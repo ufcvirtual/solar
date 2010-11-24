@@ -13,6 +13,10 @@
 ActiveRecord::Schema.define(:version => 20101123180139) do
 
   create_table "usuarios", :force => true do |t|
+    t.string   "nome",       :limit => 100
+    t.string   "login",      :limit => 15
+    t.string   "cpf",        :limit => 11
+    t.string   "senha",      :limit => 40
     t.datetime "created_at"
     t.datetime "updated_at"
   end
