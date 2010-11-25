@@ -14,7 +14,7 @@ development:
   database: solar_development
   pool: 5
   username: solar
-  password: s0l4r
+  password: 
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
@@ -40,7 +40,7 @@ test: &test
   database: solar_test
   pool: 5
   username: solar
-  password: s0l4r
+  password: 
 
 production:
   adapter: postgresql
@@ -48,7 +48,7 @@ production:
   database: solar_production
   pool: 5
   username: solar
-  password: s0l4r
+  password: 
 
 cucumber:
   <<: *test
