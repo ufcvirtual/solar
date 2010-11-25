@@ -2341,3 +2341,1880 @@ Migrating to CreateUsuarios (20101123180139)
  AND i.relnamespace IN (SELECT oid FROM pg_namespace WHERE nspname IN ('"$user"','public') )
  ORDER BY i.relname
 [0m
+DEPRECATION WARNING: Use toplevel init.rb; rails/init.rb is deprecated: /home/humberto/work/ufc/solar/solar/vendor/plugins/authlogic/rails/init.rb. (called from <top (required)> at /home/humberto/work/ufc/solar/solar/config/environment.rb:5)
+
+
+Started GET "/livros" for 127.0.0.1 at 2010-11-25 15:26:25 -0300
+
+PGError (fe_sendauth: no password supplied
+):
+  
+
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_trace.erb (1.3ms)
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (10.0ms)
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (17.5ms)
+DEPRECATION WARNING: Use toplevel init.rb; rails/init.rb is deprecated: /home/humberto/work/ufc/solar/solar/vendor/plugins/authlogic/rails/init.rb. (called from <top (required)> at /home/humberto/work/ufc/solar/solar/config/environment.rb:5)
+DEPRECATION WARNING: Use toplevel init.rb; rails/init.rb is deprecated: /home/humberto/work/ufc/solar/solar/vendor/plugins/authlogic/rails/init.rb. (called from <top (required)> at /home/humberto/work/ufc/solar/solar/config/environment.rb:5)
+DEPRECATION WARNING: Use toplevel init.rb; rails/init.rb is deprecated: /home/humberto/work/ufc/solar/solar/vendor/plugins/authlogic/rails/init.rb. (called from <top (required)> at /home/humberto/work/ufc/solar/solar/config/environment.rb:5)
+
+
+Started GET "/rails/info/properties" for 127.0.0.1 at 2010-11-25 15:39:15 -0300
+
+PGError (fe_sendauth: no password supplied
+):
+  
+
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_trace.erb (1.2ms)
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (10.1ms)
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (15.4ms)
+DEPRECATION WARNING: Use toplevel init.rb; rails/init.rb is deprecated: /home/humberto/work/ufc/solar/solar/vendor/plugins/authlogic/rails/init.rb. (called from <top (required)> at /home/humberto/work/ufc/solar/solar/config/environment.rb:5)
+
+
+Started GET "/rails/info/properties" for 127.0.0.1 at 2010-11-25 15:40:46 -0300
+  [1m[36mSQL (30.1ms)[0m  [1mSHOW client_min_messages[0m
+  [1m[35mSQL (0.1ms)[0m  SET client_min_messages TO 'panic'
+  [1m[36mSQL (0.1ms)[0m  [1mSET standard_conforming_strings = on[0m
+  [1m[35mSQL (0.1ms)[0m  SET client_min_messages TO 'notice'
+  [1m[36mSQL (0.5ms)[0m  [1mSET time zone 'UTC'[0m
+  [1m[35mSQL (0.1ms)[0m  SHOW TIME ZONE
+  Processing by Rails::InfoController#properties as */*
+  [1m[36mSQL (156.9ms)[0m  [1m SELECT COUNT(*)
+ FROM pg_tables
+ WHERE tablename = 'schema_migrations'
+ 
+[0m
+Rendered inline template (0.8ms)
+Completed 200 OK in 221ms (Views: 2.4ms | ActiveRecord: 188.0ms)
+DEPRECATION WARNING: Use toplevel init.rb; rails/init.rb is deprecated: /home/humberto/work/ufc/solar/solar/vendor/plugins/authlogic/rails/init.rb. (called from <top (required)> at /home/humberto/work/ufc/solar/solar/config/environment.rb:5)
+DEPRECATION WARNING: Use toplevel init.rb; rails/init.rb is deprecated: /home/humberto/work/ufc/solar/solar/vendor/plugins/authlogic/rails/init.rb. (called from <top (required)> at /home/humberto/work/ufc/solar/solar/config/environment.rb:5)
+DEPRECATION WARNING: Use toplevel init.rb; rails/init.rb is deprecated: /home/humberto/work/ufc/solar/solar/vendor/plugins/authlogic/rails/init.rb. (called from <top (required)> at /home/humberto/work/ufc/solar/solar/config/environment.rb:5)
+DEPRECATION WARNING: Use toplevel init.rb; rails/init.rb is deprecated: /home/humberto/work/ufc/solar/solar/vendor/plugins/authlogic/rails/init.rb. (called from <top (required)> at /home/humberto/work/ufc/solar/solar/config/environment.rb:5)
+DEPRECATION WARNING: Use toplevel init.rb; rails/init.rb is deprecated: /home/humberto/work/ufc/solar/solar/vendor/plugins/authlogic/rails/init.rb. (called from <top (required)> at /home/humberto/work/ufc/solar/solar/config/environment.rb:5)
+
+
+Started GET "/" for 127.0.0.1 at 2010-11-25 16:44:16 -0300
+  [1m[36mSQL (0.2ms)[0m  [1mSHOW client_min_messages[0m
+  [1m[35mSQL (0.1ms)[0m  SET client_min_messages TO 'panic'
+  [1m[36mSQL (0.1ms)[0m  [1mSET standard_conforming_strings = on[0m
+  [1m[35mSQL (0.0ms)[0m  SET client_min_messages TO 'notice'
+  [1m[36mSQL (19.8ms)[0m  [1mSET time zone 'UTC'[0m
+  [1m[35mSQL (0.1ms)[0m  SHOW TIME ZONE
+  Processing by HomeController#index as HTML
+ApplicationController::require_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[36mSQL (233.7ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[35mSQL (0.9ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[35mSQL (0.7ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[35mSQL (0.8ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[36mSQL (0.8ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[35mSQL (0.7ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[35mSQL (0.7ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[36mSQL (0.9ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+DEPRECATION WARNING: Using #request_uri is deprecated. Use fullpath instead. (called from store_location at /home/humberto/work/ufc/solar/solar/app/controllers/application_controller.rb:40)
+Redirected to http://localhost:3000/user_sessions/new
+Completed 302 Found in 653ms
+
+
+Started GET "/user_sessions/new" for 127.0.0.1 at 2010-11-25 16:44:17 -0300
+  Processing by UserSessionsController#new as HTML
+ApplicationController::require_no_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[35mSQL (0.6ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[36mSQL (0.8ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[35mSQL (0.5ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[36mSQL (0.4ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[35mSQL (0.4ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[36mSQL (0.4ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[35mSQL (0.5ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[36mSQL (0.5ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[35mSQL (0.4ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[36mSQL (0.5ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+  [1m[35mSQL (0.4ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+PGError: ERRO:  relação "users" não existe
+LINE 4:              WHERE a.attrelid = '"users"'::regclass
+                                        ^
+:             SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+              FROM pg_attribute a LEFT JOIN pg_attrdef d
+                ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+             WHERE a.attrelid = '"users"'::regclass
+               AND a.attnum > 0 AND NOT a.attisdropped
+             ORDER BY a.attnum
+Rendered user_sessions/new.html.erb within layouts/application (3.3ms)
+Completed 200 OK in 61ms (Views: 31.0ms | ActiveRecord: 5.4ms)
+DEPRECATION WARNING: Use toplevel init.rb; rails/init.rb is deprecated: /home/humberto/work/ufc/solar/solar/vendor/plugins/authlogic/rails/init.rb. (called from <top (required)> at /home/humberto/work/ufc/solar/solar/config/environment.rb:5)
+  [1m[36mSQL (0.2ms)[0m  [1mSHOW client_min_messages[0m
+  [1m[35mSQL (0.1ms)[0m  SET client_min_messages TO 'panic'
+  [1m[36mSQL (0.1ms)[0m  [1mSET standard_conforming_strings = on[0m
+  [1m[35mSQL (0.1ms)[0m  SET client_min_messages TO 'notice'
+  [1m[36mSQL (0.8ms)[0m  [1mSET time zone 'UTC'[0m
+  [1m[35mSQL (0.1ms)[0m  SHOW TIME ZONE
+  [1m[36mSQL (2.9ms)[0m  [1m SELECT COUNT(*)
+ FROM pg_tables
+ WHERE tablename = 'schema_migrations'
+ 
+[0m
+  [1m[35mSQL (94.8ms)[0m  CREATE TABLE "schema_migrations" ("version" character varying(255) NOT NULL) 
+  [1m[36mSQL (0.3ms)[0m  [1mSHOW search_path[0m
+  [1m[35mSQL (23.1ms)[0m   SELECT distinct i.relname, d.indisunique, d.indkey, t.oid
+ FROM pg_class t, pg_class i, pg_index d
+ WHERE i.relkind = 'i'
+ AND d.indexrelid = i.oid
+ AND d.indisprimary = 'f'
+ AND t.oid = d.indrelid
+ AND t.relname = 'schema_migrations'
+ AND i.relnamespace IN (SELECT oid FROM pg_namespace WHERE nspname IN ('"$user"','public') )
+ ORDER BY i.relname
+  [1m[36mSQL (57.9ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35mSQL (0.8ms)[0m   SELECT COUNT(*)
+ FROM pg_tables
+ WHERE tablename = 'schema_info'
+ 
+  [1m[36mSQL (1.1ms)[0m  [1m SELECT tablename
+ FROM pg_tables
+ WHERE schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35mSQL (1.9ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"schema_migrations"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+  [1m[36mSQL (0.4ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations"[0m
+Migrating to CreateUsers (20101125183549)
+  [1m[35mSQL (0.1ms)[0m  BEGIN
+  [1m[36mSQL (100.2ms)[0m  [1mCREATE TABLE "users" ("id" serial primary key, "login" character varying(255) NOT NULL, "email" character varying(255) NOT NULL, "crypted_password" character varying(255) NOT NULL, "password_salt" character varying(255) NOT NULL, "persistence_token" character varying(255) NOT NULL, "login_count" integer DEFAULT 0 NOT NULL, "failed_login_count" integer DEFAULT 0 NOT NULL, "last_request_at" timestamp, "current_login_at" timestamp, "last_login_at" timestamp, "current_login_ip" character varying(255), "last_login_ip" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35mSQL (1.3ms)[0m   SELECT distinct i.relname, d.indisunique, d.indkey, t.oid
+ FROM pg_class t, pg_class i, pg_index d
+ WHERE i.relkind = 'i'
+ AND d.indexrelid = i.oid
+ AND d.indisprimary = 'f'
+ AND t.oid = d.indrelid
+ AND t.relname = 'users'
+ AND i.relnamespace IN (SELECT oid FROM pg_namespace WHERE nspname IN ('"$user"','public') )
+ ORDER BY i.relname
+  [1m[36mSQL (39.8ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_login" ON "users" ("login")[0m
+  [1m[35mSQL (1.9ms)[0m   SELECT distinct i.relname, d.indisunique, d.indkey, t.oid
+ FROM pg_class t, pg_class i, pg_index d
+ WHERE i.relkind = 'i'
+ AND d.indexrelid = i.oid
+ AND d.indisprimary = 'f'
+ AND t.oid = d.indrelid
+ AND t.relname = 'users'
+ AND i.relnamespace IN (SELECT oid FROM pg_namespace WHERE nspname IN ('"$user"','public') )
+ ORDER BY i.relname
+  [1m[36mColumns for index index_users_on_login on users (0.8ms)[0m  [1m SELECT a.attnum, a.attname
+ FROM pg_attribute a
+ WHERE a.attrelid = 59158
+ AND a.attnum IN (2)
+[0m
+  [1m[35mSQL (87.7ms)[0m  CREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")
+  [1m[36mSQL (1.2ms)[0m  [1m SELECT distinct i.relname, d.indisunique, d.indkey, t.oid
+ FROM pg_class t, pg_class i, pg_index d
+ WHERE i.relkind = 'i'
+ AND d.indexrelid = i.oid
+ AND d.indisprimary = 'f'
+ AND t.oid = d.indrelid
+ AND t.relname = 'users'
+ AND i.relnamespace IN (SELECT oid FROM pg_namespace WHERE nspname IN ('"$user"','public') )
+ ORDER BY i.relname
+[0m
+  [1m[35mColumns for index index_users_on_email on users (0.2ms)[0m   SELECT a.attnum, a.attname
+ FROM pg_attribute a
+ WHERE a.attrelid = 59158
+ AND a.attnum IN (3)
+  [1m[36mColumns for index index_users_on_login on users (0.2ms)[0m  [1m SELECT a.attnum, a.attname
+ FROM pg_attribute a
+ WHERE a.attrelid = 59158
+ AND a.attnum IN (2)
+[0m
+  [1m[35mSQL (82.6ms)[0m  CREATE UNIQUE INDEX "index_users_on_persistence_token" ON "users" ("persistence_token")
+  [1m[36mSQL (1.1ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"schema_migrations"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mPK and serial sequence (6.5ms)[0m   SELECT attr.attname, seq.relname
+ FROM pg_class seq,
+ pg_attribute attr,
+ pg_depend dep,
+ pg_namespace name,
+ pg_constraint cons
+ WHERE seq.oid = dep.objid
+ AND seq.relkind = 'S'
+ AND attr.attrelid = dep.refobjid
+ AND attr.attnum = dep.refobjsubid
+ AND attr.attrelid = cons.conrelid
+ AND attr.attnum = cons.conkey[1]
+ AND cons.contype = 'p'
+ AND dep.refobjid = '"schema_migrations"'::regclass
+  [1m[36mPK and custom sequence (3.3ms)[0m  [1m SELECT attr.attname,
+ CASE
+ WHEN split_part(def.adsrc, '''', 2) ~ '.' THEN
+ substr(split_part(def.adsrc, '''', 2),
+ strpos(split_part(def.adsrc, '''', 2), '.')+1)
+ ELSE split_part(def.adsrc, '''', 2)
+ END
+ FROM pg_class t
+ JOIN pg_attribute attr ON (t.oid = attrelid)
+ JOIN pg_attrdef def ON (adrelid = attrelid AND adnum = attnum)
+ JOIN pg_constraint cons ON (conrelid = adrelid AND adnum = conkey[1])
+ WHERE t.oid = '"schema_migrations"'::regclass
+ AND cons.contype = 'p'
+ AND def.adsrc ~* 'nextval'
+[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20101125183549')
+  [1m[36mPK and serial sequence (3.3ms)[0m  [1m SELECT attr.attname, seq.relname
+ FROM pg_class seq,
+ pg_attribute attr,
+ pg_depend dep,
+ pg_namespace name,
+ pg_constraint cons
+ WHERE seq.oid = dep.objid
+ AND seq.relkind = 'S'
+ AND attr.attrelid = dep.refobjid
+ AND attr.attnum = dep.refobjsubid
+ AND attr.attrelid = cons.conrelid
+ AND attr.attnum = cons.conkey[1]
+ AND cons.contype = 'p'
+ AND dep.refobjid = '"schema_migrations"'::regclass
+[0m
+  [1m[35mPK and custom sequence (1.2ms)[0m   SELECT attr.attname,
+ CASE
+ WHEN split_part(def.adsrc, '''', 2) ~ '.' THEN
+ substr(split_part(def.adsrc, '''', 2),
+ strpos(split_part(def.adsrc, '''', 2), '.')+1)
+ ELSE split_part(def.adsrc, '''', 2)
+ END
+ FROM pg_class t
+ JOIN pg_attribute attr ON (t.oid = attrelid)
+ JOIN pg_attrdef def ON (adrelid = attrelid AND adnum = attnum)
+ JOIN pg_constraint cons ON (conrelid = adrelid AND adnum = conkey[1])
+ WHERE t.oid = '"schema_migrations"'::regclass
+ AND cons.contype = 'p'
+ AND def.adsrc ~* 'nextval'
+  [1m[36mSQL (39.2ms)[0m  [1mCOMMIT[0m
+  [1m[35mSQL (2.3ms)[0m   SELECT COUNT(*)
+ FROM pg_tables
+ WHERE tablename = 'schema_migrations'
+ 
+  [1m[36mSQL (3.3ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"schema_migrations"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mSQL (0.3ms)[0m  SELECT "schema_migrations"."version" FROM "schema_migrations"
+  [1m[36mSQL (0.8ms)[0m  [1m SELECT tablename
+ FROM pg_tables
+ WHERE schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35mSQL (1.0ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+  [1m[36mPK and serial sequence (2.6ms)[0m  [1m SELECT attr.attname, seq.relname
+ FROM pg_class seq,
+ pg_attribute attr,
+ pg_depend dep,
+ pg_namespace name,
+ pg_constraint cons
+ WHERE seq.oid = dep.objid
+ AND seq.relkind = 'S'
+ AND attr.attrelid = dep.refobjid
+ AND attr.attnum = dep.refobjsubid
+ AND attr.attrelid = cons.conrelid
+ AND attr.attnum = cons.conkey[1]
+ AND cons.contype = 'p'
+ AND dep.refobjid = '"users"'::regclass
+[0m
+  [1m[35mSQL (1.2ms)[0m   SELECT distinct i.relname, d.indisunique, d.indkey, t.oid
+ FROM pg_class t, pg_class i, pg_index d
+ WHERE i.relkind = 'i'
+ AND d.indexrelid = i.oid
+ AND d.indisprimary = 'f'
+ AND t.oid = d.indrelid
+ AND t.relname = 'users'
+ AND i.relnamespace IN (SELECT oid FROM pg_namespace WHERE nspname IN ('"$user"','public') )
+ ORDER BY i.relname
+  [1m[36mColumns for index index_users_on_email on users (0.3ms)[0m  [1m SELECT a.attnum, a.attname
+ FROM pg_attribute a
+ WHERE a.attrelid = 59158
+ AND a.attnum IN (3)
+[0m
+  [1m[35mColumns for index index_users_on_login on users (0.2ms)[0m   SELECT a.attnum, a.attname
+ FROM pg_attribute a
+ WHERE a.attrelid = 59158
+ AND a.attnum IN (2)
+  [1m[36mColumns for index index_users_on_persistence_token on users (0.2ms)[0m  [1m SELECT a.attnum, a.attname
+ FROM pg_attribute a
+ WHERE a.attrelid = 59158
+ AND a.attnum IN (6)
+[0m
+DEPRECATION WARNING: Use toplevel init.rb; rails/init.rb is deprecated: /home/humberto/work/ufc/solar/solar/vendor/plugins/authlogic/rails/init.rb. (called from <top (required)> at /home/humberto/work/ufc/solar/solar/config/environment.rb:5)
+  [1m[36mSQL (0.2ms)[0m  [1mSHOW client_min_messages[0m
+  [1m[35mSQL (0.1ms)[0m  SET client_min_messages TO 'panic'
+  [1m[36mSQL (0.1ms)[0m  [1mSET standard_conforming_strings = on[0m
+  [1m[35mSQL (0.1ms)[0m  SET client_min_messages TO 'notice'
+  [1m[36mSQL (0.4ms)[0m  [1mSET time zone 'UTC'[0m
+  [1m[35mSQL (0.1ms)[0m  SHOW TIME ZONE
+  [1m[36mSQL (2.7ms)[0m  [1m SELECT COUNT(*)
+ FROM pg_tables
+ WHERE tablename = 'schema_migrations'
+ 
+[0m
+  [1m[35mSQL (3.3ms)[0m   SELECT tablename
+ FROM pg_tables
+ WHERE schemaname = ANY (current_schemas(false))
+  [1m[36mSQL (2.1ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"schema_migrations"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mSQL (0.5ms)[0m  SELECT "schema_migrations"."version" FROM "schema_migrations"
+Migrating to CreateUsers (20101125183549)
+  [1m[36mSQL (0.8ms)[0m  [1m SELECT COUNT(*)
+ FROM pg_tables
+ WHERE tablename = 'schema_migrations'
+ 
+[0m
+  [1m[35mSQL (0.5ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"schema_migrations"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+  [1m[36mSQL (0.2ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations"[0m
+  [1m[35mSQL (1.3ms)[0m   SELECT tablename
+ FROM pg_tables
+ WHERE schemaname = ANY (current_schemas(false))
+  [1m[36mSQL (0.8ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mPK and serial sequence (3.4ms)[0m   SELECT attr.attname, seq.relname
+ FROM pg_class seq,
+ pg_attribute attr,
+ pg_depend dep,
+ pg_namespace name,
+ pg_constraint cons
+ WHERE seq.oid = dep.objid
+ AND seq.relkind = 'S'
+ AND attr.attrelid = dep.refobjid
+ AND attr.attnum = dep.refobjsubid
+ AND attr.attrelid = cons.conrelid
+ AND attr.attnum = cons.conkey[1]
+ AND cons.contype = 'p'
+ AND dep.refobjid = '"users"'::regclass
+  [1m[36mSQL (0.1ms)[0m  [1mSHOW search_path[0m
+  [1m[35mSQL (3.8ms)[0m   SELECT distinct i.relname, d.indisunique, d.indkey, t.oid
+ FROM pg_class t, pg_class i, pg_index d
+ WHERE i.relkind = 'i'
+ AND d.indexrelid = i.oid
+ AND d.indisprimary = 'f'
+ AND t.oid = d.indrelid
+ AND t.relname = 'users'
+ AND i.relnamespace IN (SELECT oid FROM pg_namespace WHERE nspname IN ('"$user"','public') )
+ ORDER BY i.relname
+  [1m[36mColumns for index index_users_on_email on users (0.4ms)[0m  [1m SELECT a.attnum, a.attname
+ FROM pg_attribute a
+ WHERE a.attrelid = 59158
+ AND a.attnum IN (3)
+[0m
+  [1m[35mColumns for index index_users_on_login on users (0.3ms)[0m   SELECT a.attnum, a.attname
+ FROM pg_attribute a
+ WHERE a.attrelid = 59158
+ AND a.attnum IN (2)
+  [1m[36mColumns for index index_users_on_persistence_token on users (0.3ms)[0m  [1m SELECT a.attnum, a.attname
+ FROM pg_attribute a
+ WHERE a.attrelid = 59158
+ AND a.attnum IN (6)
+[0m
+DEPRECATION WARNING: Use toplevel init.rb; rails/init.rb is deprecated: /home/humberto/work/ufc/solar/solar/vendor/plugins/authlogic/rails/init.rb. (called from <top (required)> at /home/humberto/work/ufc/solar/solar/config/environment.rb:5)
+
+
+Started GET "/user_sessions/new" for 127.0.0.1 at 2010-11-25 16:46:24 -0300
+  [1m[36mSQL (0.2ms)[0m  [1mSHOW client_min_messages[0m
+  [1m[35mSQL (0.1ms)[0m  SET client_min_messages TO 'panic'
+  [1m[36mSQL (0.1ms)[0m  [1mSET standard_conforming_strings = on[0m
+  [1m[35mSQL (0.1ms)[0m  SET client_min_messages TO 'notice'
+  [1m[36mSQL (0.3ms)[0m  [1mSET time zone 'UTC'[0m
+  [1m[35mSQL (0.1ms)[0m  SHOW TIME ZONE
+  Processing by UserSessionsController#new as HTML
+ApplicationController::require_no_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[36mSQL (3.2ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+Rendered user_sessions/new.html.erb within layouts/application (1.9ms)
+Completed 200 OK in 87ms (Views: 7.6ms | ActiveRecord: 4.0ms)
+
+
+Started GET "/user_sessions/new" for 127.0.0.1 at 2010-11-25 16:46:32 -0300
+  Processing by UserSessionsController#new as HTML
+ApplicationController::require_no_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[35mSQL (0.9ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+Rendered user_sessions/new.html.erb within layouts/application (2.2ms)
+Completed 200 OK in 95ms (Views: 8.5ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/user_sessions/new" for 127.0.0.1 at 2010-11-25 16:46:33 -0300
+  Processing by UserSessionsController#new as HTML
+ApplicationController::require_no_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[36mSQL (1.0ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+Rendered user_sessions/new.html.erb within layouts/application (15.9ms)
+Completed 200 OK in 120ms (Views: 25.4ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/user_sessions/new" for 127.0.0.1 at 2010-11-25 16:46:33 -0300
+  Processing by UserSessionsController#new as HTML
+ApplicationController::require_no_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[35mSQL (0.9ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+Rendered user_sessions/new.html.erb within layouts/application (2.0ms)
+Completed 200 OK in 96ms (Views: 7.8ms | ActiveRecord: 0.9ms)
+DEPRECATION WARNING: Use toplevel init.rb; rails/init.rb is deprecated: /home/humberto/work/ufc/solar/solar/vendor/plugins/authlogic/rails/init.rb. (called from <top (required)> at /home/humberto/work/ufc/solar/solar/config/environment.rb:5)
+  [1m[36mSQL (0.2ms)[0m  [1mSHOW client_min_messages[0m
+  [1m[35mSQL (0.1ms)[0m  SET client_min_messages TO 'panic'
+  [1m[36mSQL (0.1ms)[0m  [1mSET standard_conforming_strings = on[0m
+  [1m[35mSQL (0.1ms)[0m  SET client_min_messages TO 'notice'
+  [1m[36mSQL (0.7ms)[0m  [1mSET time zone 'UTC'[0m
+  [1m[35mSQL (0.1ms)[0m  SHOW TIME ZONE
+  [1m[36mSQL (3.3ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mSQL (0.1ms)[0m  BEGIN
+  [1m[36mSQL (1.9ms)[0m  [1m SELECT tablename
+ FROM pg_tables
+ WHERE schemaname = ANY (current_schemas(false))
+[0m
+  [1m[35mSQL (0.7ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+  [1m[36mUser Load (27.7ms)[0m  [1mSELECT "users"."id" FROM "users" WHERE (LOWER("users"."email") = LOWER('test@tester.com')) LIMIT 1[0m
+  [1m[35mUser Load (0.4ms)[0m  SELECT "users"."id" FROM "users" WHERE (LOWER("users"."login") = LOWER('test')) LIMIT 1
+  [1m[36mUser Load (8.4ms)[0m  [1mSELECT "users"."id" FROM "users" WHERE ("users"."persistence_token" = '2c30c85b2e71cf1e95464bac323ec2e5f0ef4d44f24f272474f3f046ad3311789bc3d00461886b70badd5bf2993880450627ff557d1bfdd4091bc8750c72b0aa') LIMIT 1[0m
+  [1m[35mPK and serial sequence (6.4ms)[0m   SELECT attr.attname, seq.relname
+ FROM pg_class seq,
+ pg_attribute attr,
+ pg_depend dep,
+ pg_namespace name,
+ pg_constraint cons
+ WHERE seq.oid = dep.objid
+ AND seq.relkind = 'S'
+ AND attr.attrelid = dep.refobjid
+ AND attr.attnum = dep.refobjsubid
+ AND attr.attrelid = cons.conrelid
+ AND attr.attnum = cons.conkey[1]
+ AND cons.contype = 'p'
+ AND dep.refobjid = '"users"'::regclass
+  [1m[36mSQL (42.4ms)[0m  [1mINSERT INTO "users" ("login", "email", "crypted_password", "password_salt", "persistence_token", "login_count", "failed_login_count", "last_request_at", "current_login_at", "last_login_at", "current_login_ip", "last_login_ip", "created_at", "updated_at") VALUES ('test', 'test@tester.com', '5a66bf18df35b26ad4bfea1a76813fc78d863422b7b68547fd7d3c875e8f2bed5e9f1bc78f330eb090f533248c3916b3bed4c0cbc47727b3bb8a4e4a8371dfc0', 'CnUoGX5IgSE3luQ9BeUl', '2c30c85b2e71cf1e95464bac323ec2e5f0ef4d44f24f272474f3f046ad3311789bc3d00461886b70badd5bf2993880450627ff557d1bfdd4091bc8750c72b0aa', 0, 0, NULL, NULL, NULL, NULL, NULL, '2010-11-25 19:50:33.245406', '2010-11-25 19:50:33.245406') RETURNING "id"[0m
+  [1m[35mSQL (10.1ms)[0m  COMMIT
+DEPRECATION WARNING: Use toplevel init.rb; rails/init.rb is deprecated: /home/humberto/work/ufc/solar/solar/vendor/plugins/authlogic/rails/init.rb. (called from <top (required)> at /home/humberto/work/ufc/solar/solar/config/environment.rb:5)
+
+
+Started GET "/user_sessions/new" for 127.0.0.1 at 2010-11-25 16:53:47 -0300
+  [1m[36mSQL (0.2ms)[0m  [1mSHOW client_min_messages[0m
+  [1m[35mSQL (0.1ms)[0m  SET client_min_messages TO 'panic'
+  [1m[36mSQL (0.1ms)[0m  [1mSET standard_conforming_strings = on[0m
+  [1m[35mSQL (0.0ms)[0m  SET client_min_messages TO 'notice'
+  [1m[36mSQL (0.3ms)[0m  [1mSET time zone 'UTC'[0m
+  [1m[35mSQL (4.1ms)[0m  SHOW TIME ZONE
+  Processing by UserSessionsController#new as HTML
+ApplicationController::require_no_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[36mSQL (3.0ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+ERROR: compiling _app_views_user_sessions_new_html_erb___372548532_82182980__176401186 RAISED /home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:4: syntax error, unexpected '<'
+  <%= f.error_messages 
+   ^
+/home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:6: syntax error, unexpected '(', expecting keyword_end
+... <p>');@output_buffer.append= ( f.label :login );@output_buf...
+...                               ^
+/home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:6: syntax error, unexpected ')', expecting keyword_end
+...ffer.append= ( f.label :login );@output_buffer.safe_concat('
+...                               ^
+Function body:           def _app_views_user_sessions_new_html_erb___372548532_82182980__176401186(local_assigns)
+            _old_virtual_path, @_virtual_path = @_virtual_path, "user_sessions/new";_old_output_buffer = @output_buffer;;@output_buffer = ActionView::OutputBuffer.new;@output_buffer.safe_concat('<h1> Login::</h1>
+
+'); form_for @user_session, :url => {:action => "create"} do |f|
+  <%= f.error_messages 
+@output_buffer.safe_concat(' 
+    <p>');@output_buffer.append= ( f.label :login );@output_buffer.safe_concat('
+');@output_buffer.safe_concat('    ');@output_buffer.append= ( f.text_field :login );@output_buffer.safe_concat('</p>
+
+    <p>');@output_buffer.append= ( f.label :password );@output_buffer.safe_concat('
+');@output_buffer.safe_concat('    ');@output_buffer.append= ( f.password_field :password );@output_buffer.safe_concat('</p>
+
+    <p>');@output_buffer.append= ( f.check_box :remember_me );@output_buffer.safe_concat('
+');@output_buffer.safe_concat('    ');@output_buffer.append= ( f.label :remember_me );@output_buffer.safe_concat('</p>
+
+    <p>');@output_buffer.append= ( f.submit "Login" );@output_buffer.safe_concat('</p>
+'); end 
+@output_buffer.safe_concat('
+');@output_buffer.to_s
+          ensure
+            @_virtual_path, @output_buffer = _old_virtual_path, _old_output_buffer
+          end
+Backtrace: /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/template.rb:255:in `module_eval'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/template.rb:255:in `compile'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/template.rb:134:in `block in render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:54:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/template.rb:127:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/render/rendering.rb:59:in `block in _render_template'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:52:in `block in instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:52:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/render/rendering.rb:56:in `_render_template'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/render/rendering.rb:26:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:114:in `_render_template'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:108:in `render_to_body'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/renderers.rb:47:in `render_to_body'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/compatibility.rb:55:in `render_to_body'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:101:in `render_to_string'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:92:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/rendering.rb:17:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:40:in `block (2 levels) in render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/core_ext/benchmark.rb:5:in `block in ms'
+/home/humberto/.rvm/rubies/ruby-1.9.2-p0/lib/ruby/1.9.1/benchmark.rb:309:in `realtime'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/core_ext/benchmark.rb:5:in `ms'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:40:in `block in render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:78:in `cleanup_view_runtime'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/railties/controller_runtime.rb:15:in `cleanup_view_runtime'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:39:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/implicit_render.rb:10:in `default_render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/implicit_render.rb:5:in `send_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/base.rb:151:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/rendering.rb:11:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/callbacks.rb:18:in `block in process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/callbacks.rb:445:in `_run__944475660__process_action__294307194__callbacks'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/callbacks.rb:409:in `_run_process_action_callbacks'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/callbacks.rb:93:in `run_callbacks'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/callbacks.rb:17:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:30:in `block in process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:52:in `block in instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:52:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:29:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/rescue.rb:17:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/base.rb:120:in `process'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:40:in `process'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal.rb:138:in `dispatch'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/rack_delegation.rb:14:in `dispatch'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal.rb:178:in `block in action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/routing/route_set.rb:62:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/routing/route_set.rb:62:in `dispatch'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/routing/route_set.rb:27:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/route_set.rb:148:in `block in call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/code_generation.rb:93:in `block in recognize'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/code_generation.rb:68:in `optimized_each'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/code_generation.rb:92:in `recognize'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/route_set.rb:139:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/routing/route_set.rb:492:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/best_standards_support.rb:17:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/head.rb:14:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/methodoverride.rb:24:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/params_parser.rb:21:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/flash.rb:182:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/session/abstract_store.rb:149:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/cookies.rb:295:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/query_cache.rb:32:in `block in call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/connection_adapters/abstract/query_cache.rb:28:in `cache'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/query_cache.rb:12:in `cache'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/query_cache.rb:31:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/connection_adapters/abstract/connection_pool.rb:353:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/callbacks.rb:46:in `block in call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/callbacks.rb:415:in `_run_call_callbacks'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/callbacks.rb:44:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/sendfile.rb:107:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/remote_ip.rb:48:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/show_exceptions.rb:46:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/railties-3.0.3/lib/rails/rack/logger.rb:13:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/runtime.rb:17:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/cache/strategy/local_cache.rb:72:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/lock.rb:11:in `block in call'
+<internal:prelude>:10:in `synchronize'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/lock.rb:11:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/static.rb:30:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/railties-3.0.3/lib/rails/application.rb:168:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/railties-3.0.3/lib/rails/application.rb:77:in `method_missing'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/railties-3.0.3/lib/rails/rack/log_tailer.rb:14:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/content_length.rb:13:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/handler/webrick.rb:52:in `service'
+/home/humberto/.rvm/rubies/ruby-1.9.2-p0/lib/ruby/1.9.1/webrick/httpserver.rb:111:in `service'
+/home/humberto/.rvm/rubies/ruby-1.9.2-p0/lib/ruby/1.9.1/webrick/httpserver.rb:70:in `run'
+/home/humberto/.rvm/rubies/ruby-1.9.2-p0/lib/ruby/1.9.1/webrick/server.rb:183:in `block in start_thread'
+Rendered user_sessions/new.html.erb within layouts/application (56.7ms)
+Completed   in 139ms
+
+ActionView::Template::Error (/home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:4: syntax error, unexpected '<'
+  <%= f.error_messages 
+   ^
+/home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:6: syntax error, unexpected '(', expecting keyword_end
+... <p>');@output_buffer.append= ( f.label :login );@output_buf...
+...                               ^
+/home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:6: syntax error, unexpected ')', expecting keyword_end
+...ffer.append= ( f.label :login );@output_buffer.safe_concat('
+...                               ^):
+    1: <h1> Login::</h1>
+    2: 
+    3: <% form_for @user_session, :url => {:action => "create"} do |f|
+    4:   <%= f.error_messages %>
+    5:  
+    6:     <p><%= f.label :login %>
+    7:     <%= f.text_field :login %></p>
+  
+
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_trace.erb (2.2ms)
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (5.1ms)
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/template_error.erb within rescues/layout (13.6ms)
+
+
+Started GET "/user_sessions/new" for 127.0.0.1 at 2010-11-25 16:54:15 -0300
+  Processing by UserSessionsController#new as HTML
+ApplicationController::require_no_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[35mSQL (0.8ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+ERROR: compiling _app_views_user_sessions_new_html_erb___372548532_81922930__176401186 RAISED /home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:5: syntax error, unexpected '<'
+    <p><%= f.label :login 
+     ^
+/home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:6: syntax error, unexpected '(', expecting keyword_end
+...    ');@output_buffer.append= ( f.text_field :login );@outpu...
+...                               ^
+/home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:6: syntax error, unexpected ')', expecting keyword_end
+...append= ( f.text_field :login );@output_buffer.safe_concat('...
+...                               ^
+Function body:           def _app_views_user_sessions_new_html_erb___372548532_81922930__176401186(local_assigns)
+            _old_virtual_path, @_virtual_path = @_virtual_path, "user_sessions/new";_old_output_buffer = @output_buffer;;@output_buffer = ActionView::OutputBuffer.new;@output_buffer.safe_concat('<h1> Login::</h1>
+
+'); form_for @user_session, :url => {:action => "create"} do |f|
+ 
+    <p><%= f.label :login 
+@output_buffer.safe_concat('    ');@output_buffer.append= ( f.text_field :login );@output_buffer.safe_concat('</p>
+
+    <p>');@output_buffer.append= ( f.label :password );@output_buffer.safe_concat('
+');@output_buffer.safe_concat('    ');@output_buffer.append= ( f.password_field :password );@output_buffer.safe_concat('</p>
+
+    <p>');@output_buffer.append= ( f.check_box :remember_me );@output_buffer.safe_concat('
+');@output_buffer.safe_concat('    ');@output_buffer.append= ( f.label :remember_me );@output_buffer.safe_concat('</p>
+
+    <p>');@output_buffer.append= ( f.submit "Login" );@output_buffer.safe_concat('</p>
+'); end 
+@output_buffer.safe_concat('
+');@output_buffer.to_s
+          ensure
+            @_virtual_path, @output_buffer = _old_virtual_path, _old_output_buffer
+          end
+Backtrace: /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/template.rb:255:in `module_eval'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/template.rb:255:in `compile'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/template.rb:134:in `block in render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:54:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/template.rb:127:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/render/rendering.rb:59:in `block in _render_template'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:52:in `block in instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:52:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/render/rendering.rb:56:in `_render_template'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/render/rendering.rb:26:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:114:in `_render_template'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:108:in `render_to_body'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/renderers.rb:47:in `render_to_body'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/compatibility.rb:55:in `render_to_body'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:101:in `render_to_string'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:92:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/rendering.rb:17:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:40:in `block (2 levels) in render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/core_ext/benchmark.rb:5:in `block in ms'
+/home/humberto/.rvm/rubies/ruby-1.9.2-p0/lib/ruby/1.9.1/benchmark.rb:309:in `realtime'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/core_ext/benchmark.rb:5:in `ms'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:40:in `block in render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:78:in `cleanup_view_runtime'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/railties/controller_runtime.rb:15:in `cleanup_view_runtime'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:39:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/implicit_render.rb:10:in `default_render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/implicit_render.rb:5:in `send_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/base.rb:151:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/rendering.rb:11:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/callbacks.rb:18:in `block in process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/callbacks.rb:445:in `_run__944475660__process_action__294307194__callbacks'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/callbacks.rb:409:in `_run_process_action_callbacks'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/callbacks.rb:93:in `run_callbacks'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/callbacks.rb:17:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:30:in `block in process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:52:in `block in instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:52:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:29:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/rescue.rb:17:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/base.rb:120:in `process'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:40:in `process'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal.rb:138:in `dispatch'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/rack_delegation.rb:14:in `dispatch'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal.rb:178:in `block in action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/routing/route_set.rb:62:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/routing/route_set.rb:62:in `dispatch'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/routing/route_set.rb:27:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/route_set.rb:148:in `block in call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/code_generation.rb:93:in `block in recognize'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/code_generation.rb:68:in `optimized_each'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/code_generation.rb:92:in `recognize'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/route_set.rb:139:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/routing/route_set.rb:492:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/best_standards_support.rb:17:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/head.rb:14:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/methodoverride.rb:24:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/params_parser.rb:21:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/flash.rb:182:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/session/abstract_store.rb:149:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/cookies.rb:295:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/query_cache.rb:32:in `block in call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/connection_adapters/abstract/query_cache.rb:28:in `cache'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/query_cache.rb:12:in `cache'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/query_cache.rb:31:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/connection_adapters/abstract/connection_pool.rb:353:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/callbacks.rb:46:in `block in call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/callbacks.rb:415:in `_run_call_callbacks'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/callbacks.rb:44:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/sendfile.rb:107:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/remote_ip.rb:48:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/show_exceptions.rb:46:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/railties-3.0.3/lib/rails/rack/logger.rb:13:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/runtime.rb:17:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/cache/strategy/local_cache.rb:72:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/lock.rb:11:in `block in call'
+<internal:prelude>:10:in `synchronize'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/lock.rb:11:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/static.rb:30:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/railties-3.0.3/lib/rails/application.rb:168:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/railties-3.0.3/lib/rails/application.rb:77:in `method_missing'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/railties-3.0.3/lib/rails/rack/log_tailer.rb:14:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/content_length.rb:13:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/handler/webrick.rb:52:in `service'
+/home/humberto/.rvm/rubies/ruby-1.9.2-p0/lib/ruby/1.9.1/webrick/httpserver.rb:111:in `service'
+/home/humberto/.rvm/rubies/ruby-1.9.2-p0/lib/ruby/1.9.1/webrick/httpserver.rb:70:in `run'
+/home/humberto/.rvm/rubies/ruby-1.9.2-p0/lib/ruby/1.9.1/webrick/server.rb:183:in `block in start_thread'
+Rendered user_sessions/new.html.erb within layouts/application (1.0ms)
+Completed   in 51ms
+
+ActionView::Template::Error (/home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:5: syntax error, unexpected '<'
+    <p><%= f.label :login 
+     ^
+/home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:6: syntax error, unexpected '(', expecting keyword_end
+...    ');@output_buffer.append= ( f.text_field :login );@outpu...
+...                               ^
+/home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:6: syntax error, unexpected ')', expecting keyword_end
+...append= ( f.text_field :login );@output_buffer.safe_concat('...
+...                               ^):
+    2: 
+    3: <% form_for @user_session, :url => {:action => "create"} do |f|
+    4:  
+    5:     <p><%= f.label :login %>
+    6:     <%= f.text_field :login %></p>
+    7: 
+    8:     <p><%= f.label :password %>
+  
+
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_trace.erb (1.3ms)
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (35.4ms)
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/template_error.erb within rescues/layout (41.3ms)
+
+
+Started GET "/user_sessions/new" for 127.0.0.1 at 2010-11-25 16:54:17 -0300
+  Processing by UserSessionsController#new as HTML
+ApplicationController::require_no_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[36mSQL (0.8ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+ERROR: compiling _app_views_user_sessions_new_html_erb___372548532_82732110__176401186 RAISED /home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:5: syntax error, unexpected '<'
+    <p><%= f.label :login 
+     ^
+/home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:6: syntax error, unexpected '(', expecting keyword_end
+...    ');@output_buffer.append= ( f.text_field :login );@outpu...
+...                               ^
+/home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:6: syntax error, unexpected ')', expecting keyword_end
+...append= ( f.text_field :login );@output_buffer.safe_concat('...
+...                               ^
+Function body:           def _app_views_user_sessions_new_html_erb___372548532_82732110__176401186(local_assigns)
+            _old_virtual_path, @_virtual_path = @_virtual_path, "user_sessions/new";_old_output_buffer = @output_buffer;;@output_buffer = ActionView::OutputBuffer.new;@output_buffer.safe_concat('<h1> Login::</h1>
+
+'); form_for @user_session, :url => {:action => "create"} do |f|
+ 
+    <p><%= f.label :login 
+@output_buffer.safe_concat('    ');@output_buffer.append= ( f.text_field :login );@output_buffer.safe_concat('</p>
+
+    <p>');@output_buffer.append= ( f.label :password );@output_buffer.safe_concat('
+');@output_buffer.safe_concat('    ');@output_buffer.append= ( f.password_field :password );@output_buffer.safe_concat('</p>
+
+    <p>');@output_buffer.append= ( f.check_box :remember_me );@output_buffer.safe_concat('
+');@output_buffer.safe_concat('    ');@output_buffer.append= ( f.label :remember_me );@output_buffer.safe_concat('</p>
+
+    <p>');@output_buffer.append= ( f.submit "Login" );@output_buffer.safe_concat('</p>
+'); end 
+@output_buffer.safe_concat('
+');@output_buffer.to_s
+          ensure
+            @_virtual_path, @output_buffer = _old_virtual_path, _old_output_buffer
+          end
+Backtrace: /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/template.rb:255:in `module_eval'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/template.rb:255:in `compile'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/template.rb:134:in `block in render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:54:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/template.rb:127:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/render/rendering.rb:59:in `block in _render_template'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:52:in `block in instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:52:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/render/rendering.rb:56:in `_render_template'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/render/rendering.rb:26:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:114:in `_render_template'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:108:in `render_to_body'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/renderers.rb:47:in `render_to_body'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/compatibility.rb:55:in `render_to_body'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:101:in `render_to_string'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:92:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/rendering.rb:17:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:40:in `block (2 levels) in render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/core_ext/benchmark.rb:5:in `block in ms'
+/home/humberto/.rvm/rubies/ruby-1.9.2-p0/lib/ruby/1.9.1/benchmark.rb:309:in `realtime'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/core_ext/benchmark.rb:5:in `ms'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:40:in `block in render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:78:in `cleanup_view_runtime'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/railties/controller_runtime.rb:15:in `cleanup_view_runtime'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:39:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/implicit_render.rb:10:in `default_render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/implicit_render.rb:5:in `send_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/base.rb:151:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/rendering.rb:11:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/callbacks.rb:18:in `block in process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/callbacks.rb:445:in `_run__944475660__process_action__294307194__callbacks'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/callbacks.rb:409:in `_run_process_action_callbacks'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/callbacks.rb:93:in `run_callbacks'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/callbacks.rb:17:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:30:in `block in process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:52:in `block in instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:52:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:29:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/rescue.rb:17:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/base.rb:120:in `process'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:40:in `process'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal.rb:138:in `dispatch'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/rack_delegation.rb:14:in `dispatch'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal.rb:178:in `block in action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/routing/route_set.rb:62:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/routing/route_set.rb:62:in `dispatch'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/routing/route_set.rb:27:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/route_set.rb:148:in `block in call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/code_generation.rb:93:in `block in recognize'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/code_generation.rb:68:in `optimized_each'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/code_generation.rb:92:in `recognize'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/route_set.rb:139:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/routing/route_set.rb:492:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/best_standards_support.rb:17:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/head.rb:14:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/methodoverride.rb:24:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/params_parser.rb:21:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/flash.rb:182:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/session/abstract_store.rb:149:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/cookies.rb:295:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/query_cache.rb:32:in `block in call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/connection_adapters/abstract/query_cache.rb:28:in `cache'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/query_cache.rb:12:in `cache'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/query_cache.rb:31:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/connection_adapters/abstract/connection_pool.rb:353:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/callbacks.rb:46:in `block in call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/callbacks.rb:415:in `_run_call_callbacks'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/callbacks.rb:44:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/sendfile.rb:107:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/remote_ip.rb:48:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/show_exceptions.rb:46:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/railties-3.0.3/lib/rails/rack/logger.rb:13:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/runtime.rb:17:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/cache/strategy/local_cache.rb:72:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/lock.rb:11:in `block in call'
+<internal:prelude>:10:in `synchronize'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/lock.rb:11:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/static.rb:30:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/railties-3.0.3/lib/rails/application.rb:168:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/railties-3.0.3/lib/rails/application.rb:77:in `method_missing'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/railties-3.0.3/lib/rails/rack/log_tailer.rb:14:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/content_length.rb:13:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/handler/webrick.rb:52:in `service'
+/home/humberto/.rvm/rubies/ruby-1.9.2-p0/lib/ruby/1.9.1/webrick/httpserver.rb:111:in `service'
+/home/humberto/.rvm/rubies/ruby-1.9.2-p0/lib/ruby/1.9.1/webrick/httpserver.rb:70:in `run'
+/home/humberto/.rvm/rubies/ruby-1.9.2-p0/lib/ruby/1.9.1/webrick/server.rb:183:in `block in start_thread'
+Rendered user_sessions/new.html.erb within layouts/application (1.0ms)
+Completed   in 79ms
+
+ActionView::Template::Error (/home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:5: syntax error, unexpected '<'
+    <p><%= f.label :login 
+     ^
+/home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:6: syntax error, unexpected '(', expecting keyword_end
+...    ');@output_buffer.append= ( f.text_field :login );@outpu...
+...                               ^
+/home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:6: syntax error, unexpected ')', expecting keyword_end
+...append= ( f.text_field :login );@output_buffer.safe_concat('...
+...                               ^):
+    2: 
+    3: <% form_for @user_session, :url => {:action => "create"} do |f|
+    4:  
+    5:     <p><%= f.label :login %>
+    6:     <%= f.text_field :login %></p>
+    7: 
+    8:     <p><%= f.label :password %>
+  
+
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_trace.erb (1.3ms)
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (3.3ms)
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/template_error.erb within rescues/layout (8.9ms)
+
+
+Started GET "/user_sessions/new" for 127.0.0.1 at 2010-11-25 16:55:02 -0300
+  Processing by UserSessionsController#new as HTML
+ApplicationController::require_no_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[35mSQL (2.7ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+DEPRECATION WARNING: <% %> style block helpers are deprecated. Please use <%= %>. (called from _app_views_user_sessions_new_html_erb___372548532_82497530__176401186 at /home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:2)
+Rendered user_sessions/new.html.erb within layouts/application (4.9ms)
+Completed 200 OK in 155ms (Views: 10.3ms | ActiveRecord: 2.7ms)
+
+
+Started POST "/user_sessions" for 127.0.0.1 at 2010-11-25 16:55:18 -0300
+  Processing by UserSessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"eo0KqcgIS3qgWTM5/GaZlRRRdLniGk5/8cMoF9GbyO4=", "user_session"=>{"login"=>"test", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Login"}
+ApplicationController::require_no_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[36mSQL (0.8ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mUser Load (6.9ms)[0m  SELECT "users".* FROM "users" WHERE (LOWER("users".login) = 'test') LIMIT 1
+  [1m[36mSQL (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (1.8ms)[0m   SELECT tablename
+ FROM pg_tables
+ WHERE schemaname = ANY (current_schemas(false))
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mAREL (17.5ms)[0m  UPDATE "users" SET "login_count" = 1, "current_login_at" = '2010-11-25 19:55:19.072379', "current_login_ip" = '127.0.0.1', "last_request_at" = '2010-11-25 19:55:19.072556', "updated_at" = '2010-11-25 19:55:19.075552' WHERE ("users"."id" = 1)
+  [1m[36mSQL (10.4ms)[0m  [1mCOMMIT[0m
+Completed   in 585ms
+
+NameError (undefined local variable or method `users_url' for #<UserSessionsController:0x9c06184>):
+  app/controllers/user_sessions_controller.rb:13:in `create'
+
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_trace.erb (1.2ms)
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (4.9ms)
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (9.9ms)
+
+
+Started POST "/user_sessions" for 127.0.0.1 at 2010-11-25 16:57:28 -0300
+  Processing by UserSessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"eo0KqcgIS3qgWTM5/GaZlRRRdLniGk5/8cMoF9GbyO4=", "user_session"=>{"login"=>"test", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Login"}
+ApplicationController::require_no_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[35mSQL (0.8ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT "users".* FROM "users" WHERE (LOWER("users".login) = 'test') LIMIT 1[0m
+  [1m[35mSQL (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.7ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mAREL (0.6ms)[0m  UPDATE "users" SET "login_count" = 2, "last_login_at" = '2010-11-25 19:55:19.072379', "current_login_at" = '2010-11-25 19:57:28.389104', "last_login_ip" = '127.0.0.1', "last_request_at" = '2010-11-25 19:57:28.389467', "updated_at" = '2010-11-25 19:57:28.390430' WHERE ("users"."id" = 1)
+  [1m[36mSQL (15.4ms)[0m  [1mCOMMIT[0m
+Completed   in 173ms
+
+ActionView::MissingTemplate (Missing template user_sessions/create with {:handlers=>[:erb, :rjs, :builder, :rhtml, :rxml], :formats=>[:html], :locale=>[:en, :en]} in view paths "/home/humberto/work/ufc/solar/solar/app/views", "/home/humberto/work/ufc/solar/solar/vendor/plugins/dynamic_form/app/views", "/home/humberto/work/ufc/solar/solar/vendor/plugins/authlogic/app/views"):
+  
+
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/missing_template.erb within rescues/layout (1.6ms)
+
+
+Started POST "/user_sessions" for 127.0.0.1 at 2010-11-25 17:00:49 -0300
+  Processing by UserSessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"eo0KqcgIS3qgWTM5/GaZlRRRdLniGk5/8cMoF9GbyO4=", "user_session"=>{"login"=>"test", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Login"}
+ApplicationController::require_no_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[35mSQL (0.8ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT "users".* FROM "users" WHERE (LOWER("users".login) = 'test') LIMIT 1[0m
+  [1m[35mSQL (0.1ms)[0m  BEGIN
+  [1m[36mSQL (1.0ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mAREL (0.4ms)[0m  UPDATE "users" SET "login_count" = 3, "last_login_at" = '2010-11-25 19:57:28.389104', "current_login_at" = '2010-11-25 20:00:49.342963', "last_request_at" = '2010-11-25 20:00:49.343315', "updated_at" = '2010-11-25 20:00:49.344254' WHERE ("users"."id" = 1)
+  [1m[36mSQL (13.1ms)[0m  [1mCOMMIT[0m
+Completed   in 165ms
+
+NameError (undefined local variable or method `users_url' for #<UserSessionsController:0x947f1a4>):
+  app/controllers/user_sessions_controller.rb:13:in `create'
+
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_trace.erb (1.2ms)
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (5.0ms)
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (10.1ms)
+
+
+Started POST "/user_sessions" for 127.0.0.1 at 2010-11-25 17:04:19 -0300
+  Processing by UserSessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"eo0KqcgIS3qgWTM5/GaZlRRRdLniGk5/8cMoF9GbyO4=", "user_session"=>{"login"=>"test", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Login"}
+ApplicationController::require_no_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[35mSQL (0.9ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT "users".* FROM "users" WHERE (LOWER("users".login) = 'test') LIMIT 1[0m
+  [1m[35mSQL (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.7ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mAREL (0.4ms)[0m  UPDATE "users" SET "login_count" = 4, "last_login_at" = '2010-11-25 20:00:49.342963', "current_login_at" = '2010-11-25 20:04:19.509777', "last_request_at" = '2010-11-25 20:04:19.510327', "updated_at" = '2010-11-25 20:04:19.511418' WHERE ("users"."id" = 1)
+  [1m[36mSQL (14.8ms)[0m  [1mCOMMIT[0m
+Redirected to http://localhost:3000/
+Completed 302 Found in 163ms
+
+
+Started GET "/" for 127.0.0.1 at 2010-11-25 17:04:19 -0300
+  Processing by HomeController#index as HTML
+ApplicationController::require_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[35mSQL (0.9ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+  [1m[36mSQL (1.5ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mUser Load (0.5ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."id" = 1) LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 1) LIMIT 1[0m
+  [1m[35mSQL (0.1ms)[0m  BEGIN
+  [1m[36mAREL (0.3ms)[0m  [1mUPDATE "users" SET "last_request_at" = '2010-11-25 20:04:19.856976', "updated_at" = '2010-11-25 20:04:19.857882' WHERE ("users"."id" = 1)[0m
+  [1m[35mSQL (10.8ms)[0m  COMMIT
+ApplicationController::current_user_session
+Rendered home/index.html.erb within layouts/application (3.1ms)
+Completed 200 OK in 271ms (Views: 27.7ms | ActiveRecord: 14.1ms)
+
+
+Started GET "/" for 127.0.0.1 at 2010-11-25 17:08:46 -0300
+  Processing by HomeController#index as HTML
+ApplicationController::require_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[36mSQL (0.8ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mSQL (0.7ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+  [1m[36mUser Load (0.5ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 1) LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."id" = 1) LIMIT 1
+  [1m[36mSQL (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mAREL (0.4ms)[0m  UPDATE "users" SET "last_request_at" = '2010-11-25 20:08:46.361098', "updated_at" = '2010-11-25 20:08:46.361580' WHERE ("users"."id" = 1)
+  [1m[36mSQL (7.4ms)[0m  [1mCOMMIT[0m
+ApplicationController::current_user_session
+Rendered home/index.html.erb within layouts/application (2.5ms)
+Completed 200 OK in 165ms (Views: 11.5ms | ActiveRecord: 10.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2010-11-25 17:08:49 -0300
+  Processing by HomeController#index as HTML
+ApplicationController::require_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[35mSQL (0.8ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+  [1m[36mSQL (0.8ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mUser Load (0.5ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."id" = 1) LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 1) LIMIT 1[0m
+  [1m[35mSQL (0.1ms)[0m  BEGIN
+  [1m[36mAREL (0.3ms)[0m  [1mUPDATE "users" SET "last_request_at" = '2010-11-25 20:08:49.298803', "updated_at" = '2010-11-25 20:08:49.299371' WHERE ("users"."id" = 1)[0m
+  [1m[35mSQL (13.9ms)[0m  COMMIT
+ApplicationController::current_user_session
+Rendered home/index.html.erb within layouts/application (3.1ms)
+Completed 200 OK in 178ms (Views: 13.7ms | ActiveRecord: 16.3ms)
+DEPRECATION WARNING: Use toplevel init.rb; rails/init.rb is deprecated: /home/humberto/work/ufc/solar/solar/vendor/plugins/authlogic/rails/init.rb. (called from <top (required)> at /home/humberto/work/ufc/solar/solar/config/environment.rb:5)
+
+
+Started GET "/" for 127.0.0.1 at 2010-11-25 17:16:56 -0300
+  [1m[36mSQL (0.2ms)[0m  [1mSHOW client_min_messages[0m
+  [1m[35mSQL (0.1ms)[0m  SET client_min_messages TO 'panic'
+  [1m[36mSQL (0.1ms)[0m  [1mSET standard_conforming_strings = on[0m
+  [1m[35mSQL (0.0ms)[0m  SET client_min_messages TO 'notice'
+  [1m[36mSQL (0.3ms)[0m  [1mSET time zone 'UTC'[0m
+  [1m[35mSQL (0.1ms)[0m  SHOW TIME ZONE
+  Processing by HomeController#index as HTML
+ApplicationController::require_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[36mSQL (3.0ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mSQL (2.0ms)[0m   SELECT tablename
+ FROM pg_tables
+ WHERE schemaname = ANY (current_schemas(false))
+  [1m[36mSQL (0.7ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mUser Load (0.8ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."id" = 1) LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 1) LIMIT 1[0m
+  [1m[35mSQL (0.1ms)[0m  BEGIN
+  [1m[36mAREL (0.4ms)[0m  [1mUPDATE "users" SET "last_request_at" = '2010-11-25 20:16:57.151998', "updated_at" = '2010-11-25 20:16:57.152824' WHERE ("users"."id" = 1)[0m
+  [1m[35mSQL (8.1ms)[0m  COMMIT
+ApplicationController::current_user_session
+ERROR: compiling _app_views_layouts_application_html_erb__732872913_83252730__524840387 RAISED /home/humberto/work/ufc/solar/solar/app/views/layouts/application.html.erb:22: syntax error, unexpected keyword_ensure, expecting keyword_end
+/home/humberto/work/ufc/solar/solar/app/views/layouts/application.html.erb:24: syntax error, unexpected $end, expecting keyword_end
+Function body:           def _app_views_layouts_application_html_erb__732872913_83252730__524840387(local_assigns)
+            _old_virtual_path, @_virtual_path = @_virtual_path, "layouts/application";_old_output_buffer = @output_buffer;;@output_buffer = ActionView::OutputBuffer.new;@output_buffer.safe_concat('<!DOCTYPE html>
+<html>
+<head>
+  <title>Solar</title>
+  ');@output_buffer.append= ( stylesheet_link_tag :all );@output_buffer.safe_concat('
+');@output_buffer.safe_concat('  ');@output_buffer.append= ( javascript_include_tag :defaults );@output_buffer.safe_concat('
+');@output_buffer.safe_concat('  ');@output_buffer.append= ( csrf_meta_tag );@output_buffer.safe_concat('
+');@output_buffer.safe_concat('</head>
+<body>
+
+');   if current_user 
+@output_buffer.safe_concat('    ');@output_buffer.append= ( "Signed in as #{current_user.email}. Not you?" );@output_buffer.safe_concat('
+');@output_buffer.safe_concat('    ');@output_buffer.append= ( link_to "Sign out", logout_path );@output_buffer.safe_concat('
+');    else 
+@output_buffer.safe_concat('    ');@output_buffer.append= ( link_to "Sign in", new_user_session_path );@output_buffer.safe_concat('
+');@output_buffer.safe_concat('
+');@output_buffer.append= ( yield );@output_buffer.safe_concat('
+');@output_buffer.safe_concat('
+</body>
+</html>
+');@output_buffer.to_s
+          ensure
+            @_virtual_path, @output_buffer = _old_virtual_path, _old_output_buffer
+          end
+Backtrace: /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/template.rb:255:in `module_eval'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/template.rb:255:in `compile'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/template.rb:134:in `block in render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:54:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/template.rb:127:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/render/layouts.rb:80:in `_render_layout'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/render/rendering.rb:62:in `block in _render_template'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:52:in `block in instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:52:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/render/rendering.rb:56:in `_render_template'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_view/render/rendering.rb:26:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:114:in `_render_template'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:108:in `render_to_body'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/renderers.rb:47:in `render_to_body'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/compatibility.rb:55:in `render_to_body'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:101:in `render_to_string'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:92:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/rendering.rb:17:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:40:in `block (2 levels) in render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/core_ext/benchmark.rb:5:in `block in ms'
+/home/humberto/.rvm/rubies/ruby-1.9.2-p0/lib/ruby/1.9.1/benchmark.rb:309:in `realtime'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/core_ext/benchmark.rb:5:in `ms'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:40:in `block in render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:78:in `cleanup_view_runtime'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/railties/controller_runtime.rb:15:in `cleanup_view_runtime'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:39:in `render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/implicit_render.rb:10:in `default_render'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/implicit_render.rb:5:in `send_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/base.rb:151:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/rendering.rb:11:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/callbacks.rb:18:in `block in process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/callbacks.rb:445:in `_run__862682304__process_action__47862919__callbacks'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/callbacks.rb:409:in `_run_process_action_callbacks'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/callbacks.rb:93:in `run_callbacks'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/callbacks.rb:17:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:30:in `block in process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:52:in `block in instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications/instrumenter.rb:21:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/notifications.rb:52:in `instrument'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/instrumentation.rb:29:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/rescue.rb:17:in `process_action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/base.rb:120:in `process'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/abstract_controller/rendering.rb:40:in `process'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal.rb:138:in `dispatch'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal/rack_delegation.rb:14:in `dispatch'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_controller/metal.rb:178:in `block in action'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/routing/route_set.rb:62:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/routing/route_set.rb:62:in `dispatch'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/routing/route_set.rb:27:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/route_set.rb:148:in `block in call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/code_generation.rb:93:in `block in recognize'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/code_generation.rb:68:in `optimized_each'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/code_generation.rb:92:in `recognize'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-mount-0.6.13/lib/rack/mount/route_set.rb:139:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/routing/route_set.rb:492:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/best_standards_support.rb:17:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/head.rb:14:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/methodoverride.rb:24:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/params_parser.rb:21:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/flash.rb:182:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/session/abstract_store.rb:149:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/cookies.rb:295:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/query_cache.rb:32:in `block in call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/connection_adapters/abstract/query_cache.rb:28:in `cache'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/query_cache.rb:12:in `cache'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/query_cache.rb:31:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activerecord-3.0.3/lib/active_record/connection_adapters/abstract/connection_pool.rb:353:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/callbacks.rb:46:in `block in call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/callbacks.rb:415:in `_run_call_callbacks'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/callbacks.rb:44:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/sendfile.rb:107:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/remote_ip.rb:48:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/show_exceptions.rb:46:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/railties-3.0.3/lib/rails/rack/logger.rb:13:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/runtime.rb:17:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/activesupport-3.0.3/lib/active_support/cache/strategy/local_cache.rb:72:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/lock.rb:11:in `block in call'
+<internal:prelude>:10:in `synchronize'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/lock.rb:11:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/static.rb:30:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/railties-3.0.3/lib/rails/application.rb:168:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/railties-3.0.3/lib/rails/application.rb:77:in `method_missing'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/railties-3.0.3/lib/rails/rack/log_tailer.rb:14:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/content_length.rb:13:in `call'
+/home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/rack-1.2.1/lib/rack/handler/webrick.rb:52:in `service'
+/home/humberto/.rvm/rubies/ruby-1.9.2-p0/lib/ruby/1.9.1/webrick/httpserver.rb:111:in `service'
+/home/humberto/.rvm/rubies/ruby-1.9.2-p0/lib/ruby/1.9.1/webrick/httpserver.rb:70:in `run'
+/home/humberto/.rvm/rubies/ruby-1.9.2-p0/lib/ruby/1.9.1/webrick/server.rb:183:in `block in start_thread'
+Rendered home/index.html.erb within layouts/application (39.8ms)
+Completed   in 332ms
+
+ActionView::Template::Error (/home/humberto/work/ufc/solar/solar/app/views/layouts/application.html.erb:22: syntax error, unexpected keyword_ensure, expecting keyword_end
+/home/humberto/work/ufc/solar/solar/app/views/layouts/application.html.erb:24: syntax error, unexpected $end, expecting keyword_end):
+    19: </body>
+    20: </html>
+  
+
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_trace.erb (1.2ms)
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (4.1ms)
+Rendered /home/humberto/.rvm/gems/ruby-1.9.2-p0@rails3/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/template_error.erb within rescues/layout (36.9ms)
+
+
+Started GET "/" for 127.0.0.1 at 2010-11-25 17:18:07 -0300
+  Processing by HomeController#index as HTML
+ApplicationController::require_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[36mSQL (0.9ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mSQL (0.8ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 1) LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."id" = 1) LIMIT 1
+  [1m[36mSQL (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mAREL (0.3ms)[0m  UPDATE "users" SET "last_request_at" = '2010-11-25 20:18:07.150399', "updated_at" = '2010-11-25 20:18:07.150905' WHERE ("users"."id" = 1)
+  [1m[36mSQL (11.1ms)[0m  [1mCOMMIT[0m
+ApplicationController::current_user_session
+Rendered home/index.html.erb within layouts/application (3.3ms)
+Completed 200 OK in 138ms (Views: 12.0ms | ActiveRecord: 13.8ms)
+
+
+Started GET "/" for 127.0.0.1 at 2010-11-25 17:18:11 -0300
+  Processing by HomeController#index as HTML
+ApplicationController::require_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[35mSQL (0.9ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+  [1m[36mSQL (0.7ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mUser Load (0.4ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."id" = 1) LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 1) LIMIT 1[0m
+  [1m[35mSQL (0.1ms)[0m  BEGIN
+  [1m[36mAREL (0.3ms)[0m  [1mUPDATE "users" SET "last_request_at" = '2010-11-25 20:18:11.560139', "updated_at" = '2010-11-25 20:18:11.560635' WHERE ("users"."id" = 1)[0m
+  [1m[35mSQL (13.8ms)[0m  COMMIT
+ApplicationController::current_user_session
+Rendered home/index.html.erb within layouts/application (3.0ms)
+Completed 200 OK in 174ms (Views: 14.2ms | ActiveRecord: 16.3ms)
+DEPRECATION WARNING: Use toplevel init.rb; rails/init.rb is deprecated: /home/humberto/work/ufc/solar/solar/vendor/plugins/authlogic/rails/init.rb. (called from <top (required)> at /home/humberto/work/ufc/solar/solar/config/environment.rb:5)
+
+
+Started GET "/" for 127.0.0.1 at 2010-11-25 17:18:28 -0300
+  [1m[36mSQL (0.2ms)[0m  [1mSHOW client_min_messages[0m
+  [1m[35mSQL (0.1ms)[0m  SET client_min_messages TO 'panic'
+  [1m[36mSQL (0.1ms)[0m  [1mSET standard_conforming_strings = on[0m
+  [1m[35mSQL (0.0ms)[0m  SET client_min_messages TO 'notice'
+  [1m[36mSQL (0.3ms)[0m  [1mSET time zone 'UTC'[0m
+  [1m[35mSQL (0.1ms)[0m  SHOW TIME ZONE
+  Processing by HomeController#index as HTML
+ApplicationController::require_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[36mSQL (3.1ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mSQL (1.9ms)[0m   SELECT tablename
+ FROM pg_tables
+ WHERE schemaname = ANY (current_schemas(false))
+  [1m[36mSQL (1.5ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mUser Load (0.9ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."id" = 1) LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 1) LIMIT 1[0m
+  [1m[35mSQL (0.1ms)[0m  BEGIN
+  [1m[36mAREL (0.4ms)[0m  [1mUPDATE "users" SET "last_request_at" = '2010-11-25 20:18:29.041649', "updated_at" = '2010-11-25 20:18:29.042303' WHERE ("users"."id" = 1)[0m
+  [1m[35mSQL (25.6ms)[0m  COMMIT
+ApplicationController::current_user_session
+Rendered home/index.html.erb within layouts/application (3.4ms)
+Completed 200 OK in 319ms (Views: 13.3ms | ActiveRecord: 34.2ms)
+
+
+Started GET "/" for 127.0.0.1 at 2010-11-25 17:18:52 -0300
+  Processing by HomeController#index as HTML
+ApplicationController::require_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[36mSQL (1.0ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+DEPRECATION WARNING: Using #request_uri is deprecated. Use fullpath instead. (called from store_location at /home/humberto/work/ufc/solar/solar/app/controllers/application_controller.rb:40)
+Redirected to http://localhost:3000/user_sessions/new
+Completed 302 Found in 78ms
+
+
+Started GET "/user_sessions/new" for 127.0.0.1 at 2010-11-25 17:18:52 -0300
+  Processing by UserSessionsController#new as HTML
+ApplicationController::require_no_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[35mSQL (0.7ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+DEPRECATION WARNING: <% %> style block helpers are deprecated. Please use <%= %>. (called from _app_views_user_sessions_new_html_erb___423394171_91365960__723889618 at /home/humberto/work/ufc/solar/solar/app/views/user_sessions/new.html.erb:2)
+Rendered user_sessions/new.html.erb within layouts/application (5.0ms)
+Completed 200 OK in 87ms (Views: 10.5ms | ActiveRecord: 1.8ms)
+
+
+Started POST "/user_sessions" for 127.0.0.1 at 2010-11-25 17:19:04 -0300
+  Processing by UserSessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"WFN3i5DIW4tT0LUgl2r4msgbS/E9Ym+oRzXNYNUH1tY=", "user_session"=>{"login"=>"test", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Login"}
+ApplicationController::require_no_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[36mSQL (0.9ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mUser Load (5.3ms)[0m  SELECT "users".* FROM "users" WHERE (LOWER("users".login) = 'test') LIMIT 1
+  [1m[36mSQL (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.8ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+  [1m[36mAREL (0.4ms)[0m  [1mUPDATE "users" SET "login_count" = 5, "last_login_at" = '2010-11-25 20:04:19.509777', "current_login_at" = '2010-11-25 20:19:05.010285', "last_request_at" = '2010-11-25 20:19:05.010796', "updated_at" = '2010-11-25 20:19:05.012170' WHERE ("users"."id" = 1)[0m
+  [1m[35mSQL (14.3ms)[0m  COMMIT
+Redirected to http://localhost:3000/
+Completed 302 Found in 313ms
+
+
+Started GET "/" for 127.0.0.1 at 2010-11-25 17:19:05 -0300
+  Processing by HomeController#index as HTML
+ApplicationController::require_user
+ApplicationController::current_user
+ApplicationController::current_user_session
+  [1m[36mSQL (0.8ms)[0m  [1m SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+[0m
+  [1m[35mSQL (0.7ms)[0m   SELECT a.attname, format_type(a.atttypid, a.atttypmod), d.adsrc, a.attnotnull
+ FROM pg_attribute a LEFT JOIN pg_attrdef d
+ ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+ WHERE a.attrelid = '"users"'::regclass
+ AND a.attnum > 0 AND NOT a.attisdropped
+ ORDER BY a.attnum
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 1) LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."id" = 1) LIMIT 1
+  [1m[36mSQL (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mAREL (0.3ms)[0m  UPDATE "users" SET "last_request_at" = '2010-11-25 20:19:05.220656', "updated_at" = '2010-11-25 20:19:05.221184' WHERE ("users"."id" = 1)
+  [1m[36mSQL (6.4ms)[0m  [1mCOMMIT[0m
+ApplicationController::current_user_session
+Rendered home/index.html.erb within layouts/application (2.6ms)
+Completed 200 OK in 127ms (Views: 8.3ms | ActiveRecord: 8.8ms)

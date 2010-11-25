@@ -11,6 +11,11 @@ gem 'capybara'
 gem 'cucumber'
 gem 'cucumber-rails'
 
+# para uso da gem authlogic (autenticacao)
+#gem "authlogic"
+gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
+gem 'rails3-generators'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
