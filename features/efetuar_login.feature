@@ -8,7 +8,7 @@ Funcionalidade: Efetuar login
 Contexto:
 	Dado que tenho "usuários"
 		| login | email		| password | password_confirmation |
-		| user  | user@user.com | user123  | user123							 |
+		| user  | user@user.com | user123  | user123		   |
 
 @wip
 	Cenário: Efetuar login
