@@ -19,3 +19,4 @@ converage.data
 rerun.txt
 .DS_Store
 config/database.yml
+Gemfile.lock
