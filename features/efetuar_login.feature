@@ -14,7 +14,7 @@ Contexto:
 @wip
 	Cenário: Efetuar login
 		Dado que estou em "Login"
-			E preencho o campo "Login" com "user"
-			E preencho o campo "Password" com "user123"
-	Quando eu clicar em "Login"
+			E preencho o campo "login_form_nome" com "user"
+			E preencho o campo "login_form_senha" com "user123"
+	Quando eu clicar em "login_form_entrar"
 		Então eu deverei ver "Home#index"
