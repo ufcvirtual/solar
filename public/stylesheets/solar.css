@@ -1,0 +1,106 @@
+
+img{
+    border: none;
+}
+
+body{
+    background-color    : #fff;
+    cursor              : default;
+}
+
+label{
+    display: inline-block;
+    width: 57px;
+    font-family:'Verdana', Arial;
+    white-space: nowrap;
+}
+
+label.menor{
+    display: inline-block;
+    white-space: nowrap;
+    width: auto;
+    font-family:'Verdana', Arial;
+    font-size: 8pt;
+    font-weight: normal;
+}
+
+a{
+    color           : #222;
+    font-family     :'Myriad Pro','Trebuchet', Arial;
+}
+a.menor{
+    color           : #222;
+    font-size       : 8pt;
+    text-decoration : underline;
+    font-family     :'Myriad Pro','Trebuchet', Arial;
+}
+
+input{
+    color           : #222;
+    background-color: #fff;
+}
+/******************************** Página de login: *******/
+#login_form_entrar{
+    position            : absolute;
+    bottom              : 27px;
+    right               : 16px;
+    width               : 52px;
+    height              : 24px;
+    border              : 1px solid #fff;
+    background-color    : #fff;
+}
+
+#login_form_tab_entrar{
+    position            : absolute;
+    background-color    : #F9C153;
+    top                 : -25px;
+    left                : 75px;
+    height              : 25px;
+    font-size           : 12pt;
+    padding-top         : 0px;
+    padding-right       : 10px;
+    padding-left        : 10px;
+    line-height         : 25px;
+
+}
+
+#login_form_tab_cadastrar{
+    position            : absolute;
+    background-color    : #8ab0bf;
+    top                 : -25px;
+    right               : 0px;
+    height              : 25px;
+    font-size           : 12pt;
+    padding-top         : 0px;
+    padding-right       : 10px;
+    padding-left        : 10px;
+    width               : 81px;
+    text-align          : center;
+    line-height         : 25px;
+}
+
+
+#login_form{
+    position    : absolute;
+    top         : 200px;
+    right       : 90px;
+    width       : 224px;
+    height      : 141px;
+
+    padding-left: 15px;
+    padding-top: 15px;
+
+    background-color    : #F9C153;
+    color               : #FFF;
+    font-family         :'Myriad Pro','Trebuchet', Arial;
+    font-size           : 14pt;
+    line-height         : 26pt;
+}
+
+.login_form_text_field{
+    border      : none;
+    font-size   : 14pt;
+    font-family :'Verdana', Arial;
+    width       : 143px;
+    height      : 19px;
+}
