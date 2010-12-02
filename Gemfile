@@ -11,6 +11,7 @@ gem 'capybara'
 gem 'cucumber'
 gem 'cucumber-rails'
 gem 'rspec'
+gem 'factory_girl_rails'
 
 # para uso da gem authlogic (autenticacao)
 #gem "authlogic"

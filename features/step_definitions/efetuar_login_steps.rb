@@ -1,8 +1,10 @@
-Dado /^que tenho "([^"]*)"$/ do |arg1, table|
+Dado /^que tenho "([^"]*)"$/ do |name, table|
   # table is a Cucumber::Ast::Table
 	table.hashes.each do |hash|
-		User.create(hash)
+#		User.create(hash)
+		Factory( name.singularize, hash )
 	end
+
 end
 
 Dado /^que estou em "([^"]*)"$/ do |page_name|
