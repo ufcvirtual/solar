@@ -69,10 +69,10 @@ ptBR:
         other: 'quase %{count} anos'
     
     prompts:
-      year:   "Ano"
-      month:  "Mês"
-      day:    "Dia"
-      hour:   "Hora"
+      year: "Ano"
+      month: "Mês"
+      day: "Dia"
+      hour: "Hora"
       minute: "Minuto"
       second: "Segundos"
 
@@ -117,7 +117,7 @@ ptBR:
       decimal_units:
         format: "%n %u"
         units:
-          unit: ""     
+          unit: ""
           thousand: "mil"
           million:
             one: milhão

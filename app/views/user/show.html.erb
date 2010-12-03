@@ -1,0 +1,23 @@
+<!-- meu Solar -->
+
+<div id="conteudo">
+	<p>aqui fica o conteúdo do meu Solar com seus vários widgets...</p>
+</div>
+
+<div id="barra_lateral">
+	<%#= render :partial => "sidebar" %>
+	<%= image_tag @user.photo.url(:small) %>
+	<br />
+	<%= @user.nick%>
+</div>
+
+<div id="barra_superior">
+	<%#= render :partial => "topbar" %>
+
+	barra superior laranja - ajuda - 
+
+	<% if current_user %>
+		<%= link_to "Sair", logout_path %>
+	<% end %>
+</div>
+
