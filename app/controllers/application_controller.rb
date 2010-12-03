@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
       if current_user
         store_location
         flash[:notice] = "You must be logged out to access this page"
-        redirect_to user_show_url #account_url
+        redirect_to user_mysolar_url #account_url
         return false
       end
     end

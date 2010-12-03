@@ -1,14 +1,20 @@
 class UserController < ApplicationController
-  before_filter :require_user, :only => [:index, :show, :edit, :update, :destroy]
+  before_filter :require_user, :only => [:index, :show, :mysolar, :edit, :update, :destroy]
 	# requerem q usuario esteja logado
 
   def index
   end
 
   def show
-	if current_user
-		@user = User.find(current_user.id) #User.find(params[:id])
-	end
+		if params[:id]
+			@user = User.find(params[:id])
+		end
+  end
+
+  def mysolar
+		if current_user
+			@user = User.find(current_user.id)
+		end
   end
 
   def new
