@@ -1,0 +1,47 @@
+<!-- meu Solar -->
+
+<div id="mysolar_content">
+	<p>aqui fica o conteúdo do meu Solar com seus vários widgets...</p>
+
+	<div class="widget">
+		<div class="widget_head">Novidades</div>...
+	</div>
+
+	<div class="widget">
+		<div class="widget_head">Aulas</div>...
+	</div>
+
+	<div class="widget">
+		<div class="widget_head">Atividades Recentes</div>...
+	</div>
+
+	<div class="widget">
+		<div class="widget_head">Agenda</div>...
+	</div>
+
+	<div class="widget">
+		<div class="widget_head">Fórum</div>...
+	</div>
+
+	<div class="widget">
+		<div class="widget_head">Tweets</div>...
+	</div>
+</div>
+
+<div id="mysolar_sidebar">
+	<%#= render :partial => "sidebar" %>
+	<%= image_tag @user.photo.url(:small), :alt => "Imagem do usuário" %>
+	<br />
+	<%= @user.nick%>
+</div>
+
+<div id="mysolar_topbar">
+	<%#= render :partial => "topbar" %>
+
+	barra superior laranja - ajuda - 
+
+	<% if current_user %>
+		<%= link_to "Sair", logout_path %>
+	<% end %>
+</div>
+
