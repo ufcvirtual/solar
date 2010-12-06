@@ -12,9 +12,23 @@ Contexto:
 
 
 @wip
-	Cenário: Efetuar login
+	Cenário: Efetuar login com sucesso
 		Dado que estou em "Login"
 			E preencho o campo "login_form_nome" com "user"
 			E preencho o campo "login_form_senha" com "user123"
-	Quando eu clicar em "login_form_entrar"
+		Quando eu clicar em "login_form_entrar"
 		Então eu deverei ver "Home#index"
+
+	Cenário: Tentativa de login - senha incorreta
+		Dado que estou em "Login"
+			E preencho o campo "login_form_nome" com "user"
+			E preencho o campo "login_form_senha" com "wrong_password"
+		Quando eu clicar em "login_form_entrar"
+		Então eu deverei ver "Dados de login incorretos!"
+
+	Cenário: Tentativa de login - usuário inexistente
+		Dado que estou em "Login"
+			E preencho o campo "login_form_nome" com "unknown_user"
+			E preencho o campo "login_form_senha" com "any_password"
+		Quando eu clicar em "login_form_entrar"
+		Então eu deverei ver "Dados de login incorretos!"
