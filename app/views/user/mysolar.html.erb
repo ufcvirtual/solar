@@ -1,8 +1,7 @@
 <!-- meu Solar -->
 
 <div id="mysolar_content">
-	<p>aqui fica o conteúdo do meu Solar com seus vários widgets...</p>
-
+	
 	<div class="widget">
 		<div class="widget_head">Novidades</div>...
 	</div>
@@ -30,18 +29,33 @@
 
 <div id="mysolar_sidebar">
 	<%#= render :partial => "sidebar" %>
-	<%= image_tag @user.photo.url(:small), :alt => "Imagem do usuário" %>
-	<br />
-	<%= @user.nick%>
+
+	<div id="mysolar_boxid">
+		<div id="mysolar_id">
+			<%= image_tag @user.photo.url(:small), :alt => "Imagem do usuário #{@user.nick}" %><br/>
+			<%= @user.nick%>
+		</div>
+		<div id="mysolar_options">
+			Perfil <br />
+			Portfolio <br />
+			Blog <br />
+			Personalizar <br />
+		</div>
+	</div>
 </div>
 
 <div id="mysolar_topbar">
 	<%#= render :partial => "topbar" %>
 
-	barra superior laranja - ajuda - 
+	<div id="mysolar_logo">
+		<%= image_tag 'solar.png', :alt => "Logo do Solar" %><br/>
+	</div>
+	<div id="mysolar_top_options">	
+		ajuda - 
 
-	<% if current_user %>
-		<%= link_to "Sair", logout_path %>
-	<% end %>
+		<% if current_user %>
+			<%= link_to "Sair", logout_path %>
+		<% end %>
+	</div>
 </div>
 
