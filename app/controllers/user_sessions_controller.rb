@@ -11,6 +11,7 @@ class UserSessionsController < ApplicationController
     if @user_session.save
       redirect_back_or_default user_mysolar_url #('/')
     else
+      flash[:notice] = 'Dados de login incorretos!'
       render :action => :new
     end
   end
