@@ -1,5 +1,4 @@
 <div style="position:absolute;height:100%;width:100%; display: table;">
-  <%= flash[:notice] %>
 
   <div style="display: table-row;">
     <div id="login_top">
@@ -36,7 +35,7 @@
     </div>
 
     <!--Formulário de login-->
-    <div id="login_right_col">
+    <div id="login_right_col">      
       <%= form_for @user_session, :url => {:action => "create"} do |f| %>
         <div id="login_form_tab_blank">&nbsp;
         </div>
@@ -62,6 +61,7 @@
           <%= f.submit "Entrar", :id=>"login_form_entrar", :tabindex=>"3"%>
         </div>
       <% end %>
+      <%= flash[:notice] %>
     </div>
 
 
