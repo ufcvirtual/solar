@@ -27,3 +27,16 @@ Entao /^eu deverei ver "([^"]*)"$/ do |text|
 	end
 end
 
+Dado /^que estou logado no sistema$/ do
+  User.create(:login => 'user', :email => 'user@tester.com', :password => 'user123')
+  visit path_to("Login")
+  fill_in("login_form_name", :with => "user")
+  fill_in("login_form_password", :with => "user123")
+  click_button("login_form_entrar")
+  if page.respond_to? :should
+    page.should have_content("Novidades")
+  else
+    assert page.has_content?("Novidades")
+  end
+end
+
