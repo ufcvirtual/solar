@@ -5,6 +5,7 @@ img{
 body{
     background-color    : #fff;
     cursor              : default;
+    font-family     :'Myriad Pro','Trebuchet', Arial;
 }
 
 label{
@@ -114,19 +115,87 @@ input{
 	line-height: 175%;
 }
 
-/********divs do meu-solar**********/
+/********Portlets do meu-solar**********/
 div.widget {
-	-moz-background-inline-policy: continuous;
-	-moz-background-origin: padding;
-	float: left;
-	margin: 5px;
-	padding: 0px;
-	position: relative;
-	width: 280px;
-	height: 160px;
-	border: 1px solid #ccc;
+    -moz-background-inline-policy: continuous;
+    -moz-background-origin: padding;
+    float: left;
+    margin: 5px;
+    padding: 0px;
+    position: relative;
+    width: 280px;
+    height: 160px;
+    border: 1px solid #ccc;
 }
 div.widget_head {
-	background-color: #e7eded;
-	padding: 5px;
+    background-color: #e7eded;
+    padding: 5px;
+}
+
+/********Chat do meuSolar*****************/
+#mysolar_chat_area{
+    font-size   : 11pt;
+    position    :absolute;
+    bottom      : 0px;
+    right       : 15px;
+}
+
+#mysolar_chat_barra{
+    font-size           : 11pt;
+    background-color    : #fbb03b;
+    padding-left        :5px;
+    padding-right       :5px;
+}
+
+#mysolar_chat_contatos{
+    width       :150px;
+}
+
+#mysolar_chat_list{
+    border: 1px solid #bbb;
+}
+
+#mysolar_chat_list_internal{
+    padding-left: 5px;
+    overflow: auto;
+    height:145px;
+}
+
+.mysolar_chat_hr{
+    width:87%;
+    border:none;
+    background-color: #bbb;
+    height:1px;
+}
+
+/********Portlets do meuSolar*****************/
+.mysolar_portlets_coluna {
+    width: 170px;
+    float: left;
+    padding-bottom: 100px;
+    border:none;
+}
+
+.mysolar_portlets_portlet {
+    margin: 0 1em 1em 0;
+    border:1px dotted #88f;
+    background-color: #fff;
+    cursor: pointer;
+}
+.mysolar_portlets_header {
+    margin: 0.3em;
+    padding-bottom: 4px;
+    padding-left: 0.2em;
+    background-color: #eee;
+}
+.mysolar_portlets_content {
+    padding: 0.4em;
+}
+.ui-sortable-placeholder {
+    border: 1px dotted black;
+    visibility: visible !important;
+    height: 50px !important;
+}
+.ui-sortable-placeholder * {
+    visibility: hidden;
 }
