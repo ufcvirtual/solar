@@ -1,3 +1,5 @@
+#language: pt
+
 Dado /^que tenho "([^"]*)"$/ do |name, table|
   # table is a Cucumber::Ast::Table
 	table.hashes.each do |hash|
