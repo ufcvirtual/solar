@@ -10,6 +10,7 @@ Contexto:
 		| login | email		| password |
 		| user  | user@user.com | user123  |
 
+
 	Cenário: Efetuar login com sucesso
 		Dado que estou em "Login"
 			E preencho o campo "login_form_name" com "user"
@@ -17,7 +18,7 @@ Contexto:
 		Quando eu clicar em "login_form_entrar"
 		Então eu deverei ver "Novidades"
 
-@wip
+
 	Cenário: Tentativa de login - senha incorreta
 		Dado que estou em "Login"
 			E preencho o campo "login_form_name" com "user"
@@ -48,4 +49,26 @@ Contexto:
 		Dado que estou logado no sistema
 			E que estou em "Login"
 		Então eu deverei ver "Novidades"
+
+
+	Cenário: Usuário não logado tenta acessar "Meu Solar"
+		Dado que eu nao estou logado
+			E que estou em "Meu Solar"
+		Então eu deverei ver "Usuário"
+		E eu deverei ver "Senha"
+
+@wip
+	Esquema do Cenário: Login com usuários válidos e inválidos
+		Dado que eu nao estou logado
+			E que estou em "Login"
+			E preencho o campo "login_form_name" com "<login>"
+			E preencho o campo "login_form_password" com "<password>"
+		Quando eu clicar em "login_form_entrar"
+		Então eu deverei ver "<action>"
+	Exemplos:
+		| login |  password   |   action  		   |
+		| user  |  user123    | Novidades 		   |
+		| error |  password   | Dados de login incorretos! |
+		| user  |  error      | Dados de login incorretos! |
+
 

@@ -40,3 +40,9 @@ Dado /^que estou logado no sistema$/ do
   end
 end
 
+
+Dado /^que eu nao estou logado$/ do
+
+end
+
+

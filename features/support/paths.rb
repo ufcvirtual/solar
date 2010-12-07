@@ -11,8 +11,11 @@ module NavigationHelpers
     when /the home\s?page/
       '/'
 
-		when /Login/
+    when /Login/
       '/user_sessions/new'
+
+    when /Meu Solar/
+      '/user/mysolar'
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
