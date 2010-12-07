@@ -46,10 +46,10 @@
           Cadastrar
         </div>
         <div id="login_form">
-          <label for="login_form_nome">Usu&aacute;rio</label>
+          <label for="login_form_name">Usu&aacute;rio</label>
           <%= f.text_field :login, :id=>"login_form_name", :class=>"login_form_text_field", :tabindex=>"1"%>
           <br/>
-          <label for="login_form_senha">Senha</label>
+          <label for="login_form_password">Senha</label>
           <%= f.password_field :password, :id=>"login_form_password", :class=>"login_form_text_field", :tabindex=>"2"%>
           <br/>
           <div id="login_form_secundario" style="line-height: 30px;">
@@ -58,7 +58,7 @@
             <br/>
             &nbsp;<a href="" class="menor" >esqueci a senha</a>
           </div>
-          <%= f.submit "Entrar", :id=>"login_form_entrar", :tabindex=>"3"%>
+          <%= f.submit "Entrar", :id=>"login_form_enter", :tabindex=>"3"%>
         </div>
       <% end %>
       <%= flash[:notice] %>
