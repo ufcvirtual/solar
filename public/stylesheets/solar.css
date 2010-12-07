@@ -1,24 +1,16 @@
-
 img{
     border: none;
 }
 
-div.field_with_errors
-{
-    display: inline;
-    padding:0px;
-    margin:0px;
-}
 body{
     background-color    : #fff;
     cursor              : default;
-    margin              : 0px;
-    padding             : 0px;
 }
 
 label{
     display: inline-block;
-    width: 82px;
+    width: 57px;
+    font-family:'Verdana', Arial;
     white-space: nowrap;
 }
 
@@ -27,165 +19,114 @@ label.menor{
     white-space: nowrap;
     width: auto;
     font-family:'Verdana', Arial;
-    font-size: 9pt;
+    font-size: 8pt;
     font-weight: normal;
-    position:relative;
-    bottom: 3px;
 }
 
 a{
-    color           : #EEE;
+    color           : #222;
     font-family     :'Myriad Pro','Trebuchet', Arial;
-    font-size       : 11pt;
-    text-decoration : none;
 }
-
-
 a.menor{
-    color           : #000;
-    font-family     :'Myriad Pro','Trebuchet', Arial;
-    font-size       : 9pt;
-    text-decoration : none;
+    color           : #222;
+    font-size       : 8pt;
     text-decoration : underline;
-}
-
-a:hover{
-    color           : #DDD;
     font-family     :'Myriad Pro','Trebuchet', Arial;
-    font-size       : 11pt;
-    text-decoration : none;
-}
-
-p{
-    font-family     :'Myriad Pro','Trebuchet', Arial;
-    padding-left    : 25px;
-    padding-right   : 25px;
-    padding-top     : 15px;
 }
 
 input{
     color           : #222;
-    border:none;
-}
-/******************************** Página de login: *******/
-#login_right_col{
-    display: table-cell;
-    padding: 35px;
-    background-color        :#FFF;
+    background-color: #fff;
 }
 
-#login_left_col{
-    vertical-align          : top;
-    background-color        :#e8e8e8;
-    display: table-cell;
-    padding:0px;
-    margin:0px;
+/********meu solar**********/
+#mysolar_topbar{
+	width:100%; 
+	height:36px;
+	z-index: 2;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	background-color: #f8c301;
+	overflow: hidden;
+}
+#mysolar_sidebar{
+	width:175px;
+	height:80%; 
+	z-index: 1;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	padding-top: 70px;
+	padding-left: 10px;
+	background-color: #e7eded;
+}
+#mysolar_content{
+	z-index: 0;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	padding-top: 50px;
+	padding-left: 200px;
+	background-color: #fff;
 }
 
-#login_footer{
-    text-align          : center;
-    background-color    : #e8e8e8;
-    display             : table-row;
-    padding             : 0px;
-    margin              : 0px;
-    height              : 20px;
-    font-family         : 'Myriad Pro','Trebuchet', Arial;
-    font-size           : 9pt;
-    color               : #BBB;
+#mysolar_logo {
+	left: 0px;
+	top: 0px;
+	width: 185px;
+	height: 36px;
+	position: absolute;
+}
+#mysolar_top_options {
+	left: 185px;
+	top: 0px;
+	height: 36px;
+	position: absolute;
+	display: block;
 }
 
-#login_top{
-    background-color	: #003e7a;
-    background-image	: url('/images/logintopo.png');
-    background-repeat   : no-repeat;
-    width		: 100%;
-    height              : 95px;
-    z-index             : 1;
-    display             : table-cell;
+#mysolar_boxid {
+	left: 0px;
+	top: 36px;
+	width: 185px;
+	height: 115px;
+	position: absolute;
+	background-color: #8aafbf;
 }
-#login_top_blank{
-    background-color	: #003e7a;
-    display             : table-cell;
-    width		: 100%;
-    height              : 95px;
+#mysolar_id {
+	left: 6px;
+	top: 8px;
+	width: 68px;
+	height: 92px;
+	background-color: #eaeaea;
+	position: absolute;
+	padding-top: 5px;
+	font-size: 10pt;
+	text-align: center;
 }
-
-#login_menu{
-    background-color        : #999;
-    line-height             :32px;
-    border: none;
-}
-
-#login_form_entrar{
-    position            : relative;
-    bottom              : 28px;
-    left                : 208px;
-    width               : 77px;
-    height              : 27px;
-    background-color    : #fff;
-    font-weight         : bold;
-    vertical-align      : middle;
+#mysolar_options {
+	left: 80px;
+	top: 12px;	
+	width: 90px;
+	position: absolute;
+	font-size: 9pt;
+	line-height: 175%;
 }
 
-
-#login_form_tab_blank{
-    background          : none;
-    
-    display             :table-cell;
-    height              : 25px;
-    width               : 131px;
-    
+/********divs do meu-solar**********/
+div.widget {
+	-moz-background-inline-policy: continuous;
+	-moz-background-origin: padding;
+	float: left;
+	margin: 5px;
+	padding: 0px;
+	position: relative;
+	width: 280px;
+	height: 160px;
+	border: 1px solid #ccc;
 }
-
-#login_form_tab_entrar{
-    background-color    : #F9C153;
-    color               : #fff;
-    
-    display             :table-cell;
-    height              : 25px;
-    width               : 80px;
-
-    font-family         :'Myriad Pro','Trebuchet', Arial;
-    font-size           : 12pt;
-    text-align          : center;
-    line-height         : 25px;
-    font-weight		: bold;
-}
-
-#login_form_tab_cadastrar{
-    background-color    : #436bae;
-    color               : #fff;
-
-    display             : table-cell;
-    height              : 25px;
-    width               : 109px;
-
-    font-family         :'Myriad Pro','Trebuchet', Arial;
-    font-size           : 12pt;
-    text-align          : center;
-    line-height         : 25px;
-    font-weight		: bold;
-}
-
-
-#login_form{
-    width               : 305px;
-    height              : 170px;
-
-    padding-left        : 15px;
-    padding-top         : 15px;
-
-    background-color    : #F9C153;
-    color               : #FFF;
-    font-family         :'Myriad Pro','Trebuchet', Arial;
-    font-size           : 15pt;
-    line-height         : 30pt;
-}
-
-.login_form_text_field{
-    border          : 1px #D9A123 solid;
-    font-size       : 14pt;
-    font-family     :'Verdana', Arial;
-    width           : 198px;
-    height          : 24px;
+div.widget_head {
+	background-color: #e7eded;
+	padding: 5px;
 }
