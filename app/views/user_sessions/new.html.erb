@@ -1,25 +1,80 @@
-<%= form_for @user_session, :url => {:action => "create"} do |f| %>
-	<%= flash[:notice] %>
-            <div id="login_form">
-                <div id="login_form_tab_entrar">
-                    Entrar
-                </div>
-                <div id="login_form_tab_cadastrar">
-                    Cadastrar
-                </div>
+<div style="position:absolute;height:100%;width:100%; display: table;">
+  <%= flash[:notice] %>
 
-                <label for="login_form_nome">Login</label>
-		<%= f.text_field :login, :id=>"login_form_nome", :class=>"login_form_text_field"%>
-                <br/>
-                <label for="login_form_senha">Senha</label>
-		<%= f.password_field :password, :id=>"login_form_senha", :class=>"login_form_text_field" %>
-                <br/>
-                <div id="login_form_secundario" style="line-height: 20px;">
-		    <%= f.check_box :remember_me, :id=>"login_form_lembrar_senha", :style=>"border-style:none" %>
-                    <label for="login_form_lembrar_senha" class="menor">Lembrar minha senha</label>
-                    <br/>
-                    &nbsp;<a href="" class="menor" >esqueci a senha</a>
-                </div>
-		<%= f.submit "Entrar", :id=>"login_form_entrar"%>
-            </div>
-<% end %>
+  <div style="display: table-row;">
+    <div id="login_top">
+      &nbsp;
+    </div>
+    <div id="login_top_blank">
+      &nbsp;
+    </div>
+  </div>
+  
+
+    <!--Parte cinza-->
+    <div id="login_left_col">
+      <div id="login_menu">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="login.html">UFC Virtual</a>&nbsp;&nbsp;&nbsp;
+        <a href="noticias.html">Not&iacute;cias</a>&nbsp;&nbsp;&nbsp;
+        <a href="tutorial.html">Tutorial</a>
+      </div>
+
+      <p>
+        O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,
+        da Universidade Federal do Ceará. Ele é orientado ao professor e ao aluno,
+        possibilitando a publicação de cursos e a interação com os mesmos.
+      </p>
+      <p>
+        O Solar foi desenvolvido potencializando o aprendizado a partir da relação com
+        a própia interface gráfica do ambiente, sendo desenvolvido para que o usuário
+        tenha dapidez no acesso às páginas e ao conteúdo, fácil navegabilidade e
+        compatibilidade com navegadores. Aqui, o interagente se sente seguro a
+        explorar os espaços disponibilizados. O ambiente é apoiado
+        numa filosofia de interação e não de controle.
+      </p>
+    </div>
+
+    <!--Formulário de login-->
+    <div id="login_right_col">
+      <% form_for @user_session, :url => {:action => "create"} do |f| %>
+        <div id="login_form_tab_blank">&nbsp;
+        </div>
+        <div id="login_form_tab_entrar">
+          Entrar
+        </div>
+        <div id="login_form_tab_cadastrar">
+          Cadastrar
+        </div>
+        <div id="login_form">
+          <label for="login_form_nome">Usu&aacute;rio</label>
+          <%= f.text_field :login, :id=>"login_form_name", :class=>"login_form_text_field", :tabindex=>"1"%>
+          <br/>
+          <label for="login_form_senha">Senha</label>
+          <%= f.password_field :password, :id=>"login_form_password", :class=>"login_form_text_field", :tabindex=>"2"%>
+          <br/>
+          <div id="login_form_secundario" style="line-height: 30px;">
+              <%= f.check_box :remember_me, :id=>"login_form_lembrar_senha", :style=>"border-style:none" %>
+              <label for="login_form_lembrar_senha" class="menor">Lembrar minha senha</label>
+            <br/>
+            &nbsp;<a href="" class="menor" >esqueci a senha</a>
+          </div>
+          <%= f.submit "Entrar", :id=>"login_form_entrar", :tabindex=>"3"%>
+        </div>
+      <% end %>
+    </div>
+
+
+
+    <!--Rodapé-->
+    <div id="login_footer">
+         <img src="https://secure.wlxrs.com/~Live.SiteContent.ID/~15.3.21/~/~/~/~/images/WindowsLive.png" alt="Instituto UFC Virtual" title="Instituto UFC Virtual"/>&nbsp;&nbsp;&nbsp;<img src="https://secure.wlxrs.com/~Live.SiteContent.ID/~15.3.21/~/~/~/~/images/WindowsLive.png" alt="UFC - Universidade Fereral do Ceará" title="UFC - Universidade Fereral do Ceará"/>
+         <br/>
+        Instituto UFC Virtual 2010 - Universidade Federal do Ceará | Equipe de Desenvolvimento
+    </div>
+  </div>
+
+
+<script>
+    document.getElementById("login_form_name").focus();
+</script>
