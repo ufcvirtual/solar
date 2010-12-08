@@ -38,7 +38,7 @@ Entao /^eu deverei ver "([^"]*)"$/ do |text|
 	end
 end
 
-Dado /^que estou logado no sistema$/ do
+Dado /^que estou logado no sistema com usuario user$/ do
   User.create(:login => 'user', :email => 'user@tester.com', :password => 'user123')
   visit path_to("Login")
   fill_in("login_form_name", :with => "user")
@@ -52,8 +52,7 @@ Dado /^que estou logado no sistema$/ do
 end
 
 
-Dado /^que eu nao estou logado$/ do
-
+Dado /^que eu nao estou logado no sistema com usuario user$/ do
 end
 
 
