@@ -3,18 +3,22 @@ class UserController < ApplicationController
 	# requerem q usuario esteja logado
 
   def index
+	if current_user
+		@user = User.find(current_user.id)
+	end
+	render :action => :mysolar
   end
 
   def show
-		if params[:id]
-			@user = User.find(params[:id])
-		end
+	if params[:id]
+		@user = User.find(params[:id])
+	end
   end
 
   def mysolar
-		if current_user
-			@user = User.find(current_user.id)
-		end
+	if current_user
+		@user = User.find(current_user.id)
+	end
   end
 
   def new
