@@ -30,6 +30,10 @@ Quando /^eu clicar em "([^"]*)"$/ do |button|
   click_button(button)
 end
 
+Quando /^eu clicar no link "([^"]*)"$/ do |link|
+  click_link(link)
+end
+
 Entao /^eu deverei ver "([^"]*)"$/ do |text|
 	if page.respond_to? :should
 		page.should have_content(text)

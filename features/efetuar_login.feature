@@ -35,4 +35,9 @@ Contexto:
 		| unknown_user  |  any_password   | Dados de login incorretos! |
 		| user          |  wrong_password | Dados de login incorretos! |
 
-
+	Cenário: Efetuar logout
+		Dado que estou logado no sistema com usuario user
+			E que estou em "Meu Solar"
+		Quando eu clicar no link "Sair"
+		Então eu deverei ver "Usuário"
+		E eu deverei ver "Senha"

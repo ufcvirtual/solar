@@ -87,9 +87,7 @@
   <div id="mysolar_top_options">
 		ajuda - 
 
-    <% if current_user %>
-      <%= link_to "Sair", logout_path %>
-    <% end %>
+		<%= link_to_if(current_user, "Sair", logout_path) %>
   </div>
 </div>
 
