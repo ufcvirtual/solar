@@ -1,6 +1,11 @@
 Solar::Application.routes.draw do
 
+<<<<<<< HEAD
   get "user/mysolar"
+=======
+  get "users/mysolar"
+
+>>>>>>> 6568305
   get "user_sessions/new"
 	get "user/new"
 
