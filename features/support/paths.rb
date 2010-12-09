@@ -15,7 +15,7 @@ module NavigationHelpers
       '/user_sessions/new'
 
     when /Meu Solar/
-      '/user/mysolar'
+      '/users/mysolar'
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

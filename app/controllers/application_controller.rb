@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
       if current_user
         store_location
         flash[:notice] = "Efetue logout!"
-        redirect_to user_mysolar_url #account_url
+        redirect_to users_mysolar_url #account_url
         return false
       end
     end

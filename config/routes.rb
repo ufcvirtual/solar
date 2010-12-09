@@ -1,6 +1,6 @@
 Solar::Application.routes.draw do
 
-  get "user/mysolar"
+  get "users/mysolar"
 
   get "user_sessions/new"
 
