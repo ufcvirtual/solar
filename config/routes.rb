@@ -1,8 +1,8 @@
 Solar::Application.routes.draw do
 
   get "user/mysolar"
-
   get "user_sessions/new"
+	get "user/new"
 
 #  match 'user/:id' => 'user#show'
 #  match 'user/:id' => 'user#show', :as => :meusolar
