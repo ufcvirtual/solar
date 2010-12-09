@@ -153,6 +153,7 @@ div.widget_head {
 
 #mysolar_chat_list{
     border: 1px solid #bbb;
+    background-color: #fff;
 }
 
 #mysolar_chat_list_internal{
@@ -170,7 +171,7 @@ div.widget_head {
 
 /********Portlets do meuSolar*****************/
 .mysolar_portlets_coluna {
-    width: 170px;
+    width: 295px;
     float: left;
     padding-bottom: 100px;
     border:none;
@@ -178,15 +179,17 @@ div.widget_head {
 
 .mysolar_portlets_portlet {
     margin: 0 1em 1em 0;
-    border:1px dotted #88f;
+    border:1px solid #CCCCCC;
     background-color: #fff;
     cursor: pointer;
+    height: 160px;
+    width: 280px;
+    white-space: normal;
 }
 .mysolar_portlets_header {
     margin: 0.3em;
-    padding-bottom: 4px;
-    padding-left: 0.2em;
-    background-color: #eee;
+    padding: 5px;
+    background-color: #E7EDED;
 }
 .mysolar_portlets_content {
     padding: 0.4em;
@@ -194,7 +197,7 @@ div.widget_head {
 .ui-sortable-placeholder {
     border: 1px dotted black;
     visibility: visible !important;
-    height: 50px !important;
+    height: 100px !important;
 }
 .ui-sortable-placeholder * {
     visibility: hidden;
