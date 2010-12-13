@@ -5,7 +5,6 @@ Funcionalidade: Cadastrar usuário
   Eu quero me cadastrar
   Para acessar os recursos do sistema
 
-@wip
 Cenário: Acessar página de cadastro de novo usuário
 	Dado que eu nao estou cadastrado
 		E que estou em "Login"
@@ -15,7 +14,7 @@ Cenário: Acessar página de cadastro de novo usuário
 		E eu deverei ver "Sexo"
 		E eu deverei ver "Data de nascimento"
 		E eu deverei ver "Necessidades Especiais"
-		E eu deverei ver "Logradouro"
+		E eu deverei ver "Endereço"
 		E eu deverei ver "Número"
 		E eu deverei ver "Complemento"
 		E eu deverei ver "Bairro"
@@ -30,4 +29,5 @@ Cenário: Acessar página de cadastro de novo usuário
 		E eu deverei ver "Email"
 		E eu deverei ver "Login"
 		E eu deverei ver "Senha"
+		E eu deverei ver o botao "Salvar"
 
