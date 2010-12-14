@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
     #  and will be created a folder called "users" with object id (eg users/1) 
     #default_url define default image (if image is dropped or not exists)
 
-    validates_attachment_presence :photo, :message => 'Image must be selected'
+    #validates_attachment_presence :photo, :message => 'Image must be selected'
     validates_attachment_content_type :photo, :content_type => ['image/jpeg','image/png','image/gif','image/pjpeg']#, :message => 'Invalid image type!'
 
 end
