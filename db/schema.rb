@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101214145113) do
+ActiveRecord::Schema.define(:version => 20101214195900) do
 
   create_table "users", :force => true do |t|
     t.string   "login",                                              :null => false
@@ -31,7 +31,6 @@ ActiveRecord::Schema.define(:version => 20101214145113) do
     t.string   "nick",                 :limit => 35
     t.date     "birthdate"
     t.string   "enrollment_code",      :limit => 20
-    t.string   "cpf",                  :limit => 11
     t.string   "status",               :limit => 1
     t.string   "photo_file_name"
     t.string   "photo_content_type"
@@ -46,10 +45,11 @@ ActiveRecord::Schema.define(:version => 20101214145113) do
     t.string   "country",              :limit => 100
     t.string   "state",                :limit => 100
     t.string   "city",                 :limit => 100
-    t.integer  "telephone"
-    t.integer  "cell_phone"
+    t.string   "telephone",            :limit => 20
+    t.string   "cell_phone",           :limit => 20
     t.string   "institution",          :limit => 120
     t.boolean  "sex"
+    t.integer  "cpf",                  :limit => 8
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
