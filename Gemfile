@@ -12,7 +12,7 @@ gem 'cucumber'
 gem 'cucumber-rails'
 gem 'rspec'
 gem 'factory_girl_rails'
-
+gem 'chronic'
 # para uso da gem authlogic (autenticacao)
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
 gem 'rails3-generators'

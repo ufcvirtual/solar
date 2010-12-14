@@ -17,6 +17,9 @@ module NavigationHelpers
     when /Meu Solar/
       '/users/mysolar'
 
+    when /Cadastrar usuario/
+      '/users/new'
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
