@@ -10,14 +10,25 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101214195900) do
+ActiveRecord::Schema.define(:version => 20101215195748) do
+
+  create_table "logs", :force => true do |t|
+    t.string   "log_type"
+    t.string   "message"
+    t.string   "user"
+    t.string   "profile"
+    t.string   "course"
+    t.string   "classroom"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "login",                                              :null => false
     t.string   "email",                                              :null => false
     t.string   "crypted_password",                                   :null => false
-    t.string   "password_salt",                                      :null => false
-    t.string   "persistence_token",                                  :null => false
+    t.string   "password_salt"
+    t.string   "persistence_token"
     t.integer  "login_count",                         :default => 0, :null => false
     t.integer  "failed_login_count",                  :default => 0, :null => false
     t.datetime "last_request_at"
