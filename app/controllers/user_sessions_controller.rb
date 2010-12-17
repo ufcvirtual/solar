@@ -17,7 +17,7 @@ class UserSessionsController < ApplicationController
     @user_session = UserSession.new(params[:user_session])
     if @user_session.save
       # grava log de acesso
-      Log.create(:log_type => 1, :message => "Usuario " + @user_session.login + " efetuou login.")
+      Log.create(:log_type => Log::TYPE[:login], :userId => @user_session.user.id)
 
       redirect_back_or_default users_mysolar_url #('/')
     else
