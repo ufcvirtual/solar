@@ -27,6 +27,7 @@ label.menor{
 a{
     color           : #222;
     font-family     :'Myriad Pro','Trebuchet', Arial;
+    text-decoration : none;
 }
 a.menor{
     color           : #222;
@@ -35,21 +36,26 @@ a.menor{
     font-family     :'Myriad Pro','Trebuchet', Arial;
 }
 
+
+
 input{
     color           : #222;
     background-color: #fff;
 }
 
 /********meu solar**********/
+
 #mysolar_topbar{
-	width:100%; 
-	height:36px;
-	z-index: 2;
-	position: absolute;
-	left: 0px;
-	top: 0px;
-	background-color: #f8c301;
-	overflow: hidden;
+	width		:100%; 
+	height		:36px;
+	line-height	: 36px;
+	z-index		: 2;
+	position	: absolute;
+	left		: 0px;
+	top		: 0px;
+	background-color: #003e7a;
+	color		: #FFF;
+	overflow	: hidden;
 }
 #mysolar_sidebar{
 	width:175px;
@@ -73,18 +79,55 @@ input{
 }
 
 #mysolar_logo {
-	left: 0px;
-	top: 0px;
+	/*left: 0px;
+	top: 0px;*/
 	width: 185px;
 	height: 36px;
-	position: absolute;
+	float		: left;
+	/*position: absolute;*/
 }
+
+#mysolar_tab{
+	color: #222;
+	text-align:center;
+	width: 60px;
+ 	height: 32px;
+	background-color: #fff;
+	display:inline-block;
+	z-index: 10;
+	border-top:4px solid #003e7a;
+}
+
 #mysolar_top_options {
-	left: 185px;
+	/*left: 185px;
 	top: 0px;
 	height: 36px;
 	position: absolute;
-	display: block;
+	display: block;*/
+        padding-right   : 30px;
+	height		: 36px;
+	line-height	: 36px;
+	float		: right;
+}
+
+a.mysolar_top_link{
+    color           : #FFF;
+}
+
+#mysolar_search{
+	position: absolute;
+	top: 166px;
+	left:0px;
+	height:25px;
+	width: 100%;
+ 	text-align:center;
+}
+
+#mysolar_search_label{
+	font-size: 9pt;
+	float:right;
+	margin-right: 18px;
+	margin-top: 2px;
 }
 
 #mysolar_boxid {
@@ -115,21 +158,27 @@ input{
 	line-height: 175%;
 }
 
-/********Portlets do meu-solar**********/
-div.widget {
-    -moz-background-inline-policy: continuous;
-    -moz-background-origin: padding;
-    float: left;
-    margin: 5px;
-    padding: 0px;
-    position: relative;
-    width: 280px;
-    height: 160px;
-    border: 1px solid #ccc;
+/********Menu do meuSolar*****************/
+#mysolar_menu_accordion{
+	position: absolute;
+	top: 250px;
+	left:0px;
+	width:100%;
 }
-div.widget_head {
-    background-color: #e7eded;
-    padding: 5px;
+
+.mysolar_menu_title{
+	background-color: #fff;
+	width : 170px;
+	margin: 2px;
+	cursor: pointer;
+	font-weight: normal;
+	font-family     :'Myriad Pro','Trebuchet', Arial;
+	height: 35px;
+	line-height: 35px;
+	padding-left:15px;
+}
+.mysolar_menu_list{
+	padding-left: 25px;
 }
 
 /********Chat do meuSolar*****************/
@@ -145,6 +194,7 @@ div.widget_head {
     background-color    : #fbb03b;
     padding-left        :5px;
     padding-right       :5px;
+    cursor: pointer;
 }
 
 #mysolar_chat_contatos{
@@ -169,7 +219,30 @@ div.widget_head {
     height:1px;
 }
 
+.search_keyword{
+	border: 2px solid #b3b3b3;
+	height: 25px;
+	width:  149px;
+}
+
 /********Portlets do meuSolar*****************/
+
+div.widget {
+    -moz-background-inline-policy: continuous;
+    -moz-background-origin: padding;
+    float: left;
+    margin: 5px;
+    padding: 0px;
+    position: relative;
+    width: 280px;
+    height: 160px;
+    border: 1px solid #ccc;
+}
+div.widget_head {
+    background-color: #e7eded;
+    padding: 5px;
+}
+
 .mysolar_portlets_coluna {
     width: 295px;
     float: left;
@@ -182,18 +255,18 @@ div.widget_head {
     border:1px solid #CCCCCC;
     background-color: #fff;
     cursor: pointer;
-    height: 160px;
+    height: 180px;
     width: 280px;
     white-space: normal;
 }
 .mysolar_portlets_header {
-    margin: 0.3em;
     padding: 5px;
     background-color: #E7EDED;
 }
 .mysolar_portlets_content {
     padding: 0.4em;
 }
+
 .ui-sortable-placeholder {
     border: 1px dotted black;
     visibility: visible !important;
