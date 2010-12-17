@@ -1,13 +1,13 @@
 class CreateLogs < ActiveRecord::Migration
   def self.up
     create_table :logs do |t|
-      t.string :log_type
-      t.string :message
-			t.string :user
-			t.string :profile
-			t.string :course
-			t.string :classroom
-      t.timestamps
+	t.integer :log_type
+	t.string :message
+	t.integer :userId
+	t.integer :profileId
+	t.integer :courseId
+	t.integer :classId
+      	t.timestamps
     end
   end
 
