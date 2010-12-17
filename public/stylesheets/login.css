@@ -189,3 +189,25 @@ input{
     width           : 198px;
     height          : 24px;
 }
+
+
+/******** cadastro de novo usuario com layout do login **********/
+
+#login_form_new_user{
+	width	: 400px;
+	padding	: 20px;
+	display	: table-cell;
+}
+.login_form_link_return{
+	position			: relative;
+	top					: 10px;
+    background-color	: #fff;
+	color           	: #222;
+    font-family         :'Myriad Pro','Trebuchet', Arial;
+    text-align          : center;
+    line-height         : 25px;
+}
+.login_form_link_return:hover{
+    color           : #222;
+    text-decoration : none;
+}

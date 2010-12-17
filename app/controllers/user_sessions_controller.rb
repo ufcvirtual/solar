@@ -16,7 +16,10 @@ class UserSessionsController < ApplicationController
   def create
     @user_session = UserSession.new(params[:user_session])
     if @user_session.save
-      redirect_back_or_default user_mysolar_url #('/')
+      # grava log de acesso
+      Log.create(:log_type => 'login', :message => "Usuario " + @user_session.login + " efetuou login.")
+
+      redirect_back_or_default users_mysolar_url #('/')
     else
       flash[:notice] = 'Dados de login incorretos!'
       render :action => :new

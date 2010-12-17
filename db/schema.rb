@@ -10,16 +10,27 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101202201913) do
+ActiveRecord::Schema.define(:version => 20101215195748) do
+
+  create_table "logs", :force => true do |t|
+    t.string   "log_type"
+    t.string   "message"
+    t.string   "user"
+    t.string   "profile"
+    t.string   "course"
+    t.string   "classroom"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
-    t.string   "login",                                            :null => false
-    t.string   "email",                                            :null => false
-    t.string   "crypted_password",                                 :null => false
+    t.string   "login",                                              :null => false
+    t.string   "email",                                              :null => false
+    t.string   "crypted_password",                                   :null => false
     t.string   "password_salt"
     t.string   "persistence_token"
-    t.integer  "login_count",                       :default => 0, :null => false
-    t.integer  "failed_login_count",                :default => 0, :null => false
+    t.integer  "login_count",                         :default => 0, :null => false
+    t.integer  "failed_login_count",                  :default => 0, :null => false
     t.datetime "last_request_at"
     t.datetime "current_login_at"
     t.datetime "last_login_at"
@@ -27,17 +38,29 @@ ActiveRecord::Schema.define(:version => 20101202201913) do
     t.string   "last_login_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "nome",               :limit => 100
-    t.string   "nick",               :limit => 35
-    t.datetime "dtnascimento"
-    t.string   "matricula",          :limit => 20
-    t.string   "cpf",                :limit => 11
-    t.string   "sexo",               :limit => 1
-    t.string   "status",             :limit => 1
+    t.string   "name",                 :limit => 100
+    t.string   "nick",                 :limit => 35
+    t.date     "birthdate"
+    t.string   "enrollment_code",      :limit => 20
+    t.string   "status",               :limit => 1
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
+    t.string   "special_needs",        :limit => 50
+    t.string   "address",              :limit => 100
+    t.integer  "address_number"
+    t.string   "address_complement",   :limit => 50
+    t.string   "address_neighborhood", :limit => 50
+    t.integer  "zipcode"
+    t.string   "country",              :limit => 100
+    t.string   "state",                :limit => 100
+    t.string   "city",                 :limit => 100
+    t.string   "telephone",            :limit => 20
+    t.string   "cell_phone",           :limit => 20
+    t.string   "institution",          :limit => 120
+    t.boolean  "sex"
+    t.integer  "cpf",                  :limit => 8
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

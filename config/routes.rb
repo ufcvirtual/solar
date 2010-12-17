@@ -1,8 +1,8 @@
 Solar::Application.routes.draw do
 
-  get "user/mysolar"
-
+  get "users/mysolar"
   get "user_sessions/new"
+  get "users/new"
 
 #  match 'user/:id' => 'user#show'
 #  match 'user/:id' => 'user#show', :as => :meusolar
@@ -55,6 +55,7 @@ Solar::Application.routes.draw do
   #   end
 
 	resources :user_sessions
+	resources :users
 
 	match 'login' => "user_sessions#new",      :as => :login
 	match 'logout' => "user_sessions#destroy", :as => :logout
