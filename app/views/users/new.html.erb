@@ -1,5 +1,45 @@
-<h1>Cadastro de Usuário</h1>
+<head>
+  <%= stylesheet_link_tag "login.css" %>
+</head>
 
-<%= render 'form' %>
+<div style="position:absolute;height:100%;width:100%; display: table;">
 
-<%= link_to 'Voltar', users_path %>
+  <div style="display: table-row;">
+    <div id="login_top">
+      &nbsp;
+    </div>
+    <div id="login_top_blank">
+      &nbsp;
+    </div>
+  </div>
+  
+
+    <!--Parte cinza-->
+    <div id="login_left_col">
+      <div id="login_menu">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="login.html">UFC Virtual</a>&nbsp;&nbsp;&nbsp;
+        <a href="noticias.html">Not&iacute;cias</a>&nbsp;&nbsp;&nbsp;
+        <a href="tutorial.html">Tutorial</a>
+      </div>
+
+      <div id="login_form_new_user">
+		<h2>Cadastro de Usuário</h1>
+		<%= render 'form' %>
+		<%= link_to 'Voltar', new_user_session_path, :class => "login_form_link_return" %>
+      </div>
+    </div>
+
+
+    <!--Rodapé-->
+    <div id="login_footer">
+         <img src="https://secure.wlxrs.com/~Live.SiteContent.ID/~15.3.21/~/~/~/~/images/WindowsLive.png" alt="Instituto UFC Virtual" title="Instituto UFC Virtual"/>&nbsp;&nbsp;&nbsp;<img src="https://secure.wlxrs.com/~Live.SiteContent.ID/~15.3.21/~/~/~/~/images/WindowsLive.png" alt="UFC - Universidade Fereral do Ceará" title="UFC - Universidade Fereral do Ceará"/>
+         <br/>
+        Instituto UFC Virtual 2010 - Universidade Federal do Ceará | Equipe de Desenvolvimento
+    </div>
+  </div>
+
+
+<script>
+    document.getElementById("login_form_name").focus();
+</script>
