@@ -1,5 +1,6 @@
 <div id="login_form_new_user">
 	<h2 class="form_usuario_h2">Novo Cadastro</h2>
+	
 	<%= form_for(@user) do |f| %>
 	  <% if @user.errors.any? %>
 	    <div id="error_explanation">
@@ -11,13 +12,35 @@
 	      </ul>
 	    </div>
 	  <% end %>
-
-	<div id="form_usuario_dados">
-
-
-	</div>
+	
+	  <table class="form_usuario_table">
+		<tr>
+			<td class="form_usuario_label"><%= f.label :login %></td>
+			<td><%= f.text_field :login %></td>
+		</tr>
+		<tr>
+			<td class="form_usuario_label"></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="form_usuario_label"></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="form_usuario_label"></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="form_usuario_label"></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="form_usuario_label"></td>
+			<td></td>
+		</tr>
+	  </table>	
 	  <div class="field">
-	    <%#= f.label :id %><br />
+	    <%#= f.label :id %><br/>
 	    <%#= f.text_field :id %>
 	  </div>
 	  <div class="field">

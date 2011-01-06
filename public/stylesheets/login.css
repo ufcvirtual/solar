@@ -220,6 +220,15 @@ input{
     font-weight		: bold;
     padding-top		: 20px;
 }
-#form_usuario_dados{
-
+.form_usuario_table{
+    margin-left		: auto;
+    margin-right	: auto;
+    border		: 1px black solid;
+    color		: #fff;
+    width		: 500px;
+    
+}
+.form_usuario_label {
+    text-align		: right;
+    width		: 15px;
 }
