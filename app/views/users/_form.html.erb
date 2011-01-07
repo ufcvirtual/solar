@@ -12,116 +12,104 @@
 	      </ul>
 	    </div>
 	  <% end %>
-	
-	  <table class="form_usuario_table">
-		<tr>
-			<td class="form_usuario_label"><%= f.label :login %></td>
-			<td><%= f.text_field :login %></td>
+	<% field_size = 44 %>
+        <table class="form_usuario_table">
+		<tr class="form_usuario_tr">
+			<td class="form_usuario_label" colspan="1" width="20px"><%= f.label :login, "Login:"%></td>
+			<td colspan="5"><%= f.text_field :login, :size=>field_size %></td>
 		</tr>
-		<tr>
+		<tr class="form_usuario_tr">
+			<td class="form_usuario_label" colspan="1"><%= f.label :password, 'Senha:' %></td>
+			<td colspan="5"><%= f.text_field :password , :size=>field_size%></td>
+		</tr>
+		<tr class="form_usuario_tr" >
+			<td class="form_usuario_label" colspan="1">Confirmar senha:</td>
+                        <td colspan="5"><input type="text" size="<%=field_size%>" id="confirmar_senha"/></td>
+		</tr>
+		<tr class="form_usuario_tr">
+			<td class="form_usuario_label" colspan="1"><%= f.label :nick, 'Nick:' %></td>
+			<td colspan="5"><%= f.text_field :nick, :size=>field_size %></td>
+		</tr>
+		<tr class="form_usuario_tr">
+			<td class="form_usuario_label" colspan="1"><%= f.label :email, "E-mail:" %></td>
+			<td colspan="5"><%= f.text_field :email, :size=>field_size %></td>
+		</tr>
+		<tr class="form_usuario_tr">
+			<td class="form_usuario_label" colspan="1">E-mail alternativo:</td>
+			<td colspan="5"><input type="text" size="<%=field_size%>" id="email_alternativo"/></td>
+		</tr>
+                <tr class="form_usuario_tr">
+			<td class="form_usuario_label" colspan="1"><%= f.label :institution, 'Instituição:' %></td>
+			<td colspan="5"><%= f.text_field :institution, :size=>field_size %></td>
+		</tr>
+                <tr class="form_usuario_tr">
+			<td class="form_usuario_label" colspan="1"> <%= f.label :name, 'Nome:' %></td>
+			<td colspan="5"><%= f.text_field :name , :size=>field_size %></td>
+		</tr>
+                <tr class="form_usuario_tr">
+			<td class="form_usuario_label"><%= f.label :birthdate, 'Data de nascimento:',:class=>"label_usuario"%></td>
+			<td style="width: 217px;" colspan="3"><%= f.date_select :birthdate, :start_year => 1900, :end_year => Time.now.year %></td>
+
+                        <td class="form_usuario_label" colspan="1" style="padding-right: 3px; text-align: center;"><%= f.label :sex, 'Sexo:' %></td>
+                        <td colspan="1" style="padding-left: 9px;"><%= f.text_field :sex, :size=>2 %></td>
+		</tr>
+                <tr class="form_usuario_tr">
+			<td class="form_usuario_label" colspan="1"><%= f.label :cpf, 'CPF:' %></td>
+			<td colspan="5"> <%= f.text_field :cpf, :size=>field_size %></td>
+		</tr>
+                <tr class="form_usuario_tr">
+			<td class="form_usuario_label"> <%= f.label :address, 'Endereço:' %></td>
+			<td colspan="5"> <%= f.text_field :address , :size=>field_size%></td>
+		</tr>
+                <tr class="form_usuario_tr">
+                        
+			<td class="form_usuario_label"><%= f.label :address_number, 'Número:' %></td>
+			<td colspan="2"><%= f.text_field :address_number ,:size=>10%></td>
+                        <td class="form_usuario_label"><%= f.label :zipcode, 'CEP:' %></td>
+			<td colspan="2"> <%= f.text_field :zipcode, :size=>15 %></td>
+                        
+		</tr>
+                <tr class="form_usuario_tr">
+			<td class="form_usuario_label"><%= f.label :address_complement, 'Complemento:' %></td>
+			<td colspan="2"><%= f.text_field :address_complement, :size=>10 %></td>
+                        <td class="form_usuario_label"> <%= f.label :telephone, 'Telefone:' %></td>
+			<td colspan="2"><%= f.text_field :telephone, :size=> 15 %></td>
+		</tr>
+                 <tr class="form_usuario_tr">
+                        <td class="form_usuario_label"> <%= f.label :country, 'País' %></td>
+			<td colspan="2"><%= f.text_field :country, :size=>10 %></td>
+			<td class="form_usuario_label"> <%= f.label :cell_phone, 'Celular' %></td>
+			<td colspan="2"><%= f.text_field :cell_phone, :size=>15 %></td>
+		</tr>
+                <tr class="form_usuario_tr">
+                  	<td class="form_usuario_label"> <%= f.label :city, 'Município'%></td>
+			<td colspan="2"><%= f.text_field :city, :size=>10  %></td>
+                        <td class="form_usuario_label" colspan="1"><%= f.label :state, 'Estado' %></td>
+                        <td colspan="2"> <%= f.text_field :state, :size=> 2 %></td>
+		</tr>
+                <tr class="form_usuario_tr">
+			<td class="form_usuario_label"> </td>
+			<td colspan="5"></td>
+		</tr>
+                <tr class="form_usuario_tr">
 			<td class="form_usuario_label"></td>
-			<td></td>
+			<td colspan="5"></td>
 		</tr>
-		<tr>
+                <tr class="form_usuario_tr">
 			<td class="form_usuario_label"></td>
-			<td></td>
+			<td colspan="5"></td>
 		</tr>
-		<tr>
-			<td class="form_usuario_label"></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td class="form_usuario_label"></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td class="form_usuario_label"></td>
-			<td></td>
-		</tr>
+               
 	  </table>	
 	  <div class="field">
 	    <%#= f.label :id %><br/>
 	    <%#= f.text_field :id %>
 	  </div>
-	  <div class="field">
-	    <%= f.label :login %><br />
-	    <%= f.text_field :login %>
-	  </div>
-	  <div class="field">
-	    <%= f.label :email %><br />
-	    <%= f.text_field :email %>
-	  </div>
-	  <div class="field">
-	    <%= f.label :password, 'Senha' %><br />
-	    <%= f.text_field :password %>
-	  </div>
-	  <div class="field">
-	    <%= f.label :name, 'Nome' %><br />
-	    <%= f.text_field :name %>
-	  </div>
-	  <div class="field">
-	    <%= f.label :nick, 'Apelido' %><br />
-	    <%= f.text_field :nick %>
-	  </div>
-	  <div class="field">
-	    <%= f.label :birthdate, 'Data de nascimento' %><br />
-	    <%= f.date_select :birthdate, :start_year => 1900, :end_year => Time.now.year %>
-	  </div>
-	  <div class="field">
-	    <%= f.label :cpf, 'CPF' %><br />
-	    <%= f.text_field :cpf %>
-	  </div>
-	  <div class="field">
-	    <%= f.label :sex, 'Sexo' %><br />
-	    <%= f.text_field :sex %>
-	  </div>
+
+
 	  <div class="field">
 	    <%= f.label :special_needs, 'Necessidades Especiais' %><br />
 	    <%= f.text_field :special_needs %>
-	  </div>
-	  <div class="field">
-	    <%= f.label :address, 'Endereço' %><br />
-	    <%= f.text_field :address %>
-	  </div>
-	  <div class="field">
-	    <%= f.label :address_number, 'Número' %><br />
-	    <%= f.text_field :address_number %>
-	  </div>
-	  <div class="field">
-	    <%= f.label :address_complement, 'Complemento' %><br />
-	    <%= f.text_field :address_complement %>
-	  </div>
-	  <div class="field">
-	    <%= f.label :address_neighborhood, 'Bairro' %><br />
-	    <%= f.text_field :address_neighborhood %>
-	  </div>
-	  <div class="field">
-	    <%= f.label :zipcode, 'CEP' %><br />
-	    <%= f.text_field :zipcode %>
-	  </div>
-	  <div class="field">
-	    <%= f.label :country, 'País' %><br />
-	    <%= f.text_field :country %>
-	  </div>
-	  <div class="field">
-	    <%= f.label :state, 'Estado' %><br />
-	    <%= f.text_field :state %>
-	  </div>
-	  <div class="field">
-	    <%= f.label :city, 'Município' %><br />
-	    <%= f.text_field :city %>
-	  </div>
-	  <div class="field">
-	    <%= f.label :telephone, 'Telefone' %><br />
-	    <%= f.text_field :telephone %>
-	  </div>
-	  <div class="field">
-	    <%= f.label :cell_phone, 'Celular' %><br />
-	    <%= f.text_field :cell_phone %>
-	  </div>
-	  <div class="field">
-	    <%= f.label :institution, 'Instituição' %><br />
-	    <%= f.text_field :institution %>
 	  </div>
 
 </div>

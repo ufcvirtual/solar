@@ -15,13 +15,22 @@ body{
     margin              : 0px;
     padding             : 0px;
 }
+/* coloquei esse aqui pra sobreescrever esse label aqui de baixo (Rafael) */
+.form_usuario_label {
 
+    text-align		: right;
+    width		: 15px;
+    padding-right       : 10px;
+    padding-left        : 10px;
+    margin-top          : 2px;
+    font-size           : 14px;
+    white-space         : pre-wrap;
+}
 label{
     display: inline-block;
     width: 82px;
     white-space: nowrap;
 }
-
 label.menor{
     display: inline-block;
     white-space: nowrap;
@@ -130,17 +139,17 @@ input{
 
 #login_form_tab_blank{
     background          : none;
-    
+
     display             :table-cell;
     height              : 25px;
     width               : 131px;
-    
+
 }
 
 #login_form_tab_entrar{
     background-color    : #F9C153;
     color               : #fff;
-    
+
     display             :table-cell;
     height              : 25px;
     width               : 80px;
@@ -196,9 +205,9 @@ input{
 #login_form_new_user{
      margin-left	: 65px;
      margin-top		: 45px;
-     width		: 510px;
+     width		: 525px;
      background-color	: #a2b5c7;
-	
+
 }
 .login_form_link_return{
     position		: relative;
@@ -218,17 +227,30 @@ input{
     color		: #003e7a;
     font-size		: 18px;
     font-weight		: bold;
-    padding-top		: 20px;
+    padding-top		: 15px;
 }
 .form_usuario_table{
     margin-left		: auto;
     margin-right	: auto;
-    border		: 1px black solid;
     color		: #fff;
-    width		: 500px;
-    
+    width		: 480px;
+    line-height: 15px;
+
 }
 .form_usuario_label {
+
     text-align		: right;
     width		: 15px;
+    padding-right       : 20px;
+    padding-left        : 10px; 
+    margin-top          : 2px;
+    font-size           : 14px;
+    vertical-align: middle;
+    
+}
+.form_usuario_tr{
+    height: 30px;
+}
+.label_usuario{
+    white-space         : pre-wrap;
 }
