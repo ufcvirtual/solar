@@ -30,7 +30,7 @@ Cenário: Acessar página de cadastro de novo usuário
 		E eu deverei ver "Login"
 		E eu deverei ver "Senha"
 		E eu deverei ver o botao "Salvar"
-
+@wip
 Cenário: Cadastrar novo usuário
     Dado que estou em "Cadastrar usuario"
        E que eu preenchi "Nome" com "Usuário do Solar"

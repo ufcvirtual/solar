@@ -47,11 +47,11 @@
 			<td colspan="5"><%= f.text_field :name , :size=>field_size %></td>
 		</tr>
                 <tr class="form_usuario_tr">
-			<td class="form_usuario_label"><%= f.label :birthdate, 'Data de nascimento:',:class=>"label_usuario"%></td>
-			<td style="width: 217px;" colspan="3"><%= f.date_select :birthdate, :start_year => 1900, :end_year => Time.now.year %></td>
+			<td class="form_usuario_label" ><%= f.label :birthdate, 'Data de nascimento:',:class=>"label_usuario"%></td>
+			<td style="width: 217px;" colspan="3" nowrap="norwap"><%= f.date_select :birthdate, :start_year => 1900, :end_year => Time.now.year %></td>
 
                         <td class="form_usuario_label" colspan="1" style="padding-right: 3px; text-align: center;"><%= f.label :sex, 'Sexo:' %></td>
-                        <td colspan="1" style="padding-left: 9px;"><%= f.text_field :sex, :size=>2 %></td>
+                        <td colspan="1" style="padding-left: 9px;"><%= f.select :state, ([["M", "M"], ["F", "F"]]),:include_blank => true ,:size=>2 %></td>
 		</tr>
                 <tr class="form_usuario_tr">
 			<td class="form_usuario_label" colspan="1"><%= f.label :cpf, 'CPF:' %></td>
@@ -76,47 +76,42 @@
 			<td colspan="2"><%= f.text_field :telephone, :size=> 15 %></td>
 		</tr>
                  <tr class="form_usuario_tr">
-                        <td class="form_usuario_label"> <%= f.label :country, 'País' %></td>
+                        <td class="form_usuario_label"> <%= f.label :country, 'País:' %></td>
 			<td colspan="2"><%= f.text_field :country, :size=>10 %></td>
-			<td class="form_usuario_label"> <%= f.label :cell_phone, 'Celular' %></td>
+			<td class="form_usuario_label"> <%= f.label :cell_phone, 'Celular:' %></td>
 			<td colspan="2"><%= f.text_field :cell_phone, :size=>15 %></td>
 		</tr>
                 <tr class="form_usuario_tr">
-                  	<td class="form_usuario_label"> <%= f.label :city, 'Município'%></td>
+                  	<td class="form_usuario_label"> <%= f.label :city, 'Município:'%></td>
 			<td colspan="2"><%= f.text_field :city, :size=>10  %></td>
-                        <td class="form_usuario_label" colspan="1"><%= f.label :state, 'Estado' %></td>
-                        <td colspan="2"> <%= f.text_field :state, :size=> 2 %></td>
+                        <td class="form_usuario_label" colspan="1"><%= f.label :state, 'Estado:' %></td>
+                        <td colspan="2"> <%= f.select :state, ([["AC", "AC"], ["AL", "AL"], ["AP", "AP"],
+["AM", "AM"], ["BA", "BA"], ["CE", "CE"], ["DF", "DF"], ["ES", "ES"],
+["GO", "GO"], ["MA", "MA"], ["MT", "MT"], ["MS", "MS"], ["MG", "MG"],
+["PA", "PA"], ["PB", "PB"], ["PR", "PR"], ["PE", "PE"], ["PI", "PI"],
+["RJ", "RJ"], ["RN", "RN"], ["RS", "RS"], ["RO", "RO"], ["RR", "RR"],
+["SC", "SC"], ["SP", "SP"], ["SE", "SE"], ["TO", "TO"]]), :include_blank => true  %></td>
 		</tr>
                 <tr class="form_usuario_tr">
-			<td class="form_usuario_label"> </td>
-			<td colspan="5"></td>
+			<td class="form_usuario_label" colspan="4" style="text-align: left;"><%= f.label "radio_special", 'Portador de necessidades especiais:' %></td>
+			<td colspan="1" nowrap="norwap"> <%= radio_button_tag("radio_special", "sim") %>
+                                          <%= label_tag("radio_special","sim", :class=>"form_usuario_label") %>
+                        </td>
+                        <td colspan="1" nowrap="norwap">
+                                        <%= radio_button_tag("radio_special", "nao") %>
+                                        <%= label_tag("radio_special", "nao", :class=>"form_usuario_label") %>
+                        </td>
 		</tr>
                 <tr class="form_usuario_tr">
-			<td class="form_usuario_label"></td>
-			<td colspan="5"></td>
-		</tr>
-                <tr class="form_usuario_tr">
-			<td class="form_usuario_label"></td>
-			<td colspan="5"></td>
-		</tr>
-               
+			<td class="form_usuario_label"><%= f.label :special_needs, "Qual:"%> </td>
+			<td colspan="5"><%= f.text_field :special_needs,:size=>field_size %></td>
+		</tr>          
 	  </table>	
-	  <div class="field">
-	    <%#= f.label :id %><br/>
-	    <%#= f.text_field :id %>
-	  </div>
-
-
-	  <div class="field">
-	    <%= f.label :special_needs, 'Necessidades Especiais' %><br />
-	    <%= f.text_field :special_needs %>
-	  </div>
-
 </div>
 
-<div class="actions">
-    <%= f.submit 'Salvar' %>
-    <%= link_to 'Voltar', new_user_session_path, :class => "login_form_link_return" %>
-  </div>
+<div id="actions">
+   <div id="confirmar" style="float: right;"><%= image_submit_tag "balao_confirmar.png", :name => "submit" %></div>
+  <div id="voltar" style="" ><%= link_to 'Voltar', new_user_session_path %></div>
+</div>
 <% end %>
 
