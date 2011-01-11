@@ -2,16 +2,16 @@
 	<h2 class="form_usuario_h2">Novo Cadastro</h2>
 	
 	<%= form_for(@user) do |f| %>
-	  <% if @user.errors.any? %>
-	    <div id="error_explanation">
-	      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-	      <ul>
-	      <% @user.errors.full_messages.each do |msg| %>
-		<li><%= msg %></li>
-	      <% end %>
-	      </ul>
-	    </div>
-	  <% end %>
+            <% if @user.errors.any? %>
+                <div id="error_explanation">
+                    <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+                    <ul>
+                        <% @user.errors.full_messages.each do |msg| %>
+                              <li><%= msg %></li>
+                        <% end %>
+                    </ul>
+                </div>
+           <% end %>
 	<% field_size = 44 %>
         <table class="form_usuario_table">
 		<tr class="form_usuario_tr">
@@ -51,7 +51,7 @@
 			<td style="width: 217px;" colspan="3" nowrap="norwap"><%= f.date_select :birthdate, :start_year => 1900, :end_year => Time.now.year %></td>
 
                         <td class="form_usuario_label" colspan="1" style="padding-right: 3px; text-align: center;"><%= f.label :sex, 'Sexo:' %></td>
-                        <td colspan="1" style="padding-left: 9px;"><%= f.select :state, ([["M", "M"], ["F", "F"]]),:include_blank => true ,:size=>2 %></td>
+                        <td colspan="1" style="padding-left: 9px;"><%= f.select :sex, ([["M", "M"], ["F", "F"]]),:include_blank => true ,:size=>2 %></td>
 		</tr>
                 <tr class="form_usuario_tr">
 			<td class="form_usuario_label" colspan="1"><%= f.label :cpf, 'CPF:' %></td>
@@ -65,25 +65,19 @@
                         
 			<td class="form_usuario_label"><%= f.label :address_number, 'Número:' %></td>
 			<td colspan="2"><%= f.text_field :address_number ,:size=>10%></td>
-                        <td class="form_usuario_label"><%= f.label :zipcode, 'CEP:' %></td>
-			<td colspan="2"> <%= f.text_field :zipcode, :size=>15 %></td>
-                        
+                        <td class="form_usuario_label"><%= f.label :address_complement, 'Complemento:' %></td>
+			<td colspan="2"><%= f.text_field :address_complement, :size=>16 %></td>
+   
 		</tr>
                 <tr class="form_usuario_tr">
-			<td class="form_usuario_label"><%= f.label :address_complement, 'Complemento:' %></td>
-			<td colspan="2"><%= f.text_field :address_complement, :size=>10 %></td>
-                        <td class="form_usuario_label"> <%= f.label :telephone, 'Telefone:' %></td>
-			<td colspan="2"><%= f.text_field :telephone, :size=> 15 %></td>
+			<td class="form_usuario_label"><%= f.label :address_neighborhood, 'Bairro:' %></td>
+			<td colspan="2"><%= f.text_field :address_neighborhood, :size=>10 %></td>
+                        <td class="form_usuario_label"><%= f.label :zipcode, 'CEP:' %></td>
+                        <td colspan="2"> <%= f.text_field :zipcode, :size=>16 %></td>
 		</tr>
                  <tr class="form_usuario_tr">
                         <td class="form_usuario_label"> <%= f.label :country, 'País:' %></td>
 			<td colspan="2"><%= f.text_field :country, :size=>10 %></td>
-			<td class="form_usuario_label"> <%= f.label :cell_phone, 'Celular:' %></td>
-			<td colspan="2"><%= f.text_field :cell_phone, :size=>15 %></td>
-		</tr>
-                <tr class="form_usuario_tr">
-                  	<td class="form_usuario_label"> <%= f.label :city, 'Município:'%></td>
-			<td colspan="2"><%= f.text_field :city, :size=>10  %></td>
                         <td class="form_usuario_label" colspan="1"><%= f.label :state, 'Estado:' %></td>
                         <td colspan="2"> <%= f.select :state, ([["AC", "AC"], ["AL", "AL"], ["AP", "AP"],
 ["AM", "AM"], ["BA", "BA"], ["CE", "CE"], ["DF", "DF"], ["ES", "ES"],
@@ -91,7 +85,19 @@
 ["PA", "PA"], ["PB", "PB"], ["PR", "PR"], ["PE", "PE"], ["PI", "PI"],
 ["RJ", "RJ"], ["RN", "RN"], ["RS", "RS"], ["RO", "RO"], ["RR", "RR"],
 ["SC", "SC"], ["SP", "SP"], ["SE", "SE"], ["TO", "TO"]]), :include_blank => true  %></td>
+                        	
 		</tr>
+                <tr class="form_usuario_tr">
+                        <td class="form_usuario_label"> <%= f.label :city, 'Município:'%></td>
+			<td colspan="5"><%= f.text_field :city,  :size=>field_size  %></td>
+                        
+		</tr>
+                <tr class="form_usuario_tr">
+                        <td class="form_usuario_label"> <%= f.label :telephone, 'Telefone:' %></td>
+			<td colspan="2"><%= f.text_field :telephone, :size=> 10 %></td>
+                        <td class="form_usuario_label"> <%= f.label :cell_phone, 'Celular:' %></td>
+			<td colspan="2"><%= f.text_field :cell_phone, :size=>16 %></td>
+                </tr>
                 <tr class="form_usuario_tr">
 			<td class="form_usuario_label" colspan="4" style="text-align: left;"><%= f.label "radio_special", 'Portador de necessidades especiais:' %></td>
 			<td colspan="1" nowrap="norwap"> <%= radio_button_tag("radio_special", "sim") %>
@@ -110,8 +116,11 @@
 </div>
 
 <div id="actions">
-   <div id="confirmar" style="float: right;"><%= image_submit_tag "balao_confirmar.png", :name => "submit" %></div>
-  <div id="voltar" style="" ><%= link_to 'Voltar', new_user_session_path %></div>
+   <div id="confirmar" style="float: right;"><%= image_submit_tag "balao_confirmar.png", :name => "confirmar", :alt=>"confirmar"%></div>
+  <div id="voltar" style="" ><%= image_tag ("balao_limpar.png")  %> </div>
 </div>
+
+
+
 <% end %>
 

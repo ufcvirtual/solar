@@ -17,3 +17,14 @@ end
 Dado /^que eu selecionei a "([^"]*)" com "([^"]*)"$/ do |label, value|
   select_date(value, :from => label) 
 end
+
+Dado /^que eu selecionei "([^"]*)" com "([^"]*)"$/ do |field, value|
+   select(value, :from => field)
+end
+
+Dado /^que eu escolhi "([^"]*)" com "([^"]*)"$/ do |field, value|
+   select(value, :from => field)
+end
+Quando /^eu clicar no link da imagem "([^"]*)"$/ do |img_alt|
+   find(:xpath, "//input[@name = '#{img_alt}']").click()
+end
