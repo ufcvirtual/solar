@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101215195748) do
+ActiveRecord::Schema.define(:version => 20110112174513) do
 
   create_table "logs", :force => true do |t|
     t.integer  "log_type"
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(:version => 20101215195748) do
     t.string   "institution",          :limit => 120
     t.boolean  "sex"
     t.integer  "cpf",                  :limit => 8
+    t.string   "alternate_email"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

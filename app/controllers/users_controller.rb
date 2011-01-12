@@ -48,12 +48,20 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
 
+    #garante que a senha não fique como "" o que é diferente do nulo e seria igual a senha
+    params[:user]["password"] = nil if params[:user]["password"] == ""
+    params[:user]["password_confirmation"] = nil if params[:user]["password_confirmation"] == ""
+
+    if params["radio_special"] == "false"
+      @user.special_needs = nil
+    end
+
     respond_to do |format|
       if @user.save
         format.html { redirect_to(@user, :notice => 'Usuario criado com sucesso!') }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
-	#flash[:erro] = 'Erro criando usu�rio!'          # msg do tipo erro
+	#flash[:erro] = 'Erro criando usu�rio!'          # msg do tipo erro
         format.html { render :action => "new" }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end

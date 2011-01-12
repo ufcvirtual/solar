@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
     :default_url => "/images/no_image.png"
 
     # paperclip uses: file_name, content_type, file_size e updated_at
-
+    validates_confirmation_of :password, :message=> "deve ser igual a confirmacao de senha"
     #path and URL define that images will be in "public/images/"
     #  and will be created a folder called "users" with object id (eg users/1) 
     #default_url define default image (if image is dropped or not exists)
