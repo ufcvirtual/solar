@@ -1,9 +1,5 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Id:</b>
-  <%= @user.id %>
-</p>
 
 <p>
   <b>Login:</b>
@@ -11,17 +7,18 @@
 </p>
 
 <p>
-  <b>Email:</b>
+  <b>E-mail:</b>
   <%= @user.email %>
 </p>
 
 <p>
-  <b>Password:</b>
-  <%= @user.password %>
+  <b>E-mail Alternativo:</b>
+  <%= @user.alternate_email %>
 </p>
 
+
 <p>
-  <b>Name:</b>
+  <b>Nome:</b>
   <%= @user.name %>
 </p>
 
@@ -31,85 +28,77 @@
 </p>
 
 <p>
-  <b>Birthdate:</b>
-  <%= @user.birthdate %>
-</p>
-
-<p>
-  <b>Enrollment code:</b>
-  <%= @user.enrollment_code %>
-</p>
-
-<p>
-  <b>Cpf:</b>
+  <b>Data de Nascimento:</b>
   <%= @user.cpf %>
 </p>
 
 <p>
-  <b>Sex:</b>
+  <b>Sexo:</b>
   <%= @user.sex %>
 </p>
 
-<p>
-  <b>Special needs:</b>
-  <%= @user.special_needs %>
-</p>
+<% unless @user.special_needs.nil? %>
+    <p>
+      <b>Necessidades Especiais:</b>
+      <%= @user.special_needs %>
+    </p>
+<% end %>
 
 <p>
-  <b>Address:</b>
+  <b>Endereço:</b>
   <%= @user.address %>
 </p>
 
 <p>
-  <b>Address number:</b>
+  <b>Número:</b>
   <%= @user.address_number %>
 </p>
 
 <p>
-  <b>Address complement:</b>
+  <b>Complemento:</b>
   <%= @user.address_complement %>
 </p>
 
 <p>
-  <b>Address neighborhood:</b>
+  <b>Bairro:</b>
   <%= @user.address_neighborhood %>
 </p>
 
 <p>
-  <b>Zipcode:</b>
+  <b>CEP:</b>
   <%= @user.zipcode %>
 </p>
 
 <p>
-  <b>Country:</b>
+  <b>País:</b>
   <%= @user.country %>
 </p>
 
 <p>
-  <b>State:</b>
+  <b>Estado:</b>
   <%= @user.state %>
 </p>
 
 <p>
-  <b>City:</b>
+  <b>Municipio:</b>
   <%= @user.city %>
 </p>
 
 <p>
-  <b>Telephone:</b>
+  <b>Telefone:</b>
   <%= @user.telephone %>
 </p>
 
 <p>
-  <b>Cell phone:</b>
+  <b>Celular</b>
   <%= @user.cell_phone %>
 </p>
 
 <p>
-  <b>Institution:</b>
+  <b>Instituição:</b>
   <%= @user.institution %>
 </p>
 
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<%= link_to 'Editar', edit_user_path(@user) %> |
+<%= link_to 'Voltar', users_path %>

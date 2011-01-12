@@ -20,11 +20,11 @@
 		</tr>
 		<tr class="form_usuario_tr">
 			<td class="form_usuario_label" colspan="1"><%= f.label :password, 'Senha:' %></td>
-			<td colspan="5"><%= f.text_field :password , :size=>field_size%></td>
+			<td colspan="5"><%= f.password_field :password , :size=>field_size%></td>
 		</tr>
 		<tr class="form_usuario_tr" >
 			<td class="form_usuario_label" colspan="1">Confirmar senha:</td>
-                        <td colspan="5"><input type="text" size="<%=field_size%>" id="confirmar_senha"/></td>
+                        <td colspan="5"><%= f.password_field  :password_confirmation , :size=>field_size%></td>
 		</tr>
 		<tr class="form_usuario_tr">
 			<td class="form_usuario_label" colspan="1"><%= f.label :nick, 'Nick:' %></td>
@@ -35,8 +35,8 @@
 			<td colspan="5"><%= f.text_field :email, :size=>field_size %></td>
 		</tr>
 		<tr class="form_usuario_tr">
-			<td class="form_usuario_label" colspan="1">E-mail alternativo:</td>
-			<td colspan="5"><input type="text" size="<%=field_size%>" id="email_alternativo"/></td>
+			<td class="form_usuario_label" colspan="1"><%= f.label :alternate_email, "E-mail alternativo:" ,:class=>"label_usuario"%></td>
+			<td colspan="5"><%= f.text_field :alternate_email, :size=>field_size %></td>
 		</tr>
                 <tr class="form_usuario_tr">
 			<td class="form_usuario_label" colspan="1"><%= f.label :institution, 'Instituição:' %></td>
@@ -100,15 +100,15 @@
                 </tr>
                 <tr class="form_usuario_tr">
 			<td class="form_usuario_label" colspan="4" style="text-align: left;"><%= f.label "radio_special", 'Portador de necessidades especiais:' %></td>
-			<td colspan="1" nowrap="norwap"> <%= radio_button_tag("radio_special", "sim") %>
+                        <td colspan="1" nowrap="norwap"> <%= radio_button_tag "radio_special" , "true", true, {:id=>"sim", :onclick=>"show_special_needs('special_needs_line')"} %>
                                           <%= label_tag("radio_special","sim", :class=>"form_usuario_label") %>
                         </td>
                         <td colspan="1" nowrap="norwap">
-                                        <%= radio_button_tag("radio_special", "nao") %>
+                                        <%= radio_button_tag "radio_special" , "false", true, {:id=>"nao", :onclick=>"hide_special_needs('special_needs_line')"} %>
                                         <%= label_tag("radio_special", "nao", :class=>"form_usuario_label") %>
                         </td>
 		</tr>
-                <tr class="form_usuario_tr">
+                <tr class="form_usuario_tr" id="special_needs_line" style="display:none;">
 			<td class="form_usuario_label"><%= f.label :special_needs, "Qual:"%> </td>
 			<td colspan="5"><%= f.text_field :special_needs,:size=>field_size %></td>
 		</tr>          
@@ -116,7 +116,7 @@
 </div>
 
 <div id="actions">
-   <div id="confirmar" style="float: right;"><%= image_submit_tag "balao_confirmar.png", :name => "confirmar", :alt=>"confirmar"%></div>
+   <div id="confirmar" style="float: right;"><%= image_submit_tag "balao_confirmar.png", :id=> "botao_confirmar", :name => "botao_confirmar", :alt=>"botao_confirmar"%></div>
   <div id="voltar" style="" ><%= image_tag ("balao_limpar.png")  %> </div>
 </div>
 

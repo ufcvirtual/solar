@@ -25,6 +25,8 @@ end
 Dado /^que eu escolhi "([^"]*)" com "([^"]*)"$/ do |field, value|
    select(value, :from => field)
 end
+
 Quando /^eu clicar no link da imagem "([^"]*)"$/ do |img_alt|
-   find(:xpath, "//input[@name = '#{img_alt}']").click()
+   #find(:xpath, "//input[@name = '#{img_alt}']").click()
+   find(img_alt).click
 end

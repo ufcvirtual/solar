@@ -53,6 +53,6 @@ Cenário: Cadastrar novo usuário
        E que eu preenchi "E-mail" com "usuario@solar.virtual.ufc.br"
        E que eu preenchi "Login" com "usuario"
        E que eu preenchi "Senha" com "123456"
-    Quando eu clicar no link da imagem "confirmar"
+    Quando eu clicar no link da imagem "botao_confirmar"
     Então eu deverei ver "Usuario criado com sucesso!"
 
