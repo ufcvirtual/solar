@@ -1,5 +1,5 @@
 <!-- Portlets -------------------------->
-<div id="mysolar_content">
+<div id="mysolar_content" style="white-space: nowrap;">
   <div class="mysolar_portlets_coluna">
 
     <div class="mysolar_portlets_portlet">
@@ -11,7 +11,6 @@
       <div class="mysolar_portlets_header">Aulas</div>
       <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
     </div>
-
   </div>
 
   <div class="mysolar_portlets_coluna">
@@ -39,28 +38,27 @@
 </div>
 
 <script>
-  $(function() {
-    $( ".mysolar_portlets_coluna" ).sortable({
-      connectWith: ".mysolar_portlets_coluna"
-    });
-    $( ".mysolar_portlets_coluna" ).disableSelection();
-  });
+	//Configurando Portlets
+	$(function() {
+		$( ".mysolar_portlets_coluna" ).sortable({
+			connectWith: ".mysolar_portlets_coluna"
+		});
+		$( ".mysolar_portlets_coluna" ).disableSelection();
+	});
+
+	//Configurando Menu
+	$(function() {
+		$( "#mysolar_menu_accordion" ).accordion({
+			autoHeight: false,
+			navigation: true,
+			collapsible: true
+		});
+	});
 </script>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+<!-- Barra Lateral -------------------------->
 <div id="mysolar_sidebar">
 <%#= render :partial => "sidebar" %>
 
@@ -76,35 +74,72 @@
 			Personalizar <br />
     </div>
   </div>
+  <div id="mysolar_search">
+  <input class="search_keyword" type="text"/>
+   <br/>
+	<span id="mysolar_search_label">
+   	Busca
+	</span>
+	<br/>
+       <hr width="149" style="border:none;height:1px;background-color: #cfdde1"/>
+  </div>
+
+
+	<!--------- Menu retrátil --------->
+	<div id="mysolar_menu_accordion" style="z-index:10">
+		<h3 class="mysolar_menu_title"><a href="#">Menu 1</a></h3>
+		<div class="mysolar_menu_list">
+		item 1<br/>
+		item 2
+		</div>
+		<h3 class="mysolar_menu_title"><a href="#">Menu 2</a></h3>
+		<div class="mysolar_menu_list">
+		item 3<br/>
+		item 4<br/>
+		item 5
+		</div>
+		<h3 class="mysolar_menu_title"><a href="#">Menu 3</a></h3>
+		<div class="mysolar_menu_list">
+		item 6<br/>
+		item 7<br/>
+		item 8
+		</div>
+		<h3 class="mysolar_menu_title"><a href="#">Menu 4</a></h3>
+		<div class="mysolar_menu_list">
+		item 9<br/>
+		item 10
+		</div>
+	</div>
+
 </div>
 
+
+<!-- Barra Topo -------------------------->
 <div id="mysolar_topbar">
-<%#= render :partial => "topbar" %>
-
-  <div id="mysolar_logo">
-    <%= image_tag 'solar.png', :alt => "Logo do Solar" %><br/>
-  </div>
-  <div id="mysolar_top_options">
-		ajuda - 
-
-		<%= link_to_if(current_user, "Sair", logout_path) %>
-  </div>
+	<%#= render :partial => "topbar" %>
+	<div id="mysolar_logo">
+		<%= image_tag 'superior_logo.png', :alt => "Logo do Solar" %><br/>
+	</div>
+        <div id="mysolar_tab">
+           Home
+        </div>
+	<span id="mysolar_top_options" >
+		| &nbsp;<%= image_tag 'superior_suporte.png', :alt => "Ajuda" %>
+		Suporte&nbsp;&nbsp;&nbsp;                         
+		| &nbsp;<%= image_tag 'superior_sair.png', :alt => "Sair" %>&nbsp;
+		<%= link_to_if(current_user, "Sair", logout_path, :class => "mysolar_top_link") %>
+	</span>
 </div>
-
-
-
-
-
 
 
 <!--  Chat ------------------------>
 <div id="mysolar_chat_area">
   <div id="mysolar_chat_contatos">
-    <div id="mysolar_chat_barra">
+    <div id="mysolar_chat_barra" onclick="toggle_chat('mysolar_chat_list')">
       <%= image_tag("chat_online.png")%>Chat
       <span style="float:right;">
-        <a id="mysolar_chat_min_button" onclick="toggle_chat('mysolar_chat_list')">-</a>
-        <a id="mysolar_chat_max_button" style="display:none;" onclick="toggle_chat('mysolar_chat_list')">+</a>
+        <span id="mysolar_chat_min_button">-</span>
+        <span id="mysolar_chat_max_button" style="display:none;">+</span>
       </span>
     </div>
     <div id="mysolar_chat_list">
