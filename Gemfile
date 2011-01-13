@@ -6,7 +6,11 @@ gem 'rails', '3.0.3'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
+gem 'rack'
+gem 'rake'
 
+# Gem usada para personalizar data,moeda etc para padroes brasileiros
+gem 'brazilian-rails'
 gem 'capybara'
 gem 'cucumber'
 gem 'cucumber-rails'
