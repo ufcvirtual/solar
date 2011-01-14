@@ -1,4 +1,17 @@
 class User < ActiveRecord::Base
+
+  def cpf=(value)
+    self[:cpf] = value.gsub(/\D/, '')
+  end
+  #campos obrigatórios#
+  validates_presence_of :login,:email,:password,:name,:birthdate,:cpf,:sex,:address,:address_number,:address_neighborhood,:zipcode,:country,:state,:city,:institution, :message => "deve ser preenchido!"
+
+  #validaçao do CPF
+  usar_como_cpf :cpf
+
+	#verificação de unicidade
+  validates_uniqueness_of :cpf,:login,:email,:message=>"ja cadastrado"
+
 	acts_as_authentic do |c|
 		c.require_password_confirmation = false
 		c.validates_length_of_password_field_options = {:minimum => 3}

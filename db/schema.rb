@@ -13,12 +13,12 @@
 ActiveRecord::Schema.define(:version => 20110112174513) do
 
   create_table "logs", :force => true do |t|
-    t.integer  "log_type"
+    t.string   "log_type"
     t.string   "message"
-    t.integer  "userId"
-    t.integer  "profileId"
-    t.integer  "courseId"
-    t.integer  "classId"
+    t.string   "user"
+    t.string   "profile"
+    t.string   "course"
+    t.string   "classroom"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -60,7 +60,7 @@ ActiveRecord::Schema.define(:version => 20110112174513) do
     t.string   "cell_phone",           :limit => 20
     t.string   "institution",          :limit => 120
     t.boolean  "sex"
-    t.integer  "cpf",                  :limit => 8
+    t.string   "cpf",                  :limit => 14
     t.string   "alternate_email"
   end
 

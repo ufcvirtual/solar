@@ -40,6 +40,7 @@ a.menor{
 
 input{
     color           : #222;
+    background-color: azure;
 }
 
 /********meu solar**********/
@@ -95,6 +96,19 @@ input{
 	display:inline-block;
 	z-index: 10;
 	border-top:4px solid #003e7a;
+       cursor: pointer;
+}
+
+#meusdados_tab_topo{
+        color: #222;
+        text-align:center;
+        background-color: #fff;
+        background-position:right;
+        display:inline-block;
+        height: 36px;
+        width: 118px;
+        cursor: pointer;
+
 }
 
 #mysolar_top_options {
@@ -179,6 +193,42 @@ a.mysolar_top_link{
 .mysolar_menu_list{
 	padding-left: 25px;
 }
+
+
+/*********Abas dos Meus Dados**************/
+
+#meusdados_tab{
+        height: 50px;
+        width: 300px;
+        background-color: gray;
+}
+#meusdados_pessoais{
+        color: blue;
+        width: 70px;
+        cursor: pointer;
+        background-color: teal;
+}
+#meusdados_profissionais{
+        color: blue;
+        width: 100px;
+        margin-left: 80px;
+        margin-top: -17px;
+        cursor: pointer;
+}
+#meusdados_cadastrais{
+        color: blue;
+        width: 100px;
+        margin-left: 183px;
+        margin-top: -18px;
+        cursor: pointer;
+
+}
+#mysolar_panel_dados{
+    display: none;
+    cursor: pointer;
+}
+
+
 
 /********Chat do meuSolar*****************/
 #mysolar_chat_area{
@@ -273,4 +323,19 @@ div.widget_head {
 }
 .ui-sortable-placeholder * {
     visibility: hidden;
+}
+
+/******botões de confirmação de cadastro ********/
+#confirmacao{
+    height: 20px;
+    width: 100px;
+    margin-left: 350px;
+    margin-top: -6px;    
+}
+#limpar{
+     height: 20px;
+    width: 100px;
+    margin-left: 455px;
+    margin-top: -20px;
+    
 }

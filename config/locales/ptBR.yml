@@ -141,6 +141,24 @@ ptBR:
     
   # ActiveRecord
   activerecord:
+    models:
+      user: "Usuario"
+    attributes:
+      user:
+        password: "Senha"
+        name: "Nome"
+        birthdate: "Data de nascimento"
+        sex: "Sexo"
+        address: "Endereço"
+        address_number: "Número"
+        address_neighborhood: "Bairro"
+        zipcode: "CEP"
+        cpf: "CPF"
+        country: "País"
+        state: "Estado"
+        city: "Cidade"
+        institution: "Instituição"
+
     errors:
       template:
         header:

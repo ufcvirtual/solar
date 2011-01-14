@@ -1,40 +1,119 @@
 <!-- Portlets -------------------------->
 <div id="mysolar_content" style="white-space: nowrap;">
-  <div class="mysolar_portlets_coluna">
+  <div id="mysolar_panel_home">
+        <div class="mysolar_portlets_coluna">
 
-    <div class="mysolar_portlets_portlet">
-      <div class="mysolar_portlets_header">Novidades</div>
-      <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-    </div>
+          <div class="mysolar_portlets_portlet">
+            <div class="mysolar_portlets_header">Novidades</div>
+            <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+          </div>
 
-    <div class="mysolar_portlets_portlet">
-      <div class="mysolar_portlets_header">Aulas</div>
-      <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-    </div>
+          <div class="mysolar_portlets_portlet">
+            <div class="mysolar_portlets_header">Aulas</div>
+            <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+          </div>
+        </div>
+
+        <div class="mysolar_portlets_coluna">
+
+          <div class="mysolar_portlets_portlet">
+            <div class="mysolar_portlets_header">Atividades Recentes</div>
+            <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+          </div>
+
+        </div>
+
+        <div class="mysolar_portlets_coluna">
+
+          <div class="mysolar_portlets_portlet">
+            <div class="mysolar_portlets_header">Agenda</div>
+            <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+          </div>
+
+          <div class="mysolar_portlets_portlet">
+            <div class="mysolar_portlets_header">Fórum</div>
+            <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+          </div>
+
+        </div>
   </div>
 
-  <div class="mysolar_portlets_coluna">
+  <!--conteudo dos meus dados !-->
 
-    <div class="mysolar_portlets_portlet">
-      <div class="mysolar_portlets_header">Atividades Recentes</div>
-      <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+  <div id="mysolar_panel_dados">
+    <h3>Meus dados</h3>
+
+    <div class="meusdados_tab">
+        <div id="meusdados_pessoais">
+           Pessoais
+        </div>
+        <div id="meusdados_profissionais">
+            Profissionais
+        </div>
+        <div id="meusdados_cadastrais">
+            Cadastrais
+        </div>
     </div>
 
-  </div>
 
-  <div class="mysolar_portlets_coluna">
+ <div id="meusdados_tab_pessoais">
 
-    <div class="mysolar_portlets_portlet">
-      <div class="mysolar_portlets_header">Agenda</div>
-      <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-    </div>
+    <p>
+     <span><%= image_tag "rails.png"%></span>
+      <b>Name:</b>
+      <%= @user.name %>
+    </p>
+    <p>
+      <span><%= image_tag "rails.png"%></span>
+      <b>Nick:</b>
+      <%= @user.nick %>
+    </p>
 
-    <div class="mysolar_portlets_portlet">
-      <div class="mysolar_portlets_header">Fórum</div>
-      <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-    </div>
+   <p>
+      <span><%= image_tag "rails.png"%></span>
+      <b>Login:</b>
+      <%= @user.login %>
+   </p>
 
-  </div>
+    <p>
+      <b>Email:</b>
+      <%= @user.email %>
+    </p>
+
+    <p>
+      <b>Password:</b>
+      <%= @user.password %>
+    </p>
+
+
+    <p>
+      <b>Birthdate:</b>
+      <%= @user.birthdate %>
+    </p>
+
+    <p>
+      <b>Enrollment code:</b>
+      <%= @user.enrollment_code %>
+    </p>
+
+    <p>
+      <b>Cpf:</b>
+      <%= @user.cpf %>
+    </p>
+
+    <p>
+      <b>Sex:</b>
+      <%= @user.sex %>
+    </p>
+
+    <%= link_to 'Edit', edit_user_path(@user) %> |
+    <%= link_to 'Back', users_path %>
+</div>
+
+
+</div>
+<!--FIM do conteudo dos meus dados !-->
+
 </div>
 
 <script>
@@ -120,12 +199,16 @@
 	<div id="mysolar_logo">
 		<%= image_tag 'superior_logo.png', :alt => "Logo do Solar" %><br/>
 	</div>
-        <div id="mysolar_tab">
+        <div id="mysolar_tab" onclick="showPanel('mysolar_panel_home')">
            Home
         </div>
+        <div id="meusdados_tab_topo" onclick="showPanel('mysolar_panel_dados')">
+            Meus Dados
+        </div>
+
 	<span id="mysolar_top_options" >
 		| &nbsp;<%= image_tag 'superior_suporte.png', :alt => "Ajuda" %>
-		Suporte&nbsp;&nbsp;&nbsp;                         
+		Suporte&nbsp;&nbsp;&nbsp;
 		| &nbsp;<%= image_tag 'superior_sair.png', :alt => "Sair" %>&nbsp;
 		<%= link_to_if(current_user, "Sair", logout_path, :class => "mysolar_top_link") %>
 	</span>

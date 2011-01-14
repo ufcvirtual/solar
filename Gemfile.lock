@@ -45,6 +45,36 @@ GEM
       activesupport (= 3.0.3)
     activesupport (3.0.3)
     arel (2.0.4)
+    brI18n (3.0.2)
+      actionpack (>= 3.0.0)
+      activerecord (>= 3.0.0)
+      activesupport (>= 3.0.0)
+    brazilian-rails (3.0.2)
+      brI18n (= 3.0.2)
+      brcep (= 3.0.2)
+      brcpfcnpj (= 3.0.2)
+      brdata (= 3.0.2)
+      brdinheiro (= 3.0.2)
+      brhelper (= 3.0.2)
+      brnumeros (= 3.0.2)
+      brstring (= 3.0.2)
+    brcep (3.0.2)
+    brcpfcnpj (3.0.2)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
+    brdata (3.0.2)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
+    brdinheiro (3.0.2)
+      actionpack (>= 3.0.0)
+      activerecord (>= 3.0.0)
+      brnumeros (= 3.0.2)
+    brhelper (3.0.2)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
+    brnumeros (3.0.2)
+    brstring (3.0.2)
+      activesupport (>= 3.0.0)
     builder (2.1.2)
     capybara (0.4.0)
       celerity (>= 0.7.9)
@@ -152,6 +182,7 @@ PLATFORMS
 
 DEPENDENCIES
   authlogic!
+  brazilian-rails
   capybara
   chronic
   cucumber
