@@ -192,8 +192,10 @@ DEPENDENCIES
   launchy
   paperclip!
   pg
+  rack
   rails (= 3.0.3)
   rails3-generators
+  rake
   rspec
   rspec-rails
   spork
