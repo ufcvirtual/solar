@@ -53,7 +53,7 @@
 			<td style="width: 217px;" colspan="3" nowrap="norwap"><%= f.date_select :birthdate, :start_year => 1900, :end_year => Time.now.year %></td>
 
                         <td class="form_usuario_label" colspan="1" style="padding-right: 3px; text-align: center;"><%= f.label :sex, 'Sexo:' %></td>
-                        <td colspan="1" style="padding-left: 9px;"><%= f.select :sex, ([["M", "M"], ["F", "F"]]),:include_blank => true %></td>
+                        <td colspan="1" style="padding-left: 9px;"><%= f.select :sex, ([["M", true], ["F", false]]) ,:size=>2 %></td>
 		</tr>
                 <tr class="form_usuario_tr">
 			<td class="form_usuario_label" colspan="1"><%= f.label :cpf, 'CPF:' %></td>
@@ -118,7 +118,7 @@
 </div>
 
 <div id="actions">
-<a href="#" name="confirmar" id="confirmar" onclick="javascriptocument.getElementById('new_user').submit()" style="border: none; float: right;">
+<a href="#" name="confirmar" id="confirmar" onclick="javascript:document.getElementById('new_user').submit()" style="border: none; float: right;">
 <img src="/images/balao_confirmar.png" alt="imagem confirmar"/>
 </a>
 </div>

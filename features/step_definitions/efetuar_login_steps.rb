@@ -43,7 +43,7 @@ Entao /^eu deverei ver "([^"]*)"$/ do |text|
 end
 
 Dado /^que estou logado no sistema com usuario user$/ do
-  User.create(:login => 'user', :email => 'user@tester.com', :password => 'user123')
+  #User.create(:login => 'user', :email => 'user@tester.com', :password => 'user123', :name => 'User')
   visit path_to("Login")
   fill_in("login_form_name", :with => "user")
   fill_in("Senha", :with => "user123")
