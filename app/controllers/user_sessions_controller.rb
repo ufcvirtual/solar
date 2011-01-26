@@ -3,7 +3,7 @@ class UserSessionsController < ApplicationController
   before_filter :require_user, :only => :destroy
 
   def index
-	if ! @user_session
+	if !@user_session
 		@user_session = UserSession.new
 	end
 	render :action => :new
@@ -32,4 +32,3 @@ class UserSessionsController < ApplicationController
     redirect_back_or_default new_user_session_url
   end
 end
-
