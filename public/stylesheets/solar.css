@@ -418,3 +418,14 @@ div.widget_head {
     margin-top: -20px;
     
 }
+
+/* Layout do botões com seta */
+.solar_button {
+	margin-top:0;
+	font-weight:bold;
+	padding:8px;
+}
+.solar_button_arrow {
+	height:10px;
+	background:url('../images/solar_button_arrow.png') no-repeat right bottom;
+}
