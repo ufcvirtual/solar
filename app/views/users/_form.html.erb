@@ -115,13 +115,12 @@
 			<td colspan="5"><%= f.text_field :special_needs,:size=>field_size %></td>
 		</tr>          
 	  </table>	
+		<div id="actions">
+			<%= f.submit "Confirmar", :id=>"confirmar", :alt=>"Confirmar" %>
+		</div>
 </div>
 
-<div id="actions">
-<a href="#" name="confirmar" id="confirmar" onclick="javascript:document.getElementById('new_user').submit()" style="border: none; float: right;">
-<img src="/images/balao_confirmar.png" alt="imagem confirmar"/>
-</a>
-</div>
+
 
 <% end %>
 
