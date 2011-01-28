@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
     self[:cpf] = value.gsub(/\D/, '')
   end
   #campos obrigatórios#
-  validates_presence_of :login,:email,:password,:name,:birthdate,:cpf,:sex,:address,:address_number,:address_neighborhood,:zipcode,:country,:state,:city,:institution, :message => "deve ser preenchido!"
+  validates_presence_of :login,:email,:password,:name,:birthdate,:cpf,:address,:address_number,:address_neighborhood,:zipcode,:country,:state,:city,:institution, :message => "deve ser preenchido!"
 
   #validaçao do CPF
   usar_como_cpf :cpf

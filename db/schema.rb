@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110112174513) do
+ActiveRecord::Schema.define(:version => 20110120173856) do
 
   create_table "logs", :force => true do |t|
     t.integer  "log_type"
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(:version => 20110112174513) do
     t.integer  "address_number"
     t.string   "address_complement",   :limit => 50
     t.string   "address_neighborhood", :limit => 50
-    t.integer  "zipcode"
+    t.string   "zipcode",              :limit => 11
     t.string   "country",              :limit => 100
     t.string   "state",                :limit => 100
     t.string   "city",                 :limit => 100
@@ -62,6 +62,13 @@ ActiveRecord::Schema.define(:version => 20110112174513) do
     t.boolean  "sex"
     t.string   "cpf",                  :limit => 14
     t.string   "alternate_email"
+    t.text     "bio"
+    t.text     "interests"
+    t.text     "music"
+    t.text     "movies"
+    t.text     "books"
+    t.text     "phrase"
+    t.text     "site"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
