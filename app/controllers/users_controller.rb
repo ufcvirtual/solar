@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     @user = User.new
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html {render :layout => 'login'}# new.html.erb
       format.xml  { render :xml => @user }
     end
   end
@@ -58,11 +58,12 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to(@user, :notice => 'Usuario criado com sucesso!') }
+        #format.html { redirect_to(@user, :notice => 'Usuario criado com sucesso!') }
+        format.html { render :action => "mysolar"}
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
-	#flash[:erro] = 'Erro criando usu�rio!'          # msg do tipo erro
-        format.html { render :action => "new" }
+        #flash[:erro] = 'Erro criando usu�rio!'          # msg do tipo erro
+        format.html { render :action => "new",:layout =>"login" }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end
     end
@@ -74,11 +75,17 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+
+      format.html { render :action => "mydata" }
+      format.xml  { head :ok }
+
+      if (@user.update_attributes(:bio => params[:user][:bio]))
+        #Ver se precisa mesmo deste redirect.
         format.html { redirect_to(@user, :notice => 'Usuario atualizado com sucesso!') }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        #format.html { render :action => "edit" }
+        format.html { render :action => "mydata" }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end
     end
@@ -97,8 +104,14 @@ class UsersController < ApplicationController
   end
 
   def mysolar
-	if current_user
-		@user = User.find(current_user.id)
-	end
+    if current_user
+      @user = User.find(current_user.id)
+    end
+  end
+
+  def mydata
+    if current_user
+      @user = User.find(current_user.id)
+    end
   end
 end

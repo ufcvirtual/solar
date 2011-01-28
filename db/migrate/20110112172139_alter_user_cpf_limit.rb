@@ -1,4 +1,4 @@
-class AlterUserCpfLimite < ActiveRecord::Migration
+class AlterUserCpfLimit < ActiveRecord::Migration
   def self.up
     change_column :users, :cpf, :string, :limit => 14
   end

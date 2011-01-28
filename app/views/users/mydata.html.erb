@@ -1,0 +1,342 @@
+<div id="mysolar_panel_data">
+  <%=  image_tag "meus_dados.png" %>
+  <span style="font-weight: bold; font-size: 20px">Meus dados</span>
+  <hr style="border: none;background-color: #dedede;height: 1px;"></hr>
+
+
+
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h3>#########$#@$#@%#@%#@%$#@%*%(*&7</h3>
+      <ul>
+        <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%field_size = "width:80px;" %>
+  <%full_field_size = "width:388px;"%>
+
+  <div id="mydata_tab">
+    <div id="my_personal_data_tab" class="my_data_tab_generic" onclick="showPanel('my_personal_data')">
+      Pessoais
+    </div>
+    <div id="my_professional_data_tab" class="my_data_tab_generic" onclick="showPanel('my_professional_data')">
+      Profissionais
+    </div>
+    <div id="my_cadastral_data_tab" class="my_data_tab_generic" onclick = "showPanel('my_cadastral_data')"  >
+      Cadastrais
+    </div>
+  </div>
+
+  <div id="my_personal_data" class="my_form_data">
+    <%= form_for(@user) do |fi| %>
+      <table>
+        <tr></tr>
+        <tr>
+          <td align="center" width="65">
+            <%= image_tag "nome.png" %>
+          </td>
+          <td> <%= fi.label :name ,:class=>"my_personal_data_label"%> <br/> <%=  fi.text_field :name ,:size=>"56" %></td>
+          <td rowspan="2"> <%= image_tag @user.photo.url(:small), :alt => "Imagem do usuário #{@user.nick}" %><br/> <%= @user.nick%></td>
+        </tr>
+
+        <tr >
+          <td align="center">  <%= image_tag "dados.png" %> </td>
+          <td > <%= fi.label  :bio ,:class=>"my_personal_data_label"%> <br/><%= fi.text_area :bio,:rows=>2, :cols=>65  %></td>
+        </tr>
+
+        <tr>
+          <td align="center">  <%= image_tag "interesses.png" %> </td>
+          <td> <%= fi.label  :interests ,:class=>"my_personal_data_label" %> <br/><%= fi.text_area :interests,:rows=>2, :cols=>65  %></td>
+        </tr>
+
+        <tr>
+          <td align="center">  <%= image_tag "musicas.png" %> </td>
+          <td> <%= fi.label  :music ,:class=>"my_personal_data_label"%> <br/><%= fi.text_area :music,:rows=>2, :cols=>65  %></td>
+        </tr>
+
+        <tr>
+          <td align="center">  <%= image_tag "filmes.png" %> </td>
+          <td> <%= fi.label  :movies ,:class=>"my_personal_data_label"%> <br/><%= fi.text_area :movies,:rows=>2, :cols=>65  %></td>
+        </tr>
+
+        <tr>
+          <td align="center">  <%= image_tag "livros.png" %> </td>
+          <td> <%= fi.label  :books ,:class=>"my_personal_data_label"%> <br/><%= fi.text_area :books,:rows=>2, :cols=>65  %></td>
+        </tr>
+
+        <tr>
+          <td align="center">  <%= image_tag "frase.png" %> </td>
+          <td> <%= fi.label  :phrase ,:class=>"my_personal_data_label"%> <br/><%= fi.text_area :phrase,:rows=>2, :cols=>65  %></td>
+        </tr>
+
+        <tr>
+          <td align="center">  <%= image_tag "site.png" %> </td>
+          <td> <%= fi.label  :site ,:class=>"my_personal_data_label"%> <br/><%= fi.text_field :site ,:size=>"56" %></td>
+        </tr>
+        <tr></tr>
+
+      </table>
+
+
+    </div>
+  <% end %>
+
+
+
+  <div id="my_cadastral_data" class="my_form_data">
+    <%= form_for(@user) do |fo| %>
+      <i>*campos obrigatórios</i>
+      <table border="0" width="100%">
+        <tr></tr>
+
+        <!-- ______________________NOME__________________________________________________________________________________________________________ -->
+
+        <tr>
+          <td align="center" width="65" rowspan="2">  <%= image_tag "nome.png" %> </td>
+          <td width="400">
+            <%= fo.label :name, :class => "my_cadastral_data_label" %>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <%=  fo.text_field  :name,:size=>"50" %>*
+          </td>
+        </tr>
+
+
+        <!-- _______________________________________________________________________________________________________________________________________ -->
+
+
+
+        
+
+        <!-- _____________________APELIDO__________________________________________________________________________________________________________ -->
+
+
+        <tr>
+          <td valign="top" align="center" rowspan="2">  <%= image_tag "apelido.png" %> </td>
+          <td> <%= fo.label :nick, :class => "my_cadastral_data_label"  %></td>
+
+        </tr>
+        <tr>
+          <td>
+            <%=  fo.text_field  :nick,:size=>"50" %>
+          </td>
+        </tr>
+
+
+        <!-- _______________________________________________________________________________________________________________________________________ -->
+
+
+
+
+
+        <!-- ______________________NASCIMENTO__________________________________________________________________________________________________________ -->
+
+        <tr>
+          <td valign="top" align="center" rowspan="2">  <%= image_tag "aniversario.png" %> </td>
+          <td>
+            <%= fo.label :birthdate, 'Nascimento',:class=>"my_cadastral_data_label"%>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <%= fo.date_select :birthdate, :start_year => Time.now.year-2, :end_year => 1900  %>
+          </td>
+        </tr>
+
+
+        <!-- ____________________________________________________________________________________________________________________________________________ -->
+
+
+
+
+
+        <!-- ______________________SEXO_________________________________________________________________________________________________________ -->
+        <tr>
+          <td valign="top" align="center" rowspan="2">  <%= image_tag "sexo.png" %> </td>
+          <td><%= fo.label :sex, :class=>"my_cadastral_data_label" %></td>
+        </tr>
+        <tr>
+          <td>
+            <%= fo.select :sex, ([["Masculino", true], ["Feminino", false]]) ,:size=>2 , :style=>"margin-right:25" %>
+          </td>
+        </tr>
+
+        <!-- ____________________________________________________________________________________________________________________________________ -->
+
+
+
+
+
+        <!-- ______________________CPF__________________________________________________________________________________________________________ -->
+        <tr>
+          <td valign="top" align="center" rowspan="2">  <%= image_tag "cpf.png" %> </td>
+          <td>
+            <%= fo.label :cpf,:class=>"my_cadastral_data_label" %>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <%=  fo.text_field  :cpf ,:id=>"cpf",:size=>"50"%>*
+          </td>
+        </tr>
+
+        <!-- ______________________________________________________________________________________________________________________________________ -->
+
+
+
+
+        <!-- ______________________CONTATO__________________________________________________________________________________________________________ -->
+
+        <tr>
+          <td valign="top" align="center" rowspan="4">  <%= image_tag "contato.png" %> </td>
+          <td>
+            <%= fo.label "Contato",:class=>"my_cadastral_data_label" %>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <%= fo.label :email, "E-mail:" ,:class=>"my_cadastral_data_label_short" %>
+            <%=  fo.text_field  :email ,:style=>full_field_size %>*
+          </td>
+
+        </tr>
+        <tr>
+          <td>
+            <%= fo.label :alternate_email,"E-mail alternativo:",:class=>"my_cadastral_data_label_short" %>
+            <%=  fo.text_field  :alternate_email ,:style=>full_field_size %>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <%= fo.label "Telefone:",:class=>"my_cadastral_data_label_short"%>
+            <%=  fo.text_field  :telephone ,:id=>"telefone" ,:style=>full_field_size %>
+          </td>
+        </tr>
+
+        <!-- __________________________________________________________________________________________________________________________________________ -->
+
+
+
+        <!-- ___________________INSTITUIÇÃO_______________________________________________________________________________________ -->
+
+        <tr>
+          <td valign="top" align="center" rowspan="2">  <%= image_tag "instituicao.png" %> </td>
+          <td> <%= fo.label :institution,:class=>"my_cadastral_data_label" %></td>
+        </tr>
+        <tr>
+          <td>
+            <%=  fo.text_field  :institution ,:size=>"50"%>*
+          </td>
+        </tr>
+
+        <!-- ____________________________________________________________________________________________________________________ -->
+
+        <!-- _____________________ENDEREÇO_______________________________________________________________________________________ -->
+
+        <tr>
+          <td valign="top" align="center" rowspan="4">  <%= image_tag "logradouro.png" %> </td>
+          <td> <%= fo.label "Endereço",:class=>"my_cadastral_data_label" %> </td>
+        </tr>
+
+        <tr>
+          <td><%= fo.label "Rua" ,:class=>"my_cadastral_data_label_short"  %> <%=  fo.text_field  :address,:style=>full_field_size %></td>
+        </tr>
+
+        <tr>
+          <td>
+            <%= fo.label "Número:" ,:class=>"my_cadastral_data_label_short" %> <%=  fo.text_field  :address_number,:style=>field_size %>
+            <%= fo.label "CEP:",:class=>"my_cadastral_data_label_short" %> <%=  fo.text_field  :zipcode ,:id=>"cep",:style=>field_size %>
+            <%= fo.label "Bairro:",:class=>"my_cadastral_data_label_short"  %> <%=  fo.text_field  :address_neighborhood ,:style=>field_size %>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <%= fo.label "Cidade:" ,:class=>"my_cadastral_data_label_short" %> <%=  fo.text_field  :city ,:style=>field_size%>
+            <%= fo.label "Estado:" ,:class=>"my_cadastral_data_label_short" %>  <%= fo.select :state, ([["AC", "AC"], ["AL", "AL"], ["AP", "AP"],
+                ["AM", "AM"], ["BA", "BA"], ["CE", "CE"], ["DF", "DF"], ["ES", "ES"],
+                ["GO", "GO"], ["MA", "MA"], ["MT", "MT"], ["MS", "MS"], ["MG", "MG"],
+                ["PA", "PA"], ["PB", "PB"], ["PR", "PR"], ["PE", "PE"], ["PI", "PI"],
+                ["RJ", "RJ"], ["RN", "RN"], ["RS", "RS"], ["RO", "RO"], ["RR", "RR"],
+                ["SC", "SC"], ["SP", "SP"], ["SE", "SE"], ["TO", "TO"]]), :include_blank => true %>
+            <%= fo.label "País:" ,:class=>"my_cadastral_data_label_short" %> <%=  fo.text_field  :country,:style=>field_size %>
+          </td>
+        </tr>
+
+        <!-- ____________________________________________________________________________________________________________________________________ -->
+
+
+
+
+        <!-- _________________________________AUTENTICAÇÃO____________________________________________________________________________________ -->
+
+        <tr>
+          <td valign="top" align="center" rowspan="3">  <%= image_tag "autenticacao.png" %> </td>
+          <td> <%= fo.label "Autenticação",:class=>"my_cadastral_data_label" %> </td>
+
+        </tr>
+
+        <tr>
+          <td>
+            <%= fo.label :login ,:class=>"my_cadastral_data_label_short" %>  <%=  fo.text_field  :login ,:size=>"10"%>
+            <%= fo.label :password ,:class=>"my_cadastral_data_label_short" %> <%=  fo.text_field  :password ,:size=>"10"%>
+          </td>
+        </tr>
+
+        <tr>
+          <td><%= fo.label :password_confirmation , "Confirmar:" ,:class=>"my_cadastral_data_label_short" %> <%=  fo.text_field  :password_confirmation ,:size=>"10"%></td>
+        </tr>
+
+
+        <!-- ____________________________________________________________________________________________________________________________________ -->
+
+
+        <!-- ____________________________NECESSIDADES_ESPECIAIS___________________________________________________________________________________ -->
+
+        <tr>
+          <td valign="top" align="center" rowspan="3">  <%= image_tag "acessibilidade.png" %> </td>
+          <td> <%= fo.label "Necessidades Especiais",:class=>"my_cadastral_data_label" %> </td>
+
+        </tr>
+
+        <tr>
+          <td>
+            <%= fo.label "radio_special", 'Portador de necessidades especiais?',:class=>"my_cadastral_data_label_short",:style=>"white-space: nowrap;width:225px;text-align:left;" %>
+            <%= radio_button_tag "radio_special" , "true", true, {:id=>"sim", :onclick=>"show_special_needs('special_needs_line')"} %>
+            <%= label_tag "radio_special","Sim", :class=>"my_cadastral_data_label_short" , :style=>"text-align:left;" %>
+
+            <%= radio_button_tag "radio_special" , "false", true, {:id=>"nao", :onclick=>"hide_special_needs('special_needs_line')"} %>
+            <%= label_tag "radio_special", "Não", :class=>"my_cadastral_data_label_short", :style=>"text-align:left;" %>
+          </td>
+        </tr>
+
+        <tr class="form_usuario_tr" id="special_needs_line" style="display:none;">
+          <td>
+            <%= fo.label :special_needs, "Quais:",:class=>"my_cadastral_data_label_short",:style=>"text-align:left;"%>
+            <%= fo.text_field :special_needs ,:style=>"margin-rigth:10px;"%>
+          </td>
+        </tr>
+
+        <!-- ____________________________________________________________________________________________________________________________________ -->
+
+      </table>
+
+
+    </div>
+    <div id="actions">
+      <div class="cancelar" ><%= link_to "Cancelar",:controller=>"users", :action=>"mysolar",:class=>"cancelar"%> </div>
+      <div class="confirmacao"><%= fo.submit "Alterar Dados", :id=>"botão_confirmar"%> </div>
+    </div>
+
+  </div>
+<%  end %>

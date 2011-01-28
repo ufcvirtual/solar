@@ -147,6 +147,7 @@ ptBR:
       user:
         password: "Senha"
         name: "Nome"
+        nick: "Apelido"
         birthdate: "Data de nascimento"
         sex: "Sexo"
         address: "Endereço"
@@ -158,6 +159,13 @@ ptBR:
         state: "Estado"
         city: "Cidade"
         institution: "Instituição"
+        special_needs: "Necessidades especiais"
+        password_confirmation: "Confirmação de senha"
+        interests: "Interesses"
+        music: "Música"
+        movies: "Filmes"
+        books: "Livros"
+        phrase: "Frase"
 
     errors:
       template:

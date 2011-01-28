@@ -27,6 +27,7 @@ body{
     white-space         : pre-wrap;
 }
 label{
+    color: #ffffff;
     display: inline-block;
     width: 82px;
     white-space: nowrap;

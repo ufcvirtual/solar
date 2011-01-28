@@ -50,7 +50,7 @@
 		</tr>
                 <tr class="form_usuario_tr">
 			<td class="form_usuario_label" ><%= f.label :birthdate, 'Data de nascimento:',:class=>"label_usuario"%></td>
-			<td style="width: 217px;" colspan="3" nowrap="norwap"><%= f.date_select :birthdate, :start_year => 1900, :end_year => Time.now.year %></td>
+			<td style="width: 217px;" colspan="3" nowrap="norwap"><%= f.date_select :birthdate, :start_year => 1900, :end_year => Time.now.year - 2 %></td>
 
                         <td class="form_usuario_label" colspan="1" style="padding-right: 3px; text-align: center;"><%= f.label :sex, 'Sexo:' %></td>
                         <td colspan="1" style="padding-left: 9px;"><%= f.select :sex, ([["M", true], ["F", false]]) ,:size=>2 %></td>
