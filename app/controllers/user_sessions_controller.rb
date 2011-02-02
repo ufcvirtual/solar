@@ -33,4 +33,5 @@ layout 'login'
     current_user_session.destroy
     redirect_back_or_default new_user_session_url
   end
+
 end

@@ -4,6 +4,7 @@ Solar::Application.routes.draw do
   get "user_sessions/new"
   get "users/new"
   get "users/mydata"
+  get "users/pwd_recovery"
   
 
 #  match 'user/:id' => 'user#show'

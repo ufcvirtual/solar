@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 	before_filter :require_user, :only => [:index, :show, :mysolar, :edit, :update, :destroy]
-	# requerem q usuario esteja logado
+	before_filter :require_no_user, :only => [:pwd_recovery, :pwd_recovery_send]
 
   # GET /users
   # GET /users.xml
@@ -114,4 +114,54 @@ class UsersController < ApplicationController
       @user = User.find(current_user.id)
     end
   end
+  
+  def pwd_recovery
+  	if !@user
+		@user = User.new
+	end
+	
+	#if !@user_session
+	#	@user_session = UserSession.new
+	#end
+	#render :action => pwd_recovery
+	respond_to do |format|
+      format.html { render :layout => 'login'}# new.html.erb
+      format.xml  { render :xml => @user }
+    end
+  end
+
+  def pwd_recovery_send
+	#se existe usuario com esse cpf e email
+	user_find = User.find_by_cpf_and_email(params[:user][:cpf],params[:user][:email])
+	
+	if user_find
+		#gera nova senha
+		pwd = generate_password (8)
+		puts pwd
+			
+		#altera senha do usuario
+		user_find.password = pwd
+		user_find.save
+		
+		#@user = User.new
+
+		#se alteracao foi ok envia email
+				
+		respond_to do |format|
+		  format.html { redirect_to(users_pwd_recovery_url, :notice => 'Senha enviada com sucesso!') }
+		  format.xml  { head :ok }
+		end
+	else
+		respond_to do |format|
+		  format.html { redirect_to(users_pwd_recovery_url, :notice => 'Usuario nao encontrado!') }
+		  format.xml  { head :ok }
+		end
+	end	
+  end
+  
+  def generate_password (size)
+	accept_chars = (('a'..'z').to_a + ('0'..'9').to_a) - %w(i o 0 1 l)
+  	(1..size).collect{|a| accept_chars[rand(accept_chars.size)] }.join
+  end
+  
 end

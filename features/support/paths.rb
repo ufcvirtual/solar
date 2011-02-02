@@ -20,6 +20,9 @@ module NavigationHelpers
     when /Cadastrar usuario/
       '/users/new'
 
+	when /Recuperar senha/
+	  '/users/pwd_recovery'
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
