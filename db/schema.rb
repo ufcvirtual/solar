@@ -13,12 +13,12 @@
 ActiveRecord::Schema.define(:version => 20110120173856) do
 
   create_table "logs", :force => true do |t|
-    t.integer  "log_type"
+    t.string   "log_type"
     t.string   "message"
-    t.integer  "userId"
-    t.integer  "profileId"
-    t.integer  "courseId"
-    t.integer  "classId"
+    t.string   "user"
+    t.string   "profile"
+    t.string   "course"
+    t.string   "classroom"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

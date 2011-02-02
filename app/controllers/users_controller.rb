@@ -76,12 +76,11 @@ class UsersController < ApplicationController
 
     respond_to do |format|
 
-      format.html { render :action => "mydata" }
-      format.xml  { head :ok }
-
-      if (@user.update_attributes(:bio => params[:user][:bio]))
+      if (@user.update_attributes(params[:user]))
+      #if (@user.update_attributes!(:bio => params[:user][:bio]))
         #Ver se precisa mesmo deste redirect.
-        format.html { redirect_to(@user, :notice => 'Usuario atualizado com sucesso!') }
+        #format.html { redirect_to(@user, :notice => 'Usuario atualizado com sucesso!') }
+        format.html { render :action => "mydata"}
         format.xml  { head :ok }
       else
         #format.html { render :action => "edit" }

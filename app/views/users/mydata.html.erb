@@ -14,10 +14,14 @@
         <% end %>
       </ul>
     </div>
-  <% end %>
-  <%field_size = "width:80px;" %>
-  <%full_field_size = "width:388px;"%>
+  <% end %><!--if-->
+  <%
+  #Tamanhos dos campos
+  field_size = "width:80px;"
+  full_field_size = "width:388px;"
+%>
 
+  <!-- Alternador das Abas -->
   <div id="mydata_tab">
     <div id="my_personal_data_tab" class="my_data_tab_generic" onclick="showPanel('my_personal_data')">
       Pessoais
@@ -30,8 +34,9 @@
     </div>
   </div>
 
+  <!-- Dados Pessoais -->
   <div id="my_personal_data" class="my_form_data">
-    <%= form_for(@user) do |fi| %>
+    <%= form_for(@user, :html => {:action => "update"}) do |fi| %>
       <table>
         <tr></tr>
         <tr>
@@ -79,48 +84,35 @@
         <tr></tr>
 
       </table>
-
-
+    
+    <div id="actions">
+      <div class="cancelar" ><%= link_to "Cancelar",:controller=>"users", :action=>"mysolar",:class=>"cancelar"%> </div>
+      <div class="confirmacao"><%= fi.submit "Alterar Dados", :id=>"botão_confirmar"%> </div>
     </div>
-  <% end %>
-
-
+    <% end %> <!--form-->
+  </div>
 
   <div id="my_cadastral_data" class="my_form_data">
     <%= form_for(@user) do |fo| %>
       <i>*campos obrigatórios</i>
       <table border="0" width="100%">
-        <tr></tr>
-
-        <!-- ______________________NOME__________________________________________________________________________________________________________ -->
-
+        <!-- Nome -->
         <tr>
           <td align="center" width="65" rowspan="2">  <%= image_tag "nome.png" %> </td>
           <td width="400">
             <%= fo.label :name, :class => "my_cadastral_data_label" %>
           </td>
         </tr>
-
         <tr>
           <td>
             <%=  fo.text_field  :name,:size=>"50" %>*
           </td>
         </tr>
 
-
-        <!-- _______________________________________________________________________________________________________________________________________ -->
-
-
-
-        
-
-        <!-- _____________________APELIDO__________________________________________________________________________________________________________ -->
-
-
+        <!-- Nick -->
         <tr>
           <td valign="top" align="center" rowspan="2">  <%= image_tag "apelido.png" %> </td>
           <td> <%= fo.label :nick, :class => "my_cadastral_data_label"  %></td>
-
         </tr>
         <tr>
           <td>
@@ -128,15 +120,7 @@
           </td>
         </tr>
 
-
-        <!-- _______________________________________________________________________________________________________________________________________ -->
-
-
-
-
-
-        <!-- ______________________NASCIMENTO__________________________________________________________________________________________________________ -->
-
+        <!-- Nascimento -->
         <tr>
           <td valign="top" align="center" rowspan="2">  <%= image_tag "aniversario.png" %> </td>
           <td>
@@ -150,14 +134,7 @@
           </td>
         </tr>
 
-
-        <!-- ____________________________________________________________________________________________________________________________________________ -->
-
-
-
-
-
-        <!-- ______________________SEXO_________________________________________________________________________________________________________ -->
+        <!-- Sexo -->
         <tr>
           <td valign="top" align="center" rowspan="2">  <%= image_tag "sexo.png" %> </td>
           <td><%= fo.label :sex, :class=>"my_cadastral_data_label" %></td>
@@ -168,46 +145,31 @@
           </td>
         </tr>
 
-        <!-- ____________________________________________________________________________________________________________________________________ -->
-
-
-
-
-
-        <!-- ______________________CPF__________________________________________________________________________________________________________ -->
+        <!-- CPF -->
         <tr>
           <td valign="top" align="center" rowspan="2">  <%= image_tag "cpf.png" %> </td>
           <td>
             <%= fo.label :cpf,:class=>"my_cadastral_data_label" %>
           </td>
         </tr>
-
         <tr>
           <td>
             <%=  fo.text_field  :cpf ,:id=>"cpf",:size=>"50"%>*
           </td>
         </tr>
 
-        <!-- ______________________________________________________________________________________________________________________________________ -->
-
-
-
-
-        <!-- ______________________CONTATO__________________________________________________________________________________________________________ -->
-
+        <!-- Contato -->
         <tr>
           <td valign="top" align="center" rowspan="4">  <%= image_tag "contato.png" %> </td>
           <td>
             <%= fo.label "Contato",:class=>"my_cadastral_data_label" %>
           </td>
         </tr>
-
         <tr>
           <td>
             <%= fo.label :email, "E-mail:" ,:class=>"my_cadastral_data_label_short" %>
             <%=  fo.text_field  :email ,:style=>full_field_size %>*
           </td>
-
         </tr>
         <tr>
           <td>
@@ -215,7 +177,6 @@
             <%=  fo.text_field  :alternate_email ,:style=>full_field_size %>
           </td>
         </tr>
-
         <tr>
           <td>
             <%= fo.label "Telefone:",:class=>"my_cadastral_data_label_short"%>
@@ -223,11 +184,7 @@
           </td>
         </tr>
 
-        <!-- __________________________________________________________________________________________________________________________________________ -->
-
-
-
-        <!-- ___________________INSTITUIÇÃO_______________________________________________________________________________________ -->
+        <!-- Instituição -->
 
         <tr>
           <td valign="top" align="center" rowspan="2">  <%= image_tag "instituicao.png" %> </td>
@@ -239,19 +196,14 @@
           </td>
         </tr>
 
-        <!-- ____________________________________________________________________________________________________________________ -->
-
-        <!-- _____________________ENDEREÇO_______________________________________________________________________________________ -->
-
+        <!-- Endereço -->
         <tr>
           <td valign="top" align="center" rowspan="4">  <%= image_tag "logradouro.png" %> </td>
           <td> <%= fo.label "Endereço",:class=>"my_cadastral_data_label" %> </td>
         </tr>
-
         <tr>
           <td><%= fo.label "Rua" ,:class=>"my_cadastral_data_label_short"  %> <%=  fo.text_field  :address,:style=>full_field_size %></td>
         </tr>
-
         <tr>
           <td>
             <%= fo.label "Número:" ,:class=>"my_cadastral_data_label_short" %> <%=  fo.text_field  :address_number,:style=>field_size %>
@@ -259,7 +211,6 @@
             <%= fo.label "Bairro:",:class=>"my_cadastral_data_label_short"  %> <%=  fo.text_field  :address_neighborhood ,:style=>field_size %>
           </td>
         </tr>
-
         <tr>
           <td>
             <%= fo.label "Cidade:" ,:class=>"my_cadastral_data_label_short" %> <%=  fo.text_field  :city ,:style=>field_size%>
@@ -273,70 +224,49 @@
           </td>
         </tr>
 
-        <!-- ____________________________________________________________________________________________________________________________________ -->
-
-
-
-
-        <!-- _________________________________AUTENTICAÇÃO____________________________________________________________________________________ -->
-
+        <!-- Autenticação -->
         <tr>
           <td valign="top" align="center" rowspan="3">  <%= image_tag "autenticacao.png" %> </td>
           <td> <%= fo.label "Autenticação",:class=>"my_cadastral_data_label" %> </td>
-
         </tr>
-
         <tr>
           <td>
             <%= fo.label :login ,:class=>"my_cadastral_data_label_short" %>  <%=  fo.text_field  :login ,:size=>"10"%>
             <%= fo.label :password ,:class=>"my_cadastral_data_label_short" %> <%=  fo.text_field  :password ,:size=>"10"%>
           </td>
         </tr>
-
         <tr>
           <td><%= fo.label :password_confirmation , "Confirmar:" ,:class=>"my_cadastral_data_label_short" %> <%=  fo.text_field  :password_confirmation ,:size=>"10"%></td>
         </tr>
 
-
-        <!-- ____________________________________________________________________________________________________________________________________ -->
-
-
-        <!-- ____________________________NECESSIDADES_ESPECIAIS___________________________________________________________________________________ -->
-
+        <!-- Necessidades Especiais -->
         <tr>
           <td valign="top" align="center" rowspan="3">  <%= image_tag "acessibilidade.png" %> </td>
           <td> <%= fo.label "Necessidades Especiais",:class=>"my_cadastral_data_label" %> </td>
-
         </tr>
-
         <tr>
           <td>
             <%= fo.label "radio_special", 'Portador de necessidades especiais?',:class=>"my_cadastral_data_label_short",:style=>"white-space: nowrap;width:225px;text-align:left;" %>
             <%= radio_button_tag "radio_special" , "true", true, {:id=>"sim", :onclick=>"show_special_needs('special_needs_line')"} %>
             <%= label_tag "radio_special","Sim", :class=>"my_cadastral_data_label_short" , :style=>"text-align:left;" %>
-
             <%= radio_button_tag "radio_special" , "false", true, {:id=>"nao", :onclick=>"hide_special_needs('special_needs_line')"} %>
             <%= label_tag "radio_special", "Não", :class=>"my_cadastral_data_label_short", :style=>"text-align:left;" %>
           </td>
         </tr>
-
         <tr class="form_usuario_tr" id="special_needs_line" style="display:none;">
           <td>
             <%= fo.label :special_needs, "Quais:",:class=>"my_cadastral_data_label_short",:style=>"text-align:left;"%>
             <%= fo.text_field :special_needs ,:style=>"margin-rigth:10px;"%>
           </td>
         </tr>
-
-        <!-- ____________________________________________________________________________________________________________________________________ -->
-
       </table>
+      <div id="actions">
+        <div class="cancelar" ><%= link_to "Cancelar",:controller=>"users", :action=>"mysolar",:class=>"cancelar"%> </div>
+        <div class="confirmacao"><%= fo.submit "Alterar Dados", :id=>"botão_confirmar"%> </div>
+      </div>
+    <%  end %>
 
-
-    </div>
-    <div id="actions">
-      <div class="cancelar" ><%= link_to "Cancelar",:controller=>"users", :action=>"mysolar",:class=>"cancelar"%> </div>
-      <div class="confirmacao"><%= fo.submit "Alterar Dados", :id=>"botão_confirmar"%> </div>
-    </div>
 
   </div>
-<%  end %>
+
+</div>

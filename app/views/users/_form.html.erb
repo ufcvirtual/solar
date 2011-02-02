@@ -1,129 +1,129 @@
- <%= @object.association.variable rescue nil %>
+<%= @object.association.variable rescue nil %>
 
 <div id="login_form_new_user">
-	<h2 class="form_usuario_h2">Novo Cadastro</h2>
-	
-	<%= form_for(@user) do |f| %>
-            <% if @user.errors.any? %>
-                <div id="error_explanation">
-                    <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-                    <ul>
-                        <% @user.errors.full_messages.each do |msg| %>
-                              <li><%= msg %></li>
-                        <% end %>
-                    </ul>
-                </div>
-           <% end %>
-	<% field_size = 44 %>
-        <table class="form_usuario_table">
-		<tr class="form_usuario_tr">
-			<td class="form_usuario_label" colspan="1" width="20px"><%= f.label :login, "Login:"%></td>
-			<td colspan="5"><%= f.text_field :login, :size=>field_size %></td>
-		</tr>
-		<tr class="form_usuario_tr">
-			<td class="form_usuario_label" colspan="1"><%= f.label :password, 'Senha:' %></td>
-			<td colspan="5"><%= f.password_field :password , :size=>field_size%></td>
-		</tr>
-		<tr class="form_usuario_tr" >
-			<td class="form_usuario_label" colspan="1"><%= f.label :password_confirmation, 'Confirmar senha:',:class=>"label_usuario" %></td>
-                        <td colspan="5"><%= f.password_field  :password_confirmation , :size=>field_size%></td>
-		</tr>
-		<tr class="form_usuario_tr">
-			<td class="form_usuario_label" colspan="1"><%= f.label :nick, 'Nick:' %></td>
-			<td colspan="5"><%= f.text_field :nick, :size=>field_size %></td>
-		</tr>
-		<tr class="form_usuario_tr">
-			<td class="form_usuario_label" colspan="1"><%= f.label :email, "E-mail:" %></td>
-			<td colspan="5"><%= f.text_field :email, :size=>field_size %></td>
-		</tr>
-		<tr class="form_usuario_tr">
-			<td class="form_usuario_label" colspan="1"><%= f.label :alternate_email, "E-mail alternativo:" ,:class=>"label_usuario"%></td>
-			<td colspan="5"><%= f.text_field :alternate_email, :size=>field_size %></td>
-		</tr>
-                <tr class="form_usuario_tr">
-			<td class="form_usuario_label" colspan="1"><%= f.label :institution, 'Instituição:' %></td>
-			<td colspan="5"><%= f.text_field :institution, :size=>field_size %></td>
-		</tr>
-                <tr class="form_usuario_tr">
-			<td class="form_usuario_label" colspan="1"> <%= f.label :name, 'Nome:' %></td>
-			<td colspan="5"><%= f.text_field :name , :size=>field_size %></td>
-		</tr>
-                <tr class="form_usuario_tr">
-			<td class="form_usuario_label" ><%= f.label :birthdate, 'Data de nascimento:',:class=>"label_usuario"%></td>
-			<td style="width: 217px;" colspan="3" nowrap="norwap"><%= f.date_select :birthdate, :start_year => 1900, :end_year => Time.now.year - 2 %></td>
+  <h2 class="form_usuario_h2">Novo Cadastro</h2>
 
-                        <td class="form_usuario_label" colspan="1" style="padding-right: 3px; text-align: center;"><%= f.label :sex, 'Sexo:' %></td>
-                        <td colspan="1" style="padding-left: 9px;"><%= f.select :sex, ([["M", true], ["F", false]]) ,:size=>2 %></td>
-		</tr>
-                <tr class="form_usuario_tr">
-			<td class="form_usuario_label" colspan="1"><%= f.label :cpf, 'CPF:' %></td>
-			<td colspan="5"> <%= f.text_field :cpf, :size=>field_size, :id=>"cpf" %></td>
-		</tr>
-                <tr class="form_usuario_tr">
-			<td class="form_usuario_label"> <%= f.label :address, 'Endereço:' %></td>
-			<td colspan="5"> <%= f.text_field :address , :size=>field_size%></td>
-		</tr>
-                <tr class="form_usuario_tr">
-                        
-			<td class="form_usuario_label"><%= f.label :address_number, 'Número:' %></td>
-			<td colspan="2"><%= f.text_field :address_number ,:size=>10%></td>
-                        <td class="form_usuario_label"><%= f.label :address_complement, 'Complemento:' %></td>
-			<td colspan="2"><%= f.text_field :address_complement, :size=>16 %></td>
-   
-		</tr>
-                <tr class="form_usuario_tr">
-			<td class="form_usuario_label"><%= f.label :address_neighborhood, 'Bairro:' %></td>
-			<td colspan="2"><%= f.text_field :address_neighborhood, :size=>10 %></td>
-                        <td class="form_usuario_label"><%= f.label :zipcode, 'CEP:' %></td>
-                        <td colspan="2"> <%= f.text_field :zipcode, :size=>16,:id=>"cep" %></td>
-		</tr>
-                 <tr class="form_usuario_tr">
-                        <td class="form_usuario_label"> <%= f.label :country, 'País:' %></td>
-			<td colspan="2"><%= f.text_field :country, :size=>10 %></td>
-                        <td class="form_usuario_label" colspan="1"><%= f.label :state, 'Estado:' %></td>
-                        <td colspan="2"> <%= f.select :state, ([["AC", "AC"], ["AL", "AL"], ["AP", "AP"],
-["AM", "AM"], ["BA", "BA"], ["CE", "CE"], ["DF", "DF"], ["ES", "ES"],
-["GO", "GO"], ["MA", "MA"], ["MT", "MT"], ["MS", "MS"], ["MG", "MG"],
-["PA", "PA"], ["PB", "PB"], ["PR", "PR"], ["PE", "PE"], ["PI", "PI"],
-["RJ", "RJ"], ["RN", "RN"], ["RS", "RS"], ["RO", "RO"], ["RR", "RR"],
-["SC", "SC"], ["SP", "SP"], ["SE", "SE"], ["TO", "TO"]]), :include_blank => true  %></td>
-                        	
-		</tr>
-                <tr class="form_usuario_tr">
-                        <td class="form_usuario_label"> <%= f.label :city, 'Município:'%></td>
-			<td colspan="5"><%= f.text_field :city,  :size=>field_size  %></td>
-                        
-		</tr>
-                <tr class="form_usuario_tr">
-                        <td class="form_usuario_label"> <%= f.label :telephone, 'Telefone:' %></td>
-			<td colspan="2"><%= f.text_field :telephone, :size=> 10,:id=>"telefone" %></td>
-                        <td class="form_usuario_label"> <%= f.label :cell_phone, 'Celular:' %></td>
-			<td colspan="2"><%= f.text_field :cell_phone, :size=>16,:id=>"celular" %></td>
-                </tr>
-                <tr class="form_usuario_tr">
-			<td class="form_usuario_label" colspan="4" style="text-align: left;"><%= f.label "radio_special", 'Portador de necessidades especiais:' %></td>
-                        <td colspan="1" nowrap="norwap"> <%= radio_button_tag "radio_special" , "true", true, {:id=>"sim", :onclick=>"show_special_needs('special_needs_line')"} %>
-                                          <%= label_tag("radio_special","sim", :class=>"form_usuario_label") %>
-                        </td>
-                        <td colspan="1" nowrap="norwap">
-                                        <%= radio_button_tag "radio_special" , "false", true, {:id=>"nao", :onclick=>"hide_special_needs('special_needs_line')"} %>
-                                        <%= label_tag("radio_special", "nao", :class=>"form_usuario_label") %>
-                        </td>
-		</tr>
-                <tr class="form_usuario_tr" id="special_needs_line" style="display:none;">
-			<td class="form_usuario_label"><%= f.label :special_needs, "Qual:"%> </td>
-			<td colspan="5"><%= f.text_field :special_needs,:size=>field_size %></td>
-		</tr>          
-	  </table>	
+  <%= form_for(@user) do |f| %>
+    <% if @user.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+        <ul>
+          <% @user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <% field_size = 44 %>
+    <table class="form_usuario_table">
+      <tr class="form_usuario_tr">
+        <td class="form_usuario_label" colspan="1" width="20px"><%= f.label :login, "Login:"%></td>
+        <td colspan="5"><%= f.text_field :login, :size=>field_size %></td>
+      </tr>
+      <tr class="form_usuario_tr">
+        <td class="form_usuario_label" colspan="1"><%= f.label :password, 'Senha:' %></td>
+        <td colspan="5"><%= f.password_field :password , :size=>field_size%></td>
+      </tr>
+      <tr class="form_usuario_tr" >
+        <td class="form_usuario_label" colspan="1"><%= f.label :password_confirmation, 'Confirmar senha:',:class=>"label_usuario" %></td>
+        <td colspan="5"><%= f.password_field  :password_confirmation , :size=>field_size%></td>
+      </tr>
+      <tr class="form_usuario_tr">
+        <td class="form_usuario_label" colspan="1"><%= f.label :nick, 'Nick:' %></td>
+        <td colspan="5"><%= f.text_field :nick, :size=>field_size %></td>
+      </tr>
+      <tr class="form_usuario_tr">
+        <td class="form_usuario_label" colspan="1"><%= f.label :email, "E-mail:" %></td>
+        <td colspan="5"><%= f.text_field :email, :size=>field_size %></td>
+      </tr>
+      <tr class="form_usuario_tr">
+        <td class="form_usuario_label" colspan="1"><%= f.label :alternate_email, "E-mail alternativo:" ,:class=>"label_usuario"%></td>
+        <td colspan="5"><%= f.text_field :alternate_email, :size=>field_size %></td>
+      </tr>
+      <tr class="form_usuario_tr">
+        <td class="form_usuario_label" colspan="1"><%= f.label :institution, 'Instituição:' %></td>
+        <td colspan="5"><%= f.text_field :institution, :size=>field_size %></td>
+      </tr>
+      <tr class="form_usuario_tr">
+        <td class="form_usuario_label" colspan="1"> <%= f.label :name, 'Nome:' %></td>
+        <td colspan="5"><%= f.text_field :name , :size=>field_size %></td>
+      </tr>
+      <tr class="form_usuario_tr">
+        <td class="form_usuario_label" ><%= f.label :birthdate, 'Data de nascimento:',:class=>"label_usuario"%></td>
+        <td style="width: 217px;" colspan="3" nowrap="norwap"><%= f.date_select :birthdate, :start_year => 1900, :end_year => Time.now.year - 2 %></td>
 
-	<div style="margin-left: 65px;margin-top: 30px; width: 550px; margin-bottom: 100px;">
-                <div style="float:right; margin-right: 30px;">
-			<%= f.submit "Confirmar", :id=>"confirmar", :alt=>"Confirmar", :class=>"solar_button", :alt=>"confirmar" %>
-	</div>
-</div>
+        <td class="form_usuario_label" colspan="1" style="padding-right: 3px; text-align: center;"><%= f.label :sex, 'Sexo:' %></td>
+        <td colspan="1" style="padding-left: 9px;"><%= f.select :sex, ([["M", true], ["F", false]]) ,:size=>2 %></td>
+      </tr>
+      <tr class="form_usuario_tr">
+        <td class="form_usuario_label" colspan="1"><%= f.label :cpf, 'CPF:' %></td>
+        <td colspan="5"> <%= f.text_field :cpf, :size=>field_size, :id=>"cpf" %></td>
+      </tr>
+      <tr class="form_usuario_tr">
+        <td class="form_usuario_label"> <%= f.label :address, 'Endereço:' %></td>
+        <td colspan="5"> <%= f.text_field :address , :size=>field_size%></td>
+      </tr>
+      <tr class="form_usuario_tr">
+
+        <td class="form_usuario_label"><%= f.label :address_number, 'Número:' %></td>
+        <td colspan="2"><%= f.text_field :address_number ,:size=>10%></td>
+        <td class="form_usuario_label"><%= f.label :address_complement, 'Complemento:' %></td>
+        <td colspan="2"><%= f.text_field :address_complement, :size=>16 %></td>
+
+      </tr>
+      <tr class="form_usuario_tr">
+        <td class="form_usuario_label"><%= f.label :address_neighborhood, 'Bairro:' %></td>
+        <td colspan="2"><%= f.text_field :address_neighborhood, :size=>10 %></td>
+        <td class="form_usuario_label"><%= f.label :zipcode, 'CEP:' %></td>
+        <td colspan="2"> <%= f.text_field :zipcode, :size=>16,:id=>"cep" %></td>
+      </tr>
+      <tr class="form_usuario_tr">
+        <td class="form_usuario_label"> <%= f.label :country, 'País:' %></td>
+        <td colspan="2"><%= f.text_field :country, :size=>10 %></td>
+        <td class="form_usuario_label" colspan="1"><%= f.label :state, 'Estado:' %></td>
+        <td colspan="2"> <%= f.select :state, ([["AC", "AC"], ["AL", "AL"], ["AP", "AP"],
+              ["AM", "AM"], ["BA", "BA"], ["CE", "CE"], ["DF", "DF"], ["ES", "ES"],
+              ["GO", "GO"], ["MA", "MA"], ["MT", "MT"], ["MS", "MS"], ["MG", "MG"],
+              ["PA", "PA"], ["PB", "PB"], ["PR", "PR"], ["PE", "PE"], ["PI", "PI"],
+              ["RJ", "RJ"], ["RN", "RN"], ["RS", "RS"], ["RO", "RO"], ["RR", "RR"],
+              ["SC", "SC"], ["SP", "SP"], ["SE", "SE"], ["TO", "TO"]]), :include_blank => true  %></td>
+
+      </tr>
+      <tr class="form_usuario_tr">
+        <td class="form_usuario_label"> <%= f.label :city, 'Município:'%></td>
+        <td colspan="5"><%= f.text_field :city,  :size=>field_size  %></td>
+
+      </tr>
+      <tr class="form_usuario_tr">
+        <td class="form_usuario_label"> <%= f.label :telephone, 'Telefone:' %></td>
+        <td colspan="2"><%= f.text_field :telephone, :size=> 10,:id=>"telefone" %></td>
+        <td class="form_usuario_label"> <%= f.label :cell_phone, 'Celular:' %></td>
+        <td colspan="2"><%= f.text_field :cell_phone, :size=>16,:id=>"celular" %></td>
+      </tr>
+      <tr class="form_usuario_tr">
+        <td class="form_usuario_label" colspan="4" style="text-align: left;"><%= f.label "radio_special", 'Portador de necessidades especiais:' %></td>
+        <td colspan="1" nowrap="norwap"> <%= radio_button_tag "radio_special" , "true", true, {:id=>"sim", :onclick=>"show_special_needs('special_needs_line')"} %>
+          <%= label_tag("radio_special","sim", :class=>"form_usuario_label") %>
+        </td>
+        <td colspan="1" nowrap="norwap">
+          <%= radio_button_tag "radio_special" , "false", true, {:id=>"nao", :onclick=>"hide_special_needs('special_needs_line')"} %>
+          <%= label_tag("radio_special", "nao", :class=>"form_usuario_label") %>
+        </td>
+      </tr>
+      <tr class="form_usuario_tr" id="special_needs_line" style="display:none;">
+        <td class="form_usuario_label"><%= f.label :special_needs, "Qual:"%> </td>
+        <td colspan="5"><%= f.text_field :special_needs,:size=>field_size %></td>
+      </tr>
+    </table>
+
+    <div style="margin-left: 65px;margin-top: 30px; width: 550px; margin-bottom: 100px;">
+      <div style="float:right; margin-right: 30px;">
+        <%= f.submit "Confirmar", :id=>"confirmar", :alt=>"Confirmar", :class=>"solar_button", :alt=>"confirmar" %>
+      </div>
+    </div>
 
 
-</div>
+  </div>
 
 
 <% end %>
