@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-	before_filter :require_user, :only => [:index, :show, :mysolar, :edit, :update, :destroy]
 	before_filter :require_no_user, :only => [:pwd_recovery, :pwd_recovery_send]
+	before_filter :require_user, :only => [:index, :show, :mysolar, :edit, :update, :destroy]
 
   # GET /users
   # GET /users.xml
@@ -130,32 +130,36 @@ class UsersController < ApplicationController
   end
 
   def pwd_recovery_send
-	#se existe usuario com esse cpf e email
+	#se existe usuario com esse cpf e email, recupera
 	user_find = User.find_by_cpf_and_email(params[:user][:cpf],params[:user][:email])
 	
 	if user_find
 		#gera nova senha
 		pwd = generate_password (8)
-		puts pwd
 			
-		#altera senha do usuario
-		user_find.password = pwd
-		user_find.save
-		
-		#@user = User.new
+		#altera senha do usuario e envia email
+		if user_find.update_attributes(:password => pwd)
 
-		#se alteracao foi ok envia email
+			#envia email
+		
+			#remove sessao criada
+			current_user_session.destroy
+		
+			msg = 'Senha enviada com sucesso!'
+			
+		else
+			msg = 'Nao foi possivel enviar nova senha. Por favor, tente novamente.'
+		end
 				
-		respond_to do |format|
-		  format.html { redirect_to(users_pwd_recovery_url, :notice => 'Senha enviada com sucesso!') }
-		  format.xml  { head :ok }
-		end
 	else
-		respond_to do |format|
-		  format.html { redirect_to(users_pwd_recovery_url, :notice => 'Usuario nao encontrado!') }
-		  format.xml  { head :ok }
-		end
+		msg = 'Usuario nao encontrado!'
 	end	
+	
+	respond_to do |format|
+	  format.html { redirect_to(users_pwd_recovery_url, :notice => msg) }
+	  format.xml  { head :ok }
+	end
+	
   end
   
   def generate_password (size)
