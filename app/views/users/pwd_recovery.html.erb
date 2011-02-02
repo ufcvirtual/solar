@@ -1,0 +1,35 @@
+<head>
+  <%= stylesheet_link_tag "login.css" %>
+</head>
+
+<div style="position:absolute;height:100%;width:100%; display: table;">
+
+	<%= render '/user_sessions/header' %>  
+
+    <!--Parte cinza-->
+    <div id="login_left_col">
+      <%= render '/user_sessions/menu' %>
+
+      <p>
+		<%= form_for @user, :url => {:action => "pwd_recovery_send", :controller => "users"} do |f| %>
+			  <p>Esqueceu a sua senha?</p> 
+		      <label for="pwd_recovery_cpf">Seu CPF: </label>
+		      <%= f.text_field :cpf, :id=>"pwd_recovery_cpf", :tabindex=>"1"%>
+		      <br/>
+		      <br/>		      
+			  <label for="pwd_recovery_email">Seu E-mail: </label>
+		      <%= f.text_field :email, :id=>"pwd_recovery_email", :tabindex=>"2"%>
+		      <br/>
+
+		      <%= f.submit "Enviar", :id=>"pwd_recovery_send", :tabindex=>"3"%>
+			  <br/>
+			  <%= flash[:notice] %>	
+      	<% end %>        
+      </p>
+
+    </div>
+
+	<%# render '/user_sessions/form_login' %>
+
+    <%= render '/user_sessions/footer' %>
+</div>
