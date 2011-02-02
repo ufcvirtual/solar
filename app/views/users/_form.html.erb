@@ -36,6 +36,10 @@
         <td class="form_usuario_label" colspan="1"><%= f.label :email, "E-mail:" %></td>
         <td colspan="5"><%= f.text_field :email, :size=>field_size %></td>
       </tr>
+      <tr class="form_usuario_tr" >
+        <td class="form_usuario_label" colspan="1"><%= f.label :email_confirmation, 'Confirmar e-mail:',:class=>"label_usuario" %></td>
+        <td colspan="5"><%= f.text_field  :email_confirmation , :size=>field_size%></td>
+      </tr>
       <tr class="form_usuario_tr">
         <td class="form_usuario_label" colspan="1"><%= f.label :alternate_email, "E-mail alternativo:" ,:class=>"label_usuario"%></td>
         <td colspan="5"><%= f.text_field :alternate_email, :size=>field_size %></td>

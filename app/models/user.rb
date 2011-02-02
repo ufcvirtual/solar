@@ -6,36 +6,52 @@ class User < ActiveRecord::Base
   end
 
   #Protege o campo de senha da atualização em massa (update_attributes).
-  attr_accessible :login,:email,:name,:birthdate,:cpf,:address,:address_number
-  attr_accessible :address_neighborhood,:zipcode,:country,:state,:city
-  attr_accessible :institution,:enrollment_code, :special_needs, :address
-  attr_accessible :address_number, :address_complement, :address_neighborhood
-  attr_accessible :zipcode, :country, :state, :city, :telephone, :cell_phone
-  attr_accessible :institution,:bio, :interests, :music,:movies,:books,:phrase
-  attr_accessible :site, :nick
+  attr_protected :password
 
-  #Validação de tamanho dos campos
+
   # validacao do comprimento da senha no :create
-  validates_length_of :password, :within => 6..60, :too_long => "deve ter menos de 60 caracteres", :too_short => "deve ter 6 ou mais caracteres", :on => :create
+  validates :password,:presence =>true, :length => {:within => 6..60},:confirmation => true, :on => :create
   # validacao do comprimento da senha no :update
-  #?????/
+ 
+
+
+  #Validações campo a campo
+  #Campos pendentes devido ao authlogic
+  #Fazer o logn depois
+  validates :login, :presence => true ,:length => { :within => 3.. 20}, :uniqueness => true
+  #Fazer o email depois
+  validates :email, :presence => true, :uniqueness => true,:confirmation => true
+  validates :alternate_email, :format => { :with => %r{^(?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4})$}i}
+
+
+  validates :name, :presence => true,:length => { :within => 6.. 60}
+  validates :birthdate, :presence => true
+  validates :cpf, :presence => true, :uniqueness => true
+
+  validates :address, :presence => true
+  validates :address_number, :presence =>true
+  validates :address_neighborhood, :presence =>true
+  validates :zipcode, :presence =>true
+ 
+  validates :country, :presence =>true
+  validates :state, :presence =>true
+  validates :city, :presence =>true
+  validates :institution, :presence =>true
 
 
 
-  #campos obrigatórios#
-  validates_presence_of :login,:email,:name,:birthdate,:cpf,:address, :message => "deve ser preenchido!"
-  validates_presence_of :address_number,:address_neighborhood,:zipcode,:country, :message => "deve ser preenchido!"
-  validates_presence_of :state,:city,:institution, :message => "deve ser preenchido!"
-  validates_presence_of :password, :on => :create  #Senha é apenas no create
+#  validates :terms, :acceptance => true
+#  validates :password, :confirmation => true
+#  validates :username, :exclusion => { :in => %w(admin superuser) }
+#  validates :email, :format => { :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create }
+#  validates :age, :inclusion => { :in => 0..9 }
+#  validates :first_name, :length => { :maximum => 30 }
+#  validates :age, :numericality => true
+#  validates :username, :presence => true
+#  validates :username, :uniqueness => true
 
   #validaçao do CPF
   usar_como_cpf :cpf
-
-	#campos únicos#
-  validates_uniqueness_of :cpf,:login,:email,:message=>"ja cadastrado"
-
-  #Confirmação de senha e email.
-  validates_confirmation_of :password, :message=> "deve ser igual a confirmacao de senha"
 
 	#Detalhes da Senha #
   acts_as_authentic do |c|

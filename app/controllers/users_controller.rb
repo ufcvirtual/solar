@@ -48,16 +48,21 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
 
-    #garante que a senha não fique como "" o que é diferente do nulo e seria igual a senha
-    params[:user]["password"] = nil if params[:user]["password"] == ""
-    params[:user]["password_confirmation"] = nil if params[:user]["password_confirmation"] == ""
+#    garante que a senha não fique como "" o que é diferente do nulo e seria igual a senha
+#    params[:user]["password"] = nil if params[:user]["password"] == ""
+#    params[:user]["password_confirmation"] = nil if params[:user]["password_confirmation"] == ""
+#
+#    garante que o e-mail não fique como "" o que é diferente do nulo e seria igual ao e-mail
+#    params[:user]["email"] = nil if params[:user]["email"] == ""
+#    params[:user]["email_confirmation"] = nil if params[:user]["email_confirmation"] == ""
 
     if params["radio_special"] == "false"
       @user.special_needs = nil
     end
 
+    @user.password = params[:user]["password"]
     respond_to do |format|
-      if @user.save
+      if (@user.save )
         #format.html { redirect_to(@user, :notice => 'Usuario criado com sucesso!') }
         format.html { render :action => "mysolar"}
         format.xml  { render :xml => @user, :status => :created, :location => @user }

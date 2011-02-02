@@ -1,4 +1,6 @@
 ptBR:
+
+
   # formatos de data e hora
   date:
     formats:
@@ -145,6 +147,7 @@ ptBR:
       user: "Usuario"
     attributes:
       user:
+        alternate_email: "E-mail Alternativo"
         password: "Senha"
         name: "Nome"
         nick: "Apelido"
