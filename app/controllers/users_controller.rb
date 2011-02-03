@@ -141,15 +141,19 @@ class UsersController < ApplicationController
 	if user_find
 		#gera nova senha
 		pwd = generate_password (8)
-			
-		#altera senha do usuario e envia email
-		if user_find.update_attributes(:password => pwd)
+		user_find.password = pwd
 
-			#envia email
-		
+		#altera senha do usuario e envia email
+		if user_find.save!
+
 			#remove sessao criada
-			current_user_session.destroy
-		
+			if current_user_session
+				current_user_session.destroy
+			end 
+			
+			#envia email
+			Notifier.deliver_msg (pwd)
+  			
 			msg = 'Senha enviada com sucesso!'
 			
 		else
