@@ -74,7 +74,7 @@ textarea{
 }
 #mysolar_sidebar{
 	width:175px;
-	height:80%; 
+	height:100%; 
 	z-index: 1;
 	position: absolute;
 	left: 0px;
@@ -304,7 +304,7 @@ a.mysolar_top_link{
 /********Chat do meuSolar*****************/
 #mysolar_chat_area{
     font-size   : 11pt;
-    position    :absolute;
+    position    :fixed;
     bottom      : 0px;
     right       : 15px;
 }
