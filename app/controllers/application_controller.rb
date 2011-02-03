@@ -57,6 +57,22 @@ class ApplicationController < ActionController::Base
       session[:return_to] = request.fullpath
     end
 
+ #definir o idioma
+  
+
+  before_filter :set_locale
+  def set_locale
+    if params[:locale] ==  nil
+      I18n.locale = params[:locale] || I18n.default_locale
+    else
+     I18n.locale = params[:locale]
+    end 
+  end
+
+  def default_url_options(options={})
+    {:locale => I18n.locale}
+  end
+
     def redirect_back_or_default(default)
       redirect_to(session[:return_to] || default)
       session[:return_to] = nil

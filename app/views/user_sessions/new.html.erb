@@ -11,19 +11,17 @@
       <%= render 'menu' %>
 
       <p>
-        O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,
-        da Universidade Federal do Ceará. Ele é orientado ao professor e ao aluno,
-        possibilitando a publicação de cursos e a interação com os mesmos.
-      </p>
-      <p>
-        O Solar foi desenvolvido potencializando o aprendizado a partir da relação com
-        a própia interface gráfica do ambiente, sendo desenvolvido para que o usuário
-        tenha dapidez no acesso às páginas e ao conteúdo, fácil navegabilidade e
-        compatibilidade com navegadores. Aqui, o interagente se sente seguro a
-        explorar os espaços disponibilizados. O ambiente é apoiado
-        numa filosofia de interação e não de controle.
-      </p>
+      <%= t(:description1) %>
+    </p>
+    <p>
+      <%= t(:description2) %>
+    </p>
+
     </div>
+
+  <script>
+    document.getElementById("login_form_name").focus();
+  </script>
 
     <%= render 'form_login' %>
 

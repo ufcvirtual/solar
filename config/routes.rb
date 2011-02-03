@@ -5,6 +5,8 @@ Solar::Application.routes.draw do
   get "users/new"
   get "users/mydata"
   get "users/pwd_recovery"
+
+  match '/locale'  => "user_sessions#switch_language"
   
 
 #  match 'user/:id' => 'user#show'

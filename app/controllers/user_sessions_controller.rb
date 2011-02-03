@@ -24,7 +24,7 @@ layout 'login'
 
       redirect_back_or_default users_mysolar_url #('/')
     else
-      flash[:notice] = 'Dados de login incorretos!'
+      flash[:notice] = t(:Dados_de_login_incorretos)
       render :action => :new
     end
   end
@@ -33,5 +33,11 @@ layout 'login'
     current_user_session.destroy
     redirect_back_or_default new_user_session_url
   end
+
+  def switch_language
+    I18n.locale = params[:locale].to_sym
+    redirect_to root_url
+  end
+
 
 end

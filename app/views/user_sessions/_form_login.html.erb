@@ -5,29 +5,43 @@
         <div id="login_form_tab_blank">&nbsp;
         </div>
         <div id="login_form_tab_entrar">
-          Entrar
+          <%=  t(:entrar)%>
         </div>
         <div id="login_form_tab_cadastrar">
-			<%= link_to("Cadastrar", users_new_path) %>
+			<%= link_to(t(:cadastrar), users_new_path) %>
         </div>
         <div id="login_form">
-          <label for="login_form_name">Usu&aacute;rio</label>
+          <label for="login_form_name"><%= t(:usuario) %></label>
           <%= f.text_field :login, :id=>"login_form_name", :class=>"login_form_text_field", :tabindex=>"1"%>
           <br/>
-          <label for="login_form_password">Senha</label>
+          <label for="login_form_password"><%= t(:senha) %></label>
           <%= f.password_field :password, :id=>"login_form_password", :class=>"login_form_text_field", :tabindex=>"2"%>
           <br/>
           <div id="login_form_secundario" style="line-height: 30px;">
               <%= f.check_box :remember_me, :id=>"login_form_lembrar_senha", :style=>"border-style:none" %>
-              <label for="login_form_lembrar_senha" class="menor">Lembrar minha senha</label>
+              <label for="login_form_lembrar_senha" class="menor"><%= t(:lembrar_minha_senha) %></label>
             <br/>
             &nbsp;
-				<%= link_to "esqueci a senha",:controller=>"users", :action=>"pwd_recovery"%>
+				<%= link_to t(:esqueci_a_senha),:controller=>"users", :action=>"pwd_recovery"%>
           </div>
-          <%= f.submit "Entrar", :id=>"login_form_enter", :tabindex=>"3"%>
+          <%= f.submit t(:entrar_botao), :id=>"login_form_enter", :tabindex=>"3"%>
         </div>
       <% end %>
       <%= flash[:notice] %>	
+
+	
+	<div>
+      <table>
+        <tr>
+          <td style="width: 20px"> <%= image_tag "locales.png" %> </td>
+          <td style="width: 55px"> <%= link_to "English","http://localhost:3000/?locale=en ", :style=>"color: #000"%> </td>
+          <td> <%= link_to "Português(BR)","http://localhost:3000", :style=>"color: #000"%> </td>
+        </tr>
+
+      </table>
+    </div>	
+
+
     </div>
 
 	<script>
