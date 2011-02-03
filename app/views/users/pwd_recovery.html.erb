@@ -11,22 +11,27 @@
       <%= render '/user_sessions/menu' %>
 
       <p>
-		<% form_tag :action => "pwd_recovery_send" do %>
-			  <p>Esqueceu a sua senha?</p> 
-		      <label for="pwd_recovery_cpf">Seu CPF: </label>
-		      <%= text_field :user, :cpf, :tabindex=>"1"%>
-		      <br/>
-		      <br/>
-			  <label for="pwd_recovery_email">Seu E-mail: </label>
-		      <%= text_field :user, :email, :tabindex=>"2"%>
-		      <br/>
 
-		      <%= submit_tag 'Enviar', :tabindex=>"3"%>
-			  <br/>
+        <% form_tag controller=> "user", :action => "pwd_recovery_send" do %>
+			  <p>Esqueceu a sua senha?</p> 
+			  
+		      <label for="pwd_recovery_cpf">Seu CPF:</label>&nbsp;
+		      <%= text_field :user, :cpf, :id => 'pwd_recovery_cpf', :tabindex=>"1"%>
+		      <br/>
+		      <br/>
+		      
+			  <label for="pwd_recovery_email">Seu E-mail:</label>&nbsp;
+		      <%= text_field :user, :email, :id => 'pwd_recovery_email', :tabindex=>"2"%>		      
+		      <br/>
+		      <br/>
+		      
+		      <%= link_to 'Voltar', login_path %>&nbsp;&nbsp;
+			  <%= submit_tag "Enviar", :tabindex=>"3"%>
+
+			  <br/><br/>
 			  <%= flash[:notice] %>	
       	<% end %>        
       </p>
-
 
     </div>
 

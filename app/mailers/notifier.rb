@@ -1,11 +1,13 @@
 class Notifier < ActionMailer::Base
   default :from => "teste@virtual.ufc.br"
 	
-	def msg (text)
-		mail(:to => 'patricia@virtual.ufc.br', 
-			 :bc => 'humberto@virtual.ufc.br',
-			 :subject => 'recuperacao de senha do novo solar', 
-			 :body => 'sua nova senha eh '+text) 
+	def recovery_new_pwd (destiny, new_pwd)
+		txt_body = "Caro(a) #{destiny.name}, \n\nSua nova senha para acessar o Solar eh:\n     #{new_pwd}"
+		txt_body += "\n\nAtenciosamente,\nAdministracao do ambiente"
+		txt_body += "\n\n\n[Esta eh uma mensagem automatica. Por favor, nao a responda.]"
+		mail(:to => destiny.email, 
+			 :subject => '[SOLAR] Recuperacao de senha', 
+			 :body => txt_body) 
 	end
 
 end

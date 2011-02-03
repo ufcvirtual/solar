@@ -152,8 +152,8 @@ class UsersController < ApplicationController
 			end 
 			
 			#envia email
-			Notifier.deliver_msg (pwd)
-  			
+			Notifier.deliver_recovery_new_pwd(user_find, pwd)
+
 			msg = 'Senha enviada com sucesso!'
 			
 		else

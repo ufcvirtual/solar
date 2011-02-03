@@ -7,8 +7,8 @@ Funcionalidade: Recuperar senha
 
 Contexto:
 	Dado que tenho "users"
-		| login | email		           | password | name | birthdate  | cpf         | sex  | address | address_number | address_neighborhood | zipcode   | country | state | city      | institution |
-		| user  | teste@virtual.ufc.br | user123  | User | 01/01/2005 | 78218921494 | true | Rua R   | 111            | Bairro               | 600000000 | Brasil  | CE    | Fortaleza | UFC         |
+		| login | email		           | password | name   | birthdate  | cpf         | sex  | address | address_number | address_neighborhood | zipcode   | country | state | city      | institution | alternate_email    |
+		| user  | teste@virtual.ufc.br | user123  | User01 | 01/01/2005 | 78218921494 | true | Rua R   | 111            | Bairro               | 600000000 | Brasil  | CE    | Fortaleza | UFC         | altemail@gmail.com |
 
 Cenário: Usuário acessa tela de recuperação de senha
 	Dado que estou em "Login"
@@ -21,7 +21,7 @@ Cenário: Usuário acessa tela de recuperação de senha
 @wip
 Cenário: Usuário recupera senha
     Dado que estou em "Recuperar senha"
-		E que eu preenchi "Seu CPF" com "78218921494"
+		E que eu preenchi "Seu CPF" com "782.189.214-94"
     	E que eu preenchi "Seu E-mail" com "teste@virtual.ufc.br"
 	Quando eu clicar em "Enviar"
     Então eu deverei ver "Senha enviada com sucesso"
