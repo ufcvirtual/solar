@@ -57,6 +57,9 @@ class User < ActiveRecord::Base
   acts_as_authentic do |c|
 		#c.require_password_confirmation = false
 		#c.validates_length_of_password_field_options = {:minimum => 3}
+    c.validate_email_field = false
+    c.validate_login_field = false
+    c.validate_password_field = false
 		c.crypto_provider = CryptoProvider
 	end
 
