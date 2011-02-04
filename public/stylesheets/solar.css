@@ -8,6 +8,20 @@ body{
     font-family     :'Myriad Pro','Trebuchet', Arial;
 }
 
+/*Classes de erros*/
+.error_explanation{
+    font-size: 11pt;
+    font-style: italic;
+    color: #e03838;
+    line-height: 25px;
+    margin-left: 10px;
+}
+
+.field_with_errors{
+    display:inline-block;
+    border: 1px solid #e03838;
+}
+
 label
 {
     color: #003e7a;
@@ -425,7 +439,41 @@ div.widget_head {
 	font-weight:bold;
 	padding:8px;
 }
+.solar_button_gray {
+        background-color: #e7edee;
+	margin-top:0;
+	font-weight:bold;
+	padding:8px;
+}
 .solar_button_arrow {
 	height:10px;
 	background:url('../images/solar_button_arrow.png') no-repeat right bottom;
 }
+
+.solar_button_arrow_gray {
+	height:10px;
+	background:url('/images/solar_button_arrow_gray.png') no-repeat right bottom;
+}
+
+#my_cadastral_data_button{
+    margin-top: 40px;
+    width: 220px;
+    float: right;
+}
+#my_personal_data_button{
+    margin-top: 40px;
+    width: 220px;
+    float: right;
+}
+
+.link_gray{
+    width: 75px;
+    height: 25px;
+    padding-top: 10px;
+    padding-left: 5px;
+    margin-right: 100px;
+    background-color: #E7EDEE;
+    font-weight: bold;
+    border: 1px solid #DEDEDE;
+}
+

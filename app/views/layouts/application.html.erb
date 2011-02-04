@@ -21,6 +21,14 @@ jQuery(function($){
          $("#celular").mask("(99)9999-9999");
          $("#cep").mask("99999-999");
       });
+      // layout dos botoes
+        solar_button_width = $(".solar_button").outerWidth();
+	$(".solar_button").before("<div class='solar_button_arrow'></div>");
+	$(".solar_button_arrow").css('width',solar_button_width);
+      //layout dos botoes cinzas
+        solar_button_gray_width = $(".solar_button_gray").outerWidth();
+	$(".solar_button_gray").before("<div class='solar_button_arrow_gray'></div>");
+	$(".solar_button_arrow_gray").css('width',solar_button_gray_width);
       //Configurando Menu
       $(function() {
         $( "#mysolar_menu_accordion" ).accordion({

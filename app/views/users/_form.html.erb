@@ -6,12 +6,9 @@
   <%= form_for(@user) do |f| %>
     <% if @user.errors.any? %>
       <div id="error_explanation">
-        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-        <ul>
           <% @user.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
+            <%= msg %><br/>
           <% end %>
-        </ul>
       </div>
     <% end %>
     <% field_size = 44 %>
@@ -54,7 +51,7 @@
       </tr>
       <tr class="form_usuario_tr">
         <td class="form_usuario_label" ><%= f.label :birthdate, 'Data de nascimento:',:class=>"label_usuario"%></td>
-        <td style="width: 217px;" colspan="3" nowrap="norwap"><%= f.date_select :birthdate, :start_year => 1900, :end_year => Time.now.year - 2 %></td>
+        <td style="width: 217px;" colspan="3" nowrap="norwap"><%= f.date_select :birthdate, :start_year => Time.now.year - 2, :end_year => 1900  %></td>
 
         <td class="form_usuario_label" colspan="1" style="padding-right: 3px; text-align: center;"><%= f.label :sex, 'Sexo:' %></td>
         <td colspan="1" style="padding-left: 9px;"><%= f.select :sex, ([["M", true], ["F", false]]) ,:size=>2 %></td>

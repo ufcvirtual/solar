@@ -5,16 +5,6 @@
 
 
 
-  <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <h3>#########$#@$#@%#@%#@%$#@%*%(*&7</h3>
-      <ul>
-        <% @user.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %><!--if-->
   <%
   #Tamanhos dos campos
   field_size = "width:80px;"
@@ -36,6 +26,17 @@
 
   <!-- Dados Pessoais -->
   <div id="my_personal_data" class="my_form_data">
+
+    <!--Erros-->
+    <% if @user.errors.any? %>
+      <div class="error_explanation">
+        <% @user.errors.full_messages.each do |msg| %>
+          <%= msg %><br/>
+        <% end %>
+      </div>
+    <% end %><!--if-->
+
+
     <%= form_for(@user, :html => {:action => "update"}) do |fi| %>
       <table>
         <tr></tr>
@@ -85,14 +86,26 @@
 
       </table>
     
-    <div id="actions">
-      <div class="cancelar" ><%= link_to "Cancelar",:controller=>"users", :action=>"mysolar",:class=>"cancelar"%> </div>
-      <div class="confirmacao"><%= fi.submit "Alterar Dados", :id=>"botão_confirmar"%> </div>
+   <!--form-->
     </div>
-    <% end %> <!--form-->
-  </div>
+    <div id="my_personal_data_button">
+      <div style="float: right;"><%= fi.submit "Alterar Dados", :class=>"solar_button_gray"%> </div>
+      <div class="link_gray"><%= link_to "Cancelar",:controller=>"users", :action=>"mysolar"%> </div>
+    </div>
+  <% end %>
 
+    </div>
   <div id="my_cadastral_data" class="my_form_data">
+
+    <!--Erros-->
+    <% if @user.errors.any? %>
+      <div class="error_explanation">
+        <% @user.errors.full_messages.each do |msg| %>
+          <%= msg %><br/>
+        <% end %>
+      </div>
+    <% end %><!--if-->
+
     <%= form_for(@user) do |fo| %>
       <i>*campos obrigatórios</i>
       <table border="0" width="100%">
@@ -130,7 +143,7 @@
 
         <tr>
           <td>
-            <%= fo.date_select :birthdate, :start_year => Time.now.year-2, :end_year => 1900  %>
+            <%= fo.date_select :birthdate, :start_year => Time.now.year - 2 , :end_year => 1900  %>
           </td>
         </tr>
 
@@ -260,13 +273,9 @@
           </td>
         </tr>
       </table>
-      <div id="actions">
-        <div class="cancelar" ><%= link_to "Cancelar",:controller=>"users", :action=>"mysolar",:class=>"cancelar"%> </div>
-        <div class="confirmacao"><%= fo.submit "Alterar Dados", :id=>"botão_confirmar"%> </div>
-      </div>
-    <%  end %>
-
-
-  </div>
-
-</div>
+     </div>
+    <div id="my_cadastral_data_button" style="display:none;">
+      <div style="float: right;"><%= fo.submit "Alterar Dados", :class=>"solar_button_gray"%> </div>
+      <div class="link_gray"><%= link_to "Cancelar",:controller=>"users", :action=>"mysolar"%> </div>
+    </div>
+  <%  end %>
