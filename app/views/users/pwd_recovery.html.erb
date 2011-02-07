@@ -5,6 +5,9 @@
   <!--Parte cinza-->
   <div id="login_left_col">
     <%= render '/user_sessions/menu' %>
+
+
+
     <p>
 
       <% form_tag controller=> "user", :action => "pwd_recovery_send" do %>
@@ -12,7 +15,7 @@
       <div class="pwd_recovery_all">
         <%=  image_tag "security.png" %>
         <span class="pwd_recovery_title">Segurança</span>
-        <hr style="border: none; background-color: #d0dadd; height: 1px; width:80%; left: 0px; position: relative; top:-12px; margin-left:0px;"/>
+        <hr style="border: none; background-color: #d0dadd; height: 1px; width:80%; left: 0px; position: relative; top:-12px; margin-left:0px;"></hr>
 
         <p class="pwd_recovery_subtitle">Esqueceu a sua senha?</p>
         
@@ -38,27 +41,14 @@
             	</td>
             </tr>
           </table>
-<<<<<<< HEAD
-
-          <br/>
-          <%= flash[:notice] %>
-          <br/>
-
-          <div style="margin-left: 65px;margin-top: 30px; width: 550px; margin-bottom: 100px;">
-            <div style="float:right; margin-right: 30px">
-              <input type="button" value="Voltar" class="solar_button" onclick="document.location.href='<%=login_path%>'"/>
-              <%= submit_tag "Enviar", :class=>'solar_button', :tabindex=>"3"%>
-            </div>
-=======
           	<div><%= flash[:notice] %></div>
           
->>>>>>> a81688ef6236b7752bf9f49575f2752f35ba0b74
           </div>
-
+          
         </div>
       </div>
-
-
+      
+      
     <% end %>
     </p>
 
