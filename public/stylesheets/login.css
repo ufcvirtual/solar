@@ -1,37 +1,39 @@
-
 img{
     border: none;
 }
 
-div.field_with_errors
-{
-    display: inline;
-    padding:0px;
-    margin:0px;
-}
 body{
     background-color    : #fff;
     cursor              : default;
     margin              : 0px;
     padding             : 0px;
+    font-family         :'Myriad Pro','Trebuchet', Arial;
 }
-/* coloquei esse aqui pra sobreescrever esse label aqui de baixo (Rafael) */
-.form_usuario_label {
 
-    text-align		: right;
-    width		: 15px;
-    padding-right       : 10px;
-    padding-left        : 10px;
-    margin-top          : 2px;
-    font-size           : 14px;
-    white-space         : pre-wrap;
+/*Classes de erros*/
+.error_explanation{
+    font-size: 11pt;
+    font-style: italic;
+    color: #e03838;
+    line-height: 25px;
+    margin-left: 10px;
 }
+
+.field_with_errors{
+    display:inline-block;
+    border: 1px solid #e03838;
+}
+
+
 label{
     color: #ffffff;
     display: inline-block;
-    width: 82px;
+    white-space: nowrap;
+    width: 90px;
+    font-family:'Verdana', Arial;
     white-space: nowrap;
 }
+
 label.menor{
     display: inline-block;
     white-space: nowrap;
@@ -44,26 +46,35 @@ label.menor{
 }
 
 a{
-    color           : #EEE;
+    color           : #FFF;
     font-family     :'Myriad Pro','Trebuchet', Arial;
-    font-size       : 11pt;
     text-decoration : none;
+    font-size       : 11pt;
 }
 
+a.black{
+    color           : #333;
+}
+a.black:hover{
+    color           : #444;
+}
 
 a.menor{
-    color           : #000;
-    font-family     :'Myriad Pro','Trebuchet', Arial;
+    color           : #222;
     font-size       : 9pt;
-    text-decoration : none;
     text-decoration : underline;
+    font-family     :'Myriad Pro','Trebuchet', Arial;
+    text-decoration : none;
 }
 
 a:hover{
-    color           : #DDD;
-    font-family     :'Myriad Pro','Trebuchet', Arial;
-    font-size       : 11pt;
-    text-decoration : none;
+    color           : #EEE;
+}
+
+select{
+    color           : #222;
+    background-color: #fff;
+    border          : 1px solid #dedede;
 }
 
 p{
@@ -75,8 +86,53 @@ p{
 
 input{
     color           : #222;
-    border:none;
+    border          : none;
+    background-color: #fff;
+    border          : 1px solid #dedede;
 }
+
+textarea{
+    color           : #222;
+    background-color: #fff;
+    border          : 1px solid #dedede;
+}
+
+/*################################################################################*/
+
+/************ Layout do botões com seta ****************/
+.solar_button {
+	color           : #222;
+    background-color: #fff;
+    vertical-align: baseline;
+	margin-top:0;
+	font-weight:bold;
+	padding:8px;
+	cursor: pointer;
+}
+.solar_button_gray {
+    background-color: #e7edee;
+	margin-top:0;
+	font-weight:bold;
+	padding:8px;
+}
+.solar_button_arrow {
+	height:10px;
+	background:url('../images/solar_button_arrow.png') no-repeat right bottom;
+	display:inline-block;
+	width:22px;
+	height:10px;
+	position:relative;
+	left:-25px;
+	top:-17px;
+}
+
+.solar_button_arrow_gray {
+	height:10px;
+	background:url('/images/solar_button_arrow_gray.png') no-repeat right bottom;
+	display:inline-block;
+}
+
+
 /******************************** Página de login: *******/
 #login_right_col{
     display: table-cell;
@@ -202,6 +258,16 @@ input{
 
 
 /******** cadastro de novo usuario com layout do login **********/
+.form_usuario_label {
+
+    text-align		: right;
+    width		: 15px;
+    padding-right       : 10px;
+    padding-left        : 10px;
+    margin-top          : 2px;
+    font-size           : 14px;
+    white-space         : pre-wrap;
+}
 
 #login_form_new_user{
      margin-left	: 65px;

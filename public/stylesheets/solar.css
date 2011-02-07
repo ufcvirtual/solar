@@ -108,12 +108,9 @@ textarea{
 }
 
 #mysolar_logo {
-	/*left: 0px;
-	top: 0px;*/
 	width: 185px;
 	height: 36px;
 	float		: left;
-	/*position: absolute;*/
 }
 
 #mysolar_tab{
@@ -125,7 +122,7 @@ textarea{
 	display:inline-block;
 	z-index: 10;
 	border-top:4px solid #003e7a;
-    cursor: pointer;
+        cursor: pointer;
 }
 
 #meusdados_tab_topo{
@@ -141,11 +138,6 @@ textarea{
 }
 
 #mysolar_top_options {
-	/*left: 185px;
-	top: 0px;
-	height: 36px;
-	position: absolute;
-	display: block;*/
         padding-right   : 30px;
 	height		: 36px;
 	line-height	: 36px;
@@ -229,7 +221,6 @@ a.mysolar_top_link{
 
 #mydata_tab{
         height: 30px;
-        /*width: 340px;*/
         background-color: none;
         color: #003E7A;
 }
@@ -426,14 +417,14 @@ div.widget_head {
 }
 
 .limpar{
-     height: 20px;
+    height: 20px;
     width: 100px;
     margin-left: 455px;
     margin-top: -20px;
     
 }
 
-/* Layout do botões com seta */
+/************ Layout do botões com seta ****************/
 .solar_button {
 	color           : #222;
     background-color: #fff;

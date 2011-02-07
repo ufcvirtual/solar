@@ -5,9 +5,6 @@
   <!--Parte cinza-->
   <div id="login_left_col">
     <%= render '/user_sessions/menu' %>
-
-
-
     <p>
 
       <% form_tag controller=> "user", :action => "pwd_recovery_send" do %>
@@ -15,7 +12,7 @@
       <div id="sectodo" style="margin-left:36px;">
         <%=  image_tag "security.png" %>
         <span style="font-weight: bold; font-size: 20px; font-family:"Myriad Pro">Segurança</span>
-        <hr style="border: none;background-color: #dedede;height: 1px; position: relative"></hr>
+        <hr style="border: none;background-color: #dedede;height: 1px; position: relative" />
 
 
         <p class="sectitle">Esqueceu a sua senha?</p>
@@ -32,22 +29,22 @@
               <td> <%= text_field :user, :cpf, :id => 'cpf', :tabindex=>"2"%></td>
             </tr>
           </table>
-          
-         	<br/>
-	      	<%= flash[:notice] %>
-	      	<br/>
-	      	
-         	<div style="margin-left: 65px;margin-top: 30px; width: 550px; margin-bottom: 100px;">
-	      		<div style="float:right; margin-right: 30px">
-          		<input type="button" value="Voltar" class="solar_button" onclick="document.location.href='<%=login_path%>'"/>
-          		<%= submit_tag "Enviar", :class=>'solar_button', :tabindex=>"3"%>
-          	</div>
+
+          <br/>
+          <%= flash[:notice] %>
+          <br/>
+
+          <div style="margin-left: 65px;margin-top: 30px; width: 550px; margin-bottom: 100px;">
+            <div style="float:right; margin-right: 30px">
+              <input type="button" value="Voltar" class="solar_button" onclick="document.location.href='<%=login_path%>'"/>
+              <%= submit_tag "Enviar", :class=>'solar_button', :tabindex=>"3"%>
+            </div>
           </div>
-          
+
         </div>
       </div>
-      
-      
+
+
     <% end %>
     </p>
 

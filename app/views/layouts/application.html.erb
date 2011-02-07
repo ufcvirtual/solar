@@ -13,8 +13,6 @@
   <%= javascript_include_tag "jquery.maskedinput-1.2.2"%>
   <%= csrf_meta_tag %>
 
-
-
 <script>
 jQuery(function($){
          $("#cpf").mask("999.999.999-99");
@@ -23,13 +21,9 @@ jQuery(function($){
          $("#cep").mask("99999-999");
       });
       // layout dos botoes
-    //    solar_button_width = $(".solar_button").outerWidth();
 	$(".solar_button").after("<div class='solar_button_arrow'></div>");
-	//$(".solar_button_arrow").css('width',solar_button_width);
       //layout dos botoes cinzas
-    //    solar_button_gray_width = $(".solar_button_gray").outerWidth();
 	$(".solar_button_gray").after("<div class='solar_button_arrow_gray'></div>");
-	//$(".solar_button_arrow_gray").css('width',solar_button_gray_width);
       //Configurando Menu
       $(function() {
         $( "#mysolar_menu_accordion" ).accordion({

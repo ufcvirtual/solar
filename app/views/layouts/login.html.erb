@@ -3,7 +3,6 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Solar</title>
-    <%= stylesheet_link_tag "solar.css" %>
     <%= stylesheet_link_tag "login.css" %>
     <%= stylesheet_link_tag "security.css" %>
     <%= javascript_include_tag "jquery-1.4.4.js" %>
@@ -13,9 +12,6 @@
     <%= javascript_include_tag "mysolar.js" %>
     <%= javascript_include_tag "jquery.maskedinput-1.2.2"%>
     <%= csrf_meta_tag %>
-
-
-
     <script>
       jQuery(function($){
         $("#cpf").mask("999.999.999-99");
@@ -23,14 +19,9 @@
         $("#celular").mask("(99)9999-9999");
         $("#cep").mask("99999-999");
         // layout dos botoes
-        //solar_button_width = $(".solar_button").outerWidth();
-		$(".solar_button").after("<div class='solar_button_arrow'>&nbsp;</div>");
-	
-    	//$(".solar_button_arrow").css('width',solar_button_width);
+        $(".solar_button").after("<div class='solar_button_arrow'>&nbsp;</div>");
         //layout dos botoes cinzas
-        //solar_button_gray_width = $(".solar_button_gray").outerWidth();
 	$(".solar_button_gray").after("<div class='solar_button_arrow_gray'>&nbsp;</div>");
-	//$(".solar_button_arrow_gray").css('width',solar_button_gray_width);
       });
        </script>
 

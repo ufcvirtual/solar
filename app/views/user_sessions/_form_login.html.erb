@@ -17,7 +17,7 @@
       <%= f.password_field :password, :id=>"login_form_password", :class=>"login_form_text_field", :tabindex=>"2"%>
       <br/>
       <div id="login_form_secundario" style="line-height: 30px;">
-        <div id="direita" style="width:100px; float: right; margin-right:10px; margin-top:28px;line-height: 11px; white-space:nowrap">
+        <div id="direita" style="width:100px; float: right; margin-top:28px;line-height: 11px; white-space:nowrap">
           <%= f.submit t(:entrar_botao),:class=>"solar_button", :tabindex=>"3", :style=>"padding: 4px 10px; margin-bottom:10px;" %>
         </div>
         <div id="esquerda" style="margin-right: 120px;">
@@ -25,7 +25,7 @@
           <label for="login_form_lembrar_senha" class="menor"><%= t(:lembrar_minha_senha) %></label>
           <br/>
           &nbsp;
-          <%= link_to t(:esqueci_a_senha),:controller=>"users", :action=>"pwd_recovery"%>
+          <%= link_to t(:esqueci_a_senha),{:controller=>"users", :action=>"pwd_recovery"}, :class=>"black"%>
         </div>
 
       </div>
@@ -34,22 +34,18 @@
   <% end %>
   <%= flash[:notice] %>
 
+  <div>
+    <table>
+      <tr>
+        <td style="width: 20px"> <%= image_tag "locales.png" %> </td>
+        <td style="width: 55px"> <%= link_to "English","/?locale=en ", :style=>"color: #000"%> </td>
+        <td> <%= link_to "Português(BR)","/", :style=>"color: #000"%> </td>
+      </tr>
 
-	
-	<div>
-      <table>
-        <tr>
-          <td style="width: 20px"> <%= image_tag "locales.png" %> </td>
-          <td style="width: 55px"> <%= link_to "English","http://localhost:3000/?locale=en ", :style=>"color: #000"%> </td>
-          <td> <%= link_to "Português(BR)","http://localhost:3000", :style=>"color: #000"%> </td>
-        </tr>
+    </table>
+  </div>
+</div>
 
-      </table>
-    </div>	
-
-
-    </div>
-
-	<script>
-		document.getElementById("login_form_name").focus();
-	</script>
+<script>
+  document.getElementById("login_form_name").focus();
+</script>
