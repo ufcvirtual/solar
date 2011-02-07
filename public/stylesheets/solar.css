@@ -261,7 +261,6 @@ a.mysolar_top_link{
     width: 600px;
 }
 
-
 .my_form_data
 {
     background-color: #F7F7F7;
@@ -280,6 +279,18 @@ a.mysolar_top_link{
 
 #my_cadastral_data{
     display:none;
+}
+
+#my_cadastral_data_button{
+    margin-top: 40px;
+    width: 220px;
+    float: right;
+}
+
+#my_personal_data_button{
+    margin-top: 40px;
+    width: 220px;
+    float: right;
 }
 .my_cadastral_data_label{
     font-size       :larger;
@@ -425,6 +436,8 @@ div.widget_head {
 }
 
 /************ Layout do botões com seta ****************/
+
+/* Layout do botões com seta */
 .solar_button {
 	color           : #222;
     background-color: #fff;
@@ -456,17 +469,26 @@ div.widget_head {
 	background:url('/images/solar_button_arrow_gray.png') no-repeat right bottom;
 	display:inline-block;
 }
+.solar_button_blue {
+	color           : #fff;
+    background-color: #003e7a;
+    vertical-align: baseline;
+	margin-top:0;
+	font-weight:bold;
+	padding:8px;
+	cursor: pointer;
+}
+.solar_button_arrow_blue {
+	height:10px;
+	background:url('../images/solar_button_arrow_blue.png') no-repeat right bottom;
+	display:inline-block;
+	width:22px;
+	height:10px;
+	position:relative;
+	left:-25px;
+	top:-22px;
+}
 
-#my_cadastral_data_button{
-    margin-top: 40px;
-    width: 220px;
-    float: right;
-}
-#my_personal_data_button{
-    margin-top: 40px;
-    width: 220px;
-    float: right;
-}
 
 .link_gray{
     width: 75px;
@@ -478,4 +500,3 @@ div.widget_head {
     font-weight: bold;
     border: 1px solid #DEDEDE;
 }
-

@@ -9,26 +9,36 @@
 
       <% form_tag controller=> "user", :action => "pwd_recovery_send" do %>
 
-      <div id="sectodo" style="margin-left:36px;">
+      <div class="pwd_recovery_all">
         <%=  image_tag "security.png" %>
-        <span style="font-weight: bold; font-size: 20px; font-family:"Myriad Pro">Segurança</span>
-        <hr style="border: none;background-color: #dedede;height: 1px; position: relative" />
+        <span class="pwd_recovery_title">Segurança</span>
+        <hr style="border: none; background-color: #d0dadd; height: 1px; width:80%; left: 0px; position: relative; top:-12px; margin-left:0px;"/>
 
-
-        <p class="sectitle">Esqueceu a sua senha?</p>
-        <p class="sectext">Para recuperar sua senha, digite o endereço de e-mail que você usa para acessar a conta do Solar.<br/>
+        <p class="pwd_recovery_subtitle">Esqueceu a sua senha?</p>
+        
+        <p class="pwd_recovery_text">Para recuperar sua senha, digite o cpf e o endereço de e-mail que você usa para acessar a conta do Solar.<br/>
           Nós enviaremos a nova senha para o seu e-mail em instantes.</p>
-        <div id="pwdbox">
-          <table border="0" class="table_sec">
+        <div id="pwdbox" width="550px">
+          <table border="0" class="pwd_recovery_table">
             <tr>
-              <td><label for="email" class="label_sec">E-mail:</label></td>
+              <td align="right"><label for="email" class="pwd_recovery_label">E-mail:</label></td>
               <td><%= text_field :user, :email, :id => 'email', :tabindex=>"1"%></td>
             </tr>
             <tr>
-              <td> <label for="cpf" class="label_sec">CPF:</label></td>
-              <td> <%= text_field :user, :cpf, :id => 'cpf', :tabindex=>"2"%></td>
+              <td align="right"><label for="cpf" class="pwd_recovery_label">CPF:</label></td>
+              <td><%= text_field :user, :cpf, :id => 'cpf', :tabindex=>"2"%></td>
+            </tr>
+            <tr>
+            	<td colspan="2">
+		        	<div style="margin-left: 65px;margin-top: 30px; width: 385px; margin-bottom: 100px;">
+				  		<div style="float:right; margin-right: 30px">
+				  		<input type="button" value="Voltar" class="solar_button_blue" onclick="document.location.href='<%=login_path%>'"/>
+				  		<%= submit_tag "Enviar", :class=>'solar_button_blue', :tabindex=>"3"%>
+				  	</div>
+            	</td>
             </tr>
           </table>
+<<<<<<< HEAD
 
           <br/>
           <%= flash[:notice] %>
@@ -39,6 +49,10 @@
               <input type="button" value="Voltar" class="solar_button" onclick="document.location.href='<%=login_path%>'"/>
               <%= submit_tag "Enviar", :class=>'solar_button', :tabindex=>"3"%>
             </div>
+=======
+          	<div><%= flash[:notice] %></div>
+          
+>>>>>>> a81688ef6236b7752bf9f49575f2752f35ba0b74
           </div>
 
         </div>
