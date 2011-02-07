@@ -18,6 +18,6 @@ ActionMailer::Base.smtp_settings = {
 		:port                 => 587,  
 		:domain               => 'www.virtual.ufc.br',
 		:user_name            => 'informacao@virtual.ufc.br',		
-		:password             => '!info@',
+		:password             => 'p!ck25;30',
 		:authentication       => 'login',
 		:enable_starttls_auto => true  }

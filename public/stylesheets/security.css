@@ -1,0 +1,31 @@
+
+
+#sectodo{
+
+    margin-left             : 36px;
+
+}
+
+.sectitle{
+    font-family             : 'Myriad Pro','Trebuchet', Arial;
+    padding                 : 0px;
+    font-size               : 14pt;
+}
+.sectext{
+    padding                 : 0px;
+}
+
+#pwdbox{
+    margin-left             : 136px;
+
+    width                   : 400px;
+}
+.label_sec{
+    text-align: right;
+    margin-right: 15px;
+    color: #000;
+}
+
+.table_sec{
+    border-spacing:10px;
+}

@@ -199,6 +199,7 @@ ptBR:
         movies: "Filmes"
         books: "Livros"
         phrase: "Frase"
+        email: "E-mail"
 
     errors:
       template:

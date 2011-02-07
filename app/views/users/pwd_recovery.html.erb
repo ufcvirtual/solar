@@ -1,41 +1,59 @@
-<head>
-  <%= stylesheet_link_tag "login.css" %>
-</head>
-
 <div style="position:absolute;height:100%;width:100%; display: table;">
 
-	<%= render '/user_sessions/header' %>  
+  <%= render '/user_sessions/header' %>
 
-    <!--Parte cinza-->
-    <div id="login_left_col">
-      <%= render '/user_sessions/menu' %>
+  <!--Parte cinza-->
+  <div id="login_left_col">
+    <%= render '/user_sessions/menu' %>
 
-      <p>
 
-        <% form_tag controller=> "user", :action => "pwd_recovery_send" do %>
-			  <p>Esqueceu a sua senha?</p> 
-			  
-		      <label for="pwd_recovery_cpf">Seu CPF:</label>&nbsp;
-		      <%= text_field :user, :cpf, :id => 'pwd_recovery_cpf', :tabindex=>"1"%>
-		      <br/>
-		      <br/>
-		      
-			  <label for="pwd_recovery_email">Seu E-mail:</label>&nbsp;
-		      <%= text_field :user, :email, :id => 'pwd_recovery_email', :tabindex=>"2"%>		      
-		      <br/>
-		      <br/>
-		      
-		      <%= link_to 'Voltar', login_path %>&nbsp;&nbsp;
-			  <%= submit_tag "Enviar", :tabindex=>"3"%>
 
-			  <br/><br/>
-			  <%= flash[:notice] %>	
-      	<% end %>        
-      </p>
+    <p>
 
-    </div>
+      <% form_tag controller=> "user", :action => "pwd_recovery_send" do %>
 
-	<%#= render '/user_sessions/form_login' %>
+      <div id="sectodo" style="margin-left:36px;">
+        <%=  image_tag "security.png" %>
+        <span style="font-weight: bold; font-size: 20px; font-family:"Myriad Pro">Segurança</span>
+        <hr style="border: none;background-color: #dedede;height: 1px; position: relative"></hr>
 
-    <%= render '/user_sessions/footer' %>
+
+        <p class="sectitle">Esqueceu a sua senha?</p>
+        <p class="sectext">Para recuperar sua senha, digite o endereço de e-mail que você usa para acessar a conta do Solar.<br/>
+          Nós enviaremos a nova senha para o seu e-mail em instantes.</p>
+        <div id="pwdbox">
+          <table border="0" class="table_sec">
+            <tr>
+              <td><label for="email" class="label_sec">E-mail:</label></td>
+              <td><%= text_field :user, :email, :id => 'email', :tabindex=>"1"%></td>
+            </tr>
+            <tr>
+              <td> <label for="cpf" class="label_sec">CPF:</label></td>
+              <td> <%= text_field :user, :cpf, :id => 'cpf', :tabindex=>"2"%></td>
+            </tr>
+          </table>
+          
+         	<br/>
+	      	<%= flash[:notice] %>
+	      	<br/>
+	      	
+         	<div style="margin-left: 65px;margin-top: 30px; width: 550px; margin-bottom: 100px;">
+	      		<div style="float:right; margin-right: 30px">
+          		<input type="button" value="Voltar" class="solar_button" onclick="document.location.href='<%=login_path%>'"/>
+          		<%= submit_tag "Enviar", :class=>'solar_button', :tabindex=>"3"%>
+          	</div>
+          </div>
+          
+        </div>
+      </div>
+      
+      
+    <% end %>
+    </p>
+
+  </div>
+
+<%#= render '/user_sessions/form_login' %>
+
+  <%= render '/user_sessions/footer' %>
 </div>

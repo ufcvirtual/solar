@@ -435,12 +435,16 @@ div.widget_head {
 
 /* Layout do botões com seta */
 .solar_button {
+	color           : #222;
+    background-color: #fff;
+    vertical-align: baseline;
 	margin-top:0;
 	font-weight:bold;
 	padding:8px;
+	cursor: pointer;
 }
 .solar_button_gray {
-        background-color: #e7edee;
+    background-color: #e7edee;
 	margin-top:0;
 	font-weight:bold;
 	padding:8px;
@@ -448,11 +452,18 @@ div.widget_head {
 .solar_button_arrow {
 	height:10px;
 	background:url('../images/solar_button_arrow.png') no-repeat right bottom;
+	display:inline-block;
+	width:22px;
+	height:10px;
+	position:relative;
+	left:-25px;
+	top:-17px;
 }
 
 .solar_button_arrow_gray {
 	height:10px;
 	background:url('/images/solar_button_arrow_gray.png') no-repeat right bottom;
+	display:inline-block;
 }
 
 #my_cadastral_data_button{
