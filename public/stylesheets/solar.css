@@ -433,6 +433,27 @@ div.widget_head {
     
 }
 
+/* Botoes da recuperacao de senha */
+.solar_button_blue {
+	color           : #fff;
+    background-color: #003e7a;
+    vertical-align: baseline;
+	margin-top:0;
+	font-weight:bold;
+	padding:8px;
+	cursor: pointer;
+}
+.solar_button_arrow_blue {
+	height:10px;
+	background:url('../images/solar_button_arrow_blue.png') no-repeat right bottom;
+	display:inline-block;
+	width:22px;
+	height:10px;
+	position:relative;
+	left:-25px;
+	top:-22px;
+}
+
 /* Layout do botões com seta */
 .solar_button {
 	color           : #222;

@@ -22,14 +22,13 @@ jQuery(function($){
          $("#celular").mask("(99)9999-9999");
          $("#cep").mask("99999-999");
       });
-      // layout dos botoes
-    //    solar_button_width = $(".solar_button").outerWidth();
-	$(".solar_button").after("<div class='solar_button_arrow'></div>");
-	//$(".solar_button_arrow").css('width',solar_button_width);
-      //layout dos botoes cinzas
-    //    solar_button_gray_width = $(".solar_button_gray").outerWidth();
+      // layout dos botoes    
+	$(".solar_button").after("<div class='solar_button_arrow'></div>");	
+    //layout dos botoes cinzas
 	$(".solar_button_gray").after("<div class='solar_button_arrow_gray'></div>");
-	//$(".solar_button_arrow_gray").css('width',solar_button_gray_width);
+	//layout dos botoes azuis
+	$(".solar_button_blue").after("<div class='solar_button_arrow_blue'></div>");
+
       //Configurando Menu
       $(function() {
         $( "#mysolar_menu_accordion" ).accordion({
