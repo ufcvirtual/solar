@@ -40,6 +40,7 @@ Cenário: Cadastrar novo usuário
        E que eu preenchi "Confirmar senha" com "123456"
        E que eu preenchi "Nick" com "usuario"
        E que eu preenchi "E-mail" com "usuario@solar.virtual.ufc.br"
+       E que eu preenchi "Confirmar e-mail" com "usuario@solar.virtual.ufc.br"
        E que eu preenchi "Instituição" com "Inst"
        E que eu preenchi "Nome" com "Usuário do Solar"
        E que eu preenchi "cpf" com "72416475304"

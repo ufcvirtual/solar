@@ -8,7 +8,7 @@ Funcionalidade: Efetuar login
 Contexto:
 	Dado que tenho "users"
 		| login | email		| password | name | birthdate  | cpf         | sex  | address | address_number | address_neighborhood | zipcode   | country | state | city      | institution |
-		| user  | user@user.com | user123  | User | 01/01/2005 | 78218921494 | true | Rua R   | 111            | Bairro               | 600000000 | Brasil  | CE    | Fortaleza | UFC         |
+		| user  | user@user.com | user123  | Username | 01/01/2005 | 78218921494 | true | Rua R   | 111            | Bairro               | 600000000 | Brasil  | CE    | Fortaleza | UFC         |
 
 Cenário: Usuário já logado com step
 	Dado que estou logado no sistema com usuario user
