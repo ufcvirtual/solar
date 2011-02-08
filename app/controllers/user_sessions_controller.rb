@@ -24,7 +24,7 @@ layout 'login'
 
       redirect_back_or_default users_mysolar_url #('/')
     else
-      flash[:notice] = t(:Dados_de_login_incorretos)
+      flash[:notice] = t(:login_data_invalid)
       render :action => :new
     end
   end

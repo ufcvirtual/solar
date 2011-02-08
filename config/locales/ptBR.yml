@@ -1,32 +1,36 @@
 ptBR:
 
 #Página de Login
-
-  description1: "O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,
+  login_description1: "O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,
         da Universidade Federal do Ceará. Ele é orientado ao professor e ao aluno,
         possibilitando a publicação de cursos e a interação com os mesmos."
-
-  description2: "O Solar foi desenvolvido potencializando o aprendizado a partir da relação com
+  login_description2: "O Solar foi desenvolvido potencializando o aprendizado a partir da relação com
         a própria interface gráfica do ambiente, sendo desenvolvido para que o usuário
         tenha rapidez no acesso às páginas e ao conteúdo, fácil navegabilidade e
         compatibilidade com navegadores. Aqui, o interagente se sente seguro a
         explorar os espaços disponibilizados. O ambiente é apoiado
         numa filosofia de interação e não de controle."
-
+  login_footer: "Instituto UFC Virtual 2011 - Universidade Federal do Ceará | Equipe de Desenvolvimento"
   tutorial: "Tutorial"
   UFC_virtual: "UFC Virtual"
   news: "Notícias"
-  entrar: "Entrar"
-  cadastrar: "Cadastrar"
-  usuario: "Usuário"
-  senha: "Senha"
-  lembrar_minha_senha: "Lembrar minha senha"
-  esqueci_a_senha: "esqueci a senha"
-  entrar_botao: "Entrar"
+  signin: "Entrar"
+  signup: "Cadastrar"
+  user: "Usuário"
+  password: "Senha"
+  remember_my_password: "Lembrar minha senha"
+  forgot_my_password: "esqueci a senha"
 
+  # pagina de cadastro de usuario
+  
+  special_needs_yes: "Sim"
+  special_needs_no: "Não"
+  which: "Qual"
+  confirm: "Confirmar"
+  back: "Voltar"
+  
   #       msg de erro ,ainda no login    #
-
-  Dados_de_login_incorretos: "Dados de login incorretos!"
+  login_data_invalid: "Dados de login incorretos!"
 
   # Página Esqueci Minha Senha
 
@@ -199,6 +203,7 @@ ptBR:
         address: "Endereço"
         address_number: "Número"
         address_neighborhood: "Bairro"
+        address_complement: "Complemento"
         zipcode: "CEP"
         cpf: "CPF"
         country: "País"
@@ -206,13 +211,16 @@ ptBR:
         city: "Cidade"
         institution: "Instituição"
         special_needs: "Necessidades especiais"
-        password_confirmation: "Confirmação de senha"
+        password_confirmation: "Confirmação da senha"
         interests: "Interesses"
         music: "Música"
         movies: "Filmes"
         books: "Livros"
         phrase: "Frase"
         email: "E-mail"
+        telephone: "Telefone"
+        cell_phone: "Celular"
+        email_confirmation: "Confirmação do e-mail"
 
     errors:
       template:

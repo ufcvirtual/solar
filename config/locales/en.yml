@@ -4,25 +4,31 @@
 en:
   #Página de Login
 
-  description1: "Solar is a virtual learning environment developed by the UFC Virtual Institute at Federal University of Ceará. It is geared towards the teacher and the student, allowing the publication of courses and interaction with them."
-
-  description2: "The Solar was developed to enhance the learning process, starting from the interaction with the graphic interface of the environment, and to allow fast access to the pages and the content, easy navigation and browser compatibility. Here, the learner feels safe to explore the available spaces. The environment is supported by a philosophy of interaction, not control."
-
+  login_description1: "Solar is a virtual learning environment developed by the UFC Virtual Institute at Federal University of Ceará. It is geared towards the teacher and the student, allowing the publication of courses and interaction with them."
+  login_description2: "The Solar was developed to enhance the learning process, starting from the interaction with the graphic interface of the environment, and to allow fast access to the pages and the content, easy navigation and browser compatibility. Here, the learner feels safe to explore the available spaces. The environment is supported by a philosophy of interaction, not control."
+  login_footer: "UFC Virtual Institute 2011 - Federal University of Ceará | Development Team"
   news: "News"
   tutorial: "Tutorial"
   UFC_virtual: "UFC Virtual"
-  entrar: "Sign In"
-  cadastrar: "Sign Up"
-  usuario: "User"
-  senha: "Password"
-  lembrar_minha_senha: "Remember my password"
-  esqueci_a_senha: "I forgot my password"
-  entrar_botao: "Sign In"
+  signin: "Sign In"
+  signup: "Sign Up"
+  user: "User"
+  password: "Password"
+  remember_my_password: "Remember my password"
+  forgot_my_password: "I forgot my password"
+
+  # pagina de cadastro de usuario
+     
+  special_needs_yes: "Yes"
+  special_needs_no: "No"
+  which: "Which"
+  confirm: "Confirm"
+  back: "Back"
 
   #       msg de erro ,ainda no login    #
+  login_data_invalid: "Login details incorrect!"
 
-  Dados_de_login_incorretos: "Login details incorrect!"
-
+  
 
 
 # Página Esqueci Minha Senha
@@ -38,3 +44,40 @@ en:
   pwd_recovery_cpf: "CPF"
   pwd_recovery_send: "Send"
   pwd_recovery_back: "Back"
+
+
+
+  # formatos de data e hora
+  date:
+    formats:
+      default: "%m/%d/%Y"
+
+    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
+    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Spt, Oct, Nov, Dec]
+    order: [:month, :day, :year]
+
+# ActiveRecord
+  activerecord:
+    models:
+      user: "Usuario"
+    attributes:
+      user:
+        sex: "Gender"
+        address_number: "Number"
+        address_neighborhood: "Neighborhood"
+        address_complement: "Complement"
+        cpf: "CPF"
+    errors:
+      messages:
+        invalid: " is not valid"
+        confirmation: " is different of the confirmation"
+        accepted: "must be accepted"
+        empty: " must be filled"
+        blank: " must be filled"
+        too_long: " is too long (maximum: %{count} characters)"
+        too_short: " is too short (minimum: %{count} characters)"
+        wrong_length: " do not have the expected size (%{count} characters)"
+        taken: " already in use"
+        not_a_number: " is not a number"
+        not_an_integer: " is not an integer number"
+        record_invalid: "The validation failed: %{errors}"

@@ -1,41 +1,22 @@
 <div style="position:absolute;height:100%;width:100%; display: table;">
 
-  <div style="display: table-row;">
-    <div id="login_top">
-      &nbsp;
-    </div>
-    <div id="login_top_blank">
-      &nbsp;
-    </div>
-  </div>
+  <%= render '/user_sessions/header' %>
   
 
     <!--Parte cinza-->
     <div id="login_left_col">
-      <div id="login_menu">
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="login.html">UFC Virtual</a>&nbsp;&nbsp;&nbsp;
-        <a href="noticias.html">Not&iacute;cias</a>&nbsp;&nbsp;&nbsp;
-        <a href="tutorial.html">Tutorial</a>
-      </div>
-
+      <%= render '/user_sessions/menu' %>
       
-		<%= render 'form' %>
+      <%= render 'form' %>
 		
     </div>
 
 
     <!--Rodapé-->
-    <div id="login_footer">
-		<img src="/images/logo_virtual.png" alt="Instituto UFC Virtual" title="Instituto UFC Virtual"/>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<img src="/images/logo_ufc.png" alt="UFC - Universidade Fereral do Ceará" title="UFC - Universidade Fereral do Ceará"/>
-	    <br/>
-	    Instituto UFC Virtual 2010 - Universidade Federal do Ceará | Equipe de Desenvolvimento
-    </div>
+    <%= render '/user_sessions/footer' %>
   </div>
 
 
 <script>
-    document.getElementById("login_form_name").focus();
+    //document.getElementById("login_form_name").focus();
 </script>
