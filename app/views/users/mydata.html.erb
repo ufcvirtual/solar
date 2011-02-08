@@ -85,13 +85,13 @@
         <tr></tr>
 
       </table>
+      <div id="my_personal_data_button">
+        <input type="button" onclick="document.location.href='/';" value="Cancelar" class="solar_button_gray"/>
+        <%= fi.submit "Alterar Dados",:id=>"personal_submit", :class=>"solar_button_gray"%>
+      </div>
+    </div>
 
-      <!--form-->
-    </div>
-    <div id="my_personal_data_button">
-      <input type="button" onclick="document.location.href='/';" value="Cancelar" class="solar_button_gray"/>
-      <%= fi.submit "Alterar Dados", :id=>"personal_submit",:class=>"solar_button_gray"%>
-    </div>
+    <!--form-->
   <% end %>
 
 </div>
@@ -215,25 +215,25 @@
         <td> <%= fo.label "Endereço",:class=>"my_cadastral_data_label" %> </td>
       </tr>
       <tr>
-        <td><%= fo.label "Rua" ,:class=>"my_cadastral_data_label_short"  %> <%=  fo.text_field  :address,:style=>full_field_size %></td>
+        <td><%= fo.label :address, "Rua:" ,:class=>"my_cadastral_data_label_short"  %> <%=  fo.text_field  :address,:style=>full_field_size %></td>
       </tr>
       <tr>
         <td>
-          <%= fo.label "Número:" ,:class=>"my_cadastral_data_label_short" %> <%=  fo.text_field  :address_number,:style=>field_size %>
+          <%= fo.label :address_number, "Número:" ,:class=>"my_cadastral_data_label_short" %> <%=  fo.text_field  :address_number,:style=>field_size %>
           <%= fo.label "CEP:",:class=>"my_cadastral_data_label_short" %> <%=  fo.text_field  :zipcode ,:id=>"cep",:style=>field_size %>
-          <%= fo.label "Bairro:",:class=>"my_cadastral_data_label_short"  %> <%=  fo.text_field  :address_neighborhood ,:style=>field_size %>
+          <%= fo.label :address_neighborhood, "Bairro:",:class=>"my_cadastral_data_label_short"  %> <%=  fo.text_field  :address_neighborhood ,:style=>field_size %>
         </td>
       </tr>
       <tr>
         <td>
-          <%= fo.label "Cidade:" ,:class=>"my_cadastral_data_label_short" %> <%=  fo.text_field  :city ,:style=>field_size%>
-          <%= fo.label "Estado:" ,:class=>"my_cadastral_data_label_short" %>  <%= fo.select :state, ([["AC", "AC"], ["AL", "AL"], ["AP", "AP"],
+          <%= fo.label :city, "Cidade:" ,:class=>"my_cadastral_data_label_short" %> <%=  fo.text_field  :city ,:style=>field_size%>
+          <%= fo.label:state,  "Estado:" ,:class=>"my_cadastral_data_label_short" %>  <%= fo.select :state, ([["AC", "AC"], ["AL", "AL"], ["AP", "AP"],
               ["AM", "AM"], ["BA", "BA"], ["CE", "CE"], ["DF", "DF"], ["ES", "ES"],
               ["GO", "GO"], ["MA", "MA"], ["MT", "MT"], ["MS", "MS"], ["MG", "MG"],
               ["PA", "PA"], ["PB", "PB"], ["PR", "PR"], ["PE", "PE"], ["PI", "PI"],
               ["RJ", "RJ"], ["RN", "RN"], ["RS", "RS"], ["RO", "RO"], ["RR", "RR"],
               ["SC", "SC"], ["SP", "SP"], ["SE", "SE"], ["TO", "TO"]]), :include_blank => true %>
-          <%= fo.label "País:" ,:class=>"my_cadastral_data_label_short" %> <%=  fo.text_field  :country,:style=>field_size %>
+          <%= fo.label :country, "País:" ,:class=>"my_cadastral_data_label_short" %> <%=  fo.text_field  :country,:style=>field_size %>
         </td>
       </tr>
 
@@ -273,9 +273,10 @@
         </td>
       </tr>
     </table>
+    <div id="my_cadastral_data_button" style="display:none;">
+      <input type="button" onclick="document.location.href='/';" value="Cancelar" class="solar_button_gray"/>
+      <%= fo.submit "Alterar Dados", :id=>"personal_submit", :class=>"solar_button_gray"%>
+    </div>
   </div>
-  <div id="my_cadastral_data_button" style="display:none;">
-    <input type="button" onclick="document.location.href='/';" value="Cancelar" class="solar_button_gray"/>
-    <%= fo.submit "Alterar Dados", :id=>"cadastral_submit", :class=>"solar_button_gray"%>
-  </div>
+
 <%  end %>
