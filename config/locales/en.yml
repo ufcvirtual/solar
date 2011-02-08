@@ -22,3 +22,19 @@ en:
   #       msg de erro ,ainda no login    #
 
   Dados_de_login_incorretos: "Login details incorrect!"
+
+
+
+# Página Esqueci Minha Senha
+
+
+  pwd_recovery_security: "Security"
+  pwd_recovery_subtitle: "Forgot your password?"
+
+  pwd_recovery_text: "To regain access, type your cpf and the email address that you use to access your Solar account."
+  pwd_recovery_text2: "We will send you a new password for your e-mail shortly."
+
+  pwd_recovery_email: "E-mail"
+  pwd_recovery_cpf: "CPF"
+  pwd_recovery_send: "Send"
+  pwd_recovery_back: "Back"

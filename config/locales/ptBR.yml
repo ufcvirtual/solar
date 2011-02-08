@@ -28,6 +28,20 @@ ptBR:
 
   Dados_de_login_incorretos: "Dados de login incorretos!"
 
+  # Página Esqueci Minha Senha
+
+
+  pwd_recovery_security: "Segurança"
+  pwd_recovery_subtitle: "Esqueceu a sua senha?"
+
+  pwd_recovery_text: "Para recuperar seu acesso, digite o cpf e o endereço de e-mail que você usa para acessar a conta do Solar."
+  pwd_recovery_text2: "Nós enviaremos a nova senha para o seu e-mail em instantes."
+
+  pwd_recovery_email: "E-mail:"
+  pwd_recovery_cpf: "CPF:"
+  pwd_recovery_send: "Enviar"
+  pwd_recovery_back: "Voltar"
+  
 
 
   # formatos de data e hora
@@ -251,3 +265,4 @@ ptBR:
         email: "Email"
         password: "Senha"
         remember_me: "Lembrar me"
+

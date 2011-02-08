@@ -14,29 +14,30 @@
 
       <div class="pwd_recovery_all">
         <%=  image_tag "security.png" %>
-        <span class="pwd_recovery_title">Segurança</span>
+        <span class="pwd_recovery_title">  <%=  t(:pwd_recovery_security)%></span>
         <hr style="border: none; background-color: #d0dadd; height: 1px; width:80%; left: 0px; position: relative; top:-12px; margin-left:0px;"></hr>
 
-        <p class="pwd_recovery_subtitle">Esqueceu a sua senha?</p>
+        <p class="pwd_recovery_subtitle"><%= t(:pwd_recovery_subtitle)%></p>
         
-        <p class="pwd_recovery_text">Para recuperar sua senha, digite o cpf e o endereço de e-mail que você usa para acessar a conta do Solar.<br/>
-          Nós enviaremos a nova senha para o seu e-mail em instantes.</p>
+        <p class="pwd_recovery_text"><%= t(:pwd_recovery_text)%><br /><%= t(:pwd_recovery_text2)%></p>
+ 
         <div id="pwdbox" width="550px">
           <table border="0" class="pwd_recovery_table">
             <tr>
-              <td align="right"><label for="email" class="pwd_recovery_label">E-mail:</label></td>
+              <td align="right"><label for="email" class="pwd_recovery_label"><%= t(:pwd_recovery_email)%> </label></td>
               <td><%= text_field :user, :email, :id => 'email', :tabindex=>"1"%></td>
             </tr>
             <tr>
-              <td align="right"><label for="cpf" class="pwd_recovery_label">CPF:</label></td>
+              <td align="right"><label for="cpf" class="pwd_recovery_label"><%= t(:pwd_recovery_cpf)%> </label></td>
               <td><%= text_field :user, :cpf, :id => 'cpf', :tabindex=>"2"%></td>
             </tr>
             <tr>
             	<td colspan="2">
 		        	<div style="margin-left: 65px;margin-top: 30px; width: 385px; margin-bottom: 100px;">
 				  		<div style="float:right; margin-right: 30px">
-				  		<input type="button" value="Voltar" class="solar_button_blue" onclick="document.location.href='<%=login_path%>'"/>
-				  		<%= submit_tag "Enviar", :class=>'solar_button_blue', :tabindex=>"3"%>
+				  		<input type="button" value='<%=t(:pwd_recovery_back)%>' class="solar_button_blue" onclick="document.location.href='<%=login_path%>'"/>
+				  		<%= submit_tag t(:pwd_recovery_send), :class=>'solar_button_blue', :tabindex=>"3"%>
+                                               
 				  	</div>
             	</td>
             </tr>
