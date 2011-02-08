@@ -90,7 +90,7 @@
     </div>
     <div id="my_personal_data_button">
       <input type="button" onclick="document.location.href='/';" value="Cancelar" class="solar_button_gray"/>
-      <%= fi.submit "Alterar Dados", :class=>"solar_button_gray"%>
+      <%= fi.submit "Alterar Dados", :id=>"personal_submit",:class=>"solar_button_gray"%>
     </div>
   <% end %>
 
@@ -276,6 +276,6 @@
   </div>
   <div id="my_cadastral_data_button" style="display:none;">
     <input type="button" onclick="document.location.href='/';" value="Cancelar" class="solar_button_gray"/>
-    <%= fo.submit "Alterar Dados", :class=>"solar_button_gray"%>
+    <%= fo.submit "Alterar Dados", :id=>"cadastral_submit", :class=>"solar_button_gray"%>
   </div>
 <%  end %>

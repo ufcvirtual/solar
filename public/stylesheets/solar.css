@@ -64,12 +64,15 @@ input{
     background-color: #fff;
     border          : 1px solid #dedede;
     padding         : 5px;
+    font-size	    : 13px;
 }
 
 textarea{
     color           : #222;
     background-color: #fff;
     border          : 1px solid #dedede;
+    font-size	    : 13px; 
+    padding         : 5px;
 }
 
 /********meu solar**********/
@@ -480,7 +483,7 @@ div.widget_head {
     height:10px;
     position:relative;
     left:-25px;
-    top:-19px;
+    top:-17px;
 }
 .solar_button_blue {
     color           : #fff;

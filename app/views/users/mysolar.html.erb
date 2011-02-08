@@ -1,5 +1,9 @@
 <!-- Portlets -------------------------->
-  <table id="mysolar_panel_home">
+<% if flash[:notice] %>
+	<div id="notice"><%= flash[:notice] %></div>
+	&nbsp;<br/>&nbsp;<br/>
+<% end %>
+ <table id="mysolar_panel_home">
 	<tr>
 		<td valign="top">
 			<div class="mysolar_portlets_coluna">
