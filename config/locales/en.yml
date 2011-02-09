@@ -34,7 +34,6 @@ en:
 
 # Página Esqueci Minha Senha
 
-
   pwd_recovery_security: "Security"
   pwd_recovery_subtitle: "Forgot your password?"
 
@@ -46,6 +45,14 @@ en:
   pwd_recovery_send: "Send"
   pwd_recovery_back: "Back"
 
+  pwd_recovery_sucess_msg: "Password sent successfully!"
+  pwd_recovery_error_msg: "Could not send a new password. Please try again."
+  pwd_recovery_unknown_user_msg: "User not found!"
+
+  pwd_recovery_mail_body: "Dear %{recipient}, \n\nYour new password to access Solar is:\n    %{password}
+   			\n\nRegards,\nAdministration.
+			\n\n\nSOLAR Virtual Environment: http://www.solar2.virtual.ufc.br
+			\n\n\n[This is an automatic message. Please don't reply it.]"
 
 
   # formatos de data e hora

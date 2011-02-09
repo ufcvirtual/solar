@@ -154,14 +154,14 @@ class UsersController < ApplicationController
 			#envia email
 			Notifier.deliver_recovery_new_pwd(user_find, pwd)
 
-			msg = 'Senha enviada com sucesso!'
+			msg = t(:pwd_recovery_sucess_msg)
 			
 		else
-			msg = 'Nao foi possivel enviar nova senha. Por favor, tente novamente.'
+			msg = t(:pwd_recovery_error_msg)
 		end
 				
 	else
-		msg = 'Usuario nao encontrado!'
+		msg = t(:pwd_recovery_unknown_user_msg)
 	end	
 	
 	respond_to do |format|

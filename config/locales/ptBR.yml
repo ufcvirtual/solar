@@ -35,7 +35,6 @@ ptBR:
 
   # Página Esqueci Minha Senha
 
-
   pwd_recovery_security: "Segurança"
   pwd_recovery_subtitle: "Esqueceu a sua senha?"
 
@@ -46,7 +45,15 @@ ptBR:
   pwd_recovery_cpf: "CPF:"
   pwd_recovery_send: "Enviar"
   pwd_recovery_back: "Voltar"
+
+  pwd_recovery_sucess_msg: "Senha enviada com sucesso!"
+  pwd_recovery_error_msg: "Não foi possivel enviar nova senha. Por favor, tente novamente."
+  pwd_recovery_unknown_user_msg: "Usuario não encontrado!"
   
+  pwd_recovery_mail_body: "Caro(a) %{recipient}, \n\nSua nova senha para acessar o Solar é:\n    %{password}
+  			\n\nAtenciosamente,\nAdministração do ambiente.
+			\n\n\nAmbiente Virtual SOLAR: http://www.solar2.virtual.ufc.br
+			\n\n\n[Esta é uma mensagem automática. Por favor, não a responda.]"
 
 
   # formatos de data e hora
