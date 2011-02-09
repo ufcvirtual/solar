@@ -1,7 +1,7 @@
 <%= @object.association.variable rescue nil %>
 
 <div id="login_form_new_user">
-  <h2 class="form_usuario_h2">Novo Cadastro</h2>
+  <h2 class="form_usuario_h2"><%=t(:new_user_title)%></h2>
 
   <%= form_for(@user) do |f| %>
     <% if @user.errors.any? %>

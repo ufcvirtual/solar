@@ -18,6 +18,7 @@ en:
   forgot_my_password: "I forgot my password"
 
   # pagina de cadastro de usuario
+  new_user_title: "New Register"
   new_user_msg_ok: "User created!"
   special_needs_yes: "Yes"
   special_needs_no: "No"
