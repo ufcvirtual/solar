@@ -50,14 +50,14 @@
 
       <div id="mysolar_boxid">
         <div id="mysolar_id">
-          <%= image_tag @user.photo.url(:small), :alt => "Imagem do usuário #{@user.nick}" %><br/>
+          <%= image_tag @user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{@user.nick}" %><br/>
           <%= @user.nick%>
         </div>
         <div id="mysolar_options">
-          <%= link_to "Meus Dados", :controller => "users", :action => "mydata", :id=>current_user.id %><br/>
+          <%= link_to t(:mysolar_mn_mydata), :controller => "users", :action => "mydata", :id=>current_user.id %><br/>
 			Portfolio <br />
 			Blog <br />
-			Personalizar <br />
+			<%= t(:mysolar_mn_customize) %> <br />
 
         </div>
       </div>
@@ -65,7 +65,7 @@
         <input class="search_keyword" type="text"/>
         <br/>
         <span id="mysolar_search_label">
-   	Busca
+   	<%=t(:mysolar_search)%>
         </span>
         <br/>
         <hr width="149" style="border:none;height:1px;background-color: #cfdde1"/>
@@ -105,7 +105,7 @@
     <div id="mysolar_topbar">
 <%#= render :partial => "topbar" %>
       <div id="mysolar_logo">
-        <%= image_tag 'superior_logo.png', :alt => "Logo do Solar" %><br/>
+        <%= image_tag 'superior_logo.png', :alt => t(:mysolar_alt_img_solar) %><br/>
       </div>
       <div id="mysolar_tab" >
 <%#*<a href="mysolar">Home</a>%>
@@ -113,10 +113,10 @@
       </div>
 
       <span id="mysolar_top_options" >
-		| &nbsp;<%= image_tag 'superior_suporte.png', :alt => "Ajuda" %>
-		Suporte&nbsp;&nbsp;&nbsp;
-		| &nbsp;<%= image_tag 'superior_sair.png', :alt => "Sair" %>&nbsp;
-        <%= link_to_if(current_user, "Sair", logout_path, :class => "mysolar_top_link") %>
+		| &nbsp;<%= image_tag 'superior_suporte.png', :alt => t(:mysolar_alt_img_support) %>
+		<%= t(:mysolar_alt_img_support) %>&nbsp;&nbsp;&nbsp;
+		| &nbsp;<%= image_tag 'superior_sair.png', :alt => t(:mysolar_alt_img_exit) %>&nbsp;
+        <%= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, :class => "mysolar_top_link") %>
       </span>
     </div>
 
@@ -125,7 +125,7 @@
     <div id="mysolar_chat_area">
       <div id="mysolar_chat_contatos">
         <div id="mysolar_chat_barra" onclick="toggle_chat('mysolar_chat_list')">
-          <%= image_tag("chat_online.png")%>Chat
+          <%= image_tag("chat_online.png")%><%= t(:mysolar_chat) %>
           <span style="float:right;">
             <span id="mysolar_chat_min_button">-</span>
             <span id="mysolar_chat_max_button" style="display:none;">+</span>

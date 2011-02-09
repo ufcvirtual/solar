@@ -29,7 +29,22 @@ ptBR:
   which: "Qual"
   confirm: "Confirmar"
   back: "Voltar"
-  
+
+  # pagina do meu solar
+  mysolar_news: "Novidades"
+  mysolar_recent_activities: "Atividades Recentes"
+  mysolar_agenda: "Agenda"
+  mysolar_class: "Aulas"
+  mysolar_forum: "Fórum"
+  mysolar_chat: "Chat"
+  mysolar_alt_img_user: "Imagem do usuário"
+  mysolar_alt_img_solar: "Logo do Solar"
+  mysolar_alt_img_support: "Suporte"
+  mysolar_alt_img_exit: "Sair"
+  mysolar_mn_mydata: "Meus Dados"
+  mysolar_mn_customize: "Personalizar"
+  mysolar_search: "Busca"
+
   #       msg de erro ,ainda no login    #
   login_data_invalid: "Dados de login incorretos!"
 

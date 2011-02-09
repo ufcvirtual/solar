@@ -26,6 +26,21 @@ en:
   confirm: "Confirm"
   back: "Back"
 
+    # pagina do meu solar
+  mysolar_news: "News"
+  mysolar_recent_activities: "Recents Activities"
+  mysolar_agenda: "Agenda"
+  mysolar_class: "Classes"
+  mysolar_forum: "Forum"
+  mysolar_chat: "Chat"
+  mysolar_alt_img_user: "User image of"
+  mysolar_alt_img_solar: "Solar Logo"
+  mysolar_alt_img_support: "Support"
+  mysolar_alt_img_exit: "Exit"
+  mysolar_mn_mydata: "My Data"
+  mysolar_mn_customize: "Customize"
+  mysolar_search: "Search"
+
   #       msg de erro ,ainda no login    #
   login_data_invalid: "Login details incorrect!"
 
