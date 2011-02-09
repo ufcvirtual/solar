@@ -22,7 +22,7 @@ ptBR:
   forgot_my_password: "esqueci a senha"
 
   # pagina de cadastro de usuario
-  
+  new_user_msg_ok: "Usuário criado com sucesso!"
   special_needs_yes: "Sim"
   special_needs_no: "Não"
   which: "Qual"
@@ -194,7 +194,7 @@ ptBR:
       user: "Usuario"
     attributes:
       user:
-        alternate_email: "E-mail Alternativo"
+        alternate_email: "E-mail alternativo"
         password: "Senha"
         name: "Nome"
         nick: "Apelido"

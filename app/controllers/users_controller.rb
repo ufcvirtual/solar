@@ -63,12 +63,10 @@ class UsersController < ApplicationController
     @user.password = params[:user]["password"]
     respond_to do |format|
       if (@user.save )
-        #format.html { redirect_to(@user, :notice => 'Usuario criado com sucesso!') }
-	msg = "Usuario Criado com Sucesso!"
+        msg = t(:new_user_msg_ok)
         format.html { render :action => "mysolar", :notice=>msg}
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
-        #flash[:erro] = 'Erro criando usu�rio!'          # msg do tipo erro
         format.html { render :action => "new",:layout =>"login" }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end
@@ -85,7 +83,7 @@ class UsersController < ApplicationController
       if (@user.update_attributes(params[:user]))
       #if (@user.update_attributes!(:bio => params[:user][:bio]))
         #Ver se precisa mesmo deste redirect.
-	msg = 'Usuario alterado com sucesso!'
+      msg = 'Usuario alterado com sucesso!'
         format.html { redirect_to({:controler=>"users",:action=>"mysolar"}, :notice => msg)}
        # format.html { render :action => "mysolar", :notice => msg}
         format.xml  { head :ok }
