@@ -56,7 +56,7 @@ en:
   pwd_recovery_security: "Security"
   pwd_recovery_subtitle: "Forgot your password?"
 
-  pwd_recovery_text: "To regain access, type your cpf and the email address that you use to access your Solar account."
+  pwd_recovery_text: "To regain access, type your CPF and the e-mail address that you use to access your Solar account."
   pwd_recovery_text2: "We will send you a new password for your e-mail shortly."
 
   pwd_recovery_email: "E-mail"
@@ -68,7 +68,10 @@ en:
   pwd_recovery_error_msg: "Could not send a new password. Please try again."
   pwd_recovery_unknown_user_msg: "User not found!"
 
-  pwd_recovery_mail_body: "Dear %{recipient}, \n\nYour new password to access Solar is:\n    %{password}
+  pwd_recovery_mail_body: "Dear %{recipient}, \n\nYou requested the recovery of your Solar data access.
+			\n\nYour data to access the environment are:
+			\n    Login: %{login}
+			\n    New password: %{password}
    			\n\nRegards,\nAdministration.
 			\n\n\nSOLAR Virtual Environment: http://www.solar2.virtual.ufc.br
 			\n\n\n[This is an automatic message. Please don't reply it.]"

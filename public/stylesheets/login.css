@@ -10,6 +10,19 @@ body{
     font-family         :'Myriad Pro','Trebuchet', Arial;
 }
 
+/*Classes de mensagens flash*/
+.error{
+    font-size: 12pt;
+    font-weight: bold;
+    color: #660000;
+}
+
+.notice{
+    font-size: 12pt;
+    font-weight: bold;
+    color: #2F4F2F;
+}
+
 /*Classes de erros*/
 .error_explanation{
     font-size: 11pt;

@@ -154,18 +154,17 @@ class UsersController < ApplicationController
 			#envia email
 			Notifier.deliver_recovery_new_pwd(user_find, pwd)
 
-			msg = t(:pwd_recovery_sucess_msg)
-			
+			flash[:notice] = t(:pwd_recovery_sucess_msg)
 		else
-			msg = t(:pwd_recovery_error_msg)
+			flash[:error] = t(:pwd_recovery_error_msg)
 		end
 				
 	else
-		msg = t(:pwd_recovery_unknown_user_msg)
+		flash[:error] = t(:pwd_recovery_unknown_user_msg)
 	end	
 	
 	respond_to do |format|
-	  format.html { redirect_to(users_pwd_recovery_url, :notice => msg) }
+	  format.html { redirect_to(users_pwd_recovery_url) }
 	  format.xml  { head :ok }
 	end
 	

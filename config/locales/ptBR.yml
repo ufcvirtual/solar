@@ -57,7 +57,7 @@ ptBR:
   pwd_recovery_security: "Segurança"
   pwd_recovery_subtitle: "Esqueceu a sua senha?"
 
-  pwd_recovery_text: "Para recuperar seu acesso, digite o cpf e o endereço de e-mail que você usa para acessar a conta do Solar."
+  pwd_recovery_text: "Para recuperar seu acesso, digite o CPF e o endereço de e-mail que você usa para acessar a conta do Solar."
   pwd_recovery_text2: "Nós enviaremos a nova senha para o seu e-mail em instantes."
 
   pwd_recovery_email: "E-mail:"
@@ -69,7 +69,10 @@ ptBR:
   pwd_recovery_error_msg: "Não foi possivel enviar nova senha. Por favor, tente novamente."
   pwd_recovery_unknown_user_msg: "Usuario não encontrado!"
   
-  pwd_recovery_mail_body: "Caro(a) %{recipient}, \n\nSua nova senha para acessar o Solar é:\n    %{password}
+  pwd_recovery_mail_body: "Caro(a) %{recipient}, \n\nVocê solicitou recuperação de acesso ao Solar.
+			\n\nSeus dados para acessar o ambiente são:
+			\n    Login: %{login}
+			\n    Nova Senha: %{password}
   			\n\nAtenciosamente,\nAdministração do ambiente.
 			\n\n\nAmbiente Virtual SOLAR: http://www.solar2.virtual.ufc.br
 			\n\n\n[Esta é uma mensagem automática. Por favor, não a responda.]"
