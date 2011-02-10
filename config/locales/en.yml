@@ -17,6 +17,10 @@ en:
   remember_my_password: "Remember my password"
   forgot_my_password: "I forgot my password"
 
+  # application controller
+  app_controller_require: "Please log!"
+  app_controller_require_no: "Please log out!"
+
   # pagina de cadastro de usuario
   new_user_title: "New Register"
   new_user_msg_ok: "User created!"

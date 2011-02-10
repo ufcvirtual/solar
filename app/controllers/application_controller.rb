@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
       #logger.debug "ApplicationController::require_user"
       unless current_user
         store_location
-        flash[:notice] = "Por favor, efetue login!"
+        flash[:notice] = t(:app_controller_require)
         redirect_to new_user_session_url
         return false
       end
@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
       #logger.debug "ApplicationController::require_no_user"
       if current_user
         store_location
-        flash[:notice] = "Efetue logout!"
+        flash[:notice] = t(:app_controller_require_no)
         redirect_to users_mysolar_url #account_url
         return false
       end

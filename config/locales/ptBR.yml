@@ -21,6 +21,10 @@ ptBR:
   remember_my_password: "Lembrar minha senha"
   forgot_my_password: "esqueci a senha"
 
+  # application controller
+  app_controller_require: "Por favor, efetue login!"
+  app_controller_require_no: "Por fevor, efetue logout!"
+  
   # pagina de cadastro de usuario
   new_user_title: "Novo Cadastro"
   new_user_msg_ok: "Usuário criado com sucesso!"
