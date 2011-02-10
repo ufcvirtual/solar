@@ -76,20 +76,66 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.xml
   def update
+
+     #variavel para verificar se a mudança de senha passa nos testes
+    sucesso = true
+    msg = " "
+
+    #Evita que os parametros nulo fiquem como " " no banco
+    params[:user]["old_password"] = nil if params[:user]["old_password"] == ""
+    params[:user]["new_password"] = nil if params[:user]["new_password"] == ""
+    params[:user]["repeat_password"] = nil if params[:user]["repeat_password"] == ""
+    #recupera o usuario que esta sendo editado
     @user = User.find(params[:id])
 
-    respond_to do |format|
+    #Validação da mudança de senha. Só entra nesse if maior se algum dos campos for preenchido
+    # os campos são: Senha Antiga, Nova Senha e Confirmar Senha
+    if ( !params[:user]["old_password"].nil? ||
+          !params[:user]["new_password"].nil? ||
+          !params[:user]["repeat_password"].nil?)
 
-      if (@user.update_attributes(params[:user]))
-      #if (@user.update_attributes!(:bio => params[:user][:bio]))
-        #Ver se precisa mesmo deste redirect.
-      msg = 'Usuario alterado com sucesso!'
+
+      antiga_senha  = params[:user]["old_password"]
+      nova_senha    = params[:user]["new_password"]
+      repetir_senha = params[:user]["repeat_password"]
+
+     
+      if (!antiga_senha.nil?)
+          antiga_senha = CryptoProvider.encrypt(antiga_senha)
+      end
+      
+      if (antiga_senha.nil?)
+        sucesso = false
+        msg = "Senha antiga vazia"
+      else
+        if (antiga_senha == @user[:crypted_password])
+          if (nova_senha.nil? || repetir_senha.nil? || (nova_senha != repetir_senha))
+            sucesso = false
+            msg = "A nova senha e a confirmacao nao conferem !"
+          end
+        else
+          sucesso = false
+          msg = "Senha antiga incorreta"
+        end
+      end
+    end
+    #Limpando os parametros da requisicao que nao fazem parte do MODEL
+    params[:user].delete("old_password")
+    params[:user].delete("new_password")
+    params[:user].delete("repeat_password")
+
+    #caso a mudança de senha esteja correta, altera a senha
+    if (sucesso && !nova_senha.nil?)
+      @user.crypted_password =  CryptoProvider.encrypt(nova_senha)
+    end
+    respond_to do |format|
+      if (sucesso && @user.update_attributes(params[:user]))
+        msg = 'Usuario alterado com sucesso!'
         format.html { redirect_to({:controler=>"users",:action=>"mysolar"}, :notice => msg)}
-       # format.html { render :action => "mysolar", :notice => msg}
         format.xml  { head :ok }
       else
-        #format.html { render :action => "edit" }
-        format.html { render :action => "mydata" }
+        flash[:msg] = msg
+        format.html {redirect_to({:controler=>"users",:action=>"mydata"}, :notice => msg)}
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end
     end

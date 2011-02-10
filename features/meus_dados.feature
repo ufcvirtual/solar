@@ -88,10 +88,35 @@ Cenário: Alterar dados Cadastrais
        E que eu selecionei "Estado" com "CE"
        E que eu preenchi "País" com "Brasil"
        E que eu preenchi "Login" com "usuario"
-    Quando eu clicar em "personal_submit"
+    Quando eu clicar em "cadastral_submit"
     Então eu deverei ver "Usuario alterado com sucesso!"
 
 
+@wip
+Esquema do Cenário: Alteração de senha
+	Dado que estou logado no sistema com usuario user
+		E que estou em "Meus Dados"
+		E preencho o campo "Senha Antiga" com "<antiga_senha>"
+		E preencho o campo "Nova Senha" com "<nova_senha>"
+                E preencho o campo "Confirmar Senha" com "<confirmar_senha>"
+	Quando eu clicar em "cadastral_submit"
+	Então eu deverei ver "<action>"
+Exemplos:
+	| antiga_senha         |  nova_senha       |  confirmar_senha      | action                                        |
+	| xyz                  |                   |                       | Senha antiga incorreta                        |
+        | xyz                  |  user456          |  user456              | Senha antiga incorreta                        |
+        | user123              |                   |                       | A nova senha e a confirmacao nao conferem !   |
+        | user123              |  user456          |  user789              | A nova senha e a confirmacao nao conferem !   |
+        |                      |  user456          |  user456              | Senha antiga vazia                            |
+        |                      |  user456          |  user789              | Senha antiga vazia                            |
+        | user123              |                   |  user789              | A nova senha e a confirmacao nao conferem !   |
+        | user123              |  user789          |                       | A nova senha e a confirmacao nao conferem !   |
+        | xyz                  |                   |  user789              | Senha antiga incorreta                        |
+        | xyz                  |  user789          |                       | Senha antiga incorreta                        |
+        |                      |                   |  user789              | Senha antiga vazia                            |
+        |                      |  user789          |                       | Senha antiga vazia                            |      
+        | user123              |  user789          |  user789              | Usuario alterado com sucesso!                 |
+        
 
 
 
