@@ -3,10 +3,13 @@
   <span style="font-weight: bold; font-size: 20px">Meus dados</span>
   <hr style="border: none;background-color: #dedede;height: 1px;"></hr>
 
-<% if flash[:notice] %>
-	<div id="notice"><%= flash[:notice] %></div>
-	&nbsp;<br/>&nbsp;<br/>
+<% if flash[:success] || flash[:error] || flash[:notice]%>
+	 &nbsp;<br/>
+         <%=raw message %>&nbsp;
+	 &nbsp;<br/>
 <% end %>
+         
+ 
 
   <%
   #Tamanhos dos campos
@@ -30,14 +33,7 @@
   <!-- Dados Pessoais -->
   <div id="my_personal_data" class="my_form_data">
 
-    <!--Erros-->
-    <% if @user.errors.any? %>
-      <div class="error_explanation">
-        <% @user.errors.full_messages.each do |msg| %>
-          <%= msg %><br/>
-        <% end %>
-      </div>
-    <% end %><!--if-->
+
 
 
     <%= form_for(@user, :html => {:action => "update"}) do |fi| %>
@@ -101,13 +97,7 @@
 <div id="my_cadastral_data" class="my_form_data">
 
   <!--Erros-->
-  <% if @user.errors.any? %>
-    <div class="error_explanation">
-      <% @user.errors.full_messages.each do |msg| %>
-        <%= msg %><br/>
-      <% end %>
-    </div>
-  <% end %><!--if-->
+ <!--if-->
 
   <%= form_for(@user) do |fo| %>
     <i>*campos obrigatórios</i>
@@ -264,6 +254,7 @@
         <td valign="top" align="center" rowspan="3">  <%= image_tag "acessibilidade.png" %> </td>
         <td> <%= fo.label "Necessidades Especiais",:class=>"my_cadastral_data_label" %> </td>
       </tr>
+      <tr style="line-height: 3px;"><td>&nbsp;</td></tr>
       <tr>
         <td>
           <%= fo.label "radio_special", 'Portador de necessidades especiais?',:class=>"my_cadastral_data_label_short",:style=>"white-space: nowrap;width:225px;text-align:left;" %>

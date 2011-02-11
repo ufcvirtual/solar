@@ -1,10 +1,10 @@
 module ApplicationHelper
 	def message
 		text = ""
-		[:notice, :error].each {|type|
+		[:notice,:success,:error].each {|type|
 			if flash[type]
 				text += "<span class=\"#{type}\">#{flash[type]}</span>"
-			end
+      end
 		}
 		text
 	end

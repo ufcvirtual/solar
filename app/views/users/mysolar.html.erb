@@ -1,7 +1,8 @@
 <!-- Portlets -------------------------->
-<% if flash[:notice] %>
-  <div id="notice"><%= flash[:notice] %></div>
-  &nbsp;<br/>&nbsp;<br/>
+<% if flash[:success] || flash[:error] || flash[:notice]%>
+	 &nbsp;<br/>
+         <%=raw message %>&nbsp;
+	 &nbsp;<br/>
 <% end %>
 <table id="mysolar_panel_home">
   <tr>

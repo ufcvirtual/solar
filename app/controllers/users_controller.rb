@@ -6,9 +6,9 @@ class UsersController < ApplicationController
   # GET /users.xml
   def index
     if current_user
-		@user = User.find(current_user.id)
-	end
-	render :action => :mysolar
+      @user = User.find(current_user.id)
+    end
+    render :action => :mysolar
 
     #respond_to do |format|
     #  format.html # index.html.erb
@@ -48,13 +48,13 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
 
-#    garante que a senha não fique como "" o que é diferente do nulo e seria igual a senha
-#    params[:user]["password"] = nil if params[:user]["password"] == ""
-#    params[:user]["password_confirmation"] = nil if params[:user]["password_confirmation"] == ""
-#
-#    garante que o e-mail não fique como "" o que é diferente do nulo e seria igual ao e-mail
-#    params[:user]["email"] = nil if params[:user]["email"] == ""
-#    params[:user]["email_confirmation"] = nil if params[:user]["email_confirmation"] == ""
+    #    garante que a senha não fique como "" o que é diferente do nulo e seria igual a senha
+    #    params[:user]["password"] = nil if params[:user]["password"] == ""
+    #    params[:user]["password_confirmation"] = nil if params[:user]["password_confirmation"] == ""
+    #
+    #    garante que o e-mail não fique como "" o que é diferente do nulo e seria igual ao e-mail
+    #    params[:user]["email"] = nil if params[:user]["email"] == ""
+    #    params[:user]["email_confirmation"] = nil if params[:user]["email_confirmation"] == ""
 
     if params["radio_special"] == "false"
       @user.special_needs = nil
@@ -77,9 +77,9 @@ class UsersController < ApplicationController
   # PUT /users/1.xml
   def update
 
-     #variavel para verificar se a mudança de senha passa nos testes
+    #variavel para verificar se a mudança de senha passa nos testes
     sucesso = true
-    msg = " "
+    error_msg = " "
 
     #Evita que os parametros nulo fiquem como " " no banco
     params[:user]["old_password"] = nil if params[:user]["old_password"] == ""
@@ -101,21 +101,21 @@ class UsersController < ApplicationController
 
      
       if (!antiga_senha.nil?)
-          antiga_senha = CryptoProvider.encrypt(antiga_senha)
+        antiga_senha = CryptoProvider.encrypt(antiga_senha)
       end
       
       if (antiga_senha.nil?)
         sucesso = false
-        msg = "Senha antiga vazia"
+        error_msg = "Senha antiga vazia"
       else
         if (antiga_senha == @user[:crypted_password])
           if (nova_senha.nil? || repetir_senha.nil? || (nova_senha != repetir_senha))
             sucesso = false
-            msg = "A nova senha e a confirmacao nao conferem !"
+            error_msg = "A nova senha e a confirmacao nao conferem !"
           end
         else
           sucesso = false
-          msg = "Senha antiga incorreta"
+          error_msg = "Senha antiga incorreta"
         end
       end
     end
@@ -130,12 +130,21 @@ class UsersController < ApplicationController
     end
     respond_to do |format|
       if (sucesso && @user.update_attributes(params[:user]))
-        msg = 'Usuario alterado com sucesso!'
-        format.html { redirect_to({:controler=>"users",:action=>"mysolar"}, :notice => msg)}
+        flash[:success] = 'Usuario alterado com sucesso!'
+        format.html { redirect_to({:controler=>"users",:action=>"mydata"})}
         format.xml  { head :ok }
       else
-        flash[:msg] = msg
-        format.html {redirect_to({:controler=>"users",:action=>"mydata"}, :notice => msg)}
+        #joga as mensagens de validação do modelo nas mensagens de erro
+        if @user.errors.any?
+          @user.errors.full_messages.each do |msg|
+            #remove a mensagem do brazillian rails
+            if msg != 'CPF numero invalido'
+               error_msg << msg+"<br/>"
+            end
+          end
+        end
+        flash[:error] = error_msg
+        format.html {render ({:controler=>"users",:action=>"mydata"})}
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end
     end
@@ -167,57 +176,57 @@ class UsersController < ApplicationController
   
   def pwd_recovery
   	if !@user
-		@user = User.new
-	end
+      @user = User.new
+    end
 	
-	#if !@user_session
-	#	@user_session = UserSession.new
-	#end
-	#render :action => pwd_recovery
-	respond_to do |format|
+    #if !@user_session
+    #	@user_session = UserSession.new
+    #end
+    #render :action => pwd_recovery
+    respond_to do |format|
       format.html { render :layout => 'login'}# new.html.erb
       format.xml  { render :xml => @user }
     end
   end
 
   def pwd_recovery_send
-	#se existe usuario com esse cpf e email, recupera
-	user_find = User.find_by_cpf_and_email(params[:user][:cpf],params[:user][:email])
+    #se existe usuario com esse cpf e email, recupera
+    user_find = User.find_by_cpf_and_email(params[:user][:cpf],params[:user][:email])
 	
-	if user_find
-		#gera nova senha
-		pwd = generate_password (8)
-		user_find.password = pwd
+    if user_find
+      #gera nova senha
+      pwd = generate_password (8)
+      user_find.password = pwd
 
-		#altera senha do usuario e envia email
-		if user_find.save!
+      #altera senha do usuario e envia email
+      if user_find.save!
 
-			#remove sessao criada
-			if current_user_session
-				current_user_session.destroy
-			end 
+        #remove sessao criada
+        if current_user_session
+          current_user_session.destroy
+        end
 			
-			#envia email
-			Notifier.deliver_recovery_new_pwd(user_find, pwd)
+        #envia email
+        Notifier.deliver_recovery_new_pwd(user_find, pwd)
 
-			flash[:notice] = t(:pwd_recovery_sucess_msg)
-		else
-			flash[:error] = t(:pwd_recovery_error_msg)
-		end
+        flash[:notice] = t(:pwd_recovery_sucess_msg)
+      else
+        flash[:error] = t(:pwd_recovery_error_msg)
+      end
 				
-	else
-		flash[:error] = t(:pwd_recovery_unknown_user_msg)
-	end	
+    else
+      flash[:error] = t(:pwd_recovery_unknown_user_msg)
+    end
 	
-	respond_to do |format|
-	  format.html { redirect_to(users_pwd_recovery_url) }
-	  format.xml  { head :ok }
-	end
+    respond_to do |format|
+      format.html { redirect_to(users_pwd_recovery_url) }
+      format.xml  { head :ok }
+    end
 	
   end
   
   def generate_password (size)
-	accept_chars = (('a'..'z').to_a + ('0'..'9').to_a) - %w(i o 0 1 l)
+    accept_chars = (('a'..'z').to_a + ('0'..'9').to_a) - %w(i o 0 1 l)
   	(1..size).collect{|a| accept_chars[rand(accept_chars.size)] }.join
   end
   

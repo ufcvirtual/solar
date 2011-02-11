@@ -21,6 +21,12 @@ body{
     color: #2F4F2F;
 }
 
+.success{
+    font-size: 12pt;
+    font-weight: bold;
+    color: #2F4F2F;
+}
+
 /*Classes de erros*/
 .error_explanation{
     font-size: 11pt;
