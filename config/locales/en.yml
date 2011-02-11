@@ -31,6 +31,26 @@ en:
   back: "Back"
   new_user_msg_cpf_error: " invalid"
 
+  #pagina meus dados
+  my_data: "My Data"
+  my_personal_data: "Personal"
+  my_cadastral_data: "Cadastral"
+  my_professional_data: "Professional"
+  alter_data: "Alter Data"
+  cancel: "Cancel"
+  contact: "Contact"
+  authentication: "Authentication"
+  old_password: "Old Password"
+  new_password: "New Password"
+  repeat_password: "Confirm Password"
+  address_street: "Street"
+  special_needs_question: "Do you have any disabilities ?"
+
+  empty_old_password: "Old password is empty"
+  bad_password_confirmation: "Bad password confirmation"
+  incorrect_old_password: "Old password is incorrect"
+  successful_update: "Update successful"
+
     # pagina do meu solar
   mysolar_news: "News"
   mysolar_recent_activities: "Recents Activities"

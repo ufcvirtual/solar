@@ -11,7 +11,6 @@ Contexto:
 		| user  | teste@virtual.ufc.br | user123  | User01 | 01/01/2005 | 78218921494 | true | Rua R   | 111            | Bairro               | 600000000 | Brasil  | CE    | Fortaleza | UFC         | altemail@gmail.com | vencedor do torneio nordestão de counter strike em 2005 | sushi, festas | Jurandi Vieira, Dream Theather, Calypso, Eric Clapton | O homem de desafiou o Diabo | Harry Potter | Bato ou corro! | www.jacarebanguela.com.br |
 
 
-
 Cenário: Acessar página de Edição de Dados Pessoais
 	Dado que estou logado no sistema com usuario user
             E que estou em "Meus Dados"
@@ -30,7 +29,7 @@ Cenário: Acessar página de Edição de Dados Cadastrais
             E que estou em "Meus Dados"
 	Então eu deverei ver "Nome"
             E eu deverei ver "Apelido"
-            E eu deverei ver "Nascimento"
+            E eu deverei ver "Data de Nascimento"
             E eu deverei ver "Sexo"
             E eu deverei ver "CPF"
             E eu deverei ver "Contato"
@@ -42,14 +41,13 @@ Cenário: Acessar página de Edição de Dados Cadastrais
             E eu deverei ver "Rua"
             E eu deverei ver "Número"
             E eu deverei ver "Cidade"
-            E eu deverei ver "Cep"
+            E eu deverei ver "CEP"
             E eu deverei ver "Estado"
             E eu deverei ver "Bairro"
             E eu deverei ver "País"
             E eu deverei ver "Autenticação"
             E eu deverei ver "Login"
             E eu deverei ver "Senha"
-            E eu deverei ver "Confirmar" 
             E eu deverei ver "Necessidades especiais"
 
 
@@ -91,8 +89,6 @@ Cenário: Alterar dados Cadastrais
     Quando eu clicar em "cadastral_submit"
     Então eu deverei ver "Usuario alterado com sucesso!"
 
-
-@wip
 Esquema do Cenário: Alteração de senha
 	Dado que estou logado no sistema com usuario user
 		E que estou em "Meus Dados"
@@ -105,18 +101,17 @@ Exemplos:
 	| antiga_senha         |  nova_senha       |  confirmar_senha      | action                                        |
 	| xyz                  |                   |                       | Senha antiga incorreta                        |
         | xyz                  |  user456          |  user456              | Senha antiga incorreta                        |
-        | user123              |                   |                       | A nova senha e a confirmacao nao conferem !   |
-        | user123              |  user456          |  user789              | A nova senha e a confirmacao nao conferem !   |
+        | user123              |                   |                       | A nova senha e a confirmacao nao conferem!    |
+        | user123              |  user456          |  user789              | A nova senha e a confirmacao nao conferem!    |
         |                      |  user456          |  user456              | Senha antiga vazia                            |
         |                      |  user456          |  user789              | Senha antiga vazia                            |
-        | user123              |                   |  user789              | A nova senha e a confirmacao nao conferem !   |
-        | user123              |  user789          |                       | A nova senha e a confirmacao nao conferem !   |
+        | user123              |                   |  user789              | A nova senha e a confirmacao nao conferem!    |
+        | user123              |  user789          |                       | A nova senha e a confirmacao nao conferem!    |
         | xyz                  |                   |  user789              | Senha antiga incorreta                        |
         | xyz                  |  user789          |                       | Senha antiga incorreta                        |
         |                      |                   |  user789              | Senha antiga vazia                            |
         |                      |  user789          |                       | Senha antiga vazia                            |      
         | user123              |  user789          |  user789              | Usuario alterado com sucesso!                 |
         
-
 
 

@@ -106,16 +106,16 @@ class UsersController < ApplicationController
       
       if (antiga_senha.nil?)
         sucesso = false
-        error_msg = "Senha antiga vazia"
+        error_msg = t('empty_old_password')
       else
         if (antiga_senha == @user[:crypted_password])
           if (nova_senha.nil? || repetir_senha.nil? || (nova_senha != repetir_senha))
             sucesso = false
-            error_msg = "A nova senha e a confirmacao nao conferem !"
+            error_msg = t("bad_password_confirmation")
           end
         else
           sucesso = false
-          error_msg = "Senha antiga incorreta"
+          error_msg = t('incorrect_old_password')
         end
       end
     end
@@ -130,7 +130,7 @@ class UsersController < ApplicationController
     end
     respond_to do |format|
       if (sucesso && @user.update_attributes(params[:user]))
-        flash[:success] = 'Usuario alterado com sucesso!'
+        flash[:success] = t('successful_update')
         format.html { redirect_to({:controler=>"users",:action=>"mydata"})}
         format.xml  { head :ok }
       else

@@ -35,6 +35,28 @@ ptBR:
   back: "Voltar"
   new_user_msg_cpf_error: " inválido"
 
+  #Meus dados
+  my_data: "Meus Dados"
+  my_personal_data: "Pessoais"
+  my_cadastral_data: "Cadastrais"
+  my_professional_data: "Profissionais"
+  alter_data: "Alterar Dados"
+  cancel: "Cancelar"
+  contact: "Contato"
+  authentication: "Autenticação"
+  old_password: "Senha Antiga"
+  new_password: "Nova Senha"
+  repeat_password: "Confirmar Senha"
+  address_street: "Rua"
+  special_needs_question: "Portador de necessidades especiais?"
+
+  empty_old_password: "Senha antiga vazia"
+  bad_password_confirmation: "A nova senha e a confirmacao nao conferem!"
+  incorrect_old_password: "Senha antiga incorreta"
+  successful_update: "Usuario alterado com sucesso!"
+
+
+
   # pagina do meu solar
   mysolar_news: "Novidades"
   mysolar_recent_activities: "Atividades Recentes"
@@ -229,7 +251,7 @@ ptBR:
         password: "Senha"
         name: "Nome"
         nick: "Apelido"
-        birthdate: "Data de nascimento"
+        birthdate: "Data de Nascimento"
         sex: "Sexo"
         address: "Endereço"
         address_number: "Número"
