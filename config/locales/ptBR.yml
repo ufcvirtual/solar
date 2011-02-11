@@ -23,7 +23,7 @@ ptBR:
 
   # application controller
   app_controller_require: "Por favor, efetue login!"
-  app_controller_require_no: "Por fevor, efetue logout!"
+  app_controller_require_no: "Por favor, efetue logout!"
   
   # pagina de cadastro de usuario
   new_user_title: "Novo Cadastro"
@@ -33,6 +33,7 @@ ptBR:
   which: "Qual"
   confirm: "Confirmar"
   back: "Voltar"
+  new_user_msg_cpf_error: " inválido"
 
   # pagina do meu solar
   mysolar_news: "Novidades"

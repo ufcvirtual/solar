@@ -7,10 +7,13 @@
     <% if @user.errors.any? %>
       <div id="error_explanation">
           <% @user.errors.full_messages.each do |msg| %>
-            <%= msg %><br/>
+            <%if msg != 'CPF numero invalido' # remove msg padrao do brazilian rails %>
+              <%= msg %><br/>
+            <%end%>
           <% end %>
       </div>
     <% end %>
+
     <% field_size = 44 %>
     <table class="form_usuario_table">
       <tr class="form_usuario_tr">

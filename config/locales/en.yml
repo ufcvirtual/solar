@@ -29,6 +29,7 @@ en:
   which: "Which"
   confirm: "Confirm"
   back: "Back"
+  new_user_msg_cpf_error: " invalid"
 
     # pagina do meu solar
   mysolar_news: "News"

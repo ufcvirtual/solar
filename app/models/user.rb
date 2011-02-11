@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   # validacao do comprimento da senha no :create
   validates :password,:presence =>true, :length => {:within => 6..60},:confirmation => true, :on => :create
   # validacao do comprimento da senha no :update
- 
+
 
 
   #Validações campo a campo
@@ -52,6 +52,13 @@ class User < ActiveRecord::Base
 
   #validaçao do CPF
   usar_como_cpf :cpf
+
+
+  validate :cpf_ok
+  def cpf_ok
+    cpf_verify = Cpf.new(self[:cpf])
+    errors.add(:cpf, I18n.t(:new_user_msg_cpf_error)) unless cpf_verify.valido?
+  end
 
 	#Detalhes da Senha #
   acts_as_authentic do |c|
