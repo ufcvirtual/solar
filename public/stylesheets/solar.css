@@ -217,6 +217,13 @@ a.mysolar_top_link{
     line-height: 175%;
     cursor: pointer;
 }
+#mysolar_locale{
+    width: 50%;
+    position: fixed;
+    bottom: 0;
+    margin-bottom: 20px;
+    margin-left: 357px;
+}
 
 /********Menu do meuSolar*****************/
 #mysolar_menu_accordion{

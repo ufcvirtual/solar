@@ -1,54 +1,58 @@
 <!-- Portlets -------------------------->
 <% if flash[:notice] %>
-	<div id="notice"><%= flash[:notice] %></div>
-	&nbsp;<br/>&nbsp;<br/>
+  <div id="notice"><%= flash[:notice] %></div>
+  &nbsp;<br/>&nbsp;<br/>
 <% end %>
- <table id="mysolar_panel_home">
-	<tr>
-		<td valign="top">
-			<div class="mysolar_portlets_coluna">
-				  <div class="mysolar_portlets_portlet">
-					    <div class="mysolar_portlets_header"><%= t(:mysolar_news) %></div>
-					    <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-				  </div>
-			  	  <div class="mysolar_portlets_portlet">
-					    <div class="mysolar_portlets_header"><%= t(:mysolar_class) %></div>
-					    <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-			 	 </div>
-			</div>
-		</td>
-		<td valign="top">
-			<div class="mysolar_portlets_coluna">
-				  <div class="mysolar_portlets_portlet">
-					    <div class="mysolar_portlets_header"><%= t(:mysolar_recent_activities) %></div>
-					    <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-				  </div>
-			</div>
-		</td>
-		<td valign="top">
-			<div class="mysolar_portlets_coluna">
-				  <div class="mysolar_portlets_portlet">
-					    <div class="mysolar_portlets_header"><%= t(:mysolar_agenda) %></div>
-					    <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-				  </div>
+<table id="mysolar_panel_home">
+  <tr>
+    <td valign="top">
+      <div class="mysolar_portlets_coluna">
+        <div class="mysolar_portlets_portlet">
+          <div class="mysolar_portlets_header"><%= t(:mysolar_news) %></div>
+          <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+        </div>
+        <div class="mysolar_portlets_portlet">
+          <div class="mysolar_portlets_header"><%= t(:mysolar_class) %></div>
+          <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+        </div>
+      </div>
+    </td>
+    <td valign="top">
+      <div class="mysolar_portlets_coluna">
+        <div class="mysolar_portlets_portlet">
+          <div class="mysolar_portlets_header"><%= t(:mysolar_recent_activities) %></div>
+          <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+        </div>
+      </div>
+    </td>
+    <td valign="top">
+      <div class="mysolar_portlets_coluna">
+        <div class="mysolar_portlets_portlet">
+          <div class="mysolar_portlets_header"><%= t(:mysolar_agenda) %></div>
+          <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+        </div>
 
-				  <div class="mysolar_portlets_portlet">
-					    <div class="mysolar_portlets_header"><%= t(:mysolar_forum) %></div>
-					    <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-				  </div>
-			</div>
-		</td>
-	</tr>
-  </table>
+        <div class="mysolar_portlets_portlet">
+          <div class="mysolar_portlets_header"><%= t(:mysolar_forum) %></div>
+          <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+        </div>
+      </div>
+    </td>
+  </tr>
+</table>
 
-<script>
-	//Configurando Portlets
-	$(function() {
-		$( ".mysolar_portlets_coluna" ).sortable({
-			connectWith: ".mysolar_portlets_coluna"
-		});
-		$( ".mysolar_portlets_coluna" ).disableSelection();
-	});
-
+<script type="text/javascript">
+  //Configurando Portlets
+  $(function() {
+      $( ".mysolar_portlets_coluna" ).sortable({
+        connectWith: ".mysolar_portlets_coluna"
+      });
+      $( ".mysolar_portlets_coluna" ).disableSelection();
+    });
 </script>
 
+<div id="mysolar_locale">
+  <span style="width: 20px"><%= image_tag "locales.png" %></span>&nbsp;
+  <span style="width: 50px ; font-size:12px"><%= link_to "English","/users/mysolar/?locale=en", :style=>"color: #696969"%></span>&nbsp;
+  <span style="font-size:12px"><%= link_to "Português(BR)","/users/mysolar/?locale=ptBR", :style=>"color: #696969"%></span>
+</div>
