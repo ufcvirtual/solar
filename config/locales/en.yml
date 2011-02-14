@@ -45,7 +45,7 @@ en:
   repeat_password: "Confirm Password"
   address_street: "Street"
   special_needs_question: "Do you have any disabilities ?"
-  m: Mask
+  m: Male
   f: Female
 
   empty_old_password: "Old password is empty"
