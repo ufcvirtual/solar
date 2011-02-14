@@ -49,6 +49,8 @@ ptBR:
   repeat_password: "Confirmar Senha"
   address_street: "Rua"
   special_needs_question: "Portador de necessidades especiais?"
+  m: Masculino
+  f: Feminino
 
   empty_old_password: "Senha antiga vazia"
   bad_password_confirmation: "A nova senha e a confirmação nao conferem!"
