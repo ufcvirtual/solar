@@ -51,9 +51,9 @@ ptBR:
   special_needs_question: "Portador de necessidades especiais?"
 
   empty_old_password: "Senha antiga vazia"
-  bad_password_confirmation: "A nova senha e a confirmacao nao conferem!"
+  bad_password_confirmation: "A nova senha e a confirmação nao conferem!"
   incorrect_old_password: "Senha antiga incorreta"
-  successful_update: "Usuario alterado com sucesso!"
+  successful_update: "Usuário alterado com sucesso!"
 
 
 
