@@ -53,7 +53,7 @@ ptBR:
   f: Feminino
 
   empty_old_password: "Senha antiga vazia"
-  bad_password_confirmation: "A nova senha e a confirmação nao conferem!"
+  bad_password_confirmation: "A nova senha e a confirmação não conferem!"
   incorrect_old_password: "Senha antiga incorreta"
   successful_update: "Usuário alterado com sucesso!"
 

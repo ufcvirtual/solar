@@ -63,7 +63,7 @@ Cenário: Alterar dados Pessoais
            E que eu preenchi "Frase" com "Bazzinga"
            E que eu preenchi "Site" com "www.kibeloco.com.br"
     Quando eu clicar em "personal_submit"
-    Então eu deverei ver "Usuario alterado com sucesso!"
+    Então eu deverei ver "Usuário alterado com sucesso!"
 
 
 Cenário: Alterar dados Cadastrais
@@ -87,7 +87,7 @@ Cenário: Alterar dados Cadastrais
        E que eu preenchi "País" com "Brasil"
        E que eu preenchi "Login" com "usuario"
     Quando eu clicar em "cadastral_submit"
-    Então eu deverei ver "Usuario alterado com sucesso!"
+    Então eu deverei ver "Usuário alterado com sucesso!"
 
 Esquema do Cenário: Alteração de senha
 	Dado que estou logado no sistema com usuario user
@@ -101,17 +101,17 @@ Exemplos:
 	| antiga_senha         |  nova_senha       |  confirmar_senha      | action                                        |
 	| xyz                  |                   |                       | Senha antiga incorreta                        |
         | xyz                  |  user456          |  user456              | Senha antiga incorreta                        |
-        | user123              |                   |                       | A nova senha e a confirmacao nao conferem!    |
-        | user123              |  user456          |  user789              | A nova senha e a confirmacao nao conferem!    |
+        | user123              |                   |                       | A nova senha e a confirmação não conferem!    |
+        | user123              |  user456          |  user789              | A nova senha e a confirmação não conferem!    |
         |                      |  user456          |  user456              | Senha antiga vazia                            |
         |                      |  user456          |  user789              | Senha antiga vazia                            |
-        | user123              |                   |  user789              | A nova senha e a confirmacao nao conferem!    |
-        | user123              |  user789          |                       | A nova senha e a confirmacao nao conferem!    |
+        | user123              |                   |  user789              | A nova senha e a confirmação não conferem!    |
+        | user123              |  user789          |                       | A nova senha e a confirmação não conferem!    |
         | xyz                  |                   |  user789              | Senha antiga incorreta                        |
         | xyz                  |  user789          |                       | Senha antiga incorreta                        |
         |                      |                   |  user789              | Senha antiga vazia                            |
         |                      |  user789          |                       | Senha antiga vazia                            |      
-        | user123              |  user789          |  user789              | Usuario alterado com sucesso!                 |
+        | user123              |  user789          |  user789              | Usuário alterado com sucesso!                 |
         
 
 
