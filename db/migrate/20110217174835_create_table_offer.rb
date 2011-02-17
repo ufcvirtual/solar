@@ -1,6 +1,6 @@
 class CreateTableOffer < ActiveRecord::Migration
   def self.up
-    create_table :offer do |t|
+    create_table :offers do |t|
       t.integer :curriculum_unit_id,  :null => false
       t.integer :course_id
       t.string  :period
@@ -9,11 +9,11 @@ class CreateTableOffer < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :offer, ["curriculum_unit_id"], :name => "index_offer_on_curriculum_unit"
-    add_index :offer, ["course_id"],          :name => "index_offer_on_course"
+    add_index :offers, ["curriculum_unit_id"], :name => "index_offer_on_curriculum_unit"
+    add_index :offers, ["course_id"],          :name => "index_offer_on_course"
   end
 
-  def self.down
-    drop_table :offer
+  def self.down    
+    drop_table :offers
   end
 end
