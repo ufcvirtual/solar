@@ -10,7 +10,52 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110120173856) do
+ActiveRecord::Schema.define(:version => 20110217175333) do
+
+  create_table "allocation", :force => true do |t|
+    t.integer  "user_id",                      :null => false
+    t.integer  "class_id",                     :null => false
+    t.integer  "profile_id",                   :null => false
+    t.boolean  "status",     :default => true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "allocation", ["class_id"], :name => "index_allocation_on_class"
+  add_index "allocation", ["profile_id"], :name => "index_allocation_on_profile"
+  add_index "allocation", ["user_id"], :name => "index_allocation_on_user"
+
+  create_table "class", :force => true do |t|
+    t.integer  "offer_id",                     :null => false
+    t.string   "code"
+    t.boolean  "status",     :default => true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "class", ["offer_id"], :name => "index_class_on_offer"
+
+  create_table "curriculum_unit", :force => true do |t|
+    t.string   "name",          :null => false
+    t.string   "code",          :null => false
+    t.text     "description"
+    t.text     "syllabus"
+    t.float    "passing_grade"
+    t.integer  "category",      :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "curriculum_unit", ["category"], :name => "index_curriculum_unit_on_category"
+  add_index "curriculum_unit", ["code"], :name => "index_curriculum_unit_on_code", :unique => true
+
+  create_table "enrollment_period", :force => true do |t|
+    t.integer  "offer_id",   :null => false
+    t.date     "start",      :null => false
+    t.date     "end",        :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "logs", :force => true do |t|
     t.integer  "log_type"
@@ -19,6 +64,25 @@ ActiveRecord::Schema.define(:version => 20110120173856) do
     t.integer  "profileId"
     t.integer  "courseId"
     t.integer  "classId"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "offer", :force => true do |t|
+    t.integer  "curriculum_unit_id", :null => false
+    t.integer  "course_id"
+    t.string   "period"
+    t.date     "start",              :null => false
+    t.date     "end",                :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "offer", ["course_id"], :name => "index_offer_on_course"
+  add_index "offer", ["curriculum_unit_id"], :name => "index_offer_on_curriculum_unit"
+
+  create_table "profile", :force => true do |t|
+    t.string   "name",       :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
