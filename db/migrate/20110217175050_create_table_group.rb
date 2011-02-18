@@ -1,6 +1,6 @@
-class CreateTableClass < ActiveRecord::Migration
+class CreateTableGroup < ActiveRecord::Migration
   def self.up
-     create_table :classes do |t|
+     create_table :groups do |t|
       t.references :offers
       t.string  :code
       t.boolean :status,   :default => true
@@ -9,6 +9,6 @@ class CreateTableClass < ActiveRecord::Migration
   end
 
   def self.down    
-    drop_table :classes
+    drop_table :groups
   end
 end

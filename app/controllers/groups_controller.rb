@@ -1,8 +1,8 @@
-class ClassesController < ApplicationController
+class GroupsController < ApplicationController
 
   def index
     #if current_user
-    #  @user = Class.find(current_user.id)
+    #  @user = Group.find(current_user.id)
     #end
     #render :action => :mysolar
 
@@ -13,48 +13,48 @@ class ClassesController < ApplicationController
   end
 
   def show
-    @class = Class.find(params[:id])
+    @group = Group.find(params[:id])
 
     respond_to do |format|
       format.html
-      format.xml  { render :xml => @class }
+      format.xml  { render :xml => @group }
     end
   end
 
   def new
-    @class = Class.new
+    @group = Group.new
 
     respond_to do |format|
       format.html
-      format.xml  { render :xml => @class }
+      format.xml  { render :xml => @group }
     end
   end
 
   def edit
-    @class = Class.find(params[:id])
+    @group = Group.find(params[:id])
   end
 
   def create
-    @class = Class.new(params[:user])
+    @group = Group.new(params[:user])
 
     respond_to do |format|
       format.html
-      format.xml  { render :xml => @class }
+      format.xml  { render :xml => @group }
     end
   end
 
   def update
-    @class = Class.find(params[:id])
+    @group = Group.find(params[:id])
 
     respond_to do |format|
       format.html
-      format.xml  { render :xml => @class }
+      format.xml  { render :xml => @group }
     end
   end
 
   def destroy
-    @class = Class.find(params[:id])
-    @class.destroy
+    @group = Group.find(params[:id])
+    @group.destroy
 
     respond_to do |format|
       format.html #{ redirect_to(users_url, :notice => 'Usuario excluido com sucesso!') }

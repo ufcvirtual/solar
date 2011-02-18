@@ -14,17 +14,9 @@ ActiveRecord::Schema.define(:version => 20110217175204) do
 
   create_table "allocations", :force => true do |t|
     t.integer  "users_id"
-    t.integer  "classes_id"
+    t.integer  "groups_id"
     t.integer  "profiles_id"
     t.boolean  "status",      :default => true
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "classes", :force => true do |t|
-    t.integer  "offers_id"
-    t.string   "code"
-    t.boolean  "status",     :default => true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -54,6 +46,14 @@ ActiveRecord::Schema.define(:version => 20110217175204) do
     t.integer  "offers_id"
     t.date     "start",      :null => false
     t.date     "end",        :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "groups", :force => true do |t|
+    t.integer  "offers_id"
+    t.string   "code"
+    t.boolean  "status",     :default => true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -138,12 +138,12 @@ ActiveRecord::Schema.define(:version => 20110217175204) do
   add_index "users", ["persistence_token"], :name => "index_users_on_persistence_token", :unique => true
 
   add_foreign_key "allocations", ["users_id"], "users", ["id"], :name => "allocations_users_id_fkey"
-  add_foreign_key "allocations", ["classes_id"], "classes", ["id"], :name => "allocations_classes_id_fkey"
+  add_foreign_key "allocations", ["groups_id"], "groups", ["id"], :name => "allocations_groups_id_fkey"
   add_foreign_key "allocations", ["profiles_id"], "profiles", ["id"], :name => "allocations_profiles_id_fkey"
 
-  add_foreign_key "classes", ["offers_id"], "offers", ["id"], :name => "classes_offers_id_fkey"
-
   add_foreign_key "enrollments", ["offers_id"], "offers", ["id"], :name => "enrollments_offers_id_fkey"
+
+  add_foreign_key "groups", ["offers_id"], "offers", ["id"], :name => "groups_offers_id_fkey"
 
   add_foreign_key "offers", ["curriculum_unities_id"], "curriculum_unities", ["id"], :name => "offers_curriculum_unities_id_fkey"
   add_foreign_key "offers", ["courses_id"], "courses", ["id"], :name => "offers_courses_id_fkey"
