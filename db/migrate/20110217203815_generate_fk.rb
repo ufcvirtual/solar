@@ -1,82 +1,39 @@
+#require "migration_helper"
 class GenerateFk < ActiveRecord::Migration
+  extend MigrationHelper
+  
   def self.up
     #add foreign key - offers
-    execute <<-SQL
-      ALTER TABLE offers
-        ADD CONSTRAINT fk_offers_curriculum_unit
-        FOREIGN KEY (curriculum_unit_id)
-        REFERENCES curriculum_unities(id)
-        ON DELETE CASCADE
-    SQL
-
-    execute <<-SQL
-      ALTER TABLE offers
-        ADD CONSTRAINT fk_offers_course
-        FOREIGN KEY (course_id)
-        REFERENCES courses(id)
-        ON DELETE CASCADE
-    SQL
+    add_foreign_key(:offers, :curriculum_unit_id, :curriculum_unities)
+    add_foreign_key(:offers, :course_id, :courses)
 
     #add foreign key - classes
-    execute <<-SQL
-      ALTER TABLE classes
-        ADD CONSTRAINT fk_classes_offer
-        FOREIGN KEY (offer_id)
-        REFERENCES offers(id)
-        ON DELETE CASCADE
-    SQL
-
+    add_foreign_key(:classes, :offer_id, :offers)
+    
     #add foreign key - allocations
-    execute <<-SQL
-      ALTER TABLE allocations
-        ADD CONSTRAINT fk_allocations_user
-        FOREIGN KEY (user_id)
-        REFERENCES users(id)
-        ON DELETE CASCADE
-    SQL
-
-    execute <<-SQL
-      ALTER TABLE allocations
-        ADD CONSTRAINT fk_allocations_class
-        FOREIGN KEY (class_id)
-        REFERENCES classes(id)
-        ON DELETE CASCADE
-    SQL
-
-    execute <<-SQL
-      ALTER TABLE allocations
-        ADD CONSTRAINT fk_allocations_profile
-        FOREIGN KEY (profile_id)
-        REFERENCES profiles(id)
-        ON DELETE CASCADE
-    SQL
+    add_foreign_key(:allocations, :user_id, :users)
+    add_foreign_key(:allocations, :class_id, :classes)
+    add_foreign_key(:allocations, :profile_id, :profiles)
 
     #add foreign key - enrollment_periods
-    execute <<-SQL
-      ALTER TABLE enrollment_periods
-        ADD CONSTRAINT fk_enrollment_periods_offer
-        FOREIGN KEY (offer_id)
-        REFERENCES offers(id)
-        ON DELETE CASCADE
-    SQL
-
+    add_foreign_key(:enrollment_periods, :offer_id, :offers)
   end
 
   def self.down
     #remove foreign key - offers
-    execute "ALTER TABLE offers DROP CONSTRAINT fk_offers_curriculum_unit"
-    execute "ALTER TABLE offers DROP CONSTRAINT fk_offers_course"
+    remove_foreign_key(:offers, :curriculum_unit_id)
+    remove_foreign_key(:offers, :course_id)
 
     #remove foreign key - classes
-    execute "ALTER TABLE classes DROP CONSTRAINT fk_classes_offer"
+    remove_foreign_key(:classes, :offer_id)
 
     #remove foreign key - allocations
-    execute "ALTER TABLE allocations DROP CONSTRAINT fk_allocations_user"
-    execute "ALTER TABLE allocations DROP CONSTRAINT fk_allocations_class"
-    execute "ALTER TABLE allocations DROP CONSTRAINT fk_allocations_profile"
+    remove_foreign_key(:allocations, :user_id)
+    remove_foreign_key(:allocations, :class_id)
+    remove_foreign_key(:allocations, :profile_id)
 
     #remove foreign key - enrollment_periods
-    execute "ALTER TABLE enrollment_periods DROP CONSTRAINT fk_enrollment_periods_offer"
-
+    remove_foreign_key(:enrollment_periods, :offer_id)
   end
+  
 end
