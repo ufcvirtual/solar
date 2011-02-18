@@ -10,30 +10,24 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110217203815) do
+ActiveRecord::Schema.define(:version => 20110217175204) do
 
   create_table "allocations", :force => true do |t|
-    t.integer  "user_id",                      :null => false
-    t.integer  "class_id",                     :null => false
-    t.integer  "profile_id",                   :null => false
-    t.boolean  "status",     :default => true
+    t.integer  "users_id"
+    t.integer  "classes_id"
+    t.integer  "profiles_id"
+    t.boolean  "status",      :default => true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "allocations", ["class_id"], :name => "index_allocation_on_class"
-  add_index "allocations", ["profile_id"], :name => "index_allocation_on_profile"
-  add_index "allocations", ["user_id"], :name => "index_allocation_on_user"
-
   create_table "classes", :force => true do |t|
-    t.integer  "offer_id",                     :null => false
+    t.integer  "offers_id"
     t.string   "code"
     t.boolean  "status",     :default => true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "classes", ["offer_id"], :name => "index_class_on_offer"
 
   create_table "courses", :force => true do |t|
     t.string   "name",       :null => false
@@ -57,7 +51,7 @@ ActiveRecord::Schema.define(:version => 20110217203815) do
   add_index "curriculum_unities", ["code"], :name => "index_curriculum_unit_on_code", :unique => true
 
   create_table "enrollments", :force => true do |t|
-    t.integer  "offer_id",   :null => false
+    t.integer  "offers_id"
     t.date     "start",      :null => false
     t.date     "end",        :null => false
     t.datetime "created_at"
@@ -76,17 +70,14 @@ ActiveRecord::Schema.define(:version => 20110217203815) do
   end
 
   create_table "offers", :force => true do |t|
-    t.integer  "curriculum_unit_id", :null => false
-    t.integer  "course_id"
+    t.integer  "curriculum_unities_id"
+    t.integer  "courses_id"
     t.string   "semester"
-    t.date     "start",              :null => false
-    t.date     "end",                :null => false
+    t.date     "start",                 :null => false
+    t.date     "end",                   :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "offers", ["course_id"], :name => "index_offer_on_course"
-  add_index "offers", ["curriculum_unit_id"], :name => "index_offer_on_curriculum_unit"
 
   create_table "profiles", :force => true do |t|
     t.string   "name",       :null => false
@@ -145,5 +136,16 @@ ActiveRecord::Schema.define(:version => 20110217203815) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true
   add_index "users", ["persistence_token"], :name => "index_users_on_persistence_token", :unique => true
+
+  add_foreign_key "allocations", ["users_id"], "users", ["id"], :name => "allocations_users_id_fkey"
+  add_foreign_key "allocations", ["classes_id"], "classes", ["id"], :name => "allocations_classes_id_fkey"
+  add_foreign_key "allocations", ["profiles_id"], "profiles", ["id"], :name => "allocations_profiles_id_fkey"
+
+  add_foreign_key "classes", ["offers_id"], "offers", ["id"], :name => "classes_offers_id_fkey"
+
+  add_foreign_key "enrollments", ["offers_id"], "offers", ["id"], :name => "enrollments_offers_id_fkey"
+
+  add_foreign_key "offers", ["curriculum_unities_id"], "curriculum_unities", ["id"], :name => "offers_curriculum_unities_id_fkey"
+  add_foreign_key "offers", ["courses_id"], "courses", ["id"], :name => "offers_courses_id_fkey"
 
 end

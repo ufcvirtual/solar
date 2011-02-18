@@ -9,6 +9,8 @@ gem 'pg'
 gem 'rack'
 gem 'rake'
 
+# gem para geracao automatica de relacionamentos
+gem 'automatic_foreign_key'
 
 # Gem usada para personalizar data,moeda etc para padroes brasileiros
 gem 'brazilian-rails'
