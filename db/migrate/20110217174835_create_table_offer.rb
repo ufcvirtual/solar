@@ -3,7 +3,7 @@ class CreateTableOffer < ActiveRecord::Migration
     create_table :offers do |t|
       t.integer :curriculum_unit_id,  :null => false
       t.integer :course_id
-      t.string  :period
+      t.string  :semester
       t.date    :start,               :null => false
       t.date    :end,                 :null => false
       t.timestamps

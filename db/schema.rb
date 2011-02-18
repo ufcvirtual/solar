@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(:version => 20110217203815) do
   create_table "offers", :force => true do |t|
     t.integer  "curriculum_unit_id", :null => false
     t.integer  "course_id"
-    t.string   "period"
+    t.string   "semester"
     t.date     "start",              :null => false
     t.date     "end",                :null => false
     t.datetime "created_at"
