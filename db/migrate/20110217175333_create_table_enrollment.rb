@@ -1,6 +1,6 @@
-class CreateTableEnrollmentPeriod < ActiveRecord::Migration
+class CreateTableEnrollment < ActiveRecord::Migration
   def self.up
-    create_table :enrollment_periods do |t|
+    create_table :enrollments do |t|
       t.integer :offer_id, :null => false
       t.date    :start,    :null => false
       t.date    :end,      :null => false
@@ -9,6 +9,6 @@ class CreateTableEnrollmentPeriod < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :enrollment_periods
+    drop_table :enrollments
   end
 end

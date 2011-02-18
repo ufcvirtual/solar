@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(:version => 20110217203815) do
   add_index "curriculum_unities", ["category"], :name => "index_curriculum_unit_on_category"
   add_index "curriculum_unities", ["code"], :name => "index_curriculum_unit_on_code", :unique => true
 
-  create_table "enrollment_periods", :force => true do |t|
+  create_table "enrollments", :force => true do |t|
     t.integer  "offer_id",   :null => false
     t.date     "start",      :null => false
     t.date     "end",        :null => false

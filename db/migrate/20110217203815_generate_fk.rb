@@ -15,8 +15,8 @@ class GenerateFk < ActiveRecord::Migration
     add_foreign_key(:allocations, :class_id, :classes)
     add_foreign_key(:allocations, :profile_id, :profiles)
 
-    #add foreign key - enrollment_periods
-    add_foreign_key(:enrollment_periods, :offer_id, :offers)
+    #add foreign key - enrollments
+    add_foreign_key(:enrollments, :offer_id, :offers)
   end
 
   def self.down
@@ -32,8 +32,8 @@ class GenerateFk < ActiveRecord::Migration
     remove_foreign_key(:allocations, :class_id)
     remove_foreign_key(:allocations, :profile_id)
 
-    #remove foreign key - enrollment_periods
-    remove_foreign_key(:enrollment_periods, :offer_id)
+    #remove foreign key - enrollments
+    remove_foreign_key(:enrollments, :offer_id)
   end
   
 end
