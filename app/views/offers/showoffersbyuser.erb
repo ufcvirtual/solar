@@ -1,0 +1,10 @@
+<table>
+<% @offers.each do |offer| %>
+  <tr>
+    <td><%= offer.name %></td>
+    <td><%= offer.category %></td>
+    <td><%= offer.code %></td>
+    <td><%= offer.status %></td>
+  </tr>
+<% end %>
+</table>

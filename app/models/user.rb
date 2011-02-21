@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+  has_many :allocation
+
   #Garantindo que o cpf nao será salvo com os separadores.
   def cpf=(value)
     self[:cpf] = value.gsub(/\D/, '')

@@ -1,32 +1,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Solar</title>
-  <%= stylesheet_link_tag "solar.css" %>
-  <%= stylesheet_link_tag "security.css" %>
-  <%= javascript_include_tag "jquery-1.4.4.js" %>
-  <%= javascript_include_tag "jquery-ui-1.8.6.js" %>
-  <%= javascript_include_tag "chat.js" %>
-  <%= javascript_include_tag "user_form.js" %>
-  <%= javascript_include_tag "mysolar.js" %>
-  <%= javascript_include_tag "jquery.maskedinput-1.2.2"%>
-  <%= csrf_meta_tag %>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Solar</title>
+    <%= stylesheet_link_tag "solar.css" %>
+    <%= stylesheet_link_tag "security.css" %>
+    <%= javascript_include_tag "jquery-1.4.4.js" %>
+    <%= javascript_include_tag "jquery-ui-1.8.6.js" %>
+    <%= javascript_include_tag "chat.js" %>
+    <%= javascript_include_tag "user_form.js" %>
+    <%= javascript_include_tag "mysolar.js" %>
+    <%= javascript_include_tag "jquery.maskedinput-1.2.2"%>
+    <%= csrf_meta_tag %>
 
-  <script type="text/javascript">
+    <script type="text/javascript">
       jQuery(function($){
-         $("#cpf").mask("999.999.999-99");
-         $("#telefone").mask("(99)9999-9999");
-         $("#celular").mask("(99)9999-9999");
-         $("#cep").mask("99999-999");
+        $("#cpf").mask("999.999.999-99");
+        $("#telefone").mask("(99)9999-9999");
+        $("#celular").mask("(99)9999-9999");
+        $("#cep").mask("99999-999");
 
          
-         // layout dos botoes
-	$(".solar_button").after("<div class='solar_button_arrow'></div>");
+        // layout dos botoes
+        $(".solar_button").after("<div class='solar_button_arrow'></div>");
         //layout dos botoes cinzas
-	$(".solar_button_gray").after("<div class='solar_button_arrow_gray'></div>");
-	//layout dos botoes azuis
-	$(".solar_button_blue").after("<div class='solar_button_arrow_blue'></div>");
+        $(".solar_button_gray").after("<div class='solar_button_arrow_gray'></div>");
+        //layout dos botoes azuis
+        $(".solar_button_blue").after("<div class='solar_button_arrow_blue'></div>");
 
 
         //Configurando Menu
@@ -39,8 +39,8 @@
     </script>
 
 
-</head>
-<body>
+  </head>
+  <body>
     <div id="mysolar_content" style="white-space: nowrap;">
       <%= yield %>
     </div>
@@ -60,8 +60,8 @@
           <%= link_to t(:mysolar_mn_mydata), :controller => "users", :action => "mydata", :id=>current_user.id %><br/>
 			Portfolio <br />
 			Blog <br />
-			<%= t(:mysolar_mn_customize) %> <br />
-                        <%= t(:mysolar_mn_enrollment) %> <br />
+          <%= t(:mysolar_mn_customize) %> <br />
+          <%= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
 
         </div>
       </div>
@@ -69,7 +69,7 @@
         <input class="search_keyword" type="text"/>
         <br/>
         <span id="mysolar_search_label">
-   	<%=t(:mysolar_search)%>
+          <%=t(:mysolar_search)%>
         </span>
         <br/>
         <hr width="149" style="border:none;height:1px;background-color: #cfdde1"/>
@@ -118,7 +118,7 @@
 
       <span id="mysolar_top_options" >
 		| &nbsp;<%= image_tag 'superior_suporte.png', :alt => t(:mysolar_alt_img_support) %>
-		<%= t(:mysolar_alt_img_support) %>&nbsp;&nbsp;&nbsp;
+        <%= t(:mysolar_alt_img_support) %>&nbsp;&nbsp;&nbsp;
 		| &nbsp;<%= image_tag 'superior_sair.png', :alt => t(:mysolar_alt_img_exit) %>&nbsp;
         <%= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, :class => "mysolar_top_link") %>
       </span>

@@ -1,5 +1,5 @@
 class OffersController < ApplicationController
-
+  
   def index
     #if current_user
     #  @user = Offer.find(current_user.id)
@@ -59,6 +59,18 @@ class OffersController < ApplicationController
     respond_to do |format|
       format.html #{ redirect_to(users_url, :notice => 'Usuario excluido com sucesso!') }
       format.xml  { head :ok }
+    end
+  end
+
+  def showoffersbyuser
+    if current_user
+      @user = User.find(current_user.id)
+      @offers = Offer.find(:all,
+        :select => "*",
+        :joins => "INNER JOIN curriculum_unities  ON offers.curriculum_unities_id = curriculum_unities.id
+                   LEFT OUTER JOIN courses  ON offers.courses_id = courses.id
+                   INNER JOIN groups  ON groups.offers_id = offers.id
+                   LEFT JOIN allocations  ON allocations.groups_id = groups.id AND allocations.users_id = #{current_user.id} AND allocations.profiles_id = 1")
     end
   end
 
