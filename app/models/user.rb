@@ -90,5 +90,6 @@ class User < ActiveRecord::Base
 
   #validates_attachment_presence :photo, :message => 'Image must be selected'
   validates_attachment_content_type :photo, :content_type => ['image/jpeg','image/png','image/gif','image/pjpeg']#, :message => 'Invalid image type!'
+  validates_attachment_size :photo, :less_than=>700.kilobyte
 
 end

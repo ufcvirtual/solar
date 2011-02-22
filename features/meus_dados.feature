@@ -112,6 +112,25 @@ Exemplos:
         |                      |                   |  user789              | Senha antiga vazia                            |
         |                      |  user789          |                       | Senha antiga vazia                            |      
         | user123              |  user789          |  user789              | Usuário alterado com sucesso!                 |
-        
+
+Cenário:  Acessar Edição de foto
+    Dado que estou logado no sistema com usuario user
+       E que estou em "Meu Solar"
+    Então eu deverei ver "Do seu computador"
+    E eu deverei ver "De um link externo"
+    E eu deverei ver o botao "Cancelar"
+    E eu deverei ver o botao "Enviar"
+
+Esquema do Cenário: Enviar foto
+    Dado que estou logado no sistema com usuario user
+       E que estou em "Meu Solar"
+       E eu envio o arquivo "<foto>" no campo "user_photo"
+    Quando eu clicar em "photo_submit"
+    Então eu deverei ver "<saida>"
+Exemplos:
+	| foto                          | saida                         |
+	| images/photo_valid.png        | Usuário alterado com sucesso! |
+#    | images/photo_invalid_type     | Tipo de arquivo inválido. Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG |
+#    | images/photo_invalid_size.png | Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB |
 
 
