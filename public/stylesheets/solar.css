@@ -426,10 +426,10 @@ div.widget_head {
 }
 
 .mysolar_portlets_coluna {
-    width: 295px;
-    float: left;
-    padding-bottom: 100px;
-    border:none;
+    width           : 295px;
+    float           : left;
+    padding-bottom  : 200px;
+    border          : none;
 }
 
 .mysolar_portlets_portlet {
