@@ -74,8 +74,10 @@ class User < ActiveRecord::Base
 
   # Configuração do paperclip para upload de fotos
   has_attached_file :photo,
-    :styles => {:medium => "100x120>",
-    :small => "25x30>"},
+    :styles => {
+      :medium => "72x90#",
+      :small => "24x30#"
+    },
     :path => ":rails_root/public/images/:class/:id/:style_:basename.:extension",
     :url => "/images/:class/:id/:style_:basename.:extension",
     :default_url => "/images/no_image.png"

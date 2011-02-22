@@ -3,18 +3,17 @@
   <span style="font-weight: bold; font-size: 20px"><%= t(:my_data) %></span>
   <hr style="border: none;background-color: #dedede;height: 1px;"></hr>
 
-<% if flash[:success] || flash[:error] || flash[:notice]%>
-	 &nbsp;<br/>
-         <%=raw message %>&nbsp;
-	 &nbsp;<br/>
-<% end %>
-         
+  <% if flash[:success] || flash[:error] || flash[:notice]%>
+    &nbsp;<br/>
+    <%=raw message %>&nbsp;
+    &nbsp;<br/>
+  <% end %>
 
   <%
-  #Tamanhos dos campos
-  field_size = "width:80px;"
-  full_field_size = "width:388px;"
-%>
+    #Tamanhos dos campos
+    field_size = "width:80px;"
+    full_field_size = "width:388px;"
+  %>
 
   <!-- Alternador das Abas -->
   <div id="mydata_tab">
@@ -31,10 +30,6 @@
 
   <!-- Dados Pessoais -->
   <div id="my_personal_data" class="my_form_data">
-
-
-
-
     <%= form_for(@user, :html => {:action => "update"}) do |fi| %>
       <table>
         <tr></tr>
@@ -42,8 +37,7 @@
           <td align="center" width="65">
             <%= image_tag "nome.png" %>
           </td>
-          <td> <%= fi.label :name ,:class=>"my_personal_data_label"%> <br/> <%=  fi.text_field :name ,:size=>"56" %></td>
-          <td rowspan="2"> <%= image_tag @user.photo.url(:small), :alt => "Imagem do usuário #{@user.nick}" %><br/> <%= @user.nick%></td>
+          <td> <%= fi.label :name ,:class=>"my_personal_data_label"%> <br/> <%=  fi.text_field :name ,:size=>"65" %></td>
         </tr>
 
         <tr >
@@ -78,7 +72,7 @@
 
         <tr>
           <td align="center">  <%= image_tag "site.png" %> </td>
-          <td> <%= fi.label  :site ,:class=>"my_personal_data_label"%> <br/><%= fi.text_field :site ,:size=>"56" %></td>
+          <td> <%= fi.label  :site ,:class=>"my_personal_data_label"%> <br/><%= fi.text_field :site , :size=>"65" %></td>
         </tr>
         <tr></tr>
 
@@ -93,10 +87,11 @@
   <% end %>
 
 </div>
+
 <div id="my_cadastral_data" class="my_form_data">
 
   <!--Erros-->
- <!--if-->
+  <!--if-->
 
   <%= form_for(@user) do |fo| %>
     <i>*campos obrigatórios</i>

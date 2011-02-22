@@ -19,15 +19,12 @@
         $("#telefone").mask("(99)9999-9999");
         $("#celular").mask("(99)9999-9999");
         $("#cep").mask("99999-999");
-
-         
         // layout dos botoes
         $(".solar_button").after("<div class='solar_button_arrow'></div>");
         //layout dos botoes cinzas
         $(".solar_button_gray").after("<div class='solar_button_arrow_gray'></div>");
         //layout dos botoes azuis
         $(".solar_button_blue").after("<div class='solar_button_arrow_blue'></div>");
-
 
         //Configurando Menu
         $( "#mysolar_menu_accordion" ).accordion({
@@ -37,8 +34,7 @@
         });
       });
     </script>
-
-
+  <%= render 'mysolar_photo' %>
   </head>
   <body>
     <div id="mysolar_content" style="white-space: nowrap;">
@@ -49,11 +45,12 @@
       &nbsp;
     </div>
     <div id="mysolar_sidebar">
-<%#= render :partial => "sidebar" %>
+    <%#= render :partial => "sidebar" %>
 
       <div id="mysolar_boxid">
         <div id="mysolar_id">
-          <%= image_tag @user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{@user.nick}" %><br/>
+          <%= image_tag @user.photo.url(:medium), :alt => "#{t(:mysolar_alt_img_user)} #{@user.nick}", :id => "image_user" %>
+          <div style="opacity: 0.7;" class="div_link_decoration" id="div-alter-photo"><%= t(:alter_photo) %></div>
           <%= @user.nick%>
         </div>
         <div id="mysolar_options">
@@ -62,7 +59,8 @@
 			Blog <br />
           <%= t(:mysolar_mn_customize) %> <br />
           <%= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
-
+			<%= t(:mysolar_mn_customize) %> <br />
+                        <%= t(:mysolar_mn_enrollment) %> <br />
         </div>
       </div>
       <div id="mysolar_search">

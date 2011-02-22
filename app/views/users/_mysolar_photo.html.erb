@@ -1,0 +1,83 @@
+<script type="text/javascript">
+  $(function() {
+
+    $('#mysolar_id').hover(function(){
+      $('#mysolar_id').addClass('div_link');
+    }, function(){
+      $('#mysolar_id').removeClass('div_link');
+    });
+
+    //select all the a tag with name equal to modal
+    $('#image_user').click(function(e) {
+      //Cancel the link behavior
+      e.preventDefault();
+      //Get the A tag
+      //var id = $(this).attr('href');
+      var id = '#dialog';
+
+      //Get the screen height and width
+      var maskHeight = $(document).height();
+      var maskWidth = $(window).width();
+
+      //Set height and width to mask to fill up the whole screen
+      $('#mask').css({'width':maskWidth,'height':maskHeight});
+
+      //transition effect
+      $('#mask').fadeIn();
+      $('#mask').fadeTo("slow",0.8);
+
+      //Get the window height and width
+      var winH = $(window).height();
+      var winW = $(window).width();
+
+      //Set the popup window to center
+      $(id).css('top',  winH/2-$(id).height()/2);
+      $(id).css('left', winW/2-$(id).width()/2);
+
+      //transition effect
+      $(id).fadeIn(2000);
+
+    });
+
+    //if close button is clicked
+    $('.window .close').click(function (e) {
+      //Cancel the link behavior
+      e.preventDefault();
+      $('#mask, .window').hide();
+    });
+
+  });
+</script>
+
+<div id="boxes">
+  <div id="dialog" class="window">
+    <div id="title">
+      <table border="0" cellspacing="0" width="100%">
+        <tr>
+          <td style="width: 97%;">
+            <b class="alter_photo_text"><%=t(:send_photo)%></b>
+          </td>
+          <td align="center" style="background-color: #fff;">
+            <a href="#" class="close"><b>x</b></a>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <u class="alter_photo_text"><%= t(:your_computer) %></u>
+    <%= form_for(@user, :html => { :multipart => true }) do |f| %>
+      <%= f.file_field :photo, :class => 'alter_photo_inputs' %>
+      <br /><br />
+      <div class="alter_photo_text"><%= t(:photo_text)%></div>
+      <br/>
+      <b class="alter_photo_text"><%= t(:or) %></b><br/>
+      <u class="alter_photo_text"><%= t(:external_link) %></u><br/>
+      <input style="width: 85%;" type="text" class="alter_photo_inputs" value=<%= t(:url) %>/>
+
+      <div id="my_personal_data_button">
+        <input type="button" class="close solar_button_gray" value="<%= t(:cancel)%>"/>
+        <%= f.submit t(:send), :id => "photo_submit", :class => "solar_button_gray"%>
+      </div>
+    <% end %>
+  </div>
+  <div id="mask"></div>
+</div>

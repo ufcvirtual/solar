@@ -53,6 +53,9 @@ en:
   incorrect_old_password: "Old password is incorrect"
   successful_update: "Update successful"
 
+  #alteracao de foto do layout
+  alter_photo: "alter photo"
+
     # pagina do meu solar
   mysolar_news: "News"
   mysolar_recent_activities: "Recents Activities"
@@ -100,6 +103,19 @@ en:
 			\n\n\nSOLAR Virtual Environment: http://www.solar2.virtual.ufc.br
 			\n\n\n[This is an automatic message. Please don't reply it.]"
 
+# Página de alterar foto
+  choose_file: "Choose file"
+  photo_text: "You can upload a JPG, GIF or PNG. (Do not upload
+       \n\n pictures containing celebrities, nudity, artwork and images
+       \n\n copyrighted). The maximum size of your photo should be
+       \n\n up to 700KB."
+  send_photo: "Send your photo:"
+  your_computer: "From your computer"
+  no_file: "No file sent..."
+  or: "or"
+  external_link: "From an external link"
+  url: "Enter here the URL of the image in the textbox above."
+  send: "Send"
 
   # formatos de data e hora
   date:
