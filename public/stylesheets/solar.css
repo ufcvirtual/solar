@@ -94,6 +94,22 @@ textarea{
     padding         : 5px;
 }
 
+/****tela de matricula****/
+
+.title{
+    font-size: 14px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-weight: bold;
+}
+
+.headtable_blue{
+    font-size: 14px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-weight: bold;
+    color: #003F7B;
+    background-color: #E7EDEE;
+}
+
 /********meu solar**********/
 
 #mysolar_topbar{

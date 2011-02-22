@@ -15,3 +15,10 @@ ActionMailer::Base.smtp_settings = {
 		:password             => '123456',
 		:authentication       => 'login',
 		:enable_starttls_auto => true  }
+
+Presential_Undergraduate_Course = 1
+Distance_Undergraduate_Course = 2
+Free_Course = 3
+Extension_Course = 4
+Presential_Graduate_Course = 5
+Distance_Graduate_Course = 6

@@ -1,10 +1,26 @@
-<table>
-<% @offers.each do |offer| %>
-  <tr>
-    <td><%= offer.name %></td>
-    <td><%= offer.category %></td>
-    <td><%= offer.code %></td>
-    <td><%= offer.status %></td>
-  </tr>
-<% end %>
-</table>
+<div>
+    Matrícula<br/>
+
+    <%= form_for :offer do |f| %>
+    Buscar <%=  f.text_field  :search, :size=>"50" %> em
+    <%= f.select :category, ([
+              [categories.key(Presential_Undergraduate_Course), Presential_Undergraduate_Course],
+              [categories.key(Distance_Undergraduate_Course), Distance_Undergraduate_Course],
+              [categories.key(Free_Course), Free_Course],
+              [categories.key(Extension_Course), Extension_Course],
+              [categories.key(Presential_Graduate_Course), Presential_Graduate_Course],
+              [categories.key(Distance_Graduate_Course), Distance_Graduate_Course]
+            ]), :include_blank => true  %>
+
+    <table>
+    <% @offers.each do |offer| %>
+      <tr>
+        <td><%= offer.name %></td>
+        <td><%= offer.category %></td>
+        <td><%= offer.code %></td>
+        <td><%= offer.status %></td>
+      </tr>
+    <% end %>
+    </table>
+    <% end %>
+</div>
