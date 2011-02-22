@@ -34,7 +34,7 @@
         });
       });
     </script>
-  <%= render 'mysolar_photo' %>
+  <%= render '/users/mysolar_photo' %>
   </head>
   <body>
     <div id="mysolar_content" style="white-space: nowrap;">
@@ -59,8 +59,6 @@
 			Blog <br />
           <%= t(:mysolar_mn_customize) %> <br />
           <%= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
-			<%= t(:mysolar_mn_customize) %> <br />
-                        <%= t(:mysolar_mn_enrollment) %> <br />
         </div>
       </div>
       <div id="mysolar_search">

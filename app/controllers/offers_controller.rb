@@ -66,11 +66,14 @@ class OffersController < ApplicationController
     if current_user
       @user = User.find(current_user.id)
       @offers = Offer.find(:all,
-        :select => "*",
-        :joins => "INNER JOIN curriculum_unities  ON offers.curriculum_unities_id = curriculum_unities.id
+        :select => "offers.id,curriculum_unities.name, curriculum_unities.category,
+                   groups.code, allocations.status, enrollments.start, enrollments.end",
+        :joins => "LEFT JOIN enrollments ON offers.id=enrollments.offers_id and (enrollments.start <= current_date and enrollments.end >= current_date)
+                   INNER JOIN curriculum_unities  ON offers.curriculum_unities_id = curriculum_unities.id
                    LEFT OUTER JOIN courses  ON offers.courses_id = courses.id
                    INNER JOIN groups  ON groups.offers_id = offers.id
-                   LEFT JOIN allocations  ON allocations.groups_id = groups.id AND allocations.users_id = #{current_user.id} AND allocations.profiles_id = 1")
+                   LEFT JOIN allocations  ON allocations.groups_id = groups.id AND allocations.users_id = #{current_user.id} AND allocations.profiles_id = 1"
+      )
     end
   end
 
