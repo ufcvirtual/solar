@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110217175204) do
+ActiveRecord::Schema.define(:version => 20110218193045) do
 
   create_table "allocations", :force => true do |t|
     t.integer  "users_id"
@@ -59,12 +59,12 @@ ActiveRecord::Schema.define(:version => 20110217175204) do
   end
 
   create_table "logs", :force => true do |t|
-    t.integer  "log_type"
+    t.string   "log_type"
     t.string   "message"
-    t.integer  "userId"
-    t.integer  "profileId"
-    t.integer  "courseId"
-    t.integer  "classId"
+    t.string   "userId"
+    t.string   "profile"
+    t.string   "course"
+    t.string   "classroom"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -78,6 +78,17 @@ ActiveRecord::Schema.define(:version => 20110217175204) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "personal_configurations", :force => true do |t|
+    t.string   "theme"
+    t.string   "mysolar_portlets"
+    t.string   "default_locale"
+    t.integer  "user_id",          :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "personal_configurations", ["user_id"], :name => "index_user_on_personal_configuration", :unique => true
 
   create_table "profiles", :force => true do |t|
     t.string   "name",       :null => false
