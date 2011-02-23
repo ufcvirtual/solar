@@ -105,7 +105,7 @@ en:
 
 # Página de alterar foto
   choose_file: "Choose file"
-  photo_text: "You can upload a JPG, GIF or PNG. (Do not upload
+  photo_text: "You can upload a JPG, GIF or PNG (Do not upload
        \n\n pictures containing celebrities, nudity, artwork and images
        \n\n copyrighted). The maximum size of your photo should be
        \n\n up to 700KB."

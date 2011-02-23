@@ -106,9 +106,9 @@ ptBR:
 
 # Página de alterar foto
   choose_file: "Escolher arquivo"
-  photo_text: "Você pode fazer upload de um arquivo JPG, GIF ou PNG.(Não faça upload
+  photo_text: "Você pode fazer upload de um arquivo JPG, GIF ou PNG (Não faça upload
       \n\n de imagens contendo celebridades, nudez, trabalhos artísticos e imagens
-      \n\n protegidas por direitos autorais).O tamanho máximo da sua foto deve ser
+      \n\n protegidas por direitos autorais). O tamanho máximo da sua foto deve ser
       \n\n de até 700KB."
   send_photo: "Envie sua foto:"
   your_computer: "Do seu computador"
