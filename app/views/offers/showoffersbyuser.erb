@@ -4,11 +4,11 @@
     <span class="enrollment_title">Matrícula</span>
     <hr style="border: none; background-color: #b4b3b7; height: 1px; width:745px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px"></hr>
 
-    <%= form_for :offer do |f| %>
+    <%= form_for :offer, :url => { :controller=>"offers", :action => "showoffersbyuser" } do |f| %>
     
     <div class="enrollment_left">
       <%= f.label t(:enrollm_search), :class => "enrollment_label" %>&nbsp;
-      <%=  f.text_field  :search, :size=>"30", :class=>'enrollment_search' %>
+      <%= f.text_field  :search, :size=>"30", :class=>'enrollment_search' %>
       <%= f.label t(:enrollm_search_in), :class => "enrollment_label" %>
       <%= f.select :category, ([
                 [categories.key(Presential_Undergraduate_Course), Presential_Undergraduate_Course],
@@ -18,14 +18,13 @@
                 [categories.key(Presential_Graduate_Course), Presential_Graduate_Course],
                 [categories.key(Distance_Graduate_Course), Distance_Graduate_Course]
               ]), :class=> 'select_category', :include_blank => true  %>
-      <%= link_to image_tag("search.png", :border=>0, :class=>"enrollment_search_icon"),{:controller=>"offers", :action=>"showoffersbyuser"}%>
- 
+      <%= image_submit_tag("search.png", :class => 'enrollment_search_icon')%>
     </div>
 
     <div class="enrollment_right">
       <%= f.label t(:enrollm_view), :class => "enrollment_label" %>:&nbsp;
-      <%= link_to t(:enrollm_view_all),{:controller=>"offers", :action=>"showoffersbyuser"}, :class=>"link_gray"%>&nbsp;
-      <%= link_to t(:enrollm_view_enrolled),{:controller=>"offers", :action=>"showoffersbyuser"}, :class=>"link_gray"%>
+      <%= link_to t(:enrollm_view_all),{:controller=>"offers", :action=>"showoffersbyuser", :category_query => 'all'}, :class=>"link_gray"%>&nbsp;
+      <%= link_to t(:enrollm_view_enrolled),{:controller=>"offers", :action=>"showoffersbyuser", :category_query => 'enroll'}, :class=>"link_gray"%>
     </div>
     
     <div style="width: 100%; position: relative; float: left; left: 0px; top: 35px;">

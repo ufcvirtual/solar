@@ -142,6 +142,7 @@ textarea{
 }
 .enrollment_search_icon{
     vertical-align: middle;
+    border: 0px;
 }
 select.select_category{
     /*height:12px;*/

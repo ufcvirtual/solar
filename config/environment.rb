@@ -22,3 +22,5 @@ Free_Course = 3
 Extension_Course = 4
 Presential_Graduate_Course = 5
 Distance_Graduate_Course = 6
+
+Student = 1
