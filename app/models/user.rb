@@ -89,7 +89,8 @@ class User < ActiveRecord::Base
   #default_url define default image (if image is dropped or not exists)
 
   #validates_attachment_presence :photo, :message => 'Image must be selected'
-  validates_attachment_content_type :photo, :content_type => ['image/jpeg','image/png','image/gif','image/pjpeg']#, :message => 'Invalid image type!'
-  validates_attachment_size :photo, :less_than=>700.kilobyte
+  validates_attachment_size :photo, :less_than=>700.kilobyte, :message => " " # Esse :message => " " deve permanecer dessa forma enquanto não descobrirmos como passar a mensagem de forma correta. Se o message for vazio a validação não é feita.
+  validates_attachment_content_type :photo, :content_type => ['image/jpeg','image/png','image/gif','image/pjpeg'], :message => :invalid_type
+
 
 end

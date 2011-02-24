@@ -291,6 +291,8 @@ ptBR:
         telephone: "Telefone"
         cell_phone: "Celular"
         email_confirmation: "Confirmação do e-mail"
+        photo_content_type: "Tipo de arquivo inválido"
+        photo_file_size: "Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB."
 
     errors:
       template:
@@ -320,6 +322,13 @@ ptBR:
         odd: "deve ser ímpar"
         even: "deve ser par"
         record_invalid: "A validação falhou: %{errors}"
+      models:
+        user:
+          attributes:
+            photo_content_type:
+              invalid_type: "Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG."
+            photo_file_size:
+              invalid_size: "O tamanho máximo da sua foto deve ser de até 700KB."
 
   # Authlogic
   authlogic:

@@ -130,7 +130,5 @@ Esquema do Cenário: Enviar foto
 Exemplos:
 	| foto                          | saida                         |
 	| images/photo_valid.png        | Usuário alterado com sucesso! |
-#    | images/photo_invalid_type     | Tipo de arquivo inválido. Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG |
-#    | images/photo_invalid_size.png | Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB |
-
-
+#    | images/photo_invalid_type     | Tipo de arquivo inválido. Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG. |
+    | images/photo_invalid_size.png | Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB. |
