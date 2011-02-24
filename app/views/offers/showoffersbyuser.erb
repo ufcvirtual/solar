@@ -1,26 +1,57 @@
 <div>
-    Matrícula<br/>
+
+    <%=  image_tag "icon_enrollment.png" %>
+    <span class="enrollment_title">Matrícula</span>
+    <hr style="border: none; background-color: #b4b3b7; height: 1px; width:745px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px"></hr>
 
     <%= form_for :offer do |f| %>
-    Buscar <%=  f.text_field  :search, :size=>"50" %> em
-    <%= f.select :category, ([
-              [categories.key(Presential_Undergraduate_Course), Presential_Undergraduate_Course],
-              [categories.key(Distance_Undergraduate_Course), Distance_Undergraduate_Course],
-              [categories.key(Free_Course), Free_Course],
-              [categories.key(Extension_Course), Extension_Course],
-              [categories.key(Presential_Graduate_Course), Presential_Graduate_Course],
-              [categories.key(Distance_Graduate_Course), Distance_Graduate_Course]
-            ]), :include_blank => true  %>
+    
+    <div class="enrollment_left">
+      <%= f.label t(:enrollm_search), :class => "enrollment_label" %>&nbsp;
+      <%=  f.text_field  :search, :size=>"30", :class=>'enrollment_search' %>
+      <%= f.label t(:enrollm_search_in), :class => "enrollment_label" %>
+      <%= f.select :category, ([
+                [categories.key(Presential_Undergraduate_Course), Presential_Undergraduate_Course],
+                [categories.key(Distance_Undergraduate_Course), Distance_Undergraduate_Course],
+                [categories.key(Free_Course), Free_Course],
+                [categories.key(Extension_Course), Extension_Course],
+                [categories.key(Presential_Graduate_Course), Presential_Graduate_Course],
+                [categories.key(Distance_Graduate_Course), Distance_Graduate_Course]
+              ]), :class=> 'select_category', :include_blank => true  %>
+      <%= link_to image_tag("search.png", :border=>0, :class=>"enrollment_search_icon"),{:controller=>"offers", :action=>"showoffersbyuser"}%>
+ 
+    </div>
 
-    <table>
+    <div class="enrollment_right">
+      <%= f.label t(:enrollm_view), :class => "enrollment_label" %>:&nbsp;
+      <%= link_to t(:enrollm_view_all),{:controller=>"offers", :action=>"showoffersbyuser"}, :class=>"link_gray"%>&nbsp;
+      <%= link_to t(:enrollm_view_enrolled),{:controller=>"offers", :action=>"showoffersbyuser"}, :class=>"link_gray"%>
+    </div>
+    
+    <div style="width: 100%; position: relative; float: left; left: 0px; top: 35px;">
+      
+    <table cellpadding="2" cellspacing="0" width="745px">
+      <tr class="headtable_blue">
+        <td class="td_head_blue">Unidade Curricular</td>
+        <td class="td_head_blue" align="center">Categoria</td>
+        <td class="td_head_blue" align="center">Turma</td>
+        <td class="td_head_blue" align="center">Matrícula</td>
+      </tr>
     <% @offers.each do |offer| %>
-      <tr>
-        <td><%= offer.name %></td>
-        <td><%= offer.category %></td>
-        <td><%= offer.code %></td>
-        <td><%= offer.status %></td>
+      <tr class="<%= cycle('rowtable_odd', 'rowtable_even') %>" >
+        <td class="td_blue_first"><%= offer.name %></td>
+        <td class="td_blue" align="center"><%= image_tag("category"+offer.category.to_s+".png")%>&nbsp;<%= categories.key(offer.category.to_i) %></td>
+        <td class="td_blue" align="center"><%= offer.code %></td>
+        <td class="td_blue" align="center">
+          <%  if offer.status=='t' %>
+            <%= link_to t(:enrollm_cancel),{:controller=>"offers", :action=>"showoffersbyuser"}, :class=>'enrollment_link' %>
+          <%  else %>
+            <%= link_to t(:enrollm_enroll),{:controller=>"offers", :action=>"showoffersbyuser"}, :class=>'enrollment_link' %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
     </table>
+      </div>
     <% end %>
 </div>

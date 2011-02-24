@@ -117,6 +117,21 @@ en:
   url: "Enter here the URL of the image in the textbox above."
   send: "Send"
 
+    # página de matrícula
+  enrollm_pres_undergr_course: "Presencial Undergraduate"
+  enrollm_dist_undergr_course: "Distance Undergraduate"
+  enrollm_free_course: "Free Course"
+  enrollm_ext_course: "Extension Course"
+  enrollm_pres_grad_course: "Presencial Graduate"
+  enrollm_dist_grad_course: "Distance Graduate"
+  enrollm_search: "Search"
+  enrollm_search_in: "in"
+  enrollm_view: "View"
+  enrollm_view_all: "All"
+  enrollm_view_enrolled: "Enrolled"
+  enrollm_cancel: "Cancel"
+  enrollm_enroll: "Enroll"
+
   # formatos de data e hora
   date:
     formats:

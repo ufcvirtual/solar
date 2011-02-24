@@ -59,12 +59,12 @@ ActiveRecord::Schema.define(:version => 20110218193045) do
   end
 
   create_table "logs", :force => true do |t|
-    t.string   "log_type"
+    t.integer  "log_type"
     t.string   "message"
-    t.string   "userId"
-    t.string   "profile"
-    t.string   "course"
-    t.string   "classroom"
+    t.integer  "userId"
+    t.integer  "profileId"
+    t.integer  "courseId"
+    t.integer  "classId"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -158,5 +158,7 @@ ActiveRecord::Schema.define(:version => 20110218193045) do
 
   add_foreign_key "offers", ["curriculum_unities_id"], "curriculum_unities", ["id"], :name => "offers_curriculum_unities_id_fkey"
   add_foreign_key "offers", ["courses_id"], "courses", ["id"], :name => "offers_courses_id_fkey"
+
+  add_foreign_key "personal_configurations", ["user_id"], "users", ["id"], :name => "personal_configurations_user_id_fkey"
 
 end
