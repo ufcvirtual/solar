@@ -17,8 +17,9 @@
                 [categories.key(Free_Course), Free_Course],
                 [categories.key(Extension_Course), Extension_Course],
                 [categories.key(Presential_Graduate_Course), Presential_Graduate_Course],
-                [categories.key(Distance_Graduate_Course), Distance_Graduate_Course]
-              ]), :class=> 'select_category', :selected => @search_category  %>
+                [categories.key(Distance_Graduate_Course), Distance_Graduate_Course]]),
+                {}, {:class => "select_category"}  %>
+
       <%= image_submit_tag("search.png", :class => 'enrollment_search_icon')%>
     </div>
 
