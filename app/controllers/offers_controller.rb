@@ -64,8 +64,10 @@ class OffersController < ApplicationController
 
   def showoffersbyuser
     if current_user
+
       query_date_enrollment = ""
       query_category = ""
+      query_text = ""
 
       if params[:category_query]!='enroll'
         #traz todos: matriculados ou com data de matricula ativa
@@ -75,9 +77,15 @@ class OffersController < ApplicationController
       if params[:offer]
         query_date_enrollment = "((select enrollments.start from enrollments where offers.id=enrollments.offers_id)<= current_date and
                                   (select enrollments.end from enrollments where offers.id=enrollments.offers_id)>= current_date) or "
+        
         if params[:offer][:category]
-          #reduz para determinada categoria de disciplina          
-          query_category = " and curriculum_unities.category=#{params[:offer][:category]}" if !params[:offer][:category].empty?
+          #reduz para determinada categoria de disciplina
+          @search_category = params[:offer][:category]
+          query_category = " and curriculum_unities.category=#{@search_category}" if !@search_category.empty?
+        end
+        if params[:offer][:search]
+          @search_text = params[:offer][:search]
+          query_text = " and curriculum_unities.name ilike '%#{@search_text}%' " if !@search_text.empty?
         end
       end
 
@@ -93,7 +101,7 @@ class OffersController < ApplicationController
         :conditions => "(
                   #{query_date_enrollment}
                   (allocations.users_id = #{current_user.id} AND allocations.profiles_id = #{Student})
-                  ) #{query_category}"
+                  ) #{query_category} #{query_text}"
       )
     end
   end
