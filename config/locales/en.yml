@@ -166,3 +166,10 @@ en:
         not_a_number: " is not a number"
         not_an_integer: " is not an integer number"
         record_invalid: "The validation failed: %{errors}"
+      models:
+        user:
+          attributes:
+            photo_content_type:
+              invalid_type: "Please send only files of type JPG, GIF or PNG."
+            photo_file_size:
+              invalid_size: "The maximum size of your photo should be up to 700KB."
