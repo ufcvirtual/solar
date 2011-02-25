@@ -152,6 +152,8 @@ en:
         address_neighborhood: "Neighborhood"
         address_complement: "Complement"
         cpf: "CPF"
+        photo_content_type: "Invalid file type"
+        photo_file_size: "File too large. The maximum size of your photo should be up to 700KB."
     errors:
       messages:
         invalid: " is not valid"
