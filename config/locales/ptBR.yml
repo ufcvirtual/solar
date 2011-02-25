@@ -306,7 +306,7 @@ ptBR:
         telephone: "Telefone"
         cell_phone: "Celular"
         email_confirmation: "Confirmação do e-mail"
-        photo_content_type: "Tipo de arquivo inválido"
+        photo_content_type: "Tipo de arquivo inválido."
         photo_file_size: "Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB."
 
     errors:
