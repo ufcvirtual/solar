@@ -67,18 +67,17 @@ class OffersController < ApplicationController
       query_date_enrollment = ""
       query_category = ""
 
-      if params[:category_query]=='all'
+      if params[:category_query]!='enroll'
         #traz todos: matriculados ou com data de matricula ativa
         query_date_enrollment = "((select enrollments.start from enrollments where offers.id=enrollments.offers_id)<= current_date and
                                   (select enrollments.end from enrollments where offers.id=enrollments.offers_id)>= current_date) or "
       end
       if params[:offer]
-        if params[:offer][:category]
-          #reduz para determinada categoria de disciplina
-          query_date_enrollment = "((select enrollments.start from enrollments where offers.id=enrollments.offers_id)<= current_date and
+        query_date_enrollment = "((select enrollments.start from enrollments where offers.id=enrollments.offers_id)<= current_date and
                                   (select enrollments.end from enrollments where offers.id=enrollments.offers_id)>= current_date) or "
-          query_category = " and curriculum_unities.category=#{params[:offer][:category]}"
-
+        if params[:offer][:category]
+          #reduz para determinada categoria de disciplina          
+          query_category = " and curriculum_unities.category=#{params[:offer][:category]}" if !params[:offer][:category].empty?
         end
       end
 

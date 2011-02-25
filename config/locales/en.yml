@@ -125,7 +125,7 @@ en:
   enrollm_pres_grad_course: "Presencial Graduate"
   enrollm_dist_grad_course: "Distance Graduate"
   enrollm_search: "Search"
-  enrollm_search_in: "in"
+  enrollm_search_in: " in "
   enrollm_view: "View"
   enrollm_view_all: "All"
   enrollm_view_enrolled: "Enrolled"

@@ -144,7 +144,7 @@ textarea{
     vertical-align: middle;
     border: 0px;
 }
-select.select_category{
+.select_category{
     /*height:12px;*/
     font-size: 10px;
     font-family:'Trebuchet',Arial,'Myriad Pro';
@@ -178,9 +178,8 @@ select.select_category{
     top: 10px;
 }
 .enrollment_right{
-    position: inherit;
-    right: 0px;
-    width: 180px;    
+    position: relative;
+    margin-right: 0px;
     text-align: right;
 }
 .link_gray {

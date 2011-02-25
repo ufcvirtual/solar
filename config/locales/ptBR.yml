@@ -126,7 +126,7 @@ ptBR:
   enrollm_pres_grad_course: "Pós-Grad. Presencial"
   enrollm_dist_grad_course: "Pós-Grad. Semipresencial"
   enrollm_search: "Buscar"
-  enrollm_search_in: "em"
+  enrollm_search_in: " em "
   enrollm_view: "Ver"
   enrollm_view_all: "Todos"
   enrollm_view_enrolled: "Matriculados"

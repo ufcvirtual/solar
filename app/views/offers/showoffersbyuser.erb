@@ -11,13 +11,14 @@
       <%= f.text_field  :search, :size=>"30", :class=>'enrollment_search' %>
       <%= f.label t(:enrollm_search_in), :class => "enrollment_label" %>
       <%= f.select :category, ([
+                ['Todos',''],
                 [categories.key(Presential_Undergraduate_Course), Presential_Undergraduate_Course],
                 [categories.key(Distance_Undergraduate_Course), Distance_Undergraduate_Course],
                 [categories.key(Free_Course), Free_Course],
                 [categories.key(Extension_Course), Extension_Course],
                 [categories.key(Presential_Graduate_Course), Presential_Graduate_Course],
                 [categories.key(Distance_Graduate_Course), Distance_Graduate_Course]
-              ]), :class=> 'select_category', :include_blank => true  %>
+              ]), :class=> 'select_category'  %>
       <%= image_submit_tag("search.png", :class => 'enrollment_search_icon')%>
     </div>
 
@@ -39,7 +40,7 @@
     <% @offers.each do |offer| %>
       <tr class="<%= cycle('rowtable_odd', 'rowtable_even') %>" >
         <td class="td_blue_first"><%= offer.name %></td>
-        <td class="td_blue" align="center"><%= image_tag("category"+offer.category.to_s+".png")%>&nbsp;<%= categories.key(offer.category.to_i) %></td>
+        <td class="td_blue"><%= image_tag("category"+offer.category.to_s+".png")%>&nbsp;<%= categories.key(offer.category.to_i) %></td>
         <td class="td_blue" align="center"><%= offer.code %></td>
         <td class="td_blue" align="center">
           <%  if offer.status=='t' %>
