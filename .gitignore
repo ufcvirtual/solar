@@ -20,3 +20,4 @@ rerun.txt
 .DS_Store
 config/database.yml
 Gemfile.lock
+public/images/users/*

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 	before_filter :require_no_user, :only => [:pwd_recovery, :pwd_recovery_send]
-	before_filter :require_user, :only => [:index, :show, :mysolar, :edit, :update, :destroy]
+	before_filter :require_user, :only => [:index, :show, :mysolar, :edit, :update, :destroy, :update_photo]
 
   # GET /users
   # GET /users.xml
@@ -94,16 +94,14 @@ class UsersController < ApplicationController
           !params[:user]["new_password"].nil? ||
           !params[:user]["repeat_password"].nil?)
 
-
       antiga_senha  = params[:user]["old_password"]
       nova_senha    = params[:user]["new_password"]
       repetir_senha = params[:user]["repeat_password"]
 
-     
       if (!antiga_senha.nil?)
         antiga_senha = CryptoProvider.encrypt(antiga_senha)
       end
-      
+
       if (antiga_senha.nil?)
         sucesso = false
         error_msg = t('empty_old_password')
@@ -119,7 +117,8 @@ class UsersController < ApplicationController
         end
       end
     end
-    #Limpando os parametros da requisicao que nao fazem parte do MODEL
+
+    # Limpando os parametros da requisicao que nao fazem parte do MODEL
     params[:user].delete("old_password")
     params[:user].delete("new_password")
     params[:user].delete("repeat_password")
@@ -128,6 +127,7 @@ class UsersController < ApplicationController
     if (sucesso && !nova_senha.nil?)
       @user.crypted_password =  CryptoProvider.encrypt(nova_senha)
     end
+
     respond_to do |format|
       if (sucesso && @user.update_attributes(params[:user]))
         flash[:success] = t('successful_update')
@@ -173,12 +173,12 @@ class UsersController < ApplicationController
       @user = User.find(current_user.id)
     end
   end
-  
+
   def pwd_recovery
   	if !@user
       @user = User.new
     end
-	
+
     #if !@user_session
     #	@user_session = UserSession.new
     #end
@@ -192,7 +192,7 @@ class UsersController < ApplicationController
   def pwd_recovery_send
     #se existe usuario com esse cpf e email, recupera
     user_find = User.find_by_cpf_and_email(params[:user][:cpf],params[:user][:email])
-	
+
     if user_find
       #gera nova senha
       pwd = generate_password (8)
@@ -205,7 +205,7 @@ class UsersController < ApplicationController
         if current_user_session
           current_user_session.destroy
         end
-			
+
         #envia email
         Notifier.deliver_recovery_new_pwd(user_find, pwd)
 
@@ -213,21 +213,46 @@ class UsersController < ApplicationController
       else
         flash[:error] = t(:pwd_recovery_error_msg)
       end
-				
+
     else
       flash[:error] = t(:pwd_recovery_unknown_user_msg)
     end
-	
+
     respond_to do |format|
       format.html { redirect_to(users_pwd_recovery_url) }
       format.xml  { head :ok }
     end
-	
+
   end
-  
+
   def generate_password (size)
     accept_chars = (('a'..'z').to_a + ('0'..'9').to_a) - %w(i o 0 1 l)
   	(1..size).collect{|a| accept_chars[rand(accept_chars.size)] }.join
   end
-  
+
+  # modificacao da foto do usuario
+  def update_photo
+
+    error_msg = " "
+    @user = User.find(params[:id])
+
+    respond_to do |format|
+      if @user.update_attributes(params[:user])
+        flash[:success] = t('successful_update')
+        format.html { redirect_to({:controler => "users", :action => "mydata"})}
+        format.xml  { head :ok }
+      else
+        #joga as mensagens de validação do modelo nas mensagens de erro
+        if @user.errors.any?
+          @user.errors.full_messages.each do |msg|
+             error_msg << msg+"<br/>"
+          end
+        end
+        flash[:error] = error_msg
+        format.html { render ({:controler => "users", :action => "mydata"})}
+        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
 end
