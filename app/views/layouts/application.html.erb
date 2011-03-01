@@ -49,6 +49,11 @@
 
       <div id="mysolar_boxid">
         <div id="mysolar_id">
+
+          <% unless @user.errors.empty? %>
+            <% @user = User.find(@user.id) %>
+          <% end %>
+
           <%= image_tag @user.photo.url(:medium), :alt => "#{t(:mysolar_alt_img_user)} #{@user.nick}", :id => "image_user" %>
           <div style="opacity: 0.7;" class="div_link_decoration" id="div-alter-photo"><%= t(:alter_photo) %></div>
           <%= @user.nick%>
