@@ -121,6 +121,7 @@ Cenário:  Acessar Edição de foto
     E eu deverei ver o botao "Cancelar"
     E eu deverei ver o botao "Enviar"
 
+@wip
 Esquema do Cenário: Enviar foto
     Dado que estou logado no sistema com usuario user
        E que estou em "Meu Solar"
@@ -128,7 +129,34 @@ Esquema do Cenário: Enviar foto
     Quando eu clicar em "photo_submit"
     Então eu deverei ver "<saida>"
 Exemplos:
-	| foto                          | saida                         |
-	| images/photo_valid.png        | Usuário alterado com sucesso! |
-#    | images/photo_invalid_type     | Tipo de arquivo inválido. Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG. |
-    | images/photo_invalid_size.png | Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB. |
+	| foto                                                    | saida                                                                               |
+	| images/photo_valid.png                                  | Foto alterada com sucesso!                                                          |
+	| images/photo_valid_no_extension                         | Foto alterada com sucesso!                                                          |
+	| images/photo_invalid_type.txt                           | Tipo de arquivo inválido. Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG. |
+	| images/photo_invalid_type_size_and_valid_extension.png  | Tipo de arquivo inválido. Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG. |
+	| images/photo_invalid_size.png                           | Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB.           |
+	| images/photo_invalid_type_and_valid_extension.png       | Tipo de arquivo inválido. Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG. |
+	| images/photo_invalid_no_extension                       | Tipo de arquivo inválido. Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG. |
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
