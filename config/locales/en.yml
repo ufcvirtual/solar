@@ -52,6 +52,7 @@ en:
   bad_password_confirmation: "Bad password confirmation"
   incorrect_old_password: "Old password is incorrect"
   successful_update: "Update successful"
+  successful_update_photo: "Photo successfully changed"
 
   #alteracao de foto do layout
   alter_photo: "alter photo"

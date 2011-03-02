@@ -238,7 +238,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        flash[:success] = t('successful_update')
+        flash[:success] = t('successful_update_photo')
         format.html { redirect_to({:controler => "users", :action => "mydata"})}
         format.xml  { head :ok }
       else

@@ -56,6 +56,7 @@ ptBR:
   bad_password_confirmation: "A nova senha e a confirmação não conferem!"
   incorrect_old_password: "Senha antiga incorreta"
   successful_update: "Usuário alterado com sucesso!"
+  successful_update_photo: "Foto alterada com sucesso!"
 
   #alteracao de foto do layout
   alter_photo: "alterar foto"
