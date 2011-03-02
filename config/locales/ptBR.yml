@@ -133,6 +133,9 @@ ptBR:
   enrollm_view_enrolled: "Matriculados"
   enrollm_cancel: "Cancelar"
   enrollm_enroll: "Matricular"
+  enrollm_curriculum_unit: "Unidade Curricular"
+  enrollm_category: "Categoria"
+  enrollm_group: "Turma"
 
   # formatos de data e hora
   date:
@@ -278,6 +281,8 @@ ptBR:
   activerecord:
     models:
       user: "Usuario"
+      curriculum_unit: "Unidade Curricular"
+      group: "Class"
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -309,6 +314,8 @@ ptBR:
         email_confirmation: "Confirmação do e-mail"
         photo_content_type: "Tipo de arquivo inválido."
         photo_file_size: "Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB."
+      curriculum_unit:
+        category: "Categoria"
 
     errors:
       template:

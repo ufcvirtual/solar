@@ -132,6 +132,9 @@ en:
   enrollm_view_enrolled: "Enrolled"
   enrollm_cancel: "Cancel"
   enrollm_enroll: "Enroll"
+  enrollm_curriculum_unit: "Curriculum Unit"
+  enrollm_category: "Category"
+  enrollm_group: "Class"
 
   # formatos de data e hora
   date:
@@ -146,6 +149,8 @@ en:
   activerecord:
     models:
       user: "Usuario"
+      curriculum_unit: "Curriculum Unit"
+      group: "Turma"
     attributes:
       user:
         sex: "Gender"
@@ -155,6 +160,9 @@ en:
         cpf: "CPF"
         photo_content_type: "Invalid file type"
         photo_file_size: "File too large. The maximum size of your photo should be up to 700KB."
+      curriculum_unit:
+        category: "Category"
+
     errors:
       messages:
         invalid: " is not valid"

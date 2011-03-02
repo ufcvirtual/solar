@@ -11,7 +11,7 @@
       <%= f.text_field  :search, :size=>"30", :class=>'enrollment_search' %>
       <%= f.label t(:enrollm_search_in), :class => "enrollment_label" %>
       <%= f.select :category, ([
-                ['Todos',''],
+                [t(:enrollm_view_all),''],
                 [categories.key(Presential_Undergraduate_Course), Presential_Undergraduate_Course],
                 [categories.key(Distance_Undergraduate_Course), Distance_Undergraduate_Course],
                 [categories.key(Free_Course), Free_Course],
@@ -24,7 +24,8 @@
     </div>
 
     <div class="enrollment_right">
-      <%= f.label t(:enrollm_view), :class => "enrollment_label" %>:&nbsp;
+      <%= f.label t(:enrollm_view), :class => "enrollment_label" %>
+      <%= f.label ': ', :class => "enrollment_label" %>&nbsp;
       <%= link_to t(:enrollm_view_all),{:controller=>"offers", :action=>"showoffersbyuser", :category_query => 'all'}, :class=>"link_gray"%>&nbsp;
       <%= link_to t(:enrollm_view_enrolled),{:controller=>"offers", :action=>"showoffersbyuser", :category_query => 'enroll'}, :class=>"link_gray"%>
     </div>
@@ -33,10 +34,10 @@
       
     <table cellpadding="2" cellspacing="0" width="745px">
       <tr class="headtable_blue">
-        <td class="td_head_blue">Unidade Curricular</td>
-        <td class="td_head_blue" align="center">Categoria</td>
-        <td class="td_head_blue" align="center">Turma</td>
-        <td class="td_head_blue" align="center">Matrícula</td>
+        <td class="td_head_blue"><%= t(:enrollm_curriculum_unit)   %></td>
+        <td class="td_head_blue" align="center"><%= t(:enrollm_category)   %></td>
+        <td class="td_head_blue" align="center"><%= t(:enrollm_group)   %></td>
+        <td class="td_head_blue" align="center"><%= t(:mysolar_mn_enrollment)%></td>
       </tr>
     <% @offers.each do |offer| %>
       <tr class="<%= cycle('rowtable_odd', 'rowtable_even') %>" >
