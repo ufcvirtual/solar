@@ -53,12 +53,11 @@ en:
   incorrect_old_password: "Old password is incorrect"
   successful_update: "Update successful"
   successful_update_photo: "Photo successfully changed"
-  file_not_identify: "Tipo de arquivo inválido. Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG."
 
   #alteracao de foto do layout
   alter_photo: "alter photo"
 
-    # pagina do meu solar
+  # pagina do meu solar
   mysolar_news: "News"
   mysolar_recent_activities: "Recents Activities"
   mysolar_agenda: "Agenda"
@@ -74,13 +73,10 @@ en:
   mysolar_mn_enrollment: "Enrollment"
   mysolar_search: "Search"
 
-  #       msg de erro ,ainda no login    #
+  # msg de erro ,ainda no login    #
   login_data_invalid: "Login details incorrect!"
 
-  
-
-
-# Página Esqueci Minha Senha
+  # Página Esqueci Minha Senha
 
   pwd_recovery_security: "Security"
   pwd_recovery_subtitle: "Forgot your password?"

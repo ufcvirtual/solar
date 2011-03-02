@@ -249,7 +249,6 @@ class UsersController < ApplicationController
             if msg.index("recognized by the 'identify'") # erro que nao teve tratamento
               # se aparecer outro erro nao exibe o erro de arquivo nao identificado
               if msgs_error.count == 1
-                #error_msg << t(:file_not_identify) + "<br />"
                 error_msg << t(:activerecord)[:attributes][:user][:photo_content_type] + " "
                 error_msg << t(:activerecord)[:errors][:models][:user][:attributes][:photo_content_type][:invalid_type] + "<br />"
               end
