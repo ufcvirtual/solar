@@ -139,7 +139,7 @@ class UsersController < ApplicationController
           @user.errors.full_messages.each do |msg|
             #remove a mensagem do brazillian rails
             if msg != 'CPF numero invalido'
-               error_msg << msg+"<br/>"
+              error_msg << msg+"<br/>"
             end
           end
         end
@@ -233,23 +233,33 @@ class UsersController < ApplicationController
   # modificacao da foto do usuario
   def update_photo
 
-    error_msg = " "
+    error_msg, redirect = " ", {:action => "mysolar"}
     @user = User.find(params[:id])
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
         flash[:success] = t('successful_update_photo')
-        format.html { redirect_to({:controler => "users", :action => "mydata"})}
+        format.html { redirect_to (redirect) }
         format.xml  { head :ok }
       else
-        #joga as mensagens de validação do modelo nas mensagens de erro
+        # joga as mensagens de validação do modelo nas mensagens de erro
         if @user.errors.any?
-          @user.errors.full_messages.each do |msg|
-             error_msg << msg+"<br/>"
+          msgs_error = @user.errors.full_messages.uniq # podem ter erros repetidos mas serao exibidos como unicos
+          msgs_error.each do |msg|
+            if msg.index("recognized by the 'identify'") # erro que nao teve tratamento
+              # se aparecer outro erro nao exibe o erro de arquivo nao identificado
+              if msgs_error.count == 1
+                #error_msg << t(:file_not_identify) + "<br />"
+                error_msg << t(:activerecord)[:attributes][:user][:photo_content_type] + " "
+                error_msg << t(:activerecord)[:errors][:models][:user][:attributes][:photo_content_type][:invalid_type] + "<br />"
+              end
+            else # exibicao de erros conhecidos
+              error_msg << msg + "<br />"
+            end
           end
         end
         flash[:error] = error_msg
-        format.html { render ({:controler => "users", :action => "mydata"})}
+        format.html { render (redirect) }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end
     end

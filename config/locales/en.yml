@@ -53,6 +53,7 @@ en:
   incorrect_old_password: "Old password is incorrect"
   successful_update: "Update successful"
   successful_update_photo: "Photo successfully changed"
+  file_not_identify: "Tipo de arquivo inválido. Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG."
 
   #alteracao de foto do layout
   alter_photo: "alter photo"
