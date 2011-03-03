@@ -136,6 +136,7 @@ ptBR:
   enrollm_curriculum_unit: "Unidade Curricular"
   enrollm_category: "Categoria"
   enrollm_group: "Turma"
+  enrollm_title: "Matrícula"
 
   # formatos de data e hora
   date:

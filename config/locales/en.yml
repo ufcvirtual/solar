@@ -132,6 +132,7 @@ en:
   enrollm_curriculum_unit: "Curriculum Unit"
   enrollm_category: "Category"
   enrollm_group: "Class"
+  enrollm_title: "Enrollment"
 
   # formatos de data e hora
   date:
