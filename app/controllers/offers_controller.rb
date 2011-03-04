@@ -101,7 +101,7 @@ class OffersController < ApplicationController
                    LEFT JOIN allocations  ON allocations.groups_id = groups.id",
         :conditions => "(
                   #{query_date_enrollment}
-                  (allocations.users_id = #{current_user.id} AND allocations.profiles_id = #{Student})
+                  (allocations.users_id = #{current_user.id} AND allocations.profiles_id = #{Student} AND allocations.status = #{Allocation_Activated})
                   ) #{query_category} #{query_text}" ,
         :order => "curriculum_unities.name"
       )

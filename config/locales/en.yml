@@ -133,9 +133,11 @@ en:
   enrollm_category: "Category"
   enrollm_group: "Class"
   enrollm_title: "Enrollment"
+  enrollm_cancel_request: "Cancel Request"
   enrollm_cancelled_message: "Enrollment cancelled!"
   enrollm_reactivated_message: "Enrollment reactivated!"
-  enrollm_request_message: "Application for enrollment made!"
+  enrollm_request_message: "Request for enrollment made!"
+  enrollm_request_cancel_message: "Request for enrollment cancelled!"
 
   # formatos de data e hora
   date:

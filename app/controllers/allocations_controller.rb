@@ -52,6 +52,7 @@ class AllocationsController < ApplicationController
     end
   end
 
+  # remove matricula (alocacao)
   def destroy
     @allocation = Allocation.find(params[:id])
     @allocation.destroy
@@ -62,9 +63,10 @@ class AllocationsController < ApplicationController
     end
   end
 
+  # cancela matricula (alocacao)
   def cancel
     @allocation = Allocation.find(params[:id])
-    @allocation.status = Allocation_Canceled
+    @allocation.status = Allocation_Cancelled
 
     message = ''
     if @allocation.save
@@ -77,14 +79,39 @@ class AllocationsController < ApplicationController
     end
   end
 
+  # pede reativacao de matricula (alocacao)
+  def reactivate
+    @allocation = Allocation.find(params[:id])
+    @allocation.status = Allocation_Pending_Reactivate
+
+    message = ''
+    if @allocation.save
+      message = t(:enrollm_request_message)
+    end
+
+    respond_to do |format|
+      format.html { redirect_to(offers_showoffersbyuser_url, :notice => message) }
+      format.xml  { head :ok }
+    end
+  end
+
+  # pede matricula (alocacao)
   def send_request    
     if params[:groupid] && params[:userid]
-      @allocation = Allocation.new
-      @allocation.users_id = params[:userid]
-      @allocation.groups_id = params[:groupid]
-      @allocation.profiles_id = Student
-      @allocation.status = Allocation_Pending
-      
+
+      # se havia status anterior, reativa
+      if params[:id]
+        @allocation = Allocation.find(params[:id])
+        @allocation.status = Allocation_Pending_Reactivate
+      else
+        # senao gera novo pedido (alocacao) de matricula
+        @allocation = Allocation.new
+        @allocation.users_id = params[:userid]
+        @allocation.groups_id = params[:groupid]
+        @allocation.profiles_id = Student
+        @allocation.status = Allocation_Pending
+      end
+
       message = ''
       if @allocation.save
         message = t(:enrollm_request_message)
@@ -94,6 +121,37 @@ class AllocationsController < ApplicationController
         format.html { redirect_to(offers_showoffersbyuser_url, :notice => message) }
         format.xml  { head :ok }
       end
+    end
+  end
+
+  # cancela pedido de matricula (alocacao)
+  def cancel_request
+    @allocation = Allocation.find(params[:id])
+    status = @allocation.status
+    message = ''
+
+    # se cancela 1o pedido de matricula (nao havia alocacao), remove pedido
+    if status == Allocation_Pending
+
+      if @allocation.destroy
+         message = t(:enrollm_request_cancel_message)
+      end
+
+    else
+      
+      # se havia status cancelado anterior (havia alocacao), apenas cancela pedido
+      if status == Allocation_Pending_Reactivate
+        @allocation.status = Allocation_Cancelled
+        if @allocation.save
+          message = t(:enrollm_request_cancel_message)
+        end
+      end
+
+    end
+
+    respond_to do |format|
+      format.html { redirect_to(offers_showoffersbyuser_url, :notice => message) }
+      format.xml  { head :ok }
     end
   end
 

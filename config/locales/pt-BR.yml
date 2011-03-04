@@ -137,9 +137,11 @@
   enrollm_category: "Categoria"
   enrollm_group: "Turma"
   enrollm_title: "Matrícula"
+  enrollm_cancel_request: "Cancelar pedido"
   enrollm_cancelled_message: "Matrícula cancelada!"
   enrollm_reactivated_message: "Matrícula reativada!"
   enrollm_request_message: "Pedido de matrícula realizado!"
+  enrollm_request_cancel_message: "Pedido de matrícula cancelado!"
 
   # formatos de data e hora
   date:
