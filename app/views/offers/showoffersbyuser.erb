@@ -32,7 +32,13 @@
     </div>
     
     <div style="width: 100%; position: relative; float: left; left: 0px; top: 35px;">
-      
+
+    <% if flash[:success] || flash[:error] || flash[:notice]%>
+      <%=raw message %>&nbsp;
+    <% else %>
+      &nbsp;
+    <% end %>
+
     <table cellpadding="2" cellspacing="0" width="745px">
       <tr class="headtable_blue">
         <td class="td_head_blue"><%= t(:enrollm_curriculum_unit)   %></td>
@@ -46,8 +52,8 @@
         <td class="td_blue"><%= image_tag("category"+offer.category.to_s+".png")%>&nbsp;<%= categories.key(offer.category.to_i) %></td>
         <td class="td_blue" align="center"><%= offer.code %></td>
         <td class="td_blue" align="center">
-          <%  if offer.status=='t' %>
-            <%= link_to t(:enrollm_cancel),{:controller=>"offers", :action=>"showoffersbyuser"}, :class=>'enrollment_link' %>
+          <%  if offer.status=='1' %>
+            <%= link_to t(:enrollm_cancel),{:controller=>"allocations", :action=>"cancel", :id => offer.allocationid}, :class=>'enrollment_link' %>
           <%  else %>
             <%= link_to t(:enrollm_enroll),{:controller=>"offers", :action=>"showoffersbyuser"}, :class=>'enrollment_link' %>
           <% end %>

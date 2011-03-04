@@ -10,15 +10,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110218193045) do
+ActiveRecord::Schema.define(:version => 20110304132622) do
 
   create_table "allocations", :force => true do |t|
     t.integer  "users_id"
     t.integer  "groups_id"
     t.integer  "profiles_id"
-    t.boolean  "status",      :default => true
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "status",      :default => 0
   end
 
   create_table "courses", :force => true do |t|

@@ -24,3 +24,7 @@ Presential_Graduate_Course = 5
 Distance_Graduate_Course = 6
 
 Student = 1
+
+Allocation_Pending   = 0
+Allocation_Activated = 1
+Allocation_Canceled  = 2
