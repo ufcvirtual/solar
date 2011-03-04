@@ -38,8 +38,8 @@
     <table>
       <tr>
         <td style="width: 20px"> <%= image_tag "locales.png" %> </td>
-        <td style="width: 50px; font-size: 12px"> <%= link_to "English","/?locale=en ", :style=>"color: #000"%> </td>
-        <td style="font-size: 12px"> <%= link_to "Português(BR)","/", :style=>"color: #000"%> </td>
+        <td style="width: 50px; font-size: 12px"> <%= link_to "English",root_path(:locale => 'en'), :style=>"color: #000"%> </td>
+        <td style="font-size: 12px"> <%= link_to "Português(BR)",root_path(:locale => 'pt-BR'), :style=>"color: #000"%> </td>
       </tr>
 
     </table>
