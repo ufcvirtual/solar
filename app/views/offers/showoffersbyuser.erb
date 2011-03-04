@@ -52,11 +52,18 @@
         <td class="td_blue"><%= image_tag("category"+offer.category.to_s+".png")%>&nbsp;<%= categories.key(offer.category.to_i) %></td>
         <td class="td_blue" align="center"><%= offer.code %></td>
         <td class="td_blue" align="center">
-          <%  if offer.status=='1' %>
+
+          <% case offer.status %>
+          <% when '0' %>
+            <%= f.label 'Aguardando :D', :class => "enrollment_label" %>
+          <% when '1' %>
             <%= link_to t(:enrollm_cancel),{:controller=>"allocations", :action=>"cancel", :id => offer.allocationid}, :class=>'enrollment_link' %>
-          <%  else %>
-            <%= link_to t(:enrollm_enroll),{:controller=>"offers", :action=>"showoffersbyuser"}, :class=>'enrollment_link' %>
+          <% when '2' %>
+            <%= f.label 'cancelado :P', :class => "enrollment_label" %>
+          <% else %>
+            <%= link_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"send_request", :groupid => offer.groupsid, :userid => current_user.id }, :class=>'enrollment_link' %>
           <% end %>
+
         </td>
       </tr>
     <% end %>

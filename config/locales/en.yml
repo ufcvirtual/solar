@@ -135,6 +135,7 @@ en:
   enrollm_title: "Enrollment"
   enrollm_cancelled_message: "Enrollment cancelled!"
   enrollm_reactivated_message: "Enrollment reactivated!"
+  enrollm_request_message: "Application for enrollment made!"
 
   # formatos de data e hora
   date:

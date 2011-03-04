@@ -65,27 +65,36 @@ class AllocationsController < ApplicationController
   def cancel
     @allocation = Allocation.find(params[:id])
     @allocation.status = Allocation_Canceled
-    @allocation.save
+
+    message = ''
+    if @allocation.save
+      message = t(:enrollm_cancelled_message)
+    end
 
     respond_to do |format|
-      format.html { redirect_to(offers_showoffersbyuser_url, :notice => t(:enrollm_cancelled_message)) }
+      format.html { redirect_to(offers_showoffersbyuser_url, :notice => message) }
       format.xml  { head :ok }
     end
   end
 
-  def reactive
-    @allocation = Allocation.find(params[:id])
-    @allocation.status = Allocation_Activated
-    @allocation.save
+  def send_request    
+    if params[:groupid] && params[:userid]
+      @allocation = Allocation.new
+      @allocation.users_id = params[:userid]
+      @allocation.groups_id = params[:groupid]
+      @allocation.profiles_id = Student
+      @allocation.status = Allocation_Pending
+      
+      message = ''
+      if @allocation.save
+        message = t(:enrollm_request_message)
+      end
 
-    respond_to do |format|
-      format.html { redirect_to(offers_showoffersbyuser_url, :notice => t(:enrollm_reactivated_message)) }
-      format.xml  { head :ok }
+      respond_to do |format|
+        format.html { redirect_to(offers_showoffersbyuser_url, :notice => message) }
+        format.xml  { head :ok }
+      end
     end
-  end
-
-  def accept_request
-
   end
 
 end
