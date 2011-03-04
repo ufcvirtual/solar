@@ -1,5 +1,6 @@
-Solar::Application.routes.draw do
+Solar::Application.routes.draw do |map|
 
+  get "access_control/index"
   get "users/mysolar"
   get "user_sessions/new"
   get "users/new"
@@ -7,11 +8,13 @@ Solar::Application.routes.draw do
   get "users/pwd_recovery"
   get "offers/showoffersbyuser"
 
-  match '/locale'  => "user_sessions#switch_language"
-  
+  match '/locale' => "user_sessions#switch_language"
 
-#  match 'user/:id' => 'user#show'
-#  match 'user/:id' => 'user#show', :as => :meusolar
+  # roteamento para controle de acesso as imagens do usuario
+  map.connect '/media/users/:id/photos/:style.:extension', :controller => 'access_control', :action => 'photo'
+
+  # match 'user/:id' => 'user#show'
+  # match 'user/:id' => 'user#show', :as => :meusolar
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -75,7 +78,6 @@ Solar::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   match ':controller(/:action(/:id(.:format)))'
-
 
   root :to => 'user_sessions#new'
 

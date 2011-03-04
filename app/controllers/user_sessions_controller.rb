@@ -1,14 +1,14 @@
 class UserSessionsController < ApplicationController
-layout 'login'
+  layout 'login'
 
   before_filter :require_no_user, :only => [:index, :new, :create]
   before_filter :require_user, :only => :destroy
 
   def index
-	if !@user_session
-		@user_session = UserSession.new
-	end
-	render :action => :new
+    if !@user_session
+      @user_session = UserSession.new
+    end
+    render :action => :new
   end
 
   def new
@@ -38,6 +38,5 @@ layout 'login'
     I18n.locale = params[:locale].to_sym
     redirect_to root_url
   end
-
 
 end

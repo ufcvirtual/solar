@@ -71,17 +71,17 @@ class User < ActiveRecord::Base
       :medium => "72x90#",
       :small => "24x30#"
     },
-    :path => ":rails_root/public/images/:class/:id/:style_:basename.:extension",
-    :url => "/images/:class/:id/:style_:basename.:extension",
-    :default_url => "/images/no_image.png"
+    :path => ":rails_root/media/:class/:id/photos/:style.:extension",
+    :url => "/media/:class/:id/photos/:style.:extension",
+    :default_url => "/public/image/no_image.png"
 
   # paperclip uses: file_name, content_type, file_size e updated_at
 
-  #path and URL define that images will be in "public/images/"
-  #  and will be created a folder called "users" with object id (eg users/1)
-  #default_url define default image (if image is dropped or not exists)
+  # path and URL define that images will be in "public/images/"
+  # and will be created a folder called "users" with object id (eg users/1)
+  # default_url define default image (if image is dropped or not exists)
 
-  #  validates_attachment_presence :photo
+  # validates_attachment_presence :photo
   validates_attachment_size :photo, :less_than=>700.kilobyte, :message => " " # Esse :message => " " deve permanecer dessa forma enquanto não descobrirmos como passar a mensagem de forma correta. Se o message for vazio a validação não é feita.
   validates_attachment_content_type :photo, :content_type => ['image/jpeg','image/png','image/gif','image/pjpeg'], :message => :invalid_type
 

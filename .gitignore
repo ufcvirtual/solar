@@ -21,3 +21,4 @@ rerun.txt
 config/database.yml
 Gemfile.lock
 public/images/users/*
+media/users/*
