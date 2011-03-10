@@ -70,13 +70,17 @@ class OffersController < ApplicationController
       query_text = ""
 
       if params[:category_query]!='enroll'
-        #traz todos: matriculados ou com data de matricula ativa
+        #traz todos: matriculados OU com data de matricula ativa e q seja dos tipos: free, extension, presential
         query_date_enrollment = "((select enrollments.start from enrollments where offers.id=enrollments.offers_id)<= current_date and
-                                  (select enrollments.end from enrollments where offers.id=enrollments.offers_id)>= current_date) or "
+                                  (select enrollments.end from enrollments where offers.id=enrollments.offers_id)>= current_date
+                                  and curriculum_unities.category in (#{Free_Course},#{Extension_Course},#{Presential_Undergraduate_Course},#{Presential_Graduate_Course})
+                                 ) or "
       end
       if params[:offer]
         query_date_enrollment = "((select enrollments.start from enrollments where offers.id=enrollments.offers_id)<= current_date and
-                                  (select enrollments.end from enrollments where offers.id=enrollments.offers_id)>= current_date) or "
+                                  (select enrollments.end from enrollments where offers.id=enrollments.offers_id)>= current_date
+                                  and curriculum_unities.category in (#{Free_Course},#{Extension_Course},#{Presential_Undergraduate_Course},#{Presential_Graduate_Course})
+                                 ) or "
         
         if params[:offer][:category]
           #reduz para determinada categoria de disciplina
