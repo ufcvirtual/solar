@@ -73,33 +73,33 @@ class OffersController < ApplicationController
         #traz todos: matriculados OU com data de matricula ativa e q seja dos tipos: free, extension, presential
         query_date_enrollment = "((select enrollments.start from enrollments where offers.id=enrollments.offers_id)<= current_date and
                                   (select enrollments.end from enrollments where offers.id=enrollments.offers_id)>= current_date
-                                  and curriculum_unities.category in (#{Free_Course},#{Extension_Course},#{Presential_Undergraduate_Course},#{Presential_Graduate_Course})
+                                  and curriculum_units.category in (#{Free_Course},#{Extension_Course},#{Presential_Undergraduate_Course},#{Presential_Graduate_Course})
                                  ) or "
       end
       if params[:offer]
         query_date_enrollment = "((select enrollments.start from enrollments where offers.id=enrollments.offers_id)<= current_date and
                                   (select enrollments.end from enrollments where offers.id=enrollments.offers_id)>= current_date
-                                  and curriculum_unities.category in (#{Free_Course},#{Extension_Course},#{Presential_Undergraduate_Course},#{Presential_Graduate_Course})
+                                  and curriculum_units.category in (#{Free_Course},#{Extension_Course},#{Presential_Undergraduate_Course},#{Presential_Graduate_Course})
                                  ) or "
         
         if params[:offer][:category]
           #reduz para determinada categoria de disciplina
           @search_category = params[:offer][:category]
-          query_category = " and curriculum_unities.category=#{@search_category}" if !@search_category.empty?
+          query_category = " and curriculum_units.category=#{@search_category}" if !@search_category.empty?
         end
         if params[:offer][:search]
           @search_text = params[:offer][:search]
-          query_text = " and curriculum_unities.name ilike '%#{@search_text}%' " if !@search_text.empty?
+          query_text = " and curriculum_units.name ilike '%#{@search_text}%' " if !@search_text.empty?
         end
       end
 
       @user = User.find(current_user.id)
       @offers = Offer.find(:all,
-        :select => "DISTINCT offers.id,curriculum_unities.name, curriculum_unities.category,
+        :select => "DISTINCT offers.id,curriculum_units.name, curriculum_units.category,
                    groups.code, allocations.status, enrollments.start, enrollments.end, 
                    allocations.id AS allocationid, groups.id AS groupsid",
         :joins => "LEFT JOIN enrollments ON offers.id=enrollments.offers_id
-                   INNER JOIN curriculum_unities  ON offers.curriculum_unities_id = curriculum_unities.id
+                   INNER JOIN curriculum_units  ON offers.curriculum_units_id = curriculum_units.id
                    LEFT OUTER JOIN courses  ON offers.courses_id = courses.id
                    INNER JOIN groups  ON groups.offers_id = offers.id
                    LEFT JOIN allocations  ON allocations.groups_id = groups.id",
@@ -107,7 +107,7 @@ class OffersController < ApplicationController
                   #{query_date_enrollment}
                   (allocations.users_id = #{current_user.id} AND allocations.profiles_id = #{Student} AND allocations.status = #{Allocation_Activated})
                   ) #{query_category} #{query_text}" ,
-        :order => "curriculum_unities.name"
+        :order => "curriculum_units.name"
       )
     end
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110304132622) do
+ActiveRecord::Schema.define(:version => 20110310205235) do
 
   create_table "allocations", :force => true do |t|
     t.integer  "users_id"
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(:version => 20110304132622) do
     t.datetime "updated_at"
   end
 
-  create_table "curriculum_unities", :force => true do |t|
+  create_table "curriculum_units", :force => true do |t|
     t.string   "name",          :null => false
     t.string   "code",          :null => false
     t.text     "description"
@@ -39,8 +39,8 @@ ActiveRecord::Schema.define(:version => 20110304132622) do
     t.datetime "updated_at"
   end
 
-  add_index "curriculum_unities", ["category"], :name => "index_curriculum_unit_on_category"
-  add_index "curriculum_unities", ["code"], :name => "index_curriculum_unit_on_code", :unique => true
+  add_index "curriculum_units", ["category"], :name => "index_curriculum_unit_on_category"
+  add_index "curriculum_units", ["code"], :name => "index_curriculum_unit_on_code", :unique => true
 
   create_table "enrollments", :force => true do |t|
     t.integer  "offers_id"
@@ -70,11 +70,11 @@ ActiveRecord::Schema.define(:version => 20110304132622) do
   end
 
   create_table "offers", :force => true do |t|
-    t.integer  "curriculum_unities_id"
+    t.integer  "curriculum_units_id"
     t.integer  "courses_id"
     t.string   "semester"
-    t.date     "start",                 :null => false
-    t.date     "end",                   :null => false
+    t.date     "start",               :null => false
+    t.date     "end",                 :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -156,7 +156,7 @@ ActiveRecord::Schema.define(:version => 20110304132622) do
 
   add_foreign_key "groups", ["offers_id"], "offers", ["id"], :name => "groups_offers_id_fkey"
 
-  add_foreign_key "offers", ["curriculum_unities_id"], "curriculum_unities", ["id"], :name => "offers_curriculum_unities_id_fkey"
+  add_foreign_key "offers", ["curriculum_units_id"], "curriculum_units", ["id"], :name => "offers_curriculum_unities_id_fkey"
   add_foreign_key "offers", ["courses_id"], "courses", ["id"], :name => "offers_courses_id_fkey"
 
   add_foreign_key "personal_configurations", ["user_id"], "users", ["id"], :name => "personal_configurations_user_id_fkey"

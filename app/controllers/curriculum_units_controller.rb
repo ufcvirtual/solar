@@ -1,4 +1,4 @@
-class CurriculumUnitiesController < ApplicationController
+class CurriculumUnitsController < ApplicationController
 
   def index
     #if current_user
