@@ -30,6 +30,7 @@
       <%= link_to t(:enrollm_view_all),{:controller=>"offers", :action=>"showoffersbyuser", :category_query => 'all'}, :class=>"link_gray"%>&nbsp;
       <%= link_to t(:enrollm_view_enrolled),{:controller=>"offers", :action=>"showoffersbyuser", :category_query => 'enroll'}, :class=>"link_gray"%>
     </div>
+    <% end %>
     
     <div style="width: 100%; position: relative; float: left; left: 0px; top: 35px;">
 
@@ -55,15 +56,15 @@
 
           <% case offer.status %>
           <% when Allocation_Pending.to_s %>
-            <%= link_to t(:enrollm_cancel_request),{:controller=>"allocations", :action=>"cancel_request", :id => offer.allocationid}, :class=>'enrollment_link' %>
+            <%= button_to t(:enrollm_cancel_request),{:controller=>"allocations", :action=>"cancel_request", :id => offer.allocationid}, :class=>'enrollment_link' %>
           <% when Allocation_Pending_Reactivate.to_s %>
-            <%= link_to t(:enrollm_cancel_request),{:controller=>"allocations", :action=>"cancel_request", :id => offer.allocationid}, :class=>'enrollment_link' %>
+            <%= button_to t(:enrollm_cancel_request),{:controller=>"allocations", :action=>"cancel_request", :id => offer.allocationid}, :class=>'enrollment_link' %>
           <% when Allocation_Activated.to_s %>
-            <%= link_to t(:enrollm_cancel),{:controller=>"allocations", :action=>"cancel", :id => offer.allocationid}, :class=>'enrollment_link' %>
+            <%= button_to t(:enrollm_cancel),{:controller=>"allocations", :action=>"cancel", :id => offer.allocationid}, :confirm => t(:enrollm_confirm), :class => 'enrollment_link' %>
           <% when Allocation_Cancelled.to_s %>
-            <%= link_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"reactivate", :id => offer.allocationid }, :class=>'enrollment_link' %>
+            <%= button_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"reactivate", :id => offer.allocationid }, :class=>'enrollment_link' %>
           <% else %>
-            <%= link_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"send_request", :id => offer.allocationid, :groupid => offer.groupsid, :userid => current_user.id }, :class=>'enrollment_link' %>
+            <%= button_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"send_request", :id => offer.allocationid, :groupid => offer.groupsid, :userid => current_user.id }, :class=>'enrollment_link' %>
           <% end %>
 
         </td>
@@ -71,5 +72,5 @@
     <% end %>
     </table>
       </div>
-    <% end %>
+    
 </div>

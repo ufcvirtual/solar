@@ -162,6 +162,8 @@ textarea{
     font-weight: bold;
     text-decoration: underline;
     cursor: pointer;
+    border: 0;
+    background-color: transparent;
 }
 .enrollment_title{
     font-family:'Trebuchet',Arial,'Myriad Pro';
