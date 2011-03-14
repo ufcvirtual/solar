@@ -48,7 +48,6 @@ class ApplicationController < ActionController::Base
     #logger.debug "ApplicationController::require_no_user"
     if current_user
       store_location
-      flash[:notice] = t(:app_controller_require_no)
       redirect_to users_mysolar_url #account_url
       return false
     end
