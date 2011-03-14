@@ -60,7 +60,11 @@
           <% when Allocation_Pending_Reactivate.to_s %>
             <%= button_to t(:enrollm_cancel_request),{:controller=>"allocations", :action=>"cancel_request", :id => offer.allocationid}, :class=>'enrollment_link' %>
           <% when Allocation_Activated.to_s %>
-            <%= button_to t(:enrollm_cancel),{:controller=>"allocations", :action=>"cancel", :id => offer.allocationid}, :confirm => t(:enrollm_confirm), :class => 'enrollment_link' %>
+            <% if (offer.category.to_s != Distance_Graduate_Course.to_s) && (offer.category.to_s != Distance_Undergraduate_Course.to_s) %>
+              <%= button_to t(:enrollm_cancel),{:controller=>"allocations", :action=>"cancel", :id => offer.allocationid}, :confirm => t(:enrollm_confirm), :class => 'enrollment_link' %>
+            <% else %>
+              <%= label_tag "lb_enrollm", t(:enrollm_enrolled), :class => "enrollment_label" %>
+            <% end %>
           <% when Allocation_Cancelled.to_s %>
             <%= button_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"reactivate", :id => offer.allocationid }, :class=>'enrollment_link' %>
           <% else %>

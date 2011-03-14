@@ -137,6 +137,7 @@
   enrollm_category: "Categoria"
   enrollm_group: "Turma"
   enrollm_title: "Matrícula"
+  enrollm_enrolled: "Matriculado"
   enrollm_cancel_request: "Cancelar pedido"
   enrollm_cancelled_message: "Matrícula cancelada!"
   enrollm_reactivated_message: "Matrícula reativada!"
