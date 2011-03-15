@@ -12,7 +12,7 @@ Contexto:
 
 
 Cenário: Acessar página de Edição de Dados Pessoais
-	Dado que estou logado no sistema com usuario user
+	Dado que estou logado com o usuario "user" e com a senha "user123"
             E que estou em "Meus Dados"
 	Então eu deverei ver "Nome"
             E eu deverei ver "Bio"
@@ -25,7 +25,7 @@ Cenário: Acessar página de Edição de Dados Pessoais
 
 
 Cenário: Acessar página de Edição de Dados Cadastrais
-	Dado que estou logado no sistema com usuario user
+	Dado que estou logado com o usuario "user" e com a senha "user123"
             E que estou em "Meus Dados"
 	Então eu deverei ver "Nome"
             E eu deverei ver "Apelido"
@@ -52,7 +52,7 @@ Cenário: Acessar página de Edição de Dados Cadastrais
 
 
 Cenário: Alterar dados Pessoais
-       Dado que estou logado no sistema com usuario user
+       Dado que estou logado com o usuario "user" e com a senha "user123"
            E que estou em "Meus Dados"
            E que eu preenchi "Nome" com "Jurandi"
            E que eu preenchi "user_bio" com "Bicampeao Estadual em 94 e 95"
@@ -67,7 +67,7 @@ Cenário: Alterar dados Pessoais
 
 
 Cenário: Alterar dados Cadastrais
-   Dado que estou logado no sistema com usuario user
+   Dado que estou logado com o usuario "user" e com a senha "user123"
        E que estou em "Meus Dados"
        E que eu preenchi "Nome" com "Usuário do Solar"
        E que eu preenchi "Apelido" com "usuario"
@@ -90,7 +90,7 @@ Cenário: Alterar dados Cadastrais
     Então eu deverei ver "Usuário alterado com sucesso!"
 
 Esquema do Cenário: Alteração de senha
-	Dado que estou logado no sistema com usuario user
+	Dado que estou logado com o usuario "user" e com a senha "user123"
 		E que estou em "Meus Dados"
 		E preencho o campo "Senha Antiga" com "<antiga_senha>"
 		E preencho o campo "Nova Senha" com "<nova_senha>"
@@ -114,7 +114,7 @@ Exemplos:
         | user123              |  user789          |  user789              | Usuário alterado com sucesso!                 |
 
 Cenário:  Acessar Edição de foto
-    Dado que estou logado no sistema com usuario user
+    Dado que estou logado com o usuario "user" e com a senha "user123"
        E que estou em "Meu Solar"
     Então eu deverei ver "Do seu computador"
     E eu deverei ver "De um link externo"
@@ -122,7 +122,7 @@ Cenário:  Acessar Edição de foto
     E eu deverei ver o botao "Enviar"
 
 Esquema do Cenário: Enviar foto
-    Dado que estou logado no sistema com usuario user
+    Dado que estou logado com o usuario "user" e com a senha "user123"
        E que estou em "Meu Solar"
        E eu envio o arquivo "<foto>" no campo "user_photo"
     Quando eu clicar em "photo_submit"

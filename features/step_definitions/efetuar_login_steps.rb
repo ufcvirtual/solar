@@ -59,4 +59,12 @@ end
 Dado /^que eu nao estou logado no sistema com usuario user$/ do
 end
 
+Dado /^que estou logado com o usuario "([^\"]*)" e com a senha "([^\"]*)"$/ do |username, password|
+ visit path_to("Login")
+ fill_in "login_form_name", :with => username
+ fill_in "Senha", :with => password
+ click_button "Entrar"
+# selenium.wait_for_page_to_load
+end
+
 

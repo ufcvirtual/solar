@@ -40,7 +40,7 @@ Contexto:
 
 @wip
 Cenário: Acessar página de matricula
-    Dado que estou logado no sistema com usuario user
+    Dado que estou logado com o usuario "user" e com a senha "user123"
     Quando eu clicar no link "Matrícula"
     Então eu deverei ver "Matrícula"
         E eu deverei ver "Unidade Curricular"

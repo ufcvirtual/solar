@@ -24,7 +24,7 @@ Cenário: Login ptBR
         Então eu deverei ver "Senha"
 
 Cenário: Acessar página de Edição de Dados Pessoais em Ingles
-	Dado que estou logado no sistema com usuario user
+	Dado que estou logado com o usuario "user" e com a senha "user123"
             E que estou em "Meu Solar"
         Quando eu clicar no link "English"
         E eu clicar no link "My Data"
