@@ -17,28 +17,33 @@ Contexto:
         | Licenciatura em Química | LQUIM  |
     Dado que tenho "curriculum_units"
         | name                     | code  | category |
-        | Química I                | RM301 | 5        |
-        | Introdução à Linguística | RM404 | 1        |
+        | Introdução à Linguística | RM404 | 3        |
         | Teoria da Literatura I   | RM405 | 2        |
+        | Química I                | RM301 | 5        |
+        | Semipresencial sm nvista | TS101 | 3        |
     Dado que tenho "offers"
         | curriculum_units_id | courses_id | semester | start      | end        |
-        | 1                   | 1          | 2011.1   | 2011-02-01 | 2011-03-20 |
-        | 2                   | 1          | 2011.1   | 2011-03-10 | 2011-04-01 |
-        | 3                   | 2          | 2011.1   | 2011-03-10 | 2011-04-01 |
+        | 1                   | 1          | 2011.1   | 2011-06-01 | 2011-12-01 |
+        | 2                   | 1          | 2011.1   | 2011-06-01 | 2011-12-01 |
+        | 3                   | 2          | 2011.1   | 2011-06-01 | 2011-12-01 |
+        | 4                   | 1          | 2011.1   | 2011-06-01 | 2011-12-01 |
     Dado que tenho "groups"
         | offers_id | code  | status |
         | 1         | FOR   | TRUE   |
         | 2         | CAU-A | TRUE   |
+        | 3         | CAU-B | TRUE   |
+        | 4         | FOR   | TRUE   |
     Dado que tenho "enrollments"
         | offers_id | start      | end        |
-        | 1         | 2011-01-01 | 2011-03-02 |
-        | 2         | 2011-03-03 | 2011-03-03 |
-        | 3         | 2011-03-02 | 2011-03-10 |
-#    Dado que tenho "allocations"
-#        | users_id | groups_id | profiles_id | status |
-#        | 1        | 1         | 1           | 1      |
+        | 1         | 2011-03-01 | 2011-05-30 |
+        | 2         | 2011-03-01 | 2011-05-30 |
+        | 3         | 2011-03-01 | 2011-05-30 |
+        | 4         | 2011-03-01 | 2011-05-30 |
+    Dado que tenho "allocations"
+        | users_id | groups_id | profiles_id | status |
+        | 1        | 1         | 1           | 1      |
+        | 1        | 2         | 1           | 1      |
 
-@wip
 Cenário: Acessar página de matricula
     Dado que estou logado com o usuario "user" e com a senha "user123"
     Quando eu clicar no link "Matrícula"
@@ -50,5 +55,26 @@ Cenário: Acessar página de matricula
         E eu deverei ver "Todos"
         E eu deverei ver "Matriculados"
 
-#Cenário: Listar todos cursos matriculados ou disponíveis
-#    Dado que
+@wip
+Cenário: Listar cursos matriculados ou disponíveis
+    Dado que estou logado com o usuario "user" e com a senha "user123"
+    Quando eu clicar no link "Matrícula"
+    Então eu deverei ver a tabela
+      | Unidade Curricular            | Categoria             | Turma  | Matrícula   |
+      | Introdução à Linguística      | Grad. Semipresencial  |	FOR    | Matriculado |
+      | Química I                     | Pós-Grad. Presencial  | CAU-B  | Matricular  |
+      | Teoria da Literatura I        | Curso Livre           | CAU-A  | Matricular  |
+#      E eu não deverei ver a tabela
+#      | Unidade Curricular            | Categoria             | Turma  | Matrícula   |
+#      | Semipresencial sm nvista      | Grad. Semipresencial | Matricular|
+
+#Esquema do Cenário: Realizacao de matricula
+#    Dado que estou logado com o usuario "user" e com a senha "user123"
+#    E que estou em "Matricula"
+#	Quando eu clicar em "Matricular"
+#	Então eu deverei ver "<action>"
+#Exemplos:
+#	| login         |  password       |   action  		   |
+#	| user          |  user123        | Novidades 		   |
+#	| unknown_user  |  any_password   | Dados de login incorretos! |
+#	| user          |  wrong_password | Dados de login incorretos! |
