@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110310205235) do
+ActiveRecord::Schema.define(:version => 20110316190144) do
 
   create_table "allocations", :force => true do |t|
     t.integer  "users_id"
@@ -96,6 +96,36 @@ ActiveRecord::Schema.define(:version => 20110310205235) do
     t.datetime "updated_at"
   end
 
+  create_table "resources", :force => true do |t|
+    t.string   "description", :null => false
+    t.string   "action",      :null => false
+    t.string   "controller",  :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "role_resource", :force => true do |t|
+    t.integer "role_id",     :null => false
+    t.integer "resource_id", :null => false
+  end
+
+  add_index "role_resource", ["resource_id"], :name => "index_resource_on_role_resource"
+  add_index "role_resource", ["role_id"], :name => "index_role_on_role_resource"
+
+  create_table "role_user", :force => true do |t|
+    t.integer "user_id", :null => false
+    t.integer "role_id", :null => false
+  end
+
+  add_index "role_user", ["role_id"], :name => "index_role_on_role_user", :unique => true
+  add_index "role_user", ["user_id"], :name => "index_user_on_role_user", :unique => true
+
+  create_table "roles", :force => true do |t|
+    t.string   "name",       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "users", :force => true do |t|
     t.string   "login",                                              :null => false
     t.string   "email",                                              :null => false
@@ -160,5 +190,11 @@ ActiveRecord::Schema.define(:version => 20110310205235) do
   add_foreign_key "offers", ["courses_id"], "courses", ["id"], :name => "offers_courses_id_fkey"
 
   add_foreign_key "personal_configurations", ["user_id"], "users", ["id"], :name => "personal_configurations_user_id_fkey"
+
+  add_foreign_key "role_resource", ["role_id"], "roles", ["id"], :name => "role_resource_role_id_fkey"
+  add_foreign_key "role_resource", ["resource_id"], "resources", ["id"], :name => "role_resource_resource_id_fkey"
+
+  add_foreign_key "role_user", ["user_id"], "users", ["id"], :name => "role_user_user_id_fkey"
+  add_foreign_key "role_user", ["role_id"], "roles", ["id"], :name => "role_user_role_id_fkey"
 
 end
