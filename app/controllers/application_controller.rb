@@ -58,19 +58,46 @@ class ApplicationController < ActionController::Base
   end
 
   #definir o idioma
-
   before_filter :set_locale
 
   def set_locale
-    if params[:locale] ==  nil
-      I18n.locale = params[:locale] || I18n.default_locale
+    # permitir apenas locales conhecidos
+    params[:locale] = nil unless ['en', 'pt-BR'].include?(params[:locale])
+
+    if current_user
+
+      # recupera os dados de locale das configuracoes do usuario
+      personal_options = PersonalConfiguration.find_by_user_id(current_user.id)
+
+      # caso seja o primeiro acesso do usuario
+      if personal_options.nil?
+        personal_options = PersonalConfiguration.new :user_id => current_user.id
+      end
+
+      I18n.locale = params[:locale] || personal_options.default_locale || I18n.default_locale
+
+      # se o locale for passado pela url os dados do usuario serao alterados no base de dados
+      unless params[:locale].nil?
+        personal_options.default_locale = params[:locale]
+        personal_options.save
+      end
+
+      # caso seja a primeira sessao do usuario
+      if personal_options.new_record?
+        personal_options.save
+      end
+
     else
-      I18n.locale = params[:locale]
+      I18n.locale = params[:locale] || I18n.default_locale
     end
   end
 
   def default_url_options(options={})
-    {:locale => I18n.locale}
+    if current_user.nil?
+      {:locale => params[:locale]} # insere locale na url se o usuario nao estiver online
+    else
+      {}
+    end
   end
 
   def redirect_back_or_default(default)

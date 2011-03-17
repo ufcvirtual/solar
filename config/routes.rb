@@ -8,8 +8,6 @@ Solar::Application.routes.draw do |map|
   get "users/pwd_recovery"
   get "offers/showoffersbyuser"
 
-  match '/locale' => "user_sessions#switch_language"
-
   # roteamento para controle de acesso as imagens do usuario
   map.connect '/media/users/:id/photos/:style.:extension', :controller => 'access_control', :action => 'photo'
 

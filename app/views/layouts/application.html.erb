@@ -59,7 +59,7 @@
           <%= @user.nick%>
         </div>
         <div id="mysolar_options">
-          <%= link_to t(:mysolar_mn_mydata), :controller => "users", :action => "mydata", :id=>current_user.id %><br/>
+          <%= link_to t(:mysolar_mn_mydata), :controller => "users", :action => "mydata", :id => @user.id %><br/>
 			Portfolio <br />
 			Blog <br />
           <%= t(:mysolar_mn_customize) %> <br />

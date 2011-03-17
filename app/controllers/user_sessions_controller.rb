@@ -20,8 +20,6 @@ class UserSessionsController < ApplicationController
     if @user_session.save
       # grava log de acesso
       Log.create(:log_type => Log::TYPE[:login], :userId => @user_session.user.id)
-
-
       redirect_back_or_default users_mysolar_url #('/')
     else
       flash[:notice] = t(:login_data_invalid)
@@ -31,12 +29,7 @@ class UserSessionsController < ApplicationController
 
   def destroy
     current_user_session.destroy
-    redirect_back_or_default new_user_session_url
-  end
-
-  def switch_language
-    I18n.locale = params[:locale].to_sym
-    redirect_to root_url
+    redirect_back_or_default new_user_session_url(:locale => I18n.locale)
   end
 
 end
