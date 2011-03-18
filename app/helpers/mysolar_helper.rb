@@ -5,7 +5,7 @@ module MysolarHelper
 
     case portlet_code
     when "1"
-      render '/portlets/news'
+      render '/portlets/curricular_unit'
     when "2"
       render '/portlets/lessons'
     when "3"
@@ -14,7 +14,8 @@ module MysolarHelper
       render '/portlets/calendar'
     when "5"
       render '/portlets/forum'
-
+    when "6"
+      render '/portlets/news'
     else
       ""
     end

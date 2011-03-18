@@ -517,8 +517,8 @@ div.widget {
     margin: 5px;
     padding: 0px;
     position: relative;
-    width: 280px;
-    height: 160px;
+    width: 260px;
+    height: 183px;
     border: 1px solid #ccc;
 }
 div.widget_head {
@@ -527,7 +527,7 @@ div.widget_head {
 }
 
 .mysolar_portlets_coluna {
-    width           : 295px;
+    width           : 267px;
     float           : left;
     padding-bottom  : 200px;
     border          : none;
@@ -538,8 +538,8 @@ div.widget_head {
     border:1px solid #CCCCCC;
     background-color: #fff;
     cursor: pointer;
-    height: 180px;
-    width: 280px;
+    height: 183px;
+    width: 260px;
     white-space: normal;
 }
 .mysolar_portlets_header {
@@ -553,7 +553,7 @@ div.widget_head {
 .ui-sortable-placeholder {
     border: 1px dotted black;
     visibility: visible !important;
-    height: 100px !important;
+    height: 183px !important;
 }
 .ui-sortable-placeholder * {
     visibility: hidden;
