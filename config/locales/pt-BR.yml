@@ -143,7 +143,7 @@
   enrollm_reactivated_message: "Matrícula reativada!"
   enrollm_request_message: "Pedido de matrícula realizado!"
   enrollm_request_cancel_message: "Pedido de matrícula cancelado!"
-  enrollm_confirm: "Tem certeza de que deseja cancelar a matrícula?"
+  enrollm_confirm: "Tem certeza de que deseja cancelar?"
 
   # formatos de data e hora
   date:

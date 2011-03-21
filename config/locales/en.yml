@@ -139,7 +139,7 @@ en:
   enrollm_reactivated_message: "Enrollment reactivated!"
   enrollm_request_message: "Request for enrollment made!"
   enrollm_request_cancel_message: "Request for enrollment cancelled!"
-  enrollm_confirm: "Are you sure you want to cancel the enrollment?"
+  enrollm_confirm: "Are you sure you want to cancel?"
 
   # formatos de data e hora
   date:
