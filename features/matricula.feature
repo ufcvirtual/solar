@@ -43,11 +43,17 @@ Contexto:
         | 2         | 2011-03-01 | 2011-05-30 |
         | 3         | 2011-03-01 | 2011-05-30 |
         | 4         | 2011-03-01 | 2011-05-30 |
-    Dado que tenho "allocations"
-        | users_id | groups_id | profiles_id | status |
-        | 1        | 1         | 1           | 1      |
-        | 1        | 2         | 1           | 1      |
+    Dado que tenho "allocation_tags"
+        | id | groups_id |
+        | 1  | 1         |
+        | 2  | 2         |
 
+    Dado que tenho "allocations"
+        | users_id | allocation_tags_id | profiles_id | status |
+        | 1        | 1                  | 1           | 1      |
+        | 1        | 2                  | 1           | 1      |
+
+@wip
 Cenário: Acessar página de matricula
     Dado que estou logado com o usuario "user" e com a senha "user123"
     Quando eu clicar no link "Matrícula"

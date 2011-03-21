@@ -23,3 +23,4 @@ Gemfile.lock
 public/images/users/*
 media/users/*
 .rvmrc
+db/schema.rb
