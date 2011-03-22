@@ -50,17 +50,16 @@
     <% @offers.each do |offer| %>
       <tr class="<%= cycle('rowtable_odd', 'rowtable_even') %>" >
         <td class="td_blue_first"><%= offer.name %></td>
-        <td class="td_blue"><%= image_tag("category"+offer.category.to_s+".png")%>&nbsp;<%= categories.key(offer.category.to_i) %></td>
+        <td class="td_blue"><%= image_tag("category"+offer.categoryid.to_s+".png")%>&nbsp;<%= categories.key(offer.categoryid.to_i) %></td>
         <td class="td_blue" align="center"><%= offer.code %></td>
         <td class="td_blue" align="center">
-
           <% case offer.status %>
           <% when Allocation_Pending.to_s %>
             <%= button_to t(:enrollm_cancel_request),{:controller=>"allocations", :action=>"cancel_request", :id => offer.allocationid}, :confirm => t(:enrollm_confirm), :class=>'enrollment_link' %>
           <% when Allocation_Pending_Reactivate.to_s %>
             <%= button_to t(:enrollm_cancel_request),{:controller=>"allocations", :action=>"cancel_request", :id => offer.allocationid}, :confirm => t(:enrollm_confirm), :class=>'enrollment_link' %>
-          <% when Allocation_Activated.to_s %>
-            <% if (offer.category.to_s != Distance_Graduate_Course.to_s) && (offer.category.to_s != Distance_Undergraduate_Course.to_s) %>
+          <% when Allocation_Activated.to_s %>          
+            <% if (offer.allows_enrollment == 't') %>
               <%= button_to t(:enrollm_cancel),{:controller=>"allocations", :action=>"cancel", :id => offer.allocationid}, :confirm => t(:enrollm_confirm), :class => 'enrollment_link' %>
             <% else %>
               <%= label_tag "lb_enrollm", t(:enrollm_enrolled), :class => "enrollment_label" %>

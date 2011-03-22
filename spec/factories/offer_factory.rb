@@ -1,5 +1,4 @@
 Factory.define :offer do |offer|
-  include ActionDispatch::TestProcess
   offer.curriculum_units_id	1
   offer.courses_id	1
   offer.semester "2011.1"
