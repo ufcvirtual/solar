@@ -25,12 +25,12 @@
     </div>
     <% end %>
     
-    <div style="width: 100%; position: relative; float: left; left: 0px; top: 35px;">
+    <div style="padding-top: 50px; min-height: 120px">
 
     <% if flash[:success] || flash[:error] || flash[:notice]%>
       <%=raw message %>&nbsp;
     <% else %>
-      &nbsp;
+      <br/>
     <% end %>
 
     <table cellpadding="2" cellspacing="0" width="745px">
@@ -60,7 +60,7 @@
           <% when Allocation_Cancelled.to_s %>
             <%= button_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"reactivate", :id => offer.allocationid }, :class=>'enrollment_link' %>
           <% else %>
-            <%= button_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"send_request", :id => offer.allocationid, :groupid => offer.groupsid, :userid => current_user.id }, :class=>'enrollment_link' %>
+            <%= button_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"send_request", :id => offer.allocationid, :tagid => offer.allocationtagid, :userid => current_user.id }, :class=>'enrollment_link' %>
           <% end %>
 
         </td>

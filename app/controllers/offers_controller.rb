@@ -102,14 +102,14 @@ class OffersController < ApplicationController
       @user = User.find(current_user.id)
       @offers = Offer.find(:all,
         :select => "DISTINCT offers.id,curriculum_units.name, curriculum_unit_types.id as categoryid, curriculum_unit_types.description as categorydesc, curriculum_unit_types.allows_enrollment,
-                   groups.code, allocations.status, enrollments.start, enrollments.end, 
+                   groups.code, allocations.status, enrollments.start, enrollments.end, allocation_tags.id as allocationtagid,
                    allocations.id AS allocationid, groups.id AS groupsid",
         :joins => "LEFT JOIN enrollments ON offers.id=enrollments.offers_id
                    INNER JOIN curriculum_units  ON offers.curriculum_units_id = curriculum_units.id
                    INNER JOIN curriculum_unit_types on curriculum_unit_types.id = curriculum_units.curriculum_unit_types_id
                    LEFT OUTER JOIN courses  ON offers.courses_id = courses.id
                    INNER JOIN groups  ON groups.offers_id = offers.id
-                   LEFT OUTER JOIN allocation_tags ON allocation_tags.groups_id = groups.id
+                   INNER JOIN allocation_tags ON allocation_tags.groups_id = groups.id
                    LEFT OUTER JOIN allocations ON allocations.allocation_tags_id = allocation_tags.id",
         :conditions => "(
                   #{query_date_enrollment}

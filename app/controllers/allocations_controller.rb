@@ -97,7 +97,7 @@ class AllocationsController < ApplicationController
 
   # pede matricula (alocacao)
   def send_request    
-    if params[:groupid] && params[:userid]
+    if params[:tagid] && params[:userid]
 
       # se havia status anterior, reativa
       if params[:id]
@@ -107,7 +107,7 @@ class AllocationsController < ApplicationController
         # senao gera novo pedido (alocacao) de matricula
         @allocation = Allocation.new
         @allocation.users_id = params[:userid]
-        @allocation.groups_id = params[:groupid]
+        @allocation.allocation_tags_id = params[:tagid]
         @allocation.profiles_id = Student
         @allocation.status = Allocation_Pending
       end
