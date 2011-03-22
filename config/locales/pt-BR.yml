@@ -120,12 +120,6 @@
   send: "Enviar"
 
   # página de matrícula
-  enrollm_pres_undergr_course: "Grad. Presencial"
-  enrollm_dist_undergr_course: "Grad. Semipresencial"
-  enrollm_free_course: "Curso Livre"
-  enrollm_ext_course: "Curso de Extensão"
-  enrollm_pres_grad_course: "Pós-Grad. Presencial"
-  enrollm_dist_grad_course: "Pós-Grad. Semipresencial"
   enrollm_search: "Buscar"
   enrollm_search_in: " em "
   enrollm_view: "Ver"

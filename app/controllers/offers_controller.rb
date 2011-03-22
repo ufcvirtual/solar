@@ -63,6 +63,12 @@ class OffersController < ApplicationController
   end
 
   def showoffersbyuser
+    puts '**********'
+    puts params
+    puts '**********'
+
+    @types = CurriculumUnitType.order("description")
+
     if current_user
 
       query_date_enrollment = ""
@@ -85,7 +91,7 @@ class OffersController < ApplicationController
         if params[:offer][:category]
           #reduz para determinada categoria de disciplina
           @search_category = params[:offer][:category]
-          query_category = " and curriculum_units.category=#{@search_category}" if !@search_category.empty?
+          query_category = " and curriculum_unit_types.id=#{@search_category}" if !@search_category.empty?
         end
         if params[:offer][:search]
           @search_text = params[:offer][:search]
