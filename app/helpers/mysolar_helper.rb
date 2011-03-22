@@ -20,4 +20,67 @@ module MysolarHelper
       ""
     end
   end
+
+
+##########################################################################
+  def load_curriculum_unit_data
+    if current_user
+      query_current_courses =
+      "select * from (
+      (
+        select cr.* --(cns 1 - usuarios vinculados direto a unidade curricular)
+        from
+          allocations al
+          inner join allocation_tags tg on tg.id = al.allocation_tags_id
+          inner join curriculum_units cr on cr.id = tg.curriculum_units_id
+        where
+          users_id >0 and
+          cr.id >0
+      )
+      union
+      (
+        select cr.* --(cns 2 - usuarios vinculados a oferta)
+        from
+          allocations al
+          inner join allocation_tags tg on tg.id = al.allocation_tags_id
+          inner join offers of on of.id = tg.offers_id
+          inner join curriculum_units cr on cr.id = of.curriculum_units_id
+        where
+          users_id >0 and
+          cr.id >0
+      )
+      union(
+        select cr.* --(cns 3 - usuarios vinculados a turma)
+        from
+          allocations al
+          inner join allocation_tags tg on tg.id = al.allocation_tags_id
+          inner join groups gr on gr.id = tg.groups_id
+          inner join offers of on of.id = gr.offers_id
+          inner join curriculum_units cr on cr.id = of.curriculum_units_id
+        where
+          users_id >0 and
+          cr.id >0
+      )
+      union
+      (
+        select cr.* --(cns 3 - usuarios vinculados a graduacao)
+        from
+          allocations al
+          inner join allocation_tags tg on tg.id = al.allocation_tags_id
+          inner join courses cs on cs.id = tg.courses_id
+          inner join offers of on of.courses_id = cs.id
+          inner join curriculum_units cr on cr.id = of.curriculum_units_id
+        where
+          users_id >0 and
+          cr.id >0
+        )
+      ) as ucs_do_usuario
+      order by name
+      "
+
+      conn = ActiveRecord::Base.connection
+      conn.select_all query_current_courses
+    end
+  end
+
 end

@@ -545,6 +545,7 @@ div.widget_head {
 .mysolar_portlets_header {
     padding: 5px;
     background-color: #E7EDED;
+    cursor:move;
 }
 .mysolar_portlets_content {
     padding: 0.4em;
