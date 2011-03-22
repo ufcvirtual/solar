@@ -235,6 +235,7 @@ textarea{
     top: 0px;
     padding-top: 50px;
     padding-left: 200px;
+    padding-bottom: 50px;
     background-color: #fff;
 }
 
@@ -325,8 +326,8 @@ a.mysolar_top_link{
     cursor: pointer;
 }
 #mysolar_locale{
-    width: 50%;
-    position: fixed;
+    width: 20%;
+    position: absolute;
     bottom: 0;
     margin-bottom: 20px;
     margin-left: 357px;
