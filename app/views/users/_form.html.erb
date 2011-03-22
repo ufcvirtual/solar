@@ -56,8 +56,8 @@
         <td class="form_usuario_label" ><%= f.label :birthdate, :class=>"label_usuario"%></td>
         <td style="width: 217px;" colspan="3" nowrap="norwap"><%= f.date_select :birthdate, :start_year => Time.now.year - 2, :end_year => 1900, :id => 'user_birthdate' %></td>
 
-        <td class="form_usuario_label" colspan="1" style="padding-right: 3px; text-align: center;"><%= f.label :sex %></td>
-        <td colspan="1" style="padding-left: 9px;"><%= f.select :sex, ([["M", true], ["F", false]]) , :id => 'sex',:size=>2 %></td>
+        <td class="form_usuario_label" colspan="1" style="padding-right: 3px; text-align: center;"><%= f.label :gender %></td>
+        <td colspan="1" style="padding-left: 9px;"><%= f.select :gender, ([["M", true], ["F", false]]) , :id => 'gender',:size=>2 %></td>
       </tr>
       <tr class="form_usuario_tr">
         <td class="form_usuario_label" colspan="1"><%= f.label :cpf %></td>

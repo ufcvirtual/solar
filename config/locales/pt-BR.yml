@@ -292,7 +292,7 @@
         name: "Nome"
         nick: "Apelido"
         birthdate: "Data de Nascimento"
-        sex: "Sexo"
+        gender: "Sexo"
         address: "Endereço"
         address_number: "Número"
         address_neighborhood: "Bairro"

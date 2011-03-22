@@ -7,7 +7,7 @@ Funcionalidade: Efetuar login
 
 Contexto:
 	Dado que tenho "users"
-		| id | login | email		| password | name | birthdate  | cpf         | sex  | address | address_number | address_neighborhood | zipcode   | country | state | city      | institution |
+		| id | login | email		| password | name | birthdate  | cpf         | gender  | address | address_number | address_neighborhood | zipcode   | country | state | city      | institution |
 		| 1  | user  | user@user.com | user123  | Username | 01/01/2005 | 78218921494 | true | Rua R   | 111            | Bairro               | 600000000 | Brasil  | CE    | Fortaleza | UFC         |
         Dado que tenho "personal_configurations"
                 | user_id | default_locale |

@@ -152,7 +152,7 @@ en:
       group: "Turma"
     attributes:
       user:
-        sex: "Gender"
+        gender: "Gender"
         address_number: "Number"
         address_neighborhood: "Neighborhood"
         address_complement: "Complement"
