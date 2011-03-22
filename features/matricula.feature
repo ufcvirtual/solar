@@ -19,12 +19,20 @@ Contexto:
         | name                    | code   |
         | Letras Português        | LLPT   |
         | Licenciatura em Química | LQUIM  |
+    Dado que tenho "curriculum_unit_types"
+        | description              | allows_enrollment |
+        | Graduação Presencial     | TRUE              |
+        | Grad. Semipresencial     | FALSE             |
+        | Curso Livre              | TRUE              |
+        | Curso de Extensão        | TRUE              |
+        | Pós Grad. Presencial     | TRUE              |
+        | Pós Grad. Semipresencial | FALSE             |
     Dado que tenho "curriculum_units"
-        | name                     | code  | category |
-        | Introdução à Linguística | RM404 | 3        |
-        | Teoria da Literatura I   | RM405 | 2        |
-        | Química I                | RM301 | 5        |
-        | Semipresencial sm nvista | TS101 | 3        |
+        | name                     | code  | curriculum_unit_types_id |
+        | Introdução à Linguística | RM404 | 3                        |
+        | Teoria da Literatura I   | RM405 | 1                        |
+        | Química I                | RM301 | 2                        |
+        | Semipresencial sm nvista | TS101 | 2                        |
     Dado que tenho "offers"
         | curriculum_units_id | courses_id | semester | start      | end        |
         | 1                   | 1          | 2011.1   | 2011-06-01 | 2011-12-01 |
@@ -53,7 +61,6 @@ Contexto:
         | 1        | 1                  | 1           | 1      |
         | 1        | 2                  | 1           | 1      |
 
-@wip
 Cenário: Acessar página de matricula
     Dado que estou logado com o usuario "user" e com a senha "user123"
     Quando eu clicar no link "Matrícula"
@@ -65,15 +72,14 @@ Cenário: Acessar página de matricula
         E eu deverei ver "Todos"
         E eu deverei ver "Matriculados"
 
-@wip
-Cenário: Listar cursos matriculados ou disponíveis
-    Dado que estou logado com o usuario "user" e com a senha "user123"
-    Quando eu clicar no link "Matrícula"
-    Então eu deverei ver a tabela
-      | Unidade Curricular            | Categoria             | Turma  | Matrícula   |
-      | Introdução à Linguística      | Grad. Semipresencial  |	FOR    | Matriculado |
-      | Química I                     | Pós-Grad. Presencial  | CAU-B  | Matricular  |
-      | Teoria da Literatura I        | Curso Livre           | CAU-A  | Matricular  |
+#Cenário: Listar cursos matriculados ou disponíveis
+#    Dado que estou logado com o usuario "user" e com a senha "user123"
+#    Quando eu clicar no link "Matrícula"
+#    Então eu deverei ver a tabela
+#      | Unidade Curricular            | Categoria             | Turma  | Matrícula   |
+#      | Introdução à Linguística      | Grad. Semipresencial  |	FOR    | Matriculado |
+#      | Química I                     | Pós-Grad. Presencial  | CAU-B  | Matricular  |
+#      | Teoria da Literatura I        | Curso Livre           | CAU-A  | Matricular  |
 #      E eu não deverei ver a tabela
 #      | Unidade Curricular            | Categoria             | Turma  | Matrícula   |
 #      | Semipresencial sm nvista      | Grad. Semipresencial | Matricular|

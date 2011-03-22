@@ -1,0 +1,2 @@
+module CurriculumUnitTypesHelper
+end
