@@ -79,7 +79,7 @@
       </table>
       <div id="my_personal_data_button">
         <input type="button" onclick="document.location.href='/';" value="<%=t :cancel%> " class="solar_button_gray"/>
-        <%= fi.submit t("alter_data"),:id=>"personal_submit", :class=>"solar_button_gray"%>
+        <%= fi.submit t("alter_data") ,:id=>"personal_submit", :class=>"solar_button_gray"%>
       </div>
     </div>
 
@@ -141,7 +141,7 @@
       </tr>
       <tr>
         <td>
-          <%= fo.select :gender, ([[t(:m), true], [t(:f), false]]) ,:size=>2 , :style=>"margin-right:25" %>
+          <%= fo.select :gender, options_for_select([[t(:m), true], [t(:f), false]], @user.gender), :style=>"margin-right:25" %>
         </td>
       </tr>
 
@@ -149,12 +149,12 @@
       <tr>
         <td valign="top" align="center" rowspan="2">  <%= image_tag "cpf.png" %> </td>
         <td>
-          <%= fo.label :cpf,:class=>"my_cadastral_data_label" %>
+          <%= fo.label :cpf, :class=>"my_cadastral_data_label" %>
         </td>
       </tr>
       <tr>
         <td>
-          <%=  fo.text_field  :cpf ,:id=>"cpf",:size=>"50"%>*
+          <%=  fo.text_field :cpf, :id=>"cpf",:size=>"50"%>*
         </td>
       </tr>
 
