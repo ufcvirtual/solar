@@ -22,11 +22,11 @@ module MysolarHelper
   end
 
 
-##########################################################################
+  ##########################################################################
   def load_curriculum_unit_data
     if current_user
       query_current_courses =
-      "select * from (
+        "select * from (
       (
         select cr.* --(cns 1 - usuarios vinculados direto a unidade curricular)
         from

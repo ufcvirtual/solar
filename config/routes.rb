@@ -11,8 +11,8 @@ Solar::Application.routes.draw do |map|
   # roteamento para controle de acesso as imagens do usuario
   map.connect '/media/users/:id/photos/:style.:extension', :controller => 'access_control', :action => 'photo'
 
-  # match 'user/:id' => 'user#show'
-  # match 'user/:id' => 'user#show', :as => :meusolar
+  # redireciona para mysolar se o usuario estiver tentando acessar os dados de outros usuarios
+  map.connect '/users/:id', :controller => 'users', :action => 'mysolar', :conditions => {:method => :get}
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

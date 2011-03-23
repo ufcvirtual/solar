@@ -16,7 +16,7 @@ Contexto:
 Cenário: Usuário já logado com step
 	Dado que estou logado com o usuario "user" e com a senha "user123"
 		E que estou em "Login"
-	Então eu deverei ver "Novidades"
+	Então eu deverei ver "Agenda"
 
 Cenário: Usuário não logado tenta acessar "Meu Solar"
 	Dado que eu nao estou logado no sistema com usuario user
@@ -33,7 +33,7 @@ Esquema do Cenário: Login com usuários válidos e inválidos
 	Então eu deverei ver "<action>"
 Exemplos:
 	| login         |  password       |   action  		   |
-	| user          |  user123        | Novidades 		   |
+	| user          |  user123        | Agenda 		   |
 	| unknown_user  |  any_password   | Dados de login incorretos! |
 	| user          |  wrong_password | Dados de login incorretos! |
 

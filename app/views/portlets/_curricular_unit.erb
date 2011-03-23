@@ -6,7 +6,7 @@
 
 #Consulta os cursos dos quais o usuário participa guardando o resultado na sessao.
 #
- #personal_configuration = PersonalConfiguration.find_by_user_id(@user.id)
+#personal_configuration = PersonalConfiguration.find_by_user_id(@user.id)
 
 #Caso nao haja nada, embroma de algum jeito
 
@@ -37,11 +37,10 @@
 # Fazer testes.
 #
 
-  ucs = load_curriculum_unit_data()
+ucs = load_curriculum_unit_data() || []
 %>
 
-
-  <div class="mysolar_portlets_portlet"  id="my_solar_portlet_1">
+<div class="mysolar_portlets_portlet"  id="my_solar_portlet_1">
   <div class="mysolar_portlets_header">
     <img src="/images/unidade_curricular.png"/>
     Unidade Curricular
@@ -62,12 +61,12 @@
   </style>
   <div class="mysolar_portlets_content">
     <%
-      ucs.each {|c|
+    ucs.each {|c|
       #Adiciona um curso na tela
-        %>
-          <div class="classeNomeCurso"><%=c["name"]%></div>
-        <%
-      }
-    %>
+      %>
+      <div class="classeNomeCurso"><%=c["name"]%></div>
+    <%
+    }
+  %>
   </div>
 </div>

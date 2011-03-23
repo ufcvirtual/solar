@@ -63,9 +63,9 @@ class OffersController < ApplicationController
   end
 
   def showoffersbyuser
-    puts '**********'
-    puts params
-    puts '**********'
+#    puts '**********'
+#    puts params
+#    puts '**********'
 
     @types = CurriculumUnitType.order("description")
 
