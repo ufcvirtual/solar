@@ -1,15 +1,14 @@
-Entao /^eu deverei ver a tabela$/ do |tabela|
+Entao /^eu deverei ver a linha de opcao de matricula$/ do |tabela|
 	tabela.hashes.each do |linha|
-		linha.each do |chave,valor|
-			page.should have_content("#{valor}") || page.find_link("#{valor}").visible?
-		end
+	    xpath = "//table/tr[ child::td[contains(., '#{linha[:UnidadeCurricular]}')]  and child::td[contains(., '#{linha[:Categoria]}')]  and child::td[contains(., '#{linha[:Turma]}')]  and   (descendant::input[@value='#{linha[:Matricula]}'] or child::td[contains(., '#{linha[:Matricula]}')])       ]"
+	    page.should have_xpath(xpath)
 	end
 end
 
-#Entao /^eu não deverei ver a tabela$/ do |tabela|
-#	tabela.hashes.each do |linha|
-#		linha.each do |chave,valor|
-#			page.should have_no_content("#{valor}")
-#		end
-#	end
-#end
+
+Entao /^eu nao deverei ver a linha de opcao de matricula$/ do |tabela| 
+	 tabela.hashes.each do |linha|
+		xpath = "//table/tr[ child::td[contains(., '#{linha[:UnidadeCurricular]}')]  and child::td[contains(., '#{linha[:Categoria]}')]  and child::td[contains(., '#{linha[:Turma]}')]  and   (descendant::input[@value='#{linha[:Matricula]}'] or child::td[contains(., '#{linha[:Matricula]}')])       ]"
+	    page.should have_no_xpath(xpath)
+	 end
+end

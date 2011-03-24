@@ -13,53 +13,55 @@ Contexto:
         | 1       | pt-BR |
 
     Dado que tenho "profiles"
-        | name  | 
-        | ALUNO |
+        | id | name  | 
+        | 1  | ALUNO |
     Dado que tenho "courses"
-        | name                    | code   |
-        | Letras Português        | LLPT   |
-        | Licenciatura em Química | LQUIM  |
+        | id | name                    | code   |
+        | 1  | Letras Português        | LLPT   |
+        | 2  | Licenciatura em Química | LQUIM  |
     Dado que tenho "curriculum_unit_types"
-        | description              | allows_enrollment |
-        | Graduação Presencial     | TRUE              |
-        | Grad. Semipresencial     | FALSE             |
-        | Curso Livre              | TRUE              |
-        | Curso de Extensão        | TRUE              |
-        | Pós Grad. Presencial     | TRUE              |
-        | Pós Grad. Semipresencial | FALSE             |
+        | id | description              | allows_enrollment |
+        | 1  | Graduação Presencial     | TRUE              |
+        | 2  | Grad. Semipresencial     | FALSE             |
+        | 3  | Curso Livre              | TRUE              |
+        | 4  | Curso de Extensão        | TRUE              |
+        | 5  | Pós Grad. Presencial     | TRUE              |
+        | 6  | Pós Grad. Semipresencial | FALSE             |
     Dado que tenho "curriculum_units"
-        | name                     | code  | curriculum_unit_types_id |
-        | Introdução à Linguística | RM404 | 3                        |
-        | Teoria da Literatura I   | RM405 | 1                        |
-        | Química I                | RM301 | 2                        |
-        | Semipresencial sm nvista | TS101 | 2                        |
+        | id | name                     | code  | curriculum_unit_types_id |
+        | 1  | Introducao a Linguistica | RM404 | 3                        |
+        | 2  | Teoria da Literatura I   | RM405 | 1                        |
+        | 3  | Quimica I                | RM301 | 2                        |
+        | 4  | Semipresencial sm nvista | TS101 | 2                        |
     Dado que tenho "offers"
-        | curriculum_units_id | courses_id | semester | start      | end        |
-        | 1                   | 1          | 2011.1   | 2011-06-01 | 2011-12-01 |
-        | 2                   | 1          | 2011.1   | 2011-06-01 | 2011-12-01 |
-        | 3                   | 2          | 2011.1   | 2011-06-01 | 2011-12-01 |
-        | 4                   | 1          | 2011.1   | 2011-06-01 | 2011-12-01 |
+        | id | curriculum_units_id | courses_id | semester | start      | end        |
+        | 1  | 1                   | 1          | 2011.1   | 2011-06-01 | 2011-12-01 |
+        | 2  | 2                   | 1          | 2011.1   | 2011-06-01 | 2011-12-01 |
+        | 3  | 3                   | 2          | 2011.1   | 2011-06-01 | 2011-12-01 |
+        | 4  | 4                   | 1          | 2011.1   | 2011-06-01 | 2011-12-01 |
     Dado que tenho "groups"
-        | offers_id | code  | status |
-        | 1         | FOR   | TRUE   |
-        | 2         | CAU-A | TRUE   |
-        | 3         | CAU-B | TRUE   |
-        | 4         | FOR   | TRUE   |
+        | id | offers_id | code  | status |
+        | 1  | 1         | FOR   | TRUE   |
+        | 2  | 2         | CAU-A | TRUE   |
+        | 3  | 3         | CAU-B | TRUE   |
+        | 4  | 4         | FOR   | TRUE   |
     Dado que tenho "enrollments"
-        | offers_id | start      | end        |
-        | 1         | 2011-03-01 | 2011-05-30 |
-        | 2         | 2011-03-01 | 2011-05-30 |
-        | 3         | 2011-03-01 | 2011-05-30 |
-        | 4         | 2011-03-01 | 2011-05-30 |
+        | id | offers_id | start      | end        |
+        | 1  | 1         | 2011-03-01 | 2011-05-30 |
+        | 2  | 2         | 2011-03-01 | 2011-05-30 |
+        | 3  | 3         | 2011-03-01 | 2011-05-30 |
+        | 4  | 4         | 2011-03-01 | 2011-05-30 |
     Dado que tenho "allocation_tags"
         | id | groups_id |
         | 1  | 1         |
         | 2  | 2         |
+        | 3  | 3         |
 
     Dado que tenho "allocations"
-        | users_id | allocation_tags_id | profiles_id | status |
-        | 1        | 1                  | 1           | 1      |
-        | 1        | 2                  | 1           | 1      |
+        | id | users_id | allocation_tags_id | profiles_id | status |
+        | 1  | 1        | 1                  | 1           | 1      |
+        | 2  | 1        | 2                  | 1           | 1      |
+        | 3  | 1        | 3                  | 1           | 1      |
 
 Cenário: Acessar página de matricula
     Dado que estou logado com o usuario "user" e com a senha "user123"
@@ -72,17 +74,17 @@ Cenário: Acessar página de matricula
         E eu deverei ver "Todos"
         E eu deverei ver "Matriculados"
 
-#Cenário: Listar cursos matriculados ou disponíveis
-#    Dado que estou logado com o usuario "user" e com a senha "user123"
-#    Quando eu clicar no link "Matrícula"
-#    Então eu deverei ver a tabela
-#      | Unidade Curricular            | Categoria             | Turma  | Matrícula   |
-#      | Introdução à Linguística      | Grad. Semipresencial  |	FOR    | Matriculado |
-#      | Química I                     | Pós-Grad. Presencial  | CAU-B  | Matricular  |
-#      | Teoria da Literatura I        | Curso Livre           | CAU-A  | Matricular  |
-#      E eu não deverei ver a tabela
-#      | Unidade Curricular            | Categoria             | Turma  | Matrícula   |
-#      | Semipresencial sm nvista      | Grad. Semipresencial | Matricular|
+Cenário: Listar cursos matriculados ou disponíveis
+    Dado que estou logado com o usuario "user" e com a senha "user123"
+    Quando eu clicar no link "Matrícula"
+    Então eu deverei ver a linha de opcao de matricula
+      | UnidadeCurricular             | Categoria             | Turma  | Matricula   |
+      | Introducao a Linguistica      | Curso Livre           |	FOR    | Cancelar 	 |
+      | Quimica I                     | Grad. Semipresencial  | CAU-B  | Matriculado |      
+      | Teoria da Literatura I        | Graduação Presencial  | CAU-A  | Cancelar    |      
+	 E eu nao deverei ver a linha de opcao de matricula
+	   | UnidadeCurricular             | Categoria             | Turma  | Matricula   |
+	   | Semipresencial sm nvista      | Grad. Semipresencial  | FOR    | Matricular  |
 
 #Esquema do Cenário: Realizacao de matricula
 #    Dado que estou logado com o usuario "user" e com a senha "user123"
