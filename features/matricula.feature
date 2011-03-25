@@ -84,21 +84,21 @@ Cenário: Listar cursos matriculados ou disponíveis
       E eu nao deverei ver a linha de opcao de matricula
 	   | UnidadeCurricular             | Categoria             | Turma  | Matricula   |
 	   | Semipresencial sm nvista      | Grad. Semipresencial  | FOR    | Matricular  |
-
+@wip
 Cenário: Pedir cancelamento de matricula
     Dado que estou logado com o usuario "user" e com a senha "user123"
         E que estou em "Matricula"
-    Quando eu clicar na opcao "Cancelar" do item "Introducao a Linguistica"
+    Quando eu clicar na opcao "Cancelar" do item de matricula "Introducao a Linguistica"
     Então eu deverei ver a linha de opcao de matricula
       | UnidadeCurricular             | Categoria             | Turma  | Matricula   |
       | Introducao a Linguistica      | Curso Livre           |	FOR    | Matricular  |
       | Quimica I                     | Grad. Semipresencial  | CAU-B  | Matriculado |
       | Teoria da Literatura I        | Graduação Presencial  | CAU-A  | Matricular  |
-
+@wip
 Cenário: Pedir matricula em curso disponível
     Dado que estou logado com o usuario "user" e com a senha "user123"
         E que estou em "Matricula"
-    Quando eu clicar na opcao "Matricular" do item "Teoria da Literatura I"
+    Quando eu clicar na opcao "Matricular" do item de matricula "Teoria da Literatura I"
     Então eu deverei ver a linha de opcao de matricula
       | UnidadeCurricular             | Categoria             | Turma  | Matricula       |
       | Introducao a Linguistica      | Curso Livre           |	FOR    | Cancelar        |

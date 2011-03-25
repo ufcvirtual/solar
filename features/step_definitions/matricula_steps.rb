@@ -14,17 +14,9 @@ Entao /^eu nao deverei ver a linha de opcao de matricula$/ do |tabela|
 end
 
 
-Quando /^eu clicar na opcao "([^"]*)" do item "([^"]*)"$/ do |link, texto|
+Quando /^eu clicar na opcao "([^"]*)" do item de matricula "([^"]*)"$/ do |link, texto|
   xpath = "//table/tr[ child::td[contains(.,'#{texto}')] ]"
   within(:xpath, xpath) do
     find_button("#{link}").click
   end
 end
-
-#And /I delete "(.*)"/ do |person|
-#  # Use webrat or capybara to find row based on 'person' text... then find 'delete' link in row and click it
-#  # example (untested, pseudo code)
-#  within(:xpath, "//table/tr[contains(#{person})") do
-#    find('.deleteLink').click
-#  end
-#end
