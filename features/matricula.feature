@@ -35,10 +35,10 @@ Contexto:
         | 4  | Semipresencial sm nvista | TS101 | 2                        |
     Dado que tenho "offers"
         | id | curriculum_units_id | courses_id | semester | start      | end        |
-        | 1  | 1                   | 1          | 2011.1   | 2011-06-01 | 2011-12-01 |
-        | 2  | 2                   | 1          | 2011.1   | 2011-06-01 | 2011-12-01 |
-        | 3  | 3                   | 2          | 2011.1   | 2011-06-01 | 2011-12-01 |
-        | 4  | 4                   | 1          | 2011.1   | 2011-06-01 | 2011-12-01 |
+        | 1  | 1                   | 1          | 2011.1   | 2011-06-01 | 2021-12-01 |
+        | 2  | 2                   | 1          | 2011.1   | 2011-06-01 | 2021-12-01 |
+        | 3  | 3                   | 2          | 2011.1   | 2011-06-01 | 2021-12-01 |
+        | 4  | 4                   | 1          | 2011.1   | 2011-06-01 | 2021-12-01 |
     Dado que tenho "groups"
         | id | offers_id | code  | status |
         | 1  | 1         | FOR   | TRUE   |
@@ -47,10 +47,10 @@ Contexto:
         | 4  | 4         | FOR   | TRUE   |
     Dado que tenho "enrollments"
         | id | offers_id | start      | end        |
-        | 1  | 1         | 2011-03-01 | 2011-05-30 |
-        | 2  | 2         | 2011-03-01 | 2011-05-30 |
-        | 3  | 3         | 2011-03-01 | 2011-05-30 |
-        | 4  | 4         | 2011-03-01 | 2011-05-30 |
+        | 1  | 1         | 2011-03-01 | 2021-05-30 |
+        | 2  | 2         | 2011-03-01 | 2021-05-30 |
+        | 3  | 3         | 2011-03-01 | 2021-05-30 |
+        | 4  | 4         | 2011-03-01 | 2021-05-30 |
     Dado que tenho "allocation_tags"
         | id | groups_id |
         | 1  | 1         |
@@ -58,10 +58,9 @@ Contexto:
         | 3  | 3         |
 
     Dado que tenho "allocations"
-        | id | users_id | allocation_tags_id | profiles_id | status |
-        | 1  | 1        | 1                  | 1           | 1      |
-        | 2  | 1        | 2                  | 1           | 1      |
-        | 3  | 1        | 3                  | 1           | 1      |
+        | users_id | allocation_tags_id | profiles_id | status |
+        | 1        | 1                  | 1           | 1      |
+        | 1        | 3                  | 1           | 1      |
 
 Cenário: Acessar página de matricula
     Dado que estou logado com o usuario "user" e com a senha "user123"
@@ -79,20 +78,29 @@ Cenário: Listar cursos matriculados ou disponíveis
     Quando eu clicar no link "Matrícula"
     Então eu deverei ver a linha de opcao de matricula
       | UnidadeCurricular             | Categoria             | Turma  | Matricula   |
-      | Introducao a Linguistica      | Curso Livre           |	FOR    | Cancelar 	 |
+      | Introducao a Linguistica      | Curso Livre           |	FOR    | Cancelar    |
       | Quimica I                     | Grad. Semipresencial  | CAU-B  | Matriculado |      
-      | Teoria da Literatura I        | Graduação Presencial  | CAU-A  | Cancelar    |      
-	 E eu nao deverei ver a linha de opcao de matricula
+      | Teoria da Literatura I        | Graduação Presencial  | CAU-A  | Matricular  |
+      E eu nao deverei ver a linha de opcao de matricula
 	   | UnidadeCurricular             | Categoria             | Turma  | Matricula   |
 	   | Semipresencial sm nvista      | Grad. Semipresencial  | FOR    | Matricular  |
 
-#Esquema do Cenário: Realizacao de matricula
-#    Dado que estou logado com o usuario "user" e com a senha "user123"
-#    E que estou em "Matricula"
-#	Quando eu clicar em "Matricular"
-#	Então eu deverei ver "<action>"
-#Exemplos:
-#	| login         |  password       |   action  		   |
-#	| user          |  user123        | Novidades 		   |
-#	| unknown_user  |  any_password   | Dados de login incorretos! |
-#	| user          |  wrong_password | Dados de login incorretos! |
+Cenário: Pedir cancelamento de matricula
+    Dado que estou logado com o usuario "user" e com a senha "user123"
+        E que estou em "Matricula"
+    Quando eu clicar na opcao "Cancelar" do item "Introducao a Linguistica"
+    Então eu deverei ver a linha de opcao de matricula
+      | UnidadeCurricular             | Categoria             | Turma  | Matricula   |
+      | Introducao a Linguistica      | Curso Livre           |	FOR    | Matricular  |
+      | Quimica I                     | Grad. Semipresencial  | CAU-B  | Matriculado |
+      | Teoria da Literatura I        | Graduação Presencial  | CAU-A  | Matricular  |
+
+Cenário: Pedir matricula em curso disponível
+    Dado que estou logado com o usuario "user" e com a senha "user123"
+        E que estou em "Matricula"
+    Quando eu clicar na opcao "Matricular" do item "Teoria da Literatura I"
+    Então eu deverei ver a linha de opcao de matricula
+      | UnidadeCurricular             | Categoria             | Turma  | Matricula       |
+      | Introducao a Linguistica      | Curso Livre           |	FOR    | Cancelar        |
+      | Quimica I                     | Grad. Semipresencial  | CAU-B  | Matriculado     |
+      | Teoria da Literatura I        | Graduação Presencial  | CAU-A  | Cancelar pedido |

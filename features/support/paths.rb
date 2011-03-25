@@ -26,6 +26,9 @@ module NavigationHelpers
     when /Meus Dados/
 	 '/users/mydata'
 
+    when /Matricula/
+	 '/offers/showoffersbyuser'
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
