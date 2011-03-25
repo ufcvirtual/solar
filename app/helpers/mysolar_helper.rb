@@ -22,7 +22,6 @@ module MysolarHelper
   end
 
 
-  ##########################################################################
   def load_curriculum_unit_data
     if current_user
       query_current_courses =
@@ -34,8 +33,7 @@ module MysolarHelper
           inner join allocation_tags tg on tg.id = al.allocation_tags_id
           inner join curriculum_units cr on cr.id = tg.curriculum_units_id
         where
-          users_id >0 and
-          cr.id >0
+          users_id = #{current_user.id}
       )
       union
       (
@@ -46,8 +44,7 @@ module MysolarHelper
           inner join offers of on of.id = tg.offers_id
           inner join curriculum_units cr on cr.id = of.curriculum_units_id
         where
-          users_id >0 and
-          cr.id >0
+          users_id = #{current_user.id}
       )
       union(
         select cr.* --(cns 3 - usuarios vinculados a turma)
@@ -58,8 +55,7 @@ module MysolarHelper
           inner join offers of on of.id = gr.offers_id
           inner join curriculum_units cr on cr.id = of.curriculum_units_id
         where
-          users_id >0 and
-          cr.id >0
+          users_id = #{current_user.id} 
       )
       union
       (
@@ -71,12 +67,10 @@ module MysolarHelper
           inner join offers of on of.courses_id = cs.id
           inner join curriculum_units cr on cr.id = of.curriculum_units_id
         where
-          users_id >0 and
-          cr.id >0
+          users_id = #{current_user.id}
         )
       ) as ucs_do_usuario
-      order by name
-      "
+      order by name"
 
       conn = ActiveRecord::Base.connection
       conn.select_all query_current_courses

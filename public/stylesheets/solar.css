@@ -80,7 +80,7 @@ select{
 
 input{
     color           : #222;
-    background-color: #fff;
+    /*background-color: #fff;*/
     border          : 1px solid #dedede;
     padding         : 5px;
     font-size	    : 13px;
@@ -377,7 +377,7 @@ a.mysolar_top_link{
     background-color:  #F7F7F7;
 
     z-index         : 2;
-    
+
     float           : left;
     width           : 110px;
     height          : 30px;
@@ -388,7 +388,7 @@ a.mysolar_top_link{
     line-height     : 28px;
     text-align      : center;
     vertical-align  : middle;
-    
+
 }
 #my_personal_data_tab{
     margin-left: 0px;
@@ -537,7 +537,6 @@ div.widget_head {
     margin: 0 1em 1em 0;
     border:1px solid #CCCCCC;
     background-color: #fff;
-    cursor: pointer;
     height: 183px;
     width: 260px;
     white-space: normal;
@@ -546,9 +545,13 @@ div.widget_head {
     padding: 5px;
     background-color: #E7EDED;
     cursor:move;
+    height:30px;
 }
 .mysolar_portlets_content {
     padding: 0.4em;
+    position:relative;
+    overflow: auto;
+    height: 130px;
 }
 
 .ui-sortable-placeholder {
@@ -558,6 +561,20 @@ div.widget_head {
 }
 .ui-sortable-placeholder * {
     visibility: hidden;
+}
+
+/***** Portlet de Unidades curriculares *********/
+
+.classeNomeCurso{
+    display:inline-block;
+    width:100%;
+    color: #8AF;
+    font-family: trebuchet, verdana, courier, arial, sans-serif;
+    font-size: 12px;
+    line-height: 16px;
+}
+.classeNomeCurso:hover{
+    background-color: #F6F6FF;
 }
 
 /******botões de confirmação de cadastro ********/
@@ -615,7 +632,7 @@ div.widget_head {
     height:10px;
     position:relative;
     left:-25px;
-    top:-17px;
+    top:-16px;
 }
 
 .solar_button_arrow_gray {
@@ -626,7 +643,7 @@ div.widget_head {
     height:10px;
     position:relative;
     left:-25px;
-    top:-17px;
+    top:-16px;
 }
 .solar_button_blue {
     color           : #fff;
@@ -645,7 +662,7 @@ div.widget_head {
     height:10px;
     position:relative;
     left:-25px;
-    top:-22px;
+    top:-16px;
 }
 
 /**********alterar foto*************/
@@ -662,7 +679,7 @@ div.alter_photo_text {
 
 /**
  * manipulacao da window/modal
- */
+*/
 #mask {
     position:absolute;
     left:0;
@@ -691,7 +708,7 @@ div.alter_photo_text {
 
 /**
  * manipulacao do link na foto
- */
+*/
 .div_link_decoration {
     display: none;
 }

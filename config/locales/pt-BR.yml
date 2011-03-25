@@ -77,6 +77,11 @@
   mysolar_mn_enrollment: "Matrícula"
   mysolar_search: "Busca"
 
+  # portlets do meu solar
+  # Unidades curriculares
+  my_solar_curriculum_units: "Unidades Curriculares"
+
+
   #       msg de erro ,ainda no login    #
   login_data_invalid: "Dados de login incorretos!"
 

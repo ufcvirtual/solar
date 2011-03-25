@@ -42,6 +42,14 @@ Entao /^eu deverei ver "([^"]*)"$/ do |text|
 	end
 end
 
+Entao /^eu nao deverei ver "([^"]*)"$/ do |text|
+  if page.respond_to? :should
+    page.should have_no_content(text)
+  else
+    assert page.has_no_content?(text)
+  end
+end
+
 Dado /^que estou logado no sistema com usuario user$/ do
   #User.create(:login => 'user', :email => 'user@tester.com', :password => 'user123', :name => 'User')
   visit path_to("Login")

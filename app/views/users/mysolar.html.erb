@@ -75,6 +75,7 @@ columns = portlets_configuration.split('|');
   //Configurando Portlets
   $(function() {
     $( ".mysolar_portlets_coluna" ).sortable({
+      handle: '.mysolar_portlets_header',
       connectWith: ".mysolar_portlets_coluna", //Conectando as listas de colunas
       opacity: 0.8,
       revert: 100,
@@ -84,7 +85,6 @@ columns = portlets_configuration.split('|');
         ordem += $('#my_solar_column_3').sortable('serialize');
         ordem = ordem.replace(/my_solar_portlet\[\]=/gi,'');
         updatePortletsConfiguration(ordem);
-
       }
     });
     $( ".mysolar_portlets_coluna" ).disableSelection();

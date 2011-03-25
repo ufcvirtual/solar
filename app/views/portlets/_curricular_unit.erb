@@ -3,65 +3,18 @@
 %>
 
 <%
-
-#Consulta os cursos dos quais o usuário participa guardando o resultado na sessao.
-#
-#personal_configuration = PersonalConfiguration.find_by_user_id(@user.id)
-
-#Caso nao haja nada, embroma de algum jeito
-
-#Lista os cursos
-#if personal_configuration.nil?
-#  portlets_configuration = PersonalConfiguration.default_portlet_configuration
-#else
-#  portlets_configuration = personal_configuration.mysolar_portlets
-#  if portlets_configuration.nil?
-#    portlets_configuration = PersonalConfiguration.default_portlet_configuration
-#  end
-#end
-#
-#
-# criar metodo no controller para puxar as unidades curriculares nos quais o usuario corrente
-# tem qualquer tipo de perfil (nao soh aluno) agrupadas por curso
-# (listar as turmas diferentes aqui????)
-# (Restringir pelo semestre? pelas datas de inicio e fim do curso? como???)
-#
-# Renderizar um link para cada curso dentro do portlet (com o nome do professor)
-# e white-spacing: wrap para nomes muito grandes ou usar tooltip.
-#
-# o portlet deve ter barra de rolagem
-#
-# enfeitar com o icone
-# internacionalizar a label
-# Criar as legendas
-# Fazer testes.
-#
-
 ucs = load_curriculum_unit_data() || []
 %>
 
 <div class="mysolar_portlets_portlet"  id="my_solar_portlet_1">
   <div class="mysolar_portlets_header">
     <img src="/images/unidade_curricular.png"/>
-    Unidade Curricular
+    <%=t(:my_solar_curriculum_units)%>
     <img src="/images/unidade_curricular.png" style="float:right;"/>
   </div>
-  <style>
-    .classeNomeCurso{
-      display:inline-block;
-      width:100%;
-      color: #8AF;
-      font-family: trebuchet, verdana, courier, arial, sans-serif;
-      font-size: 12px;
-      line-height: 16px;
-    }
-    .classeNomeCurso:hover{
-      background-color: #F6F6FF;
-    }
-  </style>
   <div class="mysolar_portlets_content">
     <%
-    ucs.each {|c|
+      ucs.each {|c|
       #Adiciona um curso na tela
       %>
       <div class="classeNomeCurso"><%=c["name"]%></div>
