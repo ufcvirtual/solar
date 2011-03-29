@@ -63,9 +63,6 @@ class OffersController < ApplicationController
   end
 
   def showoffersbyuser
-#    puts '**********'
-#    puts params
-#    puts '**********'
 
     @types = CurriculumUnitType.order("description")
 
@@ -113,7 +110,7 @@ class OffersController < ApplicationController
                    LEFT OUTER JOIN allocations ON allocations.allocation_tags_id = allocation_tags.id",
         :conditions => "(
                   #{query_date_enrollment}
-                  (allocations.users_id = #{current_user.id} AND allocations.profiles_id = #{Student} AND allocations.status = #{Allocation_Activated})
+                  (allocations.users_id = #{current_user.id} AND allocations.profiles_id = #{student_profile} AND allocations.status = #{Allocation_Activated})
                   ) #{query_category} #{query_text}" ,
         :order => "curriculum_units.name"
       )

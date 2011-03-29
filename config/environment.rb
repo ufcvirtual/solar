@@ -16,18 +16,8 @@ ActionMailer::Base.smtp_settings = {
 		:authentication       => 'login',
 		:enable_starttls_auto => true  }
 
-# constantes de tipo de unidade curricular
-Presential_Undergraduate_Course = 1
-Distance_Undergraduate_Course = 2
-Free_Course = 3
-Extension_Course = 4
-Presential_Graduate_Course = 5
-Distance_Graduate_Course = 6
 
-# constantes de tipo de perfil
-Student = 1
-
-# constantes de status de matricula e pedido de matricula
+# constantes de status de matricula e pedido de matricula - table ALLOCATIONS
 Allocation_Pending   = 0           # quando pede matricula pela 1a vez
 Allocation_Activated = 1           # com matricula ativa
 Allocation_Cancelled = 2           # com matricula cancelada

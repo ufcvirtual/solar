@@ -3,6 +3,12 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user_session, :current_user
 
+  # consulta id relacionado a estudante na tabela PROFILES
+  def student_profile
+    prof = Profile.find_by_student(true)
+    return prof.id
+  end
+
   private
 
   def current_user_session

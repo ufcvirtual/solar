@@ -12,8 +12,8 @@ Contexto:
         | user_id | default_locale |
         | 1       | pt-BR |
     Dado que tenho "profiles"
-        | id | name  | 
-        | 1  | ALUNO |
+        | id | name  | student |
+        | 1  | ALUNO | true    |
     Dado que tenho "courses"
         | id | name                    | code   |
         | 1  | Letras Português        | LLPT   |

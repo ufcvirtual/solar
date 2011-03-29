@@ -108,7 +108,7 @@ class AllocationsController < ApplicationController
         @allocation = Allocation.new
         @allocation.users_id = params[:userid]
         @allocation.allocation_tags_id = params[:tagid]
-        @allocation.profiles_id = Student
+        @allocation.profiles_id = student_profile
         @allocation.status = Allocation_Pending
       end
 
