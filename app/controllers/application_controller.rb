@@ -6,9 +6,26 @@ class ApplicationController < ActionController::Base
   # consulta id relacionado a estudante na tabela PROFILES
   def student_profile
     prof = Profile.find_by_student(true)
-    return prof.id
+    if prof
+      return prof.id
+    else
+      return ''
+    end
   end
 
+  # adiciona uma aba no canto superior da interface
+  def add_tab
+    name = params[:name]
+    link = params[:link]
+    if session[:opened_tabs].nil?
+      session[:opened_tabs] = Hash.new
+    end
+    session[:opened_tabs][name] = link
+    session[:active_tab] = name
+    #quando clica na unidade, retorna para o mysolar para exibir a aba
+    redirect_to :controller => "users", :action => "mysolar"
+  end
+  
   private
 
   def current_user_session
@@ -110,5 +127,6 @@ class ApplicationController < ActionController::Base
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
   end
+
 end
 

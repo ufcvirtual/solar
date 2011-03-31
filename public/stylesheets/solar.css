@@ -257,6 +257,29 @@ textarea{
     cursor: pointer;
 }
 
+.mysolar_unit_tab{
+    color: #222;
+    text-align:center;
+    padding: 9px;
+    margin-right: 4px;
+    background-color: #eee;
+    display:inline;
+    z-index: 10;
+    border-top:4px solid #003e7a;
+    cursor: pointer;
+}
+.mysolar_unit_active_tab{
+    color: #222;
+    text-align:center;
+    padding: 9px;
+    margin-right: 4px;
+    background-color: #fff;
+    display:inline;
+    z-index: 10;
+    border-top:4px solid #003e7a;
+    cursor: pointer;
+}
+
 #meusdados_tab_topo{
     color: #222;
     text-align:center;

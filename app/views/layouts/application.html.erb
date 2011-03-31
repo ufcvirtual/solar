@@ -122,10 +122,14 @@
       <div id="mysolar_logo">
         <%= image_tag 'superior_logo.png', :alt => t(:mysolar_alt_img_solar) %><br/>
       </div>
+
+      <!-- ABAS!!! -------------------------->
       <div id="mysolar_tab" >
-<%#*<a href="mysolar">Home</a>%>
         <%= link_to "Home", :controller => "users", :action => "mysolar" %>
       </div>
+
+      <%= raw render_tabs %>
+
 
       <span id="mysolar_top_options" >
 		| &nbsp;<%= image_tag 'superior_suporte.png', :alt => t(:mysolar_alt_img_support) %>
@@ -133,6 +137,7 @@
 		| &nbsp;<%= image_tag 'superior_sair.png', :alt => t(:mysolar_alt_img_exit) %>&nbsp;
         <%= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, :class => "mysolar_top_link") %>
       </span>
+
     </div>
 
 

@@ -96,8 +96,8 @@ class AllocationsController < ApplicationController
   end
 
   # pede matricula (alocacao)
-  def send_request    
-    if params[:tagid] && params[:userid]
+  def send_request
+    if params[:tagid] && params[:userid] && (student_profile!='')
 
       # se havia status anterior, reativa
       if params[:id]

@@ -71,7 +71,6 @@ Contexto:
         | 2        | 3                  | 1           | 1      |
         | 2        | 4                  | 1           | 1      |
 
-@wip
 Cenário: Acessar página do meuSolar e visualizar o Portlet de unidades curriculares
 	Dado que estou logado com o usuario "user" e com a senha "user123"
             E que estou em "Meu Solar"

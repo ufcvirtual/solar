@@ -29,6 +29,8 @@ class UserSessionsController < ApplicationController
 
   def destroy
     current_user_session.destroy
+    #limpa sessao
+    reset_session
     redirect_back_or_default new_user_session_url(:locale => I18n.locale)
   end
 

@@ -65,8 +65,9 @@ class OffersController < ApplicationController
   def showoffersbyuser
 
     @types = CurriculumUnitType.order("description")
+    @student_profile = student_profile
 
-    if current_user
+    if current_user && (student_profile!='')
 
       query_date_enrollment = ""
       query_category = ""
@@ -114,6 +115,11 @@ class OffersController < ApplicationController
                   ) #{query_category} #{query_text}" ,
         :order => "curriculum_units.name"
       )
+    else
+      @offers = nil
+      if current_user
+        @user = User.find(current_user.id)
+      end
     end
   end
 

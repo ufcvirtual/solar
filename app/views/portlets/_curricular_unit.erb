@@ -17,7 +17,10 @@ ucs = load_curriculum_unit_data() || []
       ucs.each {|c|
       #Adiciona um curso na tela
       %>
-      <div class="classeNomeCurso"><%=c["name"]%></div>
+      <div class="classeNomeCurso">
+        <%= c["name"]%>
+        <%= button_to c["name"],{:controller=>"application", :action=>"add_tab", :name => c["name"], :link => 'google.com'}%>
+      </div>
     <%
     }
   %>
