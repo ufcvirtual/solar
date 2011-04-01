@@ -25,3 +25,7 @@ Allocation_Pending_Reactivate  = 3 # quando pede matricula depois de ter sido ca
 
 # constante que indica numero maximo de abas abertas
 Max_Tabs_Open = 4
+
+# constantes que indicam tipos de abas que podem ser abertas
+Tab_Type_Home = "0"
+Tab_Type_Curriculum_Unit = "1"

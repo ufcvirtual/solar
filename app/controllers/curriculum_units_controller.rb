@@ -63,7 +63,7 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def access
-    @curriculum_unit = CurriculumUnit.find_all_by_name (params[:name])
+    @curriculum_unit = CurriculumUnit.find (params[:id])
 
     if current_user
       @user = User.find(current_user.id)

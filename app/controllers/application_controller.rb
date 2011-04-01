@@ -15,8 +15,9 @@ class ApplicationController < ActionController::Base
 
   # adiciona uma aba no canto superior da interface
   def add_tab
-    name = params[:name]
-    link = params[:link]
+    name = params[:name]    
+    type = params[:type]
+    id   = params[:id]
 
     # se hash nao existe, cria
     if session[:opened_tabs].nil?
@@ -25,33 +26,37 @@ class ApplicationController < ActionController::Base
 
     # abre abas ate um numero limitado; atualiza como ativa se aba ja existe
     if (session[:opened_tabs].length < Max_Tabs_Open.to_i) || (session[:opened_tabs].has_key?(name))
-      session[:opened_tabs][name] = link
+      hash_tab = Hash.new
+      hash_tab["id"] = id
+      hash_tab["type"] = type
+      session[:opened_tabs][name] = hash_tab
       session[:active_tab] = name
 
-      #quando clica na unidade curricular, acessa sua pagina ou vai para o mysolar
-      if link
-        redirect_to link
-      else
-        redirect_to :controller => 'curriculum_units', :action => 'access', :name => params[:name]
+      # redireciona de acordo com o tipo de aba
+      if type == Tab_Type_Home
+        redirect_to :controller => "users", :action => "mysolar"
+      end
+      if type == Tab_Type_Curriculum_Unit
+        redirect_to :controller => 'curriculum_units', :action => 'access', :id => params[:id]
       end
       
     else
       # se estourou numero de abas, volta para mysolar
       redirect_to :controller => "users", :action => "mysolar"
-    end
-    
+    end    
   end
 
   # define aba ativa
-  def active_tab
-    session[:active_tab] = params[:name]
-    link = params[:l]
+  def activate_tab
+    name = params[:name]
+    session[:active_tab] = name
 
-    #se tem link, redireciona para ele; senao, acessa unidade curricular
-    if !link.empty?
-      redirect_to link
-    else
-      redirect_to :controller => 'curriculum_units', :action => 'access', :name => params[:name]
+    # redireciona de acordo com o tipo de aba
+    if session[:opened_tabs][name]["type"] == Tab_Type_Home
+      redirect_to :controller => "users", :action => "mysolar"
+    end
+    if session[:opened_tabs][name]["type"] == Tab_Type_Curriculum_Unit
+      redirect_to :controller => 'curriculum_units', :action => 'access', :id => session[:opened_tabs][name]["id"]
     end
   end
   
