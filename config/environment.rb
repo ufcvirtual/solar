@@ -22,3 +22,6 @@ Allocation_Pending   = 0           # quando pede matricula pela 1a vez
 Allocation_Activated = 1           # com matricula ativa
 Allocation_Cancelled = 2           # com matricula cancelada
 Allocation_Pending_Reactivate  = 3 # quando pede matricula depois de ter sido cancelado
+
+# constante que indica numero maximo de abas abertas
+Max_Tabs_Open = 4

@@ -20,7 +20,11 @@ class UserSessionsController < ApplicationController
     if @user_session.save
       # grava log de acesso
       Log.create(:log_type => Log::TYPE[:login], :userId => @user_session.user.id)
-      redirect_back_or_default users_mysolar_url #('/')
+
+      # gera aba para Home
+      redirect_to :action => "add_tab", :controller => "application", :name => 'Home', :link => '/users/mysolar'
+
+      #redirect_back_or_default users_mysolar_url #('/')
     else
       flash[:notice] = t(:login_data_invalid)
       render :action => :new

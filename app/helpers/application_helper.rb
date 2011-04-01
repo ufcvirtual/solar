@@ -22,9 +22,8 @@ module ApplicationHelper
         else
           text += "mysolar_unit_tab >"
         end
-        text += "<a href='#{link}'>#{name}</a>"
+        text += "<a href='/application/active_tab?name=#{name}&l=#{link}'>#{name}</a>"
         text += "</div>"
-        #text += '  ' + name + ' <' + link + '>'        
       end
     end
 

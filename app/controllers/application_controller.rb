@@ -17,13 +17,42 @@ class ApplicationController < ActionController::Base
   def add_tab
     name = params[:name]
     link = params[:link]
+
+    # se hash nao existe, cria
     if session[:opened_tabs].nil?
       session[:opened_tabs] = Hash.new
     end
-    session[:opened_tabs][name] = link
-    session[:active_tab] = name
-    #quando clica na unidade, retorna para o mysolar para exibir a aba
-    redirect_to :controller => "users", :action => "mysolar"
+
+    # abre abas ate um numero limitado; atualiza como ativa se aba ja existe
+    if (session[:opened_tabs].length < Max_Tabs_Open.to_i) || (session[:opened_tabs].has_key?(name))
+      session[:opened_tabs][name] = link
+      session[:active_tab] = name
+
+      #quando clica na unidade curricular, acessa sua pagina ou vai para o mysolar
+      if link
+        redirect_to link
+      else
+        redirect_to :controller => 'curriculum_units', :action => 'access', :name => params[:name]
+      end
+      
+    else
+      # se estourou numero de abas, volta para mysolar
+      redirect_to :controller => "users", :action => "mysolar"
+    end
+    
+  end
+
+  # define aba ativa
+  def active_tab
+    session[:active_tab] = params[:name]
+    link = params[:l]
+
+    #se tem link, redireciona para ele; senao, acessa unidade curricular
+    if !link.empty?
+      redirect_to link
+    else
+      redirect_to :controller => 'curriculum_units', :action => 'access', :name => params[:name]
+    end
   end
   
   private

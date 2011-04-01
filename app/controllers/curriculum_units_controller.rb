@@ -62,4 +62,25 @@ class CurriculumUnitsController < ApplicationController
     end
   end
 
+  def access
+    @curriculum_unit = CurriculumUnit.find_all_by_name (params[:name])
+
+    if current_user
+      @user = User.find(current_user.id)
+    end
+
+    if @curriculum_unit
+      respond_to do |format|
+        format.html #{ redirect_to(users_url, :notice => 'Usuario excluido com sucesso!') }
+        format.xml  { head :ok }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to(:back) }
+        format.xml  { head :ok }
+      end
+    end
+    
+  end
+
 end
