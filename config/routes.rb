@@ -4,9 +4,12 @@ Solar::Application.routes.draw do |map|
   get "users/mysolar"
   get "user_sessions/new"
   get "users/new"
-  get "users/mydata"
   get "users/pwd_recovery"
   get "offers/showoffersbyuser"
+
+  #################################
+  # rotas regulares - Nao RESTful #
+  #################################
 
   # roteamento para controle de acesso as imagens do usuario
   map.connect '/media/users/:id/photos/:style.:extension', :controller => 'access_control', :action => 'photo'
@@ -61,11 +64,11 @@ Solar::Application.routes.draw do |map|
   #     resources :products
   #   end
 
-	resources :user_sessions
-	resources :users
+  resources :user_sessions
+  resources :users
 
-	match 'login' => "user_sessions#new",      :as => :login
-	match 'logout' => "user_sessions#destroy", :as => :logout
+  match 'login' => "user_sessions#new", :as => :login
+  match 'logout' => "user_sessions#destroy", :as => :logout
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.

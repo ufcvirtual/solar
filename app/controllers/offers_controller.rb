@@ -1,6 +1,10 @@
 class OffersController < ApplicationController
 
+  load_and_authorize_resource
+  #  skip_authorize_resource :only => :showoffersbyuser
+
   def index
+
     #if current_user
     #  @user = Offer.find(current_user.id)
     #end
@@ -85,7 +89,7 @@ class OffersController < ApplicationController
                                   (select enrollments.end from enrollments where offers.id=enrollments.offers_id)>= current_date
                                   and curriculum_unit_types.allows_enrollment = TRUE
                                  ) or "
-        
+
         if params[:offer][:category]
           #reduz para determinada categoria de disciplina
           @search_category = params[:offer][:category]

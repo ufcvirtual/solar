@@ -79,6 +79,7 @@ GEM
     brstring (3.0.2)
       activesupport (>= 3.0.0)
     builder (2.1.2)
+    cancan (1.6.4)
     capybara (0.4.0)
       celerity (>= 0.7.9)
       culerity (>= 0.2.4)
@@ -189,6 +190,7 @@ DEPENDENCIES
   authlogic!
   automatic_foreign_key
   brazilian-rails
+  cancan
   capybara
   chronic
   cucumber

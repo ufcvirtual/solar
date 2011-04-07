@@ -2,8 +2,13 @@ class UsersController < ApplicationController
 	before_filter :require_no_user, :only => [:pwd_recovery, :pwd_recovery_send]
 	before_filter :require_user, :only => [:index, :show, :mysolar, :edit, :update, :destroy, :update_photo]
 
+  load_and_authorize_resource
+
+  ######################
+  # funcoes do RESTful #
+  ######################
+
   # GET /users
-  # GET /users.xml
   def index
     if current_user
       @user = User.find(current_user.id)
@@ -17,10 +22,7 @@ class UsersController < ApplicationController
   end
 
   # GET /users/new
-  # GET /users/new.xml
   def new
-    @user = User.new
-
     respond_to do |format|
       format.html {render :layout => 'login'}# new.html.erb
       format.xml  { render :xml => @user }
@@ -29,11 +31,9 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
   end
 
   # POST /users
-  # POST /users.xml
   def create
     @user = User.new(params[:user])
 
@@ -63,7 +63,6 @@ class UsersController < ApplicationController
   end
 
   # PUT /users/1
-  # PUT /users/1.xml
   def update
 
     #variavel para verificar se a mudança de senha passa nos testes
@@ -74,8 +73,6 @@ class UsersController < ApplicationController
     params[:user]["old_password"] = nil if params[:user]["old_password"] == ""
     params[:user]["new_password"] = nil if params[:user]["new_password"] == ""
     params[:user]["repeat_password"] = nil if params[:user]["repeat_password"] == ""
-    #recupera o usuario que esta sendo editado
-    @user = User.find(params[:id])
 
     #Validação da mudança de senha. Só entra nesse if maior se algum dos campos for preenchido
     # os campos são: Senha Antiga, Nova Senha e Confirmar Senha
@@ -114,14 +111,14 @@ class UsersController < ApplicationController
 
     #caso a mudança de senha esteja correta, altera a senha
     if (sucesso && !nova_senha.nil?)
-      @user.crypted_password =  CryptoProvider.encrypt(nova_senha)
+      @user.crypted_password = CryptoProvider.encrypt(nova_senha)
     end
 
     respond_to do |format|
       if (sucesso && @user.update_attributes(params[:user]))
         flash[:success] = t('successful_update')
-        format.html { redirect_to({:controler=>"users",:action=>"mydata"})}
-        format.xml  { head :ok }
+        format.html { redirect_to({:action => 'edit'})}
+        format.xml { head :ok }
       else
         #joga as mensagens de validação do modelo nas mensagens de erro
         if @user.errors.any?
@@ -133,14 +130,13 @@ class UsersController < ApplicationController
           end
         end
         flash[:error] = error_msg
-        format.html {render ({:controler=>"users",:action=>"mydata"})}
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
+        format.html {render({:action => 'edit'})}
+        format.xml { render :xml => @user.errors, :status => :unprocessable_entity }
       end
     end
   end
 
   # DELETE /users/1
-  # DELETE /users/1.xml
   def destroy
     @user = User.find(params[:id])
     @user.destroy
@@ -151,18 +147,18 @@ class UsersController < ApplicationController
     end
   end
 
+  ##############################
+  #     PORTLETS DO USUARIO    #
+  ##############################
   def mysolar
     if current_user
       @user = User.find(current_user.id)
     end
   end
 
-  def mydata
-    if current_user
-      @user = User.find(current_user.id)
-    end
-  end
-
+  ######################################
+  # funcoes para verificacao de senhas #
+  ######################################
   def pwd_recovery
   	if !@user
       @user = User.new
@@ -184,7 +180,7 @@ class UsersController < ApplicationController
 
     if user_find
       #gera nova senha
-      pwd = generate_password (8)
+      pwd = generate_password(8)
       user_find.password = pwd
 
       #altera senha do usuario e envia email
@@ -214,21 +210,22 @@ class UsersController < ApplicationController
 
   end
 
-  def generate_password (size)
+  def generate_password(size)
     accept_chars = (('a'..'z').to_a + ('0'..'9').to_a) - %w(i o 0 1 l)
   	(1..size).collect{|a| accept_chars[rand(accept_chars.size)] }.join
   end
 
-  # modificacao da foto do usuario
+  ##################################
+  # modificacao da foto do usuario #
+  ##################################
   def update_photo
 
     error_msg, redirect = " ", {:action => "mysolar"}
-    @user = User.find(params[:id])
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
         flash[:success] = t('successful_update_photo')
-        format.html { redirect_to (redirect) }
+        format.html { redirect_to(redirect) }
         format.xml  { head :ok }
       else
         # joga as mensagens de validação do modelo nas mensagens de erro
@@ -247,7 +244,7 @@ class UsersController < ApplicationController
           end
         end
         flash[:error] = error_msg
-        format.html { render (redirect) }
+        format.html { render(redirect) }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end
     end

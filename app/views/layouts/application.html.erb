@@ -69,8 +69,6 @@
       &nbsp;
     </div>
     <div id="mysolar_sidebar">
-<%#= render :partial => "sidebar" %>
-
       <div id="mysolar_boxid">
         <div id="mysolar_id">
 
@@ -83,7 +81,9 @@
           <%= @user.nick%>
         </div>
         <div id="mysolar_options">
-          <%= link_to t(:mysolar_mn_mydata), :controller => "users", :action => "mydata", :id => @user.id %><br/>
+          <% if can? :update, @user %>
+            <%= link_to t(:mysolar_mn_mydata), edit_user_url(@user) %><br/>
+          <% end %>
 			Portfolio <br />
 			Blog <br />
           <%= t(:mysolar_mn_customize) %> <br />
@@ -99,7 +99,6 @@
         <br/>
         <hr width="149" style="border:none;height:1px;background-color: #cfdde1"/>
       </div>
-
 
       <!--------- Menu retrátil --------->
       <div id="mysolar_menu_accordion" style="z-index:10">
@@ -126,13 +125,10 @@
 		item 10
         </div>
       </div>
-
     </div>
-
 
     <!-- Barra Topo -------------------------->
     <div id="mysolar_topbar">
-<%#= render :partial => "topbar" %>
       <div id="mysolar_logo">
         <%= image_tag 'superior_logo.png', :alt => t(:mysolar_alt_img_solar) %><br/>
       </div>
@@ -148,7 +144,6 @@
       </span>
 
     </div>
-
 
     <!--  Chat ------------------------>
     <div id="mysolar_chat_area">
@@ -176,7 +171,5 @@
         </div>
       </div>
     </div>
-
-
   </body>
 </html>
