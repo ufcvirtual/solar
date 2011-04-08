@@ -23,6 +23,10 @@ module ApplicationHelper
           text += "mysolar_unit_tab >"
         end
         text += "<a href='/application/activate_tab?name=#{name}'>#{name}</a>"
+        # se for a aba não for a home, tem 'fechar'
+        if (session[:opened_tabs][name]["type"] != Tab_Type_Home)
+          text += "<a href='/application/close_tab?name=#{name}' class=tabs_close></a>"
+        end
         text += "</div>"
       end
     end

@@ -814,6 +814,15 @@ div.alter_photo_text {
     margin: 1px;
     color: #000;
 }
+.tabs_close {
+    background:url('../images/bt_close_tabs.png') no-repeat right bottom;
+    display:inline-block;
+    width:11px;
+    height:11px;
+    position:relative;
+    left:5px;
+    top:-8px;
+}
 .text_alert {
     font-family: Trebuchet;
     font-size: 11px;

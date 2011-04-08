@@ -51,12 +51,33 @@ class ApplicationController < ActionController::Base
     name = params[:name]
     session[:active_tab] = name
 
-    # redireciona de acordo com o tipo de aba
+    # redireciona de acordo com o tipo de aba ativa
     if session[:opened_tabs][name]["type"] == Tab_Type_Home
       redirect_to :controller => "users", :action => "mysolar"
     end
     if session[:opened_tabs][name]["type"] == Tab_Type_Curriculum_Unit
       redirect_to :controller => 'curriculum_units', :action => 'access', :id => session[:opened_tabs][name]["id"]
+    end
+  end
+
+    # fecha aba
+  def close_tab
+    name = params[:name]
+
+    # se aba que vai fechar é a ativa, manda pra aba home
+    if session[:active_tab] == name
+      session[:active_tab] = 'Home'
+    end
+
+    # remove do hash    
+    session[:opened_tabs].delete(name)
+
+    # redireciona de acordo com o tipo de aba ativa
+    if session[:opened_tabs][session[:active_tab]]["type"] == Tab_Type_Home
+      redirect_to :controller => "users", :action => "mysolar"
+    end
+    if session[:opened_tabs][session[:active_tab]]["type"] == Tab_Type_Curriculum_Unit
+      redirect_to :controller => 'curriculum_units', :action => 'access', :id => session[:opened_tabs][session[:active_tab]]["id"]
     end
   end
   
