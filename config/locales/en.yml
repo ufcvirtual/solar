@@ -135,6 +135,14 @@ en:
   enrollm_request_cancel_message: "Request for enrollment cancelled!"
   enrollm_confirm: "Are you sure you want to cancel?"
 
+  curriculum_access_lesson: "Lessons"
+  curriculum_access_message: "Messages"
+  curriculum_access_forum: "Forum"
+  curriculum_access_curriculum_unit: "Curriculum Unit"
+  curriculum_access_agenda: "Agenda"
+  curriculum_access_view: "View"
+  curriculum_access_new: " new"
+
   # formatos de data e hora
   date:
     formats:

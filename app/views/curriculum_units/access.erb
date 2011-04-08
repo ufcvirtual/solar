@@ -1,1 +1,100 @@
-<div>aqui</div>
+<div>
+
+    <%= image_tag "icon_curriculum_unit.png" %>
+    <span class="page_title"><%=@curriculum_unit.name %></span>
+    <hr style="border: none; background-color: #b4b3b7; height: 1px; width:794px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px"></hr>
+
+    <div id="curriculum_unit_portlet" class="curriculum_unit_portlet">
+      <div class="curriculum_unit_portlet_header">
+        <%=t(:curriculum_access_curriculum_unit)%>
+      </div>
+      <div class="curriculum_unit_portlet_text">
+        <%=@curriculum_unit.description %>
+      </div>
+    </div>
+
+    <div id="lesson_portlet" class="curriculum_unit_portlet" style="height:125px">
+      <div class="curriculum_unit_portlet_header">
+        <span><%= image_tag "icon_lesson.png" %></span>
+        <%= t(:curriculum_access_lesson) %>
+        <span class="text_alert">&nbsp;&nbsp;[3] <%= t(:curriculum_access_new) %></span>
+      </div>
+      <div class="">
+        <div class="curriculum_unit_portlet_line">
+          <span class="curriculum_unit_portlet_datetime">12-jan</span>
+          aula1...
+          <a href="" class="curriculum_unit_portlet_link"><%= t(:curriculum_access_view) %></a>
+        </div>
+        <div class="curriculum_unit_portlet_line">
+          <span class="curriculum_unit_portlet_datetime">14-jan</span>
+          aula2...
+          <a href="" class="curriculum_unit_portlet_link"><%= t(:curriculum_access_view) %></a>
+        </div>
+        <div class="curriculum_unit_portlet_line">
+          <span class="curriculum_unit_portlet_datetime">28-fev</span>
+          aula3...
+          <a href="" class="curriculum_unit_portlet_link"><%= t(:curriculum_access_view) %></a>
+        </div>
+      </div>
+    </div>
+
+    <table cellpadding="0" cellspacing="0">
+      <tr>
+
+        <td>
+          <div id="message_portlet" class="curriculum_unit_portlets_small">
+            <div class="curriculum_unit_portlet_small_header">
+              <%= image_tag "icon_message.png" %>
+              <%= t(:curriculum_access_message)%>
+              <span class="text_alert">&nbsp;&nbsp;[3] <%= t(:curriculum_access_new) %></span>
+            </div>
+            <div class="">
+              <div class="curriculum_unit_portlet_line">
+                <span class="curriculum_unit_portlet_datetime">20:00h</span>
+                <a href="" class="curriculum_unit_portlet_link">fulano</a>
+                mensagem1
+              </div>
+              <div class="curriculum_unit_portlet_line">
+                <span class="curriculum_unit_portlet_datetime">19:00h</span>
+                <a href="" class="curriculum_unit_portlet_link">fulano</a>
+                mensagem2
+              </div>
+              <div class="curriculum_unit_portlet_line">
+                <span class="curriculum_unit_portlet_datetime">18:00h</span>
+                <a href="" class="curriculum_unit_portlet_link">fulano</a>
+                mensagem3
+              </div>
+            </div>
+          </div>
+        </td>
+
+        <td>
+          <div id="forum_portlet" class="curriculum_unit_portlets_small">
+            <div class="curriculum_unit_portlet_small_header">
+              <%= image_tag "icon_forum.png" %>
+              <%= t(:curriculum_access_forum)%>
+            </div>
+            <div class="">
+              ...
+            </div>
+          </div>
+        </td>
+
+        <td>
+          <div id="agenda_portlet" class="curriculum_unit_portlets_small">
+            <div class="curriculum_unit_portlet_small_header">
+              <%= image_tag "icon_agenda.png" %>
+              <%= t(:curriculum_access_agenda)%>
+            </div>
+            <div class="">
+
+              <div id="datepicker"></div>
+
+            </div>
+          </div>
+        </td>
+
+      </tr>
+    </table>
+        
+</div>

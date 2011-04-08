@@ -1,7 +1,7 @@
 <div>
 
     <%=  image_tag "icon_enrollment.png" %>
-    <span class="enrollment_title"><%=t(:enrollm_title)%></span>
+    <span class="page_title"><%=t(:enrollm_title)%></span>
     <hr style="border: none; background-color: #b4b3b7; height: 1px; width:745px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px"></hr>
 
     <%= form_for :offer, :url => { :controller=>"offers", :action => "showoffersbyuser" } do |f| %>

@@ -165,7 +165,7 @@ textarea{
     border: 0;
     background-color: transparent;
 }
-.enrollment_title{
+.page_title{
     font-family:'Trebuchet',Arial,'Myriad Pro';
     font-size  : 14pt;
     color      : #000;
@@ -262,7 +262,7 @@ textarea{
     text-align:center;
     padding: 9px;
     margin-right: 4px;
-    background-color: #eee;
+    background-color: #e6edee;
     display:inline;
     z-index: 10;
     border-top:4px solid #003e7a;
@@ -271,7 +271,7 @@ textarea{
 .mysolar_unit_active_tab{
     color: #222;
     text-align:center;
-    padding: 9px;
+    padding: 8px;
     margin-right: 4px;
     background-color: #fff;
     display:inline;
@@ -754,4 +754,68 @@ div.alter_photo_text {
     text-decoration: underline;
     width: 72px;
     z-index: 99;
+}
+
+/** Unidade Curricular - tela inicial de acesso **/
+
+.curriculum_unit_portlet_small_header {
+    cursor: default;
+    padding: 5px;
+    background-color: #E7EDED;
+    height:25px;
+}
+.curriculum_unit_portlets_small {
+    margin: 0 4px 4px 0;
+    border:1px solid #CCCCCC;
+    background-color: #fff;
+    height: 183px;
+    width: 260px;
+    white-space: normal;
+}
+.curriculum_unit_portlet_header {
+    cursor: default;
+    padding: 5px;
+    background-color: #EEE;
+    height:25px;
+}
+.curriculum_unit_portlet {
+    margin: 0 4px 4px 0;
+    border:0px;
+    background-color: #f7f7f7;
+    width: 794px;
+    white-space: normal;
+    margin-bottom: 12px;
+    height:68px;
+}
+.curriculum_unit_portlet_line {
+    border-bottom: 1px solid #CCCCCC;
+    font-family: Trebuchet;
+    font-size: 12px;
+    padding: 6px;
+    margin: 1px;
+    margin-right: 25px;
+    color: #000;
+}
+.curriculum_unit_portlet_datetime {
+    font-family: Trebuchet;
+    font-size: 11px;
+    color: #999;
+}
+.curriculum_unit_portlet_link {
+    font-family: Trebuchet;
+    font-size: 12px;
+    font-weight: bold;
+    color: #4b6380;
+}
+.curriculum_unit_portlet_text {
+    font-family: Trebuchet;
+    font-size: 12px;
+    padding: 6px;
+    margin: 1px;
+    color: #000;
+}
+.text_alert {
+    font-family: Trebuchet;
+    font-size: 11px;
+    color: #e64d4d;
 }
