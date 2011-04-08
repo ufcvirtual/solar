@@ -4,8 +4,10 @@
 jQuery(function($){
 	$.datepicker.regional['en-GB'] = {
 		closeText: 'Done',
-		prevText: 'Prev',
-		nextText: 'Next',
+		//prevText: 'Prev',
+                //nextText: 'Next',
+                prevText: '<',
+		nextText: '>',
 		currentText: 'Today',
 		monthNames: ['January','February','March','April','May','June',
 		'July','August','September','October','November','December'],

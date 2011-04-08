@@ -94,6 +94,20 @@ textarea{
     padding         : 5px;
 }
 
+.page_title{
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-size  : 14pt;
+    color      : #000;
+    font-weight: bold;
+    position   : relative; top:-5px
+}
+
+.text_alert {
+    font-family: Trebuchet;
+    font-size: 11px;
+    color: #e64d4d;
+}
+
 /****tela de matricula****/
 
 .headtable_blue{
@@ -164,13 +178,6 @@ textarea{
     cursor: pointer;
     border: 0;
     background-color: transparent;
-}
-.page_title{
-    font-family:'Trebuchet',Arial,'Myriad Pro';
-    font-size  : 14pt;
-    color      : #000;
-    font-weight: bold;
-    position   : relative; top:-5px
 }
 .enrollment_left{
     float: left;
@@ -768,7 +775,8 @@ div.alter_photo_text {
     margin: 0 4px 4px 0;
     border:1px solid #CCCCCC;
     background-color: #fff;
-    height: 183px;
+    /*height: 183px;*/
+    height: 193px;
     width: 260px;
     white-space: normal;
 }
@@ -814,6 +822,23 @@ div.alter_photo_text {
     margin: 1px;
     color: #000;
 }
+/* div onde aparece o calendario */
+div.calendar {
+    background: #ccc7cc;
+    font-family: Trebuchet;
+    font-size: 11px;
+    width: 100%;
+    height: 115px;
+}
+div.calendar_events {
+    background: #ccc7cc;
+    font-family: Trebuchet;
+    font-size: 11px;
+    color: #cfc;
+    width: 100%;
+    height: 43px;
+}
+/* fechar das abas */
 .tabs_close {
     background:url('../images/bt_close_tabs.png') no-repeat right bottom;
     display:inline-block;
@@ -822,9 +847,4 @@ div.alter_photo_text {
     position:relative;
     left:5px;
     top:-8px;
-}
-.text_alert {
-    font-family: Trebuchet;
-    font-size: 11px;
-    color: #e64d4d;
 }

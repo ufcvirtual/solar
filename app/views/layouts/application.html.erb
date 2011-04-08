@@ -4,6 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Solar</title>
     <%= stylesheet_link_tag "solar.css" %>
+    <%= stylesheet_link_tag "calendar.css" %>
     <%= stylesheet_link_tag "security.css" %>
     <%= javascript_include_tag "jquery-1.4.4.js" %>
     <%= javascript_include_tag "jquery-ui-1.8.6.js" %>
@@ -37,13 +38,13 @@
         });
 
         //Configurando calendário
-        $("#datepicker").datepicker();
+        $("#agenda").datepicker();
         var local = '<%=I18n.locale%>';        
         if (local=='en') {
-          $("#datepicker").datepicker("option",$.datepicker.regional['en-GB']);
+          $("#agenda").datepicker("option",$.datepicker.regional['en-GB']);
         }
         else {
-          $("#datepicker").datepicker("option",$.datepicker.regional[local]);
+          $("#agenda").datepicker("option",$.datepicker.regional[local]);
         }
 
       });
