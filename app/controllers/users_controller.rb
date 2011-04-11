@@ -35,7 +35,12 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    @user = User.new(params[:user])
+
+    # resetando os valores
+    @current_ability = nil
+    @current_user = nil
+
+#    @user = User.new(params[:user])
 
     #    garante que a senha não fique como "" o que é diferente do nulo e seria igual a senha
     #    params[:user]["password"] = nil if params[:user]["password"] == ""
@@ -52,11 +57,11 @@ class UsersController < ApplicationController
     @user.password = params[:user]["password"]
     respond_to do |format|
       if (@user.save )
-        msg = t(:new_user_msg_ok)
-        format.html { render :action => "mysolar", :notice=>msg}
-        format.xml  { render :xml => @user, :status => :created, :location => @user }
+        flash[:notice] = t(:new_user_msg_ok)
+        format.html { render :action => "mysolar"}
+#        format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
-        format.html { render :action => "new",:layout =>"login" }
+        format.html { render :action => "new",:layout => "login" }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end
     end

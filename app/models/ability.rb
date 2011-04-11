@@ -5,13 +5,40 @@ class Ability
 
     user ||= User.new # guest user
 
-    # Users
-    can [:create, :update, :index, :mysolar, :update_photo], User do |usuario|
-      usuario.try(:id) == user.id
+
+    # realizar uma consulta filtrando pelas tabelas onde o usuario vai acessar
+    # offers, groups, etc...
+
+    query = " SELECT t3.controller,
+                     t3.action,
+                     translate(array_agg(COALESCE(t5.groups_id, COALESCE(t5.offers_id, COALESCE(curriculum_units_id, COALESCE(courses_id, 0)))))::text, '{}', '[]') AS objetos
+                FROM profiles    AS t1
+                JOIN permissions AS t2 ON t2.profiles_id = t1.id
+                JOIN resources   AS t3 ON t3.id = t2.resources_id
+                JOIN allocations AS t4 ON t4.profiles_id = t1.id
+                JOIN allocation_tags AS t5 ON t5.id = t4.allocation_tags_id
+               WHERE t1.id = 2
+               GROUP BY t3.controller, t3.action;"
+
+    conn = ActiveRecord::Base.connection
+    permissoes = conn.select_all query
+
+    # setando as permissoes
+    permissoes.each do |permissao|
+      permissao['objetos'] = eval(permissao['objetos'])
+      can permissao["action"].to_sym, permissao["controller"].capitalize.constantize do |classe|
+        # verifica se o usuario esta tentando acessar um objeto permitido
+        permissao['objetos'].include?(classe.id)
+      end
     end
 
-    # Offers
-    can :showoffersbyuser, Offer
+    # Users
+#    can [:create, :update, :mysolar, :update_photo, :pwd_recovery], User do |usuario|
+#      usuario.try(:id) == user.id
+#    end
+#
+#    #    # Offers
+#    can :showoffersbyuser, Offer
 
     # The first argument to `can` is the action you are giving the user permission to do.
     # If you pass :manage it will apply to every action. Other common actions here are

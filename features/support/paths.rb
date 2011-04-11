@@ -24,7 +24,7 @@ module NavigationHelpers
 	  '/users/pwd_recovery'
 
     when /Meus Dados/
-	 '/users/mydata'
+	 '/users/1/edit'
 
     when /Matricula/
 	 '/offers/showoffersbyuser'
