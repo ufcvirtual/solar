@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   attr_protected :password
 
   # validacao do comprimento da senha no :create
-  validates :password,:presence =>true, :length => {:within => 6..60},:confirmation => true, :on => :create
+  validates :password, :presence =>true, :length => {:within => 6..60}, :confirmation => true, :on => :create
   # validacao do comprimento da senha no :update
 
   #Validações campo a campo
