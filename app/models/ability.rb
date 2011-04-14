@@ -11,24 +11,27 @@ class Ability
     query = "
         SELECT t3.controller,
                t3.action,
-               translate(
-                  array_agg(
-                      DISTINCT
-                      CASE t3.controller
-                          WHEN 'group' THEN t5.groups_id
-                          WHEN 'offer' THEN t5.offers_id
-                          WHEN 'curriculum_unit' THEN t5.curriculum_units_id
-                          WHEN 'course' THEN t5.courses_id
-                          ELSE t4.users_id
-                      END)::text, '{}', '[]'
-               )           AS objetos
+               CASE WHEN t3.per_id = TRUE THEN
+                   translate(
+                      array_agg(
+                          DISTINCT
+                          CASE t3.controller
+                              WHEN 'group' THEN t5.groups_id
+                              WHEN 'offer' THEN t5.offers_id
+                              WHEN 'curriculum_unit' THEN t5.curriculum_units_id
+                              WHEN 'course' THEN t5.courses_id
+                              ELSE t4.users_id
+                          END)::text, '{}', '[]'
+                   )
+               ELSE NULL
+               END         AS objetos
           FROM profiles    AS t1
           JOIN permissions AS t2 ON t2.profiles_id = t1.id
           JOIN resources   AS t3 ON t3.id = t2.resources_id
           JOIN allocations AS t4 ON t4.profiles_id = t1.id
           JOIN allocation_tags AS t5 ON t5.id = t4.allocation_tags_id
          WHERE t4.users_id = #{user.id}
-         GROUP BY t3.controller, t3.action
+         GROUP BY t3.controller, t3.action, t3.per_id
          ORDER BY 1, 2;"
 
     conn = ActiveRecord::Base.connection
@@ -36,10 +39,10 @@ class Ability
 
     # setando as permissoes
     permissoes.each do |permissao|
-      permissao['objetos'] = eval(permissao['objetos'])
+      permissao['objetos'] = (eval(permissao['objetos']) unless permissao['objetos'].nil?) || nil
       can permissao["action"].to_sym, permissao["controller"].capitalize.constantize do |classe|
         # verifica se o usuario esta tentando acessar um objeto permitido
-        permissao['objetos'].include?(classe.id) # objetos permitidos sao listados em um array
+        permissao['objetos'].nil? || permissao['objetos'].include?(classe.id)# objetos permitidos sao listados em um array
       end
     end
 
