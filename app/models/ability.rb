@@ -46,6 +46,10 @@ class Ability
           permissao['objetos'].nil? || permissao['objetos'].include?(classe.id)# objetos permitidos sao listados em um array
         end
       end
+      
+      # Permissões para usuário sem Allocation
+      can [:mysolar, :pwd_recovery, :update, :update_photo], User, :id => user.id 
+      can :showoffersbyuser, Offer
 
     else
       # permissoes para usuarios nao logados
