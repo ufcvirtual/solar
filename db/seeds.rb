@@ -50,8 +50,9 @@ groups = Group.create([
   ])
 
 profiles = Profile.create([
-    {:name => 'ALUNO'},
-    {:name => 'PROFESSOR'}
+    {:name => 'Aluno', :student => TRUE},
+    {:name => 'Prof. titular', :class_responsible => TRUE},
+    {:name => 'Tutor'}
   ])
 
 resources = Resource.create([
