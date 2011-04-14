@@ -5,14 +5,6 @@ Funcionalidade: Internacionalizacao
   Eu quero editar meus dados
   Para atualizar as minhas informações no sistema
 
-Contexto:
-    Dado que tenho "users"
-        | id | login | email		       | password | name   | birthdate  | cpf         | gender  | address | address_number | address_neighborhood | zipcode   | country | state | city      | institution | alternate_email    | bio                                                     | interests     | music                                                 | movies                      | books        | phrase         | site                      |
-        | 1  | user  | teste@virtual.ufc.br | user123  | User01 | 01/01/2005 | 78218921494 | true | Rua R   | 111            | Bairro               | 600000000 | Brasil  | CE    | Fortaleza | UFC         | altemail@gmail.com | vencedor do torneio nordestão de counter strike em 2005 | sushi, festas | Jurandi Vieira, Dream Theather, Calypso, Eric Clapton | O homem de desafiou o Diabo | Harry Potter | Bato ou corro! | www.jacarebanguela.com.br |
-    Dado que tenho "personal_configurations"
-        | user_id | default_locale |
-        | 1       | pt-BR |
-
 Cenário: Acessar página de Edição de Dados Pessoais
 	Dado que estou logado com o usuario "user" e com a senha "user123"
             E que estou em "Meus Dados"
@@ -102,18 +94,18 @@ Esquema do Cenário: Alteração de senha
 Exemplos:
 	| antiga_senha         |  nova_senha       |  confirmar_senha      | action                                        |
 	| xyz                  |                   |                       | Senha antiga incorreta                        |
-        | xyz                  |  user456          |  user456              | Senha antiga incorreta                        |
-        | user123              |                   |                       | A nova senha e a confirmação não conferem!    |
-        | user123              |  user456          |  user789              | A nova senha e a confirmação não conferem!    |
-        |                      |  user456          |  user456              | Senha antiga vazia                            |
-        |                      |  user456          |  user789              | Senha antiga vazia                            |
-        | user123              |                   |  user789              | A nova senha e a confirmação não conferem!    |
-        | user123              |  user789          |                       | A nova senha e a confirmação não conferem!    |
-        | xyz                  |                   |  user789              | Senha antiga incorreta                        |
-        | xyz                  |  user789          |                       | Senha antiga incorreta                        |
-        |                      |                   |  user789              | Senha antiga vazia                            |
-        |                      |  user789          |                       | Senha antiga vazia                            |      
-        | user123              |  user789          |  user789              | Usuário alterado com sucesso!                 |
+    | xyz                  |  user456          |  user456              | Senha antiga incorreta                        |
+    | user123              |                   |                       | A nova senha e a confirmação não conferem!    |
+    | user123              |  user456          |  user789              | A nova senha e a confirmação não conferem!    |
+    |                      |  user456          |  user456              | Senha antiga vazia                            |
+    |                      |  user456          |  user789              | Senha antiga vazia                            |
+    | user123              |                   |  user789              | A nova senha e a confirmação não conferem!    |
+    | user123              |  user789          |                       | A nova senha e a confirmação não conferem!    |
+    | xyz                  |                   |  user789              | Senha antiga incorreta                        |
+    | xyz                  |  user789          |                       | Senha antiga incorreta                        |
+    |                      |                   |  user789              | Senha antiga vazia                            |
+    |                      |  user789          |                       | Senha antiga vazia                            |
+    | user123              |  user789          |  user789              | Usuário alterado com sucesso!                 |
 
 Cenário:  Acessar Edição de foto
     Dado que estou logado com o usuario "user" e com a senha "user123"

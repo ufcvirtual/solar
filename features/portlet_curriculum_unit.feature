@@ -7,16 +7,6 @@ Funcionalidade: Portlet de unidades curriculares
 
 
 Contexto:
-    Dado que tenho "users"
-        | id | login | email		       | password | name   | birthdate  | cpf         | gender  | address | address_number | address_neighborhood | zipcode   | country | state | city      | institution | alternate_email    | bio                                                     | interests     | music                                                 | movies                      | books        | phrase         | site                      |
-        | 1  | user  | teste@virtual.ufc.br    | user123  | User01 | 01/01/2005 | 78218921494 | true    | Rua R   | 111            | Bairro               | 600000000 | Brasil  | CE    | Fortaleza | UFC         | altemail@gmail.com | vencedor do torneio nordestão de counter strike em 2005 | sushi, festas | Jurandi Vieira, Dream Theather, Calypso, Eric Clapton | O homem de desafiou o Diabo | Harry Potter | Bato ou corro! | www.jacarebanguela.com.br |
-        | 2  | usr2  | teste2@irtual.ufc.br    | user222  | User02 | 01/01/2005 | 23885393905 | true    | Rua B   | 333            | Jose Walter          | 500000000 | Brasil  | CE    | Fortaleza | UFC         | outrmail@gmail.com | corinthiano desde muleque ia ao estadio com seu brother brunuh | timao  | Restart, Metalica e Exaltassamba                      | Senhor do anel              | Biblia       | Timao eeeoo!!! | timao.com |
-
-    Dado que tenho "personal_configurations"
-        | user_id | default_locale |
-        | 1       | pt-BR |
-        | 2       | pt-BR |
-
     Dado que tenho "profiles"
         | name      |
         | ALUNO     |

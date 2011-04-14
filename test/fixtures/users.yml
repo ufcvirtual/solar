@@ -1,11 +1,47 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+# senha: user123
+user1:
+  id: 1
+  login: user
+  email: user@user.com
+  name: usuario sobrenome
+  cpf: 43463518678
+  birthdate: 2005-03-02
+  gender: true
+  address: perto do pici
+  address_number: 58
+  address_neighborhood: bons
+  country: brazil
+  state: CE
+  city: fortaleza
+  institution: ufc
+  zipcode: 60450170
+  crypted_password: 95c946bf622ef93b0a211cd0fd028dfdfcf7e39e
+
+# senha: user222
+user2:
+  id: 2 
+  login: usr2
+  email: teste2@irtual.ufc.br
+  name: User02
+  birthdate: 2005-01-01
+  cpf: 23885393905
+  gender: true
+  address: Rua B
+  address_number: 333
+  address_neighborhood: Jose Walter
+  zipcode: 500000000
+  country: Brasil
+  state: CE
+  city: Fortaleza
+  institution: UFC
+  alternate_email: outrmail@gmail.com
+  bio: corinthiano desde muleque ia ao estadio com seu brother brunuh
+  interests: timao
+  music: Restart, Metalica e Exaltassamba
+  movies: Senhor do anel
+  books: Biblia
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  crypted_password: bdfbae109d4523732b89e3fd2d248ed7fab97425

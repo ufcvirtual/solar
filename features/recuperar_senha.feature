@@ -5,14 +5,6 @@ Funcionalidade: Recuperar senha
   Eu quero recuperar minha senha
   Para acessar os recursos do sistema
 
-Contexto:
-    Dado que tenho "users"
-        | id | login | email		           | password | name   | birthdate  | cpf         | gender  | address | address_number | address_neighborhood | zipcode   | country | state | city      | institution | alternate_email    |
-        | 1  | user  | teste@virtual.ufc.br | user123  | User01 | 01/01/2005 | 78218921494 | true | Rua R   | 111            | Bairro               | 600000000 | Brasil  | CE    | Fortaleza | UFC         | altemail@gmail.com |
-    Dado que tenho "personal_configurations"
-        | user_id | default_locale |
-        | 1       | pt-BR |
-
 Cenário: Usuário acessa tela de recuperação de senha
 	Dado que estou em "Login"
 		E eu clico no link "esqueci a senha"
