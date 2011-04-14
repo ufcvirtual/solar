@@ -55,16 +55,22 @@ class UsersController < ApplicationController
     end
 
     @user.password = params[:user]["password"]
-    respond_to do |format|
+    #respond_to do |format|
       if (@user.save )
-        flash[:notice] = t(:new_user_msg_ok)
-        format.html { render :action => "mysolar"}
+
+        #flash[:notice] = t(:new_user_msg_ok)
+        #format.html { render :action => "mysolar"}
 #        format.xml  { render :xml => @user, :status => :created, :location => @user }
+        #msg = t(:new_user_msg_ok)
+
+        # gera aba para Home e redireciona
+        redirect_to :action => "add_tab", :controller => "application", :name => 'Home', :type => Tab_Type_Home
+        
       else
         format.html { render :action => "new",:layout => "login" }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end
-    end
+    #end
   end
 
   # PUT /users/1

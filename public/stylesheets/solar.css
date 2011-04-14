@@ -763,6 +763,7 @@ div.alter_photo_text {
     z-index: 99;
 }
 
+
 /** Unidade Curricular - tela inicial de acesso **/
 
 .curriculum_unit_portlet_small_header {
@@ -775,7 +776,6 @@ div.alter_photo_text {
     margin: 0 4px 4px 0;
     border:1px solid #CCCCCC;
     background-color: #fff;
-    /*height: 183px;*/
     height: 193px;
     width: 260px;
     white-space: normal;
@@ -786,14 +786,25 @@ div.alter_photo_text {
     background-color: #EEE;
     height:25px;
 }
-.curriculum_unit_portlet {
-    margin: 0 4px 4px 0;
-    border:0px;
+.curriculum_unit_portlet_border {
     background-color: #f7f7f7;
+    min-height: 68px;
     width: 794px;
-    white-space: normal;
     margin-bottom: 12px;
-    height:68px;
+}
+.curriculum_unit_portlet_left {
+    vertical-align: top;
+    width: 293px;
+    white-space: normal;    
+    display: inline-table;
+}
+.curriculum_unit_portlet_right {    
+    vertical-align: top;
+    margin-left: -4px;
+    width: 500px;
+    white-space: normal;    
+    display: inline-table;
+    border-left: 1px solid #CCCCCC;
 }
 .curriculum_unit_portlet_line {
     border-bottom: 1px solid #CCCCCC;
@@ -804,10 +815,22 @@ div.alter_photo_text {
     margin-right: 25px;
     color: #000;
 }
-.curriculum_unit_portlet_datetime {
+.curriculum_unit_portlet_gray {
     font-family: Trebuchet;
     font-size: 11px;
     color: #999;
+    width: 45px;
+    display: inline-block;
+}
+.curriculum_unit_portlet_link_gray {
+    font-family: Trebuchet;
+    font-size: 11px;
+    color: #999;
+}
+.curriculum_unit_portlet_link_more {
+    font-family: Trebuchet;
+    font-size: 11px;
+    color: #4b6380;
 }
 .curriculum_unit_portlet_link {
     font-family: Trebuchet;
@@ -822,21 +845,71 @@ div.alter_photo_text {
     margin: 1px;
     color: #000;
 }
-/* div onde aparece o calendario */
-div.calendar {
-    background: #ccc7cc;
+.curriculum_unit_portlet_lesson {
+    margin: 0 4px 4px 0;
+    border:0px;
+    background-color: #f7f7f7;
+    width: 794px;
+    white-space: normal;
+    margin-bottom: 12px;
+    height:155px;
+}
+.curriculum_unit_portlet_lesson_content {
+    height: 120px;
+    overflow: auto;
+}
+.curriculum_unit_portlet_forum {
     font-family: Trebuchet;
     font-size: 11px;
     width: 100%;
-    height: 115px;
+    height: 158px;
+    overflow: auto;
 }
-div.calendar_events {
-    background: #ccc7cc;
+.curriculum_unit_portlet_messages {
+    font-family: Trebuchet;
+    font-size: 11px;
+    width: 100%;
+    height: 130px;
+    overflow: auto;
+}
+.curriculum_unit_portlet_messages_opt {
     font-family: Trebuchet;
     font-size: 11px;
     color: #cfc;
     width: 100%;
-    height: 43px;
+    height: 28px;
+    vertical-align: bottom;
+    text-align: center;
+    border-top: #ccc7cc solid 1px;
+    padding-top: 5px;
+}
+/* div onde aparece o calendario */
+.calendar {
+    background: #F2F0F2;
+    font-family: Trebuchet;
+    font-size: 11px;
+    width: 100%;
+    height: 117px;
+}
+.calendar_events {
+    background: #ccc7cc;
+    height: 40px;
+    padding-left: 2px;
+    padding-top: 2px;
+}
+.calendar_events_more {
+    font-family: Trebuchet;
+    font-size: 10px;
+    position: absolute;
+    right: 10px;
+}
+.calendar_events_entry {
+    font-family: Trebuchet;
+    font-size: 11px;
+    color: #000;
+    vertical-align: middle;
+    display: inline-block;
+    height: 20px;
 }
 /* fechar das abas */
 .tabs_close {

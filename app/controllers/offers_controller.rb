@@ -1,7 +1,11 @@
 class OffersController < ApplicationController
 
+
   load_and_authorize_resource
   #  skip_authorize_resource :only => :showoffersbyuser
+
+  before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy, :showoffersbyuser]
+
 
   def index
 

@@ -146,11 +146,24 @@
 
   curriculum_access_lesson: "Aulas"
   curriculum_access_message: "Mensagens"
+  curriculum_access_message_inbox: "Caixa de Entrada"
+  curriculum_access_message_new: "Nova Mensagem"
+  curriculum_access_message_more: "mais"
   curriculum_access_forum: "Fórum"
   curriculum_access_curriculum_unit: "Unidade Curricular"
+  curriculum_access_responsible: "Responsáveis"
   curriculum_access_agenda: "Agenda"
   curriculum_access_view: "Visualizar"
   curriculum_access_new: " novas"
+  curriculum_access_more: "+ mais"
+
+  icon_agenda: "Ícone da agenda"
+  icon_forum: "Ícone do forum"
+  icon_message: "Ícone de messagem"
+  icon_curriculum_unit: "Ícone de unidade curricular"
+  icon_lesson: "Ícone de aula"
+  icon_agenda_event: "Ícone de evento da agenda"
+  icon_send_email: "Ícone de enviar email"
 
   # formatos de data e hora
   date:

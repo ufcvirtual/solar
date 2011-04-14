@@ -1,40 +1,66 @@
 <div>
 
-    <%= image_tag "icon_curriculum_unit.png" %>
+    <%= image_tag "icon_curriculum_unit.png", :alt=>t(:icon_curriculum_unit) %>
     <span class="page_title"><%=@curriculum_unit.name %></span>
     <hr style="border: none; background-color: #b4b3b7; height: 1px; width:794px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px"></hr>
 
-    <div id="curriculum_unit_portlet" class="curriculum_unit_portlet">
-      <div class="curriculum_unit_portlet_header">
-        <%=t(:curriculum_access_curriculum_unit)%>
+    <div class="curriculum_unit_portlet_border">
+      <div class="curriculum_unit_portlet_left">
+        <div class="curriculum_unit_portlet_header">
+          <%=t(:curriculum_access_curriculum_unit)%>
+        </div>
+        <div class="curriculum_unit_portlet_text">
+          <%=@curriculum_unit.description %>
+        </div>
       </div>
-      <div class="curriculum_unit_portlet_text">
-        <%=@curriculum_unit.description %>
+      <div class="curriculum_unit_portlet_right">
+        <div class="curriculum_unit_portlet_header">
+          <%=t(:curriculum_access_responsible)%>
+        </div>
+        <div class="curriculum_unit_portlet_text">
+          <% if @responsible %>
+            <% @responsible.each do |resp| %>
+              <%=resp.username + ' (' + resp.profilename + ') '%><span><%= link_to (image_tag "icon_send_mail.png", :alt=>t(:icon_send_email)) %></span><br/>
+            <% end %>
+          <% end %>
+        </div>
       </div>
     </div>
 
-    <div id="lesson_portlet" class="curriculum_unit_portlet" style="height:125px">
+    <div class="curriculum_unit_portlet_lesson">
       <div class="curriculum_unit_portlet_header">
-        <span><%= image_tag "icon_lesson.png" %></span>
+        <span><%= image_tag "icon_lesson.png", :alt=>t(:icon_lesson) %></span>
         <%= t(:curriculum_access_lesson) %>
         <span class="text_alert">&nbsp;&nbsp;[3] <%= t(:curriculum_access_new) %></span>
       </div>
-      <div class="">
+      <div class="curriculum_unit_portlet_lesson_content">
         <div class="curriculum_unit_portlet_line">
-          <span class="curriculum_unit_portlet_datetime">12-jan</span>
-          aula1...
+          <span class="curriculum_unit_portlet_gray">12-jan</span>
+          aula 1...
           <a href="" class="curriculum_unit_portlet_link"><%= t(:curriculum_access_view) %></a>
         </div>
         <div class="curriculum_unit_portlet_line">
-          <span class="curriculum_unit_portlet_datetime">14-jan</span>
-          aula2...
+          <span class="curriculum_unit_portlet_gray">14-jan</span>
+          aula qq com tamanho do nome diferente...
           <a href="" class="curriculum_unit_portlet_link"><%= t(:curriculum_access_view) %></a>
         </div>
         <div class="curriculum_unit_portlet_line">
-          <span class="curriculum_unit_portlet_datetime">28-fev</span>
-          aula3...
+          <span class="curriculum_unit_portlet_gray">28-fev</span>
+          aula bla bla bla...
           <a href="" class="curriculum_unit_portlet_link"><%= t(:curriculum_access_view) %></a>
         </div>
+
+        <div class="curriculum_unit_portlet_line">
+          <span class="curriculum_unit_portlet_gray">05-mar</span>
+          aula4...
+          <a href="" class="curriculum_unit_portlet_link"><%= t(:curriculum_access_view) %></a>
+        </div>
+        <div class="curriculum_unit_portlet_line">
+          <span class="curriculum_unit_portlet_gray">05-mar</span>
+          aula4...
+          <a href="" class="curriculum_unit_portlet_link"><%= t(:curriculum_access_view) %></a>
+        </div>
+        
       </div>
     </div>
 
@@ -44,26 +70,43 @@
         <td>
           <div id="message_portlet" class="curriculum_unit_portlets_small">
             <div class="curriculum_unit_portlet_small_header">
-              <%= image_tag "icon_message.png" %>
+              <%= image_tag "icon_message.png", :alt=>t(:icon_message) %>
               <%= t(:curriculum_access_message)%>
               <span class="text_alert">&nbsp;&nbsp;[3] <%= t(:curriculum_access_new) %></span>
             </div>
-            <div class="">
+            <div class="curriculum_unit_portlet_messages">
               <div class="curriculum_unit_portlet_line">
-                <span class="curriculum_unit_portlet_datetime">20:00h</span>
-                <a href="" class="curriculum_unit_portlet_link">fulano</a>
+                <span class="curriculum_unit_portlet_gray">20:00h</span>
+                <a href="" class="curriculum_unit_portlet_link">joão</a>
                 mensagem1
               </div>
               <div class="curriculum_unit_portlet_line">
-                <span class="curriculum_unit_portlet_datetime">19:00h</span>
-                <a href="" class="curriculum_unit_portlet_link">fulano</a>
+                <span class="curriculum_unit_portlet_gray">19:00h</span>
+                <a href="" class="curriculum_unit_portlet_link">maria</a>
                 mensagem2
               </div>
               <div class="curriculum_unit_portlet_line">
-                <span class="curriculum_unit_portlet_datetime">18:00h</span>
-                <a href="" class="curriculum_unit_portlet_link">fulano</a>
-                mensagem3
+                <span class="curriculum_unit_portlet_gray">18:00h</span>
+                <a href="" class="curriculum_unit_portlet_link">francisco</a>
+                mensagem 3 que é maior que as outras...
               </div>
+
+              <div class="curriculum_unit_portlet_line">
+                <span class="curriculum_unit_portlet_gray">17:00h</span>
+                <a href="" class="curriculum_unit_portlet_link">fulano</a>
+                mensagem4
+              </div>
+              <div class="curriculum_unit_portlet_line">
+                <span class="curriculum_unit_portlet_gray">16:00h</span>
+                <a href="" class="curriculum_unit_portlet_link">betrano</a>
+                mensagem5
+              </div>
+              
+            </div>
+            <div class="curriculum_unit_portlet_messages_opt">
+              <a href="" class="curriculum_unit_portlet_link_gray">[<%= t(:curriculum_access_message_inbox) %>]</a>
+              <a href="" class="curriculum_unit_portlet_link_gray">[<%= t(:curriculum_access_message_new) %>]</a>
+              <a href="" class="curriculum_unit_portlet_link_gray">[<%= t(:curriculum_access_message_more) %>]</a>
             </div>
           </div>
         </td>
@@ -71,11 +114,43 @@
         <td>
           <div id="forum_portlet" class="curriculum_unit_portlets_small">
             <div class="curriculum_unit_portlet_small_header">
-              <%= image_tag "icon_forum.png" %>
+              <%= image_tag "icon_forum.png", :alt=>t(:icon_forum) %>
               <%= t(:curriculum_access_forum)%>
             </div>
-            <div class="">
-              ...
+
+            <div class="curriculum_unit_portlet_forum">
+
+              <div class="curriculum_unit_portlet_line">
+                <span class="curriculum_unit_portlet_gray">20:00h</span>
+                <a href="" class="curriculum_unit_portlet_link">fulano</a>
+                texto do forum bla bla bla1
+              </div>
+              <div class="curriculum_unit_portlet_line">
+                <span class="curriculum_unit_portlet_gray">19:00h</span>
+                <a href="" class="curriculum_unit_portlet_link">beltrano</a>
+                texto do forum bla bla2
+              </div>
+              <div class="curriculum_unit_portlet_line">
+                <span class="curriculum_unit_portlet_gray">18:20h</span>
+                <a href="" class="curriculum_unit_portlet_link">sicrano</a>
+                texto 3
+              </div>
+              <div class="curriculum_unit_portlet_line">
+                <span class="curriculum_unit_portlet_gray">18:00h</span>
+                <a href="" class="curriculum_unit_portlet_link">fulano</a>
+                texto do forum 4
+              </div>
+              <div class="curriculum_unit_portlet_line">
+                <span class="curriculum_unit_portlet_gray">17:52h</span>
+                <a href="" class="curriculum_unit_portlet_link">fulano</a>
+                texto do forum 5
+              </div>
+              <div class="curriculum_unit_portlet_line">
+                <span class="curriculum_unit_portlet_gray">17:47h</span>
+                <a href="" class="curriculum_unit_portlet_link">fulano</a>
+                texto do forum 6
+              </div>
+
             </div>
           </div>
         </td>
@@ -83,15 +158,25 @@
         <td>
           <div id="agenda_portlet" class="curriculum_unit_portlets_small">
             <div class="curriculum_unit_portlet_small_header">
-              <%= image_tag "icon_agenda.png" %>
+              <%= image_tag "icon_agenda.png", :alt=>t(:icon_agenda) %>
               <%= t(:curriculum_access_agenda)%>
             </div>
-            <!--<div class="calendar"></div>-->
 
             <div class="calendar" id="agenda"></div>
             
-            <div class="calendar_events">eventos...</div>
-            
+            <div class="calendar_events">
+              <div class="calendar_events_more"><a href="" class="curriculum_unit_portlet_link_more"><%=t(:curriculum_access_more)%></a></div>
+
+              <span><%= image_tag "icon_clock.png", :alt=>t(:icon_agenda_event) %></span>
+              <div class="calendar_events_entry">                
+                11:00 <a href="" class="curriculum_unit_portlet_link">bla bla bla...</a>
+              </div><br/>
+              <span><%= image_tag "icon_clock.png", :alt=>t(:icon_agenda_event) %></span>
+              <div class="calendar_events_entry">                
+                12:00 <a href="" class="curriculum_unit_portlet_link">bla bla bla...</a>
+              </div><br/>
+              
+            </div>            
           </div>
         </td>
 

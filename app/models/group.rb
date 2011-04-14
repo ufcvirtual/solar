@@ -1,7 +1,6 @@
 class Group < ActiveRecord::Base
 
-  has_many :allocations
-
+  has_one :allocation_tag
   belongs_to :offer
 
   
