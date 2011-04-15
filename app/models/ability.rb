@@ -51,9 +51,13 @@ class Ability
       can [:mysolar, :pwd_recovery, :update, :update_photo], User, :id => user.id 
       can :showoffersbyuser, Offer
 
+      # Permissões para usuário sem Allocation
+      can [:mysolar, :update, :update_photo], User, :id => user.id
+      can :showoffersbyuser, Offer
+
     else
       # permissoes para usuarios nao logados
-      can [:create], User
+      can [:create, :pwd_recovery], User
     end
 
     # Users
