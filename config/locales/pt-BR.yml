@@ -166,6 +166,10 @@
   icon_agenda_event: "Ícone de evento da agenda"
   icon_send_email: "Ícone de enviar email"
 
+  # Mensagem de erro para permissão   
+  no_permission: "Você não tem permissão para acessar esta página"
+
+
   # formatos de data e hora
   date:
     formats:
