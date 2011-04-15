@@ -12,7 +12,7 @@ class Ability
       query = "
           SELECT t3.controller,
                  t3.action,
-                 CASE WHEN t3.per_id = TRUE THEN
+                 CASE WHEN t2.per_id = TRUE THEN
                      translate(
                         array_agg(
                             DISTINCT
@@ -32,7 +32,7 @@ class Ability
             JOIN allocations AS t4 ON t4.profiles_id = t1.id
             JOIN allocation_tags AS t5 ON t5.id = t4.allocation_tags_id
            WHERE t4.users_id = #{user.id}
-           GROUP BY t3.controller, t3.action, t3.per_id
+           GROUP BY t3.controller, t3.action, t2.per_id
            ORDER BY 1, 2;"
 
       conn = ActiveRecord::Base.connection

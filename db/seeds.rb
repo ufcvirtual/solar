@@ -56,24 +56,24 @@ profiles = Profile.create([
   ])
 
 resources = Resource.create([
-  {:controller => 'user', :action => 'create', :description => 'Incluir novos usuarios no sistema', :per_id => true},
-  {:controller => 'user', :action => 'update', :description => 'Alteracao dos dados do usuario', :per_id => true},
-  {:controller => 'user', :action => 'mysolar', :description => 'Lista dos Portlest/Pagina inicial', :per_id => true},
-  {:controller => 'user', :action => 'update_photo', :description => 'Trocar foto', :per_id => true},
-  {:controller => 'user', :action => 'pwd_recovery', :description => 'Recuperar Senha', :per_id => true},
-  {:controller => 'offer', :action => 'show', :description => 'Visualizacao de ofertas', :per_id => true},
-  {:controller => 'offer', :action => 'update', :description => 'Edicao de ofertas', :per_id => true},
-  {:controller => 'offer', :action => 'showoffersbyuser', :description => 'Exibe oferta atraves de busca', :per_id => true},
-  {:controller => 'group', :action => 'show', :description => 'Visualizar turmas', :per_id => true},
-  {:controller => 'group', :action => 'update', :description => 'Editar turmas', :per_id => true}
+  {:controller => 'user', :action => 'create', :description => 'Incluir novos usuarios no sistema'},
+  {:controller => 'user', :action => 'update', :description => 'Alteracao dos dados do usuario'},
+  {:controller => 'user', :action => 'mysolar', :description => 'Lista dos Portlest/Pagina inicial'},
+  {:controller => 'user', :action => 'update_photo', :description => 'Trocar foto'},
+  {:controller => 'user', :action => 'pwd_recovery', :description => 'Recuperar Senha'},
+  {:controller => 'offer', :action => 'show', :description => 'Visualizacao de ofertas'},
+  {:controller => 'offer', :action => 'update', :description => 'Edicao de ofertas'},
+  {:controller => 'offer', :action => 'showoffersbyuser', :description => 'Exibe oferta atraves de busca'},
+  {:controller => 'group', :action => 'show', :description => 'Visualizar turmas'},
+  {:controller => 'group', :action => 'update', :description => 'Editar turmas'}
 ])
 
 permissions = Permission.create([
-  {:profiles_id => profiles[0].id, :resources_id => resources[5].id},
-  {:profiles_id => profiles[0].id, :resources_id => resources[6].id},
-  {:profiles_id => profiles[0].id, :resources_id => resources[7].id},
-  {:profiles_id => profiles[0].id, :resources_id => resources[8].id},
-  {:profiles_id => profiles[0].id, :resources_id => resources[9].id}
+  {:profiles_id => profiles[0].id, :resources_id => resources[5].id, :per_id => true},
+  {:profiles_id => profiles[0].id, :resources_id => resources[6].id, :per_id => true},
+  {:profiles_id => profiles[0].id, :resources_id => resources[7].id, :per_id => true},
+  {:profiles_id => profiles[0].id, :resources_id => resources[8].id, :per_id => true},
+  {:profiles_id => profiles[0].id, :resources_id => resources[9].id, :per_id => true}
 ])
 
 allocation_tags = AllocationTag.create([
