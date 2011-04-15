@@ -144,6 +144,7 @@
   enrollm_request_cancel_message: "Pedido de matrícula cancelado!"
   enrollm_confirm: "Tem certeza de que deseja cancelar?"
 
+  curriculum_access_alert: "Número de abas excedido. Por favor, feche uma aba para abrir uma nova."
   curriculum_access_lesson: "Aulas"
   curriculum_access_message: "Mensagens"
   curriculum_access_message_inbox: "Caixa de Entrada"

@@ -33,7 +33,7 @@ module MysolarHelper
           inner join allocation_tags tg on tg.id = al.allocation_tags_id
           inner join curriculum_units cr on cr.id = tg.curriculum_units_id
         where
-          users_id = #{current_user.id}
+          users_id = #{current_user.id} AND al.status = #{Allocation_Activated}
       )
       union
       (
@@ -44,7 +44,7 @@ module MysolarHelper
           inner join offers of on of.id = tg.offers_id
           inner join curriculum_units cr on cr.id = of.curriculum_units_id
         where
-          users_id = #{current_user.id}
+          users_id = #{current_user.id} AND al.status = #{Allocation_Activated}
       )
       union(
         select cr.* --(cns 3 - usuarios vinculados a turma)
@@ -55,7 +55,7 @@ module MysolarHelper
           inner join offers of on of.id = gr.offers_id
           inner join curriculum_units cr on cr.id = of.curriculum_units_id
         where
-          users_id = #{current_user.id} 
+          users_id = #{current_user.id} AND al.status = #{Allocation_Activated}
       )
       union
       (
@@ -67,7 +67,7 @@ module MysolarHelper
           inner join offers of on of.courses_id = cs.id
           inner join curriculum_units cr on cr.id = of.curriculum_units_id
         where
-          users_id = #{current_user.id}
+          users_id = #{current_user.id} AND al.status = #{Allocation_Activated}
         )
       ) as ucs_do_usuario
       order by name"

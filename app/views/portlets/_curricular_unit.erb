@@ -18,8 +18,11 @@ ucs = load_curriculum_unit_data() || []
       #Adiciona um curso na tela
       %>
       <div class="classeNomeCurso">
-        <%= c["name"]%>
-        <%= button_to c["name"],{:controller=>"application", :action=>"add_tab", :name => c["name"], :type => Tab_Type_Curriculum_Unit, :id => c["id"]} %>
+        <% if (session[:opened_tabs].length >= Max_Tabs_Open.to_i) && ( !session[:opened_tabs].has_key?(c["name"]) ) %>
+          <%= button_to c["name"],{}, { :onclick => "javascript:alert('"+t(:curriculum_access_alert)+"')", :class=>'enrollment_link' } %>
+        <% else %>
+          <%= button_to c["name"],{:controller=>"application", :action=>"add_tab", :name => c["name"], :type => Tab_Type_Curriculum_Unit, :id => c["id"]}, {:class=>'enrollment_link'} %>
+        <% end %>
       </div>
     <%
     }

@@ -73,6 +73,10 @@ en:
   mysolar_mn_enrollment: "Enrollment"
   mysolar_search: "Search"
 
+  # portlets do meu solar
+  # Unidades curriculares
+  my_solar_curriculum_units: "Curriculum Units"
+
   # msg de erro ,ainda no login    #
   login_data_invalid: "Login details incorrect!"
 
@@ -135,6 +139,7 @@ en:
   enrollm_request_cancel_message: "Request for enrollment cancelled!"
   enrollm_confirm: "Are you sure you want to cancel?"
 
+  curriculum_access_alert: "Number of tabs exceeded. Please close a tab to open a new one."
   curriculum_access_lesson: "Lessons"
   curriculum_access_message: "Messages"
   curriculum_access_message_inbox: "Inbox"
