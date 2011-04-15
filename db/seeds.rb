@@ -6,7 +6,7 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
-user1 = User.new :login => 'user', :email => 'user@user.com', :name => 'Username', :cpf => '78218921494', :birthdate => '2005-03-02', :gender => true, :address => 'em algum lugar', :address_number => 58, :address_neighborhood => 'bons', :country => 'brazil', :state => 'ce', :city => 'fortaleza', :institution => 'ufc', :zipcode => '60450170'
+user1 = User.new :login => 'user', :email => 'user@user.com', :name => 'Username', :cpf => '78218921494', :birthdate => '2005-03-02', :gender => true, :address => 'em algum lugar', :address_number => 58, :address_neighborhood => 'bons', :country => 'brazil', :state => 'CE', :city => 'fortaleza', :institution => 'ufc', :zipcode => '60450170'
 user1.password = 'user123'
 user1.save
 
@@ -82,7 +82,9 @@ allocation_tags = AllocationTag.create([
     {:groups_id => groups[2].id},
     {:offers_id => offers[0].id},
     {:offers_id => offers[1].id},
-    {:offers_id => offers[2].id}
+    {:offers_id => offers[2].id},
+    {:curriculum_units_id => curriculum_units[0].id},
+    {:curriculum_units_id => curriculum_units[1].id}
 	])
 
 allocations = Allocation.create([
@@ -92,4 +94,6 @@ allocations = Allocation.create([
     {:users_id => user1.id, :allocation_tags_id => allocation_tags[3].id, :profiles_id => profiles[0].id, :status => 1},
     {:users_id => user1.id, :allocation_tags_id => allocation_tags[4].id, :profiles_id => profiles[0].id, :status => 1},
     {:users_id => user1.id, :allocation_tags_id => allocation_tags[5].id, :profiles_id => profiles[0].id, :status => 1},
+    {:users_id => user1.id, :allocation_tags_id => allocation_tags[6].id, :profiles_id => profiles[0].id, :status => 1},
+    {:users_id => user1.id, :allocation_tags_id => allocation_tags[7].id, :profiles_id => profiles[0].id, :status => 1}
   ])
