@@ -51,7 +51,7 @@ groups = Group.create([
 
 profiles = Profile.create([
     {:name => 'Aluno', :student => TRUE},
-    {:name => 'Prof. titular', :class_responsible => TRUE},
+    {:name => 'Prof. Titular', :class_responsible => TRUE},
     {:name => 'Tutor'}
   ])
 
@@ -69,11 +69,6 @@ resources = Resource.create([
 ])
 
 permissions = Permission.create([
-  {:profiles_id => profiles[0].id, :resources_id => resources[0].id},
-  {:profiles_id => profiles[0].id, :resources_id => resources[1].id},
-  {:profiles_id => profiles[0].id, :resources_id => resources[2].id},
-  {:profiles_id => profiles[0].id, :resources_id => resources[3].id},
-  {:profiles_id => profiles[0].id, :resources_id => resources[4].id},
   {:profiles_id => profiles[0].id, :resources_id => resources[5].id},
   {:profiles_id => profiles[0].id, :resources_id => resources[6].id},
   {:profiles_id => profiles[0].id, :resources_id => resources[7].id},

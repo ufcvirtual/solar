@@ -47,11 +47,7 @@ class Ability
         end
       end
       
-      # Permissões para usuário sem Allocation
-      can [:mysolar, :pwd_recovery, :update, :update_photo], User, :id => user.id 
-      can :showoffersbyuser, Offer
-
-      # Permissões para usuário sem Allocation
+      # Permissões para usuário sem Profile
       can [:mysolar, :update, :update_photo], User, :id => user.id
       can :showoffersbyuser, Offer
 
