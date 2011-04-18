@@ -73,7 +73,7 @@ class User < ActiveRecord::Base
     },
     :path => ":rails_root/media/:class/:id/photos/:style.:extension",
     :url => "/media/:class/:id/photos/:style.:extension",
-    :default_url => "/public/image/no_image.png"
+    :default_url => "/public/images/no_image.png"
 
   # paperclip uses: file_name, content_type, file_size e updated_at
 

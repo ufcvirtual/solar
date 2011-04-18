@@ -155,6 +155,7 @@ en:
   curriculum_access_more: "+ more"
 
   participants_title: "Participants"
+  participants_none: "No participant found"
 
   icon_agenda: "Agenda icon"
   icon_forum: "Forum icon"
@@ -164,6 +165,9 @@ en:
   icon_agenda_event: "Event agenda icon"
   icon_send_email: "Send mail icon"
   icon_participants: "Participants icon"
+  icon_profile: Profile icon""
+  icon_chat: "Chat icon"
+  icon_add_participant: "Add participant icon"
 
   # Mensagem de erro para permissão 
   no_permission: "you haven't permission to access this page"

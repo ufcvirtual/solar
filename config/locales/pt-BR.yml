@@ -160,6 +160,7 @@
   curriculum_access_more: "+ mais"
 
   participants_title: "Participantes"
+  participants_none: "Nenhum participante encontrado"
 
   icon_agenda: "Ícone da agenda"
   icon_forum: "Ícone do forum"
@@ -169,6 +170,9 @@
   icon_agenda_event: "Ícone de evento da agenda"
   icon_send_email: "Ícone de enviar email"
   icon_participants: "Ícone de participantes"
+  icon_profile: Ícone de perfil""
+  icon_chat: "Ícone do chat"
+  icon_add_participant: "Ícone de adicionar participante"
 
   # Mensagem de erro para permissão   
   no_permission: "Você não tem permissão para acessar esta página"
