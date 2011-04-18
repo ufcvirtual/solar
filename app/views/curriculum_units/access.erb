@@ -15,9 +15,9 @@
       </div>
       <div class="curriculum_unit_portlet_right">
         <div class="curriculum_unit_portlet_header">
-          <%=t(:curriculum_access_responsible)%>
+          <%=t(:curriculum_unit_responsible)%>
         </div>
-        <div class="curriculum_unit_portlet_text">
+        <div class="">
           <% if @responsible %>
             <% @responsible.each do |resp| %>
               <%=resp.username + ' (' + resp.profilename + ') '%><span><%= link_to (image_tag "icon_send_mail.png", :alt=>t(:icon_send_email)) %></span><br/>

@@ -883,7 +883,7 @@ div.alter_photo_text {
     border-top: #ccc7cc solid 1px;
     padding-top: 5px;
 }
-/* div onde aparece o calendario */
+/* calendario da tela de acesso a curso */
 .calendar {
     background: #F2F0F2;
     font-family: Trebuchet;
@@ -920,4 +920,51 @@ div.alter_photo_text {
     position:relative;
     left:5px;
     top:-8px;
+}
+/* tela de participantes */
+.participants_list {
+    border:0;
+    -moz-background-inline-policy:continuous;
+    -moz-background-origin:padding;
+    float:left;
+    margin:5px 5px 5px 0;
+    padding:2px;
+    position:relative;
+    width:150px;
+    height:150px;
+    text-align:center;
+    background-color: #f2f6f6;
+    font-family: Trebuchet;
+    font-size: 12px;
+}
+.participants_list_none {
+    border:0;
+    -moz-background-inline-policy:continuous;
+    -moz-background-origin:padding;
+    float:left;
+    margin:5px 5px 5px 0px;
+    padding:2px;
+    position:relative;
+    width:310px;
+    background-color: #f2f6f6;
+    font-family: Trebuchet;
+    font-size: 12px;
+}
+.portlet_participants_header {
+    cursor: default;
+    padding: 5px;
+    background-color: #e6eced;
+    height:20px;
+    min-width: 150px;
+    margin-right: 5px;
+}
+.portlet_participants {
+    margin: 0 4px 4px 0;
+    border:0px;
+    background-color: #fff;
+    white-space: normal;
+    margin-bottom: 12px;
+    height:195px;
+    width: 795px;
+    /*width: -moz-max-content;*/
 }

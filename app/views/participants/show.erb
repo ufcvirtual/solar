@@ -1,0 +1,65 @@
+<div>
+
+    <%= image_tag "icon_participants.png", :alt=>t(:icon_participants) %>
+    <span class="page_title"><%= t(:participants_title) %></span>
+    <hr style="border: none; background-color: #b4b3b7; height: 1px; width:770px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px"></hr>
+
+    <div class="">
+      
+      <div class="portlet_participants">
+        <div class="portlet_participants_header">
+          <%=t(:curriculum_unit_responsible)%>
+        </div>
+        
+        <% if @responsible %>
+          <% @responsible.each do |resp| %>
+            <div class="participants_list">
+              <%#=@responsible.photo_file_name%>
+              <%#= image_tag @responsible.photo.url(:medium), :alt => "#{t(:mysolar_alt_img_user)} #{@responsible.username}", :id => "image_user" %>
+              <div><%=resp.username%></div>
+              <div><%="(" + resp.profilename + ') '%></div>
+              <span><%= link_to (image_tag "icon_profile.png", :alt=>t(:icon_send_email)) %></span>
+              <span><%= link_to (image_tag "icon_add_user.png", :alt=>t(:icon_send_email)) %></span>
+              <span><%= link_to (image_tag "icon_chat.png", :alt=>t(:icon_send_email)) %></span>
+              <span><%= link_to (image_tag "icon_message_participant.png", :alt=>t(:icon_send_email)) %></span><br/>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="participants_list_none">nenhum...</div>
+        <% end %>
+      </div>
+
+      <div class="portlet_participants">
+        <div class="portlet_participants_header">
+          <%=t(:curriculum_unit_participants)%>
+        </div>
+
+        <% if @participants %>
+          <% @participants.each do |part| %>
+            <div class="participants_list">
+              <%#=@responsible.photo_file_name%>
+              <%#= image_tag @responsible.photo.url(:medium), :alt => "#{t(:mysolar_alt_img_user)} #{@responsible.username}", :id => "image_user" %>
+              <div><%=part.username%></div>
+              <div>
+                <% if part.profileid.to_s!=@student_profile.to_s %>
+                   <%="(" + part.profilename + ') '%>
+                <% else %>
+                   <br/>
+                <% end %>
+              </div>
+              <span><%= link_to (image_tag "icon_profile.png", :alt=>t(:icon_send_email)) %></span>
+              <span><%= link_to (image_tag "icon_add_user.png", :alt=>t(:icon_send_email)) %></span>
+              <span><%= link_to (image_tag "icon_chat.png", :alt=>t(:icon_send_email)) %></span>
+              <span><%= link_to (image_tag "icon_message_participant.png", :alt=>t(:icon_send_email)) %></span><br/>
+            </div>
+          <% end %>
+
+        <% else %>
+          <div class="participants_list_none">nenhum...</div>
+        <% end %>
+      </div>
+
+    </div>
+
+    <!--t(:curriculum_unit_participants)-->
+</div>

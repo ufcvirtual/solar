@@ -139,6 +139,8 @@ en:
   enrollm_request_cancel_message: "Request for enrollment cancelled!"
   enrollm_confirm: "Are you sure you want to cancel?"
 
+  curriculum_unit_responsible: "Responsible"
+  curriculum_unit_participants: "Participants"
   curriculum_access_alert: "Number of tabs exceeded. Please close a tab to open a new one."
   curriculum_access_lesson: "Lessons"
   curriculum_access_message: "Messages"
@@ -146,12 +148,13 @@ en:
   curriculum_access_message_new: "New Message"
   curriculum_access_message_more: "more"
   curriculum_access_forum: "Forum"
-  curriculum_access_curriculum_unit: "Curriculum Unit"
-  curriculum_access_responsible: "Responsible"
+  curriculum_access_curriculum_unit: "Curriculum Unit"  
   curriculum_access_agenda: "Agenda"
   curriculum_access_view: "View"
   curriculum_access_new: " new"
   curriculum_access_more: "+ more"
+
+  participants_title: "Participants"
 
   icon_agenda: "Agenda icon"
   icon_forum: "Forum icon"
@@ -160,6 +163,7 @@ en:
   icon_lesson: "Lesson icon"
   icon_agenda_event: "Event agenda icon"
   icon_send_email: "Send mail icon"
+  icon_participants: "Participants icon"
 
   # Mensagem de erro para permissão 
   no_permission: "you haven't permission to access this page"
