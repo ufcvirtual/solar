@@ -5,7 +5,6 @@ Funcionalidade: Portlet de unidades curriculares
   Eu quero ver minha lista de unidades curriculares num portlet do home
   Para ter acesso rápido a suas páginas e atividades.
 
-
 Contexto:
     Dado que tenho "profiles"
         | name      |
@@ -65,7 +64,7 @@ Cenário: Acessar página do meuSolar e visualizar o Portlet de unidades curricu
 	Dado que estou logado com o usuario "user" e com a senha "user123"
             E que estou em "Meu Solar"
 	Então eu deverei ver "Unidades Curriculares"
-            E eu deverei ver "Introdução à Linguística"
-            E eu deverei ver "Teoria da Literatura I"
+            E eu deverei ver o botao "Introdução à Linguística"
+            E eu deverei ver o botao "Teoria da Literatura I"
             E eu nao deverei ver "Química I"
             E eu nao deverei ver "Semipresencial sm nvista"
