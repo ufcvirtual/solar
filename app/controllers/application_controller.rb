@@ -2,15 +2,14 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   helper_method :current_user_session, :current_user
-
  
- # Mensagem de erro de permissão
-    rescue_from CanCan::AccessDenied do |exception|
-	flash[:error] = t(:no_permission) 
-	redirect_to :controller => "users", :action => "mysolar"
-    end 
+  # Mensagem de erro de permissão
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:error] = t(:no_permission)
+    redirect_to :controller => "users", :action => "mysolar"
+  end 
 
- # consulta id relacionado a estudante na tabela PROFILES
+  # consulta id relacionado a estudante na tabela PROFILES
   def student_profile
     prof = Profile.find_by_student(true)
     if prof
@@ -67,7 +66,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-    # fecha aba
+  # fecha aba
   def close_tab
     name = params[:name]
 

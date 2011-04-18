@@ -1,22 +1,19 @@
+<script type="text/javascript">
+  $(function(){
+    $('#login').focus();
+  });
+</script>
+
 <div style="position:absolute;height:100%;width:100%; display: table;">
 
   <%= render '/user_sessions/header' %>
-  
 
-    <!--Parte cinza-->
-    <div id="login_left_col">
-      <%= render '/user_sessions/menu' %>
-      
-      <%= render 'form' %>
-		
-    </div>
-
-
-    <!--Rodapé-->
-    <%= render '/user_sessions/footer' %>
+  <!--Parte cinza-->
+  <div id="login_left_col">
+    <%= render '/user_sessions/menu' %>
+    <%= render 'form' %>
   </div>
 
-
-<script>
-    //document.getElementById("login_form_name").focus();
-</script>
+  <!--Rodapé-->
+  <%= render '/user_sessions/footer' %>
+</div>
