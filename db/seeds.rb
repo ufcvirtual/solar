@@ -38,9 +38,9 @@ offers = Offer.create([
   ])
 
 enrollments = Enrollment.create([
-    {:offers_id => offers[0].id, :start => '2011-01-01', :end => '2011-03-02'},
-    {:offers_id => offers[1].id, :start => '2011-01-01', :end => '2011-03-02'},
-    {:offers_id => offers[2].id, :start => '2011-01-01', :end => '2011-03-02'}
+    {:offers_id => offers[0].id, :start => '2011-01-01', :end => '2021-03-02'},
+    {:offers_id => offers[1].id, :start => '2011-01-01', :end => '2021-03-02'},
+    {:offers_id => offers[2].id, :start => '2011-01-01', :end => '2021-03-02'}
   ])
 
 groups = Group.create([
