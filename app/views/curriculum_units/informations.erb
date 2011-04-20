@@ -1,0 +1,30 @@
+<div>
+
+  <%= image_tag "icon_curriculum_unit.png", :alt=>t(:icon_curriculum_unit) %>
+  <span class="page_title"><%=@curriculum_unit.name %></span>
+  <hr style="border: none; background-color: #b4b3b7; height: 1px; width:794px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px"></hr>
+
+  <div class="curriculum_unit_portlet_border">
+    <div class="curriculum_unit_portlet_left">
+      <div class="curriculum_unit_portlet_header">
+        <%=t(:curriculum_access_curriculum_unit)%>
+      </div>
+      <div class="curriculum_unit_portlet_text">
+        <%=@curriculum_unit.resume %>
+      </div>
+    </div>
+    <div class="curriculum_unit_portlet_right">
+      <div class="curriculum_unit_portlet_header">
+        <%=t(:curriculum_unit_responsible)%>
+      </div>
+      <div class="curriculum_unit_portlet_text">
+        <% if @responsible %>
+          <% @responsible.each do |resp| %>
+            <%=resp.username + ' (' + resp.profilename + ') '%><span><%= link_to (image_tag "icon_send_mail.png", :alt=>t(:icon_send_email)) %></span><br/>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+</div>

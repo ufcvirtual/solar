@@ -1,8 +1,11 @@
 class ApplicationController < ActionController::Base
+
   protect_from_forgery
 
   helper_method :current_user_session, :current_user
- 
+
+  before_filter :return_user
+
   # Mensagem de erro de permissão
   rescue_from CanCan::AccessDenied do |exception|
     flash[:error] = t(:no_permission)
@@ -21,9 +24,12 @@ class ApplicationController < ActionController::Base
 
   # adiciona uma aba no canto superior da interface
   def add_tab
+
     name = params[:name]    
     type = params[:type]
     id   = params[:id]
+    groups_id = params[:groups_id]
+    offers_id = params[:offers_id]
 
     # se hash nao existe, cria
     if session[:opened_tabs].nil?
@@ -35,6 +41,9 @@ class ApplicationController < ActionController::Base
       hash_tab = Hash.new
       hash_tab["id"] = id
       hash_tab["type"] = type
+      hash_tab["groups_id"] = groups_id
+      hash_tab["offers_id"] = offers_id
+
       session[:opened_tabs][name] = hash_tab
       session[:active_tab] = name
 
@@ -86,7 +95,11 @@ class ApplicationController < ActionController::Base
       redirect_to :controller => 'curriculum_units', :action => 'access', :id => session[:opened_tabs][session[:active_tab]]["id"]
     end
   end
-  
+
+  def return_user
+    @user = User.find(current_user.id) unless current_user.nil?
+  end
+
   private
 
   def current_user_session

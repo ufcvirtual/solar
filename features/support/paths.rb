@@ -8,6 +8,9 @@ module NavigationHelpers
   def path_to(page_name)
     case page_name
 
+    when /Pagina inicial do curso/
+      '/curriculum_units/access/'
+
     when /the home\s?page/
       '/'
 

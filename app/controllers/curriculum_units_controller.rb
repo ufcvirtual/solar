@@ -6,6 +6,7 @@ class CurriculumUnitsController < ApplicationController
 
   before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy, :access]
 
+  before_filter :curriculum_data, :only => [:access, :informations]
 
   def index
     #if current_user
@@ -70,15 +71,23 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def access
-    #localiza unidade curricular
-    @curriculum_unit = CurriculumUnit.find (params[:id])
+  end
 
-    #retorna responsaveis
-    @responsible = class_participants params[:id], true
+  def informations
+  end
 
-    if current_user
-      @user = User.find(current_user.id)
-    end
+  private
+
+  def curriculum_data
+
+    params[:offers_id] ||= nil
+    params[:groups_id] ||= nil
+
+    # localiza unidade curricular
+    @curriculum_unit = CurriculumUnit.find(params[:id])
+    # localiza responsavel
+    responsible = true
+    @responsible = class_participants(params[:id], responsible, params[:offers_id], params[:groups_id])
   end
 
 end

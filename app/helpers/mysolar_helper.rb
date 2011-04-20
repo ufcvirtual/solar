@@ -21,13 +21,12 @@ module MysolarHelper
     end
   end
 
-
   def load_curriculum_unit_data
     if current_user
       query_current_courses =
-        "select * from (
+        "select DISTINCT ON (id, name) * from (
       (
-        select cr.* --(cns 1 - usuarios vinculados direto a unidade curricular)
+        select cr.*, NULL AS offers_id, NULL::integer AS groups_id --(cns 1 - usuarios vinculados direto a unidade curricular)
         from
           allocations al
           inner join allocation_tags tg on tg.id = al.allocation_tags_id
@@ -37,7 +36,7 @@ module MysolarHelper
       )
       union
       (
-        select cr.* --(cns 2 - usuarios vinculados a oferta)
+        select cr.*, of.id AS offers_id, NULL::integer AS groups_id --(cns 2 - usuarios vinculados a oferta)
         from
           allocations al
           inner join allocation_tags tg on tg.id = al.allocation_tags_id
@@ -47,7 +46,7 @@ module MysolarHelper
           users_id = #{current_user.id} AND al.status = #{Allocation_Activated}
       )
       union(
-        select cr.* --(cns 3 - usuarios vinculados a turma)
+        select cr.*, of.id AS offers_id, gr.id AS groups_id --(cns 3 - usuarios vinculados a turma)
         from
           allocations al
           inner join allocation_tags tg on tg.id = al.allocation_tags_id
@@ -59,7 +58,7 @@ module MysolarHelper
       )
       union
       (
-        select cr.* --(cns 3 - usuarios vinculados a graduacao)
+        select cr.*, of.id AS offers_id, NULL::integer AS groups_id --(cns 3 - usuarios vinculados a graduacao)
         from
           allocations al
           inner join allocation_tags tg on tg.id = al.allocation_tags_id
@@ -70,7 +69,7 @@ module MysolarHelper
           users_id = #{current_user.id} AND al.status = #{Allocation_Activated}
         )
       ) as ucs_do_usuario
-      order by name"
+      order by name, id"
 
       conn = ActiveRecord::Base.connection
       conn.select_all query_current_courses

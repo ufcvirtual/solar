@@ -14,7 +14,7 @@ class ParticipantsController < ApplicationController
 
     if id
       #localiza unidade curricular ativa
-      @curriculum_unit = CurriculumUnit.find (id)
+      @curriculum_unit = CurriculumUnit.find(id)
 
       #retorna perfil em que se pede matricula (~aluno)
       @student_profile = student_profile

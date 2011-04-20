@@ -125,9 +125,6 @@ class OffersController < ApplicationController
       )
     else
       @offers = nil
-      if current_user
-        @user = User.find(current_user.id)
-      end
     end
   end
 
