@@ -74,7 +74,7 @@ class CurriculumUnitsController < ApplicationController
     @curriculum_unit = CurriculumUnit.find (params[:id])
 
     #retorna responsaveis
-    @responsible = class_responsible (params[:id])
+    @responsible = class_participants id, true
 
     if current_user
       @user = User.find(current_user.id)

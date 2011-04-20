@@ -104,7 +104,7 @@
       <div id="mysolar_menu_accordion" style="z-index:10">
         <h3 class="mysolar_menu_title"><a href="#">Menu 1</a></h3>
         <div class="mysolar_menu_list">
-		item 1<br/>
+		<%=link_to 'participantes', :controller => :participants, :action => :show, :id => session[:opened_tabs][session[:active_tab]]["id"] %><br/>
 		item 2
         </div>
         <h3 class="mysolar_menu_title"><a href="#">Menu 2</a></h3>

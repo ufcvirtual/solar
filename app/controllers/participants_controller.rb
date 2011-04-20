@@ -10,7 +10,7 @@ class ParticipantsController < ApplicationController
   # exibe participantes da unidade curricular
   def show
     name = session[:active_tab]
-    id = session[:opened_tabs][name]["id"]
+    id = params[:id]
 
     if id
       #localiza unidade curricular ativa
@@ -25,10 +25,10 @@ class ParticipantsController < ApplicationController
       #retorna participantes da turma (que nao sejam responsaveis)
       @participants = class_participants id, false
 
-      if current_user
-        @user = User.find(current_user.id)
-      end
-    end    
+    end
+    if current_user
+      @user = User.find(current_user.id)
+    end
   end
 
 end
