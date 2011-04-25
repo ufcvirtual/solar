@@ -139,6 +139,14 @@ en:
   enrollm_request_cancel_message: "Request for enrollment cancelled!"
   enrollm_confirm: "Are you sure you want to cancel?"
 
+  # informacoes da unidade curricular
+  syllabus: Syllabus
+  objectives: Objectives
+  prerequisites: Prerequisites
+  resume: Resume
+  semester_date: Date
+  passing_grade: Passing Grade
+
   curriculum_unit_responsible: "Responsible"
   curriculum_unit_participants: "Participants"
   curriculum_access_alert: "Number of tabs exceeded. Please close a tab to open a new one."
@@ -176,7 +184,6 @@ en:
   date:
     formats:
       default: "%m/%d/%Y"
-
     month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
     abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Spt, Oct, Nov, Dec]
     order: [:month, :day, :year]

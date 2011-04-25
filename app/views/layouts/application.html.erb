@@ -105,8 +105,12 @@
         <h3 class="mysolar_menu_title"><a href="#">Menu 1</a></h3>
         <div class="mysolar_menu_list">
 
-		<%= link_to 'participantes', :controller => :participants, :action => :show, :id => session[:opened_tabs][session[:active_tab]]["id"] %><br/>
-		<%= link_to "Informacoes", :controller => 'curriculum_units', :action => 'informations',
+        <%= link_to 'Participantes', :controller => :curriculum_units, :action => :participants,
+          :id => session[:opened_tabs][session[:active_tab]]["id"],
+          :groups_id => session[:opened_tabs][session[:active_tab]]["groups_id"],
+          :offers_id => session[:opened_tabs][session[:active_tab]]["offers_id"]%><br/>
+
+        <%= link_to "Informacoes", :controller => 'curriculum_units', :action => 'informations',
           :id => session[:opened_tabs][session[:active_tab]]["id"],
           :groups_id => session[:opened_tabs][session[:active_tab]]["groups_id"],
           :offers_id => session[:opened_tabs][session[:active_tab]]["offers_id"]

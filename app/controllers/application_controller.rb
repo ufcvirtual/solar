@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
         redirect_to :controller => "users", :action => "mysolar"
       end
       if type == Tab_Type_Curriculum_Unit
-        redirect_to :controller => 'curriculum_units', :action => 'access', :id => params[:id]
+        redirect_to :controller => 'curriculum_units', :action => 'access', :id => params[:id], :groups_id => groups_id, :offers_id => offers_id
       end
       
     else
@@ -71,7 +71,7 @@ class ApplicationController < ActionController::Base
       redirect_to :controller => "users", :action => "mysolar"
     end
     if session[:opened_tabs][name]["type"] == Tab_Type_Curriculum_Unit
-      redirect_to :controller => 'curriculum_units', :action => 'access', :id => session[:opened_tabs][name]["id"]
+      redirect_to :controller => 'curriculum_units', :action => 'access', :id => session[:opened_tabs][name]["id"], :groups_id => session[:opened_tabs][name]["groups_id"], :offers_id => session[:opened_tabs][name]["offers_id"]
     end
   end
 

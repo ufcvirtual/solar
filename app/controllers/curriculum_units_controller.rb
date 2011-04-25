@@ -1,12 +1,12 @@
 class CurriculumUnitsController < ApplicationController
 
-  include ParticipantsHelper
+  include CurriculumUnitsHelper
 
 #  load_and_authorize_resource
 
   before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy, :access]
 
-  before_filter :curriculum_data, :only => [:access, :informations]
+  before_filter :curriculum_data, :only => [:access, :informations, :participants]
 
   def index
     #if current_user
@@ -74,12 +74,21 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def informations
+    @offer = params[:offers_id].nil? ? nil : Offer.find(params[:offers_id])
+  end
+
+  def participants
+    #retorna perfil em que se pede matricula (~aluno)
+    @student_profile = student_profile
+
+    #retorna participantes da turma (que nao sejam responsaveis)
+    responsible = false
+    @participants = class_participants params[:id], responsible, params[:offers_id], params[:groups_id]
   end
 
   private
 
   def curriculum_data
-
     params[:offers_id] ||= nil
     params[:groups_id] ||= nil
 
@@ -87,7 +96,7 @@ class CurriculumUnitsController < ApplicationController
     @curriculum_unit = CurriculumUnit.find(params[:id])
     # localiza responsavel
     responsible = true
-    @responsible = class_participants(params[:id], responsible, params[:offers_id], params[:groups_id])
+    @responsible = class_participants params[:id], responsible, params[:offers_id], params[:groups_id]
   end
 
 end

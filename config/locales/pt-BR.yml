@@ -144,6 +144,14 @@
   enrollm_request_cancel_message: "Pedido de matrícula cancelado!"
   enrollm_confirm: "Tem certeza de que deseja cancelar?"
 
+  # informacoes da unidade curricular
+  syllabus: "Ementa"
+  objectives: "Objetivos"
+  prerequisites: "Pré-requisitos"
+  resume: "Resumo"
+  semester_date: "Período"
+  passing_grade: "Média"
+
   curriculum_unit_responsible: "Responsáveis"
   curriculum_unit_participants: "Participantes da turma"
   curriculum_access_alert: "Número de abas excedido. Por favor, feche uma aba para abrir uma nova."
@@ -177,14 +185,12 @@
   # Mensagem de erro para permissão   
   no_permission: "Você não tem permissão para acessar esta página"
 
-
   # formatos de data e hora
   date:
     formats:
       default: "%d/%m/%Y"
       short: "%d de %B"
       long: "%d de %B de %Y"
-
     day_names: [Domingo, Segunda, Terça, Quarta, Quinta, Sexta, Sábado]
     abbr_day_names: [Dom, Seg, Ter, Qua, Qui, Sex, Sáb]
     month_names: [~, Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro]

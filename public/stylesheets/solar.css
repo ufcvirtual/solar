@@ -129,24 +129,31 @@ textarea{
 .td_blue_first{
     padding-left: 8px;
 }
-.td_blue{
+.td_blue, .td_blue_center {
     border-left: solid #dbe5e8 1px;
     padding-left: 8px;
-    white-space: nowrap;
+    white-space: normal;
     width: auto;
+}
+.td_blue_center {
+    border-left: none;
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
 }
 .rowtable_odd{
     font-size: 12px;
     font-family:'Trebuchet',Arial,'Myriad Pro';
     color: #000;
-    background-color: #f7f7f7;
+    background-color: #f1f0f2;
     line-height: 24px;
 }
 .rowtable_even{
     font-size: 12px;
     font-family:'Trebuchet',Arial,'Myriad Pro';
     color: #000;
-    background-color: #e6edee;
+    background-color: #eaeaea;
     line-height: 24px;
 }
 .enrollment_search{

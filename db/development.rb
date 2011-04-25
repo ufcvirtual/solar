@@ -14,7 +14,7 @@ Course.delete_all
 PersonalConfiguration.delete_all
 User.delete_all
 
-user1 = User.new :login => 'user', :email => 'user@solar.ufc.br', :name => 'Username', :cpf => '78218921494', :birthdate => '2005-03-02', :gender => true, :address => 'em algum lugar', :address_number => 58, :address_neighborhood => 'bons', :country => 'brazil', :state => 'CE', :city => 'fortaleza', :institution => 'ufc', :zipcode => '60450170'
+user1 = User.new :login => 'user', :email => 'user@solar.ufc.br', :name => 'Usuario do Sistema', :cpf => '78218921494', :birthdate => '2005-03-02', :gender => true, :address => 'em algum lugar', :address_number => 58, :address_neighborhood => 'bons', :country => 'brazil', :state => 'CE', :city => 'fortaleza', :institution => 'ufc', :zipcode => '60450170'
 user1.password = 'user123'
 user1.save
 
@@ -60,11 +60,17 @@ curriculum_unit_types = CurriculumUnitType.create([
 	{ :description => 'Curso de Pos-Graduacao a Distancia', :allows_enrollment => FALSE }
 ])
 
+resume = 'Pensando mais a longo prazo, a percepo das dificuldades nao causa impacto indireto na reavaliacao da formula da ressonancia racionalista.'
+objectives = 'Do mesmo modo, a indeterminao contnua de distintas formas de fenmeno...'
+prerequisites = 'Todavia, a consolidacao das estruturas psico-lgicas assume...'
+syllabus = 'Como Deleuze eloquentemente mostrou, o inicio da atividade geral de formacao de conceitos obstaculiza a apreciacao da importancia dos paradigmas filosoficos. '
+passing_grade = 7.0
+
 curriculum_units = CurriculumUnit.create([
-	{:curriculum_unit_types_id => curriculum_unit_types[2].id, :name => 'Introducao a Linguistica', :code => 'RM404'},
-	{:curriculum_unit_types_id => curriculum_unit_types[0].id, :name => 'Teoria da Literatura I', :code => 'RM405'},
-	{:curriculum_unit_types_id => curriculum_unit_types[1].id, :name => 'Quimica I', :code => 'RM301'},
-	{:curriculum_unit_types_id => curriculum_unit_types[1].id, :name => 'Semipresencial sm nvista', :code => 'TS101'}
+	{:curriculum_unit_types_id => curriculum_unit_types[2].id, :name => 'Introducao a Linguistica', :code => 'RM404', :resume => resume, :objectives => objectives, :prerequisites => prerequisites, :syllabus => syllabus, :passing_grade => passing_grade},
+	{:curriculum_unit_types_id => curriculum_unit_types[0].id, :name => 'Teoria da Literatura I', :code => 'RM405', :resume => resume, :objectives => objectives, :prerequisites => prerequisites, :syllabus => syllabus, :passing_grade => passing_grade},
+	{:curriculum_unit_types_id => curriculum_unit_types[1].id, :name => 'Quimica I', :code => 'RM301', :resume => resume, :objectives => objectives, :prerequisites => prerequisites, :syllabus => syllabus, :passing_grade => passing_grade},
+	{:curriculum_unit_types_id => curriculum_unit_types[1].id, :name => 'Semipresencial sm nvista', :code => 'TS101', :resume => resume, :objectives => objectives, :prerequisites => prerequisites, :syllabus => syllabus, :passing_grade => passing_grade}
 ])
 
 offers = Offer.create([
@@ -90,7 +96,7 @@ profiles = Profile.create([
 	{:name => 'Prof. Titular', :class_responsible => TRUE},
 	{:name => 'Tutor', :class_responsible => TRUE},
 	{:name => 'Tutor Presencial'},
-	{:name => 'Coordenador de Disciplina'},
+	{:name => 'Coordenador de Disciplina'}
 ])
 
 resources = Resource.create([
