@@ -81,9 +81,16 @@ class CurriculumUnitsController < ApplicationController
     #retorna perfil em que se pede matricula (~aluno)
     @student_profile = student_profile
 
-    #retorna participantes da turma (que nao sejam responsaveis)
+    # pegando dados da sessao e nao da url
+    groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+    offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+   
+    # retorna participantes da turma (que nao sejam responsaveis)
     responsible = false
-    @participants = class_participants params[:id], responsible, params[:offers_id], params[:groups_id]
+    @participants = class_participants params[:id], responsible, offers_id, groups_id
+
+    # pegando valores pela url:
+    #@participants = class_participants params[:id], responsible, params[:offers_id], params[:groups_id]
   end
 
   private
@@ -94,9 +101,17 @@ class CurriculumUnitsController < ApplicationController
 
     # localiza unidade curricular
     @curriculum_unit = CurriculumUnit.find(params[:id])
+
+    # pegando dados da sessao e nao da url
+    groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+    offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+
     # localiza responsavel
     responsible = true
-    @responsible = class_participants params[:id], responsible, params[:offers_id], params[:groups_id]
+    @responsible = class_participants params[:id], responsible, offers_id, groups_id
+
+    # pegando valores pela url:
+    #@responsible = class_participants params[:id], responsible, params[:offers_id], params[:groups_id]
   end
 
 end
