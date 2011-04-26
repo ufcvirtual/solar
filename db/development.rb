@@ -52,12 +52,12 @@ courses = Course.create([
 ])
 
 curriculum_unit_types = CurriculumUnitType.create([
-	{ :description => 'Curso de Graduacao Presencial', :allows_enrollment => TRUE },
-	{ :description => 'Curso de Graduacao a Distancia', :allows_enrollment => FALSE },
-	{ :description => 'Curso Livre', :allows_enrollment => TRUE },
-	{ :description => 'Curso de Extensao', :allows_enrollment => TRUE },
-	{ :description => 'Curso de Pos-Graduacao Presencial', :allows_enrollment => TRUE },
-	{ :description => 'Curso de Pos-Graduacao a Distancia', :allows_enrollment => FALSE }
+	{ :description => 'Curso de Graduacao Presencial', :allows_enrollment => TRUE, :icon_name => 'icon_type_pres_underg.png' },
+	{ :description => 'Curso de Graduacao a Distancia', :allows_enrollment => FALSE, :icon_name => 'icon_type_dist_underg.png' },
+	{ :description => 'Curso Livre', :allows_enrollment => TRUE, :icon_name => 'icon_type_free_course.png' },
+	{ :description => 'Curso de Extensao', :allows_enrollment => TRUE, :icon_name => 'icon_type_ext_course.png' },
+	{ :description => 'Curso de Pos-Graduacao Presencial', :allows_enrollment => TRUE, :icon_name => 'icon_type_pres_grad.png' },
+	{ :description => 'Curso de Pos-Graduacao a Distancia', :allows_enrollment => FALSE, :icon_name => 'icon_type_dist_grad.png' }
 ])
 
 resume = 'Pensando mais a longo prazo, a percepo das dificuldades nao causa impacto indireto na reavaliacao da formula da ressonancia racionalista.'

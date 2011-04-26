@@ -109,7 +109,7 @@ class OffersController < ApplicationController
       @offers = Offer.find(:all,
         :select => "DISTINCT offers.id,curriculum_units.name, curriculum_unit_types.id as categoryid, curriculum_unit_types.description as categorydesc, curriculum_unit_types.allows_enrollment,
                    groups.code, allocations.status, enrollments.start, enrollments.end, allocation_tags.id as allocationtagid,
-                   allocations.id AS allocationid, groups.id AS groupsid",
+                   allocations.id AS allocationid, groups.id AS groupsid, curriculum_unit_types.icon_name",
         :joins => "LEFT JOIN enrollments ON offers.id=enrollments.offers_id
                    INNER JOIN curriculum_units  ON offers.curriculum_units_id = curriculum_units.id
                    INNER JOIN curriculum_unit_types on curriculum_unit_types.id = curriculum_units.curriculum_unit_types_id

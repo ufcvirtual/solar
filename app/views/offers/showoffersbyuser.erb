@@ -45,7 +45,7 @@
         <% @offers.each do |offer| %>
           <tr class="<%= cycle('rowtable_odd', 'rowtable_even') %>" >
             <td class="td_blue_first"><%= offer.name %></td>
-            <td class="td_blue"><%= image_tag("category"+offer.categoryid.to_s+".png")%>&nbsp;<%= offer.categorydesc %></td>
+            <td class="td_blue"><%= image_tag(offer.icon_name)%>&nbsp;<%= offer.categorydesc %></td>
             <td class="td_blue" align="center"><%= offer.code %></td>
             <td class="td_blue" align="center">
               <% case offer.status %>
