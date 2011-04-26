@@ -77,54 +77,89 @@ class OffersController < ApplicationController
 
     if current_user && (student_profile!='')
 
-      query_date_enrollment = ""
       query_category = ""
       query_text = ""
 
-      if params[:category_query]!='enroll'
-        #traz todos: matriculados OU com data de matricula ativa e q seja dos tipos: free, extension, presential
-        query_date_enrollment = "((select enrollments.start from enrollments where offers.id=enrollments.offers_id)<= current_date and
-                                  (select enrollments.end from enrollments where offers.id=enrollments.offers_id)>= current_date
-                                   and curriculum_unit_types.allows_enrollment = TRUE
-                                 ) or "
-      end
-      if params[:offer]
-        query_date_enrollment = "((select enrollments.start from enrollments where offers.id=enrollments.offers_id)<= current_date and
-                                  (select enrollments.end from enrollments where offers.id=enrollments.offers_id)>= current_date
-                                  and curriculum_unit_types.allows_enrollment = TRUE
-                                 ) or "
+      # consulta para matriculas ativas
+      query_enroll = "SELECT DISTINCT of.id, cr.name as name, t.id AS categoryid, t.description AS categorydesc,
+               t.allows_enrollment, al.status AS status, al.id AS allocationid,
+               g.code, e.start, e.end, atg.id AS allocationtagid,
+               g.id AS groupsid, t.icon_name
+              FROM allocations al
+              INNER JOIN allocation_tags atg ON atg.id = al.allocation_tags_id
+              INNER JOIN groups g ON g.id = atg.groups_id
+              INNER JOIN offers of ON of.id = g.offers_id
+              INNER JOIN curriculum_units cr ON cr.id = of.curriculum_units_id
+              INNER JOIN curriculum_unit_types t ON t.id = cr.curriculum_unit_types_id
+              LEFT JOIN enrollments e ON of.id = e.offers_id
+              where
+               users_id = #{current_user.id} AND al.profiles_id = #{student_profile}"
 
+      # recebe params[:offer] se foi pela pesquisa - MATRICULADOS e/ou ATIVOS
+      if params[:offer]
         if params[:offer][:category]
           #reduz para determinada categoria de disciplina
           @search_category = params[:offer][:category]
-          query_category = " and curriculum_unit_types.id=#{@search_category}" if !@search_category.empty?
+          query_category = " and t.id=#{@search_category}" if !@search_category.empty?
         end
         if params[:offer][:search]
           @search_text = params[:offer][:search]
-          query_text = " and curriculum_units.name ilike '%#{@search_text}%' " if !@search_text.empty?
+          query_text = " and cr.name ilike '%#{@search_text}%' " if !@search_text.empty?
         end
       end
 
+      # se params[:category_query]=='enroll' traz apenas MATRICULADOS
+      if params[:category_query]=='enroll'
+        query_offer = "#{query_enroll}
+            AND al.status = #{Allocation_Activated}
+            order by name"
+
+      else
+
+        # traz todos: data de matricula ativa e q seja matriculavel + matriculados
+        query_offer = "SELECT * FROM (
+          SELECT DISTINCT of.id,cr.name as name, t.id as categoryid, t.description as categorydesc,
+           t.allows_enrollment, null::integer as status, null::integer as allocationid,
+           g.code, e.start, e.end, atg.id as allocationtagid,
+           g.id AS groupsid, t.icon_name
+          FROM offers of
+          LEFT JOIN enrollments e ON of.id=e.offers_id
+          INNER JOIN curriculum_units cr ON of.curriculum_units_id = cr.id
+          INNER JOIN curriculum_unit_types t on t.id = cr.curriculum_unit_types_id
+          LEFT OUTER JOIN courses c ON of.courses_id = c.id
+          INNER JOIN groups g ON g.offers_id = of.id
+          INNER JOIN allocation_tags atg ON atg.groups_id = g.id
+          WHERE
+            (select enrollments.start from enrollments where of.id=enrollments.offers_id)<= current_date and
+            (select enrollments.end from enrollments where of.id=enrollments.offers_id)>= current_date
+            and
+            t.allows_enrollment = TRUE
+            and not exists
+              (  SELECT al.id
+                 FROM allocations al
+                 INNER JOIN allocation_tags ON allocation_tags.id = al.allocation_tags_id
+                 INNER JOIN groups ON groups.id = allocation_tags.groups_id
+                 INNER JOIN offers ON offers.id = groups.offers_id
+                 where users_id = #{current_user.id} AND offers.id=of.id
+              )
+            #{query_category}
+            #{query_text}
+           UNION
+            #{query_enroll}
+            #{query_category}
+            #{query_text}
+          ) as offer_user
+          ORDER BY name"
+
+      end
+
       @user = User.find(current_user.id)
-      @offers = Offer.find(:all,
-        :select => "DISTINCT offers.id,curriculum_units.name, curriculum_unit_types.id as categoryid, curriculum_unit_types.description as categorydesc, curriculum_unit_types.allows_enrollment,
-                   groups.code, allocations.status, enrollments.start, enrollments.end, allocation_tags.id as allocationtagid,
-                   allocations.id AS allocationid, groups.id AS groupsid, curriculum_unit_types.icon_name",
-        :joins => "LEFT JOIN enrollments ON offers.id=enrollments.offers_id
-                   INNER JOIN curriculum_units  ON offers.curriculum_units_id = curriculum_units.id
-                   INNER JOIN curriculum_unit_types on curriculum_unit_types.id = curriculum_units.curriculum_unit_types_id
-                   LEFT OUTER JOIN courses  ON offers.courses_id = courses.id
-                   INNER JOIN groups  ON groups.offers_id = offers.id
-                   INNER JOIN allocation_tags ON allocation_tags.groups_id = groups.id
-                   LEFT OUTER JOIN allocations ON allocations.allocation_tags_id = allocation_tags.id",
-        :conditions => "(
-                  #{query_date_enrollment}
-                  (allocations.users_id = #{current_user.id} AND allocations.profiles_id = #{student_profile} AND allocations.status = #{Allocation_Activated})
-                  ) #{query_category} #{query_text}" ,
-        :order => "curriculum_units.name"
-      )
+      @offers = Offer.find_by_sql(query_offer)
+
     else
+
       @offers = nil
+      
     end
   end
 
