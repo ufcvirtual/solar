@@ -18,7 +18,7 @@ class AccessControlController < ApplicationController
       # envia a imagem
       send_file(path, { :disposition => 'inline', :content_type => 'image' }) # content-type espcífico pra imagem
     else
-      redirect_to ({ :controller => 'user_sessions' }) # caso o usuario nao esteja autenticado
+      redirect_to({ :controller => 'user_sessions' }) # caso o usuario nao esteja autenticado
     end
   end
 
