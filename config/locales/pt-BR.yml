@@ -170,6 +170,8 @@
   participants_title: "Participantes"
   participants_none: "Nenhum participante encontrado"
 
+  lesson_title: "Aulas"
+
   icon_agenda: "Ícone da agenda"
   icon_forum: "Ícone do forum"
   icon_message: "Ícone de messagem"
@@ -181,6 +183,7 @@
   icon_profile: Ícone de perfil""
   icon_chat: "Ícone do chat"
   icon_add_participant: "Ícone de adicionar participante"
+  icon_lesson: "Ícone de aulas"
 
   # Mensagem de erro para permissão   
   no_permission: "Você não tem permissão para acessar esta página"

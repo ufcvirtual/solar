@@ -165,6 +165,8 @@ en:
   participants_title: "Participants"
   participants_none: "No participant found"
 
+  lesson_title: "Lessons"
+
   icon_agenda: "Agenda icon"
   icon_forum: "Forum icon"
   icon_message: "Message icon"
@@ -176,6 +178,7 @@ en:
   icon_profile: Profile icon""
   icon_chat: "Chat icon"
   icon_add_participant: "Add participant icon"
+  icon_lesson: "Lesson icon"
 
   # Mensagem de erro para permissão 
   no_permission: "you haven't permission to access this page"
