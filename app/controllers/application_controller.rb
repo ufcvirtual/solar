@@ -190,7 +190,6 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options(options={})
-    current_user = User.new
     if current_user.nil?
       {:locale => params[:locale]} # insere locale na url se o usuario nao estiver online
     else
