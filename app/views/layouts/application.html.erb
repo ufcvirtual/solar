@@ -104,17 +104,18 @@
       <div id="mysolar_menu_accordion" style="z-index:10">
         <h3 class="mysolar_menu_title"><a href="#">Menu 1</a></h3>
         <div class="mysolar_menu_list">
-
-        <%= link_to 'Participantes', :controller => :curriculum_units, :action => :participants,
-          :id => session[:opened_tabs][session[:active_tab]]["id"]%><br/>
-
-        <%= link_to "Informacoes", :controller => 'curriculum_units', :action => 'informations',
-          :id => session[:opened_tabs][session[:active_tab]]["id"]
-        %>
-        <br/>
-        <%= link_to "Aulas", :controller => 'lesson', :action => 'list',
-          :id => session[:opened_tabs][session[:active_tab]]["id"]
-        %>
+          <% curriculum_unit_id = @curriculum_unit.nil? ? nil : @curriculum_unit.id %>
+          <%= link_to 'Participantes', :controller => :curriculum_units, :action => :participants,
+            :id => curriculum_unit_id
+          %>
+          <br/>
+          <%= link_to "Informacoes", :controller => 'curriculum_units', :action => 'informations',
+            :id => curriculum_unit_id
+          %>
+          <br/>
+          <%= link_to "Aulas", :controller => 'lesson', :action => 'list',
+            :id => curriculum_unit_id
+          %>
         </div>
         <h3 class="mysolar_menu_title"><a href="#">Menu 2</a></h3>
         <div class="mysolar_menu_list">

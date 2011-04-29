@@ -74,7 +74,8 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def informations
-    @offer = params[:offers_id].nil? ? nil : Offer.find(params[:offers_id])
+    offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+    @offer = offers_id.nil? ? nil : Offer.find(offers_id)
   end
 
   def participants
@@ -96,9 +97,6 @@ class CurriculumUnitsController < ApplicationController
   private
 
   def curriculum_data
-    params[:offers_id] ||= nil
-    params[:groups_id] ||= nil
-
     # localiza unidade curricular
     @curriculum_unit = CurriculumUnit.find(params[:id])
 

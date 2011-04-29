@@ -39,19 +39,20 @@ Contexto:
         | 4  | 4         | FOR   | TRUE   |
         | 5  | 5         | FOR   | TRUE   |
     Dado que tenho "allocation_tags"
-        | id | groups_id | curriculum_units_id |
-        | 1  |           | 1         |
+        | id |  offers_id |
+        | 1  |  1         |
     Dado que tenho "allocations"
         | users_id | allocation_tags_id | profiles_id | status |
         | 1        | 1                  | 3           | 1      |
         | 2        | 1                  | 2           | 1      |
 
-@wip
 Cenário: Acessar pagina de informacoes do curso
     Dado que estou logado com o usuario "user" e com a senha "user123"
-        E que estou em "Pagina inicial do curso" referente a "1"
-        Quando eu clicar no link "Informacoes"
-    Então eu deverei ver "Ementa"
+        E que estou em "Meu Solar"
+        Quando eu clicar em "Introducao a Linguistica"
+        Então eu deverei ver "Informacoes"
+    Quando eu clicar no link "Informacoes"
+        Então eu deverei ver "Ementa"
         E eu deverei ver "Problemas formais"
         E eu deverei ver "Objetivos"
         E eu deverei ver "Problemas formais"
