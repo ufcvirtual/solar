@@ -11,22 +11,14 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    if current_user
-      @user = User.find(current_user.id)
-    end
     render :action => :mysolar
-
-    #respond_to do |format|
-    #  format.html # index.html.erb
-    #  format.xml  { render :xml => @users }
-    #end
   end
 
   # GET /users/new
   def new
     respond_to do |format|
-      format.html {render :layout => 'login'}# new.html.erb
-      format.xml  { render :xml => @user }
+      format.html {render :layout => 'login'}
+      format.xml {render :xml => @user}
     end
   end
 
@@ -37,48 +29,25 @@ class UsersController < ApplicationController
   # POST /users
   def create
 
-#    @user = User.new(params[:user])
-
-#    garante que a senha não fique como "" o que é diferente do nulo e seria igual a senha
-#    params[:user]["password"] = nil if params[:user]["password"] == ""
-#    params[:user]["password_confirmation"] = nil if params[:user]["password_confirmation"] == ""
-
-#    garante que o e-mail não fique como "" o que é diferente do nulo e seria igual ao e-mail
-#    params[:user]["email"] = nil if params[:user]["email"] == ""
-#    params[:user]["email_confirmation"] = nil if params[:user]["email_confirmation"] == ""
-
-    if params["radio_special"] == "false"
-      @user.special_needs = nil
-    end
-
+    @user.special_needs = nil if params["radio_special"] == "false"
     @user.password = params[:user]["password"]
 
-    #respond_to do |format|
     if (@user.save)
-
-      #flash[:notice] = t(:new_user_msg_ok)
-      #format.html { render :action => "mysolar"}
-      #        format.xml  { render :xml => @user, :status => :created, :location => @user }
-      #msg = t(:new_user_msg_ok)
-
       # gera aba para Home e redireciona
       redirect_to :action => "add_tab", :controller => "application", :name => 'Home', :type => Tab_Type_Home
-        
     else
       respond_to do |format|
         format.html { render :action => "new", :layout => "login" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @user.errors, :status => :unprocessable_entity }
       end
     end
-    #end
   end
 
   # PUT /users/1
   def update
 
     #variavel para verificar se a mudança de senha passa nos testes
-    sucesso = true
-    error_msg = " "
+    sucesso, error_msg = true, " "
 
     #Evita que os parametros nulo fiquem como " " no banco
     params[:user]["old_password"] = nil if params[:user]["old_password"] == ""
@@ -121,9 +90,7 @@ class UsersController < ApplicationController
     params[:user].delete("repeat_password")
 
     #caso a mudança de senha esteja correta, altera a senha
-    if (sucesso && !nova_senha.nil?)
-      @user.crypted_password = CryptoProvider.encrypt(nova_senha)
-    end
+    @user.crypted_password = CryptoProvider.encrypt(nova_senha) if (sucesso && !nova_senha.nil?)
 
     respond_to do |format|
       if (sucesso && @user.update_attributes(params[:user]))
@@ -149,7 +116,6 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
-    @user = User.find(params[:id])
     @user.destroy
 
     respond_to do |format|
@@ -162,32 +128,26 @@ class UsersController < ApplicationController
   #     PORTLETS DO USUARIO    #
   ##############################
   def mysolar
-    if current_user
-      @user = User.find(current_user.id)
-    end
+    @user = User.find(current_user.id) if current_user
   end
 
   ######################################
   # funcoes para verificacao de senhas #
   ######################################
   def pwd_recovery
-  	if !@user
-      @user = User.new
-    end
+    #  	if !@user
+    #      @user = User.new
+    #    end
 
-    #if !@user_session
-    #	@user_session = UserSession.new
-    #end
-    #render :action => pwd_recovery
     respond_to do |format|
-      format.html { render :layout => 'login'}# new.html.erb
+      format.html { render :layout => 'login'}
       format.xml  { render :xml => @user }
     end
   end
 
   def pwd_recovery_send
     #se existe usuario com esse cpf e email, recupera
-    user_find = User.find_by_cpf_and_email(params[:user][:cpf],params[:user][:email])
+    user_find = User.find_by_cpf_and_email(params[:user][:cpf], params[:user][:email])
 
     if user_find
       #gera nova senha

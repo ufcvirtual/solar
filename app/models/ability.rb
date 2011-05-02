@@ -35,18 +35,17 @@ class Ability
            GROUP BY t3.controller, t3.action, t2.per_id
            ORDER BY 1, 2;"
 
-      conn = ActiveRecord::Base.connection
-      permissoes = conn.select_all query
+      permissoes = ActiveRecord::Base.connection.select_all query
 
       # setando as permissoes
       permissoes.each do |permissao|
         permissao['objetos'] = (eval(permissao['objetos']) unless permissao['objetos'].nil?) || nil
         can permissao["action"].to_sym, permissao["controller"].capitalize.constantize do |classe|
           # verifica se o usuario esta tentando acessar um objeto permitido
-          permissao['objetos'].nil? || permissao['objetos'].include?(classe.id)# objetos permitidos sao listados em um array
+          permissao['objetos'].nil? || permissao['objetos'].include?(classe.id) # objetos permitidos sao listados em um array
         end
       end
-      
+
       # Permissões para usuário sem Profile
       can [:mysolar, :update, :update_photo], User, :id => user.id
       can :showoffersbyuser, Offer
@@ -55,6 +54,15 @@ class Ability
       # permissoes para usuarios nao logados
       can [:create, :pwd_recovery], User
     end
+
+
+
+
+    # testes - nao eh pra estar em producao
+#    can [:show, :access, :participants, :informations], CurriculumUnit
+
+
+
 
     # Users
 #    can [:create, :update, :mysolar, :update_photo, :pwd_recovery], User do |usuario|
@@ -78,4 +86,5 @@ class Ability
     #
     # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
   end
+
 end

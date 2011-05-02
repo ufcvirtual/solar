@@ -2,7 +2,7 @@ class CurriculumUnitsController < ApplicationController
 
   include CurriculumUnitsHelper
 
-#  load_and_authorize_resource
+  load_and_authorize_resource
 
   before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy, :access]
 
@@ -21,8 +21,6 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def show
-    @curriculum_unit = CurriculumUnit.find(params[:id])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @curriculum_unit }
@@ -30,8 +28,6 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def new
-    @curriculum_unit = CurriculumUnit.new
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @curriculum_unit }
@@ -39,12 +35,9 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def edit
-    @curriculum_unit = CurriculumUnit.find(params[:id])
   end
 
   def create
-    @curriculum_unit = CurriculumUnit.new(params[:user])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @curriculum_unit }
@@ -52,8 +45,6 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def update
-    @curriculum_unit = CurriculumUnit.find(params[:id])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @curriculum_unit }
@@ -61,7 +52,6 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def destroy
-    @curriculum_unit = CurriculumUnit.find(params[:id])
     @curriculum_unit.destroy
 
     respond_to do |format|
@@ -79,6 +69,9 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def participants
+
+#    authorize! :participants, @project
+
     #retorna perfil em que se pede matricula (~aluno)
     @student_profile = student_profile
 
