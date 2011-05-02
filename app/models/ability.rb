@@ -59,7 +59,8 @@ class Ability
 
 
     # testes - nao eh pra estar em producao
-#    can [:show, :access, :participants, :informations], CurriculumUnit
+    can [:show, :access, :participants, :informations], CurriculumUnit
+    can :manage, Allocation
 
 
 

@@ -1,4 +1,5 @@
 class UserSessionsController < ApplicationController
+
   layout 'login'
 
   before_filter :require_no_user, :only => [:index, :new, :create]

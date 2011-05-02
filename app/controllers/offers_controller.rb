@@ -19,8 +19,6 @@ class OffersController < ApplicationController
   end
 
   def show
-    @offer = Offer.find(params[:id])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @offer }
@@ -28,8 +26,6 @@ class OffersController < ApplicationController
   end
 
   def new
-    @offer = Offer.new
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @offer }
@@ -37,12 +33,9 @@ class OffersController < ApplicationController
   end
 
   def edit
-    @offer = Offer.find(params[:id])
   end
 
   def create
-    @offer = Offer.new(params[:user])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @offer }
@@ -50,8 +43,6 @@ class OffersController < ApplicationController
   end
 
   def update
-    @offer = Offer.find(params[:id])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @offer }
@@ -59,7 +50,6 @@ class OffersController < ApplicationController
   end
 
   def destroy
-    @offer = Offer.find(params[:id])
     @offer.destroy
 
     respond_to do |format|
@@ -126,7 +116,7 @@ class OffersController < ApplicationController
  LEFT OUTER JOIN courses c               ON of.courses_id = c.id
       INNER JOIN groups g                ON g.offers_id = of.id
       INNER JOIN allocation_tags atg     ON atg.groups_id = g.id
-           WHERE
+            WHERE
               (select enrollments.start from enrollments where of.id=enrollments.offers_id)<= current_date and
               (select enrollments.end from enrollments where of.id=enrollments.offers_id)>= current_date
               AND

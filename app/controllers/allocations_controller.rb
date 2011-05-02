@@ -1,5 +1,7 @@
 class AllocationsController < ApplicationController
 
+  load_and_authorize_resource
+
   def index
     #if current_user
     #  @user = Allocation.find(current_user.id)
@@ -13,8 +15,6 @@ class AllocationsController < ApplicationController
   end
 
   def show
-    @allocation = Allocation.find(params[:id])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @allocation }
@@ -22,8 +22,6 @@ class AllocationsController < ApplicationController
   end
 
   def new
-    @allocation = Allocation.new
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @allocation }
@@ -31,12 +29,9 @@ class AllocationsController < ApplicationController
   end
 
   def edit
-    @allocation = Allocation.find(params[:id])
   end
 
   def create
-    @allocation = Allocation.new(params[:user])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @allocation }
@@ -44,8 +39,6 @@ class AllocationsController < ApplicationController
   end
 
   def update
-    @allocation = Allocation.find(params[:id])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @allocation }
@@ -54,7 +47,6 @@ class AllocationsController < ApplicationController
 
   # remove matricula (alocacao)
   def destroy
-    @allocation = Allocation.find(params[:id])
     @allocation.destroy
 
     respond_to do |format|

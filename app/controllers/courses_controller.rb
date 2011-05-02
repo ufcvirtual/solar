@@ -1,5 +1,7 @@
 class CoursesController < ApplicationController
 
+  load_and_authorize_resource
+
   def index
     #if current_user
     #  @user = Course.find(current_user.id)
@@ -13,8 +15,6 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @course = Course.find(params[:id])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @course }
@@ -22,8 +22,6 @@ class CoursesController < ApplicationController
   end
 
   def new
-    @course = Course.new
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @course }
@@ -31,12 +29,9 @@ class CoursesController < ApplicationController
   end
 
   def edit
-    @course = Course.find(params[:id])
   end
 
   def create
-    @course = Course.new(params[:user])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @course }
@@ -44,8 +39,6 @@ class CoursesController < ApplicationController
   end
 
   def update
-    @course = Course.find(params[:id])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @course }
@@ -53,7 +46,6 @@ class CoursesController < ApplicationController
   end
 
   def destroy
-    @course = Course.find(params[:id])
     @course.destroy
 
     respond_to do |format|

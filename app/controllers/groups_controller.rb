@@ -1,5 +1,7 @@
 class GroupsController < ApplicationController
 
+  load_and_authorize_resource
+
   def index
     #if current_user
     #  @user = Group.find(current_user.id)
@@ -13,8 +15,6 @@ class GroupsController < ApplicationController
   end
 
   def show
-    @group = Group.find(params[:id])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @group }
@@ -22,8 +22,6 @@ class GroupsController < ApplicationController
   end
 
   def new
-    @group = Group.new
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @group }
@@ -31,12 +29,9 @@ class GroupsController < ApplicationController
   end
 
   def edit
-    @group = Group.find(params[:id])
   end
 
   def create
-    @group = Group.new(params[:user])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @group }
@@ -53,7 +48,6 @@ class GroupsController < ApplicationController
   end
 
   def destroy
-    @group = Group.find(params[:id])
     @group.destroy
 
     respond_to do |format|

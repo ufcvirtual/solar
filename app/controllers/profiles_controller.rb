@@ -1,5 +1,7 @@
 class ProfilesController < ApplicationController
 
+  load_and_authorize_resource
+
   def index
     #if current_user
     #  @user = Profile.find(current_user.id)
@@ -13,8 +15,6 @@ class ProfilesController < ApplicationController
   end
 
   def show
-    @profile = Profile.find(params[:id])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @profile }
@@ -22,8 +22,6 @@ class ProfilesController < ApplicationController
   end
 
   def new
-    @profile = Profile.new
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @profile }
@@ -31,12 +29,9 @@ class ProfilesController < ApplicationController
   end
 
   def edit
-    @profile = Profile.find(params[:id])
   end
 
   def create
-    @profile = Profile.new(params[:user])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @profile }
@@ -44,8 +39,6 @@ class ProfilesController < ApplicationController
   end
 
   def update
-    @profile = Profile.find(params[:id])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @profile }
@@ -53,7 +46,6 @@ class ProfilesController < ApplicationController
   end
 
   def destroy
-    @profile = Profile.find(params[:id])
     @profile.destroy
 
     respond_to do |format|

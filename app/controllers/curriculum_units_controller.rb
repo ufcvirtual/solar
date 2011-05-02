@@ -2,11 +2,11 @@ class CurriculumUnitsController < ApplicationController
 
   include CurriculumUnitsHelper
 
-  load_and_authorize_resource
-
   before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy, :access]
 
   before_filter :curriculum_data, :only => [:access, :informations, :participants]
+
+  load_and_authorize_resource
 
   def index
     #if current_user
@@ -69,9 +69,6 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def participants
-
-#    authorize! :participants, @project
-
     #retorna perfil em que se pede matricula (~aluno)
     @student_profile = student_profile
 

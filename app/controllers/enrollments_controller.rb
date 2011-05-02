@@ -1,5 +1,7 @@
 class EnrollmentsController < ApplicationController
 
+  load_and_authorize_resource
+
   def index
     #if current_user
     #  @user = Enrollment.find(current_user.id)
@@ -13,8 +15,6 @@ class EnrollmentsController < ApplicationController
   end
 
   def show
-    @enrollment = Enrollment.find(params[:id])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @enrollment }
@@ -22,8 +22,6 @@ class EnrollmentsController < ApplicationController
   end
 
   def new
-    @enrollment = Enrollment.new
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @enrollment }
@@ -31,12 +29,9 @@ class EnrollmentsController < ApplicationController
   end
 
   def edit
-    @enrollment = Enrollment.find(params[:id])
   end
 
   def create
-    @enrollment = Enrollment.new(params[:user])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @enrollment }
@@ -44,8 +39,6 @@ class EnrollmentsController < ApplicationController
   end
 
   def update
-    @enrollment = Enrollment.find(params[:id])
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @enrollment }
@@ -53,7 +46,6 @@ class EnrollmentsController < ApplicationController
   end
 
   def destroy
-    @enrollment = Enrollment.find(params[:id])
     @enrollment.destroy
 
     respond_to do |format|
