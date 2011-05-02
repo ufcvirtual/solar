@@ -7,12 +7,13 @@
     <div>
       
       <% if @lessons %>
-        tem aula...
+        <% @lessons.each do |lesson| %>
+          <%= label "lb_lesson", lesson.name, :onclick => "javascript:show_lesson('#{lesson.address}')", :class=>'enrollment_link' %><br/>
+        <% end %>
       <% else %>
-        tem aula não...
+        tem aula não... 
       <% end %>
 
-      <br/><br/><span><%= link_to 'clique aqui pra testar...' %></span>
     </div>
 
 </div>

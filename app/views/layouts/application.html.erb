@@ -11,6 +11,7 @@
     <%= javascript_include_tag "jquery.ui.datepicker-en-GB" %>
     <%= javascript_include_tag "jquery.ui.datepicker-pt-BR" %>
     <%= javascript_include_tag "chat.js" %>
+    <%= javascript_include_tag "lesson.js" %>
     <%= javascript_include_tag "user_form.js" %>
     <%= javascript_include_tag "mysolar.js" %>
     <%= javascript_include_tag "rails.js" %>
@@ -104,6 +105,7 @@
       <div id="mysolar_menu_accordion" style="z-index:10">
         <h3 class="mysolar_menu_title"><a href="#">Menu 1</a></h3>
         <div class="mysolar_menu_list">
+
           <% curriculum_unit_id = @curriculum_unit.nil? ? nil : @curriculum_unit.id %>
           <%= link_to 'Participantes', :controller => :curriculum_units, :action => :participants,
             :id => curriculum_unit_id
@@ -116,6 +118,7 @@
           <%= link_to "Aulas", :controller => 'lesson', :action => 'list',
             :id => curriculum_unit_id
           %>
+
         </div>
         <h3 class="mysolar_menu_title"><a href="#">Menu 2</a></h3>
         <div class="mysolar_menu_list">
@@ -181,5 +184,12 @@
         </div>
       </div>
     </div>
+
+    <!--  Aulas ------------------------>
+    <div id="lesson_area" class="lesson_area" style="display:none">
+      <div id="lesson_min_button" onclick="javascript:hide_lesson()">X</div>
+      <%= render '/lessons/show.erb' %>
+    </div>
+    
   </body>
 </html>

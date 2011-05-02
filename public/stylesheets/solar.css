@@ -983,3 +983,60 @@ div.alter_photo_text {
     display: table;
     max-width: 775px;
 }
+
+/* acesso a aulas */
+.lesson_area {
+    background-color: #E7EDED;
+    border: 1px solid #0658B5;
+    padding: 0px;
+    margin:  3px;
+    width:   98%;
+    height:  92%;
+    top:  7%;
+    left: 1%;
+    position: absolute;
+    z-index:  1000;
+}
+#lesson_min_button {
+    /*background:url('/images/solar_button_arrow_gray.png') no-repeat right bottom;*/
+    background-color: #8aafbf;
+    display: inline-block;
+    width:  18px;
+    height: 18px;
+    position: relative;
+    float: right;
+    /*top:   -20px;*/
+    margin:  0px;
+    margin-right: 1px;
+    margin-top: 1px;
+    cursor: pointer;
+}
+#lesson_content, #lesson_address {
+    width:  100%;
+    height: 100%;
+    padding: 0px;
+    margin:  0px;
+    border:  1px solid #DEDEDE;
+}
+#lesson_address {
+    position: relative;
+    border: 0px;
+    height: 90%;    
+}
+#lesson_content_header {
+    background-color: #dbe5e8;
+    width:  auto;
+    height: 22px;
+    padding: 0px;
+    margin:  1px;
+    padding: 3px;
+}
+.lesson_frame {
+    position: relative;
+    width:  99.8%;
+    left:    0.1%;
+    height: 99.8%;
+    border:   0px;
+    margin:   0px;
+    padding:  0px;
+}
