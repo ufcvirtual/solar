@@ -7,9 +7,13 @@
     <div>
       
       <% if @lessons %>
+        <% curriculum_unit_id = @curriculum_unit.id %>
         <% @lessons.each do |lesson| %>
-          <%= label "lb_lesson", lesson.name, :onclick => "javascript:show_lesson('#{lesson.address}')", :class=>'enrollment_link' %><br/>
+          <%= link_to lesson.name, {:controller => "lessons", :action => "list", :id => curriculum_unit_id, :lesson_id => lesson.lessonid}, :class=>'enrollment_link' %>
+          <%= l lesson.start %> - <%= l lesson.end %>
+          <br/>
         <% end %>
+          
       <% else %>
         tem aula não... 
       <% end %>
@@ -17,3 +21,14 @@
     </div>
 
 </div>
+
+<% # abre aula caso alguma tenha sido clicada %>
+<% lesson_opened = @lesson %>
+<%  if !lesson_opened.nil? %>
+  <script type="text/javascript">
+    function lesson_load() {
+      show_lesson('<%=lesson_opened.address%>');
+    }
+    window.onload = lesson_load;
+  </script>
+<% end %>

@@ -1,6 +1,16 @@
+<div id="lesson_content_header">
+  cabeçalho - aulas pra aparecer:
+  <% lessons = session[:lessons].nil? ? nil : session[:lessons] %>
+
+  <% if !lessons.nil? %>
+    <% lessons.each do |l| %>
+        <%= l.lessonid.to_s + " " %>
+    <% end %>
+     - aula atual:
+    <%= session[:opened_lesson] unless session[:opened_lesson].nil?%>
+  <% end %>
+</div>
+
 <div id="lesson_content">
-  <div id="lesson_content_header">
-    cabeçalho
-  </div>
   <div id="lesson_address"></div>
 </div>

@@ -8,8 +8,18 @@ class LessonsController < ApplicationController
   end
 
   def list
-    # localiza unidade curricular
-    @curriculum_unit = CurriculumUnit.find(params[:id])
+    if (params[:id])
+      # localiza unidade curricular
+      @curriculum_unit = CurriculumUnit.find(params[:id])
+    else
+      return
+    end
+
+    # recebe id da aula para exibicao
+    @lesson = params[:lesson_id].nil? ? nil : Lesson.find(params[:lesson_id])
+
+    # guarda em sessao id da aula aberta
+    session[:opened_lesson] = @lesson.nil? ? nil : @lesson.id
 
     # pegando dados da sessao e nao da url
     groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
@@ -38,6 +48,9 @@ class LessonsController < ApplicationController
                     ORDER BY L.order) as query_group"
 
     @lessons = Lesson.find_by_sql(query_lessons)
+
+    # guarda lista de aulas para navegacao
+    session[:lessons] = @lessons
   end
   
 end

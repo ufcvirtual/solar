@@ -991,8 +991,9 @@ div.alter_photo_text {
     padding: 0px;
     margin:  3px;
     width:   98%;
-    height:  92%;
-    top:  7%;
+    /*height:  92%;top:  7%;*/
+    height:  96%;
+    top:  2%;
     left: 1%;
     position: absolute;
     z-index:  1000;
@@ -1013,15 +1014,14 @@ div.alter_photo_text {
 }
 #lesson_content, #lesson_address {
     width:  100%;
-    height: 100%;
+    height: 90%;
     padding: 0px;
-    margin:  0px;
     border:  1px solid #DEDEDE;
 }
 #lesson_address {
     position: relative;
-    border: 0px;
-    height: 90%;    
+    border:  0px;
+    height: 100%;
 }
 #lesson_content_header {
     background-color: #dbe5e8;
