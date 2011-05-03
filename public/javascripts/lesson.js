@@ -7,8 +7,10 @@ function show_lesson (address){
 
         //remove pra nao ficar duplicado caso alguma ja tenha sido aberta
         $("#lesson_address").remove();
-        $("#lesson_content").append("<div id='lesson_address'></div>");
-        $("#lesson_address").append("<iframe class=lesson_frame src='"+address+"'></iframe>");
+        //$("#lesson_content").append("<div id='lesson_address'></div>");
+        //$("#lesson_address").append("<iframe class=lesson_frame src='"+address+"'></iframe>");
+
+        $("#lesson_content").append("<iframe class=lesson_frame src='"+address+"'></iframe>");
     }
 }
 
