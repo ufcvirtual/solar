@@ -151,7 +151,8 @@
   resume: "Resumo"
   semester_date: "Período"
   passing_grade: "Média"
-
+  
+  curriculum_unit_information_title: "Informações da Unidade Curicular"
   curriculum_unit_responsible: "Responsáveis"
   curriculum_unit_participants: "Participantes da turma"
   curriculum_access_alert: "Número de abas excedido. Por favor, feche uma aba para abrir uma nova."

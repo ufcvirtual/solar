@@ -146,7 +146,8 @@ en:
   resume: Resume
   semester_date: Date
   passing_grade: Passing Grade
-
+  
+  curriculum_unit_information_title: "Curriculum Unit Informartion"
   curriculum_unit_responsible: "Responsible"
   curriculum_unit_participants: "Participants"
   curriculum_access_alert: "Number of tabs exceeded. Please close a tab to open a new one."
