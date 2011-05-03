@@ -4,26 +4,6 @@ Funcionalidade: Exibir informacoes do curso
   Eu quero acessar as informacoes basicas do curso
 
 Contexto:
-    Dado que tenho "profiles"
-        | id | name              | student | class_responsible |
-        |  1 | ALUNO             | true    | false             |
-        |  2 | PROFESSOR TITULAR | false   | true              |
-        |  3 | TUTOR             | false   | true              |
-    Dado que tenho "curriculum_unit_types"
-        | id | description              | allows_enrollment |
-        | 1  | Graduação Presencial     | TRUE              |
-        | 2  | Grad. Semipresencial     | FALSE             |
-        | 3  | Curso Livre              | TRUE              |
-        | 4  | Curso de Extensão        | TRUE              |
-        | 5  | Pós Grad. Presencial     | TRUE              |
-        | 6  | Pós Grad. Semipresencial | FALSE             |
-    Dado que tenho "curriculum_units"
-        | id | name                     | code  | curriculum_unit_types_id | syllabus           | objectives        | prerequisites     | resume            | passing_grade |
-        | 1  | Introducao a Linguistica | RM404 | 3                        | Problemas formais  | Problemas formais | Problemas formais | Problemas formais | 7.0           |
-        | 2  | Teoria da Literatura I   | RM405 | 1                        | Problemas formais  | Problemas formais | Problemas formais | Problemas formais | 7.0           |
-        | 3  | Quimica I                | RM301 | 2                        | Problemas formais  | Problemas formais | Problemas formais | Problemas formais | 7.0           |
-        | 4  | Semipresencial sm nvista | TS101 | 2                        | Problemas formais  | Problemas formais | Problemas formais | Problemas formais | 7.0           |
-        | 5  | Literatura Brasileira I  | RM414 | 5                        | Problemas formais  | Problemas formais | Problemas formais | Problemas formais | 7.0           |
     Dado que tenho "offers"
         | id | curriculum_units_id | courses_id | semester | start      | end        |
         | 1  | 1                   |            | 2011.1   | 2011-06-01 | 2021-12-01 |
@@ -53,17 +33,17 @@ Cenário: Acessar pagina de informacoes do curso
         Então eu deverei ver "Informacoes"
     Quando eu clicar no link "Informacoes"
         Então eu deverei ver "Ementa"
-        E eu deverei ver "Problemas formais"
+        E eu deverei ver "Como Deleuze eloquentemente mostrou, o inicio da atividade geral de formacao de conceitos obstaculiza a apreciacao da importancia dos paradigmas filosoficos."
         E eu deverei ver "Objetivos"
-        E eu deverei ver "Problemas formais"
+        E eu deverei ver "Do mesmo modo, a indeterminao contnua de distintas formas de fenmeno..."
         E eu deverei ver "Pré-requisitos"
-        E eu deverei ver "Problemas formais"
+        E eu deverei ver "Todavia, a consolidacao das estruturas psico-lgicas assume..."
         E eu deverei ver "Resumo"
-        E eu deverei ver "Problemas formais"
+        E eu deverei ver "Pensando mais a longo prazo, a percepo das dificuldades nao causa impacto indireto na reavaliacao da formula da ressonancia racionalista."
         E eu deverei ver "Período"
         E eu deverei ver "01/06/2011 - 01/12/2021"
         E eu deverei ver "Média"
         E eu deverei ver "7"
         E eu deverei ver "Responsáveis"
-        E eu deverei ver "Ricardo Palacio (PROFESSOR TITULAR)"
-        E eu deverei ver "Usuario Sobrenome (TUTOR)"
+        E eu deverei ver "Ricardo Palacio (Prof. Titular)"
+        E eu deverei ver "Usuario Sobrenome (Tutor)"

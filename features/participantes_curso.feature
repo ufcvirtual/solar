@@ -4,26 +4,6 @@ Funcionalidade: Exibir participantes do curso
   Eu quero visualizar os participantes do curso
 
 Contexto:
-    Dado que tenho "profiles"
-        | id | name              | student | class_responsible |
-        |  1 | ALUNO             | true    | false             |
-        |  2 | PROFESSOR TITULAR | false   | true              |
-        |  3 | TUTOR             | false   | true              |
-    Dado que tenho "curriculum_unit_types"
-        | id | description              | allows_enrollment |
-        | 1  | Graduação Presencial     | TRUE              |
-        | 2  | Grad. Semipresencial     | FALSE             |
-        | 3  | Curso Livre              | TRUE              |
-        | 4  | Curso de Extensão        | TRUE              |
-        | 5  | Pós Grad. Presencial     | TRUE              |
-        | 6  | Pós Grad. Semipresencial | FALSE             |
-    Dado que tenho "curriculum_units"
-        | id | name                     | code  | curriculum_unit_types_id | syllabus           | objectives        | prerequisites     | resume            | passing_grade |
-        | 1  | Introducao a Linguistica | RM404 | 3                        | Problemas formais  | Problemas formais | Problemas formais | Problemas formais | 7.0           |
-        | 2  | Teoria da Literatura I   | RM405 | 1                        | Problemas formais  | Problemas formais | Problemas formais | Problemas formais | 7.0           |
-        | 3  | Quimica I                | RM301 | 2                        | Problemas formais  | Problemas formais | Problemas formais | Problemas formais | 7.0           |
-        | 4  | Semipresencial sm nvista | TS101 | 2                        | Problemas formais  | Problemas formais | Problemas formais | Problemas formais | 7.0           |
-        | 5  | Literatura Brasileira I  | RM414 | 5                        | Problemas formais  | Problemas formais | Problemas formais | Problemas formais | 7.0           |
     Dado que tenho "offers"
         | id | curriculum_units_id | courses_id | semester | start      | end        |
         | 1  | 1                   |            | 2011.1   | 2011-06-01 | 2021-12-01 |

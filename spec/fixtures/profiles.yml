@@ -1,0 +1,20 @@
+# cadastro de profiles
+
+aluno:
+  id: 1
+  name: 'Aluno'
+  student: TRUE
+
+titular:
+  id: 2
+  name: 'Prof. Titular'
+  class_responsible: TRUE
+
+tutor:
+  id: 3
+  name: 'Tutor'
+  class_responsible: TRUE
+
+t_presencial:
+  id: 4
+  name: 'Tutor Presencial'

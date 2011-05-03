@@ -6,5 +6,5 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
-require File.join(Rails.root.to_s,'db',Rails.env+'.rb')
+require File.join(Rails.root.to_s,'db',Rails.env + '.rb')
 
