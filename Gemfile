@@ -18,9 +18,6 @@ gem 'cancan'
 # Gem usada para personalizar data,moeda etc para padroes brasileiros
 gem 'brazilian-rails'
 gem 'capybara'
-gem 'cucumber'
-gem 'cucumber-rails'
-gem 'rspec'
 gem 'factory_girl_rails'
 gem 'chronic'
 # para uso da gem authlogic (autenticacao)
@@ -49,11 +46,12 @@ gem 'paperclip', :git => 'git://github.com/thoughtbot/paperclip.git'
 # and rake tasks are available in development mode:
 group :development, :test do
   gem 'webrat'
-	gem 'capybara'
+  gem 'capybara'
   gem 'database_cleaner'
-  gem 'cucumber-rails'
   gem 'cucumber'
-  gem 'rspec-rails'
+  gem 'cucumber-rails'
+  gem 'rspec','~> 2.5.0'
+  gem 'rspec-rails','~> 2.5.0'
   gem 'spork'
   gem 'launchy'    # So you can do Then show me the page
 end
