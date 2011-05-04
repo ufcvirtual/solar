@@ -34,7 +34,7 @@ Cenário: Acessar pagina de informacoes do curso
     Então eu deverei ver "Participantes"
         Quando eu clicar no link "Participantes"
     Então eu deverei ver "Responsáveis"
-        E eu deverei ver "Usuario Sobrenome"
+        E eu deverei ver "Usuario do Sistema"
         E eu deverei ver "Participantes da turma"
         E eu deverei ver "Ricardo Palacio"
         E eu deverei ver "Bezerra"

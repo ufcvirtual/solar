@@ -36,7 +36,6 @@ Contexto:
         | 2  | 2         |
         | 3  | 3         |
         | 4  | 5         |
-
     Dado que tenho "allocations"
         | users_id | allocation_tags_id | profiles_id | status |
         | 1        | 1                  | 1           | 1      |

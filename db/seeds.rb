@@ -6,5 +6,7 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
-require File.join(Rails.root.to_s,'db',Rails.env + '.rb')
+  # pre-requisito para executar os outros arquivos de seeds
+  require File.join(Rails.root.to_s,'db', 'production.rb')
+  require File.join(Rails.root.to_s,'db', 'development.rb') if Rails.env == 'development'
 

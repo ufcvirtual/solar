@@ -2,19 +2,23 @@
 
 aluno:
   id: 1
-  name: 'Aluno'
+  name: Aluno
   student: TRUE
 
 titular:
   id: 2
-  name: 'Prof. Titular'
+  name: Prof. Titular
   class_responsible: TRUE
 
 tutor:
   id: 3
-  name: 'Tutor'
+  name: Tutor
   class_responsible: TRUE
 
 t_presencial:
   id: 4
-  name: 'Tutor Presencial'
+  name: Tutor Presencial
+
+c_disciplina:
+  id: 5
+  name: Coordenador de Disciplina

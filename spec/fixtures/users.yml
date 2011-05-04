@@ -5,7 +5,7 @@ user:
   id: 1
   login: user
   email: user@user.com
-  name: Usuario Sobrenome
+  name: Usuario do Sistema
   cpf: 43463518678
   birthdate: 2005-03-02
   gender: true
@@ -46,6 +46,7 @@ palacio:
   site: timao.com
   crypted_password: bdfbae109d4523732b89e3fd2d248ed7fab97425
 
+# senha: user222
 hoog:
   id: 3
   login: dexter
@@ -72,6 +73,7 @@ hoog:
   site: timao.com
   crypted_password: bdfbae109d4523732b89e3fd2d248ed7fab97425
 
+# senha: user222
 ariovaldo:
   id: 4
   login: ariovaldo
