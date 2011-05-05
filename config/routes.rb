@@ -1,5 +1,7 @@
 Solar::Application.routes.draw do |map|
 
+  get "pages/index"
+
   get "access_control/index"
   get "users/mysolar"
   get "user_sessions/new"
@@ -35,6 +37,7 @@ Solar::Application.routes.draw do |map|
   # Note: This route will make all actions in every controller accessible via GET requests.
   match ':controller(/:action(/:id(.:format)))'
 
-  root :to => 'user_sessions#new'
-
+  #root :to => 'user_sessions#new'
+  root :to => 'pages#index'
+    
 end

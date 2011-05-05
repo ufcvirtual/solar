@@ -1,0 +1,213 @@
+#dimmed_div{
+	display:none;
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+	z-index:15;
+    background-color:#000;
+}
+
+#lesson_content, #lessonf {
+	display:none;
+	position:absolute;
+	margin:  0;
+	width:96%;
+	height:94%;
+	left:1%;
+	top:3%;
+	border:   1px solid #555;
+	background-color: #FFF;
+	z-index:20;
+}
+#lessonf {
+        position: relative;
+        display: block;
+        left: 0px;        
+	width: 99.8%;
+        border: none;
+}
+
+#lesson_external_div {
+	/*position: absolute;
+	margin:   0;
+	width:    1px;
+	height:   1px;
+	border:   0px;
+	left:     0;
+	top:      0;*/
+	z-index:  -10;
+}
+
+#close_button {
+    position    : absolute;
+	top         : 7%;
+	left        : 97%;
+	margin-left : -22px;
+	margin-top  : -24px;
+
+	width       : 22px;
+	height      : 22px;
+
+	border      : 0px;
+	cursor      : pointer;
+	background-image: url('../images/lesson_close.png');
+	background-position:0px 0px;
+	font-size   : 3px;
+	z-index     :  45;
+}
+
+#close_button:Hover {
+	cursor      : pointer;
+	background-position: 22px 0px;
+}
+
+#min_button {
+    position    : absolute;
+	top         : 7%;
+	left        : 97%;
+	margin-left : -46px;
+	margin-top  : -24px;
+
+	width       : 22px;
+	height      : 22px;
+
+	border      : 0px;
+	cursor      : pointer;
+        background-image: url('../images/lesson_minimize.png');
+	font-size   : 3px;
+	z-index     :  25;
+}
+
+#min_button:Hover {
+	cursor      : pointer;
+	background-position: 22px 0px;
+}
+
+#close_tab_button {
+    position    : absolute;
+	top         : 4px;
+	right       : 4px;
+
+	width       : 22px;
+	height      : 22px;
+
+	border      : 0px;
+	cursor      : pointer;
+	background-image: url('../images/lesson_close.png');
+	background-position:0px 0px;
+	font-size   : xx-small;
+	z-index     :  30;
+}
+
+#min_tab {
+	display:none;
+	position:absolute;
+	bottom:0px;
+	right: 190px;
+        /*33px;*/
+	height:19px;
+	width:200px;
+	z-index:25;
+	background-color:#F82;
+	color: #000;
+	font-family: 'Myriad Pro','Trebuchet',Arial;
+        font-weight: lighter;
+        font-size: 11pt;
+	padding-top: 1px;
+	cursor:pointer;
+}
+
+#close_tab_button:Hover {
+	cursor      : pointer;
+	background-position: 22px 0px;
+}
+
+
+#frame_content {
+	position: absolute;
+	margin:   0;
+	width:    100%;
+	height:   100%;
+	border:   0px;
+	left:     0;
+	top:      0;
+	z-index:  10;
+}
+
+.frame_navegation {
+	position: absolute;
+	margin:   0;
+	width:    100%;
+	height:   100%;
+	border:   0px;
+	left:     0;
+	top:      0;
+	z-index:  10;
+}
+
+/* acesso a aulas */
+/*
+.lesson_area {
+    background-color: #eee;
+    border: 1px solid #ddd;
+    padding: 0px;
+    margin:  0px;
+    width:   98%;
+    height:  96%;
+    top:  2%;
+    left: 1%;
+    position: absolute;
+    z-index:  1000;
+}
+#lesson_min_button {
+    background-color: #8aafbf;
+    display: inline-block;
+    width:  18px;
+    height: 18px;
+    position: relative;
+    float: right;
+    margin:   0px;
+    margin-right: 1px;
+    margin-top: 1px;
+    cursor: pointer;
+}*/
+/*
+#lesson_address {
+    width:  99.8%;
+    height: 90%;
+    padding: 0px;
+    margin:  0px;
+    border:  1px solid #DEDEDE;
+    position: relative;
+    border:  0px;
+    height: 100%;
+    width:  100%;
+}*/
+#lesson_content_header, #lesson_header {
+    background-color: #dee8ec;
+    font-family: Trebuchet;
+    font-size: 11px;
+    color: #000;
+    width:  auto;
+    height: 16px;
+    padding: 0px;
+    margin:  1px;
+    padding: 3px;
+}
+#lesson_header {
+    background-color: #1d4786;
+    font-size: 12px;
+    color: #fff;
+}
+/*
+.lesson_frame {
+    position: relative;
+    width:  99.8%;
+    left:    0.1%;
+    height: 99.8%;
+    border:   0px;
+    margin:   0px;
+    padding:  0px;
+}*/
