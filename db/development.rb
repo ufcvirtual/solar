@@ -1,32 +1,4 @@
-#require 'active_record/fixtures.rb'
-
 puts "Development Seed"
-
-#puts "Truncando tabelas"
-#
-#Allocation.delete_all
-#AllocationTag.delete_all
-#Permission.delete_all
-#Resource.delete_all
-#Profile.delete_all
-#Group.delete_all
-#Enrollment.delete_all
-#Offer.delete_all
-#CurriculumUnit.delete_all
-#CurriculumUnitType.delete_all
-#Course.delete_all
-#PersonalConfiguration.delete_all
-#User.delete_all
-#
-#puts "Executando fixtures"
-#
-#Fixtures.reset_cache
-#fixtures_folder = File.join(::Rails.root.to_s, 'spec', 'fixtures')
-#fixtures = Dir[File.join(fixtures_folder, '*.yml')].map {|f| File.basename(f, '.yml') }
-#
-#puts "  - Executando fixtures: #{fixtures}"
-#
-#Fixtures.create_fixtures(fixtures_folder, fixtures)
 
 puts "Criando registros de usuarios"
 
@@ -58,81 +30,7 @@ coordenador_disciplina = User.new :login => 'coorddisc', :email => 'coord@solar.
 coordenador_disciplina.password = '123456'
 coordenador_disciplina.save
 
-#puts "Criando cursos"
-#
-#courses = Course.create([
-#	{ :name => 'Letras Portugues', :code => 'LLPT' },
-#	{ :name => 'Licenciatura em Quimica', :code => 'LQUIM' }
-#])
-
-#curriculum_unit_types = CurriculumUnitType.create([
-#	{ :description => 'Curso de Graduacao Presencial', :allows_enrollment => TRUE, :icon_name => 'icon_type_pres_underg.png' },
-#	{ :description => 'Curso de Graduacao a Distancia', :allows_enrollment => FALSE, :icon_name => 'icon_type_dist_underg.png' },
-#	{ :description => 'Curso Livre', :allows_enrollment => TRUE, :icon_name => 'icon_type_free_course.png' },
-#	{ :description => 'Curso de Extensao', :allows_enrollment => TRUE, :icon_name => 'icon_type_ext_course.png' },
-#	{ :description => 'Curso de Pos-Graduacao Presencial', :allows_enrollment => TRUE, :icon_name => 'icon_type_pres_grad.png' },
-#	{ :description => 'Curso de Pos-Graduacao a Distancia', :allows_enrollment => FALSE, :icon_name => 'icon_type_dist_grad.png' }
-#])
-
-#resume = 'Pensando mais a longo prazo, a percepo das dificuldades nao causa impacto indireto na reavaliacao da formula da ressonancia racionalista.'
-#objectives = 'Do mesmo modo, a indeterminao contnua de distintas formas de fenmeno...'
-#prerequisites = 'Todavia, a consolidacao das estruturas psico-lgicas assume...'
-#syllabus = 'Como Deleuze eloquentemente mostrou, o inicio da atividade geral de formacao de conceitos obstaculiza a apreciacao da importancia dos paradigmas filosoficos. '
-#passing_grade = 7.0
-#
-#curriculum_units = CurriculumUnit.create([
-#	{:curriculum_unit_types_id => 3, :name => 'Introducao a Linguistica', :code => 'RM404', :resume => resume, :objectives => objectives, :prerequisites => prerequisites, :syllabus => syllabus, :passing_grade => passing_grade},
-#	{:curriculum_unit_types_id => 1, :name => 'Teoria da Literatura I', :code => 'RM405', :resume => resume, :objectives => objectives, :prerequisites => prerequisites, :syllabus => syllabus, :passing_grade => passing_grade},
-#	{:curriculum_unit_types_id => 2, :name => 'Quimica I', :code => 'RM301', :resume => resume, :objectives => objectives, :prerequisites => prerequisites, :syllabus => syllabus, :passing_grade => passing_grade},
-#	{:curriculum_unit_types_id => 2, :name => 'Semipresencial sm nvista', :code => 'TS101', :resume => resume, :objectives => objectives, :prerequisites => prerequisites, :syllabus => syllabus, :passing_grade => passing_grade}
-#])
-
-#profiles = Profile.create([
-#	{:name => 'Aluno', :student => TRUE},
-#	{:name => 'Prof. Titular', :class_responsible => TRUE},
-#	{:name => 'Tutor', :class_responsible => TRUE},
-#	{:name => 'Tutor Presencial'},
-#	{:name => 'Coordenador de Disciplina'}
-#])
-
-#resources = Resource.create([
-#	{:controller => 'user', :action => 'create', :description => 'Incluir novos usuarios no sistema'},
-#	{:controller => 'user', :action => 'update', :description => 'Alteracao dos dados do usuario'},
-#	{:controller => 'user', :action => 'mysolar', :description => 'Lista dos Portlest/Pagina inicial'},
-#	{:controller => 'user', :action => 'update_photo', :description => 'Trocar foto'},
-#	{:controller => 'user', :action => 'pwd_recovery', :description => 'Recuperar Senha'},
-#	{:controller => 'offer', :action => 'show', :description => 'Visualizacao de ofertas'},
-#	{:controller => 'offer', :action => 'update', :description => 'Edicao de ofertas'},
-#	{:controller => 'offer', :action => 'showoffersbyuser', :description => 'Exibe oferta atraves de busca'},
-#	{:controller => 'group', :action => 'show', :description => 'Visualizar turmas'},
-#	{:controller => 'group', :action => 'update', :description => 'Editar turmas'},
-#
-## novos controllers
-##10
-#  {:controller => 'CurriculumUnit', :action => 'access', :description => 'Acessar Unidade Curricular'},
-#  {:controller => 'CurriculumUnit', :action => 'participants', :description => 'Listar Participantes de uma Unidade Curricular'},
-#  {:controller => 'CurriculumUnit', :action => 'information', :description => 'Listar Informacoes de uma Unidade Curricular'},
-#  {:controller => 'Allocation', :action => 'cancel', :description => 'Cancelar Matricula'},
-#  {:controller => 'Allocation', :action => 'reactivate', :description => 'Pedir Reativacao de Matricula'},
-#  {:controller => 'Allocation', :action => 'send_request', :description => 'Pedir Matricula'},
-#  {:controller => 'Allocation', :action => 'cancel_request', :description => 'Cancelar Pedido de Matricula'}
-##  {:controller => '', :action => '', :description => ''},
-#
-#])
-#
-#permissions = Permission.create([
-#	{:profiles_id => 1, :resources_id => resources[5].id, :per_id => true},
-#	{:profiles_id => 1, :resources_id => resources[6].id, :per_id => true},
-#	{:profiles_id => 1, :resources_id => resources[7].id, :per_id => true},
-#	{:profiles_id => 1, :resources_id => resources[8].id, :per_id => true},
-#	{:profiles_id => 1, :resources_id => resources[9].id, :per_id => true}
-#])
-
-#courses = Course.create([
-#	{:id => 1,  :name => 'Letras Portugues', :code => 'LLPT' },
-#	{:id => 2,  :name => 'Licenciatura em Quimica', :code => 'LQUIM' }
-#])
-
+# courses
 [
 	{:id => 1,  :name => 'Letras Portugues', :code => 'LLPT' },
 	{:id => 2,  :name => 'Licenciatura em Quimica', :code => 'LQUIM' }
@@ -142,43 +40,19 @@ coordenador_disciplina.save
     end
 end
 
-offers = Offer.create([
-	{:curriculum_units_id => 3, :courses_id => 1, :semester => '2011.1', :start => '2011-02-01', :end => '2021-03-30'},
-	{:curriculum_units_id => 2, :courses_id => 1, :semester => '2011.1', :start => '2011-03-10', :end => '2021-04-01'},
-	{:curriculum_units_id => 4, :courses_id => 2, :semester => '2011.1', :start => '2011-03-10', :end => '2021-04-01'}
-])
-
 enrollments = Enrollment.create([
-	{:offers_id => offers[0].id, :start => '2011-01-01', :end => '2021-03-02'},
-	{:offers_id => offers[1].id, :start => '2011-01-01', :end => '2021-03-02'},
-	{:offers_id => offers[2].id, :start => '2011-01-01', :end => '2021-03-02'}
+	{:offers_id => 1, :start => '2011-01-01', :end => '2021-03-02'},
+	{:offers_id => 2, :start => '2011-01-01', :end => '2021-03-02'},
+	{:offers_id => 3, :start => '2011-01-01', :end => '2021-03-02'},
+  {:offers_id => 4, :start => '2011-01-01', :end => '2021-03-02'},
+  {:offers_id => 5, :start => '2011-01-01', :end => '2021-03-02'}
 ])
-
-groups = Group.create([
-	{:offers_id => offers[0].id, :code => 'FOR', :status => TRUE},
-	{:offers_id => offers[1].id, :code => 'CAU-A', :status => TRUE},
-	{:offers_id => offers[2].id, :code => 'CAU-B', :status => TRUE}
-])
-
-[
-	{:id => 1, :groups_id => groups[0].id},
-	{:id => 2, :groups_id => groups[1].id},
-	{:id => 3, :groups_id => groups[2].id},
-	{:id => 4, :offers_id => offers[0].id},
-	{:id => 5, :offers_id => offers[1].id},
-	{:id => 6, :offers_id => offers[2].id},
-	{:id => 7, :curriculum_units_id => 1},
-	{:id => 8, :curriculum_units_id => 1}
-].each do |allocation|
-  AllocationTag.create allocation do |a|
-    a.id = allocation[:id]
-  end
-end
 
 allocations = Allocation.create([
 	{:users_id => 1, :allocation_tags_id => 1, :profiles_id => 1, :status => 1},
 	{:users_id => 1, :allocation_tags_id => 2, :profiles_id => 1, :status => 1},
 	{:users_id => 1, :allocation_tags_id => 3, :profiles_id => 1, :status => 1},
+  {:users_id => 1, :allocation_tags_id => 9, :profiles_id => 1, :status => 0},
 
 	{:users_id => aluno1.id, :allocation_tags_id => 1, :profiles_id => 1, :status => 1},
 	{:users_id => aluno1.id, :allocation_tags_id => 2, :profiles_id => 1, :status => 1},
@@ -202,5 +76,5 @@ allocations = Allocation.create([
 	{:users_id => prof.id, :allocation_tags_id => 5, :profiles_id => 2, :status => 1},
 	{:users_id => prof.id, :allocation_tags_id => 6, :profiles_id => 2, :status => 1},
 
-	{:users_id => coordenador_disciplina.id, :allocation_tags_id => 8, :profiles_id => 5, :status => 1},
+	{:users_id => coordenador_disciplina.id, :allocation_tags_id => 8, :profiles_id => 5, :status => 1}
 ])

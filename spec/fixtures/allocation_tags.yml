@@ -1,0 +1,39 @@
+#Allocation tags
+
+al1:
+  id: 1
+  groups_id: 1
+
+al2:
+  id: 2
+  groups_id: 2
+
+al3:
+  id: 3
+  groups_id: 3
+
+# introducao a linguistica
+al4:
+  id: 4
+  offers_id: 1
+
+al5:
+  id: 5
+  offers_id: 2
+
+al6:
+  id: 6
+  offers_id: 3
+
+al7:
+  id: 7
+  curriculum_units_id: 1
+
+al8:
+  id: 8
+  curriculum_units_id: 1
+
+# literatura brasileria I
+al9:
+  id: 9
+  groups_id: 5

@@ -1,0 +1,31 @@
+# groups
+
+g1:
+  id: 1
+  offers_id: 1
+  code: 'FOR'
+  status: TRUE
+
+g2:
+  id: 2
+  offers_id: 2
+  code: 'CAU-A'
+  status: TRUE
+
+g3:
+  id: 3
+  offers_id: 3
+  code: 'CAU-B'
+  status: TRUE
+
+g4:
+  id: 4
+  offers_id: 4
+  code: 'FOR'
+  status: TRUE
+
+g5:
+  id: 5
+  offers_id: 5
+  code: 'FOR'
+  status: TRUE

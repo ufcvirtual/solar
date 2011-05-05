@@ -46,6 +46,6 @@ r4:
 
 r5:
   id: 5
+  curriculum_unit_types_id: 5
   name: Literatura Brasileira I
   code: RM414
-  curriculum_unit_types_id: 5
