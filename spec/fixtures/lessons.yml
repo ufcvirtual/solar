@@ -1,0 +1,25 @@
+#lessons
+
+pag_ufc:
+  id: 1
+  users_id: 1
+  allocation_tags_id: 1
+  name: aula 1 pag ufc
+  address: http://www.uol.com.br
+  type_lesson: 1
+  order: 1
+  status: 1
+  start: '2011-03-01'
+  end: '2021-12-01'
+
+pag_uol:
+  id: 2
+  users_id: 1
+  allocation_tags_id: 1
+  name: aula 2 pag uol
+  address: 'http://opovo.uol.com.br'
+  type_lesson: 1
+  order: 2
+  status: 1
+  start: '2011-03-01'
+  end: '2021-12-01'
