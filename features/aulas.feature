@@ -52,7 +52,7 @@ Contexto:
         | 1  | 1        | 1                  | aula 1 pag ufc | http://www.uol.com.br   | 1           | 1     | 1      | 2011-03-01 | 2021-12-01 |
         | 2  | 1        | 1                  | aula 2 pag uol | http://opovo.uol.com.br | 1           | 2     | 1      | 2011-03-01 | 2021-12-01 |
 
-@wip
+
 Cenário: Exibir aulas do curso
     Dado que estou logado com o usuario "user" e com a senha "user123"
         E que estou em "Meu Solar"
@@ -62,13 +62,13 @@ Cenário: Exibir aulas do curso
     Então eu deverei ver "Aulas"
         E eu deverei ver o link "aula 1 pag ufc"
         E eu deverei ver o link "aula 2 pag uol"
-@wip
-Cenário: Acessar aula do curso
-    Dado que estou logado com o usuario "user" e com a senha "user123"
-        E que estou em "Meu Solar"
-    Quando eu clicar em "Introducao a Linguistica"
-        Então eu deverei ver "Aulas"
-    Quando eu clicar no link "Aulas"
-        Então eu deverei ver o link "aula 1 pag ufc"
-    Quando eu clicar no link "aula 1 pag ufc"
-        Então eu deverei ver "cabeçalho"
+
+#Cenário: Acessar aula do curso
+#    Dado que estou logado com o usuario "user" e com a senha "user123"
+#        E que estou em "Meu Solar"
+#    Quando eu clicar em "Introducao a Linguistica"
+#        Então eu deverei ver "Aulas"
+#    Quando eu clicar no link "Aulas"
+#        Então eu deverei ver o link "aula 1 pag ufc"
+#    Quando eu clicar no link "aula 1 pag ufc"
+#        Então eu deverei ver "cabeçalho"
