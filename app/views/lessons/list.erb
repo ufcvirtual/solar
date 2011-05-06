@@ -23,12 +23,11 @@
 </div>
 
 <% # abre aula caso alguma tenha sido clicada %>
-<% lesson_opened = opened_lesson %>
-<%  if !lesson_opened.nil? %>
-  <script type="text/javascript">
-    function lesson_load() {
-      show_lesson('<%=lesson_opened.address%>');
-    }
-    window.onload = lesson_load;
-  </script>
+<% if !@lesson.nil? %>
+    <script type="text/javascript">
+      function lesson_load() {
+        show_lesson('/lessons/show');
+      }
+      window.onload = lesson_load;
+    </script>
 <% end %>

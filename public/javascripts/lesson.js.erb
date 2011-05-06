@@ -46,20 +46,19 @@ function show_lesson(caminho) {
     $("#lesson_external_div", parent.document.body).append(dimmed_div);
     $("#dimmed_div", parent.document.body).fadeTo('fast', 0.8);
 
-
-    /* TESTANDO - inicio */
     $("#lesson_content", parent.document.body).remove();
-    lessonh = '<div id=lesson_content style="">'+"<%= escape_javascript(render '/lessons/show') %>"+'</div>';
+
+    lessonh = "<div id=lesson_content></div>";
     $("#lesson_external_div", parent.document.body).append(lessonh);
-    /* TESTANDO - fim    */
 
 
-    //lesson = '<iframe id="lesson_content" src="' + caminho + '"></iframe>';
+
+    //esse funciona:
+    //$("#lesson_content", parent.document.body).append('<div id="teste" style="top:-5px; left:0px;">...</div>');
+    
     lesson = '<iframe id="lessonf" src="' + caminho + '"></iframe>';
 
     //Exibindo a aula
-    //$("#lesson_content", parent.document.body).remove();
-    //$("#lesson_external_div", parent.document.body).append(lesson);
     $("#lessonf", parent.document.body).remove();
     $("#lesson_content", parent.document.body).append(lesson);
     

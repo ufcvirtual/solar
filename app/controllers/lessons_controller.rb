@@ -4,7 +4,7 @@ class LessonsController < ApplicationController
   before_filter :require_user, :only => [:list, :show]
 
   def show
-
+    render :layout => 'lesson'    
   end
 
   def list
@@ -16,10 +16,10 @@ class LessonsController < ApplicationController
     end
 
     # recebe id da aula para exibicao
-    lesson = params[:lesson_id].nil? ? nil : Lesson.find(params[:lesson_id])
+    @lesson = params[:lesson_id].nil? ? nil : Lesson.find(params[:lesson_id])
 
     # guarda em sessao id da aula aberta
-    session[:opened_lesson] = lesson.nil? ? nil : lesson.id
+    session[:opened_lesson] = @lesson.nil? ? nil : @lesson.id
 
     # pegando dados da sessao e nao da url
     groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]

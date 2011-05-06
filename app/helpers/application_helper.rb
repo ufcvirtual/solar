@@ -9,12 +9,6 @@ module ApplicationHelper
 		text
 	end
 
-  # consulta aula aberta
-  def opened_lesson
-    # recebe id da aula para exibicao
-    return session[:opened_lesson].nil? ? nil : Lesson.find(session[:opened_lesson])
-  end
-
   #Ver se existe outro lugar melhor para este método.
   def render_tabs
     text = ""
