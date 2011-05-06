@@ -190,9 +190,9 @@
 }
 #lesson_frame_address {
     position: relative;
-    width:  99.9%;
+    width:  100%;
     border:   0px;
     margin:   0px;
     padding:  0px;
-    top: 33px;
+    top: 0px;
 }
