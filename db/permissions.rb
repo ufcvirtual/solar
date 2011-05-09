@@ -1,5 +1,3 @@
-puts "Criando permissoes para os perfis"
-
 # criando os recursos
 resources = Resource.create([
 	{:controller => 'user', :action => 'create', :description => 'Incluir novos usuarios no sistema'},
