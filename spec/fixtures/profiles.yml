@@ -5,20 +5,44 @@ aluno:
   name: Aluno
   student: TRUE
 
-titular:
+prof_titular:
   id: 2
   name: Prof. Titular
   class_responsible: TRUE
 
-tutor:
+tutor_distancia:
   id: 3
-  name: Tutor
+  name: Tutor a Distancia
   class_responsible: TRUE
 
-t_presencial:
+tutor_presencial:
   id: 4
   name: Tutor Presencial
 
-c_disciplina:
+editor:
   id: 5
-  name: Coordenador de Disciplina
+  name: Editor
+
+adm:
+  id: 6
+  name: Adm
+
+coord_tutoria:
+  id: 7
+  name: Coordenador de Tutoria
+
+coord_grad:
+  id: 8
+  name: Coord. Graduacao
+
+coord_polo:
+  id: 9
+  name: Coord. Polo
+
+avaliador:
+  id: 10
+  name: Avaliador
+
+secretaria:
+  id: 11
+  name: Secretaria

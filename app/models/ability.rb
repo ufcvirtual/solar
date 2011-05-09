@@ -2,12 +2,10 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-
     user ||= User.new # guest user
 
     # realizar uma consulta filtrando pelas tabelas onde o usuario vai acessar
     # offers, groups, etc...
-
     unless user.id.nil?
       query = "
           SELECT t3.controller,
@@ -40,7 +38,7 @@ class Ability
       # setando as permissoes
       permissoes.each do |permissao|
         permissao['objetos'] = (eval(permissao['objetos']) unless permissao['objetos'].nil?) || nil
-        can permissao["action"].to_sym, permissao["controller"].capitalize.constantize do |classe|
+        can permissao["action"].to_sym, capitalize_controller_name(permissao["controller"]) do |classe|
           # verifica se o usuario esta tentando acessar um objeto permitido
           permissao['objetos'].nil? || permissao['objetos'].include?(classe.id) # objetos permitidos sao listados em um array
         end
@@ -49,43 +47,19 @@ class Ability
       # Permissões para usuário sem Profile
       can [:mysolar, :update, :update_photo], User, :id => user.id
       can :showoffersbyuser, Offer
-
     else
       # permissoes para usuarios nao logados
       can [:create, :pwd_recovery], User
     end
+  end
 
+  private
 
-
-
-    # testes - nao eh pra estar em producao
-    can [:access, :participants, :informations], CurriculumUnit
-    can [:cancel, :reactivate, :send_request, :cancel_request], Allocation
-
-
-
-
-    # Users
-#    can [:create, :update, :mysolar, :update_photo, :pwd_recovery], User do |usuario|
-#      usuario.try(:id) == user.id
-#    end
-#
-#    #    # Offers
-#    can :showoffersbyuser, Offer
-
-    # The first argument to `can` is the action you are giving the user permission to do.
-    # If you pass :manage it will apply to every action. Other common actions here are
-    # :read, :create, :update and :destroy.
-    #
-    # The second argument is the resource the user can perform the action on. If you pass
-    # :all it will apply to every resource. Otherwise pass a Ruby class of the resource.
-    #
-    # The third argument is an optional hash of conditions to further filter the objects.
-    # For example, here the user can only update published articles.
-    #
-    #   can :update, Article, :published => true
-    #
-    # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
+  # mapeia da forma 'curriculum_unit' para 'CurriculumUnit'
+  def capitalize_controller_name(word)
+    r = ''
+    word.split('_').each {|w| r << w.capitalize}
+    r.constantize
   end
 
 end

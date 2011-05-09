@@ -48,6 +48,7 @@ ActionController::Base.allow_rescue = false
 # subsequent scenarios. If you do this, we recommend you create a Before
 # block that will explicitly put your database in a known state.
 Cucumber::Rails::World.use_transactional_fixtures = true
+#Cucumber::Rails::World.use_transactional_fixtures = false # para o selenium
 # How to clean your database when transactions are turned off. See
 # http://github.com/bmabey/database_cleaner for more info.
 if defined?(ActiveRecord::Base)
@@ -63,4 +64,7 @@ Before do
   fixtures_folder = File.join(::Rails.root.to_s, 'spec', 'fixtures')
   fixtures = Dir[File.join(fixtures_folder, '*.yml')].map {|f| File.basename(f, '.yml') }
   Fixtures.create_fixtures(fixtures_folder, fixtures)
+
+  # insere os registros de permissoes para os profiles cadastrados
+  load File.join(::Rails.root.to_s, 'db', 'permissions.rb')
 end
