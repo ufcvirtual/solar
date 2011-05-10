@@ -4,30 +4,36 @@ resources = Resource.create([
 	{:controller => 'user', :action => 'update', :description => 'Alteracao dos dados do usuario'},
 	{:controller => 'user', :action => 'mysolar', :description => 'Lista dos Portlest/Pagina inicial'},
 	{:controller => 'user', :action => 'update_photo', :description => 'Trocar foto'},
-	{:controller => 'user', :action => 'pwd_recovery', :description => 'Recuperar Senha'},
+	{:controller => 'user', :action => 'pwd_recovery', :description => 'Recuperar senha'},
+#5
 	{:controller => 'offer', :action => 'show', :description => 'Visualizacao de ofertas'},
 	{:controller => 'offer', :action => 'update', :description => 'Edicao de ofertas'},
 	{:controller => 'offer', :action => 'showoffersbyuser', :description => 'Exibe oferta atraves de busca'},
+#8
 	{:controller => 'group', :action => 'show', :description => 'Visualizar turmas'},
 	{:controller => 'group', :action => 'update', :description => 'Editar turmas'},
 #10
   {:controller => 'curriculum_unit', :action => 'access', :description => 'Acessar Unidade Curricular'},
-  {:controller => 'curriculum_unit', :action => 'participants', :description => 'Listar Participantes de uma Unidade Curricular'},
-  {:controller => 'curriculum_unit', :action => 'informations', :description => 'Listar Informacoes de uma Unidade Curricular'},
+  {:controller => 'curriculum_unit', :action => 'participants', :description => 'Listar participantes de uma Unidade Curricular'},
+  {:controller => 'curriculum_unit', :action => 'informations', :description => 'Listar informacoes de uma Unidade Curricular'},
 #13
-  {:controller => 'allocation', :action => 'cancel', :description => 'Cancelar Matricula'},
-  {:controller => 'allocation', :action => 'reactivate', :description => 'Pedir Reativacao de Matricula'},
-  {:controller => 'allocation', :action => 'send_request', :description => 'Pedir Matricula'},
-  {:controller => 'allocation', :action => 'cancel_request', :description => 'Cancelar Pedido de Matricula'}
+  {:controller => 'allocation', :action => 'cancel', :description => 'Cancelar matricula'},
+  {:controller => 'allocation', :action => 'reactivate', :description => 'Pedir reativacao de matricula'},
+  {:controller => 'allocation', :action => 'send_request', :description => 'Pedir matricula'},
+  {:controller => 'allocation', :action => 'cancel_request', :description => 'Cancelar pedido de matricula'},
+#17
+  {:controller => 'lessons', :action => 'show', :description => 'Ver aula'},
+  {:controller => 'lessons', :action => 'list', :description => 'Listar aulas de uma Unidade Curricular'}
 #  {:controller => '', :action => '', :description => ''},
-
 ])
 
 ########################
 #        PERFIS        #
 ########################
 
-# perfil aluno
+###############
+#    ALUNO    #
+###############
 perm_alunos = Permission.create([
   # offer
 	{:profiles_id => 1, :resources_id => resources[5].id, :per_id => true},
@@ -46,7 +52,9 @@ perm_alunos = Permission.create([
   {:profiles_id => 1, :resources_id => resources[16].id, :per_id => false}
 ])
 
-# professor titular
+##############################
+#      PROFESSOR TITULAR     #
+##############################
 perm_prof_titular = Permission.create([
   # offer
 	{:profiles_id => 2, :resources_id => resources[5].id, :per_id => true},
@@ -65,7 +73,9 @@ perm_prof_titular = Permission.create([
   {:profiles_id => 2, :resources_id => resources[16].id, :per_id => false}
 ])
 
-# tutor a distancia
+##############################
+#      TUTOR A DISTANCIA     #
+##############################
 perm_prof_titular = Permission.create([
   # offer
 	{:profiles_id => 3, :resources_id => resources[5].id, :per_id => true},

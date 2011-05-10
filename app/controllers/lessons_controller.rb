@@ -4,7 +4,7 @@ class LessonsController < ApplicationController
   before_filter :require_user, :only => [:list, :show]
 
   def show
-    render :layout => 'lesson'    
+    render :layout => 'lesson'
   end
 
   def list
@@ -52,5 +52,5 @@ class LessonsController < ApplicationController
     # guarda lista de aulas para navegacao
     session[:lessons] = @lessons
   end
-  
+
 end
