@@ -1,3 +1,7 @@
+function reload_frame(path) {
+    $("#lesson_frame_address").attr('src',path);
+}
+  
 function minimize() {
     //Removendo esmaecimento
     $("#dimmed_div").fadeOut('fast', function() { $("#dimmed_div").remove(); });

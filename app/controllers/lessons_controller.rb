@@ -3,18 +3,14 @@ class LessonsController < ApplicationController
   #  load_and_authorize_resource
   before_filter :require_user, :only => [:list, :show]
 
+  before_filter :curriculum_data, :only => [:show, :list]
+
   def show
     render :layout => 'lesson'
   end
 
   def list
-    if (params[:id])
-      # localiza unidade curricular
-      @curriculum_unit = CurriculumUnit.find(params[:id])
-    else
-      return
-    end
-
+    
     # recebe id da aula para exibicao
     @lesson = params[:lesson_id].nil? ? nil : Lesson.find(params[:lesson_id])
 
@@ -51,6 +47,16 @@ class LessonsController < ApplicationController
 
     # guarda lista de aulas para navegacao
     session[:lessons] = @lessons
+
+  end
+
+  private
+
+  def curriculum_data
+    if (params[:id])
+      # localiza unidade curricular
+      @curriculum_unit = CurriculumUnit.find(params[:id])
+    end
   end
 
 end

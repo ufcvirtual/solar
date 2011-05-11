@@ -167,6 +167,9 @@ en:
   participants_none: "No participant found"
 
   lesson_title: "Lessons"
+  lesson_table_title: "Lessons available"
+  lesson_table_date: "Access date"
+  lesson_message: "No lesson available"
 
   icon_agenda: "Agenda icon"
   icon_forum: "Forum icon"

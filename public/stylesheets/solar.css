@@ -113,11 +113,10 @@ textarea{
 .headtable_blue{
     font-size: 14px;
     font-family:'Trebuchet',Arial,'Myriad Pro';
-    font-weight: bold;
-    color: #003F7B;
+    color: #000;
     background-color: #E7EDEE;
-    line-height: 24px;
-    border: 0px;    
+    line-height: 25px;
+    border: 0px;
 }
 .table_blue{
     border: 0px;
@@ -174,10 +173,9 @@ textarea{
     width: auto;
 }
 .enrollment_link {
-    color: #000;
+    color: #214684;
     font-size: 12px;
     font-family:'Trebuchet',Arial,'Myriad Pro';
-    font-weight: bold;
     text-decoration: underline;
     cursor: pointer;
     border: 0;
