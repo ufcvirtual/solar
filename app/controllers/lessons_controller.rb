@@ -3,9 +3,15 @@ class LessonsController < ApplicationController
   #  load_and_authorize_resource
   before_filter :require_user, :only => [:list, :show]
 
-  before_filter :curriculum_data, :only => [:show, :list]
+  before_filter :curriculum_data, :only => [:list, :show, :show_header, :show_content]
 
   def show
+    render :layout => 'lesson_frame'
+  end
+  def show_header
+    render :layout => 'lesson'
+  end
+  def show_content
     render :layout => 'lesson'
   end
 

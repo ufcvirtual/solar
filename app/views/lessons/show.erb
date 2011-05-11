@@ -1,25 +1,4 @@
-<div id="lesson_area">
-  <div id="lesson_header">
-    curso > aula... 
-  </div>
-    <div id="lesson_content_header">      
-      <% lessons = session[:lessons].nil? ? nil : session[:lessons] %>
-
-      <% if !lessons.nil? %>
-
-        <% count=1 %>
-        <% lessons.each do |l| %>
-            <%= link_to count.to_s, onclick="javascript:reload_frame('#{l.address}')", :class => 'enrollment_link' %>
-            <% count=count+1 %>
-        <% end %>
-
-      <% end %>
-      Ir para aula ...
-    </div>
-
-  <% atual_lesson = session[:opened_lesson].nil? ? nil : Lesson.find(session[:opened_lesson])%>
-  <% if !atual_lesson.nil? %>
-    <iframe id="lesson_frame_address" src="<%=atual_lesson.address%>"></iframe>
-  <% end %>
-
-</div>
+<frameset rows="43,*" frameborder="0" framespacing="0">
+  <frame name="frame_lesson_header" src="/lessons/show_header?id=<%=@curriculum_unit.id%>" target="_self" scrolling="no" noresize>
+  <frame name="frame_lesson_content"  src="/lessons/show_content" target="_self">
+</frameset>

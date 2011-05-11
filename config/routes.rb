@@ -16,9 +16,12 @@ Solar::Application.routes.draw do |map|
   # roteamento para controle de acesso as imagens do usuario
   map.connect '/media/users/:id/photos/:style.:extension', :controller => 'access_control', :action => 'photo'
 
+  # roteamento para controle de acesso as midias de aula
+  map.connect '/media/lessons/:id/:file.:extension', :controller => 'access_control', :action => 'lesson'
+
   # redireciona para mysolar se o usuario estiver tentando acessar os dados de outros usuarios
   map.connect '/users/:id', :controller => 'users', :action => 'mysolar', :conditions => {:method => :get}
-
+ 
   # Definindo resources (mapeamento de urls para os objetos)
 
   resources :users, :user_sessions, :curriculum_units, :participants, :allocations

@@ -1,5 +1,6 @@
-function reload_frame(path) {
-    $("#lesson_frame_address").attr('src',path);
+function reload_frame(path,name) {
+    $("#lesson_name").html(name);
+    window.parent.frame_lesson_content.location.href = path;
 }
   
 function minimize() {
@@ -50,16 +51,11 @@ function show_lesson(caminho) {
     $("#lesson_external_div", parent.document.body).append(dimmed_div);
     $("#dimmed_div", parent.document.body).fadeTo('fast', 0.8);
 
+    // VER SE AINDA PRECISA... ************************************
     $("#lesson_content", parent.document.body).remove();
-
     lessonh = "<div id=lesson_content></div>";
     $("#lesson_external_div", parent.document.body).append(lessonh);
 
-
-
-    //esse funciona:
-    //$("#lesson_content", parent.document.body).append('<div id="teste" style="top:-5px; left:0px;">...</div>');
-    
     lesson = '<iframe id="lessonf" src="' + caminho + '"></iframe>';
 
     //Exibindo a aula

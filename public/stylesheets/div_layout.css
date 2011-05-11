@@ -32,13 +32,6 @@
 }
 
 #lesson_external_div {
-	/*position: absolute;
-	margin:   0;
-	width:    1px;
-	height:   1px;
-	border:   0px;
-	left:     0;
-	top:      0;*/
 	z-index:  -10;
 }
 
@@ -149,7 +142,7 @@
 	z-index:  10;
 }
 
-/* acesso a aulas */
+/* aulas */
 
 #lesson_area {
     background-color: #eee;
