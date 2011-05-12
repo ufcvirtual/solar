@@ -8,13 +8,19 @@
       <% if !lessons.nil? %>
 
         <% count=1 %>
-        <% lessons.each do |l| %>
-            <%= link_to count.to_s, onclick="javascript:reload_frame('#{l.address}','#{l.name}')", :class => 'enrollment_link' %>
+        <div id="lesson_click_area">
+          <% lessons.each do |l| %>
+            <div id="lesson_click">
+              <%= link_to count.to_s, onclick="javascript:reload_frame('#{l.address}','#{l.name}')", :class => 'lesson_link' %>
+            </div>
             <% count=count+1 %>
-        <% end %>
+          <% end %>
+        </div>
+        <div id="lesson_goto">
+          Ir para aula ...
+        </div>
 
-      <% end %>
-      Ir para aula ...
+      <% end %>      
     </div>
 
   <% atual_lesson = session[:opened_lesson].nil? ? nil : Lesson.find(session[:opened_lesson])%>
