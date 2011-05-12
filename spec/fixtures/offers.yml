@@ -1,7 +1,6 @@
 
 of1:
   id: 1
-#  curriculum_units_id: 3
   curriculum_units_id: 1
   courses_id: 1
   semester: '2011.1'
@@ -18,7 +17,6 @@ of2:
 
 of3:
   id: 3
-#  curriculum_units_id: 4
   curriculum_units_id: 3
   courses_id: 2
   semester: '2011.1'

@@ -20,7 +20,7 @@ Contexto:
         | users_id | allocation_tags_id | profiles_id | status |
         | 1        | 1                  | 1           | 1      |
         | 1        | 3                  | 1           | 1      |
-        | 1        | 9                  | 1           | 0      |
+        | 1        | 8                  | 1           | 0      |
 
 Cenário: Acessar página de matricula
     Dado que estou logado com o usuario "user" e com a senha "user123"
