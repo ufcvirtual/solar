@@ -25,7 +25,7 @@ class Ability
                  ELSE NULL
                  END         AS objetos
             FROM profiles    AS t1
-            JOIN permissions AS t2 ON t2.profiles_id = t1.id
+            JOIN permissions_resources AS t2 ON t2.profiles_id = t1.id
             JOIN resources   AS t3 ON t3.id = t2.resources_id
             JOIN allocations AS t4 ON t4.profiles_id = t1.id
             JOIN allocation_tags AS t5 ON t5.id = t4.allocation_tags_id

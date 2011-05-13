@@ -34,7 +34,7 @@ resources = Resource.create([
 ###############
 #    ALUNO    #
 ###############
-perm_alunos = Permission.create([
+perm_alunos = PermissionsResource.create([
   # offer
 	{:profiles_id => 1, :resources_id => resources[5].id, :per_id => true},
 	{:profiles_id => 1, :resources_id => resources[6].id, :per_id => true},
@@ -55,7 +55,7 @@ perm_alunos = Permission.create([
 ##############################
 #      PROFESSOR TITULAR     #
 ##############################
-perm_prof_titular = Permission.create([
+perm_prof_titular = PermissionsResource.create([
   # offer
 	{:profiles_id => 2, :resources_id => resources[5].id, :per_id => true},
 	{:profiles_id => 2, :resources_id => resources[6].id, :per_id => true},
@@ -76,7 +76,7 @@ perm_prof_titular = Permission.create([
 ##############################
 #      TUTOR A DISTANCIA     #
 ##############################
-perm_prof_titular = Permission.create([
+perm_prof_titular = PermissionsResource.create([
   # offer
 	{:profiles_id => 3, :resources_id => resources[5].id, :per_id => true},
 	{:profiles_id => 3, :resources_id => resources[6].id, :per_id => true},
