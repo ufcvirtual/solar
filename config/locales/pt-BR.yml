@@ -175,6 +175,8 @@
   lesson_table_title: "Aulas disponíveis"
   lesson_table_date: "Data de acesso"
   lesson_message: "Nenhuma aula disponível"
+  lesson: "Aula"
+  lesson_goto: "Ir para aula"
 
   icon_agenda: "Ícone da agenda"
   icon_forum: "Ícone do forum"

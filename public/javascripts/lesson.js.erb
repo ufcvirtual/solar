@@ -1,3 +1,9 @@
+function goto_lesson() {
+    lesson_selected = $("#lesson_text_goto").val()
+    element = "lesson_link"+lesson_selected;
+    $("#"+element).trigger('click')
+}
+
 function reload_frame(path,name) {
     $("#lesson_name").html(name);
     window.parent.frame_lesson_content.location.href = path;

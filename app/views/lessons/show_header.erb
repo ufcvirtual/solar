@@ -7,20 +7,20 @@
 
       <% if !lessons.nil? %>
 
-        <% count=1 %>
         <div id="lesson_click_area">
-          <% lessons.each do |l| %>
-            <div id="lesson_click">
-              <%= link_to count.to_s, onclick="javascript:reload_frame('#{l.address}','#{l.name}')", :class => 'lesson_link' %>
-            </div>
-            <% count=count+1 %>
-          <% end %>
-        </div>
-        <div id="lesson_goto">
-          Ir para aula ...
+          <% ret = lesson_list(lessons) %>
+          <% order_lesson = ret[1] %>
+          <% total_lesson = ret[2] %>
+          <%= raw ret[0] %>
         </div>
 
-      <% end %>      
+        <div id="lesson_goto">
+          <%=t(:lesson_goto)%>&nbsp;
+          <%=text_field_tag 'lesson_text_goto'%>&nbsp;
+          <span><a href="javascript:goto_lesson()" border="0"><%=image_tag("lesson_goto.png", :alt=>t(:lesson_goto),  :class => "lesson_img_goto")%></a></span>
+        </div>
+
+      <% end %>
     </div>
 
   <% atual_lesson = session[:opened_lesson].nil? ? nil : Lesson.find(session[:opened_lesson])%>
@@ -28,5 +28,5 @@
 
 <script type="text/javascript">  
   window.parent.frame_lesson_content.location.href = "<%=atual_lesson.address%>";
-  $("#lesson_name").html("<%=atual_lesson.name%>");
+  $("#lesson_name").html("<%=t(:lesson)+ ' '+order_lesson.to_s+' / '+total_lesson.to_s%>");
 </script>

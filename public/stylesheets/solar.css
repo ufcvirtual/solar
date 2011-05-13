@@ -999,9 +999,9 @@ div.alter_photo_text {
     font-size: 11px;
     color: #000;
     width:  100%;
-    height: 22px;
+    height: 25px;
     margin:  0px;
-    padding: 2px 3px 0px 8px;
+    padding: 0px 3px 0px 8px;
 }
 #lesson_header {
     background-color: #1d4786;
@@ -1011,7 +1011,7 @@ div.alter_photo_text {
     width:  100%;
     height: 22px;
     margin:  0px;
-    padding: 6px 3px 0px 8px;
+    padding: 6px 0px 0px 8px;
 }
 #lesson_frame_address {
     position: relative;
@@ -1022,24 +1022,25 @@ div.alter_photo_text {
     top: 0px;
 }
 #lesson_goto {
-    width:80px;
-    display: inline;
-    margin-left:  3px;
-    margin-right: 3px;
+    width: auto;
+    height: 20px;
+    display: inline-block;
     text-align: center;
+    vertical-align: text-top;
 }
 #lesson_click_area {
     width: 50%;
     display: inline-block;
+    padding-top: 2px;
 }
-#lesson_click {
+#lesson_click, .lesson_link {
     background-color: #b8cbcf;
     width:17px;
     display: inline-block;
-    height: 19px;
+    height: 20px;
     text-align: center;
     vertical-align: middle;
-    margin-right: -2px;
+    margin-right: 1px;
 }
 .lesson_link {
     color: #000;
@@ -1051,4 +1052,18 @@ div.alter_photo_text {
     border: 0;
     background-color: transparent;
     line-height: 19px;
+}
+.lesson_link_invisible {
+    display: none;
+}
+.lesson_img_goto {
+    cursor: pointer;
+    vertical-align: middle;
+}
+#lesson_text_goto {
+    height: 16px;
+    width:  22px;
+    font-size: 11px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    padding: 0px;
 }
