@@ -1073,15 +1073,14 @@ div.alter_photo_text {
 }
 /* rolagem da lista de aulas */
 #content-scroll {
-  width: 54px;
+  max-width: 270px;      /*54px*/
   height: 22px;
   overflow: hidden;
   padding-top: 2px;
   display: inline-block;
 }
 #content-holder {
-  min-width: 400px;
-  max-width: 50%;
+  width: 360px;
   height: 25px;
 }
 /* estilo para item invisivel */
