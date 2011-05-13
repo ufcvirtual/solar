@@ -1,0 +1,124 @@
+##################
+# ultimo id add:
+##################
+
+# MENU PAI
+conteudo:
+  id: 1
+  name: Conteudo
+
+aulas_conteudo:
+  id: 2
+  father_id: 1
+  name: Aulas
+
+material_conteudo:
+  id: 3
+  father_id: 1
+  name: Material de Apoio
+
+# MENU PAI
+atividades:
+  id: 4
+  name: Atividades
+
+forum_ativ:
+  id: 5
+  father_id: 4
+  name: Forum
+
+portfolio_ativ:
+  id: 6
+  father_id: 4
+  name: "Portfolio(Trabalhos, pessoal, grupo, professor)"
+
+prova_ativ:
+  id: 7
+  father_id: 4
+  name: Prova
+
+acomp_ativ:
+  id: 8
+  father_id: 4
+  name: Acompanhamento
+
+chat_ativ:
+  id: 9
+  father_id: 4
+  name: Chat
+
+webconf_ativ:
+  id: 10
+  father_id: 4
+  name: Webconferencia
+
+# MENU PAI
+
+info_geral:
+  id: 11
+  name: Informacoes Gerais
+
+programa_info:
+  id: 12
+  father_id: 11
+  name: Programa
+
+agenda_info:
+  id: 13
+  father_id: 11
+  name: Agenda
+
+biblio_info:
+  id: 14
+  father_id: 11
+  name: Bibliografia
+
+parti_info:
+  id: 15
+  father_id: 11
+  name: Participantes
+
+# MENU PAI
+social:
+  id: 16
+  name: Social
+
+mensagem_soc:
+  id: 17
+  father_id: 16
+  name: Mensagem
+
+wiki_soc:
+  id: 18
+  father_id: 16
+  name: Wiki
+
+blog_soc:
+  id: 19
+  father_id: 16
+  name: Blog
+
+# MENU PAI
+admin:
+  id: 20
+  name: Administracao
+
+aviso_admin:
+  id: 21
+  father_id: 20
+  name: Aviso
+
+# MENU PAI
+disco_virtual:
+  id: 22
+  name: Disco Virtual
+  link: "www.dropbox.com"
+
+# MENU PAI
+avaliacao_inst:
+  id: 23
+  name: Avaliacao Institucional
+
+cursos:
+  id: 24
+  name: Cursos
