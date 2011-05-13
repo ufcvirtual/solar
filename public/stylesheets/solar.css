@@ -1022,18 +1022,41 @@ div.alter_photo_text {
     top: 0px;
 }
 #lesson_goto {
-    width: auto;
+    /*width: auto;
     height: 20px;
-    display: inline-block;
+    display: inline;
     text-align: center;
-    vertical-align: text-top;
+    vertical-align: text-top;*/
+    display: inline;
+    float: right;
+    height: 20px;
+    margin-right: 50px;
+    margin-top: 4px;
+    text-align: center;
+    vertical-align: top;
+    width: auto;
 }
 #lesson_click_area {
-    width: 50%;
+    /*width: 50%;
     display: inline-block;
+    padding-top: 2px;*/
+
     padding-top: 2px;
+    display: inline-table;
+    /*max-width: 80px;
+    width: auto;
+    border: 1px solid;*/
+    height: 22px;
 }
-#lesson_click, .lesson_link {
+#lesson_back, #lesson_next {
+    width: 20px;
+    display: inline;
+    cursor: pointer;
+}
+#lesson_next {
+    
+}
+.lesson_link {
     background-color: #b8cbcf;
     width:17px;
     display: inline-block;
@@ -1041,8 +1064,7 @@ div.alter_photo_text {
     text-align: center;
     vertical-align: middle;
     margin-right: 1px;
-}
-.lesson_link {
+    margin-bottom: 3px;
     color: #000;
     font-size: 12px;
     font-family:'Trebuchet',Arial,'Myriad Pro';
@@ -1050,7 +1072,6 @@ div.alter_photo_text {
     font-weight: bold;
     cursor: pointer;
     border: 0;
-    background-color: transparent;
     line-height: 19px;
 }
 .lesson_link_invisible {

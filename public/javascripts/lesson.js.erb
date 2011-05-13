@@ -5,7 +5,7 @@ function goto_lesson() {
 }
 
 function reload_frame(path,name) {
-    $("#lesson_name").html(name);
+    $("#lesson_name").html(decodeURI(name));
     window.parent.frame_lesson_content.location.href = path;
 }
   

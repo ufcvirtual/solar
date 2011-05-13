@@ -7,12 +7,14 @@
 
       <% if !lessons.nil? %>
 
+        <div id="lesson_back"> <<< </div>
         <div id="lesson_click_area">
           <% ret = lesson_list(lessons) %>
           <% order_lesson = ret[1] %>
           <% total_lesson = ret[2] %>
           <%= raw ret[0] %>
         </div>
+        <div id="lesson_next"> >>> </div>
 
         <div id="lesson_goto">
           <%=t(:lesson_goto)%>&nbsp;
