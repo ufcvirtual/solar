@@ -1,12 +1,55 @@
-function goto_lesson() {
-    lesson_selected = $("#lesson_text_goto").val()
-    element = "lesson_link"+lesson_selected;
-    $("#"+element).trigger('click')
+function move(direction) {
+    var mov_atual = $("#mov_atual").html();
+    var total = $("#total_lesson").html();
+
+    //direction:
+    //    1: pra tras
+    //    2: pra frente
+
+    if (direction==2){
+      if (mov_atual<total)
+        mov_atual++;
+    }
+    else {
+      if (direction==1){
+        if (mov_atual>=1)
+          mov_atual--;
+      }
+    }
+
+    //atualiza valor
+    $("#mov_atual").html(mov_atual);
+
+    //atualiza para exibicao (mostra antes do clicado)
+    if (mov_atual>0)
+      mov_atual--;
+
+    //calcula deslocamento
+    var scroll = (mov_atual)*18;
+
+    $("#content-scroll").animate({scrollLeft: scroll + 'px'}, 50);
 }
 
-function reload_frame(path,name) {
+function goto_lesson() {
+    lesson_selected = $("#lesson_text_goto").val();
+
+    //clica no link da aula desejada
+    element = "lesson_link"+lesson_selected;
+
+    $("#"+element).trigger('click');
+
+    if ($("#"+element).length>0) {
+      $("#mov_atual").html(lesson_selected);
+      move(0);
+    }
+}
+
+function reload_frame(path,name,mov_atual) {
     $("#lesson_name").html(decodeURI(name));
     window.parent.frame_lesson_content.location.href = path;
+
+    $("#mov_atual").html(mov_atual);
+    move(0);
 }
   
 function minimize() {

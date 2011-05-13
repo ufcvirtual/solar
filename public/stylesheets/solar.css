@@ -1022,11 +1022,6 @@ div.alter_photo_text {
     top: 0px;
 }
 #lesson_goto {
-    /*width: auto;
-    height: 20px;
-    display: inline;
-    text-align: center;
-    vertical-align: text-top;*/
     display: inline;
     float: right;
     height: 20px;
@@ -1037,24 +1032,15 @@ div.alter_photo_text {
     width: auto;
 }
 #lesson_click_area {
-    /*width: 50%;
     display: inline-block;
-    padding-top: 2px;*/
-
-    padding-top: 2px;
-    display: inline-table;
-    /*max-width: 80px;
-    width: auto;
-    border: 1px solid;*/
+    width: 50%;
     height: 22px;
 }
 #lesson_back, #lesson_next {
-    width: 20px;
-    display: inline;
+    width: 9px;
+    display: inline-block;
     cursor: pointer;
-}
-#lesson_next {
-    
+    vertical-align: super;
 }
 .lesson_link {
     background-color: #b8cbcf;
@@ -1074,10 +1060,7 @@ div.alter_photo_text {
     border: 0;
     line-height: 19px;
 }
-.lesson_link_invisible {
-    display: none;
-}
-.lesson_img_goto {
+.lesson_img_nav {
     cursor: pointer;
     vertical-align: middle;
 }
@@ -1087,4 +1070,21 @@ div.alter_photo_text {
     font-size: 11px;
     font-family:'Trebuchet',Arial,'Myriad Pro';
     padding: 0px;
+}
+/* rolagem da lista de aulas */
+#content-scroll {
+  width: 54px;
+  height: 22px;
+  overflow: hidden;
+  padding-top: 2px;
+  display: inline-block;
+}
+#content-holder {
+  min-width: 400px;
+  max-width: 50%;
+  height: 25px;
+}
+/* estilo para item invisivel */
+.invisible {
+    display: none;
 }
