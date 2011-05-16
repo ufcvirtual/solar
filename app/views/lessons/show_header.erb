@@ -11,7 +11,8 @@
         <div id="lesson_click_area">
 
           <div id="lesson_back"><a href="javascript:move(1)" border="0"><%= image_tag("lesson_left.png", :alt => '', :class => 'lesson_img_nav') %></a></div>
-
+          <div id="lesson_next"><a href="javascript:move(2)" border="0"><%= image_tag("lesson_right.png", :alt => '', :class => 'lesson_img_nav') %></a></div>
+          
           <div id="content-scroll">
             <div id="content-holder">
 
@@ -22,8 +23,6 @@
 
             </div>
           </div>
-
-          <div id="lesson_next"><a href="javascript:move(2)" border="0"><%= image_tag("lesson_right.png", :alt => '', :class => 'lesson_img_nav') %></a></div>
           
         </div>
         
@@ -32,7 +31,7 @@
         
         <div id="lesson_goto">
           <%=t(:lesson_goto)%>&nbsp;
-          <%=text_field_tag 'lesson_text_goto'%>&nbsp;
+          <%=text_field_tag 'lesson_text_goto'%>&nbsp;/&nbsp;<%=total_lesson.to_s%>&nbsp;
           <span><a href="javascript:goto_lesson()" border="0"><%=image_tag("lesson_goto.png", :alt=>t(:lesson_goto),  :class => "lesson_img_nav")%></a></span>
         </div>
 

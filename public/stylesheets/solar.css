@@ -1040,7 +1040,8 @@ div.alter_photo_text {
     width: 9px;
     display: inline-block;
     cursor: pointer;
-    vertical-align: super;
+    height: 20px;
+    vertical-align: bottom;
 }
 .lesson_link {
     background-color: #b8cbcf;
