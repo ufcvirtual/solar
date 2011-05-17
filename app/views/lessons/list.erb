@@ -16,7 +16,7 @@
           <% @lessons.each do |lesson| %>
             <tr class="<%= cycle('rowtable_odd', 'rowtable_even') %>" >
               <td class="td_blue_first">
-                <%= link_to lesson.name, {:controller => "lessons", :action => "list", :id => curriculum_unit_id, :lesson_id => lesson.lessonid}, :class=>'enrollment_link' %>
+                <a href="javascript:show_lesson('/lessons/show?id=<%=curriculum_unit_id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
               </td>
               <td class="td_blue" align="center" style="width: 200px">
                 <%= l lesson.start %> - <%= l lesson.end %>
@@ -29,15 +29,4 @@
       <% end %>
 
     </div>
-
 </div>
-
-<% # abre aula caso alguma tenha sido clicada %>
-<% if !@lesson.nil? %>
-    <script type="text/javascript">
-      function lesson_load() {
-        show_lesson('/lessons/show?id=<%=curriculum_unit_id%>');
-      }
-      window.onload = lesson_load;
-    </script>
-<% end %>

@@ -20,9 +20,6 @@ class LessonsController < ApplicationController
     # recebe id da aula para exibicao
     @lesson = params[:lesson_id].nil? ? nil : Lesson.find(params[:lesson_id])
 
-    # guarda em sessao id da aula aberta
-    session[:opened_lesson] = @lesson.nil? ? nil : @lesson.id
-
     # pegando dados da sessao e nao da url
     groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]

@@ -23,7 +23,10 @@
     </div>
 
   <script>
-    document.getElementById("login_form_name").focus();
+      $(document).ready(function() {
+          $("#login_form_name").focus();
+      });
+    
   </script>
 
     <%= render 'form_login' %>
