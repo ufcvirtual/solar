@@ -2,6 +2,26 @@ function move(direction) {
     var mov_atual = $("#mov_atual").html();
     var total = $("#total_lesson").html();
 
+    // *** so habilita movimentacao se qtde de aulas for maior que espaco para listagem
+    var width  = parseFloat($(".lesson_link").css("width"));
+    var margin = parseFloat($(".lesson_link").css("margin-right"));
+    var width_atual = (width+margin)*total;
+    var width_max   = parseInt($("#content-scroll").css("width"));
+
+    //se eh menor nao precisa de navegacao - remove visibilidade e retorna
+    if ( width_atual < width_max ){
+      $("#link_lesson_back").removeClass("lesson_back").addClass("invisible");
+      $("#link_lesson_next").removeClass("lesson_next").addClass("invisible");
+      mov_atual=1;
+      direction=0;
+    }
+    else {
+      $("#link_lesson_back").removeClass("invisible").addClass("lesson_back");
+      $("#link_lesson_next").removeClass("invisible").addClass("lesson_next");
+    }
+    // ***
+
+
     //direction:
     //    1: pra tras
     //    2: pra frente
