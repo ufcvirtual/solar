@@ -1,0 +1,9 @@
+
+# Geral
+geral:
+  id: 1
+  name: geral
+
+uc:
+  id: 2
+  name: curriculum_unit

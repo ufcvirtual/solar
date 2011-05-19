@@ -1,5 +1,5 @@
 # criando os recursos
-resources = Resource.create([
+resources_arr = [
 	{:controller => 'user', :action => 'create', :description => 'Incluir novos usuarios no sistema'},
 	{:controller => 'user', :action => 'update', :description => 'Alteracao dos dados do usuario'},
 	{:controller => 'user', :action => 'mysolar', :description => 'Lista dos Portlest/Pagina inicial'},
@@ -25,8 +25,12 @@ resources = Resource.create([
   {:controller => 'lessons', :action => 'show', :description => 'Ver aula'},
   {:controller => 'lessons', :action => 'list', :description => 'Listar aulas de uma Unidade Curricular'}
 #  {:controller => '', :action => '', :description => ''},
-])
-
+]
+count = 1
+resources = Resource.create(resources_arr) do |registro|
+  registro.id = count
+  count += 1
+end
 ########################
 #        PERFIS        #
 ########################

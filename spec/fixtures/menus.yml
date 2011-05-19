@@ -1,124 +1,217 @@
-###################
-# ultimo id add: 24
-###################
-
-# MENU PAI
+# MENU PAI - 10
 conteudo:
-  id: 1
+  id: 10
   name: Conteudo
+  order: 1
+  contexts_id: 2
 
 aulas_conteudo:
-  id: 2
-  father_id: 1
+  id: 101
+  father_id: 10
   name: Aulas
+  order: 1
+  contexts_id: 2
+  resources_id: 19
 
 material_conteudo:
-  id: 3
-  father_id: 1
+  id: 102
+  father_id: 10
   name: Material de Apoio
+  order: 2
+  contexts_id: 2
 
-# MENU PAI
+# MENU PAI - 20
 atividades:
-  id: 4
+  id: 20
   name: Atividades
+  order: 2
+  contexts_id: 2
 
 forum_ativ:
-  id: 5
-  father_id: 4
+  id: 201
+  father_id: 20
   name: Forum
+  order: 1
+  contexts_id: 2
 
 portfolio_ativ:
-  id: 6
-  father_id: 4
+  id: 202
+  father_id: 20
   name: "Portfolio(Trabalhos, pessoal, grupo, professor)"
+  order: 2
+  contexts_id: 2
 
 prova_ativ:
-  id: 7
-  father_id: 4
+  id: 203
+  father_id: 20
   name: Prova
+  order: 3
+  contexts_id: 2
 
 acomp_ativ:
-  id: 8
-  father_id: 4
+  id: 204
+  father_id: 20
   name: Acompanhamento
+  order: 4
+  contexts_id: 2
 
 chat_ativ:
-  id: 9
-  father_id: 4
+  id: 205
+  father_id: 20
   name: Chat
+  order: 5
+  contexts_id: 2
 
 webconf_ativ:
-  id: 10
-  father_id: 4
+  id: 206
+  father_id: 20
   name: Webconferencia
+  order: 6
+  contexts_id: 2
 
-# MENU PAI
+# MENU PAI - 30
 
 info_geral:
-  id: 11
+  id: 30
   name: Informacoes Gerais
+  order: 3
+  contexts_id: 2
 
 programa_info:
-  id: 12
-  father_id: 11
+  id: 301
+  father_id: 30
   name: Programa
+  order: 1
+  contexts_id: 2
+  resources_id: 13
 
 agenda_info:
-  id: 13
-  father_id: 11
+  id: 302
+  father_id: 30
   name: Agenda
+  order: 2
+  contexts_id: 2
 
 biblio_info:
-  id: 14
-  father_id: 11
+  id: 303
+  father_id: 30
   name: Bibliografia
+  order: 3
+  contexts_id: 2
 
 parti_info:
-  id: 15
-  father_id: 11
+  id: 304
+  father_id: 30
   name: Participantes
+  order: 4
+  contexts_id: 2
+  resources_id: 12
 
-# MENU PAI
+# MENU PAI - 40
 social:
-  id: 16
+  id: 40
   name: Social
-
-mensagem_soc:
-  id: 17
-  father_id: 16
-  name: Mensagem
+  order: 4
+  contexts_id: 2
 
 wiki_soc:
-  id: 18
-  father_id: 16
+  id: 401
+  father_id: 40
   name: Wiki
+  order: 1
+  contexts_id: 2
 
 blog_soc:
-  id: 19
-  father_id: 16
+  id: 402
+  father_id: 40
   name: Blog
+  order: 2
+  contexts_id: 2
 
-# MENU PAI
+# MENU PAI - 50
+mensagem_soc:
+  id: 50
+  name: Mensagens
+  order: 5
+
+# MENU PAI - 60
 admin:
-  id: 20
+  id: 60
   name: Administracao
+  order: 6
 
 aviso_admin:
-  id: 21
-  father_id: 20
+  id: 601
+  father_id: 60
   name: Aviso
+  order: 1
 
-# MENU PAI
+ger_perfis_admin:
+  id: 602
+  father_id: 60
+  name: Gerenciar Perfis
+  order: 2
+
+indicar_user_admin:
+  id: 603
+  father_id: 60
+  name: Indicar Usuario
+  order: 3
+
+relat_admin:
+  id: 604
+  father_id: 60
+  name: Relatorios
+  order: 4
+
+# MENU PAI - 70
 disco_virtual:
-  id: 22
+  id: 70
   name: Disco Virtual
-  link: "www.dropbox.com"
+  order: 7
 
-# MENU PAI
+# MENU PAI - 80
 avaliacao_inst:
-  id: 23
+  id: 80
   name: Avaliacao Institucional
+  contexts_id: 2
+  order: 8
 
-cursos:
-  id: 24
-  name: Cursos
+ger_aval:
+  id: 801
+  father_id: 80
+  name: Gerenciar Avaliacoes
+  contexts_id: 2
+  order: 1
+
+resp_aval:
+  id: 802
+  father_id: 80
+  name: Responder Avaliação
+  contexts_id: 2
+  order: 2
+
+relat_aval:
+  id: 803
+  father_id: 80
+  name: Relatorios
+  contexts_id: 2
+  order: 3
+
+# MENU PAI - 90
+unidades_curriculares:
+  id: 90
+  name: Unidade Curricular
+  order: 9
+
+matricula_uc:
+  id: 901
+  father_id: 90
+  name: Matricula
+  order: 1
+
+hist_uc:
+  id: 902
+  father_id: 90
+  name: Historico
+  order: 2

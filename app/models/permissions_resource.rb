@@ -1,6 +1,6 @@
 class PermissionsResource < ActiveRecord::Base
 
-  belongs_to :resources
-  belongs_to :profiles
+  belongs_to :resource
+  belongs_to :profile
 
 end

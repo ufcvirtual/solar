@@ -4,7 +4,8 @@ puts "Production Seed"
 
 puts "Truncando tabelas"
 
-models = [Lesson, Allocation, AllocationTag, PermissionsResource, Resource, Profile, Group, Enrollment, Offer, CurriculumUnit, CurriculumUnitType, Course, PersonalConfiguration, User]
+models = [Lesson, Allocation, AllocationTag, PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,
+Enrollment, Offer, CurriculumUnit, CurriculumUnitType, Course, PersonalConfiguration, User]
 models.each(&:delete_all)
 
 Fixtures.reset_cache
