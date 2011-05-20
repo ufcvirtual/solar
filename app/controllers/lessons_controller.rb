@@ -1,5 +1,7 @@
 class LessonsController < ApplicationController
 
+  include LessonHelper
+
   #  load_and_authorize_resource
   before_filter :require_user, :only => [:list, :show]
 
@@ -24,29 +26,8 @@ class LessonsController < ApplicationController
     groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
 
-    query_lessons = "select * from (SELECT distinct at.id as id, at.offers_id as offerid, l.id as lessonid,
-                           l.allocation_tags_id as alloctagid,
-                           l.name, description, address, l.type_lesson, privacy, l.order, l.start, l.end
-                      FROM lessons l
-                      LEFT JOIN allocation_tags at ON l.allocation_tags_id = at.id
-                    WHERE
-                      status=#{Lesson_Approved} and l.start<=current_date and l.end>=current_date
-                      and (at.offers_id in ( #{offers_id.nil? ? 'NULL' : offers_id} ))
-                    ORDER BY L.order) as query_offer
-
-                    UNION ALL
-
-                    select * from (SELECT distinct at.id as id, at.offers_id as offerid, l.id as lessonid,
-                           l.allocation_tags_id as alloctagid,
-                           l.name, description, address, l.type_lesson, privacy, l.order, l.start, l.end
-                      FROM lessons l
-                      LEFT JOIN allocation_tags at ON l.allocation_tags_id = at.id
-                    WHERE
-                      status=#{Lesson_Approved} and l.start<=current_date and l.end>=current_date
-                      and (at.groups_id in ( #{groups_id.nil? ? 'NULL' : groups_id} ))
-                    ORDER BY L.order) as query_group"
-
-    @lessons = Lesson.find_by_sql(query_lessons)
+    # retorna aulas
+    @lessons = return_lessons_to_open(offers_id, groups_id)
 
     # guarda lista de aulas para navegacao
     session[:lessons] = @lessons

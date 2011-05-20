@@ -1,5 +1,7 @@
 class AccessControlController < ApplicationController
 
+  include LessonHelper
+
   before_filter :require_user
 
   # exibicao das imagens do usuario
@@ -39,34 +41,9 @@ class AccessControlController < ApplicationController
       end
     end
 
-    # *** mesma query usada no controller lessons, so MUDA q no where tem o ID da LESSON ***
-    # consulta aulas com acesso permitido
-    query_lessons = "select * from (SELECT distinct at.id as id, at.offers_id as offerid, l.id as lessonid,
-                           l.allocation_tags_id as alloctagid,
-                           l.name, description, address, l.type_lesson, privacy, l.order, l.start, l.end
-                      FROM lessons l
-                      LEFT JOIN allocation_tags at ON l.allocation_tags_id = at.id
-                    WHERE
-                      status=#{Lesson_Approved} and l.start<=current_date and l.end>=current_date
-                      and (at.offers_id in ( #{offers} )) 
-                      and l.id=#{params[:id]}              -- filtra pela aula passada
-                    ORDER BY L.order) as query_offer
+    # retorna aulas
+    permited_lessons = return_lessons_to_open(offers, groups, params[:id])
 
-                    UNION ALL
-
-                    select * from (SELECT distinct at.id as id, at.offers_id as offerid, l.id as lessonid,
-                           l.allocation_tags_id as alloctagid,
-                           l.name, description, address, l.type_lesson, privacy, l.order, l.start, l.end
-                      FROM lessons l
-                      LEFT JOIN allocation_tags at ON l.allocation_tags_id = at.id
-                    WHERE
-                      status=#{Lesson_Approved} and l.start<=current_date and l.end>=current_date
-                      and (at.groups_id in ( #{groups} )) 
-                      and l.id=#{params[:id]}             -- filtra pela aula passada
-                    ORDER BY L.order) as query_group"
-    
-    permited_lessons = Lesson.find_by_sql(query_lessons)
-    
     # se tem aula passada em disciplina aberta, pode acessar
     if (permited_lessons.length>0)
         case params[:extension]
@@ -74,6 +51,8 @@ class AccessControlController < ApplicationController
           type = 'image/jpeg'
         when "gif"
           type = 'image/gif'
+        when "png"
+          type = 'image/png'
         when "swf"
           type = 'application/x-shockwave-flash'
         when "pdf"
