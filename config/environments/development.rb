@@ -22,8 +22,5 @@ Solar::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
-
-  #mudando armazenamento de sessao para o banco
-  config.action_dispatch.session_store = :active_record_store  
 end
 
