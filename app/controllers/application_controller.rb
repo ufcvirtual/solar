@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   # adiciona uma aba no canto superior da interface
   def add_tab
 
-    name = params[:name]    
+    name = params[:name]
     type = params[:type]
     id   = params[:id]
     groups_id = params[:groups_id]
@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
         redirect_to :controller => "users", :action => "mysolar"
       end
       if type == Tab_Type_Curriculum_Unit
-        redirect_to :controller => 'curriculum_units', :action => 'access', :id => params[:id], :groups_id => groups_id, :offers_id => offers_id
+        redirect_to :controller => 'curriculum_units', :action => 'access', :id => id, :groups_id => groups_id, :offers_id => offers_id
       end
       
     else
