@@ -5,7 +5,7 @@ pag_ufc:
   users_id: 1
   allocation_tags_id: 1
   name: aula 1 pag ufc
-  address: http://www.uol.com.br
+  address: http://www.ufc.br
   type_lesson: 1
   order: 1
   status: 1
@@ -17,9 +17,45 @@ pag_uol:
   users_id: 1
   allocation_tags_id: 1
   name: aula 2 pag uol
-  address: 'http://opovo.uol.com.br'
+  address: 'http://www.uol.com.br'
   type_lesson: 1
   order: 2
+  status: 1
+  start: '2011-03-01'
+  end: '2021-12-01'
+
+pag_globo:
+  id: 3
+  users_id: 1
+  allocation_tags_id: 1
+  name: aula 3
+  address: 'http://www.globo.com'
+  type_lesson: 1
+  order: 3
+  status: 1
+  start: '2011-03-01'
+  end: '2021-12-01'
+
+pag_virtual:
+  id: 4
+  users_id: 1
+  allocation_tags_id: 1
+  name: aula 4
+  address: 'http://www.virtual.ufc.br'
+  type_lesson: 1
+  order: 4
+  status: 1
+  start: '2011-03-01'
+  end: '2021-12-01'
+
+pag_bbc:
+  id: 5
+  users_id: 1
+  allocation_tags_id: 1
+  name: aula 5
+  address: 'http://www.bbc.com'
+  type_lesson: 1
+  order: 5
   status: 1
   start: '2011-03-01'
   end: '2021-12-01'
