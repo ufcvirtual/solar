@@ -7,6 +7,8 @@ class LessonsController < ApplicationController
 
   before_filter :curriculum_data, :only => [:list, :show, :show_header, :show_content]
 
+  load_and_authorize_resource
+
   def show
     render :layout => 'lesson_frame'
   end

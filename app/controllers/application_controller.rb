@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user_session, :current_user
 
-  before_filter :return_user
+  before_filter :return_user, :application_context
 
   # Mensagem de erro de permissão
   rescue_from CanCan::AccessDenied do |exception|
@@ -98,6 +98,12 @@ class ApplicationController < ActionController::Base
 
   def return_user
     @user = User.find(current_user.id) unless current_user.nil?
+  end
+
+  # recupera o controller sendo acessado - contexto
+  def application_context
+    @context = params[:controller]
+    @context_param_id = params[:id] if params.include?("id")
   end
 
   private
