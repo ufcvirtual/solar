@@ -84,10 +84,10 @@ module MenuHelper
     return html_menu << "</div>" # fechando a ultima div aberta
   end
 
-end
+  def users_profiles(users_id = 0)
+    profiles = Allocation.find(:all, :select => "DISTINCT profiles_id AS id", :conditions => ["users_id = ?", users_id]).collect{|p| p.id}
+    return 0 unless profiles.length > 0
+    profiles.join(',')
+  end
 
-=begin
-<% curriculum_unit_id = @curriculum_unit.nil? ? nil : @curriculum_unit.id %>
-<%= link_to 'Participantes', :controller => :curriculum_units, :action => :participants, :id => curriculum_unit_id
-%>
-=end
+end

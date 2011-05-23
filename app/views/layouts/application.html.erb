@@ -103,7 +103,7 @@
 
       <!--------- Menu retrátil --------->
       <div id="mysolar_menu_accordion" style="z-index:10">
-        <%=raw create_menu_list current_user.id, @context || 'geral', @context_param_id || nil %>
+        <%=raw create_menu_list(users_profiles(current_user.id), @context || 'geral', @context_param_id || nil) %>
       </div>
 
     </div>
