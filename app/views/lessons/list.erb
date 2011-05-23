@@ -16,7 +16,7 @@
           <% @lessons.each do |lesson| %>
             <tr class="<%= cycle('rowtable_odd', 'rowtable_even') %>" >
               <td class="td_blue_first">
-                <a href="javascript:show_lesson('/lessons/show?id=<%=curriculum_unit_id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
+                <a class="curriculum_unit_portlet_link" href="javascript:show_lesson('/lessons/show?id=<%=curriculum_unit_id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
               </td>
               <td class="td_blue" align="center" style="width: 200px">
                 <%= l lesson.start %> - <%= l lesson.end %>

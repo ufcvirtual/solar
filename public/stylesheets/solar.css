@@ -821,7 +821,7 @@ div.alter_photo_text {
     font-family: Trebuchet;
     font-size: 11px;
     color: #999;
-    width: 45px;
+    /*width: 45px;*/
     display: inline-block;
 }
 .curriculum_unit_portlet_link_gray {

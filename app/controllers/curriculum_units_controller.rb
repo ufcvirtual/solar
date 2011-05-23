@@ -1,6 +1,7 @@
 class CurriculumUnitsController < ApplicationController
 
   include CurriculumUnitsHelper
+  include LessonHelper
 
   before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy, :access]
 
@@ -61,6 +62,12 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def access
+    # pegando dados da sessao e nao da url
+    groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+    offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+    
+    # retorna aulas
+    @lessons = return_lessons_to_open(offers_id, groups_id)
   end
 
   def informations
