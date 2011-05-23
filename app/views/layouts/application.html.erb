@@ -103,41 +103,9 @@
 
       <!--------- Menu retrátil --------->
       <div id="mysolar_menu_accordion" style="z-index:10">
-        <h3 class="mysolar_menu_title"><a href="#">Menu 1</a></h3>
-        <div class="mysolar_menu_list">
-
-          <% curriculum_unit_id = @curriculum_unit.nil? ? nil : @curriculum_unit.id %>
-          <%= link_to 'Participantes', :controller => :curriculum_units, :action => :participants,
-            :id => curriculum_unit_id
-          %>
-          <br/>
-          <%= link_to "Informacoes", :controller => 'curriculum_units', :action => 'informations',
-            :id => curriculum_unit_id
-          %>
-          <br/>
-          <%= link_to "Aulas", :controller => 'lessons', :action => 'list',
-            :id => curriculum_unit_id
-          %>
-
-        </div>
-        <h3 class="mysolar_menu_title"><a href="#">Menu 2</a></h3>
-        <div class="mysolar_menu_list">
-		item 3<br/>
-		item 4<br/>
-		item 5
-        </div>
-        <h3 class="mysolar_menu_title"><a href="#">Menu 3</a></h3>
-        <div class="mysolar_menu_list">
-		item 6<br/>
-		item 7<br/>
-		item 8
-        </div>
-        <h3 class="mysolar_menu_title"><a href="#">Menu 4</a></h3>
-        <div class="mysolar_menu_list">
-		item 9<br/>
-		item 10
-        </div>
+        <%=raw create_menu_list current_user.id, @context || 'geral', @context_param_id || nil %>
       </div>
+
     </div>
 
     <!-- Barra Topo -------------------------->

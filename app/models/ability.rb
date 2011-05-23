@@ -58,6 +58,7 @@ class Ability
   # mapeia da forma 'curriculum_unit' para 'CurriculumUnit'
   def capitalize_controller_name(word)
     r = ''
+    word = word.slice(0, word.length-1) if word[-1] == "s" # retira o s do final dos nomes dos controllers
     word.split('_').each {|w| r << w.capitalize}
     r.constantize
   end
