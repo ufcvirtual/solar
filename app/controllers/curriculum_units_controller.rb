@@ -68,6 +68,7 @@ class CurriculumUnitsController < ApplicationController
     
     # retorna aulas
     @lessons = return_lessons_to_open(offers_id, groups_id)
+    session[:lessons] = @lessons
   end
 
   def informations
