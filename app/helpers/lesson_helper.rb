@@ -2,9 +2,10 @@ module LessonHelper
 
   def return_lessons_to_open(offers_id = nil, groups_id = nil, lesson_id = nil)
 
-    query_lessons = "select * from (SELECT distinct at.id as id, at.offers_id as offerid, l.id as lessonid,
-                           l.allocation_tags_id as alloctagid,
-                           l.name, description, address, l.type_lesson, privacy, l.order, l.start, l.end
+    # at.id as id, at.offers_id as offerid,l.allocation_tags_id as alloctagid,l.type_lesson, privacy,description,
+    
+    query_lessons = "select * from (SELECT distinct l.id as lessonid,
+                           l.name, address, l.order, l.start, l.end
                       FROM lessons l
                       LEFT JOIN allocation_tags at ON l.allocation_tags_id = at.id
                     WHERE
@@ -18,15 +19,14 @@ module LessonHelper
     end
 
     #vê se passou lesson
-    query_lessons += " and l.id=#{lesson_id} " unless lesson_id.nil? #filtra pela aula passada
+    query_lessons += " and l.id=#{lesson_id} " unless lesson_id.nil? 
 
     query_lessons += " ORDER BY L.order) as query_offer
 
                     UNION ALL
 
-                    select * from (SELECT distinct at.id as id, at.offers_id as offerid, l.id as lessonid,
-                           l.allocation_tags_id as alloctagid,
-                           l.name, description, address, l.type_lesson, privacy, l.order, l.start, l.end
+                    select * from (SELECT distinct l.id as lessonid,
+                           l.name, address, l.order, l.start, l.end
                       FROM lessons l
                       LEFT JOIN allocation_tags at ON l.allocation_tags_id = at.id
                     WHERE
@@ -40,7 +40,7 @@ module LessonHelper
     end
 
     #vê se passou lesson
-    query_lessons += " and l.id=#{lesson_id} " unless lesson_id.nil? #filtra pela aula passada
+    query_lessons += " and l.id=#{lesson_id} " unless lesson_id.nil? 
 
     query_lessons += " ORDER BY L.order) as query_group"
 
