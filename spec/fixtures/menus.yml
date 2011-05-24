@@ -33,7 +33,7 @@ forum_ativ:
   name: Forum
   order: 1
   contexts_id: 2
-  resources_id: 21
+  resources_id: 22
 
 portfolio_ativ:
   id: 202
