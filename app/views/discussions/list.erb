@@ -6,8 +6,7 @@
 	</hr>
 
 	<div>
-
-		<% if @discussions %>
+		<% if !(@discussions.nil? || @discussions.empty?) %>
 		<table cellpadding="10" cellspacing="0" width="640px">
 			<tr class="headtable_blue">
 				<td class="td_head_blue"><%= t(:forum_table_title) %></td>
