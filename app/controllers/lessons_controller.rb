@@ -2,7 +2,6 @@ class LessonsController < ApplicationController
 
   include LessonHelper
 
-  #  load_and_authorize_resource
   before_filter :require_user, :only => [:list, :show]
 
   before_filter :curriculum_data, :only => [:list, :show, :show_header, :show_content]
@@ -21,9 +20,6 @@ class LessonsController < ApplicationController
 
   def list
     
-    # recebe id da aula para exibicao
-    @lesson = params[:lesson_id].nil? ? nil : Lesson.find(params[:lesson_id])
-
     # pegando dados da sessao e nao da url
     groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]

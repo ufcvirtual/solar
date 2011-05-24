@@ -1,8 +1,26 @@
 class MessagesController < ApplicationController
-  # GET /messages
-  # GET /messages.xml
+  
+  before_filter :require_user
+
+  load_and_authorize_resource
+
   def index
-    @messages = Message.all
+    query_messages = ""
+
+    # pegando dados da sessao e nao da url
+    groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+    offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+    
+    # verifica aba aberta, se Home ou se aba de unidade curricular
+    # se Home, traz todas; senao, traz com filtro da unidade curricular
+    if session[:opened_tabs][type] == Tab_Type_Home
+
+    else
+      
+    end
+        
+    # retorna mensagens
+    @messages = Message.find_by_sql(query_messages)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -80,4 +98,5 @@ class MessagesController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
 end

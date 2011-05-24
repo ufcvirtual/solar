@@ -6,7 +6,7 @@
 
     <div>
 
-      <% if @lessons %>
+      <% if !(@lessons.nil? || @lessons.empty?) %>
         <table cellpadding="10" cellspacing="0" width="640px">
           <tr class="headtable_blue">
             <td class="td_head_blue"><%= t(:lesson_table_title) %></td>
