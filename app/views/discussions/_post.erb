@@ -1,12 +1,22 @@
-<%#
+<% #
 # Renderiza um post de um fórum na tela.
 %>
 <div>
-  <div style="background-color:#bbb;">[barra superior]</div>
-  <div style="float:left">
-    [foto]
-  </div>
-<div class="forum_post">
-  <%=@post[:content]%>
-</div>
+	<div style="float:left;width: 120px">
+		<div style="background-color:#ecf3f8;height: 30px;">
+			<span>[<%= @post.user%>[user]</span><br/>
+			<span>[perfil]</span>
+		</div>
+		<div style="float:left">
+			[foto]
+		</div>
+	</div>
+	<div>
+		<div style="background-color:#ecf3f8;height: 30px;">
+			<div style="float:right;background-color:#8bb1c0;height:25px;padding-left:10px;padding-right:10px;padding-top:5px;width:100px;display:inline-block;text-align:center;vertical-align:middle;"><a href="">[reponder]</a></div>
+		</div>
+		<div class="forum_post">
+			<%= @post[:content]%>
+		</div>
+	</div>
 </div>

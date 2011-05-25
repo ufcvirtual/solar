@@ -3,7 +3,8 @@ module DiscussionPostsHelper
 
   #Renderiza um post na tela de interação do portólio.
   #show_child indica se as respostas deste post devem ser renderizadas com ele.
-  def show_post(post_id = nil, show_child=true)
+  def show_post(post = nil, show_child=true)
+    @post = post
     render '/discussions/post'
   end
 
@@ -20,7 +21,7 @@ module DiscussionPostsHelper
       query += " and father_id is null"
     end
     query += " order by created_at desc"
-
+    
     return DiscussionPost.find_by_sql(query)
   end
 

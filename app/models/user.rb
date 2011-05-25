@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
 
   has_many :allocation
   has_many :lessons
+  has_many :discussion_posts
 
   #Garantindo que o cpf nao será salvo com os separadores.
   def cpf=(value)

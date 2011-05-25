@@ -3,4 +3,5 @@ class DiscussionPost < ActiveRecord::Base
   belongs_to :father, :class_name => "DiscussionPost"
   
   belongs_to :discussion
+  belongs_to :user
 end
