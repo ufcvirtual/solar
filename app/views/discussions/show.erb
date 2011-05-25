@@ -1,0 +1,18 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+
+<span class="page_title"><%= @discussion["name"] %></span>
+<div id="forum_description">
+  <%= @discussion["description"] %>
+</div>
+
+<div class="forum_navigation_bar">#</div>
+<% @posts.each do |post|%>
+  <%@post = post%>
+  <%=show_post(post.id)%>
+<%end%>
+
+
+<div class="forum_navigation_bar">#</div>

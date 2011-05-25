@@ -1088,3 +1088,17 @@ div.alter_photo_text {
 .invisible {
     display: none;
 }
+/*Tela de fórum*/
+#forum_description{
+    white-space: normal;
+    padding-bottom: 30px;
+}
+
+.forum_navigation_bar{
+    background-color: #dee8ec;
+}
+.forum_post{
+    background-color: #f9f9fa;
+    height: 80px;
+    margin-top: 4px;
+}
