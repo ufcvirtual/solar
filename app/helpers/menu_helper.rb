@@ -46,7 +46,7 @@ module MenuHelper
              t1.link
         FROM cte_all_fathers  AS t1
    LEFT JOIN resources        AS t2 ON (t2.id = t1.resources_id)
-       WHERE (t1.context = 'geral'  OR t1.context IS NULL OR t1.context = '#{context}')
+       WHERE (t1.context = 'geral' OR t1.context = '#{context}')
          AND ((t1.resources_id IS NOT NULL AND t2.status = TRUE) OR (t1.resources_id IS NULL AND t1.child IS NULL)) -- verifica se o registro eh um pai ou nao
        ORDER BY t1.father_order, t1.child_order;"
 
