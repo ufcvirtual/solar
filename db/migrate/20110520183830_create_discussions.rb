@@ -6,7 +6,7 @@ class CreateDiscussions < ActiveRecord::Migration
       t.date :end
       t.string :description, :limit => 600
 
-      t.references :allocation_tags
+      t.references :allocation_tag
     end
   end
 

@@ -2,7 +2,7 @@
 
 forum_1:
   id: 1
-  allocation_tags_id: 1
+  allocation_tag_id: 1
   name: 'Forum 1'
   description: 'Forum inicial para testes'
   start: '2011-03-01'
@@ -10,7 +10,7 @@ forum_1:
 
 forum_2:
   id: 2
-  allocation_tags_id: 1
+  allocation_tag_id: 1
   name: 'Forum 2'
   description: 'Segundo fórum de testes'
   start: '2011-05-05'
