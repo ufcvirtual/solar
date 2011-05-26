@@ -25,7 +25,7 @@ module MenuHelper
                  t3.child_order,
                  t3.child_id,
                  t3.child,
-                 t3.resources_id,
+                 COALESCE(t3.resources_id, t1.resources_id) AS resources_id, -- resource do filho, senao do pai
                  COALESCE(t4.name, 'geral') AS context,
                  t1.link
             FROM menus             AS t1 -- recuperando todos os menus-pai
@@ -46,7 +46,7 @@ module MenuHelper
              t1.link
         FROM cte_all_fathers  AS t1
    LEFT JOIN resources        AS t2 ON (t2.id = t1.resources_id)
-       WHERE (t1.context = 'geral'  OR t1.context IS NULL OR t1.context = '#{context}')
+       WHERE (t1.context = 'geral' OR t1.context = '#{context}')
          AND ((t1.resources_id IS NOT NULL AND t2.status = TRUE) OR (t1.resources_id IS NULL AND t1.child IS NULL)) -- verifica se o registro eh um pai ou nao
        ORDER BY t1.father_order, t1.child_order;"
 
@@ -62,18 +62,28 @@ module MenuHelper
     # percorrer todos os registros
     menus.each do |menu|
 
+      access_controller = {:controller => menu["controller"], :action => menu["action"]}
+
       # verifica se o menu pai foi modificado para gerar um novo menu
       unless previous_father_id == menu["father_id"].to_i
         # verifica se foi aberto alguma div de menu filho
         html_menu << "</div>" if open_div_menu_child # fecha div do menu filho
-        html_menu << "<h3 class='#{class_menu_title}'><a href='#'>#{menu['father']}</a></h3>"
+
+        # para um menu pai ser um link ele nao deve ter filhos
+        if (menu["resources_id"] != nil && menu['child'] == nil)
+          link = link_to("#{menu['father']}", access_controller)
+        else
+          link = "<a href='#'>#{menu['father']}</a>"
+        end
+
+        # menus pai tbm podem ter links diretamente para funcionalidades
+        html_menu << "<h3 class='#{class_menu_title}'>#{link}</h3>"
 
         # print dos menus filhos
         html_menu << "<div class='#{class_menu_list}'>"
         open_div_menu_child = true
       end
       # verifica se existe filho para imprimir
-      access_controller = {:controller => menu["controller"], :action => menu["action"]}
       access_controller[:id] = id unless id.nil?
       html_menu << link_to("#{menu['child']}", access_controller) << "<br />" unless menu['child'].nil?
 

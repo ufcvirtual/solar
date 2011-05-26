@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     flash[:error] = t(:no_permission)
     redirect_to :controller => "users", :action => "mysolar"
-  end 
+  end
 
   # consulta id relacionado a estudante na tabela PROFILES
   def student_profile
@@ -54,11 +54,11 @@ class ApplicationController < ActionController::Base
       if type == Tab_Type_Curriculum_Unit
         redirect_to :controller => 'curriculum_units', :action => 'access', :id => id, :groups_id => groups_id, :offers_id => offers_id
       end
-      
+
     else
       # se estourou numero de abas, volta para mysolar
       redirect_to :controller => "users", :action => "mysolar"
-    end    
+    end
   end
 
   # define aba ativa
@@ -84,7 +84,7 @@ class ApplicationController < ActionController::Base
       session[:active_tab] = 'Home'
     end
 
-    # remove do hash    
+    # remove do hash
     session[:opened_tabs].delete(name)
 
     # redireciona de acordo com o tipo de aba ativa
@@ -100,9 +100,20 @@ class ApplicationController < ActionController::Base
     @user = User.find(current_user.id) unless current_user.nil?
   end
 
-  # recupera o controller sendo acessado - contexto
+  # recupear o contexto que esta sendo acessado
   def application_context
-    @context = params[:controller]
+    @context, @context_param_id = nil, nil
+
+    # recupera o contexto do controller que esta sendo acessado
+    query = "  SELECT DISTINCT t3.name AS context
+                 FROM resources AS t1
+                 JOIN menus     AS t2 ON t1.id = t2.resources_id
+                 JOIN contexts  AS t3 ON t3.id = t2.contexts_id
+                WHERE t1.controller = '#{params[:controller]}';"
+
+    context = ActiveRecord::Base.connection.select_all query
+
+    @context = context[0]["context"] if context.length > 0
     @context_param_id = params[:id] if params.include?("id")
   end
 
