@@ -1,6 +1,6 @@
 class AccessControlController < ApplicationController
 
-  include LessonHelper
+  include LessonsHelper
 
   before_filter :require_user
 

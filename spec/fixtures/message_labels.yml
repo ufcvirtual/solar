@@ -1,0 +1,7 @@
+#message_label
+
+message_label1:
+  id: 1
+  user_id:
+  allocation_tag_id: 1
+  title: 'Introducao a Linguistica'

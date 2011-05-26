@@ -1,0 +1,19 @@
+#messages
+
+message1:
+  id: 1
+  subject: 'assunto da msg 1'
+  content: 'bla bla bla msg1'
+  send_date: '2011-05-11 10:42:25'
+
+message2:
+  id: 2
+  subject: 'assunto da msg 2'
+  content: 'bla bla bla msg2'
+  send_date: '2011-05-17 21:06:15'
+
+message3:
+  id: 3
+  subject: 'assunto da msg 3'
+  content: 'bla bla bla msg3'
+  send_date: '2011-05-22 17:05:22'

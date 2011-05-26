@@ -1,1 +1,10 @@
-<div></div>
+<div>
+<%= link_to 'inbox',    {:type => 'index'} %> |
+<%= link_to 'enviados', {:type => 'outbox'} %> |
+<%= link_to 'lixeira',  {:type => 'trashbox'} %><br/><br/>
+  <% @messages.each do |message| %>
+
+        <%= message.subject %><br/>
+
+  <% end %>
+</div>

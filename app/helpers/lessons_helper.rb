@@ -1,4 +1,4 @@
-module LessonHelper
+module LessonsHelper
 
   def return_lessons_to_open(offers_id = nil, groups_id = nil, lesson_id = nil)
 

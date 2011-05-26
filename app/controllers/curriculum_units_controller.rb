@@ -1,7 +1,7 @@
 class CurriculumUnitsController < ApplicationController
 
   include CurriculumUnitsHelper
-  include LessonHelper
+  include LessonsHelper
 
   before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy, :access]
 
