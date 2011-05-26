@@ -6,6 +6,7 @@ user:
   login: user
   email: user@user.com
   name: Usuario do Sistema
+  nick: Usuario do Sistema
   cpf: 43463518678
   birthdate: 2005-03-02
   gender: true
@@ -25,6 +26,7 @@ palacio:
   login: rosacrinaldo
   email: palacio@qualquer.br
   name: Ricardo Palacio
+  nick: Ricardo Palacio
   birthdate: 2005-01-01
   cpf: 23885393905
   gender: true
@@ -52,6 +54,7 @@ hoog:
   login: dexter
   email: hoog@qualquer.br
   name: Bezerra
+  nick: Bezerra
   birthdate: 2005-01-01
   cpf: 11016853521
   gender: true
@@ -79,6 +82,7 @@ ariovaldo:
   login: ariovaldo
   email: amaral@qualquer.br
   name: Ariovaldo Amaral
+  nick: Ariovaldo Amaral
   birthdate: 2005-01-01
   cpf: 57215688798
   gender: true
