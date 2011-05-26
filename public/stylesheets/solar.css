@@ -1101,4 +1101,5 @@ div.alter_photo_text {
     background-color: #f9f9fa;
     height: 80px;
     margin-top: 4px;
+    white-space: normal;
 }
