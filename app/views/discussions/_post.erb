@@ -3,27 +3,26 @@
 %>
 <div>
 	<div style="float:left;width: 106px">
-		<div style="background-color:#ecf3f8;height: 35px;">
+		<div class="forum_participant_id">
 			<span alt="<%= @post.user_nick%>">
-				<% if @post.user_nick.length > 25 %>
-				<%= @post.user_nick.slice(0..24) + '...'%>
+				<% if @post.user_nick.length > 15 %>
+				<%= @post.user_nick.slice(0..12) + '...'%>
 				<% else %>
 				<%= @post.user_nick%>
 				<% end %>
 			</span>
 			<br/>
-			<span><%= @post.profile %></span>
+			<span class="forum_participant_profile" ><%= @post.profile %></span>
 		</div>
 		<div class="forum_post" style="float:left">
-			<div class="participants_list">
+			<div class="forum_participants">
 
 				<% if @post.photo_file_name %>
 				<%= image_tag @post.photo.url(:medium), :alt => t(:mysolar_alt_img_user) + ' ' + @post.user_nick %>
 				<% else %>
 				<%= image_tag 'no_image.png', :alt => t(:mysolar_alt_img_user) + ' ' + @post.user_nick %>
 				<% end %>
-
-				<div class="participants_icons">
+				<div class="forum_participants_icons">
 					<span><%= link_to (image_tag "icon_profile.png", :alt=>t(:icon_profile)) %></span>
 					<span><%= link_to (image_tag "icon_add_user.png", :alt=>t(:icon_add_participant)) %></span>
 					<span><%= link_to (image_tag "icon_chat.png", :alt=>t(:icon_chat)) %></span>

@@ -1099,7 +1099,46 @@ div.alter_photo_text {
 }
 .forum_post{
     background-color: #f9f9fa;
-    height: 80px;
+    min-height: 140px;
+    max-width: 640px;
     margin-top: 4px;
     white-space: normal;
+}
+
+.forum_participant_id {
+	
+	background-color:#ecf3f8;
+	height: 35px;"
+    border:0;
+    -moz-background-origin:padding;
+    float:left;
+    width:106px;
+    text-align:center;
+    font-family: Trebuchet MS;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.forum_participant_profile {
+	font-size: 11px;
+    font-style:italic;
+}
+
+.forum_participants {
+    border:0;
+    -moz-background-inline-policy:continuous;
+    -moz-background-origin:padding;
+    float:left;
+    margin:5px 5px 0px 0px;
+    padding-top:2px;
+    padding-bottom: 2px;
+    width:106px;
+    min-height:90px;
+    text-align:center;
+    font-family: Trebuchet;
+    font-size: 11px;    
+}
+.forum_participants_icons {
+    bottom: 1px;
+    left: 23%;
 }
