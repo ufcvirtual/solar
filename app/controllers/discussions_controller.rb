@@ -25,7 +25,7 @@ class DiscussionsController < ApplicationController
               FROM 
                 (SELECT d.name, d.id, d.start, d.end, d.description 
                  FROM discussions d 
-                 INNER JOIN allocation_tags t on d.allocation_tags_id = t.id 
+                 INNER JOIN allocation_tags t on d.allocation_tag_id = t.id 
                  INNER JOIN groups g on g.id = t.groups_id
                  WHERE g.id = #{groups_id}
               
@@ -33,7 +33,7 @@ class DiscussionsController < ApplicationController
               
                  SELECT d.name, d.id, d.start, d.end, d.description 
                  FROM discussions d 
-                 INNER JOIN allocation_tags t on d.allocation_tags_id = t.id 
+                 INNER JOIN allocation_tags t on d.allocation_tag_id = t.id 
                  INNER JOIN offers o on o.id = t.offers_id
                  WHERE o.id = #{offers_id}
                 ) as available_discussions
