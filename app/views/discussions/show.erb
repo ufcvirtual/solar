@@ -13,5 +13,14 @@
   <%=show_post(post)%>
 <%end%>
 
-
-<div class="forum_navigation_bar">#</div>
+<%= form_for(:new_discussion_post, :url => {:action => "new_post"}) do |f| %>
+  
+  <div class="field">
+    <%= f.label "Conteudo" %><br />
+    <%= f.text_field :content%>
+ 	<%= hidden_field_tag(:discussion_id, @discussion["id"]) %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
