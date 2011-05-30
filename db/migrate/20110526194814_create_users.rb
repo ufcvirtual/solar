@@ -14,7 +14,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string   "current_login_ip"
       t.string   "last_login_ip"
       t.string   "name",                 :limit => 100
-      t.string   "nick",                 :limit => 35
+      t.string   "nick",                 :limit => 35, :null => false
       t.date     "birthdate"
       t.string   "enrollment_code",      :limit => 20
       t.string   "status",               :limit => 1
