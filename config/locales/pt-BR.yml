@@ -183,7 +183,25 @@
   forum_table_date: "Data de acesso"
   forum_message: "Nenhum fórum disponível"
   forum: "Fórum"
-  
+
+  message_title: "Mensagens"
+  message_inbox: "Entrada"
+  message_outbox: "Enviadas"
+  message_trash: "Lixeira"
+  message_search: "Buscar Mensagem"
+  message_new: "Nova Mensagem"
+  message_filter: "Filtro"
+  message_select: "Selecionar"
+  message_move: "Mover para"
+  message_delete: "Excluir"
+  message_mark_as_read: "Marcar como lida"
+  message_mark_as_unread: "Marcar como não lida"
+  message_of: " de "
+  message_attach: "Possui arquivo anexado"
+
+  navigation_next: "Próxima"
+  navigation_previous: "Anterior"
+
   icon_agenda: "Ícone da agenda"
   icon_forum: "Ícone do forum"
   icon_message: "Ícone de messagem"

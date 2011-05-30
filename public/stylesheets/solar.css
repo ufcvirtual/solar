@@ -106,6 +106,7 @@ textarea{
     font-family: Trebuchet;
     font-size: 11px;
     color: #e64d4d;
+    width: auto;
 }
 
 /****tela de matricula****/
@@ -1107,8 +1108,8 @@ div.alter_photo_text {
 
 .forum_participant_id {
 	
-	background-color:#ecf3f8;
-	height: 35px;"
+    background-color:#ecf3f8;
+    height: 35px;
     border:0;
     -moz-background-origin:padding;
     float:left;
@@ -1120,7 +1121,7 @@ div.alter_photo_text {
 }
 
 .forum_participant_profile {
-	font-size: 11px;
+    font-size: 11px;
     font-style:italic;
 }
 
@@ -1141,4 +1142,76 @@ div.alter_photo_text {
 .forum_participants_icons {
     bottom: 1px;
     left: 23%;
+
+}
+
+/* tela de mensagens */
+.message_search_div,.message_div{
+    color: #000;
+    font-size: 12px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    text-decoration: none;
+}
+.message_div {
+    padding-top: 15px;
+}
+.message_general_div_option {
+    display: inline-block;
+    padding-right: 30px;
+}
+.message_main_menu{
+    color: #214684;
+    font-size: 12px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    text-decoration: none;
+    cursor: pointer;
+    display: inline;
+    height: 25px;
+    padding-left: 5px;
+    padding-right: 5px;
+    vertical-align: bottom;
+}
+.message_div_options{
+    background-color: #E7EDED;
+    width: 780px;
+    height: 25px;
+    padding: 0 5px 0 5px;
+    margin: 0;
+    vertical-align: middle;
+    border-top: 2px solid #b4b3b7;
+}
+.message_link{
+    font-size: 12px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    text-decoration: underline;
+    margin-right: 10px;
+    color: #214684;
+}
+.message_div_list{
+    background-color: #F7F7F7;
+    width: 780px;
+    padding: 5px;    
+}
+.message_line{
+    background-color: #f9f9f9;
+}
+.message_div_navigation{
+    background-color: #E7EDED;
+    height: 25px;
+    text-align: right;
+}
+.message_nav_text {
+    font-size: 12px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    text-decoration: none;
+    color: #000;
+    width: auto;
+}
+.message_search_textbox{
+    height: 18px;
+    width: 450px;
+    padding: 0px;
+    font-size: 11px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+
 }

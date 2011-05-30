@@ -1,10 +1,69 @@
 <div>
-<%= link_to 'inbox',    {:type => 'index'} %> |
-<%= link_to 'enviados', {:type => 'outbox'} %> |
-<%= link_to 'lixeira',  {:type => 'trashbox'} %><br/><br/>
-  <% @messages.each do |message| %>
+  <%= image_tag "icon_message.png", :alt=>t(:icon_message) %>
+    <span class="page_title"><%= t(:message_title) %></span>
+    <hr style="border: none; background-color: #b4b3b7; height: 1px; width:640px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px"></hr>
 
-        <%= message.subject %><br/>
+    <div class="message_search_div">
+      <%= label_tag 'lb_search', t(:message_search), :class => "enrollment_label" %>&nbsp;
+      <%= text_field_tag  'search', @search_text, :class=> "message_search_textbox" %>
+      <%= image_submit_tag("search.png", :class => 'enrollment_search_icon')%>
+    </div>
 
-  <% end %>
+    <div class="message_div">
+      <div class="message_general_div_option">
+        <%= link_to (image_tag "message_inbox.png", :alt=>t(:message_inbox)),{:type => 'index'} %>
+        <div class="message_main_menu">
+          <%= link_to t(:message_inbox), {:type => 'index'} %>
+          <%= label_tag 'lb_number', '(3)', :class => "text_alert" %>
+        </div>
+      </div>
+      <div class="message_general_div_option">
+        <%= link_to (image_tag "message_outbox.png", :alt=>t(:message_outbox)),{:type => 'outbox'} %>
+        <div class="message_main_menu">
+          <%= link_to t(:message_outbox), {:type => 'outbox'} %>
+        </div>
+      </div>
+      <div class="message_general_div_option">
+        <%= link_to (image_tag "message_trash.png", :alt=>t(:message_trash)),{:type => 'trashbox'} %>
+        <div class="message_main_menu">
+          <%= link_to t(:message_trash),  {:type => 'trashbox'} %>
+        </div>
+      </div>
+    </div>
+    
+    <div class="message_div_options">
+      <%= link_to t(:message_new), {}, {:class=>'message_link'} %>&nbsp;
+      <%= link_to t(:message_delete), {}, {:class=>'message_link'} %>&nbsp;
+
+
+      <%= link_to t(:message_mark_as_read), {}, {:class=>'message_link'} %>&nbsp;
+      <%= link_to t(:message_mark_as_unread), {}, {:class=>'message_link'} %>&nbsp;
+    </div>
+<!--
+  message_filter: "Filter"
+  message_select: "Select"
+  message_move: "Move"
+-->
+    <div class="message_div_list">
+      <table width="100%">
+        <% @messages.each do |message| %>
+          <tr class="message_line">
+            <td style="width:30px"><%=check_box :id, :id => 'checkbox_message'%></td>
+            <td style="width:120px"><%= label_tag 'lb_from', 'fulano', :class => "curriculum_unit_portlet_link" %></td>
+            <td><%= label_tag 'lb_from', message.subject, :class => "enrollment_label" %></td>
+            <td style="width:30px"><%=image_tag "message_file.png",:alt=>t(:message_attach)%></td>
+            <td style="width:30px"><%= label_tag 'lb_date', '30/05/2011', :class => "enrollment_label" %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+    <div class="message_div_navigation">
+      <%= label_tag 'lb_nav1', '1-20', :class => "message_nav_text" %>
+      <%= label_tag 'lb_nav1', t(:message_of), :class => "message_nav_text" %>
+      <%= label_tag 'lb_nav2', '53', :class => "message_nav_text" %>
+      &nbsp;&nbsp;&nbsp;
+      <%= link_to t(:navigation_previous), {}, {:class=>'message_link'} %>
+      <%= link_to t(:navigation_next), {}, {:class=>'message_link'} %>
+    </div>
+
 </div>
