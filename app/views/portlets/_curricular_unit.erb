@@ -22,7 +22,7 @@ ucs = load_curriculum_unit_data() || []
           <%= button_to c["name"],{}, { :onclick => "javascript:alert('"+t(:curriculum_access_alert)+"')", :class=>'enrollment_link' } %>
         <% else %>
           <%= button_to c["name"], {:controller=>"application", :action=>"add_tab", :name => c["name"], :type => Tab_Type_Curriculum_Unit,
-            :id => c["id"], :offers_id => c["offers_id"], :groups_id => c["groups_id"]},
+            :id => c["id"], :offers_id => c["offer_id"], :groups_id => c["group_id"]},
           {:class=>'enrollment_link'} %>
         <% end %>
       </div>

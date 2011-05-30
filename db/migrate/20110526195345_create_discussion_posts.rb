@@ -3,6 +3,7 @@ class CreateDiscussionPosts < ActiveRecord::Migration
     create_table "discussion_posts" do |t|
       t.integer  "user_id"
       t.integer  "discussion_id"
+      t.integer  "profile_id"
       t.text     "content"
 
       t.timestamps # É importante nessa classe pela necessidade de registrarmos as datas de criação e alteração
