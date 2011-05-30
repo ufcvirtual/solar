@@ -98,9 +98,9 @@ class AllocationsController < ApplicationController
       else
         # senao gera novo pedido (alocacao) de matricula
         @allocation = Allocation.new
-        @allocation.users_id = params[:userid]
-        @allocation.allocation_tags_id = params[:tagid]
-        @allocation.profiles_id = student_profile
+        @allocation.user_id = params[:userid]
+        @allocation.allocation_tag_id = params[:tagid]
+        @allocation.profile_id = student_profile
         @allocation.status = Allocation_Pending
       end
 

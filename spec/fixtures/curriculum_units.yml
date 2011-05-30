@@ -2,7 +2,7 @@
 
 r1:
   id: 1
-  curriculum_unit_types_id: 3
+  curriculum_unit_type_id: 3
   name: Introducao a Linguistica
   code: RM404
   resume: Pensando mais a longo prazo, a percepo das dificuldades nao causa impacto indireto na reavaliacao da formula da ressonancia racionalista.
@@ -13,7 +13,7 @@ r1:
 
 r2:
   id: 2
-  curriculum_unit_types_id: 1
+  curriculum_unit_type_id: 1
   name: Teoria da Literatura I
   code: RM405
   resume: Pensando mais a longo prazo, a percepo das dificuldades nao causa impacto indireto na reavaliacao da formula da ressonancia racionalista.
@@ -24,7 +24,7 @@ r2:
 
 r3:
   id: 3
-  curriculum_unit_types_id: 2
+  curriculum_unit_type_id: 2
   name: Quimica I
   code: RM301
   resume: Pensando mais a longo prazo, a percepo das dificuldades nao causa impacto indireto na reavaliacao da formula da ressonancia racionalista.
@@ -35,7 +35,7 @@ r3:
 
 r4:
   id: 4
-  curriculum_unit_types_id: 2
+  curriculum_unit_type_id: 2
   name: Semipresencial sm nvista
   code: TS101
   resume: Pensando mais a longo prazo, a percepo das dificuldades nao causa impacto indireto na reavaliacao da formula da ressonancia racionalista.
@@ -46,6 +46,6 @@ r4:
 
 r5:
   id: 5
-  curriculum_unit_types_id: 5
+  curriculum_unit_type_id: 5
   name: Literatura Brasileira I
   code: RM414

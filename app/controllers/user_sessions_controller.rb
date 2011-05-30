@@ -20,7 +20,7 @@ class UserSessionsController < ApplicationController
     @user_session = UserSession.new(params[:user_session])
     if @user_session.save
       # grava log de acesso
-      Log.create(:log_type => Log::TYPE[:login], :userId => @user_session.user.id)
+      Log.create(:log_type => Log::TYPE[:login], :user_id => @user_session.user.id)
 
       # gera aba para Home
       redirect_to :action => "add_tab", :controller => "application", :name => 'Home', :type => Tab_Type_Home

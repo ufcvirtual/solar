@@ -4,7 +4,7 @@ puts "Production Seed"
 
 puts "Truncando tabelas"
 
-models = [DiscussionPost, Discussion, Lesson, Allocation, AllocationTag, PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,
+models = [DiscussionPost, Discussion, Lesson, Allocation, UserMessageLabel, UserMessage, MessageLabel, AllocationTag, PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,
 Enrollment, Offer, CurriculumUnit, CurriculumUnitType, Course, PersonalConfiguration, User]
 models.each(&:delete_all)
 

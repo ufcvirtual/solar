@@ -41,40 +41,40 @@ coordenador_disciplina.save
 end
 
 enrollments = Enrollment.create([
-	{:offers_id => 1, :start => '2011-01-01', :end => '2021-03-02'},
-	{:offers_id => 2, :start => '2011-01-01', :end => '2021-03-02'},
-	{:offers_id => 3, :start => '2011-01-01', :end => '2021-03-02'},
-  {:offers_id => 4, :start => '2011-01-01', :end => '2021-03-02'},
-  {:offers_id => 5, :start => '2011-01-01', :end => '2021-03-02'}
+	{:offer_id => 1, :start => '2011-01-01', :end => '2021-03-02'},
+	{:offer_id => 2, :start => '2011-01-01', :end => '2021-03-02'},
+	{:offer_id => 3, :start => '2011-01-01', :end => '2021-03-02'},
+  {:offer_id => 4, :start => '2011-01-01', :end => '2021-03-02'},
+  {:offer_id => 5, :start => '2011-01-01', :end => '2021-03-02'}
 ])
 
 allocations = Allocation.create([
-	{:users_id => 1, :allocation_tags_id => 1, :profiles_id => 1, :status => 1},
-	{:users_id => 1, :allocation_tags_id => 2, :profiles_id => 1, :status => 1},
-	{:users_id => 1, :allocation_tags_id => 3, :profiles_id => 1, :status => 1},
-  {:users_id => 1, :allocation_tags_id => 8, :profiles_id => 1, :status => 0},
+	{:user_id => 1, :allocation_tag_id => 1, :profile_id => 1, :status => 1},
+	{:user_id => 1, :allocation_tag_id => 2, :profile_id => 1, :status => 1},
+	{:user_id => 1, :allocation_tag_id => 3, :profile_id => 1, :status => 1},
+  {:user_id => 1, :allocation_tag_id => 8, :profile_id => 1, :status => 0},
 
-	{:users_id => aluno1.id, :allocation_tags_id => 1, :profiles_id => 1, :status => 1},
-	{:users_id => aluno1.id, :allocation_tags_id => 2, :profiles_id => 1, :status => 1},
-	{:users_id => aluno1.id, :allocation_tags_id => 3, :profiles_id => 1, :status => 1},
+	{:user_id => aluno1.id, :allocation_tag_id => 1, :profile_id => 1, :status => 1},
+	{:user_id => aluno1.id, :allocation_tag_id => 2, :profile_id => 1, :status => 1},
+	{:user_id => aluno1.id, :allocation_tag_id => 3, :profile_id => 1, :status => 1},
 
-	{:users_id => aluno2.id, :allocation_tags_id => 1, :profiles_id => 1, :status => 1},
-	{:users_id => aluno2.id, :allocation_tags_id => 2, :profiles_id => 1, :status => 1},
-	{:users_id => aluno2.id, :allocation_tags_id => 3, :profiles_id => 1, :status => 1},
+	{:user_id => aluno2.id, :allocation_tag_id => 1, :profile_id => 1, :status => 1},
+	{:user_id => aluno2.id, :allocation_tag_id => 2, :profile_id => 1, :status => 1},
+	{:user_id => aluno2.id, :allocation_tag_id => 3, :profile_id => 1, :status => 1},
 
-	{:users_id => aluno3.id, :allocation_tags_id => 1, :profiles_id => 1, :status => 1},
-	{:users_id => aluno3.id, :allocation_tags_id => 2, :profiles_id => 1, :status => 1},
-	{:users_id => aluno3.id, :allocation_tags_id => 3, :profiles_id => 1, :status => 1},
+	{:user_id => aluno3.id, :allocation_tag_id => 1, :profile_id => 1, :status => 1},
+	{:user_id => aluno3.id, :allocation_tag_id => 2, :profile_id => 1, :status => 1},
+	{:user_id => aluno3.id, :allocation_tag_id => 3, :profile_id => 1, :status => 1},
 
-	{:users_id => tutor.id, :allocation_tags_id => 2, :profiles_id => 3, :status => 1},
-	{:users_id => tutor.id, :allocation_tags_id => 3, :profiles_id => 3, :status => 1},
+	{:user_id => tutor.id, :allocation_tag_id => 2, :profile_id => 3, :status => 1},
+	{:user_id => tutor.id, :allocation_tag_id => 3, :profile_id => 3, :status => 1},
 
-	{:users_id => tutor_presencial.id, :allocation_tags_id => 2, :profiles_id => 4, :status => 1},
-	{:users_id => tutor_presencial.id, :allocation_tags_id => 3, :profiles_id => 4, :status => 1},
+	{:user_id => tutor_presencial.id, :allocation_tag_id => 2, :profile_id => 4, :status => 1},
+	{:user_id => tutor_presencial.id, :allocation_tag_id => 3, :profile_id => 4, :status => 1},
 
-	{:users_id => prof.id, :allocation_tags_id => 4, :profiles_id => 2, :status => 1},
-	{:users_id => prof.id, :allocation_tags_id => 5, :profiles_id => 2, :status => 1},
-	{:users_id => prof.id, :allocation_tags_id => 6, :profiles_id => 2, :status => 1},
+	{:user_id => prof.id, :allocation_tag_id => 4, :profile_id => 2, :status => 1},
+	{:user_id => prof.id, :allocation_tag_id => 5, :profile_id => 2, :status => 1},
+	{:user_id => prof.id, :allocation_tag_id => 6, :profile_id => 2, :status => 1},
 
-	{:users_id => coordenador_disciplina.id, :allocation_tags_id => 8, :profiles_id => 5, :status => 1}
+	{:user_id => coordenador_disciplina.id, :allocation_tag_id => 8, :profile_id => 5, :status => 1}
 ])

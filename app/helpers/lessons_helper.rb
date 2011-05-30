@@ -1,21 +1,21 @@
 module LessonsHelper
 
-  def return_lessons_to_open(offers_id = nil, groups_id = nil, lesson_id = nil)
+  def return_lessons_to_open(offer_id = nil, group_id = nil, lesson_id = nil)
 
-    # at.id as id, at.offers_id as offerid,l.allocation_tags_id as alloctagid,l.type_lesson, privacy,description,
+    # at.id as id, at.offer_id as offerid,l.allocation_tag_id as alloctagid,l.type_lesson, privacy,description,
     
     query_lessons = "select * from (SELECT distinct l.id as lessonid,
                            l.name, address, l.order, l.start, l.end
                       FROM lessons l
-                      LEFT JOIN allocation_tags at ON l.allocation_tags_id = at.id
+                      LEFT JOIN allocation_tags at ON l.allocation_tag_id = at.id
                     WHERE
                       status=#{Lesson_Approved} and l.start<=current_date and l.end>=current_date "
 
     #vê se passou offers
-    if offers_id.nil? || offers_id==""
-      query_lessons += " and at.offers_id in ( NULL )"
+    if offer_id.nil? || offer_id==""
+      query_lessons += " and at.offer_id in ( NULL )"
     else
-      query_lessons += " and at.offers_id in ( #{offers_id} )"
+      query_lessons += " and at.offer_id in ( #{offer_id} )"
     end
 
     #vê se passou lesson
@@ -28,15 +28,15 @@ module LessonsHelper
                     select * from (SELECT distinct l.id as lessonid,
                            l.name, address, l.order, l.start, l.end
                       FROM lessons l
-                      LEFT JOIN allocation_tags at ON l.allocation_tags_id = at.id
+                      LEFT JOIN allocation_tags at ON l.allocation_tag_id = at.id
                     WHERE
                       status=#{Lesson_Approved} and l.start<=current_date and l.end>=current_date "
 
     #vê se passou groups
-    if groups_id.nil? || groups_id==""
-      query_lessons += " and at.groups_id in ( NULL )"
+    if group_id.nil? || group_id==""
+      query_lessons += " and at.group_id in ( NULL )"
     else
-      query_lessons += " and at.groups_id in ( #{groups_id} )"
+      query_lessons += " and at.group_id in ( #{group_id} )"
     end
 
     #vê se passou lesson

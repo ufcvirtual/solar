@@ -6,5 +6,5 @@ Factory.define :lesson do |lesson|
   lesson.status 1
   lesson.start "2011-02-01"
   lesson.end   "2011-12-01"
-  lesson.allocation_tags_id	1
+  lesson.allocation_tag_id	1
 end

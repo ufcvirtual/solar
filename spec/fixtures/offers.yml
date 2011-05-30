@@ -1,40 +1,40 @@
 
 of1:
   id: 1
-  curriculum_units_id: 1
-  courses_id: 1
+  curriculum_unit_id: 1
+  course_id: 1
   semester: '2011.1'
   start: '2011-03-10'
   end: '2021-12-01'
 
 of2:
   id: 2
-  curriculum_units_id: 2
-  courses_id: 1
+  curriculum_unit_id: 2
+  course_id: 1
   semester: '2011.1'
   start: '2011-03-10'
   end: '2021-12-01'
 
 of3:
   id: 3
-  curriculum_units_id: 3
-  courses_id: 2
+  curriculum_unit_id: 3
+  course_id: 2
   semester: '2011.1'
   start: '2011-03-10'
   end: '2021-12-01'
 
 of4:
   id: 4
-  curriculum_units_id: 4
-  courses_id: 1
+  curriculum_unit_id: 4
+  course_id: 1
   semester: '2011.1'
   start: '2011-03-10'
   end: '2021-12-01'
 
 of5:
   id: 5
-  curriculum_units_id: 5
-  courses_id: 2
+  curriculum_unit_id: 5
+  course_id: 2
   semester: '2011.1'
   start: '2011-03-10'
   end: '2021-12-01'

@@ -1,38 +1,37 @@
 # criando os recursos
 resources_arr = [
-	{:controller => 'users', :action => 'create', :description => 'Incluir novos usuarios no sistema'},
-	{:controller => 'users', :action => 'update', :description => 'Alteracao dos dados do usuario'},
-	{:controller => 'users', :action => 'mysolar', :description => 'Lista dos Portlest/Pagina inicial'},
-	{:controller => 'users', :action => 'update_photo', :description => 'Trocar foto'},
-	{:controller => 'users', :action => 'pwd_recovery', :description => 'Recuperar senha'},
-#5
-	{:controller => 'offers', :action => 'show', :description => 'Visualizacao de ofertas'},
-	{:controller => 'offers', :action => 'update', :description => 'Edicao de ofertas'},
-	{:controller => 'offers', :action => 'showoffersbyuser', :description => 'Exibe oferta atraves de busca'},
-#8
-	{:controller => 'groups', :action => 'show', :description => 'Visualizar turmas'},
-	{:controller => 'groups', :action => 'update', :description => 'Editar turmas'},
-#10
-  {:controller => 'curriculum_units', :action => 'access', :description => 'Acessar Unidade Curricular'},
-  {:controller => 'curriculum_units', :action => 'participants', :description => 'Listar participantes de uma Unidade Curricular'},
-  {:controller => 'curriculum_units', :action => 'informations', :description => 'Listar informacoes de uma Unidade Curricular'},
-#13
-  {:controller => 'allocations', :action => 'cancel', :description => 'Cancelar matricula'},
-  {:controller => 'allocations', :action => 'reactivate', :description => 'Pedir reativacao de matricula'},
-  {:controller => 'allocations', :action => 'send_request', :description => 'Pedir matricula'},
-  {:controller => 'allocations', :action => 'cancel_request', :description => 'Cancelar pedido de matricula'},
-#17
-  {:controller => 'lessons', :action => 'show', :description => 'Ver aula'},
-  {:controller => 'lessons', :action => 'list', :description => 'Listar aulas de uma Unidade Curricular'},
-  {:controller => 'lessons', :action => 'show_header', :description => 'Ver aula - header'},
-  {:controller => 'lessons', :action => 'show_content', :description => 'Ver aula - content'},
-#  {:controller => '', :action => '', :description => ''},
-#21
-  {:controller => 'discussions', :action => 'list', :description => 'Listar Foruns'}
+	{:id => 1, :controller => 'users', :action => 'create', :description => 'Incluir novos usuarios no sistema'},
+	{:id => 2, :controller => 'users', :action => 'update', :description => 'Alteracao dos dados do usuario'},
+	{:id => 3, :controller => 'users', :action => 'mysolar', :description => 'Lista dos Portlest/Pagina inicial'},
+	{:id => 4, :controller => 'users', :action => 'update_photo', :description => 'Trocar foto'},
+	{:id => 5, :controller => 'users', :action => 'pwd_recovery', :description => 'Recuperar senha'},
+
+	{:id => 6, :controller => 'offers', :action => 'show', :description => 'Visualizacao de ofertas'},
+	{:id => 7, :controller => 'offers', :action => 'update', :description => 'Edicao de ofertas'},
+	{:id => 8, :controller => 'offers', :action => 'showoffersbyuser', :description => 'Exibe oferta atraves de busca'},
+
+	{:id => 9, :controller => 'groups', :action => 'show', :description => 'Visualizar turmas'},
+	{:id => 10, :controller => 'groups', :action => 'update', :description => 'Editar turmas'},
+
+  {:id => 11, :controller => 'curriculum_units', :action => 'access', :description => 'Acessar Unidade Curricular'},
+  {:id => 12, :controller => 'curriculum_units', :action => 'participants', :description => 'Listar participantes de uma Unidade Curricular'},
+  {:id => 13, :controller => 'curriculum_units', :action => 'informations', :description => 'Listar informacoes de uma Unidade Curricular'},
+
+  {:id => 14, :controller => 'allocations', :action => 'cancel', :description => 'Cancelar matricula'},
+  {:id => 15, :controller => 'allocations', :action => 'reactivate', :description => 'Pedir reativacao de matricula'},
+  {:id => 16, :controller => 'allocations', :action => 'send_request', :description => 'Pedir matricula'},
+  {:id => 17, :controller => 'allocations', :action => 'cancel_request', :description => 'Cancelar pedido de matricula'},
+
+  {:id => 18, :controller => 'lessons', :action => 'show', :description => 'Ver aula'},
+  {:id => 19, :controller => 'lessons', :action => 'list', :description => 'Listar aulas de uma Unidade Curricular'},
+  {:id => 20, :controller => 'lessons', :action => 'show_header', :description => 'Ver aula - header'},
+  {:id => 21, :controller => 'lessons', :action => 'show_content', :description => 'Ver aula - content'},
+#  {:id => , :controller => '', :action => '', :description => ''},
+  {:id => 22, :controller => 'discussions', :action => 'list', :description => 'Listar Foruns'}
 ]
-count = 1
+count = 0
 resources = Resource.create(resources_arr) do |registro|
-  registro.id = count
+  registro.id = resources_arr[count][:id]
   count += 1
 end
 ########################
@@ -44,25 +43,25 @@ end
 ###############
 perm_alunos = PermissionsResource.create([
   # offer
-	{:profiles_id => 1, :resources_id => resources[5].id, :per_id => true},
-	{:profiles_id => 1, :resources_id => resources[6].id, :per_id => true},
-	{:profiles_id => 1, :resources_id => resources[7].id, :per_id => true},
+	{:profile_id => 1, :resource_id => 6, :per_id => true},
+	{:profile_id => 1, :resource_id => 7, :per_id => true},
+	{:profile_id => 1, :resource_id => 8, :per_id => true},
   # group
-	{:profiles_id => 1, :resources_id => resources[8].id, :per_id => true},
-	{:profiles_id => 1, :resources_id => resources[9].id, :per_id => true},
+	{:profile_id => 1, :resource_id => 9, :per_id => true},
+	{:profile_id => 1, :resource_id => 10, :per_id => true},
   # curriculum unit
-  {:profiles_id => 1, :resources_id => resources[10].id, :per_id => false},
-  {:profiles_id => 1, :resources_id => resources[11].id, :per_id => false},
-  {:profiles_id => 1, :resources_id => resources[12].id, :per_id => false},
-  {:profiles_id => 1, :resources_id => resources[13].id, :per_id => false},
-  {:profiles_id => 1, :resources_id => resources[14].id, :per_id => false},
-  {:profiles_id => 1, :resources_id => resources[15].id, :per_id => false},
-  {:profiles_id => 1, :resources_id => resources[16].id, :per_id => false},
-  {:profiles_id => 1, :resources_id => resources[17].id, :per_id => false},
-  {:profiles_id => 1, :resources_id => resources[18].id, :per_id => false},
-  {:profiles_id => 1, :resources_id => resources[19].id, :per_id => false},
-  {:profiles_id => 1, :resources_id => resources[20].id, :per_id => false},
-  {:profiles_id => 1, :resources_id => resources[21].id, :per_id => false}
+  {:profile_id => 1, :resource_id => 11, :per_id => false},
+  {:profile_id => 1, :resource_id => 12, :per_id => false},
+  {:profile_id => 1, :resource_id => 13, :per_id => false},
+  {:profile_id => 1, :resource_id => 14, :per_id => false},
+  {:profile_id => 1, :resource_id => 15, :per_id => false},
+  {:profile_id => 1, :resource_id => 16, :per_id => false},
+  {:profile_id => 1, :resource_id => 17, :per_id => false},
+  {:profile_id => 1, :resource_id => 18, :per_id => false},
+  {:profile_id => 1, :resource_id => 19, :per_id => false},
+  {:profile_id => 1, :resource_id => 20, :per_id => false},
+  {:profile_id => 1, :resource_id => 21, :per_id => false},
+  {:profile_id => 1, :resource_id => 22, :per_id => false}
 ])
 
 ##############################
@@ -70,23 +69,23 @@ perm_alunos = PermissionsResource.create([
 ##############################
 perm_prof_titular = PermissionsResource.create([
   # offer
-	{:profiles_id => 2, :resources_id => resources[5].id, :per_id => true},
-	{:profiles_id => 2, :resources_id => resources[6].id, :per_id => true},
-	{:profiles_id => 2, :resources_id => resources[7].id, :per_id => true},
+	{:profile_id => 2, :resource_id => 6, :per_id => true},
+	{:profile_id => 2, :resource_id => 7, :per_id => true},
+	{:profile_id => 2, :resource_id => 8, :per_id => true},
   # group
-	{:profiles_id => 2, :resources_id => resources[8].id, :per_id => true},
-	{:profiles_id => 2, :resources_id => resources[9].id, :per_id => true},
+	{:profile_id => 2, :resource_id => 9, :per_id => true},
+	{:profile_id => 2, :resource_id => 10, :per_id => true},
   # curriculum unit
-  {:profiles_id => 2, :resources_id => resources[10].id, :per_id => false},
-  {:profiles_id => 2, :resources_id => resources[11].id, :per_id => false},
-  {:profiles_id => 2, :resources_id => resources[12].id, :per_id => false},
-  {:profiles_id => 2, :resources_id => resources[13].id, :per_id => false},
-  {:profiles_id => 2, :resources_id => resources[14].id, :per_id => false},
-  {:profiles_id => 2, :resources_id => resources[15].id, :per_id => false},
-  {:profiles_id => 2, :resources_id => resources[16].id, :per_id => false},
-  {:profiles_id => 2, :resources_id => resources[17].id, :per_id => false},
-  {:profiles_id => 2, :resources_id => resources[18].id, :per_id => false},
-  {:profiles_id => 2, :resources_id => resources[21].id, :per_id => false}
+  {:profile_id => 2, :resource_id => 11, :per_id => false},
+  {:profile_id => 2, :resource_id => 12, :per_id => false},
+  {:profile_id => 2, :resource_id => 13, :per_id => false},
+  {:profile_id => 2, :resource_id => 14, :per_id => false},
+  {:profile_id => 2, :resource_id => 15, :per_id => false},
+  {:profile_id => 2, :resource_id => 16, :per_id => false},
+  {:profile_id => 2, :resource_id => 17, :per_id => false},
+  {:profile_id => 2, :resource_id => 18, :per_id => false},
+  {:profile_id => 2, :resource_id => 19, :per_id => false},
+  {:profile_id => 2, :resource_id => 22, :per_id => false}
 ])
 
 ##############################
@@ -94,23 +93,23 @@ perm_prof_titular = PermissionsResource.create([
 ##############################
 perm_prof_titular = PermissionsResource.create([
   # offer
-	{:profiles_id => 3, :resources_id => resources[5].id, :per_id => true},
-	{:profiles_id => 3, :resources_id => resources[6].id, :per_id => true},
-	{:profiles_id => 3, :resources_id => resources[7].id, :per_id => true},
+	{:profile_id => 3, :resource_id => 6, :per_id => true},
+	{:profile_id => 3, :resource_id => 7, :per_id => true},
+	{:profile_id => 3, :resource_id => 8, :per_id => true},
   # group
-	{:profiles_id => 3, :resources_id => resources[8].id, :per_id => true},
-	{:profiles_id => 3, :resources_id => resources[9].id, :per_id => true},
+	{:profile_id => 3, :resource_id => 9, :per_id => true},
+	{:profile_id => 3, :resource_id => 10, :per_id => true},
   # curriculum unit
-  {:profiles_id => 3, :resources_id => resources[10].id, :per_id => false},
-  {:profiles_id => 3, :resources_id => resources[11].id, :per_id => false},
-  {:profiles_id => 3, :resources_id => resources[12].id, :per_id => false},
-  {:profiles_id => 3, :resources_id => resources[13].id, :per_id => false},
-  {:profiles_id => 3, :resources_id => resources[14].id, :per_id => false},
-  {:profiles_id => 3, :resources_id => resources[15].id, :per_id => false},
-  {:profiles_id => 3, :resources_id => resources[16].id, :per_id => false},
-  {:profiles_id => 3, :resources_id => resources[17].id, :per_id => false},
-  {:profiles_id => 3, :resources_id => resources[18].id, :per_id => false},
-  {:profiles_id => 3, :resources_id => resources[21].id, :per_id => false}
+  {:profile_id => 3, :resource_id => 11, :per_id => false},
+  {:profile_id => 3, :resource_id => 12, :per_id => false},
+  {:profile_id => 3, :resource_id => 13, :per_id => false},
+  {:profile_id => 3, :resource_id => 14, :per_id => false},
+  {:profile_id => 3, :resource_id => 15, :per_id => false},
+  {:profile_id => 3, :resource_id => 16, :per_id => false},
+  {:profile_id => 3, :resource_id => 17, :per_id => false},
+  {:profile_id => 3, :resource_id => 18, :per_id => false},
+  {:profile_id => 3, :resource_id => 19, :per_id => false},
+  {:profile_id => 3, :resource_id => 22, :per_id => false}
 ])
 
 
@@ -118,35 +117,35 @@ perm_prof_titular = PermissionsResource.create([
 
 
 PermissionsMenu.create([
-    {:profiles_id => 1, :menus_id => 10},
-    {:profiles_id => 1, :menus_id => 101},
-    {:profiles_id => 1, :menus_id => 20},
-    {:profiles_id => 1, :menus_id => 201},
-    {:profiles_id => 1, :menus_id => 30},
-    {:profiles_id => 1, :menus_id => 301},
-    {:profiles_id => 1, :menus_id => 304},
-    {:profiles_id => 1, :menus_id => 50},
-    {:profiles_id => 1, :menus_id => 70},
+    {:profile_id => 1, :menu_id => 10},
+    {:profile_id => 1, :menu_id => 101},
+    {:profile_id => 1, :menu_id => 20},
+    {:profile_id => 1, :menu_id => 201},
+    {:profile_id => 1, :menu_id => 30},
+    {:profile_id => 1, :menu_id => 301},
+    {:profile_id => 1, :menu_id => 304},
+    {:profile_id => 1, :menu_id => 50},
+    {:profile_id => 1, :menu_id => 70},
 
-    {:profiles_id => 2, :menus_id => 10},
-    {:profiles_id => 2, :menus_id => 101},
-    {:profiles_id => 2, :menus_id => 20},
-    {:profiles_id => 2, :menus_id => 201},
-    {:profiles_id => 2, :menus_id => 30},
-    {:profiles_id => 2, :menus_id => 301},
-    {:profiles_id => 2, :menus_id => 304},
-    {:profiles_id => 2, :menus_id => 50},
-    {:profiles_id => 2, :menus_id => 70},
+    {:profile_id => 2, :menu_id => 10},
+    {:profile_id => 2, :menu_id => 101},
+    {:profile_id => 2, :menu_id => 20},
+    {:profile_id => 2, :menu_id => 201},
+    {:profile_id => 2, :menu_id => 30},
+    {:profile_id => 2, :menu_id => 301},
+    {:profile_id => 2, :menu_id => 304},
+    {:profile_id => 2, :menu_id => 50},
+    {:profile_id => 2, :menu_id => 70},
 
-    {:profiles_id => 3, :menus_id => 10},
-    {:profiles_id => 3, :menus_id => 101},
-    {:profiles_id => 3, :menus_id => 20},
-    {:profiles_id => 3, :menus_id => 201},
-    {:profiles_id => 3, :menus_id => 30},
-    {:profiles_id => 3, :menus_id => 301},
-    {:profiles_id => 3, :menus_id => 304},
-    {:profiles_id => 3, :menus_id => 50},
-    {:profiles_id => 3, :menus_id => 70},
+    {:profile_id => 3, :menu_id => 10},
+    {:profile_id => 3, :menu_id => 101},
+    {:profile_id => 3, :menu_id => 20},
+    {:profile_id => 3, :menu_id => 201},
+    {:profile_id => 3, :menu_id => 30},
+    {:profile_id => 3, :menu_id => 301},
+    {:profile_id => 3, :menu_id => 304},
+    {:profile_id => 3, :menu_id => 50},
+    {:profile_id => 3, :menu_id => 70},
 
 
 ])

@@ -1,6 +1,6 @@
 Factory.define :allocation do |allocation|
-  allocation.users_id	1
-  allocation.allocation_tags_id	1
-  allocation.profiles_id	1
+  allocation.user_id	1
+  allocation.allocation_tag_id	1
+  allocation.profile_id	1
   allocation.status 1
 end

@@ -10,14 +10,14 @@ Contexto:
         | 1  | Letras Português        | LLPT   |
         | 2  | Licenciatura em Química | LQUIM  |
     Dado que tenho "enrollments"
-        | id | offers_id | start      | end        |
+        | id | offer_id  | start      | end        |
         | 1  | 1         | 2011-03-01 | 2021-05-30 |
         | 2  | 2         | 2011-03-01 | 2021-05-30 |
         | 3  | 3         | 2011-03-01 | 2021-05-30 |
         | 4  | 4         | 2011-03-01 | 2021-05-30 |
         | 5  | 5         | 2011-03-01 | 2021-05-30 |
     Dado que tenho "allocations"
-        | users_id | allocation_tags_id | profiles_id | status |
+        | user_id  | allocation_tag_id  | profile_id  | status |
         | 1        | 1                  | 1           | 1      |
         | 1        | 3                  | 1           | 1      |
         | 1        | 8                  | 1           | 0      |

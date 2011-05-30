@@ -15,21 +15,21 @@ class Ability
                         array_agg(
                             DISTINCT
                             CASE t3.controller
-                                WHEN 'group' THEN t5.groups_id
-                                WHEN 'offer' THEN t5.offers_id
-                                WHEN 'curriculum_unit' THEN t5.curriculum_units_id
-                                WHEN 'course' THEN t5.courses_id
-                                ELSE t4.users_id
+                                WHEN 'group' THEN t5.group_id
+                                WHEN 'offer' THEN t5.offer_id
+                                WHEN 'curriculum_unit' THEN t5.curriculum_unit_id
+                                WHEN 'course' THEN t5.course_id
+                                ELSE t4.user_id
                             END)::text, '{}', '[]'
                      )
                  ELSE NULL
                  END         AS objetos
             FROM profiles    AS t1
-            JOIN permissions_resources AS t2 ON t2.profiles_id = t1.id
-            JOIN resources   AS t3 ON t3.id = t2.resources_id
-            JOIN allocations AS t4 ON t4.profiles_id = t1.id
-            JOIN allocation_tags AS t5 ON t5.id = t4.allocation_tags_id
-           WHERE t4.users_id = #{user.id}
+            JOIN permissions_resources AS t2 ON t2.profile_id = t1.id
+            JOIN resources             AS t3 ON t3.id = t2.resource_id
+            JOIN allocations           AS t4 ON t4.profile_id = t1.id
+            JOIN allocation_tags       AS t5 ON t5.id = t4.allocation_tag_id
+           WHERE t4.user_id = #{user.id}
            GROUP BY t3.controller, t3.action, t2.per_id
            ORDER BY 1, 2;"
 

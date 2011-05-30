@@ -5,7 +5,7 @@ Funcionalidade: Exibir participantes do curso
 
 Contexto:
     Dado que tenho "allocations"
-        | users_id | allocation_tags_id | profiles_id | status |
+        | user_id  | allocation_tag_id  | profile_id  | status |
         | 1        | 4                  | 2           | 1      |
         | 2        | 4                  | 1           | 1      |
         | 3        | 4                  | 1           | 1      |

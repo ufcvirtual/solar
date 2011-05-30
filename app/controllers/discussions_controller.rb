@@ -7,35 +7,35 @@ class DiscussionsController < ApplicationController
   def list
     
     # pegando dados da sessao e nao da url
-    groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-    offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+    group_id = session[:opened_tabs][session[:active_tab]]["group_id"]
+    offer_id = session[:opened_tabs][session[:active_tab]]["offer_id"]
     
-    if groups_id.nil?
-      groups_id = -1
+    if group_id.nil?
+      group_id = -1
     end
     
-    if offers_id.nil?
-      offers_id = -1
+    if offer_id.nil?
+      offer_id = -1
     end
 
     # retorna os fóruns da turma
-    # at.id as id, at.offers_id as offerid,l.allocation_tags_id as alloctagid,l.type_lesson, privacy,description,
+    # at.id as id, at.offer_id as offerid,l.allocation_tag_id as alloctagid,l.type_lesson, privacy,description,
     
     query = "SELECT * 
               FROM 
                 (SELECT d.name, d.id, d.start, d.end, d.description 
                  FROM discussions d 
-                 INNER JOIN allocation_tags t on d.allocation_tag_id = t.id 
-                 INNER JOIN groups g on g.id = t.groups_id
-                 WHERE g.id = #{groups_id}
+                 INNER JOIN allocation_tags t on d.allocation_tag_id = t.id
+                 INNER JOIN groups g on g.id = t.group_id
+                 WHERE g.id = #{group_id}
               
                  UNION ALL
               
                  SELECT d.name, d.id, d.start, d.end, d.description 
                  FROM discussions d 
-                 INNER JOIN allocation_tags t on d.allocation_tag_id = t.id 
-                 INNER JOIN offers o on o.id = t.offers_id
-                 WHERE o.id = #{offers_id}
+                 INNER JOIN allocation_tags t on d.allocation_tag_id = t.id
+                 INNER JOIN offers o on o.id = t.offer_id
+                 WHERE o.id = #{offer_id}
                 ) as available_discussions
               ORDER BY start;"
 

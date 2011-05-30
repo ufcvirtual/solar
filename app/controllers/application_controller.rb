@@ -107,8 +107,8 @@ class ApplicationController < ActionController::Base
     # recupera o contexto do controller que esta sendo acessado
     query = "  SELECT DISTINCT t3.name AS context
                  FROM resources AS t1
-                 JOIN menus     AS t2 ON t1.id = t2.resources_id
-                 JOIN contexts  AS t3 ON t3.id = t2.contexts_id
+                 JOIN menus     AS t2 ON t1.id = t2.resource_id
+                 JOIN contexts  AS t3 ON t3.id = t2.context_id
                 WHERE t1.controller = '#{params[:controller]}';"
 
     context = ActiveRecord::Base.connection.select_all query
