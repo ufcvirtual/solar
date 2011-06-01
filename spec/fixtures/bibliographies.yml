@@ -1,0 +1,56 @@
+livro1:
+  id: 1
+  allocation_tags_id: 3
+  title: Metodos ageis em POG
+  publisher: Ursa menor
+  edition: 1
+  year: 2020
+  author: Rafael Patao
+  locale: Trantor
+  url: http://www.euamopog.com/apognaminhavida/meufilhosechamapog/pogforever
+  isbn_issn: 12365489
+  additional_text: Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form.
+
+livro2:
+  id: 2
+  allocation_tags_id: 3
+  title: Sistemas embarcados em aviões e em barcos
+  publisher: Distribuida
+  edition: 1
+  year: 2020
+  author: Laertimmmmmmmm
+  locale: London
+  url: http://www.euembarco.com.br/podesernonavil/achoquenoaviao/nadmahehnopc
+  isbn_issn: 9876543210
+  additional_text: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+livro3:
+  id: 3
+  allocation_tags_id: 3
+  title: vai la
+  publisher: fui
+  edition: 10
+  year: 2011
+  author: eu
+  locale: sei não!
+  url: http://www.google.com
+  isbn_issn: 456832
+  additional_text: asljkf asahads basdla hfasa fsa saa  aslkjblfhasjkf hasdkjf alksjfhaklsjfh alskfhkajsf alksjf .
+
+livro4:
+  id: 4
+  allocation_tags_id: 7
+  title: Cantando pneu em 10 exercícios práticos
+  publisher: Roda de vento
+  edition: 6
+  year: 2000
+  author: Delanimm
+  locale: Nas brenhas!
+  url: http://www.cantandopneu.com.br/cantopneudemanha/atardetambem/easvezesanoite
+  isbn_issn: 9876543210
+  additional_text: kjasdnajkdakjd abkdhabd akhdba dlkadjba ldhbad lkahbdl askfbça bsd f asbdfkl ba ailh akdhfb akdhfb alkhdbfa.
+
+livro5:
+  id: 5
+  allocation_tags_id: 3
+  title: So tem o titulo

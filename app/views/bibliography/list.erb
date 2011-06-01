@@ -1,0 +1,106 @@
+
+<div>
+  <span class="page_title"><%= t(:bibliography_title)%></span> <span class="page_title"><%=@curriculum_unit.name%></span>
+  <br/>
+</div>
+<%
+query = "SELECT t1.*
+FROM bibliographies as t1
+Inner Join allocation_tags as t2 ON (t1.allocation_tags_id = t2.id)
+left join offers as t4 ON (t2.offers_id = t4.id)
+left join groups as t5 ON (t2.offers_id = t4.id)
+left join courses as t6 ON (t2.courses_id = t6.id)
+where
+t2.courses_id is null and
+t2.curriculum_units_id is null
+and
+(
+t2.groups_id = #{ @groups_id }  OR
+t2.offers_id = #{ @offers_id }
+)
+; "
+
+bibli = ActiveRecord::Base.connection.select_all query
+%>
+
+
+<div>
+
+  <% if !(bibli.nil? || bibli.empty?) %>
+    <% bibli.each do |bib| %>
+      <div id="biliography_header_content">
+        <div id="biliography_title"><%= bib["title"] %></div> <div id="biliography_photo"> <%= image_tag "icon_bibliografia.png", :alt=>t(:icon_bibliography ) %></div>
+        <hr id="bibliography_line"></hr>
+      </div>
+
+      <div id="biliography">
+        <div style="margin-left: 5px; margin-top: 7px">
+    <%#*Autor%>
+          <% unless  bib["author"] == nil  %>
+            <%= a = bib["author"].to_s.split
+            a[a.length-1].upcase
+          %>
+
+            <%= a = bib["author"].to_s.split
+            if a.length > 1
+              ', ' << a[0].to_s
+            end
+
+          %>.
+          <% end %>
+
+    <%#*Titulo%>
+          <% unless  bib["title"] == nil  %>
+            <span style="font-weight: bold"><%=  bib["title"] %> </span>.
+          <% end %>
+
+    <%#*Edicao%>
+          <% unless  bib["edition"] == nil  %>
+            <%=  bib["edition"]%>.ed .
+          <% end %>
+
+    <%#*local%>
+          <% unless  bib["locale"] == nil  %>
+            <%= bib["locale"]%>:
+          <% end %>
+
+    <%#*Editora%>
+          <% unless  bib["publisher"] == nil  %>
+            <%= bib["publisher"]%> ,
+          <% end %>
+
+    <%#*ano%>
+          <% unless  bib["year"] == nil  %>
+            <%= bib["year"] %>.
+          <% end %>
+
+    <%#*Texto complementar%>
+          <% unless  bib["additional_text"] == nil  %>
+            <%= bib["additional_text"]%>
+          <% end %>
+
+    <%#*ISBN%>
+          <% unless  bib["isbn_issn"] == nil  %>
+            <p style="margin-top: 4px">ISBN/ISSN: <%=bib["isbn_issn"]%></p>
+          <% end %>
+
+    <%#*URL%>
+          <% unless  bib["url"] == nil  %>
+            URL: <u style="color: #8b94b7"><a style="color: #1c4785;" target="_blank" href= <%= bib["url"] %>><%= bib["url"] %></a></u><br />
+          <% end %>
+          &nbsp;
+
+        </div>
+        <div style="background-color: #FFF">
+          <br/>
+        </div>
+
+
+      </div>
+    <%  end %>
+
+  <% else %>
+    <%= t(:lesson_message) %>
+  <% end %>
+
+</div>

@@ -213,6 +213,9 @@ en:
   icon_chat: "Chat icon"
   icon_add_participant: "Add participant icon"
   icon_lesson: "Lesson icon"
+  icon_bibliography: "Bibliography icon"
+  bibliography_title: "Bibliography of"
+  bibliography_null: "Nothing bibliography registered"
 
   # Mensagem de erro para permissão 
   no_permission: "you haven't permission to access this page"

@@ -27,7 +27,8 @@ resources_arr = [
   {:id => 20, :controller => 'lessons', :action => 'show_header', :description => 'Ver aula - header'},
   {:id => 21, :controller => 'lessons', :action => 'show_content', :description => 'Ver aula - content'},
 #  {:id => , :controller => '', :action => '', :description => ''},
-  {:id => 22, :controller => 'discussions', :action => 'list', :description => 'Listar Foruns'}
+  {:id => 22, :controller => 'discussions', :action => 'list', :description => 'Listar Foruns'},
+  {:id => 23, :controller => 'bibliography', :action =>'list', :description => 'Bibliografia do curso'}
 ]
 count = 0
 resources = Resource.create(resources_arr) do |registro|
@@ -61,7 +62,8 @@ perm_alunos = PermissionsResource.create([
   {:profile_id => 1, :resource_id => 19, :per_id => false},
   {:profile_id => 1, :resource_id => 20, :per_id => false},
   {:profile_id => 1, :resource_id => 21, :per_id => false},
-  {:profile_id => 1, :resource_id => 22, :per_id => false}
+  {:profile_id => 1, :resource_id => 22, :per_id => false},
+  {:profile_id => 1, :resource_id => 23, :per_id => false}
 ])
 
 ##############################
@@ -146,6 +148,4 @@ PermissionsMenu.create([
     {:profile_id => 3, :menu_id => 304},
     {:profile_id => 3, :menu_id => 50},
     {:profile_id => 3, :menu_id => 70},
-
-
 ])
