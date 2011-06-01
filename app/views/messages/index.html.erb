@@ -13,20 +13,20 @@
       <div class="message_general_div_option">
         <%= link_to (image_tag "message_inbox.png", :alt=>t(:message_inbox)),{:type => 'index'} %>
         <div class="message_main_menu">
-          <%= link_to t(:message_inbox), {:type => 'index'} %>
+          <%= link_to t(:message_inbox), {:type => 'index'},{:class=>'message_link_menu'} %>
           <%= label_tag 'lb_number', '(3)', :class => "text_alert" %>
         </div>
       </div>
       <div class="message_general_div_option">
         <%= link_to (image_tag "message_outbox.png", :alt=>t(:message_outbox)),{:type => 'outbox'} %>
         <div class="message_main_menu">
-          <%= link_to t(:message_outbox), {:type => 'outbox'} %>
+          <%= link_to t(:message_outbox), {:type => 'outbox'},{:class=>'message_link_menu'} %>
         </div>
       </div>
       <div class="message_general_div_option">
         <%= link_to (image_tag "message_trash.png", :alt=>t(:message_trash)),{:type => 'trashbox'} %>
         <div class="message_main_menu">
-          <%= link_to t(:message_trash),  {:type => 'trashbox'} %>
+          <%= link_to t(:message_trash),  {:type => 'trashbox'},{:class=>'message_link_menu'} %>
         </div>
       </div>
     </div>

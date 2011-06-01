@@ -1156,10 +1156,11 @@ div.alter_photo_text {
 }
 .message_div {
     padding-top: 15px;
+    border-bottom: 2px solid #B4B3B7
 }
 .message_general_div_option {
     display: inline-block;
-    padding-right: 30px;
+    margin-right: 30px;
 }
 .message_main_menu{
     color: #214684;
@@ -1180,15 +1181,20 @@ div.alter_photo_text {
     padding: 0 5px 0 5px;
     margin: 0;
     vertical-align: middle;
-    border-top: 2px solid #b4b3b7;
+    /*border-top: 2px solid #b4b3b7;*/
 }
-.message_link{
+.message_link,.message_link_menu{
     font-size: 12px;
     font-family:'Trebuchet',Arial,'Myriad Pro';
     text-decoration: underline;
     margin-right: 10px;
     color: #214684;
     cursor: pointer;
+}
+.message_link_menu{
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
 }
 .message_div_list{
     background-color: #F7F7F7;
