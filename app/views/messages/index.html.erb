@@ -10,42 +10,57 @@
     </div>
 
     <div class="message_div">
-      <div class="message_general_div_option">
+      <div class="message_general_div_option_active" id="menu_inbox">
         <%= link_to (image_tag "message_inbox.png", :alt=>t(:message_inbox)),{:type => 'index'} %>
         <div class="message_main_menu">
-          <%= link_to t(:message_inbox), {:type => 'index'} %>
-          <%= label_tag 'lb_number', '(3)', :class => "text_alert" %>
+          <%= link_to t(:message_inbox), {:type => 'index'},{:class=>'message_link_menu'} %>
+          <%= label_tag 'lb_number', '(3)', :class => "text_alert_message" %>
         </div>
       </div>
-      <div class="message_general_div_option">
+      <div class="message_general_div_option" id="menu_outbox">
         <%= link_to (image_tag "message_outbox.png", :alt=>t(:message_outbox)),{:type => 'outbox'} %>
         <div class="message_main_menu">
-          <%= link_to t(:message_outbox), {:type => 'outbox'} %>
+          <%= link_to t(:message_outbox), {:type => 'outbox'},{:class=>'message_link_menu'} %>
         </div>
       </div>
-      <div class="message_general_div_option">
+      <div class="message_general_div_option" id="menu_trash">
         <%= link_to (image_tag "message_trash.png", :alt=>t(:message_trash)),{:type => 'trashbox'} %>
         <div class="message_main_menu">
-          <%= link_to t(:message_trash),  {:type => 'trashbox'} %>
+          <%= link_to t(:message_trash),  {:type => 'trashbox'},{:class=>'message_link_menu'} %>
         </div>
       </div>
     </div>
     
     <div class="message_div_options">
       <%= link_to t(:message_new), {}, {:class=>'message_link'} %>&nbsp;
+
+      
+      <ul class="message_menu_listbox">
+        <li><a href="#"><%=t(:message_select)%> <%=image_tag "icon_arrow_down.png", :alt=>t(:message_move)%></a>
+          <ul>
+            <li><%= link_to t(:message_select_all), {}, {:class=>'message_link'}%></li>
+            <li><%= link_to t(:message_select_none), {}, {:class=>'message_link'}%></li>
+            <li><%= link_to t(:message_select_read), {}, {:class=>'message_link'}%></li>
+            <li><%= link_to t(:message_select_unread), {}, {:class=>'message_link'}%></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="message_menu_listbox">
+        <li><a href="#"><%=t(:message_move)%> <%=image_tag "icon_arrow_down.png", :alt=>t(:message_move)%></a>
+          <ul>
+            <li><%= link_to t(:message_trash), {}, {:class=>''}%></li>
+          </ul>
+        </li>
+      </ul>
+
+
       <%= link_to t(:message_delete), {}, {:class=>'message_link'} %>&nbsp;
-
-
       <%= link_to t(:message_mark_as_read), {}, {:class=>'message_link'} %>&nbsp;
       <%= link_to t(:message_mark_as_unread), {}, {:class=>'message_link'} %>&nbsp;
     </div>
-<!--
-  message_filter: "Filter"
-  message_select: "Select"
-  message_move: "Move"
--->
+
     <div class="message_div_list">
-      <table width="100%">
+      <table class="message_div_list">
         <% @messages.each do |message| %>
           <tr class="message_line">
             <td style="width:30px"><%=check_box :id, :id => 'checkbox_message'%></td>
@@ -67,3 +82,9 @@
     </div>
 
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    dropdown_menu();
+  });
+</script>

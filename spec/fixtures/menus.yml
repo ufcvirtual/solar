@@ -38,7 +38,7 @@ forum_ativ:
 portfolio_ativ:
   id: 202
   father_id: 20
-  name: "Portfolio(Trabalhos, pessoal, grupo, professor)"
+  name: "Portfolio"
   order: 2
   context_id: 2
 
@@ -99,6 +99,7 @@ biblio_info:
   name: Bibliografia
   order: 3
   context_id: 2
+  resource_id: 23
 
 parti_info:
   id: 304

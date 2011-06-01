@@ -193,6 +193,10 @@ en:
   message_mark_as_unread: "Mark as unread"
   message_of: " of "
   message_attach: "Has attachment"
+  message_select_all: "All"
+  message_select_none: "None"
+  message_select_read: "Read"
+  message_select_unread: "Unread"
 
   navigation_next: "Next"
   navigation_previous: "Previous"
@@ -209,6 +213,9 @@ en:
   icon_chat: "Chat icon"
   icon_add_participant: "Add participant icon"
   icon_lesson: "Lesson icon"
+  icon_bibliography: "Bibliography icon"
+  bibliography_title: "Bibliography of"
+  bibliography_null: "Nothing bibliography registered"
 
   # Mensagem de erro para permissão 
   no_permission: "you haven't permission to access this page"

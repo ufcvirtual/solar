@@ -198,6 +198,10 @@
   message_mark_as_unread: "Marcar como não lida"
   message_of: " de "
   message_attach: "Possui arquivo anexado"
+  message_select_all: "Todas"
+  message_select_none: "Nenhuma"
+  message_select_read: "Lidas"
+  message_select_unread: "Não lidas"
 
   navigation_next: "Próxima"
   navigation_previous: "Anterior"
@@ -214,6 +218,9 @@
   icon_chat: "Ícone do chat"
   icon_add_participant: "Ícone de adicionar participante"
   icon_lesson: "Ícone de aulas"
+  icon_bibliography: "Ícone bibliografia"
+  bibliography_title: "Bibliografia de"
+  bibliography_null: "Nenhuma bibliografia cadastrada"
 
   # Mensagem de erro para permissão   
   no_permission: "Você não tem permissão para acessar esta página"
