@@ -103,11 +103,14 @@ textarea{
     text-transform: capitalize;
 }
 
-.text_alert {
+.text_alert, .text_alert_message {
     font-family: Trebuchet;
     font-size: 11px;
     color: #e64d4d;
     width: auto;
+}
+.text_alert_message {
+    vertical-align: super;
 }
 
 /****tela de matricula****/
@@ -1158,9 +1161,12 @@ div.alter_photo_text {
     padding-top: 15px;
     border-bottom: 2px solid #B4B3B7
 }
-.message_general_div_option {
+.message_general_div_option, .message_general_div_option_active {
     display: inline-block;
-    margin-right: 30px;
+    margin-right: 25px;
+}
+.message_general_div_option_active {
+    border-bottom: 3px solid #214684;
 }
 .message_main_menu{
     color: #214684;
@@ -1181,7 +1187,8 @@ div.alter_photo_text {
     padding: 0 5px 0 5px;
     margin: 0;
     vertical-align: middle;
-    /*border-top: 2px solid #b4b3b7;*/
+    border-top: 3px solid #CCCCCC;
+    margin-top: -5px;
 }
 .message_link,.message_link_menu{
     font-size: 12px;
@@ -1195,11 +1202,11 @@ div.alter_photo_text {
     text-decoration: none;
     font-size: 14px;
     font-weight: bold;
+    vertical-align: super;
 }
 .message_div_list{
     background-color: #F7F7F7;
     width: 780px;
-    padding: 5px;    
 }
 .message_line{
     background-color: #f9f9f9;
