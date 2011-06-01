@@ -1186,6 +1186,7 @@ div.alter_photo_text {
     text-decoration: underline;
     margin-right: 10px;
     color: #214684;
+    cursor: pointer;
 }
 .message_div_list{
     background-color: #F7F7F7;
@@ -1213,5 +1214,54 @@ div.alter_photo_text {
     padding: 0px;
     font-size: 11px;
     font-family:'Trebuchet',Arial,'Myriad Pro';
-
 }
+/* dropdown de mensagens (selecionar, mover para) */
+ul{
+    list-style-type:none;
+}
+ul.message_menu_listbox{
+    width:  80px;
+    margin:  0px;
+    padding: 0px;
+    display: inline-block;}
+ul.message_menu_listbox li{
+    position: relative;
+}
+ul.message_menu_listbox li:hover{
+    position: relative;
+}
+ul.message_menu_listbox li a{  /* menu nivel 1 */
+    font-size: 12px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    text-decoration: underline;
+    color: #214684;
+    cursor: pointer;
+    display:block;    
+}
+ul.message_menu_listbox li ul{
+    display:none;
+    border: 1px solid #ccc;
+    position: absolute;
+    line-height: 18px;
+    margin: 0px;
+    padding: 0px;
+    top:14px;
+    left:0;
+    margin-right: 0px;
+    background:#fff;
+}
+ul.message_menu_listbox li:hover ul{
+    display:block;
+    }
+ul.message_menu_listbox li ul a{  /* menu nivel 2 - opcoes */
+    width: 80px;
+    display: block;
+    background: #fff;
+    padding: 0px;
+    margin:  2px;
+    font-size: 11px;
+    font-family: 'Trebuchet',Arial,'Myriad Pro';
+    text-decoration: none;
+}
+ul.message_menu_listbox li ul a:hover{
+    background:#eee;}
