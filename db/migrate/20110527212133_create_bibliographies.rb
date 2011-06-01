@@ -1,7 +1,7 @@
 class CreateBibliographies < ActiveRecord::Migration
   def self.up
     create_table :bibliographies do |t|
-      t.references :allocation_tags
+      t.integer :allocation_tag_id
       t.string :title
       t.string :additional_text
       t.string :publisher, :limit => 100

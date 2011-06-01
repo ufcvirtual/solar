@@ -4,21 +4,20 @@
   <br/>
 </div>
 <%
-query = "SELECT t1.*
-FROM bibliographies as t1
-Inner Join allocation_tags as t2 ON (t1.allocation_tags_id = t2.id)
-left join offers as t4 ON (t2.offers_id = t4.id)
-left join groups as t5 ON (t2.offers_id = t4.id)
-left join courses as t6 ON (t2.courses_id = t6.id)
-where
-t2.courses_id is null and
-t2.curriculum_units_id is null
-and
-(
-t2.groups_id = #{ @groups_id }  OR
-t2.offers_id = #{ @offers_id }
-)
-; "
+query = "
+       SELECT t1.*
+         FROM bibliographies as t1
+        INNER JOIN allocation_tags as t2 ON (t1.allocation_tag_id = t2.id)
+         LEFT JOIN offers as t4 ON (t2.offer_id = t4.id)
+         LEFT JOIN groups as t5 ON (t2.offer_id = t4.id)
+         LEFT JOIN courses as t6 ON (t2.course_id = t6.id)
+        WHERE t2.course_id is null and
+              t2.curriculum_unit_id is null
+          and
+          (
+            t2.group_id = #{ @groups_id }  OR
+            t2.offer_id = #{ @offers_id }
+          ); "
 
 bibli = ActiveRecord::Base.connection.select_all query
 %>

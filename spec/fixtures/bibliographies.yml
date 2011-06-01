@@ -1,6 +1,6 @@
 livro1:
   id: 1
-  allocation_tags_id: 3
+  allocation_tag_id: 3
   title: Metodos ageis em POG
   publisher: Ursa menor
   edition: 1
@@ -13,7 +13,7 @@ livro1:
 
 livro2:
   id: 2
-  allocation_tags_id: 3
+  allocation_tag_id: 3
   title: Sistemas embarcados em aviões e em barcos
   publisher: Distribuida
   edition: 1
@@ -26,7 +26,7 @@ livro2:
 
 livro3:
   id: 3
-  allocation_tags_id: 3
+  allocation_tag_id: 3
   title: vai la
   publisher: fui
   edition: 10
@@ -39,7 +39,7 @@ livro3:
 
 livro4:
   id: 4
-  allocation_tags_id: 7
+  allocation_tag_id: 7
   title: Cantando pneu em 10 exercícios práticos
   publisher: Roda de vento
   edition: 6
@@ -52,5 +52,5 @@ livro4:
 
 livro5:
   id: 5
-  allocation_tags_id: 3
+  allocation_tag_id: 3
   title: So tem o titulo
