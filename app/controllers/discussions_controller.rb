@@ -51,9 +51,10 @@ class DiscussionsController < ApplicationController
   def new_post
     discussion_id = params[:discussion_id]
     profile_id = 2
-    content = params[:new_discussion_post][:content]
+    content = params[:content]
+    father_id = params[:parent_post_id]
 
-    new_discussion_post = DiscussionPost.new :discussion_id => discussion_id, :user_id => current_user.id, :profile_id => profile_id, :content => content
+    new_discussion_post = DiscussionPost.new :discussion_id => discussion_id, :user_id => current_user.id, :profile_id => profile_id, :content => content, :father_id => father_id
     new_discussion_post.save
 
     @discussion = Discussion.find(discussion_id)

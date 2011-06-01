@@ -1,26 +1,75 @@
-<%#
+<% #
 # To change this template, choose Tools | Templates
 # and open the template in the editor.
 %>
+<head>
+	<script type="text/javascript">
+		function cancelPosting() {
+			$('#newPostDialog').attr('id', 'oldPostDialog');
+			$('#newPostTextBox').attr('id', 'oldPostTextBox');
+			if (CKEDITOR.instances.newPostTextBox) {
+				CKEDITOR.instances.newPostTextBox.destroy();
+			}
+			$('#oldPostTextBox').remove();
+			$('#oldPostDialog').remove();
+		}
 
+		$(document).ready( function () {
+
+			$('.postDialogLink').click( function () {
+				newFormCode = '' +
+				'<div id="newPostDialog" style="display: none;">' +
+				'<textarea id="newPostTextBox">' +
+				'</textarea>' +
+				'<div style="float:right;"><a href="javascript:cancelPosting();">[Cancelar]</a><a href="javascript:sendPost()">[Enviar]</a></div>' +
+				'</div>';
+
+				//Removendo outra caixa de entrada de postagem que possam
+				//estar abertas, possivelmente.
+				$('#newPostDialog').attr('id', 'oldPostDialog');
+				$('#newPostTextBox').attr('id', 'oldPostTextBox');
+				if (CKEDITOR.instances.newPostTextBox) {
+					CKEDITOR.instances.newPostTextBox.destroy();
+				}
+				$('#oldPostTextBox').remove();
+				$('#oldPostDialog').remove();
+
+				//Criando a nova caixa de entrada e exibindo-a
+				var postContainer = $(this).parent().parent().parent().parent();
+				postContainer.append(newFormCode);
+
+				$('#newPostTextBox').ckeditor( function () {
+					$('#newPostDialog').slideToggle()
+				}, {
+					toolbar: 'SolarToolbar'
+				});
+
+				//$('#newPostDialog').slideToggle();
+			});
+		});
+		function setParentPostId(post_id) {
+			$('#parent_post_id').attr('value',post_id);
+		}
+
+		function sendPost() {
+			$('#content').attr('value',$('#newPostTextBox').val());
+			$('#new_post_form').submit();
+		}
+	</script>
+</head>
 <span class="page_title"><%= @discussion["name"] %></span>
 <div id="forum_description">
-  <%= @discussion["description"] %>
+	<%= @discussion["description"] %>
 </div>
-
-<div class="forum_navigation_bar">#</div>
+<div class="forum_navigation_bar">
+	#
+</div>
 <% @posts.each do |post|%>
-  <%=show_post(post)%>
+<%= show_post(post)%>
 <%end%>
 
-<%= form_for(:new_discussion_post, :url => {:action => "new_post"}) do |f| %>
-  
-  <div class="field">
-    <%= f.label "Conteudo" %><br />
-    <%= f.text_field :content%>
- 	<%= hidden_field_tag(:discussion_id, @discussion["id"]) %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+<%= form_for(:new_discussion_post, :url => {:action => "new_post"}, :html => { :id => "new_post_form" } ) do |f| %>
+<%= hidden_field_tag(:content, "") %>
+<%= hidden_field_tag(:discussion_id, @discussion["id"]) %>
+<%= hidden_field_tag(:parent_post_id, "") %>
 <% end %>

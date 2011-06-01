@@ -34,11 +34,11 @@
 	<div style="margin-left:106px">
 		<div style="background-color:#ecf3f8;height: 35px;">
 			<div style="float:right;background-color:#8bb1c0;height:28px;padding-left:10px;padding-right:10px;padding-top:7px;width:100px;display:inline-block;text-align:center;vertical-align:middle;">
-				<a href="">[reponder]</a>
+				<a href="javascript:setParentPostId(<%= @post.id %>)" class="postDialogLink">[reponder]</a>
 			</div>
 		</div>
 		<div class="forum_post">
-			<%= @post.content%>
+			<%= raw @post.content%>
 		</div>
 	</div>
 </div>
