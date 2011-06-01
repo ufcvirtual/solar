@@ -1206,7 +1206,7 @@ div.alter_photo_text {
 }
 .message_div_list{
     background-color: #F7F7F7;
-    width: 780px;
+    width: 100%;
 }
 .message_line{
     background-color: #f9f9f9;
