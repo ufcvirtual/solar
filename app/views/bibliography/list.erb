@@ -1,4 +1,4 @@
-
+&nbsp;
 <div>
   <span class="page_title"><%= t(:bibliography_title)%></span> <span class="page_title"><%=@curriculum_unit.name%></span>
   <br/>
@@ -33,7 +33,7 @@ bibli = ActiveRecord::Base.connection.select_all query
       </div>
 
       <div id="biliography">
-        <div style="margin-left: 5px; margin-top: 7px">
+        <div style="margin-left: 5px; margin-top: 10px">
     <%#*Autor%>
           <% unless  bib["author"] == nil  %>
             <%= a = bib["author"].to_s.split

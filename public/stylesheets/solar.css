@@ -95,7 +95,7 @@ textarea{
 }
 
 .page_title{
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family: "Trebuchet";
     font-size  : 14pt;
     color      : #000;
     font-weight: bold;
@@ -1296,13 +1296,13 @@ ul.message_menu_listbox li ul a:hover{
 }
 #bibliography_line{
     color: #1C4785;
-    background-color: #1C4785;
     border: solid 2px;
     font-weight: bold;
     width: 730px;
     margin-top: 0px;
 }
 #biliography_title{
+    font-family: "Trebuchet";
     font-size: 14px;
     font-weight: bold;
     margin-bottom: -22px;
