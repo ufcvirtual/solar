@@ -1292,7 +1292,7 @@ ul.message_menu_listbox li ul a:hover{
     /*line-height: 25px;*/
     white-space: normal;
     word-wrap: break-word;
-    margin-top: -8px;
+    margin-top: -11px;
 }
 #bibliography_line{
     color: #1C4785;
@@ -1312,7 +1312,7 @@ ul.message_menu_listbox li ul a:hover{
     
 }
 #biliography_photo{
-    margin-bottom: 2px;
+    margin-bottom: 13px;
     background-color: #FFF; 
 }
 #biliography_header_content{

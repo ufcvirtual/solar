@@ -29,11 +29,12 @@ bibli = ActiveRecord::Base.connection.select_all query
     <% bibli.each do |bib| %>
       <div id="biliography_header_content">
         <div id="biliography_title"><%= bib["title"] %></div> <div id="biliography_photo"> <%= image_tag "icon_bibliografia.png", :alt=>t(:icon_bibliography ) %></div>
-        <hr id="bibliography_line"></hr>
+        
       </div>
 
       <div id="biliography">
-        <div style="margin-left: 5px; margin-top: 10px">
+        <hr id="bibliography_line"></hr>
+        <div style="margin-left: 5px; margin-top: 5px">
     <%#*Autor%>
           <% unless  bib["author"] == nil  %>
             <%= a = bib["author"].to_s.split
