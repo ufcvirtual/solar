@@ -100,7 +100,7 @@ textarea{
     color      : #000;
     font-weight: bold;
     position   : relative; top:-5px;
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
 }
 
 .text_alert, .text_alert_message {
@@ -1308,7 +1308,7 @@ ul.message_menu_listbox li ul a:hover{
     margin-bottom: -22px;
     margin-left: 31px;
     background-color: #FFF;
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
     
 }
 #biliography_photo{
