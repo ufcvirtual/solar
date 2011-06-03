@@ -37,16 +37,9 @@ bibli = ActiveRecord::Base.connection.select_all query
         <div style="margin-left: 5px; margin-top: 5px">
     <%#*Autor%>
           <% unless  bib["author"] == nil  %>
-            <%= a = bib["author"].to_s.split
-            a[a.length-1].upcase
-          %>
-
-            <%= a = bib["author"].to_s.split
-            if a.length > 1
-              ', ' << a[0].to_s
-            end
-
-          %>.
+            <% author = bib["author"].to_s.split(' ') %>
+            <%= (author.last).upcase %>
+            <%= ', ' << author.first if author.length > 1 %>.
           <% end %>
 
     <%#*Titulo%>
