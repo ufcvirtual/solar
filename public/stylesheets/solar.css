@@ -1079,15 +1079,15 @@ div.alter_photo_text {
 }
 /* rolagem da lista de aulas */
 #content-scroll {
-  width: 270px;
-  height: 22px;
-  overflow: hidden;
-  padding-top: 2px;
-  display: inline-block;
+    width: 270px;
+    height: 22px;
+    overflow: hidden;
+    padding-top: 2px;
+    display: inline-block;
 }
 #content-holder {
-  width: 360px;
-  height: 25px;
+    width: 360px;
+    height: 25px;
 }
 /* estilo para item invisivel */
 .invisible {
@@ -1112,7 +1112,7 @@ div.alter_photo_text {
 }
 
 .forum_participant_id {
-	
+
     background-color:#ecf3f8;
     height: 35px;
     border:0;
@@ -1246,12 +1246,12 @@ ul.message_menu_listbox li:hover{
     position: relative;
 }
 ul.message_menu_listbox li a{  /* menu nivel 1 */
-    font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
-    text-decoration: underline;
-    color: #214684;
-    cursor: pointer;
-    display:block;    
+                               font-size: 12px;
+                               font-family:'Trebuchet',Arial,'Myriad Pro';
+                               text-decoration: underline;
+                               color: #214684;
+                               cursor: pointer;
+                               display:block;
 }
 ul.message_menu_listbox li ul{
     display:none;
@@ -1267,16 +1267,16 @@ ul.message_menu_listbox li ul{
 }
 ul.message_menu_listbox li:hover ul{
     display:block;
-    }
+}
 ul.message_menu_listbox li ul a{  /* menu nivel 2 - opcoes */
-    width: 80px;
-    display: block;
-    background: #fff;
-    padding: 0px;
-    margin:  2px;
-    font-size: 11px;
-    font-family: 'Trebuchet',Arial,'Myriad Pro';
-    text-decoration: none;
+                                  width: 80px;
+                                  display: block;
+                                  background: #fff;
+                                  padding: 0px;
+                                  margin:  2px;
+                                  font-size: 11px;
+                                  font-family: 'Trebuchet',Arial,'Myriad Pro';
+                                  text-decoration: none;
 }
 ul.message_menu_listbox li ul a:hover{
     background:#eee;}
@@ -1309,7 +1309,7 @@ ul.message_menu_listbox li ul a:hover{
     margin-left: 31px;
     background-color: #FFF;
     /*text-transform: capitalize;*/
-    
+
 }
 #biliography_photo{
     margin-bottom: 13px;
@@ -1317,4 +1317,79 @@ ul.message_menu_listbox li ul a:hover{
 }
 #biliography_header_content{
     margin-top: 15px;
+}
+
+/*PORTFOLIO*/
+
+.portfolio{
+    width: 700px;
+    font-size: 12px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    color: #000;
+    background-color: #F5F8FB;
+    white-space: normal;
+    margin-top: -11px;
+}
+
+.portfolio_line{
+    color: #1C4785;
+    border: solid 2px;
+    width: 700px;
+    margin-top: 0px;
+}
+
+.portfolio_title{
+    font-family: "Trebuchet";
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: -22px;
+    margin-left: 31px;
+    background-color: #FFF;
+}
+.portfolio_image{
+    margin-bottom: 13px;
+    background-color: #FFF;
+}
+.portfolio_header_content{
+    margin-top: 15px;
+}
+
+/* table */
+table.portfolio_borda_simples {
+    border-collapse: collapse;
+}
+
+table.portfolio_borda_simples tr td {
+    border: 1px solid #FF0000;
+}
+
+table.portfolio_table {
+    margin-top: -6px;
+    width: 700px;
+}
+
+td.border_line {
+    border-top: 1px solid #d0d0d1;
+}
+
+.td_blue_portfolio, .td_blue_portfolio_first{
+    border-left: solid #dbe5e8 1px;
+    padding-left: 8px;
+    white-space: normal;
+}
+
+.td_blue_portfolio_first {
+    width: 485px;
+}
+
+.rowtable_even_portfolio{
+    background-color: #F5F8FB;
+}
+
+hr.portfolio_table_division {
+    color: #FFF;
+    border: solid 1px;
+    font-weight: bold;
+    width: 700px;
+    margin-top: 0px;
 }

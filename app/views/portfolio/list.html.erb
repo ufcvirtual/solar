@@ -1,90 +1,3 @@
-
-<style type="text/css">
-
-  /*PORTFOLIO*/
-
-  .portfolio{
-    width: 700px;
-    font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
-    color: #000;
-    background-color: #F5F8FB;
-    white-space: normal;
-    /*word-wrap: break-word;*/
-    margin-top: -11px;
-  }
-  .portfolio_line{
-    color: #1C4785;
-    border: solid 2px;
-    /*font-weight: bold;*/
-    width: 700px;
-    margin-top: 0px;
-  }
-
-  #portfolio_title{
-    font-family: "Trebuchet";
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: -22px;
-    margin-left: 31px;
-    background-color: #FFF;
-  }
-  .portfolio_image{
-    margin-bottom: 13px;
-    background-color: #FFF;
-  }
-  .portfolio_header_content{
-    margin-top: 15px;
-  }
-
-
-
-
-  table.portfolio_borda_simples {
-    border-collapse: collapse;
-  }
-
-  table.portfolio_borda_simples tr td {
-    border: 1px solid #FF0000;
-  }
-
-  table.portfolio_table {
-    margin-top: -6px;
-    width: 700px;
-  }
-
-  #portfolio_table_division {
-    color: #FFF;
-    border: solid 1px;
-    font-weight: bold;
-    width: 700px;
-    margin-top: 0px;
-  }
-
-
-  .td_blue_portfolio, .td_blue_portfolio_first{
-    border-left: solid #dbe5e8 1px;
-    padding-left: 8px;
-    white-space: normal;
-  }
-
-  .td_blue_portfolio_first {
-    width: 485px;
-  }
-
-  .rowtable_even_portfolio{
-    background-color: #F5F8FB;
-  }
-
-  .table_public {
-    border-top: 4px solid white;
-  }
-
-  td.border_line {
-    border-top: 1px solid #d0d0d1;
-  }
-</style>
-
 &nbsp;
 <div>
   <span class="page_title"><%= t(:portfolio_title)%></span> <span class="page_title"><%=@curriculum_unit.name%></span>
@@ -92,13 +5,13 @@
 
 <div>
   <div class="portfolio_header_content">
-    <div id="portfolio_title"><%= t(:individual_activity)%></div> <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+    <div class="portfolio_title"><%= t(:individual_activity)%></div> <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
   </div>
 
   <% texto = "O incentivo ao avanço tecnológico, assim como a determinação clara de objetivos nos obriga à análise dos modos de operação convencionais. Podemos já vislumbrar o modo pelo qual o desafiador cenário globalizado talvez venha a ressaltar a relatividade dos métodos utilizados na avaliação de resultados. Pensando mais a longo prazo, a execução dos pontos do programa é uma das consequências dos níveis de motivação departamental."  %>
 
   <div id="individual_activity" class="portfolio">
-    <hr id="portfolio_line_ia" class="portfolio_line"></hr>
+    <hr id="portfolio_line_ia" class="portfolio_line" />
 
     <table cellpadding="5" cellspacing="0" class="portfolio_table">
       <tr class="rowtable_even_portfolio">
@@ -123,7 +36,7 @@
       </tr>
     </table>
 
-    <hr id="portfolio_table_division"></hr>
+    <hr class="portfolio_table_division" />
 
     <table cellpadding="5" cellspacing="0" class="portfolio_table">
       <tr class="rowtable_even_portfolio">
@@ -148,7 +61,7 @@
       </tr>
     </table>
 
-    <hr id="portfolio_table_division"></hr>
+    <hr class="portfolio_table_division" />
 
     <table cellpadding="5" cellspacing="0" class="portfolio_table">
       <tr class="rowtable_even_portfolio">
@@ -174,7 +87,7 @@
     </table>
 
 
-    <hr id="portfolio_table_division"></hr>
+    <hr class="portfolio_table_division" />
 
     <table cellpadding="5" cellspacing="0" class="portfolio_table">
       <tr class="rowtable_even_portfolio">
@@ -204,11 +117,11 @@
   <!-- Provas -->
 
   <div class="portfolio_header_content">
-    <div id="portfolio_title"><%= t(:tasks) %></div> <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+    <div class="portfolio_title"><%= t(:tasks) %></div> <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
   </div>
 
   <div id="grade" class="portfolio">
-    <hr id="portfolio_line_g" class="portfolio_line"></hr>
+    <hr id="portfolio_line_g" class="portfolio_line" />
 
     <table cellpadding="5" cellspacing="0" class="portfolio_table">
       <tr class="rowtable_even_portfolio">
@@ -231,11 +144,11 @@
   <!-- area publica -->
 
   <div class="portfolio_header_content">
-    <div id="portfolio_title"><%= t(:public_area) %></div> <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+    <div class="portfolio_title"><%= t(:public_area) %></div> <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
   </div>
 
   <div id="portfolio" class="portfolio">
-    <hr id="portfolio_line_pa" class="portfolio_line"></hr>
+    <hr id="portfolio_line_pa" class="portfolio_line" />
 
     <table cellpadding="5" cellspacing="0" class="portfolio_table">
       <tbody align="left">
