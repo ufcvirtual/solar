@@ -1,5 +1,7 @@
 Solar::Application.routes.draw do |map|
 
+  get "portfolio/list"
+
   resources :discussions
   resources :messages
   

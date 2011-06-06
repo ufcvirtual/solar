@@ -1,0 +1,271 @@
+
+<style type="text/css">
+
+  /*PORTFOLIO*/
+
+  .portfolio{
+    width: 700px;
+    font-size: 12px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    color: #000;
+    background-color: #F5F8FB;
+    white-space: normal;
+    /*word-wrap: break-word;*/
+    margin-top: -11px;
+  }
+  .portfolio_line{
+    color: #1C4785;
+    border: solid 2px;
+    /*font-weight: bold;*/
+    width: 700px;
+    margin-top: 0px;
+  }
+
+  #portfolio_title{
+    font-family: "Trebuchet";
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: -22px;
+    margin-left: 31px;
+    background-color: #FFF;
+  }
+  .portfolio_image{
+    margin-bottom: 13px;
+    background-color: #FFF;
+  }
+  .portfolio_header_content{
+    margin-top: 15px;
+  }
+
+
+
+
+  table.portfolio_borda_simples {
+    border-collapse: collapse;
+  }
+
+  table.portfolio_borda_simples tr td {
+    border: 1px solid #FF0000;
+  }
+
+  table.portfolio_table {
+    margin-top: -6px;
+    width: 700px;
+  }
+
+  #portfolio_table_division {
+    color: #FFF;
+    border: solid 1px;
+    font-weight: bold;
+    width: 700px;
+    margin-top: 0px;
+  }
+
+
+  .td_blue_portfolio, .td_blue_portfolio_first{
+    border-left: solid #dbe5e8 1px;
+    padding-left: 8px;
+    white-space: normal;
+  }
+
+  .td_blue_portfolio_first {
+    width: 485px;
+  }
+
+  .rowtable_even_portfolio{
+    background-color: #F5F8FB;
+  }
+
+  .table_public {
+    border-top: 4px solid white;
+  }
+
+  td.border_line {
+    border-top: 1px solid #d0d0d1;
+  }
+</style>
+
+&nbsp;
+<div>
+  <span class="page_title"><%= t(:portfolio_title)%></span> <span class="page_title"><%=@curriculum_unit.name%></span>
+</div>
+
+<div>
+  <div class="portfolio_header_content">
+    <div id="portfolio_title"><%= t(:individual_activity)%></div> <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+  </div>
+
+  <% texto = "O incentivo ao avanço tecnológico, assim como a determinação clara de objetivos nos obriga à análise dos modos de operação convencionais. Podemos já vislumbrar o modo pelo qual o desafiador cenário globalizado talvez venha a ressaltar a relatividade dos métodos utilizados na avaliação de resultados. Pensando mais a longo prazo, a execução dos pontos do programa é uma das consequências dos níveis de motivação departamental."  %>
+
+  <div id="individual_activity" class="portfolio">
+    <hr id="portfolio_line_ia" class="portfolio_line"></hr>
+
+    <table cellpadding="5" cellspacing="0" class="portfolio_table">
+      <tr class="rowtable_even_portfolio">
+        <td class="td_blue_portfolio_first">
+          <span style="font-weight: bold;">Nome da atividade</span>&nbsp;
+          <span style="font-style: italic; color: gray;"><%= t(:date_name)%>: 22/03/11 - 30/03/11</span>
+        </td>
+        <td class="td_blue_portfolio"><span style="font-weight: bold;"><%= t(:situation) %></span></td>
+        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:grade) %></span></td>
+        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:comments) %></span> </td>
+      </tr>
+      <tr class="rowtable_even_portfolio" >
+        <td class="td_blue_portfolio_first">
+          <%= texto.slice(0..180) << '...' %><br />
+          <div style=" text-align: right;">
+            <a href="#" style="color: #204683;"><%= t(:more)%></a>
+          </div>
+        </td>
+        <td class="td_blue_portfolio" style="width: 70px;"><a href="#" style="color: green;"><%= t(:corrected) %></a></td>
+        <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">7</td>
+        <td class="td_blue_portfolio" style="width: 95px;" align="center"><%= image_tag "icon_comments.png" %></td>
+      </tr>
+    </table>
+
+    <hr id="portfolio_table_division"></hr>
+
+    <table cellpadding="5" cellspacing="0" class="portfolio_table">
+      <tr class="rowtable_even_portfolio">
+        <td class="td_blue_portfolio_first">
+          <span style="font-weight: bold;">Nome da atividade</span>&nbsp;
+          <span style="font-style: italic; color: gray;"><%= t(:date_name)%>: 22/03/11 - 30/03/11</span>
+        </td>
+        <td class="td_blue_portfolio"><span style="font-weight: bold;"><%= t(:situation) %></span></td>
+        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:grade) %></span></td>
+        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:comments) %></span> </td>
+      </tr>
+      <tr class="rowtable_even_portfolio" >
+        <td class="td_blue_portfolio_first">
+          <%= texto.slice(0..180) << '...' %><br />
+          <div style=" text-align: right;">
+            <a href="#" style="color: #204683;"><%= t(:more)%></a>
+          </div>
+        </td>
+        <td class="td_blue_portfolio" style="width: 70px;"><a href="#" style="color: green;"><%= t(:corrected) %></a></td>
+        <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">9</td>
+        <td class="td_blue_portfolio" style="width: 95px;" align="center"><%= image_tag "icon_comments.png" %></td>
+      </tr>
+    </table>
+
+    <hr id="portfolio_table_division"></hr>
+
+    <table cellpadding="5" cellspacing="0" class="portfolio_table">
+      <tr class="rowtable_even_portfolio">
+        <td class="td_blue_portfolio_first">
+          <span style="font-weight: bold;">Nome da atividade</span>&nbsp;
+          <span style="font-style: italic; color: gray;"><%= t(:date_name)%>: 22/03/11 - 30/03/11</span>
+        </td>
+        <td class="td_blue_portfolio"><span style="font-weight: bold;"><%= t(:situation) %></span></td>
+        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:grade) %></span></td>
+        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:comments) %></span> </td>
+      </tr>
+      <tr class="rowtable_even_portfolio" >
+        <td class="td_blue_portfolio_first">
+          <%= texto.slice(0..180) << '...' %><br />
+          <div style=" text-align: right;">
+            <a href="#" style="color: #204683;"><%= t(:more)%></a>
+          </div>
+        </td>
+        <td class="td_blue_portfolio" style="width: 70px;"><a href="#" style="color: green;"><%= t(:sent) %></a></td>
+        <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">-</td>
+        <td class="td_blue_portfolio" style="width: 95px;" align="center"><%= image_tag "icon_no_comments.png" %></td>
+      </tr>
+    </table>
+
+
+    <hr id="portfolio_table_division"></hr>
+
+    <table cellpadding="5" cellspacing="0" class="portfolio_table">
+      <tr class="rowtable_even_portfolio">
+        <td class="td_blue_portfolio_first">
+          <span style="font-weight: bold;">Nome da atividade</span>&nbsp;
+          <span style="font-style: italic; color: gray;"><%= t(:date_name)%>: 22/03/11 - 30/03/11</span>
+        </td>
+        <td class="td_blue_portfolio"><span style="font-weight: bold;"><%= t(:situation) %></span></td>
+        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:grade) %></span></td>
+        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:comments) %></span> </td>
+      </tr>
+      <tr class="rowtable_even_portfolio" >
+        <td class="td_blue_portfolio_first">
+          <%= texto.slice(0..180) << '...' %><br />
+          <div style=" text-align: right;">
+            <a href="#" style="color: #204683;"><%= t(:more)%></a>
+          </div>
+        </td>
+        <td class="td_blue_portfolio" style="width: 70px;"><a href="#" style="color: #204683;"><%= t(:send) %></a></td>
+        <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">-</td>
+        <td class="td_blue_portfolio" style="width: 95px;" align="center"><%= image_tag "icon_no_comments.png" %></td>
+      </tr>
+    </table>
+
+  </div>
+
+  <!-- Provas -->
+
+  <div class="portfolio_header_content">
+    <div id="portfolio_title"><%= t(:tasks) %></div> <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+  </div>
+
+  <div id="grade" class="portfolio">
+    <hr id="portfolio_line_g" class="portfolio_line"></hr>
+
+    <table cellpadding="5" cellspacing="0" class="portfolio_table">
+      <tr class="rowtable_even_portfolio">
+        <td class="td_blue_portfolio_first">
+          <span style="font-weight: bold;">Nome da Prova</span>&nbsp;
+          <span style="font-style: italic; color: gray;"><%= t(:date_name)%>: 22/03/11 - 30/03/11</span>
+        </td>
+        <td class="td_blue_portfolio"><span style="font-weight: bold;"><%= t(:situation) %></span></td>
+        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:grade) %></span></td>
+      </tr>
+      <tr class="rowtable_even_portfolio" >
+        <td class="td_blue_portfolio_first"><%= texto.slice(0..180) << '...' %></td>
+        <td class="td_blue_portfolio" style="width: 70px;"><a href="#" style="color: green;"><%= t(:make) %></a></td>
+        <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">-</td>
+      </tr>
+    </table>
+
+  </div>
+
+  <!-- area publica -->
+
+  <div class="portfolio_header_content">
+    <div id="portfolio_title"><%= t(:public_area) %></div> <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+  </div>
+
+  <div id="portfolio" class="portfolio">
+    <hr id="portfolio_line_pa" class="portfolio_line"></hr>
+
+    <table cellpadding="5" cellspacing="0" class="portfolio_table">
+      <tbody align="left">
+        <tr style="height: 35px;">
+          <td style="width: 10px;"><%= image_tag "icon_file_doc.png" %></td>
+          <td>Atividade 2 de Interação Humano Computador.doc</td>
+          <td><span style="color: gray;">256kb</span></td>
+          <td><a href="#" style="color: red;"><%= t(:delete) %></a></td>
+        </tr>
+        <tr style="height: 35px;">
+          <td class="border_line" style="width: 10px;"><%= image_tag "icon_file_pdf.png" %></td>
+          <td class="border_line">Exercicios de Fixacao.pdf</td>
+          <td class="border_line"><span style="color: gray;">256kb</span></td>
+          <td class="border_line"><a href="#" style="color: red;"><%= t(:delete) %></a></td>
+        </tr>
+        <tr style="height: 35px;">
+          <td class="border_line" style="width: 10px;"><%= image_tag "icon_file_doc.png" %></td>
+          <td class="border_line">Exercicios de Fixacao2.doc</td>
+          <td class="border_line"><span style="color: gray;">256kb</span></td>
+          <td class="border_line"><a href="#" style="color: red;"><%= t(:delete) %></a></td>
+        </tr>
+        <tr style="height: 35px;">
+          <td colspan="4" class="border_line"><a href="#" style="color: #204683;"><%= t(:portfolio_upload_file) %></a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="background-color: #FFF">
+      <br/>
+    </div>
+  </div>
+
+</div>

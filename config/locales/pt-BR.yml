@@ -76,6 +76,7 @@
   mysolar_mn_customize: "Personalizar"
   mysolar_mn_enrollment: "Matrícula"
   mysolar_search: "Busca"
+  date_name: Data
 
   # portlets do meu solar
   # Unidades curriculares
@@ -221,6 +222,24 @@
   icon_bibliography: "Ícone bibliografia"
   bibliography_title: "Bibliografia de"
   bibliography_null: "Nenhuma bibliografia cadastrada"
+
+  #PORTFOLIO
+  portfolio_icon: "Ícone Portfolio"
+  portfolio_title: "Portfolio de"
+  portfolio_null: "Nenhum portfolio cadastrado"
+  portfolio_upload_file: "Enviar arquivos para a área pública"
+  individual_activity: "Atividades Individuais"
+  situation: "Situação"
+  grade: "Nota"
+  comments: "Comentários"
+  task: "Prova"
+  tasks: "Provas"
+  public_area: "Área Pública"
+  delete: "Excluir"
+  more: "mais"
+  corrected: "Corrigido"
+  sent: "Enviado"
+  make: "Fazer"
 
   # Mensagem de erro para permissão   
   no_permission: "Você não tem permissão para acessar esta página"

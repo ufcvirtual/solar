@@ -72,6 +72,7 @@ en:
   mysolar_mn_customize: "Customize"
   mysolar_mn_enrollment: "Enrollment"
   mysolar_search: "Search"
+  date_name: Date
 
   # portlets do meu solar
   # Unidades curriculares
@@ -216,6 +217,24 @@ en:
   icon_bibliography: "Bibliography icon"
   bibliography_title: "Bibliography of"
   bibliography_null: "Nothing bibliography registered"
+
+  #PORTFOLIO
+  portfolio_icon: "Portfolio Icon"
+  portfolio_title: "Portfolio of"
+  portfolio_null: "None portfolio registered"
+  portfolio_upload_file: "Upload files for public area"
+  individual_activity: "Individual Activity"
+  situation: "Situation"
+  grade: "Grade"
+  comments: "Comments"
+  task: "Task"
+  tasks: "Tasks"
+  public_area: "Public Area"
+  delete: "Delete"
+  more: "more"
+  corrected: "Corrected"
+  sent: "Sent"
+  make: "Make"
 
   # Mensagem de erro para permissão 
   no_permission: "you haven't permission to access this page"
