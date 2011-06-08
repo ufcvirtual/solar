@@ -65,3 +65,25 @@ user_message12:
   message_id: 6
   user_id: 6
   status: 0
+
+user_message13:
+  id: 13
+  message_id: 7
+  user_id: 1
+  status: 0
+user_message14:
+  id: 14
+  message_id: 7
+  user_id: 6
+  status: 11
+
+user_message15:
+  id: 15
+  message_id: 8
+  user_id: 1
+  status: 0
+user_message16:
+  id: 16
+  message_id: 8
+  user_id: 6
+  status: 11

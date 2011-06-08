@@ -1241,7 +1241,7 @@ div.alter_photo_text {
 }
 .message_search_textbox{
     height: 18px;
-    width: 450px;
+    width: 500px;
     padding: 0px;
     font-size: 11px;
     font-family:'Trebuchet',Arial,'Myriad Pro';
@@ -1309,6 +1309,43 @@ ul.message_menu_listbox li ul a{  /* menu nivel 2 - opcoes */
 }
 ul.message_menu_listbox li ul a:hover{
     background:#eee;}
+
+/* paginacao */
+.next_page, .prev_page, .current {
+    font-size: 12px;
+    font-family: 'Trebuchet',Arial,'Myriad Pro';
+    text-decoration: underline;
+    color: #214684;
+    cursor: pointer;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.disabled, .message_div_navigation {
+    font-size: 12px;
+    font-family: 'Trebuchet',Arial,'Myriad Pro';
+    text-decoration: none;
+    color: #B4B3B7;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.current {
+    background-color: #E7EDED;
+    text-decoration: none;
+    font-weight: bold;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.pagination {
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    display: inline-block;    
+}
+.pagination a {
+    padding-left: 5px;
+    padding-right: 5px;
+    color: #214684;
+}
 
 /*BIBLIOGRAFIA*/
 

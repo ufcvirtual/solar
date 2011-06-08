@@ -191,8 +191,7 @@ en:
   message_move: "Move"
   message_delete: "Delete"
   message_mark_as_read: "Mark as read"
-  message_mark_as_unread: "Mark as unread"
-  message_of: " of "
+  message_mark_as_unread: "Mark as unread"  
   message_attach: "Has attachment"
   message_select_all: "All"
   message_select_none: "None"
@@ -200,8 +199,11 @@ en:
   message_select_unread: "Unread"
   message_none: "No messages found"
 
-  navigation_next: "Next"
-  navigation_previous: "Previous"
+  navigation_of: " of "
+  navigation_next: "Next >"
+  navigation_previous: "< Previous"
+  navigation_first: "<< First"
+  navigation_last: "Last >>"
 
   icon_agenda: "Agenda icon"
   icon_forum: "Forum icon"

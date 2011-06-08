@@ -1,8 +1,7 @@
 <div>
-  <%= image_tag "icon_message.png", :alt=>t(:icon_message) %>
+    <%# image_tag "icon_message.png", :alt=>t(:icon_message) %>
     <span class="page_title"><%= t(:message_title) %></span>
-    <hr style="border: none; background-color: #b4b3b7; height: 1px; width:640px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px"></hr>
-
+    
     <div class="message_search_div">
       <%= label_tag 'lb_search', t(:message_search), :class => "enrollment_label" %>&nbsp;
       <%= text_field_tag  'search', @search_text, :class=> "message_search_textbox" %>
@@ -10,20 +9,25 @@
     </div>
 
     <div class="message_div">
-      <div class="message_general_div_option_active" id="menu_inbox">
+
+      <% css_class_inbox  = (@type == "index")    ? "message_general_div_option_active" : "message_general_div_option" %>
+      <% css_class_outbox = (@type == "outbox")   ? "message_general_div_option_active" : "message_general_div_option" %>
+      <% css_class_trash  = (@type == "trashbox") ? "message_general_div_option_active" : "message_general_div_option" %>
+
+      <div class="<%=css_class_inbox%>" id="menu_inbox">
         <%= link_to (image_tag "message_inbox.png", :alt=>t(:message_inbox)),{:type => 'index'} %>
         <div class="message_main_menu">
           <%= link_to t(:message_inbox), {:type => 'index'},{:class=>'message_link_menu'} %>
           <%= label_tag 'lb_number', '(3)', :class => "text_alert_message" %>
         </div>
       </div>
-      <div class="message_general_div_option" id="menu_outbox">
+      <div class="<%=css_class_outbox%>" id="menu_outbox">
         <%= link_to (image_tag "message_outbox.png", :alt=>t(:message_outbox)),{:type => 'outbox'} %>
         <div class="message_main_menu">
           <%= link_to t(:message_outbox), {:type => 'outbox'},{:class=>'message_link_menu'} %>
         </div>
       </div>
-      <div class="message_general_div_option" id="menu_trash">
+      <div class="<%=css_class_trash%>" id="menu_trash">
         <%= link_to (image_tag "message_trash.png", :alt=>t(:message_trash)),{:type => 'trashbox'} %>
         <div class="message_main_menu">
           <%= link_to t(:message_trash),  {:type => 'trashbox'},{:class=>'message_link_menu'} %>
@@ -82,12 +86,13 @@
     </div>
     
     <div class="message_div_navigation">
-      <%= label_tag 'lb_nav1', '1-20', :class => "message_nav_text" %>
-      <%= label_tag 'lb_nav1', t(:message_of), :class => "message_nav_text" %>
-      <%= label_tag 'lb_nav2', '53', :class => "message_nav_text" %>
+      <%= will_paginate @messages,
+                        :first_label => "#{t(:navigation_first)}",
+                        :previous_label => "#{t(:navigation_previous)}",
+                        :next_label => "#{t(:navigation_next)}",
+                        :last_label => "#{t(:navigation_last)}",
+                        :summary_label => "%d - %d t(:navigation_of) %d"%>
       &nbsp;&nbsp;&nbsp;
-      <%= link_to t(:navigation_previous), {}, {:class=>'message_link_nav'} %>
-      <%= link_to t(:navigation_next), {}, {:class=>'message_link_nav'} %>
     </div>
 
 </div>

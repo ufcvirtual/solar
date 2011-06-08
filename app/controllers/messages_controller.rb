@@ -9,13 +9,15 @@ class MessagesController < ApplicationController
 
   def index
     #recebe tipo de msg a ser consultada
-    type = params[:type]
-    if type.nil?
-      type = 'index'
+    @type = params[:type]
+    if @type.nil?
+      @type = "index"
     end
 
+    page = params[:page].nil? ? "1" : params[:page]
+
     # retorna mensagens
-    @messages = return_messages(current_user.id, type, @message_tag)
+    @messages = return_messages(current_user.id, @type, @message_tag, page)
 
     respond_to do |format|
       format.html # index.html.erb

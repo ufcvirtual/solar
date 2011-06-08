@@ -8,13 +8,13 @@ message1:
 
 message2:
   id: 2
-  subject: 'assunto da msg 2'
+  subject: 'assunto da msg 17/5'
   content: 'bla bla bla msg2'
   send_date: '2011-05-17 21:06:15'
 
 message3:
   id: 3
-  subject: 'assunto da msg 3'
+  subject: 'assunto da msg 22/5'
   content: 'bla bla bla msg3'
   send_date: '2011-05-22 17:05:22'
 
@@ -35,3 +35,15 @@ message6:
   subject: 'assunto da msg 26/5'
   content: 'bla bla bla ...'
   send_date: '2011-05-26 11:42:25'
+
+message7:
+  id: 7
+  subject: 'assunto da msg 27/5 (i)'
+  content: 'bla bla bla ...'
+  send_date: '2011-05-27 13:42:25'
+
+message8:
+  id: 8
+  subject: 'assunto da msg 27/5 (ii)'
+  content: 'bla bla bla ...'
+  send_date: '2011-05-27 16:42:25'

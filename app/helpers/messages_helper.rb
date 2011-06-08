@@ -1,6 +1,6 @@
 module MessagesHelper
 
-  def return_messages(userid, type='index', tag=nil)
+  def return_messages(userid, type='index', tag=nil, page=1)
     query_messages = "select m.*, usm.user_id, f.original_name, u.name, u.nick,
         cast( usm.status & '00000001' as boolean)ehorigem,
         cast( usm.status & '00000010' as boolean)ehlida
@@ -30,8 +30,11 @@ module MessagesHelper
       query_messages += " and     cast( usm.status & '00000001' as boolean) " #filtra se eh origem (default)
       query_messages += " and NOT cast( usm.status & '00000100' as boolean) " #nao esta na lixeira
     end
-#puts "\ntag: #{tag}\n\n**********\n#{query_messages}\n**********\n\n"
-    return Message.find_by_sql(query_messages)
+    query_messages += " order by send_date desc "
+
+    msg = Message.find_by_sql(query_messages)
+    return msg.paginate :page => page, :per_page => Record_Per_Page
+    
   end
 
 end

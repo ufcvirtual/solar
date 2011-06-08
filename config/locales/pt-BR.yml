@@ -197,7 +197,6 @@
   message_delete: "Excluir"
   message_mark_as_read: "Marcar como lida"
   message_mark_as_unread: "Marcar como não lida"
-  message_of: " de "
   message_attach: "Possui arquivo anexado"
   message_select_all: "Todas"
   message_select_none: "Nenhuma"
@@ -205,8 +204,11 @@
   message_select_unread: "Não lidas"
   message_none: "Nenhuma mensagem encontrada"
 
-  navigation_next: "Próxima"
-  navigation_previous: "Anterior"
+  navigation_of: " de "
+  navigation_next: "Próxima >"
+  navigation_previous: "< Anterior"
+  navigation_first: "<< Primeira"
+  navigation_last: "Última >>"
 
   icon_agenda: "Ícone da agenda"
   icon_forum: "Ícone do forum"
