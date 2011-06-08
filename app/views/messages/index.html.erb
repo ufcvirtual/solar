@@ -58,8 +58,8 @@
 
 
       <%= link_to t(:message_delete), {}, {:class=>'message_link'} %>&nbsp;
-      <%= link_to t(:message_mark_as_read), {}, {:class=>'message_link'} %>&nbsp;
-      <%= link_to t(:message_mark_as_unread), {}, {:class=>'message_link'} %>&nbsp;
+      <%= link_to t(:message_mark_as_read), {}, {:class=>'message_link'} unless @type=="trashbox" %>&nbsp;
+      <%= link_to t(:message_mark_as_unread), {}, {:class=>'message_link'} unless @type=="trashbox" %>&nbsp;
     </div>
 
     <div class="message_div_list">
