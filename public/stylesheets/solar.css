@@ -1226,6 +1226,7 @@ div.alter_photo_text {
 }
 .message_line{
     background-color: #f9f9f9;
+    height: 25px;
 }
 .message_div_navigation{
     background-color: #E7EDED;
