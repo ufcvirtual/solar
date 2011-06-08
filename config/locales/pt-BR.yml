@@ -203,6 +203,7 @@
   message_select_none: "Nenhuma"
   message_select_read: "Lidas"
   message_select_unread: "Não lidas"
+  message_none: "Nenhuma mensagem encontrada"
 
   navigation_next: "Próxima"
   navigation_previous: "Anterior"

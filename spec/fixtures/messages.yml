@@ -17,3 +17,21 @@ message3:
   subject: 'assunto da msg 3'
   content: 'bla bla bla msg3'
   send_date: '2011-05-22 17:05:22'
+
+message4:
+  id: 4
+  subject: 'assunto da msg 23/5'
+  content: 'bla bla bla ...'
+  send_date: '2011-05-23 18:42:25'
+
+message5:
+  id: 5
+  subject: 'assunto da msg 25/5'
+  content: 'bla bla bla ...'
+  send_date: '2011-05-25 12:42:25'
+
+message6:
+  id: 6
+  subject: 'assunto da msg 26/5'
+  content: 'bla bla bla ...'
+  send_date: '2011-05-26 11:42:25'

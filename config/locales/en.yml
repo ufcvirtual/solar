@@ -198,6 +198,7 @@ en:
   message_select_none: "None"
   message_select_read: "Read"
   message_select_unread: "Unread"
+  message_none: "No messages found"
 
   navigation_next: "Next"
   navigation_previous: "Previous"
@@ -246,6 +247,14 @@ en:
     month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
     abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Spt, Oct, Nov, Dec]
     order: [:month, :day, :year]
+
+  time:
+    formats:
+      default: "%b %d %Y %H:%M:%S"
+      short: "%b/%d %H:%M"
+      long: "%B %d, %Y %H:%M"
+    am: "am"
+    pm: "pm"
 
 # ActiveRecord
   activerecord:

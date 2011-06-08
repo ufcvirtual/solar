@@ -112,6 +112,12 @@ textarea{
 .text_alert_message {
     vertical-align: super;
 }
+.text_none {
+    font-family: Trebuchet;
+    font-size: 11px;
+    color: #003e7a;
+    padding: 5px;
+}
 
 /****tela de matricula****/
 
@@ -1164,9 +1170,11 @@ div.alter_photo_text {
 .message_general_div_option, .message_general_div_option_active {
     display: inline-block;
     margin-right: 25px;
+    z-index: 10;
 }
 .message_general_div_option_active {
     border-bottom: 3px solid #214684;
+    z-index: 20;
 }
 .message_main_menu{
     color: #214684;
@@ -1193,7 +1201,7 @@ div.alter_photo_text {
 .message_link,.message_link_menu{
     font-size: 12px;
     font-family:'Trebuchet',Arial,'Myriad Pro';
-    text-decoration: underline;
+    text-decoration: none;
     margin-right: 10px;
     color: #214684;
     cursor: pointer;
@@ -1203,6 +1211,14 @@ div.alter_photo_text {
     font-size: 14px;
     font-weight: bold;
     vertical-align: super;
+}
+.message_link_nav{
+    font-size: 12px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    text-decoration: underline;
+    margin-right: 10px;
+    color: #214684;
+    cursor: pointer;
 }
 .message_div_list{
     background-color: #F7F7F7;
@@ -1230,6 +1246,19 @@ div.alter_photo_text {
     font-size: 11px;
     font-family:'Trebuchet',Arial,'Myriad Pro';
 }
+.message_read, .message_unread{
+    color: #666;
+    font-size: 12px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-weight: normal;
+}
+.message_unread{
+    color: #000;
+    font-weight: bold;
+}
+.message_read:hover, .message_unread:hover {
+    text-decoration: underline;
+}
 /* dropdown de mensagens (selecionar, mover para) */
 ul{
     list-style-type:none;
@@ -1248,7 +1277,7 @@ ul.message_menu_listbox li:hover{
 ul.message_menu_listbox li a{  /* menu nivel 1 */
                                font-size: 12px;
                                font-family:'Trebuchet',Arial,'Myriad Pro';
-                               text-decoration: underline;
+                               text-decoration: none;
                                color: #214684;
                                cursor: pointer;
                                display:block;
