@@ -191,24 +191,24 @@ PLATFORMS
 
 DEPENDENCIES
   authlogic!
-  automatic_foreign_key
-  brazilian-rails
-  cancan
-  capybara
-  chronic
-  cucumber
-  cucumber-rails
-  database_cleaner
-  factory_girl_rails
-  launchy
+  automatic_foreign_key (= 1.2.0)
+  brazilian-rails (= 3.0.2)
+  cancan (= 1.6.4)
+  capybara (= 0.4.0)
+  chronic (= 0.3.0)
+  cucumber (= 0.9.4)
+  cucumber-rails (= 0.3.2)
+  database_cleaner (= 0.6.0)
+  factory_girl_rails (= 1.0)
+  launchy (= 0.3.7)
   paperclip!
-  pg
-  rack
+  pg (= 0.9.0)
+  rack (= 1.2.1)
   rails (= 3.0.3)
-  rails3-generators
-  rake
-  rspec (~> 2.5.0)
-  rspec-rails (~> 2.5.0)
-  spork
-  webrat
   will_paginate
+  rails3-generators (= 0.14.0)
+  rake (= 0.8.7)
+  rspec (= 2.5.0)
+  rspec-rails (= 2.5.0)
+  spork (= 0.8.4)
+  webrat (= 0.7.2)

@@ -41,6 +41,7 @@ portfolio_ativ:
   name: "Portfolio"
   order: 2
   context_id: 2
+  resource_id: 24
 
 prova_ativ:
   id: 203

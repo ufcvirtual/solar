@@ -28,7 +28,9 @@ resources_arr = [
   {:id => 21, :controller => 'lessons', :action => 'show_content', :description => 'Ver aula - content'},
 
   {:id => 22, :controller => 'discussions', :action => 'list', :description => 'Listar Foruns'},
-  {:id => 23, :controller => 'bibliography', :action =>'list', :description => 'Bibliografia do curso'}
+  {:id => 23, :controller => 'bibliography', :action =>'list', :description => 'Bibliografia do curso'},
+
+  {:id => 24, :controller => 'portfolio', :action =>'list', :description => 'Portfolio da Unidade Curricular'}
 ]
 count = 0
 resources = Resource.create(resources_arr) do |registro|
@@ -63,7 +65,8 @@ perm_alunos = PermissionsResource.create([
   {:profile_id => 1, :resource_id => 20, :per_id => false},
   {:profile_id => 1, :resource_id => 21, :per_id => false},
   {:profile_id => 1, :resource_id => 22, :per_id => false},
-  {:profile_id => 1, :resource_id => 23, :per_id => false}
+  {:profile_id => 1, :resource_id => 23, :per_id => false},
+  {:profile_id => 1, :resource_id => 24, :per_id => false}
 ])
 
 ##############################
@@ -88,7 +91,8 @@ perm_prof_titular = PermissionsResource.create([
   {:profile_id => 2, :resource_id => 18, :per_id => false},
   {:profile_id => 2, :resource_id => 19, :per_id => false},
   {:profile_id => 2, :resource_id => 22, :per_id => false},
-  {:profile_id => 2, :resource_id => 23, :per_id => false}
+  {:profile_id => 2, :resource_id => 23, :per_id => false},
+  {:profile_id => 2, :resource_id => 24, :per_id => false}
 ])
 
 ##############################
@@ -113,7 +117,8 @@ perm_prof_titular = PermissionsResource.create([
   {:profile_id => 3, :resource_id => 18, :per_id => false},
   {:profile_id => 3, :resource_id => 19, :per_id => false},
   {:profile_id => 3, :resource_id => 22, :per_id => false},
-  {:profile_id => 3, :resource_id => 23, :per_id => false}
+  {:profile_id => 3, :resource_id => 23, :per_id => false},
+  {:profile_id => 3, :resource_id => 24, :per_id => false}
 ])
 
 
@@ -125,6 +130,7 @@ PermissionsMenu.create([
     {:profile_id => 1, :menu_id => 101},
     {:profile_id => 1, :menu_id => 20},
     {:profile_id => 1, :menu_id => 201},
+    {:profile_id => 1, :menu_id => 202},
     {:profile_id => 1, :menu_id => 30},
     {:profile_id => 1, :menu_id => 301},
     {:profile_id => 1, :menu_id => 303},
@@ -136,6 +142,7 @@ PermissionsMenu.create([
     {:profile_id => 2, :menu_id => 101},
     {:profile_id => 2, :menu_id => 20},
     {:profile_id => 2, :menu_id => 201},
+    {:profile_id => 2, :menu_id => 202},
     {:profile_id => 2, :menu_id => 30},
     {:profile_id => 2, :menu_id => 301},
     {:profile_id => 2, :menu_id => 303},
@@ -147,6 +154,7 @@ PermissionsMenu.create([
     {:profile_id => 3, :menu_id => 101},
     {:profile_id => 3, :menu_id => 20},
     {:profile_id => 3, :menu_id => 201},
+    {:profile_id => 3, :menu_id => 202},
     {:profile_id => 3, :menu_id => 30},
     {:profile_id => 3, :menu_id => 301},
     {:profile_id => 3, :menu_id => 303},
