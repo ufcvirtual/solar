@@ -184,6 +184,9 @@
   forum_table_date: "Data de acesso"
   forum_message: "Nenhum fórum disponível"
   forum: "Fórum"
+  forum_new_message: "Nova mensagem"
+
+
 
   message_title: "Mensagens"
   message_inbox: "Entrada"

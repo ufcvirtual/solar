@@ -3,73 +3,108 @@
 # and open the template in the editor.
 %>
 <head>
-	<script type="text/javascript">
-		function cancelPosting() {
-			$('#newPostDialog').attr('id', 'oldPostDialog');
-			$('#newPostTextBox').attr('id', 'oldPostTextBox');
-			if (CKEDITOR.instances.newPostTextBox) {
-				CKEDITOR.instances.newPostTextBox.destroy();
-			}
-			$('#oldPostTextBox').remove();
-			$('#oldPostDialog').remove();
-		}
+  <script type="text/javascript">
+    function cancelPosting() {
+      $('#newPostDialog').attr('id', 'oldPostDialog');
+      $('#newPostTextBox').attr('id', 'oldPostTextBox');
+      if (CKEDITOR.instances.newPostTextBox) {
+        CKEDITOR.instances.newPostTextBox.destroy();
+      }
+      $('#oldPostTextBox').remove();
+      $('#oldPostDialog').remove();
+    }
 
-		$(document).ready( function () {
+    function showAsThread() {
+      $('#display_mode').attr('value','');
+      $('#new_post_form').attr('action','');
+      $('#new_post_form').submit();
+    }
 
-			$('.postDialogLink').click( function () {
-				newFormCode = '' +
-				'<div id="newPostDialog" style="display: none;">' +
-				'<textarea id="newPostTextBox">' +
-				'</textarea>' +
-				'<div style="float:right;"><a href="javascript:cancelPosting();">[Cancelar]</a><a href="javascript:sendPost()">[Enviar]</a></div>' +
-				'</div>';
+    function showAsPlainList() {
+      $('#display_mode').attr('value','PLAINLIST');
+      $('#new_post_form').attr('action','');
+      $('#new_post_form').submit();
+    }
 
-				//Removendo outra caixa de entrada de postagem que possam
-				//estar abertas, possivelmente.
-				$('#newPostDialog').attr('id', 'oldPostDialog');
-				$('#newPostTextBox').attr('id', 'oldPostTextBox');
-				if (CKEDITOR.instances.newPostTextBox) {
-					CKEDITOR.instances.newPostTextBox.destroy();
-				}
-				$('#oldPostTextBox').remove();
-				$('#oldPostDialog').remove();
+    function appendRichTextBox(postContainer){
+      newFormCode = '' +
+        '<div id="newPostDialog" style="display: none;">' +
+        '<textarea id="newPostTextBox">' +
+        '</textarea>' +
+        '<a href="javascript:cancelPosting();">[Cancelar]</a><a href="javascript:sendPost()">[Enviar]</a>' +
+        '</div>';
 
-				//Criando a nova caixa de entrada e exibindo-a
-				var postContainer = $(this).parent().parent().parent().parent();
-				postContainer.append(newFormCode);
+      //Removendo outra caixa de entrada de postagem que possam
+      //estar abertas, possivelmente.
+      $('#newPostDialog').attr('id', 'oldPostDialog');
+      $('#newPostTextBox').attr('id', 'oldPostTextBox');
+      if (CKEDITOR.instances.newPostTextBox) {
+        CKEDITOR.instances.newPostTextBox.destroy();
+      }
+      $('#oldPostTextBox').remove();
+      $('#oldPostDialog').remove();
 
-				$('#newPostTextBox').ckeditor( function () {
-					$('#newPostDialog').slideToggle()
-				}, {
-					toolbar: 'SolarToolbar'
-				});
+      //Criando a nova caixa de entrada e exibindo-a
+      postContainer.append(newFormCode);
 
-				//$('#newPostDialog').slideToggle();
-			});
-		});
-		function setParentPostId(post_id) {
-			$('#parent_post_id').attr('value',post_id);
-		}
+      $('#newPostTextBox').ckeditor( function () {
+        $('#newPostDialog').slideToggle(800)
+      }, {
+        toolbar: 'SolarToolbar'
+      });
+    }
 
-		function sendPost() {
-			$('#content').attr('value',$('#newPostTextBox').val());
-			$('#new_post_form').submit();
-		}
-	</script>
+    $(document).ready( function () {
+
+      //Botões de resposta
+      $('.postDialogLink').click( function () {
+        var postContainer = $(this).parent().parent();
+        appendRichTextBox(postContainer);
+      });
+      //Botão de nova postagem
+      $('#NewPostButton').click( function () {
+        var postContainer = $(this).parent().parent();
+        appendRichTextBox(postContainer);
+      });
+    });
+
+    function setParentPostId(post_id) {
+      $('#parent_post_id').attr('value',post_id);
+    }
+
+    function sendPost() {
+      $('#content').attr('value',$('#newPostTextBox').val());
+      $('#new_post_form').submit();
+    }
+  </script>
 </head>
 <span class="page_title"><%= @discussion["name"] %></span>
 <div id="forum_description">
-	<%= @discussion["description"] %>
+  <%= @discussion["description"] %>
 </div>
 <div class="forum_navigation_bar">
-	#
+  <div>
+    <a href="javascript:setParentPostId('')" id="NewPostButton"><%= t("forum_new_message")%></a>&nbsp;
+    <%if @display_mode == "PLAINLIST"%>
+      <a href="javascript:showAsThread()">Modo árvore</a>&nbsp;
+    <%else%>
+      <a href="javascript:showAsPlainList()">Modo Lista</a>
+    <%end%>
+  </div>
 </div>
-<% @posts.each do |post|%>
-<%= show_post(post)%>
+<%if @display_mode == "PLAINLIST"%>
+  <% @posts.each do |post|%>
+    <%= raw show_post(post, false)%>
+  <%end%>
+<%else%>
+  <% @posts.each do |post|%>
+    <%= raw show_post(post)%>
+  <%end%>
 <%end%>
 
 <%= form_for(:new_discussion_post, :url => {:action => "new_post"}, :html => { :id => "new_post_form" } ) do |f| %>
-<%= hidden_field_tag(:content, "") %>
-<%= hidden_field_tag(:discussion_id, @discussion["id"]) %>
-<%= hidden_field_tag(:parent_post_id, "") %>
+  <%= hidden_field_tag(:content, "") %>
+  <%= hidden_field_tag(:discussion_id, @discussion["id"]) %>
+  <%= hidden_field_tag(:parent_post_id, "") %>
+  <%= hidden_field_tag(:display_mode, @display_mode) %>
 <% end %>

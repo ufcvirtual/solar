@@ -22,6 +22,11 @@ module Solar
     # Activate observers that should always be running.
     # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
 
+  #Tags e atributos permitidos pelo método auxiliador "sanitize"
+  config.action_view.sanitized_allowed_tags = %w(h1 h2 h3 h4 hr b i p u a pre div span br ul ol li em strong strike img sup sub abbr big small code)
+  config.action_view.sanitized_allowed_attributes = %w(name style class href cite title src height datetime alt abbr width)
+
+
 	config.active_record.observers = :user_observer
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.

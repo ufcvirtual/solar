@@ -5,7 +5,7 @@ img{
 body{
     background-color    : #fff;
     cursor              : default;
-    font-family     :'Myriad Pro','Trebuchet', Arial;
+    font-family         :'Myriad Pro','Trebuchet', Arial;
 }
 
 /*Classes de mensagens flash*/
@@ -1112,34 +1112,58 @@ div.alter_photo_text {
 .forum_post{
     background-color: #f9f9fa;
     min-height: 140px;
-    max-width: 640px;
-    margin-top: 4px;
     white-space: normal;
 }
+.forum_post_child_ident{
+    padding-left: 70px;
+}
 
-.forum_participant_id {
-
+.forum_post_head_left, .forum_post_head_right{
     background-color:#ecf3f8;
     height: 35px;
-    border:0;
-    -moz-background-origin:padding;
-    float:left;
-    width:106px;
-    text-align:center;
-    font-family: Trebuchet MS;
+    font-family: 'Trebuchet MS';
     font-size: 12px;
+    white-space: normal;
+    border-top: 2px solid #fff;
+}
+
+.forum_post_head_left {
+    width:120px;
+    display: block;
+    text-align:center;
     font-weight: bold;
+    border-right: 1px solid #fff;
+}
+.forum_post_head_right{
+    width:100%;
+    text-align:justify;
+    font-weight: normal;
+}
+
+.forum_post_content_left, .forum_post_content_right{
+    background-color:#f9f9fa;
+    height: 35px;
+    width: 106px;
+    font-family: 'Trebuchet MS';
+    font-size: 12px;
+    border-bottom: 3px solid #fff;
+    vertical-align: top;
+}
+.forum_post_content_left{
+    border-right: 1px solid #ecf3f8;
+    text-align: center;
+}
+.forum_post_content_right{
+    text-align: left;
 }
 
 .forum_participant_profile {
     font-size: 11px;
-    font-style:italic;
+    font-style: italic;
 }
 
 .forum_participants {
     border:0;
-    -moz-background-inline-policy:continuous;
-    -moz-background-origin:padding;
     float:left;
     margin:5px 5px 0px 0px;
     padding-top:2px;
@@ -1153,7 +1177,10 @@ div.alter_photo_text {
 .forum_participants_icons {
     bottom: 1px;
     left: 23%;
-
+}
+.forum_post_date{
+    font-size: 9px;
+    text-align: right;
 }
 
 /* tela de mensagens */
