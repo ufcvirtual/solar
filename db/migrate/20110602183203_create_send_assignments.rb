@@ -3,6 +3,7 @@ class CreateSendAssignments < ActiveRecord::Migration
     create_table :send_assignments do |t|
       t.integer :assignment_id, :null => false
       t.integer :user_id, :null => false
+      t.text :comment
     end
   end
 

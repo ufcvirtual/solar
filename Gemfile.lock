@@ -205,10 +205,10 @@ DEPENDENCIES
   pg (= 0.9.0)
   rack (= 1.2.1)
   rails (= 3.0.3)
-  will_paginate
   rails3-generators (= 0.14.0)
   rake (= 0.8.7)
   rspec (= 2.5.0)
   rspec-rails (= 2.5.0)
   spork (= 0.8.4)
   webrat (= 0.7.2)
+  will_paginate
