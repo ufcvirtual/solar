@@ -1188,15 +1188,26 @@ div.alter_photo_text {
     padding-right: 5px;
     vertical-align: bottom;
 }
-.message_div_options{
+.message_div_options, .message_div_options_new {
     background-color: #E7EDED;
     width: 780px;
     height: 25px;
-    padding: 0 5px 0 5px;
+    padding: 3px;
     margin: 0;
-    vertical-align: middle;
-    border-top: 3px solid #CCCCCC;
     margin-top: -5px;
+    vertical-align: middle;
+}
+.message_div_options {
+    border-top: 3px solid #CCCCCC;
+}
+.message_div_options_new {
+    margin: 0;
+}
+.message_div_navigation{
+    background-color: #E7EDED;
+    height: 25px;
+    text-align: right;
+    padding: 3px;
 }
 .message_link,.message_link_menu{
     font-size: 12px;
@@ -1228,11 +1239,6 @@ div.alter_photo_text {
     background-color: #f9f9f9;
     height: 25px;
 }
-.message_div_navigation{
-    background-color: #E7EDED;
-    height: 25px;
-    text-align: right;
-}
 .message_nav_text {
     font-size: 12px;
     font-family:'Trebuchet',Arial,'Myriad Pro';
@@ -1259,6 +1265,23 @@ div.alter_photo_text {
 }
 .message_read:hover, .message_unread:hover {
     text-decoration: underline;
+}
+.message_header_new {
+    background-color: #ececf0;
+    width: 100%;
+}
+.message_div_text_read {
+    background-color: #F7F7F7;
+    width: 100%;
+}
+.message_text_to, .message_text_body {
+    font-size: 12px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    color: #000;
+}
+.message_text_body {
+    padding: 20px;
+    padding-right: 100px;
 }
 /* dropdown de mensagens (selecionar, mover para) */
 ul{

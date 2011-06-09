@@ -204,6 +204,16 @@
   message_select_unread: "Não lidas"
   message_none: "Nenhuma mensagem encontrada"
 
+  message_new_title: "Nova mensagem"
+  message_send: "Enviar"
+  message_discard: "Descartar"
+  message_attach_file: "Anexar um arquivo"
+  message_to: "Para"
+  message_subject: "Assunto"
+  message_reply: Responder""
+  message_reply_all: "Responder para todos"
+  message_route: "Encaminhar"
+
   navigation_of: " de "
   navigation_next: "Próxima >"
   navigation_previous: "< Anterior"
@@ -223,6 +233,7 @@
   icon_add_participant: "Ícone de adicionar participante"
   icon_lesson: "Ícone de aulas"
   icon_bibliography: "Ícone bibliografia"
+
   bibliography_title: "Bibliografia de"
   bibliography_null: "Nenhuma bibliografia cadastrada"
 

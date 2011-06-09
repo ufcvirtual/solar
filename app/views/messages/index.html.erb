@@ -1,65 +1,9 @@
 <div>
     <span class="page_title"><%= t(:message_title) %></span>
     
-    <div class="message_search_div">
-      <%= label_tag 'lb_search', t(:message_search), :class => "enrollment_label" %>&nbsp;
-      <%= text_field_tag  'search', @search_text, :class=> "message_search_textbox" %>
-      <%= image_submit_tag("search.png", :class => 'enrollment_search_icon')%>
-    </div>
-
-    <div class="message_div">
-
-      <% css_class_inbox  = (@type == "index")    ? "message_general_div_option_active" : "message_general_div_option" %>
-      <% css_class_outbox = (@type == "outbox")   ? "message_general_div_option_active" : "message_general_div_option" %>
-      <% css_class_trash  = (@type == "trashbox") ? "message_general_div_option_active" : "message_general_div_option" %>
-
-      <div class="<%=css_class_inbox%>" id="menu_inbox">
-        <%= link_to (image_tag "message_inbox.png", :alt=>t(:message_inbox)),{:type => 'index'} %>
-        <div class="message_main_menu">
-          <%= link_to t(:message_inbox), {:type => 'index'},{:class=>'message_link_menu'} %>
-          <%= label_tag 'lb_number', "(#{@unread})", :class => "text_alert_message" unless @unread==0 %>
-        </div>
-      </div>
-      <div class="<%=css_class_outbox%>" id="menu_outbox">
-        <%= link_to (image_tag "message_outbox.png", :alt=>t(:message_outbox)),{:type => 'outbox'} %>
-        <div class="message_main_menu">
-          <%= link_to t(:message_outbox), {:type => 'outbox'},{:class=>'message_link_menu'} %>
-        </div>
-      </div>
-      <div class="<%=css_class_trash%>" id="menu_trash">
-        <%= link_to (image_tag "message_trash.png", :alt=>t(:message_trash)),{:type => 'trashbox'} %>
-        <div class="message_main_menu">
-          <%= link_to t(:message_trash),  {:type => 'trashbox'},{:class=>'message_link_menu'} %>
-        </div>
-      </div>
-    </div>
+    <%= render 'message_header' %>
     
-    <div class="message_div_options">
-      <%= link_to t(:message_new), {:action => 'new'}, {:class=>'message_link'} %>&nbsp;
-      
-      <ul class="message_menu_listbox">
-        <li><a href="#"><%=t(:message_select)%> <%=image_tag "icon_arrow_down.png", :alt=>t(:message_move)%></a>
-          <ul>
-            <li><%= link_to t(:message_select_all), {}, {:class=>'message_link'}%></li>
-            <li><%= link_to t(:message_select_none), {}, {:class=>'message_link'}%></li>
-            <li><%= link_to t(:message_select_read), {}, {:class=>'message_link'}%></li>
-            <li><%= link_to t(:message_select_unread), {}, {:class=>'message_link'}%></li>
-          </ul>
-        </li>
-      </ul>
-      <ul class="message_menu_listbox">
-        <li><a href="#"><%=t(:message_move)%> <%=image_tag "icon_arrow_down.png", :alt=>t(:message_move)%></a>
-          <ul>
-            <li><%= link_to t(:message_trash), {}, {:class=>''}%></li>
-          </ul>
-        </li>
-      </ul>
-
-
-      <%= link_to t(:message_delete), {}, {:class=>'message_link'} %>&nbsp;
-      <%= link_to t(:message_mark_as_read), {}, {:class=>'message_link'} unless @type=="trashbox" %>&nbsp;
-      <%= link_to t(:message_mark_as_unread), {}, {:class=>'message_link'} unless @type=="trashbox" %>&nbsp;
-    </div>
+    <%= render 'message_options'  %>
 
     <div class="message_div_list">
       <% if @messages.length > 0 %>

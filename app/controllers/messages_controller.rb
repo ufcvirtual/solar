@@ -3,7 +3,7 @@ class MessagesController < ApplicationController
   include MessagesHelper
   
   before_filter :require_user
-  before_filter :message_data, :only => [:index]
+  before_filter :message_data, :only => [:index, :new]
 
   #load_and_authorize_resource
 
@@ -18,12 +18,15 @@ class MessagesController < ApplicationController
 
     # retorna mensagens
     @messages = return_messages(current_user.id, @type, @message_tag, page)
-    @unread = unread_inbox(current_user.id, @message_tag)
-
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @messages }
     end
+  end
+
+  def new
+    @type = nil
   end
 
 private
@@ -36,6 +39,7 @@ private
     else
       @message_tag = nil
     end
+    @unread = unread_inbox(current_user.id, @message_tag)
   end
 
 end

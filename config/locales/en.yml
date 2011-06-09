@@ -199,6 +199,16 @@ en:
   message_select_unread: "Unread"
   message_none: "No messages found"
 
+  message_new_title: "New message"
+  message_send: "Send"
+  message_discard: "Discard"
+  message_attach_file: "Attach a file"
+  message_to: "To"
+  message_subject: "Subject"
+  message_reply: Reply""
+  message_reply_all: "Reply all"
+  message_route: "Route"
+
   navigation_of: " of "
   navigation_next: "Next >"
   navigation_previous: "< Previous"
@@ -218,6 +228,7 @@ en:
   icon_add_participant: "Add participant icon"
   icon_lesson: "Lesson icon"
   icon_bibliography: "Bibliography icon"
+  
   bibliography_title: "Bibliography of"
   bibliography_null: "Nothing bibliography registered"
 

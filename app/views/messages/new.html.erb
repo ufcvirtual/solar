@@ -1,36 +1,51 @@
 <div>
-    <%# image_tag "icon_message.png", :alt=>t(:icon_message) %>
-    <span class="page_title"><%= t(:message_title) %></span>
+    <span class="page_title"><%= t(:message_new_title) %></span>
     
-    <div class="message_search_div">
-      <%= label_tag 'lb_search', t(:message_search), :class => "enrollment_label" %>&nbsp;
-      <%= text_field_tag  'search', @search_text, :class=> "message_search_textbox" %>
-      <%= image_submit_tag("search.png", :class => 'enrollment_search_icon')%>
+    <%= render 'message_header' %>
+
+    <%= render 'message_options' %>
+
+    <div class="message_header_new">
+      <table border="0" cellpadding="5" cellspacing="0" width="100%">
+        <tbody>
+          <tr>
+            <td class="message_text_to" align="right" style="width:75px"><%=t(:message_to)%></td>
+            <td class="message_text_to"><%= text_field_tag  'to', '', :class=> "message_search_textbox" %></td>
+          </tr>
+          <tr>
+            <td class="message_text_to" align="right" style="width:75px"><%=t(:message_subject)%></td>
+            <td class="message_text_to"><%= text_field_tag  'subject', '', :class=> "message_search_textbox" %></td>
+          </tr>
+          <tr>
+            <td class="message_text_to" align="right" style="width:75px">&nbsp;</td>
+            <td class="message_text_to"><%= link_to t(:message_attach_file), {},{:class=>'message_link'} %></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <div class="message_div">
-
-      <div class="message_general_div_option" id="menu_inbox">
-        <%= link_to (image_tag "message_inbox.png", :alt=>t(:message_inbox)),{:type => 'index'} %>
-        <div class="message_main_menu">
-          <%= link_to t(:message_inbox), {:type => 'index'},{:class=>'message_link_menu'} %>
-          <%= label_tag 'lb_number', '(3)', :class => "text_alert_message" %>
-        </div>
-      </div>
-      <div class="message_general_div_option" id="menu_outbox">
-        <%= link_to (image_tag "message_outbox.png", :alt=>t(:message_outbox)),{:type => 'outbox'} %>
-        <div class="message_main_menu">
-          <%= link_to t(:message_outbox), {:type => 'outbox'},{:class=>'message_link_menu'} %>
-        </div>
-      </div>
-      <div class="message_general_div_option" id="menu_trash">
-        <%= link_to (image_tag "message_trash.png", :alt=>t(:message_trash)),{:type => 'trashbox'} %>
-        <div class="message_main_menu">
-          <%= link_to t(:message_trash),  {:type => 'trashbox'},{:class=>'message_link_menu'} %>
-        </div>
-      </div>
+    <div id="div_new_message">
+      <textarea id="newMessageTextBox"></textarea>
     </div>
+    <!--
+    message_reply
+    message_reply_all
+    message_route
+    -->
 
-    <div></div>
+    <div class="message_div_options_new">&nbsp;
+      <%= link_to t(:message_send)+' ', {:action => 'new'}, {:class=>'message_link'} %>
+      <%= link_to t(:message_discard)+' ', {:action => 'index', :type => 'index'}, {:class=>'message_link'} %>
+    </div>
 
 </div>
+
+<script type="text/javascript">
+  $(document).ready( function () {
+    $('#newMessageTextBox').ckeditor({
+      toolbar: 'SolarToolbar',
+      resize_enabled: false
+    });
+
+  })
+</script>
