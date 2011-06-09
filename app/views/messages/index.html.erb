@@ -1,5 +1,4 @@
 <div>
-    <%# image_tag "icon_message.png", :alt=>t(:icon_message) %>
     <span class="page_title"><%= t(:message_title) %></span>
     
     <div class="message_search_div">
@@ -18,7 +17,7 @@
         <%= link_to (image_tag "message_inbox.png", :alt=>t(:message_inbox)),{:type => 'index'} %>
         <div class="message_main_menu">
           <%= link_to t(:message_inbox), {:type => 'index'},{:class=>'message_link_menu'} %>
-          <%= label_tag 'lb_number', '(3)', :class => "text_alert_message" %>
+          <%= label_tag 'lb_number', "(#{@unread})", :class => "text_alert_message" unless @unread==0 %>
         </div>
       </div>
       <div class="<%=css_class_outbox%>" id="menu_outbox">
@@ -36,7 +35,7 @@
     </div>
     
     <div class="message_div_options">
-      <%= link_to t(:message_new), {}, {:class=>'message_link'} %>&nbsp;
+      <%= link_to t(:message_new), {:action => 'new'}, {:class=>'message_link'} %>&nbsp;
       
       <ul class="message_menu_listbox">
         <li><a href="#"><%=t(:message_select)%> <%=image_tag "icon_arrow_down.png", :alt=>t(:message_move)%></a>
@@ -81,7 +80,7 @@
           <% end %>
         </table>
       <% else %>
-        <div class="text_none"><%=t(:text_none)%></div>
+        <div class="text_none"><%=t(:message_none)%></div>
       <% end %>
     </div>
     

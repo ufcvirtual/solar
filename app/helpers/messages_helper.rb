@@ -37,4 +37,28 @@ module MessagesHelper
     
   end
 
+  def unread_inbox(userid, tag=nil)
+    query_messages = "select count(m.id)n
+
+      from messages m
+        inner join user_messages usm on m.id = usm.message_id
+        inner join users u on usm.user_id=u.id
+        left join user_message_labels uml on usm.id = uml.user_message_id
+        left join message_labels ml on uml.message_label_id = ml.id
+        left join allocation_tags at on ml.allocation_tag_id = at.id
+
+      where
+        usm.user_id = #{userid}
+        and NOT cast( usm.status & '00000001' as boolean)
+        and NOT cast( usm.status & '00000010' as boolean)"
+
+    if !tag.nil?
+      query_messages += " and ml.title = '#{tag}' "
+    end
+
+    total = Message.find_by_sql(query_messages)
+
+    return total[0].n.to_i 
+  end
+
 end

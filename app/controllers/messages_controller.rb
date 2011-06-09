@@ -18,6 +18,7 @@ class MessagesController < ApplicationController
 
     # retorna mensagens
     @messages = return_messages(current_user.id, @type, @message_tag, page)
+    @unread = unread_inbox(current_user.id, @message_tag)
 
     respond_to do |format|
       format.html # index.html.erb

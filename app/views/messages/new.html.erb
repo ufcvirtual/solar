@@ -1,0 +1,36 @@
+<div>
+    <%# image_tag "icon_message.png", :alt=>t(:icon_message) %>
+    <span class="page_title"><%= t(:message_title) %></span>
+    
+    <div class="message_search_div">
+      <%= label_tag 'lb_search', t(:message_search), :class => "enrollment_label" %>&nbsp;
+      <%= text_field_tag  'search', @search_text, :class=> "message_search_textbox" %>
+      <%= image_submit_tag("search.png", :class => 'enrollment_search_icon')%>
+    </div>
+
+    <div class="message_div">
+
+      <div class="message_general_div_option" id="menu_inbox">
+        <%= link_to (image_tag "message_inbox.png", :alt=>t(:message_inbox)),{:type => 'index'} %>
+        <div class="message_main_menu">
+          <%= link_to t(:message_inbox), {:type => 'index'},{:class=>'message_link_menu'} %>
+          <%= label_tag 'lb_number', '(3)', :class => "text_alert_message" %>
+        </div>
+      </div>
+      <div class="message_general_div_option" id="menu_outbox">
+        <%= link_to (image_tag "message_outbox.png", :alt=>t(:message_outbox)),{:type => 'outbox'} %>
+        <div class="message_main_menu">
+          <%= link_to t(:message_outbox), {:type => 'outbox'},{:class=>'message_link_menu'} %>
+        </div>
+      </div>
+      <div class="message_general_div_option" id="menu_trash">
+        <%= link_to (image_tag "message_trash.png", :alt=>t(:message_trash)),{:type => 'trashbox'} %>
+        <div class="message_main_menu">
+          <%= link_to t(:message_trash),  {:type => 'trashbox'},{:class=>'message_link_menu'} %>
+        </div>
+      </div>
+    </div>
+
+    <div></div>
+
+</div>

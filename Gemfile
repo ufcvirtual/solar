@@ -12,7 +12,10 @@ gem 'rake'
 # gem para geracao automatica de relacionamentos
 gem 'automatic_foreign_key'
 
-# autoriazacao com cancan
+# paginacao
+gem 'will_paginate'
+
+# autorizacao com cancan
 gem 'cancan'
 
 # Gem usada para personalizar data,moeda etc para padroes brasileiros
