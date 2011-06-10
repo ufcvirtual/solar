@@ -56,6 +56,7 @@ class DiscussionsController < ApplicationController
 
   def new_post
     discussion_id = params[:discussion_id]
+    #DEFINIR O PROFILE!!!! ###################################################
     profile_id = 2
     content = params[:content]
     father_id = params[:parent_post_id]
@@ -73,4 +74,38 @@ class DiscussionsController < ApplicationController
     render "show"
   end
 
+  def remove_post
+    discussion_id = params[:discussion_id]
+    discussion_post_id = params[:discussion_post_id]
+    @display_mode = params[:display_mode]
+
+    DiscussionPost.delete(discussion_post_id)#.delete()
+
+    @discussion = Discussion.find(discussion_id)
+    if @display_mode == "PLAINLIST"
+      @posts = return_discussion_posts(discussion_id, true)
+    else
+      @posts = return_discussion_posts(discussion_id, false)
+    end
+    render "show"
+  end
+
+  def update_post
+    discussion_id = params[:discussion_id]
+    discussion_post_id = params[:discussion_post_id]
+    new_content = params[:content]
+    @display_mode = params[:display_mode]
+
+    @discussion = Discussion.find(discussion_id)
+    post = DiscussionPost.find(discussion_post_id);
+
+    post.update_attributes({:content => new_content})
+
+    if @display_mode == "PLAINLIST"
+      @posts = return_discussion_posts(discussion_id, true)
+    else
+      @posts = return_discussion_posts(discussion_id, false)
+    end
+    render "show"
+  end
 end

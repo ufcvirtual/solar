@@ -1,28 +1,14 @@
-<% #
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
-%>
 <head>
   <script type="text/javascript">
-    function cancelPosting() {
-      $('#newPostDialog').attr('id', 'oldPostDialog');
-      $('#newPostTextBox').attr('id', 'oldPostTextBox');
-      if (CKEDITOR.instances.newPostTextBox) {
-        CKEDITOR.instances.newPostTextBox.destroy();
-      }
-      $('#oldPostTextBox').remove();
-      $('#oldPostDialog').remove();
-    }
-
     function showAsThread() {
       $('#display_mode').attr('value','');
-      $('#new_post_form').attr('action','');
+      $('#new_post_form').attr('action','/discussions/show/<%=@discussion["id"]%>');
       $('#new_post_form').submit();
     }
 
     function showAsPlainList() {
       $('#display_mode').attr('value','PLAINLIST');
-      $('#new_post_form').attr('action','');
+      $('#new_post_form').attr('action','/discussions/show/<%=@discussion["id"]%>');
       $('#new_post_form').submit();
     }
 
@@ -54,28 +40,74 @@
       });
     }
 
-    $(document).ready( function () {
-
-      //Botões de resposta
-      $('.postDialogLink').click( function () {
-        var postContainer = $(this).parent().parent();
-        appendRichTextBox(postContainer);
-      });
-      //Botão de nova postagem
-      $('#NewPostButton').click( function () {
-        var postContainer = $(this).parent().parent();
-        appendRichTextBox(postContainer);
-      });
-    });
+    function cancelPosting() {
+      $('#newPostDialog').attr('id', 'oldPostDialog');
+      $('#newPostTextBox').attr('id', 'oldPostTextBox');
+      if (CKEDITOR.instances.newPostTextBox) {
+        CKEDITOR.instances.newPostTextBox.destroy();
+      }
+      $('#oldPostTextBox').remove();
+      $('#oldPostDialog').remove();
+    }
 
     function setParentPostId(post_id) {
       $('#parent_post_id').attr('value',post_id);
+      $('#update_post_id').attr('value','');
+    }
+
+    function setDiscussionPostId(post_id) {
+      $('#discussion_post_id').attr('value',post_id);
+      $('#parent_post_id').attr('value','');
+    }
+
+    function clearFormData(){
+      $('#parent_post_id').attr('value','');
+      $('#discussion_post_id').attr('value', '');
     }
 
     function sendPost() {
       $('#content').attr('value',$('#newPostTextBox').val());
+
+      //caso de atualização de post
+      if ($('#discussion_post_id').attr('value') != '')
+        updatePost();
+      else//caso de novo post
+        $('#new_post_form').submit();
+    }
+
+    function removePost(postId) {
+      $('#discussion_post_id').attr('value', postId);
+      $('#new_post_form').attr('action','/discussions/remove_post');
       $('#new_post_form').submit();
     }
+    
+    function updatePost() {
+      $('#new_post_form').attr('action','/discussions/update_post');
+      $('#new_post_form').submit();
+    }
+
+    $(document).ready( function () {
+
+      //Botões de responder postagem
+      $('.postDialogLink').click( function () {
+        var postContainer = $(this).parent().parent();
+        appendRichTextBox(postContainer);
+      });
+
+      //Botão de editar postagem
+      $('.updateDialogLink').click( function () {
+        var postContainer = $(this).parent().parent();
+        appendRichTextBox(postContainer);
+        $('#newPostTextBox').val(postContainer.children('.forum_post_inner_content').html());
+      });
+
+      //Botão de nova postagem
+      $('#NewPostButton').click( function () {
+        clearFormData();
+        var postContainer = $(this).parent().parent();
+        appendRichTextBox(postContainer);
+      });
+    });
   </script>
 </head>
 <span class="page_title"><%= @discussion["name"] %></span>
@@ -84,11 +116,11 @@
 </div>
 <div class="forum_navigation_bar">
   <div>
-    <a href="javascript:setParentPostId('')" id="NewPostButton"><%= t("forum_new_message")%></a>&nbsp;
+    <a href="javascript:clearFormData()" id="NewPostButton"><%= t("forum_new_message")%></a>&nbsp;
     <%if @display_mode == "PLAINLIST"%>
-      <a href="javascript:showAsThread()">Modo árvore</a>&nbsp;
+      <a href="javascript:showAsThread()">[Modo árvore]</a>&nbsp;
     <%else%>
-      <a href="javascript:showAsPlainList()">Modo Lista</a>
+      <a href="javascript:showAsPlainList()">[Modo Lista]</a>
     <%end%>
   </div>
 </div>
@@ -105,6 +137,7 @@
 <%= form_for(:new_discussion_post, :url => {:action => "new_post"}, :html => { :id => "new_post_form" } ) do |f| %>
   <%= hidden_field_tag(:content, "") %>
   <%= hidden_field_tag(:discussion_id, @discussion["id"]) %>
+  <%= hidden_field_tag(:discussion_post_id, "") %>
   <%= hidden_field_tag(:parent_post_id, "") %>
   <%= hidden_field_tag(:display_mode, @display_mode) %>
 <% end %>

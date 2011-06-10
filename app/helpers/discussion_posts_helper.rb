@@ -6,6 +6,13 @@ module DiscussionPostsHelper
   def show_post(post = nil, threaded=true)
     post_string = ""
     childs = {}
+    editable = false
+    childs_count = return_child_count(post.id)
+
+    #Um post pode ser editado se é do próprio usuário e se não possui respostas.
+    if (post.user_id == current_user.id) && (childs_count == 0)
+        editable = true
+    end
 
     #Recuperando posts filhos para renderização
     if threaded
@@ -48,18 +55,17 @@ module DiscussionPostsHelper
                           </div>
                         </td>
                         <td class="forum_post_content_right">
-                          <div style="min-height:100px">'
+                          <div class="forum_post_inner_content" style="min-height:100px">'
     post_string <<      (sanitize post.content)
 
     post_string <<      ' </div>
                           <div class="forum_post_date">' << post[:updated_at].to_s(:discussion_post_pt_br) << '</div>
-                      </td>
-                      </tr>
-                      <tr>
-                        <td class="forum_post_content_left">&nbsp;</td>
-                        <td class="forum_post_content_right">
-                          <div style="text-align: right;">
-                              <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink">[reponder]</a>
+                          <div class="forum_post_date">'
+                            if editable
+    post_string <<      '     <a href="javascript:removePost(' << post[:id].to_s << ')">[excluir]</a>
+                              <a href="javascript:setDiscussionPostId(' << post[:id].to_s << ')" class="updateDialogLink">[editar]</a>'
+                            end
+    post_string <<      '   <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink">[reponder]</a>
                           </div>
                         </td>
                       </tr>
@@ -88,8 +94,7 @@ module DiscussionPostsHelper
     query << " and father_id is null" unless plain_list
     query << " order by created_at desc"
     
-    #return DiscussionPost.find_by_sql(query)
-    return DiscussionPost.paginate_by_sql(query)#, :page => 1, :per_page => 2)
+    return DiscussionPost.find_by_sql(query)
   end
 
   def return_posts_child(parent_id = -1)
@@ -98,10 +103,16 @@ module DiscussionPostsHelper
              INNER JOIN users u on u.id = dp.user_id
              INNER JOIN profiles p on p.id = dp.profile_id
              WHERE dp.father_id = '#{parent_id}'"
-
     query << " order by created_at desc"
-
+    
     return DiscussionPost.find_by_sql(query)
+  end
+
+  def return_child_count(parent_id = -1)
+    query = "SELECT dp.id
+             FROM discussion_posts dp
+             WHERE dp.father_id = '#{parent_id}'"
+    return DiscussionPost.count_by_sql(query)
   end
 
 end
