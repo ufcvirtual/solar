@@ -8,109 +8,66 @@
     <div class="portfolio_title"><%= t(:individual_activity)%></div> <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
   </div>
 
-  <% texto = "O incentivo ao avanço tecnológico, assim como a determinação clara de objetivos nos obriga à análise dos modos de operação convencionais. Podemos já vislumbrar o modo pelo qual o desafiador cenário globalizado talvez venha a ressaltar a relatividade dos métodos utilizados na avaliação de resultados. Pensando mais a longo prazo, a execução dos pontos do programa é uma das consequências dos níveis de motivação departamental."  %>
+  <!-- Atividades individuais -->
 
   <div id="individual_activity" class="portfolio">
-    <hr id="portfolio_line_ia" class="portfolio_line" />
+    <hr class="portfolio_line" />
 
-    <table cellpadding="5" cellspacing="0" class="portfolio_table">
-      <tr class="rowtable_even_portfolio">
-        <td class="td_blue_portfolio_first">
-          <span style="font-weight: bold;">Nome da atividade</span>&nbsp;
-          <span style="font-style: italic; color: gray;"><%= t(:date_name)%>: 22/03/11 - 30/03/11</span>
-        </td>
-        <td class="td_blue_portfolio"><span style="font-weight: bold;"><%= t(:situation) %></span></td>
-        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:grade) %></span></td>
-        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:comments) %></span> </td>
-      </tr>
-      <tr class="rowtable_even_portfolio" >
-        <td class="td_blue_portfolio_first">
-          <%= texto.slice(0..180) << '...' %><br />
-          <div style=" text-align: right;">
-            <a href="#" style="color: #204683;"><%= t(:more)%></a>
-          </div>
-        </td>
-        <td class="td_blue_portfolio" style="width: 70px;"><a href="#" style="color: green;"><%= t(:corrected) %></a></td>
-        <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">7</td>
-        <td class="td_blue_portfolio" style="width: 95px;" align="center"><%= image_tag "icon_comments.png" %></td>
-      </tr>
-    </table>
+    <% @individual_activits.each_with_index do |ia, idx| %>
 
-    <hr class="portfolio_table_division" />
+      <% if idx > 0 %>
+        <hr class="portfolio_table_division" />
+      <% end %>
 
-    <table cellpadding="5" cellspacing="0" class="portfolio_table">
-      <tr class="rowtable_even_portfolio">
-        <td class="td_blue_portfolio_first">
-          <span style="font-weight: bold;">Nome da atividade</span>&nbsp;
-          <span style="font-style: italic; color: gray;"><%= t(:date_name)%>: 22/03/11 - 30/03/11</span>
-        </td>
-        <td class="td_blue_portfolio"><span style="font-weight: bold;"><%= t(:situation) %></span></td>
-        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:grade) %></span></td>
-        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:comments) %></span> </td>
-      </tr>
-      <tr class="rowtable_even_portfolio" >
-        <td class="td_blue_portfolio_first">
-          <%= texto.slice(0..180) << '...' %><br />
-          <div style=" text-align: right;">
-            <a href="#" style="color: #204683;"><%= t(:more)%></a>
-          </div>
-        </td>
-        <td class="td_blue_portfolio" style="width: 70px;"><a href="#" style="color: green;"><%= t(:corrected) %></a></td>
-        <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">9</td>
-        <td class="td_blue_portfolio" style="width: 95px;" align="center"><%= image_tag "icon_comments.png" %></td>
-      </tr>
-    </table>
+      <table cellpadding="5" cellspacing="0" class="portfolio_table">
+        <tr class="rowtable_even_portfolio">
+          <td class="td_blue_portfolio_first">
+            <span style="font-weight: bold;"><%= ia["name"] %></span>&nbsp;
+            <span style="font-style: italic; color: gray;"><%= t(:date_name)%>: <%= ia["initial_date"] %> - <%= ia["final_date"] %></span>
+          </td>
+          <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:situation) %></span></td>
+          <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:grade) %></span></td>
+          <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:comments) %></span> </td>
+        </tr>
 
-    <hr class="portfolio_table_division" />
+        <tr class="rowtable_even_portfolio" >
+          <td class="td_blue_portfolio_first">
 
-    <table cellpadding="5" cellspacing="0" class="portfolio_table">
-      <tr class="rowtable_even_portfolio">
-        <td class="td_blue_portfolio_first">
-          <span style="font-weight: bold;">Nome da atividade</span>&nbsp;
-          <span style="font-style: italic; color: gray;"><%= t(:date_name)%>: 22/03/11 - 30/03/11</span>
-        </td>
-        <td class="td_blue_portfolio"><span style="font-weight: bold;"><%= t(:situation) %></span></td>
-        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:grade) %></span></td>
-        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:comments) %></span> </td>
-      </tr>
-      <tr class="rowtable_even_portfolio" >
-        <td class="td_blue_portfolio_first">
-          <%= texto.slice(0..180) << '...' %><br />
-          <div style=" text-align: right;">
-            <a href="#" style="color: #204683;"><%= t(:more)%></a>
-          </div>
-        </td>
-        <td class="td_blue_portfolio" style="width: 70px;"><a href="#" style="color: green;"><%= t(:sent) %></a></td>
-        <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">-</td>
-        <td class="td_blue_portfolio" style="width: 95px;" align="center"><%= image_tag "icon_no_comments.png" %></td>
-      </tr>
-    </table>
+            <% if ia["enunciation"].size > 180 %>
 
+              <div class="enunciation">
+                <div class="enunciation_slice" style="display: block;">
+                  <%= ia["enunciation"].slice(0..180) << '...' %>
+                </div>
+                <div class="enunciation_complete" style="display: none;">
+                  <%= ia["enunciation"] %>
+                </div>
+                <br />
+                <div style=" text-align: right; display: block;" class="more_or_less">
+                  <a href="#" class="enunciation_more" style="color: #204683; display: block;"><%= t(:more)%></a>
+                  <a href="#" class="enunciation_less" style="color: #204683; display: none;"><%= t(:less)%></a>
+                </div>
+              </div>
 
-    <hr class="portfolio_table_division" />
+            <% else %>
+              <%= ia["enunciation"] %><br /><br /><!-- exibe todo o conteudo se tiver poucos caracteres -->
+            <% end %>
+          </td>
+          <td class="td_blue_portfolio" style="width: 70px;"><a href="#" style="color: green;"><%= t(:corrected) %></a></td>
+          <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">
+            <%= ia["grade"] %>
+          </td>
+          <td class="td_blue_portfolio" style="width: 95px;" align="center">
+            <% if ia["comments"].to_i > 0 %>
+              <%= image_tag "icon_comments.png" %>
+            <% else %>
+              <%= image_tag "icon_no_comments.png" %>
+            <% end %>
+          </td>
+        </tr>
+      </table>
 
-    <table cellpadding="5" cellspacing="0" class="portfolio_table">
-      <tr class="rowtable_even_portfolio">
-        <td class="td_blue_portfolio_first">
-          <span style="font-weight: bold;">Nome da atividade</span>&nbsp;
-          <span style="font-style: italic; color: gray;"><%= t(:date_name)%>: 22/03/11 - 30/03/11</span>
-        </td>
-        <td class="td_blue_portfolio"><span style="font-weight: bold;"><%= t(:situation) %></span></td>
-        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:grade) %></span></td>
-        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:comments) %></span> </td>
-      </tr>
-      <tr class="rowtable_even_portfolio" >
-        <td class="td_blue_portfolio_first">
-          <%= texto.slice(0..180) << '...' %><br />
-          <div style=" text-align: right;">
-            <a href="#" style="color: #204683;"><%= t(:more)%></a>
-          </div>
-        </td>
-        <td class="td_blue_portfolio" style="width: 70px;"><a href="#" style="color: #204683;"><%= t(:send) %></a></td>
-        <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">-</td>
-        <td class="td_blue_portfolio" style="width: 95px;" align="center"><%= image_tag "icon_no_comments.png" %></td>
-      </tr>
-    </table>
+    <% end %>
 
   </div>
 
@@ -124,6 +81,7 @@
     <hr id="portfolio_line_g" class="portfolio_line" />
 
     <table cellpadding="5" cellspacing="0" class="portfolio_table">
+
       <tr class="rowtable_even_portfolio">
         <td class="td_blue_portfolio_first">
           <span style="font-weight: bold;">Nome da Prova</span>&nbsp;
@@ -132,11 +90,13 @@
         <td class="td_blue_portfolio"><span style="font-weight: bold;"><%= t(:situation) %></span></td>
         <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:grade) %></span></td>
       </tr>
+
       <tr class="rowtable_even_portfolio" >
-        <td class="td_blue_portfolio_first"><%= texto.slice(0..180) << '...' %></td>
+        <td class="td_blue_portfolio_first">alguma coisa aqui</td>
         <td class="td_blue_portfolio" style="width: 70px;"><a href="#" style="color: green;"><%= t(:make) %></a></td>
         <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">-</td>
       </tr>
+
     </table>
 
   </div>
@@ -182,3 +142,24 @@
   </div>
 
 </div>
+
+<script type="text/javascript">
+  $(function(){
+    $(".enunciation_more").click(function(){
+
+      $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "none");
+      $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "block");
+
+      return false;
+    });
+
+    $(".enunciation_less").click(function(){
+
+      $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "block");
+      $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "none");
+
+      return false;
+    });
+
+  });
+</script>

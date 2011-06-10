@@ -254,6 +254,7 @@
   public_area: "Área Pública"
   delete: "Excluir"
   more: "mais"
+  less: "menos"
   corrected: "Corrigido"
   sent: "Enviado"
   make: "Fazer"

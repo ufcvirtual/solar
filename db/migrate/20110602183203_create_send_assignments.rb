@@ -4,6 +4,7 @@ class CreateSendAssignments < ActiveRecord::Migration
       t.integer :assignment_id, :null => false
       t.integer :user_id, :null => false
       t.text :comment
+      t.float :grade
     end
   end
 
