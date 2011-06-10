@@ -1,0 +1,37 @@
+<div>
+    <span class="page_title"><%= t(:message_new_title) %></span>
+    
+    <%= render 'message_header' %>
+
+    <%= render 'message_options' %>
+    
+    <div class="message_header_new">
+      <table border="0" cellpadding="5" cellspacing="0" width="100%">
+        <tbody>
+          <tr>
+            <td class="message_text_to" align="right" style="width:75px"><%= link_to t(:message_from), {},{} %></td>
+            <td class="message_text_to"><%= label_tag 'lb_from', '', :class => "" %></td>
+          </tr>
+          <tr>
+            <td class="message_text_to" align="right" style="width:75px"><%=t(:message_subject)%></td>
+            <td class="message_text_to"><%= label_tag 'lb_subject', @message.subject, :class => "" %></td>
+          </tr>
+          <tr>
+            <td class="message_text_to" align="right" style="width:75px">...anexos...</td>
+            <td class="message_text_to"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="message_div_show">
+      <%=  @message.content %>
+    </div>
+
+    <div class="message_div_options_new">&nbsp;
+      <%= link_to t(:message_reply)+' ', {:action => ''}, {:class=>'message_link'} %>
+      <%= link_to t(:message_reply_all)+' ', {:action => ''}, {:class=>'message_link'} %>
+      <%= link_to t(:message_route)+' ', {:action => ''}, {:class=>'message_link'} %>
+    </div>
+
+</div>

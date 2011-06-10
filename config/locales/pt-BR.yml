@@ -212,8 +212,9 @@
   message_discard: "Descartar"
   message_attach_file: "Anexar um arquivo"
   message_to: "Para"
+  message_from: "De"
   message_subject: "Assunto"
-  message_reply: Responder""
+  message_reply: "Responder"
   message_reply_all: "Responder para todos"
   message_route: "Encaminhar"
 

@@ -1215,9 +1215,11 @@ div.alter_photo_text {
     padding-right: 5px;
     vertical-align: bottom;
 }
+.message_div_options, .message_div_options_new, .message_div_show, .message_header_new {
+    width: auto;
+}
 .message_div_options, .message_div_options_new {
-    background-color: #E7EDED;
-    width: 780px;
+    background-color: #E7EDED;    
     height: 25px;
     padding: 3px;
     margin: 0;
@@ -1236,7 +1238,7 @@ div.alter_photo_text {
     text-align: right;
     padding: 3px;
 }
-.message_link,.message_link_menu{
+.message_link, .message_link_menu{
     font-size: 12px;
     font-family:'Trebuchet',Arial,'Myriad Pro';
     text-decoration: none;
@@ -1261,6 +1263,15 @@ div.alter_photo_text {
 .message_div_list{
     background-color: #F7F7F7;
     width: 100%;
+}
+.message_div_show {
+    background-color: #F7F7F7;
+    padding-right: 100px;
+    min-height: 100px;
+    white-space: normal;
+    font-size: 12px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    padding: 20px;
 }
 .message_line{
     background-color: #f9f9f9;
@@ -1295,7 +1306,6 @@ div.alter_photo_text {
 }
 .message_header_new {
     background-color: #ececf0;
-    width: 100%;
 }
 .message_div_text_read {
     background-color: #F7F7F7;

@@ -204,8 +204,9 @@ en:
   message_discard: "Discard"
   message_attach_file: "Attach a file"
   message_to: "To"
+  message_from: "From"
   message_subject: "Subject"
-  message_reply: Reply""
+  message_reply: "Reply"
   message_reply_all: "Reply all"
   message_route: "Route"
 
