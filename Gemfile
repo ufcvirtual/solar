@@ -13,7 +13,7 @@ gem 'rake', '0.8.7'
 gem 'automatic_foreign_key', '1.2.0'
 
 # paginacao
-gem 'will_paginate'
+gem 'will_paginate', "~> 3.0.pre2" #Will paginate padrão é bugada com o rails 3 :/
 
 # autoriazacao com cancan
 gem 'cancan', '1.6.4'

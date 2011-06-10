@@ -94,7 +94,8 @@ module DiscussionPostsHelper
     query << " and father_id is null" unless plain_list
     query << " order by created_at desc"
     
-    return DiscussionPost.find_by_sql(query)
+    #return DiscussionPost.find_by_sql(query)
+    return DiscussionPost.paginate_by_sql(query, {:per_page => 2, :page => 1})
   end
 
   def return_posts_child(parent_id = -1)
