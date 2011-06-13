@@ -3,6 +3,20 @@
   <span class="page_title"><%= t(:portfolio_title)%></span> <span class="page_title"><%=@curriculum_unit.name%></span>
 </div>
 
+<style type="text/css">
+  .assignment_corrected {
+    color: #378941;
+  }
+
+  .assignment_sent {
+    color: #56b7ae;
+  }
+
+  .assignment_send {
+    color: #204683;
+  }
+</style>
+
 <div>
   <div class="portfolio_header_content">
     <div class="portfolio_title"><%= t(:individual_activity)%></div> <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
@@ -53,7 +67,11 @@
               <%= ia["enunciation"] %><br /><br /><!-- exibe todo o conteudo se tiver poucos caracteres -->
             <% end %>
           </td>
-          <td class="td_blue_portfolio" style="width: 70px;"><a href="#" style="color: green;"><%= t(:corrected) %></a></td>
+          <td class="td_blue_portfolio" style="width: 70px;">
+            <a href="#" class="assignment_<%= ia["correction"] %>">
+              <%= t(ia["correction"].to_sym) %>
+            </a>
+          </td>
           <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">
             <%= ia["grade"] %>
           </td>
@@ -92,7 +110,7 @@
       </tr>
 
       <tr class="rowtable_even_portfolio" >
-        <td class="td_blue_portfolio_first">alguma coisa aqui</td>
+        <td class="td_blue_portfolio_first">Neste sentido, o julgamento imparcial das eventualidades é uma das consequências do orçamento setorial.</td>
         <td class="td_blue_portfolio" style="width: 70px;"><a href="#" style="color: green;"><%= t(:make) %></a></td>
         <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">-</td>
       </tr>
@@ -112,33 +130,35 @@
 
     <table cellpadding="5" cellspacing="0" class="portfolio_table">
       <tbody align="left">
+
+        <% classe = "" %>
+        <% @public_area.each_with_index do |pa, idx| %>
+          <% classe = "border_line" if idx > 0 %>
+
+          <tr style="height: 35px;">
+            <td class="<%= classe %>" style="width: 10px;"><%= image_tag icon_attachment(pa["attachment_file_name"]) %></td>
+            <td class="<%= classe %>"><%= pa["attachment_file_name"] %></td>
+            <td class="<%= classe %>"><span style="color: gray;"><%= pa["attachment_file_size"] %></span></td>
+            <td class="<%= classe %>"><a href="#" style="color: red;"><%= t(:delete) %></a></td>
+          </tr>
+
+        <% end %>
         <tr style="height: 35px;">
-          <td style="width: 10px;"><%= image_tag "icon_file_doc.png" %></td>
-          <td>Atividade 2 de Interação Humano Computador.doc</td>
-          <td><span style="color: gray;">256kb</span></td>
-          <td><a href="#" style="color: red;"><%= t(:delete) %></a></td>
-        </tr>
-        <tr style="height: 35px;">
-          <td class="border_line" style="width: 10px;"><%= image_tag "icon_file_pdf.png" %></td>
-          <td class="border_line">Exercicios de Fixacao.pdf</td>
-          <td class="border_line"><span style="color: gray;">256kb</span></td>
-          <td class="border_line"><a href="#" style="color: red;"><%= t(:delete) %></a></td>
-        </tr>
-        <tr style="height: 35px;">
-          <td class="border_line" style="width: 10px;"><%= image_tag "icon_file_doc.png" %></td>
-          <td class="border_line">Exercicios de Fixacao2.doc</td>
-          <td class="border_line"><span style="color: gray;">256kb</span></td>
-          <td class="border_line"><a href="#" style="color: red;"><%= t(:delete) %></a></td>
-        </tr>
-        <tr style="height: 35px;">
-          <td colspan="4" class="border_line"><a href="#" style="color: #204683;"><%= t(:portfolio_upload_file) %></a></td>
+          <td colspan="4" class="border_line">
+            <a href="#" style="color: #204683;">
+              <%# form_for :public_file, :html => {:multpart => true} do |f| %>
+                <%#= f.file_field :photo %>
+              <%# end %>
+              <%= t(:portfolio_upload_file) %>
+            </a>
+          </td>
         </tr>
       </tbody>
     </table>
-
     <div style="background-color: #FFF">
       <br/>
     </div>
+
   </div>
 
 </div>
