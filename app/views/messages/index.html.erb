@@ -1,4 +1,4 @@
-<div>
+<div class="message_external_div">
     <span class="page_title"><%= t(:message_title) %></span>
 
     <% if flash[:success] || flash[:error] || flash[:notice]%>
@@ -25,7 +25,7 @@
               <td style="width:120px"><%= link_to message.name,  {:action => 'show', :id => message.id},{:class => css_class} %></td>
               <td><%= link_to message.subject,  {:action => 'show', :id => message.id},{:class => css_class} %></td>
               <td style="width:30px"><%=image_tag("message_file.png",:alt=>t(:message_attach)) unless message.original_name.nil?%></td>
-              <td style="width:30px"><%= link_to l(message.send_date, :format => :short),  {:action => 'show', :id => message.id},{:class => css_class} %></td>
+              <td style="width:80px"><%= link_to l(message.send_date, :format => :short),  {:action => 'show', :id => message.id},{:class => css_class} %></td>
             </tr>
           <% end %>
         </table>

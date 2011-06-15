@@ -851,13 +851,6 @@ div.alter_photo_text {
     font-weight: bold;
     color: #4b6380;
 }
-.curriculum_unit_portlet_text {
-    font-family: Trebuchet;
-    font-size: 12px;
-    padding: 6px;
-    margin: 1px;
-    color: #000;
-}
 .curriculum_unit_portlet_lesson {
     margin: 0 4px 4px 0;
     border:0px;
@@ -895,6 +888,19 @@ div.alter_photo_text {
     text-align: center;
     border-top: #ccc7cc solid 1px;
     padding-top: 5px;
+}
+.curriculum_unit_portlet_text, .label_text {
+    font-family: Trebuchet;
+    font-size: 12px;
+    padding: 6px;
+    margin: 1px;
+    color: #000;
+}
+.label_text {
+    padding: 0px;
+    margin: 0px;
+    width: auto;
+    white-space: normal;
 }
 /* calendario da tela de acesso a curso */
 .calendar {
@@ -1184,6 +1190,9 @@ div.alter_photo_text {
 }
 
 /* tela de mensagens */
+.message_external_div {
+    width: 780px;
+}
 .message_search_div,.message_div{
     color: #000;
     font-size: 12px;
@@ -1245,6 +1254,8 @@ div.alter_photo_text {
     margin-right: 10px;
     color: #214684;
     cursor: pointer;
+    background-color: transparent;
+    border: none;
 }
 .message_link_menu{
     text-decoration: none;
@@ -1296,6 +1307,7 @@ div.alter_photo_text {
     font-size: 12px;
     font-family:'Trebuchet',Arial,'Myriad Pro';
     font-weight: normal;
+    white-space: normal;
 }
 .message_unread{
     color: #000;

@@ -1,21 +1,25 @@
-<div>
-    <span class="page_title"><%= t(:message_new_title) %></span>
-    
-    <%= render 'message_header' %>
+<div class="message_external_div">
+    <span class="page_title"><%= t(:message_title) %></span>
 
-    <div class="message_div_options_new">&nbsp;</div>
-    
-    <%= render 'message_header_to' %>
+    <%= form_for :message, :url => {:action => 'send_message'} do |f| %>
 
-    <div id="div_new_message">
-      <textarea id="newMessageTextBox"></textarea>
-    </div>
-    
-    <div class="message_div_options_new">&nbsp;
-      <%= link_to t(:message_send)+' ', {:action => 'new'}, {:class=>'message_link'} %>
-      <%= link_to t(:message_discard)+' ', {:action => 'index', :type => 'index'}, {:class=>'message_link'} %>
-    </div>
+      <%= render 'message_header' %>
 
+      <div class="message_div_options_new">&nbsp;</div>
+
+      <%= render 'message_header_to' %>
+
+      <div id="div_new_message">
+        <textarea id="newMessageTextBox" name="newMessageTextBox"></textarea>
+      </div>
+
+      <div class="message_div_options_new">&nbsp;
+        <%= f.submit t(:message_send)+' ', :id => 'send_message', :class=> 'message_link', :alt=> t(:message_send) %>
+
+        <%= link_to t(:message_discard)+' ', {:action => 'index', :type => 'index'}, {:class=>'message_link'} %>
+      </div>
+
+    <% end %>
 </div>
 
 <script type="text/javascript">

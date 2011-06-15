@@ -217,6 +217,9 @@
   message_reply: "Responder"
   message_reply_all: "Responder para todos"
   message_route: "Encaminhar"
+  message_attachments: "Arquivos anexos"
+  message_send_ok: "Mensagem enviada com sucesso."
+  message_send_error: "Não foi possível enviar mensagem."
 
   navigation_of: " de "
   navigation_next: "Próxima >"

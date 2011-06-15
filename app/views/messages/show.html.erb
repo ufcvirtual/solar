@@ -1,4 +1,4 @@
-<div>
+<div class="message_external_div">
     <span class="page_title"><%= t(:message_new_title) %></span>
     
     <%= render 'message_header' %>
@@ -9,29 +9,46 @@
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
         <tbody>
           <tr>
-            <td class="message_text_to" align="right" style="width:75px"><%= link_to t(:message_from), {},{} %></td>
-            <td class="message_text_to"><%= label_tag 'lb_from', '', :class => "" %></td>
+            <td class="message_text_to" align="right" style="width:75px"><%= label_tag 'lb_from', t(:message_from), :class => 'label_text' %></td>
+            <td class="message_text_to"><%= label_tag 'lb_from', @sender.name + " <" + @sender.email + ">", :class => "label_text" %></td>
           </tr>
           <tr>
-            <td class="message_text_to" align="right" style="width:75px"><%=t(:message_subject)%></td>
-            <td class="message_text_to"><%= label_tag 'lb_subject', @message.subject, :class => "" %></td>
+            <td class="message_text_to" align="right" style="width:75px"><%= label_tag 'lb_to', t(:message_to), :class => 'label_text' %></td>
+            <td class="message_text_to">
+              <% text = "" %>
+              <% @recipients.each do |r| %>
+                 <% text += r.nick + " <" + r.email + ">, "%>
+              <% end %>
+              <%= label_tag 'lb_data_from', text, :class => "label_text"%>
+            </td>
           </tr>
           <tr>
-            <td class="message_text_to" align="right" style="width:75px">...anexos...</td>
-            <td class="message_text_to"></td>
+            <td class="message_text_to" align="right" style="width:75px"><%= label_tag 'lb_subject', t(:message_subject), :class => 'label_text' %></td>
+            <td class="message_text_to"><%= label_tag 'lb_subject', @message.subject, :class => "label_text" %></td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <div class="message_div_show">
-      <%=  @message.content %>
+      <%= sanitize @message.content %>
+      <br/>
+      <div class="text_bottom">
+        <% if @files.length > 0 %>
+          <br/>
+          <hr style="border: none; background-color: #b4b3b7; height: 1px; margin-left:0px; margin-bottom: 0px"></hr>
+          <br/>
+          <% @files.each do |f| %>
+             <%= link_to image_tag("message_file.png",:alt=>t(:message_attach))+f.original_name, {}, {:class => 'message_link'}%><br/>
+          <% end %>
+        <% end %>
+      </div>
     </div>
 
     <div class="message_div_options_new">&nbsp;
-      <%= link_to t(:message_reply)+' ', {:action => ''}, {:class=>'message_link'} %>
-      <%= link_to t(:message_reply_all)+' ', {:action => ''}, {:class=>'message_link'} %>
-      <%= link_to t(:message_route)+' ', {:action => ''}, {:class=>'message_link'} %>
+      <%= link_to t(:message_reply)+' ', {:action => 'new', :id => @message.id, :target => 'sender'}, {:class=>'message_link'} %>
+      <%= link_to t(:message_reply_all)+' ', {:action => 'new', :id => @message.id, :target => 'all'}, {:class=>'message_link'} %>
+      <%= link_to t(:message_route)+' ', {:action => 'new', :id => @message.id, :target => ''}, {:class=>'message_link'} %>
     </div>
 
 </div>
