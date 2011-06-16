@@ -1,3 +1,8 @@
+<% if flash[:success] || flash[:error] || flash[:notice]%>
+  &nbsp;<br/>
+  <%=raw message %>&nbsp;
+  &nbsp;<br/>
+<% end %>
 &nbsp;
 <div>
   <span class="page_title"><%= t(:portfolio_title)%></span> <span class="page_title"><%=@curriculum_unit.name%></span>
@@ -138,17 +143,16 @@
           <tr style="height: 35px;">
             <td class="<%= classe %>" style="width: 10px;"><%= image_tag icon_attachment(pa["attachment_file_name"]) %></td>
             <td class="<%= classe %>"><%= pa["attachment_file_name"] %></td>
-            <td class="<%= classe %>"><span style="color: gray;"><%= pa["attachment_file_size"] %></span></td>
-            <td class="<%= classe %>"><a href="#" style="color: red;"><%= t(:delete) %></a></td>
+            <td class="<%= classe %>"><span style="color: gray;"><%= format('%.2fKB', pa["attachment_file_size"].to_i/1024.0) %></span></td>
+            <td class="<%= classe %>">
+              <%= link_to t(:delete), {:controller => :portfolio, :action => :delete_file, :id => pa["id"]}, :confirm => "#{t(:delete_file_msg)}" %>
+            </td>
           </tr>
 
         <% end %>
         <tr style="height: 35px;">
           <td colspan="4" class="border_line">
-            <a href="#" style="color: #204683;">
-              <%# form_for :public_file, :html => {:multpart => true} do |f| %>
-                <%#= f.file_field :photo %>
-              <%# end %>
+            <a href="#" style="color: #204683;" id="send_attachment">
               <%= t(:portfolio_upload_file) %>
             </a>
           </td>
@@ -162,6 +166,8 @@
   </div>
 
 </div>
+
+<%= render '/portfolio/public_files_send' %>
 
 <script type="text/javascript">
   $(function(){

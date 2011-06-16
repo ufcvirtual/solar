@@ -262,6 +262,7 @@
   corrected: "Corrigido"
   sent: "Enviado"
   make: "Fazer"
+  delete_file_msg: "Deseja realmente excluir este arquivo?"
 
   # Mensagem de erro para permissão   
   no_permission: "Você não tem permissão para acessar esta página"

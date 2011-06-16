@@ -732,7 +732,7 @@ div.alter_photo_text {
     display:none;
 }
 
-#boxes .window {
+.boxes .window {
     position:absolute;
     left:0;
     top:0;
@@ -741,7 +741,7 @@ div.alter_photo_text {
     padding:20px;
 }
 
-#boxes #dialog {
+.boxes #dialog {
     border-color: #ffd;
     width:434px;
     height:331px;
