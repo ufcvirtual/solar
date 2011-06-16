@@ -1,5 +1,7 @@
 class PortfolioController < ApplicationController
 
+  before_filter :require_user
+
   #  load_and_authorize_resource
 
   def list
@@ -20,41 +22,51 @@ class PortfolioController < ApplicationController
   # envio de arquivos para o portfolio individual do aluno
   def upload_files
 
-    # redireciona para a lista
-    error_msg, redirect = " ", {:action => "list", :id => params[:id]}
-    # group_id do portfolio
-    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-
-    @public_file = PublicFile.new params[:portfolio]
-    @public_file.user_id = current_user.id
-    @public_file.allocation_tag_id = AllocationTag.find(:first, :conditions => ["group_id = ?", group_id]).id
-
     respond_to do |format|
-      if @public_file.save
-        flash[:success] = t(:successful_update_file)
+      begin
+        # redireciona para a lista
+        redirect = {:action => "list", :id => params[:id]}
 
+        # verifica se o arquivo foi adicionado
+        raise t(:error_no_file_sent) unless params.include?(:portfolio)
+
+        # allocation_tag do grupo selecionada
+        allocation_tag_id = AllocationTag.find(:first, :conditions => ["group_id = ?", session[:opened_tabs][session[:active_tab]]["groups_id"]]).id
+
+        @public_file = PublicFile.new params[:portfolio]
+        @public_file.user_id = current_user.id
+        @public_file.allocation_tag_id = allocation_tag_id
+        @public_file.save!
+
+        # arquivo salvo com sucesso
+        flash[:success] = t(:file_uploaded)
         format.html { redirect_to(redirect) }
-        format.xml  { head :ok }
-      else
-        # joga as mensagens de validação do modelo nas mensagens de erro
-        #        if @public_file.errors.any?
-        #          msgs_error = @public_file.errors.full_messages.uniq # podem ter erros repetidos mas serao exibidos como unicos
-        #          msgs_error.each do |msg|
-        #            if msg.index("recognized by the 'identify'") # erro que nao teve tratamento
-        #              # se aparecer outro erro nao exibe o erro de arquivo nao identificado
-        #              if msgs_error.count == 1
-        #                error_msg << t(:activerecord)[:attributes][:user][:photo_content_type] + " "
-        #                error_msg << t(:activerecord)[:errors][:models][:user][:attributes][:photo_content_type][:invalid_type] + "<br />"
-        #              end
-        #            else # exibicao de erros conhecidos
-        #              error_msg << msg + "<br />"
-        #            end
-        #          end
-        #        end
-        flash[:error] = error_msg
-        format.html { render(redirect) }
-        format.xml  { render :xml => @public_file.errors, :status => :unprocessable_entity }
+
+      rescue Exception => erro
+
+        flash[:error] = erro.message # @public_file.errors.full_messages
+        format.html { redirect_to(redirect) }
+
       end
+    end
+
+  end
+
+  # download dos arquivos da area publica
+  def download_file
+
+    filename = PublicFile.find(params[:id]).attachment_file_name
+    file_down = ::Rails.root.to_s + '/media/portfolio/public_area/' + params[:id] + '_' + filename
+
+    if File.exist?(file_down)
+      send_file file_down, :filename => filename#, :x_sendfile => true
+    else
+
+      respond_to do |format|
+        flash[:success] = t(:error_nonexistent_file)
+        format.html { redirect_to({:action => 'list', :id => 3}) }
+      end
+
     end
 
   end
@@ -80,10 +92,9 @@ class PortfolioController < ApplicationController
             # retira o registro da base de dados
             if PublicFile.find(params[:id]).delete
 
-              flash[:success] = t(:successful_delete_file)
-
+              flash[:success] = t(:file_deleted)
               format.html { redirect_to(redirect) }
-              format.xml  { head :ok }
+
             end
           else
             raise "Arquivo nao deletado do servidor"
@@ -95,9 +106,7 @@ class PortfolioController < ApplicationController
 
       rescue
         flash[:success] = t(:error_delete_file)
-
         format.html { redirect_to(redirect) }
-        format.xml  { head :ok }
       end
 
     end

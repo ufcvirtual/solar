@@ -263,6 +263,10 @@
   sent: "Enviado"
   make: "Fazer"
   delete_file_msg: "Deseja realmente excluir este arquivo?"
+  file_uploaded: "Arquivo enviado com sucesso"
+  file_deleted: "Arquivo deletado com sucesso"
+  error_nonexistent_file: "Arquivo não encontrado"
+  error_no_file_sent: "Nenhum arquivo enviado"
 
   # Mensagem de erro para permissão   
   no_permission: "Você não tem permissão para acessar esta página"

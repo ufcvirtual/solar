@@ -254,6 +254,11 @@ en:
   corrected: "Corrected"
   sent: "Sent"
   make: "Make"
+  delete_file_msg: "Really delete this file?"
+  file_uploaded: "File uploaded"
+  file_deleted: "File deleted"
+  error_nonexistent_file: "File not found"
+  error_no_file_sent: "File not sent"
 
   # Mensagem de erro para permissão 
   no_permission: "you haven't permission to access this page"
