@@ -16,11 +16,11 @@
     <%= javascript_include_tag "user_form.js" %>
     <%= javascript_include_tag "mysolar.js" %>
     <%= javascript_include_tag "rails.js" %>
+    <%= javascript_include_tag "application.js" %>
     <%= javascript_include_tag "jquery.maskedinput-1.2.2"%>
-	<%= javascript_include_tag "ckeditor/ckeditor.js"%>
-	<%= javascript_include_tag "ckeditor/adapters/jquery.js"%>
+    <%= javascript_include_tag "ckeditor/ckeditor.js"%>
+    <%= javascript_include_tag "ckeditor/adapters/jquery.js"%>
     <%= csrf_meta_tag %>
-	
 
     <script type="text/javascript">
       jQuery(function($){
@@ -59,7 +59,7 @@
   <body>
     <div id="mysolar_content" style="white-space: nowrap;">
       <%= yield %>
-      
+
       <!-- Internacionalização  -->
 
       <div id="mysolar_locale">
@@ -156,6 +156,6 @@
         </div>
       </div>
     </div>
-    
+
   </body>
 </html>

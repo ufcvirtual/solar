@@ -1,55 +1,24 @@
 <script type="text/javascript">
-  $(function() {
-    //select all the a tag with name equal to modal
-    $('#send_attachment').click(function(e) {
-      //Cancel the link behavior
-      e.preventDefault();
+  $(function(){
 
-      // window
-      var window_upload = $('#dialog', $('#window_portfolio_send_file'));
+    $('#send_attachment').click(function(e){
+      e.preventDefault(); // cancel the link behavior
 
-      //Get the screen height and width
-      var maskHeight = $(document).height();
-      var maskWidth = $(window).width();
-
-      //Set height and width to mask to fill up the whole screen
-      $('#mask', $('#window_portfolio_send_file')).css({'width':maskWidth,'height':maskHeight});
-
-      //transition effect
-      $('#mask', $('#window_portfolio_send_file')).fadeIn();
-      $('#mask', $('#window_portfolio_send_file')).fadeTo("slow", 0.8);
-
-      //Get the window height and width
-      var winH = $(window).height();
-      var winW = $(window).width();
-
-      //Set the popup window to center
-      window_upload.css('top',  winH/2-window_upload.height()/2);
-      window_upload.css('left', winW/2-window_upload.width()/2);
-
-      //transition effect
-      window_upload.fadeIn(2000);
-
-    });
-
-    //if close button is clicked
-    $('.window .close').click(function (e) {
-      //Cancel the link behavior
-      e.preventDefault();
-      $('#mask, .window').hide();
+      // selecionando a div principal da window
+      $('#window_portfolio_send_file').window_upload_files();
     });
 
   });
 </script>
 
 <div class="boxes" id="window_portfolio_send_file">
-  
-  <div id="dialog" class="window" style="height: 220px;">
+
+  <div id="dialog" class="window" style="height: 250px;">
     <div id="title">
       <table border="0" cellspacing="0" width="100%">
         <tr>
           <td style="width: 97%;">
-            <b class="alter_photo_text"><%=t(:send_file_potfolio)%></b>
+            <b class="alter_photo_text"><%=t(:send_file_portfolio)%></b>
           </td>
           <td align="center" style="background-color: #fff;">
             <a href="#" class="close"><b>x</b></a>
@@ -59,13 +28,13 @@
     </div>
 
     <span class="alter_photo_text"><%= t(:your_computer) %></span>
-    
+
     <%= form_for(:portfolio, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files', :id => params[:id]}) do |f| %>
-      <%= f.file_field :attachment, :class => 'alter_photo_inputs' %>
+      <%= f.file_field :attachment%>
       <br />
-      <div class="alter_photo_text"><%= t(:file_portfolio_obs)%></div>
+      <div class="alter_photo_text"><%= t(:send_file_portfolio_obs)%></div>
       <br /><br />
-      <div class="alter_photo_text"><%= t(:file_portfolio_text)%></div>
+      <div class="alter_photo_text"><%= t(:send_file_portfolio_text)%></div>
       <br/>
       <div id="my_personal_data_button">
         <input type="button" class="close solar_button_gray" value="<%= t(:cancel)%>"/>
@@ -73,7 +42,7 @@
       </div>
     <% end %>
   </div>
-  
+
   <div id="mask"></div>
-  
+
 </div>

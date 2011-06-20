@@ -1,55 +1,24 @@
 <script type="text/javascript">
   $(function() {
-
+    // apresenta o link de modificacao da foto
     $('#mysolar_id').hover(function(){
       $('#mysolar_id').addClass('div_link');
     }, function(){
       $('#mysolar_id').removeClass('div_link');
     });
 
-    //select all the a tag with name equal to modal
-    $('#mysolar_id').click(function(e) {
-      //Cancel the link behavior
-      e.preventDefault();
-      //Get the A tag
-      //var id = $(this).attr('href');
-      var id = '#dialog';
-
-      //Get the screen height and width
-      var maskHeight = $(document).height();
-      var maskWidth = $(window).width();
-
-      //Set height and width to mask to fill up the whole screen
-      $('#mask').css({'width':maskWidth,'height':maskHeight});
-
-      //transition effect
-      $('#mask').fadeIn();
-      $('#mask').fadeTo("slow",0.8);
-
-      //Get the window height and width
-      var winH = $(window).height();
-      var winW = $(window).width();
-
-      //Set the popup window to center
-      $(id).css('top',  winH/2-$(id).height()/2);
-      $(id).css('left', winW/2-$(id).width()/2);
-
-      //transition effect
-      $(id).fadeIn(2000);
-
-    });
-
-    //if close button is clicked
-    $('.window .close').click(function (e) {
-      //Cancel the link behavior
-      e.preventDefault();
-      $('#mask, .window').hide();
+    // window de upload de foto
+    $('#mysolar_id').click(function(e){
+      e.preventDefault(); // cancel the link behavior
+      // selecionando a div principal da window
+      $('#update_photo').window_upload_files();
     });
 
   });
 </script>
 
-<div class="boxes">
+<div class="boxes" id="update_photo">
+
   <div id="dialog" class="window">
     <div id="title">
       <table border="0" cellspacing="0" width="100%">
@@ -63,7 +32,9 @@
         </tr>
       </table>
     </div>
+
     <u class="alter_photo_text"><%= t(:your_computer) %></u>
+
     <%= form_for(@user, :html => { :multipart => true }, :url => {:controller => 'users', :action => 'update_photo', :id => @user.id}) do |f| %>
       <%= f.file_field :photo, :class => 'alter_photo_inputs' %>
       <br /><br />
@@ -79,5 +50,6 @@
       </div>
     <% end %>
   </div>
+
   <div id="mask"></div>
 </div>

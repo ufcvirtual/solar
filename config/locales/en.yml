@@ -259,6 +259,15 @@ en:
   file_deleted: "File deleted"
   error_nonexistent_file: "File not found"
   error_no_file_sent: "File not sent"
+  send_file_portfolio: "Upload Files To Portfolio"
+  send_file_portfolio_obs: "Wait for the complete submission of the file. The size should not exceed 5MB."
+  send_file_portfolio_text: "Accepted file example:
+  - Documentos do Microsoft Office
+  - OpenOffice.org
+  - Arquivos Compactados(.zip, .rar...)
+  - Documentos PDF
+  - Arquivos de Video(avi, mpeg,...)
+  - Arquivos de Audio(mp3, wma...)"
 
   # Mensagem de erro para permissão 
   no_permission: "you haven't permission to access this page"

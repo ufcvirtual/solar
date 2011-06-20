@@ -267,6 +267,15 @@
   file_deleted: "Arquivo deletado com sucesso"
   error_nonexistent_file: "Arquivo não encontrado"
   error_no_file_sent: "Nenhum arquivo enviado"
+  send_file_portfolio: "Upload de Arquivos Para Portfolio"
+  send_file_portfolio_obs: "Aguarde o envio completo do arquivo. O tamanho não deve exceder 5MB."
+  send_file_portfolio_text: "Exemplos de arquivos aceitos:
+  - Documentos do Microsoft Office
+  - OpenOffice.org
+  - Arquivos Compactados(.zip, .rar...)
+  - Documentos PDF
+  - Arquivos de Video(avi, mpeg,...)
+  - Arquivos de Audio(mp3, wma...)"
 
   # Mensagem de erro para permissão   
   no_permission: "Você não tem permissão para acessar esta página"
