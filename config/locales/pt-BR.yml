@@ -279,6 +279,9 @@
 
   # Mensagem de erro para permissão   
   no_permission: "Você não tem permissão para acessar esta página"
+  sent_files: "Arquivos Enviados"
+  send_files: "Enviar Arquivos"
+  download_attachment: "Baixar Anexo"
 
   # formatos de data e hora
   date:

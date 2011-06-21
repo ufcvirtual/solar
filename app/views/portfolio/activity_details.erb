@@ -1,0 +1,185 @@
+<% if flash[:success] || flash[:error] || flash[:notice]%>
+  &nbsp;<br/>
+  <%=raw message %>&nbsp;
+  &nbsp;<br/>
+<% end %>
+&nbsp;
+<div>
+  <span class="page_title">
+    <%= t(:portfolio_title)%>
+  </span>
+  <span class="page_title">
+    <%= @curriculum_unit.name unless @curriculum_unit.nil? %>
+  </span>
+</div>
+
+<style type="text/css">
+  .assignment_corrected {
+    color: #378941;
+  }
+
+  .assignment_sent {
+    color: #56b7ae;
+  }
+
+  .assignment_send {
+    color: #204683;
+  }
+</style>
+
+<div>
+
+  <!-- Descricao da atividade -->
+
+  <div class="portfolio_header_content">
+    <div class="portfolio_title">
+      <div style="text-align: left;">
+        <span style="text-align: left;"><%= @activity.name %></span>
+        <span style="font-style: italic; color: gray; text-align: right;">
+          <%= t(:date_name)%>: <%= @activity.initial_date %> - <%= @activity.final_date %>
+        </span>
+      </div>
+    </div>
+    <div class="portfolio_image">
+      <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
+    </div>
+  </div>
+
+  <div id="individual_activity" class="portfolio">
+    <hr class="portfolio_line" />
+
+    <table cellpadding="5" cellspacing="0" class="portfolio_table">
+      <tr class="rowtable_even_portfolio">
+        <td class="td_blue_portfolio_first">
+        </td>
+        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:situation) %></span></td>
+        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:grade) %></span></td>
+      </tr>
+
+      <tr class="rowtable_even_portfolio" >
+        <td class="td_blue_portfolio_first">
+          <%= @activity.enunciation %><br /><br />
+        </td>
+
+
+        <td class="td_blue_portfolio" style="width: 70px;">
+          situacao
+        </td>
+
+
+        <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">
+          nota
+        </td>
+
+
+      </tr>
+    </table>
+  </div>
+
+  <!-- Comentarios do professor -->
+
+  <div class="portfolio_header_content">
+    <div class="portfolio_title">
+      <%= t(:comments) %>
+      <div>
+        <%= link_to t(:download_attachment), {:controller => :portfolio, :action => :download_file, :id_assignment_comment => 'asasdfk'} %>
+        <%= image_tag "icon_attachment.png" %>
+      </div>
+    </div>
+    <div class="portfolio_image"><%= image_tag "icon_comments.png" %></div>
+  </div>
+
+  <div id="grade" class="portfolio">
+    <hr id="portfolio_line_g" class="portfolio_line" />
+
+    <table cellpadding="5" cellspacing="0" class="portfolio_table">
+      <tr class="rowtable_even_portfolio" >
+        <td class="td_blue_portfolio_first">Neste sentido, o julgamento imparcial das eventualidades é uma das consequências do orçamento setorial.</td>
+      </tr>
+
+    </table>
+
+  </div>
+
+  <!-- Arquivos enviados -->
+
+  <div class="portfolio_header_content">
+    <div class="portfolio_title"><%= t(:sent_files) %></div> <div class="portfolio_image">
+      <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
+    </div>
+  </div>
+
+  <div id="portfolio" class="portfolio">
+    <hr id="portfolio_line_pa" class="portfolio_line" />
+
+    <table cellpadding="5" cellspacing="0" class="portfolio_table">
+      <tbody align="left">
+
+        <% classe = "" %>
+        <% @public_area.each_with_index do |pa, idx| %>
+          <% classe = "border_line" if idx > 0 %>
+
+          <tr style="height: 35px;">
+            <td class="<%= classe %>" style="width: 10px;"><%= image_tag icon_attachment(pa["attachment_file_name"]) %></td>
+            <td class="<%= classe %>">
+              <%= link_to pa["attachment_file_name"], {:controller => :portfolio, :action => :download_file, :id => pa["id"]} %>
+            </td>
+            <td class="<%= classe %>"><span style="color: gray;"><%= format('%.2fKB', pa["attachment_file_size"].to_i/1024.0) %></span></td>
+            <td class="<%= classe %>">
+              <%= link_to t(:delete), {:controller => :portfolio, :action => :delete_file, :id => pa["id"]}, :confirm => "#{t(:delete_file_msg)}" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div style="background-color: #FFF">
+      <br/>
+    </div>
+
+  </div>
+
+  <!-- Enviar arquivos -->
+
+  <div class="portfolio_header_content">
+    <div class="portfolio_title"><%= t(:send_files) %></div>
+    <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+  </div>
+
+  <div id="send_files" class="portfolio">
+    <hr id="portfolio_line_g" class="portfolio_line" />
+
+    <%= form_for(:portfolio, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files', :id => params[:id]}) do |f| %>
+      <%= f.file_field :attachment%> <%= f.submit t(:send), :class => "solar_button_gray"%>
+      <br />
+      <div class="alter_photo_text"><%= t(:send_file_portfolio_obs)%></div>
+      <br /><br />
+      <div class="alter_photo_text"><%= t(:send_file_portfolio_text)%></div>
+      <br/>
+    <% end %>
+  </div>
+
+</div>
+
+<%= render '/portfolio/public_files_send' %>
+
+<script type="text/javascript">
+  $(function(){
+    $(".enunciation_more").click(function(){
+
+      $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "none");
+      $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "block");
+
+      return false;
+    });
+
+    $(".enunciation_less").click(function(){
+
+      $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "block");
+      $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "none");
+
+      return false;
+    });
+
+  });
+</script>

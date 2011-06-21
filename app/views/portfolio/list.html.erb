@@ -37,7 +37,7 @@
   <div id="individual_activity" class="portfolio">
     <hr class="portfolio_line" />
 
-    <% @individual_activits.each_with_index do |ia, idx| %>
+    <% @individual_activities.each_with_index do |ia, idx| %>
 
       <% if idx > 0 %>
         <hr class="portfolio_table_division" />
@@ -46,7 +46,9 @@
       <table cellpadding="5" cellspacing="0" class="portfolio_table">
         <tr class="rowtable_even_portfolio">
           <td class="td_blue_portfolio_first">
-            <span style="font-weight: bold;"><%= ia["name"] %></span>&nbsp;
+            <span style="font-weight: bold;">
+              <%= link_to ia["name"], {:action => :activity_details, :id => ia["id"]} %>
+            </span>&nbsp;
             <span style="font-style: italic; color: gray;"><%= t(:date_name)%>: <%= ia["initial_date"] %> - <%= ia["final_date"] %></span>
           </td>
           <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:situation) %></span></td>

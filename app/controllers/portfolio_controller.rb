@@ -4,6 +4,7 @@ class PortfolioController < ApplicationController
 
   #  load_and_authorize_resource
 
+  # lista as atividades
   def list
     @curriculum_unit = CurriculumUnit.find(params[:id])
 
@@ -12,11 +13,39 @@ class PortfolioController < ApplicationController
 
     # atividades individuais
     # listando atividades individuais pelo grupo_id em que o usuario esta inserido
-    @individual_activits = individual_activits(group_id, current_user.id)
+    @individual_activities = individual_activities(group_id, current_user.id)
 
     # area publica
     @public_area = public_area(group_id, current_user.id)
 
+  end
+
+  # recupera as informacoes de uma atividade - lista arquivos enviados e opcao
+  # para enviar arquivos
+  def activity_details
+
+
+    # recupera a atividade selecionada
+    @activity = Assignment.joins(:allocation_tag).where(["assignments.id = ?", params[:id]]).first
+
+
+#    @curriculum_unit = CurriculumUnit.find(params[:id])
+
+
+
+    # params[:id] -> refere-se ao id da atividade
+
+    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+
+    # id da atividade, id do grupo e id do usuario
+
+
+
+    # listando atividades individuais pelo grupo_id em que o usuario esta inserido
+    @individual_activities = individual_activities(group_id, current_user.id)
+
+    # area publica
+    @public_area = public_area(group_id, current_user.id)
   end
 
   # envio de arquivos para o portfolio individual do aluno
@@ -115,10 +144,11 @@ class PortfolioController < ApplicationController
   private
 
   # atividades individuais
-  def individual_activits(group_id, user_id)
+  def individual_activities(group_id, user_id)
 
     query = "
-    SELECT t1.name,
+    SELECT t1.id,
+           t1.name,
            t1.enunciation,
            t1.initial_date,
            t1.final_date,
