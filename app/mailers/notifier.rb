@@ -10,14 +10,17 @@ class Notifier < ActionMailer::Base
 
   def send_mail (recipients, subject, message, from = nil)
     if !from.nil?
-      mail(:to => recipients,
-         :subject => '[SOLAR] ' << subject,
-         :from => from,
-         :body => message)
+      mail(:to => recipients, :from => from,
+           :subject => "[SOLAR] #{subject}") do |format|
+          format.text { render :text => message }
+          format.html { render :text => message }
+      end
     else
       mail(:to => recipients,
-         :subject => '[SOLAR] ' << subject,
-         :body => message)
+           :subject => "[SOLAR] #{subject}") do |format|
+          format.text { render :text => message }
+          format.html { render :text => message }
+      end
     end
 	end
 

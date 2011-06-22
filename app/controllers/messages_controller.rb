@@ -1,6 +1,7 @@
 class MessagesController < ApplicationController
 
   include MessagesHelper
+  include CurriculumUnitsHelper
   
   before_filter :require_user
   before_filter :message_data
@@ -57,6 +58,7 @@ class MessagesController < ApplicationController
         individual_to.each {|r|
           r_user = User.find_by_email(r)
           if !r_user.nil?
+            real_receivers << ", " unless real_receivers.empty?
             real_receivers << r_user.email
             #status=0 {nao_origem, nao_lida, nao_excluida}
             receiver_message = UserMessage.new :message_id => new_message.id, :user_id => r_user.id, :status => 0
@@ -65,14 +67,10 @@ class MessagesController < ApplicationController
           }
 
         #envia email apenas uma vez
-        Notifier.send_mail(real_receivers, subject, message) #, from = nil
-=begin
-      flash[:notice] = t(:message_send_ok)
-        render :action => 'index', :type => 'outbox'
-      else
-        flash[:notice] = t(:message_send_error)
-      end
-=end
+        Notifier.deliver_send_mail(real_receivers, subject, message) #, from = nil
+
+        flash[:notice] = t(:message_send_ok)
+      
       end
       
       redirect_to :action => 'index', :type => 'outbox'
@@ -90,6 +88,8 @@ class MessagesController < ApplicationController
         @files = get_files(message_id)
         
         mark_as_read(message_id)
+
+        @show_message = 'show'
       else
         flash[:error] = t(:no_permission)
         redirect_to :action => "index"
@@ -106,7 +106,7 @@ class MessagesController < ApplicationController
     @show_message = 'reply'
   end
 
-  # marca a mensagem como lida
+  # marca mensagem(ns) como lida(s)
   def mark_as_read(message_id)
     # busca mensagem para esse usuario
     message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).first(1)
@@ -117,7 +117,6 @@ class MessagesController < ApplicationController
       logical_comparison = 0b00000010
 
       status = message_user[0].status.to_i
-      atual_status = status | logical_comparison
 
 puts "\n\n\n***  status antes: #{status} = #{status.to_s(2)}"
 puts "***  status depois:#{atual_status} = #{atual_status.to_s(2)}"
@@ -128,6 +127,42 @@ puts "\n\n\n"
 
       # atualiza qtde de msgs nao lidas
       @unread = unread_inbox(current_user.id, @message_tag)
+    end
+  end
+
+  # marca mensagem(ns) como nao lida(s)
+  def mark_as_unread(message_id)
+    # busca mensagem para esse usuario
+    message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).first(1)
+
+    if !message_user.nil?
+      # pra zerar (marcar como nao lida) E logico:  & 0b11111101
+      # pra setar 1 (marcar como lida) OU logico:   | 0b00000010
+      logical_comparison = 0b11111101
+
+      status = message_user[0].status.to_i
+
+      message_user[0].status = status & logical_comparison
+      message_user[0].save
+
+      # atualiza qtde de msgs nao lidas
+      @unread = unread_inbox(current_user.id, @message_tag)
+    end
+  end
+
+  # marca mensagem(ns) como lixo
+  def mark_as_trash(message_id)
+    # busca mensagem para esse usuario
+    message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).first(1)
+
+    if !message_user.nil?
+      # pra setar 1 (marcar como excluida) OU logico:   | 0b00000100
+      logical_comparison = 0b00000100
+
+      status = message_user[0].status.to_i
+
+      message_user[0].status = status | logical_comparison
+      message_user[0].save
     end
   end
 
@@ -178,6 +213,15 @@ private
 
     # qtde de msgs nao lidas
     @unread = unread_inbox(current_user.id, @message_tag)
+  end
+
+  def get_user_recipients
+    # pegando dados da sessao e nao da url
+    groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+    offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+
+    @participants = class_participants params[:id], false, offers_id, groups_id
+    @responsibles = class_participants params[:id], true, offers_id, groups_id
   end
 
 end

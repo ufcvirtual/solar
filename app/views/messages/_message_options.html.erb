@@ -21,7 +21,15 @@
       </ul>
       <% end %>
 
-      <%= link_to t(:message_delete)+' ', {}, {:class=>'message_link'} %>
+      <% if @show_message == 'show' %>
+        <% selected_id = @message.id %>
+      <% else %>
+        <% if @type == 'inbox' || @type == 'outbox' || @type == 'trashbox' %>
+          <% selected_id = nil %>
+        <% end %>
+      <% end %>
+
+      <%= link_to t(:message_delete)+' ', {:action => '', :id => selected_id}, {:class=>'message_link'} %>
       <%= link_to t(:message_mark_as_read)+' ', {}, {:class=>'message_link'} unless @type=="trashbox" || @type.nil? %>
       <%= link_to t(:message_mark_as_unread)+' ', {}, {:class=>'message_link'} unless @type=="trashbox" %>
     </div>

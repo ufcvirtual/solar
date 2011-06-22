@@ -12,23 +12,27 @@
     <%= render 'message_options' %>
 
     <div class="message_div_list">
-      <% if @messages.length > 0 %>
-        <table class="message_div_list">
-          <% @messages.each do |message| %>
-            <tr class="message_line">
-              <td style="width:30px"><%=check_box :id, :id => 'checkbox_message'%></td>
-              <% if message.ehlida == 't' %>
-                  <% css_class = "message_read" %>
-              <% else %>
-                  <% css_class = "message_unread" %>
+      <% if !@messages.nil? %>
+          <% if @messages.length >0 %>
+            <table class="message_div_list">
+              <% @messages.each do |message| %>
+                <tr class="message_line">
+                  <td style="width:30px"><%=check_box :id, :id => 'checkbox_message'%></td>
+                  <% if message.ehlida == 't' %>
+                      <% css_class = "message_read" %>
+                  <% else %>
+                      <% css_class = "message_unread" %>
+                  <% end %>
+                  <td style="width:120px"><%= link_to message.name,  {:action => 'show', :id => message.id},{:class => css_class} %></td>
+                  <td><%= link_to message.subject,  {:action => 'show', :id => message.id},{:class => css_class} %></td>
+                  <td style="width:30px"><%=image_tag("message_file.png",:alt=>t(:message_attach)) unless message.original_name.nil?%></td>
+                  <td style="width:80px"><%= link_to l(message.send_date, :format => :short),  {:action => 'show', :id => message.id},{:class => css_class} %></td>
+                </tr>
               <% end %>
-              <td style="width:120px"><%= link_to message.name,  {:action => 'show', :id => message.id},{:class => css_class} %></td>
-              <td><%= link_to message.subject,  {:action => 'show', :id => message.id},{:class => css_class} %></td>
-              <td style="width:30px"><%=image_tag("message_file.png",:alt=>t(:message_attach)) unless message.original_name.nil?%></td>
-              <td style="width:80px"><%= link_to l(message.send_date, :format => :short),  {:action => 'show', :id => message.id},{:class => css_class} %></td>
-            </tr>
+            </table>
+          <% else %>
+            <div class="text_none"><%=t(:message_none)%></div>
           <% end %>
-        </table>
       <% else %>
         <div class="text_none"><%=t(:message_none)%></div>
       <% end %>
