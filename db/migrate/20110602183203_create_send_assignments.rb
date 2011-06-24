@@ -6,6 +6,10 @@ class CreateSendAssignments < ActiveRecord::Migration
       t.text :comment
       t.float :grade
     end
+
+    execute <<-SQL
+      ALTER TABLE send_assignments ADD CONSTRAINT unq_send_assignment UNIQUE(assignment_id, user_id);
+    SQL
   end
 
   def self.down

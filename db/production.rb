@@ -4,8 +4,9 @@ puts "Production Seed"
 
 puts "Truncando tabelas"
 
-models = [DiscussionPost, Discussion, Lesson, Allocation, Bibliography, UserMessageLabel, UserMessage, MessageLabel, AllocationTag, PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,
-Enrollment, Offer, CurriculumUnit, CurriculumUnitType, Course, PersonalConfiguration, User]
+models = [DiscussionPost, Discussion, Lesson, Allocation, Bibliography, UserMessageLabel, UserMessage, MessageLabel,
+  AssignmentComment, SendAssignment, Assignment, AllocationTag, PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,
+  Enrollment, Offer, CurriculumUnit, CurriculumUnitType, Course, PersonalConfiguration, User]
 models.each(&:delete_all)
 
 Fixtures.reset_cache

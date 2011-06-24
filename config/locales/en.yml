@@ -262,15 +262,16 @@ en:
   send_file_portfolio: "Upload Files To Portfolio"
   send_file_portfolio_obs: "Wait for the complete submission of the file. The size should not exceed 5MB."
   send_file_portfolio_text: "Accepted file example:
-  - Documentos do Microsoft Office
+  - Microsoft Office Documents
   - OpenOffice.org
-  - Arquivos Compactados(.zip, .rar...)
-  - Documentos PDF
-  - Arquivos de Video(avi, mpeg,...)
-  - Arquivos de Audio(mp3, wma...)"
+  - Archives(.zip, .rar...)
+  - PDF Documents
+  - Video Files(avi, mpeg,...)
+  - Audio Files(mp3, wma...)"
   sent_files: "Sent Files"
   send_files: "Send Files"
   download_attachment: "Download Attachment"
+  error_delete_file: "Error when trying to delete file"
 
   # Mensagem de erro para permissão 
   no_permission: "you haven't permission to access this page"

@@ -3,15 +3,6 @@
   <%=raw message %>&nbsp;
   &nbsp;<br/>
 <% end %>
-&nbsp;
-<div>
-  <span class="page_title">
-    <%= t(:portfolio_title)%>
-  </span>
-  <span class="page_title">
-    <%= @curriculum_unit.name unless @curriculum_unit.nil? %>
-  </span>
-</div>
 
 <style type="text/css">
   .assignment_corrected {
@@ -27,6 +18,15 @@
   }
 </style>
 
+&nbsp;
+
+<!-- Apresenta o nome da unidade curricular -->
+<div>
+  <span class="page_title"><%= t(:portfolio_title) %></span>
+  <span class="page_title"><%= @curriculum_unit.name unless @curriculum_unit.nil? %></span>
+</div>
+
+<!-- Portfolio -->
 <div>
   <div class="portfolio_header_content">
     <div class="portfolio_title"><%= t(:individual_activity)%></div> <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
@@ -47,9 +47,11 @@
         <tr class="rowtable_even_portfolio">
           <td class="td_blue_portfolio_first">
             <span style="font-weight: bold;">
-              <%= link_to ia["name"], {:action => :activity_details, :id => ia["id"]} %>
+              <%= link_to ia["name"], {:controller => :portfolio, :action => :activity_details, :id => ia["id"]} %>
             </span>&nbsp;
-            <span style="font-style: italic; color: gray;"><%= t(:date_name)%>: <%= ia["initial_date"] %> - <%= ia["final_date"] %></span>
+            <span style="font-style: italic; color: gray;">
+              <%= t(:date_name)%>: <%= ia["initial_date"] %> - <%= ia["final_date"] %>
+            </span>
           </td>
           <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:situation) %></span></td>
           <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:grade) %></span></td>
@@ -150,11 +152,11 @@
           <tr style="height: 35px;">
             <td class="<%= classe %>" style="width: 10px;"><%= image_tag icon_attachment(pa["attachment_file_name"]) %></td>
             <td class="<%= classe %>">
-              <%= link_to pa["attachment_file_name"], {:controller => :portfolio, :action => :download_file, :id => pa["id"]} %>
+              <%= link_to pa["attachment_file_name"], {:controller => :portfolio, :action => :download_file_public_area, :id => pa["id"]} %>
             </td>
             <td class="<%= classe %>"><span style="color: gray;"><%= format('%.2fKB', pa["attachment_file_size"].to_i/1024.0) %></span></td>
             <td class="<%= classe %>">
-              <%= link_to t(:delete), {:controller => :portfolio, :action => :delete_file, :id => pa["id"]}, :confirm => "#{t(:delete_file_msg)}" %>
+              <%= link_to t(:delete), {:controller => :portfolio, :action => :delete_file_public_area, :id => pa["id"]}, :confirm => "#{t(:delete_file_msg)}" %>
             </td>
           </tr>
 

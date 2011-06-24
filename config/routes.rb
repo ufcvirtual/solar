@@ -1,7 +1,5 @@
 Solar::Application.routes.draw do |map|
 
-  get "portfolio/list"
-
   resources :discussions
   resources :messages
   
@@ -32,7 +30,7 @@ Solar::Application.routes.draw do |map|
  
   # Definindo resources (mapeamento de urls para os objetos)
 
-  resources :users, :user_sessions, :curriculum_units, :participants, :allocations
+  resources :users, :user_sessions, :curriculum_units, :participants, :allocations, :portfolio
   
   match 'login' => "user_sessions#new", :as => :login
   match 'logout' => "user_sessions#destroy", :as => :logout

@@ -3,7 +3,9 @@
   <%=raw message %>&nbsp;
   &nbsp;<br/>
 <% end %>
+
 &nbsp;
+
 <div>
   <span class="page_title">
     <%= t(:portfolio_title)%>
@@ -48,32 +50,33 @@
   <div id="individual_activity" class="portfolio">
     <hr class="portfolio_line" />
 
+    <!-- Descricao da atividade -->
+
     <table cellpadding="5" cellspacing="0" class="portfolio_table">
-      <tr class="rowtable_even_portfolio">
-        <td class="td_blue_portfolio_first">
-        </td>
-        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:situation) %></span></td>
-        <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:grade) %></span></td>
-      </tr>
+      <thead>
+        <tr class="rowtable_even_portfolio">
+          <td class="td_blue_portfolio_first"></td>
+          <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:situation) %></span></td>
+          <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:grade) %></span></td>
+        </tr>
+      </thead>
 
-      <tr class="rowtable_even_portfolio" >
-        <td class="td_blue_portfolio_first">
-          <%= @activity.enunciation %><br /><br />
-        </td>
+      <tbody>
+        <tr class="rowtable_even_portfolio" >
+          <td class="td_blue_portfolio_first">
+            <%= @activity.enunciation %><br /><br />
+          </td>
+          <td class="td_blue_portfolio" style="width: 70px;">
+            situacao
+          </td>
+          <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">
+            nota
+          </td>
+        </tr>
+      </tbody>
 
-
-        <td class="td_blue_portfolio" style="width: 70px;">
-          situacao
-        </td>
-
-
-        <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">
-          nota
-        </td>
-
-
-      </tr>
     </table>
+
   </div>
 
   <!-- Comentarios do professor -->
@@ -81,10 +84,6 @@
   <div class="portfolio_header_content">
     <div class="portfolio_title">
       <%= t(:comments) %>
-      <div>
-        <%= link_to t(:download_attachment), {:controller => :portfolio, :action => :download_file, :id_assignment_comment => 'asasdfk'} %>
-        <%= image_tag "icon_attachment.png" %>
-      </div>
     </div>
     <div class="portfolio_image"><%= image_tag "icon_comments.png" %></div>
   </div>
@@ -92,19 +91,44 @@
   <div id="grade" class="portfolio">
     <hr id="portfolio_line_g" class="portfolio_line" />
 
-    <table cellpadding="5" cellspacing="0" class="portfolio_table">
-      <tr class="rowtable_even_portfolio" >
-        <td class="td_blue_portfolio_first">Neste sentido, o julgamento imparcial das eventualidades é uma das consequências do orçamento setorial.</td>
-      </tr>
 
-    </table>
+
+    <% @comments.each_with_index do |c, idx| %>
+
+      <% if idx > 0 %>
+        <hr class="portfolio_table_division" />
+      <% end %>
+
+      <table cellpadding="5" cellspacing="0" class="portfolio_table">
+        <thead>
+          <tr>
+            <td class="td_blue_portfolio_first"></td>
+            <td align="right">
+              <% if c["files"].to_i > 0 %>
+                <%= link_to t(:download_attachment), {:controller => :portfolio, :action => :download_file, :assignment_comment_id => c["assignment_comment_id"]} %>
+                <%= image_tag "icon_attachment.png" %>
+              <% end %>
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="rowtable_even_portfolio" >
+            <td colspan="2" class="td_blue_portfolio_first">
+              <%= c["comment"] %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    <% end %>
 
   </div>
 
   <!-- Arquivos enviados -->
 
   <div class="portfolio_header_content">
-    <div class="portfolio_title"><%= t(:sent_files) %></div> <div class="portfolio_image">
+    <div class="portfolio_title"><%= t(:sent_files) %></div>
+    <div class="portfolio_image">
       <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
     </div>
   </div>
@@ -116,17 +140,17 @@
       <tbody align="left">
 
         <% classe = "" %>
-        <% @public_area.each_with_index do |pa, idx| %>
+        <% @files.each_with_index do |pa, idx| %>
           <% classe = "border_line" if idx > 0 %>
 
           <tr style="height: 35px;">
             <td class="<%= classe %>" style="width: 10px;"><%= image_tag icon_attachment(pa["attachment_file_name"]) %></td>
             <td class="<%= classe %>">
-              <%= link_to pa["attachment_file_name"], {:controller => :portfolio, :action => :download_file, :id => pa["id"]} %>
+              <%= link_to pa["attachment_file_name"], {:controller => :portfolio, :action => :download_file_individual_area, :id => pa["id"]} %>
             </td>
             <td class="<%= classe %>"><span style="color: gray;"><%= format('%.2fKB', pa["attachment_file_size"].to_i/1024.0) %></span></td>
             <td class="<%= classe %>">
-              <%= link_to t(:delete), {:controller => :portfolio, :action => :delete_file, :id => pa["id"]}, :confirm => "#{t(:delete_file_msg)}" %>
+              <%= link_to t(:delete), {:controller => :portfolio, :action => :delete_file_individual_area, :id => pa["id"]}, :confirm => "#{t(:delete_file_msg)}" %>
             </td>
           </tr>
         <% end %>
@@ -149,7 +173,7 @@
   <div id="send_files" class="portfolio">
     <hr id="portfolio_line_g" class="portfolio_line" />
 
-    <%= form_for(:portfolio, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files', :id => params[:id]}) do |f| %>
+    <%= form_for(:assignment_file, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files_individual', :assignment_id => params[:id]}) do |f| %>
       <%= f.file_field :attachment%> <%= f.submit t(:send), :class => "solar_button_gray"%>
       <br />
       <div class="alter_photo_text"><%= t(:send_file_portfolio_obs)%></div>

@@ -29,7 +29,7 @@
 
     <span class="alter_photo_text"><%= t(:your_computer) %></span>
 
-    <%= form_for(:portfolio, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files', :id => params[:id]}) do |f| %>
+    <%= form_for(:portfolio, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files', :curriculum_unit_id => params[:id]}) do |f| %>
       <%= f.file_field :attachment%>
       <br />
       <div class="alter_photo_text"><%= t(:send_file_portfolio_obs)%></div>
