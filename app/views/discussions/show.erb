@@ -118,10 +118,11 @@
   <div>
     <a href="javascript:clearFormData()" id="NewPostButton"><%= t("forum_new_message")%></a>&nbsp;
     <%if @display_mode == "PLAINLIST"%>
-      <a href="javascript:showAsThread()">[Modo árvore]</a>&nbsp;
+      <a href="javascript:showAsThread()">[Modo árvore]</a>&nbsp;   
     <%else%>
       <a href="javascript:showAsPlainList()">[Modo Lista]</a>
     <%end%>
+    <%=raw render_pagination_bar(count_discussion_posts(@discussion.id,(@display_mode=="PLAINLIST")).to_s)%>
   </div>
 </div>
 <%if @display_mode == "PLAINLIST"%>
@@ -140,4 +141,5 @@
   <%= hidden_field_tag(:discussion_post_id, "") %>
   <%= hidden_field_tag(:parent_post_id, "") %>
   <%= hidden_field_tag(:display_mode, @display_mode) %>
+  <%= hidden_field_tag(:current_page, @current_page) %>
 <% end %>

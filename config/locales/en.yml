@@ -181,6 +181,7 @@ en:
   forum_table_date: "Access date"
   forum_message: "No discussion available"
   forum: "Discussion"
+  forum_new_message: "New Message"
 
   message_title: "Messages"
   message_inbox: "Inbox"

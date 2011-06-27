@@ -1,5 +1,14 @@
 class ApplicationController < ActionController::Base
 
+# Variáveis de sessão utilizadas no sistema
+#
+#   - session[:opened_tabs]
+#   - session[:active_tab]
+#   - session[:return_to]
+#   - session[:current_page]
+#   - session[:forum_display_mode]
+#
+
   protect_from_forgery
 
   helper_method :current_user_session, :current_user
@@ -222,5 +231,18 @@ class ApplicationController < ActionController::Base
     session[:return_to] = nil
   end
 
-end
+# Preparando o uso da paginação
+  before_filter :prepare_for_pagination
 
+  def prepare_for_pagination
+    @current_page = session[:current_page]
+    session[:current_page] = nil
+
+    @current_page = params[:current_page] if @current_page.nil?
+    @current_page = "1" if @current_page.nil?
+  end
+
+  def hold_pagination
+    session[:current_page] = @current_page
+  end
+end

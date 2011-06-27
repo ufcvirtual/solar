@@ -43,69 +43,64 @@ class DiscussionsController < ApplicationController
   end
 
   def show
-    discussion_id = params[:id]
-    @display_mode = params[:display_mode]
-    
-    @discussion = Discussion.find(discussion_id)
-    if @display_mode == "PLAINLIST"
-      @posts = return_discussion_posts(discussion_id, true)
-    else
-      @posts = return_discussion_posts(discussion_id, false)
-    end
+    load_posts 
   end
 
   def new_post
     discussion_id = params[:discussion_id]
+    content       = params[:content]
+    parent_id     = params[:parent_post_id]
     #DEFINIR O PROFILE!!!! ###################################################
-    profile_id = 2
-    content = params[:content]
-    father_id = params[:parent_post_id]
-    @display_mode = params[:display_mode]
+    profile_id    = 2
 
-    new_discussion_post = DiscussionPost.new :discussion_id => discussion_id, :user_id => current_user.id, :profile_id => profile_id, :content => content, :father_id => father_id
+    new_discussion_post = DiscussionPost.new :discussion_id => discussion_id, :user_id => current_user.id, :profile_id => profile_id, :content => content, :father_id => parent_id
     new_discussion_post.save
 
-    @discussion = Discussion.find(discussion_id)
-    if @display_mode == "PLAINLIST"
-      @posts = return_discussion_posts(discussion_id, true)
-    else
-      @posts = return_discussion_posts(discussion_id, false)
+    if @display_mode != "PLAINLIST"
+      hold_pagination
     end
-    render "show"
+    redirect_to "/discussions/show/" << discussion_id
   end
 
   def remove_post
     discussion_id = params[:discussion_id]
     discussion_post_id = params[:discussion_post_id]
-    @display_mode = params[:display_mode]
+    DiscussionPost.delete(discussion_post_id)
 
-    DiscussionPost.delete(discussion_post_id)#.delete()
-
-    @discussion = Discussion.find(discussion_id)
-    if @display_mode == "PLAINLIST"
-      @posts = return_discussion_posts(discussion_id, true)
-    else
-      @posts = return_discussion_posts(discussion_id, false)
-    end
-    render "show"
+    hold_pagination
+    redirect_to "/discussions/show/" << discussion_id
   end
 
   def update_post
     discussion_id = params[:discussion_id]
     discussion_post_id = params[:discussion_post_id]
     new_content = params[:content]
-    @display_mode = params[:display_mode]
 
-    @discussion = Discussion.find(discussion_id)
     post = DiscussionPost.find(discussion_post_id);
-
     post.update_attributes({:content => new_content})
 
-    if @display_mode == "PLAINLIST"
-      @posts = return_discussion_posts(discussion_id, true)
+    hold_pagination
+    redirect_to "/discussions/show/" << discussion_id
+  end
+
+  private
+  def load_posts
+    discussion_id = params[:discussion_id]
+    discussion_id = params[:id] if discussion_id.nil?
+
+    @display_mode = params[:display_mode]
+
+    if @display_mode.nil?
+      @display_mode = session[:forum_display_mode]
     else
-      @posts = return_discussion_posts(discussion_id, false)
+      session[:forum_display_mode] = @display_mode
     end
-    render "show"
+
+    @discussion = Discussion.find(discussion_id)
+    if @display_mode == "PLAINLIST"
+      @posts = return_discussion_posts(@discussion.id, true)
+    else
+      @posts = return_discussion_posts(@discussion.id, false)
+    end
   end
 end
