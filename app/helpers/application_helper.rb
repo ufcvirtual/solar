@@ -49,7 +49,6 @@ module ApplicationHelper
 #      #redirect_to request.fullpath
 #    end
 
-
     total_pages = total_pages.to_s
 
     result = '<form accept-charset="UTF-8" action="" method="post" name="paginationForm" style="display:inline">'

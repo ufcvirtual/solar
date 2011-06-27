@@ -1,3 +1,14 @@
+@font-face
+{
+    font-family: 'Trebuchet';
+    src: url('/fonts/trebuc.ttf');
+}
+@font-face
+{
+    font-family: 'Myriad Pro';
+    src: url('/fonts/myriad.otf');
+}
+
 img{
     border: none;
 }
@@ -1112,9 +1123,16 @@ div.alter_photo_text {
     padding-bottom: 30px;
 }
 
-.forum_navigation_bar{
-    background-color: #dee8ec;
+.forum_button{
+    color: #1c4785;
+    text-decoration: underline;
+    font-family:  'Myriad Pro';
 }
+
+.forum_navigation_bar{
+    border-bottom: 3px solid #1d4786;
+}
+
 .forum_post{
     background-color: #f9f9fa;
     min-height: 140px;
