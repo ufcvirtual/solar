@@ -67,10 +67,16 @@
             <%= @activity.enunciation %><br /><br />
           </td>
           <td class="td_blue_portfolio" style="width: 70px;">
-            situacao
+            <a href="#" class="assignment_<%= @correction %>">
+              <%= t(@correction.to_sym) %>
+            </a>
           </td>
           <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">
-            nota
+            <% unless @grade.nil? %>
+              <%= @grade.to_f %>
+            <% else %>
+              <%= '-' %>
+            <% end %>
           </td>
         </tr>
       </tbody>
@@ -106,7 +112,7 @@
             <td align="right">
               <% if c["files"].to_i > 0 %>
                 <%= link_to t(:download_attachment), {:controller => :portfolio, :action => :download_file, :assignment_comment_id => c["assignment_comment_id"]} %>
-                <%= image_tag "icon_attachment.png" %>
+                <%= image_tag "icon_anexo.png" %>
               <% end %>
             </td>
           </tr>

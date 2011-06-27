@@ -464,6 +464,12 @@
         photo_file_size: "Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB."
       curriculum_unit:
         category: "Categoria"
+      public_file:
+        attachment_content_type: ""
+        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
+      assignment_file:
+        attachment_content_type: ""
+        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
 
     errors:
       template:
@@ -492,8 +498,16 @@
         less_than_or_equal_to: "deve ser menor ou igual a %{count}"
         odd: "deve ser ímpar"
         even: "deve ser par"
-        record_invalid: "A validação falhou: %{errors}"
+        record_invalid: "%{errors}"
       models:
+        assignment_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: "Tipo de arquivo inválido."
+        public_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: "Tipo de arquivo inválido."
         user:
           attributes:
             photo_content_type:

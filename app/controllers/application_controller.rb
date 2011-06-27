@@ -114,7 +114,9 @@ class ApplicationController < ActionController::Base
     context = ActiveRecord::Base.connection.select_all query
 
     @context = context[0]["context"] if context.length > 0
-    @context_param_id = params[:id] if params.include?("id")
+    # recupera o curriculum unit da sessao do usuario, com a tab ativa
+    @context_param_id = session[:opened_tabs][session[:active_tab]]["id"] if session.include?("opened_tabs") && session[:opened_tabs][session[:active_tab]].include?("id")
+
   end
 
   private

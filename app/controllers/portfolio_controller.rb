@@ -11,6 +11,8 @@ class PortfolioController < ApplicationController
 
   # lista as atividades
   def list
+
+    # unidade curricular
     @curriculum_unit = CurriculumUnit.find(params[:id])
 
     group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
@@ -27,15 +29,33 @@ class PortfolioController < ApplicationController
   # recupera as informacoes de uma atividade - lista arquivos enviados e opcao para enviar arquivos
   def activity_details
 
+    # unidade curricular
+    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+    @curriculum_unit = CurriculumUnit.find(curriculum_unit_id)
+
     # recupera a atividade selecionada
     @activity = Assignment.joins(:allocation_tag).where(["assignments.id = ?", params[:id]]).first
 
     # recuperar o send_assignment
     send_assignment = SendAssignment.where(["assignment_id = ? AND user_id = ?", params[:id], current_user.id]).first
 
+
+
+    @correction = nil
+    @grade = nil
     @comments = []
     @files = []
     unless send_assignment.nil?
+
+      
+
+      if send_assignment.grade != nil
+        @correction = 'corrected'
+      else
+        @correction = 'sent'
+      end
+
+      @grade = send_assignment.grade
 
       # listagem de arquivos enviados
       @files = AssignmentFile.where(["send_assignment_id = ?", send_assignment.id])
@@ -52,7 +72,8 @@ class PortfolioController < ApplicationController
        GROUP BY t1.send_assignment_id, t1.id, t1.comment
       ORDER BY t1.comment;
 SQL
-
+    else
+      @correction = 'send'
     end
 
   end
@@ -270,7 +291,7 @@ SQL
            t1.enunciation,
            t1.initial_date,
            t1.final_date,
-           COALESCE(t2.grade::text, '-') AS grade,
+           t2.grade,
            COUNT(t3.id) AS comments,
            CASE
             WHEN t2.grade IS NOT NULL THEN 'corrected'

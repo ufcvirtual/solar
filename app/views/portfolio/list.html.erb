@@ -47,7 +47,7 @@
         <tr class="rowtable_even_portfolio">
           <td class="td_blue_portfolio_first">
             <span style="font-weight: bold;">
-              <%= link_to ia["name"], {:controller => :portfolio, :action => :activity_details, :id => ia["id"]} %>
+              <%= link_to ia["name"], {:controller => :portfolio, :action => :activity_details, :id => ia["id"], :curriculum_unit_id => params[:id]} %>
             </span>&nbsp;
             <span style="font-style: italic; color: gray;">
               <%= t(:date_name)%>: <%= ia["initial_date"] %> - <%= ia["final_date"] %>
@@ -87,7 +87,11 @@
             </a>
           </td>
           <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">
-            <%= ia["grade"] %>
+            <% unless ia["grade"].nil? %>
+              <%= ia["grade"].to_f %>
+            <% else %>
+              <%= '-' %>
+            <% end %>
           </td>
           <td class="td_blue_portfolio" style="width: 95px;" align="center">
             <% if ia["comments"].to_i > 0 %>
