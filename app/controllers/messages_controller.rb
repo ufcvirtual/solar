@@ -2,9 +2,11 @@ class MessagesController < ApplicationController
 
   include MessagesHelper
   include CurriculumUnitsHelper
+  include MysolarHelper
   
   before_filter :require_user
   before_filter :message_data
+  before_filter :get_contacts, :only => [:new, :reply]
 
   #load_and_authorize_resource
 
@@ -30,6 +32,7 @@ class MessagesController < ApplicationController
     #recebe nil quando esta em pagina de leitura/edicao de msg
     @type = nil
     @show_message = 'new'
+    get_contacts
   end
 
   def send_message
@@ -52,6 +55,9 @@ class MessagesController < ApplicationController
         #apenas usuarios que sao cadastrados no ambiente; se algum destinarario nao eh, nao envia...
         real_receivers = ""
 
+        #troca ";" por "," para split e envio
+        individual_to.gsub(";", ",")
+        
         #salva os destinatarios
         individual_to = to.split(",").map{|r|r.strip}
 
@@ -63,14 +69,15 @@ class MessagesController < ApplicationController
             #status=0 {nao_origem, nao_lida, nao_excluida}
             receiver_message = UserMessage.new :message_id => new_message.id, :user_id => r_user.id, :status => 0
             receiver_message.save
-          end          
+
+            # ****************************
+            # FALTA - se for de unidade curricular, gravar labels...
+            # ****************************
+          end
           }
 
         #envia email apenas uma vez
         Notifier.deliver_send_mail(real_receivers, subject, message) #, from = nil
-
-        flash[:notice] = t(:message_send_ok)
-      
       end
       
       redirect_to :action => 'index', :type => 'outbox'
@@ -118,10 +125,6 @@ class MessagesController < ApplicationController
 
       status = message_user[0].status.to_i
 
-puts "\n\n\n***  status antes: #{status} = #{status.to_s(2)}"
-puts "***  status depois:#{atual_status} = #{atual_status.to_s(2)}"
-puts "\n\n\n"
-
       message_user[0].status = status | logical_comparison
       message_user[0].save
 
@@ -166,6 +169,51 @@ puts "\n\n\n"
     end
   end
 
+  # contatos para montagem da tela
+  def get_contacts
+    #unidades curriculares do usuario logado
+    @curriculum_units_user = load_curriculum_unit_data
+
+    # pegando id da sessao - unidade curricular aberta
+    id = session[:opened_tabs][session[:active_tab]]["id"]
+
+    curriculum_unit_id = params[:curriculum_unit_id]
+    if curriculum_unit_id.nil?
+      curriculum_unit_id = id
+    end
+
+    curriculum_unit_name = params[:curriculum_unit_name]
+
+    #unidade curricular ativa ou home ("")
+    if curriculum_unit_id == id
+      @curriculum_units_name = (session[:opened_tabs][session[:active_tab]]["type"] == Tab_Type_Home) ? "" : session[:active_tab]
+    else
+      @curriculum_units_name = curriculum_unit_name
+    end
+
+    offer = Offer.find_by_curriculum_unit_id(curriculum_unit_id)
+    offer_id = offer.id unless offer.nil?
+
+    group = Group.find_by_offer_id(offer)
+    group_id = group.id unless group.nil?
+
+    @all_contacts = nil
+    @participants = nil
+    @responsibles = nil
+
+    # se esta com unidade curricular aberta
+    if id != "" || group_id != "" || offer_id != ""
+      @participants = class_participants curriculum_unit_id, false, offer_id, group_id
+      @responsibles = class_participants curriculum_unit_id, true, offer_id, group_id
+    else
+      @all_contacts = nil
+    end
+
+    text = show_contacts_updated
+    return text
+    
+  end
+
   # retorna (1) usuario que enviou a msg
   def get_sender(message_id)
     return User.find(:first, 
@@ -173,7 +221,7 @@ puts "\n\n\n"
           :conditions => "user_messages.message_id = #{message_id} and cast( user_messages.status & '00000001' as boolean)")
   end
 
-  # retorna (varios) destinatarios
+  # retorna (1 a varios) destinatarios
   def get_recipients(message_id)
     return User.find(:all,
           :joins => "INNER JOIN user_messages ON users.id = user_messages.user_id",
@@ -181,7 +229,7 @@ puts "\n\n\n"
           :conditions => "user_messages.message_id = #{message_id} and NOT cast( user_messages.status & '00000001' as boolean)")
   end
 
-  # retorna (varios) arquivos de anexo
+  # retorna (0 a varios) arquivos de anexo
   def get_files(message_id)
     return MessageFile.find :all, :conditions => ["message_id = ?", message_id]
   end
@@ -213,15 +261,6 @@ private
 
     # qtde de msgs nao lidas
     @unread = unread_inbox(current_user.id, @message_tag)
-  end
-
-  def get_user_recipients
-    # pegando dados da sessao e nao da url
-    groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-    offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
-
-    @participants = class_participants params[:id], false, offers_id, groups_id
-    @responsibles = class_participants params[:id], true, offers_id, groups_id
   end
 
 end

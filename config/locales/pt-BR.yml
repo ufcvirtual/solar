@@ -1,4 +1,5 @@
 "pt-BR":
+  all: "Todos"
 
 #Página de Login
   login_description1: "O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,

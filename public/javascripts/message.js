@@ -1,6 +1,6 @@
-function show_div(origin,elementId) {    
-    var posx =$('#'+origin).offset().left-2;
-    var posy =$('#'+origin).offset().top+14;
+function show_div(origin,elementId) {
+    var posx =$('#'+origin).offset().left + 40;
+    var posy =$('#'+origin).offset().top - 2;
 
     $('#'+ elementId).css({"left":posx});
     $('#'+ elementId).css({"top":posy});

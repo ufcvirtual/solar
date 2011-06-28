@@ -1,8 +1,10 @@
-     <div class="message_header_new">
+    <div class="message_header_new">
       <table border="0" cellpadding="5" cellspacing="0" width="100%">
         <tbody>
           <tr>
-            <td class="message_text_to" align="right" style="width:75px"><%= link_to t(:message_to), {},{} %></td>
+            <td class="message_text_to" align="right" style="width:75px">
+              <a class="curriculum_unit_portlet_link" href="javascript:show_div('link_to_contacts','div_contacts')" id="link_to_contacts"><%=t(:message_to)%></a>
+            </td>
             <td class="message_text_to"><%= text_field_tag  'to', '', :class=> "message_search_textbox" %></td>
           </tr>
           <tr>
@@ -16,3 +18,44 @@
         </tbody>
       </table>
     </div>
+
+
+<div style="display:none" id="div_contacts">
+  <% if !@curriculum_units_user.nil? %>
+    <select id="curriculum_unit_select">
+      <option value="" <%=" selected=true " unless !@curriculum_units_name.nil?%> ><%=t(:all)%></option>
+      <% @curriculum_units_user.each do |curriculum_unit| %>        
+        <option value="<%=curriculum_unit["id"]%>" <%=" selected=true " unless @curriculum_units_name!=curriculum_unit["name"]%> ><%=curriculum_unit["name"]%></option>
+      <% end %>
+    </select>
+  <% end %>
+  
+  <hr/>
+  <div id="div_contacts_list"></div>
+  <textarea id="recipients_selected" disabled="true"></textarea>
+</div>
+
+<script type="text/javascript">
+  //atualiza usuarios
+  $(function($) {
+    $("#curriculum_unit_select").change(function() {
+        $.ajax({
+          url: "/messages/get_contacts/",
+          type: "POST",
+          dataType: "html",
+          data: ({curriculum_unit_id : this.value, curriculum_unit_name : this.text}),
+          async: true,
+          success: show_names(data)
+          })
+        });
+  });
+
+  $(document).ready(function() {
+      //show_names("");
+  });
+
+  function show_names(data){
+      alert (data);
+      $("#div_contacts_list").html(data);
+  }
+</script>
