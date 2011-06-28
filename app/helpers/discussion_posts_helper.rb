@@ -64,7 +64,7 @@ module DiscussionPostsHelper
     post_string <<      '     <a href="javascript:removePost(' << post[:id].to_s << ')">[excluir]</a>
                               <a href="javascript:setDiscussionPostId(' << post[:id].to_s << ')" class="updateDialogLink">[editar]</a>'
                             end
-    post_string <<      '   <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink">[reponder]</a>
+    post_string <<      '   <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink forum_button">[reponder]</a>
                           </div>
                         </td>
                       </tr>

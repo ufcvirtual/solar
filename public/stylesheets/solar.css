@@ -1126,11 +1126,15 @@ div.alter_photo_text {
 .forum_button{
     color: #1c4785;
     text-decoration: underline;
-    font-family:  'Myriad Pro';
+    font-family:  'Myriad Pro', 'Arial', sans;
+    font-size: 12px;
+    cursor: pointer;
+    
 }
 
 .forum_navigation_bar{
     border-bottom: 3px solid #1d4786;
+    width: 100%;
 }
 
 .forum_post{
