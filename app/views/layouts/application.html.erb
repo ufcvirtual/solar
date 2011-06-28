@@ -35,20 +35,24 @@
         //layout dos botoes azuis
         $(".solar_button_blue").after("<div class='solar_button_arrow_blue'></div>");
 
+        //Configurando a largura do conteudo
+        $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
+        $("#mysolar_content").outerHeight($(window).height()-($("#mysolar_content").position().top+$("#mysolar_content").offset().top));
+        console.log($("#mysolar_content").outerHeight());
+        $("#mask").outerHeight($("#mysolar_content").outerHeight());
+        $("#mask").outerWidth($("#mysolar_content").outerWidth());
+        
+        $(window).resize(function() {
+          $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
+          $("#mysolar_content").outerHeight($(window).height()-($("#mysolar_content").position().top+$("#mysolar_content").offset().top));
+        });
+
         //Configurando a altura da sidebar para acompanhar o total do conteúdo da página
         maxHeight = $('#mysolar_content').outerHeight();
         maxHeight += $('#mysolar_content').position().top;
         if ($(window).height() > maxHeight)
           maxHeight = $(window).height();
         $("#mysolar_sidebar").height(maxHeight);
-
-        //Configurando a largura do conteudo
-        $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
-        $("#mysolar_content").outerHeight($(window).height()-($("#mysolar_content").position().top+$("#mysolar_content").offset().top));
-        $(window).resize(function() {
-          $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
-          $("#mysolar_content").outerHeight($(window).height()-($("#mysolar_content").position().top+$("#mysolar_content").offset().top));
-        });
 
         //Configurando Menu
         $( "#mysolar_menu_accordion" ).accordion({

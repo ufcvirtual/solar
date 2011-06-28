@@ -735,12 +735,12 @@ div.alter_photo_text {
  * manipulacao da window/modal
 */
 #mask {
-    position:absolute;
-    left:0;
-    top:0;
-    z-index:9000;
-    background-color:#000;
-    display:none;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    z-index: 9000;
+    background-color: #000;
+    display: none;
     width: 100%;
     height: 100%;
 }
@@ -1133,7 +1133,7 @@ div.alter_photo_text {
     font-family:  'Myriad Pro', 'Arial', sans;
     font-size: 12px;
     cursor: pointer;
-    
+
 }
 
 .forum_navigation_bar{
