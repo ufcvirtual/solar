@@ -44,6 +44,11 @@
 
         //Configurando a largura do conteudo
         $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
+        $("#mysolar_content").outerHeight($(window).height()-($("#mysolar_content").position().top+$("#mysolar_content").offset().top));
+        $(window).resize(function() {
+          $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
+          $("#mysolar_content").outerHeight($(window).height()-($("#mysolar_content").position().top+$("#mysolar_content").offset().top));
+        });
 
         //Configurando Menu
         $( "#mysolar_menu_accordion" ).accordion({
