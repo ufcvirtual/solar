@@ -1,8 +1,3 @@
-
-
-############ VERIFICAR IDS FIXOS - 3
-
-
 class PortfolioController < ApplicationController
 
   before_filter :require_user
@@ -29,50 +24,41 @@ class PortfolioController < ApplicationController
   # recupera as informacoes de uma atividade - lista arquivos enviados e opcao para enviar arquivos
   def activity_details
 
+    assignment_id = params[:id]
+
     # unidade curricular
-    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"] # recupera unidade curricular da sessao
     @curriculum_unit = CurriculumUnit.find(curriculum_unit_id)
 
     # recupera a atividade selecionada
-    @activity = Assignment.joins(:allocation_tag).where(["assignments.id = ?", params[:id]]).first
+    @activity = Assignment.joins(:allocation_tag).where(["assignments.id = ?", assignment_id]).first
 
     # recuperar o send_assignment
-    send_assignment = SendAssignment.where(["assignment_id = ? AND user_id = ?", params[:id], current_user.id]).first
+    send_assignment = SendAssignment.where(["assignment_id = ? AND user_id = ?", assignment_id, current_user.id])
 
+    @correction = nil # indica se a atividade do aluno foi corrigida ou nao
+    @grade = nil # nota dada pelo professor a atividade enviada
+    @comments = [] # comentarios do professor
+    @files = [] # arquivos dos comentarios enviados pelo professor
+    unless send_assignment.first.nil?
 
+      # recupera o primeiro registro
+      send_assignment = send_assignment.first
 
-    @correction = nil
-    @grade = nil
-    @comments = []
-    @files = []
-    unless send_assignment.nil?
+      # verifica se a nota foi dada, caso verdadeiro a atividade foi corrigida pelo professor
+      @correction = (send_assignment.grade != nil) ? 'corrected' : 'sent'
 
-      
-
-      if send_assignment.grade != nil
-        @correction = 'corrected'
-      else
-        @correction = 'sent'
-      end
-
+      # nota
       @grade = send_assignment.grade
 
-      # listagem de arquivos enviados
+      # listagem de arquivos enviados pelo aluno para a atividade
       @files = AssignmentFile.where(["send_assignment_id = ?", send_assignment.id])
 
       # comentarios do professor com informacoes de arquivos para download
-      @comments = ActiveRecord::Base.connection.select_all <<SQL
-      SELECT t1.id AS assignment_comment_id,
-             t1.send_assignment_id,
-             t1.comment,
-             COUNT(t2.id) AS files
-        FROM assignment_comments AS t1
-   LEFT JOIN comment_files AS t2 ON t2.assignment_comment_id = t1.id
-       WHERE t1.send_assignment_id = #{send_assignment.id}
-       GROUP BY t1.send_assignment_id, t1.id, t1.comment
-      ORDER BY t1.comment;
-SQL
+      @comments = comments_and_files(send_assignment.id)
+
     else
+      # arquivos ainda nao enviados pelo aluno
       @correction = 'send'
     end
 
@@ -81,16 +67,20 @@ SQL
   # delecao de arquivos da area publica
   def delete_file_individual_area
 
-    redirect = {:action => "activity_details", :id => 2}
+    redirect = {:action => "activity_details", :id => params[:assignment_id]} # modificar esse id
 
     respond_to do |format|
 
       begin
 
-        filename = AssignmentFile.find(params[:id]).attachment_file_name
+        assignment_file_id = params[:id]
+
+        # recupera o nome do arquivo a ser feito o download
+        filename = AssignmentFile.find(assignment_file_id).attachment_file_name
 
         # arquivo a ser deletado
-        file_del = ::Rails.root.to_s + '/media/portfolio/individual_area/' + params[:id] + '_' + filename
+        file_del = "#{::Rails.root.to_s}/media/portfolio/individual_area/#{params[:id]}_#{filename}"
+        error = 0
 
         # verificando se o arquivo ainda existe
         if File.exist?(file_del)
@@ -106,16 +96,20 @@ SQL
 
             end
           else
-            raise "Arquivo nao deletado do servidor"
+            error = 1 # arquivo nao deletado
           end
 
         else
-          raise "Arquivo nao econtrado no servidor"
+          error = 1 # arquivo inexistente
         end
 
-      rescue Exception => exce
-        flash[:error] = exce #t(:error_delete_file)
+        raise t(:error_delete_file) unless error == 0
+
+      rescue Exception => except
+
+        flash[:error] = except
         format.html { redirect_to(redirect) }
+
       end
 
     end
@@ -124,14 +118,19 @@ SQL
   # delecao de arquivos da area publica
   def delete_file_public_area
 
-    redirect = {:action => "list", :id => 3}
+    # unidade curricular
+    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+    redirect = {:action => "list", :id => curriculum_unit_id}
 
     respond_to do |format|
 
       begin
 
         # arquivo a ser deletado
-        file_del = ::Rails.root.to_s + '/media/portfolio/public_area/' + params[:id] + '_' + PublicFile.find(params[:id]).attachment_file_name
+        file_name = PublicFile.find(params[:id]).attachment_file_name
+        file_del = "#{::Rails.root.to_s}/media/portfolio/public_area/#{params[:id]}_#{file_name}"
+
+        error = 0
 
         # verificando se o arquivo ainda existe
         if File.exist?(file_del)
@@ -147,15 +146,17 @@ SQL
 
             end
           else
-            raise "Arquivo nao deletado do servidor"
+            error = 1 # arquivo nao deletado
           end
 
         else
-          raise "Arquivo nao econtrado no servidor"
+          error = 1 # arquivo inexistente
         end
 
-      rescue
-        flash[:success] = t(:error_delete_file)
+        raise t(:error_delete_file) unless error == 0
+
+      rescue Exception => except
+        flash[:success] = except
         format.html { redirect_to(redirect) }
       end
 
@@ -199,22 +200,51 @@ SQL
   #  AREA PUBLICA
   ##################
 
+  def download_file_comment
+
+    # id do assignment_comment
+    assignment_comment_id = params[:id]
+
+    file_ = CommentFile.find_by_assignment_comment_id(assignment_comment_id)
+    filename = file_.attachment_file_name
+
+    prefix_file = file_.id # id da tabela comment_file para diferenciar os arquivos
+    path_file = "#{::Rails.root.to_s}/media/portfolio/comments/#{assignment_comment_id}/"
+    
+    # id da atividade
+    send_assignment = SendAssignment.joins(:assignment_comments).where(["assignment_comments.id = ?", assignment_comment_id])
+
+    # verifica se foi encontrado algum registro
+    if send_assignment.length > 0
+      assignment_id = send_assignment.first.assignment_id
+      redirect_error = {:action => 'activity_details', :id => assignment_id}
+    else
+
+      curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+      # redireciona para a pagina de listagem de atividades
+      redirect_error = {:action => 'list', :id => curriculum_unit_id}
+
+    end
+
+    # recupera arquivo
+    download_file(redirect_error, path_file, filename, prefix_file)
+
+  end
+
   def download_file_individual_area
 
     filename = AssignmentFile.find(params[:id]).attachment_file_name
     prefix_file = params[:id]
-    path_file = ::Rails.root.to_s + '/media/portfolio/individual_area/'
+    path_file = "#{::Rails.root.to_s}/media/portfolio/individual_area/"
 
     # id da atividade
     id = SendAssignment.find(AssignmentFile.find(params[:id]).send_assignment_id).assignment_id
 
-
-
     # modificar id
-    redirect = {:action => 'activity_details', :id => id}
+    redirect_error = {:action => 'activity_details', :id => id}
 
     # recupera arquivo
-    download_file(redirect, path_file, filename, prefix_file)
+    download_file(redirect_error, path_file, filename, prefix_file)
 
   end
 
@@ -223,11 +253,13 @@ SQL
 
     filename = PublicFile.find(params[:id]).attachment_file_name
     prefix_file = params[:id]
-    path_file = ::Rails.root.to_s + '/media/portfolio/public_area/'
-    redirect = {:action => 'list', :id => 3}
+    path_file = "#{::Rails.root.to_s}/media/portfolio/public_area/"
+
+    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+    redirect_error = {:action => 'list', :id => curriculum_unit_id}
 
     # recupera arquivo
-    download_file(redirect, path_file, filename, prefix_file)
+    download_file(redirect_error, path_file, filename, prefix_file)
 
   end
 
@@ -331,7 +363,7 @@ SQL
   end
 
   # download de arquivos
-  def download_file(redirect_, path_, filename_, prefix_ = nil)
+  def download_file(redirect_error, path_, filename_, prefix_ = nil)
 
     # verifica se o arquivo possui prefixo
     unless prefix_.nil?
@@ -347,9 +379,25 @@ SQL
         flash[:error] = t(:error_nonexistent_file)
 
         # modificar esse id
-        format.html { redirect_to(redirect_) }
+        format.html { redirect_to(redirect_error) }
       end
     end
 
   end
+
+  # comentarios e quantidade de arquivos enviados na correcao do professor
+  def comments_and_files(send_assignment_id)
+    ActiveRecord::Base.connection.select_all <<SQL
+      SELECT t1.id AS assignment_comment_id,
+             t1.send_assignment_id,
+             t1.comment,
+             COUNT(t2.id) AS files
+        FROM assignment_comments  AS t1
+   LEFT JOIN comment_files        AS t2 ON t2.assignment_comment_id = t1.id
+       WHERE t1.send_assignment_id = #{send_assignment_id}
+       GROUP BY t1.send_assignment_id, t1.id, t1.comment
+      ORDER BY t1.comment;
+SQL
+  end
+
 end

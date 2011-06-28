@@ -88,16 +88,12 @@
   <!-- Comentarios do professor -->
 
   <div class="portfolio_header_content">
-    <div class="portfolio_title">
-      <%= t(:comments) %>
-    </div>
+    <div class="portfolio_title"><%= t(:comments) %></div>
     <div class="portfolio_image"><%= image_tag "icon_comments.png" %></div>
   </div>
 
   <div id="grade" class="portfolio">
     <hr id="portfolio_line_g" class="portfolio_line" />
-
-
 
     <% @comments.each_with_index do |c, idx| %>
 
@@ -111,7 +107,7 @@
             <td class="td_blue_portfolio_first"></td>
             <td align="right">
               <% if c["files"].to_i > 0 %>
-                <%= link_to t(:download_attachment), {:controller => :portfolio, :action => :download_file, :assignment_comment_id => c["assignment_comment_id"]} %>
+                <%= link_to t(:download_attachment), {:controller => :portfolio, :action => :download_file_comment, :id => c["assignment_comment_id"]} %>
                 <%= image_tag "icon_anexo.png" %>
               <% end %>
             </td>
@@ -156,9 +152,10 @@
             </td>
             <td class="<%= classe %>"><span style="color: gray;"><%= format('%.2fKB', pa["attachment_file_size"].to_i/1024.0) %></span></td>
             <td class="<%= classe %>">
-              <%= link_to t(:delete), {:controller => :portfolio, :action => :delete_file_individual_area, :id => pa["id"]}, :confirm => "#{t(:delete_file_msg)}" %>
+              <%= link_to t(:delete), {:controller => :portfolio, :action => :delete_file_individual_area, :id => pa["id"], :assignment_id => params[:id]}, :confirm => "#{t(:delete_file_msg)}" %>
             </td>
           </tr>
+
         <% end %>
       </tbody>
     </table>
