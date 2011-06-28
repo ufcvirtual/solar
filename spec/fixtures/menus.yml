@@ -136,6 +136,7 @@ mensagem_soc:
   id: 50
   name: Mensagens
   order: 5
+  resource_id: 25
 
 # MENU PAI - 60
 admin:
