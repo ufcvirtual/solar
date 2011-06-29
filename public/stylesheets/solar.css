@@ -1426,6 +1426,24 @@ ul.message_menu_listbox li ul a:hover{
     color: #214684;
 }
 
+/* Mensagens */
+
+#div_contacts{
+    font-size: 11px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    text-decoration: none;
+    padding: 2px;
+    color: #214684;
+    position: absolute;
+    display:block;
+    border: 1px solid #F5F8FB;
+    background-color: #fafafa;
+    min-width: 450px;
+    min-height: 50px;
+    line-height: 15px;
+    z-index: 100;
+}
+
 /*BIBLIOGRAFIA*/
 
 #biliography{
