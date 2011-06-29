@@ -53,11 +53,14 @@ module MenuHelper
     menus = ActiveRecord::Base.connection.select_all query
 
     # variaveis de controle
-    html_menu, previous_father_id, open_div_menu_child = '', 0, false
+    html_menu, previous_father_id, first_iteration = '', 0, false
 
     # classes de css utilizadas pelos menus
+    class_menu_div_topo = 'mysolar_menu_group'
     class_menu_title = 'mysolar_menu_title'
     class_menu_list = 'mysolar_menu_list'
+
+    html_menu_group = []
 
     # percorrer todos os registros
     menus.each do |menu|
@@ -67,31 +70,36 @@ module MenuHelper
       # verifica se o menu pai foi modificado para gerar um novo menu
       unless previous_father_id == menu["father_id"].to_i
         # verifica se foi aberto alguma div de menu filho
-        html_menu << "</div>" if open_div_menu_child # fecha div do menu filho
+        #        html_menu << "</div>" if open_div_menu_child # fecha div do menu filho
+
+        # coloca as divs anteriores em uma nova div
+        html_menu_group << "<div class='#{class_menu_div_topo}'>#{html_menu}</div>" if first_iteration # verifica se ja entrou aqui
 
         # para um menu pai ser um link ele nao deve ter filhos
-        if (menu["resources_id"] != nil && menu['child'] == nil)
+        if (menu["resource_id"] != nil && menu['child'] == nil)
           link = link_to("#{menu['father']}", access_controller)
+        elsif !menu["link"].nil?
+          link = "<a href='#{menu['link']}'>#{menu['father']}</a>"
         else
           link = "<a href='#'>#{menu['father']}</a>"
         end
 
         # menus pai tbm podem ter links diretamente para funcionalidades
-        html_menu << "<h3 class='#{class_menu_title}'>#{link}</h3>"
+        html_menu = "<div id='father_#{menu['father_id']}' class='#{class_menu_title}'>#{link}</div>"
 
-        # print dos menus filhos
-        html_menu << "<div class='#{class_menu_list}'>"
-        open_div_menu_child = true
+        # indica primeira iteracao
+        first_iteration = true
       end
       # verifica se existe filho para imprimir
       access_controller[:id] = id unless id.nil?
-      html_menu << link_to("#{menu['child']}", access_controller) << "<br />" unless menu['child'].nil?
+      html_menu << "<div class='#{class_menu_list}'>" << link_to("#{menu['child']}", access_controller) << "</div>" unless menu['child'].nil?
 
       # sempre atualiza o previous_father
       previous_father_id = menu['father_id'].to_i
     end
 
-    return html_menu << "</div>" # fechando a ultima div aberta
+    html_menu_group << "<div class='#{class_menu_div_topo}'>#{html_menu}</div>"
+    return html_menu_group.join('') # fechando a ultima div aberta
   end
 
   def users_profiles(user_id = 0)

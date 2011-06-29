@@ -378,10 +378,15 @@ a.mysolar_top_link{
 
 /********Menu do meuSolar*****************/
 #mysolar_menu_accordion{
+    display:inline-block;
     position: absolute;
     top: 250px;
     left:0px;
     width:100%;
+}
+
+.mysolar_menu_group{
+    
 }
 
 .mysolar_menu_title{
@@ -397,6 +402,7 @@ a.mysolar_top_link{
 }
 .mysolar_menu_list{
     padding-left: 25px;
+    display: none;
 }
 
 
