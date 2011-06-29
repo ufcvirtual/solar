@@ -46,9 +46,6 @@ jQuery.fn.window_upload_files = function(options) {
         $('#' + options.mask_id + ', .' + options.class_window).hide();
     });
 }
-<<<<<<< HEAD
-=======
-
 //Parte do menu//
 //Esse código faz o acordion do menu e serve para guardar o estado do dele por meio de cookies//
 
@@ -115,4 +112,3 @@ $(document).ready(function() {
           });*/
 
 });
->>>>>>> 12846245
