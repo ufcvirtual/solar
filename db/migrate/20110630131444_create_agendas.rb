@@ -5,8 +5,8 @@ class CreateAgendas < ActiveRecord::Migration
       t.integer :agenda_type_id
       t.string :title, :limit => 255
       t.text :description
-      t.date :start
-      t.date :end
+      t.date :start_date
+      t.date :end_date
     end
   end
 

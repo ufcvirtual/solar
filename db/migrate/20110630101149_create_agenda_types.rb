@@ -1,7 +1,7 @@
 class CreateAgendaTypes < ActiveRecord::Migration
   def self.up
     create_table :agenda_types do |t|
-      t.string :type
+      t.string :event_type
     end
   end
 
