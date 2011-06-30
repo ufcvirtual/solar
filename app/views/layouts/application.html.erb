@@ -35,7 +35,6 @@
         //layout dos botoes azuis
         $(".solar_button_blue").after("<div class='solar_button_arrow_blue'></div>");
 
-<<<<<<< HEAD
         // NÃO APAGAR POR ENQUANTO! //
 
                 //Configurando Menu
@@ -45,20 +44,6 @@
         <%#*collapsible: true%>
         <%#*});%>
 
-        //////////////////////////////////
-
-    //Configurando calendário
-    $("#agenda").datepicker();
-    var local = '<%=I18n.locale%>';
-    if (local=='en') {
-      $("#agenda").datepicker("option",$.datepicker.regional['en-GB']);
-    }
-    else {
-      $("#agenda").datepicker("option",$.datepicker.regional[local]);
-    }
-
-  });
-=======
         //Configurando a largura do conteudo
         $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
         $("#mysolar_content").outerHeight($(window).height()-($("#mysolar_content").position().top+$("#mysolar_content").offset().top));
@@ -96,7 +81,6 @@
         }
 
       });
->>>>>>> 13646403
     </script>
     <%= render '/users/mysolar_photo' %>
   </head>
