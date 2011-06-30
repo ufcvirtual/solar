@@ -245,6 +245,9 @@
   bibliography_title: "Bibliografia de"
   bibliography_null: "Nenhuma bibliografia cadastrada"
 
+  agenda_title: "Agenda de"
+  new_activity: "Nova atividade"
+
   #PORTFOLIO
   portfolio_icon: "Ícone Portfolio"
   portfolio_title: "Portfolio de"

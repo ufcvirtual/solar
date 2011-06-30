@@ -238,6 +238,9 @@ en:
   bibliography_title: "Bibliography of"
   bibliography_null: "Nothing bibliography registered"
 
+  agenda_title: "Agenda of"
+  new_activity: "New activity"
+
   #PORTFOLIO
   portfolio_icon: "Portfolio Icon"
   portfolio_title: "Portfolio of"

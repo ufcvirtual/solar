@@ -93,6 +93,7 @@ agenda_info:
   name: Agenda
   order: 2
   context_id: 2
+  resource_id: 26
 
 biblio_info:
   id: 303

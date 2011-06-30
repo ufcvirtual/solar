@@ -31,7 +31,8 @@ resources_arr = [
   {:id => 23, :controller => 'bibliography', :action =>'list', :description => 'Bibliografia do curso'},
 
   {:id => 24, :controller => 'portfolio', :action =>'list', :description => 'Portfolio da Unidade Curricular'},
-  {:id => 25, :controller => 'messages', :action =>'index', :description => 'Mensagens'}
+  {:id => 25, :controller => 'messages', :action =>'index', :description => 'Mensagens'},
+  {:id => 26, :controller => 'agenda', :action =>'list', :description => 'Agenda'}
 ]
 count = 0
 resources = Resource.create(resources_arr) do |registro|
@@ -138,6 +139,7 @@ PermissionsMenu.create([
     {:profile_id => 1, :menu_id => 304},
     {:profile_id => 1, :menu_id => 50},
     {:profile_id => 1, :menu_id => 70},
+    {:profile_id => 1, :menu_id => 302},
 
     {:profile_id => 2, :menu_id => 10},
     {:profile_id => 2, :menu_id => 101},
@@ -150,6 +152,7 @@ PermissionsMenu.create([
     {:profile_id => 2, :menu_id => 304},
     {:profile_id => 2, :menu_id => 50},
     {:profile_id => 2, :menu_id => 70},
+    {:profile_id => 2, :menu_id => 302},
 
     {:profile_id => 3, :menu_id => 10},
     {:profile_id => 3, :menu_id => 101},
@@ -161,5 +164,6 @@ PermissionsMenu.create([
     {:profile_id => 3, :menu_id => 303},
     {:profile_id => 3, :menu_id => 304},
     {:profile_id => 3, :menu_id => 50},
-    {:profile_id => 3, :menu_id => 70}
+    {:profile_id => 3, :menu_id => 70},
+    {:profile_id => 3, :menu_id => 302}
 ])
