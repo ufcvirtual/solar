@@ -35,6 +35,7 @@
         //layout dos botoes azuis
         $(".solar_button_blue").after("<div class='solar_button_arrow_blue'></div>");
 
+<<<<<<< HEAD
         // NÃO APAGAR POR ENQUANTO! //
 
                 //Configurando Menu
@@ -57,6 +58,45 @@
     }
 
   });
+=======
+        //Configurando a largura do conteudo
+        $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
+        $("#mysolar_content").outerHeight($(window).height()-($("#mysolar_content").position().top+$("#mysolar_content").offset().top));
+        console.log($("#mysolar_content").outerHeight());
+        $("#mask").outerHeight($("#mysolar_content").outerHeight());
+        $("#mask").outerWidth($("#mysolar_content").outerWidth());
+        
+        $(window).resize(function() {
+          $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
+          $("#mysolar_content").outerHeight($(window).height()-($("#mysolar_content").position().top+$("#mysolar_content").offset().top));
+        });
+
+        //Configurando a altura da sidebar para acompanhar o total do conteúdo da página
+        maxHeight = $('#mysolar_content').outerHeight();
+        maxHeight += $('#mysolar_content').position().top;
+        if ($(window).height() > maxHeight)
+          maxHeight = $(window).height();
+        $("#mysolar_sidebar").height(maxHeight);
+
+        //Configurando Menu
+        $( "#mysolar_menu_accordion" ).accordion({
+          autoHeight: false,
+          navigation: true,
+          collapsible: true
+        });
+
+        //Configurando calendário
+        $("#agenda").datepicker();
+        var local = '<%=I18n.locale%>';        
+        if (local=='en') {
+          $("#agenda").datepicker("option",$.datepicker.regional['en-GB']);
+        }
+        else {
+          $("#agenda").datepicker("option",$.datepicker.regional[local]);
+        }
+
+      });
+>>>>>>> 13646403
     </script>
     <%= render '/users/mysolar_photo' %>
   </head>
@@ -74,9 +114,6 @@
 
     </div>
     <!-- Barra Lateral -------------------------->
-    <div id="mysolar_sidebar_infinite_background">
-      &nbsp;
-    </div>
     <div id="mysolar_sidebar">
       <div id="mysolar_boxid">
         <div id="mysolar_id">

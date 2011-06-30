@@ -1,3 +1,14 @@
+@font-face
+{
+    font-family: 'Trebuchet';
+    src: url('/fonts/trebuc.ttf');
+}
+@font-face
+{
+    font-family: 'Myriad Pro';
+    src: url('/fonts/myriad.otf');
+}
+
 img{
     border: none;
 }
@@ -249,7 +260,7 @@ textarea{
     background-color: #e7eded;
 }
 #mysolar_content{
-    z-index: 0;
+    /*z-index: 0;*/
     position: absolute;
     left: 0px;
     top: 0px;
@@ -730,12 +741,14 @@ div.alter_photo_text {
  * manipulacao da window/modal
 */
 #mask {
-    position:absolute;
-    left:0;
-    top:0;
-    z-index:9000;
-    background-color:#000;
-    display:none;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    z-index: 9000;
+    background-color: #000;
+    display: none;
+    width: 100%;
+    height: 100%;
 }
 
 .boxes .window {
@@ -751,6 +764,8 @@ div.alter_photo_text {
     border-color: #ffd;
     width:434px;
     height:331px;
+    left:50%;
+    top: 50%;
     padding:10px;
     background-color: #DBD5D5;
 }
@@ -1118,9 +1133,20 @@ div.alter_photo_text {
     padding-bottom: 30px;
 }
 
-.forum_navigation_bar{
-    background-color: #dee8ec;
+.forum_button{
+    color: #1c4785;
+    text-decoration: underline;
+    font-family:  'Myriad Pro', 'Arial', sans;
+    font-size: 12px;
+    cursor: pointer;
+
 }
+
+.forum_navigation_bar{
+    border-bottom: 3px solid #1d4786;
+    width: 100%;
+}
+
 .forum_post{
     background-color: #f9f9fa;
     min-height: 140px;

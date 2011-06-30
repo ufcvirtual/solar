@@ -1,4 +1,5 @@
 module ApplicationHelper
+
   def message
 		text = ""
 		[:notice,:success,:error].each {|type|
@@ -32,6 +33,43 @@ module ApplicationHelper
     end
 
     return text
+  end
+
+
+  #Renderiza a navegação da paginação.
+  #PRECISAMOS INTERNACIONALIZAR ISSO
+  def render_pagination_bar(total_Itens = "1")
+    #Limpando as variaveis
+
+    #descobrindo o número total de páginas
+    total_pages = (total_Itens.to_f/Rails.application.config.items_per_page.to_f).ceil.to_i
+
+#    if @current_page.to_i > total_pages
+#      @current_page = total_pages.to_s
+#      #redirect_to request.fullpath
+#    end
+
+    total_pages = total_pages.to_s
+
+    result = '<form accept-charset="UTF-8" action="" method="post" name="paginationForm" style="display:inline">'
+
+    unless (@current_page.eql? "1")# voltar uma página: <<
+      result << '<a onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)-1).to_s << ');$(this).parent().submit();">&lt;&lt;</a>'
+    end
+
+    # página atual: 
+    result << ' ' << @current_page << ' de ' << total_pages << ' ' #PRECISAMOS INTERNACIONALIZAR ISSO AQUI
+
+    unless (@current_page.eql? total_pages)# avançar uma página: >>
+      #result << '<a href="javascript:$(\'#current_page\').val(' << ((current_page.to_i)+1).to_s << ');$(\'#current_page\').parent().submit();">&gt;&gt;</a>'
+      result << '<a onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)+1).to_s << ');$(this).parent().submit();">&gt;&gt;</a>'
+    end
+    
+    result << ' <input name="authenticity_token" value="' << form_authenticity_token << '" type="hidden">'
+    result << '<input type="hidden" id="current_page" name="current_page" value="' << @current_page << '"/>'
+    
+    result << '</form>'
+    return result
   end
 
 end

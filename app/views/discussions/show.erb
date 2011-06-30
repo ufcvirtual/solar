@@ -114,25 +114,37 @@
 <div id="forum_description">
   <%= @discussion["description"] %>
 </div>
+
+<!--------------- Barra Superior --------------->
 <div class="forum_navigation_bar">
-  <div>
-    <a href="javascript:clearFormData()" id="NewPostButton"><%= t("forum_new_message")%></a>&nbsp;
-    <%if @display_mode == "PLAINLIST"%>
-      <a href="javascript:showAsThread()">[Modo árvore]</a>&nbsp;
-    <%else%>
-      <a href="javascript:showAsPlainList()">[Modo Lista]</a>
-    <%end%>
+  <div style="text-align: center;">
+    <span style="float:left">
+      <a href="javascript:clearFormData()" id="NewPostButton" class="forum_button"><%= t("forum_new_message")%></a>
+    </span>
+
+    <%=raw render_pagination_bar(count_discussion_posts(@discussion.id,(@display_mode=="PLAINLIST")).to_s)%>
+
+    <span style="float:right">
+      <%if @display_mode == "PLAINLIST"%>
+        <a href="javascript:showAsThread()" class="forum_button">[Modo árvore]</a>&nbsp;
+      <%else%>
+        <a href="javascript:showAsPlainList()" class="forum_button">[Modo Lista]</a>
+      <%end%>
+    </span>
   </div>
 </div>
-<%if @display_mode == "PLAINLIST"%>
-  <% @posts.each do |post|%>
-    <%= raw show_post(post, false)%>
+
+<div>
+  <%if @display_mode == "PLAINLIST"%>
+    <% @posts.each do |post|%>
+      <%= raw show_post(post, false)%>
+    <%end%>
+  <%else%>
+    <% @posts.each do |post|%>
+      <%= raw show_post(post)%>
+    <%end%>
   <%end%>
-<%else%>
-  <% @posts.each do |post|%>
-    <%= raw show_post(post)%>
-  <%end%>
-<%end%>
+</div>
 
 <%= form_for(:new_discussion_post, :url => {:action => "new_post"}, :html => { :id => "new_post_form" } ) do |f| %>
   <%= hidden_field_tag(:content, "") %>
@@ -140,4 +152,5 @@
   <%= hidden_field_tag(:discussion_post_id, "") %>
   <%= hidden_field_tag(:parent_post_id, "") %>
   <%= hidden_field_tag(:display_mode, @display_mode) %>
+  <%= hidden_field_tag(:current_page, @current_page) %>
 <% end %>

@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.3'
+gem 'rails', '3.0.7'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -13,7 +13,7 @@ gem 'rake', '0.8.7'
 gem 'automatic_foreign_key', '1.2.0'
 
 # paginacao
-gem 'will_paginate'
+gem 'will_paginate', "~> 3.0.pre2" #Will paginate padrão é bugada com o rails 3 :/
 
 # autoriazacao com cancan
 gem 'cancan', '1.6.4'
@@ -56,4 +56,5 @@ group :development, :test do
   gem 'rspec-rails', '2.5.0'
   gem 'spork', '0.8.4'
   gem 'launchy', '0.3.7'    # So you can do Then show me the page
+  gem 'silent-postgres'     # Omitindo os logs demasiados do adapter do postgres.
 end

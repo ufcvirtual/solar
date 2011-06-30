@@ -10,8 +10,8 @@ module DiscussionPostsHelper
     childs_count = return_child_count(post.id)
 
     #Um post pode ser editado se é do próprio usuário e se não possui respostas.
-    if (post.user_id == current_user.id) && (childs_count == 0)
-        editable = true
+    if (post.user.id == current_user.id) && (childs_count == 0)
+      editable = true
     end
 
     #Recuperando posts filhos para renderização
@@ -28,7 +28,7 @@ module DiscussionPostsHelper
     #Recuperando caminho da foto a ser carregada
     photo_url = ''
     if post.photo_file_name
-      photo_url =  post.photo.url(:medium)
+      photo_url = post.user.photo.url(:medium)
     else
       photo_url = 'no_image.png'
     end
@@ -57,7 +57,6 @@ module DiscussionPostsHelper
                         <td class="forum_post_content_right">
                           <div class="forum_post_inner_content" style="min-height:100px">'
     post_string <<      (sanitize post.content)
-
     post_string <<      ' </div>
                           <div class="forum_post_date">' << post[:updated_at].to_s(:discussion_post_pt_br) << '</div>
                           <div class="forum_post_date">'
@@ -65,7 +64,7 @@ module DiscussionPostsHelper
     post_string <<      '     <a href="javascript:removePost(' << post[:id].to_s << ')">[excluir]</a>
                               <a href="javascript:setDiscussionPostId(' << post[:id].to_s << ')" class="updateDialogLink">[editar]</a>'
                             end
-    post_string <<      '   <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink">[reponder]</a>
+    post_string <<      '   <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink forum_button">[reponder]</a>
                           </div>
                         </td>
                       </tr>
@@ -81,8 +80,6 @@ module DiscussionPostsHelper
 
 ######## MÉTODOS DE ACESSO À BASE DE DADOS ####################################
 
-
-
   #Recupera os posts de uma discussion.
   def return_discussion_posts(discussion_id = nil, plain_list = true)
     query = "SELECT dp.id, dp.discussion_id, dp.user_id, content, dp.created_at, dp.updated_at, dp.father_id, u.nick as user_nick, u.photo_file_name as photo_file_name, p.name as profile
@@ -93,8 +90,20 @@ module DiscussionPostsHelper
 
     query << " and father_id is null" unless plain_list
     query << " order by created_at desc"
+
     
-    return DiscussionPost.find_by_sql(query)
+    return DiscussionPost.paginate_by_sql(query, {:per_page => Rails.application.config.items_per_page, :page => @current_page})
+
+  end
+  
+  def count_discussion_posts(discussion_id = nil, plain_list = true)
+    discussion_id = discussion_id.to_s
+    
+    query = "SELECT count (*) as total
+             FROM discussion_posts dp
+             WHERE dp.discussion_id = '#{discussion_id}'"
+    query << " and father_id is null" unless plain_list
+    return ActiveRecord::Base.connection.execute(query)[0]["total"]
   end
 
   def return_posts_child(parent_id = -1)
