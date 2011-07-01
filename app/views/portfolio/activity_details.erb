@@ -3,7 +3,6 @@
   <%=raw message %>&nbsp;
   &nbsp;<br/>
 <% end %>
-
 &nbsp;
 
 <div>
@@ -14,20 +13,6 @@
     <%= @curriculum_unit.name unless @curriculum_unit.nil? %>
   </span>
 </div>
-
-<style type="text/css">
-  .assignment_corrected {
-    color: #378941;
-  }
-
-  .assignment_sent {
-    color: #56b7ae;
-  }
-
-  .assignment_send {
-    color: #204683;
-  }
-</style>
 
 <div>
 
@@ -176,37 +161,14 @@
   <div id="send_files" class="portfolio">
     <hr id="portfolio_line_g" class="portfolio_line" />
 
-    <%= form_for(:assignment_file, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files_individual', :assignment_id => params[:id]}) do |f| %>
+    <%= form_for(:assignment_file, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files_individual_area', :assignment_id => params[:id]}) do |f| %>
       <%= f.file_field :attachment%> <%= f.submit t(:send), :class => "solar_button_gray"%>
       <br />
       <div class="alter_photo_text"><%= t(:send_file_portfolio_obs)%></div>
-      <br /><br />
-      <div class="alter_photo_text"><%= t(:send_file_portfolio_text)%></div>
+      <br />
+      <div class="alter_photo_text"><%=raw t(:send_file_portfolio_text)%></div>
       <br/>
     <% end %>
   </div>
 
 </div>
-
-<%= render '/portfolio/public_files_send' %>
-
-<script type="text/javascript">
-  $(function(){
-    $(".enunciation_more").click(function(){
-
-      $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "none");
-      $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "block");
-
-      return false;
-    });
-
-    $(".enunciation_less").click(function(){
-
-      $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "block");
-      $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "none");
-
-      return false;
-    });
-
-  });
-</script>

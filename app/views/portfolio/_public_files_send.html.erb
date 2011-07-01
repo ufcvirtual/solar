@@ -13,7 +13,7 @@
 
 <div class="boxes" id="window_portfolio_send_file" style="white-space: normal;">
 
-  <div id="dialog" class="window" style="height: 280px;">
+  <div id="dialog" class="window" style="height: 322px;">
     <div id="title">
       <table border="0" cellspacing="0" width="100%">
         <tr>
@@ -29,10 +29,10 @@
 
     <span class="alter_photo_text"><%= t(:your_computer) %></span>
 
-    <%= form_for(:portfolio, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files', :curriculum_unit_id => params[:id]}) do |f| %>
+    <%= form_for(:portfolio, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files_public_area', :curriculum_unit_id => params[:id]}) do |f| %>
       <%= f.file_field :attachment%>
       <br />
-      <div class="alter_photo_text"><%= t(:send_file_portfolio_obs)%></div><br />
+      <div class="alter_photo_text"><%=raw t(:send_file_portfolio_obs)%></div><br />
       <div class="alter_photo_text"><%=raw t(:send_file_portfolio_text)%></div>
       <div id="my_personal_data_button">
         <input type="button" class="close solar_button_gray" value="<%= t(:cancel)%>"/>

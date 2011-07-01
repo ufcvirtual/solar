@@ -2,6 +2,8 @@ class AssignmentFile < ActiveRecord::Base
 
   belongs_to :send_assignment
 
+  validates :attachment_file_name, :presence => true
+
   has_attached_file :attachment,
     :path => ":rails_root/media/portfolio/individual_area/:id_:basename.:extension",
     :url => "/media/portfolio/individual_area/:id_:basename.:extension"

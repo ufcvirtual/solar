@@ -5,7 +5,7 @@ puts "Production Seed"
 puts "Truncando tabelas"
 
 models = [DiscussionPost, Discussion, Lesson, Allocation, Bibliography, UserMessageLabel, UserMessage, MessageLabel,
-  AssignmentComment, SendAssignment, Assignment, Agenda, AgendaType, AllocationTag, PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,
+  AssignmentComment, CommentFile, AssignmentComment, SendAssignment, Assignment, Agenda, AgendaType, AllocationTag, PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,
   Enrollment, Offer, CurriculumUnit, CurriculumUnitType, Course, PersonalConfiguration, User]
 models.each(&:delete_all)
 

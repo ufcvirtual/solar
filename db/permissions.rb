@@ -32,7 +32,16 @@ resources_arr = [
 
   {:id => 24, :controller => 'portfolio', :action =>'list', :description => 'Portfolio da Unidade Curricular'},
   {:id => 25, :controller => 'messages', :action =>'index', :description => 'Mensagens'},
-  {:id => 26, :controller => 'agenda', :action =>'list', :description => 'Agenda'}
+  {:id => 26, :controller => 'agenda', :action =>'list', :description => 'Agenda'},
+
+  {:id => 27, :controller => 'portfolio', :action => 'activity_details', :description => 'Atividades Individuais'},
+  {:id => 28, :controller => 'portfolio', :action => 'delete_file_individual_area', :description => ''},
+  {:id => 29, :controller => 'portfolio', :action => 'delete_file_public_area', :description => ''},
+  {:id => 30, :controller => 'portfolio', :action => 'download_file_comment', :description => ''},
+  {:id => 31, :controller => 'portfolio', :action => 'upload_files_public_area', :description => ''},
+  {:id => 32, :controller => 'portfolio', :action => 'download_file_public_area', :description => ''},
+  {:id => 33, :controller => 'portfolio', :action => 'upload_files_individual_area', :description => ''},
+  {:id => 34, :controller => 'portfolio', :action => 'download_file_individual_area', :description => ''}
 ]
 count = 0
 resources = Resource.create(resources_arr) do |registro|
@@ -68,7 +77,16 @@ perm_alunos = PermissionsResource.create([
   {:profile_id => 1, :resource_id => 21, :per_id => false},
   {:profile_id => 1, :resource_id => 22, :per_id => false},
   {:profile_id => 1, :resource_id => 23, :per_id => false},
-  {:profile_id => 1, :resource_id => 24, :per_id => false}
+  {:profile_id => 1, :resource_id => 24, :per_id => false},
+
+  {:profile_id => 1, :resource_id => 27, :per_id => false},
+  {:profile_id => 1, :resource_id => 28, :per_id => false},
+  {:profile_id => 1, :resource_id => 29, :per_id => false},
+  {:profile_id => 1, :resource_id => 30, :per_id => false},
+  {:profile_id => 1, :resource_id => 31, :per_id => false},
+  {:profile_id => 1, :resource_id => 32, :per_id => false},
+  {:profile_id => 1, :resource_id => 33, :per_id => false},
+  {:profile_id => 1, :resource_id => 34, :per_id => false}
 ])
 
 ##############################

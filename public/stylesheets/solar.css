@@ -397,7 +397,7 @@ a.mysolar_top_link{
 }
 
 .mysolar_menu_group{
-    
+
 }
 
 .mysolar_menu_title{
@@ -1612,7 +1612,7 @@ hr.portfolio_table_division {
     background-color: #f5f5f6;
     height: 200px;
     width: 630px;
-    
+
 }
 #agenda_line{
     color: #1C4785;
@@ -1625,4 +1625,17 @@ hr.portfolio_table_division {
     font-size: small;
     color: #1C4785;
     margin-top: -6px;
+}
+
+
+.assignment_corrected {
+    color: #378941;
+}
+
+.assignment_sent {
+    color: #56b7ae;
+}
+
+.assignment_send {
+    color: #204683;
 }

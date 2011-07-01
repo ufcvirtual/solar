@@ -1,11 +1,16 @@
+################################################################################
+# obs: o controle de acesso é feito individualmente em cada action por se tratar
+# de um controller fora dos padroes
+################################################################################
+
 class PortfolioController < ApplicationController
 
   before_filter :require_user
 
-  #  load_and_authorize_resource
-
   # lista as atividades
   def list
+
+    authorize! :list, Portfolio
 
     # unidade curricular
     @curriculum_unit = CurriculumUnit.find(params[:id])
@@ -23,6 +28,8 @@ class PortfolioController < ApplicationController
 
   # recupera as informacoes de uma atividade - lista arquivos enviados e opcao para enviar arquivos
   def activity_details
+
+    authorize! :activity_details, Portfolio
 
     assignment_id = params[:id]
 
@@ -66,6 +73,8 @@ class PortfolioController < ApplicationController
 
   # delecao de arquivos da area publica
   def delete_file_individual_area
+
+    authorize! :delete_file_individual_area, Portfolio
 
     redirect = {:action => "activity_details", :id => params[:assignment_id]} # modificar esse id
 
@@ -118,6 +127,8 @@ class PortfolioController < ApplicationController
   # delecao de arquivos da area publica
   def delete_file_public_area
 
+    authorize! :delete_file_public_area, Portfolio
+
     # unidade curricular
     curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
     redirect = {:action => "list", :id => curriculum_unit_id}
@@ -163,44 +174,10 @@ class PortfolioController < ApplicationController
     end
   end
 
-  # envio de arquivos para o portfolio individual do aluno
-  def upload_files
-
-    respond_to do |format|
-      begin
-        # redireciona para a lista
-        redirect = {:action => "list", :id => params[:curriculum_unit_id]}
-
-        # verifica se o arquivo foi adicionado
-        raise t(:error_no_file_sent) unless params.include?(:portfolio)
-
-        # allocation_tag do grupo selecionada
-        allocation_tag_id = AllocationTag.find(:first, :conditions => ["group_id = ?", session[:opened_tabs][session[:active_tab]]["groups_id"]]).id
-
-        @public_file = PublicFile.new params[:portfolio]
-        @public_file.user_id = current_user.id
-        @public_file.allocation_tag_id = allocation_tag_id
-        @public_file.save!
-
-        # arquivo salvo com sucesso
-        flash[:success] = t(:file_uploaded)
-        format.html { redirect_to(redirect) }
-
-      rescue Exception => erro
-
-        flash[:error] = erro.message # @public_file.errors.full_messages
-        format.html { redirect_to(redirect) }
-
-      end
-    end
-
-  end
-
-  ##################
-  #  AREA PUBLICA
-  ##################
-
+  # download dos arquivos do comentario do professor
   def download_file_comment
+
+    authorize! :download_file_comment, Portfolio
 
     # id do assignment_comment
     assignment_comment_id = params[:id]
@@ -210,7 +187,7 @@ class PortfolioController < ApplicationController
 
     prefix_file = file_.id # id da tabela comment_file para diferenciar os arquivos
     path_file = "#{::Rails.root.to_s}/media/portfolio/comments/#{assignment_comment_id}/"
-    
+
     # id da atividade
     send_assignment = SendAssignment.joins(:assignment_comments).where(["assignment_comments.id = ?", assignment_comment_id])
 
@@ -231,25 +208,49 @@ class PortfolioController < ApplicationController
 
   end
 
-  def download_file_individual_area
+  ##################
+  #  AREA PUBLICA
+  ##################
 
-    filename = AssignmentFile.find(params[:id]).attachment_file_name
-    prefix_file = params[:id]
-    path_file = "#{::Rails.root.to_s}/media/portfolio/individual_area/"
+  # envio de arquivos para a area publica
+  def upload_files_public_area
 
-    # id da atividade
-    id = SendAssignment.find(AssignmentFile.find(params[:id]).send_assignment_id).assignment_id
+    authorize! :upload_files_public_area, Portfolio
 
-    # modificar id
-    redirect_error = {:action => 'activity_details', :id => id}
+    respond_to do |format|
+      begin
+        # redireciona para a lista
+        redirect = {:action => :list, :id => params[:curriculum_unit_id]}
 
-    # recupera arquivo
-    download_file(redirect_error, path_file, filename, prefix_file)
+        # verifica se o arquivo foi adicionado
+        raise t(:error_no_file_sent) unless params.include?(:portfolio)
+
+        # allocation_tag do grupo selecionada
+        allocation_tag_id = AllocationTag.find(:first, :conditions => ["group_id = ?", session[:opened_tabs][session[:active_tab]]["groups_id"]]).id
+
+        @public_file = PublicFile.new params[:portfolio]
+        @public_file.user_id = current_user.id
+        @public_file.allocation_tag_id = allocation_tag_id
+        @public_file.save!
+
+        # arquivo salvo com sucesso
+        flash[:success] = t(:file_uploaded)
+        format.html { redirect_to(redirect) }
+
+      rescue Exception => error
+
+        flash[:error] = error.message # @public_file.errors.full_messages
+        format.html { redirect_to(redirect) }
+
+      end
+    end
 
   end
 
   # download dos arquivos da area publica
   def download_file_public_area
+
+    authorize! :download_file_public_area, Portfolio
 
     filename = PublicFile.find(params[:id]).attachment_file_name
     prefix_file = params[:id]
@@ -267,13 +268,19 @@ class PortfolioController < ApplicationController
   #  AREA INDIVIDUAL
   ####################
 
-  def upload_files_individual
+  # envio de arquivos como resposta para a atividade
+  def upload_files_individual_area
+
+    authorize! :upload_files_individual_area, Portfolio
 
     respond_to do |format|
       begin
 
         # redireciona para os detalhes da atividade individual
         redirect = {:action => :activity_details, :id => params[:assignment_id]}
+
+        # verifica se o arquivo foi adicionado
+        raise t(:error_no_file_sent) unless params.include?(:portfolio)
 
         # verifica se a atividade ja foi respondida para aquele usuario
         send_assignment = SendAssignment.where(["assignment_id = ? AND user_id = ?", params[:assignment_id], current_user.id]).first
@@ -299,13 +306,33 @@ class PortfolioController < ApplicationController
         flash[:success] = t(:file_uploaded)
         format.html { redirect_to(redirect) }
 
-      rescue Exception => erro
+      rescue Exception => error
 
-        flash[:error] = erro.message # @public_file.errors.full_messages
+        flash[:error] = error.message
         format.html { redirect_to(redirect) }
 
       end
     end
+  end
+
+  # download dos arquivos da area individual
+  def download_file_individual_area
+
+    authorize! :download_file_individual_area, Portfolio
+
+    filename = AssignmentFile.find(params[:id]).attachment_file_name
+    prefix_file = params[:id]
+    path_file = "#{::Rails.root.to_s}/media/portfolio/individual_area/"
+
+    # id da atividade
+    id = SendAssignment.find(AssignmentFile.find(params[:id]).send_assignment_id).assignment_id
+
+    # modificar id
+    redirect_error = {:action => 'activity_details', :id => id}
+
+    # recupera arquivo
+    download_file(redirect_error, path_file, filename, prefix_file)
+
   end
 
   ###################
@@ -317,7 +344,7 @@ class PortfolioController < ApplicationController
   # atividades individuais
   def individual_activities(group_id, user_id)
 
-    query = "
+    ActiveRecord::Base.connection.select_all <<SQL
     SELECT t1.id,
            t1.name,
            t1.enunciation,
@@ -338,16 +365,15 @@ class PortfolioController < ApplicationController
      WHERE t4.group_id = #{group_id}
        AND t5.user_id = #{user_id}
   GROUP BY t1.id, t2.id, t1.name, t1.enunciation, t1.initial_date, t1.final_date, t2.grade
-  ORDER BY t1.final_date, t1.initial_date DESC;"
-
-    ActiveRecord::Base.connection.select_all query
+  ORDER BY t1.final_date, t1.initial_date DESC;
+SQL
 
   end
 
   # arquivos da area publica
   def public_area(group_id, user_id)
 
-    query = "
+    ActiveRecord::Base.connection.select_all <<SQL
     SELECT t1.id,
            t1.attachment_file_name,
            t1.attachment_content_type,
@@ -356,9 +382,8 @@ class PortfolioController < ApplicationController
       JOIN allocation_tags AS t2 ON t2.id = t1.allocation_tag_id
       JOIN users AS t3 ON t3.id = t1.user_id
      WHERE t3.id = #{user_id}
-       AND t2.group_id = #{group_id};"
-
-    ActiveRecord::Base.connection.select_all query
+       AND t2.group_id = #{group_id};
+SQL
 
   end
 
@@ -387,6 +412,7 @@ class PortfolioController < ApplicationController
 
   # comentarios e quantidade de arquivos enviados na correcao do professor
   def comments_and_files(send_assignment_id)
+
     ActiveRecord::Base.connection.select_all <<SQL
       SELECT t1.id AS assignment_comment_id,
              t1.send_assignment_id,
@@ -398,6 +424,7 @@ class PortfolioController < ApplicationController
        GROUP BY t1.send_assignment_id, t1.id, t1.comment
       ORDER BY t1.comment;
 SQL
+
   end
 
 end
