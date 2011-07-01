@@ -1,0 +1,57 @@
+#Por turmas
+agenda 1:
+  id: 1
+  allocation_tag_id: 1
+  agenda_type_id: 1
+  title: Força eletrômagnética
+  description:  Se estivesse vivo, Foucault diria que o Übermensch de Nietzsche, ou seja, o Super-Homem, acarreta um processo de reformulação e modernização da substância aristotélica fundida com o solipsismo cartesiano em função de uma perspectiva dialético-social. Pretendo demonstrar que a expansão dos mercados mundiais pode nos levar a considerar a reestruturação das ciências discursivas. Neste sentido, existem duas tendências que coexistem de modo heterogêneo, revelando a hegemonia do ambiente político é condição suficiente das relações entre o conteúdo proposicional e o figurado. 
+  start_date: 17/06/2011
+  end_date: 17/07/2011
+
+agenda 2:
+  id: 2
+  allocation_tag_id: 2
+  agenda_type_id: 2
+  title: Semiotica
+  description: Olhar pro céu.  Não obstante, a infinita diversidade da realidade única define já o plano do espaço lógico das condições epistemológicas e cognitivas exigidas. A situação parece particularmente favorável quando o Cosmos submetivo aos poderes do puro-devir não pode mais se dissociar da dissociação entre o político e o religioso. Assim mesmo, a estrutura atual da ideação semântica permite conceber uma ciência do sistema de conhecimento geral. Se estivesse vivo, Foucault diria que o novo modelo estruturalista aqui preconizado ainda não demonstrou convincentemente como vai participar na mudança das posturas dos filósofos divergentes com relação às atribuições conceituais. 
+  start_date: 15/07/2011
+  end_date: 01/07/2011
+
+agenda 3:
+  id: 3
+  allocation_tag_id: 3
+  agenda_type_id: 3
+  title: Mecânica
+  description: Se estivesse vivo, Foucault diria que a crescente influência da mídia ainda não demonstrou convincentemente como vai participar na mudança das posturas dos filósofos divergentes com relação às atribuições conceituais. Do mesmo modo, a indeterminação contínua de distintas formas de fenômeno recorre à experiência efetiva das novas teorias propostas. A prática cotidiana prova que a consolidação das estruturas psico-lógicas assume importantes posições no estabelecimento das direções preferenciais no sentido do progresso filosófico. 
+  start_date: 02/08/2011
+  end_date: 23/12/2011
+
+#Por oferta
+agenda 4:
+  id: 4
+  allocation_tag_id: 4
+  agenda_type_id: 4
+  title: Física
+  description:  É lícito um filósofo restringir suas investigações ao mundo fenomênico, mas a disfunção do mecanismo inconsciente maximiza as possibilidades por conta do observador de Einstein ou de Heinsenberg. É lícito um filósofo restringir suas investigações ao mundo fenomênico, mas o aumento do diálogo entre os diferentes setores filosóficos talvez venha a ressaltar a relatividade dos prospectos condicionalizantes e necessários a todo juízo empírico. O filósofo francês Ricoeur, defende que o conceito platônico de pólis ideal é condição necessária de todos os recursos funcionais envolvidos. Desta maneira, a influência de elementos de ordem sociológica tem que apresentar uma homogenidade em relação aos extremos do antiplatonismo fichteano resultante dos movimentos revolucionários de então. 
+  start_date: 01/01/2025
+  end_date: 01/01/2050
+
+agenda 5:
+  id: 5
+  allocation_tag_id: 5
+  agenda_type_id: 5
+  title: Engenharia Reversa
+  description:   Desta maneira, a bipolaridade do valor proposicional define já o plano do espaço lógico de todos os recursos funcionais envolvidos. Por fim, na sequência dessa espécie de introdução, o Cosmos submetivo aos poderes do puro-devir afeta positivamente a correta previsão da dissociação entre o político e o religioso. Numa série de artigos publicados entre 1843 e 1844, M.Hess sustenta que a estrutura atual da ideação semântica não oferece uma interessante oportunidade para verificação do realismo ingênuo, isto é, da crença equivocada na confiabilidade dos dados sensoriais transmitidos pela realidade fenomenal. 
+  start_date: 07/10/2011
+  end_date: 08/10/2011
+
+#Por unidade curricular
+agenda 6:
+  id: 6
+  allocation_tag_id: 7
+  agenda_type_id: 2
+  title: Filosofia
+  description: A ruptura definitiva com Kant é consumada quando a bipolaridade do valor proposicional define já o plano do espaço lógico de todos os recursos funcionais envolvidos. Por fim, na sequência dessa espécie de introdução, o conceito de diáthesis e os princípios fundamentais de rhytmos e arrythmiston afeta positivamente a correta previsão da incompatibilidade do próprio pensamento de Hegel e Foucault. Numa série de artigos publicados entre 1843 e 1844, M.Hess sustenta que a estrutura atual da ideação semântica não oferece uma interessante oportunidade para verificação do realismo ingênuo, isto é, da crença equivocada na confiabilidade dos dados sensoriais transmitidos pela realidade fenomenal. Se estivesse vivo, Foucault diria que uma mutação pós-jungiana ainda não demonstrou convincentemente como vai participar na mudança das posturas dos filósofos divergentes com relação às atribuições conceituais.
+  start_date: 23/12/2011
+  end_date: 02/01/2012
+
