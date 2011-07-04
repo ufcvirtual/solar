@@ -282,6 +282,7 @@
   send_files: "Enviar Arquivos"
   download_attachment: "Baixar Anexo"
   error_delete_file: "Erro ao tentar deletar arquivo"
+  sent_in: "Enviado em"
 
 
   # Mensagem de erro para permissão   
@@ -304,6 +305,8 @@
       default: "%A, %d de %B de %Y, %H:%M h"
       short: "%d/%m %H:%M h"
       long: "%A, %d de %B de %Y, %H:%M h"
+      files: "%d/%m/%Y %H:%M"
+      discussion_post: "%d %B, %Y %H:%M horas"
     am: ''
     pm: ''
 

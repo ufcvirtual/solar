@@ -4,9 +4,6 @@ require File.expand_path('../application', __FILE__)
 # Initialize the rails application
 Solar::Application.initialize!
 
-#Formatos de exibição de data e hora.
-Time::DATE_FORMATS[:discussion_post_pt_br] = "%d %B, %Y %H:%M horas"
-
 # configuracoes do action mailer para o gmail - porta: 465 ou 587
 ActionMailer::Base.raise_delivery_errors = true
 ActionMailer::Base.delivery_method = :smtp

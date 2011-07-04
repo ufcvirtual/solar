@@ -68,6 +68,9 @@
 
     </table>
 
+    <div style="background-color: #FFF">
+      <br/>
+    </div>
   </div>
 
   <!-- Comentarios do professor -->
@@ -80,35 +83,31 @@
   <div id="grade" class="portfolio">
     <hr id="portfolio_line_g" class="portfolio_line" />
 
-    <% @comments.each_with_index do |c, idx| %>
+    <table cellpadding="5" cellspacing="0" class="portfolio_table">
+      <tbody align="left">
 
-      <% if idx > 0 %>
-        <hr class="portfolio_table_division" />
-      <% end %>
-
-      <table cellpadding="5" cellspacing="0" class="portfolio_table">
-        <thead>
+        <% unless @comment.nil? %>
           <tr>
-            <td class="td_blue_portfolio_first"></td>
-            <td align="right">
-              <% if c["files"].to_i > 0 %>
-                <%= link_to t(:download_attachment), {:controller => :portfolio, :action => :download_file_comment, :id => c["assignment_comment_id"]} %>
-                <%= image_tag "icon_anexo.png" %>
-              <% end %>
-            </td>
+            <td colspan="4"><%= @comment %></td>
           </tr>
-        </thead>
-        <tbody>
-          <tr class="rowtable_even_portfolio" >
-            <td colspan="2" class="td_blue_portfolio_first">
-              <%= c["comment"] %>
+        <% end %>
+
+        <% @files_comments.each_with_index do |reg, idx| %>
+          <tr style="height: 35px;">
+            <td class="border_line" style="width: 10px;"><%= image_tag icon_attachment(reg["attachment_file_name"]) %></td>
+            <td class="border_line">
+              <%= link_to reg["attachment_file_name"], {:controller => :portfolio, :action => :download_file_comment, :id => reg["id"]} %>
             </td>
+            <td class="border_line"><span style="color: gray;"><%= format('%.2fKB', reg["attachment_file_size"].to_i/1024.0) %></span></td>
+            <td class="border_line"><%= t(:sent_in) %>: <span style="color: gray;"><%= l reg["attachment_update_at"], :format => :files %></span></td>
           </tr>
-        </tbody>
-      </table>
+        <% end %>
 
-    <% end %>
-
+      </tbody>
+    </table>
+    <div style="background-color: #FFF">
+      <br/>
+    </div>
   </div>
 
   <!-- Arquivos enviados -->
@@ -127,7 +126,7 @@
       <tbody align="left">
 
         <% classe = "" %>
-        <% @files.each_with_index do |pa, idx| %>
+        <% @files_sent.each_with_index do |pa, idx| %>
           <% classe = "border_line" if idx > 0 %>
 
           <tr style="height: 35px;">

@@ -278,6 +278,7 @@ en:
   send_files: "Send Files"
   download_attachment: "Download Attachment"
   error_delete_file: "Error when trying to delete file"
+  sent_in: "Sent In"
 
   # Mensagem de erro para permissão 
   no_permission: "you haven't permission to access this page"
@@ -295,6 +296,8 @@ en:
       default: "%b %d %Y %H:%M:%S"
       short: "%b/%d %H:%M"
       long: "%B %d, %Y %H:%M"
+      files: "%D %H:%M"
+      discussion_post: "%d %B, %Y %H:%M horas"
     am: "am"
     pm: "pm"
 

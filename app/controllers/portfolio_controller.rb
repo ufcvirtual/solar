@@ -45,8 +45,11 @@ class PortfolioController < ApplicationController
 
     @correction = nil # indica se a atividade do aluno foi corrigida ou nao
     @grade = nil # nota dada pelo professor a atividade enviada
-    @comments = [] # comentarios do professor
-    @files = [] # arquivos dos comentarios enviados pelo professor
+    @comment = nil # comentario do professor
+    @files_sent = [] # arquivos enviados pelo aluno
+    @files_comments = [] # arquivos dos comentarios enviados pelo professor
+
+    # verifica se o aluno respondeu a atividade
     unless send_assignment.first.nil?
 
       # recupera o primeiro registro
@@ -59,10 +62,18 @@ class PortfolioController < ApplicationController
       @grade = send_assignment.grade
 
       # listagem de arquivos enviados pelo aluno para a atividade
-      @files = AssignmentFile.where(["send_assignment_id = ?", send_assignment.id])
+      @files_sent = AssignmentFile.where(["send_assignment_id = ?", send_assignment.id])
 
       # comentarios do professor com informacoes de arquivos para download
-      @comments = comments_and_files(send_assignment.id)
+      comment = AssignmentComment.find_by_send_assignment_id(send_assignment.id)
+
+      unless comment.nil?
+        # comentario do professor
+        @comment = comment.comment
+
+        # arquivos enviados pelo professor para este comentario
+        @files_comments = CommentFile.all(:conditions => ["assignment_comment_id = ?", comment.id])
+      end
 
     else
       # arquivos ainda nao enviados pelo aluno
@@ -179,10 +190,10 @@ class PortfolioController < ApplicationController
 
     authorize! :download_file_comment, Portfolio
 
-    # id do assignment_comment
-    assignment_comment_id = params[:id]
+    comment_file_id = params[:id]
 
-    file_ = CommentFile.find_by_assignment_comment_id(assignment_comment_id)
+    file_ = CommentFile.find(comment_file_id)
+    assignment_comment_id = file_.assignment_comment_id
     filename = file_.attachment_file_name
 
     prefix_file = file_.id # id da tabela comment_file para diferenciar os arquivos
@@ -280,7 +291,7 @@ class PortfolioController < ApplicationController
         redirect = {:action => :activity_details, :id => params[:assignment_id]}
 
         # verifica se o arquivo foi adicionado
-        raise t(:error_no_file_sent) unless params.include?(:portfolio)
+        raise t(:error_no_file_sent) unless params.include?(:assignment_file)
 
         # verifica se a atividade ja foi respondida para aquele usuario
         send_assignment = SendAssignment.where(["assignment_id = ? AND user_id = ?", params[:assignment_id], current_user.id]).first
@@ -407,23 +418,6 @@ SQL
         format.html { redirect_to(redirect_error) }
       end
     end
-
-  end
-
-  # comentarios e quantidade de arquivos enviados na correcao do professor
-  def comments_and_files(send_assignment_id)
-
-    ActiveRecord::Base.connection.select_all <<SQL
-      SELECT t1.id AS assignment_comment_id,
-             t1.send_assignment_id,
-             t1.comment,
-             COUNT(t2.id) AS files
-        FROM assignment_comments  AS t1
-   LEFT JOIN comment_files        AS t2 ON t2.assignment_comment_id = t1.id
-       WHERE t1.send_assignment_id = #{send_assignment_id}
-       GROUP BY t1.send_assignment_id, t1.id, t1.comment
-      ORDER BY t1.comment;
-SQL
 
   end
 

@@ -58,7 +58,7 @@ module DiscussionPostsHelper
                           <div class="forum_post_inner_content" style="min-height:100px">'
     post_string <<      (sanitize post.content)
     post_string <<      ' </div>
-                          <div class="forum_post_date">' << post[:updated_at].to_s(:discussion_post_pt_br) << '</div>
+                          <div class="forum_post_date">' << post[:updated_at].to_s(t(:discussion_post_pt_br)) << '</div>
                           <div class="forum_post_date">'
                             if editable
     post_string <<      '     <a href="javascript:removePost(' << post[:id].to_s << ')">[excluir]</a>
