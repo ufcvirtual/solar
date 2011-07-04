@@ -41,7 +41,7 @@ module DiscussionPostsHelper
                         <span class="forum_participant_profile" >'<< post.profile << '</span>
                       </td>
                       <td class="forum_post_head_right">
-                        #
+                        &nbsp;
                       </td>
                     </tr>
                     <tr>
@@ -57,6 +57,7 @@ module DiscussionPostsHelper
                         <td class="forum_post_content_right">
                           <div class="forum_post_inner_content" style="min-height:100px">'
     post_string <<      (sanitize post.content)
+    #ESCREVER A DATA E HORA DO MESMO MODO COMO O PORTFOLIO ESCREVE (FORMATO NO ARQUIVO DE INTERNACIONALIZACAO)
     post_string <<      ' </div>
                           <div class="forum_post_date">' << post[:updated_at].to_s(t(:discussion_post_pt_br)) << '</div>
                           <div class="forum_post_date">'
