@@ -19,13 +19,12 @@
       </table>
     </div>
 
-
 <div style="display:none" id="div_contacts">
   <% if !@curriculum_units_user.nil? %>
     <select id="curriculum_unit_select">
       <option value="" <%=" selected=true " unless !@curriculum_units_name.nil?%> ><%=t(:all)%></option>
       <% @curriculum_units_user.each do |curriculum_unit| %>        
-        <option value="<%=curriculum_unit["id"]%>" <%=" selected=true " unless @curriculum_units_name!=curriculum_unit["name"]%> ><%=curriculum_unit["name"]%></option>
+        <option value="<%=curriculum_unit["id"] << ';' << curriculum_unit["offer_id"] << ';' << curriculum_unit["group_id"]%>" <%=" selected=true " unless @curriculum_units_name!=curriculum_unit["name"]%> ><%=curriculum_unit["name"]%></option>
       <% end %>
     </select>
   <% end %>
@@ -41,13 +40,23 @@
     $("#curriculum_unit_select").change(function() {
         $.ajax({
           url: "/messages/get_contacts/",
-          type: "POST",
-          dataType: "html",
-          data: ({curriculum_unit_id : this.value, curriculum_unit_name : this.text}),
+          //type: "POST",
+          dataType: "json",
+          data: ({data : this.value, curriculum_unit_name : this.text}),
           async: true,
           success: show_names(data)
           })
         });
+
+    /*$('#curriculum_unit_select').change(function(){
+      $.getJSON("/messages/get_contacts/", {data : this.value, curriculum_unit_name : this.text, format: "json"},
+                function(data) {
+                  alert('oi');
+                  //$('#div_contacts_list').html(data);                
+                  }
+               );
+      });*/
+
   });
 
   $(document).ready(function() {
@@ -56,6 +65,6 @@
 
   function show_names(data){
       alert (data);
-      $("#div_contacts_list").html(data);
+      //$("#div_contacts_list").html(data);
   }
 </script>

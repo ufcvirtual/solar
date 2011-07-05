@@ -6,7 +6,7 @@ class MessagesController < ApplicationController
   
   before_filter :require_user
   before_filter :message_data
-  before_filter :get_contacts, :only => [:new, :reply]
+  before_filter :get_contacts
 
   #load_and_authorize_resource
 
@@ -32,7 +32,6 @@ class MessagesController < ApplicationController
     #recebe nil quando esta em pagina de leitura/edicao de msg
     @type = nil
     @show_message = 'new'
-    get_contacts
   end
 
   def send_message
@@ -42,46 +41,116 @@ class MessagesController < ApplicationController
       message = params[:newMessageTextBox]
       #from = current_user
 
-      #grava mensagem
-      new_message = Message.new :subject => subject, :content => message, :send_date => DateTime.now
+      #apenas usuarios que sao cadastrados no ambiente; se algum destinarario nao eh, nao envia...
+      real_receivers = ""
 
-      if new_message.save
+      #troca ";" por "," para split e envio para destinatarios
+      to.gsub(";", ",")
 
-        #salva remetente
-        #status=3 => 00000011 {origem, lida, nao_excluida}
-        sender_message = UserMessage.new :message_id => new_message.id, :user_id => current_user.id, :status => 3
-        sender_message.save
+      #divide destinatarios
+      individual_to = to.split(",").map{|r|r.strip}
 
-        #apenas usuarios que sao cadastrados no ambiente; se algum destinarario nao eh, nao envia...
-        real_receivers = ""
+      label_name = get_label_name(@curriculum_unit_id, @offer_id, @group_id)
 
-        #troca ";" por "," para split e envio
-        individual_to.gsub(";", ",")
-        
-        #salva os destinatarios
-        individual_to = to.split(",").map{|r|r.strip}
 
-        individual_to.each {|r|
-          r_user = User.find_by_email(r)
-          if !r_user.nil?
-            real_receivers << ", " unless real_receivers.empty?
-            real_receivers << r_user.email
-            #status=0 {nao_origem, nao_lida, nao_excluida}
-            receiver_message = UserMessage.new :message_id => new_message.id, :user_id => r_user.id, :status => 0
-            receiver_message.save
+      #":requires_new => true" permite rollback
+      Message.transaction do
+        begin
+          #salva nova mensagem
+          new_message = Message.new :subject => subject, :content => message, :send_date => DateTime.now
+          new_message.save!
 
-            # ****************************
-            # FALTA - se for de unidade curricular, gravar labels...
-            # ****************************
+          #salva dados de remetente
+          UserMessage.transaction(:requires_new => true) do
+            #status=3 => 00000011 {origem, lida, nao_excluida}
+            sender_message = UserMessage.new :message_id => new_message.id, :user_id => current_user.id, :status => 3
+            sender_message.save!
+
+            if label_name != ""
+              message_label = MessageLabel.find_all_by_title_and_user_id(label_name,current_user.id).first
+              #se precisa mas nao existe no banco, cria
+              if message_label.nil?
+                MessageLabel.transaction(:requires_new => true) do
+                  message_label = MessageLabel.new :user_id => current_user.id, :title => label_name, :label_system => true
+                  message_label.save!
+                end
+              end
+
+              #associa label do remetente
+              UserMessageLabel.transaction(:requires_new => true)do
+                UserMessageLabel.create! :user_message_id => sender_message.id, :message_label_id => message_label.id
+              end
+            end
           end
-          }
 
-        #envia email apenas uma vez
-        Notifier.deliver_send_mail(real_receivers, subject, message) #, from = nil
+          #para salvar destinatarios individualmente - pegar o id
+          UserMessage.transaction(:requires_new => true) do
+            individual_to.each {|r|
+              r_user = User.find_by_email(r)
+
+              if !r_user.nil?
+                real_receivers << ", " unless real_receivers.empty?
+                real_receivers << r_user.email
+
+                #status=0 {nao_origem, nao_lida, nao_excluida}
+                receiver_message = UserMessage.new :message_id => new_message.id, :user_id => r_user.id, :status => 0
+                receiver_message.save!
+
+                # se for de unidade curricular, grava user_message_labels e message_labels do usuario (se nao existir)...
+                if label_name != ""
+                  message_label = MessageLabel.find_all_by_title_and_user_id(label_name,r_user.id).first
+                  #se precisa mas nao existe no banco, cria
+                  if message_label.nil?
+                    MessageLabel.transaction(:requires_new => true) do
+                      message_label = MessageLabel.new :user_id => r_user.id, :title => label_name
+                      message_label.save!
+                    end
+                  end
+
+                  #associa label do destinatario
+                  UserMessageLabel.transaction(:requires_new => true)do
+                    UserMessageLabel.create! :user_message_id => receiver_message.id, :message_label_id => message_label.id
+                  end
+                end
+              end
+            }
+          end
+
+        rescue
+          flash[:notice] = t(:message_send_error)
+          #efetua rollback
+          raise ActiveRecord::Rollback
+        else
+          if real_receivers.empty?
+            flash[:notice] = t(:message_send_error_no_receiver)
+          else
+            flash[:notice] = t(:message_send_ok)
+            #envia email apenas uma vez, em caso de sucesso da gravacao no banco
+            Notifier.deliver_send_mail(real_receivers, subject, message) unless real_receivers.empty? #, from = nil
+          end
+        end
       end
-      
+
       redirect_to :action => 'index', :type => 'outbox'
     end
+  end
+
+  def get_label_name (curriculum_unit_id = nil, offer_id = nil, group_id = nil)
+    label_name = ""
+    #formato: 2011.1|FOR|Física I
+    if !offer_id.nil?
+      offer = Offer.find(offer_id)
+      label_name << offer.semester.slice(0..5)
+    end
+    if !group_id.nil?
+      group = Group.find(group_id)
+      label_name << '|' << group.code.slice(0..9) << '|'
+    end
+    if !curriculum_unit_id.nil? 
+      curriculum_unit = CurriculumUnit.find(curriculum_unit_id)
+      label_name << curriculum_unit.name.slice(0..15)
+    end    
+    return label_name
   end
 
   def show
@@ -177,34 +246,50 @@ class MessagesController < ApplicationController
     # pegando id da sessao - unidade curricular aberta
     id = session[:opened_tabs][session[:active_tab]]["id"]
 
-    curriculum_unit_id = params[:curriculum_unit_id]
-    if curriculum_unit_id.nil?
-      curriculum_unit_id = id
+    if !params[:data].nil?
+      data = params[:data].split(";").map{|r|r.strip}
+
+      @curriculum_unit_id = data[0]
+      @offer_id = data[1]
+      @group_id = data[2]
+    else
+      @curriculum_unit_id = id
+
+      #offer = Offer.find_by_curriculum_unit_id(id)
+      @offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+
+      #group = Group.find_by_offer_id(@offer_id)
+      @group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     end
+
+puts "\n\n\n*************************"
+puts "@curriculum_unit_id: #{@curriculum_unit_id}"
+puts "@offer_id: #{@offer_id}"
+puts "@group_id: #{@group_id}"
+puts "\n\n\n*************************"
+
+    #curriculum_unit_id = params[:curriculum_unit_id]
+    #if curriculum_unit_id.nil?
+    #  curriculum_unit_id = id
+    #end
 
     curriculum_unit_name = params[:curriculum_unit_name]
 
     #unidade curricular ativa ou home ("")
-    if curriculum_unit_id == id
+    if @curriculum_unit_id == id
       @curriculum_units_name = (session[:opened_tabs][session[:active_tab]]["type"] == Tab_Type_Home) ? "" : session[:active_tab]
     else
       @curriculum_units_name = curriculum_unit_name
     end
-
-    offer = Offer.find_by_curriculum_unit_id(curriculum_unit_id)
-    offer_id = offer.id unless offer.nil?
-
-    group = Group.find_by_offer_id(offer)
-    group_id = group.id unless group.nil?
-
+    
     @all_contacts = nil
     @participants = nil
     @responsibles = nil
 
     # se esta com unidade curricular aberta
-    if id != "" || group_id != "" || offer_id != ""
-      @participants = class_participants curriculum_unit_id, false, offer_id, group_id
-      @responsibles = class_participants curriculum_unit_id, true, offer_id, group_id
+    if id != "" || @group_id != "" || @offer_id != ""
+      @participants = class_participants @curriculum_unit_id, false, @offer_id, @group_id
+      @responsibles = class_participants @curriculum_unit_id, true,  @offer_id, @group_id
     else
       @all_contacts = nil
     end
@@ -254,7 +339,11 @@ private
     # verifica aba aberta, se Home ou se aba de unidade curricular
     # se Home, traz todas; senao, traz com filtro da unidade curricular
     if session[:opened_tabs][session[:active_tab]]["type"] != Tab_Type_Home
-      @message_tag = session[:active_tab]
+      group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+      offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+      curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+
+      @message_tag = get_label_name(curriculum_unit_id, offer_id, group_id)
     else
       @message_tag = nil
     end

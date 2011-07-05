@@ -219,6 +219,7 @@
   message_attachments: "Arquivos anexos"
   message_send_ok: "Mensagem enviada com sucesso."
   message_send_error: "Não foi possível enviar mensagem."
+  message_send_error_no_receiver: "Mensagem não enviada. Nenhum destinatário encontrado no ambiente."
 
   navigation_of: " de "
   navigation_next: "Próxima >"

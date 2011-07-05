@@ -1345,6 +1345,19 @@ div.alter_photo_text {
     color: #000;
     font-weight: bold;
 }
+.message_label {
+    font-size: 10px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    color: #000;
+    font-weight: normal;
+    margin: 0px;
+    padding: 0px;
+    padding-left: 2px;
+    padding-right: 2px;
+    background-color: #F9C153;
+    border: 1px solid #F9C153;
+    -moz-border-radius: 4px;
+}
 .message_read:hover, .message_unread:hover {
     text-decoration: underline;
 }

@@ -10,7 +10,7 @@ ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.smtp_settings = {
 		:address              => 'smtp.gmail.com',
 		:port                 => 587,
-		:domain               => 'domain',
+    :domain               => 'domain',
 		:user_name            => 'teste@domain.br',
 		:password             => '123456',
 		:authentication       => 'login',
@@ -35,4 +35,4 @@ Tab_Type_Home = "0"
 Tab_Type_Curriculum_Unit = "1"
 
 # constante que indica numero maximo de registros por pagina
-Record_Per_Page = 2
+Record_Per_Page = 10

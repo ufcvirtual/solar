@@ -4,6 +4,10 @@ class CreateUserMessageLabels < ActiveRecord::Migration
       t.integer "user_message_id",  :null => false
       t.integer "message_label_id", :null => false
     end
+
+    execute <<-SQL
+      ALTER TABLE user_message_labels ADD PRIMARY KEY (user_message_id, message_label_id);
+    SQL
   end
 
   def self.down
