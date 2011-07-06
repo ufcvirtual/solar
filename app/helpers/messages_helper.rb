@@ -62,15 +62,29 @@ module MessagesHelper
   #chamada depois de get_contacts para montar os contatos atualizados
   def show_contacts_updated
     text = ""
+    if !@all_contacts.nil?
+        @all_contacts.each do |c|
+            text << "<a class='curriculum_unit_portlet_link' href='javascript:message_recipient(1,2)'>" << c.name << " <" << c.email << "></a><br/>"
+        end
+puts "\n**********text (@all_contacts):\n"
+puts text
+puts "\n**********\n"
+    end
     if !@responsibles.nil?
         @responsibles.each do |r|
             text << "<a class='curriculum_unit_portlet_link' href='javascript:message_recipient(1,2)'>" << r.username << " <"<< r.email << "></a><br/>"
         end
+puts "\n**********text (@responsibles):\n"
+puts text
+puts "\n**********\n"
     end
     if !@participants.nil?
         @participants.each do |p|
             text << "<a class='curriculum_unit_portlet_link' href='javascript:message_recipient(1,2)'>" << p.username << " <" << p.email << "></a><br/>"
         end
+puts "\n**********text (@participants):\n"
+puts text
+puts "\n**********\n"
     end
 
     return text

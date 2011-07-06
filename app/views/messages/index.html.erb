@@ -33,7 +33,7 @@
                     <%= link_to message.subject,  {:action => 'show', :id => message.id},{:class => css_class} %>
                   </td>
                   <td style="width:30px"><%=image_tag("message_file.png",:alt=>t(:message_attach)) unless message.original_name.nil?%></td>
-                  <td style="width:80px"><%= link_to l(message.send_date, :format => :short),  {:action => 'show', :id => message.id},{:class => css_class} %></td>
+                  <td style="width:100px"><%= link_to l(message.send_date, :format => :short),  {:action => 'show', :id => message.id},{:class => css_class} %></td>
                 </tr>
               <% end %>
             </table>

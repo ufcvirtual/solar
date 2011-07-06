@@ -6,7 +6,7 @@ class MessagesController < ApplicationController
   
   before_filter :require_user
   before_filter :message_data
-  before_filter :get_contacts
+  before_filter :get_curriculum_units
 
   #load_and_authorize_resource
 
@@ -32,6 +32,7 @@ class MessagesController < ApplicationController
     #recebe nil quando esta em pagina de leitura/edicao de msg
     @type = nil
     @show_message = 'new'
+    get_contacts
   end
 
   def send_message
@@ -238,13 +239,19 @@ class MessagesController < ApplicationController
     end
   end
 
-  # contatos para montagem da tela
-  def get_contacts
+  def get_curriculum_units
     #unidades curriculares do usuario logado
     @curriculum_units_user = load_curriculum_unit_data
+  end
 
+  # contatos para montagem da tela
+  def get_contacts
     # pegando id da sessao - unidade curricular aberta
     id = session[:opened_tabs][session[:active_tab]]["id"]
+
+    @curriculum_unit_id = nil
+    @offer_id = nil
+    @group_id = nil
 
     if !params[:data].nil?
       data = params[:data].split(";").map{|r|r.strip}
@@ -253,33 +260,22 @@ class MessagesController < ApplicationController
       @offer_id = data[1]
       @group_id = data[2]
     else
-      @curriculum_unit_id = id
+      if session[:opened_tabs][session[:active_tab]]["type"] != Tab_Type_Home
+        @curriculum_unit_id = id
 
-      #offer = Offer.find_by_curriculum_unit_id(id)
-      @offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+        #offer = Offer.find_by_curriculum_unit_id(id)
+        @offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
 
-      #group = Group.find_by_offer_id(@offer_id)
-      @group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+        #group = Group.find_by_offer_id(@offer_id)
+        @group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+      end
     end
-
-puts "\n\n\n*************************"
-puts "@curriculum_unit_id: #{@curriculum_unit_id}"
-puts "@offer_id: #{@offer_id}"
-puts "@group_id: #{@group_id}"
-puts "\n\n\n*************************"
-
-    #curriculum_unit_id = params[:curriculum_unit_id]
-    #if curriculum_unit_id.nil?
-    #  curriculum_unit_id = id
-    #end
-
-    curriculum_unit_name = params[:curriculum_unit_name]
 
     #unidade curricular ativa ou home ("")
     if @curriculum_unit_id == id
       @curriculum_units_name = (session[:opened_tabs][session[:active_tab]]["type"] == Tab_Type_Home) ? "" : session[:active_tab]
     else
-      @curriculum_units_name = curriculum_unit_name
+      @curriculum_units_name = CurriculumUnit.find(@curriculum_unit_id).name unless @curriculum_unit_id.nil?
     end
     
     @all_contacts = nil
@@ -287,16 +283,17 @@ puts "\n\n\n*************************"
     @responsibles = nil
 
     # se esta com unidade curricular aberta
-    if id != "" || @group_id != "" || @offer_id != ""
+    if !@curriculum_unit_id.nil? || !@group_id.nil? || !@offer_id.nil?
       @participants = class_participants @curriculum_unit_id, false, @offer_id, @group_id
       @responsibles = class_participants @curriculum_unit_id, true,  @offer_id, @group_id
     else
-      @all_contacts = nil
+      @all_contacts = User.order("name").find(:all, :joins => :user_contacts,
+                                :conditions => {:user_contacts => {:user_id => current_user.id}} )
     end
 
-    text = show_contacts_updated
-    return text
-    
+    @contacts = show_contacts_updated
+
+    return @contacts
   end
 
   # retorna (1) usuario que enviou a msg

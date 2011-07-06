@@ -30,41 +30,41 @@
   <% end %>
   
   <hr/>
-  <div id="div_contacts_list"></div>
+  <div id="div_contacts_list"><%=raw @contacts %></div>
   <textarea id="recipients_selected" disabled="true"></textarea>
 </div>
 
 <script type="text/javascript">
   //atualiza usuarios
   $(function($) {
-    $("#curriculum_unit_select").change(function() {
+    
+    /*$("#curriculum_unit_select").change(function() {
         $.ajax({
           url: "/messages/get_contacts/",
-          //type: "POST",
+          type: "POST",
           dataType: "json",
-          data: ({data : this.value, curriculum_unit_name : this.text}),
-          async: true,
-          success: show_names(data)
+          data: ({data: this.value}),
+          async: false,
+          success: function(data) {
+                  alert(data);
+                  $('#div_contacts_list').empty();
+                  $('#div_contacts_list').html(data);
+                }
           })
-        });
+        });*/
 
-    /*$('#curriculum_unit_select').change(function(){
-      $.getJSON("/messages/get_contacts/", {data : this.value, curriculum_unit_name : this.text, format: "json"},
-                function(data) {
-                  alert('oi');
-                  //$('#div_contacts_list').html(data);                
-                  }
+
+    $('#curriculum_unit_select').change(function(){
+      $.getJSON("/messages/get_contacts/params=?", {data: this.value, format: "json"},
+                  function(data) {
+                    alert(data);
+                    $('#div_contacts_list').empty();
+                    $('#div_contacts_list').html(data);
+                  }
                );
-      });*/
+    });
+
 
   });
 
-  $(document).ready(function() {
-      //show_names("");
-  });
-
-  function show_names(data){
-      alert (data);
-      //$("#div_contacts_list").html(data);
-  }
 </script>
