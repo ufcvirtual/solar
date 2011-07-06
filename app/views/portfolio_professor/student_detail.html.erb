@@ -1,0 +1,27 @@
+<% if flash[:success] || flash[:error] || flash[:notice]%>
+  &nbsp;<br/>
+  <%=raw message %>&nbsp;
+  &nbsp;<br/>
+<% end %>
+&nbsp;
+
+<!-- Apresenta o nome da unidade curricular -->
+<div>
+  <span class="page_title"><%= t(:portfolio_title) %></span>
+  <span class="page_title"><%= @curriculum_unit.name unless @curriculum_unit.nil? %></span>
+</div>
+
+<!-- Portfolio -->
+<div>
+  <div class="portfolio_header_content">
+    <div class="portfolio_title">
+      nome do aluno
+    </div>
+  </div>
+
+  <!--  -->
+  <div id="individual_activity" class="portfolio">
+    <hr class="portfolio_line" />
+  </div>
+
+</div>

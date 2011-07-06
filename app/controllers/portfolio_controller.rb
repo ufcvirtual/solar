@@ -17,7 +17,6 @@ class PortfolioController < ApplicationController
 
     group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
 
-    # atividades individuais
     # listando atividades individuais pelo grupo_id em que o usuario esta inserido
     @individual_activities = individual_activities(group_id, current_user.id)
 
@@ -355,7 +354,7 @@ class PortfolioController < ApplicationController
   # atividades individuais
   def individual_activities(group_id, user_id)
 
-    ActiveRecord::Base.connection.select_all <<SQL
+    ia = ActiveRecord::Base.connection.select_all <<SQL
     SELECT t1.id,
            t1.name,
            t1.enunciation,
@@ -379,12 +378,14 @@ class PortfolioController < ApplicationController
   ORDER BY t1.final_date, t1.initial_date DESC;
 SQL
 
+    return (ia.nil?) ? [] : ia
+
   end
 
   # arquivos da area publica
   def public_area(group_id, user_id)
 
-    ActiveRecord::Base.connection.select_all <<SQL
+    pa = ActiveRecord::Base.connection.select_all <<SQL
     SELECT t1.id,
            t1.attachment_file_name,
            t1.attachment_content_type,
@@ -395,6 +396,8 @@ SQL
      WHERE t3.id = #{user_id}
        AND t2.group_id = #{group_id};
 SQL
+
+    return (pa.nil?) ? [] : pa
 
   end
 

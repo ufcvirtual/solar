@@ -32,8 +32,7 @@ resources_arr = [
 
   {:id => 24, :controller => 'portfolio', :action =>'list', :description => 'Portfolio da Unidade Curricular'},
   {:id => 25, :controller => 'messages', :action =>'index', :description => 'Mensagens'},
-<<<<<<< HEAD
-  {:id => 26, :controller => 'agenda', :action =>'list', :description => 'Agenda'},
+  {:id => 26, :controller => 'schedules', :action =>'list', :description => 'Agenda'},
 
   {:id => 27, :controller => 'portfolio', :action => 'activity_details', :description => 'Atividades Individuais'},
   {:id => 28, :controller => 'portfolio', :action => 'delete_file_individual_area', :description => ''},
@@ -42,10 +41,10 @@ resources_arr = [
   {:id => 31, :controller => 'portfolio', :action => 'upload_files_public_area', :description => ''},
   {:id => 32, :controller => 'portfolio', :action => 'download_file_public_area', :description => ''},
   {:id => 33, :controller => 'portfolio', :action => 'upload_files_individual_area', :description => ''},
-  {:id => 34, :controller => 'portfolio', :action => 'download_file_individual_area', :description => ''}
-=======
-  {:id => 26, :controller => 'schedules', :action =>'list', :description => 'Agenda'}
->>>>>>> 6560359
+  {:id => 34, :controller => 'portfolio', :action => 'download_file_individual_area', :description => ''},
+
+  {:id => 35, :controller => 'portfolio_professor', :action => 'list', :description => 'Lista os alunos da turma'},
+  {:id => 36, :controller => 'portfolio_professor', :action => 'student_detail', :description => 'Detalha portfolio do aluno'}
 ]
 count = 0
 resources = Resource.create(resources_arr) do |registro|
@@ -116,7 +115,9 @@ perm_prof_titular = PermissionsResource.create([
   {:profile_id => 2, :resource_id => 19, :per_id => false},
   {:profile_id => 2, :resource_id => 22, :per_id => false},
   {:profile_id => 2, :resource_id => 23, :per_id => false},
-  {:profile_id => 2, :resource_id => 24, :per_id => false}
+  # portfolio
+  {:profile_id => 2, :resource_id => 35, :per_id => false},
+  {:profile_id => 2, :resource_id => 36, :per_id => false}
 ])
 
 ##############################
@@ -142,12 +143,13 @@ perm_prof_titular = PermissionsResource.create([
   {:profile_id => 3, :resource_id => 19, :per_id => false},
   {:profile_id => 3, :resource_id => 22, :per_id => false},
   {:profile_id => 3, :resource_id => 23, :per_id => false},
-  {:profile_id => 3, :resource_id => 24, :per_id => false}
+  {:profile_id => 3, :resource_id => 24, :per_id => false},
+  # portfolio
+  {:profile_id => 3, :resource_id => 35, :per_id => false},
+  {:profile_id => 3, :resource_id => 36, :per_id => false}
 ])
 
-
 ######## PERMISSIONS MENUS #########
-
 
 PermissionsMenu.create([
     {:profile_id => 1, :menu_id => 10},
@@ -163,11 +165,12 @@ PermissionsMenu.create([
     {:profile_id => 1, :menu_id => 70},
     {:profile_id => 1, :menu_id => 302},
 
+    # professor titular
     {:profile_id => 2, :menu_id => 10},
     {:profile_id => 2, :menu_id => 101},
     {:profile_id => 2, :menu_id => 20},
     {:profile_id => 2, :menu_id => 201},
-    {:profile_id => 2, :menu_id => 202},
+    {:profile_id => 2, :menu_id => 207},
     {:profile_id => 2, :menu_id => 30},
     {:profile_id => 2, :menu_id => 301},
     {:profile_id => 2, :menu_id => 303},

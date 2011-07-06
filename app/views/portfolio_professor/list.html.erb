@@ -1,0 +1,50 @@
+<% if flash[:success] || flash[:error] || flash[:notice]%>
+  &nbsp;<br/>
+  <%=raw message %>&nbsp;
+  &nbsp;<br/>
+<% end %>
+&nbsp;
+
+<!-- Apresenta o nome da unidade curricular -->
+<div>
+  <span class="page_title"><%= t(:portfolio_title) %></span>
+  <span class="page_title"><%= @curriculum_unit.name unless @curriculum_unit.nil? %></span>
+</div>
+
+<!-- Portfolio -->
+<div>
+  <div class="portfolio_header_content">
+    <div class="portfolio_title">
+      alunos da turma
+    </div> <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+  </div>
+
+  <!-- lista de alunos -->
+  <div id="individual_activity" class="portfolio">
+    <hr class="portfolio_line" />
+
+    <table cellpadding="5" cellspacing="0" class="portfolio_table">
+      <tbody>
+        <% @students.each_with_index do |s, idx| %>
+
+          <% rowtable = 'rowtable_even' %>
+          <% rowtable = 'rowtable_odd' if (idx % 2 == 0) %>
+
+          <tr class="<%= rowtable %>">
+            <td>
+              <%=link_to s["name"], {:controller => :portfolio_professor, :action => :student_detail, :id => s["id"]} %>
+            </td>
+            <td>
+              icon
+            </td>
+          </tr>
+
+        <% end %>
+      </tbody>
+    </table>
+
+    <div style="background-color: #FFF">
+      <br/>
+    </div>
+  </div>
+</div>

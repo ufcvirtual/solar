@@ -5,17 +5,16 @@ puts "Production Seed"
 puts "Truncando tabelas"
 
 models = [DiscussionPost, Discussion, Lesson, Allocation, Bibliography, UserMessageLabel, UserMessage, MessageLabel,
-<<<<<<< HEAD
-  AssignmentComment, CommentFile, AssignmentComment, SendAssignment, Assignment, Agenda, AgendaType, AllocationTag, PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,
-=======
-  AssignmentComment, SendAssignment, Assignment, Schedule, ScheduleEvent, AllocationTag, PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,
->>>>>>> 6560359
+  AssignmentComment, CommentFile, SendAssignment, Assignment, Agenda, AgendaType, AllocationTag,
+  PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,
+  PublicFile, CommentFile, AssignmentFile, SendAssignment, Assignment,
+  Agenda, AgendaType, AllocationTag, PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,
   Enrollment, Offer, CurriculumUnit, CurriculumUnitType, Course, PersonalConfiguration, User]
 models.each(&:delete_all)
 
 Fixtures.reset_cache
 fixtures_folder = File.join(::Rails.root.to_s, 'spec', 'fixtures')
-fixtures = Dir[File.join(fixtures_folder, '*.yml')].map {|f| File.basename(f, '.yml') }
+fixtures = Dir[File.join(fixtures_folder, '*.yml')].map {|f| File.basename(f, '.yml')}
 
 puts "  - Executando fixtures: #{fixtures}"
 
