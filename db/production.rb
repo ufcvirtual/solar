@@ -4,8 +4,16 @@ puts "Production Seed"
 
 puts "Truncando tabelas"
 
-models = [DiscussionPost, Discussion, Lesson, Allocation, Bibliography, UserMessageLabel, UserMessage, MessageLabel,
-  AssignmentComment, SendAssignment, Assignment, Agenda, AgendaType, AllocationTag, PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,
+# TEMPORARIO - MODIFICAR ESTA PARTE -> 2011/07/06
+ActiveRecord::Base.connection.select_all "TRUNCATE discussions CASCADE;"
+ActiveRecord::Base.connection.select_all "TRUNCATE discussion_posts CASCADE;"
+ActiveRecord::Base.connection.select_all "TRUNCATE lessons CASCADE;"
+ActiveRecord::Base.connection.select_all "TRUNCATE assignments CASCADE;"
+ActiveRecord::Base.connection.select_all "TRUNCATE calendar_events CASCADE;"
+
+
+models = [Allocation, Bibliography, UserMessageLabel, UserMessage, MessageLabel,
+  AssignmentComment, SendAssignment, Assignment, Agenda, AllocationTag, PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,
   Enrollment, Offer, CurriculumUnit, CurriculumUnitType, Course, PersonalConfiguration, User]
 models.each(&:delete_all)
 

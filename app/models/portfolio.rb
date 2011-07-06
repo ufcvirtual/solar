@@ -1,4 +1,4 @@
-class Portfolio < ActiveRecord::Base
+class Portfolio < Agenda
 
   set_table_name "assignments"
 
