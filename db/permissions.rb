@@ -32,6 +32,7 @@ resources_arr = [
 
   {:id => 24, :controller => 'portfolio', :action =>'list', :description => 'Portfolio da Unidade Curricular'},
   {:id => 25, :controller => 'messages', :action =>'index', :description => 'Mensagens'},
+<<<<<<< HEAD
   {:id => 26, :controller => 'agenda', :action =>'list', :description => 'Agenda'},
 
   {:id => 27, :controller => 'portfolio', :action => 'activity_details', :description => 'Atividades Individuais'},
@@ -42,6 +43,9 @@ resources_arr = [
   {:id => 32, :controller => 'portfolio', :action => 'download_file_public_area', :description => ''},
   {:id => 33, :controller => 'portfolio', :action => 'upload_files_individual_area', :description => ''},
   {:id => 34, :controller => 'portfolio', :action => 'download_file_individual_area', :description => ''}
+=======
+  {:id => 26, :controller => 'schedules', :action =>'list', :description => 'Agenda'}
+>>>>>>> 6560359
 ]
 count = 0
 resources = Resource.create(resources_arr) do |registro|
