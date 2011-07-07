@@ -21,11 +21,6 @@ class MessagesController < ApplicationController
 
     # retorna mensagens
     @messages = return_messages(current_user.id, @type, @message_tag, page)
-    
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @messages }
-    end
   end
 
   def new
@@ -239,61 +234,15 @@ class MessagesController < ApplicationController
     end
   end
 
-  def get_curriculum_units
-    #unidades curriculares do usuario logado
+  # unidades curriculares do usuario logado
+  def get_curriculum_units    
     @curriculum_units_user = load_curriculum_unit_data
   end
 
-  # contatos para montagem da tela
-  def get_contacts
-    # pegando id da sessao - unidade curricular aberta
-    id = session[:opened_tabs][session[:active_tab]]["id"]
-
-    @curriculum_unit_id = nil
-    @offer_id = nil
-    @group_id = nil
-
-    if !params[:data].nil?
-      data = params[:data].split(";").map{|r|r.strip}
-
-      @curriculum_unit_id = data[0]
-      @offer_id = data[1]
-      @group_id = data[2]
-    else
-      if session[:opened_tabs][session[:active_tab]]["type"] != Tab_Type_Home
-        @curriculum_unit_id = id
-
-        #offer = Offer.find_by_curriculum_unit_id(id)
-        @offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
-
-        #group = Group.find_by_offer_id(@offer_id)
-        @group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-      end
-    end
-
-    #unidade curricular ativa ou home ("")
-    if @curriculum_unit_id == id
-      @curriculum_units_name = (session[:opened_tabs][session[:active_tab]]["type"] == Tab_Type_Home) ? "" : session[:active_tab]
-    else
-      @curriculum_units_name = CurriculumUnit.find(@curriculum_unit_id).name unless @curriculum_unit_id.nil?
-    end
-    
-    @all_contacts = nil
-    @participants = nil
-    @responsibles = nil
-
-    # se esta com unidade curricular aberta
-    if !@curriculum_unit_id.nil? || !@group_id.nil? || !@offer_id.nil?
-      @participants = class_participants @curriculum_unit_id, false, @offer_id, @group_id
-      @responsibles = class_participants @curriculum_unit_id, true,  @offer_id, @group_id
-    else
-      @all_contacts = User.order("name").find(:all, :joins => :user_contacts,
-                                :conditions => {:user_contacts => {:user_id => current_user.id}} )
-    end
-
-    @contacts = show_contacts_updated
-
-    return @contacts
+  # metodo chamado por ajax para atualizar contatos
+  def ajax_get_contacts
+    get_contacts
+    render :layout => false
   end
 
   # retorna (1) usuario que enviou a msg
@@ -347,6 +296,57 @@ private
 
     # qtde de msgs nao lidas
     @unread = unread_inbox(current_user.id, @message_tag)
+  end
+
+  # contatos para montagem da tela
+  def get_contacts
+    # pegando id da sessao - unidade curricular aberta
+    id = session[:opened_tabs][session[:active_tab]]["id"]
+
+    @curriculum_unit_id = nil
+    @offer_id = nil
+    @group_id = nil
+
+    if !params[:data].nil?
+      data = params[:data].split(";").map{|r|r.strip}
+
+      @curriculum_unit_id = data[0]
+      @offer_id = data[1]
+      @group_id = data[2]
+    else
+      if session[:opened_tabs][session[:active_tab]]["type"] != Tab_Type_Home
+        @curriculum_unit_id = id
+
+        #offer = Offer.find_by_curriculum_unit_id(id)
+        @offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+
+        #group = Group.find_by_offer_id(@offer_id)
+        @group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+      end
+    end
+
+    #unidade curricular ativa ou home ("")
+    if @curriculum_unit_id == id
+      @curriculum_units_name = (session[:opened_tabs][session[:active_tab]]["type"] == Tab_Type_Home) ? "" : session[:active_tab]
+    else
+      @curriculum_units_name = CurriculumUnit.find(@curriculum_unit_id).name unless @curriculum_unit_id.nil?
+    end
+
+    @all_contacts = nil
+    @participants = nil
+    @responsibles = nil
+
+    # se esta com unidade curricular aberta
+    if !@curriculum_unit_id.nil? || !@group_id.nil? || !@offer_id.nil?
+      @participants = class_participants @curriculum_unit_id, false, @offer_id, @group_id
+      @responsibles = class_participants @curriculum_unit_id, true,  @offer_id, @group_id
+    else
+      @all_contacts = User.order("name").find(:all, :joins => :user_contacts,
+                                :conditions => {:user_contacts => {:user_id => current_user.id}} )
+    end
+
+    @contacts = show_contacts_updated
+    return @contacts
   end
 
 end

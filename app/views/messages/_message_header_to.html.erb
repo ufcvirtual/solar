@@ -30,41 +30,21 @@
   <% end %>
   
   <hr/>
-  <div id="div_contacts_list"><%=raw @contacts %></div>
+  <div id="div_contacts_list">
+    <% form_for(@contacts) do |f| %>
+        <%=raw @contacts%>
+    <% end %>
+  </div>
   <textarea id="recipients_selected" disabled="true"></textarea>
 </div>
 
 <script type="text/javascript">
   //atualiza usuarios
   $(function($) {
-    
-    /*$("#curriculum_unit_select").change(function() {
-        $.ajax({
-          url: "/messages/get_contacts/",
-          type: "POST",
-          dataType: "json",
-          data: ({data: this.value}),
-          async: false,
-          success: function(data) {
-                  alert(data);
-                  $('#div_contacts_list').empty();
-                  $('#div_contacts_list').html(data);
-                }
-          })
-        });*/
 
-
-    $('#curriculum_unit_select').change(function(){
-      $.getJSON("/messages/get_contacts/params=?", {data: this.value, format: "json"},
-                  function(data) {
-                    alert(data);
-                    $('#div_contacts_list').empty();
-                    $('#div_contacts_list').html(data);
-                  }
-               );
-    });
-
+     $("#curriculum_unit_select").change(function() {
+        $("#div_contacts_list").load("/messages/ajax_get_contacts/",{data: this.value})
+      })
 
   });
-
 </script>
