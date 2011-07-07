@@ -11,25 +11,30 @@
 <br/>
 &nbsp;
 
-<!-- Conteudo da agenda -->
 
+
+<%#= @agendas.title %>
+
+
+
+
+<!-- Conteudo da agenda -->
 <div id="agenda_content">
-  <div class="agenda_menu_left"> 
+  <div class="agenda_menu_left">
+    <hr id="agenda_line"></hr>
     <div>
-      <div class="agenda_menu_left_title">
-        <div style="float: left;"><%= image_tag "agenda/encontro presencial.png" %> </div>
-        <div class="agenda_menu_left_title">Encontro </div>
+      <div class="agenda_menu_left_title"> 
+        <div style="float: left;"><%= image_tag "chat_offline.png" %> </div>
+        <div style="float: right; font-size: 12px; padding-top: 3px; padding-right: 8px;">Alguma coisa </div>
       </div>
       &nbsp;
-      <p style="font-size: 11px;padding-left: 3px; font-weight: bold;">25/FEV 30/MAR</p>
+      <p style="font-size: small;padding-left: 3px; font-weight: bold">25/FEV 30/MAR</p>
       <p style="margin-top: -10px; padding-left: 35px; font-size: small"> 2011 </p>
     </div>
   </div>
 
   <div class="agenda_menu_ritgh">
-    <div class="agenda_menu_ritgh_title">
-      <%=@agendas.title%>
-    </div>
+    
   </div>
 
 </div>

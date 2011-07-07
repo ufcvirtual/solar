@@ -1,4 +1,5 @@
 class Agenda < ActiveRecord::Base
-  belongs_to :allocation_tag
+  has_many :agenda_types
 
+  belongs_to :allocation_tag
 end
