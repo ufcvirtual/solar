@@ -6,6 +6,9 @@ class CreateDiscussions < ActiveRecord::Migration
       t.date    "end"
       t.string  "description",        :limit => 600
       t.integer "allocation_tag_id"
+      
+      t.integer "schedule_id"
+      
     end
   end
 
