@@ -32,7 +32,7 @@ resources_arr = [
 
   {:id => 24, :controller => 'portfolio', :action =>'list', :description => 'Portfolio da Unidade Curricular'},
   {:id => 25, :controller => 'messages', :action =>'index', :description => 'Mensagens'},
-  {:id => 26, :controller => 'agenda', :action =>'list', :description => 'Agenda'}
+  {:id => 26, :controller => 'schedules', :action =>'list', :description => 'Agenda'}
 ]
 count = 0
 resources = Resource.create(resources_arr) do |registro|
