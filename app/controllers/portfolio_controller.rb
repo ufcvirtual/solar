@@ -6,14 +6,12 @@
 class PortfolioController < ApplicationController
 
   before_filter :require_user
+  before_filter :curriculum_unit_name, :only => [:list, :activity_details]
 
   # lista as atividades
   def list
 
     authorize! :list, Portfolio
-
-    # unidade curricular
-    @curriculum_unit = CurriculumUnit.find(params[:id])
 
     group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
 
@@ -31,10 +29,6 @@ class PortfolioController < ApplicationController
     authorize! :activity_details, Portfolio
 
     assignment_id = params[:id]
-
-    # unidade curricular
-    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"] # recupera unidade curricular da sessao
-    @curriculum_unit = CurriculumUnit.find(curriculum_unit_id)
 
     # recupera a atividade selecionada
     @activity = Assignment.joins(:allocation_tag).where(["assignments.id = ?", assignment_id]).first
@@ -350,6 +344,12 @@ class PortfolioController < ApplicationController
   ###################
 
   private
+
+  # recupera o nome do curriculum_unit
+  def curriculum_unit_name
+    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"] # recupera unidade curricular da sessao
+    @curriculum_unit = CurriculumUnit.select("id, name").where(["id = ?", curriculum_unit_id]).first
+  end
 
   # atividades individuais
   def individual_activities(group_id, user_id)
