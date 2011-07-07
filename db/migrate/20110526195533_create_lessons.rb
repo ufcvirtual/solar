@@ -12,6 +12,9 @@ class CreateLessons < ActiveRecord::Migration
       t.integer  "status",             :default => 0,    :null => false
       t.date     "start",                                :null => false
       t.date     "end",                                  :null => false
+
+      t.integer "schedule_id"
+      
     end
   end
 
