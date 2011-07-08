@@ -11,6 +11,7 @@ pag_ufc:
   status: 1
   start: '2011-03-01'
   end: '2021-12-01'
+  schedule_id: 8
 
 pag_uol:
   id: 2
@@ -23,6 +24,7 @@ pag_uol:
   status: 1
   start: '2011-03-01'
   end: '2021-12-01'
+  schedule_id: 9
 
 pag_globo:
   id: 3
@@ -35,6 +37,7 @@ pag_globo:
   status: 1
   start: '2011-03-01'
   end: '2021-12-01'
+  schedule_id: 10
 
 pag_virtual:
   id: 4
@@ -47,6 +50,7 @@ pag_virtual:
   status: 1
   start: '2011-03-01'
   end: '2021-12-01'
+  schedule_id: 11
 
 pag_bbc:
   id: 5
@@ -59,3 +63,4 @@ pag_bbc:
   status: 1
   start: '2011-03-01'
   end: '2021-12-01'
+  schedule_id: 12
