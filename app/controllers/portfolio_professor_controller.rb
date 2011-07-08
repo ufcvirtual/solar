@@ -1,5 +1,6 @@
 class PortfolioProfessorController < ApplicationController
 
+  before_filter :require_user
   before_filter :curriculum_unit_name
 
   # lista de portfolio dos alunos de uma turma
