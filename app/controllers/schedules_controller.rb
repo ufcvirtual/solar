@@ -1,4 +1,4 @@
-class AgendaController < ApplicationController
+class SchedulesController < ApplicationController
    
   def list
 
