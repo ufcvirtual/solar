@@ -64,17 +64,17 @@ module MessagesHelper
     text = ""
     if !@all_contacts.nil?
         @all_contacts.each do |c|
-            text << "<a class='curriculum_unit_portlet_link' href='javascript:message_recipient(1,2)'>" << c.name << " <" << c.email << "></a><br/>"
+            text << "<a class='message_link' href='javascript:add_receiver(#{c.email})'>" << c.name << " [" << c.email << "]</a><br/>"
         end
     end
     if !@responsibles.nil?
         @responsibles.each do |r|
-            text << "<a class='curriculum_unit_portlet_link' href='javascript:message_recipient(1,2)'>" << r.username << " <"<< r.email << "></a><br/>"
+            text << "<a class='message_link' href='javascript:add_receiver(#{r.email})'>" << r.username << " [" << r.email << "]</a><br/>"
         end
     end
     if !@participants.nil?
         @participants.each do |p|
-            text << "<a class='curriculum_unit_portlet_link' href='javascript:message_recipient(1,2)'>" << p.username << " <" << p.email << "></a><br/>"
+            text << "<a class='message_link' href='javascript:add_receiver(#{p.email})'>" << p.username << " [" << p.email << "]</a><br/>"
         end
     end
 

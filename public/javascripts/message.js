@@ -1,12 +1,3 @@
-function show_div(origin,elementId) {
-    var posx =$('#'+origin).offset().left + 40;
-    var posy =$('#'+origin).offset().top - 2;
-
-    $('#'+ elementId).css({"left":posx});
-    $('#'+ elementId).css({"top":posy});
-    $('#'+ elementId).toggle();
-}
-
 function dropdown_menu(){
     $("#message_menu a, li a").removeAttr('title');
     $("#message_menu ul").css({display: "none"}); // Opera Fix

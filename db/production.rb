@@ -5,7 +5,7 @@ puts "Production Seed"
 puts "Truncando tabelas"
 
 models = [DiscussionPost, Discussion, Lesson, Allocation, Bibliography, UserMessageLabel, UserMessage, MessageLabel,
-  AssignmentComment, CommentFile, SendAssignment, Assignment, Schedule, ScheduleEvent, AllocationTag,
+  AssignmentComment, CommentFile, SendAssignment, Assignment, ScheduleEvent,Schedule, AllocationTag,
   PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,
   PublicFile, CommentFile, AssignmentFile, SendAssignment, Assignment,
   Enrollment, Offer, CurriculumUnit, CurriculumUnitType, Course, PersonalConfiguration, User]

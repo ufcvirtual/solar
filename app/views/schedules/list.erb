@@ -1,0 +1,51 @@
+&nbsp;
+&nbsp;
+<div id="agenda_body" style="background-color: #FFF">
+  <span class="page_title"><%= t(:agenda_title)%></span> <span class="page_title"><%=@curriculum_unit.name%></span>  <!-- TROCAR POR UMA PRÓPRIA -->
+  <br/>
+
+<%#*<div id="agenda_new_activity">%>
+<%#*<div style="margin-left: 9px;margin-top: 3px;">%>
+<%#*&nbsp;+&nbsp;<%= t(:new_activity)%>
+<%#*</div>%>
+<%#*</div>%>
+</div>
+<br/>
+&nbsp;
+
+<!-- Conteudo da agenda -->
+
+<% @schedule.each do |schedule| %>
+<% if !(schedule.nil?) %>
+<div id="agenda_content">
+  <div class="agenda_menu_left">
+    <div>
+      <div class="agenda_menu_left_title">
+        <div style="width: 16px;height: 16px;float: left;"><%= image_tag "agenda/encontro presencial 16x16.png" %> </div>
+        <div style="margin-top: 2px;float: right;"> <%= Discussion%> </div>
+      </div>
+      &nbsp;
+      <p class="agenda_menu_left_date">25/fev 30/mar</p>
+      <p style="margin-top: -10px; padding-left: 38px; font-size: 11px;font-family: 'Trebuchet';"> 2011 </p>
+    </div>
+  </div>
+
+  <div class="agenda_menu_ritgh">
+    <div class="agenda_menu_ritgh_title">
+
+        <% schedule.discussions.each do |disc| %>
+          <%= disc.name %><br />
+          <div class="agenda_menu_ritgh_text">
+          <%= disc.description %>
+          </div>
+        <% end %>
+    </div>
+
+  </div>
+
+</div>
+<br/><br/><br/><br/><br/><br/>
+  <% else %>
+    <%= t(:agenda_null) %>    <!-- INTERNACIONALIZAR AQUI!!! -->
+  <% end %>
+<% end %>

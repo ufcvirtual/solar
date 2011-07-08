@@ -216,6 +216,7 @@ en:
   message_send_ok: "Message sent successfully."
   message_send_error: "Unable to send message."
   message_send_error_no_receiver: "Message not sent. No recipients found in the environment."
+  message_personal_contacts: "Personal Contacts"
 
   navigation_of: " of "
   navigation_next: "Next >"
