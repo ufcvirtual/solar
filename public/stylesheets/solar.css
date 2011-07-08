@@ -130,6 +130,19 @@ textarea{
     padding: 5px;
 }
 
+.link_button {
+    background-color: #eeeeed;
+    color           : #222;
+    float: right;
+    font-weight:bold;
+    padding: 4px;
+    margin:  2px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    -moz-border-radius: 4px;
+}
+
 /****tela de matricula****/
 
 .headtable_blue{
@@ -1471,16 +1484,26 @@ ul.message_menu_listbox li ul a:hover{
     font-size: 11px;
     font-family:'Trebuchet',Arial,'Myriad Pro';
     text-decoration: none;
-    padding: 2px;
+    padding: 5px;
     color: #214684;
     position: absolute;
-    display:block;
-    border: 1px solid #F5F8FB;
+    border: 2px solid #F2F2F2;
     background-color: #fafafa;
-    min-width: 450px;
-    min-height: 50px;
     line-height: 15px;
     z-index: 100;
+}
+.div_contacts_buttons{
+    width:440px;
+    padding-top:4px;
+}
+#div_contacts_list {
+    overflow: auto;
+    background-color: #fff;
+    padding: 5px;
+    margin-right: 3px;
+    margin-top: 1px;
+    border: 1px solid #ddd;
+    height: 150px;
 }
 
 /*BIBLIOGRAFIA*/

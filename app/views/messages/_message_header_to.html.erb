@@ -5,7 +5,7 @@
             <td class="message_text_to" align="right" style="width:75px">
               <a class="curriculum_unit_portlet_link" href="javascript:show_div('link_to_contacts','div_contacts')" id="link_to_contacts"><%=t(:message_to)%></a>
             </td>
-            <td class="message_text_to"><%= text_field_tag  'to', '', :class=> "message_search_textbox" %></td>
+            <td class="message_text_to"><%= text_field_tag  'to', '', :class=> "message_search_textbox", :readonly => true, :onclick => "javascript:show_div('link_to_contacts','div_contacts')" %></td>
           </tr>
           <tr>
             <td class="message_text_to" align="right" style="width:75px"><%=t(:message_subject)%></td>
@@ -21,30 +21,59 @@
 
 <div style="display:none" id="div_contacts">
   <% if !@curriculum_units_user.nil? %>
-    <select id="curriculum_unit_select">
-      <option value="" <%=" selected=true " unless !@curriculum_units_name.nil?%> ><%=t(:all)%></option>
+    
+    <select id="curriculum_unit_select" style="width:440px">
+      <option value="" <%=" selected=true " unless !@curriculum_units_name.nil?%> ><%=t(:message_personal_contacts)%></option>
       <% @curriculum_units_user.each do |curriculum_unit| %>        
         <option value="<%=curriculum_unit["id"] << ';' << curriculum_unit["offer_id"] << ';' << curriculum_unit["group_id"]%>" <%=" selected=true " unless @curriculum_units_name!=curriculum_unit["name"]%> ><%=curriculum_unit["name"]%></option>
       <% end %>
     </select>
   <% end %>
   
-  <hr/>
+  <br/><br/>
+  <%= label_tag "", t(:message_select)+': ' %><br/>
+
   <div id="div_contacts_list">
     <% form_for(@contacts) do |f| %>
         <%=raw @contacts%>
     <% end %>
   </div>
-  <textarea id="recipients_selected" disabled="true"></textarea>
+  <br/>
+  <%= label_tag "", t(:message_to)+': ' %><br/>
+  <textarea id="recipients_selected" style="width:425px" disabled="true"></textarea>
+  <div class="div_contacts_buttons">
+    <span id="link_confirm_contacts" border="0" class="link_button">Concluir</span> 
+    <span id="link_cancel_contacts" border="0" class="link_button">Cancelar</span>
+  </div>
 </div>
 
 <script type="text/javascript">
-  //atualiza usuarios
+
   $(function($) {
 
      $("#curriculum_unit_select").change(function() {
-        $("#div_contacts_list").load("/messages/ajax_get_contacts/",{data: this.value})
-      })
+       $("#div_contacts_list").load("/messages/ajax_get_contacts/",{data: this.value})
+     })
+
+     $("#link_cancel_contacts").click(function() {
+       $("#div_contacts").hide();
+       $("#recipients_selected").empty();
+     })
+
+     $("#link_confirm_contacts").click(function() {
+       $("#div_contacts").hide();
+       $("#to").val($("#recipients_selected").val());
+     })
 
   });
+
+  function show_div(origin,elementId) {
+        var posx =$('#'+origin).offset().left + 38;
+        var posy =$('#'+origin).offset().top - 2;
+
+        $('#'+ elementId).css({"left":posx});
+        $('#'+ elementId).css({"top":posy});
+        $('#'+ elementId).show();
+        $("#recipients_selected").val($("#to").val());
+    }
 </script>
