@@ -1,0 +1,31 @@
+# Data that are not generated automatically by the system
+schedule_event 1:
+  id: 1
+  title: Videoconferência
+  description: Reunião com videoconferência
+  schedule_id: 1
+
+schedule_event 2:
+  id: 2
+  title: Recesso
+  description: Recesso institucional
+  schedule_id: 2
+
+schedule_event 3:
+  id: 3
+  title: Avaliação
+  description: Avaliação marcada para esse período
+  schedule_id: 3
+
+schedule_event 4:
+  id: 4
+  title: Encontro Presencial
+  description: Encontro Presencial marcado para esse período
+  schedule_id: 4
+
+schedule_event 5:
+  id: 5
+  title: Feriado
+  description: Feriado nesse período
+  schedule_id: 5
+

@@ -1,4 +1,4 @@
 class ScheduleEvent < ActiveRecord::Base
 
-  has_many :schedules
+  belongs_to :schedule
 end

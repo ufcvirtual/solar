@@ -3,11 +3,11 @@ class SchedulesController < ApplicationController
   def list
 
     @curriculum_unit = CurriculumUnit.find(params[:id])
-    @schedule = Schedule.all #teste
+    @schedule = Schedule.joins(:discussions) #teste
     
 #    # pegando dados da sessao e nao da url
-#    @groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-#    @offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+#   @groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+#   @offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
 
 #    @bibliography = Bibliography.all
 #    @curriculum_unit = CurriculumUnit.all
