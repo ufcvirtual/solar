@@ -15,34 +15,35 @@ class PortfolioProfessorController < ApplicationController
 
   # detalha o portfolio do aluno para a turma em questao
   def student_detail
-    student_id = params[:id] || 0
+
+    # modificar esta opcao
+    send_assignment_id = 2
+
+    students_id = params[:id] || 0
 
     # estudante
-    @student = User.select("name").where(["id = ?", student_id]).first
+    @student = User.select("name").where(["id = ?", students_id]).first
 
+    # arquivos enviados pelo aluno e nota
+    @grade = ''
+    @files = AssignmentFile.includes(:send_assignment).where("assignment_files.send_assignment_id = ? AND send_assignments.user_id = ?", send_assignment_id, students_id)
+    @grade = @files.first.send_assignment["grade"] unless @files.nil?
+    @files = [] if @files.nil?
 
-#    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-#
-#    # arquivos enviados
-#    CommentFile.select("attachment_file_name, attachment_update_at").where(["assignment_comment_id = ?", assignment_comment_id])
-
-
-    # nota
-
-    # comentarios
-
-    # anexos aos comentarios
+    # comentarios e arquivos do professor
+    @comments_files = CommentFile.includes(:assignment_comment).where("assignment_comments.send_assignment_id = ?", send_assignment_id)
+    @comment = @comments_files.first.assignment_comment["comment"] unless @comments_files.nil?
 
   end
 
   # deleta arquivos enviados
   def delete_file
-    
+
   end
 
   # upload de arquivos para o comentario
   def upload_files
-    
+
   end
 
   private

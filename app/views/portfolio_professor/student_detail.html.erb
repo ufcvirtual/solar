@@ -47,23 +47,17 @@
       <br />
       <div id="div_body_pa">
         <div id="div_body_left" style="display: inline-block;">
-
-          <div class="list_files" style="padding-bottom: 10px; text-align: right;">
-            <div class="name_files">nome do arquivo do primeiro trabalho 1.pdf</div>
-            <div class="date_files"><span style="font-style: italic; color:  gray;">Enviado em 2011/02/02</span></div>
-          </div>
-          <div class="list_files" style="padding-bottom: 10px; text-align: right;">
-            <div class="name_files">nome do arquivo trabalho 2 - 1.pdf</div>
-            <div class="date_files"><span style="font-style: italic; color:  gray;">Enviado em 2011/02/02</span></div>
-          </div>
-          <div class="list_files" style="padding-bottom: 10px; text-align: right;">
-            <div class="name_files">nome do arquivo 1.pdf</div>
-            <div class="date_files"><span style="font-style: italic; color:  gray;">Enviado em 2011/02/02</span></div>
-          </div>
-
+          <% @files.each do |f| %>
+            <div class="list_files" style="padding-bottom: 10px; text-align: right;">
+              <div class="files_name">
+                <a href="#" style="color: blue;"><%= f["attachment_file_name"] %></a>
+              </div>
+              <div class="files_date"><span style="font-style: italic; color:  gray;">Enviado em <%=l f["attachment_updated_at"].to_time, :format => :files %></span></div>
+            </div>
+          <% end %>
         </div>
         <div id="div_body_right" style="float: right;">
-          <input type="text" value="8" size="5"/>
+          <input type="text" value="<%= @grade %>" size="4"/>
         </div>
       </div>
     </div>
@@ -71,9 +65,9 @@
     <div style="padding-bottom: 10px; padding-left: 10px;">
 
       <!-- comentarios sobre o trabalho enviado -->
-      <span>Comentarios sobre o trabalho enviado:</span><br /><br />
+      <span>Comentario sobre o(s) trabalho(s) enviado(s):</span><br /><br />
       <div id="teachers_comments" style="text-align: center; padding-bottom: 10px;">
-        <textarea rows="10" cols="50" style="width: 450px;"></textarea>
+        <textarea rows="10" cols="50" style="width: 450px;"><%= @comment %></textarea>
       </div>
       <span class="portfolio_activity_mright" style="float: right;">
         <span style="padding-right: 10px;"><a href="#">Voltar</a></span>
@@ -99,26 +93,22 @@
       <div id="list_files_sent">
         <table border="0" width="70%" cellspacing="0" cellpadding="0" style="padding-bottom: 10px; padding-top: 10px;">
           <tbody>
-            <tr>
-              <td align="right">
-                <div id="files_list">
-                  <span>nome arquivo mutio grande mesmo.pdf</span><br />
-                  <span style="font-style: italic; color: gray;">Enviado em 2011-05-01</span>
-                </div>
-              </td>
-              <td align="left" style="float: left; margin-left: 10px; margin-top: 2px;">
-                <a href="#">Excluir</a>
-              </td>
-            </tr>
-            <tr>
-              <td align="right">
-                <span>arquivo1.pdf</span><br />
-                <span style="font-style: italic; color: gray;">Enviado em 2011-05-01</span>
-              </td>
-              <td align="left" style="float: left; margin-left: 10px; margin-top: 2px;">
-                <a href="#">Excluir</a>
-              </td>
-            </tr>
+
+
+            <% @comments_files.each do |c| %>
+              <tr>
+                <td align="right">
+                  <div id="files_list">
+                    <span><%= c["attachment_file_name"] %></span><br />
+                    <span style="font-style: italic; color: gray;">Enviado em <%=l c["attachment_updated_at"], :format => :files %></span>
+                  </div>
+                </td>
+                <td align="left" style="float: left; margin-left: 10px; margin-top: 2px;">
+                  <%= link_to "Excluir", {:action => :delete_file, :id => c["id"]} %>
+                </td>
+              </tr>
+            <% end %>
+
           </tbody>
         </table>
       </div>
