@@ -34,6 +34,7 @@
   which: "Qual"
   confirm: "Confirmar"
   back: "Voltar"
+  save: "Salvar"
   new_user_msg_cpf_error: " inválido"
 
   #Meus dados

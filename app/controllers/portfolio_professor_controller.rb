@@ -18,8 +18,12 @@ class PortfolioProfessorController < ApplicationController
 
     # modificar esta opcao
     send_assignment_id = 2
+    students_id = params[:id]
 
-    students_id = params[:id] || 0
+    # recuperar o nome da atividade
+    activity = Assignment.joins(:send_assignments).where("send_assignments.id = ? AND user_id = ?", send_assignment_id, students_id)
+    @activity = ''
+    @activity = activity.first["name"] unless activity.nil?
 
     # estudante
     @student = User.select("name").where(["id = ?", students_id]).first
@@ -39,6 +43,11 @@ class PortfolioProfessorController < ApplicationController
   # deleta arquivos enviados
   def delete_file
 
+  end
+
+  # atualiza comentarios do professor
+  def update_comment
+    
   end
 
   # upload de arquivos para o comentario
