@@ -34,14 +34,14 @@ module DiscussionPostsHelper
     end
 
     #Montando exibição do post e exibindo respostas recursivamente
-    post_string << '<table border="0" cellpadding="0" cellspacing="0" width="95%" class="forum_post">
+    post_string << '<table border="0" cellpadding="0" cellspacing="0" class="forum_post">
                     <tr>
                       <td class="forum_post_head_left">
                         <span alt="' << post.user_nick << '">' << nick << '</span><br />
                         <span class="forum_participant_profile" >'<< post.profile << '</span>
                       </td>
                       <td class="forum_post_head_right">
-                        #
+                        <div class="forum_post_date">' << (l post[:updated_at], :format => :discussion_post ) << '</div>
                       </td>
                     </tr>
                     <tr>
@@ -58,13 +58,12 @@ module DiscussionPostsHelper
                           <div class="forum_post_inner_content" style="min-height:100px">'
     post_string <<      (sanitize post.content)
     post_string <<      ' </div>
-                          <div class="forum_post_date">' << post[:updated_at].to_s(t(:discussion_post_pt_br)) << '</div>
-                          <div class="forum_post_date">'
+                          <div class="forum_post_buttons">'
                             if editable
-    post_string <<      '     <a href="javascript:removePost(' << post[:id].to_s << ')">[excluir]</a>
-                              <a href="javascript:setDiscussionPostId(' << post[:id].to_s << ')" class="updateDialogLink">[editar]</a>'
+    post_string <<      '     <a href="javascript:removePost(' << post[:id].to_s << ')" class="forum_button forum_button_remove">' << t('forum_show_remove') << '</a>&nbsp;&nbsp;
+                              <a href="javascript:setDiscussionPostId(' << post[:id].to_s << ')" class="forum_button updateDialogLink ">' << t('forum_show_edit') << '</a>&nbsp;&nbsp;'
                             end
-    post_string <<      '   <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink forum_button">[reponder]</a>
+    post_string <<      '   <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink forum_button">' << t('forum_show_answer') << '</a>
                           </div>
                         </td>
                       </tr>

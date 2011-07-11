@@ -40,6 +40,7 @@ en:
   my_professional_data: "Professional"
   alter_data: "Alter Data"
   cancel: "Cancel"
+  send: "Send"
   contact: "Contact"
   authentication: "Authentication"
   old_password: "Old Password"
@@ -183,6 +184,13 @@ en:
   forum: "Discussion"
   forum_new_message: "New Message"
 
+  #Exibição/Interação Fóruns
+  forum_show_plainlist: "Show as List"
+  forum_show_thread: "Show as Thread"
+  forum_show_answer: "Answer"
+  forum_show_remove: "Remove"
+  forum_show_edit: "Edit"
+
   message_title: "Messages"
   message_inbox: "Inbox"
   message_outbox: "Outbox"
@@ -299,7 +307,7 @@ en:
       short: "%b/%d %H:%M"
       long: "%B %d, %Y %H:%M"
       files: "%D %H:%M"
-      discussion_post: "%d %B, %Y %H:%M horas"
+      discussion_post: "%B %d, %Y %H:%M h"
     am: "am"
     pm: "pm"
 

@@ -17,7 +17,10 @@
         '<div id="newPostDialog" style="display: none;">' +
         '<textarea id="newPostTextBox">' +
         '</textarea>' +
-        '<a href="javascript:cancelPosting();">[Cancelar]</a><a href="javascript:sendPost()">[Enviar]</a>' +
+        '<div style="text-align:right;">' +
+        '<a href="javascript:cancelPosting();" class="forum_button"><%=t("cancel")%></a>&nbsp;&nbsp;' +
+        '<a href="javascript:sendPost();" class="forum_button"><%=t("send")%></a>' +
+        '</div>' +
         '</div>';
 
       //Removendo outra caixa de entrada de postagem que possam
@@ -34,6 +37,7 @@
       postContainer.append(newFormCode);
 
       $('#newPostTextBox').ckeditor( function () {
+        $('#newPostDialog').css('width','100%');
         $('#newPostDialog').slideToggle(800)
       }, {
         toolbar: 'SolarToolbar'
@@ -122,19 +126,23 @@
       <a href="javascript:clearFormData()" id="NewPostButton" class="forum_button"><%= t("forum_new_message")%></a>
     </span>
 
-    <%=raw render_pagination_bar(count_discussion_posts(@discussion.id,(@display_mode=="PLAINLIST")).to_s)%>
-
-    <span style="float:right">
+    <span style="float:right;">
       <%if @display_mode == "PLAINLIST"%>
-        <a href="javascript:showAsThread()" class="forum_button">[Modo árvore]</a>&nbsp;
+        <a href="javascript:showAsThread()" class="forum_button forum_button_view_mode"><%=  t("forum_show_thread")%>
+          <%= image_tag "discussion_thread.png", :alt => '' %>
+        </a>
       <%else%>
-        <a href="javascript:showAsPlainList()" class="forum_button">[Modo Lista]</a>
+        <a href="javascript:showAsPlainList()" class="forum_button forum_button_view_mode"><%=  t("forum_show_plainlist")%>
+          <%= image_tag "discussion_plainlist.png", :alt => '' %>
+        </a>
       <%end%>
     </span>
+    <%=raw render_pagination_bar(count_discussion_posts(@discussion.id,(@display_mode=="PLAINLIST")).to_s)%>
+    
   </div>
 </div>
 
-<div>
+<div style="max-width:640px">
   <%if @display_mode == "PLAINLIST"%>
     <% @posts.each do |post|%>
       <%= raw show_post(post, false)%>
