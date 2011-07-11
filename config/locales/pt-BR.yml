@@ -43,6 +43,7 @@
   my_professional_data: "Profissionais"
   alter_data: "Alterar Dados"
   cancel: "Cancelar"
+  send: "Enviar"
   contact: "Contato"
   authentication: "Autenticação"
   old_password: "Senha Antiga"
@@ -179,13 +180,21 @@
   lesson_message: "Nenhuma aula disponível"
   lesson: "Aula"
   lesson_goto: "Ir para aula"
-  
+
+  #Listagem de Fóruns
   forum_title: "Fóruns"
   forum_table_title: "Fóruns disponíveis"
   forum_table_date: "Data de acesso"
   forum_message: "Nenhum fórum disponível"
   forum: "Fórum"
-  forum_new_message: "Nova mensagem"
+  forum_new_message: "Nova Mensagem"
+
+  #Exibição/Interação Fóruns
+  forum_show_plainlist: "Ver em Lista"
+  forum_show_thread: "Ver em Árvore"
+  forum_show_answer: "Responder"
+  forum_show_remove: "Excluir"
+  forum_show_edit: "Editar"
 
   message_title: "Mensagens"
   message_inbox: "Entrada"
@@ -308,7 +317,7 @@
       short: "%d/%m %H:%M h"
       long: "%A, %d de %B de %Y, %H:%M h"
       files: "%d/%m/%Y %H:%M"
-      discussion_post: "%d %B, %Y %H:%M horas"
+      discussion_post: "%d %B, %Y %H:%M h"
     am: ''
     pm: ''
 

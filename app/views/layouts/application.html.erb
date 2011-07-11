@@ -46,14 +46,11 @@
 
         //Configurando a largura do conteudo
         $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
-        $("#mysolar_content").outerHeight($(window).height()-($("#mysolar_content").position().top+$("#mysolar_content").offset().top));
-        console.log($("#mysolar_content").outerHeight());
         $("#mask").outerHeight($("#mysolar_content").outerHeight());
         $("#mask").outerWidth($("#mysolar_content").outerWidth());
         
         $(window).resize(function() {
           $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
-          $("#mysolar_content").outerHeight($(window).height()-($("#mysolar_content").position().top+$("#mysolar_content").offset().top));
         });
 
         //Configurando a altura da sidebar para acompanhar o total do conteúdo da página

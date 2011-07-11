@@ -252,6 +252,11 @@ textarea{
     color		: #FFF;
     overflow	: hidden;
 }
+
+#image_user{
+    max-width: 90px;
+}
+
 #mysolar_sidebar{
     width               :175px;
     height              :100%;
@@ -304,10 +309,11 @@ textarea{
 .mysolar_unit_tab{
     color: #222;
     text-align:center;
-    padding: 9px;
+    padding-left: 9px;
+    padding-right: 9px;
     margin-right: 4px;
     background-color: #e6edee;
-    display:inline;
+    display:inline-block;
     z-index: 10;
     border-top:4px solid #003e7a;
     cursor: pointer;
@@ -560,6 +566,7 @@ a.mysolar_top_link{
 #mysolar_chat_list{
     border: 1px solid #bbb;
     background-color: #fff;
+    display:none;
 }
 
 #mysolar_chat_list_internal{
@@ -1150,20 +1157,29 @@ div.alter_photo_text {
     color: #1c4785;
     text-decoration: underline;
     font-family:  'Myriad Pro', 'Arial', sans;
-    font-size: 12px;
+    font-size: 15px;
     cursor: pointer;
+}
+.forum_button_remove{
+    color: #922;
+}
 
+.forum_button_view_mode{
+    color: #222;
+    font-size: 13px;
 }
 
 .forum_navigation_bar{
     border-bottom: 3px solid #1d4786;
     width: 100%;
+    max-width: 640px;
 }
 
 .forum_post{
     background-color: #f9f9fa;
     min-height: 140px;
     white-space: normal;
+    max-width: 640px;
 }
 .forum_post_child_ident{
     padding-left: 70px;
@@ -1195,10 +1211,12 @@ div.alter_photo_text {
     background-color:#f9f9fa;
     height: 35px;
     width: 106px;
+    min-width: 106px;
     font-family: 'Trebuchet MS';
     font-size: 12px;
     border-bottom: 3px solid #fff;
     vertical-align: top;
+    padding-top: 10px;
 }
 .forum_post_content_left{
     border-right: 1px solid #ecf3f8;
@@ -1228,11 +1246,20 @@ div.alter_photo_text {
 .forum_participants_icons {
     bottom: 1px;
     left: 23%;
+    padding-top:5px;
 }
 .forum_post_date{
     font-size: 9px;
     text-align: right;
+    font-style: italic;
+    color: #888;
+    margin-right: 10px;
 }
+.forum_post_buttons{
+    text-align: right;
+    margin-right: 10px;
+}
+
 
 /* tela de mensagens */
 .message_external_div {
