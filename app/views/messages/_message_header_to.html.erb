@@ -40,7 +40,7 @@
   </div>
   <br/>
   <%= label_tag "", t(:message_to)+': ' %><br/>
-  <textarea id="recipients_selected" style="width:425px" disabled="true"></textarea>
+  <div id="recipients_selected"></div>
   <div class="div_contacts_buttons">
     <span id="link_confirm_contacts" border="0" class="link_button">Concluir</span> 
     <span id="link_cancel_contacts" border="0" class="link_button">Cancelar</span>
@@ -57,12 +57,11 @@
 
      $("#link_cancel_contacts").click(function() {
        $("#div_contacts").hide();
-       $("#recipients_selected").empty();
      })
 
      $("#link_confirm_contacts").click(function() {
        $("#div_contacts").hide();
-       $("#to").val($("#recipients_selected").val());
+       $("#to").val($("#recipients_selected").text());
      })
 
   });
@@ -74,6 +73,17 @@
         $('#'+ elementId).css({"left":posx});
         $('#'+ elementId).css({"top":posy});
         $('#'+ elementId).show();
-        $("#recipients_selected").val($("#to").val());
+  }
+
+  function add_receiver(email){
+    new_email = email + ", ";
+    var new_recipient = "<span onclick='$(this).remove()' class='message_recipient_box' >"+new_email+"</span>";
+
+    var atual_recipients = $("#recipients_selected").text();
+    var found = atual_recipients.search(new_email);
+    if (found == -1) {
+      $("#recipients_selected").append(new_recipient);
     }
+  }
+
 </script>

@@ -230,6 +230,7 @@
   message_send_error: "Não foi possível enviar mensagem."
   message_send_error_no_receiver: "Mensagem não enviada. Nenhum destinatário encontrado no ambiente."
   message_personal_contacts: "Contatos Pessoais"
+  message_header: "Mensagem enviada por: "
 
   navigation_of: " de "
   navigation_next: "Próxima >"

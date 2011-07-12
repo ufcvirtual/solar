@@ -1417,6 +1417,47 @@ div.alter_photo_text {
     padding: 20px;
     padding-right: 100px;
 }
+.message_recipient_box {
+    border: 1px solid #eee;
+    font-size: 12px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    color: #214684;
+    cursor: pointer;
+}
+#recipients_selected {
+    border: 1px solid #ccc;
+    width: 435px;
+    height: 50px;
+    background-color: #fff;
+    white-space: normal;
+    overflow: auto;
+}
+#div_contacts{
+    font-size: 11px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    text-decoration: none;
+    padding: 5px;
+    color: #214684;
+    position: absolute;
+    border: 2px solid #F2F2F2;
+    background-color: #fafafa;
+    line-height: 15px;
+    z-index: 100;
+}
+.div_contacts_buttons{
+    width:440px;
+    padding-top:4px;
+}
+#div_contacts_list {
+    overflow: auto;
+    background-color: #fff;
+    padding: 5px;
+    margin-right: 3px;
+    margin-top: 1px;
+    border: 1px solid #ddd;
+    height: 150px;
+}
+
 /* dropdown de mensagens (selecionar, mover para) */
 ul{
     list-style-type:none;
@@ -1503,34 +1544,6 @@ ul.message_menu_listbox li ul a:hover{
     padding-left: 5px;
     padding-right: 5px;
     color: #214684;
-}
-
-/* Mensagens */
-
-#div_contacts{
-    font-size: 11px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
-    text-decoration: none;
-    padding: 5px;
-    color: #214684;
-    position: absolute;
-    border: 2px solid #F2F2F2;
-    background-color: #fafafa;
-    line-height: 15px;
-    z-index: 100;
-}
-.div_contacts_buttons{
-    width:440px;
-    padding-top:4px;
-}
-#div_contacts_list {
-    overflow: auto;
-    background-color: #fff;
-    padding: 5px;
-    margin-right: 3px;
-    margin-top: 1px;
-    border: 1px solid #ddd;
-    height: 150px;
 }
 
 /*BIBLIOGRAFIA*/

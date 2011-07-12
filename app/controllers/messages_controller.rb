@@ -30,12 +30,40 @@ class MessagesController < ApplicationController
     get_contacts
   end
 
+  def show
+    if !params[:id].nil?
+      message_id = params[:id]
+
+      if has_permission(message_id)
+        @message = Message.find(message_id)
+        @sender  = get_sender(message_id)
+        @recipients  = get_recipients(message_id)
+        @files = get_files(message_id)
+
+        mark_as_read(message_id)
+
+        @show_message = 'show'
+      else
+        flash[:error] = t(:no_permission)
+        redirect_to :action => "index"
+      end
+    end
+  end
+
+  def reply
+    #id da msg
+    id = params[:id]
+
+    #recebe nil quando esta em pagina de leitura/edicao de msg
+    @type = nil
+    @show_message = 'reply'
+  end
+
   def send_message
     if !params[:to].nil? && !params[:newMessageTextBox].nil?
       to = params[:to]
       subject = params[:subject]
       message = params[:newMessageTextBox]
-      #from = current_user
 
       #apenas usuarios que sao cadastrados no ambiente; se algum destinarario nao eh, nao envia...
       real_receivers = ""
@@ -46,8 +74,17 @@ class MessagesController < ApplicationController
       #divide destinatarios
       individual_to = to.split(",").map{|r|r.strip}
 
+      update_tab_values
       label_name = get_label_name(@curriculum_unit_id, @offer_id, @group_id)
-
+      
+      #informacoes do usuario atual para identificacao na msg
+      atual_user = User.find(current_user.id)
+      message_header = "<b>" + t(:message_header) + atual_user.name + " [" + atual_user.email + "]</b><br/>"      
+      if label_name != ""
+        message_header << "[" + label_name + "]<br/>"
+      end
+      message_header << "________________________________________________________________________<br/><br/>"
+      message = message_header + message
 
       #":requires_new => true" permite rollback
       Message.transaction do
@@ -114,14 +151,14 @@ class MessagesController < ApplicationController
 
         rescue
           flash[:notice] = t(:message_send_error)
-          #efetua rollback
+          # efetua rollback
           raise ActiveRecord::Rollback
         else
           if real_receivers.empty?
             flash[:notice] = t(:message_send_error_no_receiver)
           else
             flash[:notice] = t(:message_send_ok)
-            #envia email apenas uma vez, em caso de sucesso da gravacao no banco
+            # envia email apenas uma vez, em caso de sucesso da gravacao no banco
             Notifier.deliver_send_mail(real_receivers, subject, message) unless real_receivers.empty? #, from = nil
           end
         end
@@ -145,37 +182,8 @@ class MessagesController < ApplicationController
     if !curriculum_unit_id.nil? 
       curriculum_unit = CurriculumUnit.find(curriculum_unit_id)
       label_name << curriculum_unit.name.slice(0..15)
-    end    
-    return label_name
-  end
-
-  def show
-    if !params[:id].nil?
-      message_id = params[:id]
-
-      if has_permission(message_id)
-        @message = Message.find(message_id)
-        @sender  = get_sender(message_id)
-        @recipients  = get_recipients(message_id)
-        @files = get_files(message_id)
-        
-        mark_as_read(message_id)
-
-        @show_message = 'show'
-      else
-        flash[:error] = t(:no_permission)
-        redirect_to :action => "index"
-      end
     end
-  end
-
-  def reply
-    #id da msg
-    id = params[:id]
-
-    #recebe nil quando esta em pagina de leitura/edicao de msg
-    @type = nil
-    @show_message = 'reply'
+    return label_name
   end
 
   # marca mensagem(ns) como lida(s)
@@ -234,15 +242,15 @@ class MessagesController < ApplicationController
     end
   end
 
-  # unidades curriculares do usuario logado
-  def get_curriculum_units    
-    @curriculum_units_user = load_curriculum_unit_data
-  end
-
   # metodo chamado por ajax para atualizar contatos
   def ajax_get_contacts
     get_contacts
     render :layout => false
+  end
+
+  # unidades curriculares do usuario logado
+  def get_curriculum_units    
+    @curriculum_units_user = load_curriculum_unit_data
   end
 
   # retorna (1) usuario que enviou a msg
@@ -298,8 +306,7 @@ private
     @unread = unread_inbox(current_user.id, @message_tag)
   end
 
-  # contatos para montagem da tela
-  def get_contacts
+  def update_tab_values
     # pegando id da sessao - unidade curricular aberta
     id = session[:opened_tabs][session[:active_tab]]["id"]
 
@@ -324,6 +331,13 @@ private
         @group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
       end
     end
+  end
+
+  # contatos para montagem da tela
+  def get_contacts
+    # pegando id da sessao - unidade curricular aberta
+    id = session[:opened_tabs][session[:active_tab]]["id"]
+    update_tab_values
 
     #unidade curricular ativa ou home ("")
     if @curriculum_unit_id == id

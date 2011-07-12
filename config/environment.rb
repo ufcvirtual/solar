@@ -10,9 +10,9 @@ ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.smtp_settings = {
 		:address              => 'smtp.gmail.com',
 		:port                 => 587,
-    :domain               => 'domain',
-		:user_name            => 'teste@domain.br',
-		:password             => '123456',
+		:domain               => 'www.virtual.ufc.br',
+		:user_name            => 'teste@virtual.ufc.br',
+		:password             => '!teste123',
 		:authentication       => 'login',
 		:enable_starttls_auto => true  }
 
