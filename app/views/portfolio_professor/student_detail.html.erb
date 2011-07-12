@@ -6,86 +6,80 @@
 &nbsp;
 
 <style type="text/css">
-  .estilotextarea {
-    width:400px;
-    height:100px;
-    /*    border: 1px solid #000;*/
+
+  .portfolio_activity {
+    width: 500px;
   }
+
+  .portfolio_activity_mright {
+    margin-right: 20px;
+  }
+
 </style>
 
 <!-- Apresenta o nome da unidade curricular -->
+
 <div>
-  <span class="page_title"><%= t(:portfolio_title) %></span>
-  <span class="page_title"><%= @curriculum_unit.name unless @curriculum_unit.nil? %></span>
+  <span class="page_title">
+    Correcao de Trabalho de Atividade I de Quimica I
+  </span>
 </div>
 
 <!-- Portfolio -->
-<div>
+<div class="portfolio_activity">
+
   <div class="portfolio_header_content">
     <div class="portfolio_title"><%= @student.name %></div>
     <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
   </div>
 
-  <!-- 1a parte -->
-  <div id="portfolio" class="portfolio">
-    <hr class="portfolio_line" />
+  <!-- Arquivos do aluno e comentarios -->
 
+  <div id="portfolio" class="portfolio portfolio_activity">
+    <hr class="portfolio_line portfolio_activity" />
 
-
-    <div>
-
-      <table border="1" width="100%">
-        <thead>
-          <tr>
-            <td>Arquivos do trabalho:</td>
-            <td align="right">Nota:</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td align="right">
-              <div id="files_list">
-                <span>arquivo1.pdf</span><br />
-                <span>2011-05-01</span>
+    <!-- Arquivos de trabalho -->
+    <div style="padding-left: 10px; padding-right: 10px;">
+      <div id="div_header" style="padding-bottom: 10px;">
+        <div id="header_left" style="float: left;">Arquivos do trabalho:</div>
+        <div id="header_rigth" style="float: right; padding-right: 50px;">Nota:</div>
+      </div>
+      <br />
+      <div id="div_body_pa">
+        <div id="div_body_left" style="display: inline-block;">
+          <% @files.each do |f| %>
+            <div class="list_files" style="padding-bottom: 10px; text-align: right;">
+              <div class="files_name">
+                <a href="#" style="color: blue;"><%= f["attachment_file_name"] %></a>
               </div>
-            </td>
-            <td rowspan="3" align="right" style="float: right;">
-              <input id="grade" value="8" size="5" />
-            </td>
-          </tr>
-          <tr>
-            <td align="right">
-              <span>arquivo1.pdf</span><br />
-              <span>2011-05-01</span>
-            </td>
-          </tr>
-          <tr>
-            <td align="right">
-              <span>arquivo1.pdf</span><br />
-              <span>2011-05-01</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <div class="files_date"><span style="font-style: italic; color:  gray;">Enviado em <%=l f["attachment_updated_at"].to_time, :format => :files %></span></div>
+            </div>
+          <% end %>
+        </div>
+        <div id="div_body_right" style="float: right;">
+          <input type="text" value="<%= @grade %>" size="4"/>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding-bottom: 10px; padding-left: 10px;">
 
       <!-- comentarios sobre o trabalho enviado -->
-      <br />
-      <br />
-      <span>Comentarios sobre o trabalho enviado:</span><br />
-      <textarea rows="10" cols="50" class="estilotextarea"></textarea>
-      <br />
-      <span style="text-align:right;">
-        <a href="#">Voltar</a>&nbsp;<a href="#">Salvar</a>
+      <span>Comentario sobre o(s) trabalho(s) enviado(s):</span><br /><br />
+      <div id="teachers_comments" style="text-align: center; padding-bottom: 10px;">
+        <textarea rows="10" cols="50" style="width: 450px;"><%= @comment %></textarea>
+      </div>
+      <span class="portfolio_activity_mright" style="float: right;">
+        <span style="padding-right: 10px;"><a href="#">Voltar</a></span>
+        <span><a href="#">Salvar</a></span>
       </span>
-
+      &nbsp;
     </div>
 
-    <div style="background-color: #FFF">
-      <br/>
-    </div>
   </div>
 
   <!-- Inserir anexos aos comentarios -->
+
   <div class="portfolio_header_content">
     <div class="portfolio_title">Inserir anexos ao comentario</div>
     <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
@@ -93,54 +87,49 @@
 
   <div id="attachments">
 
-    <div id="portfolio" class="portfolio">
-      <hr class="portfolio_line" />
+    <div id="portfolio" class="portfolio portfolio_activity">
+      <hr class="portfolio_line portfolio_activity" />
 
-      <div>
-        <table border="1" width="50%">
+      <div id="list_files_sent">
+        <table border="0" width="70%" cellspacing="0" cellpadding="0" style="padding-bottom: 10px; padding-top: 10px;">
           <tbody>
-            <tr>
-              <td align="right">
-                <div id="files_list">
-                  <span>arquivo1.pdf</span><br />
-                  <span>2011-05-01</span>
-                </div>
-              </td>
-              <td align="left">
-                Excluir
-              </td>
-            </tr>
-            <tr>
-              <td align="right">
-                <span>arquivo1.pdf</span><br />
-                <span>2011-05-01</span>
-              </td>
-              <td align="left">
-                Excluir
-              </td>
-            </tr>
+
+
+            <% @comments_files.each do |c| %>
+              <tr>
+                <td align="right">
+                  <div id="files_list">
+                    <span><%= c["attachment_file_name"] %></span><br />
+                    <span style="font-style: italic; color: gray;">Enviado em <%=l c["attachment_updated_at"], :format => :files %></span>
+                  </div>
+                </td>
+                <td align="left" style="float: left; margin-left: 10px; margin-top: 2px;">
+                  <%= link_to "Excluir", {:action => :delete_file, :id => c["id"]} %>
+                </td>
+              </tr>
+            <% end %>
+
           </tbody>
         </table>
       </div>
+
       <br />
       <div id="send_file">
         <span class="alter_photo_text"><%= t(:your_computer) %></span>
 
-        <%= form_for(:portfolio, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files_public_area', :curriculum_unit_id => params[:id]}) do |f| %>
+        <%= form_for(:portfolio_professor, :html => { :multipart => true }, :url => {:action => 'upload_files_public_area', :curriculum_unit_id => params[:id]}) do |f| %>
           <%= f.file_field :attachment%>
           <br />
           <div class="alter_photo_text"><%=raw t(:send_file_portfolio_obs)%></div><br />
           <div class="alter_photo_text"><%=raw t(:send_file_portfolio_text)%></div>
-          <%= f.submit t(:send), :id => "attachment_submit", :class => "solar_button_gray"%>
+          <div style="float: right; padding-bottom: 10px; padding-right: 10px;">
+            <%= f.submit t(:send) %>
+          </div><br /><br /><br />
         <% end %>
       </div>
 
-
     </div>
 
-
-
   </div>
-
 
 </div>
