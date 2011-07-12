@@ -12,9 +12,30 @@
       $('#new_post_form').submit();
     }
 
+
+    var numFileFields = 0;
+    function appendFileField(){
+      newElementId = 'post_attachment_' + numFileFields;
+      newElementName = 'post[attachment_' + numFileFields + ']'
+      newElement = '<div id="'+ newElementId +'_container">';
+      newElement += '<input id="' + newElementId + '" type="file" name="' + newElementName + '" style="display:none;"/>';
+      newElement += '<a href="javascript:removeFileField(\''+newElementId+'\')">[remover]</a>';
+      newElement += '</div>';
+      $("#newPostUploadPanel").prepend(newElement);
+      $("#"+newElementId).slideDown('fast');
+      numFileFields++;
+    }
+    
+    function removeFileField(fieldId){
+      $("#"+fieldId+"_container").hide('fast', function(){ $("#"+fieldId+"_container").remove(); });
+    }
+
+
+
     function appendRichTextBox(postContainer){
       newFormCode = '' +
-        '<div id="newPostDialog" style="display: none;">' +
+        '<div id="new_post_dialog" style="display: none;">' +
+        '<div id="newPostUploadPanel"><a href="javascript:appendFileField()">[Anexar arquivo]</a></div>' +
         '<textarea id="newPostTextBox">' +
         '</textarea>' +
         '<div style="text-align:right;">' +
@@ -25,7 +46,7 @@
 
       //Removendo outra caixa de entrada de postagem que possam
       //estar abertas, possivelmente.
-      $('#newPostDialog').attr('id', 'oldPostDialog');
+      $('#new_post_dialog').attr('id', 'oldPostDialog');
       $('#newPostTextBox').attr('id', 'oldPostTextBox');
       if (CKEDITOR.instances.newPostTextBox) {
         CKEDITOR.instances.newPostTextBox.destroy();
@@ -37,15 +58,15 @@
       postContainer.append(newFormCode);
 
       $('#newPostTextBox').ckeditor( function () {
-        $('#newPostDialog').css('width','100%');
-        $('#newPostDialog').slideToggle(800)
+        $('#new_post_dialog').css('width','100%');
+        $('#new_post_dialog').show(300)
       }, {
         toolbar: 'SolarToolbar'
       });
     }
 
     function cancelPosting() {
-      $('#newPostDialog').attr('id', 'oldPostDialog');
+      $('#new_post_dialog').attr('id', 'oldPostDialog');
       $('#newPostTextBox').attr('id', 'oldPostTextBox');
       if (CKEDITOR.instances.newPostTextBox) {
         CKEDITOR.instances.newPostTextBox.destroy();
@@ -71,6 +92,8 @@
 
     function sendPost() {
       $('#content').attr('value',$('#newPostTextBox').val());
+
+      $("#new_post_form").append($('#newPostUploadPanel'));
 
       //caso de atualização de post
       if ($('#discussion_post_id').attr('value') != '')
@@ -125,7 +148,7 @@
     <span style="float:left">
       <a href="javascript:clearFormData()" id="NewPostButton" class="forum_button"><%= t("forum_new_message")%></a>
     </span>
-
+    
     <span style="float:right;">
       <%if @display_mode == "PLAINLIST"%>
         <a href="javascript:showAsThread()" class="forum_button forum_button_view_mode"><%=  t("forum_show_thread")%>
@@ -162,3 +185,5 @@
   <%= hidden_field_tag(:display_mode, @display_mode) %>
   <%= hidden_field_tag(:current_page, @current_page) %>
 <% end %>
+
+

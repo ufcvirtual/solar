@@ -52,7 +52,7 @@ class DiscussionsController < ApplicationController
     parent_id     = params[:parent_post_id]
     #DEFINIR O PROFILE!!!! ###################################################
     profile_id    = 2
-
+    raise "teste"
     new_discussion_post = DiscussionPost.new :discussion_id => discussion_id, :user_id => current_user.id, :profile_id => profile_id, :content => content, :father_id => parent_id
     new_discussion_post.save
 
