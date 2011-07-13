@@ -257,6 +257,7 @@
 
   agenda_title: "Agenda de"
   new_activity: "Nova atividade"
+  agenda_null: "Nenhuma atividade marcada para esta agenda"
 
   #PORTFOLIO
   portfolio_icon: "Ícone Portfolio"

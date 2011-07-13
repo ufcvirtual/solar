@@ -3,7 +3,8 @@ class CreateScheduleEvents < ActiveRecord::Migration
     create_table :schedule_events do |t|
       t.string :title , :limit => 100
       t.text :description
-      
+
+      t.integer :allocation_tag_id
       t.integer :schedule_id
 
     end

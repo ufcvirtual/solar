@@ -7,7 +7,7 @@ schedule 1:
 schedule 2:
   id: 2
   start_date: 12/05/2011
-  end_date: 16/07/2011
+  end_date: 12/07/2011
 
 schedule 3:
   id: 3
@@ -28,12 +28,12 @@ schedule 5:
 schedule 6:
   id: 6
   start_date: 20/09/2011
-  end_date: 20/10/2011
+  end_date: 20/09/2011
 
 schedule 7:
   id: 7
   start_date: 25/07/2011
-  end_date: 19/09/2011
+  end_date: 19/09/2012
 
 #reservados para aulas
 schedule 8:
@@ -66,4 +66,18 @@ schedule 13:
   start_date: 25/03/2011
   end_date: 27/08/2011
 
+schedule 14:
+  id: 14
+  start_date: 16/03/2011
+  end_date: 01/08/2012
+
+schedule 15:
+  id: 15
+  start_date: 25/03/2011
+  end_date: 06/05/2015
+
+schedule 16:
+  id: 16
+  start_date: 25/03/2011
+  end_date: 25/03/2011
 
