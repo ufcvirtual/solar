@@ -4,8 +4,8 @@ class CreateAssignment < ActiveRecord::Migration
       t.integer :allocation_tag_id, :null => false
       t.string :name, :limit => 100, :null => false
       t.text :enunciation
-      t.date :initial_date, :null => false
-      t.date :final_date, :null => false
+      t.datetime :start_date, :null => false
+      t.datetime :end_date, :null => false
     end
   end
 

@@ -16,7 +16,7 @@ class PortfolioProfessorController < ApplicationController
   # detalha o portfolio do aluno para a turma em questao
   def student_detail
 
-    @send_assignment_id = 2 # modificar esta opcao
+    @send_assignment_id = params[:send_assignment_id]
     @students_id = params[:id]
 
     # recuperar o nome da atividade
@@ -88,7 +88,8 @@ class PortfolioProfessorController < ApplicationController
     comment_teacher.comment = comment unless comment_teacher.nil? || comment_teacher == ''
 
     # modifica nota do aluno
-    students_grade = SendAssignment.find_by_assignment_id_and_user_id(send_assignment_id, students_id)
+    students_grade = SendAssignment.find(send_assignment_id)
+
     students_grade.grade = grade unless students_grade.nil?
 
     redirect = {:action => :student_detail, :id => students_id, :send_assignment_id => send_assignment_id}
@@ -229,7 +230,7 @@ class PortfolioProfessorController < ApplicationController
     #    authorize! :download_file_individual_area, Portfolio
 
     # modificar este ID - 2011-07-14
-    redirect_error = {:action => :student_detail, :id => 1}
+    redirect_error = {:action => :student_detail, :id => params[:students_id], :send_assignment_id => params[:send_assignment_id]}
 
     begin
 

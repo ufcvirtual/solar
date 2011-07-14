@@ -55,7 +55,7 @@
               <div class="list_files" style="padding-bottom: 10px; text-align: right;">
                 <div class="files_name">
                   <a href="#" style="color: blue;">
-                    <%= link_to f["attachment_file_name"], {:action => :download_files_student, :id => f["id"]}%>
+                    <%= link_to f["attachment_file_name"], {:action => :download_files_student, :id => f["id"], :students_id => @students_id, :send_assignment_id => @send_assignment_id}%>
                   </a>
                 </div>
                 <div class="files_date"><span style="font-style: italic; color:  gray;"><%= t(:sent_in) %> <%=l f["attachment_updated_at"].to_time, :format => :files %></span></div>

@@ -18,7 +18,7 @@ AND t2.group_id = 1
 )
 union
 (
-SELECT t1.name,t1.initial_date,t1.final_date
+SELECT t1.name,t1.start_date,t1.end_date
 FROM assignments AS t1
 JOIN allocation_tags AS t2 ON t2.id = t1.allocation_tag_id
 JOIN allocations     AS t3 ON t3.allocation_tag_id = t2.id

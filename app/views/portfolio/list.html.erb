@@ -35,7 +35,7 @@
               <%= link_to ia["name"], {:controller => :portfolio, :action => :activity_details, :id => ia["id"]} %>
             </span>&nbsp;
             <span style="font-style: italic; color:  gray;">
-              <%= t(:date_name)%>: <%= ia["initial_date"] %> - <%= ia["final_date"] %>
+              <%= t(:date_name)%>: <%= ia["start_date"] %> - <%= ia["end_date"] %>
             </span>
           </td>
           <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:situation) %></span></td>

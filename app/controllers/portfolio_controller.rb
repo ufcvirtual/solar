@@ -358,8 +358,8 @@ class PortfolioController < ApplicationController
     SELECT t1.id,
            t1.name,
            t1.enunciation,
-           t1.initial_date,
-           t1.final_date,
+           t1.start_date,
+           t1.end_date,
            t2.grade,
            COUNT(t3.id) AS comments,
            CASE
@@ -374,8 +374,8 @@ class PortfolioController < ApplicationController
  LEFT JOIN assignment_comments AS t3 ON t3.send_assignment_id = t2.id
      WHERE t4.group_id = #{group_id}
        AND t5.user_id = #{user_id}
-  GROUP BY t1.id, t2.id, t1.name, t1.enunciation, t1.initial_date, t1.final_date, t2.grade
-  ORDER BY t1.final_date, t1.initial_date DESC;
+  GROUP BY t1.id, t2.id, t1.name, t1.enunciation, t1.start_date, t1.end_date, t2.grade
+  ORDER BY t1.end_date, t1.start_date DESC;
 SQL
 
     return (ia.nil?) ? [] : ia

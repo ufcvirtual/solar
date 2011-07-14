@@ -23,7 +23,7 @@
       <div style="text-align: left;">
         <span style="text-align: left;"><%= @activity.name %></span>
         <span style="font-style: italic; color: gray; text-align: right;">
-          <%= t(:date_name)%>: <%= @activity.initial_date %> - <%= @activity.final_date %>
+          <%= t(:date_name)%>: <%=l @activity.start_date, :format => :files %> - <%=l @activity.end_date, :format => :files %>
         </span>
       </div>
     </div>
