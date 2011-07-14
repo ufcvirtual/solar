@@ -34,9 +34,13 @@ class PortfolioController < ApplicationController
     @activity = Assignment.joins(:allocation_tag).where(["assignments.id = ?", assignment_id]).first
 
     # recuperar o send_assignment
-    send_assignment = SendAssignment.where(["assignment_id = ? AND user_id = ?", assignment_id, current_user.id])
+    students_id = current_user.id
 
-    @correction = nil # indica se a atividade do aluno foi corrigida ou nao
+    # recupera os arquivos enviados pelo aluno
+    send_assignment = SendAssignment.joins("LEFT JOIN assignment_files ON assignment_files.send_assignment_id = send_assignments.id").
+      where(["send_assignments.assignment_id = ? AND send_assignments.user_id = ?", assignment_id, students_id])
+
+    @correction = 'send' # indica se a atividade do aluno foi corrigida ou nao
     @grade = nil # nota dada pelo professor a atividade enviada
     @comment = nil # comentario do professor
     @files_sent = [] # arquivos enviados pelo aluno
@@ -48,8 +52,8 @@ class PortfolioController < ApplicationController
       # recupera o primeiro registro
       send_assignment = send_assignment.first
 
-      # verifica se a nota foi dada, caso verdadeiro a atividade foi corrigida pelo professor
-      @correction = (send_assignment.grade != nil) ? 'corrected' : 'sent'
+      # verifica se o aluno enviou os arquivos e se a nota ja foi dada
+      @correction = send_assignment.grade.nil? ? (send_assignment.assignment_files.first.nil? ? 'send' : 'sent') : 'corrected'
 
       # nota
       @grade = send_assignment.grade
@@ -68,9 +72,6 @@ class PortfolioController < ApplicationController
         @files_comments = CommentFile.all(:conditions => ["assignment_comment_id = ?", comment.id])
       end
 
-    else
-      # arquivos ainda nao enviados pelo aluno
-      @correction = 'send'
     end
 
   end
@@ -364,17 +365,18 @@ class PortfolioController < ApplicationController
            COUNT(t3.id) AS comments,
            CASE
             WHEN t2.grade IS NOT NULL THEN 'corrected'
-            WHEN t2.id IS NOT NULL    THEN 'sent'
-            WHEN t2.id IS NULL        THEN 'send'
+            WHEN t6.id IS NOT NULL    THEN 'sent'
+            WHEN t6.id IS NULL        THEN 'send'
            END AS correction
       FROM assignments         AS t1
       JOIN allocation_tags     AS t4 ON t4.id = t1.allocation_tag_id
       JOIN allocations         AS t5 ON t5.allocation_tag_id = t4.id
  LEFT JOIN send_assignments    AS t2 ON t2.assignment_id = t1.id
  LEFT JOIN assignment_comments AS t3 ON t3.send_assignment_id = t2.id
+ LEFT JOIN assignment_files    AS t6 ON t6.send_assignment_id = t2.id
      WHERE t4.group_id = #{group_id}
        AND t5.user_id = #{user_id}
-  GROUP BY t1.id, t2.id, t1.name, t1.enunciation, t1.start_date, t1.end_date, t2.grade
+  GROUP BY t1.id, t2.id, t6.id, t1.name, t1.enunciation, t1.start_date, t1.end_date, t2.grade
   ORDER BY t1.end_date, t1.start_date DESC;
 SQL
 

@@ -296,6 +296,7 @@ en:
   sent_in: "Sent In"
   comment_updated_successfully: "Comment Updated Successfully"
   files_assignments: "Files Assignments"
+  invalid_grade: "Invalid Grade"
 
   # Mensagem de erro para permissão 
   no_permission: "you haven't permission to access this page"

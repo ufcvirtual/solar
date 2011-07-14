@@ -37,13 +37,10 @@
   <div id="portfolio" class="portfolio portfolio_activity">
     <hr class="portfolio_line portfolio_activity" />
 
-    <%= form_for(:comments, :html => { :multipart => true }, :url => {:action => :update_comment}) do |f| %>
-
-      <%= f.hidden_field :students_id, :value => @students_id %>
-      <%= f.hidden_field :send_assignment_id, :value => @send_assignment_id %>
+    <%= form_for(:comments, :html => { :multipart => true }, :url => {:action => :update_comment, :students_id => @students_id, :send_assignment_id => @send_assignment_id}) do |f| %>
 
       <!-- Arquivos de trabalho -->
-      <div style="padding-left: 10px; padding-right: 10px;">
+      <div style="padding-left: 10px; padding-right: 10px; overflow: auto;">
         <div id="div_header" style="padding-bottom: 10px;">
           <div id="header_left" style="float: left;"><%= t(:files_assignments) %>:</div>
           <div id="header_rigth" style="float: right; padding-right: 50px;"><%= t(:grade) %>:</div>
@@ -103,29 +100,29 @@
     <div id="portfolio" class="portfolio portfolio_activity">
       <hr class="portfolio_line portfolio_activity" />
 
-      <div id="list_files_sent">
-        <table border="0" width="70%" cellspacing="0" cellpadding="0" style="padding-bottom: 10px; padding-top: 10px;">
-          <tbody>
+      <%# unless @comments_files.first.nil? %>
+        <div id="list_files_sent">
+          <table border="0" width="70%" cellspacing="0" cellpadding="0" style="padding-bottom: 10px; padding-top: 10px;">
+            <tbody>
 
-            <% @comments_files.each do |c| %>
-              <tr>
-                <td align="right">
-                  <div id="files_list">
-                    <span><%= link_to c["attachment_file_name"], {:action => :donwload_files, :id => c["id"]}%></span><br />
-                    <span style="font-style: italic; color: gray;"><%= t(:sent_in) %> <%=l c["attachment_updated_at"], :format => :files %></span>
-                  </div>
-                </td>
-                <td align="left" style="float: left; margin-left: 10px;">
-                  <%= link_to t(:delete), {:action => :delete_file, :comment_file_id => c["id"], :students_id => @students_id, :send_assignment_id => @send_assignment_id}, :confirm => "#{t(:delete_file_msg)}" %>
-                </td>
-              </tr>
-            <% end %>
+              <% @comments_files.each do |c| %>
+                <tr>
+                  <td align="right">
+                    <div id="files_list">
+                      <span><%= link_to c["attachment_file_name"], {:action => :donwload_files, :id => c["id"]}%></span><br />
+                      <span style="font-style: italic; color: gray;"><%= t(:sent_in) %> <%=l c["attachment_updated_at"], :format => :files %></span>
+                    </div>
+                  </td>
+                  <td align="left" style="float: left; margin-left: 10px;">
+                    <%= link_to t(:delete), {:action => :delete_file, :comment_file_id => c["id"], :students_id => @students_id, :send_assignment_id => @send_assignment_id}, :confirm => "#{t(:delete_file_msg)}" %>
+                  </td>
+                </tr>
+              <% end %>
 
-          </tbody>
-        </table>
-      </div>
-
-      <br />
+            </tbody>
+          </table>
+        </div>
+      <%# end %>
       <div id="send_file">
         <span class="alter_photo_text"><%= t(:your_computer) %></span>
 

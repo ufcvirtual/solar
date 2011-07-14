@@ -64,10 +64,10 @@ class PortfolioProfessorController < ApplicationController
     comment = comments[:comment] if comments.include? :comment
 
     # atividade em questao
-    send_assignment_id = comments[:send_assignment_id] if comments.include? :send_assignment_id
+    send_assignment_id = params[:send_assignment_id] if params.include? :send_assignment_id
 
     # usuarios envolvidos
-    students_id = comments[:students_id] if comments.include? :students_id
+    students_id = params[:students_id] if params.include? :students_id
     professors_id = current_user.id
 
     # update comment do professor
@@ -123,7 +123,7 @@ class PortfolioProfessorController < ApplicationController
   # deleta arquivos enviados
   def delete_file
 
-    redirect = {:action => :student_detail, :id => params[:students_id]} # modificar esse id
+    redirect = {:action => :student_detail, :id => params[:students_id], :send_assignment_id => params[:send_assignment_id]} # modificar esse id
 
     respond_to do |format|
 
