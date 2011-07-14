@@ -59,6 +59,32 @@ class MessagesController < ApplicationController
     @show_message = 'reply'
   end
 
+  def destroy
+    id = params[:id]
+
+    if id != ""
+      deleted_id = id.split(";")#.map{|r|
+        #r.strip
+        #if has_permission(r)
+        #  mark_as_trash(r)
+        #end
+        #}
+puts "\n***** deleted_id: #{deleted_id} *****\n"
+      deleted_id.each { |i|
+puts "\n***** deleted_id: #{i} *****\n"
+        if has_permission(i)
+          mark_as_trash(i)
+        end
+      }
+    end
+
+    type = params[:type]
+    if type.nil?
+      type = 'inbox'
+    end
+    redirect_to :action => 'index', :type => type
+  end
+
   def send_message
     if !params[:to].nil? && !params[:newMessageTextBox].nil?
       to = params[:to]

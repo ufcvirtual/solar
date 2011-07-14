@@ -12,36 +12,38 @@
     <%= render 'message_options' %>
 
     <div class="message_div_list">
-      <% if !@messages.nil? %>
-          <% if @messages.length >0 %>
-            <table class="message_div_list">
-              <% @messages.each do |message| %>
-                <tr class="message_line">
-                  <td style="width:30px"><%=check_box :id, :id => 'checkbox_message'%></td>
-                  <% if message.ehlida == 't' %>
-                      <% css_class = "message_read" %>
-                  <% else %>
-                      <% css_class = "message_unread" %>
-                  <% end %>
-                  <td style="width:120px"><%= link_to message.name,  {:action => 'show', :id => message.id},{:class => css_class} %></td>
-                  <td>
-                    <% if @message_tag.nil? %>
-                      <% if !message.label.nil? %>
-                        <span class="message_label"><%=message.label%></span>
+      <%= form_for :message, :url => {:action => ''}, :html => {:id => 'message_list'} do |f| %>
+          <% if !@messages.nil? %>
+              <% if @messages.length >0 %>
+                <table class="message_div_list">
+                  <% @messages.each do |message| %>
+                    <tr class="message_line">
+                      <td style="width:30px"><%=check_box_tag 'checkbox_message', message.id, checked = false, {:class => 'selected_messages'}%></td>
+                      <% if message.ehlida == 't' %>
+                          <% css_class = "message_read" %>
+                      <% else %>
+                          <% css_class = "message_unread" %>
                       <% end %>
-                    <% end %>
-                    <%= link_to message.subject,  {:action => 'show', :id => message.id},{:class => css_class} %>
-                  </td>
-                  <td style="width:30px"><%=image_tag("message_file.png",:alt=>t(:message_attach)) unless message.original_name.nil?%></td>
-                  <td style="width:100px"><%= link_to l(message.send_date, :format => :short),  {:action => 'show', :id => message.id},{:class => css_class} %></td>
-                </tr>
+                      <td style="width:120px"><%= link_to message.name,  {:action => 'show', :id => message.id},{:class => css_class} %></td>
+                      <td>
+                        <% if @message_tag.nil? %>
+                          <% if !message.label.nil? %>
+                            <span class="message_label"><%=message.label%></span>
+                          <% end %>
+                        <% end %>
+                        <%= link_to message.subject,  {:action => 'show', :id => message.id},{:class => css_class} %>
+                      </td>
+                      <td style="width:30px"><%=image_tag("message_file.png",:alt=>t(:message_attach)) unless message.original_name.nil?%></td>
+                      <td style="width:100px"><%= link_to l(message.send_date, :format => :short),  {:action => 'show', :id => message.id},{:class => css_class} %></td>
+                    </tr>
+                  <% end %>
+                </table>
+              <% else %>
+                <div class="text_none"><%=t(:message_none)%></div>
               <% end %>
-            </table>
           <% else %>
             <div class="text_none"><%=t(:message_none)%></div>
           <% end %>
-      <% else %>
-        <div class="text_none"><%=t(:message_none)%></div>
       <% end %>
     </div>
     
@@ -60,5 +62,21 @@
 <script type="text/javascript">
   $(document).ready(function(){
     dropdown_menu();
+  });
+
+  $(function($) {
+
+     $("#link_remove_message").click(function() {
+        var value = "";
+        var type = "<%=@type%>";
+
+        $("input:checked").each(function() {
+            value = value + $(this).val() + ";";
+        });
+
+        $("#message_list").attr("action", "/messages/destroy/?id="+value+"&type="+type);
+        $("#message_list").submit();
+     })
+
   });
 </script>

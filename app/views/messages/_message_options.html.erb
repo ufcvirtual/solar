@@ -29,7 +29,9 @@
         <% end %>
       <% end %>
 
-      <%= link_to t(:message_delete)+' ', {:action => '', :id => selected_id}, {:class=>'message_link'} %>
+      <%#= link_to t(:message_delete)+' ', {:action => 'destroy', :id => selected_id}, {:id => 'link_remove_message', :class=>'message_link'} %>
+      <span id="link_remove_message" class="message_link"><%=t(:message_delete)%></span>
+      
       <%= link_to t(:message_mark_as_read)+' ', {}, {:class=>'message_link'} unless @type=="trashbox" || @type.nil? %>
       <%= link_to t(:message_mark_as_unread)+' ', {}, {:class=>'message_link'} unless @type=="trashbox" %>
     </div>
