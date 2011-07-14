@@ -190,7 +190,7 @@ class PortfolioController < ApplicationController
     filename = file_.attachment_file_name
 
     prefix_file = file_.id # id da tabela comment_file para diferenciar os arquivos
-    path_file = "#{::Rails.root.to_s}/media/portfolio/comments/#{assignment_comment_id}/"
+    path_file = "#{::Rails.root.to_s}/media/portfolio/comments/"
 
     # id da atividade
     send_assignment = SendAssignment.joins(:assignment_comments).where(["assignment_comments.id = ?", assignment_comment_id])
@@ -398,29 +398,6 @@ SQL
 SQL
 
     return (pa.nil?) ? [] : pa
-
-  end
-
-  # download de arquivos
-  def download_file(redirect_error, path_, filename_, prefix_ = nil)
-
-    # verifica se o arquivo possui prefixo
-    unless prefix_.nil?
-      path_file = "#{path_}/#{prefix_}_#{filename_}"
-    else
-      path_file = "#{path_}/#{filename_}"
-    end
-
-    if File.exist?(path_file)
-      send_file path_file, :filename => filename_
-    else
-      respond_to do |format|
-        flash[:error] = t(:error_nonexistent_file)
-
-        # modificar esse id
-        format.html { redirect_to(redirect_error) }
-      end
-    end
 
   end
 

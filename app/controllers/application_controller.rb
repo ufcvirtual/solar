@@ -1,13 +1,13 @@
 class ApplicationController < ActionController::Base
 
-# Variáveis de sessão utilizadas no sistema
-#
-#   - session[:opened_tabs]
-#   - session[:active_tab]
-#   - session[:return_to]
-#   - session[:current_page]
-#   - session[:forum_display_mode]
-#
+  # Variáveis de sessão utilizadas no sistema
+  #
+  #   - session[:opened_tabs]
+  #   - session[:active_tab]
+  #   - session[:return_to]
+  #   - session[:current_page]
+  #   - session[:forum_display_mode]
+  #
 
   protect_from_forgery
 
@@ -231,7 +231,7 @@ class ApplicationController < ActionController::Base
     session[:return_to] = nil
   end
 
-# Preparando o uso da paginação
+  # Preparando o uso da paginação
   before_filter :prepare_for_pagination
 
   def prepare_for_pagination
@@ -245,4 +245,25 @@ class ApplicationController < ActionController::Base
   def hold_pagination
     session[:current_page] = @current_page
   end
+end
+
+# download de arquivos
+def download_file(redirect_error, path_, filename_, prefix_ = nil)
+
+  # verifica se o arquivo possui prefixo
+  unless prefix_.nil?
+    path_file = "#{path_}/#{prefix_}_#{filename_}"
+  else
+    path_file = "#{path_}/#{filename_}"
+  end
+
+  if File.exist?(path_file)
+    send_file path_file, :filename => filename_
+  else
+    respond_to do |format|
+      flash[:error] = t(:error_nonexistent_file)
+      format.html { redirect_to(redirect_error) }
+    end
+  end
+
 end

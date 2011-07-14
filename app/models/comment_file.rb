@@ -9,11 +9,11 @@ class CommentFile < ActiveRecord::Base
   ################################
 
   has_attached_file :attachment,
-    :path => ":rails_root/media/portfolio_teacher/:assignment_comment_id/:id_:basename.:extension",
-    :url => "/media/portfolio_teacher/:assignment_comment_id/:id_:basename.:extension"
+    :path => ":rails_root/media/portfolio/comments/:id_:basename.:extension",
+    :url => "/media/portfolio/comments/:id_:basename.:extension"
 
   validates_attachment_size :attachment, :less_than => 5.megabyte, :message => " "
-  validates_attachment_content_type :attachment, :content_type =>[
+  validates_attachment_content_type :attachment, :content_type => [
     'image/pjpeg','image/jpeg','image/gif','image/png',
     'application/zip','application/x-rar','application/x-compressed-tar', # arquivos comprimidos
     'application/x-shockwave-flash','application/pdf','application/msword',

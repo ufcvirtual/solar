@@ -16,42 +16,244 @@ class PortfolioProfessorController < ApplicationController
   # detalha o portfolio do aluno para a turma em questao
   def student_detail
 
-    # modificar esta opcao
-    send_assignment_id = 2
-    students_id = params[:id]
+    @send_assignment_id = 2 # modificar esta opcao
+    @students_id = params[:id]
 
     # recuperar o nome da atividade
-    activity = Assignment.joins(:send_assignments).where("send_assignments.id = ? AND user_id = ?", send_assignment_id, students_id)
+    activity = Assignment.joins(:send_assignments).where("send_assignments.id = ? AND user_id = ?", @send_assignment_id, @students_id)
     @activity = ''
-    @activity = activity.first["name"] unless activity.nil?
+    @activity = activity.first["name"] unless activity.first.nil?
 
     # estudante
-    @student = User.select("name").where(["id = ?", students_id]).first
+    @student = User.select("name").where(["id = ?", @students_id]).first
 
-    # arquivos enviados pelo aluno e nota
-    @grade = ''
-    @files = AssignmentFile.includes(:send_assignment).where("assignment_files.send_assignment_id = ? AND send_assignments.user_id = ?", send_assignment_id, students_id)
-    @grade = @files.first.send_assignment["grade"] unless @files.nil?
-    @files = [] if @files.nil?
+    # consulta a atividade do aluno em questao
+    assignments = SendAssignment.joins("LEFT JOIN assignment_files ON assignment_files.send_assignment_id = send_assignments.id").
+      where("send_assignments.id = ?", @send_assignment_id).
+      order("assignment_files.attachment_updated_at DESC").first
+
+    # recuperando os arquivos enviados pelo aluno
+    @files = []
+    @files = assignments.assignment_files unless assignments.nil?
+
+    @grade = nil
+    @grade = assignments.grade unless assignments.nil?
 
     # comentarios e arquivos do professor
-    @comments_files = CommentFile.includes(:assignment_comment).where("assignment_comments.send_assignment_id = ?", send_assignment_id)
-    @comment = @comments_files.first.assignment_comment["comment"] unless @comments_files.nil?
+    professor_id = current_user.id
+    assignment_comment = AssignmentComment.find_by_send_assignment_id_and_user_id(@send_assignment_id, professor_id)
+    @comment = assignment_comment.comment unless assignment_comment.nil?
+
+    # arquivos
+    @comments_files = []
+    @comments_files = CommentFile.find(:all, :conditions => ["assignment_comment_id = ?", assignment_comment.id], :order => "attachment_updated_at DESC") unless assignment_comment.nil?
+
+  end
+
+  # atualiza comentarios do professor
+  def update_comment
+
+    comments, grade, comment, send_assignment_id, students_id = nil, nil, nil, nil, nil
+    comments = params[:comments] if params.include? :comments
+
+    # recupera valores do formulario
+    if comments.include? :grade
+      grade = comments[:grade].to_f unless comments[:grade].nil? || comments[:grade] == ''
+    end
+
+    comment = comments[:comment] if comments.include? :comment
+
+    # atividade em questao
+    send_assignment_id = comments[:send_assignment_id] if comments.include? :send_assignment_id
+
+    # usuarios envolvidos
+    students_id = comments[:students_id] if comments.include? :students_id
+    professors_id = current_user.id
+
+    # update comment do professor
+    comment_teacher = AssignmentComment.find_by_send_assignment_id_and_user_id(send_assignment_id, professors_id)
+
+    # registro de comentario do professor inexistente
+    if comment_teacher.nil? # && !send_assignment_id.nil?
+
+      # se nao fez comentario o registro nao existe na tarefa
+      comment_teacher = AssignmentComment.new do |ac|
+        ac.send_assignment_id = send_assignment_id
+        ac.user_id = professors_id
+      end
+
+    end
+
+    # insere comentario se nao for vazio
+    comment_teacher.comment = comment unless comment_teacher.nil? || comment_teacher == ''
+
+    # modifica nota do aluno
+    students_grade = SendAssignment.find_by_assignment_id_and_user_id(send_assignment_id, students_id)
+    students_grade.grade = grade unless students_grade.nil?
+
+    redirect = {:action => :student_detail, :id => students_id, :send_assignment_id => send_assignment_id}
+
+    respond_to do |format|
+
+      begin
+
+        if grade < 0 || grade > 10
+          raise t(:invalid_grade)
+        end unless grade.nil?
+
+        # executar as modificacoes em uma transacao
+        ActiveRecord::Base.transaction do
+          comment_teacher.save!
+          students_grade.save!
+        end
+
+        flash[:success] = t(:comment_updated_successfully)
+        format.html { redirect_to(redirect) }
+
+      rescue Exception => except
+        flash[:error] = except.message
+        format.html { redirect_to(redirect) }
+      end
+
+    end
 
   end
 
   # deleta arquivos enviados
   def delete_file
 
-  end
+    redirect = {:action => :student_detail, :id => params[:students_id]} # modificar esse id
 
-  # atualiza comentarios do professor
-  def update_comment
-    
+    respond_to do |format|
+
+      begin
+
+        comment_file_id = params[:comment_file_id]
+
+        # recupera o nome do arquivo a ser feito o download
+        filename = CommentFile.find(comment_file_id).attachment_file_name
+
+        # arquivo a ser deletado
+        file_del = "#{::Rails.root.to_s}/media/portfolio/comments/#{comment_file_id}_#{filename}"
+
+        error = 0
+
+        # verificando se o arquivo ainda existe
+        if File.exist?(file_del)
+
+          # deleta o arquivo do servidor
+          if File.delete(file_del)
+
+            # retira o registro da base de dados
+            if CommentFile.find(comment_file_id).delete
+
+              flash[:success] = t(:file_deleted)
+              format.html { redirect_to(redirect) }
+
+            end
+
+          else
+            error = 1 # arquivo nao deletado
+          end
+
+        else
+          error = 2 # arquivo inexistente
+        end
+
+        raise t(:error_delete_file) unless error == 0
+
+      rescue Exception => except
+
+        flash[:error] = except
+        format.html { redirect_to(redirect) }
+
+      end
+
+    end
+
   end
 
   # upload de arquivos para o comentario
   def upload_files
+
+    send_assignment_id = params[:send_assignment_id] if params.include? :send_assignment_id
+    students_id = params[:students_id] if params.include? :students_id
+    teachers_id = current_user.id # professor
+
+    # redireciona para os detalhes da atividade individual
+    redirect = {:action => :student_detail, :id => students_id, :send_assignment_id => send_assignment_id}
+
+    respond_to do |format|
+
+      begin
+
+        # verifica se o arquivo foi adicionado
+        raise t(:error_no_file_sent) unless params.include? :comments_files
+
+        assignment_comment = AssignmentComment.where(["send_assignment_id = ? AND user_id = ?", send_assignment_id, teachers_id]).first
+
+        # verifica se o professor ja comentou
+        if assignment_comment.nil?
+          # se nao tiver comentario, cria um registro na tabela para fazer associacoes
+
+          assignment_comment = AssignmentComment.new do |ac|
+            ac.send_assignment_id = send_assignment_id
+            ac.user_id = teachers_id
+          end
+
+          # salvando registro de comentario
+          assignment_comment.save!
+
+        end
+
+        comments_files = CommentFile.new params[:comments_files]
+        comments_files.assignment_comment_id = assignment_comment.id
+        comments_files.save!
+
+        # arquivo salvo com sucesso
+        flash[:success] = t(:file_uploaded)
+        format.html { redirect_to(redirect) }
+
+      rescue Exception => error
+
+        flash[:error] = error.message
+        format.html { redirect_to(redirect) }
+
+      end
+    end
+  end
+
+  # download de arquivos
+  def download_files_student
+
+    #    authorize! :download_file_individual_area, Portfolio
+
+    # modificar este ID - 2011-07-14
+    redirect_error = {:action => :student_detail, :id => 1}
+
+    begin
+
+      assignment_file_id = params[:id]
+
+      file_ = AssignmentFile.find(assignment_file_id)
+      filename = file_.attachment_file_name
+
+      path_file = "#{::Rails.root.to_s}/media/portfolio/individual_area/"
+
+      # id da atividade
+      id = SendAssignment.find(file_.send_assignment_id).assignment_id
+
+      # recupera arquivo
+      download_file(redirect_error, path_file, filename, assignment_file_id)
+
+    rescue
+
+      respond_to do |format|
+        flash[:success] = t(:error_nonexistent_file)
+        format.html { redirect_to(redirect_error) }
+      end
+
+    end
 
   end
 

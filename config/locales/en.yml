@@ -292,6 +292,8 @@ en:
   download_attachment: "Download Attachment"
   error_delete_file: "Error when trying to delete file"
   sent_in: "Sent In"
+  comment_updated_successfully: "Comment Updated Successfully"
+  files_assignments: "Files Assignments"
 
   # Mensagem de erro para permissão 
   no_permission: "you haven't permission to access this page"

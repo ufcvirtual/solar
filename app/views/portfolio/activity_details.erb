@@ -99,7 +99,7 @@
               <%= link_to reg["attachment_file_name"], {:controller => :portfolio, :action => :download_file_comment, :id => reg["id"]} %>
             </td>
             <td class="border_line"><span style="color: gray;"><%= format('%.2fKB', reg["attachment_file_size"].to_i/1024.0) %></span></td>
-            <td class="border_line"><%= t(:sent_in) %>: <span style="color: gray;"><%=l reg["attachment_update_at"], :format => :files unless reg["attachment_update_at"].nil? %></span></td>
+            <td class="border_line"><%= t(:sent_in) %>: <span style="color: gray;"><%=l reg["attachment_updated_at"], :format => :files unless reg["attachment_updated_at"].nil? %></span></td>
           </tr>
         <% end %>
 
