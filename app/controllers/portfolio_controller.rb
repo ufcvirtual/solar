@@ -31,8 +31,11 @@ class PortfolioController < ApplicationController
     assignment_id = params[:id]
 
     # recupera a atividade selecionada
-    @activity = Assignment.joins(:allocation_tag).where(["assignments.id = ?", assignment_id]).first
+    @activity = Assignment.find(assignment_id)
 
+    # verifica se os arquivos podem ser deletados
+    @delete_files = verify_date_range(@activity.start_date.to_time, @activity.end_date.to_time, Time.now)
+    
     # recuperar o send_assignment
     students_id = current_user.id
 
@@ -81,11 +84,20 @@ class PortfolioController < ApplicationController
 
     authorize! :delete_file_individual_area, Portfolio
 
-    redirect = {:action => "activity_details", :id => params[:assignment_id]} # modificar esse id
+    assignment_id = params[:assignment_id]
+    redirect = {:action => :activity_details, :id => assignment_id} # modificar esse id
 
     respond_to do |format|
 
       begin
+
+        # verifica periodo para delecao das atividades
+        assignment = Assignment.find(assignment_id)
+        start_date = assignment.start_date
+        end_date = assignment.end_date
+
+        # verifica permissao de intervalo de datas para deletar arquivos
+        raise t(:delete_file_interval_error) unless verify_date_range(start_date.to_time, end_date.to_time, Time.now)
 
         assignment_file_id = params[:id]
 
@@ -278,11 +290,18 @@ class PortfolioController < ApplicationController
 
     authorize! :upload_files_individual_area, Portfolio
 
+    assignment_id = params[:assignment_id]
+
+    # redireciona para os detalhes da atividade individual
+    redirect = {:action => :activity_details, :id => assignment_id}
+
     respond_to do |format|
       begin
 
-        # redireciona para os detalhes da atividade individual
-        redirect = {:action => :activity_details, :id => params[:assignment_id]}
+        # verificar intervalo de envio de arquivos
+        activity = Assignment.find(assignment_id)
+        # verifica se os arquivos podem ser deletados
+        raise t(:send_file_interval_error) unless verify_date_range(activity.start_date.to_time, activity.end_date.to_time, Time.now)
 
         # verifica se o arquivo foi adicionado
         raise t(:error_no_file_sent) unless params.include?(:assignment_file)
@@ -356,7 +375,8 @@ class PortfolioController < ApplicationController
   def individual_activities(group_id, user_id)
 
     ia = ActiveRecord::Base.connection.select_all <<SQL
-    SELECT t1.id,
+    SELECT DISTINCT
+           t1.id,
            t1.name,
            t1.enunciation,
            t1.start_date,
@@ -403,4 +423,12 @@ SQL
 
   end
 
+  # verifica se uma data esta em um intervalo de outras
+  def verify_date_range(start_date, end_date, date)
+    return date > start_date && date < end_date
+  end
+
 end
+
+
+

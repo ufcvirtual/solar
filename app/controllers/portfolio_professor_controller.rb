@@ -6,6 +6,8 @@ class PortfolioProfessorController < ApplicationController
   # lista de portfolio dos alunos de uma turma
   def list
 
+    authorize! :list, PortfolioProfessor
+
     group_id = 3 # devera ser carregado a partir da escolha da combo de GROUP
 
     # lista dos alunos da turma
@@ -15,6 +17,8 @@ class PortfolioProfessorController < ApplicationController
 
   # detalha o portfolio do aluno para a turma em questao
   def student_detail
+
+    authorize! :student_detail, PortfolioProfessor
 
     @send_assignment_id = params[:send_assignment_id]
     @students_id = params[:id]
@@ -52,6 +56,8 @@ class PortfolioProfessorController < ApplicationController
 
   # atualiza comentarios do professor
   def update_comment
+
+    authorize! :update_comment, PortfolioProfessor
 
     comments, grade, comment, send_assignment_id, students_id = nil, nil, nil, nil, nil
     comments = params[:comments] if params.include? :comments
@@ -123,7 +129,9 @@ class PortfolioProfessorController < ApplicationController
   # deleta arquivos enviados
   def delete_file
 
-    redirect = {:action => :student_detail, :id => params[:students_id], :send_assignment_id => params[:send_assignment_id]} # modificar esse id
+    authorize! :delete_file, PortfolioProfessor
+
+    redirect = {:action => :student_detail, :id => params[:students_id], :send_assignment_id => params[:send_assignment_id]}
 
     respond_to do |format|
 
@@ -177,6 +185,8 @@ class PortfolioProfessorController < ApplicationController
   # upload de arquivos para o comentario
   def upload_files
 
+    authorize! :upload_files, PortfolioProfessor
+
     send_assignment_id = params[:send_assignment_id] if params.include? :send_assignment_id
     students_id = params[:students_id] if params.include? :students_id
     teachers_id = current_user.id # professor
@@ -227,9 +237,8 @@ class PortfolioProfessorController < ApplicationController
   # download de arquivos
   def download_files_student
 
-    #    authorize! :download_file_individual_area, Portfolio
+    authorize! :download_files_student, PortfolioProfessor
 
-    # modificar este ID - 2011-07-14
     redirect_error = {:action => :student_detail, :id => params[:students_id], :send_assignment_id => params[:send_assignment_id]}
 
     begin

@@ -302,6 +302,8 @@
   comment_updated_successfully: "Comentário atualizado com sucesso"
   files_assignments: "Arquivos do Trabalho"
   invalid_grade: "Nota Inválida"
+  delete_file_interval_error: "Modificação de arquivos fora do intervalo permitido"
+  send_file_interval_error: "Envio de arquivos fora do intervalo permitido"
 
   # Mensagem de erro para permissão   
   no_permission: "Você não tem permissão para acessar esta página"

@@ -20,10 +20,10 @@
 
   <div class="portfolio_header_content">
     <div class="portfolio_title">
-      <div style="text-align: left;">
+      <div style="text-align: left; overflow: auto;">
         <span style="text-align: left;"><%= @activity.name %></span>
-        <span style="font-style: italic; color: gray; text-align: right;">
-          <%= t(:date_name)%>: <%=l @activity.start_date, :format => :files %> - <%=l @activity.end_date, :format => :files %>
+        <span style="font-style: italic; color: gray; float: right;">
+          <%= t(:date_name)%>: <%=l @activity.start_date.to_time, :format => :files %> - <%=l @activity.end_date.to_time, :format => :files %>
         </span>
       </div>
     </div>
@@ -135,9 +135,11 @@
               <%= link_to pa["attachment_file_name"], {:controller => :portfolio, :action => :download_file_individual_area, :id => pa["id"]} %>
             </td>
             <td class="<%= classe %>"><span style="color: gray;"><%= format('%.2fKB', pa["attachment_file_size"].to_i/1024.0) %></span></td>
-            <td class="<%= classe %>">
-              <%= link_to t(:delete), {:controller => :portfolio, :action => :delete_file_individual_area, :id => pa["id"], :assignment_id => params[:id]}, :confirm => "#{t(:delete_file_msg)}" %>
-            </td>
+            <% if @delete_files  %>
+              <td class="<%= classe %>">
+                <%= link_to t(:delete), {:controller => :portfolio, :action => :delete_file_individual_area, :id => pa["id"], :assignment_id => params[:id]}, :confirm => "#{t(:delete_file_msg)}" %>
+              </td>
+            <% end %>
           </tr>
 
         <% end %>
