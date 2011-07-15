@@ -59,23 +59,25 @@ class MessagesController < ApplicationController
     @show_message = 'reply'
   end
 
+  # na verdade, muda status para apagado - pode receber um id ou varios separados por $
   def destroy
     id = params[:id]
 
     if id != ""
-      deleted_id = id.split(";")#.map{|r|
-        #r.strip
-        #if has_permission(r)
-        #  mark_as_trash(r)
-        #end
-        #}
-puts "\n***** deleted_id: #{deleted_id} *****\n"
-      deleted_id.each { |i|
-puts "\n***** deleted_id: #{i} *****\n"
-        if has_permission(i)
-          mark_as_trash(i)
+      #eh apenas um id
+      if id.index("$").nil?
+        if has_permission(id)
+          mark_as_trash(id)
         end
-      }
+      else
+        #mais de um id
+        deleted_id = id.split("$")
+        deleted_id.each { |i|
+          if has_permission(i)
+            mark_as_trash(i)
+          end
+        }
+      end
     end
 
     type = params[:type]
@@ -83,6 +85,44 @@ puts "\n***** deleted_id: #{i} *****\n"
       type = 'inbox'
     end
     redirect_to :action => 'index', :type => type
+  end
+
+  # muda status para lido/nao lido - pode receber um id ou varios separados por $
+  def change_indicator_reading
+    id = params[:id]
+    new_status = params[:new_status]
+
+    if id != ""
+      #eh apenas um id
+      if id.index("$").nil?
+        if has_permission(id)
+          if new_status == "read"
+            mark_as_read(id)
+          else
+            mark_as_unread(id)
+          end
+        end
+      else
+        #mais de um id
+        deleted_id = id.split("$")
+        deleted_id.each { |i|
+          if has_permission(i)
+            if new_status == "read"
+              mark_as_read(i)
+            else
+              mark_as_unread(i)
+            end
+          end
+        }
+      end
+    end
+
+    type = params[:type]
+    if type.nil?
+      redirect_to :action => 'show', :id => id
+    else
+      redirect_to :action => 'index', :type => type
+    end    
   end
 
   def send_message
@@ -212,61 +252,7 @@ puts "\n***** deleted_id: #{i} *****\n"
     return label_name
   end
 
-  # marca mensagem(ns) como lida(s)
-  def mark_as_read(message_id)
-    # busca mensagem para esse usuario
-    message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).first(1)
-
-    if !message_user.nil?
-      # pra zerar (marcar como nao lida) E logico:  & 0b11111101
-      # pra setar 1 (marcar como lida) OU logico:   | 0b00000010
-      logical_comparison = 0b00000010
-
-      status = message_user[0].status.to_i
-
-      message_user[0].status = status | logical_comparison
-      message_user[0].save
-
-      # atualiza qtde de msgs nao lidas
-      @unread = unread_inbox(current_user.id, @message_tag)
-    end
-  end
-
-  # marca mensagem(ns) como nao lida(s)
-  def mark_as_unread(message_id)
-    # busca mensagem para esse usuario
-    message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).first(1)
-
-    if !message_user.nil?
-      # pra zerar (marcar como nao lida) E logico:  & 0b11111101
-      # pra setar 1 (marcar como lida) OU logico:   | 0b00000010
-      logical_comparison = 0b11111101
-
-      status = message_user[0].status.to_i
-
-      message_user[0].status = status & logical_comparison
-      message_user[0].save
-
-      # atualiza qtde de msgs nao lidas
-      @unread = unread_inbox(current_user.id, @message_tag)
-    end
-  end
-
-  # marca mensagem(ns) como lixo
-  def mark_as_trash(message_id)
-    # busca mensagem para esse usuario
-    message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).first(1)
-
-    if !message_user.nil?
-      # pra setar 1 (marcar como excluida) OU logico:   | 0b00000100
-      logical_comparison = 0b00000100
-
-      status = message_user[0].status.to_i
-
-      message_user[0].status = status | logical_comparison
-      message_user[0].save
-    end
-  end
+    
 
   # metodo chamado por ajax para atualizar contatos
   def ajax_get_contacts
@@ -387,6 +373,62 @@ private
 
     @contacts = show_contacts_updated
     return @contacts
+  end
+
+  # marca mensagem como lixo
+  def mark_as_trash(message_id)
+    # busca mensagem para esse usuario
+    message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).first(1)
+
+    if !message_user.nil?
+      # pra setar 1 (marcar como excluida) OU logico:   | 0b00000100
+      logical_comparison = 0b00000100
+
+      status = message_user[0].status.to_i
+
+      message_user[0].status = status | logical_comparison
+      message_user[0].save
+    end
+  end
+
+  # marca mensagem como lida
+  def mark_as_read(message_id)
+    # busca mensagem para esse usuario
+    message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).first(1)
+
+    if !message_user.nil?
+      # pra zerar (marcar como nao lida) E logico:  & 0b11111101
+      # pra setar 1 (marcar como lida) OU logico:   | 0b00000010
+      logical_comparison = 0b00000010
+
+      status = message_user[0].status.to_i
+
+      message_user[0].status = status | logical_comparison
+      message_user[0].save
+
+      # atualiza qtde de msgs nao lidas
+      @unread = unread_inbox(current_user.id, @message_tag)
+    end
+  end
+
+  # marca mensagem como nao lida
+  def mark_as_unread(message_id)
+    # busca mensagem para esse usuario
+    message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).first(1)
+
+    if !message_user.nil?
+      # pra zerar (marcar como nao lida) E logico:  & 0b11111101
+      # pra setar 1 (marcar como lida) OU logico:   | 0b00000010
+      logical_comparison = 0b11111101
+
+      status = message_user[0].status.to_i
+
+      message_user[0].status = status & logical_comparison
+      message_user[0].save
+
+      # atualiza qtde de msgs nao lidas
+      @unread = unread_inbox(current_user.id, @message_tag)
+    end
   end
 
 end

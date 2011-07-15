@@ -1,37 +1,100 @@
-    <div class="message_div_options">&nbsp;
-      <%= link_to t(:message_new)+' ', {:action => 'new'}, {:class=>'message_link'} unless @type.nil? %>
+<%= form_for :message, :url => {:action => ''}, :html => {:id => 'message_list', :class => 'message_div_options'} do |f| %>
+  &nbsp;
+  <%= link_to t(:message_new)+' ', {:action => 'new'}, {:class=>'message_link'} unless @type.nil? %>
 
-      <% if !@type.nil? %>
-      <ul class="message_menu_listbox">
-        <li><a href="#"><%=t(:message_select)%> <%=image_tag "icon_arrow_down.png", :alt=>t(:message_move)%></a>
-          <ul>
-            <li><%= link_to t(:message_select_all), {}, {:class=>'message_link'}%></li>
-            <li><%= link_to t(:message_select_none), {}, {:class=>'message_link'}%></li>
-            <li><%= link_to t(:message_select_read), {}, {:class=>'message_link'}%></li>
-            <li><%= link_to t(:message_select_unread), {}, {:class=>'message_link'}%></li>
-          </ul>
-        </li>
-      </ul>
-      <ul class="message_menu_listbox">
-        <li><a href="#"><%=t(:message_move)%> <%=image_tag "icon_arrow_down.png", :alt=>t(:message_move)%></a>
-          <ul>
-            <li><%= link_to t(:message_trash), {}, {:class=>''}%></li>
-          </ul>
-        </li>
-      </ul>
-      <% end %>
+  <% if !@type.nil? %>
+    <ul class="message_menu_listbox">
+      <li><a href="#"><%=t(:message_select)%> <%=image_tag "icon_arrow_down.png", :alt=>t(:message_move)%></a>
+        <ul>
+          <li><%= link_to t(:message_select_all), {}, {:class=>'message_link'}%></li>
+          <li><%= link_to t(:message_select_none), {}, {:class=>'message_link'}%></li>
+          <li><%= link_to t(:message_select_read), {}, {:class=>'message_link'}%></li>
+          <li><%= link_to t(:message_select_unread), {}, {:class=>'message_link'}%></li>
+        </ul>
+      </li>
+    </ul>
+    <ul class="message_menu_listbox">
+      <li><a href="#"><%=t(:message_move)%> <%=image_tag "icon_arrow_down.png", :alt=>t(:message_move)%></a>
+        <ul>
+          <li><%= link_to t(:message_trash), {}, {:class=>''}%></li>
+        </ul>
+      </li>
+    </ul>
+  <% end %>
 
-      <% if @show_message == 'show' %>
-        <% selected_id = @message.id %>
-      <% else %>
-        <% if @type == 'inbox' || @type == 'outbox' || @type == 'trashbox' %>
-          <% selected_id = nil %>
-        <% end %>
-      <% end %>
+  <% if @show_message == 'show' %>
+    <% selected_id = @message.id %>
+  <% else %>
+    <% if @type == 'inbox' || @type == 'outbox' || @type == 'trashbox' %>
+      <% selected_id = nil %>
+    <% end %>
+  <% end %>
 
-      <%#= link_to t(:message_delete)+' ', {:action => 'destroy', :id => selected_id}, {:id => 'link_remove_message', :class=>'message_link'} %>
-      <span id="link_remove_message" class="message_link"><%=t(:message_delete)%></span>
-      
-      <%= link_to t(:message_mark_as_read)+' ', {}, {:class=>'message_link'} unless @type=="trashbox" || @type.nil? %>
-      <%= link_to t(:message_mark_as_unread)+' ', {}, {:class=>'message_link'} unless @type=="trashbox" %>
-    </div>
+  <% if @type != "trashbox" %>
+    <span id="link_remove_message" class="message_link"><%=t(:message_delete)%></span>
+  <% end %>
+
+  <% if (@type!="trashbox" && !@type.nil?) %>
+    <span id="link_mark_as_read" class="message_link"><%=t(:message_mark_as_read)%></span>
+  <% end %>
+  <% if @type!="trashbox" %>
+    <span id="link_mark_as_unread" class="message_link"><%=t(:message_mark_as_unread)%></span>
+  <% end %>
+
+<% end %>
+
+<script type="text/javascript">
+  $(function($) {
+     $("#link_remove_message").click(function() {
+        var value = "";
+        var type = "<%=@type%>";
+        var checked_messages = "<%=@message.nil?%>".toLowerCase();
+
+        if (checked_messages=="true"){
+          value = "";
+          $("input:checked").each(function() {
+            value = value + $(this).val() + "$";
+          });
+          if (value!=""){
+            $("#message_list").attr("action", "/messages/destroy/?id="+value+"&type="+type);
+            $("#message_list").submit();
+          }
+        }
+        else{
+          value = "<%=@message.id unless @message.nil?%>";
+          $("#message_list").attr("action", "/messages/destroy/?id="+value+"&type=index");
+          $("#message_list").submit();
+        }
+     })
+
+     $("#link_mark_as_read").click(function() {
+        change_reading_status("read");
+     })
+
+     $("#link_mark_as_unread").click(function() {
+        change_reading_status("unread");
+     })
+  });
+
+  function change_reading_status(new_status){
+      var value = "";
+      var type = "<%=@type%>";
+      var checked_messages = "<%=@message.nil?%>".toLowerCase();
+
+      if (checked_messages=="true"){
+        value = "";
+        $("input:checked").each(function() {
+          value = value + $(this).val() + "$";
+        });
+        if (value!=""){
+          $("#message_list").attr("action", "/messages/change_indicator_reading/?id="+value+"&new_status="+new_status+"&type="+type);
+          $("#message_list").submit();
+        }
+      }
+      else{
+        value = "<%=@message.id unless @message.nil?%>";
+        $("#message_list").attr("action", "/messages/change_indicator_reading/?id="+value+"&new_status="+new_status+"&type=index");
+        $("#message_list").submit();
+      }
+  }
+</script>

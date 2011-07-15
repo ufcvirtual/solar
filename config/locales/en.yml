@@ -227,6 +227,8 @@ en:
   message_send_error_no_receiver: "Message not sent. No recipients found in the environment."
   message_personal_contacts: "Personal Contacts"
   message_header: "Message sent by: "
+  message_complete: "Complete"
+  message_cancel: "Cancel"
 
   navigation_of: " of "
   navigation_next: "Next >"
