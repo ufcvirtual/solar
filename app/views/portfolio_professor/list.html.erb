@@ -25,14 +25,14 @@
 
     <table cellpadding="5" cellspacing="0" class="portfolio_table">
       <tbody>
-        <% @students.each_with_index do |s, idx| %>
+        <% @students.each_with_index do |student, idx| %>
 
           <% rowtable = 'rowtable_even' %>
           <% rowtable = 'rowtable_odd' if (idx % 2 == 0) %>
 
           <tr class="<%= rowtable %>">
             <td>
-              <%=link_to s["name"], {:controller => :portfolio_professor, :action => :student_detail, :id => s["id"], :send_assignment_id => 3} %>
+              <%=link_to student["name"], {:controller => :portfolio_professor, :action => :list_assignments, :id => student["id"]} %>
             </td>
             <td>
               icon

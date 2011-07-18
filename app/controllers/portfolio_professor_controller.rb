@@ -8,14 +8,42 @@ class PortfolioProfessorController < ApplicationController
 
     authorize! :list, PortfolioProfessor
 
-    group_id = 3 # devera ser carregado a partir da escolha da combo de GROUP
+    groups_id = 3 # devera ser carregado a partir da escolha da combo de GROUP
+
+    # seta novo valor para o grupo/turma selecionada pelo professor
+    session[:opened_tabs][session[:active_tab]]["groups_id"] = groups_id
 
     # lista de estudantes da turma
 
     @students = User.joins(:allocations => [{:allocation_tag => [:group, :assignments]}, :profile]).
       select("DISTINCT users.id, users.name").
-      where("profiles.student = TRUE AND groups.id = ?", group_id).
+      where("profiles.student = TRUE AND groups.id = ?", groups_id).
       order("users.name")
+
+  end
+
+  # lista dos trabalhos passados pelo professor e a situacao do aluno selecionado
+  def list_assignments
+
+    # recupera turma selecionada
+    groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+
+    @students_id = params[:id]
+    @activities = Assignment.joins(:allocation_tag, :send_assignments).
+      select("name, start_date, end_date").
+      where("allocation_tags.group_id = ?", groups_id)
+
+# @activities = Assignment.includes(:allocation_tag, :send_assignments).
+#      where("allocation_tags.group_id = ?", groups_id)
+
+
+
+#    SELECT t1.id, t1.allocation_tag_id, t1.name, t1.start_date, t1.end_date
+#      FROM assignments AS t1
+#      JOIN send_assignments AS t2 ON t2.assignment_id = t1.id
+#      JOIN allocation_tags AS t3 ON t3.id = t1.allocation_tag_id
+#      WHERE t3.group_id = 3;
+
 
   end
 
