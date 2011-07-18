@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  has_many :allocation
+  has_many :allocations
   has_many :lessons
   has_many :discussion_posts
   has_many :user_messages

@@ -10,8 +10,12 @@ class PortfolioProfessorController < ApplicationController
 
     group_id = 3 # devera ser carregado a partir da escolha da combo de GROUP
 
-    # lista dos alunos da turma
-    @students = list_of_students_by_group(group_id)
+    # lista de estudantes da turma
+
+    @students = User.joins(:allocations => [{:allocation_tag => [:group, :assignments]}, :profile]).
+      select("DISTINCT users.id, users.name").
+      where("profiles.student = TRUE AND groups.id = ?", group_id).
+      order("users.name")
 
   end
 
@@ -275,6 +279,7 @@ class PortfolioProfessorController < ApplicationController
     @curriculum_unit = CurriculumUnit.select("id, name").where(["id = ?", curriculum_unit_id]).first
   end
 
+=begin
   # lista de alunos por turma
   def list_of_students_by_group(group_id)
     ActiveRecord::Base.connection.select_all <<SQL
@@ -289,5 +294,6 @@ class PortfolioProfessorController < ApplicationController
        ORDER BY t5.name;
 SQL
   end
+=end
 
 end
