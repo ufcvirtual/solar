@@ -45,16 +45,13 @@
           <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:grade) %></span></td>
         </tr>
       </thead>
-
       <tbody>
         <tr class="rowtable_even_portfolio" >
           <td class="td_blue_portfolio_first">
             <%= @activity.enunciation %><br /><br />
           </td>
-          <td class="td_blue_portfolio" style="width: 70px;">
-            <a href="#" class="assignment_<%= @correction %>">
-              <%= t(@correction.to_sym) %>
-            </a>
+          <td class="td_blue_portfolio" style="width: 70px;" align="center">
+            <span class="assignment_<%= @correction %>"><%= t(@correction.to_sym) %></span>
           </td>
           <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">
             <% unless @grade.nil? %>
@@ -65,7 +62,6 @@
           </td>
         </tr>
       </tbody>
-
     </table>
 
     <div style="background-color: #FFF">

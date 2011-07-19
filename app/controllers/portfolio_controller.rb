@@ -55,8 +55,14 @@ class PortfolioController < ApplicationController
       # recupera o primeiro registro
       send_assignment = send_assignment.first
 
+      # para verificacao de arquivos enviados
+      assignment_files = send_assignment.assignment_files.first
+
+      # verifica se ainda pode enviar
+      send_or_not = (@activity.end_date < DateTime.now) ? '-' : 'send'
+
       # verifica se o aluno enviou os arquivos e se a nota ja foi dada
-      @correction = send_assignment.grade.nil? ? (send_assignment.assignment_files.first.nil? ? 'send' : 'sent') : 'corrected'
+      @correction = send_assignment.grade.nil? ? (assignment_files.nil? ? send_or_not : 'sent') : 'corrected'
 
       # nota
       @grade = send_assignment.grade
@@ -74,7 +80,8 @@ class PortfolioController < ApplicationController
         # arquivos enviados pelo professor para este comentario
         @files_comments = CommentFile.all(:conditions => ["assignment_comment_id = ?", comment.id])
       end
-
+    else
+      @correction = '-' if (@activity.end_date < DateTime.now)
     end
 
   end
@@ -386,7 +393,8 @@ class PortfolioController < ApplicationController
            CASE
             WHEN t2.grade IS NOT NULL THEN 'corrected'
             WHEN t6.id IS NOT NULL    THEN 'sent'
-            WHEN t6.id IS NULL        THEN 'send'
+            WHEN t6.id IS NULL AND t1.end_date > now() THEN 'send' -- verifica se ainda pode enviar arquivos
+            ELSE '-'
            END AS correction
       FROM assignments         AS t1
       JOIN allocation_tags     AS t4 ON t4.id = t1.allocation_tag_id

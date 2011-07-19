@@ -66,10 +66,8 @@
               <%= ia["enunciation"] %><br /><br /><!-- exibe todo o conteudo se tiver poucos caracteres -->
             <% end %>
           </td>
-          <td class="td_blue_portfolio" style="width: 70px;">
-            <a href="#" class="assignment_<%= ia["correction"] %>">
-              <%= t(ia["correction"].to_sym) %>
-            </a>
+          <td class="td_blue_portfolio" style="width: 70px;" align="center">
+            <%=link_to t(ia["correction"].to_sym), {:action => :activity_details, :id => ia["id"]}, :class => "assignment_#{ia["correction"]}" %>
           </td>
           <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">
             <% unless ia["grade"].nil? %>
