@@ -2,7 +2,8 @@ class DiscussionsController < ApplicationController
 
   include DiscussionPostsHelper
 
-  #load_and_authorize_resource #Setar permissoes!!!!!
+  load_and_authorize_resource #Setar permissoes!!!!!
+
   def list
 
     # pegando dados da sessao e nao da url
@@ -19,7 +20,6 @@ class DiscussionsController < ApplicationController
 
     # retorna os fóruns da turma
     # at.id as id, at.offer_id as offerid,l.allocation_tag_id as alloctagid,l.type_lesson, privacy,description,
-    
     query = "SELECT * 
               FROM 
                 (SELECT d.name, d.id, d.start, d.end, d.description 
@@ -50,9 +50,11 @@ class DiscussionsController < ApplicationController
     discussion_id = params[:discussion_id]
     content       = params[:content]
     parent_id     = params[:parent_post_id]
-    #DEFINIR O PROFILE!!!! ###################################################
-    profile_id    = 2
-    raise "teste"
+    
+    #DEFINIR O PROFILE!!!! 
+    #profile_id    = 2
+    profile_id    = 1
+
     new_discussion_post = DiscussionPost.new :discussion_id => discussion_id, :user_id => current_user.id, :profile_id => profile_id, :content => content, :father_id => parent_id
     new_discussion_post.save
 

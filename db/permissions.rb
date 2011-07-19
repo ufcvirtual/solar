@@ -48,7 +48,16 @@ resources_arr = [
   {:id => 37, :controller => 'portfolio_professor', :action => 'update_comment', :description => 'Comentar atividade do aluno'},
   {:id => 38, :controller => 'portfolio_professor', :action => 'delete_file', :description => 'Deletar arquivos de comentarios'},
   {:id => 39, :controller => 'portfolio_professor', :action => 'upload_files', :description => 'Upload de arquivos de correcao'},
-  {:id => 40, :controller => 'portfolio_professor', :action => 'download_files_student', :description => 'Download de arquivos enviados pelo aluno'}
+  {:id => 40, :controller => 'portfolio_professor', :action => 'download_files_student', :description => 'Download de arquivos enviados pelo aluno'},
+
+   # Discussion deve ser separado em dois controllers: Discussion e Discussion_post#
+   
+  {:id => 41, :controller => 'discussions', :action => 'show', :description => 'Exibe todos os posts'},
+  {:id => 42, :controller => 'discussions', :action => 'new_post', :description => 'Cria um novo post'},
+  {:id => 43, :controller => 'discussions', :action => 'remove_post', :description => 'Remove um post'},
+  {:id => 44, :controller => 'discussions', :action => 'update_post', :description => 'Atualiza o conteudo de um post'}
+
+
 ]
 count = 0
 resources = Resource.create(resources_arr) do |registro|
@@ -93,7 +102,14 @@ perm_alunos = PermissionsResource.create([
   {:profile_id => 1, :resource_id => 31, :per_id => false},
   {:profile_id => 1, :resource_id => 32, :per_id => false},
   {:profile_id => 1, :resource_id => 33, :per_id => false},
-  {:profile_id => 1, :resource_id => 34, :per_id => false}
+  {:profile_id => 1, :resource_id => 34, :per_id => false},
+   
+   #discussion
+  {:profile_id => 1, :resource_id => 41, :per_id => false},
+  {:profile_id => 1, :resource_id => 42, :per_id => false},
+  {:profile_id => 1, :resource_id => 43, :per_id => false},
+  {:profile_id => 1, :resource_id => 44, :per_id => false}
+   
 ])
 
 ##############################
@@ -125,7 +141,13 @@ perm_prof_titular = PermissionsResource.create([
   {:profile_id => 2, :resource_id => 37, :per_id => false},
   {:profile_id => 2, :resource_id => 38, :per_id => false},
   {:profile_id => 2, :resource_id => 39, :per_id => false},
-  {:profile_id => 2, :resource_id => 40, :per_id => false}
+  {:profile_id => 2, :resource_id => 40, :per_id => false},
+
+   #discussion
+  {:profile_id => 2, :resource_id => 41, :per_id => false},
+  {:profile_id => 2, :resource_id => 42, :per_id => false},
+  {:profile_id => 2, :resource_id => 43, :per_id => false},
+  {:profile_id => 2, :resource_id => 44, :per_id => false}
 ])
 
 ##############################
