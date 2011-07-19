@@ -180,7 +180,13 @@ perm_prof_titular = PermissionsResource.create([
   {:profile_id => 3, :resource_id => 37, :per_id => false},
   {:profile_id => 3, :resource_id => 38, :per_id => false},
   {:profile_id => 3, :resource_id => 39, :per_id => false},
-  {:profile_id => 3, :resource_id => 40, :per_id => false}
+  {:profile_id => 3, :resource_id => 40, :per_id => false},
+
+   #discussion
+  {:profile_id => 3, :resource_id => 41, :per_id => false},
+  {:profile_id => 3, :resource_id => 42, :per_id => false},
+  {:profile_id => 3, :resource_id => 43, :per_id => false},
+  {:profile_id => 3, :resource_id => 44, :per_id => false}
 ])
 
 ######## PERMISSIONS MENUS #########
