@@ -148,56 +148,6 @@ class PortfolioController < ApplicationController
     end
   end
 
-  # delecao de arquivos da area publica
-  def delete_file_public_area
-
-    authorize! :delete_file_public_area, Portfolio
-
-    # unidade curricular
-    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
-    redirect = {:action => "list", :id => curriculum_unit_id}
-
-    respond_to do |format|
-
-      begin
-
-        # arquivo a ser deletado
-        file_name = PublicFile.find(params[:id]).attachment_file_name
-        file_del = "#{::Rails.root.to_s}/media/portfolio/public_area/#{params[:id]}_#{file_name}"
-
-        error = 0
-
-        # verificando se o arquivo ainda existe
-        if File.exist?(file_del)
-
-          # deleta o arquivo do servidor
-          if File.delete(file_del)
-
-            # retira o registro da base de dados
-            if PublicFile.find(params[:id]).delete
-
-              flash[:success] = t(:file_deleted)
-              format.html { redirect_to(redirect) }
-
-            end
-          else
-            error = 1 # arquivo nao deletado
-          end
-
-        else
-          error = 1 # arquivo inexistente
-        end
-
-        raise t(:error_delete_file) unless error == 0
-
-      rescue Exception => except
-        flash[:success] = except
-        format.html { redirect_to(redirect) }
-      end
-
-    end
-  end
-
   # download dos arquivos do comentario do professor
   def download_file_comment
 
@@ -268,7 +218,56 @@ class PortfolioController < ApplicationController
 
       end
     end
+  end
 
+  # delecao de arquivos da area publica
+  def delete_file_public_area
+
+    authorize! :delete_file_public_area, Portfolio
+
+    # unidade curricular
+    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+    redirect = {:action => "list", :id => curriculum_unit_id}
+
+    respond_to do |format|
+
+      begin
+
+        # arquivo a ser deletado
+        file_name = PublicFile.find(params[:id]).attachment_file_name
+        file_del = "#{::Rails.root.to_s}/media/portfolio/public_area/#{params[:id]}_#{file_name}"
+
+        error = 0
+
+        # verificando se o arquivo ainda existe
+        if File.exist?(file_del)
+
+          # deleta o arquivo do servidor
+          if File.delete(file_del)
+
+            # retira o registro da base de dados
+            if PublicFile.find(params[:id]).delete
+
+              flash[:success] = t(:file_deleted)
+              format.html { redirect_to(redirect) }
+
+            end
+          else
+            error = 1 # arquivo nao deletado
+          end
+
+        else
+          error = 1 # arquivo inexistente
+        end
+
+        raise t(:error_delete_file) unless error == 0
+
+      rescue Exception => except
+        flash[:success] = except
+        format.html { redirect_to(redirect) }
+      end
+
+    end
   end
 
   # download dos arquivos da area publica

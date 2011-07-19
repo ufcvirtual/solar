@@ -28,7 +28,7 @@
             <span style="font-weight: bold;">
               <%= link_to ia["name"], {:controller => :portfolio, :action => :activity_details, :id => ia["id"]} %>
             </span>&nbsp;
-            <span style="font-style: italic; color:  gray;">
+            <span class="portfolio_activity_date">
               <%= t(:date_name)%>: <%=l ia["start_date"].to_time, :format => :files %> - <%=l ia["end_date"].to_time, :format => :files %>
             </span>
           </td>
@@ -100,7 +100,7 @@
       <tr class="rowtable_even_portfolio">
         <td class="td_blue_portfolio_first">
           <span style="font-weight: bold;">Nome da Prova</span>&nbsp;
-          <span style="font-style: italic; color: gray;"><%= t(:date_name)%>: 22/03/11 - 30/03/11</span>
+          <span class="portfolio_activity_date"><%= t(:date_name)%>: 22/03/11 - 30/03/11</span>
         </td>
         <td class="td_blue_portfolio"><span style="font-weight: bold;"><%= t(:situation) %></span></td>
         <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:grade) %></span></td>
@@ -130,17 +130,17 @@
     <table cellpadding="5" cellspacing="0" class="portfolio_table">
       <tbody align="left">
 
-        <% classe = "" %>
+        <% css_class = "" %>
         <% @public_area.each_with_index do |pa, idx| %>
-          <% classe = "border_line" if idx > 0 %>
+          <% css_class = "border_line" if idx > 0 %>
 
           <tr style="height: 35px;">
-            <td class="<%= classe %>" style="width: 10px;"><%= image_tag icon_attachment(pa["attachment_file_name"]) %></td>
-            <td class="<%= classe %>">
+            <td class="<%= css_class %>" style="width: 10px;"><%= image_tag icon_attachment(pa["attachment_file_name"]) %></td>
+            <td class="<%= css_class %>">
               <%= link_to pa["attachment_file_name"], {:controller => :portfolio, :action => :download_file_public_area, :id => pa["id"]} %>
             </td>
-            <td class="<%= classe %>"><span style="color: gray;"><%= format('%.2fKB', pa["attachment_file_size"].to_i/1024.0) %></span></td>
-            <td class="<%= classe %>">
+            <td class="<%= css_class %>"><span class="portfolio_public_file_size"><%= format('%.2fKB', pa["attachment_file_size"].to_i/1024.0) %></span></td>
+            <td class="<%= css_class %>">
               <%= link_to t(:delete), {:controller => :portfolio, :action => :delete_file_public_area, :id => pa["id"]}, :confirm => "#{t(:delete_file_msg)}" %>
             </td>
           </tr>
@@ -148,7 +148,7 @@
         <% end %>
         <tr style="height: 35px;">
           <td colspan="4" class="border_line">
-            <a href="#" style="color: #204683;" id="send_attachment">
+            <a href="#" class="portfolio_public_file_upload_link" id="send_attachment">
               <%= t(:portfolio_upload_file) %>
             </a>
           </td>

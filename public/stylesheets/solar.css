@@ -1625,6 +1625,18 @@ ul.message_menu_listbox li ul a:hover{
     margin-top: 15px;
     width: 700px;
 }
+.portfolio_activity_date{
+    font-style  : italic;
+    color       : #888;
+}
+.portfolio_public_file_size{
+    color       : #888;
+}
+
+.portfolio_public_file_upload_link{
+    color: #204683;
+}
+
 
 /* table */
 table.portfolio_borda_simples {
