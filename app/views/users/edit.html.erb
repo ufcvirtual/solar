@@ -3,12 +3,6 @@
   <span style="font-weight: bold; font-size: 20px"><%= t(:my_data) %></span>
   <hr style="border: none;background-color: #dedede;height: 1px;"></hr>
 
-  <% if flash[:success] || flash[:error] || flash[:notice]%>
-    &nbsp;<br/>
-    <%=raw message %>&nbsp;
-    &nbsp;<br/>
-  <% end %>
-
   <%
     #Tamanhos dos campos
     field_size = "width:80px;"

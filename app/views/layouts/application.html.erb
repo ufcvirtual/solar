@@ -83,6 +83,16 @@
   </head>
   <body>
     <div id="mysolar_content" style="white-space: nowrap;">
+
+      <!--Mensagens de Erro, Alerta e Aviso-->
+      <% if flash[:success] || flash[:error] || flash[:notice]%>
+        &nbsp;<br/>
+        <%=raw message %>&nbsp;
+        &nbsp;<br/>
+      <% end %>
+      &nbsp;
+
+
       <%= yield %>
 
       <!-- Internacionalização  -->

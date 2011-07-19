@@ -1,61 +1,55 @@
 <div class="message_external_div">
-    <span class="page_title"><%= t(:message_title) %></span>
+  <span class="page_title"><%= t(:message_title) %></span>
 
-    <% if flash[:success] || flash[:error] || flash[:notice]%>
-      &nbsp;<br/>
-      <%=raw message %>&nbsp;
-      &nbsp;<br/>
+  <%= render 'message_header' %>
+
+  <%= render 'message_options' %>
+
+  <div class="message_div_list">
+
+    <% if !@messages.nil? %>
+      <% if @messages.length >0 %>
+        <table class="message_div_list">
+          <% @messages.each do |message| %>
+            <tr class="message_line">
+              <td style="width:30px"><%=check_box_tag 'checkbox_message', message.id, checked = false, {:class => 'selected_messages'}%></td>
+              <% if message.ehlida == 't' %>
+                <% css_class = "message_read" %>
+              <% else %>
+                <% css_class = "message_unread" %>
+              <% end %>
+              <td style="width:120px"><%= link_to message.name,  {:action => 'show', :id => message.id},{:class => css_class} %></td>
+              <td>
+                <% if @message_tag.nil? %>
+                  <% if !message.label.nil? %>
+                    <span class="message_label"><%=message.label%></span>
+                  <% end %>
+                <% end %>
+                <%= link_to message.subject,  {:action => 'show', :id => message.id},{:class => css_class} %>
+              </td>
+              <td style="width:30px"><%=image_tag("message_file.png",:alt=>t(:message_attach)) unless message.original_name.nil?%></td>
+              <td style="width:100px"><%= link_to l(message.send_date, :format => :short),  {:action => 'show', :id => message.id},{:class => css_class} %></td>
+            </tr>
+          <% end %>
+        </table>
+      <% else %>
+        <div class="text_none"><%=t(:message_none)%></div>
+      <% end %>
+    <% else %>
+      <div class="text_none"><%=t(:message_none)%></div>
     <% end %>
 
-    <%= render 'message_header' %>
-    
-    <%= render 'message_options' %>
+  </div>
 
-    <div class="message_div_list">
-      
-          <% if !@messages.nil? %>
-              <% if @messages.length >0 %>
-                <table class="message_div_list">
-                  <% @messages.each do |message| %>
-                    <tr class="message_line">
-                      <td style="width:30px"><%=check_box_tag 'checkbox_message', message.id, checked = false, {:class => 'selected_messages'}%></td>
-                      <% if message.ehlida == 't' %>
-                          <% css_class = "message_read" %>
-                      <% else %>
-                          <% css_class = "message_unread" %>
-                      <% end %>
-                      <td style="width:120px"><%= link_to message.name,  {:action => 'show', :id => message.id},{:class => css_class} %></td>
-                      <td>
-                        <% if @message_tag.nil? %>
-                          <% if !message.label.nil? %>
-                            <span class="message_label"><%=message.label%></span>
-                          <% end %>
-                        <% end %>
-                        <%= link_to message.subject,  {:action => 'show', :id => message.id},{:class => css_class} %>
-                      </td>
-                      <td style="width:30px"><%=image_tag("message_file.png",:alt=>t(:message_attach)) unless message.original_name.nil?%></td>
-                      <td style="width:100px"><%= link_to l(message.send_date, :format => :short),  {:action => 'show', :id => message.id},{:class => css_class} %></td>
-                    </tr>
-                  <% end %>
-                </table>
-              <% else %>
-                <div class="text_none"><%=t(:message_none)%></div>
-              <% end %>
-          <% else %>
-            <div class="text_none"><%=t(:message_none)%></div>
-          <% end %>
-      
-    </div>
-    
-    <div class="message_div_navigation">
-      <%= will_paginate @messages,
-                        :first_label => "#{t(:navigation_first)}",
-                        :previous_label => "#{t(:navigation_previous)}",
-                        :next_label => "#{t(:navigation_next)}",
-                        :last_label => "#{t(:navigation_last)}",
-                        :summary_label => "%d - %d t(:navigation_of) %d"%>
-      &nbsp;&nbsp;&nbsp;
-    </div>
+  <div class="message_div_navigation">
+    <%= will_paginate @messages,
+      :first_label => "#{t(:navigation_first)}",
+      :previous_label => "#{t(:navigation_previous)}",
+      :next_label => "#{t(:navigation_next)}",
+      :last_label => "#{t(:navigation_last)}",
+      :summary_label => "%d - %d t(:navigation_of) %d"%>
+    &nbsp;&nbsp;&nbsp;
+  </div>
 
 </div>
 

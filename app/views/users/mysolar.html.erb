@@ -1,9 +1,4 @@
 <!-- Portlets -------------------------->
-<% if flash[:success] || flash[:error] || flash[:notice]%>
-	 &nbsp;<br/>
-         <%=raw message %>&nbsp;
-	 &nbsp;<br/>
-<% end %>
 
 <%
 personal_configuration = PersonalConfiguration.find_by_user_id(@user.id)
