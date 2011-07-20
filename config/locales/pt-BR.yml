@@ -289,11 +289,11 @@
   send_file_portfolio_obs: "Aguarde o envio completo do arquivo. O tamanho não deve exceder 5MB."
   send_file_portfolio_text: "Exemplos de arquivos aceitos:<br />
   &nbsp;&nbsp;- Documentos do Microsoft Office<br />
-  &nbsp;&nbsp;- OpenOffice.org<br />
-  &nbsp;&nbsp;- Arquivos Compactados(.zip, .rar...)<br />
+  &nbsp;&nbsp;- Documentos do OpenOffice.org (ODF)<br />
+  &nbsp;&nbsp;- Arquivos Compactados (.zip, .rar...)<br />
   &nbsp;&nbsp;- Documentos PDF<br />
-  &nbsp;&nbsp;- Arquivos de Video(avi, mpeg,...)<br />
-  &nbsp;&nbsp;- Arquivos de Audio(mp3, wma...)"
+  &nbsp;&nbsp;- Arquivos de Video (avi, mpeg,...)<br />
+  &nbsp;&nbsp;- Arquivos de Audio (mp3, wma...)"
   sent_files: "Arquivos Enviados"
   send_files: "Enviar Arquivos"
   download_attachment: "Baixar Anexo"

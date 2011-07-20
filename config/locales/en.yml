@@ -284,11 +284,11 @@ en:
   send_file_portfolio_obs: "Wait for the complete submission of the file. The size should not exceed 5MB."
   send_file_portfolio_text: "Allowed file example:<br />
   &nbsp;&nbsp;- Microsoft Office Documents<br />
-  &nbsp;&nbsp;- OpenOffice.org<br />
-  &nbsp;&nbsp;- Archives(.zip, .rar...)<br />
+  &nbsp;&nbsp;- OpenOffice.org Documents (ODF)<br />
+  &nbsp;&nbsp;- Archives (.zip, .rar...)<br />
   &nbsp;&nbsp;- PDF Documents<br />
-  &nbsp;&nbsp;- Video Files(avi, mpeg,...)<br />
-  &nbsp;&nbsp;- Audio Files(mp3, wma...)"
+  &nbsp;&nbsp;- Video Files (avi, mpeg,...)<br />
+  &nbsp;&nbsp;- Audio Files (mp3, wma...)"
   sent_files: "Sent Files"
   send_files: "Send Files"
   download_attachment: "Download Attachment"
