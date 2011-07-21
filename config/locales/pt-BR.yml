@@ -304,6 +304,9 @@
   invalid_grade: "Nota Inválida"
   delete_file_interval_error: "Modificação de arquivos fora do intervalo permitido"
   send_file_interval_error: "Envio de arquivos fora do intervalo permitido"
+  not_sent: "Não Enviado"
+  assignments: "Trabalhos"
+  participation: "Participação"
   -: "-"
 
   # Mensagem de erro para permissão   

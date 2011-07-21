@@ -43,7 +43,7 @@ class PortfolioController < ApplicationController
     send_assignment = SendAssignment.joins("LEFT JOIN assignment_files ON assignment_files.send_assignment_id = send_assignments.id").
       where(["send_assignments.assignment_id = ? AND send_assignments.user_id = ?", assignment_id, students_id])
 
-    @correction = 'send' # indica se a atividade do aluno foi corrigida ou nao
+    @correction = 'not_sent' # indica se a atividade do aluno foi corrigida ou nao
     @grade = nil # nota dada pelo professor a atividade enviada
     @comment = nil # comentario do professor
     @files_sent = [] # arquivos enviados pelo aluno
@@ -59,7 +59,7 @@ class PortfolioController < ApplicationController
       assignment_files = send_assignment.assignment_files.first
 
       # verifica se ainda pode enviar
-      send_or_not = (@activity.end_date < DateTime.now) ? '-' : 'send'
+      send_or_not = (@activity.end_date < DateTime.now) ? '-' : 'not_sent'
 
       # verifica se o aluno enviou os arquivos e se a nota ja foi dada
       @correction = send_assignment.grade.nil? ? (assignment_files.nil? ? send_or_not : 'sent') : 'corrected'
@@ -378,7 +378,7 @@ class PortfolioController < ApplicationController
   end
 
   # atividades individuais
-  def individual_activities(group_id, user_id)
+  def individual_activities(group_id, students_id)
 
     ia = ActiveRecord::Base.connection.select_all <<SQL
     SELECT DISTINCT
@@ -391,19 +391,19 @@ class PortfolioController < ApplicationController
            COUNT(t3.id) AS comments,
            CASE
             WHEN t2.grade IS NOT NULL THEN 'corrected'
-            WHEN t6.id IS NOT NULL    THEN 'sent'
-            WHEN t6.id IS NULL AND t1.end_date > now() THEN 'send' -- verifica se ainda pode enviar arquivos
+            WHEN COUNT(t6.id) > 0 THEN 'sent'
+            WHEN COUNT(t6.id) = 0 AND t1.end_date > now() THEN 'send'
             ELSE '-'
            END AS correction
       FROM assignments         AS t1
       JOIN allocation_tags     AS t4 ON t4.id = t1.allocation_tag_id
       JOIN allocations         AS t5 ON t5.allocation_tag_id = t4.id
- LEFT JOIN send_assignments    AS t2 ON t2.assignment_id = t1.id
+ LEFT JOIN send_assignments    AS t2 ON t2.assignment_id = t1.id AND t2.user_id = #{students_id}
  LEFT JOIN assignment_comments AS t3 ON t3.send_assignment_id = t2.id
  LEFT JOIN assignment_files    AS t6 ON t6.send_assignment_id = t2.id
      WHERE t4.group_id = #{group_id}
-       AND t5.user_id = #{user_id}
-  GROUP BY t1.id, t2.id, t6.id, t1.name, t1.enunciation, t1.start_date, t1.end_date, t2.grade
+       AND t5.user_id = #{students_id}
+  GROUP BY t1.id, t2.id, t1.name, t1.enunciation, t1.start_date, t1.end_date, t2.grade
   ORDER BY t1.end_date, t1.start_date DESC;
 SQL
 

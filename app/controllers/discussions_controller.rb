@@ -80,6 +80,7 @@ class DiscussionsController < ApplicationController
        end
     
     end   
+
     redirect_to "/discussions/show/" << discussion_id
   end
 

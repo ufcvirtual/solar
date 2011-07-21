@@ -27,23 +27,10 @@ class PortfolioProfessorController < ApplicationController
 
     # recupera turma selecionada
     groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+    students_id = params[:id]
 
-    @students_id = params[:id]
-    @activities = Assignment.joins(:allocation_tag, :send_assignments).
-      select("name, start_date, end_date").
-      where("allocation_tags.group_id = ?", groups_id)
-
-# @activities = Assignment.includes(:allocation_tag, :send_assignments).
-#      where("allocation_tags.group_id = ?", groups_id)
-
-
-
-#    SELECT t1.id, t1.allocation_tag_id, t1.name, t1.start_date, t1.end_date
-#      FROM assignments AS t1
-#      JOIN send_assignments AS t2 ON t2.assignment_id = t1.id
-#      JOIN allocation_tags AS t3 ON t3.id = t1.allocation_tag_id
-#      WHERE t3.group_id = 3;
-
+    @student = User.find(students_id)
+    @activities = list_assignments_by_group_and_student(groups_id, students_id)
 
   end
 
@@ -157,6 +144,10 @@ class PortfolioProfessorController < ApplicationController
     end
 
   end
+
+  #####################
+  # FILES
+  #####################
 
   # deleta arquivos enviados
   def delete_file
@@ -307,21 +298,31 @@ class PortfolioProfessorController < ApplicationController
     @curriculum_unit = CurriculumUnit.select("id, name").where(["id = ?", curriculum_unit_id]).first
   end
 
-=begin
-  # lista de alunos por turma
-  def list_of_students_by_group(group_id)
-    ActiveRecord::Base.connection.select_all <<SQL
-      SELECT t5.id, t5.name
-        FROM groups           AS t1
-        JOIN allocation_tags  AS t2 ON t2.group_id = t1.id
-        JOIN allocations      AS t3 ON t3.allocation_tag_id = t2.id
-        JOIN profiles         AS t4 ON t4.id = t3.profile_id
-        JOIN users            AS t5 ON t5.id = t3.user_id
-       WHERE t4.student = TRUE
-         AND t1.id = #{group_id}
-       ORDER BY t5.name;
+  # lista com as atividades do aluno dentro na turma
+  def list_assignments_by_group_and_student(groups_id, students_id)
+    assignments = ActiveRecord::Base.connection.select_all <<SQL
+      SELECT DISTINCT
+             t1.name AS assignments_name,
+             t1.id AS assignment_id,
+             t1.start_date,
+             t1.end_date,
+             t2.grade,
+             t2.id AS send_assignment_id,
+             CASE
+                WHEN t2.grade IS NOT NULL THEN 'corrected'
+                WHEN COUNT(t3.id) > 0 THEN 'sent'
+                WHEN COUNT(t3.id) = 0 AND t1.end_date > now() THEN 'not_sent'
+                ELSE '-'
+             END AS situation
+        FROM assignments      AS t1
+        JOIN allocation_tags  AS t4 ON t4.id = t1.allocation_tag_id
+   LEFT JOIN send_assignments AS t2 ON t2.assignment_id = t1.id AND t2.user_id = #{students_id}
+   LEFT JOIN assignment_files AS t3 ON t3.send_assignment_id = t2.id
+       WHERE t4.group_id = #{groups_id}
+       GROUP BY t1.id, t1.name, t1.start_date, t1.end_date, t2.id, t2.grade
+       ORDER BY t1.end_date;
 SQL
+    return (assignments.nil?) ? [] : assignments
   end
-=end
 
 end

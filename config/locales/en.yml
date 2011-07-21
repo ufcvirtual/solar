@@ -299,6 +299,9 @@ en:
   invalid_grade: "Invalid Grade"
   delete_file_interval_error: "Modification of files out of range"
   send_file_interval_error: "Sending files out of range"
+  not_sent: "Not Sent"
+  assignments: "Assignments"
+  participation: "Participation"
   -: "-"
 
   # Mensagem de erro para permissão 

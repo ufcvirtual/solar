@@ -1772,6 +1772,6 @@ hr.portfolio_table_division {
     color: #56b7ae;
 }
 
-.assignment_send {
+.assignment_not_sent, .assignment_send {
     color: #204683;
 }

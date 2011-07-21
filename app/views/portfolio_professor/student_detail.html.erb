@@ -67,7 +67,7 @@
         </div>
         <span class="portfolio_activity_mright" style="float: right;">
           <span style="padding-right: 10px;">
-            <a href="#"><%= t(:back) %></a>
+            <%=link_to t(:back), {:action => :list_assignments, :id => @students_id} %>
           </span>
           <span>
             <%= f.submit t(:save) %>
@@ -93,7 +93,7 @@
     <div id="portfolio" class="portfolio portfolio_activity">
       <hr class="portfolio_line portfolio_activity" />
 
-      <%# unless @comments_files.first.nil? %>
+      <% unless @comments_files.first.nil? %>
         <div id="list_files_sent">
           <table border="0" width="70%" cellspacing="0" cellpadding="0" style="padding-bottom: 10px; padding-top: 10px;">
             <tbody>
@@ -115,11 +115,11 @@
             </tbody>
           </table>
         </div>
-      <%# end %>
+      <% end %>
       <div id="send_file">
         <span class="alter_photo_text"><%= t(:your_computer) %></span>
 
-        <%= form_for(:comments_files, :html => { :multipart => true }, :url => {:action => :upload_files, :curriculum_unit_id => params[:id], :students_id => @students_id, :send_assignment_id => @send_assignment_id}) do |f| %>
+        <%= form_for(:comments_files, :html => { :multipart => true }, :url => {:action => :upload_files, :students_id => @students_id, :send_assignment_id => @send_assignment_id}) do |f| %>
           <%= f.file_field :attachment %>
           <div style="float: right; padding-bottom: 10px; padding-right: 10px;"><%= f.submit t(:send) %></div>
           <br />
