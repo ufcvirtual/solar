@@ -43,21 +43,19 @@ resources_arr = [
   {:id => 33, :controller => 'portfolio', :action => 'upload_files_individual_area', :description => ''},
   {:id => 34, :controller => 'portfolio', :action => 'download_file_individual_area', :description => ''},
 
-  {:id => 35, :controller => 'portfolio_professor', :action => 'list', :description => 'Lista os alunos da turma'},
-  {:id => 36, :controller => 'portfolio_professor', :action => 'student_detail', :description => 'Detalha portfolio do aluno'},
-  {:id => 37, :controller => 'portfolio_professor', :action => 'update_comment', :description => 'Comentar atividade do aluno'},
-  {:id => 38, :controller => 'portfolio_professor', :action => 'delete_file', :description => 'Deletar arquivos de comentarios'},
-  {:id => 39, :controller => 'portfolio_professor', :action => 'upload_files', :description => 'Upload de arquivos de correcao'},
-  {:id => 40, :controller => 'portfolio_professor', :action => 'download_files_student', :description => 'Download de arquivos enviados pelo aluno'},
+  {:id => 35, :controller => 'portfolio_teacher', :action => 'list', :description => 'Lista os alunos da turma'},
+  {:id => 36, :controller => 'portfolio_teacher', :action => 'student_detail', :description => 'Detalha portfolio do aluno'},
+  {:id => 37, :controller => 'portfolio_teacher', :action => 'update_comment', :description => 'Comentar atividade do aluno'},
+  {:id => 38, :controller => 'portfolio_teacher', :action => 'delete_file', :description => 'Deletar arquivos de comentarios'},
+  {:id => 39, :controller => 'portfolio_teacher', :action => 'upload_files', :description => 'Upload de arquivos de correcao'},
+  {:id => 40, :controller => 'portfolio_teacher', :action => 'download_files_student', :description => 'Download de arquivos enviados pelo aluno'},
+  {:id => 41, :controller => 'portfolio_teacher', :action => 'list_assignments', :description => 'Lista trablhos de cada aluno'},
 
    # Discussion deve ser separado em dois controllers: Discussion e Discussion_post#
-   
-  {:id => 41, :controller => 'discussions', :action => 'show', :description => 'Exibe todos os posts'},
   {:id => 42, :controller => 'discussions', :action => 'new_post', :description => 'Cria um novo post'},
   {:id => 43, :controller => 'discussions', :action => 'remove_post', :description => 'Remove um post'},
-  {:id => 44, :controller => 'discussions', :action => 'update_post', :description => 'Atualiza o conteudo de um post'}
-
-
+  {:id => 44, :controller => 'discussions', :action => 'update_post', :description => 'Atualiza o conteudo de um post'},
+  {:id => 45, :controller => 'discussions', :action => 'show', :description => 'Exibe todos os posts'}
 ]
 count = 0
 resources = Resource.create(resources_arr) do |registro|
@@ -142,12 +140,12 @@ perm_prof_titular = PermissionsResource.create([
   {:profile_id => 2, :resource_id => 38, :per_id => false},
   {:profile_id => 2, :resource_id => 39, :per_id => false},
   {:profile_id => 2, :resource_id => 40, :per_id => false},
-
-   #discussion
   {:profile_id => 2, :resource_id => 41, :per_id => false},
+  #discussion
   {:profile_id => 2, :resource_id => 42, :per_id => false},
   {:profile_id => 2, :resource_id => 43, :per_id => false},
-  {:profile_id => 2, :resource_id => 44, :per_id => false}
+  {:profile_id => 2, :resource_id => 44, :per_id => false},
+  {:profile_id => 2, :resource_id => 45, :per_id => false}
 ])
 
 ##############################

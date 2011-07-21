@@ -30,7 +30,7 @@
   <div id="portfolio" class="portfolio portfolio_activity">
     <hr class="portfolio_line portfolio_activity" />
 
-    <%= form_for(:comments, :html => { :multipart => true }, :url => {:action => :update_comment, :students_id => @students_id, :send_assignment_id => @send_assignment_id}) do |f| %>
+    <%= form_for(:comments, :html => { :multipart => true }, :url => {:action => :update_comment, :students_id => @students_id, :assignment_id => @assignment_id, :send_assignment_id => @send_assignment_id}) do |f| %>
 
       <!-- Arquivos de trabalho -->
       <div style="padding-left: 10px; padding-right: 10px; overflow: auto;">

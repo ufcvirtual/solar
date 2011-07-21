@@ -1,4 +1,4 @@
-class PortfolioProfessorController < ApplicationController
+class PortfolioTeacherController < ApplicationController
 
   before_filter :require_user
   before_filter :curriculum_unit_name
@@ -6,7 +6,7 @@ class PortfolioProfessorController < ApplicationController
   # lista de portfolio dos alunos de uma turma
   def list
 
-    authorize! :list, PortfolioProfessor
+    authorize! :list, PortfolioTeacher
 
     groups_id = 3 # devera ser carregado a partir da escolha da combo de GROUP
 
@@ -25,6 +25,8 @@ class PortfolioProfessorController < ApplicationController
   # lista dos trabalhos passados pelo professor e a situacao do aluno selecionado
   def list_assignments
 
+    authorize! :list_assignments, PortfolioTeacher
+
     # recupera turma selecionada
     groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     students_id = params[:id]
@@ -37,15 +39,18 @@ class PortfolioProfessorController < ApplicationController
   # detalha o portfolio do aluno para a turma em questao
   def student_detail
 
-    authorize! :student_detail, PortfolioProfessor
+    authorize! :student_detail, PortfolioTeacher
 
+    @assignment_id = params[:assignment_id]
     @send_assignment_id = params[:send_assignment_id]
     @students_id = params[:id]
 
     # recuperar o nome da atividade
-    activity = Assignment.joins(:send_assignments).where("send_assignments.id = ? AND user_id = ?", @send_assignment_id, @students_id)
-    @activity = ''
-    @activity = activity.first["name"] unless activity.first.nil?
+    begin
+      @activity = Assignment.find(@assignment_id).name
+    rescue
+      @activity = ''
+    end
 
     # estudante
     @student = User.select("name").where(["id = ?", @students_id]).first
@@ -76,52 +81,65 @@ class PortfolioProfessorController < ApplicationController
   # atualiza comentarios do professor
   def update_comment
 
-    authorize! :update_comment, PortfolioProfessor
+    authorize! :update_comment, PortfolioTeacher
 
-    comments, grade, comment, send_assignment_id, students_id = nil, nil, nil, nil, nil
-    comments = params[:comments] if params.include? :comments
+    # id da atividade
+    assignment_id = params[:assignment_id]
 
-    # recupera valores do formulario
-    if comments.include? :grade
-      grade = comments[:grade].to_f unless comments[:grade].nil? || comments[:grade] == ''
-    end
-
-    comment = comments[:comment] if comments.include? :comment
-
-    # atividade em questao
-    send_assignment_id = params[:send_assignment_id] if params.include? :send_assignment_id
+    # id da resposta do aluno
+    send_assignment_id = params[:send_assignment_id]
 
     # usuarios envolvidos
-    students_id = params[:students_id] if params.include? :students_id
     professors_id = current_user.id
+    students_id = params[:students_id]
 
-    # update comment do professor
-    comment_teacher = AssignmentComment.find_by_send_assignment_id_and_user_id(send_assignment_id, professors_id)
+    # nota do aluno
+    grade = (params[:comments][:grade].nil? || params[:comments][:grade] == '') ? nil : params[:comments][:grade].to_f
 
-    # registro de comentario do professor inexistente
-    if comment_teacher.nil? # && !send_assignment_id.nil?
-
-      # se nao fez comentario o registro nao existe na tarefa
-      comment_teacher = AssignmentComment.new do |ac|
-        ac.send_assignment_id = send_assignment_id
-        ac.user_id = professors_id
-      end
-
-    end
-
-    # insere comentario se nao for vazio
-    comment_teacher.comment = comment unless comment_teacher.nil? || comment_teacher == ''
-
-    # modifica nota do aluno
-    students_grade = SendAssignment.find(send_assignment_id)
-
-    students_grade.grade = grade unless students_grade.nil?
+    # comentario enviado pelo professor
+    comment = (params[:comments][:comment].nil? || params[:comments][:comment] == '') ? nil : params[:comments][:comment]
 
     redirect = {:action => :student_detail, :id => students_id, :send_assignment_id => send_assignment_id}
 
     respond_to do |format|
 
       begin
+
+
+        # verifica se ja existe um send_assignment
+        if send_assignment_id.nil?
+
+          send_assignment = SendAssignment.new do |s|
+            s.assignment_id = assignment_id
+            s.user_id = students_id
+          end
+          send_assignment.save!
+
+          send_assignment_id = send_assignment.id
+
+        end
+
+        # update comment do professor
+        comment_teacher = AssignmentComment.find_by_send_assignment_id_and_user_id(send_assignment_id, professors_id)
+
+        # registro de comentario do professor inexistente
+        if comment_teacher.nil? # && !send_assignment_id.nil?
+
+          # se nao fez comentario o registro nao existe na tarefa
+          comment_teacher = AssignmentComment.new do |ac|
+            ac.send_assignment_id = send_assignment_id
+            ac.user_id = professors_id
+          end
+
+        end
+
+        # insere comentario se nao for vazio
+        comment_teacher.comment = comment unless comment_teacher.nil? || comment_teacher == ''
+
+        # modifica nota do aluno
+        students_grade = SendAssignment.find(send_assignment_id)
+
+        students_grade.grade = grade unless students_grade.nil?
 
         if grade < 0 || grade > 10
           raise t(:invalid_grade)
@@ -152,7 +170,7 @@ class PortfolioProfessorController < ApplicationController
   # deleta arquivos enviados
   def delete_file
 
-    authorize! :delete_file, PortfolioProfessor
+    authorize! :delete_file, PortfolioTeacher
 
     redirect = {:action => :student_detail, :id => params[:students_id], :send_assignment_id => params[:send_assignment_id]}
 
@@ -208,7 +226,7 @@ class PortfolioProfessorController < ApplicationController
   # upload de arquivos para o comentario
   def upload_files
 
-    authorize! :upload_files, PortfolioProfessor
+    authorize! :upload_files, PortfolioTeacher
 
     send_assignment_id = params[:send_assignment_id] if params.include? :send_assignment_id
     students_id = params[:students_id] if params.include? :students_id
@@ -260,7 +278,7 @@ class PortfolioProfessorController < ApplicationController
   # download de arquivos
   def download_files_student
 
-    authorize! :download_files_student, PortfolioProfessor
+    authorize! :download_files_student, PortfolioTeacher
 
     redirect_error = {:action => :student_detail, :id => params[:students_id], :send_assignment_id => params[:send_assignment_id]}
 

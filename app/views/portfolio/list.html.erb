@@ -64,18 +64,10 @@
             <%=link_to t(ia["correction"].to_sym), {:action => :activity_details, :id => ia["id"]}, :class => "assignment_#{ia["correction"]}" %>
           </td>
           <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">
-            <% unless ia["grade"].nil? %>
-              <%= ia["grade"].to_f %>
-            <% else %>
-              <%= '-' %>
-            <% end %>
+            <%= (ia["grade"].nil?) ? '-' : ia["grade"].to_f %>
           </td>
           <td class="td_blue_portfolio" style="width: 95px;" align="center">
-            <% if ia["comments"].to_i > 0 %>
-              <%= image_tag "icon_comments.png" %>
-            <% else %>
-              <%= image_tag "icon_no_comments.png" %>
-            <% end %>
+            <%= image_tag( (ia["comments"].to_i > 0) ? "icon_comments.png" : "icon_no_comments.png" )%>
           </td>
         </tr>
       </table>

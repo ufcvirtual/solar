@@ -66,10 +66,10 @@
           <% @activities.each_with_index do |activity, idx| %>
             <% class_name = ((idx % 2) == 0) ? 'rowtable_odd' : 'rowtable_even' %>
             <tr class="<%= class_name %>">
-              <td class="td_blue_portfolio"><%=link_to activity["assignments_name"], {:action => :student_detail, :id => @student.id, :send_assignment_id => activity["send_assignment_id"]} %></td>
+              <td class="td_blue_portfolio"><%=link_to activity["assignments_name"], {:action => :student_detail, :id => @student.id, :assignment_id => activity["assignment_id"],:send_assignment_id => activity["send_assignment_id"]} %></td>
               <td class="td_blue_portfolio" align="center"><%=l activity["start_date"].to_time, :format => :normal %> - <%=l activity["end_date"].to_time, :format => :normal %></td>
               <td class="td_blue_portfolio assignment_<%= activity["situation"] %>" align="center"><%= t(activity["situation"].to_sym) %></td>
-              <td class="td_blue_portfolio" align="center"><%= activity["grade"] || '-' %></td>
+              <td class="td_blue_portfolio" align="center"><%= (activity["grade"].nil?) ? '-' : activity["grade"].to_f %></td>
             </tr>
           <% end %>
         </tbody>

@@ -26,7 +26,7 @@
 
           <tr class="<%= rowtable %>">
             <td>
-              <%=link_to student["name"], {:controller => :portfolio_professor, :action => :list_assignments, :id => student["id"]} %>
+              <%=link_to student["name"], {:action => :list_assignments, :id => student["id"]} %>
             </td>
             <td>
               icon
