@@ -99,12 +99,9 @@ class PortfolioTeacherController < ApplicationController
     # comentario enviado pelo professor
     comment = (params[:comments][:comment].nil? || params[:comments][:comment] == '') ? nil : params[:comments][:comment]
 
-    redirect = {:action => :student_detail, :id => students_id, :send_assignment_id => send_assignment_id}
-
     respond_to do |format|
 
       begin
-
 
         # verifica se ja existe um send_assignment
         if send_assignment_id.nil?
@@ -118,6 +115,8 @@ class PortfolioTeacherController < ApplicationController
           send_assignment_id = send_assignment.id
 
         end
+
+        redirect = {:action => :student_detail, :id => students_id, :assignment_id => assignment_id, :send_assignment_id => send_assignment_id}
 
         # update comment do professor
         comment_teacher = AssignmentComment.find_by_send_assignment_id_and_user_id(send_assignment_id, professors_id)
