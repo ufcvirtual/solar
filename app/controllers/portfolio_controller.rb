@@ -200,6 +200,7 @@ class PortfolioController < ApplicationController
         # allocation_tag do grupo selecionada
         allocation_tag_id = AllocationTag.find(:first, :conditions => ["group_id = ?", session[:opened_tabs][session[:active_tab]]["groups_id"]]).id
 
+        
         @public_file = PublicFile.new params[:portfolio]
         @public_file.user_id = current_user.id
         @public_file.allocation_tag_id = allocation_tag_id

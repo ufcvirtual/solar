@@ -9,7 +9,7 @@ class DiscussionsController < ApplicationController
   end
   
   def owned_by_current_user
-      current_user.id == @discussion_post.user_id
+    current_user.id == @discussion_post.user_id
   end
   
   def has_no_response
@@ -63,10 +63,9 @@ class DiscussionsController < ApplicationController
     discussion_id = params[:discussion_id]
     content       = params[:content]
     parent_id     = params[:parent_post_id]
-    
     #DEFINIR O PROFILE!!!! 
     #profile_id    = 2
-    profile_id    = 1
+    profile_id    = 1 #DEFINIR O PROFILE!!!! ##################################################
     
    
     @discussion= Discussion.find_by_id(discussion_id)
@@ -74,12 +73,27 @@ class DiscussionsController < ApplicationController
     #Usuário só pode criar posts no período ativo do fórum
     if (valid_date)
     
-       new_discussion_post = DiscussionPost.new :discussion_id => discussion_id, :user_id => current_user.id, :profile_id => profile_id, :content => content, :father_id => parent_id
-       new_discussion_post.save
+      begin#Descobrir aqui como abrir uma transacao...
+        #Criando nova postagem
+        new_discussion_post = DiscussionPost.new :discussion_id => discussion_id, :user_id => current_user.id, :profile_id => profile_id, :content => content, :father_id => parent_id
+        new_discussion_post.save!
 
-       if @display_mode != "PLAINLIST"
-         hold_pagination
-       end
+        #Salvando os arquivos anexados à postagem
+        unless params[:attachment].nil?
+          params[:attachment].each do |file|
+            post_file = DiscussionPostFile.new Hash["attachment", file[1]]
+            post_file[:discussion_post_id] = new_discussion_post.id
+            post_file.save!
+          end
+        end
+      rescue Exception => error
+        flash[:error] = error.message
+      end
+
+      #Se a exibição for do tipo PLAINLIST, a nova postagem aparece no inicio, logo, não devemos manter a página atual
+      if @display_mode != "PLAINLIST"
+        hold_pagination
+      end
     
     end   
 
@@ -100,9 +114,9 @@ class DiscussionsController < ApplicationController
         (valid_date)&&
         (has_no_response)   
       
-    DiscussionPost.delete(discussion_post_id)
+      DiscussionPost.delete(discussion_post_id)
 
-    hold_pagination
+      hold_pagination
     end
     redirect_to "/discussions/show/" << discussion_id
   end
@@ -120,10 +134,10 @@ class DiscussionsController < ApplicationController
         (valid_date)&&
         (has_no_response)   
         
-    post = DiscussionPost.find(discussion_post_id);
-    post.update_attributes({:content => new_content})
+      post = DiscussionPost.find(discussion_post_id);
+      post.update_attributes({:content => new_content})
 
-    hold_pagination 
+      hold_pagination
     end
     redirect_to "/discussions/show/" << discussion_id
   end

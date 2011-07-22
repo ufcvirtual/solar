@@ -1,0 +1,10 @@
+
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Icon[pt_BR]=nautilus
+Exec=nautilus "/home/ricardo/Projetos/solar"
+Name[pt_BR]=Solar 2
+Name=teste
+Icon=/home/ricardo/Imagens/solar.svg

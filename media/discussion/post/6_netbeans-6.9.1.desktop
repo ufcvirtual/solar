@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=NetBeans IDE 6.9.1
+Comment=The Smart Way to Code
+Exec=/bin/sh "/home/ricardo/netbeans-6.9.1/bin/netbeans"
+Icon=/home/ricardo/netbeans-6.9.1/nb/netbeans.png
+Categories=Application;Development;Java;IDE
+Version=1.0
+Type=Application
+Terminal=0
+

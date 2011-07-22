@@ -24,24 +24,4 @@ class PublicFile < ActiveRecord::Base
   ], :message => :invalid_type
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 end
