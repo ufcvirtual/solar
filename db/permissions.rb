@@ -55,7 +55,8 @@ resources_arr = [
   {:id => 42, :controller => 'discussions', :action => 'new_post', :description => 'Cria um novo post'},
   {:id => 43, :controller => 'discussions', :action => 'remove_post', :description => 'Remove um post'},
   {:id => 44, :controller => 'discussions', :action => 'update_post', :description => 'Atualiza o conteudo de um post'},
-  {:id => 45, :controller => 'discussions', :action => 'show', :description => 'Exibe todos os posts'}
+  {:id => 45, :controller => 'discussions', :action => 'show', :description => 'Exibe todos os posts'},
+  {:id => 46, :controller => 'discussions', :action => 'list', :description => 'Lista os foruns'}
 ]
 count = 0
 resources = Resource.create(resources_arr) do |registro|
@@ -106,8 +107,9 @@ perm_alunos = PermissionsResource.create([
   {:profile_id => 1, :resource_id => 41, :per_id => false},
   {:profile_id => 1, :resource_id => 42, :per_id => false},
   {:profile_id => 1, :resource_id => 43, :per_id => false},
-  {:profile_id => 1, :resource_id => 44, :per_id => false}
-   
+  {:profile_id => 1, :resource_id => 44, :per_id => false},
+  {:profile_id => 1, :resource_id => 45, :per_id => false},
+  {:profile_id => 1, :resource_id => 46, :per_id => false}
 ])
 
 ##############################
@@ -145,7 +147,8 @@ perm_prof_titular = PermissionsResource.create([
   {:profile_id => 2, :resource_id => 42, :per_id => false},
   {:profile_id => 2, :resource_id => 43, :per_id => false},
   {:profile_id => 2, :resource_id => 44, :per_id => false},
-  {:profile_id => 2, :resource_id => 45, :per_id => false}
+  {:profile_id => 2, :resource_id => 45, :per_id => false},
+  {:profile_id => 2, :resource_id => 46, :per_id => false}
 ])
 
 ##############################
@@ -184,7 +187,9 @@ perm_prof_titular = PermissionsResource.create([
   {:profile_id => 3, :resource_id => 41, :per_id => false},
   {:profile_id => 3, :resource_id => 42, :per_id => false},
   {:profile_id => 3, :resource_id => 43, :per_id => false},
-  {:profile_id => 3, :resource_id => 44, :per_id => false}
+  {:profile_id => 3, :resource_id => 44, :per_id => false},
+  {:profile_id => 3, :resource_id => 45, :per_id => false},
+  {:profile_id => 3, :resource_id => 46, :per_id => false},
 ])
 
 ######## PERMISSIONS MENUS #########

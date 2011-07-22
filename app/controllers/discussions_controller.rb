@@ -19,8 +19,8 @@ class DiscussionsController < ApplicationController
   def list
 
     # pegando dados da sessao e nao da url
-    group_id = session[:opened_tabs][session[:active_tab]]["group_id"]
-    offer_id = session[:opened_tabs][session[:active_tab]]["offer_id"]
+    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+    offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
 
     if group_id.nil?
       group_id = -1
@@ -29,6 +29,7 @@ class DiscussionsController < ApplicationController
     if offer_id.nil?
       offer_id = -1
     end
+    
 
     # retorna os fóruns da turma
     # at.id as id, at.offer_id as offerid,l.allocation_tag_id as alloctagid,l.type_lesson, privacy,description,
