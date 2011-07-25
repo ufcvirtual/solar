@@ -1183,15 +1183,14 @@ div.alter_photo_text {
 }
 
 .forum_post_link_disabled{
-  color: #1c4785;
+  color: #5C6D85;
   font-family:  'Myriad Pro', 'Arial', sans;
   font-size: 15px;
-  cursor: pointer;  
   text-decoration: underline line-through; 
 }
 
 .forum_post_link_remove_disabled{
-    color: #922;
+    color: #996262;
 }
 
 .forum_post_child_ident{
