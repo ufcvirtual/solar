@@ -1,8 +1,6 @@
 module DiscussionPostsHelper
 
   def valid_date
-    discussion_id = 1
-    @discussion= Discussion.find_by_id(discussion_id)
     @discussion.start <= Date.today && Date.today <= @discussion.end
   end
   
