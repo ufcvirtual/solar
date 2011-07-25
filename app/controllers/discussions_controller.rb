@@ -67,6 +67,7 @@ class DiscussionsController < ApplicationController
     #DEFINIR O PROFILE!!!! 
     #profile_id    = 2
     profile_id    = 1
+    
    
     @discussion= Discussion.find_by_id(discussion_id)
     

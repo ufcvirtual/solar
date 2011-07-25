@@ -72,13 +72,13 @@ module DiscussionPostsHelper
                               <a href="javascript:setDiscussionPostId(' << post[:id].to_s << ')" class="forum_button updateDialogLink ">' << t('forum_show_edit') << '</a>&nbsp;&nbsp;
                               <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink forum_button">' << t('forum_show_answer') << '</a>' 
     elsif editable && !can_interact
-      post_string <<      '    <strike> <a class="forum_post_link_disabled forum_post_link_remove_disabled">' << t('forum_show_remove') << '</a></strike>&nbsp;&nbsp;
-                               <strike> <a  class="forum_post_link_disabled">' << t('forum_show_edit') << '</a></strike>&nbsp;&nbsp;
-                               <strike><a   class="forum_post_link_disabled">' << t('forum_show_answer') << '</a></strike>'
+      post_string <<      '    <a class="forum_post_link_disabled forum_post_link_remove_disabled">' << t('forum_show_remove') << '</a>&nbsp;&nbsp;
+                               <a  class="forum_post_link_disabled">' << t('forum_show_edit') << '</a>&nbsp;&nbsp;
+                               <a   class="forum_post_link_disabled">' << t('forum_show_answer') << '</a>'
     elsif !editable && can_interact 
          post_string <<      '   <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink forum_button">' << t('forum_show_answer') << '</a>'     
     elsif !editable && !can_interact
-        post_string <<      '  <strike><a class="forum_post_link_disabled">' << t('forum_show_answer') << '</a></strike>'
+        post_string <<      '  <a class="forum_post_link_disabled">' << t('forum_show_answer') << '</a>'
     end
     post_string <<      '</div>
                         </td>
