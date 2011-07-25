@@ -310,6 +310,9 @@
   tests: "Provas"
   -: "-"
 
+  # acompanhamento
+  scores_of: "Acompanhamento de"
+
   # Mensagem de erro para permissão   
   no_permission: "Você não tem permissão para acessar esta página"
 

@@ -2,7 +2,7 @@
 <!-- Apresenta o nome da unidade curricular -->
 <div>
   <span class="page_title"><%= t(:portfolio_title) %></span>
-  <span class="page_title"><%= @curriculum_unit.name unless @curriculum_unit.nil? %></span>
+  <span class="page_title"><%= curriculum_unit_name %></span>
 </div>
 
 <!-- Portfolio -->
@@ -21,10 +21,8 @@
       <tbody>
         <% @students.each_with_index do |student, idx| %>
 
-          <% rowtable = 'rowtable_even' %>
-          <% rowtable = 'rowtable_odd' if (idx % 2 == 0) %>
-
-          <tr class="<%= rowtable %>">
+          <% class_name = ((idx % 2) == 0) ? 'rowtable_even' : 'rowtable_odd' %>
+          <tr class="<%= class_name %>">
             <td>
               <%=link_to student["name"], {:action => :list_assignments, :id => student["id"]} %>
             </td>

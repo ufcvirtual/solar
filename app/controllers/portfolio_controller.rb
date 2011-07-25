@@ -6,7 +6,6 @@
 class PortfolioController < ApplicationController
 
   before_filter :require_user
-  before_filter :curriculum_unit_name, :only => [:list, :activity_details]
 
   # lista as atividades
   def list
@@ -371,12 +370,6 @@ class PortfolioController < ApplicationController
 
   private
 
-  # recupera o nome do curriculum_unit
-  def curriculum_unit_name
-    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"] # recupera unidade curricular da sessao
-    @curriculum_unit = CurriculumUnit.select("id, name").where(["id = ?", curriculum_unit_id]).first
-  end
-
   # atividades individuais
   def individual_activities(group_id, students_id)
 
@@ -388,7 +381,7 @@ class PortfolioController < ApplicationController
            t1.start_date,
            t1.end_date,
            t2.grade,
-           COUNT(t3.id) AS comments,
+           CASE WHEN t3.comment IS NOT NULL THEN 1 ELSE 0 END AS comments,
            CASE
             WHEN t2.grade IS NOT NULL THEN 'corrected'
             WHEN COUNT(t6.id) > 0 THEN 'sent'
@@ -403,7 +396,7 @@ class PortfolioController < ApplicationController
  LEFT JOIN assignment_files    AS t6 ON t6.send_assignment_id = t2.id
      WHERE t4.group_id = #{group_id}
        AND t5.user_id = #{students_id}
-  GROUP BY t1.id, t2.id, t1.name, t1.enunciation, t1.start_date, t1.end_date, t2.grade
+  GROUP BY t1.id, t2.id, t1.name, t1.enunciation, t1.start_date, t1.end_date, t2.grade, t3.comment
   ORDER BY t1.end_date, t1.start_date DESC;
 SQL
 

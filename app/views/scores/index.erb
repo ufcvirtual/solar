@@ -1,1 +1,137 @@
-nao muita coisa
+
+<!-- Apresenta o nome da unidade curricular -->
+<div>
+  <span class="page_title">
+    <%= t(:scores_of) %> <%= curriculum_unit_name %>
+  </span>
+</div>
+
+<!-- Lista de atividades -->
+<div class="portfolio_activity_list">
+
+  <div class="portfolio_header_content">
+    <div class="portfolio_title"><%= @student.name %></div>
+    <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+  </div>
+
+  <!-- Informacoes -->
+
+  <div id="portfolio" class="portfolio portfolio_activity_list">
+
+    <!-- test -->
+    <hr class="portfolio_line" />
+    <div id="test">
+      <table id="assignments_list" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+          <tr style="font-weight: bold;">
+            <td class="td_blue_portfolio"><%= t(:tests) %></td>
+            <td class="td_blue_portfolio" align="center" style="width: 22%;"><%= t(:date_name) %></td>
+            <td class="td_blue_portfolio" align="center" style="width: 12%;"><%= t(:situation) %></td>
+            <td class="td_blue_portfolio" align="center" style="width: 8%;"><%= t(:grade) %></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td_blue_portfolio">Prova I</td>
+            <td class="td_blue_portfolio" align="center">2011-05-04</td>
+            <td class="td_blue_portfolio" align="center">-</td>
+            <td class="td_blue_portfolio" align="center">9.8</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- assignments -->
+    <hr class="portfolio_table_division" />
+    <div id="assignments">
+      <table id="assignments_list" width="100%" cellspacing="0" border="0">
+        <thead>
+          <tr style="font-weight: bold;">
+            <td class="td_blue_portfolio"><%= t(:assignments) %></td>
+            <td class="td_blue_portfolio" align="center" style="width: 22%;"><%= t(:date_name) %></td>
+            <td class="td_blue_portfolio" align="center" style="width: 12%;"><%= t(:situation) %></td>
+            <td class="td_blue_portfolio" align="center" style="width: 8%;"><%= t(:grade) %></td>
+          </tr>
+        </thead>
+        <tbody>
+          <% @activities.each_with_index do |activity, idx| %>
+            <% class_name = ((idx % 2) == 0) ? 'rowtable_even' : 'rowtable_odd' %>
+            <tr class="<%= class_name %>">
+              <td class="td_blue_portfolio"><%=  activity["assignments_name"] %></td>
+              <td class="td_blue_portfolio" align="center"><%=l activity["start_date"].to_time, :format => :normal %> - <%=l activity["end_date"].to_time, :format => :normal %></td>
+              <td class="td_blue_portfolio assignment_<%= activity["situation"] %>" align="center"><%= t(activity["situation"].to_sym) %></td>
+              <td class="td_blue_portfolio" align="center"><%= (activity["grade"].nil?) ? '-' : activity["grade"].to_f %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- participation -->
+    <hr class="portfolio_table_division" />
+    <div id="participation">
+      <table id="assignments_list" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+          <tr style="font-weight: bold;">
+            <td class="td_blue_portfolio"><%= t(:participation) %></td>
+            <td class="td_blue_portfolio" align="center" style="width: 22%;"><%= t(:date_name) %></td>
+            <td class="td_blue_portfolio" align="center" style="width: 12%;"><%= t(:situation) %></td>
+            <td class="td_blue_portfolio" align="center" style="width: 8%;"><%= t(:grade) %></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td_blue_portfolio">Participacao I</td>
+            <td class="td_blue_portfolio" align="center">2011-05-04</td>
+            <td class="td_blue_portfolio" align="center">-</td>
+            <td class="td_blue_portfolio" align="center">9.8</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Quantidade de participacoes -->
+<div class="portfolio_activity_list">
+
+  <div class="portfolio_header_content">
+    <div class="portfolio_title">Qtd de participacao</div>
+    <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+  </div>
+
+  <!-- Informacoes -->
+  <div id="portfolio" class="portfolio portfolio_activity_list">
+    <hr class="portfolio_line" />
+
+    <table width="100%" cellspacing="0">
+      <thead>
+        <tr>
+          <td></td>
+          <td align="center">Qtd</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="rowtable_even">
+          <td class="td_blue_portfolio">Forum</td>
+          <td class="td_blue_portfolio" align="center">1</td>
+        </tr>
+        <tr class="rowtable_odd">
+          <td class="td_blue_portfolio">Apresentacao dos participantes</td>
+          <td class="td_blue_portfolio" align="center">1</td>
+        </tr>
+        <tr class="rowtable_even">
+          <td class="td_blue_portfolio">Forum de teste</td>
+          <td class="td_blue_portfolio" align="center">2</td>
+        </tr>
+        <tr class="rowtable_odd">
+          <td class="td_blue_portfolio">Quantidade total de acessos</td>
+          <td class="td_blue_portfolio" align="center">4</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

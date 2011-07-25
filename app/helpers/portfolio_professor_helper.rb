@@ -1,2 +1,0 @@
-module PortfolioProfessorHelper
-end

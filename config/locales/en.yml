@@ -305,6 +305,9 @@ en:
   tests: "Tests"
   -: "-"
 
+  # acompanhamento
+  scores_of: "Scores Of"
+
   # Mensagem de erro para permissão 
   no_permission: "you haven't permission to access this page"
 

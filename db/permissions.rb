@@ -205,6 +205,7 @@ PermissionsMenu.create([
     {:profile_id => 1, :menu_id => 20},
     {:profile_id => 1, :menu_id => 201},
     {:profile_id => 1, :menu_id => 202},
+    {:profile_id => 1, :menu_id => 204},
     {:profile_id => 1, :menu_id => 30},
     {:profile_id => 1, :menu_id => 301},
     {:profile_id => 1, :menu_id => 303},
@@ -227,6 +228,7 @@ PermissionsMenu.create([
     {:profile_id => 2, :menu_id => 70},
     {:profile_id => 2, :menu_id => 302},
 
+    # tutor a distancia
     {:profile_id => 3, :menu_id => 10},
     {:profile_id => 3, :menu_id => 101},
     {:profile_id => 3, :menu_id => 20},

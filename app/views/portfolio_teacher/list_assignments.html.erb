@@ -2,7 +2,7 @@
 <!-- Apresenta o nome da unidade curricular -->
 <div>
   <span class="page_title">
-    Acompanhamento em <%= @curriculum_unit.name unless @curriculum_unit.nil? %>
+    <%= t(:scores_of) %> <%= curriculum_unit_name %>
   </span>
 </div>
 
@@ -17,7 +17,7 @@
   <!-- Informacoes -->
 
   <div id="portfolio" class="portfolio portfolio_activity_list">
-    <hr class="portfolio_line portfolio_activity" />
+    <hr class="portfolio_line" />
     <div id="test">
       <table id="assignments_list" width="100%" cellpadding="0" cellspacing="0" border="0">
         <thead>
@@ -39,7 +39,7 @@
       </table>
     </div>
     <hr class="portfolio_table_division" />
-    <div id="assignments" style="padding-bottom: 10px;">
+    <div id="assignments">
       <table id="assignments_list" width="100%" cellpadding="0" cellspacing="0" border="0">
         <thead>
           <tr style="font-weight: bold;">
@@ -51,7 +51,7 @@
         </thead>
         <tbody>
           <% @activities.each_with_index do |activity, idx| %>
-            <% class_name = ((idx % 2) == 0) ? 'rowtable_odd' : 'rowtable_even' %>
+            <% class_name = ((idx % 2) == 0) ? 'rowtable_even' : 'rowtable_odd' %>
             <tr class="<%= class_name %>">
               <td class="td_blue_portfolio"><%=link_to activity["assignments_name"], {:action => :student_detail, :id => @student.id, :assignment_id => activity["assignment_id"],:send_assignment_id => activity["send_assignment_id"]} %></td>
               <td class="td_blue_portfolio" align="center"><%=l activity["start_date"].to_time, :format => :normal %> - <%=l activity["end_date"].to_time, :format => :normal %></td>
@@ -88,7 +88,45 @@
 
 </div>
 
+
 <!-- Quantidade de participacoes -->
-<div>
-  
+<div class="portfolio_activity_list">
+
+  <div class="portfolio_header_content">
+    <div class="portfolio_title">Qtd de participacao</div>
+    <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+  </div>
+
+  <!-- Informacoes -->
+  <div id="portfolio" class="portfolio portfolio_activity_list">
+    <hr class="portfolio_line" />
+
+    <table width="100%" cellspacing="0">
+      <thead>
+        <tr>
+          <td></td>
+          <td align="center">Qtd</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="rowtable_even">
+          <td class="td_blue_portfolio">Forum</td>
+          <td class="td_blue_portfolio" align="center">1</td>
+        </tr>
+        <tr class="rowtable_odd">
+          <td class="td_blue_portfolio">Apresentacao dos participantes</td>
+          <td class="td_blue_portfolio" align="center">1</td>
+        </tr>
+        <tr class="rowtable_even">
+          <td class="td_blue_portfolio">Forum de teste</td>
+          <td class="td_blue_portfolio" align="center">2</td>
+        </tr>
+        <tr class="rowtable_odd">
+          <td class="td_blue_portfolio">Quantidade total de acessos</td>
+          <td class="td_blue_portfolio" align="center">4</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
 </div>

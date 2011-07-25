@@ -1,10 +1,6 @@
 <div>
-  <span class="page_title">
-    <%= t(:portfolio_title)%>
-  </span>
-  <span class="page_title">
-    <%= @curriculum_unit.name unless @curriculum_unit.nil? %>
-  </span>
+  <span class="page_title"><%= t(:portfolio_title)%></span>
+  <span class="page_title"><%= curriculum_unit_name %></span>
 </div>
 
 <div>

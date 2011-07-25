@@ -38,11 +38,11 @@ module ApplicationHelper
 
   #Renderiza a navegação da paginação.
   #PRECISAMOS INTERNACIONALIZAR ISSO
-  def render_pagination_bar(total_Itens = "1")
+  def render_pagination_bar(total_itens = "1")
     #Limpando as variaveis
 
     #descobrindo o número total de páginas
-    total_pages = (total_Itens.to_f/Rails.application.config.items_per_page.to_f).ceil.to_i
+    total_pages = (total_itens.to_f/Rails.application.config.items_per_page.to_f).ceil.to_i
 
 #    if @current_page.to_i > total_pages
 #      @current_page = total_pages.to_s
@@ -72,4 +72,9 @@ module ApplicationHelper
     return result
   end
 
+  # recupera o nome da unidade curricular em questao
+  def curriculum_unit_name
+    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"] # recupera unidade curricular da sessao
+    CurriculumUnit.find(curriculum_unit_id).name
+  end
 end

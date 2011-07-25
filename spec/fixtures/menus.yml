@@ -57,7 +57,7 @@ acomp_ativ:
   name: Acompanhamento
   order: 4
   context_id: 2
-  resource_id: 46
+  resource_id: 47
 
 chat_ativ:
   id: 205

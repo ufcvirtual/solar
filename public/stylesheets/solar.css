@@ -1648,7 +1648,6 @@ table.portfolio_borda_simples tr td {
 }
 
 table.portfolio_table {
-    margin-top: -6px;
     width: 700px;
 }
 
@@ -1676,6 +1675,7 @@ hr.portfolio_table_division {
     font-weight: bold;
     width: 700px;
     margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 .portfolio_activity {
