@@ -1181,6 +1181,19 @@ div.alter_photo_text {
     white-space: normal;
     max-width: 640px;
 }
+
+.forum_post_link_disabled{
+  color: #1c4785;
+  font-family:  'Myriad Pro', 'Arial', sans;
+  font-size: 15px;
+  cursor: pointer;  
+  text-decoration: underline line-through; 
+}
+
+.forum_post_link_remove_disabled{
+    color: #922;
+}
+
 .forum_post_child_ident{
     padding-left: 70px;
 }

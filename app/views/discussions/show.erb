@@ -145,9 +145,14 @@
 <!--------------- Barra Superior --------------->
 <div class="forum_navigation_bar">
   <div style="text-align: center;">
-    <span style="float:left">
+     <span style="float:left">
+    <if can_interact>
       <a href="javascript:clearFormData()" id="NewPostButton" class="forum_button"><%= t("forum_new_message")%></a>
-    </span>
+    </if>  
+    <else>
+      <a  class="forum_post_link_disabled"><%= t("forum_new_message")%></a>
+    </else>
+    </span>   
     
     <span style="float:right;">
       <%if @display_mode == "PLAINLIST"%>

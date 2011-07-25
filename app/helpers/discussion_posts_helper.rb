@@ -1,6 +1,11 @@
 module DiscussionPostsHelper
 
-
+  def valid_date
+    discussion_id = 1
+    @discussion= Discussion.find_by_id(discussion_id)
+    @discussion.start <= Date.today && Date.today <= @discussion.end
+  end
+  
   #Renderiza um post na tela de interação do portólio.
   #threaded indica se as respostas deste post devem ser renderizadas com ele.
   def show_post(post = nil, threaded=true)
@@ -8,7 +13,12 @@ module DiscussionPostsHelper
     childs = {}
     editable = false
     childs_count = return_child_count(post.id)
-
+    can_interact=true
+    
+    if(!valid_date)
+      can_interact= false
+    end
+  
     #Um post pode ser editado se é do próprio usuário e se não possui respostas.
     if (post.user.id == current_user.id) && (childs_count == 0)
       editable = true
@@ -59,12 +69,20 @@ module DiscussionPostsHelper
     post_string <<      (sanitize post.content)
     post_string <<      ' </div>
                           <div class="forum_post_buttons">'
-                            if editable
-    post_string <<      '     <a href="javascript:removePost(' << post[:id].to_s << ')" class="forum_button forum_button_remove">' << t('forum_show_remove') << '</a>&nbsp;&nbsp;
-                              <a href="javascript:setDiscussionPostId(' << post[:id].to_s << ')" class="forum_button updateDialogLink ">' << t('forum_show_edit') << '</a>&nbsp;&nbsp;'
-                            end
-    post_string <<      '   <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink forum_button">' << t('forum_show_answer') << '</a>
-                          </div>
+    if editable && can_interact
+      post_string <<      '   <a href="javascript:removePost(' << post[:id].to_s << ')" class="forum_button forum_button_remove">' << t('forum_show_remove') << '</a>&nbsp;&nbsp;
+                              <a href="javascript:setDiscussionPostId(' << post[:id].to_s << ')" class="forum_button updateDialogLink ">' << t('forum_show_edit') << '</a>&nbsp;&nbsp;
+                              <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink forum_button">' << t('forum_show_answer') << '</a>' 
+    elsif editable && !can_interact
+      post_string <<      '    <strike> <a class="forum_post_link_disabled forum_post_link_remove_disabled">' << t('forum_show_remove') << '</a></strike>&nbsp;&nbsp;
+                               <strike> <a  class="forum_post_link_disabled">' << t('forum_show_edit') << '</a></strike>&nbsp;&nbsp;
+                               <strike><a   class="forum_post_link_disabled">' << t('forum_show_answer') << '</a></strike>'
+    elsif !editable && can_interact 
+         post_string <<      '   <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink forum_button">' << t('forum_show_answer') << '</a>'     
+    elsif !editable && !can_interact
+        post_string <<      '  <strike><a class="forum_post_link_disabled">' << t('forum_show_answer') << '</a></strike>'
+    end
+    post_string <<      '</div>
                         </td>
                       </tr>
                     </table>'
@@ -77,7 +95,7 @@ module DiscussionPostsHelper
   end
 
 
-######## MÉTODOS DE ACESSO À BASE DE DADOS ####################################
+  ######## MÉTODOS DE ACESSO À BASE DE DADOS ####################################
 
   #Recupera os posts de uma discussion.
   def return_discussion_posts(discussion_id = nil, plain_list = true)
