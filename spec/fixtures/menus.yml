@@ -39,7 +39,7 @@ forum_ativ:
 portfolio_ativ:
   id: 202
   father_id: 20
-  name: "Portfolio"
+  name: Portfolio
   order: 2
   context_id: 2
   resource_id: 24
@@ -57,6 +57,7 @@ acomp_ativ:
   name: Acompanhamento
   order: 4
   context_id: 2
+  resource_id: 46
 
 chat_ativ:
   id: 205
@@ -76,7 +77,7 @@ webconf_ativ:
 portfolio_professor_ativ:
   id: 207
   father_id: 20
-  name: "Portfolio"
+  name: Portfolio
   order: 2
   context_id: 2
   resource_id: 35

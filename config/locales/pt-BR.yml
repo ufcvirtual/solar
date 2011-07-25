@@ -307,6 +307,7 @@
   not_sent: "Não Enviado"
   assignments: "Trabalhos"
   participation: "Participação"
+  tests: "Provas"
   -: "-"
 
   # Mensagem de erro para permissão   

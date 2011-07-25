@@ -49,14 +49,17 @@ resources_arr = [
   {:id => 38, :controller => 'portfolio_teacher', :action => 'delete_file', :description => 'Deletar arquivos de comentarios'},
   {:id => 39, :controller => 'portfolio_teacher', :action => 'upload_files', :description => 'Upload de arquivos de correcao'},
   {:id => 40, :controller => 'portfolio_teacher', :action => 'download_files_student', :description => 'Download de arquivos enviados pelo aluno'},
-  {:id => 41, :controller => 'portfolio_teacher', :action => 'list_assignments', :description => 'Lista trablhos de cada aluno'},
+  {:id => 41, :controller => 'portfolio_teacher', :action => 'list_assignments', :description => 'Lista trabalhos de cada aluno'},
 
    # Discussion deve ser separado em dois controllers: Discussion e Discussion_post#
   {:id => 42, :controller => 'discussions', :action => 'new_post', :description => 'Cria um novo post'},
   {:id => 43, :controller => 'discussions', :action => 'remove_post', :description => 'Remove um post'},
   {:id => 44, :controller => 'discussions', :action => 'update_post', :description => 'Atualiza o conteudo de um post'},
   {:id => 45, :controller => 'discussions', :action => 'show', :description => 'Exibe todos os posts'},
-  {:id => 46, :controller => 'discussions', :action => 'list', :description => 'Lista os foruns'}
+  {:id => 46, :controller => 'discussions', :action => 'list', :description => 'Lista os foruns'},
+
+  # acompanhamento
+  {:id => 47, :controller => 'scores', :action => 'index', :description => 'Exibicao dos dados do aluno'}
 ]
 count = 0
 resources = Resource.create(resources_arr) do |registro|
@@ -103,13 +106,15 @@ perm_alunos = PermissionsResource.create([
   {:profile_id => 1, :resource_id => 33, :per_id => false},
   {:profile_id => 1, :resource_id => 34, :per_id => false},
    
-   #discussion
+  # discussion
   {:profile_id => 1, :resource_id => 41, :per_id => false},
   {:profile_id => 1, :resource_id => 42, :per_id => false},
   {:profile_id => 1, :resource_id => 43, :per_id => false},
   {:profile_id => 1, :resource_id => 44, :per_id => false},
   {:profile_id => 1, :resource_id => 45, :per_id => false},
-  {:profile_id => 1, :resource_id => 46, :per_id => false}
+  {:profile_id => 1, :resource_id => 46, :per_id => false},
+  # acompanhamento
+  {:profile_id => 1, :resource_id => 47, :per_id => true}
 ])
 
 ##############################

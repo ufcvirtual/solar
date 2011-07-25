@@ -1,83 +1,83 @@
 #reservados para automático dos sistema
 schedule 1:
   id: 1
-  start_date: 16/06/2011
-  end_date: 13/07/2011
+  start_date: 16-06-2011
+  end_date: 13-07-2011
 
 schedule 2:
   id: 2
-  start_date: 12/05/2011
-  end_date: 12/07/2011
+  start_date: 12-05-2011
+  end_date: 12-07-2011
 
 schedule 3:
   id: 3
-  start_date: 17/07/2011
-  end_date: 18/08/2011
+  start_date: 17-07-2011
+  end_date: 18-08-2011
 
 schedule 4:
   id: 4
-  start_date: 19/07/2011
-  end_date: 19/09/2011
+  start_date: 19-07-2011
+  end_date: 19-09-2011
 
 schedule 5:
   id: 5
-  start_date: 16/08/2011
-  end_date: 17/09/2011
+  start_date: 16-08-2011
+  end_date: 17-09-2011
 
 #reservados para forum
 schedule 6:
   id: 6
-  start_date: 20/09/2011
-  end_date: 20/09/2011
+  start_date: 20-09-2011
+  end_date: 20-09-2011
 
 schedule 7:
   id: 7
-  start_date: 25/07/2011
-  end_date: 19/09/2012
+  start_date: 25-07-2011
+  end_date: 19-09-2012
 
 #reservados para aulas
 schedule 8:
   id: 8
-  start_date: 23/11/2011
-  end_date: 19/12/2011
+  start_date: 23-11-2011
+  end_date: 19-12-2011
 
 schedule 9:
   id: 9
-  start_date: 01/05/2011
-  end_date: 19/12/2012
+  start_date: 01-05-2011
+  end_date: 19-12-2012
 
 schedule 10:
   id: 10
-  start_date: 26/05/2011
-  end_date: 10/03/2011
+  start_date: 26-05-2011
+  end_date: 10-03-2011
 
 schedule 11:
   id: 11
-  start_date: 05/03/2011
-  end_date: 20/06/2011
+  start_date: 05-03-2011
+  end_date: 20-06-2011
 
 schedule 12:
   id: 12
-  start_date: 27/03/2011
-  end_date: 27/06/2011
+  start_date: 27-03-2011
+  end_date: 27-06-2011
 
 schedule 13:
   id: 13
-  start_date: 25/03/2011
-  end_date: 27/08/2011
+  start_date: 25-03-2011
+  end_date: 27-08-2011
 
 schedule 14:
   id: 14
-  start_date: 16/03/2011
-  end_date: 01/08/2012
+  start_date: 16-03-2011
+  end_date: 01-08-2012
 
 schedule 15:
   id: 15
-  start_date: 25/03/2011
-  end_date: 06/05/2015
+  start_date: 25-03-2011
+  end_date: 06-05-2015
 
 schedule 16:
   id: 16
-  start_date: 25/03/2011
-  end_date: 25/03/2011
+  start_date: 25-03-2011
+  end_date: 25-03-2011
 

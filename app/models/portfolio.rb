@@ -1,5 +1,6 @@
 class Portfolio < ActiveRecord::Base
-  belongs_to :schedule
+
   set_table_name "assignments"
+  belongs_to :schedule
 
 end

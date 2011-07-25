@@ -1678,6 +1678,19 @@ hr.portfolio_table_division {
     margin-top: 0px;
 }
 
+.portfolio_activity {
+    width: 500px;
+}
+
+.portfolio_activity_mright {
+    margin-right: 20px;
+}
+
+.portfolio_activity_list {
+    width: 700px;
+}
+
+
 /* AGENDA */
 
 #agenda_body{
@@ -1718,7 +1731,7 @@ hr.portfolio_table_division {
 }
 .agenda_icon{
     float: left;
-    
+
 }
 
 .agenda_icon_title{

@@ -1,16 +1,3 @@
-<% if flash[:success] || flash[:error] || flash[:notice]%>
-  &nbsp;<br/>
-  <%=raw message %>&nbsp;
-  &nbsp;<br/>
-<% end %>
-&nbsp;
-
-<style type="text/css">
-  .portfolio_activity_list {
-    width: 700px;
-  }
-
-</style>
 
 <!-- Apresenta o nome da unidade curricular -->
 <div>
@@ -35,7 +22,7 @@
       <table id="assignments_list" width="100%" cellpadding="0" cellspacing="0" border="0">
         <thead>
           <tr style="font-weight: bold;">
-            <td class="td_blue_portfolio"><%= t(:test) %></td>
+            <td class="td_blue_portfolio"><%= t(:tests) %></td>
             <td class="td_blue_portfolio" align="center" style="width: 22%;"><%= t(:date_name) %></td>
             <td class="td_blue_portfolio" align="center" style="width: 12%;"><%= t(:situation) %></td>
             <td class="td_blue_portfolio" align="center" style="width: 8%;"><%= t(:grade) %></td>
