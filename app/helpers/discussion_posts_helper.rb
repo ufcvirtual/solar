@@ -65,8 +65,17 @@ module DiscussionPostsHelper
                         <td class="forum_post_content_right">
                           <div class="forum_post_inner_content" style="min-height:100px">'
     post_string <<      (sanitize post.content)
-    post_string <<      ' </div>
-                          <div class="forum_post_buttons">'
+    post_string <<      ' </div>'
+    #Apresentando os arquivos do post
+    unless post.discussion_post_files.nil?
+      post_string <<      '<ul>
+                          <lh>[Arquivos]</lh>'
+      post.discussion_post_files.each do |file|
+        post_string <<      '<li><a href="#">'<<(link_to file.attachment_file_name, :controller => "discussions", :action => "download_post_file", :id => file.id)<<'</a></li>'
+      end
+      post_string <<      '</ul>'
+    end
+    post_string <<                          '<div class="forum_post_buttons">'
     if editable && can_interact
       post_string <<      '   <a href="javascript:removePost(' << post[:id].to_s << ')" class="forum_button forum_button_remove">' << t('forum_show_remove') << '</a>&nbsp;&nbsp;
                               <a href="javascript:setDiscussionPostId(' << post[:id].to_s << ')" class="forum_button updateDialogLink ">' << t('forum_show_edit') << '</a>&nbsp;&nbsp;
@@ -76,9 +85,9 @@ module DiscussionPostsHelper
                                <a  class="forum_post_link_disabled">' << t('forum_show_edit') << '</a>&nbsp;&nbsp;
                                <a   class="forum_post_link_disabled">' << t('forum_show_answer') << '</a>'
     elsif !editable && can_interact 
-         post_string <<      '   <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink forum_button">' << t('forum_show_answer') << '</a>'     
+      post_string <<      '   <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink forum_button">' << t('forum_show_answer') << '</a>'
     elsif !editable && !can_interact
-        post_string <<      '  <a class="forum_post_link_disabled">' << t('forum_show_answer') << '</a>'
+      post_string <<      '  <a class="forum_post_link_disabled">' << t('forum_show_answer') << '</a>'
     end
     post_string <<      '</div>
                         </td>

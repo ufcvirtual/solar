@@ -142,6 +142,37 @@ class DiscussionsController < ApplicationController
     redirect_to "/discussions/show/" << discussion_id
   end
 
+  # download dos arquivos da postagem
+  def download_post_file
+    post_file_id = params[:id]
+
+    file_ = DiscussionPostFile.find(post_file_id)
+    discussion_post_id = file_.discussion_post_id
+    filename = file_.attachment_file_name
+
+    prefix_file = file_.id # id da tabela discussion_post_file para diferenciar os arquivos
+    path_file = "#{::Rails.root.to_s}/media/discussion/post/"
+
+    # id da atividade
+    #send_assignment = SendAssignment.joins(:assignment_comments).where(["assignment_comments.id = ?", assignment_comment_id])
+
+    # verifica se foi encontrado algum registro
+    #if send_assignment.length > 0
+    #  assignment_id = send_assignment.first.assignment_id
+    #  redirect_error = {:action => 'activity_details', :id => assignment_id}
+    #else
+
+    #  curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+      # redireciona para a pagina de listagem de atividades
+    #  redirect_error = {:action => 'list', :id => curriculum_unit_id}
+
+    #end
+    redirect_error = {}
+    # recupera arquivo
+    download_file(redirect_error, path_file, filename, prefix_file)
+
+  end
+
   private
   def load_posts
     discussion_id = params[:discussion_id]

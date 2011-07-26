@@ -38,10 +38,10 @@ jQuery.fn.window_upload_files = function(options) {
 $(document).ready(function() {
     $('.mysolar_menu_title').click(function() {
         if($(this).siblings().is(':visible')){
-            $('.mysolar_menu_list').slideUp("slow");
+            $('.mysolar_menu_list').slideUp("fast");
         } else {
-            $('.mysolar_menu_list').slideUp("slow");
-            $(this).siblings().slideDown("slow");
+            $('.mysolar_menu_list').slideUp("fast");
+            $(this).siblings().slideDown("fast");
         }
         checkCookie();
     });

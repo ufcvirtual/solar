@@ -1,28 +1,28 @@
 <div>
 
-	<%= image_tag "icon_forum.png", :alt=>t(:icon_forum) %>
-	<span class="page_title"><%= t(:forum_title) %></span>
-	<hr style="border: none; background-color: #b4b3b7; height: 1px; width:640px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px">
-	</hr>
+  <%= image_tag "icon_forum.png", :alt=>t(:icon_forum) %>
+  <span class="page_title"><%= t(:forum_title) %></span>
+  <hr style="border: none; background-color: #b4b3b7; height: 1px; width:640px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px">
+  </hr>
 
-	<div>
-		<% if !(@discussions.nil? || @discussions.empty?) %>
-		<table cellpadding="10" cellspacing="0" width="640px">
-			<tr class="headtable_blue">
-				<td class="td_head_blue"><%= t(:forum_table_title) %></td>
-				<td class="td_head_blue" align="center" style="width: 200px"><%= t(:forum_table_date) %></td>
-			</tr>
-			<% @discussions.each do |discussion| %>
-			<tr class="<%= cycle('rowtable_odd', 'rowtable_even') %>" >
-				<td class="td_blue_first">
-				<span><%= discussion.name%></span>
-				</td>
-				<td class="td_blue" align="center" style="width: 200px"> <%= l discussion.start %> - <%= l discussion.end %></td>
-			</tr>
-			<% end %>
-		</table>
-		<% else %>
-			<%= t(:forum_message) %>
-		<% end %>
-	</div>
+  <div>
+    <% if !(@discussions.nil? || @discussions.empty?) %>
+      <table cellpadding="10" cellspacing="0" width="640px">
+        <tr class="headtable_blue">
+          <td class="td_head_blue"><%= t(:forum_table_title) %></td>
+          <td class="td_head_blue" align="center" style="width: 200px"><%= t(:forum_table_date) %></td>
+        </tr>
+        <% @discussions.each do |discussion| %>
+          <tr class="<%= cycle('rowtable_odd', 'rowtable_even') %>" >
+            <td class="td_blue_first">
+              <%=link_to discussion.name, :controller => "discussions", :action => "show", :id => discussion.id%>
+            </td>
+            <td class="td_blue" align="center" style="width: 200px"> <%= l discussion.start %> - <%= l discussion.end %></td>
+          </tr>
+        <% end %>
+      </table>
+    <% else %>
+      <%= t(:forum_message) %>
+    <% end %>
+  </div>
 </div>
