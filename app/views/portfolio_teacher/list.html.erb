@@ -23,14 +23,9 @@
 
           <% class_name = ((idx % 2) == 0) ? 'rowtable_even' : 'rowtable_odd' %>
           <tr class="<%= class_name %>">
-            <td>
-              <%=link_to student["name"], {:action => :list_assignments, :id => student["id"]} %>
-            </td>
-            <td>
-              icon
-            </td>
+            <td><%=link_to student["name"], {:action => :list_assignments, :id => student["id"]} %></td>
+            <td>icon</td>
           </tr>
-
         <% end %>
       </tbody>
     </table>
