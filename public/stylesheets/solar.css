@@ -1667,10 +1667,20 @@ td.border_line {
     border-top: 1px solid #d0d0d1;
 }
 
-.td_blue_portfolio, .td_blue_portfolio_first{
+.td_blue_portfolio, .td_blue_portfolio_first, tr.lines td {
     border-left: solid #dbe5e8 1px;
     padding-left: 8px;
     white-space: normal;
+}
+
+/*Table com listras*/
+table.list_table {
+    border-top: solid #dbe5e8 1px;
+    border-right: solid #dbe5e8 1px;
+}
+
+tr.lines td {
+    border-bottom: solid #dbe5e8 1px;
 }
 
 .td_blue_portfolio_first {

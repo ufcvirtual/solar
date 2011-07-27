@@ -1,0 +1,120 @@
+<!-- Unidade Curricular -->
+<div>
+  <span class="page_title"><%= t(:scores_of) %> <%= curriculum_unit_name %></span>
+</div>
+
+<!-- Portfolio -->
+<div style="width: 700px;">
+  <div class="portfolio_header_content">
+    <div class="portfolio_title"><%= t(:group)%> Area 51 - Logica de Programacao</div>
+    <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+  </div>
+
+  <!-- Lista dos alunos com notas -->
+
+  <div id="individual_activity" class="portfolio">
+    <hr class="portfolio_line" />
+
+    <table width="100%" cellspacing="0" border="0" id="list_of_students" class="list_table">
+      <thead>
+        <tr>
+          <td align="left">Cursista</td>
+          <td style="width: 16%;">Arquivos Públicos</td>
+          <td style="width: 8%;">Provas</td>
+          <td style="width: 14%;">Àrea Privada</td>
+          <td style="width: 12%;">Participação</td>
+          <td style="width: 15%;">Acessos ao Curso</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td_student">Ford Prefect</td>
+          <td></td>
+          <td></td>
+          <td>5</td>
+          <td>1</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="td_student">Arthur Dent</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>1</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="td_student">Zaphod Beeblebrox</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>2</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="td_student">Zaphod Beeblebrox</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>1</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="td_student">Zaphod Beeblebrox</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>-</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="td_student">Zaphod Beeblebrox</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>1</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <!-- Notas -->
+
+  <div id="scores_notes" class="label_score">
+    TE: Trabalho não corrigido(sem nota).<br />
+    TN: Trabalho não enviado.
+  </div>
+
+  <!-- Paginacao -->
+  <div id="scores_pagination" style="text-align: center;" class="label_score">
+    <span>Pagina 1 de 2</span><br />
+    <span style="color: #1c4785; cursor: pointer;">Anterior 1 | 2 Proxima</span>
+  </div>
+
+  <!-- Legendas -->
+  <div id="scores_label" class="label_score">
+    Legenda de provas.<br />
+    Legenda de trabalhos.
+  </div>
+</div>
+
+<!-- scripts -->
+<div id="scripts">
+  <style type="text/css">
+    div.label_score {
+      font-size: 11px;
+      font-family:'Trebuchet',Arial,'Myriad Pro';
+      padding-top: 10px;
+    }
+  </style>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.list_table tr').addClass('lines');
+      $('.list_table td:not([class=td_student])').css('text-align', 'center');
+      $('.list_table .td_student').css('color', '#1c4785');
+    });
+  </script>
+</div>
