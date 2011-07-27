@@ -305,13 +305,18 @@
   delete_file_interval_error: "Modificação de arquivos fora do intervalo permitido"
   send_file_interval_error: "Envio de arquivos fora do intervalo permitido"
   not_sent: "Não Enviado"
-  assignments: "Trabalhos"
-  participation: "Participação"
-  tests: "Provas"
   -: "-"
 
   # acompanhamento
+  student: "Aluno"
   scores_of: "Acompanhamento de"
+  public_files: "Arquivos Publicos"
+  tests: "Provas"
+  private_area: "Area Privada"
+  participation: "Participação"
+  assignments: "Trabalhos"
+  access_to_the_course: "Acessos ao Curso"
+  group: "Turma"
 
   # Mensagem de erro para permissão   
   no_permission: "Você não tem permissão para acessar esta página"

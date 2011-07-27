@@ -6,7 +6,7 @@
 <!-- Portfolio -->
 <div style="width: 700px;">
   <div class="portfolio_header_content">
-    <div class="portfolio_title"><%= t(:group)%> Area 51 - Logica de Programacao</div>
+    <div class="portfolio_title"><%= t(:group)%> <%= @group %></div>
     <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
   </div>
 
@@ -18,63 +18,25 @@
     <table width="100%" cellspacing="0" border="0" id="list_of_students" class="list_table">
       <thead>
         <tr>
-          <td align="left">Cursista</td>
-          <td style="width: 16%;">Arquivos Públicos</td>
-          <td style="width: 8%;">Provas</td>
-          <td style="width: 14%;">Àrea Privada</td>
-          <td style="width: 12%;">Participação</td>
-          <td style="width: 15%;">Acessos ao Curso</td>
+          <td align="left"><%= t(:student) %></td>
+          <td style="width: 16%;"><%= t(:public_files)  %></td>
+          <td style="width: 8%;"><%= t(:tests) %></td>
+          <td style="width: 14%;"><%= t(:private_area) %></td>
+          <td style="width: 12%;"><%= t(:participation) %></td>
+          <td style="width: 15%;"><%= t(:access_to_the_course) %></td>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td class="td_student">Ford Prefect</td>
-          <td></td>
-          <td></td>
-          <td>5</td>
-          <td>1</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="td_student">Arthur Dent</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>1</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="td_student">Zaphod Beeblebrox</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>2</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="td_student">Zaphod Beeblebrox</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>1</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="td_student">Zaphod Beeblebrox</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>-</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td class="td_student">Zaphod Beeblebrox</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>1</td>
-          <td></td>
-        </tr>
+        <% @students.each do |student| %>
+          <tr>
+            <td class="td_student"><%=link_to student["name"], {:controller => :portfolio_teacher, :action => :list_assignments, :id => student["id"]} %></td>
+            <td><%= student["cnt_public_files"] %></td>
+            <td></td>
+            <td><%= student["cnt_private_files"] %></td>
+            <td></td>
+            <td></td>
+          </tr>
+        <% end %>
       </tbody>
     </table>
 
@@ -88,12 +50,14 @@
   </div>
 
   <!-- Paginacao -->
+
   <div id="scores_pagination" style="text-align: center;" class="label_score">
-    <span>Pagina 1 de 2</span><br />
-    <span style="color: #1c4785; cursor: pointer;">Anterior 1 | 2 Proxima</span>
+    <span><%= t(:page) %> 1 <%= t(:of) %> 2</span><br />
+    <span style="color: #1c4785; cursor: pointer;"><%= t(:previous) %> 1 | 2 <%= t(:next) %></span>
   </div>
 
   <!-- Legendas -->
+
   <div id="scores_label" class="label_score">
     Legenda de provas.<br />
     Legenda de trabalhos.
@@ -101,6 +65,7 @@
 </div>
 
 <!-- scripts -->
+
 <div id="scripts">
   <style type="text/css">
     div.label_score {
@@ -108,13 +73,19 @@
       font-family:'Trebuchet',Arial,'Myriad Pro';
       padding-top: 10px;
     }
+
+    table tbody tr.hover td{ background-color:#a9d0f5; }
   </style>
 
   <script type="text/javascript">
     $(function(){
       $('.list_table tr').addClass('lines');
-      $('.list_table td:not([class=td_student])').css('text-align', 'center');
+      $('.list_table > tbody td:not([class=td_student])').css('text-align', 'center');
       $('.list_table .td_student').css('color', '#1c4785');
+
+      $('table > tbody > tr').hover(function(){
+        $(this).toggleClass('hover');
+      });
     });
   </script>
 </div>

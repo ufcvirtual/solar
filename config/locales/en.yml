@@ -300,13 +300,19 @@ en:
   delete_file_interval_error: "Modification of files out of range"
   send_file_interval_error: "Sending files out of range"
   not_sent: "Not Sent"
-  assignments: "Assignments"
-  participation: "Participation"
   tests: "Tests"
   -: "-"
 
   # acompanhamento
+  student: "Student"
   scores_of: "Scores Of"
+  public_files: "Public Files"
+  tests: "Provas"
+  private_area: "Private Area"
+  participation: "Participation"
+  assignments: "Assignments"
+  access_to_the_course: "Access to the Course"
+  group: "Group"
 
   # Mensagem de erro para permissão 
   no_permission: "you haven't permission to access this page"

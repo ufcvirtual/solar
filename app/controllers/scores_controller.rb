@@ -8,11 +8,11 @@ class ScoresController < ApplicationController
   def index
 
     # recupera turma selecionada
-    groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-    students_id = current_user.id
+    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+    student_id = current_user.id
 
-    @student = User.find(students_id)
-    @activities = list_assignments_by_group_and_student(groups_id, students_id)
+    @student = User.find(student_id)
+    @activities = list_assignments_by_group_and_student(group_id, student_id)
 
   end
 
