@@ -39,7 +39,6 @@
         <% end %>
       </tbody>
     </table>
-
   </div>
 
   <!-- Notas -->
@@ -52,8 +51,7 @@
   <!-- Paginacao -->
 
   <div id="scores_pagination" style="text-align: center;" class="label_score">
-    <span><%= t(:page) %> 1 <%= t(:of) %> 2</span><br />
-    <span style="color: #1c4785; cursor: pointer;"><%= t(:previous) %> 1 | 2 <%= t(:next) %></span>
+    <span>    <%=raw render_pagination_bar(@cnt_students)%></span><br />
   </div>
 
   <!-- Legendas -->

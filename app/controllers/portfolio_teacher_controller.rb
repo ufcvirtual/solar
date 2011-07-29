@@ -2,24 +2,19 @@ class PortfolioTeacherController < ApplicationController
 
   before_filter :require_user
 
-  include PortfolioTeacherHelper
+  # nao sera mais necessario qndo a combo existir - 2011-07-28
+  before_filter :set_group_id_for_responsible, :only => [:list]
 
   # lista de portfolio dos alunos de uma turma
   def list
 
     authorize! :list, PortfolioTeacher
 
-    groups_id = 3 # devera ser carregado a partir da escolha da combo de GROUP
-
     # seta novo valor para o grupo/turma selecionada pelo professor
-    session[:opened_tabs][session[:active_tab]]["groups_id"] = groups_id
+    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
 
     # lista de estudantes da turma
-
-    @students = User.joins(:allocations => [{:allocation_tag => [:group, :assignments]}, :profile]).
-      select("DISTINCT users.id, users.name").
-      where("profiles.student = TRUE AND groups.id = ?", groups_id).
-      order("users.name")
+    @students = PortfolioTeacher.list_students_by_group_id(group_id)
 
   end
 
@@ -33,7 +28,7 @@ class PortfolioTeacherController < ApplicationController
     students_id = params[:id]
 
     @student = User.find(students_id)
-    @activities = list_assignments_by_group_and_student(groups_id, students_id)
+    @activities = PortfolioTeacher.list_assignments_by_group_and_student(groups_id, students_id)
 
   end
 
