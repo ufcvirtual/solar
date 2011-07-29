@@ -10,7 +10,7 @@ class DiscussionsController < ApplicationController
   end
   
   def owned_by_current_user
-      current_user.id == @discussion_post.user_id
+    current_user.id == @discussion_post.user_id
   end
   
   def has_no_response
@@ -59,28 +59,134 @@ class DiscussionsController < ApplicationController
   def show
     load_posts 
   end
+  
+  def find_allocation_tag_user_profiles(activity_allocation_tag, user)
+    query = "SELECT distinct p.* FROM 
+              allocations al 
+              inner join profiles p on al.profile_id = p.id
+              inner join 
+              (select
+                     root.id as allocation_tag_id,
+                     CASE
+                       WHEN group_id is not null THEN (select 'GROUP'::text)
+                       WHEN offer_id is not null THEN (select 'OFFER'::text)
+                       WHEN course_id is not null THEN (select 'COURSE'::text)
+                       ELSE (select 'CURRICULUM_UNIT'::text)
+                     END as entity_type,
+                     (coalesce(group_id, 0) + coalesce(offer_id, 0) +
+              coalesce(curriculum_unit_id, 0) + coalesce(course_id, 0)) as entity_id,
+                    --parents do tipo offer
+                     CASE
+                       WHEN group_id is not null THEN (
+                         select coalesce(t.id,0)
+                         from
+                           groups g
+                           left join allocation_tags t on t.offer_id = g.offer_id
+                         where
+                           g.id = root.group_id
+                       )
+                       ELSE (select 0)
+                     END as offer_parent_tag_id,
+
+                     --parents do tipo curriculum unit
+                     CASE
+                       WHEN group_id is not null THEN (
+                         select coalesce(t.id,0)
+                         from
+                           groups g
+                           left join offers o on g.offer_id = o.id
+                           left join allocation_tags t on t.curriculum_unit_id = o.curriculum_unit_id
+                         where
+                           g.id = root.group_id
+                       )
+                       WHEN offer_id is not null THEN (
+                         select coalesce(t.id,0)
+                         from
+                           offers o
+                           left join allocation_tags t on t.curriculum_unit_id = o.curriculum_unit_id
+                         where
+                           o.id = root.offer_id
+                       )
+                       ELSE (select 0)
+                     END as curriculum_unit_parent_tag_id,
+
+                     --parents do tipo course
+                     CASE
+                       WHEN group_id is not null THEN (
+                         select coalesce(t.id,0)
+                         from
+                           groups g
+                           left join offers o on g.offer_id = o.id
+                           left join allocation_tags t on t.course_id = o.course_id
+                         where
+                           g.id = root.group_id
+                       )
+                       WHEN offer_id is not null THEN (
+                         select coalesce(t.id,0)
+                         from
+                           offers o
+                           left join allocation_tags t on t.course_id = o.course_id
+                         where
+                           o.id = root.offer_id
+                       )
+                       ELSE (select 0)
+                     END as course_parent_tag_id
+              from
+                     allocation_tags root
+              order by entity_type, allocation_tag_id) as hierarchy
+              on 
+                (al.allocation_tag_id = hierarchy.allocation_tag_id) or 
+                (al.allocation_tag_id = hierarchy.offer_parent_tag_id) or 
+                (al.allocation_tag_id = hierarchy.curriculum_unit_parent_tag_id) or
+                (al.allocation_tag_id = hierarchy.course_parent_tag_id)
+            where 
+              al.user_id = #{user.id} and
+              (
+                (hierarchy.allocation_tag_id = #{activity_allocation_tag.id}) or 
+                (hierarchy.offer_parent_tag_id = #{activity_allocation_tag.id}) or 
+                (hierarchy.curriculum_unit_parent_tag_id = #{activity_allocation_tag.id}) or
+                (hierarchy.course_parent_tag_id = #{activity_allocation_tag.id})
+              )"
+    
+    return Profile.find_by_sql(query)
+  end
+  
+  def find_activity_user_profile(activity_allocation_tag, user)
+    profiles = find_allocation_tag_user_profiles(activity_allocation_tag, user)
+    
+    for profile in profiles
+      if profile.class_responsible
+        return profile        
+      end 
+    end
+    
+    return profiles[0]
+  end
 
   def new_post
+    
     discussion_id = params[:discussion_id]
     content       = params[:content]
     parent_id     = params[:parent_post_id]
     
     #DEFINIR O PROFILE!!!! 
     #profile_id    = 2
-    profile_id    = 1
+    #profile_id    = 1
     
    
-    @discussion= Discussion.find_by_id(discussion_id)
+    @discussion = Discussion.find_by_id(discussion_id)
+    
+    profile_id = find_activity_user_profile(@discussion.allocation_tag, current_user).id
     
     #Usuário só pode criar posts no período ativo do fórum
     if (valid_date)
     
-       new_discussion_post = DiscussionPost.new :discussion_id => discussion_id, :user_id => current_user.id, :profile_id => profile_id, :content => content, :father_id => parent_id
-       new_discussion_post.save
+      new_discussion_post = DiscussionPost.new :discussion_id => discussion_id, :user_id => current_user.id, :profile_id => profile_id, :content => content, :father_id => parent_id
+      new_discussion_post.save
 
-       if @display_mode != "PLAINLIST"
-         hold_pagination
-       end
+      if @display_mode != "PLAINLIST"
+        hold_pagination
+      end
     
     end   
 
@@ -101,9 +207,9 @@ class DiscussionsController < ApplicationController
         (valid_date)&&
         (has_no_response)   
       
-    DiscussionPost.delete(discussion_post_id)
+      DiscussionPost.delete(discussion_post_id)
 
-    hold_pagination
+      hold_pagination
     end
     redirect_to "/discussions/show/" << discussion_id
   end
@@ -121,10 +227,10 @@ class DiscussionsController < ApplicationController
         (valid_date)&&
         (has_no_response)   
         
-    post = DiscussionPost.find(discussion_post_id);
-    post.update_attributes({:content => new_content})
+      post = DiscussionPost.find(discussion_post_id);
+      post.update_attributes({:content => new_content})
 
-    hold_pagination 
+      hold_pagination 
     end
     redirect_to "/discussions/show/" << discussion_id
   end
