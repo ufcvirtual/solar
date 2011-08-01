@@ -151,16 +151,31 @@ class DiscussionsController < ApplicationController
     return Profile.find_by_sql(query)
   end
   
-  def find_activity_user_profile(activity_allocation_tag, user)
+  def find_activity_user_profile_with_permission(activity_allocation_tag, user, controller, action)
     profiles = find_allocation_tag_user_profiles(activity_allocation_tag, user)
+    
+    resource_id = Resource.find_by_controller_and_action(controller, action)
+    
+    i = 0
+    
+    for profile in profiles
+      if PermissionsResource.find_by_profile_id_and_resource_id(profile.id, resource_id).nil?         
+        profiles.remove_at(i)        
+      end 
+      i += 1
+    end
     
     for profile in profiles
       if profile.class_responsible
-        return profile        
+        return profile.id
       end 
     end
     
-    return profiles[0]
+    if !profiles.empty?    
+      return profiles[0].id
+    end
+    
+    return -1    
   end
 
   def new_post
@@ -168,18 +183,19 @@ class DiscussionsController < ApplicationController
     discussion_id = params[:discussion_id]
     content       = params[:content]
     parent_id     = params[:parent_post_id]
-    
-    #DEFINIR O PROFILE!!!! 
-    #profile_id    = 2
-    #profile_id    = 1
-    
    
     @discussion = Discussion.find_by_id(discussion_id)
     
-    profile_id = find_activity_user_profile(@discussion.allocation_tag, current_user).id
+    has_permission = false
+            
+    profile_id = find_activity_user_profile_with_permission(@discussion.allocation_tag, current_user, 'discussions', 'new_post')
+    
+    if profile_id > 0
+      has_permission = true
+    end
     
     #Usuário só pode criar posts no período ativo do fórum
-    if (valid_date)
+    if (valid_date && has_permission) 
     
       new_discussion_post = DiscussionPost.new :discussion_id => discussion_id, :user_id => current_user.id, :profile_id => profile_id, :content => content, :father_id => parent_id
       new_discussion_post.save
