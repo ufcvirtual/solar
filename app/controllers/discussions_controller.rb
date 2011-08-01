@@ -107,6 +107,7 @@ class DiscussionsController < ApplicationController
         error = false
         path = ""
         
+        
         #Removendo arquivos da postagem na base de dados
         @discussion_post.discussion_post_files.each do |file|
           filenameArray.push("#{file.id.to_s}_#{file.attachment_file_name}")
@@ -119,8 +120,8 @@ class DiscussionsController < ApplicationController
         #caso não tenha havido problema algum, remove o arquivo do disco.
         unless error
           filenameArray.each do |filename|
-            path = "#{::Rails.root.to_s}/media/discussion/post/#{params[:id]}_#{filename}"
-            File.delete(file_del) if File.exist?(path)
+            path = "#{::Rails.root.to_s}/media/discussion/post/#{filename}"
+            File.delete(path) if File.exist?(path)
           end
         else
           #dá um rollback malvado
@@ -176,9 +177,8 @@ class DiscussionsController < ApplicationController
     #  redirect_error = {:action => 'list', :id => curriculum_unit_id}
 
     #end
-    redirect_error = {}
+    redirect_error = {:action => 'show', :id => params[:id], :idFile => post_file_id}
     # recupera arquivo
-    #render :text => "!!!!!!!!"
     
     download_file(redirect_error, path_file, filename, prefix_file)
 
