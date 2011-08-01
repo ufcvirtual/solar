@@ -29,7 +29,9 @@
       <tbody>
         <% @students.each do |student| %>
           <tr>
-            <td class="td_student"><%=link_to student["name"], {:controller => :portfolio_teacher, :action => :list_assignments, :id => student["id"]} %></td>
+            <td class="td_student">
+              <%=link_to student["name"], {:controller => :portfolio_teacher, :action => :list_assignments, :id => student["id"]} %>
+            </td>
             <td><%= student["cnt_public_files"] %></td>
             <td></td>
             <td><%= student["cnt_private_files"] %></td>
@@ -72,7 +74,9 @@
       padding-top: 10px;
     }
 
-    table tbody tr.hover td{ background-color:#a9d0f5; }
+    table tbody tr.hover td { background-color:#a9d0f5; }
+
+    td.td_student a { color: #2a538d; }
   </style>
 
   <script type="text/javascript">
@@ -80,10 +84,8 @@
       $('.list_table tr').addClass('lines');
       $('.list_table > tbody td:not([class=td_student])').css('text-align', 'center');
       $('.list_table .td_student').css('color', '#1c4785');
-
-      $('table > tbody > tr').hover(function(){
-        $(this).toggleClass('hover');
-      });
+      $('table > tbody > tr').hover(function(){$(this).toggleClass('hover');});
+      $('table > thead > tr td').css('font-weight', 'bold');
     });
   </script>
 </div>
