@@ -371,64 +371,64 @@ private
                                 :conditions => {:user_contacts => {:user_id => current_user.id}} )
     end
 
-    @contacts = show_contacts_updated
+    @contacts = show_contacts_updated   
     return @contacts
   end
 
   # marca mensagem como lixo
   def mark_as_trash(message_id)
     # busca mensagem para esse usuario
-    message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).first(1)
-
-    if !message_user.nil?
+    
+    message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).all? { |m|  
       # pra setar 1 (marcar como excluida) OU logico:   | 0b00000100
       logical_comparison = 0b00000100
 
-      status = message_user[0].status.to_i
+      status = m.status.to_i
 
-      message_user[0].status = status | logical_comparison
-      message_user[0].save
-    end
+      m.status = status | logical_comparison
+      m.save
+    }
+
   end
 
   # marca mensagem como lida
   def mark_as_read(message_id)
     # busca mensagem para esse usuario
-    message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).first(1)
 
-    if !message_user.nil?
+    message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).all? { |m|
       # pra zerar (marcar como nao lida) E logico:  & 0b11111101
       # pra setar 1 (marcar como lida) OU logico:   | 0b00000010
       logical_comparison = 0b00000010
 
-      status = message_user[0].status.to_i
+      status = m.status.to_i
 
-      message_user[0].status = status | logical_comparison
-      message_user[0].save
+      m.status = status | logical_comparison
+      m.save
 
       # atualiza qtde de msgs nao lidas
       @unread = unread_inbox(current_user.id, @message_tag)
-    end
+    }
+
   end
 
   # marca mensagem como nao lida
   def mark_as_unread(message_id)
     # busca mensagem para esse usuario
-    message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).first(1)
-
-    if !message_user.nil?
+    
+    message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).all? { |m|  
       # pra zerar (marcar como nao lida) E logico:  & 0b11111101
       # pra setar 1 (marcar como lida) OU logico:   | 0b00000010
       logical_comparison = 0b11111101
 
-      status = message_user[0].status.to_i
+      status = m.status.to_i
 
-      message_user[0].status = status & logical_comparison
-      message_user[0].save
+      m.status = status & logical_comparison
+      m.save
 
       # atualiza qtde de msgs nao lidas
       @unread = unread_inbox(current_user.id, @message_tag)
-    end
+    }
+
   end
 
 end

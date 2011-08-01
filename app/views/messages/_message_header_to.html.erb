@@ -24,8 +24,10 @@
     
     <select id="curriculum_unit_select" style="width:440px">
       <option value="" <%=" selected=true " unless !@curriculum_units_name.nil?%> ><%=t(:message_personal_contacts)%></option>
-      <% @curriculum_units_user.each do |curriculum_unit| %>        
-        <option value="<%=curriculum_unit["id"] << ';' << curriculum_unit["offer_id"] << ';' << curriculum_unit["group_id"]%>" <%=" selected=true " unless @curriculum_units_name!=curriculum_unit["name"]%> ><%=curriculum_unit["name"]%></option>
+      <% @curriculum_units_user.each do |curriculum_unit| %>
+        <% offer_id = curriculum_unit["offer_id"].nil? ? "" : curriculum_unit["offer_id"] %>
+        <% group_id = curriculum_unit["group_id"].nil? ? "" : curriculum_unit["group_id"] %>
+        <option value="<%=curriculum_unit["id"] << ';' << offer_id << ';' << group_id %>" <%=" selected=true " unless @curriculum_units_name!=curriculum_unit["name"]%> ><%=curriculum_unit["name"]%></option>
       <% end %>
     </select>
   <% end %>
