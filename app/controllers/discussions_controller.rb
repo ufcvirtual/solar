@@ -3,6 +3,7 @@ class DiscussionsController < ApplicationController
   include DiscussionPostsHelper
 
   load_and_authorize_resource #Setar permissoes!!!!!
+  before_filter :prepare_for_pagination, :only => [:show]
   
   def valid_date
     @discussion.start <= Date.today && Date.today <= @discussion.end

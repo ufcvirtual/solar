@@ -128,6 +128,17 @@ class ApplicationController < ActionController::Base
 
   end
 
+  # define o grupo selecionado para os perfis responsaveis
+  def set_group_id_for_responsible
+
+    # retirar esse 3 qndo a combo estiver feita - 2011-07-28
+    groups_id = params["groups_id"] || 3
+
+    # seta novo valor para o grupo/turma selecionada pelo professor
+    session[:opened_tabs][session[:active_tab]]["groups_id"] = groups_id
+
+  end
+
   private
 
   def current_user_session
@@ -232,8 +243,6 @@ class ApplicationController < ActionController::Base
   end
 
   # Preparando o uso da paginação
-  before_filter :prepare_for_pagination
-
   def prepare_for_pagination
     @current_page = session[:current_page]
     session[:current_page] = nil
