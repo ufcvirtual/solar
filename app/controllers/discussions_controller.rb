@@ -5,18 +5,6 @@ class DiscussionsController < ApplicationController
   load_and_authorize_resource #Setar permissoes!!!!!
   before_filter :prepare_for_pagination, :only => [:show]
   
-  def valid_date
-    @discussion.start <= Date.today && Date.today <= @discussion.end
-  end
-  
-  def owned_by_current_user
-    current_user.id == @discussion_post.user_id
-  end
-  
-  def has_no_response
-    DiscussionPost.find_all_by_father_id(discussion_post_id).empty?
-  end
-
   def list
 
     # pegando dados da sessao e nao da url
@@ -30,7 +18,6 @@ class DiscussionsController < ApplicationController
     if offer_id.nil?
       offer_id = -1
     end
-    
 
     # retorna os fóruns da turma
     # at.id as id, at.offer_id as offerid,l.allocation_tag_id as alloctagid,l.type_lesson, privacy,description,
@@ -73,18 +60,19 @@ class DiscussionsController < ApplicationController
     
     #Usuário só pode criar posts no período ativo do fórum
     if (valid_date)
-    
-      begin#Descobrir aqui como abrir uma transacao...
-        #Criando nova postagem
-        new_discussion_post = DiscussionPost.new :discussion_id => discussion_id, :user_id => current_user.id, :profile_id => profile_id, :content => content, :father_id => parent_id
-        new_discussion_post.save!
+      begin
+        ActiveRecord::Base.transaction do
+          #Criando nova postagem
+          new_discussion_post = DiscussionPost.new :discussion_id => discussion_id, :user_id => current_user.id, :profile_id => profile_id, :content => content, :father_id => parent_id
+          new_discussion_post.save!
 
-        #Salvando os arquivos anexados à postagem
-        unless params[:attachment].nil?
-          params[:attachment].each do |file|
-            post_file = DiscussionPostFile.new Hash["attachment", file[1]]
-            post_file[:discussion_post_id] = new_discussion_post.id
-            post_file.save!
+          #Salvando os arquivos anexados à postagem
+          unless params[:attachment].nil?
+            params[:attachment].each do |file|
+              post_file = DiscussionPostFile.new Hash["attachment", file[1]]
+              post_file[:discussion_post_id] = new_discussion_post.id
+              post_file.save!
+            end
           end
         end
       rescue Exception => error
@@ -110,15 +98,37 @@ class DiscussionsController < ApplicationController
     
     @discussion_post= DiscussionPost.find_by_id(discussion_post_id)
     @discussion= Discussion.find_by_id(discussion_id)
-    
-    if (owned_by_current_user) &&
-        (valid_date)&&
-        (has_no_response)   
-      
-      DiscussionPost.delete(discussion_post_id)
+    ActiveRecord::Base.transaction do
+      if (owned_by_current_user) &&
+          (valid_date)&&
+          (has_no_response)
 
-      hold_pagination
+        filenameArray = []
+        error = false
+        path = ""
+        
+        #Removendo arquivos da postagem na base de dados
+        @discussion_post.discussion_post_files.each do |file|
+          filenameArray.push("#{file.id.to_s}_#{file.attachment_file_name}")
+          error = true unless DiscussionPostFile.delete(file.id)
+        end
+
+        #Removendo a postagem propriamente dita
+        error = true unless DiscussionPost.delete(discussion_post_id)
+
+        #caso não tenha havido problema algum, remove o arquivo do disco.
+        unless error
+          filenameArray.each do |filename|
+            path = "#{::Rails.root.to_s}/media/discussion/post/#{params[:id]}_#{filename}"
+            File.delete(file_del) if File.exist?(path)
+          end
+        else
+          #dá um rollback malvado
+        end
+        flash[:error] = "[Erro removendo postagem]" unless error == false # INTERNACIONALIZAR!!!!!!!!!!!
+      end
     end
+    hold_pagination
     redirect_to "/discussions/show/" << discussion_id
   end
 
@@ -133,7 +143,7 @@ class DiscussionsController < ApplicationController
     
     if (owned_by_current_user) &&
         (valid_date)&&
-        (has_no_response)   
+        (has_no_response)
         
       post = DiscussionPost.find(discussion_post_id);
       post.update_attributes({:content => new_content})
@@ -145,10 +155,8 @@ class DiscussionsController < ApplicationController
 
   # download dos arquivos da postagem
   def download_post_file
-    post_file_id = params[:id]
-
+    post_file_id = params[:idFile]
     file_ = DiscussionPostFile.find(post_file_id)
-    discussion_post_id = file_.discussion_post_id
     filename = file_.attachment_file_name
 
     prefix_file = file_.id # id da tabela discussion_post_file para diferenciar os arquivos
@@ -164,12 +172,14 @@ class DiscussionsController < ApplicationController
     #else
 
     #  curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
-      # redireciona para a pagina de listagem de atividades
+    # redireciona para a pagina de listagem de atividades
     #  redirect_error = {:action => 'list', :id => curriculum_unit_id}
 
     #end
     redirect_error = {}
     # recupera arquivo
+    #render :text => "!!!!!!!!"
+    
     download_file(redirect_error, path_file, filename, prefix_file)
 
   end
@@ -194,4 +204,17 @@ class DiscussionsController < ApplicationController
       @posts = return_discussion_posts(@discussion.id, false)
     end
   end
+
+  def has_no_response
+    DiscussionPost.find_all_by_father_id(@discussion_post.id).empty?
+  end
+
+  def valid_date
+    @discussion.start <= Date.today && Date.today <= @discussion.end
+  end
+
+  def owned_by_current_user
+    current_user.id == @discussion_post.user_id
+  end
+  
 end

@@ -61,7 +61,8 @@ resources_arr = [
   # acompanhamento
   {:id => 47, :controller => 'scores', :action => 'index', :description => 'Exibicao dos dados do aluno'},
   # acompanhamento do professor
-  {:id => 48, :controller => 'scores_teacher', :action => 'list', :description => 'Lista dos alunos da turma'}
+  {:id => 48, :controller => 'scores_teacher', :action => 'list', :description => 'Lista dos alunos da turma'},
+  {:id => 49, :controller => 'discussions', :action => 'download_post_file', :description => 'Baixar arquivos de foruns'}
 ]
 count = 0
 resources = Resource.create(resources_arr) do |registro|
@@ -115,6 +116,7 @@ perm_alunos = PermissionsResource.create([
   {:profile_id => 1, :resource_id => 44, :per_id => false},
   {:profile_id => 1, :resource_id => 45, :per_id => false},
   {:profile_id => 1, :resource_id => 46, :per_id => false},
+  {:profile_id => 1, :resource_id => 48, :per_id => false},
   # acompanhamento
   {:profile_id => 1, :resource_id => 47, :per_id => true}
 ])
@@ -156,6 +158,7 @@ perm_prof_titular = PermissionsResource.create([
   {:profile_id => 2, :resource_id => 44, :per_id => false},
   {:profile_id => 2, :resource_id => 45, :per_id => false},
   {:profile_id => 2, :resource_id => 46, :per_id => false},
+
   # acompanhamento
   {:profile_id => 2, :resource_id => 48, :per_id => false}
 ])
@@ -199,6 +202,7 @@ perm_prof_titular = PermissionsResource.create([
   {:profile_id => 3, :resource_id => 44, :per_id => false},
   {:profile_id => 3, :resource_id => 45, :per_id => false},
   {:profile_id => 3, :resource_id => 46, :per_id => false},
+  {:profile_id => 3, :resource_id => 48, :per_id => false}
 ])
 
 ######## PERMISSIONS MENUS #########

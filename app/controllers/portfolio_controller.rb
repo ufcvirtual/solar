@@ -148,7 +148,6 @@ class PortfolioController < ApplicationController
 
   # download dos arquivos do comentario do professor
   def download_file_comment
-
     authorize! :download_file_comment, Portfolio
 
     comment_file_id = params[:id]

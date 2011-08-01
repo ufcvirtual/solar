@@ -66,15 +66,17 @@ module DiscussionPostsHelper
                           <div class="forum_post_inner_content" style="min-height:100px">'
     post_string <<      (sanitize post.content)
     post_string <<      ' </div>'
+
     #Apresentando os arquivos do post
     unless post.discussion_post_files.nil?
       post_string <<      '<ul>
                           <lh>[Arquivos]</lh>'
       post.discussion_post_files.each do |file|
-        post_string <<      '<li><a href="#">'<<(link_to file.attachment_file_name, :controller => "discussions", :action => "download_post_file", :id => file.id)<<'</a></li>'
+        post_string <<      '<li><a href="#">'<<(link_to file.attachment_file_name, :controller => "discussions", :action => "download_post_file", :idFile => file.id, :id => @discussion.id)<<'</a></li>'
       end
       post_string <<      '</ul>'
     end
+
     post_string <<                          '<div class="forum_post_buttons">'
     if editable && can_interact
       post_string <<      '   <a href="javascript:removePost(' << post[:id].to_s << ')" class="forum_button forum_button_remove">' << t('forum_show_remove') << '</a>&nbsp;&nbsp;

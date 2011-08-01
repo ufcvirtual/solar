@@ -146,22 +146,14 @@
 <!--//------------- Barra Superior--------------->
 <div class="forum_navigation_bar">
   <div style="text-align: center;">
-<<<<<<< HEAD
-     <span style="float:left">
-    <%if valid_date%>
-      <a href="javascript:clearFormData()" id="NewPostButton" class="forum_button"><%= t("forum_new_message")%></a> 
-    <%else%>
-      <a  class="forum_post_link_disabled"><%= t("forum_new_message")%></a>
-    <%end%> 
-    </else>
-    </span>   
-    
-=======
     <span style="float:left">
-      <a href="javascript:clearFormData()" id="NewPostButton" class="forum_button"><%= t("forum_new_message")%></a>
+      <%if valid_date%>
+        <a href="javascript:clearFormData()" id="NewPostButton" class="forum_button"><%= t("forum_new_message")%></a>
+      <%else%>
+        <a  class="forum_post_link_disabled"><%= t("forum_new_message")%></a>
+      <%end%>
     </span>
-
->>>>>>> [#13646403] inicio do download dos arquivos
+    
     <span style="float:right;">
       <%if @display_mode == "PLAINLIST"%>
         <a href="javascript:showAsThread()" class="forum_button forum_button_view_mode"><%=  t("forum_show_thread")%>
