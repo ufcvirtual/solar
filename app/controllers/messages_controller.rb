@@ -126,7 +126,7 @@ class MessagesController < ApplicationController
   end
 
   def send_message
-    if !params[:to].nil? && !params[:newMessageTextBox].nil?
+    if !params[:to].nil? && !params[:newMessageTextBox].nil? && !params[:to].empty? && !params[:newMessageTextBox].empty?
       to = params[:to]
       subject = params[:subject]
       message = params[:newMessageTextBox]
@@ -231,6 +231,8 @@ class MessagesController < ApplicationController
       end
 
       redirect_to :action => 'index', :type => 'outbox'
+    else
+      redirect_to :action => 'new'
     end
   end
 

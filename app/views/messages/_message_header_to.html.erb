@@ -36,9 +36,7 @@
   <%= label_tag "", t(:message_select)+': ' %><br/>
 
   <div id="div_contacts_list">
-    <% form_for(@contacts) do |f| %>
-        <%=raw @contacts%>
-    <% end %>
+    <%=raw @contacts%>
   </div>
   <br/>
   <%= label_tag "", t(:message_to)+': ' %><br/>

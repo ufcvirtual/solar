@@ -5,7 +5,7 @@ require File.expand_path('../application', __FILE__)
 Solar::Application.initialize!
 
 # configuracoes do action mailer para o gmail - porta: 465 ou 587
-ActionMailer::Base.raise_delivery_errors = true
+ActionMailer::Base.raise_delivery_errors = false
 ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.smtp_settings = {
 		:address              => 'smtp.gmail.com',
