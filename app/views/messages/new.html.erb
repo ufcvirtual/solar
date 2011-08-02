@@ -1,7 +1,7 @@
 <div class="message_external_div">
     <span class="page_title"><%= t(:message_title) %></span>
 
-    <%= form_for :message, :url => {:action => 'send_message'} do |f| %>
+    <%= form_for :message, :url => {:action => 'send_message'}, :html => {:id => 'form_message_text'} do |f| %>
 
       <%= render 'message_header' %>
 
@@ -15,7 +15,7 @@
 
       <div class="message_div_options_new">&nbsp;
         <%= f.submit t(:message_send)+' ', :id => 'send_message', :class=> 'message_link', :alt=> t(:message_send) %>
-
+        
         <%= link_to t(:message_discard)+' ', {:action => 'index', :type => 'index'}, {:class=>'message_link'} %>
       </div>
 
@@ -26,7 +26,7 @@
   $(document).ready( function () {
     //identificando idioma corrente para config ckeditor
     var local = '<%=I18n.locale%>';
-
+    
     $('#newMessageTextBox').ckeditor({
       toolbar: 'SolarToolbar',
       resize_enabled: false,

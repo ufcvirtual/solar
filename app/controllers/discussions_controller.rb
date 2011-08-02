@@ -46,20 +46,146 @@ class DiscussionsController < ApplicationController
   def show
     load_posts 
   end
+  
+  def find_allocation_tag_user_profiles(activity_allocation_tag, user)
+    query = "SELECT distinct p.* FROM 
+              allocations al 
+              inner join profiles p on al.profile_id = p.id
+              inner join 
+              (select
+                     root.id as allocation_tag_id,
+                     CASE
+                       WHEN group_id is not null THEN (select 'GROUP'::text)
+                       WHEN offer_id is not null THEN (select 'OFFER'::text)
+                       WHEN course_id is not null THEN (select 'COURSE'::text)
+                       ELSE (select 'CURRICULUM_UNIT'::text)
+                     END as entity_type,
+                     (coalesce(group_id, 0) + coalesce(offer_id, 0) +
+              coalesce(curriculum_unit_id, 0) + coalesce(course_id, 0)) as entity_id,
+                    --parents do tipo offer
+                     CASE
+                       WHEN group_id is not null THEN (
+                         select coalesce(t.id,0)
+                         from
+                           groups g
+                           left join allocation_tags t on t.offer_id = g.offer_id
+                         where
+                           g.id = root.group_id
+                       )
+                       ELSE (select 0)
+                     END as offer_parent_tag_id,
+
+                     --parents do tipo curriculum unit
+                     CASE
+                       WHEN group_id is not null THEN (
+                         select coalesce(t.id,0)
+                         from
+                           groups g
+                           left join offers o on g.offer_id = o.id
+                           left join allocation_tags t on t.curriculum_unit_id = o.curriculum_unit_id
+                         where
+                           g.id = root.group_id
+                       )
+                       WHEN offer_id is not null THEN (
+                         select coalesce(t.id,0)
+                         from
+                           offers o
+                           left join allocation_tags t on t.curriculum_unit_id = o.curriculum_unit_id
+                         where
+                           o.id = root.offer_id
+                       )
+                       ELSE (select 0)
+                     END as curriculum_unit_parent_tag_id,
+
+                     --parents do tipo course
+                     CASE
+                       WHEN group_id is not null THEN (
+                         select coalesce(t.id,0)
+                         from
+                           groups g
+                           left join offers o on g.offer_id = o.id
+                           left join allocation_tags t on t.course_id = o.course_id
+                         where
+                           g.id = root.group_id
+                       )
+                       WHEN offer_id is not null THEN (
+                         select coalesce(t.id,0)
+                         from
+                           offers o
+                           left join allocation_tags t on t.course_id = o.course_id
+                         where
+                           o.id = root.offer_id
+                       )
+                       ELSE (select 0)
+                     END as course_parent_tag_id
+              from
+                     allocation_tags root
+              order by entity_type, allocation_tag_id) as hierarchy
+              on 
+                (al.allocation_tag_id = hierarchy.allocation_tag_id) or 
+                (al.allocation_tag_id = hierarchy.offer_parent_tag_id) or 
+                (al.allocation_tag_id = hierarchy.curriculum_unit_parent_tag_id) or
+                (al.allocation_tag_id = hierarchy.course_parent_tag_id)
+            where 
+              al.user_id = #{user.id} and
+              (
+                (hierarchy.allocation_tag_id = #{activity_allocation_tag.id}) or 
+                (hierarchy.offer_parent_tag_id = #{activity_allocation_tag.id}) or 
+                (hierarchy.curriculum_unit_parent_tag_id = #{activity_allocation_tag.id}) or
+                (hierarchy.course_parent_tag_id = #{activity_allocation_tag.id})
+              )"
+    
+    return Profile.find_by_sql(query)
+  end
+  
+  def find_activity_user_profile_with_permission(activity_allocation_tag, user, controller, action)
+    profiles = find_allocation_tag_user_profiles(activity_allocation_tag, user)
+    
+    resource_id = Resource.find_by_controller_and_action(controller, action)
+    
+    i = 0
+    
+    for profile in profiles
+      if PermissionsResource.find_by_profile_id_and_resource_id(profile.id, resource_id).nil?         
+        profiles.remove_at(i)        
+      end 
+      i += 1
+    end
+    
+    for profile in profiles
+      if profile.class_responsible
+        return profile.id
+      end 
+    end
+    
+    if !profiles.empty?    
+      return profiles[0].id
+    end
+    
+    return -1    
+  end
 
   def new_post
+    
     discussion_id = params[:discussion_id]
     content       = params[:content]
     parent_id     = params[:parent_post_id]
     #DEFINIR O PROFILE!!!! 
     #profile_id    = 2
     profile_id    = 1 #DEFINIR O PROFILE!!!! ##################################################
-    
    
-    @discussion= Discussion.find_by_id(discussion_id)
+    @discussion = Discussion.find_by_id(discussion_id)
+    
+    has_permission = false
+            
+    profile_id = find_activity_user_profile_with_permission(@discussion.allocation_tag, current_user, 'discussions', 'new_post')
+    
+    if profile_id > 0
+      has_permission = true
+    end
     
     #Usuário só pode criar posts no período ativo do fórum
-    if (valid_date)
+    if (valid_date && has_permission)
       begin
         ActiveRecord::Base.transaction do
           #Criando nova postagem
@@ -148,7 +274,6 @@ class DiscussionsController < ApplicationController
       post = DiscussionPost.find(discussion_post_id);
       post.update_attributes({:content => new_content})
 
-      hold_pagination
     end
     redirect_to "/discussions/show/" << discussion_id
   end
@@ -205,7 +330,9 @@ class DiscussionsController < ApplicationController
     end
   end
 
+
   def has_no_response
+    #DiscussionPost.find_all_by_father_id(discussion_post_id).empty?
     DiscussionPost.find_all_by_father_id(@discussion_post.id).empty?
   end
 
