@@ -5,9 +5,9 @@ gem 'rails', '3.0.7'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'pg', '0.9.0'
+gem 'pg', '0.11.0'
 gem 'rack', '1.2.1'
-gem 'rake', '0.8.7'
+gem 'rake', '0.9.2'
 
 # gem para geracao automatica de relacionamentos
 gem 'automatic_foreign_key', '1.2.0'
@@ -16,15 +16,15 @@ gem 'automatic_foreign_key', '1.2.0'
 gem 'will_paginate', "~> 3.0.pre2" #Will paginate padrão é bugada com o rails 3 :/
 
 # autoriazacao com cancan
-gem 'cancan', '1.6.4'
+gem 'cancan', '1.6.5'
 
 # Gem usada para personalizar data,moeda etc para padroes brasileiros
-gem 'brazilian-rails', '3.0.2'
+gem 'brazilian-rails', '3.0.4'
 gem 'factory_girl_rails', '1.0'
-gem 'chronic', '0.3.0'
+gem 'chronic', '0.6.1'
 # para uso da gem authlogic (autenticacao)
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
-gem 'rails3-generators', '0.14.0'
+gem 'rails3-generators', '0.17.4'
 gem 'paperclip', :git => 'git://github.com/thoughtbot/paperclip.git'
 
 # Use unicorn as the web server
@@ -47,14 +47,14 @@ gem 'paperclip', :git => 'git://github.com/thoughtbot/paperclip.git'
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test do
-  gem 'webrat', '0.7.2'
-  gem 'capybara', '0.4.0'
-  gem 'database_cleaner', '0.6.0'
-  gem 'cucumber', '0.9.4'
-  gem 'cucumber-rails', '0.3.2'
-  gem 'rspec', '2.5.0'
-  gem 'rspec-rails', '2.5.0'
-  gem 'spork', '0.8.4'
-  gem 'launchy', '0.3.7'    # So you can do Then show me the page
+  gem 'webrat', '0.7.3'
+  gem 'capybara', '1.0.0'
+  gem 'database_cleaner', '0.6.7'
+  gem 'cucumber', '1.0.2'
+  gem 'cucumber-rails', '1.0.2'
+  gem 'rspec', '2.6.0'
+  gem 'rspec-rails', '2.6.1'
+  gem 'spork', '0.8.5'
+  gem 'launchy', '2.0.4'    # So you can do Then show me the page
   gem 'silent-postgres'     # Omitindo os logs demasiados do adapter do postgres.
 end

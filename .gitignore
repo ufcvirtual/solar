@@ -23,5 +23,7 @@ Gemfile.lock
 public/images/users/*
 media/users/*
 media/portfolio/*
+media/discussion/*
+media/lesson/*
 .rvmrc
 db/schema.rb
