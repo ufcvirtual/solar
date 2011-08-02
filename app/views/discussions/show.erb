@@ -12,7 +12,6 @@
       $('#new_post_form').submit();
     }
 
-
     var numFileFields = 0;
     function appendFileField(){
       newElementId = 'post_attachment_' + numFileFields;
@@ -20,9 +19,9 @@
       //newElementName = 'attachment';
       newElement = '<div id="'+ newElementId +'_container">';
       newElement += '<input id="' + newElementId + '" type="file" name="' + newElementName + '" style="display:none;"/>';
-      newElement += '<a href="javascript:removeFileField(\''+newElementId+'\')">[remover]</a>';
+      newElement += '<a href="javascript:removeFileField(\''+newElementId+'\')"><%=t(:forum_remove_file)%></a>';
       newElement += '</div>';
-      $("#newPostUploadPanel").prepend(newElement);
+      $("#newPostUploadPanel").append(newElement);
       $("#"+newElementId).slideDown('fast');
       numFileFields++;
     }
@@ -36,7 +35,7 @@
     function appendRichTextBox(postContainer){
       newFormCode = '' +
         '<div id="new_post_dialog" style="display: none;">' +
-        '<div id="newPostUploadPanel"><a href="javascript:appendFileField()">[Anexar arquivo]</a></div>' +
+        '<div id="newPostUploadPanel"><a href="javascript:appendFileField()"><%=t(:forum_attach_file)%></a></div>' +
         '<textarea id="newPostTextBox">' +
         '</textarea>' +
         '<div style="text-align:right;">' +

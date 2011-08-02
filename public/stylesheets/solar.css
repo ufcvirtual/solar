@@ -1271,6 +1271,11 @@ div.alter_photo_text {
     text-align: right;
     margin-right: 10px;
 }
+
+.forum_post_attachment{
+    -webkit-padding-start:0px;
+}
+
 #new_post_dialog{
     text-align:left;
     background-color: #F4F4F4;

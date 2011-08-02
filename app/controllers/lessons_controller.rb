@@ -6,7 +6,7 @@ class LessonsController < ApplicationController
 
   before_filter :curriculum_data, :only => [:list, :show, :show_header, :show_content]
 
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:list]
 
   def show
     render :layout => 'lesson_frame'
@@ -19,7 +19,8 @@ class LessonsController < ApplicationController
   end
 
   def list
-    
+    authorize! :list, Lesson
+
     # pegando dados da sessao e nao da url
     groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]

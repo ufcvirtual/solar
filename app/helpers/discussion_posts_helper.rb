@@ -68,9 +68,10 @@ module DiscussionPostsHelper
     post_string <<      ' </div>'
 
     #Apresentando os arquivos do post
-    unless post.discussion_post_files.nil?
-      post_string <<      '<ul>
-                          <lh>[Arquivos]</lh>'
+    #unless post.discussion_post_files.nil?
+    unless post.discussion_post_files.count == 0
+      post_string <<      '<ul class="forum_post_attachment">
+                          <lh>'<< t(:forum_file_list) << '</lh>'
       post.discussion_post_files.each do |file|
         post_string <<      '<li><a href="#">'<<(link_to file.attachment_file_name, :controller => "discussions", :action => "download_post_file", :idFile => file.id, :id => @discussion.id)<<'</a></li>'
       end

@@ -189,6 +189,7 @@
   forum_message: "Nenhum fórum disponível"
   forum: "Fórum"
   forum_new_message: "Nova Mensagem"
+  forum_file_list: "Arquivos"
 
   #Exibição/Interação Fóruns
   forum_show_plainlist: "Ver em Lista"
@@ -196,6 +197,9 @@
   forum_show_answer: "Responder"
   forum_show_remove: "Excluir"
   forum_show_edit: "Editar"
+  forum_file_list: "Anexos"
+  forum_attach_file: "Anexar arquivo"
+  forum_remove_file: "Remover arquivo"
 
   message_title: "Mensagens"
   message_inbox: "Entrada"

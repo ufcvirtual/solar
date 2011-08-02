@@ -2,10 +2,12 @@ class DiscussionsController < ApplicationController
 
   include DiscussionPostsHelper
 
-  load_and_authorize_resource #Setar permissoes!!!!!
+  load_and_authorize_resource :except => [:list] #Setar permissoes!!!!!
   before_filter :prepare_for_pagination, :only => [:show]
   
   def list
+
+    authorize! :list, Discussion
 
     # pegando dados da sessao e nao da url
     group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
@@ -288,20 +290,6 @@ class DiscussionsController < ApplicationController
     prefix_file = file_.id # id da tabela discussion_post_file para diferenciar os arquivos
     path_file = "#{::Rails.root.to_s}/media/discussion/post/"
 
-    # id da atividade
-    #send_assignment = SendAssignment.joins(:assignment_comments).where(["assignment_comments.id = ?", assignment_comment_id])
-
-    # verifica se foi encontrado algum registro
-    #if send_assignment.length > 0
-    #  assignment_id = send_assignment.first.assignment_id
-    #  redirect_error = {:action => 'activity_details', :id => assignment_id}
-    #else
-
-    #  curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
-    # redireciona para a pagina de listagem de atividades
-    #  redirect_error = {:action => 'list', :id => curriculum_unit_id}
-
-    #end
     redirect_error = {:action => 'show', :id => params[:id], :idFile => post_file_id}
     # recupera arquivo
     
