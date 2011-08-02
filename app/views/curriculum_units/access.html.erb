@@ -1,168 +1,178 @@
 <div>
 
-    <%= image_tag "icon_curriculum_unit.png", :alt=>t(:icon_curriculum_unit) %>
-    <span class="page_title"><%=@curriculum_unit.name %></span>
-    <hr style="border: none; background-color: #b4b3b7; height: 1px; width:794px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px"></hr>
+  <%= image_tag "icon_curriculum_unit.png", :alt=>t(:icon_curriculum_unit) %>
+  <span class="page_title"><%=@curriculum_unit.name %></span>
+  <hr style="border: none; background-color: #b4b3b7; height: 1px; width:794px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px"></hr>
 
-    <div class="curriculum_unit_portlet_border">
-      <div class="curriculum_unit_portlet_left">
-        <div class="curriculum_unit_portlet_header">
-          <%=t(:curriculum_access_curriculum_unit)%>
-        </div>
-        <div class="curriculum_unit_portlet_text">
-          <%=@curriculum_unit.resume %>
-        </div>
+  <div class="curriculum_unit_portlet_border">
+    <div class="curriculum_unit_portlet_left">
+      <div class="curriculum_unit_portlet_header">
+        <%=t(:curriculum_access_curriculum_unit)%>
       </div>
-      <div class="curriculum_unit_portlet_right">
-        <div class="curriculum_unit_portlet_header">
-          <%=t(:curriculum_unit_responsible)%>
-        </div>
-        <div class="curriculum_unit_portlet_text">
-          <% if @responsible %>
-            <% @responsible.each do |resp| %>
-              <%= resp.username + ' (' + resp.profilename + ') '%><span><%= link_to (image_tag "icon_send_mail.png", :alt=>t(:icon_send_email)) %></span><br/>
-            <% end %>
-          <% end %>
-        </div>
+      <div class="curriculum_unit_portlet_text">
+        <%=@curriculum_unit.resume %>
       </div>
     </div>
-
-    <div class="curriculum_unit_portlet_lesson">
+    <div class="curriculum_unit_portlet_right">
       <div class="curriculum_unit_portlet_header">
-        <span><%= image_tag "icon_lesson.png", :alt=>t(:icon_lesson) %></span>
-        <%= t(:curriculum_access_lesson) %>
+        <%=t(:curriculum_unit_responsible)%>
       </div>
-      <div class="curriculum_unit_portlet_lesson_content">
-        <% if !(@lessons.nil? || @lessons.empty?) %>
-          <% @lessons.each do |lesson| %>
-              <div class="curriculum_unit_portlet_line">
-                <span class="curriculum_unit_portlet_gray"><%= l lesson.start %> - <%= l lesson.end %></span>
-                <a class="curriculum_unit_portlet_link" href="javascript:show_lesson('/lessons/show?id=<%=@curriculum_unit.id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
-              </div>
+      <div class="curriculum_unit_portlet_text">
+        <% if @responsible %>
+          <% @responsible.each do |resp| %>
+            <%= resp.username + ' (' + resp.profilename + ') '%><span><%= link_to (image_tag "icon_send_mail.png", :alt=>t(:icon_send_email)) %></span><br/>
           <% end %>
-        <% else %>
-          <div class="curriculum_unit_portlet_text"><%= t(:lesson_message) %></div>
         <% end %>
       </div>
     </div>
+  </div>
 
-    <table cellpadding="0" cellspacing="0">
-      <tr>
-
-        <td>
-          <div id="message_portlet" class="curriculum_unit_portlets_small">
-            <div class="curriculum_unit_portlet_small_header">
-              <%= image_tag "icon_message.png", :alt=>t(:icon_message) %>
-              <%= t(:curriculum_access_message)%>
-              <span class="text_alert">&nbsp;&nbsp;[3] <%= t(:curriculum_access_new) %></span>
-            </div>
-            <div class="curriculum_unit_portlet_messages">
-              <div class="curriculum_unit_portlet_line">
-                <span class="curriculum_unit_portlet_gray">20:00h</span>
-                <a href="" class="curriculum_unit_portlet_link">joão</a>
-                mensagem1
-              </div>
-              <div class="curriculum_unit_portlet_line">
-                <span class="curriculum_unit_portlet_gray">19:00h</span>
-                <a href="" class="curriculum_unit_portlet_link">maria</a>
-                mensagem2
-              </div>
-              <div class="curriculum_unit_portlet_line">
-                <span class="curriculum_unit_portlet_gray">18:00h</span>
-                <a href="" class="curriculum_unit_portlet_link">francisco</a>
-                mensagem 3 que é maior que as outras...
-              </div>
-
-              <div class="curriculum_unit_portlet_line">
-                <span class="curriculum_unit_portlet_gray">17:00h</span>
-                <a href="" class="curriculum_unit_portlet_link">fulano</a>
-                mensagem4
-              </div>
-              <div class="curriculum_unit_portlet_line">
-                <span class="curriculum_unit_portlet_gray">16:00h</span>
-                <a href="" class="curriculum_unit_portlet_link">betrano</a>
-                mensagem5
-              </div>
-              
-            </div>
-            <div class="curriculum_unit_portlet_messages_opt">
-              <a href="" class="curriculum_unit_portlet_link_gray">[<%= t(:curriculum_access_message_inbox) %>]</a>
-              <a href="" class="curriculum_unit_portlet_link_gray">[<%= t(:curriculum_access_message_new) %>]</a>
-              <a href="" class="curriculum_unit_portlet_link_gray">[<%= t(:curriculum_access_message_more) %>]</a>
-            </div>
+  <div class="curriculum_unit_portlet_lesson">
+    <div class="curriculum_unit_portlet_header">
+      <span><%= image_tag "icon_lesson.png", :alt=>t(:icon_lesson) %></span>
+      <%= t(:curriculum_access_lesson) %>
+    </div>
+    <div class="curriculum_unit_portlet_lesson_content">
+      <% if !(@lessons.nil? || @lessons.empty?) %>
+        <% @lessons.each do |lesson| %>
+          <div class="curriculum_unit_portlet_line">
+            <span class="curriculum_unit_portlet_gray"><%= l lesson.start %> - <%= l lesson.end %></span>
+            <a class="curriculum_unit_portlet_link" href="javascript:show_lesson('/lessons/show?id=<%=@curriculum_unit.id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
           </div>
-        </td>
+        <% end %>
+      <% else %>
+        <div class="curriculum_unit_portlet_text"><%= t(:lesson_message) %></div>
+      <% end %>
+    </div>
+  </div>
 
-        <td>
-          <div id="forum_portlet" class="curriculum_unit_portlets_small">
-            <div class="curriculum_unit_portlet_small_header">
-              <%= image_tag "icon_forum.png", :alt=>t(:icon_forum) %>
-              <%= t(:curriculum_access_forum)%>
-            </div>
+  <table cellpadding="0" cellspacing="0">
+    <tr>
 
-            <div class="curriculum_unit_portlet_forum">
-
-              <div class="curriculum_unit_portlet_line">
-                <span class="curriculum_unit_portlet_gray">20:00h</span>
-                <a href="" class="curriculum_unit_portlet_link">fulano</a>
-                texto do forum bla bla bla1
-              </div>
-              <div class="curriculum_unit_portlet_line">
-                <span class="curriculum_unit_portlet_gray">19:00h</span>
-                <a href="" class="curriculum_unit_portlet_link">beltrano</a>
-                texto do forum bla bla2
-              </div>
-              <div class="curriculum_unit_portlet_line">
-                <span class="curriculum_unit_portlet_gray">18:20h</span>
-                <a href="" class="curriculum_unit_portlet_link">sicrano</a>
-                texto 3
-              </div>
-              <div class="curriculum_unit_portlet_line">
-                <span class="curriculum_unit_portlet_gray">18:00h</span>
-                <a href="" class="curriculum_unit_portlet_link">fulano</a>
-                texto do forum 4
-              </div>
-              <div class="curriculum_unit_portlet_line">
-                <span class="curriculum_unit_portlet_gray">17:52h</span>
-                <a href="" class="curriculum_unit_portlet_link">fulano</a>
-                texto do forum 5
-              </div>
-              <div class="curriculum_unit_portlet_line">
-                <span class="curriculum_unit_portlet_gray">17:47h</span>
-                <a href="" class="curriculum_unit_portlet_link">fulano</a>
-                texto do forum 6
-              </div>
-
-            </div>
+      <td>
+        <div id="message_portlet" class="curriculum_unit_portlets_small">
+          <div class="curriculum_unit_portlet_small_header">
+            <%= image_tag "icon_message.png", :alt=>t(:icon_message) %>
+            <%= t(:curriculum_access_message)%>
+            <span class="text_alert">&nbsp;&nbsp;[3] <%= t(:curriculum_access_new) %></span>
           </div>
-        </td>
-
-        <td>
-          <div id="agenda_portlet" class="curriculum_unit_portlets_small">
-            <div class="curriculum_unit_portlet_small_header">
-              <%= image_tag "icon_agenda.png", :alt=>t(:icon_agenda) %>
-              <%= t(:curriculum_access_agenda)%>
+          <div class="curriculum_unit_portlet_messages">
+            <div class="curriculum_unit_portlet_line">
+              <span class="curriculum_unit_portlet_gray">20:00h</span>
+              <a href="" class="curriculum_unit_portlet_link">joão</a>
+              mensagem1
+            </div>
+            <div class="curriculum_unit_portlet_line">
+              <span class="curriculum_unit_portlet_gray">19:00h</span>
+              <a href="" class="curriculum_unit_portlet_link">maria</a>
+              mensagem2
+            </div>
+            <div class="curriculum_unit_portlet_line">
+              <span class="curriculum_unit_portlet_gray">18:00h</span>
+              <a href="" class="curriculum_unit_portlet_link">francisco</a>
+              mensagem 3 que é maior que as outras...
             </div>
 
-            <div class="calendar" id="agenda"></div>
-            
-            <div class="calendar_events">
-              <div class="calendar_events_more"><a href="" class="curriculum_unit_portlet_link_more"><%=t(:curriculum_access_more)%></a></div>
+            <div class="curriculum_unit_portlet_line">
+              <span class="curriculum_unit_portlet_gray">17:00h</span>
+              <a href="" class="curriculum_unit_portlet_link">fulano</a>
+              mensagem4
+            </div>
+            <div class="curriculum_unit_portlet_line">
+              <span class="curriculum_unit_portlet_gray">16:00h</span>
+              <a href="" class="curriculum_unit_portlet_link">betrano</a>
+              mensagem5
+            </div>
 
-              <span><%= image_tag "icon_clock.png", :alt=>t(:icon_agenda_event) %></span>
-              <div class="calendar_events_entry">                
-                11:00 <a href="" class="curriculum_unit_portlet_link">bla bla bla...</a>
-              </div><br/>
-              <span><%= image_tag "icon_clock.png", :alt=>t(:icon_agenda_event) %></span>
-              <div class="calendar_events_entry">                
-                12:00 <a href="" class="curriculum_unit_portlet_link">bla bla bla...</a>
-              </div><br/>
-              
-            </div>            
           </div>
-        </td>
+          <div class="curriculum_unit_portlet_messages_opt">
+            <a href="" class="curriculum_unit_portlet_link_gray">[<%= t(:curriculum_access_message_inbox) %>]</a>
+            <a href="" class="curriculum_unit_portlet_link_gray">[<%= t(:curriculum_access_message_new) %>]</a>
+            <a href="" class="curriculum_unit_portlet_link_gray">[<%= t(:curriculum_access_message_more) %>]</a>
+          </div>
+        </div>
+      </td>
 
-      </tr>
-    </table>
-        
+      <td>
+        <div id="forum_portlet" class="curriculum_unit_portlets_small">
+          <div class="curriculum_unit_portlet_small_header">
+            <%= image_tag "icon_forum.png", :alt=>t(:icon_forum) %>
+            <%= t(:curriculum_access_forum)%>
+          </div>
+
+          <div class="curriculum_unit_portlet_forum">
+            <% if !(@discussion_posts.nil? || @discussion_posts.empty?) %>
+              <% @discussion_posts.each do |discussion_post| %>
+                <div class="curriculum_unit_portlet_line">
+                  <span class="curriculum_unit_portlet_gray"><%= l discussion_post.updated_at %>  <%= discussion_post.user.nick %> <%= discussion_post.content %></span>
+                  
+                </div>
+              <% end %>
+            <% else %>
+              <div class="curriculum_unit_portlet_text"><%= t(:forum_message) %></div>
+            <% end %>
+
+            <div class="curriculum_unit_portlet_line">
+              <span class="curriculum_unit_portlet_gray">20:00h</span>
+              <a href="" class="curriculum_unit_portlet_link">fulano</a>
+              texto do forum bla bla bla1
+            </div>
+            <div class="curriculum_unit_portlet_line">
+              <span class="curriculum_unit_portlet_gray">19:00h</span>
+              <a href="" class="curriculum_unit_portlet_link">beltrano</a>
+              texto do forum bla bla2
+            </div>
+            <div class="curriculum_unit_portlet_line">
+              <span class="curriculum_unit_portlet_gray">18:20h</span>
+              <a href="" class="curriculum_unit_portlet_link">sicrano</a>
+              texto 3
+            </div>
+            <div class="curriculum_unit_portlet_line">
+              <span class="curriculum_unit_portlet_gray">18:00h</span>
+              <a href="" class="curriculum_unit_portlet_link">fulano</a>
+              texto do forum 4
+            </div>
+            <div class="curriculum_unit_portlet_line">
+              <span class="curriculum_unit_portlet_gray">17:52h</span>
+              <a href="" class="curriculum_unit_portlet_link">fulano</a>
+              texto do forum 5
+            </div>
+            <div class="curriculum_unit_portlet_line">
+              <span class="curriculum_unit_portlet_gray">17:47h</span>
+              <a href="" class="curriculum_unit_portlet_link">fulano</a>
+              texto do forum 6
+            </div>
+
+          </div>
+        </div>
+      </td>
+
+      <td>
+        <div id="agenda_portlet" class="curriculum_unit_portlets_small">
+          <div class="curriculum_unit_portlet_small_header">
+            <%= image_tag "icon_agenda.png", :alt=>t(:icon_agenda) %>
+            <%= t(:curriculum_access_agenda)%>
+          </div>
+
+          <div class="calendar" id="agenda"></div>
+
+          <div class="calendar_events">
+            <div class="calendar_events_more"><a href="" class="curriculum_unit_portlet_link_more"><%=t(:curriculum_access_more)%></a></div>
+
+            <span><%= image_tag "icon_clock.png", :alt=>t(:icon_agenda_event) %></span>
+            <div class="calendar_events_entry">                
+              11:00 <a href="" class="curriculum_unit_portlet_link">bla bla bla...</a>
+            </div><br/>
+            <span><%= image_tag "icon_clock.png", :alt=>t(:icon_agenda_event) %></span>
+            <div class="calendar_events_entry">                
+              12:00 <a href="" class="curriculum_unit_portlet_link">bla bla bla...</a>
+            </div><br/>
+
+          </div>            
+        </div>
+      </td>
+
+    </tr>
+  </table>
+
 </div>

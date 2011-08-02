@@ -150,5 +150,45 @@ module DiscussionPostsHelper
              WHERE dp.father_id = '#{parent_id}'"
     return DiscussionPost.count_by_sql(query)
   end
+  
+  def return_discussions(offer_id, group_id)
 
+    if group_id.nil?
+      group_id = -1
+    end
+    
+    if offer_id.nil?
+      offer_id = -1
+    end
+
+    # retorna os fóruns da turma
+    # at.id as id, at.offer_id as offerid,l.allocation_tag_id as alloctagid,l.type_lesson, privacy,description,
+    query = "SELECT * 
+              FROM 
+                (SELECT d.name, d.id, d.start, d.end, d.description 
+                 FROM discussions d 
+                 INNER JOIN allocation_tags t on d.allocation_tag_id = t.id
+                 INNER JOIN groups g on g.id = t.group_id
+                 WHERE g.id = #{group_id}
+              
+                 UNION ALL
+              
+                 SELECT d.name, d.id, d.start, d.end, d.description 
+                 FROM discussions d 
+                 INNER JOIN allocation_tags t on d.allocation_tag_id = t.id
+                 INNER JOIN offers o on o.id = t.offer_id
+                 WHERE o.id = #{offer_id}
+                ) as available_discussions
+              ORDER BY start;"
+
+    return Discussion.find_by_sql(query)
+
+  end
+
+    # Consultas para portlets 
+  def list_portlet_discussion_posts(offer_id, group_id)
+    discussions = return_discussions(offer_id, group_id)    
+    return DiscussionPost.order('updated_at DESC').limit(20).find_all_by_discussion_id(discussions)
+  end
+  
 end

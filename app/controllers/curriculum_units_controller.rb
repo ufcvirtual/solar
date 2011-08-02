@@ -2,6 +2,7 @@ class CurriculumUnitsController < ApplicationController
 
   include CurriculumUnitsHelper
   include LessonsHelper
+  include DiscussionPostsHelper
 
   before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy, :access]
 
@@ -68,6 +69,7 @@ class CurriculumUnitsController < ApplicationController
     
     # retorna aulas
     @lessons = return_lessons_to_open(offers_id, groups_id)
+    @discussion_posts = list_portlet_discussion_posts(offers_id, groups_id)
     session[:lessons] = @lessons
   end
 
@@ -109,5 +111,7 @@ class CurriculumUnitsController < ApplicationController
     # pegando valores pela url:
     #@responsible = class_participants params[:id], responsible, params[:offers_id], params[:groups_id]
   end
+  
+
 
 end
