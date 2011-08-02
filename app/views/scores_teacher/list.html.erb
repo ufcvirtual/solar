@@ -15,15 +15,22 @@
   <div id="individual_activity" class="portfolio">
     <hr class="portfolio_line" />
 
+    <% leng_assignments = @students.first["assignment_grades"].split(',').length %>
     <table width="100%" cellspacing="0" border="0" id="list_of_students" class="list_table">
       <thead>
         <tr>
-          <td align="left"><%= t(:student) %></td>
-          <td style="width: 16%;"><%= t(:public_files)  %></td>
-          <td style="width: 8%;"><%= t(:tests) %></td>
-          <td style="width: 14%;"><%= t(:private_area) %></td>
-          <td style="width: 12%;"><%= t(:participation) %></td>
-          <td style="width: 15%;"><%= t(:access_to_the_course) %></td>
+          <th rowspan="2" align="left"><%= t(:student) %></th>
+          <th rowspan="2" style="width: 16%;"><%= t(:public_files)  %></th>
+          <th rowspan="2" style="width: 8%;"><%= t(:tests) %></th>
+          <!-- trabalhos-->
+          <th colspan="<%= leng_assignments %>" style="width: 20%;"><%= t(:private_area) %></th>
+          <th rowspan="2" style="width: 12%;"><%= t(:participation) %></th>
+          <th rowspan="2" style="width: 15%;"><%= t(:access_to_the_course) %></th>
+        </tr>
+        <tr>
+          <% for i in 1..leng_assignments %>
+            <th><%= i %>&deg;</th>
+          <% end %>
         </tr>
       </thead>
       <tbody>
@@ -34,7 +41,9 @@
             </td>
             <td><%= student["cnt_public_files"] %></td>
             <td></td>
-            <td><%= student["cnt_private_files"] %></td>
+            <% student["assignment_grades"].split(',').each do |grade| %>
+              <td><%= grade %></td>
+            <% end %>
             <td></td>
             <td></td>
           </tr>
@@ -43,10 +52,10 @@
     </table>
   </div>
 
-  <!-- Notas -->
+  <!-- Nota -->
 
   <div id="scores_notes" class="label_score">
-    TE: Trabalho não corrigido(sem nota).<br />
+    TE: Trabalho enviado mas não corrigido(sem nota).<br />
     TN: Trabalho não enviado.
   </div>
 
@@ -74,7 +83,7 @@
       padding-top: 10px;
     }
 
-    table tbody tr.hover td { background-color:#a9d0f5; }
+    table tbody tr.hover td { background-color: #a9d0f5; }
 
     td.td_student a { color: #2a538d; }
   </style>
@@ -83,9 +92,7 @@
     $(function(){
       $('.list_table tr').addClass('lines');
       $('.list_table > tbody td:not([class=td_student])').css('text-align', 'center');
-      $('.list_table .td_student').css('color', '#1c4785');
       $('table > tbody > tr').hover(function(){$(this).toggleClass('hover');});
-      $('table > thead > tr td').css('font-weight', 'bold');
     });
   </script>
 </div>

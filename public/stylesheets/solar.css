@@ -1673,7 +1673,7 @@ td.border_line {
     border-top: 1px solid #d0d0d1;
 }
 
-.td_blue_portfolio, .td_blue_portfolio_first, tr.lines td {
+.td_blue_portfolio, .td_blue_portfolio_first, tr.lines td, th {
     border-left: solid #dbe5e8 1px;
     padding-left: 8px;
     white-space: normal;
@@ -1685,7 +1685,7 @@ table.list_table {
     border-right: solid #dbe5e8 1px;
 }
 
-tr.lines td {
+tr.lines td, th {
     border-bottom: solid #dbe5e8 1px;
 }
 
