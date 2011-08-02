@@ -18,7 +18,8 @@
               <% else %>
                 <% css_class = "message_unread" %>
               <% end %>
-              <td style="width:120px"><%= link_to message.name,  {:action => 'show', :id => message.id},{:class => css_class} %></td>
+              <% sender = get_sender(message.id) %>
+              <td style="width:120px"><%= link_to sender.name,  {:action => 'show', :id => message.id},{:class => css_class} %></td>
               <td>
                 <% if @message_tag.nil? %>
                   <% if !message.label.nil? %>

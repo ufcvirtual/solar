@@ -2,7 +2,7 @@ class ScoresController < ApplicationController
 
   before_filter :require_user
 
-  include PortfolioTeacherHelper
+  #include PortfolioTeacherHelper
 
   # lista informacoes de acompanhamento do aluno
   def index
