@@ -1,6 +1,6 @@
 <%= form_for :message, :url => {:action => ''}, :html => {:id => 'message_list', :class => 'message_div_options'} do |f| %>
   &nbsp;
-  <%= link_to t(:message_new)+' ', {:action => 'new'}, {:class=>'message_link'} unless @type.nil? %>
+  <%= link_to t(:message_new)+' ', {:action => 'new'}, {:class=>'message_link'} %>
 
   <% if !@type.nil? %>
     <ul class="message_menu_listbox">

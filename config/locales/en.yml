@@ -218,6 +218,7 @@ en:
   message_to: "To"
   message_from: "From"
   message_subject: "Subject"
+  message_date: "Date"
   message_reply: "Reply"
   message_reply_all: "Reply all"
   message_route: "Route"
@@ -229,6 +230,8 @@ en:
   message_header: "Message sent by: "
   message_complete: "Complete"
   message_cancel: "Cancel"
+  message_subject_reply: "Re: "
+  message_subject_route: "Fwd: "
 
   navigation_of: " of "
   navigation_next: "Next >"

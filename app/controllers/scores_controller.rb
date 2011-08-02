@@ -2,6 +2,11 @@ class ScoresController < ApplicationController
 
   before_filter :require_user
 
+<<<<<<< HEAD
+=======
+  #include PortfolioTeacherHelper
+
+>>>>>>> 12848891
   # lista informacoes de acompanhamento do aluno
   def index
 
