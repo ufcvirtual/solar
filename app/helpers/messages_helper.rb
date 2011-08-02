@@ -48,7 +48,8 @@ module MessagesHelper
       where
         usm.user_id = #{userid}
         and NOT cast( usm.status & '00000001' as boolean)
-        and NOT cast( usm.status & '00000010' as boolean)"
+        and NOT cast( usm.status & '00000010' as boolean)
+        and NOT cast( usm.status & '00000100' as boolean)"
 
     if !tag.nil?
       query_messages += " and ml.title = '#{tag}' "
@@ -78,6 +79,13 @@ module MessagesHelper
         end
     end
     return text
+  end
+
+  # retorna (1) usuario que enviou a msg
+  def get_sender(message_id)
+    return User.find(:first,
+          :joins => "INNER JOIN user_messages ON users.id = user_messages.user_id",
+          :conditions => "user_messages.message_id = #{message_id} and cast( user_messages.status & '00000001' as boolean)")
   end
 
 end

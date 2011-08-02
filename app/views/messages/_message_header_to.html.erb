@@ -5,11 +5,11 @@
             <td class="message_text_to" align="right" style="width:75px">
               <a class="curriculum_unit_portlet_link" href="javascript:show_div('link_to_contacts','div_contacts')" id="link_to_contacts"><%=t(:message_to)%></a>
             </td>
-            <td class="message_text_to"><%= text_field_tag  'to', '', :class=> "message_search_textbox", :readonly => true, :onclick => "javascript:show_div('link_to_contacts','div_contacts')" %></td>
+            <td class="message_text_to"><%= text_field_tag  'to', @target, :class=> "message_search_textbox", :readonly => true, :onclick => "javascript:show_div('link_to_contacts','div_contacts')" %></td>
           </tr>
           <tr>
             <td class="message_text_to" align="right" style="width:75px"><%=t(:message_subject)%></td>
-            <td class="message_text_to"><%= text_field_tag  'subject', '', :class=> "message_search_textbox" %></td>
+            <td class="message_text_to"><%= text_field_tag  'subject', @subject, :class=> "message_search_textbox" %></td>
           </tr>
           <tr>
             <td class="message_text_to" align="right" style="width:75px">&nbsp;</td>
@@ -40,7 +40,7 @@
   </div>
   <br/>
   <%= label_tag "", t(:message_to)+': ' %><br/>
-  <div id="recipients_selected"></div>
+  <div id="recipients_selected"><%= raw @target_html unless @target.empty? %></div>
   <div class="div_contacts_buttons">
     <span id="link_confirm_contacts" border="0" class="link_button"><%=t(:message_complete)%></span>
     <span id="link_cancel_contacts" border="0" class="link_button"><%=t(:message_cancel)%></span>

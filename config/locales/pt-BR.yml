@@ -227,6 +227,7 @@
   message_to: "Para"
   message_from: "De"
   message_subject: "Assunto"
+  message_date: "Data"
   message_reply: "Responder"
   message_reply_all: "Responder para todos"
   message_route: "Encaminhar"
@@ -238,6 +239,8 @@
   message_header: "Mensagem enviada por: "
   message_complete: "Concluir"
   message_cancel: "Cancelar"
+  message_subject_reply: "Res: "
+  message_subject_route: "Enc: "
 
   navigation_of: " de "
   navigation_next: "Próxima >"
