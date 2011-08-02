@@ -104,39 +104,15 @@
             <% if !(@discussion_posts.nil? || @discussion_posts.empty?) %>
               <% @discussion_posts.each do |discussion_post| %>
                 <div class="curriculum_unit_portlet_line">
-                  <span class="curriculum_unit_portlet_gray"><%= l discussion_post.updated_at %>  <%= discussion_post.user.nick %> <%= discussion_post.content %></span>
-                  
+                  <span class="curriculum_unit_portlet_gray"><%= l discussion_post.updated_at %> </span>
+                  <a href="" class="curriculum_unit_portlet_link"><%= discussion_post.user.nick %></a>
+                  <%= discussion_post.content %>
                 </div>
               <% end %>
             <% else %>
               <div class="curriculum_unit_portlet_text"><%= t(:forum_message) %></div>
             <% end %>
-
-            <div class="curriculum_unit_portlet_line">
-              <span class="curriculum_unit_portlet_gray">20:00h</span>
-              <a href="" class="curriculum_unit_portlet_link">fulano</a>
-              texto do forum bla bla bla1
-            </div>
-            <div class="curriculum_unit_portlet_line">
-              <span class="curriculum_unit_portlet_gray">19:00h</span>
-              <a href="" class="curriculum_unit_portlet_link">beltrano</a>
-              texto do forum bla bla2
-            </div>
-            <div class="curriculum_unit_portlet_line">
-              <span class="curriculum_unit_portlet_gray">18:20h</span>
-              <a href="" class="curriculum_unit_portlet_link">sicrano</a>
-              texto 3
-            </div>
-            <div class="curriculum_unit_portlet_line">
-              <span class="curriculum_unit_portlet_gray">18:00h</span>
-              <a href="" class="curriculum_unit_portlet_link">fulano</a>
-              texto do forum 4
-            </div>
-            <div class="curriculum_unit_portlet_line">
-              <span class="curriculum_unit_portlet_gray">17:52h</span>
-              <a href="" class="curriculum_unit_portlet_link">fulano</a>
-              texto do forum 5
-            </div>
+            
             <div class="curriculum_unit_portlet_line">
               <span class="curriculum_unit_portlet_gray">17:47h</span>
               <a href="" class="curriculum_unit_portlet_link">fulano</a>
