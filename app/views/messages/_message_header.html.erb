@@ -1,8 +1,10 @@
+  <%= form_for :message, :url => '/messages/index', :html => {:id => 'message_form_search'} do |f| %>
     <div class="message_search_div">
       <%= label_tag 'lb_search', t(:message_search), :class => "enrollment_label" %>&nbsp;
       <%= text_field_tag  'search', @search_text, :class=> "message_search_textbox" %>
       <%= image_submit_tag("search.png", :class => 'enrollment_search_icon')%>
     </div>
+  <% end %>
 
     <div class="message_div">
 

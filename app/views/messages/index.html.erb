@@ -18,18 +18,30 @@
               <% else %>
                 <% css_class = "message_unread" %>
               <% end %>
-              <% sender = get_sender(message.id) %>
-              <td style="width:120px"><%= link_to sender.name,  {:action => 'show', :id => message.id},{:class => css_class} %></td>
+              <td style="width:120px"><%= link_to message.sender,  {:action => 'show', :id => message.id, :search => @search_text},{:class => css_class} %></td>
               <td>
                 <% if @message_tag.nil? %>
                   <% if !message.label.nil? %>
                     <span class="message_label"><%=message.label%></span>
                   <% end %>
                 <% end %>
-                <%= link_to message.subject,  {:action => 'show', :id => message.id},{:class => css_class} %>
+
+                <% if !@search_text.empty? %>
+                  <% if message.ehlixo == 't' %>
+                    "lixeira"
+                  <% else %>
+                    <% if message.ehorigem == 't' %>
+                      "entrada"
+                    <% else %>
+                      "saída"
+                    <% end %>
+                  <% end %>                  
+                <% end %>
+
+                <%= link_to message.subject,  {:action => 'show', :id => message.id, :search => @search_text},{:class => css_class} %>
               </td>
               <td style="width:30px"><%=image_tag("message_file.png",:alt=>t(:message_attach)) unless message.original_name.nil?%></td>
-              <td style="width:100px"><%= link_to l(message.send_date, :format => :short),  {:action => 'show', :id => message.id},{:class => css_class} %></td>
+              <td style="width:100px"><%= link_to l(message.send_date, :format => :short),  {:action => 'show', :id => message.id, :search => @search_text},{:class => css_class} %></td>
             </tr>
           <% end %>
         </table>

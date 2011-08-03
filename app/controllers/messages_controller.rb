@@ -14,6 +14,10 @@ class MessagesController < ApplicationController
   def index
     #recebe tipo de msg a ser consultada
     @type = params[:type]
+
+    @search_text = params[:search].nil? ? "" : params[:search]
+    @type = 'search' unless @search_text.empty?
+
     if @type.nil?
       @type = "index"
     end
@@ -21,7 +25,7 @@ class MessagesController < ApplicationController
     page = params[:page].nil? ? "1" : params[:page]
 
     # retorna mensagens
-    @messages = return_messages(current_user.id, @type, @message_tag, page)
+    @messages = return_messages(current_user.id, @type, @message_tag, page, @search_text.split(" "))
   end
 
   # edicao de mensagem (nova, responder, encaminhar)
@@ -96,6 +100,7 @@ class MessagesController < ApplicationController
       @show_message = 'show'
       get_message_data(message_id)
     end
+    @search_text = params[:search].nil? ? "" : params[:search]
   end
   
   # na verdade, muda status para apagado - pode receber um id ou varios separados por $

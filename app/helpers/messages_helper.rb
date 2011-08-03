@@ -1,9 +1,12 @@
 module MessagesHelper
 
-  def return_messages(userid, type='index', tag=nil, page=1)
-    query_messages = "select m.*, usm.user_id, f.original_name, u.name, u.nick,
+  def return_messages(userid, type='index', tag=nil, page=1, search_text)
+    query_messages = "select m.*, usm.user_id, f.original_name, u.name, u.nick,ml.title label,
         cast( usm.status & '00000001' as boolean)ehorigem,
-        cast( usm.status & '00000010' as boolean)ehlida, ml.title label
+        cast( usm.status & '00000010' as boolean)ehlida,
+        cast( usm.status & '00000100' as boolean)ehlixo,
+        (select users.name from users inner join user_messages ON users.id = user_messages.user_id
+        where user_messages.message_id = m.id and cast( user_messages.status & '00000001' as boolean))sender
 
       from messages m
         inner join user_messages usm on m.id = usm.message_id
@@ -28,12 +31,26 @@ module MessagesHelper
     when 'outbox'
       query_messages += " and     cast( usm.status & '00000001' as boolean) " #filtra se eh origem (default)
       query_messages += " and NOT cast( usm.status & '00000100' as boolean) " #nao esta na lixeira
+    when 'search'
+      # monta parte da query referente a busca textual
+      query_search = ''
+      search_text.each { |text|
+        query_search << " AND " unless query_search.empty? # nao adiciona na 1a vez
+        query_search << "     (subject  ilike '%#{text}%' or
+                               content  ilike '%#{text}%' or
+                               (select users.name from users inner join user_messages
+                                ON users.id = user_messages.user_id
+                                where user_messages.message_id = m.id
+                                and cast(user_messages.status & '00000001' as boolean)) ilike '%#{text}%' or
+                               ml.title ilike '%#{text}%')"
+      }
+      query_messages += " and ( #{query_search} )"
     end
     query_messages += " order by send_date desc "
 
     msg = Message.find_by_sql(query_messages)
+   
     return msg.paginate :page => page, :per_page => Record_Per_Page
-    
   end
 
   def unread_inbox(userid, tag=nil)
