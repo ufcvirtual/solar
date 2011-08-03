@@ -188,7 +188,7 @@ module DiscussionPostsHelper
     # Consultas para portlets 
   def list_portlet_discussion_posts(offer_id, group_id)
     discussions = return_discussions(offer_id, group_id)    
-    return DiscussionPost.order('updated_at DESC').limit(20).find_all_by_discussion_id(discussions)
+    return DiscussionPost.order('updated_at DESC').limit(Rails.application.config.items_per_page.to_i).find_all_by_discussion_id(discussions)
   end
   
 end
