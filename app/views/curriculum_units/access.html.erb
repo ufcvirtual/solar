@@ -105,20 +105,14 @@
               <% @discussion_posts.each do |discussion_post| %>
                 <div class="curriculum_unit_portlet_line">
                   <span class="curriculum_unit_portlet_gray"><%= l discussion_post.updated_at %> </span>
-                  <a href="" class="curriculum_unit_portlet_link"><%= discussion_post.user.nick %></a>
-                  <%= discussion_post.content %>
+                  <a class="curriculum_unit_portlet_link" href="/discussions/show/<%=discussion_post.discussion_id%>"><%= discussion_post.user.nick %></a>
+                  <%= sanitize discussion_post.content %>
                 </div>
               <% end %>
             <% else %>
               <div class="curriculum_unit_portlet_text"><%= t(:forum_message) %></div>
             <% end %>
             
-            <div class="curriculum_unit_portlet_line">
-              <span class="curriculum_unit_portlet_gray">17:47h</span>
-              <a href="" class="curriculum_unit_portlet_link">fulano</a>
-              texto do forum 6
-            </div>
-
           </div>
         </div>
       </td>
