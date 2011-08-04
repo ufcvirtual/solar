@@ -33,6 +33,3 @@ Max_Tabs_Open = 4
 # constantes que indicam tipos de abas que podem ser abertas
 Tab_Type_Home = "0"
 Tab_Type_Curriculum_Unit = "1"
-
-# constante que indica numero maximo de registros por pagina
-Record_Per_Page = 10

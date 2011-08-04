@@ -38,7 +38,7 @@ module ApplicationHelper
 
   #Renderiza a navegação da paginação.
   #PRECISAMOS INTERNACIONALIZAR ISSO
-  def render_pagination_bar(total_itens = "1")
+  def render_pagination_bar(total_itens = "1", hash_params = nil)
     #Limpando as variaveis
 
     #descobrindo o número total de páginas
@@ -52,6 +52,15 @@ module ApplicationHelper
     total_pages = total_pages.to_s
 
     result = '<form accept-charset="UTF-8" action="" method="post" name="paginationForm" style="display:inline">'
+    
+    if !hash_params.nil?
+      # ex: type=index&search=1 2 3
+      hash_params.split("&").each { |item|        
+        individual_param = item.split("=")
+        v = individual_param[1].nil? ? "" : individual_param[1]
+        result << '<input id="' << individual_param[0] << '" name="' << individual_param[0] << '" value="' << v << '" type="hidden">'
+      }
+    end
 
     unless (@current_page.eql? "1")# voltar uma página: <<
       result << '<a onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)-1).to_s << ');$(this).parent().submit();">&lt;&lt;</a>'

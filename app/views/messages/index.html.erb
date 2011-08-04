@@ -20,22 +20,19 @@
               <% end %>
               <td style="width:120px"><%= link_to message.sender,  {:action => 'show', :id => message.id, :search => @search_text},{:class => css_class} %></td>
               <td>
+                
+                <% if !@search_text.empty? %>
+                  <% if message.ehorigem == 't' %>
+                    <%=image_tag("icon_message_inbox_small.png",:alt=>'')%>
+                  <% else %>
+                    <%=image_tag("icon_message_sent_small.png",:alt=>'')%>
+                  <% end %>
+                <% end %>
+
                 <% if @message_tag.nil? %>
                   <% if !message.label.nil? %>
                     <span class="message_label"><%=message.label%></span>
                   <% end %>
-                <% end %>
-
-                <% if !@search_text.empty? %>
-                  <% if message.ehlixo == 't' %>
-                    "lixeira"
-                  <% else %>
-                    <% if message.ehorigem == 't' %>
-                      "entrada"
-                    <% else %>
-                      "saída"
-                    <% end %>
-                  <% end %>                  
                 <% end %>
 
                 <%= link_to message.subject,  {:action => 'show', :id => message.id, :search => @search_text},{:class => css_class} %>
@@ -55,12 +52,10 @@
   </div>
 
   <div class="message_div_navigation">
-    <%= will_paginate @messages,
-      :first_label => "#{t(:navigation_first)}",
-      :previous_label => "#{t(:navigation_previous)}",
-      :next_label => "#{t(:navigation_next)}",
-      :last_label => "#{t(:navigation_last)}",
-      :summary_label => "%d - %d t(:navigation_of) %d"%>
+    <% t = @type.nil? ? "" : @type %>
+    <% s = @search_text.nil? ? "" : @search_text %>
+    <% p = 'type=' << t << '&search=' << s %>
+    <%=raw render_pagination_bar(@messages_count, p)%>
     &nbsp;&nbsp;&nbsp;
   </div>
 

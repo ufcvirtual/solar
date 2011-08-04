@@ -1,6 +1,6 @@
 <%= form_for :message, :url => {:action => ''}, :html => {:id => 'message_list', :class => 'message_div_options'} do |f| %>
   &nbsp;
-  <%= link_to t(:message_new)+' ', {:action => 'new'}, {:class=>'message_link'} %>
+  <%= link_to t(:message_new)+' ', {:action => 'new', :search => @search_text}, {:class=>'message_link'} %>
 
   <% if !@type.nil? %>
     <ul class="message_menu_listbox">
@@ -48,6 +48,7 @@
      $("#link_remove_message").click(function() {
         var value = "";
         var type = "<%=@type%>";
+        var search = "<%=@search_text%>";
         var checked_messages = "<%=@message.nil?%>".toLowerCase();
 
         if (checked_messages=="true"){
@@ -56,13 +57,13 @@
             value = value + $(this).val() + "$";
           });
           if (value!=""){
-            $("#message_list").attr("action", "/messages/destroy/?id="+value+"&type="+type);
+            $("#message_list").attr("action", "/messages/destroy/?id="+value+"&type="+type+"&search="+search);
             $("#message_list").submit();
           }
         }
         else{
           value = "<%=@message.id unless @message.nil?%>";
-          $("#message_list").attr("action", "/messages/destroy/?id="+value+"&type=index");
+          $("#message_list").attr("action", "/messages/destroy/?id="+value+"&type=index&search="+search);
           $("#message_list").submit();
         }
      })
@@ -79,6 +80,7 @@
   function change_reading_status(new_status){
       var value = "";
       var type = "<%=@type%>";
+      var search = "<%=@search_text%>";
       var checked_messages = "<%=@message.nil?%>".toLowerCase();
 
       if (checked_messages=="true"){
@@ -87,7 +89,7 @@
           value = value + $(this).val() + "$";
         });
         if (value!=""){
-          $("#message_list").attr("action", "/messages/change_indicator_reading/?id="+value+"&new_status="+new_status+"&type="+type);
+          $("#message_list").attr("action", "/messages/change_indicator_reading/?id="+value+"&new_status="+new_status+"&type="+type+"&search="+search);
           $("#message_list").submit();
         }
       }

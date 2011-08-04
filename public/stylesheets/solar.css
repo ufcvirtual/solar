@@ -195,6 +195,7 @@ textarea{
 .enrollment_search_icon{
     vertical-align: middle;
     border: 0px;
+    cursor: pointer;
 }
 .select_category{
     height:19px;

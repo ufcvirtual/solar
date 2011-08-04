@@ -7,6 +7,7 @@ class MessagesController < ApplicationController
   before_filter :require_user
   before_filter :message_data
   before_filter :get_curriculum_units
+  before_filter :prepare_for_pagination, :only => [:index]
 
   # nao precisa usar load_and_authorize_resource pq todos tem acesso
 
@@ -22,16 +23,16 @@ class MessagesController < ApplicationController
       @type = "index"
     end
 
-    page = params[:page].nil? ? "1" : params[:page]
-
     # retorna mensagens
-    @messages = return_messages(current_user.id, @type, @message_tag, page, @search_text.split(" "))
+    @messages = return_messages(current_user.id, @type, @message_tag, @search_text.split(" "))
   end
 
   # edicao de mensagem (nova, responder, encaminhar)
   def new
     #recebe nil quando esta em pagina de leitura/edicao de msg
     @type = nil
+
+    @search_text = params[:search].nil? ? "" : params[:search]
 
     @show_message = 'new'
     get_contacts
@@ -125,10 +126,13 @@ class MessagesController < ApplicationController
     end
 
     type = params[:type]
+
+    search_text = params[:search].nil? ? "" : params[:search]
+
     if type.nil?
       type = 'inbox'
     end
-    redirect_to :action => 'index', :type => type
+    redirect_to :action => 'index', :type => type, :search => search_text
   end
 
   # muda status para lido/nao lido - pode receber um id ou varios separados por $
@@ -162,10 +166,13 @@ class MessagesController < ApplicationController
     end
 
     type = params[:type]
+
+    search_text = params[:search].nil? ? "" : params[:search]
+
     if type.nil?
-      redirect_to :action => 'show', :id => id
+      redirect_to :action => 'show', :id => id, :search => search_text
     else
-      redirect_to :action => 'index', :type => type
+      redirect_to :action => 'index', :type => type, :search => search_text
     end    
   end
 

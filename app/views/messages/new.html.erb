@@ -1,9 +1,9 @@
 <div class="message_external_div">
     <span class="page_title"><%= t(:message_title) %></span>
 
-    <%= form_for :message, :url => {:action => 'send_message'}, :html => {:id => 'form_message_text'} do |f| %>
+    <%= render 'message_header' %>
 
-      <%= render 'message_header' %>
+    <%= form_for :message, :url => {:action => 'send_message'}, :html => {:id => 'form_message_text'} do |f| %>
 
       <div class="message_div_options_new">&nbsp;</div>
 

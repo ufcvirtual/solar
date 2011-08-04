@@ -1,14 +1,13 @@
 module MessagesHelper
 
-  def return_messages(userid, type='index', tag=nil, page=1, search_text)
-    query_messages = "select m.*, usm.user_id, f.original_name, u.name, u.nick,ml.title label,
+  def return_messages(userid, type='index', tag=nil, search_text)
+    query_fields = "select m.*, usm.user_id, f.original_name, u.name, u.nick,ml.title label,
         cast( usm.status & '00000001' as boolean)ehorigem,
         cast( usm.status & '00000010' as boolean)ehlida,
-        cast( usm.status & '00000100' as boolean)ehlixo,
         (select users.name from users inner join user_messages ON users.id = user_messages.user_id
-        where user_messages.message_id = m.id and cast( user_messages.status & '00000001' as boolean))sender
+        where user_messages.message_id = m.id and cast( user_messages.status & '00000001' as boolean))sender"
 
-      from messages m
+    query_messages = " from messages m
         inner join user_messages usm on m.id = usm.message_id
         left join message_files f on m.id = f.message_id
         inner join users u on usm.user_id=u.id
@@ -34,6 +33,7 @@ module MessagesHelper
     when 'search'
       # monta parte da query referente a busca textual
       query_search = ''
+      query_search << " NOT cast( usm.status & '00000100' as boolean) "   #nao esta na lixeira
       search_text.each { |text|
         query_search << " AND " unless query_search.empty? # nao adiciona na 1a vez
         query_search << "     (subject  ilike '%#{text}%' or
@@ -46,13 +46,18 @@ module MessagesHelper
       }
       query_messages += " and ( #{query_search} )"
     end
-    query_messages += " order by send_date desc "
+    query_order = " order by send_date desc "
 
-    msg = Message.find_by_sql(query_messages)
-   
-    return msg.paginate :page => page, :per_page => Record_Per_Page
+    query_all = query_fields << query_messages << query_order
+
+    # retorna total de registros da consulta
+    query_count = " select count(*)total " << query_messages
+    @messages_count = ActiveRecord::Base.connection.execute(query_count)[0]["total"]
+
+    # retorna mensagens paginadas
+    return Message.paginate_by_sql(query_all, {:per_page => Rails.application.config.items_per_page, :page => @current_page})
   end
-
+  
   def unread_inbox(userid, tag=nil)
     query_messages = "select count(m.id)n
 

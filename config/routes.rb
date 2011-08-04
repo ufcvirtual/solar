@@ -1,7 +1,6 @@
 Solar::Application.routes.draw do |map|
 
   resources :discussions
-  resources :messages
   
   get "pages/index"
 
