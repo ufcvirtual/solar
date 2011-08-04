@@ -101,9 +101,10 @@ module MessagesHelper
         AND      not  cast( usm.status & '00000100' as boolean)"
 
     if !tag.nil?
-      query_messages += " and ml.title = '#{tag}' "
+      query_messages += " and ml.title = '#{tag}' 
+                        Limit #{Rails.application.config.items_per_page}"
     end
-
+    
     return Message.find_by_sql(query_messages) 
   end
   

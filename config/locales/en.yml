@@ -215,6 +215,7 @@ en:
   message_select_read: "Read"
   message_select_unread: "Unread"
   message_none: "No messages found"
+  message_no_new: "No new messages"
 
   message_new_title: "New message"
   message_send: "Send"
