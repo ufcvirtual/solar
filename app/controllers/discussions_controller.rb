@@ -129,13 +129,13 @@ class DiscussionsController < ApplicationController
                 (al.allocation_tag_id = hierarchy.curriculum_unit_parent_tag_id) or
                 (al.allocation_tag_id = hierarchy.course_parent_tag_id)
             where 
-              al.user_id = #{user.id} and
-              (
-                (hierarchy.allocation_tag_id = #{activity_allocation_tag.id}) or 
-                (hierarchy.offer_parent_tag_id = #{activity_allocation_tag.id}) or 
-                (hierarchy.curriculum_unit_parent_tag_id = #{activity_allocation_tag.id}) or
-                (hierarchy.course_parent_tag_id = #{activity_allocation_tag.id})
-              )"
+                al.user_id = #{user.id} AND al.status = #{Allocation_Activated} AND 
+                (
+                  (hierarchy.allocation_tag_id = #{activity_allocation_tag.id}) or 
+                  (hierarchy.offer_parent_tag_id = #{activity_allocation_tag.id}) or 
+                  (hierarchy.curriculum_unit_parent_tag_id = #{activity_allocation_tag.id}) or
+                  (hierarchy.course_parent_tag_id = #{activity_allocation_tag.id})
+                )"
     
     return Profile.find_by_sql(query)
   end
