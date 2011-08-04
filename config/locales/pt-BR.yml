@@ -324,6 +324,12 @@
   assignments: "Trabalhos"
   access_to_the_course: "Acessos ao Curso"
   group: "Turma"
+  legends: "Legendas"
+  legend_assignments: "Legenda dos Trabalhos"
+  assignment_without_correction: "TE: Trabalho enviado mas não corrigido(sem nota)."
+  assignment_not_sent: "TN: Trabalho não enviado"
+  assignment_as: "TE"
+  assignment_an: "TN"
 
   # Mensagem de erro para permissão   
   no_permission: "Você não tem permissão para acessar esta página"
