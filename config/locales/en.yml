@@ -319,7 +319,12 @@ en:
   assignments: "Assignments"
   access_to_the_course: "Access to the Course"
   group: "Group"
-
+  legends: "Legends"
+  legend_assignments: "Legend Of Assignments"
+  assignment_without_correction: "AS: Assignment sent but not corrected(without grade)."
+  assignment_not_sent: "AN: Assignment not sent."
+  assignment_as: "AS"
+  assignment_an: "AN"
   # Mensagem de erro para permissão 
   no_permission: "you haven't permission to access this page"
 

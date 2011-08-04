@@ -1,10 +1,13 @@
 <!-- Unidade Curricular -->
+
 <div>
   <span class="page_title"><%= t(:scores_of) %> <%= curriculum_unit_name %></span>
 </div>
 
-<!-- Portfolio -->
+<!-- Scores -->
+
 <div style="width: 700px;">
+
   <div class="portfolio_header_content">
     <div class="portfolio_title"><%= t(:group)%> <%= @group %></div>
     <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
@@ -15,8 +18,8 @@
   <div id="individual_activity" class="portfolio">
     <hr class="portfolio_line" />
 
-    <% leng_assignments = @students.first["assignment_grades"].split(',').length %>
-    <table width="100%" cellspacing="0" border="0" id="list_of_students" class="list_table">
+    <% leng_assignments = @students.first["grades"].split(',').length %>
+    <table width="100%" cellspacing="0" border="0" id="list_of_students" class="list_table" summary="lista de estudantes">
       <thead>
         <tr>
           <th rowspan="2" align="left"><%= t(:student) %></th>
@@ -33,16 +36,24 @@
           <% end %>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="alignment">
         <% @students.each do |student| %>
           <tr>
             <td class="td_student">
-              <%=link_to student["name"], {:controller => :portfolio_teacher, :action => :list_assignments, :id => student["id"]} %>
+              <%=link_to student["student_name"], {:controller => :portfolio_teacher, :action => :list_assignments, :id => student["student_id"]} %>
             </td>
             <td><%= student["cnt_public_files"] %></td>
             <td></td>
-            <% student["assignment_grades"].split(',').each do |grade| %>
-              <td><%= grade %></td>
+            <% assignments_ids = student["assignment_ids"].split(',') %>
+            <% send_assignment_ids = student["send_assignment_ids"].split(',') %>
+            <% student["grades"].split(',').each_with_index do |grade, idx| %>
+
+              <% grade_link = (grade.to_f > 0) ? grade.to_f : t("assignment_#{grade}".to_s) %>
+              <td class="assignment_<%= grade %>">
+                <%=link_to grade_link, {:controller => :portfolio_teacher, :action => :student_detail, :id => student["student_id"],
+                  :assignment_id => assignments_ids[idx], :send_assignment_id => send_assignment_ids[idx]} %>
+              </td>
+
             <% end %>
             <td></td>
             <td></td>
@@ -55,8 +66,8 @@
   <!-- Nota -->
 
   <div id="scores_notes" class="label_score">
-    TE: Trabalho enviado mas não corrigido(sem nota).<br />
-    TN: Trabalho não enviado.
+    <%= t(:assignment_without_correction) %><br />
+    <%= t(:assignment_not_sent) %>
   </div>
 
   <!-- Paginacao -->
@@ -68,9 +79,25 @@
   <!-- Legendas -->
 
   <div id="scores_label" class="label_score">
-    Legenda de provas.<br />
-    Legenda de trabalhos.
+
+    <table width="100%" class="portfolio list_table" border="0" cellpadding="0" cellspacing="0" style="margin-top: 0px;">
+      <thead>
+        <tr align="left">
+          <th colspan="2"><%= t(:legend_assignments) %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @activities.each_with_index do |activity, idx| %>
+          <tr>
+            <td align="right" style="width: 30px;"><%= idx + 1 %>&deg;</td>
+            <td align="left"><%= activity["name"] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
   </div>
+
 </div>
 
 <!-- scripts -->
@@ -83,15 +110,16 @@
       padding-top: 10px;
     }
 
-    table tbody tr.hover td { background-color: #a9d0f5; }
+    table tbody tr.hover td {background-color: #a9d0f5;}
 
-    td.td_student a { color: #2a538d; }
+    td.td_student a {color: #2a538d;}
+
   </style>
 
   <script type="text/javascript">
     $(function(){
       $('.list_table tr').addClass('lines');
-      $('.list_table > tbody td:not([class=td_student])').css('text-align', 'center');
+      $('.list_table > tbody.alignment td:not([class=td_student])').css('text-align', 'center');
       $('table > tbody > tr').hover(function(){$(this).toggleClass('hover');});
     });
   </script>

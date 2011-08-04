@@ -13,6 +13,7 @@ class ScoresTeacherController < ApplicationController
 
     # lista de estudantes paginada
     @cnt_students = ScoresTeacher.number_of_students_by_group_id(group_id)
+    @activities = Assignment.all_by_group_id(group_id)
     @students = ScoresTeacher.list_students_by_group_id(group_id, @current_page)
     @group = Group.find(group_id).code || nil
 

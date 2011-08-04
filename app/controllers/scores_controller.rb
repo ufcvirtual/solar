@@ -10,7 +10,7 @@ class ScoresController < ApplicationController
     student_id = current_user.id
 
     @student = User.find(student_id)
-    @activities = list_assignments_by_group_and_student(group_id, student_id)
+    @activities = PortfolioTeacher.list_assignments_by_group_and_student(group_id, student_id)
 
   end
 

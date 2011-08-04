@@ -1809,10 +1809,10 @@ hr.portfolio_table_division {
     color: #378941;
 }
 
-.assignment_sent {
+.assignment_sent, td.assignment_as a  {
     color: #56b7ae;
 }
 
-.assignment_not_sent, .assignment_send {
+.assignment_not_sent, .assignment_send, td.assignment_an a {
     color: #204683;
 }
