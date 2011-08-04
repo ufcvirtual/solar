@@ -62,7 +62,11 @@ resources_arr = [
   {:id => 47, :controller => 'scores', :action => 'index', :description => 'Exibicao dos dados do aluno'},
   # acompanhamento do professor
   {:id => 48, :controller => 'scores_teacher', :action => 'list', :description => 'Lista dos alunos da turma'},
-  {:id => 49, :controller => 'discussions', :action => 'download_post_file', :description => 'Baixar arquivos de foruns'}
+  {:id => 49, :controller => 'discussions', :action => 'download_post_file', :description => 'Baixar arquivos de foruns'},
+  {:id => 50, :controller => 'discussions', :action => 'attach_file', :description => 'Anexar arquivos de foruns'},
+  {:id => 51, :controller => 'discussions', :action => 'remove_attached_file', :description => 'Anexar arquivos de foruns'}
+
+
 ]
 count = 0
 resources = Resource.create(resources_arr) do |registro|

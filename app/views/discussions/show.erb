@@ -1,5 +1,7 @@
 <head>
   <script type="text/javascript">
+
+ //// Modos de exibição ////////////////////////////////////////////
     function showAsThread() {
       $('#display_mode').attr('value','');
       $('#new_post_form').attr('action','/discussions/show/<%=@discussion["id"]%>');
@@ -12,35 +14,39 @@
       $('#new_post_form').submit();
     }
 
+//// Manipulação de arquivos anexos ///////////////////////////////
     var numFileFields = 0;
-    function appendFileField(){
+    function appendFileField(target){
       newElementId = 'post_attachment_' + numFileFields;
       newElementName = 'attachment[' + numFileFields + ']';
-      //newElementName = 'attachment';
       newElement = '<div id="'+ newElementId +'_container">';
       newElement += '<input id="' + newElementId + '" type="file" name="' + newElementName + '" style="display:none;"/>';
-      newElement += '<a href="javascript:removeFileField(\''+newElementId+'\')"><%=t(:forum_remove_file)%></a>';
+      newElement += '<a href="#" onclick="removeFileField(\''+newElementId+'\');return false;"><%=t(:forum_attach_cancel)%></a>';
       newElement += '</div>';
-      $("#newPostUploadPanel").append(newElement);
-      $("#"+newElementId).slideDown('fast');
+      //$("#newPostUploadPanel").append(newElement);
+      $(target).after(newElement)
+      $("#"+newElementId).slideDown('fast');//exibindo campo de upload
+      $(target).siblings(".UploadFileSubmit").show('fast');//exibindo botão de enviar
       numFileFields++;
     }
     
     function removeFileField(fieldId){
-      $("#"+fieldId+"_container").hide('fast', function(){ $("#"+fieldId+"_container").remove(); });
+      $("#"+fieldId+"_container").hide('fast', function(){
+        $("#"+fieldId+"_container").remove();
+      });
     }
 
 
-
+//// Manipulação da caixa de edição ///////////////////////////////
     function appendRichTextBox(postContainer){
       newFormCode = '' +
         '<div id="new_post_dialog" style="display: none;">' +
-        '<div id="newPostUploadPanel"><a href="javascript:appendFileField()"><%=t(:forum_attach_file)%></a></div>' +
-        '<textarea id="newPostTextBox">' +
+        //'<div id="newPostUploadPanel"><a href="javascript:appendFileField()"><%=t(:forum_attach_file)%></a></div>' +
+      '<textarea id="newPostTextBox">' +
         '</textarea>' +
         '<div style="text-align:right;">' +
-        '<a href="javascript:cancelPosting();" class="forum_button"><%=t("cancel")%></a>&nbsp;&nbsp;' +
-        '<a href="javascript:sendPost();" class="forum_button"><%=t("send")%></a>' +
+        '<a href="#" onclick="cancelPosting();return false;" class="forum_button"><%=t("cancel")%></a>&nbsp;&nbsp;' +
+        '<a href="#" onclick="sendPost();return false;" class="forum_button"><%=t("send")%></a>' +
         '</div>' +
         '</div>';
 
@@ -75,6 +81,7 @@
       $('#oldPostDialog').remove();
     }
 
+//// Manipulação de variaveis internas ////////////////////////////
     function setParentPostId(post_id) {
       $('#parent_post_id').attr('value',post_id);
       $('#update_post_id').attr('value','');
@@ -90,11 +97,9 @@
       $('#discussion_post_id').attr('value', '');
     }
 
+//// Envio de postagens e atualizações ////////////////////////////
     function sendPost() {
       $('#content').attr('value',$('#newPostTextBox').val());
-
-      $("#new_post_form").append($('#newPostUploadPanel'));
-
       //caso de atualização de post
       if ($('#discussion_post_id').attr('value') != '')
         updatePost();
@@ -113,12 +118,19 @@
       $('#new_post_form').submit();
     }
 
+//// Eventos e comportamentos dos links ///////////////////////////
     $(document).ready( function () {
 
       //Botões de responder postagem
       $('.postDialogLink').click( function () {
         var postContainer = $(this).parent().parent();
         appendRichTextBox(postContainer);
+      });
+
+      //Botão de editar postagem
+      $('.UploadFileLink').click( function () {
+        appendFileField(this);
+        return false;
       });
 
       //Botão de editar postagem
@@ -152,7 +164,7 @@
         <a  class="forum_post_link_disabled"><%= t("forum_new_message")%></a>
       <%end%>
     </span>
-    
+
     <span style="float:right;">
       <%if @display_mode == "PLAINLIST"%>
         <a href="javascript:showAsThread()" class="forum_button forum_button_view_mode"><%=  t("forum_show_thread")%>
@@ -165,10 +177,11 @@
       <%end%>
     </span>
     <%=raw render_pagination_bar(count_discussion_posts(@discussion.id,(@display_mode=="PLAINLIST")).to_s)%>
-
   </div>
 </div>
+<!--//------------- Fim da Barra Superior--------------->
 
+<!--//------------- Exibição de Posts--------------->
 <div style="max-width:640px">
   <%if @display_mode == "PLAINLIST"%>
     <% @posts.each do |post|%>
@@ -189,5 +202,4 @@
   <%= hidden_field_tag(:display_mode, @display_mode) %>
   <%= hidden_field_tag(:current_page, @current_page) %>
 <% end %>
-
-
+<!--//------------- Fim da Exibição de Posts--------------->

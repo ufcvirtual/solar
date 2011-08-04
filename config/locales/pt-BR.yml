@@ -198,8 +198,10 @@
   forum_show_remove: "Excluir"
   forum_show_edit: "Editar"
   forum_file_list: "Anexos"
-  forum_attach_file: "Anexar arquivo"
+  forum_attach_file: "Anexar arquivo..."
+  forum_attach_cancel: "Cancelar"
   forum_remove_file: "Remover arquivo"
+  forum_remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
 
   message_title: "Mensagens"
   message_inbox: "Entrada"

@@ -97,6 +97,13 @@ input{
     font-size	    : 13px;
 }
 
+
+input[type="file"]
+{
+    border          : 0px;
+    padding         : 0px;
+}
+
 textarea{
     color           : #222;
     background-color: #fff;

@@ -63,36 +63,26 @@ module DiscussionPostsHelper
                           </div>
                         </td>
                         <td class="forum_post_content_right">
-                          <div class="forum_post_inner_content" style="min-height:100px">'
-    post_string <<      (sanitize post.content)
-    post_string <<      ' </div>'
+                          <div class="forum_post_inner_content" style="min-height:100px">' << (sanitize post.content) <<' </div>'
 
     #Apresentando os arquivos do post
-    #unless post.discussion_post_files.nil?
+    post_string <<      '<ul class="forum_post_attachment">'
     unless post.discussion_post_files.count == 0
-      post_string <<      '<ul class="forum_post_attachment">
-                          <lh>'<< t(:forum_file_list) << '</lh>'
       post.discussion_post_files.each do |file|
-        post_string <<      '<li><a href="#">'<<(link_to file.attachment_file_name, :controller => "discussions", :action => "download_post_file", :idFile => file.id, :id => @discussion.id)<<'</a></li>'
+        post_string <<   '<li>' << (image_tag "icon_anexo.png", :alt => '').to_s()
+        post_string <<   '<a href="#">'<<(link_to file.attachment_file_name, :controller => "discussions", :action => "download_post_file", :idFile => file.id, :id => @discussion.id)<<'</a>'
+        post_string <<   '&nbsp;&nbsp;' << (link_to '[X]', {:controller => "discussions",
+            :action => "remove_attached_file",
+            :idFile => file.id,
+            :id => @discussion.id},
+          :confirm=>t(:forum_remove_file_confirm)) if editable && can_interact
+        '</li>'
       end
-      post_string <<      '</ul>'
     end
+    post_string <<      '</ul>'
+    post_string << show_attachment_form(post[:discussion_id],post[:id]) if editable && can_interact
 
-    post_string <<                          '<div class="forum_post_buttons">'
-    if editable && can_interact
-      post_string <<      '   <a href="javascript:removePost(' << post[:id].to_s << ')" class="forum_button forum_button_remove">' << t('forum_show_remove') << '</a>&nbsp;&nbsp;
-                              <a href="javascript:setDiscussionPostId(' << post[:id].to_s << ')" class="forum_button updateDialogLink ">' << t('forum_show_edit') << '</a>&nbsp;&nbsp;
-                              <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink forum_button">' << t('forum_show_answer') << '</a>' 
-    elsif editable && !can_interact
-      post_string <<      '    <a class="forum_post_link_disabled forum_post_link_remove_disabled">' << t('forum_show_remove') << '</a>&nbsp;&nbsp;
-                               <a  class="forum_post_link_disabled">' << t('forum_show_edit') << '</a>&nbsp;&nbsp;
-                               <a   class="forum_post_link_disabled">' << t('forum_show_answer') << '</a>'
-    elsif !editable && can_interact 
-      post_string <<      '   <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink forum_button">' << t('forum_show_answer') << '</a>'
-    elsif !editable && !can_interact
-      post_string <<      '  <a class="forum_post_link_disabled">' << t('forum_show_answer') << '</a>'
-    end
-    post_string <<      '</div>
+    post_string << show_buttons(editable,can_interact, post)<< '
                         </td>
                       </tr>
                     </table>'
@@ -191,4 +181,43 @@ module DiscussionPostsHelper
     return DiscussionPost.order('updated_at DESC').limit(Rails.application.config.items_per_page.to_i).find_all_by_discussion_id(discussions)
   end
   
+  private
+  #Form de upload de arquivos dentro de um post
+  def show_attachment_form(discussion_id = -1, post_id = -1)
+    form_string = ''
+    form_string << '<div>
+                      <form accept-charset="UTF-8" action="/discussions/attach_file" enctype="multipart/form-data" method="post" >
+                      <input type="hidden" value="'<<form_authenticity_token<<'" name="authenticity_token">
+                      <input type="hidden" value="'<< discussion_id.to_s() <<'" name="id" id="id">
+                      <input type="hidden" value="'<< post_id.to_s << '" name="post_id" id="post_id">
+                      <a href="#" class="UploadFileLink">'<<t(:forum_attach_file)<<'</a><br/>
+                      <a href="#" style="display:none;" class="UploadFileSubmit" onclick="javascript:$(this).parent().submit();return false;">[enviar]</a>
+                      </form>
+                   </div>'
+    return form_string
+  end
+
+  #Form de upload de arquivos dentro de um post
+  def show_buttons(editable = false, can_interact = false, post=nil)
+    post_string = ''
+
+    post_string << '<div class="forum_post_buttons">'
+    if editable && can_interact
+      post_string <<      '   <a href="javascript:removePost(' << post[:id].to_s << ')" class="forum_button forum_button_remove">' << t('forum_show_remove') << '</a>&nbsp;&nbsp;
+                              <a href="javascript:setDiscussionPostId(' << post[:id].to_s << ')" class="forum_button updateDialogLink ">' << t('forum_show_edit') << '</a>&nbsp;&nbsp;
+                              <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink forum_button">' << t('forum_show_answer') << '</a>'
+    elsif editable && !can_interact
+      post_string <<      '    <a class="forum_post_link_disabled forum_post_link_remove_disabled">' << t('forum_show_remove') << '</a>&nbsp;&nbsp;
+                               <a class="forum_post_link_disabled">' << t('forum_show_edit') << '</a>&nbsp;&nbsp;
+                               <a class="forum_post_link_disabled">' << t('forum_show_answer') << '</a>'
+    elsif !editable && can_interact
+      post_string <<      '   <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink forum_button">' << t('forum_show_answer') << '</a>'
+    elsif !editable && !can_interact
+      post_string <<      '  <a class="forum_post_link_disabled">' << t('forum_show_answer') << '</a>'
+    end
+    post_string <<      '</div>'
+
+    return post_string
+  end
+
 end

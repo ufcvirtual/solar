@@ -2,7 +2,7 @@ class DiscussionsController < ApplicationController
 
   include DiscussionPostsHelper
 
-  load_and_authorize_resource :except => [:list] #Setar permissoes!!!!!
+  load_and_authorize_resource :except => [:list, :attach_file, :download_post_file, :remove_attached_file] #Setar permissoes!!!!!
   before_filter :prepare_for_pagination, :only => [:show]
   
   def list
@@ -172,16 +172,13 @@ class DiscussionsController < ApplicationController
     discussion_id = params[:discussion_id]
     content       = params[:content]
     parent_id     = params[:parent_post_id]
-    #DEFINIR O PROFILE!!!! 
-    #profile_id    = 2
-    profile_id    = 1 #DEFINIR O PROFILE!!!! ##################################################
+    profile_id    = -1
    
     @discussion = Discussion.find_by_id(discussion_id)
-    
+
+    #Investigando um perfil com permissão para o usuário
     has_permission = false
-            
     profile_id = find_activity_user_profile_with_permission(@discussion.allocation_tag, current_user, 'discussions', 'new_post')
-    
     if profile_id > 0
       has_permission = true
     end
@@ -193,24 +190,13 @@ class DiscussionsController < ApplicationController
           #Criando nova postagem
           new_discussion_post = DiscussionPost.new :discussion_id => discussion_id, :user_id => current_user.id, :profile_id => profile_id, :content => content, :father_id => parent_id
           new_discussion_post.save!
-
-          #Salvando os arquivos anexados à postagem
-          unless params[:attachment].nil?
-            params[:attachment].each do |file|
-              post_file = DiscussionPostFile.new Hash["attachment", file[1]]
-              post_file[:discussion_post_id] = new_discussion_post.id
-              post_file.save!
-            end
-          end
         end
       rescue Exception => error
         flash[:error] = error.message
       end
 
       #Se a exibição for do tipo PLAINLIST, a nova postagem aparece no inicio, logo, não devemos manter a página atual
-      if @display_mode != "PLAINLIST"
-        hold_pagination
-      end
+      hold_pagination unless @display_mode == "PLAINLIST"
     
     end   
 
@@ -294,6 +280,59 @@ class DiscussionsController < ApplicationController
     # recupera arquivo
     
     download_file(redirect_error, path_file, filename, prefix_file)
+  end
+
+  #Envio de arquivo anexo
+  def attach_file
+    #CHECAR SE A PERMISSAO ESTÁ APENAS PARA O DONO DA POSTAGEM!!!
+
+    discussion_id = params[:id]
+    post_id     = params[:post_id]
+    post = DiscussionPost.find(post_id.to_i)
+    @discussion = Discussion.find(discussion_id.to_i)
+
+    has_permission = false
+    has_permission = true if (post.user.id == current_user.id)
+
+    if (valid_date && has_permission)
+      begin
+        ActiveRecord::Base.transaction do
+          #Salvando os novos arquivos anexados
+          unless params[:attachment].nil?
+            params[:attachment].each do |file|
+              post_file = DiscussionPostFile.new Hash["attachment", file[1]]
+              post_file[:discussion_post_id] = post_id.to_i
+              post_file.save!
+            end
+          end
+        end
+      rescue Exception => error
+        flash[:error] = error.message
+      end
+    end
+
+    hold_pagination unless @display_mode == "PLAINLIST"
+
+    redirect_to "/discussions/show/" << discussion_id
+  end
+
+  def remove_attached_file
+    #CHECAR SE A PERMISSAO ESTÁ APENAS PARA O DONO DA POSTAGEM!!!
+    discussion_id = params[:id]
+    post_file_id  = params[:idFile]
+    file          = DiscussionPostFile.find(post_file_id.to_i)
+    @discussion = Discussion.find(discussion_id.to_i)
+
+    #Removendo arquivo da base de dados
+    DiscussionPostFile.delete(file.id)
+
+    #Removendo o arquivo do disco
+    filename = "#{file.id.to_s}_#{file.attachment_file_name}"
+    path = "#{::Rails.root.to_s}/media/discussion/post/#{filename}"
+    File.delete(path) if File.exist?(path)
+
+    hold_pagination unless @display_mode == "PLAINLIST"
+    redirect_to "/discussions/show/" << discussion_id
 
   end
 
@@ -317,7 +356,6 @@ class DiscussionsController < ApplicationController
       @posts = return_discussion_posts(@discussion.id, false)
     end
   end
-
 
   def has_no_response
     #DiscussionPost.find_all_by_father_id(discussion_post_id).empty?
