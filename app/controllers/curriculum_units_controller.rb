@@ -3,6 +3,7 @@ class CurriculumUnitsController < ApplicationController
   include CurriculumUnitsHelper
   include LessonsHelper
   include DiscussionPostsHelper
+  include MessagesHelper
 
   before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy, :access]
 
@@ -70,6 +71,7 @@ class CurriculumUnitsController < ApplicationController
     # retorna aulas
     @lessons = return_lessons_to_open(offers_id, groups_id)
     @discussion_posts = list_portlet_discussion_posts(offers_id, groups_id)
+    @messages = unread_inbox_messages(current_user.id)
     session[:lessons] = @lessons
   end
 
