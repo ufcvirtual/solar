@@ -65,13 +65,19 @@ class CurriculumUnitsController < ApplicationController
 
   def access
     # pegando dados da sessao e nao da url
-    groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-    offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+    message_tag = nil
+    if session[:opened_tabs][session[:active_tab]]["type"] != Tab_Type_Home
+        groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+        offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+        curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
     
-    # retorna aulas
+        message_tag = get_label_name(curriculum_unit_id, offers_id, groups_id)
+    end
+    
+    # retorna aulas, posts nos foruns e mensagens relacionados a UC mais atuais 
     @lessons = return_lessons_to_open(offers_id, groups_id)
     @discussion_posts = list_portlet_discussion_posts(offers_id, groups_id)
-    @messages = unread_inbox_messages(current_user.id)
+    @messages = newest_unread_messages(current_user.id,message_tag)
     session[:lessons] = @lessons
   end
 

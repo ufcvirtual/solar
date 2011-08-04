@@ -54,7 +54,7 @@
           <div class="curriculum_unit_portlet_small_header">
             <%= image_tag "icon_message.png", :alt=>t(:icon_message) %>
             <%= t(:curriculum_access_message)%>
-            <span class="text_alert">&nbsp;&nbsp;[3] <%= t(:curriculum_access_new) %></span>
+            <span class="text_alert">&nbsp;&nbsp;[<%=@messages.count%>] <%= t(:curriculum_access_new) %></span>
           </div>
           
           <div class="curriculum_unit_portlet_messages">
@@ -62,22 +62,14 @@
               <% @messages.each do |message| %>
                 <div class="curriculum_unit_portlet_line">
                  <span class="curriculum_unit_portlet_gray"><%= l message.send_date %> </span>
-                  <a class="curriculum_unit_portlet_link" ><%= current_user.nick %></a>
-                  <%= sanitize message.content %>
+                  <a class="curriculum_unit_portlet_link" ><%= message.sender %></a>
+                  <%= sanitize message.subject %>
                 </div>
               <% end %>
             <% else %>
               <div class="curriculum_unit_portlet_text"><%= t(:forum_message) %></div>
             <% end %>
               
-              
-            <div class="curriculum_unit_portlet_line">
-              <span class="curriculum_unit_portlet_gray">20:00h</span>
-              <a href="" class="curriculum_unit_portlet_link">joão</a>
-              mensagem1
-            </div>
-            
-
           </div>
           <div class="curriculum_unit_portlet_messages_opt">
             <a href="" class="curriculum_unit_portlet_link_gray">[<%= t(:curriculum_access_message_inbox) %>]</a>

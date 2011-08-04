@@ -82,20 +82,23 @@ module MessagesHelper
     return total[0].n.to_i 
   end
   
-  def unread_inbox_messages(userid, tag=nil)
-    query_messages = "select m.*
-
-      from messages m
+  #pegas mensagens nao lidas
+  def newest_unread_messages(userid, tag=nil)
+    query_messages = "select m.subject, m.send_date, ml.title label,
+        (select users.name from users inner join user_messages ON users.id = user_messages.user_id
+        where user_messages.message_id = m.id and cast( user_messages.status & '00000001' as boolean))sender
+        from messages m
         inner join user_messages usm on m.id = usm.message_id
+        left join message_files f on m.id = f.message_id
         inner join users u on usm.user_id=u.id
         left join user_message_labels uml on usm.id = uml.user_message_id
         left join message_labels ml on uml.message_label_id = ml.id
         
       where
-        usm.user_id = #{userid}
-        and NOT cast( usm.status & '00000001' as boolean)
-        and NOT cast( usm.status & '00000010' as boolean)
-        and NOT cast( usm.status & '00000100' as boolean)"
+        usm.user_id = 1
+        AND      not  cast( usm.status & '00000010' as boolean)  
+        AND      not  cast( usm.status & '00000001' as boolean)
+        AND      not  cast( usm.status & '00000100' as boolean)"
 
     if !tag.nil?
       query_messages += " and ml.title = '#{tag}' "
@@ -103,6 +106,26 @@ module MessagesHelper
 
     return Message.find_by_sql(query_messages) 
   end
+  
+  #pega label
+  def get_label_name (curriculum_unit_id = nil, offer_id = nil, group_id = nil)
+    label_name = ""
+    #formato: 2011.1|FOR|Física I
+    if !offer_id.nil?
+      offer = Offer.find(offer_id)
+      label_name << offer.semester.slice(0..5)
+    end
+    if !group_id.nil?
+      group = Group.find(group_id)
+      label_name << '|' << group.code.slice(0..9) << '|'
+    end
+    if !curriculum_unit_id.nil? 
+      curriculum_unit = CurriculumUnit.find(curriculum_unit_id)
+      label_name << curriculum_unit.name.slice(0..15)
+    end
+    return label_name
+  end
+  
 
   #chamada depois de get_contacts para montar os contatos atualizados
   def show_contacts_updated
