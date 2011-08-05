@@ -1191,10 +1191,10 @@ div.alter_photo_text {
 }
 
 .forum_post_link_disabled{
-  color: #5C6D85;
-  font-family:  'Myriad Pro', 'Arial', sans;
-  font-size: 15px;
-  text-decoration: underline line-through; 
+    color: #5C6D85;
+    font-family:  'Myriad Pro', 'Arial', sans;
+    font-size: 15px;
+    text-decoration: underline line-through;
 }
 
 .forum_post_link_remove_disabled{
@@ -1728,6 +1728,15 @@ hr.portfolio_table_division {
     width: 700px;
 }
 
+div.label_score {
+    font-size: 11px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+    padding-top: 10px;
+}
+
+table tbody tr.hover td {background-color: #a9d0f5;}
+
+td.td_student a {color: #2a538d;}
 
 /* AGENDA */
 

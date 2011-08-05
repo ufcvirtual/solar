@@ -1,5 +1,6 @@
 
 <!-- Apresenta o nome da unidade curricular -->
+
 <div>
   <span class="page_title">
     <%= t(:assignment_correction_of) %> <%= @activity %> <%= t(:of) %> <%= curriculum_unit_name %>
@@ -7,6 +8,7 @@
 </div>
 
 <!-- Portfolio -->
+
 <div class="portfolio_activity">
 
   <div class="portfolio_header_content">
@@ -22,6 +24,7 @@
     <%= form_for(:comments, :html => { :multipart => true }, :url => {:action => :update_comment, :students_id => @students_id, :assignment_id => @assignment_id, :send_assignment_id => @send_assignment_id}) do |f| %>
 
       <!-- Arquivos de trabalho -->
+
       <div style="padding-left: 10px; padding-right: 10px; overflow: auto;">
         <div id="div_header" style="padding-bottom: 10px;">
           <div id="header_left" style="float: left;"><%= t(:files_assignments) %>:</div>
@@ -37,8 +40,12 @@
                     <%= link_to f["attachment_file_name"], {:action => :download_files_student, :id => f["id"], :students_id => @students_id, :send_assignment_id => @send_assignment_id}%>
                   </a>
                 </div>
-                <div class="files_date"><span style="font-style: italic; color:  gray;"><%= t(:sent_in) %> <%=l f["attachment_updated_at"].to_time, :format => :files %></span></div>
+                <div class="files_date"><span style="font-style: italic; color: gray;"><%= t(:sent_in) %> <%=l f["attachment_updated_at"].to_time, :format => :files %></span></div>
               </div>
+            <% end %>
+            <!-- informa que nenhum trabalho foi enviado -->
+            <% if @files.first.nil? %>
+              <span style="font-style: italic; color: gray;"><%= t(:assignment_not_sent) %></span>
             <% end %>
           </div>
           <div id="div_body_right" style="float: right;">
