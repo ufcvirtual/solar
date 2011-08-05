@@ -66,7 +66,7 @@
               <% @messages.each do |message| %>
                 <div class="curriculum_unit_portlet_line">
                   <span class="curriculum_unit_portlet_gray"><%= l message.send_date %> </span>
-                  <a class="curriculum_unit_portlet_link" ><%= message.sender %></a>
+                  <%= link_to message.sender,  {:controller => 'messages', :action => 'show', :id => message.id},{:class => 'curriculum_unit_portlet_link'} %>
                   <%= sanitize message.subject %>
                 </div>
               <% end %>
@@ -76,8 +76,8 @@
 
           </div>
           <div class="curriculum_unit_portlet_messages_opt">
-            <%= link_to '['+t(:curriculum_access_message_inbox)+'] ', {:controller => 'messages', :search => @search_text}, {:class=>'curriculum_unit_portlet_link_gray'} %>
-            <%= link_to '['+t(:curriculum_access_message_new)+'] ', {:controller => 'messages',:action => 'new', :search => @search_text}, {:class=>'curriculum_unit_portlet_link_gray'} %>
+            <%= link_to '['+t(:curriculum_access_message_inbox)+'] ', {:controller => 'messages'}, {:class=>'curriculum_unit_portlet_link_gray'} %>
+            <%= link_to '['+t(:curriculum_access_message_new)+'] ', {:controller => 'messages', :action => 'new'}, {:class=>'curriculum_unit_portlet_link_gray'} %>
           </div>
         </div>
       </td>
