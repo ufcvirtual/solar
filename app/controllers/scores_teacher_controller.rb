@@ -2,7 +2,7 @@ class ScoresTeacherController < ApplicationController
 
   before_filter :require_user
 
-  # nao sera mais necessario qndo a combode grupo existir - 2011-07-28
+  # nao sera mais necessario qndo a combo de grupo existir - 2011-07-28
   before_filter :set_group_id_for_responsible, :only => [:list]
   before_filter :prepare_for_pagination, :only => [:list]
 

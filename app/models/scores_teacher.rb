@@ -43,9 +43,10 @@ class ScoresTeacher < ActiveRecord::Base
     ),
     -- notas dos alunos
     cte_grades AS (
-        SELECT t2.student_id,
+        SELECT DISTINCT t2.student_id,
                t2.student_name,
                t1.assignment_id,
+               t1.start_date,
                CASE
                   WHEN t3.grade IS NOT NULL THEN t3.grade::text -- nota do aluno
                   WHEN t4.id    IS NOT NULL THEN 'as' -- trabalho enviado e nao corrigido
@@ -56,7 +57,7 @@ class ScoresTeacher < ActiveRecord::Base
           JOIN cte_students         AS t2 ON t2.allocation_tag_id = t1.allocation_tag_id
      LEFT JOIN send_assignments     AS t3 ON t3.assignment_id = t1.assignment_id AND t3.user_id = t2.student_id
      LEFT JOIN assignment_files     AS t4 ON t4.send_assignment_id = t3.id
-         ORDER BY t2.student_id
+         ORDER BY t2.student_id, t1.start_date
     )
     --
     SELECT t1.student_id,

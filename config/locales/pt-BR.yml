@@ -329,8 +329,8 @@
   group: "Turma"
   legends: "Legendas"
   legend_assignments: "Legenda dos Trabalhos"
-  assignment_without_correction: "TE: Trabalho enviado mas não corrigido(sem nota)."
-  assignment_not_sent: "TN: Trabalho não enviado"
+  assignment_without_correction: "Trabalho enviado mas não corrigido(sem nota)."
+  assignment_not_sent: "Trabalho não enviado"
   assignment_as: "TE"
   assignment_an: "TN"
 
