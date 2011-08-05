@@ -4,19 +4,12 @@
 
   <% if (@type!="trashbox" && !@type.nil?) %>
     <ul class="message_menu_listbox">
-      <li><a href="#"><%=t(:message_select)%> <%=image_tag "icon_arrow_down.png", :alt=>t(:message_move)%></a>
+      <li><a href="#"><%=t(:message_select)%> <%=image_tag "icon_arrow_down.png", :alt=>t(:message_select)%></a>
         <ul>
           <li><%= link_to t(:message_select_all), {}, {:class=>'message_link'}%></li>
           <li><%= link_to t(:message_select_none), {}, {:class=>'message_link'}%></li>
           <li><%= link_to t(:message_select_read), {}, {:class=>'message_link'}%></li>
           <li><%= link_to t(:message_select_unread), {}, {:class=>'message_link'}%></li>
-        </ul>
-      </li>
-    </ul>
-    <ul class="message_menu_listbox">
-      <li><a href="#"><%=t(:message_move)%> <%=image_tag "icon_arrow_down.png", :alt=>t(:message_move)%></a>
-        <ul>
-          <li><%= link_to t(:message_trash), {}, {:class=>''}%></li>
         </ul>
       </li>
     </ul>

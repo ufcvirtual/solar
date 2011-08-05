@@ -37,7 +37,6 @@ module ApplicationHelper
 
 
   #Renderiza a navegação da paginação.
-  #PRECISAMOS INTERNACIONALIZAR ISSO
   def render_pagination_bar(total_itens = "1", hash_params = nil)
     #Limpando as variaveis
 
@@ -63,15 +62,15 @@ module ApplicationHelper
     end
 
     unless (@current_page.eql? "1")# voltar uma página: <<
-      result << '<a onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)-1).to_s << ');$(this).parent().submit();">&lt;&lt;</a>'
+      result << '<a class="link_navigation" onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)-1).to_s << ');$(this).parent().submit();">&lt;&lt;</a>'
     end
 
     # página atual: 
-    result << ' ' << @current_page << ' de ' << total_pages << ' ' #PRECISAMOS INTERNACIONALIZAR ISSO AQUI
+    result << ' ' << @current_page << t(:navigation_of) << total_pages << ' '
 
     unless (@current_page.eql? total_pages)# avançar uma página: >>
       #result << '<a href="javascript:$(\'#current_page\').val(' << ((current_page.to_i)+1).to_s << ');$(\'#current_page\').parent().submit();">&gt;&gt;</a>'
-      result << '<a onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)+1).to_s << ');$(this).parent().submit();">&gt;&gt;</a>'
+      result << '<a class="link_navigation" onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)+1).to_s << ');$(this).parent().submit();">&gt;&gt;</a>'
     end
     
     result << ' <input name="authenticity_token" value="' << form_authenticity_token << '" type="hidden">'

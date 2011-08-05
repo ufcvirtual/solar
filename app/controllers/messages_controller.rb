@@ -112,14 +112,14 @@ class MessagesController < ApplicationController
       #eh apenas um id
       if id.index("$").nil?
         if has_permission(id)
-          mark_as_trash(id)
+          change_message_status(id,'trash')
         end
       else
         #mais de um id
         deleted_id = id.split("$")
         deleted_id.each { |i|
           if has_permission(i)
-            mark_as_trash(i)
+            change_message_status(i,'trash')
           end
         }
       end
@@ -145,9 +145,9 @@ class MessagesController < ApplicationController
       if id.index("$").nil?
         if has_permission(id)
           if new_status == "read"
-            mark_as_read(id)
+            change_message_status(id,'read')
           else
-            mark_as_unread(id)
+            change_message_status(id,'unread')
           end
         end
       else
@@ -156,9 +156,9 @@ class MessagesController < ApplicationController
         deleted_id.each { |i|
           if has_permission(i)
             if new_status == "read"
-              mark_as_read(i)
+              change_message_status(i,'read')
             else
-              mark_as_unread(i)
+              change_message_status(i,'unread')
             end
           end
         }
@@ -419,51 +419,26 @@ private
     return @contacts
   end
 
-  # marca mensagem(ns) como lixo
-  def mark_as_trash(message_id)
+  # marca mensagem(ns) como lida (read), nao lida (unread), excluida (trash)
+  def change_message_status(message_id, new_status = 'read')
     # busca mensagem para esse usuario
-    
-    message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).all? { |m|  
-      # pra setar 1 (marcar como excluida) OU logico:   | 0b00000100
+
+    UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).all? { |m|
+      # pra marcar como nao lida (zerar 2o bit) realiza E logico:   & 0b11111101
+      # pra marcar como lida (1 no 2o bit)      realiza  OU logico: | 0b00000010
+      # pra marcar como excluida) (1 no 3o bit) realiza  OU logico: | 0b00000100
 
       status = m.status.to_i
 
-      m.status = status | Message_Filter_Trash
-      m.save
-    }
+      case new_status
+      when 'read'
+        m.status = status | Message_Filter_Read
+      when 'unread'
+        m.status = status & Message_Filter_Unread
+      when 'trash'
+        m.status = status | Message_Filter_Trash
+      end
 
-  end
-
-  # marca mensagem(ns) como lida
-  def mark_as_read(message_id)
-    # busca mensagem para esse usuario
-
-    message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).all? { |m|
-      # pra zerar (marcar como nao lida) realiza E logico:  & 0b11111101
-      # pra setar 1 (marcar como lida) realiza  OU logico:  | 0b00000010
-
-      status = m.status.to_i
-
-      m.status = status | Message_Filter_Read
-      m.save
-
-      # atualiza qtde de msgs nao lidas
-      @unread = unread_inbox(current_user.id, @message_tag)
-    }
-
-  end
-
-  # marca mensagem(ns) como nao lida
-  def mark_as_unread(message_id)
-    # busca mensagem para esse usuario
-    
-    message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).all? { |m|  
-      # pra zerar (marcar como nao lida) realiza E logico:  & 0b11111101
-      # pra setar 1 (marcar como lida) realiza  OU logico:  | 0b00000010
-
-      status = m.status.to_i
-
-      m.status = status & Message_Filter_Unread
       m.save
 
       # atualiza qtde de msgs nao lidas
@@ -481,7 +456,7 @@ private
       @recipients  = get_recipients(message_id)
       @files = get_files(message_id)
 
-      mark_as_read(message_id)
+      change_message_status(id,'read')
     else
       @show_message = ''
       flash[:error] = t(:no_permission)

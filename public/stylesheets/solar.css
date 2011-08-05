@@ -1541,7 +1541,7 @@ ul.message_menu_listbox li ul a:hover{
     background:#eee;}
 
 /* paginacao */
-.next_page, .prev_page, .current {
+.next_page, .prev_page, .current, .link_navigation {
     font-size: 12px;
     font-family: 'Trebuchet',Arial,'Myriad Pro';
     text-decoration: underline;
@@ -1549,6 +1549,9 @@ ul.message_menu_listbox li ul a:hover{
     cursor: pointer;
     padding-left: 5px;
     padding-right: 5px;
+}
+.link_navigation {
+    text-decoration: none;
 }
 .disabled, .message_div_navigation {
     font-size: 12px;
