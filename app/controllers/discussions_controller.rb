@@ -3,7 +3,7 @@ class DiscussionsController < ApplicationController
   include DiscussionPostsHelper
 
   load_and_authorize_resource :except => [:list, :attach_file, :download_post_file, :remove_attached_file] #Setar permissoes!!!!!
-  before_filter :prepare_for_pagination, :only => [:show]
+  before_filter :prepare_for_pagination#, :only => [:show]
   
   def list
 
@@ -46,7 +46,22 @@ class DiscussionsController < ApplicationController
   end
 
   def show
-    load_posts 
+    discussion_id = params[:discussion_id]
+    discussion_id = params[:id] if discussion_id.nil?
+    @display_mode = params[:display_mode]
+
+    if @display_mode.nil?
+      @display_mode = session[:forum_display_mode]
+    else
+      session[:forum_display_mode] = @display_mode
+    end
+
+    @discussion = Discussion.find(discussion_id)
+    if @display_mode == "PLAINLIST"
+      @posts = return_discussion_posts(@discussion.id, true)
+    else
+      @posts = return_discussion_posts(@discussion.id, false)
+    end
   end
   
   def find_allocation_tag_user_profiles(activity_allocation_tag, user)
@@ -168,7 +183,7 @@ class DiscussionsController < ApplicationController
   end
 
   def new_post
-    
+    @display_mode = params[:display_mode]
     discussion_id = params[:discussion_id]
     content       = params[:content]
     parent_id     = params[:parent_post_id]
@@ -196,7 +211,8 @@ class DiscussionsController < ApplicationController
       end
 
       #Se a exibição for do tipo PLAINLIST, a nova postagem aparece no inicio, logo, não devemos manter a página atual
-      hold_pagination unless @display_mode == "PLAINLIST"
+
+      hold_pagination unless (@display_mode == "PLAINLIST" or parent_id == "")
     
     end   
 
@@ -204,6 +220,7 @@ class DiscussionsController < ApplicationController
   end
 
   def remove_post
+    @display_mode = params[:display_mode]
     discussion_id = params[:discussion_id]
     discussion_post_id = params[:discussion_post_id]
     
@@ -264,6 +281,8 @@ class DiscussionsController < ApplicationController
       post.update_attributes({:content => new_content})
 
     end
+
+    hold_pagination
     redirect_to "/discussions/show/" << discussion_id
   end
 
@@ -286,6 +305,7 @@ class DiscussionsController < ApplicationController
   def attach_file
     #CHECAR SE A PERMISSAO ESTÁ APENAS PARA O DONO DA POSTAGEM!!!
 
+    @display_mode = params[:display_mode]
     discussion_id = params[:id]
     post_id     = params[:post_id]
     post = DiscussionPost.find(post_id.to_i)
@@ -318,6 +338,7 @@ class DiscussionsController < ApplicationController
 
   def remove_attached_file
     #CHECAR SE A PERMISSAO ESTÁ APENAS PARA O DONO DA POSTAGEM!!!
+    @display_mode = params[:display_mode]
     discussion_id = params[:id]
     post_file_id  = params[:idFile]
     file          = DiscussionPostFile.find(post_file_id.to_i)
@@ -337,25 +358,6 @@ class DiscussionsController < ApplicationController
   end
 
   private
-  def load_posts
-    discussion_id = params[:discussion_id]
-    discussion_id = params[:id] if discussion_id.nil?
-
-    @display_mode = params[:display_mode]
-
-    if @display_mode.nil?
-      @display_mode = session[:forum_display_mode]
-    else
-      session[:forum_display_mode] = @display_mode
-    end
-
-    @discussion = Discussion.find(discussion_id)
-    if @display_mode == "PLAINLIST"
-      @posts = return_discussion_posts(@discussion.id, true)
-    else
-      @posts = return_discussion_posts(@discussion.id, false)
-    end
-  end
 
   def has_no_response
     #DiscussionPost.find_all_by_father_id(discussion_post_id).empty?

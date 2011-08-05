@@ -30,7 +30,7 @@ module Solar
     config.active_record.observers = :user_observer
 
     #Itens por página para a paginação.
-    config.items_per_page = 15
+    config.items_per_page = 3
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
