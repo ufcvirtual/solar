@@ -67,7 +67,11 @@
                 <div class="curriculum_unit_portlet_line">
                   <span class="curriculum_unit_portlet_gray"><%= l message.send_date %> </span>
                   <%= link_to message.sender,  {:controller => 'messages', :action => 'show', :id => message.id},{:class => 'curriculum_unit_portlet_link'} %>
-                  <%= sanitize message.subject %>
+                  <%
+                  msg_subject = strip_tags message.subject
+                  msg_subject = msg_subject.slice(0..107) + ' (...)' if msg_subject.length > 110
+                  %>
+                  <%= msg_subject %>
                 </div>
               <% end %>
             <% else %>
