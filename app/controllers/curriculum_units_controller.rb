@@ -77,7 +77,7 @@ class CurriculumUnitsController < ApplicationController
     # retorna aulas, posts nos foruns e mensagens relacionados a UC mais atuais 
     @lessons = return_lessons_to_open(offers_id, groups_id)
     @discussion_posts = list_portlet_discussion_posts(offers_id, groups_id)
-    @messages = newest_unread_messages(current_user.id,message_tag)
+    @messages = return_messages(current_user.id, 'portlet', message_tag)
     session[:lessons] = @lessons
   end
 
