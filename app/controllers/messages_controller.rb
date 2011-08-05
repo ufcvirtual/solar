@@ -456,7 +456,7 @@ private
       @recipients  = get_recipients(message_id)
       @files = get_files(message_id)
 
-      change_message_status(id,'read')
+      change_message_status(message_id,'read')
     else
       @show_message = ''
       flash[:error] = t(:no_permission)

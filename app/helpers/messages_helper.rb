@@ -52,10 +52,15 @@ module MessagesHelper
 
     # retorna total de registros da consulta
     query_count = " select count(*)total " << query_messages
+
     @messages_count = ActiveRecord::Base.connection.execute(query_count)[0]["total"]
 
-    # retorna mensagens paginadas
-    return Message.paginate_by_sql(query_all, {:per_page => Rails.application.config.items_per_page, :page => @current_page})
+    if (@messages_count.to_i > 0)
+      # retorna mensagens paginadas
+      return Message.paginate_by_sql(query_all, {:per_page => Rails.application.config.items_per_page, :page => @current_page})
+    else
+      return nil
+    end
   end
   
   def unread_inbox(userid, tag=nil)
