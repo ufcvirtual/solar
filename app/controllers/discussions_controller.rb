@@ -3,7 +3,7 @@ class DiscussionsController < ApplicationController
   include DiscussionPostsHelper
 
   load_and_authorize_resource :except => [:list, :attach_file, :download_post_file, :remove_attached_file] #Setar permissoes!!!!!
-  before_filter :prepare_for_pagination#, :only => [:show]
+  before_filter :prepare_for_pagination
   
   def list
 
@@ -62,124 +62,6 @@ class DiscussionsController < ApplicationController
     else
       @posts = return_discussion_posts(@discussion.id, false)
     end
-  end
-  
-  def find_allocation_tag_user_profiles(activity_allocation_tag, user)
-    query = "SELECT distinct p.* FROM 
-              allocations al 
-              inner join profiles p on al.profile_id = p.id
-              inner join 
-              (select
-                     root.id as allocation_tag_id,
-                     CASE
-                       WHEN group_id is not null THEN (select 'GROUP'::text)
-                       WHEN offer_id is not null THEN (select 'OFFER'::text)
-                       WHEN course_id is not null THEN (select 'COURSE'::text)
-                       ELSE (select 'CURRICULUM_UNIT'::text)
-                     END as entity_type,
-                     (coalesce(group_id, 0) + coalesce(offer_id, 0) +
-              coalesce(curriculum_unit_id, 0) + coalesce(course_id, 0)) as entity_id,
-                    --parents do tipo offer
-                     CASE
-                       WHEN group_id is not null THEN (
-                         select coalesce(t.id,0)
-                         from
-                           groups g
-                           left join allocation_tags t on t.offer_id = g.offer_id
-                         where
-                           g.id = root.group_id
-                       )
-                       ELSE (select 0)
-                     END as offer_parent_tag_id,
-
-                     --parents do tipo curriculum unit
-                     CASE
-                       WHEN group_id is not null THEN (
-                         select coalesce(t.id,0)
-                         from
-                           groups g
-                           left join offers o on g.offer_id = o.id
-                           left join allocation_tags t on t.curriculum_unit_id = o.curriculum_unit_id
-                         where
-                           g.id = root.group_id
-                       )
-                       WHEN offer_id is not null THEN (
-                         select coalesce(t.id,0)
-                         from
-                           offers o
-                           left join allocation_tags t on t.curriculum_unit_id = o.curriculum_unit_id
-                         where
-                           o.id = root.offer_id
-                       )
-                       ELSE (select 0)
-                     END as curriculum_unit_parent_tag_id,
-
-                     --parents do tipo course
-                     CASE
-                       WHEN group_id is not null THEN (
-                         select coalesce(t.id,0)
-                         from
-                           groups g
-                           left join offers o on g.offer_id = o.id
-                           left join allocation_tags t on t.course_id = o.course_id
-                         where
-                           g.id = root.group_id
-                       )
-                       WHEN offer_id is not null THEN (
-                         select coalesce(t.id,0)
-                         from
-                           offers o
-                           left join allocation_tags t on t.course_id = o.course_id
-                         where
-                           o.id = root.offer_id
-                       )
-                       ELSE (select 0)
-                     END as course_parent_tag_id
-              from
-                     allocation_tags root
-              order by entity_type, allocation_tag_id) as hierarchy
-              on 
-                (al.allocation_tag_id = hierarchy.allocation_tag_id) or 
-                (al.allocation_tag_id = hierarchy.offer_parent_tag_id) or 
-                (al.allocation_tag_id = hierarchy.curriculum_unit_parent_tag_id) or
-                (al.allocation_tag_id = hierarchy.course_parent_tag_id)
-            where 
-                al.user_id = #{user.id} AND al.status = #{Allocation_Activated} AND 
-                (
-                  (hierarchy.allocation_tag_id = #{activity_allocation_tag.id}) or 
-                  (hierarchy.offer_parent_tag_id = #{activity_allocation_tag.id}) or 
-                  (hierarchy.curriculum_unit_parent_tag_id = #{activity_allocation_tag.id}) or
-                  (hierarchy.course_parent_tag_id = #{activity_allocation_tag.id})
-                )"
-    
-    return Profile.find_by_sql(query)
-  end
-  
-  def find_activity_user_profile_with_permission(activity_allocation_tag, user, controller, action)
-    profiles = find_allocation_tag_user_profiles(activity_allocation_tag, user)
-    
-    resource_id = Resource.find_by_controller_and_action(controller, action)
-    
-    i = 0
-    
-    for profile in profiles
-      if PermissionsResource.find_by_profile_id_and_resource_id(profile.id, resource_id).nil?         
-        profiles.remove_at(i)        
-      end 
-      i += 1
-    end
-    
-    for profile in profiles
-      if profile.class_responsible
-        return profile.id
-      end 
-    end
-    
-    if !profiles.empty?    
-      return profiles[0].id
-    end
-    
-    return -1    
   end
 
   def new_post
@@ -286,7 +168,7 @@ class DiscussionsController < ApplicationController
     redirect_to "/discussions/show/" << discussion_id
   end
 
-  # download dos arquivos da postagem
+  #Download de arquivo anexo
   def download_post_file
     post_file_id = params[:idFile]
     file_ = DiscussionPostFile.find(post_file_id)
@@ -336,6 +218,7 @@ class DiscussionsController < ApplicationController
     redirect_to "/discussions/show/" << discussion_id
   end
 
+  #Remoção de arquivo anexo
   def remove_attached_file
     #CHECAR SE A PERMISSAO ESTÁ APENAS PARA O DONO DA POSTAGEM!!!
     @display_mode = params[:display_mode]
@@ -370,6 +253,124 @@ class DiscussionsController < ApplicationController
 
   def owned_by_current_user
     current_user.id == @discussion_post.user_id
+  end
+
+  def find_allocation_tag_user_profiles(activity_allocation_tag, user)
+    query = "SELECT distinct p.* FROM
+              allocations al
+              inner join profiles p on al.profile_id = p.id
+              inner join
+              (select
+                     root.id as allocation_tag_id,
+                     CASE
+                       WHEN group_id is not null THEN (select 'GROUP'::text)
+                       WHEN offer_id is not null THEN (select 'OFFER'::text)
+                       WHEN course_id is not null THEN (select 'COURSE'::text)
+                       ELSE (select 'CURRICULUM_UNIT'::text)
+                     END as entity_type,
+                     (coalesce(group_id, 0) + coalesce(offer_id, 0) +
+              coalesce(curriculum_unit_id, 0) + coalesce(course_id, 0)) as entity_id,
+                    --parents do tipo offer
+                     CASE
+                       WHEN group_id is not null THEN (
+                         select coalesce(t.id,0)
+                         from
+                           groups g
+                           left join allocation_tags t on t.offer_id = g.offer_id
+                         where
+                           g.id = root.group_id
+                       )
+                       ELSE (select 0)
+                     END as offer_parent_tag_id,
+
+                     --parents do tipo curriculum unit
+                     CASE
+                       WHEN group_id is not null THEN (
+                         select coalesce(t.id,0)
+                         from
+                           groups g
+                           left join offers o on g.offer_id = o.id
+                           left join allocation_tags t on t.curriculum_unit_id = o.curriculum_unit_id
+                         where
+                           g.id = root.group_id
+                       )
+                       WHEN offer_id is not null THEN (
+                         select coalesce(t.id,0)
+                         from
+                           offers o
+                           left join allocation_tags t on t.curriculum_unit_id = o.curriculum_unit_id
+                         where
+                           o.id = root.offer_id
+                       )
+                       ELSE (select 0)
+                     END as curriculum_unit_parent_tag_id,
+
+                     --parents do tipo course
+                     CASE
+                       WHEN group_id is not null THEN (
+                         select coalesce(t.id,0)
+                         from
+                           groups g
+                           left join offers o on g.offer_id = o.id
+                           left join allocation_tags t on t.course_id = o.course_id
+                         where
+                           g.id = root.group_id
+                       )
+                       WHEN offer_id is not null THEN (
+                         select coalesce(t.id,0)
+                         from
+                           offers o
+                           left join allocation_tags t on t.course_id = o.course_id
+                         where
+                           o.id = root.offer_id
+                       )
+                       ELSE (select 0)
+                     END as course_parent_tag_id
+              from
+                     allocation_tags root
+              order by entity_type, allocation_tag_id) as hierarchy
+              on
+                (al.allocation_tag_id = hierarchy.allocation_tag_id) or
+                (al.allocation_tag_id = hierarchy.offer_parent_tag_id) or
+                (al.allocation_tag_id = hierarchy.curriculum_unit_parent_tag_id) or
+                (al.allocation_tag_id = hierarchy.course_parent_tag_id)
+            where
+                al.user_id = #{user.id} AND al.status = #{Allocation_Activated} AND
+                (
+                  (hierarchy.allocation_tag_id = #{activity_allocation_tag.id}) or
+                  (hierarchy.offer_parent_tag_id = #{activity_allocation_tag.id}) or
+                  (hierarchy.curriculum_unit_parent_tag_id = #{activity_allocation_tag.id}) or
+                  (hierarchy.course_parent_tag_id = #{activity_allocation_tag.id})
+                )"
+
+    return Profile.find_by_sql(query)
+  end
+
+  def find_activity_user_profile_with_permission(activity_allocation_tag, user, controller, action)
+    profiles = find_allocation_tag_user_profiles(activity_allocation_tag, user)
+
+    resource_id = Resource.find_by_controller_and_action(controller, action)
+
+    i = 0
+
+    for profile in profiles
+      if PermissionsResource.find_by_profile_id_and_resource_id(profile.id, resource_id).nil?
+        profiles.remove_at(i)
+      end
+      i += 1
+    end
+
+    for profile in profiles
+      if profile.class_responsible
+        return profile.id
+      end
+    end
+
+    if !profiles.empty?
+      return profiles[0].id
+    end
+
+    return -1
   end
   
 end

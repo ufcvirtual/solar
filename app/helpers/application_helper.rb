@@ -43,14 +43,15 @@ module ApplicationHelper
     #descobrindo o número total de páginas
     total_pages = (total_itens.to_f/Rails.application.config.items_per_page.to_f).ceil.to_i
 
-#    if @current_page.to_i > total_pages
-#      @current_page = total_pages.to_s
-#      #redirect_to request.fullpath
-#    end
+    result = ''
+    if @current_page.to_i > total_pages
+      @current_page = total_pages.to_s
+      result << '<script>$(function() {  $(\'form[name="paginationForm"]\').submit();  });</script>'
+    end
 
     total_pages = total_pages.to_s
 
-    result = '<form accept-charset="UTF-8" action="" method="post" name="paginationForm" style="display:inline">'
+    result << '<form accept-charset="UTF-8" action="" method="post" name="paginationForm" style="display:inline">'
     
     if !hash_params.nil?
       # ex: type=index&search=1 2 3
@@ -77,6 +78,7 @@ module ApplicationHelper
     result << '<input type="hidden" id="current_page" name="current_page" value="' << @current_page << '"/>'
     
     result << '</form>'
+
     return result
   end
 
