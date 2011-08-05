@@ -56,12 +56,12 @@
             <%= t(:curriculum_access_message)%>
             <span class="text_alert">&nbsp;&nbsp;[<%=@messages.count%>] <%= t(:curriculum_access_new) %></span>
           </div>
-          
+
           <div class="curriculum_unit_portlet_messages">
             <% if !(@messages.nil? || @messages.empty?) %>
               <% @messages.each do |message| %>
                 <div class="curriculum_unit_portlet_line">
-                 <span class="curriculum_unit_portlet_gray"><%= l message.send_date %> </span>
+                  <span class="curriculum_unit_portlet_gray"><%= l message.send_date %> </span>
                   <a class="curriculum_unit_portlet_link" ><%= message.sender %></a>
                   <%= sanitize message.subject %>
                 </div>
@@ -69,7 +69,7 @@
             <% else %>
               <div class="curriculum_unit_portlet_text"><%= t(:message_no_new) %></div>
             <% end %>
-              
+
           </div>
           <div class="curriculum_unit_portlet_messages_opt">
             <a href="" class="curriculum_unit_portlet_link_gray">[<%= t(:curriculum_access_message_inbox) %>]</a>
@@ -91,13 +91,17 @@
                 <div class="curriculum_unit_portlet_line">
                   <span class="curriculum_unit_portlet_gray"><%= l discussion_post.updated_at %> </span>
                   <a class="curriculum_unit_portlet_link" href="/discussions/show/<%=discussion_post.discussion_id%>"><%= discussion_post.user.nick %></a>
-                  <%= sanitize discussion_post.content %>
+                  <%
+                  clear_content = strip_tags discussion_post.content
+                  clear_content = clear_content.slice(0..107) + ' (...)' if clear_content.length > 110
+                  %>
+                  <%= clear_content %>
                 </div>
               <% end %>
             <% else %>
               <div class="curriculum_unit_portlet_text"><%= t(:forum_message) %></div>
             <% end %>
-            
+
           </div>
         </div>
       </td>
