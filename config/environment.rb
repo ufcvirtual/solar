@@ -33,3 +33,9 @@ Max_Tabs_Open = 4
 # constantes que indicam tipos de abas que podem ser abertas
 Tab_Type_Home = "0"
 Tab_Type_Curriculum_Unit = "1"
+
+# filtros para mensagem
+Message_Filter_Sender = 0b00000001   # 00000001 = eh origem            (1o bit = 1)
+Message_Filter_Read   = 0b00000010   # filtro com 00000010 -> lida     (2o bit = 1)
+Message_Filter_Unread = 0b11111101   # filtro com 11111101 -> nao lida (2o bit = 0)
+Message_Filter_Trash  = 0b00000100   # filtro com 00000100 -> estah na lixeira (3o bit = 1)

@@ -2,10 +2,10 @@ module MessagesHelper
 
   def return_messages(userid, type='index', tag=nil, search_text)
     query_fields = "select m.*, usm.user_id, f.original_name, u.name, u.nick,ml.title label,
-        cast( usm.status & '00000001' as boolean)ehorigem,
-        cast( usm.status & '00000010' as boolean)ehlida,
+        cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)ehorigem,
+        cast( usm.status & '#{Message_Filter_Read.to_s(2)}' as boolean)ehlida,
         (select users.name from users inner join user_messages ON users.id = user_messages.user_id
-        where user_messages.message_id = m.id and cast( user_messages.status & '00000001' as boolean))sender"
+        where user_messages.message_id = m.id and cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean))sender"
 
     query_messages = " from messages m
         inner join user_messages usm on m.id = usm.message_id
@@ -23,17 +23,17 @@ module MessagesHelper
     
     case type
     when 'trashbox'
-      query_messages += " and cast( usm.status & '00000100' as boolean) "     #filtra se eh excluida
+      query_messages += " and cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean) "     #filtra se eh excluida
     when 'index'
-      query_messages += " and NOT cast( usm.status & '00000001' as boolean) " #filtra se nao eh origem (eh destino)
-      query_messages += " and NOT cast( usm.status & '00000100' as boolean) " #nao esta na lixeira
+      query_messages += " and NOT cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean) " #filtra se nao eh origem (eh destino)
+      query_messages += " and NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean) " #nao esta na lixeira
     when 'outbox'
-      query_messages += " and     cast( usm.status & '00000001' as boolean) " #filtra se eh origem (default)
-      query_messages += " and NOT cast( usm.status & '00000100' as boolean) " #nao esta na lixeira
+      query_messages += " and     cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean) " #filtra se eh origem (default)
+      query_messages += " and NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean) " #nao esta na lixeira
     when 'search'
       # monta parte da query referente a busca textual
       query_search = ''
-      query_search << " NOT cast( usm.status & '00000100' as boolean) "   #nao esta na lixeira
+      query_search << " NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean) "   #nao esta na lixeira
       search_text.each { |text|
         query_search << " AND " unless query_search.empty? # nao adiciona na 1a vez
         query_search << "     (subject  ilike '%#{text}%' or
@@ -41,7 +41,7 @@ module MessagesHelper
                                (select users.name from users inner join user_messages
                                 ON users.id = user_messages.user_id
                                 where user_messages.message_id = m.id
-                                and cast(user_messages.status & '00000001' as boolean)) ilike '%#{text}%' or
+                                and cast(user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)) ilike '%#{text}%' or
                                ml.title ilike '%#{text}%')"
       }
       query_messages += " and ( #{query_search} )"
@@ -69,9 +69,9 @@ module MessagesHelper
         
       where
         usm.user_id = #{userid}
-        and NOT cast( usm.status & '00000001' as boolean)
-        and NOT cast( usm.status & '00000010' as boolean)
-        and NOT cast( usm.status & '00000100' as boolean)"
+        and NOT cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean) 
+        and NOT cast( usm.status & '#{Message_Filter_Read.to_s(2)}' as boolean)
+        and NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean)"
 
     if !tag.nil?
       query_messages += " and ml.title = '#{tag}' "
@@ -153,7 +153,7 @@ module MessagesHelper
   def get_sender(message_id)
     return User.find(:first,
           :joins => "INNER JOIN user_messages ON users.id = user_messages.user_id",
-          :conditions => "user_messages.message_id = #{message_id} and cast( user_messages.status & '00000001' as boolean)")
+          :conditions => "user_messages.message_id = #{message_id} and cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)")
   end
 
 end

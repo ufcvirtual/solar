@@ -321,7 +321,7 @@ class MessagesController < ApplicationController
     return User.find(:all,
           :joins => "INNER JOIN user_messages ON users.id = user_messages.user_id",
           :select => "users.*",
-          :conditions => "user_messages.message_id = #{message_id} and NOT cast( user_messages.status & '00000001' as boolean)")
+          :conditions => "user_messages.message_id = #{message_id} and NOT cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)")
   end
 
   # retorna (0 a varios) arquivos de anexo
@@ -425,11 +425,10 @@ private
     
     message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).all? { |m|  
       # pra setar 1 (marcar como excluida) OU logico:   | 0b00000100
-      logical_comparison = 0b00000100
 
       status = m.status.to_i
 
-      m.status = status | logical_comparison
+      m.status = status | Message_Filter_Trash
       m.save
     }
 
@@ -440,13 +439,12 @@ private
     # busca mensagem para esse usuario
 
     message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).all? { |m|
-      # pra zerar (marcar como nao lida) E logico:  & 0b11111101
-      # pra setar 1 (marcar como lida) OU logico:   | 0b00000010
-      logical_comparison = 0b00000010
+      # pra zerar (marcar como nao lida) realiza E logico:  & 0b11111101
+      # pra setar 1 (marcar como lida) realiza  OU logico:  | 0b00000010
 
       status = m.status.to_i
 
-      m.status = status | logical_comparison
+      m.status = status | Message_Filter_Read
       m.save
 
       # atualiza qtde de msgs nao lidas
@@ -460,13 +458,12 @@ private
     # busca mensagem para esse usuario
     
     message_user = UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).all? { |m|  
-      # pra zerar (marcar como nao lida) E logico:  & 0b11111101
-      # pra setar 1 (marcar como lida) OU logico:   | 0b00000010
-      logical_comparison = 0b11111101
+      # pra zerar (marcar como nao lida) realiza E logico:  & 0b11111101
+      # pra setar 1 (marcar como lida) realiza  OU logico:  | 0b00000010
 
       status = m.status.to_i
 
-      m.status = status & logical_comparison
+      m.status = status & Message_Filter_Unread
       m.save
 
       # atualiza qtde de msgs nao lidas
