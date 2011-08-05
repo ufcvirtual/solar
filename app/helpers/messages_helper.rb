@@ -1,6 +1,7 @@
 module MessagesHelper
 
-  def return_messages(userid, type='index', tag=nil, search_text)
+  def return_messages (userid, type='index', tag=nil, search_text='')
+
     query_fields = "select m.*, usm.user_id, f.original_name, u.name, u.nick,ml.title label,
         cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)ehorigem,
         cast( usm.status & '#{Message_Filter_Read.to_s(2)}' as boolean)ehlida,
