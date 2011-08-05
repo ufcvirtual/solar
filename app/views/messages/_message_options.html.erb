@@ -6,10 +6,17 @@
     <ul class="message_menu_listbox">
       <li><a href="#"><%=t(:message_select)%> <%=image_tag "icon_arrow_down.png", :alt=>t(:message_select)%></a>
         <ul>
-          <li><%= link_to t(:message_select_all), {}, {:class=>'message_link'}%></li>
-          <li><%= link_to t(:message_select_none), {}, {:class=>'message_link'}%></li>
-          <li><%= link_to t(:message_select_read), {}, {:class=>'message_link'}%></li>
-          <li><%= link_to t(:message_select_unread), {}, {:class=>'message_link'}%></li>
+          <li><span id="check_all" class="message_link"><%=t(:message_select_all)%></span></li>
+          <li><span id="check_none" class="message_link"><%=t(:message_select_none)%></span></li>
+          <li><span id="check_read" class="message_link"><%=t(:message_select_read)%></span></li>
+          <li><span id="check_unread" class="message_link"><%=t(:message_select_unread)%></span></li>
+        </ul>
+      </li>
+    </ul>
+    <ul class="message_menu_listbox">
+      <li><a href="#"><%=t(:message_move)%> <%=image_tag "icon_arrow_down.png", :alt=>t(:message_move)%></a>
+        <ul>
+          <li><span id="link_move_to_trash" class="message_link"><%=t(:message_trash)%></span></li>
         </ul>
       </li>
     </ul>
@@ -38,7 +45,15 @@
 
 <script type="text/javascript">
   $(function($) {
+     $("#link_move_to_trash").click(function() {
+       $('#link_remove_message').click();
+     })
+
      $("#link_remove_message").click(function() {
+        var answer = confirm("<%=t(:message_confirm)%>");
+        if (!answer)
+          return;
+
         var value = "";
         var type = "<%=@type%>";
         var search = "<%=@search_text%>";
@@ -68,6 +83,39 @@
      $("#link_mark_as_unread").click(function() {
         change_reading_status("unread");
      })
+
+     $("#check_all").click(function() {
+        $(".selected_messages").each(function(i){
+            $(this).attr("checked","checked");
+        });
+     });
+
+     $("#check_none").click(function() {
+        $(".selected_messages").each(function(i){
+            $(this).removeAttr("checked");
+        });
+     });
+
+     $("#check_read").click(function() {
+        $(".selected_messages").each(function(i){
+          style_message = $(this).next("#message_style").val();
+          if (style_message == "message_read")
+            $(this).attr("checked","checked");
+          else
+             $(this).removeAttr("checked");
+        });
+     });
+
+     $("#check_unread").click(function() {
+       $(".selected_messages").each(function(i){
+          style_message = $(this).next("#message_style").val();
+          if (style_message == "message_read")
+            $(this).removeAttr("checked");
+          else
+            $(this).attr("checked","checked");
+        });
+     });
+
   });
 
   function change_reading_status(new_status){

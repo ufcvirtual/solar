@@ -238,6 +238,7 @@ en:
   message_cancel: "Cancel"
   message_subject_reply: "Re: "
   message_subject_route: "Fwd: "
+  message_confirm: "Are you sure you want to delete this?"
 
   navigation_of: " of "
   navigation_next: "Next >"

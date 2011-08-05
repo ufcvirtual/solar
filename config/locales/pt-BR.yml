@@ -244,6 +244,7 @@
   message_cancel: "Cancelar"
   message_subject_reply: "Res: "
   message_subject_route: "Enc: "
+  message_confirm: "Tem certeza de que deseja excluir?"
 
   navigation_of: " de "
   navigation_next: "Próxima >"
