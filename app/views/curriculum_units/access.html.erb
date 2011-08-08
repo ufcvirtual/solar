@@ -66,7 +66,11 @@
               <% @messages.each do |message| %>
                 <div class="curriculum_unit_portlet_line">
                   <span class="curriculum_unit_portlet_gray">
-                    <%= l(message.send_date, :format => :short) %> 
+                  <% if sent_today?(message.send_date.to_datetime) %>
+                    <%= l(message.send_date, :format => :today) %> 
+                  <% else %>    
+                    <%= l(message.send_date, :format => :not_today) %> 
+                  <% end %>  
                   </span>
                   <%= link_to message.sender,  {:controller => 'messages', :action => 'show', :id => message.id},{:class => 'curriculum_unit_portlet_link'} %>
                   <%

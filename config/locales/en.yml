@@ -344,6 +344,8 @@ en:
     formats:
       default: "%b %d %Y %H:%M:%S"
       short: "%b/%d %H:%M"
+      today: "%H:%M"
+      not_today: "%m/%d"
       long: "%B %d, %Y %H:%M"
       normal: "%m/%d/%Y"
       files: "%D %H:%M"

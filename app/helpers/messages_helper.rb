@@ -158,5 +158,11 @@ module MessagesHelper
       :joins => "INNER JOIN user_messages ON users.id = user_messages.user_id",
       :conditions => "user_messages.message_id = #{message_id} and cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)")
   end
+  
+  #Verifica se a messagem foi postada hoje ou não!
+  
+  def sent_today?(message_datetime)
+     message_datetime === Date.today
+  end
 
 end
