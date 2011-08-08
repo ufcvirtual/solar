@@ -103,7 +103,13 @@
             <% if !(@discussion_posts.nil? || @discussion_posts.empty?) %>
               <% @discussion_posts.each do |discussion_post| %>
                 <div class="curriculum_unit_portlet_line">
-                  <span class="curriculum_unit_portlet_gray"><%= l discussion_post.updated_at %> </span>
+                  <span class="curriculum_unit_portlet_gray">
+                  <% if posted_today?(discussion_post.updated_at.to_datetime) %>
+                    <%= l(discussion_post.updated_at, :format => :today) %> 
+                  <% else %>    
+                    <%= l(discussion_post.updated_at, :format => :not_today) %> 
+                  <% end %>  
+                 </span>
                   <a class="curriculum_unit_portlet_link" href="/discussions/show/<%=discussion_post.discussion_id%>"><%= discussion_post.user.nick %></a>
                   <%
                   clear_content = strip_tags discussion_post.content
