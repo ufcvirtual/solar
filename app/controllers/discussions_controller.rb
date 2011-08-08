@@ -2,7 +2,7 @@ class DiscussionsController < ApplicationController
 
   include DiscussionPostsHelper
 
-  load_and_authorize_resource :except => [:list, :attach_file, :download_post_file, :remove_attached_file] #Setar permissoes!!!!!
+  load_and_authorize_resource :except => [:list, :attach_file, :download_post_file, :remove_attached_file, :show_posts] #Setar permissoes!!!!!
   before_filter :prepare_for_pagination
   
   def list
@@ -237,6 +237,20 @@ class DiscussionsController < ApplicationController
 
     hold_pagination unless @display_mode == "PLAINLIST"
     redirect_to "/discussions/show/" << discussion_id
+
+  end
+
+  # Posts do aluno
+  def show_posts
+
+    # recupera todos os posts do aluno de acordo com o id da discussion enviada
+    discussion_id = params[:id]
+    student_id = params[:student_id]
+    @discussion = Discussion.find(discussion_id)
+    @posts = DiscussionPost.all_by_discussion_id_and_student_id(discussion_id, student_id)
+
+    # nao renderiza o layout
+    render :layout => false
 
   end
 

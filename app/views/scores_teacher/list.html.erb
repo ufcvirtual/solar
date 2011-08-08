@@ -18,7 +18,7 @@
   <div id="individual_activity" class="portfolio">
     <hr class="portfolio_line" />
 
-    <% leng_assignments = @students.first["grades"].split(',').length %>
+    <% leng_assignments = (@students.first.nil?) ? 0 : @students.first["grades"].split(',').length %>
     <table width="100%" cellspacing="0" border="0" id="list_of_students" class="list_table" summary="lista de estudantes">
       <thead>
         <tr class="lines">
@@ -28,13 +28,15 @@
           <!-- trabalhos-->
           <th colspan="<%= leng_assignments %>" style="width: 20%;"><%= t(:private_area) %></th>
           <th rowspan="2" style="width: 12%;"><%= t(:participation) %></th>
-          <th rowspan="2" style="width: 15%;"><%= t(:access_to_the_course) %></th>
+          <th rowspan="2" style="width: 18%;"><%= t(:access_to_the_course) %></th>
         </tr>
-        <tr class="lines">
-          <% for i in 1..leng_assignments %>
-            <th><%= i %>&deg;</th>
-          <% end %>
-        </tr>
+        <% if leng_assignments > 0 %>
+          <tr>
+            <% for i in 1..leng_assignments %>
+              <th><%= i %>&deg;</th>
+            <% end %>
+          </tr>
+        <% end %>
       </thead>
       <tbody class="alignment">
         <% @students.each do |student| %>

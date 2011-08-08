@@ -1,5 +1,5 @@
-
 <!-- Apresenta o nome da unidade curricular -->
+
 <div>
   <span class="page_title">
     <%= t(:scores_of) %> <%= curriculum_unit_name %>
@@ -7,6 +7,7 @@
 </div>
 
 <!-- Lista de atividades -->
+
 <div class="portfolio_activity_list">
 
   <div class="portfolio_header_content">
@@ -88,8 +89,8 @@
 
 </div>
 
-
 <!-- Quantidade de participacoes -->
+
 <div class="portfolio_activity_list">
 
   <div class="portfolio_header_content">
@@ -104,29 +105,61 @@
     <table width="100%" cellspacing="0">
       <thead>
         <tr>
-          <td></td>
-          <td align="center">Qtd</td>
+          <td style="width: 80%;"></td>
+          <td style="width: 20%;" align="center">Qtd</td>
         </tr>
       </thead>
       <tbody>
-        <tr class="rowtable_even">
-          <td class="td_blue_portfolio">Forum</td>
-          <td class="td_blue_portfolio" align="center">1</td>
-        </tr>
-        <tr class="rowtable_odd">
-          <td class="td_blue_portfolio">Apresentacao dos participantes</td>
-          <td class="td_blue_portfolio" align="center">1</td>
-        </tr>
-        <tr class="rowtable_even">
-          <td class="td_blue_portfolio">Forum de teste</td>
-          <td class="td_blue_portfolio" align="center">2</td>
-        </tr>
-        <tr class="rowtable_odd">
-          <td class="td_blue_portfolio">Quantidade total de acessos</td>
-          <td class="td_blue_portfolio" align="center">4</td>
-        </tr>
+        <% @discussions.each_with_index do |discussion, idx| %>
+          <tr class="rowtable_<%= (idx % 2 == 0) ? 'even' : 'odd' %>">
+            <td class="td_blue_portfolio"><%= discussion["name"] %></td>
+            <td class="td_blue_portfolio show_posts" align="center">
+              <%=link_to discussion["qtd"], {:controller => :discussions, :action => :show_posts, :id => discussion["discussion_id"], :student_id => @student.id} %>
+            </td>
+          </tr>
+        <% end %>
       </tbody>
     </table>
 
   </div>
+</div>
+
+<!-- Apresentacao dos posts do aluno -->
+
+<div id="all_posts" style="display: none; width: 700px; border: 1px solid #000;"></div>
+
+<!-- Scripts -->
+
+<div id="scripts">
+  <script type="text/javascript">
+    $(function(){
+      // requisicao ajax para recuperar posts do usuario
+      $('td.show_posts').click(function(){
+        $.ajax({
+          type: 'GET',
+          url: $('a', $(this)).attr('href'),
+          cache: false,
+          //context: document.body,
+          success: function(response){
+            $('#all_posts').html(response).css('display', 'block');
+          },
+          complete: function(response){
+            // verifica se foi gerado algum erro
+            if (parseInt(response.status) != 200) {
+              alert('Erro ao tentar consultar');
+            }
+
+            // fechar a janela de exibicao
+            $('#window_close').click(function(){
+              $('#all_posts').css('display', 'none');
+            });
+          }
+        });
+
+        return false;
+
+      });
+
+    });
+  </script>
 </div>

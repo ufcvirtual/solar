@@ -7,7 +7,7 @@ class PortfolioController < ApplicationController
 
   before_filter :require_user
 
-  # lista as atividades
+  # Lista as atividades
   def list
 
     authorize! :list, Portfolio
@@ -22,7 +22,7 @@ class PortfolioController < ApplicationController
 
   end
 
-  # recupera as informacoes de uma atividade - lista arquivos enviados e opcao para enviar arquivos
+  # Recupera as informacoes de uma atividade - lista arquivos enviados e opcao para enviar arquivos
   def activity_details
 
     authorize! :activity_details, Portfolio
@@ -84,7 +84,7 @@ class PortfolioController < ApplicationController
 
   end
 
-  # delecao de arquivos da area publica
+  # Delecao de arquivos da area publica
   def delete_file_individual_area
 
     authorize! :delete_file_individual_area, Portfolio
@@ -146,7 +146,7 @@ class PortfolioController < ApplicationController
     end
   end
 
-  # download dos arquivos do comentario do professor
+  # Download dos arquivos do comentario do professor
   def download_file_comment
     authorize! :download_file_comment, Portfolio
 
@@ -183,7 +183,7 @@ class PortfolioController < ApplicationController
   #  AREA PUBLICA
   ##################
 
-  # envio de arquivos para a area publica
+  # Envio de arquivos para a area publica
   def upload_files_public_area
 
     authorize! :upload_files_public_area, Portfolio
@@ -218,7 +218,7 @@ class PortfolioController < ApplicationController
     end
   end
 
-  # delecao de arquivos da area publica
+  # Delecao de arquivos da area publica
   def delete_file_public_area
 
     authorize! :delete_file_public_area, Portfolio
@@ -268,7 +268,7 @@ class PortfolioController < ApplicationController
     end
   end
 
-  # download dos arquivos da area publica
+  # Download dos arquivos da area publica
   def download_file_public_area
 
     authorize! :download_file_public_area, Portfolio
@@ -289,7 +289,7 @@ class PortfolioController < ApplicationController
   #  AREA INDIVIDUAL
   ####################
 
-  # envio de arquivos como resposta para a atividade
+  # Evio de arquivos como resposta para a atividade
   def upload_files_individual_area
 
     authorize! :upload_files_individual_area, Portfolio
@@ -343,7 +343,7 @@ class PortfolioController < ApplicationController
     end
   end
 
-  # download dos arquivos da area individual
+  # Download dos arquivos da area individual
   def download_file_individual_area
 
     authorize! :download_file_individual_area, Portfolio
@@ -369,7 +369,7 @@ class PortfolioController < ApplicationController
 
   private
 
-  # verifica se uma data esta em um intervalo de outras
+  # Verifica se uma data esta em um intervalo de outras
   def verify_date_range(start_date, end_date, date)
     return date > start_date && date < end_date
   end

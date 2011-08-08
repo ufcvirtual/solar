@@ -1,0 +1,40 @@
+<div id="posts" style="margin-top: 0px;">
+
+  <div id="phead">
+    <div id="ptitle" style="float: left;">
+      <%= t(:discussion) %>:&nbsp;<%= @discussion.name %>
+    </div>
+    <div id="window_close">X</div><br />
+    <div><%=raw @discussion.description %></div>
+  </div>
+
+  <hr class="portfolio_table_division" />
+
+  <div id="pbody">
+    <% @posts.each_with_index do |post, idx| %>
+      <div class="<%= (idx % 2 == 0) ? 'post_content' : 'noclass' %>">
+        <%=raw post["content"] %>
+      </div>
+      <hr class="portfolio_table_division" />
+    <% end %>
+  </div>
+
+</div>
+
+<style type="text/css">
+
+  div#phead {
+    overflow: auto;
+    background-color: #f1f0f2;
+  }
+
+  div#window_close {
+    float: right;
+    cursor: pointer;
+  }
+
+  div.post_content {
+    background-color: #F5F8FB;
+  }
+
+</style>

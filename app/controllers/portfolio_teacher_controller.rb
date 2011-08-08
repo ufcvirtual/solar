@@ -24,11 +24,14 @@ class PortfolioTeacherController < ApplicationController
     authorize! :list_assignments, PortfolioTeacher
 
     # recupera turma selecionada
-    groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-    students_id = params[:id]
+    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
 
-    @student = User.find(students_id)
-    @activities = PortfolioTeacher.list_assignments_by_group_and_student(groups_id, students_id)
+    student_id = params[:id]
+
+    @student = User.find(student_id)
+    @activities = PortfolioTeacher.list_assignments_by_group_and_student(group_id, student_id)
+
+    @discussions = Discussion.all_by_group_and_student_id(group_id, student_id)
 
   end
 
