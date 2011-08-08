@@ -3,7 +3,7 @@
 
     <%= render 'message_header' %>
 
-    <%= form_for :message, :url => {:action => 'send_message'}, :html => {:id => 'form_message_text'} do |f| %>
+    <%= form_for :message, :url => {:action => 'send_message'}, :html => {:id => 'form_message_text', :multipart => true} do |f| %>
 
       <div class="message_div_options_new">&nbsp;</div>
 

@@ -39,7 +39,7 @@
           <hr style="border: none; background-color: #b4b3b7; height: 1px; margin-left:0px; margin-bottom: 0px"></hr>
           <br/>
           <% @files.each do |f| %>
-             <%= link_to image_tag("message_file.png",:alt=>t(:message_attach))+f.original_name, {}, {:class => 'message_link'}%><br/>
+             <%= link_to image_tag("message_file.png",:alt=>t(:message_attach))+f.message_file_name, {:controller => "messages", :action => "download_message_file", :idFile => f.id, :id => @message.id}, {:class => 'message_link'}%><br/>
           <% end %>
         <% end %>
       </div>

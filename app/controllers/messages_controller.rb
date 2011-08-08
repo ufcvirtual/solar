@@ -55,11 +55,11 @@ class MessagesController < ApplicationController
       all_recipients_name = ''
       all_recipients_html = ''
       get_recipients(message_id).each { |r|
-              all_recipients = all_recipients << r.email << ', ' unless r.email == current_user.email
-              all_recipients_html = all_recipients_html << "<span onclick='$(this).remove()' class='message_recipient_box' >#{r.email}, </span>" unless r.email == current_user.email
-              # apenas para identificacao do email - informa todos, inclusive o logado
-              all_recipients_name = all_recipients_name << r.name << " [" << r.email << "], "
-            }
+        all_recipients = all_recipients << r.email << ', ' unless r.email == current_user.email
+        all_recipients_html = all_recipients_html << "<span onclick='$(this).remove()' class='message_recipient_box' >#{r.email}, </span>" unless r.email == current_user.email
+        # apenas para identificacao do email - informa todos, inclusive o logado
+        all_recipients_name = all_recipients_name << r.name << " [" << r.email << "], "
+      }
 
       # identificacao da mensagem original para juntar ao texto
       message_header =  t(:message_from) << ": " << sender.name << " [" << sender.email << "]<br/>"
@@ -85,8 +85,8 @@ class MessagesController < ApplicationController
           
           # destinatarios
           if target == 'all'
-              @target = @target << all_recipients
-              @target_html = @target_html << all_recipients_html
+            @target = @target << all_recipients
+            @target_html = @target_html << all_recipients_html
           end
         end
       end
@@ -177,7 +177,7 @@ class MessagesController < ApplicationController
   end
 
   def send_message
-    if !params[:to].nil? && !params[:newMessageTextBox].nil? && !params[:to].empty? && !params[:newMessageTextBox].empty?
+    if !params[:to].nil? && !params[:to].empty?
       to = params[:to]
       subject = params[:subject]
       message = params[:newMessageTextBox]
@@ -201,13 +201,23 @@ class MessagesController < ApplicationController
         message_header << "[" + label_name + "]<br/>"
       end
       message_header << "________________________________________________________________________<br/><br/>"
-      
+
       #":requires_new => true" permite rollback
       Message.transaction do
         begin
           #salva nova mensagem
           new_message = Message.new :subject => subject, :content => message, :send_date => DateTime.now
           new_message.save!
+
+          #Recupera os arquivos anexados
+          unless params[:attachment].nil?
+            params[:attachment].each do |file|
+              message_file = MessageFile.new Hash["message", file[1]]
+              message_file[:original_name] = "" # remover esse campo daqui e da migrate
+              message_file[:message_id] = new_message.id
+              message_file.save!
+            end
+          end
 
           #salva dados de remetente
           UserMessage.transaction(:requires_new => true) do
@@ -286,6 +296,21 @@ class MessagesController < ApplicationController
     end
   end
 
+  #download de arquivo anexo
+  def download_message_file
+    file_id = params[:idFile]
+    file_ = MessageFile.find(file_id)
+    filename = file_.message_file_name
+
+    prefix_file = file_.id # id da tabela discussion_post_file para diferenciar os arquivos
+    path_file = "#{::Rails.root.to_s}/media/message/"
+
+    redirect_error = {:action => 'show', :id => params[:id], :idFile => file_id}
+    
+    # recupera arquivo
+    download_file(redirect_error, path_file, filename, prefix_file)
+  end
+
   # retorna a label a ser usada na mensagem indicando disciplina, semestre e periodo
   def get_label_name (curriculum_unit_id = nil, offer_id = nil, group_id = nil)
     label_name = ""
@@ -319,9 +344,9 @@ class MessagesController < ApplicationController
   # retorna (1 a varios) destinatarios
   def get_recipients(message_id)
     return User.find(:all,
-          :joins => "INNER JOIN user_messages ON users.id = user_messages.user_id",
-          :select => "users.*",
-          :conditions => "user_messages.message_id = #{message_id} and NOT cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)")
+      :joins => "INNER JOIN user_messages ON users.id = user_messages.user_id",
+      :select => "users.*",
+      :conditions => "user_messages.message_id = #{message_id} and NOT cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)")
   end
 
   # retorna (0 a varios) arquivos de anexo
@@ -343,7 +368,7 @@ class MessagesController < ApplicationController
     return true
   end
 
-private
+  private
 
   # verifica aba aberta, se Home ou se aba de unidade curricular
   # se Home, traz todas; senao, traz com filtro da unidade curricular
@@ -412,7 +437,7 @@ private
       @responsibles = class_participants @curriculum_unit_id, true,  @offer_id, @group_id
     else
       @all_contacts = User.order("name").find(:all, :joins => :user_contacts,
-                                :conditions => {:user_contacts => {:user_id => current_user.id}} )
+        :conditions => {:user_contacts => {:user_id => current_user.id}} )
     end
 
     @contacts = show_contacts_updated   

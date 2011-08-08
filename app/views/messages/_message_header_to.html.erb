@@ -1,27 +1,29 @@
-    <div class="message_header_new">
-      <table border="0" cellpadding="5" cellspacing="0" width="100%">
-        <tbody>
-          <tr>
-            <td class="message_text_to" align="right" style="width:75px">
-              <a class="curriculum_unit_portlet_link" href="javascript:show_div('link_to_contacts','div_contacts')" id="link_to_contacts"><%=t(:message_to)%></a>
-            </td>
-            <td class="message_text_to"><%= text_field_tag  'to', @target, :class=> "message_search_textbox", :readonly => true, :onclick => "javascript:show_div('link_to_contacts','div_contacts')" %></td>
-          </tr>
-          <tr>
-            <td class="message_text_to" align="right" style="width:75px"><%=t(:message_subject)%></td>
-            <td class="message_text_to"><%= text_field_tag  'subject', @subject, :class=> "message_search_textbox" %></td>
-          </tr>
-          <tr>
-            <td class="message_text_to" align="right" style="width:75px">&nbsp;</td>
-            <td class="message_text_to"><%= link_to t(:message_attach_file), {},{:class=>'message_link'} %></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+<div class="message_header_new">
+  <table border="0" cellpadding="5" cellspacing="0" width="100%">
+    <tbody>
+      <tr>
+        <td class="message_text_to" align="right" style="width:75px">
+          <a class="curriculum_unit_portlet_link" href="javascript:show_div('link_to_contacts','div_contacts')" id="link_to_contacts"><%=t(:message_to)%></a>
+        </td>
+        <td class="message_text_to"><%= text_field_tag  'to', @target, :class=> "message_search_textbox", :readonly => true, :onclick => "javascript:show_div('link_to_contacts','div_contacts')" %></td>
+      </tr>
+      <tr>
+        <td class="message_text_to" align="right" style="width:75px"><%=t(:message_subject)%></td>
+        <td class="message_text_to"><%= text_field_tag  'subject', @subject, :class=> "message_search_textbox" %></td>
+      </tr>
+      <tr>
+        <td class="message_text_to" align="right" style="width:75px">&nbsp;</td>
+        <td class="message_text_to">
+          <div id="newPostUploadPanel"><a href="#" id="link_upload" class="message_link" onclick="appendFileField(); return false;"><%=t(:message_attach_file)%></a></div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <div style="display:none" id="div_contacts">
   <% if !@curriculum_units_user.nil? %>
-    
+
     <select id="curriculum_unit_select" style="width:440px">
       <option value="" <%=" selected=true " unless !@curriculum_units_name.nil?%> ><%=t(:message_personal_contacts)%></option>
       <% @curriculum_units_user.each do |curriculum_unit| %>
@@ -31,7 +33,7 @@
       <% end %>
     </select>
   <% end %>
-  
+
   <br/><br/>
   <%= label_tag "", t(:message_select)+': ' %><br/>
 
@@ -51,28 +53,28 @@
 
   $(function($) {
 
-     $("#curriculum_unit_select").change(function() {
-       $("#div_contacts_list").load("/messages/ajax_get_contacts/",{data: this.value})
-     })
+    $("#curriculum_unit_select").change(function() {
+      $("#div_contacts_list").load("/messages/ajax_get_contacts/",{data: this.value})
+    })
 
-     $("#link_cancel_contacts").click(function() {
-       $("#div_contacts").hide();
-     })
+    $("#link_cancel_contacts").click(function() {
+      $("#div_contacts").hide();
+    })
 
-     $("#link_confirm_contacts").click(function() {
-       $("#div_contacts").hide();
-       $("#to").val($("#recipients_selected").text());
-     })
+    $("#link_confirm_contacts").click(function() {
+      $("#div_contacts").hide();
+      $("#to").val($("#recipients_selected").text());
+    })
 
   });
 
   function show_div(origin,elementId) {
-        var posx =$('#'+origin).offset().left + 38;
-        var posy =$('#'+origin).offset().top - 2;
+    var posx =$('#'+origin).offset().left + 38;
+    var posy =$('#'+origin).offset().top - 2;
 
-        $('#'+ elementId).css({"left":posx});
-        $('#'+ elementId).css({"top":posy});
-        $('#'+ elementId).show();
+    $('#'+ elementId).css({"left":posx});
+    $('#'+ elementId).css({"top":posy});
+    $('#'+ elementId).show();
   }
 
   function add_receiver(email){
@@ -84,6 +86,28 @@
     if (found == -1) {
       $("#recipients_selected").append(new_recipient);
     }
+  }
+
+  //// Manipulação de arquivos anexos ///////////////////////////////
+  var numFileFields = 0;
+  function appendFileField(){
+    newElementId = 'attachment_' + numFileFields;
+    newElementName = 'attachment[' + numFileFields + ']';
+    newElement = '<div id="'+ newElementId +'_container">';
+    newElement += '<input id="' + newElementId + '" type="file" name="' + newElementName + '" style="display:none;"/>';
+    newElement += '<a href="#" onclick="removeFileField(\''+newElementId+'\');return false;">*** cancelar ***</a>';
+    newElement += '</div>';
+    //$("#newPostUploadPanel").append(newElement);
+    $("#link_upload").after(newElement)
+    $("#"+newElementId).slideDown('fast');//exibindo campo de upload
+    //$(target).siblings(".UploadFileSubmit").show('fast');//exibindo botão de enviar
+    numFileFields++;
+  }
+
+  function removeFileField(fieldId){
+    $("#"+fieldId+"_container").hide('fast', function(){
+      $("#"+fieldId+"_container").remove();
+    });
   }
 
 </script>
