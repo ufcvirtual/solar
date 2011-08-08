@@ -40,21 +40,26 @@ class MessagesController < ApplicationController
     @target  = ''
     @subject = ''
     @original_message = ''
+    @target_html = ''
 
     if !params[:id].nil?
-      message_id = params[:id]
-      get_message_data(message_id)
+      @original_message_id = params[:id]
+
+      get_message_data(@original_message_id)
 
       @subject = @message.subject
       
       # remetente
-      sender = get_sender(message_id)
+      sender = get_sender(@original_message_id)
+
+      # arquivos
+      @files = get_files(@original_message_id)
 
       # destinatarios
       all_recipients = ''
       all_recipients_name = ''
       all_recipients_html = ''
-      get_recipients(message_id).each { |r|
+      get_recipients(@original_message_id).each { |r|
         all_recipients = all_recipients << r.email << ', ' unless r.email == current_user.email
         all_recipients_html = all_recipients_html << "<span onclick='$(this).remove()' class='message_recipient_box' >#{r.email}, </span>" unless r.email == current_user.email
         # apenas para identificacao do email - informa todos, inclusive o logado
@@ -176,6 +181,76 @@ class MessagesController < ApplicationController
     end    
   end
 
+=begin SO PARA TESTE
+  def send_message
+    if !params[:to].nil? && !params[:to].empty?
+      to = params[:to]
+      subject = params[:subject]
+      message = params[:newMessageTextBox]
+
+      #apenas usuarios que sao cadastrados no ambiente; se algum destinarario nao eh, nao envia...
+      real_receivers = ""
+
+      #troca ";" por "," para split e envio para destinatarios
+      to.gsub(";", ",")
+
+      #divide destinatarios
+      individual_to = to.split(",").map{|r|r.strip}
+
+      update_tab_values
+      label_name = get_label_name(@curriculum_unit_id, @offer_id, @group_id)
+
+      #informacoes do usuario atual para identificacao na msg
+      atual_user = User.find(current_user.id)
+      message_header = "<b>" + t(:message_header) + atual_user.name + " [" + atual_user.email + "]</b><br/>"
+      if label_name != ""
+        message_header << "[" + label_name + "]<br/>"
+      end
+      message_header << "________________________________________________________________________<br/><br/>"
+
+      #":requires_new => true" permite rollback
+
+          #salva nova mensagem
+          new_message = Message.new :subject => subject, :content => message, :send_date => DateTime.now
+          new_message.save!
+
+          original_message_id = params[:id]
+
+          # ******************************************************************************************
+          # verificar se tem permissao para esse original_message_id *********************************
+          # para cada arquivo, copiar fisicamente                    *********************************
+          # ******************************************************************************************
+
+          #recupera arquivos da mensagem original, caso esteja encaminhando ou respondendo
+          unless original_message_id.nil?
+            files = get_files(original_message_id)
+            unless files.nil?
+              files.each do |f|
+                message_file = MessageFile.new
+                message_file[:message_file_name] = f.message_file_name
+                message_file[:message_content_type] = f.message_content_type
+                message_file[:message_file_size] = f.message_file_size
+                message_file[:original_name] = f.original_name # remover esse campo daqui e da migrate
+                message_file[:message_id] = new_message.id
+                message_file.save!
+              end
+            end
+          end
+
+          #recupera os arquivos anexados
+          unless params[:attachment].nil?
+            params[:attachment].each do |file|
+              message_file = MessageFile.new Hash["message", file[1]]
+              message_file[:original_name] = "" # remover esse campo daqui e da migrate
+              message_file[:message_id] = new_message.id
+              message_file.save!
+            end
+          end
+
+    end
+  end
+=end
+
   def send_message
     if !params[:to].nil? && !params[:to].empty?
       to = params[:to]
@@ -209,7 +284,31 @@ class MessagesController < ApplicationController
           new_message = Message.new :subject => subject, :content => message, :send_date => DateTime.now
           new_message.save!
 
-          #Recupera os arquivos anexados
+          original_message_id = params[:id]
+
+          # ******************************************************************************************
+          # verificar se tem permissao para esse original_message_id *********************************
+          # para cada arquivo, copiar fisicamente                    *********************************
+          # talvez: apagar arquivo caso haja rollback                *********************************
+          # ******************************************************************************************
+
+          #recupera arquivos da mensagem original, caso esteja encaminhando ou respondendo
+          unless original_message_id.nil?
+            files = get_files(original_message_id)
+            unless files.nil?
+              files.each do |f|
+                message_file = MessageFile.new
+                message_file[:message_file_name] = f.message_file_name
+                message_file[:message_content_type] = f.message_content_type
+                message_file[:message_file_size] = f.message_file_size
+                message_file[:original_name] = f.original_name # remover esse campo daqui e da migrate
+                message_file[:message_id] = new_message.id
+                message_file.save!
+              end
+            end
+          end
+
+          #recupera os arquivos anexados
           unless params[:attachment].nil?
             params[:attachment].each do |file|
               message_file = MessageFile.new Hash["message", file[1]]

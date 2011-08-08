@@ -14,6 +14,12 @@
       <tr>
         <td class="message_text_to" align="right" style="width:75px">&nbsp;</td>
         <td class="message_text_to">
+          <% unless @files.nil? %>
+            <% @files.each do |f| %>
+               <%= image_tag("message_file.png",:alt=>t(:message_attach))+f.message_file_name %><br/>
+            <% end %>
+            <%= raw "<br/>"%>
+          <% end %>
           <div id="newPostUploadPanel"><a href="#" id="link_upload" class="message_link" onclick="appendFileField(); return false;"><%=t(:message_attach_file)%></a></div>
         </td>
       </tr>
@@ -97,10 +103,8 @@
     newElement += '<input id="' + newElementId + '" type="file" name="' + newElementName + '" style="display:none;"/>';
     newElement += '<a href="#" onclick="removeFileField(\''+newElementId+'\');return false;">*** cancelar ***</a>';
     newElement += '</div>';
-    //$("#newPostUploadPanel").append(newElement);
     $("#link_upload").after(newElement)
     $("#"+newElementId).slideDown('fast');//exibindo campo de upload
-    //$(target).siblings(".UploadFileSubmit").show('fast');//exibindo botão de enviar
     numFileFields++;
   }
 

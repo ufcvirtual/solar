@@ -15,7 +15,7 @@
 
       <div class="message_div_options_new">&nbsp;
         <%= f.submit t(:message_send)+' ', :id => 'send_message', :class=> 'message_link', :alt=> t(:message_send) %>
-        
+        <%= hidden_field_tag :id, @original_message_id %>
         <%= link_to t(:message_discard)+' ', {:action => 'index', :type => 'index'}, {:class=>'message_link'} %>
       </div>
 
