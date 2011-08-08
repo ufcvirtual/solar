@@ -35,6 +35,7 @@ module MessagesHelper
       query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean) " #filtra se nao eh origem (eh destino)
       query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Read.to_s(2)}' as boolean) "   #nao lida
       query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean) "  #nao esta na lixeira
+      
     when 'search'
       # monta parte da query referente a busca textual
       query_search = ''
@@ -42,14 +43,32 @@ module MessagesHelper
       search_text.each { |text|
         query_search << " AND " unless query_search.empty? # nao adiciona na 1a vez
         query_search << "     (subject  ilike '%#{text}%' or
-                               content  ilike '%#{text}%' or
-                               (select users.name from users inner join user_messages
+                               content  ilike '%#{text}%' or "
+
+        begin
+          # pega formato da data a usar na query de acordo com idioma atual (ex: dd mm yyyy)
+          # date_format = I18n.t :query_format, :scope => 'date'
+          
+          # coloca data no formato do idioma atual - converte sempre em dd mm yyyy... (?)
+          # entrando 08/02/2011:
+          #     em ingles - text.to_date = 2011-02-08 e d = 02/08/2011
+          #     em port   - text.to_date = 2011-02-08 e d = 08/02/2011
+          d = I18n.l(text.to_date, :format => :default).to_s
+
+          query_date = " m.send_date::date = to_date('#{d}','dd mm yyyy') or"
+        rescue
+          query_date = ""
+        end
+
+        query_search << query_date
+        query_search << "     (select users.name from users inner join user_messages
                                 ON users.id = user_messages.user_id
                                 where user_messages.message_id = m.id
                                 and cast(user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)) ilike '%#{text}%' or
                                ml.title ilike '%#{text}%')"
       }
       query_messages += " and ( #{query_search} )"
+
     end
     query_order = " order by send_date desc "
 
