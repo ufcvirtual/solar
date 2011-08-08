@@ -1699,6 +1699,10 @@ tr.lines td, th {
     border-bottom: solid #dbe5e8 1px;
 }
 
+tbody tr.lines:hover{
+    background-color: #a9d0f5;
+}
+
 .td_blue_portfolio_first {
     width: 485px;
 }
@@ -1734,7 +1738,7 @@ div.label_score {
     padding-top: 10px;
 }
 
-table tbody tr.hover td {background-color: #a9d0f5;}
+/*table tbody tr.hover td {background-color: #a9d0f5;}*/
 
 td.td_student a {color: #2a538d;}
 

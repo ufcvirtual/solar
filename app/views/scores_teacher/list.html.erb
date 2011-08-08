@@ -21,7 +21,7 @@
     <% leng_assignments = @students.first["grades"].split(',').length %>
     <table width="100%" cellspacing="0" border="0" id="list_of_students" class="list_table" summary="lista de estudantes">
       <thead>
-        <tr>
+        <tr class="lines">
           <th rowspan="2" align="left"><%= t(:student) %></th>
           <th rowspan="2" style="width: 16%;"><%= t(:public_files)  %></th>
           <th rowspan="2" style="width: 8%;"><%= t(:tests) %></th>
@@ -30,7 +30,7 @@
           <th rowspan="2" style="width: 12%;"><%= t(:participation) %></th>
           <th rowspan="2" style="width: 15%;"><%= t(:access_to_the_course) %></th>
         </tr>
-        <tr>
+        <tr class="lines">
           <% for i in 1..leng_assignments %>
             <th><%= i %>&deg;</th>
           <% end %>
@@ -38,26 +38,26 @@
       </thead>
       <tbody class="alignment">
         <% @students.each do |student| %>
-          <tr>
-            <td class="td_student">
+          <tr class="lines">
+            <td align="left" class="td_student">
               <%=link_to student["student_name"], {:controller => :portfolio_teacher, :action => :list_assignments, :id => student["student_id"]} %>
             </td>
-            <td><%= student["cnt_public_files"] %></td>
-            <td></td>
+            <td align="center"><%= student["cnt_public_files"] %></td>
+            <td>&nbsp;</td>
             <% assignments_ids = student["assignment_ids"].split(',') %>
             <% send_assignment_ids = student["send_assignment_ids"].split(',') %>
             <% student["grades"].split(',').each_with_index do |grade, idx| %>
 
               <!-- no mesmo campo pode vir tanto a nota quanto o status do trabalho -> enviado ou nao enviado-->
               <% grade_link = (grade.match(/[a-z-A-Z]/)) ? t("assignment_#{grade}".to_s) : grade.to_f %>
-              <td class="assignment_<%= grade %>">
+              <td align="center" class="assignment_<%= grade %>">
                 <%=link_to grade_link, {:controller => :portfolio_teacher, :action => :student_detail, :id => student["student_id"],
                   :assignment_id => assignments_ids[idx], :send_assignment_id => send_assignment_ids[idx]} %>
               </td>
 
             <% end %>
-            <td></td>
-            <td></td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
           </tr>
         <% end %>
       </tbody>
@@ -83,13 +83,13 @@
 
     <table width="100%" class="portfolio list_table" border="0" cellpadding="0" cellspacing="0" style="margin-top: 0px;">
       <thead>
-        <tr align="left">
+        <tr align="left" class="lines">
           <th colspan="2"><%= t(:legend_assignments) %></th>
         </tr>
       </thead>
       <tbody>
         <% @activities.each_with_index do |activity, idx| %>
-          <tr>
+          <tr class="lines">
             <td align="right" style="width: 30px;"><%= idx + 1 %>&deg;</td>
             <td align="left"><%= activity["name"] %></td>
           </tr>
@@ -99,16 +99,4 @@
 
   </div>
 
-</div>
-
-<!-- scripts -->
-
-<div id="scripts">
-  <script type="text/javascript">
-    $(function(){
-      $('.list_table tr').addClass('lines');
-      $('.list_table > tbody.alignment td:not([class=td_student])').css('text-align', 'center');
-      $('table > tbody > tr').hover(function(){$(this).toggleClass('hover');});
-    });
-  </script>
 </div>

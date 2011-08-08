@@ -30,6 +30,7 @@ class ScoresTeacher < ActiveRecord::Base
         JOIN allocation_tags    AS t4 ON t4.id = t2.allocation_tag_id
        WHERE t3.student = TRUE
          AND t4.group_id = #{group_id}
+         AND t2.status = #{Allocation_Activated}
        ORDER BY t1.id
     ),
     -- contador de arquivos publicos por usuario
@@ -85,7 +86,8 @@ SQL
      JOIN allocation_tags   AS t3 ON t3.id = t2.allocation_tag_id
      JOIN profiles          AS t4 ON t4.id = t2.profile_id
     WHERE t3.group_id = #{group_id}
-      AND t4.student = TRUE;
+      AND t4.student = TRUE
+      AND t2.status = #{Allocation_Activated};
 SQL
 
     return (cnt.nil?) ? 0 : cnt.first["cnt"].to_i
