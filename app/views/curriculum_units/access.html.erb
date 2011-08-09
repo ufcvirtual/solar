@@ -27,130 +27,19 @@
     </div>
   </div>
 
-  <div class="curriculum_unit_portlet_lesson">
-    <div class="curriculum_unit_portlet_header">
-      <span><%= image_tag "icon_lesson.png", :alt=>t(:icon_lesson) %></span>
-      <%= t(:curriculum_access_lesson) %>
-    </div>
-    <div class="curriculum_unit_portlet_lesson_content">
-      <% if !(@lessons.nil? || @lessons.empty?) %>
-        <% @lessons.each do |lesson| %>
-          <div class="curriculum_unit_portlet_line">
-            <span class="curriculum_unit_portlet_gray"><%= l lesson.start %> - <%= l lesson.end %></span>
-            <a class="curriculum_unit_portlet_link" href="javascript:show_lesson('/lessons/show?id=<%=@curriculum_unit.id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
-          </div>
-        <% end %>
-      <% else %>
-        <div class="curriculum_unit_portlet_text"><%= t(:lesson_message) %></div>
-      <% end %>
-    </div>
-  </div>
+  <%= render 'lesson_portlet' %>
 
   <table cellpadding="0" cellspacing="0">
     <tr>
-
       <td>
-        <div id="message_portlet" class="curriculum_unit_portlets_small">
-          <div class="curriculum_unit_portlet_small_header">
-            <%= image_tag "icon_message.png", :alt=>t(:icon_message) %>
-            <%= t(:curriculum_access_message)%>
-            <span class="text_alert">&nbsp;&nbsp;
-              <% if !(@messages.nil? || @messages.empty?) %>
-                [<%=@messages.count%>] <%= t(:curriculum_access_new) %>
-              <% end %>
-            </span>
-          </div>
-
-          <div class="curriculum_unit_portlet_messages">
-            <% if !(@messages.nil? || @messages.empty?) %>
-              <% @messages.each do |message| %>
-                <div class="curriculum_unit_portlet_line">
-                  <span class="curriculum_unit_portlet_gray">
-                  <% if sent_today?(message.send_date.to_datetime) %>
-                    <%= l(message.send_date, :format => :today) %> 
-                  <% else %>    
-                    <%= l(message.send_date, :format => :not_today) %> 
-                  <% end %>  
-                  </span>
-                  <%= link_to message.sender,  {:controller => 'messages', :action => 'show', :id => message.id},{:class => 'curriculum_unit_portlet_link'} %>
-                  <%
-                  msg_subject = strip_tags message.subject
-                  msg_subject = msg_subject.slice(0..107) + ' (...)' if msg_subject.length > 110
-                %>
-                  <%= msg_subject %>
-                </div>
-              <% end %>
-            <% else %>
-              <div class="curriculum_unit_portlet_text"><%= t(:message_no_new) %></div>
-            <% end %>
-
-          </div>
-          <div class="curriculum_unit_portlet_messages_opt">
-            <%= link_to '['+t(:curriculum_access_message_inbox)+'] ', {:controller => 'messages'}, {:class=>'curriculum_unit_portlet_link_gray'} %>
-            <%= link_to '['+t(:curriculum_access_message_new)+'] ', {:controller => 'messages', :action => 'new'}, {:class=>'curriculum_unit_portlet_link_gray'} %>
-          </div>
-        </div>
+        <%= render 'message_portlet' %>
       </td>
-
       <td>
-        <div id="forum_portlet" class="curriculum_unit_portlets_small">
-          <div class="curriculum_unit_portlet_small_header">
-            <%= image_tag "icon_forum.png", :alt=>t(:icon_forum) %>
-            <%= t(:curriculum_access_forum)%>
-          </div>
-
-          <div class="curriculum_unit_portlet_forum">
-            <% if !(@discussion_posts.nil? || @discussion_posts.empty?) %>
-              <% @discussion_posts.each do |discussion_post| %>
-                <div class="curriculum_unit_portlet_line">
-                  <span class="curriculum_unit_portlet_gray">
-                  <% if posted_today?(discussion_post.updated_at.to_datetime) %>
-                    <%= l(discussion_post.updated_at, :format => :today) %> 
-                  <% else %>    
-                    <%= l(discussion_post.updated_at, :format => :not_today) %> 
-                  <% end %>  
-                 </span>
-                  <a class="curriculum_unit_portlet_link" href="/discussions/show/<%=discussion_post.discussion_id%>"><%= discussion_post.user.nick %></a>
-                  <%
-                  clear_content = strip_tags discussion_post.content
-                  clear_content = clear_content.slice(0..107) + ' (...)' if clear_content.length > 110
-                %>
-                  <%= clear_content %>
-                </div>
-              <% end %>
-            <% else %>
-              <div class="curriculum_unit_portlet_text"><%= t(:forum_message) %></div>
-            <% end %>
-
-          </div>
-        </div>
+        <%= render 'discussion_posts_portlet' %>
       </td>
-
       <td>
-        <div id="agenda_portlet" class="curriculum_unit_portlets_small">
-          <div class="curriculum_unit_portlet_small_header">
-            <%= image_tag "icon_agenda.png", :alt=>t(:icon_agenda) %>
-            <%= t(:curriculum_access_agenda)%>
-          </div>
-
-          <div class="calendar" id="agenda"></div>
-
-          <div class="calendar_events">
-            <div class="calendar_events_more"><a href="" class="curriculum_unit_portlet_link_more"><%=t(:curriculum_access_more)%></a></div>
-
-            <span><%= image_tag "icon_clock.png", :alt=>t(:icon_agenda_event) %></span>
-            <div class="calendar_events_entry">                
-              11:00 <a href="" class="curriculum_unit_portlet_link">bla bla bla...</a>
-            </div><br/>
-            <span><%= image_tag "icon_clock.png", :alt=>t(:icon_agenda_event) %></span>
-            <div class="calendar_events_entry">                
-              12:00 <a href="" class="curriculum_unit_portlet_link">bla bla bla...</a>
-            </div><br/>
-
-          </div>            
-        </div>
+        <%= render 'agenda_portlet' %>
       </td>
-
     </tr>
   </table>
 
