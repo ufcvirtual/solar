@@ -1790,6 +1790,8 @@ td.td_student a {color: #2a538d;}
     margin-top: 2px;
     font-family: 'Myriad Pro';
     font-size: 11px;
+    position: absolute;
+    margin-left: 18px;
 
 }
 .agenda_menu_left_date{

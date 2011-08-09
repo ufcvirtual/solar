@@ -6,6 +6,7 @@ class CreateAssignment < ActiveRecord::Migration
       t.text :enunciation
       t.datetime :start_date, :null => false
       t.datetime :end_date, :null => false
+      t.integer :schedule_id
     end
   end
 
