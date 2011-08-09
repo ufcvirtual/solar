@@ -1,40 +1,66 @@
-<div id="posts" style="margin-top: 0px;">
 
-  <div id="phead">
-    <div id="ptitle" style="float: left;">
-      <%= t(:discussion) %>:&nbsp;<%= @discussion.name %>
-    </div>
-    <div id="window_close">X</div><br />
-    <div><%=raw @discussion.description %></div>
+<div class="dialog">
+  <div id="phead" class="dialog-title dialog-title-draggable">
+    <span class="dialog-title-text"><%= t(:discussion) %>:&nbsp;<%= @discussion.name %></span>
+    <span class="dialog-title-close"></span>
   </div>
-
-  <hr class="portfolio_table_division" />
-
-  <div id="pbody">
-    <% @posts.each_with_index do |post, idx| %>
-      <div class="<%= (idx % 2 == 0) ? 'post_content' : 'noclass' %>">
-        <%=raw post["content"] %>
-      </div>
-      <hr class="portfolio_table_division" />
-    <% end %>
+  <div class="dialog-content">
+    <table width="100%">
+      <tbody>
+        <% @posts.each_with_index do |post, idx| %>
+          <tr class="<%= (idx % 2 == 0) ? 'post_content' : 'noclass' %>">
+            <td>
+              <%=raw post["content"] %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
-
+  <div class="dialog-buttons"></div>
 </div>
+
+
+
+
+
 
 <style type="text/css">
 
-  div#phead {
-    overflow: auto;
-    background-color: #f1f0f2;
+  .dialog-title {
+    background-color: #E3E9FF;
   }
 
-  div#window_close {
-    float: right;
+  .dialog-title-close {
+    position: absolute;
+    right: 359px;
+    /*right: 15px;*/
+    /*top: 10px;*/
+    width: 16px;
+    height: 16px;
+    background: url(//calendar.google.com/googlecalendar/images/combined_v21.png);
+    background-position: -212px -48px;
+    overflow: hidden;
     cursor: pointer;
   }
 
-  div.post_content {
+
+
+
+  /*
+    div#phead {
+      overflow: auto;
+      background-color: #f1f0f2;
+    }
+
+    div#window_close {
+      float: right;
+      cursor: pointer;
+    }
+
+  */
+
+  tr.post_content {
     background-color: #F5F8FB;
   }
-
 </style>
