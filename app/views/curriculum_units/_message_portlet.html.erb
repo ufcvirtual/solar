@@ -1,0 +1,43 @@
+<%
+#Portlet da Unidade Curricular que exibe as mensagens não lidas mais recentes.
+%>
+<div id="message_portlet" class="curriculum_unit_portlets_small">
+  <div class="curriculum_unit_portlet_small_header">
+    <%= image_tag "icon_message.png", :alt=>t(:icon_message) %>
+    <%= t(:curriculum_access_message)%>
+    <span class="text_alert">&nbsp;&nbsp;
+      <% if !(@messages.nil? || @messages.empty?) %>
+        [<%=@messages.count%>] <%= t(:curriculum_access_new) %>
+      <% end %>
+    </span>
+  </div>
+
+  <div class="curriculum_unit_portlet_messages">
+    <% if !(@messages.nil? || @messages.empty?) %>
+      <% @messages.each do |message| %>
+        <div class="curriculum_unit_portlet_line">
+          <span class="curriculum_unit_portlet_gray">
+            <% if sent_today?(message.send_date.to_datetime) %>
+              <%= l(message.send_date, :format => :today) %> 
+            <% else %>    
+              <%= l(message.send_date, :format => :not_today) %> 
+            <% end %>  
+          </span>
+          <%= link_to message.sender,  {:controller => 'messages', :action => 'show', :id => message.id},{:class => 'curriculum_unit_portlet_link'} %>
+          <%
+          msg_subject = strip_tags message.subject
+          msg_subject = msg_subject.slice(0..107) + ' (...)' if msg_subject.length > 110
+        %>
+          <%= msg_subject %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="curriculum_unit_portlet_text"><%= t(:message_no_new) %></div>
+    <% end %>
+
+  </div>
+  <div class="curriculum_unit_portlet_messages_opt">
+    <%= link_to '['+t(:curriculum_access_message_inbox)+'] ', {:controller => 'messages'}, {:class=>'curriculum_unit_portlet_link_gray'} %>
+    <%= link_to '['+t(:curriculum_access_message_new)+'] ', {:controller => 'messages', :action => 'new'}, {:class=>'curriculum_unit_portlet_link_gray'} %>
+  </div>
+</div>

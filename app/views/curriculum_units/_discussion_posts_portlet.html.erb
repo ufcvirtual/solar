@@ -1,0 +1,34 @@
+<%
+#Portlet da Unidade Curricular que exibe as postagens dos fóruns ligados a ela mais recentes.
+%>
+<div id="forum_portlet" class="curriculum_unit_portlets_small">
+  <div class="curriculum_unit_portlet_small_header">
+    <%= image_tag "icon_forum.png", :alt=>t(:icon_forum) %>
+    <%= t(:curriculum_access_forum)%>
+  </div>
+
+  <div class="curriculum_unit_portlet_forum">
+    <% if !(@discussion_posts.nil? || @discussion_posts.empty?) %>
+      <% @discussion_posts.each do |discussion_post| %>
+        <div class="curriculum_unit_portlet_line">
+          <span class="curriculum_unit_portlet_gray">
+            <% if posted_today?(discussion_post.updated_at.to_datetime) %>
+              <%= l(discussion_post.updated_at, :format => :today) %> 
+            <% else %>    
+              <%= l(discussion_post.updated_at, :format => :not_today) %> 
+            <% end %>  
+          </span>
+          <a class="curriculum_unit_portlet_link" href="/discussions/show/<%=discussion_post.discussion_id%>"><%= discussion_post.user.nick %></a>
+          <%
+          clear_content = strip_tags discussion_post.content
+          clear_content = clear_content.slice(0..107) + ' (...)' if clear_content.length > 110
+        %>
+          <%= clear_content %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="curriculum_unit_portlet_text"><%= t(:forum_message) %></div>
+    <% end %>
+
+  </div>
+</div>
