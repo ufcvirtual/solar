@@ -13,25 +13,17 @@ module DiscussionPostsHelper
     childs_count = return_child_count(post.id)
     can_interact=true
     
-    if(!valid_date)
-      can_interact= false
-    end
+    can_interact= false unless (valid_date)
   
     #Um post pode ser editado se é do próprio usuário e se não possui respostas.
-    if (post.user.id == current_user.id) && (childs_count == 0)
-      editable = true
-    end
+    editable = true if (post.user.id == current_user.id) && (childs_count == 0)
 
     #Recuperando posts filhos para renderização
-    if threaded
-      childs = return_posts_child(post[:id])
-    end
+    childs = return_posts_child(post[:id]) if threaded
 
     #Tratando nick para exibição
     nick = post.user_nick
-    if nick.length > 15
-      nick = nick.slice(0..12) + '...'
-    end
+    nick = nick.slice(0..12) + '...' if nick.length > 15
 
     #Recuperando caminho da foto a ser carregada
     photo_url = ''
@@ -63,8 +55,9 @@ module DiscussionPostsHelper
                           </div>
                         </td>
                         <td class="forum_post_content_right">
-                          <div class="forum_post_inner_content" style="min-height:100px">' << (sanitize post.content) <<' </div>'
-
+                          <div class="forum_post_inner_content" style="min-height:100px">' << (sanitize post.content) <<' </div>
+                          <div><span style="float:left;"><b>[Anexos]</b></span><hr style="display:block; margin-top:10px;"/>
+                          </div>'
     #Apresentando os arquivos do post
     post_string <<      '<ul class="forum_post_attachment">'
     unless post.discussion_post_files.count == 0
@@ -175,7 +168,7 @@ module DiscussionPostsHelper
 
   end
 
-    # Consultas para portlets 
+  # Consultas para portlets
   def list_portlet_discussion_posts(offer_id, group_id)
     discussions = return_discussions(offer_id, group_id)    
     return DiscussionPost.order('updated_at DESC').limit(Rails.application.config.items_per_page.to_i).find_all_by_discussion_id(discussions)
@@ -220,10 +213,10 @@ module DiscussionPostsHelper
     return post_string
   end
   
-   #Verifica se a messagem foi postada hoje ou não!
+  #Verifica se a messagem foi postada hoje ou não!
   
   def posted_today?(message_datetime)
-     message_datetime === Date.today
+    message_datetime === Date.today
   end
 
 end
