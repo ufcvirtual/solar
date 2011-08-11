@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_session, :current_user
 
   before_filter :return_user, :application_context
+  before_filter :log_access, :only => :add_tab
 
   # Mensagem de erro de permissão
   rescue_from CanCan::AccessDenied do |exception|
@@ -28,45 +29,6 @@ class ApplicationController < ActionController::Base
       return prof.id
     else
       return ''
-    end
-  end
-
-  # adiciona uma aba no canto superior da interface
-  def add_tab
-
-    name = params[:name]
-    type = params[:type]
-    id   = params[:id]
-    groups_id = params[:groups_id]
-    offers_id = params[:offers_id]
-
-    # se hash nao existe, cria
-    if session[:opened_tabs].nil?
-      session[:opened_tabs] = Hash.new
-    end
-
-    # abre abas ate um numero limitado; atualiza como ativa se aba ja existe
-    if (session[:opened_tabs].length < Max_Tabs_Open.to_i) || (session[:opened_tabs].has_key?(name))
-      hash_tab = Hash.new
-      hash_tab["id"] = id
-      hash_tab["type"] = type
-      hash_tab["groups_id"] = groups_id
-      hash_tab["offers_id"] = offers_id
-
-      session[:opened_tabs][name] = hash_tab
-      session[:active_tab] = name
-
-      # redireciona de acordo com o tipo de aba
-      if type == Tab_Type_Home
-        redirect_to :controller => "users", :action => "mysolar"
-      end
-      if type == Tab_Type_Curriculum_Unit
-        redirect_to :controller => 'curriculum_units', :action => 'access', :id => id, :groups_id => groups_id, :offers_id => offers_id
-      end
-
-    else
-      # se estourou numero de abas, volta para mysolar
-      redirect_to :controller => "users", :action => "mysolar"
     end
   end
 
@@ -139,7 +101,64 @@ class ApplicationController < ActionController::Base
 
   end
 
+  # Adiciona uma aba no canto superior da interface
+  def add_tab
+
+    name_tab = params[:name]
+    type = params[:type] # tipo de aba -> Home ou Curriculum_Unit
+    id = params[:id]
+    groups_id = params[:groups_id]
+    offers_id = params[:offers_id]
+
+    # se hash nao existe, cria
+    session[:opened_tabs] = Hash.new if session[:opened_tabs].nil?
+
+    # se estourou numero de abas, volta para mysolar
+    redirect = {:controller => :users, :action => :mysolar} # Tab_Type_Home
+
+    # abre abas ate um numero limitado; atualiza como ativa se aba ja existe
+    if new_tab?(name_tab)
+      hash_tab = {
+        "id" => id,
+        "type" => type,
+        "groups_id" => groups_id,
+        "offers_id" => offers_id
+      }
+
+      set_session_opened_tabs(name_tab, hash_tab)
+
+      # redireciona de acordo com o tipo de aba
+      redirect = {
+        :controller => :curriculum_units,
+        :action => :access,
+        :id => id, :groups_id => groups_id,
+        :offers_id => offers_id
+      } if type == Tab_Type_Curriculum_Unit
+
+    end
+
+    redirect_to redirect
+
+  end
+
   private
+
+  # Verifica se será necessário criar uma nova aba ou se ja existe uma aba aberta
+  # com o mesmo nome passado como parametro
+  def new_tab?(name_tab)
+    return (session[:opened_tabs].length < Max_Tabs_Open.to_i) || (session[:opened_tabs].has_key?(name_tab))
+  end
+
+  # atualiza a sessao com as abas abertas e ativas
+  def set_session_opened_tabs(name_tab, hash_tab)
+    session[:opened_tabs][name_tab] = hash_tab
+    session[:active_tab] = name_tab
+  end
+
+  # grava log de acesso a unidade curricular
+  def log_access
+    Log.create(:log_type => Log::TYPE[:course_access], :user_id => current_user.id, :curriculum_unit_id => params[:id]) if (params[:type] == Tab_Type_Curriculum_Unit)
+  end
 
   def current_user_session
     #logger.debug "ApplicationController::current_user_session"
