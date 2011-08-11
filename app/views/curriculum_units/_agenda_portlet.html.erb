@@ -2,24 +2,30 @@
 #Portlet da Unidade Curricular que exibe a agenda da mesma
 %>
 <div id="agenda_portlet" class="curriculum_unit_portlets_small">
-          <div class="curriculum_unit_portlet_small_header">
-            <%= image_tag "icon_agenda.png", :alt=>t(:icon_agenda) %>
-            <%= t(:curriculum_access_agenda)%>
-          </div>
+  <div class="curriculum_unit_portlet_small_header">
+    <%= image_tag "icon_agenda.png", :alt=>t(:icon_agenda) %>
+    <%= t(:curriculum_access_agenda)%>
+  </div>
 
-          <div class="calendar" id="agenda"></div>
+  <div class="calendar" id="agenda"></div>
 
-          <div class="calendar_events">
-            <div class="calendar_events_more"><a href="" class="curriculum_unit_portlet_link_more"><%=t(:curriculum_access_more)%></a></div>
+  <div class="calendar_events">
+    <div class="calendar_events_more"><a href="" class="curriculum_unit_portlet_link_more"><%=t(:curriculum_access_more)%></a></div>
 
-            <span><%= image_tag "icon_clock.png", :alt=>t(:icon_agenda_event) %></span>
-            <div class="calendar_events_entry">                
-              11:00 <a href="" class="curriculum_unit_portlet_link">bla bla bla...</a>
-            </div><br/>
-            <span><%= image_tag "icon_clock.png", :alt=>t(:icon_agenda_event) %></span>
-            <div class="calendar_events_entry">                
-              12:00 <a href="" class="curriculum_unit_portlet_link">bla bla bla...</a>
-            </div><br/>
+    <%#*<span>%>
+      <%#= image_tag "icon_clock.png", :alt=>t(:icon_agenda_event) %>
+    <%#*</span>%>
+    <div class="calendar_events_entry">
 
-          </div>            
-        </div>
+      <a href="" class="curriculum_unit_portlet_link">
+
+        bla bla bla...</a>
+
+    </div><br/>
+
+    
+    <div class="calendar_events_entry">
+    </div><br/>
+
+  </div>
+</div>
