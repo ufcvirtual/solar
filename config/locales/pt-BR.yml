@@ -221,7 +221,7 @@
   message_select_read: "Lidas"
   message_select_unread: "Não lidas"
   message_none: "Nenhuma mensagem encontrada"
-  message_no_new: "Nenhuma nova messagem"
+  message_no_new: "Nenhuma nova mensagem"
 
   message_new_title: "Nova mensagem"
   message_send: "Enviar"
