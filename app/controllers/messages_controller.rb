@@ -181,7 +181,6 @@ class MessagesController < ApplicationController
     end    
   end
 
-=begin SO PARA TESTE
   def send_message
     if !params[:to].nil? && !params[:to].empty?
       to = params[:to]
@@ -191,74 +190,8 @@ class MessagesController < ApplicationController
       #apenas usuarios que sao cadastrados no ambiente; se algum destinarario nao eh, nao envia...
       real_receivers = ""
 
-      #troca ";" por "," para split e envio para destinatarios
-      to.gsub(";", ",")
-
-      #divide destinatarios
-      individual_to = to.split(",").map{|r|r.strip}
-
-      update_tab_values
-      label_name = get_label_name(@curriculum_unit_id, @offer_id, @group_id)
-
-      #informacoes do usuario atual para identificacao na msg
-      atual_user = User.find(current_user.id)
-      message_header = "<b>" + t(:message_header) + atual_user.name + " [" + atual_user.email + "]</b><br/>"
-      if label_name != ""
-        message_header << "[" + label_name + "]<br/>"
-      end
-      message_header << "________________________________________________________________________<br/><br/>"
-
-      #":requires_new => true" permite rollback
-
-          #salva nova mensagem
-          new_message = Message.new :subject => subject, :content => message, :send_date => DateTime.now
-          new_message.save!
-
-          original_message_id = params[:id]
-
-          # ******************************************************************************************
-          # verificar se tem permissao para esse original_message_id *********************************
-          # para cada arquivo, copiar fisicamente                    *********************************
-          # ******************************************************************************************
-
-          #recupera arquivos da mensagem original, caso esteja encaminhando ou respondendo
-          unless original_message_id.nil?
-            files = get_files(original_message_id)
-            unless files.nil?
-              files.each do |f|
-                message_file = MessageFile.new
-                message_file[:message_file_name] = f.message_file_name
-                message_file[:message_content_type] = f.message_content_type
-                message_file[:message_file_size] = f.message_file_size
-                message_file[:original_name] = f.original_name # remover esse campo daqui e da migrate
-                message_file[:message_id] = new_message.id
-                message_file.save!
-              end
-            end
-          end
-
-          #recupera os arquivos anexados
-          unless params[:attachment].nil?
-            params[:attachment].each do |file|
-              message_file = MessageFile.new Hash["message", file[1]]
-              message_file[:original_name] = "" # remover esse campo daqui e da migrate
-              message_file[:message_id] = new_message.id
-              message_file.save!
-            end
-          end
-
-    end
-  end
-=end
-
-  def send_message
-    if !params[:to].nil? && !params[:to].empty?
-      to = params[:to]
-      subject = params[:subject]
-      message = params[:newMessageTextBox]
-
-      #apenas usuarios que sao cadastrados no ambiente; se algum destinarario nao eh, nao envia...
-      real_receivers = ""
+      #anexos de mensagem original quando encaminhando ou respondendo mensagem
+      all_files_destiny = ""
 
       #troca ";" por "," para split e envio para destinatarios
       to.gsub(";", ",")
@@ -284,26 +217,37 @@ class MessagesController < ApplicationController
           new_message = Message.new :subject => subject, :content => message, :send_date => DateTime.now
           new_message.save!
 
-          original_message_id = params[:id]
-
           # ******************************************************************************************
-          # verificar se tem permissao para esse original_message_id *********************************
-          # para cada arquivo, copiar fisicamente                    *********************************
-          # talvez: apagar arquivo caso haja rollback                *********************************
+          # verificar se tem permissao para esse original_message_id ****************************** ok
+          # para cada arquivo, copiar fisicamente                    ****************************** ok
+          # talvez: apagar arquivo caso haja rollback                ****************************** ok
+          # enviar os anexos por email                               *********************************
           # ******************************************************************************************
 
           #recupera arquivos da mensagem original, caso esteja encaminhando ou respondendo
+          original_message_id = params[:id]          
           unless original_message_id.nil?
-            files = get_files(original_message_id)
-            unless files.nil?
-              files.each do |f|
-                message_file = MessageFile.new
-                message_file[:message_file_name] = f.message_file_name
-                message_file[:message_content_type] = f.message_content_type
-                message_file[:message_file_size] = f.message_file_size
-                message_file[:original_name] = f.original_name # remover esse campo daqui e da migrate
-                message_file[:message_id] = new_message.id
-                message_file.save!
+            #verifica permissao na mensagem original
+            if has_permission(original_message_id)
+              files = get_files(original_message_id)
+              unless files.nil?
+                files.each do |f|
+                  message_file = MessageFile.new
+                  message_file[:message_file_name] = f.message_file_name
+                  message_file[:message_content_type] = f.message_content_type
+                  message_file[:message_file_size] = f.message_file_size
+                  message_file[:original_name] = f.original_name # remover esse campo daqui e da migrate
+                  message_file[:message_id] = new_message.id
+                  message_file.save!
+
+                  origin  = "#{Rails.root}/media/message/" + f.id.to_s + "_" + f.message_file_name
+                  destiny = "#{Rails.root}/media/message/" + message_file.id.to_s + "_" + f.message_file_name                  
+                  #copia fisicamente arquivo do anexo original
+                  FileUtils.cp origin, destiny
+                  #guardar arquivos de destino para apagar no caso de rollback
+                  all_files_destiny << ";" unless all_files_destiny.empty?
+                  all_files_destiny << destiny
+                end
               end
             end
           end
@@ -376,6 +320,12 @@ class MessagesController < ApplicationController
 
         rescue
           flash[:notice] = t(:message_send_error)
+          # apaga arquivos copiados fisicamente de mensagem original quando ha rollback
+          unless all_files_destiny.empty?
+            all_files_destiny.split(";").each{ |f|
+              File.delete(f)
+              }
+          end
           # efetua rollback
           raise ActiveRecord::Rollback
         else
@@ -401,7 +351,7 @@ class MessagesController < ApplicationController
     file_ = MessageFile.find(file_id)
     filename = file_.message_file_name
 
-    prefix_file = file_.id # id da tabela discussion_post_file para diferenciar os arquivos
+    prefix_file = file_.id # id da tabela message_files para diferenciar os arquivos
     path_file = "#{::Rails.root.to_s}/media/message/"
 
     redirect_error = {:action => 'show', :id => params[:id], :idFile => file_id}

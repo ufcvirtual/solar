@@ -97,11 +97,12 @@
   //// Manipulação de arquivos anexos ///////////////////////////////
   var numFileFields = 0;
   function appendFileField(){
+    var cancel_text = "<%=t(:message_cancel)%>"
     newElementId = 'attachment_' + numFileFields;
     newElementName = 'attachment[' + numFileFields + ']';
     newElement = '<div id="'+ newElementId +'_container">';
     newElement += '<input id="' + newElementId + '" type="file" name="' + newElementName + '" style="display:none;"/>';
-    newElement += '<a href="#" onclick="removeFileField(\''+newElementId+'\');return false;">*** cancelar ***</a>';
+    newElement += ' <a href="#" class="message_link" onclick="removeFileField(\''+newElementId+'\');return false;">' + cancel_text + '</a>';
     newElement += '</div>';
     $("#link_upload").after(newElement)
     $("#"+newElementId).slideDown('fast');//exibindo campo de upload
