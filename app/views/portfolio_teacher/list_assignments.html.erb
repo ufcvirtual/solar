@@ -99,9 +99,9 @@
   </div>
 
   <!-- Informacoes -->
+
   <div id="portfolio" class="portfolio portfolio_activity_list">
     <hr class="portfolio_line" />
-
     <table width="100%" cellspacing="0">
       <thead>
         <tr>
@@ -114,14 +114,16 @@
           <tr class="rowtable_<%= (idx % 2 == 0) ? 'even' : 'odd' %>">
             <td class="td_blue_portfolio"><%= discussion["name"] %></td>
             <td class="td_blue_portfolio show_posts" align="center">
-              <%=link_to discussion["qtd"], {:controller => :discussions, :action => :show_posts, :id => discussion["discussion_id"], :student_id => @student.id} %>
+              <%=(discussion["qtd"].to_i > 0) ? link_to(discussion["qtd"],
+                {:controller => :discussions, :action => :show_posts,
+                 :id => discussion["discussion_id"], :student_id => @student.id}) : discussion["qtd"] %>
             </td>
           </tr>
         <% end %>
       </tbody>
     </table>
-
   </div>
+
 </div>
 
 <!-- Apresentacao dos posts do aluno -->
@@ -148,11 +150,6 @@
             if (parseInt(response.status) != 200) {
               alert('Erro ao tentar consultar');
             }
-
-            // fechar a janela de exibicao
-            $('#window_close').click(function(){
-              $('#all_posts').css('display', 'none');
-            });
           }
         });
 
@@ -163,174 +160,3 @@
     });
   </script>
 </div>
-
-<!--
-<div class="ep-recl-dialog" tabindex="0" role="dialog" aria-labelledby=":2k" style="left: 426.5px; top: 190px; ">
-  <div class="ep-recl-dialog-title ep-recl-dialog-title-draggable" id=":2k">
-    <span class="ep-recl-dialog-title-text">Repetir</span>
-    <span class="ep-recl-dialog-title-close">
-    </span>
-  </div>
-  <div class="ep-recl-dialog-content">
-    <div id=":24.editordialog">
-      <table class="ep-rec">
-        <tbody>
-          <tr>
-            <th>Repetição:</th>
-            <td>
-              <select id=":2n.frequency">
-                <option value="0">Todos os dias</option>
-                <option value="1">Todos os dias da semana (seg. a sex.)</option>
-                <option value="2">Todas as segundas, quartas e sextas.</option>
-                <option value="3">Todas as terças e quintas.</option>
-                <option value="4">Semanal:</option>
-                <option value="5">Mensal</option>
-                <option value="6">Anual</option>
-              </select>
-            </td>
-          </tr>
-        </tbody>
-        <tbody>
-          <tr>
-            <th>Repete a cada:</th>
-            <td>
-              <select id=":2o.interval">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-                <option value="24">24</option>
-                <option value="25">25</option>
-                <option value="26">26</option>
-                <option value="27">27</option>
-                <option value="28">28</option>
-                <option value="29">29</option>
-                <option value="30">30</option>
-              </select>
-              <label>semanas</label>
-            </td>
-          </tr>
-          <tr>
-            <th>Repete:</th>
-            <td id=":2o.checkboxes">
-              <div>
-                <span class="">
-                  <input id=":2o.dow0" name="SU" type="checkbox">
-                  <label for=":2o.dow0">D</label>
-                </span>
-                <span class="">
-                  <input id=":2o.dow1" name="MO" type="checkbox">
-                  <label for=":2o.dow1">S</label>
-                </span>
-                <span class="">
-                  <input id=":2o.dow2" name="TU" type="checkbox" checked="">
-                  <label for=":2o.dow2">T</label>
-                </span>
-                <span class="">
-                  <input id=":2o.dow3" name="WE" type="checkbox">
-                  <label for=":2o.dow3">Q</label>
-                </span>
-                <span class="">
-                  <input id=":2o.dow4" name="TH" type="checkbox">
-                  <label for=":2o.dow4">Q</label>
-                </span>
-                <span class="">
-                  <input id=":2o.dow5" name="FR" type="checkbox">
-                  <label for=":2o.dow5">S</label>
-                </span>
-                <span class="">
-                  <input id=":2o.dow6" name="SA" type="checkbox">
-                  <label for=":2o.dow6">S</label>
-                </span>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <th>Início em:</th>
-            <td>
-              <input id=":2o.rstart" size="10" disabled="" autocomplete="off">
-            </td>
-          </tr>
-          <tr>
-            <th class="ep-rec-ends-th">Termina:</th>
-            <td>
-              <span class="ep-rec-ends-opt">
-                <input id=":2o.endson_never" name="endson" type="radio" checked="">
-                <label for=":2o.endson_never">Sempre</label>
-              </span>
-              <span class="ep-rec-ends-opt">
-                <input id=":2o.endson_count" name="endson" type="radio">
-                <label for=":2o.endson_count">Após <input id=":2o.endson_count_input" size="3" value="" disabled=""> ocorrências</label>
-              </span>
-              <span class="ep-rec-ends-opt">
-                <input id=":2o.endson_until" name="endson" type="radio">
-                <label for=":2o.endson_until">Em <input id=":2o.endson_until_input" size="10" value="" disabled="" autocomplete="off">
-                </label>
-              </span>
-            </td>
-          </tr>
-          <tr>
-            <th>Resumo:</th>
-            <td class="ep-rec-summary">Semanal: cada terça-feira</td>
-          </tr>
-        </tbody>
-        <tbody>
-          <tr>
-            <th>
-            </th>
-            <td class="ep-rec-buttons-padding">
-              <div>
-                <div class="goog-inline-block goog-imageless-button" title="" role="button" style="-webkit-user-select: none; " tabindex="0">
-                  <div class="goog-inline-block goog-imageless-button-outer-box">
-                    <div class="goog-inline-block goog-imageless-button-inner-box">
-                      <div class="goog-imageless-button-pos">
-                        <div class="goog-imageless-button-top-shadow">&nbsp;</div>
-                        <div class="goog-imageless-button-content">Concluído</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="goog-inline-block goog-imageless-button" title="" role="button" style="-webkit-user-select: none; " tabindex="0">
-                  <div class="goog-inline-block goog-imageless-button-outer-box">
-                    <div class="goog-inline-block goog-imageless-button-inner-box">
-                      <div class="goog-imageless-button-pos">
-                        <div class="goog-imageless-button-top-shadow">&nbsp;</div>
-                        <div class="goog-imageless-button-content">Cancelar</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div class="ep-recl-dialog-buttons">
-    <button name="ok" class="goog-buttonset-default">OK</button>
-    <button name="cancel">Cancel</button>
-  </div>
-  <span tabindex="0">
-  </span>
-</div>
--->

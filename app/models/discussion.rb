@@ -20,8 +20,7 @@ class Discussion < ActiveRecord::Base
              t2.discussion_name AS name,
              COUNT(t1.id) AS qtd
         FROM discussion_posts AS t1
-        JOIN cte_discussions  AS t2 ON t2.discussion_id = t1.discussion_id
-       WHERE user_id = #{student_id}
+  RIGHT JOIN cte_discussions  AS t2 ON t2.discussion_id = t1.discussion_id AND t1.user_id = #{student_id}
        GROUP BY t2.discussion_id, t2.discussion_name
 SQL
 
