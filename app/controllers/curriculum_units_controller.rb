@@ -96,7 +96,11 @@ class CurriculumUnitsController < ApplicationController
    
     # retorna participantes da turma (que nao sejam responsaveis)
     responsible = false
-    @participants = class_participants params[:id], responsible, offers_id, groups_id
+    
+    # Temporário: garantindo que haverá um grupo, pois futuramente será necessário escolher um grupo para visualizar os participantes
+    groups_id = Group.find_by_offer_id(offers_id).id unless !groups_id.nil?
+       
+    @participants = class_participants groups_id, responsible
 
     # pegando valores pela url:
     #@participants = class_participants params[:id], responsible, params[:offers_id], params[:groups_id]
@@ -114,8 +118,11 @@ class CurriculumUnitsController < ApplicationController
 
     # localiza responsavel
     responsible = true
-    @responsible = class_participants params[:id], responsible, offers_id, groups_id
-
+    # Temporário: garantindo que haverá um grupo, pois futuramente será necessário escolher um grupo para visualizar os participantes
+    groups_id = Group.find_by_offer_id(offers_id).id unless !groups_id.nil?
+       
+    @responsible = class_participants groups_id, responsible
+    
     # pegando valores pela url:
     #@responsible = class_participants params[:id], responsible, params[:offers_id], params[:groups_id]
   end
