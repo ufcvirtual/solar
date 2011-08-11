@@ -4,7 +4,7 @@ class SchedulesController < ApplicationController
 
     @curriculum_unit = CurriculumUnit.find(params[:id])
 
-    @schedule = Schedule.all_by_group_id_and_user_id(1, 1)
+    @schedule = Schedule.all_by_group_id_and_user_id(1, 1, 3)
     
 #    # pegando dados da sessao e nao da url
 #   @groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
