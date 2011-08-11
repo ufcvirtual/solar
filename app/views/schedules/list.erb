@@ -2,7 +2,6 @@
 &nbsp;
 <div id="agenda_body" style="background-color: #FFF">
   <span class="page_title"><%= t(:agenda_title)%></span> <span class="page_title"><%=@curriculum_unit.name%></span>
-  <br/>
 
 <%#*<div id="agenda_new_activity">%>
 <%#*<div style="margin-left: 9px;margin-top: 3px;">%>
@@ -10,72 +9,76 @@
 <%#*</div>%>
 <%#*</div>%>
 </div>
-<br/>
-&nbsp;
+
 <!-- Conteudo da agenda -->
-<% @schedule.each do |schedule| %>
-  <% if !(schedule.nil?) %>
-    <div id="agenda_content">
-      <div class="agenda_menu_left">
-        <div>
+<div>
+  <br/>
+  <% if !(@schedule.nil? || @schedule.empty?) %>
+    <% @schedule.each do |schedule| %>
+      <div id="agenda_content">
+        <div class="agenda_menu_left">
+          <div>
     <%# "MONTANDO MENU ESQUERDO DE ACORDO COM O TIPO"%>
-          <div class="agenda_menu_left_title">
-            <div class="agenda_icon"><%= image_tag "agenda/Acompanhamento 16x16.png" %> </div>
-            <%  if schedule['schedule_type'] == "discussions" || schedule['schedule_type'] == "lessons" || schedule['schedule_type'] == "assignments" %>
-              <div class="agenda_icon_title"> <%= t(schedule['schedule_type'].to_s) %></div>
-            <% else %>
-              <div class="agenda_icon_title"> <%= t(schedule['name'].to_s) %></div>
-            <% end %>
-          </div>
-          &nbsp;
-          <div class="agenda_menu_left_date">
+            <div class="agenda_menu_left_title">
+              <div class="agenda_icon"><%= image_tag "agenda/Acompanhamento 16x16.png" %> </div>
+              <%  if schedule['schedule_type'] == "discussions" || schedule['schedule_type'] == "lessons" || schedule['schedule_type'] == "assignments" %>
+                <div class="agenda_icon_title"> <%= t(schedule['schedule_type'].to_s) %></div>
+              <% else %>
+                <div class="agenda_icon_title"> <%= t(schedule['name'].to_s) %></div>
+              <% end %>
+            </div>
+            &nbsp;
+            <div class="agenda_menu_left_date">
 
-            <% if schedule['start_date'].to_time.strftime('%d') == schedule['end_date'].to_time.strftime('%d') && schedule['start_date'].to_time.strftime('%m') == schedule['end_date'].to_time.strftime('%m') && schedule['start_date'].to_time.strftime('%Y') == schedule['end_date'].to_time.strftime('%Y') %>
-              <div style="font-weight: bold;font-size: large;margin-left: 42px;"><%= schedule['start_date'].to_time.strftime('%d') %></div>
-              <% status = true%>
-              &nbsp;
-            <% else %>
-              <p><%= schedule['start_date'].to_time.strftime('%d/%b')  %> <%= schedule['end_date'].to_time.strftime('%d/%b') %></p>
-            <% end %>
+              <% if schedule['start_date'].to_time.strftime('%d') == schedule['end_date'].to_time.strftime('%d') && schedule['start_date'].to_time.strftime('%m') == schedule['end_date'].to_time.strftime('%m') && schedule['start_date'].to_time.strftime('%Y') == schedule['end_date'].to_time.strftime('%Y') %>
+                <div style="font-weight: bold;font-size: large;margin-left: 42px;"><%= schedule['start_date'].to_time.strftime('%d') %></div>
+                <% status = true%>
+                &nbsp;
+              <% else %>
+                <p><%= schedule['start_date'].to_time.strftime('%d/%b')  %> <%= schedule['end_date'].to_time.strftime('%d/%b') %></p>
+              <% end %>
 
-            <% if schedule['start_date'].to_time.strftime('%Y') == schedule['end_date'].to_time.strftime('%Y') && status == true %>
-              <p style="margin-top: -10px; padding-left: 27px; font-size: 11px;font-family: 'Trebuchet';"> <%= schedule['end_date'].to_time.strftime('%b %Y') %> </p>
-              <!-- passando de um ano de duração -->
-            <%  else %>
-              <% if schedule['start_date'].to_time.strftime('%d') == schedule['end_date'].to_time.strftime('%d') && schedule['start_date'].to_time.strftime('%m') == schedule['end_date'].to_time.strftime('%m') && (schedule['start_date'].to_time.strftime('%Y') == schedule['end_date'].to_time.strftime('%Y')) %>
-                <p style="margin-top: -10px; padding-left: 30px; font-size: 11px;font-family: 'Trebuchet';"> <%= schedule['end_date'].to_time.strftime('%b %Y') %></p>
+              <% if schedule['start_date'].to_time.strftime('%Y') == schedule['end_date'].to_time.strftime('%Y') && status == true %>
+                <p style="margin-top: -10px; padding-left: 27px; font-size: 11px;font-family: 'Trebuchet';"> <%= schedule['end_date'].to_time.strftime('%b %Y') %> </p>
+                <!-- passando de um ano de duração -->
               <%  else %>
-                <%  if schedule['start_date'].to_time.strftime('%Y') == schedule['end_date'].to_time.strftime('%Y')%>
-                  <p style="margin-top: -10px; padding-left: 35px; font-size: 11px;font-family: 'Trebuchet';"><%=  schedule['start_date'].to_time.strftime('%Y') %></p>
-                <% else %>
-                  <p style="margin-top: -10px; padding-left: 20px; font-size: 11px;font-family: 'Trebuchet';"><%=  schedule['start_date'].to_time.strftime('%Y') %>-<%= schedule['end_date'].to_time.strftime('%Y') %> </p>
+                <% if schedule['start_date'].to_time.strftime('%d') == schedule['end_date'].to_time.strftime('%d') && schedule['start_date'].to_time.strftime('%m') == schedule['end_date'].to_time.strftime('%m') && (schedule['start_date'].to_time.strftime('%Y') == schedule['end_date'].to_time.strftime('%Y')) %>
+                  <p style="margin-top: -10px; padding-left: 30px; font-size: 11px;font-family: 'Trebuchet';"> <%= schedule['end_date'].to_time.strftime('%b %Y') %></p>
+                <%  else %>
+                  <%  if schedule['start_date'].to_time.strftime('%Y') == schedule['end_date'].to_time.strftime('%Y')%>
+                    <p style="margin-top: -10px; padding-left: 35px; font-size: 11px;font-family: 'Trebuchet';"><%=  schedule['start_date'].to_time.strftime('%Y') %></p>
+                  <% else %>
+                    <p style="margin-top: -10px; padding-left: 20px; font-size: 11px;font-family: 'Trebuchet';"><%=  schedule['start_date'].to_time.strftime('%Y') %>-<%= schedule['end_date'].to_time.strftime('%Y') %> </p>
+                  <% end %>
                 <% end %>
               <% end %>
-            <% end %>
 
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="agenda_menu_ritgh">
-        <div class="agenda_menu_ritgh_title">
-          <%= schedule['name'] %><br />
-          <div class="agenda_menu_ritgh_text">
-            <%= schedule['description'] %>
+        <div class="agenda_menu_ritgh">
+          <div class="agenda_menu_ritgh_title">
+            <%= schedule['name'] %><br />
+            <div class="agenda_menu_ritgh_text">
+              <%= schedule['description'] %>
+            </div>
+
           </div>
 
         </div>
 
       </div>
 
-    </div>
+      <div>
+        <br/>
+      </div>
 
+
+    <% end %>
     <div>
-      <br/>
-    </div>
-  <% else %>
-    <% return t(:agenda_null) %>
-  <% end %>
-
-<% end %>
-
+    <% else %>
+      <%= t(:agenda_null) %>
+    <% end %>
+  </div>
+</div>
