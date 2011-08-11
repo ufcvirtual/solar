@@ -532,8 +532,8 @@ class MessagesController < ApplicationController
 
     # se esta com unidade curricular aberta
     if !@curriculum_unit_id.nil? || !@group_id.nil? || !@offer_id.nil?
-      @participants = class_participants @curriculum_unit_id, false, @offer_id, @group_id
-      @responsibles = class_participants @curriculum_unit_id, true,  @offer_id, @group_id
+      @participants = class_participants @group_id, false
+      @responsibles = class_participants @group_id, true
     else
       @all_contacts = User.order("name").find(:all, :joins => :user_contacts,
         :conditions => {:user_contacts => {:user_id => current_user.id}} )
