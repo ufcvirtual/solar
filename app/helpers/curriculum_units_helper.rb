@@ -132,15 +132,26 @@ module CurriculumUnitsHelper
     return participants
   end
   
-  def message_class_participants (curriculum_unit, flag_resp = false, offer_id = nil, group_id = nil)
+  def message_class_participants (user_id, curriculum_unit, flag_resp = false, offer_id = nil, group_id = nil)
     if curriculum_unit
       allocation_tag_id = AllocationTag.find_by_group_id(curriculum_unit).id
       
-      if offer_id
-        allocation_tag_id = AllocationTag.find_by_group_id(offer_id).id
-      elsif group_id
-        allocation_tag_id = AllocationTag.find_by_group_id(group_id).id
+      # allocation_tag_id será a de unidade curricular se houver allocation para o usuário
+      if Allocation.find_by_user_id_and_allocation_tag_id(user_id, allocation_tag_id).nil?
+        if offer_id
+          allocation_tag_id = AllocationTag.find_by_group_id(offer_id).id
+          
+          # allocation_tag_id será a de oferta se houver allocation para o usuário
+          if Allocation.find_by_user_id_and_allocation_tag_id(user_id, allocation_tag_id).nil?
+            if group_id
+              allocation_tag_id = AllocationTag.find_by_group_id(group_id).id
+            end
+          end 
+        elsif group_id # Caso oferta seja nil
+          allocation_tag_id = AllocationTag.find_by_group_id(group_id).id
+        end
       end
+      
       query = "
             SELECT   DISTINCT 
               users.id, users.name as username, users.photo_file_name, users.email, p.name as profilename, p.id as profileid
