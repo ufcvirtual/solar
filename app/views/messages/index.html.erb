@@ -41,7 +41,7 @@
 
                 <%= link_to message.subject,  {:action => 'show', :id => message.id, :search => @search_text},{:class => css_class} %>
               </td>
-              <td style="width:30px"><%=image_tag("message_file.png",:alt=>t(:message_attach)) unless message.original_name.nil?%></td>
+              <td style="width:30px"><%=image_tag("message_file.png",:alt=>t(:message_attach)) unless message.has_attachment==0%></td>
               <td style="width:100px"><%= link_to l(message.send_date, :format => :short),  {:action => 'show', :id => message.id, :search => @search_text},{:class => css_class} %></td>
             </tr>
           <% end %>

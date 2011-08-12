@@ -223,7 +223,8 @@ class MessagesController < ApplicationController
           # verificar se tem permissao para esse original_message_id ****************************** ok
           # para cada arquivo, copiar fisicamente                    ****************************** ok
           # talvez: apagar arquivo caso haja rollback                ****************************** ok
-          # enviar os anexos por email                               *********************************
+          # enviar os anexos por email                               ****************************** ok
+          # verificar permissao no caminho do arquivo
           # ******************************************************************************************
 
           #recupera arquivos da mensagem original, caso esteja encaminhando ou respondendo
@@ -245,7 +246,7 @@ class MessagesController < ApplicationController
                   origin  = f.id.to_s + "_" + f.message_file_name
                   destiny = message_file.id.to_s + "_" + f.message_file_name
                   #copia fisicamente arquivo do anexo original
-                  all_files_destiny = copy_file(origin, destiny, all_files_destiny)
+                  all_files_destiny = copy_file(origin, destiny, all_files_destiny, true)
 
                 end
               end
@@ -256,14 +257,13 @@ class MessagesController < ApplicationController
           unless params[:attachment].nil?
             params[:attachment].each do |file|
               message_file = MessageFile.new Hash["message", file[1]]
-              message_file[:original_name] = "" # remover esse campo daqui e da migrate
+              message_file[:original_name] = file[1].original_filename # remover esse campo daqui e da migrate
               message_file[:message_id] = new_message.id
               message_file.save!
 
               #adiciona arquivos de anexo para encaminhar com o email
-              destiny = Path_Message_Files + message_file.id.to_s + "_" + message_file.message_file_name
-              all_files_destiny << ";" unless all_files_destiny.empty?
-              all_files_destiny << destiny
+              destiny = message_file.id.to_s + "_" + message_file.message_file_name
+              all_files_destiny = copy_file("", destiny, all_files_destiny, false)
 
             end
           end
@@ -365,25 +365,6 @@ class MessagesController < ApplicationController
     
     # recupera arquivo
     download_file(redirect_error, Path_Message_Files, filename, prefix_file)
-  end
-
-  # retorna a label a ser usada na mensagem indicando disciplina, semestre e periodo
-  def get_label_name (curriculum_unit_id = nil, offer_id = nil, group_id = nil)
-    label_name = ""
-    #formato: 2011.1|FOR|Física I
-    if !offer_id.nil?
-      offer = Offer.find(offer_id)
-      label_name << offer.semester.slice(0..5)
-    end
-    if !group_id.nil?
-      group = Group.find(group_id)
-      label_name << '|' << group.code.slice(0..9) << '|'
-    end
-    if !curriculum_unit_id.nil? 
-      curriculum_unit = CurriculumUnit.find(curriculum_unit_id)
-      label_name << curriculum_unit.name.slice(0..15)
-    end
-    return label_name
   end
 
   # metodo chamado por ajax para atualizar contatos
@@ -545,16 +526,17 @@ class MessagesController < ApplicationController
     end
   end
 
-  def copy_file(origin, destiny, all_files_destiny)
-    origin  = Path_Message_Files + origin  # f.id.to_s + "_" + f.message_file_name
-    destiny = Path_Message_Files + destiny # message_file.id.to_s + "_" + f.message_file_name
+  def copy_file(origin, destiny, all_files_destiny, flag_copy = true)
+    origin  = Path_Message_Files + origin 
+    destiny = Path_Message_Files + destiny
 
     #copia fisicamente arquivo do anexo original
-    FileUtils.cp origin, destiny
+    FileUtils.cp origin, destiny unless !flag_copy
 
     #guardar arquivos de destino para apagar no caso de rollback
     all_files_destiny << ";" unless all_files_destiny.empty?
     all_files_destiny << destiny
+
     return all_files_destiny
   end
 

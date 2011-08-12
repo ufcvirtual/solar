@@ -11,7 +11,10 @@ class Notifier < ActionMailer::Base
   def send_mail (recipients, subject, message, message_path, files, from = nil)
     unless files.empty?
       files.split(";").each{ |f|
-        attachments[f.gsub(message_path,'')] = File.read(f)
+        #remove do nome de cada arquivo o caminho, o id e o "_"
+        name_attachment = f.gsub(message_path,'')
+        name_attachment = name_attachment.slice(name_attachment.index("_")+1..name_attachment.length)
+        attachments[name_attachment] = File.read(f)
       }
     end
 
