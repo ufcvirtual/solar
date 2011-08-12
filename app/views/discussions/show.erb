@@ -1,7 +1,7 @@
 <head>
   <script type="text/javascript">
 
- //// Modos de exibição ////////////////////////////////////////////
+    //// Modos de exibição ////////////////////////////////////////////
     function showAsThread() {
       $('#display_mode').attr('value','');
       $('#new_post_form').attr('action','/discussions/show/<%=@discussion["id"]%>');
@@ -14,21 +14,46 @@
       $('#new_post_form').submit();
     }
 
-//// Manipulação de arquivos anexos ///////////////////////////////
+    //// Manipulação de arquivos anexos ///////////////////////////////
     var numFileFields = 0;
-    function appendFileField(target){
+
+    function showUploadForm(discussionId, postId){
+
+      var dialog = '';
+      dialog += '<form accept-charset="UTF-8" action="/discussions/attach_file" enctype="multipart/form-data" method="post" >';
+      dialog +=   '<input type="hidden" value="<%=form_authenticity_token%>" name="authenticity_token">';
+      dialog +=   '<input type="hidden" value="' + discussionId + '" name="id" id="id">';
+      dialog +=   '<input type="hidden" value="' + postId + '" name="post_id" id="post_id">';
+      dialog +=   '<a href="#" class="UploadFileLink"><%=t(:forum_attach_file)%></a><br/>';
+      dialog +=   '<a href="#" class="UploadFileSubmit" onclick="javascript:$(this).parent().submit();return false;">[enviar]</a>';
+      dialog += '</form>';
+
+      showLightBox(dialog,600,400);
+
+      //Botão de inserir novo anexo
+      $('.UploadFileLink').click( function () {
+        anotherFileField(this);
+        return false;
+      });
+    }
+    
+    function anotherFileField(target){
+
       newElementId = 'post_attachment_' + numFileFields;
       newElementName = 'attachment[' + numFileFields + ']';
+
       newElement = '<div id="'+ newElementId +'_container">';
       newElement += '<input id="' + newElementId + '" type="file" name="' + newElementName + '" style="display:none;"/>';
       newElement += '<a href="#" onclick="removeFileField(\''+newElementId+'\');return false;"><%=t(:forum_attach_cancel)%></a>';
       newElement += '</div>';
-      //$("#newPostUploadPanel").append(newElement);
+      
       $(target).after(newElement)
       $("#"+newElementId).slideDown('fast');//exibindo campo de upload
-      $(target).siblings(".UploadFileSubmit").show('fast');//exibindo botão de enviar
+
       numFileFields++;
     }
+
+    
     
     function removeFileField(fieldId){
       $("#"+fieldId+"_container").hide('fast', function(){
@@ -37,7 +62,7 @@
     }
 
 
-//// Manipulação da caixa de edição ///////////////////////////////
+    //// Manipulação da caixa de edição ///////////////////////////////
     function appendRichTextBox(postContainer){
       newFormCode = '' +
         '<div id="new_post_dialog" style="display: none;">' +
@@ -81,7 +106,7 @@
       $('#oldPostDialog').remove();
     }
 
-//// Manipulação de variaveis internas ////////////////////////////
+    //// Manipulação de variaveis internas ////////////////////////////
     function setParentPostId(post_id) {
       $('#parent_post_id').attr('value',post_id);
       $('#update_post_id').attr('value','');
@@ -97,7 +122,7 @@
       $('#discussion_post_id').attr('value', '');
     }
 
-//// Envio de postagens e atualizações ////////////////////////////
+    //// Envio de postagens e atualizações ////////////////////////////
     function sendPost() {
       $('#content').attr('value',$('#newPostTextBox').val());
       //caso de atualização de post
@@ -118,19 +143,13 @@
       $('#new_post_form').submit();
     }
 
-//// Eventos e comportamentos dos links ///////////////////////////
+    //// Eventos e comportamentos dos links ///////////////////////////
     $(document).ready( function () {
 
       //Botões de responder postagem
       $('.postDialogLink').click( function () {
         var postContainer = $(this).parent().parent();
         appendRichTextBox(postContainer);
-      });
-
-      //Botão de editar postagem
-      $('.UploadFileLink').click( function () {
-        appendFileField(this);
-        return false;
       });
 
       //Botão de editar postagem

@@ -455,7 +455,7 @@ a.mysolar_top_link{
 
 #mydata_tab{
     height: 30px;
-    background-color: none;
+    background-color: transparent;
     color: #003E7A;
 }
 
@@ -1169,13 +1169,20 @@ div.alter_photo_text {
     padding-bottom: 30px;
 }
 
-.forum_button{
+.forum_button, .forum_button_attachment{
     color: #1c4785;
     text-decoration: underline;
     font-family:  'Myriad Pro', 'Arial', sans;
     font-size: 15px;
     cursor: pointer;
 }
+
+.forum_button_attachment{
+    font-size: 11px;
+    float: right;
+    margin-right: 15px;
+}
+
 .forum_button_remove{
     color: #922;
 }
@@ -1196,6 +1203,22 @@ div.alter_photo_text {
     min-height: 140px;
     white-space: normal;
     max-width: 640px;
+}
+.forum_post_attachment_line{
+    display:block;
+    height:13px;
+    width:96%;
+    margin:0px;
+    border-bottom:1px solid #CCC;
+    border-top:0px;
+    border-left:0px;
+    border-right:0px;
+}
+
+.forum_post_attachment_empty{
+    color: #666;
+    font-size: 11px;
+    padding-left: 7px;
 }
 
 .forum_post_link_disabled{
@@ -1289,7 +1312,8 @@ div.alter_photo_text {
 }
 
 .forum_post_attachment{
-    -webkit-padding-start:0px;
+    -webkit-padding-start:7px;
+    padding-left:7px;
 }
 
 #new_post_dialog{

@@ -22,4 +22,56 @@ class DiscussionPost < ActiveRecord::Base
 SQL
     return (posts.nil?) ? [] : posts
   end
+
+  #Respostas diretas a um post
+  def self.posts_child(parent_id = -1)
+    #posts = ActiveRecord::Base.connection.select_all
+    posts = DiscussionPost.find_by_sql <<SQL
+      SELECT dp.id, dp.discussion_id, dp.user_id, content, dp.created_at, dp.updated_at, dp.father_id, u.nick as user_nick, u.photo_file_name as photo_file_name, p.name as profile
+             FROM discussion_posts dp
+             INNER JOIN users u on u.id = dp.user_id
+             INNER JOIN profiles p on p.id = dp.profile_id
+             WHERE dp.father_id = #{parent_id}
+       ORDER BY created_at desc
+SQL
+    
+    return (posts.nil?) ? [] : posts
+  end
+
+  #Número de respostas diretas a um post
+  def self.child_count(parent_id = -1)
+
+    count = ActiveRecord::Base.connection.select_one <<SQL
+      SELECT count (*)
+        FROM discussion_posts dp
+       WHERE dp.father_id = '#{parent_id}'
+SQL
+    return (count.nil?) ? 0 : count["count"].to_i
+  end
+
+  #Consulta página de postagens de uma discussion
+  def self.discussion_posts(discussion_id = nil, plain_list = true, page = 1)
+    query = "SELECT dp.id, dp.discussion_id, dp.user_id, content, dp.created_at, dp.updated_at, dp.father_id, u.nick as user_nick, u.photo_file_name as photo_file_name, p.name as profile
+             FROM discussion_posts dp
+             INNER JOIN users u on u.id = dp.user_id
+             INNER JOIN profiles p on p.id = dp.profile_id
+             WHERE dp.discussion_id = '#{discussion_id}'"
+    query << " and father_id is null" unless plain_list
+    query << " order by created_at desc"
+
+    return DiscussionPost.paginate_by_sql(query, {:per_page => Rails.application.config.items_per_page, :page => page})
+  end
+
+  #Consulta número de postagens de uma discussion
+  def self.count_discussion_posts(discussion_id = nil, plain_list = true)
+    discussion_id = discussion_id.to_s
+
+    query = "SELECT count (*) as total
+             FROM discussion_posts dp
+             WHERE dp.discussion_id = #{discussion_id}"
+    query << " and father_id is null" unless plain_list
+    return ActiveRecord::Base.connection.select_one(query)["total"].to_i
+
+  end
+
 end

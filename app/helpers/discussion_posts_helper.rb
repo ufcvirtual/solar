@@ -10,76 +10,61 @@ module DiscussionPostsHelper
     post_string = ""
     childs = {}
     editable = false
-    childs_count = return_child_count(post.id)
+    childs_count = DiscussionPost.child_count(post.id)
     can_interact=true
     
     can_interact= false unless (valid_date)
-  
+
     #Um post pode ser editado se é do próprio usuário e se não possui respostas.
     editable = true if (post.user.id == current_user.id) && (childs_count == 0)
 
     #Recuperando posts filhos para renderização
-    childs = return_posts_child(post[:id]) if threaded
+    childs = DiscussionPost.posts_child(post[:id]) if threaded
 
     #Tratando nick para exibição
     nick = post.user_nick
     nick = nick.slice(0..12) + '...' if nick.length > 15
 
     #Recuperando caminho da foto a ser carregada
-    photo_url = ''
-    if post.photo_file_name
-      photo_url = post.user.photo.url(:medium)
-    else
-      photo_url = 'no_image.png'
-    end
+    photo_url = 'no_image.png'
+    photo_url = post.user.photo.url(:medium) if post.photo_file_name
+
 
     #Montando exibição do post e exibindo respostas recursivamente
-    post_string << '<table border="0" cellpadding="0" cellspacing="0" class="forum_post">
-                    <tr>
-                      <td class="forum_post_head_left">
-                        <span alt="' << post.user_nick << '">' << nick << '</span><br />
-                        <span class="forum_participant_profile" >'<< post.profile << '</span>
-                      </td>
-                      <td class="forum_post_head_right">
-                        <div class="forum_post_date">' << (l post[:updated_at], :format => :discussion_post ) << '</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="forum_post_content_left">'
-    post_string <<      (image_tag photo_url, :alt => t(:mysolar_alt_img_user) + ' ' + post.user_nick)
-    post_string << '     <div class="forum_participants_icons">
-                            <span>' << (link_to (image_tag "icon_profile.png", :alt=>t(:icon_profile))) << '</span>
-                            <span>' << (link_to (image_tag "icon_add_user.png", :alt=>t(:icon_add_participant))) << '</span>
-                            <span>' << (link_to (image_tag "icon_chat.png", :alt=>t(:icon_chat))) << '</span>
-                            <span>' << (link_to (image_tag "icon_message_participant.png", :alt=>t(:icon_send_email))) << '</span>
-                          </div>
-                        </td>
-                        <td class="forum_post_content_right">
-                          <div class="forum_post_inner_content" style="min-height:100px">' << (sanitize post.content) <<' </div>
-                          <div><span style="float:left;"><b>[Anexos]</b></span><hr style="display:block; margin-top:10px;"/>
-                          </div>'
+    post_string << '<table border="0" cellpadding="0" cellspacing="0" class="forum_post">'
+    post_string <<    '<tr>'
+    post_string <<      '<td class="forum_post_head_left">'
+    post_string <<        '<span alt="' << post.user_nick << '">' << nick << '</span><br />'
+    post_string <<        '<span class="forum_participant_profile" >'<< post.profile << '</span>'
+    post_string <<      '</td>'
+    post_string <<      '<td class="forum_post_head_right">'
+    post_string <<        '<div class="forum_post_date">' << (l post[:updated_at], :format => :discussion_post ) << '</div>'
+    post_string <<      '</td>'
+    post_string <<    '</tr>'
+    post_string <<    '<tr>'
+    post_string <<      '<td class="forum_post_content_left">'
+    post_string <<        (image_tag photo_url, :alt => t(:mysolar_alt_img_user) + ' ' + post.user_nick)
+#    post_string <<        '<div class="forum_participants_icons">'
+#    post_string <<        '<span>' << (link_to (image_tag "icon_profile.png", :alt=>t(:icon_profile))) << '</span>'
+#    post_string <<        '<span>' << (link_to (image_tag "icon_add_user.png", :alt=>t(:icon_add_participant))) << '</span>'
+#    post_string <<        '<span>' << (link_to (image_tag "icon_chat.png", :alt=>t(:icon_chat))) << '</span>'
+#    post_string <<        '<span>' << (link_to (image_tag "icon_message_participant.png", :alt=>t(:icon_send_email))) << '</span>'
+#    post_string <<        '</div>'
+    post_string <<      '</td>'
+    post_string <<      '<td class="forum_post_content_right">'
+    post_string <<        '<div class="forum_post_inner_content" style="min-height:100px">' << (sanitize post.content) <<' </div>'
+
     #Apresentando os arquivos do post
-    post_string <<      '<ul class="forum_post_attachment">'
-    unless post.discussion_post_files.count == 0
-      post.discussion_post_files.each do |file|
-        post_string <<   '<li>' << (image_tag "icon_anexo.png", :alt => '').to_s()
-        post_string <<   '<a href="#">'<<(link_to file.attachment_file_name, :controller => "discussions", :action => "download_post_file", :idFile => file.id, :id => @discussion.id)<<'</a>'
-        post_string <<   '&nbsp;&nbsp;' << (link_to '[X]', {:controller => "discussions",
-            :action => "remove_attached_file",
-            :idFile => file.id,
-            :id => @discussion.id},
-          :confirm=>t(:forum_remove_file_confirm)) if editable && can_interact
-        '</li>'
-      end
-    end
-    post_string <<      '</ul>'
-    post_string << show_attachment_form(post[:discussion_id],post[:id]) if editable && can_interact
+    post_string << show_attachments(post, editable, can_interact)
+    
+    #Exibindo botões de edição, resposta e exclusão
+    post_string << show_buttons(editable,can_interact, post)
 
-    post_string << show_buttons(editable,can_interact, post)<< '
-                        </td>
-                      </tr>
-                    </table>'
+    post_string <<      '</td>'
+    post_string <<    '</tr>'
+    post_string <<  '</table>'
 
+    #Renderizando as respostas ao post
     childs.each do |child|
       post_string << '<div class="forum_post_child_ident">' << show_post(child, true) << '</div>'
     end
@@ -87,106 +72,46 @@ module DiscussionPostsHelper
     return post_string
   end
 
-
-  ######## MÉTODOS DE ACESSO À BASE DE DADOS ####################################
-
-  #Recupera os posts de uma discussion.
-  def return_discussion_posts(discussion_id = nil, plain_list = true)
-    query = "SELECT dp.id, dp.discussion_id, dp.user_id, content, dp.created_at, dp.updated_at, dp.father_id, u.nick as user_nick, u.photo_file_name as photo_file_name, p.name as profile
-             FROM discussion_posts dp
-             INNER JOIN users u on u.id = dp.user_id
-             INNER JOIN profiles p on p.id = dp.profile_id
-             WHERE dp.discussion_id = '#{discussion_id}'"
-
-    query << " and father_id is null" unless plain_list
-    query << " order by created_at desc"
-
-    
-    return DiscussionPost.paginate_by_sql(query, {:per_page => Rails.application.config.items_per_page, :page => @current_page})
-
-  end
-  
+  #Utilizado na paginação
   def count_discussion_posts(discussion_id = nil, plain_list = true)
-    discussion_id = discussion_id.to_s
-    
-    query = "SELECT count (*) as total
-             FROM discussion_posts dp
-             WHERE dp.discussion_id = '#{discussion_id}'"
-    query << " and father_id is null" unless plain_list
-    return ActiveRecord::Base.connection.execute(query)[0]["total"]
+    return DiscussionPost.count_discussion_posts(discussion_id, plain_list)
   end
 
-  def return_posts_child(parent_id = -1)
-    query = "SELECT dp.id, dp.discussion_id, dp.user_id, content, dp.created_at, dp.updated_at, dp.father_id, u.nick as user_nick, u.photo_file_name as photo_file_name, p.name as profile
-             FROM discussion_posts dp
-             INNER JOIN users u on u.id = dp.user_id
-             INNER JOIN profiles p on p.id = dp.profile_id
-             WHERE dp.father_id = '#{parent_id}'"
-    query << " order by created_at desc"
-    
-    return DiscussionPost.find_by_sql(query)
-  end
-
-  def return_child_count(parent_id = -1)
-    query = "SELECT dp.id
-             FROM discussion_posts dp
-             WHERE dp.father_id = '#{parent_id}'"
-    return DiscussionPost.count_by_sql(query)
-  end
-  
-  def return_discussions(offer_id, group_id)
-
-    if group_id.nil?
-      group_id = -1
-    end
-    
-    if offer_id.nil?
-      offer_id = -1
-    end
-
-    # retorna os fóruns da turma
-    # at.id as id, at.offer_id as offerid,l.allocation_tag_id as alloctagid,l.type_lesson, privacy,description,
-    query = "SELECT * 
-              FROM 
-                (SELECT d.name, d.id, d.start, d.end, d.description 
-                 FROM discussions d 
-                 INNER JOIN allocation_tags t on d.allocation_tag_id = t.id
-                 INNER JOIN groups g on g.id = t.group_id
-                 WHERE g.id = #{group_id}
-              
-                 UNION ALL
-              
-                 SELECT d.name, d.id, d.start, d.end, d.description 
-                 FROM discussions d 
-                 INNER JOIN allocation_tags t on d.allocation_tag_id = t.id
-                 INNER JOIN offers o on o.id = t.offer_id
-                 WHERE o.id = #{offer_id}
-                ) as available_discussions
-              ORDER BY start;"
-
-    return Discussion.find_by_sql(query)
-
-  end
-
-  # Consultas para portlets
+  #Utilizado nas consultas para portlets
   def list_portlet_discussion_posts(offer_id, group_id)
-    discussions = return_discussions(offer_id, group_id)    
+    discussions = Discussion.all_by_offer_id_and_group_id(offer_id, group_id)
     return DiscussionPost.order('updated_at DESC').limit(Rails.application.config.items_per_page.to_i).find_all_by_discussion_id(discussions)
   end
   
   private
-  #Form de upload de arquivos dentro de um post
-  def show_attachment_form(discussion_id = -1, post_id = -1)
-    form_string = ''
-    form_string << '<div>
-                      <form accept-charset="UTF-8" action="/discussions/attach_file" enctype="multipart/form-data" method="post" >
-                      <input type="hidden" value="'<<form_authenticity_token<<'" name="authenticity_token">
-                      <input type="hidden" value="'<< discussion_id.to_s() <<'" name="id" id="id">
-                      <input type="hidden" value="'<< post_id.to_s << '" name="post_id" id="post_id">
-                      <a href="#" class="UploadFileLink">'<<t(:forum_attach_file)<<'</a><br/>
-                      <a href="#" style="display:none;" class="UploadFileSubmit" onclick="javascript:$(this).parent().submit();return false;">[enviar]</a>
-                      </form>
-                   </div>'
+  #Link para o lightbox de upload
+  def show_attachments(post = nil, editable = false, can_interact = false)
+    #Cabeçalho
+    form_string =  '<div style="display:table;width:100%;">'
+    form_string <<   '<span style="display:table-cell;width:10px;"><b>' << t(:forum_file_list) << '</b></span>'
+    form_string <<   '<span style="display:table-cell;padding-left:2%">'
+    form_string <<    '<hr class="forum_post_attachment_line"/>'
+    form_string <<   '</span>'
+    form_string << '</div>'
+
+    #Link para lightbox
+    form_string << '<a href="#" class="forum_button_attachment" onclick="showUploadForm(\''<< post[:discussion_id].to_s << '\',\'' << post[:id].to_s << '\');">'<< t(:forum_attach_file) << '&nbsp;' << (image_tag "more.png", :alt => t(:forum_attach_file)) << '</a>' if editable && can_interact
+
+    #Lista de arquivos
+    unless post.discussion_post_files.count == 0
+      form_string <<      '<ul class="forum_post_attachment">'
+      post.discussion_post_files.each do |file|
+        form_string <<   '<li>'
+        form_string <<   '<a href="#">'<<(link_to file.attachment_file_name, :controller => "discussions", :action => "download_post_file", :idFile => file.id, :id => @discussion.id)<<'</a>&nbsp;&nbsp;'
+        form_string <<   (link_to (image_tag "discussion_file_remove.png", :alt => t(:forum_remove_file)), {:controller => "discussions", :action => "remove_attached_file", :idFile => file.id, :id => @discussion.id}, :confirm=>t(:forum_remove_file_confirm), :title => t(:forum_remove_file)) if editable && can_interact
+        form_string <<   '</li>'
+      end
+      form_string <<      '</ul>'
+    else
+      form_string << "<p class=\"forum_post_attachment_empty\">#{t(:forum_empty_file_list)}</p>"
+    end
+    
+
     return form_string
   end
 
@@ -214,7 +139,6 @@ module DiscussionPostsHelper
   end
   
   #Verifica se a messagem foi postada hoje ou não!
-  
   def posted_today?(message_datetime)
     message_datetime === Date.today
   end

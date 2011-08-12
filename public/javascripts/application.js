@@ -1,3 +1,42 @@
+//Renderiza uma lightbox na página
+
+function showLightBox(content, width, height, canClose){
+    if (width == null)
+        width = 500;
+    if (height == null)
+        height = 500;
+    if (canClose == null)
+        canClose = true;
+
+    var halfWidth = Math.floor(width/2);
+    var halfHeight = Math.floor(height/2);
+    var modalClose = '';
+    var lightBox = '';
+    var dialog = '';
+    
+    if (canClose)
+        modalClose = 'onclick="removeLightBox();" ';
+
+    removeLightBox();
+    dialog = '<div id="lightBoxDialog" style="border:1px solid #000;display:none;width:'+width+'px;height:'+height+'px;background-color:#AAA;position:absolute;z-index:1001;top:50%; left:50%; margin-top:-'+halfHeight+'px;margin-left:-'+halfWidth+'px;">'+ content + '</div>'
+    lightBox = '<div id="lightBoxBackground" ' + modalClose + ' style="display:none;width:100%;height:100%;position:fixed;top:0px;left:0px;background-color:#000;z-index:1000;">&nbsp;</div>';
+    lightBox += dialog;
+    $(document.body).append(lightBox);
+    $("#lightBoxBackground").fadeTo("400", 0.7, function() {
+        $("#lightBoxDialog").slideDown("400");
+    });
+
+}
+
+function removeLightBox(){
+    $("#lightBoxDialog").slideUp("400", function() {
+        $("#lightBoxBackground").fadeOut("400", function() {
+            $('#lightBoxBackground').remove();
+            $('#lightBoxDialog').remove();
+        });
+    });
+}
+
 // window file uploads
 jQuery.fn.window_upload_files = function(options) {
     // default values

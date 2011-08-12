@@ -58,9 +58,9 @@ class DiscussionsController < ApplicationController
 
     @discussion = Discussion.find(discussion_id)
     if @display_mode == "PLAINLIST"
-      @posts = return_discussion_posts(@discussion.id, true)
+      @posts = DiscussionPost.discussion_posts(@discussion.id, true,@current_page)
     else
-      @posts = return_discussion_posts(@discussion.id, false)
+      @posts = DiscussionPost.discussion_posts(@discussion.id, false,@current_page)
     end
   end
 
