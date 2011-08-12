@@ -220,10 +220,6 @@ class MessagesController < ApplicationController
           new_message.save!
 
           # ******************************************************************************************
-          # verificar se tem permissao para esse original_message_id ****************************** ok
-          # para cada arquivo, copiar fisicamente                    ****************************** ok
-          # talvez: apagar arquivo caso haja rollback                ****************************** ok
-          # enviar os anexos por email                               ****************************** ok
           # verificar permissao no caminho do arquivo
           # ******************************************************************************************
 
@@ -239,7 +235,6 @@ class MessagesController < ApplicationController
                   message_file[:message_file_name] = f.message_file_name
                   message_file[:message_content_type] = f.message_content_type
                   message_file[:message_file_size] = f.message_file_size
-                  message_file[:original_name] = f.original_name # remover esse campo daqui e da migrate
                   message_file[:message_id] = new_message.id
                   message_file.save!
 
@@ -257,7 +252,6 @@ class MessagesController < ApplicationController
           unless params[:attachment].nil?
             params[:attachment].each do |file|
               message_file = MessageFile.new Hash["message", file[1]]
-              message_file[:original_name] = file[1].original_filename # remover esse campo daqui e da migrate
               message_file[:message_id] = new_message.id
               message_file.save!
 

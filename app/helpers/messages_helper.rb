@@ -3,9 +3,9 @@ module MessagesHelper
   def return_messages (userid, type='index', tag=nil, search_text='')
 
     query_fields = "select distinct m.*, usm.user_id, u.name, u.nick,ml.title label,
-        (select count(original_name) from message_files where message_id = m.id)has_attachment,
-        cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)ehorigem,
-        cast( usm.status & '#{Message_Filter_Read.to_s(2)}' as boolean)ehlida,
+        (select count(message_file_name) from message_files where message_id = m.id)has_attachment,
+        cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)was_sent,
+        cast( usm.status & '#{Message_Filter_Read.to_s(2)}' as boolean)was_read,
         (select users.name from users inner join user_messages ON users.id = user_messages.user_id
         where user_messages.message_id = m.id and cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean))sender"
 

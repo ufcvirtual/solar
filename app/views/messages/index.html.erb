@@ -14,7 +14,7 @@
             <tr class="message_line">
 
               <td style="width:30px"><%=check_box_tag 'checkbox_message', message.id, checked = false, {:class => 'selected_messages'}%>
-                <% if message.ehlida == 't' %>
+                <% if message.was_read == 't' %>
                   <% css_class = "message_read" %>
                 <% else %>
                   <% css_class = "message_unread" %>
@@ -26,7 +26,7 @@
               <td>
                 
                 <% if !@search_text.empty? %>
-                  <% if message.ehorigem == 't' %>
+                  <% if message.was_sent == 't' %>
                     <%=image_tag("icon_message_inbox_small.png",:alt=>'')%>
                   <% else %>
                     <%=image_tag("icon_message_sent_small.png",:alt=>'')%>
@@ -41,7 +41,7 @@
 
                 <%= link_to message.subject,  {:action => 'show', :id => message.id, :search => @search_text},{:class => css_class} %>
               </td>
-              <td style="width:30px"><%=image_tag("message_file.png",:alt=>t(:message_attach)) unless message.has_attachment==0%></td>
+              <td style="width:30px"><%=image_tag("message_file.png",:alt=>t(:message_attach)) unless (message.has_attachment=="0")%></td>
               <td style="width:100px"><%= link_to l(message.send_date, :format => :short),  {:action => 'show', :id => message.id, :search => @search_text},{:class => css_class} %></td>
             </tr>
           <% end %>
