@@ -8,7 +8,13 @@ class Notifier < ActionMailer::Base
 			 :body => txt_body) 
 	end
 
-  def send_mail (recipients, subject, message, from = nil)
+  def send_mail (recipients, subject, message, message_path, files, from = nil)
+    unless files.empty?
+      files.split(";").each{ |f|
+        attachments[f.gsub(message_path,'')] = File.read(f)
+      }
+    end
+
     if !from.nil?
       mail(:to => recipients, :from => from,
            :subject => "[SOLAR] #{subject}") do |format|

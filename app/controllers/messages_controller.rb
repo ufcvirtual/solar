@@ -11,6 +11,8 @@ class MessagesController < ApplicationController
 
   # nao precisa usar load_and_authorize_resource pq todos tem acesso
 
+  Path_Message_Files = "#{::Rails.root.to_s}/media/message/"
+
   # listagem de mensagens (entrada, enviados, lixeira)
   def index
     #recebe tipo de msg a ser consultada
@@ -240,13 +242,11 @@ class MessagesController < ApplicationController
                   message_file[:message_id] = new_message.id
                   message_file.save!
 
-                  origin  = "#{Rails.root}/media/message/" + f.id.to_s + "_" + f.message_file_name
-                  destiny = "#{Rails.root}/media/message/" + message_file.id.to_s + "_" + f.message_file_name                  
+                  origin  = f.id.to_s + "_" + f.message_file_name
+                  destiny = message_file.id.to_s + "_" + f.message_file_name
                   #copia fisicamente arquivo do anexo original
-                  FileUtils.cp origin, destiny
-                  #guardar arquivos de destino para apagar no caso de rollback
-                  all_files_destiny << ";" unless all_files_destiny.empty?
-                  all_files_destiny << destiny
+                  all_files_destiny = copy_file(origin, destiny, all_files_destiny)
+
                 end
               end
             end
@@ -259,6 +259,12 @@ class MessagesController < ApplicationController
               message_file[:original_name] = "" # remover esse campo daqui e da migrate
               message_file[:message_id] = new_message.id
               message_file.save!
+
+              #adiciona arquivos de anexo para encaminhar com o email
+              destiny = Path_Message_Files + message_file.id.to_s + "_" + message_file.message_file_name
+              all_files_destiny << ";" unless all_files_destiny.empty?
+              all_files_destiny << destiny
+
             end
           end
 
@@ -284,6 +290,8 @@ class MessagesController < ApplicationController
               end
             end
           end
+
+#raise ActiveRecord::Rollback
 
           #para salvar destinatarios individualmente - pegar o id
           UserMessage.transaction(:requires_new => true) do
@@ -334,7 +342,7 @@ class MessagesController < ApplicationController
           else
             flash[:notice] = t(:message_send_ok)
             # envia email apenas uma vez, em caso de sucesso da gravacao no banco
-            Notifier.deliver_send_mail(real_receivers, subject, message_header + message) unless real_receivers.empty? #, from = nil            
+            Notifier.deliver_send_mail(real_receivers, subject, message_header + message, Path_Message_Files, all_files_destiny) unless real_receivers.empty? #, from = nil
           end
         end
       end
@@ -352,12 +360,11 @@ class MessagesController < ApplicationController
     filename = file_.message_file_name
 
     prefix_file = file_.id # id da tabela message_files para diferenciar os arquivos
-    path_file = "#{::Rails.root.to_s}/media/message/"
 
     redirect_error = {:action => 'show', :id => params[:id], :idFile => file_id}
     
     # recupera arquivo
-    download_file(redirect_error, path_file, filename, prefix_file)
+    download_file(redirect_error, Path_Message_Files, filename, prefix_file)
   end
 
   # retorna a label a ser usada na mensagem indicando disciplina, semestre e periodo
@@ -536,6 +543,19 @@ class MessagesController < ApplicationController
       flash[:error] = t(:no_permission)
       redirect_to :action => "index"
     end
+  end
+
+  def copy_file(origin, destiny, all_files_destiny)
+    origin  = Path_Message_Files + origin  # f.id.to_s + "_" + f.message_file_name
+    destiny = Path_Message_Files + destiny # message_file.id.to_s + "_" + f.message_file_name
+
+    #copia fisicamente arquivo do anexo original
+    FileUtils.cp origin, destiny
+
+    #guardar arquivos de destino para apagar no caso de rollback
+    all_files_destiny << ";" unless all_files_destiny.empty?
+    all_files_destiny << destiny
+    return all_files_destiny
   end
 
 end
