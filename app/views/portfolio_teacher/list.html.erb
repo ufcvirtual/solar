@@ -8,9 +8,8 @@
 <!-- Portfolio -->
 <div>
   <div class="portfolio_header_content">
-    <div class="portfolio_title">
-      alunos da turma
-    </div> <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+    <div class="portfolio_title"><%= t(:group) %>&nbsp;<%= @group.code %></div>
+    <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
   </div>
 
   <!-- lista de alunos -->
@@ -23,7 +22,7 @@
 
           <% class_name = ((idx % 2) == 0) ? 'rowtable_even' : 'rowtable_odd' %>
           <tr class="<%= class_name %>">
-            <td><%=link_to student["name"], {:action => :list_assignments, :id => student["id"]} %></td>
+            <td><%=link_to student["name"], {:controller => :scores, :action => :index, :student_id => student["id"]} %></td>
             <td>icon</td>
           </tr>
         <% end %>

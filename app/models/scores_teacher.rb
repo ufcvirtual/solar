@@ -3,10 +3,9 @@ class ScoresTeacher < ActiveRecord::Base
   set_table_name "assignment_comments"
 
   # Listagem dos alunos por turma
-  def self.list_students_by_group_id(group_id, page = 1)
+  def self.list_students_by_curriculum_unit_id_and_group_id(curriculum_unit_id, group_id, page = 1)
 
     sql = <<SQL
-    -- todas as atividades do grupo
     WITH cte_assignments AS (
       SELECT t2.id              AS allocation_tag_id,
              t1.id              AS assignment_id,
@@ -59,17 +58,27 @@ class ScoresTeacher < ActiveRecord::Base
      LEFT JOIN send_assignments     AS t3 ON t3.assignment_id = t1.assignment_id AND t3.user_id = t2.student_id
      LEFT JOIN assignment_files     AS t4 ON t4.send_assignment_id = t3.id
          ORDER BY t2.student_id, t1.start_date
-    )
+    ),
+    -- acessos de cada aluno no curso
+    cte_access AS (
+        SELECT t1.student_id,
+               count(t2.id) AS cnt_access
+          FROM cte_students AS t1
+     LEFT JOIN logs AS t2 ON t2.user_id = t1.student_id AND log_type = 3 AND curriculum_unit_id = #{curriculum_unit_id}
+         GROUP BY t1.student_id
+         )
     --
     SELECT t1.student_id,
            t1.student_name,
-           translate(array_agg(t1.grade)::text,'{}','')              AS grades,
-           translate(array_agg(t1.assignment_id)::text,'{}','')      AS assignment_ids,
+           translate(array_agg(t1.grade)::text,'{}','')                  AS grades,
+           translate(array_agg(t1.assignment_id)::text,'{}','')          AS assignment_ids,
            translate(array_agg(t1.send_assignment_id)::text,'{}NULL','') AS send_assignment_ids,
-           t2.cnt_public_files
+           t2.cnt_public_files,
+           t3.cnt_access
       FROM cte_grades                   AS t1
       JOIN cte_public_files             AS t2 ON t2.student_id = t1.student_id
-     GROUP BY t1.student_id, t1.student_name, t2.cnt_public_files
+      JOIN cte_access                   AS t3 ON t3.student_id = t1.student_id
+     GROUP BY t1.student_id, t1.student_name, t2.cnt_public_files, t3.cnt_access
      ORDER BY t1.student_name
 SQL
 

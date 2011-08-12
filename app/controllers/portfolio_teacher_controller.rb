@@ -13,36 +13,20 @@ class PortfolioTeacherController < ApplicationController
     # seta novo valor para o grupo/turma selecionada pelo professor
     group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
 
+    @group = Group.find(group_id)
     # lista de estudantes da turma
     @students = PortfolioTeacher.list_students_by_group_id(group_id)
 
   end
 
-  # lista dos trabalhos passados pelo professor e a situacao do aluno selecionado
-  def list_assignments
-
-    authorize! :list_assignments, PortfolioTeacher
-
-    # recupera turma selecionada
-    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-
-    student_id = params[:id]
-
-    @student = User.find(student_id)
-    @activities = PortfolioTeacher.list_assignments_by_group_and_student(group_id, student_id)
-
-    @discussions = Discussion.all_by_group_and_student_id(group_id, student_id)
-
-  end
-
-  # detalha o portfolio do aluno para a turma em questao
+  # Detalha o portfolio do aluno para a turma em questao
   def student_detail
 
     authorize! :student_detail, PortfolioTeacher
 
     @assignment_id = params[:assignment_id]
     @send_assignment_id = params[:send_assignment_id]
-    @students_id = params[:id]
+    @student_id = params[:id]
 
     # recuperar o nome da atividade
     begin
@@ -52,7 +36,7 @@ class PortfolioTeacherController < ApplicationController
     end
 
     # estudante
-    @student = User.select("name").where(["id = ?", @students_id]).first
+    @student = User.select("name").where(["id = ?", @student_id]).first
 
     # consulta a atividade do aluno em questao
     assignments = SendAssignment.joins("LEFT JOIN assignment_files ON assignment_files.send_assignment_id = send_assignments.id").
@@ -109,13 +93,18 @@ class PortfolioTeacherController < ApplicationController
             s.assignment_id = assignment_id
             s.user_id = students_id
           end
-          send_assignment.save!
 
+          send_assignment.save!
           send_assignment_id = send_assignment.id
 
         end
 
-        redirect = {:action => :student_detail, :id => students_id, :assignment_id => assignment_id, :send_assignment_id => send_assignment_id}
+        redirect = {
+          :action => :student_detail,
+          :id => students_id,
+          :assignment_id => assignment_id,
+          :send_assignment_id => send_assignment_id
+        }
 
         # update comment do professor
         comment_teacher = AssignmentComment.find_by_send_assignment_id_and_user_id(send_assignment_id, professors_id)
@@ -226,12 +215,26 @@ class PortfolioTeacherController < ApplicationController
 
     authorize! :upload_files, PortfolioTeacher
 
-    send_assignment_id = params[:send_assignment_id] if params.include? :send_assignment_id
-    students_id = params[:students_id] if params.include? :students_id
+    send_assignment_id = params[:send_assignment_id] #if params.include? :send_assignment_id
+    student_id = params[:students_id] #if params.include? :students_id
+    assignment_id = params[:assignment_id]
     teachers_id = current_user.id # professor
 
+    # se nao existir send_assignment_id devera ser criado um
+    if send_assignment_id.nil?
+      send_assignment = SendAssignment.new do |sa|
+        sa.assignment_id = assignment_id
+        sa.user_id = student_id
+      end
+      send_assignment.save
+
+      # recupera o id do registro criado
+      send_assignment_id = send_assignment.id
+
+    end
+
     # redireciona para os detalhes da atividade individual
-    redirect = {:action => :student_detail, :id => students_id, :send_assignment_id => send_assignment_id}
+    redirect = {:action => :student_detail, :id => student_id, :send_assignment_id => send_assignment_id}
 
     respond_to do |format|
 

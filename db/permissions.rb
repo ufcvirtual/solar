@@ -35,13 +35,13 @@ resources_arr = [
   {:id => 26, :controller => 'schedules', :action =>'list', :description => 'Agenda'},
 
   {:id => 27, :controller => 'portfolio', :action => 'activity_details', :description => 'Atividades Individuais'},
-  {:id => 28, :controller => 'portfolio', :action => 'delete_file_individual_area', :description => ''},
-  {:id => 29, :controller => 'portfolio', :action => 'delete_file_public_area', :description => ''},
-  {:id => 30, :controller => 'portfolio', :action => 'download_file_comment', :description => ''},
-  {:id => 31, :controller => 'portfolio', :action => 'upload_files_public_area', :description => ''},
-  {:id => 32, :controller => 'portfolio', :action => 'download_file_public_area', :description => ''},
-  {:id => 33, :controller => 'portfolio', :action => 'upload_files_individual_area', :description => ''},
-  {:id => 34, :controller => 'portfolio', :action => 'download_file_individual_area', :description => ''},
+  {:id => 28, :controller => 'portfolio', :action => 'delete_file_individual_area', :description => 'Delecao de arquivos da area privada'},
+  {:id => 29, :controller => 'portfolio', :action => 'delete_file_public_area', :description => 'Delecao de arquivos da area publica'},
+  {:id => 30, :controller => 'portfolio', :action => 'download_file_comment', :description => 'Download de arquivos enviados pelo professor'},
+  {:id => 31, :controller => 'portfolio', :action => 'upload_files_public_area', :description => 'Upload de arquivos para a area publica'},
+  {:id => 32, :controller => 'portfolio', :action => 'download_file_public_area', :description => 'Download de arquivos da area publica'},
+  {:id => 33, :controller => 'portfolio', :action => 'upload_files_individual_area', :description => 'Upload de arquivos para a area privada'},
+  {:id => 34, :controller => 'portfolio', :action => 'download_file_individual_area', :description => 'Download de arquivos da area privada'},
 
   {:id => 35, :controller => 'portfolio_teacher', :action => 'list', :description => 'Lista os alunos da turma'},
   {:id => 36, :controller => 'portfolio_teacher', :action => 'student_detail', :description => 'Detalha portfolio do aluno'},
@@ -49,7 +49,6 @@ resources_arr = [
   {:id => 38, :controller => 'portfolio_teacher', :action => 'delete_file', :description => 'Deletar arquivos de comentarios'},
   {:id => 39, :controller => 'portfolio_teacher', :action => 'upload_files', :description => 'Upload de arquivos de correcao'},
   {:id => 40, :controller => 'portfolio_teacher', :action => 'download_files_student', :description => 'Download de arquivos enviados pelo aluno'},
-  {:id => 41, :controller => 'portfolio_teacher', :action => 'list_assignments', :description => 'Lista trabalhos de cada aluno'},
 
    # Discussion deve ser separado em dois controllers: Discussion e Discussion_post#
   {:id => 42, :controller => 'discussions', :action => 'new_post', :description => 'Cria um novo post'},
@@ -60,6 +59,7 @@ resources_arr = [
 
   # acompanhamento
   {:id => 47, :controller => 'scores', :action => 'index', :description => 'Exibicao dos dados do aluno'},
+
   # acompanhamento do professor
   {:id => 48, :controller => 'scores_teacher', :action => 'list', :description => 'Lista dos alunos da turma'},
   {:id => 49, :controller => 'discussions', :action => 'download_post_file', :description => 'Baixar arquivos de foruns'},
@@ -114,13 +114,11 @@ perm_alunos = PermissionsResource.create([
   {:profile_id => 1, :resource_id => 34, :per_id => false},
    
   # discussion
-  {:profile_id => 1, :resource_id => 41, :per_id => false},
   {:profile_id => 1, :resource_id => 42, :per_id => false},
   {:profile_id => 1, :resource_id => 43, :per_id => false},
   {:profile_id => 1, :resource_id => 44, :per_id => false},
   {:profile_id => 1, :resource_id => 45, :per_id => false},
   {:profile_id => 1, :resource_id => 46, :per_id => false},
-  {:profile_id => 1, :resource_id => 48, :per_id => false},
   # acompanhamento
   {:profile_id => 1, :resource_id => 47, :per_id => true}
 ])
@@ -149,13 +147,13 @@ perm_prof_titular = PermissionsResource.create([
   {:profile_id => 2, :resource_id => 22, :per_id => false},
   {:profile_id => 2, :resource_id => 23, :per_id => false},
   # portfolio
+  {:profile_id => 2, :resource_id => 30, :per_id => false},
   {:profile_id => 2, :resource_id => 35, :per_id => false},
   {:profile_id => 2, :resource_id => 36, :per_id => false},
   {:profile_id => 2, :resource_id => 37, :per_id => false},
   {:profile_id => 2, :resource_id => 38, :per_id => false},
   {:profile_id => 2, :resource_id => 39, :per_id => false},
   {:profile_id => 2, :resource_id => 40, :per_id => false},
-  {:profile_id => 2, :resource_id => 41, :per_id => false},
   #discussion
   {:profile_id => 2, :resource_id => 42, :per_id => false},
   {:profile_id => 2, :resource_id => 43, :per_id => false},
@@ -164,6 +162,7 @@ perm_prof_titular = PermissionsResource.create([
   {:profile_id => 2, :resource_id => 46, :per_id => false},
 
   # acompanhamento
+  {:profile_id => 2, :resource_id => 47, :per_id => false},
   {:profile_id => 2, :resource_id => 48, :per_id => false}
 ])
 
@@ -200,12 +199,12 @@ perm_prof_titular = PermissionsResource.create([
   {:profile_id => 3, :resource_id => 40, :per_id => false},
 
    #discussion
-  {:profile_id => 3, :resource_id => 41, :per_id => false},
   {:profile_id => 3, :resource_id => 42, :per_id => false},
   {:profile_id => 3, :resource_id => 43, :per_id => false},
   {:profile_id => 3, :resource_id => 44, :per_id => false},
   {:profile_id => 3, :resource_id => 45, :per_id => false},
   {:profile_id => 3, :resource_id => 46, :per_id => false},
+  {:profile_id => 3, :resource_id => 47, :per_id => false},
   {:profile_id => 3, :resource_id => 48, :per_id => false}
 ])
 

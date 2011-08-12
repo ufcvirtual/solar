@@ -8,7 +8,7 @@ models = [DiscussionPost, Discussion, Lesson, Allocation, Bibliography, UserMess
   PublicFile, CommentFile, AssignmentFile, CommentFile, AssignmentComment, SendAssignment, Assignment,
   ScheduleEvent, Schedule, AllocationTag,
   PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,
-  Enrollment, Offer, CurriculumUnit, CurriculumUnitType, Course, PersonalConfiguration, User]
+  Enrollment, Offer, CurriculumUnit, CurriculumUnitType, Course, PersonalConfiguration, User, Log]
 models.each(&:delete_all)
 
 Fixtures.reset_cache
