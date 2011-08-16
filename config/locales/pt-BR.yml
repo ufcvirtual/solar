@@ -363,6 +363,7 @@
       normal: "%d/%m/%Y"
       files: "%d/%m/%Y %H:%M"
       discussion_post: "%d %B, %Y %H:%M h"
+      simple_day_and_month: "%d/%b"
     am: ''
     pm: ''
 
