@@ -159,9 +159,24 @@ module MessagesHelper
       :joins => "INNER JOIN user_messages ON users.id = user_messages.user_id",
       :conditions => "user_messages.message_id = #{message_id} and cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)")
   end
+
+  # verifica se usuario logado tem permissao de acessar a mensagem com id passado
+  def has_permission(message_id)
+    # traz usuarios relacionados a msg - pra verificar permissao de acesso
+    user_messages = UserMessage.find_all_by_message_id(message_id)
+
+    # procura usuario logado ente usuarios que podem acessar msg
+    search = user_messages.find { |i| i.user_id==current_user.id }
+
+    if search.nil?
+      return false
+    end
+    return true
+  end
   
+
   #Verifica se a messagem foi postada hoje ou não!
-  
+
   def sent_today?(message_datetime)
      message_datetime === Date.today
   end

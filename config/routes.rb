@@ -21,7 +21,7 @@ Solar::Application.routes.draw do |map|
   map.connect '/media/lessons/:id/:file.:extension', :controller => 'access_control', :action => 'lesson'
 
   # roteamento para controle de acesso as midias de mensagem
-  map.connect '/media/messages/:id/:file.:extension', :controller => 'access_control', :action => 'message'
+  map.connect '/media/messages/:file.:extension', :controller => 'access_control', :action => 'message'
 
   # redireciona para mysolar se o usuario estiver tentando acessar os dados de outros usuarios
   map.connect '/users/:id', :controller => 'users', :action => 'mysolar', :conditions => {:method => :get}
