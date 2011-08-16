@@ -75,8 +75,8 @@ module MessagesHelper
 
     query_all = query_fields << query_messages << query_order
 
-    # retorna total de registros da consulta
-    query_count = " select count(*)total " << query_messages
+    # retorna total de mensagens
+    query_count = " select count(distinct m.id)total " << query_messages
 
     @messages_count = ActiveRecord::Base.connection.execute(query_count)[0]["total"]
 

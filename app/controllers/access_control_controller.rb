@@ -72,8 +72,11 @@ class AccessControlController < ApplicationController
         id_message = message_file.nil? ? "" : message_file.message_id
 
         if has_permission(id_message)
-          # path do arquivo do anexo da mensagem
-          send_file("#{Rails.root}/media/messages/#{params[:file]}.#{params[:extension]}", { :disposition => 'inline', :type => type} )
+          begin
+            # path do arquivo do anexo da mensagem
+            send_file("#{Rails.root}/media/messages/#{params[:file]}.#{params[:extension]}", { :disposition => 'inline', :type => type} )
+          rescue
+          end
         end
       end
     end
