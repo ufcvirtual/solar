@@ -1,35 +1,23 @@
-//Renderiza uma lightbox na página
+/**
+  Funções relativas à renderização de uma lightBox
+**/
 
 function showLightBoxURL(url, width, height, canClose){
-    //showLightBox('<p><center>...</center></p>', width, height, canClose);
-    $('#forum_description').load(url,  function() {
-        alert('Load was performed.');
-    });
+    showLightBox('', width, height, canClose);
 
-/*$.ajax({
-          type: 'GET',
-          url: url,
-          cache: false,
-          async: false,
-          //context: document.body,
-          success: function(response){
-            alert('foi');
-            showLightBox(response, width, height, canClose);
-          }
-          complete: function(response){
-            // verifica se foi gerado algum erro
-            if (parseInt(response.status) != 200) {
-              alert('STATUS:' + response.status + ' Erro ao tentar consultar. Tente novamente em instantes.');
-            }
-          }
-        });*/
+    $("#lightBoxDialog").load(url , function(response, status, xhr) {
+        if (status == "error") {
+            var msg = "Erro na aplicação.\n Por favor, aguarde alguns instantes.";
+            alert(msg);
+        }
+    });
 }
 
 function showLightBox(content, width, height, canClose){
     if (width == null)
         width = 500;
     if (height == null)
-        height = 500;
+        height = 300;
     if (canClose == null)
         canClose = true;
 
@@ -43,12 +31,12 @@ function showLightBox(content, width, height, canClose){
         modalClose = 'onclick="removeLightBox();" ';
 
     removeLightBox();
-    dialog = '<div id="lightBoxDialog" style="border:1px solid #000;display:none;width:'+width+'px;height:'+height+'px;background-color:#AAA;position:absolute;z-index:1001;top:50%; left:50%; margin-top:-'+halfHeight+'px;margin-left:-'+halfWidth+'px;">'+ content + '</div>'
-    lightBox = '<div id="lightBoxBackground" ' + modalClose + ' style="display:none;width:100%;height:100%;position:fixed;top:0px;left:0px;background-color:#000;z-index:1000;">&nbsp;</div>';
+    dialog = '<div id="lightBoxDialog" style="width:'+width+'px;height:'+height+'px;margin-top:-'+halfHeight+'px;margin-left:-'+halfWidth+'px;">'+ content + '</div>'
+    lightBox = '<div id="lightBoxBackground" ' + modalClose + '">&nbsp;</div>';
     lightBox += dialog;
     $(document.body).append(lightBox);
-    $("#lightBoxBackground").fadeTo("400", 0.7, function() {
-        $("#lightBoxDialog").slideDown("400");
+    $("#lightBoxBackground").fadeTo("fast", 0.7, function() {
+        $("#lightBoxDialog").slideDown("fast");
     });
 
 }

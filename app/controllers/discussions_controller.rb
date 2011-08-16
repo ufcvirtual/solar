@@ -2,7 +2,7 @@ class DiscussionsController < ApplicationController
 
   include DiscussionPostsHelper
 
-  load_and_authorize_resource :except => [:list, :attach_file, :download_post_file, :remove_attached_file, :show_posts] #Setar permissoes!!!!!
+  load_and_authorize_resource :except => [:list, :attach_file, :download_post_file, :remove_attached_file, :show_posts, :post_file_upload] #Setar permissoes!!!!!
   before_filter :prepare_for_pagination
   
   def list
@@ -166,6 +166,11 @@ class DiscussionsController < ApplicationController
 
     hold_pagination
     redirect_to "/discussions/show/" << discussion_id
+  end
+
+  #Formulário de upload exibido numa lightbox
+  def post_file_upload
+    render :layout => false
   end
 
   #Download de arquivo anexo
