@@ -11,7 +11,7 @@ class MessagesController < ApplicationController
 
   # nao precisa usar load_and_authorize_resource pq todos tem acesso
 
-  Path_Message_Files = "#{::Rails.root.to_s}/media/message/"
+  Path_Message_Files = "#{::Rails.root.to_s}/media/messages/"
 
   # listagem de mensagens (entrada, enviados, lixeira)
   def index
@@ -219,10 +219,6 @@ class MessagesController < ApplicationController
           new_message = Message.new :subject => subject, :content => message, :send_date => DateTime.now
           new_message.save!
 
-          # ******************************************************************************************
-          # verificar permissao no caminho do arquivo
-          # ******************************************************************************************
-
           #recupera arquivos da mensagem original, caso esteja encaminhando ou respondendo
           original_message_id = params[:id]          
           unless original_message_id.nil?
@@ -383,20 +379,6 @@ class MessagesController < ApplicationController
   # retorna (0 a varios) arquivos de anexo
   def get_files(message_id)
     return MessageFile.find :all, :conditions => ["message_id = ?", message_id]
-  end
-
-  # verifica se usuario logado tem permissao de acessar a mensagem com id passado
-  def has_permission(message_id)
-    # traz usuarios relacionados a msg - pra verificar permissao de acesso
-    user_messages = UserMessage.find_all_by_message_id(message_id)
-
-    # procura usuario logado ente usuarios que podem acessar msg
-    search = user_messages.find { |i| i.user_id==current_user.id }
-
-    if search.nil?
-      return false
-    end
-    return true
   end
 
   private
