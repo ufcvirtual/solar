@@ -26,8 +26,8 @@ module Solar
     config.action_view.sanitized_allowed_tags = %w(h1 h2 h3 h4 hr b i p u a pre div span br ul ol li em strong strike img sup sub abbr big small code)
     config.action_view.sanitized_allowed_attributes = %w(name style class href cite title src height datetime alt abbr width)
 
-
     config.active_record.observers = :user_observer
+    config.active_record.default_timezone = :local
 
     #Itens por página para a paginação.
     config.items_per_page = 3
