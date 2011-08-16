@@ -9,6 +9,9 @@ class CurriculumUnitsController < ApplicationController
 
   before_filter :curriculum_data, :only => [:access, :informations, :participants]
 
+  # nao sera mais necessario qndo a combo existir - 2011-08-16
+  before_filter :set_group_id_for_responsible, :only => [:access, :participants]
+
   load_and_authorize_resource
 
   def index
@@ -67,11 +70,11 @@ class CurriculumUnitsController < ApplicationController
     # pegando dados da sessao e nao da url
     message_tag = nil
     if session[:opened_tabs][session[:active_tab]]["type"] != Tab_Type_Home
-        groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-        offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
-        curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+      groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+      offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+      curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
     
-        message_tag = get_label_name(curriculum_unit_id, offers_id, groups_id)
+      message_tag = get_label_name(curriculum_unit_id, offers_id, groups_id)
     end
     
     # retorna aulas, posts nos foruns e mensagens relacionados a UC mais atuais 
@@ -79,6 +82,11 @@ class CurriculumUnitsController < ApplicationController
     @discussion_posts = list_portlet_discussion_posts(offers_id, groups_id)
     @messages = return_messages(current_user.id, 'portlet', message_tag)
     session[:lessons] = @lessons
+    
+    groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+    user_id = current_user.id
+    @schedule_portlet = CurriculumUnit.select_for_schedule_in_portlet(groups_id, user_id, curriculum_unit_id)
+
   end
 
   def informations
@@ -91,7 +99,6 @@ class CurriculumUnitsController < ApplicationController
     @student_profile = student_profile
 
     # pegando dados da sessao e nao da url
-    groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
    
     # retorna participantes da turma (que nao sejam responsaveis)
@@ -99,7 +106,7 @@ class CurriculumUnitsController < ApplicationController
     
     # Temporário: garantindo que haverá um grupo, pois futuramente será necessário escolher um grupo para visualizar os participantes
     groups_id = Group.find_by_offer_id(offers_id).id unless !groups_id.nil?
-       
+
     @participants = class_participants groups_id, responsible
 
     # pegando valores pela url:

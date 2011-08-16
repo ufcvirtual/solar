@@ -10,22 +10,27 @@
   <div class="calendar" id="agenda"></div>
 
   <div class="calendar_events">
-    <div class="calendar_events_more"><a href="" class="curriculum_unit_portlet_link_more"><%=t(:curriculum_access_more)%></a></div>
+    <% @schedule_portlet.each do |schedule| %>
+  <%#*<span>%>
+  <%#= image_tag "icon_clock.png", :alt=>t(:icon_agenda_event) %>
+  <%#*</span>%>
 
-    <%#*<span>%>
-      <%#= image_tag "icon_clock.png", :alt=>t(:icon_agenda_event) %>
-    <%#*</span>%>
-    <div class="calendar_events_entry">
-
-      <a href="" class="curriculum_unit_portlet_link">
-
-        bla bla bla...</a>
+      <div class="calendar_events_entry">
+        <%= link_to schedule["name"], {:controller => :schedules, :action => :list, :id => schedule["id"]} %>
+        <%#*<a href="" class="curriculum_unit_portlet_link">%>
+          <%#= schedule['name'] %>
+        <%#*</a>%>
+        <br/>
+      <% end %>
 
     </div><br/>
+    <div class="calendar_events_more"> <a href="" class="curriculum_unit_portlet_link_more">
+        <%=t(:curriculum_access_more)%></a>
+    </div>
 
-    
     <div class="calendar_events_entry">
     </div><br/>
 
   </div>
 </div>
+
