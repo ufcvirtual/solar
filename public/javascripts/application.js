@@ -1,5 +1,30 @@
 //Renderiza uma lightbox na página
 
+function showLightBoxURL(url, width, height, canClose){
+    //showLightBox('<p><center>...</center></p>', width, height, canClose);
+    $('#forum_description').load(url,  function() {
+        alert('Load was performed.');
+    });
+
+/*$.ajax({
+          type: 'GET',
+          url: url,
+          cache: false,
+          async: false,
+          //context: document.body,
+          success: function(response){
+            alert('foi');
+            showLightBox(response, width, height, canClose);
+          }
+          complete: function(response){
+            // verifica se foi gerado algum erro
+            if (parseInt(response.status) != 200) {
+              alert('STATUS:' + response.status + ' Erro ao tentar consultar. Tente novamente em instantes.');
+            }
+          }
+        });*/
+}
+
 function showLightBox(content, width, height, canClose){
     if (width == null)
         width = 500;
