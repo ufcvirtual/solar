@@ -1,16 +1,13 @@
-<div class="dialog" style="background-color: #E3E9FF; max-height: 500px; border: 1px solid #1D4786;">
-  <div id="phead" class="dialog-title dialog-title-draggable">
-    <span class="dialog-title-text"><%= t(:discussion) %>:&nbsp;<%= @discussion.name %></span>
-    <!--
-      <span class="dialog-title-close"></span>
-    -->
+<div class="dialog-score">
+  <div id="phead" class="dialog-score-title">
+    <span class="dialog-score-title-text"><%= @discussion.name %></span>
   </div>
   <div class="dialog-content">
-    <table width="100%">
+    <table width="100%" cellspacing="1" cellpadding="0" border="0">
       <tbody>
         <% @posts.each_with_index do |post, idx| %>
           <tr class="<%= (idx % 2 == 0) ? 'post_content' : 'noclass' %>">
-            <td><%= idx + 1 %></td>
+            <td style="width: 30px;" align="center"><%= idx + 1 %></td>
             <td><%=raw post["content"] %></td>
           </tr>
         <% end %>
@@ -22,51 +19,21 @@
 
 <script type="text/javascript">
   $(function(){
-
-    $('#lightBoxDialog').height($('div.dialog').height());
-    // fechar a janela de exibicao
-    /*
-    $('span.dialog-title-close').click(function(){
-      $('#all_posts').css('display', 'none');
-    });
-     */
+    $('#lightBoxDialog').height($('div.dialog-score').height());
   });
 </script>
 
 <style type="text/css">
 
-  .dialog-title {
+  .dialog-score {
+    background-color: white;
+    border: 5px solid #1D4786;
+  }
+
+  .dialog-score-title {
     background-color: #E3E9FF;
+    height: 50px;
   }
-
-  .dialog-title-close {
-    position: absolute;
-    right: 359px;
-    /*right: 15px;*/
-    /*top: 10px;*/
-    width: 16px;
-    height: 16px;
-    background: url(//calendar.google.com/googlecalendar/images/combined_v21.png);
-    background-position: -212px -48px;
-    overflow: hidden;
-    cursor: pointer;
-  }
-
-
-
-
-  /*
-    div#phead {
-      overflow: auto;
-      background-color: #f1f0f2;
-    }
-
-    div#window_close {
-      float: right;
-      cursor: pointer;
-    }
-
-  */
 
   tr.post_content {
     background-color: #F5F8FB;
