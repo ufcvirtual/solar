@@ -9,6 +9,8 @@ class ScoresTeacherController < ApplicationController
   # lista de alunos paginados
   def list
 
+    authorize! :list, ScoresTeacher
+
     curriculum_unit_id = params[:id]
     group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
 
