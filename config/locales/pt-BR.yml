@@ -203,8 +203,9 @@
   forum_attach_cancel: "Cancelar"
   forum_remove_file: "Remover arquivo"
   forum_remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
+  forum_remove_error: "Erro ao remover postagem"
 
-
+  # messages
   message_title: "Mensagens"
   message_inbox: "Entrada"
   message_outbox: "Enviadas"

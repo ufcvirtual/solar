@@ -3,8 +3,9 @@ class DiscussionsController < ApplicationController
   include DiscussionPostsHelper
 
   load_and_authorize_resource :except => [:list, :attach_file, :download_post_file, :remove_attached_file, :show_posts, :post_file_upload] #Setar permissoes!!!!!
+
   before_filter :prepare_for_pagination
-  
+
   def list
 
     authorize! :list, Discussion
@@ -13,28 +14,23 @@ class DiscussionsController < ApplicationController
     group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
 
-    if group_id.nil?
-      group_id = -1
-    end
-    
-    if offer_id.nil?
-      offer_id = -1
-    end
+    group_id = -1 if group_id.nil?
+    offer_id = -1 if offer_id.nil?
 
     # retorna os fóruns da turma
     # at.id as id, at.offer_id as offerid,l.allocation_tag_id as alloctagid,l.type_lesson, privacy,description,
-    query = "SELECT * 
-              FROM 
-                (SELECT d.name, d.id, d.start, d.end, d.description 
-                 FROM discussions d 
+    query = "SELECT *
+              FROM
+                (SELECT d.name, d.id, d.start, d.end, d.description
+                 FROM discussions d
                  INNER JOIN allocation_tags t on d.allocation_tag_id = t.id
                  INNER JOIN groups g on g.id = t.group_id
                  WHERE g.id = #{group_id}
-              
+
                  UNION ALL
-              
-                 SELECT d.name, d.id, d.start, d.end, d.description 
-                 FROM discussions d 
+
+                 SELECT d.name, d.id, d.start, d.end, d.description
+                 FROM discussions d
                  INNER JOIN allocation_tags t on d.allocation_tag_id = t.id
                  INNER JOIN offers o on o.id = t.offer_id
                  WHERE o.id = #{offer_id}
@@ -57,11 +53,9 @@ class DiscussionsController < ApplicationController
     end
 
     @discussion = Discussion.find(discussion_id)
-    if @display_mode == "PLAINLIST"
-      @posts = DiscussionPost.discussion_posts(@discussion.id, true,@current_page)
-    else
-      @posts = DiscussionPost.discussion_posts(@discussion.id, false,@current_page)
-    end
+    plain_list = (@display_mode == "PLAINLIST")
+
+    @posts = DiscussionPost.discussion_posts(@discussion.id, plain_list, @current_page)
   end
 
   def new_post
@@ -70,22 +64,22 @@ class DiscussionsController < ApplicationController
     content       = params[:content]
     parent_id     = params[:parent_post_id]
     profile_id    = -1
-   
+
     @discussion = Discussion.find_by_id(discussion_id)
 
     #Investigando um perfil com permissão para o usuário
     has_permission = false
     profile_id = find_activity_user_profile_with_permission(@discussion.allocation_tag, current_user, 'discussions', 'new_post')
-    if profile_id > 0
-      has_permission = true
-    end
-    
+    has_permission = true if profile_id > 0
+
     #Usuário só pode criar posts no período ativo do fórum
     if (valid_date && has_permission)
       begin
         ActiveRecord::Base.transaction do
           #Criando nova postagem
-          new_discussion_post = DiscussionPost.new :discussion_id => discussion_id, :user_id => current_user.id, :profile_id => profile_id, :content => content, :father_id => parent_id
+          new_discussion_post = DiscussionPost.new :discussion_id => discussion_id,
+            :user_id => current_user.id, :profile_id => profile_id,
+            :content => content, :father_id => parent_id
           new_discussion_post.save!
         end
       rescue Exception => error
@@ -93,34 +87,29 @@ class DiscussionsController < ApplicationController
       end
 
       #Se a exibição for do tipo PLAINLIST, a nova postagem aparece no inicio, logo, não devemos manter a página atual
-
       hold_pagination unless (@display_mode == "PLAINLIST" or parent_id == "")
-    
-    end   
 
-    redirect_to "/discussions/show/" << discussion_id
+    end
+
+    redirect_to "/discussions/show/#{discussion_id}"
   end
 
   def remove_post
     @display_mode = params[:display_mode]
     discussion_id = params[:discussion_id]
     discussion_post_id = params[:discussion_post_id]
-    
+
     #Relação de usuário com o post
     #(# Só o dono do post pode apagar, se estiver no período ativo do fórum e se a postagem não tiver resposta(filhos))
-    
     @discussion_post= DiscussionPost.find_by_id(discussion_post_id)
     @discussion= Discussion.find_by_id(discussion_id)
     ActiveRecord::Base.transaction do
-      if (owned_by_current_user) &&
-          (valid_date)&&
-          (has_no_response)
+      if (owned_by_current_user && valid_date && has_no_response)
 
         filenameArray = []
         error = false
         path = ""
-        
-        
+
         #Removendo arquivos da postagem na base de dados
         @discussion_post.discussion_post_files.each do |file|
           filenameArray.push("#{file.id.to_s}_#{file.attachment_file_name}")
@@ -137,13 +126,14 @@ class DiscussionsController < ApplicationController
             File.delete(path) if File.exist?(path)
           end
         else
-          #dá um rollback malvado
+          flash[:error] = t(:forum_remove_error)
         end
-        flash[:error] = "[Erro removendo postagem]" unless error == false # INTERNACIONALIZAR!!!!!!!!!!!
+
       end
     end
+
     hold_pagination
-    redirect_to "/discussions/show/" << discussion_id
+    redirect_to "/discussions/show/#{discussion_id}"
   end
 
   def update_post
@@ -154,18 +144,14 @@ class DiscussionsController < ApplicationController
     #(# Só o dono do post pode editar, se estiver no período ativo do fórum e se a postagem não tiver resposta(filhos))
     @discussion_post= DiscussionPost.find_by_id(discussion_post_id)
     @discussion= Discussion.find_by_id(discussion_id)
-    
-    if (owned_by_current_user) &&
-        (valid_date)&&
-        (has_no_response)
-        
+
+    if (owned_by_current_user && valid_date && has_no_response)
       post = DiscussionPost.find(discussion_post_id);
       post.update_attributes({:content => new_content})
-
     end
 
     hold_pagination
-    redirect_to "/discussions/show/" << discussion_id
+    redirect_to "/discussions/show/#{discussion_id}"
   end
 
   #Formulário de upload exibido numa lightbox
@@ -183,8 +169,8 @@ class DiscussionsController < ApplicationController
     path_file = "#{::Rails.root.to_s}/media/discussion/post/"
 
     redirect_error = {:action => 'show', :id => params[:id], :idFile => post_file_id}
+
     # recupera arquivo
-    
     download_file(redirect_error, path_file, filename, prefix_file)
   end
 
@@ -198,8 +184,7 @@ class DiscussionsController < ApplicationController
     post = DiscussionPost.find(post_id.to_i)
     @discussion = Discussion.find(discussion_id.to_i)
 
-    has_permission = false
-    has_permission = true if (post.user.id == current_user.id)
+    has_permission = (post.user.id == current_user.id)
 
     if (valid_date && has_permission)
       begin
@@ -220,7 +205,7 @@ class DiscussionsController < ApplicationController
 
     hold_pagination unless @display_mode == "PLAINLIST"
 
-    redirect_to "/discussions/show/" << discussion_id
+    redirect_to "/discussions/show/#{discussion_id}"
   end
 
   #Remoção de arquivo anexo
@@ -241,7 +226,7 @@ class DiscussionsController < ApplicationController
     File.delete(path) if File.exist?(path)
 
     hold_pagination unless @display_mode == "PLAINLIST"
-    redirect_to "/discussions/show/" << discussion_id
+    redirect_to "/discussions/show/#{discussion_id}"
 
   end
 
@@ -262,7 +247,6 @@ class DiscussionsController < ApplicationController
   private
 
   def has_no_response
-    #DiscussionPost.find_all_by_father_id(discussion_post_id).empty?
     DiscussionPost.find_all_by_father_id(@discussion_post.id).empty?
   end
 
@@ -369,7 +353,6 @@ class DiscussionsController < ApplicationController
     profiles = find_allocation_tag_user_profiles(activity_allocation_tag, user)
 
     resource_id = Resource.find_by_controller_and_action(controller, action)
-
     i = 0
 
     for profile in profiles
@@ -391,5 +374,5 @@ class DiscussionsController < ApplicationController
 
     return -1
   end
-  
+
 end

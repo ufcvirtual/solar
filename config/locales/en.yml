@@ -197,6 +197,7 @@ en:
   forum_attach_cancel: "Cancel"
   forum_remove_file: "Remove file"
   forum_remove_file_confirm: "Your file will be deleted permanently. Proceed?"
+  forum_remove_error: "Error removing post"
 
   message_title: "Messages"
   message_inbox: "Inbox"

@@ -3,17 +3,15 @@ module DiscussionPostsHelper
   def valid_date
     @discussion.start <= Date.today && Date.today <= @discussion.end
   end
-  
-  #Renderiza um post na tela de interação do portólio.
-  #threaded indica se as respostas deste post devem ser renderizadas com ele.
+
+  # Renderiza um post na tela de interação do portólio.
+  # threaded indica se as respostas deste post devem ser renderizadas com ele.
   def show_post(post = nil, threaded=true)
     post_string = ""
     childs = {}
     editable = false
     childs_count = DiscussionPost.child_count(post.id)
-    can_interact=true
-    
-    can_interact= false unless (valid_date)
+    can_interact= valid_date
 
     #Um post pode ser editado se é do próprio usuário e se não possui respostas.
     editable = true if (post.user.id == current_user.id) && (childs_count == 0)
@@ -29,7 +27,6 @@ module DiscussionPostsHelper
     photo_url = 'no_image.png'
     photo_url = post.user.photo.url(:medium) if post.photo_file_name
 
-
     #Montando exibição do post e exibindo respostas recursivamente
     post_string << '<table border="0" cellpadding="0" cellspacing="0" class="forum_post">'
     post_string <<    '<tr>'
@@ -44,19 +41,13 @@ module DiscussionPostsHelper
     post_string <<    '<tr>'
     post_string <<      '<td class="forum_post_content_left">'
     post_string <<        (image_tag photo_url, :alt => t(:mysolar_alt_img_user) + ' ' + post.user_nick)
-#    post_string <<        '<div class="forum_participants_icons">'
-#    post_string <<        '<span>' << (link_to (image_tag "icon_profile.png", :alt=>t(:icon_profile))) << '</span>'
-#    post_string <<        '<span>' << (link_to (image_tag "icon_add_user.png", :alt=>t(:icon_add_participant))) << '</span>'
-#    post_string <<        '<span>' << (link_to (image_tag "icon_chat.png", :alt=>t(:icon_chat))) << '</span>'
-#    post_string <<        '<span>' << (link_to (image_tag "icon_message_participant.png", :alt=>t(:icon_send_email))) << '</span>'
-#    post_string <<        '</div>'
     post_string <<      '</td>'
     post_string <<      '<td class="forum_post_content_right">'
     post_string <<        '<div class="forum_post_inner_content" style="min-height:100px">' << (sanitize post.content) <<' </div>'
 
     #Apresentando os arquivos do post
     post_string << show_attachments(post, editable, can_interact)
-    
+
     #Exibindo botões de edição, resposta e exclusão
     post_string << show_buttons(editable,can_interact, post)
 
@@ -72,19 +63,22 @@ module DiscussionPostsHelper
     return post_string
   end
 
-  #Utilizado na paginação
+  # Utilizado na paginação
   def count_discussion_posts(discussion_id = nil, plain_list = true)
-    return DiscussionPost.count_discussion_posts(discussion_id, plain_list)
+    DiscussionPost.count_discussion_posts(discussion_id, plain_list)
   end
 
-  #Utilizado nas consultas para portlets
+  # Utilizado nas consultas para portlets
   def list_portlet_discussion_posts(offer_id, group_id)
     discussions = Discussion.all_by_offer_id_and_group_id(offer_id, group_id)
-    return DiscussionPost.order('updated_at DESC').limit(Rails.application.config.items_per_page.to_i).find_all_by_discussion_id(discussions)
+    return DiscussionPost.order('updated_at DESC').
+      limit(Rails.application.config.items_per_page.to_i).
+      find_all_by_discussion_id(discussions)
   end
-  
+
   private
-  #Link para o lightbox de upload
+
+  # Link para o lightbox de upload
   def show_attachments(post = nil, editable = false, can_interact = false)
     #Cabeçalho
     form_string =  '<div style="display:table;width:100%;">'
@@ -110,16 +104,14 @@ module DiscussionPostsHelper
     else
       form_string << "<p class=\"forum_post_attachment_empty\">#{t(:forum_empty_file_list)}</p>"
     end
-    
 
     return form_string
   end
 
-  #Form de upload de arquivos dentro de um post
+  # Form de upload de arquivos dentro de um post
   def show_buttons(editable = false, can_interact = false, post=nil)
-    post_string = ''
+    post_string = '<div class="forum_post_buttons">'
 
-    post_string << '<div class="forum_post_buttons">'
     if editable && can_interact
       post_string <<      '   <a href="javascript:removePost(' << post[:id].to_s << ')" class="forum_button forum_button_remove">' << t('forum_show_remove') << '</a>&nbsp;&nbsp;
                               <a href="javascript:setDiscussionPostId(' << post[:id].to_s << ')" class="forum_button updateDialogLink ">' << t('forum_show_edit') << '</a>&nbsp;&nbsp;
@@ -137,8 +129,8 @@ module DiscussionPostsHelper
 
     return post_string
   end
-  
-  #Verifica se a messagem foi postada hoje ou não!
+
+  # Verifica se a messagem foi postada hoje ou não!
   def posted_today?(message_datetime)
     message_datetime === Date.today
   end

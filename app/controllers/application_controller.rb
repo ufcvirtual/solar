@@ -273,25 +273,26 @@ class ApplicationController < ActionController::Base
   def hold_pagination
     session[:current_page] = @current_page
   end
-end
 
-# download de arquivos
-def download_file(redirect_error, path_, filename_, prefix_ = nil)
+  # download de arquivos
+  def download_file(redirect_error, path_, filename_, prefix_ = nil)
 
-  # verifica se o arquivo possui prefixo
-  unless prefix_.nil?
-    path_file = "#{path_}/#{prefix_}_#{filename_}"
-  else
-    path_file = "#{path_}/#{filename_}"
-  end
-
-  if File.exist?(path_file)
-    send_file path_file, :filename => filename_
-  else
-    respond_to do |format|
-      flash[:error] = t(:error_nonexistent_file)
-      format.html { redirect_to(redirect_error) }
+    # verifica se o arquivo possui prefixo
+    unless prefix_.nil?
+      path_file = "#{path_}/#{prefix_}_#{filename_}"
+    else
+      path_file = "#{path_}/#{filename_}"
     end
-  end
 
+    if File.exist?(path_file)
+      send_file path_file, :filename => filename_
+    else
+      respond_to do |format|
+        flash[:error] = t(:error_nonexistent_file)
+        format.html { redirect_to(redirect_error) }
+      end
+    end
+
+  end
 end
+
