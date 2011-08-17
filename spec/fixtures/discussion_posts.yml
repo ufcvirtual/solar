@@ -43,7 +43,7 @@ post_2_forum_2:
 
 post_3_forum_2:
   id: 6
-  discussion_id: 2
+  discussion_id: 1
   user_id: 2
   profile_id: 2
   father_id: 1
