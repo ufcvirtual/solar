@@ -15,49 +15,17 @@
     }
 
     //// Manipulação de arquivos anexos ///////////////////////////////
-    var numFileFields = 0;
+    
 
     function showUploadForm(discussionId, postId){
-      showLightBoxURL('/discussions/post_file_upload/',600,400,true)
-
-      //Botão de inserir novo anexo
-      $('.UploadFileLink').click( function () {
-        anotherFileField(this);
-        return false;
-      });
+      showLightBoxURL('/discussions/post_file_upload/?id=' + discussionId + '&post_id=' + postId ,400,250,true,'Envio de arquivos');
     }
-    
-    function anotherFileField(target){
-
-      newElementId = 'post_attachment_' + numFileFields;
-      newElementName = 'attachment[' + numFileFields + ']';
-
-      newElement = '<div id="'+ newElementId +'_container">';
-      newElement += '<input id="' + newElementId + '" type="file" name="' + newElementName + '" style="display:none;"/>';
-      newElement += '<a href="#" onclick="removeFileField(\''+newElementId+'\');return false;"><%=t(:forum_attach_cancel)%></a>';
-      newElement += '</div>';
-      
-      $(target).after(newElement)
-      $("#"+newElementId).slideDown('fast');//exibindo campo de upload
-
-      numFileFields++;
-    }
-
-    
-    
-    function removeFileField(fieldId){
-      $("#"+fieldId+"_container").hide('fast', function(){
-        $("#"+fieldId+"_container").remove();
-      });
-    }
-
 
     //// Manipulação da caixa de edição ///////////////////////////////
     function appendRichTextBox(postContainer){
       newFormCode = '' +
         '<div id="new_post_dialog" style="display: none;">' +
-        //'<div id="newPostUploadPanel"><a href="javascript:appendFileField()"><%=t(:forum_attach_file)%></a></div>' +
-      '<textarea id="newPostTextBox">' +
+        '<textarea id="newPostTextBox">' +
         '</textarea>' +
         '<div style="text-align:right;">' +
         '<a href="#" onclick="cancelPosting();return false;" class="forum_button"><%=t("cancel")%></a>&nbsp;&nbsp;' +

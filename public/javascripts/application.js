@@ -2,18 +2,18 @@
   Funções relativas à renderização de uma lightBox
 **/
 
-function showLightBoxURL(url, width, height, canClose){
-    showLightBox('', width, height, canClose);
+function showLightBoxURL(url, width, height, canClose, title){
+    showLightBox('', width, height, canClose,title);
 
-    $("#lightBoxDialog").load(url , function(response, status, xhr) {
+    $("#lightBoxDialogContent").load(url , function(response, status, xhr) {
         if (status == "error") {
-            var msg = "Erro na aplicação.\n Por favor, aguarde alguns instantes.";
+            var msg = "Erro na aplicação.\n Por favor, aguarde alguns instantes.";//internacionalizar
             alert(msg);
         }
     });
 }
 
-function showLightBox(content, width, height, canClose){
+function showLightBox(content, width, height, canClose, title){
     if (width == null)
         width = 500;
     if (height == null)
@@ -26,12 +26,21 @@ function showLightBox(content, width, height, canClose){
     var modalClose = '';
     var lightBox = '';
     var dialog = '';
-    
-    if (canClose)
-        modalClose = 'onclick="removeLightBox();" ';
+    var closeBt = '';
 
-    removeLightBox();
-    dialog = '<div id="lightBoxDialog" style="width:'+width+'px;height:'+height+'px;margin-top:-'+halfHeight+'px;margin-left:-'+halfWidth+'px;">'+ content + '</div>'
+    if (canClose){
+        modalClose = 'onclick="removeLightBox();" ';
+        closeBt = '<div ' + modalClose + ' id="lightBoxDialogCloseBt">&nbsp;</div>';
+    }
+    title = '<div id="lightBoxDialogTitle">'+title+'</div>'
+    
+    removeLightBox(true);
+    dialog = '<div id="lightBoxDialog" style="width:'+width+'px;height:'+height+'px;margin-top:-'+halfHeight+'px;margin-left:-'+halfWidth+'px;">'
+        + closeBt
+        + title
+        + '<div id="lightBoxDialogContent">'
+        + content
+        + '</div>'
     lightBox = '<div id="lightBoxBackground" ' + modalClose + '">&nbsp;</div>';
     lightBox += dialog;
     $(document.body).append(lightBox);
@@ -41,13 +50,18 @@ function showLightBox(content, width, height, canClose){
 
 }
 
-function removeLightBox(){
-    $("#lightBoxDialog").slideUp("400", function() {
-        $("#lightBoxBackground").fadeOut("400", function() {
-            $('#lightBoxBackground').remove();
-            $('#lightBoxDialog').remove();
+function removeLightBox(force){
+    if (force == null){
+        $("#lightBoxDialog").slideUp("400", function() {
+            $("#lightBoxBackground").fadeOut("400", function() {
+                $('#lightBoxBackground').remove();
+                $('#lightBoxDialog').remove();
+            });
         });
-    });
+        return;
+    }
+    $('#lightBoxBackground').remove();
+    $('#lightBoxDialog').remove();
 }
 
 // window file uploads

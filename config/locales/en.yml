@@ -193,8 +193,9 @@ en:
   forum_show_edit: "Edit"
   forum_file_list: "Attachment"
   forum_empty_file_list: "No files"
-  forum_attach_file: "Attach file"
+  forum_attach_file: "Attach another file"
   forum_attach_cancel: "Cancel"
+  forum_attach_save: "Save"
   forum_remove_file: "Remove file"
   forum_remove_file_confirm: "Your file will be deleted permanently. Proceed?"
 

@@ -158,13 +158,15 @@ textarea{
 }
 /****LightBox genérico****/
 #lightBoxDialog{
- border:1px solid #000;
- display:none;
- background-color:#AAA;
- position:absolute;
- z-index:1001;
- top:50%;
- left:50%;
+     border:1px solid #000;
+     display:none;
+     background-color:#DDD;
+     position:absolute;
+     z-index:1001;
+     top:50%;
+     left:50%;
+     padding:10px;
+     overflow: auto;
 }
 #lightBoxBackground{
     display:none;
@@ -175,6 +177,33 @@ textarea{
     left:0px;
     background-color:#000;
     z-index:1000;
+}
+#lightBoxDialogTitle{
+    text-align: right;
+    border-bottom: 3px dotted #BBB;
+    margin: 5px;
+    letter-spacing: 2px;
+}
+
+#lightBoxDialogCloseBt
+{
+    position : absolute;
+    top : 3px;
+    right : 3px;
+
+    width : 11px;
+    height : 11px;
+
+    border : 0px;
+    cursor : pointer;
+    background-image: url('/images/closeLightBox.png');
+    background-position:0px 0px;
+    font-size : 3px;
+}
+#lightBoxDialogCloseBt:Hover
+{
+    cursor : pointer;
+    background-position: 11px 0px;
 }
 
 /****tela de matricula****/
