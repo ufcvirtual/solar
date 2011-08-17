@@ -165,7 +165,11 @@
           cache: false,
           //context: document.body,
           success: function(response){
-            $('#all_posts').html(response).css('display', 'block');
+            // $('#all_posts').html(response).css('display', 'block');
+
+            var canClose = true;
+            showLightBox(response, 500, 600, canClose);
+
           },
           complete: function(response){
             // verifica se foi gerado algum erro
@@ -189,4 +193,5 @@
 
     });
   </script>
+
 </div>

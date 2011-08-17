@@ -65,6 +65,7 @@ resources_arr = [
   {:id => 49, :controller => 'discussions', :action => 'download_post_file', :description => 'Baixar arquivos de foruns'},
   {:id => 50, :controller => 'discussions', :action => 'attach_file', :description => 'Anexar arquivos de foruns'},
   {:id => 51, :controller => 'discussions', :action => 'remove_attached_file', :description => 'Remover arquivos de postagens'},
+  {:id => 52, :controller => 'users', :action => 'find', :description => 'Consultar dados do usuario'},
   {:id => 53, :controller => 'discussions', :action => 'post_file_upload', :description => 'Anexar arquivos de foruns'}
 
 ]
@@ -124,7 +125,8 @@ perm_alunos = PermissionsResource.create([
   {:profile_id => 1, :resource_id => 51, :per_id => false},
   {:profile_id => 1, :resource_id => 53, :per_id => false},
   # acompanhamento
-  {:profile_id => 1, :resource_id => 47, :per_id => true}
+  {:profile_id => 1, :resource_id => 47, :per_id => true},
+  {:profile_id => 1, :resource_id => 52, :per_id => true}
 ])
 
 ##############################
@@ -171,7 +173,8 @@ perm_prof_titular = PermissionsResource.create([
 
   # acompanhamento
   {:profile_id => 2, :resource_id => 47, :per_id => false},
-  {:profile_id => 2, :resource_id => 48, :per_id => false}
+  {:profile_id => 2, :resource_id => 48, :per_id => false},
+  {:profile_id => 2, :resource_id => 52, :per_id => false}
 ])
 
 ##############################
