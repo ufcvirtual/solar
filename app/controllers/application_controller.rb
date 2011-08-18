@@ -284,6 +284,15 @@ class ApplicationController < ActionController::Base
       path_file = "#{path_}/#{filename_}"
     end
 
+    #Caso o caminho do arquivo todo tenha sido passado em 'path_', desconsidera
+    #o resto e descobre o filename
+    if (filename_ == '')
+      path_file = path_
+      pattern = /\//
+      filename_ = path_file[path_file.rindex(pattern)+1..-1]
+    end
+
+
     if File.exist?(path_file)
       send_file path_file, :filename => filename_
     else

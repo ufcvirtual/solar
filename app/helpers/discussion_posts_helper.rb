@@ -97,7 +97,7 @@ module DiscussionPostsHelper
       post.discussion_post_files.each do |file|
         form_string <<   '<li>'
         form_string <<   '<a href="#">'<<(link_to file.attachment_file_name, :controller => "discussions", :action => "download_post_file", :idFile => file.id, :id => @discussion.id)<<'</a>&nbsp;&nbsp;'
-        form_string <<   (link_to (image_tag "discussion_file_remove.png", :alt => t(:forum_remove_file)), {:controller => "discussions", :action => "remove_attached_file", :idFile => file.id, :id => @discussion.id}, :confirm=>t(:forum_remove_file_confirm), :title => t(:forum_remove_file)) if editable && can_interact
+        form_string <<   (link_to (image_tag "discussion_file_remove.png", :alt => t(:forum_remove_file)), {:controller => "discussions", :action => "remove_attached_file", :idFile => file.id, :current_page => @current_page, :id => @discussion.id}, :confirm=>t(:forum_remove_file_confirm), :title => t(:forum_remove_file)) if editable && can_interact
         form_string <<   '</li>'
       end
       form_string <<      '</ul>'

@@ -1,3 +1,4 @@
+
 <span class="page_title"><%= @discussion["name"] %></span>
 <div id="forum_description">
   <%= @discussion["description"] %>
@@ -53,6 +54,7 @@
 <% end %>
 <!--//------------- Fim da Exibição de Posts--------------->
 
+
 <script type="text/javascript">
 
   //// Modos de exibição ////////////////////////////////////////////
@@ -69,8 +71,10 @@
   }
 
   //// Manipulação de arquivos anexos ///////////////////////////////
+
+
   function showUploadForm(discussionId, postId){
-    showLightBoxURL('/discussions/post_file_upload/?id=' + discussionId + '&post_id=' + postId ,400,250,true,'Envio de arquivos');
+    showLightBoxURL('/discussions/post_file_upload/?id=' + discussionId + '&post_id=' + postId + '&current_page=<%=@current_page%>' ,400,250,true,'<%=t(:forum_attach_file_title)%>');
   }
 
   //// Manipulação da caixa de edição ///////////////////////////////
@@ -154,7 +158,8 @@
   }
 
   //// Eventos e comportamentos dos links ///////////////////////////
-  $(function() {
+  $(document).ready( function () {
+
     //Botões de responder postagem
     $('.postDialogLink').click( function () {
       var postContainer = $(this).parent().parent();

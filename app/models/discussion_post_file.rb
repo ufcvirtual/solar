@@ -6,6 +6,6 @@ class DiscussionPostFile < ActiveRecord::Base
 
   validates_attachment_size :attachment, :less_than => 10.megabyte, :message => " "
   has_attached_file :attachment,
-    :path => ":rails_root/media/discussion/post/:id_:basename.:extension",
-    :url => "/media/discussion/post/:id_:basename.:extension"
+    :path => ":rails_root/media/discussions/post/:id_:basename.:extension",
+    :url => "/media/discussions/post/:id_:basename.:extension"
 end

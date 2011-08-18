@@ -164,10 +164,12 @@ class DiscussionsController < ApplicationController
   def download_post_file
     post_file_id = params[:idFile]
     file_ = DiscussionPostFile.find(post_file_id)
-    filename = file_.attachment_file_name
+    #filename = file_.attachment_file_name
+    filename = ''
 
-    prefix_file = file_.id # id da tabela discussion_post_file para diferenciar os arquivos
-    path_file = "#{::Rails.root.to_s}/media/discussion/post/"
+    prefix_file = nil
+
+    path_file = file_.attachment.path
 
     redirect_error = {:action => 'show', :id => params[:id], :idFile => post_file_id}
 
@@ -223,7 +225,7 @@ class DiscussionsController < ApplicationController
 
     #Removendo o arquivo do disco
     filename = "#{file.id.to_s}_#{file.attachment_file_name}"
-    path = "#{::Rails.root.to_s}/media/discussion/post/#{filename}"
+    path = "#{::Rails.root.to_s}/media/discussions/post/#{filename}"
     File.delete(path) if File.exist?(path)
 
     hold_pagination unless @display_mode == "PLAINLIST"
@@ -249,10 +251,6 @@ class DiscussionsController < ApplicationController
 
   def has_no_response
     DiscussionPost.find_all_by_father_id(@discussion_post.id).empty?
-  end
-
-  def valid_date
-    @discussion.start <= Date.today && Date.today <= @discussion.end
   end
 
   def owned_by_current_user

@@ -23,13 +23,20 @@
     });
   }
 </script>
-<form accept-charset="UTF-8" action="/discussions/attach_file" enctype="multipart/form-data" method="post" >
+<div>&nbsp;</div>
+<form id="post_attachment_form" accept-charset="UTF-8" action="/discussions/attach_file" enctype="multipart/form-data" method="post" >
   <input type="hidden" value="<%=form_authenticity_token%>" name="authenticity_token"/>
   <input type="hidden" value="<%=params['id']%>" name="id" id="id"/>
   <input type="hidden" value="<%=params['post_id']%>" name="post_id" id="post_id"/>
+  <input type="hidden" value="<%=params['current_page']%>" name="current_page" id="post_id"/>
   <div id="'+ newElementId +'_container">
-    <input id="post_attachment_1" type="file" name="attachment[1]"/>&nbsp;&nbsp;
+    <input id="post_attachment_1" type="file" name="attachment[1]" />&nbsp;&nbsp;
   </div>
-  <a href="#" class="UploadFileLink forum_button_attachment" onclick="anotherFileField(this)"><%=t(:forum_attach_file)%></a><br/>
-  <a href="#" class="UploadFileSubmit forum_button" onclick="javascript:$(this).parent().submit();return false;"><%=t(:forum_attach_save)%></a>
+  <div align="left">
+    <a href="#" class="UploadFileLink forum_button_attachment" onclick="anotherFileField(this)" style="float:none"><%=t(:forum_attach_another_file)%></a><br/>
+  </div>
+  <div align="right">
+    &nbsp;<br/>
+    <a href="#" class="UploadFileSubmit forum_button" onclick="$('#post_attachment_form').submit();return false;"><%=t(:forum_attach_save)%></a>
+  </div>
 </form>

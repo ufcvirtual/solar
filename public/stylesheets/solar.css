@@ -160,7 +160,7 @@ textarea{
 #lightBoxDialog{
      border:1px solid #000;
      display:none;
-     background-color:#DDD;
+     background-color:#FFF;
      position:absolute;
      z-index:1001;
      top:50%;
@@ -180,7 +180,7 @@ textarea{
 }
 #lightBoxDialogTitle{
     text-align: right;
-    border-bottom: 3px dotted #BBB;
+    border-bottom: 3px dotted #EEE;
     margin: 5px;
     letter-spacing: 2px;
 }
