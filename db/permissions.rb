@@ -50,7 +50,7 @@ resources_arr = [
   {:id => 39, :controller => 'portfolio_teacher', :action => 'upload_files', :description => 'Upload de arquivos de correcao'},
   {:id => 40, :controller => 'portfolio_teacher', :action => 'download_files_student', :description => 'Download de arquivos enviados pelo aluno'},
 
-   # Discussion deve ser separado em dois controllers: Discussion e Discussion_post#
+  # Discussion deve ser separado em dois controllers: Discussion e Discussion_post#
   {:id => 42, :controller => 'discussions', :action => 'new_post', :description => 'Cria um novo post'},
   {:id => 43, :controller => 'discussions', :action => 'remove_post', :description => 'Remove um post'},
   {:id => 44, :controller => 'discussions', :action => 'update_post', :description => 'Atualiza o conteudo de um post'},
@@ -82,142 +82,142 @@ end
 #    ALUNO    #
 ###############
 perm_alunos = PermissionsResource.create([
-  # offer
-	{:profile_id => 1, :resource_id => 6, :per_id => true},
-	{:profile_id => 1, :resource_id => 7, :per_id => true},
-	{:profile_id => 1, :resource_id => 8, :per_id => true},
-  # group
-	{:profile_id => 1, :resource_id => 9, :per_id => true},
-	{:profile_id => 1, :resource_id => 10, :per_id => true},
-  # curriculum unit
-  {:profile_id => 1, :resource_id => 11, :per_id => false},
-  {:profile_id => 1, :resource_id => 12, :per_id => false},
-  {:profile_id => 1, :resource_id => 13, :per_id => false},
-  {:profile_id => 1, :resource_id => 14, :per_id => false},
-  {:profile_id => 1, :resource_id => 15, :per_id => false},
-  {:profile_id => 1, :resource_id => 16, :per_id => false},
-  {:profile_id => 1, :resource_id => 17, :per_id => false},
-  {:profile_id => 1, :resource_id => 18, :per_id => false},
-  {:profile_id => 1, :resource_id => 19, :per_id => false},
-  {:profile_id => 1, :resource_id => 20, :per_id => false},
-  {:profile_id => 1, :resource_id => 21, :per_id => false},
-  {:profile_id => 1, :resource_id => 22, :per_id => false},
-  {:profile_id => 1, :resource_id => 23, :per_id => false},
-  {:profile_id => 1, :resource_id => 24, :per_id => false},
+    # offer
+    {:profile_id => 1, :resource_id => 6, :per_id => true},
+    {:profile_id => 1, :resource_id => 7, :per_id => true},
+    {:profile_id => 1, :resource_id => 8, :per_id => true},
+    # group
+    {:profile_id => 1, :resource_id => 9, :per_id => true},
+    {:profile_id => 1, :resource_id => 10, :per_id => true},
+    # curriculum unit
+    {:profile_id => 1, :resource_id => 11, :per_id => false},
+    {:profile_id => 1, :resource_id => 12, :per_id => false},
+    {:profile_id => 1, :resource_id => 13, :per_id => false},
+    {:profile_id => 1, :resource_id => 14, :per_id => false},
+    {:profile_id => 1, :resource_id => 15, :per_id => false},
+    {:profile_id => 1, :resource_id => 16, :per_id => false},
+    {:profile_id => 1, :resource_id => 17, :per_id => false},
+    {:profile_id => 1, :resource_id => 18, :per_id => false},
+    {:profile_id => 1, :resource_id => 19, :per_id => false},
+    {:profile_id => 1, :resource_id => 20, :per_id => false},
+    {:profile_id => 1, :resource_id => 21, :per_id => false},
+    {:profile_id => 1, :resource_id => 22, :per_id => false},
+    {:profile_id => 1, :resource_id => 23, :per_id => false},
+    {:profile_id => 1, :resource_id => 24, :per_id => false},
 
-  {:profile_id => 1, :resource_id => 27, :per_id => false},
-  {:profile_id => 1, :resource_id => 28, :per_id => false},
-  {:profile_id => 1, :resource_id => 29, :per_id => false},
-  {:profile_id => 1, :resource_id => 30, :per_id => false},
-  {:profile_id => 1, :resource_id => 31, :per_id => false},
-  {:profile_id => 1, :resource_id => 32, :per_id => false},
-  {:profile_id => 1, :resource_id => 33, :per_id => false},
-  {:profile_id => 1, :resource_id => 34, :per_id => false},
-   
-  # discussion
-  {:profile_id => 1, :resource_id => 42, :per_id => false},
-  {:profile_id => 1, :resource_id => 43, :per_id => false},
-  {:profile_id => 1, :resource_id => 44, :per_id => false},
-  {:profile_id => 1, :resource_id => 45, :per_id => false},
-  {:profile_id => 1, :resource_id => 46, :per_id => false},
-  {:profile_id => 1, :resource_id => 49, :per_id => false},
-  {:profile_id => 1, :resource_id => 50, :per_id => false},
-  {:profile_id => 1, :resource_id => 51, :per_id => false},
-  {:profile_id => 1, :resource_id => 53, :per_id => false},
-  # acompanhamento
-  {:profile_id => 1, :resource_id => 47, :per_id => true},
-  {:profile_id => 1, :resource_id => 52, :per_id => true}
-])
+    {:profile_id => 1, :resource_id => 27, :per_id => false},
+    {:profile_id => 1, :resource_id => 28, :per_id => false},
+    {:profile_id => 1, :resource_id => 29, :per_id => false},
+    {:profile_id => 1, :resource_id => 30, :per_id => false},
+    {:profile_id => 1, :resource_id => 31, :per_id => false},
+    {:profile_id => 1, :resource_id => 32, :per_id => false},
+    {:profile_id => 1, :resource_id => 33, :per_id => false},
+    {:profile_id => 1, :resource_id => 34, :per_id => false},
+
+    # discussion
+    {:profile_id => 1, :resource_id => 42, :per_id => false},
+    {:profile_id => 1, :resource_id => 43, :per_id => false},
+    {:profile_id => 1, :resource_id => 44, :per_id => false},
+    {:profile_id => 1, :resource_id => 45, :per_id => false},
+    {:profile_id => 1, :resource_id => 46, :per_id => false},
+    {:profile_id => 1, :resource_id => 49, :per_id => false},
+    {:profile_id => 1, :resource_id => 50, :per_id => false},
+    {:profile_id => 1, :resource_id => 51, :per_id => false},
+    {:profile_id => 1, :resource_id => 53, :per_id => false},
+    # acompanhamento
+    {:profile_id => 1, :resource_id => 47, :per_id => true},
+    {:profile_id => 1, :resource_id => 52, :per_id => true}
+  ])
 
 ##############################
 #      PROFESSOR TITULAR     #
 ##############################
 perm_prof_titular = PermissionsResource.create([
-  # offer
-	{:profile_id => 2, :resource_id => 6, :per_id => true},
-	{:profile_id => 2, :resource_id => 7, :per_id => true},
-	{:profile_id => 2, :resource_id => 8, :per_id => true},
-  # group
-	{:profile_id => 2, :resource_id => 9, :per_id => true},
-	{:profile_id => 2, :resource_id => 10, :per_id => true},
-  # curriculum unit
-  {:profile_id => 2, :resource_id => 11, :per_id => false},
-  {:profile_id => 2, :resource_id => 12, :per_id => false},
-  {:profile_id => 2, :resource_id => 13, :per_id => false},
-  {:profile_id => 2, :resource_id => 14, :per_id => false},
-  {:profile_id => 2, :resource_id => 15, :per_id => false},
-  {:profile_id => 2, :resource_id => 16, :per_id => false},
-  {:profile_id => 2, :resource_id => 17, :per_id => false},
-  {:profile_id => 2, :resource_id => 18, :per_id => false},
-  {:profile_id => 2, :resource_id => 19, :per_id => false},
-  {:profile_id => 2, :resource_id => 22, :per_id => false},
-  {:profile_id => 2, :resource_id => 23, :per_id => false},
-  # portfolio
-  {:profile_id => 2, :resource_id => 30, :per_id => false},
-  {:profile_id => 2, :resource_id => 35, :per_id => false},
-  {:profile_id => 2, :resource_id => 36, :per_id => false},
-  {:profile_id => 2, :resource_id => 37, :per_id => false},
-  {:profile_id => 2, :resource_id => 38, :per_id => false},
-  {:profile_id => 2, :resource_id => 39, :per_id => false},
-  {:profile_id => 2, :resource_id => 40, :per_id => false},
-  #discussion
-  {:profile_id => 2, :resource_id => 42, :per_id => false},
-  {:profile_id => 2, :resource_id => 43, :per_id => false},
-  {:profile_id => 2, :resource_id => 44, :per_id => false},
-  {:profile_id => 2, :resource_id => 45, :per_id => false},
-  {:profile_id => 2, :resource_id => 46, :per_id => false},
-  {:profile_id => 2, :resource_id => 49, :per_id => false},
-  {:profile_id => 2, :resource_id => 50, :per_id => false},
-  {:profile_id => 2, :resource_id => 51, :per_id => false},
-  {:profile_id => 2, :resource_id => 53, :per_id => false},
+    # offer
+    {:profile_id => 2, :resource_id => 6, :per_id => true},
+    {:profile_id => 2, :resource_id => 7, :per_id => true},
+    {:profile_id => 2, :resource_id => 8, :per_id => true},
+    # group
+    {:profile_id => 2, :resource_id => 9, :per_id => true},
+    {:profile_id => 2, :resource_id => 10, :per_id => true},
+    # curriculum unit
+    {:profile_id => 2, :resource_id => 11, :per_id => false},
+    {:profile_id => 2, :resource_id => 12, :per_id => false},
+    {:profile_id => 2, :resource_id => 13, :per_id => false},
+    {:profile_id => 2, :resource_id => 14, :per_id => false},
+    {:profile_id => 2, :resource_id => 15, :per_id => false},
+    {:profile_id => 2, :resource_id => 16, :per_id => false},
+    {:profile_id => 2, :resource_id => 17, :per_id => false},
+    {:profile_id => 2, :resource_id => 18, :per_id => false},
+    {:profile_id => 2, :resource_id => 19, :per_id => false},
+    {:profile_id => 2, :resource_id => 22, :per_id => false},
+    {:profile_id => 2, :resource_id => 23, :per_id => false},
+    # portfolio
+    {:profile_id => 2, :resource_id => 30, :per_id => false},
+    {:profile_id => 2, :resource_id => 35, :per_id => false},
+    {:profile_id => 2, :resource_id => 36, :per_id => false},
+    {:profile_id => 2, :resource_id => 37, :per_id => false},
+    {:profile_id => 2, :resource_id => 38, :per_id => false},
+    {:profile_id => 2, :resource_id => 39, :per_id => false},
+    {:profile_id => 2, :resource_id => 40, :per_id => false},
+    #discussion
+    {:profile_id => 2, :resource_id => 42, :per_id => false},
+    {:profile_id => 2, :resource_id => 43, :per_id => false},
+    {:profile_id => 2, :resource_id => 44, :per_id => false},
+    {:profile_id => 2, :resource_id => 45, :per_id => false},
+    {:profile_id => 2, :resource_id => 46, :per_id => false},
+    {:profile_id => 2, :resource_id => 49, :per_id => false},
+    {:profile_id => 2, :resource_id => 50, :per_id => false},
+    {:profile_id => 2, :resource_id => 51, :per_id => false},
+    {:profile_id => 2, :resource_id => 53, :per_id => false},
 
-  # acompanhamento
-  {:profile_id => 2, :resource_id => 47, :per_id => false},
-  {:profile_id => 2, :resource_id => 48, :per_id => false},
-  {:profile_id => 2, :resource_id => 52, :per_id => false}
-])
+    # acompanhamento
+    {:profile_id => 2, :resource_id => 47, :per_id => false},
+    {:profile_id => 2, :resource_id => 48, :per_id => false},
+    {:profile_id => 2, :resource_id => 52, :per_id => false}
+  ])
 
 ##############################
 #      TUTOR A DISTANCIA     #
 ##############################
 perm_prof_titular = PermissionsResource.create([
-  # offer
-	{:profile_id => 3, :resource_id => 6, :per_id => true},
-	{:profile_id => 3, :resource_id => 7, :per_id => true},
-	{:profile_id => 3, :resource_id => 8, :per_id => true},
-  # group
-	{:profile_id => 3, :resource_id => 9, :per_id => true},
-	{:profile_id => 3, :resource_id => 10, :per_id => true},
-  # curriculum unit
-  {:profile_id => 3, :resource_id => 11, :per_id => false},
-  {:profile_id => 3, :resource_id => 12, :per_id => false},
-  {:profile_id => 3, :resource_id => 13, :per_id => false},
-  {:profile_id => 3, :resource_id => 14, :per_id => false},
-  {:profile_id => 3, :resource_id => 15, :per_id => false},
-  {:profile_id => 3, :resource_id => 16, :per_id => false},
-  {:profile_id => 3, :resource_id => 17, :per_id => false},
-  {:profile_id => 3, :resource_id => 18, :per_id => false},
-  {:profile_id => 3, :resource_id => 19, :per_id => false},
-  {:profile_id => 3, :resource_id => 22, :per_id => false},
-  {:profile_id => 3, :resource_id => 23, :per_id => false},
-  {:profile_id => 3, :resource_id => 24, :per_id => false},
-  # portfolio
-  {:profile_id => 3, :resource_id => 35, :per_id => false},
-  {:profile_id => 3, :resource_id => 36, :per_id => false},
-  {:profile_id => 3, :resource_id => 37, :per_id => false},
-  {:profile_id => 3, :resource_id => 38, :per_id => false},
-  {:profile_id => 3, :resource_id => 39, :per_id => false},
-  {:profile_id => 3, :resource_id => 40, :per_id => false},
+    # offer
+    {:profile_id => 3, :resource_id => 6, :per_id => true},
+    {:profile_id => 3, :resource_id => 7, :per_id => true},
+    {:profile_id => 3, :resource_id => 8, :per_id => true},
+    # group
+    {:profile_id => 3, :resource_id => 9, :per_id => true},
+    {:profile_id => 3, :resource_id => 10, :per_id => true},
+    # curriculum unit
+    {:profile_id => 3, :resource_id => 11, :per_id => false},
+    {:profile_id => 3, :resource_id => 12, :per_id => false},
+    {:profile_id => 3, :resource_id => 13, :per_id => false},
+    {:profile_id => 3, :resource_id => 14, :per_id => false},
+    {:profile_id => 3, :resource_id => 15, :per_id => false},
+    {:profile_id => 3, :resource_id => 16, :per_id => false},
+    {:profile_id => 3, :resource_id => 17, :per_id => false},
+    {:profile_id => 3, :resource_id => 18, :per_id => false},
+    {:profile_id => 3, :resource_id => 19, :per_id => false},
+    {:profile_id => 3, :resource_id => 22, :per_id => false},
+    {:profile_id => 3, :resource_id => 23, :per_id => false},
+    {:profile_id => 3, :resource_id => 24, :per_id => false},
+    # portfolio
+    {:profile_id => 3, :resource_id => 35, :per_id => false},
+    {:profile_id => 3, :resource_id => 36, :per_id => false},
+    {:profile_id => 3, :resource_id => 37, :per_id => false},
+    {:profile_id => 3, :resource_id => 38, :per_id => false},
+    {:profile_id => 3, :resource_id => 39, :per_id => false},
+    {:profile_id => 3, :resource_id => 40, :per_id => false},
 
-   #discussion
-  {:profile_id => 3, :resource_id => 42, :per_id => false},
-  {:profile_id => 3, :resource_id => 43, :per_id => false},
-  {:profile_id => 3, :resource_id => 44, :per_id => false},
-  {:profile_id => 3, :resource_id => 45, :per_id => false},
-  {:profile_id => 3, :resource_id => 46, :per_id => false},
-  {:profile_id => 3, :resource_id => 47, :per_id => false},
-  {:profile_id => 3, :resource_id => 48, :per_id => false}
-])
+    #discussion
+    {:profile_id => 3, :resource_id => 42, :per_id => false},
+    {:profile_id => 3, :resource_id => 43, :per_id => false},
+    {:profile_id => 3, :resource_id => 44, :per_id => false},
+    {:profile_id => 3, :resource_id => 45, :per_id => false},
+    {:profile_id => 3, :resource_id => 46, :per_id => false},
+    {:profile_id => 3, :resource_id => 47, :per_id => false},
+    {:profile_id => 3, :resource_id => 48, :per_id => false}
+  ])
 
 ######## PERMISSIONS MENUS #########
 
@@ -264,4 +264,4 @@ PermissionsMenu.create([
     {:profile_id => 3, :menu_id => 50},
     {:profile_id => 3, :menu_id => 70},
     {:profile_id => 3, :menu_id => 302}
-])
+  ])

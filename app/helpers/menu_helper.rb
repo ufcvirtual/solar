@@ -5,7 +5,8 @@ module MenuHelper
     # consulta para recuperar os dados do menu
     query = "
       WITH cte_menus AS (
-       SELECT t1.id    AS father_id,
+       SELECT DISTINCT
+              t1.id    AS father_id,
               t1.order AS father_order,
               t1.name  AS father,
               t2.id    AS child_id,
@@ -19,7 +20,8 @@ module MenuHelper
       ), -- menus filhos com permissoes associadas
       --
       cte_all_fathers AS (
-          SELECT t1.id    AS father_id,
+          SELECT DISTINCT
+                 t1.id    AS father_id,
                  t1.order AS father_order,
                  t1.name  AS father,
                  t3.child_order,

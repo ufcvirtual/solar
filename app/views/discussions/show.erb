@@ -1,131 +1,3 @@
-<head>
-  <script type="text/javascript">
-
-    //// Modos de exibição ////////////////////////////////////////////
-    function showAsThread() {
-      $('#display_mode').attr('value','');
-      $('#new_post_form').attr('action','/discussions/show/<%=@discussion["id"]%>');
-      $('#new_post_form').submit();
-    }
-
-    function showAsPlainList() {
-      $('#display_mode').attr('value','PLAINLIST');
-      $('#new_post_form').attr('action','/discussions/show/<%=@discussion["id"]%>');
-      $('#new_post_form').submit();
-    }
-
-    //// Manipulação de arquivos anexos ///////////////////////////////
-    
-
-    function showUploadForm(discussionId, postId){
-      showLightBoxURL('/discussions/post_file_upload/?id=' + discussionId + '&post_id=' + postId ,400,250,true,'Envio de arquivos');
-    }
-
-    //// Manipulação da caixa de edição ///////////////////////////////
-    function appendRichTextBox(postContainer){
-      newFormCode = '' +
-        '<div id="new_post_dialog" style="display: none;">' +
-        '<textarea id="newPostTextBox">' +
-        '</textarea>' +
-        '<div style="text-align:right;">' +
-        '<a href="#" onclick="cancelPosting();return false;" class="forum_button"><%=t("cancel")%></a>&nbsp;&nbsp;' +
-        '<a href="#" onclick="sendPost();return false;" class="forum_button"><%=t("send")%></a>' +
-        '</div>' +
-        '</div>';
-
-      //Removendo outra caixa de entrada de postagem que possam
-      //estar abertas, possivelmente.
-      $('#new_post_dialog').attr('id', 'oldPostDialog');
-      $('#newPostTextBox').attr('id', 'oldPostTextBox');
-      if (CKEDITOR.instances.newPostTextBox) {
-        CKEDITOR.instances.newPostTextBox.destroy();
-      }
-      $('#oldPostTextBox').remove();
-      $('#oldPostDialog').remove();
-
-      //Criando a nova caixa de entrada e exibindo-a
-      postContainer.append(newFormCode);
-
-      $('#newPostTextBox').ckeditor( function () {
-        $('#new_post_dialog').css('width','100%');
-        $('#new_post_dialog').show(300)
-      }, {
-        toolbar: 'SolarToolbar'
-      });
-    }
-
-    function cancelPosting() {
-      $('#new_post_dialog').attr('id', 'oldPostDialog');
-      $('#newPostTextBox').attr('id', 'oldPostTextBox');
-      if (CKEDITOR.instances.newPostTextBox) {
-        CKEDITOR.instances.newPostTextBox.destroy();
-      }
-      $('#oldPostTextBox').remove();
-      $('#oldPostDialog').remove();
-    }
-
-    //// Manipulação de variaveis internas ////////////////////////////
-    function setParentPostId(post_id) {
-      $('#parent_post_id').attr('value',post_id);
-      $('#update_post_id').attr('value','');
-    }
-
-    function setDiscussionPostId(post_id) {
-      $('#discussion_post_id').attr('value',post_id);
-      $('#parent_post_id').attr('value','');
-    }
-
-    function clearFormData(){
-      $('#parent_post_id').attr('value','');
-      $('#discussion_post_id').attr('value', '');
-    }
-
-    //// Envio de postagens e atualizações ////////////////////////////
-    function sendPost() {
-      $('#content').attr('value',$('#newPostTextBox').val());
-      //caso de atualização de post
-      if ($('#discussion_post_id').attr('value') != '')
-        updatePost();
-      else//caso de novo post
-        $('#new_post_form').submit();
-    }
-
-    function removePost(postId) {
-      $('#discussion_post_id').attr('value', postId);
-      $('#new_post_form').attr('action','/discussions/remove_post');
-      $('#new_post_form').submit();
-    }
-    
-    function updatePost() {
-      $('#new_post_form').attr('action','/discussions/update_post');
-      $('#new_post_form').submit();
-    }
-
-    //// Eventos e comportamentos dos links ///////////////////////////
-    $(document).ready( function () {
-
-      //Botões de responder postagem
-      $('.postDialogLink').click( function () {
-        var postContainer = $(this).parent().parent();
-        appendRichTextBox(postContainer);
-      });
-
-      //Botão de editar postagem
-      $('.updateDialogLink').click( function () {
-        var postContainer = $(this).parent().parent();
-        appendRichTextBox(postContainer);
-        $('#newPostTextBox').val(postContainer.children('.forum_post_inner_content').html());
-      });
-
-      //Botão de nova postagem
-      $('#NewPostButton').click( function () {
-        clearFormData();
-        var postContainer = $(this).parent().parent();
-        appendRichTextBox(postContainer);
-      });
-    });
-  </script>
-</head>
 <span class="page_title"><%= @discussion["name"] %></span>
 <div id="forum_description">
   <%= @discussion["description"] %>
@@ -180,3 +52,127 @@
   <%= hidden_field_tag(:current_page, @current_page) %>
 <% end %>
 <!--//------------- Fim da Exibição de Posts--------------->
+
+<script type="text/javascript">
+
+  //// Modos de exibição ////////////////////////////////////////////
+  function showAsThread() {
+    $('#display_mode').attr('value','');
+    $('#new_post_form').attr('action','/discussions/show/<%=@discussion["id"]%>');
+    $('#new_post_form').submit();
+  }
+
+  function showAsPlainList() {
+    $('#display_mode').attr('value','PLAINLIST');
+    $('#new_post_form').attr('action','/discussions/show/<%=@discussion["id"]%>');
+    $('#new_post_form').submit();
+  }
+
+  //// Manipulação de arquivos anexos ///////////////////////////////
+  function showUploadForm(discussionId, postId){
+    showLightBoxURL('/discussions/post_file_upload/?id=' + discussionId + '&post_id=' + postId ,400,250,true,'Envio de arquivos');
+  }
+
+  //// Manipulação da caixa de edição ///////////////////////////////
+  function appendRichTextBox(postContainer){
+    newFormCode = '' +
+      '<div id="new_post_dialog" style="display: none;">' +
+      '<textarea id="newPostTextBox">' +
+      '</textarea>' +
+      '<div style="text-align:right;">' +
+      '<a href="#" onclick="cancelPosting();return false;" class="forum_button"><%=t("cancel")%></a>&nbsp;&nbsp;' +
+      '<a href="#" onclick="sendPost();return false;" class="forum_button"><%=t("send")%></a>' +
+      '</div>' +
+      '</div>';
+
+    //Removendo outra caixa de entrada de postagem que possam
+    //estar abertas, possivelmente.
+    $('#new_post_dialog').attr('id', 'oldPostDialog');
+    $('#newPostTextBox').attr('id', 'oldPostTextBox');
+    if (CKEDITOR.instances.newPostTextBox) {
+      CKEDITOR.instances.newPostTextBox.destroy();
+    }
+    $('#oldPostTextBox').remove();
+    $('#oldPostDialog').remove();
+
+    //Criando a nova caixa de entrada e exibindo-a
+    postContainer.append(newFormCode);
+
+    $('#newPostTextBox').ckeditor( function () {
+      $('#new_post_dialog').css('width','100%');
+      $('#new_post_dialog').show(300)
+    }, {
+      toolbar: 'SolarToolbar'
+    });
+  }
+
+  function cancelPosting() {
+    $('#new_post_dialog').attr('id', 'oldPostDialog');
+    $('#newPostTextBox').attr('id', 'oldPostTextBox');
+    if (CKEDITOR.instances.newPostTextBox) {
+      CKEDITOR.instances.newPostTextBox.destroy();
+    }
+    $('#oldPostTextBox').remove();
+    $('#oldPostDialog').remove();
+  }
+
+  //// Manipulação de variaveis internas ////////////////////////////
+  function setParentPostId(post_id) {
+    $('#parent_post_id').attr('value',post_id);
+    $('#update_post_id').attr('value','');
+  }
+
+  function setDiscussionPostId(post_id) {
+    $('#discussion_post_id').attr('value',post_id);
+    $('#parent_post_id').attr('value','');
+  }
+
+  function clearFormData(){
+    $('#parent_post_id').attr('value','');
+    $('#discussion_post_id').attr('value', '');
+  }
+
+  //// Envio de postagens e atualizações ////////////////////////////
+  function sendPost() {
+    $('#content').attr('value',$('#newPostTextBox').val());
+    //caso de atualização de post
+    if ($('#discussion_post_id').attr('value') != '')
+      updatePost();
+    else//caso de novo post
+      $('#new_post_form').submit();
+  }
+
+  function removePost(postId) {
+    $('#discussion_post_id').attr('value', postId);
+    $('#new_post_form').attr('action','/discussions/remove_post');
+    $('#new_post_form').submit();
+  }
+
+  function updatePost() {
+    $('#new_post_form').attr('action','/discussions/update_post');
+    $('#new_post_form').submit();
+  }
+
+  //// Eventos e comportamentos dos links ///////////////////////////
+  $(function() {
+    //Botões de responder postagem
+    $('.postDialogLink').click( function () {
+      var postContainer = $(this).parent().parent();
+      appendRichTextBox(postContainer);
+    });
+
+    //Botão de editar postagem
+    $('.updateDialogLink').click( function () {
+      var postContainer = $(this).parent().parent();
+      appendRichTextBox(postContainer);
+      $('#newPostTextBox').val(postContainer.children('.forum_post_inner_content').html());
+    });
+
+    //Botão de nova postagem
+    $('#NewPostButton').click( function () {
+      clearFormData();
+      var postContainer = $(this).parent().parent();
+      appendRichTextBox(postContainer);
+    });
+  });
+</script>
