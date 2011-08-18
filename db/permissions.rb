@@ -150,6 +150,8 @@ perm_prof_titular = PermissionsResource.create([
     {:profile_id => 2, :resource_id => 17, :per_id => false},
     {:profile_id => 2, :resource_id => 18, :per_id => false},
     {:profile_id => 2, :resource_id => 19, :per_id => false},
+    {:profile_id => 2, :resource_id => 20, :per_id => false},
+    {:profile_id => 2, :resource_id => 21, :per_id => false},
     {:profile_id => 2, :resource_id => 22, :per_id => false},
     {:profile_id => 2, :resource_id => 23, :per_id => false},
     # portfolio
@@ -198,6 +200,8 @@ perm_prof_titular = PermissionsResource.create([
     {:profile_id => 3, :resource_id => 17, :per_id => false},
     {:profile_id => 3, :resource_id => 18, :per_id => false},
     {:profile_id => 3, :resource_id => 19, :per_id => false},
+    {:profile_id => 3, :resource_id => 20, :per_id => false},
+    {:profile_id => 3, :resource_id => 21, :per_id => false},
     {:profile_id => 3, :resource_id => 22, :per_id => false},
     {:profile_id => 3, :resource_id => 23, :per_id => false},
     {:profile_id => 3, :resource_id => 24, :per_id => false},
