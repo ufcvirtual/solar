@@ -104,7 +104,7 @@
 
   </div>
 
-  <!-- Quantidade de participacoes -->
+  <!-- Quantidade de participacoes em foruns -->
 
   <div class="portfolio_activity_list">
 
@@ -121,7 +121,7 @@
         <thead>
           <tr>
             <td style="width: 80%;"></td>
-            <td style="width: 20%;" align="center">Qtd</td>
+            <td style="width: 20%;" align="center"><%= t(:amount) %></td>
           </tr>
         </thead>
         <tbody>
@@ -157,26 +157,21 @@
 
       <div id="history-search">
 
-        <div id="history-search-label">
-          <span><%= t(:search) %></span>
+        <div id="history-search-label" style="padding-bottom: 10px;">
+          <span><%= t(:history_search) %></span>
         </div>
-        <div id="history-search-content">
-          <span>
-            <input id="from-date" title="<%= t(:from_date) %>" size="9" value="<%= two_months_ago %>"/>
-          </span>
+        <div id="history-search-content" style="padding-bottom: 10px;">
+          <span><input id="from-date" title="<%= t(:from_date) %>" size="9" value="<%= two_months_ago %>"/></span>
           <%= t(:to) %>
-          <span>
-            <input id="until-date" title="<%= t(:until_date) %>" size="9" value="<%= Date.today %>"/>
-          </span>
-          <span>
-            <%=link_to t(:search), {:controller => :scores, :action => :amount_history_access}, :id => 'bt-amount-history-access' %>
-          </span>
+          <span><input id="until-date" title="<%= t(:until_date) %>" size="9" value="<%= Date.today %>"/></span>
+          <span><%=link_to t(:history_find), {:controller => :scores,
+                :action => :amount_history_access}, :id => 'bt-amount-history-access' %></span>
         </div>
 
       </div>
       <hr class="portfolio_table_division" />
       <div id="history-body" style="overflow: auto; height: 20px;">
-        <span id="history-body-label" style="padding-right: 10px;"><%=t :quantity_access %>:</span>
+        <span id="history-body-label" style="padding-right: 10px;"><%=t :amount_access %>:</span>
         <span id="history-body-value">
           <%= link_to @amount, {:controller => :scores, :action => :history_access, :student_id => params[:id]} %>
         </span>
@@ -207,7 +202,6 @@
 
           // verificar se as datas foram preenchidas - as duas sao obrigatorias
 
-
           $.post($(this).attr('href'), {
             'from-date': $('#from-date').val(),
             'until-date': $('#until-date').val(),
@@ -217,16 +211,10 @@
             $('#history-body-value').html(response);
           });
 
-          // consultar passando as datas por parametro
-
-          // a resposta vem em html juntamente com um link para o historico de acesso,
-          // basta inserir na div certa
-
           // parar o evento de click
           return false;
 
         });
-
 
         // requisicao ajax para recuperar posts do usuario
         $('td.show_posts').click(function(){
@@ -239,7 +227,8 @@
               // $('#all_posts').html(response).css('display', 'block');
 
               var canClose = true;
-              showLightBox(response, 500, 600, canClose);
+              var title = '<span style="font-weight: bold;"><%= t(:scores_discussions) %></span><br /><%= @student.name %>';
+              showLightBox(response, 500, 600, canClose, title);
 
             },
             complete: function(response){
@@ -260,7 +249,6 @@
         }, function(){
           $(this).removeClass('txt-link');
         });
-
 
       });
     </script>

@@ -1,4 +1,8 @@
-<%= link_to @amount, {:controller => :scores, :action => :history_access, :student_id => @student_id} %>
+<% if @amount.to_i > 0 %>
+  <%= link_to @amount, {:controller => :scores, :action => :history_access, :student_id => @student_id} %>
+<% else %>
+  <%= @amount %>
+<% end %>
 
 <!-- atualizando datas -->
 <script type="text/javascript">

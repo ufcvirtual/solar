@@ -13,7 +13,8 @@ class DiscussionPost < ActiveRecord::Base
     posts = ActiveRecord::Base.connection.select_all <<SQL
       SELECT t1.id,
              t2.user_id,
-             t2.content
+             t2.content,
+             t2.created_at AS posted
         FROM discussions      AS t1
         JOIN discussion_posts AS t2 ON t2.discussion_id = t1.id
        WHERE t2.user_id = #{student_id}
