@@ -109,58 +109,7 @@ $(document).ready(function() {
             $('.mysolar_menu_list').slideUp("fast");
             $(this).siblings().slideDown("fast");
         }
-        checkCookie();
     });
-
-    //        alert('abaixo: ' + $.cookie("father_id"));
-
-    checkCookie();
-
-    function setCookie(c_name,value,exdays)
-    {
-        //alert('setou: '+value);
-        var exdate=new Date();
-        exdate.setDate(exdate.getDate() + exdays);
-        var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
-        document.cookie=c_name + "=" + c_value;
-    }
-
-    function getCookie(c_name)
-    {
-        var i,x,y;
-        var ARRcookies=document.cookie.split(";");
-
-        //alert('getCookie[' + document.cookie + ']');
-
-        for (i=0;i<ARRcookies.length;i++)
-        {
-            x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
-            y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
-            //alert('get'+i+': ' + y);
-            x=x.replace(/^\s+|\s+$/g,"");
-            if (x==c_name)
-            {
-                return unescape(y);
-            }
-        }
-    }
-
-    function checkCookie()
-    {
-        var parent_id = getCookie("parent_id");
-
-        //alert('checou: '+parent_id);
-
-        if (parent_id != null && parent_id!="")
-        {
-            //alert('VERIFICOU: '+parent_id);
-            $("#"+parent_id).siblings().show();
-        }
-    }
-
-//Rever esse código aqui!
-/*$('.mysolar_top_link').click(function(){
-            setCookie("parent_id",null,-1);
-          });*/
-
+    // abre menu corrente
+    $('.open_menu').click();
 });

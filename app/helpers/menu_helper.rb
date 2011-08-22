@@ -1,7 +1,7 @@
 module MenuHelper
 
   # retorna o menu de acordo com o perfil do usuario
-  def create_menu_list(profile_id, context = 'geral', id = nil)
+  def create_menu_list(profile_id, context = 'geral', id = nil, current_menu = nil)
     # consulta para recuperar os dados do menu
     query = "
       WITH cte_menus AS (
@@ -67,7 +67,7 @@ module MenuHelper
     # percorrer todos os registros
     menus.each do |menu|
 
-      access_controller = {:controller => menu["controller"], :action => menu["action"]}
+      access_controller = {:controller => menu["controller"], :action => menu["action"], :mid => menu['father_id']}
 
       # verifica se o menu pai foi modificado para gerar um novo menu
       unless previous_father_id == menu["father_id"].to_i
@@ -83,7 +83,13 @@ module MenuHelper
         elsif !menu["link"].nil?
           link = "<a href='#{menu['link']}'>#{menu['father']}</a>"
         else
-          link = "<a href='#'>#{menu['father']}</a>"
+          # verifica menu corrente
+          if (menu['father_id'] == current_menu)
+            link = "<a href='#' class='open_menu'>#{menu['father']}</a>"
+          else
+            link = "<a href='#'>#{menu['father']}</a>"
+          end
+
         end
 
         # menus pai tbm podem ter links diretamente para funcionalidades

@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user_session, :current_user
 
-  before_filter :return_user, :application_context
+  before_filter :return_user, :application_context, :current_menu
   before_filter :log_access, :only => :add_tab
 
   # Mensagem de erro de permissão
@@ -156,6 +156,11 @@ puts " --- offer_id em sessao: #{session[:opened_tabs][session[:active_tab]]["of
 
     redirect_to redirect
 
+  end
+  
+# Seta o valor do menu corrente
+  def current_menu
+    session[:current_menu] = params.include?('mid') ? params[:mid] : nil
   end
 
   private
