@@ -90,7 +90,11 @@ class PortfolioController < ApplicationController
     authorize! :delete_file_individual_area, Portfolio
 
     assignment_id = params[:assignment_id]
-    redirect = {:action => :activity_details, :id => assignment_id} # modificar esse id
+    redirect = {
+      :controller => :portfolio,
+      :action => :activity_details,
+      :id => assignment_id
+    }
 
     respond_to do |format|
 

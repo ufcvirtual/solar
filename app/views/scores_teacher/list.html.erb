@@ -42,7 +42,7 @@
         <% @students.each do |student| %>
           <tr class="lines">
             <td align="left" class="td_student">
-              <%=link_to student["student_name"], {:controller => :scores, :action => :index, :student_id => student["student_id"]} %>
+              <%=link_to student["student_name"], {:controller => :scores, :action => :show, :id => student["student_id"]} %>
             </td>
             <td align="center"><%= student["cnt_public_files"] %></td>
             <td>&nbsp;</td>

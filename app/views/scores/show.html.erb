@@ -1,0 +1,273 @@
+<!-- Apresenta o nome da unidade curricular -->
+
+<div>
+  <span class="page_title">
+    <%= t(:scores_of) %> <%= curriculum_unit_name %>
+  </span>
+</div>
+
+<!-- Lista de atividades -->
+
+<div class="portfolio_activity_list">
+
+  <div class="portfolio_header_content">
+    <div class="portfolio_title"><%= @student.name %></div>
+    <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+  </div>
+
+  <!-- Informacoes -->
+
+  <div id="portfolio" class="portfolio portfolio_activity_list">
+    <hr class="portfolio_line" />
+
+    <div id="test">
+      <table id="assignments_list" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+          <tr style="font-weight: bold;">
+            <td class="td_blue_portfolio"><%= t(:tests) %></td>
+            <td class="td_blue_portfolio" align="center" style="width: 22%;"><%= t(:date_name) %></td>
+            <td class="td_blue_portfolio" align="center" style="width: 12%;"><%= t(:situation) %></td>
+            <td class="td_blue_portfolio" align="center" style="width: 8%;"><%= t(:grade) %></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td_blue_portfolio">Prova I</td>
+            <td class="td_blue_portfolio" align="center">2011-05-04</td>
+            <td class="td_blue_portfolio" align="center">-</td>
+            <td class="td_blue_portfolio" align="center">9.8</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="portfolio_table_division" />
+
+    <div id="assignments">
+      <table id="assignments_list" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+          <tr>
+            <th class="td_blue_portfolio" align="left"><%= t(:assignments) %></th>
+            <th class="td_blue_portfolio" align="center" style="width: 22%;"><%= t(:date_name) %></th>
+            <th class="td_blue_portfolio" align="center" style="width: 12%;"><%= t(:situation) %></th>
+            <th class="td_blue_portfolio" align="center" style="width: 8%;"><%= t(:grade) %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @activities.each_with_index do |activity, idx| %>
+            <% class_name = ((idx % 2) == 0) ? 'rowtable_even' : 'rowtable_odd' %>
+            <tr class="<%= class_name %>">
+              <td class="td_blue_portfolio">
+                <!-- verifica permissao de modificao de notas -->
+                <% if can? :student_detail, PortfolioTeacher %>
+                  <%=link_to activity["assignments_name"], {:controller => :portfolio_teacher,
+                    :action => :student_detail, :id => @student.id,
+                    :assignment_id => activity["assignment_id"],
+                    :send_assignment_id => activity["send_assignment_id"]}, {class: 'link'} %>
+                  <% else %>
+                    <%= activity["assignments_name"] %>
+                  <% end %>
+                </td>
+                <td class="td_blue_portfolio" align="center"><%=l activity["start_date"].to_time, :format => :normal %> - <%=l activity["end_date"].to_time, :format => :normal %></td>
+                <td class="td_blue_portfolio assignment_<%= activity["situation"] %>" align="center"><%= t(activity["situation"].to_sym) %></td>
+                <td class="td_blue_portfolio" align="center"><%= (activity["grade"].nil?) ? '-' : activity["grade"].to_f %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <hr class="portfolio_table_division" />
+
+      <div id="participation">
+        <table id="assignments_list" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr style="font-weight: bold;">
+              <td class="td_blue_portfolio"><%= t(:participation) %></td>
+              <td class="td_blue_portfolio" align="center" style="width: 22%;"><%= t(:date_name) %></td>
+              <td class="td_blue_portfolio" align="center" style="width: 12%;"><%= t(:situation) %></td>
+              <td class="td_blue_portfolio" align="center" style="width: 8%;"><%= t(:grade) %></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td_blue_portfolio">Participacao I</td>
+              <td class="td_blue_portfolio" align="center">2011-05-04</td>
+              <td class="td_blue_portfolio" align="center">-</td>
+              <td class="td_blue_portfolio" align="center">9.8</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Quantidade de participacoes -->
+
+  <div class="portfolio_activity_list">
+
+    <div class="portfolio_header_content">
+      <div class="portfolio_title"><%= t(:amount_participation) %></div>
+      <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+    </div>
+
+    <!-- Informacoes -->
+
+    <div id="portfolio" class="portfolio portfolio_activity_list">
+      <hr class="portfolio_line" />
+      <table width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <td style="width: 80%;"></td>
+            <td style="width: 20%;" align="center">Qtd</td>
+          </tr>
+        </thead>
+        <tbody>
+          <% @discussions.each_with_index do |discussion, idx| %>
+            <tr class="rowtable_<%= (idx % 2 == 0) ? 'even' : 'odd' %>">
+              <td class="td_blue_portfolio"><%= discussion["name"] %></td>
+              <td class="td_blue_portfolio show_posts" align="center">
+                <%=(discussion["qtd"].to_i > 0) ? link_to(discussion["qtd"],
+                  {:controller => :discussions, :action => :show_posts,
+                    :id => discussion["discussion_id"], :student_id => @student.id}) : discussion["qtd"] %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Historico de acesso -->
+
+  <div class="portfolio_activity_list">
+
+    <div class="portfolio_header_content">
+      <div class="portfolio_title"><%= t(:history_access) %></div>
+      <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+    </div>
+
+    <!-- Informacoes -->
+
+    <div id="portfolio" class="portfolio portfolio_activity_list">
+      <hr class="portfolio_line" />
+
+      <div id="history-search">
+
+        <div id="history-search-label">
+          <span><%= t(:search) %></span>
+        </div>
+        <div id="history-search-content">
+          <span>
+            <input id="from-date" title="<%= t(:from_date) %>" size="9" />
+          </span>
+          <%= t(:to) %>
+          <span>
+            <input id="until-date" title="<%= t(:until_date) %>" size="9" />
+          </span>
+          <span>
+            <%=link_to t(:search), {:controller => :scores, :action => :amount_history_access}, :id => 'bt-amount-history-access' %>
+          </span>
+        </div>
+
+      </div>
+      <hr class="portfolio_table_division" />
+      <div id="history-body" style="overflow: auto; height: 20px;">
+
+        <span id="history-body-label" style="float: left;"><%=t :quantity_access %></span>
+        <span id="history-body-value" style="float: right;">
+          <%= link_to '90', {:controller => :scores, :action => :history_access} %>
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+
+  <div id="scripts">
+
+    <style type="text/css">
+      .txt-link {
+        text-decoration: underline;
+      }
+    </style>
+
+    <script type="text/javascript">
+      $(function(){
+
+        // campos de data
+        $('#from-date, #until-date').datepicker({
+          dateFormat: '<%=t :search_format_date %>'
+        });
+
+        // requisicao ajax para recuperar quantidade de acessos de um usuario
+        $('a#bt-amount-history-access').click(function(){
+
+          // verificar se as datas foram preenchidas - as duas sao obrigatorias
+
+          console.log($('#from-date').val());
+
+          $.post($(this).attr('href'), {
+            'from-date': $('#from-date').val(),
+            'until-date': $('#until-date').val(),
+            'id': <%= @student.id %>
+          },
+          function(response){
+            $('#history-body').html(response);
+          });
+
+          // consultar passando as datas por parametro
+
+          // a resposta vem em html juntamente com um link para o historico de acesso,
+          // basta inserir na div certa
+
+          // parar o evento de click
+          return false;
+
+        });
+
+
+        // requisicao ajax para recuperar posts do usuario
+        $('td.show_posts').click(function(){
+          $.ajax({
+            type: 'GET',
+            url: $('a', $(this)).attr('href'),
+            cache: false,
+            //context: document.body,
+            success: function(response){
+              // $('#all_posts').html(response).css('display', 'block');
+
+              var canClose = true;
+              showLightBox(response, 500, 600, canClose);
+
+            },
+            complete: function(response){
+              // verifica se foi gerado algum erro
+              if (parseInt(response.status) != 200) {
+                alert('Erro ao tentar consultar. Tente novamente mais tarde.');
+              }
+            }
+          });
+
+          return false;
+
+        });
+
+        // Transformando em link
+        $('a.link').hover(function(){
+          $(this).addClass('txt-link');
+        }, function(){
+          $(this).removeClass('txt-link');
+        });
+
+
+      });
+    </script>
+
+  </div>

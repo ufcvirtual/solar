@@ -58,7 +58,7 @@ resources_arr = [
   {:id => 46, :controller => 'discussions', :action => 'list', :description => 'Lista os foruns'},
 
   # acompanhamento
-  {:id => 47, :controller => 'scores', :action => 'index', :description => 'Exibicao dos dados do aluno'},
+  {:id => 47, :controller => 'scores', :action => 'show', :description => 'Exibicao dos dados do aluno'},
 
   # acompanhamento do professor
   {:id => 48, :controller => 'scores_teacher', :action => 'list', :description => 'Lista dos alunos da turma'},

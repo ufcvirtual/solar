@@ -64,7 +64,7 @@
         <span class="portfolio_activity_mright" style="float: right;">
           <span>
             <%= link_to t(:back),
-              {:controller => :scores, :action => :index, :student_id => @student_id},
+              {:controller => :scores, :action => :show, :id => @student_id},
               {:name => t(:back).downcase, :class => 'btn-decoration'} %>
           </span>
           <span>
@@ -109,10 +109,8 @@
                   </td>
                   <td align="left" style="float: left; margin-left: 10px;">
                     <%= link_to t(:delete), {
-                      :action => :delete_file,
-                      :comment_file_id => c["id"],
-                      :students_id => @student_id,
-                      :send_assignment_id => @send_assignment_id
+                      :action => :delete_file, :comment_file_id => c["id"],
+                      :students_id => @student_id, :send_assignment_id => @send_assignment_id
                     }, :confirm => "#{t(:delete_file_msg)}" %>
                   </td>
                 </tr>

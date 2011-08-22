@@ -100,6 +100,7 @@ class PortfolioTeacherController < ApplicationController
         end
 
         redirect = {
+          :controller => :portfolio_teacher,
           :action => :student_detail,
           :id => students_id,
           :assignment_id => assignment_id,

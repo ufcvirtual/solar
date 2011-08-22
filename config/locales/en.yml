@@ -322,7 +322,7 @@ en:
   student: "Student"
   scores_of: "Scores Of"
   public_files: "Public Files"
-  tests: "Provas"
+  tests: "Tests"
   private_area: "Private Area"
   participation: "Participation"
   assignments: "Assignments"
@@ -334,6 +334,13 @@ en:
   assignment_not_sent: "Assignment not sent."
   assignment_as: "AS"
   assignment_an: "AN"
+  amount_participation: "Amount Of Participation"
+  from_date: "From Date"
+  until_date: "Until Date"
+  search_format_date: "mm-dd-yy"
+  quantity_access: "Quantity of Accesses"
+  invalid_identifier: "Invalid Identifier"
+
   # Mensagem de erro para permissão 
   no_permission: "you haven't permission to access this page"
 

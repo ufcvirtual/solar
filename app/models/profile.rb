@@ -80,7 +80,44 @@ class Profile < ActiveRecord::Base
             (ch.course_parent_tag_id = #{activity_allocation_tag_id})
           )"
 
-    return Profile.find_by_sql(query)
+    return self.find_by_sql(query)
+  end
+
+  # Verifica se o usuario tem o perfil de estudante
+  def self.student?(user_id = 0)
+    types_perfil(user_id).include?('student')
+  end
+
+  # Verifica se o usuario tem o perfil de responsavel
+  def self.class_responsible?(user_id = 0)
+    types_perfil(user_id).include?('class_responsible')
+  end
+
+  # verifica se é estudante ou responsal
+  def self.types_perfil(user_id)
+    tps = ActiveRecord::Base.connection.select_all <<SQL
+       SELECT DISTINCT
+              CASE
+                  WHEN t3.student           IS TRUE THEN 'student'
+                  WHEN t3.class_responsible IS TRUE THEN 'class_responsible'
+                  ELSE 'undefined'
+              END AS type_perfil
+         FROM users         AS t1
+         JOIN allocations   AS t2 ON t2.user_id = t1.id
+         JOIN profiles      AS t3 ON t3.id = t2.profile_id
+        WHERE t1.id = #{user_id};
+SQL
+
+    tps = [] if tps.nil?
+
+    # Transformando o hash da consulta em um array
+    array_types = []
+    tps.each do |tp|
+      array_types << tp.values.first
+    end
+
+    return array_types
+
   end
 
 end

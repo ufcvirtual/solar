@@ -11,7 +11,7 @@ class PortfolioTeacher < ActiveRecord::Base
   end
 
   # lista com as atividades do aluno dentro na turma
-  def self.list_assignments_by_group_and_student(groups_id, students_id)
+  def self.list_assignments_by_group_and_student_id(groups_id, students_id)
     assignments = ActiveRecord::Base.connection.select_all <<SQL
       SELECT DISTINCT
              t1.name AS assignments_name,

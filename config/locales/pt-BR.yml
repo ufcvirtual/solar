@@ -343,6 +343,12 @@
   assignment_not_sent: "Trabalho não enviado"
   assignment_as: "TE"
   assignment_an: "TN"
+  amount_participation: "Quantidade de Participação"
+  from_date: "Da Data"
+  until_date: "Até a Data"
+  search_format_date: "dd-mm-yy"
+  quantity_access: "Quantidade de Acessos"
+  invalid_identifier: "Identificador Inválido"
 
   # Mensagem de erro para permissão   
   no_permission: "Você não tem permissão para acessar esta página"
