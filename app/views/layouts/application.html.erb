@@ -67,16 +67,6 @@
           collapsible: true
         });*/
 
-        //Configurando calendário
-        $("#agenda").datepicker();
-        var local = '<%=I18n.locale%>';        
-        if (local=='en') {
-          $("#agenda").datepicker("option",$.datepicker.regional['en-GB']);
-        }
-        else {
-          $("#agenda").datepicker("option",$.datepicker.regional[local]);
-        }
-
       });
     </script>
     <%= render '/users/mysolar_photo' %>

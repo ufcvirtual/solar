@@ -46,8 +46,10 @@
 /* ... Interaction Cues ... */
 /* data atual */
 #agenda .ui-state-highlight, #agenda .ui-widget-content .ui-state-highlight, #agenda .ui-widget-header .ui-state-highlight  {
-    background: #fffafc;
-    color: #363636; }
+/*    background: #fffafc;*/
+    color: #000000; 
+    font-weight: bold;
+}
 
 /*
  *  * *** Adaptado ***
