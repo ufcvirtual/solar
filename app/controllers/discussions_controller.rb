@@ -2,7 +2,7 @@ class DiscussionsController < ApplicationController
 
   include DiscussionPostsHelper
 
-  load_and_authorize_resource :except => [:list, :attach_file, :download_post_file, :remove_attached_file, :show_posts, :post_file_upload] #Setar permissoes!!!!!
+  load_and_authorize_resource :except => [:list, :show_posts] #Setar permissoes!!!!!
 
   before_filter :prepare_for_pagination
 
@@ -42,20 +42,27 @@ class DiscussionsController < ApplicationController
   end
 
   def show
+    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+    offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+    
     discussion_id = params[:discussion_id]
     discussion_id = params[:id] if discussion_id.nil?
     @display_mode = params[:display_mode]
-
-    if @display_mode.nil?
-      @display_mode = session[:forum_display_mode]
-    else
-      session[:forum_display_mode] = @display_mode
-    end
-
-    @discussion = Discussion.find(discussion_id)
-    plain_list = (@display_mode == "PLAINLIST")
-
-    @posts = DiscussionPost.discussion_posts(@discussion.id, plain_list, @current_page)
+    
+    unless(permitted_discussions(offer_id, group_id, discussion_id).empty?)
+      if @display_mode.nil?
+        @display_mode = session[:forum_display_mode]
+      else
+        session[:forum_display_mode] = @display_mode
+      end
+      
+      @discussion = Discussion.find(discussion_id)
+      plain_list = (@display_mode == "PLAINLIST")
+      
+      @posts = DiscussionPost.discussion_posts(@discussion.id, plain_list, @current_page)
+   else
+    redirect_to "/discussions/list"
+   end 
   end
 
   def new_post
@@ -123,7 +130,7 @@ class DiscussionsController < ApplicationController
         #caso não tenha havido problema algum, remove o arquivo do disco.
         unless error
           filenameArray.each do |filename|
-            path = "#{::Rails.root.to_s}/media/discussion/post/#{filename}"
+            path = "#{::Rails.root.to_s}/media/discussions/post/#{filename}"
             File.delete(path) if File.exist?(path)
           end
         else
@@ -179,7 +186,6 @@ class DiscussionsController < ApplicationController
 
   #Envio de arquivo anexo
   def attach_file
-    #CHECAR SE A PERMISSAO ESTÁ APENAS PARA O DONO DA POSTAGEM!!!
 
     @display_mode = params[:display_mode]
     discussion_id = params[:id]
@@ -187,9 +193,7 @@ class DiscussionsController < ApplicationController
     post = DiscussionPost.find(post_id.to_i)
     @discussion = Discussion.find(discussion_id.to_i)
 
-    has_permission = (post.user.id == current_user.id)
-
-    if (valid_date && has_permission)
+    if (owned_by_current_user&& valid_date && has_no_response)
       begin
         ActiveRecord::Base.transaction do
           #Salvando os novos arquivos anexados
@@ -213,22 +217,24 @@ class DiscussionsController < ApplicationController
 
   #Remoção de arquivo anexo
   def remove_attached_file
-    #CHECAR SE A PERMISSAO ESTÁ APENAS PARA O DONO DA POSTAGEM!!!
     @display_mode = params[:display_mode]
     discussion_id = params[:id]
     post_file_id  = params[:idFile]
     file          = DiscussionPostFile.find(post_file_id.to_i)
     @discussion = Discussion.find(discussion_id.to_i)
 
-    #Removendo arquivo da base de dados
-    DiscussionPostFile.delete(file.id)
-
-    #Removendo o arquivo do disco
-    filename = "#{file.id.to_s}_#{file.attachment_file_name}"
-    path = "#{::Rails.root.to_s}/media/discussions/post/#{filename}"
-    File.delete(path) if File.exist?(path)
-
-    hold_pagination unless @display_mode == "PLAINLIST"
+    if (owned_by_current_user && valid_date && has_no_response)
+      #Removendo arquivo da base de dados
+      DiscussionPostFile.delete(file.id)
+      
+      #Removendo o arquivo do disco
+      filename = "#{file.id.to_s}_#{file.attachment_file_name}"
+      path = "#{::Rails.root.to_s}/media/discussions/post/#{filename}"
+      File.delete(path) if File.exist?(path)
+      
+      hold_pagination unless @display_mode == "PLAINLIST"
+    end
+    
     redirect_to "/discussions/show/#{discussion_id}"
 
   end

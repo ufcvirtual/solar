@@ -66,9 +66,10 @@ resources_arr = [
   {:id => 50, :controller => 'discussions', :action => 'attach_file', :description => 'Anexar arquivos de foruns'},
   {:id => 51, :controller => 'discussions', :action => 'remove_attached_file', :description => 'Remover arquivos de postagens'},
   {:id => 52, :controller => 'users', :action => 'find', :description => 'Consultar dados do usuario'},
-  {:id => 53, :controller => 'discussions', :action => 'post_file_upload', :description => 'Anexar arquivos de foruns'}
+  {:id => 53, :controller => 'discussions', :action => 'post_file_upload', :description => 'Exibir janela para upload de arquivos no foruns'}
 
 ]
+
 count = 0
 resources = Resource.create(resources_arr) do |registro|
   registro.id = resources_arr[count][:id]
@@ -220,7 +221,11 @@ perm_prof_titular = PermissionsResource.create([
     {:profile_id => 3, :resource_id => 45, :per_id => false},
     {:profile_id => 3, :resource_id => 46, :per_id => false},
     {:profile_id => 3, :resource_id => 47, :per_id => false},
-    {:profile_id => 3, :resource_id => 48, :per_id => false}
+    {:profile_id => 3, :resource_id => 48, :per_id => false},
+    {:profile_id => 3, :resource_id => 49, :per_id => false},
+    {:profile_id => 3, :resource_id => 50, :per_id => false},
+    {:profile_id => 3, :resource_id => 51, :per_id => false},
+    {:profile_id => 3, :resource_id => 53, :per_id => false}
   ])
 
 ######## PERMISSIONS MENUS #########

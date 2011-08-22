@@ -134,5 +134,30 @@ module DiscussionPostsHelper
   def posted_today?(message_datetime)
     message_datetime === Date.today
   end
-
+  
+  #retorna discussions onde o usuário pode interagir.
+  def permitted_discussions(offer_id = nil, group_id = nil, discussion_id = nil)
+    
+    # uma discussion eh ligada a uma turma ou a uma oferta
+    if !(group_id.nil? && offer_id.nil?)
+      query_discussions = "SELECT distinct d.id as discussionid,d.name
+                       FROM discussions d
+                       LEFT JOIN allocation_tags at ON d.allocation_tag_id = at.id
+                    WHERE
+                        d.start<=current_date and d.end>=current_date"
+      unless (offer_id.nil? && group_id.nil?)
+        query_discussions << " and ( "
+        query_discussions << "      at.group_id in ( #{group_id} )" unless group_id.nil?
+        query_discussions << "      or at.offer_id in ( #{offer_id} )" unless offer_id.nil?
+        query_discussions << "      or at.group_id in ( select id from groups where offer_id=#{offer_id} ) "  unless offer_id.nil?
+        query_discussions << "     ) "
+      end
+      
+      #vê se passou discussion
+      query_discussions += " and d.id=#{discussion_id} " unless discussion_id.nil? 
+      
+      return Discussion.find_by_sql(query_discussions)
+    end
+  end
+  
 end
