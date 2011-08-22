@@ -29,3 +29,9 @@ g5:
   offer_id: 5
   code: 'FOR'
   status: TRUE
+
+g6:
+  id: 6
+  offer_id: 6
+  code: 'FOR'
+  status: TRUE

@@ -38,3 +38,11 @@ of5:
   semester: '2011.1'
   start: '2011-03-10'
   end: '2021-12-01'
+
+of6:
+  id: 6
+  curriculum_unit_id: 1
+  course_id: 1
+  semester: '2012.1'
+  start: '2011-03-10'
+  end: '2021-12-01'

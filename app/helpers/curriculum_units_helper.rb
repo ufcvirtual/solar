@@ -1,10 +1,80 @@
 module CurriculumUnitsHelper
 
+  def find_user_groups_by_curriculum_unit(curriculum_unit_id)
+     if current_user
+        #groups = ActiveRecord::Base.connection.select_all <<SQL
+        query = "
+           SELECT
+            DISTINCT *
+            FROM (
+            (	--(cns 1 - usuarios vinculados direto a unidade curricular)
+              SELECT
+                gr.id, gr.code, of.semester
+              FROM
+                allocations al
+                INNER JOIN allocation_tags tg ON tg.id = al.allocation_tag_id
+                INNER JOIN curriculum_units cr ON cr.id = tg.curriculum_unit_id
+                INNER JOIN offers of ON of.curriculum_unit_id = cr.id
+                INNER JOIN groups gr ON gr.offer_id = of.id
+              WHERE
+                user_id = #{current_user.id} AND al.status = #{Allocation_Activated} AND cr.id = #{curriculum_unit_id}
+            )
+            union
+            (	--(cns 2 - usuarios vinculados a oferta)
+              SELECT
+                gr.id, gr.code, of.semester
+              FROM
+                allocations al
+                INNER JOIN allocation_tags tg ON tg.id = al.allocation_tag_id
+                INNER JOIN offers of ON of.id = tg.offer_id
+                INNER JOIN groups gr ON gr.offer_id = of.id
+                INNER JOIN curriculum_units cr ON cr.id = of.curriculum_unit_id
+              WHERE
+                user_id = #{current_user.id} AND al.status = #{Allocation_Activated} AND cr.id = #{curriculum_unit_id}
+            )
+            union
+            (	--(cns 3 - usuarios vinculados a turma)
+              SELECT
+                gr.id, gr.code, of.semester
+              FROM
+                allocations al
+                INNER JOIN allocation_tags tg ON tg.id = al.allocation_tag_id
+                INNER JOIN groups gr ON gr.id = tg.group_id
+                INNER JOIN offers of ON of.id = gr.offer_id
+                INNER JOIN curriculum_units cr ON cr.id = of.curriculum_unit_id
+              WHERE
+                user_id = #{current_user.id} AND al.status = #{Allocation_Activated} AND cr.id = #{curriculum_unit_id}
+            )
+            union
+            (	--(cns 4 - usuarios vinculados a graduacao)
+              SELECT
+                gr.id, gr.code, of.semester
+              FROM
+                allocations al
+                INNER JOIN allocation_tags tg ON tg.id = al.allocation_tag_id
+                INNER JOIN courses cs ON cs.id = tg.course_id
+                INNER JOIN offers of ON of.course_id = cs.id
+                INNER JOIN groups gr ON gr.offer_id = of.id
+                INNER JOIN curriculum_units cr ON cr.id = of.curriculum_unit_id
+              WHERE
+                user_id = #{current_user.id} AND al.status = #{Allocation_Activated} AND cr.id = #{curriculum_unit_id}
+            )
+          ) AS ucs_do_usuario
+          ORDER BY semester DESC, code
+"
+      groups1 = Group.find_by_sql(query)
+      return (groups1.nil?) ? [] : groups1
+     end
+  end
+
   # Retorna participantes por unidade curricular passada que tenham status ativo
   #   se resp=TRUE, os retornados sao responsaveis pela turma
   #      o perfil responsavel esta marcado na tabela profiles (pode ser mais de um)
   #   busca em allocation_tags groups e offers relacionadas a unidade curricular
   def class_participants (group_id = nil, flag_resp = false)
+puts "\n\n\n *** class_participants"
+puts " --- group_id: #{group_id}"
+
     if group_id
       group_allocation_tag_id = AllocationTag.find_by_group_id(group_id).id
       query = "

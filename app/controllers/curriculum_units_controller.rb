@@ -13,7 +13,7 @@ class CurriculumUnitsController < ApplicationController
   before_filter :set_group_id_for_responsible, :only => [:access, :participants]
 
   load_and_authorize_resource
-
+    
   def index
     #if current_user
     #  @user = CurriculumUnit.find(current_user.id)
@@ -98,6 +98,10 @@ class CurriculumUnitsController < ApplicationController
     #retorna perfil em que se pede matricula (~aluno)
     @student_profile = student_profile
 
+
+puts "\n\n\n *** participants - acessando a a pagina de participantes *** "
+puts " --- groups_id: #{session[:opened_tabs][session[:active_tab]]["groups_id"]}"
+puts " --- offers_id: #{session[:opened_tabs][session[:active_tab]]["offers_id"]}"
     # pegando dados da sessao e nao da url
     offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
    
@@ -105,8 +109,9 @@ class CurriculumUnitsController < ApplicationController
     responsible = false
     
     # Temporário: garantindo que haverá um grupo, pois futuramente será necessário escolher um grupo para visualizar os participantes
-    groups_id = Group.find_by_offer_id(offers_id).id unless !groups_id.nil?
-
+    #groups_id = Group.find_by_offer_id(offers_id).id unless !groups_id.nil?
+    groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+puts " --- groups_id: #{groups_id}"
     @participants = class_participants groups_id, responsible
 
     # pegando valores pela url:
@@ -122,12 +127,13 @@ class CurriculumUnitsController < ApplicationController
     # pegando dados da sessao e nao da url
     groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
-
+puts "\n\n\n *** curriculum_data"
+puts " --- groups_id: #{groups_id}"
     # localiza responsavel
     responsible = true
     # Temporário: garantindo que haverá um grupo, pois futuramente será necessário escolher um grupo para visualizar os participantes
-    groups_id = Group.find_by_offer_id(offers_id).id unless !groups_id.nil?
-       
+    # groups_id = Group.find_by_offer_id(offers_id).id unless !groups_id.nil?
+           
     @responsible = class_participants groups_id, responsible
     
     # pegando valores pela url:

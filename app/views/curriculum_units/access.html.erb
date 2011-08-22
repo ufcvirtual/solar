@@ -4,6 +4,11 @@
   <span class="page_title"><%=@curriculum_unit.name %></span>
   <hr style="border: none; background-color: #b4b3b7; height: 1px; width:794px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px"></hr>
 
+  <span class="page_title">
+    <%#=@curriculum_unit.name %>
+    <%= render 'group_selection' %>
+  </span>
+  
   <div class="curriculum_unit_portlet_border">
     <div class="curriculum_unit_portlet_left">
       <div class="curriculum_unit_portlet_header">

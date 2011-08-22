@@ -37,13 +37,30 @@ class ApplicationController < ActionController::Base
     name = params[:name]
     session[:active_tab] = name
 
-    # redireciona de acordo com o tipo de aba ativa
-    if session[:opened_tabs][name]["type"] == Tab_Type_Home
+    unless session[:opened_tabs].nil?
+      # redireciona de acordo com o tipo de aba ativa
+      if session[:opened_tabs][name]["type"] == Tab_Type_Home
+        redirect_to :controller => "users", :action => "mysolar"
+      end
+      if session[:opened_tabs][name]["type"] == Tab_Type_Curriculum_Unit
+        redirect_to :controller => 'curriculum_units', :action => 'access', :id => session[:opened_tabs][name]["id"], :groups_id => session[:opened_tabs][name]["groups_id"], :offers_id => session[:opened_tabs][name]["offers_id"]
+      end
+    else
       redirect_to :controller => "users", :action => "mysolar"
     end
-    if session[:opened_tabs][name]["type"] == Tab_Type_Curriculum_Unit
-      redirect_to :controller => 'curriculum_units', :action => 'access', :id => session[:opened_tabs][name]["id"], :groups_id => session[:opened_tabs][name]["groups_id"], :offers_id => session[:opened_tabs][name]["offers_id"]
-    end
+  end
+
+  # atualiza turma selecionada
+  def update_opened_tab_offer_and_group
+    group_id = params[:group_id]
+puts "\n\n\n*** update_opened_tab_offer_and_group - ANTES"
+puts " --- group_id em sessao: #{session[:opened_tabs][session[:active_tab]]["groups_id"]}"
+puts " --- offer_id em sessao: #{session[:opened_tabs][session[:active_tab]]["offers_id"]}"
+    session[:opened_tabs][session[:active_tab]]["groups_id"] = group_id
+    session[:opened_tabs][session[:active_tab]]["offers_id"] = Group.find(group_id).offer.id
+puts "\n*** update_opened_tab_offer_and_group - DEPOIS "
+puts " --- group_id em sessao: #{session[:opened_tabs][session[:active_tab]]["groups_id"]}"
+puts " --- offer_id em sessao: #{session[:opened_tabs][session[:active_tab]]["offers_id"]}"
   end
 
   # fecha aba
@@ -94,10 +111,10 @@ class ApplicationController < ActionController::Base
   def set_group_id_for_responsible
 
     # retirar esse 3 qndo a combo estiver feita - 2011-07-28
-    groups_id = params["groups_id"] || 3
+    #groups_id = params["groups_id"] || 3
 
     # seta novo valor para o grupo/turma selecionada pelo professor
-    session[:opened_tabs][session[:active_tab]]["groups_id"] = groups_id
+    #session[:opened_tabs][session[:active_tab]]["groups_id"] = groups_id
 
   end
 

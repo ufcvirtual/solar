@@ -20,7 +20,9 @@ class LessonsController < ApplicationController
 
   def list
     authorize! :list, Lesson
-
+puts "\n\n\n*** lesson - list "
+puts " --- group_id em sessao: #{session[:opened_tabs][session[:active_tab]]["groups_id"]}"
+puts " --- offer_id em sessao: #{session[:opened_tabs][session[:active_tab]]["offers_id"]}"
     # pegando dados da sessao e nao da url
     groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]

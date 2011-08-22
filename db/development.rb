@@ -53,6 +53,7 @@ allocations = Allocation.create([
 	{:user_id => 1, :allocation_tag_id => 2, :profile_id => 1, :status => 1},
 	{:user_id => 1, :allocation_tag_id => 3, :profile_id => 1, :status => 1},
   {:user_id => 1, :allocation_tag_id => 8, :profile_id => 1, :status => 0},
+  {:user_id => 1, :allocation_tag_id => 9, :profile_id => 1, :status => 1},
 
 	{:user_id => aluno1.id, :allocation_tag_id => 1, :profile_id => 1, :status => 1},
 	{:user_id => aluno1.id, :allocation_tag_id => 2, :profile_id => 1, :status => 1},
