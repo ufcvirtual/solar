@@ -1,0 +1,37 @@
+<%= form_for :curriculum_unit, :url => { }, :html => {:id => 'group_list_form'} do |f| %>
+<!--
+collection_select :group, :groups, Group.find_all_by_offer_id(params["offers_id"]), :id, :code, {:prompt => 'Selecione a turma'}
+    #select_tag(session[:opened_tabs][session[:active_tab]]["groups_id"],options_from_collection_for_select(Group.find_all_by_offer_id(session[:opened_tabs][session[:active_tab]]["offers_id"]), :id, :code))
+    #select_tag(session[:opened_tabs][session[:active_tab]]["groups_id"], options_from_collection_for_select(find_user_groups_by_curriculum_unit(session[:opened_tabs][session[:active_tab]]["id"]), :id, :code_semester), :onchange => "alert(#{session[:opened_tabs][session[:active_tab]]["groups_id"].to_s})")
+    #select_tag(:grupo, options_from_collection_for_select(find_user_groups_by_curriculum_unit(session[:opened_tabs][session[:active_tab]]["id"]), :id, :code_semester),    :onchange => remote_function(:url => {:controller => 'application', :action => 'update_opened_tab_offer_and_group', :group_id => :grupo}))
+
+    #select(@group_selected, options_from_collection_for_select(find_user_groups_by_curriculum_unit(session[:opened_tabs][session[:active_tab]]["id"]), :id, :code_semester), :onchange => "alert(#{@group_selected.id.to_s})")
+    #select(session[:opened_tabs][session[:active_tab]]["groups_id"], :grupo,  options_from_collection_for_select(find_user_groups_by_curriculum_unit(session[:opened_tabs][session[:active_tab]]["id"]), :id, :code_semester), :onchange => "alert(#{session[:opened_tabs][session[:active_tab]]["groups_id"].to_s})")
+-->
+  <%=
+    select(
+        :group_selected,
+        :id,
+        options_from_collection_for_select(
+          find_user_groups_by_curriculum_unit(
+            session[:opened_tabs][session[:active_tab]]["id"]),
+            :id,
+            :code_semester)
+      )
+  %>
+<% end %>
+
+<script type="text/javascript">
+  $(function($) {
+     $("#group_selected_id").change(function() {
+       var groupId = $("#group_selected_id").val();
+       alert(groupId);
+       $.ajax({
+          url: "/application/update_opened_tab_offer_and_group/",//caminho da chamada
+          type: "POST",
+          data: ({group_id : groupId}),
+          async:false
+        });
+     })
+  });
+</script>
