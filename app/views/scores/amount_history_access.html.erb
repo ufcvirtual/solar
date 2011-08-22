@@ -1,3 +1,9 @@
-<div>
-  <%= @amount %>10
-</div>
+<%= link_to @amount, {:controller => :scores, :action => :history_access, :student_id => @student_id} %>
+
+<!-- atualizando datas -->
+<script type="text/javascript">
+  $(function(){
+    $('#from-date').val('<%= @from_date %>');
+    $('#until-date').val('<%= @until_date %>');
+  });
+</script>

@@ -162,11 +162,11 @@
         </div>
         <div id="history-search-content">
           <span>
-            <input id="from-date" title="<%= t(:from_date) %>" size="9" />
+            <input id="from-date" title="<%= t(:from_date) %>" size="9" value="<%= two_months_ago %>"/>
           </span>
           <%= t(:to) %>
           <span>
-            <input id="until-date" title="<%= t(:until_date) %>" size="9" />
+            <input id="until-date" title="<%= t(:until_date) %>" size="9" value="<%= Date.today %>"/>
           </span>
           <span>
             <%=link_to t(:search), {:controller => :scores, :action => :amount_history_access}, :id => 'bt-amount-history-access' %>
@@ -176,16 +176,12 @@
       </div>
       <hr class="portfolio_table_division" />
       <div id="history-body" style="overflow: auto; height: 20px;">
-
-        <span id="history-body-label" style="float: left;"><%=t :quantity_access %></span>
-        <span id="history-body-value" style="float: right;">
-          <%= link_to '90', {:controller => :scores, :action => :history_access} %>
+        <span id="history-body-label" style="padding-right: 10px;"><%=t :quantity_access %>:</span>
+        <span id="history-body-value">
+          <%= link_to @amount, {:controller => :scores, :action => :history_access, :student_id => params[:id]} %>
         </span>
-
       </div>
-
     </div>
-
   </div>
 
   <!-- Scripts -->
@@ -211,7 +207,6 @@
 
           // verificar se as datas foram preenchidas - as duas sao obrigatorias
 
-          console.log($('#from-date').val());
 
           $.post($(this).attr('href'), {
             'from-date': $('#from-date').val(),
@@ -219,7 +214,7 @@
             'id': <%= @student.id %>
           },
           function(response){
-            $('#history-body').html(response);
+            $('#history-body-value').html(response);
           });
 
           // consultar passando as datas por parametro

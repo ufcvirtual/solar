@@ -337,7 +337,7 @@ en:
   amount_participation: "Amount Of Participation"
   from_date: "From Date"
   until_date: "Until Date"
-  search_format_date: "mm-dd-yy"
+  search_format_date: "yy-mm-dd"
   quantity_access: "Quantity of Accesses"
   invalid_identifier: "Invalid Identifier"
 

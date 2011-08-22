@@ -28,6 +28,10 @@ class ScoresController < ApplicationController
       @activities = PortfolioTeacher.list_assignments_by_group_and_student_id(group_id, student_id)
       @discussions = Discussion.all_by_group_and_student_id(group_id, student_id)
 
+      from_date = Date.today << 2 # dois meses atras
+      until_date = Date.today
+      @amount = Score.find_amount_access_by_student_id_and_interval(@student.id, from_date, until_date)
+
     rescue
       respond_to do |format|
 
@@ -42,21 +46,36 @@ class ScoresController < ApplicationController
   # Quantidade de acessos do aluno a unidade curricular
   def amount_history_access
 
+    @from_date = params['from-date']
+    @until_date = params['until-date']
+    @student_id = params[:id]
+
+    # validar as datas
+    @from_date = Date.today << 2 unless date_valid?(@from_date)
+    @until_date = Date.today unless date_valid?(@until_date)
+
     # retorna valor direto
+    @amount = Score.find_amount_access_by_student_id_and_interval(@student_id, @from_date, @until_date)
 
     render :layout => false
-
-    respond_to do |format|
-      @amount = Score.find_amount_access_by_student_id(params[:id])
-
-      format.html
-    end
 
   end
 
   # Historico de acesso do aluno
   def history_access
     render :layout => false
+  end
+
+
+  private
+
+  # Verifica se a data tem um formato valido
+  def date_valid?(date)
+    begin
+      return true if Date.parse date
+    rescue
+      return false
+    end
   end
 
 end
