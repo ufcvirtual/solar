@@ -51,16 +51,12 @@ class ApplicationController < ActionController::Base
   end
 
   # atualiza turma selecionada
-  def update_opened_tab_offer_and_group
+  def update_active_tab_offer_and_group
     group_id = params[:group_id]
-puts "\n\n\n*** update_opened_tab_offer_and_group - ANTES"
-puts " --- group_id em sessao: #{session[:opened_tabs][session[:active_tab]]["groups_id"]}"
-puts " --- offer_id em sessao: #{session[:opened_tabs][session[:active_tab]]["offers_id"]}"
-    session[:opened_tabs][session[:active_tab]]["groups_id"] = group_id
-    session[:opened_tabs][session[:active_tab]]["offers_id"] = Group.find(group_id).offer.id
-puts "\n*** update_opened_tab_offer_and_group - DEPOIS "
-puts " --- group_id em sessao: #{session[:opened_tabs][session[:active_tab]]["groups_id"]}"
-puts " --- offer_id em sessao: #{session[:opened_tabs][session[:active_tab]]["offers_id"]}"
+    unless group_id.nil?
+      session[:opened_tabs][session[:active_tab]]["groups_id"] = group_id
+      session[:opened_tabs][session[:active_tab]]["offers_id"] = Group.find(group_id).offer.id
+    end
   end
 
   # fecha aba

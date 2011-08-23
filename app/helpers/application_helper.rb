@@ -35,7 +35,6 @@ module ApplicationHelper
     return text
   end
 
-
   #Renderiza a navegação da paginação.
   def render_pagination_bar(total_itens = "1", hash_params = nil)
     #Limpando as variaveis
@@ -51,7 +50,7 @@ module ApplicationHelper
 
     total_pages = total_pages.to_s
 
-    result << '<form accept-charset="UTF-8" action="" method="post" name="paginationForm" style="display:inline">'
+    result << '<form accept-charset="UTF-8" action="" method="' << request.method << '" name="paginationForm" style="display:inline">'
     
     if !hash_params.nil?
       # ex: type=index&search=1 2 3
@@ -77,6 +76,36 @@ module ApplicationHelper
     result << ' <input name="authenticity_token" value="' << form_authenticity_token << '" type="hidden">'
     result << '<input type="hidden" id="current_page" name="current_page" value="' << @current_page << '"/>'
     
+    result << '</form>'
+
+    return result
+  end
+
+  #Renderiza a seleção de turmas
+  def render_group_selection(hash_params = nil)
+    result = '<form accept-charset="UTF-8" action="" method="' << request.method << '" name="groupSelectionForm" style="display:inline">'
+    result << select_tag(
+      :group_selected,
+      options_from_collection_for_select(
+        find_user_groups_by_curriculum_unit(
+          session[:opened_tabs][session[:active_tab]]["id"]),
+        :id,
+        :code_semester),
+      {:onchange => "$(this).parent().submit();"}
+    )
+   
+
+    #Renderizando parametros
+    if !hash_params.nil?
+      # ex: type=index&search=1 2 3
+      hash_params.split("&").each { |item|
+        individual_param = item.split("=")
+        v = individual_param[1].nil? ? "" : individual_param[1]
+        result << '<input id="' << individual_param[0] << '" name="' << individual_param[0] << '" value="' << v << '" type="hidden">'
+      }
+    end
+
+    result << ' <input name="authenticity_token" value="' << form_authenticity_token << '" type="hidden">'
     result << '</form>'
 
     return result
