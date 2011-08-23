@@ -354,7 +354,8 @@
   history_search: "Busca"
   history_find: "Buscar"
   history_access: "Histórico de Acessos"
-  scores_discussions: "Acompanhamento de Forum do Aluno"
+  scores_discussions: "Acompanhamento de Foruns do Aluno"
+  scores_history_access: "Acompanhamento de Histórico de Acesso do Aluno"
 
   # Mensagem de erro para permissão   
   no_permission: "Você não tem permissão para acessar esta página"

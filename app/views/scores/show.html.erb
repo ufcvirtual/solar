@@ -6,7 +6,7 @@
   </span>
 </div>
 
-<!-- Lista de atividades -->
+<!-- Lista de atividades do aluno -->
 
 <div class="portfolio_activity_list">
 
@@ -19,6 +19,8 @@
 
   <div id="portfolio" class="portfolio portfolio_activity_list">
     <hr class="portfolio_line" />
+
+    <!-- Provas -->
 
     <div id="test">
       <table id="assignments_list" width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -42,6 +44,8 @@
     </div>
 
     <hr class="portfolio_table_division" />
+
+    <!-- Trabalhos -->
 
     <div id="assignments">
       <table id="assignments_list" width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -78,6 +82,8 @@
       </div>
 
       <hr class="portfolio_table_division" />
+
+      <!-- Participacoes -->
 
       <div id="participation">
         <table id="assignments_list" width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -165,7 +171,7 @@
           <%= t(:to) %>
           <span><input id="until-date" title="<%= t(:until_date) %>" size="9" value="<%= Date.today %>"/></span>
           <span><%=link_to t(:history_find), {:controller => :scores,
-                :action => :amount_history_access}, :id => 'bt-amount-history-access' %></span>
+              :action => :amount_history_access}, :id => 'bt-amount-history-access' %></span>
         </div>
 
       </div>
@@ -173,10 +179,11 @@
       <div id="history-body" style="overflow: auto; height: 20px;">
         <span id="history-body-label" style="padding-right: 10px;"><%=t :amount_access %>:</span>
         <span id="history-body-value">
-          <%= link_to @amount, {:controller => :scores, :action => :history_access, :student_id => params[:id]} %>
+          <%= link_to @amount, {:controller => :scores, :action => :history_access, :student_id => @student.id} %>
         </span>
       </div>
     </div>
+
   </div>
 
   <!-- Scripts -->
@@ -201,7 +208,6 @@
         $('a#bt-amount-history-access').click(function(){
 
           // verificar se as datas foram preenchidas - as duas sao obrigatorias
-
           $.post($(this).attr('href'), {
             'from-date': $('#from-date').val(),
             'until-date': $('#until-date').val(),
@@ -222,20 +228,37 @@
             type: 'GET',
             url: $('a', $(this)).attr('href'),
             cache: false,
-            //context: document.body,
             success: function(response){
-              // $('#all_posts').html(response).css('display', 'block');
-
               var canClose = true;
               var title = '<span style="font-weight: bold;"><%= t(:scores_discussions) %></span><br /><%= @student.name %>';
               showLightBox(response, 500, 600, canClose, title);
-
             },
-            complete: function(response){
-              // verifica se foi gerado algum erro
-              if (parseInt(response.status) != 200) {
-                alert('Erro ao tentar consultar. Tente novamente mais tarde.');
-              }
+            error: function(response){
+              alert('Erro ao tentar consultar. Tente novamente mais tarde.');
+            }
+          });
+
+          return false;
+
+        });
+
+        // requisicao ajax para recuperar historico de acesso do usuario
+        $('#history-body-value').click(function(){
+          $.ajax({
+            type: 'GET',
+            data: {
+              'from-date': $('#from-date').val(),
+              'until-date': $('#until-date').val()
+            },
+            url: $('a', $(this)).attr('href'),
+            cache: false,
+            success: function(response){
+              var canClose = true;
+              var title = '<span style="font-weight: bold;"><%= t(:scores_history_access) %></span><br /><%= @student.name %>';
+              showLightBox(response, 500, 600, canClose, title);
+            },
+            error: function(response){
+              alert('Erro ao tentar consultar. Tente novamente mais tarde.');
             }
           });
 

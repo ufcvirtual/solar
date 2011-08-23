@@ -25,13 +25,13 @@ module MessagesHelper
     
     case type
     when 'trashbox'
-      query_messages += " and cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean) "     #filtra se eh excluida
+      query_messages += " AND cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean) "     #filtra se eh excluida
     when 'index'
-      query_messages += " and NOT cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean) " #filtra se nao eh origem (eh destino)
-      query_messages += " and NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean) " #nao esta na lixeira
+      query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean) " #filtra se nao eh origem (eh destino)
+      query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean) " #nao esta na lixeira
     when 'outbox'
-      query_messages += " and     cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean) " #filtra se eh origem (default)
-      query_messages += " and NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean) " #nao esta na lixeira
+      query_messages += " AND     cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean) " #filtra se eh origem (default)
+      query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean) " #nao esta na lixeira
     when 'portlet'
       query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean) " #filtra se nao eh origem (eh destino)
       query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Read.to_s(2)}' as boolean) "   #nao lida

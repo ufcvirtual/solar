@@ -5,7 +5,7 @@ class Discussion < ActiveRecord::Base
   has_many :discussion_posts
 
   # Todas os foruns do grupo por usuario
-  def self.all_by_group_and_student_id(group_id, student_id)
+  def self.all_by_group_id_and_student_id(group_id, student_id)
     discussions = ActiveRecord::Base.connection.select_all <<SQL
       WITH cte_discussions AS (
           SELECT t2.id            AS allocation_tag_id,

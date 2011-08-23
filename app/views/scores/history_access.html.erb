@@ -1,1 +1,13 @@
-tem nada ainda pra trazer aqui
+<div id="history-access">
+  <div>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tbody>
+        <% @history.each_with_index do |hist, idx| %>
+          <tr class="<%= (idx % 2 == 0) ? 'post_content' : 'noclass' %>">
+            <td><%=l hist['access_date'].to_time, :format => :files %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -24,7 +24,10 @@ class AccessControlController < ApplicationController
   end
   
   def discussion
-    name_attachment = params[:id_]
+   puts'*******************************************************************'
+   puts params
+   puts'*******************************************************************'
+    name_attachment = params[:file]
     if name_attachment.index("_")>0
       id_file = name_attachment.slice(0..name_attachment.index("_")-1)
       file= DiscussionPostFile.find(id_file)
@@ -55,7 +58,7 @@ class AccessControlController < ApplicationController
         type = return_type(params[:extension])
         
         # path do arquivo anexo a postagem
-        send_file("#{Rails.root}/media/discussions/post/#{name_attachment}#{params[:basename]}.#{params[:extension]}", { :disposition => 'inline', :type => type} )
+        send_file("#{Rails.root}/media/discussions/post/#{name_attachment}.#{params[:extension]}", { :disposition => 'inline', :type => type} )
       end
     end   
   end
