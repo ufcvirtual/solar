@@ -71,56 +71,35 @@ function removeLightBox(force){
  * a seleção de turmas.
  * */
 function reloadContentByForm(form){
-    return;
+    var rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
+    
     var type = $(form).attr("method");
-    var url = window.location;
-    alert("Tentou Submeter:\n["+ type + "]\n[" + url + "]");
-    return;
-
-    ////////////////////////////////////////////////////////////////////////
+    var url = '';//window.location;
+    var selector = "#mysolar_content";
+    var target = $("#mysolar_content");
+    
+    var params = '';
+    var isFirst = true;
+    $.each($(form).children(), function(index, value) {
+        var name = $(value).attr("name");
+        var val = $(value).attr("value");
+        
+        if (!isFirst)
+            params += "&"
+        params += name + "="+val;
+        isFirst = false;
+    });
     // Request the remote document
     jQuery.ajax({
         url: url,
         type: type,
         dataType: "html",
-        data: params,
-        // Complete callback (responseText is used internally)
+        data: params,//params,
         complete: function( jqXHR, status, responseText ) {
-            // Store the response as specified by the jqXHR object
             responseText = jqXHR.responseText;
-            // If successful, inject the HTML into all the matched elements
-            if ( jqXHR.isResolved() ) {
-                // #4825: Get the actual response in case
-                // a dataFilter is present in ajaxSettings
-                jqXHR.done(function( r ) {
-                    responseText = r;
-                });
-                // See if a selector was specified
-                self.html( selector ?
-                    // Create a dummy div to hold the results
-                    jQuery("<div>")
-                    // inject the contents of the document in, removing the scripts
-                    // to avoid any 'Permission Denied' errors in IE
-                    .append(responseText.replace(rscript, ""))
-
-                    // Locate the specified elements
-                    .find(selector) :
-
-                    // If not, just inject the full result
-                    responseText );
-            }
-
-            if ( callback ) {
-                self.each( callback, [ responseText, status, jqXHR ] );
-            }
+            target.html(jQuery("<div>").append(responseText.replace(rscript, "")).find(selector));
         }
     });
-
-    ////////////////////////////////////////////////////////////////////////
-
-
-
-
     return false;
 }
 

@@ -5,10 +5,12 @@ class CurriculumUnitsController < ApplicationController
   include DiscussionPostsHelper
   include MessagesHelper
 
+
   before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy, :access]
-  before_filter :curriculum_data, :only => [:access, :informations, :participants]
-  #Prepara paginas que usam a selecao de turma
   before_filter :prepare_for_group_selection, :only => [:access, :participants]
+  #before_filter :curriculum_data, :only => [:access, :informations, :participants]
+
+  
 
   load_and_authorize_resource
     
@@ -65,7 +67,7 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def access
-
+    curriculum_data
     # pegando dados da sessao e nao da url
     message_tag = nil
     if session[:opened_tabs][session[:active_tab]]["type"] != Tab_Type_Home
@@ -89,11 +91,13 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def informations
+    curriculum_data
     offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
     @offer = offers_id.nil? ? nil : Offer.find(offers_id)
   end
 
   def participants
+    curriculum_data
     #retorna perfil em que se pede matricula (~aluno)
     @student_profile = student_profile
 

@@ -271,7 +271,6 @@ class ApplicationController < ActionController::Base
   # Preparando para seleção genérica de turmas
   def prepare_for_group_selection
     #Colocar aqui: se session[:opened_tabs][session[:active_tab]]["groups_id"] for nulo, pega o 1o com permissao
-
     group_id = params[:selected_group]
    
     #Checando se ainda nao está com nenhum group_id na sessao
@@ -283,6 +282,8 @@ class ApplicationController < ActionController::Base
       session[:opened_tabs][session[:active_tab]]["groups_id"] = group_id
       session[:opened_tabs][session[:active_tab]]["offers_id"] = Group.find(group_id).offer.id
     end
+puts "\n\n\n *** prepare_for_group_selection"
+puts " --- group_id: #{group_id}"
   end
 
   def hold_pagination

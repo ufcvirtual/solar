@@ -83,7 +83,9 @@ module ApplicationHelper
 
   #Renderiza a seleção de turmas
   def render_group_selection(hash_params = nil)
-    result = '<form accept-charset="UTF-8" action="" method="' << request.method << '" name="groupSelectionForm" onsubmit="reloadContentByForm(this);" style="display:inline">'
+    
+    result = '<form accept-charset="UTF-8" action="" method="' << request.method << '" name="groupSelectionForm" style="display:inline">'
+
     result << select_tag(
       :selected_group,
       options_from_collection_for_select(
@@ -93,7 +95,8 @@ module ApplicationHelper
         :code_semester,
         params["selected_group"]
       ),
-      {:onchange => "$(this).parent().submit();"}
+      #{:onchange => "$(this).parent().submit();"}#Versao SEM AJAX
+      {:onchange => "reloadContentByForm($(this).parent());"}#Versao AJAX
     )
    
 
