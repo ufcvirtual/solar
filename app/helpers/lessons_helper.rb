@@ -12,9 +12,16 @@ module LessonsHelper
                        status=#{Lesson_Approved} and l.start<=current_date and l.end>=current_date "
     unless (offer_id.nil? && group_id.nil?)
       query_lessons << " and ( "
-      query_lessons << "      at.group_id in ( #{group_id} )" unless group_id.nil?
-      query_lessons << "      or at.offer_id in ( #{offer_id} )" unless offer_id.nil?
-      query_lessons << "      or at.group_id in ( select id from groups where offer_id=#{offer_id} ) "  unless offer_id.nil?
+
+
+      temp_query_lessons = []
+
+      temp_query_lessons << " at.group_id in ( #{group_id} )" unless group_id.nil?
+      temp_query_lessons << " at.offer_id in ( #{offer_id} )" unless offer_id.nil?
+      temp_query_lessons << " at.group_id in ( select id from groups where offer_id=#{offer_id} ) "  unless offer_id.nil?
+
+      query_lessons << temp_query_lessons.join(' OR ')
+      
       query_lessons << "     ) "
     end
    

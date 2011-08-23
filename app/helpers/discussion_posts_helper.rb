@@ -147,9 +147,14 @@ module DiscussionPostsHelper
                         d.start<=current_date and d.end>=current_date"
       unless (offer_id.nil? && group_id.nil?)
         query_discussions << " and ( "
-        query_discussions << "      at.group_id in ( #{group_id} )" unless group_id.nil?
-        query_discussions << "      or at.offer_id in ( #{offer_id} )" unless offer_id.nil?
-        query_discussions << "      or at.group_id in ( select id from groups where offer_id=#{offer_id} ) "  unless offer_id.nil?
+
+        temp_query_discussions = []
+        temp_query_discussions << " at.group_id in ( #{group_id} )" unless group_id.nil?
+        temp_query_discussions << " at.offer_id in ( #{offer_id} )" unless offer_id.nil?
+        temp_query_discussions << " at.group_id in ( select id from groups where offer_id = #{offer_id} ) "  unless offer_id.nil?
+
+        query_discussions << temp_query_discussions.join(' OR ')
+        
         query_discussions << "     ) "
       end
       

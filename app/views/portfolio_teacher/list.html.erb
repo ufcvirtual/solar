@@ -22,7 +22,7 @@
 
           <% class_name = ((idx % 2) == 0) ? 'rowtable_even' : 'rowtable_odd' %>
           <tr class="<%= class_name %>">
-            <td><%=link_to student["name"], {:controller => :scores, :action => :show, :id => student["id"]} %></td>
+            <td><%=link_to student["name"], {:controller => :scores, :action => :show, :student_id => student["id"]} %></td>
             <td>icon</td>
           </tr>
         <% end %>

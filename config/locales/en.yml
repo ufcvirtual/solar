@@ -346,6 +346,7 @@ en:
   history_find: "Search"
   history_access: "History Access"
   scores_discussions: "Scores Discussions Student"
+  scores_history_access: "Scores History Access"
 
   # Mensagem de erro para permissão 
   no_permission: "you haven't permission to access this page"

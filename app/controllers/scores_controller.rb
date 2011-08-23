@@ -11,7 +11,8 @@ class ScoresController < ApplicationController
     group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
 
     # se o aluno nao for passado como parametro, o usuario logado sera considerado como um
-    student_id = (params.include?('id')) ? params[:id] : current_user.id # verificar se isso pode ser feito
+    student_id = (params.include?('student_id')) ? params[:student_id] : current_user.id # verificar se isso pode ser feito
+    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
 
     begin
 
@@ -26,16 +27,16 @@ class ScoresController < ApplicationController
 
       @student = student
       @activities = PortfolioTeacher.list_assignments_by_group_and_student_id(group_id, student_id)
-      @discussions = Discussion.all_by_group_and_student_id(group_id, student_id)
+      @discussions = Discussion.all_by_group_id_and_student_id(group_id, student_id)
 
       from_date = Date.today << 2 # dois meses atras
       until_date = Date.today
-      @amount = Score.find_amount_access_by_student_id_and_interval(@student.id, from_date, until_date)
+      @amount = Score.find_amount_access_by_student_id_and_interval(curriculum_unit_id, @student.id, from_date, until_date)
 
-    rescue
+    rescue Exception => except
       respond_to do |format|
 
-        flash[:error] = t(:invalid_identifier)
+        flash[:error] = except #t(:invalid_identifier)
         format.html {redirect_to({:controller => :users, :action => :mysolar})}
 
       end
@@ -49,13 +50,15 @@ class ScoresController < ApplicationController
     @from_date = params['from-date']
     @until_date = params['until-date']
     @student_id = params[:id]
+    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+
+    # recuperar o curriculum_unit pelo grupo
 
     # validar as datas
     @from_date = Date.today << 2 unless date_valid?(@from_date)
     @until_date = Date.today unless date_valid?(@until_date)
 
-    # retorna valor direto
-    @amount = Score.find_amount_access_by_student_id_and_interval(@student_id, @from_date, @until_date)
+    @amount = Score.find_amount_access_by_student_id_and_interval(curriculum_unit_id, @student_id, @from_date, @until_date)
 
     render :layout => false
 
@@ -63,9 +66,21 @@ class ScoresController < ApplicationController
 
   # Historico de acesso do aluno
   def history_access
-    render :layout => false
-  end
 
+    from_date = params['from-date']
+    until_date = params['until-date']
+    @student_id = params['student_id']
+    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+
+    # validar as datas
+    from_date = Date.today << 2 unless date_valid?(@from_date)
+    until_date = Date.today unless date_valid?(@until_date)
+
+    @history = Score.history_student_id_and_interval(curriculum_unit_id, @student_id, from_date, until_date)
+
+    render :layout => false
+
+  end
 
   private
 

@@ -48,6 +48,8 @@ function showLightBox(content, width, height, canClose, title){
         $("#lightBoxDialog").slideDown("fast");
     });
 
+    return false;
+
 }
 
 function removeLightBox(force){
