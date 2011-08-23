@@ -2,6 +2,7 @@ class AccessControlController < ApplicationController
 
   include LessonsHelper
   include MessagesHelper
+  include DiscussionPostsHelper
 
   before_filter :require_user
 
@@ -20,6 +21,43 @@ class AccessControlController < ApplicationController
 
     # envia a imagem
     send_file(path, { :disposition => 'inline', :content_type => 'image' }) # content-type espcífico pra imagem
+  end
+  
+  def discussion
+    name_attachment = params[:id_]
+    if name_attachment.index("_")>0
+      id_file = name_attachment.slice(0..name_attachment.index("_")-1)
+      file= DiscussionPostFile.find(id_file)
+      discussion= file.discussion_post.discussion
+      
+      # verificar se usuario logado tem forum na(s) disciplina(s) aberta(s)
+      
+      groups = ""
+      offers = ""
+      
+      # pega valores de offer e group das abas abertas pra consultar foruns
+      tabs = session[:opened_tabs]
+      tabs.each do |key, value|
+        if (!value["groups_id"].nil?)
+          groups += "," unless groups==""
+          groups += value["groups_id"]
+        end
+        if (!value["offers_id"].nil?)
+          offers += "," unless offers==""
+          offers += value["offers_id"]
+        end
+      end
+      offers = -1 if offers.empty?
+      groups = -1 if groups.empty?
+      
+      # se tem forum passado em disciplina aberta, pode acessar
+      if (permitted_discussions(offers, groups, discussion.id).size>0)
+        type = return_type(params[:extension])
+        
+        # path do arquivo anexo a postagem
+        send_file("#{Rails.root}/media/discussions/post/#{name_attachment}#{params[:basename]}.#{params[:extension]}", { :disposition => 'inline', :type => type} )
+      end
+    end   
   end
 
   def lesson   

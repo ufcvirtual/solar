@@ -192,7 +192,10 @@ class DiscussionsController < ApplicationController
     post_id     = params[:post_id]
     post = DiscussionPost.find(post_id.to_i)
     @discussion = Discussion.find(discussion_id.to_i)
-
+    
+    owned_by_current_user = (post.user.id == current_user.id)
+    has_no_response = DiscussionPost.find_all_by_father_id(post_id).empty?
+    
     if (owned_by_current_user&& valid_date && has_no_response)
       begin
         ActiveRecord::Base.transaction do
@@ -222,7 +225,12 @@ class DiscussionsController < ApplicationController
     post_file_id  = params[:idFile]
     file          = DiscussionPostFile.find(post_file_id.to_i)
     @discussion = Discussion.find(discussion_id.to_i)
-
+     
+    post = file.discussion_post
+    
+    owned_by_current_user = (post.user.id == current_user.id)
+    has_no_response = DiscussionPost.find_all_by_father_id(post.id).empty?
+      
     if (owned_by_current_user && valid_date && has_no_response)
       #Removendo arquivo da base de dados
       DiscussionPostFile.delete(file.id)

@@ -13,6 +13,9 @@ Solar::Application.routes.draw do |map|
   #################################
   # rotas regulares - Nao RESTful #
   #################################
+  
+  #roteamento para controle de acesso a arquivos anexos a uma postagem
+  map.conect  '/media/discussions/post/:id_:basename.:extension', :controller =>'access_control', :action => 'discussion' 
 
   # roteamento para controle de acesso as imagens do usuario
   map.connect '/media/users/:id/photos/:style.:extension', :controller => 'access_control', :action => 'photo'
