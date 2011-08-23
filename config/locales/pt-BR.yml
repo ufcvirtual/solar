@@ -275,12 +275,14 @@
   bibliography_title: "Bibliografia de"
   bibliography_null: "Nenhuma bibliografia cadastrada"
 
+  #AGENDA
   agenda_title: "Agenda de"
   new_activity: "Nova atividade"
   agenda_null: "Nenhuma atividade marcada para esta agenda"
   discussions: "Foruns"
   lessons: "Aulas"
   schedule_events: "Evento da Agenda"
+  no_events: "Sem eventos para o dia selecionado"
 
   #PORTFOLIO
   portfolio_icon: "Ícone Portfolio"

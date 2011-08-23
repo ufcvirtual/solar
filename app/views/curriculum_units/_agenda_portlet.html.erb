@@ -1,51 +1,46 @@
-<%
-#Portlet da Unidade Curricular que exibe a agenda da mesma
-%>
-
-
+<!-- Portlet da Unidade Curricular que exibe a agenda da mesma -->
 
 <div id="agenda_portlet" class="curriculum_unit_portlets_small">
   <div class="curriculum_unit_portlet_small_header">
     <%= image_tag "icon_agenda.png", :alt=>t(:icon_agenda) %>
     <%= t(:curriculum_access_agenda)%>
   </div>
-
   <div class="calendar" id="agenda"></div>
-
   <div class="calendar_events">
-    <% @schedule_portlet.each do |schedule| %>
-  <%#*<span>%>
-  <%#= image_tag "icon_clock.png", :alt=>t(:icon_agenda_event) %>
-  <%#*</span>%>
-
-      <div class="calendar_events_entry">
-        <%= link_to schedule["name"], {:controller => :schedules, :action => :list, :id => schedule["id"]} %>
-
-        <br/>
-      <% end %>
-
+    <div class="calendar_events_entry">
       <div class="calendar_events_more">
         <div class="curriculum_unit_portlet_link_more">
           <%= link_to t(:curriculum_access_more), {:controller => :schedules, :action => :list, :id => params[:id] }%>
         </div>
       </div>
-
     </div>
     <br/>
-
-
     <div class="calendar_events_entry">
     </div><br/>
-
   </div>
+
   <script type="text/javascript">
 
     function changeDate(dateText){
-      alert('alerte laerte [' + dateText + ']');
+
+      var valor_recuperado = dateText; //$(this).val();
+
+      $.get('/schedules/show', {
+        date: valor_recuperado,
+        id: <%= @curriculum_unit.id %>
+      },
+      function(response) {
+        $('.calendar_events').html(response);
+      });
     }
 
     $(function() {
-      var local = '<%=I18n.locale%>';        
+
+      // carregando eventos de hoje
+      var today = new Date();
+      changeDate(today.toGMTString());
+
+      var local = '<%=I18n.locale%>';
       var locale = $.datepicker.regional[local];
       if (local=='en') {
         locale = $.datepicker.regional['en-GB']
@@ -54,14 +49,11 @@
       $("#agenda").datepicker({
         option: locale,
         onSelect: function(dateText, inst) {
-          changedate(dateText);
+          changeDate(dateText);
         }
       });
     });
 
   </script>
-
-  <input id="aaa" type="button" value="teste do box" />
-
 
 </div>

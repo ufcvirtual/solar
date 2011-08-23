@@ -1914,6 +1914,12 @@ td.td_student a {color: #2a538d;}
     font-style: normal;
 }
 
+.agenda_ajax{
+    color: #6a7c93;
+    font-size: 12px;
+    
+}
+
 
 .assignment_corrected {
     color: #378941;

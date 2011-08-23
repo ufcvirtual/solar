@@ -268,9 +268,11 @@ en:
   bibliography_title: "Bibliography of"
   bibliography_null: "Nothing bibliography registered"
 
+  #AGENDA
   agenda_title: "Agenda of"
   new_activity: "New activity"
   agenda_null: "No actives programed for this schedule"
+  no_events: "No events to selected day"
 
   #PORTFOLIO
   portfolio_icon: "Portfolio Icon"

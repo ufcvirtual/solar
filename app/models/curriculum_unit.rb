@@ -3,10 +3,13 @@ class CurriculumUnit < ActiveRecord::Base
   has_one :allocation_tag
   has_many :offers
 
+  def self.select_for_schedule_in_portlet(group_id, user_id, curriculum_unit_id, date_search = nil)
 
-  #CORRIGIR O NUMERO MÀXIMO DE RESULTADOS
-  def self.select_for_schedule_in_portlet(group_id, user_id,curriculum_unit_id )
-    ActiveRecord::Base.connection.select_all  <<SQL
+    date_search_option = ''
+    date_search_option << "AND (current_date = t4.start_date OR current_date = t4.end_date)" if date_search.nil?
+    date_search_option << "AND (t4.start_date = '#{date_search}' OR t4.end_date = '#{date_search}')" unless date_search.nil?
+
+    query =  <<SQL
     SELECT * FROM (
       (    SELECT t1.name, t1.description, t4.start_date,t4.end_date , 'discussions' AS schedule_type
       FROM discussions AS t1
@@ -15,7 +18,7 @@ class CurriculumUnit < ActiveRecord::Base
       JOIN allocations     AS t3 ON t3.allocation_tag_id = t2.id
       WHERE t3.user_id = #{user_id}
       AND (t2.group_id = #{group_id} OR t2.curriculum_unit_id = #{curriculum_unit_id})
-      AND (current_date = t4.start_date OR current_date = t4.end_date)
+      #{date_search_option}
       )
       union
       (    SELECT t1.name, t1.description, t4.start_date,t4.end_date, 'lessons' AS schedule_type
@@ -25,7 +28,7 @@ class CurriculumUnit < ActiveRecord::Base
       JOIN allocations     AS t3 ON t3.allocation_tag_id = t2.id
       WHERE t3.user_id = #{user_id}
       AND (t2.group_id = #{group_id} OR t2.curriculum_unit_id = #{curriculum_unit_id})
-      AND (current_date = t4.start_date OR current_date = t4.end_date)
+      #{date_search_option}
       )
       union
       (
@@ -36,7 +39,7 @@ class CurriculumUnit < ActiveRecord::Base
       JOIN allocations     AS t3 ON t3.allocation_tag_id = t2.id
       WHERE t3.user_id = #{user_id}
       AND (t2.group_id = #{group_id} OR t2.curriculum_unit_id = #{curriculum_unit_id})
-      AND (current_date = t4.start_date OR current_date = t4.end_date)
+      #{date_search_option}
       )
       union
       (
@@ -47,14 +50,16 @@ class CurriculumUnit < ActiveRecord::Base
       JOIN allocations     AS t3 ON t3.allocation_tag_id = t2.id
       WHERE t3.user_id = #{user_id}
       AND (t2.group_id = #{group_id} OR t2.curriculum_unit_id = #{curriculum_unit_id})
-      AND (current_date = t4.start_date OR current_date = t4.end_date)
+      #{date_search_option}
       )
 ) AS final
 
-ORDER BY final.name
-LIMIT 3
-
+  ORDER BY final.name
+  LIMIT 2
 SQL
+
+    ActiveRecord::Base.connection.select_all query
+
   end
 
   def self.find_user_groups_by_curriculum_unit(curriculum_unit_id, user_id)
