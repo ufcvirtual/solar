@@ -1,7 +1,6 @@
-/**
-  Funções relativas à renderização de uma lightBox
-**/
-
+/*******************************************************************************
+ * LightBox genérico do sistema
+ * */
 function showLightBoxURL(url, width, height, canClose, title){
     showLightBox('', width, height, canClose,title);
 
@@ -36,11 +35,11 @@ function showLightBox(content, width, height, canClose, title){
     
     removeLightBox(true);
     dialog = '<div id="lightBoxDialog" style="width:'+width+'px;height:'+height+'px;margin-top:-'+halfHeight+'px;margin-left:-'+halfWidth+'px;">'
-        + closeBt
-        + title
-        + '<div id="lightBoxDialogContent">'
-        + content
-        + '</div>'
+    + closeBt
+    + title
+    + '<div id="lightBoxDialogContent">'
+    + content
+    + '</div>'
     lightBox = '<div id="lightBoxBackground" ' + modalClose + '">&nbsp;</div>';
     lightBox += dialog;
     $(document.body).append(lightBox);
@@ -64,7 +63,69 @@ function removeLightBox(force){
     $('#lightBoxDialog').remove();
 }
 
-// window file uploads
+/*******************************************************************************
+ * Atualiza o conteudo da tela por ajax.
+ * Utilizado por funções genéricas de seleção como a paginação ou
+ * a seleção de turmas.
+ * */
+function reloadContentByForm(form){
+    return;
+    var type = $(form).attr("method");
+    var url = window.location;
+    alert("Tentou Submeter:\n["+ type + "]\n[" + url + "]");
+    return;
+
+    ////////////////////////////////////////////////////////////////////////
+    // Request the remote document
+    jQuery.ajax({
+        url: url,
+        type: type,
+        dataType: "html",
+        data: params,
+        // Complete callback (responseText is used internally)
+        complete: function( jqXHR, status, responseText ) {
+            // Store the response as specified by the jqXHR object
+            responseText = jqXHR.responseText;
+            // If successful, inject the HTML into all the matched elements
+            if ( jqXHR.isResolved() ) {
+                // #4825: Get the actual response in case
+                // a dataFilter is present in ajaxSettings
+                jqXHR.done(function( r ) {
+                    responseText = r;
+                });
+                // See if a selector was specified
+                self.html( selector ?
+                    // Create a dummy div to hold the results
+                    jQuery("<div>")
+                    // inject the contents of the document in, removing the scripts
+                    // to avoid any 'Permission Denied' errors in IE
+                    .append(responseText.replace(rscript, ""))
+
+                    // Locate the specified elements
+                    .find(selector) :
+
+                    // If not, just inject the full result
+                    responseText );
+            }
+
+            if ( callback ) {
+                self.each( callback, [ responseText, status, jqXHR ] );
+            }
+        }
+    });
+
+    ////////////////////////////////////////////////////////////////////////
+
+
+
+
+    return false;
+}
+
+
+/*******************************************************************************
+ * Upload das imagens de usuário.
+ * */
 jQuery.fn.window_upload_files = function(options) {
     // default values
     var defaults = {
@@ -98,9 +159,10 @@ jQuery.fn.window_upload_files = function(options) {
         $('#' + options.mask_id + ', .' + options.class_window).hide();
     });
 }
-//Parte do menu//
-//Esse código faz o acordion do menu e serve para guardar o estado do dele por meio de cookies//
 
+/*******************************************************************************
+ * Código do Menu Accordion com estado salvo em cookies.
+ * */
 $(document).ready(function() {
     $('.mysolar_menu_title').click(function() {
         if($(this).siblings().is(':visible')){
@@ -110,6 +172,78 @@ $(document).ready(function() {
             $(this).siblings().slideDown("fast");
         }
     });
+
     // abre menu corrente
     $('.open_menu').click();
+
+    checkCookie();
+
+    function setCookie(c_name,value,exdays)
+    {
+        //alert('setou: '+value);
+        var exdate=new Date();
+        exdate.setDate(exdate.getDate() + exdays);
+        var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+        document.cookie=c_name + "=" + c_value;
+    }
+
+    function getCookie(c_name)
+    {
+        var i,x,y;
+        var ARRcookies=document.cookie.split(";");
+
+        //alert('getCookie[' + document.cookie + ']');
+
+        for (i=0;i<ARRcookies.length;i++)
+        {
+            x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+            y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+            //alert('get'+i+': ' + y);
+            x=x.replace(/^\s+|\s+$/g,"");
+            if (x==c_name)
+            {
+                return unescape(y);
+            }
+        }
+    }
+
+    function checkCookie()
+    {
+        var parent_id = getCookie("parent_id");
+
+        //alert('checou: '+parent_id);
+
+        if (parent_id != null && parent_id!="")
+        {
+            //alert('VERIFICOU: '+parent_id);
+            $("#"+parent_id).siblings().show();
+        }
+    }
+});
+
+
+/*******************************************************************************
+ * Extendendo o JQuery para Trabalhar bem com o REST. (Incluindo suporte aos métodos "PUT"  e "DELETE"
+ * */
+function _ajax_request(url, data, callback, type, method) {
+    if (jQuery.isFunction(data)) {
+        callback = data;
+        data = {};
+    }
+    return jQuery.ajax({
+        type: method,
+        url: url,
+        data: data,
+        success: callback,
+        dataType: type
+    });
+}
+
+jQuery.extend({
+    put: function(url, data, callback, type) {
+        return _ajax_request(url, data, callback, type, 'PUT');
+    },
+    delete_: function(url, data, callback, type) {
+        return _ajax_request(url, data, callback, type, 'DELETE');
+    }
 });

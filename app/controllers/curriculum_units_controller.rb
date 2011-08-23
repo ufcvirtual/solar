@@ -6,10 +6,9 @@ class CurriculumUnitsController < ApplicationController
   include MessagesHelper
 
   before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy, :access]
-  before_filter :update_active_tab_offer_and_group, :only => [:access]
   before_filter :curriculum_data, :only => [:access, :informations, :participants]
-  # nao sera mais necessario qndo a combo existir - 2011-08-16
-  before_filter :set_group_id_for_responsible, :only => [:access, :participants]
+  #Prepara paginas que usam a selecao de turma
+  before_filter :prepare_for_group_selection, :only => [:access, :participants]
 
   load_and_authorize_resource
     

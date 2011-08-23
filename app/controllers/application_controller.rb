@@ -50,15 +50,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # atualiza turma selecionada
-  def update_active_tab_offer_and_group
-    group_id = params[:group_id]
-    unless group_id.nil?
-      session[:opened_tabs][session[:active_tab]]["groups_id"] = group_id
-      session[:opened_tabs][session[:active_tab]]["offers_id"] = Group.find(group_id).offer.id
-    end
-  end
-
   # fecha aba
   def close_tab
     name = params[:name]
@@ -100,17 +91,6 @@ class ApplicationController < ActionController::Base
     @context = context[0]["context"] if context.length > 0
     # recupera o curriculum unit da sessao do usuario, com a tab ativa
     @context_param_id = session[:opened_tabs][session[:active_tab]]["id"] if session.include?("opened_tabs") && session[:opened_tabs][session[:active_tab]].include?("id")
-
-  end
-
-  # define o grupo selecionado para os perfis responsaveis
-  def set_group_id_for_responsible
-
-    # retirar esse 3 qndo a combo estiver feita - 2011-07-28
-    #groups_id = params["groups_id"] || 3
-
-    # seta novo valor para o grupo/turma selecionada pelo professor
-    #session[:opened_tabs][session[:active_tab]]["groups_id"] = groups_id
 
   end
 
@@ -286,6 +266,23 @@ class ApplicationController < ActionController::Base
 
     @current_page = params[:current_page] if @current_page.nil?
     @current_page = "1" if @current_page.nil?
+  end
+
+  # Preparando para seleção genérica de turmas
+  def prepare_for_group_selection
+    #Colocar aqui: se session[:opened_tabs][session[:active_tab]]["groups_id"] for nulo, pega o 1o com permissao
+
+    group_id = params[:selected_group]
+   
+    #Checando se ainda nao está com nenhum group_id na sessao
+    if (session[:opened_tabs][session[:active_tab]]["groups_id"] == "" or session[:opened_tabs][session[:active_tab]]["groups_id"].nil?)
+      group_id = CurriculumUnit.find_user_groups_by_curriculum_unit((session[:opened_tabs][session[:active_tab]]["id"]), current_user.id )[0].id
+    end
+
+    unless group_id.nil?
+      session[:opened_tabs][session[:active_tab]]["groups_id"] = group_id
+      session[:opened_tabs][session[:active_tab]]["offers_id"] = Group.find(group_id).offer.id
+    end
   end
 
   def hold_pagination
