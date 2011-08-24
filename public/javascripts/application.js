@@ -40,7 +40,7 @@ function showLightBox(content, width, height, canClose, title){
     + '<div id="lightBoxDialogContent">'
     + content
     + '</div>'
-    lightBox = '<div id="lightBoxBackground" ' + modalClose + '">&nbsp;</div>';
+    lightBox = '<div id="lightBoxBackground" ' + modalClose + '>&nbsp;</div>';
     lightBox += dialog;
     $(document.body).append(lightBox);
     $("#lightBoxBackground").fadeTo("fast", 0.7, function() {
