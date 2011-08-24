@@ -1,0 +1,26 @@
+    <!--  Chat ------------------------>
+    <div id="mysolar_chat_area">
+      <div id="mysolar_chat_contatos">
+        <div id="mysolar_chat_barra" onclick="toggle_chat('mysolar_chat_list')">
+          <%= image_tag("chat_online.png")%><%= t(:mysolar_chat) %>
+          <span style="float:right;">
+            <span id="mysolar_chat_min_button">-</span>
+            <span id="mysolar_chat_max_button" style="display:none;">+</span>
+          </span>
+        </div>
+        <div id="mysolar_chat_list">
+          <div id="mysolar_chat_list_internal">
+            <%= image_tag("chat_online.png")%>Pata<br/>
+            <%= image_tag("chat_online.png")%>Peta<br/>
+            <%= image_tag("chat_online.png")%>Pita<br/>
+            <%= image_tag("chat_busy.png")%>Pota<br/>
+            <%= image_tag("chat_busy.png")%>Pato<br/>
+            <%= image_tag("chat_busy.png")%>Potó<br/>
+            <%= image_tag("chat_offline.png")%>Cotó<br/>
+            <%= image_tag("chat_offline.png")%>William<br/>
+          </div>
+          <hr class="mysolar_chat_hr"/>
+          <div style="text-align: right;padding-right: 3px;">@@@</div>
+        </div>
+      </div>
+    </div>
