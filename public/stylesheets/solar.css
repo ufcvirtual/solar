@@ -949,7 +949,8 @@ div.alter_photo_text {
     font-family: Trebuchet;
     font-size: 11px;
     color: #4b6380;
-    margin-right: 660px;
+    margin-right: 2px;
+    float: right;
 }
 .curriculum_unit_portlet_link {
     font-family: Trebuchet;
@@ -1021,20 +1022,6 @@ div.alter_photo_text {
     height: 40px;
     padding-left: 2px;
     padding-top: 2px;
-}
-.calendar_events_more {
-    font-family: Trebuchet;
-    font-size: 10px;
-    position: absolute;
-    right: 10px;
-}
-.calendar_events_entry {
-    font-family: Trebuchet;
-    font-size: 11px;
-    color: #000;
-    vertical-align: middle;
-    display: inline-block;
-    height: 20px;
 }
 /* fechar das abas */
 .tabs_close {
@@ -1915,9 +1902,10 @@ td.td_student a {color: #2a538d;}
 }
 
 .agenda_ajax{
-    color: #6a7c93;
-    font-size: 12px;
-    
+    color: #4B6380;
+    font-size: 11px;
+    font-family: Trebuchet;
+
 }
 
 

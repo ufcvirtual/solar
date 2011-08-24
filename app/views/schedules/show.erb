@@ -1,16 +1,15 @@
-<div class="agenda_ajax">
-  <% @ajax.each do |schedule| %>
-    <%= link_to schedule["name"], {:controller => :schedules, :action => :list, :id => schedule["id"]} %>
-  <br/>
+<div>
+  <% @ajax.each_with_index do |schedule, idx| %>
+    <%=raw '<br />' if idx > 0 %>
+    <%= link_to schedule["name"], {:controller => :schedules, :action => :list, :id => params[:id]}, {:class => 'agenda_ajax'} %>
   <% end %>
+
+  <% if @ajax.first.nil? %>
+    <span class="agenda_ajax"><%= t(:no_events) %></span>
+  <% end %>
+
+  <span>
+    <%= link_to t(:curriculum_access_more), {:controller => :schedules, :action => :list, :id => params[:id] },{:class => 'curriculum_unit_portlet_link_more'}%>
+  </span>
 </div>
 
-<% if @ajax.first.nil? %>
-  <span class="agenda_ajax"><%= t(:no_events) %></span>
-<% end %>
-<div class="calendar_events_more">
-  <div class="curriculum_unit_portlet_link_more">
-    <%= link_to t(:curriculum_access_more), {:controller => :schedules, :action => :list, :id => params[:id] }%>
-  </div>
-</div>
-<br/>
