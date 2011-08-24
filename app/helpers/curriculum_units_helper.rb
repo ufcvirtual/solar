@@ -5,9 +5,6 @@ module CurriculumUnitsHelper
   #      o perfil responsavel esta marcado na tabela profiles (pode ser mais de um)
   #   busca em allocation_tags groups e offers relacionadas a unidade curricular
   def class_participants (group_id = nil, flag_resp = false)
-puts "\n\n\n *** class_participants"
-puts " --- group_id: #{group_id}"
-
     if group_id
       group_allocation_tag_id = AllocationTag.find_by_group_id(group_id).id
       query = "

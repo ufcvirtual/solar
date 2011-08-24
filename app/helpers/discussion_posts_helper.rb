@@ -161,8 +161,6 @@ module DiscussionPostsHelper
       #vê se passou discussion
       query_discussions += " and d.id=#{discussion_id} " unless discussion_id.nil? 
       
-      puts query_discussions
-      
       return Discussion.find_by_sql(query_discussions)
     end
   end

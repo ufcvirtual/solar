@@ -93,7 +93,7 @@ module ApplicationHelper
           session[:opened_tabs][session[:active_tab]]["id"], current_user.id),
         :id,
         :code_semester,
-        params["selected_group"]
+        session[:opened_tabs][session[:active_tab]]["groups_id"]
       ),
       #{:onchange => "$(this).parent().submit();"}#Versao SEM AJAX
       {:onchange => "reloadContentByForm($(this).parent());"}#Versao AJAX

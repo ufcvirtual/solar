@@ -134,7 +134,7 @@ class ApplicationController < ActionController::Base
 
   end
   
-# Seta o valor do menu corrente
+  # Seta o valor do menu corrente
   def current_menu
     session[:current_menu] = params.include?('mid') ? params[:mid] : nil
   end
@@ -282,8 +282,6 @@ class ApplicationController < ActionController::Base
       session[:opened_tabs][session[:active_tab]]["groups_id"] = group_id
       session[:opened_tabs][session[:active_tab]]["offers_id"] = Group.find(group_id).offer.id
     end
-puts "\n\n\n *** prepare_for_group_selection"
-puts " --- group_id: #{group_id}"
   end
 
   def hold_pagination

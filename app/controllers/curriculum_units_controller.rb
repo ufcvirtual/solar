@@ -101,10 +101,6 @@ class CurriculumUnitsController < ApplicationController
     #retorna perfil em que se pede matricula (~aluno)
     @student_profile = student_profile
 
-
-puts "\n\n\n *** participants - acessando a a pagina de participantes *** "
-puts " --- groups_id: #{session[:opened_tabs][session[:active_tab]]["groups_id"]}"
-puts " --- offers_id: #{session[:opened_tabs][session[:active_tab]]["offers_id"]}"
     # pegando dados da sessao e nao da url
     offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
    
@@ -114,7 +110,7 @@ puts " --- offers_id: #{session[:opened_tabs][session[:active_tab]]["offers_id"]
     # Temporário: garantindo que haverá um grupo, pois futuramente será necessário escolher um grupo para visualizar os participantes
     #groups_id = Group.find_by_offer_id(offers_id).id unless !groups_id.nil?
     groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-puts " --- groups_id: #{groups_id}"
+
     @participants = class_participants groups_id, responsible
 
     # pegando valores pela url:
@@ -130,8 +126,7 @@ puts " --- groups_id: #{groups_id}"
     # pegando dados da sessao e nao da url
     groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
-puts "\n\n\n *** curriculum_data"
-puts " --- groups_id: #{groups_id}"
+
     # localiza responsavel
     responsible = true
     # Temporário: garantindo que haverá um grupo, pois futuramente será necessário escolher um grupo para visualizar os participantes

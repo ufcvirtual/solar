@@ -24,9 +24,6 @@ class AccessControlController < ApplicationController
   end
   
   def discussion
-   puts'*******************************************************************'
-   puts params
-   puts'*******************************************************************'
     name_attachment = params[:file]
     if name_attachment.index("_")>0
       id_file = name_attachment.slice(0..name_attachment.index("_")-1)
