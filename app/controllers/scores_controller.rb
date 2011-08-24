@@ -36,7 +36,7 @@ class ScoresController < ApplicationController
     rescue Exception => except
       respond_to do |format|
 
-        flash[:error] = except #t(:invalid_identifier)
+        flash[:error] = t(:invalid_identifier)
         format.html {redirect_to({:controller => :users, :action => :mysolar})}
 
       end

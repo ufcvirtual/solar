@@ -2,9 +2,6 @@ class PortfolioTeacherController < ApplicationController
 
   before_filter :require_user
 
-  # nao sera mais necessario qndo a combo existir - 2011-07-28
-  before_filter :set_group_id_for_responsible, :only => [:list]
-
   # lista de portfolio dos alunos de uma turma
   def list
 
