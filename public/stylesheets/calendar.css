@@ -13,13 +13,13 @@
 /* ... Component containers ... */
 
 /* corpo do calendario */
-#agenda .ui-widget-content {
+.ui-widget-content {
     background: #F2F0F2; /*#ccc7cc;*/
     left: 0px;
     color: #222222;
     padding-bottom: 3px; }
 /* cabecalho do calendario */
-#agenda .ui-widget-header {
+.ui-widget-header {
     background: #fff;
     color: #000;
     height: 1em;
@@ -28,7 +28,7 @@
 
 /* ... Interaction states ... */
 /* celulas */
-#agenda .ui-state-default, #agenda .ui-widget-content .ui-state-default, #agenda .ui-widget-header .ui-state-default {
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
     border: 1px solid #ccc7cc;
     background: #f2f0f2;
     font-weight: normal;
@@ -37,7 +37,7 @@
     color: #555555;
     text-align: center; }
 /* celula ativa */
-#agenda .ui-state-active, #agenda .ui-widget-content .ui-state-active, #agenda .ui-widget-header .ui-state-active {
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
     border: 1px solid #aaaaaa;
     background: #a7b6c4;
     font-weight: normal;
@@ -45,9 +45,9 @@
 
 /* ... Interaction Cues ... */
 /* data atual */
-#agenda .ui-state-highlight, #agenda .ui-widget-content .ui-state-highlight, #agenda .ui-widget-header .ui-state-highlight  {
-/*    background: #fffafc;*/
-    color: #000000; 
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {
+    background: #fffafc;
+    color: #363636;
     font-weight: bold;
 }
 

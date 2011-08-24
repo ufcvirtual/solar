@@ -52,8 +52,6 @@ class ScoresController < ApplicationController
     @student_id = params[:id]
     curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
 
-    # recuperar o curriculum_unit pelo grupo
-
     # validar as datas
     @from_date = Date.today << 2 unless date_valid?(@from_date)
     @until_date = Date.today unless date_valid?(@until_date)

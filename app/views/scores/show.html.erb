@@ -15,35 +15,36 @@
     <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
   </div>
 
-  <!-- Informacoes -->
+  <!-- Tabelas de atividades -->
 
   <div id="portfolio" class="portfolio portfolio_activity_list">
     <hr class="portfolio_line" />
 
     <!-- Provas -->
+    <!--
+        <div id="test">
+          <table id="assignments_list" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+              <tr style="font-weight: bold;">
+                <td class="td_blue_portfolio"><%= t(:tests) %></td>
+                <td class="td_blue_portfolio" align="center" style="width: 22%;"><%= t(:date_name) %></td>
+                <td class="td_blue_portfolio" align="center" style="width: 12%;"><%= t(:situation) %></td>
+                <td class="td_blue_portfolio" align="center" style="width: 8%;"><%= t(:grade) %></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="td_blue_portfolio">Prova I</td>
+                <td class="td_blue_portfolio" align="center">2011-05-04</td>
+                <td class="td_blue_portfolio" align="center">-</td>
+                <td class="td_blue_portfolio" align="center">9.8</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-    <div id="test">
-      <table id="assignments_list" width="100%" cellpadding="0" cellspacing="0" border="0">
-        <thead>
-          <tr style="font-weight: bold;">
-            <td class="td_blue_portfolio"><%= t(:tests) %></td>
-            <td class="td_blue_portfolio" align="center" style="width: 22%;"><%= t(:date_name) %></td>
-            <td class="td_blue_portfolio" align="center" style="width: 12%;"><%= t(:situation) %></td>
-            <td class="td_blue_portfolio" align="center" style="width: 8%;"><%= t(:grade) %></td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="td_blue_portfolio">Prova I</td>
-            <td class="td_blue_portfolio" align="center">2011-05-04</td>
-            <td class="td_blue_portfolio" align="center">-</td>
-            <td class="td_blue_portfolio" align="center">9.8</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <hr class="portfolio_table_division" />
+        <hr class="portfolio_table_division" />
+    -->
 
     <!-- Trabalhos -->
 
@@ -61,7 +62,7 @@
           <% @activities.each_with_index do |activity, idx| %>
             <% class_name = ((idx % 2) == 0) ? 'rowtable_even' : 'rowtable_odd' %>
             <tr class="<%= class_name %>">
-              <td class="td_blue_portfolio">
+              <td class="td_blue_portfolio" style="padding-left: 20px;">
                 <!-- verifica permissao de modificao de notas -->
                 <% if can? :student_detail, PortfolioTeacher %>
                   <%=link_to activity["assignments_name"], {:controller => :portfolio_teacher,
@@ -81,31 +82,31 @@
         </table>
       </div>
 
-      <hr class="portfolio_table_division" />
-
       <!-- Participacoes -->
+      <!--
+            <hr class="portfolio_table_division" />
 
-      <div id="participation">
-        <table id="assignments_list" width="100%" cellpadding="0" cellspacing="0" border="0">
-          <thead>
-            <tr style="font-weight: bold;">
-              <td class="td_blue_portfolio"><%= t(:participation) %></td>
-              <td class="td_blue_portfolio" align="center" style="width: 22%;"><%= t(:date_name) %></td>
-              <td class="td_blue_portfolio" align="center" style="width: 12%;"><%= t(:situation) %></td>
-              <td class="td_blue_portfolio" align="center" style="width: 8%;"><%= t(:grade) %></td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="td_blue_portfolio">Participacao I</td>
-              <td class="td_blue_portfolio" align="center">2011-05-04</td>
-              <td class="td_blue_portfolio" align="center">-</td>
-              <td class="td_blue_portfolio" align="center">9.8</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
+            <div id="participation">
+              <table id="assignments_list" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                  <tr style="font-weight: bold;">
+                    <td class="td_blue_portfolio"><%= t(:participation) %></td>
+                    <td class="td_blue_portfolio" align="center" style="width: 22%;"><%= t(:date_name) %></td>
+                    <td class="td_blue_portfolio" align="center" style="width: 12%;"><%= t(:situation) %></td>
+                    <td class="td_blue_portfolio" align="center" style="width: 8%;"><%= t(:grade) %></td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="td_blue_portfolio">Participacao I</td>
+                    <td class="td_blue_portfolio" align="center">2011-05-04</td>
+                    <td class="td_blue_portfolio" align="center">-</td>
+                    <td class="td_blue_portfolio" align="center">9.8</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+      -->
     </div>
 
   </div>
@@ -199,10 +200,10 @@
     <script type="text/javascript">
       $(function(){
 
-        // campos de data
-        $('#from-date, #until-date').datepicker({
-          dateFormat: '<%=t :search_format_date %>'
-        });
+        var local = ('<%= I18n.locale %>' == 'en') ? 'en-GB' : '<%= I18n.locale %>';
+        var options = $.extend($.datepicker.regional[local]);
+        options.dateFormat = '<%=t :search_format_date %>';
+        $('#from-date, #until-date').datepicker(options);
 
         // requisicao ajax para recuperar quantidade de acessos de um usuario
         $('a#bt-amount-history-access').click(function(){
