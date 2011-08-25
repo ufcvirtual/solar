@@ -20,32 +20,6 @@
   <div id="portfolio" class="portfolio portfolio_activity_list">
     <hr class="portfolio_line" />
 
-    <!-- Provas -->
-    <!--
-        <div id="test">
-          <table id="assignments_list" width="100%" cellpadding="0" cellspacing="0" border="0">
-            <thead>
-              <tr style="font-weight: bold;">
-                <td class="td_blue_portfolio"><%= t(:tests) %></td>
-                <td class="td_blue_portfolio" align="center" style="width: 22%;"><%= t(:date_name) %></td>
-                <td class="td_blue_portfolio" align="center" style="width: 12%;"><%= t(:situation) %></td>
-                <td class="td_blue_portfolio" align="center" style="width: 8%;"><%= t(:grade) %></td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="td_blue_portfolio">Prova I</td>
-                <td class="td_blue_portfolio" align="center">2011-05-04</td>
-                <td class="td_blue_portfolio" align="center">-</td>
-                <td class="td_blue_portfolio" align="center">9.8</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <hr class="portfolio_table_division" />
-    -->
-
     <!-- Trabalhos -->
 
     <div id="assignments">
@@ -81,32 +55,6 @@
           </tbody>
         </table>
       </div>
-
-      <!-- Participacoes -->
-      <!--
-            <hr class="portfolio_table_division" />
-
-            <div id="participation">
-              <table id="assignments_list" width="100%" cellpadding="0" cellspacing="0" border="0">
-                <thead>
-                  <tr style="font-weight: bold;">
-                    <td class="td_blue_portfolio"><%= t(:participation) %></td>
-                    <td class="td_blue_portfolio" align="center" style="width: 22%;"><%= t(:date_name) %></td>
-                    <td class="td_blue_portfolio" align="center" style="width: 12%;"><%= t(:situation) %></td>
-                    <td class="td_blue_portfolio" align="center" style="width: 8%;"><%= t(:grade) %></td>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="td_blue_portfolio">Participacao I</td>
-                    <td class="td_blue_portfolio" align="center">2011-05-04</td>
-                    <td class="td_blue_portfolio" align="center">-</td>
-                    <td class="td_blue_portfolio" align="center">9.8</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-      -->
     </div>
 
   </div>
@@ -189,92 +137,88 @@
 
   <!-- Scripts -->
 
-  <div id="scripts">
+  <style type="text/css">
+    .txt-link {
+      text-decoration: underline;
+    }
+  </style>
 
-    <style type="text/css">
-      .txt-link {
-        text-decoration: underline;
-      }
-    </style>
+  <script type="text/javascript">
+    $(function(){
 
-    <script type="text/javascript">
-      $(function(){
+      var local = ('<%= I18n.locale %>' == 'en') ? 'en-GB' : '<%= I18n.locale %>';
+      var options = $.extend($.datepicker.regional[local]);
+      options.dateFormat = '<%=t :search_format_date %>';
+      $('#from-date, #until-date').datepicker(options);
 
-        var local = ('<%= I18n.locale %>' == 'en') ? 'en-GB' : '<%= I18n.locale %>';
-        var options = $.extend($.datepicker.regional[local]);
-        options.dateFormat = '<%=t :search_format_date %>';
-        $('#from-date, #until-date').datepicker(options);
+      // requisicao ajax para recuperar quantidade de acessos de um usuario
+      $('a#bt-amount-history-access').click(function(){
 
-        // requisicao ajax para recuperar quantidade de acessos de um usuario
-        $('a#bt-amount-history-access').click(function(){
-
-          // verificar se as datas foram preenchidas - as duas sao obrigatorias
-          $.post($(this).attr('href'), {
-            'from-date': $('#from-date').val(),
-            'until-date': $('#until-date').val(),
-            'id': <%= @student.id %>
-          },
-          function(response){
-            $('#history-body-value').html(response);
-          });
-
-          // parar o evento de click
-          return false;
-
+        // verificar se as datas foram preenchidas - as duas sao obrigatorias
+        $.post($(this).attr('href'), {
+          'from-date': $('#from-date').val(),
+          'until-date': $('#until-date').val(),
+          'id': <%= @student.id %>
+        },
+        function(response){
+          $('#history-body-value').html(response);
         });
 
-        // requisicao ajax para recuperar posts do usuario
-        $('td.show_posts').click(function(){
-          $.ajax({
-            type: 'GET',
-            url: $('a', $(this)).attr('href'),
-            cache: false,
-            success: function(response){
-              var canClose = true;
-              var title = '<span style="font-weight: bold;"><%= t(:scores_discussions) %></span><br /><%= @student.name %>';
-              showLightBox(response, 500, 600, canClose, title);
-            },
-            error: function(response){
-              alert('Erro ao tentar consultar. Tente novamente mais tarde.');
-            }
-          });
-
-          return false;
-
-        });
-
-        // requisicao ajax para recuperar historico de acesso do usuario
-        $('#history-body-value').click(function(){
-          $.ajax({
-            type: 'GET',
-            data: {
-              'from-date': $('#from-date').val(),
-              'until-date': $('#until-date').val()
-            },
-            url: $('a', $(this)).attr('href'),
-            cache: false,
-            success: function(response){
-              var canClose = true;
-              var title = '<span style="font-weight: bold;"><%= t(:scores_history_access) %></span><br /><%= @student.name %>';
-              showLightBox(response, 500, 600, canClose, title);
-            },
-            error: function(response){
-              alert('Erro ao tentar consultar. Tente novamente mais tarde.');
-            }
-          });
-
-          return false;
-
-        });
-
-        // Transformando em link
-        $('a.link').hover(function(){
-          $(this).addClass('txt-link');
-        }, function(){
-          $(this).removeClass('txt-link');
-        });
+        // parar o evento de click
+        return false;
 
       });
-    </script>
 
-  </div>
+      // requisicao ajax para recuperar posts do usuario
+      $('td.show_posts').click(function(){
+        $.ajax({
+          type: 'GET',
+          url: $('a', $(this)).attr('href'),
+          cache: false,
+          success: function(response){
+            var canClose = true;
+            var title = '<span style="font-weight: bold;"><%= t(:scores_discussions) %></span><br /><%= @student.name %>';
+            showLightBox(response, 500, 600, canClose, title);
+          },
+          error: function(response){
+            alert('Erro ao tentar consultar. Tente novamente mais tarde.');
+          }
+        });
+
+        return false;
+
+      });
+
+      // requisicao ajax para recuperar historico de acesso do usuario
+      $('#history-body-value').click(function(){
+        $.ajax({
+          type: 'GET',
+          data: {
+            'from-date': $('#from-date').val(),
+            'until-date': $('#until-date').val()
+          },
+          url: $('a', $(this)).attr('href'),
+          cache: false,
+          success: function(response){
+            var canClose = true;
+            var title = '<span style="font-weight: bold;"><%= t(:scores_history_access) %></span><br /><%= @student.name %>';
+            showLightBox(response, 500, 600, canClose, title);
+          },
+          error: function(response){
+            alert('Erro ao tentar consultar. Tente novamente mais tarde.');
+          }
+        });
+
+        return false;
+
+      });
+
+      // Transformando em link
+      $('a.link').hover(function(){
+        $(this).addClass('txt-link');
+      }, function(){
+        $(this).removeClass('txt-link');
+      });
+
+    });
+  </script>

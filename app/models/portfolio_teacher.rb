@@ -21,6 +21,7 @@ class PortfolioTeacher < ActiveRecord::Base
              t2.grade,
              t2.id AS send_assignment_id,
              CASE
+                WHEN t1.start_date > now() THEN 'not_started'
                 WHEN t2.grade IS NOT NULL THEN 'corrected'
                 WHEN COUNT(t3.id) > 0 THEN 'sent'
                 WHEN COUNT(t3.id) = 0 AND t1.end_date > now() THEN 'not_sent'

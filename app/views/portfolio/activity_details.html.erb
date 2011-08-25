@@ -40,7 +40,7 @@
             <%= @activity.enunciation %><br /><br />
           </td>
           <td class="td_blue_portfolio" style="width: 70px;" align="center">
-            <span class="assignment_<%= @correction %>"><%= t(@correction.to_sym) %></span>
+            <span class="assignment_<%= @situation %>"><%= t(@situation.to_sym) %></span>
           </td>
           <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">
             <% unless @grade.nil? %>
@@ -137,24 +137,28 @@
 
   </div>
 
-  <!-- Enviar arquivos -->
+  <% if @situation != 'not_started' && @delete_files %>
 
-  <div class="portfolio_header_content">
-    <div class="portfolio_title"><%= t(:send_files) %></div>
-    <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
-  </div>
+    <!-- Enviar arquivos -->
 
-  <div id="send_files" class="portfolio">
-    <hr id="portfolio_line_g" class="portfolio_line" />
+    <div class="portfolio_header_content">
+      <div class="portfolio_title"><%= t(:send_files) %></div>
+      <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+    </div>
 
-    <%= form_for(:assignment_file, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files_individual_area', :assignment_id => params[:id]}) do |f| %>
-      <%= f.file_field :attachment%> <%= f.submit t(:send), :class => "solar_button_gray"%>
-      <br />
-      <div class="alter_photo_text"><%= t(:send_file_portfolio_obs)%></div>
-      <br />
-      <div class="alter_photo_text"><%=raw t(:send_file_portfolio_text)%></div>
-      <br/>
-    <% end %>
-  </div>
+    <div id="send_files" class="portfolio">
+      <hr id="portfolio_line_g" class="portfolio_line" />
+
+      <%= form_for(:assignment_file, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files_individual_area', :assignment_id => params[:id]}) do |f| %>
+        <%= f.file_field :attachment%> <%= f.submit t(:send), :class => "solar_button_gray"%>
+        <br />
+        <div class="alter_photo_text"><%= t(:send_file_portfolio_obs)%></div>
+        <br />
+        <div class="alter_photo_text"><%=raw t(:send_file_portfolio_text)%></div>
+        <br/>
+      <% end %>
+    </div>
+
+  <% end %>
 
 </div>

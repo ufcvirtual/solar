@@ -299,6 +299,7 @@
   delete: "Excluir"
   more: "mais"
   less: "menos"
+  not_started: "Não Iniciado"
   corrected: "Corrigido"
   sent: "Enviado"
   make: "Fazer"
