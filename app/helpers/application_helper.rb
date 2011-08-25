@@ -95,8 +95,8 @@ module ApplicationHelper
         :code_semester,
         session[:opened_tabs][session[:active_tab]]["groups_id"]
       ),
-      #{:onchange => "$(this).parent().submit();"}#Versao SEM AJAX
-      {:onchange => "reloadContentByForm($(this).parent());"}#Versao AJAX
+      {:onchange => "$(this).parent().submit();"}#Versao SEM AJAX
+      #{:onchange => "reloadContentByForm($(this).parent());"}#Versao AJAX
     )
    
 
