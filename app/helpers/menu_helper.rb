@@ -71,23 +71,21 @@ module MenuHelper
 
       # verifica se o menu pai foi modificado para gerar um novo menu
       unless previous_father_id == menu["father_id"].to_i
-        # verifica se foi aberto alguma div de menu filho
-        #        html_menu << "</div>" if open_div_menu_child # fecha div do menu filho
 
         # coloca as divs anteriores em uma nova div
         html_menu_group << "<div class='#{class_menu_div_topo}'>#{html_menu}</div>" if first_iteration # verifica se ja entrou aqui
 
         # para um menu pai ser um link ele nao deve ter filhos
         if (menu["resource_id"] != nil && menu['child'] == nil)
-          link = link_to("#{menu['father']}", access_controller)
+          link = link_to("#{t(menu['father'].to_sym)}", access_controller)
         elsif !menu["link"].nil?
-          link = "<a href='#{menu['link']}'>#{menu['father']}</a>"
+          link = "<a href='#{menu['link']}'>#{t(menu['father'].to_sym)}</a>"
         else
           # verifica menu corrente
           if (menu['father_id'] == current_menu)
-            link = "<a href='#' class='open_menu'>#{menu['father']}</a>"
+            link = "<a href='#' class='open_menu'>#{t(menu['father'].to_sym)}</a>"
           else
-            link = "<a href='#'>#{menu['father']}</a>"
+            link = "<a href='#'>#{t(menu['father'].to_sym)}</a>"
           end
 
         end
@@ -100,7 +98,7 @@ module MenuHelper
       end
       # verifica se existe filho para imprimir
       access_controller[:id] = id unless id.nil?
-      html_menu << "<div class='#{class_menu_list}'>" << link_to("#{menu['child']}", access_controller) << "</div>" unless menu['child'].nil?
+      html_menu << "<div class='#{class_menu_list}'>" << link_to("#{t(menu['child'].to_sym)}", access_controller) << "</div>" unless menu['child'].nil?
 
       # sempre atualiza o previous_father
       previous_father_id = menu['father_id'].to_i

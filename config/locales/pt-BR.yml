@@ -619,3 +619,36 @@
         email: "Email"
         password: "Senha"
         remember_me: "Lembrar me"
+
+# Menu
+  menu_content: Conteudo
+  menu_lesson: Aulas
+  menu_support_material: Material de Apoio
+  menu_activity: Atividades
+  menu_discussion: Forum
+  menu_portfolio: Portfolio
+  menu_test: Prova
+  menu_chat: Chat
+  menu_webconference: Webconferencia
+  menu_score: Acompanhamento
+  menu_general_information: Informações Gerais
+  menu_program: Programa
+  menu_agenda: Agenda
+  menu_bibliografy: Bibliografia
+  menu_participants: Participantes
+  menu_social: Social
+  menu_wiki: Wiki
+  menu_blog: Blog
+  menu_messages: Mensagens
+  menu_adm: Administracao
+  menu_notice: Aviso
+  menu_manage_profiles: Gerenciar Perfis
+  menu_indicate_user: Indicar Usuario
+  menu_reports: Relatorios
+  menu_virtual_disc: Disco Virtual
+  menu_institucional_assessment: Avaliacao Institucional
+  menu_manage_assessment: Gerenciar Avaliacoes
+  menu_response_assessment: Responder Avaliação
+  menu_curriculum_unit: Unidade Curricular
+  menu_registration: Matricula
+  menu_history: Historico
