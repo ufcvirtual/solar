@@ -24,7 +24,8 @@ module MysolarHelper
   def load_curriculum_unit_data
     if current_user
       query_current_courses =
-        "select DISTINCT ON (id, name, semester) * from (
+        "SELECT  DISTINCT ON (id, name) * from (
+      select * from (
       (
         select cr.*, NULL AS offer_id, NULL::integer AS group_id, NULL::varchar AS semester --(cns 1 - usuarios vinculados direto a unidade curricular)
         from
@@ -68,8 +69,8 @@ module MysolarHelper
         where
           user_id = #{current_user.id} AND al.status = #{Allocation_Activated}
         )
-      ) as ucs_do_usuario
-      order by name, semester DESC, id"
+      ) as user_crs
+      order by name, semester DESC, id ) as user_ordered_crs"
 
       conn = ActiveRecord::Base.connection
       conn.select_all query_current_courses
