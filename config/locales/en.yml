@@ -428,3 +428,36 @@ en:
           attributes:
             attachment_content_type:
               invalid_type: "Type of the file invalid."
+
+# Menu
+  menu_content: Content
+  menu_lesson: Lessons
+  menu_support_material: Support Material
+  menu_activity: Activities
+  menu_discussion: Discussions
+  menu_portfolio: Portfolio
+  menu_test: Tests
+  menu_chat: Chat
+  menu_webconference: Webconference
+  menu_score: Scores
+  menu_general_information: General Information
+  menu_program: Program
+  menu_agenda: Agenda
+  menu_bibliografy: Bibliografy
+  menu_participants: Participants
+  menu_social: Social
+  menu_wiki: Wiki
+  menu_blog: Blog
+  menu_messages: Mensages
+  menu_adm: Administration
+  menu_notice: Notice
+  menu_manage_profiles: Manage Profiles
+  menu_indicate_user: Indicate User
+  menu_reports: Reports
+  menu_virtual_disc: Virtual Disc
+  menu_institucional_assessment: Institutional Assessment
+  menu_manage_assessment: Manage Assessment
+  menu_response_assessment: Response Assessment
+  menu_curriculum_unit: Curriculum Unit
+  menu_registration: Registration
+  menu_history: History

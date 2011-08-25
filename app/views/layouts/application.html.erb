@@ -117,15 +117,16 @@
           <%= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
         </div>
       </div>
-      <div id="mysolar_search">
+
+      <!--<div id="mysolar_search">
         <input class="search_keyword" type="text"/>
         <br/>
-        <span id="mysolar_search_label">
-          <%=t(:mysolar_search)%>
-        </span>
+        <span id="mysolar_search_label">-->
+          <%#=t(:mysolar_search)%>
+        <!--</span>
         <br/>
         <hr width="149" style="border:none;height:1px;background-color: #cfdde1"/>
-      </div>
+      </div>-->
 
 
       <div id="mysolar_menu_accordion" style="z-index:10">
@@ -144,8 +145,8 @@
       <%= raw render_tabs %>
 
       <span id="mysolar_top_options" >
-		| &nbsp;<%= image_tag 'superior_suporte.png', :alt => t(:mysolar_alt_img_support) %>
-        <%= t(:mysolar_alt_img_support) %>&nbsp;&nbsp;&nbsp;
+		<!--| &nbsp;--><%#= image_tag 'superior_suporte.png', :alt => t(:mysolar_alt_img_support) %>
+        <%#= t(:mysolar_alt_img_support) %><!--&nbsp;&nbsp;&nbsp;-->
 		| &nbsp;<%= image_tag 'superior_sair.png', :alt => t(:mysolar_alt_img_exit) %>&nbsp;
         <%= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, :class => "mysolar_top_link") %>
       </span>
