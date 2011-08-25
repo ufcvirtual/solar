@@ -41,7 +41,6 @@ class PortfolioController < ApplicationController
     # recupera os arquivos enviados pelo aluno
     send_assignment = Portfolio.assignments_student(student_id, assignment_id)
 
-    @correction = 'not_sent' # indica se a atividade do aluno foi corrigida ou nao
     @grade = nil # nota dada pelo professor a atividade enviada
     @comment = nil # comentario do professor
     @files_sent = [] # arquivos enviados pelo aluno
@@ -52,15 +51,6 @@ class PortfolioController < ApplicationController
 
       # recupera o primeiro registro
       send_assignment = send_assignment.first
-
-      # para verificacao de arquivos enviados
-      assignment_files = send_assignment.assignment_files.first
-
-      # verifica se ainda pode enviar
-      send_or_not = (@activity.end_date < DateTime.now) ? '-' : 'not_sent'
-
-      # verifica se o aluno enviou os arquivos e se a nota ja foi dada
-      @correction = send_assignment.grade.nil? ? (assignment_files.nil? ? send_or_not : 'sent') : 'corrected'
 
       # nota
       @grade = send_assignment.grade
@@ -78,9 +68,10 @@ class PortfolioController < ApplicationController
         # arquivos enviados pelo professor para este comentario
         @files_comments = CommentFile.all(:conditions => ["assignment_comment_id = ?", comment.id])
       end
-    else
-      @correction = '-' if (@activity.end_date < DateTime.now)
+
     end
+
+    @situation = Assignment.status_of_actitivy_by_assignment_id_and_student_id(assignment_id, student_id)
 
   end
 

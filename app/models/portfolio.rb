@@ -17,6 +17,7 @@ class Portfolio < ActiveRecord::Base
            t2.grade,
            CASE WHEN t3.comment IS NOT NULL THEN 1 ELSE 0 END AS comments,
            CASE
+            WHEN t1.start_date > now() THEN 'not_started'
             WHEN t2.grade IS NOT NULL THEN 'corrected'
             WHEN COUNT(t6.id) > 0 THEN 'sent'
             WHEN COUNT(t6.id) = 0 AND t1.end_date > now() THEN 'send'
