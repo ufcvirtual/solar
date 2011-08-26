@@ -1,5 +1,7 @@
 class SchedulesController < ApplicationController
 
+  before_filter :prepare_for_group_selection, :only => [:list]
+  
   def list
 
     group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]

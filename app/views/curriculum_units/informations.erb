@@ -1,4 +1,5 @@
 <div>
+  <%= raw render_group_selection %></br>
   <%= image_tag "icon_curriculum_unit.png", :alt=>t(:icon_curriculum_unit) %>
   <span class="page_title"><%=t(:curriculum_unit_information_title)%></span>
   <hr style="border: none; background-color: #b4b3b7; height: 1px; width:550px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px"></hr>
@@ -22,10 +23,10 @@
         <td class="td_blue"><%= @curriculum_unit.resume %></td>
       </tr>
       <% unless @offer.nil? %>
-      <tr class="rowtable_odd">
-        <td class="td_blue_center"><%= t(:semester_date) %></td>
-        <td class="td_blue"><%= l @offer.start %> - <%= l @offer.end %></td>
-      </tr>
+        <tr class="rowtable_odd">
+          <td class="td_blue_center"><%= t(:semester_date) %></td>
+          <td class="td_blue"><%= l @offer.start %> - <%= l @offer.end %></td>
+        </tr>
       <% end %>
       <tr class="rowtable_even">
         <td class="td_blue_center"><%= t(:passing_grade) %></td>

@@ -7,7 +7,7 @@ class CurriculumUnitsController < ApplicationController
 
 
   before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy, :access]
-  before_filter :prepare_for_group_selection, :only => [:access, :participants]
+  before_filter :prepare_for_group_selection, :only => [:access, :participants, :informations]
   #before_filter :curriculum_data, :only => [:access, :informations, :participants]
 
   

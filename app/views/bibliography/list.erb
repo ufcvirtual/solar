@@ -3,6 +3,9 @@
   <span class="page_title"><%= t(:bibliography_title)%></span> <span class="page_title"><%=@curriculum_unit.name%></span>
   <br/>
 </div>
+
+<%= raw render_group_selection %></br>
+
 <div>
 
   <% if !(@bibliography_filter.nil? || @bibliography_filter.empty?) %>
