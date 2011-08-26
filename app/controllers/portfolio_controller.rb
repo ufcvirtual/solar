@@ -6,6 +6,7 @@
 class PortfolioController < ApplicationController
 
   before_filter :require_user
+  before_filter :prepare_for_group_selection, :only => [:list]
 
   # Lista as atividades
   def list

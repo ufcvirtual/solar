@@ -1,6 +1,7 @@
 class ScoresController < ApplicationController
 
   before_filter :require_user
+  before_filter :prepare_for_group_selection, :only => [:show]
 
   # Lista informacoes de acompanhamento do aluno
   def show
