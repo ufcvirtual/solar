@@ -171,41 +171,31 @@ class PortfolioTeacherController < ApplicationController
         # arquivo a ser deletado
         file_del = "#{::Rails.root.to_s}/media/portfolio/comments/#{comment_file_id}_#{filename}"
 
-        error = 0
+        error = false
 
-        # verificando se o arquivo ainda existe
-        if File.exist?(file_del)
+        # deletar arquivo da base de dados
+        error = true unless CommentFile.find(comment_file_id).delete
 
-          # deleta o arquivo do servidor
-          if File.delete(file_del)
+        # deletar arquivos do servidor
+        unless error
 
-            # retira o registro da base de dados
-            if CommentFile.find(comment_file_id).delete
+          File.delete(file_del) if File.exist?(file_del)
 
-              flash[:success] = t(:file_deleted)
-              format.html { redirect_to(redirect) }
-
-            end
-
-          else
-            error = 1 # arquivo nao deletado
-          end
+          flash[:success] = t(:file_deleted)
+          format.html { redirect_to(redirect) }
 
         else
-          error = 2 # arquivo inexistente
+          raise t(:error_delete_file)
         end
 
-        raise t(:error_delete_file) unless error == 0
+      rescue Exception
 
-      rescue Exception => except
-
-        flash[:error] = except
+        flash[:error] = t(:error_delete_file)
         format.html { redirect_to(redirect) }
 
       end
 
     end
-
   end
 
   # upload de arquivos para o comentario

@@ -34,7 +34,7 @@ class PortfolioController < ApplicationController
 
     # verifica se os arquivos podem ser deletados
     @delete_files = verify_date_range(@activity.start_date.to_time, @activity.end_date.to_time, Time.now)
-    
+
     # recuperar o send_assignment
     student_id = current_user.id
 
@@ -75,7 +75,7 @@ class PortfolioController < ApplicationController
 
   end
 
-  # Delecao de arquivos da area publica
+  # Delecao de arquivos da area individual
   def delete_file_individual_area
 
     authorize! :delete_file_individual_area, Portfolio
@@ -105,35 +105,26 @@ class PortfolioController < ApplicationController
         filename = AssignmentFile.find(assignment_file_id).attachment_file_name
 
         # arquivo a ser deletado
-        file_del = "#{::Rails.root.to_s}/media/portfolio/individual_area/#{params[:id]}_#{filename}"
-        error = 0
+        file_del = "#{::Rails.root.to_s}/media/portfolio/individual_area/#{assignment_file_id}_#{filename}"
+        error = false
 
-        # verificando se o arquivo ainda existe
-        if File.exist?(file_del)
+        # deletar o arquivo da base de dados
+        error = true unless AssignmentFile.find(assignment_file_id).delete
 
-          # deleta o arquivo do servidor
-          if File.delete(file_del)
+        # deletar o arquivo do servidor
+        unless error
+          File.delete(file_del) if File.exist?(file_del)
 
-            # retira o registro da base de dados
-            if AssignmentFile.find(params[:id]).delete
-
-              flash[:success] = t(:file_deleted)
-              format.html { redirect_to(redirect) }
-
-            end
-          else
-            error = 1 # arquivo nao deletado
-          end
+          flash[:success] = t(:file_deleted)
+          format.html { redirect_to(redirect) }
 
         else
-          error = 1 # arquivo inexistente
+          raise t(:error_delete_file)
         end
 
-        raise t(:error_delete_file) unless error == 0
+      rescue Exception
 
-      rescue Exception => except
-
-        flash[:error] = except
+        flash[:error] = t(:error_delete_file)
         format.html { redirect_to(redirect) }
 
       end
@@ -143,34 +134,42 @@ class PortfolioController < ApplicationController
 
   # Download dos arquivos do comentario do professor
   def download_file_comment
+
     authorize! :download_file_comment, Portfolio
 
     comment_file_id = params[:id]
 
-    file_ = CommentFile.find(comment_file_id)
-    assignment_comment_id = file_.assignment_comment_id
-    filename = file_.attachment_file_name
+    begin
+      file_ = CommentFile.find(comment_file_id)
 
-    prefix_file = file_.id # id da tabela comment_file para diferenciar os arquivos
-    path_file = "#{::Rails.root.to_s}/media/portfolio/comments/"
+      assignment_comment_id = file_.assignment_comment_id
+      filename = file_.attachment_file_name
 
-    # id da atividade
-    send_assignment = SendAssignment.joins(:assignment_comments).where(["assignment_comments.id = ?", assignment_comment_id])
+      prefix_file = file_.id # id da tabela comment_file para diferenciar os arquivos
+      path_file = "#{::Rails.root.to_s}/media/portfolio/comments/"
 
-    # verifica se foi encontrado algum registro
-    if send_assignment.length > 0
-      assignment_id = send_assignment.first.assignment_id
-      redirect_error = {:action => 'activity_details', :id => assignment_id}
-    else
+      # id da atividade
+      send_assignment = SendAssignment.joins(:assignment_comments).where(["assignment_comments.id = ?", assignment_comment_id])
 
-      curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
-      # redireciona para a pagina de listagem de atividades
-      redirect_error = {:action => 'list', :id => curriculum_unit_id}
+      # verifica se foi encontrado algum registro
+      if send_assignment.length > 0
+        assignment_id = send_assignment.first.assignment_id
+        redirect_error = {:action => :activity_details, :id => assignment_id}
+      else
 
+        curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+        # redireciona para a pagina de listagem de atividades
+        redirect_error = {:action => :list, :id => curriculum_unit_id}
+
+      end
+
+      # recupera arquivo
+      download_file(redirect_error, path_file, filename, prefix_file)
+
+    rescue
+      flash[:error] = flash[:error] = t(:error_nonexistent_file)
+      redirect_to({:controller => :users, :action => :mysolar})
     end
-
-    # recupera arquivo
-    download_file(redirect_error, path_file, filename, prefix_file)
 
   end
 
@@ -194,7 +193,7 @@ class PortfolioController < ApplicationController
         # allocation_tag do grupo selecionada
         allocation_tag_id = AllocationTag.find(:first, :conditions => ["group_id = ?", session[:opened_tabs][session[:active_tab]]["groups_id"]]).id
 
-        
+
         @public_file = PublicFile.new params[:portfolio]
         @public_file.user_id = current_user.id
         @public_file.allocation_tag_id = allocation_tag_id
@@ -343,18 +342,24 @@ class PortfolioController < ApplicationController
 
     authorize! :download_file_individual_area, Portfolio
 
-    filename = AssignmentFile.find(params[:id]).attachment_file_name
-    prefix_file = params[:id]
-    path_file = "#{::Rails.root.to_s}/media/portfolio/individual_area/"
+    begin
+      filename = AssignmentFile.find(params[:id]).attachment_file_name
+      prefix_file = params[:id]
+      path_file = "#{::Rails.root.to_s}/media/portfolio/individual_area/"
 
-    # id da atividade
-    id = SendAssignment.find(AssignmentFile.find(params[:id]).send_assignment_id).assignment_id
+      # id da atividade
+      id = SendAssignment.find(AssignmentFile.find(params[:id]).send_assignment_id).assignment_id
 
-    # modificar id
-    redirect_error = {:action => 'activity_details', :id => id}
+      # modificar id
+      redirect_error = {:action => 'activity_details', :id => id}
 
-    # recupera arquivo
-    download_file(redirect_error, path_file, filename, prefix_file)
+      # recupera arquivo
+      download_file(redirect_error, path_file, filename, prefix_file)
+
+    rescue
+      flash[:error] = flash[:error] = t(:error_nonexistent_file)
+      redirect_to({:controller => :users, :action => :mysolar})
+    end
 
   end
 
