@@ -5,6 +5,7 @@ class DiscussionsController < ApplicationController
   load_and_authorize_resource :except => [:list, :show_posts] #Setar permissoes!!!!!
 
   before_filter :prepare_for_pagination
+  before_filter :prepare_for_group_selection, :only => [:list]
 
   def list
 
