@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  
+  include ApplicationHelper
 
 	before_filter :require_no_user, :only => [:pwd_recovery, :pwd_recovery_send]
 	before_filter :require_user, :only => [:index, :show, :mysolar, :edit, :update, :destroy, :update_photo]
@@ -24,6 +26,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    set_active_tab_to_home
   end
 
   # POST /users

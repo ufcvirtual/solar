@@ -1,4 +1,6 @@
 class OffersController < ApplicationController
+  
+  include ApplicationHelper
 
   load_and_authorize_resource
 #  skip_authorize_resource :only => :showoffersbyuser
@@ -59,7 +61,9 @@ class OffersController < ApplicationController
   end
 
   def showoffersbyuser
-
+    
+    set_active_tab_to_home
+    
     @types = CurriculumUnitType.order("description")
     @student_profile = student_profile
 
