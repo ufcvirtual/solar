@@ -9,7 +9,7 @@ Contexto:
         | user_id  | allocation_tag_id  | profile_id  | status |
         | 1        | 3                  | 1           | 1      |
 
-
+@wip
 Cenário: Exibir Agenda
     Dado que estou logado com o usuario "user" e com a senha "user123"
         E que estou em "Meu Solar"
@@ -18,8 +18,7 @@ Cenário: Exibir Agenda
     Quando eu clicar no link "Informacoes Gerais"
         Então eu deverei ver o link "Agenda"
     Quando eu clicar no link "Agenda"
-        Então eu deverei ver "Agenda de Quimica I"
-        E eu deverei ver "Recesso"
+        Então eu deverei ver "Recesso"
         E eu deverei ver "Reunião com videoconferência"
         E eu deverei ver "Avaliação"
         E eu deverei ver "Feriado"
