@@ -3,6 +3,7 @@ class LessonsController < ApplicationController
   include LessonsHelper
 
   before_filter :require_user, :only => [:list, :show]
+  before_filter :prepare_for_group_selection, :only => [:list]
 
   before_filter :curriculum_data, :only => [:list, :show, :show_header, :show_content]
 
