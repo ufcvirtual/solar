@@ -19,6 +19,7 @@
     <hr class="portfolio_line" />
 
     <% leng_assignments = (@students.first.nil?) ? 0 : @students.first["grades"].split(',').length %>
+
     <table width="100%" cellspacing="0" border="0" id="list_of_students" class="list_table" summary="lista de estudantes">
       <thead>
         <tr class="lines">
@@ -26,7 +27,7 @@
           <th rowspan="2" style="width: 16%;"><%= t(:public_files)  %></th>
           <th rowspan="2" style="width: 8%;"><%= t(:tests) %></th>
           <!-- trabalhos-->
-          <th colspan="<%= leng_assignments %>" style="width: 20%;"><%= t(:private_area) %></th>
+          <th colspan="<%= (leng_assignments == 0) ? 1 : leng_assignments %>" style="width: 20%;"><%= t(:private_area) %></th>
           <th rowspan="2" style="width: 12%;"><%= t(:participation) %></th>
           <th rowspan="2" style="width: 18%;"><%= t(:access_to_the_course) %></th>
         </tr>
@@ -45,7 +46,7 @@
               <%=link_to student["student_name"], {:controller => :scores, :action => :show, :student_id => student["student_id"]} %>
             </td>
             <td align="center"><%= student["cnt_public_files"] %></td>
-            <td>&nbsp;</td>
+            <td align="center">-</td>
             <% assignments_ids = student["assignment_ids"].split(',') %>
             <% send_assignment_ids = student["send_assignment_ids"].split(',') %>
             <% student["grades"].split(',').each_with_index do |grade, idx| %>
@@ -58,7 +59,10 @@
               </td>
 
             <% end %>
-            <td>&nbsp;</td>
+            <% if leng_assignments == 0 %>
+              <td align="center">-</td>
+            <% end %>
+            <td align="center">-</td>
             <td align="center"><%= student["cnt_access"] %></td>
           </tr>
         <% end %>

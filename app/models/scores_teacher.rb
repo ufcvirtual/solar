@@ -48,13 +48,14 @@ class ScoresTeacher < ActiveRecord::Base
                t1.assignment_id,
                t1.start_date,
                CASE
+                  WHEN t1.assignment_id IS NULL THEN NULL
                   WHEN t3.grade IS NOT NULL THEN t3.grade::text -- nota do aluno
                   WHEN t4.id    IS NOT NULL THEN 'as' -- trabalho enviado e nao corrigido
                   WHEN t4.id    IS NULL     THEN 'an' -- trabalho nao enviado
                END AS grade,
                t3.id                AS send_assignment_id
           FROM cte_assignments      AS t1
-          JOIN cte_students         AS t2 ON t2.allocation_tag_id = t1.allocation_tag_id
+    RIGHT JOIN cte_students         AS t2 ON t2.allocation_tag_id = t1.allocation_tag_id
      LEFT JOIN send_assignments     AS t3 ON t3.assignment_id = t1.assignment_id AND t3.user_id = t2.student_id
      LEFT JOIN assignment_files     AS t4 ON t4.send_assignment_id = t3.id
          ORDER BY t2.student_id, t1.start_date
@@ -70,8 +71,8 @@ class ScoresTeacher < ActiveRecord::Base
     --
     SELECT t1.student_id,
            t1.student_name,
-           translate(array_agg(t1.grade)::text,'{}','')                  AS grades,
-           translate(array_agg(t1.assignment_id)::text,'{}','')          AS assignment_ids,
+           translate(array_agg(t1.grade)::text,'{}NULL','')              AS grades,
+           translate(array_agg(t1.assignment_id)::text,'{}NULL','')      AS assignment_ids,
            translate(array_agg(t1.send_assignment_id)::text,'{}NULL','') AS send_assignment_ids,
            t2.cnt_public_files,
            t3.cnt_access
