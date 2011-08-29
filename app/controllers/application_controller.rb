@@ -79,7 +79,7 @@ class ApplicationController < ActionController::Base
   def application_context
 
     # recupera o contexto do controller que esta sendo acessado
-    context_id = session[:opened_tabs][session[:active_tab]]["type"]
+    context_id = session[:opened_tabs][session[:active_tab]]["type"] if session.include?("opened_tabs") && session[:opened_tabs][session[:active_tab]].include?("type")
 
     begin
       # verifica o contexto
