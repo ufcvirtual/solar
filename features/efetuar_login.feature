@@ -8,7 +8,7 @@ Funcionalidade: Efetuar login
 Cenário: Usuário já logado com step
 	Dado que estou logado com o usuario "user" e com a senha "user123"
 		E que estou em "Login"
-	Então eu deverei ver "Agenda"
+	Então eu deverei ver "Unidade Curricular"
 
 Cenário: Usuário não logado tenta acessar "Meu Solar"
 	Dado que eu nao estou logado no sistema com usuario user
@@ -24,8 +24,8 @@ Esquema do Cenário: Login com usuários válidos e inválidos
 	Quando eu clicar em "Entrar"
 	Então eu deverei ver "<action>"
 Exemplos:
-	| login         |  password       |   action  		   |
-	| user          |  user123        | Agenda 		   |
+	| login         |  password       |   action  		       |
+	| user          |  user123        | Unidade Curricular         |
 	| unknown_user  |  any_password   | Dados de login incorretos! |
 	| user          |  wrong_password | Dados de login incorretos! |
 

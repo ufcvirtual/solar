@@ -26,7 +26,7 @@ Contexto:
 Cenário: Acessar página do meuSolar e visualizar o Portlet de unidades curriculares
 	Dado que estou logado com o usuario "user" e com a senha "user123"
             E que estou em "Meu Solar"
-	Então eu deverei ver "Unidades Curriculares"
+	Então eu deverei ver "Unidade Curricular"
             E eu deverei ver o botao "Introducao a Linguistica"
             E eu deverei ver o botao "Teoria da Literatura I"
             E eu nao deverei ver "Quimica I"

@@ -75,20 +75,20 @@ class ApplicationController < ActionController::Base
     @user = User.find(current_user.id) unless current_user.nil?
   end
 
-  # recupear o contexto que esta sendo acessado
+  # Recupera o contexto que esta sendo acessado
   def application_context
-    @context, @context_param_id = nil, nil
 
     # recupera o contexto do controller que esta sendo acessado
-    query = "  SELECT DISTINCT t3.name AS context
-                 FROM resources AS t1
-                 JOIN menus     AS t2 ON t1.id = t2.resource_id
-                 JOIN contexts  AS t3 ON t3.id = t2.context_id
-                WHERE t1.controller = '#{params[:controller]}';"
+    context_id = session[:opened_tabs][session[:active_tab]]["type"] if session.include?("opened_tabs") && session[:opened_tabs][session[:active_tab]].include?("type")
 
-    context = ActiveRecord::Base.connection.select_all query
+    begin
+      # verifica o contexto
+      @context = Context.find(context_id).name
+    rescue
+      # contexto de home
+      @context = Context.find(Tab_Type_Home).name
+    end
 
-    @context = context[0]["context"] if context.length > 0
     # recupera o curriculum unit da sessao do usuario, com a tab ativa
     @context_param_id = session[:opened_tabs][session[:active_tab]]["id"] if session.include?("opened_tabs") && session[:opened_tabs][session[:active_tab]].include?("id")
 
@@ -133,10 +133,10 @@ class ApplicationController < ActionController::Base
     redirect_to redirect
 
   end
-  
+
   # Seta o valor do menu corrente
   def current_menu
-    session[:current_menu] = params.include?('mid') ? params[:mid] : nil
+    session[:current_menu] = params[:mid] if params.include?('mid')
   end
 
   private
@@ -272,7 +272,7 @@ class ApplicationController < ActionController::Base
   def prepare_for_group_selection
     #Colocar aqui: se session[:opened_tabs][session[:active_tab]]["groups_id"] for nulo, pega o 1o com permissao
     group_id = params[:selected_group]
-   
+
     #Checando se ainda nao está com nenhum group_id na sessao
     if (session[:opened_tabs][session[:active_tab]]["groups_id"] == "" or session[:opened_tabs][session[:active_tab]]["groups_id"].nil?)
       group_id = CurriculumUnit.find_user_groups_by_curriculum_unit((session[:opened_tabs][session[:active_tab]]["id"]), current_user.id )[0].id

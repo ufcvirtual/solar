@@ -9,13 +9,12 @@ Contexto:
         | user_id  | allocation_tag_id  | profile_id  | status |
         | 1        | 3                  | 1           | 1      |
 
-@wip
 Cenário: Exibir Agenda
     Dado que estou logado com o usuario "user" e com a senha "user123"
         E que estou em "Meu Solar"
     Quando eu clicar em "Quimica I"
-        Então eu deverei ver "Informacoes Gerais"
-    Quando eu clicar no link "Informacoes Gerais"
+        Então eu deverei ver "Informações Gerais"
+    Quando eu clicar no link "Informações Gerais"
         Então eu deverei ver o link "Agenda"
     Quando eu clicar no link "Agenda"
         Então eu deverei ver "Recesso"

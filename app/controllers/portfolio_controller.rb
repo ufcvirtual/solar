@@ -220,7 +220,7 @@ class PortfolioController < ApplicationController
 
     # unidade curricular
     curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
-    redirect = {:action => "list", :id => curriculum_unit_id}
+    redirect = {:action => :list, :id => curriculum_unit_id}
 
     respond_to do |format|
 
@@ -230,33 +230,24 @@ class PortfolioController < ApplicationController
         file_name = PublicFile.find(params[:id]).attachment_file_name
         file_del = "#{::Rails.root.to_s}/media/portfolio/public_area/#{params[:id]}_#{file_name}"
 
-        error = 0
+        error = false
 
-        # verificando se o arquivo ainda existe
-        if File.exist?(file_del)
+        # deletar arquivo da base de dados
+        error = true unless PublicFile.find(params[:id]).delete
 
-          # deleta o arquivo do servidor
-          if File.delete(file_del)
+        # deletar arquivo do servidor
+        unless error
+          File.delete(file_del) if File.exist?(file_del)
 
-            # retira o registro da base de dados
-            if PublicFile.find(params[:id]).delete
-
-              flash[:success] = t(:file_deleted)
-              format.html { redirect_to(redirect) }
-
-            end
-          else
-            error = 1 # arquivo nao deletado
-          end
-
+          flash[:success] = t(:file_deleted)
+          format.html { redirect_to(redirect) }
+          
         else
-          error = 1 # arquivo inexistente
+          raise t(:error_delete_file) unless error == 0
         end
 
-        raise t(:error_delete_file) unless error == 0
-
-      rescue Exception => except
-        flash[:success] = except
+      rescue Exception
+        flash[:success] = t(:error_delete_file)
         format.html { redirect_to(redirect) }
       end
 

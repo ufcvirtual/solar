@@ -83,8 +83,8 @@
 
   # portlets do meu solar
   # Unidades curriculares
-  my_solar_curriculum_units: "Unidades Curriculares"
-
+  my_solar_curriculum_units: "Unidade Curricular"
+  my_solar_curriculum_without: "Nenhuma unidade curricular encontrada."
 
   #       msg de erro ,ainda no login    #
   login_data_invalid: "Dados de login incorretos!"

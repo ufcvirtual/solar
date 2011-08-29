@@ -123,4 +123,11 @@ module ApplicationHelper
     curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"] # recupera unidade curricular da sessao
     CurriculumUnit.find(curriculum_unit_id).name
   end
+  
+  #Muda o tipo da aba
+  def set_active_tab_to_home
+   if session[:active_tab] != 'Home'
+       session[:active_tab] = 'Home'
+   end
+  end
 end

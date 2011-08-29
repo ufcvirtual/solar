@@ -82,7 +82,6 @@
       <% end %>
       &nbsp;
 
-
       <%= yield %>
 
       <!-- Internacionalização  -->
@@ -111,9 +110,9 @@
           <% if can? :update, @user %>
             <%= link_to t(:mysolar_mn_mydata), edit_user_url(@user) %><br/>
           <% end %>
-			Portfolio <br />
-			Blog <br />
-          <%= t(:mysolar_mn_customize) %> <br />
+          <!--Portfolio <br />
+          Blog <br />-->
+          <%#= t(:mysolar_mn_customize) %> <!--<br />-->
           <%= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
         </div>
       </div>
@@ -154,6 +153,5 @@
     </div>
 
     <%#= render '/portlets/chat' %>
-
   </body>
 </html>
