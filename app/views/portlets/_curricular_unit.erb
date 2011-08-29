@@ -13,21 +13,25 @@ ucs = load_curriculum_unit_data() || []
     <hr style="border: none; background-color: #204683; height: 4px; left: 0px; position: relative; top:-18px; margin-left:0px; margin-bottom: 0px"></hr>
   </div>
   <div class="mysolar_portlets_content">
-    <%
-      ucs.each {|c|
-      #Adiciona um curso na tela
-      %>
-      <div class="classeNomeCurso">
-        <% if (session[:opened_tabs].length >= Max_Tabs_Open.to_i) && ( !session[:opened_tabs].has_key?(c["name"]) ) %>
-          <%= button_to c["name"],{}, { :onclick => "javascript:alert('"+t(:curriculum_access_alert)+"')", :class=>'enrollment_link' } %>
-        <% else %>
-          <%= button_to c["name"], {:controller=>"application", :action=>"add_tab", :name => c["name"], :type => Tab_Type_Curriculum_Unit,
-            :id => c["id"], :offers_id => c["offer_id"], :groups_id => c["group_id"]},
-          {:class=>'enrollment_link'} %>
-        <% end %>
-      </div>
-    <%
-    }
-  %>
+    <% if ucs.length > 0%>
+      <%
+        ucs.each {|c|
+        #Adiciona um curso na tela
+        %>
+        <div class="classeNomeCurso">
+          <% if (session[:opened_tabs].length >= Max_Tabs_Open.to_i) && ( !session[:opened_tabs].has_key?(c["name"]) ) %>
+            <%= button_to c["name"],{}, { :onclick => "javascript:alert('"+t(:curriculum_access_alert)+"')", :class=>'enrollment_link' } %>
+          <% else %>
+            <%= button_to c["name"], {:controller=>"application", :action=>"add_tab", :name => c["name"], :type => Tab_Type_Curriculum_Unit,
+              :id => c["id"], :offers_id => c["offer_id"], :groups_id => c["group_id"]},
+            {:class=>'enrollment_link'} %>
+          <% end %>
+        </div>
+      <%
+      }
+    %>
+   <% else %>
+    <%=t(:my_solar_curriculum_without)%>
+   <% end %>
   </div>
 </div>
