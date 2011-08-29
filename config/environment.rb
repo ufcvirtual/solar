@@ -8,18 +8,22 @@ Solar::Application.initialize!
 ActionMailer::Base.raise_delivery_errors = false
 ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.smtp_settings = {
-		:address              => 'smtp.gmail.com',
-		:port                 => 587,
-		:domain               => 'www.teste.com',
-		:user_name            => 'teste@teste.com',
-		:password             => 'teste',
-		:authentication       => 'login',
-		:enable_starttls_auto => true  }
+  :address              => 'smtp.gmail.com',
+  :port                 => 587,
+  :domain               => 'www.teste.com',
+  :user_name            => 'teste@teste.com',
+  :password             => 'teste',
+  :authentication       => 'login',
+  :enable_starttls_auto => true  }
 
 
 # Black list para validar envio de arquivos
 Black_List = [
-  # lista de arquivos fica aqui
+  'application/x-asp',
+  'application/octet-stream', # exe, aspx, jsp, bat
+  'application/x-php',
+  'text/x-java',
+  'application/x-java' # class
 ]
 
 # constantes de status de matricula e pedido de matricula - table ALLOCATIONS
