@@ -685,6 +685,8 @@ div.widget {
     color: #000;
     height: 30px;
     vertical-align: middle;
+    text-transform: capitalize;
+    font-variant: small-caps;
 }
 
 .ui-sortable-placeholder {
