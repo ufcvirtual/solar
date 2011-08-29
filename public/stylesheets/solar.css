@@ -665,37 +665,26 @@ div.widget {
     height: 183px;
     border: 1px solid #ccc;
 }
-div.widget_head {
-    background-color: #e7eded;
-    padding: 5px;
-}
-
-.mysolar_portlets_coluna {
-    width           : 267px;
-    float           : left;
-    padding-bottom  : 200px;
-    border          : none;
-}
 
 .mysolar_portlets_portlet {
     margin: 0 1em 1em 0;
-    border:1px solid #CCCCCC;
     background-color: #fff;
     height: 183px;
-    width: 260px;
+    width: 480px;
     white-space: normal;
 }
 .mysolar_portlets_header {
-    padding: 5px;
-    background-color: #E7EDED;
-    cursor:move;
     height:30px;
 }
 .mysolar_portlets_content {
-    padding: 0.4em;
     position:relative;
     overflow: auto;
     height: 130px;
+}
+.mysolar_title{
+    color: #000;
+    height: 30px;
+    vertical-align: middle;
 }
 
 .ui-sortable-placeholder {

@@ -3,7 +3,6 @@ class CreatePersonalConfigurations < ActiveRecord::Migration
     create_table "personal_configurations" do |t|
       t.integer  "user_id",          :null => false
       t.string   "theme"
-      t.string   "mysolar_portlets"
       t.string   "default_locale"
     end
 

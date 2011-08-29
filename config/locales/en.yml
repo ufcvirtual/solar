@@ -80,7 +80,7 @@ en:
 
   # portlets do meu solar
   # Unidades curriculares
-  my_solar_curriculum_units: "Curriculum Units"
+  my_solar_curriculum_units: "Curriculum Unit"
 
   # msg de erro ,ainda no login    #
   login_data_invalid: "Login details incorrect!"

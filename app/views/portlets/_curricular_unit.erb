@@ -1,5 +1,5 @@
 <%
-#Portlet do MySolar que exibe as unidades curriculares nas quais o usuário possui perfil.
+# Exibe as unidades curriculares nas quais o usuário possui perfil.
 %>
 
 <%
@@ -9,8 +9,8 @@ ucs = load_curriculum_unit_data() || []
 <div class="mysolar_portlets_portlet"  id="my_solar_portlet_1">
   <div class="mysolar_portlets_header">
     <img src="/images/unidade_curricular.png"/>
-    <%= t(:my_solar_curriculum_units)%>
-    <img src="/images/unidade_curricular.png" style="float:right;"/>
+    <%=label_tag 'lb_title_curriculum_unit', t(:my_solar_curriculum_units), :class => 'mysolar_title'%>
+    <hr style="border: none; background-color: #204683; height: 4px; left: 0px; position: relative; top:-18px; margin-left:0px; margin-bottom: 0px"></hr>
   </div>
   <div class="mysolar_portlets_content">
     <%
