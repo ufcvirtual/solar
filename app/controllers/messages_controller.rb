@@ -4,6 +4,7 @@ class MessagesController < ApplicationController
   include CurriculumUnitsHelper
   include MysolarHelper
   
+  before_filter :prepare_for_group_selection, :only => [:index]
   before_filter :require_user
   before_filter :message_data
   before_filter :get_curriculum_units
@@ -238,7 +239,6 @@ class MessagesController < ApplicationController
                   destiny = message_file.id.to_s + "_" + f.message_file_name
                   #copia fisicamente arquivo do anexo original
                   all_files_destiny = copy_file(origin, destiny, all_files_destiny, true)
-
                 end
               end
             end
@@ -281,7 +281,7 @@ class MessagesController < ApplicationController
             end
           end
 
-#raise ActiveRecord::Rollback
+          #raise ActiveRecord::Rollback
 
           #para salvar destinatarios individualmente - pegar o id
           UserMessage.transaction(:requires_new => true) do
@@ -322,7 +322,7 @@ class MessagesController < ApplicationController
           unless all_files_destiny.empty?
             all_files_destiny.split(";").each{ |f|
               File.delete(f)
-              }
+            }
           end
           # efetua rollback
           raise ActiveRecord::Rollback

@@ -1,3 +1,6 @@
+<%=if session[:opened_tabs][session[:active_tab]]["type"] == Tab_Type_Curriculum_Unit
+  raw render_group_selection 
+end%></br>
 <div class="message_external_div">
   <span class="page_title"><%= t(:message_title) %></span>
 
@@ -24,7 +27,7 @@
 
               <td style="width:120px"><%= link_to message.sender,  {:action => 'show', :id => message.id, :search => @search_text},{:class => css_class} %></td>
               <td>
-                
+
                 <% if !@search_text.empty? %>
                   <% if message.was_sent == 't' %>
                     <%=image_tag("icon_message_inbox_small.png",:alt=>'')%>
@@ -64,8 +67,8 @@
   </div>
 
 </div>
-  <script type="text/javascript">
-    $(document).ready(function(){
-      dropdown_menu();
-    });
-  </script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    dropdown_menu();
+  });
+</script>

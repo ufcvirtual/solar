@@ -270,17 +270,18 @@ class ApplicationController < ActionController::Base
 
   # Preparando para seleção genérica de turmas
   def prepare_for_group_selection
-    #Colocar aqui: se session[:opened_tabs][session[:active_tab]]["groups_id"] for nulo, pega o 1o com permissao
-    group_id = params[:selected_group]
-
-    #Checando se ainda nao está com nenhum group_id na sessao
-    if (session[:opened_tabs][session[:active_tab]]["groups_id"] == "" or session[:opened_tabs][session[:active_tab]]["groups_id"].nil?)
-      group_id = CurriculumUnit.find_user_groups_by_curriculum_unit((session[:opened_tabs][session[:active_tab]]["id"]), current_user.id )[0].id
-    end
-
-    unless group_id.nil?
-      session[:opened_tabs][session[:active_tab]]["groups_id"] = group_id
-      session[:opened_tabs][session[:active_tab]]["offers_id"] = Group.find(group_id).offer.id
+    if session[:opened_tabs][session[:active_tab]]["type"] == Tab_Type_Curriculum_Unit
+      #Colocar aqui: se session[:opened_tabs][session[:active_tab]]["groups_id"] for nulo, pega o 1o com permissao
+      group_id = params[:selected_group]
+   
+      #Checando se ainda nao está com nenhum group_id na sessao
+      if (session[:opened_tabs][session[:active_tab]]["groups_id"] == "" or session[:opened_tabs][session[:active_tab]]["groups_id"].nil?)
+        group_id = CurriculumUnit.find_user_groups_by_curriculum_unit((session[:opened_tabs][session[:active_tab]]["id"]), current_user.id )[0].id
+      end
+      unless group_id.nil?
+        session[:opened_tabs][session[:active_tab]]["groups_id"] = group_id
+        session[:opened_tabs][session[:active_tab]]["offers_id"] = Group.find(group_id).offer.id
+      end
     end
   end
 
