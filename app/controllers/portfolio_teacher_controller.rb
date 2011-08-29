@@ -189,10 +189,8 @@ class PortfolioTeacherController < ApplicationController
         end
 
       rescue Exception
-
         flash[:error] = t(:error_delete_file)
         format.html { redirect_to(redirect) }
-
       end
 
     end
