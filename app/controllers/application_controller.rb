@@ -136,7 +136,7 @@ class ApplicationController < ActionController::Base
 
   # Seta o valor do menu corrente
   def current_menu
-    session[:current_menu] = params.include?('mid') ? params[:mid] : nil
+    session[:current_menu] = params[:mid] if params.include?('mid')
   end
 
   private
