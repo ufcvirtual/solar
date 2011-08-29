@@ -3,33 +3,13 @@
   <span class="page_title"><%= t(:bibliography_title)%></span> <span class="page_title"><%=@curriculum_unit.name%></span>
   <br/>
 </div>
-<%
-query = "
-       SELECT t1.*
-         FROM bibliographies as t1
-        INNER JOIN allocation_tags as t2 ON (t1.allocation_tag_id = t2.id)
-         LEFT JOIN offers as t4 ON (t2.offer_id = t4.id)
-         LEFT JOIN groups as t5 ON (t2.offer_id = t4.id)
-         LEFT JOIN courses as t6 ON (t2.course_id = t6.id)
-        WHERE t2.course_id is null and
-              t2.curriculum_unit_id is null
-          and
-          (
-            t2.group_id = #{ @groups_id }  OR
-            t2.offer_id = #{ @offers_id }
-          ); "
-
-bibli = ActiveRecord::Base.connection.select_all query
-%>
-
-
 <div>
 
-  <% if !(bibli.nil? || bibli.empty?) %>
-    <% bibli.each do |bib| %>
+  <% if !(@bibliography_filter.nil? || @bibliography_filter.empty?) %>
+    <% @bibliography_filter.each do |bib| %>
       <div id="biliography_header_content">
         <div id="biliography_title"><%= bib["title"] %></div> <div id="biliography_photo"> <%= image_tag "icon_bibliografia.png", :alt=>t(:icon_bibliography ) %></div>
-        
+
       </div>
 
       <div id="biliography">

@@ -9,6 +9,8 @@ class BibliographyController < ApplicationController
     @bibliography = Bibliography.all
     #@curriculum_unit = CurriculumUnit.all
     @curriculum_unit = CurriculumUnit.find(params[:id])
+    @bibliography_filter= Bibliography.bibliography_filter(@groups_id,@offers_id)
+
   end
 
 end
