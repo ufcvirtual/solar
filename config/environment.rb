@@ -31,8 +31,8 @@ Lesson_Approved  = 1               # aula aprovada
 Max_Tabs_Open = 4
 
 # constantes que indicam tipos de abas que podem ser abertas
-Tab_Type_Home = "0"
-Tab_Type_Curriculum_Unit = "1"
+Tab_Type_Home = "1"
+Tab_Type_Curriculum_Unit = "2"
 
 # filtros para mensagem
 Message_Filter_Sender = 0b00000001   # 00000001 = eh origem            (1o bit = 1)
