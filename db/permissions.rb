@@ -242,7 +242,7 @@ PermissionsMenu.create([
     {:profile_id => 1, :menu_id => 303},
     {:profile_id => 1, :menu_id => 304},
     {:profile_id => 1, :menu_id => 50},
-    {:profile_id => 1, :menu_id => 70},
+    #{:profile_id => 1, :menu_id => 70},
     {:profile_id => 1, :menu_id => 302},
 
     # professor titular
@@ -257,7 +257,7 @@ PermissionsMenu.create([
     {:profile_id => 2, :menu_id => 303},
     {:profile_id => 2, :menu_id => 304},
     {:profile_id => 2, :menu_id => 50},
-    {:profile_id => 2, :menu_id => 70},
+    #{:profile_id => 2, :menu_id => 70},
     {:profile_id => 2, :menu_id => 302},
 
     # tutor a distancia
@@ -271,6 +271,6 @@ PermissionsMenu.create([
     {:profile_id => 3, :menu_id => 303},
     {:profile_id => 3, :menu_id => 304},
     {:profile_id => 3, :menu_id => 50},
-    {:profile_id => 3, :menu_id => 70},
+    #{:profile_id => 3, :menu_id => 70},
     {:profile_id => 3, :menu_id => 302}
   ])
