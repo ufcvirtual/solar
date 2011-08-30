@@ -1,8 +1,9 @@
-<%=if session[:opened_tabs][session[:active_tab]]["type"] == Tab_Type_Curriculum_Unit
-  raw render_group_selection 
-end%></br>
 <div class="message_external_div">
   <span class="page_title"><%= t(:message_title) %></span>
+
+  <%=if session[:opened_tabs][session[:active_tab]]["type"] == Tab_Type_Curriculum_Unit
+    raw "<br/>" << render_group_selection 
+  end%>
 
   <%= render 'message_header' %>
 

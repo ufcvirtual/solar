@@ -113,7 +113,7 @@ module ApplicationHelper
     end
 
     result << ' <input name="authenticity_token" value="' << form_authenticity_token << '" type="hidden">'
-    result << '</form>'
+    result << '</form><br/><br/>'
 
     return result
   end

@@ -1,32 +1,31 @@
 <div>
-    <%= raw render_group_selection %></br>
-    <%= image_tag "icon_lesson.png", :alt=>t(:icon_lesson) %>
-    <span class="page_title"><%= t(:lesson_title) %></span>
-    <hr style="border: none; background-color: #b4b3b7; height: 1px; width:640px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px"></hr>
+  <%= image_tag "icon_lesson.png", :alt=>t(:icon_lesson) %>
+  <span class="page_title"><%= t(:lesson_title) %></span>
+  <hr style="border: none; background-color: #b4b3b7; height: 1px; width:640px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px"></hr>
+  <%= raw render_group_selection %>
+  <div>
 
-    <div>
-
-      <% if !(@lessons.nil? || @lessons.empty?) %>
-        <table cellpadding="10" cellspacing="0" width="640px">
-          <tr class="headtable_blue">
-            <td class="td_head_blue"><%= t(:lesson_table_title) %></td>
-            <td class="td_head_blue" align="center" style="width: 200px"><%= t(:lesson_table_date) %></td>
+    <% if !(@lessons.nil? || @lessons.empty?) %>
+      <table cellpadding="10" cellspacing="0" width="640px">
+        <tr class="headtable_blue">
+          <td class="td_head_blue"><%= t(:lesson_table_title) %></td>
+          <td class="td_head_blue" align="center" style="width: 200px"><%= t(:lesson_table_date) %></td>
+        </tr>
+        <% curriculum_unit_id = @curriculum_unit.id %>
+        <% @lessons.each do |lesson| %>
+          <tr class="<%= cycle('rowtable_odd', 'rowtable_even') %>" >
+            <td class="td_blue_first">
+              <a class="curriculum_unit_portlet_link" href="javascript:show_lesson('/lessons/show?id=<%=curriculum_unit_id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
+            </td>
+            <td class="td_blue" align="center" style="width: 200px">
+              <%= l lesson.start %> - <%= l lesson.end %>
+            </td>
           </tr>
-          <% curriculum_unit_id = @curriculum_unit.id %>
-          <% @lessons.each do |lesson| %>
-            <tr class="<%= cycle('rowtable_odd', 'rowtable_even') %>" >
-              <td class="td_blue_first">
-                <a class="curriculum_unit_portlet_link" href="javascript:show_lesson('/lessons/show?id=<%=curriculum_unit_id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
-              </td>
-              <td class="td_blue" align="center" style="width: 200px">
-                <%= l lesson.start %> - <%= l lesson.end %>
-              </td>
-            </tr>
-          <% end %>
-        </table>
-      <% else %>
-          <%= t(:lesson_message) %>
-      <% end %>
+        <% end %>
+      </table>
+    <% else %>
+      <%= t(:lesson_message) %>
+    <% end %>
 
-    </div>
+  </div>
 </div>
