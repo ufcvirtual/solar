@@ -26,6 +26,9 @@ Black_List = [
   'application/x-java' # class
 ]
 
+# Carrega validadores
+require "validations/blacklist"
+
 # constantes de status de matricula e pedido de matricula - table ALLOCATIONS
 Allocation_Pending   = 0           # quando pede matricula pela 1a vez
 Allocation_Activated = 1           # com matricula ativa

@@ -400,6 +400,9 @@ en:
       assignment_file:
         attachment_content_type: ""
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
+      comment_file:
+        attachment_content_type: ""
+        attachment_file_size: "File too large. The maximum size should be up to 5MB."
 
     errors:
       messages:
@@ -427,6 +430,10 @@ en:
             attachment_content_type:
               invalid_type: "Type of the file invalid."
         public_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: "Type of the file invalid."
+        comment_file:
           attributes:
             attachment_content_type:
               invalid_type: "Type of the file invalid."

@@ -553,6 +553,9 @@
       assignment_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
+      comment_file:
+        attachment_content_type: ""
+        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
 
     errors:
       template:
@@ -594,6 +597,10 @@
             attachment_content_type:
               invalid_type: "Tipo de arquivo inválido."
         public_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: "Tipo de arquivo inválido."
+        comment_file:
           attributes:
             attachment_content_type:
               invalid_type: "Tipo de arquivo inválido."
