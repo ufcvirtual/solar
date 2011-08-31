@@ -1,5 +1,7 @@
 <!-- Portlet da Unidade Curricular que exibe a agenda da mesma -->
-
+<%
+#Portlet de exibição do calendário com os eventos.
+%>
 <div id="agenda_portlet" class="curriculum_unit_portlets_small">
   <div class="curriculum_unit_portlet_small_header">
     <%= image_tag "icon_agenda.png", :alt=>t(:icon_agenda) %>
@@ -25,8 +27,7 @@
       });
     }
 
-    $(function() {
-
+    function showAgenda(){
       // carregando eventos de hoje
       var today = new Date();
       changeDate(today.toGMTString());
@@ -43,6 +44,10 @@
           changeDate(dateText);
         }
       });
+    }
+
+    $(function() {
+      showAgenda();
     });
 
   </script>

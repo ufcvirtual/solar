@@ -87,7 +87,6 @@ module ApplicationHelper
     result = '<form accept-charset="UTF-8" action="" method="' << request.method << '" name="groupSelectionForm" style="display:inline">'
     
     result <<  t(:group) << ":&nbsp"
-    
     result << select_tag(
       :selected_group,
       options_from_collection_for_select(
@@ -97,10 +96,9 @@ module ApplicationHelper
         :code_semester,
         session[:opened_tabs][session[:active_tab]]["groups_id"]
       ),
-      {:onchange => "$(this).parent().submit();"}#Versao SEM AJAX
-      #{:onchange => "reloadContentByForm($(this).parent());"}#Versao AJAX
+      #{:onchange => "$(this).parent().submit();"}#Versao SEM AJAX
+      {:onchange => "reloadContentByForm($(this).parent());"}#Versao AJAX
     )
-   
 
     #Renderizando parametros
     if !hash_params.nil?
