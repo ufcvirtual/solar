@@ -43,7 +43,7 @@ module Solar
     #definindo locales#
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
     config.i18n.default_locale = "pt-BR"
-    config.time_zone = 'Brasilia'
+    config.time_zone = 'Buenos Aires' # Estamos utilizando 'Buenos Aires' para evitar problemas com horário de verão.
 
     # JavaScript files you want as :defaults (application.js is always included).
     # config.action_view.javascript_expansions[:defaults] = %w(jquery rails)
