@@ -1,4 +1,3 @@
-#mudando armazenamento de sessao para o banco
 Solar::Application.config.black_list = [
   'application/x-asp',
   'application/octet-stream', # exe, aspx, jsp, bat
