@@ -11,16 +11,58 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  helper_method :current_user_session, :current_user
-
-  before_filter :return_user, :application_context, :current_menu
-  before_filter :log_access, :only => :add_tab
-
   # Mensagem de erro de permissão
   rescue_from CanCan::AccessDenied do |exception|
     flash[:error] = t(:no_permission)
     redirect_to :controller => "users", :action => "mysolar"
   end
+
+  helper_method :current_user_session, :current_user
+
+  before_filter :return_user, :application_context, :current_menu
+  before_filter :log_access, :only => :add_tab
+
+  BreadCrumb_First_Level = 0
+  BreadCrumb_Second_Level = 1
+  BreadCrumb_Third_Level = 2
+
+  # BreadCrumb
+  before_filter :define_second_level_breadcrumb, :only => [:activate_tab, :add_tab]
+
+  # Seta os valores para o segundo nivel de breadcrumb
+  def define_second_level_breadcrumb
+
+    # verifica se é a aba home que esta sendo acessada
+    if params[:name] == 'Home'
+      clear_breadcrumb_after(BreadCrumb_First_Level)
+    else
+      session[:breadcrumb][BreadCrumb_Second_Level] = {
+        :name => params[:name],
+        :params => params
+      }
+      clear_breadcrumb_after(BreadCrumb_Second_Level)
+    end
+
+  end
+
+  def define_third_level_breadcrumb
+    
+  end
+
+  # Define links de mesmo nivel
+  def clear_breadcrumb_after(level)
+    session[:breadcrumb] = session[:breadcrumb].first(level+1)
+  end
+
+#  before_filter :bread_crumb_hierarchy
+#
+#  def bread_crumb_hierarchy
+#
+#    #    raise "#{session[:breadcrumb]}"
+#
+#  end
+
+
 
   # consulta id relacionado a estudante na tabela PROFILES
   def student_profile
