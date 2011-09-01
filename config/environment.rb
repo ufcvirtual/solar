@@ -16,16 +16,6 @@ ActionMailer::Base.smtp_settings = {
   :authentication       => 'login',
   :enable_starttls_auto => true  }
 
-
-# Black list para validar envio de arquivos
-Black_List = [
-  'application/x-asp',
-  'application/octet-stream', # exe, aspx, jsp, bat
-  'application/x-php',
-  'text/x-java',
-  'application/x-java' # class
-]
-
 # constantes de status de matricula e pedido de matricula - table ALLOCATIONS
 Allocation_Pending   = 0           # quando pede matricula pela 1a vez
 Allocation_Activated = 1           # com matricula ativa
