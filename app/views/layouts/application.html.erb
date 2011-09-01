@@ -158,9 +158,15 @@
       <%= raw render_tabs %>
 
       <span id="mysolar_top_options" >
-        <!--| &nbsp;--><%#= image_tag 'superior_suporte.png', :alt => t(:mysolar_alt_img_support) %>
-<%#= t(:mysolar_alt_img_support) %><!--&nbsp;&nbsp;&nbsp;-->
-        | &nbsp;<%= image_tag 'superior_sair.png', :alt => t(:mysolar_alt_img_exit) %>&nbsp;
+
+      <!-- Relogio do sistema --------------->
+      <span id="server_clock" name="server_clock" class="server_clock"></span>&nbsp;
+
+        
+		<!--| &nbsp;--><%#= image_tag 'superior_suporte.png', :alt => t(:mysolar_alt_img_support) %>
+        <%#= t(:mysolar_alt_img_support) %><!--&nbsp;&nbsp;&nbsp;-->
+		| &nbsp;<%= image_tag 'superior_sair.png', :alt => t(:mysolar_alt_img_exit), :class => 'image_logout' %>&nbsp;
+
         <%= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, :class => "mysolar_top_link") %>
       </span>
 
@@ -169,3 +175,31 @@
 <%#= render '/portlets/chat' %>
   </body>
 </html>
+
+<script language="JavaScript" type="text/javascript">
+new showLocalTime("server_clock");
+
+function showLocalTime(container){
+  //se nao existe, retorna
+  if ( !$('#'+container).length ) return;
+
+  //formato: 9/5/2011 9:53:30 (9/5 => 5/set)
+  updateTime(container, "<%=DateTime.now.strftime("%m/%d/%Y %H:%M:%S")%>");
+}
+
+function updateTime(el, server_time){
+  var localtime = new Date(server_time);
+  localtime.setSeconds(localtime.getSeconds()+1);
+
+  var hour    = localtime.getHours();
+  var minutes = localtime.getMinutes();
+  var seconds = localtime.getSeconds();
+  $("#"+el).html(formatNumber(hour)+":"+formatNumber(minutes)+":"+formatNumber(seconds));
+
+  var t = setTimeout(function(){updateTime(el, localtime);},1000);
+}
+
+function formatNumber(num){
+  return (num<=9)? "0"+num : num;
+}
+</script>
