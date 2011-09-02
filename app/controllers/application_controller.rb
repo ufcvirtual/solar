@@ -22,12 +22,19 @@ class ApplicationController < ActionController::Base
   before_filter :return_user, :application_context, :current_menu
   before_filter :log_access, :only => :add_tab
 
+
+  ###########################################
+  # BREADCRUMB
+  ###########################################
+
+
   BreadCrumb_First_Level = 0
   BreadCrumb_Second_Level = 1
   BreadCrumb_Third_Level = 2
 
   # BreadCrumb
   before_filter :define_second_level_breadcrumb, :only => [:activate_tab, :add_tab]
+  before_filter :define_third_level_breadcrumb
 
   # Seta os valores para o segundo nivel de breadcrumb
   def define_second_level_breadcrumb
@@ -45,13 +52,24 @@ class ApplicationController < ActionController::Base
 
   end
 
+  # O terceiro nivel eh definido quando o usuario acessa um link do menu lateral
   def define_third_level_breadcrumb
-    
+
+    # verificando se a chamada vem do menu
+    if params.include?('mid')
+      session[:breadcrumb][BreadCrumb_Third_Level] = {
+        :name => params[:name],
+        :params => params
+      }
+    end
+
+#    limpa_url
+
   end
 
   # Define links de mesmo nivel
   def clear_breadcrumb_after(level)
-    session[:breadcrumb] = session[:breadcrumb].first(level+1)
+    session[:breadcrumb] = session[:breadcrumb].first(level+1) unless session[:breadcrumb].nil?
   end
 
 #  before_filter :bread_crumb_hierarchy
@@ -62,6 +80,10 @@ class ApplicationController < ActionController::Base
 #
 #  end
 
+#  def limpa_url
+#    params.delete(:name)
+#    params.delete(:mid)
+#  end
 
 
   # consulta id relacionado a estudante na tabela PROFILES
@@ -315,7 +337,7 @@ class ApplicationController < ActionController::Base
     if session[:opened_tabs][session[:active_tab]]["type"] == Tab_Type_Curriculum_Unit
       #Colocar aqui: se session[:opened_tabs][session[:active_tab]]["groups_id"] for nulo, pega o 1o com permissao
       group_id = params[:selected_group]
-   
+
       #Checando se ainda nao está com nenhum group_id na sessao
       if (session[:opened_tabs][session[:active_tab]]["groups_id"] == "" or session[:opened_tabs][session[:active_tab]]["groups_id"].nil?)
         group_id = CurriculumUnit.find_user_groups_by_curriculum_unit((session[:opened_tabs][session[:active_tab]]["id"]), current_user.id )[0].id

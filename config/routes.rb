@@ -1,6 +1,6 @@
 Solar::Application.routes.draw do |map|
 
-  
+
   get "pages/index"
 
   get "access_control/index"
@@ -13,9 +13,9 @@ Solar::Application.routes.draw do |map|
   #################################
   # rotas regulares - Nao RESTful #
   #################################
-  
+
   #roteamento para controle de acesso a arquivos anexos a uma postagem
-  map.conect  '/media/discussions/post/:file.:extension', :controller =>'access_control', :action => 'discussion' 
+  map.conect  '/media/discussions/post/:file.:extension', :controller =>'access_control', :action => 'discussion'
 
   # roteamento para controle de acesso as imagens do usuario
   map.connect '/media/users/:id/photos/:style.:extension', :controller => 'access_control', :action => 'photo'
@@ -28,11 +28,11 @@ Solar::Application.routes.draw do |map|
 
   # redireciona para mysolar se o usuario estiver tentando acessar os dados de outros usuarios
   map.connect '/users/:id', :controller => 'users', :action => 'mysolar', :conditions => {:method => :get}
- 
+
   # Definindo resources (mapeamento de urls para os objetos)
 
   resources :users, :user_sessions, :curriculum_units, :participants, :allocations, :portfolio
-  
+
   match 'login' => "user_sessions#new", :as => :login
   match 'logout' => "user_sessions#destroy", :as => :logout
 
@@ -48,5 +48,5 @@ Solar::Application.routes.draw do |map|
 
   #root :to => 'user_sessions#new'
   root :to => 'pages#index'
-    
+
 end

@@ -39,6 +39,7 @@ class UserSessionsController < ApplicationController
   end
 
   BreadCrumb_First_Level = 0
+
   def bread_crumb
     session[:breadcrumb] = Array.new
     session[:breadcrumb][BreadCrumb_First_Level] = {

@@ -48,7 +48,7 @@
     $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
     $("#mask").outerHeight($("#mysolar_content").outerHeight());
     $("#mask").outerWidth($("#mysolar_content").outerWidth());
-        
+
     $(window).resize(function() {
       $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
     });
@@ -150,9 +150,8 @@
       <hr width="149" style="border:none;height:1px;background-color: #cfdde1"/>
     </div>-->
 
-
       <div id="mysolar_menu_accordion" style="z-index:10">
-        <%=raw create_menu_list(users_profiles(current_user.id), @context || 'geral', @context_param_id || nil, session[:current_menu] || nil) %>
+        <%=raw create_menu_list(Profile.all_by_user_id(current_user.id), @context || 'geral', @context_param_id || nil, session[:current_menu] || nil) %>
       </div>
 
     </div>
