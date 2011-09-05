@@ -91,8 +91,10 @@
       <div id="breadcrumb">
         <% unless session[:breadcrumb].nil? %>
           <% session[:breadcrumb].each_with_index do |link, idx| %>
-            <%= '>' if idx > 0 %>
-            <%= link_to link[:name], link[:params] %>
+            <% unless link.nil? %>
+              <%= '>' if idx > 0 %>
+              <%= link_to link[:name], link[:url] %>
+            <% end %>
           <% end %>
         <% end %>
       </div>

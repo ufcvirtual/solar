@@ -38,15 +38,15 @@ class UserSessionsController < ApplicationController
     redirect_back_or_default new_user_session_url(:locale => I18n.locale)
   end
 
-  BreadCrumb_First_Level = 0
-
+  # Criacao da migalha de pao
   def bread_crumb
     session[:breadcrumb] = Array.new
     session[:breadcrumb][BreadCrumb_First_Level] = {
-      :name => "Home",
-      :params => {
-        :controller => :users,
-        :action => :mysolar
+      :name => 'Home',
+      :url => {
+        :controller => :application,
+        :action => :activate_tab,
+        :name => 'Home'
       }
     }
   end

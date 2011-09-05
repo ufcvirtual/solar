@@ -1,5 +1,10 @@
 class ApplicationController < ActionController::Base
 
+  # Constantes utilizadas na migalha de pao
+  BreadCrumb_First_Level = 0
+  BreadCrumb_Second_Level = 1
+  BreadCrumb_Third_Level = 2
+
   # Variáveis de sessão utilizadas no sistema
   #
   #   - session[:opened_tabs]
@@ -22,30 +27,25 @@ class ApplicationController < ActionController::Base
   before_filter :return_user, :application_context, :current_menu
   before_filter :log_access, :only => :add_tab
 
-
   ###########################################
   # BREADCRUMB
   ###########################################
 
-
-  BreadCrumb_First_Level = 0
-  BreadCrumb_Second_Level = 1
-  BreadCrumb_Third_Level = 2
-
   # BreadCrumb
-  before_filter :define_second_level_breadcrumb, :only => [:activate_tab, :add_tab]
+  before_filter :define_second_level_breadcrumb, :only => [:activate_tab, :add_tab, :close_tab]
   before_filter :define_third_level_breadcrumb
 
   # Seta os valores para o segundo nivel de breadcrumb
   def define_second_level_breadcrumb
 
     # verifica se é a aba home que esta sendo acessada
-    if params[:name] == 'Home'
+    if params[:name] == 'Home' || params[:action] == 'close_tab'
       clear_breadcrumb_after(BreadCrumb_First_Level)
     else
+      params.delete('authenticity_token')
       session[:breadcrumb][BreadCrumb_Second_Level] = {
         :name => params[:name],
-        :params => params
+        :url => params
       }
       clear_breadcrumb_after(BreadCrumb_Second_Level)
     end
@@ -57,34 +57,19 @@ class ApplicationController < ActionController::Base
 
     # verificando se a chamada vem do menu
     if params.include?('mid')
+
+      name = params[:bread]
+
+      params.delete('bread')
+      params.delete('mid')
+
       session[:breadcrumb][BreadCrumb_Third_Level] = {
-        :name => params[:name],
-        :params => params
+        :name => name,
+        :url => params
       }
     end
 
-#    limpa_url
-
   end
-
-  # Define links de mesmo nivel
-  def clear_breadcrumb_after(level)
-    session[:breadcrumb] = session[:breadcrumb].first(level+1) unless session[:breadcrumb].nil?
-  end
-
-#  before_filter :bread_crumb_hierarchy
-#
-#  def bread_crumb_hierarchy
-#
-#    #    raise "#{session[:breadcrumb]}"
-#
-#  end
-
-#  def limpa_url
-#    params.delete(:name)
-#    params.delete(:mid)
-#  end
-
 
   # consulta id relacionado a estudante na tabela PROFILES
   def student_profile
@@ -104,13 +89,13 @@ class ApplicationController < ActionController::Base
     unless session[:opened_tabs].nil?
       # redireciona de acordo com o tipo de aba ativa
       if session[:opened_tabs][name]["type"] == Tab_Type_Home
-        redirect_to :controller => "users", :action => "mysolar"
+        redirect_to :controller => :users, :action => :mysolar
       end
       if session[:opened_tabs][name]["type"] == Tab_Type_Curriculum_Unit
-        redirect_to :controller => 'curriculum_units', :action => 'access', :id => session[:opened_tabs][name]["id"], :groups_id => session[:opened_tabs][name]["groups_id"], :offers_id => session[:opened_tabs][name]["offers_id"]
+        redirect_to :controller => :curriculum_units, :action => :access, :id => session[:opened_tabs][name]["id"], :groups_id => session[:opened_tabs][name]["groups_id"], :offers_id => session[:opened_tabs][name]["offers_id"]
       end
     else
-      redirect_to :controller => "users", :action => "mysolar"
+      redirect_to :controller => :users, :action => :mysolar
     end
   end
 
@@ -204,6 +189,11 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  # Define links de mesmo nivel
+  def clear_breadcrumb_after(level)
+    session[:breadcrumb] = session[:breadcrumb].first(level+1) unless session[:breadcrumb].nil?
+  end
 
   # Verifica se será necessário criar uma nova aba ou se ja existe uma aba aberta
   # com o mesmo nome passado como parametro
@@ -371,7 +361,6 @@ class ApplicationController < ActionController::Base
       filename_ = path_file[path_file.rindex(pattern)+1..-1]
     end
 
-
     if File.exist?(path_file)
       send_file path_file, :filename => filename_
     else
@@ -382,5 +371,6 @@ class ApplicationController < ActionController::Base
     end
 
   end
+
 end
 
