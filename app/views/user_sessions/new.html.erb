@@ -3,33 +3,47 @@
   <script type="text/javascript">
     clear_lesson();
   </script>
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-25482431-1']);
+    _gaq.push(['_setDomainName', '.virtual.ufc.br']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
 </head>
 
 <div style="position:absolute;height:100%;width:100%; display: table;">
 
-	<%= render 'header' %>  
+  <%= render 'header' %>  
 
-    <!--Parte cinza-->
-    <div id="login_left_col">
-      <%= render 'menu' %>
+  <!--Parte cinza-->
+  <div id="login_left_col">
+    <%= render 'menu' %>
 
-      <p>
+    <p>
       <%= t(:login_description1) %>
     </p>
     <p>
       <%= t(:login_description2) %>
     </p>
 
-    </div>
+  </div>
 
   <script>
-      $(document).ready(function() {
-          $("#login_form_name").focus();
-      });
+    $(document).ready(function() {
+      $("#login_form_name").focus();
+    });
     
   </script>
 
-    <%= render 'form_login' %>
+  <%= render 'form_login' %>
 
-    <%= render 'footer' %>
+  <%= render 'footer' %>
 </div>

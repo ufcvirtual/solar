@@ -37,39 +37,53 @@
 
         // NÃO APAGAR POR ENQUANTO! //
 
-                //Configurando Menu
-        <%#*$( "#mysolar_menu_accordion" ).accordion({%>
-        <%#*autoHeight: false,%>
-        <%#*navigation: true,%>
-        <%#*collapsible: true%>
-        <%#*});%>
-
-        //Configurando a largura do conteudo
-        $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
-        $("#mask").outerHeight($("#mysolar_content").outerHeight());
-        $("#mask").outerWidth($("#mysolar_content").outerWidth());
-        
-        $(window).resize(function() {
-          $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
-        });
-
-        //Configurando a altura da sidebar para acompanhar o total do conteúdo da página
-        maxHeight = $('#mysolar_content').outerHeight();
-        maxHeight += $('#mysolar_content').position().top;
-        if ($(window).height() > maxHeight)
-          maxHeight = $(window).height();
-        $("#mysolar_sidebar").height(maxHeight);
-
         //Configurando Menu
-        /*$( "#mysolar_menu_accordion" ).accordion({
+<%#*$( "#mysolar_menu_accordion" ).accordion({%>
+<%#*autoHeight: false,%>
+<%#*navigation: true,%>
+<%#*collapsible: true%>
+<%#*});%>
+
+    //Configurando a largura do conteudo
+    $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
+    $("#mask").outerHeight($("#mysolar_content").outerHeight());
+    $("#mask").outerWidth($("#mysolar_content").outerWidth());
+        
+    $(window).resize(function() {
+      $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
+    });
+
+    //Configurando a altura da sidebar para acompanhar o total do conteúdo da página
+    maxHeight = $('#mysolar_content').outerHeight();
+    maxHeight += $('#mysolar_content').position().top;
+    if ($(window).height() > maxHeight)
+      maxHeight = $(window).height();
+    $("#mysolar_sidebar").height(maxHeight);
+
+    //Configurando Menu
+    /*$( "#mysolar_menu_accordion" ).accordion({
           autoHeight: false,
           navigation: true,
           collapsible: true
         });*/
 
-      });
+  });
     </script>
     <%= render '/users/mysolar_photo' %>
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-25482431-1']);
+      _gaq.push(['_setDomainName', '.virtual.ufc.br']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
   </head>
   <body>
     <div id="mysolar_content" style="white-space: nowrap;">
@@ -112,7 +126,7 @@
           <% end %>
           <!--Portfolio <br />
           Blog <br />-->
-          <%#= t(:mysolar_mn_customize) %> <!--<br />-->
+<%#= t(:mysolar_mn_customize) %> <!--<br />-->
           <%= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
         </div>
       </div>
@@ -121,11 +135,11 @@
         <input class="search_keyword" type="text"/>
         <br/>
         <span id="mysolar_search_label">-->
-          <%#=t(:mysolar_search)%>
-        <!--</span>
-        <br/>
-        <hr width="149" style="border:none;height:1px;background-color: #cfdde1"/>
-      </div>-->
+<%#=t(:mysolar_search)%>
+      <!--</span>
+      <br/>
+      <hr width="149" style="border:none;height:1px;background-color: #cfdde1"/>
+    </div>-->
 
 
       <div id="mysolar_menu_accordion" style="z-index:10">
@@ -144,14 +158,14 @@
       <%= raw render_tabs %>
 
       <span id="mysolar_top_options" >
-		<!--| &nbsp;--><%#= image_tag 'superior_suporte.png', :alt => t(:mysolar_alt_img_support) %>
-        <%#= t(:mysolar_alt_img_support) %><!--&nbsp;&nbsp;&nbsp;-->
-		| &nbsp;<%= image_tag 'superior_sair.png', :alt => t(:mysolar_alt_img_exit) %>&nbsp;
+        <!--| &nbsp;--><%#= image_tag 'superior_suporte.png', :alt => t(:mysolar_alt_img_support) %>
+<%#= t(:mysolar_alt_img_support) %><!--&nbsp;&nbsp;&nbsp;-->
+        | &nbsp;<%= image_tag 'superior_sair.png', :alt => t(:mysolar_alt_img_exit) %>&nbsp;
         <%= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, :class => "mysolar_top_link") %>
       </span>
 
     </div>
 
-    <%#= render '/portlets/chat' %>
+<%#= render '/portlets/chat' %>
   </body>
 </html>
