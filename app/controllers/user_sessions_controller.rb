@@ -4,6 +4,7 @@ class UserSessionsController < ApplicationController
 
   before_filter :require_no_user, :only => [:index, :new, :create]
   before_filter :require_user, :only => :destroy
+  before_filter :bread_crumb, :only => :create
 
   def index
     if !@user_session
@@ -35,6 +36,19 @@ class UserSessionsController < ApplicationController
     #limpa sessao
     reset_session
     redirect_back_or_default new_user_session_url(:locale => I18n.locale)
+  end
+
+  # Criacao da migalha de pao
+  def bread_crumb
+    session[:breadcrumb] = Array.new
+    session[:breadcrumb][BreadCrumb_First_Level] = {
+      :name => 'Home',
+      :url => {
+        :controller => :application,
+        :action => :activate_tab,
+        :name => 'Home'
+      }
+    }
   end
 
 end

@@ -1,5 +1,10 @@
 class ApplicationController < ActionController::Base
 
+  # Constantes utilizadas na migalha de pao
+  BreadCrumb_First_Level = 0
+  BreadCrumb_Second_Level = 1
+  BreadCrumb_Third_Level = 2
+
   # Variáveis de sessão utilizadas no sistema
   #
   #   - session[:opened_tabs]
@@ -11,15 +16,59 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
+  # Mensagem de erro de permissão
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:error] = t(:no_permission)
+    redirect_to :controller => "users", :action => "mysolar"
+  end
+
   helper_method :current_user_session, :current_user
 
   before_filter :return_user, :application_context, :current_menu
   before_filter :log_access, :only => :add_tab
 
-  # Mensagem de erro de permissão
-  rescue_from CanCan::AccessDenied do |exception|
-    flash[:error] = t(:no_permission)
-    redirect_to :controller => "users", :action => "mysolar"
+  ###########################################
+  # BREADCRUMB
+  ###########################################
+
+  # BreadCrumb
+  before_filter :define_second_level_breadcrumb, :only => [:activate_tab, :add_tab, :close_tab]
+  before_filter :define_third_level_breadcrumb
+
+  # Seta os valores para o segundo nivel de breadcrumb
+  def define_second_level_breadcrumb
+
+    # verifica se é a aba home que esta sendo acessada
+    if params[:name] == 'Home' || params[:action] == 'close_tab'
+      clear_breadcrumb_after(BreadCrumb_First_Level)
+    else
+      params.delete('authenticity_token')
+      session[:breadcrumb][BreadCrumb_Second_Level] = {
+        :name => params[:name],
+        :url => params
+      }
+      clear_breadcrumb_after(BreadCrumb_Second_Level)
+    end
+
+  end
+
+  # O terceiro nivel eh definido quando o usuario acessa um link do menu lateral
+  def define_third_level_breadcrumb
+
+    # verificando se a chamada vem do menu
+    if params.include?('mid')
+
+      name = params[:bread]
+
+      params.delete('bread')
+      params.delete('mid')
+
+      session[:breadcrumb][BreadCrumb_Third_Level] = {
+        :name => name,
+        :url => params
+      }
+    end
+
   end
 
   # consulta id relacionado a estudante na tabela PROFILES
@@ -40,13 +89,13 @@ class ApplicationController < ActionController::Base
     unless session[:opened_tabs].nil?
       # redireciona de acordo com o tipo de aba ativa
       if session[:opened_tabs][name]["type"] == Tab_Type_Home
-        redirect_to :controller => "users", :action => "mysolar"
+        redirect_to :controller => :users, :action => :mysolar
       end
       if session[:opened_tabs][name]["type"] == Tab_Type_Curriculum_Unit
-        redirect_to :controller => 'curriculum_units', :action => 'access', :id => session[:opened_tabs][name]["id"], :groups_id => session[:opened_tabs][name]["groups_id"], :offers_id => session[:opened_tabs][name]["offers_id"]
+        redirect_to :controller => :curriculum_units, :action => :access, :id => session[:opened_tabs][name]["id"], :groups_id => session[:opened_tabs][name]["groups_id"], :offers_id => session[:opened_tabs][name]["offers_id"]
       end
     else
-      redirect_to :controller => "users", :action => "mysolar"
+      redirect_to :controller => :users, :action => :mysolar
     end
   end
 
@@ -140,6 +189,11 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  # Define links de mesmo nivel
+  def clear_breadcrumb_after(level)
+    session[:breadcrumb] = session[:breadcrumb].first(level+1) unless session[:breadcrumb].nil?
+  end
 
   # Verifica se será necessário criar uma nova aba ou se ja existe uma aba aberta
   # com o mesmo nome passado como parametro
@@ -273,7 +327,7 @@ class ApplicationController < ActionController::Base
     if session[:opened_tabs][session[:active_tab]]["type"] == Tab_Type_Curriculum_Unit
       #Colocar aqui: se session[:opened_tabs][session[:active_tab]]["groups_id"] for nulo, pega o 1o com permissao
       group_id = params[:selected_group]
-   
+
       #Checando se ainda nao está com nenhum group_id na sessao
       if (session[:opened_tabs][session[:active_tab]]["groups_id"] == "" or session[:opened_tabs][session[:active_tab]]["groups_id"].nil?)
         group_id = CurriculumUnit.find_user_groups_by_curriculum_unit((session[:opened_tabs][session[:active_tab]]["id"]), current_user.id )[0].id
@@ -307,7 +361,6 @@ class ApplicationController < ActionController::Base
       filename_ = path_file[path_file.rindex(pattern)+1..-1]
     end
 
-
     if File.exist?(path_file)
       send_file path_file, :filename => filename_
     else
@@ -318,5 +371,6 @@ class ApplicationController < ActionController::Base
     end
 
   end
+
 end
 

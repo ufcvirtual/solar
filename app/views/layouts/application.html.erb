@@ -48,7 +48,7 @@
     $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
     $("#mask").outerHeight($("#mysolar_content").outerHeight());
     $("#mask").outerWidth($("#mysolar_content").outerWidth());
-        
+
     $(window).resize(function() {
       $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
     });
@@ -87,6 +87,17 @@
   </head>
   <body>
     <div id="mysolar_content" style="white-space: nowrap;">
+
+      <div id="breadcrumb">
+        <% unless session[:breadcrumb].nil? %>
+          <% session[:breadcrumb].each_with_index do |link, idx| %>
+            <% unless link.nil? %>
+              <%= '>' if idx > 0 %>
+              <%= link_to link[:name], link[:url] %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
 
       <!--Mensagens de Erro, Alerta e Aviso-->
       <% if flash[:success] || flash[:error] || flash[:notice]%>
@@ -141,9 +152,8 @@
       <hr width="149" style="border:none;height:1px;background-color: #cfdde1"/>
     </div>-->
 
-
       <div id="mysolar_menu_accordion" style="z-index:10">
-        <%=raw create_menu_list(users_profiles(current_user.id), @context || 'geral', @context_param_id || nil, session[:current_menu] || nil) %>
+        <%=raw create_menu_list(Profile.all_by_user_id(current_user.id), @context || 'geral', @context_param_id || nil, session[:current_menu] || nil) %>
       </div>
 
     </div>
@@ -159,12 +169,12 @@
 
       <span id="mysolar_top_options" >
 
-      <!-- Relogio do sistema --------------->
-      <span id="server_clock" name="server_clock" class="server_clock"></span>&nbsp;
+        <!-- Relogio do sistema --------------->
+        <span id="server_clock" name="server_clock" class="server_clock"></span>&nbsp;
 
-        
-	<!--| &nbsp;--><%#= image_tag 'superior_suporte.png', :alt => t(:mysolar_alt_img_support) %>
-        <%#= t(:mysolar_alt_img_support) %><!--&nbsp;&nbsp;&nbsp;-->
+
+        <!--| &nbsp;--><%#= image_tag 'superior_suporte.png', :alt => t(:mysolar_alt_img_support) %>
+<%#= t(:mysolar_alt_img_support) %><!--&nbsp;&nbsp;&nbsp;-->
 		| &nbsp;<%= image_tag 'superior_sair.png', :alt => t(:mysolar_alt_img_exit), :class => 'image_logout' %>&nbsp;
 
         <%= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, :class => "mysolar_top_link") %>
@@ -177,28 +187,28 @@
 </html>
 
 <script language="JavaScript" type="text/javascript">
-new showLocalTime("server_clock");
+  new showLocalTime("server_clock");
 
-function showLocalTime(container){
-  //se nao existe, retorna
-  if ( !$('#'+container).length ) return;
+  function showLocalTime(container){
+    //se nao existe, retorna
+    if ( !$('#'+container).length ) return;
 
-  //formato: 9/5/2011 9:53:30 (9/5 => 5/set)
-  updateTime(container, "<%=DateTime.now.strftime("%m/%d/%Y %H:%M:%S")%>");
-}
+    //formato: 9/5/2011 9:53:30 (9/5 => 5/set)
+    updateTime(container, "<%=DateTime.now.strftime("%m/%d/%Y %H:%M:%S")%>");
+  }
 
-function updateTime(el, server_time){
-  var localtime = new Date(server_time);
-  localtime.setSeconds(localtime.getSeconds()+1);
+  function updateTime(el, server_time){
+    var localtime = new Date(server_time);
+    localtime.setSeconds(localtime.getSeconds()+1);
 
-  var hour    = localtime.getHours();
-  var minutes = localtime.getMinutes();
-  var seconds = localtime.getSeconds();
-  $("#"+el).html(formatNumber(hour)+":"+formatNumber(minutes)+":"+formatNumber(seconds));
-  var t = setTimeout(function(){updateTime(el, localtime);},1000);
-}
+    var hour    = localtime.getHours();
+    var minutes = localtime.getMinutes();
+    var seconds = localtime.getSeconds();
+    $("#"+el).html(formatNumber(hour)+":"+formatNumber(minutes)+":"+formatNumber(seconds));
+    var t = setTimeout(function(){updateTime(el, localtime);},1000);
+  }
 
-function formatNumber(num){
-  return (num<=9)? "0"+num : num; 
-}
+  function formatNumber(num){
+    return (num<=9)? "0"+num : num;
+  }
 </script>

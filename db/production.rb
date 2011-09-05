@@ -4,7 +4,7 @@ puts "Production Seed"
 
 puts "Truncando tabelas"
 
-models = [DiscussionPost, Discussion, Lesson, Allocation, Bibliography, UserMessageLabel, UserMessage, MessageLabel,
+models = [DiscussionPostFile, DiscussionPost, Discussion, Lesson, Allocation, Bibliography, UserMessageLabel, UserMessage, MessageLabel,
   PublicFile, CommentFile, AssignmentFile, CommentFile, AssignmentComment, SendAssignment, Assignment,
   ScheduleEvent, Schedule, AllocationTag,
   PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,
