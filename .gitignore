@@ -24,6 +24,7 @@ public/images/users/*
 media/users/*
 media/portfolio/*
 media/discussions/*
-media/lesson/*
+media/lessons/*
+media/messages/*
 .rvmrc
 db/schema.rb
