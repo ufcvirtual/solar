@@ -163,7 +163,7 @@
       <span id="server_clock" name="server_clock" class="server_clock"></span>&nbsp;
 
         
-		<!--| &nbsp;--><%#= image_tag 'superior_suporte.png', :alt => t(:mysolar_alt_img_support) %>
+	<!--| &nbsp;--><%#= image_tag 'superior_suporte.png', :alt => t(:mysolar_alt_img_support) %>
         <%#= t(:mysolar_alt_img_support) %><!--&nbsp;&nbsp;&nbsp;-->
 		| &nbsp;<%= image_tag 'superior_sair.png', :alt => t(:mysolar_alt_img_exit), :class => 'image_logout' %>&nbsp;
 
@@ -195,11 +195,10 @@ function updateTime(el, server_time){
   var minutes = localtime.getMinutes();
   var seconds = localtime.getSeconds();
   $("#"+el).html(formatNumber(hour)+":"+formatNumber(minutes)+":"+formatNumber(seconds));
-
   var t = setTimeout(function(){updateTime(el, localtime);},1000);
 }
 
 function formatNumber(num){
-  return (num<=9)? "0"+num : num;
+  return (num<=9)? "0"+num : num; 
 }
 </script>
