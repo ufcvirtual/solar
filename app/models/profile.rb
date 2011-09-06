@@ -93,7 +93,7 @@ class Profile < ActiveRecord::Base
     types_perfil(user_id).include?('class_responsible')
   end
 
-  # verifica se é estudante ou responsal
+  # Verifica se é estudante ou responsal
   def self.types_perfil(user_id)
     tps = ActiveRecord::Base.connection.select_all <<SQL
        SELECT DISTINCT
@@ -118,6 +118,14 @@ SQL
 
     return array_types
 
+  end
+
+  # Recupera todos os profiles do usuario
+  def self.all_by_user_id(user_id)
+    profiles = Allocation.find(:all, :select => "DISTINCT profile_id AS id",
+      :conditions => ["user_id = ?", user_id]).collect{|p| p.id}
+    return 0 unless profiles.length > 0
+    return profiles.join(',')
   end
 
 end

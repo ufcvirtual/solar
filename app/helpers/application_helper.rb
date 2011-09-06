@@ -41,6 +41,7 @@ module ApplicationHelper
 
     #descobrindo o número total de páginas
     total_pages = (total_itens.to_f/Rails.application.config.items_per_page.to_f).ceil.to_i
+    total_pages = 1 unless total_itens.to_i > 0
 
     result = ''
     if @current_page.to_i > total_pages

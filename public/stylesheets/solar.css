@@ -302,7 +302,17 @@ textarea{
     font-family:'Trebuchet',Arial,'Myriad Pro';
 }
 
+/******** relogio **********/
+.server_clock {
+    font-size: 13px;
+    font-family:'Trebuchet',Arial,'Myriad Pro';
+}
+
 /********meu solar**********/
+
+.image_logout {
+    vertical-align: text-bottom;
+}
 
 #mysolar_topbar{
     width		:100%;
