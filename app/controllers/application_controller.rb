@@ -44,16 +44,20 @@ class ApplicationController < ActionController::Base
   # Seta os valores para o segundo nivel de breadcrumb
   def define_second_level_breadcrumb
 
-    # verifica se é a aba home que esta sendo acessada, ou se uma aba esta sendo fechada
-    if params[:name] == 'Home' || params[:action] == 'close_tab'
+    if params[:action] == 'close_tab'
+      # se a aba a ser fechada for a atual, a migalha deve voltar para o Home
       clear_breadcrumb_after(BreadCrumb_First_Level) if session[:active_tab] == params[:name]
     else
-      params.delete('authenticity_token')
-      session[:breadcrumb][BreadCrumb_Second_Level] = {
-        :name => params[:name],
-        :url => params
-      }
-      clear_breadcrumb_after(BreadCrumb_Second_Level)
+      if params[:name] == 'Home'
+        clear_breadcrumb_after(BreadCrumb_First_Level)
+      else
+        params.delete('authenticity_token')
+        session[:breadcrumb][BreadCrumb_Second_Level] = {
+          :name => params[:name],
+          :url => params
+        }
+        clear_breadcrumb_after(BreadCrumb_Second_Level)
+      end
     end
 
   end
