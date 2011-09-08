@@ -17,7 +17,7 @@
   });
 </script>
 
-<div class="boxes" id="update_photo">
+<div class="boxes" id="update_photo" style="white-space: normal;">
 
   <div id="dialog" class="window">
     <div id="title">
@@ -33,15 +33,16 @@
       </table>
     </div>
 
-    <u class="alter_photo_text"><%= t(:your_computer) %></u>
+    <span class="alter_photo_text"><%= t(:your_computer) %></span>
 
-    <%= form_for(@user, :html => { :multipart => true }, :url => {:controller => 'users', :action => 'update_photo', :id => @user.id}) do |f| %>
+    <%= form_for(@user, :html => { :multipart => true }, :url => {:controller => 'users',
+        :action => 'update_photo', :id => @user.id}) do |f| %>
       <%= f.file_field :photo, :class => 'alter_photo_inputs' %>
       <br /><br />
       <div class="alter_photo_text"><%= t(:photo_text)%></div>
       <br/>
       <b class="alter_photo_text"><%= t(:or) %></b><br/>
-      <u class="alter_photo_text"><%= t(:external_link) %></u><br/>
+      <span class="alter_photo_text"><%= t(:external_link) %></span><br/>
       <input style="width: 85%;" type="text" class="alter_photo_inputs" value=<%= t(:url) %>/>
 
       <div id="my_personal_data_button">
@@ -51,5 +52,5 @@
     <% end %>
   </div>
 
-  <div id="mask"></div>
+  <div id="mask" style="width: 100%; height: 100%;"></div>
 </div>
