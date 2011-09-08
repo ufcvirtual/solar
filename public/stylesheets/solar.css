@@ -484,7 +484,8 @@ a.mysolar_top_link{
 #mysolar_menu_accordion{
     display:inline-block;
     position: absolute;
-    top: 250px;
+    /*top: 250px;*/
+    top: 152px;
     left:0px;
     width:100%;
 }
