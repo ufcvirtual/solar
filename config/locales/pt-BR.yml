@@ -590,8 +590,6 @@
           attributes:
             photo_content_type:
               invalid_type: "Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG."
-            photo_file_size:
-              invalid_size: "O tamanho máximo da sua foto deve ser de até 700KB."
         assignment_file:
           attributes:
             attachment_content_type:

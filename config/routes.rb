@@ -43,6 +43,7 @@ Solar::Application.routes.draw do |map|
 
   match 'login' => "user_sessions#new", :as => :login
   match 'logout' => "user_sessions#destroy", :as => :logout
+  match 'home' => "users#mysolar", :as => :home
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
