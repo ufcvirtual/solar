@@ -214,7 +214,16 @@ class UsersController < ApplicationController
 
       rescue Exception => error
 
-        flash[:error] = error.message
+        error_msg = ''
+        if error.message.index("not recognized by the 'identify'") # erro que nao teve tratamento
+          # se aparecer outro erro nao exibe o erro de arquivo nao identificado
+          error_msg << t(:activerecord)[:attributes][:user][:photo_content_type] + " "
+          error_msg << t(:activerecord)[:errors][:models][:user][:attributes][:photo_content_type][:invalid_type] + "<br />"
+        else # exibicao de erros conhecidos
+          error_msg << error.message
+        end
+
+        flash[:error] = error_msg
         format.html { redirect_to(redirect) }
       end
     end

@@ -111,7 +111,6 @@ Cenário:  Acessar Edição de foto
     Dado que estou logado com o usuario "user" e com a senha "user123"
        E que estou em "Meu Solar"
     Então eu deverei ver "Do seu computador"
-    E eu deverei ver "De um link externo"
     E eu deverei ver o botao "Cancelar"
     E eu deverei ver o botao "Enviar"
 
