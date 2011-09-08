@@ -7,9 +7,10 @@ class SchedulesController < ApplicationController
     group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     user_id = current_user.id
     curriculum_unit_id = params[:id]
+    offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
 
     @curriculum_unit = CurriculumUnit.find(curriculum_unit_id)
-    @schedule = Schedule.all_by_group_id_and_user_id_and_curriculum_unit_id(group_id, user_id, curriculum_unit_id)
+    @schedule = Schedule.all_by_group_id_and_user_id_and_curriculum_unit_id(offer_id,group_id, user_id, curriculum_unit_id)
 
   end
 
