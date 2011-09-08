@@ -147,6 +147,10 @@
   }
 
   function removePost(postId) {
+    var answer = confirm("<%=t(:message_confirm)%>");
+    if (!answer)
+      return;
+
     $('#discussion_post_id').attr('value', postId);
     $('#new_post_form').attr('action','/discussions/remove_post');
     $('#new_post_form').submit();
