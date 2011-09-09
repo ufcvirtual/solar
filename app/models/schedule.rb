@@ -4,7 +4,12 @@ class Schedule < ActiveRecord::Base
   has_many :schedule_events
   has_many :portfolio
 
-  def self.all_by_group_id_and_user_id_and_curriculum_unit_id(offer_id, group_id, user_id, curriculum_unit_id)
+  def self.all_by_curriculum_unit_id_and_offer_id_group_id_and_user_id(curriculum_unit_id, offer_id, group_id, user_id, period = false, date_search = nil)
+
+    date_search_option = ''
+    date_search_option = "AND (t2.start_date = current_date OR t2.end_date = current_date)" if date_search.nil? && period
+    date_search_option = "AND (t2.start_date = '#{date_search}' OR t2.end_date = '#{date_search}')" unless date_search.nil?
+
     ActiveRecord::Base.connection.select_all <<SQL
     WITH cte_allocations AS (
        SELECT t1.id           AS allocation_tag_id,
@@ -14,7 +19,7 @@ class Schedule < ActiveRecord::Base
          FROM allocation_tags AS t1
          JOIN allocations     AS t2 ON t2.allocation_tag_id = t1.id
         WHERE t2.user_id = #{user_id}
-          AND t2.status = 1
+          AND t2.status = #{Allocation_Activated}
     ),
     -- descobrir todas as ofertas desses curriculum_units dessas allocations
     cte_offers_by_curriculum_unit AS (
@@ -78,6 +83,7 @@ class Schedule < ActiveRecord::Base
           JOIN schedules               AS t2 ON t2.id = t1.schedule_id
           JOIN cte_all_allocation_tags AS t3 ON t3.allocation_tag_id = t1.allocation_tag_id
          WHERE (t3.group_id = #{group_id} OR t3.offer_id = #{offer_id} OR t3.curriculum_unit_id = #{curriculum_unit_id})
+               #{date_search_option}
       )
       UNION
       (
@@ -86,6 +92,7 @@ class Schedule < ActiveRecord::Base
           JOIN schedules               AS t2 ON t2.id = t1.schedule_id
           JOIN cte_all_allocation_tags AS t3 ON t3.allocation_tag_id = t1.allocation_tag_id
          WHERE (t3.group_id = #{group_id} OR t3.offer_id = #{offer_id} OR t3.curriculum_unit_id = #{curriculum_unit_id})
+               #{date_search_option}
       )
       UNION
       (
@@ -94,6 +101,7 @@ class Schedule < ActiveRecord::Base
         JOIN schedules               AS t2 ON t2.id = t1.schedule_id
         JOIN cte_all_allocation_tags AS t3 ON t3.allocation_tag_id = t1.allocation_tag_id
        WHERE (t3.group_id = #{group_id} OR t3.offer_id = #{offer_id} OR t3.curriculum_unit_id = #{curriculum_unit_id})
+             #{date_search_option}
       )
       UNION
       (
@@ -102,11 +110,13 @@ class Schedule < ActiveRecord::Base
         JOIN schedules               AS t2 ON t2.id = t1.schedule_id
         JOIN cte_all_allocation_tags AS t3 ON t3.allocation_tag_id = t1.allocation_tag_id
        WHERE (t3.group_id = #{group_id} OR t3.offer_id = #{offer_id} OR t3.curriculum_unit_id = #{curriculum_unit_id})
+             #{date_search_option}
       )
-) AS final
+    ) AS t1
+   ORDER BY t1.end_date
 
-ORDER BY final.end_date
 SQL
 
   end
+
 end
