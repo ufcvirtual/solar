@@ -33,8 +33,6 @@
       </table>
     </div>
 
-    <span class="alter_photo_text"><%= t(:your_computer) %></span>
-
     <%= form_for(@user, :html => { :multipart => true }, :url => {:controller => 'users',
         :action => 'update_photo', :id => @user.id}) do |f| %>
       <%= f.file_field :photo, :class => 'alter_photo_inputs' %>
