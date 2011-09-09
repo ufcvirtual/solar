@@ -8,4 +8,6 @@ class MessageFile < ActiveRecord::Base
 
   validates_attachment_size :message, :less_than => 10.megabytes, :message => " " # Esse :message => " " deve permanecer dessa forma enquanto não descobrirmos como passar a mensagem de forma correta. Se o message for vazio a validação não é feita.
 
+  validates_attachment_content_type_in_black_list :message
+
 end

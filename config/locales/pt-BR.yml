@@ -550,6 +550,10 @@
       public_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
+      discussion_post_file:
+        attachment_content_type: ""
+      message_file:
+        message_content_type: ""
       assignment_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
@@ -601,6 +605,14 @@
         comment_file:
           attributes:
             attachment_content_type:
+              invalid_type: "Tipo de arquivo inválido."
+        discussion_post_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: "Tipo de arquivo inválido."
+        message_file:
+          attributes:
+            message_content_type:
               invalid_type: "Tipo de arquivo inválido."
 
   # Authlogic

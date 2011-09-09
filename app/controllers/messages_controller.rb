@@ -316,8 +316,9 @@ class MessagesController < ApplicationController
             }
           end
 
-        rescue
-          flash[:notice] = t(:message_send_error)
+        rescue Exception => error
+          flash[:error] =  error.message.empty? ? t(:message_send_error) : error.message
+
           # apaga arquivos copiados fisicamente de mensagem original quando ha rollback
           unless all_files_destiny.empty?
             all_files_destiny.split(";").each{ |f|
