@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   # Mensagem de erro de permissão
   rescue_from CanCan::AccessDenied do |exception|
     flash[:error] = t(:no_permission)
-    redirect_to :controller => "users", :action => "mysolar"
+    redirect_to :controller => :home#:users, :action => :mysolar
   end
 
   helper_method :current_user_session, :current_user
@@ -35,19 +35,29 @@ class ApplicationController < ActionController::Base
   before_filter :define_second_level_breadcrumb, :only => [:activate_tab, :add_tab, :close_tab]
   before_filter :define_third_level_breadcrumb
 
+  def set_active_tab_to_home
+    session[:active_tab] = 'Home'
+    # limpa o breadcrumb
+    clear_breadcrumb_after(BreadCrumb_First_Level)
+  end
+
   # Seta os valores para o segundo nivel de breadcrumb
   def define_second_level_breadcrumb
 
-    # verifica se é a aba home que esta sendo acessada
-    if params[:name] == 'Home' || params[:action] == 'close_tab'
-      clear_breadcrumb_after(BreadCrumb_First_Level)
+    if params[:action] == 'close_tab'
+      # se a aba a ser fechada for a atual, a migalha deve voltar para o Home
+      clear_breadcrumb_after(BreadCrumb_First_Level) if session[:active_tab] == params[:name]
     else
-      params.delete('authenticity_token')
-      session[:breadcrumb][BreadCrumb_Second_Level] = {
-        :name => params[:name],
-        :url => params
-      }
-      clear_breadcrumb_after(BreadCrumb_Second_Level)
+      if params[:name] == 'Home'
+        clear_breadcrumb_after(BreadCrumb_First_Level)
+      else
+        params.delete('authenticity_token')
+        session[:breadcrumb][BreadCrumb_Second_Level] = {
+          :name => params[:name],
+          :url => params
+        }
+        clear_breadcrumb_after(BreadCrumb_Second_Level)
+      end
     end
 
   end
@@ -94,6 +104,7 @@ class ApplicationController < ActionController::Base
       if session[:opened_tabs][name]["type"] == Tab_Type_Curriculum_Unit
         redirect_to :controller => :curriculum_units, :action => :access, :id => session[:opened_tabs][name]["id"], :groups_id => session[:opened_tabs][name]["groups_id"], :offers_id => session[:opened_tabs][name]["offers_id"]
       end
+
     else
       redirect_to :controller => :users, :action => :mysolar
     end
@@ -104,19 +115,19 @@ class ApplicationController < ActionController::Base
     name = params[:name]
 
     # se aba que vai fechar é a ativa, manda pra aba home
-    if session[:active_tab] == name
-      session[:active_tab] = 'Home'
-    end
+    session[:active_tab] = 'Home' if session[:active_tab] == name
 
     # remove do hash
     session[:opened_tabs].delete(name)
 
+    type_active_tab = session[:opened_tabs][session[:active_tab]]["type"]
+
     # redireciona de acordo com o tipo de aba ativa
-    if session[:opened_tabs][session[:active_tab]]["type"] == Tab_Type_Home
-      redirect_to :controller => "users", :action => "mysolar"
+    if type_active_tab == Tab_Type_Home
+      redirect_to :controller => :users, :action => :mysolar
     end
-    if session[:opened_tabs][session[:active_tab]]["type"] == Tab_Type_Curriculum_Unit
-      redirect_to :controller => 'curriculum_units', :action => 'access', :id => session[:opened_tabs][session[:active_tab]]["id"]
+    if type_active_tab == Tab_Type_Curriculum_Unit
+      redirect_to :controller => :curriculum_units, :action => :access, :id => session[:opened_tabs][session[:active_tab]]["id"]
     end
   end
 

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  
+
   include ApplicationHelper
 
 	before_filter :require_no_user, :only => [:pwd_recovery, :pwd_recovery_send]
@@ -130,6 +130,7 @@ class UsersController < ApplicationController
   ##############################
   #     PORTLETS DO USUARIO    #
   ##############################
+
   def mysolar
     @user = User.find(current_user.id) if current_user
   end
@@ -137,6 +138,7 @@ class UsersController < ApplicationController
   ######################################
   # funcoes para verificacao de senhas #
   ######################################
+
   def pwd_recovery
     #  	if !@user
     #      @user = User.new
@@ -192,36 +194,40 @@ class UsersController < ApplicationController
   ##################################
   # modificacao da foto do usuario #
   ##################################
+
   def update_photo
 
-    error_msg, redirect = " ", {:action => "mysolar"}
+    redirect = {:controller => :home}
+
+    set_active_tab_to_home
 
     respond_to do |format|
-      if @user.update_attributes(params[:user])
-        flash[:success] = t('successful_update_photo')
+      begin
+
+        # verifica se o arquivo foi adicionado
+        raise t(:error_no_file_sent) unless params.include?(:user) && params[:user].include?(:photo)
+
+        @user.update_attributes!(params[:user])
+
+        flash[:success] = t(:successful_update_photo)
         format.html { redirect_to(redirect) }
-        format.xml  { head :ok }
-      else
-        # joga as mensagens de validação do modelo nas mensagens de erro
-        if @user.errors.any?
-          msgs_error = @user.errors.full_messages.uniq # podem ter erros repetidos mas serao exibidos como unicos
-          msgs_error.each do |msg|
-            if msg.index("recognized by the 'identify'") # erro que nao teve tratamento
-              # se aparecer outro erro nao exibe o erro de arquivo nao identificado
-              if msgs_error.count == 1
-                error_msg << t(:activerecord)[:attributes][:user][:photo_content_type] + " "
-                error_msg << t(:activerecord)[:errors][:models][:user][:attributes][:photo_content_type][:invalid_type] + "<br />"
-              end
-            else # exibicao de erros conhecidos
-              error_msg << msg + "<br />"
-            end
-          end
+
+      rescue Exception => error
+
+        error_msg = ''
+        if error.message.index("not recognized by the 'identify'") # erro que nao teve tratamento
+          # se aparecer outro erro nao exibe o erro de arquivo nao identificado
+          error_msg << t(:activerecord)[:attributes][:user][:photo_content_type] + " "
+          error_msg << t(:activerecord)[:errors][:models][:user][:attributes][:photo_content_type][:invalid_type] + "<br />"
+        else # exibicao de erros conhecidos
+          error_msg << error.message
         end
+
         flash[:error] = error_msg
-        format.html { render(redirect) }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
+        format.html { redirect_to(redirect) }
       end
     end
+
   end
 
 end

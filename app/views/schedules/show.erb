@@ -1,10 +1,10 @@
 <div>
-  <% @ajax.each_with_index do |schedule, idx| %>
+  <% @schedule.each_with_index do |schedule, idx| %>
     <%=raw '<br />' if idx > 0 %>
     <%= link_to schedule["name"], {:controller => :schedules, :action => :list, :id => params[:id]}, {:class => 'agenda_ajax'} %>
   <% end %>
 
-  <% if @ajax.first.nil? %>
+  <% if @schedule.first.nil? %>
     <span class="agenda_ajax"><%= t(:no_events) %></span>
   <% end %>
 

@@ -52,10 +52,10 @@ module ApplicationHelper
     total_pages = total_pages.to_s
 
     result << '<form accept-charset="UTF-8" action="" method="' << request.method << '" name="paginationForm" style="display:inline">'
-    
+
     if !hash_params.nil?
       # ex: type=index&search=1 2 3
-      hash_params.split("&").each { |item|        
+      hash_params.split("&").each { |item|
         individual_param = item.split("=")
         v = individual_param[1].nil? ? "" : individual_param[1]
         result << '<input id="' << individual_param[0] << '" name="' << individual_param[0] << '" value="' << v << '" type="hidden">'
@@ -66,36 +66,35 @@ module ApplicationHelper
       result << '<a class="link_navigation" onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)-1).to_s << ');$(this).parent().submit();">&lt;&lt;</a>'
     end
 
-    # página atual: 
+    # página atual:
     result << ' ' << @current_page << t(:navigation_of) << total_pages << ' '
 
     unless (@current_page.eql? total_pages)# avançar uma página: >>
       #result << '<a href="javascript:$(\'#current_page\').val(' << ((current_page.to_i)+1).to_s << ');$(\'#current_page\').parent().submit();">&gt;&gt;</a>'
       result << '<a class="link_navigation" onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)+1).to_s << ');$(this).parent().submit();">&gt;&gt;</a>'
     end
-    
+
     result << ' <input name="authenticity_token" value="' << form_authenticity_token << '" type="hidden">'
     result << '<input type="hidden" id="current_page" name="current_page" value="' << @current_page << '"/>'
-    
+
     result << '</form>'
 
     return result
   end
 
-  #Renderiza a seleção de turmas
+  # Renderiza a seleção de turmas
   def render_group_selection(hash_params = nil)
-    
+
     result = '<form accept-charset="UTF-8" action="" method="' << request.method << '" name="groupSelectionForm" style="display:inline">'
-    
     result <<  t(:group) << ":&nbsp"
     result << select_tag(
       :selected_group,
       options_from_collection_for_select(
         CurriculumUnit.find_user_groups_by_curriculum_unit(
           session[:opened_tabs][session[:active_tab]]["id"], current_user.id),
-        :id,
-        :code_semester,
-        session[:opened_tabs][session[:active_tab]]["groups_id"]
+          :id,
+          :code_semester,
+          session[:opened_tabs][session[:active_tab]]["groups_id"]
       ),
       #{:onchange => "$(this).parent().submit();"}#Versao SEM AJAX
       {:onchange => "reloadContentByForm($(this).parent());"}#Versao AJAX
@@ -122,11 +121,5 @@ module ApplicationHelper
     curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"] # recupera unidade curricular da sessao
     CurriculumUnit.find(curriculum_unit_id).name
   end
-  
-  #Muda o tipo da aba
-  def set_active_tab_to_home
-   if session[:active_tab] != 'Home'
-       session[:active_tab] = 'Home'
-   end
-  end
+
 end

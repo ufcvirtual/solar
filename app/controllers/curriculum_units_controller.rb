@@ -65,25 +65,27 @@ class CurriculumUnitsController < ApplicationController
 
   def access
     curriculum_data
+
+    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+    offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+
     # pegando dados da sessao e nao da url
     message_tag = nil
-    if session[:opened_tabs][session[:active_tab]]["type"] != Tab_Type_Home
-      groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-      offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
-      curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
-
-      message_tag = get_label_name(curriculum_unit_id, offers_id, groups_id)
-    end
+    message_tag = get_label_name(curriculum_unit_id, offer_id, group_id) if session[:opened_tabs][session[:active_tab]]["type"] != Tab_Type_Home
 
     # retorna aulas, posts nos foruns e mensagens relacionados a UC mais atuais
-    @lessons = return_lessons_to_open(offers_id, groups_id)
-    @discussion_posts = list_portlet_discussion_posts(offers_id, groups_id)
+    @lessons = return_lessons_to_open(offer_id, group_id)
+    @discussion_posts = list_portlet_discussion_posts(offer_id, group_id)
     @messages = return_messages(current_user.id, 'portlet', message_tag)
+
     session[:lessons] = @lessons
 
-    groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+    offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     user_id = current_user.id
-    @schedule_portlet = CurriculumUnit.select_for_schedule_in_portlet(groups_id, user_id, curriculum_unit_id)
+
+    @schedule_portlet = Schedule.all_by_curriculum_unit_id_and_offer_id_group_id_and_user_id(curriculum_unit_id, offer_id, group_id, user_id)
 
   end
 

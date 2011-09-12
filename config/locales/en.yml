@@ -397,6 +397,10 @@ en:
       public_file:
         attachment_content_type: ""
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
+      discussion_post_file:
+        attachment_content_type: ""
+      message_file:
+        message_content_type: ""
       assignment_file:
         attachment_content_type: ""
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
@@ -428,15 +432,23 @@ en:
         assignment_file:
           attributes:
             attachment_content_type:
-              invalid_type: "Type of the file invalid."
+              invalid_type: "Invalid file type."
         public_file:
           attributes:
             attachment_content_type:
-              invalid_type: "Type of the file invalid."
+              invalid_type: "Invalid file type."
         comment_file:
           attributes:
             attachment_content_type:
-              invalid_type: "Type of the file invalid."
+              invalid_type: "Invalid file type."
+        discussion_post_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: "Invalid file type."
+        message_file:
+          attributes:
+            message_content_type:
+              invalid_type: "Invalid file type."
 
 # Menu
   menu_content: Content
