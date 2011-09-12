@@ -34,7 +34,7 @@ module MenuHelper
 
         # para um menu pai ser um link ele nao deve ter filhos
         if !menu["resource_id"].nil? && menu['child'].nil?
-          access_controller[:bread] = t(menu['father'].to_sym)
+          access_controller[:bread] = menu['father']
           link = link_to("#{t(menu['father'].to_sym)}", access_controller)
         elsif !menu["link"].nil?
           link = "<a href='#{menu['link']}'>#{t(menu['father'].to_sym)}</a>"
@@ -58,7 +58,7 @@ module MenuHelper
       access_controller[:id] = id unless id.nil?
 
       unless menu['child'].nil?
-        access_controller[:bread] = t(menu['child'].to_sym)
+        access_controller[:bread] = menu['child']
         html_menu << "<div class='#{class_menu_list}'>" << link_to("#{t(menu['child'].to_sym)}", access_controller) << "</div>"
       end
 

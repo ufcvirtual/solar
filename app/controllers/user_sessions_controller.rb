@@ -42,11 +42,12 @@ class UserSessionsController < ApplicationController
   def bread_crumb
     session[:breadcrumb] = Array.new
     session[:breadcrumb][BreadCrumb_First_Level] = {
-      :name => 'Home',
+      :name => 'home',
       :url => {
         :controller => :application,
         :action => :activate_tab,
-        :name => 'Home'
+        :name => 'Home',
+        :type => Tab_Type_Home
       }
     }
   end

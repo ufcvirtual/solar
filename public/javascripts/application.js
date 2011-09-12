@@ -98,6 +98,13 @@ function reloadContentByForm(form){
         complete: function( jqXHR, status, responseText ) {
             responseText = jqXHR.responseText;
             target.html(jQuery("<div>").append(responseText.replace(rscript, "")).find(selector));
+
+            // chamar a funcao que atualiza a agenda
+            showAgenda();
+
+            // atualiza clique em dia do mes
+
+
         }
     });
     return false;

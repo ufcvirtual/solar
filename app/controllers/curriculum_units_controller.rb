@@ -85,7 +85,7 @@ class CurriculumUnitsController < ApplicationController
     group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     user_id = current_user.id
 
-    @schedule_portlet = Schedule.all_by_curriculum_unit_id_and_offer_id_group_id_and_user_id(curriculum_unit_id, offer_id, group_id, user_id)
+    @schedule_portlet = Schedule.all_by_offer_id_and_group_id_and_user_id(offer_id, group_id, user_id)
 
   end
 
@@ -100,9 +100,6 @@ class CurriculumUnitsController < ApplicationController
     #retorna perfil em que se pede matricula (~aluno)
     @student_profile = student_profile
 
-    # pegando dados da sessao e nao da url
-    offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
-
     # retorna participantes da turma (que nao sejam responsaveis)
     responsible = false
 
@@ -112,8 +109,6 @@ class CurriculumUnitsController < ApplicationController
 
     @participants = class_participants groups_id, responsible
 
-    # pegando valores pela url:
-    #@participants = class_participants params[:id], responsible, params[:offers_id], params[:groups_id]
   end
 
   private
@@ -124,17 +119,11 @@ class CurriculumUnitsController < ApplicationController
 
     # pegando dados da sessao e nao da url
     groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-    offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
 
     # localiza responsavel
     responsible = true
-    # Temporário: garantindo que haverá um grupo, pois futuramente será necessário escolher um grupo para visualizar os participantes
-    # groups_id = Group.find_by_offer_id(offers_id).id unless !groups_id.nil?
 
     @responsible = class_participants groups_id, responsible
-
-    # pegando valores pela url:
-    #@responsible = class_participants params[:id], responsible, params[:offers_id], params[:groups_id]
   end
 
 end
