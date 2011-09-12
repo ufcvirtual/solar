@@ -116,7 +116,7 @@ agenda_info:
 biblio_info:
   id: 303
   father_id: 30
-  name: menu_bibliografy
+  name: menu_bibliography
   order: 3
   context_id: 2
   resource_id: 23
