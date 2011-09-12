@@ -1910,7 +1910,6 @@ td.td_student a {color: #2a538d;}
 
 }
 
-
 .assignment_corrected {
     color: #378941;
 }
@@ -1921,4 +1920,9 @@ td.td_student a {color: #2a538d;}
 
 .assignment_not_started, .assignment_not_sent, .assignment_send, td.assignment_an a {
     color: #204683;
+}
+
+.breadcrumb {
+    font-size: 12px;
+    font-family: 'Myriad Pro','Trebuchet', Arial;
 }

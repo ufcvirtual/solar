@@ -1,5 +1,6 @@
 "pt-BR":
   all: "Todos"
+  home: "Home"
 
 #Página de Login
   login_description1: "O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,
@@ -652,7 +653,7 @@
   menu_general_information: Informações Gerais
   menu_program: Programa
   menu_agenda: Agenda
-  menu_bibliografy: Bibliografia
+  menu_bibliography: Bibliografia
   menu_participants: Participantes
   menu_social: Social
   menu_wiki: Wiki

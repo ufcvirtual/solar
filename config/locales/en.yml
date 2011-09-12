@@ -3,6 +3,7 @@
 
 en:
   all: "All"
+  home: "Home"
 
   #Página de Login
 
@@ -464,7 +465,7 @@ en:
   menu_general_information: General Information
   menu_program: Program
   menu_agenda: Agenda
-  menu_bibliografy: Bibliografy
+  menu_bibliography: Bibliography
   menu_participants: Participants
   menu_social: Social
   menu_wiki: Wiki
