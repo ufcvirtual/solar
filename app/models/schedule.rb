@@ -6,7 +6,8 @@ class Schedule < ActiveRecord::Base
 
   def self.all_by_offer_id_and_group_id_and_user_id(offer_id, group_id, user_id, period = false, date_search = nil)
 
-    date_search_option = ''
+    date_search_option, limit = '', ''
+    limit = 'LIMIT 2' if period
     date_search_option = "AND (t2.start_date = current_date OR t2.end_date = current_date)" if date_search.nil? && period
     date_search_option = "AND (t2.start_date = '#{date_search}' OR t2.end_date = '#{date_search}')" unless date_search.nil?
 
@@ -99,7 +100,7 @@ class Schedule < ActiveRecord::Base
       )
     ) AS t1
    ORDER BY t1.end_date
-
+   #{limit}
 SQL
   end
 
