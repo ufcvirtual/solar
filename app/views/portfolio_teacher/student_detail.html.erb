@@ -2,7 +2,7 @@
 
 <div>
   <span class="page_title">
-    <%= t(:assignment_correction_of) %> <%= @activity %> <%= t(:of) %> <%= curriculum_unit_name %>
+    <%= t(:assignment_correction_of) %>&nbsp;<%=raw @activity << "&nbsp;#{t(:of)}&nbsp;" unless @activity.nil? %><%= curriculum_unit_name %>
   </span>
 </div>
 

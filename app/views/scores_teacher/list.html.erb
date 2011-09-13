@@ -25,7 +25,6 @@
         <tr class="lines">
           <th rowspan="2" align="left"><%= t(:student) %></th>
           <th rowspan="2" style="width: 16%;"><%= t(:public_files)  %></th>
-          <th rowspan="2" style="width: 8%;"><%= t(:tests) %></th>
           <!-- trabalhos-->
           <th colspan="<%= (leng_assignments == 0) ? 1 : leng_assignments %>" style="width: 20%;"><%= t(:private_area) %></th>
           <th rowspan="2" style="width: 12%;"><%= t(:participation) %></th>
@@ -46,7 +45,6 @@
               <%=link_to student["student_name"], {:controller => :scores, :action => :show, :student_id => student["student_id"]} %>
             </td>
             <td align="center"><%= student["cnt_public_files"] %></td>
-            <td align="center">-</td>
             <% assignments_ids = student["assignment_ids"].split(',') %>
             <% send_assignment_ids = student["send_assignment_ids"].split(',') %>
             <% student["grades"].split(',').each_with_index do |grade, idx| %>

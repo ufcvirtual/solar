@@ -29,7 +29,7 @@ class PortfolioTeacherController < ApplicationController
     begin
       @activity = Assignment.find(@assignment_id).name
     rescue
-      @activity = ''
+      @activity = nil
     end
 
     # estudante

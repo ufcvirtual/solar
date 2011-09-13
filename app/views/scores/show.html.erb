@@ -65,7 +65,7 @@
   <div class="portfolio_activity_list">
 
     <div class="portfolio_header_content">
-      <div class="portfolio_title"><%= t(:amount_participation) %></div>
+      <div class="portfolio_title"><%= t(:amount_participation_discussions) %></div>
       <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
     </div>
 
@@ -83,11 +83,14 @@
         <tbody>
           <% @discussions.each_with_index do |discussion, idx| %>
             <tr class="rowtable_<%= (idx % 2 == 0) ? 'even' : 'odd' %>">
-              <td class="td_blue_portfolio"><%= discussion["name"] %></td>
-              <td class="td_blue_portfolio show_posts" align="center">
-                <%=(discussion["qtd"].to_i > 0) ? link_to(discussion["qtd"],
-                  {:controller => :discussions, :action => :show_posts,
-                    :id => discussion["discussion_id"], :student_id => @student.id}) : discussion["qtd"] %>
+              <% is_link = (discussion["qtd"].to_i > 0) %>
+              <% class_show = is_link ? 'show_posts' : '' %>
+              <% link = {:controller => :discussions, :action => :show_posts, :id => discussion["discussion_id"], :student_id => @student.id} %>
+              <td class="td_blue_portfolio <%= class_show %>">
+                <%= is_link ? link_to(discussion["name"], link) : discussion["name"] %>
+              </td>
+              <td class="td_blue_portfolio <%= class_show %>" align="center">
+                <%= is_link ? link_to(discussion["qtd"], link) : discussion["qtd"] %>
               </td>
             </tr>
           <% end %>
@@ -117,11 +120,12 @@
           <span><%= t(:history_search) %></span>
         </div>
         <div id="history-search-content" style="padding-bottom: 10px;">
-          <span><input id="from-date" title="<%= t(:from_date) %>" size="9" value="<%= two_months_ago %>"/></span>
+          <input type="text" id="from-date" title="<%= t(:from_date) %>" size="9" value="<%=l two_months_ago, :format => :datepicker %>"/>
           <%= t(:to) %>
-          <span><input id="until-date" title="<%= t(:until_date) %>" size="9" value="<%= Date.today %>"/></span>
-          <span><%=link_to t(:history_find), {:controller => :scores,
-              :action => :amount_history_access}, :id => 'bt-amount-history-access' %></span>
+          <input type="text" id="until-date" title="<%= t(:until_date) %>" size="9" value="<%=l Date.today, :format => :datepicker %>"/>
+          <span>
+            <%=link_to t(:history_find), {:controller => :scores, :action => :amount_history_access}, :id => 'bt-amount-history-access' %>
+          </span>
         </div>
 
       </div>
@@ -139,9 +143,8 @@
   <!-- Scripts -->
 
   <style type="text/css">
-    .txt-link {
-      text-decoration: underline;
-    }
+    .txt-link { text-decoration: underline; }
+    .ui-datepicker { width: 15em; padding: .2em .2em 0; display: none; }
   </style>
 
   <script type="text/javascript">
@@ -172,9 +175,15 @@
 
       // requisicao ajax para recuperar posts do usuario
       $('td.show_posts').click(function(){
+
+        var url = $('a', $(this)).attr('href');
+        if (typeof(url) === 'undefined'){
+          return false;
+        }
+
         $.ajax({
           type: 'GET',
-          url: $('a', $(this)).attr('href'),
+          url: url,
           cache: false,
           success: function(response){
             var canClose = true;
@@ -182,7 +191,7 @@
             showLightBox(response, 500, 600, canClose, title);
           },
           error: function(response){
-            alert('Erro ao tentar consultar. Tente novamente mais tarde.');
+            alert('<%=t :error_find_ajax%>');
           }
         });
 
@@ -192,13 +201,19 @@
 
       // requisicao ajax para recuperar historico de acesso do usuario
       $('#history-body-value').click(function(){
+
+        var url = $('a', $(this)).attr('href');
+        if (typeof(url) === 'undefined'){
+          return false;
+        }
+
         $.ajax({
           type: 'GET',
           data: {
             'from-date': $('#from-date').val(),
             'until-date': $('#until-date').val()
           },
-          url: $('a', $(this)).attr('href'),
+          url: url,
           cache: false,
           success: function(response){
             var canClose = true;
@@ -206,7 +221,7 @@
             showLightBox(response, 500, 600, canClose, title);
           },
           error: function(response){
-            alert('Erro ao tentar consultar. Tente novamente mais tarde.');
+            alert('<%=t :error_find_ajax%>');
           }
         });
 

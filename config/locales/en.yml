@@ -4,6 +4,7 @@
 en:
   all: "All"
   home: "Home"
+  of: "Of"
 
   #Página de Login
 
@@ -285,6 +286,7 @@ en:
   situation: "Situation"
   grade: "Grade"
   comments: "Comments"
+  comment: "Comment"
   task: "Task"
   tasks: "Tasks"
   public_area: "Public Area"
@@ -340,7 +342,7 @@ en:
   assignment_as: "AS"
   assignment_an: "AN"
   amount: "Amount"
-  amount_participation: "Amount Of Participation"
+  amount_participation_discussions: "Participation in Discussions"
   from_date: "From Date"
   until_date: "Until Date"
   search_format_date: "yy-mm-dd"
@@ -352,6 +354,8 @@ en:
   history_access: "History Access"
   scores_discussions: "Scores Discussions Student"
   scores_history_access: "Scores History Access"
+  assignment_correction_of: "Correction Of"
+  error_find_ajax: "Error trying to query. Try again later."
 
   # Mensagem de erro para permissão 
   no_permission: "you haven't permission to access this page"
@@ -360,6 +364,7 @@ en:
   date:
     formats:
       default: "%m/%d/%Y"
+      datepicker: "%Y-%m-%d"
     month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
     abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Spt, Oct, Nov, Dec]
     order: [:month, :day, :year]
