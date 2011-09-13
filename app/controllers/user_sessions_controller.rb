@@ -14,6 +14,8 @@ class UserSessionsController < ApplicationController
   end
 
   def new
+    # antes de criar uma nova sessao limpa qualquer outra existente
+    destroy_session
     @user_session = UserSession.new
   end
 
@@ -32,9 +34,7 @@ class UserSessionsController < ApplicationController
   end
 
   def destroy
-    current_user_session.destroy
-    #limpa sessao
-    reset_session
+    destroy_session
     redirect_back_or_default new_user_session_url(:locale => I18n.locale)
   end
 
@@ -50,6 +50,14 @@ class UserSessionsController < ApplicationController
         :type => Tab_Type_Home
       }
     }
+  end
+
+  private
+
+  def destroy_session
+    current_user_session.destroy unless current_user_session.nil?
+    #limpa sessao
+    reset_session
   end
 
 end
