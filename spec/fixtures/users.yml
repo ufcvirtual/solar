@@ -103,3 +103,31 @@ ariovaldo:
   phrase: Timao eeeoo!!!
   site: timao.com
   crypted_password: bdfbae109d4523732b89e3fd2d248ed7fab97425
+
+# senha: 123456
+professor2:
+  id: 5
+  login: prof2
+  email: prof2@prof2.br
+  name: professor2
+  nick: prof2
+  birthdate: 2005-01-01
+  cpf: 21569104646
+  gender: true
+  address: Rua ABC
+  address_number: 999
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: Paraguay
+  state: importado
+  city: Irmã de Assunção
+  institution: UFP
+  alternate_email: prof2@gmail.com
+  bio: prof2
+  interests: ensinar
+  music: Clássica
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b

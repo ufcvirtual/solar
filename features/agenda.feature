@@ -8,6 +8,9 @@ Contexto:
     Dado que tenho "allocations"
         | user_id  | allocation_tag_id  | profile_id  | status |
         | 1        | 3                  | 1           | 1      |
+        | 5        | 4                  | 2           | 1      |
+        | 5        | 5                  | 2           | 1      |
+        | 5        | 6                  | 2           | 1      |
 
 Cenário: Exibir Agenda
     Dado que estou logado com o usuario "user" e com a senha "user123"
@@ -21,6 +24,19 @@ Cenário: Exibir Agenda
         E eu deverei ver "Reunião com videoconferência"
         E eu deverei ver "Avaliação"
         E eu deverei ver "Feriado"
+
+Cenário: Exibir Agenda do professor
+    Dado que estou logado com o usuario "prof2" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar em "Teoria da Literatura I"
+        Então eu deverei ver "Informações Gerais"
+    Quando eu clicar no link "Informações Gerais"
+        Então eu deverei ver o link "Agenda"
+    Quando eu clicar no link "Agenda"
+        Então eu deverei ver "Trabalhos"
+        E eu deverei ver "23/Nov 19/Dez"
+        E eu deverei ver "Atividade I"
+
 
 #@wip
 #Cenário: Exibir agenda do portlet
