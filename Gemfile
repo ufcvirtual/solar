@@ -47,6 +47,7 @@ gem 'paperclip', :git => 'git://github.com/thoughtbot/paperclip.git'
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test do
+  gem 'capistrano'
   gem 'webrat', '0.7.3'
   gem 'capybara', '1.0.0'
   gem 'database_cleaner', '0.6.7'
