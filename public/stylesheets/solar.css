@@ -1755,8 +1755,12 @@ td.border_line {
 
 .td_blue_portfolio, .td_blue_portfolio_first, tr.lines td, th {
     border-left: solid #dbe5e8 1px;
-    padding-left: 8px;
+    padding: 5px;
     white-space: normal;
+}
+
+.td_blue_portfolio_first {
+    width: 485px;
 }
 
 /*Table com listras*/
@@ -1775,10 +1779,6 @@ tr.post_content {
 
 tbody tr.lines:hover{
     background-color: #a9d0f5;
-}
-
-.td_blue_portfolio_first {
-    width: 485px;
 }
 
 .rowtable_even_portfolio{
