@@ -317,7 +317,7 @@ textarea{
 #mysolar_topbar{
     width		:100%;
     height		:36px;
-    line-height	: 36px;
+    line-height	: 33px;
     z-index		: 2;
     position	: absolute;
     left		: 0px;
@@ -385,23 +385,28 @@ textarea{
     text-align:center;
     padding-left: 9px;
     padding-right: 9px;
-    margin-right: 4px;
+    margin-right: 6px;
+    margin-top:6px;
     background-color: #e6edee;
     display:inline-block;
     z-index: 10;
-    border-top:4px solid #003e7a;
     cursor: pointer;
 }
+
 .mysolar_unit_active_tab{
     color: #222;
     text-align:center;
-    padding: 8px 8px 9px 8px;
-    margin-right: 4px;
-    background-color: #fff;
-    display:inline;
+    padding-left: 9px;
+    padding-right: 9px;
+    margin-right: 6px;
+    margin-top:6px;
+    background-color: white;
+    display:inline-block;
     z-index: 10;
-    border-top:4px solid #003e7a;
     cursor: pointer;
+    box-shadow:4px -4px 0px 0px #001E3C;
+    -moz-box-shadow:4px -4px 0px 0px #001E3C;
+    -webkit-box-shadow:4px -4px 0px 0px #001E3C;
 }
 
 #meusdados_tab_topo{
