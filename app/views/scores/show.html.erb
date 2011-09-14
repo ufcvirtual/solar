@@ -37,7 +37,7 @@
           <% @activities.each_with_index do |activity, idx| %>
             <% class_name = ((idx % 2) == 0) ? 'rowtable_even' : 'rowtable_odd' %>
             <tr class="<%= class_name %>">
-              <td class="td_blue_portfolio" style="padding-left: 20px;">
+              <td class="td_blue_portfolio" style="padding: 10px;">
                 <!-- verifica permissao de modificao de notas -->
                 <% if can? :student_detail, PortfolioTeacher %>
                   <%=link_to activity["assignments_name"], {:controller => :portfolio_teacher,
