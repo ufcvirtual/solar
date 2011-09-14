@@ -1,0 +1,17 @@
+user:
+  id: 1
+  login: admin
+  email: solar@virtual.ufc.br
+  name: Administrador
+  nick: Administrador
+  cpf: 43463518678
+  birthdate: 2011-01-01
+  gender: true
+  address: Av. Humberto Monte, bloco 901, 1o andar.
+  address_number: s/n
+  country: Brazil
+  state: CE
+  city: Fortaleza
+  institution: UFC
+  zipcode: 60450000
+  crypted_password: 23fe77f3a637d84276a8a1604b4e7a91de1b5a87

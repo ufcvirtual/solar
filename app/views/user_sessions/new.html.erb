@@ -2,8 +2,6 @@
   <%= stylesheet_link_tag "login.css" %>
   <script type="text/javascript">
     clear_lesson();
-  </script>
-  <script type="text/javascript">
 
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-25482431-1']);
@@ -33,10 +31,9 @@
     <p>
       <%= t(:login_description2) %>
     </p>
-
   </div>
 
-  <script>
+  <script type="text/javascript">
     $(document).ready(function() {
       $("#login_form_name").focus();
     });

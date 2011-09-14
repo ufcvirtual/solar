@@ -1,5 +1,27 @@
 puts "Development Seed"
 
+puts "Truncando tabelas"
+
+models = [DiscussionPostFile, DiscussionPost, Discussion, Lesson, Allocation, Bibliography, UserMessageLabel, UserMessage, MessageLabel,
+  PublicFile, CommentFile, AssignmentFile, CommentFile, AssignmentComment, SendAssignment, Assignment,
+  ScheduleEvent, Schedule, AllocationTag,
+  PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,
+  Enrollment, Offer, CurriculumUnit, CurriculumUnitType, Course, PersonalConfiguration, User, Log]
+models.each(&:delete_all)
+
+Fixtures.reset_cache
+fixtures_folder = File.join(::Rails.root.to_s, 'spec', 'fixtures')
+fixtures = Dir[File.join(fixtures_folder, '*.yml')].map {|f| File.basename(f, '.yml')}
+
+puts "  - Executando fixtures: #{fixtures}"
+
+Fixtures.create_fixtures(fixtures_folder, fixtures)
+
+puts "Setando permissoes"
+
+# executa o arquivo de permissoes
+require File.join(::Rails.root.to_s, 'db', 'permissions')
+
 puts "Criando registros de usuarios"
 
 prof = User.new :login => 'prof', :email => 'prof@solar.ufc.br', :name => 'Professor', :nick => 'Professor', :cpf => '21872285848', :birthdate => '2000-03-02', :gender => true, :address => 'em algum lugar', :address_number => 58, :address_neighborhood => 'bons', :country => 'brazil', :state => 'CE', :city => 'fortaleza', :institution => 'ufc', :zipcode => '60450170'

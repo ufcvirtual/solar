@@ -27,13 +27,10 @@
           &nbsp;
           <%= link_to t(:forgot_my_password),{:controller=>"users", :action=>"pwd_recovery"}, :class=>"black"%>
         </div>
-
       </div>
-
     </div>
   <% end %>
   <%= flash[:notice] %>
-
   <div>
     <table>
       <tr>
@@ -41,11 +38,12 @@
         <td style="width: 50px; font-size: 12px"> <%= link_to "English",{:controller => 'user_sessions', :action => 'new', :locale => 'en'}, :style=>"color: #000"%> </td>
         <td style="font-size: 12px"> <%= link_to "Português(BR)", {:controller => 'user_sessions', :action => 'new', :locale => 'pt-BR'}, :style=>"color: #000"%> </td>
       </tr>
-
     </table>
   </div>
 </div>
 
-<script>
-  document.getElementById("login_form_name").focus();
+<script type="text/javascript">
+  $(function(){
+    $('#login_form_name').focus();
+  });
 </script>
