@@ -8,6 +8,7 @@ user:
   birthdate: 2011-01-01
   gender: true
   address: Av. Humberto Monte, bloco 901, 1o andar.
+  address_neighborhood: Pici
   address_number: s/n
   country: Brazil
   state: CE
