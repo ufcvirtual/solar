@@ -10,6 +10,8 @@
  * http://docs.jquery.com/UI/Theming/API
  */
 
+ .highlightDate { background: #F9C153;}
+
 /* ... Component containers ... */
 
 /* corpo do calendario */

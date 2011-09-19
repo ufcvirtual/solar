@@ -14,6 +14,22 @@
 
   <script type="text/javascript">
 
+    function updateMonthlyEvents(year, month){
+      var all_dates = <%=raw @scheduled_events%>;
+
+      //coloca datas que possuem evento realcadas
+      $(all_dates).each(function(i, d) {
+        $(".ui-state-default").each(function() {
+            var date_comparison = $(this).text() + '/' + month + '/' + year;            
+            if (date_comparison == d ) {
+              $(this).attr('style', 'background: #F9C153;');
+            }
+        });
+      });
+      alert("fim");
+    }
+
+
     function changeDate(dateText){
 
       var valor_recuperado = dateText; //$(this).val();
@@ -42,8 +58,14 @@
         option: locale,
         onSelect: function(dateText, inst) {
           changeDate(dateText);
+        },
+        onChangeMonthYear: function(year, month, inst) {
+          updateMonthlyEvents(year, month);
         }
       });
+      
+      //getMonth: 0 - 11
+      updateMonthlyEvents(today.getFullYear(), today.getMonth()+1);
     }
 
     $(function() {
