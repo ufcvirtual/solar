@@ -132,6 +132,7 @@ class UsersController < ApplicationController
   ##############################
 
   def mysolar
+    set_active_tab_to_home
     @user = User.find(current_user.id) if current_user
   end
 
