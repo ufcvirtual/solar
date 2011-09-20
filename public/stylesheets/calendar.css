@@ -10,7 +10,7 @@
  * http://docs.jquery.com/UI/Theming/API
  */
 
- .highlightDate { background: #F9C153;}
+ .highlight-date-mark a { background: #F9C153 !important; }
 
 /* ... Component containers ... */
 

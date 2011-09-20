@@ -4,11 +4,9 @@
   <span class="page_title"><%=@curriculum_unit.name %></span>
   <hr style="border: none; background-color: #b4b3b7; height: 1px; width:794px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px"></hr>
 
-  <span class="page_title">
-    <%#=@curriculum_unit.name %>    
-  </span>
+  <span class="page_title"><%#=@curriculum_unit.name %></span>
   <%= raw render_group_selection %>
-  
+
   <div class="curriculum_unit_portlet_border">
     <div class="curriculum_unit_portlet_left">
       <div class="curriculum_unit_portlet_header">
@@ -36,15 +34,9 @@
 
   <table cellpadding="0" cellspacing="0">
     <tr>
-      <td>
-        <%= render 'message_portlet' %>
-      </td>
-      <td>
-        <%= render 'discussion_posts_portlet' %>
-      </td>
-      <td>
-        <%= render 'agenda_portlet' %>
-      </td>
+      <td><%= render 'message_portlet' %></td>
+      <td><%= render 'discussion_posts_portlet' %></td>
+      <td><%= render 'agenda_portlet' %></td>
     </tr>
   </table>
 

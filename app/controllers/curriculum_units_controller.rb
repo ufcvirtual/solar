@@ -69,6 +69,7 @@ class CurriculumUnitsController < ApplicationController
     group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
     curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+    user_id = current_user.id
 
     # pegando dados da sessao e nao da url
     message_tag = nil
@@ -78,35 +79,17 @@ class CurriculumUnitsController < ApplicationController
     @lessons = return_lessons_to_open(offer_id, group_id)
     @discussion_posts = list_portlet_discussion_posts(offer_id, group_id)
     @messages = return_messages(current_user.id, 'portlet', message_tag)
-
     session[:lessons] = @lessons
 
-    offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
-    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-    user_id = current_user.id
-
-    @schedule_portlet = Schedule.all_by_offer_id_and_group_id_and_user_id(offer_id, group_id, user_id)
-
-    # vetor apenas com datas de inicio e fim para realce no portlet
-    a = Array.new
-    count = 0
-    @schedule_portlet.each {|c|
-      #adicionada data inicial
-      new_date = Date.parse(c["start_date"])
-      new_date_format = new_date.day.to_s + '/' + new_date.month.to_s + '/' + new_date.year.to_s
-      if a.index(new_date_format).nil?
-        a[count] = new_date_format
-        count=count+1
-      end
-      #adicionada data final
-      new_date = Date.parse(c["end_date"])
-      new_date_format = new_date.day.to_s + '/' + new_date.month.to_s + '/' + new_date.year.to_s
-      if a.index(new_date_format).nil?
-        a[count] = new_date.day.to_s + '/' + new_date.month.to_s + '/' + new_date.year.to_s
-        count=count+1
-      end
+    ######
+    # destacando dias que possuem eventos
+    ######
+    schedules_events = Schedule.all_by_offer_id_and_group_id_and_user_id(offer_id, group_id, user_id)
+    schedules_events_dates = schedules_events.collect { |schedule_event|
+      [schedule_event['start_date'], schedule_event['end_date']]
     }
-    @scheduled_events = a
+
+    @scheduled_events = schedules_events_dates.flatten.uniq
 
   end
 
