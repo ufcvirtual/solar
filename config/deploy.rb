@@ -14,6 +14,14 @@ set :use_sudo, false
 set :ssh_options, {:forward_agent => true, :port => 4858}
 set :rvm_type, :user # Rvm instalado no home do usuario
 
+# utilizando-se de tags
+set :branch do
+  default_tag = `git tag`.split("\n").last
+  tag = Capistrano::CLI.ui.ask "Tag to deploy: [#{default_tag}]"
+  tag = default_tag if tag.empty?
+  tag
+end
+
 # Utilizar Capistrano junto com RVM
 $:.unshift(File.expand_path('./lib', ENV['rvm_path'])) # Add RVM's lib directory to the load path.
 require 'rvm/capistrano'                  # Load RVM's capistrano plugin.
