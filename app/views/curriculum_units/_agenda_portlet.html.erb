@@ -19,10 +19,21 @@
   //--------------------------------------
 
   var highlightDay = function(date) {
+
+    // recuperando as datas dos eventos correntes
     var all_dates_schedules_events = eval($('#dates-values', $('#dates-schedules-events')).html());
-    for (var idx in all_dates_schedules_events)
-      if (date.toString() == (new Date(all_dates_schedules_events[idx] + ' GMT-0300')).toString())
+
+    for (var idx in all_dates_schedules_events) {
+      // esperando o formato yyyy-mm-dd
+      var date_split = all_dates_schedules_events[idx].split('-');
+      var ano = date_split[0];
+      var mes = (date_split[1] - 1); // a contagem do mes começa com 0
+      var dia = date_split[2];
+      var date_schedule = new Date(ano, mes, dia);
+
+      if (date.toString() == date_schedule.toString())
         return [true, 'highlight-date-mark'];
+    }
 
     return [true, ''];
   }
