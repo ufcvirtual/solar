@@ -27,19 +27,20 @@ class User < ActiveRecord::Base
   validates :email, :presence => true, :uniqueness => true,:confirmation => true
   validates :alternate_email, :format => { :with => %r{^((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?$}i}
 
-  validates :name, :presence => true,:length => { :within => 6.. 60}
+  validates :name, :presence => true,:length => { :within => 6.. 90}
   validates :birthdate, :presence => true
   validates :cpf, :presence => true, :uniqueness => true
 
-  validates :address, :presence => true
-  validates :address_number, :presence =>true
-  validates :address_neighborhood, :presence =>true
-  validates :zipcode, :presence =>true
+  validates :address, :presence => true,:length => { :within => 10.. 99} 
+  validates :address_number, :presence =>true 
+  validates :address_neighborhood, :presence =>true,:length => { :within => 4.. 49}
+  validates :zipcode, :presence =>true,:length => { :within => 6.. 90}
 
-  validates :country, :presence =>true
+  validates :country, :presence =>true,:length => { :within => 6.. 90}
   validates :state, :presence =>true
-  validates :city, :presence =>true
-  validates :institution, :presence =>true
+  validates :city, :presence =>true,:length => { :within => 6.. 90}
+  validates :institution, :presence =>true,:length => { :within => 3.. 119}
+  validates :nick,:length => { :within => 3.. 34}
 
   #  validates :terms, :acceptance => true
   #  validates :password, :confirmation => true
