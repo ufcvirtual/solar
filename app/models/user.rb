@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
   validates :country, :presence =>true,:length => { :within => 6.. 90}
   validates :state, :presence =>true
   validates :city, :presence =>true,:length => { :within => 6.. 90}
-  validates :institution, :presence =>true,:length => { :within => 3.. 119}
+  validates :institution, :presence =>true,:length => { :within => 3.. 80}
   validates :nick,:length => { :within => 3.. 34}
 
   #  validates :terms, :acceptance => true
