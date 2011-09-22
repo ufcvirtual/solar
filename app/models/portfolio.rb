@@ -46,7 +46,8 @@ SQL
     SELECT t1.id,
            t1.attachment_file_name,
            t1.attachment_content_type,
-           t1.attachment_file_size
+           t1.attachment_file_size,
+           t1.attachment_updated_at
       FROM public_files AS t1
       JOIN allocation_tags AS t2 ON t2.id = t1.allocation_tag_id
       JOIN users AS t3 ON t3.id = t1.user_id
