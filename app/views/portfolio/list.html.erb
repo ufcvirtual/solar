@@ -100,7 +100,8 @@
             <td class="<%= css_class %>">
               <%= link_to pa["attachment_file_name"], {:controller => :portfolio, :action => :download_file_public_area, :id => pa["id"]} %>
             </td>
-            <td class="<%= css_class %>"><span class="portfolio_public_file_size"><%= format('%.2fKB', pa["attachment_file_size"].to_i/1024.0) %></span></td>
+            <td class="<%= css_class %>"><span class="portfolio_public_file_size"><%= format('%.2f KB', pa["attachment_file_size"].to_i/1024.0) %></span></td>
+            <td class="<%= css_class %>"><span class="portfolio_public_file_size"><%=l pa["attachment_updated_at"].to_time, :format => :files  %></span> </td>
             <td class="<%= css_class %>">
               <%= link_to t(:delete), {:controller => :portfolio, :action => :delete_file_public_area, :id => pa["id"]}, :confirm => "#{t(:delete_file_msg)}" %>
             </td>
