@@ -302,187 +302,174 @@ textarea{
     font-family:'Trebuchet',Arial,'Myriad Pro';
 }
 
-/******** relogio **********/
-.server_clock {
-    font-size: 13px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
-}
-
 /********meu solar**********/
-
-.image_logout {
-    vertical-align: text-bottom;
-}
-
-#mysolar_topbar{
-    width		:100%;
-    height		:36px;
-    line-height	: 33px;
-    z-index		: 2;
-    position	: absolute;
-    left		: 0px;
-    top		: 0px;
-    background-color: #003e7a;
-    color		: #FFF;
-    overflow	: hidden;
-}
-
-#image_user{
-    max-width: 90px;
-}
-
-#mysolar_sidebar{
-    width               :175px;
-    height              :100%;
-    z-index             : 1;
-    position            : absolute;
-    left                : 0px;
-    top                 : 0px;
-    padding-top         : 70px;
-    padding-left        : 10px;
-    background-color    : #e7eded;
-}
-#mysolar_sidebar_infinite_background{
-    width       : 185px;
-    height      : 100%;
-    z-index     : 0;
-    position    : fixed;
-    left        : 0px;
-    top         : 0px;
-    background-color: #e7eded;
-}
-#mysolar_content{
-    /*z-index: 0;*/
+/* barra superior geral */
+#mysolar_topbar {
+    width: 100%;
+    height: 72px;
+    z-index: 2;
     position: absolute;
-    left: 0px;
     top: 0px;
-    padding-top: 50px;
-    padding-left: 200px;
-    padding-bottom: 50px;
-    background-color: #fff;
+    left: 0px;
+    background-color: #003e7a;
+    color: #fff;
+    overflow: hidden;
+}
+
+/* barra identity */
+#mysolar_identity {
+    width: 100%;
+    height: 36px;
 }
 
 #mysolar_logo {
     width: 185px;
     height: 36px;
-    float		: left;
-}
-
-#mysolar_tab{
-    color: #222;
-    text-align:center;
-    width: 60px;
-    height: 35px;
-    background-color: #fff;
-    display:inline-block;
-    z-index: 10;
-    border-top:4px solid #003e7a;
-    cursor: pointer;
-}
-
-.mysolar_unit_tab{
-    color: #222;
-    text-align:center;
-    padding-left: 9px;
-    padding-right: 9px;
-    margin-right: 6px;
-    margin-top:6px;
-    background-color: #e6edee;
-    display:inline-block;
-    z-index: 10;
-    cursor: pointer;
-}
-
-.mysolar_unit_active_tab{
-    color: #222;
-    text-align:center;
-    padding-left: 9px;
-    padding-right: 9px;
-    margin-right: 6px;
-    margin-top:6px;
-    background-color: white;
-    display:inline-block;
-    z-index: 10;
-    cursor: pointer;
-    box-shadow:4px -4px 0px 0px #001E3C;
-    -moz-box-shadow:4px -4px 0px 0px #001E3C;
-    -webkit-box-shadow:4px -4px 0px 0px #001E3C;
-}
-
-#meusdados_tab_topo{
-    color: #222;
-    text-align:center;
-    background-color: #fff;
-    background-position:right;
-    display:inline-block;
-    height: 36px;
-    width: 118px;
-    cursor: pointer;
-
+    float: left;
 }
 
 #mysolar_top_options {
-    padding-right   : 30px;
-    height		: 36px;
-    line-height	: 36px;
-    float		: right;
+    line-height: 36px;
+    float: right;
+    font-size: 11pt;
+    list-style-type: none;
+    padding: 0 10px 0 0;
+    margin: 0;
+}
+
+#mysolar_top_options li {
+    line-height: 36px;
+    height: 36px;
+    display: inline-block;
+    padding: 0 6px;
+}
+
+#mysolar_top_options li:hover {
+    height: 34px;
+    border-bottom: 2px solid #fff;
+}
+
+/* foto do usuário */
+#mysolar_id {
+    text-align: center;
+}
+
+#image_user {
+    vertical-align: top;
+    margin-top: 3px;
+}
+
+/* relogio */
+#server_clock_wrapper:hover {
+    height: 36px;
+    border-bottom: none !important;
 }
 
 a.mysolar_top_link{
-    color           : #FFF;
+    color: #FFF;
 }
 
-#mysolar_search{
-    position: absolute;
-    top: 166px;
-    left:0px;
-    height:25px;
+/* barra tabs */
+#mysolar_tabs {
     width: 100%;
-    text-align:center;
+    height: 34px;
+    background-color: #e8e8e8;
+    border-bottom:2px solid #003e7a;
 }
 
-#mysolar_search_label{
-    font-size: 9pt;
-    float:right;
-    margin-right: 18px;
-    margin-top: 2px;
+#mysolar_tabs_wrapper {
+    float:left;
+    line-height: 32px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
 
-#mysolar_boxid {
+.mysolar_unit_tab, .mysolar_unit_active_tab{
+    list-style-type: none;
+    display: inline-block;
+    margin: 5px 4px 0 4px;
+    padding:0 5px;
+    height:27px;
+    border-top:2px solid;
+    border-right:2px solid;
+    border-left:2px solid;
+    border-bottom:2px solid;
+}
+
+.mysolar_unit_tab {
+    background-color: #666;
+    border-top-color: #003e7a;
+    border-right-color: #003e7a;
+    border-left-color: #003e7a;
+    border-bottom-color: #003e7a;
+}
+
+.mysolar_unit_active_tab{
+    background-color: #fff;
+    border-top-color: #003e7a;
+    border-right-color: #003e7a;
+    border-left-color: #003e7a;
+    border-bottom-color: #fff;
+}
+
+/* fechar das abas */
+.tabs_close {
+    background:url('../images/bt_close_tabs.png') no-repeat right bottom;
+    display:inline-block;
+    width:11px;
+    height:11px;
+    position:relative;
+    left:5px;
+    top:-8px;
+}
+
+/* itens adicionais: busca e acessibilidade */
+/* busca */
+#mysolar_extras {
+    line-height: 36px;
+    float: right;
+    font-size: 11pt;
+    list-style-type: none;
+    padding: 0 10px 0 0;
+    margin: 0;
+}
+
+#mysolar_extras li {
+    display:inline-block;
+}
+
+.search_keyword{
+    border: 1px solid #b0b0b0;
+    height: 20px;
+    width: 130px;
+    padding: 0 20px 0 2px;
+    background: url('../images/search.png') no-repeat right bottom #fff;
+    margin-right: 4px;
+}
+
+.search_keyword_inactive {
+    font-style: italic;
+    color: #b0b0b0;
+}
+
+/* acessibilidade */
+.acessibility_icons {
+    vertical-align: middle;
+    margin: 0 2px;
+}
+
+/* sidebar */
+#mysolar_sidebar{
+    width: 175px;
+    height: 100%;
+    z-index: 1;
+    position: absolute;
     left: 0px;
-    top: 36px;
-    width: 185px;
-    height: 115px;
-    position: absolute;
-    background-color: #8aafbf;
-}
-#mysolar_id {
-    /*left: 6px;
-    top: 8px;*/
-    width: 72px;
-    height: 90px;
-    /*background-color: #eaeaea;*/
-    /*position: absolute;*/
-    padding-left: 5px;
-    padding-top: 5px;
-    font-size: 10pt;
-    text-align: center;
-}
-#mysolar_options {
-    left: 80px;
-    top: 12px;
-    width: 90px;
-    position: absolute;
-    font-size: 9pt;
-    line-height: 175%;
-    cursor: pointer;
-}
-#mysolar_locale{
-    width: 20%;
-    position: absolute;
-    bottom: 0;
-    margin-bottom: 20px;
-    margin-left: 357px;
+    top: 0px;
+    margin-top: 80px;
+    padding-left: 10px;
+    border-right: 1px solid #b0b0b0;
 }
 
 /********Menu do meuSolar*****************/
@@ -490,7 +477,6 @@ a.mysolar_top_link{
     display:inline-block;
     position: absolute;
     /*top: 250px;*/
-    top: 152px;
     left:0px;
     width:100%;
 }
@@ -500,7 +486,6 @@ a.mysolar_top_link{
 }
 
 .mysolar_menu_title{
-    background-color: #fff;
     width : 170px;
     margin: 2px;
     cursor: pointer;
@@ -515,6 +500,25 @@ a.mysolar_top_link{
     display: none;
 }
 
+/* conteudo em si */
+#mysolar_content{
+    /*z-index: 0;*/
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    margin-top: 80px;
+    padding-left: 200px;
+    padding-bottom: 50px;
+    background-color: #fff;
+}
+
+#mysolar_locale{
+    width: 20%;
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 20px;
+    margin-left: 357px;
+}
 
 /*********Abas dos Meus Dados**************/
 
@@ -660,12 +664,6 @@ a.mysolar_top_link{
     border:none;
     background-color: #bbb;
     height:1px;
-}
-
-.search_keyword{
-    border: 2px solid #b3b3b3;
-    height: 25px;
-    width:  149px;
 }
 
 /********Portlets do meuSolar*****************/
@@ -1029,16 +1027,6 @@ div.alter_photo_text {
     height: 40px;
     padding-left: 2px;
     padding-top: 2px;
-}
-/* fechar das abas */
-.tabs_close {
-    background:url('../images/bt_close_tabs.png') no-repeat right bottom;
-    display:inline-block;
-    width:11px;
-    height:11px;
-    position:relative;
-    left:5px;
-    top:-8px;
 }
 /* tela de participantes */
 .participants_list {

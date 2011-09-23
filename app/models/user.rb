@@ -75,7 +75,7 @@ class User < ActiveRecord::Base
   has_attached_file :photo,
     :styles => {
       :medium => "72x90#",
-      :small => "24x30#"
+      :small => "25x30#"
     },
     :path => ":rails_root/media/:class/:id/photos/:style.:extension",
     :url => "/media/:class/:id/photos/:style.:extension",

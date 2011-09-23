@@ -35,30 +35,21 @@
         //layout dos botoes azuis
         $(".solar_button_blue").after("<div class='solar_button_arrow_blue'></div>");
 
-        // NÃO APAGAR POR ENQUANTO! //
+        //Configurando a largura do conteudo
+        $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
 
-        //Configurando Menu
-<%#*$( "#mysolar_menu_accordion" ).accordion({%>
-<%#*autoHeight: false,%>
-<%#*navigation: true,%>
-<%#*collapsible: true%>
-<%#*});%>
+        $(window).resize(function() {
+          $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
+        });
 
-    //Configurando a largura do conteudo
-    $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
+        //Configurando a altura da sidebar para acompanhar o total do conteúdo da página
+        var maxHeight = $('#mysolar_content').outerHeight();
+        maxHeight += $('#mysolar_content').position().top;
+        if ($(window).height() > maxHeight)
+          maxHeight = $(window).height();
+        $("#mysolar_sidebar").height(maxHeight);
 
-    $(window).resize(function() {
-      $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
-    });
-
-    //Configurando a altura da sidebar para acompanhar o total do conteúdo da página
-    var maxHeight = $('#mysolar_content').outerHeight();
-    maxHeight += $('#mysolar_content').position().top;
-    if ($(window).height() > maxHeight)
-      maxHeight = $(window).height();
-    $("#mysolar_sidebar").height(maxHeight);
-
-  });
+      });
     </script>
     <%= render '/users/mysolar_photo' %>
     <script type="text/javascript">
@@ -77,6 +68,70 @@
     </script>
   </head>
   <body>
+    <!-- Barra Topo -------------------------->
+    <div id="mysolar_topbar">
+      <div id="mysolar_identity">
+        <div id="mysolar_logo">
+          <%= image_tag 'superior_logo.png', :alt => t(:mysolar_alt_img_solar) %>
+        </div>
+        <ul id="mysolar_top_options">
+          <% unless @user.errors.empty? %>
+            <% @user = User.find(@user.id) %>
+          <% end %>
+          <li id="mysolar_id">
+            <%= image_tag @user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{@user.nick}", :id => "image_user" %>
+            <!-- adicionar esse link depois em algum lugar -->
+            <%#= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
+          </li>
+          <li>
+            <% if can? :update, @user %>
+              <%= link_to @user.nick, edit_user_url(@user), :class => 'mysolar_top_link' %>
+            <% end %>
+          </li>
+          <li id="server_clock_wrapper">
+            <span name="server_clock" id="server_clock"></span>
+          </li>
+          <li>
+            <a href="#" class="mysolar_top_link">Ajuda</a>
+          </li>
+          <li>
+            <%= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, :class => "mysolar_top_link") %>
+          </li>
+        </ul>
+      </div>
+      <div id="mysolar_tabs">
+        <!-- Abas -------------------------->
+        <ul id="mysolar_tabs_wrapper">
+          <%= raw render_tabs %>
+        </ul>
+        <ul id="mysolar_extras">
+          <li id="mysolar_search">
+            <!-- FIXME: criar script para remover o value inicial e remover a classe search_keyword_inactive -->
+            <input class="search_keyword search_keyword_inactive" type="text" value="Buscar" />
+          </li>
+          <li>
+            <%=image_tag "acessibility_font_increase.png", :alt => "Aumentar tamanho da fonte", :class => "acessibility_icons", :id => "mysolar_font_increase"%> <%#:alt=>t(:message_outbox)%>
+          </li>
+          <li>
+            <%=image_tag "acessibility_font_decrease.png", :alt => "Reduzir tamanho da fonte", :class => "acessibility_icons", :id => "mysolar_font_decrease"%>
+          </li>
+          <li>
+            <%=image_tag "acessibility_contrast.png", :alt => "Alternar para visual de alto contraste", :class => "acessibility_icons", :id => "mysolar_contrast"%>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Barra Lateral -------------------------->
+    <div id="mysolar_sidebar">
+
+      <div id="mysolar_menu_accordion" style="z-index:10">
+        <%=raw create_menu_list(Profile.all_by_user_id(current_user.id), @context || 'geral', @context_param_id || nil, session[:current_menu] || nil) %>
+      </div>
+
+    </div>
+    
+    <!-- Conteúdo -------------------------->
     <div id="mysolar_content" style="white-space: nowrap;">
 
       <div id="breadcrumb" class="breadcrumb">
@@ -112,75 +167,8 @@
       </div>
 
     </div>
-    <!-- Barra Lateral -------------------------->
-    <div id="mysolar_sidebar">
-      <div id="mysolar_boxid">
-        <div id="mysolar_id">
 
-          <% unless @user.errors.empty? %>
-            <% @user = User.find(@user.id) %>
-          <% end %>
-
-          <%= image_tag @user.photo.url(:medium), :alt => "#{t(:mysolar_alt_img_user)} #{@user.nick}", :id => "image_user" %>
-          <div style="opacity: 0.7;" class="div_link_decoration" id="div-alter-photo"><%= t(:alter_photo) %></div>
-          <%
-          nick = @user.nick
-          nick = nick.slice(0..9) + '...' if nick.length > 12
-        %>
-          <%= nick%>
-        </div>
-        <div id="mysolar_options">
-          <% if can? :update, @user %>
-            <%= link_to t(:mysolar_mn_mydata), edit_user_url(@user) %><br/>
-          <% end %>
-          <!--Portfolio <br />
-          Blog <br />-->
-<%#= t(:mysolar_mn_customize) %> <!--<br />-->
-          <%= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
-        </div>
-      </div>
-
-      <!--<div id="mysolar_search">
-        <input class="search_keyword" type="text"/>
-        <br/>
-        <span id="mysolar_search_label">-->
-<%#=t(:mysolar_search)%>
-      <!--</span>
-      <br/>
-      <hr width="149" style="border:none;height:1px;background-color: #cfdde1"/>
-    </div>-->
-
-      <div id="mysolar_menu_accordion" style="z-index:10">
-        <%=raw create_menu_list(Profile.all_by_user_id(current_user.id), @context || 'geral', @context_param_id || nil, session[:current_menu] || nil) %>
-      </div>
-
-    </div>
-
-    <!-- Barra Topo -------------------------->
-    <div id="mysolar_topbar">
-      <div id="mysolar_logo">
-        <%= image_tag 'superior_logo.png', :alt => t(:mysolar_alt_img_solar) %><br/>
-      </div>
-
-      <!-- ABAS!!! -------------------------->
-      <%= raw render_tabs %>
-
-      <span id="mysolar_top_options" >
-
-        <!-- Relogio do sistema --------------->
-        <span id="server_clock" name="server_clock" class="server_clock"></span>&nbsp;
-
-
-        <!--| &nbsp;--><%#= image_tag 'superior_suporte.png', :alt => t(:mysolar_alt_img_support) %>
-<%#= t(:mysolar_alt_img_support) %><!--&nbsp;&nbsp;&nbsp;-->
-		| &nbsp;<%= image_tag 'superior_sair.png', :alt => t(:mysolar_alt_img_exit), :class => 'image_logout' %>&nbsp;
-
-        <%= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, :class => "mysolar_top_link") %>
-      </span>
-
-    </div>
-
-<%#= render '/portlets/chat' %>
+  <%#= render '/portlets/chat' %>
   </body>
 </html>
 
