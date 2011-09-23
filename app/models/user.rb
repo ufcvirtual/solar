@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
   validates :address, :presence => true,:length => { :within => 10.. 99} 
   validates :address_number, :presence =>true 
   validates :address_neighborhood, :presence =>true,:length => { :within => 4.. 49}
-  validates :zipcode, :presence =>true,:length => { :within => 6.. 90}
+  validates :zipcode, :presence =>true
 
   validates :country, :presence =>true,:length => { :within => 6.. 90}
   validates :state, :presence =>true
