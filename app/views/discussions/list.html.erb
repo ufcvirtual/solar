@@ -16,7 +16,9 @@
             <td class="td_blue_first">
               <%=link_to discussion.name, :controller => "discussions", :action => "show", :id => discussion.id%>
             </td>
-            <td class="td_blue" align="center" style="width: 200px"> <%= l discussion.schedule.start %> - <%= l discussion.schedule.end %></td>
+            <td class="td_blue" align="center" style="width: 200px"> 
+            <%schedule= Schedule.find(discussion.schedule_id)%>  
+            <%= l schedule.start_date  %> - <%= l schedule.end_date %></td>
           </tr>
         <% end %>
       </table>

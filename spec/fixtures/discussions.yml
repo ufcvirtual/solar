@@ -5,8 +5,6 @@ forum_1:
   allocation_tag_id: 3
   name: 'Forum 1'
   description: 'Forum inicial para testes'
-  start: '2011-03-01'
-  end: '2012-12-01'
   schedule_id: 6
 
 forum_2:
@@ -14,6 +12,4 @@ forum_2:
   allocation_tag_id: 3
   name: 'Forum 2'
   description: 'Segundo fórum de testes'
-  start: '2011-05-05'
-  end: '2012-06-06'
   schedule_id: 7

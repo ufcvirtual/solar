@@ -1,7 +1,8 @@
 module DiscussionPostsHelper
 
   def valid_date
-    @discussion.schedule.start <= Date.today && Date.today <= @discussion.schedule.end
+    schedule = Schedule.find(@discussion.schedule_id)
+    schedule.start_date <= Date.today && Date.today <= schedule.end_date
   end
 
   # Renderiza um post na tela de interação do portólio.
@@ -140,11 +141,9 @@ module DiscussionPostsHelper
     
     # uma discussion eh ligada a uma turma ou a uma oferta
     if !(group_id.nil? && offer_id.nil?)
-      query_discussions = "SELECT distinct d.id as discussionid,d.name
+      query_discussions = "SELECT distinct d.id as discussionid, d.name
                        FROM discussions d
-                       LEFT JOIN allocation_tags at ON d.allocation_tag_id = at.id
-                    WHERE
-                        d.start<=current_date and d.end>=current_date"
+                       LEFT JOIN allocation_tags at ON d.allocation_tag_id = at.id"
       unless (offer_id.nil? && group_id.nil?)
         query_discussions << " and ( "
 
