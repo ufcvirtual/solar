@@ -16,7 +16,7 @@
             <td class="td_blue_first">
               <%=link_to discussion.name, :controller => "discussions", :action => "show", :id => discussion.id%>
             </td>
-            <td class="td_blue" align="center" style="width: 200px"> <%= l discussion.start %> - <%= l discussion.end %></td>
+            <td class="td_blue" align="center" style="width: 200px"> <%= l discussion.schedule.start %> - <%= l discussion.schedule.end %></td>
           </tr>
         <% end %>
       </table>

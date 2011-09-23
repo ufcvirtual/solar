@@ -1,7 +1,7 @@
 module DiscussionPostsHelper
 
   def valid_date
-    @discussion.start <= Date.today && Date.today <= @discussion.end
+    @discussion.schedule.start <= Date.today && Date.today <= @discussion.schedule.end
   end
 
   # Renderiza um post na tela de interação do portólio.

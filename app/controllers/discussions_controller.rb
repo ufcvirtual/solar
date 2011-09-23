@@ -22,7 +22,7 @@ class DiscussionsController < ApplicationController
     # at.id as id, at.offer_id as offerid,l.allocation_tag_id as alloctagid,l.type_lesson, privacy,description,
     query = "SELECT *
               FROM
-                (SELECT d.name, d.id, d.start, d.end, d.description
+                (SELECT d.name, d.id, d.description, d.schedule_id
                  FROM discussions d
                  INNER JOIN allocation_tags t on d.allocation_tag_id = t.id
                  INNER JOIN groups g on g.id = t.group_id
@@ -30,13 +30,12 @@ class DiscussionsController < ApplicationController
 
                  UNION ALL
 
-                 SELECT d.name, d.id, d.start, d.end, d.description
+                 SELECT d.name, d.id, d.description, d.schedule_id
                  FROM discussions d
                  INNER JOIN allocation_tags t on d.allocation_tag_id = t.id
                  INNER JOIN offers o on o.id = t.offer_id
                  WHERE o.id = #{offer_id}
-                ) as available_discussions
-              ORDER BY start;"
+                ) as available_discussions;"
 
     @discussions = Discussion.find_by_sql(query)
 
