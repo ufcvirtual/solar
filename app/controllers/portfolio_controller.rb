@@ -31,10 +31,10 @@ class PortfolioController < ApplicationController
     assignment_id = params[:id]
 
     # recupera a atividade selecionada
-    @activity = Assignment.find(assignment_id)
+    @activity = Portfolio.find(assignment_id, :joins => :schedule)
 
     # verifica se os arquivos podem ser deletados
-    @delete_files = verify_date_range(@activity.start_date.to_time, @activity.end_date.to_time, Time.now)
+    @delete_files = verify_date_range(@activity.schedule.start_date.to_time, @activity.schedule.end_date.to_time, Time.now)
 
     # recuperar o send_assignment
     student_id = current_user.id
@@ -93,9 +93,9 @@ class PortfolioController < ApplicationController
       begin
 
         # verifica periodo para delecao das atividades
-        assignment = Assignment.find(assignment_id)
-        start_date = assignment.start_date
-        end_date = assignment.end_date
+        assignment = Portfolio.find(assignment_id)
+        start_date = assignment.schedule.start_date
+        end_date = assignment.schedule.end_date
 
         # verifica permissao de intervalo de datas para deletar arquivos
         raise t(:delete_file_interval_error) unless verify_date_range(start_date.to_time, end_date.to_time, Time.now)
@@ -289,9 +289,9 @@ class PortfolioController < ApplicationController
       begin
 
         # verificar intervalo de envio de arquivos
-        activity = Assignment.find(assignment_id)
+        activity = Portfolio.find(assignment_id)
         # verifica se os arquivos podem ser deletados
-        raise t(:send_file_interval_error) unless verify_date_range(activity.start_date.to_time, activity.end_date.to_time, Time.now)
+        raise t(:send_file_interval_error) unless verify_date_range(activity.schedule.start_date.to_time, activity.schedule.end_date.to_time, Time.now)
 
         # verifica se o arquivo foi adicionado
         raise t(:error_no_file_sent) unless params.include?(:assignment_file)

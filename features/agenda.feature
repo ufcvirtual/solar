@@ -34,9 +34,8 @@ Cenário: Exibir Agenda do professor
         Então eu deverei ver o link "Agenda"
     Quando eu clicar no link "Agenda"
         Então eu deverei ver "Trabalhos"
-        E eu deverei ver "23/Nov 19/Dez"
+        E eu deverei ver "13/Ago 17/Set"
         E eu deverei ver "Atividade I"
-
 
 #@wip
 #Cenário: Exibir agenda do portlet

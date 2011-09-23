@@ -1,8 +1,10 @@
 class Schedule < ActiveRecord::Base
+
   has_many :discussions
   has_many :lessons
   has_many :schedule_events
   has_many :portfolio
+  has_many :assignment
 
   def self.all_by_offer_id_and_group_id_and_user_id(offer_id, group_id, user_id, period = false, date_search = nil)
 

@@ -12,7 +12,7 @@
       <div style="text-align: left; overflow: auto;">
         <span style="text-align: left;"><%= @activity.name %></span>
         <span style="font-style: italic; color: gray; float: right;">
-          <%= t(:date_name)%>: <%=l @activity.start_date.to_time, :format => :files %> - <%=l @activity.end_date.to_time, :format => :files %>
+          <%= t(:date_name)%>: <%=l @activity.schedule.start_date.to_time, :format => :files %> - <%=l @activity.schedule.end_date.to_time, :format => :files %>
         </span>
       </div>
     </div>

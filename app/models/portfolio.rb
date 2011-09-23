@@ -12,15 +12,15 @@ class Portfolio < ActiveRecord::Base
            t1.id,
            t1.name,
            t1.enunciation,
-           t1.start_date,
-           t1.end_date,
+           t7.start_date,
+           t7.end_date,
            t2.grade,
            CASE WHEN t3.comment IS NOT NULL THEN 1 ELSE 0 END AS comments,
            CASE
-            WHEN t1.start_date > now() THEN 'not_started'
+            WHEN t7.start_date > now() THEN 'not_started'
             WHEN t2.grade IS NOT NULL THEN 'corrected'
             WHEN COUNT(t6.id) > 0 THEN 'sent'
-            WHEN COUNT(t6.id) = 0 AND t1.end_date > now() THEN 'send'
+            WHEN COUNT(t6.id) = 0 AND t7.end_date > now() THEN 'send'
             ELSE '-'
            END AS correction
       FROM assignments         AS t1
@@ -29,10 +29,11 @@ class Portfolio < ActiveRecord::Base
  LEFT JOIN send_assignments    AS t2 ON t2.assignment_id = t1.id AND t2.user_id = #{students_id}
  LEFT JOIN assignment_comments AS t3 ON t3.send_assignment_id = t2.id
  LEFT JOIN assignment_files    AS t6 ON t6.send_assignment_id = t2.id
+ LEFT JOIN schedules           AS t7 ON t7.id = t1.schedule_id
      WHERE t4.group_id = #{group_id}
        AND t5.user_id = #{students_id}
-  GROUP BY t1.id, t2.id, t1.name, t1.enunciation, t1.start_date, t1.end_date, t2.grade, t3.comment
-  ORDER BY t1.end_date, t1.start_date DESC;
+  GROUP BY t1.id, t2.id, t1.name, t1.enunciation, t7.start_date, t7.end_date, t2.grade, t3.comment
+  ORDER BY t7.end_date, t7.start_date DESC;
 SQL
 
     return (ia.nil?) ? [] : ia

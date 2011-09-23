@@ -11,30 +11,32 @@ class PortfolioTeacher < ActiveRecord::Base
   end
 
   # lista com as atividades do aluno dentro na turma
-  def self.list_assignments_by_group_and_student_id(groups_id, students_id)
+  def self.list_assignments_by_group_and_student_id(group_id, student_id)
     assignments = ActiveRecord::Base.connection.select_all <<SQL
       SELECT DISTINCT
              t1.name AS assignments_name,
              t1.id AS assignment_id,
-             t1.start_date,
-             t1.end_date,
-             t2.grade,
-             t2.id AS send_assignment_id,
+             t5.start_date,
+             t5.end_date,
+             t3.grade,
+             t3.id AS send_assignment_id,
              CASE
-                WHEN t1.start_date > now() THEN 'not_started'
-                WHEN t2.grade IS NOT NULL THEN 'corrected'
-                WHEN COUNT(t3.id) > 0 THEN 'sent'
-                WHEN COUNT(t3.id) = 0 AND t1.end_date > now() THEN 'not_sent'
+                WHEN t5.start_date > now() THEN 'not_started'
+                WHEN t3.grade IS NOT NULL THEN 'corrected'
+                WHEN COUNT(t4.id) > 0 THEN 'sent'
+                WHEN COUNT(t4.id) = 0 AND t5.end_date > now() THEN 'not_sent'
                 ELSE '-'
              END AS situation
         FROM assignments      AS t1
-        JOIN allocation_tags  AS t4 ON t4.id = t1.allocation_tag_id
-   LEFT JOIN send_assignments AS t2 ON t2.assignment_id = t1.id AND t2.user_id = #{students_id}
-   LEFT JOIN assignment_files AS t3 ON t3.send_assignment_id = t2.id
-       WHERE t4.group_id = #{groups_id}
-       GROUP BY t1.id, t1.name, t1.start_date, t1.end_date, t2.id, t2.grade
-       ORDER BY t1.end_date;
+        JOIN allocation_tags  AS t2 ON t2.id = t1.allocation_tag_id
+   LEFT JOIN send_assignments AS t3 ON t3.assignment_id = t1.id AND t3.user_id = #{student_id}
+   LEFT JOIN assignment_files AS t4 ON t4.send_assignment_id = t3.id
+   LEFT JOIN schedules        AS t5 ON t5.id = t1.schedule_id
+       WHERE t2.group_id = #{group_id}
+       GROUP BY t1.id, t1.name, t5.start_date, t5.end_date, t3.id, t3.grade
+       ORDER BY t5.end_date;
 SQL
+
     return (assignments.nil?) ? [] : assignments
   end
 

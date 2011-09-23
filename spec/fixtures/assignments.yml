@@ -4,9 +4,7 @@ a1:
   allocation_tag_id: 2
   name: Atividade I
   enunciation: Segue em anexo questionario que devem ser respondidos para a 3a nota
-  start_date: 2011-08-13
-  end_date: 2011-09-17 23:59:59
-  schedule_id: 8
+  schedule_id: 17
 
 # quimica I
 a2:
@@ -14,9 +12,7 @@ a2:
   allocation_tag_id: 3
   name: Atividade II
   enunciation: Acima de tudo, é fundamental ressaltar que a contínua expansão de nossa atividade ainda não demonstrou convincentemente que vai participar na mudança dos conhecimentos estratégicos para atingir a excelência.Acima de tudo, é fundamental ressaltar que a contínua expansão de nossa atividade ainda não demonstrou convincentemente que vai participar na mudança dos conhecimentos estratégicos para atingir a excelência.Acima de tudo, é fundamental ressaltar que a contínua expansão de nossa atividade ainda não demonstrou convincentemente que vai participar na mudança dos conhecimentos estratégicos para atingir a excelência.Acima de tudo, é fundamental ressaltar que a contínua expansão de nossa atividade ainda não demonstrou convincentemente que vai participar na mudança dos conhecimentos estratégicos para atingir a excelência.
-  start_date: 2011-11-20
-  end_date: 2011-12-14 23:59:59
-  schedule_id: 9
+  schedule_id: 18
 
 # quimica I
 a3:
@@ -24,6 +20,4 @@ a3:
   allocation_tag_id: 3
   name: Atividade III
   enunciation: Podemos já vislumbrar o modo pelo qual a crescente influência da mídia talvez venha a ressaltar a relatividade do levantamento das variáveis envolvidas.Podemos já vislumbrar o modo pelo qual a crescente influência da mídia talvez venha a ressaltar a relatividade do levantamento das variáveis envolvidas.
-  start_date: 2011-07-04
-  end_date: 2011-10-19 23:59:59
-  schedule_id: 10
+  schedule_id: 19
