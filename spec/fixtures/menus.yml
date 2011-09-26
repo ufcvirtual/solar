@@ -7,7 +7,7 @@ conteudo:
 
 aulas_conteudo:
   id: 101
-  father_id: 10
+  parent_id: 10
   name: menu_lesson
   order: 1
   context_id: 2
@@ -15,7 +15,7 @@ aulas_conteudo:
 
 material_conteudo:
   id: 102
-  father_id: 10
+  parent_id: 10
   name: menu_support_material
   order: 2
   context_id: 2
@@ -29,7 +29,7 @@ atividades:
 
 forum_ativ:
   id: 201
-  father_id: 20
+  parent_id: 20
   name: menu_discussion
   order: 1
   context_id: 2
@@ -38,7 +38,7 @@ forum_ativ:
 # portfolio do aluno
 portfolio_ativ:
   id: 202
-  father_id: 20
+  parent_id: 20
   name: menu_portfolio
   order: 2
   context_id: 2
@@ -46,14 +46,14 @@ portfolio_ativ:
 
 prova_ativ:
   id: 203
-  father_id: 20
+  parent_id: 20
   name: menu_test
   order: 3
   context_id: 2
 
 acomp_ativ:
   id: 204
-  father_id: 20
+  parent_id: 20
   name: menu_score
   order: 4
   context_id: 2
@@ -61,21 +61,21 @@ acomp_ativ:
 
 chat_ativ:
   id: 205
-  father_id: 20
+  parent_id: 20
   name: menu_chat
   order: 5
   context_id: 2
 
 webconf_ativ:
   id: 206
-  father_id: 20
+  parent_id: 20
   name: menu_webconference
   order: 6
   context_id: 2
 
 portfolio_professor_ativ:
   id: 207
-  father_id: 20
+  parent_id: 20
   name: menu_portfolio
   order: 7
   context_id: 2
@@ -83,7 +83,7 @@ portfolio_professor_ativ:
 
 acomp_ativ_teacher:
   id: 208
-  father_id: 20
+  parent_id: 20
   name: menu_score
   order: 8
   context_id: 2
@@ -99,7 +99,7 @@ info_geral:
 
 programa_info:
   id: 301
-  father_id: 30
+  parent_id: 30
   name: menu_program
   order: 1
   context_id: 2
@@ -107,7 +107,7 @@ programa_info:
 
 agenda_info:
   id: 302
-  father_id: 30
+  parent_id: 30
   name: menu_agenda
   order: 2
   context_id: 2
@@ -115,7 +115,7 @@ agenda_info:
 
 biblio_info:
   id: 303
-  father_id: 30
+  parent_id: 30
   name: menu_bibliography
   order: 3
   context_id: 2
@@ -123,7 +123,7 @@ biblio_info:
 
 parti_info:
   id: 304
-  father_id: 30
+  parent_id: 30
   name: menu_participants
   order: 4
   context_id: 2
@@ -138,14 +138,14 @@ social:
 
 wiki_soc:
   id: 401
-  father_id: 40
+  parent_id: 40
   name: menu_wiki
   order: 1
   context_id: 2
 
 blog_soc:
   id: 402
-  father_id: 40
+  parent_id: 40
   name: menu_blog
   order: 2
   context_id: 2
@@ -165,25 +165,25 @@ admin:
 
 aviso_admin:
   id: 601
-  father_id: 60
+  parent_id: 60
   name: menu_notice
   order: 1
 
 ger_perfis_admin:
   id: 602
-  father_id: 60
+  parent_id: 60
   name: menu_manage_profiles
   order: 2
 
 indicar_user_admin:
   id: 603
-  father_id: 60
+  parent_id: 60
   name: menu_indicate_user
   order: 3
 
 relat_admin:
   id: 604
-  father_id: 60
+  parent_id: 60
   name: menu_reports
   order: 4
 
@@ -202,21 +202,21 @@ avaliacao_inst:
 
 ger_aval:
   id: 801
-  father_id: 80
+  parent_id: 80
   name: menu_manage_assessment
   context_id: 2
   order: 1
 
 resp_aval:
   id: 802
-  father_id: 80
+  parent_id: 80
   name: menu_response_assessment
   context_id: 2
   order: 2
 
 relat_aval:
   id: 803
-  father_id: 80
+  parent_id: 80
   name: menu_reports
   context_id: 2
   order: 3
@@ -229,12 +229,12 @@ unidades_curriculares:
 
 matricula_uc:
   id: 901
-  father_id: 90
+  parent_id: 90
   name: menu_registration
   order: 1
 
 hist_uc:
   id: 902
-  father_id: 90
+  parent_id: 90
   name: menu_history
   order: 2

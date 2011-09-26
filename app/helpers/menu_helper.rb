@@ -7,7 +7,7 @@ module MenuHelper
     menus = Menu.list_by_profile_id_and_context(profile_id, context)
 
     # variaveis de controle
-    html_menu, previous_father_id, first_iteration = '', 0, false
+    html_menu, previous_parent_id, first_iteration = '', 0, false
 
     # classes de css utilizadas pelos menus
     class_menu_div_topo = 'mysolar_menu_group'
@@ -22,33 +22,33 @@ module MenuHelper
       access_controller = {
         :controller => menu["controller"],
         :action => menu["action"],
-        :mid => menu['father_id'],
+        :mid => menu['parent_id'],
         :bread => nil
       }
 
       # verifica se o menu pai foi modificado para gerar um novo menu
-      unless previous_father_id == menu["father_id"].to_i
+      unless previous_parent_id == menu["parent_id"].to_i
 
         # coloca as divs anteriores em uma nova div
         html_menu_group << "<div class='#{class_menu_div_topo}'>#{html_menu}</div>" if first_iteration # verifica se ja entrou aqui
 
         # para um menu pai ser um link ele nao deve ter filhos
         if !menu["resource_id"].nil? && menu['child'].nil?
-          access_controller[:bread] = menu['father']
-          link = link_to("#{t(menu['father'].to_sym)}", access_controller)
+          access_controller[:bread] = menu['parent']
+          link = link_to("#{t(menu['parent'].to_sym)}", access_controller)
         elsif !menu["link"].nil?
-          link = "<a href='#{menu['link']}'>#{t(menu['father'].to_sym)}</a>"
+          link = "<a href='#{menu['link']}'>#{t(menu['parent'].to_sym)}</a>"
         else
           # verifica menu corrente
-          if (menu['father_id'] == current_menu)
-            link = "<a href='#' class='open_menu'>#{t(menu['father'].to_sym)}</a>"
+          if (menu['parent_id'] == current_menu)
+            link = "<a href='#' class='open_menu'>#{t(menu['parent'].to_sym)}</a>"
           else
-            link = "<a href='#'>#{t(menu['father'].to_sym)}</a>"
+            link = "<a href='#'>#{t(menu['parent'].to_sym)}</a>"
           end
         end
 
         # menus pai tbm podem ter links diretamente para funcionalidades
-        html_menu = "<div id='father_#{menu['father_id']}' class='#{class_menu_title}'>#{link}</div>"
+        html_menu = "<div id='parent_#{menu['parent_id']}' class='#{class_menu_title}'>#{link}</div>"
 
         # indica primeira iteracao
         first_iteration = true
@@ -62,8 +62,8 @@ module MenuHelper
         html_menu << "<div class='#{class_menu_list}'>" << link_to("#{t(menu['child'].to_sym)}", access_controller) << "</div>"
       end
 
-      # sempre atualiza o previous_father
-      previous_father_id = menu['father_id'].to_i
+      # sempre atualiza o previous_parent
+      previous_parent_id = menu['parent_id'].to_i
     end
 
     html_menu_group << "<div class='#{class_menu_div_topo}'>#{html_menu}</div>"

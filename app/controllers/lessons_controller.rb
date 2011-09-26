@@ -12,9 +12,11 @@ class LessonsController < ApplicationController
   def show
     render :layout => 'lesson_frame'
   end
+
   def show_header
     render :layout => 'lesson'
   end
+
   def show_content
     render :layout => 'lesson'
   end

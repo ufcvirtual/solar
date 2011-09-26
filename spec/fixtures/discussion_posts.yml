@@ -13,7 +13,7 @@ post_2_forum_1:
   discussion_id: 1
   user_id: 2
   profile_id: 2
-  father_id: 1
+  parent_id: 1
   content: 'Ihhh, rapa... que papo mais estranho... tah na turma errada, hein? aqui soh tem macho!'
   created_at: '2011-03-01'
 
@@ -46,6 +46,6 @@ post_3_forum_2:
   discussion_id: 1
   user_id: 2
   profile_id: 2
-  father_id: 1
+  parent_id: 1
   content: 'Tambem acho!!!'
   created_at: '2011-03-01'

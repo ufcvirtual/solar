@@ -87,7 +87,8 @@ class DiscussionsController < ApplicationController
           new_discussion_post = DiscussionPost.new :discussion_id => discussion_id,
             :user_id => current_user.id,
             :profile_id => profile_id,
-            :content => content, :father_id => parent_id
+            :content => content,
+            :parent_id => parent_id
           new_discussion_post.save!
         end
       rescue Exception => error
@@ -194,7 +195,7 @@ class DiscussionsController < ApplicationController
     @discussion = Discussion.find(discussion_id.to_i)
     
     owned_by_current_user = (post.user.id == current_user.id)
-    has_no_response = DiscussionPost.find_all_by_father_id(post_id).empty?
+    has_no_response = DiscussionPost.find_all_by_parent_id(post_id).empty?
     
     if (owned_by_current_user&& valid_date && has_no_response)
       begin
@@ -229,7 +230,7 @@ class DiscussionsController < ApplicationController
     post = file.discussion_post
     
     owned_by_current_user = (post.user.id == current_user.id)
-    has_no_response = DiscussionPost.find_all_by_father_id(post.id).empty?
+    has_no_response = DiscussionPost.find_all_by_parent_id(post.id).empty?
       
     if (owned_by_current_user && valid_date && has_no_response)
       #Removendo arquivo da base de dados
@@ -264,7 +265,7 @@ class DiscussionsController < ApplicationController
   private
 
   def has_no_response
-    DiscussionPost.find_all_by_father_id(@discussion_post.id).empty?
+    DiscussionPost.find_all_by_parent_id(@discussion_post.id).empty?
   end
 
   def owned_by_current_user
