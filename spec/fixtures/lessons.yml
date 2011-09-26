@@ -9,8 +9,6 @@ pag_ufc:
   type_lesson: 1
   order: 1
   status: 1
-  start: '2011-03-01'
-  end: '2021-12-01'
   schedule_id: 11
 
 pag_uol:
@@ -22,8 +20,6 @@ pag_uol:
   type_lesson: 1
   order: 2
   status: 1
-  start: '2011-03-01'
-  end: '2021-12-01'
   schedule_id: 12
 
 pag_globo:
@@ -35,8 +31,6 @@ pag_globo:
   type_lesson: 1
   order: 3
   status: 1
-  start: '2011-03-01'
-  end: '2021-12-01'
   schedule_id: 13
 
 pag_virtual:
@@ -48,8 +42,6 @@ pag_virtual:
   type_lesson: 1
   order: 4
   status: 1
-  start: '2011-03-01'
-  end: '2021-12-01'
   schedule_id: 14
 
 pag_bbc:
@@ -61,6 +53,4 @@ pag_bbc:
   type_lesson: 1
   order: 5
   status: 1
-  start: '2011-03-01'
-  end: '2021-12-01'
   schedule_id: 15

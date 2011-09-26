@@ -10,7 +10,10 @@
       <% if !(@lessons.nil? || @lessons.empty?) %>
         <% @lessons.each do |lesson| %>
           <div class="curriculum_unit_portlet_line">
-            <span class="curriculum_unit_portlet_gray"><%= l lesson.start %> - <%= l lesson.end %></span>
+            <span class="curriculum_unit_portlet_gray">
+              <%schedule= Schedule.find(lesson.schedule_id)%>  
+              <%= l schedule.start_date  %> - <%= l schedule.end_date %>
+            </span>
             <a class="curriculum_unit_portlet_link" href="javascript:show_lesson('/lessons/show?id=<%=@curriculum_unit.id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
           </div>
         <% end %>
