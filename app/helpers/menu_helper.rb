@@ -15,10 +15,10 @@ module MenuHelper
     class_menu_list = 'mysolar_menu_list'
 
     html_menu_group = []
-puts "\n\n\n\n\n\n\n\n\n\n\n\n\n\n*******************************"
+
     # percorrer todos os registros
     menus.each do |menu|
-puts "\n\n\n\n\nmenu:\n#{menu}\nprevious_parent_id: #{previous_parent_id}"
+
       access_controller = {
         :controller => menu["controller"],
         :action => menu["action"],
@@ -29,16 +29,16 @@ puts "\n\n\n\n\nmenu:\n#{menu}\nprevious_parent_id: #{previous_parent_id}"
       # verifica se o menu pai foi modificado para gerar um novo menu
       unless previous_parent_id == menu["parent_id"].to_i
 
-        html_menu << "</ul>" if first_iteration #[fechando1]
+        html_menu << "</ul>" if first_iteration 
 
         if !(!menu["resource_id"].nil? && menu['child'].nil?)
-          html_menu << "</li></ul>" #[fechando2]
+          html_menu << "</li></ul>" 
         elsif !menu["link"].nil?
-          html_menu << "</ul>" #[fechando3]
+          html_menu << "</ul>" 
         elsif (menu['parent_id'] == current_menu)
-          html_menu << "</li></ul>" #[fechando4]
+          html_menu << "</li></ul>" 
         else
-          html_menu << "</li></ul>" #[fechando5]
+          html_menu << "</li></ul>" 
         end
 
         # coloca as divs anteriores em uma nova div
@@ -48,18 +48,14 @@ puts "\n\n\n\n\nmenu:\n#{menu}\nprevious_parent_id: #{previous_parent_id}"
         if !menu["resource_id"].nil? && menu['child'].nil?
           access_controller[:bread] = menu['parent']
           link = "<li id='parent_#{menu['parent_id']}'>" << link_to("#{t(menu['parent'].to_sym)}", access_controller, :class =>  class_menu_title) << "</li>"
-puts ">> 1: #{link}" #messages
         elsif !menu["link"].nil?
           link = "<li><a href='#{menu['link']}'>#{t(menu['parent'].to_sym)}</a></li>"
-puts ">> 2: #{link}"
         else
           # verifica menu corrente
           if (menu['parent_id'] == current_menu)
             link = "<li><a href='#' class='#{class_menu_title} open_menu'>#{t(menu['parent'].to_sym)}</a><ul class='submenu'>"
-puts ">> 3: #{link}"
           else
             link = "<li id='parent_#{menu['parent_id']}'><a href='#' class='#{class_menu_title}'>#{t(menu['parent'].to_sym)}</a><ul class='submenu'>"
-puts ">> 4: #{link}" #menu pai
           end
         end
 
@@ -83,9 +79,8 @@ puts ">> 4: #{link}" #menu pai
       previous_parent_id = menu['parent_id'].to_i
 
     end
-    html_menu << "</ul>" #[fechando]
+    html_menu << "</ul>"
     
-puts "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
     html_menu_group << "<div class='#{class_menu_div_topo}'>#{html_menu}</div>"
     return html_menu_group.join('') # fechando a ultima div aberta
   end

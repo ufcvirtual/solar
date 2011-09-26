@@ -159,14 +159,6 @@ $(document).ready(function() {
             $('.mysolar_menu_list').slideUp("fast");
             $(this).next('.submenu').children('.mysolar_menu_list').slideDown("fast");
         }
-        /*
-         if($(this).siblings().is(':visible')){
-            $('.mysolar_menu_list').slideUp("fast");
-        } else {
-            $('.mysolar_menu_list').slideUp("fast");
-            $(this).siblings().slideDown("fast");
-        }
-         **/
     });
 
     // abre menu corrente
@@ -176,7 +168,6 @@ $(document).ready(function() {
 
     function setCookie(c_name,value,exdays)
     {
-        //alert('setou: '+value);
         var exdate=new Date();
         exdate.setDate(exdate.getDate() + exdays);
         var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
@@ -188,13 +179,11 @@ $(document).ready(function() {
         var i,x,y;
         var ARRcookies=document.cookie.split(";");
 
-        //alert('getCookie[' + document.cookie + ']');
-
         for (i=0;i<ARRcookies.length;i++)
         {
             x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
             y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
-            //alert('get'+i+': ' + y);
+
             x=x.replace(/^\s+|\s+$/g,"");
             if (x==c_name)
             {
@@ -207,11 +196,8 @@ $(document).ready(function() {
     {
         var parent_id = getCookie("parent_id");
 
-        //alert('checou: '+parent_id);
-
         if (parent_id != null && parent_id!="")
         {
-            //alert('VERIFICOU: '+parent_id);
             $("#"+parent_id).children().show();
         }
     }
