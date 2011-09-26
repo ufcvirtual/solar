@@ -29,36 +29,43 @@ puts "\n\n\n\n\nmenu:\n#{menu}\nprevious_parent_id: #{previous_parent_id}"
       # verifica se o menu pai foi modificado para gerar um novo menu
       unless previous_parent_id == menu["parent_id"].to_i
 
-        html_menu << "</li></ul>" if first_iteration
+        html_menu << "</ul>" if first_iteration #[fechando1]
+
+        if !(!menu["resource_id"].nil? && menu['child'].nil?)
+          html_menu << "</li></ul>" #[fechando2]
+        elsif !menu["link"].nil?
+          html_menu << "</ul>" #[fechando3]
+        elsif (menu['parent_id'] == current_menu)
+          html_menu << "</li></ul>" #[fechando4]
+        else
+          html_menu << "</li></ul>" #[fechando5]
+        end
+
         # coloca as divs anteriores em uma nova div
         html_menu_group << "<div class='#{class_menu_div_topo}'>#{html_menu}</div>" if first_iteration # verifica se ja entrou aqui
 
         # para um menu pai ser um link ele nao deve ter filhos
         if !menu["resource_id"].nil? && menu['child'].nil?
-
-puts ">> 1" #messages
           access_controller[:bread] = menu['parent']
           link = "<li id='parent_#{menu['parent_id']}'>" << link_to("#{t(menu['parent'].to_sym)}", access_controller, :class =>  class_menu_title) << "</li>"
+puts ">> 1: #{link}" #messages
         elsif !menu["link"].nil?
-puts ">> 2"
           link = "<li><a href='#{menu['link']}'>#{t(menu['parent'].to_sym)}</a></li>"
+puts ">> 2: #{link}"
         else
           # verifica menu corrente
           if (menu['parent_id'] == current_menu)
-puts ">> 3"
-            link = "<li><a href='#' class='open_menu'>#{t(menu['parent'].to_sym)}</a></li>"
+            link = "<li><a href='#' class='#{class_menu_title} open_menu'>#{t(menu['parent'].to_sym)}</a><ul class='submenu'>"
+puts ">> 3: #{link}"
           else
-puts ">> 4" #menu pai
             link = "<li id='parent_#{menu['parent_id']}'><a href='#' class='#{class_menu_title}'>#{t(menu['parent'].to_sym)}</a><ul class='submenu'>"
-
+puts ">> 4: #{link}" #menu pai
           end
         end
 
         # menus pai tbm podem ter links diretamente para funcionalidades
-
         #html_menu = "<ul id='parent_#{menu['parent_id']}' class='#{class_menu_title}'>#{link}"
         html_menu = "<ul>#{link}"
-#puts "\n***** html_menu2: \n#{html_menu}\n"
 
         # indica primeira iteracao
         first_iteration = true
@@ -70,14 +77,14 @@ puts ">> 4" #menu pai
       unless menu['child'].nil?
         access_controller[:bread] = menu['child']
         html_menu << "<li class='#{class_menu_list}'>" << link_to("#{t(menu['child'].to_sym)}", access_controller) << "</li>"
-#puts "\n***** html_menu3: \n#{html_menu}\n"
       end
 
-#puts "\n***** html_menu final: \n#{html_menu}\n"
       # sempre atualiza o previous_parent
       previous_parent_id = menu['parent_id'].to_i
 
     end
+    html_menu << "</ul>" #[fechando]
+    
 puts "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
     html_menu_group << "<div class='#{class_menu_div_topo}'>#{html_menu}</div>"
     return html_menu_group.join('') # fechando a ultima div aberta

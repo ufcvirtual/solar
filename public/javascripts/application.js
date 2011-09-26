@@ -153,17 +153,20 @@ jQuery.fn.window_upload_files = function(options) {
  * */
 $(document).ready(function() {
     $('.mysolar_menu_title').click(function() {
-        if($(this).children().is(':visible')){
-            alert("if");
-            $('ul.submenu').slideDown("fast");
+        if($(this).next('.submenu > .mysolar_menu_list').is(':visible')){
             $('.mysolar_menu_list').slideUp("fast");
         } else {
-            alert("else");
-            $('ul.submenu').slideUp("fast");
+            $('.mysolar_menu_list').slideUp("fast");
+            $(this).next('.submenu').children('.mysolar_menu_list').slideDown("fast");
+        }
+        /*
+         if($(this).siblings().is(':visible')){
+            $('.mysolar_menu_list').slideUp("fast");
+        } else {
             $('.mysolar_menu_list').slideUp("fast");
             $(this).siblings().slideDown("fast");
-            //$(this).children().slideDown("fast"); //children
         }
+         **/
     });
 
     // abre menu corrente
