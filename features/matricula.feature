@@ -22,59 +22,59 @@ Contexto:
         | 1        | 3                  | 1           | 1      |
         | 1        | 8                  | 1           | 0      |
 
-Cenário: Acessar página de matricula
-    Dado que estou logado com o usuario "user" e com a senha "user123"
-    Quando eu clicar no link "Matrícula"
-    Então eu deverei ver "Matrícula"
-        E eu deverei ver "Unidade Curricular"
-        E eu deverei ver "Categoria"
-        E eu deverei ver "Turma"
-        E eu deverei ver "Buscar"
-        E eu deverei ver "Todos"
-        E eu deverei ver "Matriculados"
-
-Cenário: Listar cursos matriculados ou disponíveis
-    Dado que estou logado com o usuario "user" e com a senha "user123"
-    Quando eu clicar no link "Matrícula"
-    Então eu deverei ver a linha de opcao de matricula
-      | UnidadeCurricular             | Categoria                           | Turma  | Matricula       |
-      | Introducao a Linguistica      | Curso Livre                         | FOR    | Cancelar        |
-      | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | FOR    | Cancelar pedido |
-      | Quimica I                     | Curso de Graduacao a Distancia      | CAU-B  | Matriculado     |
-      | Teoria da Literatura I        | Curso de Graduacao Presencial       | CAU-A  | Matricular      |
-      E eu nao deverei ver a linha de opcao de matricula
-	   | UnidadeCurricular             | Categoria                           | Turma  | Matricula   |
-	   | Semipresencial sm nvista      | Curso de Pos-Graduacao a Distancia  | FOR    | Matricular  |
-
-Cenário: Pedir cancelamento de matricula
-    Dado que estou logado com o usuario "user" e com a senha "user123"
-        E que estou em "Matricula"
-    Quando eu clicar na opcao "Cancelar" do item de matricula "Introducao a Linguistica"
-    Então eu deverei ver a linha de opcao de matricula
-      | UnidadeCurricular             | Categoria                           | Turma  | Matricula       |
-      | Introducao a Linguistica      | Curso Livre                         | FOR    | Matricular      |
-      | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | FOR    | Cancelar pedido |
-      | Quimica I                     | Curso de Graduacao a Distancia      | CAU-B  | Matriculado     |
-      | Teoria da Literatura I        | Curso de Graduacao Presencial       | CAU-A  | Matricular      |
-
-Cenário: Pedir matricula em curso disponível
-    Dado que estou logado com o usuario "user" e com a senha "user123"
-        E que estou em "Matricula"
-    Quando eu clicar na opcao "Matricular" do item de matricula "Teoria da Literatura I"
-    Então eu deverei ver a linha de opcao de matricula
-      | UnidadeCurricular             | Categoria                           | Turma  | Matricula       |
-      | Introducao a Linguistica      | Curso Livre                         | FOR    | Cancelar        |
-      | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | FOR    | Cancelar pedido |
-      | Quimica I                     | Curso de Graduacao a Distancia      | CAU-B  | Matriculado     |
-      | Teoria da Literatura I        | Curso de Graduacao Presencial       | CAU-A  | Cancelar pedido |
-
-Cenário: Cancelar pedido de matricula
-    Dado que estou logado com o usuario "user" e com a senha "user123"
-        E que estou em "Matricula"
-    Quando eu clicar na opcao "Cancelar pedido" do item de matricula "Literatura Brasileira I"
-    Então eu deverei ver a linha de opcao de matricula
-      | UnidadeCurricular             | Categoria                           | Turma  | Matricula       |
-      | Introducao a Linguistica      | Curso Livre                         | FOR    | Cancelar        |
-      | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | FOR    | Matricular      |
-      | Quimica I                     | Curso de Graduacao a Distancia      | CAU-B  | Matriculado     |
-      | Teoria da Literatura I        | Curso de Graduacao Presencial       | CAU-A  | Matricular      |
+#Cenário: Acessar página de matricula
+#    Dado que estou logado com o usuario "user" e com a senha "user123"
+#    Quando eu clicar no link "Matrícula"
+#    Então eu deverei ver "Matrícula"
+#        E eu deverei ver "Unidade Curricular"
+#        E eu deverei ver "Categoria"
+#        E eu deverei ver "Turma"
+#        E eu deverei ver "Buscar"
+#        E eu deverei ver "Todos"
+#        E eu deverei ver "Matriculados"
+#
+#Cenário: Listar cursos matriculados ou disponíveis
+#    Dado que estou logado com o usuario "user" e com a senha "user123"
+#    Quando eu clicar no link "Matrícula"
+#    Então eu deverei ver a linha de opcao de matricula
+#      | UnidadeCurricular             | Categoria                           | Turma  | Matricula       |
+#      | Introducao a Linguistica      | Curso Livre                         | FOR    | Cancelar        |
+#      | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | FOR    | Cancelar pedido |
+#      | Quimica I                     | Curso de Graduacao a Distancia      | CAU-B  | Matriculado     |
+#      | Teoria da Literatura I        | Curso de Graduacao Presencial       | CAU-A  | Matricular      |
+#      E eu nao deverei ver a linha de opcao de matricula
+#	   | UnidadeCurricular             | Categoria                           | Turma  | Matricula   |
+#	   | Semipresencial sm nvista      | Curso de Pos-Graduacao a Distancia  | FOR    | Matricular  |
+#
+#Cenário: Pedir cancelamento de matricula
+#    Dado que estou logado com o usuario "user" e com a senha "user123"
+#        E que estou em "Matricula"
+#    Quando eu clicar na opcao "Cancelar" do item de matricula "Introducao a Linguistica"
+#    Então eu deverei ver a linha de opcao de matricula
+#      | UnidadeCurricular             | Categoria                           | Turma  | Matricula       |
+#      | Introducao a Linguistica      | Curso Livre                         | FOR    | Matricular      |
+#      | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | FOR    | Cancelar pedido |
+#      | Quimica I                     | Curso de Graduacao a Distancia      | CAU-B  | Matriculado     |
+#      | Teoria da Literatura I        | Curso de Graduacao Presencial       | CAU-A  | Matricular      |
+#
+#Cenário: Pedir matricula em curso disponível
+#    Dado que estou logado com o usuario "user" e com a senha "user123"
+#        E que estou em "Matricula"
+#    Quando eu clicar na opcao "Matricular" do item de matricula "Teoria da Literatura I"
+#    Então eu deverei ver a linha de opcao de matricula
+#      | UnidadeCurricular             | Categoria                           | Turma  | Matricula       |
+#      | Introducao a Linguistica      | Curso Livre                         | FOR    | Cancelar        |
+#      | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | FOR    | Cancelar pedido |
+#      | Quimica I                     | Curso de Graduacao a Distancia      | CAU-B  | Matriculado     |
+#      | Teoria da Literatura I        | Curso de Graduacao Presencial       | CAU-A  | Cancelar pedido |
+#
+#Cenário: Cancelar pedido de matricula
+#    Dado que estou logado com o usuario "user" e com a senha "user123"
+#        E que estou em "Matricula"
+#    Quando eu clicar na opcao "Cancelar pedido" do item de matricula "Literatura Brasileira I"
+#    Então eu deverei ver a linha de opcao de matricula
+#      | UnidadeCurricular             | Categoria                           | Turma  | Matricula       |
+#      | Introducao a Linguistica      | Curso Livre                         | FOR    | Cancelar        |
+#      | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | FOR    | Matricular      |
+#      | Quimica I                     | Curso de Graduacao a Distancia      | CAU-B  | Matriculado     |
+#      | Teoria da Literatura I        | Curso de Graduacao Presencial       | CAU-A  | Matricular      |

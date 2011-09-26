@@ -60,7 +60,6 @@ Cenário: Cadastrar novo usuário
     Quando eu clicar em "confirm"
     Então eu deverei ver "Sair"
         E eu deverei ver "Home"
-        E eu deverei ver "Meus Dados"
 
 Cenário: Cadastrar novo usuário com dados inválidos
     Dado que estou em "Cadastrar usuario"
@@ -115,7 +114,6 @@ Cenário: Cadastrar novo usuário e sair logo em seguida
     Quando eu clicar em "confirm"
     Então eu deverei ver "Sair"
         E eu deverei ver "Home"
-        E eu deverei ver "Meus Dados"
     Quando eu clicar no link "Sair"
 	Então eu deverei ver "Usuário"
     	E eu deverei ver "Senha"

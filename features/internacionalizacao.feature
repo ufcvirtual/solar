@@ -22,7 +22,7 @@ Cenário: Acessar página de Edição de Dados Pessoais em Ingles
 	Dado que estou logado com o usuario "user" e com a senha "user123"
             E que estou em "Meu Solar"
         Quando eu clicar no link "English"
-        E eu clicar no link "My Data"
+        E eu clicar no link "my_data"
 	Então eu deverei ver "Name"
             E eu deverei ver "Bio"
             E eu deverei ver "Interests"
