@@ -6,32 +6,42 @@
 ucs = load_curriculum_unit_data() || []
 %>
 
-<div class="mysolar_portlets_portlet"  id="my_solar_portlet_1">
-  <div class="mysolar_portlets_header">
-    <img src="/images/unidade_curricular.png"/>
-    <%=label_tag 'lb_title_curriculum_unit', t(:my_solar_curriculum_units), :class => 'mysolar_title'%>
-    <hr style="border: none; background-color: #204683; height: 4px; left: 0px; position: relative; top:-18px; margin-left:0px; margin-bottom: 0px"></hr>
-  </div>
-  <div class="mysolar_portlets_content">
-    <% if ucs.length > 0%>
-      <%
+<div style="min-width: 800px;max-width: 800px;"> <!-- div para deixar a agenda fixa , independente de resolução -->
+
+  <div class="mysolar_portlets_portlet"  id="my_solar_portlet_1">
+    <div class="mysolar_portlets_header">
+      <img src="/images/unidade_curricular.png"/>
+      <%=label_tag 'lb_title_curriculum_unit', t(:my_solar_curriculum_units), :class => 'mysolar_title'%>
+      <hr style="border: none; background-color: #204683; height: 4px; left: 0px; position: relative; top:-18px; margin-left:0px; margin-bottom: 0px"></hr>
+    </div>
+    <div class="mysolar_portlets_content">
+      <% if ucs.length > 0%>
+        <%
         ucs.each {|c|
-        #Adiciona um curso na tela
-        %>
-        <div class="classeNomeCurso">
-          <% if (session[:opened_tabs].length >= Max_Tabs_Open.to_i) && ( !session[:opened_tabs].has_key?(c["name"]) ) %>
-            <%= button_to c["name"],{}, { :onclick => "javascript:alert('"+t(:curriculum_access_alert)+"')", :class=>'enrollment_link' } %>
-          <% else %>
-            <%= button_to c["name"], {:controller=>"application", :action=>"add_tab", :name => c["name"], :type => Tab_Type_Curriculum_Unit,
-              :id => c["id"], :offers_id => c["offer_id"], :groups_id => c["group_id"]},
-            {:class=>'enrollment_link'} %>
-          <% end %>
-        </div>
-      <%
-      }
-    %>
-   <% else %>
-    <%=t(:my_solar_curriculum_without)%>
-   <% end %>
+          #Adiciona um curso na tela
+          %>
+          <div class="classeNomeCurso">
+            <% if (session[:opened_tabs].length >= Max_Tabs_Open.to_i) && ( !session[:opened_tabs].has_key?(c["name"]) ) %>
+              <%= button_to c["name"],{}, { :onclick => "javascript:alert('"+t(:curriculum_access_alert)+"')", :class=>'enrollment_link' } %>
+            <% else %>
+              <%= button_to c["name"], {:controller=>"application", :action=>"add_tab", :name => c["name"], :type => Tab_Type_Curriculum_Unit,
+                :id => c["id"], :offers_id => c["offer_id"], :groups_id => c["group_id"]},
+              {:class=>'enrollment_link'} %>
+            <% end %>
+          </div>
+        <%
+        }
+      %>
+      <% else %>
+        <%=t(:my_solar_curriculum_without)%>
+      <% end %>
+    </div>
   </div>
+
+  <div class="mysolar_portlets_agenda">
+    <%= render 'portlets/calendar' %>
+  </div>
+
 </div>
+
+<br/>

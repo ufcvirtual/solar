@@ -686,6 +686,7 @@ div.widget {
     height: 183px;
     width: 480px;
     white-space: normal;
+    float: left;
 }
 .mysolar_portlets_header {
     height:30px;
@@ -693,7 +694,19 @@ div.widget {
 .mysolar_portlets_content {
     position:relative;
     overflow: auto;
-    height: 130px;
+/*    height: 130px;*/
+}
+.mysolar_portlets_agenda{
+    float: right;
+    margin-right: -220px;
+    margin-top: 6px;
+    font-variant: small-caps;
+    text-transform: capitalize;
+}
+.mysolar_portlets_agenda_events{
+    min-width: 262px;
+    max-width: 262px;
+    font-size: 12px;
 }
 .mysolar_title{
     color: #000;

@@ -3,6 +3,23 @@
 %>
 
 <div class="mysolar_portlets_portlet"  id="my_solar_portlet_4">
-  <div class="mysolar_portlets_header">Agenda</div>
-  <div class="mysolar_portlets_content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+  <div class="mysolar_portlets_header"><%= t(:mysolar_agenda) %></div>
+  <hr style="border: none; background-color: #204683; height: 4px; left: 0px; position: relative; top:-18px; margin-left:0px; margin-bottom: 0px;width: 262px;"/>
+  <div class="mysolar_portlets_content">
+    <div class="mysolar_portlets_agenda_events">
+      <script>
+        $(function() {
+          $( "#datepicker" ).datepicker();
+        });
+      </script>
+
+      <div id="datepicker">
+
+      </div>
+      <!-- Classe que carrega o Ajax -->
+      <div class="calendar_events"></div>
+    </div>
+
+  </div>
 </div>
+<br/>

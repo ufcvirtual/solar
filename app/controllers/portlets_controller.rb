@@ -1,3 +1,3 @@
 class PortletsController < ApplicationController
-
+  
 end
