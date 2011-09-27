@@ -8,19 +8,22 @@
 
 <div style="width: 700px;">
 
-  <div class="portfolio_header_content">
-    <div class="portfolio_title"><%= t(:group)%> <%= @group %></div>
-    <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+  <div class="mysolar_header">
+    <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
+    <h1 class="mysolar_title"><%= t(:group)%> <%= @group %></h1>
   </div>
+
+
+
 
   <!-- Lista dos alunos com notas -->
 
-  <div id="individual_activity" class="portfolio">
-    <hr class="portfolio_line" />
+  <div id="individual_activity" class="tb_list">
+<%#*<hr class="portfolio_line" />%>
 
     <% leng_assignments = (@students.first.nil?) ? 0 : @students.first["grades"].split(',').length %>
 
-    <table width="100%" cellspacing="0" border="0" id="list_of_students" class="list_table" summary="lista de estudantes">
+    <table width="100%" cellspacing="0" border="0" id="list_of_students" class="tb_list" summary="lista de estudantes">
       <thead>
         <tr class="lines">
           <th rowspan="2" align="left"><%= t(:student) %></th>
@@ -70,37 +73,26 @@
 
   <!-- Nota -->
 
-  <div id="scores_notes" class="label_score">
-    <%= t(:assignment_as) %>:&nbsp;<%= t(:assignment_without_correction) %><br />
-    <%= t(:assignment_an) %>:&nbsp;<%= t(:assignment_not_sent) %>
+  <div id="scores_notes" class="legend_score_footer">
+    <span><%= t(:assignment_as) %>:&nbsp;<%= t(:assignment_without_correction) %></span><br />
+    <span><%= t(:assignment_an) %>:&nbsp;<%= t(:assignment_not_sent) %></span>
   </div>
 
   <!-- Paginacao -->
 
-  <div id="scores_pagination" style="text-align: center;" class="label_score">
-    <span>    <%=raw render_pagination_bar(@cnt_students)%></span><br />
+  <div id="scores_pagination" style="text-align: center;" class="legend">
+    <span><%=raw render_pagination_bar(@cnt_students)%></span>
   </div>
 
   <!-- Legendas -->
 
-  <div id="scores_label" class="label_score">
-
-    <table width="100%" class="portfolio list_table" border="0" cellpadding="0" cellspacing="0" style="margin-top: 0px;">
-      <thead>
-        <tr align="left" class="lines">
-          <th colspan="2"><%= t(:legend_assignments) %></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @activities.each_with_index do |activity, idx| %>
-          <tr class="lines">
-            <td align="right" style="width: 30px;"><%= idx + 1 %>&deg;</td>
-            <td align="left"><%= activity["name"] %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+  <div class="legend">
+    <ul>
+      <li><h1><%= t(:legend_assignments) %></h1></li>
+      <% @activities.each_with_index do |activity, idx| %>
+        <li><%= idx + 1 %>&deg; - <%= activity["name"] %></li>
+      <% end %>
+    </ul>
 
   </div>
-
 </div>

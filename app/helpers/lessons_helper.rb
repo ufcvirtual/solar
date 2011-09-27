@@ -5,12 +5,14 @@ module LessonsHelper
     # uma aula eh ligada a uma turma ou a uma oferta
 
     query_lessons = "SELECT distinct l.id as lessonid,
-                           l.name, address, l.order,l.schedule_id
+                            l.name, address,
+                            l.order,l.schedule_id
                        FROM lessons l
-                       LEFT JOIN schedules s ON l.schedule_id = s.id
-                       LEFT JOIN allocation_tags at ON l.allocation_tag_id = at.id
-                    WHERE
-                       status=#{Lesson_Approved} and s.start_date<=current_date and s.end_date>=current_date "
+                  LEFT JOIN schedules s ON l.schedule_id = s.id
+                  LEFT JOIN allocation_tags at ON l.allocation_tag_id = at.id
+                      WHERE status = #{Lesson_Approved}
+                        AND s.start_date <= current_date
+                        AND s.end_date >= current_date "
     unless (offer_id.nil? && group_id.nil?)
       query_lessons << " and ( "
 

@@ -12,7 +12,7 @@ Contexto:
 Cenário: Acessar pagina de informacoes do curso
     Dado que estou logado com o usuario "user" e com a senha "user123"
         E que estou em "Meu Solar"
-        Quando eu clicar em "Introducao a Linguistica"
+        Quando eu clicar no link "Introducao a Linguistica"
         Então eu deverei ver "Informações Gerais"
     Quando eu clicar no link "Informações Gerais"
         Então eu deverei ver "Programa"

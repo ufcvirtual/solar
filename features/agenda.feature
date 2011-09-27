@@ -15,7 +15,7 @@ Contexto:
 Cenário: Exibir Agenda
     Dado que estou logado com o usuario "user" e com a senha "user123"
         E que estou em "Meu Solar"
-    Quando eu clicar em "Quimica I"
+    Quando eu clicar no link "Quimica I"
         Então eu deverei ver "Informações Gerais"
     Quando eu clicar no link "Informações Gerais"
         Então eu deverei ver o link "Agenda"
@@ -28,7 +28,7 @@ Cenário: Exibir Agenda
 Cenário: Exibir Agenda do professor
     Dado que estou logado com o usuario "prof2" e com a senha "123456"
         E que estou em "Meu Solar"
-    Quando eu clicar em "Teoria da Literatura I"
+    Quando eu clicar no link "Teoria da Literatura I"
         Então eu deverei ver "Informações Gerais"
     Quando eu clicar no link "Informações Gerais"
         Então eu deverei ver o link "Agenda"

@@ -12,7 +12,7 @@ Contexto:
 Cenário: Exibir bibliografia
     Dado que estou logado com o usuario "user" e com a senha "user123"
         E que estou em "Meu Solar"
-    Quando eu clicar em "Quimica I"
+    Quando eu clicar no link "Quimica I"
         Então eu deverei ver "Informações Gerais"
     Quando eu clicar no link "Informações Gerais"
         Então eu deverei ver o link "Bibliografia"

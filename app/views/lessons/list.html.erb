@@ -17,9 +17,8 @@
             <td class="td_blue_first">
               <a class="curriculum_unit_portlet_link" href="javascript:show_lesson('/lessons/show?id=<%=curriculum_unit_id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
             </td>
-            <td class="td_blue" align="center" style="width: 200px">
-              <%schedule= Schedule.find(lesson.schedule_id)%>  
-              <%= l schedule.start_date  %> - <%= l schedule.end_date %>
+            <td class="td_blue" align="center" style="width: 200px;">
+              <%= l lesson.schedule.start_date %> - <%= l lesson.schedule.end_date %>
             </td>
           </tr>
         <% end %>

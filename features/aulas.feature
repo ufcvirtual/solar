@@ -14,14 +14,14 @@ Contexto:
 Cenário: Listar aulas do curso
     Dado que estou logado com o usuario "user" e com a senha "user123"
         E que estou em "Meu Solar"
-    Quando eu clicar em "Introducao a Linguistica"
+    Quando eu clicar no link "Introducao a Linguistica"
         Então eu deverei ver "Aulas"
     Quando eu clicar no link "Aulas"
     Então eu deverei ver "Aulas disponíveis"
     E eu deverei ver a linha de aulas disponiveis
       | AulasDisponiveis  | DataAcesso              |
-      | aula 1 pag ufc    | 01/03/2011 - 01/12/2021 |
-      | aula 2 pag uol    | 01/03/2011 - 01/12/2021 |
+      | aula 1 pag ufc    | 05/03/2011 - 20/06/2011 |
+      | aula 2 pag uol    | 27/03/2011 - 27/06/2011 |
 
 #@wip
 #Cenário: Exibir aula do curso

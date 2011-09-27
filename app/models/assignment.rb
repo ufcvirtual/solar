@@ -11,12 +11,13 @@ class Assignment < ActiveRecord::Base
     ActiveRecord::Base.connection.select_all <<SQL
     SELECT t1.id,
            t1.name,
-           t1.start_date,
-           t1.end_date
+           t3.start_date,
+           t3.end_date
       FROM assignments     AS t1
       JOIN allocation_tags AS t2 ON t2.id = t1.allocation_tag_id
+      JOIN schedules       AS t3 ON t3.id = t1.schedule_id
      WHERE t2.group_id = #{group_id}
-     ORDER BY t1.start_date;
+     ORDER BY t3.start_date;
 SQL
   end
 

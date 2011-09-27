@@ -814,7 +814,7 @@ a.mysolar_top_link{
 }
 
 .mysolar_portlets_wrapper {
-     padding-right: 250px;
+    padding-right: 250px;
 }
 
 .mysolar_portlets_portlet {
@@ -839,15 +839,27 @@ a.mysolar_top_link{
     margin-right: -100%;
 }
 
-.mysolar_portlets_header {
+/**
+ * Tratando dos titulos dos conteudos
+*/
+
+.mysolar_header {
     height: 26px;
     border-bottom: 4px solid #204783;
 }
 
-.mysolar_portlets_header img {
+.mysolar_header img {
     float: left;
     margin-right: 4px;
 }
+
+.mysolar_header h1 {
+    padding-top: 8px;
+}
+
+/**
+ * Portlets
+*/
 
 .mysolar_portlets_content {
     background-color: #F5F8FB;
@@ -874,6 +886,39 @@ a.mysolar_top_link{
     max-width: 262px;
     font-size: 12px;
 }
+
+
+/**
+* Legendas
+*/
+
+div.legend {
+    font-size: 12px;
+    padding-top: 10px;
+    position: relative;
+}
+
+div.legend_score_footer {
+    font-family: Arial;
+    font-style: italic;
+    font-size: 9pt;
+}
+
+div.legend ul {
+    padding: 5px 0px;
+}
+
+div.legend li {
+    text-align: left;
+}
+
+div.legend h1 {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+
 
 hr.curriculum_unit_division, hr.curriculum_unit_division_mysolar {
     border: none;
@@ -915,7 +960,7 @@ hr.curriculum_unit_division_mysolar {
 .curriculum_unit_display {
     /*display:inline-block;*/
     width: 100%;
-/*    color: #8AF;*/
+    /*    color: #8AF;*/
     font-family: trebuchet, verdana, courier, arial, sans-serif;
     font-size: 13pt;
     line-height: 20px;
@@ -1881,7 +1926,7 @@ ul.message_menu_listbox li ul a:hover{
 }
 
 /*PORTFOLIO*/
-
+/*
 .portfolio{
     width: 700px;
     font-size: 12px;
@@ -1891,42 +1936,44 @@ ul.message_menu_listbox li ul a:hover{
     white-space: normal;
     margin-top: -11px;
 }
+*/
 
-.portfolio_line{
-    color: #1C4785;
-    border: solid 2px;
-    width: 700px;
-    margin-top: 0px;
+
+/**
+ * Tabelas
+*/
+
+table.tb_list {
+    height: 30px;
+    font-size: 12px;
+    font-family: 'Trebuchet', 'Myriad Pro', Arial;
+    background-color: #F7F7F8;
+    border-right: solid #B4B2B1 1px;
 }
 
-.portfolio_title{
-    font-family: "Trebuchet";
-    font-size: 14px;
+table.tb_list th {
+    white-space: nowrap;
     font-weight: bold;
-    margin-bottom: -22px;
-    margin-left: 31px;
-    background-color: #FFF;
-}
-.portfolio_image{
-    margin-bottom: 13px;
-    background-color: #FFF;
-}
-.portfolio_header_content{
-    margin-top: 15px;
-    width: 700px;
-}
-.portfolio_activity_date{
-    font-style  : italic;
-    color       : #888;
-}
-.portfolio_public_file_size{
-    color       : #888;
 }
 
-.portfolio_public_file_upload_link{
-    color: #204683;
+tr.lines td, th {
+    border-bottom: solid #B4B2B1 1px;
+    border-left: solid #B4B2B1 1px;
+    padding: 2px 2px 2px 5px;
 }
 
+tr.post_content {
+    background-color: #F5F8FB;
+}
+
+tbody tr.lines:hover {
+    background-color: #eef3fb;
+}
+
+td.td_student a {
+    color: #204783;
+    text-decoration: underline;
+}
 
 /* table */
 table.portfolio_borda_simples {
@@ -1945,32 +1992,8 @@ td.border_line {
     border-top: 1px solid #d0d0d1;
 }
 
-.td_blue_portfolio, .td_blue_portfolio_first, tr.lines td, th {
-    border-left: solid #dbe5e8 1px;
-    padding: 5px;
-    white-space: normal;
-}
-
 .td_blue_portfolio_first {
     width: 485px;
-}
-
-/*Table com listras*/
-table.list_table {
-    border-top: solid #dbe5e8 1px;
-    border-right: solid #dbe5e8 1px;
-}
-
-tr.lines td, th {
-    border-bottom: solid #dbe5e8 1px;
-}
-
-tr.post_content {
-    background-color: #F5F8FB;
-}
-
-tbody tr.lines:hover{
-    background-color: #a9d0f5;
 }
 
 .rowtable_even_portfolio{
@@ -2014,20 +2037,6 @@ td.td_student a {color: #2a538d;}
     width: 730px;
 }
 
-/*#agenda_new_activity{
-    float: right;
-    color: #1C4785;
-    background-color: #dee8ec;
-    text-transform: capitalize;
-    width: 110px;
-    height: 20px;
-    font-size: 11px;
-    padding-top: 4px;
-    cursor:pointer;
-    font-family: 'Myriad Pro';
-    margin-right: 80px;
-}*/
-
 #agenda_content{
     width: 750px;;
     margin-top: -8px;
@@ -2066,7 +2075,6 @@ td.td_student a {color: #2a538d;}
     font-weight: bold;
     font-family: 'Trebuchet';
 }
-
 
 .agenda_menu_ritgh{
     float: right;
