@@ -500,7 +500,32 @@ a.mysolar_top_link{
     display: none;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/******************************************************************************/
 /* conteudo em si */
+/******************************************************************************/
+
+
 #mysolar_content{
     /*z-index: 0;*/
     position: absolute;
@@ -667,8 +692,30 @@ a.mysolar_top_link{
 }
 
 /********Portlets do meuSolar*****************/
+#flash_message {
+    border: 1px solid #d0d0d0;
+    padding: 10px 10px 4px 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
 
-div.widget {
+#flash_message span {
+    margin-left: 15px;
+}
+
+#flash_message.success {
+    background: url('../images/success.gif') no-repeat 5px center #f5ffec;
+}
+
+#flash_message.error {
+    background: url('../images/error.gif') no-repeat 5px center #fff6f6;
+}
+
+#flash_message.notice {
+    background-color: #ffffe2;
+}
+
+/*div.widget {
     -moz-background-inline-policy: continuous;
     -moz-background-origin: padding;
     float: left;
@@ -678,6 +725,10 @@ div.widget {
     width: 260px;
     height: 183px;
     border: 1px solid #ccc;
+}*/
+
+.mysolar_portlets_wrapper {
+     padding-right: 250px;
 }
 
 .mysolar_portlets_portlet {
@@ -688,32 +739,79 @@ div.widget {
     white-space: normal;
     float: left;
 }
+
+.mysolar_portlets_main {
+    float: left;
+    width: 100%;
+    min-width: 540px;
+}
+
+.mysolar_portlets_side {
+    float: left;
+    width: 220px;
+    margin-right: -100%;
+}
+
 .mysolar_portlets_header {
-    height:30px;
+    height: 26px;
+    border-bottom: 4px solid #204783;
 }
+
+.mysolar_portlets_header img {
+    float: left;
+    margin-right: 4px;
+}
+
 .mysolar_portlets_content {
-    position:relative;
+    background-color: #F5F8FB;
+    position: relative;
     overflow: auto;
-/*    height: 130px;*/
+    width: 100%;
+    height: 162px;
 }
-.mysolar_portlets_agenda{
+
+#mysolar_curriculum_unit_wrapper {
+    margin: 0;
+    padding: 5px 10px;
+}
+
+.mysolar_portlets_agenda {
     float: right;
     margin-right: -220px;
     margin-top: 6px;
     font-variant: small-caps;
     text-transform: capitalize;
 }
-.mysolar_portlets_agenda_events{
+.mysolar_portlets_agenda_events {
     min-width: 262px;
     max-width: 262px;
     font-size: 12px;
 }
+
+hr.curriculum_unit_division, hr.curriculum_unit_division_mysolar {
+    border: none;
+    background-color: #204783;
+    height: 4px;
+    left: 0px;
+    position: relative;
+    top:-18px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    width: 700px;
+}
+
+hr.curriculum_unit_division_mysolar {
+    width: 464px;
+}
+
 .mysolar_title{
     color: #000;
-    height: 30px;
     vertical-align: middle;
     text-transform: capitalize;
     font-variant: small-caps;
+    padding: 2px 0 0 0;
+    margin: 0;
+    font-size: 14pt;
 }
 
 .ui-sortable-placeholder {
@@ -727,15 +825,16 @@ div.widget {
 
 /***** Portlet de Unidades curriculares *********/
 
-.classeNomeCurso{
-    display:inline-block;
-    width:100%;
-    color: #8AF;
+.curriculum_unit_display {
+    /*display:inline-block;*/
+    width: 100%;
+/*    color: #8AF;*/
     font-family: trebuchet, verdana, courier, arial, sans-serif;
-    font-size: 12px;
-    line-height: 16px;
+    font-size: 13pt;
+    line-height: 20px;
 }
-.classeNomeCurso:hover{
+
+.curriculum_unit_display:hover{
     background-color: #F6F6FF;
 }
 

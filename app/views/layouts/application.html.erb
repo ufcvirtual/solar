@@ -81,7 +81,7 @@
           <li id="mysolar_id">
             <%= image_tag @user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{@user.nick}", :id => "image_user" %>
             <!-- adicionar esse link depois em algum lugar -->
-            <%#= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
+<%#= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
           </li>
           <li>
             <% if can? :update, @user %>
@@ -130,7 +130,7 @@
       </div>
 
     </div>
-    
+
     <!-- Conteúdo -------------------------->
     <div id="mysolar_content" style="white-space: nowrap;">
 
@@ -149,12 +149,11 @@
       </div>
 
       <!--Mensagens de Erro, Alerta e Aviso-->
-      <% if flash[:success] || flash[:error] || flash[:notice]%>
-        &nbsp;<br/>
-        <%=raw message %>&nbsp;
-        &nbsp;<br/>
+      <% if flash[:success] || flash[:error] || flash[:notice] %>
+        <div id="flash_message" class="<%= flash.keys.first %>">
+          <%=raw message %>
+        </div>
       <% end %>
-      &nbsp;
 
       <%= yield %>
 
@@ -168,7 +167,7 @@
 
     </div>
 
-  <%#= render '/portlets/chat' %>
+<%#= render '/portlets/chat' %>
   </body>
 </html>
 
@@ -200,8 +199,8 @@
 </script>
 
 
-	<style type="text/css">
-		/*#mysolar_menu_accordion {
+<style type="text/css">
+  /*#mysolar_menu_accordion {
 			width:300px;
 			background-color:#e8e8e8;
 			padding:0;
@@ -225,4 +224,4 @@
 			border-top:3px solid black;
 			background-color: white;
 		}*/
-	</style>
+</style>

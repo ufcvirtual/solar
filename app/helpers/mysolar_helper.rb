@@ -51,8 +51,7 @@ module MysolarHelper
       ) as user_crs
       order by name, semester DESC, id ) as user_ordered_crs"
 
-      conn = ActiveRecord::Base.connection
-      conn.select_all query_current_courses
+      ActiveRecord::Base.connection.select_all query_current_courses
     end
   end
 
