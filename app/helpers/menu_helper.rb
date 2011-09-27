@@ -47,7 +47,7 @@ module MenuHelper
         # para um menu pai ser um link ele nao deve ter filhos
         if !menu["resource_id"].nil? && menu['child'].nil?
           access_controller[:bread] = menu['parent']
-          link = "<li id='parent_#{menu['parent_id']}'>" << link_to("#{t(menu['parent'].to_sym)}", access_controller, :class =>  class_menu_title) << "</li>"
+          link = "<li class='mysolar_menu_title_single' id='parent_#{menu['parent_id']}'>" << link_to("#{t(menu['parent'].to_sym)}", access_controller, :class =>  class_menu_title) << "</li>"
         elsif !menu["link"].nil?
           link = "<li><a href='#{menu['link']}'>#{t(menu['parent'].to_sym)}</a></li>"
         else

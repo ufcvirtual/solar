@@ -153,12 +153,14 @@ jQuery.fn.window_upload_files = function(options) {
  * */
 $(document).ready(function() {
     $('.mysolar_menu_title').click(function() {
-        if($(this).next('.submenu > .mysolar_menu_list').is(':visible')){
-            $('.mysolar_menu_list').slideUp("fast");
-        } else {
-            $('.mysolar_menu_list').slideUp("fast");
-            $(this).next('.submenu').children('.mysolar_menu_list').slideDown("fast");
+        if ( $(this).parent().hasClass('mysolar_menu_title_active') == false ) {
+            $('.mysolar_menu_title').each(function(){
+                $(this).parent().removeClass('mysolar_menu_title_active');
+                $(this).next('.submenu').slideUp('fast');
+            });
         }
+        $(this).parent().addClass('mysolar_menu_title_active');
+        $(this).next('.submenu').slideDown('fast');
     });
 
     // abre menu corrente

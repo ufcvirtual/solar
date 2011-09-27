@@ -474,30 +474,64 @@ a.mysolar_top_link{
 
 /********Menu do meuSolar*****************/
 #mysolar_menu_accordion{
-    display:inline-block;
+    display: inline-block;
     position: absolute;
     /*top: 250px;*/
-    left:0px;
-    width:100%;
+    left: 0px;
+    width: 100%;
 }
 
-.mysolar_menu_group{
-
+.mysolar_menu_group > ul {
+    padding: 0 10px 0 10px;
+    margin: 5px 0;
 }
 
-.mysolar_menu_title{
-    width : 170px;
+.mysolar_menu_group > ul > li {
+    background: url('../images/icon_arrow_right.png') no-repeat left 10px;
+}
+
+.mysolar_menu_title_single {
+    background: url('../images/icon_circle.png') no-repeat left 10px !important;
+}
+
+.mysolar_menu_title_active {
+    background: url('../images/icon_arrow_down.png') no-repeat left 10px !important;
+}
+
+.mysolar_menu_title {
+    width: 100%;
     margin: 2px;
+    padding-left: 12px;
     cursor: pointer;
     font-weight: normal;
-    font-family     :'Myriad Pro','Trebuchet', Arial;
-    height: 35px;
-    line-height: 35px;
-    padding-left:15px;
+    font-family: 'Myriad Pro','Trebuchet', Arial;
+    height: 30px;
+    line-height: 30px;
+    color: #003e7a;
+    font-variant: small-caps;
+    font-size: 13pt;
+/*    padding-left: 15px;*/
 }
-.mysolar_menu_list{
-    padding-left: 25px;
+
+.submenu {
     display: none;
+    padding: 5px 0 5px 10px;
+    margin: 0;
+    border-top: 3px solid #003e7a;
+    background-color: #ecf0f8; /* alternativa: f5f8fb */
+    font-size: 11pt;
+}
+
+.submenu > li {
+    padding: 5px 0;
+}
+
+.submenu > li:hover {
+    
+}
+
+.mysolar_menu_list{
+/*    padding-left: 25px;*/
 }
 
 
