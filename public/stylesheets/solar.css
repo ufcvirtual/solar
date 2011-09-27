@@ -734,8 +734,9 @@ a.mysolar_top_link{
 .mysolar_portlets_portlet {
     margin: 0 1em 1em 0;
     background-color: #fff;
-    height: 183px;
-    width: 480px;
+    min-height: 183px; /* modificação comportar agenda */
+    min-width: 262px; /* modificação comportar agenda */
+    max-width: 1395px;
     white-space: normal;
     float: left;
 }
