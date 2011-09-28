@@ -31,16 +31,15 @@ class User < ActiveRecord::Base
   validates :birthdate, :presence => true
   validates :cpf, :presence => true, :uniqueness => true
 
-  validates :address, :presence => true,:length => { :within => 10.. 99} 
-  validates :address_number, :presence =>true 
-  validates :address_neighborhood, :presence =>true,:length => { :within => 4.. 49}
-  validates :zipcode, :presence =>true
+  validates_length_of :address, :maximum => 99 
+  validates_length_of :address_neighborhood, :maximum => 49
+  validates_length_of :zipcode, :maximum => 9
 
-  validates :country, :presence =>true,:length => { :within => 6.. 90}
-  validates :state, :presence =>true
-  validates :city, :presence =>true,:length => { :within => 6.. 90}
-  validates :institution, :presence =>true,:length => { :within => 3.. 80}
-  validates :nick,:length => { :within => 3.. 34}
+  validates_length_of :country,:maximum => 90
+  validates_length_of :city, :maximum => 90
+  validates_length_of :institution, :maximum => 80
+  
+  validates :nick,:presence => true,:length => { :within => 3.. 34}
 
   #  validates :terms, :acceptance => true
   #  validates :password, :confirmation => true

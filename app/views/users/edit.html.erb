@@ -88,7 +88,7 @@
   <!--if-->
 
   <%= form_for(@user) do |fo| %>
-    <i>*campos obrigatórios</i>
+    <i><%= t(:required_fields) %></i>
     <table border="0" width="100%">
       <!-- Nome -->
       <tr>
@@ -110,7 +110,7 @@
       </tr>
       <tr>
         <td>
-          <%=  fo.text_field  :nick,:size=>"34" %>
+          <%=  fo.text_field  :nick,:size=>"34" %>*
         </td>
       </tr>
 
@@ -225,7 +225,7 @@
       </tr>
       <tr>
         <td>
-          <%= fo.label :login , "Login:",:class=>"my_cadastral_data_label_short" %>  <%=  fo.text_field  :login ,:size=>"15"%>
+          <%= fo.label :login , "Login:",:class=>"my_cadastral_data_label_short" %>  <%=  fo.text_field  :login ,:size=>"15"%>*
           <%= fo.label "old_password", t("old_password"),:class=>"my_cadastral_data_label_short" %> <%=  fo.password_field "old_password", :size=>"15", :value=>""%>
         </td>
       </tr>
@@ -244,7 +244,7 @@
       <tr style="line-height: 3px;"><td>&nbsp;</td></tr>
       <tr>
         <td>
-          <%= fo.label "radio_special", t('special_needs_question'),:class=>"my_cadastral_data_label_short",:style=>"white-space: nowrap;width:225px;text-align:left;" %>
+          <%= fo.label "radio_special", t('special_needs_question'),:class=>"my_cadastral_data_label_short",:style=>"white-space: nowrap;width:225px;text-align:left;" %>*
           <%= radio_button_tag "radio_special" , "true", true, {:id=>"sim", :onclick=>"show_special_needs('special_needs_line')"} %>
           <%= label_tag "radio_special", t('special_needs_yes'), :class=>"my_cadastral_data_label_short" , :style=>"text-align:left;" %>
           <%= radio_button_tag "radio_special" , "false", true, {:id=>"nao", :onclick=>"hide_special_needs('special_needs_line')"} %>

@@ -5,6 +5,7 @@ en:
   all: "All"
   home: "Home"
   of: "Of"
+  required_fields: "* required fields"
 
   #Página de Login
 
