@@ -333,6 +333,7 @@
   send_file_interval_error: "Envio de arquivos fora do intervalo permitido"
   not_sent: "Não Enviado"
   -: "-"
+  pending: "Pendente"
 
   # acompanhamento
   student: "Aluno"

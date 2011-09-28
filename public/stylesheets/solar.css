@@ -75,13 +75,21 @@ label.menor{
     font-weight: normal;
 }
 
-a, a.menor, a.content {
+/**
+* Tratando links
+*/
+a, a.menor, a.link_content, a.link_content_del {
     color           : #222;
     font-family     : 'Trebuchet', Arial;
     text-decoration : none;
 }
 
-a.content {
+a.link_content_del {
+    color: #EA4F52;
+    text-decoration: underline;
+}
+
+a.link_content {
     color: #204783;
     text-decoration: underline;
 }
@@ -89,6 +97,11 @@ a.content {
 a.menor {
     font-size       : 8pt;
     text-decoration : underline;
+}
+
+.more_or_less {
+    text-align: right;
+    display: block;
 }
 
 .btn-decoration {
@@ -330,7 +343,7 @@ textarea{
 #mysolar_identity {
     width: 100%;
     height: 36px;
-/*    border-bottom: 1px solid #fff;*/
+    /*    border-bottom: 1px solid #fff;*/
 }
 
 #mysolar_logo {
@@ -371,7 +384,7 @@ textarea{
 }
 
 #image_user {
-/*    vertical-align: text-bottom;*/
+    /*    vertical-align: text-bottom;*/
     height: 30px;
 }
 
@@ -388,7 +401,7 @@ a.mysolar_top_link{
 #mysolar_tabs {
     width: 100%;
     height: 34px;
-/*    background-color: #e8e8e8;*/
+    /*    background-color: #e8e8e8;*/
     background:url('../images/topbar_gradient.png') repeat-x left center #4170b6;
     border-bottom:2px solid #003e7a;
 }
@@ -457,7 +470,7 @@ a.mysolar_top_link{
     height: 11px;
     position: relative;
     left: 5px;
-/*    top: -2px;*/
+    /*    top: -2px;*/
     margin-right: 5px;
 }
 
@@ -580,11 +593,11 @@ a.mysolar_top_link{
 }
 
 .submenu > li:hover {
-    
+
 }
 
 .mysolar_menu_list{
-/*    padding-left: 25px;*/
+    /*    padding-left: 25px;*/
 }
 
 
@@ -1937,7 +1950,7 @@ ul.message_menu_listbox li ul a:hover{
  * Tabelas
 */
 
-table.tb_list {
+table.tb_list, table.tb_list_files {
     height: 30px;
     font-size: 12px;
     font-family: 'Trebuchet', 'Myriad Pro', Arial;
@@ -1950,6 +1963,18 @@ table.tb_list th {
     font-weight: bold;
 }
 
+table.tb_list_files {
+    border-right: 0px;
+}
+
+table.tb_list_files td {
+    border-top: 1px solid #d0d0d1;
+}
+
+table.tb_list_files td.file_data_info {
+    color: #787878;
+}
+
 tr.lines td, th {
     border-bottom: solid #B4B2B1 1px;
     border-left: solid #B4B2B1 1px;
@@ -1960,7 +1985,7 @@ tr.post_content {
     background-color: #F5F8FB;
 }
 
-tbody tr.lines:hover {
+tbody tr.lines:hover, table.tb_list_files tr:hover {
     background-color: #eef3fb;
 }
 
@@ -1976,14 +2001,6 @@ table.portfolio_borda_simples {
 
 table.portfolio_borda_simples tr td {
     border: 1px solid #FF0000;
-}
-
-table.portfolio_table {
-    width: 700px;
-}
-
-td.border_line {
-    border-top: 1px solid #d0d0d1;
 }
 
 .td_blue_portfolio_first {
@@ -2110,16 +2127,28 @@ td.td_student a {color: #2a538d;}
 
 }
 
+/**
+* Situacao das tarefas
+*/
+
 .assignment_corrected {
     color: #378941;
 }
 
 .assignment_sent, td.assignment_as a  {
-    color: #56b7ae;
+    color: #1CA093;
 }
 
-.assignment_not_started, .assignment_not_sent, .assignment_send, td.assignment_an a {
-    color: #204683;
+.assignment_not_sent {
+    color: #EA4F52;
+}
+
+.assignment_not_started {
+    color: #787878;
+}
+
+.assignment_send, .assignment_pending, td.assignment_an a {
+    color: #204783;
 }
 
 .breadcrumb {

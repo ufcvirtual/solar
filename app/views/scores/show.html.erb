@@ -41,7 +41,7 @@
                     <%=link_to activity["assignments_name"], {:controller => :portfolio_teacher,
                       :action => :student_detail, :id => @student.id,
                       :assignment_id => activity["assignment_id"],
-                      :send_assignment_id => activity["send_assignment_id"]}, {:class => 'content'} %>
+                      :send_assignment_id => activity["send_assignment_id"]}, {:class => 'link_content'} %>
                   <% else %>
                     <%= activity["assignments_name"] %>
                   <% end %>
@@ -82,10 +82,10 @@
             <tr class="lines">
               <% link = {:controller => :discussions, :action => :show_posts, :id => discussion["discussion_id"], :student_id => @student.id} %>
               <td class="show_posts">
-                <%= link_to(discussion["name"], link, {:class => 'content'}) %>
+                <%= link_to(discussion["name"], link, {:class => 'link_content'}) %>
               </td>
               <td class="show_posts" align="center">
-                <%= link_to(discussion["qtd"], link, {:class => 'content'}) %>
+                <%= link_to(discussion["qtd"], link, {:class => 'link_content'}) %>
               </td>
             </tr>
           <% end %>
@@ -113,14 +113,14 @@
         <%= t(:to) %>
         <input type="text" id="until-date" title="<%= t(:until_date) %>" size="9" value="<%=l Date.today, :format => :datepicker %>"/>
         <span>
-          <%=link_to t(:history_find), {:controller => :scores, :action => :amount_history_access}, {:id => 'bt-amount-history-access', :class => 'content'} %>
+          <%=link_to t(:history_find), {:controller => :scores, :action => :amount_history_access}, {:id => 'bt-amount-history-access', :class => 'link_content'} %>
         </span>
       </div>
 
       <div id="history-body" style="border-top: solid #B4B2B1 1px; padding-top: 10px;">
         <span id="history-body-label" style="padding-right: 10px;"><%=t :amount_access %>:</span>
         <span id="history-body-value">
-          <%= link_to @amount, {:controller => :scores, :action => :history_access, :student_id => @student.id}, :class => 'content' %>
+          <%= link_to @amount, {:controller => :scores, :action => :history_access, :student_id => @student.id}, :class => 'link_content' %>
         </span>
       </div>
 

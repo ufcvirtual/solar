@@ -24,7 +24,7 @@ class PortfolioTeacher < ActiveRecord::Base
                 WHEN t5.start_date > now() THEN 'not_started'
                 WHEN t3.grade IS NOT NULL THEN 'corrected'
                 WHEN COUNT(t4.id) > 0 THEN 'sent'
-                WHEN COUNT(t4.id) = 0 AND t5.end_date > now() THEN 'not_sent'
+                WHEN COUNT(t4.id) = 0 AND t5.end_date > now() THEN 'pending'
                 ELSE '-'
              END AS situation
         FROM assignments      AS t1

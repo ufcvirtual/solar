@@ -325,6 +325,7 @@ en:
   not_sent: "Not Sent"
   tests: "Tests"
   -: "-"
+  pending: "Pending"
 
   # acompanhamento
   student: "Student"

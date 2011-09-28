@@ -1,129 +1,103 @@
-<!-- Apresenta o nome da unidade curricular -->
+<div><span class="page_title"><%= t(:portfolio_title) %> <%= curriculum_unit_name %></span></div>
 
-<div>
-  <span class="page_title"><%= t(:portfolio_title) %> <%= curriculum_unit_name %></span>
-</div>
 <%= raw render_group_selection %>
+
 <!-- Portfolio -->
 
-<div>
-  <div class="portfolio_header_content">
-    <div class="portfolio_title"><%= t(:individual_activity)%></div>
-    <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
-  </div>
+<div  class="portfolio_activity_list">
+  <div id="activities_area">
+    <div class="mysolar_header">
+      <%= image_tag "icon_suitcase_portfolio.png", :alt => t(:portfolio_icon) %>
+      <h1 class="mysolar_title"><%= t(:individual_activity)%></h1>
+    </div>
 
-  <!-- Atividades individuais -->
+    <!-- Atividades individuais -->
 
-  <div id="individual_activity" class="portfolio">
-    <hr class="portfolio_line" />
+    <div id="individual_activity">
 
-    <% @individual_activities.each_with_index do |ia, idx| %>
-
-      <% if idx > 0 %>
-        <hr class="portfolio_table_division" />
-      <% end %>
-
-      <table cellpadding="5" cellspacing="0" class="portfolio_table">
-        <tr class="rowtable_even_portfolio">
-          <td class="td_blue_portfolio_first">
-            <span style="font-weight: bold;">
-              <%= link_to ia["name"], {:controller => :portfolio, :action => :activity_details, :id => ia["id"]} %>
-            </span>&nbsp;
-            <span class="portfolio_activity_date">
-              <%= t(:date_name)%>: <%=l ia["start_date"].to_time, :format => :files %> - <%=l ia["end_date"].to_time, :format => :files %>
-            </span>
-          </td>
-          <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:situation) %></span></td>
-          <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:grade) %></span></td>
-          <td class="td_blue_portfolio" align="center"><span style="font-weight: bold;"><%= t(:comments) %></span> </td>
-        </tr>
-
-        <tr class="rowtable_even_portfolio" >
-          <td class="td_blue_portfolio_first">
-
-            <% if ia["enunciation"].size > 180 %>
-
-              <div class="enunciation">
-                <div class="enunciation_slice" style="display: block;">
-                  <%= ia["enunciation"].slice(0..180) << '...' %>
-                </div>
-                <div class="enunciation_complete" style="display: none;">
+      <% @individual_activities.each_with_index do |ia, idx| %>
+        <table class="tb_list" cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr class="lines">
+              <th style="text-align: left;">
+                <%= link_to ia["name"], {:controller => :portfolio, :action => :activity_details, :id => ia["id"]}, {:class => 'link_content'} %>
+                &nbsp;
+                <%= t(:date_name)%>: <%=l ia["start_date"].to_time, :format => :files %> - <%=l ia["end_date"].to_time, :format => :files %>
+              </th>
+              <th align="center"><%= t(:situation) %></th>
+              <th align="center"><%= t(:grade) %></th>
+              <th align="center"><%= t(:comments) %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="lines">
+              <td>
+                <% if ia["enunciation"].size > 180 %>
+                  <div class="enunciation" style="white-space: normal;">
+                    <div class="enunciation_slice" style="display: block;"><%= ia["enunciation"].slice(0..180) << '...' %></div>
+                    <div class="enunciation_complete" style="display: none;"><%= ia["enunciation"] %></div>
+                    <div class="more_or_less">
+                      <a href="#" class="enunciation_more link_content" style="display: block;"><%= t(:more)%></a>
+                      <a href="#" class="enunciation_less link_content" style="display: none;"><%= t(:less)%></a>
+                    </div>
+                  </div>
+                <% else %>
                   <%= ia["enunciation"] %>
-                </div>
-                <br />
-                <div style="text-align: right; display: block;" class="more_or_less">
-                  <a href="#" class="enunciation_more" style="color: #204683; display: block;"><%= t(:more)%></a>
-                  <a href="#" class="enunciation_less" style="color: #204683; display: none;"><%= t(:less)%></a>
-                </div>
-              </div>
-
-            <% else %>
-              <%= ia["enunciation"] %><br /><br /><!-- exibe todo o conteudo se tiver poucos caracteres -->
-            <% end %>
-          </td>
-          <td class="td_blue_portfolio" style="width: 70px;" align="center">
-            <%=link_to t(ia["correction"].to_sym), {:action => :activity_details, :id => ia["id"]}, :class => "assignment_#{ia["correction"]}" %>
-          </td>
-          <td class="td_blue_portfolio" style="width: 50px; font-weight: bold;" align="center">
-            <%= (ia["grade"].nil?) ? '-' : ia["grade"].to_f %>
-          </td>
-          <td class="td_blue_portfolio" style="width: 95px;" align="center">
-            <%= image_tag( (ia["comments"].to_i > 0) ? "icon_comments.png" : "icon_no_comments.png" )%>
-          </td>
-        </tr>
-      </table>
-
-    <% end %>
-    <div style="background-color: #FFF">
-      <br/>
+                <% end %>
+              </td>
+              <td style="width: 70px; text-decoration: underline;" align="center">
+                <%=link_to t(ia["correction"].to_sym), {:action => :activity_details, :id => ia["id"]}, :class => "assignment_#{ia["correction"]}" %>
+              </td>
+              <td style="width: 50px; font-weight: bold;" align="center">
+                <%= (ia["grade"].nil?) ? '-' : ia["grade"].to_f %>
+              </td>
+              <td style="width: 95px;" align="center">
+                <%= image_tag( (ia["comments"].to_i > 0) ? "icon_comments.png" : "icon_no_comments.png" )%>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      <% end %>
     </div>
   </div>
-
   <!-- area publica -->
 
-  <div class="portfolio_header_content">
-    <div class="portfolio_title"><%= t(:public_area) %></div> <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
-  </div>
-
-  <div id="portfolio" class="portfolio">
-    <hr id="portfolio_line_pa" class="portfolio_line" />
-
-    <table cellpadding="5" cellspacing="0" class="portfolio_table">
-      <tbody align="left">
-
-        <% css_class = "" %>
-        <% @public_area.each_with_index do |pa, idx| %>
-          <% css_class = "border_line" if idx > 0 %>
-
-          <tr style="height: 35px;">
-            <td class="<%= css_class %>" style="width: 10px;"><%= image_tag icon_attachment(pa["attachment_file_name"]) %></td>
-            <td class="<%= css_class %>">
-              <%= link_to pa["attachment_file_name"], {:controller => :portfolio, :action => :download_file_public_area, :id => pa["id"]} %>
-            </td>
-            <td class="<%= css_class %>"><span class="portfolio_public_file_size"><%= format('%.2f KB', pa["attachment_file_size"].to_i/1024.0) %></span></td>
-            <td class="<%= css_class %>"><span class="portfolio_public_file_size"><%=l pa["attachment_updated_at"].to_time, :format => :files  %></span> </td>
-            <td class="<%= css_class %>">
-              <%= link_to t(:delete), {:controller => :portfolio, :action => :delete_file_public_area, :id => pa["id"]}, :confirm => "#{t(:delete_file_msg)}" %>
+  <div id="public_area" style="padding-top: 10px;">
+    <div class="mysolar_header">
+      <%= image_tag "icon_suitcase_portfolio.png", :alt => t(:portfolio_icon) %>
+      <h1 class="mysolar_title"><%= t(:public_area) %></h1>
+    </div>
+    <div id="files_public_area">
+      <table class="tb_list_files" border="0" cellpadding="5" cellspacing="0" width="100%">
+        <tbody>
+          <% @public_area.each_with_index do |pa, idx| %>
+            <tr>
+              <td style="width: 10px;">
+                <%= image_tag icon_attachment(pa["attachment_file_name"]) %>
+              </td>
+              <td>
+                <%= link_to pa["attachment_file_name"], {:controller => :portfolio, :action => :download_file_public_area, :id => pa["id"]}, {:class => 'link_content'} %>
+              </td>
+              <td class="file_data_info" style="width: 10%;" align="center">
+                <%= format('%.2f KB', pa["attachment_file_size"].to_i/1024.0) %>
+              </td>
+              <td class="file_data_info" style="width: 20%;" align="center">
+                <%=l pa["attachment_updated_at"].to_time, :format => :files  %>
+              </td>
+              <td style="width: 10%;" align="center">
+                <%= link_to t(:delete), {:controller => :portfolio, :action => :delete_file_public_area, :id => pa["id"]}, {:confirm => "#{t(:delete_file_msg)}", :class => 'link_content_del'} %>
+              </td>
+            </tr>
+          <% end %>
+          <tr>
+            <td colspan="5" class="border_line">
+              <a href="#" id="send_attachment" class="link_content"><%= t(:portfolio_upload_file) %></a>
             </td>
           </tr>
-
-        <% end %>
-        <tr style="height: 35px;">
-          <td colspan="5" class="border_line">
-            <a href="#" class="portfolio_public_file_upload_link" id="send_attachment">
-              <%= t(:portfolio_upload_file) %>
-            </a>
-          </td>
-        </tr>
-      </tbody>
-
-    </table>
-    <div style="background-color: #FFF">
-      <br/>
+        </tbody>
+      </table>
     </div>
-
   </div>
-
 </div>
 
 <%= render '/portfolio/public_files_send' %>
