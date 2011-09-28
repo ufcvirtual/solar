@@ -20,21 +20,18 @@
       <!-- Trabalhos -->
 
       <div id="assignments">
-
         <table id="assignments_list" class="tb_list" width="100%" cellpadding="0" cellspacing="0" border="0">
           <thead>
             <tr class="lines">
               <th align="left"><%= t(:assignments) %></th>
-              <th align="center" style="width: 22%;"><%= t(:date_name) %></th>
+              <th align="center" style="width: 24%;"><%= t(:date_name) %></th>
               <th align="center" style="width: 12%;"><%= t(:situation) %></th>
               <th align="center" style="width: 8%;"><%= t(:grade) %></th>
             </tr>
           </thead>
           <tbody>
             <% @activities.each_with_index do |activity, idx| %>
-
               <tr class="lines">
-
                 <td align="left">
                   <!-- verifica permissao de modificao de notas -->
                   <% if can? :student_detail, PortfolioTeacher %>
@@ -55,13 +52,11 @@
         </table>
       </div>
     </div>
-
   </div>
 
   <!-- Quantidade de participacoes em foruns -->
 
   <div class="portfolio_activity_list" style="padding-top: 10px;">
-
     <div class="mysolar_header">
       <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
       <h1 class="mysolar_title"><%= t(:amount_participation_discussions) %></h1>
@@ -92,7 +87,6 @@
         </tbody>
       </table>
     </div>
-
   </div>
 
   <!-- Historico de acesso -->
@@ -107,7 +101,6 @@
     <!-- Informacoes -->
 
     <div class="portfolio_history_access">
-
       <div id="history-search-content" style="padding-bottom: 10px;">
         <input type="text" id="from-date" title="<%= t(:from_date) %>" size="9" value="<%=l two_months_ago, :format => :datepicker %>"/>
         <%= t(:to) %>
@@ -116,14 +109,12 @@
           <%=link_to t(:history_find), {:controller => :scores, :action => :amount_history_access}, {:id => 'bt-amount-history-access', :class => 'link_content'} %>
         </span>
       </div>
-
-      <div id="history-body" style="border-top: solid #B4B2B1 1px; padding-top: 10px;">
+      <div id="history-body" style="border-top: solid #B4B2B1 1px; padding-top: 10px; padding-left: 5px;">
         <span id="history-body-label" style="padding-right: 10px;"><%=t :amount_access %>:</span>
         <span id="history-body-value">
           <%= link_to @amount, {:controller => :scores, :action => :history_access, :student_id => @student.id}, :class => 'link_content' %>
         </span>
       </div>
-
     </div>
   </div>
 </div>

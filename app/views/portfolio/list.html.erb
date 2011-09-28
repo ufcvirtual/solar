@@ -4,7 +4,7 @@
 
 <!-- Portfolio -->
 
-<div  class="portfolio_activity_list">
+<div class="portfolio_activity_list">
   <div id="activities_area">
     <div class="mysolar_header">
       <%= image_tag "icon_suitcase_portfolio.png", :alt => t(:portfolio_icon) %>
@@ -22,7 +22,9 @@
               <th style="text-align: left;">
                 <%= link_to ia["name"], {:controller => :portfolio, :action => :activity_details, :id => ia["id"]}, {:class => 'link_content'} %>
                 &nbsp;
-                <%= t(:date_name)%>: <%=l ia["start_date"].to_time, :format => :files %> - <%=l ia["end_date"].to_time, :format => :files %>
+                <span class="date_info">
+                  <%= t(:date_name)%>: <%=l ia["start_date"].to_time, :format => :files %> - <%=l ia["end_date"].to_time, :format => :files %>
+                </span>
               </th>
               <th align="center"><%= t(:situation) %></th>
               <th align="center"><%= t(:grade) %></th>
