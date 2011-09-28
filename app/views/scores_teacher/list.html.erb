@@ -13,13 +13,9 @@
     <h1 class="mysolar_title"><%= t(:group)%> <%= @group %></h1>
   </div>
 
-
-
-
   <!-- Lista dos alunos com notas -->
 
   <div id="individual_activity" class="tb_list">
-<%#*<hr class="portfolio_line" />%>
 
     <% leng_assignments = (@students.first.nil?) ? 0 : @students.first["grades"].split(',').length %>
 
@@ -41,7 +37,7 @@
           </tr>
         <% end %>
       </thead>
-      <tbody class="alignment">
+      <tbody>
         <% @students.each do |student| %>
           <tr class="lines">
             <td align="left" class="td_student">

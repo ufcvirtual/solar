@@ -75,10 +75,15 @@ label.menor{
     font-weight: normal;
 }
 
-a, a.menor {
+a, a.menor, a.content {
     color           : #222;
     font-family     : 'Trebuchet', Arial;
     text-decoration : none;
+}
+
+a.content {
+    color: #204783;
+    text-decoration: underline;
 }
 
 a.menor {
@@ -797,17 +802,6 @@ a.mysolar_top_link{
     background-color: #ffffe2;
 }
 
-/*div.widget {
-    -moz-background-inline-policy: continuous;
-    -moz-background-origin: padding;
-    float: left;
-    margin: 5px;
-    padding: 0px;
-    position: relative;
-    width: 260px;
-    height: 183px;
-    border: 1px solid #ccc;
-}*/
 .mysolar_portlets_limit{
      margin-right: 38px;
      max-width: 1700px;
@@ -2030,6 +2024,12 @@ div.label_score {
 /*table tbody tr.hover td {background-color: #a9d0f5;}*/
 
 td.td_student a {color: #2a538d;}
+
+.portfolio_history_access {
+    font-size: 10pt;
+    background-color: #F7F7F8;
+    padding-top: 10px;
+}
 
 /* AGENDA */
 
