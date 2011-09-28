@@ -18,7 +18,7 @@
     <% field_size = 44 %>
     <table class="form_usuario_table">
       <tr class="form_usuario_tr">
-        <td class="form_usuario_label" colspan="1" width="20px"><%= f.label :login%>*</td>
+        <td class="form_usuario_label" colspan="1" width="20px"><%= f.label :login %>*</td>
         <td colspan="5"><%= f.text_field :login, :id => 'login', :size=>field_size %></td>
       </tr>
       <tr class="form_usuario_tr">
@@ -133,3 +133,8 @@
 
 <% end %>
 
+<script type="text/javascript">
+  $(function(){
+    $('#password,#password_confirmation').val('');
+  });
+</script>
