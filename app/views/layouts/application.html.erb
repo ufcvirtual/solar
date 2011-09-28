@@ -78,7 +78,7 @@
           <% unless @user.errors.empty? %>
             <% @user = User.find(@user.id) %>
           <% end %>
-          <li>
+          <li id="mysolar_id">
             <%= image_tag @user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{@user.nick}", :id => "image_user" %>
             <!-- adicionar esse link depois em algum lugar -->
             <%#= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
