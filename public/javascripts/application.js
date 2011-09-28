@@ -159,8 +159,10 @@ $(document).ready(function() {
                 $(this).next('.submenu').slideUp('fast');
             });
         }
-        $(this).parent().addClass('mysolar_menu_title_active');
-        $(this).next('.submenu').slideDown('fast');
+        if ( $(this).parent().hasClass('mysolar_menu_title_single') == false ) {
+            $(this).parent().addClass('mysolar_menu_title_active');
+            $(this).next('.submenu').slideDown('fast');
+        }
     });
 
     // abre menu corrente

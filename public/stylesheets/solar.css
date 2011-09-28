@@ -1,22 +1,27 @@
 @font-face
 {
     font-family: 'Trebuchet';
-    src: url('/fonts/trebuc.ttf');
+    src: url(/fonts/trebuc.eot);
 }
 @font-face
 {
-    font-family: 'Myriad Pro';
-    src: url('/fonts/myriad.otf');
+    font-family: 'Trebuchet';
+    src: url(/fonts/trebuc.ttf);
 }
+/*@font-face
+{
+    font-family: 'Myriad Pro';
+    src: url(/fonts/myriad.otf);
+}*/
 
 img{
     border: none;
 }
 
 body{
-    background-color    : #fff;
-    cursor              : default;
-    font-family         :'Myriad Pro','Trebuchet', Arial;
+    background-color: #fff;
+    cursor: default;
+    font-family: 'Trebuchet', Arial;
 }
 
 /*Classes de mensagens flash*/
@@ -72,7 +77,7 @@ label.menor{
 
 a, a.menor {
     color           : #222;
-    font-family     :'Myriad Pro','Trebuchet', Arial;
+    font-family     : 'Trebuchet', Arial;
     text-decoration : none;
 }
 
@@ -82,7 +87,7 @@ a.menor {
 }
 
 .btn-decoration {
-    font-family: 'Myriad Pro','Trebuchet', Arial;
+    font-family: 'Trebuchet', Arial;
     text-decoration: underline;
     font-size: 10pt;
     background-color: #F5F8FB;
@@ -153,7 +158,7 @@ textarea{
     margin:  2px;
     cursor: pointer;
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     -moz-border-radius: 4px;
 }
 /****LightBox genérico****/
@@ -210,7 +215,7 @@ textarea{
 
 .headtable_blue{
     font-size: 14px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     color: #000;
     background-color: #E7EDEE;
     line-height: 25px;
@@ -237,11 +242,11 @@ textarea{
     text-align: center;
     font-weight: bold;
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
 }
 .rowtable_odd, .rowtable_even{
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     text-align: justify;
     color: #000;
     background-color: #f1f0f2;
@@ -253,7 +258,7 @@ textarea{
 .enrollment_search{
     height:12px;
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
 }
 .enrollment_search_icon{
     vertical-align: middle;
@@ -263,18 +268,18 @@ textarea{
 .select_category{
     height:19px;
     font-size: 10px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
 }
 .enrollment_label {
     color: #000;
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     width: auto;
 }
 .enrollment_link {
     color: #214684;
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     text-decoration: underline;
     cursor: pointer;
     border: 0;
@@ -299,7 +304,7 @@ textarea{
     padding:6px 4px 6px 4px;
     cursor: pointer;
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
 }
 
 /********meu solar**********/
@@ -345,6 +350,10 @@ textarea{
     display: inline-block;
     padding: 3px 6px 0 6px;
     vertical-align: middle;
+    float: left;
+    /* necessario para funcionar ok no IE7 */
+    /*    zoom: 1;
+    *display: inline;*/
 }
 
 #mysolar_top_options li:hover {
@@ -381,7 +390,7 @@ a.mysolar_top_link{
 
 #mysolar_tabs_wrapper {
     float:left;
-    line-height: 32px;
+    line-height: 28px;
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -398,6 +407,9 @@ a.mysolar_top_link{
     border-left:2px solid;
     border-bottom:2px solid;
     font-variant: small-caps;
+    /* codigo necessario para exibir corretamente no IE 7 */
+    zoom: 1;
+    *display: inline;
 }
 
 .mysolar_unit_tab {
@@ -448,6 +460,7 @@ a.mysolar_top_link{
 /* busca */
 #mysolar_extras {
     line-height: 36px;
+    height: 36px;
     float: right;
     font-size: 11pt;
     list-style-type: none;
@@ -456,7 +469,10 @@ a.mysolar_top_link{
 }
 
 #mysolar_extras li {
-    display:inline-block;
+    display: inline-block;
+    /* codigo necessario para exibir corretamente no IE 7 */
+    zoom: 1;
+    *display: inline;
 }
 
 .search_keyword{
@@ -518,18 +534,22 @@ a.mysolar_top_link{
     background: url('../images/icon_arrow_down.png') no-repeat left 10px !important;
 }
 
+.mysolar_menu_title_active > a {
+    color: #ff7418;
+}
+
 .mysolar_menu_title {
     width: 100%;
     margin: 2px;
     padding-left: 12px;
     cursor: pointer;
     font-weight: normal;
-    font-family: 'Myriad Pro','Trebuchet', Arial;
+    font-family: 'Trebuchet', Arial;
     height: 30px;
     line-height: 30px;
     color: #003e7a;
     font-variant: small-caps;
-    font-size: 13pt;
+    font-size: 12pt;
 /*    padding-left: 15px;*/
 }
 
@@ -537,9 +557,9 @@ a.mysolar_top_link{
     display: none;
     padding: 5px 0 5px 10px;
     margin: 0;
-    border-top: 3px solid #003e7a;
-    background-color: #ecf0f8; /* alternativa: f5f8fb */
-    font-size: 11pt;
+    border-top: 3px solid #ff7418;
+    background-color: #fff5ed; /* alternativa: f5f8fb */
+    font-size: 10pt;
 }
 
 .submenu > li {
@@ -862,11 +882,11 @@ hr.curriculum_unit_division_mysolar {
 .mysolar_title{
     color: #000;
     vertical-align: middle;
-    text-transform: capitalize;
     font-variant: small-caps;
     padding: 2px 0 0 0;
     margin: 0;
-    font-size: 14pt;
+    font-size: 12pt;
+    font-weight: normal;
 }
 
 .ui-sortable-placeholder {
@@ -1326,7 +1346,7 @@ div.alter_photo_text {
     margin-bottom: 3px;
     color: #000;
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     text-decoration: none;
     font-weight: bold;
     cursor: pointer;
@@ -1341,7 +1361,7 @@ div.alter_photo_text {
     height: 16px;
     width:  22px;
     font-size: 11px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     padding: 0px;
 }
 /* rolagem da lista de aulas */
@@ -1370,7 +1390,7 @@ div.alter_photo_text {
 .forum_button, .forum_button_attachment{
     color: #1c4785;
     text-decoration: underline;
-    font-family:  'Myriad Pro', 'Arial', sans;
+    font-family:  'Trebuchet', 'Arial', sans;
     font-size: 15px;
     cursor: pointer;
 }
@@ -1421,7 +1441,7 @@ div.alter_photo_text {
 
 .forum_post_link_disabled{
     color: #5C6D85;
-    font-family:  'Myriad Pro', 'Arial', sans;
+    font-family:  'Trebuchet', 'Arial', sans;
     font-size: 15px;
     text-decoration: underline line-through;
 }
@@ -1529,7 +1549,7 @@ div.alter_photo_text {
 .message_search_div,.message_div{
     color: #000;
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     text-decoration: none;
 }
 .message_div {
@@ -1548,7 +1568,7 @@ div.alter_photo_text {
 .message_main_menu{
     color: #214684;
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     text-decoration: none;
     cursor: pointer;
     display: inline;
@@ -1582,7 +1602,7 @@ div.alter_photo_text {
 }
 .message_link, .message_link_menu{
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     text-decoration: none;
     margin-right: 10px;
     color: #214684;
@@ -1598,7 +1618,7 @@ div.alter_photo_text {
 }
 .message_link_nav{
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     text-decoration: underline;
     margin-right: 10px;
     color: #214684;
@@ -1614,7 +1634,7 @@ div.alter_photo_text {
     min-height: 100px;
     white-space: normal;
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     padding: 20px;
 }
 .message_line{
@@ -1623,7 +1643,7 @@ div.alter_photo_text {
 }
 .message_nav_text {
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     text-decoration: none;
     color: #000;
     width: auto;
@@ -1633,12 +1653,12 @@ div.alter_photo_text {
     width: 500px;
     padding: 0px;
     font-size: 11px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
 }
 .message_read, .message_unread{
     color: #666;
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     font-weight: normal;
     white-space: normal;
 }
@@ -1648,7 +1668,7 @@ div.alter_photo_text {
 }
 .message_label {
     font-size: 10px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     color: #000;
     font-weight: normal;
     margin: 0px;
@@ -1671,7 +1691,7 @@ div.alter_photo_text {
 }
 .message_text_to, .message_text_body {
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     color: #000;
 }
 .message_text_body {
@@ -1681,7 +1701,7 @@ div.alter_photo_text {
 .message_recipient_box {
     border: 1px solid #eee;
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     color: #214684;
     cursor: pointer;
 }
@@ -1695,7 +1715,7 @@ div.alter_photo_text {
 }
 #div_contacts{
     font-size: 11px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     text-decoration: none;
     padding: 5px;
     color: #214684;
@@ -1735,12 +1755,12 @@ ul.message_menu_listbox li:hover{
     position: relative;
 }
 ul.message_menu_listbox li a{  /* menu nivel 1 */
-                               font-size: 12px;
-                               font-family:'Trebuchet',Arial,'Myriad Pro';
-                               text-decoration: none;
-                               color: #214684;
-                               cursor: pointer;
-                               display:block;
+    font-size: 12px;
+    font-family:'Trebuchet',Arial;
+    text-decoration: none;
+    color: #214684;
+    cursor: pointer;
+    display:block;
 }
 ul.message_menu_listbox li ul{
     display:none;
@@ -1758,14 +1778,14 @@ ul.message_menu_listbox li:hover ul{
     display:block;
 }
 ul.message_menu_listbox li ul a{  /* menu nivel 2 - opcoes */
-                                  width: 80px;
-                                  display: block;
-                                  background: #fff;
-                                  padding: 0px;
-                                  margin:  2px;
-                                  font-size: 11px;
-                                  font-family: 'Trebuchet',Arial,'Myriad Pro';
-                                  text-decoration: none;
+    width: 80px;
+    display: block;
+    background: #fff;
+    padding: 0px;
+    margin:  2px;
+    font-size: 11px;
+    font-family: 'Trebuchet',Arial;
+    text-decoration: none;
 }
 ul.message_menu_listbox li ul a:hover{
     background:#eee;}
@@ -1773,7 +1793,7 @@ ul.message_menu_listbox li ul a:hover{
 /* paginacao */
 .next_page, .prev_page, .current, .link_navigation {
     font-size: 12px;
-    font-family: 'Trebuchet',Arial,'Myriad Pro';
+    font-family: 'Trebuchet',Arial;
     text-decoration: underline;
     color: #214684;
     cursor: pointer;
@@ -1785,7 +1805,7 @@ ul.message_menu_listbox li ul a:hover{
 }
 .disabled, .message_div_navigation {
     font-size: 12px;
-    font-family: 'Trebuchet',Arial,'Myriad Pro';
+    font-family: 'Trebuchet',Arial;
     text-decoration: none;
     color: #B4B3B7;
     padding-left: 5px;
@@ -1815,7 +1835,7 @@ ul.message_menu_listbox li ul a:hover{
 #biliography{
     width: 730px;
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     color: #000;
     background-color: #F5F8FB;
     /*line-height: 25px;*/
@@ -1853,7 +1873,7 @@ ul.message_menu_listbox li ul a:hover{
 .portfolio{
     width: 700px;
     font-size: 12px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     color: #000;
     background-color: #F5F8FB;
     white-space: normal;
@@ -1968,7 +1988,7 @@ hr.portfolio_table_division {
 
 div.label_score {
     font-size: 11px;
-    font-family:'Trebuchet',Arial,'Myriad Pro';
+    font-family:'Trebuchet',Arial;
     padding-top: 10px;
 }
 
@@ -2022,7 +2042,7 @@ td.td_student a {color: #2a538d;}
 .agenda_icon_title{
     float: right;
     margin-top: 2px;
-    font-family: 'Myriad Pro';
+    font-family: 'Trebuchet';
     font-size: 11px;
     position: absolute;
     margin-left: 18px;
@@ -2084,5 +2104,5 @@ td.td_student a {color: #2a538d;}
 
 .breadcrumb {
     font-size: 12px;
-    font-family: 'Myriad Pro','Trebuchet', Arial;
+    font-family: 'Trebuchet', Arial;
 }
