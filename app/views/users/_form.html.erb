@@ -18,39 +18,39 @@
     <% field_size = 44 %>
     <table class="form_usuario_table">
       <tr class="form_usuario_tr">
-        <td class="form_usuario_label" colspan="1" width="20px"><%= f.label :login %>*</td>
+        <td class="form_usuario_label" colspan="1" width="20px"><%= f.label "#{t(:new_user_login)}*" %></td>
         <td colspan="5"><%= f.text_field :login, :id => 'login', :size=>field_size %></td>
       </tr>
       <tr class="form_usuario_tr">
-        <td class="form_usuario_label" colspan="1"><%= f.label :password %>*</td>
+        <td class="form_usuario_label" colspan="1"><%= f.label "#{t(:new_user_password)}*" %></td>
         <td colspan="5"><%= f.password_field :password , :id => 'password', :size=>field_size%></td>
       </tr>
       <tr class="form_usuario_tr" >
-        <td class="form_usuario_label" colspan="1"><%= f.label :password_confirmation, :class=>"label_usuario" %>*</td>
+        <td class="form_usuario_label" colspan="1"><%= f.label "#{t(:new_user_password_confirmation)}*", :class=>"label_usuario" %></td>
         <td colspan="5"><%= f.password_field :password_confirmation , :id => 'password_confirmation', :size=>field_size%></td>
       </tr>
       <tr class="form_usuario_tr">
-        <td class="form_usuario_label" colspan="1"><%= f.label :nick %>*</td>
+        <td class="form_usuario_label" colspan="1"><%= f.label "#{t(:new_user_nick)}*" %></td>
         <td colspan="5"><%= f.text_field :nick, :id => 'nick', :size=>field_size %></td>
       </tr>
       <tr class="form_usuario_tr">
-        <td class="form_usuario_label" colspan="1"><%= f.label :email %>*</td>
+        <td class="form_usuario_label" colspan="1"><%= f.label "#{t(:new_user_email)}*" %></td>
         <td colspan="5"><%= f.text_field :email, :id => 'email', :size=>field_size %></td>
       </tr>
       <tr class="form_usuario_tr" >
-        <td class="form_usuario_label" colspan="1"><%= f.label :email_confirmation, :class=>"label_usuario" %>*</td>
+        <td class="form_usuario_label" colspan="1"><%= f.label "#{t(:new_user_email_confirmation)}*", :class=>"label_usuario" %></td>
         <td colspan="5"><%= f.text_field  :email_confirmation ,:id => 'email_confirmation', :size=>field_size%></td>
       </tr>
       <tr class="form_usuario_tr">
-        <td class="form_usuario_label" colspan="1"><%= f.label :alternate_email, :class=>"label_usuario"%></td>
+        <td class="form_usuario_label" colspan="1"><%= f.label "#{t(:new_user_alternate_email)}*", :class=>"label_usuario"%></td>
         <td colspan="5"><%= f.text_field :alternate_email, :size=>field_size %></td>
       </tr>
       <tr class="form_usuario_tr">
-        <td class="form_usuario_label" colspan="1"><%= f.label :institution %>*</td>
+        <td class="form_usuario_label" colspan="1"><%= f.label "#{t(:new_user_institution)}*" %></td>
         <td colspan="5"><%= f.text_field :institution, :id => 'institution',:size=>field_size %></td>
       </tr>
       <tr class="form_usuario_tr">
-        <td class="form_usuario_label" colspan="1"><%= f.label :name %>*</td>
+        <td class="form_usuario_label" colspan="1"><%= f.label "#{t(:new_user_name)}*" %></td>
         <td colspan="5"><%= f.text_field :name, :id => "name", :size=>field_size %></td>
       </tr>
       <tr class="form_usuario_tr">
@@ -61,7 +61,7 @@
         <td colspan="1" style="padding-left: 9px;"><%= f.select :gender, ([["M", true], ["F", false]]) , :id => 'gender',:size=>2 %></td>
       </tr>
       <tr class="form_usuario_tr">
-        <td class="form_usuario_label" colspan="1"><%= f.label :cpf %>*</td>
+        <td class="form_usuario_label" colspan="1"><%= f.label "#{t(:new_user_cpf)}*" %></td>
         <td colspan="5"> <%= f.text_field :cpf, :size=>field_size, :id=>"cpf" %></td>
       </tr>
       <tr class="form_usuario_tr">
@@ -106,7 +106,7 @@
         <td colspan="2"><%= f.text_field :cell_phone, :size=>16,:id=>"cell_phone" %></td>
       </tr>
       <tr class="form_usuario_tr">
-        <td class="form_usuario_label" colspan="4" style="text-align: left;"><%= f.label :special_needs %>*</td>
+        <td class="form_usuario_label" colspan="4" style="text-align: left;"><%= f.label "#{t(:new_user_special_needs)}*" %></td>
         <td colspan="1" nowrap="norwap"><%= radio_button_tag "radio_special" , "true", true, {:id=>"sim", :onclick=>"show_special_needs('special_needs_line')"} %>
           <%= label_tag("radio_special", t('special_needs_yes'), :class=>"form_usuario_label") %>
         </td>

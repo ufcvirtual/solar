@@ -1,4 +1,6 @@
 "pt-BR":
+  
+  
   all: "Todos"
   home: "Home"
   of: "de"
@@ -39,7 +41,19 @@
   back: "Voltar"
   save: "Salvar"
   new_user_msg_cpf_error: " inválido"
-
+  
+  new_user_login: "Login"
+  new_user_alternate_email: "E-mail alternativo"
+  new_user_password: "Senha"
+  new_user_name: "Nome"
+  new_user_nick: "Apelido"
+  new_user_cpf: "CPF"
+  new_user_institution: "Instituição"
+  new_user_special_needs: "Necessidades especiais"
+  new_user_password_confirmation: "Confirmação da senha"
+  new_user_email_confirmation: "Confirmação do e-mail"
+  new_user_email: "E-mail"
+  
   #Meus dados
   my_data: "Meus Dados"
   my_personal_data: "Pessoais"
