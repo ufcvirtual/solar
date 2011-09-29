@@ -24,50 +24,49 @@
 
       <!-- Arquivos de trabalho -->
 
-      <div style="padding-left: 10px; padding-right: 10px; overflow: auto;">
-        <div id="div_header" style="padding-bottom: 10px;">
-          <div id="header_left" style="float: left;"><%= t(:files_assignments) %>:</div>
-          <div id="header_rigth" style="float: right; padding-right: 50px;"><%= t(:grade) %>:</div>
+      <div id="list_files_and_grade" style="overflow: auto;">
+        <div id="list_files" style="float: left;">
+          <table class="tb_list_files" cellpadding="5" cellspacing="0" border="0" style="width: 380px;">
+            <thead>
+              <tr>
+                <th style="text-align: left;"><%= t(:files_assignments) %>:</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @files.each do |f| %>
+                <tr>
+                  <td style="text-align: right;">
+                    <div class="files_name">
+                      <% file_name = f["attachment_file_name"].length > 35? f["attachment_file_name"].slice(0..35) + '...' : f["attachment_file_name"] %>
+                      <%= link_to file_name, {:action => :download_files_student,
+                        :id => f["id"], :students_id => @student_id,
+                        :send_assignment_id => @send_assignment_id}, {:class => 'link_content'} %>
+                    </div>
+                    <div class="date_info">
+                      <%= t(:sent_in) %> <%=l f["attachment_updated_at"].to_time, :format => :files %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
         </div>
-        <br />
-        <div id="div_body_pa">
-          <div id="div_body_left" style="display: inline-block;">
-            <% @files.each do |f| %>
-              <div class="list_files" style="padding-bottom: 10px; text-align: right;">
-                <div class="files_name">
-                  <%= link_to f["attachment_file_name"], {:action => :download_files_student,
-                    :id => f["id"], :students_id => @student_id,
-                    :send_assignment_id => @send_assignment_id}, {:class => 'link_content'} %>
-                </div>
-                <div class="files_date"><span style="font-style: italic; color: gray;"><%= t(:sent_in) %> <%=l f["attachment_updated_at"].to_time, :format => :files %></span></div>
-              </div>
-            <% end %>
-            <!-- informa que nenhum trabalho foi enviado -->
-            <% if @files.first.nil? %>
-              <span style="font-style: italic; color: gray;"><%= t(:assignment_not_sent) %></span>
-            <% end %>
-          </div>
-          <div id="div_body_right" style="float: right;">
-            <%= f.text_field :grade, :value => @grade, :size => 4 %>
-          </div>
+        <div id="list_grade" style="float: right; width: 95px;">
+          <div><%= t(:grade) %>:</div>
+          <%= f.text_field :grade, :value => @grade, :size => 4 %>
         </div>
       </div>
 
-      <div style="padding-bottom: 10px; padding-left: 10px;">
-        <!-- comentarios sobre o trabalho enviado -->
-        <span><%= t(:comment) %>:</span><br /><br />
+      <div id="comment_teacher" style="padding-top: 10px;">
+        <span><%= t(:comment) %>:</span>
         <div id="teachers_comments" style="text-align: center; padding-bottom: 10px;">
           <%= f.text_area :comment, :value => @comment, :rows => 10, :cols => 50 %>
         </div>
         <span class="portfolio_activity_mright" style="float: right;">
           <span>
-            <%= link_to t(:back),
-              {:controller => :scores, :action => :show, :student_id => @student_id},
-              {:name => t(:back).downcase, :class => 'btn-decoration'} %>
+            <input type="button" class="btn btn_blue" name="<%= t(:back).downcase %>" value="<%= t(:back) %>" id="back_to_show" />
           </span>
-          <span>
-            <%= f.submit t(:save), {:class => 'btn-decoration'} %>
-          </span>
+          <span><%= f.submit t(:save), {:class => 'btn btn_blue'} %></span>
         </span>
         &nbsp;
       </div>
@@ -82,28 +81,29 @@
 
     <div class="mysolar_header">
       <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
-      <h1 class="mysolar_title"><%= t(:attachments) %></h1>
+      <h1 class="mysolar_title"><%= t(:sent_files) %></h1>
     </div>
 
     <% unless @comments_files.first.nil? %>
       <div id="list_files_sent">
         <table class="tb_list_files" border="0" width="100%" cellspacing="0" cellpadding="5">
           <tbody>
-            <% @comments_files.each do |c| %>
+            <% @comments_files.each do |file_sent| %>
               <tr>
-                <td align="right">
-                  <div id="files_list">
-                    <span>
-                      <%= link_to c["attachment_file_name"], {:controller => :portfolio, :action => :download_file_comment, :id => c["id"]}, {:class => 'link_content'}%>
-                    </span><br />
-                    <span class="date_info">
-                      <%= t(:sent_in) %> <%=l c["attachment_updated_at"], :format => :files %>
-                    </span>
-                  </div>
+                <td style="width: 10px;">
+                  <%= image_tag icon_attachment(file_sent["attachment_file_name"]) %>
                 </td>
-                <td align="center" style="width: 20%;">
+                <td>
+                  <% file_name = file_sent["attachment_file_name"].length > 35 ? file_sent["attachment_file_name"].slice(0..35) + '...' : file_sent["attachment_file_name"] %>
+                  <%= link_to file_name, {:controller => :portfolio, :action => :download_file_comment,
+                    :id => file_sent["id"]}, {:class => 'link_content'}%>
+                </td>
+                <td class="file_data_info">
+                  <span><%=l file_sent["attachment_updated_at"], :format => :files %></span>
+                </td>
+                <td>
                   <%= link_to t(:delete), {
-                    :action => :delete_file, :comment_file_id => c["id"],
+                    :action => :delete_file, :comment_file_id => file_sent["id"],
                     :students_id => @student_id, :send_assignment_id => @send_assignment_id
                   }, {:confirm => "#{t(:delete_file_msg)}", :class => 'link_content_del'} %>
                 </td>
@@ -132,6 +132,12 @@
       <% end %>
     </div>
   </div>
-
-
 </div>
+
+<script type="text/javascript">
+  $(function(){
+    $('#back_to_show').click(function(){
+      window.location.href = '/scores/show?student_id=<%= @student_id %>';
+    });
+  });
+</script>

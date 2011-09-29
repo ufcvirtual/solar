@@ -12,7 +12,7 @@
       <h1 class="mysolar_title">
         <div style="text-align: left; overflow: auto;">
           <span style="float: left;"><%= @activity.name %></span>
-          <span class="date_info_title">
+          <span style="float: right;" class="date_info">
             <%= t(:date_name)%>: <%=l @activity.schedule.start_date.to_time, :format => :files %> - <%=l @activity.schedule.end_date.to_time, :format => :files %>
           </span>
         </div>
@@ -65,15 +65,15 @@
           <% end %>
           <% @files_comments.each_with_index do |reg, idx| %>
             <tr>
-              <td class="border_line" style="width: 10px;"><%= image_tag icon_attachment(reg["attachment_file_name"]) %></td>
-              <td class="border_line">
-                <%= link_to reg["attachment_file_name"], {:controller => :portfolio,
-                  :action => :download_file_comment, :id => reg["id"]}, {:class => 'link_content'} %>
+              <td style="width: 10px;"><%= image_tag icon_attachment(reg["attachment_file_name"]) %></td>
+              <td>
+                <% file_name = reg["attachment_file_name"].length > 35 ? reg["attachment_file_name"].slice(0..35) + '...' : reg["attachment_file_name"] %>
+                <%= link_to file_name, {:controller => :portfolio, :action => :download_file_comment, :id => reg["id"]}, {:class => 'link_content'} %>
               </td>
-              <td class="border_line file_data_info">
+              <td class="file_data_info">
                 <%= format('%.2f KB', reg["attachment_file_size"].to_i/1024.0) %>
               </td>
-              <td class="border_line">
+              <td>
                 <%= t(:sent_in) %>:
                 <span class="date_info">
                   <%=l reg["attachment_updated_at"], :format => :files unless reg["attachment_updated_at"].nil? %>
@@ -105,8 +105,8 @@
                 <%= image_tag icon_attachment(file_sent["attachment_file_name"]) %>
               </td>
               <td>
-                <%= link_to file_sent["attachment_file_name"], {:controller => :portfolio,
-                  :action => :download_file_individual_area, :id => file_sent["id"]}, {:class => 'link_content'} %>
+                <% file_name = file_sent["attachment_file_name"].length > 35 ? file_sent["attachment_file_name"].slice(0..35) + '...' : file_sent["attachment_file_name"] %>
+                <%= link_to file_name, {:controller => :portfolio, :action => :download_file_individual_area, :id => file_sent["id"]}, {:class => 'link_content'} %>
               </td>
               <td class="file_data_info">
                 <span><%= format('%.2f KB', file_sent["attachment_file_size"].to_i/1024.0) %></span>
