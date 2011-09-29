@@ -873,8 +873,7 @@ a.mysolar_top_link{
     position: relative;
     overflow: auto;
     width: 100%;
-    height: auto;
-    min-height: 152px;
+    height: 162px;
 }
 
 #mysolar_curriculum_unit_wrapper {
