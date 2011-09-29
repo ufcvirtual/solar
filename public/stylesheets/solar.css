@@ -829,7 +829,7 @@ a.mysolar_top_link{
     background-color: #fff;
     min-height: 183px; /* modificação comportar agenda */
     min-width: 262px; /* modificação comportar agenda */
-    max-width: 1395px;
+    max-width: 1164px;
     white-space: normal;
     float: left;
 }
@@ -846,11 +846,16 @@ a.mysolar_top_link{
     margin-right: -100%;
 }
 
+<<<<<<< HEAD
 /**
  * Tratando dos titulos dos conteudos
 */
 
 .mysolar_header {
+=======
+.mysolar_portlets_header {
+    font-variant: small-caps;
+>>>>>>> 6560243
     height: 26px;
     border-bottom: 4px solid #204783;
 }
