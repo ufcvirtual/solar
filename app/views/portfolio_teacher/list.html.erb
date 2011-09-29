@@ -1,35 +1,27 @@
-
-<!-- Apresenta o nome da unidade curricular -->
 <div>
   <span class="page_title"><%= t(:portfolio_title) %></span>
   <span class="page_title"><%= curriculum_unit_name %></span>
 </div>
 
 <!-- Portfolio -->
-<div>
-  <div class="portfolio_header_content">
-    <div class="portfolio_title"><%= t(:group) %>&nbsp;<%= @group.code %></div>
-    <div class="portfolio_image"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %></div>
+<div class="portfolio_activity_list">
+  <div class="mysolar_header">
+    <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
+    <h1 class="mysolar_title"><%= t(:group) %>&nbsp;<%= @group.code %></h1>
   </div>
 
   <!-- lista de alunos -->
-  <div id="individual_activity" class="portfolio">
-    <hr class="portfolio_line" />
+  <div id="individual_activity">
 
-    <table cellpadding="5" cellspacing="0" class="portfolio_table">
+    <table cellpadding="5" cellspacing="0" class="tb_list" width="100%">
       <tbody>
         <% @students.each_with_index do |student, idx| %>
-
-          <% class_name = ((idx % 2) == 0) ? 'rowtable_even' : 'rowtable_odd' %>
-          <tr class="<%= class_name %>">
-            <td><%=link_to student["name"], {:controller => :scores, :action => :show, :student_id => student["id"]} %></td>
+          <tr class="lines">
+            <td><%=link_to student["name"], {:controller => :scores, :action => :show, :student_id => student["id"]}, {:class => 'link_content'} %></td>
           </tr>
         <% end %>
       </tbody>
     </table>
 
-    <div style="background-color: #FFF">
-      <br/>
-    </div>
   </div>
 </div>

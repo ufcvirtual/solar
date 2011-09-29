@@ -19,9 +19,10 @@
         <table class="tb_list" cellpadding="0" cellspacing="0" border="0">
           <thead>
             <tr class="lines">
-              <th style="text-align: left;">
-                <%= link_to ia["name"], {:controller => :portfolio, :action => :activity_details, :id => ia["id"]}, {:class => 'link_content'} %>
-                &nbsp;
+              <th>
+                <span style="float: left;">
+                  <%= link_to ia["name"], {:controller => :portfolio, :action => :activity_details, :id => ia["id"]}, {:class => 'link_content'} %>
+                </span>
                 <span class="date_info">
                   <%= t(:date_name)%>: <%=l ia["start_date"].to_time, :format => :files %> - <%=l ia["end_date"].to_time, :format => :files %>
                 </span>
@@ -47,7 +48,7 @@
                   <%= ia["enunciation"] %>
                 <% end %>
               </td>
-              <td style="width: 70px; text-decoration: underline;" align="center">
+              <td style="width: 80px; text-decoration: underline;" align="center">
                 <%=link_to t(ia["correction"].to_sym), {:action => :activity_details, :id => ia["id"]}, :class => "assignment_#{ia["correction"]}" %>
               </td>
               <td style="width: 50px; font-weight: bold;" align="center">
