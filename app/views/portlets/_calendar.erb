@@ -3,10 +3,10 @@
     <%= image_tag "icon_agenda.png", :alt=>t(:icon_agenda) %>
     <%= t(:mysolar_agenda) %>
   </div>
-  <div class="mysolar_portlets_content">
+  <div class="mysolar_portlets_content" style="height: auto; min-height: 110px;">
     <div class="mysolar_portlets_agenda_events">
       <div id="agenda"></div>
-      <div class="calendar_events"></div>
+      <div class="calendar_events" style="height: 46px;"></div>
       <div id="dates-schedules-events" style="display: none;">
         <span id="dates-values"><%=raw @scheduled_events %></span>
       </div>
