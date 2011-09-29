@@ -808,6 +808,10 @@ a.mysolar_top_link{
     height: 183px;
     border: 1px solid #ccc;
 }*/
+.mysolar_portlets_limit{
+     margin-right: 38px;
+     max-width: 1700px;
+}
 
 .mysolar_portlets_wrapper {
      padding-right: 250px;
