@@ -846,16 +846,14 @@ a.mysolar_top_link{
     margin-right: -100%;
 }
 
-<<<<<<< HEAD
+
 /**
  * Tratando dos titulos dos conteudos
 */
 
 .mysolar_header {
-=======
-.mysolar_portlets_header {
+
     font-variant: small-caps;
->>>>>>> 6560243
     height: 26px;
     border-bottom: 4px solid #204783;
 }
