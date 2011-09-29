@@ -8,8 +8,9 @@ class Schedule < ActiveRecord::Base
 
   def self.all_by_offer_id_and_group_id_and_user_id(offer_id, group_id, user_id, period = false, date_search = nil)
 
-    date_search_option, limit = '', ''
+    date_search_option, limit, list_all_schedules = '', '', ''
     limit = 'LIMIT 2' if period
+    list_all_schedules = " WHERE (t3.group_id = #{group_id} OR t3.offer_id = #{offer_id})" unless group_id.nil? && offer_id.nil?
     date_search_option = "AND (t2.start_date = current_date OR t2.end_date = current_date)" if date_search.nil? && period
     date_search_option = "AND (t2.start_date = '#{date_search}' OR t2.end_date = '#{date_search}')" unless date_search.nil?
 
@@ -70,7 +71,7 @@ class Schedule < ActiveRecord::Base
           FROM discussions             AS t1
           JOIN schedules               AS t2 ON t2.id = t1.schedule_id
           JOIN cte_all_allocation_tags AS t3 ON t3.allocation_tag_id = t1.allocation_tag_id
-         WHERE (t3.group_id = #{group_id} OR t3.offer_id = #{offer_id})
+           #{list_all_schedules}
            #{date_search_option}
       )
       UNION
@@ -79,7 +80,7 @@ class Schedule < ActiveRecord::Base
           FROM lessons                 AS t1
           JOIN schedules               AS t2 ON t2.id = t1.schedule_id
           JOIN cte_all_allocation_tags AS t3 ON t3.allocation_tag_id = t1.allocation_tag_id
-         WHERE (t3.group_id = #{group_id} OR t3.offer_id = #{offer_id})
+           #{list_all_schedules}
            #{date_search_option}
       )
       UNION
@@ -88,7 +89,7 @@ class Schedule < ActiveRecord::Base
         FROM assignments             AS t1
         JOIN schedules               AS t2 ON t2.id = t1.schedule_id
         JOIN cte_all_allocation_tags AS t3 ON t3.allocation_tag_id = t1.allocation_tag_id
-       WHERE (t3.group_id = #{group_id} OR t3.offer_id = #{offer_id})
+           #{list_all_schedules}
            #{date_search_option}
       )
       UNION
@@ -97,7 +98,7 @@ class Schedule < ActiveRecord::Base
         FROM schedule_events         AS t1
         JOIN schedules               AS t2 ON t2.id = t1.schedule_id
         JOIN cte_all_allocation_tags AS t3 ON t3.allocation_tag_id = t1.allocation_tag_id
-       WHERE (t3.group_id = #{group_id} OR t3.offer_id = #{offer_id})
+           #{list_all_schedules}
            #{date_search_option}
       )
     ) AS t1

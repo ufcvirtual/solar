@@ -132,8 +132,23 @@ class UsersController < ApplicationController
   ##############################
 
   def mysolar
+
+    user_id  = current_user.id
     set_active_tab_to_home
-    @user = User.find(current_user.id) if current_user
+    @user = User.find(user_id) if current_user
+
+
+    ######
+    # Portlet do calendario
+    # destacando dias que possuem eventos
+    ######
+    schedules_events = Schedule.all_by_offer_id_and_group_id_and_user_id(nil, nil, user_id)
+    schedules_events_dates = schedules_events.collect { |schedule_event|
+      [schedule_event['start_date'], schedule_event['end_date']]
+    }
+
+    @scheduled_events = schedules_events_dates.flatten.uniq
+
   end
 
   ######################################

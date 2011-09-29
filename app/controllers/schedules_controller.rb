@@ -15,14 +15,23 @@ class SchedulesController < ApplicationController
   end
 
   def show
-    offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
-    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+
+    # verifica se exibe o link para visualizar a agenda completa
+    @link = true
     user_id = current_user.id
     date = params[:date]
     period = true
 
-    # tem q considerar a data q tu passou
-    @schedule = Schedule.all_by_offer_id_and_group_id_and_user_id(offer_id, group_id, user_id, period, date)
+    # requisicao vinda do mysolar
+    unless params[:list_all_schedule].nil?
+      @link = false
+      @schedule = Schedule.all_by_offer_id_and_group_id_and_user_id(nil, nil, user_id, period, date)
+    else
+      offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+      group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+      # tem q considerar a data q tu passou
+      @schedule = Schedule.all_by_offer_id_and_group_id_and_user_id(offer_id, group_id, user_id, period, date)
+    end
 
     render :layout => false
 

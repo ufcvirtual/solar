@@ -1,30 +1,94 @@
-<%#
-#Portlet do MySolar que exibe as Atividades Recentes
-%>
-
 <div class="mysolar_portlets_portlet mysolar_portlets_side"  id="my_solar_portlet_4" style="top: -200px">
   <div class="mysolar_portlets_header" style="top: -10px;">
     <%= image_tag "icon_agenda.png", :alt=>t(:icon_agenda) %>
     <%= t(:mysolar_agenda) %>
   </div>
-  <!-- 
-    <hr style="border: none; background-color: #204683; height: 4px; left: 0px; position: relative; top:-18px; margin-left:0px; margin-bottom: 0px;width: 262px;"/>
-  -->
   <div class="mysolar_portlets_content">
     <div class="mysolar_portlets_agenda_events">
-      <script>
-        $(function() {
-          $( "#datepicker" ).datepicker();
-        });
-      </script>
-
-      <div id="datepicker">
-
-      </div>
-      <!-- Classe que carrega o Ajax -->
+      <div id="agenda"></div>
       <div class="calendar_events"></div>
+      <div id="dates-schedules-events" style="display: none;">
+        <span id="dates-values"><%=raw @scheduled_events %></span>
+      </div>
     </div>
 
+    <script type="text/javascript">
+
+      //--------------------------------------
+      // Destaca dias que possuem algum evento
+      //--------------------------------------
+
+      var highlightDay = function(date) {
+
+        // recuperando as datas dos eventos correntes
+        var all_dates_schedules_events = eval($('#dates-values', $('#dates-schedules-events')).html());
+
+        for (var idx in all_dates_schedules_events) {
+          // esperando o formato yyyy-mm-dd
+          var date_split = all_dates_schedules_events[idx].split('-');
+          var ano = date_split[0];
+          var mes = (date_split[1] - 1); // a contagem do mes começa com 0
+          var dia = date_split[2];
+          var date_schedule = new Date(ano, mes, dia);
+
+          if (date.toString() == date_schedule.toString())
+            return [true, 'highlight-date-mark'];
+        }
+
+        return [true, ''];
+      }
+
+      //--------------------------------------------------------
+      // Quando ocorre um evento de mudanca de dia, as schedules
+      // para o novo dia devem ser exibidas
+      //--------------------------------------------------------
+
+      var changeDate = function(dateText) {
+        $.get('/schedules/show', {
+          date: dateText,
+          list_all_schedule: true
+        },
+        function(response) {
+          $('.calendar_events').html(response);
+          $('.curriculum_unit_portlet_link_more').remove();
+        });
+      }
+
+      //-----------------------------------------
+      // Exibe a agenda no portlet
+      // Obs.: esta funcao deve permanecer global
+      //-----------------------------------------
+
+      function showAgenda(){
+        // carregando eventos do dia atual
+        var today = new Date();
+        changeDate(today.toGMTString());
+
+        var local = '<%=I18n.locale%>';
+        var locale = $.datepicker.regional[local];
+        if (local=='en')
+          locale = $.datepicker.regional['en-GB']
+
+        $("#agenda").datepicker({
+          option: locale,
+          onSelect: function(dateText, inst) {
+            changeDate(dateText);
+          },
+          beforeShowDay: highlightDay
+        });
+      }
+
+      $(function() {
+
+        //--------------------------------------------
+        // Exibe a agenda ao terminar o load da pagina
+        //--------------------------------------------
+
+        showAgenda();
+      });
+
+
+    </script>
   </div>
 </div>
 <br/>
