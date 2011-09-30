@@ -1,57 +1,63 @@
-<div>
-<span class="page_title"><%= @discussion["name"] %></span>
-<div id="forum_description">
-  <%= @discussion["description"] %>
-</div>
+<div class="presentation_area">
 
-<!--//------------- Barra Superior--------------->
-<div class="forum_navigation_bar">
-  <div style="text-align: center;">
-    <span style="float:left">
-      <%if valid_date%>
-        <a href="javascript:clearFormData()" id="NewPostButton" class="forum_button"><%= t("forum_new_message")%></a>
-      <%else%>
-        <a  class="forum_post_link_disabled"><%= t("forum_new_message")%></a>
-      <%end%>
-    </span>
-
-    <span style="float:right;">
-      <%if @display_mode == "PLAINLIST"%>
-        <a href="javascript:showAsThread()" class="forum_button forum_button_view_mode"><%=  t("forum_show_thread")%>
-          <%= image_tag "discussion_thread.png", :alt => '' %>
-        </a>
-      <%else%>
-        <a href="javascript:showAsPlainList()" class="forum_button forum_button_view_mode"><%=  t("forum_show_plainlist")%>
-          <%= image_tag "discussion_plainlist.png", :alt => '' %>
-        </a>
-      <%end%>
-    </span>
-    <%=raw render_pagination_bar(count_discussion_posts(@discussion.id,(@display_mode=="PLAINLIST")).to_s)%>
+  <div class="mysolar_header">
+    <%= image_tag "icon_forum.png", :alt=>t(:icon_forum) %>
+    <h1 class="mysolar_title"><%= @discussion["name"] %></h1>
   </div>
-</div>
-<!--//------------- Fim da Barra Superior--------------->
 
-<!--//------------- Exibição de Posts--------------->
-<div style="max-width:640px">
-  <%if @display_mode == "PLAINLIST"%>
-    <% @posts.each do |post|%>
-      <%= raw show_post(post, false)%>
-    <%end%>
-  <%else%>
-    <% @posts.each do |post|%>
-      <%= raw show_post(post)%>
-    <%end%>
-  <%end%>
-</div>
 
-<%= form_for(:new_discussion_post, :url => {:action => "new_post"}, :html => { :id => "new_post_form", :multipart => true} ) do |f|%>
-  <%= hidden_field_tag(:content, "") %>
-  <%= hidden_field_tag(:discussion_id, @discussion["id"]) %>
-  <%= hidden_field_tag(:discussion_post_id, "") %>
-  <%= hidden_field_tag(:parent_post_id, "") %>
-  <%= hidden_field_tag(:display_mode, @display_mode) %>
-  <%= hidden_field_tag(:current_page, @current_page) %>
-<% end %>
+  <div id="forum_description">
+    <%= @discussion["description"] %>
+  </div>
+
+  <!--//------------- Barra Superior--------------->
+  <div class="forum_navigation_bar">
+    <div style="text-align: center;">
+      <span style="float:left">
+        <%if valid_date%>
+          <a href="javascript:clearFormData()" id="NewPostButton" class="forum_button"><%= t("forum_new_message")%></a>
+        <%else%>
+          <a  class="forum_post_link_disabled"><%= t("forum_new_message")%></a>
+        <%end%>
+      </span>
+
+      <span style="float:right;">
+        <%if @display_mode == "PLAINLIST"%>
+          <a href="javascript:showAsThread()" class="forum_button forum_button_view_mode"><%=  t("forum_show_thread")%>
+            <%= image_tag "discussion_thread.png", :alt => '' %>
+          </a>
+        <%else%>
+          <a href="javascript:showAsPlainList()" class="forum_button forum_button_view_mode"><%=  t("forum_show_plainlist")%>
+            <%= image_tag "discussion_plainlist.png", :alt => '' %>
+          </a>
+        <%end%>
+      </span>
+      <%=raw render_pagination_bar(count_discussion_posts(@discussion.id,(@display_mode=="PLAINLIST")).to_s)%>
+    </div>
+  </div>
+  <!--//------------- Fim da Barra Superior--------------->
+
+  <!--//------------- Exibição de Posts--------------->
+  <div style="max-width:640px">
+    <%if @display_mode == "PLAINLIST"%>
+      <% @posts.each do |post|%>
+        <%= raw show_post(post, false)%>
+      <%end%>
+    <%else%>
+      <% @posts.each do |post|%>
+        <%= raw show_post(post)%>
+      <%end%>
+    <%end%>
+  </div>
+
+  <%= form_for(:new_discussion_post, :url => {:action => "new_post"}, :html => { :id => "new_post_form", :multipart => true} ) do |f|%>
+    <%= hidden_field_tag(:content, "") %>
+    <%= hidden_field_tag(:discussion_id, @discussion["id"]) %>
+    <%= hidden_field_tag(:discussion_post_id, "") %>
+    <%= hidden_field_tag(:parent_post_id, "") %>
+    <%= hidden_field_tag(:display_mode, @display_mode) %>
+    <%= hidden_field_tag(:current_page, @current_page) %>
+  <% end %>
 </div>
 <!--//------------- Fim da Exibição de Posts--------------->
 

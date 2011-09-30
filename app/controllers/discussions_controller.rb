@@ -60,9 +60,9 @@ class DiscussionsController < ApplicationController
       plain_list = (@display_mode == "PLAINLIST")
       
       @posts = DiscussionPost.discussion_posts(@discussion.id, plain_list, @current_page)
-   else
-    redirect_to "/discussions/list"
-   end 
+    else
+      redirect_to "/discussions/list"
+    end
   end
 
   def new_post

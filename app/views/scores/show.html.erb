@@ -1,13 +1,11 @@
-
 <div><span class="page_title"><%= t(:scores_of) %> <%= curriculum_unit_name %></span></div>
 
 <%= raw render_group_selection %>
 
 <!-- Lista de atividades do aluno -->
 
-<div class="portfolio_activity_list">
+<div class="presentation_area">
   <div>
-
     <div class="mysolar_header">
       <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
       <h1 class="mysolar_title"><%= @student.name %></h1>
@@ -15,7 +13,7 @@
 
     <!-- Tabelas de atividades -->
 
-    <div class="portfolio_activity_list">
+    <div>
 
       <!-- Trabalhos -->
 
@@ -33,7 +31,7 @@
             <% @activities.each_with_index do |activity, idx| %>
               <tr class="lines">
                 <td align="left">
-                  <!-- verifica permissao de modificao de notas -->
+                  <%# verifica permissao de modificao de notas %>
                   <% if can? :student_detail, PortfolioTeacher %>
                     <%=link_to activity["assignments_name"], {:controller => :portfolio_teacher,
                       :action => :student_detail, :id => @student.id,
@@ -56,7 +54,7 @@
 
   <!-- Quantidade de participacoes em foruns -->
 
-  <div class="portfolio_activity_list" style="padding-top: 10px;">
+  <div style="padding-top: 10px;">
     <div class="mysolar_header">
       <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
       <h1 class="mysolar_title"><%= t(:amount_participation_discussions) %></h1>
