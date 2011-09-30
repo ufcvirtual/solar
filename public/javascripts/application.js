@@ -155,7 +155,7 @@ $(document).ready(function() {
     $('.mysolar_menu_title').click(function() {
         if ( $(this).parent().hasClass('mysolar_menu_title_active') == false ) {
             $('.mysolar_menu_title').each(function(){
-                $(this).parent().removeClass('mysolar_menu_title_active');
+                $(this).parent().removeClass('mysolar_menu_title_active').removeClass('mysolar_menu_title_single_active');
                 $(this).next('.submenu').slideUp('fast');
             });
         }
@@ -163,7 +163,7 @@ $(document).ready(function() {
             $(this).parent().addClass('mysolar_menu_title_active');
             $(this).next('.submenu').slideDown('fast');
         } else {
-            $(this).parent().addClass('mysolar_menu_title_active');
+            $(this).parent().addClass('mysolar_menu_title_single_active');
         }
     });
 

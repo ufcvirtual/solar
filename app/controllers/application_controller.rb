@@ -39,6 +39,8 @@ class ApplicationController < ActionController::Base
     session[:active_tab] = 'Home'
     # limpa o breadcrumb
     clear_breadcrumb_after(BreadCrumb_First_Level)
+    #limpando menu acionado
+    session[:current_menu] = nil
   end
 
   # Seta os valores para o segundo nivel de breadcrumb
@@ -95,6 +97,8 @@ class ApplicationController < ActionController::Base
   def activate_tab
     name = params[:name]
     session[:active_tab] = name
+    #limpando menu acionado
+    session[:current_menu] = nil
 
     unless session[:opened_tabs].nil?
       # redireciona de acordo com o tipo de aba ativa

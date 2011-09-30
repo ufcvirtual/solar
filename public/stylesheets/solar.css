@@ -550,6 +550,7 @@ a.mysolar_top_link{
 
 .mysolar_menu_title_single_active {
     border-bottom: 3px solid #ff7418;
+    background: url('../images/icon_circle.png') no-repeat left 10px !important;
 }
 
 .mysolar_menu_title_single_active a {
