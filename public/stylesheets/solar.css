@@ -464,7 +464,7 @@ a.mysolar_top_link{
 
 /* fechar das abas */
 .tabs_close {
-    background: url('../images/bt_close_tabs.png') no-repeat right bottom;
+    background: url('../images/tabs_close.png') no-repeat right bottom;
     display: inline-block;
     width: 11px;
     height: 11px;
