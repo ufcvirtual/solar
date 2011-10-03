@@ -19,22 +19,22 @@
                 <%msgLogin << msg %>
               <%end%>  
               <%if (msg.include?(t(:new_user_password))) %>
-                <%msgPassword << msg %>
+                <%msgPassword << msg + "\n" %>
               <%end%>
               <%if (msg.include?(t(:new_user_nick))) %>
-                <%msgNick << msg %>
+                <%msgNick << msg + "\n" %>
               <%end%>
               <%if (msg.include?(t(:new_user_email))) %>
-                <%msgEmail << msg %>
+                <%msgEmail << msg + "\n" %>
               <%end%>
               <%if (msg.include?(t(:new_user_institution))) %>
-                <%msgInstitution << msg %>
+                <%msgInstitution << msg + "\n" %>
               <%end%>
               <%if (msg.include?(t(:new_user_name))) %>
-                <%msgName << msg %>
+                <%msgName << msg + "\n" %>
               <%end%>
               <%if (msg.include?(t(:new_user_cpf))) %>
-                <%msgCPF << msg %>
+                <%msgCPF << msg + "\n" %>
               <%end%>
           <% end %>       
         </div>   
@@ -45,7 +45,7 @@
       <tr class="form_usuario_tr">
         <td class="form_usuario_label" colspan="1" width="20px"><%= f.label "#{t(:new_user_login)}*" %></td>
         <td colspan="5"><%= f.text_field :login, :id => 'login', :size=>field_size %></td>
-        <td><%=  msgLogin %> </td>
+        <td><%= msgLogin %> </td>
       </tr>
       <tr class="form_usuario_tr">
         <td class="form_usuario_label" colspan="1"><%= f.label "#{t(:new_user_password)}*" %></td>
