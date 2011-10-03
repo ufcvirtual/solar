@@ -378,6 +378,8 @@ en:
     formats:
       default: "%m/%d/%Y"
       datepicker: "%Y-%m-%d"
+      month_and_year: "%b %Y"
+      day_and_month: "%d/%b"
     month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
     abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Spt, Oct, Nov, Dec]
     order: [:month, :day, :year]

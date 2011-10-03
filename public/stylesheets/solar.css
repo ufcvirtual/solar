@@ -847,7 +847,6 @@ a.mysolar_top_link{
     margin-right: -100%;
 }
 
-
 /**
  * Tratando dos titulos dos conteudos
 */
@@ -2052,81 +2051,86 @@ td.td_student a {color: #2a538d;}
     padding-top: 10px;
 }
 
-/* AGENDA */
+/**
+* AGENDA
+*/
 
-#agenda_body{
-    width: 730px;
+.agenda_content {
+    width: 700px;
+    font-size: 10pt;
 }
 
-#agenda_content{
-    width: 750px;;
-    margin-top: -8px;
+.agenda_block {
     overflow: auto;
+    padding-bottom: 20px;
 }
 
-.agenda_menu_left{
+.agenda_left {
     float: left;
-    background-color: #dee8ec;
-    width: 133px;
-    border-top: 4px solid #1C4785;
-    min-height: 78px;
+    background-color: #F5F8FB;
+    border-top: 4px solid #003E7A;
+    min-height: 71px;
+    width: 160px;
+    font-size: 11pt;
 }
 
-.agenda_menu_left_title{
-    margin-top: 3px;
-    margin-left: 3px;
-}
-.agenda_icon{
-    float: left;
-
-}
-
-.agenda_icon_title{
+.agenda_right {
     float: right;
-    margin-top: 2px;
-    font-family: 'Trebuchet';
-    font-size: 11px;
-    position: absolute;
-    margin-left: 18px;
-
-}
-.agenda_menu_left_date{
-    font-size: 13px;
-    padding-left: 16px;
-    font-weight: bold;
-    font-family: 'Trebuchet';
-}
-
-.agenda_menu_ritgh{
-    float: right;
-    background-color: #f5f5f6;
-    min-height: 82px;
-    width: 537px;
-    margin-right: 80px;
-}
-
-.agenda_menu_ritgh_title{
     white-space: normal;
-    width: 500px;
-    font-size: 12px;
-    margin-top: 13px;
-    margin-left: 10px;
-    font-weight: bold;
-    font-family: 'Trebuchet';
-}
-
-.agenda_menu_ritgh_text{
-    width: 500px;
-    font-family: 'Trebuchet';
-    font-size: 12px;
+    min-height: 75px;
+    width: 538px;
+    overflow: hidden;
     font-weight: normal;
-    white-space: normal;
-    font-style: normal;
+    background-color: #F7F7F8;
 }
 
-.agenda_ajax{
+.agenda_right p {
+    padding: 5px;
+}
+
+.agenda_right .title {
+    padding-left: 5px;
+    font-weight: bold;
+    font-size: 11pt;
+}
+
+.agenda_left_title {
+    overflow: auto;
+    padding-top: 5px;
+    padding-left: 5px;
+}
+
+.agenda_left_title_img {
+    float: left;
+    height: 16px;
+    width: 16px;
+}
+
+.agenda_left_title_text {
+    padding-left: 21px; /*5px a direita da img*/
+    color: #204783;
+}
+
+.agenda_left_title_img.discussions, .agenda_left_title_img.lessons, .agenda_left_title_img.assignments, .agenda_left_title_img.schedule_events {
+    background: url('../images/agenda/assignments_16x16.png') no-repeat;
+}
+
+.agenda_left_title_img.chat {
+    background: url('../images/agenda/chat_16x16.png') no-repeat;
+}
+
+/*encontro presencial*/
+.agenda_left_title_img.meeting_attendance {
+    background: url('../images/agenda/meeting_attendance_16x16.png') no-repeat;
+}
+
+.agenda_left_content {
+    text-align: center;
+}
+
+.agenda_ajax {
     color: #4B6380;
-    font-size: 11px;
+    font-size: 8pt;
     font-family: Trebuchet;
 }
 

@@ -391,6 +391,8 @@
       short: "%d de %B"
       long: "%d de %B de %Y"
       datepicker: "%d-%m-%Y"
+      month_and_year: "%b %Y"
+      day_and_month: "%d/%b"
     day_names: [Domingo, Segunda, Terça, Quarta, Quinta, Sexta, Sábado]
     abbr_day_names: [Dom, Seg, Ter, Qua, Qui, Sex, Sáb]
     month_names: [~, Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro]
