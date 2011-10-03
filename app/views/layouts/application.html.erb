@@ -36,11 +36,13 @@
         $(".solar_button_blue").after("<div class='solar_button_arrow_blue'></div>");
 
         //Configurando a largura do conteudo
-        $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
+        //$("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
 
+        /*
         $(window).resize(function() {
           $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
         });
+        */
 
         //Configurando a altura da sidebar para acompanhar o total do conteúdo da página
         var maxHeight = $('#mysolar_content').outerHeight();
@@ -68,6 +70,7 @@
     </script>
   </head>
   <body>
+    <div id="body_wrapper">
     <!-- Barra Topo -------------------------->
     <div id="mysolar_topbar">
       <div id="mysolar_identity">
@@ -132,7 +135,8 @@
     </div>
 
     <!-- Conteúdo -------------------------->
-    <div id="mysolar_content" style="white-space: nowrap;">
+    <%#*<div id="mysolar_content" style="white-space: nowrap;">%>
+    <div id="mysolar_content">
 
       <div id="breadcrumb" class="breadcrumb">
         <% unless session[:breadcrumb].nil? || session[:breadcrumb].length == 1 %>
@@ -168,6 +172,7 @@
     </div>
 
 <%#= render '/portlets/chat' %>
+  </div>
   </body>
 </html>
 

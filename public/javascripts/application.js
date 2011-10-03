@@ -153,19 +153,38 @@ jQuery.fn.window_upload_files = function(options) {
  * */
 $(document).ready(function() {
     $('.mysolar_menu_title').click(function() {
+        // verificando se o item do menu já está ativo
         if ( $(this).parent().hasClass('mysolar_menu_title_active') == false ) {
+            // limpando o menu, removendo itens ativos e ocultando submenu
             $('.mysolar_menu_title').each(function(){
                 $(this).parent().removeClass('mysolar_menu_title_active').removeClass('mysolar_menu_title_single_active');
+                $(this).find('div').removeClass('menu_icon_animate');
                 $(this).next('.submenu').slideUp('fast');
             });
         }
+        // verificando se o item possui filhos
         if ( $(this).parent().hasClass('mysolar_menu_title_single') == false ) {
+            // adicionando icone da seta
+            $(this).parents('li').find('.menu_icon_arrow').addClass('menu_icon_animate');
+            // tornando o item ativo
             $(this).parent().addClass('mysolar_menu_title_active');
+            // exibindo submenu
             $(this).next('.submenu').slideDown('fast');
         } else {
+            // adicionando icone da bolinhaaaaaa
+            $(this).parents('li').find('.menu_icon_circle').addClass('.menu_icon_animate');
+            // tornando o item ativo
             $(this).parent().addClass('mysolar_menu_title_single_active');
         }
     });
+
+    $('.mysolar_menu_title_single > a').prepend('<div class="menu_icon_circle">&bull;</div>');
+    
+    $('.mysolar_menu_title_multiple > a').prepend('<div class="menu_icon_arrow">&#8227;</div>');
+
+//    $('.mysolar_menu_title').prepend('<div class="menu_icon_arrow">&#10148;</div>');
+
+//    $('.mysolar_menu_title_single > a > div').empty().html('&bull;').removeClass('menu_icon_arrow').addClass('menu_icon_circle');
 
     // abre menu corrente
     $('.open_menu').click();

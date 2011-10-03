@@ -56,9 +56,9 @@ module MenuHelper
         else
           # verifica menu corrente
           if (menu['parent_id'] == current_menu)
-            link = "<li><a href='#' class='#{class_menu_title} open_menu'>#{t(menu['parent'].to_sym)}</a><ul class='submenu'>"
+            link = "<li class='mysolar_menu_title_multiple'><a href='#' class='#{class_menu_title} open_menu'>#{t(menu['parent'].to_sym)}</a><ul class='submenu'>"
           else
-            link = "<li id='parent_#{menu['parent_id']}'><a href='#' class='#{class_menu_title}'>#{t(menu['parent'].to_sym)}</a><ul class='submenu'>"
+            link = "<li id='parent_#{menu['parent_id']}' class='mysolar_menu_title_multiple'><a href='#' class='#{class_menu_title}'>#{t(menu['parent'].to_sym)}</a><ul class='submenu'>"
           end
         end
 

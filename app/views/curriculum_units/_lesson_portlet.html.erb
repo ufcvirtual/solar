@@ -1,24 +1,23 @@
 <%
 #Portlet da Unidade Curricular que exibe as aulas.
 %>
- <div class="curriculum_unit_portlet_lesson">
-    <div class="curriculum_unit_portlet_header">
-      <span><%= image_tag "icon_lesson.png", :alt=>t(:icon_lesson) %></span>
-      <%= t(:curriculum_access_lesson) %>
+  <div class="block_wrapper">
+    <div class="block_title">
+      <h2><%= image_tag "icon_lesson.png", :alt=>t(:icon_lesson), :class=>(:block_title_icon) %><%= t(:curriculum_access_lesson) %></h2>
     </div>
-    <div class="curriculum_unit_portlet_lesson_content">
+    <div class="block_content" id="block_lessons">
       <% if !(@lessons.nil? || @lessons.empty?) %>
         <% @lessons.each do |lesson| %>
-          <div class="curriculum_unit_portlet_line">
-            <span class="curriculum_unit_portlet_gray">
-              <%schedule= Schedule.find(lesson.schedule_id)%>  
+          <div class="block_content_line">
+            <span class="block_content_gray">
+              <%schedule= Schedule.find(lesson.schedule_id)%>
               <%= l schedule.start_date  %> - <%= l schedule.end_date %>
             </span>
-            <a class="curriculum_unit_portlet_link" href="javascript:show_lesson('/lessons/show?id=<%=@curriculum_unit.id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
+            <a class="block_content_link" href="javascript:show_lesson('/lessons/show?id=<%=@curriculum_unit.id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
           </div>
         <% end %>
       <% else %>
-        <div class="curriculum_unit_portlet_text"><%= t(:lesson_message) %></div>
+        <div class="block_content_spacing block_content_text"><%= t(:lesson_message) %></div>
       <% end %>
     </div>
   </div>

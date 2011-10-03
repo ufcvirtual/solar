@@ -1,3 +1,36 @@
+/* css reset */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {
+	margin:0;
+	padding:0;
+}
+table {
+	border-collapse:collapse;
+	border-spacing:0;
+}
+fieldset,img {
+	border:0;
+}
+address,caption,cite,code,dfn,em,strong,th,var {
+	font-style:normal;
+	font-weight:normal;
+}
+ol,ul {
+	list-style:none;
+}
+caption,th {
+	text-align:left;
+}
+h1,h2,h3,h4,h5,h6 {
+	font-size:100%;
+	font-weight:normal;
+}
+q:before,q:after {
+	content:'';
+}
+abbr,acronym { border:0;
+}
+
+/* carregando fontes externas */
 @font-face
 {
     font-family: 'Trebuchet';
@@ -19,9 +52,18 @@ img{
 }
 
 body{
+    margin: 0;
+    padding: 0;
     background-color: #fff;
     cursor: default;
     font-family: 'Trebuchet', Arial;
+}
+
+#body_wrapper {
+    width: 980px;
+    margin: 0 auto;
+    border-left: 1px solid red;
+    border-right: 1px solid red;
 }
 
 /*Classes de mensagens flash*/
@@ -331,9 +373,11 @@ textarea{
     width: 100%;
     height: 72px;
     z-index: 2;
+    /*
     position: absolute;
     top: 0px;
     left: 0px;
+    */
     background-color: #003e7a;
     color: #fff;
     overflow: hidden;
@@ -518,20 +562,24 @@ a.mysolar_top_link{
     width: 175px;
     height: 100%;
     z-index: 1;
+    float: left;
+    /*
     position: absolute;
     left: 0px;
     top: 0px;
     margin-top: 80px;
     padding-left: 10px;
+    */
     border-right: 1px solid #b0b0b0;
 }
 
 /********Menu do meuSolar*****************/
 #mysolar_menu_accordion{
     display: inline-block;
-    position: absolute;
-    /*top: 250px;*/
+/*    position: absolute;
+    top: 250px;
     left: 0px;
+*/
     width: 100%;
 }
 
@@ -540,35 +588,58 @@ a.mysolar_top_link{
     margin: 5px 0;
 }
 
-.mysolar_menu_group > ul > li {
+/*.mysolar_menu_group > ul > li {
     background: url('../images/icon_arrow_right.png') no-repeat left 10px;
-}
+}*/
 
-.mysolar_menu_title_single {
+/*.mysolar_menu_title_single {
     background: url('../images/icon_circle.png') no-repeat left 10px !important;
-}
+}*/
 
 .mysolar_menu_title_single_active {
     border-bottom: 3px solid #ff7418;
-    background: url('../images/icon_circle.png') no-repeat left 10px !important;
+/*    background: url('../images/icon_circle.png') no-repeat left 10px !important;*/
 }
 
 .mysolar_menu_title_single_active a {
     color: #ff7418;
 }
 
-.mysolar_menu_title_active {
+/*.mysolar_menu_title_active {
     background: url('../images/icon_arrow_down.png') no-repeat left 10px !important;
-}
+}*/
 
 .mysolar_menu_title_active > a {
     color: #ff7418;
 }
 
+.menu_icon_arrow, .menu_icon_circle {
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+    margin-right: 5px;
+    font-size: 14pt;
+    display: inline-block;
+    /* codigo necessario para exibir corretamente no IE 7 */
+    zoom: 1;
+    *display: inline;
+}
+
+/* BUG: icone rotacionado está com problemas no IE 7-8, não testado no 9 */
+.menu_icon_animate {
+    -moz-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+/*    filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.00000000, M12=-1.00000000, M21=1.00000000, M22=0.00000000,sizingMethod='auto expand');*/
+/*    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);*/
+    transform: rotate(90deg);
+}
+
 .mysolar_menu_title {
     width: 100%;
     margin: 2px;
-    padding-left: 12px;
+/*    padding-left: 12px;*/
     cursor: pointer;
     font-weight: normal;
     font-family: 'Trebuchet', Arial;
@@ -629,19 +700,25 @@ a.mysolar_top_link{
 
 #mysolar_content{
     /*z-index: 0;*/
+    /*
     position: absolute;
     left: 0px;
     top: 0px;
     margin-top: 80px;
-    padding-left: 200px;
-    padding-bottom: 50px;
+    */
+    padding-left: 185px;
+/*    padding-bottom: 50px;*/
     background-color: #fff;
+    width: 765px;
+    padding-right: 10px;
 }
 
 #mysolar_locale{
     width: 20%;
+    /*
     position: absolute;
     bottom: 0;
+    */
     margin-bottom: 20px;
     margin-left: 357px;
 }
@@ -852,7 +929,6 @@ a.mysolar_top_link{
 */
 
 .mysolar_header {
-
     font-variant: small-caps;
     height: 26px;
     border-bottom: 4px solid #204783;
@@ -1143,20 +1219,178 @@ div.alter_photo_text {
 
 /** Unidade Curricular - tela inicial de acesso **/
 
+/* div que engloba tudo */
+.block_wrapper {
+    width: 785px;
+    margin-bottom: 15px;
+}
+
+/* titulo do bloco */
+.block_title {
+    border-bottom: 3px solid #003E7A;
+    padding-bottom: 2px !important;
+}
+
+/* icone que fica ao lado do titulo do bloco */
+.block_title_icon {
+    margin-right: 5px;
+    width: 20px;
+}
+
+/* zerando o espaçamento do titulo do bloco */
+.block_title, .block_title > .block_left, .block_title > .block_right {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 0;
+}
+
+/* definindo as divs de conteudo como inline-table */
+.block_title > div, .block_content > .block_left, .block_content > .block_right {
+    display: inline-table;
+    border-spacing: 0;
+}
+
+/* garantindo que o titulo do bloco fique proximo a linha inferior */
+.block_title {
+    vertical-align: bottom;
+}
+
+.block_title > .block_right {
+    padding-left: 6px;
+}
+
+/* largura dos blocos internos */
+.block_left, .block_right {
+    width: 370px;
+    padding: 6px 10px;
+}
+
+/* garantindo que o conteudo do bloco fique proximo a linha superior */
+.block_content > .block_left, .block_content > .block_right {
+    vertical-align: top;
+}
+
+/* definindo cor de background do conteudo e tamanho da fonte */
+.block_content {
+    font-size: 10pt;
+    background-color: #F5F8FB;
+}
+
+/* ajustando a largura do bloco esquerdo e adicionando a borda divisoria*/
+.block_content > .block_left {
+    width: 369px;
+    border-right: 1px solid #d0d0d0;
+}
+
+/* ajustando o espaçamento do bloco direito */
+.block_content > .block_right {
+    padding: 6px 10px 6px 8px;
+}
+
+.block_content_spacing {
+    padding: 6px 10px;
+}
+
+.block_content_line {
+    border-bottom: 1px solid #CCCCCC;
+    font-size: 10pt;
+    padding: 6px 10px;
+}
+
+.block_content_line:last-child {
+    border-bottom: none;
+}
+
+.block_content_gray {
+    font-size: 9pt;
+    color: #999;
+    padding-right: 5px;
+}
+
+.block_content_text {
+    color: #000;
+    font-size: 10pt;
+    padding: 6px 10px;
+}
+
+.label_text {
+    font-family: Trebuchet;
+    font-size: 12px;
+    padding: 6px;
+    margin: 1px;
+    color: #000;
+}
+
+.block_content_link {
+    color: #4b6380;
+    font-size: 10pt;
+    text-decoration: underline;
+}
+
+.block_content_link_gray {
+    font-size: 9pt;
+    color: #999;
+    text-decoration: underline;
+}
+
+h2 {
+    font-size: 11pt;
+    margin: 0;
+    padding: 0;
+}
+
+.curriculum_unit_text {
+    width: 100%;
+}
+
 .curriculum_unit_portlet_small_header {
     cursor: default;
     padding: 5px;
     background-color: #E7EDED;
     height:25px;
 }
-.curriculum_unit_portlets_small {
-    margin: 0 4px 4px 0;
-    border:1px solid #CCCCCC;
-    background-color: #fff;
-    height: 193px;
-    width: 260px;
-    white-space: normal;
+
+.block_small {
+    height: 195px;
+    width: 255px;
+    float: left;
+    margin-right: 10px;
 }
+
+#block_lessons {
+    min-height: 135px;
+    max-height: 160px;
+    overflow: auto;
+}
+
+#block_schedule {
+    margin-right: 0 !important;
+}
+
+#block_messages_content {
+    width: 100%;
+    height: 134px;
+    overflow: auto;
+}
+
+.block_messages_opt {
+    font-size: 8pt;
+    color: #d0d0d0;
+    width: 100%;
+/*    height: 28px;*/
+    vertical-align: bottom;
+    text-align: center;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    background-color: #F5F8FB;
+}
+
+#block_forum {
+    width: 100%;
+    height: 161px;
+    overflow: auto;
+}
+
 .curriculum_unit_portlet_header {
     cursor: default;
     padding: 5px;
@@ -1166,19 +1400,19 @@ div.alter_photo_text {
 .curriculum_unit_portlet_border {
     background-color: #f7f7f7;
     min-height: 68px;
-    width: 794px;
+    width: 765px;
     margin-bottom: 12px;
 }
 .curriculum_unit_portlet_left {
     vertical-align: top;
-    width: 293px;
+    width: 295px;
     white-space: normal;    
     display: inline-table;
 }
 .curriculum_unit_portlet_right {    
     vertical-align: top;
     margin-left: -4px;
-    width: 500px;
+    width: 465px;
     white-space: normal;    
     display: inline-table;
     border-left: 1px solid #CCCCCC;
@@ -1196,7 +1430,7 @@ div.alter_photo_text {
     font-family: Trebuchet;
     font-size: 11px;
     color: #999;
-    /*width: 45px;*/
+    width: 45px;
     display: inline-block;
 }
 .curriculum_unit_portlet_link_gray {
@@ -1217,6 +1451,7 @@ div.alter_photo_text {
     font-weight: bold;
     color: #4b6380;
 }
+
 .curriculum_unit_portlet_lesson {
     margin: 0 4px 4px 0;
     border:0px;
@@ -1230,20 +1465,7 @@ div.alter_photo_text {
     height: 120px;
     overflow: auto;
 }
-.curriculum_unit_portlet_forum {
-    font-family: Trebuchet;
-    font-size: 11px;
-    width: 100%;
-    height: 158px;
-    overflow: auto;
-}
-.curriculum_unit_portlet_messages {
-    font-family: Trebuchet;
-    font-size: 11px;
-    width: 100%;
-    height: 130px;
-    overflow: auto;
-}
+
 .curriculum_unit_portlet_messages_opt {
     font-family: Trebuchet;
     font-size: 11px;
@@ -1275,6 +1497,7 @@ div.alter_photo_text {
     font-size: 11px;
     width: 100%;
     height: 117px;
+    padding-bottom: 2px;
 }
 .calendar_events {
     background: #ccc7cc;

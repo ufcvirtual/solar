@@ -1,7 +1,7 @@
 <!-- Portlet da Unidade Curricular que exibe a agenda da mesma -->
-<div id="agenda_portlet" class="curriculum_unit_portlets_small">
-  <div class="curriculum_unit_portlet_small_header">
-    <%= image_tag "icon_agenda.png", :alt=>t(:icon_agenda) %>
+<div id="block_schedule" class="block_small">
+  <div class="block_title">
+    <%= image_tag "icon_agenda.png", :alt=>t(:icon_agenda), :class=>(:block_title_icon) %>
     <%= t(:curriculum_access_agenda)%>
   </div>
   <div class="calendar" id="agenda"></div>
