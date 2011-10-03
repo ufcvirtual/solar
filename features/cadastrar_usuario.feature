@@ -85,8 +85,7 @@ Cenário: Cadastrar novo usuário com dados inválidos
        E que eu preenchi "telephone" com "(85)3322-2233"
        E que eu preenchi "cell_phone" com "(85)8888-8888"
     Quando eu clicar em "confirm"
-    Então eu deverei ver "Login deve ser preenchido(a)"
-        E eu deverei ver "Estado deve ser preenchido(a)"
+    Então eu deverei ver "Login é muito curto(a) (mínimo: 3 caracteres)"
 
 Cenário: Cadastrar novo usuário e sair logo em seguida
     Dado que estou em "Cadastrar usuario"
