@@ -16,18 +16,18 @@ class User < ActiveRecord::Base
   attr_protected :password
 
   # validacao do comprimento da senha no :create
-  validates :password, :presence =>true, :length => {:within => 6..60}, :confirmation => true, :on => :create
+  validates :password, :length => {:within => 6..60}, :confirmation => true, :on => :create
   # validacao do comprimento da senha no :update
 
   #Validações campo a campo
   #Campos pendentes devido ao authlogic
   #Fazer o logn depois
-  validates :login, :presence => true ,:length => { :within => 3.. 20}, :uniqueness => true
+  validates :login, :length => { :within => 3.. 20}, :uniqueness => true
   #Fazer o email depois
   validates :email, :presence => true, :uniqueness => true,:confirmation => true
   validates :alternate_email, :format => { :with => %r{^((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?$}i}
 
-  validates :name, :presence => true,:length => { :within => 6.. 90}
+  validates :name, :length => { :within => 6.. 90}
   validates :birthdate, :presence => true
   validates :cpf, :presence => true, :uniqueness => true
 
@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
   validates_length_of :city, :maximum => 90
   validates_length_of :institution, :maximum => 80
   
-  validates :nick,:presence => true,:length => { :within => 3.. 34}
+  validates :nick,:length => { :within => 3.. 34}
 
   #  validates :terms, :acceptance => true
   #  validates :password, :confirmation => true
@@ -52,12 +52,15 @@ class User < ActiveRecord::Base
   #  validates :username, :uniqueness => true
 
   #validaçao do CPF
-  usar_como_cpf :cpf
+#  usar_como_cpf :cpf
 
   validate :cpf_ok
+  
   def cpf_ok
     cpf_verify = Cpf.new(self[:cpf])
-    errors.add(:cpf, I18n.t(:new_user_msg_cpf_error)) unless cpf_verify.valido?
+    unless cpf_verify.nil?
+      errors.add(:cpf, I18n.t(:new_user_msg_cpf_error)) unless cpf_verify.valido?
+    end
   end
 
 	#Detalhes da Senha #
