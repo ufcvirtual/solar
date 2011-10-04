@@ -1,4 +1,4 @@
-Solar::Application.routes.draw do |map|
+Solar::Application.routes.draw do 
 
   get "pages/index"
   get "access_control/index"
