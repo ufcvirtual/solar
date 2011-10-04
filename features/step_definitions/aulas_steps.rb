@@ -4,7 +4,7 @@ end
 
 Entao /^eu deverei ver a linha de aulas disponiveis$/ do |tabela|
 	tabela.hashes.each do |linha|	   
-      xpath = "//table/tr[   descendant::a[contains(.,'#{linha[:AulasDisponiveis]}')]    and   child::td[contains(., '#{linha[:DataAcesso]}')]   ]"
+      xpath = "//table/tbody/tr[   descendant::a[contains(.,'#{linha[:AulasDisponiveis]}')]    and   child::td[contains(., '#{linha[:DataAcesso]}')]   ]"
 	    page.should have_xpath(xpath)
 	end
 end
