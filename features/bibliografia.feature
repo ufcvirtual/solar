@@ -17,6 +17,5 @@ Cenário: Exibir bibliografia
     Quando eu clicar no link "Informações Gerais"
         Então eu deverei ver o link "Bibliografia"
     Quando eu clicar no link "Bibliografia"
-        Então eu deverei ver "Bibliografia de Quimica I"
-        E eu deverei ver "Metodos ageis em POG"
+        Então eu deverei ver "Metodos ageis em POG"
         E eu deverei ver "PATAO , Rafael. Metodos ageis em POG . 1.ed . Trantor: Ursa menor , 2020. Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form."

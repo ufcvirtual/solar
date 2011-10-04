@@ -10,7 +10,7 @@ module ApplicationHelper
 		text
 	end
 
-  #Ver se existe outro lugar melhor para este método.
+  # Ver se existe outro lugar melhor para este método.
   def render_tabs
     text = ""
     tabs = session[:opened_tabs]
@@ -35,7 +35,7 @@ module ApplicationHelper
     return text
   end
 
-  #Renderiza a navegação da paginação.
+  # Renderiza a navegação da paginação.
   def render_pagination_bar(total_itens = "1", hash_params = nil)
     #Limpando as variaveis
 
@@ -92,9 +92,9 @@ module ApplicationHelper
       options_from_collection_for_select(
         CurriculumUnit.find_user_groups_by_curriculum_unit(
           session[:opened_tabs][session[:active_tab]]["id"], current_user.id),
-          :id,
-          :code_semester,
-          session[:opened_tabs][session[:active_tab]]["groups_id"]
+        :id,
+        :code_semester,
+        session[:opened_tabs][session[:active_tab]]["groups_id"]
       ),
       #{:onchange => "$(this).parent().submit();"}#Versao SEM AJAX
       {:onchange => "reloadContentByForm($(this).parent());"}#Versao AJAX
@@ -111,15 +111,30 @@ module ApplicationHelper
     end
 
     result << ' <input name="authenticity_token" value="' << form_authenticity_token << '" type="hidden">'
-    result << '</form><br/><br/>'
+    result << '</form>'
 
     return result
   end
 
-  # recupera o nome da unidade curricular em questao
+  ##
+  # Recupera o nome da unidade curricular em questao
+  ##
   def curriculum_unit_name
-    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"] # recupera unidade curricular da sessao
-    CurriculumUnit.find(curriculum_unit_id).name
+
+    act_tab = session[:opened_tabs][session[:active_tab]]
+
+    unless act_tab['id'].nil?
+      curriculum_unit_id = act_tab['id'] # recupera unidade curricular da sessao
+      CurriculumUnit.find(curriculum_unit_id).name
+    end
+
+  end
+
+  ##
+  # Verifica se uma unidade curricular já foi selecionada
+  ##
+  def curriculum_unit_selected?
+    return !session[:opened_tabs][session[:active_tab]]['id'].nil?
   end
 
 end

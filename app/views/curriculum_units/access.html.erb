@@ -1,12 +1,16 @@
 <div>
-
-  <%= image_tag "icon_curriculum_unit.png", :alt=>t(:icon_curriculum_unit) %>
-  <span class="page_title"><%=@curriculum_unit.name %></span>
-  <hr style="border: none; background-color: #b4b3b7; height: 1px; width:794px; left: 0px; position: relative; top:-13px; margin-left:0px; margin-bottom: 0px"></hr>
-
-  <span class="page_title"><%#=@curriculum_unit.name %></span>
-  <%= raw render_group_selection %>
-
+  <!--
+  <div class="block_wrapper">
+    <div class="block_title">
+      <h1><%= image_tag "icon_curriculum_unit.png", :alt=>t(:icon_curriculum_unit), :class => 'block_title_icon', :id => 'page_title_icon' %><%=@curriculum_unit.name %></h1>
+    </div>
+    <div id="block_group_selection" class="block_content">
+      <div class="block_content_text">
+        <%= raw render_group_selection %>
+      </div>
+    </div>
+  </div>
+  -->
   <div class="block_wrapper">
     <div class="block_title">
       <div class="block_left">
@@ -32,7 +36,7 @@
 
   <%= render 'lesson_portlet' %>
 
-  <div class="block_wrapper">
+  <div class="block_wrapper block_wrapper_small">
     <%= render 'message_portlet' %>
     <%= render 'discussion_posts_portlet' %>
     <%= render 'agenda_portlet' %>

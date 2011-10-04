@@ -68,21 +68,42 @@ body{
 
 /*Classes de mensagens flash*/
 .error{
-    font-size: 12pt;
     font-weight: bold;
     color: #660000;
 }
 
 .notice{
-    font-size: 12pt;
+    font-weight: bold;
+    color: #e9ba00;
+}
+
+.success{
     font-weight: bold;
     color: #2F4F2F;
 }
 
-.success{
-    font-size: 12pt;
-    font-weight: bold;
-    color: #2F4F2F;
+#flash_message {
+    border: 1px solid #d0d0d0;
+    padding: 5px 10px 4px 10px;
+    margin: 10px 0;
+    font-size: 10pt;
+}
+
+#flash_message span {
+    margin-left: 15px;
+}
+
+#flash_message.success {
+    background: url('../images/success.gif') no-repeat 5px center #f5ffec;
+}
+
+#flash_message.error {
+    background: url('../images/error.gif') no-repeat 5px center #fff6f6;
+}
+
+#flash_message.notice {
+    background: url('../images/warning.png') no-repeat 5px center #fff6f6;
+    background-color: #ffffe2;
 }
 
 /*Classes de erros*/
@@ -157,17 +178,17 @@ a.menor {
 }
 
 select{
-    color           : #222;
+    color: #222;
     background-color: #fff;
-    border          : 1px solid #dedede;
+    border: 1px solid #dedede;
+    min-width: 180px;
 }
 
 input{
-    color           : #222;
-    /*background-color: #fff;*/
-    border          : 1px solid #dedede;
-    padding         : 5px;
-    font-size	    : 13px;
+    color: #222;
+    border: 1px solid #dedede;
+    padding: 5px;
+    font-size: 13px;
 }
 
 
@@ -184,12 +205,13 @@ textarea{
     padding         : 5px;
 }
 
-.page_title{
-    font-family: "Trebuchet";
-    font-size  : 14pt;
+h1.page_title{
+    font-size  : 12pt;
     color      : #000;
     font-weight: bold;
-    position   : relative; top:-5px;
+    font-variant: small-caps;
+    border-bottom: 3px solid #003E7A;
+    padding-bottom: 2px !important;
     /*text-transform: capitalize;*/
 }
 
@@ -563,6 +585,8 @@ a.mysolar_top_link{
     height: 100%;
     z-index: 1;
     float: left;
+    margin-top: 10px;
+    padding-top: 0;
     /*
     position: absolute;
     left: 0px;
@@ -570,7 +594,7 @@ a.mysolar_top_link{
     margin-top: 80px;
     padding-left: 10px;
     */
-    border-right: 1px solid #b0b0b0;
+    border-right: 1px solid #d0d0d0;
 }
 
 /********Menu do meuSolar*****************/
@@ -580,12 +604,19 @@ a.mysolar_top_link{
     top: 250px;
     left: 0px;
 */
+    padding-top: 0;
+    margin-top: 0;
     width: 100%;
 }
 
 .mysolar_menu_group > ul {
     padding: 0 10px 0 10px;
     margin: 5px 0;
+}
+
+.mysolar_menu_group > ul:first-child {
+    padding-top: 0;
+    margin-top: 0;
 }
 
 /*.mysolar_menu_group > ul > li {
@@ -713,15 +744,34 @@ a.mysolar_top_link{
     padding-right: 10px;
 }
 
-#mysolar_locale{
-    width: 20%;
+#block_locale{
+    text-align: center;
+    font-size: 9pt;
+    
     /*
+    width: 20%;
     position: absolute;
     bottom: 0;
-    */
     margin-bottom: 20px;
     margin-left: 357px;
+    */
 }
+
+#block_locale a {
+    color: #666;
+}
+
+#block_locale > ul {
+    list-style-type: none;
+    padding: 0 10px 0 0;
+    background:url('../images/solar_button_arrow.png') no-repeat left center;
+}
+
+#block_locale > ul > li {
+    display: inline-block;
+    margin-right: 5px;
+}
+
 
 /*********Abas dos Meus Dados**************/
 
@@ -870,28 +920,6 @@ a.mysolar_top_link{
 }
 
 /********Portlets do meuSolar*****************/
-#flash_message {
-    border: 1px solid #d0d0d0;
-    padding: 10px 10px 4px 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-}
-
-#flash_message span {
-    margin-left: 15px;
-}
-
-#flash_message.success {
-    background: url('../images/success.gif') no-repeat 5px center #f5ffec;
-}
-
-#flash_message.error {
-    background: url('../images/error.gif') no-repeat 5px center #fff6f6;
-}
-
-#flash_message.notice {
-    background-color: #ffffe2;
-}
 
 .mysolar_portlets_limit{
     margin-right: 38px;
@@ -1225,6 +1253,10 @@ div.alter_photo_text {
     margin-bottom: 15px;
 }
 
+.block_wrapper_small {
+    height: 195px;
+}
+
 /* titulo do bloco */
 .block_title {
     border-bottom: 3px solid #003E7A;
@@ -1232,9 +1264,13 @@ div.alter_photo_text {
 }
 
 /* icone que fica ao lado do titulo do bloco */
-.block_title_icon {
+.block_title_icon, .page_title_icon {
     margin-right: 5px;
     width: 20px;
+}
+
+#page_title_icon {
+    vertical-align: top;
 }
 
 /* zerando o espaçamento do titulo do bloco */
@@ -1344,6 +1380,10 @@ h2 {
     width: 255px;
     float: left;
     margin-right: 10px;
+}
+
+#block_group_selection {
+    background-color: transparent;
 }
 
 #block_lessons {
@@ -2081,7 +2121,6 @@ ul.message_menu_listbox li ul a:hover{
 */
 
 table.tb_list, table.tb_list_files {
-    /*    height: 30px;*/
     font-size: 10pt;
     font-family: 'Trebuchet', Arial;
     background-color: #F7F7F8;
@@ -2304,10 +2343,11 @@ td.td_student a {color: #2a538d;}
     color: #204783;
 }
 
-.breadcrumb {
+#breadcrumb {
     white-space: nowrap;
     font-size: 10pt;
-    font-family: 'Trebuchet', Arial;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 /**

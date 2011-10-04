@@ -42,14 +42,18 @@
         $(window).resize(function() {
           $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
         });
-        */
+         */
 
         //Configurando a altura da sidebar para acompanhar o total do conteúdo da página
+        /*
         var maxHeight = $('#mysolar_content').outerHeight();
         maxHeight += $('#mysolar_content').position().top;
         if ($(window).height() > maxHeight)
           maxHeight = $(window).height();
         $("#mysolar_sidebar").height(maxHeight);
+         */
+
+       
 
       });
     </script>
@@ -71,108 +75,128 @@
   </head>
   <body>
     <div id="body_wrapper">
-    <!-- Barra Topo -------------------------->
-    <div id="mysolar_topbar">
-      <div id="mysolar_identity">
-        <div id="mysolar_logo">
-          <%= image_tag 'superior_logo.png', :alt => t(:mysolar_alt_img_solar) %>
-        </div>
-        <ul id="mysolar_top_options">
-          <% unless @user.errors.empty? %>
-            <% @user = User.find(@user.id) %>
-          <% end %>
-          <li id="mysolar_id">
-            <%= image_tag @user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{@user.nick}", :id => "image_user" %>
-            <!-- adicionar esse link depois em algum lugar -->
-            <%#= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
-          </li>
-          <li>
-            <% if can? :update, @user %>
-              <%= link_to @user.nick, edit_user_url(@user), :class => 'mysolar_top_link', :id => 'my_data' %>
+      <!-- Barra Topo -------------------------->
+      <div id="mysolar_topbar">
+        <div id="mysolar_identity">
+          <div id="mysolar_logo">
+            <%= image_tag 'superior_logo.png', :alt => t(:mysolar_alt_img_solar) %>
+          </div>
+          <ul id="mysolar_top_options">
+            <% unless @user.errors.empty? %>
+              <% @user = User.find(@user.id) %>
             <% end %>
-          </li>
-          <li id="server_clock_wrapper">
-            <span name="server_clock" id="server_clock"></span>
-          </li>
-          <li>
-            <a href="#" class="mysolar_top_link">Ajuda</a>
-          </li>
-          <li>
-            <%= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, :class => "mysolar_top_link") %>
-          </li>
-        </ul>
-      </div>
-      <div id="mysolar_tabs">
-        <!-- Abas -------------------------->
-        <ul id="mysolar_tabs_wrapper">
-          <%= raw render_tabs %>
-        </ul>
-        <ul id="mysolar_extras">
-          <li id="mysolar_search">
-            <!-- FIXME: criar script para remover o value inicial e remover a classe search_keyword_inactive -->
-            <input class="search_keyword search_keyword_inactive" type="text" value="Buscar" />
-          </li>
-          <li>
-            <%=image_tag "acessibility_font_increase.png", :alt => "Aumentar tamanho da fonte", :class => "acessibility_icons", :id => "mysolar_font_increase"%> <%#:alt=>t(:message_outbox)%>
-          </li>
-          <li>
-            <%=image_tag "acessibility_font_decrease.png", :alt => "Reduzir tamanho da fonte", :class => "acessibility_icons", :id => "mysolar_font_decrease"%>
-          </li>
-          <li>
-            <%=image_tag "acessibility_contrast.png", :alt => "Alternar para visual de alto contraste", :class => "acessibility_icons", :id => "mysolar_contrast"%>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Barra Lateral -------------------------->
-    <div id="mysolar_sidebar">
-
-      <div id="mysolar_menu_accordion" style="z-index:10">
-        <%=raw create_menu_list(Profile.all_by_user_id(current_user.id), @context || 'geral', @context_param_id || nil, session[:current_menu] || nil) %>
-      </div>
-
-    </div>
-
-    <!-- Conteúdo -------------------------->
-    <%#*<div id="mysolar_content" style="white-space: nowrap;">%>
-    <div id="mysolar_content">
-
-      <div id="breadcrumb" class="breadcrumb">
-        <% unless session[:breadcrumb].nil? || session[:breadcrumb].length == 1 %>
-          <% session[:breadcrumb].each_with_index do |link, idx| %>
-            <% unless link.nil? %>
-              <%= '>' if idx > 0 %>
-              <span style="text-decoration: underline;">
-                <% link_name = (idx == 1)? link[:name] : t(:"#{link[:name]}") %>
-                <%= link_to link_name, link[:url] %>
-              </span>
-            <% end %>
-          <% end %>
-        <% end %>
-      </div>
-
-      <!--Mensagens de Erro, Alerta e Aviso-->
-      <% if flash[:success] || flash[:error] || flash[:notice] %>
-        <div id="flash_message" class="<%= flash.keys.first %>">
-          <%=raw message %>
+            <li id="mysolar_id">
+              <%= image_tag @user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{@user.nick}", :id => "image_user" %>
+              <!-- adicionar esse link depois em algum lugar -->
+<%#= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
+            </li>
+            <li>
+              <% if can? :update, @user %>
+                <%= link_to @user.nick, edit_user_url(@user), :class => 'mysolar_top_link', :id => 'my_data' %>
+              <% end %>
+            </li>
+            <li id="server_clock_wrapper">
+              <span name="server_clock" id="server_clock"></span>
+            </li>
+            <li>
+              <a href="#" class="mysolar_top_link">Ajuda</a>
+            </li>
+            <li>
+              <%= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, :class => "mysolar_top_link") %>
+            </li>
+          </ul>
         </div>
-      <% end %>
-
-      <%= yield %>
-
-      <!-- Internacionalização  -->
-
-      <div id="mysolar_locale">
-        <span style="width: 20px"><%= image_tag "locales.png" %></span>&nbsp;
-        <span style="width: 50px ; font-size:12px"><%= link_to "English",url_for( :locale => 'en' ), :style=>"color: #696969"%></span>&nbsp;
-        <span style="font-size:12px"><%= link_to "Português(BR)",url_for( :locale => 'pt-BR' ), :style=>"color: #696969"%></span>
+        <div id="mysolar_tabs">
+          <!-- Abas -------------------------->
+          <ul id="mysolar_tabs_wrapper">
+            <%= raw render_tabs %>
+          </ul>
+          <ul id="mysolar_extras">
+            <li id="mysolar_search">
+              <!-- FIXME: criar script para remover o value inicial e remover a classe search_keyword_inactive -->
+              <input class="search_keyword search_keyword_inactive" type="text" value="Buscar" />
+            </li>
+            <li>
+              <%=image_tag "acessibility_font_increase.png", :alt => "Aumentar tamanho da fonte", :class => "acessibility_icons", :id => "mysolar_font_increase"%> <%#:alt=>t(:message_outbox)%>
+            </li>
+            <li>
+              <%=image_tag "acessibility_font_decrease.png", :alt => "Reduzir tamanho da fonte", :class => "acessibility_icons", :id => "mysolar_font_decrease"%>
+            </li>
+            <li>
+              <%=image_tag "acessibility_contrast.png", :alt => "Alternar para visual de alto contraste", :class => "acessibility_icons", :id => "mysolar_contrast"%>
+            </li>
+          </ul>
+        </div>
       </div>
 
-    </div>
+      <!-- Barra Lateral -------------------------->
+      <div id="mysolar_sidebar">
+
+        <div id="mysolar_menu_accordion" style="z-index:10">
+          <%=raw create_menu_list(Profile.all_by_user_id(current_user.id), @context || 'geral', @context_param_id || nil, session[:current_menu] || nil) %>
+        </div>
+
+      </div>
+
+      <!-- CONTEUDO -->
+      <div id="mysolar_content">
+
+        <!-- titulo das paginas -->
+        <div class="block_wrapper">
+
+          <!--Mensagens de Erro, Alerta e Aviso-->
+          <% if flash[:success] || flash[:error] || flash[:notice] %>
+            <div id="flash_message" class="<%= flash.keys.first %>">
+              <%=raw message %>
+            </div>
+          <% end %>
+
+          <div id="breadcrumb">
+            <% unless session[:breadcrumb].nil? || session[:breadcrumb].length == 1 %>
+              <% session[:breadcrumb].each_with_index do |link, idx| %>
+                <% unless link.nil? %>
+                  <%= '>' if idx > 0 %>
+                  <span style="text-decoration: underline;">
+                    <% link_name = (idx == 1)? link[:name] : t(:"#{link[:name]}") %>
+                    <%= link_to link_name, link[:url] %>
+                  </span>
+                <% end %>
+              <% end %>
+            <% end %>
+          </div>
+
+          <% if curriculum_unit_selected? %>
+            <div class="block_title">
+              <h1>
+                <%= image_tag "icon_curriculum_unit.png", :alt => t(:icon_curriculum_unit), :class => 'block_title_icon', :id => 'page_title_icon' %>
+                <%= curriculum_unit_name %>
+              </h1>
+            </div>
+            <div id="block_group_selection" class="block_content">
+              <div class="block_content_text">
+                <%= raw(render_group_selection) %>
+              </div>
+            </div>
+          <% end %>
+
+
+        </div>
+
+        <%= yield %>
+
+        <!-- Internacionalização  -->
+        <div id="block_locale">
+          <ul>
+            <li><%= link_to "English",url_for( :locale => 'en' ) %></li>
+            <li><%= link_to "Português(BR)",url_for( :locale => 'pt-BR' ) %></li>
+          </ul>
+        </div>
+
+
+      </div>
 
 <%#= render '/portlets/chat' %>
-  </div>
+    </div>
   </body>
 </html>
 
