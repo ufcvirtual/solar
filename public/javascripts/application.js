@@ -182,10 +182,6 @@ $(document).ready(function() {
     
     $('.mysolar_menu_title_multiple > a').prepend('<div class="menu_icon_arrow">&#8227;</div>');
 
-//    $('.mysolar_menu_title').prepend('<div class="menu_icon_arrow">&#10148;</div>');
-
-//    $('.mysolar_menu_title_single > a > div').empty().html('&bull;').removeClass('menu_icon_arrow').addClass('menu_icon_circle');
-
     // abre menu corrente
     $('.open_menu').click();
 

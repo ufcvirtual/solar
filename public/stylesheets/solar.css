@@ -1339,17 +1339,6 @@ h2 {
     padding: 0;
 }
 
-.curriculum_unit_text {
-    width: 100%;
-}
-
-.curriculum_unit_portlet_small_header {
-    cursor: default;
-    padding: 5px;
-    background-color: #E7EDED;
-    height:25px;
-}
-
 .block_small {
     height: 195px;
     width: 255px;
@@ -1377,7 +1366,6 @@ h2 {
     font-size: 8pt;
     color: #d0d0d0;
     width: 100%;
-/*    height: 28px;*/
     vertical-align: bottom;
     text-align: center;
     padding-top: 6px;
@@ -1391,53 +1379,7 @@ h2 {
     overflow: auto;
 }
 
-.curriculum_unit_portlet_header {
-    cursor: default;
-    padding: 5px;
-    background-color: #EEE;
-    height:25px;
-}
-.curriculum_unit_portlet_border {
-    background-color: #f7f7f7;
-    min-height: 68px;
-    width: 765px;
-    margin-bottom: 12px;
-}
-.curriculum_unit_portlet_left {
-    vertical-align: top;
-    width: 295px;
-    white-space: normal;    
-    display: inline-table;
-}
-.curriculum_unit_portlet_right {    
-    vertical-align: top;
-    margin-left: -4px;
-    width: 465px;
-    white-space: normal;    
-    display: inline-table;
-    border-left: 1px solid #CCCCCC;
-}
-.curriculum_unit_portlet_line {
-    border-bottom: 1px solid #CCCCCC;
-    font-family: Trebuchet;
-    font-size: 12px;
-    padding: 6px;
-    margin: 1px;
-    margin-right: 25px;
-    color: #000;
-}
-.curriculum_unit_portlet_gray {
-    font-family: Trebuchet;
-    font-size: 11px;
-    color: #999;
-    width: 45px;
-    display: inline-block;
-}
-.curriculum_unit_portlet_link_gray {
-    font-family: Trebuchet;
-    font-size: 11px;
-    color: #999;
-}
+/* continuar daqui... */
 .curriculum_unit_portlet_link_more {
     font-family: Trebuchet;
     font-size: 11px;
@@ -1450,32 +1392,6 @@ h2 {
     font-size: 12px;
     font-weight: bold;
     color: #4b6380;
-}
-
-.curriculum_unit_portlet_lesson {
-    margin: 0 4px 4px 0;
-    border:0px;
-    background-color: #f7f7f7;
-    width: 794px;
-    white-space: normal;
-    margin-bottom: 12px;
-    height:155px;
-}
-.curriculum_unit_portlet_lesson_content {
-    height: 120px;
-    overflow: auto;
-}
-
-.curriculum_unit_portlet_messages_opt {
-    font-family: Trebuchet;
-    font-size: 11px;
-    color: #cfc;
-    width: 100%;
-    height: 28px;
-    vertical-align: bottom;
-    text-align: center;
-    border-top: #ccc7cc solid 1px;
-    padding-top: 5px;
 }
 .curriculum_unit_portlet_text, .label_text {
     font-family: Trebuchet;
@@ -1490,6 +1406,7 @@ h2 {
     width: auto;
     white-space: normal;
 }
+
 /* calendario da tela de acesso a curso */
 .calendar {
     background: #F2F0F2;
@@ -1505,6 +1422,7 @@ h2 {
     padding-left: 2px;
     padding-top: 2px;
 }
+
 /* tela de participantes */
 .participants_list {
     border:0;

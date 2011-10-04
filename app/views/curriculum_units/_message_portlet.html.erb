@@ -23,7 +23,7 @@
               <%= l(message.send_date, :format => :not_today) %> 
             <% end %>  
           </span>
-          <%= link_to message.sender,  {:controller => 'messages', :action => 'show', :id => message.id},{:class => 'curriculum_unit_portlet_link'} %>
+          <%= link_to message.sender,  {:controller => 'messages', :action => 'show', :id => message.id},{:class => 'block_content_link'} %>
           <%
           msg_subject = strip_tags message.subject
           msg_subject = msg_subject.slice(0..107) + ' (...)' if msg_subject.length > 110
