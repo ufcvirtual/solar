@@ -51,19 +51,27 @@ img{
     border: none;
 }
 
+html, body {
+    height: 100%;
+}
+
 body{
     margin: 0;
     padding: 0;
     background-color: #fff;
     cursor: default;
     font-family: 'Trebuchet', Arial;
+    height: 100%;
+    background-color: #f9f9f9;
 }
 
 #body_wrapper {
     width: 980px;
     margin: 0 auto;
-    border-left: 1px solid red;
-    border-right: 1px solid red;
+    border-left: 1px solid #d0d0d0;
+    border-right: 1px solid #d0d0d0;
+    background-color: #ffffff;
+    min-height: 100%;
 }
 
 /*Classes de mensagens flash*/
@@ -181,7 +189,7 @@ select{
     color: #222;
     background-color: #fff;
     border: 1px solid #dedede;
-    min-width: 180px;
+/*    min-width: 180px;*/
 }
 
 input{
@@ -583,8 +591,15 @@ a.mysolar_top_link{
 #mysolar_sidebar{
     width: 175px;
     height: 100%;
+    min-height: 100%;
+    max-height: 100%;
     z-index: 1;
-    float: left;
+/*    float: left;*/
+/*    position: absolute;*/
+    vertical-align: top;
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
     margin-top: 10px;
     padding-top: 0;
     /*
@@ -737,14 +752,22 @@ a.mysolar_top_link{
     top: 0px;
     margin-top: 80px;
     */
-    padding-left: 185px;
+/*    padding-left: 185px;*/
 /*    padding-bottom: 50px;*/
+    padding-left: 5px;
+/*    float: left;*/
+/*    position: absolute;*/
     background-color: #fff;
     width: 765px;
     padding-right: 10px;
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
 }
 
+/* rodapé - escolha de idioma */
 #block_locale{
+    margin-top: 10px;
     text-align: center;
     font-size: 9pt;
     
@@ -763,8 +786,7 @@ a.mysolar_top_link{
 
 #block_locale > ul {
     list-style-type: none;
-    padding: 0 10px 0 0;
-    background:url('../images/solar_button_arrow.png') no-repeat left center;
+    padding: 0;
 }
 
 #block_locale > ul > li {
@@ -1257,14 +1279,50 @@ div.alter_photo_text {
     height: 195px;
 }
 
+/* id do titulo geral da página */
+#page_title {
+    border-bottom: 1px solid #d0d0d0;
+}
+
+#page_title h1 {
+    font-size: 14pt;
+    font-weight: bold;
+    font-variant: small-caps;
+    display: inline;
+/*    border-bottom: 1px solid #fff;*/
+}
+
+#page_title > .block_content_text {
+    border: none;
+    color: #666666;
+    font-size: 9pt;
+    padding: 4px 0 0 4px;
+    float: right;
+}
+
+/*#page_title > .block_content_text:hover {
+    border: 1px solid #666666;
+}*/
+
+#page_title > .block_content_text:hover, #page_title > .block_content_text:hover select {
+    color: #000000;
+}
+
+#page_title select {
+    color: #666666;
+    font-size: 9pt;
+    border: none;
+}
+
 /* titulo do bloco */
+
 .block_title {
     border-bottom: 3px solid #003E7A;
     padding-bottom: 2px !important;
 }
 
 /* icone que fica ao lado do titulo do bloco */
-.block_title_icon, .page_title_icon {
+.block_title_icon {
     margin-right: 5px;
     width: 20px;
 }
@@ -1419,7 +1477,6 @@ h2 {
     overflow: auto;
 }
 
-/* continuar daqui... */
 .curriculum_unit_portlet_link_more {
     font-family: Trebuchet;
     font-size: 11px;

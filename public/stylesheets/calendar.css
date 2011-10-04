@@ -11,6 +11,7 @@
  */
 
  .highlight-date-mark a { background: #F9C153 !important; }
+ .ui-helper-hidden-accessible { display: none; }
 
 /* ... Component containers ... */
 

@@ -88,7 +88,7 @@
             <li id="mysolar_id">
               <%= image_tag @user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{@user.nick}", :id => "image_user" %>
               <!-- adicionar esse link depois em algum lugar -->
-<%#= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
+              <%#= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
             </li>
             <li>
               <% if can? :update, @user %>
@@ -166,16 +166,13 @@
           </div>
 
           <% if curriculum_unit_selected? %>
-            <div class="block_title">
+            <div id="page_title">
               <h1>
-                <%= image_tag "icon_curriculum_unit.png", :alt => t(:icon_curriculum_unit), :class => 'block_title_icon', :id => 'page_title_icon' %>
                 <%= curriculum_unit_name %>
               </h1>
-            </div>
-            <div id="block_group_selection" class="block_content">
-              <div class="block_content_text">
+              <span class="block_content_text">
                 <%= raw(render_group_selection) %>
-              </div>
+              </span>
             </div>
           <% end %>
 
@@ -184,7 +181,9 @@
 
         <%= yield %>
 
-        <!-- Internacionalização  -->
+      </div>
+
+      <!-- Internacionalização  -->
         <div id="block_locale">
           <ul>
             <li><%= link_to "English",url_for( :locale => 'en' ) %></li>
@@ -192,10 +191,7 @@
           </ul>
         </div>
 
-
-      </div>
-
-<%#= render '/portlets/chat' %>
+        <%#= render '/portlets/chat' %>
     </div>
   </body>
 </html>
