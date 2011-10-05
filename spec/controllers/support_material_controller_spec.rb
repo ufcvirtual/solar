@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe SupportMaterialController do
+describe SupportMaterialFileController do
 
 end
