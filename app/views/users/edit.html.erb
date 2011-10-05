@@ -99,7 +99,7 @@
       </tr>
       <tr>
         <td>
-          <%=  fo.text_field  :name,:size=>"60" %>*
+          <%=  fo.text_field  :name,:size=>"60" %>*<%= @msg_name %>
         </td>
       </tr>
 
@@ -110,7 +110,7 @@
       </tr>
       <tr>
         <td>
-          <%=  fo.text_field  :nick,:size=>"34" %>*
+          <%=  fo.text_field  :nick,:size=>"34" %>*<%= @msg_nick %>
         </td>
       </tr>
 
@@ -148,7 +148,7 @@
       </tr>
       <tr>
         <td>
-          <%=  fo.text_field :cpf, :id=>"cpf",:size=>"14"%>*
+          <%=  fo.text_field :cpf, :id=>"cpf",:size=>"14"%>*<%= @msg_CPF %>
         </td>
       </tr>
 
@@ -162,7 +162,7 @@
       <tr>
         <td>
           <%= fo.label :email ,:class=>"my_cadastral_data_label_short" %>
-          <%=  fo.text_field  :email ,:style=>full_field_size,:size=>"254"%>*
+          <%=  fo.text_field  :email ,:style=>full_field_size,:size=>"254"%>*<%= @msg_email %>
         </td>
       </tr>
       <tr>
@@ -186,7 +186,7 @@
       </tr>
       <tr>
         <td>
-          <%=  fo.text_field  :institution ,:size=>"80"%>*
+          <%=  fo.text_field  :institution ,:size=>"80"%>*<%= @msg_institution %>
         </td>
       </tr>
 
@@ -225,8 +225,9 @@
       </tr>
       <tr>
         <td>
-          <%= fo.label :login , "Login:",:class=>"my_cadastral_data_label_short" %>  <%=  fo.text_field  :login ,:size=>"15"%>*
+          <%= fo.label :login , "Login:",:class=>"my_cadastral_data_label_short" %>  <%=  fo.text_field  :login ,:size=>"15"%>*<%= @msg_login %>
           <%= fo.label "old_password", t("old_password"),:class=>"my_cadastral_data_label_short" %> <%=  fo.password_field "old_password", :size=>"15", :value=>""%>
+        <%= @msg_password %>
         </td>
       </tr>
       <tr>

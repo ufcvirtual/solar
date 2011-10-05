@@ -50,7 +50,7 @@ class UsersController < ApplicationController
   def update
 
     #variavel para verificar se a mudança de senha passa nos testes
-    sucesso, error_msg = true, " "
+    sucesso = true
 
     #Evita que os parametros nulo fiquem como " " no banco
     params[:user]["old_password"] = nil if params[:user]["old_password"] == ""
@@ -73,16 +73,16 @@ class UsersController < ApplicationController
 
       if (antiga_senha.nil?)
         sucesso = false
-        error_msg = t('empty_old_password')
+        @msg_password = t('empty_old_password')
       else
         if (antiga_senha == @user[:crypted_password])
           if (nova_senha.nil? || repetir_senha.nil? || (nova_senha != repetir_senha))
             sucesso = false
-            error_msg = t("bad_password_confirmation")
+            @msg_password = t("bad_password_confirmation")
           end
         else
           sucesso = false
-          error_msg = t('incorrect_old_password')
+          @msg_password = t('incorrect_old_password')
         end
       end
     end
@@ -102,15 +102,36 @@ class UsersController < ApplicationController
         format.xml { head :ok }
       else
         #joga as mensagens de validação do modelo nas mensagens de erro
-        if @user.errors.any?
-          @user.errors.full_messages.each do |msg|
-            #remove a mensagem do brazillian rails
-            if msg != 'CPF numero invalido'
-              error_msg << msg+"<br/>"
-            end
-          end
+        @msg_login =""
+        @msg_nick =""
+        @msg_email =""
+        @msg_institution =""
+        @msg_name =""
+        @msg_CPF =""
+        for msg in @user.errors.full_messages
+              if (msg.include?(t(:form_login))) 
+                @msg_login << msg 
+              end  
+              if (msg.include?(t(:form_password))) 
+                @msg_password << msg + "\n" 
+              end
+              if (msg.include?(t(:form_nick))) 
+                @msg_nick << msg + "\n"
+              end
+              if (msg.include?(t(:form_email))) 
+                @msg_email << msg + "\n" 
+              end
+              if (msg.include?(t(:form_institution))) 
+                @msg_institution << msg + "\n" 
+              end
+              if (msg.include?(t(:form_name)))
+                @msg_name << msg + "\n" 
+              end
+              if (msg.include?(t(:form_cpf))) 
+                @msg_CPF << msg + "\n" 
+              end
         end
-        flash[:error] = error_msg
+        flash[:error] = t('unsuccessful_update')
         format.html {render({:action => 'edit'})}
         format.xml { render :xml => @user.errors, :status => :unprocessable_entity }
       end

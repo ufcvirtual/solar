@@ -31,6 +31,19 @@
   app_controller_require: "Por favor, efetue login!"
   app_controller_require_no: "Por favor, efetue logout!"
 
+  # forms de usuario em geral (para mensagens de validação)
+  form_login: "Login"
+  form_alternate_email: "E-mail alternativo"
+  form_password: "Senha"
+  form_name: "Nome"
+  form_nick: "Apelido"
+  form_cpf: "CPF "
+  form_institution: "Instituição"
+  form_special_needs: "Necessidades especiais"
+  form_password_confirmation: "Confirmação da senha"
+  form_email_confirmation: "Confirmação do e-mail"
+  form_email: "E-mail"
+  
   # pagina de cadastro de usuario
   new_user_title: "Novo Cadastro"
   new_user_msg_ok: "Usuário criado com sucesso!"
@@ -41,18 +54,6 @@
   back: "Voltar"
   save: "Salvar"
   new_user_msg_cpf_error: " inválido"
-  
-  new_user_login: "Login"
-  new_user_alternate_email: "E-mail alternativo"
-  new_user_password: "Senha"
-  new_user_name: "Nome"
-  new_user_nick: "Apelido"
-  new_user_cpf: "CPF "
-  new_user_institution: "Instituição"
-  new_user_special_needs: "Necessidades especiais"
-  new_user_password_confirmation: "Confirmação da senha"
-  new_user_email_confirmation: "Confirmação do e-mail"
-  new_user_email: "E-mail"
   
   #Meus dados
   my_data: "Meus Dados"
@@ -76,7 +77,9 @@
   bad_password_confirmation: "A nova senha e a confirmação não conferem!"
   incorrect_old_password: "Senha antiga incorreta"
   successful_update: "Usuário alterado com sucesso!"
+  unsuccessful_update: "Atualização não realizada!"
   successful_update_photo: "Foto alterada com sucesso!"
+  
 
   #alteracao de foto do layout
   alter_photo: "alterar foto"

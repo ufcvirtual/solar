@@ -25,6 +25,19 @@ en:
   # application controller
   app_controller_require: "Please log!"
   app_controller_require_no: "Please log out!"
+  
+  # forms de usuario em geral (para mensagens de validação)
+  form_login: "Login"
+  form_alternate_email: "Alternate e-mail"
+  form_password: "Password"
+  form_name: "Name"
+  form_nick: "Nick"
+  form_cpf: "CPF"
+  form_institution: "Institution"
+  form_special_needs: "Special needs"
+  form_password_confirmation: "Password confirmation"
+  form_email_confirmation: "E-mail confirmation"
+  form_email: "E-mail"
 
   # pagina de cadastro de usuario
   new_user_title: "New Register"
@@ -36,17 +49,6 @@ en:
   back: "Back"
   save: "Save"
   new_user_msg_cpf_error: " invalid"
-  
-  new_user_alternate_email: "Alternate e-mail"
-  new_user_password: "Password"
-  new_user_name: "Name"
-  new_user_nick: "Nick"
-  new_user_cpf: "CPF"
-  new_user_institution: "Institution"
-  new_user_special_needs: "Special needs"
-  new_user_password_confirmation: "Password confirmation"
-  new_user_email_confirmation: "E-mail confirmation"
-  new_user_email: "E-mail"
 
   #pagina meus dados
   my_data: "My Data"
@@ -70,6 +72,7 @@ en:
   bad_password_confirmation: "Bad password confirmation"
   incorrect_old_password: "Old password is incorrect"
   successful_update: "Update successful"
+  unsuccessful_update: "Update unsuccessful!"
   successful_update_photo: "Photo successfully changed"
 
   #alteracao de foto do layout
