@@ -1,2 +1,3 @@
-class SupportMaterial < ActiveRecord::Base
+class SupportMaterial <ActiveRecord::Base
+  
 end

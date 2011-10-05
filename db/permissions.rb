@@ -69,7 +69,7 @@ resources_arr = [
   {:id => 53, :controller => 'discussions', :action => 'post_file_upload', :description => 'Exibir janela para upload de arquivos no foruns'},
 
   # Material de apoio
-  {:id => 54, :controller => 'support_material', :action => 'show', :description => 'Visualizar material de apoio'}
+  {:id => 54, :controller => 'support_material', :action => 'list', :description => 'Visualizar material de apoio'}
 
 ]
 
