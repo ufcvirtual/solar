@@ -35,25 +35,8 @@
         //layout dos botoes azuis
         $(".solar_button_blue").after("<div class='solar_button_arrow_blue'></div>");
 
-        //Configurando a largura do conteudo
-        //$("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
-
-        /*
-        $(window).resize(function() {
-          $("#mysolar_content").outerWidth($(window).width()-($("#mysolar_content").position().left+$("#mysolar_content").offset().left));
-        });
-         */
-
-        //Configurando a altura da sidebar para acompanhar o total do conteúdo da página
-        /*
-        var maxHeight = $('#mysolar_content').outerHeight();
-        maxHeight += $('#mysolar_content').position().top;
-        if ($(window).height() > maxHeight)
-          maxHeight = $(window).height();
-        $("#mysolar_sidebar").height(maxHeight);
-         */
-
-       
+        // altura da linha divisória entre o menu e o conteúdo
+        // $("#mysolar_sidebar").height($('#body_wrapper').height());
 
       });
     </script>
@@ -87,8 +70,8 @@
             <% end %>
             <li id="mysolar_id">
               <%= image_tag @user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{@user.nick}", :id => "image_user" %>
-              <!-- adicionar esse link depois em algum lugar -->
-              <%#= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
+<%#*<!-- adicionar esse link depois em algum lugar -->%>
+<%#= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
             </li>
             <li>
               <% if can? :update, @user %>
@@ -113,7 +96,7 @@
           </ul>
           <ul id="mysolar_extras">
             <li id="mysolar_search">
-              <!-- FIXME: criar script para remover o value inicial e remover a classe search_keyword_inactive -->
+<%#*<!-- FIXME: criar script para remover o value inicial e remover a classe search_keyword_inactive -->%>
               <input class="search_keyword search_keyword_inactive" type="text" value="Buscar" />
             </li>
             <li>
@@ -131,11 +114,9 @@
 
       <!-- Barra Lateral -------------------------->
       <div id="mysolar_sidebar">
-
         <div id="mysolar_menu_accordion" style="z-index:10">
           <%=raw create_menu_list(Profile.all_by_user_id(current_user.id), @context || 'geral', @context_param_id || nil, session[:current_menu] || nil) %>
         </div>
-
       </div>
 
       <!-- CONTEUDO -->
@@ -167,16 +148,10 @@
 
           <% if curriculum_unit_selected? %>
             <div id="page_title">
-              <h1>
-                <%= curriculum_unit_name %>
-              </h1>
-              <span class="block_content_text">
-                <%= raw(render_group_selection) %>
-              </span>
+              <h1><%=t session[:breadcrumb].last[:name] %></h1>
+              <span class="block_content_text"><%= raw(render_group_selection) %></span>
             </div>
           <% end %>
-
-
         </div>
 
         <%= yield %>
@@ -184,19 +159,19 @@
       </div>
 
       <!-- Internacionalização  -->
-        <div id="block_locale">
-          <ul>
-            <li><%= link_to "English",url_for( :locale => 'en' ) %></li>
-            <li><%= link_to "Português(BR)",url_for( :locale => 'pt-BR' ) %></li>
-          </ul>
-        </div>
+      <div id="block_locale">
+        <ul>
+          <li><%= link_to "English", url_for( :locale => 'en' ) %></li>
+          <li><%= link_to "Português(BR)",url_for( :locale => 'pt-BR' ) %></li>
+        </ul>
+      </div>
 
-        <%#= render '/portlets/chat' %>
+<%#= render '/portlets/chat' %>
     </div>
   </body>
 </html>
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
   new showLocalTime("server_clock");
 
   function showLocalTime(container){
@@ -215,7 +190,7 @@
     var minutes = localtime.getMinutes();
     var seconds = localtime.getSeconds();
     $("#"+el).html(formatNumber(hour)+":"+formatNumber(minutes)+":"+formatNumber(seconds));
-    var t = setTimeout(function(){updateTime(el, localtime);},1000);
+    setTimeout(function(){updateTime(el, localtime);},1000);
   }
 
   function formatNumber(num){
