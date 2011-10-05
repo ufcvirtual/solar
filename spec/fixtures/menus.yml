@@ -19,6 +19,7 @@ material_conteudo:
   name: menu_support_material
   order: 2
   context_id: 2
+  resource_id: 54
 
 # MENU PAI - 20
 atividades:

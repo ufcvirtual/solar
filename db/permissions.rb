@@ -66,7 +66,10 @@ resources_arr = [
   {:id => 50, :controller => 'discussions', :action => 'attach_file', :description => 'Anexar arquivos de foruns'},
   {:id => 51, :controller => 'discussions', :action => 'remove_attached_file', :description => 'Remover arquivos de postagens'},
   {:id => 52, :controller => 'users', :action => 'find', :description => 'Consultar dados do usuario'},
-  {:id => 53, :controller => 'discussions', :action => 'post_file_upload', :description => 'Exibir janela para upload de arquivos no foruns'}
+  {:id => 53, :controller => 'discussions', :action => 'post_file_upload', :description => 'Exibir janela para upload de arquivos no foruns'},
+
+  # Material de apoio
+  {:id => 54, :controller => 'support_material', :action => 'show', :description => 'Visualizar material de apoio'}
 
 ]
 
@@ -127,7 +130,9 @@ perm_alunos = PermissionsResource.create([
     {:profile_id => 1, :resource_id => 53, :per_id => false},
     # acompanhamento
     {:profile_id => 1, :resource_id => 47, :per_id => true},
-    {:profile_id => 1, :resource_id => 52, :per_id => true}
+    {:profile_id => 1, :resource_id => 52, :per_id => true},
+    # Material de apoio
+    {:profile_id => 1, :resource_id => 54, :per_id => false}
   ])
 
 ##############################
@@ -177,7 +182,10 @@ perm_prof_titular = PermissionsResource.create([
     # acompanhamento
     {:profile_id => 2, :resource_id => 47, :per_id => false},
     {:profile_id => 2, :resource_id => 48, :per_id => false},
-    {:profile_id => 2, :resource_id => 52, :per_id => false}
+    {:profile_id => 2, :resource_id => 52, :per_id => false},
+
+    # Material de apoio
+    {:profile_id => 2, :resource_id => 54, :per_id => false}
   ])
 
 ##############################
@@ -225,7 +233,11 @@ perm_prof_titular = PermissionsResource.create([
     {:profile_id => 3, :resource_id => 49, :per_id => false},
     {:profile_id => 3, :resource_id => 50, :per_id => false},
     {:profile_id => 3, :resource_id => 51, :per_id => false},
-    {:profile_id => 3, :resource_id => 53, :per_id => false}
+    {:profile_id => 3, :resource_id => 53, :per_id => false},
+
+     # Material de apoio
+    {:profile_id => 3, :resource_id => 54, :per_id => false}
+    
   ])
 
 ######## PERMISSIONS MENUS #########
@@ -244,6 +256,7 @@ PermissionsMenu.create([
     {:profile_id => 1, :menu_id => 50},
     #{:profile_id => 1, :menu_id => 70},
     {:profile_id => 1, :menu_id => 302},
+    {:profile_id => 1, :menu_id => 102},
 
     # professor titular
     {:profile_id => 2, :menu_id => 10},
@@ -259,6 +272,7 @@ PermissionsMenu.create([
     {:profile_id => 2, :menu_id => 50},
     #{:profile_id => 2, :menu_id => 70},
     {:profile_id => 2, :menu_id => 302},
+    {:profile_id => 2, :menu_id => 102},
 
     # tutor a distancia
     {:profile_id => 3, :menu_id => 10},
@@ -272,5 +286,6 @@ PermissionsMenu.create([
     {:profile_id => 3, :menu_id => 304},
     {:profile_id => 3, :menu_id => 50},
     #{:profile_id => 3, :menu_id => 70},
-    {:profile_id => 3, :menu_id => 302}
+    {:profile_id => 3, :menu_id => 302},
+    {:profile_id => 3, :menu_id => 102}
   ])
