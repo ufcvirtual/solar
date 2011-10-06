@@ -771,7 +771,7 @@ a.mysolar_top_link{
     margin-top: 10px;
     text-align: center;
     font-size: 9pt;
-    
+
     /*
     width: 20%;
     position: absolute;
@@ -1325,7 +1325,8 @@ div.alter_photo_text {
 /* icone que fica ao lado do titulo do bloco */
 .block_title_icon {
     margin-right: 5px;
-    width: 20px;
+    width: 18px;
+    height: 18px;
 }
 
 #page_title_icon {
@@ -2238,7 +2239,7 @@ table.tb_list_files th.date_info {
 tr.lines td, th {
     border-bottom: solid #B4B2B1 1px;
     border-left: solid #B4B2B1 1px;
-    padding: 2px 2px 2px 5px;
+    padding: 7px 5px 7px 5px;
 }
 
 tr.post_content {
