@@ -1,53 +1,48 @@
-<!--
-<%= raw render_group_selection %>
--->
-
-<div class="presentation_area">
-  <div class="mysolar_header">
-    <%= image_tag "icon_curriculum_unit.png", :alt=>t(:icon_curriculum_unit) %>
-    <h1 class="mysolar_title"><%=t(:curriculum_unit_information_title)%></h1>
+<div class="block_wrapper">
+  
+  <div class="block_title">
+    <h2><%= image_tag "icon_curriculum_unit.png", :alt=>t(:icon_curriculum_unit), :class=>(:block_title_icon) %><%= t(:curriculum_unit_information_title) %></h2>
   </div>
 
-  <div>
-    <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tbody>
+  <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tbody>
+      <tr class="lines">
+        <td style="width: 20%;"><%= t(:syllabus) %></td>
+        <td><%= @curriculum_unit.syllabus %></td>
+      </tr>
+      <tr class="lines">
+        <td><%= t(:objectives) %></td>
+        <td><%= @curriculum_unit.objectives %></td>
+      </tr>
+      <tr class="lines">
+        <td><%= t(:prerequisites) %></td>
+        <td><%= @curriculum_unit.prerequisites %></td>
+      </tr>
+      <tr class="lines">
+        <td><%= t(:resume) %></td>
+        <td><%= @curriculum_unit.resume %></td>
+      </tr>
+      <% unless @offer.nil? %>
         <tr class="lines">
-          <td style="width: 20%;"><%= t(:syllabus) %></td>
-          <td><%= @curriculum_unit.syllabus %></td>
+          <td><%= t(:semester_date) %></td>
+          <td><%= l @offer.start %> - <%= l @offer.end %></td>
         </tr>
-        <tr class="lines">
-          <td><%= t(:objectives) %></td>
-          <td><%= @curriculum_unit.objectives %></td>
-        </tr>
-        <tr class="lines">
-          <td><%= t(:prerequisites) %></td>
-          <td><%= @curriculum_unit.prerequisites %></td>
-        </tr>
-        <tr class="lines">
-          <td><%= t(:resume) %></td>
-          <td><%= @curriculum_unit.resume %></td>
-        </tr>
-        <% unless @offer.nil? %>
-          <tr class="lines">
-            <td><%= t(:semester_date) %></td>
-            <td><%= l @offer.start %> - <%= l @offer.end %></td>
-          </tr>
-        <% end %>
-        <tr class="lines">
-          <td><%= t(:passing_grade) %></td>
-          <td><%= @curriculum_unit.passing_grade %></td>
-        </tr>
-        <tr class="lines">
-          <td><%= t(:curriculum_unit_responsible) %></td>
-          <td>
-            <% if @responsible %>
-              <% @responsible.each do |resp| %>
-                <%=resp.username + ' (' + resp.profilename + ') '%><span><%= link_to (image_tag "icon_send_mail.png", :alt=>t(:icon_send_email)) %></span><br/>
-              <% end %>
+      <% end %>
+      <tr class="lines">
+        <td><%= t(:passing_grade) %></td>
+        <td><%= @curriculum_unit.passing_grade %></td>
+      </tr>
+      <tr class="lines">
+        <td><%= t(:curriculum_unit_responsible) %></td>
+        <td>
+          <% if @responsible %>
+            <% @responsible.each do |resp| %>
+              <%=resp.username + ' (' + resp.profilename + ') '%><span><%= link_to (image_tag "icon_send_mail.png", :alt=>t(:icon_send_email)) %></span><br/>
             <% end %>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+          <% end %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
 </div>
