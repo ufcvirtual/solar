@@ -9,11 +9,23 @@
       <% if !(@lessons.nil? || @lessons.empty?) %>
         <% @lessons.each do |lesson| %>
           <div class="block_content_line">
+            <%schedule= Schedule.find(lesson.schedule_id)%>
+            <%if lesson.schedule.end_date.nil?%>
             <span class="block_content_gray">
-              <%schedule= Schedule.find(lesson.schedule_id)%>
+              <%= l schedule.start_date  %>
+            </span>
+            <a class="block_content_link" href="javascript:show_lesson('/lessons/show?id=<%=@curriculum_unit.id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
+            <%elsif lesson.schedule.end_date >= Date.today%>
+            <span class="block_content_gray">
               <%= l schedule.start_date  %> - <%= l schedule.end_date %>
             </span>
             <a class="block_content_link" href="javascript:show_lesson('/lessons/show?id=<%=@curriculum_unit.id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
+            <%elsif lesson.schedule.end_date < Date.today%>
+            <span class="block_content_gray">
+              <%= l schedule.start_date  %> - <%= l schedule.end_date %>
+            </span>
+             <a class="block_content_link" ><%=lesson.name%></a>
+            <%end%>
           </div>
         <% end %>
       <% else %>

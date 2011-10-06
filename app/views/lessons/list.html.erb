@@ -21,12 +21,28 @@
           <% curriculum_unit_id = @curriculum_unit.id %>
           <% @lessons.each do |lesson| %>
             <tr class="lines">
+              <%if lesson.schedule.end_date.nil?%>
+              <td>
+                <a class="link_content" href="javascript:show_lesson('/lessons/show?id=<%=curriculum_unit_id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
+              </td>
+              <td align="center" style="width: 200px;">
+                <%= l lesson.schedule.start_date %>
+              </td>
+              <%elsif lesson.schedule.end_date >= Date.today%>
               <td>
                 <a class="link_content" href="javascript:show_lesson('/lessons/show?id=<%=curriculum_unit_id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
               </td>
               <td align="center" style="width: 200px;">
                 <%= l lesson.schedule.start_date %> - <%= l lesson.schedule.end_date %>
               </td>
+              <%elsif lesson.schedule.end_date < Date.today%>
+              <td>
+                <a class="link_content" ><%=lesson.name%></a>
+              </td>
+              <td align="center" style="width: 200px;">
+                <%= l lesson.schedule.start_date %> - <%= l lesson.schedule.end_date %>
+              </td>
+              <%end%> 
             </tr>
           <% end %>
         </tbody>
