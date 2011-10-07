@@ -1,14 +1,4 @@
-<!--
-
-&nbsp;
-<div>
-  <span class="page_title"><%= t(:bibliography_title)%></span> <span class="page_title"><%=@curriculum_unit.name%></span>
-  <br/>
-</div>
-
-<%= raw render_group_selection %>
--->
-<div>
+<div class="block_wrapper">
 
   <% if !(@bibliography_filter.nil? || @bibliography_filter.empty?) %>
     <% @bibliography_filter.each do |bib| %>
@@ -78,7 +68,9 @@
     <%  end %>
 
   <% else %>
-    <%= t(:bibliography_null) %>
+    <div class="block_content block_content_text">
+      <%= t(:bibliography_null) %>
+    </div>
   <% end %>
 
 </div>

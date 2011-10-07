@@ -1,21 +1,19 @@
-<!--
-<div>
-  <span class="page_title"><%= t(:agenda_title)%></span>
-  <span class="page_title"><%=@curriculum_unit.name%></span>
-</div>
-
--->
-
-<div class="agenda_content">
+<div class="block_wrapper">
   <% if !(@schedule.nil? || @schedule.empty?) %>
     <% @schedule.each do |schedule| %>
 
       <div class="agenda_block">
+
+        <div class="block_title">
+          <h2><div class="block_title_icon <%= schedule['schedule_type'] %>"></div><%=t :"#{schedule['schedule_type']}" %></h2>
+        </div>
+
         <div class="agenda_left">
-          <div class="agenda_left_title">
+          <!--<div class="agenda_left_title">
             <div class="agenda_left_title_img <%= schedule['schedule_type'] %>"></div>
             <div class="agenda_left_title_text"><%=t :"#{schedule['schedule_type']}" %></div>
-          </div>
+          </div>-->
+
           <div class="agenda_left_content">
             <div class="agenda_left_date">
               <% start_date = schedule['start_date'].nil? ? nil : schedule['start_date'].to_date %>
@@ -24,16 +22,20 @@
             </div>
           </div>
         </div>
+
         <div class="agenda_right">
           <span class="title"><%= schedule['name'] %></span>
           <div class="content">
             <p><%= schedule['description'] %></p>
           </div>
         </div>
+
       </div>
 
     <% end %>
   <% else %>
-    <%= t(:agenda_null) %>
+    <div class="block_content block_content_text">
+      <%= t(:agenda_null) %>
+    </div>
   <% end %>
 </div>

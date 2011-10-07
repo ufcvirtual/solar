@@ -11,6 +11,6 @@
   <% if @schedule.first.nil? %>
     <span class="agenda_ajax"><%= t(:no_events) %></span>
   <% else %>
-    <%= link_to t(:curriculum_access_more), {:controller => :schedules, :action => :list, :id => params[:id] }, {:class => 'curriculum_unit_portlet_link_more'}%>
+    <%= link_to t(:curriculum_access_more), {:controller => :schedules, :action => :list, :id => params[:id] }, {:class => 'schedule_link_more'}%>
   <%end%>
 </div>

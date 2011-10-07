@@ -1,54 +1,48 @@
 <div class="block_wrapper">
 
-  <div class="block_title">
-    <h2><%= image_tag "icon_lesson.png", :alt=>t(:icon_lesson), :class=>(:block_title_icon) %><%= t(:lesson_title) %></h2>
-  </div>
-
-  <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%">
-    <% if !(@lessons.nil? || @lessons.empty?) %>
-      <table class="tb_list" cellpadding="10" cellspacing="0" width="100%">
-        <thead>
-          <tr>
-            <th align="left"><%= t(:lesson_table_title) %></th>
-            <th style="width: 200px"><%= t(:lesson_table_date) %></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% curriculum_unit_id = @curriculum_unit.id %>
-          <% @lessons.each do |lesson| %>
-            <tr class="lines">
-              <%if lesson.schedule.end_date.nil?%>
+  <% if !(@lessons.nil? || @lessons.empty?) %>
+    <div class="block_title">
+      <h2><%= image_tag "icon_lesson.png", :alt=>t(:icon_lesson), :class=>(:block_title_icon) %><%= t(:lesson_title) %></h2>
+    </div>
+    <table class="tb_list" border="0" cellpadding="10" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th align="left"><%= t(:lesson_table_title) %></th>
+          <th style="width: 200px"><%= t(:lesson_table_date) %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% curriculum_unit_id = @curriculum_unit.id %>
+        <% @lessons.each do |lesson| %>
+          <tr class="lines">
+            <%if lesson.schedule.end_date.nil?%>
               <td>
                 <a class="link_content" href="javascript:show_lesson('/lessons/show?id=<%=curriculum_unit_id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
               </td>
               <td align="center" style="width: 200px;">
                 <%= l lesson.schedule.start_date %>
               </td>
-              <%elsif lesson.schedule.end_date >= Date.today%>
+            <%elsif lesson.schedule.end_date >= Date.today%>
               <td>
                 <a class="link_content" href="javascript:show_lesson('/lessons/show?id=<%=curriculum_unit_id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
               </td>
               <td align="center" style="width: 200px;">
                 <%= l lesson.schedule.start_date %> - <%= l lesson.schedule.end_date %>
               </td>
-              <%elsif lesson.schedule.end_date < Date.today%>
+            <%elsif lesson.schedule.end_date < Date.today%>
               <td>
                 <a class="link_content" ><%=lesson.name%></a>
               </td>
               <td align="center" style="width: 200px;">
                 <%= l lesson.schedule.start_date %> - <%= l lesson.schedule.end_date %>
               </td>
-              <%end%> 
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    <% else %>
-    <tbody>
-      <tr class="lines">
-        <td colspan="2"><%= t(:lesson_message) %></td>
-      </tr>
-    </tbody>
+            <%end%>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div class="block_content block_content_text"><%= t(:lesson_message) %></div>
   <% end %>
-  </table>
+
 </div>

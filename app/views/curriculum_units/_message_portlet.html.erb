@@ -3,7 +3,7 @@
 %>
 <div id="block_messages" class="block_small">
   <div class="block_title">
-    <%= image_tag "icon_message.png", :alt=>t(:icon_message), :class=>(:block_title_icon) %><%= t(:curriculum_access_message)%>
+    <h2><%= image_tag "icon_message.png", :alt=>t(:icon_message), :class=>(:block_title_icon) %><%= t(:curriculum_access_message)%></h2>
     <span class="text_alert">&nbsp;&nbsp;
       <% if !(@messages.nil? || @messages.empty?) %>
         [<%=@messages.count%>] <%= t(:curriculum_access_new) %>

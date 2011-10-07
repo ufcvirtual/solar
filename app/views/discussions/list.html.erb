@@ -1,19 +1,13 @@
-<div class="presentation_area">
-<!--
-  <%= raw render_group_selection %>
--->
-  <div class="mysolar_header">
-    <%= image_tag "icon_forum.png", :alt=>t(:icon_forum) %>
-    <h1 class="mysolar_title"><%= t(:forum_title) %></h1>
-  </div>
+<div class="block_wrapper">
 
-  <div>
     <% if !(@discussions.nil? || @discussions.empty?) %>
-      <table class="tb_list" cellpadding="10" cellspacing="0" width="100%">
+      <table class="tb_list" cellpadding="10" cellspacing="0" width="100%" style="table-layout: fixed">
         <thead>
-          <tr class="lines">
-            <th align="left"><%= t(:forum_table_title) %></th>
-            <th style="width: 200px"><%= t(:forum_table_date) %></th>
+          <tr class="lines block_title">
+            <th align="left">
+              <%= image_tag "icon_forum.png", :alt=>t(:icon_forum), :class=>:block_title_icon %><%= t(:forum_table_title) %>
+            </th>
+            <th style="width: 200px;padding-left:8px"><%= t(:forum_table_date) %></th>
           </tr>
         </thead>
         <tbody>
@@ -22,7 +16,7 @@
               <td>
                 <%=link_to discussion.name, {:controller => "discussions", :action => "show", :id => discussion.id}, {:class => 'link_content'} %>
               </td>
-              <td align="center" style="width: 200px">
+              <td style="width: 200px;">
                 <%schedule= Schedule.find(discussion.schedule_id)%>
                 <%= l schedule.start_date  %> - <%= l schedule.end_date %></td>
             </tr>
@@ -30,7 +24,7 @@
         </tbody>
       </table>
     <% else %>
-      <%= t(:forum_message) %>
+      <div class="block_content block_content_text"><%= t(:forum_message) %></div>
     <% end %>
-  </div>
+
 </div>

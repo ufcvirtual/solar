@@ -32,7 +32,7 @@ module LessonsHelper
     query_lessons += " and l.id=#{lesson_id} " unless lesson_id.nil? 
 
     query_lessons += " ORDER BY l.order"
-puts "\n\n\n#{query_lessons}\n\n\n"
+
     return Lesson.find_by_sql(query_lessons)
   end
 
