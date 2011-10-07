@@ -12,7 +12,7 @@ module LessonsHelper
                   LEFT JOIN allocation_tags at ON l.allocation_tag_id = at.id
                       WHERE status = #{Lesson_Approved}
                         AND s.start_date <= current_date
-                       -- AND s.end_date >= current_date "
+                       /* AND s.end_date >= current_date */ "
     unless (offer_id.nil? && group_id.nil?)
       query_lessons << " and ( "
 
@@ -32,7 +32,7 @@ module LessonsHelper
     query_lessons += " and l.id=#{lesson_id} " unless lesson_id.nil? 
 
     query_lessons += " ORDER BY l.order"
-
+puts "\n\n\n#{query_lessons}\n\n\n"
     return Lesson.find_by_sql(query_lessons)
   end
 
