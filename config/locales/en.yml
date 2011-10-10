@@ -195,7 +195,8 @@ en:
   lesson_message: "No lesson available"
   lesson: "Lesson"
   lesson_goto: "Go to lesson"
-  
+
+  title: "Title"
   forum_title: "Discussions"
   forum_table_title: "Available Discussions"
   forum_table_date: "Access date"

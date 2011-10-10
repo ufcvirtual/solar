@@ -2166,7 +2166,7 @@ table.tb_list th {
 }
 
 table.tb_list tbody {
-    background-color: #F7F7F8;
+    background-color: #F5F8FB;
 }
 
 table.tb_list td {
@@ -2242,7 +2242,11 @@ tr.post_content {
 }
 
 tbody tr.lines:hover, table.tb_list_files td:hover {
-    background-color: #eef3fb;
+    background-color: #eef3fb; /* #FFF5ED*/
+}
+
+tbody tr.lines:hover a, table.tb_list_files td:hover a {
+    
 }
 
 td.td_student a {

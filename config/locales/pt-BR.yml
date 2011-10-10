@@ -203,6 +203,7 @@
   lesson_goto: "Ir para aula"
 
   #Listagem de Fóruns
+  title: "Título"
   forum_title: "Fóruns"
   forum_table_title: "Fóruns disponíveis"
   forum_table_date: "Data de acesso"
