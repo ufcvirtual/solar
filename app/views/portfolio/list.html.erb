@@ -1,13 +1,11 @@
-<div class="presentation_area">
-  <div id="activities_area">
-    <div class="mysolar_header">
-      <%= image_tag "icon_suitcase_portfolio.png", :alt => t(:portfolio_icon) %>
-      <h1 class="mysolar_title"><%= t(:individual_activity)%></h1>
+<div class="block_wrapper" id="activities_area">
+    <div class="block_title">
+      <h2 class="mysolar_title"><%= image_tag "icon_suitcase_portfolio.png", :alt => t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:individual_activity)%></h2>
     </div>
 
     <!-- Atividades individuais -->
 
-    <div id="individual_activity">
+    <div class="block_content" id="individual_activity">
 
       <% @individual_activities.each_with_index do |ia, idx| %>
         <table class="tb_list" cellpadding="0" cellspacing="0" border="0">
@@ -56,13 +54,12 @@
         </table>
       <% end %>
     </div>
-  </div>
+</div>
+<div class="block_wrapper" id="public_area">
   <!-- area publica -->
 
-  <div id="public_area" style="padding-top: 10px;">
-    <div class="mysolar_header">
-      <%= image_tag "icon_suitcase_portfolio.png", :alt => t(:portfolio_icon) %>
-      <h1 class="mysolar_title"><%= t(:public_area) %></h1>
+    <div class="block_title">
+      <h2 class="mysolar_title"><%= image_tag "icon_suitcase_portfolio.png", :alt => t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:public_area)%></h2>
     </div>
     <div id="files_public_area">
       <table class="tb_list_files" border="0" cellpadding="5" cellspacing="0" width="100%">
@@ -94,7 +91,7 @@
         </tbody>
       </table>
     </div>
-  </div>
+  <%#*</div>%>
 </div>
 
 <%= render '/portfolio/public_files_send' %>
