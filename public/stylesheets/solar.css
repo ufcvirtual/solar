@@ -31,6 +31,7 @@ abbr,acronym { border:0;
 }
 
 /* carregando fontes externas */
+
 @font-face
 {
     font-family: 'Trebuchet';
@@ -60,9 +61,26 @@ body{
     padding: 0;
     background-color: #fff;
     cursor: default;
-    font-family: 'Trebuchet', Arial;
+/*    font-family: 'Trebuchet', Arial;*/
+    font-family: 'PT Sans', sans-serif;
     height: 100%;
     background-color: #f9f9f9;
+}
+
+h1, h2, h3, h4, h5 {
+/*    font-family: 'Trebuchet', Arial;*/
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 500;
+}
+
+h1 {
+    font-weight: 300;
+}
+
+h2 {
+/*    font-family: 'Trebuchet', Arial;*/
+    font-family: 'Ubuntu Condensed', sans-serif;
+    font-weight: 500;
 }
 
 #body_wrapper {
@@ -221,8 +239,8 @@ textarea{
 h1.page_title{
     font-size  : 12pt;
     color      : #000;
-    font-weight: bold;
-    font-variant: small-caps;
+/*    font-weight: bold;*/
+/*    font-variant: small-caps;*/
     border-bottom: 3px solid #003E7A;
     padding-bottom: 2px !important;
     /*text-transform: capitalize;*/
@@ -413,6 +431,8 @@ h1.page_title{
     top: 0px;
     left: 0px;
     */
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 400;
     background-color: #003e7a;
     color: #fff;
     overflow: hidden;
@@ -435,7 +455,7 @@ h1.page_title{
     height: 36px;
     line-height: 36px;
     float: right;
-    font-size: 11pt;
+    font-size: 10pt;
     list-style-type: none;
     padding: 0 10px 0 0;
     margin: 0;
@@ -694,7 +714,7 @@ a.mysolar_top_link{
 /*    padding-left: 12px;*/
     cursor: pointer;
     font-weight: normal;
-    font-family: 'Trebuchet', Arial;
+/*    font-family: 'Trebuchet', Arial;*/
     height: 30px;
     line-height: 30px;
     color: #003e7a;
@@ -707,7 +727,7 @@ a.mysolar_top_link{
     display: none;
     padding: 5px 0 5px 10px;
     margin: 0;
-    border-top: 3px solid #ff7418;
+    border-top: 2px solid #ff7418;
     background-color: #fff5ed; /* alternativa: f5f8fb */
     font-size: 10pt;
 }
@@ -1292,8 +1312,8 @@ div.alter_photo_text {
 
 #page_title h1 {
     font-size: 14pt;
-    font-weight: bold;
-    font-variant: small-caps;
+/*    font-weight: bold;*/
+/*    font-variant: small-caps;*/
     display: inline;
 /*    border-bottom: 1px solid #fff;*/
 }
@@ -1323,12 +1343,13 @@ div.alter_photo_text {
 /* titulo do bloco */
 
 .block_title {
-    border-bottom: 3px solid #003E7A;
+    border-bottom: 2px solid #003E7A;
     padding-bottom: 2px !important;
 }
 
 .block_title h2 {
     display: inline;
+/*    font-variant: small-caps;*/
 }
 
 /* icone que fica ao lado do titulo do bloco */
@@ -1398,7 +1419,7 @@ div.alter_photo_text {
 
 .block_content_line {
     border-bottom: 1px solid #CCCCCC;
-    font-size: 10pt;
+/*    font-size: 10pt;*/
     padding: 6px 10px;
 }
 
@@ -1414,7 +1435,7 @@ div.alter_photo_text {
 
 .block_content_text {
     color: #000;
-    font-size: 10pt;
+/*    font-size: 10pt;*/
     padding: 6px 10px;
 }
 
