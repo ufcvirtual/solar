@@ -239,3 +239,10 @@ hist_uc:
   parent_id: 90
   name: menu_history
   order: 2
+
+# MENU PAI - 100
+registration:
+  id: 100
+  name: menu_registration
+  order: 10
+  resource_id: 8

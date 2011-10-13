@@ -254,6 +254,7 @@ PermissionsMenu.create([
     {:profile_id => 1, :menu_id => 303},
     {:profile_id => 1, :menu_id => 304},
     {:profile_id => 1, :menu_id => 50},
+    {:profile_id => 1, :menu_id => 100},
     #{:profile_id => 1, :menu_id => 70},
     {:profile_id => 1, :menu_id => 302},
     {:profile_id => 1, :menu_id => 102},
@@ -270,6 +271,7 @@ PermissionsMenu.create([
     {:profile_id => 2, :menu_id => 303},
     {:profile_id => 2, :menu_id => 304},
     {:profile_id => 2, :menu_id => 50},
+    {:profile_id => 2, :menu_id => 100},
     #{:profile_id => 2, :menu_id => 70},
     {:profile_id => 2, :menu_id => 302},
     {:profile_id => 2, :menu_id => 102},
@@ -285,6 +287,7 @@ PermissionsMenu.create([
     {:profile_id => 3, :menu_id => 303},
     {:profile_id => 3, :menu_id => 304},
     {:profile_id => 3, :menu_id => 50},
+    {:profile_id => 3, :menu_id => 100},
     #{:profile_id => 3, :menu_id => 70},
     {:profile_id => 3, :menu_id => 302},
     {:profile_id => 3, :menu_id => 102}
