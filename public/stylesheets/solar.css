@@ -167,9 +167,9 @@ label.menor{
 /**
 * Tratando links
 */
-a, a.menor, a.link_content, a.link_content_del {
-    color           : #222;
-    text-decoration : none;
+a, a.menor, a.link_content {
+    color: #222;
+    text-decoration: none;
 }
 
 a.link_content_del {
@@ -2170,20 +2170,31 @@ ul.message_menu_listbox li ul a:hover{
 /**
  * Tabelas - geral e files
 */
+table.tb_list, table.tb_list_files {
+    width: 100%;
+}
 
 table.tb_list tr.block_title th {
     padding-bottom: 2px;
 }
 
-table.tb_list, table.tb_list_files {
-    font-size: 10pt;
-/*    background-color: #F7F7F8;*/
-/*    border-right: solid #B4B2B1 1px;*/
-}
+/*table.tb_list, table.tb_list_files {
+    
+    background-color: #F7F7F8;
+    border-right: solid #B4B2B1 1px;
+}*/
 
 table.tb_list th {
     white-space: nowrap;
+    background-color: white;
 /*    font-weight: bold;*/
+}
+
+table.tb_list h4 {
+    margin-bottom: 4px;
+    overflow: hidden;
+    word-wrap:break-word;
+    max-width:410px;
 }
 
 table.tb_list tbody {
@@ -2193,10 +2204,11 @@ table.tb_list tbody {
 table.tb_list td {
     white-space: normal;
     word-wrap: break-word;
+/*    border-right: 1px solid #d0d0d0;*/
 }
 
-table.tb_list td:first-child {
-    border-right: 1px solid #d0d0d0;
+table.tb_list td:last-child {
+    border-right: none;
 }
 
 table.tb_list tbody tr:last-child {
@@ -2216,11 +2228,21 @@ table.tb_list_files td {
     border-top: 1px solid #B4B2B1;
 }
 
+.enunciation_complete, .enunciation_less {
+    display:none;
+}
+/**
+* Icones de arquivos em tabelas
+*/
+table .file_data_icon {
+    text-align: center;
+}
+
 /**
 * Datas de arquivos em tabelas
 */
 
-table.tb_list_files td.file_data_info {
+table.tb_list_files td.file_data_info, table.tb_list td.file_data_info {
     color: #787878;
 }
 
@@ -2400,6 +2422,9 @@ td.td_student a {color: #2a538d;}
 /**
 * Situacao das tarefas
 */
+.assignment_corrected, .assignment_sent, td.assignment_as a, .assignment_not_sent, .assignment_not_started, .assignment_send, .assignment_pending, td.assignment_an a {
+    text-decoration: underline;
+}
 
 .assignment_corrected {
     white-space: nowrap;
@@ -2426,6 +2451,10 @@ td.td_student a {color: #2a538d;}
     color: #204783;
 }
 
+.activity_grade {
+    font-weight: bold;
+}
+
 #breadcrumb {
     white-space: nowrap;
     font-size: 10pt;
@@ -2443,7 +2472,7 @@ td.td_student a {color: #2a538d;}
     cursor: pointer;
     text-align: center;
     text-decoration: none;
-    padding: .3em 1em .3em;
+    padding: .3em .5em .3em;
     margin: 2px;
     ltext-shadow: 0 1px 1px rgba(0,0,0,.3);
     -webkit-border-radius: .2em;
@@ -2452,6 +2481,7 @@ td.td_student a {color: #2a538d;}
     -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    font-size: 8pt;
 }
 .btn:hover {
     text-decoration: none;
