@@ -169,9 +169,6 @@ class UsersController < ApplicationController
     }
 
     @scheduled_events = schedules_events_dates.flatten.uniq
-
-#    raise "#{@scheduled_events}"
-
   end
 
   ######################################

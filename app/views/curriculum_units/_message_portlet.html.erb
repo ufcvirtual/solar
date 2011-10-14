@@ -3,7 +3,7 @@
 %>
 <div id="block_messages" class="block_small">
   <div class="block_title">
-    <%= image_tag "icon_message.png", :alt=>t(:icon_message), :class=>(:block_title_icon) %><%= t(:curriculum_access_message)%>
+    <h2><%= image_tag "icon_message.png", :alt=>t(:icon_message), :class=>(:block_title_icon) %><%= t(:curriculum_access_message)%></h2>
     <span class="text_alert">&nbsp;&nbsp;
       <% if !(@messages.nil? || @messages.empty?) %>
         [<%=@messages.count%>] <%= t(:curriculum_access_new) %>
@@ -22,7 +22,7 @@
               <%= l(message.send_date, :format => :not_today) %> 
             <% end %>  
           </span>
-          <%= link_to message.sender,  {:controller => 'messages', :action => 'show', :id => message.id},{:class => 'block_content_link'} %>
+          <%= link_to message.sender,  {:controller => 'messages', :action => 'show', :id => message.id},{:class => 'link_content'} %>
           <%
           msg_subject = strip_tags message.subject
           msg_subject = msg_subject.slice(0..107) + ' (...)' if msg_subject.length > 110
@@ -36,7 +36,7 @@
 
   </div>
   <div class="block_messages_opt">
-    <%= link_to t(:curriculum_access_message_inbox), {:controller => 'messages'}, {:class=>'block_content_link_gray'} %>&nbsp;|
-    <%= link_to t(:curriculum_access_message_new), {:controller => 'messages', :action => 'new'}, {:class=>'block_content_link_gray'} %>
+    <%= link_to t(:curriculum_access_message_inbox), {:controller => 'messages'}, {:class=>'link_content_gray'} %>&nbsp;|
+    <%= link_to t(:curriculum_access_message_new), {:controller => 'messages', :action => 'new'}, {:class=>'link_content_gray'} %>
   </div>
 </div>

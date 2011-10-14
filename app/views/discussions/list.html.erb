@@ -1,36 +1,31 @@
-<div class="presentation_area">
-<!--
-  <%= raw render_group_selection %>
--->
-  <div class="mysolar_header">
-    <%= image_tag "icon_forum.png", :alt=>t(:icon_forum) %>
-    <h1 class="mysolar_title"><%= t(:forum_title) %></h1>
-  </div>
+<div class="block_wrapper">
 
-  <div>
-    <% if !(@discussions.nil? || @discussions.empty?) %>
-      <table class="tb_list" cellpadding="10" cellspacing="0" width="100%">
-        <thead>
+  <% if !(@discussions.nil? || @discussions.empty?) %>
+    <div class="mysolar_header">
+      <h2 class="mysolar_title"><%= image_tag "icon_forum.png", :alt=>t(:icon_forum), :class=>:block_title_icon %><%= t(:forum_table_title) %></h2>
+    </div>
+    <table class="tb_list" cellpadding="10" cellspacing="0" width="100%" style="table-layout: fixed">
+      <thead>
+        <tr class="lines">
+          <th align="left"><%=t :title %></th>
+          <th align="center" style="width: 25%;"><%= t(:forum_table_date) %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @discussions.each do |discussion| %>
           <tr class="lines">
-            <th align="left"><%= t(:forum_table_title) %></th>
-            <th style="width: 200px"><%= t(:forum_table_date) %></th>
+            <td>
+              <%=link_to discussion.name, {:controller => "discussions", :action => "show", :id => discussion.id}, {:class => 'link_content'} %>
+            </td>
+            <td style="width: 200px;">
+              <%schedule= Schedule.find(discussion.schedule_id)%>
+              <%= l schedule.start_date  %> - <%= l schedule.end_date %></td>
           </tr>
-        </thead>
-        <tbody>
-          <% @discussions.each do |discussion| %>
-            <tr class="lines">
-              <td>
-                <%=link_to discussion.name, {:controller => "discussions", :action => "show", :id => discussion.id}, {:class => 'link_content'} %>
-              </td>
-              <td align="center" style="width: 200px">
-                <%schedule= Schedule.find(discussion.schedule_id)%>
-                <%= l schedule.start_date  %> - <%= l schedule.end_date %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    <% else %>
-      <%= t(:forum_message) %>
-    <% end %>
-  </div>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div class="block_content block_content_text"><%= t(:forum_message) %></div>
+  <% end %>
+
 </div>

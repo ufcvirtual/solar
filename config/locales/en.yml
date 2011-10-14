@@ -195,7 +195,8 @@ en:
   lesson_message: "No lesson available"
   lesson: "Lesson"
   lesson_goto: "Go to lesson"
-  
+
+  title: "Title"
   forum_title: "Discussions"
   forum_table_title: "Available Discussions"
   forum_table_date: "Access date"
@@ -298,6 +299,7 @@ en:
   portfolio_null: "None portfolio registered"
   portfolio_upload_file: "Upload files for public area"
   individual_activity: "Individual Activity"
+  activity_description: "Description"
   situation: "Situation"
   grade: "Grade"
   comments: "Comments"
@@ -386,7 +388,7 @@ en:
     month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
     abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Spt, Oct, Nov, Dec]
     order: [:month, :day, :year]
-
+#%H:%M
   time:
     formats:
       default: "%b %d %Y %H:%M:%S"
@@ -395,7 +397,7 @@ en:
       not_today: "%m/%d"
       long: "%B %d, %Y %H:%M"
       normal: "%m/%d/%Y"
-      files: "%D %H:%M"
+      files: "%D" 
       discussion_post: "%B %d, %Y %H:%M h"
       simple_day_and_month: "%d/%b"
     am: "am"

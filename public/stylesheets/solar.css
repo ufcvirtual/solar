@@ -31,6 +31,7 @@ abbr,acronym { border:0;
 }
 
 /* carregando fontes externas */
+
 @font-face
 {
     font-family: 'Trebuchet';
@@ -60,9 +61,26 @@ body{
     padding: 0;
     background-color: #fff;
     cursor: default;
-    font-family: 'Trebuchet', Arial;
+/*    font-family: 'Trebuchet', Arial;*/
+    font-family: 'PT Sans', sans-serif;
     height: 100%;
     background-color: #f9f9f9;
+}
+
+h1, h2, h3, h4, h5 {
+/*    font-family: 'Trebuchet', Arial;*/
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 500;
+}
+
+h1 {
+    font-weight: 300;
+}
+
+h2 {
+/*    font-family: 'Trebuchet', Arial;*/
+    font-family: 'Ubuntu Condensed', sans-serif;
+    font-weight: 500;
 }
 
 #body_wrapper {
@@ -149,10 +167,9 @@ label.menor{
 /**
 * Tratando links
 */
-a, a.menor, a.link_content, a.link_content_del {
-    color           : #222;
-    font-family     : 'Trebuchet', Arial;
-    text-decoration : none;
+a, a.menor, a.link_content {
+    color: #222;
+    text-decoration: none;
 }
 
 a.link_content_del {
@@ -162,6 +179,12 @@ a.link_content_del {
 
 a.link_content {
     color: #204783;
+    text-decoration: underline;
+}
+
+a.link_content_gray {
+    font-size: 9pt;
+    color: #999;
     text-decoration: underline;
 }
 
@@ -216,8 +239,8 @@ textarea{
 h1.page_title{
     font-size  : 12pt;
     color      : #000;
-    font-weight: bold;
-    font-variant: small-caps;
+/*    font-weight: bold;*/
+/*    font-variant: small-caps;*/
     border-bottom: 3px solid #003E7A;
     padding-bottom: 2px !important;
     /*text-transform: capitalize;*/
@@ -408,6 +431,8 @@ h1.page_title{
     top: 0px;
     left: 0px;
     */
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 400;
     background-color: #003e7a;
     color: #fff;
     overflow: hidden;
@@ -430,7 +455,7 @@ h1.page_title{
     height: 36px;
     line-height: 36px;
     float: right;
-    font-size: 11pt;
+    font-size: 10pt;
     list-style-type: none;
     padding: 0 10px 0 0;
     margin: 0;
@@ -689,7 +714,7 @@ a.mysolar_top_link{
 /*    padding-left: 12px;*/
     cursor: pointer;
     font-weight: normal;
-    font-family: 'Trebuchet', Arial;
+/*    font-family: 'Trebuchet', Arial;*/
     height: 30px;
     line-height: 30px;
     color: #003e7a;
@@ -702,7 +727,7 @@ a.mysolar_top_link{
     display: none;
     padding: 5px 0 5px 10px;
     margin: 0;
-    border-top: 3px solid #ff7418;
+    border-top: 2px solid #ff7418;
     background-color: #fff5ed; /* alternativa: f5f8fb */
     font-size: 10pt;
 }
@@ -1287,8 +1312,8 @@ div.alter_photo_text {
 
 #page_title h1 {
     font-size: 14pt;
-    font-weight: bold;
-    font-variant: small-caps;
+/*    font-weight: bold;*/
+/*    font-variant: small-caps;*/
     display: inline;
 /*    border-bottom: 1px solid #fff;*/
 }
@@ -1318,8 +1343,13 @@ div.alter_photo_text {
 /* titulo do bloco */
 
 .block_title {
-    border-bottom: 3px solid #003E7A;
+    border-bottom: 2px solid #003E7A;
     padding-bottom: 2px !important;
+}
+
+.block_title h2 {
+    display: inline;
+/*    font-variant: small-caps;*/
 }
 
 /* icone que fica ao lado do titulo do bloco */
@@ -1389,7 +1419,7 @@ div.alter_photo_text {
 
 .block_content_line {
     border-bottom: 1px solid #CCCCCC;
-    font-size: 10pt;
+/*    font-size: 10pt;*/
     padding: 6px 10px;
 }
 
@@ -1398,38 +1428,18 @@ div.alter_photo_text {
 }
 
 .block_content_gray {
-    font-size: 9pt;
+    font-size: 8pt;
     color: #999;
     padding-right: 5px;
 }
 
 .block_content_text {
     color: #000;
-    font-size: 10pt;
+/*    font-size: 10pt;*/
     padding: 6px 10px;
 }
 
-.label_text {
-    font-family: Trebuchet;
-    font-size: 12px;
-    padding: 6px;
-    margin: 1px;
-    color: #000;
-}
-
-.block_content_link {
-    color: #4b6380;
-    font-size: 10pt;
-    text-decoration: underline;
-}
-
-.block_content_link_gray {
-    font-size: 9pt;
-    color: #999;
-    text-decoration: underline;
-}
-
-h2 {
+h2, table tr.block_title th {
     font-size: 11pt;
     margin: 0;
     padding: 0;
@@ -1477,33 +1487,6 @@ h2 {
     width: 100%;
     height: 161px;
     overflow: auto;
-}
-
-.curriculum_unit_portlet_link_more {
-    font-family: Trebuchet;
-    font-size: 11px;
-    color: #4b6380;
-    margin-right: 2px;
-    float: right;
-}
-.curriculum_unit_portlet_link {
-    font-family: Trebuchet;
-    font-size: 12px;
-    font-weight: bold;
-    color: #4b6380;
-}
-.curriculum_unit_portlet_text, .label_text {
-    font-family: Trebuchet;
-    font-size: 12px;
-    padding: 6px;
-    margin: 1px;
-    color: #000;
-}
-.label_text {
-    padding: 0px;
-    margin: 0px;
-    width: auto;
-    white-space: normal;
 }
 
 /* calendario da tela de acesso a curso */
@@ -1582,8 +1565,8 @@ h2 {
 #lesson_area {
     background-color: #eee;
     border: none;
-    padding: 0px;
-    margin:  0px;
+    padding: 0;
+    margin:  0;
     width:  100%;
     height: 100%;
     top:  0;
@@ -1594,7 +1577,6 @@ h2 {
 }
 #lesson_content_header {
     background-color: #dee8ec;
-    font-family: Trebuchet;
     font-size: 11px;
     color: #000;
     width:  100%;
@@ -1604,7 +1586,6 @@ h2 {
 }
 #lesson_header {
     background-color: #1d4786;
-    font-family: Trebuchet;
     font-size: 12px;
     color: #fff;
     width:  100%;
@@ -1653,7 +1634,6 @@ h2 {
     margin-bottom: 3px;
     color: #000;
     font-size: 12px;
-    font-family:'Trebuchet',Arial;
     text-decoration: none;
     font-weight: bold;
     cursor: pointer;
@@ -1683,6 +1663,7 @@ h2 {
     width: 360px;
     height: 25px;
 }
+
 /* estilo para item invisivel */
 .invisible {
     display: none;
@@ -1691,7 +1672,7 @@ h2 {
 /*Tela de fórum*/
 #forum_description{
     white-space: normal;
-    padding-bottom: 30px;
+    margin-bottom: 30px;
 }
 
 .forum_button, .forum_button_attachment{
@@ -1719,15 +1700,20 @@ h2 {
 
 .forum_navigation_bar{
     border-bottom: 3px solid #1d4786;
+    font-size: 10pt;
     width: 100%;
-    max-width: 640px;
+    max-width: 785px;
+}
+
+.forum_post_wrapper {
+    max-width: 785px;
 }
 
 .forum_post{
     background-color: #f9f9fa;
     min-height: 140px;
     white-space: normal;
-    max-width: 640px;
+    max-width: 785px;
 }
 .forum_post_attachment_line{
     display:block;
@@ -1850,6 +1836,12 @@ h2 {
 }
 
 /* tela de mensagens */
+.label_text {
+    font-size: 10pt;
+    padding: 6px;
+    color: #000;
+}
+
 .message_external_div {
     width: 780px;
 }
@@ -2178,21 +2170,49 @@ ul.message_menu_listbox li ul a:hover{
 /**
  * Tabelas - geral e files
 */
-
 table.tb_list, table.tb_list_files {
-    font-size: 10pt;
-    font-family: 'Trebuchet', Arial;
+    width: 100%;
+}
+
+table.tb_list tr.block_title th {
+    padding-bottom: 2px;
+}
+
+/*table.tb_list, table.tb_list_files {
+    
     background-color: #F7F7F8;
     border-right: solid #B4B2B1 1px;
-}
+}*/
 
 table.tb_list th {
     white-space: nowrap;
-    font-weight: bold;
+    background-color: white;
+/*    font-weight: bold;*/
+}
+
+table.tb_list h4 {
+    margin-bottom: 4px;
+    overflow: hidden;
+    word-wrap:break-word;
+    max-width:410px;
+}
+
+table.tb_list tbody {
+    background-color: #F5F8FB;
 }
 
 table.tb_list td {
     white-space: normal;
+    word-wrap: break-word;
+/*    border-right: 1px solid #d0d0d0;*/
+}
+
+table.tb_list td:last-child {
+    border-right: none;
+}
+
+table.tb_list tbody tr:last-child {
+    border-bottom: none;
 }
 
 table.tb_list_files {
@@ -2208,11 +2228,21 @@ table.tb_list_files td {
     border-top: 1px solid #B4B2B1;
 }
 
+.enunciation_complete, .enunciation_less {
+    display:none;
+}
+/**
+* Icones de arquivos em tabelas
+*/
+table .file_data_icon {
+    text-align: center;
+}
+
 /**
 * Datas de arquivos em tabelas
 */
 
-table.tb_list_files td.file_data_info {
+table.tb_list_files td.file_data_info, table.tb_list td.file_data_info {
     color: #787878;
 }
 
@@ -2235,11 +2265,19 @@ table.tb_list_files th.date_info {
 /**
 * Tratando linhas das tabelas
 */
+th {
+    border-bottom: solid #B4B2B1 1px;
+}
+
+tbody tr.lines {
+    border-bottom: solid #B4B2B1 1px;
+}
 
 tr.lines td, th {
-    border-bottom: solid #B4B2B1 1px;
-    border-left: solid #B4B2B1 1px;
-    padding: 7px 5px 7px 5px;
+/*    border-bottom: solid #B4B2B1 1px;*/
+/*    border-left: solid #B4B2B1 1px;*/
+/*    padding: 7px 5px 6px 5px;*/
+    padding: 6px 10px;
 }
 
 tr.post_content {
@@ -2247,7 +2285,11 @@ tr.post_content {
 }
 
 tbody tr.lines:hover, table.tb_list_files td:hover {
-    background-color: #eef3fb;
+    background-color: #eef3fb; /* #FFF5ED*/
+}
+
+tbody tr.lines:hover a, table.tb_list_files td:hover a {
+    
 }
 
 td.td_student a {
@@ -2293,10 +2335,11 @@ td.td_student a {color: #2a538d;}
 /**
 * AGENDA
 */
-
-.agenda_content {
-    width: 700px;
-    font-size: 10pt;
+.schedule_link_more {
+    font-size: 11px;
+    color: #4b6380;
+    margin-right: 2px;
+    float: right;
 }
 
 .agenda_block {
@@ -2350,17 +2393,20 @@ td.td_student a {color: #2a538d;}
     color: #204783;
 }
 
-.agenda_left_title_img.discussions, .agenda_left_title_img.lessons, .agenda_left_title_img.assignments, .agenda_left_title_img.schedule_events {
+.block_title_icon.discussions, .block_title_icon.lessons, .block_title_icon.assignments, .block_title_icon.schedule_events {
     background: url('../images/agenda/assignments_16x16.png') no-repeat;
+    display: inline-block;
 }
 
-.agenda_left_title_img.chat {
+.block_title_icon.chat {
     background: url('../images/agenda/chat_16x16.png') no-repeat;
+    display: inline-block;
 }
 
 /*encontro presencial*/
-.agenda_left_title_img.meeting_attendance {
+.block_title_icon.meeting_attendance {
     background: url('../images/agenda/meeting_attendance_16x16.png') no-repeat;
+    display: inline-block;
 }
 
 .agenda_left_content {
@@ -2376,6 +2422,9 @@ td.td_student a {color: #2a538d;}
 /**
 * Situacao das tarefas
 */
+.assignment_corrected, .assignment_sent, td.assignment_as a, .assignment_not_sent, .assignment_not_started, .assignment_send, .assignment_pending, td.assignment_an a {
+    text-decoration: underline;
+}
 
 .assignment_corrected {
     white-space: nowrap;
@@ -2402,6 +2451,10 @@ td.td_student a {color: #2a538d;}
     color: #204783;
 }
 
+.activity_grade {
+    font-weight: bold;
+}
+
 #breadcrumb {
     white-space: nowrap;
     font-size: 10pt;
@@ -2419,7 +2472,7 @@ td.td_student a {color: #2a538d;}
     cursor: pointer;
     text-align: center;
     text-decoration: none;
-    padding: .3em 1em .3em;
+    padding: .3em .5em .3em;
     margin: 2px;
     ltext-shadow: 0 1px 1px rgba(0,0,0,.3);
     -webkit-border-radius: .2em;
@@ -2428,6 +2481,7 @@ td.td_student a {color: #2a538d;}
     -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    font-size: 8pt;
 }
 .btn:hover {
     text-decoration: none;

@@ -59,7 +59,7 @@ var changeDate = function(dateText) {
     },
     function(response) {
         $('.calendar_events').html(response);
-        $('.curriculum_unit_portlet_link_more').remove();
+        $('.schedule_link_more').remove();
     });
 }
 

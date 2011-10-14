@@ -3,7 +3,7 @@
 %>
 <div id="forum_portlet" class="block_small">
   <div class="block_title">
-    <%= image_tag "icon_forum.png", :alt=>t(:icon_forum), :class=>(:block_title_icon) %><%= t(:curriculum_access_forum)%>
+    <h2><%= image_tag "icon_forum.png", :alt=>t(:icon_forum), :class=>(:block_title_icon) %><%= t(:curriculum_access_forum)%></h2>
   </div>
 
   <div id="block_forum" class="block_content">
@@ -17,7 +17,7 @@
               <%= l(discussion_post.updated_at, :format => :not_today) %> 
             <% end %>  
           </span>
-          <a class="block_content_link" href="/discussions/show/<%=discussion_post.discussion_id%>"><%= discussion_post.user.nick %></a>
+          <a class="link_content" href="/discussions/show/<%=discussion_post.discussion_id%>"><%= discussion_post.user.nick %></a>
           <%
           clear_content = strip_tags discussion_post.content
           clear_content = clear_content.slice(0..107) + ' (...)' if clear_content.length > 110

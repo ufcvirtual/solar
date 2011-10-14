@@ -3,7 +3,7 @@
     <tbody>
       <tr>
         <td class="message_text_to" align="right" style="width:75px">
-          <a class="curriculum_unit_portlet_link" href="javascript:show_div('link_to_contacts','div_contacts')" id="link_to_contacts"><%=t(:message_to)%></a>
+          <a class="link_content" href="javascript:show_div('link_to_contacts','div_contacts')" id="link_to_contacts"><%=t(:message_to)%></a>
         </td>
         <td class="message_text_to"><%= text_field_tag  'to', @target, :class=> "message_search_textbox", :readonly => true, :onclick => "javascript:show_div('link_to_contacts','div_contacts')" %></td>
       </tr>

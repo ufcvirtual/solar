@@ -14,18 +14,20 @@
             <span class="block_content_gray">
               <%= l schedule.start_date  %>
             </span>
-            <a class="block_content_link" href="javascript:show_lesson('/lessons/show?id=<%=@curriculum_unit.id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
+            <a class="link_content" href="javascript:show_lesson('/lessons/show?id=<%=@curriculum_unit.id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
             <%elsif lesson.schedule.end_date >= Date.today%>
             <span class="block_content_gray">
               <%= l schedule.start_date  %> - <%= l schedule.end_date %>
             </span>
-            <a class="block_content_link" href="javascript:show_lesson('/lessons/show?id=<%=@curriculum_unit.id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
+
+            <a class="link_content" href="javascript:show_lesson('/lessons/show?id=<%=@curriculum_unit.id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
             <%elsif lesson.schedule.end_date < Date.today%>
             <span class="block_content_gray">
               <%= l schedule.start_date  %> - <%= l schedule.end_date %>
             </span>
-             <a class="block_content_link" ><%=lesson.name%></a>
+             <a class="link_content" ><%=lesson.name%></a>
             <%end%>
+
           </div>
         <% end %>
       <% else %>
