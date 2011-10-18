@@ -1,31 +1,31 @@
 /* css reset */
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {
-    margin:0;
-    padding:0;
+	margin:0;
+	padding:0;
 }
 table {
-    border-collapse:collapse;
-    border-spacing:0;
+	border-collapse:collapse;
+	border-spacing:0;
 }
 fieldset,img {
-    border:0;
+	border:0;
 }
 address,caption,cite,code,dfn,em,strong,th,var {
-    font-style:normal;
-    font-weight:normal;
+	font-style:normal;
+	font-weight:normal;
 }
 ol,ul {
-    list-style:none;
+	list-style:none;
 }
 caption,th {
-    text-align:left;
+	text-align:left;
 }
 h1,h2,h3,h4,h5,h6 {
-    font-size:100%;
-    font-weight:normal;
+	font-size:100%;
+	font-weight:normal;
 }
 q:before,q:after {
-    content:'';
+	content:'';
 }
 abbr,acronym { border:0;
 }
@@ -212,7 +212,7 @@ select{
     color: #222;
     background-color: #fff;
     border: 1px solid #dedede;
-    /*    min-width: 180px;*/
+/*    min-width: 180px;*/
 }
 
 input{
@@ -232,7 +232,7 @@ textarea{
     color           : #222;
     background-color: #fff;
     border          : 1px solid #dedede;
-    font-size	    : 13px; 
+    font-size	    : 13px;
     padding         : 5px;
 }
 
@@ -619,8 +619,8 @@ a.mysolar_top_link{
     min-height: 100%;
     max-height: 100%;
     z-index: 1;
-    /*    float: left;*/
-    /*    position: absolute;*/
+/*    float: left;*/
+/*    position: absolute;*/
     vertical-align: top;
     display: inline-block;
     zoom: 1;
@@ -641,10 +641,10 @@ a.mysolar_top_link{
 /********Menu do meuSolar*****************/
 #mysolar_menu_accordion{
     display: inline-block;
-    /*    position: absolute;
-        top: 250px;
-        left: 0px;
-    */
+/*    position: absolute;
+    top: 250px;
+    left: 0px;
+*/
     padding-top: 0;
     margin-top: 0;
     width: 100%;
@@ -670,7 +670,7 @@ a.mysolar_top_link{
 
 .mysolar_menu_title_single_active {
     border-bottom: 3px solid #ff7418;
-    /*    background: url('../images/icon_circle.png') no-repeat left 10px !important;*/
+/*    background: url('../images/icon_circle.png') no-repeat left 10px !important;*/
 }
 
 .mysolar_menu_title_single_active a {
@@ -703,15 +703,15 @@ a.mysolar_top_link{
     -moz-transform: rotate(90deg);
     -webkit-transform: rotate(90deg);
     -o-transform: rotate(90deg);
-    /*    filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.00000000, M12=-1.00000000, M21=1.00000000, M22=0.00000000,sizingMethod='auto expand');*/
-    /*    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);*/
+/*    filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.00000000, M12=-1.00000000, M21=1.00000000, M22=0.00000000,sizingMethod='auto expand');*/
+/*    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);*/
     transform: rotate(90deg);
 }
 
 .mysolar_menu_title {
     width: 100%;
     margin: 2px;
-    /*    padding-left: 12px;*/
+/*    padding-left: 12px;*/
     cursor: pointer;
     font-weight: normal;
 /*    font-family: 'Trebuchet', Arial;*/
@@ -778,11 +778,11 @@ a.mysolar_top_link{
     top: 0px;
     margin-top: 80px;
     */
-    /*    padding-left: 185px;*/
-    /*    padding-bottom: 50px;*/
+/*    padding-left: 185px;*/
+/*    padding-bottom: 50px;*/
     padding-left: 5px;
-    /*    float: left;*/
-    /*    position: absolute;*/
+/*    float: left;*/
+/*    position: absolute;*/
     background-color: #fff;
     width: 765px;
     padding-right: 10px;
@@ -1138,7 +1138,7 @@ hr.curriculum_unit_division_mysolar {
     height: 20px;
     width: 100px;
     margin-left: 647px;
-    margin-top: -6px;    
+    margin-top: -6px;
 }
 .cancelar{
     height: 7px;
@@ -1315,7 +1315,7 @@ div.alter_photo_text {
 /*    font-weight: bold;*/
 /*    font-variant: small-caps;*/
     display: inline;
-    /*    border-bottom: 1px solid #fff;*/
+/*    border-bottom: 1px solid #fff;*/
 }
 
 #page_title > .block_content_text {
@@ -1520,7 +1520,7 @@ h2, table tr.block_title th {
     text-align:center;
     background-color: #f2f6f6;
     font-family: Trebuchet;
-    font-size: 11px;    
+    font-size: 11px;
 }
 .participants_list_none {
     border:0;
@@ -1545,7 +1545,7 @@ h2, table tr.block_title th {
     min-width: 140px;
     margin-right: 5px;
 }
-.participants_icons {    
+.participants_icons {
     position: absolute;
     bottom: 1px;
     left: 23%;
@@ -1803,7 +1803,7 @@ h2, table tr.block_title th {
     min-height:90px;
     text-align:center;
     font-family: Trebuchet;
-    font-size: 11px;    
+    font-size: 11px;
 }
 .forum_participants_icons {
     bottom: 1px;
@@ -1880,7 +1880,7 @@ h2, table tr.block_title th {
     width: auto;
 }
 .message_div_options, .message_div_options_new {
-    background-color: #E7EDED;    
+    background-color: #E7EDED;
     height: 25px;
     padding: 3px;
     margin: 0;
@@ -2121,7 +2121,7 @@ ul.message_menu_listbox li ul a:hover{
     padding-left: 5px;
     padding-top: 5px;
     padding-bottom: 5px;
-    display: inline-block;    
+    display: inline-block;
 }
 .pagination a {
     padding-left: 5px;
@@ -2161,7 +2161,7 @@ ul.message_menu_listbox li ul a:hover{
 }
 #biliography_photo{
     margin-bottom: 13px;
-    background-color: #FFF; 
+    background-color: #FFF;
 }
 #biliography_header_content{
     margin-top: 15px;
@@ -2178,19 +2178,8 @@ table.tb_list tr.block_title th {
     padding-bottom: 2px;
 }
 
-<<<<<<< HEAD
-table.tb_list, table.tb_list_files {
-    font-size: 10pt;
-    /*    background-color: #F7F7F8;*/
-    /*    border-right: solid #B4B2B1 1px;*/
-}
-
-table.tb_list th {
-    white-space: nowrap;
-    /*    font-weight: bold;*/
-=======
 /*table.tb_list, table.tb_list_files {
-    
+
     background-color: #F7F7F8;
     border-right: solid #B4B2B1 1px;
 }*/
@@ -2199,7 +2188,6 @@ table.tb_list th {
     white-space: nowrap;
     background-color: white;
 /*    font-weight: bold;*/
->>>>>>> 959050722933f2f26443570eb2eff6f4bd3653fa
 }
 
 table.tb_list h4 {
@@ -2286,9 +2274,9 @@ tbody tr.lines {
 }
 
 tr.lines td, th {
-    /*    border-bottom: solid #B4B2B1 1px;*/
-    /*    border-left: solid #B4B2B1 1px;*/
-    /*    padding: 7px 5px 6px 5px;*/
+/*    border-bottom: solid #B4B2B1 1px;*/
+/*    border-left: solid #B4B2B1 1px;*/
+/*    padding: 7px 5px 6px 5px;*/
     padding: 6px 10px;
 }
 
@@ -2580,6 +2568,7 @@ td.td_student a {color: #2a538d;}
     background: -o-linear-gradient(#f54c4f,#f55052);
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f54c4f', endColorstr='#f55052');
 }
+
 /* MATERIAL DE APOIO */
 
 .support_material_folder_top{
