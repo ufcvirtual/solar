@@ -12,7 +12,7 @@ Solar::Application.routes.draw do
   # rotas regulares - Nao RESTful #
   #################################
 
-  #roteamento para controle de acesso a arquivos anexos a uma postagem
+  # roteamento para controle de acesso a arquivos anexos a uma postagem
   match "/media/discussions/post/:file.:extension", :to => "access_control#discussion"
 
   # roteamento para controle de acesso as imagens do usuario
@@ -23,6 +23,9 @@ Solar::Application.routes.draw do
 
   # roteamento para controle de acesso as midias de mensagem
   match "/media/messages/:file.:extension", :to => "access_control#message"
+
+  # roteamento para controle de acesso as midias de material de apoio
+#  match "/media/support_material_file/allocation_tags/:id/:file.:extension", :to => "access_control#support_material_file"
 
   # redireciona para mysolar se o usuario estiver tentando acessar os dados de outros usuarios
   match "/users/:id", :to => "users#mysolar", :via => "get"

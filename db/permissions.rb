@@ -69,7 +69,9 @@ resources_arr = [
   {:id => 53, :controller => 'discussions', :action => 'post_file_upload', :description => 'Exibir janela para upload de arquivos no foruns'},
 
   # Material de apoio
-  {:id => 54, :controller => 'support_material_file', :action => 'list', :description => 'Visualizar material de apoio'}
+  {:id => 54, :controller => 'support_material_file', :action => 'list', :description => 'Visualizar material de apoio'},
+  {:id => 55, :controller => 'support_material_file', :action => 'download', :description => 'Baixar material de apoio'},
+  {:id => 56, :controller => 'support_material_file', :action => 'download_all_file_ziped', :description => 'Baixar material de apoio ZIPADO'}
 
 ]
 
@@ -132,7 +134,9 @@ perm_alunos = PermissionsResource.create([
     {:profile_id => 1, :resource_id => 47, :per_id => true},
     {:profile_id => 1, :resource_id => 52, :per_id => true},
     # Material de apoio
-    {:profile_id => 1, :resource_id => 54, :per_id => false}
+    {:profile_id => 1, :resource_id => 54, :per_id => false},
+    {:profile_id => 1, :resource_id => 55, :per_id => false},
+    {:profile_id => 1, :resource_id => 56, :per_id => false}
   ])
 
 ##############################
@@ -185,7 +189,9 @@ perm_prof_titular = PermissionsResource.create([
     {:profile_id => 2, :resource_id => 52, :per_id => false},
 
     # Material de apoio
-    {:profile_id => 2, :resource_id => 54, :per_id => false}
+    {:profile_id => 2, :resource_id => 54, :per_id => false},
+    {:profile_id => 2, :resource_id => 55, :per_id => false},
+    {:profile_id => 2, :resource_id => 56, :per_id => false}
   ])
 
 ##############################
@@ -236,7 +242,9 @@ perm_prof_titular = PermissionsResource.create([
     {:profile_id => 3, :resource_id => 53, :per_id => false},
 
      # Material de apoio
-    {:profile_id => 3, :resource_id => 54, :per_id => false}
+    {:profile_id => 3, :resource_id => 54, :per_id => false},
+    {:profile_id => 3, :resource_id => 55, :per_id => false},
+    {:profile_id => 3, :resource_id => 56, :per_id => false}
     
   ])
 

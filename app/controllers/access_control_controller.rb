@@ -88,10 +88,10 @@ class AccessControlController < ApplicationController
 
     # se tem aula passada em disciplina aberta, pode acessar
     if (permited_lessons.length>0)
-        type = return_type(params[:extension])
+      type = return_type(params[:extension])
 
-        # path do arquivo da aula
-        send_file("#{Rails.root}/media/lessons/#{params[:id]}/#{params[:file]}.#{params[:extension]}", { :disposition => 'inline', :type => type} )
+      # path do arquivo da aula
+      send_file("#{Rails.root}/media/lessons/#{params[:id]}/#{params[:file]}.#{params[:extension]}", { :disposition => 'inline', :type => type} )
     end
   end
 
@@ -120,6 +120,12 @@ class AccessControlController < ApplicationController
     end
   end
 
+  # acesso ao material de apoio do curso
+#  def support_material_file
+#    send_file("#{Rails.root}/media/support_material_file/allocation_tags/#{params[:file_allocation_tag_id]}")
+#  end
+
+  
   private
 
   def return_type(extension)

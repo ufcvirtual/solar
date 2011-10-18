@@ -2,7 +2,7 @@ puts "Development Seed"
 
 puts "Truncando tabelas"
 
-models = [DiscussionPostFile, DiscussionPost, Discussion, Lesson, Allocation, Bibliography, UserMessageLabel, UserMessage, MessageLabel,
+models = [SupportMaterialFile,DiscussionPostFile, DiscussionPost, Discussion, Lesson, Allocation, Bibliography, UserMessageLabel, UserMessage, MessageLabel,
   PublicFile, CommentFile, AssignmentFile, CommentFile, AssignmentComment, SendAssignment, Assignment,
   ScheduleEvent, Schedule, AllocationTag,
   PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,

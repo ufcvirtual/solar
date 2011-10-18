@@ -9,6 +9,10 @@ module PortfolioHelper
         'icon_file_doc.png'
       when '.txt'
         'icon_file_text.png'
+      when '.ppt'
+        'icon_file_ppt.png'
+      when '.link'
+        'icon_file_link.png'
       else
         'icon_file_without_format.png'
     end

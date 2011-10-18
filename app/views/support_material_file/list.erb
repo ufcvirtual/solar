@@ -1,4 +1,38 @@
-<div>
-      A ser exibido!
-      
-</div>
+<!-- INTERNACIONALIZAR -->
+
+<span style="font-size: 11px;font-style: italic;color: #4B6380;"> <%= link_to "Baixar todo o material de apoio como zip", :controler => :support_material_file, :action => :download_all_file_ziped %> </span>
+<br/>
+<% prev_folder = "" %>
+<% if !(@list_files.nil? || @list_files.empty?) %>
+  <% @list_files.each do |file| %>
+    <%unless file['folder']== prev_folder%>
+
+      <div class="support_material_folder_top">
+        <span style="float: left;margin-left: 5px;"> <%= file['folder'] %> </span> &zwj;
+        <span style="float: right;"><%= link_to image_tag "support_material/download_support_material.png", :alt => "download" , :controller => :support_material_file, :action => :download_all_file_ziped %></span>
+        <span style="font-size: 11px;font-style: italic;color: #4B6380;float: right;text-decoration: underline;"><%= link_to "Baixar tudo",:controller => :support_material_file, :action => :download_all_file_ziped %>&nbsp;</span>
+        <hr class="support_material_folder_top_line"></hr>
+
+      </div>
+    <%end%>
+
+    <%prev_folder = file['folder']%>
+
+    <div class="support_material_content_links">
+      <span>
+        <%= link_to image_tag icon_attachment(file["attachment_file_name"]), :controller => :support_material_file, :action => :download, :id => file['id'], :file_allocation_tag_id => file['allocation_tag_id']%>
+        &nbsp;<%= link_to file['attachment_file_name'],:controller => :support_material_file, :action => :download, :id => file['id'], :file_allocation_tag_id => file['allocation_tag_id'] %>
+      </span>
+      <span class="support_material_files_informations">
+        Enviado em&nbsp;<%=l file["attachment_updated_at"].to_time, :format => :files  %>
+        Tamanho:<%= format('%.2f KB', file["attachment_file_size"].to_i/1024.0) %>
+      </span>
+
+    </div>
+    <hr></hr>
+
+  <% end %>
+
+<%else%>
+  <p style="color: red">Nenhum arquivo encontrado</p>
+<% end %>

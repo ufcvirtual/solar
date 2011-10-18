@@ -4,10 +4,11 @@ class CreateSupportMaterialFiles < ActiveRecord::Migration
 
       t.integer :allocation_tag_id,         :null => false
       t.string :attachment_file_name,       :limit => 255, :null => false
-      t.string :attachment_content_type,    :limit => 45
+      t.string :attachment_content_type,    :limit => 255
       t.integer :attachment_file_size
       t.datetime :attachment_updated_at
-      
+      t.string :folder,                     :limit => 255
+
     end
   end
 
