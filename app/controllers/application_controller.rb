@@ -142,16 +142,21 @@ class ApplicationController < ActionController::Base
   # Recupera o contexto que esta sendo acessado
   def application_context
 
-    # recupera o contexto do controller que esta sendo acessado
-    context_id = session[:opened_tabs][session[:active_tab]]["type"] if session.include?("opened_tabs") && session[:opened_tabs][session[:active_tab]].include?("type")
+    # considera-se por default que o usuario esta acessando o Home
+    context_id = Tab_Type_Home
 
-    begin
-      # verifica o contexto
-      @context = Context.find(context_id).name
-    rescue
-      # contexto de home
-      @context = Context.find(Tab_Type_Home).name
+    ##
+    # Verificar a quantidade de requisições ao servidor ao se utilizar o ctrl+f5
+    ##
+    if (params['action'] != 'mysolar' &&
+          params['controller'] != 'pages' &&
+          session.include?("opened_tabs") &&
+          session[:opened_tabs][session[:active_tab]].include?("type"))
+
+      context_id = session[:opened_tabs][session[:active_tab]]["type"]
     end
+
+    @context = Context.find(context_id).name
 
     # recupera o curriculum unit da sessao do usuario, com a tab ativa
     @context_param_id = session[:opened_tabs][session[:active_tab]]["id"] if session.include?("opened_tabs") && session[:opened_tabs][session[:active_tab]].include?("id")
