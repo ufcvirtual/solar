@@ -311,6 +311,7 @@
   portfolio_null: "Nenhum portfolio cadastrado"
   portfolio_upload_file: "Enviar arquivos para a área pública"
   individual_activity: "Atividades Individuais"
+  activity_description: "Descrição"
   situation: "Situação"
   grade: "Nota"
   comments: "Comentários"
@@ -402,7 +403,7 @@
     month_names: [~, Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro]
     abbr_month_names: [~, Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez]
     order: [:day, :month, :year]
-
+#%H:%M
   time:
     formats:
       default: "%A, %d de %B de %Y, %H:%M h"
@@ -411,7 +412,7 @@
       not_today: "%d/%m"
       long: "%A, %d de %B de %Y, %H:%M h"
       normal: "%d/%m/%Y"
-      files: "%d/%m/%Y %H:%M"
+      files: "%d/%m/%Y"
       discussion_post: "%d %B, %Y %H:%M h"
       simple_day_and_month: "%d/%b"
     am: ''
@@ -667,7 +668,7 @@
         remember_me: "Lembrar me"
 
 # Menu
-  menu_content: Conteudo
+  menu_content: Conteúdo
   menu_lesson: Aulas
   menu_support_material: Material de Apoio
   menu_activity: Atividades
@@ -696,5 +697,5 @@
   menu_manage_assessment: Gerenciar Avaliacoes
   menu_response_assessment: Responder Avaliação
   menu_curriculum_unit: Unidade Curricular
-  menu_registration: Matricula
+  menu_registration: Matrícula
   menu_history: Historico

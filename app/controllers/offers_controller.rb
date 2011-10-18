@@ -61,9 +61,6 @@ class OffersController < ApplicationController
   end
 
   def showoffersbyuser
-    
-    set_active_tab_to_home
-    
     @types = CurriculumUnitType.order("description")
     @student_profile = student_profile
 
