@@ -54,27 +54,39 @@ Cenário: Acessar página de mensagens a partir do "Meu Solar"
 #      | coluna1                  | coluna2       |
 #      | assunto da msg 27/5 (ii) | 27/05 16:42 h |
 
-@wip
+
 Cenário: Acessar página de mensagens a partir de "Unidade curricular"
     Dado que estou logado com o usuario "user" e com a senha "user123"
     E que estou em "Meu Solar"
-    Quando eu clicar no link "Mensagens"
-    Entao eu deverei ver a migalha de pao "Home" > "Mensagens"    
-        E eu deverei ver "Mensagens"
-        E eu deverei ver "Buscar Mensagem"
-        E eu deverei ver o link "Entrada"
-        E eu deverei ver o link "Enviadas"
-        E eu deverei ver o link "Lixeira"
-        E eu deverei ver o link "Nova Mensagem"
-        E eu deverei ver o link "Selecionar"
-        E eu deverei ver o link "Mover para"
+    Quando eu clicar no link "Teoria da Literatura I"
+    Entao eu deverei ver a migalha de pao "Home" > "Teoria da Literatura I"    
+        E eu clicar no link "Mensagens"
+        E eu deverei ver "professor2"
+        E eu deverei ver "assunto da msg 1"
+        E eu deverei ver "11/05 10:42 h"
+        E eu nao deverei ver "assunto da msg 27/5 (ii)"
+        E eu nao deverei ver "27/05 16:42 h"
+        
+
+Cenário: Abrir mensagem
+ Dado que estou logado com o usuario "user" e com a senha "user123"
+    E que estou em "Meu Solar"
+    E eu clicar no link "Mensagens"
+    Quando eu clicar no link "professor2"
+    Então eu deverei ver o link "Nova Mensagem"
         E eu deverei ver "Excluir"
-        E eu deverei ver "Marcar como lida"
         E eu deverei ver "Marcar como não lida"
+        E eu deverei ver "<prof2@prof2.br>"
+        E eu deverei ver "<user@user.com>"
+        E eu deverei ver "assunto da msg 27/5 (ii)"
+        E eu deverei ver "bla bla bla ..." 
+        E eu deverei ver o link "Responder"
+        E eu deverei ver o link "Responder para todos"
+        E eu deverei ver o link "Encaminhar"
 
+#@wip
+#Cenário: Criar e enviar mensagem
 
-#Cenário: Abrir mensagem
-#Cenário: Criar nova mensagem
 #Cenário: Encaminhar mensagem
 #Cenário: Responder mensagem
 #Cenário: Buscar mensagem
