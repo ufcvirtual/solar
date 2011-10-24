@@ -2,7 +2,7 @@ module MessagesHelper
 
   def return_messages (userid, type='index', tag=nil, search_text='')
 
-    query_fields = "select distinct m.*, usm.user_id, u.name, u.nick,ml.title label,
+    query_fields = "select distinct m.*, usm.user_id, u.name, u.nick, ml.title AS label,
         (select count(message_file_name) from message_files where message_id = m.id)has_attachment,
         cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)was_sent,
         cast( usm.status & '#{Message_Filter_Read.to_s(2)}' as boolean)was_read,

@@ -15,7 +15,7 @@ class SupportMaterialFile < ActiveRecord::Base
   validates_attachment_content_type_in_black_list :attachment
 
 
-  def self .search_files(user_id,offer_id, group_id)
+  def self.search_files(user_id,offer_id, group_id)
 
     list_all = " WHERE (t2.group_id = #{group_id} OR t2.offer_id = #{offer_id})" unless group_id.nil? && offer_id.nil?
 
@@ -73,11 +73,8 @@ class SupportMaterialFile < ActiveRecord::Base
     SELECT t1.attachment_file_name , t1.attachment_file_size , t1. attachment_updated_at , t1.folder, t1.id ,t1.allocation_tag_id
         FROM support_material_files AS t1
         INNER JOIN cte_all_allocation_tags  AS t2 ON (t1.allocation_tag_id = t2.allocation_tag_id)
-
         #{list_all}
-        ORDER BY t1.folder,t1.attachment_content_type,t1.name
-
-        ;
+        ORDER BY t1.folder,t1.attachment_content_type;
 SQL
 
   end

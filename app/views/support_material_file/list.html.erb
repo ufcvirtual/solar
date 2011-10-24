@@ -1,0 +1,32 @@
+<% @folders_list.each do |folder_name, folder_content| %>
+
+  <div class="block_title">
+    <h2><%= folder_name %> </h2>
+  </div>
+
+  <table class='tb_list' border='0' cellpadding='10' cellspacing='0' width='100%'>
+    <thead>
+      <tr>
+        <th align='left'>Nome</th>
+        <th width='60px'>Enviado em</th>
+        <th width='60px'>Tamanho</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% folder_content.each do |file| %>
+        <tr class="lines">
+          <td>
+            <%= link_to image_tag icon_attachment(file["attachment_file_name"]), :controller => :support_material_file, :action => :download, :id => file['id'], :file_allocation_tag_id => file['allocation_tag_id']%>
+            <%= link_to file['attachment_file_name'],:controller => :support_material_file, :action => :download, :id => file['id'], :file_allocation_tag_id => file['allocation_tag_id'] %>
+          </td>
+          <td>
+            <%=l file["attachment_updated_at"].to_time, :format => :files  %>
+          </td>
+          <td>
+            <%= format('%.2f KB', file["attachment_file_size"].to_i/1024.0) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

@@ -8,7 +8,7 @@
       <thead>
         <tr>
           <th align="left"><%= t(:lesson_table_title) %></th>
-          <th style="width: 200px"><%= t(:lesson_table_date) %></th>
+          <th style="width: 150px"><%= t(:lesson_table_date) %></th>
         </tr>
       </thead>
       <tbody>
@@ -19,21 +19,21 @@
               <td>
                 <a class="link_content" href="javascript:show_lesson('/lessons/show?id=<%=curriculum_unit_id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
               </td>
-              <td align="center" style="width: 200px;">
+              <td>
                 <%= l lesson.schedule.start_date %>
               </td>
             <%elsif lesson.schedule.end_date >= Date.today%>
               <td>
                 <a class="link_content" href="javascript:show_lesson('/lessons/show?id=<%=curriculum_unit_id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
               </td>
-              <td align="center" style="width: 200px;">
+              <td>
                 <%= l lesson.schedule.start_date %> - <%= l lesson.schedule.end_date %>
               </td>
             <%elsif lesson.schedule.end_date < Date.today%>
               <td>
                 <a class="link_content" ><%=lesson.name%></a>
               </td>
-              <td align="center" style="width: 200px;">
+              <td>
                 <%= l lesson.schedule.start_date %> - <%= l lesson.schedule.end_date %>
               </td>
             <%end%>

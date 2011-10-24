@@ -8,10 +8,16 @@ class SupportMaterialFileController < ApplicationController
     offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
     group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     user_id = current_user.id
-    curriculum_unit_id = params[:id]
 
-    @curriculum_unit = CurriculumUnit.find(curriculum_unit_id)
-    @list_files = SupportMaterialFile.search_files(user_id, offer_id, group_id)
+    list_files = SupportMaterialFile.search_files(user_id, offer_id, group_id)
+    
+    # construindo um conjunto de objetos
+    @folders_list = {}
+    list_files.collect {|file|
+      @folders_list[file["folder"]] = [] unless @folders_list[file["folder"]].is_a?(Array)
+      @folders_list[file["folder"]] << file
+    }
+
   end
 
   # DOWNLOADS
