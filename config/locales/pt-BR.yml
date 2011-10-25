@@ -54,6 +54,7 @@
   back: "Voltar"
   save: "Salvar"
   new_user_msg_cpf_error: " inválido"
+  itens_not_found: "Itens não encontrados"
   
   #Meus dados
   my_data: "Meus Dados"
@@ -353,6 +354,7 @@
   not_sent: "Não Enviado"
   -: "-"
   pending: "Pendente"
+  comments_icon: "Comentários"
 
   # acompanhamento
   student: "Aluno"

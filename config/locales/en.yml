@@ -49,6 +49,7 @@ en:
   back: "Back"
   save: "Save"
   new_user_msg_cpf_error: " invalid"
+  itens_not_found: "Itens not found"
 
   #pagina meus dados
   my_data: "My Data"
@@ -342,6 +343,7 @@ en:
   tests: "Tests"
   -: "-"
   pending: "Pending"
+  comments_icon: "Comments"
 
   # acompanhamento
   student: "Student"

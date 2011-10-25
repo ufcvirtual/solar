@@ -21,6 +21,7 @@ class Portfolio < ActiveRecord::Base
             WHEN t2.grade IS NOT NULL THEN 'corrected'
             WHEN COUNT(t6.id) > 0 THEN 'sent'
             WHEN COUNT(t6.id) = 0 AND t7.end_date > now() THEN 'send'
+            WHEN COUNT(t6.id) = 0 AND t7.end_date < now() THEN 'not_sent'
             ELSE '-'
            END AS correction
       FROM assignments         AS t1

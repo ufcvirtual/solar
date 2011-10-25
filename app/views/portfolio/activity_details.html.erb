@@ -1,24 +1,18 @@
 <div>
-  <span class="page_title"><%= t(:portfolio_title)%></span>
-  <span class="page_title"><%= curriculum_unit_name %></span>
-</div>
-
-<div class="presentation_area">
 
   <!-- Descricao da atividade -->
-  <div id="activities">
-    <div class="mysolar_header">
-      <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
-      <h1 class="mysolar_title">
+  <div id="activities" class="block_wrapper">
+    <div class="block_title">
+      <h2 class="mysolar_title">
         <div style="text-align: left; overflow: auto;">
-          <span style="float: left;"><%= @activity.name %></span>
+          <span style="float: left;"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %><%= @activity.name %></span>
           <span style="float: right;" class="date_info">
             <%= t(:date_name)%>: <%=l @activity.schedule.start_date.to_time, :format => :files %> - <%=l @activity.schedule.end_date.to_time, :format => :files %>
           </span>
         </div>
-      </h1>
+      </h2>
     </div>
-    <div id="individual_activity" >
+    <div id="individual_activity" class="block_content">
       <!-- Descricao da atividade -->
       <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%">
         <thead>
@@ -48,82 +42,87 @@
       </table>
     </div>
   </div>
-
   <!-- Comentarios do professor -->
 
-  <div id="professors_comments" style="padding-top: 10px;">
-    <div class="mysolar_header">
-      <%= image_tag "icon_comments.png" %>
-      <h1 class="mysolar_title"><%= t(:comments) %></h1>
+  <div id="professors_comments" class="block_wrapper">
+    <div class="block_title">
+      <h2 class="mysolar_title"><%= image_tag "icon_comments.png", :alt => t(:comments_icon), :class=>'block_title_icon' %><%= t(:comments) %></h2>
     </div>
 
     <div id="grade">
-      <table class="tb_list_files" border="0" cellpadding="5" cellspacing="0" width="100%">
-        <tbody>
-          <% unless @comment.nil? %>
-            <tr><td colspan="4"><%= @comment %></td></tr>
-          <% end %>
-          <% @files_comments.each_with_index do |reg, idx| %>
-            <tr>
-              <td style="width: 10px;"><%= image_tag icon_attachment(reg["attachment_file_name"]) %></td>
-              <td>
-                <% file_name = reg["attachment_file_name"].length > 35 ? reg["attachment_file_name"].slice(0..35) + '...' : reg["attachment_file_name"] %>
-                <%= link_to file_name, {:controller => :portfolio, :action => :download_file_comment, :id => reg["id"]}, {:class => 'link_content'} %>
-              </td>
-              <td class="file_data_info">
-                <%= format('%.2f KB', reg["attachment_file_size"].to_i/1024.0) %>
-              </td>
-              <td>
-                <%= t(:sent_in) %>:
-                <span class="date_info">
-                  <%=l reg["attachment_updated_at"], :format => :files unless reg["attachment_updated_at"].nil? %>
-                </span>
-              </td>
-            </tr>
-          <% end %>
+      <% unless @files_comments.nil? or @files_comments.empty? %>
+        <table class="tb_list_files" border="0" cellpadding="5" cellspacing="0" width="100%">
+          <tbody>
+            <% unless @comment.nil? %>
+              <tr><td colspan="4"><%= @comment %></td></tr>
+            <% end %>
+            <% @files_comments.each_with_index do |reg, idx| %>
+              <tr>
+                <td style="width: 10px;"><%= image_tag icon_attachment(reg["attachment_file_name"]) %></td>
+                <td>
+                  <% file_name = reg["attachment_file_name"].length > 35 ? reg["attachment_file_name"].slice(0..35) + '...' : reg["attachment_file_name"] %>
+                  <%= link_to file_name, {:controller => :portfolio, :action => :download_file_comment, :id => reg["id"]}, {:class => 'link_content'} %>
+                </td>
+                <td class="file_data_info">
+                  <%= format('%.2f KB', reg["attachment_file_size"].to_i/1024.0) %>
+                </td>
+                <td>
+                  <%= t(:sent_in) %>:
+                  <span class="date_info">
+                    <%=l reg["attachment_updated_at"], :format => :files unless reg["attachment_updated_at"].nil? %>
+                  </span>
+                </td>
+              </tr>
+            <% end %>
 
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      <% else %>
+        <div class="block_content block_content_text"><%= t(:itens_not_found) %></div>
+      <% end %>
     </div>
   </div>
 
   <!-- Arquivos enviados -->
 
-  <div id="files_sent" style="padding-top: 10px;">
+  <div id="files_sent" class="block_wrapper">
 
-    <div class="mysolar_header">
-      <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
-      <h1 class="mysolar_title"><%= t(:sent_files) %></h1>
+    <div class="block_title">
+      <h2 class="mysolar_title"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:sent_files) %></h2>
     </div>
 
     <div id="files_sent">
-      <table class="tb_list_files" cellpadding="5" cellspacing="0" width="100%">
-        <tbody>
-          <% @files_sent.each_with_index do |file_sent, idx| %>
-            <tr>
-              <td style="width: 10px;">
-                <%= image_tag icon_attachment(file_sent["attachment_file_name"]) %>
-              </td>
-              <td>
-                <% file_name = file_sent["attachment_file_name"].length > 35 ? file_sent["attachment_file_name"].slice(0..35) + '...' : file_sent["attachment_file_name"] %>
-                <%= link_to file_name, {:controller => :portfolio, :action => :download_file_individual_area, :id => file_sent["id"]}, {:class => 'link_content'} %>
-              </td>
-              <td class="file_data_info">
-                <span><%= format('%.2f KB', file_sent["attachment_file_size"].to_i/1024.0) %></span>
-              </td>
-              <td class="file_data_info">
-                <span><%=l file_sent["attachment_updated_at"], :format => :files %></span>
-              </td>
-              <% if @delete_files  %>
-                <td>
-                  <%= link_to t(:delete), {:controller => :portfolio, :action => :delete_file_individual_area,
-                    :id => file_sent["id"], :assignment_id => params[:id]}, {:confirm => "#{t(:delete_file_msg)}", :class => 'link_content_del'} %>
+      <% unless @files_sent.nil? or @files_sent.empty? %>
+        <table class="tb_list_files" cellpadding="5" cellspacing="0" width="100%">
+          <tbody>
+            <% @files_sent.each_with_index do |file_sent, idx| %>
+              <tr>
+                <td style="width: 10px;">
+                  <%= image_tag icon_attachment(file_sent["attachment_file_name"]) %>
                 </td>
-              <% end %>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+                <td>
+                  <% file_name = file_sent["attachment_file_name"].length > 35 ? file_sent["attachment_file_name"].slice(0..35) + '...' : file_sent["attachment_file_name"] %>
+                  <%= link_to file_name, {:controller => :portfolio, :action => :download_file_individual_area, :id => file_sent["id"]}, {:class => 'link_content'} %>
+                </td>
+                <td class="file_data_info">
+                  <span><%= format('%.2f KB', file_sent["attachment_file_size"].to_i/1024.0) %></span>
+                </td>
+                <td class="file_data_info">
+                  <span><%=l file_sent["attachment_updated_at"], :format => :files %></span>
+                </td>
+                <% if @delete_files  %>
+                  <td>
+                    <%= link_to t(:delete), {:controller => :portfolio, :action => :delete_file_individual_area,
+                      :id => file_sent["id"], :assignment_id => params[:id]}, {:confirm => "#{t(:delete_file_msg)}", :class => 'link_content_del'} %>
+                  </td>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <div class="block_content block_content_text"><%= t(:itens_not_found) %></div>
+      <% end %>
     </div>
   </div>
 

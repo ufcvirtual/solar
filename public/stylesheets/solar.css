@@ -1345,6 +1345,7 @@ div.alter_photo_text {
 .block_title {
     border-bottom: 2px solid #003E7A;
     padding-bottom: 2px !important;
+/*    text-transform: capitalize;*/
 }
 
 .block_title h2 {
@@ -1357,6 +1358,7 @@ div.alter_photo_text {
     margin-right: 5px;
     width: 18px;
     height: 18px;
+    vertical-align: top;
 }
 
 #page_title_icon {
@@ -2215,7 +2217,10 @@ table.tb_list td:last-child {
 table.tb_list tbody tr:last-child {
     border-bottom: none;
 }
-
+.file_icon {
+    margin-right: 5px;
+    vertical-align: middle;
+}
 table.tb_list_files {
     border-right: 0px;
 }
@@ -2272,7 +2277,14 @@ th {
 
 tbody tr.lines {
     border-bottom: solid #B4B2B1 1px;
+    background-color: #F5F8FB;
 }
+
+/*
+tbody tr.lines:nth-child(odd) {
+    background-color: #eef3fb;
+}
+*/
 
 tr.lines td, th {
 /*    border-bottom: solid #B4B2B1 1px;*/

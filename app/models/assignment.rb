@@ -30,6 +30,7 @@ SQL
             WHEN t2.grade IS NOT NULL THEN 'corrected'
             WHEN COUNT(t3.id) > 0 THEN 'sent'
             WHEN COUNT(t3.id) = 0 AND t4.end_date > now() THEN 'send'
+            WHEN COUNT(t3.id) = 0 AND t4.end_date < now() THEN 'not_sent'
             ELSE '-'
            END AS assignment_status
       FROM assignments      AS t1

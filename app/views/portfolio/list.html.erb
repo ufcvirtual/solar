@@ -1,72 +1,75 @@
 <div class="block_wrapper" id="activities_area">
-    <div class="block_title">
-      <h2><%= image_tag "icon_suitcase_portfolio.png", :alt => t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:individual_activity)%></h2>
-    </div>
+  <div class="block_title">
+    <h2><%= image_tag "icon_suitcase_portfolio.png", :alt => t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:individual_activity)%></h2>
+  </div>
 
-    <!-- Atividades individuais -->
+  <!-- Atividades individuais -->
 
-    <div class="block_content" id="individual_activity">
+  <div class="block_content" id="individual_activity">
 
-      
-        <table class="tb_list">
-          <thead>
-            <tr class="lines">
-              <th style="">
-                <span>
-                  <%#= link_to ia["name"], {:controller => :portfolio, :action => :activity_details, :id => ia["id"]}, {:class => 'link_content'} %>
-                  <%=t(:activity_description)%>
-                </span>                
-              </th>
-              <th align="center" style="width:70px"><%= t(:date_name)%></th>
-              <th align="center" style="width:80px"><%= t(:situation) %></th>
-              <th align="center" style="width:40px"><%= t(:grade) %></th>
-              <th align="center" style="width:80px"><%= t(:comments) %></th>
-            </tr>
-          </thead>
-          
-          <tbody>
-            <% @individual_activities.each_with_index do |ia, idx| %>
-            <tr class="lines">
-              <td>
-                <h4><%= link_to ia["name"], {:controller => :portfolio, :action => :activity_details, :id => ia["id"]}, {:class => 'link_content'} %></h4>
-                <% if ia["enunciation"].size > 180 %>
-                  <div class="enunciation">
-                    <div class="enunciation_slice"><%= ia["enunciation"].slice(0..180) << '...' %></div>
-                    <div class="enunciation_complete"><%= ia["enunciation"] %></div>
-                    <div class="more_or_less">
-                      <a href="#" class="enunciation_more link_content"><%= t(:more)%></a>
-                      <a href="#" class="enunciation_less link_content"><%= t(:less)%></a>
-                    </div>
+
+    <table class="tb_list">
+      <thead>
+        <tr class="lines">
+          <th style="">
+            <span>
+<%#= link_to ia["name"], {:controller => :portfolio, :action => :activity_details, :id => ia["id"]}, {:class => 'link_content'} %>
+              <%=t(:activity_description)%>
+            </span>                
+          </th>
+          <th align="center" style="width:70px"><%= t(:date_name)%></th>
+          <th align="center" style="width:80px"><%= t(:situation) %></th>
+          <th align="center" style="width:40px"><%= t(:grade) %></th>
+          <th align="center" style="width:80px"><%= t(:comments) %></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @individual_activities.each_with_index do |ia, idx| %>
+          <tr class="lines">
+            <td>
+              <h4><%= link_to ia["name"], {:controller => :portfolio, :action => :activity_details, :id => ia["id"]}, {:class => 'link_content'} %></h4>
+              <% if ia["enunciation"].size > 180 %>
+                <div class="enunciation">
+                  <div class="enunciation_slice"><%= ia["enunciation"].slice(0..180) << '...' %></div>
+                  <div class="enunciation_complete"><%= ia["enunciation"] %></div>
+                  <div class="more_or_less">
+                    <a href="#" class="enunciation_more link_content"><%= t(:more)%></a>
+                    <a href="#" class="enunciation_less link_content"><%= t(:less)%></a>
                   </div>
-                <% else %>
-                  <%= ia["enunciation"] %>
-                <% end %>
-              </td>
-              <td>
-                <%=l ia["start_date"].to_time, :format => :files %><br /><%=l ia["end_date"].to_time, :format => :files %>
-              </td>
-              <td align="center">
-                <%=link_to t(ia["correction"].to_sym), {:action => :activity_details, :id => ia["id"]}, :class => "assignment_#{ia["correction"]}" %>
-              </td>
-              <td align="center">
-                <span class="activity_grade"><%= (ia["grade"].nil?) ? '-' : ia["grade"].to_f %></span>
-              </td>
-              <td align="center">
-                <%= image_tag( (ia["comments"].to_i > 0) ? "icon_comments.png" : "icon_no_comments.png" )%>
-              </td>
-            </tr>
-            <% end %>
-          </tbody>
-        </table>
-      
-    </div>
+                </div>
+              <% else %>
+                <%= ia["enunciation"] %>
+              <% end %>
+            </td>
+            <td>
+              <%=l ia["start_date"].to_time, :format => :files %><br /><%=l ia["end_date"].to_time, :format => :files %>
+            </td>
+            <td align="center">
+              <%=link_to t(ia["correction"].to_sym), {:action => :activity_details, :id => ia["id"]}, :class => "assignment_#{ia["correction"]}" %>
+            </td>
+            <td align="center">
+              <span class="activity_grade"><%= (ia["grade"].nil?) ? '-' : ia["grade"].to_f %></span>
+            </td>
+            <td align="center">
+              <%= image_tag( (ia["comments"].to_i > 0) ? "icon_comments.png" : "icon_no_comments.png" )%>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>
 </div>
 <div class="block_wrapper" id="public_area">
   <!-- area publica -->
-    <div class="block_title">
-      <h2><%= image_tag "icon_suitcase_portfolio.png", :alt => t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:public_area)%></h2>
-    </div>
-    <div class="block_content" id="files_public_area">
+  <div class="block_title">
+    <h2><%= image_tag "icon_suitcase_portfolio.png", :alt => t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:public_area)%></h2>
+  </div>
+  <div class="block_content" id="files_public_area">
+
+    <% unless @public_area.nil? or @public_area.empty? %>
+
       <table class="tb_list">
         <tbody>
           <% @public_area.each_with_index do |pa, idx| %>
@@ -90,10 +93,13 @@
           <% end %>
         </tbody>
       </table>
-      <div style="background-color: white;padding-top:6px">
-        <input type="button" value="<%= t(:portfolio_upload_file) %>" id="send_attachment" class="btn btn_blue"></input>
-      </div>      
-    </div>
+    <% else %>
+      <div class="block_content block_content_text"><%= t(:itens_not_found) %></div>
+    <% end %>
+    <div style="background-color: white;padding-top:6px">
+      <input type="button" value="<%= t(:portfolio_upload_file) %>" id="send_attachment" class="btn btn_blue"></input>
+    </div>      
+  </div>
 
 </div>
 
