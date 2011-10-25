@@ -1,19 +1,19 @@
 class SupportMaterialFileController < ApplicationController
   before_filter :prepare_for_group_selection, :only => [:list]
-  
+
   def list
 
     authorize! :list, SupportMaterialFile
 
-    offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
-    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-    user_id = current_user.id
+#    offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+#    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+#    user_id = current_user.id
 
-    list_files = SupportMaterialFile.search_files(user_id, offer_id, group_id)
-    
+    @list_files = SupportMaterialFile.search_files(3) # Pegar por allocation tag e colocar o combo da seleção de turma
+
     # construindo um conjunto de objetos
     @folders_list = {}
-    list_files.collect {|file|
+    @list_files.collect {|file|
       @folders_list[file["folder"]] = [] unless @folders_list[file["folder"]].is_a?(Array)
       @folders_list[file["folder"]] << file
     }
@@ -35,12 +35,12 @@ class SupportMaterialFileController < ApplicationController
 
     # recupera arquivo
     download_file(redirect_error, path_file, filename, prefix_file)
-    
+
   end
 
   def download_all_file_ziped
     authorize! :download_all_file_ziped, SupportMaterialFile
-    
+
     raise "Ainda nao implementado"
   end
 
