@@ -9,6 +9,7 @@ Contexto:
         | 1        | 1                  | 3           | 1      |
         | 2        | 1                  | 2           | 1      |
 
+
 Cenário: Acessar pagina de unidade curricular
     Dado que estou logado com o usuario "user" e com a senha "user123"
         E que estou em "Meu Solar"
