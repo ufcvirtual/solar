@@ -26,9 +26,9 @@
 
                 <% if !@search_text.empty? %>
                   <% if message.was_sent == 't' %>
-                    <%=image_tag("icon_message_inbox_small.png",:alt=>'')%>
-                  <% else %>
                     <%=image_tag("icon_message_sent_small.png",:alt=>'')%>
+                  <% else %>
+                    <%=image_tag("icon_message_inbox_small.png",:alt=>'')%>
                   <% end %>
                 <% end %>
 

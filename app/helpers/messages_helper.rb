@@ -54,8 +54,12 @@ module MessagesHelper
           # entrando 08/02/2011:
           #     em ingles - text.to_date = 2011-02-08 e d = 02/08/2011
           #     em port   - text.to_date = 2011-02-08 e d = 08/02/2011
-          d = I18n.l(text.to_date, :format => :default).to_s
-
+          if text.length == 5
+            date_text = text + "/" + Time.now.year.to_s
+          else
+            date_text = text
+          end
+          d = I18n.l(date_text.to_date, :format => :default).to_s
           query_date = " m.send_date::date = to_date('#{d}','dd mm yyyy') or"
         rescue
           query_date = ""
