@@ -21,6 +21,7 @@ Contexto:
         | 5        | 5                  | 2           | 1      |
         | 5        | 6                  | 2           | 1      |
 
+@wip 
 Cenário: Acessar página de mensagens a partir do "Meu Solar"
     Dado que estou logado com o usuario "user" e com a senha "user123"
     E que estou em "Meu Solar"
@@ -37,22 +38,10 @@ Cenário: Acessar página de mensagens a partir do "Meu Solar"
         E eu deverei ver "Excluir"
         E eu deverei ver "Marcar como lida"
         E eu deverei ver "Marcar como não lida"
-        E eu deverei ver "assunto da msg 27/5 (ii)"
-        E eu deverei ver "27/05 16:42 h"
-        E eu deverei ver "27/05 13:42 h"
-        E eu deverei ver "assunto da msg 1"
-        E eu deverei ver "11/05 10:42 h"        
-        E eu deverei ver "assunto da msg 27/5 (i)"
-        E eu deverei ver "professor2"
-#       E eu nao deverei ver "Usuario do Sistema"
-        E eu nao deverei ver "assunto da msg 26/5"
-        E eu nao deverei ver "26/05 11:42 h"
-#E eu deverei ver a linha de mensagem
-#      | coluna1    | coluna2                     | coluna3       |
-#      | professor2 | assunto da msg 27/5 (i)     | 27/05 13:42 h |
-#      | professor2 | assunto da msg 27/5 (ii)    | 27/05 16:42 h |
-#      | coluna1                  | coluna2       |
-#      | assunto da msg 27/5 (ii) | 27/05 16:42 h |
+        E eu deverei ver a linha de mensagem
+        | coluna1    | coluna2                     | coluna3       |
+        | professor2 | assunto da msg 27/5 (i)     | 27/05 13:42 h |
+        | professor2 | assunto da msg 27/5 (ii)    | 27/05 16:42 h |
 
 
 Cenário: Acessar página de mensagens a partir de "Unidade curricular"
