@@ -65,35 +65,39 @@ arquivo 7:
 url 1:
   id: 8
   allocation_tag_id: 3
-  attachment_file_name: "http://www.google.com"
+  attachment_file_name: 
   attachment_content_type: 
   attachment_file_size: 
   attachment_updated_at: 2011-10-27 09:40:03.524322
   folder: Links
+  url: "http://www.google.com"
 
 url 2:
   id: 9
   allocation_tag_id: 3
-  attachment_file_name: "http://www.globo.com"
+  attachment_file_name: 
   attachment_content_type:
   attachment_file_size:
   attachment_updated_at: 2011-10-27 09:45:03.524322
   folder: Links
+  url: "http://www.globo.com"
 
 url 3:
   id: 10
   allocation_tag_id: 3
-  attachment_file_name: "http://www.baixaki.com.br"
+  attachment_file_name: 
   attachment_content_type:
   attachment_file_size:
   attachment_updated_at: 2011-10-27 09:50:03.524322
   folder: Links
+  url: "http://www.baixaki.com.br"
 
 url 4:
   id: 11
   allocation_tag_id: 3
-  attachment_file_name: "http://www.prograd.ufc.br/"
+  attachment_file_name: 
   attachment_content_type:
   attachment_file_size:
   attachment_updated_at: 2011-10-27 09:55:03.524322
   folder: Links
+  url: "http://www.prograd.ufc.br/"
