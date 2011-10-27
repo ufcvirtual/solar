@@ -4,12 +4,7 @@
   <div id="activities" class="block_wrapper">
     <div class="block_title">
       <h2 class="mysolar_title">
-        <div style="text-align: left; overflow: auto;">
-          <span style="float: left;"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %><%= @activity.name %></span>
-          <span style="float: right;" class="date_info">
-            <%= t(:date_name)%>: <%=l @activity.schedule.start_date.to_time, :format => :files %> - <%=l @activity.schedule.end_date.to_time, :format => :files %>
-          </span>
-        </div>
+        <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %><%= @activity.name %>
       </h2>
     </div>
     <div id="individual_activity" class="block_content">
@@ -17,9 +12,10 @@
       <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%">
         <thead>
           <tr class="lines">
-            <th></th>
-            <th align="center"><%= t(:situation) %></th>
-            <th align="center"><%= t(:grade) %></th>
+            <th><%=t(:activity_description)%></th>
+            <th align="center" style="width:80px"><%= t(:date_name)%></th>
+            <th align="center" style="width:80px"><%= t(:situation) %></th>
+            <th align="center" style="width:50px"><%= t(:grade) %></th>
           </tr>
         </thead>
         <tbody>
@@ -27,10 +23,13 @@
             <td>
               <%= @activity.enunciation %>
             </td>
-            <td style="width: 70px;" align="center">
+            <td class="center">
+              <%=l @activity.schedule.start_date.to_time, :format => :files %><br /><%=l @activity.schedule.end_date.to_time, :format => :files %>
+            </td>
+            <td style="width: 70px" class="center">
               <span class="assignment_<%= @situation %>"><%= t(@situation.to_sym) %></span>
             </td>
-            <td style="width: 50px; font-weight: bold;" align="center">
+            <td style="width: 50px; font-weight: bold;" class="center">
               <% unless @grade.nil? %>
                 <%= @grade.to_f %>
               <% else %>
@@ -46,39 +45,50 @@
 
   <div id="professors_comments" class="block_wrapper">
     <div class="block_title">
-      <h2 class="mysolar_title"><%= image_tag "icon_comments.png", :alt => t(:comments_icon), :class=>'block_title_icon' %><%= t(:comments) %></h2>
+      <h2><%= image_tag "icon_comments.png", :alt => t(:comments_icon), :class=>'block_title_icon' %><%= t(:comments_teacher) %></h2>
     </div>
 
-    <div id="grade">
-      <% unless @files_comments.nil? or @files_comments.empty? %>
-        <table class="tb_list_files" border="0" cellpadding="5" cellspacing="0" width="100%">
+    <div id="grade" class="block_content">
+      <% unless (@comment.nil? or @comment.empty?) and (@files_comments.nil? or @files_comments.empty?) %>
+      <% unless @comment.nil? %>
+        <div class="block_content_text">
+          <%= @comment %>
+        </div>
+      <% end %>
+      <div class="block_content">
+        <table class="tb_list" border="0" cellpadding="5" cellspacing="0" width="100%">
           <tbody>
-            <% unless @comment.nil? %>
-              <tr><td colspan="4"><%= @comment %></td></tr>
-            <% end %>
             <% @files_comments.each_with_index do |reg, idx| %>
-              <tr>
-                <td style="width: 10px;"><%= image_tag icon_attachment(reg["attachment_file_name"]) %></td>
+              <tr class="lines">
                 <td>
+                  <%= image_tag icon_attachment(reg["attachment_file_name"]), {:class => 'file_icon'} %>
                   <% file_name = reg["attachment_file_name"].length > 35 ? reg["attachment_file_name"].slice(0..35) + '...' : reg["attachment_file_name"] %>
                   <%= link_to file_name, {:controller => :portfolio, :action => :download_file_comment, :id => reg["id"]}, {:class => 'link_content'} %>
                 </td>
-                <td class="file_data_info">
+                <td style="width:50px;">
+                  <span class="date_info">
+                    <%= t(:size) %>:&nbsp;
+                  </span>
+                </td>
+                <td style="width:60px;text-align:right">
                   <%= format('%.2f KB', reg["attachment_file_size"].to_i/1024.0) %>
                 </td>
-                <td>
-                  <%= t(:sent_in) %>:
+                <td style="width:70px;">
                   <span class="date_info">
-                    <%=l reg["attachment_updated_at"], :format => :files unless reg["attachment_updated_at"].nil? %>
+                    <%= t(:sent_in) %>:&nbsp;
                   </span>
+                </td>
+                <td style="width:70px">
+                  <%=l reg["attachment_updated_at"], :format => :files unless reg["attachment_updated_at"].nil? %>
                 </td>
               </tr>
             <% end %>
 
           </tbody>
         </table>
+      </div>
       <% else %>
-        <div class="block_content block_content_text"><%= t(:itens_not_found) %></div>
+        <div class="block_content_text"><%= t(:itens_not_found) %></div>
       <% end %>
     </div>
   </div>
@@ -88,61 +98,65 @@
   <div id="files_sent" class="block_wrapper">
 
     <div class="block_title">
-      <h2 class="mysolar_title"><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:sent_files) %></h2>
+      <h2><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:sent_files) %></h2>
     </div>
 
-    <div id="files_sent">
+    <div id="files_sent" class="block_content">
       <% unless @files_sent.nil? or @files_sent.empty? %>
-        <table class="tb_list_files" cellpadding="5" cellspacing="0" width="100%">
+        <table class="tb_list">
+          <thead>
+            <tr>
+                <th><%= t(:name) %></th>
+                <th style="width:80px"><%= t(:size) %></th>
+                <th style="width:80px"><%= t(:sent_in) %></th>
+                <th style="width:50px"></th>
+              </tr>
+          </thead>
           <tbody>
             <% @files_sent.each_with_index do |file_sent, idx| %>
-              <tr>
-                <td style="width: 10px;">
-                  <%= image_tag icon_attachment(file_sent["attachment_file_name"]) %>
-                </td>
+              <tr class="lines">
                 <td>
                   <% file_name = file_sent["attachment_file_name"].length > 35 ? file_sent["attachment_file_name"].slice(0..35) + '...' : file_sent["attachment_file_name"] %>
-                  <%= link_to file_name, {:controller => :portfolio, :action => :download_file_individual_area, :id => file_sent["id"]}, {:class => 'link_content'} %>
+                  <% controller = {:controller => :portfolio, :action => :download_file_individual_area, :id => file_sent["id"]} %>
+
+                  <%= link_to image_tag(icon_attachment(file_sent["attachment_file_name"])), controller, {:class => 'file_icon'} %>
+                  <%= link_to file_name, controller, {:class => 'link_content'} %>
                 </td>
-                <td class="file_data_info">
+                <td style="text-align:right">
                   <span><%= format('%.2f KB', file_sent["attachment_file_size"].to_i/1024.0) %></span>
                 </td>
-                <td class="file_data_info">
+                <td>
                   <span><%=l file_sent["attachment_updated_at"], :format => :files %></span>
                 </td>
                 <% if @delete_files  %>
                   <td>
-                    <%= link_to t(:delete), {:controller => :portfolio, :action => :delete_file_individual_area,
+                    <%#= link_to t(:delete), {:controller => :portfolio, :action => :delete_file_individual_area,
                       :id => file_sent["id"], :assignment_id => params[:id]}, {:confirm => "#{t(:delete_file_msg)}", :class => 'link_content_del'} %>
+                    <%= button_to t(:delete), {:controller => :portfolio, :action => :delete_file_individual_area, :id => file_sent["id"], :assignment_id => params[:id]}, :confirm => t(:delete_file_msg), :class=>'btn btn_red' %>
                   </td>
                 <% end %>
               </tr>
             <% end %>
+
           </tbody>
         </table>
       <% else %>
-        <div class="block_content block_content_text"><%= t(:itens_not_found) %></div>
+        <div class="block_content_text"><%= t(:itens_not_found) %></div>
       <% end %>
+        <!-- Enviar arquivos -->
+        <div style="background-color:white;padding-top:6px">
+          <% if @situation != 'not_started' && @delete_files %>
+            <%= form_for(:assignment_file, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files_individual_area', :assignment_id => params[:id]}) do |f| %>
+              <p><%= f.file_field :attachment%><%= f.submit t(:send), :class => "btn btn_blue"%></p>
+              <p class="block_content_gray"><%= t(:send_file_portfolio_obs)%></p>
+              <p class="block_content_gray"><%=raw t(:send_file_portfolio_text)%></p>
+            <% end %>
+          <% else %>
+            <div class="expired"><%= t(:expired) %></div>
+          <% end %>
+        </div>
     </div>
   </div>
 
-  <% if @situation != 'not_started' && @delete_files %>
-    <!-- Enviar arquivos -->
-
-    <div id="send_files" style="padding-top: 10px;">
-      <div class="mysolar_header">
-        <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
-        <h1 class="mysolar_title"><%= t(:send_files) %></h1>
-      </div>
-      <div id="form_send_file" class="send_files">
-        <%= form_for(:assignment_file, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files_individual_area', :assignment_id => params[:id]}) do |f| %>
-          <%= f.file_field :attachment%><%= f.submit t(:send), :class => "btn btn_blue"%>
-          <div style="padding-top: 10px;"><%= t(:send_file_portfolio_obs)%></div>
-          <div style="padding-top: 10px;"><%=raw t(:send_file_portfolio_text)%></div>
-        <% end %>
-      </div>
-    </div>
-
-  <% end %>
-
+  
 </div>

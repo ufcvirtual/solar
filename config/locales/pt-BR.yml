@@ -26,6 +26,9 @@
   password: "Senha"
   remember_my_password: "Lembrar minha senha"
   forgot_my_password: "esqueci a senha"
+  expired: "Prazo encerrado"
+  name: "Nome"
+  size: "Tamanho"
 
   # application controller
   app_controller_require: "Por favor, efetue login!"
@@ -316,6 +319,7 @@
   situation: "Situação"
   grade: "Nota"
   comments: "Comentários"
+  comments_teacher: "Comentários do Professor"
   comment: "Comentário"
   task: "Prova"
   tasks: "Provas"

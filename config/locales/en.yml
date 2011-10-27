@@ -21,6 +21,9 @@ en:
   password: "Password"
   remember_my_password: "Remember my password"
   forgot_my_password: "I forgot my password"
+  expired: "Time expired"
+  name: "Name"
+  size: "Size"
 
   # application controller
   app_controller_require: "Please log!"
@@ -304,6 +307,7 @@ en:
   situation: "Situation"
   grade: "Grade"
   comments: "Comments"
+  comments_teacher: "Teacher's comments"
   comment: "Comment"
   task: "Task"
   tasks: "Tasks"

@@ -27,7 +27,7 @@ class SupportMaterialFile < ActiveRecord::Base
         support_material_files sm
       where
         allocation_tag_id in (#{relatedAllocationTagIds.join(",")})
-      ORDER BY sm.folder, sm.attachment_content_type, sm.name
+      ORDER BY sm.folder, sm.attachment_content_type, sm.attachment_file_name
     "
     return SupportMaterialFile.find_by_sql(sql);
   end

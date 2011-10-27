@@ -7,9 +7,9 @@
     <table class='tb_list' border='0' cellpadding='10' cellspacing='0' width='100%'>
       <thead>
         <tr>
-          <th align='left'>Nome</th>
-          <th width='60px'>Enviado em</th>
-          <th style="width:70px">Tamanho</th>
+          <th><%= t(:name) %></th>
+          <th style="width:80px"><%= t(:size) %></th>
+          <th style="width:80px"><%= t(:sent_in) %></th>
         </tr>
       </thead>
       <tbody>
@@ -22,10 +22,10 @@
               <%= link_to file['attachment_file_name'],:controller => :support_material_file, :action => :download, :id => file['id'], :file_allocation_tag_id => file['allocation_tag_id'] %>
             </td>
             <td>
-              <%=l file["attachment_updated_at"].to_time, :format => :files  %>
+              <%= format('%.2f KB', file["attachment_file_size"].to_i/1024.0) %>
             </td>
             <td>
-              <%= format('%.2f KB', file["attachment_file_size"].to_i/1024.0) %>
+              <%=l file["attachment_updated_at"].to_time, :format => :files  %>
             </td>
           </tr>
         <% end %>

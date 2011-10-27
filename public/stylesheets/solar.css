@@ -67,6 +67,14 @@ body{
     background-color: #f9f9f9;
 }
 
+p {
+    margin-bottom: 10px;
+}
+
+.center {
+    text-align: center;
+}
+
 h1, h2, h3, h4, h5 {
 /*    font-family: 'Trebuchet', Arial;*/
     font-family: 'Ubuntu', sans-serif;
@@ -2286,11 +2294,12 @@ tbody tr.lines:nth-child(odd) {
 }
 */
 
-tr.lines td, th {
+th, tr.lines td {
 /*    border-bottom: solid #B4B2B1 1px;*/
 /*    border-left: solid #B4B2B1 1px;*/
 /*    padding: 7px 5px 6px 5px;*/
     padding: 6px 10px;
+    vertical-align: top;
 }
 
 tr.post_content {
@@ -2449,9 +2458,9 @@ td.td_student a {color: #2a538d;}
     color: #1CA093;
 }
 
-.assignment_not_sent {
+.assignment_not_sent, .expired {
     white-space: nowrap;
-    color: #EA4F52;
+    color: #e12227;
 }
 
 .assignment_not_started {
@@ -2486,7 +2495,7 @@ td.td_student a {color: #2a538d;}
     text-align: center;
     text-decoration: none;
     padding: .3em .5em .3em;
-    margin: 2px;
+/*    margin: 2px;*/
     ltext-shadow: 0 1px 1px rgba(0,0,0,.3);
     -webkit-border-radius: .2em;
     -moz-border-radius: .2em;

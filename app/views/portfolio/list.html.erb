@@ -42,16 +42,16 @@
                 <%= ia["enunciation"] %>
               <% end %>
             </td>
-            <td>
+            <td class="center">
               <%=l ia["start_date"].to_time, :format => :files %><br /><%=l ia["end_date"].to_time, :format => :files %>
             </td>
-            <td align="center">
+            <td class="center">
               <%=link_to t(ia["correction"].to_sym), {:action => :activity_details, :id => ia["id"]}, :class => "assignment_#{ia["correction"]}" %>
             </td>
-            <td align="center">
+            <td class="center">
               <span class="activity_grade"><%= (ia["grade"].nil?) ? '-' : ia["grade"].to_f %></span>
             </td>
-            <td align="center">
+            <td class="center">
               <%= image_tag( (ia["comments"].to_i > 0) ? "icon_comments.png" : "icon_no_comments.png" )%>
             </td>
           </tr>
