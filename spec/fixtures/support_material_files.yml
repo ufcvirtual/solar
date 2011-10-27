@@ -61,3 +61,39 @@ arquivo 7:
   attachment_file_size: 2234
   attachment_updated_at: 2011-10-10 15:10:00.524322
   folder: Slides
+
+url 1:
+  id: 8
+  allocation_tag_id: 3
+  attachment_file_name: "http://www.google.com"
+  attachment_content_type: 
+  attachment_file_size: 
+  attachment_updated_at: 2011-10-27 09:40:03.524322
+  folder: Links
+
+url 2:
+  id: 9
+  allocation_tag_id: 3
+  attachment_file_name: "http://www.globo.com"
+  attachment_content_type:
+  attachment_file_size:
+  attachment_updated_at: 2011-10-27 09:45:03.524322
+  folder: Links
+
+url 3:
+  id: 10
+  allocation_tag_id: 3
+  attachment_file_name: "http://www.baixaki.com.br"
+  attachment_content_type:
+  attachment_file_size:
+  attachment_updated_at: 2011-10-27 09:50:03.524322
+  folder: Links
+
+url 4:
+  id: 11
+  allocation_tag_id: 3
+  attachment_file_name: "http://www.prograd.ufc.br/"
+  attachment_content_type:
+  attachment_file_size:
+  attachment_updated_at: 2011-10-27 09:55:03.524322
+  folder: Links
