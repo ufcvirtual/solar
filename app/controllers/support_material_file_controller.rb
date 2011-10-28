@@ -9,7 +9,7 @@ class SupportMaterialFileController < ApplicationController
 #    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
 #    user_id = current_user.id
 
-    @list_files = SupportMaterialFile.search_files(3) # Pegar por allocation tag e colocar o combo da seleção de turma
+    @list_files = SupportMaterialFile.search_files(3) # Pegar por allocation tag e colocar o combo da seleção de turma 
 
     # construindo um conjunto de objetos
     @folders_list = {}
