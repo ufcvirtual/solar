@@ -1,19 +1,13 @@
-<div>
-  <span class="page_title"><%= t(:portfolio_title) %></span>
-  <span class="page_title"><%= curriculum_unit_name %></span>
-</div>
-
 <!-- Portfolio -->
-<div class="presentation_area">
-  <div class="mysolar_header">
-    <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
-    <h1 class="mysolar_title"><%= t(:group) %>&nbsp;<%= @group.code %></h1>
+<div class="block_wrapper">
+  <div class="block_title">
+    <h2><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:group) %>&nbsp;<%= @group.code %></h2>
   </div>
 
   <!-- lista de alunos -->
-  <div id="individual_activity">
+  <div id="individual_activity" class="block_content">
 
-    <table cellpadding="5" cellspacing="0" class="tb_list" width="100%">
+    <table class="tb_list">
       <tbody>
         <% @students.each_with_index do |student, idx| %>
           <tr class="lines">

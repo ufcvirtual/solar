@@ -1,114 +1,103 @@
 <!-- Lista de atividades do aluno -->
-
-<div class="presentation_area">
-  <div>
-    <div class="mysolar_header">
-      <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
-      <h1 class="mysolar_title"><%= @student.name %></h1>
-    </div>
-
-    <!-- Tabelas de atividades -->
-
-    <div>
-
-      <!-- Trabalhos -->
-
-      <div id="assignments">
-        <table id="assignments_list" class="tb_list" width="100%" cellpadding="0" cellspacing="0" border="0">
-          <thead>
-            <tr class="lines">
-              <th align="left"><%= t(:assignments) %></th>
-              <th align="center" style="width: 24%;"><%= t(:date_name) %></th>
-              <th align="center" style="width: 12%;"><%= t(:situation) %></th>
-              <th align="center" style="width: 8%;"><%= t(:grade) %></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @activities.each_with_index do |activity, idx| %>
-              <tr class="lines">
-                <td align="left">
-                  <%# verifica permissao de modificao de notas %>
-                  <% if can? :student_detail, PortfolioTeacher %>
-                    <%=link_to activity["assignments_name"], {:controller => :portfolio_teacher,
-                      :action => :student_detail, :id => @student.id,
-                      :assignment_id => activity["assignment_id"],
-                      :send_assignment_id => activity["send_assignment_id"]}, {:class => 'link_content'} %>
-                  <% else %>
-                    <%= activity["assignments_name"] %>
-                  <% end %>
-                </td>
-                <td align="center"><%=l activity["start_date"].to_time, :format => :normal %> - <%=l activity["end_date"].to_time, :format => :normal %></td>
-                <td class="assignment_<%= activity["situation"] %>" align="center"><%= t(activity["situation"].to_sym) %></td>
-                <td align="center"><%= (activity["grade"].nil?) ? '-' : activity["grade"].to_f %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
+<div class="block_wrapper" id="assignments">
+  <div class="block_title">
+    <h2><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %><%= @student.name %></h2>
   </div>
 
-  <!-- Quantidade de participacoes em foruns -->
+  <!-- Tabelas de atividades -->
 
-  <div style="padding-top: 10px;">
-    <div class="mysolar_header">
-      <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
-      <h1 class="mysolar_title"><%= t(:amount_participation_discussions) %></h1>
-    </div>
-
-    <!-- Informacoes -->
-
-    <div>
-      <table class="tb_list" width="100%" cellspacing="0">
-        <thead>
+  <div  class="block_content">
+    <table id="assignments_list" class="tb_list">
+      <thead>
+        <tr class="lines">
+          <th align="left"><%= t(:assignments) %></th>
+          <th align="center" style="width: 24%;"><%= t(:date_name) %></th>
+          <th align="center" style="width: 12%;"><%= t(:situation) %></th>
+          <th align="center" style="width: 8%;"><%= t(:grade) %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @activities.each_with_index do |activity, idx| %>
           <tr class="lines">
-            <th style="width: 80%;"></th>
-            <th style="width: 20%;" align="center"><%= t(:amount) %></th>
+            <td align="left">
+              <%# verifica permissao de modificao de notas %>
+              <% if can? :student_detail, PortfolioTeacher %>
+                <%=link_to activity["assignments_name"], {:controller => :portfolio_teacher,
+                  :action => :student_detail, :id => @student.id,
+                  :assignment_id => activity["assignment_id"],
+                  :send_assignment_id => activity["send_assignment_id"]}, {:class => 'link_content'} %>
+              <% else %>
+                <%= activity["assignments_name"] %>
+              <% end %>
+            </td>
+            <td align="center"><%=l activity["start_date"].to_time, :format => :normal %> - <%=l activity["end_date"].to_time, :format => :normal %></td>
+            <td class="assignment_<%= activity["situation"] %>" align="center"><%= t(activity["situation"].to_sym) %></td>
+            <td align="center"><%= (activity["grade"].nil?) ? '-' : activity["grade"].to_f %></td>
           </tr>
-        </thead>
-        <tbody>
-          <% @discussions.each_with_index do |discussion, idx| %>
-            <tr class="lines">
-              <% link = {:controller => :discussions, :action => :show_posts, :id => discussion["discussion_id"], :student_id => @student.id} %>
-              <td class="show_posts">
-                <%= link_to(discussion["name"], link, {:class => 'link_content'}) %>
-              </td>
-              <td class="show_posts" align="center">
-                <%= link_to(discussion["qtd"], link, {:class => 'link_content'}) %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Quantidade de participacoes em foruns -->
+
+<div class="block_wrapper">
+  <div class="block_title">
+    <h2><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:amount_participation_discussions) %></h2>
   </div>
 
-  <!-- Historico de acesso -->
+  <!-- Informacoes -->
 
-  <div style="padding-top: 10px;">
+  <div>
+    <table class="tb_list">
+      <thead>
+        <tr class="lines">
+          <th style="width: 80%;"><%= t(:title)  %> </th>
+          <th style="width: 7%;" align="center"><%= t(:amount) %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @discussions.each_with_index do |discussion, idx| %>
+          <tr class="lines">
+            <% link = {:controller => :discussions, :action => :show_posts, :id => discussion["discussion_id"], :student_id => @student.id} %>
+            <td class="show_posts">
+              <%= link_to(discussion["name"], link, {:class => 'link_content'}) %>
+            </td>
+            <td class="show_posts" align="center">
+              <%= link_to(discussion["qtd"], link, {:class => 'link_content'}) %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-    <div class="mysolar_header">
-      <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
-      <h1 class="mysolar_title"><%= t(:history_access) %></h1>
+<!-- Historico de acesso -->
+
+<div class="block_wrapper">
+
+  <div class="block_title">
+    <h2><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:history_access) %></h2>
+  </div>
+
+  <!-- Informacoes -->
+
+  <div class="block_content block_content_text">
+    <div id="history_search_content">
+      <input type="text" id="from-date" title="<%= t(:from_date) %>" size="9" value="<%=l two_months_ago, :format => :datepicker %>"/>
+      <%= t(:to) %>
+      <input type="text" id="until-date" title="<%= t(:until_date) %>" size="9" value="<%=l Date.today, :format => :datepicker %>"/>
+      <span>
+        <input type="button" value="<%= t(:history_find) %>" id="bt-amount-history-access" class="btn btn_blue" />
+      </span>
     </div>
-
-    <!-- Informacoes -->
-
-    <div class="portfolio_history_access">
-      <div id="history-search-content" style="padding-bottom: 10px;">
-        <input type="text" id="from-date" title="<%= t(:from_date) %>" size="9" value="<%=l two_months_ago, :format => :datepicker %>"/>
-        <%= t(:to) %>
-        <input type="text" id="until-date" title="<%= t(:until_date) %>" size="9" value="<%=l Date.today, :format => :datepicker %>"/>
-        <span>
-          <%=link_to t(:history_find), {:controller => :scores, :action => :amount_history_access}, {:id => 'bt-amount-history-access', :class => 'link_content'} %>
-        </span>
-      </div>
-      <div id="history-body" style="border-top: solid #B4B2B1 1px; padding-top: 10px; padding-left: 5px;">
-        <span id="history-body-label" style="padding-right: 10px;"><%=t :amount_access %>:</span>
-        <span id="history-body-value">
-          <%= link_to @amount, {:controller => :scores, :action => :history_access, :student_id => @student.id}, :class => 'link_content' %>
-        </span>
-      </div>
+    <div id="history-body">
+      <span id="history-body-label"><%=t :amount_access %>:</span>
+      <span id="history-body-value">
+        <%= link_to @amount, {:controller => :scores, :action => :history_access, :student_id => @student.id}, :class => 'link_content' %>
+      </span>
     </div>
   </div>
 </div>
@@ -128,12 +117,12 @@
     $('#from-date, #until-date').datepicker(options);
 
     // requisicao ajax para recuperar quantidade de acessos de um usuario
-    $('a#bt-amount-history-access').click(function(){
+    $('#bt-amount-history-access').click(function(){
 
       // verificar se as datas foram preenchidas - as duas sao obrigatorias
-      $.post($(this).attr('href'), {
-        'from-date': $('#from-date').val(),
-        'until-date': $('#until-date').val(),
+      $.post("/scores/amount_history_access", {
+        'from-date': new Date($('#from-date').val()),
+        'until-date': new Date($('#until-date').val()),
         'id': <%= @student.id %>
       },
       function(response){

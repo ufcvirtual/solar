@@ -622,7 +622,7 @@ a.mysolar_top_link{
 
 /* sidebar */
 #mysolar_sidebar{
-    width: 175px;
+    width: 174px;
     height: 100%;
     min-height: 100%;
     max-height: 100%;
@@ -2340,6 +2340,15 @@ div.send_files {
     width: 700px;
 }
 
+#history_search_content {
+    padding-bottom: 6px;
+    border-bottom:1px solid #d0d0d0;
+}
+
+#history-body {
+    padding:7px 0 5px 0;
+}
+
 div.label_score {
     font-size: 11px;
     font-family:'Trebuchet',Arial;
@@ -2347,12 +2356,6 @@ div.label_score {
 }
 
 td.td_student a {color: #2a538d;}
-
-.portfolio_history_access {
-    font-size: 10pt;
-    background-color: #F7F7F8;
-    padding-top: 10px;
-}
 
 /**
 * AGENDA
