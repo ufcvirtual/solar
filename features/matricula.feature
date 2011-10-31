@@ -5,10 +5,10 @@ Funcionalidade: Exibir tela de matricula
   Para verificar e alterar matricula
 
 Contexto:
-    Dado que tenho "courses"
-        | id | name                    | code   |
-        | 1  | Letras Português        | LLPT   |
-        | 2  | Licenciatura em Química | LQUIM  |
+#    Dado que tenho "courses"
+#        | id | name                    | code   |
+#        | 1  | Letras Português        | LLPT   |
+#        | 2  | Licenciatura em Química | LQUIM  |
     Dado que tenho "enrollments"
         | id | offer_id  | start      | end        |
         | 1  | 1         | 2011-03-01 | 2021-05-30 |

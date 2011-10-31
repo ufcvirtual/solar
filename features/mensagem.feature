@@ -6,10 +6,10 @@ Funcionalidade: Enviar, receber e visualizar mensagens
   Para me comunicar com os demais usuários do sistema
 
 Contexto:
-    Dado que tenho "courses"
-        | id | name                    | code   |
-        | 1  | Letras Português        | LLPT   |
-        | 2  | Licenciatura em Química | LQUIM  |
+#    Dado que tenho "courses"
+#        | id | name                    | code   |
+#        | 1  | Letras Português        | LLPT   |
+#        | 2  | Licenciatura em Química | LQUIM  |
     Dado que tenho "allocations"
         | user_id  | allocation_tag_id  | profile_id  | status |
         | 1        | 1                  | 1           | 1      |
