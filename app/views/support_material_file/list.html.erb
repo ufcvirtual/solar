@@ -1,3 +1,5 @@
+<span style="font-size: 11px;font-style: italic;color: #4B6380;"> <%= link_to "Baixar todo o material de apoio como zip", :controler => :support_material_file, :action => :download_all_file_ziped %> </span>
+<br/>
 <% @folders_list.each do |folder_name, folder_content| %>
   <div class="block_wrapper">
     <div class="block_title">
