@@ -129,3 +129,199 @@ professor2:
   phrase: Timao eeeoo!!!
   site: timao.com
   crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b
+  
+# senha: 123456
+Professor:
+  id: 6
+  login: prof
+  email: prof@prof.br
+  name: Professor
+  nick: Prof
+  birthdate: 2000-03-02
+  cpf: 21872285848
+  gender: true
+  address: Rua ABC
+  address_number: 999
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: Paraguay
+  state: importado
+  city: Irmã de Assunção
+  institution: UFP
+  alternate_email: prof@gmail.com
+  bio: Professor
+  interests: ensinar
+  music: Clássica
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b  
+  
+# senha: 123456
+aluno 1:
+  id: 7
+  login: aluno1
+  email: aluno1@aluno1.br
+  name: Aluno 1
+  nick: Aluno 1
+  birthdate: 2006-03-02
+  cpf: 32305605153
+  gender: true
+  address: Rua ABC
+  address_number: 999
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: Paraguay
+  state: importado
+  city: Irmã de Assunção
+  institution: UFP
+  alternate_email: aluno1@gmail.com
+  bio: Professor
+  interests: ensinar
+  music: Clássica
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b
+  
+# senha: 123456
+aluno 2:
+  id: 8
+  login: aluno2
+  email: aluno2@aluno2.br
+  name: Aluno 2
+  nick: Aluno 2
+  birthdate: 2004-03-02
+  cpf: 98447432904
+  gender: true
+  address: Rua ABC
+  address_number: 999
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: Paraguay
+  state: importado
+  city: Irmã de Assunção
+  institution: UFP
+  alternate_email: aluno2@gmail.com
+  bio: Professor
+  interests: ensinar
+  music: Clássica
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b
+  
+# senha: 123456
+aluno 3:
+  id: 9
+  login: aluno3
+  email: aluno3@aluno3.br
+  name: Aluno 3
+  nick: Aluno 3
+  birthdate: 2004-03-02
+  cpf: 47382348113
+  gender: true
+  address: Rua ABC
+  address_number: 999
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: Paraguay
+  state: importado
+  city: Irmã de Assunção
+  institution: UFP
+  alternate_email: aluno3@gmail.com
+  bio: Professor
+  interests: ensinar
+  music: Clássica
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b  
+
+# senha: 123456
+Tutor:
+  id: 10
+  login: tutorp
+  email: tutorp@tutorp.br
+  name: Tutor
+  nick: Tutor
+  birthdate: 2004-03-02
+  cpf: 31877336203
+  gender: true
+  address: Rua ABC
+  address_number: 999
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: Paraguay
+  state: importado
+  city: Irmã de Assunção
+  institution: UFP
+  alternate_email: tutorp@gmail.com
+  bio: Professor
+  interests: ensinar
+  music: Clássica
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b
+  
+# senha: 123456
+Tutor:
+  id: 11
+  login: tutordist
+  email: tutordist@tutorp.br
+  name: Tutor a Dist
+  nick: Tutor a Dist
+  birthdate: 2004-03-02
+  cpf: 10145734595
+  gender: true
+  address: Rua ABC
+  address_number: 999
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: Paraguay
+  state: importado
+  city: Irmã de Assunção
+  institution: UFP
+  alternate_email: tutordist@gmail.com
+  bio: Professor
+  interests: ensinar
+  music: Clássica
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b
+  
+# senha: 123456
+Tutor:
+  id: 12
+  login: coorddisc
+  email: coorddisc@coorddisc.br
+  name: Tutor a Dist
+  nick: Tutor a Dist
+  birthdate: 2004-03-02
+  cpf: 04982281505
+  gender: true
+  address: Rua ABC
+  address_number: 999
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: Paraguay
+  state: importado
+  city: Irmã de Assunção
+  institution: UFP
+  alternate_email: coorddisc@gmail.com
+  bio: Professor
+  interests: ensinar
+  music: Clássica
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b  

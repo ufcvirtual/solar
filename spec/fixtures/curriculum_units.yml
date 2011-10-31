@@ -49,3 +49,14 @@ r5:
   curriculum_unit_type_id: 5
   name: Literatura Brasileira I
   code: RM414
+r6:
+  id: 6
+  curriculum_unit_type_id: 5
+  name: Letras Portugues
+  code: LLPT
+
+r7:
+  id: 7
+  curriculum_unit_type_id: 5
+  name: Licenciatura em Quimica
+  code: LQUIM
