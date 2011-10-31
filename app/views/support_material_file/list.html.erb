@@ -24,6 +24,7 @@
                   {:class => 'file_icon'} %>
                 <%= link_to file['attachment_file_name'],:controller => :support_material_file, :action => :download, :id => file['id'], :file_allocation_tag_id => file['allocation_tag_id'] %>
               <% else %>
+                <img alt="" src="/images/icon_file_link.png" />&nbsp;
                 <a href="<%= file['url'] %>" target="_blank"><%= file['url'] %></a>
               <% end %>
             </td>
@@ -31,7 +32,7 @@
               <% if file['url'] == nil %>
                 <%= format('%.2f KB', file["attachment_file_size"].to_i/1024.0) %>
               <% else %>
-
+                <!-- O temanho não é exibido -->
               <% end %>
 
             </td>
