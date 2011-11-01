@@ -1,19 +1,20 @@
 <% curriculum_units = load_curriculum_unit_data() || [] %>
 
-<div class="mysolar_portlets_portlet mysolar_portlets_main">
-  <div class="mysolar_header">
-    <img alt="" src="/images/unidade_curricular.png" />
-    <h1 class="mysolar_title"><%= t(:my_solar_curriculum_units) %></h1>
+<div class="block_large">
+  <div class="block_title">
+    <h1><img alt="" src="/images/unidade_curricular.png" class="block_title_icon" /><%= t(:my_solar_curriculum_units) %></h1>
   </div>
+
   <div class="mysolar_portlets_content">
+    
     <ul id="mysolar_curriculum_unit_wrapper">
     <% if curriculum_units.length > 0%>
       <% curriculum_units.each { |curriculum_unit| %>
-        <li class="curriculum_unit_display">
+        <li>
 
           <% if ((session[:opened_tabs].length >= Max_Tabs_Open.to_i) && (!session[:opened_tabs].has_key?(curriculum_unit["name"]))) %>
             <% options = {} %>
-            <% html_options = {:onclick => "javascript:alert('"+t(:curriculum_access_alert)+"');return false;", :class=>'enrollment_link' } %>
+            <% html_options = {:onclick => "javascript:alert('"+t(:curriculum_access_alert)+"');return false;", :class=>'link_content' } %>
           <% else %>
             <% options = {:controller => :application, :action => :add_tab,
               :type => Tab_Type_Curriculum_Unit,
@@ -22,7 +23,7 @@
               :offers_id => curriculum_unit["offer_id"],
               :groups_id => curriculum_unit["group_id"]
             } %>
-            <% html_options = {:class=>'enrollment_link'} %>
+            <% html_options = {:class=>'link_content'} %>
           <% end %>
 
           <%= link_to curriculum_unit["name"], options, html_options %>
@@ -33,5 +34,6 @@
       <%= t(:my_solar_curriculum_without) %>
     <% end %>
     </ul>
+
   </div>
 </div>
