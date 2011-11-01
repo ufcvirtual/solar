@@ -1,3 +1,5 @@
+include FilesHelper
+
 class MessagesController < ApplicationController
 
   include MessagesHelper

@@ -230,7 +230,6 @@ input{
     font-size: 13px;
 }
 
-
 input[type="file"] {
     border          : 0px;
     padding         : 0px;
@@ -255,8 +254,7 @@ h1.page_title{
 }
 
 .text_alert, .text_alert_message {
-    font-family: Trebuchet;
-    font-size: 11px;
+    font-size: 8pt;
     color: #e64d4d;
     width: auto;
 }
@@ -977,36 +975,29 @@ a.mysolar_top_link{
 
 /********Portlets do meuSolar*****************/
 
+/* REMOVER */
+/*
 .mysolar_portlets_limit{
     margin-right: 38px;
     max-width: 1700px;
 }
-
 .mysolar_portlets_wrapper {
     padding-right: 250px;
 }
-
-.mysolar_portlets_portlet {
-    margin: 0 1em 1em 0;
-    background-color: #fff;
-    min-height: 183px; /* modificação comportar agenda */
-    min-width: 262px; /* modificação comportar agenda */
-    max-width: 1164px;
-    white-space: normal;
-    float: left;
+.mysolar_portlets_side {
+    margin-right: -100%;
 }
-
 .mysolar_portlets_main {
     float: left;
     width: 100%;
-    min-width: 540px;
 }
-
-.mysolar_portlets_side {
+.mysolar_portlets_portlet {
+    background-color: #fff;
+    width: 255px;
+    white-space: normal;
     float: left;
-    width: 220px;
-    margin-right: -100%;
 }
+*/
 
 /**
  * Tratando dos titulos dos conteudos
@@ -1037,6 +1028,7 @@ a.mysolar_top_link{
     overflow: auto;
     width: 100%;
     height: 162px;
+    font-size: 10pt;
 }
 
 #mysolar_curriculum_unit_wrapper {
@@ -1044,6 +1036,12 @@ a.mysolar_top_link{
     padding: 5px 10px;
 }
 
+#mysolar_curriculum_unit_wrapper li {
+    padding-bottom: 5px;
+}
+
+/* REMOVER */
+/*
 .mysolar_portlets_agenda {
     float: right;
     margin-right: -220px;
@@ -1056,6 +1054,7 @@ a.mysolar_top_link{
     max-width: 262px;
     font-size: 12px;
 }
+*/
 
 
 /**
@@ -1086,9 +1085,6 @@ div.legend h1 {
     font-size: 14px;
     font-weight: bold;
 }
-
-
-
 
 hr.curriculum_unit_division, hr.curriculum_unit_division_mysolar {
     border: none;
@@ -1353,12 +1349,16 @@ div.alter_photo_text {
 .block_title {
     border-bottom: 2px solid #003E7A;
     padding-bottom: 2px !important;
-/*    text-transform: capitalize;*/
+}
+
+.block_title h1 {
+    font-variant: small-caps;
+    font-size: 12pt;
+    font-weight: normal;
 }
 
 .block_title h2 {
     display: inline;
-/*    font-variant: small-caps;*/
 }
 
 /* icone que fica ao lado do titulo do bloco */
@@ -1462,6 +1462,14 @@ h2, table tr.block_title th {
     margin-right: 10px;
 }
 
+.block_large {
+    float: left;
+    display: inline-block;
+    height: 195px;
+    width: 520px;
+    margin-right: 10px;
+}
+
 #block_group_selection {
     background-color: transparent;
 }
@@ -1502,8 +1510,7 @@ h2, table tr.block_title th {
 /* calendario da tela de acesso a curso */
 .calendar {
     background: #F2F0F2;
-    font-family: Trebuchet;
-    font-size: 11px;
+    font-size: 9pt;
     width: 100%;
     height: 117px;
     padding-bottom: 2px;

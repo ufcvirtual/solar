@@ -1,3 +1,5 @@
+include FilesHelper
+
 class PortfolioTeacherController < ApplicationController
 
   before_filter :require_user

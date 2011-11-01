@@ -3,6 +3,8 @@
 # de um controller fora dos padroes
 ################################################################################
 
+include FilesHelper
+
 class PortfolioController < ApplicationController
 
   before_filter :require_user
