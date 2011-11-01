@@ -134,20 +134,20 @@ professor2:
 Professor:
   id: 6
   login: prof
-  email: prof@prof.br
+  email: prof@solar.ufc.br
   name: Professor
-  nick: Prof
+  nick: Professor
   birthdate: 2000-03-02
   cpf: 21872285848
   gender: true
-  address: Rua ABC
-  address_number: 999
+  address: em algum lugar
+  address_number: 58
   address_neighborhood: UFC
-  zipcode: 60000000
-  country: Paraguay
-  state: importado
-  city: Irmã de Assunção
-  institution: UFP
+  zipcode: 60450170
+  country: Brazil
+  state: CE
+  city: Fortaleza
+  institution: UFC
   alternate_email: prof@gmail.com
   bio: Professor
   interests: ensinar
@@ -157,12 +157,12 @@ Professor:
   phrase: Timao eeeoo!!!
   site: timao.com
   crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b  
-  
+
 # senha: 123456
 aluno 1:
   id: 7
   login: aluno1
-  email: aluno1@aluno1.br
+  email: aluno1@solar.ufc.br
   name: Aluno 1
   nick: Aluno 1
   birthdate: 2006-03-02
@@ -190,7 +190,7 @@ aluno 1:
 aluno 2:
   id: 8
   login: aluno2
-  email: aluno2@aluno2.br
+  email: aluno2@solar.ufc.br
   name: Aluno 2
   nick: Aluno 2
   birthdate: 2004-03-02
@@ -221,7 +221,7 @@ aluno 3:
   email: aluno3@aluno3.br
   name: Aluno 3
   nick: Aluno 3
-  birthdate: 2004-03-02
+  birthdate: 2002-03-02
   cpf: 47382348113
   gender: true
   address: Rua ABC
@@ -243,13 +243,13 @@ aluno 3:
   crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b  
 
 # senha: 123456
-Tutor:
+tutor_presencial:
   id: 10
   login: tutorp
-  email: tutorp@tutorp.br
-  name: Tutor
-  nick: Tutor
-  birthdate: 2004-03-02
+  email: tutorp@solar.ufc.br
+  name: Tutor Presencial
+  nick: Tutor Presencial
+  birthdate: 2000-03-02
   cpf: 31877336203
   gender: true
   address: Rua ABC
@@ -271,7 +271,7 @@ Tutor:
   crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b
   
 # senha: 123456
-Tutor:
+tutor_distancia:
   id: 11
   login: tutordist
   email: tutordist@tutorp.br
@@ -299,12 +299,12 @@ Tutor:
   crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b
   
 # senha: 123456
-Tutor:
+coordenador:
   id: 12
   login: coorddisc
   email: coorddisc@coorddisc.br
-  name: Tutor a Dist
-  nick: Tutor a Dist
+  name: Coordenador
+  nick: Coordenador
   birthdate: 2004-03-02
   cpf: 04982281505
   gender: true
