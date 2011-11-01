@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
 
+  protect_from_forgery
+
   # Constantes utilizadas na migalha de pao
   BreadCrumb_First_Level = 0
   BreadCrumb_Second_Level = 1
@@ -14,8 +16,6 @@ class ApplicationController < ActionController::Base
   #   - session[:forum_display_mode]
   #
 
-  protect_from_forgery
-
   # Mensagem de erro de permissão
   rescue_from CanCan::AccessDenied do |exception|
     flash[:error] = t(:no_permission)
@@ -26,6 +26,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :return_user, :application_context, :current_menu
   before_filter :log_access, :only => :add_tab
+  before_filter :set_locale
 
   ###########################################
   # BREADCRUMB
@@ -284,9 +285,6 @@ class ApplicationController < ActionController::Base
     session[:return_to] = request.fullpath
   end
 
-  #definir o idioma
-  before_filter :set_locale
-
   def set_locale
     # permitir apenas locales conhecidos
     params[:locale] = nil unless ['en', 'pt-BR'].include?(params[:locale])
@@ -297,9 +295,7 @@ class ApplicationController < ActionController::Base
       personal_options = PersonalConfiguration.find_by_user_id(current_user.id)
 
       # caso seja o primeiro acesso do usuario
-      if personal_options.nil?
-        personal_options = PersonalConfiguration.new :user_id => current_user.id
-      end
+      personal_options = PersonalConfiguration.new :user_id => current_user.id if personal_options.nil?
 
       I18n.locale = params[:locale] || personal_options.default_locale || I18n.default_locale
 
@@ -310,9 +306,7 @@ class ApplicationController < ActionController::Base
       end
 
       # caso seja a primeira sessao do usuario
-      if personal_options.new_record?
-        personal_options.save
-      end
+      personal_options.save if personal_options.new_record?
 
     else
       I18n.locale = params[:locale] || I18n.default_locale
@@ -361,35 +355,6 @@ class ApplicationController < ActionController::Base
 
   def hold_pagination
     session[:current_page] = @current_page
-  end
-
-  # download de arquivos
-  def download_file(redirect_error, path_, filename_, prefix_ = nil)
-
-    # verifica se o arquivo possui prefixo
-    unless prefix_.nil?
-      path_file = "#{path_}/#{prefix_}_#{filename_}"
-    else
-      path_file = "#{path_}/#{filename_}"
-    end
-
-    #Caso o caminho do arquivo todo tenha sido passado em 'path_', desconsidera
-    #o resto e descobre o filename
-    if (filename_ == '')
-      path_file = path_
-      pattern = /\//
-      filename_ = path_file[path_file.rindex(pattern)+1..-1]
-    end
-
-    if File.exist?(path_file)
-      send_file path_file, :filename => filename_
-    else
-      respond_to do |format|
-        flash[:error] = t(:error_nonexistent_file)
-        format.html { redirect_to(redirect_error) }
-      end
-    end
-
   end
 
 end

@@ -4,9 +4,11 @@ module LessonsHelper
 
     # uma aula eh ligada a uma turma ou a uma oferta
 
-    query_lessons = "SELECT distinct l.id as lessonid,
-                            l.name, address,
-                            l.order,l.schedule_id
+    query_lessons = "SELECT DISTINCT l.id AS lessonid,
+                            l.name,
+                            address,
+                            l.order,
+                            l.schedule_id
                        FROM lessons l
                   LEFT JOIN schedules s ON l.schedule_id = s.id
                   LEFT JOIN allocation_tags at ON l.allocation_tag_id = at.id
@@ -14,8 +16,7 @@ module LessonsHelper
                         AND s.start_date <= current_date
                        /* AND s.end_date >= current_date */ "
     unless (offer_id.nil? && group_id.nil?)
-      query_lessons << " and ( "
-
+      query_lessons << " AND ( "
 
       temp_query_lessons = []
 
@@ -25,11 +26,11 @@ module LessonsHelper
 
       query_lessons << temp_query_lessons.join(' OR ')
       
-      query_lessons << "     ) "
+      query_lessons << " ) "
     end
    
     #vê se passou lesson
-    query_lessons += " and l.id=#{lesson_id} " unless lesson_id.nil? 
+    query_lessons += " AND l.id=#{lesson_id} " unless lesson_id.nil?
 
     query_lessons += " ORDER BY l.order"
 

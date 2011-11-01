@@ -1,5 +1,6 @@
 class DiscussionsController < ApplicationController
 
+  include FilesHelper
   include DiscussionPostsHelper
 
   load_and_authorize_resource :except => [:list, :show_posts] #Setar permissoes!!!!!
@@ -11,33 +12,12 @@ class DiscussionsController < ApplicationController
 
     authorize! :list, Discussion
 
-    # pegando dados da sessao e nao da url
-    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-    offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+    active_tab = session[:opened_tabs][session[:active_tab]]
 
-    group_id = -1 if group_id.nil?
-    offer_id = -1 if offer_id.nil?
+    group_id = active_tab.include?("groups_id") ? active_tab["groups_id"] : -1
+    offer_id = active_tab.include?("offers_id") ? active_tab["offers_id"] : -1
 
-    # retorna os fóruns da turma
-    # at.id as id, at.offer_id as offerid,l.allocation_tag_id as alloctagid,l.type_lesson, privacy,description,
-    query = "SELECT *
-              FROM
-                (SELECT d.name, d.id, d.description, d.schedule_id
-                 FROM discussions d
-                 INNER JOIN allocation_tags t on d.allocation_tag_id = t.id
-                 INNER JOIN groups g on g.id = t.group_id
-                 WHERE g.id = #{group_id}
-
-                 UNION ALL
-
-                 SELECT d.name, d.id, d.description, d.schedule_id
-                 FROM discussions d
-                 INNER JOIN allocation_tags t on d.allocation_tag_id = t.id
-                 INNER JOIN offers o on o.id = t.offer_id
-                 WHERE o.id = #{offer_id}
-                ) as available_discussions;"
-
-    @discussions = Discussion.find_by_sql(query)
+    @discussions = Discussion.all_by_offer_id_and_group_id(offer_id, group_id)
 
   end
 
