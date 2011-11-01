@@ -60,13 +60,13 @@ coordenador_disciplina.save
 #    end
 #end
 
-enrollments = Enrollment.create([
-	{:offer_id => 1, :start => '2011-01-01', :end => '2021-03-02'},
-	{:offer_id => 2, :start => '2011-01-01', :end => '2021-03-02'},
-	{:offer_id => 3, :start => '2011-01-01', :end => '2021-03-02'},
-  {:offer_id => 4, :start => '2011-01-01', :end => '2021-03-02'},
-  {:offer_id => 5, :start => '2011-01-01', :end => '2021-03-02'}
-])
+#enrollments = Enrollment.create([
+#	{:offer_id => 1, :start => '2011-01-01', :end => '2021-03-02'},
+#	{:offer_id => 2, :start => '2011-01-01', :end => '2021-03-02'},
+#	{:offer_id => 3, :start => '2011-01-01', :end => '2021-03-02'},
+#  {:offer_id => 4, :start => '2011-01-01', :end => '2021-03-02'},
+#  {:offer_id => 5, :start => '2011-01-01', :end => '2021-03-02'}
+#])
 
 allocations = Allocation.create([
 	{:user_id => 1, :allocation_tag_id => 1, :profile_id => 1, :status => 1},
