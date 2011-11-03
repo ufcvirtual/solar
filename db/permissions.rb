@@ -71,7 +71,8 @@ resources_arr = [
   # Material de apoio
   {:id => 54, :controller => 'support_material_file', :action => 'list', :description => 'Visualizar material de apoio'},
   {:id => 55, :controller => 'support_material_file', :action => 'download', :description => 'Baixar material de apoio'},
-  {:id => 56, :controller => 'support_material_file', :action => 'download_all_file_ziped', :description => 'Baixar material de apoio ZIPADO'}
+  {:id => 56, :controller => 'support_material_file', :action => 'download_all_file_ziped', :description => 'Baixar material de apoio ZIPADO'},
+  {:id => 57, :controller => 'support_material_file', :action => 'download_folder_file_ziped', :description => 'Baixar pasta do material de apoio ZIPADO'},
 
 ]
 
@@ -136,7 +137,8 @@ perm_alunos = PermissionsResource.create([
     # Material de apoio
     {:profile_id => 1, :resource_id => 54, :per_id => false},
     {:profile_id => 1, :resource_id => 55, :per_id => false},
-    {:profile_id => 1, :resource_id => 56, :per_id => false}
+    {:profile_id => 1, :resource_id => 56, :per_id => false},
+    {:profile_id => 1, :resource_id => 57, :per_id => false}
   ])
 
 ##############################
@@ -191,7 +193,8 @@ perm_prof_titular = PermissionsResource.create([
     # Material de apoio
     {:profile_id => 2, :resource_id => 54, :per_id => false},
     {:profile_id => 2, :resource_id => 55, :per_id => false},
-    {:profile_id => 2, :resource_id => 56, :per_id => false}
+    {:profile_id => 2, :resource_id => 56, :per_id => false},
+    {:profile_id => 2, :resource_id => 57, :per_id => false}
   ])
 
 ##############################
@@ -244,7 +247,8 @@ perm_prof_titular = PermissionsResource.create([
      # Material de apoio
     {:profile_id => 3, :resource_id => 54, :per_id => false},
     {:profile_id => 3, :resource_id => 55, :per_id => false},
-    {:profile_id => 3, :resource_id => 56, :per_id => false}
+    {:profile_id => 3, :resource_id => 56, :per_id => false},
+    {:profile_id => 3, :resource_id => 57, :per_id => false}
     
   ])
 
