@@ -1,7 +1,125 @@
-# Sample localization file for English. Add more files in this directory for other locales.
-# See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+"en-US":
 
-en:
+  # Formatos de data e hora
+  date:
+    formats:
+      default: "%m/%d/%Y"
+      datepicker: "%Y-%m-%d"
+      month_and_year: "%b %Y"
+      day_and_month: "%d/%b"
+    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
+    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Spt, Oct, Nov, Dec]
+    order: [:month, :day, :year]
+  time:
+    formats:
+      default: "%b %d %Y %H:%M:%S"
+      short: "%b/%d %H:%M"
+      today: "%H:%M"
+      not_today: "%m/%d"
+      long: "%B %d, %Y %H:%M"
+      normal: "%m/%d/%Y"
+      files: "%D"
+      discussion_post: "%B %d, %Y %H:%M h"
+      simple_day_and_month: "%d/%b"
+    am: "am"
+    pm: "pm"
+
+  # ActiveRecord
+  activerecord:
+    models:
+      user: "Usuario"
+      curriculum_unit: "Curriculum Unit"
+      group: "Turma"
+    attributes:
+      user:
+        alternate_email: "Alternate e-mail"
+        password: "Password"
+        name: "Name"
+        nick: "Nick"
+        birthdate: "Birthdate"
+        gender: "Gender"
+        address: "Address"
+        address_number: "Number"
+        address_neighborhood: "Neighborhood"
+        address_complement: "Complement"
+        zipcode: "CEP"
+        cpf: "CPF"
+        country: "Country"
+        state: "State"
+        city: "City"
+        institution: "Institution"
+        special_needs: "Special needs"
+        password_confirmation: "Password confirmation"
+        interests: "Interests"
+        music: "Music"
+        movies: "Movies"
+        books: "Books"
+        phrase: "Phrase"
+        email: "E-mail"
+        telephone: "Telephone"
+        cell_phone: "Cell Phone"
+        photo_content_type: "Invalid file type"
+        photo_file_size: "File too large. The maximum size of your photo should be up to 700KB."
+      curriculum_unit:
+        category: "Category"
+      public_file:
+        attachment_content_type: ""
+        attachment_file_size: "File too large. The maximum size should be up to 5MB."
+      discussion_post_file:
+        attachment_content_type: ""
+      message_file:
+        message_content_type: ""
+      assignment_file:
+        attachment_content_type: ""
+        attachment_file_size: "File too large. The maximum size should be up to 5MB."
+      comment_file:
+        attachment_content_type: ""
+        attachment_file_size: "File too large. The maximum size should be up to 5MB."
+
+    errors:
+      messages:
+        invalid: " is not valid"
+        confirmation: " is different of the confirmation"
+        accepted: "must be accepted"
+        empty: " must be filled"
+        blank: " must be filled"
+        too_long: " is too long (maximum: %{count} characters)"
+        too_short: " is too short (minimum: %{count} characters)"
+        wrong_length: " do not have the expected size (%{count} characters)"
+        taken: " already in use"
+        not_a_number: " is not a number"
+        not_an_integer: " is not an integer number"
+        record_invalid: "%{errors}"
+      models:
+        user:
+          attributes:
+            photo_content_type:
+              invalid_type: "Please send only files of type JPG, GIF or PNG."
+            photo_file_size:
+              invalid_size: "The maximum size of your photo should be up to 700KB."
+        assignment_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: "Invalid file type."
+        public_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: "Invalid file type."
+        comment_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: "Invalid file type."
+        discussion_post_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: "Invalid file type."
+        message_file:
+          attributes:
+            message_content_type:
+              invalid_type: "Invalid file type."
+
+########### GERAL ###############
+
   all: "All"
   home: "Home"
   of: "Of"
@@ -28,7 +146,7 @@ en:
   # application controller
   app_controller_require: "Please log!"
   app_controller_require_no: "Please log out!"
-  
+
   # forms de usuario em geral (para mensagens de validação)
   form_login: "Login"
   form_alternate_email: "Alternate e-mail"
@@ -173,7 +291,7 @@ en:
   resume: Resume
   semester_date: Date
   passing_grade: Passing Grade
-  
+
   curriculum_unit_information_title: "Curriculum Unit Informartion"
   curriculum_unit_responsible: "Responsible"
   curriculum_unit_participants: "Participants"
@@ -184,7 +302,7 @@ en:
   curriculum_access_message_new: "New Message"
   curriculum_access_message_more: "more"
   curriculum_access_forum: "Forum"
-  curriculum_access_curriculum_unit: "Curriculum Unit"  
+  curriculum_access_curriculum_unit: "Curriculum Unit"
   curriculum_access_agenda: "Agenda"
   curriculum_access_view: "View"
   curriculum_access_new: " new"
@@ -236,7 +354,7 @@ en:
   message_move: "Move"
   message_delete: "Delete"
   message_mark_as_read: "Mark as read"
-  message_mark_as_unread: "Mark as unread"  
+  message_mark_as_unread: "Mark as unread"
   message_attach: "Has attachment"
   message_select_all: "All"
   message_select_none: "None"
@@ -287,7 +405,7 @@ en:
   icon_add_participant: "Add participant icon"
   icon_lesson: "Lesson icon"
   icon_bibliography: "Bibliography icon"
-  
+
   bibliography_title: "Bibliography of"
   bibliography_null: "Nothing bibliography registered"
 
@@ -381,127 +499,8 @@ en:
   assignment_correction_of: "Correction Of"
   error_find_ajax: "Error trying to query. Try again later."
 
-  # Mensagem de erro para permissão 
+  # Mensagem de erro para permissão
   no_permission: "you haven't permission to access this page"
-
-  # formatos de data e hora
-  date:
-    formats:
-      default: "%m/%d/%Y"
-      datepicker: "%Y-%m-%d"
-      month_and_year: "%b %Y"
-      day_and_month: "%d/%b"
-    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
-    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Spt, Oct, Nov, Dec]
-    order: [:month, :day, :year]
-#%H:%M
-  time:
-    formats:
-      default: "%b %d %Y %H:%M:%S"
-      short: "%b/%d %H:%M"
-      today: "%H:%M"
-      not_today: "%m/%d"
-      long: "%B %d, %Y %H:%M"
-      normal: "%m/%d/%Y"
-      files: "%D" 
-      discussion_post: "%B %d, %Y %H:%M h"
-      simple_day_and_month: "%d/%b"
-    am: "am"
-    pm: "pm"
-
-# ActiveRecord
-  activerecord:
-    models:
-      user: "Usuario"
-      curriculum_unit: "Curriculum Unit"
-      group: "Turma"
-    attributes:
-      user:
-        alternate_email: "Alternate e-mail"
-        password: "Password"
-        name: "Name"
-        nick: "Nick"
-        birthdate: "Birthdate"
-        gender: "Gender"
-        address: "Address"
-        address_number: "Number"
-        address_neighborhood: "Neighborhood"
-        address_complement: "Complement"
-        zipcode: "CEP"
-        cpf: "CPF"
-        country: "Country"
-        state: "State"
-        city: "City"
-        institution: "Institution"
-        special_needs: "Special needs"
-        password_confirmation: "Password confirmation"
-        interests: "Interests"
-        music: "Music"
-        movies: "Movies"
-        books: "Books"
-        phrase: "Phrase"
-        email: "E-mail"
-        telephone: "Telephone"
-        cell_phone: "Cell Phone"
-        photo_content_type: "Invalid file type"
-        photo_file_size: "File too large. The maximum size of your photo should be up to 700KB."
-      curriculum_unit:
-        category: "Category"
-      public_file:
-        attachment_content_type: ""
-        attachment_file_size: "File too large. The maximum size should be up to 5MB."
-      discussion_post_file:
-        attachment_content_type: ""
-      message_file:
-        message_content_type: ""
-      assignment_file:
-        attachment_content_type: ""
-        attachment_file_size: "File too large. The maximum size should be up to 5MB."
-      comment_file:
-        attachment_content_type: ""
-        attachment_file_size: "File too large. The maximum size should be up to 5MB."
-
-    errors:
-      messages:
-        invalid: " is not valid"
-        confirmation: " is different of the confirmation"
-        accepted: "must be accepted"
-        empty: " must be filled"
-        blank: " must be filled"
-        too_long: " is too long (maximum: %{count} characters)"
-        too_short: " is too short (minimum: %{count} characters)"
-        wrong_length: " do not have the expected size (%{count} characters)"
-        taken: " already in use"
-        not_a_number: " is not a number"
-        not_an_integer: " is not an integer number"
-        record_invalid: "%{errors}"
-      models:
-        user:
-          attributes:
-            photo_content_type:
-              invalid_type: "Please send only files of type JPG, GIF or PNG."
-            photo_file_size:
-              invalid_size: "The maximum size of your photo should be up to 700KB."
-        assignment_file:
-          attributes:
-            attachment_content_type:
-              invalid_type: "Invalid file type."
-        public_file:
-          attributes:
-            attachment_content_type:
-              invalid_type: "Invalid file type."
-        comment_file:
-          attributes:
-            attachment_content_type:
-              invalid_type: "Invalid file type."
-        discussion_post_file:
-          attributes:
-            attachment_content_type:
-              invalid_type: "Invalid file type."
-        message_file:
-          attributes:
-            message_content_type:
-              invalid_type: "Invalid file type."
 
 # Menu
   menu_content: Content

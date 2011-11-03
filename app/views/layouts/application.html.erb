@@ -27,6 +27,9 @@
     <%= csrf_meta_tag %>
 
     <script type="text/javascript">
+      // variavel global com a configuracao do locale
+      I18nlocale = '<%=I18n.locale%>'
+
       jQuery(function($){
         $("#cpf").mask("999.999.999-99");
         $("#telefone").mask("(99)9999-9999");
@@ -164,14 +167,13 @@
       </div>
 
       <!-- Internacionalização  -->
-      <!--
+
       <div id="block_locale">
         <ul>
-          <li><%= link_to "English", url_for( :locale => 'en' ) %></li>
+          <li><%= link_to "English", url_for( :locale => 'en-US' ) %></li>
           <li><%= link_to "Português(BR)",url_for( :locale => 'pt-BR' ) %></li>
         </ul>
       </div>
-      -->
 
       <%#= render '/portlets/chat' %>
     </div>

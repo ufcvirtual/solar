@@ -111,7 +111,7 @@
 <script type="text/javascript">
   $(function(){
 
-    var local = ('<%= I18n.locale %>' == 'en') ? 'en-GB' : '<%= I18n.locale %>';
+    var local = '<%= I18n.locale %>'; // ('<%= I18n.locale %>' == 'en') ? 'en-GB' : '<%= I18n.locale %>';
     var options = $.extend($.datepicker.regional[local]);
     options.dateFormat = '<%=t :search_format_date %>';
     $('#from-date, #until-date').datepicker(options);

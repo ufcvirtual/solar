@@ -1,399 +1,4 @@
 "pt-BR":
-  
-  
-  all: "Todos"
-  home: "Home"
-  of: "de"
-  required_fields: "* campos obrigatórios"
-
-#Página de Login
-  login_description1: "O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,
-        da Universidade Federal do Ceará. Ele é orientado ao professor e ao aluno,
-        possibilitando a publicação de cursos e a interação com os mesmos."
-  login_description2: "O Solar foi desenvolvido potencializando o aprendizado a partir da relação com
-        a própria interface gráfica do ambiente, sendo desenvolvido para que o usuário
-        tenha rapidez no acesso às páginas e ao conteúdo, fácil navegabilidade e
-        compatibilidade com navegadores. Aqui, o interagente se sente seguro a
-        explorar os espaços disponibilizados. O ambiente é apoiado
-        numa filosofia de interação e não de controle."
-  login_footer: "Instituto UFC Virtual 2011 - Universidade Federal do Ceará | Equipe de Desenvolvimento"
-  tutorial: "Tutorial"
-  UFC_virtual: "UFC Virtual"
-  news: "Notícias"
-  signin: "Entrar"
-  signup: "Cadastrar"
-  user: "Usuário"
-  password: "Senha"
-  remember_my_password: "Lembrar minha senha"
-  forgot_my_password: "esqueci a senha"
-  expired: "Prazo encerrado"
-  name: "Nome"
-  size: "Tamanho"
-
-  # application controller
-  app_controller_require: "Por favor, efetue login!"
-  app_controller_require_no: "Por favor, efetue logout!"
-
-  # forms de usuario em geral (para mensagens de validação)
-  form_login: "Login"
-  form_alternate_email: "E-mail alternativo"
-  form_password: "Senha"
-  form_name: "Nome"
-  form_nick: "Apelido"
-  form_cpf: "CPF "
-  form_institution: "Instituição"
-  form_special_needs: "Necessidades especiais"
-  form_password_confirmation: "Confirmação da senha"
-  form_email_confirmation: "Confirmação do e-mail"
-  form_email: "E-mail"
-  
-  # pagina de cadastro de usuario
-  new_user_title: "Novo Cadastro"
-  new_user_msg_ok: "Usuário criado com sucesso!"
-  special_needs_yes: "Sim"
-  special_needs_no: "Não"
-  which: "Qual"
-  confirm: "Confirmar"
-  back: "Voltar"
-  save: "Salvar"
-  new_user_msg_cpf_error: " inválido"
-  itens_not_found: "Itens não encontrados"
-  
-  #Meus dados
-  my_data: "Meus Dados"
-  my_personal_data: "Pessoais"
-  my_cadastral_data: "Cadastrais"
-  my_professional_data: "Profissionais"
-  alter_data: "Alterar Dados"
-  cancel: "Cancelar"
-  send: "Enviar"
-  contact: "Contato"
-  authentication: "Autenticação"
-  old_password: "Senha Antiga"
-  new_password: "Nova Senha"
-  repeat_password: "Confirmar Senha"
-  address_street: "Rua"
-  special_needs_question: "Portador de necessidades especiais?"
-  m: Masculino
-  f: Feminino
-
-  empty_old_password: "Senha antiga vazia"
-  bad_password_confirmation: "A nova senha e a confirmação não conferem!"
-  incorrect_old_password: "Senha antiga incorreta"
-  successful_update: "Usuário alterado com sucesso!"
-  unsuccessful_update: "Atualização não realizada!"
-  successful_update_photo: "Foto alterada com sucesso!"
-  
-
-  #alteracao de foto do layout
-  alter_photo: "alterar foto"
-
-  # pagina do meu solar
-  mysolar_news: "Novidades"
-  mysolar_recent_activities: "Atividades Recentes"
-  mysolar_agenda: "Agenda"
-  mysolar_class: "Aulas"
-  mysolar_forum: "Fórum"
-  mysolar_chat: "Chat"
-  mysolar_alt_img_user: "Imagem do usuário"
-  mysolar_alt_img_solar: "Logo do Solar"
-  mysolar_alt_img_support: "Suporte"
-  mysolar_alt_img_exit: "Sair"
-  mysolar_mn_mydata: "Meus Dados"
-  mysolar_mn_customize: "Personalizar"
-  mysolar_mn_enrollment: "Matrícula"
-  mysolar_search: "Busca"
-  date_name: Data
-
-  # portlets do meu solar
-  # Unidades curriculares
-  my_solar_curriculum_units: "Unidade Curricular"
-  my_solar_curriculum_without: "Nenhuma unidade curricular encontrada."
-
-  #       msg de erro ,ainda no login    #
-  login_data_invalid: "Dados de login incorretos!"
-
-  # Página Esqueci Minha Senha
-
-  pwd_recovery_security: "Segurança"
-  pwd_recovery_subtitle: "Esqueceu a sua senha?"
-
-  pwd_recovery_text: "Para recuperar seu acesso, digite o CPF e o endereço de e-mail que você usa para acessar a conta do Solar."
-  pwd_recovery_text2: "Nós enviaremos a nova senha para o seu e-mail em instantes."
-
-  pwd_recovery_email: "E-mail:"
-  pwd_recovery_cpf: "CPF:"
-  pwd_recovery_send: "Enviar"
-  pwd_recovery_back: "Voltar"
-
-  pwd_recovery_sucess_msg: "Senha enviada com sucesso!"
-  pwd_recovery_error_msg: "Não foi possivel enviar nova senha. Por favor, tente novamente."
-  pwd_recovery_unknown_user_msg: "Usuario não encontrado!"
-
-  pwd_recovery_mail_body: "Caro(a) %{recipient}, \n\nVocê solicitou recuperação de acesso ao Solar.
-			\n\nSeus dados para acessar o ambiente são:
-			\n    Login: %{login}
-			\n    Nova Senha: %{password}
-  			\n\nAtenciosamente,\nAdministração do ambiente.
-			\n\n\nAmbiente Virtual SOLAR: http://www.solar2.virtual.ufc.br
-			\n\n\n[Esta é uma mensagem automática. Por favor, não a responda.]"
-
-# Página de alterar foto
-  choose_file: "Escolher arquivo"
-  photo_text: "Você pode fazer upload de um arquivo JPG, GIF ou PNG (Não faça upload
-      \n\n de imagens contendo celebridades, nudez, trabalhos artísticos e imagens
-      \n\n protegidas por direitos autorais). O tamanho máximo da sua foto deve ser
-      \n\n de até 700KB."
-  send_photo: "Envie sua foto:"
-  your_computer: "Do seu computador"
-  no_file: "Nenhum arquivo enviado..."
-  or: "ou"
-  external_link: "De um link externo"
-  url: "Digite aqui a URL da imagem no campo de texto acima."
-  send: "Enviar"
-
-  # página de matrícula
-  enrollm_search: "Buscar"
-  enrollm_search_in: " em "
-  enrollm_view: "Ver"
-  enrollm_view_all: "Todos"
-  enrollm_view_enrolled: "Matriculados"
-  enrollm_cancel: "Cancelar"
-  enrollm_enroll: "Matricular"
-  enrollm_curriculum_unit: "Unidade Curricular"
-  enrollm_category: "Categoria"
-  enrollm_group: "Turma"
-  enrollm_title: "Matrícula"
-  enrollm_enrolled: "Matriculado"
-  enrollm_cancel_request: "Cancelar pedido"
-  enrollm_cancelled_message: "Matrícula cancelada!"
-  enrollm_reactivated_message: "Matrícula reativada!"
-  enrollm_request_message: "Pedido de matrícula realizado!"
-  enrollm_request_cancel_message: "Pedido de matrícula cancelado!"
-  enrollm_confirm: "Tem certeza de que deseja cancelar?"
-
-  # informacoes da unidade curricular
-  syllabus: "Ementa"
-  objectives: "Objetivos"
-  prerequisites: "Pré-requisitos"
-  resume: "Resumo"
-  semester_date: "Período"
-  passing_grade: "Média"
-  
-  curriculum_unit_information_title: "Informações da Unidade Curricular"
-  curriculum_unit_responsible: "Responsáveis"
-  curriculum_unit_participants: "Participantes da turma"
-  curriculum_access_alert: "Número de abas excedido. Por favor, feche uma aba para abrir uma nova."
-  curriculum_access_lesson: "Aulas"
-  curriculum_access_message: "Mensagens"
-  curriculum_access_message_inbox: "Caixa de Entrada"
-  curriculum_access_message_new: "Nova Mensagem"
-  curriculum_access_message_more: "mais"
-  curriculum_access_forum: "Fórum"
-  curriculum_access_curriculum_unit: "Unidade Curricular"  
-  curriculum_access_agenda: "Agenda"
-  curriculum_access_view: "Visualizar"
-  curriculum_access_new: " novas"
-  curriculum_access_more: "+ mais"
-
-  participants_title: "Participantes"
-  participants_none: "Nenhum participante encontrado"
-
-  lesson_title: "Aulas"
-  lesson_table_title: "Aulas disponíveis"
-  lesson_table_date: "Data de acesso"
-  lesson_message: "Nenhuma aula disponível"
-  lesson: "Aula"
-  lesson_goto: "Ir para aula"
-
-  #Listagem de Fóruns
-  title: "Título"
-  forum_title: "Fóruns"
-  forum_table_title: "Fóruns disponíveis"
-  forum_table_date: "Data de acesso"
-  forum_message: "Nenhum fórum disponível"
-  forum: "Fórum"
-  forum_new_message: "Nova Mensagem"
-  forum_file_list: "Arquivos"
-
-  #Exibição/Interação Fóruns
-  forum_show_plainlist: "Ver em Lista"
-  forum_show_thread: "Ver em Árvore"
-  forum_show_answer: "Responder"
-  forum_show_remove: "Excluir"
-  forum_show_edit: "Editar"
-  forum_file_list: "Anexos"
-  forum_empty_file_list: "Nenhum arquivo"
-  forum_attach_file_title: "Envio de arquivos"
-  forum_attach_file: "Anexar arquivo"
-  forum_attach_another_file: "Anexar outro arquivo"
-  forum_attach_cancel: "Cancelar"
-  forum_attach_save: "Salvar"
-  forum_remove_file: "Remover arquivo"
-  forum_remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
-  forum_remove_error: "Erro ao remover postagem"
-
-  # messages
-  message_title: "Mensagens"
-  message_inbox: "Entrada"
-  message_outbox: "Enviadas"
-  message_trash: "Lixeira"
-  message_search: "Buscar Mensagem"
-  message_new: "Nova Mensagem"
-  message_filter: "Filtro"
-  message_select: "Selecionar"
-  message_move: "Mover para"
-  message_delete: "Excluir"
-  message_mark_as_read: "Marcar como lida"
-  message_mark_as_unread: "Marcar como não lida"
-  message_attach: "Possui arquivo anexado"
-  message_select_all: "Todas"
-  message_select_none: "Nenhuma"
-  message_select_read: "Lidas"
-  message_select_unread: "Não lidas"
-  message_none: "Nenhuma mensagem encontrada"
-  message_no_new: "Nenhuma nova mensagem"
-
-  message_new_title: "Nova mensagem"
-  message_send: "Enviar"
-  message_discard: "Descartar"
-  message_attach_file: "Anexar um arquivo"
-  message_to: "Para"
-  message_from: "De"
-  message_subject: "Assunto"
-  message_date: "Data"
-  message_reply: "Responder"
-  message_reply_all: "Responder para todos"
-  message_route: "Encaminhar"
-  message_attachments: "Arquivos anexos"
-  message_send_ok: "Mensagem enviada com sucesso."
-  message_send_error: "Não foi possível enviar mensagem."
-  message_send_error_no_receiver: "Mensagem não enviada. Nenhum destinatário encontrado no ambiente."
-  message_personal_contacts: "Contatos Pessoais"
-  message_header: "Mensagem enviada por: "
-  message_complete: "Concluir"
-  message_cancel: "Cancelar"
-  message_subject_reply: "Res: "
-  message_subject_route: "Enc: "
-  message_confirm: "Tem certeza de que deseja excluir?"
-
-  navigation_of: " de "
-  navigation_next: "Próxima >"
-  navigation_previous: "< Anterior"
-  navigation_first: "<< Primeira"
-  navigation_last: "Última >>"
-
-  icon_agenda: "Ícone da agenda"
-  icon_forum: "Ícone do forum"
-  icon_message: "Ícone de mensagem"
-  icon_curriculum_unit: "Ícone de unidade curricular"
-  icon_lesson: "Ícone de aula"
-  icon_agenda_event: "Ícone de evento da agenda"
-  icon_send_email: "Ícone de enviar email"
-  icon_participants: "Ícone de participantes"
-  icon_profile: Ícone de perfil""
-  icon_chat: "Ícone do chat"
-  icon_add_participant: "Ícone de adicionar participante"
-  icon_lesson: "Ícone de aulas"
-  icon_bibliography: "Ícone bibliografia"
-
-  bibliography_title: "Bibliografia de"
-  bibliography_null: "Nenhuma bibliografia cadastrada"
-
-  #AGENDA
-  agenda_title: "Agenda de"
-  new_activity: "Nova atividade"
-  agenda_null: "Nenhuma atividade marcada para esta agenda"
-  discussions: "Foruns"
-  lessons: "Aulas"
-  schedule_events: "Evento da Agenda"
-  no_events: "Sem eventos para o dia selecionado"
-
-  #PORTFOLIO
-  portfolio_icon: "Ícone Portfolio"
-  portfolio_title: "Portfolio de"
-  portfolio_null: "Nenhum portfolio cadastrado"
-  portfolio_upload_file: "Enviar arquivos para a área pública"
-  individual_activity: "Atividades Individuais"
-  activity_description: "Descrição"
-  situation: "Situação"
-  grade: "Nota"
-  comments: "Comentários"
-  comments_teacher: "Comentários do Professor"
-  comment: "Comentário"
-  task: "Prova"
-  tasks: "Provas"
-  public_area: "Área Pública"
-  delete: "Excluir"
-  more: "mais"
-  less: "menos"
-  not_started: "Não Iniciado"
-  corrected: "Corrigido"
-  sent: "Enviado"
-  make: "Fazer"
-  delete_file_msg: "Deseja realmente excluir este arquivo?"
-  file_uploaded: "Arquivo enviado com sucesso"
-  file_deleted: "Arquivo deletado com sucesso"
-  error_nonexistent_file: "Arquivo não encontrado"
-  error_no_file_sent: "Nenhum arquivo enviado"
-  send_file_portfolio: "Upload de Arquivos Para Portfolio"
-  send_file_portfolio_obs: "Aguarde o envio completo do arquivo. O tamanho não deve exceder 5MB."
-  send_file_portfolio_text: "Exemplos de arquivos aceitos:<br />
-  &nbsp;&nbsp;- Documentos do Microsoft Office<br />
-  &nbsp;&nbsp;- Documentos do OpenOffice.org (ODF)<br />
-  &nbsp;&nbsp;- Arquivos Compactados (.zip, .rar...)<br />
-  &nbsp;&nbsp;- Documentos PDF<br />
-  &nbsp;&nbsp;- Arquivos de Video (avi, mpeg,...)<br />
-  &nbsp;&nbsp;- Arquivos de Audio (mp3, wma...)"
-  sent_files: "Arquivos Enviados"
-  send_files: "Enviar Arquivos"
-  download_attachment: "Baixar Anexo"
-  error_delete_file: "Erro ao tentar deletar arquivo"
-  sent_in: "Enviado em"
-  comment_updated_successfully: "Comentário atualizado com sucesso"
-  files_assignments: "Arquivos do Trabalho"
-  invalid_grade: "Nota Inválida"
-  delete_file_interval_error: "Modificação de arquivos fora do intervalo permitido"
-  send_file_interval_error: "Envio de arquivos fora do intervalo permitido"
-  not_sent: "Não Enviado"
-  -: "-"
-  pending: "Pendente"
-  comments_icon: "Comentários"
-
-  # acompanhamento
-  student: "Aluno"
-  scores_of: "Acompanhamento de"
-  public_files: "Arquivos Publicos"
-  tests: "Provas"
-  private_area: "Trabalhos"
-  participation: "Participação"
-  assignments: "Trabalhos"
-  access_to_the_course: "Acessos ao Curso"
-  group: "Turma"
-  legends: "Legendas"
-  legend_assignments: "Legenda dos Trabalhos"
-  assignment_without_correction: "Trabalho enviado mas não corrigido(sem nota)."
-  assignment_not_sent: "Trabalho não enviado"
-  assignment_as: "TE"
-  assignment_an: "TN"
-  amount: "Qtd"
-  amount_participation_discussions: "Participações em Fóruns"
-  from_date: "Da Data"
-  until_date: "Até a Data"
-  search_format_date: "dd-mm-yy"
-  amount_access: "Quantidade de Acessos"
-  invalid_identifier: "Identificador Inválido"
-  to: "a"
-  history_search: "Busca"
-  history_find: "Buscar"
-  history_access: "Histórico de Acessos"
-  scores_discussions: "Acompanhamento de Foruns do Aluno"
-  scores_history_access: "Acompanhamento de Histórico de Acesso do Aluno"
-  assignment_correction_of: "Correção de"
-  error_find_ajax: "Erro ao tentar consultar. Tente novamente mais tarde."
-
-  # Mensagem de erro para permissão   
-  no_permission: "Você não tem permissão para acessar esta página"
 
   # formatos de data e hora
   date:
@@ -409,7 +14,6 @@
     month_names: [~, Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro]
     abbr_month_names: [~, Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez]
     order: [:day, :month, :year]
-#%H:%M
   time:
     formats:
       default: "%A, %d de %B de %Y, %H:%M h"
@@ -673,7 +277,401 @@
         password: "Senha"
         remember_me: "Lembrar me"
 
-# Menu
+  all: "Todos"
+  home: "Home"
+  of: "de"
+  required_fields: "* campos obrigatórios"
+
+#Página de Login
+  login_description1: "O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,
+        da Universidade Federal do Ceará. Ele é orientado ao professor e ao aluno,
+        possibilitando a publicação de cursos e a interação com os mesmos."
+  login_description2: "O Solar foi desenvolvido potencializando o aprendizado a partir da relação com
+        a própria interface gráfica do ambiente, sendo desenvolvido para que o usuário
+        tenha rapidez no acesso às páginas e ao conteúdo, fácil navegabilidade e
+        compatibilidade com navegadores. Aqui, o interagente se sente seguro a
+        explorar os espaços disponibilizados. O ambiente é apoiado
+        numa filosofia de interação e não de controle."
+  login_footer: "Instituto UFC Virtual 2011 - Universidade Federal do Ceará | Equipe de Desenvolvimento"
+  tutorial: "Tutorial"
+  UFC_virtual: "UFC Virtual"
+  news: "Notícias"
+  signin: "Entrar"
+  signup: "Cadastrar"
+  user: "Usuário"
+  password: "Senha"
+  remember_my_password: "Lembrar minha senha"
+  forgot_my_password: "esqueci a senha"
+  expired: "Prazo encerrado"
+  name: "Nome"
+  size: "Tamanho"
+
+  # application controller
+  app_controller_require: "Por favor, efetue login!"
+  app_controller_require_no: "Por favor, efetue logout!"
+
+  # forms de usuario em geral (para mensagens de validação)
+  form_login: "Login"
+  form_alternate_email: "E-mail alternativo"
+  form_password: "Senha"
+  form_name: "Nome"
+  form_nick: "Apelido"
+  form_cpf: "CPF "
+  form_institution: "Instituição"
+  form_special_needs: "Necessidades especiais"
+  form_password_confirmation: "Confirmação da senha"
+  form_email_confirmation: "Confirmação do e-mail"
+  form_email: "E-mail"
+
+  # pagina de cadastro de usuario
+  new_user_title: "Novo Cadastro"
+  new_user_msg_ok: "Usuário criado com sucesso!"
+  special_needs_yes: "Sim"
+  special_needs_no: "Não"
+  which: "Qual"
+  confirm: "Confirmar"
+  back: "Voltar"
+  save: "Salvar"
+  new_user_msg_cpf_error: " inválido"
+  itens_not_found: "Itens não encontrados"
+
+  #Meus dados
+  my_data: "Meus Dados"
+  my_personal_data: "Pessoais"
+  my_cadastral_data: "Cadastrais"
+  my_professional_data: "Profissionais"
+  alter_data: "Alterar Dados"
+  cancel: "Cancelar"
+  send: "Enviar"
+  contact: "Contato"
+  authentication: "Autenticação"
+  old_password: "Senha Antiga"
+  new_password: "Nova Senha"
+  repeat_password: "Confirmar Senha"
+  address_street: "Rua"
+  special_needs_question: "Portador de necessidades especiais?"
+  m: Masculino
+  f: Feminino
+
+  empty_old_password: "Senha antiga vazia"
+  bad_password_confirmation: "A nova senha e a confirmação não conferem!"
+  incorrect_old_password: "Senha antiga incorreta"
+  successful_update: "Usuário alterado com sucesso!"
+  unsuccessful_update: "Atualização não realizada!"
+  successful_update_photo: "Foto alterada com sucesso!"
+
+
+  #alteracao de foto do layout
+  alter_photo: "alterar foto"
+
+  # pagina do meu solar
+  mysolar_news: "Novidades"
+  mysolar_recent_activities: "Atividades Recentes"
+  mysolar_agenda: "Agenda"
+  mysolar_class: "Aulas"
+  mysolar_forum: "Fórum"
+  mysolar_chat: "Chat"
+  mysolar_alt_img_user: "Imagem do usuário"
+  mysolar_alt_img_solar: "Logo do Solar"
+  mysolar_alt_img_support: "Suporte"
+  mysolar_alt_img_exit: "Sair"
+  mysolar_mn_mydata: "Meus Dados"
+  mysolar_mn_customize: "Personalizar"
+  mysolar_mn_enrollment: "Matrícula"
+  mysolar_search: "Busca"
+  date_name: Data
+
+  # portlets do meu solar
+  # Unidades curriculares
+  my_solar_curriculum_units: "Unidade Curricular"
+  my_solar_curriculum_without: "Nenhuma unidade curricular encontrada."
+
+  #       msg de erro ,ainda no login    #
+  login_data_invalid: "Dados de login incorretos!"
+
+  # Página Esqueci Minha Senha
+
+  pwd_recovery_security: "Segurança"
+  pwd_recovery_subtitle: "Esqueceu a sua senha?"
+
+  pwd_recovery_text: "Para recuperar seu acesso, digite o CPF e o endereço de e-mail que você usa para acessar a conta do Solar."
+  pwd_recovery_text2: "Nós enviaremos a nova senha para o seu e-mail em instantes."
+
+  pwd_recovery_email: "E-mail:"
+  pwd_recovery_cpf: "CPF:"
+  pwd_recovery_send: "Enviar"
+  pwd_recovery_back: "Voltar"
+
+  pwd_recovery_sucess_msg: "Senha enviada com sucesso!"
+  pwd_recovery_error_msg: "Não foi possivel enviar nova senha. Por favor, tente novamente."
+  pwd_recovery_unknown_user_msg: "Usuario não encontrado!"
+
+  pwd_recovery_mail_body: "Caro(a) %{recipient}, \n\nVocê solicitou recuperação de acesso ao Solar.
+			\n\nSeus dados para acessar o ambiente são:
+			\n    Login: %{login}
+			\n    Nova Senha: %{password}
+  			\n\nAtenciosamente,\nAdministração do ambiente.
+			\n\n\nAmbiente Virtual SOLAR: http://www.solar2.virtual.ufc.br
+			\n\n\n[Esta é uma mensagem automática. Por favor, não a responda.]"
+
+# Página de alterar foto
+  choose_file: "Escolher arquivo"
+  photo_text: "Você pode fazer upload de um arquivo JPG, GIF ou PNG (Não faça upload
+      \n\n de imagens contendo celebridades, nudez, trabalhos artísticos e imagens
+      \n\n protegidas por direitos autorais). O tamanho máximo da sua foto deve ser
+      \n\n de até 700KB."
+  send_photo: "Envie sua foto:"
+  your_computer: "Do seu computador"
+  no_file: "Nenhum arquivo enviado..."
+  or: "ou"
+  external_link: "De um link externo"
+  url: "Digite aqui a URL da imagem no campo de texto acima."
+  send: "Enviar"
+
+  # página de matrícula
+  enrollm_search: "Buscar"
+  enrollm_search_in: " em "
+  enrollm_view: "Ver"
+  enrollm_view_all: "Todos"
+  enrollm_view_enrolled: "Matriculados"
+  enrollm_cancel: "Cancelar"
+  enrollm_enroll: "Matricular"
+  enrollm_curriculum_unit: "Unidade Curricular"
+  enrollm_category: "Categoria"
+  enrollm_group: "Turma"
+  enrollm_title: "Matrícula"
+  enrollm_enrolled: "Matriculado"
+  enrollm_cancel_request: "Cancelar pedido"
+  enrollm_cancelled_message: "Matrícula cancelada!"
+  enrollm_reactivated_message: "Matrícula reativada!"
+  enrollm_request_message: "Pedido de matrícula realizado!"
+  enrollm_request_cancel_message: "Pedido de matrícula cancelado!"
+  enrollm_confirm: "Tem certeza de que deseja cancelar?"
+
+  # informacoes da unidade curricular
+  syllabus: "Ementa"
+  objectives: "Objetivos"
+  prerequisites: "Pré-requisitos"
+  resume: "Resumo"
+  semester_date: "Período"
+  passing_grade: "Média"
+
+  curriculum_unit_information_title: "Informações da Unidade Curricular"
+  curriculum_unit_responsible: "Responsáveis"
+  curriculum_unit_participants: "Participantes da turma"
+  curriculum_access_alert: "Número de abas excedido. Por favor, feche uma aba para abrir uma nova."
+  curriculum_access_lesson: "Aulas"
+  curriculum_access_message: "Mensagens"
+  curriculum_access_message_inbox: "Caixa de Entrada"
+  curriculum_access_message_new: "Nova Mensagem"
+  curriculum_access_message_more: "mais"
+  curriculum_access_forum: "Fórum"
+  curriculum_access_curriculum_unit: "Unidade Curricular"
+  curriculum_access_agenda: "Agenda"
+  curriculum_access_view: "Visualizar"
+  curriculum_access_new: " novas"
+  curriculum_access_more: "+ mais"
+
+  participants_title: "Participantes"
+  participants_none: "Nenhum participante encontrado"
+
+  lesson_title: "Aulas"
+  lesson_table_title: "Aulas disponíveis"
+  lesson_table_date: "Data de acesso"
+  lesson_message: "Nenhuma aula disponível"
+  lesson: "Aula"
+  lesson_goto: "Ir para aula"
+
+  #Listagem de Fóruns
+  title: "Título"
+  forum_title: "Fóruns"
+  forum_table_title: "Fóruns disponíveis"
+  forum_table_date: "Data de acesso"
+  forum_message: "Nenhum fórum disponível"
+  forum: "Fórum"
+  forum_new_message: "Nova Mensagem"
+  forum_file_list: "Arquivos"
+
+  #Exibição/Interação Fóruns
+  forum_show_plainlist: "Ver em Lista"
+  forum_show_thread: "Ver em Árvore"
+  forum_show_answer: "Responder"
+  forum_show_remove: "Excluir"
+  forum_show_edit: "Editar"
+  forum_file_list: "Anexos"
+  forum_empty_file_list: "Nenhum arquivo"
+  forum_attach_file_title: "Envio de arquivos"
+  forum_attach_file: "Anexar arquivo"
+  forum_attach_another_file: "Anexar outro arquivo"
+  forum_attach_cancel: "Cancelar"
+  forum_attach_save: "Salvar"
+  forum_remove_file: "Remover arquivo"
+  forum_remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
+  forum_remove_error: "Erro ao remover postagem"
+
+  # messages
+  message_title: "Mensagens"
+  message_inbox: "Entrada"
+  message_outbox: "Enviadas"
+  message_trash: "Lixeira"
+  message_search: "Buscar Mensagem"
+  message_new: "Nova Mensagem"
+  message_filter: "Filtro"
+  message_select: "Selecionar"
+  message_move: "Mover para"
+  message_delete: "Excluir"
+  message_mark_as_read: "Marcar como lida"
+  message_mark_as_unread: "Marcar como não lida"
+  message_attach: "Possui arquivo anexado"
+  message_select_all: "Todas"
+  message_select_none: "Nenhuma"
+  message_select_read: "Lidas"
+  message_select_unread: "Não lidas"
+  message_none: "Nenhuma mensagem encontrada"
+  message_no_new: "Nenhuma nova mensagem"
+
+  message_new_title: "Nova mensagem"
+  message_send: "Enviar"
+  message_discard: "Descartar"
+  message_attach_file: "Anexar um arquivo"
+  message_to: "Para"
+  message_from: "De"
+  message_subject: "Assunto"
+  message_date: "Data"
+  message_reply: "Responder"
+  message_reply_all: "Responder para todos"
+  message_route: "Encaminhar"
+  message_attachments: "Arquivos anexos"
+  message_send_ok: "Mensagem enviada com sucesso."
+  message_send_error: "Não foi possível enviar mensagem."
+  message_send_error_no_receiver: "Mensagem não enviada. Nenhum destinatário encontrado no ambiente."
+  message_personal_contacts: "Contatos Pessoais"
+  message_header: "Mensagem enviada por: "
+  message_complete: "Concluir"
+  message_cancel: "Cancelar"
+  message_subject_reply: "Res: "
+  message_subject_route: "Enc: "
+  message_confirm: "Tem certeza de que deseja excluir?"
+
+  navigation_of: " de "
+  navigation_next: "Próxima >"
+  navigation_previous: "< Anterior"
+  navigation_first: "<< Primeira"
+  navigation_last: "Última >>"
+
+  icon_agenda: "Ícone da agenda"
+  icon_forum: "Ícone do forum"
+  icon_message: "Ícone de mensagem"
+  icon_curriculum_unit: "Ícone de unidade curricular"
+  icon_lesson: "Ícone de aula"
+  icon_agenda_event: "Ícone de evento da agenda"
+  icon_send_email: "Ícone de enviar email"
+  icon_participants: "Ícone de participantes"
+  icon_profile: Ícone de perfil""
+  icon_chat: "Ícone do chat"
+  icon_add_participant: "Ícone de adicionar participante"
+  icon_lesson: "Ícone de aulas"
+  icon_bibliography: "Ícone bibliografia"
+
+  bibliography_title: "Bibliografia de"
+  bibliography_null: "Nenhuma bibliografia cadastrada"
+
+  #AGENDA
+  agenda_title: "Agenda de"
+  new_activity: "Nova atividade"
+  agenda_null: "Nenhuma atividade marcada para esta agenda"
+  discussions: "Foruns"
+  lessons: "Aulas"
+  schedule_events: "Evento da Agenda"
+  no_events: "Sem eventos para o dia selecionado"
+
+  #PORTFOLIO
+  portfolio_icon: "Ícone Portfolio"
+  portfolio_title: "Portfolio de"
+  portfolio_null: "Nenhum portfolio cadastrado"
+  portfolio_upload_file: "Enviar arquivos para a área pública"
+  individual_activity: "Atividades Individuais"
+  activity_description: "Descrição"
+  situation: "Situação"
+  grade: "Nota"
+  comments: "Comentários"
+  comments_teacher: "Comentários do Professor"
+  comment: "Comentário"
+  task: "Prova"
+  tasks: "Provas"
+  public_area: "Área Pública"
+  delete: "Excluir"
+  more: "mais"
+  less: "menos"
+  not_started: "Não Iniciado"
+  corrected: "Corrigido"
+  sent: "Enviado"
+  make: "Fazer"
+  delete_file_msg: "Deseja realmente excluir este arquivo?"
+  file_uploaded: "Arquivo enviado com sucesso"
+  file_deleted: "Arquivo deletado com sucesso"
+  error_nonexistent_file: "Arquivo não encontrado"
+  error_no_file_sent: "Nenhum arquivo enviado"
+  send_file_portfolio: "Upload de Arquivos Para Portfolio"
+  send_file_portfolio_obs: "Aguarde o envio completo do arquivo. O tamanho não deve exceder 5MB."
+  send_file_portfolio_text: "Exemplos de arquivos aceitos:<br />
+  &nbsp;&nbsp;- Documentos do Microsoft Office<br />
+  &nbsp;&nbsp;- Documentos do OpenOffice.org (ODF)<br />
+  &nbsp;&nbsp;- Arquivos Compactados (.zip, .rar...)<br />
+  &nbsp;&nbsp;- Documentos PDF<br />
+  &nbsp;&nbsp;- Arquivos de Video (avi, mpeg,...)<br />
+  &nbsp;&nbsp;- Arquivos de Audio (mp3, wma...)"
+  sent_files: "Arquivos Enviados"
+  send_files: "Enviar Arquivos"
+  download_attachment: "Baixar Anexo"
+  error_delete_file: "Erro ao tentar deletar arquivo"
+  sent_in: "Enviado em"
+  comment_updated_successfully: "Comentário atualizado com sucesso"
+  files_assignments: "Arquivos do Trabalho"
+  invalid_grade: "Nota Inválida"
+  delete_file_interval_error: "Modificação de arquivos fora do intervalo permitido"
+  send_file_interval_error: "Envio de arquivos fora do intervalo permitido"
+  not_sent: "Não Enviado"
+  -: "-"
+  pending: "Pendente"
+  comments_icon: "Comentários"
+
+  # acompanhamento
+  student: "Aluno"
+  scores_of: "Acompanhamento de"
+  public_files: "Arquivos Publicos"
+  tests: "Provas"
+  private_area: "Trabalhos"
+  participation: "Participação"
+  assignments: "Trabalhos"
+  access_to_the_course: "Acessos ao Curso"
+  group: "Turma"
+  legends: "Legendas"
+  legend_assignments: "Legenda dos Trabalhos"
+  assignment_without_correction: "Trabalho enviado mas não corrigido(sem nota)."
+  assignment_not_sent: "Trabalho não enviado"
+  assignment_as: "TE"
+  assignment_an: "TN"
+  amount: "Qtd"
+  amount_participation_discussions: "Participações em Fóruns"
+  from_date: "Da Data"
+  until_date: "Até a Data"
+  search_format_date: "dd-mm-yy"
+  amount_access: "Quantidade de Acessos"
+  invalid_identifier: "Identificador Inválido"
+  to: "a"
+  history_search: "Busca"
+  history_find: "Buscar"
+  history_access: "Histórico de Acessos"
+  scores_discussions: "Acompanhamento de Foruns do Aluno"
+  scores_history_access: "Acompanhamento de Histórico de Acesso do Aluno"
+  assignment_correction_of: "Correção de"
+  error_find_ajax: "Erro ao tentar consultar. Tente novamente mais tarde."
+
+  # Mensagem de erro para permissão
+  no_permission: "Você não tem permissão para acessar esta página"
+
+  # Menu
   menu_content: Conteúdo
   menu_lesson: Aulas
   menu_support_material: Material de Apoio

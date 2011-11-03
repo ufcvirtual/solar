@@ -68,12 +68,12 @@ var changeDate = function(dateText) {
 // Obs.: esta funcao deve permanecer global
 //-----------------------------------------
 
-function showAgenda(dates_with_events){
+function showAgenda(dates_with_events) {
     // carregando eventos do dia atual
     var today = new Date();
     changeDate(today.toGMTString());
 
-    var local = '<%=I18n.locale%>';
+    var local = I18nlocale;
     var locale = $.datepicker.regional[local];
     if (local=='en')
         locale = $.datepicker.regional['en-GB'];
