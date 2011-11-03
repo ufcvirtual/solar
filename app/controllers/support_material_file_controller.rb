@@ -41,18 +41,17 @@ class SupportMaterialFileController < ApplicationController
   end
 
   def download_all_file_ziped
-    raise "Sendo implementado"
+    #raise "COLOCAR ALLOCATION TAG AQUI TAMBÉM!!!"
     authorize! :download_all_file_ziped, SupportMaterialFile
     require 'zip/zip'
 
-    lista_zips = Dir.glob('tmp/*') # lista dos arquivos .zip existentes no '/tmp'
+    lista_zips = Dir.glob('tmp/*') #lista dos arquivos .zip existentes no '/tmp'
 
     curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
-#    offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+    #offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
     group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-#    user_id = current_user.id
+    #user_id = current_user.id
 
-    #prefix_file =
     @list_files = SupportMaterialFile.search_files(3)
 
     nomes_files = @list_files.collect{|file| [file["attachment_file_name"]]}
@@ -73,9 +72,11 @@ class SupportMaterialFileController < ApplicationController
 
     if result_test == 0
       Zip::ZipFile.open("tmp/#{Digest::SHA1.hexdigest(nomes_files.to_s)}.zip", Zip::ZipFile::CREATE) { |zipfile|
-
         nomes_files.each do |zipados|
-          zipfile.add(zipados[0].to_s,"media/support_material_file/allocation_tags/"+group_id.to_s+"/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados[0].to_s+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados[0].to_s)
+            temp_zip = zipados[0].to_s
+            unless(zipados[0].nil?)
+                zipfile.add(temp_zip,"media/support_material_file/allocation_tags/"+3.to_s+"/"+SupportMaterialFile.where("attachment_file_name = "+"'"+temp_zip+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+temp_zip)
+            end
         end
       }
       result_test = 0
