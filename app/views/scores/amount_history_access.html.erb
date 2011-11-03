@@ -7,7 +7,7 @@
 <!-- atualizando datas -->
 <script type="text/javascript">
   $(function(){
-    $('#from-date').val('<%= @from_date %>');
-    $('#until-date').val('<%= @until_date %>');
+    $('#from-date').val('<%=l @from_date, :format => :datepicker %>');
+    $('#until-date').val('<%=l @until_date, :format => :datepicker %>');
   });
 </script>

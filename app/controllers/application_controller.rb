@@ -279,9 +279,6 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    # permitir apenas locales conhecidos
-#    params[:locale] = nil unless ['en-US', 'pt-BR'].include?(params[:locale])
-
     if current_user
 
       # recupera os dados de locale das configuracoes do usuario

@@ -110,10 +110,8 @@
 
 <script type="text/javascript">
   $(function(){
-
-    var local = '<%= I18n.locale %>'; // ('<%= I18n.locale %>' == 'en') ? 'en-GB' : '<%= I18n.locale %>';
-    var options = $.extend($.datepicker.regional[local]);
-    options.dateFormat = '<%=t :search_format_date %>';
+    var options = $.extend($.datepicker.regional['<%= I18n.locale %>']);
+    options.dateFormat = global_config.locale.dateFormat;
     $('#from-date, #until-date').datepicker(options);
 
     // requisicao ajax para recuperar quantidade de acessos de um usuario
@@ -121,8 +119,8 @@
 
       // verificar se as datas foram preenchidas - as duas sao obrigatorias
       $.post("/scores/amount_history_access", {
-        'from-date': new Date($('#from-date').val()),
-        'until-date': new Date($('#until-date').val()),
+        'from-date': $('#from-date').val(),
+        'until-date': $('#until-date').val(),
         'id': <%= @student.id %>
       },
       function(response){

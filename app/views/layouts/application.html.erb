@@ -6,13 +6,13 @@
     <%= stylesheet_link_tag "solar.css" %>
     <%= stylesheet_link_tag "calendar.css" %>
     <%= stylesheet_link_tag "security.css" %>
-    <%#= stylesheet_link_tag "http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,400italic|Ubuntu+Condensed" %>
-    <%#= stylesheet_link_tag "http://fonts.googleapis.com/css?family=PT+Sans|PT+Sans+Narrow:700|PT+Sans+Caption:700" %>
+<%#= stylesheet_link_tag "http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,400italic|Ubuntu+Condensed" %>
+<%#= stylesheet_link_tag "http://fonts.googleapis.com/css?family=PT+Sans|PT+Sans+Narrow:700|PT+Sans+Caption:700" %>
     <%= stylesheet_link_tag "http://fonts.googleapis.com/css?family=PT+Sans|Ubuntu:300,400,500,700|Ubuntu+Condensed" %>
-    
+
     <%= javascript_include_tag "jquery-1.4.4.js" %>
     <%= javascript_include_tag "jquery-ui-1.8.6.js" %>
-    <%= javascript_include_tag "jquery.ui.datepicker-en-GB" %>
+    <%= javascript_include_tag "jquery.ui.datepicker-en-US" %>
     <%= javascript_include_tag "jquery.ui.datepicker-pt-BR" %>
     <%= javascript_include_tag "chat.js" %>
     <%= javascript_include_tag "message.js" %>
@@ -28,7 +28,10 @@
 
     <script type="text/javascript">
       // variavel global com a configuracao do locale
-      I18nlocale = '<%=I18n.locale%>'
+      global_config = {};
+      global_config.locale = {};
+      global_config.locale.I18n = '<%=I18n.locale%>';
+      global_config.locale.dateFormat = '<%=t :search_format_date %>';
 
       jQuery(function($){
         $("#cpf").mask("999.999.999-99");
@@ -78,8 +81,8 @@
             <% end %>
             <li id="mysolar_id">
               <%= image_tag @user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{@user.nick}", :id => "image_user" %>
-              <%#*<!-- adicionar esse link depois em algum lugar -->%>
-              <%#= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
+<%#*<!-- adicionar esse link depois em algum lugar -->%>
+<%#= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
             </li>
             <li>
               <% if can? :update, @user %>
@@ -104,7 +107,7 @@
           </ul>
           <ul id="mysolar_extras">
             <li id="mysolar_search">
-              <%#*<!-- FIXME: criar script para remover o value inicial e remover a classe search_keyword_inactive -->%>
+<%#*<!-- FIXME: criar script para remover o value inicial e remover a classe search_keyword_inactive -->%>
               <input class="search_keyword search_keyword_inactive" type="text" value="Buscar" />
             </li>
             <li>
@@ -175,7 +178,7 @@
         </ul>
       </div>
 
-      <%#= render '/portlets/chat' %>
+<%#= render '/portlets/chat' %>
     </div>
   </body>
 </html>

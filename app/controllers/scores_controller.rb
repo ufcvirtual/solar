@@ -52,8 +52,8 @@ class ScoresController < ApplicationController
     curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
 
     # validar as datas
-    @from_date = Date.today << 2 unless date_valid?(@from_date)
-    @until_date = Date.today unless date_valid?(@until_date)
+    @from_date = date_valid?(@from_date) ? Date.parse(@from_date) : Date.today << 2
+    @until_date = date_valid?(@until_date) ? Date.parse(@until_date) : Date.today
 
     @amount = Score.find_amount_access_by_student_id_and_interval(curriculum_unit_id, @student_id, @from_date, @until_date)
 
