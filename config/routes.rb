@@ -24,22 +24,8 @@ Solar::Application.routes.draw do
   # roteamento para controle de acesso as midias de mensagem
   match "/media/messages/:file.:extension", :to => "access_control#message"
 
-  # roteamento para controle de acesso as midias de material de apoio
-#  match "/media/support_material_file/allocation_tags/:id/:file.:extension", :to => "access_control#support_material_file"
-
-  # redireciona para mysolar se o usuario estiver tentando acessar os dados de outros usuarios
+  # redireciona para home se o usuario estiver tentando acessar os dados de outros usuarios
   match "/users/:id", :to => "users#mysolar", :via => "get"
-
-  #####################################
-  # Melhorando a apresentacao da url
-  # Evita erro ao modificar locale
-  #####################################
-
-#  # Mapeamento breadcrumb
-#  match ":controller/:action/:id/mid/:mid/bread/:bread"#, :to => "application#breadcrumb"
-#  match ":controller/:action/:id/offers_id/:offers_id(/groups_id/:groups_id)"
-#  match ":controller/:action/:id/student_id/:student_id"
-#  match ":controller/:action/:id/assignment_id/:assignment_id(/send_assignment_id/:send_assignment_id)"
 
   # Definindo resources (mapeamento de urls para os objetos)
   resources :users, :user_sessions, :curriculum_units, :participants, :allocations, :portfolio

@@ -1,3 +1,10 @@
+# Variáveis de sessão utilizadas no sistema
+# - session[:opened_tabs]
+# - session[:active_tab]
+# - session[:return_to]
+# - session[:current_page]
+# - session[:forum_display_mode]
+
 class ApplicationController < ActionController::Base
 
   protect_from_forgery
@@ -7,19 +14,10 @@ class ApplicationController < ActionController::Base
   BreadCrumb_Second_Level = 1
   BreadCrumb_Third_Level = 2
 
-  # Variáveis de sessão utilizadas no sistema
-  #
-  #   - session[:opened_tabs]
-  #   - session[:active_tab]
-  #   - session[:return_to]
-  #   - session[:current_page]
-  #   - session[:forum_display_mode]
-  #
-
   # Mensagem de erro de permissão
   rescue_from CanCan::AccessDenied do |exception|
     flash[:error] = t(:no_permission)
-    redirect_to :controller => :home#:users, :action => :mysolar
+    redirect_to :controller => :home
   end
 
   helper_method :current_user_session, :current_user
@@ -36,15 +34,18 @@ class ApplicationController < ActionController::Base
   before_filter :define_second_level_breadcrumb, :only => [:activate_tab, :add_tab, :close_tab]
   before_filter :define_third_level_breadcrumb
 
+  ##
+  # Setando sistema para home e atualizando breadcrumb
+  ##
   def set_active_tab_to_home
     session[:active_tab] = 'Home'
-    # limpa o breadcrumb
-    clear_breadcrumb_after(BreadCrumb_First_Level)
-    #limpando menu acionado
-    session[:current_menu] = nil
+    clear_breadcrumb_after(BreadCrumb_First_Level) # limpa o breadcrumb
+    session[:current_menu] = nil # limpando menu acionado
   end
 
+  ##
   # Seta os valores para o segundo nivel de breadcrumb
+  ##
   def define_second_level_breadcrumb
 
     if params[:action] == 'close_tab'
@@ -65,7 +66,9 @@ class ApplicationController < ActionController::Base
 
   end
 
+  ##
   # O terceiro nivel eh definido quando o usuario acessa um link do menu lateral
+  ##
   def define_third_level_breadcrumb
 
     # verificando se a chamada vem do menu
@@ -84,91 +87,56 @@ class ApplicationController < ActionController::Base
 
   end
 
-  # consulta id relacionado a estudante na tabela PROFILES
+  ##
+  # Consulta id relacionado a estudante na tabela PROFILES
+  ##
   def student_profile
     prof = Profile.find_by_student(true)
-    if prof
-      return prof.id
-    else
-      return ''
-    end
+    return prof.id if prof
+    return ''
   end
 
-  # define aba ativa
+  ##
+  # Define aba ativa
+  ##
   def activate_tab
-    name = params[:name]
-    session[:active_tab] = name
-    #limpando menu acionado
-    session[:current_menu] = nil
+    session[:active_tab] = params[:name] # setando aba ativa
+    session[:current_menu] = nil # limpando menu selecionado
 
-    unless session[:opened_tabs].nil?
-      # redireciona de acordo com o tipo de aba ativa
-      if session[:opened_tabs][name]["type"] == Tab_Type_Home
-        redirect_to :controller => :users, :action => :mysolar
-      end
-      if session[:opened_tabs][name]["type"] == Tab_Type_Curriculum_Unit
-        redirect_to :controller => :curriculum_units, :action => :access, :id => session[:opened_tabs][name]["id"], :groups_id => session[:opened_tabs][name]["groups_id"], :offers_id => session[:opened_tabs][name]["offers_id"]
-      end
+    # verifica se existe array de abas ativas
+    opened_tabs = session[:opened_tabs].nil? ? nil : (session[:opened_tabs].has_key?(params[:name]) ? session[:opened_tabs][params[:name]] : nil)
 
+    unless opened_tabs.nil? or opened_tabs["type"] != Tab_Type_Curriculum_Unit
+      redirect_to :controller => :curriculum_units, :action => :access, :id => opened_tabs["id"], :groups_id => opened_tabs["groups_id"], :offers_id => opened_tabs["offers_id"]
     else
-      redirect_to :controller => :users, :action => :mysolar
+      redirect_to :controller => :home
     end
   end
 
-  # fecha aba
+  ##
+  # Fecha abas
+  ##
   def close_tab
-    name = params[:name]
+    tab_name = params[:name]
 
     # se aba que vai fechar é a ativa, manda pra aba home
-    session[:active_tab] = 'Home' if session[:active_tab] == name
+    session[:active_tab] = 'Home' if session[:active_tab] == tab_name
 
-    # remove do hash
-    session[:opened_tabs].delete(name)
-
-    type_active_tab = session[:opened_tabs][session[:active_tab]]["type"]
+    session[:opened_tabs].delete(tab_name) # remove do hash
+    active_tab = session[:opened_tabs][session[:active_tab]]
 
     # redireciona de acordo com o tipo de aba ativa
-    if type_active_tab == Tab_Type_Home
-      redirect_to :controller => :users, :action => :mysolar
-    end
-    if type_active_tab == Tab_Type_Curriculum_Unit
-      redirect_to :controller => :curriculum_units, :action => :access, :id => session[:opened_tabs][session[:active_tab]]["id"]
-    end
+    redirect_to :controller => :home if active_tab["type"] == Tab_Type_Home
+    redirect_to :controller => :curriculum_units, :action => :access, :id => active_tab["id"] if active_tab["type"] == Tab_Type_Curriculum_Unit
   end
 
-  def return_user
-    @user = User.find(current_user.id) unless current_user.nil?
-  end
-
-  # Recupera o contexto que esta sendo acessado
-  def application_context
-
-    # considera-se por default que o usuario esta acessando o Home
-    context_id = Tab_Type_Home
-
-    ##
-    # Verificar a quantidade de requisições ao servidor ao se utilizar o ctrl+f5
-    ##
-    if (params['action'] != 'mysolar' &&
-          params['controller'] != 'pages' &&
-          session.include?("opened_tabs") &&
-          session[:opened_tabs][session[:active_tab]].include?("type"))
-
-      context_id = session[:opened_tabs][session[:active_tab]]["type"]
-    end
-
-    @context = Context.find(context_id).name
-
-    # recupera o curriculum unit da sessao do usuario, com a tab ativa
-    @context_param_id = session[:opened_tabs][session[:active_tab]]["id"] if session.include?("opened_tabs") && session[:opened_tabs][session[:active_tab]].include?("id")
-
-  end
-
+  ##
   # Adiciona uma aba no canto superior da interface
+  ##
   def add_tab
 
     name_tab = params[:name]
-    type = params[:type] # tipo de aba -> Home ou Curriculum_Unit
+    type = params[:type] # Home ou Curriculum_Unit
     id = params[:id]
     groups_id = params[:groups_id]
     offers_id = params[:offers_id]
@@ -177,25 +145,18 @@ class ApplicationController < ActionController::Base
     session[:opened_tabs] = Hash.new if session[:opened_tabs].nil?
 
     # se estourou numero de abas, volta para mysolar
-    redirect = {:controller => :users, :action => :mysolar} # Tab_Type_Home
+    redirect = {:controller => :home} # Tab_Type_Home
 
     # abre abas ate um numero limitado; atualiza como ativa se aba ja existe
     if new_tab?(name_tab)
-      hash_tab = {
-        "id" => id,
-        "type" => type,
-        "groups_id" => groups_id,
-        "offers_id" => offers_id
-      }
+      hash_tab = {"id" => id, "type" => type, "groups_id" => groups_id, "offers_id" => offers_id}
 
+      # atualizando dados da sessao
       set_session_opened_tabs(name_tab, hash_tab)
 
       # redireciona de acordo com o tipo de aba
       redirect = {
-        :controller => :curriculum_units,
-        :action => :access,
-        :id => id, :groups_id => groups_id,
-        :offers_id => offers_id
+        :controller => :curriculum_units, :action => :access, :id => id, :groups_id => groups_id, :offers_id => offers_id
       } if type == Tab_Type_Curriculum_Unit
 
     end
@@ -204,7 +165,34 @@ class ApplicationController < ActionController::Base
 
   end
 
+  ##
+  # Retorna (object)usuario logado
+  ##
+  def return_user
+    @user = User.find(current_user.id) unless current_user.nil?
+  end
+
+  ##
+  # Recupera o contexto que esta sendo acessado
+  ##
+  def application_context
+    # considera-se por default que o usuario esta acessando o Home
+    context_id = Tab_Type_Home
+    active_tab = session.include?("opened_tabs") ? session[:opened_tabs][session[:active_tab]] : []
+
+    if (params['action'] != 'mysolar' && params['controller'] != 'pages' && session.include?("opened_tabs") && active_tab.include?("type"))
+      context_id = active_tab["type"]
+    end
+
+    @context = Context.find(context_id).name
+
+    # recupera o curriculum unit da sessao do usuario, com a tab ativa
+    @context_param_id = active_tab["id"] if session.include?("opened_tabs") && active_tab.include?("id")
+  end
+
+  ##
   # Seta o valor do menu corrente
+  ##
   def current_menu
     session[:current_menu] = params[:mid] if params.include?('mid')
   end
@@ -216,19 +204,24 @@ class ApplicationController < ActionController::Base
     session[:breadcrumb] = session[:breadcrumb].first(level+1) unless session[:breadcrumb].nil?
   end
 
-  # Verifica se será necessário criar uma nova aba ou se ja existe uma aba aberta
-  # com o mesmo nome passado como parametro
+  ##
+  # Verifica se existe uma aba criada com o nome passado
+  ##
   def new_tab?(name_tab)
     return (session[:opened_tabs].length < Max_Tabs_Open.to_i) || (session[:opened_tabs].has_key?(name_tab))
   end
 
-  # atualiza a sessao com as abas abertas e ativas
+  ##
+  # Atualiza a sessao com as abas abertas e ativas
+  ##
   def set_session_opened_tabs(name_tab, hash_tab)
     session[:opened_tabs][name_tab] = hash_tab
     session[:active_tab] = name_tab
   end
 
-  # grava log de acesso a unidade curricular
+  ##
+  # Grava log de acesso a unidade curricular
+  ##
   def log_access
     Log.create(:log_type => Log::TYPE[:course_access], :user_id => current_user.id, :curriculum_unit_id => params[:id]) if (params[:type] == Tab_Type_Curriculum_Unit)
   end
