@@ -11,7 +11,7 @@
       <tbody>
         <% @students.each_with_index do |student, idx| %>
           <tr class="lines">
-            <td><%=link_to student["name"], {:controller => :scores, :action => :show, :student_id => student["id"]}, {:class => 'link_content'} %></td>
+            <td><%=link_to student["name"], score_path(student[:id]), {:class => 'link_content'} %></td>
           </tr>
         <% end %>
       </tbody>

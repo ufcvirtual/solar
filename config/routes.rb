@@ -29,14 +29,13 @@ Solar::Application.routes.draw do
 
   # Definindo resources (mapeamento de urls para os objetos)
   resources :users, :user_sessions, :curriculum_units, :participants, :allocations, :portfolio
+  resources :scores
+
+  match "scores/:id/history_access" => "scores#history_access"
 
   match 'login' => "user_sessions#new", :as => :login
   match 'logout' => "user_sessions#destroy", :as => :logout
   match 'home' => "users#mysolar", :as => :home
-
-  # You can have the root of your site routed with "root"
-  # just remember to delete public/index.html.
-  # root :to => "welcome#index"
 
   # See how all your routes lay out with "rake routes"
 

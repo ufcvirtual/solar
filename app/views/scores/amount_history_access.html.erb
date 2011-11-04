@@ -1,5 +1,5 @@
 <% if @amount.to_i > 0 %>
-  <%= link_to @amount, {:controller => :scores, :action => :history_access, :student_id => @student_id}, :class => 'content' %>
+  <%= link_to @amount, {:controller => :scores, :action => :history_access, :id => @student_id}, :class => 'link_content' %>
 <% else %>
   <%= @amount %>
 <% end %>

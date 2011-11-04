@@ -96,7 +96,7 @@
     <div id="history-body">
       <span id="history-body-label"><%=t :amount_access %>:</span>
       <span id="history-body-value">
-        <%= link_to @amount, {:controller => :scores, :action => :history_access, :student_id => @student.id}, :class => 'link_content' %>
+        <%= link_to @amount, {:controller => :scores, :action => :history_access, :id => @student.id}, :class => 'link_content' %>
       </span>
     </div>
   </div>
