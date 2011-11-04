@@ -14,27 +14,21 @@ class SchedulesController < ApplicationController
 
   end
 
+  ##
+  # Exibição de links da agenda
+  ##
   def show
+    @link, user_id, date = true, current_user.id, Date.parse(params[:date])
 
-    # verifica se exibe o link para visualizar a agenda completa
-    @link = true
-    user_id = current_user.id
-    date = params[:date]
     period = true
+    offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
 
-    # requisicao vinda do mysolar
-    unless params[:list_all_schedule].nil?
-      @link = false
-      @schedule = Schedule.all_by_offer_id_and_group_id_and_user_id(nil, nil, user_id, period, date)
-    else
-      offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
-      group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-      # tem q considerar a data q tu passou
-      @schedule = Schedule.all_by_offer_id_and_group_id_and_user_id(offer_id, group_id, user_id, period, date)
-    end
+    # apresentacao dos links de todas as schedules
+    @link, offer_id, group_id = false, nil, nil unless params[:list_all_schedule].nil?
+    @schedule = Schedule.all_by_offer_id_and_group_id_and_user_id(offer_id, group_id, user_id, period, date)
 
     render :layout => false
-
   end
 
 end
