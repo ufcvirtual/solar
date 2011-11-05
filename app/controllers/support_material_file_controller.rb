@@ -4,7 +4,6 @@ class SupportMaterialFileController < ApplicationController
   before_filter :prepare_for_group_selection, :only => [:list]
 
   def list
-
     authorize! :list, SupportMaterialFile
 
     #    offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
