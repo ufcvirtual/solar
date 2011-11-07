@@ -44,25 +44,22 @@ class SupportMaterialFileController < ApplicationController
     authorize! :download_all_file_ziped, SupportMaterialFile
     require 'zip/zip'
 
-    lista_zips = Dir.glob('tmp/*') #lista dos arquivos .zip existentes no '/tmp'
-
+    # Parâmetros de entrada pela página
     curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
-    #offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+    redirect_error = {:action => 'list', :id => curriculum_unit_id}
     group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-    #user_id = current_user.id
 
-    @list_files = SupportMaterialFile.search_files(3)
-
-    nomes_files = @list_files.collect{|file| [file["attachment_file_name"]]}
-    #path_files = "#{::Rails.root.to_s}/media/support_material_file/allocation_tags/"+@list_files.collect{|file| [file["allocation_tag_id"]]}.to_s + @list_files.collect{|file| [file["attachment_file_name"]]}.to_s
-
+    # Consultas pela tabela
+    nomes_files = SupportMaterialFile.search_files(3).collect{|file| [file["attachment_file_name"]]}
+    lista_zips = Dir.glob('tmp/*') #lista dos arquivos .zip existentes no '/tmp'
+    
     # nome do pacote que será criado
-    zip_in_test = Digest::SHA1.hexdigest(nomes_files.to_s)+".zip"
+    zip_in_test = "tmp/"+Digest::SHA1.hexdigest(nomes_files.to_s)+".zip"
 
     result_test = 0
 
     lista_zips.each do |file_test|
-      if file_test != "tmp/"+zip_in_test # se não houver zip, na pasta 'tmp/' de mesmo conteúdo, então criasse o .zip
+      if file_test != zip_in_test # se não houver zip, na pasta 'tmp/' de mesmo conteúdo, então criasse o .zip
         result_test = result_test + 0
       else
         result_test = 1
@@ -72,24 +69,19 @@ class SupportMaterialFileController < ApplicationController
     if result_test == 0
       Zip::ZipFile.open("tmp/#{Digest::SHA1.hexdigest(nomes_files.to_s)}.zip", Zip::ZipFile::CREATE) { |zipfile|
         nomes_files.each do |zipados|
-            temp_zip = zipados[0].to_s
+            zipados = zipados[0].to_s
             unless(zipados[0].nil?)
-                zipfile.add(temp_zip,"media/support_material_file/allocation_tags/"+3.to_s+"/"+SupportMaterialFile.where("attachment_file_name = "+"'"+temp_zip+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+temp_zip)
+                zipfile.add(zipados,"media/support_material_file/allocation_tags/"+3.to_s+"/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados)
             end
         end
       }
       result_test = 0
     end
 
-    redirect_error = {:action => 'list', :id => curriculum_unit_id}
-
     # recupera arquivo
 
     zip_name = Zip::ZipFile.open(Digest::SHA1.hexdigest(nomes_files.to_s)+".zip", Zip::ZipFile::CREATE).to_s
     path_zip = "#{::Rails.root.to_s}/tmp/"
-
-    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
-    redirect_error = {:action => 'list', :id => curriculum_unit_id}
 
     # download do zip
     download_file(redirect_error, path_zip, zip_name)
@@ -103,23 +95,19 @@ class SupportMaterialFileController < ApplicationController
         lista_zips = Dir.glob('tmp/*') #lista dos arquivos .zip existentes no '/tmp'
 
         curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
-        #offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+        redirect_error = {:action => 'list', :id => curriculum_unit_id}
         group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-        #user_id = current_user.id
         folder = params[:folder]
-
-        @list_files = SupportMaterialFile.search_files(3)
         
-        #path_files = "#{::Rails.root.to_s}/media/support_material_file/allocation_tags/"+@list_files.collect{|file| [file["allocation_tag_id"]]}.to_s + @list_files.collect{|file| [file["attachment_file_name"]]}.to_s
         nomes_files = SupportMaterialFile.where("allocation_tag_id = ? and folder = ?", 3, folder).collect{|file| [file["attachment_file_name"]]}
         
         # nome do pacote que será criado
-        zip_in_test = Digest::SHA1.hexdigest(nomes_files.to_s)+".zip"
+        zip_in_test = "tmp/"+Digest::SHA1.hexdigest(nomes_files.to_s)+".zip"
 
         result_test = 0
 
         lista_zips.each do |file_test|
-          if file_test != "tmp/"+zip_in_test # se não houver zip, na pasta 'tmp/' de mesmo conteúdo, então criasse o .zip
+          if file_test != zip_in_test # se não houver zip, na pasta 'tmp/' de mesmo conteúdo, então criasse o .zip
             result_test = result_test + 0
           else
             result_test = 1
@@ -129,9 +117,9 @@ class SupportMaterialFileController < ApplicationController
             if result_test == 0
           Zip::ZipFile.open("tmp/#{Digest::SHA1.hexdigest(nomes_files.to_s)}.zip", Zip::ZipFile::CREATE) { |zipfile|
             nomes_files.each do |zipados|
-                temp_zip = zipados[0].to_s
+                zipados = zipados[0].to_s
                 unless(zipados[0].nil?)
-                    zipfile.add(temp_zip,"media/support_material_file/allocation_tags/"+3.to_s+"/"+SupportMaterialFile.where("attachment_file_name = "+"'"+temp_zip+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+temp_zip)
+                    zipfile.add(zipados,"media/support_material_file/allocation_tags/"+3.to_s+"/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados)
                 end
             end
           }
@@ -144,9 +132,6 @@ class SupportMaterialFileController < ApplicationController
 
         zip_name = Zip::ZipFile.open(Digest::SHA1.hexdigest(nomes_files.to_s)+".zip", Zip::ZipFile::CREATE).to_s
         path_zip = "#{::Rails.root.to_s}/tmp/"
-
-        curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
-        redirect_error = {:action => 'list', :id => curriculum_unit_id}
 
         # download do zip
         download_file(redirect_error, path_zip, zip_name)
