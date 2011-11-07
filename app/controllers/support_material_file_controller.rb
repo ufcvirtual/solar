@@ -59,10 +59,9 @@ class SupportMaterialFileController < ApplicationController
     result_test = 0
 
     lista_zips.each do |file_test|
-      if file_test != zip_in_test # se não houver zip, na pasta 'tmp/' de mesmo conteúdo, então criasse o .zip
-        result_test = result_test + 0
-      else
+      if file_test == zip_in_test # se não houver zip, na pasta 'tmp/' de mesmo conteúdo, então criasse o .zip
         result_test = 1
+        break
       end
     end
 
@@ -107,10 +106,9 @@ class SupportMaterialFileController < ApplicationController
         result_test = 0
 
         lista_zips.each do |file_test|
-          if file_test != zip_in_test # se não houver zip, na pasta 'tmp/' de mesmo conteúdo, então criasse o .zip
-            result_test = result_test + 0
-          else
+          if file_test == zip_in_test # se não houver zip, na pasta 'tmp/' de mesmo conteúdo, então criasse o .zip
             result_test = 1
+            break
           end
         end
         
@@ -125,8 +123,6 @@ class SupportMaterialFileController < ApplicationController
           }
           result_test = 0
         end
-
-        redirect_error = {:action => 'list', :id => curriculum_unit_id}
 
         # recupera arquivo
 
