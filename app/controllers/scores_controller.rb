@@ -12,9 +12,8 @@ class ScoresController < ApplicationController
 
     # recupera turma selecionada
     group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-
-    student_id = params[:id] || current_user.id
     curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+    student_id = params[:id] || current_user.id
 
     begin
 
@@ -28,7 +27,6 @@ class ScoresController < ApplicationController
       raise :invalid_identifier unless Profile.student?(student_id)
 
       @student = student
-
       @activities = PortfolioTeacher.list_assignments_by_group_and_student_id(group_id, student_id)
       @discussions = Discussion.all_by_group_id_and_student_id(group_id, student_id)
 

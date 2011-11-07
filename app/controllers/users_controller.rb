@@ -158,7 +158,6 @@ class UsersController < ApplicationController
     set_active_tab_to_home
     @user = User.find(user_id) if current_user
 
-
     ######
     # Portlet do calendario
     # destacando dias que possuem eventos

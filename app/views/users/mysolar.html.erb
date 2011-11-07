@@ -2,3 +2,10 @@
   <%= render '/portlets/curricular_unit'%>
   <%= render '/portlets/calendar' %>
 </div>
+
+<div id="block_locale">
+  <ul>
+    <li><%= link_to "English", url_for(:locale => 'en-US') %></li>
+    <li><%= link_to "Português(BR)", url_for(:locale => 'pt-BR') %></li>
+  </ul>
+</div>

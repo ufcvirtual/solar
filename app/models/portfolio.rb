@@ -4,7 +4,9 @@ class Portfolio < ActiveRecord::Base
 
   belongs_to :schedule
 
-  # atividades individuais
+  ##
+  # Atividades individuais
+  ##
   def self.individual_activities(group_id, students_id)
 
     ia = ActiveRecord::Base.connection.select_all <<SQL
@@ -41,7 +43,9 @@ SQL
 
   end
 
-  # arquivos da area publica
+  ##
+  # Arquivos da area publica
+  ##
   def self.public_area(group_id, user_id)
 
     pa = ActiveRecord::Base.connection.select_all <<SQL
@@ -61,7 +65,9 @@ SQL
 
   end
 
-  # informacoes sobre a atividade do aluno
+  ##
+  # Informacoes sobre a atividade do aluno
+  ##
   def self.assignments_student(student_id, assignment_id)
     SendAssignment.
       joins("LEFT JOIN assignment_files ON assignment_files.send_assignment_id = send_assignments.id").

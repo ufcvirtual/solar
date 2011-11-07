@@ -13,7 +13,7 @@ resources_arr = [
 	{:id => 9, :controller => 'groups', :action => 'show', :description => 'Visualizar turmas'},
 	{:id => 10, :controller => 'groups', :action => 'update', :description => 'Editar turmas'},
 
-  {:id => 11, :controller => 'curriculum_units', :action => 'access', :description => 'Acessar Unidade Curricular'},
+  {:id => 11, :controller => 'curriculum_units', :action => 'show', :description => 'Acessar Unidade Curricular'},
   {:id => 12, :controller => 'curriculum_units', :action => 'participants', :description => 'Listar participantes de uma Unidade Curricular'},
   {:id => 13, :controller => 'curriculum_units', :action => 'informations', :description => 'Listar informacoes de uma Unidade Curricular'},
 

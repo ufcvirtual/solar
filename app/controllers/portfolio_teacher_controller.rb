@@ -4,7 +4,9 @@ class PortfolioTeacherController < ApplicationController
 
   before_filter :require_user
 
-  # lista de portfolio dos alunos de uma turma
+  ##
+  # Lista de portfolio dos alunos de uma turma
+  ##
   def list
 
     authorize! :list, PortfolioTeacher
@@ -18,7 +20,9 @@ class PortfolioTeacherController < ApplicationController
 
   end
 
+  ##
   # Detalha o portfolio do aluno para a turma em questao
+  ##
   def student_detail
 
     authorize! :student_detail, PortfolioTeacher
@@ -60,7 +64,9 @@ class PortfolioTeacherController < ApplicationController
 
   end
 
-  # atualiza comentarios do professor
+  ##
+  # Atualiza comentarios do professor
+  ##
   def update_comment
 
     authorize! :update_comment, PortfolioTeacher
@@ -154,7 +160,9 @@ class PortfolioTeacherController < ApplicationController
   # FILES
   #####################
 
-  # deleta arquivos enviados
+  ##
+  # Deleta arquivos enviados
+  ##
   def delete_file
 
     authorize! :delete_file, PortfolioTeacher
@@ -198,7 +206,9 @@ class PortfolioTeacherController < ApplicationController
     end
   end
 
-  # upload de arquivos para o comentario
+  ##
+  # Upload de arquivos para o comentario
+  ##
   def upload_files
 
     authorize! :upload_files, PortfolioTeacher
@@ -264,7 +274,9 @@ class PortfolioTeacherController < ApplicationController
     end
   end
 
-  # download de arquivos
+  ##
+  # Download de arquivos
+  ##
   def download_files_student
 
     authorize! :download_files_student, PortfolioTeacher

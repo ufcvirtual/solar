@@ -2,7 +2,9 @@ class PortfolioTeacher < ActiveRecord::Base
 
   set_table_name "assignment_comments"
 
-  # lista de alunos por turma
+  ##
+  # Alunos por turma
+  ##
   def self.list_students_by_group_id(group_id)
     User.joins(:allocations => [{:allocation_tag => [:group, :assignments]}, :profile]).
       select("DISTINCT users.id, users.name").
@@ -10,7 +12,9 @@ class PortfolioTeacher < ActiveRecord::Base
       order("users.name")
   end
 
-  # lista com as atividades do aluno dentro na turma
+  ##
+  # Atividades do aluno na turma
+  ##
   def self.list_assignments_by_group_and_student_id(group_id, student_id)
     assignments = ActiveRecord::Base.connection.select_all <<SQL
       SELECT DISTINCT
@@ -22,9 +26,10 @@ class PortfolioTeacher < ActiveRecord::Base
              t3.id AS send_assignment_id,
              CASE
                 WHEN t5.start_date > now() THEN 'not_started'
-                WHEN t3.grade IS NOT NULL THEN 'corrected'
+                WHEN t3.grade IS NOT NULL AND COUNT(t4.id) > 0 THEN 'corrected'
                 WHEN COUNT(t4.id) > 0 THEN 'sent'
                 WHEN COUNT(t4.id) = 0 AND t5.end_date > now() THEN 'pending'
+                WHEN COUNT(t4.id) = 0 AND t5.end_date < now() THEN 'not_sent'
                 ELSE '-'
              END AS situation
         FROM assignments      AS t1

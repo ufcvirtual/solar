@@ -5,53 +5,43 @@ class CurriculumUnitsController < ApplicationController
   include DiscussionPostsHelper
   include MessagesHelper
 
-  before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy, :access]
-  before_filter :prepare_for_group_selection, :only => [:access, :participants, :informations]
-  #before_filter :curriculum_data, :only => [:access, :informations, :participants]
+  before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy, :show]
+  before_filter :prepare_for_group_selection, :only => [:show, :participants, :informations]
+  #before_filter :curriculum_data, :only => [:show, :informations, :participants]
 
-  load_and_authorize_resource
+  #  load_and_authorize_resource
 
-  def index
-    #if current_user
-    #  @user = CurriculumUnit.find(current_user.id)
-    #end
-    #render :action => :mysolar
-
-    #respond_to do |format|
-    #  format.html # index.html.erb
-    #  format.xml  { render :xml => @users }
-    #end
-  end
-
+  ##
+  # Apresentacao de todas as informacoes relevantes para o usuario
+  ##
   def show
-    respond_to do |format|
-      format.html
-      format.xml  { render :xml => @curriculum_unit }
-    end
-  end
 
-  def new
-    respond_to do |format|
-      format.html
-      format.xml  { render :xml => @curriculum_unit }
-    end
-  end
+    curriculum_data
 
-  def edit
-  end
+    # recuperando informações da sessao
+    active_tab = session[:opened_tabs][session[:active_tab]]
 
-  def create
-    respond_to do |format|
-      format.html
-      format.xml  { render :xml => @curriculum_unit }
-    end
-  end
+    group_id, offer_id, curriculum_unit_id = active_tab["groups_id"], active_tab["offers_id"], active_tab["id"]
+    user_id = current_user.id
 
-  def update
-    respond_to do |format|
-      format.html
-      format.xml  { render :xml => @curriculum_unit }
-    end
+    message_tag = nil
+    message_tag = get_label_name(curriculum_unit_id, offer_id, group_id) unless active_tab["type"] == Tab_Type_Home
+
+    # retorna aulas, posts nos foruns e mensagens relacionados a UC mais atuais
+    @lessons = return_lessons_to_open(offer_id, group_id)
+    @discussion_posts = list_portlet_discussion_posts(offer_id, group_id)
+    @messages = return_messages(current_user.id, 'portlet', message_tag)
+    
+    session[:lessons] = @lessons
+
+    # destacando dias que possuem eventos
+    schedules_events = Schedule.all_by_offer_id_and_group_id_and_user_id(offer_id, group_id || nil, user_id)
+    schedules_events_dates = schedules_events.collect { |schedule_event|
+      [schedule_event['start_date'], schedule_event['end_date']]
+    }
+
+    @scheduled_events = schedules_events_dates.flatten.uniq
+
   end
 
   def destroy
@@ -61,36 +51,6 @@ class CurriculumUnitsController < ApplicationController
       format.html #{ redirect_to(users_url, :notice => 'Usuario excluido com sucesso!') }
       format.xml  { head :ok }
     end
-  end
-
-  def access
-    curriculum_data
-
-    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-    offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
-    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
-    user_id = current_user.id
-
-    # pegando dados da sessao e nao da url
-    message_tag = nil
-    message_tag = get_label_name(curriculum_unit_id, offer_id, group_id) if session[:opened_tabs][session[:active_tab]]["type"] != Tab_Type_Home
-
-    # retorna aulas, posts nos foruns e mensagens relacionados a UC mais atuais
-    @lessons = return_lessons_to_open(offer_id, group_id)
-    @discussion_posts = list_portlet_discussion_posts(offer_id, group_id)
-    @messages = return_messages(current_user.id, 'portlet', message_tag)
-    session[:lessons] = @lessons
-
-    ######
-    # destacando dias que possuem eventos
-    ######
-    schedules_events = Schedule.all_by_offer_id_and_group_id_and_user_id(offer_id, group_id, user_id)
-    schedules_events_dates = schedules_events.collect { |schedule_event|
-      [schedule_event['start_date'], schedule_event['end_date']]
-    }
-
-    @scheduled_events = schedules_events_dates.flatten.uniq
-
   end
 
   def informations

@@ -2,7 +2,9 @@ class Score < ActiveRecord::Base
 
   set_table_name "assignment_comments"
 
+  ##
   # Recupera a quantidade de acessos de um usuario em uma unidade curricular
+  ##
   def self.find_amount_access_by_student_id_and_interval(curriculum_unit_id, student_id, from_date, until_date)
     amount = ActiveRecord::Base.connection.select_all <<SQL
     SELECT COUNT(id) AS cnt_access
@@ -16,8 +18,9 @@ SQL
     return amount.first['cnt_access']
   end
 
-
+  ##
   # Recupera historico de acessos
+  ##
   def self.history_student_id_and_interval(curriculum_unit_id, student_id, from_date, until_date)
     history = ActiveRecord::Base.connection.select_all <<SQL
    SELECT t2.name               AS curriculum_unit_name,

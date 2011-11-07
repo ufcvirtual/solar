@@ -6,12 +6,15 @@ class Schedule < ActiveRecord::Base
   has_many :portfolio
   has_many :assignment
 
+  ##
+  # Todas as schedules por oferta, groupo e usuario
+  ##
   def self.all_by_offer_id_and_group_id_and_user_id(offer_id, group_id, user_id, period = false, date_search = nil)
 
     date_search_option, limit, list_all_schedules = '', '', ''
     limit = 'LIMIT 2' if period
-    list_all_schedules = " WHERE (t3.group_id = #{group_id} OR t3.offer_id = #{offer_id})" unless group_id.nil? && offer_id.nil?
-    date_search_option = "AND (t2.start_date = current_date OR t2.end_date = current_date)" if date_search.nil? && period
+    list_all_schedules = " WHERE (t3.group_id = #{group_id} OR t3.offer_id = #{offer_id})" unless group_id.nil? and offer_id.nil?
+    date_search_option = "AND (t2.start_date = current_date OR t2.end_date = current_date)" if date_search.nil? and period
     date_search_option = "AND (t2.start_date = '#{date_search}' OR t2.end_date = '#{date_search}')" unless date_search.nil?
 
     ActiveRecord::Base.connection.select_all <<SQL

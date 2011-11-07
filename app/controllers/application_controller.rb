@@ -101,13 +101,13 @@ class ApplicationController < ActionController::Base
   ##
   def activate_tab
     session[:active_tab] = params[:name] # setando aba ativa
-    session[:current_menu] = nil # limpando menu selecionado
+    session[:current_menu] = nil # removendo menu selecionado
 
     # verifica se existe array de abas ativas
     opened_tabs = session[:opened_tabs].nil? ? nil : (session[:opened_tabs].has_key?(params[:name]) ? session[:opened_tabs][params[:name]] : nil)
 
     unless opened_tabs.nil? or opened_tabs["type"] != Tab_Type_Curriculum_Unit
-      redirect_to :controller => :curriculum_units, :action => :access, :id => opened_tabs["id"], :groups_id => opened_tabs["groups_id"], :offers_id => opened_tabs["offers_id"]
+      redirect_to :controller => :curriculum_units, :action => :show, :id => opened_tabs["id"] #, :groups_id => opened_tabs["groups_id"], :offers_id => opened_tabs["offers_id"]
     else
       redirect_to :controller => :home
     end
@@ -127,7 +127,7 @@ class ApplicationController < ActionController::Base
 
     # redireciona de acordo com o tipo de aba ativa
     redirect_to :controller => :home if active_tab["type"] == Tab_Type_Home
-    redirect_to :controller => :curriculum_units, :action => :access, :id => active_tab["id"] if active_tab["type"] == Tab_Type_Curriculum_Unit
+    redirect_to :controller => :curriculum_units, :action => :show, :id => active_tab["id"] if active_tab["type"] == Tab_Type_Curriculum_Unit
   end
 
   ##
@@ -135,11 +135,8 @@ class ApplicationController < ActionController::Base
   ##
   def add_tab
 
-    name_tab = params[:name]
-    type = params[:type] # Home ou Curriculum_Unit
-    id = params[:id]
-    groups_id = params[:groups_id]
-    offers_id = params[:offers_id]
+    name_tab, type = params[:name], params[:type] # Home ou Curriculum_Unit
+    groups_id, offers_id, id = params[:groups_id], params[:offers_id], params[:id]
 
     # se hash nao existe, cria
     session[:opened_tabs] = Hash.new if session[:opened_tabs].nil?
@@ -156,7 +153,7 @@ class ApplicationController < ActionController::Base
 
       # redireciona de acordo com o tipo de aba
       redirect = {
-        :controller => :curriculum_units, :action => :access, :id => id, :groups_id => groups_id, :offers_id => offers_id
+        :controller => :curriculum_units, :action => :show, :id => id, :groups_id => groups_id, :offers_id => offers_id
       } if type == Tab_Type_Curriculum_Unit
 
     end
