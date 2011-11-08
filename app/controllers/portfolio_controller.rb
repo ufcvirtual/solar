@@ -1,16 +1,12 @@
-################################################################################
-# obs: o controle de acesso é feito individualmente em cada action por se tratar
-# de um controller fora dos padroes
-################################################################################
-
-include FilesHelper
-
 class PortfolioController < ApplicationController
+  include FilesHelper
 
   before_filter :require_user
   before_filter :prepare_for_group_selection, :only => [:list]
 
+  ##
   # Lista as atividades
+  ##
   def list
 
     authorize! :list, Portfolio
@@ -25,7 +21,9 @@ class PortfolioController < ApplicationController
 
   end
 
-  # Recupera as informacoes de uma atividade - lista arquivos enviados e opcao para enviar arquivos
+  ##
+  # Detalhes de uma atividade e arquivos da area publica
+  ##
   def activity_details
 
     authorize! :activity_details, Portfolio
@@ -78,17 +76,15 @@ class PortfolioController < ApplicationController
 
   end
 
+  ##
   # Delecao de arquivos da area individual
+  ##
   def delete_file_individual_area
 
     authorize! :delete_file_individual_area, Portfolio
 
     assignment_id = params[:assignment_id]
-    redirect = {
-      :controller => :portfolio,
-      :action => :activity_details,
-      :id => assignment_id
-    }
+    redirect = {:controller => :portfolio, :action => :activity_details, :id => assignment_id}
 
     respond_to do |format|
 
@@ -126,61 +122,30 @@ class PortfolioController < ApplicationController
         end
 
       rescue Exception
-
         flash[:error] = t(:error_delete_file)
-        format.html { redirect_to(redirect) }
-
+        format.html {redirect_to(redirect)}
       end
 
     end
   end
 
+  ##
   # Download dos arquivos do comentario do professor
+  ##
   def download_file_comment
-
     authorize! :download_file_comment, Portfolio
 
-    comment_file_id = params[:id]
-
-    begin
-      file_ = CommentFile.find(comment_file_id)
-
-      assignment_comment_id = file_.assignment_comment_id
-      filename = file_.attachment_file_name
-
-      prefix_file = file_.id # id da tabela comment_file para diferenciar os arquivos
-      path_file = "#{::Rails.root.to_s}/media/portfolio/comments/"
-
-      # id da atividade
-      send_assignment = SendAssignment.joins(:assignment_comments).where(["assignment_comments.id = ?", assignment_comment_id])
-
-      # verifica se foi encontrado algum registro
-      if send_assignment.length > 0
-        assignment_id = send_assignment.first.assignment_id
-        redirect_error = {:action => :activity_details, :id => assignment_id}
-      else
-
-        curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
-        # redireciona para a pagina de listagem de atividades
-        redirect_error = {:action => :list, :id => curriculum_unit_id}
-
-      end
-
-      # recupera arquivo
-      download_file(redirect_error, path_file, filename, prefix_file)
-
-    rescue
-      flash[:error] = flash[:error] = t(:error_nonexistent_file)
-      redirect_to({:controller => :users, :action => :mysolar})
-    end
-
+    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+    download_file({:action => :list, :id => curriculum_unit_id}, CommentFile.find(params[:id]).attachment.path)
   end
 
   ##################
   #  AREA PUBLICA
   ##################
 
+  ##
   # Envio de arquivos para a area publica
+  ##
   def upload_files_public_area
 
     authorize! :upload_files_public_area, Portfolio
@@ -243,7 +208,7 @@ class PortfolioController < ApplicationController
 
           flash[:success] = t(:file_deleted)
           format.html { redirect_to(redirect) }
-          
+
         else
           raise t(:error_delete_file) unless error == 0
         end
@@ -258,26 +223,19 @@ class PortfolioController < ApplicationController
 
   # Download dos arquivos da area publica
   def download_file_public_area
-
     authorize! :download_file_public_area, Portfolio
 
-    filename = PublicFile.find(params[:id]).attachment_file_name
-    prefix_file = params[:id]
-    path_file = "#{::Rails.root.to_s}/media/portfolio/public_area/"
-
     curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
-    redirect_error = {:action => 'list', :id => curriculum_unit_id}
-
-    # recupera arquivo
-    download_file(redirect_error, path_file, filename, prefix_file)
-
+    download_file({:action => 'list', :id => curriculum_unit_id}, PublicFile.find(params[:id]).attachment.path)
   end
 
   ####################
   #  AREA INDIVIDUAL
   ####################
 
-  # Evio de arquivos como resposta para a atividade
+  ##
+  # Envio de arquivos como resposta para a atividade
+  ##
   def upload_files_individual_area
 
     authorize! :upload_files_individual_area, Portfolio
@@ -331,30 +289,15 @@ class PortfolioController < ApplicationController
     end
   end
 
+  ##
   # Download dos arquivos da area individual
+  ##
   def download_file_individual_area
-
     authorize! :download_file_individual_area, Portfolio
 
-    begin
-      filename = AssignmentFile.find(params[:id]).attachment_file_name
-      prefix_file = params[:id]
-      path_file = "#{::Rails.root.to_s}/media/portfolio/individual_area/"
-
-      # id da atividade
-      id = SendAssignment.find(AssignmentFile.find(params[:id]).send_assignment_id).assignment_id
-
-      # modificar id
-      redirect_error = {:action => 'activity_details', :id => id}
-
-      # recupera arquivo
-      download_file(redirect_error, path_file, filename, prefix_file)
-
-    rescue
-      flash[:error] = flash[:error] = t(:error_nonexistent_file)
-      redirect_to({:controller => :users, :action => :mysolar})
-    end
-
+    # id da atividade
+    id = SendAssignment.find(AssignmentFile.find(params[:id]).send_assignment_id).assignment_id
+    download_file({:action => 'activity_details', :id => id}, AssignmentFile.find(params[:id]).attachment.path)
   end
 
   ###################

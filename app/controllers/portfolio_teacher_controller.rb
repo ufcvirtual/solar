@@ -1,6 +1,6 @@
-include FilesHelper
-
 class PortfolioTeacherController < ApplicationController
+
+  include FilesHelper
 
   before_filter :require_user
 
@@ -278,35 +278,10 @@ class PortfolioTeacherController < ApplicationController
   # Download de arquivos
   ##
   def download_files_student
-
     authorize! :download_files_student, PortfolioTeacher
 
     redirect_error = {:action => :student_detail, :id => params[:students_id], :send_assignment_id => params[:send_assignment_id]}
-
-    begin
-
-      assignment_file_id = params[:id]
-
-      file_ = AssignmentFile.find(assignment_file_id)
-      filename = file_.attachment_file_name
-
-      path_file = "#{::Rails.root.to_s}/media/portfolio/individual_area/"
-
-      # id da atividade
-      id = SendAssignment.find(file_.send_assignment_id).assignment_id
-
-      # recupera arquivo
-      download_file(redirect_error, path_file, filename, assignment_file_id)
-
-    rescue
-
-      respond_to do |format|
-        flash[:success] = t(:error_nonexistent_file)
-        format.html { redirect_to(redirect_error) }
-      end
-
-    end
-
+    download_file(redirect_error, AssignmentFile.find(params[:id]).attachment.path)
   end
 
 end

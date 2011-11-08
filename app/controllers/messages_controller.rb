@@ -5,7 +5,7 @@ class MessagesController < ApplicationController
   include MessagesHelper
   include CurriculumUnitsHelper
   include MysolarHelper
-  
+
   before_filter :prepare_for_group_selection, :only => [:index]
   before_filter :require_user
   before_filter :message_data
@@ -53,7 +53,7 @@ class MessagesController < ApplicationController
       get_message_data(@original_message_id)
 
       @subject = @message.subject
-      
+
       # remetente
       sender = get_sender(@original_message_id)
 
@@ -86,13 +86,13 @@ class MessagesController < ApplicationController
         if target.empty?
           @subject = t(:message_subject_route) << @subject
         else
-          # respondendo          
+          # respondendo
           @subject = t(:message_subject_reply) << @subject
-          
+
           # so adiciona usuarios diferentes do logado (nao manda msg pra si, a menos q escolhar abertamente depois)
           @target = sender.email << ', ' unless sender.id == current_user.id
           @target_html = "<span onclick='$(this).remove()' class='message_recipient_box' >#{@target}</span>" unless sender.id == current_user.id
-          
+
           # destinatarios
           if target == 'all'
             @target = @target << all_recipients
@@ -113,7 +113,7 @@ class MessagesController < ApplicationController
     end
     @search_text = params[:search].nil? ? "" : params[:search]
   end
-  
+
   # na verdade, muda status para apagado - pode receber um id ou varios separados por $
   def destroy
     id = params[:id]
@@ -183,7 +183,7 @@ class MessagesController < ApplicationController
       redirect_to :action => 'show', :id => id, :search => search_text
     else
       redirect_to :action => 'index', :type => type, :search => search_text
-    end    
+    end
   end
 
   def send_message
@@ -206,10 +206,10 @@ class MessagesController < ApplicationController
 
       update_tab_values
       label_name = get_label_name(@curriculum_unit_id, @offer_id, @group_id)
-      
+
       #informacoes do usuario atual para identificacao na msg
       atual_user = User.find(current_user.id)
-      message_header = "<b>" + t(:message_header) + atual_user.name + " [" + atual_user.email + "]</b><br/>"      
+      message_header = "<b>" + t(:message_header) + atual_user.name + " [" + atual_user.email + "]</b><br/>"
       if label_name != ""
         message_header << "[" + label_name + "]<br/>"
       end
@@ -223,7 +223,7 @@ class MessagesController < ApplicationController
           new_message.save!
 
           #recupera arquivos da mensagem original, caso esteja encaminhando ou respondendo
-          original_message_id = params[:id]          
+          original_message_id = params[:id]
           unless original_message_id.nil?
             #verifica permissao na mensagem original
             if has_permission(original_message_id)
@@ -349,15 +349,7 @@ class MessagesController < ApplicationController
   #download de arquivo anexo
   def download_message_file
     file_id = params[:idFile]
-    file_ = MessageFile.find(file_id)
-    filename = file_.message_file_name
-
-    prefix_file = file_.id # id da tabela message_files para diferenciar os arquivos
-
-    redirect_error = {:action => 'show', :id => params[:id], :idFile => file_id}
-    
-    # recupera arquivo
-    download_file(redirect_error, Path_Message_Files, filename, prefix_file)
+    download_file({:action => 'show', :id => params[:id], :idFile => file_id}, MessageFile.find(file_id).message.path)
   end
 
   # metodo chamado por ajax para atualizar contatos
@@ -367,10 +359,10 @@ class MessagesController < ApplicationController
   end
 
   # unidades curriculares do usuario logado
-  def get_curriculum_units    
+  def get_curriculum_units
     @curriculum_units_user = load_curriculum_unit_data
   end
-  
+
   # retorna (1 a varios) destinatarios
   def get_recipients(message_id)
     return User.find(:all,
@@ -388,7 +380,7 @@ class MessagesController < ApplicationController
 
   # verifica aba aberta, se Home ou se aba de unidade curricular
   # se Home, traz todas; senao, traz com filtro da unidade curricular
-  def message_data    
+  def message_data
     if session[:opened_tabs][session[:active_tab]]["type"] != Tab_Type_Home
       group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
       offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
@@ -456,7 +448,7 @@ class MessagesController < ApplicationController
         :conditions => {:user_contacts => {:user_id => current_user.id}} )
     end
 
-    @contacts = show_contacts_updated   
+    @contacts = show_contacts_updated
     return @contacts
   end
 
@@ -506,7 +498,7 @@ class MessagesController < ApplicationController
   end
 
   def copy_file(origin, destiny, all_files_destiny, flag_copy = true)
-    origin  = Path_Message_Files + origin 
+    origin  = Path_Message_Files + origin
     destiny = Path_Message_Files + destiny
 
     #copia fisicamente arquivo do anexo original

@@ -6,7 +6,9 @@ class Assignment < ActiveRecord::Base
   has_many :files_enunciations
   has_many :send_assignments
 
+  ##
   # Recupera as atividades por turma
+  ##
   def self.all_by_group_id(group_id)
     ActiveRecord::Base.connection.select_all <<SQL
     SELECT t1.id,
@@ -21,13 +23,15 @@ class Assignment < ActiveRecord::Base
 SQL
   end
 
+  ##
   # Recupera status da atividade
+  ##
   def self.status_of_actitivy_by_assignment_id_and_student_id(assignment_id, student_id)
     status_assignment = ActiveRecord::Base.connection.select_all <<SQL
     SELECT
            CASE
             WHEN t4.start_date > now() THEN 'not_started'
-            WHEN t2.grade IS NOT NULL THEN 'corrected'
+            WHEN t2.grade IS NOT NULL AND COUNT(t3.id) > 0 THEN 'corrected'
             WHEN COUNT(t3.id) > 0 THEN 'sent'
             WHEN COUNT(t3.id) = 0 AND t4.end_date > now() THEN 'send'
             WHEN COUNT(t3.id) = 0 AND t4.end_date < now() THEN 'not_sent'

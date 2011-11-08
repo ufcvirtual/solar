@@ -148,21 +148,12 @@ class DiscussionsController < ApplicationController
     render :layout => false
   end
 
-  #Download de arquivo anexo
+  ##
+  # Download de arquivo anexo a postagem
+  ##
   def download_post_file
     post_file_id = params[:idFile]
-    file_ = DiscussionPostFile.find(post_file_id)
-    #filename = file_.attachment_file_name
-    filename = ''
-
-    prefix_file = nil
-
-    path_file = file_.attachment.path
-
-    redirect_error = {:action => 'show', :id => params[:id], :idFile => post_file_id}
-
-    # recupera arquivo
-    download_file(redirect_error, path_file, filename, prefix_file)
+    download_file({:action => :show, :id => params[:id], :idFile => post_file_id}, DiscussionPostFile.find(post_file_id).attachment.path)
   end
 
   #Envio de arquivo anexo

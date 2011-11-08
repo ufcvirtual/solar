@@ -4,10 +4,6 @@ class CommentFile < ActiveRecord::Base
 
   validates :attachment_file_name, :presence => true
 
-  ################################
-  # attachment files
-  ################################
-
   has_attached_file :attachment,
     :path => ":rails_root/media/portfolio/comments/:id_:basename.:extension",
     :url => "/media/portfolio/comments/:id_:basename.:extension"
