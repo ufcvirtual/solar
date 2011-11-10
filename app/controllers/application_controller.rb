@@ -137,6 +137,7 @@ class ApplicationController < ActionController::Base
 
     name_tab, type = params[:name], params[:type] # Home ou Curriculum_Unit
     groups_id, offers_id, id = params[:groups_id], params[:offers_id], params[:id]
+    allocation_tag_id = params[:allocation_tag_id]
 
     # se hash nao existe, cria
     session[:opened_tabs] = Hash.new if session[:opened_tabs].nil?
@@ -146,7 +147,7 @@ class ApplicationController < ActionController::Base
 
     # abre abas ate um numero limitado; atualiza como ativa se aba ja existe
     if new_tab?(name_tab)
-      hash_tab = {"id" => id, "type" => type, "groups_id" => groups_id, "offers_id" => offers_id}
+      hash_tab = {"id" => id, "type" => type, "groups_id" => groups_id, "offers_id" => offers_id, "allocation_tag_id" => allocation_tag_id}
 
       # atualizando dados da sessao
       set_session_opened_tabs(name_tab, hash_tab)

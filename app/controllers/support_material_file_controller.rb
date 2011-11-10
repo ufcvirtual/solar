@@ -9,8 +9,9 @@ class SupportMaterialFileController < ApplicationController
     #    offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
     #    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     #    user_id = current_user.id
+        allocation_tag_id = session[:opened_tabs][session[:active_tab]]["allocation_tag_id"]
 
-    @list_files = SupportMaterialFile.search_files(3) # Pegar por allocation tag e colocar o combo da seleção de turma 
+    @list_files = SupportMaterialFile.search_files(allocation_tag_id) # Pegar por allocation tag e colocar o combo da seleção de turma
 
     # construindo um conjunto de objetos
     @folders_list = {}
@@ -31,6 +32,8 @@ class SupportMaterialFileController < ApplicationController
 
   def download_all_file_ziped
     #raise "COLOCAR ALLOCATION TAG AQUI TAMBÉM!!!"
+    allocation_tag_id = session[:opened_tabs][session[:active_tab]]["allocation_tag_id"]
+
     authorize! :download_all_file_ziped, SupportMaterialFile
     require 'zip/zip'
 
@@ -39,7 +42,7 @@ class SupportMaterialFileController < ApplicationController
     redirect_error = {:action => 'list', :id => curriculum_unit_id}
 
     # Consultas pela tabela
-    nomes_files = SupportMaterialFile.search_files(3).collect{|file| [file["attachment_file_name"]]}
+    nomes_files = SupportMaterialFile.search_files(allocation_tag_id).collect{|file| [file["attachment_file_name"]]}
     lista_zips = Dir.glob('tmp/*') #lista dos arquivos .zip existentes no '/tmp'
     
     # nome do pacote que será criado
@@ -59,7 +62,7 @@ class SupportMaterialFileController < ApplicationController
         nomes_files.each do |zipados|
           zipados = zipados[0].to_s
           unless(zipados[0].nil?)
-            zipfile.add(zipados,"media/support_material_file/allocation_tags/"+3.to_s+"/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados)
+            zipfile.add(zipados,"media/support_material_file/allocation_tags/"+allocation_tag_id.to_s+"/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados)
           end
         end
       }
@@ -80,6 +83,8 @@ class SupportMaterialFileController < ApplicationController
     authorize! :download_all_file_ziped, SupportMaterialFile
     require 'zip/zip'
 
+    allocation_tag_id = session[:opened_tabs][session[:active_tab]]["allocation_tag_id"]
+
     lista_zips = Dir.glob('tmp/*') #lista dos arquivos .zip existentes no '/tmp'
 
     curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
@@ -87,7 +92,7 @@ class SupportMaterialFileController < ApplicationController
     group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     folder = params[:folder]
         
-    nomes_files = SupportMaterialFile.where("allocation_tag_id = ? and folder = ?", 3, folder).collect{|file| [file["attachment_file_name"]]}
+    nomes_files = SupportMaterialFile.where("allocation_tag_id = ? and folder = ?", allocation_tag_id, folder).collect{|file| [file["attachment_file_name"]]}
         
     # nome do pacote que será criado
     zip_in_test = "tmp/"+Digest::SHA1.hexdigest(nomes_files.to_s)+".zip"
@@ -106,7 +111,7 @@ class SupportMaterialFileController < ApplicationController
         nomes_files.each do |zipados|
           zipados = zipados[0].to_s
           unless(zipados[0].nil?)
-            zipfile.add(zipados,"media/support_material_file/allocation_tags/"+3.to_s+"/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados)
+            zipfile.add(zipados,"media/support_material_file/allocation_tags/"+allocation_tag_id.to_s+"/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados)
           end
         end
       }

@@ -6,7 +6,7 @@ module MysolarHelper
         "SELECT  DISTINCT ON (id, name) * from (
       select * from (
       (
-        select cr.*, NULL AS offer_id, NULL::integer AS group_id, NULL::varchar AS semester --(cns 1 - usuarios vinculados direto a unidade curricular)
+        select cr.*, NULL AS offer_id, NULL::integer AS group_id, NULL::varchar AS semester, allocation_tag_id --(cns 1 - usuarios vinculados direto a unidade curricular)
         from
           allocations al
           inner join allocation_tags tg on tg.id = al.allocation_tag_id
@@ -16,7 +16,7 @@ module MysolarHelper
       )
       union
       (
-        select cr.*, of.id AS offer_id, NULL::integer AS group_id, semester --(cns 2 - usuarios vinculados a oferta)
+        select cr.*, of.id AS offer_id, NULL::integer AS group_id, semester, allocation_tag_id --(cns 2 - usuarios vinculados a oferta)
         from
           allocations al
           inner join allocation_tags tg on tg.id = al.allocation_tag_id
@@ -26,7 +26,7 @@ module MysolarHelper
           user_id = #{current_user.id} AND al.status = #{Allocation_Activated}
       )
       union(
-        select cr.*, of.id AS offer_id, gr.id AS group_id, semester --(cns 3 - usuarios vinculados a turma)
+        select cr.*, of.id AS offer_id, gr.id AS group_id, semester, allocation_tag_id --(cns 3 - usuarios vinculados a turma)
         from
           allocations al
           inner join allocation_tags tg on tg.id = al.allocation_tag_id
@@ -38,7 +38,7 @@ module MysolarHelper
       )
       union
       (
-        select cr.*, of.id AS offer_id, NULL::integer AS group_id, semester --(cns 3 - usuarios vinculados a graduacao)
+        select cr.*, of.id AS offer_id, NULL::integer AS group_id, semester, allocation_tag_id --(cns 3 - usuarios vinculados a graduacao)
         from
           allocations al
           inner join allocation_tags tg on tg.id = al.allocation_tag_id
