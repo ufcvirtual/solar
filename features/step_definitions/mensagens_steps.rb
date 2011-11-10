@@ -1,6 +1,8 @@
 Entao /^eu deverei ver a linha de mensagem$/ do |tabela|
 	tabela.hashes.each do |linha|	   
       #xpath = "//table/tbody/tr[ descendant::a[ contains(.,'#{linha[:coluna1]}')] and child::td[contains(., '#{linha[:coluna2]}')] and child::td[contains(., '#{linha[:coluna3]}')] ]"
+#      WebElement iframe = driver.findElement(By.xpath("//iframe"));
+#      driver.switchTo().frame(iframe); 
       xpath = "//table/tbody/tr[ descendant::a[ contains(.,'#{linha[:coluna1]}')] and child::td[contains(., '#{linha[:coluna2]}')]  ]"
 	    page.should have_xpath(xpath)
 	end

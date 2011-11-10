@@ -3,7 +3,7 @@
 pag_ufc:
   id: 1
   user_id: 1
-  allocation_tag_id: 1
+  allocation_tag_id: 6
   name: aula 1 pag ufc
   address: http://www.ufc.br
   type_lesson: 1
@@ -14,7 +14,7 @@ pag_ufc:
 pag_uol:
   id: 2
   user_id: 1
-  allocation_tag_id: 1
+  allocation_tag_id: 6
   name: aula 2 pag uol
   address: 'http://www.uol.com.br'
   type_lesson: 1
@@ -25,7 +25,7 @@ pag_uol:
 pag_globo:
   id: 3
   user_id: 1
-  allocation_tag_id: 1
+  allocation_tag_id: 6
   name: aula 3
   address: 'http://www.globo.com'
   type_lesson: 1
@@ -36,7 +36,7 @@ pag_globo:
 pag_virtual:
   id: 4
   user_id: 1
-  allocation_tag_id: 1
+  allocation_tag_id: 6
   name: aula 4
   address: 'http://www.virtual.ufc.br'
   type_lesson: 1
@@ -47,7 +47,7 @@ pag_virtual:
 pag_bbc:
   id: 5
   user_id: 1
-  allocation_tag_id: 1
+  allocation_tag_id: 6
   name: aula 5
   address: 'http://www.bbc.com'
   type_lesson: 1

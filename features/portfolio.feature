@@ -10,7 +10,7 @@ Contexto:
         | user_id  | allocation_tag_id  | profile_id  | status |
         | 1        | 3                  | 1           | 1      |
 
-@wip
+
 Cenário: Exibir Portfolio
     Dado que estou logado com o usuario "user" e com a senha "user123"
         E que estou em "Meu Solar"
