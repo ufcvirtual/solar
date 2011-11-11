@@ -13,7 +13,7 @@ class ScoresController < ApplicationController
     # recupera turma selecionada
     group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
-    student_id = params[:id] || current_user.id
+    student_id = params[:student_id] || current_user.id
 
     begin
 
