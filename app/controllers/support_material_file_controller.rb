@@ -9,7 +9,7 @@ class SupportMaterialFileController < ApplicationController
     #    offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
     #    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     #    user_id = current_user.id
-        allocation_tag_id = session[:opened_tabs][session[:active_tab]]["allocation_tag_id"]
+    allocation_tag_id = session[:opened_tabs][session[:active_tab]]["allocation_tag_id"]
 
     @list_files = SupportMaterialFile.search_files(allocation_tag_id) # Pegar por allocation tag e colocar o combo da seleção de turma
 
@@ -62,7 +62,7 @@ class SupportMaterialFileController < ApplicationController
         nomes_files.each do |zipados|
           zipados = zipados[0].to_s
           unless(zipados[0].nil?)
-            zipfile.add(zipados,"media/support_material_file/allocation_tags/"+allocation_tag_id.to_s+"/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados)
+            zipfile.add(zipados,"media/support_material_file/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados)
           end
         end
       }
@@ -89,7 +89,6 @@ class SupportMaterialFileController < ApplicationController
 
     curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
     redirect_error = {:action => 'list', :id => curriculum_unit_id}
-    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
     folder = params[:folder]
         
     nomes_files = SupportMaterialFile.where("allocation_tag_id = ? and folder = ?", allocation_tag_id, folder).collect{|file| [file["attachment_file_name"]]}
@@ -111,7 +110,7 @@ class SupportMaterialFileController < ApplicationController
         nomes_files.each do |zipados|
           zipados = zipados[0].to_s
           unless(zipados[0].nil?)
-            zipfile.add(zipados,"media/support_material_file/allocation_tags/"+allocation_tag_id.to_s+"/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados)
+            zipfile.add(zipados,"media/support_material_file/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados)
           end
         end
       }
