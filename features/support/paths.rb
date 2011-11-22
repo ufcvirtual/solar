@@ -12,19 +12,19 @@ module NavigationHelpers
       '/curriculum_units/access/'
 
     when /the home\s?page/
-      '/'
+      '/home'
 
     when /Login/
-      '/user_sessions/new'
+      '/login'
 
     when /Meu Solar/
-      '/users/mysolar'
+      '/home'
 
     when /Cadastrar usuario/
-      '/users/new'
+      '/users/register'
 
     when /Recuperar senha/
-	  '/users/pwd_recovery'
+	  '/users/password/new'
 
     when /Meus Dados/
 	 '/users/1/edit'

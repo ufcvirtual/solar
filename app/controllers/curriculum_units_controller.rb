@@ -62,12 +62,9 @@ class CurriculumUnitsController < ApplicationController
 
     # retorna participantes da turma (que nao sejam responsaveis)
     responsible = false
+    group_id = AllocationTag.find(user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id']).group_id
 
-    # Temporário: garantindo que haverá um grupo, pois futuramente será necessário escolher um grupo para visualizar os participantes
-    #groups_id = Group.find_by_offer_id(offers_id).id unless !groups_id.nil?
-    groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-
-    @participants = class_participants groups_id, responsible
+    @participants = class_participants group_id, responsible
 
   end
 

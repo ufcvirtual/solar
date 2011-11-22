@@ -53,9 +53,9 @@ end
 Dado /^que estou logado no sistema com usuario user$/ do
   #User.create(:login => 'user', :email => 'user@tester.com', :password => '123456', :name => 'User')
   visit path_to("Login")
-  fill_in("login_form_name", :with => "user")
-  fill_in("Senha", :with => "123456")
-  click_button("Entrar")
+  fill_in("username", :with => "user")
+  fill_in("password", :with => "123456")
+  click_button "user_submit"
   if page.respond_to? :should
     page.should have_content("Novidades")
   else
@@ -69,9 +69,9 @@ end
 
 Dado /^que estou logado com o usuario "([^\"]*)" e com a senha "([^\"]*)"$/ do |username, password|
  visit path_to("Login")
- fill_in "login_form_name", :with => username
- fill_in "Senha", :with => password
- click_button "Entrar"
+ fill_in "username", :with => username
+ fill_in "password", :with => password
+ click_button "user_submit"
 # selenium.wait_for_page_to_load
 end
 

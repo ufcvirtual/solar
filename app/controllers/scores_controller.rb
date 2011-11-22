@@ -9,11 +9,8 @@ class ScoresController < ApplicationController
 
     authorize! :show, Score
 
-    active_tabs = session.include?('opened_tabs') ? (session[:opened_tabs].include?(session[:active_tabs]) ? session[:opened_tabs][:active_tabs] : [] ) : []
-
-    # recupera turma selecionada
-    group_id ||= active_tabs["groups_id"]
-    curriculum_unit_id ||= active_tabs["id"]
+    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
+    allocation_tag = AllocationTag.find(active_tab['allocation_tag_id'])
     student_id = params[:student_id] || current_user.id
 
     begin
@@ -28,12 +25,12 @@ class ScoresController < ApplicationController
       raise :invalid_identifier unless Profile.student?(student_id)
 
       @student = student
-      @activities = PortfolioTeacher.list_assignments_by_group_and_student_id(group_id, student_id)
-      @discussions = Discussion.all_by_group_id_and_student_id(group_id, student_id)
+      @activities = PortfolioTeacher.list_assignments_by_group_and_student_id(allocation_tag.group_id, student_id)
+      @discussions = Discussion.all_by_group_id_and_student_id(allocation_tag.group_id, student_id)
 
       from_date = Date.today << 2 # dois meses atras
       until_date = Date.today
-      @amount = Score.find_amount_access_by_student_id_and_interval(curriculum_unit_id, @student.id, from_date, until_date)
+      @amount = Score.find_amount_access_by_student_id_and_interval(active_tab['id'], @student.id, from_date, until_date)
 
     rescue Exception => except
       respond_to do |format|

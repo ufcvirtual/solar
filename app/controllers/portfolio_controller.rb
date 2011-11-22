@@ -11,7 +11,7 @@ class PortfolioController < ApplicationController
 
     authorize! :list, Portfolio
 
-    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+    group_id = AllocationTag.find(user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id']).group_id
 
     # listando atividades individuais pelo grupo_id em que o usuario esta inserido
     @individual_activities = Portfolio.individual_activities(group_id, current_user.id)
