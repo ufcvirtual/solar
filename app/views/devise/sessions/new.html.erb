@@ -1,0 +1,34 @@
+<div id="login_right_col">
+  <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+
+    <div id="login_form_tab_blank">&nbsp;
+    </div>
+    <div id="login_form_tab_entrar">
+      <%=  t(:signin)%>
+    </div>
+    <div id="login_form_tab_cadastrar">
+      <%= link_to t(:signup), new_registration_path(resource_name) %>
+    </div>
+    <div id="login_form">
+      <div><%= f.label :username %>
+        <%= f.text_field :username %></div>
+
+      <div><%= f.label :password %>
+        <%= f.password_field :password %></div>
+
+      <div id="username_form_secundario">
+        <div id="direita" style="width:100px; float: right; margin-top:28px;line-height: 11px; white-space:nowrap">
+          <%= f.submit "Sign in", :class => 'solar_button' %>
+        </div>
+        <div id="esquerda" style="margin-right: 120px;">
+          <% if devise_mapping.rememberable? -%>
+            <div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
+          <% end -%>
+          <%= link_to "Forgot your password?", new_password_path(resource_name) %>
+        </div>
+      </div>
+    </div>
+
+  <% end %>
+
+</div>

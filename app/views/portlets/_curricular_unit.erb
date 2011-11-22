@@ -6,34 +6,34 @@
   </div>
 
   <div class="mysolar_portlets_content">
-    
+
     <ul id="mysolar_curriculum_unit_wrapper">
-    <% if curriculum_units.length > 0%>
-      <% curriculum_units.each { |curriculum_unit| %>
-        <li>
+      <% if curriculum_units.length > 0%>
+        <% curriculum_units.each { |curriculum_unit| %>
+          <li>
 
-          <% if ((session[:opened_tabs].length >= Max_Tabs_Open.to_i) && (!session[:opened_tabs].has_key?(curriculum_unit["name"]))) %>
-            <% options = {} %>
-            <% html_options = {:onclick => "javascript:alert('"+t(:curriculum_access_alert)+"');return false;", :class=>'link_content' } %>
-          <% else %>
-            <% options = {:controller => :application, :action => :add_tab,
-              :type => Tab_Type_Curriculum_Unit,
-              :name => curriculum_unit["name"],
-              :id => curriculum_unit["id"],
-              :offers_id => curriculum_unit["offer_id"],
-              :groups_id => curriculum_unit["group_id"],
-              :allocation_tag_id => curriculum_unit["allocation_tag_id"]
-            } %>
-            <% html_options = {:class=>'link_content'} %>
-          <% end %>
+            <% if ((session.include?('opened_tabs') and session[:opened_tabs].length >= Max_Tabs_Open.to_i) and (!session[:opened_tabs].has_key?(curriculum_unit["name"]))) %>
+              <% options = {} %>
+              <% html_options = {:onclick => "javascript:alert('"+t(:curriculum_access_alert)+"');return false;", :class=>'link_content' } %>
+            <% else %>
+              <% options = {:controller => :application, :action => :add_tab,
+                :type => Tab_Type_Curriculum_Unit,
+                :name => curriculum_unit["name"],
+                :id => curriculum_unit["id"],
+                :offers_id => curriculum_unit["offer_id"],
+                :groups_id => curriculum_unit["group_id"],
+                :allocation_tag_id => curriculum_unit["allocation_tag_id"]
+              } %>
+              <% html_options = {:class=>'link_content'} %>
+            <% end %>
 
-          <%= link_to curriculum_unit["name"], options, html_options %>
+            <%= link_to curriculum_unit["name"], options, html_options %>
 
-        </li>
-      <% } %>
-    <% else %>
-      <%= t(:my_solar_curriculum_without) %>
-    <% end %>
+          </li>
+        <% } %>
+      <% else %>
+        <%= t(:my_solar_curriculum_without) %>
+      <% end %>
     </ul>
 
   </div>

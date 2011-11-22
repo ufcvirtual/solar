@@ -1,11 +1,18 @@
 Solar::Application.routes.draw do 
 
+  devise_for :users, :path_names => {:sign_in => "login", :sign_out => "logout", :sign_up => "register"}
+
+  devise_scope :user do
+    get "login", :to => "devise/sessions#new"
+    get "logout", :to => "devise/sessions#destroy"
+  end
+
   get "pages/index"
   get "access_control/index"
-  get "users/mysolar"
-  get "user_sessions/new"
-  get "users/new"
-  get "users/pwd_recovery"
+#  get "users/mysolar"
+#  get "user_sessions/new"
+#  get "users/new"
+#  get "users/pwd_recovery"
   get "offers/showoffersbyuser"
 
   #################################
@@ -28,13 +35,13 @@ Solar::Application.routes.draw do
   match "/users/:id", :to => "users#mysolar", :via => "get"
 
   # Definindo resources (mapeamento de urls para os objetos)
-  resources :users, :user_sessions, :curriculum_units, :participants, :allocations, :portfolio,:courses
+  resources :users, :curriculum_units, :participants, :allocations, :portfolio, :courses
   resources :scores
 
   match "scores/:id/history_access" => "scores#history_access"
 
-  match 'login' => "user_sessions#new", :as => :login
-  match 'logout' => "user_sessions#destroy", :as => :logout
+#  match 'login' => "user_sessions#new", :as => :login
+#  match 'logout' => "user_sessions#destroy", :as => :logout
   match 'home' => "users#mysolar", :as => :home
 
   # See how all your routes lay out with "rake routes"

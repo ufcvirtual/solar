@@ -4,9 +4,8 @@ module CurriculumUnitsHelper
   #   se resp=TRUE, os retornados sao responsaveis pela turma
   #      o perfil responsavel esta marcado na tabela profiles (pode ser mais de um)
   #   busca em allocation_tags groups e offers relacionadas a unidade curricular
-  def class_participants (group_id = nil, flag_resp = false)
-    if group_id
-      group_allocation_tag_id = AllocationTag.find_by_group_id(group_id).id
+  def class_participants (group_allocation_tag_id = nil, flag_resp = false)
+#      group_allocation_tag_id = AllocationTag.find_by_group_id(group_id).id
       query = "
             SELECT   DISTINCT 
               users.id, users.name as username, users.photo_file_name, users.email, p.name as profilename, p.id as profileid
@@ -23,8 +22,7 @@ module CurriculumUnitsHelper
                        WHEN course_id is not null THEN (select 'COURSE'::text)
                        ELSE (select 'CURRICULUM_UNIT'::text)
                      END as entity_type,
-                     (coalesce(group_id, 0) + coalesce(offer_id, 0) +
-              coalesce(curriculum_unit_id, 0) + coalesce(course_id, 0)) as entity_id,
+                     (coalesce(group_id, 0) + coalesce(offer_id, 0) + coalesce(curriculum_unit_id, 0) + coalesce(course_id, 0)) as entity_id,
                     --parents do tipo offer
                      CASE
                        WHEN group_id is not null THEN (
@@ -95,12 +93,7 @@ module CurriculumUnitsHelper
                 hierarchy.allocation_tag_id = #{group_allocation_tag_id}
            ORDER BY profilename, users.name"
       
-      participants = User.find_by_sql(query)
-
-      return participants
-    else
-      return nil
-    end
+      return User.find_by_sql(query)
   end
 
   # Retorna participantes por unidade curricular passada que tenham status ativo

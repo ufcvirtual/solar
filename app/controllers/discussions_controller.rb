@@ -12,7 +12,7 @@ class DiscussionsController < ApplicationController
 
     authorize! :list, Discussion
 
-    active_tab = session[:opened_tabs][session[:active_tab]]
+    active_tab = session[:opened_tabs][session[:active_tab]] || []
 
     group_id = active_tab.include?("groups_id") ? active_tab["groups_id"] : -1
     offer_id = active_tab.include?("offers_id") ? active_tab["offers_id"] : -1

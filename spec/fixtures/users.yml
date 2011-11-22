@@ -1,7 +1,6 @@
-# senha: user123
 user:
   id: 1
-  login: user
+  username: user
   email: user@user.com
   name: Usuario do Sistema
   nick: Usuario do Sistema
@@ -16,12 +15,12 @@ user:
   city: fortaleza
   institution: ufc
   zipcode: 60450170
-  crypted_password: 95c946bf622ef93b0a211cd0fd028dfdfcf7e39e
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
 
-# senha: user222
 palacio:
   id: 2
-  login: rosacrinaldo
+  username: rosacrinaldo
   email: palacio@qualquer.br
   name: Ricardo Palacio
   nick: Ricardo Palacio
@@ -44,12 +43,12 @@ palacio:
   books: Biblia, Pequeno Principe
   phrase: Timao eeeoo!!!
   site: timao.com
-  crypted_password: bdfbae109d4523732b89e3fd2d248ed7fab97425
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
 
-# senha: user222
 hoog:
   id: 3
-  login: dexter
+  username: dexter
   email: hoog@qualquer.br
   name: Bezerra
   nick: Bezerra
@@ -72,12 +71,12 @@ hoog:
   books: Biblia, Pequeno Principe
   phrase: Timao eeeoo!!!
   site: timao.com
-  crypted_password: bdfbae109d4523732b89e3fd2d248ed7fab97425
+  encrypted_password: bdfbae109d4523732b89e3fd2d248ed7fab97425
+  password_salt: ziApLgRyXbqJPBN18g4g
 
-# senha: user222
 ariovaldo:
   id: 4
-  login: ariovaldo
+  username: ariovaldo
   email: amaral@qualquer.br
   name: Ariovaldo Amaral
   nick: Ariovaldo Amaral
@@ -100,12 +99,12 @@ ariovaldo:
   books: Biblia, Pequeno Principe
   phrase: Timao eeeoo!!!
   site: timao.com
-  crypted_password: bdfbae109d4523732b89e3fd2d248ed7fab97425
+  encrypted_password: bdfbae109d4523732b89e3fd2d248ed7fab97425
+  password_salt: ziApLgRyXbqJPBN18g4g
 
-# senha: 123456
 professor2:
   id: 5
-  login: prof2
+  username: prof2
   email: prof2@prof2.br
   name: professor2
   nick: prof2
@@ -128,12 +127,12 @@ professor2:
   books: Biblia, Pequeno Principe
   phrase: Timao eeeoo!!!
   site: timao.com
-  crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b
+  encrypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b
+  password_salt: ziApLgRyXbqJPBN18g4g
   
-# senha: 123456
 Professor:
   id: 6
-  login: prof
+  username: prof
   email: prof@solar.ufc.br
   name: Professor
   nick: Professor
@@ -156,12 +155,12 @@ Professor:
   books: Biblia, Pequeno Principe
   phrase: Timao eeeoo!!!
   site: timao.com
-  crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b  
+  encrypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b
+  password_salt: ziApLgRyXbqJPBN18g4g
 
-# senha: 123456
 aluno 1:
   id: 7
-  login: aluno1
+  username: aluno1
   email: aluno1@solar.ufc.br
   name: Aluno 1
   nick: Aluno 1
@@ -184,12 +183,12 @@ aluno 1:
   books: Biblia, Pequeno Principe
   phrase: Timao eeeoo!!!
   site: timao.com
-  crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
   
-# senha: 123456
 aluno 2:
   id: 8
-  login: aluno2
+  username: aluno2
   email: aluno2@solar.ufc.br
   name: Aluno 2
   nick: Aluno 2
@@ -212,12 +211,12 @@ aluno 2:
   books: Biblia, Pequeno Principe
   phrase: Timao eeeoo!!!
   site: timao.com
-  crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
   
-# senha: 123456
 aluno 3:
   id: 9
-  login: aluno3
+  username: aluno3
   email: aluno3@aluno3.br
   name: Aluno 3
   nick: Aluno 3
@@ -240,12 +239,12 @@ aluno 3:
   books: Biblia, Pequeno Principe
   phrase: Timao eeeoo!!!
   site: timao.com
-  crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b  
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
 
-# senha: 123456
 tutor_presencial:
   id: 10
-  login: tutorp
+  username: tutorp
   email: tutorp@solar.ufc.br
   name: Tutor Presencial
   nick: Tutor Presencial
@@ -268,12 +267,12 @@ tutor_presencial:
   books: Biblia, Pequeno Principe
   phrase: Timao eeeoo!!!
   site: timao.com
-  crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
   
-# senha: 123456
 tutor_distancia:
   id: 11
-  login: tutordist
+  username: tutordist
   email: tutordist@tutorp.br
   name: Tutor a Dist
   nick: Tutor a Dist
@@ -296,12 +295,12 @@ tutor_distancia:
   books: Biblia, Pequeno Principe
   phrase: Timao eeeoo!!!
   site: timao.com
-  crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
   
-# senha: 123456
 coordenador:
   id: 12
-  login: coorddisc
+  username: coorddisc
   email: coorddisc@coorddisc.br
   name: Coordenador
   nick: Coordenador
@@ -324,4 +323,5 @@ coordenador:
   books: Biblia, Pequeno Principe
   phrase: Timao eeeoo!!!
   site: timao.com
-  crypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b  
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g

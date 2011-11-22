@@ -6,8 +6,6 @@
     <%= stylesheet_link_tag "solar.css" %>
     <%= stylesheet_link_tag "calendar.css" %>
     <%= stylesheet_link_tag "security.css" %>
-<%#= stylesheet_link_tag "http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,400italic|Ubuntu+Condensed" %>
-<%#= stylesheet_link_tag "http://fonts.googleapis.com/css?family=PT+Sans|PT+Sans+Narrow:700|PT+Sans+Caption:700" %>
     <%= stylesheet_link_tag "http://fonts.googleapis.com/css?family=PT+Sans|Ubuntu:300,400,500,700|Ubuntu+Condensed" %>
 
     <%= javascript_include_tag "jquery-1.4.4.js" %>
@@ -80,7 +78,7 @@
               <% @user = User.find(@user.id) %>
             <% end %>
             <li id="mysolar_id">
-              <%= image_tag @user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{@user.nick}", :id => "image_user" %>
+<%#= image_tag @user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{@user.nick}", :id => "image_user" %>
 <%#*<!-- adicionar esse link depois em algum lugar -->%>
 <%#= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
             </li>
@@ -126,7 +124,7 @@
       <!-- Barra Lateral -------------------------->
       <div id="mysolar_sidebar">
         <div id="mysolar_menu_accordion" style="z-index:10">
-          <%=raw create_menu_list(Profile.all_by_user_id(current_user.id), @context || 'geral', @context_param_id || nil, session[:current_menu] || nil) %>
+          <%=raw create_menu_list(Profile.all_by_user_id(current_user.id), @context || 'geral', @context_param_id || nil, session[:current_menu] || nil) if user_signed_in? %>
         </div>
       </div>
 
@@ -143,6 +141,12 @@
             </div>
           <% end %>
 
+          <!-- flash aqui -->
+          <% flash.each do |name, msg| %>
+            <%= content_tag :div, msg, :id => "flash_#{name}" %>
+          <% end %>
+
+
           <div id="breadcrumb">
             <% unless session[:breadcrumb].nil? || session[:breadcrumb].length == 1 %>
               <% session[:breadcrumb].each_with_index do |link, idx| %>
@@ -157,28 +161,31 @@
             <% end %>
           </div>
 
-          <% if curriculum_unit_selected? %>
-            <div id="page_title">
-              <h1><%=t session[:breadcrumb].last[:name] %></h1>
-              <span class="block_content_text"><%= raw(render_group_selection) %></span>
-            </div>
-          <% end %>
+          <!--
+<%# if curriculum_unit_selected? %>
+              <div id="page_title">
+                <h1><%#=t session[:breadcrumb].last[:name] %></h1>
+                <span class="block_content_text"><%#= raw(render_group_selection) %></span>
+              </div>
+<%# end %>
+        </div>
+          -->
+
+          <%= yield %>
+
         </div>
 
-        <%= yield %>
-
-      </div>
-
-      <!--
-      <div id="block_locale">
-        <ul>
-          <li><%= link_to "English", url_for(:locale => 'en-US') %></li>
-          <li><%= link_to "Português(BR)", url_for(:locale => 'pt-BR') %></li>
-        </ul>
-      </div>
-      -->
+        <!--
+        <div id="block_locale">
+          <ul>
+            <li><%= link_to "English", url_for(:locale => 'en-US') %></li>
+            <li><%= link_to "Português(BR)", url_for(:locale => 'pt-BR') %></li>
+          </ul>
+        </div>
+        -->
 
 <%#= render '/portlets/chat' %>
+      </div>
     </div>
   </body>
 </html>

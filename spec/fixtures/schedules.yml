@@ -83,15 +83,15 @@ schedule 16:
 
 schedule 17:
   id: 17
-  start_date: 2011-08-13
-  end_date: 2011-09-17 23:59:59
+  start_date: <%= Date.today << 5 %> #2011-08-13
+  end_date: <%= Date.today - 3 %> #2011-09-17 23:59:59
 
 schedule 18:
   id: 18
-  start_date: 2011-11-20
-  end_date: 2011-12-14 23:59:59
+  start_date: <%= Date.today >> 1 %> #2011-11-20
+  end_date: <%= Date.today >> 5%> #2011-12-14 23:59:59
 
 schedule 19:
   id: 19
-  start_date: 2011-07-04
-  end_date: 2011-10-19 23:59:59
+  start_date: <%= Date.today << 2 %> #2011-07-04
+  end_date: <%= Date.today >> 1 %> #2011-10-19 23:59:59

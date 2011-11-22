@@ -155,6 +155,7 @@
 
   # forms de usuario em geral (para mensagens de validação)
   form_login: "Login"
+  form_username: "Login"
   form_alternate_email: "Alternate e-mail"
   form_password: "Password"
   form_name: "Name"

@@ -320,6 +320,7 @@
 
   # forms de usuario em geral (para mensagens de validação)
   form_login: "Login"
+  form_username: "Login"
   form_alternate_email: "E-mail alternativo"
   form_password: "Senha"
   form_name: "Nome"
@@ -716,4 +717,7 @@
   new_course_title: Cadastro de Curso
   update_course_title: Atualização de Curso
   
-  
+  devise:
+    sessions:
+      signed_in: 'Signed in successfully.'
+      signed_out: 'Signed out successfully.'

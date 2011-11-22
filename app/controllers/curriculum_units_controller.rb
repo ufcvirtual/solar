@@ -5,7 +5,7 @@ class CurriculumUnitsController < ApplicationController
   include DiscussionPostsHelper
   include MessagesHelper
 
-  before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy, :show]
+#  before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy, :show]
   before_filter :prepare_for_group_selection, :only => [:show, :participants, :informations]
   #before_filter :curriculum_data, :only => [:show, :informations, :participants]
 
@@ -19,17 +19,31 @@ class CurriculumUnitsController < ApplicationController
     curriculum_data
 
     # recuperando informações da sessao
-    active_tab = session[:opened_tabs][session[:active_tab]]
+#    active_tab = session.include?('opened_tabs') ? session[:opened_tabs][session[:active_tab]] : []
 
-    group_id, offer_id, curriculum_unit_id = active_tab["groups_id"], active_tab["offers_id"], active_tab["id"]
+#    group_id, offer_id, curriculum_unit_id = active_tab["groups_id"], active_tab["offers_id"], active_tab["id"]
     user_id = current_user.id
+    allocation_tag = AllocationTag.find(@allocation_tag_id)
+
+
+    # label_name
+
 
     message_tag = nil
-    message_tag = get_label_name(curriculum_unit_id, offer_id, group_id) unless active_tab["type"] == Tab_Type_Home
+    message_tag = get_label_name(allocation_tag) #unless active_tab["type"] == Tab_Type_Home
+
+    #
+    # verificar esta parte ainda
+    #
+    ###
+
+    offer_id = nil
+    group_id = nil
+
 
     # retorna aulas, posts nos foruns e mensagens relacionados a UC mais atuais
-    @lessons = return_lessons_to_open(offer_id, group_id)
-    @discussion_posts = list_portlet_discussion_posts(offer_id, group_id)
+    @lessons = return_lessons_to_open(offer_id, allocation_tag.group.id)
+    @discussion_posts = list_portlet_discussion_posts(offer_id, allocation_tag.group.id)
     @messages = return_messages(current_user.id, 'portlet', message_tag)
     
     session[:lessons] = @lessons
@@ -78,16 +92,15 @@ class CurriculumUnitsController < ApplicationController
   private
 
   def curriculum_data
+
     # localiza unidade curricular
     @curriculum_unit = CurriculumUnit.find(params[:id])
 
-    # pegando dados da sessao e nao da url
-    groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-
     # localiza responsavel
     responsible = true
+    @allocation_tag_id = user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id']
 
-    @responsible = class_participants groups_id, responsible
+    @responsible = class_participants(@allocation_tag_id, responsible)
   end
 
 end

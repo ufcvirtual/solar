@@ -9,6 +9,28 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
+  # autenticação do usuario para acessar as funcionalidades do sistema atraves do devise
+  before_filter :authenticate_user!
+
+  # BreadCrumb
+  before_filter :define_second_level_breadcrumb, :only => [:activate_tab, :add_tab, :close_tab]
+  before_filter :define_third_level_breadcrumb
+
+  #helper_method :current_user_session, :current_user
+  #before_filter :return_user, :application_context, :current_menu
+  #before_filter :log_access, :only => :add_tab
+  before_filter :set_locale
+
+
+  layout :layout_by_resource
+
+  ##
+  # Verificando o layout a ser renderizado
+  ##
+  def layout_by_resource
+    return devise_controller? ? 'login' : 'application'
+  end
+
   # Constantes utilizadas na migalha de pao
   BreadCrumb_First_Level = 0
   BreadCrumb_Second_Level = 1
@@ -20,19 +42,9 @@ class ApplicationController < ActionController::Base
     redirect_to :controller => :home
   end
 
-  helper_method :current_user_session, :current_user
-
-  before_filter :return_user, :application_context, :current_menu
-  before_filter :log_access, :only => :add_tab
-  before_filter :set_locale
-
   ###########################################
   # BREADCRUMB
   ###########################################
-
-  # BreadCrumb
-  before_filter :define_second_level_breadcrumb, :only => [:activate_tab, :add_tab, :close_tab]
-  before_filter :define_third_level_breadcrumb
 
   ##
   # Setando sistema para home e atualizando breadcrumb
@@ -56,10 +68,7 @@ class ApplicationController < ActionController::Base
         clear_breadcrumb_after(BreadCrumb_First_Level)
       else
         params.delete('authenticity_token')
-        session[:breadcrumb][BreadCrumb_Second_Level] = {
-          :name => params[:name],
-          :url => params
-        }
+        session[:breadcrumb][BreadCrumb_Second_Level] = { :name => params[:name], :url => params } if session.include?('breadcrumb')
         clear_breadcrumb_after(BreadCrumb_Second_Level)
       end
     end
@@ -74,15 +83,10 @@ class ApplicationController < ActionController::Base
     # verificando se a chamada vem do menu
     if params.include?('mid')
 
-      name = params[:bread]
-
       params.delete('bread')
       params.delete('mid')
 
-      session[:breadcrumb][BreadCrumb_Third_Level] = {
-        :name => name,
-        :url => params
-      }
+      session[:breadcrumb][BreadCrumb_Third_Level] = { :name => params[:bread], :url => params } if session.include?('breadcrumb')
     end
 
   end
@@ -100,6 +104,9 @@ class ApplicationController < ActionController::Base
   # Define aba ativa
   ##
   def activate_tab
+
+    raise "entrou activate_tab"
+
     session[:active_tab] = params[:name] # setando aba ativa
     session[:current_menu] = nil # removendo menu selecionado
 
@@ -121,13 +128,16 @@ class ApplicationController < ActionController::Base
 
     # se aba que vai fechar é a ativa, manda pra aba home
     session[:active_tab] = 'Home' if session[:active_tab] == tab_name
-
     session[:opened_tabs].delete(tab_name) # remove do hash
+
     active_tab = session[:opened_tabs][session[:active_tab]]
 
     # redireciona de acordo com o tipo de aba ativa
-    redirect_to :controller => :home if active_tab["type"] == Tab_Type_Home
-    redirect_to :controller => :curriculum_units, :action => :show, :id => active_tab["id"] if active_tab["type"] == Tab_Type_Curriculum_Unit
+    if !active_tab.nil? and active_tab.include?('type') and active_tab['type'] == Tab_Type_Curriculum_Unit
+      redirect_to :controller => :curriculum_units, :action => :show, :id => active_tab["id"] #if active_tab["type"] == Tab_Type_Curriculum_Unit
+    else
+      redirect_to :controller => :home #if active_tab["type"] == Tab_Type_Home
+    end
   end
 
   ##
@@ -136,8 +146,7 @@ class ApplicationController < ActionController::Base
   def add_tab
 
     name_tab, type = params[:name], params[:type] # Home ou Curriculum_Unit
-    groups_id, offers_id, id = params[:groups_id], params[:offers_id], params[:id]
-    allocation_tag_id = params[:allocation_tag_id]
+    id, allocation_tag_id = params[:id], params[:allocation_tag_id]
 
     # se hash nao existe, cria
     session[:opened_tabs] = Hash.new if session[:opened_tabs].nil?
@@ -147,19 +156,44 @@ class ApplicationController < ActionController::Base
 
     # abre abas ate um numero limitado; atualiza como ativa se aba ja existe
     if new_tab?(name_tab)
-      hash_tab = {"id" => id, "type" => type, "groups_id" => groups_id, "offers_id" => offers_id, "allocation_tag_id" => allocation_tag_id}
+      hash_tab = {"id" => id, "type" => type, "allocation_tag_id" => allocation_tag_id}
 
       # atualizando dados da sessao
       set_session_opened_tabs(name_tab, hash_tab)
 
       # redireciona de acordo com o tipo de aba
-      redirect = {
-        :controller => :curriculum_units, :action => :show, :id => id, :groups_id => groups_id, :offers_id => offers_id
-      } if type == Tab_Type_Curriculum_Unit
+      redirect = { :controller => :curriculum_units, :action => :show, :id => id, :allocation_tag => allocation_tag_id } if type == Tab_Type_Curriculum_Unit
 
     end
 
     redirect_to redirect
+
+
+#    name_tab, type = params[:name], params[:type] # Home ou Curriculum_Unit
+#    groups_id, offers_id, id = params[:groups_id], params[:offers_id], params[:id]
+#    allocation_tag_id = params[:allocation_tag_id]
+#
+#    # se hash nao existe, cria
+#    session[:opened_tabs] = Hash.new if session[:opened_tabs].nil?
+#
+#    # se estourou numero de abas, volta para mysolar
+#    redirect = {:controller => :home} # Tab_Type_Home
+#
+#    # abre abas ate um numero limitado; atualiza como ativa se aba ja existe
+#    if new_tab?(name_tab)
+#      hash_tab = {"id" => id, "type" => type, "groups_id" => groups_id, "offers_id" => offers_id, "allocation_tag_id" => allocation_tag_id}
+#
+#      # atualizando dados da sessao
+#      set_session_opened_tabs(name_tab, hash_tab)
+#
+#      # redireciona de acordo com o tipo de aba
+#      redirect = {
+#        :controller => :curriculum_units, :action => :show, :id => id, :groups_id => groups_id, :offers_id => offers_id
+#      } if type == Tab_Type_Curriculum_Unit
+#
+#    end
+#
+#    redirect_to redirect
 
   end
 
@@ -178,14 +212,14 @@ class ApplicationController < ActionController::Base
     context_id = Tab_Type_Home
     active_tab = session.include?("opened_tabs") ? session[:opened_tabs][session[:active_tab]] : []
 
-    if (params['action'] != 'mysolar' && params['controller'] != 'pages' && session.include?("opened_tabs") && active_tab.include?("type"))
+    if (!active_tab.nil? and params['action'] != 'mysolar' and params['controller'] != 'pages' and session.include?("opened_tabs") and active_tab.include?("type"))
       context_id = active_tab["type"]
     end
 
     @context = Context.find(context_id).name
 
     # recupera o curriculum unit da sessao do usuario, com a tab ativa
-    @context_param_id = active_tab["id"] if session.include?("opened_tabs") && active_tab.include?("id")
+    @context_param_id = active_tab["id"] if session.include?("opened_tabs") and (!active_tab.nil? and active_tab.include?("id"))
   end
 
   ##
@@ -213,8 +247,11 @@ class ApplicationController < ActionController::Base
   # Atualiza a sessao com as abas abertas e ativas
   ##
   def set_session_opened_tabs(name_tab, hash_tab)
-    session[:opened_tabs][name_tab] = hash_tab
-    session[:active_tab] = name_tab
+    # definindo dados das tabelas caso ainda nao existam
+    user_session[:tabs] = {:opened => {}, :active => nil} unless user_session.include?(:tabs)
+
+    user_session[:tabs][:opened][name_tab] = hash_tab
+    user_session[:tabs][:active] = name_tab
   end
 
   ##
@@ -227,54 +264,54 @@ class ApplicationController < ActionController::Base
   def current_user_session
     #logger.debug "ApplicationController::current_user_session"
 
-    if @current_user_session
-      if params[:user_session]
-
-        if @current_user_session.login == params[:user_session][:login]
-          #logger.debug "LOGINS IGUAIS"
-          return @current_user_session
-        else
-          #logger.debug "LOGINS DIFERENTES"
-          @current_user_session.destroy
-          @current_user_session = UserSession.new(params[:user_session])
-          return @current_user_session
-        end
-
-      end
-    end
-
-    #return @current_user_session if defined?(@current_user_session)
-    @current_user_session = UserSession.find
+    #    if @current_user_session
+    #      if params[:user_session]
+    #
+    #        if @current_user_session.login == params[:user_session][:login]
+    #          #logger.debug "LOGINS IGUAIS"
+    #          return @current_user_session
+    #        else
+    #          #logger.debug "LOGINS DIFERENTES"
+    #          @current_user_session.destroy
+    #          @current_user_session = UserSession.new(params[:user_session])
+    #          return @current_user_session
+    #        end
+    #
+    #      end
+    #    end
+    #
+    #    #return @current_user_session if defined?(@current_user_session)
+    #    @current_user_session = UserSession.find
   end
 
-  def current_user
-    #logger.debug "ApplicationController::current_user"
-    return @current_user if defined?(@current_user)
-    @current_user = current_user_session && current_user_session.user
-  end
+  #  def current_user
+  #    #logger.debug "ApplicationController::current_user"
+  #    return @current_user if defined?(@current_user)
+  #    @current_user = current_user_session && current_user_session.user
+  #  end
 
-  def require_user
-    #logger.debug "ApplicationController::require_user"
-    unless current_user
-      store_location
-      flash[:notice] = t(:app_controller_require)
-      redirect_to new_user_session_url
-      return false
-    end
-  end
+  #def require_user
+  #  #logger.debug "ApplicationController::require_user"
+  #  unless current_user
+  #    store_location
+  #    flash[:notice] = t(:app_controller_require)
+  #    redirect_to new_user_session_url
+  #    return false
+  #  end
+  #end
 
-  def require_no_user
-    #logger.debug "ApplicationController::require_no_user"
-    if current_user
-      store_location
-      redirect_to users_mysolar_url #account_url
-      return false
-    end
-  end
+  #def require_no_user
+  #  #logger.debug "ApplicationController::require_no_user"
+  #  if current_user
+  #    store_location
+  #    redirect_to users_mysolar_url #account_url
+  #    return false
+  #  end
+  #end
 
-  def store_location
-    session[:return_to] = request.fullpath
-  end
+  #def store_location
+  #  session[:return_to] = request.fullpath
+  #end
 
   def set_locale
     if current_user
@@ -326,14 +363,17 @@ class ApplicationController < ActionController::Base
 
   # Preparando para seleção genérica de turmas
   def prepare_for_group_selection
-    if session[:opened_tabs][session[:active_tab]]["type"] == Tab_Type_Curriculum_Unit
+    active_tab = session.include?('opened_tabs') ? session[:opened_tabs][session[:active_tab]] : []
+
+    if !active_tab.nil? and active_tab.include?('type') and active_tab["type"] == Tab_Type_Curriculum_Unit
       #Colocar aqui: se session[:opened_tabs][session[:active_tab]]["groups_id"] for nulo, pega o 1o com permissao
       group_id = params[:selected_group]
 
       #Checando se ainda nao está com nenhum group_id na sessao
-      if (session[:opened_tabs][session[:active_tab]]["groups_id"] == "" or session[:opened_tabs][session[:active_tab]]["groups_id"].nil?)
-        group_id = CurriculumUnit.find_user_groups_by_curriculum_unit((session[:opened_tabs][session[:active_tab]]["id"]), current_user.id )[0].id
+      if (active_tab["groups_id"] == "" or active_tab["groups_id"].nil?)
+        group_id = CurriculumUnit.find_user_groups_by_curriculum_unit((active_tab["id"]), current_user.id )[0].id
       end
+
       unless group_id.nil?
         session[:opened_tabs][session[:active_tab]]["groups_id"] = group_id
         session[:opened_tabs][session[:active_tab]]["offers_id"] = Group.find(group_id).offer.id

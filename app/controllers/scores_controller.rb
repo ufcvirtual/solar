@@ -1,6 +1,6 @@
 class ScoresController < ApplicationController
 
-  before_filter :require_user
+  #before_filter :require_user
   before_filter :prepare_for_group_selection, :only => [:show]
 
   ##
@@ -10,9 +10,11 @@ class ScoresController < ApplicationController
 
     authorize! :show, Score
 
+    active_tabs = session.include?('opened_tabs') ? (session[:opened_tabs].include?(session[:active_tabs]) ? session[:opened_tabs][:active_tabs] : [] ) : []
+
     # recupera turma selecionada
-    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+    group_id ||= active_tabs["groups_id"]
+    curriculum_unit_id ||= active_tabs["id"]
     student_id = params[:student_id] || current_user.id
 
     begin
