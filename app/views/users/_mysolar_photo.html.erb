@@ -33,8 +33,7 @@
       </table>
     </div>
 
-    <%= form_for(@user, :html => { :multipart => true }, :url => {:controller => 'users',
-        :action => 'update_photo', :id => @user.id}) do |f| %>
+    <%= form_for(current_user, :html => { :multipart => true }, :url => {:controller => 'users', :action => 'update_photo', :id => current_user.id}) do |f| %>
       <%= f.file_field :photo, :class => 'alter_photo_inputs' %>
       <br /><br />
       <div class="alter_photo_text"><%= t(:photo_text)%></div>

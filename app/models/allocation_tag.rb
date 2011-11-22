@@ -94,14 +94,13 @@ SQL
 
     result = Array.new()
     hierarchy.each do |line|
-      result << line["allocation_tag_id"]
-      result << line["offer_parent_tag_id"]
-      result << line["curriculum_unit_parent_tag_id"]
-      result << line["course_parent_tag_id"]
+      result << line["allocation_tag_id"].to_i
+      result << line["offer_parent_tag_id"].to_i
+      result << line["curriculum_unit_parent_tag_id"].to_i
+      result << line["course_parent_tag_id"].to_i
     end
 
-
-    return result
+    return result.flatten.uniq
 
   end
 

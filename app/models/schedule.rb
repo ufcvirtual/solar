@@ -13,11 +13,16 @@ class Schedule < ActiveRecord::Base
 
     date_search_option, limit, list_all_schedules = '', '', ''
     limit = 'LIMIT 2' if period
-    list_all_schedules = " WHERE (t3.group_id = #{group_id} OR t3.offer_id = #{offer_id})" unless group_id.nil? and offer_id.nil?
+
+    where = []
+    where << "t3.group_id = #{group_id}" unless group_id.nil?
+    where << "t3.offer_id = #{offer_id}" unless offer_id.nil?
+    list_all_schedules = " WHERE (#{where.join(' OR ')})" unless where.empty?
+
     date_search_option = "AND (t2.start_date = current_date OR t2.end_date = current_date)" if date_search.nil? and period
     date_search_option = "AND (t2.start_date = '#{date_search}' OR t2.end_date = '#{date_search}')" unless date_search.nil?
 
-    ActiveRecord::Base.connection.select_all <<SQL
+    query = <<SQL
     WITH cte_allocations AS (
        SELECT t1.id           AS allocation_tag_id,
               t1.curriculum_unit_id,
@@ -108,6 +113,8 @@ class Schedule < ActiveRecord::Base
    ORDER BY t1.end_date
    #{limit}
 SQL
+
+    ActiveRecord::Base.connection.select_all query
   end
 
 end

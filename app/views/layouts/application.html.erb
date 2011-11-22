@@ -74,9 +74,9 @@
             <%= image_tag 'superior_logo.png', :alt => t(:mysolar_alt_img_solar) %>
           </div>
           <ul id="mysolar_top_options">
-            <% unless @user.errors.empty? %>
-              <% @user = User.find(@user.id) %>
-            <% end %>
+            <%# unless current_user.errors.empty? %>
+              <%# @user = User.find(@user.id) %>
+            <%# end %>
             <li id="mysolar_id">
 <%#= image_tag @user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{@user.nick}", :id => "image_user" %>
 <%#*<!-- adicionar esse link depois em algum lugar -->%>

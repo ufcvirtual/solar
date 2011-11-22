@@ -1,7 +1,6 @@
 class CurriculumUnitsController < ApplicationController
 
   include CurriculumUnitsHelper
-  include LessonsHelper
   include DiscussionPostsHelper
   include MessagesHelper
 
@@ -19,42 +18,25 @@ class CurriculumUnitsController < ApplicationController
     curriculum_data
 
     # recuperando informações da sessao
-#    active_tab = session.include?('opened_tabs') ? session[:opened_tabs][session[:active_tab]] : []
 
-#    group_id, offer_id, curriculum_unit_id = active_tab["groups_id"], active_tab["offers_id"], active_tab["id"]
-    user_id = current_user.id
     allocation_tag = AllocationTag.find(@allocation_tag_id)
-
-
-    # label_name
-
 
     message_tag = nil
     message_tag = get_label_name(allocation_tag) #unless active_tab["type"] == Tab_Type_Home
 
-    #
-    # verificar esta parte ainda
-    #
-    ###
-
-    offer_id = nil
-    group_id = nil
-
-
     # retorna aulas, posts nos foruns e mensagens relacionados a UC mais atuais
-    @lessons = return_lessons_to_open(offer_id, allocation_tag.group.id)
-    @discussion_posts = list_portlet_discussion_posts(offer_id, allocation_tag.group.id)
+    @lessons = Lesson.to_open(@allocation_tag_id)
+
+    @discussion_posts = list_portlet_discussion_posts(allocation_tag.offer_id, allocation_tag.group_id)
     @messages = return_messages(current_user.id, 'portlet', message_tag)
     
     session[:lessons] = @lessons
 
     # destacando dias que possuem eventos
-    schedules_events = Schedule.all_by_offer_id_and_group_id_and_user_id(offer_id, group_id || nil, user_id)
-    schedules_events_dates = schedules_events.collect { |schedule_event|
+    schedules_events = Schedule.all_by_offer_id_and_group_id_and_user_id(allocation_tag.offer_id, allocation_tag.group_id, current_user.id)
+    @scheduled_events = schedules_events.collect { |schedule_event|
       [schedule_event['start_date'], schedule_event['end_date']]
-    }
-
-    @scheduled_events = schedules_events_dates.flatten.uniq
+    }.flatten.uniq
 
   end
 

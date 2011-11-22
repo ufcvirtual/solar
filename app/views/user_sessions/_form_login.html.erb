@@ -1,6 +1,6 @@
 <!--Formulário de login-->
 <div id="login_right_col">      
-  <%= form_for @user_session, :url => {:action => "create"} do |f| %>
+  <%= form_for current_user, :url => {:action => "create"} do |f| %>
     <div id="login_form_header">
       <span id="login_form_tab_login">
         <%=  t(:signin)%>

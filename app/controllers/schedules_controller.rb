@@ -4,15 +4,13 @@ class SchedulesController < ApplicationController
 
   def list
 
-    active_tab = session.include?('opened_tabs') ? session[:opened_tabs][session[:active_tab]] : []
-    offer_id = active_tab.include?('offers_id') ? active_tab['offers_id'] : nil
-    group_id = active_tab.include?('groups_id') ? active_tab['groups_id'] : nil
+    allocation_tag_id = user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id']
+    allocation_tag = AllocationTag.find(allocation_tag_id)
 
-    user_id = current_user.id
     curriculum_unit_id = params[:id]
 
     @curriculum_unit = CurriculumUnit.find(curriculum_unit_id)
-    @schedule = Schedule.all_by_offer_id_and_group_id_and_user_id(offer_id, group_id, user_id)
+    @schedule = Schedule.all_by_offer_id_and_group_id_and_user_id(allocation_tag.offer_id, allocation_tag.group_id, current_user.id)
 
   end
 
@@ -20,16 +18,13 @@ class SchedulesController < ApplicationController
   # Exibição de links da agenda
   ##
   def show
-    @link, user_id, date = true, current_user.id, Date.parse(params[:date])
-
+    allocation_tag_id = user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id']
+    allocation_tag = AllocationTag.find(allocation_tag_id)
     period = true
-    active_tab = session.include?('opened_tabs') ? session[:opened_tabs][session[:active_tab]] : []
-    offer_id = active_tab.include?('offers_id') ? active_tab['offers_id'] : nil
-    group_id = active_tab.include?('groups_id') ? active_tab['groups_id'] : nil
 
     # apresentacao dos links de todas as schedules
-    @link, offer_id, group_id = false, nil, nil unless params[:list_all_schedule].nil?
-    @schedule = Schedule.all_by_offer_id_and_group_id_and_user_id(offer_id, group_id, user_id, period, date)
+    @link = params[:list_all_schedule].nil? ? false : true
+    @schedule = Schedule.all_by_offer_id_and_group_id_and_user_id(allocation_tag.offer_id, allocation_tag.group_id, current_user.id, period, Date.parse(params[:date]))
 
     render :layout => false
   end

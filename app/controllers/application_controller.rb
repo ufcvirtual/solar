@@ -1,6 +1,10 @@
+# Variaveis de sessao do usuario
+# user_session {
+#   :opened => {},
+#   :active => ''
+# }
+
 # Variáveis de sessão utilizadas no sistema
-# - session[:opened_tabs]
-# - session[:active_tab]
 # - session[:return_to]
 # - session[:current_page]
 # - session[:forum_display_mode]
@@ -105,8 +109,6 @@ class ApplicationController < ActionController::Base
   ##
   def activate_tab
 
-    raise "entrou activate_tab"
-
     session[:active_tab] = params[:name] # setando aba ativa
     session[:current_menu] = nil # removendo menu selecionado
 
@@ -126,17 +128,16 @@ class ApplicationController < ActionController::Base
   def close_tab
     tab_name = params[:name]
 
-    # se aba que vai fechar é a ativa, manda pra aba home
-    session[:active_tab] = 'Home' if session[:active_tab] == tab_name
-    session[:opened_tabs].delete(tab_name) # remove do hash
+    user_session[:tabs][:active] = 'Home' if user_session[:tabs][:active] == tab_name
+    user_session[:tabs][:opened].delete(tab_name)
 
-    active_tab = session[:opened_tabs][session[:active_tab]]
+    active_tab = user_session[:tabs][:opened][user_session[:active]]
 
     # redireciona de acordo com o tipo de aba ativa
     if !active_tab.nil? and active_tab.include?('type') and active_tab['type'] == Tab_Type_Curriculum_Unit
-      redirect_to :controller => :curriculum_units, :action => :show, :id => active_tab["id"] #if active_tab["type"] == Tab_Type_Curriculum_Unit
+      redirect_to :controller => :curriculum_units, :action => :show, :id => active_tab['id']
     else
-      redirect_to :controller => :home #if active_tab["type"] == Tab_Type_Home
+      redirect_to :controller => :home
     end
   end
 
@@ -149,7 +150,7 @@ class ApplicationController < ActionController::Base
     id, allocation_tag_id = params[:id], params[:allocation_tag_id]
 
     # se hash nao existe, cria
-    session[:opened_tabs] = Hash.new if session[:opened_tabs].nil?
+    user_session[:tabs] = {:opened => {}, :active => nil} unless user_session.include?(:tabs)
 
     # se estourou numero de abas, volta para mysolar
     redirect = {:controller => :home} # Tab_Type_Home
@@ -167,33 +168,6 @@ class ApplicationController < ActionController::Base
     end
 
     redirect_to redirect
-
-
-#    name_tab, type = params[:name], params[:type] # Home ou Curriculum_Unit
-#    groups_id, offers_id, id = params[:groups_id], params[:offers_id], params[:id]
-#    allocation_tag_id = params[:allocation_tag_id]
-#
-#    # se hash nao existe, cria
-#    session[:opened_tabs] = Hash.new if session[:opened_tabs].nil?
-#
-#    # se estourou numero de abas, volta para mysolar
-#    redirect = {:controller => :home} # Tab_Type_Home
-#
-#    # abre abas ate um numero limitado; atualiza como ativa se aba ja existe
-#    if new_tab?(name_tab)
-#      hash_tab = {"id" => id, "type" => type, "groups_id" => groups_id, "offers_id" => offers_id, "allocation_tag_id" => allocation_tag_id}
-#
-#      # atualizando dados da sessao
-#      set_session_opened_tabs(name_tab, hash_tab)
-#
-#      # redireciona de acordo com o tipo de aba
-#      redirect = {
-#        :controller => :curriculum_units, :action => :show, :id => id, :groups_id => groups_id, :offers_id => offers_id
-#      } if type == Tab_Type_Curriculum_Unit
-#
-#    end
-#
-#    redirect_to redirect
 
   end
 

@@ -15,8 +15,8 @@ class UserSessionsController < ApplicationController
 
   def new
     # antes de criar uma nova sessao limpa qualquer outra existente
-    destroy_session
-    @user_session = UserSession.new
+#    destroy_session
+#    @user_session = UserSession.new
   end
 
   def create
@@ -61,9 +61,9 @@ class UserSessionsController < ApplicationController
   private
 
   def destroy_session
-    current_user_session.destroy unless current_user_session.nil?
-    #limpa sessao
-    reset_session
+#    current_user_session.destroy unless current_user_session.nil?
+#    #limpa sessao
+#    reset_session
   end
 
 end
