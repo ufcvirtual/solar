@@ -12,7 +12,7 @@ Contexto:
 
 
 Cenário: Exibir Foruns
-    Dado que estou logado com o usuario "user" e com a senha "user123"
+    Dado que estou logado com o usuario "user" e com a senha "123456"
         E que estou em "Meu Solar"
     Quando eu clicar no link "Quimica I"
         Então eu deverei ver "Atividades"
@@ -33,7 +33,7 @@ Cenário: Exibir Foruns
 
 
 Cenario: Exibir segundo forum
-    Dado que estou logado com o usuario "user" e com a senha "user123"
+    Dado que estou logado com o usuario "user" e com a senha "123456"
         E que estou em "Meu Solar"
     Quando eu clicar no link "Quimica I"
         Então eu deverei ver "Atividades"

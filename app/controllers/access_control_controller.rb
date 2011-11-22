@@ -4,8 +4,6 @@ class AccessControlController < ApplicationController
   include MessagesHelper
   include DiscussionPostsHelper
 
-  before_filter :require_user
-
   # exibicao das imagens do usuario
   def photo
     user = User.find_by_id(params[:id])

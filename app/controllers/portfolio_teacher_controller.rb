@@ -2,8 +2,6 @@ class PortfolioTeacherController < ApplicationController
 
   include FilesHelper
 
-  before_filter :require_user
-
   ##
   # Lista de portfolio dos alunos de uma turma
   ##

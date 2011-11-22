@@ -24,7 +24,7 @@ Contexto:
         | 2        | 4                  | 1           | 1      |
 
 Cenário: Acessar página do meuSolar e visualizar o Portlet de unidades curriculares
-	Dado que estou logado com o usuario "user" e com a senha "user123"
+	Dado que estou logado com o usuario "user" e com a senha "123456"
             E que estou em "Meu Solar"
 	Então eu deverei ver "Unidade Curricular"
             E eu deverei ver "Introducao a Linguistica"

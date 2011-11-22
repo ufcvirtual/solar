@@ -13,7 +13,7 @@ Contexto:
         | 1        | 3                  | 1           | 1      |
 
 Cenário: Listar aulas do curso
-    Dado que estou logado com o usuario "user" e com a senha "user123"
+    Dado que estou logado com o usuario "user" e com a senha "123456"
         E que estou em "Meu Solar"
     Quando eu clicar no link "Quimica I"
         Então eu deverei ver "Aulas"
@@ -28,7 +28,7 @@ Cenário: Listar aulas do curso
 
 #@wip
 #Cenário: Exibir aula do curso
-#    Dado que estou logado com o usuario "user" e com a senha "user123"
+#    Dado que estou logado com o usuario "user" e com a senha "123456"
 #        E que estou em "Meu Solar"
 #    Quando eu clicar em "Introducao a Linguistica"
 #        Então eu deverei ver "Aulas"

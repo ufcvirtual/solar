@@ -13,7 +13,7 @@ Contexto:
         | 5        | 6                  | 2           | 1      |
 
 Cenário: Exibir Agenda
-    Dado que estou logado com o usuario "user" e com a senha "user123"
+    Dado que estou logado com o usuario "user" e com a senha "123456"
         E que estou em "Meu Solar"
     Quando eu clicar no link "Quimica I"
         Então eu deverei ver "Informações Gerais"
@@ -39,7 +39,7 @@ Cenário: Exibir Agenda do professor
 
 #@wip
 #Cenário: Exibir agenda do portlet
-#     Dado que estou logado com o usuario "user" e com a senha "user123"
+#     Dado que estou logado com o usuario "user" e com a senha "123456"
 #        E que estou em "Meu Solar"
 #    Quando eu clicar em "Quimica I"
 #         Então eu deverei ver "Agenda"

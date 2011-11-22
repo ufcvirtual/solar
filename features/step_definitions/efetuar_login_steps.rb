@@ -51,10 +51,10 @@ Entao /^eu nao deverei ver "([^"]*)"$/ do |text|
 end
 
 Dado /^que estou logado no sistema com usuario user$/ do
-  #User.create(:login => 'user', :email => 'user@tester.com', :password => 'user123', :name => 'User')
+  #User.create(:login => 'user', :email => 'user@tester.com', :password => '123456', :name => 'User')
   visit path_to("Login")
   fill_in("login_form_name", :with => "user")
-  fill_in("Senha", :with => "user123")
+  fill_in("Senha", :with => "123456")
   click_button("Entrar")
   if page.respond_to? :should
     page.should have_content("Novidades")

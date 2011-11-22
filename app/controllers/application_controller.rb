@@ -51,15 +51,6 @@ class ApplicationController < ActionController::Base
   ###########################################
 
   ##
-  # Setando sistema para home e atualizando breadcrumb
-  ##
-  def set_active_tab_to_home
-    session[:active_tab] = 'Home'
-    clear_breadcrumb_after(BreadCrumb_First_Level) # limpa o breadcrumb
-    session[:current_menu] = nil # limpando menu acionado
-  end
-
-  ##
   # Seta os valores para o segundo nivel de breadcrumb
   ##
   def define_second_level_breadcrumb
@@ -105,20 +96,73 @@ class ApplicationController < ActionController::Base
   end
 
   ##
+  # Retorna (object)usuario logado
+  ##
+  def return_user
+    @user = User.find(current_user.id) unless current_user.nil?
+  end
+
+  ##
+  # Recupera o contexto que esta sendo acessado
+  ##
+  def application_context
+    # considera-se por default que o usuario esta acessando o Home
+    context_id = Tab_Type_Home
+    active_tab = session.include?("opened_tabs") ? session[:opened_tabs][session[:active_tab]] : []
+
+    if (!active_tab.nil? and params['action'] != 'mysolar' and params['controller'] != 'pages' and session.include?("opened_tabs") and active_tab.include?("type"))
+      context_id = active_tab["type"]
+    end
+
+    @context = Context.find(context_id).name
+
+    # recupera o curriculum unit da sessao do usuario, com a tab ativa
+    @context_param_id = active_tab["id"] if session.include?("opened_tabs") and (!active_tab.nil? and active_tab.include?("id"))
+  end
+
+  ##
+  # Seta o valor do menu corrente
+  ##
+  def current_menu
+    session[:current_menu] = params[:mid] if params.include?('mid')
+  end
+
+
+
+  ###############################
+  # TABS
+  ###############################
+
+
+  ##
+  # Setando sistema para home e atualizando breadcrumb
+  ##
+  def set_active_tab_to_home
+
+    user_session[:tabs] = {:opened => {'Home' => {'type' => Tab_Type_Home}}, :active => 'Home'} unless user_session.include?(:tabs)
+    user_session[:tabs][:active] = 'Home'
+
+#    session[:active_tab] = 'Home'
+#    clear_breadcrumb_after(BreadCrumb_First_Level) # limpa o breadcrumb
+#    session[:current_menu] = nil # limpando menu acionado
+  end
+
+  ##
   # Define aba ativa
   ##
   def activate_tab
 
-    session[:active_tab] = params[:name] # setando aba ativa
-    session[:current_menu] = nil # removendo menu selecionado
-
-    # verifica se existe array de abas ativas
-    opened_tabs = session[:opened_tabs].nil? ? nil : (session[:opened_tabs].has_key?(params[:name]) ? session[:opened_tabs][params[:name]] : nil)
-
-    unless opened_tabs.nil? or opened_tabs["type"] != Tab_Type_Curriculum_Unit
-      redirect_to :controller => :curriculum_units, :action => :show, :id => opened_tabs["id"] #, :groups_id => opened_tabs["groups_id"], :offers_id => opened_tabs["offers_id"]
-    else
+    # verifica se a aba que esta sendo acessada esta aberta
+    unless user_session[:tabs][:opened].has_key?(params[:name])
       redirect_to :controller => :home
+    else
+
+      user_session[:tabs][:active] = params[:name]
+      if user_session[:tabs][:opened][user_session[:tabs][:active]]['type'] == Tab_Type_Home
+        redirect_to :controller => :home
+      else
+        redirect_to :controller => :curriculum_units, :action => :show, :id => user_session[:tabs][:opened][user_session[:tabs][:active]]['id']
+      end
     end
   end
 
@@ -171,37 +215,6 @@ class ApplicationController < ActionController::Base
 
   end
 
-  ##
-  # Retorna (object)usuario logado
-  ##
-  def return_user
-    @user = User.find(current_user.id) unless current_user.nil?
-  end
-
-  ##
-  # Recupera o contexto que esta sendo acessado
-  ##
-  def application_context
-    # considera-se por default que o usuario esta acessando o Home
-    context_id = Tab_Type_Home
-    active_tab = session.include?("opened_tabs") ? session[:opened_tabs][session[:active_tab]] : []
-
-    if (!active_tab.nil? and params['action'] != 'mysolar' and params['controller'] != 'pages' and session.include?("opened_tabs") and active_tab.include?("type"))
-      context_id = active_tab["type"]
-    end
-
-    @context = Context.find(context_id).name
-
-    # recupera o curriculum unit da sessao do usuario, com a tab ativa
-    @context_param_id = active_tab["id"] if session.include?("opened_tabs") and (!active_tab.nil? and active_tab.include?("id"))
-  end
-
-  ##
-  # Seta o valor do menu corrente
-  ##
-  def current_menu
-    session[:current_menu] = params[:mid] if params.include?('mid')
-  end
 
   private
 
@@ -214,7 +227,7 @@ class ApplicationController < ActionController::Base
   # Verifica se existe uma aba criada com o nome passado
   ##
   def new_tab?(name_tab)
-    return (session[:opened_tabs].length < Max_Tabs_Open.to_i) || (session[:opened_tabs].has_key?(name_tab))
+    return (user_session[:tabs][:opened].length < Max_Tabs_Open.to_i) || (user_session[:tabs][:opened].has_key?(name_tab))
   end
 
   ##

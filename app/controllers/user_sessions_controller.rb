@@ -14,6 +14,8 @@ class UserSessionsController < ApplicationController
   end
 
   def new
+    user_session[:tabs] = {:opened => {'Home' => {'type' => Tab_Type_Home}}, :active => 'Home'}
+
     # antes de criar uma nova sessao limpa qualquer outra existente
 #    destroy_session
 #    @user_session = UserSession.new

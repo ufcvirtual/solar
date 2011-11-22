@@ -11,7 +11,7 @@ Contexto:
         | 3        | 4                  | 1           | 1      |
 
 Cenário: Acessar pagina de informacoes do curso
-    Dado que estou logado com o usuario "user" e com a senha "user123"
+    Dado que estou logado com o usuario "user" e com a senha "123456"
         E que estou em "Meu Solar"
         Quando eu clicar no link "Introducao a Linguistica"
     Então eu deverei ver "Participantes"

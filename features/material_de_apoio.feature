@@ -14,7 +14,7 @@ Dado que tenho "allocations"
 
 @wip
 Cenário: Exibir Material de apoio
-    Dado que estou logado com o usuario "user" e com a senha "user123"
+    Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"
         Quando eu clicar no link "Quimica I"
     Então eu deverei ver "Conteúdo"
@@ -31,7 +31,7 @@ Cenário: Exibir Material de apoio
 #COMBOBOX
 #@wip
 #Cenário: Trocar material de apoio com a combo
-#    Dado que estou logado com o usuario "user" e com a senha "user123"
+#    Dado que estou logado com o usuario "user" e com a senha "123456"
 #    E que estou em "Meu Solar"
 #        Quando eu clicar no link "Introducao a Linguistica"
 #    Então eu deverei ver "Conteúdo"

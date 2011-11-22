@@ -6,7 +6,7 @@ Funcionalidade: Efetuar login
   Para acessar os recursos do sistema
 
 Cenário: Usuário já logado com step
-	Dado que estou logado com o usuario "user" e com a senha "user123"
+	Dado que estou logado com o usuario "user" e com a senha "123456"
 		E que estou em "Login"
 	Então eu deverei ver "Unidade Curricular"
 
@@ -25,12 +25,12 @@ Esquema do Cenário: Login com usuários válidos e inválidos
 	Então eu deverei ver "<action>"
 Exemplos:
 	| login         |  password       |   action  		       |
-	| user          |  user123        | Unidade Curricular         |
+	| user          |  123456         | Unidade Curricular         |
 	| unknown_user  |  any_password   | Dados de login incorretos! |
 	| user          |  wrong_password | Dados de login incorretos! |
 
 Cenário: Efetuar logout
-	Dado que estou logado com o usuario "user" e com a senha "user123"
+	Dado que estou logado com o usuario "user" e com a senha "123456"
 		E que estou em "Meu Solar"
 	Quando eu clicar no link "Sair"
 	Então eu deverei ver "Usuário"

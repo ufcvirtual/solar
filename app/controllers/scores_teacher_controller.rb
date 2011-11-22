@@ -1,7 +1,5 @@
 class ScoresTeacherController < ApplicationController
 
-  before_filter :require_user
-
   before_filter :prepare_for_pagination, :only => [:list]
 
   # lista de alunos paginados

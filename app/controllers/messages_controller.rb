@@ -7,7 +7,6 @@ class MessagesController < ApplicationController
   include MysolarHelper
 
   before_filter :prepare_for_group_selection, :only => [:index]
-  before_filter :require_user
   before_filter :message_data
   before_filter :get_curriculum_units
   before_filter :prepare_for_pagination, :only => [:index]

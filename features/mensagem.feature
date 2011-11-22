@@ -23,7 +23,7 @@ Contexto:
 
 @wip 
 Cenário: Acessar página de mensagens a partir do "Meu Solar"
-    Dado que estou logado com o usuario "user" e com a senha "user123"
+    Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"
     Quando eu clicar no link "Mensagens"
     Entao eu deverei ver a migalha de pao "Home" > "Mensagens"    
@@ -45,7 +45,7 @@ Cenário: Acessar página de mensagens a partir do "Meu Solar"
 
 
 Cenário: Acessar página de mensagens a partir de "Unidade curricular"
-    Dado que estou logado com o usuario "user" e com a senha "user123"
+    Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"
     Quando eu clicar no link "Teoria da Literatura I"
     Entao eu deverei ver a migalha de pao "Home" > "Teoria da Literatura I"    
@@ -58,7 +58,7 @@ Cenário: Acessar página de mensagens a partir de "Unidade curricular"
         
 
 Cenário: Abrir mensagem
- Dado que estou logado com o usuario "user" e com a senha "user123"
+ Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"
     E eu clicar no link "Mensagens"
     Quando eu clicar no link "professor2"

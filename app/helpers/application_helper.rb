@@ -13,19 +13,15 @@ module ApplicationHelper
   # Ver se existe outro lugar melhor para este método.
   def render_tabs
     text = ""
-    #    tabs = session[:opened_tabs]
     tabs_opened = user_session[:tabs][:opened]
     tab_active = user_session[:tabs][:active]
-
-    #    raise "#{tabs_opened}"
-    #    {"Quimica I"=>{"id"=>"3", "type"=>"2", "allocation_tag_id"=>"3"}}
 
     unless tabs_opened.nil?
       tabs_opened.each do |name, link|
         text << "<li class="
         text << ((tab_active == name) ? "'mysolar_unit_active_tab'" : "'mysolar_unit_tab'") << ">"
         text << "<a href='/application/activate_tab?name=#{name}'>#{name}</a>"
-        text << "<a href='/application/close_tab?name=#{name}' class=tabs_close></a>" if (tabs_opened[tab_active]['type'] != Tab_Type_Home)
+        text << "<a href='/application/close_tab?name=#{name}' class='tabs_close'></a>" if (tabs_opened[name]['type'] != Tab_Type_Home)
         text << "</li>"
       end
     end
