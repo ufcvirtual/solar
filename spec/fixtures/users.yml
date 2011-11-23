@@ -71,7 +71,7 @@ hoog:
   books: Biblia, Pequeno Principe
   phrase: Timao eeeoo!!!
   site: timao.com
-  encrypted_password: bdfbae109d4523732b89e3fd2d248ed7fab97425
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
 
 ariovaldo:
@@ -99,7 +99,7 @@ ariovaldo:
   books: Biblia, Pequeno Principe
   phrase: Timao eeeoo!!!
   site: timao.com
-  encrypted_password: bdfbae109d4523732b89e3fd2d248ed7fab97425
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
 
 professor2:
@@ -127,7 +127,7 @@ professor2:
   books: Biblia, Pequeno Principe
   phrase: Timao eeeoo!!!
   site: timao.com
-  encrypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
   
 Professor:
@@ -155,7 +155,7 @@ Professor:
   books: Biblia, Pequeno Principe
   phrase: Timao eeeoo!!!
   site: timao.com
-  encrypted_password: 7c4a8d09ca3762af61e59520943dc26494f8941b
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
 
 aluno 1:

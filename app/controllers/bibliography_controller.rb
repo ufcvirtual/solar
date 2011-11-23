@@ -3,16 +3,12 @@ class BibliographyController < ApplicationController
   before_filter :prepare_for_group_selection, :only => [:list]
    
   def list
-
-    # pegando dados da sessao e nao da url
-    @groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-    @offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
+    allocations = AllocationTag.find_related_ids(active_tab['allocation_tag_id'])
 
     @bibliography = Bibliography.all
-    #@curriculum_unit = CurriculumUnit.all
-    @curriculum_unit = CurriculumUnit.find(params[:id])
-    @bibliography_filter= Bibliography.bibliography_filter(@groups_id,@offers_id)
-
+    @curriculum_unit = CurriculumUnit.find(active_tab['id'])
+    @bibliography_filter= Bibliography.bibliography_filter(allocations)
   end
 
 end

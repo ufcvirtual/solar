@@ -8,7 +8,6 @@ class PortfolioController < ApplicationController
   # Lista as atividades
   ##
   def list
-
     authorize! :list, Portfolio
 
     group_id = AllocationTag.find(user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id']).group_id
@@ -18,14 +17,12 @@ class PortfolioController < ApplicationController
 
     # area publica
     @public_area = Portfolio.public_area(group_id, current_user.id)
-
   end
 
   ##
   # Detalhes de uma atividade e arquivos da area publica
   ##
   def activity_details
-
     authorize! :activity_details, Portfolio
 
     assignment_id = params[:id]
@@ -80,16 +77,13 @@ class PortfolioController < ApplicationController
   # Delecao de arquivos da area individual
   ##
   def delete_file_individual_area
-
     authorize! :delete_file_individual_area, Portfolio
 
     assignment_id = params[:assignment_id]
     redirect = {:controller => :portfolio, :action => :activity_details, :id => assignment_id}
 
     respond_to do |format|
-
       begin
-
         # verifica periodo para delecao das atividades
         assignment = Portfolio.find(assignment_id)
         start_date = assignment.schedule.start_date
@@ -125,7 +119,6 @@ class PortfolioController < ApplicationController
         flash[:error] = t(:error_delete_file)
         format.html {redirect_to(redirect)}
       end
-
     end
   end
 
@@ -159,8 +152,7 @@ class PortfolioController < ApplicationController
         raise t(:error_no_file_sent) unless params.include?(:portfolio)
 
         # allocation_tag do grupo selecionada
-        allocation_tag_id = AllocationTag.find(:first, :conditions => ["group_id = ?", session[:opened_tabs][session[:active_tab]]["groups_id"]]).id
-
+        allocation_tag_id = user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id']
 
         @public_file = PublicFile.new params[:portfolio]
         @public_file.user_id = current_user.id
@@ -185,14 +177,11 @@ class PortfolioController < ApplicationController
 
     authorize! :delete_file_public_area, Portfolio
 
-    # unidade curricular
-    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+    curriculum_unit_id = user_session[:tabs][:opened][user_session[:tabs][:active]]['id']
     redirect = {:action => :list, :id => curriculum_unit_id}
 
     respond_to do |format|
-
       begin
-
         # arquivo a ser deletado
         file_name = PublicFile.find(params[:id]).attachment_file_name
         file_del = "#{::Rails.root.to_s}/media/portfolio/public_area/#{params[:id]}_#{file_name}"
@@ -217,7 +206,6 @@ class PortfolioController < ApplicationController
         flash[:success] = t(:error_delete_file)
         format.html { redirect_to(redirect) }
       end
-
     end
   end
 
@@ -225,7 +213,7 @@ class PortfolioController < ApplicationController
   def download_file_public_area
     authorize! :download_file_public_area, Portfolio
 
-    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+    curriculum_unit_id = user_session[:tabs][:opened][user_session[:tabs][:active]]["id"]
     download_file({:action => 'list', :id => curriculum_unit_id}, PublicFile.find(params[:id]).attachment.path)
   end
 

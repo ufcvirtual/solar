@@ -1,7 +1,6 @@
-include FilesHelper
-
 class MessagesController < ApplicationController
 
+  include FilesHelper
   include MessagesHelper
   include CurriculumUnitsHelper
   include MysolarHelper
@@ -380,12 +379,12 @@ class MessagesController < ApplicationController
   # verifica aba aberta, se Home ou se aba de unidade curricular
   # se Home, traz todas; senao, traz com filtro da unidade curricular
   def message_data
-    if session[:opened_tabs][session[:active_tab]]["type"] != Tab_Type_Home
-      group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-      offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
-      curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
 
-      @message_tag = get_label_name(curriculum_unit_id, offer_id, group_id)
+    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
+
+    if active_tab['type'] != Tab_Type_Home
+      allocation_tab = AllocationTag.find(active_tab['allocation_tag_id'])
+      @message_tag = get_label_name(allocation_tab)
     else
       @message_tag = nil
     end

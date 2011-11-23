@@ -3,15 +3,11 @@ class SchedulesController < ApplicationController
   before_filter :prepare_for_group_selection, :only => [:list]
 
   def list
+    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
+    allocation_tag = AllocationTag.find(active_tab['allocation_tag_id'])
 
-    allocation_tag_id = user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id']
-    allocation_tag = AllocationTag.find(allocation_tag_id)
-
-    curriculum_unit_id = params[:id]
-
-    @curriculum_unit = CurriculumUnit.find(curriculum_unit_id)
+    @curriculum_unit = CurriculumUnit.find(active_tab['id'])
     @schedule = Schedule.all_by_offer_id_and_group_id_and_user_id(allocation_tag.offer_id, allocation_tag.group_id, current_user.id)
-
   end
 
   ##

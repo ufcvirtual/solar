@@ -1,6 +1,6 @@
 <div class="block_wrapper">
 
-  <% if !(@lessons.nil? || @lessons.empty?) %>
+  <% unless @lessons.nil? or @lessons.empty? %>
     <div class="block_title">
       <h2><%= image_tag "icon_lesson.png", :alt=>t(:icon_lesson), :class=>(:block_title_icon) %><%= t(:lesson_title) %></h2>
     </div>
@@ -17,14 +17,14 @@
           <tr class="lines">
             <%if lesson.schedule.end_date.nil?%>
               <td>
-                <a class="link_content" href="javascript:show_lesson('/lessons/show?id=<%=curriculum_unit_id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
+                <a class="link_content" href="javascript:show_lesson('/lessons/show?id=<%=curriculum_unit_id%>&l=<%= lesson.lesson_id %>')"><%= lesson.name %></a>
               </td>
               <td>
                 <%= l lesson.schedule.start_date %>
               </td>
             <%elsif lesson.schedule.end_date >= Date.today%>
               <td>
-                <a class="link_content" href="javascript:show_lesson('/lessons/show?id=<%=curriculum_unit_id%>&l=<%=lesson.lessonid%>')"><%=lesson.name%></a>
+                <a class="link_content" href="javascript:show_lesson('/lessons/show?id=<%=curriculum_unit_id%>&l=<%= lesson.lesson_id %>')"><%= lesson.name %></a>
               </td>
               <td>
                 <%= l lesson.schedule.start_date %> - <%= l lesson.schedule.end_date %>

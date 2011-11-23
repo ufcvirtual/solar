@@ -1,8 +1,8 @@
 class LessonsController < ApplicationController
 
-  include LessonsHelper
+  #  include LessonsHelper
 
-#  before_filter :require_user, :only => [:list, :show]
+  #  before_filter :require_user, :only => [:list, :show]
   before_filter :prepare_for_group_selection, :only => [:list]
 
   before_filter :curriculum_data, :only => [:list, :show, :show_header, :show_content]
@@ -24,25 +24,21 @@ class LessonsController < ApplicationController
   def list
     authorize! :list, Lesson
 
-    # pegando dados da sessao e nao da url
-    groups_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-    offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
 
     # retorna aulas
-    @lessons = return_lessons_to_open(offers_id, groups_id)
+    @lessons = Lesson.to_open(active_tab['allocation_tag_id'])
 
     # guarda lista de aulas para navegacao
-    session[:lessons] = @lessons
+    user_session[:lessons] = @lessons
 
   end
 
   private
 
   def curriculum_data
-    if (params[:id])
-      # localiza unidade curricular
-      @curriculum_unit = CurriculumUnit.find(params[:id])
-    end
+    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
+    @curriculum_unit = CurriculumUnit.find(active_tab['id']) if active_tab.include?('id')
   end
 
 end

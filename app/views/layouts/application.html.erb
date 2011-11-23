@@ -74,15 +74,12 @@
             <%= image_tag 'superior_logo.png', :alt => t(:mysolar_alt_img_solar) %>
           </div>
           <ul id="mysolar_top_options">
-<%# unless current_user.errors.empty? %>
-<%# @user = User.find(@user.id) %>
-<%# end %>
             <li id="mysolar_id">
               <%= image_tag current_user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{current_user.nick}", :id => "image_user" %>
             </li>
             <li>
-              <% if can? :update, @user %>
-                <%= link_to @user.nick, edit_user_url(@user), :class => 'mysolar_top_link', :id => 'my_data' %>
+              <% if can? :update, current_user %>
+                <%= link_to current_user.nick, edit_user_url(current_user), :class => 'mysolar_top_link', :id => 'my_data' %>
               <% end %>
             </li>
             <li id="server_clock_wrapper">
@@ -132,18 +129,11 @@
         <!-- titulo das paginas -->
         <div class="block_wrapper">
 
-          <!--Mensagens de Erro, Alerta e Aviso-->
-          <% if flash[:success] || flash[:error] || flash[:notice] %>
-            <div id="flash_message" class="<%= flash.keys.first %>">
-              <%=raw message %>
+          <% flash.each do |name, msg| %>
+            <div id="flash_message" class="<%= name %>">
+              <%= content_tag :span, msg %>
             </div>
           <% end %>
-
-          <!-- flash aqui -->
-          <% flash.each do |name, msg| %>
-            <%= content_tag :div, msg, :id => "flash_#{name}" %>
-          <% end %>
-
 
           <div id="breadcrumb">
             <% unless session[:breadcrumb].nil? || session[:breadcrumb].length == 1 %>

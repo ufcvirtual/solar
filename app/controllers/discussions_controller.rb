@@ -9,21 +9,17 @@ class DiscussionsController < ApplicationController
   before_filter :prepare_for_group_selection, :only => [:list]
 
   def list
-
     authorize! :list, Discussion
 
-    active_tab = session[:opened_tabs][session[:active_tab]] || []
-
-    group_id = active_tab.include?("groups_id") ? active_tab["groups_id"] : -1
-    offer_id = active_tab.include?("offers_id") ? active_tab["offers_id"] : -1
-
-    @discussions = Discussion.all_by_offer_id_and_group_id(offer_id, group_id)
-
+    allocation_tag = AllocationTag.find(user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id'])
+    @discussions = Discussion.all_by_offer_id_and_group_id(allocation_tag.offer_id, allocation_tag.group_id)
   end
 
   def show
-    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-    offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
+    allocation_tag = AllocationTag.find(user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id'])
+
+    group_id = allocation_tag.group_id
+    offer_id = allocation_tag.offer_id
     
     discussion_id = params[:discussion_id]
     discussion_id = params[:id] if discussion_id.nil?

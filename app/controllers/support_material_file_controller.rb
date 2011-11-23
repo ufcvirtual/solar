@@ -1,15 +1,13 @@
-include FilesHelper
-
 class SupportMaterialFileController < ApplicationController
+
+  include FilesHelper
+
   before_filter :prepare_for_group_selection, :only => [:list]
 
   def list
     authorize! :list, SupportMaterialFile
 
-    #    offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
-    #    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-    #    user_id = current_user.id
-    allocation_tag_id = session[:opened_tabs][session[:active_tab]]["allocation_tag_id"]
+    allocation_tag_id = user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id']
 
     @list_files = SupportMaterialFile.search_files(allocation_tag_id) # Pegar por allocation tag e colocar o combo da seleção de turma
 
@@ -26,19 +24,19 @@ class SupportMaterialFileController < ApplicationController
   def download
     authorize! :download, SupportMaterialFile
 
-    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+    curriculum_unit_id = user_session[:tabs][:opened][user_session[:tabs][:active]]['id']
     download_file({:action => 'list', :id => curriculum_unit_id}, SupportMaterialFile.find(params[:id]).attachment.path)
   end
 
   def download_all_file_ziped
-    #raise "COLOCAR ALLOCATION TAG AQUI TAMBÉM!!!"
-    allocation_tag_id = session[:opened_tabs][session[:active_tab]]["allocation_tag_id"]
-
     authorize! :download_all_file_ziped, SupportMaterialFile
+
     require 'zip/zip'
+    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
+    allocation_tag_id = active_tab['allocation_tag_id']
 
     # Parâmetros de entrada pela página
-    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+    curriculum_unit_id = active_tab["id"]
     redirect_error = {:action => 'list', :id => curriculum_unit_id}
 
     # Consultas pela tabela
@@ -81,13 +79,14 @@ class SupportMaterialFileController < ApplicationController
   
   def download_folder_file_ziped
     authorize! :download_all_file_ziped, SupportMaterialFile
-    require 'zip/zip'
 
-    allocation_tag_id = session[:opened_tabs][session[:active_tab]]["allocation_tag_id"]
+    require 'zip/zip'
+    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
+    allocation_tag_id = active_tab['allocation_tag_id']
 
     lista_zips = Dir.glob('tmp/*') #lista dos arquivos .zip existentes no '/tmp'
 
-    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+    curriculum_unit_id = active_tab["id"]
     redirect_error = {:action => 'list', :id => curriculum_unit_id}
     folder = params[:folder]
         

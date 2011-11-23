@@ -12,7 +12,6 @@ class CurriculumUnitsController < ApplicationController
   # Apresentacao de todas as informacoes relevantes para o usuario
   ##
   def show
-
     curriculum_data
 
     allocation_tag = AllocationTag.find(@allocation_tag_id)
@@ -47,8 +46,9 @@ class CurriculumUnitsController < ApplicationController
 
   def informations
     curriculum_data
-    offers_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
-    @offer = offers_id.nil? ? nil : Offer.find(offers_id)
+
+    allocation_tag = AllocationTag.find(user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id'])
+    @offer = allocation_tag.offer_id.nil? ? nil : Offer.find(allocation_tag.offer_id)
   end
 
   def participants
@@ -67,14 +67,14 @@ class CurriculumUnitsController < ApplicationController
   private
 
   def curriculum_data
+    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
 
     # localiza unidade curricular
-    @curriculum_unit = CurriculumUnit.find(params[:id])
+    @curriculum_unit = CurriculumUnit.find(active_tab['id'])
 
     # localiza responsavel
     responsible = true
-    @allocation_tag_id = user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id']
-
+    @allocation_tag_id = active_tab['allocation_tag_id']
     @responsible = class_participants(@allocation_tag_id, responsible)
   end
 
