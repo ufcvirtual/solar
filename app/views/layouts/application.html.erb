@@ -74,13 +74,11 @@
             <%= image_tag 'superior_logo.png', :alt => t(:mysolar_alt_img_solar) %>
           </div>
           <ul id="mysolar_top_options">
-            <%# unless current_user.errors.empty? %>
-              <%# @user = User.find(@user.id) %>
-            <%# end %>
+<%# unless current_user.errors.empty? %>
+<%# @user = User.find(@user.id) %>
+<%# end %>
             <li id="mysolar_id">
-<%#= image_tag @user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{@user.nick}", :id => "image_user" %>
-<%#*<!-- adicionar esse link depois em algum lugar -->%>
-<%#= link_to t(:mysolar_mn_enrollment), :controller => "offers", :action => "showoffersbyuser" %>
+              <%= image_tag current_user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{current_user.nick}", :id => "image_user" %>
             </li>
             <li>
               <% if can? :update, @user %>
@@ -161,31 +159,29 @@
             <% end %>
           </div>
 
-          <!--
-<%# if curriculum_unit_selected? %>
-              <div id="page_title">
-                <h1><%#=t session[:breadcrumb].last[:name] %></h1>
-                <span class="block_content_text"><%#= raw(render_group_selection) %></span>
-              </div>
-<%# end %>
-        </div>
-          -->
-
-          <%= yield %>
-
+          <% if curriculum_unit_selected? %>
+            <div id="page_title">
+              <h1><%=t user_session[:breadcrumb].last[:name] %></h1>
+              <span class="block_content_text"><%= raw(render_group_selection) %></span>
+            </div>
+          <% end %>
         </div>
 
-        <!--
-        <div id="block_locale">
-          <ul>
-            <li><%= link_to "English", url_for(:locale => 'en-US') %></li>
-            <li><%= link_to "Português(BR)", url_for(:locale => 'pt-BR') %></li>
-          </ul>
-        </div>
-        -->
+        <%= yield %>
+
+      </div>
+
+      <!--
+      <div id="block_locale">
+        <ul>
+          <li><%= link_to "English", url_for(:locale => 'en-US') %></li>
+          <li><%= link_to "Português(BR)", url_for(:locale => 'pt-BR') %></li>
+        </ul>
+      </div>
+      -->
 
 <%#= render '/portlets/chat' %>
-      </div>
+    </div>
     </div>
   </body>
 </html>

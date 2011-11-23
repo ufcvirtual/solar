@@ -4,9 +4,7 @@ class CurriculumUnitsController < ApplicationController
   include DiscussionPostsHelper
   include MessagesHelper
 
-#  before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy, :show]
   before_filter :prepare_for_group_selection, :only => [:show, :participants, :informations]
-  #before_filter :curriculum_data, :only => [:show, :informations, :participants]
 
   #  load_and_authorize_resource
 
@@ -16,8 +14,6 @@ class CurriculumUnitsController < ApplicationController
   def show
 
     curriculum_data
-
-    # recuperando informações da sessao
 
     allocation_tag = AllocationTag.find(@allocation_tag_id)
 

@@ -44,7 +44,11 @@ class ApplicationController < ActionController::Base
   # Inicializa valores da sessao do usuario logado
   ##
   def start_user_session
-    user_session[:tabs] = {:opened => {'Home' => {'type' => Tab_Type_Home}}, :active => 'Home'} unless user_session.include?(:tabs) if user_signed_in?
+    return nil unless user_signed_in?
+
+    user_session[:tabs] = {:opened => {'Home' => {'type' => Tab_Type_Home}}, :active => 'Home'} unless user_session.include?(:tabs)
+    user_session[:breadcrumb] = []
+    user_session[:breadcrumb][BreadCrumb_First_Level] = { :name => 'Home', :url => {:controller => :home} }
   end
 
 

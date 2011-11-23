@@ -76,28 +76,26 @@ module ApplicationHelper
     return result
   end
 
+  ##
   # Renderiza a seleção de turmas
+  ##
   def render_group_selection(hash_params = nil)
-    
-    groups = CurriculumUnit.find_user_groups_by_curriculum_unit(session[:opened_tabs][session[:active_tab]]["id"], current_user.id)
-    if(groups.length > 1)
+    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
+
     result = '<form accept-charset="UTF-8" action="" method="' << request.method << '" name="groupSelectionForm" style="display:inline">'
     result <<  t(:group) << ":&nbsp"
-    
-      result << select_tag(
-        :selected_group,
-        options_from_collection_for_select(
-          groups,
-          :id,
-          :code_semester,
-          session[:opened_tabs][session[:active_tab]]["groups_id"]
-        ),
-        #{:onchange => "$(this).parent().submit();"}#Versao SEM AJAX
-        {:onchange => "reloadContentByForm($(this).parent());"}#Versao AJAX
-      )
-    
-    #Renderizando parametros
-    if !hash_params.nil?
+    result << select_tag(
+      :selected_group,
+      options_from_collection_for_select(
+        CurriculumUnit.find_user_groups_by_curriculum_unit(active_tab['id'], current_user.id),
+        :id, :code_semester,
+        active_tab['allocation_tag_id']
+      ),
+      #{:onchange => "$(this).parent().submit();"}#Versao SEM AJAX
+      {:onchange => "reloadContentByForm($(this).parent());"}#Versao AJAX
+    )
+
+    unless hash_params.nil?
       # ex: type=index&search=1 2 3
       hash_params.split("&").each { |item|
         individual_param = item.split("=")
@@ -118,21 +116,17 @@ module ApplicationHelper
   # Recupera o nome da unidade curricular em questao
   ##
   def curriculum_unit_name
+    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
 
-    act_tab = session[:opened_tabs][session[:active_tab]]
-
-    unless act_tab['id'].nil?
-      curriculum_unit_id = act_tab['id'] # recupera unidade curricular da sessao
-      CurriculumUnit.find(curriculum_unit_id).name
-    end
-
+    return CurriculumUnit.find(active_tab['id']).name if active_tab.include?('id')
+    return ''
   end
 
   ##
   # Verifica se uma unidade curricular já foi selecionada
   ##
   def curriculum_unit_selected?
-    return !session[:opened_tabs][session[:active_tab]]['id'].nil?
+    return !user_session[:tabs][:opened][user_session[:tabs][:active]]['id'].nil?
   end
 
 end
