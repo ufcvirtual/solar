@@ -1,49 +1,46 @@
 <div id="lesson_area">
   <div id="lesson_header">
-    <%=@curriculum_unit.name%> > <span id="lesson_name"></span>
+    <%= @curriculum_unit.name %> > <span id="lesson_name"></span>
   </div>
   <div id="lesson_content_header">
-    <% user_session[:opened_lesson] = params[:l] %>
-    <% lessons = user_session[:lessons].nil? ? nil : user_session[:lessons] %>
+    <% lessons_opened_id = params[:l] %>
+    <% lessons = @lessons %>
 
-    <% if !lessons.nil? %>
+    <% unless lessons.nil? %>
       <div id="lesson_click_area">
-
-        <div id="link_lesson_back" class="lesson_back"><a href="javascript:move(1)" border="0"><%= image_tag("lesson_left.png", :alt => '', :class => 'lesson_img_nav') %></a></div>
-
+        <div id="link_lesson_back" class="lesson_back">
+          <a href="javascript:move(1)"><%= image_tag("lesson_left.png", :class => 'lesson_img_nav') %></a>
+        </div>
         <div id="content-scroll">
           <div id="content-holder">
-
-            <% ret = lesson_list(lessons) %>
+            <% ret = lessons_list(lessons, lessons_opened_id) %>
             <% order_lesson = ret[1] %>
             <% total_lesson = ret[2] %>
             <%= raw ret[0] %>
-
           </div>
         </div>
-
-        <div id="link_lesson_next" class="lesson_next"><a href="javascript:move(2)" border="0"><%= image_tag("lesson_right.png", :alt => '', :class => 'lesson_img_nav') %></a></div>
-
+        <div id="link_lesson_next" class="lesson_next">
+          <a href="javascript:move(2)"><%= image_tag("lesson_right.png", :class => 'lesson_img_nav') %></a>
+        </div>
       </div>
 
       <span id="mov_atual" class="invisible"></span>
-      <span id="total_lesson" class="invisible"><%=lessons.length%></span>
+      <span id="total_lesson" class="invisible"><%= lessons.length %></span>
 
       <div id="lesson_goto">
         <%=t(:lesson_goto)%>&nbsp;
         <%=text_field_tag 'lesson_text_goto'%>&nbsp;/&nbsp;<%=total_lesson.to_s%>&nbsp;
-        <span><a href="javascript:goto_lesson()" border="0"><%=image_tag("lesson_goto.png", :alt=>t(:lesson_goto),  :class => "lesson_img_nav")%></a></span>
+        <span><a href="javascript:goto_lesson()"><%=image_tag("lesson_goto.png", :alt=>t(:lesson_goto),  :class => "lesson_img_nav")%></a></span>
       </div>
-
     <% end %>
   </div>
-
-  <% atual_lesson = user_session[:opened_lesson].nil? ? nil : Lesson.find(user_session[:opened_lesson])%>
 </div>
 
+<% atual_lesson = Lesson.find(lessons_opened_id) %>
+
 <script type="text/javascript">
-  window.parent.frame_lesson_content.location.href = "<%=atual_lesson.address%>";
-  $("#lesson_name").html("<%=t(:lesson)+ ' '+order_lesson.to_s+' / '+total_lesson.to_s%>");
+  window.parent.frame_lesson_content.location.href = "<%= atual_lesson.address %>";
+  $("#lesson_name").html("<%=t(:lesson) << ' ' << order_lesson.to_s << ' - ' << total_lesson.to_s %>");
   $("#mov_atual").html("<%=order_lesson%>");
   move(0);
 </script>
