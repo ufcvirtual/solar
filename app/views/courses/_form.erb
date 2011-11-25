@@ -1,0 +1,17 @@
+<% form_for(@course) do |f| %> 
+   
+
+<p> <%= f.label :name %><br />
+<%= f.text_field :name %> 
+</p> 
+
+<p> 
+<%= f.label :code %><br />
+<%= f.text_field :code %>
+</p> 
+
+<p> 
+<%= f.submit "Create" %>
+</p> <% end %> 
+
+<%= link_to 'Back', courses_path %>

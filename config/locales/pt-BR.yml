@@ -703,3 +703,11 @@
   menu_curriculum_unit: Unidade Curricular
   menu_registration: Matrícula
   menu_history: Historico
+  
+  #Course
+  
+  new_course_title: Cadastro de Curso
+  course_name: Nome do Curso 
+  course_code: Nome do Código 
+  
+  
