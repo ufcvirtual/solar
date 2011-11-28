@@ -14,14 +14,14 @@ module ApplicationHelper
   def render_tabs
     text = ""
     tabs_opened = user_session[:tabs][:opened]
-    tab_active = user_session[:tabs][:active]
+    tab_active_name = user_session[:tabs][:active]
 
     unless tabs_opened.nil?
       tabs_opened.each do |name, link|
         text << "<li class="
-        text << ((tab_active == name) ? "'mysolar_unit_active_tab'" : "'mysolar_unit_tab'") << ">"
+        text << ((tab_active_name == name) ? "'mysolar_unit_active_tab'" : "'mysolar_unit_tab'") << ">"
         text << "<a href='/application/activate_tab?name=#{name}'>#{name}</a>"
-        text << "<a href='/application/close_tab?name=#{name}' class='tabs_close'></a>" if (tabs_opened[name]['type'] != Tab_Type_Home)
+        text << "<a href='/application/close_tab?name=#{name}' class='tabs_close'></a>" if (tabs_opened[name][:url]['type'] != Tab_Type_Home)
         text << "</li>"
       end
     end
@@ -87,7 +87,7 @@ module ApplicationHelper
     result << select_tag(
       :selected_group,
       options_from_collection_for_select(
-        CurriculumUnit.find_user_groups_by_curriculum_unit(active_tab['id'], current_user.id),
+        CurriculumUnit.find_user_groups_by_curriculum_unit(active_tab[:url]['id'], current_user.id),
         :id, :code_semester,
         active_tab['allocation_tag_id']
       ),
@@ -116,17 +116,14 @@ module ApplicationHelper
   # Recupera o nome da unidade curricular em questao
   ##
   def curriculum_unit_name
-    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
-
-    return CurriculumUnit.find(active_tab['id']).name if active_tab.include?('id')
-    return ''
+    CurriculumUnit.find(active_tab[:url]['id']).name
   end
 
   ##
   # Verifica se uma unidade curricular já foi selecionada
   ##
   def curriculum_unit_selected?
-    return !user_session[:tabs][:opened][user_session[:tabs][:active]]['id'].nil?
+    return !user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['id'].nil?
   end
 
 end

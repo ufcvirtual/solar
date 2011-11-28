@@ -79,7 +79,8 @@
             </li>
             <li>
               <% if can? :update, current_user %>
-                <%= link_to current_user.nick, edit_user_url(current_user), :class => 'mysolar_top_link', :id => 'my_data' %>
+                <%= link_to current_user.nick, {:action=>"edit", :controller=>"devise/registrations"}, :class => 'mysolar_top_link', :id => 'my_data' %>
+              <%# edit_user_url(current_user)%>
               <% end %>
             </li>
             <li id="server_clock_wrapper">
@@ -135,13 +136,18 @@
             </div>
           <% end %>
 
+          <% active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]] %>
+
           <div id="breadcrumb">
-            <% unless session[:breadcrumb].nil? || session[:breadcrumb].length == 1 %>
-              <% session[:breadcrumb].each_with_index do |link, idx| %>
+
+            <% breadcrumb = user_session[:breadcrumb] + active_tab[:breadcrumb] %>
+
+            <% unless breadcrumb.length == 1 %>
+              <% breadcrumb.each_with_index do |link, idx| %>
                 <% unless link.nil? %>
                   <%= '>' if idx > 0 %>
                   <span style="text-decoration: underline;">
-                    <% link_name = (idx == 1)? link[:name] : t(:"#{link[:name]}") %>
+                    <% link_name = (idx == 0)? link[:name] : t(:"#{link[:name]}") %>
                     <%= link_to link_name, link[:url] %>
                   </span>
                 <% end %>
@@ -151,7 +157,7 @@
 
           <% if curriculum_unit_selected? %>
             <div id="page_title">
-              <h1><%=t user_session[:breadcrumb].last[:name] %></h1>
+              <h1><%=t active_tab[:breadcrumb].last[:name] unless active_tab[:breadcrumb].last.nil? %></h1>
               <span class="block_content_text"><%= raw(render_group_selection) %></span>
             </div>
           <% end %>

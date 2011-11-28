@@ -27,7 +27,7 @@ module NavigationHelpers
 	  '/users/password/new'
 
     when /Meus Dados/
-	 '/users/1/edit'
+	 '/users/edit'
 
     when /Matricula/
 	 '/offers/showoffersbyuser'

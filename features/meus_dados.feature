@@ -94,18 +94,18 @@ Esquema do Cenário: Alteração de senha
 Exemplos:
 	| antiga_senha         |  nova_senha       |  confirmar_senha      | action                                        |
 	| xyz                  |                   |                       | Senha antiga incorreta                        |
-    | xyz                  |  user456          |  user456              | Senha antiga incorreta                        |
-    | 123456               |                   |                       | A nova senha e a confirmação não conferem!    |
-    | 123456               |  user456          |  user789              | A nova senha e a confirmação não conferem!    |
-    |                      |  user456          |  user456              | Senha antiga vazia                            |
-    |                      |  user456          |  user789              | Senha antiga vazia                            |
-    | 123456               |                   |  user789              | A nova senha e a confirmação não conferem!    |
-    | 123456               |  user789          |                       | A nova senha e a confirmação não conferem!    |
-    | xyz                  |                   |  user789              | Senha antiga incorreta                        |
-    | xyz                  |  user789          |                       | Senha antiga incorreta                        |
-    |                      |                   |  user789              | Senha antiga vazia                            |
-    |                      |  user789          |                       | Senha antiga vazia                            |
-    | 123456               |  user789          |  user789              | Usuário alterado com sucesso!                 |
+        | xyz                  |  user456          |  user456              | Senha antiga incorreta                        |
+        | 123456               |                   |                       | A nova senha e a confirmação não conferem!    |
+        | 123456               |  user456          |  user789              | A nova senha e a confirmação não conferem!    |
+        |                      |  user456          |  user456              | Senha antiga vazia                            |
+        |                      |  user456          |  user789              | Senha antiga vazia                            |
+        | 123456               |                   |  user789              | A nova senha e a confirmação não conferem!    |
+        | 123456               |  user789          |                       | A nova senha e a confirmação não conferem!    |
+        | xyz                  |                   |  user789              | Senha antiga incorreta                        |
+        | xyz                  |  user789          |                       | Senha antiga incorreta                        |
+        |                      |                   |  user789              | Senha antiga vazia                            |
+        |                      |  user789          |                       | Senha antiga vazia                            |
+        | 123456               |  user789          |  user789              | Usuário alterado com sucesso!                 |
 
 Cenário:  Acessar Edição de foto
     Dado que estou logado com o usuario "user" e com a senha "123456"

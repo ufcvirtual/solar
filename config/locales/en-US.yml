@@ -192,9 +192,9 @@
   send: "Send"
   contact: "Contact"
   authentication: "Authentication"
-  old_password: "Old Password"
+  current_password: "Password"
   new_password: "New Password"
-  repeat_password: "Confirm Password"
+  password_confirmation: "Confirm Password"
   address_street: "Street"
   special_needs_question: "Do you have any disabilities ?"
   m: Male

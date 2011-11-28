@@ -2,14 +2,7 @@ class UsersController < ApplicationController
 
   include ApplicationHelper
 
-#	before_filter :require_no_user, :only => [:pwd_recovery, :pwd_recovery_send]
-#	before_filter :require_user, :only => [:index, :show, :mysolar, :edit, :update, :destroy, :update_photo]
-
   load_and_authorize_resource
-
-  ######################
-  # funcoes do RESTful #
-  ######################
 
   # GET /users
   def index
@@ -26,7 +19,9 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    # utilizando devise
     set_active_tab_to_home
+    redirect_to :action => "edit", :controller => "devise/registrations"
   end
 
   # POST /users
@@ -48,94 +43,7 @@ class UsersController < ApplicationController
 
   # PUT /users/1
   def update
-
-    #variavel para verificar se a mudança de senha passa nos testes
-    sucesso = true
-
-    #Evita que os parametros nulo fiquem como " " no banco
-    params[:user]["old_password"] = nil if params[:user]["old_password"] == ""
-    params[:user]["new_password"] = nil if params[:user]["new_password"] == ""
-    params[:user]["repeat_password"] = nil if params[:user]["repeat_password"] == ""
-
-    #Validação da mudança de senha. Só entra nesse if maior se algum dos campos for preenchido
-    # os campos são: Senha Antiga, Nova Senha e Confirmar Senha
-    if ( !params[:user]["old_password"].nil? ||
-          !params[:user]["new_password"].nil? ||
-          !params[:user]["repeat_password"].nil?)
-
-      antiga_senha  = params[:user]["old_password"]
-      nova_senha    = params[:user]["new_password"]
-      repetir_senha = params[:user]["repeat_password"]
-
-      if (!antiga_senha.nil?)
-        antiga_senha = CryptoProvider.encrypt(antiga_senha)
-      end
-
-      if (antiga_senha.nil?)
-        sucesso = false
-        @msg_password = t('empty_old_password')
-      else
-        if (antiga_senha == @user[:crypted_password])
-          if (nova_senha.nil? || repetir_senha.nil? || (nova_senha != repetir_senha))
-            sucesso = false
-            @msg_password = t("bad_password_confirmation")
-          end
-        else
-          sucesso = false
-          @msg_password = t('incorrect_old_password')
-        end
-      end
-    end
-
-    # Limpando os parametros da requisicao que nao fazem parte do MODEL
-    params[:user].delete("old_password")
-    params[:user].delete("new_password")
-    params[:user].delete("repeat_password")
-
-    #caso a mudança de senha esteja correta, altera a senha
-    @user.crypted_password = CryptoProvider.encrypt(nova_senha) if (sucesso && !nova_senha.nil?)
-
-    respond_to do |format|
-      if (sucesso && @user.update_attributes(params[:user]))
-        flash[:success] = t('successful_update')
-        format.html { redirect_to({:action => 'edit'})}
-        format.xml { head :ok }
-      else
-        #joga as mensagens de validação do modelo nas mensagens de erro
-        @msg_login =""
-        @msg_nick =""
-        @msg_email =""
-        @msg_institution =""
-        @msg_name =""
-        @msg_CPF =""
-        for msg in @user.errors.full_messages
-              if (msg.include?(t(:form_login))) 
-                @msg_login << msg 
-              end  
-              if (msg.include?(t(:form_password))) 
-                @msg_password << msg + "\n" 
-              end
-              if (msg.include?(t(:form_nick))) 
-                @msg_nick << msg + "\n"
-              end
-              if (msg.include?(t(:form_email))) 
-                @msg_email << msg + "\n" 
-              end
-              if (msg.include?(t(:form_institution))) 
-                @msg_institution << msg + "\n" 
-              end
-              if (msg.include?(t(:form_name)))
-                @msg_name << msg + "\n" 
-              end
-              if (msg.include?(t(:form_cpf))) 
-                @msg_CPF << msg + "\n" 
-              end
-        end
-        flash[:error] = t('unsuccessful_update')
-        format.html {render({:action => 'edit'})}
-        format.xml { render :xml => @user.errors, :status => :unprocessable_entity }
-      end
-    end
+    # utilizando devise
   end
 
   # DELETE /users/1
@@ -154,15 +62,14 @@ class UsersController < ApplicationController
 
   def mysolar
 
-    user_id  = current_user.id
     set_active_tab_to_home
-    @user = User.find(user_id) if current_user
+    @user = current_user
 
     ######
     # Portlet do calendario
     # destacando dias que possuem eventos
     ######
-    schedules_events = Schedule.all_by_offer_id_and_group_id_and_user_id(nil, nil, user_id)
+    schedules_events = Schedule.all_by_offer_id_and_group_id_and_user_id(nil, nil, current_user.id)
     schedules_events_dates = schedules_events.collect { |schedule_event|
       [schedule_event['start_date'], schedule_event['end_date']]
     }

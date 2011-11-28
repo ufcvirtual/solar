@@ -7,7 +7,7 @@ class SupportMaterialFileController < ApplicationController
   def list
     authorize! :list, SupportMaterialFile
 
-    allocation_tag_id = user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id']
+    allocation_tag_id = active_tab[:url]['allocation_tag_id']
 
     @list_files = SupportMaterialFile.search_files(allocation_tag_id) # Pegar por allocation tag e colocar o combo da seleção de turma
 
@@ -24,7 +24,7 @@ class SupportMaterialFileController < ApplicationController
   def download
     authorize! :download, SupportMaterialFile
 
-    curriculum_unit_id = user_session[:tabs][:opened][user_session[:tabs][:active]]['id']
+    curriculum_unit_id = active_tab[:url]['id']
     download_file({:action => 'list', :id => curriculum_unit_id}, SupportMaterialFile.find(params[:id]).attachment.path)
   end
 
@@ -32,11 +32,10 @@ class SupportMaterialFileController < ApplicationController
     authorize! :download_all_file_ziped, SupportMaterialFile
 
     require 'zip/zip'
-    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
-    allocation_tag_id = active_tab['allocation_tag_id']
+    allocation_tag_id = active_tab[:url]['allocation_tag_id']
 
     # Parâmetros de entrada pela página
-    curriculum_unit_id = active_tab["id"]
+    curriculum_unit_id = active_tab[:url]["id"]
     redirect_error = {:action => 'list', :id => curriculum_unit_id}
 
     # Consultas pela tabela
@@ -81,12 +80,11 @@ class SupportMaterialFileController < ApplicationController
     authorize! :download_all_file_ziped, SupportMaterialFile
 
     require 'zip/zip'
-    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
-    allocation_tag_id = active_tab['allocation_tag_id']
+    allocation_tag_id = active_tab[:url]['allocation_tag_id']
 
     lista_zips = Dir.glob('tmp/*') #lista dos arquivos .zip existentes no '/tmp'
 
-    curriculum_unit_id = active_tab["id"]
+    curriculum_unit_id = active_tab[:url]["id"]
     redirect_error = {:action => 'list', :id => curriculum_unit_id}
     folder = params[:folder]
         

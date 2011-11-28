@@ -9,10 +9,6 @@ Solar::Application.routes.draw do
 
   get "pages/index"
   get "access_control/index"
-#  get "users/mysolar"
-#  get "user_sessions/new"
-#  get "users/new"
-#  get "users/pwd_recovery"
   get "offers/showoffersbyuser"
 
   #################################
@@ -39,9 +35,6 @@ Solar::Application.routes.draw do
   resources :scores
 
   match "scores/:id/history_access" => "scores#history_access"
-
-#  match 'login' => "user_sessions#new", :as => :login
-#  match 'logout' => "user_sessions#destroy", :as => :logout
   match 'home' => "users#mysolar", :as => :home
 
   # See how all your routes lay out with "rake routes"
@@ -51,6 +44,7 @@ Solar::Application.routes.draw do
   match ':controller(/:action(/:id(.:format)))'
 
   #root :to => 'user_sessions#new'
+  root :to => "users#mysolar"
   root :to => 'pages#index'
 
 end

@@ -27,12 +27,11 @@ class LessonsController < ApplicationController
   private
 
   def curriculum_data
-    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
-    @curriculum_unit = CurriculumUnit.find(active_tab['id']) if active_tab.include?('id')
+    @curriculum_unit = CurriculumUnit.find(active_tab[:url]['id'])
   end
 
   def lessons_to_open
-    Lesson.to_open(user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id'])
+    Lesson.to_open(active_tab[:url]['allocation_tag_id'])
   end
 
 end

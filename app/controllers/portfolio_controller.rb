@@ -10,7 +10,7 @@ class PortfolioController < ApplicationController
   def list
     authorize! :list, Portfolio
 
-    group_id = AllocationTag.find(user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id']).group_id
+    group_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
 
     # listando atividades individuais pelo grupo_id em que o usuario esta inserido
     @individual_activities = Portfolio.individual_activities(group_id, current_user.id)
@@ -128,7 +128,7 @@ class PortfolioController < ApplicationController
   def download_file_comment
     authorize! :download_file_comment, Portfolio
 
-    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+    curriculum_unit_id = active_tab[:url]["id"]
     download_file({:action => :list, :id => curriculum_unit_id}, CommentFile.find(params[:id]).attachment.path)
   end
 
@@ -152,7 +152,7 @@ class PortfolioController < ApplicationController
         raise t(:error_no_file_sent) unless params.include?(:portfolio)
 
         # allocation_tag do grupo selecionada
-        allocation_tag_id = user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id']
+        allocation_tag_id = active_tab[:url]['allocation_tag_id']
 
         @public_file = PublicFile.new params[:portfolio]
         @public_file.user_id = current_user.id
@@ -177,7 +177,7 @@ class PortfolioController < ApplicationController
 
     authorize! :delete_file_public_area, Portfolio
 
-    curriculum_unit_id = user_session[:tabs][:opened][user_session[:tabs][:active]]['id']
+    curriculum_unit_id = active_tab[:url]['id']
     redirect = {:action => :list, :id => curriculum_unit_id}
 
     respond_to do |format|
@@ -213,7 +213,7 @@ class PortfolioController < ApplicationController
   def download_file_public_area
     authorize! :download_file_public_area, Portfolio
 
-    curriculum_unit_id = user_session[:tabs][:opened][user_session[:tabs][:active]]["id"]
+    curriculum_unit_id = active_tab[:url]["id"]
     download_file({:action => 'list', :id => curriculum_unit_id}, PublicFile.find(params[:id]).attachment.path)
   end
 

@@ -16,8 +16,7 @@ class CurriculumUnitsController < ApplicationController
 
     allocation_tag = AllocationTag.find(@allocation_tag_id)
 
-    message_tag = nil
-    message_tag = get_label_name(allocation_tag) #unless active_tab["type"] == Tab_Type_Home
+    message_tag = get_label_name(allocation_tag)
 
     # retorna aulas, posts nos foruns e mensagens relacionados a UC mais atuais
     @lessons = Lesson.to_open(@allocation_tag_id)
@@ -25,8 +24,6 @@ class CurriculumUnitsController < ApplicationController
     @discussion_posts = list_portlet_discussion_posts(allocation_tag.offer_id, allocation_tag.group_id)
     @messages = return_messages(current_user.id, 'portlet', message_tag)
     
-    session[:lessons] = @lessons
-
     # destacando dias que possuem eventos
     schedules_events = Schedule.all_by_offer_id_and_group_id_and_user_id(allocation_tag.offer_id, allocation_tag.group_id, current_user.id)
     @scheduled_events = schedules_events.collect { |schedule_event|
@@ -47,7 +44,7 @@ class CurriculumUnitsController < ApplicationController
   def informations
     curriculum_data
 
-    allocation_tag = AllocationTag.find(user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id'])
+    allocation_tag = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
     @offer = allocation_tag.offer_id.nil? ? nil : Offer.find(allocation_tag.offer_id)
   end
 
@@ -58,7 +55,7 @@ class CurriculumUnitsController < ApplicationController
 
     # retorna participantes da turma (que nao sejam responsaveis)
     responsible = false
-    group_id = AllocationTag.find(user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id']).group_id
+    group_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
 
     @participants = class_participants group_id, responsible
 
@@ -67,14 +64,13 @@ class CurriculumUnitsController < ApplicationController
   private
 
   def curriculum_data
-    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
-
     # localiza unidade curricular
-    @curriculum_unit = CurriculumUnit.find(active_tab['id'])
+    @curriculum_unit = CurriculumUnit.find(active_tab[:url]['id'])
 
     # localiza responsavel
     responsible = true
-    @allocation_tag_id = active_tab['allocation_tag_id']
+
+    @allocation_tag_id = active_tab[:url]['allocation_tag_id']
     @responsible = class_participants(@allocation_tag_id, responsible)
   end
 

@@ -380,10 +380,8 @@ class MessagesController < ApplicationController
   # se Home, traz todas; senao, traz com filtro da unidade curricular
   def message_data
 
-    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
-
-    if active_tab['type'] != Tab_Type_Home
-      allocation_tab = AllocationTag.find(active_tab['allocation_tag_id'])
+    unless active_tab[:url]['type'] == Tab_Type_Home
+      allocation_tab = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
       @message_tag = get_label_name(allocation_tab)
     else
       @message_tag = nil
@@ -395,7 +393,7 @@ class MessagesController < ApplicationController
 
   def update_tab_values
     # pegando id da sessao - unidade curricular aberta
-    id = session[:opened_tabs][session[:active_tab]]["id"]
+    id = active_tab[:url]["id"]
 
     @curriculum_unit_id = nil
     @offer_id = nil
@@ -408,14 +406,11 @@ class MessagesController < ApplicationController
       @offer_id = data[1]
       @group_id = data[2]
     else
-      if session[:opened_tabs][session[:active_tab]]["type"] != Tab_Type_Home
+      unless active_tab[:url]["type"] == Tab_Type_Home
+        allocation_tag = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
         @curriculum_unit_id = id
-
-        #offer = Offer.find_by_curriculum_unit_id(id)
-        @offer_id = session[:opened_tabs][session[:active_tab]]["offers_id"]
-
-        #group = Group.find_by_offer_id(@offer_id)
-        @group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
+        @offer_id = allocation_tag.offer_id
+        @group_id = allocation_tag.group_id
       end
     end
   end
@@ -423,12 +418,12 @@ class MessagesController < ApplicationController
   # contatos para montagem da tela
   def get_contacts
     # pegando id da sessao - unidade curricular aberta
-    id = session[:opened_tabs][session[:active_tab]]["id"]
+    id = active_tab[:url]["id"]
     update_tab_values
 
     #unidade curricular ativa ou home ("")
     if @curriculum_unit_id == id
-      @curriculum_units_name = (session[:opened_tabs][session[:active_tab]]["type"] == Tab_Type_Home) ? "" : session[:active_tab]
+      @curriculum_units_name = (active_tab[:url]["type"] == Tab_Type_Home) ? "" : user_session[:tabs][:active]
     else
       @curriculum_units_name = CurriculumUnit.find(@curriculum_unit_id).name unless @curriculum_unit_id.nil?
     end

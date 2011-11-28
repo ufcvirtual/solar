@@ -147,6 +147,10 @@
       two_words_connector: " e "
       last_word_connector: " e "
 
+  errors:
+    messages:
+      not_saved: "Não foi possível salvar modificações"
+
   # ActiveRecord
   activerecord:
     models:
@@ -158,6 +162,8 @@
       user:
         alternate_email: "E-mail alternativo"
         password: "Senha"
+        current_password: "Senha"
+        new_password: "Nova Senha"
         name: "Nome"
         nick: "Apelido"
         birthdate: "Data de Nascimento"
@@ -261,27 +267,27 @@
                   
 
   # Authlogic
-  authlogic:
-    error_messages:
-      login_blank: "não pode ficar em branco"
-      login_not_found: "não é válido"
-      login_invalid: "deve usar somente letras, números, espaços e .-_@ por favor."
-      consecutive_failed_logins_limit_exceeded: "Consecutivos logins que falharam limite excedido, a conta está desativada."
-      email_invalid: "deve ser semelhante a um endereço de email."
-      password_blank: "não pode ficar em branco"
-      password_invalid: "não é válido"
-      not_active: "Sua conta não está ativa"
-      not_confirmed: "Sua conta não está confirmada"
-      not_approved: "Sua conta não foi aprovada"
-      no_authentication_details: "Você não forneceu nenhum detalhe para autenticação."
-    models:
-      user_session: "SessãoUsuário"
-    attributes:
-      user_session:
-        login: "Usuário"
-        email: "Email"
-        password: "Senha"
-        remember_me: "Lembrar me"
+#  authlogic:
+#    error_messages:
+#      login_blank: "não pode ficar em branco"
+#      login_not_found: "não é válido"
+#      login_invalid: "deve usar somente letras, números, espaços e .-_@ por favor."
+#      consecutive_failed_logins_limit_exceeded: "Consecutivos logins que falharam limite excedido, a conta está desativada."
+#      email_invalid: "deve ser semelhante a um endereço de email."
+#      password_blank: "não pode ficar em branco"
+#      password_invalid: "não é válido"
+#      not_active: "Sua conta não está ativa"
+#      not_confirmed: "Sua conta não está confirmada"
+#      not_approved: "Sua conta não foi aprovada"
+#      no_authentication_details: "Você não forneceu nenhum detalhe para autenticação."
+#    models:
+#      user_session: "SessãoUsuário"
+#    attributes:
+#      user_session:
+#        login: "Usuário"
+#        email: "Email"
+#        password: "Senha"
+#        remember_me: "Lembrar me"
 
   all: "Todos"
   home: "Home"
@@ -322,6 +328,8 @@
   app_controller_require_no: "Por favor, efetue logout!"
 
   # forms de usuario em geral (para mensagens de validação)
+  username: "Login"
+
   form_login: "Login"
   form_username: "Login"
   form_alternate_email: "E-mail alternativo"
@@ -357,9 +365,9 @@
   send: "Enviar"
   contact: "Contato"
   authentication: "Autenticação"
-  old_password: "Senha Antiga"
+  current_password: "Senha"
   new_password: "Nova Senha"
-  repeat_password: "Confirmar Senha"
+  password_confirmation: "Confirmar Senha"
   address_street: "Rua"
   special_needs_question: "Portador de necessidades especiais?"
   m: Masculino
@@ -745,7 +753,7 @@
     registrations:
       signed_up: 'Welcome! You have signed up successfully.'
       inactive_signed_up: 'You have signed up successfully. However, we could not sign you in because your account is %{reason}.'
-      updated: 'You updated your account successfully.'
+      updated: 'Dados atualizados com sucesso.'
       destroyed: 'Bye! Your account was successfully cancelled. We hope to see you again soon.'
       reasons:
         inactive: 'inactive'

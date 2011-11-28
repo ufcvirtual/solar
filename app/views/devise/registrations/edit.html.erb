@@ -1,25 +1,23 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<div id="mysolar_panel_data">
+  <%=  image_tag "page_title_my_data.png" %>
+  <span style="font-weight: bold; font-size: 20px"><%= t(:my_data) %></span>
+  <hr style="border: none;background-color: #dedede;height: 1px;"></hr>
 
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
-  <%= devise_error_messages! %>
+  <div id="mydata_tab">
+    <div id="my_personal_data_tab" class="my_data_tab_generic" onclick="showPanel('my_personal_data')">
+      <%= t(:my_personal_data) %>
+    </div>
+    <%#*<div id="my_professional_data_tab" class="my_data_tab_generic" onclick="showPanel('my_professional_data')">%>
+      <%#= t(:my_professional_data) %>
+    <%#*</div>%>
+    <div id="my_cadastral_data_tab" class="my_data_tab_generic" onclick = "showPanel('my_cadastral_data')"  >
+      <%=  t(:my_cadastral_data) %>
+    </div>
+  </div>
 
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email %></div>
+  <%= render 'form_data' %>
 
-  <div><%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-  <%= f.password_field :password %></div>
+</div>
 
-  <div><%= f.label :password_confirmation %><br />
-  <%= f.password_field :password_confirmation %></div>
 
-  <div><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-  <%= f.password_field :current_password %></div>
 
-  <div><%= f.submit "Update" %></div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<p>Unhappy? <%= link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure?", :method => :delete %>.</p>
-
-<%= link_to "Back", :back %>

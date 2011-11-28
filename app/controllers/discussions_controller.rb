@@ -11,12 +11,12 @@ class DiscussionsController < ApplicationController
   def list
     authorize! :list, Discussion
 
-    allocation_tag = AllocationTag.find(user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id'])
+    allocation_tag = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
     @discussions = Discussion.all_by_offer_id_and_group_id(allocation_tag.offer_id, allocation_tag.group_id)
   end
 
   def show
-    allocation_tag = AllocationTag.find(user_session[:tabs][:opened][user_session[:tabs][:active]]['allocation_tag_id'])
+    allocation_tag = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
 
     group_id = allocation_tag.group_id
     offer_id = allocation_tag.offer_id

@@ -9,8 +9,7 @@ class ScoresController < ApplicationController
 
     authorize! :show, Score
 
-    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
-    allocation_tag = AllocationTag.find(active_tab['allocation_tag_id'])
+    allocation_tag = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
     student_id = params[:student_id] || current_user.id
 
     begin
@@ -30,7 +29,7 @@ class ScoresController < ApplicationController
 
       from_date = Date.today << 2 # dois meses atras
       until_date = Date.today
-      @amount = Score.find_amount_access_by_student_id_and_interval(active_tab['id'], @student.id, from_date, until_date)
+      @amount = Score.find_amount_access_by_student_id_and_interval(active_tab[:url]['id'], @student.id, from_date, until_date)
 
     rescue Exception => except
       respond_to do |format|
@@ -49,7 +48,7 @@ class ScoresController < ApplicationController
     @from_date = params['from-date']
     @until_date = params['until-date']
     @student_id = params[:id]
-    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+    curriculum_unit_id = active_tab[:url]["id"]
 
     # validar as datas
     @from_date = date_valid?(@from_date) ? Date.parse(@from_date) : Date.today << 2
@@ -69,7 +68,7 @@ class ScoresController < ApplicationController
     from_date = params['from-date']
     until_date = params['until-date']
     student_id = params['id']
-    curriculum_unit_id = session[:opened_tabs][session[:active_tab]]["id"]
+    curriculum_unit_id = active_tab[:url]["id"]
 
     # validar as datas
     from_date = Date.today << 2 unless date_valid?(@from_date)
