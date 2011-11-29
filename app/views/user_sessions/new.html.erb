@@ -1,5 +1,4 @@
 <head>
-  <%= stylesheet_link_tag "login.css" %>
   <script type="text/javascript">
     clear_lesson();
 
@@ -17,30 +16,32 @@
   </script>
 </head>
 
-<div style="position:absolute;height:100%;width:100%; display: table;">
+<div>
 
   <%= render 'header' %>  
+  <div id="login_content">
+    <!--Parte cinza-->
+    <div id="login_left_col">
+      <%= render 'menu' %>
 
-  <!--Parte cinza-->
-  <div id="login_left_col">
-    <%= render 'menu' %>
+      <p>
+        <%= t(:login_description1) %>
+      </p>
+      <p>
+        <%= t(:login_description2) %>
+      </p>
+    </div>
 
-    <p>
-      <%= t(:login_description1) %>
-    </p>
-    <p>
-      <%= t(:login_description2) %>
-    </p>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $("#login_form_name").focus();
+      });
+
+    </script>
+
+    <%= render 'form_login' %>
   </div>
-
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $("#login_form_name").focus();
-    });
-    
-  </script>
-
-  <%= render 'form_login' %>
+  <div style="clear:both"></div>
 
   <%= render 'footer' %>
 </div>

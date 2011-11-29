@@ -42,11 +42,6 @@ abbr,acronym { border:0;
     font-family: 'Trebuchet';
     src: url(/fonts/trebuc.ttf);
 }
-/*@font-face
-{
-    font-family: 'Myriad Pro';
-    src: url(/fonts/myriad.otf);
-}*/
 
 img{
     border: none;

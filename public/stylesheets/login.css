@@ -1,3 +1,43 @@
+/* css reset */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {
+    margin:0;
+    padding:0;
+}
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+fieldset,img {
+    border:0;
+}
+address,caption,cite,code,dfn,em,strong,th,var {
+    font-style:normal;
+    font-weight:normal;
+}
+ol,ul {
+    list-style:none;
+}
+caption,th {
+    text-align:left;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-size:100%;
+    font-weight:normal;
+}
+q:before,q:after {
+    content:'';
+}
+abbr,acronym { border:0;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 500;
+}
+
+/* amarelo: #F9DB43 */
+/* azul:    #1F4782 (comparar com o que estamos utilizando -#003E7A) */
+
 img{
     border: none;
 }
@@ -7,7 +47,7 @@ body{
     cursor              : default;
     margin              : 0px;
     padding             : 0px;
-    font-family         :'Myriad Pro','Trebuchet', Arial;
+    font-family: 'PT Sans', sans-serif;
 }
 
 /*Classes de mensagens flash*/
@@ -44,19 +84,18 @@ body{
 
 
 label{
-    color: #ffffff;
+    color: #003e7a;
     display: inline-block;
     white-space: nowrap;
     width: 90px;
-    font-family:'Verdana', Arial;
     white-space: nowrap;
+    text-align: right;
 }
 
 label.menor{
     display: inline-block;
     white-space: nowrap;
     width: auto;
-    font-family:'Verdana', Arial;
     font-size: 9pt;
     font-weight: normal;
     position:relative;
@@ -64,10 +103,8 @@ label.menor{
 }
 
 a{
-    color           : #FFF;
-    font-family     :'Myriad Pro','Trebuchet', Arial;
     text-decoration : none;
-    font-size       : 11pt;
+    font-size       : 10pt;
 }
 
 a.black{
@@ -81,7 +118,6 @@ a.menor{
     color           : #222;
     font-size       : 9pt;
     text-decoration : underline;
-    font-family     :'Myriad Pro','Trebuchet', Arial;
     text-decoration : none;
 }
 
@@ -96,10 +132,8 @@ select{
 }
 
 p{
-    font-family     :'Myriad Pro','Trebuchet', Arial;
-    padding-left    : 25px;
-    padding-right   : 25px;
-    padding-top     : 15px;
+    padding-left: 6px;
+    padding-top: 15px;
 }
 
 input{
@@ -119,178 +153,195 @@ textarea{
 
 /************ Layout do botões com seta ****************/
 .solar_button {
-	color           : #222;
+    color           : #222;
     background-color: #fff;
     vertical-align: baseline;
-	margin-top:0;
-	font-weight:bold;
-	padding:8px;
-	cursor: pointer;
+    margin-top:0;
+    font-weight:bold;
+    padding:8px;
+    cursor: pointer;
 }
 .solar_button_gray {
     background-color: #e7edee;
-	margin-top:0;
-	font-weight:bold;
-	padding:8px;
+    margin-top:0;
+    font-weight:bold;
+    padding:8px;
 }
 .solar_button_arrow {
-	height:10px;
-	background:url('../images/solar_button_arrow.png') no-repeat right bottom;
-	display:inline-block;
-	width:22px;
-	height:10px;
-	position:relative;
-	left:-25px;
-	top:-16px;
+    height:10px;
+    background:url('../images/solar_button_arrow.png') no-repeat right bottom;
+    display:inline-block;
+    width:22px;
+    height:10px;
+    position:relative;
+    left:-25px;
+    top:-16px;
 }
 
 .solar_button_arrow_gray {
-	height:10px;
-	background:url('/images/solar_button_arrow_gray.png') no-repeat right bottom;
-	display:inline-block;
+    height:10px;
+    background:url('/images/solar_button_arrow_gray.png') no-repeat right bottom;
+    display:inline-block;
 }
 .solar_button_blue {
-	color           : #fff;
+    color           : #fff;
     background-color: #003e7a;
     vertical-align: baseline;
-	margin-top:0;
-	font-weight:bold;
-	padding:8px;
-	cursor: pointer;
+    margin-top:0;
+    font-weight:bold;
+    padding:8px;
+    cursor: pointer;
 }
 .solar_button_arrow_blue {
-	height:10px;
-	background:url('../images/solar_button_arrow_blue.png') no-repeat right bottom;
-	display:inline-block;
-	width:22px;
-	height:10px;
-	position:relative;
-	left:-25px;
-	top:-16px;
+    height:10px;
+    background:url('../images/solar_button_arrow_blue.png') no-repeat right bottom;
+    display:inline-block;
+    width:22px;
+    height:10px;
+    position:relative;
+    left:-25px;
+    top:-16px;
 }
 
 
 /******************************** Página de login: *******/
-#login_right_col{
-    display: table-cell;
-    padding: 35px;
-    background-color        :#FFF;
+#login_header {
+    /*    background:url('../images/solar_logo.png') no-repeat center 15px #003e7a;*/
+    background: #003e7a;
+    height: 165px;
+    text-align: center;
+    border-bottom: 5px solid #F9DB43;
+}
+
+#login_header h1 {
+    padding: 30px 0 0 0;
+    margin: 0;
+}
+
+#login_header h2 {
+    color: #ffffff;
+    font-size: 14pt;
+    font-variant: small-caps;
+    font-family: 'Ubuntu Condensed', sans-serif;
+}
+
+#login_content {
+    width: 960px;
+    margin: 10px auto;
+    font-size: 10pt;
 }
 
 #login_left_col{
-    vertical-align          : top;
-    background-color        :#e8e8e8;
-    display: table-cell;
-    padding:0px;
-    margin:0px;
+    float: left;
+    width: 600px;
+    vertical-align: top;
+    /*    border-right: 1px solid #A5B5CD;*/
+    margin-right: 10px;
+    padding-right: 10px;
+}
+
+#login_left_col p {
+
+}
+
+#login_right_col{
+    /*    padding: 35px;*/
+    float: left;
 }
 
 #login_footer{
-    text-align          : center;
-    background-color    : #e8e8e8;
-    display             : table-row;
-    padding             : 0px;
-    margin              : 0px;
-    height              : 20px;
-    font-family         : 'Myriad Pro','Trebuchet', Arial;
-    font-size           : 9pt;
-    color               : #BBB;
-}
-
-#login_top{
-    background-color	: #003e7a;
-    background-image	: url('/images/logintopo.png');
-    background-repeat   : no-repeat;
-    width		: 100%;
-    height              : 95px;
-    z-index             : 1;
-    display             : table-cell;
-}
-#login_top_blank{
-    background-color	: #003e7a;
-    display             : table-cell;
-    width		: 100%;
-    height              : 95px;
+    text-align: center;
+    height: 20px;
+    font-size: 9pt;
+    margin-top: 20px;
+    color: #BBB;
 }
 
 #login_menu{
-    background-color        : #999;
-    line-height             :32px;
     border: none;
+    font-variant: small-caps;
+    border-bottom: 1px solid #A5B5CD;
+}
+
+#login_menu a {
+    font-size: 11pt;
+    color: #A5B5CD;
+    margin: 5px 5px 0 5px;
+}
+
+#login_menu_active {
+    color: #003e7a !important;
+    border-bottom: 2px solid #003e7a;
+}
+
+#login_menu a:hover {
+    color: #003e7a !important;
 }
 
 #login_form_enter{
-    position            : relative;
-    bottom              : 28px;
-    left                : 208px;
-    width               : 77px;
-    height              : 27px;
-    background-color    : #fff;
-    font-weight         : bold;
-    vertical-align      : middle;
+    position: relative;
+    bottom: 28px;
+    left: 208px;
+    width: 77px;
+    height: 27px;
+    background-color: #fff;
+    font-weight: bold;
+    vertical-align: middle;
 }
 
-
-#login_form_tab_blank{
-    background          : none;
-
-    display             :table-cell;
-    height              : 25px;
-    width               : 131px;
-
+#login_form_tab_entrar, #login_form_tab_cadastrar {
+    font-variant: small-caps;
+    font-size: 11pt;
 }
 
 #login_form_tab_entrar{
-    background-color    : #F9C153;
-    color               : #fff;
+    color: #003e7a;
 
-    display             :table-cell;
-    height              : 25px;
-    width               : 80px;
+    display: table-cell;
+    height: 25px;
 
-    font-family         :'Myriad Pro','Trebuchet', Arial;
-    font-size           : 12pt;
-    text-align          : center;
-    line-height         : 25px;
-    font-weight		: bold;
+    text-align: center;
+    line-height: 25px;
+    font-weight: bold;
 }
 
 #login_form_tab_cadastrar{
-    background-color    : #436bae;
-    color               : #fff;
+    display: table-cell;
+    height: 25px;
+    width: 109px;
 
-    display             : table-cell;
-    height              : 25px;
-    width               : 109px;
-
-    font-family         :'Myriad Pro','Trebuchet', Arial;
-    font-size           : 12pt;
-    text-align          : center;
-    line-height         : 25px;
-    font-weight		: bold;
+    text-align: center;
+    line-height: 25px;
+    font-weight: bold;
 }
 
+#login_form_tab_cadastrar a{
+    color: #A5B5CD;
+}
+
+#login_form_tab_cadastrar a:hover {
+    color: #003e7a;
+}
 
 #login_form{
-    width               : 305px;
-    height              : 170px;
+    border-top: 2px solid #003e7a;
+    width: 305px;
+    height: 170px;
 
-    padding-left        : 15px;
-    padding-top         : 15px;
+    padding-left: 15px;
+    padding-top: 5px;
 
-    background-color    : #F9C153;
-    color               : #FFF;
-    font-family         :'Myriad Pro','Trebuchet', Arial;
-    font-size           : 13pt;
-    line-height         : 30pt;
+    background-color: #E8EBEF;
+    color: #003e7a;
+    font-size: 13pt;
+    line-height: 30pt;
 }
 
 .login_form_text_field{
-    border          : 1px #D9A123 solid;
-    font-size       : 14pt;
-    font-family     :'Verdana', Arial;
-    width           : 198px;
-    height          : 24px;
+    border: 1px #D9A123 solid;
+    font-size: 14pt;
+    width: 198px;
+    height: 24px;
 }
 
 
@@ -307,10 +358,10 @@ textarea{
 }
 
 #login_form_new_user{
-     margin-left	: 65px;
-     margin-top		: 45px;
-     width		: 600px;
-     background-color	: #a2b5c7;
+    margin-left	: 65px;
+    margin-top		: 45px;
+    width		: 600px;
+    background-color	: #a2b5c7;
 
 }
 .login_form_link_return{
@@ -318,7 +369,6 @@ textarea{
     top			: 10px;
     background-color	: #fff;
     color           	: #222;
-    font-family         :'Myriad Pro','Trebuchet', Arial;
     text-align          : center;
     line-height         : 25px;
 }
@@ -350,7 +400,7 @@ textarea{
     margin-top          : 2px;
     font-size           : 14px;
     vertical-align: middle;
-    
+
 }
 .form_usuario_tr{
     height: 30px;
@@ -364,12 +414,53 @@ textarea{
     height              : 40px;
     width		: 495px;
     margin-left         : 65px;
-   vertical-align: bottom;
-   margin-bottom        : 40px;
+    vertical-align: bottom;
+    margin-bottom        : 40px;
 }
 #voltar{
     height              : 40px;
     width               : 80px;
     float               :right;
     margin-right        : 10px;
+}
+
+
+
+/****** security ******/
+
+.pwd_recovery_all{
+    margin-left             : 36px;
+}
+
+.pwd_recovery_title{
+    font-family             : 'Myriad Pro','Trebuchet', Arial;
+    padding                 : 0px;
+    font-size               : 14pt;
+    color					: #000;
+    font-weight				: bold;
+}
+.pwd_recovery_subtitle{
+    font-family             : 'Myriad Pro','Trebuchet', Arial;
+    padding                 : 0px;
+    font-size               : 13pt;
+    color					: #003e7a;
+    font-weight				: bold;
+}
+.pwd_recovery_text{
+    padding                 : 0px;
+    font-size               : 12pt;
+}
+.pwd_recovery_label{
+    text-align				: right;
+    margin-right			: 15px;
+    color					: #000;
+    font-size               : 13pt;
+}
+
+#pwdbox{
+    margin-left             : 136px;
+    width                   : 400px;
+}
+.pwd_recovery_table{
+    border-spacing:10px;
 }
