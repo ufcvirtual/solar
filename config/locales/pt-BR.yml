@@ -164,6 +164,7 @@
         password: "Senha"
         current_password: "Senha"
         new_password: "Nova Senha"
+        username: "Login"
         name: "Nome"
         nick: "Apelido"
         birthdate: "Data de Nascimento"

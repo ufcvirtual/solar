@@ -53,5 +53,15 @@ module Solar
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+
+    # layout
+    config.to_prepare do
+      Devise::SessionsController.layout "login"
+      Devise::RegistrationsController.layout proc{ |controller| user_signed_in? ? "application" : "login" }
+      Devise::ConfirmationsController.layout "login"
+      Devise::UnlocksController.layout "login"
+      Devise::PasswordsController.layout "login"
+    end
+
   end
 end

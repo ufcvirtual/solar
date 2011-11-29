@@ -36,7 +36,7 @@ Cenário: Acessar página de cadastro de novo usuário
 
 Cenário: Cadastrar novo usuário
     Dado que estou em "Cadastrar usuario"
-       E que eu preenchi "login" com "usuario"
+       E que eu preenchi "username" com "usuario"
        E que eu preenchi "password" com "123456"
        E que eu preenchi "password_confirmation" com "123456"
        E que eu preenchi "nick" com "usuario"
@@ -63,7 +63,7 @@ Cenário: Cadastrar novo usuário
 
 Cenário: Cadastrar novo usuário com dados inválidos
     Dado que estou em "Cadastrar usuario"
-       E que eu preenchi "login" com ""
+       E que eu preenchi "username" com ""
        E que eu preenchi "password" com "123456"
        E que eu preenchi "password_confirmation" com "123456"
        E que eu preenchi "nick" com "usuario"
@@ -89,7 +89,7 @@ Cenário: Cadastrar novo usuário com dados inválidos
 
 Cenário: Cadastrar novo usuário e sair logo em seguida
     Dado que estou em "Cadastrar usuario"
-       E que eu preenchi "login" com "usuario"
+       E que eu preenchi "username" com "usuario"
        E que eu preenchi "password" com "123456"
        E que eu preenchi "password_confirmation" com "123456"
        E que eu preenchi "nick" com "usuario"

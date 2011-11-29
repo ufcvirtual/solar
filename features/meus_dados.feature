@@ -56,8 +56,9 @@ Cenário: Alterar dados Pessoais
            E que eu preenchi "Livros" com "The Hobbit"
            E que eu preenchi "Frase" com "Bazzinga"
            E que eu preenchi "Site" com "www.kibeloco.com.br"
+           E que eu preenchi "Senha" com "123456"
     Quando eu clicar em "personal_submit"
-    Então eu deverei ver "Usuário alterado com sucesso!"
+    Então eu deverei ver "Dados atualizados com sucesso."
 
 
 Cenário: Alterar dados Cadastrais
@@ -80,6 +81,7 @@ Cenário: Alterar dados Cadastrais
        E que eu selecionei "Estado" com "CE"
        E que eu preenchi "País" com "Brasil"
        E que eu preenchi "Login" com "usuario"
+       E que eu preenchi "Senha" com "123456"
     Quando eu clicar em "cadastral_submit"
     Então eu deverei ver "Usuário alterado com sucesso!"
 

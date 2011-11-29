@@ -49,7 +49,7 @@
 
       });
     </script>
-    <%= render '/users/mysolar_photo' %>
+    <%= render '/users/mysolar_photo' if user_signed_in? %>
     <script type="text/javascript">
 
       var _gaq = _gaq || [];

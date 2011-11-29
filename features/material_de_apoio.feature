@@ -12,21 +12,21 @@ Dado que tenho "allocations"
 |    1    |         1         |     1      |    1   |
 |    1    |         9         |     1      |    1   |
 
-@wip
-Cenário: Exibir Material de apoio
-    Dado que estou logado com o usuario "user" e com a senha "123456"
-    E que estou em "Meu Solar"
-        Quando eu clicar no link "Quimica I"
-    Então eu deverei ver "Conteúdo"
-        Quando eu clicar no link "Conteúdo"
-    Então eu deverei ver o link "Material de Apoio"
-        Quando eu clicar no link "Material de Apoio"
-    Então eu deverei ver "aulas"
-       E eu deverei ver o link "2.pdf"
-       E eu deverei ver "fotos"
-       E eu deverei ver o link "1.png"
-       E eu deverei ver "outra pasta"
-       E eu deverei ver o link "3.pdf"
+#@wip
+#Cenário: Exibir Material de apoio
+#   Dado que estou logado com o usuario "user" e com a senha "123456"
+#   E que estou em "Meu Solar"
+#       Quando eu clicar no link "Quimica I"
+#   Então eu deverei ver "Conteúdo"
+#       Quando eu clicar no link "Conteúdo"
+#   Então eu deverei ver o link "Material de Apoio"
+#       Quando eu clicar no link "Material de Apoio"
+#   Então eu deverei ver "aulas"
+#      E eu deverei ver o link "2.pdf"
+#      E eu deverei ver "fotos"
+#      E eu deverei ver o link "1.png"
+#      E eu deverei ver "outra pasta"
+#      E eu deverei ver o link "3.pdf"
 
 #COMBOBOX
 #@wip

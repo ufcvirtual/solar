@@ -9,32 +9,16 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  layout :layout_by_resource
-
   before_filter :authenticate_user! # devise
   before_filter :start_user_session
 
-  ##
-  #  before_filter :define_second_level_breadcrumb, :only => [:activate_tab, :add_tab, :close_tab]
-  #  before_filter :define_third_level_breadcrumb
-  ##
-
   before_filter :define_third_level_breadcrumb
-
   before_filter :set_locale, :application_context, :current_menu
 
   # Mensagem de erro de permissão
   rescue_from CanCan::AccessDenied do |exception|
     flash[:error] = t(:no_permission)
     redirect_to :controller => :home
-  end
-
-  ##
-  # Verificando o layout a ser renderizado
-  ##
-  def layout_by_resource
-    return is_a?(Devise::SessionsController) ? 'login' : 'application'
-#    return devise_controller? ? 'login' : 'application'
   end
 
   ##
@@ -53,7 +37,6 @@ class ApplicationController < ActionController::Base
     } unless user_session.include?(:tabs)
 
     user_session[:breadcrumb] = [{ :name => 'Home', :url => {:controller => :application, :action => :activate_tab, :name => 'Home'} }]
-    #    user_session[:breadcrumb][BreadCrumb_First_Level] = { :name => 'home', :url => {:controller => :home} }
   end
 
 

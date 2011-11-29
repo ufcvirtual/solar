@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :username, :email, :alternate_email, :password, :password_confirmation, :remember_me, :name, :nick, :birthdate,
     :address, :address_number, :address_complement, :address_neighborhood, :zipcode, :country, :state, :city,
-    :telephone, :cell_phone, :institution, :gender, :cpf, :bio, :interests, :music, :movies, :books, :phrase, :site
+    :telephone, :cell_phone, :institution, :gender, :cpf, :bio, :interests, :music, :movies, :books, :phrase, :site, :photo
 
   validates :username, :length => { :within => 3.. 20 }, :uniqueness => true
   validates :email, :presence => true, :uniqueness => true, :confirmation => true
