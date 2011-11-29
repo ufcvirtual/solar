@@ -11,7 +11,7 @@
 </p> 
 
 <p> 
-<%= f.submit "Create" %>
+ <%= f.submit t(:confirm), :id=>"confirm", :class=>"solar_button", :alt=> t(:confirm) %>
 </p> <% end %> 
 
-<%= link_to 'Back', courses_path %>
+<%= link_to t(:back), courses_path %>

@@ -27,9 +27,10 @@
   # ActiveRecord
   activerecord:
     models:
-      user: "Usuario"
+      user: "User"
       curriculum_unit: "Curriculum Unit"
-      group: "Turma"
+      group: "Class"
+      course: "Course"
     attributes:
       user:
         alternate_email: "Alternate e-mail"
@@ -62,6 +63,9 @@
         photo_file_size: "File too large. The maximum size of your photo should be up to 700KB."
       curriculum_unit:
         category: "Category"
+      course: 
+        name: Name
+        code: Code 
       public_file:
         attachment_content_type: ""
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
@@ -534,3 +538,7 @@
   menu_curriculum_unit: Curriculum Unit
   menu_registration: Registration
   menu_history: History
+  
+  #Course
+  new_course_title: New Course
+  update_course_title: Update Course
