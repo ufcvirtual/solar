@@ -1,10 +1,10 @@
 <%= @object.association.variable rescue nil %>
 
 <div id="login_form_new_user">
-  <h2 class="form_usuario_h2"><%=t(:new_user_title)%></h2>
+  <h2 class="form_title"><%=t(:new_user_title)%></h2>
 
   <%= form_for(@user) do |f| %>
-    <i><%= t(:required_fields) %></i>
+    <span id="form_requirement"><%= t(:required_fields) %></span>
     <% if @user.errors.any? %>
       <div id="error_explanation">
         <%msgLogin =""%>

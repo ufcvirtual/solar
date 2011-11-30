@@ -50,6 +50,10 @@ body{
     font-family: 'PT Sans', sans-serif;
 }
 
+html, body {
+    height: 100%;
+}
+
 /*Classes de mensagens flash*/
 .error{
     font-size: 12pt;
@@ -132,15 +136,15 @@ select{
 }
 
 p{
-    padding-left: 6px;
     padding-top: 15px;
+    text-align: justify;
 }
 
 input{
-    color           : #222;
-    border          : none;
-    /*background-color: #fff;*/
-    border          : 1px solid #dedede;
+    color: #222;
+    border: none;
+    border: 1px solid #dedede;
+    font-family: 'PT Sans', sans-serif;
 }
 
 textarea{
@@ -151,37 +155,17 @@ textarea{
 
 /*################################################################################*/
 
-/************ Layout do botões com seta ****************/
+/************ Layout dos botões ****************/
+/* FIXME: a remover */
 .solar_button {
-    color           : #222;
+    color: #222;
     background-color: #fff;
     vertical-align: baseline;
-    margin-top:0;
     font-weight:bold;
     padding:8px;
     cursor: pointer;
-}
-.solar_button_gray {
-    background-color: #e7edee;
-    margin-top:0;
-    font-weight:bold;
-    padding:8px;
-}
-.solar_button_arrow {
-    height:10px;
-    background:url('../images/solar_button_arrow.png') no-repeat right bottom;
-    display:inline-block;
-    width:22px;
-    height:10px;
-    position:relative;
-    left:-25px;
-    top:-16px;
-}
-
-.solar_button_arrow_gray {
-    height:10px;
-    background:url('/images/solar_button_arrow_gray.png') no-repeat right bottom;
-    display:inline-block;
+    float: right;
+    margin-right: 24px;
 }
 .solar_button_blue {
     color           : #fff;
@@ -192,19 +176,13 @@ textarea{
     padding:8px;
     cursor: pointer;
 }
-.solar_button_arrow_blue {
-    height:10px;
-    background:url('../images/solar_button_arrow_blue.png') no-repeat right bottom;
-    display:inline-block;
-    width:22px;
-    height:10px;
-    position:relative;
-    left:-25px;
-    top:-16px;
-}
 
 
 /******************************** Página de login: *******/
+#login_wrapper {
+    min-height: 100%;
+    position: relative;
+}
 #login_header {
     /*    background:url('../images/solar_logo.png') no-repeat center 15px #003e7a;*/
     background: #003e7a;
@@ -229,14 +207,15 @@ textarea{
     width: 960px;
     margin: 10px auto;
     font-size: 10pt;
+    overflow:auto;
 }
 
 #login_left_col{
     float: left;
-    width: 600px;
+    width: 650px;
     vertical-align: top;
     /*    border-right: 1px solid #A5B5CD;*/
-    margin-right: 10px;
+    margin-right: 30px;
     padding-right: 10px;
 }
 
@@ -249,28 +228,44 @@ textarea{
     float: left;
 }
 
+#login_footer_push, #login_footer {
+    height: 60px;
+}
+
 #login_footer{
     text-align: center;
-    height: 20px;
+/*    height: 20px;*/
     font-size: 9pt;
-    margin-top: 20px;
+    margin: 0 auto;
+    width: 100%;
+/*    margin-top: 20px;*/
     color: #BBB;
+    bottom: 0;
+    position: absolute;
+}
+
+#login_footer img:first-child {
+    margin-right:20px;
 }
 
 #login_menu{
     border: none;
     font-variant: small-caps;
     border-bottom: 1px solid #A5B5CD;
+    margin-top:3px;
+    padding-bottom:5px;
+    font-family: 'Ubuntu Condensed', sans-serif;
 }
 
 #login_menu a {
-    font-size: 11pt;
+    font-size: 12pt;
     color: #A5B5CD;
-    margin: 5px 5px 0 5px;
+    margin: 5px 10px 0 0;
 }
 
 #login_menu_active {
     color: #003e7a !important;
+    padding-bottom: 3px;
     border-bottom: 2px solid #003e7a;
 }
 
@@ -289,61 +284,96 @@ textarea{
     vertical-align: middle;
 }
 
-#login_form_tab_entrar, #login_form_tab_cadastrar {
-    font-variant: small-caps;
-    font-size: 11pt;
-}
-
-#login_form_tab_entrar{
-    color: #003e7a;
-
-    display: table-cell;
-    height: 25px;
-
-    text-align: center;
-    line-height: 25px;
-    font-weight: bold;
-}
-
-#login_form_tab_cadastrar{
-    display: table-cell;
-    height: 25px;
-    width: 109px;
-
-    text-align: center;
-    line-height: 25px;
-    font-weight: bold;
-}
-
-#login_form_tab_cadastrar a{
-    color: #A5B5CD;
-}
-
-#login_form_tab_cadastrar a:hover {
-    color: #003e7a;
-}
-
 #login_form{
-    border-top: 2px solid #003e7a;
-    width: 305px;
-    height: 170px;
+    width: 270px;
+    height: 155px;
 
-    padding-left: 15px;
     padding-top: 5px;
 
     background-color: #E8EBEF;
     color: #003e7a;
-    font-size: 13pt;
+    font-size: 11pt;
     line-height: 30pt;
 }
 
+#login_form_header {
+    width: 270px;
+    border-bottom:1px solid #A5B5CD;
+}
+
+#login_form_tab_login, #login_form_tab_register {
+    font-variant: small-caps;
+    font-size: 12pt;
+    font-family: 'Ubuntu Condensed', sans-serif;
+}
+
+#login_form_tab_login{
+    border-bottom:2px solid #003e7a;
+
+    color: #003e7a;
+
+    display: table-cell;
+    height: 25px;
+
+    line-height: 25px;
+    
+}
+
+#login_form_tab_register{
+    display: table-cell;
+    height: 25px;
+    width: 109px;
+
+    line-height: 25px;
+
+    padding-left: 10px;
+    
+}
+
+#login_form_tab_register a{
+    color: #A5B5CD;
+    font-size: 12pt;
+}
+
+#login_form_tab_register a:hover {
+    color: #003e7a;
+}
+
 .login_form_text_field{
-    border: 1px #D9A123 solid;
-    font-size: 14pt;
-    width: 198px;
+    font-size: 11pt;
+    width: 150px;
     height: 24px;
 }
 
+.login_form_text_field:focus {
+    border: 1px solid #F9DB43;
+}
+
+#login_form_remember {
+    margin-left: 95px;
+    line-height: 20px;
+}
+
+#login_form_submit {
+    margin-top: 10px;
+}
+
+#login_form_submit input {
+    background-color: #003e7a;
+    background-image: -moz-linear-gradient(center top,#00519d,#003e7a);
+    background-image: -webkit-linear-gradient(top,#00519d,#003e7a);
+    color: #ffffff;
+    padding:5px 8px;
+}
+
+#login_locale {
+    margin-top: 5px;
+}
+
+#login_locale a {
+    color: #bbbbbb;
+    margin-right: 5px;
+}
 
 /******** cadastro de novo usuario com layout do login **********/
 .form_usuario_label {
@@ -358,12 +388,15 @@ textarea{
 }
 
 #login_form_new_user{
-    margin-left	: 65px;
-    margin-top		: 45px;
-    width		: 600px;
-    background-color	: #a2b5c7;
+/*    margin-left: 65px;*/
+    margin-top: 45px;
 
 }
+
+.new_user {
+    background-color: #E8EBEF;
+}
+
 .login_form_link_return{
     position		: relative;
     top			: 10px;
@@ -376,20 +409,21 @@ textarea{
     color           	: #222;
     text-decoration 	: none;
 }
-.form_usuario_h2{
-    text-align		: center;
-    color		: #003e7a;
-    font-size		: 18px;
-    font-weight		: bold;
-    padding-top		: 15px;
+.form_title{
+    font-variant: small-caps;
+    font-size: 12pt;
+    font-family: 'Ubuntu Condensed', sans-serif;
+    color: #003e7a;
+    border-bottom: 2px solid #003e7a;
+}
+#form_requirement {
+    font-style: italic;
 }
 .form_usuario_table{
-    margin-left		: auto;
-    margin-right	: auto;
-    color		: #fff;
-    width		: 480px;
-    line-height         : 15px;
-    margin-bottom       : 25px;
+    color: #fff;
+    
+    line-height: 15px;
+    margin-bottom: 25px;
 
 }
 .form_usuario_label {

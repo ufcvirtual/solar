@@ -4,16 +4,8 @@
   });
 </script>
 
-<div style="position:absolute;height:100%;width:100%; display: table;">
+<%= render '/user_sessions/header' %>
 
-  <%= render '/user_sessions/header' %>
-
-  <!--Parte cinza-->
-  <div id="login_left_col">
-    <%= render '/user_sessions/menu' %>
+<div id="login_content">
     <%= render 'form' %>
-  </div>
-
-  <!--Rodapé-->
-  <%= render '/user_sessions/footer' %>
 </div>
