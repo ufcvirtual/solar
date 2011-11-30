@@ -16,7 +16,11 @@ Solar::Application.config.black_list = {:mime_types => [
     'text/x-java',
     'application/x-java' # class
   ], :extensions => [
-    'jsp'
+    'jsp',
+    'exe',
+    'msi',
+    'js',
+    'php'
   ]
 }
 
