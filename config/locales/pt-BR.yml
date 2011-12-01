@@ -349,6 +349,10 @@
   # pagina de cadastro de usuario
   new_user_title: "Novo Cadastro"
   new_user_msg_ok: "Usuário criado com sucesso!"
+  new_user_personal_data: "Dados Pessoais"
+  new_user_access_data: "Acesso"
+  new_user_contact_data: "Contato"
+  new_user_other_info: "Outros"
   special_needs_yes: "Sim"
   special_needs_no: "Não"
   which: "Qual"

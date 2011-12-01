@@ -173,6 +173,10 @@
   # pagina de cadastro de usuario
   new_user_title: "New Register"
   new_user_msg_ok: "User created!"
+  new_user_personal_data: "Personal Data"
+  new_user_access_data: "Access Data"
+  new_user_contact_data: "Contact"
+  new_user_other_info: "Other"
   special_needs_yes: "Yes"
   special_needs_no: "No"
   which: "Which"

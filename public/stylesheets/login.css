@@ -35,6 +35,15 @@ h1, h2, h3, h4 {
     font-weight: 500;
 }
 
+#page_title {
+    border-bottom: 1px solid #D0D0D0;
+}
+
+#page_title h1{
+    font-size  : 14pt;
+    font-weight: 300;
+}
+
 /* amarelo: #F9DB43 */
 /* azul:    #1F4782 (comparar com o que estamos utilizando -#003E7A) */
 
@@ -82,14 +91,14 @@ html, body {
 }
 
 .field_with_errors{
-    display:inline-block;
+    display: inline-block;
     border: 1px solid #e03838;
 }
 
 
 label{
     color: #003e7a;
-    display: inline-block;
+/*    display: inline-block;*/
     white-space: nowrap;
     width: 90px;
     white-space: nowrap;
@@ -155,28 +164,52 @@ textarea{
 
 /*################################################################################*/
 
-/************ Layout dos botões ****************/
-/* FIXME: a remover */
-.solar_button {
-    color: #222;
-    background-color: #fff;
-    vertical-align: baseline;
-    font-weight:bold;
-    padding:8px;
-    cursor: pointer;
-    float: right;
-    margin-right: 24px;
+/* blocos */
+/* div que engloba tudo */
+.block_wrapper {
+    width: 100%;
+    margin-bottom: 15px;
+    overflow: hidden;
 }
-.solar_button_blue {
-    color           : #fff;
-    background-color: #003e7a;
+
+/* titulo do bloco */
+
+.block_title {
+    border-bottom: 2px solid #003E7A;
+    padding-bottom: 2px !important;
+}
+
+.block_title h2 {
+    display: inline;
+    font-family: 'Ubuntu Condensed', sans-serif;
+    font-size: 12pt;
+}
+
+/* definindo cor de background do conteudo e tamanho da fonte */
+.block_content {
+    font-size: 10pt;
+    background-color: #F5F8FB;
+    padding: 7px 0;
+}
+
+/************ Layout dos botões ****************/
+.solar_button {
+    color: #FFFFFF;
+    background-color: #003E7A;
+/*    background-image: -moz-linear-gradient(center top,#00519d,#003e7a);
+    background-image: -webkit-linear-gradient(top,#00519d,#003e7a);*/
+    background-image: -moz-linear-gradient(center top , #005CC0, #004898);
+    background-image: -webkit-linear-gradient(top,#005CC0,#004898);
     vertical-align: baseline;
-    margin-top:0;
     font-weight:bold;
-    padding:8px;
+    padding:5px 8px;
     cursor: pointer;
 }
 
+.solar_button:hover {
+    background-image: -moz-linear-gradient(center top , #016ee5, #005CC0);
+    background-image: -webkit-linear-gradient(top,#016ee5,#005CC0);
+}
 
 /******************************** Página de login: *******/
 #login_wrapper {
@@ -205,9 +238,10 @@ textarea{
 
 #login_content {
     width: 960px;
-    margin: 10px auto;
+    margin: 0 auto 10px auto;
+    padding-top: 10px;
     font-size: 10pt;
-    overflow:auto;
+    overflow: hidden;
 }
 
 #login_left_col{
@@ -296,6 +330,12 @@ textarea{
     line-height: 30pt;
 }
 
+#login_form label {
+    width: 75px;
+    margin-right: 5px;
+    display: inline-block;
+}
+
 #login_form_header {
     width: 270px;
     border-bottom:1px solid #A5B5CD;
@@ -350,8 +390,9 @@ textarea{
 }
 
 #login_form_remember {
-    margin-left: 95px;
+    margin-left: 85px;
     line-height: 20px;
+    text-decoration: underline;
 }
 
 #login_form_submit {
@@ -359,11 +400,8 @@ textarea{
 }
 
 #login_form_submit input {
-    background-color: #003e7a;
-    background-image: -moz-linear-gradient(center top,#00519d,#003e7a);
-    background-image: -webkit-linear-gradient(top,#00519d,#003e7a);
-    color: #ffffff;
-    padding:5px 8px;
+    float: right;
+    margin-right: 35px;
 }
 
 #login_locale {
@@ -375,26 +413,65 @@ textarea{
     margin-right: 5px;
 }
 
+.form_buttons {
+    text-align: center;
+}
+
 /******** cadastro de novo usuario com layout do login **********/
+.form_user_table {
+    margin-top: 5px;
+}
+
+.form_user_table td {
+    padding:2px 0;
+}
+
+.form_label {
+/*    background-color:red;*/
+/*    width: 170px;*/
+    text-align: right;
+    padding-right: 10px;
+}
+
+.form_label:first-child {
+    width: 160px;
+}
+
+.form_label label {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.form_inner_label {
+    padding: 0 10px 0 0;
+}
+
+.form_field {
+/*    background-color: blue;*/
+}
+
+.form_field input {
+    
+}
+
+td.form_error {
+    color: #E03838;
+    padding-left: 10px;
+}
+
+#special_needs_line {
+    display: none;
+}
+
 .form_usuario_label {
-
-    text-align		: right;
-    width		: 15px;
-    padding-right       : 10px;
-    padding-left        : 10px;
-    margin-top          : 2px;
-    font-size           : 14px;
-    white-space         : pre-wrap;
-}
-
-#login_form_new_user{
-/*    margin-left: 65px;*/
-    margin-top: 45px;
-
-}
-
-.new_user {
-    background-color: #E8EBEF;
+    text-align: right;
+    width: 15px;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-top: 2px;
+    font-size: 14px;
+    white-space: pre-wrap;
+    vertical-align: middle;
 }
 
 .login_form_link_return{
@@ -416,8 +493,12 @@ textarea{
     color: #003e7a;
     border-bottom: 2px solid #003e7a;
 }
-#form_requirement {
+.form_requirement {
     font-style: italic;
+    font-size: 9pt;
+    color: #666;
+    padding-bottom: 10px;
+    padding-left: 10px;
 }
 .form_usuario_table{
     color: #fff;
@@ -426,21 +507,23 @@ textarea{
     margin-bottom: 25px;
 
 }
-.form_usuario_label {
-    text-align		: right;
-    width		: 15px;
-    padding-right       : 20px;
-    padding-left        : 10px; 
-    margin-top          : 2px;
-    font-size           : 14px;
-    vertical-align: middle;
-
-}
 .form_usuario_tr{
     height: 30px;
 }
 .label_usuario{
     white-space         : pre-wrap;
+}
+
+#user_gender {
+    width: 50px;
+}
+
+#address_number, #address_neighborhood, #country, #telephone {
+    width: 105px;
+}
+
+#address_complement, #zipcode, #cell_phone {
+    width: 97%;
 }
 
 #actions{
