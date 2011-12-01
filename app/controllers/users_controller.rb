@@ -44,7 +44,8 @@ class UsersController < ApplicationController
 
   def update_photo
 
-    redirect = session[:breadcrumb].last[:url]
+    breadcrumb = active_tab[:breadcrumb].last
+    redirect = breadcrumb.nil? ? {:controller => :home} : breadcrumb[:url]
 
     respond_to do |format|
       begin

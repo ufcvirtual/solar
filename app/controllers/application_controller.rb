@@ -151,7 +151,7 @@ class ApplicationController < ActionController::Base
       redirect = { :controller => :curriculum_units, :action => :show, :id => id, :allocation_tag_id => allocation_tag_id } if type == Tab_Type_Curriculum_Unit
 
     end
-    redirect_to redirect
+    redirect_to redirect, :flash => flash
   end
 
   ##
