@@ -1,34 +1,46 @@
-<div id="login_right_col">
-  <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+<script type="text/javascript">
+  clear_lesson();
 
-    <div id="login_form_tab_blank">&nbsp;
-    </div>
-    <div id="login_form_tab_entrar">
-      <%= t(:sign_in)%>
-    </div>
-    <div id="login_form_tab_cadastrar">
-      <%= link_to t(:sign_up), new_registration_path(resource_name) %>
-    </div>
-    <div id="login_form">
-      <div><%= f.label t(:user_name) %>
-        <%= f.text_field :username, :id => 'username' %></div>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-25482431-1']);
+  _gaq.push(['_setDomainName', '.virtual.ufc.br']);
+  _gaq.push(['_trackPageview']);
 
-      <div><%= f.label :password %>
-        <%= f.password_field :password, :id => 'password' %></div>
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
 
-      <div id="username_form_secundario">
-        <div id="direita" style="width:100px; float: right; margin-top:28px;line-height: 11px; white-space:nowrap">
-          <%= f.submit t(:sign_in), :class => 'solar_button' %>
-        </div>
-        <div id="esquerda" style="margin-right: 120px;">
-          <% if devise_mapping.rememberable? -%>
-            <div><%= f.check_box :remember_me %> <%= f.label t(:remember_me) %></div>
-          <% end -%>
-          <%= link_to t(:forgot_my_password), new_password_path(resource_name) %>
-        </div>
-      </div>
+</script>
+
+<%= render 'header' %>
+
+<div id="login_content">
+  <!--Parte cinza-->
+  <div id="login_left_col">
+    <%= render 'menu' %>
+
+    <p>
+      <%= t(:login_description1) %>
+    </p>
+    <p>
+      <%= t(:login_description2) %>
+    </p>
+  </div>
+
+  <%= render 'form_login' %>
+
+  <% flash.each do |name, msg| %>
+    <div id="flash_message" class="<%= name %>">
+      <%= content_tag :span, msg %>
     </div>
-
   <% end %>
 
 </div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#login_form_name").focus();
+  });
+
+</script>

@@ -9,53 +9,13 @@ class UsersController < ApplicationController
     render :action => :mysolar
   end
 
-  # GET /users/new
-#  def new
-#    respond_to do |format|
-#      format.html {render :layout => 'login'}
-#      format.xml {render :xml => @user}
-#    end
-#  end
-
   # GET /users/1/edit
   def edit
     # utilizando devise
     set_active_tab_to_home
     render :action => :mysolar
-#    redirect_to :action => "edit", :controller => "devise/registrations"
+    #    redirect_to :action => "edit", :controller => "devise/registrations"
   end
-
-  # POST /users
-#  def create
-#
-#    @user.special_needs = nil if params["radio_special"] == "false"
-#    @user.password = params[:user]["password"]
-#
-#    if (@user.save)
-#      # gera aba para Home e redireciona
-#      redirect_to :action => "add_tab", :controller => "application", :name => 'Home', :type => Tab_Type_Home
-#    else
-#      respond_to do |format|
-#        format.html { render :action => "new", :layout => "login" }
-#        format.xml { render :xml => @user.errors, :status => :unprocessable_entity }
-#      end
-#    end
-#  end
-#
-#  # PUT /users/1
-#  def update
-#    # utilizando devise
-#  end
-#
-#  # DELETE /users/1
-#  def destroy
-#    @user.destroy
-#
-#    respond_to do |format|
-#      format.html { redirect_to(users_url, :notice => 'Usuario excluido com sucesso!') }
-#      format.xml  { head :ok }
-#    end
-#  end
 
   ##############################
   #     PORTLETS DO USUARIO    #
@@ -77,62 +37,6 @@ class UsersController < ApplicationController
 
     @scheduled_events = schedules_events_dates.flatten.uniq
   end
-
-  ######################################
-  # funcoes para verificacao de senhas #
-  ######################################
-
-#  def pwd_recovery
-#    #  	if !@user
-#    #      @user = User.new
-#    #    end
-#
-#    respond_to do |format|
-#      format.html { render :layout => 'login'}
-#      format.xml  { render :xml => @user }
-#    end
-#  end
-#
-#  def pwd_recovery_send
-#    #se existe usuario com esse cpf e email, recupera
-#    user_find = User.find_by_cpf_and_email(params[:user][:cpf], params[:user][:email])
-#
-#    if user_find
-#      #gera nova senha
-#      pwd = generate_password(8)
-#      user_find.password = pwd
-#
-#      #altera senha do usuario e envia email
-#      if user_find.save!
-#
-#        #remove sessao criada
-#        if current_user_session
-#          current_user_session.destroy
-#        end
-#
-#        #envia email
-#        Notifier.deliver_recovery_new_pwd(user_find, pwd)
-#
-#        flash[:notice] = t(:pwd_recovery_sucess_msg)
-#      else
-#        flash[:error] = t(:pwd_recovery_error_msg)
-#      end
-#
-#    else
-#      flash[:error] = t(:pwd_recovery_unknown_user_msg)
-#    end
-#
-#    respond_to do |format|
-#      format.html { redirect_to(users_pwd_recovery_url) }
-#      format.xml  { head :ok }
-#    end
-#
-#  end
-
-#  def generate_password(size)
-#    accept_chars = (('a'..'z').to_a + ('0'..'9').to_a) - %w(i o 0 1 l)
-#  	(1..size).collect{|a| accept_chars[rand(accept_chars.size)] }.join
-#  end
 
   ##################################
   # modificacao da foto do usuario #
