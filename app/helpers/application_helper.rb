@@ -89,11 +89,7 @@ module ApplicationHelper
       result <<  t(:group) << ":&nbsp"
       result << select_tag(
         :selected_group,
-        options_from_collection_for_select(
-          groups,
-          :id, :code_semester,
-          active_tab['allocation_tag_id']
-        ),
+        options_from_collection_for_select( groups, :id, :code_semester, AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id),
         #{:onchange => "$(this).parent().submit();"}#Versao SEM AJAX
         {:onchange => "reloadContentByForm($(this).parent());"}#Versao AJAX
       )
