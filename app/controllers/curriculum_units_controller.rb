@@ -14,16 +14,28 @@ class CurriculumUnitsController < ApplicationController
   def show
     curriculum_data
 
-    allocation_tag = AllocationTag.find(@allocation_tag_id)
+    allocations = AllocationTag.find_related_ids(@allocation_tag_id).join(', ');
 
-    message_tag = get_label_name(allocation_tag)
+    # relacionado diretamente com a allocation_tag
+    group = AllocationTag.find(@allocation_tag_id).group
+
+    # offer
+    al_offer = AllocationTag.where("id IN (#{allocations}) AND offer_id IS NOT NULL").first
+    offer = al_offer.nil? ? nil : al_offer.offer
+
+    # curriculum_unit
+    al_c_unit = AllocationTag.where("id IN (#{allocations}) AND curriculum_unit_id IS NOT NULL").first
+    curriculum_unit = al_c_unit.nil? ? CurriculumUnit.find(active_tab[:url]['id']) : al_c_unit.curriculum_unit
+
+    message_tag = get_label_name(group, offer, curriculum_unit)
+    allocation_tag = AllocationTag.find(@allocation_tag_id)
 
     # retorna aulas, posts nos foruns e mensagens relacionados a UC mais atuais
     @lessons = Lesson.to_open(@allocation_tag_id)
 
     @discussion_posts = list_portlet_discussion_posts(allocation_tag.offer_id, allocation_tag.group_id)
     @messages = return_messages(current_user.id, 'portlet', message_tag)
-    
+
     # destacando dias que possuem eventos
     schedules_events = Schedule.all_by_offer_id_and_group_id_and_user_id(allocation_tag.offer_id, allocation_tag.group_id, current_user.id)
     @scheduled_events = schedules_events.collect { |schedule_event|
@@ -44,12 +56,15 @@ class CurriculumUnitsController < ApplicationController
   def informations
     curriculum_data
 
-    allocation_tag = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
-    @offer = allocation_tag.offer_id.nil? ? nil : Offer.find(allocation_tag.offer_id)
+    allocations = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
+    allocation_offer = AllocationTag.all(:conditions => "id IN (#{allocations.join(', ')}) AND offer_id IS NOT NULL").first
+
+    @offer = allocation_offer.offer
   end
 
   def participants
     curriculum_data
+
     #retorna perfil em que se pede matricula (~aluno)
     @student_profile = student_profile
 
@@ -69,7 +84,6 @@ class CurriculumUnitsController < ApplicationController
 
     # localiza responsavel
     responsible = true
-
     @allocation_tag_id = active_tab[:url]['allocation_tag_id']
     @responsible = class_participants(@allocation_tag_id, responsible)
   end

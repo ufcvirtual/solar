@@ -19,9 +19,7 @@ module MessagesHelper
       where
         usm.user_id = #{userid}"  #filtra por usuario
 
-    if !tag.nil?
-      query_messages += " and ml.title = '#{tag}' "
-    end
+    query_messages += " and ml.title = '#{tag}' " unless tag.nil?
     
     case type
     when 'trashbox'
@@ -80,7 +78,9 @@ module MessagesHelper
     query_all = query_fields << query_messages << query_order
 
     # retorna total de mensagens
-    query_count = " select count(distinct m.id)total " << query_messages
+    query_count = " select count(distinct m.id) total " << query_messages
+
+#    raise "#{query_all}"
 
     @messages_count = ActiveRecord::Base.connection.execute(query_count)[0]["total"]
 
@@ -106,11 +106,8 @@ module MessagesHelper
         and NOT cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean) 
         and NOT cast( usm.status & '#{Message_Filter_Read.to_s(2)}' as boolean)
         and NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean)"
-
-    if !tag.nil?
-      query_messages += " and ml.title = '#{tag}' "
-    end
-
+    
+    query_messages += " and ml.title = '#{tag}' " unless tag.nil?
     total = Message.find_by_sql(query_messages)
 
     return total[0].n.to_i 
@@ -119,11 +116,9 @@ module MessagesHelper
   ##
   # Recupera label
   ##
-  def get_label_name(allocation_tag_obj)
-    group = allocation_tag_obj.group
-    offer = allocation_tag_obj.offer
-    c_unit = allocation_tag_obj.curriculum_unit
+  def get_label_name(group, offer, c_unit)
 
+    #formato: 2011.1|FOR|Física I
     label_name = ''
     label_name << offer.semester.slice(0..5) if offer.respond_to?('semester')
     label_name << '|' << group.code.slice(0..9) << '|' if group.respond_to?('code')
@@ -132,25 +127,6 @@ module MessagesHelper
     return label_name
   end
 
-  #pega label
-  #  def get_label_name (curriculum_unit_id = nil, offer_id = nil, group_id = nil)
-  #    label_name = ""
-  #    #formato: 2011.1|FOR|Física I
-  #    if !offer_id.nil?
-  #      offer = Offer.find(offer_id)
-  #      label_name << offer.semester.slice(0..5)
-  #    end
-  #    if !group_id.nil?
-  #      group = Group.find(group_id)
-  #      label_name << '|' << group.code.slice(0..9) << '|'
-  #    end
-  #    if !curriculum_unit_id.nil?
-  #      curriculum_unit = CurriculumUnit.find(curriculum_unit_id)
-  #      label_name << curriculum_unit.name.slice(0..15)
-  #    end
-  #    return label_name
-  #  end
-  
 
   #chamada depois de get_contacts para montar os contatos atualizados
   def show_contacts_updated
@@ -194,9 +170,7 @@ module MessagesHelper
     return true
   end
   
-
   #Verifica se a messagem foi postada hoje ou não!
-
   def sent_today?(message_datetime)
     message_datetime === Date.today
   end

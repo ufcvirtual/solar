@@ -60,7 +60,6 @@ Cenário: Alterar dados Pessoais
     Quando eu clicar em "personal_submit"
     Então eu deverei ver "Dados atualizados com sucesso."
 
-
 Cenário: Alterar dados Cadastrais
    Dado que estou logado com o usuario "user" e com a senha "123456"
        E que estou em "Meus Dados"
@@ -82,32 +81,33 @@ Cenário: Alterar dados Cadastrais
        E que eu preenchi "País" com "Brasil"
        E que eu preenchi "Login" com "usuario"
        E que eu preenchi "Senha" com "123456"
-    Quando eu clicar em "cadastral_submit"
-    Então eu deverei ver "Usuário alterado com sucesso!"
+    Quando eu clicar em "Alterar Dados"
+    Então eu deverei ver "Dados atualizados com sucesso."
 
 Esquema do Cenário: Alteração de senha
 	Dado que estou logado com o usuario "user" e com a senha "123456"
 		E que estou em "Meus Dados"
-		E preencho o campo "Senha Antiga" com "<antiga_senha>"
+		E preencho o campo "Senha" com "<antiga_senha>"
 		E preencho o campo "Nova Senha" com "<nova_senha>"
                 E preencho o campo "Confirmar Senha" com "<confirmar_senha>"
-	Quando eu clicar em "cadastral_submit"
+	Quando eu clicar em "Alterar Dados"
 	Então eu deverei ver "<action>"
 Exemplos:
 	| antiga_senha         |  nova_senha       |  confirmar_senha      | action                                        |
-	| xyz                  |                   |                       | Senha antiga incorreta                        |
-        | xyz                  |  user456          |  user456              | Senha antiga incorreta                        |
-        | 123456               |                   |                       | A nova senha e a confirmação não conferem!    |
-        | 123456               |  user456          |  user789              | A nova senha e a confirmação não conferem!    |
-        |                      |  user456          |  user456              | Senha antiga vazia                            |
-        |                      |  user456          |  user789              | Senha antiga vazia                            |
-        | 123456               |                   |  user789              | A nova senha e a confirmação não conferem!    |
-        | 123456               |  user789          |                       | A nova senha e a confirmação não conferem!    |
-        | xyz                  |                   |  user789              | Senha antiga incorreta                        |
-        | xyz                  |  user789          |                       | Senha antiga incorreta                        |
-        |                      |                   |  user789              | Senha antiga vazia                            |
-        |                      |  user789          |                       | Senha antiga vazia                            |
-        | 123456               |  user789          |  user789              | Usuário alterado com sucesso!                 |
+	| xyz                  |                   |                       | Senha não é válido(a)                         |
+        | xyz                  |  user456          |  user456              | Senha não é válido(a)                         |
+#        | 123456               |                   |                       | Senha não está de acordo com a confirmação    |
+        | 123456               |  user456          |  user789              | Senha não está de acordo com a confirmação    |
+        |                      |  user456          |  user456              | Senha deve ser preenchido(a)                  |
+        |                      |  user456          |  user789              | Senha deve ser preenchido(a)                  |
+        | 123456               |                   |  user789              | Senha não está de acordo com a confirmação    |
+        | 123456               |  user789          |                       | Senha não está de acordo com a confirmação    |
+        | xyz                  |                   |  user789              | Senha não é válido(a)                         |
+        | xyz                  |  user789          |                       | Senha não é válido(a)                         |
+        |                      |                   |  user789              | Senha deve ser preenchido(a)                  |
+        |                      |  user789          |                       | Senha deve ser preenchido(a)                  |
+        | 123456               |  user789          |  user789              | Dados atualizados com sucesso.                |
+
 
 Cenário:  Acessar Edição de foto
     Dado que estou logado com o usuario "user" e com a senha "123456"

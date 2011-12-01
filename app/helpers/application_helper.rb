@@ -90,7 +90,7 @@ module ApplicationHelper
       result << select_tag(
         :selected_group,
         options_from_collection_for_select(
-          CurriculumUnit.find_user_groups_by_curriculum_unit(active_tab[:url]['id'], current_user.id),
+          groups,
           :id, :code_semester,
           active_tab['allocation_tag_id']
         ),

@@ -16,15 +16,12 @@ class MessagesController < ApplicationController
 
   # listagem de mensagens (entrada, enviados, lixeira)
   def index
-    #recebe tipo de msg a ser consultada
+    # recebe tipo de msg a ser consultada
     @type = params[:type]
 
     @search_text = params[:search].nil? ? "" : params[:search]
     @type = 'search' unless @search_text.empty?
-
-    if @type.nil?
-      @type = "index"
-    end
+    @type = 'index' if @type.nil?
 
     # retorna mensagens
     @messages = return_messages(current_user.id, @type, @message_tag, @search_text.split(" "))
@@ -203,7 +200,19 @@ class MessagesController < ApplicationController
       individual_to = to.split(",").map{|r|r.strip}
 
       update_tab_values
-      label_name = get_label_name(@curriculum_unit_id, @offer_id, @group_id)
+
+      allocation_tag_id = active_tab[:url]['allocation_tag_id']
+      allocations = AllocationTag.find_related_ids(allocation_tag_id).join(', ');
+
+
+      # relacionado diretamente com a allocation_tag
+      group = AllocationTag.find(allocation_tag_id).group
+      al_offer = AllocationTag.where("id IN (#{allocations}) AND offer_id IS NOT NULL").first
+      offer = al_offer.nil? ? nil : al_offer.offer
+      al_c_unit = AllocationTag.where("id IN (#{allocations}) AND curriculum_unit_id IS NOT NULL").first
+      curriculum_unit = al_c_unit.nil? ? CurriculumUnit.find(active_tab[:url]['id']) : al_c_unit.curriculum_unit
+
+      label_name = get_label_name(group, offer, curriculum_unit)
 
       #informacoes do usuario atual para identificacao na msg
       atual_user = User.find(current_user.id)
@@ -381,8 +390,18 @@ class MessagesController < ApplicationController
   def message_data
 
     unless active_tab[:url]['type'] == Tab_Type_Home
-      allocation_tab = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
-      @message_tag = get_label_name(allocation_tab)
+
+      allocation_tag_id = active_tab[:url]['allocation_tag_id']
+      allocations = AllocationTag.find_related_ids(allocation_tag_id).join(', ');
+
+      # relacionado diretamente com a allocation_tag
+      group = AllocationTag.find(allocation_tag_id).group
+      al_offer = AllocationTag.where("id IN (#{allocations}) AND offer_id IS NOT NULL").first
+      offer = al_offer.nil? ? nil : al_offer.offer
+      al_c_unit = AllocationTag.where("id IN (#{allocations}) AND curriculum_unit_id IS NOT NULL").first
+      curriculum_unit = al_c_unit.nil? ? CurriculumUnit.find(active_tab[:url]['id']) : al_c_unit.curriculum_unit
+
+      @message_tag = get_label_name(group, offer, curriculum_unit)
     else
       @message_tag = nil
     end

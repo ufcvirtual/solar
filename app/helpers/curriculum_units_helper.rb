@@ -5,16 +5,16 @@ module CurriculumUnitsHelper
   #      o perfil responsavel esta marcado na tabela profiles (pode ser mais de um)
   #   busca em allocation_tags groups e offers relacionadas a unidade curricular
   def class_participants (group_allocation_tag_id = nil, flag_resp = false)
-#      group_allocation_tag_id = AllocationTag.find_by_group_id(group_id).id
-      query = "
-            SELECT   DISTINCT 
+
+    query = "
+            SELECT DISTINCT
               users.id, users.name as username, users.photo_file_name, users.email, p.name as profilename, p.id as profileid
             FROM
               allocations al
               inner join profiles p on al.profile_id = p.id
-              INNER JOIN users  ON al.user_id = users.id 
-              inner join 
-              (select 
+              INNER JOIN users  ON al.user_id = users.id
+              inner join
+              (select
                      root.id as allocation_tag_id,
                      CASE
                        WHEN group_id is not null THEN (select 'GROUP'::text)
@@ -90,10 +90,10 @@ module CurriculumUnitsHelper
             where
                 p.class_responsible = #{flag_resp} AND
                 al.status=#{Allocation_Activated} AND
-                hierarchy.allocation_tag_id = #{group_allocation_tag_id}
+                hierarchy.allocation_tag_id = ?
            ORDER BY profilename, users.name"
-      
-      return User.find_by_sql(query)
+
+    return User.find_by_sql [query, group_allocation_tag_id]
   end
 
   # Retorna participantes por unidade curricular passada que tenham status ativo
@@ -121,39 +121,39 @@ module CurriculumUnitsHelper
     else
       return nil
     end
-  
+
     return participants
   end
-  
+
   def message_class_participants (user_id, curriculum_unit, flag_resp = false, offer_id = nil, group_id = nil)
     if curriculum_unit
       allocation_tag_id = AllocationTag.find_by_group_id(curriculum_unit).id
-      
+
       # allocation_tag_id será a de unidade curricular se houver allocation para o usuário
       if Allocation.find_by_user_id_and_allocation_tag_id(user_id, allocation_tag_id).nil?
         if offer_id
           allocation_tag_id = AllocationTag.find_by_group_id(offer_id).id
-          
+
           # allocation_tag_id será a de oferta se houver allocation para o usuário
           if Allocation.find_by_user_id_and_allocation_tag_id(user_id, allocation_tag_id).nil?
             if group_id
               allocation_tag_id = AllocationTag.find_by_group_id(group_id).id
             end
-          end 
+          end
         elsif group_id # Caso oferta seja nil
           allocation_tag_id = AllocationTag.find_by_group_id(group_id).id
         end
       end
-      
+
       query = "
-            SELECT   DISTINCT 
+            SELECT   DISTINCT
               users.id, users.name as username, users.photo_file_name, users.email, p.name as profilename, p.id as profileid
             FROM
               allocations al
               inner join profiles p on al.profile_id = p.id
-              INNER JOIN users  ON al.user_id = users.id 
-              inner join 
-              (select 
+              INNER JOIN users  ON al.user_id = users.id
+              inner join
+              (select
                      root.id as allocation_tag_id,
                      CASE
                        WHEN group_id is not null THEN (select 'GROUP'::text)
@@ -237,7 +237,7 @@ module CurriculumUnitsHelper
                   (hierarchy.course_parent_tag_id = #{allocation_tag_id})
                 )
            ORDER BY profilename, users.name"
-      
+
       participants = User.find_by_sql(query)
 
       return participants
@@ -245,4 +245,5 @@ module CurriculumUnitsHelper
       return nil
     end
   end
+
 end

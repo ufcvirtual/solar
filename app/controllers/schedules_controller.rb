@@ -3,10 +3,11 @@ class SchedulesController < ApplicationController
   before_filter :prepare_for_group_selection, :only => [:list]
 
   def list
-    allocation_tag = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
+    allocation_tag_id = active_tab[:url]['allocation_tag_id']
+    allocations = AllocationTag.find_related_ids(allocation_tag_id)
 
     @curriculum_unit = CurriculumUnit.find(active_tab[:url]['id'])
-    @schedule = Schedule.all_by_offer_id_and_group_id_and_user_id(allocation_tag.offer_id, allocation_tag.group_id, current_user.id)
+    @schedule = Schedule.all_by_allocations(allocations.join(', '))
   end
 
   ##
@@ -14,12 +15,12 @@ class SchedulesController < ApplicationController
   ##
   def show
     allocation_tag_id = active_tab[:url]['allocation_tag_id']
-    allocation_tag = AllocationTag.find(allocation_tag_id)
+    allocations = AllocationTag.find_related_ids(allocation_tag_id)
     period = true
 
     # apresentacao dos links de todas as schedules
     @link = params[:list_all_schedule].nil? ? false : true
-    @schedule = Schedule.all_by_offer_id_and_group_id_and_user_id(allocation_tag.offer_id, allocation_tag.group_id, current_user.id, period, Date.parse(params[:date]))
+    @schedule = Schedule.all_by_allocations(allocations.join(', '), period, Date.parse(params[:date]))
 
     render :layout => false
   end

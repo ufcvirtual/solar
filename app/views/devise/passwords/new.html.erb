@@ -1,12 +1,51 @@
-<h2>Forgot your password?</h2>
+<div style="position:absolute;height:100%;width:100%; display: table;">
 
-<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
-  <%= devise_error_messages! %>
+  <%= render '/user_sessions/header' %>
 
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email %></div>
+  <!--Parte cinza-->
+  <div id="login_left_col">
+    <%= render '/user_sessions/menu' %>
+    <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
+      <%= devise_error_messages! %>
 
-  <div><%= f.submit "Send me reset password instructions" %></div>
-<% end %>
+      <div class="pwd_recovery_all">
+        <%= image_tag "page_title_pwd_recovery.png" %>
+        <span class="pwd_recovery_title">  <%=  t(:pwd_recovery_security)%></span>
+        <hr style="border: none; background-color: #d0dadd; height: 1px; width:80%; left: 0px; position: relative; top:-12px; margin-left:0px;"></hr>
 
-<%= render :partial => "devise/shared/links" %>
+        <p class="pwd_recovery_subtitle"><%= t(:pwd_recovery_subtitle)%></p>
+
+        <p class="pwd_recovery_text"><%= t(:pwd_recovery_text)%><br /><%= t(:pwd_recovery_text2)%></p>
+
+        <div id="pwdbox">
+          <%=raw message %>&nbsp;
+          <table border="0" class="pwd_recovery_table">
+            <tr>
+              <td align="right"><label for="email" class="pwd_recovery_label"><%= t(:pwd_recovery_email)%> </label></td>
+              <td><%= f.email_field :email, :id => 'email', :tabindex=>"1"%></td>
+            </tr>
+            <tr>
+              <td align="right"><label for="cpf" class="pwd_recovery_label"><%= t(:pwd_recovery_cpf)%> </label></td>
+              <td><%= f.text_field :cpf, :id => 'cpf', :tabindex=>"2"%></td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td colspan="2">
+                <div style="margin-left: 65px;margin-top: 30px; width: 385px; margin-bottom: 100px;">
+                  <div style="float:right; margin-right: 30px">
+                    <input type="button" value='<%=t(:pwd_recovery_back)%>' class="solar_button_blue" onclick="document.location.href='<%=login_path%>'"/>
+                    <%= f.submit t(:pwd_recovery_send), :class=>'solar_button_blue', :tabindex=>"3" %>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  <% end %>
+
+</div>
+
+<%= render '/user_sessions/footer' %>

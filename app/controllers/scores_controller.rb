@@ -6,13 +6,12 @@ class ScoresController < ApplicationController
   # Lista informacoes de acompanhamento do aluno
   ##
   def show
-
     authorize! :show, Score
 
-    allocation_tag = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
-    student_id = params[:student_id] || current_user.id
-
     begin
+
+      student_id = params[:student_id] || current_user.id
+      allocation_tag = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
 
       # verifica se o usuario logado tem permissao para consultar o usuario informado
       student = User.find(student_id)

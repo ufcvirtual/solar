@@ -7,12 +7,13 @@ Solar::Application.initialize!
 # configuracoes do action mailer para o gmail - porta: 465 ou 587
 ActionMailer::Base.raise_delivery_errors = false
 ActionMailer::Base.delivery_method = :smtp
+ActionMailer::Base.default_url_options[:host] = 'localhost:3000'
 ActionMailer::Base.smtp_settings = {
   :address              => 'smtp.gmail.com',
   :port                 => 587,
-  :domain               => 'www.teste.com',
-  :user_name            => 'teste@teste.com',
-  :password             => 'teste',
+  :domain               => 'www.virtual.ufc.br',
+  :user_name            => 'teste@virtual.ufc.br',
+  :password             => '!teste123',
   :authentication       => 'login',
   :enable_starttls_auto => true  }
 

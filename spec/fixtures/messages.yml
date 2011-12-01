@@ -1,5 +1,3 @@
-#messages
-
 message1:
   id: 1
   subject: 'assunto da msg 1'

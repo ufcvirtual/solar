@@ -11,8 +11,7 @@
       <% if curriculum_units.length > 0%>
         <% curriculum_units.each { |curriculum_unit| %>
           <li>
-
-            <% if ((session.include?('opened_tabs') and session[:opened_tabs].length >= Max_Tabs_Open.to_i) and (!session[:opened_tabs].has_key?(curriculum_unit["name"]))) %>
+            <% if ((user_session[:tabs][:opened].length >= Max_Tabs_Open.to_i) and (!user_session[:tabs][:opened].has_key?(curriculum_unit["name"]))) %>
               <% options = {} %>
               <% html_options = {:onclick => "javascript:alert('"+t(:curriculum_access_alert)+"');return false;", :class=>'link_content' } %>
             <% else %>
@@ -20,8 +19,6 @@
                 :type => Tab_Type_Curriculum_Unit,
                 :name => curriculum_unit["name"],
                 :id => curriculum_unit["id"],
-                #:offers_id => curriculum_unit["offer_id"],
-                #:groups_id => curriculum_unit["group_id"],
                 :allocation_tag_id => curriculum_unit["allocation_tag_id"]
               } %>
               <% html_options = {:class=>'link_content'} %>

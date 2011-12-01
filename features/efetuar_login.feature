@@ -19,8 +19,8 @@ Cenário: Usuário não logado tenta acessar "Meu Solar"
 Esquema do Cenário: Login com usuários válidos e inválidos
 	Dado que eu nao estou logado no sistema com usuario user
             E que estou em "Login"
-            E preencho o campo "Usuário" com "<login>"
-            E preencho o campo "Senha" com "<password>"
+            E preencho o campo "username" com "<login>"
+            E preencho o campo "password" com "<password>"
 	Quando eu clicar em "Entrar"
 	Então eu deverei ver "<action>"
 Exemplos:

@@ -73,7 +73,6 @@ class ApplicationController < ActionController::Base
   # O terceiro nivel eh definido quando o usuario acessa um link do menu lateral
   ##
   def define_third_level_breadcrumb
-
     user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb][BreadCrumb_Second_Level] = {
       :name => params[:bread], :url => params
     } if params.include?('bread')

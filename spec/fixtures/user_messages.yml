@@ -1,10 +1,9 @@
-#user_messages
-
 user_message1:
   id: 1
   message_id: 1
   user_id: 5
   status: 3
+
 user_message2:
   id: 2
   message_id: 1
@@ -16,6 +15,7 @@ user_message3:
   message_id: 2
   user_id: 5
   status: 0
+
 user_message4:
   id: 4
   message_id: 2
@@ -27,6 +27,7 @@ user_message5:
   message_id: 3
   user_id: 1
   status: 7
+
 user_message6:
   id: 6
   message_id: 3
@@ -38,6 +39,7 @@ user_message7:
   message_id: 4
   user_id: 1
   status: 3
+
 user_message8:
   id: 8
   message_id: 4
@@ -49,6 +51,7 @@ user_message9:
   message_id: 5
   user_id: 1
   status: 3
+
 user_message10:
   id: 10
   message_id: 5
@@ -60,6 +63,7 @@ user_message11:
   message_id: 6
   user_id: 1
   status: 3
+
 user_message12:
   id: 12
   message_id: 6
@@ -71,6 +75,7 @@ user_message13:
   message_id: 7
   user_id: 1
   status: 0
+
 user_message14:
   id: 14
   message_id: 7
@@ -82,6 +87,7 @@ user_message15:
   message_id: 8
   user_id: 1
   status: 0
+
 user_message16:
   id: 16
   message_id: 8

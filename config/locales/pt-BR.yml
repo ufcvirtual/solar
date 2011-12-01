@@ -149,7 +149,7 @@
 
   errors:
     messages:
-      not_saved: "Não foi possível salvar modificações"
+      not_saved: ""
 
   # ActiveRecord
   activerecord:
@@ -242,6 +242,8 @@
       models:
         user:
           attributes:
+            email:
+              not_found: "E-mail não encontrado"
             photo_content_type:
               invalid_type: "Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG."
         assignment_file:
@@ -319,7 +321,7 @@
   user_name: "Usuário"
   password: "Senha"
   remember_me: "Lembrar minha senha"
-  forgot_my_password: "esqueci a senha"
+  forgot_my_password: "Esqueci minha senha"
   expired: "Prazo encerrado"
   name: "Nome"
   size: "Tamanho"

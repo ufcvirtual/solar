@@ -5,9 +5,10 @@ Funcionalidade: Recuperar senha
   Eu quero recuperar minha senha
   Para acessar os recursos do sistema
 
+#@wip
 Cenário: Usuário acessa tela de recuperação de senha
 	Dado que estou em "Login"
-		E eu clico no link "esqueci a senha"
+		E eu clico no link "Esqueci minha senha"
 	Então eu deverei ver "Esqueceu a sua senha?"
 		E eu deverei ver "CPF"
 		E eu deverei ver "E-mail"
