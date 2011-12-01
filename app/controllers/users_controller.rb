@@ -232,9 +232,7 @@ class UsersController < ApplicationController
 
   def update_photo
 
-    redirect = {:controller => :home}
-
-    set_active_tab_to_home
+    redirect = session[:breadcrumb].last[:url]
 
     respond_to do |format|
       begin
