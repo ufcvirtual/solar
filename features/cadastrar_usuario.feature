@@ -20,7 +20,7 @@ Cenário: Acessar página de cadastro de novo usuário
                 E eu deverei ver "Nome"
 		E eu deverei ver "Data de Nascimento"
 		E eu deverei ver "Sexo"
-		E eu deverei ver "CPF"
+		E eu deverei ver "Cpf"
 		E eu deverei ver "Endereço"
 		E eu deverei ver "Número"
 		E eu deverei ver "Complemento"

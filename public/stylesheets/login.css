@@ -64,19 +64,18 @@ html, body {
 }
 
 /*Classes de mensagens flash*/
-.error{
-    font-size: 12pt;
+.error, .alert span{
+    color: #E03838;
+    font-size: 10pt;
     font-weight: bold;
-    color: #660000;
 }
-
 .notice{
-    font-size: 12pt;
+    font-size: 10pt;
     font-weight: bold;
     color: #2F4F2F;
 }
 .success{
-    font-size: 12pt;
+    font-size: 10pt;
     font-weight: bold;
     color: #2F4F2F;
 }

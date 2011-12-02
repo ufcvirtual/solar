@@ -14,9 +14,6 @@
       <label for="password"><%= t(:password) %></label>
       <%= f.password_field :password, :id => "password", :class => "login_form_text_field", :tabindex => "2"%>
       <div id="login_form_remember">
-        <% if devise_mapping.rememberable? -%>
-          <div><%= f.check_box :remember_me %> <%= f.label t(:remember_me) %></div>
-        <% end -%>
         <%= link_to t(:forgot_my_password), new_password_path(resource_name), :class => "black" %>
       </div>
       <div id="login_form_submit">
@@ -24,7 +21,7 @@
       </div>
     </div>
   <% end %>
-  <%= flash[:notice] %>
+  <%= flash[:notice] %>  
   <div id="login_locale">
     <%= image_tag "locales.png" %>
     <%= link_to "English", url_for(:locale => 'en-US') %>
