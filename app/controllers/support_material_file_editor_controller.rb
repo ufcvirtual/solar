@@ -25,7 +25,7 @@ class SupportMaterialFileEditorController < ApplicationController
     allocation_tag_id = 3
     @newlink = SupportMaterialFile.upload_link(allocation_tag_id, url)
 
-    flash[:notice] = "Link enviado com sucesso !"
+    flash[:success] = "Link enviado com sucesso !"
     redirect_to :controller => "support_material_file_editor", :action => "list"
     
   end

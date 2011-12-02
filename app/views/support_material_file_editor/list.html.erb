@@ -4,8 +4,6 @@
   });
 </script>
 
-
-
 Material de apoio do editor
 
 <div>
@@ -39,14 +37,22 @@ Material de apoio do editor
     </div>
   <%end%>
 
+  <br/>
 
   <% #Arquivo %>
   <div>
     <div>  Arquivo:  </div>
+    <br/>
     <div>
       <%= form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :support_material_file_editor,
           :action => :upload_files }) do |f| %>
         <%= f.file_field :attachment%>
+      </div>
+
+      <br/>
+      <div>  Pasta:  </div>
+      <div id="select_folder">
+        <%= f.select :folder, options_for_select([["",""]] + SupportMaterialFile.find(:all,:select => "DISTINCT folder", :conditions => ["folder != ? ", ""]).collect{|c| [c.folder]})%>
       </div>
 
       <br/>
@@ -55,18 +61,6 @@ Material de apoio do editor
         <%= f.submit t(:send), :id => "support_material", :class => "solar_button_gray"%>
       </span>
     <% end %>
-
-    <br/>
-    <br/>
-    <br/>
-
-    <div>  Pasta:  </div>
-
-    <% form_for :folder, :url => {:controller => "support_material_file_editor", :action => "create_folder"} do |ffolder| %>
-      <div id="select_folder">
-        <%= select_tag :folder, options_for_select([["",""]] + SupportMaterialFile.find(:all,:select => "DISTINCT folder", :conditions => ["folder != ? ", ""]).collect{|c| [c.folder]})%>
-      </div>
-    <%end%>
 
 
   </div>
