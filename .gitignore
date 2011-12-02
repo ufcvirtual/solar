@@ -26,5 +26,6 @@ media/portfolio/*
 media/discussions/*
 media/lessons/*
 media/messages/*
+media/support_material_file/*
 .rvmrc
 db/schema.rb

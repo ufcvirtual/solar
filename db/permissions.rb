@@ -79,8 +79,12 @@ resources_arr = [
   {:id => 59, :controller => 'courses', :action => 'update', :description => 'Editar um curso'},
   {:id => 60, :controller => 'courses', :action => 'show', :description => 'Mostrar um curso'},
   {:id => 61, :controller => 'courses', :action => 'index', :description => 'inicio'},
-  {:id => 62, :controller => 'courses', :action => 'destroy', :description => 'Apaga um curso'}
-  
+  {:id => 62, :controller => 'courses', :action => 'destroy', :description => 'Apaga um curso'},
+
+  #Material de apoio do editor
+  {:id => 63, :controller => 'support_material_file_editor', :action => 'list', :description => 'Visulalizar arquivos do material de apoio do editor'},
+  {:id => 64, :controller => 'support_material_file_editor', :action => 'upload_link', :description => 'Upload de link do material de apoio'},
+  {:id => 65, :controller => 'support_material_file_editor', :action => 'upload_files', :description => 'Upload de arquivos do material de apoio'},
 ]
 
 count = 0
@@ -258,13 +262,24 @@ perm_prof_titular = PermissionsResource.create([
     {:profile_id => 3, :resource_id => 51, :per_id => false},
     {:profile_id => 3, :resource_id => 53, :per_id => false},
 
-     # Material de apoio
+    # Material de apoio
     {:profile_id => 3, :resource_id => 54, :per_id => false},
     {:profile_id => 3, :resource_id => 55, :per_id => false},
     {:profile_id => 3, :resource_id => 56, :per_id => false},
     {:profile_id => 3, :resource_id => 57, :per_id => false}
     
   ])
+
+
+##############################
+#           EDITOR           #
+##############################
+perm_editor = PermissionsResource.create([
+    {:profile_id => 5, :resource_id => 58, :per_id => false},
+    {:profile_id => 5, :resource_id => 59, :per_id => false},
+    {:profile_id => 5, :resource_id => 60, :per_id => false}
+  ])
+
 
 ######## PERMISSIONS MENUS #########
 
@@ -316,5 +331,23 @@ PermissionsMenu.create([
     {:profile_id => 3, :menu_id => 100},
     #{:profile_id => 3, :menu_id => 70},
     {:profile_id => 3, :menu_id => 302},
-    {:profile_id => 3, :menu_id => 102}
+    {:profile_id => 3, :menu_id => 102},
+
+    #editor
+    {:profile_id => 5, :menu_id => 10},
+    {:profile_id => 5, :menu_id => 101},
+    {:profile_id => 5, :menu_id => 20},
+    {:profile_id => 5, :menu_id => 201},
+    {:profile_id => 5, :menu_id => 202},
+    {:profile_id => 5, :menu_id => 30},
+    {:profile_id => 5, :menu_id => 301},
+    {:profile_id => 5, :menu_id => 303},
+    {:profile_id => 5, :menu_id => 304},
+    {:profile_id => 5, :menu_id => 50},
+    {:profile_id => 5, :menu_id => 100},
+    #{:profile_id => 5, :menu_id => 70},
+    {:profile_id => 5, :menu_id => 302},
+    {:profile_id => 5, :menu_id => 102},
+    {:profile_id => 5, :menu_id => 120}
+
   ])
