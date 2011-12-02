@@ -37,7 +37,7 @@ class CurriculumUnitsController < ApplicationController
     @messages = return_messages(current_user.id, 'portlet', message_tag)
 
     # destacando dias que possuem eventos
-    schedules_events = Schedule.all_by_offer_id_and_group_id_and_user_id(allocation_tag.offer_id, allocation_tag.group_id, current_user.id)
+    schedules_events = Schedule.all_by_allocations(allocations)
     @scheduled_events = schedules_events.collect { |schedule_event|
       [schedule_event['start_date'], schedule_event['end_date']]
     }.flatten.uniq

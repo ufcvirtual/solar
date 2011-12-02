@@ -4,10 +4,10 @@ class SchedulesController < ApplicationController
 
   def list
     allocation_tag_id = active_tab[:url]['allocation_tag_id']
-    allocations = AllocationTag.find_related_ids(allocation_tag_id)
+    allocations = allocation_tag_id.nil? ? nil : AllocationTag.find_related_ids(allocation_tag_id).join(', ')
 
-    @curriculum_unit = CurriculumUnit.find(active_tab[:url]['id'])
-    @schedule = Schedule.all_by_allocations(allocations.join(', '))
+    @curriculum_unit = CurriculumUnit.find(active_tab[:url]['id']) unless active_tab[:url]['id'].nil?
+    @schedule = Schedule.all_by_allocations(allocations)
   end
 
   ##
@@ -15,12 +15,12 @@ class SchedulesController < ApplicationController
   ##
   def show
     allocation_tag_id = active_tab[:url]['allocation_tag_id']
-    allocations = AllocationTag.find_related_ids(allocation_tag_id)
+    allocations = allocation_tag_id.nil? ? nil : AllocationTag.find_related_ids(allocation_tag_id).join(', ')
     period = true
 
     # apresentacao dos links de todas as schedules
     @link = params[:list_all_schedule].nil? ? false : true
-    @schedule = Schedule.all_by_allocations(allocations.join(', '), period, Date.parse(params[:date]))
+    @schedule = Schedule.all_by_allocations(allocations, period, Date.parse(params[:date]))
 
     render :layout => false
   end
