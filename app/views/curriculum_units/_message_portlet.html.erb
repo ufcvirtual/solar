@@ -25,9 +25,9 @@
           <%= link_to message.sender,  {:controller => 'messages', :action => 'show', :id => message.id},{:class => 'link_content'} %>
           <%
           msg_subject = strip_tags message.subject
-          msg_subject = msg_subject.slice(0..107) + ' (...)' if msg_subject.length > 110
+          msg_subject = slice_content(msg_subject, 107) << ' (...)' if msg_subject.length > 110
         %>
-          <%= msg_subject %>
+          <%= raw  msg_subject %>
         </div>
       <% end %>
     <% else %>

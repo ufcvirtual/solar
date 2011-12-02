@@ -22,7 +22,7 @@
           clear_content = strip_tags discussion_post.content
           clear_content = slice_content(clear_content, 107) << ' (...)' if clear_content.length > 110
         %>
-          <%= clear_content %>
+          <%= raw clear_content %>
         </div>
       <% end %>
     <% else %>
