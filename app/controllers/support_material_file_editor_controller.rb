@@ -33,7 +33,7 @@ class SupportMaterialFileEditorController < ApplicationController
   def upload_files
     #### PEGAR ALLOCATION TAG ! ! !
     allocation_tag_id = 3
-    authorize! :upload_files, SupportMaterialFileEditor
+#    authorize! :upload_files, SupportMaterialFileEditor
 
     respond_to do |format|
       begin
