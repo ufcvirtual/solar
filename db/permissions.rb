@@ -74,6 +74,7 @@ resources_arr = [
   {:id => 56, :controller => 'support_material_file', :action => 'download_all_file_ziped', :description => 'Baixar material de apoio ZIPADO'},
   {:id => 57, :controller => 'support_material_file', :action => 'download_folder_file_ziped', :description => 'Baixar pasta do material de apoio ZIPADO'},
 
+
   #curso
   {:id => 58, :controller => 'courses', :action => 'create', :description => 'Criar novo curso'},
   {:id => 59, :controller => 'courses', :action => 'update', :description => 'Editar um curso'},
@@ -150,6 +151,10 @@ perm_alunos = PermissionsResource.create([
     {:profile_id => 1, :resource_id => 55, :per_id => false},
     {:profile_id => 1, :resource_id => 56, :per_id => false},
     {:profile_id => 1, :resource_id => 57, :per_id => false}
+<<<<<<< HEAD
+=======
+
+>>>>>>> [#21284625] Inicio do material de apoio do editor
   ])
 
 ##############################
