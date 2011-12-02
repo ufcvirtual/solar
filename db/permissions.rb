@@ -151,10 +151,7 @@ perm_alunos = PermissionsResource.create([
     {:profile_id => 1, :resource_id => 55, :per_id => false},
     {:profile_id => 1, :resource_id => 56, :per_id => false},
     {:profile_id => 1, :resource_id => 57, :per_id => false}
-<<<<<<< HEAD
-=======
-
->>>>>>> [#21284625] Inicio do material de apoio do editor
+    
   ])
 
 ##############################
