@@ -84,7 +84,7 @@ resources_arr = [
   #Material de apoio do editor
   {:id => 63, :controller => 'support_material_file_editor', :action => 'list', :description => 'Visulalizar arquivos do material de apoio do editor'},
   {:id => 64, :controller => 'support_material_file_editor', :action => 'upload_link', :description => 'Upload de link do material de apoio'},
-  {:id => 65, :controller => 'support_material_file_editor', :action => 'upload_files', :description => 'Upload de arquivos do material de apoio'},
+  {:id => 65, :controller => 'support_material_file_editor', :action => 'upload_files', :description => 'Upload de arquivos do material de apoio'}
 ]
 
 count = 0
@@ -149,14 +149,7 @@ perm_alunos = PermissionsResource.create([
     {:profile_id => 1, :resource_id => 54, :per_id => false},
     {:profile_id => 1, :resource_id => 55, :per_id => false},
     {:profile_id => 1, :resource_id => 56, :per_id => false},
-    {:profile_id => 1, :resource_id => 57, :per_id => false},
-    
-    #TESTE  CURSO !!!!!!!!!!!!!!!!!!!!!!APAGAR!!!!!!!!!!!!!!!!!!!!!!!
-    {:profile_id => 1, :resource_id => 58, :per_id => false},
-    {:profile_id => 1, :resource_id => 59, :per_id => false},
-    {:profile_id => 1, :resource_id => 60, :per_id => false},
-    {:profile_id => 1, :resource_id => 61, :per_id => false},
-    {:profile_id => 1, :resource_id => 62, :per_id => false}
+    {:profile_id => 1, :resource_id => 57, :per_id => false}
   ])
 
 ##############################
@@ -275,9 +268,9 @@ perm_prof_titular = PermissionsResource.create([
 #           EDITOR           #
 ##############################
 perm_editor = PermissionsResource.create([
-    {:profile_id => 5, :resource_id => 58, :per_id => false},
-    {:profile_id => 5, :resource_id => 59, :per_id => false},
-    {:profile_id => 5, :resource_id => 60, :per_id => false}
+    {:profile_id => 5, :resource_id => 63, :per_id => false},
+    {:profile_id => 5, :resource_id => 64, :per_id => false},
+    {:profile_id => 5, :resource_id => 65, :per_id => false}
   ])
 
 
