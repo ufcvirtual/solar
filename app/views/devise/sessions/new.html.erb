@@ -19,7 +19,14 @@
 <div id="login_content">
   <!--Parte cinza-->
   <div id="login_left_col">
+
     <%= render 'menu' %>
+
+    <% flash.each do |name, msg| %>
+      <div id="flash_message" class="<%= name %>">
+        <%= content_tag :span, msg %>
+      </div>
+    <% end %>
 
     <p>
       <%= t(:login_description1) %>
@@ -31,11 +38,7 @@
 
   <%= render 'form_login' %>
 
-  <% flash.each do |name, msg| %>
-    <div id="flash_message" class="<%= name %>">
-      <%= content_tag :span, msg %>
-    </div>
-  <% end %>
+
 
 </div>
 <script type="text/javascript">

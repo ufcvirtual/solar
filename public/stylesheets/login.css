@@ -64,7 +64,7 @@ html, body {
 }
 
 /*Classes de mensagens flash*/
-.error, .alert span{
+.error, .alert span, #error_explanation li {
     color: #E03838;
     font-size: 10pt;
     font-weight: bold;
@@ -82,11 +82,11 @@ html, body {
 
 /*Classes de erros*/
 .error_explanation{
-    font-size: 11pt;
+/*    font-size: 11pt;
     font-style: italic;
-    color: #e03838;
+    color: #e03838;*/
     line-height: 25px;
-    margin-left: 10px;
+/*    margin-left: 10px;*/
 }
 
 .field_with_errors{
@@ -188,7 +188,7 @@ textarea{
 .block_content {
     font-size: 10pt;
     background-color: #F5F8FB;
-    padding: 7px 0;
+    padding: 2px 0 7px 0;
 }
 
 /************ Layout dos botões ****************/
@@ -416,6 +416,25 @@ textarea{
     text-align: center;
 }
 
+#flash_message, #error_explanation {
+    border: 1px solid #d0d0d0;
+    padding: 5px 10px 4px 10px;
+    margin: 10px 0 0 0;
+    font-size: 10pt;
+}
+
+#error_explanation {
+    margin: 10px 10px 0 10px;
+}
+
+#flash_message span, #error_explanation ul {
+    margin-left: 15px;
+}
+
+#flash_message.alert, #error_explanation {
+    background: url('../images/error.gif') no-repeat 5px center #fff6f6;
+}
+
 /******** cadastro de novo usuario com layout do login **********/
 .form_user_table {
     margin-top: 5px;
@@ -544,39 +563,37 @@ td.form_error {
 
 /****** security ******/
 
-.pwd_recovery_all{
-    margin-left             : 36px;
-}
-
-.pwd_recovery_title{
-    font-family             : 'Myriad Pro','Trebuchet', Arial;
-    padding                 : 0px;
-    font-size               : 14pt;
-    color					: #000;
-    font-weight				: bold;
-}
-.pwd_recovery_subtitle{
-    font-family             : 'Myriad Pro','Trebuchet', Arial;
-    padding                 : 0px;
-    font-size               : 13pt;
-    color					: #003e7a;
-    font-weight				: bold;
-}
-.pwd_recovery_text{
-    padding                 : 0px;
-    font-size               : 12pt;
+#pwd_recovery p {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
 }
 .pwd_recovery_label{
-    text-align				: right;
-    margin-right			: 15px;
-    color					: #000;
-    font-size               : 13pt;
+    text-align: right;
+    margin-right: 10px;
+    color: #003E7A;
+    font-size: 11pt;
+    float: right;
+}
+#pwd_box{
+    margin-left: 10px;
+    padding: 5px 5px 5px 0;
 }
 
-#pwdbox{
-    margin-left             : 136px;
-    width                   : 400px;
+#pwd_box table {
+    margin-bottom: 5px;
+}
+
+#pwd_box td {
+    padding: 5px 0;
+}
+#pwd_box td label {
+    width: 70px;
 }
 .pwd_recovery_table{
     border-spacing:10px;
+}
+
+#pwd_box_buttons {
+    margin-left: 165px;
 }
