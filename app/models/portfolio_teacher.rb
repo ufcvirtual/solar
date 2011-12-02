@@ -6,7 +6,7 @@ class PortfolioTeacher < ActiveRecord::Base
   # Alunos por turma
   ##
   def self.list_students_by_group_id(group_id)
-    User.joins(:allocations => [{:allocation_tag => [:group, :assignments]}, :profile]).
+    User.joins(:allocations => [{:allocation_tag => [:group]}, :profile]).
       select("DISTINCT users.id, users.name").
       where("profiles.student = TRUE AND groups.id = ?", group_id).
       order("users.name")
