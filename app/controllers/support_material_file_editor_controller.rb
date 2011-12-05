@@ -22,6 +22,13 @@ class SupportMaterialFileEditorController < ApplicationController
 
   def upload_link
     url  = params[:link]["link"]
+
+    if (url.empty?)
+      flash[:error] = "Link deve ser preenchido !"
+      redirect_to :controller => "support_material_file_editor", :action => "list"
+      return
+    end
+    
     allocation_tag_id = 3
     @newlink = SupportMaterialFile.upload_link(allocation_tag_id, url)
 
@@ -32,8 +39,8 @@ class SupportMaterialFileEditorController < ApplicationController
 
   def upload_files
     #### PEGAR ALLOCATION TAG ! ! !
+    #    authorize! :upload_files, SupportMaterialFileEditor
     allocation_tag_id = 3
-#    authorize! :upload_files, SupportMaterialFileEditor
 
     respond_to do |format|
       begin
@@ -47,6 +54,12 @@ class SupportMaterialFileEditorController < ApplicationController
         #        allocation_tag_id = AllocationTag.find(:first, :conditions => ["group_id = ?", session[:opened_tabs][session[:active_tab]]["groups_id"]]).id
 
 
+        if (params[:support_material][:new_folder] != "")
+          params[:support_material][:folder] = params[:support_material][:new_folder]
+        end
+        
+        params[:support_material].delete(:new_folder)
+
         @file = SupportMaterialFile.new params[:support_material]
         @file.allocation_tag_id = allocation_tag_id
         @file.save!
@@ -56,19 +69,11 @@ class SupportMaterialFileEditorController < ApplicationController
         format.html { redirect_to(redirect) }
 
       rescue Exception => error
-
         flash[:error] = error.message
         format.html { redirect_to(redirect) }
-
       end
     end
   end
-
-
-  def create_folder
-    new_folder = params[:folder]["new_folder"]
-  end
-
 
   def delete_select_files
     
