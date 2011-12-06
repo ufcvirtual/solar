@@ -63,10 +63,23 @@ class CurriculumUnit < ActiveRecord::Base
           ) AS ucs_do_usuario
           ORDER BY semester DESC, code"
 
-#    raise "#{query}"
-
     groups1 = Group.find_by_sql(query)
     return (groups1.nil?) ? [] : groups1
+  end
+
+  def self.class_participants_by_allocations(allocations = [], flag_resp = false)
+    query = <<SQL
+      SELECT t3.id, t3.name, t3.photo_file_name, t3.email, t4.name AS profile_name, t4.id AS profile_id
+        FROM allocations     AS t1
+        JOIN allocation_tags AS t2 ON t1.allocation_tag_id = t2.id
+        JOIN users           AS t3 ON t1.user_id = t3.id
+        JOIN profiles        AS t4 ON t4.id = t1.profile_id
+       WHERE t2.id IN (#{allocations.join(',')})
+         AND t4.class_responsible = #{flag_resp}
+         AND t1.status = #{Allocation_Activated}
+       ORDER BY profile_name, t3.name
+SQL
+    User.find_by_sql query
   end
 
 end

@@ -9,18 +9,12 @@ class PortfolioTeacherController < ApplicationController
 
     authorize! :list, PortfolioTeacher
 
-
-    # aqui, a allocation_tag ja indica o grupo selecionado
     allocation_tag_id = active_tab[:url]['allocation_tag_id']
-    @group = AllocationTag.find(allocation_tag_id).group
+    allocations = AllocationTag.find_related_ids(allocation_tag_id)
 
-    if @group.nil?
-      allocations = AllocationTag.find_related_ids(allocation_tag_id).join(', ')
-      @group = AllocationTag.where(["id IN (#{allocations}) AND group_id IS NOT NULL"]).first.group
-    end
-
-    # lista de estudantes da turma
-    @students = PortfolioTeacher.list_students_by_group_id(@group.id)
+    # grupo selecionado
+    @group = AllocationTag.where("id IN (#{allocations.join(',')}) AND group_id IS NOT NULL").first.group
+    @students = PortfolioTeacher.list_students_by_allocations(allocations)
 
   end
 

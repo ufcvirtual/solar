@@ -104,4 +104,14 @@ SQL
     return (cnt.nil?) ? 0 : cnt.first["cnt"].to_i
   end
 
+  def self.list_students(allocations, page = 1)
+
+    query = <<SQL
+    
+SQL
+
+    paginate_by_sql query, {:per_page => Rails.application.config.items_per_page, :page => page}
+
+  end
+
 end

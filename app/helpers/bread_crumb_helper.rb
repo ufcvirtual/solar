@@ -1,6 +1,6 @@
 module BreadCrumbHelper
 
-  def show_breadcrumb()
+  def show_breadcrumb
     text_bread = ''
     active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
     breadcrumb = user_session[:breadcrumb] + active_tab[:breadcrumb]

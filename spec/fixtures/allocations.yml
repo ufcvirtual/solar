@@ -1,163 +1,20 @@
-##Allocations
-#
-##User
-#alloc1:
-#  id: 1
-#  user_id: 1
-#  allocation_tag_id: 1
-#  profile_id: 1
-#  status: 1
-#  
-#alloc2:
-#  id: 2
-#  user_id: 1
-#  allocation_tag_id: 2
-#  profile_id: 1
-#  status: 1  
-#  
-#alloc3:
-#  id: 3
-#  user_id: 1
-#  allocation_tag_id: 3
-#  profile_id: 1
-#  status: 1
-#  
-#alloc4:
-#  id: 4
-#  user_id: 1
-#  allocation_tag_id: 8
-#  profile_id: 1
-#  status: 0
-# 
-#alloc5:
-#  id: 5
-#  user_id: 1
-#  allocation_tag_id: 9
-#  profile_id: 1
-#  status: 1
-#
-##aluno 1  
-#alloc6:
-#  id: 6
-#  user_id: 7
-#  allocation_tag_id: 1
-#  profile_id: 1
-#  status: 1
-#  
-#alloc7:
-#  id: 7
-#  user_id: 7
-#  allocation_tag_id: 2
-#  profile_id: 1
-#  status: 1  
-#  
-#alloc8:
-#  id: 8
-#  user_id: 7
-#  allocation_tag_id: 3
-#  profile_id: 1
-#  status: 1	
-#  
-##aluno 2  
-#alloc9:
-#  id: 9
-#  user_id: 8
-#  allocation_tag_id: 1
-#  profile_id: 1
-#  status: 1
-#  
-#alloc10:
-#  id: 10
-#  user_id: 8
-#  allocation_tag_id: 2
-#  profile_id: 1
-#  status: 1	  
-#
-#alloc11:
-#  id: 11
-#  user_id: 8
-#  allocation_tag_id: 3
-#  profile_id: 1
-#  status: 1
-#  
-##aluno 3  
-#alloc12:
-#  id: 12
-#  user_id: 9
-#  allocation_tag_id: 1
-#  profile_id: 1
-#  status: 1
-#  
-#alloc13:
-#  id: 13
-#  user_id: 9
-#  allocation_tag_id: 2
-#  profile_id: 1
-#  status: 1	  
-#
-#alloc14:
-#  id: 14
-#  user_id: 9
-#  allocation_tag_id: 3
-#  profile_id: 1
-#  status: 1  
-#
-##Tutor Presencial 
-#alloc15:
-#  id: 15
-#  user_id: 10
-#  allocation_tag_id: 2
-#  profile_id: 4
-#  status: 1	  
-#
-#alloc16:
-#  id: 16
-#  user_id: 10
-#  allocation_tag_id: 3
-#  profile_id: 4
-#  status: 1	
-#  
-##Tutor a Distancia
-#alloc17:
-#  id: 17
-#  user_id: 11
-#  allocation_tag_id: 2
-#  profile_id: 3
-#  status: 1	  
-#
-#alloc18:
-#  id: 18
-#  user_id: 11
-#  allocation_tag_id: 3
-#  profile_id: 3
-#  status: 1
-#  
-##Professor  
-#alloc19:
-#  id: 19
-#  user_id: 6
-#  allocation_tag_id: 4
-#  profile_id: 2
-#  status: 1	
-#  
-#alloc20:
-#  id: 20
-#  user_id: 6
-#  allocation_tag_id: 5
-#  profile_id: 2
-#  status: 1	  
-#
-#alloc21:
-#  id: 21
-#  user_id: 6
-#  allocation_tag_id: 6
-#  profile_id: 2
-#  status: 1
-#
-##Coordenador
-#alloc22:
-#  id: 22
-#  user_id: 12
-#  allocation_tag_id: 8
-#  profile_id: 5
-#  status: 1
+user_as_professor:
+  id: 23
+  user_id: 1
+  allocation_tag_id: 4
+  profile_id: 2
+  status: 1
+
+palacio_as_student:
+  id: 24
+  user_id: 2
+  allocation_tag_id: 4
+  profile_id: 1
+  status: 1
+
+bezerra_as_student:
+  id: 25
+  user_id: 3
+  allocation_tag_id: 4
+  profile_id: 1
+  status: 1

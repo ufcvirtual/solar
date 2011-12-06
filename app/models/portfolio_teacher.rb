@@ -3,20 +3,33 @@ class PortfolioTeacher < ActiveRecord::Base
   set_table_name "assignment_comments"
 
   ##
-  # Alunos por turma
+  # Lista de alunos presentes nas turmas
   ##
-  def self.list_students_by_group_id(group_id)
-    User.joins(:allocations => [{:allocation_tag => [:group]}, :profile]).
-      select("DISTINCT users.id, users.name").
-      where("profiles.student = TRUE AND groups.id = ?", group_id).
-      order("users.name")
+  def self.list_students_by_allocations(allocations)
+
+    query = <<SQL
+
+      SELECT DISTINCT t3.id, t3.name
+        FROM allocations      AS t1
+        JOIN allocation_tags  AS t2 ON t2.id = t1.allocation_tag_id
+        JOIN users            AS t3 ON t3.id = t1.user_id
+        JOIN profiles         AS t4 ON t4.id = t1.profile_id
+       WHERE t2.id IN (#{allocations.join(',')})
+         AND t2.group_id IS NOT NULL
+         AND t4.student IS TRUE
+       ORDER BY t3.name
+SQL
+
+    User.find_by_sql query
+
   end
 
   ##
   # Atividades do aluno na turma
   ##
-  def self.list_assignments_by_group_and_student_id(group_id, student_id)
-    assignments = ActiveRecord::Base.connection.select_all <<SQL
+  def self.list_assignments_by_allocations_and_student_id(allocations, student_id)
+
+    query = <<SQL
       SELECT DISTINCT
              t1.name AS assignments_name,
              t1.id AS assignment_id,
@@ -37,12 +50,13 @@ class PortfolioTeacher < ActiveRecord::Base
    LEFT JOIN send_assignments AS t3 ON t3.assignment_id = t1.id AND t3.user_id = #{student_id}
    LEFT JOIN assignment_files AS t4 ON t4.send_assignment_id = t3.id
    LEFT JOIN schedules        AS t5 ON t5.id = t1.schedule_id
-       WHERE t2.group_id = #{group_id}
+       WHERE t2.id IN (#{allocations.join(',')})
+         AND t2.group_id IS NOT NULL
        GROUP BY t1.id, t1.name, t5.start_date, t5.end_date, t3.id, t3.grade
        ORDER BY t5.end_date;
 SQL
 
-    return (assignments.nil?) ? [] : assignments
+    ActiveRecord::Base.connection.select_all query
   end
 
 end

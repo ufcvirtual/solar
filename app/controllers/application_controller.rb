@@ -12,13 +12,13 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user! # devise
   before_filter :start_user_session
 
-  before_filter :define_third_level_breadcrumb
+  before_filter :another_level_breadcrumb
   before_filter :set_locale, :application_context, :current_menu
 
   # Mensagem de erro de permissão
   rescue_from CanCan::AccessDenied do |exception|
     flash[:error] = t(:no_permission)
-    redirect_to :controller => :home
+    redirect_to :controller => :home, :flash => flash
   end
 
   ##
@@ -39,12 +39,6 @@ class ApplicationController < ActionController::Base
     user_session[:breadcrumb] = [{ :name => 'Home', :url => {:controller => :application, :action => :activate_tab, :name => 'Home'} }]
   end
 
-
-
-
-
-
-
   ##
   # Consulta id relacionado a estudante na tabela PROFILES
   ##
@@ -54,26 +48,16 @@ class ApplicationController < ActionController::Base
     return ''
   end
 
-
-
-
-
-  
-
   ###########################################
   # BREADCRUMB
   ###########################################
 
-  # Constantes utilizadas na migalha de pao
-  BreadCrumb_First_Level = 0
-  BreadCrumb_Second_Level = 1
-  BreadCrumb_Third_Level = 2
-
   ##
-  # O terceiro nivel eh definido quando o usuario acessa um link do menu lateral
+  # Define um novo nivel no breadcrumb da aba atual
   ##
-  def define_third_level_breadcrumb
-    user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb][BreadCrumb_Second_Level] = {
+  def another_level_breadcrumb
+    same_level_for_all = 1
+    user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb][same_level_for_all] = {
       :name => params[:bread], :url => params
     } if params.include?('bread')
 
@@ -85,19 +69,15 @@ class ApplicationController < ActionController::Base
   # Recupera o contexto que esta sendo acessado
   ##
   def application_context
-
     return nil unless user_signed_in?
-
-    context_id = active_tab[:url]['type']
-    @context = Context.find(context_id).name
-    @context_param_id = active_tab[:url]["id"]
+    @context, @context_param_id = Context.find(active_tab[:url]['type']).name, active_tab[:url]["id"]
   end
 
   ##
   # Seta o valor do menu corrente
   ##
   def current_menu
-    user_session[:menu] = { :current => params[:mid] } if params.include?('mid')
+    user_session[:menu] = { :current => params[:mid] } if user_signed_in? and params.include?('mid')
   end
 
   ###############################
@@ -105,27 +85,47 @@ class ApplicationController < ActionController::Base
   ###############################
 
   ##
-  # Setando sistema para home e atualizando breadcrumb
+  # Modifica aba ativa
   ##
-  def set_active_tab_to_home
-    user_session[:tabs][:active] = 'Home'
+  def set_active_tab(tab_name)
+    user_session[:tabs][:active] = tab_name
+    # atualiza breadcrumb
+#    bread = user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb]
+#
+#    unless bread.last[:name] == tab_name
+#      user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb].delete_at(-1)
+#    end
+
+    # verificar se existe ultimo nivel de breadcrumb e renderiza este
+
   end
 
   ##
-  # Define aba ativa
+  # Seta aba ativa para Home
+  ##
+  def set_active_tab_to_home
+    set_active_tab('Home')
+  end
+
+  ##
+  # Exibe conteudo da aba ativa
   ##
   def activate_tab
     # verifica se a aba que esta sendo acessada esta aberta
+    redirect = {}
     unless user_session[:tabs][:opened].has_key?(params[:name])
-      redirect_to :controller => :home
+      set_active_tab_to_home
+      redirect = {:controller => :home}
     else
-      user_session[:tabs][:active] = params[:name]
+      set_active_tab(params[:name])
       if active_tab[:url]['type'] == Tab_Type_Home
-        redirect_to :controller => :home
+        redirect = {:controller => :home}
       else
-        redirect_to :controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']
+        redirect = {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']}
       end
     end
+
+    redirect_to redirect, :flash => flash
   end
 
   ##
@@ -162,16 +162,15 @@ class ApplicationController < ActionController::Base
     set_active_tab_to_home if user_session[:tabs][:active] == tab_name
     user_session[:tabs][:opened].delete(tab_name)
 
-    #    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
     redirect_to ((active_tab[:url]['type'] == Tab_Type_Curriculum_Unit) ? {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']} : {:controller => :home})
   end
 
   private
 
-  # Define links de mesmo nivel
-  def clear_breadcrumb_after(level)
-    user_session[:breadcrumb] = user_session[:breadcrumb].first(level+1) unless user_session[:breadcrumb].nil?
-  end
+#  # Define links de mesmo nivel
+#  def clear_breadcrumb_after(level)
+#    user_session[:breadcrumb] = user_session[:breadcrumb].first(level+1) unless user_session[:breadcrumb].nil?
+#  end
 
   ##
   # Verifica se existe uma aba criada com o nome passado
@@ -181,7 +180,7 @@ class ApplicationController < ActionController::Base
   end
 
   ##
-  # Atualiza a sessao com as abas abertas e ativas
+  # Atualiza a sessao com as abas abertas e ativas destruindo o ultimo nivel
   ##
   def set_session_opened_tabs(name_tab, hash_url, params_url)
     user_session[:tabs][:opened][name_tab] = {
@@ -198,8 +197,11 @@ class ApplicationController < ActionController::Base
     Log.create(:log_type => Log::TYPE[:course_access], :user_id => current_user.id, :curriculum_unit_id => params[:id]) if (params[:type] == Tab_Type_Curriculum_Unit)
   end
 
+  ##
+  # Default locale da aplicação
+  ##
   def set_locale
-    if current_user
+    if user_signed_in?
 
       # recupera os dados de locale das configuracoes do usuario
       personal_options = PersonalConfiguration.find_by_user_id(current_user.id)
@@ -223,16 +225,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  #  def default_url_options(options={})
-  #    current_user = User.new
-  #    if current_user.nil?
-  #      {:locale => params[:locale]} # insere locale na url se o usuario nao estiver online
-  #    else
-  #      {}
-  #    end
-  #  end
-
+  ##
   # Preparando o uso da paginação
+  ##
   def prepare_for_pagination
     @current_page = user_session[:current_page]
     user_session[:current_page] = nil
@@ -241,7 +236,9 @@ class ApplicationController < ActionController::Base
     @current_page = "1" if @current_page.nil?
   end
 
+  ##
   # Preparando para seleção genérica de turmas
+  ##
   def prepare_for_group_selection
     if params.include?('selected_group') and active_tab[:url]['type'] == Tab_Type_Curriculum_Unit
       allocation_tag_id = AllocationTag.find_by_group_id(params[:selected_group]).id
@@ -253,6 +250,9 @@ class ApplicationController < ActionController::Base
     user_session[:current_page] = @current_page
   end
 
+  ##
+  # Retora o hash, com as informações da aba ativa
+  ##
   def active_tab
     user_session[:tabs][:opened][user_session[:tabs][:active]] if user_signed_in?
   end

@@ -104,4 +104,19 @@ SQL
 
   end
 
+  def self.find_all_groups(allocations = [])
+
+    query = <<SQL
+         SELECT t2.id, t2.code, t3.semester
+           FROM allocation_tags AS t1
+           JOIN groups          AS t2 ON t1.group_id = t2.id
+           JOIN offers          AS t3 ON t2.offer_id = t3.id
+          WHERE t1.group_id IS NOT NULL
+            AND t1.id IN (#{allocations.join(',')})
+SQL
+
+    Group.find_by_sql(query)
+
+  end
+
 end

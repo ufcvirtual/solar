@@ -3,13 +3,6 @@ Funcionalidade: Exibir participantes do curso
   Como um usuario do solar
   Eu quero visualizar os participantes do curso
 
-  Contexto:
-    Dado que tenho "allocations"
-      | user_id | allocation_tag_id | profile_id | status |
-      | 1       | 4                 | 2          | 1      |
-      | 2       | 4                 | 1          | 1      |
-      | 3       | 4                 | 1          | 1      |
-
   @selenium
   Cenário: Acessar pagina de informacoes do curso
     Dado que estou logado com o usuario "user" e com a senha "123456"

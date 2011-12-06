@@ -65,14 +65,15 @@ class CurriculumUnitsController < ApplicationController
   def participants
     curriculum_data
 
-    #retorna perfil em que se pede matricula (~aluno)
+    # retorna perfil em que se pede matricula (~aluno)
     @student_profile = student_profile
 
     # retorna participantes da turma (que nao sejam responsaveis)
-    responsible = false
-    group_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
+    allocation_tag_id = active_tab[:url]['allocation_tag_id']
+    allocations = AllocationTag.find_related_ids(allocation_tag_id)
 
-    @participants = class_participants group_id, responsible
+    responsible = false
+    @participants = CurriculumUnit.class_participants_by_allocations allocations, responsible
 
   end
 
@@ -82,10 +83,11 @@ class CurriculumUnitsController < ApplicationController
     # localiza unidade curricular
     @curriculum_unit = CurriculumUnit.find(active_tab[:url]['id'])
 
-    # localiza responsavel
-    responsible = true
     @allocation_tag_id = active_tab[:url]['allocation_tag_id']
-    @responsible = class_participants(@allocation_tag_id, responsible)
+    allocations = AllocationTag.find_related_ids(@allocation_tag_id)
+    responsible = true
+    @responsible = CurriculumUnit.class_participants_by_allocations allocations, responsible
+
   end
 
 end

@@ -1,19 +1,23 @@
 class Discussion < ActiveRecord::Base
   belongs_to :allocation_tag
   belongs_to :schedules
-  
+
   has_many :discussion_posts
 
-  # Todas os foruns do grupo por usuario
-  def self.all_by_group_id_and_student_id(group_id, student_id)
-    discussions = ActiveRecord::Base.connection.select_all <<SQL
+  ##
+  # Todas as discussoes por estudante no grupo
+  ##
+  def self.all_by_allocations_and_student_id(allocations, student_id)
+
+    query = <<SQL
       WITH cte_discussions AS (
           SELECT t2.id            AS allocation_tag_id,
                  t1.id            AS discussion_id,
                  t1.name          AS discussion_name
             FROM discussions      AS t1
             JOIN allocation_tags  AS t2 ON t2.id = t1.allocation_tag_id
-           WHERE t2.group_id = #{group_id}
+           WHERE t2.id IN (#{allocations.join(',')})
+             AND t2.group_id IS NOT NULL
       )
       -- todos os posts de cada forum
       SELECT t2.discussion_id,
@@ -24,7 +28,8 @@ class Discussion < ActiveRecord::Base
        GROUP BY t2.discussion_id, t2.discussion_name
 SQL
 
-    return (discussions.nil?) ? [] : discussions
+    ActiveRecord::Base.connection.select_all query
+
   end
 
   def self.all_by_offer_id_and_group_id(offer_id, group_id)

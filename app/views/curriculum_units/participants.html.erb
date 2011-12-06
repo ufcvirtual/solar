@@ -18,20 +18,20 @@
           <div class="participants_list">
 
             <% if resp.photo_file_name %>
-              <%=image_tag resp.photo.url(:medium), :alt => t(:mysolar_alt_img_user) + ' ' + resp.username %>
+              <%=image_tag resp.photo.url(:medium), :alt => t(:mysolar_alt_img_user) + ' ' + resp.name %>
             <% else %>
-              <%=image_tag 'no_image.png', :alt => t(:mysolar_alt_img_user) + ' ' + resp.username %>
+              <%=image_tag 'no_image.png', :alt => t(:mysolar_alt_img_user) + ' ' + resp.name %>
             <% end %>
 
-            <div title="<%=resp.username%>">
-              <% if resp.username.length > 25 %>
-                <%=resp.username.slice(0..24) + '...'%>
+            <div title="<%=resp.name%>">
+              <% if resp.name.length > 25 %>
+                <%=resp.name.slice(0..24) + '...'%>
               <% else %>
-                <%=resp.username%>
+                <%=resp.name%>
               <% end %>
             </div>
 
-            <div><%="(" + resp.profilename + ') '%></div>
+            <div><%= "(#{resp.profile_name})" %></div>
             <!--<div class="participants_icons">
               <span><%#= link_to (image_tag "icon_profile.png", :alt=>t(:icon_profile)) %></span>
               <span><%#= link_to (image_tag "icon_add_user.png", :alt=>t(:icon_add_participant)) %></span>
@@ -59,22 +59,22 @@
         <% @participants.each do |part| %>
           <div class="participants_list">
             <% if part.photo_file_name %>
-              <%=image_tag part.photo.url(:medium), :alt => t(:mysolar_alt_img_user) + ' ' + part.username %>
+              <%=image_tag part.photo.url(:medium), :alt => t(:mysolar_alt_img_user) + ' ' + part.name %>
             <% else %>
-              <%=image_tag 'no_image.png', :alt => t(:mysolar_alt_img_user) + ' ' + part.username %>
+              <%=image_tag 'no_image.png', :alt => t(:mysolar_alt_img_user) + ' ' + part.name %>
             <% end %>
 
-            <div title="<%=part.username%>">
-              <% if part.username.length > 25 %>
-                <%=part.username.slice(0..24) + '...'%>
+            <div title="<%=part.name%>">
+              <% if part.name.length > 25 %>
+                <%=part.name.slice(0..24) + '...'%>
               <% else %>
-                <%=part.username%>
+                <%=part.name%>
               <% end %>
             </div>
 
             <div>
-              <% if part.profileid.to_s!=@student_profile.to_s %>
-                <%="(" << part.profilename << ') '%>
+              <% if part.profile_id.to_s != @student_profile.to_s %>
+                <%= "(#{part.profile_name})" %>
               <% else %>
                 <br/>
               <% end %>

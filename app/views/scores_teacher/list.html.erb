@@ -73,7 +73,7 @@
   <!-- Paginacao -->
 
   <div id="scores_pagination" style="text-align: center;" class="legend">
-    <span><%=raw render_pagination_bar(@cnt_students)%></span>
+    <span><%=raw render_pagination_bar(@cnt_students) unless @cnt_students == 0%></span>
   </div>
 
   <!-- Legendas -->
