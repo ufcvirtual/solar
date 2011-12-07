@@ -77,5 +77,29 @@ SQL
     return ActiveRecord::Base.connection.select_one(query)["total"].to_i
 
   end
+  
+  #Consulta retorna postagens mais recentes dos dados forúns
+  def self.recent_by_discussions(discussions, content_size = 255, limit = 0)
+   
+    discussions_ids = ""
+
+    for discussion in discussions
+      discussions_ids << discussion.id.to_s << ","
+    end
+    
+    discussions_ids = discussions_ids.chop 
+    #CHOP= Returns a new String with the last character removed
+    
+    query = "SELECT id, user_id, discussion_id, profile_id, 
+             substring(\"content\" from 0 for #{content_size})as \"content\",
+             created_at, updated_at, parent_id 
+             FROM discussion_posts 
+             WHERE discussion_id IN (#{discussions_ids}) 
+             ORDER BY updated_at DESC "
+    query << "LIMIT #{limit}" if limit > 0
+
+    return DiscussionPost.find_by_sql(query)
+    
+  end
 
 end
