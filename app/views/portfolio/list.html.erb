@@ -87,7 +87,7 @@
                 <%=l pa["attachment_updated_at"].to_time, :format => :files  %>
               </td>
               <td style="width: 60px" align="center">
-                <%= button_to t(:delete), {:controller => :portfolio, :action => :delete_file_public_area, :id => pa["id"]}, :confirm => t(:delete_file_msg), :class=>'btn btn_red' %>
+                <%= button_to t(:delete), {:controller => :portfolio, :action => :delete_file_public_area, :id => pa["id"]}, :confirm => t(:delete_file_msg), :class=>'btn btn_caution' %>
               </td>
             </tr>
           <% end %>
@@ -97,7 +97,7 @@
       <div class="block_content block_content_text"><%= t(:itens_not_found) %></div>
     <% end %>
     <div style="background-color: white;padding-top:6px">
-      <input type="button" value="<%= t(:portfolio_upload_file) %>" id="send_attachment" class="btn btn_blue"></input>
+      <input type="button" value="<%= t(:portfolio_upload_file) %>" id="send_attachment" class="btn btn_default"></input>
     </div>      
   </div>
 

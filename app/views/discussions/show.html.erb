@@ -92,8 +92,10 @@
       '<textarea id="newPostTextBox">' +
       '</textarea>' +
       '<div style="text-align:right;">' +
-      '<a href="#" onclick="cancelPosting();return false;" class="forum_button"><%=t("cancel")%></a>&nbsp;&nbsp;' +
-      '<a href="#" onclick="sendPost();return false;" class="forum_button"><%=t("send")%></a>' +
+      //'<a href="#" onclick="cancelPosting();return false;" class="forum_button"><%=t("cancel")%></a>&nbsp;&nbsp;' +
+      '<input type="button" onclick="cancelPosting();" class="btn btn_caution postDialogLink" value="<%=t("cancel")%>"' +
+      //'<a href="#" onclick="sendPost();return false;" class="forum_button"><%=t("send")%></a>' +
+      '<input type="button" onclick="sendPost();" class="btn btn_default postDialogLink" value="<%=t("send")%>"' +
       '</div>' +
       '</div>';
 
@@ -176,6 +178,7 @@
     $('.postDialogLink').click( function () {
       var postContainer = $(this).parent().parent();
       appendRichTextBox(postContainer);
+      return false;
     });
 
     //Botão de editar postagem
@@ -183,6 +186,7 @@
       var postContainer = $(this).parent().parent();
       appendRichTextBox(postContainer);
       $('#newPostTextBox').val(postContainer.children('.forum_post_inner_content').html());
+      return false;
     });
 
     //Botão de nova postagem
