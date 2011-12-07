@@ -29,37 +29,46 @@ module DiscussionPostsHelper
     photo_url = post.user.photo.url(:medium) if post.photo_file_name
 
     #Montando exibição do post e exibindo respostas recursivamente
+    post_string <<
     post_string << '<table border="0" cellpadding="0" cellspacing="0" class="forum_post">'
     post_string <<    '<tr>'
-    post_string <<      '<td class="forum_post_head_left">'
-    post_string <<        '<span alt="' << post.user_nick << '">' << nick << '</span><br />'
-    post_string <<        '<span class="forum_participant_profile" >'<< post.profile << '</span>'
-    post_string <<      '</td>'
-    post_string <<      '<td class="forum_post_head_right">'
-    post_string <<        '<div class="forum_post_date">' << (l post[:updated_at], :format => :discussion_post ) << '</div>'
-    post_string <<      '</td>'
-    post_string <<    '</tr>'
-    post_string <<    '<tr>'
-    post_string <<      '<td class="forum_post_content_left">'
+    post_string <<      '<td rowspan="3" class="forum_post_icon">'
     post_string <<        (image_tag photo_url, :alt => t(:mysolar_alt_img_user) + ' ' + post.user_nick)
     post_string <<      '</td>'
-    post_string <<      '<td class="forum_post_content_right">'
-    post_string <<        '<div class="forum_post_inner_content" style="min-height:100px">' << (sanitize post.content) <<' </div>'
+    post_string <<      '<td class="forum_post_head">'
+    post_string <<        '<div style="float:left;padding-left:5px">'
+    post_string <<          '<div class="forum_participant_nick" alt="' << post.user_nick << '">' << post.user_nick << '</div>'
+    post_string <<          '<div class="forum_participant_profile" >'<< post.profile << '</div>'
+    post_string <<        '</div>'
+    post_string <<        '<div class="forum_post_date">' << (l post[:updated_at], :format => :discussion_post ) << '<br />teste</div>'
+    post_string <<      '</td>'
+    # post_string <<      '<td>'
+    # post_string <<        '<br />'
+    # post_string <<      '</td>'
+    # post_string <<      '<td class="forum_post_head_right">'
+    # post_string <<        '<div class="forum_post_date">' << (l post[:updated_at], :format => :discussion_post ) << '</div>'
+    # post_string <<      '</td>'
+    post_string <<    '</tr>'
+    post_string <<    '<tr>'
+    post_string <<      '<td class="forum_post_content" colspan="2">'
+    post_string <<        '<div class="forum_post_inner_content">' << (sanitize post.content) <<' </div>'
 
     #Apresentando os arquivos do post
-    post_string << show_attachments(post, editable, can_interact)
+    # post_string << show_attachments(post, editable, can_interact)
 
     #Exibindo botões de edição, resposta e exclusão
     post_string << show_buttons(editable,can_interact, post)
 
-    post_string <<      '</td>'
-    post_string <<    '</tr>'
-    post_string <<  '</table>'
+
 
     #Renderizando as respostas ao post
     childs.each do |child|
-      post_string << '<div class="forum_post_child_ident">' << show_post(child, true) << '</div>'
+      post_string << show_post(child, true)
     end
+
+    post_string <<      '</td>'
+    post_string <<    '</tr>'
+    post_string <<  '</table>'
 
     return post_string
   end
@@ -124,7 +133,8 @@ module DiscussionPostsHelper
     elsif !editable && can_interact
       post_string <<      '   <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink forum_button">' << t('forum_show_answer') << '</a>'
     elsif !editable && !can_interact
-      post_string <<      '  <a class="forum_post_link_disabled">' << t('forum_show_answer') << '</a>'
+      # post_string <<      '  <a class="forum_post_link_disabled">' << t('forum_show_answer') << '</a>'
+      post_string << button_to( t(:forum_show_answer), {}, {:class=>'btn btn_blue'} )
     end
     post_string <<      '</div>'
 

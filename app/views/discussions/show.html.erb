@@ -8,11 +8,12 @@
   <div id="forum_description" class="block_content block_content_text">
     <%= @discussion["description"] %>
   </div>
+</div>
 
+<div class="block_wrapper">
   <!--//------------- Barra Superior--------------->
-  <div class="forum_navigation_bar">
-    <div style="text-align: center;">
-      <span style="float:left">
+  <div class="block_title" style="text-align: center;overflow:hidden">
+      <span style="float:left;">
         <%if valid_date%>
           <a href="javascript:clearFormData()" id="NewPostButton" class="forum_button"><%= t("forum_new_message")%></a>
         <%else%>
@@ -31,8 +32,9 @@
           </a>
         <%end%>
       </span>
-      <%=raw render_pagination_bar(count_discussion_posts(@discussion.id,(@display_mode=="PLAINLIST")).to_s)%>
-    </div>
+      <span>
+        <%=raw render_pagination_bar(count_discussion_posts(@discussion.id,(@display_mode=="PLAINLIST")).to_s)%>
+      </span>
   </div>
   <!--//------------- Fim da Barra Superior--------------->
 
