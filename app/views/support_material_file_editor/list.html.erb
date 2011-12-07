@@ -6,14 +6,14 @@ Material de apoio do editor
   <span> Oferta: </span>
   <div style="margin-left: 50px;margin-top: -20px;">
     <%= form_for(@offers) do |f| %>
-      <%= f.select :offer, ([["2012.1"],["2011.1"], ["2011.2"] ]), :include_blank => true  %>
+      <%= f.select :offer, options_for_select([""] + Offer.find(:all,:select => "semester"))%>
     <%end%>
   </div>
 
   <span> Turma: </span>
   <div style="margin-left: 50px;margin-top: -20px;">
     <%= form_for(@groups) do |f| %>
-      <%= f.select :group, ([["FOR"],["CAU-A"]]), :include_blank => true  %>
+      <%= f.select :group, options_for_select([""] + Group.find(:all,:select => "code"))%>
     <%end%>
   </div>
 
@@ -49,7 +49,7 @@ Material de apoio do editor
         <%= f.select :folder, options_for_select([""] + ["NOVA PASTA"] + SupportMaterialFile.find(:all,:select => "DISTINCT folder", :conditions => ["folder != ? ", ""]).collect{|c| [c.folder]})%>
       </div>
 
-      <div id ="new_folder">
+      <div id ="new_folder" style="display: none">
         <div> Nova pasta </div>
         <%= f.text_field :new_folder%>
       </div>
@@ -68,17 +68,15 @@ Material de apoio do editor
 
 <script type ="text/javascript">
 
-<%#*$(document).ready(function(){%>
-
-<%#*$('#select_folder').change(function(){%>
-<%#*if($('#select_folder option:selected').text() == "NOVA PASTA"){%>
-<%#*$('#new_folder').fadeIn();%>
-<%#*$('#new_folder').append('<div> Nova pasta </div><input id="support_material_folder" name="support_material[folder]" size="30" type="text">');%>
-<%#*}else{%>
-<%#*$('#new_folder').remove();%>
-<%#*}%>
-<%#*});%>
-<%#*});%>
+  $(document).ready(function(){
+  $('#select_folder').change(function(){
+  if($('#select_folder option:selected').text() == "NOVA PASTA"){
+  $('#new_folder').fadeIn();
+  } else{
+  $('#new_folder').fadeOut();
+  }
+  });
+  });
 </script>
 
 
