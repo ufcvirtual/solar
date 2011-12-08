@@ -45,7 +45,7 @@ class SupportMaterialFile < ActiveRecord::Base
     ActiveRecord::Base.connection.select_all <<SQL
 
     INSERT INTO support_material_files (allocation_tag_id, attachment_content_type,attachment_updated_at, folder, url)
-    VALUES (#{allocation_tag_id}, 'link' ,CURRENT_TIMESTAMP ,'Links' , '#{url}')
+    VALUES (#{allocation_tag_id}, 'link' ,CURRENT_TIMESTAMP ,'LINKS' , '#{url}')
 
 SQL
   end

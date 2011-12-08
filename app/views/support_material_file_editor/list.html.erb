@@ -135,7 +135,7 @@ Material de apoio do editor
               <%=l file["attachment_updated_at"].to_time, :format => :files %>
             </td>
             <td>
-              <%= link_to "Excluir" ,:action => :delete_select_file , :id =>file["id"] %>
+              <%= link_to "Excluir" ,:action => :delete_select_file , :id =>file["id"], :confirm => "Tem certeza que dejeja deletar ?", :method => :delete %>
             </td>
           </tr>
         <% end %>
