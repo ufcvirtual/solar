@@ -31,7 +31,7 @@ function showLightBox(content, width, height, canClose, title){
         modalClose = 'onclick="removeLightBox();" ';
         closeBt = '<div ' + modalClose + ' id="lightBoxDialogCloseBt">&nbsp;</div>';
     }
-    title = '<div id="lightBoxDialogTitle">'+title+'</div>'
+    title = '<div id="lightBoxDialogTitle"><h1>'+title+'</h1></div>'
     
     removeLightBox(true);
     dialog = '<div id="lightBoxDialog" style="width:'+width+'px;height:'+height+'px;margin-top:-'+halfHeight+'px;margin-left:-'+halfWidth+'px;">'

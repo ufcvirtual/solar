@@ -12,8 +12,8 @@
 
 <div class="block_wrapper">
   <!--//------------- Barra Superior--------------->
-  <div class="block_title" style="text-align: center;overflow:hidden">
-      <span style="float:left;">
+  <div class="block_title forum_navigation">
+      <span id="forum_new_message">
         <%if valid_date%>
           <a href="javascript:clearFormData()" id="NewPostButton" class="forum_button"><%= t("forum_new_message")%></a>
         <%else%>
@@ -21,7 +21,7 @@
         <%end%>
       </span>
 
-      <span style="float:right;">
+      <span id="forum_view_mode">
         <%if @display_mode == "PLAINLIST"%>
           <a href="javascript:showAsThread()" class="forum_button forum_button_view_mode"><%=  t("forum_show_thread")%>
             <%= image_tag "discussion_thread.png", :alt => '' %>
@@ -89,13 +89,11 @@
   //// Manipulação da caixa de edição ///////////////////////////////
   function appendRichTextBox(postContainer){
     newFormCode = '' +
-      '<div id="new_post_dialog" style="display: none;">' +
+      '<div id="new_post_dialog">' +
       '<textarea id="newPostTextBox">' +
       '</textarea>' +
-      '<div style="text-align:right;">' +
-      //'<a href="#" onclick="cancelPosting();return false;" class="forum_button"><%=t("cancel")%></a>&nbsp;&nbsp;' +
+      '<div class="new_post_dialog_buttons">' +
       '<input type="button" onclick="cancelPosting();" class="btn btn_caution postDialogLink" value="<%=t("cancel")%>">' +
-      //'<a href="#" onclick="sendPost();return false;" class="forum_button"><%=t("send")%></a>' +
       '<input type="button" onclick="sendPost();" class="btn btn_default postDialogLink" value="<%=t("send")%>">' +
       '</div>' +
       '</div>';
