@@ -26,7 +26,7 @@ module DiscussionPostsHelper
 
     #Recuperando caminho da foto a ser carregada
     photo_url = 'no_image.png'
-    photo_url = post.user.photo.url(:medium) if post.photo_file_name
+    photo_url = post.user.photo.url(:forum) if post.photo_file_name
 
     #Montando exibição do post e exibindo respostas recursivamente
     post_string <<
@@ -36,18 +36,12 @@ module DiscussionPostsHelper
     post_string <<        (image_tag photo_url, :alt => t(:mysolar_alt_img_user) + ' ' + post.user_nick)
     post_string <<      '</td>'
     post_string <<      '<td class="forum_post_head">'
-    post_string <<        '<div style="float:left;padding-left:5px">'
+    post_string <<        '<div class="forum_post_author">'
     post_string <<          '<div class="forum_participant_nick" alt="' << post.user_nick << '">' << post.user_nick << '</div>'
     post_string <<          '<div class="forum_participant_profile" >'<< post.profile << '</div>'
     post_string <<        '</div>'
-    post_string <<        '<div class="forum_post_date">' << (l post[:updated_at], :format => :discussion_post ) << '<br />teste</div>'
+    post_string <<        '<div class="forum_post_date">' << (l post[:updated_at], :format => :discussion_post_date ) << '<br />' << (l post[:updated_at], :format => :discussion_post_hour ) << '</div>'
     post_string <<      '</td>'
-    # post_string <<      '<td>'
-    # post_string <<        '<br />'
-    # post_string <<      '</td>'
-    # post_string <<      '<td class="forum_post_head_right">'
-    # post_string <<        '<div class="forum_post_date">' << (l post[:updated_at], :format => :discussion_post ) << '</div>'
-    # post_string <<      '</td>'
     post_string <<    '</tr>'
     post_string <<    '<tr>'
     post_string <<      '<td class="forum_post_content" colspan="2">'
@@ -58,8 +52,6 @@ module DiscussionPostsHelper
 
     #Exibindo botões de edição, resposta e exclusão
     post_string << show_buttons(editable,can_interact, post)
-
-
 
     #Renderizando as respostas ao post
     childs.each do |child|
@@ -91,8 +83,8 @@ module DiscussionPostsHelper
     all_discussions.each do |discussion|
       discussions_ids << discussion.id
     end
-
-    DiscussionPost.recent_by_discussions(discussions_ids.join(','), 255, Rails.application.config.items_per_page.to_i)
+    
+    DiscussionPost.recent_by_discussions(discussions_ids.join(','), Rails.application.config.items_per_page.to_i)
   end
 
   private
@@ -101,22 +93,13 @@ module DiscussionPostsHelper
   def show_attachments(post = nil, editable = false, can_interact = false)
     #Cabeçalho
     form_string =  ''
-    #form_string =  '<div style="display:table;width:100%;">'
-    #form_string <<   '<span style="display:table-cell;width:10px;"><b>' << t(:forum_file_list) << '</b></span>'
-    #form_string <<   '<span style="display:table-cell;padding-left:2%">'
-    #form_string <<    '<hr class="forum_post_attachment_line"/>'
-    #form_string <<   '</span>'
-    #form_string << '</div>'
-
-    #Link para lightbox
-    form_string << '<a href="#" class="forum_button_attachment" onclick="showUploadForm(\''<< post[:discussion_id].to_s << '\',\'' << post[:id].to_s << '\');">'<< t(:forum_attach_file) << '&nbsp;' << (image_tag "more.png", :alt => t(:forum_attach_file)) << '</a>' if editable && can_interact
-
+   
     #Lista de arquivos
     unless post.discussion_post_files.count == 0
+      form_string <<   '<div class="forum_post_attachment">'
+      form_string <<   '<div><b>' << t(:forum_file_list) << '</b></div>'
 
-      form_string <<   '<span style="display:table-cell;width:10px;"><b>' << t(:forum_file_list) << '</b></span>'
-
-      form_string <<      '<ul class="forum_post_attachment">'
+      form_string <<      '<ul class="forum_post_attachment_list">'
       post.discussion_post_files.each do |file|
         form_string <<   '<li>'
         form_string <<   '<a href="#">'<<(link_to file.attachment_file_name, :controller => "discussions", :action => "download_post_file", :idFile => file.id, :id => @discussion.id)<<'</a>&nbsp;&nbsp;'
@@ -124,8 +107,7 @@ module DiscussionPostsHelper
         form_string <<   '</li>'
       end
       form_string <<      '</ul>'
-#    else
-#      form_string << "<p class=\"forum_post_attachment_empty\">#{t(:forum_empty_file_list)}</p>"
+      form_string <<      '</div>'
     end
 
     return form_string
@@ -136,9 +118,7 @@ module DiscussionPostsHelper
     post_string = '<div class="forum_post_buttons">'
 
     if editable && can_interact
-      # post_string <<      '   <a href="javascript:removePost(' << post[:id].to_s << ')" class="forum_button forum_button_remove">' << t('forum_show_remove') << '</a>&nbsp;&nbsp;
-      #                        <a href="javascript:setDiscussionPostId(' << post[:id].to_s << ')" class="forum_button updateDialogLink ">' << t('forum_show_edit') << '</a>&nbsp;&nbsp;
-      #                        <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink forum_button">' << t('forum_show_answer') << '</a>'
+      post_string << '<a href="#" class="forum_button_attachment" onclick="showUploadForm(\''<< post[:discussion_id].to_s << '\',\'' << post[:id].to_s << '\');">'<< t(:forum_attach_file) << '&nbsp;' << (image_tag "more.png", :alt => t(:forum_attach_file)) << '</a>' if editable && can_interact
       post_string << '<input type="button" onclick="removePost(' << post[:id].to_s << ')" class="btn btn_caution" value="' << t(:forum_show_remove) << '"/>'
       post_string << '<input type="button" onclick="setDiscussionPostId(' << post[:id].to_s << ')" class="btn btn_default updateDialogLink" value="' << t(:forum_show_edit) << '"/>'
       post_string << '<input type="button" onclick="setParentPostId(' << post[:id].to_s << ')" class="btn btn_default postDialogLink" value="' << t(:forum_show_answer) << '"/>'
@@ -147,15 +127,13 @@ module DiscussionPostsHelper
       post_string <<      '    <a class="forum_post_link_disabled forum_post_link_remove_disabled">' << t('forum_show_remove') << '</a>&nbsp;&nbsp;
                                <a class="forum_post_link_disabled">' << t('forum_show_edit') << '</a>&nbsp;&nbsp;
                                <a class="forum_post_link_disabled">' << t('forum_show_answer') << '</a>'
-    elsif !editable && can_interact
-      # post_string <<      '   <a href="javascript:setParentPostId(' << post[:id].to_s << ')" class="postDialogLink forum_button">' << t('forum_show_answer') << '</a>'
+    elsif !editable && can_interact      
       post_string << '<input type="button" onclick="setParentPostId(' << post[:id].to_s << ')" class="btn btn_default postDialogLink" value="' << t(:forum_show_answer) << '"'
 
     elsif !editable && !can_interact
       post_string <<      '  <a class="forum_post_link_disabled">' << t('forum_show_answer') << '</a>'
-      # post_string << button_to( t(:forum_show_answer), {}, {:class=>'btn btn_default'} )
     end
-    post_string <<      '</div>'
+    post_string <<      '</div></div>'
 
     return post_string
   end

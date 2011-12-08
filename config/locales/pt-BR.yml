@@ -23,7 +23,8 @@
       long: "%A, %d de %B de %Y, %H:%M h"
       normal: "%d/%m/%Y"
       files: "%d/%m/%Y"
-      discussion_post: "%d %B, %Y %H:%M h"
+      discussion_post_date: "%d/%m/%Y"
+      discussion_post_hour: "%H:%M h"
       simple_day_and_month: "%d/%b"
     am: ''
     pm: ''

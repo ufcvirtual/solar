@@ -81,7 +81,7 @@ SQL
   ##
   # Consulta retorna postagens mais recentes dos dados forúns
   ##
-  def self.recent_by_discussions(discussions, content_size = 255, limit = 0)
+  def self.recent_by_discussions(discussions, limit = 0, content_size = 255)
 
     query = <<SQL
         SELECT id, user_id, discussion_id, profile_id,
