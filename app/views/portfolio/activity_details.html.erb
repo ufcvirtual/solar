@@ -132,7 +132,7 @@
                   <td>
                     <%#= link_to t(:delete), {:controller => :portfolio, :action => :delete_file_individual_area,
                       :id => file_sent["id"], :assignment_id => params[:id]}, {:confirm => "#{t(:delete_file_msg)}", :class => 'link_content_del'} %>
-                    <%= button_to t(:delete), {:controller => :portfolio, :action => :delete_file_individual_area, :id => file_sent["id"], :assignment_id => params[:id]}, :confirm => t(:delete_file_msg), :class=>'btn btn_red' %>
+                    <%= button_to t(:delete), {:controller => :portfolio, :action => :delete_file_individual_area, :id => file_sent["id"], :assignment_id => params[:id]}, :confirm => t(:delete_file_msg), :class=>'btn btn_caution' %>
                   </td>
                 <% end %>
               </tr>
@@ -147,7 +147,7 @@
         <div style="background-color:white;padding-top:6px">
           <% if @situation != 'not_started' && @delete_files %>
             <%= form_for(:assignment_file, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files_individual_area', :assignment_id => params[:id]}) do |f| %>
-              <p><%= f.file_field :attachment%><%= f.submit t(:send), :class => "btn btn_blue"%></p>
+              <p><%= f.file_field :attachment%><%= f.submit t(:send), :class => "btn btn_default"%></p>
               <p class="block_content_gray"><%= t(:send_file_portfolio_obs)%></p>
               <p class="block_content_gray"><%=raw t(:send_file_portfolio_text)%></p>
             <% end %>

@@ -89,10 +89,11 @@ h2 {
 #body_wrapper {
     width: 980px;
     margin: 0 auto;
-    border-left: 1px solid #d0d0d0;
-    border-right: 1px solid #d0d0d0;
+    /*border-left: 1px solid #d0d0d0;
+    border-right: 1px solid #d0d0d0;*/
     background-color: #ffffff;
     min-height: 100%;
+    position: relative;
 }
 
 /*Classes de mensagens flash*/
@@ -222,7 +223,7 @@ input{
     color: #222;
     border: 1px solid #dedede;
     padding: 5px;
-    font-size: 13px;
+/*    font-size: 13px;*/
 }
 
 input[type="file"] {
@@ -434,7 +435,7 @@ h1.page_title{
     */
     font-family: 'Ubuntu', sans-serif;
     font-weight: 400;
-    background-color: #003e7a;
+    /*background-color: #003e7a;*/
     color: #fff;
     overflow: hidden;
 }
@@ -443,13 +444,19 @@ h1.page_title{
 #mysolar_identity {
     width: 100%;
     height: 36px;
-    /*    border-bottom: 1px solid #fff;*/
+    border-bottom: 2px solid #F9DB43;
+    background-color: #003E7A;
 }
 
 #mysolar_logo {
     width: 185px;
     height: 36px;
     float: left;
+}
+
+#solar_logo {
+    margin-top: 2px;
+    margin-left: 5px;
 }
 
 #mysolar_top_options {
@@ -500,10 +507,10 @@ a.mysolar_top_link{
 /* barra tabs */
 #mysolar_tabs {
     width: 100%;
-    height: 34px;
-    /*    background-color: #e8e8e8;*/
-    background:url('../images/topbar_gradient.png') repeat-x left center #4170b6;
-    border-bottom:2px solid #003e7a;
+    height: 33px;
+    /*background-color: #FFFEF7;*/
+    /*background:url('../images/topbar_gradient.png') repeat-x left center #4170b6;*/
+    border-bottom: 1px solid #D0D0D0;
 }
 
 #mysolar_tabs_wrapper {
@@ -512,18 +519,20 @@ a.mysolar_top_link{
     list-style-type: none;
     padding: 0;
     margin: 0;
+    font-family: 'Ubuntu Condensed', sans-serif;
+    font-size: 14pt;
 }
 
 .mysolar_unit_tab, .mysolar_unit_active_tab{
     list-style-type: none;
     display: inline-block;
-    margin: 6px 4px 0 4px;
-    padding:0 5px;
+    margin: 6px 0px 0px 0px;
+    padding:0 7px;
     height:26px;
-    border-top:2px solid;
+    /*border-top:2px solid;
     border-right:2px solid;
     border-left:2px solid;
-    border-bottom:2px solid;
+    border-bottom:2px solid;*/
     font-variant: small-caps;
     /* codigo necessario para exibir corretamente no IE 7 */
     zoom: 1;
@@ -531,7 +540,7 @@ a.mysolar_top_link{
 }
 
 .mysolar_unit_tab {
-    background-color: #e3eaf4;
+    /*background-color: #e3eaf4;
     border-top-color: #4d6d9c;
     border-right-color: #4d6d9c;
     border-left-color: #4d6d9c;
@@ -539,7 +548,7 @@ a.mysolar_top_link{
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     -moz-border-top-left-radius: 5px;
-    -moz-border-top-right-radius: 5px;
+    -moz-border-top-right-radius: 5px;*/
 }
 
 .mysolar_unit_tab a {
@@ -547,7 +556,8 @@ a.mysolar_top_link{
 }
 
 .mysolar_unit_active_tab{
-    background-color: #fff;
+    border-bottom: 2px solid #003E7A;
+    /*background-color: #fff;
     border-top-color: #003e7a;
     border-right-color: #003e7a;
     border-left-color: #003e7a;
@@ -555,7 +565,7 @@ a.mysolar_top_link{
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     -moz-border-top-left-radius: 5px;
-    -moz-border-top-right-radius: 5px;
+    -moz-border-top-right-radius: 5px;*/
 }
 
 .mysolar_unit_active_tab a {
@@ -594,7 +604,7 @@ a.mysolar_top_link{
 }
 
 .search_keyword{
-    border: 1px solid #b0b0b0;
+    border: 1px solid #d0d0d0;
     height: 20px;
     width: 130px;
     padding: 0 20px 0 2px;
@@ -615,7 +625,7 @@ a.mysolar_top_link{
 
 /* sidebar */
 #mysolar_sidebar{
-    width: 174px;
+    width: 175px;
     height: 100%;
     min-height: 100%;
     max-height: 100%;
@@ -636,7 +646,7 @@ a.mysolar_top_link{
     margin-top: 80px;
     padding-left: 10px;
     */
-    border-right: 1px solid #d0d0d0;
+    /*border-right: 1px solid #d0d0d0;*/
 }
 
 /********Menu do meuSolar*****************/
@@ -683,7 +693,7 @@ a.mysolar_top_link{
 }*/
 
 .mysolar_menu_title_active > a {
-    color: #ff7418;
+    color: #D7B507;
 }
 
 .menu_icon_arrow, .menu_icon_circle {
@@ -721,6 +731,7 @@ a.mysolar_top_link{
     color: #003e7a;
     font-variant: small-caps;
     font-size: 12pt;
+    font-family: 'Ubuntu Condensed', sans-serif;
     /*    padding-left: 15px;*/
 }
 
@@ -728,8 +739,8 @@ a.mysolar_top_link{
     display: none;
     padding: 5px 0 5px 10px;
     margin: 0;
-    border-top: 2px solid #ff7418;
-    background-color: #fff5ed; /* alternativa: f5f8fb */
+    border-top: 2px solid #F9DB43;
+    background-color: #FFFBE4; /* alternativa: f5f8fb */
     font-size: 10pt;
 }
 
@@ -743,6 +754,28 @@ a.mysolar_top_link{
 
 .mysolar_menu_list{
     /*    padding-left: 25px;*/
+}
+
+#footer {
+    background-color:#f9f9f9;
+    overflow: hidden;
+    font-size: 9pt;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px;
+    color: #666;
+    width: 980px;
+    bottom: 0;
+    position: absolute;
+}
+
+#footer ul {
+    
+}
+
+#footer ul li {
+    display: inline-block;
+    margin:0 5px;
 }
 
 
@@ -1001,7 +1034,7 @@ a.mysolar_top_link{
 .mysolar_header {
     font-variant: small-caps;
     height: 26px;
-    border-bottom: 4px solid #204783;
+    border-bottom: 2px solid #204783;
 }
 
 .mysolar_header img {
@@ -1298,11 +1331,12 @@ div.alter_photo_text {
 .block_wrapper {
     width: 785px;
     margin-bottom: 15px;
+    overflow: hidden;
 }
 
-.block_wrapper_small {
+/*.block_wrapper_small {
     height: 195px;
-}
+}*/
 
 /* id do titulo geral da página */
 #page_title {
@@ -1684,13 +1718,12 @@ h2, table tr.block_title th {
 /*Tela de fórum*/
 #forum_description{
     white-space: normal;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 .forum_button, .forum_button_attachment{
     color: #1c4785;
     text-decoration: underline;
-    font-family:  'Trebuchet', 'Arial', sans;
     font-size: 15px;
     cursor: pointer;
 }
@@ -1711,7 +1744,7 @@ h2, table tr.block_title th {
 }
 
 .forum_navigation_bar{
-    border-bottom: 3px solid #1d4786;
+    border-bottom: 2px solid #1d4786;
     font-size: 10pt;
     width: 100%;
     max-width: 785px;
@@ -1722,10 +1755,11 @@ h2, table tr.block_title th {
 }
 
 .forum_post{
-    background-color: #f9f9fa;
-    min-height: 140px;
+    min-height: 40px;
     white-space: normal;
     max-width: 785px;
+    width:100%;
+    margin-top: 10px;
 }
 .forum_post_attachment_line{
     display:block;
@@ -1746,7 +1780,6 @@ h2, table tr.block_title th {
 
 .forum_post_link_disabled{
     color: #5C6D85;
-    font-family:  'Trebuchet', 'Arial', sans;
     font-size: 15px;
     text-decoration: underline line-through;
 }
@@ -1759,50 +1792,52 @@ h2, table tr.block_title th {
     padding-left: 70px;
 }
 
-.forum_post_head_left, .forum_post_head_right{
-    background-color:#ecf3f8;
-    height: 35px;
-    font-family: 'Trebuchet MS';
-    font-size: 12px;
-    white-space: normal;
-    border-top: 2px solid #fff;
-}
-
-.forum_post_head_left {
-    width:120px;
-    display: block;
-    text-align:center;
-    font-weight: bold;
-    border-right: 1px solid #fff;
-}
-.forum_post_head_right{
-    width:100%;
-    text-align:justify;
-    font-weight: normal;
-}
-
-.forum_post_content_left, .forum_post_content_right{
-    background-color:#f9f9fa;
-    height: 35px;
-    width: 106px;
-    min-width: 106px;
-    font-family: 'Trebuchet MS';
-    font-size: 12px;
-    border-bottom: 3px solid #fff;
+.forum_post_icon {
+    border-right:2px solid #003E7A;
     vertical-align: top;
-    padding-top: 10px;
+    padding-right: 5px;
+    width: 40px;
+    background-color: #ffffff;
 }
-.forum_post_content_left{
-    border-right: 1px solid #ecf3f8;
-    text-align: center;
+
+.forum_post_icon img {
+    width: 40px;
+    height: 40px;
 }
-.forum_post_content_right{
-    text-align: left;
+
+.forum_post_head {
+    /*background-color:#F5F8FB;*/
+    height: 35px;
+    font-size: 13px;
+    white-space: normal;
+    font-family: 'Ubuntu';
+    font-weight: bold;
+    width:100%;
+    display: block;
+    text-align:left;
+    border-bottom: 1px solid #003E7A;
+}
+
+.forum_post_content{
+    width: 100%;
+/*    background-color: #F5F8FB;*/
+    font-family:'PT Sans', sans serif;
+    font-size: 13px;
+    vertical-align: top;
+}
+
+.forum_post_inner_content {
+    padding: 5px;
+    background-color: #F5F8FB;
+}
+
+.forum_participant_nick {
+    /*border-bottom: 1px solid #003E7A;*/
 }
 
 .forum_participant_profile {
-    font-size: 11px;
-    font-style: italic;
+    font-size: 12px;
+    font-weight: normal;
 }
 
 .forum_participants {
@@ -1814,7 +1849,6 @@ h2, table tr.block_title th {
     width:106px;
     min-height:90px;
     text-align:center;
-    font-family: Trebuchet;
     font-size: 11px;
 }
 .forum_participants_icons {
@@ -1823,20 +1857,28 @@ h2, table tr.block_title th {
     padding-top:5px;
 }
 .forum_post_date{
-    font-size: 9px;
+    font-size: 10px;
     text-align: right;
     font-style: italic;
     color: #888;
     margin-right: 10px;
+    float: right;
 }
 .forum_post_buttons{
     text-align: right;
-    margin-right: 10px;
+    background-color: #F5F8FB;
+    padding-bottom: 3px;
+    padding-right: 5px;
 }
 
 .forum_post_attachment{
     -webkit-padding-start:7px;
     padding-left:7px;
+}
+
+.forum_post_content .forum_post {
+    margin-left: 5px;
+    width: auto;
 }
 
 #new_post_dialog{
@@ -1860,7 +1902,6 @@ h2, table tr.block_title th {
 .message_search_div,.message_div{
     color: #000;
     font-size: 12px;
-    font-family:'Trebuchet',Arial;
     text-decoration: none;
 }
 .message_div {
@@ -1879,7 +1920,6 @@ h2, table tr.block_title th {
 .message_main_menu{
     color: #214684;
     font-size: 12px;
-    font-family:'Trebuchet',Arial;
     text-decoration: none;
     cursor: pointer;
     display: inline;
@@ -1945,7 +1985,6 @@ h2, table tr.block_title th {
     min-height: 100px;
     white-space: normal;
     font-size: 12px;
-    font-family:'Trebuchet',Arial;
     padding: 20px;
 }
 .message_line{
@@ -2489,6 +2528,10 @@ td.td_student a {color: #2a538d;}
     margin-top: 10px;
 }
 
+#breadcrumb a {
+    color: #666;
+}
+
 /**
 * Botoes
 */
@@ -2500,15 +2543,8 @@ td.td_student a {color: #2a538d;}
     text-align: center;
     text-decoration: none;
     padding: .3em .5em .3em;
-/*    margin: 2px;*/
-    ltext-shadow: 0 1px 1px rgba(0,0,0,.3);
-    -webkit-border-radius: .2em;
-    -moz-border-radius: .2em;
-    border-radius: .2em;
-    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-    box-shadow: 0 1px 2px rgba(0,0,0,.2);
     font-size: 8pt;
+    margin:0 2px;
 }
 .btn:hover {
     text-decoration: none;
@@ -2527,73 +2563,45 @@ td.td_student a {color: #2a538d;}
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#c9c9c9', endColorstr='#9d9d9d');
     top: 0px;
 }
-.btn_orange {
-    color: #ffffff;
-    border: solid 1px #eeae2c;
-    background: #eeae2c;
-    background: -webkit-gradient(linear, left top, left bottom, from(#f4ca75), to(#eeae2c));
-    background: -moz-linear-gradient(top,  #f4ca75,  #eeae2c);
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f4ca75', endColorstr='#eeae2c');
-}
-.btn_orange:hover {
-    background: #f0a717;
-    background: -webkit-gradient(linear, left top, left bottom, from(#f8c359), to(#f9a706));
-    background: -moz-linear-gradient(top,  #f8c359,  #f9a706);
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8c359', endColorstr='#f9a706');
-}
-.btn_orange:active {
-    color: #fcd3a5;
-    background: -webkit-gradient(linear, left top, left bottom, from(#ffa900), to(#ef9f00));
-    background: -moz-linear-gradient(top,  #ffa900,  #ef9f00);
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa900', endColorstr='#ef9f00');
-}
-
-.btn_blue{
-    color: #ffffff;
+.btn_default{
+    /*color: #ffffff;
     border: solid 1px #003e7a;
     background: -webkit-gradient(linear, left top, left bottom, from(#5f8db7), to(#2f6393));
     background: -moz-linear-gradient(top,  #5f8db7,  #003e7a);
     background: -o-linear-gradient(#5f8db7,#003e7a);
     background-color: #003e7a;
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#5f8db7', endColorstr='#003e7a');
-}
-.btn_blue:hover {
-    background: #79b1c7;
-    background: -webkit-gradient(linear, left top, left bottom, from(#7ca0c1), to(#5d82a4));
-    background: -moz-linear-gradient(top,  #D1DCDF,  #79b1c7);
-    background: -o-linear-gradient(#D1DCDF,#79b1c7);
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#D1DCDF', endColorstr='#79b1c7');
-}
-.btn_blue:active {
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#5f8db7', endColorstr='#003e7a');*/
+    background-color: #004898;
+    background-image: -moz-linear-gradient(center top , #005CC0, #003e7c);
+    background-image: -webkit-linear-gradient(top,#005CC0,#003e7c);
     color: #ffffff;
-    background: -webkit-gradient(linear, left top, left bottom, from(#003e7a), to(#79b1c7));
-    background: -moz-linear-gradient(top,  #003e7a,  #79b1c7);
-    background: -o-linear-gradient(#003e7a,#79b1c7);
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#003e7a', endColorstr='#79b1c7');
+    
+}
+.btn_default:hover {
+    background-image: -moz-linear-gradient(center top , #016ee5, #005CC0);
+    background-image: -webkit-linear-gradient(top,#016ee5,#005CC0);
+}
+.btn_default:active {
+    background-image: -moz-linear-gradient(center top , #005CC0, #016ee5);
+    background-image: -webkit-linear-gradient(top,#005CC0,#016ee5);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
 }
 
-.btn_red {
+.btn_caution {
+    background-color: #f55254;
+    background-image: -moz-linear-gradient(center top , #f67a7b, #f55254);
+    background-image: -webkit-linear-gradient(top,#f67a7b,#f55254);
     color: #ffffff;
-    border: solid 1px #e96d6f;
-    background: #f55254;
-    background: -webkit-gradient(linear, left top, left bottom, from(#f59d9e), to(#f55254));
-    background: -moz-linear-gradient(top,  #f59d9e,  #f55254);
-    background: -o-linear-gradient(#f59d9e,#f55254);
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f59d9e', endColorstr='#f55254');
+    
 }
-.btn_red:hover {
-    background: #e96d6f;
-    background: -webkit-gradient(linear, left top, left bottom, from(#fcb3b4), to(#e96d6f));
-    background: -moz-linear-gradient(top,  #fcb3b4,  #e96d6f);
-    background: -o-linear-gradient(#fcb3b4,#e96d6f);
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#fcb3b4', endColorstr='#e96d6f');
+.btn_caution:hover {
+    background-image: -moz-linear-gradient(center top , #f65f60, #f0292d);
+    background-image: -webkit-linear-gradient(top,#f65f60,#f0292d);
 }
-.btn_red:active {
-    color: #ffffff;
-    background: -webkit-gradient(linear, left top, left bottom, from(#f54c4f), to(#f55052));
-    background: -moz-linear-gradient(top,  #f54c4f,  #f55052);
-    background: -o-linear-gradient(#f54c4f,#f55052);
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f54c4f', endColorstr='#f55052');
+.btn_caution:active {
+    background-image: -moz-linear-gradient(center top , #f0292d, #f65f60);
+    background-image: -webkit-linear-gradient(top,#f0292d,#f65f60);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
 }
 
 /* MATERIAL DE APOIO */

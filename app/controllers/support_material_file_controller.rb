@@ -41,11 +41,12 @@ class SupportMaterialFileController < ApplicationController
     # Consultas pela tabela
     nomes_files = SupportMaterialFile.search_files(allocation_tag_id).collect{|file| [file["attachment_file_name"]]}
     lista_zips = Dir.glob('tmp/*') #lista dos arquivos .zip existentes no '/tmp'
-    
+
     # nome do pacote que será criado
     zip_in_test = "tmp/"+Digest::SHA1.hexdigest(nomes_files.to_s)+".zip"
 
     result_test = 0
+    folder_create = ""
 
     lista_zips.each do |file_test|
       if file_test == zip_in_test # se não houver zip, na pasta 'tmp/' de mesmo conteúdo, então criasse o .zip
@@ -53,13 +54,23 @@ class SupportMaterialFileController < ApplicationController
         break
       end
     end
-
+    
     if result_test == 0
       Zip::ZipFile.open("tmp/#{Digest::SHA1.hexdigest(nomes_files.to_s)}.zip", Zip::ZipFile::CREATE) { |zipfile|
         nomes_files.each do |zipados|
           zipados = zipados[0].to_s
           unless(zipados[0].nil?)
-            zipfile.add(zipados,"media/support_material_file/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados)
+            if result_test == 0
+              zipfile.mkdir("Todos arquivos")
+              result_test = 1
+           end
+           folder = SupportMaterialFile.where("allocation_tag_id = ? AND attachment_file_name = ?", allocation_tag_id, zipados).collect{|file| [file["folder"]]}
+           folder = folder[0][0].to_s
+            if folder_create != folder
+              zipfile.mkdir("Todos arquivos"+"/"+folder)
+              folder_create = folder
+            end
+              zipfile.add("Todos arquivos/"+folder+"/"+zipados,"media/support_material_file/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados)
           end
         end
       }
@@ -75,7 +86,7 @@ class SupportMaterialFileController < ApplicationController
     download_file(redirect_error, path_zip)
 
   end
-  
+
   def download_folder_file_ziped
     authorize! :download_all_file_ziped, SupportMaterialFile
 
@@ -87,9 +98,10 @@ class SupportMaterialFileController < ApplicationController
     curriculum_unit_id = active_tab[:url]["id"]
     redirect_error = {:action => 'list', :id => curriculum_unit_id}
     folder = params[:folder]
-        
+
     nomes_files = SupportMaterialFile.where("allocation_tag_id = ? and folder = ?", allocation_tag_id, folder).collect{|file| [file["attachment_file_name"]]}
-        
+    #raise nomes_files[0][0]
+
     # nome do pacote que será criado
     zip_in_test = "tmp/"+Digest::SHA1.hexdigest(nomes_files.to_s)+".zip"
 
@@ -101,13 +113,22 @@ class SupportMaterialFileController < ApplicationController
         break
       end
     end
-        
+
     if result_test == 0
       Zip::ZipFile.open("tmp/#{Digest::SHA1.hexdigest(nomes_files.to_s)}.zip", Zip::ZipFile::CREATE) { |zipfile|
         nomes_files.each do |zipados|
           zipados = zipados[0].to_s
+      #if folder ==''
+      #  nomes_files = nomes_files[0].to_s
+      #  raise nomes_files
+      #end
+          if result_test == 0
+            zipfile.mkdir(folder)
+            result_test = 1
+          end
           unless(zipados[0].nil?)
-            zipfile.add(zipados,"media/support_material_file/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados)
+            zipfile.add(folder+"/"+zipados,"media/support_material_file/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados)
+            #zipfile.add(zipados,"media/support_material_file/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados)
           end
         end
       }

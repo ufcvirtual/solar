@@ -4,7 +4,7 @@
   <div class="block_wrapper">
     <div class="block_title">
       <h2><%= folder_name %> </h2>
-      <% unless folder_name == 'Links' %>
+      <% unless folder_name == 'LINKS' %>
         <span style="font-size: 11px;font-style: italic;color: #4B6380;"> <%= link_to "Baixar toda a pasta como zip", :controler => :support_material_file, :action => :download_folder_file_ziped, :folder=> folder_name  %> </span>
       <% end %>
     </div>

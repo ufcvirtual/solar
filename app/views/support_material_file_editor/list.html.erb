@@ -1,3 +1,17 @@
+<script type ="text/javascript">
+
+  $(document).ready(function(){
+  $('#select_folder').change(function(){
+  if($('#select_folder option:selected').text() == "nova pasta"){
+  $('#new_folder').fadeIn();
+  } else{
+  $('#new_folder').fadeOut();
+  }
+  });
+  });
+</script>
+
+
 Material de apoio do editor
 
 <div>
@@ -46,7 +60,7 @@ Material de apoio do editor
       <br/>
       <div>  Pasta:  </div>
       <div id="select_folder">
-        <%= f.select :folder, options_for_select([""] + ["NOVA PASTA"] + SupportMaterialFile.find(:all,:select => "DISTINCT folder", :conditions => ["folder != ? ", ""]).collect{|c| [c.folder]})%>
+        <%= f.select :folder, options_for_select([""] + ["nova pasta"] + SupportMaterialFile.find(:all,:select => "DISTINCT folder", :conditions => ["folder != ? ", ""]).collect{|c| [c.folder]})%>
       </div>
 
       <div id ="new_folder" style="display: none">
@@ -66,20 +80,70 @@ Material de apoio do editor
   </div>
 </div>
 
-<script type ="text/javascript">
+<br/>
+<hr/>
 
-  $(document).ready(function(){
-  $('#select_folder').change(function(){
-  if($('#select_folder option:selected').text() == "NOVA PASTA"){
-  $('#new_folder').fadeIn();
-  } else{
-  $('#new_folder').fadeOut();
-  }
-  });
-  });
-</script>
+<% "----------------------------------------------------------------------------------------------------------------------------" %>
+<% "VERIFICAR MELHOR FORMA DE RENDERIZAR ESSA PÁGINA" %>
 
+<h2> Material de apoio enviado </h2>
+<br/>
+<span style="font-size: 11px;font-style: italic;color: #4B6380;"> <%= link_to "Baixar todo o material de apoio como zip", :controler => :support_material_file, :action => :download_all_file_ziped %> </span>
+<br/>
+<% @folders_list.each do |folder_name, folder_content| %>
+  <div class="block_wrapper">
+    <div class="block_title">
+      <h2><%= folder_name %> </h2>
+      <% unless folder_name == 'LINKS' %>
+        <span style="font-size: 11px;font-style: italic;color: #4B6380;"> <%= link_to "Baixar toda a pasta como zip", :controler => :support_material_file, :action => :download_folder_file_ziped, :folder=> folder_name  %> </span>
+      <% end %>
+    </div>
 
-<%#*<div>%>
-<%#= render '/support_material_file/list' %>
-<%#*</div>%>
+    <table class='tb_list' border='0' cellpadding='10' cellspacing='0' width='100%'>
+      <thead>
+        <tr>
+          <th><%= t(:name) %></th>
+          <th style="width:80px"><%= t(:size) %></th>
+          <th style="width:80px"><%= t(:sent_in) %></th>
+          <th style="width:80px"><%= "Opções" %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% folder_content.each do |file| %>
+          <tr class="lines">
+            <td>
+              <% if file['url'] == nil %>
+                <%= link_to image_tag(icon_attachment(file["attachment_file_name"])),
+                  {:controller => :support_material_file, :action => :download, :id => file['id'], :file_allocation_tag_id => file['allocation_tag_id']},
+                  {:class => 'file_icon'} %>
+                <%= link_to file['attachment_file_name'],:controller => :support_material_file, :action => :download, :id => file['id'], :file_allocation_tag_id => file['allocation_tag_id'] %>
+
+              <% else %>
+                <img alt="" src="/images/icon_file_link.png" />&nbsp;
+                <a href="<%= file['url'] %>" target="_blank"><%= file['url'] %></a>
+              <% end %>
+            </td>
+            <td>
+              <% if file['url'] == nil %>
+                <%= format('%.2f KB', file["attachment_file_size"].to_i/1024.0) %>
+              <% else %>
+                <!-- O temanho não é exibido -->
+              <% end %>
+
+            </td>
+            <td>
+              <%=l file["attachment_updated_at"].to_time, :format => :files %>
+            </td>
+            <td>
+              <%= link_to "Excluir" ,:action => :delete_select_file , :id =>file["id"] %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+
+<% if @folders_list.nil? or @folders_list.empty? %>
+  <div class="block_content block_content_text"><%= t(:itens_not_found) %></div>
+<% end %>

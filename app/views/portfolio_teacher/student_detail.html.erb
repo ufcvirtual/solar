@@ -64,9 +64,9 @@
         </div>
         <span class="portfolio_activity_mright" style="float: right;">
           <span>
-            <input type="button" class="btn btn_blue" name="<%= t(:back).downcase %>" value="<%= t(:back) %>" id="back_to_show" />
+            <input type="button" class="btn btn_default" name="<%= t(:back).downcase %>" value="<%= t(:back) %>" id="back_to_show" />
           </span>
-          <span><%= f.submit t(:save), {:class => 'btn btn_blue'} %></span>
+          <span><%= f.submit t(:save), {:class => 'btn btn_default'} %></span>
         </span>
         &nbsp;
       </div>
@@ -126,7 +126,7 @@
           :students_id => @student_id, :assignment_id => @assignment_id,
           :send_assignment_id => @send_assignment_id
         }) do |f| %>
-        <%= f.file_field :attachment %><%= f.submit t(:send), {:class => 'btn btn_blue'} %>
+        <%= f.file_field :attachment %><%= f.submit t(:send), {:class => 'btn btn_default'} %>
         <div style="padding-top: 10px;"><%=raw t(:send_file_portfolio_obs)%></div>
         <div style="padding-top: 10px;"><%=raw t(:send_file_portfolio_text)%></div>
       <% end %>

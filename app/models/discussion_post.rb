@@ -36,7 +36,7 @@ SQL
        WHERE dp.parent_id = #{parent_id}
        ORDER BY created_at desc
 SQL
-    
+
     return (posts.nil?) ? [] : posts
   end
 
@@ -75,6 +75,26 @@ SQL
               WHERE dp.discussion_id = #{discussion_id}"
     query << " AND parent_id IS NULL" unless plain_list
     return ActiveRecord::Base.connection.select_one(query)["total"].to_i
+
+  end
+
+  ##
+  # Consulta retorna postagens mais recentes dos dados forúns
+  ##
+  def self.recent_by_discussions(discussions, content_size = 255, limit = 0)
+
+    query = <<SQL
+        SELECT id, user_id, discussion_id, profile_id,
+               substring("content" from 0 for #{content_size}) AS content,
+               created_at, updated_at, parent_id
+          FROM discussion_posts
+         WHERE discussion_id IN (#{discussions})
+         ORDER BY updated_at DESC
+SQL
+
+    query << "LIMIT #{limit}" if limit > 0
+
+    return DiscussionPost.find_by_sql(query)
 
   end
 

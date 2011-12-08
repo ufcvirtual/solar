@@ -66,12 +66,13 @@
     </script>
   </head>
   <body>
+    <div style="height:38px;width:100%;background-color:#003E7A;position:absolute;top:0;z-index:-10"></div>
     <div id="body_wrapper">
       <!-- Barra Topo -------------------------->
       <div id="mysolar_topbar">
         <div id="mysolar_identity">
           <div id="mysolar_logo">
-            <%= image_tag 'superior_logo.png', :alt => t(:mysolar_alt_img_solar) %>
+            <%= image_tag 'solar_logo_small.png', :alt => t(:mysolar_alt_img_solar), :id => "solar_logo" %>
           </div>
           <ul id="mysolar_top_options">
             <li id="mysolar_id">
@@ -149,6 +150,15 @@
 
         <%= yield %>
 
+      </div>
+
+      <div id="footer_push" style="height:35px"></div>
+      <div id="footer">
+        <ul>
+          <li>Instituto UFC Virtual 2011</li>
+          <li>Universidade Federal do Ceará</li>
+          <li>Equipe de Desenvolvimento</li>
+        </ul>
       </div>
 
 <%#= render '/portlets/chat' %>

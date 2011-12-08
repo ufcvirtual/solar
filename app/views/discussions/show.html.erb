@@ -8,11 +8,12 @@
   <div id="forum_description" class="block_content block_content_text">
     <%= @discussion["description"] %>
   </div>
+</div>
 
+<div class="block_wrapper">
   <!--//------------- Barra Superior--------------->
-  <div class="forum_navigation_bar">
-    <div style="text-align: center;">
-      <span style="float:left">
+  <div class="block_title" style="text-align: center;overflow:hidden">
+      <span style="float:left;">
         <%if valid_date%>
           <a href="javascript:clearFormData()" id="NewPostButton" class="forum_button"><%= t("forum_new_message")%></a>
         <%else%>
@@ -31,8 +32,9 @@
           </a>
         <%end%>
       </span>
-      <%=raw render_pagination_bar(count_discussion_posts(@discussion.id,(@display_mode=="PLAINLIST")).to_s)%>
-    </div>
+      <span>
+        <%=raw render_pagination_bar(count_discussion_posts(@discussion.id,(@display_mode=="PLAINLIST")).to_s)%>
+      </span>
   </div>
   <!--//------------- Fim da Barra Superior--------------->
 
@@ -90,8 +92,10 @@
       '<textarea id="newPostTextBox">' +
       '</textarea>' +
       '<div style="text-align:right;">' +
-      '<a href="#" onclick="cancelPosting();return false;" class="forum_button"><%=t("cancel")%></a>&nbsp;&nbsp;' +
-      '<a href="#" onclick="sendPost();return false;" class="forum_button"><%=t("send")%></a>' +
+      //'<a href="#" onclick="cancelPosting();return false;" class="forum_button"><%=t("cancel")%></a>&nbsp;&nbsp;' +
+      '<input type="button" onclick="cancelPosting();" class="btn btn_caution postDialogLink" value="<%=t("cancel")%>"' +
+      //'<a href="#" onclick="sendPost();return false;" class="forum_button"><%=t("send")%></a>' +
+      '<input type="button" onclick="sendPost();" class="btn btn_default postDialogLink" value="<%=t("send")%>"' +
       '</div>' +
       '</div>';
 
@@ -174,6 +178,7 @@
     $('.postDialogLink').click( function () {
       var postContainer = $(this).parent().parent();
       appendRichTextBox(postContainer);
+      return false;
     });
 
     //Botão de editar postagem
@@ -181,6 +186,7 @@
       var postContainer = $(this).parent().parent();
       appendRichTextBox(postContainer);
       $('#newPostTextBox').val(postContainer.children('.forum_post_inner_content').html());
+      return false;
     });
 
     //Botão de nova postagem

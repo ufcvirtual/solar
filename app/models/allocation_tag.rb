@@ -18,10 +18,10 @@ class AllocationTag < ActiveRecord::Base
       (select
         root.id as allocation_tag_id,
         CASE
-          WHEN group_id is not null THEN (select 'GROUP'::text)
-          WHEN offer_id is not null THEN (select 'OFFER'::text)
-          WHEN course_id is not null THEN (select 'COURSE'::text)
-          ELSE (select 'CURRICULUM_UNIT'::text)
+          WHEN group_id is not null THEN 'GROUP'::text
+          WHEN offer_id is not null THEN 'OFFER'::text
+          WHEN course_id is not null THEN 'COURSE'::text
+          ELSE 'CURRICULUM_UNIT'::text
         END as entity_type,
 
         (coalesce(group_id, 0) + coalesce(offer_id, 0) + coalesce(curriculum_unit_id, 0) + coalesce(course_id, 0)) as entity_id,
@@ -92,7 +92,7 @@ class AllocationTag < ActiveRecord::Base
         (hierarchy.course_parent_tag_id = #{allocation_tag_id})
 SQL
 
-    result = Array.new()
+    result = []
     hierarchy.each do |line|
       result << line["allocation_tag_id"].to_i
       result << line["offer_parent_tag_id"].to_i
