@@ -11,8 +11,10 @@ class DiscussionsController < ApplicationController
   def list
     authorize! :list, Discussion
 
-    allocation_tag = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
-    @discussions = Discussion.all_by_offer_id_and_group_id(allocation_tag.offer_id, allocation_tag.group_id)
+    allocation_tag_id = active_tab[:url]['allocation_tag_id']
+    allocations = AllocationTag.find_related_ids(allocation_tag_id)
+    @discussions = Discussion.all_by_allocations(allocations.join(','))
+
   end
 
   def show
@@ -20,21 +22,21 @@ class DiscussionsController < ApplicationController
 
     group_id = allocation_tag.group_id
     offer_id = allocation_tag.offer_id
-    
+
     discussion_id = params[:discussion_id]
     discussion_id = params[:id] if discussion_id.nil?
     @display_mode = params[:display_mode]
-    
+
     unless(permitted_discussions(offer_id, group_id, discussion_id).empty?)
       if @display_mode.nil?
         @display_mode = session[:forum_display_mode]
       else
         session[:forum_display_mode] = @display_mode
       end
-      
+
       @discussion = Discussion.find(discussion_id)
       plain_list = (@display_mode == "PLAINLIST")
-      
+
       @posts = DiscussionPost.discussion_posts(@discussion.id, plain_list, @current_page)
     else
       redirect_to "/discussions/list"
@@ -160,10 +162,10 @@ class DiscussionsController < ApplicationController
     post_id     = params[:post_id]
     post = DiscussionPost.find(post_id.to_i)
     @discussion = Discussion.find(discussion_id.to_i)
-    
+
     owned_by_current_user = (post.user.id == current_user.id)
     has_no_response = DiscussionPost.find_all_by_parent_id(post_id).empty?
-    
+
     if (owned_by_current_user&& valid_date && has_no_response)
       begin
         ActiveRecord::Base.transaction do
@@ -193,24 +195,24 @@ class DiscussionsController < ApplicationController
     post_file_id  = params[:idFile]
     file          = DiscussionPostFile.find(post_file_id.to_i)
     @discussion = Discussion.find(discussion_id.to_i)
-     
+
     post = file.discussion_post
-    
+
     owned_by_current_user = (post.user.id == current_user.id)
     has_no_response = DiscussionPost.find_all_by_parent_id(post.id).empty?
-      
+
     if (owned_by_current_user && valid_date && has_no_response)
       #Removendo arquivo da base de dados
       DiscussionPostFile.delete(file.id)
-      
+
       #Removendo o arquivo do disco
       filename = "#{file.id.to_s}_#{file.attachment_file_name}"
       path = "#{::Rails.root.to_s}/media/discussions/post/#{filename}"
       File.delete(path) if File.exist?(path)
-      
+
       hold_pagination unless @display_mode == "PLAINLIST"
     end
-    
+
     redirect_to "/discussions/show/#{discussion_id}"
 
   end
