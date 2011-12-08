@@ -1729,9 +1729,10 @@ h2, table tr.block_title th {
 }
 
 .forum_button_attachment{
-    font-size: 11px;
-    float: right;
-    margin-right: 15px;
+    float: left;
+    font-size: 9pt;
+    margin-left: 5px;
+    margin-top: 4px;
 }
 
 .forum_button_remove{
@@ -1741,6 +1742,10 @@ h2, table tr.block_title th {
 .forum_button_view_mode{
     color: #222;
     font-size: 13px;
+}
+
+.forum_button_view_mode img {
+    vertical-align: bottom;
 }
 
 .forum_navigation_bar{
@@ -1761,6 +1766,11 @@ h2, table tr.block_title th {
     width:100%;
     margin-top: 10px;
 }
+
+.forum_post .forum_post {
+    margin-top: 10px;
+}
+
 .forum_post_attachment_line{
     display:block;
     height:13px;
@@ -1800,6 +1810,10 @@ h2, table tr.block_title th {
     background-color: #ffffff;
 }
 
+.forum_post_content .forum_post_icon {
+    padding-left: 5px;
+}
+
 .forum_post_icon img {
     width: 40px;
     height: 40px;
@@ -1818,10 +1832,15 @@ h2, table tr.block_title th {
     border-bottom: 1px solid #003E7A;
 }
 
+.forum_post_author {
+    float:left;
+    padding-left:5px;
+}
+
 .forum_post_content{
     width: 100%;
 /*    background-color: #F5F8FB;*/
-    font-family:'PT Sans', sans serif;
+    font-family:'PT Sans', sans-serif;
     font-size: 13px;
     vertical-align: top;
 }
@@ -1857,11 +1876,14 @@ h2, table tr.block_title th {
     padding-top:5px;
 }
 .forum_post_date{
-    font-size: 10px;
+    font-family: 'PT Sans', sans-serif;
+    font-weight: normal;
+    font-size: 8pt;
     text-align: right;
     font-style: italic;
     color: #888;
-    margin-right: 10px;
+    margin-right: 8px;
+    margin-top: 5px;
     float: right;
 }
 .forum_post_buttons{
@@ -1874,12 +1896,23 @@ h2, table tr.block_title th {
 .forum_post_attachment{
     -webkit-padding-start:7px;
     padding-left:7px;
+    background-color: #F5F8FB;
 }
 
-.forum_post_content .forum_post {
+.forum_post_attachment > div {
+    border-bottom: 1px solid #d0d0d0;
+    margin-right: 7px;
+}
+
+.forum_post_attachment_list {
+    list-style: square;
+    padding-left: 15px;
+}
+
+/*.forum_post_content .forum_post {
     margin-left: 5px;
     width: auto;
-}
+}*/
 
 #new_post_dialog{
     text-align:left;

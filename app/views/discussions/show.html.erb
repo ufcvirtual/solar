@@ -83,6 +83,7 @@
 
   function showUploadForm(discussionId, postId){
     showLightBoxURL('/discussions/post_file_upload/?id=' + discussionId + '&post_id=' + postId + '&current_page=<%=@current_page%>' ,400,250,true,'<%=t(:forum_attach_file_title)%>');
+    return false;
   }
 
   //// Manipulação da caixa de edição ///////////////////////////////
@@ -93,9 +94,9 @@
       '</textarea>' +
       '<div style="text-align:right;">' +
       //'<a href="#" onclick="cancelPosting();return false;" class="forum_button"><%=t("cancel")%></a>&nbsp;&nbsp;' +
-      '<input type="button" onclick="cancelPosting();" class="btn btn_caution postDialogLink" value="<%=t("cancel")%>"' +
+      '<input type="button" onclick="cancelPosting();" class="btn btn_caution postDialogLink" value="<%=t("cancel")%>">' +
       //'<a href="#" onclick="sendPost();return false;" class="forum_button"><%=t("send")%></a>' +
-      '<input type="button" onclick="sendPost();" class="btn btn_default postDialogLink" value="<%=t("send")%>"' +
+      '<input type="button" onclick="sendPost();" class="btn btn_default postDialogLink" value="<%=t("send")%>">' +
       '</div>' +
       '</div>';
 
@@ -176,7 +177,7 @@
 
     //Botões de responder postagem
     $('.postDialogLink').click( function () {
-      var postContainer = $(this).parent().parent();
+      var postContainer = $(this).parent();
       appendRichTextBox(postContainer);
       return false;
     });
