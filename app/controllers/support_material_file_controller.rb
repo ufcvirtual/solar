@@ -9,7 +9,7 @@ class SupportMaterialFileController < ApplicationController
 
     allocation_tag_id = active_tab[:url]['allocation_tag_id']
 
-    @list_files = SupportMaterialFile.search_files(allocation_tag_id) # Pegar por allocation tag e colocar o combo da seleção de turma
+    @list_files = SupportMaterialFile.search_files(allocation_tag_id)
 
     # construindo um conjunto de objetos
     @folders_list = {}

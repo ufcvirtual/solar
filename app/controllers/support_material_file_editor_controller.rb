@@ -1,22 +1,22 @@
 class SupportMaterialFileEditorController < ApplicationController
 
-  #  def list
-  #
-  #    authorize! :list, Portfolio
-  #
-  #    group_id = session[:opened_tabs][session[:active_tab]]["groups_id"]
-  #
-  #    # listando atividades individuais pelo grupo_id em que o usuario esta inserido
-  #    @individual_activities = Portfolio.individual_activities(group_id, current_user.id)
-  #
-  #    # area publica
-  #    @public_area = Portfolio.public_area(group_id, current_user.id)
-  #
-  #  end
-
   def list
+
+    allocation_tag_id = 3
+    @list_files = SupportMaterialFile.search_files(allocation_tag_id)
+
+    # construindo um conjunto de objetos
+    @folders_list = {}
+    @list_files.collect {|file|
+      @folders_list[file["folder"]] = [] unless @folders_list[file["folder"]].is_a?(Array)
+      @folders_list[file["folder"]] << file
+    }
+
     @offers  = ""
     @groups  = ""
+
+    #    render :template => "support_material_file/list"
+    #    render :controller => "support_material_file", :action => "list"
 
   end
 
@@ -38,9 +38,7 @@ class SupportMaterialFileEditorController < ApplicationController
   end
 
   def upload_files
-    #    authorize! :upload_files, SupportMaterialFileEditor
-
-    
+    #    authorize! :upload_files, SupportMaterialFileEditor 
     #### PEGAR ALLOCATION TAG ! ! !
     allocation_tag_id = 3
 
@@ -52,10 +50,7 @@ class SupportMaterialFileEditorController < ApplicationController
 
         # verifica se o arquivo foi adicionado
         raise t(:error_no_file_sent) unless params.include?(:support_material)
-
-        # allocation_tag do grupo selecionada
-        #        allocation_tag_id = AllocationTag.find(:first, :conditions => ["group_id = ?", session[:opened_tabs][session[:active_tab]]["groups_id"]]).id
-
+      
         # Verificando se é uma pasta existente no banco ou uma nova criado pelo usuário.
         if (params[:support_material][:new_folder] != "")
           params[:support_material][:folder] = params[:support_material][:new_folder]
@@ -72,6 +67,7 @@ class SupportMaterialFileEditorController < ApplicationController
         end
 
         @file = SupportMaterialFile.new params[:support_material]
+        @file.folder = @file.folder.upcase
         @file.allocation_tag_id = allocation_tag_id
         @file.save!
 
@@ -86,9 +82,36 @@ class SupportMaterialFileEditorController < ApplicationController
     end
   end
 
-  def delete_select_files
-    
+  #Deleta arquivos e links
+  def delete_select_file
+    #    authorize! :delete_file_public_area, Portfolio
+    redirect = {:action => :list}
+    respond_to do |format|
+      begin
+        # arquivo a ser deletado
+        file_name = SupportMaterialFile.find(params[:id]).attachment_file_name
+        file_del = "#{::Rails.root.to_s}/media/support_material_file/#{params[:id]}_#{file_name}"
+
+        error = false
+
+        # deletar arquivo da base de dados
+        error = true unless SupportMaterialFile.find(params[:id]).delete
+
+        # deletar arquivo do servidor
+        unless error
+          File.delete(file_del) if File.exist?(file_del)
+
+          flash[:success] = t(:file_deleted)
+          format.html { redirect_to(redirect) }
+
+        else
+          raise t(:error_delete_file) unless error == 0
+        end
+
+      rescue Exception
+        flash[:error] = t(:error_delete_file)
+        format.html { redirect_to(redirect) }
+      end
+    end
   end
-
-
 end
