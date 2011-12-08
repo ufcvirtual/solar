@@ -91,8 +91,8 @@ module DiscussionPostsHelper
     all_discussions.each do |discussion|
       discussions_ids << discussion.id
     end
-
-    DiscussionPost.recent_by_discussions(discussions_ids.join(','), 255, Rails.application.config.items_per_page.to_i)
+    
+    DiscussionPost.recent_by_discussions(discussions_ids.join(','), Rails.application.config.items_per_page.to_i)
   end
 
   private
