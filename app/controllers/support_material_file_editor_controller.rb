@@ -61,13 +61,14 @@ class SupportMaterialFileEditorController < ApplicationController
         file = SupportMaterialFile.new params[:support_material]
   
         # Se retornar um registro é pq ja existe no banco e nao pode inserir, se for vazio pode inserir
-        verify = SupportMaterialFile.find_by_attachment_file_name_and_folder(file.attachment_file_name, file.folder)
-        unless (verify.nil?)
-          raise "Arquivo escolhido existe nessa mesma pasta"
-        end
+        verify = SupportMaterialFile.find_by_attachment_file_name_and_folder(file.attachment_file_name, file.folder.upcase.squeeze(" ").strip)
 
+        unless (verify.nil?)
+          raise "Arquivo escolhido existe nessa mesma pasta !"
+        end
+        
         @file = SupportMaterialFile.new params[:support_material]
-        @file.folder = @file.folder.upcase
+        @file.folder = @file.folder.upcase.squeeze(" ").strip
         @file.allocation_tag_id = allocation_tag_id
         @file.save!
 

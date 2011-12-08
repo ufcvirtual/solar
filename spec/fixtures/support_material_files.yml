@@ -6,7 +6,7 @@ arquivo 1:
   attachment_content_type: "application/pdf"
   attachment_file_size: 3165198
   attachment_updated_at: 2011-10-06 09:52:01.524322
-  folder: aulas
+  folder: AULAS
 
 arquivo 2:
   id: 2
@@ -15,7 +15,7 @@ arquivo 2:
   attachment_content_type: "application/pdf"
   attachment_file_size: 55669
   attachment_updated_at: 2011-10-06 09:52:01.524322
-  folder: aulas
+  folder: AULAS
 
 arquivo 3:
   id: 3
@@ -24,7 +24,7 @@ arquivo 3:
   attachment_content_type: "image/jpeg "
   attachment_file_size: 53357
   attachment_updated_at: 2011-10-06 09:52:01.524322
-  folder: fotos
+  folder: AULAS
 
 arquivo 4:
   id: 4
@@ -33,7 +33,7 @@ arquivo 4:
   attachment_content_type: "image/jpeg "
   attachment_file_size: 343563
   attachment_updated_at: 2011-10-06 09:52:01.524322
-  folder: fotos
+  folder: AULAS
 
 arquivo 5:
   id: 5
@@ -42,7 +42,7 @@ arquivo 5:
   attachment_content_type: "text/plain"
   attachment_file_size: 134
   attachment_updated_at: 2011-10-10 09:52:01.524322
-  folder: pasta
+  folder: PASTA
 
 arquivo 6:
   id: 6
@@ -51,7 +51,7 @@ arquivo 6:
   attachment_content_type: "application/pdf"
   attachment_file_size: 55669
   attachment_updated_at: 2011-01-06 09:52:01.524322
-  folder: outra pasta
+  folder: OUTRA PASTA
 
 arquivo 7:
   id: 7
@@ -60,7 +60,7 @@ arquivo 7:
   attachment_content_type: "application/vnd.ms-powerpoint"
   attachment_file_size: 2234
   attachment_updated_at: 2011-10-10 15:10:00.524322
-  folder: Slides
+  folder: SLIDES
 
 url 1:
   id: 8
@@ -69,7 +69,7 @@ url 1:
   attachment_content_type: 'link'
   attachment_file_size: 
   attachment_updated_at: 2011-10-27 09:40:03.524322
-  folder: Links
+  folder: LINKS
   url: "http://www.google.com"
 
 url 2:
@@ -79,7 +79,7 @@ url 2:
   attachment_content_type: 'link'
   attachment_file_size:
   attachment_updated_at: 2011-10-27 09:45:03.524322
-  folder: Links
+  folder: LINKS
   url: "http://www.globo.com"
 
 url 3:
@@ -89,7 +89,7 @@ url 3:
   attachment_content_type: 'link'
   attachment_file_size:
   attachment_updated_at: 2011-10-27 09:50:03.524322
-  folder: Links
+  folder: LINKS
   url: "http://www.baixaki.com.br"
 
 url 4:
@@ -99,5 +99,5 @@ url 4:
   attachment_content_type: 'link'
   attachment_file_size:
   attachment_updated_at: 2011-10-27 09:55:03.524322
-  folder: Links
+  folder: LINKS
   url: "http://www.prograd.ufc.br"
