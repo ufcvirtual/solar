@@ -1,7 +1,12 @@
 class PagesController < ApplicationController
-  layout 'external_page'
-
+  before_filter :authenticate_user!, :except => [:index, :team]
+  
   def index
+    render :layout => 'external_page'
+  end
+
+  def team
+    render :layout => 'login'
   end
 
 end
