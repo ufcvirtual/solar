@@ -78,13 +78,14 @@
 
   <!-- Legendas -->
 
-  <div class="legend">
-    <ul>
-      <li><h1><%= t(:legend_assignments) %></h1></li>
-      <% @activities.each_with_index do |activity, idx| %>
-        <li><%= idx + 1 %>&deg; - <%= activity["name"] %></li>
-      <% end %>
-    </ul>
-
-  </div>
+  <% unless @activities.empty? %>
+    <div class="legend">
+      <ul>
+        <li><h1><%= t(:legend_assignments) %></h1></li>
+        <% @activities.each_with_index do |activity, idx| %>
+          <li><%= idx + 1 %>&deg; - <%= activity["name"] %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 </div>

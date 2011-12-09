@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :another_level_breadcrumb
   before_filter :set_locale, :application_context, :current_menu
+  before_filter :log_access, :only => :add_tab
 
   # Mensagem de erro de permissão
   rescue_from CanCan::AccessDenied do |exception|
@@ -90,11 +91,11 @@ class ApplicationController < ActionController::Base
   def set_active_tab(tab_name)
     user_session[:tabs][:active] = tab_name
     # atualiza breadcrumb
-#    bread = user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb]
-#
-#    unless bread.last[:name] == tab_name
-#      user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb].delete_at(-1)
-#    end
+    #    bread = user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb]
+    #
+    #    unless bread.last[:name] == tab_name
+    #      user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb].delete_at(-1)
+    #    end
 
     # verificar se existe ultimo nivel de breadcrumb e renderiza este
 
@@ -144,7 +145,6 @@ class ApplicationController < ActionController::Base
       hash_tab = {"id" => id, "type" => type, "allocation_tag_id" => allocation_tag_id}
 
       # atualizando dados da sessao
-      # {:controller => :application, :action => :activate_tab, :name => name_tab}
       set_session_opened_tabs(name_tab, hash_tab, params)
 
       # redireciona de acordo com o tipo de aba
@@ -166,11 +166,6 @@ class ApplicationController < ActionController::Base
   end
 
   private
-
-#  # Define links de mesmo nivel
-#  def clear_breadcrumb_after(level)
-#    user_session[:breadcrumb] = user_session[:breadcrumb].first(level+1) unless user_session[:breadcrumb].nil?
-#  end
 
   ##
   # Verifica se existe uma aba criada com o nome passado
