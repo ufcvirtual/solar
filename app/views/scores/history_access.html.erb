@@ -4,7 +4,8 @@
       <tbody>
         <% @history.each_with_index do |hist, idx| %>
           <tr class="<%= (idx % 2 == 0) ? 'post_content' : 'noclass' %>">
-            <td><%=l hist['access_date'].to_time, :format => :files %></td>
+            <td><%=l hist['access_date'].to_time, :format => :default %></td>
+            <td></td>
           </tr>
         <% end %>
       </tbody>

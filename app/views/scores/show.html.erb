@@ -20,7 +20,6 @@
         <% @activities.each_with_index do |activity, idx| %>
           <tr class="lines">
             <td align="left">
-              <%# verifica permissao de modificao de notas %>
               <% if can? :student_detail, PortfolioTeacher %>
                 <%=link_to activity["assignments_name"], {:controller => :portfolio_teacher,
                   :action => :student_detail, :id => @student.id,
@@ -65,7 +64,11 @@
               <%= link_to(discussion["name"], link, {:class => 'link_content'}) %>
             </td>
             <td class="show_posts" align="center">
-              <%= link_to(discussion["qtd"], link, {:class => 'link_content'}) %>
+              <% if discussion['qtd'].to_i > 0 %>
+                <%= link_to(discussion['qtd'], link, {:class => 'link_content'}) %>
+              <% else %>
+                <%= discussion['qtd'] %>
+              <% end %>
             </td>
           </tr>
         <% end %>
@@ -96,7 +99,11 @@
     <div id="history-body">
       <span id="history-body-label"><%=t :amount_access %>:</span>
       <span id="history-body-value">
-        <%= link_to @amount, {:controller => :scores, :action => :history_access, :id => @student.id}, :class => 'link_content' %>
+        <% if @amount.to_i > 0 %>
+          <%= link_to @amount, {:controller => :scores, :action => :history_access, :id => @student_id}, :class => 'link_content' %>
+        <% else %>
+          <%= @amount %>
+        <% end %>
       </span>
     </div>
   </div>

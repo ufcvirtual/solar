@@ -37,7 +37,7 @@ class ScoresController < ApplicationController
     @from_date = params['from-date']
     @until_date = params['until-date']
     @student_id = params[:id]
-    curriculum_unit_id = active_tab[:url]["id"]
+    curriculum_unit_id = active_tab[:url]['id']
 
     # validar as datas
     @from_date = date_valid?(@from_date) ? Date.parse(@from_date) : Date.today << 2

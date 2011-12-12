@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :another_level_breadcrumb
   before_filter :set_locale, :application_context, :current_menu
+  before_filter :log_access, :only => :add_tab
 
   # Mensagem de erro de permissão
   rescue_from CanCan::AccessDenied do |exception|
@@ -22,7 +23,7 @@ class ApplicationController < ActionController::Base
   end
 
   ##
-  # Inicializa valores da sessao do usuario logado
+  # Inicializa valores da sessao quando o usuário se loga
   ##
   def start_user_session
     return nil unless user_signed_in?
@@ -37,15 +38,15 @@ class ApplicationController < ActionController::Base
     } unless user_session.include?(:tabs)
 
     user_session[:breadcrumb] = [{ :name => 'Home', :url => {:controller => :application, :action => :activate_tab, :name => 'Home'} }]
+    user_session[:menu] = { :current => nil }
   end
 
   ##
   # Consulta id relacionado a estudante na tabela PROFILES
   ##
   def student_profile
-    prof = Profile.find_by_student(true)
-    return prof.id if prof
-    return ''
+    profile = Profile.find_by_student(true)
+    return profile.nil? ? '' : profile.id
   end
 
   ###########################################
@@ -60,9 +61,6 @@ class ApplicationController < ActionController::Base
     user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb][same_level_for_all] = {
       :name => params[:bread], :url => params
     } if params.include?('bread')
-
-    params.delete('bread')
-    params.delete('mid')
   end
 
   ##
@@ -89,15 +87,6 @@ class ApplicationController < ActionController::Base
   ##
   def set_active_tab(tab_name)
     user_session[:tabs][:active] = tab_name
-    # atualiza breadcrumb
-#    bread = user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb]
-#
-#    unless bread.last[:name] == tab_name
-#      user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb].delete_at(-1)
-#    end
-
-    # verificar se existe ultimo nivel de breadcrumb e renderiza este
-
   end
 
   ##
@@ -118,13 +107,9 @@ class ApplicationController < ActionController::Base
       redirect = {:controller => :home}
     else
       set_active_tab(params[:name])
-      if active_tab[:url]['type'] == Tab_Type_Home
-        redirect = {:controller => :home}
-      else
-        redirect = {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']}
-      end
+      redirect = (active_tab[:url]['type'] == Tab_Type_Home) ? {:controller => :home} : active_tab[:breadcrumb].last[:url]
     end
-
+    
     redirect_to redirect, :flash => flash
   end
 
@@ -132,7 +117,6 @@ class ApplicationController < ActionController::Base
   # Adiciona uma aba no canto superior da interface
   ##
   def add_tab
-
     name_tab, type = params[:name], params[:type] # Home ou Curriculum_Unit
     id, allocation_tag_id = params[:id], params[:allocation_tag_id]
 
@@ -144,13 +128,12 @@ class ApplicationController < ActionController::Base
       hash_tab = {"id" => id, "type" => type, "allocation_tag_id" => allocation_tag_id}
 
       # atualizando dados da sessao
-      # {:controller => :application, :action => :activate_tab, :name => name_tab}
       set_session_opened_tabs(name_tab, hash_tab, params)
 
       # redireciona de acordo com o tipo de aba
       redirect = { :controller => :curriculum_units, :action => :show, :id => id, :allocation_tag_id => allocation_tag_id } if type == Tab_Type_Curriculum_Unit
-
     end
+
     redirect_to redirect, :flash => flash
   end
 
@@ -162,21 +145,17 @@ class ApplicationController < ActionController::Base
     set_active_tab_to_home if user_session[:tabs][:active] == tab_name
     user_session[:tabs][:opened].delete(tab_name)
 
-    redirect_to ((active_tab[:url]['type'] == Tab_Type_Curriculum_Unit) ? {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']} : {:controller => :home})
+    redirect = ((active_tab[:url]['type'] == Tab_Type_Curriculum_Unit) ? {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']} : {:controller => :home})
+    redirect_to redirect, :flash => flash
   end
 
   private
-
-#  # Define links de mesmo nivel
-#  def clear_breadcrumb_after(level)
-#    user_session[:breadcrumb] = user_session[:breadcrumb].first(level+1) unless user_session[:breadcrumb].nil?
-#  end
 
   ##
   # Verifica se existe uma aba criada com o nome passado
   ##
   def new_tab?(name_tab)
-    return (user_session[:tabs][:opened].length < Max_Tabs_Open.to_i) || (user_session[:tabs][:opened].has_key?(name_tab))
+    (user_session[:tabs][:opened].length < Max_Tabs_Open.to_i) || (user_session[:tabs][:opened].has_key?(name_tab))
   end
 
   ##
