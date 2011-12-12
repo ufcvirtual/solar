@@ -57,7 +57,7 @@ Cenário: Cadastrar novo usuário
        E que eu preenchi "city" com "Fortaleza"
        E que eu preenchi "telephone" com "(85)3322-2233"
        E que eu preenchi "cell_phone" com "(85)8888-8888"
-    Quando eu clicar em "confirm"
+    Quando eu clicar em "Confirmar"
     Então eu deverei ver "Sair"
         E eu deverei ver "Home"
 
@@ -84,7 +84,7 @@ Cenário: Cadastrar novo usuário com dados inválidos
        E que eu preenchi "city" com "Fortaleza"
        E que eu preenchi "telephone" com "(85)3322-2233"
        E que eu preenchi "cell_phone" com "(85)8888-8888"
-    Quando eu clicar em "confirm"
+    Quando eu clicar em "Confirmar"
     Então eu deverei ver "Login é muito curto(a) (mínimo: 3 caracteres)"
 
 Cenário: Cadastrar novo usuário e sair logo em seguida
@@ -110,7 +110,7 @@ Cenário: Cadastrar novo usuário e sair logo em seguida
        E que eu preenchi "city" com "Fortaleza"
        E que eu preenchi "telephone" com "(85)3322-2233"
        E que eu preenchi "cell_phone" com "(85)8888-8888"
-    Quando eu clicar em "confirm"
+    Quando eu clicar em "Confirmar"
     Então eu deverei ver "Sair"
         E eu deverei ver "Home"
     Quando eu clicar no link "Sair"
