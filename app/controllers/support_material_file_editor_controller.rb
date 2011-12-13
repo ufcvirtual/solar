@@ -2,6 +2,9 @@ class SupportMaterialFileEditorController < ApplicationController
 
   def list
 
+    # Recuperando os arquivos enviados do material de apoio
+    
+    #################  OBTER OS ARQUIVO COM O QUAL O EDITOR FEZ O UPLOAD  ##################
     allocation_tag_id = 3
     @list_files = SupportMaterialFile.search_files(allocation_tag_id)
 
@@ -11,12 +14,11 @@ class SupportMaterialFileEditorController < ApplicationController
       @folders_list[file["folder"]] = [] unless @folders_list[file["folder"]].is_a?(Array)
       @folders_list[file["folder"]] << file
     }
+    #######################################################
 
+    
     @offers  = ""
     @groups  = ""
-
-    #    render :template => "support_material_file/list"
-    #    render :controller => "support_material_file", :action => "list"
 
   end
 
@@ -28,7 +30,8 @@ class SupportMaterialFileEditorController < ApplicationController
       redirect_to :controller => "support_material_file_editor", :action => "list"
       return
     end
-    
+
+    #### PEGAR ALLOCATION TAG ! ! !
     allocation_tag_id = 3
     @newlink = SupportMaterialFile.upload_link(allocation_tag_id, url)
 
@@ -37,11 +40,12 @@ class SupportMaterialFileEditorController < ApplicationController
     
   end
 
+  def edit_link
+    raise "para implementar"
+  end
+
   def upload_files
     #    authorize! :upload_files, SupportMaterialFileEditor 
-    #### PEGAR ALLOCATION TAG ! ! !
-    allocation_tag_id = 3
-
     
     respond_to do |format|
       begin
@@ -66,6 +70,9 @@ class SupportMaterialFileEditorController < ApplicationController
         unless (verify.nil?)
           raise "Arquivo escolhido existe nessa mesma pasta !"
         end
+
+        #### PEGAR ALLOCATION TAG ! ! !
+        allocation_tag_id = 3
         
         @file = SupportMaterialFile.new params[:support_material]
         @file.folder = @file.folder.upcase.strip

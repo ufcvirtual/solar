@@ -12,7 +12,7 @@
 </script>
 
 
-Material de apoio do editor
+<span>Material de apoio do editor</span>
 
 <div>
 
@@ -20,14 +20,14 @@ Material de apoio do editor
   <span> Oferta: </span>
   <div style="margin-left: 50px;margin-top: -20px;">
     <%= form_for(@offers) do |f| %>
-      <%= f.select :offer, options_for_select([""] + Offer.find(:all,:select => "semester"))%>
+      <%= f.select :offer, options_for_select([""] + Offer.find(:all,:select => "semester").collect{|c| [c.semester]})%>
     <%end%>
   </div>
 
   <span> Turma: </span>
   <div style="margin-left: 50px;margin-top: -20px;">
     <%= form_for(@groups) do |f| %>
-      <%= f.select :group, options_for_select([""] + Group.find(:all,:select => "code"))%>
+      <%= f.select :group, options_for_select([""] + Group.find(:all,:select => "code").collect{|c| [c.code]})%>
     <%end%>
   </div>
 
@@ -60,7 +60,7 @@ Material de apoio do editor
       <br/>
       <div>  Pasta:  </div>
       <div id="select_folder">
-        <%= f.select :folder, options_for_select([""] + ["nova pasta"] + SupportMaterialFile.find(:all,:select => "DISTINCT folder", :conditions => ["folder != ? ", ""]).collect{|c| [c.folder]})%>
+        <%= f.select :folder, options_for_select([""] + ["nova pasta"] + SupportMaterialFile.find(:all,:select => "DISTINCT folder", :conditions => ["folder != ? and folder != ? ", "","LINKS"]).collect{|c| [c.folder]})%>
       </div>
 
       <div id ="new_folder" style="display: none">
@@ -127,7 +127,7 @@ Material de apoio do editor
               <% if file['url'] == nil %>
                 <%= format('%.2f KB', file["attachment_file_size"].to_i/1024.0) %>
               <% else %>
-                <!-- O temanho não é exibido -->
+                <!-- O tamanho não é exibido -->
               <% end %>
 
             </td>
@@ -135,7 +135,8 @@ Material de apoio do editor
               <%=l file["attachment_updated_at"].to_time, :format => :files %>
             </td>
             <td>
-              <%= link_to "Excluir" ,:action => :delete_select_file , :id =>file["id"], :confirm => "Tem certeza que dejeja deletar ?", :method => :delete %>
+              <%= link_to "Excluir" ,{:action => :delete_select_file , :id =>file["id"]}, :confirm => "Tem certeza que deseja excluir ?", :method => :delete %>
+              <span onclick="showLightBox('Trocar por URL para edição', 400, 300, true, 'Editar link'); return false;"> /Editar</span>
             </td>
           </tr>
         <% end %>
