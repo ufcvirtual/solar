@@ -6,7 +6,7 @@
     <%= stylesheet_link_tag "solar.css" %>
     <%= stylesheet_link_tag "calendar.css" %>
     <%= stylesheet_link_tag "security.css" %>
-    <%= stylesheet_link_tag "http://fonts.googleapis.com/css?family=PT+Sans|Ubuntu:300,400,500,700|Ubuntu+Condensed" %>
+    <%#= stylesheet_link_tag "http://fonts.googleapis.com/css?family=PT+Sans|Ubuntu:300,400,500,700|Ubuntu+Condensed" %>
 
     <%= javascript_include_tag "jquery-1.4.4.js" %>
     <%= javascript_include_tag "jquery-ui-1.8.6.js" %>
@@ -68,7 +68,7 @@
   <body>
     <div style="height:38px;width:100%;background-color:#003E7A;position:absolute;top:0;z-index:-10"></div>
     <div id="body_wrapper">
-      <!-- Barra Topo -------------------------->
+      <!-- Barra Topo #########################-->
       <div id="mysolar_topbar">
         <div id="mysolar_identity">
           <div id="mysolar_logo">
@@ -80,7 +80,8 @@
             </li>
             <li>
               <% if can? :update, current_user %>
-                <%= link_to current_user.nick, {:action=>"edit", :controller=>"devise/registrations"}, :class => 'mysolar_top_link', :id => 'my_data' %>
+  <%#= link_to current_user.nick, {:action=>"edit", :controller=>"devise/registrations"}, :class => 'mysolar_top_link', :id => 'my_data' %>
+                <a href="" id="mysolar_top_user_nick" onclick="mysolarTopSubmenuToggle();return false;" class="mysolar_top_link"><%=current_user.nick%></a>
   <%# edit_user_url(current_user)%>
               <% end %>
             </li>
@@ -95,8 +96,65 @@
             </li>
           </ul>
         </div>
+        <!-- Submenu Topo #########################-->
+        <style>
+          #mysolar_top_submenu{
+            color: #003e7a;;
+            font-size: 11pt;
+            position: absolute;
+            top:36px;
+            width:170px;
+
+            background-color: #fffeea;/*#003e7a;*/
+            margin-left: -20px;
+            z-index: 100;
+            display:none;
+            border-bottom: 2px solid #f9db43;/*#f9db43 #003e7a*/
+            border-left: 2px solid #f9db43;
+            border-right: 2px solid #f9db43;
+            border-top: none;
+            padding: 10px;
+            text-align: left;
+            overflow: hidden;
+          }
+        </style>
+        <script>
+          $(document).ready(function(){
+            $("body").click(function(e) {
+              if((e.target.id !== 'mysolar_top_submenu') && (e.target.id !== 'mysolar_top_user_nick')){
+                $("#mysolar_top_submenu").slideUp(150);
+              }      
+            });
+          });
+          function mysolarTopSubmenuToggle(){
+            var left = $("#mysolar_top_user_nick").offset().left;
+            var origin = $("#mysolar_topbar").offset().left;
+            left -= origin;
+            $("#mysolar_top_submenu").css('left', left);
+            $("#mysolar_top_submenu").slideToggle(150);
+          }
+        </script>
+
+        <div id="mysolar_top_submenu">
+          <div style="font-size:9pt;"><%=current_user.nick%></div>
+          <div style="font-size:9pt;"><%=current_user.email%></div>
+          
+          
+          <ul style="width: 100%; display:block;">
+            <li style="padding:7px;">
+              <%= link_to "[Editar perfil]", {:action=>"edit", :controller=>"devise/registrations"}, :id => 'my_data' %>
+            </li>
+            <li style="padding:7px;">
+              [Alterar Foto]
+            </li>
+            <li style="padding:7px;">
+              Sair
+            </li>
+          </ul>
+        </div>
+
+        <!-- Abas #########################-->
         <div id="mysolar_tabs">
-          <!-- Abas -------------------------->
           <ul id="mysolar_tabs_wrapper">
             <%= raw render_tabs %>
           </ul>
@@ -118,7 +176,7 @@
         </div>
       </div>
 
-      <!-- Barra Lateral -------------------------->
+      <!-- Barra Lateral #########################-->
       <div id="mysolar_sidebar">
         <div id="mysolar_menu_accordion" style="z-index:10">
           <% profiles = Profile.all_by_user_id(current_user.id) %>
@@ -164,6 +222,7 @@
 
 <%#= render '/portlets/chat' %>
     </div>
+
   </body>
 </html>
 

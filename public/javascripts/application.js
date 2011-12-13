@@ -1,4 +1,9 @@
 /*******************************************************************************
+ * Submenu da conta do usuário
+ * */
+
+
+/*******************************************************************************
  * LightBox genérico do sistema
  * */
 function showLightBoxURL(url, width, height, canClose, title){
@@ -66,6 +71,11 @@ function removeLightBox(force){
 }
 
 /*******************************************************************************
+ * Menu superior do sistema
+ * */
+
+
+/*******************************************************************************
  * Atualiza o conteudo da tela por ajax.
  * Utilizado por funções genéricas de seleção como a paginação ou
  * a seleção de turmas.
@@ -102,7 +112,7 @@ function reloadContentByForm(form){
             // chamar a funcao que atualiza a agenda
             showAgenda();
 
-            // atualiza clique em dia do mes
+        // atualiza clique em dia do mes
 
 
         }
