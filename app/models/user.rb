@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
   validates_length_of :zipcode, :maximum => 9
   validates_length_of :country,:maximum => 90
   validates_length_of :city, :maximum => 90
-  validates_length_of :institution, :maximum => 80
+  validates_length_of :institution, :maximum => 120
   validate :cpf_ok
 
   # Configuração do paperclip para upload de fotos
