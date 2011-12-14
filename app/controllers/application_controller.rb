@@ -1,10 +1,20 @@
+##########
 # Variaveis de sessao do usuario
+# 
 # user_session {
+#   :current_page,
+#   :menu,
 #   :tabs => {
-#     :opened => {},
-#     :active => ''
+#     :opened => {
+#       'name' => {
+#         :breadcrumb => [],
+#         :url => {}
+#       }
+#     },
+#     :active => 'name'
 #   }
 # }
+##########
 class ApplicationController < ActionController::Base
 
   protect_from_forgery
@@ -42,11 +52,10 @@ class ApplicationController < ActionController::Base
   end
 
   ##
-  # Consulta id relacionado a estudante na tabela PROFILES
+  # Id do perfil estudante na tabela profiles
   ##
   def student_profile
-    profile = Profile.find_by_student(true)
-    return profile.nil? ? '' : profile.id
+    Profile.find_by_student(true).id
   end
 
   ###########################################
@@ -57,7 +66,7 @@ class ApplicationController < ActionController::Base
   # Define um novo nivel no breadcrumb da aba atual
   ##
   def another_level_breadcrumb
-    same_level_for_all = 1
+    same_level_for_all = 1 # ultimo nivel, por enquanto o breadcrumb só comporta 3 níveis
     user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb][same_level_for_all] = {
       :name => params[:bread], :url => params
     } if params.include?('bread')
@@ -68,7 +77,7 @@ class ApplicationController < ActionController::Base
   ##
   def application_context
     return nil unless user_signed_in?
-    @context, @context_param_id = Context.find(active_tab[:url]['type']).name, active_tab[:url]["id"]
+    @context, @context_param_id = Context.find(active_tab[:url]['type']).name, active_tab[:url]['id']
   end
 
   ##
@@ -101,13 +110,12 @@ class ApplicationController < ActionController::Base
   ##
   def activate_tab
     # verifica se a aba que esta sendo acessada esta aberta
-    redirect = {}
+    redirect = {:controller => :home}
     unless user_session[:tabs][:opened].has_key?(params[:name])
       set_active_tab_to_home
-      redirect = {:controller => :home}
     else
       set_active_tab(params[:name])
-      redirect = (active_tab[:url]['type'] == Tab_Type_Home) ? {:controller => :home} : active_tab[:breadcrumb].last[:url]
+      redirect = active_tab[:breadcrumb].last[:url] if active_tab[:url]['type'] == Tab_Type_Curriculum_Unit
     end
     
     redirect_to redirect, :flash => flash
@@ -126,8 +134,6 @@ class ApplicationController < ActionController::Base
     # abre abas ate um numero limitado; atualiza como ativa se aba ja existe
     if new_tab?(name_tab)
       hash_tab = {"id" => id, "type" => type, "allocation_tag_id" => allocation_tag_id}
-
-      # atualizando dados da sessao
       set_session_opened_tabs(name_tab, hash_tab, params)
 
       # redireciona de acordo com o tipo de aba
@@ -180,28 +186,27 @@ class ApplicationController < ActionController::Base
   # Default locale da aplicação
   ##
   def set_locale
+    # se o usuario estiver logado e passar locale nos parametros eh salvo
     if user_signed_in?
-
-      # recupera os dados de locale das configuracoes do usuario
       personal_options = PersonalConfiguration.find_by_user_id(current_user.id)
 
-      # caso seja o primeiro acesso do usuario
-      personal_options = PersonalConfiguration.new :user_id => current_user.id if personal_options.nil?
-
-      I18n.locale = params[:locale] || personal_options.default_locale || I18n.default_locale
-
-      # se o locale for passado pela url os dados do usuario serao alterados no base de dados
-      unless params[:locale].nil?
+      # configuracoes pessoais sao criadas se nao existir
+      if personal_options.nil?
+        personal_options = PersonalConfiguration.new(:user_id => current_user.id, :default_locale => (params[:locale] || I18n.default_locale) )
+        personal_options.save
+      elsif params.include?('locale')
         personal_options.default_locale = params[:locale]
         personal_options.save
       end
 
-      # caso seja a primeira sessao do usuario
-      personal_options.save if personal_options.new_record?
+#      raise "#{personal_options.default_locale}"
 
+      locale = params[:locale] || personal_options.default_locale
     else
-      I18n.locale = params[:locale] || I18n.default_locale
+      locale = params[:locale] || I18n.default_locale
     end
+
+    I18n.locale = locale
   end
 
   ##
@@ -213,6 +218,13 @@ class ApplicationController < ActionController::Base
 
     @current_page = params[:current_page] if @current_page.nil?
     @current_page = "1" if @current_page.nil?
+  end
+
+  ##
+  # Parametros de locale para paginas externas
+  ##
+  def default_url_options(options={})
+    return params.include?('locale') ? {:locale => params[:locale]} : {}
   end
 
   ##
