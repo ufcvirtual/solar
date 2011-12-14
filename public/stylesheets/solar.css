@@ -2470,73 +2470,75 @@ td.td_student a {color: #2a538d;}
 .agenda_left {
     float: left;
     background-color: #F5F8FB;
-    border-top: 4px solid #003E7A;
-    min-height: 71px;
+    min-height: 65px;
     width: 160px;
     font-size: 11pt;
 }
 
 .agenda_right {
-    float: right;
     white-space: normal;
-    min-height: 75px;
-    width: 538px;
+    min-height: 60px;
     overflow: hidden;
     font-weight: normal;
-    background-color: #F7F7F8;
+/*    background-color: #fbfbfb;*/
+    font-size: 10pt;
+    padding-top: 10px;
+    text-align: justify;
 }
 
 .agenda_right p {
-    padding: 5px;
+    padding: 5px 5px 5px 10px;
 }
 
 .agenda_right .title {
-    padding-left: 5px;
+    padding-left: 10px;
     font-weight: bold;
-    font-size: 11pt;
+    font-size: 10pt;
 }
 
-.agenda_left_title {
-    overflow: auto;
-    padding-top: 5px;
-    padding-left: 5px;
+/*.agenda_left {
+    padding-top: 10px;
+}*/
+
+.agenda_left_date {
+    margin-top: 7px;
+    text-align: center;
 }
 
-.agenda_left_title_img {
-    float: left;
-    height: 16px;
-    width: 16px;
+.agenda_left_interval, .agenda_left_day, .agenda_left_day_and_month {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
-.agenda_left_title_text {
-    padding-left: 21px; /*5px a direita da img*/
-    color: #204783;
+.block_title_icon.discussions {
+    background: url('../images/schedule/meeting_attendance_16x16.png') no-repeat;
+    display: inline-block;
 }
 
-.block_title_icon.discussions, .block_title_icon.lessons, .block_title_icon.assignments, .block_title_icon.schedule_events {
-    background: url('../images/agenda/assignments_16x16.png') no-repeat;
+.block_title_icon.lessons, .block_title_icon.assignments, .block_title_icon.schedule_events {
+    background: url('../images/schedule/assignments_16x16.png') no-repeat;
     display: inline-block;
 }
 
 .block_title_icon.chat {
-    background: url('../images/agenda/chat_16x16.png') no-repeat;
+    background: url('../images/schedule/chat_16x16.png') no-repeat;
     display: inline-block;
 }
 
-/*encontro presencial*/
+/* encontro presencial */
 .block_title_icon.meeting_attendance {
-    background: url('../images/agenda/meeting_attendance_16x16.png') no-repeat;
+    background: url('../images/schedule/meeting_attendance_16x16.png') no-repeat;
     display: inline-block;
-}
-
-.agenda_left_content {
-    text-align: center;
 }
 
 .agenda_ajax {
     color: #4B6380;
-    font-size: 8pt;
-    font-family: Trebuchet;
+    font-size: 9pt;
+}
+
+.agenda_left_month_year .year_left {
+    margin-right: 30px;
 }
 
 /**

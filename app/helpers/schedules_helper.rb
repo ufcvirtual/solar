@@ -61,6 +61,7 @@ TEXT
       <span class="date_left">
         #{l(start_date, :format => :day_and_month)}
       </span>
+      <span class="date_middle">-</span>
       <span class="date_right">
         #{l(end_date, :format => :day_and_month)}
       </span>
@@ -69,7 +70,6 @@ TEXT
       <span class="year_left">
         #{start_date.year}
       </span>
-      <span class="date_middle">-</span>
       <span class="year_right">
         #{end_date.year}
       </span>
