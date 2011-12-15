@@ -33,9 +33,9 @@ class SupportMaterialFileEditorController < ApplicationController
 
     #### PEGAR ALLOCATION TAG ! ! !
     allocation_tag_id = 3
-    @newlink = SupportMaterialFile.upload_link(allocation_tag_id, url)
+    SupportMaterialFile.upload_link(allocation_tag_id, url)
 
-    flash[:success] = "Link enviado com sucesso !"
+    flash[:success] = "Link enviado com sucesso!"
     redirect_to :controller => "support_material_file_editor", :action => "list"
     
   end
@@ -59,6 +59,7 @@ class SupportMaterialFileEditorController < ApplicationController
         if (params[:support_material][:new_folder] != "")
           params[:support_material][:folder] = params[:support_material][:new_folder]
         end
+
         params[:support_material].delete(:new_folder)
         
         # Verificando se o arquivo enviado já existe na pasta selecionada
@@ -67,9 +68,7 @@ class SupportMaterialFileEditorController < ApplicationController
         # Se retornar um registro é pq ja existe no banco e nao pode inserir, se for vazio pode inserir
         verify = SupportMaterialFile.find_by_attachment_file_name_and_folder(file.attachment_file_name, file.folder.upcase.strip)
 
-        unless (verify.nil?)
-          raise "Arquivo escolhido existe nessa mesma pasta !"
-        end
+        raise "Arquivo escolhido existe nessa mesma pasta !" unless (verify.nil?)
 
         #### PEGAR ALLOCATION TAG ! ! !
         allocation_tag_id = 3
@@ -97,8 +96,7 @@ class SupportMaterialFileEditorController < ApplicationController
     respond_to do |format|
       begin
         # arquivo a ser deletado
-        file_name = SupportMaterialFile.find(params[:id]).attachment_file_name
-        file_del = "#{::Rails.root.to_s}/media/support_material_file/#{params[:id]}_#{file_name}"
+        file_del = "#{::Rails.root.to_s}/media/support_material_file/#{params[:id]}_#{SupportMaterialFile.find(params[:id]).attachment_file_name}"
 
         error = false
 
@@ -111,9 +109,8 @@ class SupportMaterialFileEditorController < ApplicationController
 
           flash[:success] = t(:file_deleted)
           format.html { redirect_to(redirect) }
-
         else
-          raise t(:error_delete_file) unless error == 0
+          raise t(:error_delete_file) unless !error
         end
 
       rescue Exception
