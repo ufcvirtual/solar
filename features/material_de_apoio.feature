@@ -72,3 +72,5 @@ Cenário: Exibir Material de apoio para o editor e parte superior de upload
             E eu deverei ver o link "http://www.google.com"
             E eu deverei ver "OUTRA PASTA"
             E eu deverei ver o link "3.pdf"
+
+#Cenário: Upload de arquivos pelo editor
