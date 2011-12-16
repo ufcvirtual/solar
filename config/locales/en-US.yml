@@ -217,7 +217,7 @@
   successful_update_photo: "Photo successfully changed"
 
   #alteracao de foto do layout
-  alter_photo: "alter photo"
+  alter_photo: "Change picture"
 
   # pagina do meu solar
   mysolar_news: "News"
@@ -231,6 +231,7 @@
   mysolar_alt_img_support: "Support"
   mysolar_alt_img_exit: "Exit"
   mysolar_mn_mydata: "My Data"
+  mysolar_mn_profile: "Edit Profile"
   mysolar_mn_customize: "Customize"
   mysolar_mn_enrollment: "Enrollment"
   mysolar_search: "Search"

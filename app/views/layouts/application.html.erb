@@ -6,7 +6,7 @@
     <%= stylesheet_link_tag "solar.css" %>
     <%= stylesheet_link_tag "calendar.css" %>
     <%= stylesheet_link_tag "security.css" %>
-    <%#= stylesheet_link_tag "http://fonts.googleapis.com/css?family=PT+Sans|Ubuntu:300,400,500,700|Ubuntu+Condensed" %>
+    <%= stylesheet_link_tag "http://fonts.googleapis.com/css?family=PT+Sans|Ubuntu:300,400,500,700|Ubuntu+Condensed" %>
 
     <%= javascript_include_tag "jquery-1.4.4.js" %>
     <%= javascript_include_tag "jquery-ui-1.8.6.js" %>
@@ -32,17 +32,6 @@
       global_config.locale.dateFormat = '<%=t :search_format_date %>';
 
       jQuery(function($){
-        $("#cpf").mask("999.999.999-99");
-        $("#telefone").mask("(99)9999-9999");
-        $("#celular").mask("(99)9999-9999");
-        $("#cep").mask("99999-999");
-        // layout dos botoes
-        $(".solar_button").after("<div class='solar_button_arrow'></div>");
-        //layout dos botoes cinzas
-        $(".solar_button_gray").after("<div class='solar_button_arrow_gray'></div>");
-        //layout dos botoes azuis
-        $(".solar_button_blue").after("<div class='solar_button_arrow_blue'></div>");
-
         // altura da linha divisória entre o menu e o conteúdo
         // 10px do margin-top de mysolar_sidebar, 10 do margin-top do block_locale e 5 de espaco mesmo... :)
         $("#mysolar_sidebar").height($('#body_wrapper').height() - $('#mysolar_topbar').height() - $('#block_locale').height() - 25);
@@ -142,10 +131,10 @@
           
           <ul style="width: 100%; display:block;">
             <li style="padding:7px;">
-              <%= link_to "[Editar perfil]", {:action=>"edit", :controller=>"devise/registrations"}, :id => 'my_data' %>
+              <%= link_to t(:mysolar_mn_profile), {:action=>"edit", :controller=>"devise/registrations"}, :id => 'my_data' %>
             </li>
             <li style="padding:7px;">
-              [Alterar Foto]
+              <%= t(:alter_photo)%>
             </li>
             <li style="padding:7px;">
               Sair

@@ -882,16 +882,6 @@ a.mysolar_top_link{
     vertical-align  : middle;
 
 }
-#my_personal_data_tab{
-    margin-left: 0px;
-}
-
-#my_professional_data_tab{
-    background-color:  #DEDEDE;
-}
-#my_cadastral_data_tab{
-    background-color:  #DEDEDE;
-}
 .background_data{
 
     height: 400px;
@@ -904,20 +894,6 @@ a.mysolar_top_link{
     width: 755px;
     border: 1px solid #DEDEDE;
     z-index: 1;
-}
-
-#my_personal_data{
-
-}
-
-#my_professional_data{
-    display:none;
-    margin-left: 30px;
-}
-
-#my_cadastral_data{
-    display:none;
-    margin-left: 30px;
 }
 
 #my_cadastral_data_button{
@@ -1179,71 +1155,6 @@ hr.curriculum_unit_division_mysolar {
     margin-left: 455px;
     margin-top: -20px;
 
-}
-
-/************ Layout do botões com seta ****************/
-
-/* Layout do botões com seta */
-.solar_button {
-    color           : #222;
-    background-color: #fff;
-    vertical-align: baseline;
-    margin-top:0;
-    font-weight:bold;
-    padding:8px;
-    cursor: pointer;
-}
-.solar_button_gray {
-    background-color: #e7edee;
-    /*margin-top:0;
-    font-weight:bold;
-    padding:8px;*/
-    color           : #222;
-    vertical-align: baseline;
-    margin-top:0;
-    font-weight:bold;
-    padding:4px;
-    cursor: pointer;
-}
-.solar_button_arrow {
-    height:10px;
-    background:url('../images/solar_button_arrow.png') no-repeat right bottom;
-    display:inline-block;
-    width:22px;
-    height:10px;
-    position:relative;
-    left:-25px;
-    top:-16px;
-}
-
-.solar_button_arrow_gray {
-    height:10px;
-    background:url('/images/solar_button_arrow_gray.png') no-repeat right bottom;
-    display:inline-block;
-    width:22px;
-    height:10px;
-    position:relative;
-    left:-25px;
-    top:-16px;
-}
-.solar_button_blue {
-    color           : #fff;
-    background-color: #003e7a;
-    vertical-align: baseline;
-    margin-top:0;
-    font-weight:bold;
-    padding:8px;
-    cursor: pointer;
-}
-.solar_button_arrow_blue {
-    height:10px;
-    background:url('../images/solar_button_arrow_blue.png') no-repeat right bottom;
-    display:inline-block;
-    width:22px;
-    height:10px;
-    position:relative;
-    left:-25px;
-    top:-16px;
 }
 
 /**********alterar foto*************/
@@ -2690,4 +2601,115 @@ td.td_student a {color: #2a538d;}
     font-size: 12px;
     font-style: italic;
     color: #787878;
+}
+
+
+/******** Atualização de dados de usuário **********/
+.user_data_form_section{
+    margin-bottom: 15px;
+}
+.user_data_form_buttons{
+    text-align: center;
+    font-size: 11pt;
+}
+.form_user_table {
+    margin-top: 5px;
+}
+
+.form_user_table td {
+    padding:2px 0;
+}
+
+.form_label {
+    text-align: right;
+    padding-right: 10px;
+}
+
+.form_label:first-child {
+    width: 160px;
+}
+
+.form_label label {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.form_label_multiline {
+    vertical-align: top;
+}
+
+.form_inner_label {
+    padding: 0 10px 0 0;
+}
+
+td.form_error {
+    color: #E03838;
+    padding-left: 10px;
+}
+
+#special_needs_line {
+    display: none;
+}
+.label_gender{
+    text-align: right;
+}
+
+.form_usuario_label {
+    text-align: right;
+    width: 15px;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-top: 2px;
+    font-size: 14px;
+    white-space: pre-wrap;
+    vertical-align: middle;
+}
+
+.login_form_link_return{
+    position		: relative;
+    top			: 10px;
+    background-color	: #fff;
+    color           	: #222;
+    text-align          : center;
+    line-height         : 25px;
+}
+.login_form_link_return:hover{
+    color           	: #222;
+    text-decoration 	: none;
+}
+
+.form_requirement {
+    font-style: italic;
+    font-size: 9pt;
+    color: #E03838;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    width: 98%;
+    display: block;
+    text-align: right;
+}
+.form_usuario_table{
+    color: #fff;
+    line-height: 15px;
+    margin-bottom: 25px;
+
+}
+.form_usuario_tr{
+    height: 30px;
+}
+.label_usuario{
+    white-space         : pre-wrap;
+}
+
+#user_gender {
+    width: 50px;
+}
+
+#address_number, #address_neighborhood, #country, #telephone {
+    width: 105px;
+}
+
+#address_complement, #zipcode, #cell_phone, #user_state {
+    width: 120px;
+    float:right;
+    margin: 0px;
 }

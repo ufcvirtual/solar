@@ -7,7 +7,7 @@ gem 'rails', '3.0.11'
 
 gem 'pg', '0.11.0'
 gem 'rack', '1.2.1'
-gem 'rake', '0.9.2'
+gem 'rake', '0.9.2.2'
 
 #Teste (alternativa ao metric_fu)
 gem 'simplecov', '>= 0.5.3', :require => false, :group => :test

@@ -44,6 +44,7 @@ Cenário: Acessar página de Edição de Dados Cadastrais
             E eu deverei ver "Senha"
             E eu deverei ver "Necessidades especiais"
 
+@wip
 Cenário: Alterar dados Pessoais
        Dado que estou logado com o usuario "user" e com a senha "123456"
            E que estou em "Meus Dados"
@@ -58,7 +59,7 @@ Cenário: Alterar dados Pessoais
            E que eu preenchi "Senha" com "123456"
     Quando eu clicar em "personal_submit"
     Então eu deverei ver "Dados atualizados com sucesso."
-
+@wip
 Cenário: Alterar dados Cadastrais
    Dado que estou logado com o usuario "user" e com a senha "123456"
        E que estou em "Meus Dados"
@@ -82,7 +83,7 @@ Cenário: Alterar dados Cadastrais
        E que eu preenchi "Senha" com "123456"
     Quando eu clicar em "Alterar Dados"
     Então eu deverei ver "Dados atualizados com sucesso."
-
+@wip
 Esquema do Cenário: Alteração de senha
 	Dado que estou logado com o usuario "user" e com a senha "123456"
 		E que estou em "Meus Dados"
