@@ -5,6 +5,7 @@ Solar::Application.routes.draw do
   devise_scope :user do
     get "login", :to => "devise/sessions#new"
     get "logout", :to => "devise/sessions#destroy"
+    get "/", :to => "devise/sessions#new"
   end
 
   get "pages/index"
@@ -45,6 +46,6 @@ Solar::Application.routes.draw do
   match 'user_root' => 'users#edit'
 
   #  root :to => "users#mysolar"
-  root :to => 'pages#index'
+  root :to => 'devise/sessions#new'
 
 end

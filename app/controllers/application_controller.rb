@@ -247,5 +247,9 @@ class ApplicationController < ActionController::Base
   def active_tab
     user_session[:tabs][:opened][user_session[:tabs][:active]] if user_signed_in?
   end
+  
+  def after_sign_in_path_for(resource_or_scope)
+   pages_index_url
+  end
 
 end
