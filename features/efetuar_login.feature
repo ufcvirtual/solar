@@ -29,6 +29,7 @@ Exemplos:
 	| unknown_user  |  any_password   | Usuário ou senha inválidos. |
 	| user          |  wrong_password | Usuário ou senha inválidos. |
 
+@wip
 Cenário: Efetuar logout
 	Dado que estou logado com o usuario "user" e com a senha "123456"
             E que estou em "Meu Solar"

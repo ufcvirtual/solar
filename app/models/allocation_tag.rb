@@ -11,7 +11,9 @@ class AllocationTag < ActiveRecord::Base
   belongs_to :curriculum_unit
   belongs_to :course
 
-  #Retorna ids de AllocationTags relacionadas.
+  ##
+  # Retorna ids de AllocationTags relacionadas
+  ##
   def self.find_related_ids(allocation_tag_id)
     hierarchy = ActiveRecord::Base.connection.select_all <<SQL
       select allocation_tag_id, offer_parent_tag_id, curriculum_unit_parent_tag_id, course_parent_tag_id from
@@ -119,4 +121,22 @@ SQL
 
   end
 
+  ##
+  # Todas as allocations do usuario
+  ##
+  def self.all_by_user_id(user_id)
+    query = <<SQL
+    SELECT DISTINCT t2.id
+          FROM allocations      AS t1
+          JOIN allocation_tags  AS t2 ON t2.id = t1.allocation_tag_id
+         WHERE t1.status = #{Allocation_Activated}
+           AND t1.user_id = #{user_id}
+SQL
+
+    allocation_tags = ActiveRecord::Base.connection.select_all query
+    return allocation_tags.collect { |allocation_tag|
+      allocation_tag['id'].to_i
+    }
+
+  end
 end

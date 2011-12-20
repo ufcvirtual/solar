@@ -6,7 +6,9 @@ class Schedule < ActiveRecord::Base
   has_many :portfolio
   has_many :assignment
 
-  def self.all_by_allocations(allocations, period = false, date_search = nil)
+  def self.all_by_allocation_tags(allocation_tags, period = false, date_search = nil)
+
+    allocation_tags = allocation_tags.join(',') if allocation_tags.is_a?(Array)
 
     date_search_option, limit = '', ''
     limit = 'LIMIT 2' if period
@@ -14,7 +16,7 @@ class Schedule < ActiveRecord::Base
     date_search_option = "AND (t2.start_date = current_date OR t2.end_date = current_date)" if date_search.nil? and period
     date_search_option = "AND (t2.start_date = '#{date_search}' OR t2.end_date = '#{date_search}')" unless date_search.nil?
 
-    allocations_where = allocations.nil? ? '' : "WHERE id IN (#{allocations})"
+    allocations_where = allocation_tags.nil? ? '' : "WHERE id IN (#{allocation_tags})"
 
     query = <<SQL
     WITH cte_all_allocation_tags AS (

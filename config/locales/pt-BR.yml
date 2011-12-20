@@ -752,37 +752,34 @@
       timeout: 'Sua sessão expirou, por favor faça login novamente para continuar.'
       inactive: 'Sua conta ainda não foi ativada.'
     sessions:
-      signed_in: 'Signed in successfully.'
-      signed_out: 'Signed out successfully.'
+      signed_in: 'Login efetuado com sucesso.'
+      signed_out: 'Logout efetuado com sucesso.'
     passwords:
-      send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
-      updated: 'Your password was changed successfully. You are now signed in.'
-      updated_not_active: 'Your password was changed successfully.'
-      send_paranoid_instructions: "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
+      send_instructions: 'Você receberá um email com instruções sobre como resetar sua senha em alguns minutos.'
+      updated: 'Sua senha foi modificada com sucesso. Você agora está logado.'
+      updated_not_active: 'Sua senha foi modificada com sucesso. Você agora está logado.'
+      send_paranoid_instructions: "Um link de recuperação de senha será enviado para seu email, caso ele exista em nossa base de dados."
     confirmations:
-      send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
-      send_paranoid_instructions: 'If your e-mail exists on our database, you will receive an email with instructions about how to confirm your account in a few minutes.'
-      confirmed: 'Your account was successfully confirmed. You are now signed in.'
+      send_instructions: 'Instruções de como confirmar sua conta serão enviados para seu email em alguns minutos.'
+      send_paranoid_instructions: 'Instruções de como confirmar sua conta serão enviados para seu email em alguns minutos, caso ele exista em nossa base de dados'
+      confirmed: 'Sua conta foi confirmada com sucesso. Agora você está logado.'
     registrations:
-      signed_up: 'Welcome! You have signed up successfully.'
-      inactive_signed_up: 'You have signed up successfully. However, we could not sign you in because your account is %{reason}.'
+      signed_up: 'Bem vindo! Sua conta foi criada com sucesso.'
+      inactive_signed_up: "Sua conta foi criada com sucesso. Entretanto, não foi possível fazer seu login pois sua conta está com status '%{reason}'."
       updated: 'Dados atualizados com sucesso.'
-      destroyed: 'Bye! Your account was successfully cancelled. We hope to see you again soon.'
+      destroyed: 'Sua conta foi cancelada com sucesso.'
       reasons:
-        inactive: 'inactive'
-        unconfirmed: 'unconfirmed'
-        locked: 'locked'
+        inactive: 'inativa'
+        unconfirmed: 'não confirmada'
+        locked: 'bloqueada'
     unlocks:
-      send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes.'
-      unlocked: 'Your account was successfully unlocked. You are now signed in.'
-      send_paranoid_instructions: 'If your account exists, you will receive an email with instructions about how to unlock it in a few minutes.'
-    omniauth_callbacks:
-      success: 'Successfully authorized from %{kind} account.'
-      failure: 'Could not authorize you from %{kind} because "%{reason}".'
+      send_instructions: 'Você receberá um email sobre como desbloquear sua conta em alguns minutos.'
+      unlocked: 'Sua conta foi desbloqueada com sucesso. Agora você está logado.'
+      send_paranoid_instructions: 'Se sua conta existir, você receberá um email com instruções sobre como desbloquea-la em alguns minutos.'
     mailer:
       confirmation_instructions:
-        subject: 'Confirmation instructions'
+        subject: 'Instruções de confirmação'
       reset_password_instructions:
-        subject: 'Reset password instructions'
+        subject: 'Instruções de reset de senha'
       unlock_instructions:
-        subject: 'Unlock Instructions'
+        subject: 'Instruções de desbloqueio'

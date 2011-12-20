@@ -30,7 +30,11 @@ class UsersController < ApplicationController
     # Portlet do calendario
     # destacando dias que possuem eventos
     ######
-    schedules_events = Schedule.all_by_allocations(nil)
+    c_units = CurriculumUnit.find_default_by_user_id(current_user.id)
+    allocation_tags = c_units.collect { |unit|
+      unit['allocation_tag_id'].to_i
+    }
+    schedules_events = Schedule.all_by_allocation_tags(allocation_tags)
     schedules_events_dates = schedules_events.collect { |schedule_event|
       [schedule_event['start_date'], schedule_event['end_date']]
     }

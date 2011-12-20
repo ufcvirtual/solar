@@ -41,13 +41,12 @@ class ApplicationController < ActionController::Base
     user_session[:tabs] = {
       :opened => {
         'Home' => {
-          :breadcrumb => [],
+          :breadcrumb => [ { :name => 'Home', :url => {:controller => :application, :action => :activate_tab, :name => 'Home', :type => Tab_Type_Home} } ],
           :url => {'type' => Tab_Type_Home}
         }
       }, :active => 'Home'
     } unless user_session.include?(:tabs)
 
-    user_session[:breadcrumb] = [{ :name => 'Home', :url => {:controller => :application, :action => :activate_tab, :name => 'Home'} }]
     user_session[:menu] = { :current => nil }
   end
 
@@ -199,7 +198,7 @@ class ApplicationController < ActionController::Base
         personal_options.save
       end
 
-#      raise "#{personal_options.default_locale}"
+      #      raise "#{personal_options.default_locale}"
 
       locale = params[:locale] || personal_options.default_locale
     else

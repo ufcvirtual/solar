@@ -67,14 +67,14 @@ class CurriculumUnit < ActiveRecord::Base
     return (groups1.nil?) ? [] : groups1
   end
 
-  def self.class_participants_by_allocations(allocations = [], flag_resp = false)
+  def self.class_participants_by_allocations(allocation_tags, flag_resp = false)
     query = <<SQL
       SELECT t3.id, t3.name, t3.photo_file_name, t3.email, t4.name AS profile_name, t4.id AS profile_id
         FROM allocations     AS t1
         JOIN allocation_tags AS t2 ON t1.allocation_tag_id = t2.id
         JOIN users           AS t3 ON t1.user_id = t3.id
         JOIN profiles        AS t4 ON t4.id = t1.profile_id
-       WHERE t2.id IN (#{allocations.join(',')})
+       WHERE t2.id IN (#{allocation_tags.join(',')})
          AND t4.class_responsible = #{flag_resp}
          AND t1.status = #{Allocation_Activated}
        ORDER BY profile_name, t3.name
@@ -82,4 +82,50 @@ SQL
     User.find_by_sql query
   end
 
+  def self.find_default_by_user_id(user_id)
+    query = <<SQL
+    WITH cte_all_by_user AS (
+        SELECT DISTINCT t2.id AS allocation_tag_id, t2.group_id, t2.offer_id, t2.curriculum_unit_id, t2.course_id
+          FROM allocations      AS t1
+          JOIN allocation_tags  AS t2 ON t2.id = t1.allocation_tag_id
+         WHERE t1.status = #{Allocation_Activated}
+           AND t1.user_id = #{user_id}
+    )
+    --
+    SELECT DISTINCT ON (name, id) * FROM (
+        SELECT * FROM (
+            (
+                SELECT t2.*, NULL AS offer_id, NULL::integer AS group_id, NULL::varchar AS semester, t1.allocation_tag_id --usuarios vinculados direto a unidade curricular
+                  FROM cte_all_by_user  AS t1
+                  JOIN curriculum_units AS t2 ON t2.id = t1.curriculum_unit_id
+            )
+              UNION
+            (
+                SELECT t3.*, t2.id AS offer_id, NULL::integer AS group_id, semester, t1.allocation_tag_id --usuarios vinculados a oferta
+                  FROM cte_all_by_user  AS t1
+                  JOIN offers           AS t2 ON t2.id = t1.offer_id
+                  JOIN curriculum_units AS t3 ON t3.id = t2.curriculum_unit_id
+            )
+              UNION
+            (
+                SELECT t4.*, t3.id AS offer_id, t2.id AS group_id, semester, t1.allocation_tag_id -- usuarios vinculados a turma
+                  FROM cte_all_by_user  AS t1
+                  JOIN groups           AS t2 ON t2.id = t1.group_id
+                  JOIN offers           AS t3 ON t3.id = t2.offer_id
+                  JOIN curriculum_units AS t4 ON t4.id = t3.curriculum_unit_id
+            )
+              UNION
+            (
+                select t4.*, t3.id AS offer_id, NULL::integer AS group_id, semester, t1.allocation_tag_id --usuarios vinculados a graduacao
+                  FROM cte_all_by_user  AS t1
+                  JOIN courses          AS t2 ON t2.id = t1.course_id
+                  JOIN offers           AS t3 ON t3.course_id = t2.id
+                  JOIN curriculum_units AS t4 ON t4.id = t3.curriculum_unit_id
+            )
+        ) AS curriculum_units ORDER BY name, semester DESC, id
+    ) AS curriculum_units_with_allocations;
+SQL
+
+    ActiveRecord::Base.connection.select_all query
+  end
 end

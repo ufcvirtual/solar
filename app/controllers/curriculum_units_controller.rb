@@ -14,28 +14,28 @@ class CurriculumUnitsController < ApplicationController
   def show
     curriculum_data
 
-    allocations = AllocationTag.find_related_ids(@allocation_tag_id).join(', ');
+    allocation_tags = AllocationTag.find_related_ids(@allocation_tag_id).join(', ');
 
     # relacionado diretamente com a allocation_tag
-    group = AllocationTag.where("id IN (#{allocations}) AND group_id IS NOT NULL").first.group
+    group = AllocationTag.where("id IN (#{allocation_tags}) AND group_id IS NOT NULL").first.group
 
     # offer
-    al_offer = AllocationTag.where("id IN (#{allocations}) AND offer_id IS NOT NULL").first
+    al_offer = AllocationTag.where("id IN (#{allocation_tags}) AND offer_id IS NOT NULL").first
     offer = al_offer.nil? ? nil : al_offer.offer
 
     # curriculum_unit
-    al_c_unit = AllocationTag.where("id IN (#{allocations}) AND curriculum_unit_id IS NOT NULL").first
+    al_c_unit = AllocationTag.where("id IN (#{allocation_tags}) AND curriculum_unit_id IS NOT NULL").first
     curriculum_unit = al_c_unit.nil? ? CurriculumUnit.find(active_tab[:url]['id']) : al_c_unit.curriculum_unit
 
     message_tag = get_label_name(group, offer, curriculum_unit)
 
     # retorna aulas, posts nos foruns e mensagens relacionados a UC mais atuais
     @lessons = Lesson.to_open(@allocation_tag_id)
-    @discussion_posts = list_portlet_discussion_posts allocations
+    @discussion_posts = list_portlet_discussion_posts allocation_tags
     @messages = return_messages(current_user.id, 'portlet', message_tag)
 
     # destacando dias que possuem eventos
-    schedules_events = Schedule.all_by_allocations(allocations)
+    schedules_events = Schedule.all_by_allocation_tags(allocation_tags)
     @scheduled_events = schedules_events.collect { |schedule_event|
       [schedule_event['start_date'], schedule_event['end_date']]
     }.flatten.uniq

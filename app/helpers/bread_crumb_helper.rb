@@ -1,10 +1,12 @@
 module BreadCrumbHelper
 
   def show_breadcrumb
-    text_bread = ''
-    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
-    breadcrumb = user_session[:breadcrumb] + active_tab[:breadcrumb]
-    unless breadcrumb.length == 1
+    text_bread, active_tab = '', user_session[:tabs][:opened][user_session[:tabs][:active]]
+
+    # verifica se a aba ativa é a home
+    unless active_tab[:url]['type'].to_i == Tab_Type_Home.to_i
+      breadcrumb = user_session[:tabs][:opened]['Home'][:breadcrumb] + active_tab[:breadcrumb]
+
       breadcrumb.each_with_index do |link, idx|
         unless link.nil?
           text_bread << '&nbsp;>&nbsp;' if idx > 0
