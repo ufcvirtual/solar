@@ -11,6 +11,9 @@ Dado que tenho "allocations"
 |    1    |         3         |     1      |    1   |
 |    1    |         1         |     1      |    1   |
 |    1    |         9         |     1      |    1   |
+|    7    |         1         |     5      |    1   |
+|    7    |         2         |     5      |    1   |
+|    7    |         3         |     5      |    1   |
 
 Cenário: Exibir Material de apoio
    Dado que estou logado com o usuario "user" e com a senha "123456"
@@ -54,3 +57,20 @@ Cenário: Trocar material de apoio com a combo - parte 2
         Quando eu clicar no link "Material de Apoio"
             Então eu deverei ver "AULAS"
             E eu deverei ver o link "1.jpg"
+
+
+####### EDITOR ########
+Cenário: Exibir Material de apoio para o editor e parte superior de upload
+   Dado que estou logado com o usuario "aluno1" e com a senha "123456"
+   E que estou em "Meu Solar"
+    Então eu deverei ver o link "Material de Apoio do Editor"
+        Quando eu clicar no link "Material de Apoio do Editor"
+        Então eu deverei ver "Link:"
+            E eu deverei ver "Pasta:"
+            E eu deverei ver "Arquivo:"
+            E eu deverei ver "LINKS"
+            E eu deverei ver o link "http://www.google.com"
+            E eu deverei ver "OUTRA PASTA"
+            E eu deverei ver o link "3.pdf"
+
+#Cenário: Upload de arquivos pelo editor

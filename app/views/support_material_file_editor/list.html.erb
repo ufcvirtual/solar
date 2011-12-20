@@ -36,7 +36,7 @@
 
   <% #Link %>
   <% form_for :link, :url => {:controller => "support_material_file_editor", :action => "upload_link"} do |flink| %>
-    <span>  Link:  </span>
+    <span>Link:</span>
     <div style="margin-left: 70px;margin-top: -25px;">
       <%= flink.text_field :link, :id => "link"%>
     </div>
@@ -49,7 +49,7 @@
 
   <% #Arquivo %>
   <div>
-    <div>  Arquivo:  </div>
+    <span>Arquivo:</span>
     <br/>
     <div>
       <%= form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :support_material_file_editor,
@@ -58,7 +58,7 @@
       </div>
 
       <br/>
-      <div>  Pasta:  </div>
+      <span>Pasta:</span>
       <div id="select_folder">
         <%= f.select :folder, options_for_select([""] + ["nova pasta"] + SupportMaterialFile.find(:all,:select => "DISTINCT folder", :conditions => ["folder != ? and folder != ? ", "","LINKS"]).collect{|c| [c.folder]})%>
       </div>
