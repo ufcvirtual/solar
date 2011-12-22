@@ -31,7 +31,7 @@
               </td>
             <%elsif lesson.schedule.end_date < Date.today%>
               <td>
-                <a class="link_content" ><%=lesson.name%></a>
+                <a><%=lesson.name%></a>
               </td>
               <td>
                 <%= l lesson.schedule.start_date %> - <%= l lesson.schedule.end_date %>
