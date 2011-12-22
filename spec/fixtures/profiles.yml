@@ -44,3 +44,7 @@ avaliador:
 secretaria:
   id: 11
   name: Secretaria
+  
+basico:
+  id: 12
+  name: Basico

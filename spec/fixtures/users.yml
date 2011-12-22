@@ -325,3 +325,31 @@ coordenador:
   site: timao.com
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
+  
+basico:
+  id: 13
+  username: basico
+  email: basico@basico.br
+  name: Basico
+  nick: Basico
+  birthdate: 2000-03-02
+  cpf: 34137559511
+  gender: true
+  address: Rua ABCDEF
+  address_number: 111
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: China
+  state: bem baratinho
+  city: Olho de coco
+  institution: UFP
+  alternate_email:
+  bio: Basico
+  interests: me matricular 
+  music:
+  movies:
+  books:
+  phrase:
+  site:
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g

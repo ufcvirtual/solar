@@ -75,5 +75,15 @@ class User < ActiveRecord::Base
     cpf_verify = Cpf.new(self[:cpf])
     errors.add(:cpf, I18n.t(:new_user_msg_cpf_error)) unless cpf_verify.valido? unless cpf_verify.nil?
   end
-
+  
+  # Alocar usuario para acesso com o perfil básico no ato da sua criação
+  def after_create
+    new_save = Allocation.new
+    new_save.profile_id = 12 #Rails.application.config.profile.to_i
+    new_save.status = 1
+    new_save.user_id = self.id
+    new_save.save!
+    
+  end
+  
 end

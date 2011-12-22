@@ -277,6 +277,17 @@ perm_editor = PermissionsResource.create([
     {:profile_id => 5, :resource_id => 66, :per_id => false}
   ])
 
+##############################
+#           BASICO           #
+##############################
+perm_basico = PermissionsResource.create([
+    {:profile_id => 12, :resource_id => 14, :per_id => false},
+    {:profile_id => 12, :resource_id => 15, :per_id => false},
+    {:profile_id => 12, :resource_id => 16, :per_id => false},
+    {:profile_id => 12, :resource_id => 17, :per_id => false}
+  ])
+
+
 
 ######## PERMISSIONS MENUS #########
 
@@ -292,7 +303,7 @@ PermissionsMenu.create([
     {:profile_id => 1, :menu_id => 303},
     {:profile_id => 1, :menu_id => 304},
     {:profile_id => 1, :menu_id => 50},
-    {:profile_id => 1, :menu_id => 100},
+    #{:profile_id => 1, :menu_id => 100},
     #{:profile_id => 1, :menu_id => 70},
     {:profile_id => 1, :menu_id => 302},
     {:profile_id => 1, :menu_id => 102},
@@ -309,7 +320,7 @@ PermissionsMenu.create([
     {:profile_id => 2, :menu_id => 303},
     {:profile_id => 2, :menu_id => 304},
     {:profile_id => 2, :menu_id => 50},
-    {:profile_id => 2, :menu_id => 100},
+    #{:profile_id => 2, :menu_id => 100},
     #{:profile_id => 2, :menu_id => 70},
     {:profile_id => 2, :menu_id => 302},
     {:profile_id => 2, :menu_id => 102},
@@ -325,7 +336,7 @@ PermissionsMenu.create([
     {:profile_id => 3, :menu_id => 303},
     {:profile_id => 3, :menu_id => 304},
     {:profile_id => 3, :menu_id => 50},
-    {:profile_id => 3, :menu_id => 100},
+    #{:profile_id => 3, :menu_id => 100},
     #{:profile_id => 3, :menu_id => 70},
     {:profile_id => 3, :menu_id => 302},
     {:profile_id => 3, :menu_id => 102},
@@ -341,10 +352,13 @@ PermissionsMenu.create([
     {:profile_id => 5, :menu_id => 303},
     {:profile_id => 5, :menu_id => 304},
     {:profile_id => 5, :menu_id => 50},
-    {:profile_id => 5, :menu_id => 100},
+    #{:profile_id => 5, :menu_id => 100},
     #{:profile_id => 5, :menu_id => 70},
     {:profile_id => 5, :menu_id => 302},
     {:profile_id => 5, :menu_id => 102},
-    {:profile_id => 5, :menu_id => 120}
+    {:profile_id => 5, :menu_id => 120},
+    
+    #basico
+    {:profile_id => 12, :menu_id => 100}
 
   ])
