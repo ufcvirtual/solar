@@ -34,12 +34,16 @@ class UsersController < ApplicationController
     allocation_tags = c_units.collect { |unit|
       unit['allocation_tag_id'].to_i
     }
-    schedules_events = Schedule.all_by_allocation_tags(allocation_tags)
-    schedules_events_dates = schedules_events.collect { |schedule_event|
-      [schedule_event['start_date'], schedule_event['end_date']]
-    }
+    # verificando a possibilidade de existir um usuario sem alocacao
+    unless allocation_tags.empty?
+      schedules_events = Schedule.all_by_allocation_tags(allocation_tags)
+      schedules_events_dates = schedules_events.collect { |schedule_event|
+        [schedule_event['start_date'], schedule_event['end_date']]
+      }
 
-    @scheduled_events = schedules_events_dates.flatten.uniq
+      @scheduled_events = schedules_events_dates.flatten.uniq
+    end
+
   end
 
   ##################################

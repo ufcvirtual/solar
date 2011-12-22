@@ -18,10 +18,10 @@ ActionMailer::Base.smtp_settings = {
   :enable_starttls_auto => true  }
 
 # constantes de status de matricula e pedido de matricula - table ALLOCATIONS
-Allocation_Pending   = 0           # quando pede matricula pela 1a vez
-Allocation_Activated = 1           # com matricula ativa
-Allocation_Cancelled = 2           # com matricula cancelada
-Allocation_Pending_Reactivate = 3  # quando pede matricula depois de ter sido cancelado
+Allocation_Pending   = 0           # quando pede alocação(matricula) pela 1a vez
+Allocation_Activated = 1           # com alocação ativa
+Allocation_Cancelled = 2           # com alocação cancelada
+Allocation_Pending_Reactivate = 3  # quando pede alocação(matricula) depois de ter sido cancelado
 
 # constantes de status de aula - table LESSONS
 Lesson_Test      = 0               # aula em teste
