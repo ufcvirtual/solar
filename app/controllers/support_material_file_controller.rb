@@ -20,7 +20,7 @@ class SupportMaterialFileController < ApplicationController
 
   end
 
-  # DOWNLOADS
+ # DOWNLOADS
   def download
     authorize! :download, SupportMaterialFile
 
@@ -45,36 +45,36 @@ class SupportMaterialFileController < ApplicationController
     # nome do pacote que será criado
     zip_in_test = "tmp/"+Digest::SHA1.hexdigest(nomes_files.to_s)+".zip"
 
-    result_test = 0
+    exist_zip = false
     folder_create = ""
 
     lista_zips.each do |file_test|
       if file_test == zip_in_test # se não houver zip, na pasta 'tmp/' de mesmo conteúdo, então criasse o .zip
-        result_test = 1
+        exist_zip = true
         break
       end
     end
-    
-    if result_test == 0
+
+    if !exist_zip
       Zip::ZipFile.open("tmp/#{Digest::SHA1.hexdigest(nomes_files.to_s)}.zip", Zip::ZipFile::CREATE) { |zipfile|
-        nomes_files.each do |zipados|
-          zipados = zipados[0].to_s
-          unless(zipados[0].nil?)
-            if result_test == 0
+        nomes_files.each do |zipers|
+          zipers = zipers[0].to_s
+          unless(zipers[0].nil?)
+            if !exist_zip
               zipfile.mkdir("Todos arquivos")
-              result_test = 1
+              exist_zip = true
            end
-           folder = SupportMaterialFile.where("allocation_tag_id = ? AND attachment_file_name = ?", allocation_tag_id, zipados).collect{|file| [file["folder"]]}
+           folder = SupportMaterialFile.where("allocation_tag_id = ? AND attachment_file_name = ?", allocation_tag_id, zipers).collect{|file| [file["folder"]]}
            folder = folder[0][0].to_s
             if folder_create != folder
               zipfile.mkdir("Todos arquivos"+"/"+folder)
               folder_create = folder
             end
-              zipfile.add("Todos arquivos/"+folder+"/"+zipados,"media/support_material_file/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados)
+              zipfile.add("Todos arquivos/"+folder+"/"+zipers,"media/support_material_file/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipers+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipers)
           end
         end
       }
-      result_test = 0
+      exist_zip = false
     end
 
     # recupera arquivo
@@ -100,39 +100,33 @@ class SupportMaterialFileController < ApplicationController
     folder = params[:folder]
 
     nomes_files = SupportMaterialFile.where("allocation_tag_id = ? and folder = ?", allocation_tag_id, folder).collect{|file| [file["attachment_file_name"]]}
-    #raise nomes_files[0][0]
 
     # nome do pacote que será criado
     zip_in_test = "tmp/"+Digest::SHA1.hexdigest(nomes_files.to_s)+".zip"
 
-    result_test = 0
+    exist_zip = false
 
     lista_zips.each do |file_test|
       if file_test == zip_in_test # se não houver zip, na pasta 'tmp/' de mesmo conteúdo, então criasse o .zip
-        result_test = 1
+        exist_zip = true
         break
       end
     end
 
-    if result_test == 0
+    if !exist_zip
       Zip::ZipFile.open("tmp/#{Digest::SHA1.hexdigest(nomes_files.to_s)}.zip", Zip::ZipFile::CREATE) { |zipfile|
-        nomes_files.each do |zipados|
-          zipados = zipados[0].to_s
-      #if folder ==''
-      #  nomes_files = nomes_files[0].to_s
-      #  raise nomes_files
-      #end
-          if result_test == 0
+        nomes_files.each do |zipers|
+          zipers = zipers[0].to_s
+          if !exist_zip
             zipfile.mkdir(folder)
-            result_test = 1
+            exist_zip = true
           end
-          unless(zipados[0].nil?)
-            zipfile.add(folder+"/"+zipados,"media/support_material_file/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados)
-            #zipfile.add(zipados,"media/support_material_file/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipados+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipados)
+          unless(zipers[0].nil?)
+            zipfile.add(folder+"/"+zipers,"media/support_material_file/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipers+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipers)
           end
         end
       }
-      result_test = 0
+      exist_zip = false
     end
 
     # recupera arquivo
