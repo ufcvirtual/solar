@@ -309,7 +309,7 @@
         explorar os espaços disponibilizados. O ambiente é apoiado
         numa filosofia de interação e não de controle."
   login_title: "Sistema Online de Aprendizagem da Universidade Federal do Ceará"
-  #login_footer: "Instituto UFC Virtual 2011 - Universidade Federal do Ceará | Equipe de Desenvolvimento"
+  login_footer: "Instituto UFC Virtual 2011 - Universidade Federal do Ceará | Equipe de Desenvolvimento"
   login_footer1: "Instituto UFC Virtual 2011"
   login_footer2: "Universidade Federal do Ceará"
   login_footer3: "Equipe de Desenvolvimento"
