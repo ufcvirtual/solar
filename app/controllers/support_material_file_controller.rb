@@ -40,6 +40,7 @@ class SupportMaterialFileController < ApplicationController
 
     # Consultas pela tabela
     nomes_files = SupportMaterialFile.search_files(allocation_tag_id).collect{|file| [file["attachment_file_name"]]}
+    folder = SupportMaterialFile.search_files(allocation_tag_id).collect{|file| [file["folder"]]}
     lista_zips = Dir.glob('tmp/*') #lista dos arquivos .zip existentes no '/tmp'
 
     # nome do pacote que será criado
@@ -47,6 +48,8 @@ class SupportMaterialFileController < ApplicationController
 
     exist_zip = false
     folder_create = ""
+    file_cont = 0
+    nulo = []
 
     lista_zips.each do |file_test|
       if file_test == zip_in_test # se não houver zip, na pasta 'tmp/' de mesmo conteúdo, então criasse o .zip
@@ -56,6 +59,13 @@ class SupportMaterialFileController < ApplicationController
     end
 
     if !exist_zip
+      folder, nulo = folder.partition{|r| r != 'LINKS'}
+      while file_cont < folder.length
+        folder[file_cont] = folder[file_cont][0].to_s
+        file_cont += 1
+      end
+      file_cont = 0
+
       Zip::ZipFile.open("tmp/#{Digest::SHA1.hexdigest(nomes_files.to_s)}.zip", Zip::ZipFile::CREATE) { |zipfile|
         nomes_files.each do |zipers|
           zipers = zipers[0].to_s
@@ -64,14 +74,15 @@ class SupportMaterialFileController < ApplicationController
               zipfile.mkdir("Todos arquivos")
               exist_zip = true
            end
-           folder = SupportMaterialFile.where("allocation_tag_id = ? AND attachment_file_name = ?", allocation_tag_id, zipers).collect{|file| [file["folder"]]}
-           folder = folder[0][0].to_s
-            if folder_create != folder
-              zipfile.mkdir("Todos arquivos"+"/"+folder)
-              folder_create = folder
+           #folder = SupportMaterialFile.where("allocation_tag_id = ? AND attachment_file_name = ?", allocation_tag_id, zipers).collect{|file| [file["folder"]]}
+           #folder = folder[0][0].to_s
+            if folder_create != folder[file_cont] && folder[file_cont] != ""
+              folder_create = folder[file_cont].to_s
+              zipfile.mkdir("Todos arquivos"+"/"+folder_create)
             end
-              zipfile.add("Todos arquivos/"+folder+"/"+zipers,"media/support_material_file/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipers+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipers)
+              zipfile.add("Todos arquivos/"+folder_create+"/"+zipers,"media/support_material_file/"+SupportMaterialFile.where("attachment_file_name = "+"'"+zipers+"'").collect{|file| [file["id"]]}[0][0].to_s+"_"+zipers)
           end
+          file_cont += 1
         end
       }
       exist_zip = false
