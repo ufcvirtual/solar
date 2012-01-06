@@ -10,18 +10,21 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable, :timeoutable and :omniauthable, :trackable
   devise :database_authenticatable, :registerable, :validatable,
-    :recoverable, :rememberable, :encryptable
+    :recoverable, :encryptable, :token_authenticatable # autenticacao por token
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :username, :email, :alternate_email, :password, :password_confirmation, :remember_me, :name, :nick, :birthdate,
     :address, :address_number, :address_complement, :address_neighborhood, :zipcode, :country, :state, :city,
     :telephone, :cell_phone, :institution, :gender, :cpf, :bio, :interests, :music, :movies, :books, :phrase, :site, :photo
 
-  validates :username, :length => { :within => 3.. 20 }, :uniqueness => true
+  validates :username, :length => { :within => 3..20 }, :uniqueness => true
   validates :email, :presence => true, :uniqueness => true, :confirmation => true
-  validates :alternate_email, :format => { :with => %r{^((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?$}i}
-  validates :nick, :length => { :within => 3.. 34 }
-  validates :name, :length => { :within => 6.. 90 }
+  # validates :alternate_email, :format => { :with => %r{^((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?$}i}
+  validates :alternate_email, :format => { :with => /\A[^@]+@[^@]+\z/}
+  
+  
+  validates :nick, :length => { :within => 3..34 }
+  validates :name, :length => { :within => 6..90 }
   validates :birthdate, :presence => true
   validates :cpf, :presence => true, :uniqueness => true
 
@@ -33,14 +36,13 @@ class User < ActiveRecord::Base
   validates_length_of :institution, :maximum => 120
   validate :cpf_ok
 
+  # paperclip uses: file_name, content_type, file_size e updated_at
   # Configuração do paperclip para upload de fotos
   has_attached_file :photo,
     :styles => { :medium => "72x90#", :small => "25x30#", :forum => "40x40#" },
     :path => ":rails_root/media/:class/:id/photos/:style.:extension",
     :url => "/media/:class/:id/photos/:style.:extension",
     :default_url => "/images/no_image.png"
-
-  # paperclip uses: file_name, content_type, file_size e updated_at
 
   # path and URL define that images will be in "public/images/"
   # and will be created a folder called "users" with object id (eg users/1)
@@ -51,25 +53,6 @@ class User < ActiveRecord::Base
   validates_attachment_content_type :photo,
     :content_type => ['image/jpeg','image/png','image/gif','image/pjpeg'],
     :message => :invalid_type
-
-  #Garantindo que o cpf nao será salvo com os separadores.
-  #  def cpf=(value)
-  #    self[:cpf] = value.gsub(/\D/, '')
-  #  end
-
-  ##
-  # Permite modificação dos dados do usuário sem necessidade de informar a senha - para usuários já logados
-  ##
-  #  def update_with_password(params={})
-  #
-  #    if params[:password].blank?
-  #      params.delete(:password)
-  #      params.delete(:password_confirmation) if params[:password_confirmation].blank?
-  #    end
-  #
-  #    update_attributes(params)
-  #
-  #  end
 
   def cpf_ok
     cpf_verify = Cpf.new(self[:cpf])
