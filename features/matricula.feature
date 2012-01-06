@@ -21,6 +21,7 @@ Contexto:
         | 1        | 1                  | 1           | 1      |
         | 1        | 3                  | 1           | 1      |
         | 1        | 8                  | 1           | 0      |
+        | 1        |                    | 12          | 1      |
 
 Cenário: Acessar página de matricula
     Dado que estou logado com o usuario "user" e com a senha "123456"
