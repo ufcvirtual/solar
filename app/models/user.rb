@@ -19,10 +19,8 @@ class User < ActiveRecord::Base
 
   validates :username, :length => { :within => 3..20 }, :uniqueness => true
   validates :email, :presence => true, :uniqueness => true, :confirmation => true
-  # validates :alternate_email, :format => { :with => %r{^((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?$}i}
-  validates :alternate_email, :format => { :with => /\A[^@]+@[^@]+\z/}
-  
-  
+  validates :alternate_email, :format => { :with => %r{^((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?$}i}
+
   validates :nick, :length => { :within => 3..34 }
   validates :name, :length => { :within => 6..90 }
   validates :birthdate, :presence => true
