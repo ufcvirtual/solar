@@ -13,7 +13,7 @@ require 'cucumber/rails'
 # steps to use the XPath syntax.
 Capybara.default_selector = :css
 
-Capybara.app_host = 'http://localhost:3000'
+#Capybara.app_host = 'http://localhost:3000'
 
 Capybara.register_driver :selenium do |app|
   Capybara::Selenium::Driver.new(app, :browser => :chrome)

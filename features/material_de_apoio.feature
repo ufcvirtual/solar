@@ -45,7 +45,7 @@ Cenário: Trocar material de apoio com a combo
             E eu deverei ver o link "1.pdf"
 
 #COMBOBOX-TESTE2
-@selenium
+@javascript
 Cenário: Trocar material de apoio com a combo - parte 2
     Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"

@@ -87,8 +87,7 @@ Cenário: Cadastrar novo usuário com dados inválidos
     Quando eu clicar em "Confirmar"
     Então eu deverei ver "Login é muito curto(a) (mínimo: 3 caracteres)"
 
-@wip
-Cenário: Cadastrar novo usuário e sair logo em seguida
+Cenário: Cadastrar novo usuário e sair logo em setguida
     Dado que estou em "Cadastrar usuario"
        E que eu preenchi "username" com "usuario"
        E que eu preenchi "password" com "123456"

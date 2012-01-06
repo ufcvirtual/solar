@@ -3,8 +3,8 @@ Funcionalidade: Exibir participantes do curso
   Como um usuario do solar
   Eu quero visualizar os participantes do curso
 
-  @selenium
-  Cenário: Acessar pagina de informacoes do curso
+  @javascript
+  Cenário: Visulizar participantes da turma
     Dado que estou logado com o usuario "user" e com a senha "123456"
         E que estou em "Meu Solar"
     Quando eu clicar no link "Introducao a Linguistica"
