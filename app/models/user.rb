@@ -12,14 +12,19 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :validatable,
     :recoverable, :encryptable, :token_authenticatable # autenticacao por token
 
+  before_save :ensure_authentication_token!
+
   # Setup accessible (or protected) attributes for your model
   attr_accessible :username, :email, :alternate_email, :password, :password_confirmation, :remember_me, :name, :nick, :birthdate,
     :address, :address_number, :address_complement, :address_neighborhood, :zipcode, :country, :state, :city,
     :telephone, :cell_phone, :institution, :gender, :cpf, :bio, :interests, :music, :movies, :books, :phrase, :site, :photo
 
+  email_format = %r{^((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?$}i # regex para validacao de email
+
   validates :username, :length => { :within => 3..20 }, :uniqueness => true
-  validates :email, :presence => true, :uniqueness => true, :confirmation => true
-  validates :alternate_email, :format => { :with => %r{^((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?$}i}
+  validates :email, :presence => true, :uniqueness => true, :confirmation => true, :format => { :with => email_format }
+  validates :email_confirmation, :format => { :with => email_format }
+  validates :alternate_email, :format => { :with => email_format }
 
   validates :nick, :length => { :within => 3..34 }
   validates :name, :length => { :within => 6..90 }
@@ -61,6 +66,10 @@ class User < ActiveRecord::Base
   def after_create
     new_allocation_user = Allocation.new :profile_id => Rails.application.config.profile, :status => Allocation_Activated, :user_id => self.id
     new_allocation_user.save!
+  end
+
+  def ensure_authentication_token!
+    reset_authentication_token! if authentication_token.blank? 
   end
 
 end
