@@ -221,6 +221,8 @@
 
   # pagina do meu solar
   mysolar_news: "News"
+  mysolar_edit_profile: "Edit profile"
+  mysolar_change_picture: "Change picture"
   mysolar_recent_activities: "Recents Activities"
   mysolar_agenda: "Agenda"
   mysolar_class: "Classes"

@@ -2,7 +2,7 @@ class UsersController < ApplicationController
 
   include ApplicationHelper
 
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:photo]
 
   # GET /users
   def index
@@ -50,6 +50,11 @@ class UsersController < ApplicationController
   # modificacao da foto do usuario #
   ##################################
 
+  #Formulário de upload de foto exibido numa lightbox
+  def photo
+    render :layout => false
+  end
+  
   def update_photo
 
     breadcrumb = active_tab[:breadcrumb].last

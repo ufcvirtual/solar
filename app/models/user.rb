@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
     :styles => { :medium => "72x90#", :small => "25x30#", :forum => "40x40#" },
     :path => ":rails_root/media/:class/:id/photos/:style.:extension",
     :url => "/media/:class/:id/photos/:style.:extension",
-    :default_url => "/images/no_image.png"
+    :default_url => "/images/no_image_:style.png"
 
   # path and URL define that images will be in "public/images/"
   # and will be created a folder called "users" with object id (eg users/1)

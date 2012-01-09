@@ -1,31 +1,31 @@
 /* css reset */
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {
-	margin:0;
-	padding:0;
+    margin:0;
+    padding:0;
 }
 table {
-	border-collapse:collapse;
-	border-spacing:0;
+    border-collapse:collapse;
+    border-spacing:0;
 }
 fieldset,img {
-	border:0;
+    border:0;
 }
 address,caption,cite,code,dfn,em,strong,th,var {
-	font-style:normal;
-	font-weight:normal;
+    font-style:normal;
+    font-weight:normal;
 }
 ol,ul {
-	list-style:none;
+    list-style:none;
 }
 caption,th {
-	text-align:left;
+    text-align:left;
 }
 h1,h2,h3,h4,h5,h6 {
-	font-size:100%;
-	font-weight:normal;
+    font-size:100%;
+    font-weight:normal;
 }
 q:before,q:after {
-	content:'';
+    content:'';
 }
 abbr,acronym { border:0;
 }
@@ -56,7 +56,7 @@ body{
     padding: 0;
     background-color: #fff;
     cursor: default;
-/*    font-family: 'Trebuchet', Arial;*/
+    /*    font-family: 'Trebuchet', Arial;*/
     font-family: 'PT Sans', sans-serif;
     height: 100%;
     background-color: #f9f9f9;
@@ -71,7 +71,7 @@ p {
 }
 
 h1, h2, h3, h4, h5 {
-/*    font-family: 'Trebuchet', Arial;*/
+    /*    font-family: 'Trebuchet', Arial;*/
     font-family: 'Ubuntu', sans-serif;
     font-weight: 500;
 }
@@ -81,7 +81,7 @@ h1 {
 }
 
 h2 {
-/*    font-family: 'Trebuchet', Arial;*/
+    /*    font-family: 'Trebuchet', Arial;*/
     font-family: 'Ubuntu Condensed', sans-serif;
     font-weight: 500;
 }
@@ -216,14 +216,14 @@ select{
     color: #222;
     background-color: #fff;
     border: 1px solid #dedede;
-/*    min-width: 180px;*/
+    /*    min-width: 180px;*/
 }
 
 input{
     color: #222;
     border: 1px solid #dedede;
     padding: 5px;
-/*    font-size: 13px;*/
+    /*    font-size: 13px;*/
 }
 
 input[type="file"] {
@@ -242,8 +242,8 @@ textarea{
 h1.page_title{
     font-size  : 12pt;
     color      : #000;
-/*    font-weight: bold;*/
-/*    font-variant: small-caps;*/
+    /*    font-weight: bold;*/
+    /*    font-variant: small-caps;*/
     border-bottom: 3px solid #003E7A;
     padding-bottom: 2px !important;
     /*text-transform: capitalize;*/
@@ -416,7 +416,9 @@ h1.page_title{
     font-family:'Trebuchet',Arial;
 }
 
-/********meu solar**********/
+/**
+* Meu Solar
+*/
 /* barra superior geral */
 #mysolar_topbar {
     width: 100%;
@@ -481,7 +483,48 @@ h1.page_title{
 }
 
 /* foto do usuário */
-#mysolar_id {
+#mysolar_top_submenu{
+    color: #003e7a;;
+    font-size: 10pt;
+    position: absolute;
+    top:36px;
+    width:170px;
+    background-color: #fff;
+    margin-left: -50px;
+    z-index: 100;
+    display:none;
+    border-bottom: 2px solid #f9db43;
+    border-left: 2px solid #f9db43;
+    border-right: 2px solid #f9db43;
+    border-top: none;
+    padding: 10px;
+    text-align: left;
+    overflow: hidden;
+    box-shadow: 3px 3px 15px 0px #bbb;
+}
+.mysolar_top_submenu_label_selected{
+    background-color: #fff;
+    border-top: none;
+    border-left: 2px solid #f9db43;
+    border-right: 2px solid #f9db43;
+    border-bottom: none;
+    vertical-align: top;
+}
+.mysolar_top_submenu_label_regular{
+    background-color: transparent;
+    border-top: none;
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+    border-bottom: none;
+    vertical-align: top;
+}
+.mysolar_top_submenu_label_selected a.mysolar_top_link {
+    color: #000;
+    vertical-align: top;
+}
+
+.mysolar_top_submenu_label_regular a {
+    vertical-align: top;
 }
 
 #image_user {
@@ -624,8 +667,8 @@ a.mysolar_top_link{
     min-height: 100%;
     max-height: 100%;
     z-index: 1;
-/*    float: left;*/
-/*    position: absolute;*/
+    /*    float: left;*/
+    /*    position: absolute;*/
     vertical-align: top;
     display: inline-block;
     zoom: 1;
@@ -646,10 +689,10 @@ a.mysolar_top_link{
 /********Menu do meuSolar*****************/
 #mysolar_menu_accordion{
     display: inline-block;
-/*    position: absolute;
-    top: 250px;
-    left: 0px;
-*/
+    /*    position: absolute;
+        top: 250px;
+        left: 0px;
+    */
     padding-top: 0;
     margin-top: 0;
     width: 100%;
@@ -675,7 +718,7 @@ a.mysolar_top_link{
 
 .mysolar_menu_title_single_active {
     border-bottom: 3px solid #ff7418;
-/*    background: url('../images/icon_circle.png') no-repeat left 10px !important;*/
+    /*    background: url('../images/icon_circle.png') no-repeat left 10px !important;*/
 }
 
 .mysolar_menu_title_single_active a {
@@ -708,18 +751,18 @@ a.mysolar_top_link{
     -moz-transform: rotate(90deg);
     -webkit-transform: rotate(90deg);
     -o-transform: rotate(90deg);
-/*    filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.00000000, M12=-1.00000000, M21=1.00000000, M22=0.00000000,sizingMethod='auto expand');*/
-/*    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);*/
+    /*    filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.00000000, M12=-1.00000000, M21=1.00000000, M22=0.00000000,sizingMethod='auto expand');*/
+    /*    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);*/
     transform: rotate(90deg);
 }
 
 .mysolar_menu_title {
     width: 100%;
     margin: 2px;
-/*    padding-left: 12px;*/
+    /*    padding-left: 12px;*/
     cursor: pointer;
     font-weight: normal;
-/*    font-family: 'Trebuchet', Arial;*/
+    /*    font-family: 'Trebuchet', Arial;*/
     height: 30px;
     line-height: 30px;
     color: #003e7a;
@@ -764,7 +807,7 @@ a.mysolar_top_link{
 }
 
 #footer ul {
-    
+
 }
 
 #footer ul li {
@@ -806,11 +849,11 @@ a.mysolar_top_link{
     top: 0px;
     margin-top: 80px;
     */
-/*    padding-left: 185px;*/
-/*    padding-bottom: 50px;*/
+    /*    padding-left: 185px;*/
+    /*    padding-bottom: 50px;*/
     padding-left: 5px;
-/*    float: left;*/
-/*    position: absolute;*/
+    /*    float: left;*/
+    /*    position: absolute;*/
     background-color: #fff;
     width: 785px;
     padding-right: 10px;
@@ -1250,10 +1293,10 @@ div.alter_photo_text {
 
 #page_title h1, #lightBoxDialogTitle h1 {
     font-size: 14pt;
-/*    font-weight: bold;*/
-/*    font-variant: small-caps;*/
+    /*    font-weight: bold;*/
+    /*    font-variant: small-caps;*/
     display: inline;
-/*    border-bottom: 1px solid #fff;*/
+    /*    border-bottom: 1px solid #fff;*/
 }
 
 #page_title > .block_content_text {
@@ -1363,7 +1406,7 @@ div.alter_photo_text {
 
 .block_content_line {
     border-bottom: 1px solid #CCCCCC;
-/*    font-size: 10pt;*/
+    /*    font-size: 10pt;*/
     padding: 6px 10px;
 }
 
@@ -1379,7 +1422,7 @@ div.alter_photo_text {
 
 .block_content_text {
     color: #000;
-/*    font-size: 10pt;*/
+    /*    font-size: 10pt;*/
     padding: 6px 10px;
 }
 
@@ -1757,7 +1800,7 @@ h2, table tr.block_title th {
 
 .forum_post_content{
     width: 100%;
-/*    background-color: #F5F8FB;*/
+    /*    background-color: #F5F8FB;*/
     font-family:'PT Sans', sans-serif;
     font-size: 13px;
     vertical-align: top;
@@ -2070,12 +2113,12 @@ ul.message_menu_listbox li:hover{
     position: relative;
 }
 ul.message_menu_listbox li a{  /* menu nivel 1 */
-                               font-size: 12px;
-                               font-family:'Trebuchet',Arial;
-                               text-decoration: none;
-                               color: #214684;
-                               cursor: pointer;
-                               display:block;
+    font-size: 12px;
+    font-family:'Trebuchet',Arial;
+    text-decoration: none;
+    color: #214684;
+    cursor: pointer;
+    display:block;
 }
 ul.message_menu_listbox li ul{
     display:none;
@@ -2093,14 +2136,14 @@ ul.message_menu_listbox li:hover ul{
     display:block;
 }
 ul.message_menu_listbox li ul a{  /* menu nivel 2 - opcoes */
-                                  width: 80px;
-                                  display: block;
-                                  background: #fff;
-                                  padding: 0px;
-                                  margin:  2px;
-                                  font-size: 11px;
-                                  font-family: 'Trebuchet',Arial;
-                                  text-decoration: none;
+    width: 80px;
+    display: block;
+    background: #fff;
+    padding: 0px;
+    margin:  2px;
+    font-size: 11px;
+    font-family: 'Trebuchet',Arial;
+    text-decoration: none;
 }
 ul.message_menu_listbox li ul a:hover{
     background:#eee;}
@@ -2204,7 +2247,7 @@ table.tb_list tr.block_title th {
 table.tb_list th {
     white-space: nowrap;
     background-color: white;
-/*    font-weight: bold;*/
+    /*    font-weight: bold;*/
 }
 
 table.tb_list h4 {
@@ -2221,7 +2264,7 @@ table.tb_list tbody {
 table.tb_list td {
     white-space: normal;
     word-wrap: break-word;
-/*    border-right: 1px solid #d0d0d0;*/
+    /*    border-right: 1px solid #d0d0d0;*/
 }
 
 table.tb_list td:last-child {
@@ -2301,9 +2344,9 @@ tbody tr.lines:nth-child(odd) {
 */
 
 th, tr.lines td {
-/*    border-bottom: solid #B4B2B1 1px;*/
-/*    border-left: solid #B4B2B1 1px;*/
-/*    padding: 7px 5px 6px 5px;*/
+    /*    border-bottom: solid #B4B2B1 1px;*/
+    /*    border-left: solid #B4B2B1 1px;*/
+    /*    padding: 7px 5px 6px 5px;*/
     padding: 6px 10px;
     vertical-align: top;
 }
@@ -2391,7 +2434,7 @@ td.td_student a {color: #2a538d;}
     min-height: 60px;
     overflow: hidden;
     font-weight: normal;
-/*    background-color: #fbfbfb;*/
+    /*    background-color: #fbfbfb;*/
     font-size: 10pt;
     padding-top: 10px;
     text-align: justify;
@@ -2542,7 +2585,7 @@ td.td_student a {color: #2a538d;}
     background-image: -moz-linear-gradient(center top , #005CC0, #003e7c);
     background-image: -webkit-linear-gradient(top,#005CC0,#003e7c);
     color: #ffffff;
-    
+
 }
 .btn_default:hover {
     background-image: -moz-linear-gradient(center top , #016ee5, #005CC0);
@@ -2559,7 +2602,7 @@ td.td_student a {color: #2a538d;}
     background-image: -moz-linear-gradient(center top , #f67a7b, #f55254);
     background-image: -webkit-linear-gradient(top,#f67a7b,#f55254);
     color: #ffffff;
-    
+
 }
 .btn_caution:hover {
     background-image: -moz-linear-gradient(center top , #f65f60, #f0292d);

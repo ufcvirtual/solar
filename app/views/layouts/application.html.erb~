@@ -101,7 +101,7 @@
             <li style="padding:7px;">
               <%= t(:alter_photo)%>
 -->
-<!-- [#18983481] estado atual do codigo com alteracoes no menu superior no upload de fotos e na edicao de cadastro -->
+<!-- [#18983481] estado atual do codigo com alteracoes no menu superior no upload de fotos e na edicao de cadastro>
               <%= link_to t(:mysolar_edit_profile), {:action=>"edit", :controller=>"devise/registrations"}, :id => 'my_data' %>
             </li>
             <li style="padding:7px;">

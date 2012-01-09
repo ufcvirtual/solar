@@ -124,38 +124,32 @@ function reloadContentByForm(form){
 /*******************************************************************************
  * Upload das imagens de usuário.
  * */
-jQuery.fn.window_upload_files = function(options) {
-    // default values
-    var defaults = {
-        dialog_id: 'dialog',
-        mask_id: 'mask',
-        class_window: 'window',
-        class_close: 'close'
-    };
+function showUserPictureUploadForm(id, title){
+    showLightBoxURL('/users/photo/'+ id, 500, 400, true, title);
+    return false;
+}
 
-    // verificando valores passados
-    options = $.extend(defaults, options);
-
-    var window_div = $(this);
-    var window_upload = $('#' + options.dialog_id, window_div); // window
-    var window_mask = $('#' + options.mask_id, window_div);
-
-    // transition effect
-    window_mask.fadeIn();
-    window_mask.fadeTo("slow", 0.8);
-
-    // set the popup window to center
-    window_upload.css('margin-top',  -(window_upload.height()/2));
-    window_upload.css('margin-left', -(window_upload.width()/2));
-
-    // transition effect
-    window_upload.fadeIn(2000);
-
-    // if close button is clicked
-    $('.'+ options.class_window + ' .' + options.class_close).click(function (e) {
-        e.preventDefault(); // cancel the link behavior
-        $('#' + options.mask_id + ', .' + options.class_window).hide();
+/*******************************************************************************
+ * Código do Menu de usuário na barra superior
+ * */
+$(document).ready(function(){
+    $("body").click(function(e) {
+        if((e.target.id !== 'mysolar_top_submenu') && (e.target.id !== 'mysolar_top_user_nick') && (e.target.id !== 'image_user')){
+            $("#mysolar_top_submenu").slideUp(150);
+            $('#mysolar_top_submenu_label').removeClass('mysolar_top_submenu_label_selected');
+            $('#mysolar_top_submenu_label').addClass('mysolar_top_submenu_label_regular');
+        }      
     });
+});
+function mysolarTopSubmenuToggle(){
+    var left = $("#mysolar_top_user_nick").offset().left;
+    var origin = $("#mysolar_topbar").offset().left;
+    left -= origin;
+    $("#mysolar_top_submenu").css('left', left);
+    $("#mysolar_top_submenu").slideToggle(150);
+            
+    $('#mysolar_top_submenu_label').toggleClass('mysolar_top_submenu_label_selected');
+    $('#mysolar_top_submenu_label').toggleClass('mysolar_top_submenu_label_regular');
 }
 
 /*******************************************************************************
