@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
   has_many :user_contacts, :class_name => "UserContact", :foreign_key => "user_id"
   has_many :user_contacts, :class_name => "UserContact", :foreign_key => "user_related_id"
 
+  after_create :allocate_user_with_basic_perfil
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable, :timeoutable and :omniauthable, :trackable
   devise :database_authenticatable, :registerable, :validatable,
@@ -63,7 +65,7 @@ class User < ActiveRecord::Base
   end
 
   # Alocar usuario para acesso com o perfil básico no ato da sua criação
-  def after_create
+  def allocate_user_with_basic_perfil
     new_allocation_user = Allocation.new :profile_id => Rails.application.config.profile, :status => Allocation_Activated, :user_id => self.id
     new_allocation_user.save!
   end
