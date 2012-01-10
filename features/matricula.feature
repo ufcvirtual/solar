@@ -23,9 +23,10 @@ Contexto:
         | 1        | 8                  | 1           | 0      |
         | 1        |                    | 12          | 1      |
 
+
 Cenário: Acessar página de matricula
     Dado que estou logado com o usuario "user" e com a senha "123456"
-    Quando eu clicar no link "Matrícula"
+    Quando eu clicar no link de conteudo "Matrícula"
     Então eu deverei ver "Matrícula"
         E eu deverei ver "Unidade Curricular"
         E eu deverei ver "Categoria"
@@ -34,9 +35,10 @@ Cenário: Acessar página de matricula
         E eu deverei ver "Todos"
         E eu deverei ver "Matriculados"
 
+@javascript
 Cenário: Listar cursos matriculados ou disponíveis
     Dado que estou logado com o usuario "user" e com a senha "123456"
-    Quando eu clicar no link "Matrícula"
+    Quando eu clicar no link de conteudo "Matrícula"
     Então eu deverei ver a linha de opcao de matricula
       | UnidadeCurricular             | Categoria                           | Turma  | Matricula       |
       | Introducao a Linguistica      | Curso Livre                         | FOR    | Cancelar        |

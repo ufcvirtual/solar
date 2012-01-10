@@ -34,6 +34,7 @@ Cenário: Acessar página de cadastro de novo usuário
 		E eu deverei ver "Necessidades especiais"
 		E eu deverei ver o botao "Confirmar"
 
+@javascript
 Cenário: Cadastrar novo usuário
     Dado que estou em "Cadastrar usuario"
        E que eu preenchi "username" com "usuario"
@@ -58,8 +59,8 @@ Cenário: Cadastrar novo usuário
        E que eu preenchi "telephone" com "(85)3322-2233"
        E que eu preenchi "cell_phone" com "(85)8888-8888"
     Quando eu clicar em "Confirmar"
-    Então eu deverei ver "Sair"
-        E eu deverei ver "Home"
+    Então eu deverei visualizar "Sair"
+        E eu deverei visualizar "Home"
 
 Cenário: Cadastrar novo usuário com dados inválidos
     Dado que estou em "Cadastrar usuario"
@@ -86,7 +87,7 @@ Cenário: Cadastrar novo usuário com dados inválidos
        E que eu preenchi "cell_phone" com "(85)8888-8888"
     Quando eu clicar em "Confirmar"
     Então eu deverei ver "Login é muito curto(a) (mínimo: 3 caracteres)"
-
+@javascript
 Cenário: Cadastrar novo usuário e sair logo em seguida
     Dado que estou em "Cadastrar usuario"
        E que eu preenchi "username" com "usuario"
@@ -111,8 +112,8 @@ Cenário: Cadastrar novo usuário e sair logo em seguida
        E que eu preenchi "telephone" com "(85)3322-2233"
        E que eu preenchi "cell_phone" com "(85)8888-8888"
     Quando eu clicar em "Confirmar"
-    Então eu deverei ver "Sair"
-        E eu deverei ver "Home"
-    Quando eu clicar no link "Sair"
-	Então eu deverei ver "Usuário"
-    	E eu deverei ver "Senha"
+    Então eu deverei visualizar "Sair"
+        E eu deverei visualizar "Home"
+    Quando eu clicar no link de conteudo "Sair"
+	Então eu deverei visualizar "Usuário"
+    	E eu deverei visualizar "Senha"

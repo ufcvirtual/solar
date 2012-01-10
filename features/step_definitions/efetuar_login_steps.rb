@@ -3,7 +3,7 @@
 Dado /^que tenho "([^"]*)"$/ do |name, table|
   # table is a Cucumber::Ast::Table
 	table.hashes.each do |hash|
-#		User.create(hash)
+    #		User.create(hash)
 		Factory( name.singularize, hash )
 	end
 
@@ -35,11 +35,25 @@ Quando /^eu clicar no link "([^"]*)"$/ do |link|
 end
 
 Entao /^eu deverei ver "([^"]*)"$/ do |text|
-	if page.respond_to? :should
-		page.should have_content(text)
-	else
-		assert page.has_content?(text)
-	end
+  	if page.respond_to? :should
+  		page.should have_content(text)
+  	else
+  		assert page.has_content?(text)
+  	end
+end
+
+# Teste
+
+Quando /^eu clicar no link de conteudo "([^"]*)"$/ do |link|
+  within_frame 'frame_content' do
+    click_link(link)
+  end  
+end
+
+Entao /^eu deverei visualizar "([^"]*)"$/ do |texto|
+  within_frame 'frame_content' do
+    page.should have_content(texto)
+  end
 end
 
 Entao /^eu nao deverei ver "([^"]*)"$/ do |text|
@@ -68,11 +82,11 @@ Dado /^que eu nao estou logado no sistema com usuario user$/ do
 end
 
 Dado /^que estou logado com o usuario "([^\"]*)" e com a senha "([^\"]*)"$/ do |username, password|
- visit path_to("Login")
- fill_in "username", :with => username
- fill_in "password", :with => password
- click_button "user_submit"
-# selenium.wait_for_page_to_load
+  visit path_to("Login")
+  fill_in "username", :with => username
+  fill_in "password", :with => password
+  click_button "user_submit"
+  # selenium.wait_for_page_to_load
 end
 
 
