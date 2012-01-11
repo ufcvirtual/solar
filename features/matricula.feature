@@ -23,29 +23,29 @@ Contexto:
         | 1        | 8                  | 1           | 0      |
         | 1        |                    | 12          | 1      |
 
-
+@javascript
 Cenário: Acessar página de matricula
     Dado que estou logado com o usuario "user" e com a senha "123456"
     Quando eu clicar no link de conteudo "Matrícula"
-    Então eu deverei ver "Matrícula"
-        E eu deverei ver "Unidade Curricular"
-        E eu deverei ver "Categoria"
-        E eu deverei ver "Turma"
-        E eu deverei ver "Buscar"
-        E eu deverei ver "Todos"
-        E eu deverei ver "Matriculados"
+    Então eu deverei visualizar "Matrícula"
+        E eu deverei visualizar "Unidade Curricular"
+        E eu deverei visualizar "Categoria"
+        E eu deverei visualizar "Turma"
+        E eu deverei visualizar "Buscar"
+        E eu deverei visualizar "Todos"
+        E eu deverei visualizar "Matriculados"
 
-@javascript
+@wip @javascript
 Cenário: Listar cursos matriculados ou disponíveis
     Dado que estou logado com o usuario "user" e com a senha "123456"
     Quando eu clicar no link de conteudo "Matrícula"
-    Então eu deverei ver a linha de opcao de matricula
+    Então eu deverei visualizar a linha de opcao de matricula
       | UnidadeCurricular             | Categoria                           | Turma  | Matricula       |
       | Introducao a Linguistica      | Curso Livre                         | FOR    | Cancelar        |
       | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | FOR    | Cancelar pedido |
       | Quimica I                     | Curso de Graduacao a Distancia      | CAU-B  | Matriculado     |
       | Teoria da Literatura I        | Curso de Graduacao Presencial       | CAU-A  | Matricular      |
-      E eu nao deverei ver a linha de opcao de matricula
+      E eu nao deverei visualizar a linha de opcao de matricula
 	   | UnidadeCurricular             | Categoria                           | Turma  | Matricula   |
 	   | Semipresencial sm nvista      | Curso de Pos-Graduacao a Distancia  | FOR    | Matricular  |
 
