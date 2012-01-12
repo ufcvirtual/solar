@@ -1,93 +1,3 @@
-<script type ="text/javascript">
-
-  $(document).ready(function(){
-  $('#select_folder').change(function(){
-  if($('#select_folder option:selected').text() == "nova pasta"){
-  $('#new_folder').fadeIn();
-  } else{
-  $('#new_folder').fadeOut();
-  }
-  });
-  });
-</script>
-
-
-<span>Material de apoio do editor</span>
-
-<div>
-
-  <br/>
-  <span> Oferta: </span>
-  <div style="margin-left: 50px;margin-top: -20px;">
-    <%= form_for(@offers) do |f| %>
-      <%= f.select :offer, options_for_select([""] + Offer.find(:all,:select => "semester").collect{|c| [c.semester]})%>
-    <%end%>
-  </div>
-
-  <span> Turma: </span>
-  <div style="margin-left: 50px;margin-top: -20px;">
-    <%= form_for(@groups) do |f| %>
-      <%= f.select :group, options_for_select([""] + Group.find(:all,:select => "code").collect{|c| [c.code]})%>
-    <%end%>
-  </div>
-
-  <hr/>
-  <br/>
-
-  <% #Link %>
-  <% form_for :link, :url => {:controller => "support_material_file_editor", :action => "upload_link"} do |flink| %>
-    <span>Link:</span>
-    <div style="margin-left: 70px;margin-top: -25px;">
-      <%= flink.text_field :link, :id => "link"%>
-    </div>
-    <div style="margin-left: 300px; margin-top: -30px">
-      <%= flink.submit t(:confirm), :id=>"confirm", :class=>"btn btn_default", :alt=> t(:confirm) %>
-    </div>
-  <%end%>
-
-  <br/>
-
-  <% #Arquivo %>
-  <div>
-    <span>Arquivo:</span>
-    <br/>
-    <div>
-      <%= form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :support_material_file_editor,
-          :action => :upload_files }) do |f| %>
-        <%= f.file_field :attachment%>
-      </div>
-
-      <br/>
-      <span>Pasta:</span>
-      <div id="select_folder">
-        <%= f.select :folder, options_for_select([""] + ["nova pasta"] + SupportMaterialFile.find(:all,:select => "DISTINCT folder", :conditions => ["folder != ? and folder != ? ", "","LINKS"]).collect{|c| [c.folder]})%>
-      </div>
-
-      <div id ="new_folder" style="display: none">
-        <div> Nova pasta </div>
-        <%= f.text_field :new_folder%>
-      </div>
-
-      <br/>
-
-      <span>
-        <%= f.submit t(:send), :id => "support_material", :class => "btn btn_default"%>
-      </span>
-
-    <% end %>
-
-
-  </div>
-</div>
-
-<br/>
-<hr/>
-
-<% "----------------------------------------------------------------------------------------------------------------------------" %>
-<% "VERIFICAR MELHOR FORMA DE RENDERIZAR ESSA PÁGINA" %>
-
-<h2> Material de apoio enviado </h2>
-<br/>
 <span style="font-size: 11px;font-style: italic;color: #4B6380;"> <%= link_to "Baixar todo o material de apoio como zip", :controler => :support_material_file, :action => :download_all_file_ziped %> </span>
 <br/>
 <% @folders_list.each do |folder_name, folder_content| %>
@@ -95,8 +5,10 @@
     <div class="block_title">
       <h2><%= folder_name %> </h2>
       <% unless folder_name == 'LINKS' %>
-        <span style="font-size: 11px;font-style: italic;color: #4B6380;"> <%= link_to "Baixar toda a pasta como zip", :controler => :support_material_file, :action => :download_folder_file_ziped, :folder=> folder_name  %> </span>
-      <% end %>
+      <div style="font-size: 11px;font-style: italic;color: #4B6380; float:right;">
+        <%= link_to "Baixar toda a pasta como zip", :controler => :support_material_file, :action => :download_folder_file_ziped, :folder=> folder_name  %>
+      </div>
+        <% end %>
     </div>
 
     <table class='tb_list' border='0' cellpadding='10' cellspacing='0' width='100%'>
@@ -148,3 +60,47 @@
 <% if @folders_list.nil? or @folders_list.empty? %>
   <div class="block_content block_content_text"><%= t(:itens_not_found) %></div>
 <% end %>
+
+<!-- Enviar arquivo e manipulação das pastas -->
+  <br/><%#= user_session[:tabs] %>
+  <%#= user_session[:tabs][:active] %>
+  <%#= user_session %>
+<!--div id="mysolar_tabs">
+  <ul  class="mysolar_tabs_wrapper">
+      <li class="mysolar_unit_active_tab"><#%= link_to t(:support_send_document), "Document" => params[:support_document] %></li>
+      <li class="mysolar_unit_tab"><#%= link_to t(:support_create_paste), "Paste" => :support_document %></li>
+      <li class="mysolar_unit_tab"><#%= link_to t(:support_send_link), "Link" => :support_document %></li>
+      <#% #session[:support_material][:choosen] = params[:support_title] %>
+  </ul>
+  <ul id="mysolar_extras">
+        Oferta: <#%= link_to   %>
+        Turma:  <#%= params[:name2] %>
+  </ul>
+</div-->
+<%= @editor_general_data %>
+<%= raw render_support_controll_tab %>
+<%= current_user.id  %>
+
+<div class="support_link">
+  <% if params[:support_document] == 'document' || params[:support_document].nil? %>
+    <%= render 'document' %>
+  <%  elsif params[:support_document] == 'paste' %>
+    <%= render 'paste' %>
+  <%  elsif params[:support_document] == 'link' %>
+    <%= render 'link' %>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    $('#editor_curriculun_unit').change(function(){
+        if($('#editor_curriculun_unit option:selected').text() != ""){
+            $('#editor_groups').fadeIn();
+        }else{
+            $('#editor_groups').fadeOut();
+        }
+    });
+  });
+
+</script>

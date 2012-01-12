@@ -787,3 +787,10 @@
         subject: 'Instruções de reset de senha'
       unlock_instructions:
         subject: 'Instruções de desbloqueio'
+
+  # Support Material File Editor [em teste]
+  support_send_document: 'DOCUMENTO'
+  support_send_link: 'LINK'
+  support_create_paste: 'PASTA'
+  support_text_field_link: 'Cole aqui o link que deseja enviar'
+  support_new_paste: 'Nova Pasta'

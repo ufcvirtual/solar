@@ -1,0 +1,23 @@
+<script type ="text/javascript">
+  $(document).ready(function(){
+    $('#select_folder').change(function(){
+      if($('#select_folder option:selected').text() == "nova pasta"){
+        $('#new_folder').fadeIn();
+      } else{
+        $('#new_folder').fadeOut();
+      }
+    });
+  });
+</script>
+
+<div style="margin:20px 0 60px 20px;">
+  <%= form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :support_material_file_editor, :action => :upload_files }) do |f| %>
+    Escolha a pasta <%= f.select :folder, options_for_select([""] + [t(:support_new_paste)] + SupportMaterialFile.find(:all,:select => "DISTINCT folder", :conditions => ["folder != ? and folder != ? ", "","LINKS"]).collect{|c| [c.folder]}) %>
+    <br/>
+    <!-- no AJAX -->
+      <%= f.text_field :new_folder %> <%= f.file_field :attachment %> <% f.submit t(:send), :id => "support_material", :class => "solar_button_gray" %>
+    <!--/no AJAX-->
+  <% end %>
+  Aquarde o envio completo do arquivo. O tamanho dos arquivos não devem exceder 5mb
+
+</div>

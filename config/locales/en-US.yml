@@ -608,3 +608,10 @@
         subject: 'Reset password instructions'
       unlock_instructions:
         subject: 'Unlock Instructions'
+        
+  # Support Material File Editor [em teste]
+  support_send_document: 'DOCUMENT'
+  support_send_link: 'LINK'
+  support_create_paste: 'PASTE'
+  support_text_field_link: 'Paste in here links'
+  support_new_paste: 'New Paste'

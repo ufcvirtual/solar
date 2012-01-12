@@ -1,9 +1,11 @@
 class SupportMaterialFileEditorController < ApplicationController
 
+
+
   def list
 
     # Recuperando os arquivos enviados do material de apoio
-    
+
     #################  OBTER OS ARQUIVO COM O QUAL O EDITOR FEZ O UPLOAD  ##################
     allocation_tag_id = 3
     @list_files = SupportMaterialFile.search_files(allocation_tag_id)
@@ -16,10 +18,10 @@ class SupportMaterialFileEditorController < ApplicationController
     }
     #######################################################
 
-    
-    @offers  = ""
-    @groups  = ""
-
+    @editor_general_data = SupportMaterialFileEditor.list_editor_option(current_user.id)[0]
+    @editor_curriculun_unit = ""
+    @editor_group = ""
+    @editor_class = ""
   end
 
   def upload_link
@@ -37,7 +39,7 @@ class SupportMaterialFileEditorController < ApplicationController
 
     flash[:success] = "Link enviado com sucesso!"
     redirect_to :controller => "support_material_file_editor", :action => "list"
-    
+
   end
 
   def edit_link
@@ -45,8 +47,8 @@ class SupportMaterialFileEditorController < ApplicationController
   end
 
   def upload_files
-    #    authorize! :upload_files, SupportMaterialFileEditor 
-    
+    #    authorize! :upload_files, SupportMaterialFileEditor
+
     respond_to do |format|
       begin
         # redireciona para a lista
@@ -54,25 +56,25 @@ class SupportMaterialFileEditorController < ApplicationController
 
         # verifica se o arquivo foi adicionado
         raise t(:error_no_file_sent) unless params.include?(:support_material)
-      
+
         # Verificando se é uma pasta existente no banco ou uma nova criado pelo usuário.
         if (params[:support_material][:new_folder] != "")
           params[:support_material][:folder] = params[:support_material][:new_folder]
         end
 
         params[:support_material].delete(:new_folder)
-        
+
         # Verificando se o arquivo enviado já existe na pasta selecionada
         file = SupportMaterialFile.new params[:support_material]
-  
-        # Se retornar um registro é pq ja existe no banco e nao pode inserir, se for vazio pode inserir
+
+        # Se retornar um registro é porque já existe no banco e nao pode inserir, se for vazio pode inserir
         verify = SupportMaterialFile.find_by_attachment_file_name_and_folder(file.attachment_file_name, file.folder.upcase.strip)
 
         raise "Arquivo escolhido existe nessa mesma pasta !" unless (verify.nil?)
 
         #### PEGAR ALLOCATION TAG ! ! !
         allocation_tag_id = 3
-        
+
         @file = SupportMaterialFile.new params[:support_material]
         @file.folder = @file.folder.upcase.strip
         @file.allocation_tag_id = allocation_tag_id
@@ -119,4 +121,9 @@ class SupportMaterialFileEditorController < ApplicationController
       end
     end
   end
+
+  def level_up # Nome temporário
+    
+  end
+
 end
