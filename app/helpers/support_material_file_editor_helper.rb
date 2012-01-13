@@ -22,19 +22,31 @@ module SupportMaterialFileEditorHelper
       editor_tab << " </ul>"
 
       editor_tab << " <ul id='mysolar_extras'>"
-    	editor_tab << "Disciplina: "
-      form_for(@editor_curriculun_unit) do |f|
-        editor_tab << "#{f.select :offer, options_for_select([''] + CurriculumUnit.where(["curriculum_unit_type_id = ?", 3]).collect{|c| [c.name]})}"
-      editor_tab << "</span>"
+      editor_tab << "Curso: "
+      form_for(@editor_course_choose) do |f|
+        list_courses = Course.where(["id = ?", @editor_general_data["course_id"]]).collect{|c| [c.name]}[0][0]
+        courses_value_id = Course.where(["id = ?", @editor_general_data["course_id"]]).collect{|c| [c.id]}[0][0]
+        #editor_tab << "#{f.select :course, options_for_select(Course.where(["id = ?", @editor_general_data["course_id"]]).collect{|c| [c.name]})}"
+        #editor_tab << "#{f.select :course, options_for_select([["Dollar", "$"], ["Kroner", "DKK"]])}"
+        editor_tab << "#{f.select :course, options_for_select([[list_courses, courses_value_id]])}"
       end
 
-      editor_tab << "   Turma: "
-      editor_tab << "<span id='editor_groups'>"
+
+
+    	editor_tab << "   Disciplina:"
+      form_for(@editor_curriculum_unit) do |f|
+        list_curriculun_unit = CurriculumUnit.where(["curriculum_unit_type_id = ?", @editor_general_data["curriculum_unit_id"]]).collect{|c| [c.name]}[0][0]
+        curriculun_unit_value_id = CurriculumUnit.where(["curriculum_unit_type_id = ?", @editor_general_data["curriculum_unit_id"]]).collect{|c| [c.id]}[0][0]
+        editor_tab << "#{f.select :offer, options_for_select([[list_curriculun_unit, curriculun_unit_value_id]])}"
+      end
+
+      editor_tab << "   Turma:"
       form_for(@editor_group) do |f|
-        editor_tab << "#{f.select :offer, options_for_select([''] + Offer.find(:all,:select => 'semester').collect{|c| [c.semester]} + Group.find(:all,:select => "code").collect{|c| [c.code]})}"
+        list_group = Group.find(:all,:select => "code").collect{|c| [c.code]}[0][0]
+        group_value_id = Group.find(:all,:select => "code").collect{|c| [c.id]}[0][0]
+        editor_tab << "#{f.select :offer, options_for_select([[list_group,group_value_id]])}"
       end
-      editor_tab << "</span>"
-
+      
       #editor_tab << "   Turma: "
     	#form_for(@offers) do |f|
       #   editor_tab << "#{f.select :group, options_for_select([""] + Group.find(:all,:select => "code").collect{|c| [c.code]})}"

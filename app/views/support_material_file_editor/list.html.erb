@@ -77,7 +77,8 @@
         Turma:  <#%= params[:name2] %>
   </ul>
 </div-->
-<%= @editor_general_data %>
+<%= @editor_general_data["course_id"] %><br/>
+<%= @editor_course_choose %>
 <%= raw render_support_controll_tab %>
 <%= current_user.id  %>
 

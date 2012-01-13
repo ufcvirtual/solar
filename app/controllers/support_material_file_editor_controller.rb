@@ -7,7 +7,9 @@ class SupportMaterialFileEditorController < ApplicationController
     # Recuperando os arquivos enviados do material de apoio
 
     #################  OBTER OS ARQUIVO COM O QUAL O EDITOR FEZ O UPLOAD  ##################
-    allocation_tag_id = 3
+    @editor_general_data = SupportMaterialFileEditor.list_editor_option(current_user.id)[0]
+    @editor_courses_current = SupportMaterialFileEditor.list_editor_by_course(@editor_general_data["course_id"])[0]
+    allocation_tag_id = @editor_general_data["allocation_tag_id"].to_i
     @list_files = SupportMaterialFile.search_files(allocation_tag_id)
 
     # construindo um conjunto de objetos
@@ -19,13 +21,16 @@ class SupportMaterialFileEditorController < ApplicationController
     #######################################################
 
     @editor_general_data = SupportMaterialFileEditor.list_editor_option(current_user.id)[0]
-    @editor_curriculun_unit = ""
+    @editor_courses_current = SupportMaterialFileEditor.list_editor_by_course(@editor_general_data["course_id"])[0]
+
+    @editor_course_choose = ""
+    @editor_curriculum_unit = ""
     @editor_group = ""
-    @editor_class = ""
   end
 
   def upload_link
     url  = params[:link]["link"]
+    @editor_general_data = SupportMaterialFileEditor.list_editor_option(current_user.id)[0]
 
     if (url.empty?)
       flash[:error] = "Link deve ser preenchido !"
@@ -33,8 +38,7 @@ class SupportMaterialFileEditorController < ApplicationController
       return
     end
 
-    #### PEGAR ALLOCATION TAG ! ! !
-    allocation_tag_id = 3
+    allocation_tag_id = @editor_general_data["allocation_tag_id"]
     SupportMaterialFile.upload_link(allocation_tag_id, url)
 
     flash[:success] = "Link enviado com sucesso!"
@@ -73,7 +77,7 @@ class SupportMaterialFileEditorController < ApplicationController
         raise "Arquivo escolhido existe nessa mesma pasta !" unless (verify.nil?)
 
         #### PEGAR ALLOCATION TAG ! ! !
-        allocation_tag_id = 3
+        allocation_tag_id = @editor_general_data["allocation_tag_id"].to_i
 
         @file = SupportMaterialFile.new params[:support_material]
         @file.folder = @file.folder.upcase.strip
@@ -120,10 +124,6 @@ class SupportMaterialFileEditorController < ApplicationController
         format.html { redirect_to(redirect) }
       end
     end
-  end
-
-  def level_up # Nome temporário
-    
   end
 
 end
