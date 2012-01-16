@@ -12,13 +12,13 @@
     order: [:month, :day, :year]
   time:
     formats:
-      default: "%b %d %Y %H:%M:%S"
+      default: "%b/%d/%Y, %H:%M:%S"
       short: "%b/%d %H:%M"
       today: "%H:%M"
       not_today: "%m/%d"
       long: "%B %d, %Y %H:%M"
       normal: "%m/%d/%Y"
-      files: "%D"
+      files: "%m/%d/%Y, %H:%M h"
       discussion_post_date: "%m/%d/%Y"
       discussion_post_hour: "%H:%M h"
       simple_day_and_month: "%d/%b"
