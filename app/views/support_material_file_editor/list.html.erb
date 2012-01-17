@@ -77,10 +77,11 @@
         Turma:  <#%= params[:name2] %>
   </ul>
 </div-->
-<%= @editor_general_data["course_id"] %><br/>
-<%= @editor_course_choose %>
+<%#= @editor_general_data %><br/>
+<%#= @editor_course_choose %>
+<%#= user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['allocation_tag_id'] %>
 <%= raw render_support_controll_tab %>
-<%= current_user.id  %>
+<%#= user_session[:tabs][:active] %>
 
 <div class="support_link">
   <% if params[:support_document] == 'document' || params[:support_document].nil? %>

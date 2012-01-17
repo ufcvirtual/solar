@@ -8,9 +8,10 @@ class SupportMaterialFileEditorController < ApplicationController
 
     #################  OBTER OS ARQUIVO COM O QUAL O EDITOR FEZ O UPLOAD  ##################
     @editor_general_data = SupportMaterialFileEditor.list_editor_option(current_user.id)[0]
-    @editor_courses_current = SupportMaterialFileEditor.list_editor_by_course(@editor_general_data["course_id"])[0]
-    allocation_tag_id = @editor_general_data["allocation_tag_id"].to_i
+    @editor_courses_current = SupportMaterialFileEditor.list_editor_by_course(@editor_general_data["course_id"])
+    allocation_tag_id = user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['allocation_tag_id'] #@editor_general_data["allocation_tag_id"].to_i
     @list_files = SupportMaterialFile.search_files(allocation_tag_id)
+    curriculum_unit_id = active_tab[:url]['id']
 
     # construindo um conjunto de objetos
     @folders_list = {}
@@ -21,8 +22,9 @@ class SupportMaterialFileEditorController < ApplicationController
     #######################################################
 
     @editor_general_data = SupportMaterialFileEditor.list_editor_option(current_user.id)[0]
-    @editor_courses_current = SupportMaterialFileEditor.list_editor_by_course(@editor_general_data["course_id"])[0]
+    @editor_courses_current = SupportMaterialFileEditor.list_editor_by_course(@editor_general_data["course_id"])
 
+    # As variáveis comentadas a seguir serão necessárias caso o menu esteja dentro do Curriculun Unit
     @editor_course_choose = ""
     @editor_curriculum_unit = ""
     @editor_group = ""
@@ -38,7 +40,7 @@ class SupportMaterialFileEditorController < ApplicationController
       return
     end
 
-    allocation_tag_id = @editor_general_data["allocation_tag_id"]
+    allocation_tag_id = user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['allocation_tag_id'] #@editor_general_data["allocation_tag_id"]
     SupportMaterialFile.upload_link(allocation_tag_id, url)
 
     flash[:success] = "Link enviado com sucesso!"
@@ -61,14 +63,14 @@ class SupportMaterialFileEditorController < ApplicationController
         # verifica se o arquivo foi adicionado
         raise t(:error_no_file_sent) unless params.include?(:support_material)
 
-        # Verificando se é uma pasta existente no banco ou uma nova criado pelo usuário.
+        # verifica se é uma pasta existente no banco ou uma nova criado pelo usuário.
         if (params[:support_material][:new_folder] != "")
           params[:support_material][:folder] = params[:support_material][:new_folder]
         end
 
         params[:support_material].delete(:new_folder)
 
-        # Verificando se o arquivo enviado já existe na pasta selecionada
+        # verifica se o arquivo enviado já existe na pasta selecionada
         file = SupportMaterialFile.new params[:support_material]
 
         # Se retornar um registro é porque já existe no banco e nao pode inserir, se for vazio pode inserir
@@ -76,8 +78,8 @@ class SupportMaterialFileEditorController < ApplicationController
 
         raise "Arquivo escolhido existe nessa mesma pasta !" unless (verify.nil?)
 
-        #### PEGAR ALLOCATION TAG ! ! !
-        allocation_tag_id = @editor_general_data["allocation_tag_id"].to_i
+        # allocation_tag_id selecionada pela sessão do usuário
+        allocation_tag_id = user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['allocation_tag_id'] #@editor_general_data["allocation_tag_id"].to_i
 
         @file = SupportMaterialFile.new params[:support_material]
         @file.folder = @file.folder.upcase.strip

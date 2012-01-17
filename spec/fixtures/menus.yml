@@ -251,5 +251,6 @@ registration:
 support_material_file_editor:
   id: 120
   name: menu_support_material_editor
+  context_id: 2
   order: 11
   resource_id: 63

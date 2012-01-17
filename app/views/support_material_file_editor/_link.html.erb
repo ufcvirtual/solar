@@ -4,3 +4,17 @@
       <%= flink.submit t(:send), :id=>"confirm", :class=>"solar_button", :alt=> t(:send) %>
   <% end %>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+      $('.search_keyword_inactive').click(function(){
+        if(document.getElementById("link").value == '<%= t(:support_text_field_link) %>'){
+     /*
+     * se o conteúdo encontrado no elemento for iqual ao texto predeterminado e internacionalizado
+     * então o campo de texto será limpado
+     **/
+        document.getElementById("link").value = "";
+        }
+      });
+    });
+</script>
