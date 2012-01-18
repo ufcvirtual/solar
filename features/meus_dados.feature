@@ -17,7 +17,7 @@ Cenário: Acessar página de Edição de Dados Pessoais
             E eu deverei ver "Frase"
             E eu deverei ver "Site"
 
-
+@wip
 Cenário: Acessar página de Edição de Dados Cadastrais
 	Dado que estou logado com o usuario "user" e com a senha "123456"
             E que estou em "Meus Dados"
@@ -25,29 +25,27 @@ Cenário: Acessar página de Edição de Dados Cadastrais
             E eu deverei ver "Apelido"
             E eu deverei ver "Data de Nascimento"
             E eu deverei ver "Sexo"
-            E eu deverei ver "CPF"
+            E eu deverei ver "Cpf"
             E eu deverei ver "Contato"
             E eu deverei ver "E-mail"
             E eu deverei ver "E-mail alternativo"
             E eu deverei ver "Telefone"
             E eu deverei ver "Instituição"
             E eu deverei ver "Endereço"
-            E eu deverei ver "Rua"
             E eu deverei ver "Número"
             E eu deverei ver "Cidade"
             E eu deverei ver "CEP"
             E eu deverei ver "Estado"
             E eu deverei ver "Bairro"
             E eu deverei ver "País"
-            E eu deverei ver "Autenticação"
+            E eu deverei ver "Acesso"
             E eu deverei ver "Login"
             E eu deverei ver "Senha"
             E eu deverei ver "Necessidades especiais"
-
+@wip
 Cenário: Alterar dados Pessoais
        Dado que estou logado com o usuario "user" e com a senha "123456"
            E que estou em "Meus Dados"
-           E que eu preenchi "Nome" com "Jurandi"
            E que eu preenchi "user_bio" com "Bicampeao Estadual em 94 e 95"
            E que eu preenchi "Interesses" com "Leitura e paz mundial"
            E que eu preenchi "Música" com "MPB forró reaggue e Restart"
@@ -56,7 +54,7 @@ Cenário: Alterar dados Pessoais
            E que eu preenchi "Frase" com "Bazzinga"
            E que eu preenchi "Site" com "www.kibeloco.com.br"
            E que eu preenchi "Senha" com "123456"
-    Quando eu clicar em "personal_submit"
+    Quando eu clicar em "confirm"
     Então eu deverei ver "Dados atualizados com sucesso."
 
 Cenário: Alterar dados Cadastrais

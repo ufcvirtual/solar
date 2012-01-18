@@ -95,19 +95,11 @@
 
           <ul style="width: 100%; display:block;border-top: 3px solid #EBEBEB; margin-top: 5px;">
             <li style="padding:7px;">
-<!-- HEAD
-              <%= link_to t(:mysolar_mn_profile), {:action=>"edit", :controller=>"devise/registrations"}, :id => 'my_data' %>
-            </li>
-            <li style="padding:7px;">
-              <%= t(:alter_photo)%>
--->
-<!-- [#18983481] estado atual do codigo com alteracoes no menu superior no upload de fotos e na edicao de cadastro -->
               <%= link_to t(:mysolar_edit_profile), {:action=>"edit", :controller=>"devise/registrations"}, :id => 'my_data' %>
             </li>
             <li style="padding:7px;">
               <a href="" onclick="showUserPictureUploadForm('<%=current_user.id%>', '<%= t(:mysolar_change_picture)%>');return false;"><%= t(:mysolar_change_picture)%> </a>
               <%#= link_to t(:mysolar_change_picture), {:action=>"edit", :controller=>"devise/registrations"}, :id => 'my_data' %>
-<fim-->
             </li>
             <li style="padding:7px;">
               <%= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path) %>

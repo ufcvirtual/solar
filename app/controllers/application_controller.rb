@@ -254,4 +254,8 @@ class ApplicationController < ActionController::Base
    pages_index_url
   end
 
+  def after_update_path_for(resource)
+    '/home'
+  end
+  
 end
