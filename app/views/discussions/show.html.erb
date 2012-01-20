@@ -30,7 +30,7 @@
           </a>
         <%end%>
       </span>
-      <span>
+      <span id="forum_pagination">
         <%=raw render_pagination_bar(count_discussion_posts(@discussion.id,(@display_mode=="PLAINLIST")).to_s)%>
       </span>
   </div>

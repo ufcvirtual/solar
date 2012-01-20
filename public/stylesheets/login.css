@@ -65,14 +65,14 @@ html, body {
 
 /*Classes de mensagens flash*/
 .error, .alert span, #error_explanation li {
-    color: #E03838;
+    color: #660000;
     font-size: 10pt;
     font-weight: bold;
 }
 .notice{
     font-size: 10pt;
     font-weight: bold;
-    color: #2F4F2F;
+    color: #e9ba00;
 }
 .success{
     font-size: 10pt;
@@ -433,6 +433,15 @@ textarea{
 
 #flash_message.alert, #error_explanation {
     background: url('../images/error.gif') no-repeat 5px center #fff6f6;
+}
+
+#flash_message.notice {
+    background: url('../images/warning.png') no-repeat 5px center #fff6f6;
+    background-color: #ffffe2;
+}
+
+#flash_message.success {
+    background: url('../images/success.gif') no-repeat 5px center #f5ffec;
 }
 
 /******** cadastro de novo usuario com layout do login **********/

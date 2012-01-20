@@ -45,7 +45,7 @@ module ApplicationHelper
 
     total_pages = total_pages.to_s
 
-    result << '<form accept-charset="UTF-8" action="" method="' << request.method << '" name="paginationForm" style="display:inline">'
+    result << '<form accept-charset="UTF-8" action="" method="' << request.method << '" name="paginationForm">'
 
     if !hash_params.nil?
       # ex: type=index&search=1 2 3

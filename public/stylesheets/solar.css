@@ -250,12 +250,12 @@ h1.page_title{
 }
 
 .text_alert, .text_alert_message {
-    font-size: 8pt;
+    font-size: 10pt;
     color: #e64d4d;
     width: auto;
 }
 .text_alert_message {
-    vertical-align: super;
+    vertical-align: top;
 }
 .text_none {
     font-family: Trebuchet;
@@ -717,12 +717,12 @@ a.mysolar_top_link{
 }*/
 
 .mysolar_menu_title_single_active {
-    border-bottom: 3px solid #ff7418;
+    border-bottom: 2px solid #F9DB43;
     /*    background: url('../images/icon_circle.png') no-repeat left 10px !important;*/
 }
 
 .mysolar_menu_title_single_active a {
-    color: #ff7418;
+    color: #D7B507;
 }
 
 /*.mysolar_menu_title_active {
@@ -1343,7 +1343,7 @@ div.alter_photo_text {
     margin-right: 5px;
     width: 18px;
     height: 18px;
-    vertical-align: top;
+    vertical-align: bottom;
 }
 
 #page_title_icon {
@@ -1671,6 +1671,7 @@ h2, table tr.block_title th {
 
 .forum_navigation {
     text-align: center;
+    padding-bottom: 0 !important;
     /*overflow: hidden; */
 }
 
@@ -1702,7 +1703,7 @@ h2, table tr.block_title th {
 
 .forum_button_view_mode{
     color: #222;
-    font-size: 13px;
+/*    font-size: 13px;*/
 }
 
 .forum_button_view_mode img {
@@ -1714,6 +1715,10 @@ h2, table tr.block_title th {
     font-size: 10pt;
     width: 100%;
     max-width: 785px;
+}
+
+#forum_pagination{
+    font-size: 11pt;
 }
 
 .forum_post_wrapper {
@@ -1750,8 +1755,9 @@ h2, table tr.block_title th {
 }
 
 .forum_post_link_disabled{
-    color: #5C6D85;
-    font-size: 15px;
+    /*color: #5C6D85;*/
+    color: #999999;
+    font-size: 11pt;
     text-decoration: underline line-through;
 }
 
@@ -1802,7 +1808,7 @@ h2, table tr.block_title th {
     width: 100%;
     /*    background-color: #F5F8FB;*/
     font-family:'PT Sans', sans-serif;
-    font-size: 13px;
+    font-size: 10pt;
     vertical-align: top;
 }
 
@@ -2248,6 +2254,10 @@ table.tb_list th {
     white-space: nowrap;
     background-color: white;
     /*    font-weight: bold;*/
+}
+
+table.tb_list a {
+    text-decoration: underline;
 }
 
 table.tb_list h4 {
