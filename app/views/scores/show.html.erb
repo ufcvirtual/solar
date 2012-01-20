@@ -7,35 +7,40 @@
   <!-- Tabelas de atividades -->
 
   <div  class="block_content">
-    <table id="assignments_list" class="tb_list">
-      <thead>
-        <tr class="lines">
-          <th align="left"><%= t(:assignments) %></th>
-          <th align="center" style="width: 24%;"><%= t(:date_name) %></th>
-          <th align="center" style="width: 12%;"><%= t(:situation) %></th>
-          <th align="center" style="width: 8%;"><%= t(:grade) %></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @activities.each_with_index do |activity, idx| %>
-          <tr class="lines">
-            <td align="left">
-              <% if can? :student_detail, PortfolioTeacher %>
-                <%=link_to activity["assignments_name"], {:controller => :portfolio_teacher,
-                  :action => :student_detail, :id => @student.id,
-                  :assignment_id => activity["assignment_id"],
-                  :send_assignment_id => activity["send_assignment_id"]}, {:class => 'link_content'} %>
-              <% else %>
-                <%= activity["assignments_name"] %>
-              <% end %>
-            </td>
-            <td align="center"><%=l activity["start_date"].to_time, :format => :normal %> - <%=l activity["end_date"].to_time, :format => :normal %></td>
-            <td class="assignment_<%= activity["situation"] %>" align="center"><%= t(activity["situation"].to_sym) %></td>
-            <td align="center"><%= (activity["grade"].nil?) ? '-' : activity["grade"].to_f %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <% unless @activities.empty? %>
+        <table id="assignments_list" class="tb_list">
+          <thead>
+            <tr class="lines">
+              <th align="left"><%= t(:assignments) %></th>
+              <th align="center" style="width: 24%;"><%= t(:date_name) %></th>
+              <th align="center" style="width: 12%;"><%= t(:situation) %></th>
+              <th align="center" style="width: 8%;"><%= t(:grade) %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @activities.each_with_index do |activity, idx| %>
+              <tr class="lines">
+                <td align="left">
+                  <% if can? :student_detail, PortfolioTeacher %>
+                    <%=link_to activity["assignments_name"], {:controller => :portfolio_teacher,
+                      :action => :student_detail, :id => @student.id,
+                      :assignment_id => activity["assignment_id"],
+                      :send_assignment_id => activity["send_assignment_id"]}, {:class => 'link_content'} %>
+                  <% else %>
+                    <%= activity["assignments_name"] %>
+                  <% end %>
+                </td>
+                <td align="center"><%=l activity["start_date"].to_time, :format => :normal %> - <%=l activity["end_date"].to_time, :format => :normal %></td>
+                <td class="assignment_<%= activity["situation"] %>" align="center"><%= t(activity["situation"].to_sym) %></td>
+                <td align="center"><%= (activity["grade"].nil?) ? '-' : activity["grade"].to_f %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+    <% else %>
+        <div class="block_content block_content_text"><%= t(:itens_not_found) %></div>
+    <% end %>
+
   </div>
 </div>
 
@@ -48,32 +53,37 @@
 
   <!-- Informacoes -->
 
-  <div>
-    <table class="tb_list">
-      <thead>
-        <tr class="lines">
-          <th style="width: 80%;"><%= t(:title)  %> </th>
-          <th style="width: 7%;" align="center"><%= t(:amount) %></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @discussions.each_with_index do |discussion, idx| %>
-          <tr class="lines">
-            <% link = {:controller => :discussions, :action => :show_posts, :id => discussion["discussion_id"], :student_id => @student.id} %>
-            <td class="show_posts">
-              <%= link_to(discussion["name"], link, {:class => 'link_content'}) %>
-            </td>
-            <td class="show_posts" align="center">
-              <% if discussion['qtd'].to_i > 0 %>
-                <%= link_to(discussion['qtd'], link, {:class => 'link_content'}) %>
-              <% else %>
-                <%= discussion['qtd'] %>
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+  <div class="block_content">
+  	<% unless @discussions.empty? %>
+        <table class="tb_list">
+          <thead>
+            <tr class="lines">
+              <th style="width: 80%;"><%= t(:title)  %> </th>
+              <th style="width: 7%;" align="center"><%= t(:amount) %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @discussions.each_with_index do |discussion, idx| %>
+              <tr class="lines">
+                <% link = {:controller => :discussions, :action => :show_posts, :id => discussion["discussion_id"], :student_id => @student.id} %>
+                <td class="show_posts">
+                  <%= link_to(discussion["name"], link, {:class => 'link_content'}) %>
+                </td>
+                <td class="show_posts" align="center">
+                  <% if discussion['qtd'].to_i > 0 %>
+                    <%= link_to(discussion['qtd'], link, {:class => 'link_content'}) %>
+                  <% else %>
+                    <%= discussion['qtd'] %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+    <% else %>
+        <div class="block_content block_content_text"><%= t(:itens_not_found) %></div>
+  	<% end %>
+
   </div>
 </div>
 

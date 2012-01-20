@@ -340,7 +340,7 @@ class MessagesController < ApplicationController
           if real_receivers.empty?
             flash[:notice] = t(:message_send_error_no_receiver)
           else
-            flash[:notice] = t(:message_send_ok)
+            flash[:success] = t(:message_send_ok)
             # envia email apenas uma vez, em caso de sucesso da gravacao no banco
             Notifier.deliver_send_mail(real_receivers, subject, message_header + message, Path_Message_Files, all_files_destiny) unless real_receivers.empty? #, from = nil
           end
