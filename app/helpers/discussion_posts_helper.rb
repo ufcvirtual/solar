@@ -8,7 +8,6 @@ module DiscussionPostsHelper
   # Renderiza um post na tela de interação do portólio.
   # threaded indica se as respostas deste post devem ser renderizadas com ele.
   def show_post(post = nil, threaded=true)
-    post_string = ""
     childs = {}
     editable = false
     childs_count = DiscussionPost.child_count(post.id)
@@ -25,12 +24,10 @@ module DiscussionPostsHelper
     nick = nick.slice(0..12) + '...' if nick.length > 15
 
     #Recuperando caminho da foto a ser carregada
-    photo_url = 'no_image.png'
-    photo_url = post.user.photo.url(:forum) if post.photo_file_name
+    photo_url = post.user.photo.url(:forum)
 
     #Montando exibição do post e exibindo respostas recursivamente
-    post_string <<
-    post_string << '<table border="0" cellpadding="0" cellspacing="0" class="forum_post">'
+    post_string = '<table border="0" cellpadding="0" cellspacing="0" class="forum_post">'
     post_string <<    '<tr>'
     post_string <<      '<td rowspan="3" class="forum_post_icon">'
     post_string <<        (image_tag photo_url, :alt => t(:mysolar_alt_img_user) + ' ' + post.user_nick)

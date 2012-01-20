@@ -1,9 +1,7 @@
 <div class="block_wrapper">
-
   <div class="block_title">
-    <h2><%= image_tag "icon_forum.png", :alt=>t(:icon_forum), :class=>'block_title_icon' %><%= @discussion["name"] %></h2>
+    <h2 class="mysolar_title"><%= image_tag "icon_forum.png", :alt=>t(:icon_forum), :class=>'block_title_icon' %><%= @discussion["name"] %></h2>
   </div>
-
 
   <div id="forum_description" class="block_content block_content_text">
     <%= @discussion["description"] %>
