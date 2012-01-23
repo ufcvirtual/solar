@@ -254,7 +254,7 @@ class DiscussionsController < ApplicationController
 
     # retorna o primeiro perfil responsavel se existir
     profiles.each do |profile|
-      return profile.id if profile.class_responsible
+      return profile.id if (profile.type & Profile_Type_Class_Responsible) == Profile_Type_Class_Responsible
     end
 
     # retorna o primeiro perfil encontrado

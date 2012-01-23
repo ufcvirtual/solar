@@ -68,10 +68,10 @@ class CurriculumUnitsController < ApplicationController
 
     # retorna participantes da turma (que nao sejam responsaveis)
     allocation_tag_id = active_tab[:url]['allocation_tag_id']
-    allocations = AllocationTag.find_related_ids(allocation_tag_id)
+    allocation_tags = AllocationTag.find_related_ids(allocation_tag_id)
 
-    responsible = false
-    @participants = CurriculumUnit.class_participants_by_allocations allocations, responsible
+    responsible = Profile_Type_Class_Responsible
+    @participants = CurriculumUnit.class_participants_by_allocations_tags_and_is_not_profile_type allocation_tags, responsible
 
   end
 
@@ -82,10 +82,9 @@ class CurriculumUnitsController < ApplicationController
     @curriculum_unit = CurriculumUnit.find(active_tab[:url]['id'])
 
     @allocation_tag_id = active_tab[:url]['allocation_tag_id']
-    allocations = AllocationTag.find_related_ids(@allocation_tag_id)
-    responsible = true
-    @responsible = CurriculumUnit.class_participants_by_allocations allocations, responsible
-
+    allocation_tags = AllocationTag.find_related_ids(@allocation_tag_id)
+    responsible = Profile_Type_Class_Responsible
+    @responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type allocation_tags, responsible
   end
 
 end

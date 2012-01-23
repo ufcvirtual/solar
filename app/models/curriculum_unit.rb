@@ -67,7 +67,21 @@ class CurriculumUnit < ActiveRecord::Base
     return (groups1.nil?) ? [] : groups1
   end
 
-  def self.class_participants_by_allocations(allocation_tags, flag_resp = false)
+  
+  # participantes que nao sao TAL TIPO DE PERFIL
+  def self.class_participants_by_allocations_tags_and_is_not_profile_type(allocation_tags, profile_flag)
+    class_participants_by_allocations(allocation_tags, profile_flag, false)
+  end
+  
+  # Participantes que sao determinado tipo de perfil
+  def self.class_participants_by_allocations_tags_and_is_profile_type(allocation_tags, profile_flag)
+    class_participants_by_allocations(allocation_tags, profile_flag)
+  end
+  
+  def self.class_participants_by_allocations(allocation_tags, profile_flag, have_profile = true )
+       
+    negative = have_profile ? '' : 'NOT'
+    
     query = <<SQL
       SELECT t3.id, t3.name, t3.photo_file_name, t3.email, t4.name AS profile_name, t4.id AS profile_id
         FROM allocations     AS t1
@@ -75,7 +89,7 @@ class CurriculumUnit < ActiveRecord::Base
         JOIN users           AS t3 ON t1.user_id = t3.id
         JOIN profiles        AS t4 ON t4.id = t1.profile_id
        WHERE t2.id IN (#{allocation_tags.join(',')})
-         AND t4.class_responsible = #{flag_resp}
+         AND #{negative} cast(t4.type & '#{profile_flag.to_s(2)}' as boolean)
          AND t1.status = #{Allocation_Activated}
        ORDER BY profile_name, t3.name
 SQL

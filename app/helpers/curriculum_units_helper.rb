@@ -1,11 +1,13 @@
 module CurriculumUnitsHelper
-
+=begin
   # Retorna participantes por unidade curricular passada que tenham status ativo
   #   se resp=TRUE, os retornados sao responsaveis pela turma
   #      o perfil responsavel esta marcado na tabela profiles (pode ser mais de um)
   #   busca em allocation_tags groups e offers relacionadas a unidade curricular
-  def class_participants (group_allocation_tag_id = nil, flag_resp = false)
-
+  def class_participants (group_allocation_tag_id = nil, profile_flag, have_profile = true)
+    
+    negative = have_profile ? '' : 'NOT'
+    
     query = "
             SELECT DISTINCT
               users.id, users.name as username, users.photo_file_name, users.email, p.name as profilename, p.id as profileid
@@ -88,7 +90,7 @@ module CurriculumUnitsHelper
                 (al.allocation_tag_id = hierarchy.curriculum_unit_parent_tag_id) or
                 (al.allocation_tag_id = hierarchy.course_parent_tag_id)
             where
-                p.class_responsible = #{flag_resp} AND
+                #{negative} cast( p.type & '#{profile_flag.to_s(2)}' as boolean) AND
                 al.status=#{Allocation_Activated} AND
                 hierarchy.allocation_tag_id = ?
            ORDER BY profilename, users.name"
@@ -96,19 +98,22 @@ module CurriculumUnitsHelper
     return User.find_by_sql [query, group_allocation_tag_id]
   end
 
+  
   # Retorna participantes por unidade curricular passada que tenham status ativo
   #   se resp=TRUE, os retornados sao responsaveis pela turma
   #      o perfil responsavel esta marcado na tabela profiles (pode ser mais de um)
   #   busca em allocation_tags groups e offers relacionadas a unidade curricular
-  def class_participants_original (curriculum_unit, flag_resp = false, offer_id = nil, group_id = nil)
+  def class_participants_original (curriculum_unit, profile_flag, have_profile = true, offer_id = nil, group_id = nil)
 
+    negative = have_profile ? '' : 'NOT'
+    
     if curriculum_unit
       participants = User.find(:all,
         :select => "DISTINCT users.id, users.name as username, users.photo_file_name, users.email, profiles.name as profilename, profiles.id as profileid ",
         :joins => "JOIN allocations on allocations.user_id = users.id
                      JOIN profiles on allocations.profile_id = profiles.id
                      JOIN allocation_tags on allocations.allocation_tag_id = allocation_tags.id",
-        :conditions => "profiles.class_responsible = #{flag_resp} AND
+        :conditions => " #{negative} cast( profiles.type & '#{profile_flag.to_s(2)}' as boolean) AND
                     allocations.status=#{Allocation_Activated} AND
                     (
                      allocation_tags.curriculum_unit_id=#{curriculum_unit} OR
@@ -124,8 +129,8 @@ module CurriculumUnitsHelper
 
     return participants
   end
-
-  def message_class_participants (user_id, curriculum_unit, flag_resp = false, offer_id = nil, group_id = nil)
+=end
+  def message_class_participants (user_id, curriculum_unit, profile_flag, have_profile = true, offer_id = nil, group_id = nil)
     if curriculum_unit
       allocation_tag_id = AllocationTag.find_by_group_id(curriculum_unit).id
 
@@ -145,6 +150,8 @@ module CurriculumUnitsHelper
         end
       end
 
+      negative = have_profile ? '' : 'NOT'
+      
       query = "
             SELECT   DISTINCT
               users.id, users.name as username, users.photo_file_name, users.email, p.name as profilename, p.id as profileid
@@ -228,7 +235,7 @@ module CurriculumUnitsHelper
                 (al.allocation_tag_id = hierarchy.curriculum_unit_parent_tag_id) or
                 (al.allocation_tag_id = hierarchy.course_parent_tag_id)
             where
-                p.class_responsible = #{flag_resp} AND
+                #{negative} cast( p.type & '#{profile_flag.to_s(2)}' as boolean) AND
                 al.status=#{Allocation_Activated} AND
                 (
                   (hierarchy.allocation_tag_id = #{allocation_tag_id}) or

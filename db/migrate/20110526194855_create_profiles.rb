@@ -3,7 +3,7 @@ class CreateProfiles < ActiveRecord::Migration
     create_table "profiles" do |t|
       t.string  "name",              :null => false
       t.boolean "student",           :default => false
-      t.boolean "class_responsible", :default => false
+      t.integer "type",              :default => 0
       t.boolean "status",            :default => true
     end
   end
