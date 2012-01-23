@@ -89,7 +89,7 @@ class CurriculumUnit < ActiveRecord::Base
         JOIN users           AS t3 ON t1.user_id = t3.id
         JOIN profiles        AS t4 ON t4.id = t1.profile_id
        WHERE t2.id IN (#{allocation_tags.join(',')})
-         AND #{negative} cast(t4.type & '#{profile_flag.to_s(2)}' as boolean)
+         AND #{negative} cast(t4.types & '#{profile_flag.to_s(2)}' as boolean)
          AND t1.status = #{Allocation_Activated}
        ORDER BY profile_name, t3.name
 SQL

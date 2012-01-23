@@ -6,12 +6,12 @@ aluno:
 prof_titular:
   id: 2
   name: Prof. Titular
-  type: 2
+  types: 2
 
 tutor_distancia:
   id: 3
   name: Tutor a Distancia
-  type: 2
+  types: 2
 
 tutor_presencial:
   id: 4
@@ -48,4 +48,4 @@ secretaria:
 basico:
   id: 12
   name: Basico
-  type: 4
+  types: 4

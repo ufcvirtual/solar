@@ -90,7 +90,7 @@ module CurriculumUnitsHelper
                 (al.allocation_tag_id = hierarchy.curriculum_unit_parent_tag_id) or
                 (al.allocation_tag_id = hierarchy.course_parent_tag_id)
             where
-                #{negative} cast( p.type & '#{profile_flag.to_s(2)}' as boolean) AND
+                #{negative} cast( p.types & '#{profile_flag.to_s(2)}' as boolean) AND
                 al.status=#{Allocation_Activated} AND
                 hierarchy.allocation_tag_id = ?
            ORDER BY profilename, users.name"
@@ -113,7 +113,7 @@ module CurriculumUnitsHelper
         :joins => "JOIN allocations on allocations.user_id = users.id
                      JOIN profiles on allocations.profile_id = profiles.id
                      JOIN allocation_tags on allocations.allocation_tag_id = allocation_tags.id",
-        :conditions => " #{negative} cast( profiles.type & '#{profile_flag.to_s(2)}' as boolean) AND
+        :conditions => " #{negative} cast( profiles.types & '#{profile_flag.to_s(2)}' as boolean) AND
                     allocations.status=#{Allocation_Activated} AND
                     (
                      allocation_tags.curriculum_unit_id=#{curriculum_unit} OR
@@ -235,7 +235,7 @@ module CurriculumUnitsHelper
                 (al.allocation_tag_id = hierarchy.curriculum_unit_parent_tag_id) or
                 (al.allocation_tag_id = hierarchy.course_parent_tag_id)
             where
-                #{negative} cast( p.type & '#{profile_flag.to_s(2)}' as boolean) AND
+                #{negative} cast( p.types & '#{profile_flag.to_s(2)}' as boolean) AND
                 al.status=#{Allocation_Activated} AND
                 (
                   (hierarchy.allocation_tag_id = #{allocation_tag_id}) or
