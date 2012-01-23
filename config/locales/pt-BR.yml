@@ -365,7 +365,7 @@
   back: "Voltar"
   save: "Salvar"
   new_user_msg_cpf_error: " inválido"
-  itens_not_found: "Itens não encontrados"
+  itens_not_found: "Sem itens para exibir"
 
   #Meus dados
   my_data: "Meus Dados"

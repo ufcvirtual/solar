@@ -189,7 +189,7 @@
   back: "Back"
   save: "Save"
   new_user_msg_cpf_error: " invalid"
-  itens_not_found: "Itens not found"
+  itens_not_found: "No itens to display"
 
   #pagina meus dados
   my_data: "My Data"
