@@ -23,30 +23,26 @@ class Ability
                             END)::text, '{}', '[]'
                      )
                  ELSE NULL
-                 END         AS objetos
+                 END         AS objects
             FROM profiles    AS t1
             JOIN permissions_resources AS t2 ON t2.profile_id = t1.id
             JOIN resources             AS t3 ON t3.id = t2.resource_id
             JOIN allocations           AS t4 ON t4.profile_id = t1.id
-            JOIN allocation_tags       AS t5 ON t5.id = t4.allocation_tag_id
+            LEFT JOIN allocation_tags       AS t5 ON t5.id = t4.allocation_tag_id
            WHERE t4.user_id = #{user.id}
            GROUP BY t3.controller, t3.action, t2.per_id
            ORDER BY 1, 2;"
 
-      permissoes = ActiveRecord::Base.connection.select_all query
+      permissions = ActiveRecord::Base.connection.select_all query
 
       # setando as permissoes
-      permissoes.each do |permissao|
-        permissao['objetos'] = (eval(permissao['objetos']) unless permissao['objetos'].nil?) || nil
-        can permissao["action"].to_sym, capitalize_controller_name(permissao["controller"]) do |classe|
+      permissions.each do |permission|
+        permission['objects'] = (eval(permission['objects']) unless permission['objects'].nil?) || nil
+        can permission["action"].to_sym, capitalize_controller_name(permission["controller"]) do |classe|
           # verifica se o usuario esta tentando acessar um objeto permitido
-          permissao['objetos'].nil? || permissao['objetos'].include?(classe.id) # objetos permitidos sao listados em um array
+          permission['objects'].nil? || permission['objects'].include?(classe.id) # objetos permitidos sao listados em um array
         end
       end
-
-      # Permissões para usuário sem Profile
-      can [:mysolar, :update, :update_photo], User, :id => user.id
-      can :showoffersbyuser, Offer
     else
       # permissoes para usuarios nao logados
       can [:create, :pwd_recovery], User

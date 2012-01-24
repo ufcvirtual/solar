@@ -105,7 +105,6 @@ perm_alunos = PermissionsResource.create([
     # offer
     {:profile_id => 1, :resource_id => 6, :per_id => true},
     {:profile_id => 1, :resource_id => 7, :per_id => true},
-    {:profile_id => 1, :resource_id => 8, :per_id => true},
     # group
     {:profile_id => 1, :resource_id => 9, :per_id => true},
     {:profile_id => 1, :resource_id => 10, :per_id => true},
@@ -113,10 +112,6 @@ perm_alunos = PermissionsResource.create([
     {:profile_id => 1, :resource_id => 11, :per_id => false},
     {:profile_id => 1, :resource_id => 12, :per_id => false},
     {:profile_id => 1, :resource_id => 13, :per_id => false},
-    {:profile_id => 1, :resource_id => 14, :per_id => false},
-    {:profile_id => 1, :resource_id => 15, :per_id => false},
-    {:profile_id => 1, :resource_id => 16, :per_id => false},
-    {:profile_id => 1, :resource_id => 17, :per_id => false},
     {:profile_id => 1, :resource_id => 18, :per_id => false},
     {:profile_id => 1, :resource_id => 19, :per_id => false},
     {:profile_id => 1, :resource_id => 20, :per_id => false},
@@ -162,7 +157,6 @@ perm_prof_titular = PermissionsResource.create([
     # offer
     {:profile_id => 2, :resource_id => 6, :per_id => true},
     {:profile_id => 2, :resource_id => 7, :per_id => true},
-    {:profile_id => 2, :resource_id => 8, :per_id => true},
     # group
     {:profile_id => 2, :resource_id => 9, :per_id => true},
     {:profile_id => 2, :resource_id => 10, :per_id => true},
@@ -170,10 +164,6 @@ perm_prof_titular = PermissionsResource.create([
     {:profile_id => 2, :resource_id => 11, :per_id => false},
     {:profile_id => 2, :resource_id => 12, :per_id => false},
     {:profile_id => 2, :resource_id => 13, :per_id => false},
-    {:profile_id => 2, :resource_id => 14, :per_id => false},
-    {:profile_id => 2, :resource_id => 15, :per_id => false},
-    {:profile_id => 2, :resource_id => 16, :per_id => false},
-    {:profile_id => 2, :resource_id => 17, :per_id => false},
     {:profile_id => 2, :resource_id => 18, :per_id => false},
     {:profile_id => 2, :resource_id => 19, :per_id => false},
     {:profile_id => 2, :resource_id => 20, :per_id => false},
@@ -218,7 +208,6 @@ perm_prof_titular = PermissionsResource.create([
     # offer
     {:profile_id => 3, :resource_id => 6, :per_id => true},
     {:profile_id => 3, :resource_id => 7, :per_id => true},
-    {:profile_id => 3, :resource_id => 8, :per_id => true},
     # group
     {:profile_id => 3, :resource_id => 9, :per_id => true},
     {:profile_id => 3, :resource_id => 10, :per_id => true},
@@ -226,10 +215,6 @@ perm_prof_titular = PermissionsResource.create([
     {:profile_id => 3, :resource_id => 11, :per_id => false},
     {:profile_id => 3, :resource_id => 12, :per_id => false},
     {:profile_id => 3, :resource_id => 13, :per_id => false},
-    {:profile_id => 3, :resource_id => 14, :per_id => false},
-    {:profile_id => 3, :resource_id => 15, :per_id => false},
-    {:profile_id => 3, :resource_id => 16, :per_id => false},
-    {:profile_id => 3, :resource_id => 17, :per_id => false},
     {:profile_id => 3, :resource_id => 18, :per_id => false},
     {:profile_id => 3, :resource_id => 19, :per_id => false},
     {:profile_id => 3, :resource_id => 20, :per_id => false},
@@ -281,12 +266,16 @@ perm_editor = PermissionsResource.create([
 #           BASICO           #
 ##############################
 perm_basico = PermissionsResource.create([
+    {:profile_id => 12, :resource_id => 2, :per_id => false},
+    {:profile_id => 12, :resource_id => 3, :per_id => true},
+    {:profile_id => 12, :resource_id => 4, :per_id => true},
+    {:profile_id => 12, :resource_id => 8, :per_id => true},
+        
     {:profile_id => 12, :resource_id => 14, :per_id => false},
     {:profile_id => 12, :resource_id => 15, :per_id => false},
     {:profile_id => 12, :resource_id => 16, :per_id => false},
     {:profile_id => 12, :resource_id => 17, :per_id => false}
   ])
-
 
 
 ######## PERMISSIONS MENUS #########

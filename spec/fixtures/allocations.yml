@@ -12,15 +12,29 @@ palacio_as_student:
   profile_id: 1
   status: 1
 
-bezerra_as_student:
+palacio_as_basic:
   id: 25
+  user_id: 2
+  allocation_tag_id: 
+  profile_id: 12
+  status: 1
+  
+bezerra_as_student:
+  id: 26
   user_id: 3
   allocation_tag_id: 4
   profile_id: 1
   status: 1
 
-basico:
-  id: 26
+bezerra_as_basic:
+  id: 27
+  user_id: 3
+  allocation_tag_id: 
+  profile_id: 12
+  status: 1
+  
+basic:
+  id: 28
   user_id: 13
   allocation_tag_id:
   profile_id: 12
