@@ -528,6 +528,7 @@
   forum_new_message: "Nova Postagem"
   forum_file_list: "Arquivos"
   forum_closed: "Fórum encerrado"
+  forum_closed_short: "encerrado"
 
   #Exibição/Interação Fóruns
   forum_show_plainlist: "Ver em Lista"

@@ -15,7 +15,8 @@
         <% @discussions.each do |discussion| %>
           <tr class="lines <%= 'discussion_closed' if discussion.closed == 't' %>">
             <td>
-              <%=link_to discussion.name, {:controller => "discussions", :action => "show", :id => discussion.id}, {:class => 'link_content'} %><%= ' (encerrado)' if discussion.closed == 't' %>
+              <%=link_to discussion.name, {:controller => "discussions", :action => "show", :id => discussion.id}, {:class => 'link_content'} %>
+              <%= "(#{t(:forum_closed_short)})" if discussion.closed == 't' %>
             </td>
             <td style="width: 200px;">
               <%= l discussion.start_date.to_date %> - <%= l discussion.end_date.to_date %></td>

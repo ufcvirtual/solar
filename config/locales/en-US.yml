@@ -350,6 +350,7 @@
   forum_new_message: "New Post"
   forum_file_list: "Attachment"
   forum_closed: "Discussion closed"
+  forum_closed_short: "closed"
 
   #Exibição/Interação Fóruns
   forum_show_plainlist: "Show as List"
