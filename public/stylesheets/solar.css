@@ -8,7 +8,7 @@ table {
     border-spacing:0;
 }
 fieldset,img {
-    border:0;
+    border:0;   
 }
 address,caption,cite,code,dfn,em,strong,th,var {
     font-style:normal;
@@ -223,6 +223,7 @@ input{
     color: #222;
     border: 1px solid #dedede;
     padding: 5px;
+    font-family:'PT Sans', sans-serif;
     /*    font-size: 13px;*/
 }
 
@@ -1671,7 +1672,7 @@ h2, table tr.block_title th {
 
 .forum_navigation {
     text-align: center;
-    padding-bottom: 0 !important;
+    min-height: 28px;
     /*overflow: hidden; */
 }
 
@@ -1697,28 +1698,50 @@ h2, table tr.block_title th {
     float: left;
 }
 
+/*.forum_closed_title {
+    background-color:#fff6f6;
+}*/
+
+.lines.discussion_closed {
+    background-color:#f6f6f6;
+    color:#666;
+}
+
+.lines.discussion_closed a {
+    color:#666;
+}
+
+#forum_closed {
+    color: red;
+    font-weight: bold;
+    height: 28px;
+    padding-top: 7px;
+    /*background: url('../images/error.gif') no-repeat left center;*/
+}
+
 #forum_view_mode {
     float: right;
 }
 
-.forum_button_view_mode{
-    color: #222;
-/*    font-size: 13px;*/
+.forum_post_buttons .forum_button_attachment {
+    text-align: left;
 }
 
-.forum_button_view_mode img {
-    vertical-align: bottom;
-}
-
-.forum_navigation_bar{
+.forum_navigation_bar {
     border-bottom: 2px solid #1d4786;
     font-size: 10pt;
     width: 100%;
     max-width: 785px;
 }
 
-#forum_pagination{
+#forum_pagination {
     font-size: 11pt;
+    min-height: 28px;
+    display: block;
+}
+
+#forum_pagination form {
+    padding-top: 7px;
 }
 
 .forum_post_wrapper {
@@ -1730,11 +1753,11 @@ h2, table tr.block_title th {
     white-space: normal;
     max-width: 785px;
     width:100%;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .forum_post .forum_post {
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .forum_post_attachment_line{
@@ -1896,11 +1919,12 @@ h2, table tr.block_title th {
     -moz-border-radius: 4px;
     border-radius: 4px;
     display: none;
+    margin-top: 5px;
 }
 
 .new_post_dialog_buttons {
     margin-top: 5px;
-    float: right;
+    text-align: right;
 }
 
 /* tela de mensagens */
@@ -2562,9 +2586,18 @@ td.td_student a {color: #2a538d;}
     cursor: pointer;
     text-align: center;
     text-decoration: none;
-    padding: .3em .5em .3em;
+    padding: 3px 5px;
     font-size: 8pt;
     margin:0 2px;
+    border: 1px solid #DEDEDE;
+    min-width: 60px;
+}
+.btn img {
+    vertical-align: text-bottom;
+    margin-left: 5px;
+}
+input.btn {
+    padding: 5px 6px;
 }
 .btn:hover {
     text-decoration: none;
@@ -2591,19 +2624,23 @@ td.td_student a {color: #2a538d;}
     background: -o-linear-gradient(#5f8db7,#003e7a);
     background-color: #003e7a;
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#5f8db7', endColorstr='#003e7a');*/
-    background-color: #004898;
-    background-image: -moz-linear-gradient(center top , #005CC0, #003e7c);
-    background-image: -webkit-linear-gradient(top,#005CC0,#003e7c);
-    color: #ffffff;
-
+    /*background-color: #004898;*/
+    background-image: -moz-linear-gradient(center top , rgba(255,255,255,1), rgba(232,232,232,1));
+    /*background-image: -webkit-linear-gradient(top,#005CC0,#003e7c);*/
+    background-image: -webkit-linear-gradient(top,rgba(255,255,255,1),rgba(232,232,232,1));
+    color: #111;
 }
 .btn_default:hover {
-    background-image: -moz-linear-gradient(center top , #016ee5, #005CC0);
-    background-image: -webkit-linear-gradient(top,#016ee5,#005CC0);
+    /*background-image: -moz-linear-gradient(center top , rgba(255,255,255,.70), rgba(247,247,247,.70));
+    background-image: -webkit-linear-gradient(top,rgba(255,255,255,.85),rgba(247,247,247,.85));*/
+    /*background-image: -webkit-linear-gradient(top,#016ee5,#005CC0);*/
+    border: solid 1px #999;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.1);
+    box-shadow: 0 1px 1px rgba(0,0,0,.1);
 }
 .btn_default:active {
-    background-image: -moz-linear-gradient(center top , #005CC0, #016ee5);
-    background-image: -webkit-linear-gradient(top,#005CC0,#016ee5);
+    background-image: -moz-linear-gradient(center top , rgba(232,232,232,.50), rgba(255,255,255,.85));
+    background-image: -webkit-linear-gradient(top,rgba(232,232,232,.50),rgba(255,255,255,.85));
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
 }
 

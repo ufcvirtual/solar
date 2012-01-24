@@ -271,7 +271,7 @@
 			\n    New password: %{password}
    			\n\nRegards,\nAdministration.
 			\n\n\nSOLAR Virtual Environment: http://www.solar2.virtual.ufc.br
-			\n\n\n[This is an automatic message. Please don't reply it.]"
+			\n\n\n[This is an automatic message. Please do not reply.]"
 
 # Página de alterar foto
   choose_file: "Choose file"
@@ -347,7 +347,9 @@
   forum_table_date: "Access date"
   forum_message: "No discussion available"
   forum: "Discussion"
-  forum_new_message: "New Message"
+  forum_new_message: "New Post"
+  forum_file_list: "Attachment"
+  forum_closed: "Discussion closed"
 
   #Exibição/Interação Fóruns
   forum_show_plainlist: "Show as List"
@@ -355,7 +357,6 @@
   forum_show_answer: "Answer"
   forum_show_remove: "Remove"
   forum_show_edit: "Edit"
-  forum_file_list: "Attachment"
   forum_empty_file_list: "No files"
   forum_attach_file_title: "Send files"
   forum_attach_file: "Attach file"

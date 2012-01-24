@@ -9,34 +9,44 @@
 </div>
 
 <div class="block_wrapper">
-  <!--//------------- Barra Superior--------------->
+  <!--//------------- Barra Superior------------- -->
   <div class="block_title forum_navigation">
       <span id="forum_new_message">
         <%if valid_date%>
-          <a href="javascript:clearFormData()" id="NewPostButton" class="forum_button"><%= t("forum_new_message")%></a>
+          <!-- <input type="button" class="btn btn_default" id="NewPostButton" onClick="javascript:clearFormData()" value="<%=t("forum_new_message")%>"/> -->
+          <div class="btn btn_default forum_button_view_mode" id="NewPostButton" onclick="javascript:clearFormData()">
+            <%= t("forum_new_message")%><%= image_tag "icon_write.png", :alt => '' %>
+          </div>
+          <!-- <a href="javascript:clearFormData()" id="NewPostButton" class="forum_button"><%= t("forum_new_message")%></a> -->
         <%else%>
-          <a  class="forum_post_link_disabled"><%= t("forum_new_message")%></a>
+          <div id="forum_closed"><%= t("forum_closed")%></div>
         <%end%>
       </span>
 
       <span id="forum_view_mode">
         <%if @display_mode == "PLAINLIST"%>
-          <a href="javascript:showAsThread()" class="forum_button forum_button_view_mode"><%=  t("forum_show_thread")%>
+            <div class="btn btn_default forum_button_view_mode" onclick="javascript:showAsThread()">
+              <%=  t("forum_show_thread")%><%= image_tag "discussion_thread.png", :alt => '' %>
+            </div>
+          <!-- <a href="javascript:showAsThread()" class="forum_button forum_button_view_mode"><%=  t("forum_show_thread")%>
             <%= image_tag "discussion_thread.png", :alt => '' %>
-          </a>
+          </a> -->
         <%else%>
-          <a href="javascript:showAsPlainList()" class="forum_button forum_button_view_mode"><%=  t("forum_show_plainlist")%>
+            <div class="btn btn_default forum_button_view_mode" onclick="javascript:showAsPlainList()">
+              <%=  t("forum_show_plainlist")%><%= image_tag "discussion_plainlist.png", :alt => '' %>
+            </div>
+          <!-- <a href="javascript:showAsPlainList()" class="forum_button forum_button_view_mode"><%=  t("forum_show_plainlist")%>
             <%= image_tag "discussion_plainlist.png", :alt => '' %>
-          </a>
+          </a> -->
         <%end%>
       </span>
-      <span id="forum_pagination">
+      <div id="forum_pagination">
         <%=raw render_pagination_bar(count_discussion_posts(@discussion.id,(@display_mode=="PLAINLIST")).to_s)%>
-      </span>
+      </div>
   </div>
-  <!--//------------- Fim da Barra Superior--------------->
+  <!--//------------- Fim da Barra Superior------------- -->
 
-  <!--//------------- Exibição de Posts--------------->
+  <!--//------------- Exibição de Posts------------- -->
   <div class="forum_posts_wrapper">
     <%if @display_mode == "PLAINLIST"%>
       <% @posts.each do |post|%>
@@ -58,7 +68,7 @@
     <%= hidden_field_tag(:current_page, @current_page) %>
   <% end %>
 </div>
-<!--//------------- Fim da Exibição de Posts--------------->
+<!--//------------- Fim da Exibição de Posts------------- -->
 
 
 <script type="text/javascript">
@@ -189,7 +199,7 @@
     //Botão de nova postagem
     $('#NewPostButton').click( function () {
       clearFormData();
-      var postContainer = $(this).parent().parent();
+      var postContainer = $(this).parents('.block_title');
       appendRichTextBox(postContainer);
     });
   });

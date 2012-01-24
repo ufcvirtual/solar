@@ -525,8 +525,9 @@
   forum_table_date: "Data de acesso"
   forum_message: "Nenhum fórum disponível"
   forum: "Fórum"
-  forum_new_message: "Nova Mensagem"
+  forum_new_message: "Nova Postagem"
   forum_file_list: "Arquivos"
+  forum_closed: "Fórum encerrado"
 
   #Exibição/Interação Fóruns
   forum_show_plainlist: "Ver em Lista"

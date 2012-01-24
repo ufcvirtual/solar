@@ -62,7 +62,9 @@ module DiscussionPostsHelper
     return post_string
   end
 
+  ##
   # Utilizado na paginação
+  ##
   def count_discussion_posts(discussion_id = nil, plain_list = true)
     DiscussionPost.count_discussion_posts(discussion_id, plain_list)
   end
@@ -115,7 +117,7 @@ module DiscussionPostsHelper
     post_string = '<div class="forum_post_buttons">'
 
     if editable && can_interact
-      post_string << '<a href="#" class="forum_button_attachment" onclick="showUploadForm(\''<< post[:discussion_id].to_s << '\',\'' << post[:id].to_s << '\');">'<< t(:forum_attach_file) << '&nbsp;' << (image_tag "more.png", :alt => t(:forum_attach_file)) << '</a>' if editable && can_interact
+      post_string << '<div class="btn btn_default forum_button_attachment" onclick="showUploadForm(\''<< post[:discussion_id].to_s << '\',\'' << post[:id].to_s << '\');">'<< t(:forum_attach_file) << (image_tag "icon_attachment.png", :alt => t(:forum_attach_file)) << '</div>'  if editable && can_interact
       post_string << '<input type="button" onclick="removePost(' << post[:id].to_s << ')" class="btn btn_caution" value="' << t(:forum_show_remove) << '"/>'
       post_string << '<input type="button" onclick="setDiscussionPostId(' << post[:id].to_s << ')" class="btn btn_default updateDialogLink" value="' << t(:forum_show_edit) << '"/>'
       post_string << '<input type="button" onclick="setParentPostId(' << post[:id].to_s << ')" class="btn btn_default postDialogLink" value="' << t(:forum_show_answer) << '"/>'
@@ -125,10 +127,10 @@ module DiscussionPostsHelper
                                <a class="forum_post_link_disabled">' << t('forum_show_edit') << '</a>&nbsp;&nbsp;
                                <a class="forum_post_link_disabled">' << t('forum_show_answer') << '</a>'
     elsif !editable && can_interact      
-      post_string << '<input type="button" onclick="setParentPostId(' << post[:id].to_s << ')" class="btn btn_default postDialogLink" value="' << t(:forum_show_answer) << '"'
+      post_string << '<input type="button" onclick="setParentPostId(' << post[:id].to_s << ')" class="btn btn_default postDialogLink" value="' << t(:forum_show_answer) << '" />'
 
-    elsif !editable && !can_interact
-      post_string <<      '  <a class="forum_post_link_disabled">' << t('forum_show_answer') << '</a>'
+    # elsif !editable && !can_interact
+      # post_string <<      '  <input type="button" class="btn btn_disabled" value="' << t(:forum_show_answer) << '" />'
     end
     post_string <<      '</div></div>'
 

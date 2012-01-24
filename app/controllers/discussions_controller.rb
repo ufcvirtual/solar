@@ -250,11 +250,7 @@ class DiscussionsController < ApplicationController
     resource_id = Resource.find_by_controller_and_action(controller, action)
 
     # separando apenas os perfis que tem permissao de acessar a funcionalidade
-    profiles.each_with_index do |profile, idx|
-      if PermissionsResource.find_by_profile_id_and_resource_id(profile.id, resource_id).nil?
-        profiles.remove_at(idx)
-      end
-    end
+    profiles.delete_if {|profile| PermissionsResource.find_by_profile_id_and_resource_id(profile.id, resource_id).nil?}
 
     # retorna o primeiro perfil responsavel se existir
     profiles.each do |profile|

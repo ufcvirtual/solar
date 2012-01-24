@@ -33,19 +33,21 @@ SQL
   end
 
   ##
-  # Recupera discussions
+  # Recupera discussions com informacoes de que o mesmo foi finalizado
   ##
   def self.all_by_allocations(allocations)
-
     query = <<SQL
-      SELECT t1.id, t1.name, t1.description, t1.schedule_id
+      SELECT t1.id, t1.name, t1.description, t1.schedule_id, t3.start_date, t3.end_date,
+        CASE WHEN t3.end_date < now()::date THEN true
+             ELSE false
+         END AS closed
         FROM discussions      AS t1
         JOIN allocation_tags  AS t2 ON t2.id = t1.allocation_tag_id
+        JOIN schedules        AS t3 ON t1.schedule_id = t3.id
        WHERE t2.id IN (#{allocations})
 SQL
 
     Discussion.find_by_sql(query)
-
   end
 
 end
