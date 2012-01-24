@@ -31,7 +31,7 @@ Cenário: Exibir Foruns
         E eu deverei ver "Prof. Titular"
         E eu deverei ver "Tutor a Distancia"
 
-
+@wip
 Cenario: Exibir segundo forum
     Dado que estou logado com o usuario "user" e com a senha "123456"
         E que estou em "Meu Solar"
@@ -52,4 +52,4 @@ Cenario: Exibir segundo forum
         E eu deverei ver o botao "Excluir"
         E eu deverei ver o botao "Editar"
         E eu deverei ver o botao "Responder"
-        E eu deverei ver o link "Anexar arquivo"
+        E eu deverei ver "Anexar arquivo"
