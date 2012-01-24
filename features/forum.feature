@@ -9,6 +9,7 @@ Contexto:
     Dado que tenho "allocations"
         | user_id  | allocation_tag_id  | profile_id  | status |
         | 1        | 3                  | 1           | 1      |
+        | 1        |                    | 12          | 1      |
 
 
 Cenário: Exibir Foruns
@@ -31,7 +32,6 @@ Cenário: Exibir Foruns
         E eu deverei ver "Prof. Titular"
         E eu deverei ver "Tutor a Distancia"
 
-@wip
 Cenario: Exibir segundo forum
     Dado que estou logado com o usuario "user" e com a senha "123456"
         E que estou em "Meu Solar"

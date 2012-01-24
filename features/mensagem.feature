@@ -17,9 +17,11 @@ Contexto:
         | 1        | 3                  | 1           | 1      |
         | 1        | 8                  | 1           | 0      |
         | 1        | 8                  | 1           | 1      |
+        | 1        |                    | 12          | 1      |
         | 5        | 4                  | 2           | 1      |
         | 5        | 5                  | 2           | 1      |
         | 5        | 6                  | 2           | 1      |
+        | 5        |                    | 12          | 1      |
 
 Cenário: Abrir mensagem
  Dado que estou logado com o usuario "user" e com a senha "123456"

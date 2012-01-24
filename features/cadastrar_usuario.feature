@@ -87,6 +87,7 @@ Cenário: Cadastrar novo usuário com dados inválidos
        E que eu preenchi "cell_phone" com "(85)8888-8888"
     Quando eu clicar em "Confirmar"
     Então eu deverei ver "Login é muito curto(a) (mínimo: 3 caracteres)"
+
 @javascript
 Cenário: Cadastrar novo usuário e sair logo em seguida
     Dado que estou em "Cadastrar usuario"

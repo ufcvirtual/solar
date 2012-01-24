@@ -5,6 +5,11 @@ Funcionalidade: Internacionalizacao
   Eu quero escolher uma língua
   Para compreender o conteúdo do site
 
+Contexto:
+    Dado que tenho "allocations"
+        | user_id  | allocation_tag_id  | profile_id  | status |
+        | 1        |                    | 12          | 1      |
+
 Cenário: Login EN
         Dado que estou em "Login"
                 E eu deverei ver "Senha"
