@@ -35,7 +35,7 @@ Cenário: Acessar página de matricula
         E eu deverei visualizar "Todos"
         E eu deverei visualizar "Matriculados"
 
-@javascript
+@javascript 
 Cenário: Listar cursos matriculados ou disponíveis
     Dado que estou logado com o usuario "user" e com a senha "123456"
     Quando eu clicar no link de conteudo "Matrícula"

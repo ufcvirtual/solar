@@ -108,6 +108,7 @@ Exemplos:
         | 123456               |  user789          |  user789              | Dados atualizados com sucesso.                |
 
 
+
 Cenário:  Acessar Edição de foto
     Dado que estou logado com o usuario "user" e com a senha "123456"
        E que estou em "Meu Solar"

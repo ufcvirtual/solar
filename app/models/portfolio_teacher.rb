@@ -16,7 +16,7 @@ class PortfolioTeacher < ActiveRecord::Base
         JOIN profiles         AS t4 ON t4.id = t1.profile_id
        WHERE t2.id IN (#{allocations.join(',')})
          AND t2.group_id IS NOT NULL
-         AND t4.student IS TRUE
+         AND cast( t4.types & '#{Profile_Type_Student}' as boolean) 
        ORDER BY t3.name
 SQL
 

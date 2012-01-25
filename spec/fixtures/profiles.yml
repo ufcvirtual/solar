@@ -1,7 +1,7 @@
 aluno:
   id: 1
   name: Aluno
-  student: TRUE
+  types: 4
 
 prof_titular:
   id: 2
@@ -48,4 +48,4 @@ secretaria:
 basico:
   id: 12
   name: Basico
-  types: 4
+  types: 1

@@ -28,7 +28,7 @@ class ScoresTeacher < ActiveRecord::Base
         JOIN allocations        AS t2 ON t2.user_id = t1.id
         JOIN profiles           AS t3 ON t3.id = t2.profile_id
         JOIN allocation_tags    AS t4 ON t4.id = t2.allocation_tag_id
-       WHERE t3.student = TRUE
+       WHERE cast( t3.types & '#{Profile_Type_Student}' as boolean)
          AND t4.group_id = #{group_id}
          AND t2.status = #{Allocation_Activated}
        ORDER BY t1.id
@@ -97,7 +97,7 @@ SQL
      JOIN allocation_tags   AS t3 ON t3.id = t2.allocation_tag_id
      JOIN profiles          AS t4 ON t4.id = t2.profile_id
     WHERE t3.group_id = #{group_id}
-      AND t4.student = TRUE
+      AND cast( t4.types & '#{Profile_Type_Student}' as boolean)
       AND t2.status = #{Allocation_Activated};
 SQL
 

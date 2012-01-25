@@ -98,7 +98,7 @@ class Profile < ActiveRecord::Base
     tps = ActiveRecord::Base.connection.select_all <<SQL
        SELECT DISTINCT
               CASE
-                  WHEN t3.student           IS TRUE THEN 'student' #WHEN NOT  cast( t3.types & '#{Profile_Type_Class_Responsible}' as boolean)  IS TRUE THEN 'student'
+                  WHEN      cast( t3.types & '#{Profile_Type_Student}' as boolean)    IS TRUE THEN 'student'
                   WHEN      cast( t3.types & '#{Profile_Type_Class_Responsible}' as boolean)  IS TRUE THEN 'class_responsible'
                   ELSE 'undefined'
               END AS type_perfil

@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
   # Id do perfil estudante na tabela profiles
   ##
   def student_profile
-    Profile.find_by_student(true).id
+    Profile.find_by_types(4).id
   end
 
   ###########################################
