@@ -201,18 +201,21 @@ class MessagesController < ApplicationController
 
       update_tab_values
 
+      # retorna label de acordo com disciplina atual
       allocation_tag_id = active_tab[:url]['allocation_tag_id']
-      allocations = AllocationTag.find_related_ids(allocation_tag_id).join(', ');
 
+      label_name = ''
+      if !allocation_tag_id.nil?
+        allocations = AllocationTag.find_related_ids(allocation_tag_id).join(', ');
+        # relacionado diretamente com a allocation_tag
+        group = AllocationTag.find(allocation_tag_id).group
+        al_offer = AllocationTag.where("id IN (#{allocations}) AND offer_id IS NOT NULL").first
+        offer = al_offer.nil? ? nil : al_offer.offer
+        al_c_unit = AllocationTag.where("id IN (#{allocations}) AND curriculum_unit_id IS NOT NULL").first
+        curriculum_unit = al_c_unit.nil? ? CurriculumUnit.find(active_tab[:url]['id']) : al_c_unit.curriculum_unit
 
-      # relacionado diretamente com a allocation_tag
-      group = AllocationTag.find(allocation_tag_id).group
-      al_offer = AllocationTag.where("id IN (#{allocations}) AND offer_id IS NOT NULL").first
-      offer = al_offer.nil? ? nil : al_offer.offer
-      al_c_unit = AllocationTag.where("id IN (#{allocations}) AND curriculum_unit_id IS NOT NULL").first
-      curriculum_unit = al_c_unit.nil? ? CurriculumUnit.find(active_tab[:url]['id']) : al_c_unit.curriculum_unit
-
-      label_name = get_label_name(group, offer, curriculum_unit)
+        label_name = get_label_name(group, offer, curriculum_unit)
+      end
 
       #informacoes do usuario atual para identificacao na msg
       atual_user = User.find(current_user.id)

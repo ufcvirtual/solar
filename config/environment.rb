@@ -11,11 +11,11 @@ ActionMailer::Base.default_url_options[:host] = 'localhost:3000'
 ActionMailer::Base.smtp_settings = {
   :address              => 'smtp.gmail.com',
   :port                 => 587,
-  :domain               => 'www.virtual.ufc.br',
-  :user_name            => 'teste@virtual.ufc.br',
-  :password             => '!teste123',
+  :domain               => 'www.teste.com',
+  :user_name            => 'teste@teste.com',
+  :password             => 'teste',
   :authentication       => 'login',
-  :enable_starttls_auto => true  }
+  :enable_starttls_auto => false  }
 
 # constantes de status de matricula e pedido de matricula - table ALLOCATIONS
 Allocation_Pending   = 0           # quando pede alocação(matricula) pela 1a vez
