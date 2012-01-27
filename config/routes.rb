@@ -32,8 +32,7 @@ Solar::Application.routes.draw do
   match "/users/:id", :to => "users#mysolar", :via => "get"
 
   # Definindo resources (mapeamento de urls para os objetos)
-  resources :users, :curriculum_units, :participants, :allocations, :portfolio, :courses
-  resources :scores
+  resources :users, :curriculum_units, :participants, :allocations, :portfolio, :courses, :scores
 
   match "scores/:id/history_access" => "scores#history_access"
   match 'home' => "users#mysolar", :as => :home

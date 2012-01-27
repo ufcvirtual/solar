@@ -27,13 +27,13 @@ module MenuHelper
       }
 
       # verifica se o menu pai foi modificado para gerar um novo menu
-      unless previous_parent_id == menu["parent_id"].to_i
+      unless previous_parent_id == menu['parent_id'].to_i
 
         html_menu << "</ul>" if first_iteration
 
-        if !(!menu["resource_id"].nil? && menu['child'].nil?)
+        if !(!menu['resource_id'].nil? && menu['child'].nil?)
           html_menu << "</li></ul>"
-        elsif !menu["link"].nil?
+        elsif !menu['link'].nil?
           html_menu << "</ul>"
         elsif (menu['parent_id'] == current_menu)
           html_menu << "</li></ul>"
@@ -45,11 +45,9 @@ module MenuHelper
         html_menu_group << "<div class='#{class_menu_div_topo}'>#{html_menu}</div>" if first_iteration # verifica se ja entrou aqui
 
         # para um menu pai ser um link ele nao deve ter filhos
-        if !menu["resource_id"].nil? && menu['child'].nil?
+        if !menu['resource_id'].nil? && menu['child'].nil?
           access_controller[:bread] = menu['parent']
-          if (menu['parent_id'] == current_menu)
-            style_single = "mysolar_menu_title_single_active"
-          end
+          style_single = "mysolar_menu_title_single_active" if (menu['parent_id'] == current_menu)
           link = "<li class='mysolar_menu_title_single #{style_single}' id='parent_#{menu['parent_id']}'>" << link_to("#{t(menu['parent'].to_sym)}", access_controller, :class =>  class_menu_title) << "</li>"
         elsif !menu["link"].nil?
           link = "<li><a href='#{menu['link']}'>#{t(menu['parent'].to_sym)}</a></li>"

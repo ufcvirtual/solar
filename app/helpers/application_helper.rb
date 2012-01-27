@@ -112,36 +112,6 @@ module ApplicationHelper
       result =  t(:group) << ":&nbsp #{groups[0].code_semester}"
     end
 
-
-#    raise "#{grups}"
-
-#    group_id_active = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
-
-#    if (groups.length > 1)
-#      result = "<form accept-charset='UTF-8' action='' method='#{request.method}' name='groupSelectionForm' style='display:inline'>"
-#      result <<  t(:group) << ":&nbsp"
-#      result << select_tag(
-#        :selected_group,
-#        options_from_collection_for_select(groups, :id, :code_semester, group_id_active),
-#        #{:onchange => "$(this).parent().submit();"}#Versao SEM AJAX
-#        {:onchange => "reloadContentByForm($(this).parent());"}#Versao AJAX
-#      )
-#
-#      unless hash_params.nil?
-#        # ex: type=index&search=1 2 3
-#        hash_params.split("&").each { |item|
-#          individual_param = item.split("=")
-#          v = individual_param[1].nil? ? "" : individual_param[1]
-#          result << "<input id='#{individual_param[0]}' name='#{individual_param[0]}' value='#{v}' type='hidden'>"
-#        }
-#      end
-#
-#      result << " <input name='authenticity_token' value='#{form_authenticity_token}' type='hidden'>"
-#      result << '</form>'
-#    else
-#      result =  t(:group) << ":&nbsp #{groups[0].code_semester}"
-#    end
-
     return result
   end
 
