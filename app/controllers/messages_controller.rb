@@ -60,8 +60,10 @@ class MessagesController < ApplicationController
       all_recipients_name = ''
       all_recipients_html = ''
       get_recipients(@original_message_id).each { |r|
-        all_recipients = all_recipients << r.email << ', ' unless r.email == current_user.email
-        all_recipients_html = all_recipients_html << "<span onclick='$(this).remove()' class='message_recipient_box' >#{r.email}, </span>" unless r.email == current_user.email
+        all_recipients = all_recipients << r.name << ' [' << r.email << '], ' unless r.email == current_user.email
+        #all_recipients_html = all_recipients_html << "<span onclick='$(this).remove()' class='message_recipient_box' >#{r.email}, </span>" unless r.email == current_user.email
+        all_jquery = "'#u#{r.id}'"
+        all_recipients_html = all_recipients_html << "<span onclick=""$(#{all_jquery}).show();$(this).remove()"" class='message_recipient_box' >#{r.name} [#{r.email}], </span>" unless r.email == current_user.email
         # apenas para identificacao do email - informa todos, inclusive o logado
         all_recipients_name = all_recipients_name << r.name << " [" << r.email << "], "
       }
@@ -85,8 +87,9 @@ class MessagesController < ApplicationController
           @subject = t(:message_subject_reply) << @subject
 
           # so adiciona usuarios diferentes do logado (nao manda msg pra si, a menos q escolhar abertamente depois)
-          @target = sender.email << ', ' unless sender.id == current_user.id
-          @target_html = "<span onclick='$(this).remove()' class='message_recipient_box' >#{@target}</span>" unless sender.id == current_user.id
+          @target = sender.name << ' [' << sender.email << '], ' unless sender.id == current_user.id
+          target_jquery = "'#u#{sender.id}'"
+          @target_html = "<span onclick=""$(#{target_jquery}).show();$(this).remove()"" class='message_recipient_box' >#{@target}</span>" unless sender.id == current_user.id
 
           # destinatarios
           if target == 'all'
@@ -298,7 +301,9 @@ class MessagesController < ApplicationController
           #para salvar destinatarios individualmente - pegar o id
           UserMessage.transaction(:requires_new => true) do
             individual_to.each {|r|
-              r_user = User.find_by_email(r)
+              #pega apenas o email
+              individual_email = r.slice(r.index('[')+1..r.index(']')-1) if (!r.index('[').nil? && !r.index(']').nil?)
+              r_user = User.find_by_email(individual_email)
 
               if !r_user.nil?
                 real_receivers << ", " unless real_receivers.empty?
@@ -342,6 +347,8 @@ class MessagesController < ApplicationController
         else
           if real_receivers.empty?
             flash[:notice] = t(:message_send_error_no_receiver)
+            # efetua rollback
+            raise ActiveRecord::Rollback
           else
             flash[:success] = t(:message_send_ok)
             # envia email apenas uma vez, em caso de sucesso da gravacao no banco

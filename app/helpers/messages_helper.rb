@@ -76,7 +76,9 @@ module MessagesHelper
     query_order = " order by send_date desc "
 
     query_all = query_fields << query_messages << query_order
-
+puts "\n\n\n*********************"
+puts query_all
+puts "\n*********************\n\n"
     # retorna total de mensagens
     query_count = " select count(distinct m.id) total " << query_messages
 
@@ -120,30 +122,29 @@ module MessagesHelper
 
     #formato: 2011.1|FOR|Física I
     label_name = ''
-    label_name << offer.semester.slice(0..5) if offer.respond_to?('semester')
-    label_name << '|' << group.code.slice(0..9) << '|' if group.respond_to?('code')
+    label_name << offer.semester.slice(0..5) << '|' if offer.respond_to?('semester')
+    label_name << group.code.slice(0..9) << '|' if group.respond_to?('code')
     label_name << c_unit.name.slice(0..15) if c_unit.respond_to?('name')
 
     return label_name
   end
-
 
   #chamada depois de get_contacts para montar os contatos atualizados
   def show_contacts_updated
     text = ""
     if !@all_contacts.nil?
       @all_contacts.each do |c|
-        text << "<a class='message_link' href=javascript:add_receiver('#{c.email}')>" << c.name << " [" << c.email << "]</a><br/>"
+        text << "<span id='u#{c.id}'><a class='message_link' href=javascript:add_receiver('u#{c.id}','#{URI.escape(c.name)}','#{c.email}')>" << c.name << " [" << c.email << "]</a><br/></span>"
       end
     end
     if !@responsibles.nil?
       @responsibles.each do |r|
-        text << "<a class='message_link' href=javascript:add_receiver('#{r.email}')>" << r.username << " [" << r.email << "]</a><br/>"
+        text << "<span id='u#{r.id}'><a class='message_link' href=javascript:add_receiver('u#{r.id}','#{URI.escape(r.username)}','#{r.email}')>" << r.username << " [" << r.email << "]</a><br/></span>"
       end
     end
     if !@participants.nil?
       @participants.each do |p|
-        text << "<a class='message_link' href=javascript:add_receiver('#{p.email}')>" << p.username << " [" << p.email << "]</a><br/>"
+        text << "<span id='u#{p.id}'><a class='message_link' href=javascript:add_receiver('u#{p.id}','#{URI.escape(p.username)}','#{p.email}')>" << p.username << " [" << p.email << "]</a><br/></span>"
       end
     end
     return text

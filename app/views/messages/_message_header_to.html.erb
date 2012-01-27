@@ -49,6 +49,7 @@
   <br/>
   <%= label_tag "", t(:message_to)+': ' %><br/>
   <div id="recipients_selected"><%= raw @target_html unless @target.empty? %></div>
+  <span class="invisible" id="older_recipients"><%= raw @target_html unless @target.empty? %></span>
   <div class="div_contacts_buttons">
     <span id="link_confirm_contacts" border="0" class="link_button"><%=t(:message_complete)%></span>
     <span id="link_cancel_contacts" border="0" class="link_button"><%=t(:message_cancel)%></span>
@@ -65,10 +66,15 @@
 
     $("#link_cancel_contacts").click(function() {
       $("#div_contacts").hide();
+      //volta destinatarios
+      $("#recipients_selected").html($("#older_recipients").html());
+      $("#div_contacts_list > span").show();
     })
 
     $("#link_confirm_contacts").click(function() {
       $("#div_contacts").hide();
+      //older_recipients guarda os destinatarios atuais
+      $("#older_recipients").html($("#recipients_selected").html());
       $("#to").val($("#recipients_selected").text());
     })
 
@@ -83,14 +89,15 @@
     $('#'+ elementId).show();
   }
 
-  function add_receiver(email){
-    new_email = email + ", ";
-    var new_recipient = "<span onclick='$(this).remove()' class='message_recipient_box' >"+new_email+"</span>";
+  function add_receiver(u,name,email){
+    new_to = name + " [" + email + "], ";
+    var new_recipient = "<span onclick="+"$('#"+u+"').show();$(this).remove()" + " class='message_recipient_box' >"+new_to+"</span>";
 
     var atual_recipients = $("#recipients_selected").text();
-    var found = atual_recipients.search(new_email);
+    var found = atual_recipients.search(email);
     if (found == -1) {
       $("#recipients_selected").append(new_recipient);
+      $("#"+u).hide();
     }
   }
 
