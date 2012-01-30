@@ -38,7 +38,7 @@
 
   </div>
   <div class="block_messages_opt">
-    <%= link_to t(:curriculum_access_message_inbox), {:controller => 'messages'}, {:class=>'link_content_gray'} %>&nbsp;|
-    <%= link_to t(:curriculum_access_message_new), {:controller => 'messages', :action => 'new'}, {:class=>'link_content_gray'} %>
+    <%= link_to t(:curriculum_access_message_inbox), {:controller => 'messages', :bread => :menu_messages}, {:class=>'link_content_gray'} %>&nbsp;|
+    <%= link_to t(:curriculum_access_message_new), {:controller => 'messages', :action => 'new', :bread => :menu_messages}, {:class=>'link_content_gray'} %>
   </div>
 </div>
