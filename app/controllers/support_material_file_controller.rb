@@ -45,14 +45,14 @@ class SupportMaterialFileController < ApplicationController
 
     # nome do pacote que será criado
     zip_in_test = "tmp/"+Digest::SHA1.hexdigest(nomes_files.to_s)+".zip"
-
+    
     exist_zip = false
     folder_create = ""
     file_cont = 0
     nulo = []
 
     lista_zips.each do |file_test|
-      if file_test == zip_in_test # se não houver zip, na pasta 'tmp/' de mesmo conteúdo, então criasse o .zip
+      if file_test == zip_in_test # se não houver zip, na pasta 'tmp/' de mesmo conteúdo, então será criado o .zip
         exist_zip = true
         break
       end
@@ -99,7 +99,7 @@ class SupportMaterialFileController < ApplicationController
   end
 
   def download_folder_file_ziped
-    authorize! :download_all_file_ziped, SupportMaterialFile
+    authorize! :download_folder_file_ziped, SupportMaterialFile
 
     require 'zip/zip'
     allocation_tag_id = active_tab[:url]['allocation_tag_id']
@@ -109,16 +109,15 @@ class SupportMaterialFileController < ApplicationController
     curriculum_unit_id = active_tab[:url]["id"]
     redirect_error = {:action => 'list', :id => curriculum_unit_id}
     folder = params[:folder]
-
     nomes_files = SupportMaterialFile.where("allocation_tag_id = ? and folder = ?", allocation_tag_id, folder).collect{|file| [file["attachment_file_name"]]}
 
     # nome do pacote que será criado
     zip_in_test = "tmp/"+Digest::SHA1.hexdigest(nomes_files.to_s)+".zip"
-
+    
     exist_zip = false
 
     lista_zips.each do |file_test|
-      if file_test == zip_in_test # se não houver zip, na pasta 'tmp/' de mesmo conteúdo, então criasse o .zip
+      if file_test == zip_in_test # se não houver zip, na pasta 'tmp/' de mesmo conteúdo, então será criado o .zip
         exist_zip = true
         break
       end
