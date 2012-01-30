@@ -76,7 +76,10 @@ class ApplicationController < ActionController::Base
   ##
   def application_context
     return nil unless user_signed_in?
-    @context, @context_param_id = Context.find(active_tab[:url]['type']).name, active_tab[:url]['id']
+    context = nil
+    context = 'geral' if params.include?('action') and params['action'] == 'mysolar'
+    @context = context || Context.find(active_tab[:url]['type']).name
+    @context_param_id = context.nil? ? active_tab[:url]['id'] : nil
   end
 
   ##

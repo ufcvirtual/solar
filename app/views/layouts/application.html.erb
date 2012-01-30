@@ -142,6 +142,9 @@
       <div id="mysolar_sidebar">
         <div id="mysolar_menu_accordion" style="z-index:10">
           <% profiles = Profile.all_by_user_id(current_user.id) %>
+
+          <% context = nil %>
+
           <%=raw create_menu_list(profiles, @context || 'geral', @context_param_id || nil, user_session[:menu][:current] || nil) if user_signed_in? %>
         </div>
       </div>
