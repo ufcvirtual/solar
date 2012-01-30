@@ -76,13 +76,9 @@ module MessagesHelper
     query_order = " order by send_date desc "
 
     query_all = query_fields << query_messages << query_order
-puts "\n\n\n*********************"
-puts query_all
-puts "\n*********************\n\n"
+
     # retorna total de mensagens
     query_count = " select count(distinct m.id) total " << query_messages
-
-#    raise "#{query_all}"
 
     @messages_count = ActiveRecord::Base.connection.execute(query_count)[0]["total"]
 

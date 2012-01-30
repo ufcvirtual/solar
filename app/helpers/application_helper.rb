@@ -19,9 +19,9 @@ module ApplicationHelper
     unless tabs_opened.nil?
       tabs_opened.each do |name, link|
         text << "<li class="
-        text << ((tab_active_name == name) ? "'mysolar_unit_active_tab'" : "'mysolar_unit_tab'") << ">"
-        text << "<a href='/application/activate_tab?name=#{name}'>#{name}</a>"
-        text << "<a href='/application/close_tab?name=#{name}' class='tabs_close'></a>" if (tabs_opened[name][:url]['type'] != Tab_Type_Home)
+        text << ((tab_active_name == name) ? 'mysolar_unit_active_tab' : 'mysolar_unit_tab') << ">"
+        text << link_to(name, {:controller => '/application', :action => :activate_tab, :name => name})
+        text << link_to_if(tabs_opened[name][:url]['type'] != Tab_Type_Home, '', {:controller => '/application', :action => :close_tab, :name => name}, {:class => 'tabs_close'})
         text << "</li>"
       end
     end

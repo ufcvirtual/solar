@@ -20,7 +20,7 @@ module MenuHelper
     menus.each do |menu|
 
       access_controller = {
-        :controller => menu["controller"],
+        :controller => "/#{menu["controller"]}",
         :action => menu["action"],
         :mid => menu['parent_id'],
         :bread => nil
