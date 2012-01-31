@@ -98,7 +98,7 @@
               <%= link_to t(:mysolar_edit_profile), {:action=>"edit", :controller=>"devise/registrations"}, :id => 'my_data' %>
             </li>
             <li style="padding:7px;">
-              <a href="" onclick="showUserPictureUploadForm('<%=current_user.id%>', '<%= t(:mysolar_change_picture)%>');return false;"><%= t(:mysolar_change_picture)%> </a>
+              <a id="mysolar_change_picture" href="" onclick="showUserPictureUploadForm('<%=current_user.id%>', '<%= t(:mysolar_change_picture)%>');return false;"><%= t(:mysolar_change_picture)%></a>
               <%#= link_to t(:mysolar_change_picture), {:action=>"edit", :controller=>"devise/registrations"}, :id => 'my_data' %>
             </li>
             <li style="padding:7px;">

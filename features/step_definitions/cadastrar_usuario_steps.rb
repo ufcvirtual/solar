@@ -14,6 +14,7 @@ Dado /^que eu preenchi "([^"]*)" com "([^"]*)"$/ do |selector, value|
   fill_in selector, :with => value
 end
 
+
 Dado /^que eu preencho os seguintes(?: within "([^"]*)")?:$/ do |selector, fields|
    with_scope(selector) do
     fields.rows_hash.each do |name, value|
@@ -21,7 +22,6 @@ Dado /^que eu preencho os seguintes(?: within "([^"]*)")?:$/ do |selector, field
     end
   end
 end
-
 
 Dado /^que eu selecionei a "([^"]*)" com "([^"]*)"$/ do |label, value|
   select_date(value, :from => label) 

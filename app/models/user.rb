@@ -69,7 +69,7 @@ class User < ActiveRecord::Base
   ##
   def update_with_password(params={})
   
-    if params[:password].blank?
+    if (params[:password].blank? && params[:current_password].blank? && params[:password_confirmation].blank?)
       params.delete(:current_password)
       self.update_without_password(params)
     else

@@ -17,7 +17,6 @@ Cenário: Acessar página de Edição de Dados Pessoais
             E eu deverei ver "Frase"
             E eu deverei ver "Site"
 
-@wip
 Cenário: Acessar página de Edição de Dados Cadastrais
 	Dado que estou logado com o usuario "user" e com a senha "123456"
             E que estou em "Meus Dados"
@@ -42,7 +41,7 @@ Cenário: Acessar página de Edição de Dados Cadastrais
             E eu deverei ver "Login"
             E eu deverei ver "Senha"
             E eu deverei ver "Necessidades especiais"
-@wip
+
 Cenário: Alterar dados Pessoais
        Dado que estou logado com o usuario "user" e com a senha "123456"
            E que estou em "Meus Dados"
@@ -60,34 +59,38 @@ Cenário: Alterar dados Pessoais
 Cenário: Alterar dados Cadastrais
    Dado que estou logado com o usuario "user" e com a senha "123456"
        E que estou em "Meus Dados"
-       E que eu preenchi "Nome" com "Usuário do Solar"
-       E que eu preenchi "Apelido" com "usuario"
+       E que eu preenchi "name" com "Usuário do Solar"
+       E que eu preenchi "nick" com "usuario"
        E que eu selecionei a data "13/12/2001" no campo com id "user_birthdate"
-       E que eu selecionei "Sexo" com "Masculino"
+       E que eu selecionei "user_gender" com "M"
        E que eu preenchi "cpf" com "72416475304"
-       E que eu preenchi "E-mail" com "usuario@solar.virtual.ufc.br"
-       E que eu preenchi "E-mail alternativo" com "alexiei@solar.virtual.ufc.br"
-       E que eu preenchi "telefone" com "8533222233"
-       E que eu preenchi "Instituição" com "Elzir Cabral"
-       E que eu preenchi "Rua" com "Rua Sei Não"
-       E que eu preenchi "Número" com "123"
-       E que eu preenchi "cep" com "60000000"
-       E que eu preenchi "Bairro" com "Sei lá qual"
-       E que eu preenchi "Cidade" com "Fortaleza"
-       E que eu selecionei "Estado" com "CE"
-       E que eu preenchi "País" com "Brasil"
-       E que eu preenchi "Login" com "usuario"
-       E que eu preenchi "Senha" com "123456"
-    Quando eu clicar em "Alterar Dados"
+       E que eu preenchi "email" com "usuario@solar.virtual.ufc.br"
+       E que eu preenchi "email_confirmation" com "usuario@solar.virtual.ufc.br"
+       E que eu preenchi "user_alternate_email" com "alexiei@solar.virtual.ufc.br"
+       E que eu preenchi "telephone" com "8533222233"
+       E que eu preenchi "institution" com "Elzir Cabral"
+       E que eu preenchi "address" com "Rua Sei Não"
+       E que eu preenchi "address_number" com "123"
+       E que eu preenchi "zipcode" com "60000000"
+       E que eu preenchi "address_neighborhood" com "Sei lá qual"
+       E que eu preenchi "city" com "Fortaleza"
+       E que eu selecionei "user_state" com "CE"
+       E que eu preenchi "country" com "Brasil"
+       E que eu preenchi "username" com "usuario"
+       E que eu preenchi "user_current_password" com "123456"
+       E que eu preenchi "user_password" com "12345678"
+       E que eu preenchi "user_password_confirmation" com "12345678"
+
+    Quando eu clicar em "confirm"
     Então eu deverei ver "Dados atualizados com sucesso."
 
 Esquema do Cenário: Alteração de senha
 	Dado que estou logado com o usuario "user" e com a senha "123456"
-		E que estou em "Meus Dados"
-		E preencho o campo "Senha" com "<antiga_senha>"
-		E preencho o campo "Nova Senha" com "<nova_senha>"
-                E preencho o campo "Confirmar Senha" com "<confirmar_senha>"
-	Quando eu clicar em "Alterar Dados"
+            E que estou em "Meus Dados"
+            E que eu preenchi "user_current_password" com "<antiga_senha>"
+            E que eu preenchi "user_password" com "<nova_senha>"
+            E que eu preenchi "user_password_confirmation" com "<confirmar_senha>"
+	Quando eu clicar em "confirm"
 	Então eu deverei ver "<action>"
 Exemplos:
 	| antiga_senha         |  nova_senha       |  confirmar_senha      | action                                        |
@@ -106,18 +109,23 @@ Exemplos:
         | 123456               |  user789          |  user789              | Dados atualizados com sucesso.                |
 
 
-
+@javascript
 Cenário:  Acessar Edição de foto
     Dado que estou logado com o usuario "user" e com a senha "123456"
        E que estou em "Meu Solar"
-    Então eu deverei ver o botao "Cancelar"
-    E eu deverei ver o botao "Enviar"
+    Quando eu clicar no link "mysolar_top_user_nick"
+    Então eu deverei ver "Alterar foto"
+    E eu clicar no link "mysolar_change_picture"
+    Então eu deverei ver o botao "Enviar"
 
+@javascript
 Esquema do Cenário: Enviar foto
     Dado que estou logado com o usuario "user" e com a senha "123456"
        E que estou em "Meu Solar"
-       E eu envio o arquivo "<foto>" no campo "user_photo"
-    Quando eu clicar em "photo_submit"
+    Quando eu clicar no link "mysolar_top_user_nick"
+    E eu clicar no link "mysolar_change_picture"
+    E eu envio o arquivo "<foto>" no campo "user_photo"
+    Quando eu clicar em "Enviar"
     Então eu deverei ver "<saida>"
 Exemplos:
 	| foto                                                    | saida                                                                               |
