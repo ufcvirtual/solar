@@ -23,7 +23,7 @@
               <%= l(message.send_date, :format => :not_today) %> 
             <% end %>  
           </span>
-          <%= link_to message.sender,  {:controller => 'messages', :action => 'show', :id => message.id},{:class => 'link_content'} %>
+          <%= link_to message.sender,  {:controller => 'messages', :action => 'show', :id => message.id,:bread => :menu_messages},{:class => 'link_content'} %>
           <%
           msg_subject = strip_tags message.subject
           msg_subject = msg_subject.rpartition("&")[0] if msg_subject.rpartition("&")[2].length < 8
