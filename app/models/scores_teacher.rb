@@ -90,28 +90,20 @@ SQL
 
   # Numero de estudantes por group
   def self.number_of_students_by_group_id(group_id)
-    cnt = ActiveRecord::Base.connection.select_all <<SQL
+    query = <<SQL
   SELECT COUNT(DISTINCT t1.id)::int AS cnt
      FROM users             AS t1
      JOIN allocations       AS t2 ON t2.user_id = t1.id
      JOIN allocation_tags   AS t3 ON t3.id = t2.allocation_tag_id
      JOIN profiles          AS t4 ON t4.id = t2.profile_id
     WHERE t3.group_id = #{group_id}
-      AND cast( t4.types & '#{Profile_Type_Student}' as boolean)
+      AND cast(t4.types & '#{Profile_Type_Student}' as boolean)
       AND t2.status = #{Allocation_Activated};
 SQL
 
+    cnt = ActiveRecord::Base.connection.select_all query
+
     return (cnt.nil?) ? 0 : cnt.first["cnt"].to_i
-  end
-
-  def self.list_students(allocations, page = 1)
-
-    query = <<SQL
-    
-SQL
-
-    paginate_by_sql query, {:per_page => Rails.application.config.items_per_page, :page => page}
-
   end
 
 end
