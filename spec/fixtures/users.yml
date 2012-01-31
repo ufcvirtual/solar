@@ -17,6 +17,7 @@ user:
   zipcode: 60450170
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: k9Dq7yfax83NZ3QRQoXr
 
 palacio:
   id: 2
@@ -45,6 +46,7 @@ palacio:
   site: timao.com
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: sarqmbpiY2DKWUyRkgzA
 
 hoog:
   id: 3
@@ -73,6 +75,7 @@ hoog:
   site: timao.com
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: kqAgG9hYkBj6TFnps9A2
 
 ariovaldo:
   id: 4
@@ -101,6 +104,7 @@ ariovaldo:
   site: timao.com
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: J3ymer6aYPtTVWQuxJq3
 
 professor2:
   id: 5
@@ -129,6 +133,7 @@ professor2:
   site: timao.com
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: 9qUpqgvLDSa7R5EYDPmV
   
 Professor:
   id: 6
@@ -157,6 +162,7 @@ Professor:
   site: timao.com
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: qwBqKTuU6XTAxEZxymjC
 
 aluno 1:
   id: 7
@@ -185,6 +191,7 @@ aluno 1:
   site: timao.com
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: WhxdcZhWhEMVAauWg41h
   
 aluno 2:
   id: 8
@@ -213,6 +220,7 @@ aluno 2:
   site: timao.com
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: aq1pyZWxcphCzouEzGzt
   
 aluno 3:
   id: 9
@@ -241,6 +249,7 @@ aluno 3:
   site: timao.com
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: wdfyBr312os1yqyzhQuf
 
 tutor_presencial:
   id: 10
@@ -269,6 +278,7 @@ tutor_presencial:
   site: timao.com
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: 7sec5gtrn5CiiXpqfmrz
   
 tutor_distancia:
   id: 11
@@ -297,6 +307,7 @@ tutor_distancia:
   site: timao.com
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: nerd51wudWkq6vk3by3c
   
 coordenador:
   id: 12
@@ -325,6 +336,7 @@ coordenador:
   site: timao.com
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: ZxChgdpRbQuypvZfMV3x
   
 basico:
   id: 13
@@ -353,3 +365,4 @@ basico:
   site:
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: ppbT4Ue132asgpkCAB1q
