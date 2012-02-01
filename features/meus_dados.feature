@@ -108,7 +108,7 @@ Exemplos:
         |                      |  user789          |                       | Senha deve ser preenchido(a)                  |
         | 123456               |  user789          |  user789              | Dados atualizados com sucesso.                |
 
-
+@wip
 @javascript
 Cenário:  Acessar Edição de foto
     Dado que estou logado com o usuario "user" e com a senha "123456"

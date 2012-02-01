@@ -37,9 +37,6 @@
         $("#mysolar_sidebar").height($('#body_wrapper').height() - $('#mysolar_topbar').height() - $('#block_locale').height() - 25);
 
       });
-    </script>
-    <%#= render '/users/mysolar_photo' if user_signed_in? %>
-    <script type="text/javascript">
 
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-25482431-1']);
@@ -52,10 +49,41 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
 
+
+      /*******************************************************************************
+       * Relógio do Sistema
+       * */
+
+      new showLocalTime("server_clock");
+
+      function showLocalTime(container){
+          //se nao existe, retorna
+          if ( !$('#'+container).length ) return;
+
+          //formato: 9/5/2011 9:53:30 (9/5 => 5/set)
+          updateTime(container, "<%=DateTime.now.strftime("%m/%d/%Y %H:%M:%S")%>");
+      }
+
+      function updateTime(el, server_time){
+          var localtime = new Date(server_time);
+          localtime.setSeconds(localtime.getSeconds()+1);
+
+          var hour    = localtime.getHours();
+          var minutes = localtime.getMinutes();
+          var seconds = localtime.getSeconds();
+          $("#"+el).html(formatNumber(hour)+":"+formatNumber(minutes)+":"+formatNumber(seconds));
+          setTimeout(function(){updateTime(el, localtime);},1000);
+      }
+
+      function formatNumber(num){
+          return (num<=9)? "0"+num : num;
+      }
+
+
     </script>
   </head>
   <body>
-    <div style="height:38px;width:100%;background-color:#003E7A;position:absolute;top:0;z-index:-10"></div>
+    <div id="mysolar_topbar_wide_background"></div>
     <div id="body_wrapper">
       <!-- Barra Topo #########################-->
       <div id="mysolar_topbar">
@@ -70,7 +98,7 @@
             <li id="mysolar_top_submenu_label" class="mysolar_top_submenu_label_regular">
               <%= image_tag current_user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{current_user.nick}", :id => "image_user", :onclick => "mysolarTopSubmenuToggle();return false;"%>
               <% if can? :update, current_user %>
-                <a href="" id="mysolar_top_user_nick" onclick="mysolarTopSubmenuToggle();return false;" class="mysolar_top_link"><%=current_user.nick%></a>
+                <a id="mysolar_top_user_nick" onclick="mysolarTopSubmenuToggle();return false;" class="mysolar_top_link"><%=current_user.nick%></a>
               <% end %>
             </li>
             <li id="server_clock_wrapper">
@@ -88,20 +116,21 @@
         <!-- Painel de Menu superior #########################-->
         <div id="mysolar_top_submenu">
           <div>
-            <%= image_tag current_user.photo.url(:forum), :alt => "#{t(:mysolar_alt_img_user)} #{current_user.nick}", :style => "float:right;padding-left:4px;" %>
-            <div style="font-size:9pt;"><%=current_user.name%></div>
-            <div style="font-size:8pt;margin-top: 4px;"><%=current_user.email%></div>
+            <%= image_tag current_user.photo.url(:forum), :alt => "#{t(:mysolar_alt_img_user)} #{current_user.nick}", :id => "mysolar_top_img_user" %>
+            <div id="mysolar_top_submenu_username"><%=current_user.name%></div>
+            <div id="mysolar_top_submenu_useremail"><%=current_user.email%></div>
           </div>
 
-          <ul style="width: 100%; display:block;border-top: 3px solid #EBEBEB; margin-top: 5px;">
-            <li style="padding:7px;">
+          <ul>
+            <li>
               <%= link_to t(:mysolar_edit_profile), {:action=>"edit", :controller=>"devise/registrations"}, :id => 'my_data' %>
             </li>
-            <li style="padding:7px;">
-              <a id="mysolar_change_picture" href="" onclick="showUserPictureUploadForm('<%=current_user.id%>', '<%= t(:mysolar_change_picture)%>');return false;"><%= t(:mysolar_change_picture)%></a>
-              <%#= link_to t(:mysolar_change_picture), {:action=>"edit", :controller=>"devise/registrations"}, :id => 'my_data' %>
+            <li>
+              <a id="mysolar_change_picture" href="" onclick="showUserPictureUploadForm('<%=current_user.id%>', '<%= t(:mysolar_change_picture)%>');return false;">
+                <%= t(:mysolar_change_picture)%>
+              </a>
             </li>
-            <li style="padding:7px;">
+            <li>
               <%= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path) %>
             </li>
           </ul>
@@ -182,30 +211,3 @@
 
   </body>
 </html>
-
-<script type="text/javascript">
-  new showLocalTime("server_clock");
-
-  function showLocalTime(container){
-    //se nao existe, retorna
-    if ( !$('#'+container).length ) return;
-
-    //formato: 9/5/2011 9:53:30 (9/5 => 5/set)
-    updateTime(container, "<%=DateTime.now.strftime("%m/%d/%Y %H:%M:%S")%>");
-  }
-
-  function updateTime(el, server_time){
-    var localtime = new Date(server_time);
-    localtime.setSeconds(localtime.getSeconds()+1);
-
-    var hour    = localtime.getHours();
-    var minutes = localtime.getMinutes();
-    var seconds = localtime.getSeconds();
-    $("#"+el).html(formatNumber(hour)+":"+formatNumber(minutes)+":"+formatNumber(seconds));
-    setTimeout(function(){updateTime(el, localtime);},1000);
-  }
-
-  function formatNumber(num){
-    return (num<=9)? "0"+num : num;
-  }
-</script>

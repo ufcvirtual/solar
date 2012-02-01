@@ -141,6 +141,7 @@ $(document).ready(function(){
         }      
     });
 });
+
 function mysolarTopSubmenuToggle(){
     var left = $("#mysolar_top_user_nick").offset().left;
     var origin = $("#mysolar_topbar").offset().left;

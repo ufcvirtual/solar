@@ -31,7 +31,6 @@ abbr,acronym { border:0;
 }
 
 /* carregando fontes externas */
-
 @font-face
 {
     font-family: 'Trebuchet';
@@ -421,6 +420,15 @@ h1.page_title{
 * Meu Solar
 */
 /* barra superior geral */
+#mysolar_topbar_wide_background {
+    height:38px;
+    width:100%;
+    background-color:#003E7A;
+    position:absolute;
+    top:0;
+    z-index:-10
+}
+
 #mysolar_topbar {
     width: 100%;
     height: 72px;
@@ -477,10 +485,14 @@ h1.page_title{
     /*    zoom: 1;
     *display: inline;*/
 }
-
 #mysolar_top_options li:hover {
     height: 31px;
     border-bottom: 2px solid #fff;
+}
+
+#mysolar_top_img_user {
+    float:right;
+    padding-left:4px;
 }
 
 /* foto do usuário */
@@ -503,6 +515,27 @@ h1.page_title{
     overflow: hidden;
     box-shadow: 3px 3px 15px 0px #bbb;
 }
+
+#mysolar_top_submenu ul{
+    width: 100%;
+    display:block;
+    border-top: 3px solid #EBEBEB;
+    margin-top: 5px;
+}
+#mysolar_top_submenu ul li{
+    padding:7px;
+}
+
+
+#mysolar_top_submenu_username{
+    font-size:9pt;
+}
+
+#mysolar_top_submenu_useremail{
+    font-size:8pt;
+    margin-top: 4px;
+}
+
 .mysolar_top_submenu_label_selected{
     background-color: #fff;
     border-top: none;

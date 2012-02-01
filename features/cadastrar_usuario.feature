@@ -34,6 +34,7 @@ Cenário: Acessar página de cadastro de novo usuário
 		E eu deverei ver "Necessidades especiais"
 		E eu deverei ver o botao "Confirmar"
 
+@wip
 @javascript
 Cenário: Cadastrar novo usuário
     Dado que estou em "Cadastrar usuario"
