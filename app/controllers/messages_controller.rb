@@ -481,7 +481,8 @@ class MessagesController < ApplicationController
     UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).all? { |m|
       # pra marcar como nao lida (zerar 2o bit) realiza E logico:   & 0b11111101
       # pra marcar como lida (1 no 2o bit)      realiza  OU logico: | 0b00000010
-      # pra marcar como excluida) (1 no 3o bit) realiza  OU logico: | 0b00000100
+      # pra marcar como excluida (1 no 3o bit) realiza  OU logico: | 0b00000100
+      # pra marcar como nao exc (zerar 3o bit) realiza E logico:   & 0b11111011   ***** A FAZER: mover para inbox *****
 
       status = m.status.to_i
 

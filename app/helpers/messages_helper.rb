@@ -15,11 +15,26 @@ module MessagesHelper
         inner join users u on usm.user_id=u.id
         left join user_message_labels uml on usm.id = uml.user_message_id
         left join message_labels ml on uml.message_label_id = ml.id
-        
       where
         usm.user_id = #{userid}"  #filtra por usuario
 
-    query_messages += " and ml.title = '#{tag}' " unless tag.nil?
+    #formato: 2011.1|FOR|Física I
+    #monta label para pesquisa que inclua mensagens enviadas por turma/oferta
+    if !tag.nil?
+      tag_slice = tag.split("|")
+      case tag_slice.count()
+      when 3
+        #se label foi criada por aluno ou outro perfil vinculado a turma, possui 3 partes
+        query_label1 = tag_slice[0] << "|" << tag_slice[2]
+        query_messages += " and ( ml.title = '#{query_label1}' or ml.title = '#{tag}' )"
+      when 2
+        #se label foi criada por prof ou outro perfil vinculado a oferta, possui 2 partes
+        query_label1 = tag_slice[0] << "|%|" << tag_slice[1]
+        query_messages += " and ( ml.title ilike '#{query_label1}' or ml.title = '#{tag}' )"
+      else
+        query_messages += " and ( ml.title = '#{tag}' )"
+      end
+    end
     
     case type
     when 'trashbox'
@@ -68,7 +83,7 @@ module MessagesHelper
                                 ON users.id = user_messages.user_id
                                 where user_messages.message_id = m.id
                                 and cast(user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)) ilike '%#{text}%' or
-                               ml.title ilike '%#{text}%')"
+                                ml.title ilike '%#{text}%')"
       }
       query_messages += " and ( #{query_search} )"
 
@@ -104,10 +119,26 @@ module MessagesHelper
         and NOT cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean) 
         and NOT cast( usm.status & '#{Message_Filter_Read.to_s(2)}' as boolean)
         and NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean)"
-    
-    query_messages += " and ml.title = '#{tag}' " unless tag.nil?
-    total = Message.find_by_sql(query_messages)
 
+    #formato: 2011.1|FOR|Física I
+    #monta label para pesquisa que inclua mensagens enviadas por turma/oferta
+    if !tag.nil?
+      tag_slice = tag.split("|")
+      case tag_slice.count()
+      when 3
+        #se label foi criada por aluno ou outro perfil vinculado a turma, possui 3 partes
+        query_label1 = tag_slice[0] << "|" << tag_slice[2]
+        query_messages += " and ( ml.title = '#{query_label1}' or ml.title = '#{tag}' )"
+      when 2
+        #se label foi criada por prof ou outro perfil vinculado a oferta, possui 2 partes
+        query_label1 = tag_slice[0] << "|%|" << tag_slice[1]
+        query_messages += " and ( ml.title ilike '#{query_label1}' or ml.title = '#{tag}' )"
+      else
+        query_messages += " and ( ml.title = '#{tag}' )"
+      end
+    end
+
+    total = Message.find_by_sql(query_messages)
     return total[0].n.to_i 
   end
 
