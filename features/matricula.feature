@@ -21,7 +21,6 @@ Contexto:
         | 1        | 1                  | 1           | 1      |
         | 1        | 3                  | 1           | 1      |
         | 1        | 8                  | 1           | 0      |
-        | 1        |                    | 12          | 1      |
 
 @javascript
 Cenário: Acessar página de matricula

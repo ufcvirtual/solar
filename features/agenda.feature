@@ -11,8 +11,6 @@ Contexto:
         | 5        | 4                  | 2           | 1      |
         | 5        | 5                  | 2           | 1      |
         | 5        | 6                  | 2           | 1      |
-        | 1        |                    | 12          | 1      |
-        | 5        |                    | 12          | 1      |
 
 Cenário: Exibir Agenda
     Dado que estou logado com o usuario "user" e com a senha "123456"

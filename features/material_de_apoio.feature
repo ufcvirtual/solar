@@ -11,11 +11,9 @@ Dado que tenho "allocations"
 |    1    |         3         |     1      |    1   |
 |    1    |         1         |     1      |    1   |
 |    1    |         9         |     1      |    1   |
-|    1    |                   |     12     |    1   |
 |    7    |         1         |     5      |    1   |
 |    7    |         2         |     5      |    1   |
 |    7    |         3         |     5      |    1   |
-|    7    |                   |     12     |    1   |
 
 Cenário: Exibir Material de apoio
    Dado que estou logado com o usuario "user" e com a senha "123456"

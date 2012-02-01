@@ -48,10 +48,10 @@ palacio:
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: sarqmbpiY2DKWUyRkgzA
 
-hoog:
+bezerra:
   id: 3
   username: dexter
-  email: hoog@qualquer.br
+  email: bezerra@qualquer.br
   name: Bezerra
   nick: Bezerra
   birthdate: 2005-01-01
