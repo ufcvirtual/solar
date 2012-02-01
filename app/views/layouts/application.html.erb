@@ -98,7 +98,7 @@
             <li id="mysolar_top_submenu_label" class="mysolar_top_submenu_label_regular">
               <%= image_tag current_user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{current_user.nick}", :id => "image_user", :onclick => "mysolarTopSubmenuToggle();return false;"%>
               <% if can? :update, current_user %>
-                <a id="mysolar_top_user_nick" onclick="mysolarTopSubmenuToggle();return false;" class="mysolar_top_link"><%=current_user.nick%></a>
+                <a id="mysolar_top_user_nick" href="" onclick="mysolarTopSubmenuToggle();return false;" class="mysolar_top_link"><%=current_user.nick%></a>
               <% end %>
             </li>
             <li id="server_clock_wrapper">

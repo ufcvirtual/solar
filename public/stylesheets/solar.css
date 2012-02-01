@@ -564,6 +564,7 @@ h1.page_title{
 #image_user {
     /*    vertical-align: text-bottom;*/
     height: 30px;
+    cursor: pointer;
 }
 
 /* relogio */
