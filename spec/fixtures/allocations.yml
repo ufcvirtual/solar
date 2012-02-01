@@ -39,3 +39,9 @@ basic:
   allocation_tag_id:
   profile_id: 12
   status: 1
+  
+user_as_basic:
+  id: 29
+  user_id: 1
+  profile_id: 12
+  status: 1
