@@ -54,12 +54,17 @@
        * Relógio do Sistema
        * */
 
-      new showLocalTime("server_clock");
-
+      $(document).ready(function() {
+        new showLocalTime("server_clock");
+      })
+      
       function showLocalTime(container){
+        console.log("iniciando relogio");
           //se nao existe, retorna
-          if ( !$('#'+container).length ) return;
-
+          console.log("$(#"+container+")");
+          console.log($('#'+container).length);
+          if (!$('#'+container).length) return;
+          console.log("encontrado");
           //formato: 9/5/2011 9:53:30 (9/5 => 5/set)
           updateTime(container, "<%=DateTime.now.strftime("%m/%d/%Y %H:%M:%S")%>");
       }
