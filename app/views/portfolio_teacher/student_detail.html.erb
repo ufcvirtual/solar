@@ -138,7 +138,7 @@
 <script type="text/javascript">
   $(function(){
     $('#back_to_show').click(function(){
-      window.location.href = '<%= score_path(@student_id) %>';
+      window.location.href = '<%= score_path(@student_id, :student_id => @student_id) %>';
     });
   });
 </script>

@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
       }, :active => 'Home'
     } unless user_session.include?(:tabs)
 
-    user_session[:menu] = { :current => nil }
+    user_session[:menu] = { :current => nil } if user_session[:menu].blank?
   end
 
   ##
