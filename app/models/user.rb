@@ -84,7 +84,6 @@ class User < ActiveRecord::Base
 
   # Alocar usuario para acesso com o perfil básico no ato da sua criação
   def basic_profile_allocation
-    puts "\n\n\n\nProfile.find_by_types(Profile_Type_Basic):#{Profile.find_by_types(Profile_Type_Basic)}\n\n\n\n"
     new_allocation_user = Allocation.new :profile_id => Profile.find_by_types(Profile_Type_Basic).id, :status => Allocation_Activated, :user_id => self.id
     new_allocation_user.save!
   end
