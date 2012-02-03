@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
   # Id do perfil estudante na tabela profiles
   ##
   def student_profile
-    Profile.find_by_types(4).id
+    Profile.find_by_types(Profile_Type_Student).id
   end
 
   ###########################################
@@ -69,6 +69,10 @@ class ApplicationController < ActionController::Base
     user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb][same_level_for_all] = {
       :name => params[:bread], :url => params
     } if params.include?('bread')
+  end
+
+  def clear_breadcrumb_home
+    user_session[:tabs][:opened]['Home'][:breadcrumb] = [user_session[:tabs][:opened]['Home'][:breadcrumb].first]
   end
 
   ##
@@ -90,7 +94,7 @@ class ApplicationController < ActionController::Base
   end
 
   ###############################
-  # TABS
+  # ABAS
   ###############################
 
   ##
@@ -111,32 +115,36 @@ class ApplicationController < ActionController::Base
   # Exibe conteudo da aba ativa
   ##
   def activate_tab
+    clear_breadcrumb_home
     # verifica se a aba que esta sendo acessada esta aberta
     redirect = {:controller => :home}
     unless user_session[:tabs][:opened].has_key?(params[:name])
-      set_active_tab_to_home
+      set_active_tab_to_home # o usuário é redirecionado para o Home caso a aba não exista
     else
       set_active_tab(params[:name])
+      # dentro da aba, podem existir links abertos
       redirect = active_tab[:breadcrumb].last[:url] if active_tab[:url]['type'] == Tab_Type_Curriculum_Unit
     end
-    
+
     redirect_to redirect, :flash => flash
   end
 
   ##
-  # Adiciona uma aba no canto superior da interface
+  # Adiciona uma aba ao conjunto de abas abertas
+  # Obs.: A quantidade de abas abertas é limitada
   ##
   def add_tab
-    name_tab, type = params[:name], params[:type] # Home ou Curriculum_Unit
+    clear_breadcrumb_home
+    tab_name, type = params[:name], params[:type] # Home, Curriculum_Unit ou outro nao mapeado
     id, allocation_tag_id = params[:id], params[:allocation_tag_id]
 
     # se estourou numero de abas, volta para mysolar
     redirect = {:controller => :home} # Tab_Type_Home
 
     # abre abas ate um numero limitado; atualiza como ativa se aba ja existe
-    if new_tab?(name_tab)
+    if opened_or_new_tab?(tab_name)
       hash_tab = {"id" => id, "type" => type, "allocation_tag_id" => allocation_tag_id}
-      set_session_opened_tabs(name_tab, hash_tab, params)
+      set_session_opened_tabs(tab_name, hash_tab, params)
 
       # redireciona de acordo com o tipo de aba
       redirect = { :controller => :curriculum_units, :action => :show, :id => id, :allocation_tag_id => allocation_tag_id } if type == Tab_Type_Curriculum_Unit
@@ -153,8 +161,16 @@ class ApplicationController < ActionController::Base
     set_active_tab_to_home if user_session[:tabs][:active] == tab_name
     user_session[:tabs][:opened].delete(tab_name)
 
-    redirect = ((active_tab[:url]['type'] == Tab_Type_Curriculum_Unit) ? {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']} : {:controller => :home})
+    controller_curriculum_unit = {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']}
+    redirect = ((active_tab[:url]['type'] == Tab_Type_Curriculum_Unit) ? controller_curriculum_unit : {:controller => :home})
     redirect_to redirect, :flash => flash
+  end
+
+  ##
+  # Retora o hash, com as informações da aba ativa
+  ##
+  def active_tab
+    user_session[:tabs][:opened][user_session[:tabs][:active]] if user_signed_in?
   end
 
   private
@@ -162,19 +178,19 @@ class ApplicationController < ActionController::Base
   ##
   # Verifica se existe uma aba criada com o nome passado
   ##
-  def new_tab?(name_tab)
-    (user_session[:tabs][:opened].length < Max_Tabs_Open.to_i) || (user_session[:tabs][:opened].has_key?(name_tab))
+  def opened_or_new_tab?(tab_name)
+    (user_session[:tabs][:opened].has_key?(tab_name)) or (user_session[:tabs][:opened].length < Max_Tabs_Open.to_i)
   end
 
   ##
   # Atualiza a sessao com as abas abertas e ativas destruindo o ultimo nivel
   ##
-  def set_session_opened_tabs(name_tab, hash_url, params_url)
-    user_session[:tabs][:opened][name_tab] = {
+  def set_session_opened_tabs(tab_name, hash_url, params_url)
+    user_session[:tabs][:opened][tab_name] = {
       :breadcrumb => [{:name => params[:name], :url => params_url}],
       :url => hash_url
     }
-    user_session[:tabs][:active] = name_tab
+    set_active_tab tab_name
   end
 
   ##
@@ -200,9 +216,6 @@ class ApplicationController < ActionController::Base
         personal_options.default_locale = params[:locale]
         personal_options.save
       end
-
-      #      raise "#{personal_options.default_locale}"
-
       locale = params[:locale] || personal_options.default_locale
     else
       locale = params[:locale] || I18n.default_locale
@@ -226,7 +239,7 @@ class ApplicationController < ActionController::Base
   # Parametros de locale para paginas externas
   ##
   def default_url_options(options={})
-    return params.include?('locale') ? {:locale => params[:locale]} : {}
+    params.include?('locale') ? {:locale => params[:locale]} : {}
   end
 
   ##
@@ -243,13 +256,6 @@ class ApplicationController < ActionController::Base
     user_session[:current_page] = @current_page
   end
 
-  ##
-  # Retora o hash, com as informações da aba ativa
-  ##
-  def active_tab
-    user_session[:tabs][:opened][user_session[:tabs][:active]] if user_signed_in?
-  end
-  
   def after_sign_in_path_for(resource_or_scope)
    pages_index_url
   end
@@ -257,5 +263,5 @@ class ApplicationController < ActionController::Base
   def after_update_path_for(resource)
     '/home'
   end
-  
+
 end

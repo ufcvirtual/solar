@@ -4,10 +4,14 @@ module BreadCrumbHelper
     text_bread, active_tab = '', user_session[:tabs][:opened][user_session[:tabs][:active]]
 
     # verifica se a aba ativa é a home
-    unless active_tab[:url]['type'].to_i == Tab_Type_Home.to_i
-      breadcrumb = user_session[:tabs][:opened]['Home'][:breadcrumb] + active_tab[:breadcrumb]
+    breadcrumb = []
+    if active_tab[:url]['type'].to_i == Tab_Type_Home.to_i
+      breadcrumb = active_tab[:breadcrumb] if active_tab[:breadcrumb].length > 1 # somente a aba ativa 
+    else
+      breadcrumb = [user_session[:tabs][:opened]['Home'][:breadcrumb].first] + active_tab[:breadcrumb]
+    end
 
-      breadcrumb.each_with_index do |link, idx|
+    breadcrumb.each_with_index do |link, idx|
         unless link.nil?
           text_bread << '&nbsp;>&nbsp;' if idx > 0
           text_bread << '<span style="text-decoration: underline;">'
@@ -15,7 +19,6 @@ module BreadCrumbHelper
           text_bread << '</span>'
         end
       end
-    end
 
     return text_bread
   end
