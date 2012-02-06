@@ -1,6 +1,6 @@
-/*******************************************************************************
+/****************************************************
  * Agenda
- * */
+ ****************************************************/
 
 // Destaca dias que possuem algum evento
 var highlightDay = function(date, dates_with_events) {
@@ -21,11 +21,10 @@ var highlightDay = function(date, dates_with_events) {
     return [true, ''];
 }
 
-
 // Quando ocorre um evento de mudanca de dia, as schedules
 // para o novo dia devem ser exibidas
-var changeDate = function(dateText) {
-    $.get('/schedules/show', {
+var changeDate = function(dateText, url_for_schedules) {
+    $.get(url_for_schedules, {
         date: dateText,
         list_all_schedule: true
     },
@@ -37,10 +36,12 @@ var changeDate = function(dateText) {
 
 // Exibe a agenda no portlet
 // Obs.: esta funcao deve permanecer global
-function showAgenda(dates_with_events){
+function showAgenda(dates_with_events) {
+    // url para pegar as schedules
+    var url_for_schedules = $('#agenda').attr('url_for');
     // carregando eventos do dia atual
     var today = new Date();
-    changeDate(today.toGMTString());
+    changeDate(today.toGMTString(), url_for_schedules);
     // passando o locale do sistema para o javascript
     var locale = $.datepicker.regional[global_config.locale.I18n];
 
@@ -48,7 +49,7 @@ function showAgenda(dates_with_events){
         option: locale,
         dateFormat: global_config.locale.dateFormat,
         onSelect: function(dateText, inst) {
-            changeDate(dateText);
+            changeDate(dateText, url_for_schedules);
         },
         beforeShowDay: function(date){
             return highlightDay(date, dates_with_events);
