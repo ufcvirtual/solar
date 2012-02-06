@@ -12,6 +12,7 @@ Solar::Application.routes.draw do
   get "pages/index"
   get "access_control/index"
   get "offers/showoffersbyuser"
+  get "schedules/show"
 
   #################################
   # rotas regulares - Nao RESTful #
