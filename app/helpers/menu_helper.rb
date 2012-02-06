@@ -47,7 +47,7 @@ module MenuHelper
         # para um menu pai ser um link ele nao deve ter filhos
         if !menu['resource_id'].nil? && menu['child'].nil?
           access_controller[:bread] = menu['parent']
-          style_single = "mysolar_menu_title_single_active" if (menu['parent_id'] == current_menu)
+          style_single = "mysolar_menu_title_single_active" if menu['parent_id'] == current_menu and params.include?('mid')
           link = "<li class='mysolar_menu_title_single #{style_single}' id='parent_#{menu['parent_id']}'>" << link_to("#{t(menu['parent'].to_sym)}", access_controller, :class =>  class_menu_title) << "</li>"
         elsif !menu["link"].nil?
           link = "<li><a href='#{menu['link']}'>#{t(menu['parent'].to_sym)}</a></li>"
@@ -61,7 +61,6 @@ module MenuHelper
         end
 
         # menus pai tbm podem ter links diretamente para funcionalidades
-        #html_menu = "<ul id='parent_#{menu['parent_id']}' class='#{class_menu_title}'>#{link}"
         html_menu = "<ul>#{link}"
 
         # indica primeira iteracao
