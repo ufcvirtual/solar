@@ -6,14 +6,12 @@
   <!-- Atividades individuais -->
 
   <div class="block_content" id="individual_activity">
-
-
+  <% unless @individual_activities.nil? or @individual_activities.empty? %>
     <table class="tb_list">
       <thead>
         <tr class="lines">
           <th style="">
             <span>
-<%#= link_to ia["name"], {:controller => :portfolio, :action => :activity_details, :id => ia["id"]}, {:class => 'link_content'} %>
               <%=t(:activity_description)%>
             </span>                
           </th>
@@ -58,9 +56,12 @@
         <% end %>
       </tbody>
     </table>
-
+    <% else %>
+      <div class="block_content block_content_text"><%= t(:itens_not_found) %></div>
+    <% end %>
   </div>
 </div>
+
 <div class="block_wrapper" id="public_area">
   <!-- area publica -->
   <div class="block_title">
