@@ -101,28 +101,26 @@
       <input type="button" value="<%= t(:portfolio_upload_file) %>" id="send_attachment" class="btn btn_default"></input>
     </div>      
   </div>
-
 </div>
-
-<%= render '/portfolio/public_files_send' %>
 
 <script type="text/javascript">
   $(function(){
     $(".enunciation_more").click(function(){
-
       $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "none");
       $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "block");
-
       return false;
     });
 
     $(".enunciation_less").click(function(){
-
       $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "block");
       $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "none");
-
       return false;
     });
-   
+
+    $('#send_attachment').click(function(e){
+      e.preventDefault(); // cancel the link behavior
+      url = "<%= url_for :portfolio_public_files_send %>"
+      showLightBoxURL(url,500,320,true,'<%=t(:send_file_portfolio)%>');
+    });
   });
 </script>

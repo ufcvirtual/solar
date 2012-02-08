@@ -2,7 +2,6 @@ Solar::Application.routes.draw do
 
   devise_for :users, :path_names => {:sign_in => "login", :sign_out => "logout", :sign_up => "register"}
 
-
   devise_scope :user do
     get "login", :to => "devise/sessions#new"
     get "logout", :to => "devise/sessions#destroy"
@@ -13,6 +12,7 @@ Solar::Application.routes.draw do
   get "access_control/index"
   get "offers/showoffersbyuser"
   get "schedules/show"
+  get "portfolio/public_files_send"
 
   #################################
   # rotas regulares - Nao RESTful #
@@ -34,7 +34,7 @@ Solar::Application.routes.draw do
   match "/users/:id", :to => "users#mysolar", :via => "get"
 
   # Definindo resources (mapeamento de urls para os objetos)
-  resources :users, :curriculum_units, :participants, :allocations, :portfolio, :courses, :scores
+  resources :users, :curriculum_units, :participants, :allocations, :courses, :scores
 
   match "scores/:id/history_access" => "scores#history_access"
   match 'home' => "users#mysolar", :as => :home

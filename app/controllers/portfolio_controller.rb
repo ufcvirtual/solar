@@ -288,6 +288,11 @@ class PortfolioController < ApplicationController
     download_file({:action => 'activity_details', :id => id}, AssignmentFile.find(params[:id]).attachment.path)
   end
 
+  #Formulário de upload exibido numa lightbox
+  def public_files_send
+    render :layout => false
+  end
+
   ###################
   # Funcoes privadas
   ###################
