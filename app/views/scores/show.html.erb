@@ -26,6 +26,10 @@
                       :action => :student_detail, :id => @student.id,
                       :assignment_id => activity["assignment_id"],
                       :send_assignment_id => activity["send_assignment_id"]}, {:class => 'link_content'} %>
+                  <% elsif can? :activity_details, Portfolio %>
+                    <%=link_to activity["assignments_name"], {:controller => :portfolio,
+                      :action => :activity_details, :id => activity["assignment_id"],
+                      :bread => :menu_portfolio}, {:class => 'link_content'} %>
                   <% else %>
                     <%= activity["assignments_name"] %>
                   <% end %>
