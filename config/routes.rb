@@ -13,6 +13,7 @@ Solar::Application.routes.draw do
   get "offers/showoffersbyuser"
   get "schedules/show"
   get "portfolio/public_files_send"
+  get "users/photo"
 
   #################################
   # rotas regulares - Nao RESTful #

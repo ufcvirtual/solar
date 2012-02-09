@@ -124,8 +124,8 @@ function reloadContentByForm(form){
 /*******************************************************************************
  * Upload das imagens de usuário.
  * */
-function showUserPictureUploadForm(id, title){
-    showLightBoxURL('/users/photo/'+ id, 500, 400, true, title);
+function showUserPictureUploadForm(url, title){
+    showLightBoxURL(url, 500, 400, true, title);
     return false;
 }
 

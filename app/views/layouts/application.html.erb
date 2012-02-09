@@ -131,7 +131,7 @@
               <%= link_to t(:mysolar_edit_profile), {:action=>"edit", :controller=>"devise/registrations"}, :id => 'my_data' %>
             </li>
             <li>
-              <a id="mysolar_change_picture" href="" onclick="showUserPictureUploadForm('<%=current_user.id%>', '<%= t(:mysolar_change_picture)%>');return false;">
+              <a id="mysolar_change_picture" href="" onclick="showUserPictureUploadForm('<%= url_for :users_photo %>', '<%= t(:mysolar_change_picture)%>');return false;">
                 <%= t(:mysolar_change_picture)%>
               </a>
             </li>
