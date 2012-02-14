@@ -2787,6 +2787,44 @@ td.td_student a {color: #2a538d;}
     color: #787878;
 }
 
+/* material de apoio do editor (inicio) */
+
+#column_wrapper {
+    display: none;
+}
+
+.select_editor {
+    width: 260px;
+    display: block;
+    float: left;
+    background-color: #F5F8FB;
+}
+
+.select_editor_title {
+    padding: 6px 10px 5px 10px;
+    border-bottom: 1px solid #B4B2B1;
+    background-color: #fff;
+}
+
+.select_editor_content {
+    overflow: auto;
+    height: 95px;
+}
+
+.select_editor_content li {
+    padding: 3px 10px;
+}
+
+.select_editor_content li:hover {
+    cursor: pointer;
+    background-color: #fff;
+    border-left: 2px solid #003E7A;
+    padding-left: 8px;
+    color: #000;
+}
+
+/* material de apoio do editor (fim) */
+
 
 /******** Atualização de dados de usuário **********/
 .user_data_form_section{

@@ -1,8 +1,6 @@
 <div style="margin:10px 0 40px 20px;">
-  <%= form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :support_material_file_editor, :action => :upload_files }) do |f| %>
-    <%= f.file_field :attachment%>
-    <%#= f.text_field :new_folder%>
-    <%# f.select :folder_new options_for_select([""]) %>
+  <%= form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :support_material_file_editor, :action => :upload_general_paste, :value_for_allocation_tag_id => params[:value_id], :type_for_allocation_tag_id => params[:type_value_id]}) do |f| %>
+    <%= f.file_field :attachment %>
     <%= f.submit t(:send), :id => "support_material", :class => "solar_button_gray"%>
   <% end %>
 </div>

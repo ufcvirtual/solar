@@ -1,5 +1,5 @@
 <div style="margin:10px 0 40px 20px;">
-  <% form_for :link, :url => {:controller => "support_material_file_editor", :action => "upload_link"} do |flink| %>
+  <% form_for :link, :url => {:controller => "support_material_file_editor", :action => "upload_link", :value_for_allocation_tag_id => params[:value_id], :type_for_allocation_tag_id => params[:type_value_id]} do |flink| %>
       <%= flink.text_field :link, :class => "search_keyword_inactive", :id => "link", :value => t(:support_text_field_link) %>
       <%= flink.submit t(:send), :id=>"confirm", :class=>"solar_button", :alt=> t(:send) %>
   <% end %>
