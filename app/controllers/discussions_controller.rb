@@ -39,7 +39,7 @@ class DiscussionsController < ApplicationController
 
       @posts = DiscussionPost.discussion_posts(@discussion.id, plain_list, @current_page)
     else
-      redirect_to "/discussions/list"
+      redirect_to :controller => :discussions, :action => :list # "/discussions/list"
     end
   end
 
@@ -75,10 +75,9 @@ class DiscussionsController < ApplicationController
 
       #Se a exibição for do tipo PLAINLIST, a nova postagem aparece no inicio, logo, não devemos manter a página atual
       hold_pagination unless (@display_mode == "PLAINLIST" or parent_id == "")
-
     end
 
-    redirect_to "/discussions/show/#{discussion_id}"
+    redirect_to :controller => :discussions, :action => :show, :id => discussion_id # "/discussions/show/#{discussion_id}"
   end
 
   def remove_post
@@ -120,7 +119,7 @@ class DiscussionsController < ApplicationController
     end
 
     hold_pagination
-    redirect_to "/discussions/show/#{discussion_id}"
+    redirect_to :controller => :discussions, :action => :show, :id => discussion_id # "/discussions/show/#{discussion_id}"
   end
 
   def update_post
@@ -138,7 +137,7 @@ class DiscussionsController < ApplicationController
     end
 
     hold_pagination
-    redirect_to "/discussions/show/#{discussion_id}"
+    redirect_to :controller => discussions, :action => :show, :id => discussion_id # "/discussions/show/#{discussion_id}"
   end
 
   #Formulário de upload exibido numa lightbox
@@ -185,7 +184,7 @@ class DiscussionsController < ApplicationController
 
     hold_pagination unless @display_mode == "PLAINLIST"
 
-    redirect_to "/discussions/show/#{discussion_id}"
+    redirect_to :controller => :discussions, :action => :show, :id => discussion_id # "/discussions/show/#{discussion_id}"
   end
 
   #Remoção de arquivo anexo
@@ -213,7 +212,7 @@ class DiscussionsController < ApplicationController
       hold_pagination unless @display_mode == "PLAINLIST"
     end
 
-    redirect_to "/discussions/show/#{discussion_id}"
+    redirect_to :controller => :discussions, :action => :show, :id => discussion_id # "/discussions/show/#{discussion_id}"
 
   end
 
