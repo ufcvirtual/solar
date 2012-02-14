@@ -1,7 +1,6 @@
 $(document).ready(function(){
   $('button').each(function(){
     var tooltip = $(this).attr('data-tooltip');
-    console.info(tooltip);
     if (tooltip != undefined && tooltip != '') {
       $(this).qtip({
         text: false,

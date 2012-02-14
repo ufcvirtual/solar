@@ -68,26 +68,25 @@
 </div>
 <!--//------------- Fim da Exibição de Posts------------- -->
 
-
 <script type="text/javascript">
-
   //// Modos de exibição ////////////////////////////////////////////
   function showAsThread() {
     $('#display_mode').attr('value','');
-    $('#new_post_form').attr('action','/discussions/show/<%=@discussion["id"]%>');
+    $('#new_post_form').attr('action', '<%= url_for :controller => :discussions, :action => :show, :id => @discussion["id"] %>');
     $('#new_post_form').submit();
   }
 
   function showAsPlainList() {
     $('#display_mode').attr('value','PLAINLIST');
-    $('#new_post_form').attr('action','/discussions/show/<%=@discussion["id"]%>');
+    $('#new_post_form').attr('action', '<%= url_for :controller => :discussions, :action => :show, :id => @discussion["id"] %>');
     $('#new_post_form').submit();
   }
 
   //// Manipulação de arquivos anexos ///////////////////////////////
 
-  function showUploadForm(discussionId, postId){
-    showLightBoxURL('/discussions/post_file_upload/?id=' + discussionId + '&post_id=' + postId + '&current_page=<%=@current_page%>' ,400,250,true,'<%=t(:forum_attach_file_title)%>');
+  function showUploadForm(discussionId, postId) {
+    var url_for = '<%= url_for :controller => :discussions, :action => :post_file_upload, :current_page => @current_page %>' + '&id=' + discussionId + '&post_id=' + postId;
+    showLightBoxURL(url_for ,400,250,true,'<%=t(:forum_attach_file_title)%>');
     return false;
   }
 

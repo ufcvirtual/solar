@@ -63,12 +63,7 @@
       })
       
       function showLocalTime(container){
-        // console.log("iniciando relogio");
-        //   //se nao existe, retorna
-        //   console.log("$(#"+container+")");
-        //   console.log($('#'+container).length);
           if (!$('#'+container).length) return;
-          // console.log("encontrado");
           //formato: 9/5/2011 9:53:30 (9/5 => 5/set)
           updateTime(container, "<%=DateTime.now.strftime("%m/%d/%Y %H:%M:%S")%>");
       }
@@ -87,8 +82,6 @@
       function formatNumber(num){
           return (num<=9)? "0"+num : num;
       }
-
-
     </script>
   </head>
   <body>
