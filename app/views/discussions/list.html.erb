@@ -1,19 +1,19 @@
 <div class="block_wrapper">
 
   <% if !(@discussions.nil? || @discussions.empty?) %>
-    <div class="mysolar_header">
-      <h2 class="mysolar_title"><%= image_tag "icon_forum.png", :alt=>t(:icon_forum), :class=>:block_title_icon %><%= t(:forum_table_title) %></h2>
+    <div class="block_title">
+      <h2><%= image_tag "icon_forum.png", :alt=>t(:icon_forum), :class=>:block_title_icon %><%= t(:forum_table_title) %></h2>
     </div>
     <table class="tb_list" cellpadding="10" cellspacing="0" width="100%" style="table-layout: fixed">
       <thead>
         <tr class="lines">
           <th align="left"><%=t :title %></th>
-          <th align="center" style="width: 25%;"><%= t(:forum_table_date) %></th>
+          <th align="center" style="width: 22%;"><%= t(:forum_table_date) %></th>
         </tr>
       </thead>
       <tbody>
         <% @discussions.each do |discussion| %>
-          <tr class="lines <%= 'discussion_closed' if discussion.closed == 't' %>">
+          <tr class="lines <%= 'period_ended' if discussion.closed == 't' %>">
             <td>
               <%=link_to discussion.name, {:controller => "discussions", :action => "show", :id => discussion.id}, {:class => 'link_content'} %>
               <%= "(#{t(:forum_closed_short)})" if discussion.closed == 't' %>

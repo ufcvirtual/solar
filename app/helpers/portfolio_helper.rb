@@ -4,17 +4,25 @@ module PortfolioHelper
   def icon_attachment(file)
     case File.extname(file)
       when '.pdf'
-        'icon_file_pdf.png'
-      when '.doc', '.docx'
-        'icon_file_doc.png'
+        'mimetypes/pdf.png'
+      when '.doc', '.docx', '.odt'
+        'mimetypes/document.png'
+      when '.xls', '.xlsx', '.ods'
+        'mimetypes/spreadsheet.png'
+      when '.ppt', '.pptx', '.odp'
+        'mimetypes/presentation.png'
       when '.txt'
-        'icon_file_text.png'
-      when '.ppt'
-        'icon_file_ppt.png'
+        'mimetypes/text.png'
       when '.link'
-        'icon_file_link.png'
+        'mimetypes/url.png'
+      when '.png', '.jpg', '.jpeg', '.bmp'
+        'mimetypes/image.png'
+      when '.mp3', '.wav', '.m4a', '.wav'
+        'mimetypes/audio.png'
+      when '.avi', '.mpg', '.mp4'
+        'mimetypes/video.png'
       else
-        'icon_file_without_format.png'
+        'mimetypes/default.png'
     end
   end
 

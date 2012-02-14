@@ -1,6 +1,6 @@
 <div class="block_wrapper">
   <div class="block_title">
-    <h2 class="mysolar_title"><%= image_tag "icon_forum.png", :alt=>t(:icon_forum), :class=>'block_title_icon' %><%= @discussion["name"] %></h2>
+    <h2><%= image_tag "icon_forum.png", :alt=>t(:icon_forum), :class=>'block_title_icon' %><%= @discussion["name"] %></h2>
   </div>
 
   <div id="forum_description" class="block_content block_content_text">
@@ -13,9 +13,9 @@
   <div class="block_title forum_navigation">
       <span id="forum_new_message">
         <% if valid_date %>
-          <div class="btn btn_default forum_button_view_mode" id="NewPostButton" onclick="javascript:clearFormData()">
+          <button type="button" class="btn btn_default" id="NewPostButton" value="<%= t("forum_new_message")%>" onclick="javascript:clearFormData()">
             <%= t("forum_new_message")%><%= image_tag "icon_write.png", :alt => '' %>
-          </div>
+          </button>
         <%else%>
           <div id="forum_closed"><%= t("forum_closed")%></div>
         <%end%>
@@ -23,13 +23,19 @@
 
       <span id="forum_view_mode">
         <% if @display_mode == "PLAINLIST" %>
-            <div class="btn btn_default forum_button_view_mode" onclick="javascript:showAsThread()">
-              <%=  t("forum_show_thread")%><%= image_tag "discussion_thread.png", :alt => '' %>
-            </div>
+            <button type="button" class="btn btn_disable" value="<%= t("forum_show_plainlist")%>" data-tooltip="<%= t("forum_show_plainlist")%>">
+              <%= image_tag "discussion_plainlist.png", :alt => '' %>
+            </button>
+            <button type="button" class="btn btn_default" value="<%= t("forum_show_thread")%>" onclick="javascript:showAsThread()" data-tooltip="<%= t("forum_show_thread")%>">
+              <%= image_tag "discussion_thread.png", :alt => '' %>
+            </button>
         <% else %>
-            <div class="btn btn_default forum_button_view_mode" onclick="javascript:showAsPlainList()">
-              <%=  t("forum_show_plainlist")%><%= image_tag "discussion_plainlist.png", :alt => '' %>
-            </div>
+            <button type="button" class="btn btn_default" value="<%= t("forum_show_plainlist")%>" onclick="javascript:showAsPlainList()" data-tooltip="<%= t("forum_show_plainlist")%>">
+              <%= image_tag "discussion_plainlist.png", :alt => '' %>
+            </button>
+            <button type="button" class="btn btn_disable" value="<%=  t("forum_show_thread")%>" data-tooltip="<%= t("forum_show_thread")%>">
+              <%= image_tag "discussion_thread.png", :alt => '' %>
+            </button>
         <%end%>
       </span>
       <div id="forum_pagination">
@@ -99,13 +105,13 @@
 
     //Removendo outra caixa de entrada de postagem que possam
     //estar abertas, possivelmente.
-    $('#new_post_dialog').attr('id', 'oldPostDialog');
-    $('#newPostTextBox').attr('id', 'oldPostTextBox');
+    $('#new_post_dialog').attr('id', 'oldPostDialog').slideUp(function(){
+      $(this).remove();
+    });
+    $('#newPostTextBox').attr('id', 'oldPostTextBox').remove();
     if (CKEDITOR.instances.newPostTextBox) {
       CKEDITOR.instances.newPostTextBox.destroy();
     }
-    $('#oldPostTextBox').remove();
-    $('#oldPostDialog').remove();
 
     //Criando a nova caixa de entrada e exibindo-a
     postContainer.append(newFormCode);
@@ -119,13 +125,13 @@
   }
 
   function cancelPosting() {
-    $('#new_post_dialog').attr('id', 'oldPostDialog');
-    $('#newPostTextBox').attr('id', 'oldPostTextBox');
+    $('#new_post_dialog').attr('id', 'oldPostDialog').slideUp(function () {
+      $(this).remove();
+    });
+    $('#newPostTextBox').attr('id', 'oldPostTextBox').remove();
     if (CKEDITOR.instances.newPostTextBox) {
       CKEDITOR.instances.newPostTextBox.destroy();
     }
-    $('#oldPostTextBox').remove();
-    $('#oldPostDialog').remove();
   }
 
   //// Manipulação de variaveis internas ////////////////////////////
