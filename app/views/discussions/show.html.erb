@@ -165,12 +165,12 @@
       return;
 
     $('#discussion_post_id').attr('value', postId);
-    $('#new_post_form').attr('action','/discussions/remove_post');
+    $('#new_post_form').attr('action', '<%= url_for :controller => :discussions, :action => :remove_post %>');
     $('#new_post_form').submit();
   }
 
   function updatePost() {
-    $('#new_post_form').attr('action','/discussions/update_post');
+    $('#new_post_form').attr('action', '<%= url_for :controller => :discussions, :action => :update_post %>');
     $('#new_post_form').submit();
   }
 
