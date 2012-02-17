@@ -91,6 +91,7 @@ class ApplicationController < ActionController::Base
   ##
   def current_menu
     user_session[:menu] = { :current => params[:mid] } if user_signed_in? and params.include?('mid')
+    user_session[:menu] = { :current => nil } if (params.include?('type'))
   end
 
   ###############################

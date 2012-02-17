@@ -7,8 +7,7 @@ class Menu < ActiveRecord::Base
   # outros relacionamentos
   has_many :permissions_menus
   has_many :resources
-
-  belongs_to :context
+  has_and_belongs_to_many :contexts
 
   # Lista com os menus do perfil do usuario dependendo do contexto
   def self.list_by_profile_id_and_context(profile_id, context = 'geral')
@@ -38,12 +37,13 @@ class Menu < ActiveRecord::Base
                  t3.child_id,
                  t3.child,
                  COALESCE(t3.resource_id, t1.resource_id) AS resource_id, -- resource do filho, senao do pai
-                 COALESCE(t4.name, 'geral') AS context,
+                 COALESCE(t5.name, 'geral') AS context,
                  t1.link
             FROM menus             AS t1 -- recuperando todos os menus-pai
             JOIN permissions_menus AS t2 ON (t2.menu_id = t1.id AND t1.parent_id IS NULL) -- verifica permissoes aos menus pais
        LEFT JOIN cte_menus         AS t3 ON (t3.parent_id = t1.id)
-       LEFT JOIN contexts          AS t4 ON (t4.id = t1.context_id)
+       LEFT JOIN menus_contexts    AS t4 ON (t4.menu_id = t1.id)
+       LEFT JOIN contexts    	   AS t5 ON (t5.id = t4.context_id)
            WHERE t1.status = TRUE AND t2.profile_id IN (#{profile_id}) -- permissoes para os menus pais
       )
       SELECT t1.parent_id,

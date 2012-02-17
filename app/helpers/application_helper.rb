@@ -124,6 +124,24 @@ module ApplicationHelper
   end
 
   ##
+  # Verifica se deve apresentar seleção de unidade curricular
+  ##
+  def show_curriculum_unit_selection?(active_tab)
+    # Mostrar quando a aba não está no contexto geral e o menu tem o mesmo contexto   
+    
+    tab_context = active_tab[:url]['type'] 
+    current_menu_id = user_session[:menu][:current]
+   
+    if tab_context == Context_General
+      return false
+    elsif current_menu_id.nil?      
+      return true
+    else        
+      return !MenusContexts.find_all_by_menu_id_and_context_id(current_menu_id, tab_context).empty?
+    end
+  end
+  
+  ##
   # Verifica se uma unidade curricular já foi selecionada
   ##
   def curriculum_unit_selected?

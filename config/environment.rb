@@ -41,3 +41,6 @@ Profile_Type_No_Type            = 0
 Profile_Type_Basic              = 0b00000001  # (1o bit = 1)
 Profile_Type_Class_Responsible  = 0b00000010  # (2o bit = 1)
 Profile_Type_Student            = 0b00000100  # (3o bit = 1)
+
+# Context_General
+Context_General            = Context.find_by_name('geral').to_s

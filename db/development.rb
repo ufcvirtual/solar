@@ -5,7 +5,7 @@ puts "Truncando tabelas"
 models = [SupportMaterialFile,DiscussionPostFile, DiscussionPost, Discussion, Lesson, Allocation, Bibliography, UserMessageLabel, UserMessage, MessageLabel,
   PublicFile, CommentFile, AssignmentFile, CommentFile, AssignmentComment, SendAssignment, Assignment,
   ScheduleEvent, Schedule, AllocationTag,
-  PermissionsResource, PermissionsMenu, Menu, Resource, Profile, Group,
+  PermissionsResource, PermissionsMenu, MenusContexts, Menu, Resource, Profile, Group,
   Enrollment, Offer, CurriculumUnit, CurriculumUnitType, Course, PersonalConfiguration, User, Log]
 models.each(&:delete_all)
 

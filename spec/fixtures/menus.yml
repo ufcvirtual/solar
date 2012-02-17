@@ -3,14 +3,12 @@ conteudo:
   id: 10
   name: menu_content
   order: 1
-  context_id: 2
 
 aulas_conteudo:
   id: 101
   parent_id: 10
   name: menu_lesson
   order: 1
-  context_id: 2
   resource_id: 19
 
 material_conteudo:
@@ -18,7 +16,6 @@ material_conteudo:
   parent_id: 10
   name: menu_support_material
   order: 2
-  context_id: 2
   resource_id: 54
 
 # MENU PAI - 20
@@ -26,14 +23,12 @@ atividades:
   id: 20
   name: menu_activity
   order: 2
-  context_id: 2
 
 forum_ativ:
   id: 201
   parent_id: 20
   name: menu_discussion
   order: 1
-  context_id: 2
   resource_id: 22
 
 # portfolio do aluno
@@ -42,7 +37,6 @@ portfolio_ativ:
   parent_id: 20
   name: menu_portfolio
   order: 2
-  context_id: 2
   resource_id: 24
 
 prova_ativ:
@@ -50,14 +44,12 @@ prova_ativ:
   parent_id: 20
   name: menu_test
   order: 3
-  context_id: 2
 
 acomp_ativ:
   id: 204
   parent_id: 20
   name: menu_score
   order: 4
-  context_id: 2
   resource_id: 47
 
 chat_ativ:
@@ -65,21 +57,18 @@ chat_ativ:
   parent_id: 20
   name: menu_chat
   order: 5
-  context_id: 2
 
 webconf_ativ:
   id: 206
   parent_id: 20
   name: menu_webconference
   order: 6
-  context_id: 2
 
 portfolio_professor_ativ:
   id: 207
   parent_id: 20
   name: menu_portfolio
   order: 7
-  context_id: 2
   resource_id: 35
 
 acomp_ativ_teacher:
@@ -87,7 +76,6 @@ acomp_ativ_teacher:
   parent_id: 20
   name: menu_score
   order: 8
-  context_id: 2
   resource_id: 48
 
 # MENU PAI - 30
@@ -96,14 +84,12 @@ info_geral:
   id: 30
   name: menu_general_information
   order: 3
-  context_id: 2
 
 programa_info:
   id: 301
   parent_id: 30
   name: menu_program
   order: 1
-  context_id: 2
   resource_id: 13
 
 agenda_info:
@@ -111,7 +97,6 @@ agenda_info:
   parent_id: 30
   name: menu_agenda
   order: 2
-  context_id: 2
   resource_id: 26
 
 biblio_info:
@@ -119,7 +104,6 @@ biblio_info:
   parent_id: 30
   name: menu_bibliography
   order: 3
-  context_id: 2
   resource_id: 23
 
 parti_info:
@@ -127,7 +111,6 @@ parti_info:
   parent_id: 30
   name: menu_participants
   order: 4
-  context_id: 2
   resource_id: 12
 
 # MENU PAI - 40
@@ -135,21 +118,18 @@ social:
   id: 40
   name: menu_social
   order: 4
-  context_id: 2
 
 wiki_soc:
   id: 401
   parent_id: 40
   name: menu_wiki
   order: 1
-  context_id: 2
 
 blog_soc:
   id: 402
   parent_id: 40
   name: menu_blog
   order: 2
-  context_id: 2
 
 # MENU PAI - 50
 mensagem_soc:
@@ -198,28 +178,24 @@ disco_virtual:
 avaliacao_inst:
   id: 80
   name: menu_institucional_assessment
-  context_id: 2
   order: 8
 
 ger_aval:
   id: 801
   parent_id: 80
   name: menu_manage_assessment
-  context_id: 2
   order: 1
 
 resp_aval:
   id: 802
   parent_id: 80
   name: menu_response_assessment
-  context_id: 2
   order: 2
 
 relat_aval:
   id: 803
   parent_id: 80
   name: menu_reports
-  context_id: 2
   order: 3
 
 # MENU PAI - 90
@@ -251,6 +227,5 @@ registration:
 support_material_file_editor:
   id: 120
   name: menu_support_material_editor
-  context_id: 2
   order: 11
   resource_id: 63
