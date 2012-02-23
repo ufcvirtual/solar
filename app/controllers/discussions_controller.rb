@@ -137,7 +137,7 @@ class DiscussionsController < ApplicationController
     end
 
     hold_pagination
-    redirect_to :controller => discussions, :action => :show, :id => discussion_id # "/discussions/show/#{discussion_id}"
+    redirect_to :controller => :discussions, :action => :show, :id => discussion_id # "/discussions/show/#{discussion_id}"
   end
 
   #Formulário de upload exibido numa lightbox
