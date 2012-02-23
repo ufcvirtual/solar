@@ -2,24 +2,30 @@ module MessagesHelper
 
   def return_messages (userid, type='index', tag=nil, search_text='')
 
-    query_fields = "select distinct m.*, usm.user_id, u.name, u.nick, ml.title AS label,
-        (select count(message_file_name) from message_files where message_id = m.id)has_attachment,
-        cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)was_sent,
-        cast( usm.status & '#{Message_Filter_Read.to_s(2)}' as boolean)was_read,
-        (select users.name from users inner join user_messages ON users.id = user_messages.user_id
-        where user_messages.message_id = m.id and cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean))sender"
+    query_fields = "
+    SELECT DISTINCT ON (m.id, m.send_date)
+           m.*, usm.user_id, u.name, u.nick, ml.title AS label,
+           (SELECT count(message_file_name) FROM message_files WHERE message_id = m.id)  AS has_attachment,
+           cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)             AS was_sent,
+           cast( usm.status & '#{Message_Filter_Read.to_s(2)}' as boolean)               AS was_read,
+           (SELECT users.name
+              FROM users
+              JOIN user_messages ON users.id = user_messages.user_id
+             WHERE user_messages.message_id = m.id
+               AND cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)
+           ) AS sender"
 
-    query_messages = " from messages m
-        inner join user_messages usm on m.id = usm.message_id
-        left join message_files f on m.id = f.message_id
-        inner join users u on usm.user_id=u.id
-        left join user_message_labels uml on usm.id = uml.user_message_id
-        left join message_labels ml on uml.message_label_id = ml.id
-      where
-        usm.user_id = #{userid}"  #filtra por usuario
+    query_messages = "
+    FROM messages                 AS m
+        JOIN user_messages        AS usm  ON m.id = usm.message_id
+   LEFT JOIN message_files        AS f    ON m.id = f.message_id
+        JOIN users                AS u    ON usm.user_id=u.id
+   LEFT JOIN user_message_labels  AS uml  ON usm.id = uml.user_message_id
+   LEFT JOIN message_labels       AS ml   ON uml.message_label_id = ml.id
+       WHERE usm.user_id = #{userid}"  #filtra por usuario
 
-    #formato: 2011.1|FOR|Física I
-    #monta label para pesquisa que inclua mensagens enviadas por turma/oferta
+    # formato: 2011.1|FOR|Física I
+    # monta label para pesquisa que inclua mensagens enviadas por turma/oferta
     if !tag.nil?
       tag_slice = tag.split("|")
       case tag_slice.count()
@@ -38,22 +44,22 @@ module MessagesHelper
     
     case type
     when 'trashbox'
-      query_messages += " AND cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean) "     #filtra se eh excluida
+      query_messages += " AND cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' AS boolean) "     #filtra se eh excluida
     when 'index'
-      query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean) " #filtra se nao eh origem (eh destino)
-      query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean) " #nao esta na lixeira
+      query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' AS boolean) " #filtra se nao eh origem (eh destino)
+      query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' AS boolean) " #nao esta na lixeira
     when 'outbox'
-      query_messages += " AND     cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean) " #filtra se eh origem (default)
-      query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean) " #nao esta na lixeira
+      query_messages += " AND     cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' AS boolean) " #filtra se eh origem (default)
+      query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' AS boolean) " #nao esta na lixeira
     when 'portlet'
-      query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean) " #filtra se nao eh origem (eh destino)
-      query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Read.to_s(2)}' as boolean) "   #nao lida
-      query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean) "  #nao esta na lixeira
+      query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' AS boolean) " #filtra se nao eh origem (eh destino)
+      query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Read.to_s(2)}' AS boolean) "   #nao lida
+      query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' AS boolean) "  #nao esta na lixeira
       
     when 'search'
       # monta parte da query referente a busca textual
       query_search = ''
-      query_search << " NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean) "   #nao esta na lixeira
+      query_search << " NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' AS boolean) "   #nao esta na lixeira
       search_text.each { |text|
         query_search << " AND " unless query_search.empty? # nao adiciona na 1a vez
         query_search << "     (subject  ilike '%#{text}%' or
@@ -88,7 +94,7 @@ module MessagesHelper
       query_messages += " and ( #{query_search} )"
 
     end
-    query_order = " order by send_date desc "
+    query_order = " ORDER BY send_date desc, m.id "
 
     query_all = query_fields << query_messages << query_order
 
