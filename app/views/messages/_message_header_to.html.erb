@@ -61,7 +61,8 @@
   $(function($) {
 
     $("#curriculum_unit_select").change(function() {
-      $("#div_contacts_list").load("/messages/ajax_get_contacts/",{data: this.value})
+      var url_for = '<%= url_for :controller => :messages, :action => :ajax_get_contacts %>';
+      $("#div_contacts_list").load(url_for, {data: this.value})
     })
 
     $("#link_cancel_contacts").click(function() {
