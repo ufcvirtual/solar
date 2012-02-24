@@ -187,7 +187,7 @@ module MessagesHelper
   def get_sender(message_id)
     return User.find(:first,
       :joins => "INNER JOIN user_messages ON users.id = user_messages.user_id",
-      :conditions => "user_messages.message_id = #{message_id} and cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)")
+      :conditions => "user_messages.message_id = #{message_id} and cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' AS boolean)")
   end
 
   # verifica se usuario logado tem permissao de acessar a mensagem com id passado

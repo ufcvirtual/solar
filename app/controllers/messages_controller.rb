@@ -102,48 +102,51 @@ class MessagesController < ApplicationController
 
   end
 
-  # exibe mensagem para leitura apenas
+  ##
+  # Exibe mensagem para leitura apenas
+  ##
   def show
-    if !params[:id].nil?
+    if params.include?('id') and not params[:id].nil?
       message_id = params[:id]
       @show_message = 'show'
       get_message_data(message_id)
     end
-    @search_text = params[:search].nil? ? "" : params[:search]
+
+    @search_text = params.include?('search') ? params[:search] : ''
   end
 
-  # na verdade, muda status para apagado - pode receber um id ou varios separados por $
+  ##
+  # Restaura uma msg da lixeira
+  ##
+  def restore
+    id = params[:id]
+    restore_id = id.split('$')
+    restore_id.each { |i| change_message_status(i, 'restore') if has_permission(i) }
+
+    search_text = params.include?('search') ? params[:search] : ''
+    type = params.include?('type') ? params[:type] : 'trashbox'
+
+    redirect_to :action => :index, :type => type, :search => search_text
+  end
+
+  ##
+  # Muda status para apagado
+  ##
   def destroy
     id = params[:id]
 
-    if id != ""
-      #eh apenas um id
-      if id.index("$").nil?
-        if has_permission(id)
-          change_message_status(id,'trash')
-        end
-      else
-        #mais de um id
-        deleted_id = id.split("$")
-        deleted_id.each { |i|
-          if has_permission(i)
-            change_message_status(i,'trash')
-          end
-        }
-      end
-    end
+    deleted_id = id.split('$')
+    deleted_id.each { |i| change_message_status(i,'trash') if has_permission(i) }
 
-    type = params[:type]
+    search_text = params.include?('search') ? params[:search] : ''
+    type = params.include?('type') ? params[:type] : 'index'
 
-    search_text = params[:search].nil? ? "" : params[:search]
-
-    if type.nil?
-      type = 'inbox'
-    end
-    redirect_to :action => 'index', :type => type, :search => search_text
+    redirect_to :action => :index, :type => type, :search => search_text
   end
 
-  # muda status para lido/nao lido - pode receber um id ou varios separados por $
+  ##
+  # Muda status para lido/nao lido - pode receber um id ou varios separados por $
+  ##
   def change_indicator_reading
     id = params[:id]
     new_status = params[:new_status]
@@ -385,7 +388,7 @@ class MessagesController < ApplicationController
     return User.find(:all,
       :joins => "INNER JOIN user_messages ON users.id = user_messages.user_id",
       :select => "users.*",
-      :conditions => "user_messages.message_id = #{message_id} and NOT cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)")
+      :conditions => "user_messages.message_id = #{message_id} AND NOT cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)")
   end
 
   # retorna (0 a varios) arquivos de anexo
@@ -487,12 +490,14 @@ class MessagesController < ApplicationController
       status = m.status.to_i
 
       case new_status
-      when 'read'
-        m.status = status | Message_Filter_Read
-      when 'unread'
-        m.status = status & Message_Filter_Unread
-      when 'trash'
-        m.status = status | Message_Filter_Trash
+        when 'read'
+          m.status = status | Message_Filter_Read
+        when 'unread'
+          m.status = status & Message_Filter_Unread
+        when 'trash'
+          m.status = status | Message_Filter_Trash
+        when 'restore'
+          m.status = status & Message_Filter_Restore
       end
 
       m.save

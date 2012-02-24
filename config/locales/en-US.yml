@@ -387,6 +387,7 @@
   message_select_unread: "Unread"
   message_none: "No messages found"
   message_no_new: "No new messages"
+  message_restore: "Restore"
 
   message_new_title: "New message"
   message_send: "Send"

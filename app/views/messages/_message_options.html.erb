@@ -34,11 +34,16 @@
     <span id="link_remove_message" class="message_link"><%=t(:message_delete)%></span>
   <% end %>
 
-  <% if (@type!="trashbox" && !@type.nil?) %>
+  <% if (@type != "trashbox" && !@type.nil?) %>
     <span id="link_mark_as_read" class="message_link"><%=t(:message_mark_as_read)%></span>
   <% end %>
-  <% if @type!="trashbox" %>
+
+  <% if @type != "trashbox" %>
     <span id="link_mark_as_unread" class="message_link"><%=t(:message_mark_as_unread)%></span>
+  <% end %>
+
+  <% if @type == "trashbox" %>
+    <span id="link_restore_message" class="message_link"><%=t(:message_restore)%></span>
   <% end %>
 
 <% end %>
@@ -49,52 +54,48 @@
        $('#link_remove_message').click();
      })
 
+     // Restaurar mensagens
+     $("#link_restore_message").click(function() {
+        // recuperar msgs selecionadas
+        var values_id = '';
+        $("input:checked").each(function(key, v) {
+          values_id += ((key == 0) ? "" : "$") + $(this).val();
+        });
+
+        if (values_id != '') {
+          var url_for = '<%= url_for :controller => :messages, :action => :restore %>' + '?id=' + values_id;
+          $("#message_list").attr("action", url_for);
+          $("#message_list").submit();
+        }
+     });
+
+     // Remover mensagens
      $("#link_remove_message").click(function() {
         var answer = confirm("<%=t(:message_confirm)%>");
-        if (!answer)
-          return;
+        if (!answer) return;
 
         var value = "";
         var type = "<%=@type%>";
         var search = "<%=@search_text%>";
         var checked_messages = "<%=@message.nil?%>".toLowerCase();
 
-        if (checked_messages=="true"){
-          value = "";
-          $("input:checked").each(function() {
-            value = value + $(this).val() + "$";
+        if (checked_messages == "true") {
+          values_id = "";
+          $("input:checked").each(function(key, v) {
+            values_id += ((key == 0) ? "" : "$") + $(this).val();
           });
-          if (value!=""){
-            $("#message_list").attr("action", "/messages/destroy/?id="+value+"&type="+type+"&search="+search);
+
+          if (values_id != "") {
+            var url_for = '<%= url_for :controller => :messages, :action => :destroy %>' + "?id=" + values_id + "&type=" + type + "&search=" + search;
+            $("#message_list").attr("action", url_for);
             $("#message_list").submit();
           }
-        }
-        else{
-          value = "<%=@message.id unless @message.nil?%>";
-          $("#message_list").attr("action", "/messages/destroy/?id="+value+"&type=index&search="+search);
+        } else {
+          var url_for = '<%= url_for :controller => :messages, :action => :destroy, :id => (@message.id unless @message.nil?) %>' + "?type=index&search=" + search;
+          $("#message_list").attr("action", url_for);
           $("#message_list").submit();
         }
      })
-
-     $("#link_mark_as_read").click(function() {
-        change_reading_status("read");
-     })
-
-     $("#link_mark_as_unread").click(function() {
-        change_reading_status("unread");
-     })
-
-     $("#check_all").click(function() {
-        $(".selected_messages").each(function(i){
-            $(this).attr("checked","checked");
-        });
-     });
-
-     $("#check_none").click(function() {
-        $(".selected_messages").each(function(i){
-            $(this).removeAttr("checked");
-        });
-     });
 
      $("#check_read").click(function() {
         $(".selected_messages").each(function(i){
@@ -116,27 +117,48 @@
         });
      });
 
+     $("#link_mark_as_read").click(function() {
+        change_reading_status("read");
+     })
+
+     $("#link_mark_as_unread").click(function() {
+        change_reading_status("unread");
+     })
+
+     $("#check_all").click(function() {
+        $(".selected_messages").each(function(i) {
+            $(this).attr("checked","checked");
+        });
+     });
+
+     $("#check_none").click(function() {
+        $(".selected_messages").each(function(i) {
+            $(this).removeAttr("checked");
+        });
+     });
+
   });
 
-  function change_reading_status(new_status){
+  function change_reading_status(new_status) {
       var value = "";
       var type = "<%=@type%>";
       var search = "<%=@search_text%>";
       var checked_messages = "<%=@message.nil?%>".toLowerCase();
 
-      if (checked_messages=="true"){
-        value = "";
-        $("input:checked").each(function() {
-          value = value + $(this).val() + "$";
+      if (checked_messages == "true") {
+        values_id = "";
+        $("input:checked").each(function(key, v) {
+          values_id += ((key == 0) ? "" : "$") + $(this).val();
         });
-        if (value!=""){
-          $("#message_list").attr("action", "/messages/change_indicator_reading/?id="+value+"&new_status="+new_status+"&type="+type+"&search="+search);
+
+        if (values_id != "") {
+          var url_for = '<%= url_for :controller => :messages, :action => :change_indicator_reading %>' + "?id=" + values_id + "&new_status=" + new_status + "&type=" + type + "&search=" + search;
+          $("#message_list").attr("action", url_for);
           $("#message_list").submit();
         }
-      }
-      else{
-        value = "<%=@message.id unless @message.nil?%>";
-        $("#message_list").attr("action", "/messages/change_indicator_reading/?id="+value+"&new_status="+new_status+"&type=index");
+      } else {
+        var url_for = '<%= url_for :controller => :messages, :action => :change_indicator_reading, :id => (@message.id unless @message.nil?) %>' + "?new_status=" + new_status + "&type=index";
+        $("#message_list").attr("action", url_for);
         $("#message_list").submit();
       }
   }
