@@ -41,13 +41,22 @@ class ApplicationController < ActionController::Base
     user_session[:tabs] = {
       :opened => {
         'Home' => {
-          :breadcrumb => [ { :name => 'Home', :url => {:controller => :application, :action => :activate_tab, :name => 'Home', :type => Tab_Type_Home} } ],
-          :url => {'type' => Tab_Type_Home}
+          :breadcrumb => [ { :name => 'Home', :url => {:controller => :application, :action => :activate_tab, :name => 'Home', :context => Context_General} } ],
+          :url => {'context' => Context_General}
         }
       }, :active => 'Home'
     } unless user_session.include?(:tabs)
 
     user_session[:menu] = { :current => nil } if user_session[:menu].blank?
+
+    # teste
+    # verificar context_id do menu com o context_id da aplicacao
+#    menu_context = MenusContexts.find_by_menu_id_and_context_id(params[:mid], active_tab[:url]['context'])
+#    unless menu_context
+#      raise "#{params[:mid]}"
+#      set_active_tab_to_home
+#    end
+    
   end
 
   ##
@@ -80,10 +89,10 @@ class ApplicationController < ActionController::Base
   ##
   def application_context
     return nil unless user_signed_in?
-    context = nil
-    context = 'geral' if params.include?('action') and params['action'] == 'mysolar'
-    @context = context || Context.find(active_tab[:url]['type']).name
-    @context_param_id = context.nil? ? active_tab[:url]['id'] : nil
+    context_id = nil
+    context_id = Context_General if params.include?('action') and params['action'] == 'mysolar'
+    @context_id = context_id || active_tab[:url]['context']
+    @context_allocation_tag_id = context_id.nil? ? active_tab[:url]['id'] : nil
   end
 
   ##
@@ -91,7 +100,7 @@ class ApplicationController < ActionController::Base
   ##
   def current_menu
     user_session[:menu] = { :current => params[:mid] } if user_signed_in? and params.include?('mid')
-    user_session[:menu] = { :current => nil } if (params.include?('type'))
+    user_session[:menu] = { :current => nil } if (params.include?('context'))
   end
 
   ###############################
@@ -124,7 +133,7 @@ class ApplicationController < ActionController::Base
     else
       set_active_tab(params[:name])
       # dentro da aba, podem existir links abertos
-      redirect = active_tab[:breadcrumb].last[:url] if active_tab[:url]['type'] == Tab_Type_Curriculum_Unit
+      redirect = active_tab[:breadcrumb].last[:url] if active_tab[:url]['context'].to_i == Context_Curriculum_Unit
     end
 
     redirect_to redirect, :flash => flash
@@ -136,19 +145,19 @@ class ApplicationController < ActionController::Base
   ##
   def add_tab
     clear_breadcrumb_home
-    tab_name, type = params[:name], params[:type] # Home, Curriculum_Unit ou outro nao mapeado
+    tab_name, context_id = params[:name], params[:context].to_i # Home, Curriculum_Unit ou outro nao mapeado
     id, allocation_tag_id = params[:id], params[:allocation_tag_id]
 
     # se estourou numero de abas, volta para mysolar
-    redirect = {:controller => :home} # Tab_Type_Home
+    redirect = {:controller => :home} # Context_General
 
     # abre abas ate um numero limitado; atualiza como ativa se aba ja existe
     if opened_or_new_tab?(tab_name)
-      hash_tab = {"id" => id, "type" => type, "allocation_tag_id" => allocation_tag_id}
+      hash_tab = {"id" => id, "context" => context_id, "allocation_tag_id" => allocation_tag_id}
       set_session_opened_tabs(tab_name, hash_tab, params)
 
       # redireciona de acordo com o tipo de aba
-      redirect = { :controller => :curriculum_units, :action => :show, :id => id, :allocation_tag_id => allocation_tag_id } if type == Tab_Type_Curriculum_Unit
+      redirect = { :controller => :curriculum_units, :action => :show, :id => id, :allocation_tag_id => allocation_tag_id } if context_id == Context_Curriculum_Unit
     end
 
     redirect_to redirect, :flash => flash
@@ -163,7 +172,7 @@ class ApplicationController < ActionController::Base
     user_session[:tabs][:opened].delete(tab_name)
 
     controller_curriculum_unit = {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']}
-    redirect = ((active_tab[:url]['type'] == Tab_Type_Curriculum_Unit) ? controller_curriculum_unit : {:controller => :home})
+    redirect = ((active_tab[:url]['context'] == Context_Curriculum_Unit) ? controller_curriculum_unit : {:controller => :home})
     redirect_to redirect, :flash => flash
   end
 
@@ -198,7 +207,7 @@ class ApplicationController < ActionController::Base
   # Grava log de acesso a unidade curricular
   ##
   def log_access
-    Log.create(:log_type => Log::TYPE[:course_access], :user_id => current_user.id, :curriculum_unit_id => params[:id]) if (params[:type] == Tab_Type_Curriculum_Unit)
+    Log.create(:log_type => Log::TYPE[:course_access], :user_id => current_user.id, :curriculum_unit_id => params[:id]) if (params[:type] == Context_Curriculum_Unit)
   end
 
   ##
@@ -247,7 +256,7 @@ class ApplicationController < ActionController::Base
   # Preparando para seleção genérica de turmas
   ##
   def prepare_for_group_selection
-    if params.include?('selected_group') and active_tab[:url]['type'] == Tab_Type_Curriculum_Unit
+    if params.include?('selected_group') and active_tab[:url]['context'] == Context_Curriculum_Unit
       allocation_tag_id = AllocationTag.find_by_group_id(params[:selected_group]).id
       user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['allocation_tag_id'] = allocation_tag_id
     end

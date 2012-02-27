@@ -1,8 +1,8 @@
 # Geral
 geral:
   id: 1
-  name: geral
+  name: general
 
 uc:
   id: 2
-  name: curriculum_units
+  name: curriculum_unit

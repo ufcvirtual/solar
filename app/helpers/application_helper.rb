@@ -21,7 +21,7 @@ module ApplicationHelper
         text << "<li class="
         text << ((tab_active_name == name) ? 'mysolar_unit_active_tab' : 'mysolar_unit_tab') << ">"
         text << link_to(name, {:controller => '/application', :action => :activate_tab, :name => name})
-        text << link_to_if(tabs_opened[name][:url]['type'] != Tab_Type_Home, '', {:controller => '/application', :action => :close_tab, :name => name}, {:class => 'tabs_close'})
+        text << link_to_if(tabs_opened[name][:url]['context'] != Context_General, '', {:controller => '/application', :action => :close_tab, :name => name}, {:class => 'tabs_close'})
         text << "</li>"
       end
     end
@@ -129,7 +129,7 @@ module ApplicationHelper
   def show_curriculum_unit_selection?(active_tab)
     # Mostrar quando a aba não está no contexto geral e o menu tem o mesmo contexto   
     
-    tab_context = active_tab[:url]['type'] 
+    tab_context = active_tab[:url]['context'] 
     current_menu_id = user_session[:menu][:current]
    
     if tab_context == Context_General

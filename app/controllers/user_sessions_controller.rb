@@ -14,7 +14,7 @@ class UserSessionsController < ApplicationController
   end
 
   def new
-    user_session[:tabs] = {:opened => {'Home' => {'type' => Tab_Type_Home}}, :active => 'Home'}
+    user_session[:tabs] = {:opened => {'Home' => {'context' => Context_General}}, :active => 'Home'}
 
     # antes de criar uma nova sessao limpa qualquer outra existente
 #    destroy_session
@@ -28,7 +28,7 @@ class UserSessionsController < ApplicationController
       Log.create(:log_type => Log::TYPE[:login], :user_id => @user_session.user.id)
 
       # gera aba para Home
-      redirect_to :action => "add_tab", :controller => "application", :name => 'Home', :type => Tab_Type_Home
+      redirect_to :action => "add_tab", :controller => "application", :name => 'Home', :context => Context_General
     else
       flash[:notice] = t(:login_data_invalid)
       render :action => :new
@@ -55,7 +55,7 @@ class UserSessionsController < ApplicationController
         :controller => :application,
         :action => :activate_tab,
         :name => 'Home',
-        :type => Tab_Type_Home
+        :context => Context_General
       }
     }
   end

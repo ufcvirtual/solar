@@ -402,7 +402,7 @@ class MessagesController < ApplicationController
   # se Home, traz todas; senao, traz com filtro da unidade curricular
   def message_data
 
-    unless active_tab[:url]['type'] == Tab_Type_Home
+    unless active_tab[:url]['context'] == Context_General
 
       allocation_tag_id = active_tab[:url]['allocation_tag_id']
       allocations = AllocationTag.find_related_ids(allocation_tag_id).join(', ');
@@ -438,7 +438,7 @@ class MessagesController < ApplicationController
       @offer_id = data[1]
       @group_id = data[2]
     else
-      unless active_tab[:url]["type"] == Tab_Type_Home
+      unless active_tab[:url]["context"] == Context_General
         allocation_tag = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
         @curriculum_unit_id = id
         @offer_id = allocation_tag.offer_id
@@ -455,7 +455,7 @@ class MessagesController < ApplicationController
 
     #unidade curricular ativa ou home ("")
     if @curriculum_unit_id == id
-      @curriculum_units_name = (active_tab[:url]["type"] == Tab_Type_Home) ? "" : user_session[:tabs][:active]
+      @curriculum_units_name = (active_tab[:url]["context"] == Context_General) ? "" : user_session[:tabs][:active]
     else
       @curriculum_units_name = CurriculumUnit.find(@curriculum_unit_id).name unless @curriculum_unit_id.nil?
     end

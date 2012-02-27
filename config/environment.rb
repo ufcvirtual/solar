@@ -25,10 +25,6 @@ Lesson_Approved  = 1               # aula aprovada
 # constante que indica numero maximo de abas abertas
 Max_Tabs_Open = 4
 
-# constantes que indicam tipos de abas que podem ser abertas
-Tab_Type_Home = "1"
-Tab_Type_Curriculum_Unit = "2"
-
 # filtros para mensagem
 Message_Filter_Sender  = 0b00000001   # 00000001 = eh origem            (1o bit = 1)
 Message_Filter_Read    = 0b00000010   # filtro com 00000010 -> lida     (2o bit = 1)
@@ -42,5 +38,6 @@ Profile_Type_Basic              = 0b00000001  # (1o bit = 1)
 Profile_Type_Class_Responsible  = 0b00000010  # (2o bit = 1)
 Profile_Type_Student            = 0b00000100  # (3o bit = 1)
 
-# Context_General
-Context_General            = Context.find_by_name('geral').to_s
+# Contextos de abas e menus
+Context_General            = 1 #Context.find_by_name('general').id
+Context_Curriculum_Unit    = 2 #Context.find_by_name('curriculum_unit').id

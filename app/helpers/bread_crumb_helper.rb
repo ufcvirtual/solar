@@ -5,7 +5,7 @@ module BreadCrumbHelper
 
     # verifica se a aba ativa é a home
     breadcrumb = []
-    if active_tab[:url]['type'].to_i == Tab_Type_Home.to_i
+    if active_tab[:url]['context'].to_i == Context_General.to_i
       breadcrumb = active_tab[:breadcrumb] if active_tab[:breadcrumb].length > 1 # somente a aba ativa 
     else
       breadcrumb = [user_session[:tabs][:opened]['Home'][:breadcrumb].first] + active_tab[:breadcrumb]

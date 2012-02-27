@@ -1,11 +1,11 @@
 module MenuHelper
 
   # Lista os menus de todos os perfis
-  def create_menu_list(profile_id, context = 'geral', id = nil, current_menu = nil)
+  def create_menu_list(profile_id, context_id, id = nil, current_menu = nil)
 
     # Recupera a lista de menus
-    menus = Menu.list_by_profile_id_and_context(profile_id, context)
-
+    menus = Menu.list_by_profile_id_and_context_id(profile_id, context_id)
+    
     # variaveis de controle
     html_menu, previous_parent_id, first_iteration = '', 0, false
 
