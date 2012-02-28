@@ -15,7 +15,7 @@ Solar::Application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   #Not logging any DEBUG message
   config.log_level = :info

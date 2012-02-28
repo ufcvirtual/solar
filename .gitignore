@@ -29,3 +29,4 @@ media/messages/*
 media/support_material_file/*
 .rvmrc
 db/schema.rb
+mailer.yml
