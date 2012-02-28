@@ -3,7 +3,7 @@
 # Arquivo criado apenas para servir de base para o arquivo real
 ##
 
-settings:
+smtp_settings:
   :address: 'smtp.something.com'
   :authentication: 'plain'
   :domain: 'something.com'
