@@ -21,9 +21,9 @@ class ApplicationController < ActionController::Base
 
   before_filter :authenticate_user! # devise
   before_filter :start_user_session
-
-  before_filter :another_level_breadcrumb
+  
   before_filter :set_locale, :application_context, :current_menu
+  before_filter :another_level_breadcrumb
   before_filter :log_access, :only => :add_tab
 
   # Mensagem de erro de permissão
@@ -48,15 +48,6 @@ class ApplicationController < ActionController::Base
     } unless user_session.include?(:tabs)
 
     user_session[:menu] = { :current => nil } if user_session[:menu].blank?
-
-    # teste
-    # verificar context_id do menu com o context_id da aplicacao
-#    menu_context = MenusContexts.find_by_menu_id_and_context_id(params[:mid], active_tab[:url]['context'])
-#    unless menu_context
-#      raise "#{params[:mid]}"
-#      set_active_tab_to_home
-#    end
-    
   end
 
   ##
@@ -91,8 +82,36 @@ class ApplicationController < ActionController::Base
     return nil unless user_signed_in?
     context_id = nil
     context_id = Context_General if params.include?('action') and params['action'] == 'mysolar'
+    set_tab_by_context
     @context_id = context_id || active_tab[:url]['context']
     @context_allocation_tag_id = context_id.nil? ? active_tab[:url]['id'] : nil
+  end
+  
+  ##
+  # Abre aba adequada para o contexto
+  ##  
+  def set_tab_by_context
+    
+    if user_signed_in? 
+      # Aba Home para edição de dados do usuário (devise)
+      set_active_tab_to_home if controller_path == "devise/registrations"
+      
+      # Seleciona aba de acordo com o contexto do menu
+      if params.include?('mid')
+        tab_context_id = active_tab[:url]['context']
+        current_menu_id = params[:mid]
+        
+        if MenusContexts.find_all_by_menu_id_and_context_id(current_menu_id, tab_context_id).empty?
+          menu_context_id = MenusContexts.find_by_menu_id(current_menu_id).context_id
+     
+          # Econtra a aba de mesmo contexto       
+          tab_name = find_tab_by_context(menu_context_id)
+      
+          # Abre aba de mesmo contexto    
+          set_active_tab(tab_name)
+        end
+      end
+    end
   end
 
   ##
@@ -267,11 +286,22 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource_or_scope)
-   pages_index_url
+    pages_index_url
   end
 
   def after_update_path_for(resource)
     '/home'
+  end
+  
+  ##
+  # Encontra uma aba com o contexto passado
+  ##
+  def find_tab_by_context(context_id)
+    user_session[:tabs][:opened].each { |tab|    
+      if (tab[1][:url]['context'].to_i == context_id.to_i)
+        return tab[0]
+      end
+    }
   end
 
 end

@@ -144,7 +144,7 @@ module ApplicationHelper
   ##
   # Verifica se uma unidade curricular já foi selecionada
   ##
-  def curriculum_unit_selected?
+  def is_curriculum_unit_selected?
     return !user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['id'].nil?
   end
   

@@ -187,7 +187,7 @@
           <% active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]] %>
           <div id="breadcrumb"><%= raw show_breadcrumb %></div>
 
-          <% if show_curriculum_unit_selection?(active_tab)   %>          
+          <% if is_curriculum_unit_selected?  %>          
             <div id="page_title">
               <h1><%=t active_tab[:breadcrumb].last[:name] unless active_tab[:breadcrumb].last.nil? %></h1>
               <span class="block_content_text"><%= raw(render_group_selection) %></span>
