@@ -14,3 +14,6 @@ settings:
 
 default_sender:
   :from: 'user@something.com'
+
+default_url_options:
+  :host: 'localhost:3000'

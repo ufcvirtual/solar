@@ -24,7 +24,5 @@ class Notifier < ActionMailer::Base
         format.text { render :text => message }
         format.html { render :text => message }
     end
-
 	end
-
 end
