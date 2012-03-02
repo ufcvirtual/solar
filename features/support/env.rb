@@ -65,5 +65,6 @@ Before do
   Fixtures.create_fixtures(fixtures_folder, fixtures)
 
   # insere os registros de permissoes para os profiles cadastrados
+  load File.join(::Rails.root.to_s, 'db', 'production', 'resources.rb')
   load File.join(::Rails.root.to_s, 'db', 'permissions.rb')
 end

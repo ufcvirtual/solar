@@ -32,7 +32,6 @@ set :keep_releases, 5
 after :deploy, 'deploy:database'
 after :deploy, 'deploy:symlink'
 
-# If you are using Passenger mod_rails uncomment this:
 namespace :deploy do
   task :start do ; end
   task :stop do ; end
@@ -41,12 +40,11 @@ namespace :deploy do
   end
 
   task :database, :roles => :app do
-    run "cp #{deploy_to}/shared/database.yml #{current_path}/config/"
+    run "cp #{deploy_to}/shared/database.yml #{current_path}/config/ ; cp #{deploy_to}/shared/mailer.yml #{current_path}/config/"
   end
 
   # backup dos arquivos enviados para o servidor
   task :symlink, :roles => :app do
     run "rm -rf  #{release_path}/media ; ln -s #{shared_path}/media #{release_path}/"
   end
-
 end

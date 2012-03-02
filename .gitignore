@@ -30,3 +30,5 @@ media/support_material_file/*
 .rvmrc
 db/schema.rb
 mailer.yml
+spec/fixtures/production/users.yml
+db/production/users.rb

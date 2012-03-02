@@ -7,6 +7,6 @@
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
 # pre-requisito para executar os outros arquivos de seeds
-require File.join(Rails.root.to_s, 'db', 'production.rb')
+require File.join(Rails.root.to_s, 'db', 'production.rb') if Rails.env == 'production'
 require File.join(Rails.root.to_s, 'db', 'development.rb') if Rails.env == 'development'
 
