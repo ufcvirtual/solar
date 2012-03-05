@@ -42,13 +42,13 @@ namespace :deploy do
 
   task :database, :roles => :app do
     # Copia de arquivos de configuracao
-    puts " - Copiando arquivos de configuracao"
-    run "cp #{deploy_to}/shared/configs/database.yml #{deploy_to}/shared/configs/mailer.yml #{current_path}/config/"
+    puts "\n\n - Copiando arquivos de configuracao"
+    run "cp #{deploy_to}/shared/configs/database.yml #{deploy_to}/shared/configs/mailer.yml #{current_path}/config/ ; cp #{deploy_to}/shared/configs/users.rb #{current_path}/db/production/"
   end
 
   # backup dos arquivos enviados para o servidor
   task :symlink, :roles => :app do
-    puts " - Recriando link do diretorio de media"
+    puts "\n\n - Recriando link do diretorio de media"
     run "rm -rf  #{release_path}/media ; ln -s #{shared_path}/media #{release_path}/"
   end
 end
