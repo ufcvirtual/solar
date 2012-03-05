@@ -66,5 +66,5 @@ Before do
 
   # insere os registros de permissoes para os profiles cadastrados
   load File.join(::Rails.root.to_s, 'db', 'production', 'resources.rb')
-  load File.join(::Rails.root.to_s, 'db', 'permissions.rb')
+  load File.join(::Rails.root.to_s, 'db', 'production', 'permissions.rb')
 end
