@@ -7,25 +7,4 @@
   });
 </script>
 
-<div id="mysolar_panel_data">
-  <%=  image_tag "page_title_my_data.png" %>
-  <span style="font-weight: bold; font-size: 20px"><%= t(:my_data) %></span>
-  <hr style="border: none;background-color: #dedede;height: 1px;"></hr>
-
-  <div id="mydata_tab">
-    <div> <!--id="my_personal_data_tab" class="my_data_tab_generic" onclick="showPanel('my_personal_data')"-->
-      <%= t(:my_personal_data) %>
-<%#*<div id="my_professional_data_tab" class="my_data_tab_generic" onclick="showPanel('my_professional_data')">%>
-<%#= t(:my_professional_data) %>
-<%#*</div>%>
-<!--id="my_cadastral_data_tab" class="my_data_tab_generic" onclick = "showPanel('my_cadastral_data')" -->
-    <%=  t(:my_cadastral_data) %>
-  </div>
-</div>
-
 <%= render 'form_data' %>
-
-</div>
-
-
-
