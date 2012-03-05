@@ -89,6 +89,8 @@ resources_arr = [
   {:id => 66, :controller => 'support_material_file_editor', :action => 'delete_select_file', :description => 'Detetar arquivos do material de apoio do editor'}
 ]
 
+puts "  - Criando resources"
+
 count = 0
 resources = Resource.create(resources_arr) do |registro|
   registro.id = resources_arr[count][:id]

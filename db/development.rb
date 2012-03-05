@@ -1,8 +1,8 @@
 require 'active_record/fixtures.rb'
 
-puts "Development Seed"
+puts "::Development Seed::"
 
-puts "Truncando tabelas"
+puts " - Truncando tabelas"
 
 models = [SupportMaterialFile,DiscussionPostFile, DiscussionPost, Discussion, Lesson, Allocation, Bibliography, UserMessageLabel, UserMessage, MessageLabel,
   PublicFile, CommentFile, AssignmentFile, CommentFile, AssignmentComment, SendAssignment, Assignment,
@@ -22,7 +22,7 @@ Fixtures.create_fixtures(fixtures_folder, fixtures)
 # Criando resources
 require File.join(::Rails.root.to_s, 'db', 'production', 'resources')
 
-puts "Setando permissoes"
+puts "::Setando permissoes::"
 require File.join(::Rails.root.to_s, 'db', 'permissions')
 
 allocations = Allocation.create([

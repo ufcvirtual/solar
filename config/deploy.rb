@@ -1,5 +1,6 @@
+set :user_git, 'wwagner33'
 set :application, 'solar'
-set :repository,  'git@github.com:wwagner33/solar.git'
+set :repository,  "git@github.com:#{user_git}/solar.git"
 set :deploy_to, "/var/www/projects/production/#{application}"
 set :scm, :git
 set :deploy_via, :remote_cache
@@ -25,7 +26,7 @@ end
 # Utilizar Capistrano junto com RVM
 $:.unshift(File.expand_path('./lib', ENV['rvm_path'])) # Add RVM's lib directory to the load path.
 require 'rvm/capistrano'                  # Load RVM's capistrano plugin.
-set :rvm_ruby_string, '1.9.2'
+set :rvm_ruby_string, '1.9.3'
 set :keep_releases, 5
 
 # tasks
@@ -36,15 +37,18 @@ namespace :deploy do
   task :start do ; end
   task :stop do ; end
   task :restart, :roles => :app, :except => { :no_release => true } do
-    run "#{try_sudo} rm -rf #{current_path} && #{try_sudo} ln -s #{release_path} #{deploy_to}/current && #{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
+    run "rm -rf #{current_path} && ln -s #{release_path} #{deploy_to}/current && touch #{File.join(current_path,'tmp','restart.txt')}"
   end
 
   task :database, :roles => :app do
-    run "cp #{deploy_to}/shared/database.yml #{current_path}/config/ ; cp #{deploy_to}/shared/mailer.yml #{current_path}/config/"
+    # Copia de arquivos de configuracao
+    puts " - Copiando arquivos de configuracao"
+    run "cp #{deploy_to}/shared/configs/database.yml #{deploy_to}/shared/configs/mailer.yml #{current_path}/config/"
   end
 
   # backup dos arquivos enviados para o servidor
   task :symlink, :roles => :app do
+    puts " - Recriando link do diretorio de media"
     run "rm -rf  #{release_path}/media ; ln -s #{shared_path}/media #{release_path}/"
   end
 end
