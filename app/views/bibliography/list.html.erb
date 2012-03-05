@@ -1,15 +1,12 @@
-<div class="block_wrapper">
-
   <% if !(@bibliography_filter.nil? || @bibliography_filter.empty?) %>
     <% @bibliography_filter.each do |bib| %>
-      <div id="biliography_header_content">
-        <div id="biliography_title"><%= bib["title"] %></div> <div id="biliography_photo"> <%= image_tag "icon_bibliografia.png", :alt=>t(:icon_bibliography ) %></div>
-
+  <div class="block_wrapper">
+    <div class="block_title">
+      <h2><%= image_tag "icon_bibliografia.png", :class=>(:block_title_icon) %><%= bib["title"] %></h2>
       </div>
 
-      <div id="biliography">
-        <hr id="bibliography_line"></hr>
-        <div style="margin-left: 5px; margin-top: 5px">
+    <div class="block_content block_content_text">
+      <div>
     <%#*Autor%>
           <% unless  bib["author"] == nil  %>
             <% author = bib["author"].to_s.split(' ') %>
@@ -54,23 +51,17 @@
 
     <%#*URL%>
           <% unless  bib["url"] == nil  %>
-            URL: <u style="color: #8b94b7"><a style="color: #1c4785;" target="_blank" href= <%= bib["url"] %>><%= bib["url"] %></a></u><br />
+          URL: <a target="_blank" class="link_content" href= <%= bib["url"] %>><%= bib["url"] %></a><br />
           <% end %>
-          &nbsp;
-
         </div>
-        <div style="background-color: #FFF">
-          <br/>
         </div>
-
-
       </div>
     <%  end %>
 
   <% else %>
+  <div class="block_wrapper">
     <div class="block_content block_content_text">
       <%= t(:bibliography_null) %>
     </div>
+  </div>
   <% end %>
-
-</div>

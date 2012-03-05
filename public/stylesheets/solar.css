@@ -2303,44 +2303,6 @@ ul.message_menu_listbox li ul a:hover{
     color: #214684;
 }
 
-/*BIBLIOGRAFIA*/
-
-#biliography{
-    width: 730px;
-    font-size: 12px;
-    font-family:'Trebuchet',Arial;
-    color: #000;
-    background-color: #F5F8FB;
-    /*line-height: 25px;*/
-    white-space: normal;
-    word-wrap: break-word;
-    margin-top: -11px;
-}
-#bibliography_line{
-    color: #1C4785;
-    border: solid 2px;
-    font-weight: bold;
-    width: 730px;
-    margin-top: 0px;
-}
-#biliography_title{
-    font-family: "Trebuchet";
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: -22px;
-    margin-left: 31px;
-    background-color: #FFF;
-    /*text-transform: capitalize;*/
-
-}
-#biliography_photo{
-    margin-bottom: 13px;
-    background-color: #FFF;
-}
-#biliography_header_content{
-    margin-top: 15px;
-}
-
 /**
  * Tabelas - geral e files
 */
