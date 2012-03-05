@@ -271,5 +271,4 @@ PermissionsMenu.create([
     
     #basico
     {:profile_id => 12, :menu_id => 100}
-
   ])
