@@ -113,13 +113,9 @@ h2 {
 
 #flash_message {
     border: 1px solid #d0d0d0;
-    padding: 5px 10px 4px 10px;
+    padding: 5px 10px 4px 25px;
     margin: 10px 0;
     font-size: 10pt;
-}
-
-#flash_message span {
-    margin-left: 15px;
 }
 
 #flash_message.success {
@@ -154,15 +150,12 @@ label
     color: #003e7a;
     display: inline-block;
     width: 140px;
-    font-family:'Verdana', Arial;
-    white-space: nowrap;
 }
 
 label.menor{
     display: inline-block;
     white-space: nowrap;
     width: auto;
-    font-family:'Verdana', Arial;
     font-size: 8pt;
     font-weight: normal;
 }
@@ -238,8 +231,9 @@ textarea{
     color           : #222;
     background-color: #fff;
     border          : 1px solid #dedede;
-    font-size	    : 13px;
     padding         : 5px;
+    font-family: 'PT Sans', sans-serif;
+    font-size: 10pt;
 }
 
 h1.page_title{
@@ -1427,6 +1421,10 @@ div.alter_photo_text {
 .block_content {
     font-size: 10pt;
     background-color: #F5F8FB;
+}
+
+.block_content_overflow {
+    overflow: hidden;
 }
 
 /* ajustando a largura do bloco esquerdo e adicionando a borda divisoria*/
@@ -2827,9 +2825,6 @@ td.td_student a {color: #2a538d;}
 
 
 /******** Atualização de dados de usuário **********/
-.user_data_form_section{
-    margin-bottom: 15px;
-}
 .user_data_form_buttons{
     text-align: center;
     font-size: 11pt;
@@ -2842,9 +2837,14 @@ td.td_student a {color: #2a538d;}
     padding:2px 0;
 }
 
+.form_user_content textarea {
+    margin-bottom: 5px;
+    width: 415px;
+    padding: 2px;
+}
+
 .form_label {
     text-align: right;
-    padding-right: 10px;
 }
 
 .form_label:first-child {
@@ -2852,15 +2852,26 @@ td.td_student a {color: #2a538d;}
 }
 
 .form_label label {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-right: 5px;
+    padding-top: 2px;
+    vertical-align: top;
 }
 .form_label_multiline {
     vertical-align: top;
 }
+.form_field input {
+    
+}
+
+.form_field input, .form_field select {
+    padding: 2px;
+    margin-bottom: 4px;
+    font-size: 10pt;
+}
 
 .form_inner_label {
     padding: 0 10px 0 0;
+    width: auto;
 }
 
 td.form_error {
@@ -2903,11 +2914,10 @@ td.form_error {
     font-style: italic;
     font-size: 9pt;
     color: #E03838;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    width: 98%;
     display: block;
-    text-align: right;
+    margin-right: 2px;
+    margin-top: 2px;
+    float: right;
 }
 .form_usuario_table{
     color: #fff;
@@ -2923,15 +2933,18 @@ td.form_error {
 }
 
 #user_gender {
-    width: 50px;
+    width: 45px;
 }
 
 #address_number, #address_neighborhood, #country, #telephone {
-    width: 105px;
+    width: 128px;
 }
 
-#address_complement, #zipcode, #cell_phone, #user_state {
-    width: 120px;
-    float:right;
+#address_complement, #zipcode, #cell_phone {
+    width: 128px;
     margin: 0px;
+}
+
+#user_state {
+    width: 134px;
 }
