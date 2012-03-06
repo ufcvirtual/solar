@@ -16,12 +16,12 @@ class SupportMaterialFile < ActiveRecord::Base
 
   validates_attachment_content_type_in_black_list :attachment
 
+  def self.search_files(allocation_tag_id, folder_name = '')
 
-
-  def self.search_files(allocation_tag_id)
-
-    #Ids das allocationTags relacionadas à consulta
-    relatedAllocationTagIds = AllocationTag.find_related_ids(allocation_tag_id.to_s)
+    #Ids das allocation_tags relacionadas à consulta
+    related_allocation_tag_ids = AllocationTag.find_related_ids(allocation_tag_id.to_s)
+    
+    in_folder = " AND sm.folder = '#{folder_name}' " if (folder_name != '')
 
     sql = "
       SELECT
@@ -29,7 +29,8 @@ class SupportMaterialFile < ActiveRecord::Base
       FROM
         support_material_files sm
       where
-        allocation_tag_id in (#{relatedAllocationTagIds.join(",")})
+        allocation_tag_id in (#{related_allocation_tag_ids.join(",")}) 
+        #{in_folder}
       ORDER BY sm.folder, sm.attachment_content_type, sm.attachment_file_name
     "
     return SupportMaterialFile.find_by_sql(sql);
