@@ -124,7 +124,7 @@ SQL
   # Recupera todos os profiles do usuario
   ##
   def self.all_by_user_id(user_id)
-    profiles = Allocation.find(:all, :select => "DISTINCT profile_id AS id", :conditions => ["user_id = ?", user_id]).collect{|p| p.id}
+    profiles = Allocation.find(:all, :select => "DISTINCT profile_id AS id", :conditions => ["user_id = ? AND status = ?", user_id, Allocation_Activated]).collect{|p| p.id}
     return (profiles.length > 0) ? profiles.join(',') : 0
   end
 

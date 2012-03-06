@@ -3,15 +3,6 @@ class AllocationsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    #if current_user
-    #  @user = Allocation.find(current_user.id)
-    #end
-    #render :action => :mysolar
-
-    #respond_to do |format|
-    #  format.html # index.html.erb
-    #  format.xml  { render :xml => @users }
-    #end
   end
 
   def show
