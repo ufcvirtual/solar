@@ -1538,22 +1538,30 @@ h2, table tr.block_title th {
 }
 
 /* tela de participantes */
-.participants_list {
+.participants_list_item {
     border:0;
-    -moz-background-inline-policy:continuous;
-    -moz-background-origin:padding;
     float:left;
-    margin:5px 5px 0px 0px;
-    padding-top:2px;
-    padding-bottom: 2px;
+    margin:7px 0px 7px 0px;
     position:relative;
-    width:150px;
-    min-height:155px;
+    width:155px;
     text-align:center;
-    background-color: #f2f6f6;
-    font-family: Trebuchet;
-    font-size: 11px;
 }
+
+.participants_list_item > img {
+    padding-bottom: 5px;
+}
+
+.participant_name {
+    line-height: 11pt;
+    font-variant: small-caps;
+    font-size: 11pt;
+}
+
+.participant_role {
+    font-size: 9pt;
+    line-height: 8pt;
+}
+
 .participants_list_none {
     border:0;
     -moz-background-inline-policy:continuous;
@@ -1568,14 +1576,6 @@ h2, table tr.block_title th {
     background-color: #f2f6f6;
     font-family: Trebuchet;
     font-size: 11px;
-}
-.portlet_participants_header {
-    cursor: default;
-    padding: 5px;
-    background-color: #e6eced;
-    height:20px;
-    min-width: 140px;
-    margin-right: 5px;
 }
 .participants_icons {
     position: absolute;
