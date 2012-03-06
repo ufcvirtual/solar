@@ -99,17 +99,17 @@ module DiscussionPostsHelper
     #Lista de arquivos
     unless post.discussion_post_files.count == 0
       form_string <<   '<div class="forum_post_attachment">'
-      form_string <<   '<div><b>' << t(:forum_file_list) << '</b></div>'
+      form_string <<   '<h3>' << t(:forum_file_list) << '</h3>'
 
-      form_string <<      '<ul class="forum_post_attachment_list">'
+      form_string <<     '<ul class="forum_post_attachment_list">'
       post.discussion_post_files.each do |file|
-        form_string <<   '<li>'
-        form_string <<   '<a href="#">'<<(link_to file.attachment_file_name, :controller => "discussions", :action => "download_post_file", :idFile => file.id, :id => @discussion.id)<<'</a>&nbsp;&nbsp;'
-        form_string <<   (link_to (image_tag "discussion_file_remove.png", :alt => t(:forum_remove_file)), {:controller => "discussions", :action => "remove_attached_file", :idFile => file.id, :current_page => @current_page, :id => @discussion.id}, :confirm=>t(:forum_remove_file_confirm), :title => t(:forum_remove_file)) if editable && can_interact
-        form_string <<   '</li>'
+        form_string <<    '<li>'
+        form_string <<      '<a href="#">'<<(link_to file.attachment_file_name, :controller => "discussions", :action => "download_post_file", :idFile => file.id, :id => @discussion.id)<<'</a>&nbsp;&nbsp;'
+        form_string <<   (link_to (image_tag "icon_delete_small.png", :alt => t(:forum_remove_file)), {:controller => "discussions", :action => "remove_attached_file", :idFile => file.id, :current_page => @current_page, :id => @discussion.id}, :confirm=>t(:forum_remove_file_confirm), :title => t(:forum_remove_file), 'data-tooltip' => t(:forum_remove_file)) if editable && can_interact
+        form_string <<    '</li>'
       end
-      form_string <<      '</ul>'
-      form_string <<      '</div>'
+      form_string <<     '</ul>'
+      form_string <<   '</div>'
     end
 
     return form_string
