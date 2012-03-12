@@ -606,3 +606,10 @@ td.form_error {
 #pwd_box_buttons {
     margin-left: 165px;
 }
+
+/* Página da equipe */
+
+.team .sector {
+    color: #003e7a;
+    margin-top: 5px;
+}

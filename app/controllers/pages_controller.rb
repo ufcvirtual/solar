@@ -6,6 +6,7 @@ class PagesController < ApplicationController
   end
 
   def team
+	@setores = YAML::load(File.open('public/members.yml'))
     render :layout => 'login'
   end
 

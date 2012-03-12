@@ -12,11 +12,16 @@
 
   <div class="block_wrapper">
     <div class="block_content">
-
-
-      <input type="button" value='<%=t(:back)%>' class="solar_button" onclick="document.location.href='<%=login_path%>'"/>
-
+      <div class="team">
+        <% @setores.values.each do |setor| %>
+            <div class="sector"><%= setor['title'] %></div>
+            <% setor['members'].each do |member| %>
+              <div class="member"><%= member %></div>
+            <% end %>
+        <% end %>
+      </div>
     </div>
+    <%= link_to t(:back), :back, :class => 'solar_button' %>
   </div>
 
 </div>
