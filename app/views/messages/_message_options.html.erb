@@ -1,7 +1,5 @@
 <%= form_for :message, :url => {:action => ''}, :html => {:id => 'message_list', :class => 'message_div_options'} do |f| %>
-  &nbsp;
   <%= link_to t(:message_new)+' ', {:action => 'new', :search => @search_text}, {:class=>'message_link'} %>
-
   <% if (@type!="trashbox" && !@type.nil?) %>
     <ul class="message_menu_listbox">
       <li><a href="#"><%=t(:message_select)%> <%=image_tag "icon_arrow_down.png", :alt=>t(:message_select)%></a>
@@ -10,13 +8,6 @@
           <li><span id="check_none" class="message_link"><%=t(:message_select_none)%></span></li>
           <li><span id="check_read" class="message_link"><%=t(:message_select_read)%></span></li>
           <li><span id="check_unread" class="message_link"><%=t(:message_select_unread)%></span></li>
-        </ul>
-      </li>
-    </ul>
-    <ul class="message_menu_listbox">
-      <li><a href="#"><%=t(:message_move)%> <%=image_tag "icon_arrow_down.png", :alt=>t(:message_move)%></a>
-        <ul>
-          <li><span id="link_move_to_trash" class="message_link"><%=t(:message_trash)%></span></li>
         </ul>
       </li>
     </ul>
@@ -30,16 +21,16 @@
     <% end %>
   <% end %>
 
-  <% if @type != "trashbox" %>
-    <span id="link_remove_message" class="message_link"><%=t(:message_delete)%></span>
-  <% end %>
-
   <% if (@type != "trashbox" && !@type.nil?) %>
     <span id="link_mark_as_read" class="message_link"><%=t(:message_mark_as_read)%></span>
   <% end %>
 
   <% if @type != "trashbox" %>
     <span id="link_mark_as_unread" class="message_link"><%=t(:message_mark_as_unread)%></span>
+  <% end %>
+
+  <% if @type != "trashbox" %>
+    <span id="link_remove_message" class="message_link"><%=t(:message_delete)%></span>
   <% end %>
 
   <% if @type == "trashbox" %>
@@ -50,9 +41,6 @@
 
 <script type="text/javascript">
   $(function($) {
-     $("#link_move_to_trash").click(function() {
-       $('#link_remove_message').click();
-     })
 
      // Restaurar mensagens
      $("#link_restore_message").click(function() {
@@ -136,6 +124,11 @@
             $(this).removeAttr("checked");
         });
      });
+
+    $(".selected_messages:input").click(function(){
+      console.info('OK');
+      $(this).parents('.message_line').toggleClass('message_line_highlight');
+    })
 
   });
 

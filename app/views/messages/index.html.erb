@@ -1,10 +1,10 @@
-<div class="message_external_div">
-  <span class="page_title"><%= t(:message_title) %></span>
+<div class="block_wrapper">
+
   <%= render 'message_header' %>
 
   <%= render 'message_options' %>
 
-  <div class="message_div_list">
+  <div class="block_content">
 
     <% if !@messages.nil? %>
       <% if @messages.length >0 %>
@@ -12,7 +12,7 @@
           <% @messages.each do |message| %>
             <tr class="message_line">
 
-              <td style="width:30px"><%=check_box_tag 'checkbox_message', message.id, checked = false, {:class => 'selected_messages'}%>
+              <td class="message_line_check"><%=check_box_tag 'checkbox_message', message.id, checked = false, {:class => 'selected_messages'}%>
                 <% if message.was_read == 't' %>
                   <% css_class = "message_read" %>
                 <% else %>

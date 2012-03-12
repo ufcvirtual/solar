@@ -5,18 +5,17 @@
 
     <%= form_for :message, :url => {:action => 'send_message'}, :html => {:id => 'form_message_text', :multipart => true} do |f| %>
 
-      <div class="message_div_options_new">&nbsp;</div>
-
       <%= render 'message_header_to' %>
 
       <div id="div_new_message">
         <textarea id="newMessageTextBox" name="newMessageTextBox"><%= @original_message %></textarea>
       </div>
 
-      <div class="message_div_options_new">&nbsp;
-        <%= f.submit t(:message_send)+' ', :id => 'send_message', :class=> 'message_link', :alt=> t(:message_send) %>
+      <div class="message_new_action">
+        <%= f.submit t(:message_send)+' ', :id => 'send_message', :class=> 'btn btn_main', :alt=> t(:message_send) %>
+        <%= f.submit t(:message_discard)+' ', :id => 'discard_message', :class=> 'btn btn_default', :alt=> t(:message_discard) %>
         <%= hidden_field_tag :id, @original_message_id %>
-        <%= link_to t(:message_discard)+' ', {:action => 'index', :type => 'index'}, {:class=>'message_link'} %>
+        <%= link_to t(:message_discard)+' ', {:action => 'index', :type => 'index'}, {:class=>'btn btn_caution'} %>
       </div>
 
     <% end %>

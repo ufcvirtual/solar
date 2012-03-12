@@ -255,8 +255,7 @@ h1.page_title{
     vertical-align: top;
 }
 .text_none {
-    font-family: Trebuchet;
-    font-size: 11px;
+    font-size: 10pt;
     color: #003e7a;
     padding: 5px;
 }
@@ -2024,111 +2023,123 @@ h2, table tr.block_title th {
     text-align: right;
 }
 
-/* tela de mensagens */
+/* === TELA DE MENSAGENS  === */
 .label_text {
     font-size: 10pt;
     padding: 6px;
     color: #000;
 }
 
-.message_external_div {
-    width: 780px;
-}
+/* mensagem: busca */
 .message_search_div,.message_div{
     color: #000;
-    font-size: 12px;
+    font-size: 10pt;
     text-decoration: none;
 }
-.message_div {
-    padding-top: 15px;
-    border-bottom: 2px solid #B4B3B7
+
+/* mensagem: cabecalho, area de titulo */
+#message_general_title {
+    border-bottom: 1px solid #d0d0d0;
+    padding-bottom: 0px !important;
+    height: 25px;
+}
+#message_general_title > div {
+    /*float: left;*/
+    height: 22px;
 }
 .message_general_div_option, .message_general_div_option_active {
     display: inline-block;
-    margin-right: 25px;
-    z-index: 10;
-}
-.message_general_div_option_active {
-    border-bottom: 3px solid #214684;
+    padding: 0 8px;
     z-index: 20;
 }
-.message_main_menu{
-    color: #214684;
-    font-size: 12px;
-    text-decoration: none;
-    cursor: pointer;
-    display: inline;
-    height: 25px;
-    padding-left: 5px;
-    padding-right: 5px;
+.message_general_div_option_active {
+    border-bottom: 2px solid #214684;
+}
+.message_general_div_option img, .message_general_div_option_active img {
     vertical-align: bottom;
 }
 .message_div_options, .message_div_options_new, .message_div_show, .message_header_new {
     width: auto;
 }
 .message_div_options, .message_div_options_new {
-    background-color: #E7EDED;
-    height: 25px;
-    padding: 3px;
-    margin: 0;
-    margin-top: -5px;
+    background-color: #ffffff;
+    height: 26px;
+    margin-top: 2px;
     vertical-align: middle;
-}
-.message_div_options {
-    border-top: 3px solid #CCCCCC;
+    border-bottom: 1px solid #d0d0d0;
 }
 .message_div_options_new {
     margin: 0;
 }
+.message_new_action {
+    margin-top: 10px;
+}
+#menu_inbox .text_alert_message {
+    margin-left: 3px;
+}
+
+.message_link_menu{
+    text-decoration: none;
+    font-size: 11pt;
+    margin-left: 3px;
+}
+
+/* mensagem: rodape, navegação */
 .message_div_navigation{
-    background-color: #E7EDED;
-    height: 25px;
-    text-align: right;
+    /* background-color: #f9f9f9;*/
+    /*border-top: 1px solid #d0d0d0;*/
+    height: 20px;
+    text-align: center;
     padding: 3px;
 }
-.message_link, .message_link_menu{
-    font-size: 12px;
-    font-family:'Trebuchet',Arial;
+
+/* mensagem: links do menu */
+.message_link, .message_link_menu {
     text-decoration: none;
-    margin-right: 10px;
-    color: #214684;
     cursor: pointer;
     background-color: transparent;
     border: none;
 }
-.message_link_menu{
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: bold;
-    vertical-align: super;
+
+.message_link {
+    font-size: 10pt;
 }
-.message_link_nav{
-    font-size: 12px;
-    font-family:'Trebuchet',Arial;
-    text-decoration: underline;
-    margin-right: 10px;
-    color: #214684;
-    cursor: pointer;
+
+.message_link, .message_menu_listbox {
+    padding: 6px 10px 4px 10px;
 }
+
+#message_list > .message_link:hover {
+    border-bottom: 2px solid #214684;
+}
+
+/* mensagem: listagem das mensagens */
 .message_div_list{
-    background-color: #F7F7F7;
     width: 100%;
 }
 .message_div_show {
-    background-color: #F7F7F7;
     padding-right: 100px;
     min-height: 100px;
     white-space: normal;
-    font-size: 12px;
+    font-size: 10pt;
     padding: 20px;
 }
 .message_line{
-    background-color: #f9f9f9;
-    height: 25px;
+    /*background-color: #f9f9f9;*/
+    height: 28px;
+}
+.message_line_highlight {
+    background-color: #FFFBE4;
+}
+/*.message_line:hover {
+    background-color: #EEF3FB;
+}*/
+.message_line_check {
+    width: 30px;
+    text-align: center;
 }
 .message_nav_text {
-    font-size: 12px;
-    font-family:'Trebuchet',Arial;
+    font-size: 10pt;
     text-decoration: none;
     color: #000;
     width: auto;
@@ -2138,12 +2149,9 @@ h2, table tr.block_title th {
     width: 500px;
     padding: 0px;
     font-size: 11px;
-    font-family:'Trebuchet',Arial;
 }
 .message_read, .message_unread{
     color: #666;
-    font-size: 12px;
-    font-family:'Trebuchet',Arial;
     font-weight: normal;
     white-space: normal;
 }
@@ -2152,8 +2160,7 @@ h2, table tr.block_title th {
     font-weight: bold;
 }
 .message_label {
-    font-size: 10px;
-    font-family:'Trebuchet',Arial;
+    font-size: 8pt;
     color: #000;
     font-weight: normal;
     margin: 0px;
@@ -2168,16 +2175,24 @@ h2, table tr.block_title th {
     text-decoration: underline;
 }
 .message_header_new {
-    background-color: #ececf0;
+    width: 100%;
 }
 .message_div_text_read {
     background-color: #F7F7F7;
     width: 100%;
 }
+
 .message_text_to, .message_text_body {
-    font-size: 12px;
-    font-family:'Trebuchet',Arial;
+    font-size: 10pt;
     color: #000;
+    padding: 2px 5px;
+}
+.message_text_to, .message_text_to_label {
+    padding-top: 5px;
+}
+.message_text_to_label {
+    width: 60px;
+    text-align: right;
 }
 .message_text_body {
     padding: 20px;
@@ -2190,6 +2205,19 @@ h2, table tr.block_title th {
     color: #214684;
     cursor: pointer;
 }
+.message_new {
+    padding-top: 4px;
+}
+.message_new_textbox {
+    width: 95%;
+    font-size: 10pt;
+}
+.message_attach_item {
+    padding: 5px 0 0 0;
+}
+#newPostUploadPanel {
+    padding-bottom: 5px;
+}
 #recipients_selected {
     border: 1px solid #ccc;
     width: 435px;
@@ -2199,8 +2227,7 @@ h2, table tr.block_title th {
     overflow: auto;
 }
 #div_contacts{
-    font-size: 11px;
-    font-family:'Trebuchet',Arial;
+    font-size: 11pt;
     text-decoration: none;
     padding: 5px;
     color: #214684;
@@ -2228,11 +2255,12 @@ h2, table tr.block_title th {
 ul{
     list-style-type:none;
 }
-ul.message_menu_listbox{
-    width:  80px;
-    margin:  0px;
+ul.message_menu_listbox {
+    width: 80px;
+    margin: 0px 0px 0px 8px;
     padding: 0px;
-    display: inline-block;}
+    display: inline-block;
+}
 ul.message_menu_listbox li{
     position: relative;
 }
@@ -2240,10 +2268,8 @@ ul.message_menu_listbox li:hover{
     position: relative;
 }
 ul.message_menu_listbox li a{  /* menu nivel 1 */
-    font-size: 12px;
-    font-family:'Trebuchet',Arial;
+    font-size: 10pt;
     text-decoration: none;
-    color: #214684;
     cursor: pointer;
     display:block;
 }
@@ -2254,7 +2280,7 @@ ul.message_menu_listbox li ul{
     line-height: 18px;
     margin: 0px;
     padding: 0px;
-    top:14px;
+    top:20px;
     left:0;
     margin-right: 0px;
     background:#fff;
@@ -2268,12 +2294,12 @@ ul.message_menu_listbox li ul a{  /* menu nivel 2 - opcoes */
     background: #fff;
     padding: 0px;
     margin:  2px;
-    font-size: 11px;
-    font-family: 'Trebuchet',Arial;
+    font-size: 10pt;
     text-decoration: none;
 }
 ul.message_menu_listbox li ul a:hover{
-    background:#eee;}
+    background:#eee;
+}
 
 /* paginacao */
 .next_page, .prev_page, .current, .link_navigation {
@@ -2289,8 +2315,7 @@ ul.message_menu_listbox li ul a:hover{
     text-decoration: none;
 }
 .disabled, .message_div_navigation {
-    font-size: 12px;
-    font-family: 'Trebuchet',Arial;
+    font-size: 10pt;
     text-decoration: none;
     color: #B4B3B7;
     padding-left: 5px;
