@@ -2,7 +2,7 @@ class Bibliography < ActiveRecord::Base
 
   def self .bibliography_filter(list_allocations)
     ActiveRecord::Base.connection.select_all  <<SQL
-     SELECT t1.*
+     SELECT DISTINCT t1.*
          FROM bibliographies as t1
         INNER JOIN allocation_tags as t2 ON (t1.allocation_tag_id = t2.id)
          LEFT JOIN offers as t4 ON (t2.offer_id = t4.id)
