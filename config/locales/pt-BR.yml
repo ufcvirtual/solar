@@ -22,7 +22,7 @@
       not_today: "%d/%m"
       long: "%A, %d de %B de %Y, %H:%M h"
       normal: "%d/%m/%Y"
-      files: "%d/%m/%Y, %H:%M h"
+      files: "%d/%m/%Y, %H:%M"
       discussion_post_date: "%d/%m/%Y"
       discussion_post_hour: "%H:%M h"
       simple_day_and_month: "%d/%b"
@@ -743,11 +743,11 @@
   menu_curriculum_unit: Unidade Curricular
   menu_registration: Matrícula
   menu_history: Historico
-  
+
   #Course 
   new_course_title: Cadastro de Curso
   update_course_title: Atualização de Curso
-  
+
   devise:
     failure:
       already_authenticated: 'Você já está logado.'
@@ -791,9 +791,14 @@
       unlock_instructions:
         subject: 'Instruções de desbloqueio'
 
+  # suport material file
+  support_folder_name: Material de Apoio
+  support_download_all: Baixar todo o material de apoio como zip
+  support_download_all_folder: Baixar toda a pasta como zip
+
   # Support Material File Editor [em teste]
-  support_send_document: 'DOCUMENTO'
-  support_send_link: 'LINK'
-  support_create_paste: 'PASTA'
-  support_text_field_link: 'Cole aqui o link que deseja enviar'
-  support_new_paste: 'Nova Pasta'
+  support_send_document: DOCUMENTO
+  support_send_link: LINK
+  support_create_paste: PASTA
+  support_text_field_link: Cole aqui o link que deseja enviar
+  support_new_paste: Nova Pasta

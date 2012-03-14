@@ -18,7 +18,7 @@
       not_today: "%m/%d"
       long: "%B %d, %Y %H:%M"
       normal: "%m/%d/%Y"
-      files: "%m/%d/%Y, %H:%M h"
+      files: "%m/%d/%Y, %H:%M"
       discussion_post_date: "%m/%d/%Y"
       discussion_post_hour: "%H:%M h"
       simple_day_and_month: "%d/%b"
@@ -561,7 +561,7 @@
   menu_curriculum_unit: Curriculum Unit
   menu_registration: Registration
   menu_history: History
-  
+
   #Course
   new_course_title: New Course
   update_course_title: Update Course
@@ -611,7 +611,12 @@
         subject: 'Reset password instructions'
       unlock_instructions:
         subject: 'Unlock Instructions'
-        
+
+  # suport material file
+  support_folder_name: Support Material
+  support_download_all: Download all as zip
+  support_download_all_folder: Download all folder as zip
+
   # Support Material File Editor [em teste]
   support_send_document: 'DOCUMENT'
   support_send_link: 'LINK'

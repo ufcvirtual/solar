@@ -3,9 +3,9 @@ module FilesHelper
   ##
   # Download de arquivos
   ##
-  def download_file(redirect_error, pathfile)
+  def download_file(redirect_error, pathfile, filename = nil)
     if File.exist?(pathfile)
-      send_file pathfile
+      send_file pathfile, :filename => filename
     else
       respond_to do |format|
         flash[:error] = t(:error_nonexistent_file)
