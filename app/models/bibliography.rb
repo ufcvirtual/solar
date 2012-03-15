@@ -1,6 +1,6 @@
 class Bibliography < ActiveRecord::Base
 
-  def self .bibliography_filter(list_allocations)
+  def self.bibliography_filter(list_allocations)
     ActiveRecord::Base.connection.select_all  <<SQL
      SELECT DISTINCT t1.*
          FROM bibliographies as t1
