@@ -100,7 +100,7 @@ class SupportMaterialFileController < ApplicationController
               zipfile.mkdir(File.join(zip_name_folder, name_internal_folder))
             end
 
-            zipfile.add(File.join(zip_name_folder, name_internal_folder, file.attachment_file_name), file.attachment.path)
+            zipfile.add(File.join(zip_name_folder, name_internal_folder, file.attachment_file_name), file.attachment.path) if File.exists?(file.attachment.path.to_s)
           end
         end
       }
