@@ -1,5 +1,8 @@
-# MATERIAL DE APOIO ENCONTRADO NA PASTA MEDIA
-arquivo 1:
+##
+# Arquivos se encontram na diretório 'media'
+##
+
+arquivo1:
   id: 1
   allocation_tag_id: 9
   attachment_file_name: "1.pdf"
@@ -8,7 +11,7 @@ arquivo 1:
   attachment_updated_at: 2011-10-06 09:52:01.524322
   folder: AULAS
 
-arquivo 2:
+arquivo2:
   id: 2
   allocation_tag_id: 3
   attachment_file_name: "2.pdf"
@@ -17,7 +20,7 @@ arquivo 2:
   attachment_updated_at: 2011-10-06 09:52:01.524322
   folder: AULAS
 
-arquivo 3:
+arquivo3:
   id: 3
   allocation_tag_id: 1
   attachment_file_name: "1.jpg"
@@ -26,7 +29,7 @@ arquivo 3:
   attachment_updated_at: 2011-10-06 09:52:01.524322
   folder: AULAS
 
-arquivo 4:
+arquivo4:
   id: 4
   allocation_tag_id: 3
   attachment_file_name: "1.png"
@@ -35,7 +38,7 @@ arquivo 4:
   attachment_updated_at: 2011-10-06 09:52:01.524322
   folder: AULAS
 
-arquivo 5:
+arquivo5:
   id: 5
   allocation_tag_id: 3
   attachment_file_name: "1.txt"
@@ -44,7 +47,7 @@ arquivo 5:
   attachment_updated_at: 2011-10-10 09:52:01.524322
   folder: PASTA
 
-arquivo 6:
+arquivo6:
   id: 6
   allocation_tag_id: 3
   attachment_file_name: "3.pdf"
@@ -53,16 +56,16 @@ arquivo 6:
   attachment_updated_at: 2011-01-06 09:52:01.524322
   folder: OUTRA PASTA
 
-arquivo 7:
+arquivo7:
   id: 7
   allocation_tag_id: 3
-  attachment_file_name: "a.ppt"
+  attachment_file_name: "a.odp"
   attachment_content_type: "application/vnd.ms-powerpoint"
   attachment_file_size: 2234
   attachment_updated_at: 2011-10-10 15:10:00.524322
   folder: SLIDES
 
-url 1:
+url1:
   id: 8
   allocation_tag_id: 3
   attachment_file_name: 
@@ -72,7 +75,7 @@ url 1:
   folder: LINKS
   url: "http://www.google.com"
 
-url 2:
+url2:
   id: 9
   allocation_tag_id: 3
   attachment_file_name: 
@@ -82,7 +85,7 @@ url 2:
   folder: LINKS
   url: "http://www.globo.com"
 
-url 3:
+url3:
   id: 10
   allocation_tag_id: 3
   attachment_file_name: 
@@ -92,7 +95,7 @@ url 3:
   folder: LINKS
   url: "http://www.baixaki.com.br"
 
-url 4:
+url4:
   id: 11
   allocation_tag_id: 3
   attachment_file_name: 

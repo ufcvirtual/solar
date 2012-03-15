@@ -45,7 +45,6 @@ class SupportMaterialFileController < ApplicationController
     authorize! :download_folder_file_ziped, SupportMaterialFile
 
     allocation_tag_ids = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
-
     curriculum_unit_id = active_tab[:url]["id"]
     redirect_error = {:action => 'list', :id => curriculum_unit_id}
     
