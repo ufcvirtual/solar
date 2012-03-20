@@ -791,7 +791,7 @@
       unlock_instructions:
         subject: 'Instruções de desbloqueio'
 
-  # suport material file
+ # suport material file
   support_folder_name: Material de Apoio
   support_download_all: Baixar todo o material de apoio como zip
   support_download_all_folder: Baixar toda a pasta como zip
@@ -799,6 +799,31 @@
   # Support Material File Editor [em teste]
   support_send_document: DOCUMENTO
   support_send_link: LINK
-  support_create_paste: PASTA
+  support_create_folder: PASTA
   support_text_field_link: Cole aqui o link que deseja enviar
-  support_new_paste: Nova Pasta
+  support_new_folder: Nova Pasta
+  support_delete: Excluir
+  support_add: Adicionar
+  support_cancel: Cancelar
+  support_edit: Editar
+  support_rename: Renomear
+  support_error_no_item_selected: Erro ao deletar. Nenhum item foi selecionado
+  support_error_missing_link: Link deve ser preenchido
+  support_sent_link: Link enviado com sucesso
+  support_error_existing_folder: Pasta já existente
+  support_error_missing_folder: Pasta deve ser preenchida
+  support_error_existing_file: Arquivo escolhido já existente nesta pasta
+  support_all_files: Todos os arquivos
+  support_file_message: 'O tamanho não deve exceder 5MB. Formato suportados: doc, docx, xls, xlsx, ppt, pptx, odf, zip, rar, wmv, avi, mp4, mp3, pdf'
+  support_no_link_added: Nenhum link adicionado
+  support_no_file_added: Nenhum arquivo adicionado
+  support_confirm_exclusion_folder: Você tem certeza que deseja deletar esta pasta?
+  support_rename_folder: Renomear pasta
+  support_delete_folder: Deletar pasta
+  support_folder_renamed: Pasta renomeada com sucesso
+  support_no_changes: Nenhuma alteração feita
+  support_download_folder: Baixar pasta
+  support_allocation_curriculum_unit: Unidade Curricular
+  support_allocation_offer: Oferta
+  support_allocation_group: Turma
+  support_folder_temporary_message: 'Esta pasta é temporária. Para concluir sua criação, envie um arquivo'

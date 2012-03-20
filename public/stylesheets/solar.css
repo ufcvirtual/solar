@@ -113,9 +113,13 @@ h2 {
 
 #flash_message {
     border: 1px solid #d0d0d0;
-    padding: 5px 10px 4px 25px;
+    padding: 5px 10px 4px 10px;
     margin: 10px 0;
     font-size: 10pt;
+}
+
+#flash_message span {
+    margin-left: 15px;
 }
 
 #flash_message.success {
@@ -150,12 +154,15 @@ label
     color: #003e7a;
     display: inline-block;
     width: 140px;
+    font-family:'Verdana', Arial;
+    white-space: nowrap;
 }
 
 label.menor{
     display: inline-block;
     white-space: nowrap;
     width: auto;
+    font-family:'Verdana', Arial;
     font-size: 8pt;
     font-weight: normal;
 }
@@ -173,7 +180,7 @@ a.link_content_del {
     text-decoration: underline;
 }
 
-a.link_content, .forum_post_attachment_list a {
+a.link_content {
     color: #204783;
     text-decoration: underline;
 }
@@ -231,9 +238,8 @@ textarea{
     color           : #222;
     background-color: #fff;
     border          : 1px solid #dedede;
+    font-size       : 13px;
     padding         : 5px;
-    font-family: 'PT Sans', sans-serif;
-    font-size: 10pt;
 }
 
 h1.page_title{
@@ -1422,10 +1428,6 @@ div.alter_photo_text {
     background-color: #F5F8FB;
 }
 
-.block_content_overflow {
-    overflow: hidden;
-}
-
 /* ajustando a largura do bloco esquerdo e adicionando a borda divisoria*/
 .block_content > .block_left {
     width: 369px;
@@ -1537,30 +1539,22 @@ h2, table tr.block_title th {
 }
 
 /* tela de participantes */
-.participants_list_item {
+.participants_list {
     border:0;
+    -moz-background-inline-policy:continuous;
+    -moz-background-origin:padding;
     float:left;
-    margin:7px 0px 7px 0px;
+    margin:5px 5px 0px 0px;
+    padding-top:2px;
+    padding-bottom: 2px;
     position:relative;
-    width:155px;
+    width:150px;
+    min-height:155px;
     text-align:center;
+    background-color: #f2f6f6;
+    font-family: Trebuchet;
+    font-size: 11px;
 }
-
-.participants_list_item > img {
-    padding-bottom: 5px;
-}
-
-.participant_name {
-    line-height: 11pt;
-    font-variant: small-caps;
-    font-size: 11pt;
-}
-
-.participant_role {
-    font-size: 9pt;
-    line-height: 8pt;
-}
-
 .participants_list_none {
     border:0;
     -moz-background-inline-policy:continuous;
@@ -1575,6 +1569,14 @@ h2, table tr.block_title th {
     background-color: #f2f6f6;
     font-family: Trebuchet;
     font-size: 11px;
+}
+.portlet_participants_header {
+    cursor: default;
+    padding: 5px;
+    background-color: #e6eced;
+    height:20px;
+    min-width: 140px;
+    margin-right: 5px;
 }
 .participants_icons {
     position: absolute;
@@ -1894,14 +1896,9 @@ h2, table tr.block_title th {
 }
 
 .forum_post_inner_content {
-    padding: 5px 5px 0 5px;
+    padding: 5px;
     background-color: #F5F8FB;
     word-wrap: break-word;
-}
-
-.forum_post_inner_content p {
-    margin-bottom: 0px;
-    padding-bottom: 7px;
 }
 
 .forum_post .forum_post_inner_content {
@@ -1967,32 +1964,25 @@ h2, table tr.block_title th {
 .forum_post_buttons{
     text-align: right;
     background-color: #F5F8FB;
-    padding-bottom: 5px;
+    padding-bottom: 3px;
     padding-right: 3px;
     padding-left: 3px;
 }
 
 .forum_post_attachment{
-    padding: 0 0 5px 7px;
+    -webkit-padding-start:7px;
+    padding-left:7px;
     background-color: #F5F8FB;
 }
 
-.forum_post_attachment h3 {
-    padding-bottom: 4px;
+.forum_post_attachment > div {
+    border-bottom: 1px solid #d0d0d0;
+    margin-right: 7px;
 }
 
 .forum_post_attachment_list {
-    list-style: circle;
+    list-style: square;
     padding-left: 15px;
-}
-
-.forum_post_attachment_list li {
-    padding-bottom: 4px;
-}
-
-.forum_post_attachment_list li img {
-    width: 12px;
-    vertical-align: middle;
 }
 
 #post_attachment_wrapper div {
@@ -2338,6 +2328,44 @@ ul.message_menu_listbox li ul a:hover{
     padding-left: 5px;
     padding-right: 5px;
     color: #214684;
+}
+
+/*BIBLIOGRAFIA*/
+
+#biliography{
+    width: 730px;
+    font-size: 12px;
+    font-family:'Trebuchet',Arial;
+    color: #000;
+    background-color: #F5F8FB;
+    /*line-height: 25px;*/
+    white-space: normal;
+    word-wrap: break-word;
+    margin-top: -11px;
+}
+#bibliography_line{
+    color: #1C4785;
+    border: solid 2px;
+    font-weight: bold;
+    width: 730px;
+    margin-top: 0px;
+}
+#biliography_title{
+    font-family: "Trebuchet";
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: -22px;
+    margin-left: 31px;
+    background-color: #FFF;
+    /*text-transform: capitalize;*/
+
+}
+#biliography_photo{
+    margin-bottom: 13px;
+    background-color: #FFF;
+}
+#biliography_header_content{
+    margin-top: 15px;
 }
 
 /**
@@ -2770,12 +2798,6 @@ td.td_student a {color: #2a538d;}
 
 }
 
-.support_material_content_links{
-    background-color: #f7f7f8;
-    font-size: 12px;
-    color: #4B6380;
-    padding-left: 10px;
-}
 .support_material_files_informations{
     float: right;
     margin-right: 10px;
@@ -2820,13 +2842,98 @@ td.td_student a {color: #2a538d;}
     color: #000;
 }
 
+.delete_support_material_file_editor, .support_material_add, .support_material_add_link{
+    background-color: white;
+    border-color:white;
+    border:0;
+    padding:0;
+    cursor: pointer;
+}
+
+.support_material_message_no_files{
+    border-top: solid #B4B2B1 1px;
+    border-bottom: solid #B4B2B1 1px;
+    background-color: #F5F8FB;
+    height: 20px;
+    font-family: 'PT Sans', sans-serif;
+    font-style: italic;
+    font-size: 13px;
+    color: #666;
+    padding: 2px 0px 0px 10px;
+}
+
+.support_material_message_no_files:hover {
+    background-color: #eef3fb; 
+}
+
+/* material de apoio - editor - tabela */
+.support_material_buttons {
+    overflow: hidden;
+    padding: 4px 2px;
+}
+
+.support_material_folder_buttons {
+    overflow: hidden;
+    padding: 4px 2px;
+    cursor: pointer;
+}
+
+.support_material_buttons > div {
+    width: 80px;
+    border-right: 1px solid #d0d0d0;
+    float: left;
+    text-align: center;
+}
+
+.support_material_check_box {
+    margin-right:5px;
+}
+
+div.support_material_select {
+    width: 30px;
+    margin-left: 2px;
+}
+
+div.support_material_folder_actions {
+    float: right;
+    font-size: 11px;
+}
+
+div.support_material_folder_actions img {
+    padding: 0 0 0 5px;
+    margin: 0;
+    vertical-align: bottom;
+}
+
+#support_material_new_folder {
+    border-bottom-style: dashed;
+    border-bottom-color: #d0d0d0;
+}
+
+#support_material_new_folder img {
+    vertical-align: text-bottom;
+    margin-right: 0;
+}
+
+.new_file td {
+    font-size: 9pt;
+    color: #666;
+}
+
+.new_link input {
+    width: 560px;
+}
+
 /* material de apoio do editor (fim) */
 
 
 /******** Atualização de dados de usuário **********/
+.user_data_form_section{
+    margin-bottom: 15px;
+}
 .user_data_form_buttons{
     text-align: center;
-    font-size: 9pt;
+    font-size: 11pt;
 }
 .form_user_table {
     margin-top: 5px;
@@ -2836,14 +2943,9 @@ td.td_student a {color: #2a538d;}
     padding:2px 0;
 }
 
-.form_user_content textarea {
-    margin-bottom: 5px;
-    width: 415px;
-    padding: 2px;
-}
-
 .form_label {
     text-align: right;
+    padding-right: 10px;
 }
 
 .form_label:first-child {
@@ -2851,26 +2953,15 @@ td.td_student a {color: #2a538d;}
 }
 
 .form_label label {
-    padding-right: 5px;
-    padding-top: 2px;
-    vertical-align: top;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 .form_label_multiline {
     vertical-align: top;
 }
-.form_field input {
-    
-}
-
-.form_field input, .form_field select {
-    padding: 2px;
-    margin-bottom: 4px;
-    font-size: 10pt;
-}
 
 .form_inner_label {
     padding: 0 10px 0 0;
-    width: auto;
 }
 
 td.form_error {
@@ -2897,26 +2988,27 @@ td.form_error {
 }
 
 .login_form_link_return{
-    position		: relative;
-    top			: 10px;
-    background-color	: #fff;
-    color           	: #222;
+    position        : relative;
+    top         : 10px;
+    background-color    : #fff;
+    color               : #222;
     text-align          : center;
     line-height         : 25px;
 }
 .login_form_link_return:hover{
-    color           	: #222;
-    text-decoration 	: none;
+    color               : #222;
+    text-decoration     : none;
 }
 
 .form_requirement {
     font-style: italic;
     font-size: 9pt;
     color: #E03838;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    width: 98%;
     display: block;
-    margin-right: 2px;
-    margin-top: 2px;
-    float: right;
+    text-align: right;
 }
 .form_usuario_table{
     color: #fff;
@@ -2932,18 +3024,15 @@ td.form_error {
 }
 
 #user_gender {
-    width: 45px;
+    width: 50px;
 }
 
 #address_number, #address_neighborhood, #country, #telephone {
-    width: 128px;
+    width: 105px;
 }
 
-#address_complement, #zipcode, #cell_phone {
-    width: 128px;
+#address_complement, #zipcode, #cell_phone, #user_state {
+    width: 120px;
+    float:right;
     margin: 0px;
-}
-
-#user_state {
-    width: 134px;
 }

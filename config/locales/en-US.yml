@@ -618,8 +618,33 @@
   support_download_all_folder: Download all folder as zip
 
   # Support Material File Editor [em teste]
-  support_send_document: 'DOCUMENT'
-  support_send_link: 'LINK'
-  support_create_paste: 'PASTE'
-  support_text_field_link: 'Paste in here links'
-  support_new_paste: 'New Paste'
+  support_delete: Delete
+  support_send_document: DOCUMENT
+  support_send_link: LINK
+  support_create_folder: FOLDER
+  support_text_field_link: Paste in here links
+  support_new_folder: New Folder
+  support_add: Add
+  support_cancel: Cancel
+  support_edit: Edit
+  support_rename: Rename
+  support_error_no_item_selected: Error deleting. None item was selected
+  support_error_missing_link: Link must be filled
+  support_sent_link: Link sent successfully
+  support_error_existing_folder: Folder already exists
+  support_error_missing_folder: Folder must be filled
+  support_error_existing_file: File chosen already exists in this folder
+  support_all_files: All files
+  support_file_message: 'The size must not exceed 5MB. Supported formats: doc, docx, xls, xlsx, ppt, pptx, odf, zip, rar, wmv, avi, mp4, mp3, pdf'
+  support_no_link_added: No links added
+  support_no_file_added: No files added
+  support_confirm_exclusion_folder: Are you sure that you want to delete this folder?
+  support_rename_folder: Rename folder
+  support_delete_folder: Delete folder
+  support_folder_renamed: Folder renamed successfully
+  support_no_changes: No change made
+  support_download_folder: Download folder
+  support_allocation_curriculum_unit: Curriculum Unit
+  support_allocation_offer: Offer
+  support_allocation_group: Class
+  support_folder_temporary_message: "This folder is temporary. To conclude it's creation, send a file"

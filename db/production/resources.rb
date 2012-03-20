@@ -1,17 +1,17 @@
 # criando os recursos
 resources_arr = [
-	{:id => 1, :controller => 'users', :action => 'create', :description => 'Incluir novos usuarios no sistema'},
-	{:id => 2, :controller => 'users', :action => 'update', :description => 'Alteracao dos dados do usuario'},
-	{:id => 3, :controller => 'users', :action => 'mysolar', :description => 'Lista dos Portlest/Pagina inicial'},
-	{:id => 4, :controller => 'users', :action => 'update_photo', :description => 'Trocar foto'},
-	{:id => 5, :controller => 'users', :action => 'pwd_recovery', :description => 'Recuperar senha'},
+  {:id => 1, :controller => 'users', :action => 'create', :description => 'Incluir novos usuarios no sistema'},
+  {:id => 2, :controller => 'users', :action => 'update', :description => 'Alteracao dos dados do usuario'},
+  {:id => 3, :controller => 'users', :action => 'mysolar', :description => 'Lista dos Portlest/Pagina inicial'},
+  {:id => 4, :controller => 'users', :action => 'update_photo', :description => 'Trocar foto'},
+  {:id => 5, :controller => 'users', :action => 'pwd_recovery', :description => 'Recuperar senha'},
 
-	{:id => 6, :controller => 'offers', :action => 'show', :description => 'Visualizacao de ofertas'},
-	{:id => 7, :controller => 'offers', :action => 'update', :description => 'Edicao de ofertas'},
-	{:id => 8, :controller => 'offers', :action => 'showoffersbyuser', :description => 'Exibe oferta atraves de busca'},
+  {:id => 6, :controller => 'offers', :action => 'show', :description => 'Visualizacao de ofertas'},
+  {:id => 7, :controller => 'offers', :action => 'update', :description => 'Edicao de ofertas'},
+  {:id => 8, :controller => 'offers', :action => 'showoffersbyuser', :description => 'Exibe oferta atraves de busca'},
 
-	{:id => 9, :controller => 'groups', :action => 'show', :description => 'Visualizar turmas'},
-	{:id => 10, :controller => 'groups', :action => 'update', :description => 'Editar turmas'},
+  {:id => 9, :controller => 'groups', :action => 'show', :description => 'Visualizar turmas'},
+  {:id => 10, :controller => 'groups', :action => 'update', :description => 'Editar turmas'},
 
   {:id => 11, :controller => 'curriculum_units', :action => 'show', :description => 'Acessar Unidade Curricular'},
   {:id => 12, :controller => 'curriculum_units', :action => 'participants', :description => 'Listar participantes de uma Unidade Curricular'},
@@ -69,11 +69,10 @@ resources_arr = [
   {:id => 53, :controller => 'discussions', :action => 'post_file_upload', :description => 'Exibir janela para upload de arquivos no foruns'},
 
   # Material de apoio
-  {:id => 54, :controller => 'support_material_file', :action => 'list', :description => 'Visualizar material de apoio'},
-  {:id => 55, :controller => 'support_material_file', :action => 'download', :description => 'Baixar material de apoio'},
-  {:id => 56, :controller => 'support_material_file', :action => 'download_all_file_ziped', :description => 'Baixar material de apoio ZIPADO'},
-  {:id => 57, :controller => 'support_material_file', :action => 'download_folder_file_ziped', :description => 'Baixar pasta do material de apoio ZIPADO'},
-
+  {:id => 54, :controller => 'support_material_file', :action => 'list_visualization', :description => 'Visualizar material de apoio'},
+  {:id => 55, :controller => 'support_material_file', :action => 'download', :description => 'Baixar um arquivo de material de apoio'},
+  {:id => 56, :controller => 'support_material_file', :action => 'download_all_file_ziped', :description => 'Baixar todos os arquivos de material de apoio ZIPADO'},
+  {:id => 57, :controller => 'support_material_file', :action => 'download_folder_file_ziped', :description => 'Baixar arquivos de uma pasta do material de apoio ZIPADO'},
 
   #curso
   {:id => 58, :controller => 'courses', :action => 'create', :description => 'Criar novo curso'},
@@ -82,11 +81,13 @@ resources_arr = [
   {:id => 61, :controller => 'courses', :action => 'index', :description => 'inicio'},
   {:id => 62, :controller => 'courses', :action => 'destroy', :description => 'Apaga um curso'},
 
-  #Material de apoio do editor
-  {:id => 63, :controller => 'support_material_file_editor', :action => 'list', :description => 'Visulalizar arquivos do material de apoio do editor'},
-  {:id => 64, :controller => 'support_material_file_editor', :action => 'upload_link', :description => 'Upload de link do material de apoio'},
-  {:id => 65, :controller => 'support_material_file_editor', :action => 'upload_files', :description => 'Upload de arquivos do material de apoio'},
-  {:id => 66, :controller => 'support_material_file_editor', :action => 'delete_select_file', :description => 'Detetar arquivos do material de apoio do editor'}
+  # Material de apoio - editor
+  {:id => 63, :controller => 'support_material_file', :action => 'list_edition', :description => 'Visulalizar arquivos do material de apoio do editor'},
+  {:id => 64, :controller => 'support_material_file', :action => 'select_action_link', :description => 'Envia para o metodo de adicionar ou excluir links do material de apoio do editor'},
+  {:id => 65, :controller => 'support_material_file', :action => 'select_action_file', :description => 'Envia para o metodo de adicionar ou excluir arquivos ou renomeia uma pasta do material de apoio do editor'},
+  {:id => 66, :controller => 'support_material_file', :action => 'folder_verify', :description => 'Metodo que cria uma pasta temporaria e envia para a pagina do material de apoio do editor para aguardar o upload de um arquivo'},
+  {:id => 67, :controller => 'support_material_file', :action => 'delete_folder', :description => 'Exclui uma pasta da pagina de material de apoio do editor'},
+  {:id => 68, :controller => 'support_material_file', :action => 'edit_link', :description => 'Edita um ou mais links da pagina de material de apoio do editor'}
 ]
 
 puts "  - Criando resources"

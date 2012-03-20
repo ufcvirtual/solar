@@ -51,11 +51,17 @@ perm_alunos = PermissionsResource.create([
     {:profile_id => 1, :resource_id => 47, :per_id => true},
     {:profile_id => 1, :resource_id => 52, :per_id => true},
     # Material de apoio
-    {:profile_id => 1, :resource_id => 54, :per_id => false},
-    {:profile_id => 1, :resource_id => 55, :per_id => false},
-    {:profile_id => 1, :resource_id => 56, :per_id => false},
-    {:profile_id => 1, :resource_id => 57, :per_id => false}
-    
+    {:profile_id => 1, :resource_id => 54, :per_id => true},
+    {:profile_id => 1, :resource_id => 55, :per_id => true},
+    {:profile_id => 1, :resource_id => 56, :per_id => true},
+    {:profile_id => 1, :resource_id => 57, :per_id => true},
+    # Material de apoio - Editor
+    {:profile_id => 1, :resource_id => 63, :per_id => false},
+    {:profile_id => 1, :resource_id => 64, :per_id => false},
+    {:profile_id => 1, :resource_id => 65, :per_id => false},
+    {:profile_id => 1, :resource_id => 66, :per_id => false},
+    {:profile_id => 1, :resource_id => 67, :per_id => false},
+    {:profile_id => 1, :resource_id => 68, :per_id => false}
   ])
 
 ##############################
@@ -99,17 +105,22 @@ perm_prof_titular = PermissionsResource.create([
     {:profile_id => 2, :resource_id => 50, :per_id => false},
     {:profile_id => 2, :resource_id => 51, :per_id => false},
     {:profile_id => 2, :resource_id => 53, :per_id => false},
-
     # acompanhamento
     {:profile_id => 2, :resource_id => 47, :per_id => false},
     {:profile_id => 2, :resource_id => 48, :per_id => false},
     {:profile_id => 2, :resource_id => 52, :per_id => false},
-
     # Material de apoio
     {:profile_id => 2, :resource_id => 54, :per_id => false},
     {:profile_id => 2, :resource_id => 55, :per_id => false},
     {:profile_id => 2, :resource_id => 56, :per_id => false},
-    {:profile_id => 2, :resource_id => 57, :per_id => false}
+    {:profile_id => 2, :resource_id => 57, :per_id => false},
+    # Material de apoio - Editor
+    {:profile_id => 2, :resource_id => 63, :per_id => false},
+    {:profile_id => 2, :resource_id => 64, :per_id => false},
+    {:profile_id => 2, :resource_id => 65, :per_id => false},
+    {:profile_id => 2, :resource_id => 66, :per_id => false},
+    {:profile_id => 2, :resource_id => 67, :per_id => false},
+    {:profile_id => 2, :resource_id => 68, :per_id => false}
   ])
 
 ##############################
@@ -161,8 +172,15 @@ perm_prof_titular = PermissionsResource.create([
     {:profile_id => 3, :resource_id => 54, :per_id => false},
     {:profile_id => 3, :resource_id => 55, :per_id => false},
     {:profile_id => 3, :resource_id => 56, :per_id => false},
-    {:profile_id => 3, :resource_id => 57, :per_id => false}
-    
+    {:profile_id => 3, :resource_id => 57, :per_id => false},
+
+    # Material de apoio - Editor
+    {:profile_id => 3, :resource_id => 63, :per_id => false},
+    {:profile_id => 3, :resource_id => 64, :per_id => false},
+    {:profile_id => 3, :resource_id => 65, :per_id => false},
+    {:profile_id => 3, :resource_id => 66, :per_id => false},
+    {:profile_id => 3, :resource_id => 67, :per_id => false},
+    {:profile_id => 3, :resource_id => 68, :per_id => false}
   ])
 
 
@@ -176,7 +194,22 @@ perm_editor = PermissionsResource.create([
     {:profile_id => 5, :resource_id => 63, :per_id => false},
     {:profile_id => 5, :resource_id => 64, :per_id => false},
     {:profile_id => 5, :resource_id => 65, :per_id => false},
-    {:profile_id => 5, :resource_id => 66, :per_id => false}
+    {:profile_id => 5, :resource_id => 66, :per_id => false},
+
+<<<<<<< HEAD
+    # Material de apoio
+    {:profile_id => 5, :resource_id => 54, :per_id => false},
+    {:profile_id => 5, :resource_id => 55, :per_id => true},
+    {:profile_id => 5, :resource_id => 56, :per_id => true},
+    {:profile_id => 5, :resource_id => 57, :per_id => true},
+
+    # Material de apoio - Editor
+    {:profile_id => 5, :resource_id => 63, :per_id => true},
+    {:profile_id => 5, :resource_id => 64, :per_id => true},
+    {:profile_id => 5, :resource_id => 65, :per_id => true},
+    {:profile_id => 5, :resource_id => 66, :per_id => true},
+    {:profile_id => 5, :resource_id => 67, :per_id => true},
+    {:profile_id => 5, :resource_id => 68, :per_id => true}
   ])
 
 ##############################
@@ -194,7 +227,21 @@ perm_basico = PermissionsResource.create([
     {:profile_id => 12, :resource_id => 14, :per_id => false},
     {:profile_id => 12, :resource_id => 15, :per_id => false},
     {:profile_id => 12, :resource_id => 16, :per_id => false},
-    {:profile_id => 12, :resource_id => 17, :per_id => false}
+    {:profile_id => 12, :resource_id => 17, :per_id => false},
+
+    # Material de apoio
+    {:profile_id => 12, :resource_id => 54, :per_id => false},
+    {:profile_id => 12, :resource_id => 55, :per_id => false},
+    {:profile_id => 12, :resource_id => 56, :per_id => false},
+    {:profile_id => 12, :resource_id => 57, :per_id => false},
+
+    # Material de apoio - Editor
+    {:profile_id => 12, :resource_id => 63, :per_id => false},
+    {:profile_id => 12, :resource_id => 64, :per_id => false},
+    {:profile_id => 12, :resource_id => 65, :per_id => false},
+    {:profile_id => 12, :resource_id => 66, :per_id => false},
+    {:profile_id => 12, :resource_id => 67, :per_id => false},
+    {:profile_id => 12, :resource_id => 68, :per_id => false}
   ])
 
 
@@ -266,7 +313,7 @@ PermissionsMenu.create([
     #{:profile_id => 5, :menu_id => 100},
     #{:profile_id => 5, :menu_id => 70},
     {:profile_id => 5, :menu_id => 302},
-    {:profile_id => 5, :menu_id => 102},
+    # {:profile_id => 5, :menu_id => 102},
     {:profile_id => 5, :menu_id => 120},
     
     #basico
