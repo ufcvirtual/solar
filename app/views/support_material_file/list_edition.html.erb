@@ -147,7 +147,7 @@
   <div class="block_title" id="support_material_new_folder">
     <div id="support_material_new_folder_text" style="display:none;">
       <%= form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :support_material_file, :action => :folder_verify, :value_for_allocation_tag_id => params[:value_id], :type_for_allocation_tag_id => params[:type_value_id], :folders_list => @folders_list}) do |f| %>
-          <%= f.text_field :new_folder %>
+          <%= f.text_field :folder_name %>
           <%= f.submit t(:support_add), :id => "support_material", :class => "btn btn_default"%>
           <button type="button" class="btn btn_caution" id="folder_cancel"><%= t(:support_cancel) %></button>
        <% end %>
@@ -167,7 +167,7 @@
      <table class='tb_list' border='0' cellpadding='10' cellspacing='0' width='100%'>
         <tr class="lines new_file">
           <td colspan="3">
-            <%= form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :support_material_file, :action => :select_action_file, :value_for_allocation_tag_id => params[:value_id], :type_for_allocation_tag_id => params[:type_value_id], :new_folder => params[:folder_temp]}) do |f| %>
+            <%= form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :support_material_file, :action => :select_action_file, :value_for_allocation_tag_id => params[:value_id], :type_for_allocation_tag_id => params[:type_value_id], :folder_name => params[:folder_temp]}) do |f| %>
                 <%= f.file_field :attachment %>
                 <%= f.submit t(:send), :id => "support_material", :class => "btn_default" %>
                 <button type="button" class="btn btn_caution" id="cancel_new_folder_file"><%= t(:support_cancel) %></button>
@@ -186,7 +186,7 @@
   <div class="block_title">
     <h2>LINKS</h2>
   </div>
-  <% form_for :form, :url => {:controller=>:support_material_file, :action => :select_action_link, :value_for_allocation_tag_id => params[:value_id], :type_for_allocation_tag_id => params[:type_value_id], :type_value_id => params[:type_value_id], :choosed_type_id => params[:choosed_type_id], :folder => "LINKS"} do |c| %>
+  <% form_for :form, :url => {:controller=>:support_material_file, :action => :select_action_link, :value_for_allocation_tag_id => params[:value_id], :type_for_allocation_tag_id => params[:type_value_id], :type_value_id => params[:type_value_id], :choosed_type_id => params[:choosed_type_id], :folder_name => "LINKS"} do |c| %>
     <table class='tb_list' border='0' cellpadding='10' cellspacing='0' width='100%'>
       <thead>
         <tr>
@@ -259,7 +259,7 @@
       <%= link_to image_tag("icon_folder_compressed.png", :alt=>(t(:support_download_folder)), 'data-tooltip'=>(t(:support_download_folder)), :class=>(:support_material_folder_buttons)), {:controller => "support_material_file", :action => "download_folder_file_ziped", :value_for_allocation_tag_id => params[:value_id], :type_for_allocation_tag_id => params[:type_value_id], :folder => "GERAL"} %>
     </div>
   </div>
-    <% form_for :support_material,  :html => { :multipart => true }, :url => {:controller=>:support_material_file, :action => :select_action_file, :value_for_allocation_tag_id => params[:value_id], :type_for_allocation_tag_id => params[:type_value_id], :new_folder => params[:folder_temp], :folder => 'GERAL'} do |c| %>
+    <% form_for :support_material,  :html => { :multipart => true }, :url => {:controller=>:support_material_file, :action => :select_action_file, :value_for_allocation_tag_id => params[:value_id], :type_for_allocation_tag_id => params[:type_value_id], :folder_name => 'GERAL'} do |c| %>
     <table class='tb_list' border='0' cellpadding='10' cellspacing='0' width='100%'>
       <thead>
           <tr>
@@ -331,7 +331,7 @@
 -->
 <% @folders_list.each do |folder_name, folder_content| %>
   <% unless folder_name == "LINKS" || folder_name == "GERAL" %>
-    <% form_for :support_material,  :html => { :multipart => true }, :url => {:controller=>:support_material_file, :action => :select_action_file, :value_for_allocation_tag_id => params[:value_id], :type_for_allocation_tag_id => params[:type_value_id], :new_folder => params[:folder_temp], :folder => folder_name, :folders_list => @folders_list} do |c| %>
+    <% form_for :support_material,  :html => { :multipart => true }, :url => {:controller=>:support_material_file, :action => :select_action_file, :value_for_allocation_tag_id => params[:value_id], :type_for_allocation_tag_id => params[:type_value_id], :folder_name => folder_name, :folders_list => @folders_list} do |c| %>
       <div class="block_wrapper">
         <div class="block_title">
           <h2 id="folder_name_<%= folder_name.tr(' ', '') %>"><%= folder_name %></h2>
@@ -343,7 +343,7 @@
               <div class="support_material_folder_actions">
                 <%= image_tag "icon_rename.png", :alt=>(t(:support_rename_folder)), :class=>(:support_material_folder_buttons), 'data-tooltip'=>(t(:support_rename_folder)), :onclick => "javascript:rename_folder('#{folder_name.tr(' ', '')}');" %>
                 <%= link_to image_tag("icon_folder_compressed.png", :alt=>(t(:support_download_folder)), 'data-tooltip'=>(t(:support_download_folder)), :class=>(:support_material_folder_buttons)), {:controller => "support_material_file", :action => "download_folder_file_ziped", :value_for_allocation_tag_id => params[:value_id], :type_for_allocation_tag_id => params[:type_value_id], :folder => folder_name} %>
-                <%= link_to image_tag("icon_delete.png", :alt=>(t(:support_delete_folder)), 'data-tooltip'=>(t(:support_delete_folder)), :class=>(:support_material_folder_buttons)), {:action => "delete_folder", :folder => folder_name, :value_for_allocation_tag_id => params[:value_id], :type_for_allocation_tag_id => params[:type_value_id],},
+                <%= link_to image_tag("icon_delete.png", :alt=>(t(:support_delete_folder)), 'data-tooltip'=>(t(:support_delete_folder)), :class=>(:support_material_folder_buttons)), {:action => "delete_folder", :folder_name => folder_name, :value_for_allocation_tag_id => params[:value_id], :type_for_allocation_tag_id => params[:type_value_id],},
       :method => :delete, :confirm => t(:support_confirm_exclusion_folder) %>
               </div>
         </div>

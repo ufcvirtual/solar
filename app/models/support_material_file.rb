@@ -28,26 +28,6 @@ SQL
   end
 
   ##
-  # DEPRECATED - Utilizar find_files
-  #
-  # Recupera arquivos por allocation
-  ##
-  def self.search_files(allocation_tag_id, folder_name = nil)
-    related_allocation_tag_ids = AllocationTag.find_related_ids(allocation_tag_id)
-    in_folder = " AND sm.folder = '#{folder_name}' " unless folder_name.nil?
-
-    query = <<SQL
-    SELECT *
-      FROM support_material_files sm
-     WHERE allocation_tag_id in (#{related_allocation_tag_ids.join(",")})
-           #{in_folder}
-     ORDER BY sm.folder, sm.attachment_content_type, sm.attachment_file_name
-SQL
-
-    SupportMaterialFile.find_by_sql(query);
-  end
-
-  ##
   # Editor
   ##
   def self.upload_link(allocation_tag_id,url)
@@ -56,21 +36,6 @@ SQL
     VALUES (#{allocation_tag_id}, 'link' ,CURRENT_TIMESTAMP ,'LINKS' , '#{url}')
 SQL
   end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   ############### editor ########################
 

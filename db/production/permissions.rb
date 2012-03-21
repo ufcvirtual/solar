@@ -195,8 +195,7 @@ perm_editor = PermissionsResource.create([
     {:profile_id => 5, :resource_id => 64, :per_id => false},
     {:profile_id => 5, :resource_id => 65, :per_id => false},
     {:profile_id => 5, :resource_id => 66, :per_id => false},
-
-<<<<<<< HEAD
+    
     # Material de apoio
     {:profile_id => 5, :resource_id => 54, :per_id => false},
     {:profile_id => 5, :resource_id => 55, :per_id => true},
