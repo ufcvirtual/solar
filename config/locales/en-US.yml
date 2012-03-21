@@ -617,7 +617,7 @@
   support_download_all: Download all as zip
   support_download_all_folder: Download all folder as zip
 
-  # Support Material File Editor [em teste]
+  # Support Material File Editor
   support_delete: Delete
   support_send_document: DOCUMENT
   support_send_link: LINK

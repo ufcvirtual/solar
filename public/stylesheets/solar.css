@@ -2850,7 +2850,7 @@ td.td_student a {color: #2a538d;}
     cursor: pointer;
 }
 
-.support_material_message_no_files{
+.support_material_message_no_files {
     border-top: solid #B4B2B1 1px;
     border-bottom: solid #B4B2B1 1px;
     background-color: #F5F8FB;
@@ -2925,7 +2925,6 @@ div.support_material_folder_actions img {
 }
 
 /* material de apoio do editor (fim) */
-
 
 /******** Atualização de dados de usuário **********/
 .user_data_form_section{

@@ -157,7 +157,7 @@
 </div>
 
 <!--
-  ---- Folder_temp para criar uma nova pasta
+  ---- folder_temp para criar uma nova pasta
 -->
 <% if !params[:folder_temp].nil? %>
    <div class="block_wrapper" id="new_file_folder_temp">
@@ -305,9 +305,7 @@
                     </td>
                   <td style="width:80px">
                     <%= format('%.2f KB', file["attachment_file_size"].to_i/1024.0) %>
-                    <!-- O tamanho não é exibido -->
-                      <span>--</span>
-                    </td>
+                  </td>
                   <td style="width:80px">
                     <%=l file["attachment_updated_at"].to_date %>
                   </td>
@@ -390,10 +388,8 @@
                       <%= link_to file['attachment_file_name'], :action => :download, :id => file['id'], :file_allocation_tag_id => file['allocation_tag_id'] %>
                     </td>
                   <td style="width:80px">
-                    <%= format('%.2f KB', file["attachment_file_size"].to_i/1024.0) %>
-                    <!-- O tamanho não é exibido -->
-                      <span>--</span>
-                    </td>
+                      <%= format('%.2f KB', file["attachment_file_size"].to_i/1024.0) %>
+                  </td>
                   <td style="width:80px">
                     <%=l file["attachment_updated_at"].to_date %>
                   </td>
@@ -414,7 +410,7 @@
 
   <!-- Manipula o select do editor, marcando de amarelo a tag selecionada -->
 
-<% if params[:value_id] == nil %><%# se não houver nada seleceionado %>
+<% if params[:value_id] == nil %><%# se não houver nada selecionado %>
   <script type="text/javascript">
     $("#breadcrumb_wrapper .breadcrumb_item").click(function() {
         $(this).parent().fadeOut(function(){

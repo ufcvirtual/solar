@@ -796,7 +796,7 @@
   support_download_all: Baixar todo o material de apoio como zip
   support_download_all_folder: Baixar toda a pasta como zip
 
-  # Support Material File Editor [em teste]
+  # Support Material File Editor
   support_send_document: DOCUMENTO
   support_send_link: LINK
   support_create_folder: PASTA

@@ -21,7 +21,6 @@ module FilesHelper
     # novo visual + Jquery ##########
     #################################
 
-
   def render_support_controll_tab
       editor_tab  = String.new # string que armazena código para recriar abas de edição para o material de apoio do editor
       # combobox
