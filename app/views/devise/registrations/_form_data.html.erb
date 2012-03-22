@@ -68,13 +68,18 @@
       <li>
         <span class="form_label"><%= f.label "#{t(:form_special_needs)}*" %></span>
         <span class="form_field">
-            <%= radio_button_tag "radio_special" , "true", true, {:id=>"sim", :onclick=>"show_special_needs('special_needs_line')"} %>
+            <%= radio_button_tag "radio_special" , "true", !@user.special_needs.blank?, {:id=>"sim", :onclick=>"show_special_needs('special_needs_line')"} %>
             <%= label_tag("radio_special", t('special_needs_yes'), :class=>"form_inner_label") %>
-            <%= radio_button_tag "radio_special" , "false", true, {:id=>"nao", :onclick=>"hide_special_needs('special_needs_line')"} %>
+            <%= radio_button_tag "radio_special" , "false", @user.special_needs.blank?, {:id=>"nao", :onclick=>"hide_special_needs('special_needs_line')"} %>
             <%= label_tag("radio_special", t('special_needs_no'), :class=>"form_inner_label") %>
           </span>
       </li>
-      <li id="special_needs_line">
+      <% if @user.special_needs.blank? 
+        display_special_needs_line = 'none'
+      else
+        display_special_needs_line = 'inline-block'
+      end %>
+      <li id="special_needs_line" style="display: <%=display_special_needs_line%>;">
         <span class="form_label"><%= f.label :special_needs, t(:which) %></span>
         <span class="form_field"><%= f.text_field :special_needs,:size=>field_size %></span>
       </li>
