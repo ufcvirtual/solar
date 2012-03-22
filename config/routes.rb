@@ -9,6 +9,7 @@ Solar::Application.routes.draw do
   end
 
   get "pages/index"
+  get "pages/team"
   get "access_control/index"
   get "offers/showoffersbyuser"
   get "schedules/show"
