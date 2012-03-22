@@ -17,6 +17,8 @@
     <%  msg_institution ="" %>
     <%  msg_name ="" %>
     <%  msg_cpf ="" %>
+    <% msg_alternate_email = "" %>
+
     <% for msg in @user.errors.full_messages %>
       <%  if (msg.include?(t(:form_login))) %>
         <%  msg_login << msg %>
@@ -27,9 +29,12 @@
       <%  if (msg.include?(t(:form_nick))) %>
         <%  msg_nick << msg + "\n" %>
       <%  end %>
-      <%  if (msg.include?(t(:form_email))) %>
+      <%  if (msg.include?(t(:form_email)) and !msg.include?(t(:form_alternate_email))) %>
         <%  msg_email << msg + "\n" %>
       <%  end %>
+      <% if (msg.include?(t(:form_alternate_email))) %>
+        <% msg_alternate_email << msg + "\n" %>
+      <% end %>
       <%  if (msg.include?(t(:form_institution))) %>
         <%  msg_institution << msg + "\n" %>
       <%  end %>
@@ -122,7 +127,7 @@
         <tr>
           <td class="form_label"><%= f.label "#{t(:form_alternate_email)}", :class=>"label_usuario"%></td>
           <td class="form_field"><%= f.text_field :alternate_email, :size=>field_size %></td>
-          <td class="form_error"></td>
+          <td class="form_error"><%= msg_alternate_email %></td>
         </tr>
       </table>
     </div>

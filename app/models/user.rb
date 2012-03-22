@@ -17,15 +17,14 @@ class User < ActiveRecord::Base
   before_save :ensure_authentication_token!
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :alternate_email, :password, :password_confirmation, :remember_me, :name, :nick, :birthdate,
+  attr_accessible :username, :email, :email_confirmation, :alternate_email, :password, :password_confirmation, :remember_me, :name, :nick, :birthdate,
     :address, :address_number, :address_complement, :address_neighborhood, :zipcode, :country, :state, :city,
     :telephone, :cell_phone, :institution, :gender, :cpf, :bio, :interests, :music, :movies, :books, :phrase, :site, :photo
 
   email_format = %r{^((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?$}i # regex para validacao de email
 
   validates :username, :length => { :within => 3..20 }, :uniqueness => true
-  validates :email, :presence => true, :uniqueness => true, :confirmation => true, :format => { :with => email_format }
-  validates :email_confirmation, :format => { :with => email_format }
+  validates :email, :confirmation => true, :unless => :already_email_error_or_email_not_changed?
   validates :alternate_email, :format => { :with => email_format }
 
   validates :nick, :length => { :within => 3..34 }
@@ -39,7 +38,7 @@ class User < ActiveRecord::Base
   validates_length_of :country,:maximum => 90
   validates_length_of :city, :maximum => 90
   validates_length_of :institution, :maximum => 120
-  validate :cpf_ok
+  validate :cpf_ok, :unless => :already_cpf_error?
 
   # paperclip uses: file_name, content_type, file_size e updated_at
   # Configuração do paperclip para upload de fotos
@@ -65,10 +64,24 @@ class User < ActiveRecord::Base
   #  end
 
   ##
+  # Verifica se já existe um erro no campo de email ou, caso esteja na edição de usuário, verifica se o email foi alterado.
+  # Caso o email não tenha sido alterado, não há necessidade de verificar sua confirmação
+  ##
+  def already_email_error_or_email_not_changed?
+    (errors[:email].any? || !email_changed?)
+  end
+
+  ##
+  # Verifica se já existe um erro no campo de email
+  ##
+  def already_cpf_error?
+    errors[:cpf].any?
+  end
+
+  ##
   # Permite modificação dos dados do usuário sem necessidade de informar a senha - para usuários já logados
   ##
   def update_with_password(params={})
-  
     if (params[:password].blank? && params[:current_password].blank? && params[:password_confirmation].blank?)
       params.delete(:current_password)
       self.update_without_password(params)

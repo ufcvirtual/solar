@@ -60,6 +60,8 @@
         email: "E-mail"
         telephone: "Telephone"
         cell_phone: "Cell Phone"
+        email_confirmation: "E-mail confirmation"
+        alternate_email: "Alternate e-mail"
         photo_content_type: "Invalid file type"
         photo_file_size: "File too large. The maximum size of your photo should be up to 700KB."
       curriculum_unit:

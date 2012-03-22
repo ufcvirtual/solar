@@ -191,6 +191,7 @@
         telephone: "Telefone"
         cell_phone: "Celular"
         email_confirmation: "Confirmação do e-mail"
+        alternate_email: "E-mail alternativo"
         photo_content_type: "Tipo de arquivo inválido."
         photo_file_size: "Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB."
       curriculum_unit:
@@ -267,8 +268,7 @@
           attributes:
             message_content_type:
               invalid_type: "Tipo de arquivo inválido."
-        
-                  
+
 
   # Authlogic
 #  authlogic:

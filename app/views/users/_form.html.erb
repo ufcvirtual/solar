@@ -14,6 +14,7 @@
     <%msgPassword =""%>
     <%msgNick =""%>
     <%msgEmail =""%>
+    <%msgAlternateEmail = ""%>
     <%msgInstitution =""%>
     <%msgName =""%>
     <%msgCPF =""%>
@@ -27,8 +28,11 @@
       <%if (msg.include?(t(:form_nick))) %>
         <%msgNick << msg + "\n" %>
       <%end%>
-      <%if (msg.include?(t(:form_email))) %>
+      <%if (msg.include?(t(:form_email)) and !msg.include?(t(:form_alternate_email)))%>
         <%msgEmail << msg + "\n" %>
+      <%end%>
+      <%if (msg.include?(t(:form_alternate_email)))%>
+        <%msgAlternateEmail << msg + "\n"%>
       <%end%>
       <%if (msg.include?(t(:form_institution))) %>
         <%msgInstitution << msg + "\n" %>
@@ -121,8 +125,8 @@
         </tr>
         <tr>
           <td class="form_label"><%= f.label "#{t(:form_alternate_email)}", :class=>"label_usuario"%></td>
-          <td class="form_field"><%= f.text_field :alternate_email, :size=>field_size %></td>
-          <td class="form_error"></td>
+          <td class="form_field"><%= f.text_field :alternate_email, :id => 'alternate_email', :size=>field_size %></td>
+          <td class="form_error"><%= msgAlternateEmail %></td>
         </tr>
       </table>
     </div>
