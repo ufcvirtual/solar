@@ -10,13 +10,13 @@
 
 <%= form_for(@user) do |f| %>
   <% if @user.errors.any? %>
-    <%  msg_login ="" %>
-    <%  msg_password ="" %>
-    <%  msg_nick ="" %>
-    <%  msg_email ="" %>
-    <%  msg_institution ="" %>
-    <%  msg_name ="" %>
-    <%  msg_cpf ="" %>
+    <% msg_login ="" %>
+    <% msg_password ="" %>
+    <% msg_nick ="" %>
+    <% msg_email ="" %>
+    <% msg_institution ="" %>
+    <% msg_name ="" %>
+    <% msg_cpf ="" %>
     <% msg_alternate_email = "" %>
 
     <% for msg in @user.errors.full_messages %>

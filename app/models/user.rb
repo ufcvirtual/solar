@@ -72,7 +72,7 @@ class User < ActiveRecord::Base
   end
 
   ##
-  # Verifica se já existe um erro no campo de email
+  # Verifica se existe um erro no campo de cpf
   ##
   def already_cpf_error?
     errors[:cpf].any?
