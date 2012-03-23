@@ -79,20 +79,19 @@
         <tr>
           <td class="form_label"><%= f.label "#{t(:form_special_needs)}*" %></td>
           <td class="form_field">
-            <%= f.radio_button(:has_special_needs , true, :checked=> !@user.special_needs.blank? || !msg_special_needs.blank?, :onclick => "show_special_needs('special_needs_line')") %>
+            <% condition_special_needs = @user.special_needs.blank? && msg_special_needs.blank? %>
+            <%= f.radio_button(:has_special_needs , true, :checked => !condition_special_needs, :onclick => "show_special_needs('special_needs_line')") %>
             <%= label_tag("has_special_needs", t('special_needs_yes'), :class=>"form_inner_label") %>
-            <%= f.radio_button(:has_special_needs , false, :checked=> (@user.special_needs.blank? && msg_special_needs.blank?), :onclick => "hide_special_needs('special_needs_line')") %>
+            <%= f.radio_button(:has_special_needs , false, :checked => (condition_special_needs), :onclick => "hide_special_needs('special_needs_line')") %>
             <%= label_tag("has_special_needs", t('special_needs_no'), :class=>"form_inner_label") %>
           </td>
         </tr>
-        <% if @user.special_needs.blank? && msg_special_needs.blank?
-          display_special_needs_line = 'none'
-        else
-          display_special_needs_line = 'table-row'
+        <% unless condition_special_needs
+          display_special_needs_line = "style='display: table-row;'"
         end %>
-        <tr id="special_needs_line" style="display: <%=display_special_needs_line%>;">
-          <td class="form_label"><%= f.label t(:which) %> </td>
-          <td class="form_field"><%= f.text_field :special_needs, :id => 'special_needs', :size=>field_size %></td>
+        <tr id="special_needs_line" <%=display_special_needs_line%>>
+          <td class="form_label"><%= f.label "#{t(:which)}*" %> </td>
+          <td class="form_field"><%= f.text_field :special_needs, :id => 'special_needs', :size => field_size %></td>
           <td class="form_error"><%= msg_special_needs %></td>
         </tr>
       </table>
