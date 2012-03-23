@@ -16,10 +16,13 @@ class User < ActiveRecord::Base
 
   before_save :ensure_authentication_token!
 
+  @has_special_needs
+
   # Setup accessible (or protected) attributes for your model
   attr_accessible :username, :email, :email_confirmation, :alternate_email, :password, :password_confirmation, :remember_me, :name, :nick, :birthdate,
     :address, :address_number, :address_complement, :address_neighborhood, :zipcode, :country, :state, :city,
-    :telephone, :cell_phone, :institution, :gender, :cpf, :bio, :interests, :music, :movies, :books, :phrase, :site, :photo
+    :telephone, :cell_phone, :institution, :gender, :cpf, :bio, :interests, :music, :movies, :books, :phrase, :site, :photo,
+    :special_needs
 
   email_format = %r{^((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?$}i # regex para validacao de email
 
@@ -30,6 +33,7 @@ class User < ActiveRecord::Base
   validates :nick, :length => { :within => 3..34 }
   validates :name, :length => { :within => 6..90 }
   validates :birthdate, :presence => true
+  validates :special_needs, :presence => true, :if => :has_special_needs?
   validates :cpf, :presence => true, :uniqueness => true
 
   validates_length_of :address, :maximum => 99
@@ -64,6 +68,15 @@ class User < ActiveRecord::Base
   #  end
 
   ##
+  # Verifica se o radio_button escolhido na view é verdadeiro ou falso. Mas, como o valor vem como string, este método
+  # retorna o resultado da comparação
+  ##
+  def has_special_needs?
+    # raise @request.params
+    (@has_special_needs == 'true')
+  end
+
+  ##
   # Verifica se já existe um erro no campo de email ou, caso esteja na edição de usuário, verifica se o email foi alterado.
   # Caso o email não tenha sido alterado, não há necessidade de verificar sua confirmação
   ##
@@ -84,8 +97,12 @@ class User < ActiveRecord::Base
   def update_with_password(params={})
     if (params[:password].blank? && params[:current_password].blank? && params[:password_confirmation].blank?)
       params.delete(:current_password)
+      @has_special_needs = params[:has_special_needs]
+      params.delete(:has_special_needs)
       self.update_without_password(params)
     else
+      @has_special_needs = params[:has_special_needs]
+      params.delete(:has_special_needs)
       super(params)
     end
   end

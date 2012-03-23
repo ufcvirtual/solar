@@ -6,10 +6,11 @@
     <%  msg_password ="" %>
     <%  msg_nick ="" %>
     <%  msg_email ="" %>
+    <% msg_alternate_email = "" %>
     <%  msg_institution ="" %>
     <%  msg_name ="" %>
     <%  msg_cpf ="" %>
-    <% msg_alternate_email = "" %>
+    <% msg_special_needs = "" %>
     <% for msg in @user.errors.full_messages %>
       <%  if (msg.include?(t(:form_login))) %>
         <%  msg_login << msg %>
@@ -35,6 +36,9 @@
       <%  if (msg.include?(t(:form_cpf))) %>
         <%  msg_cpf << msg + "\n" %>
       <%  end %>
+      <% if (msg.include?(t(:form_special_needs))) %>
+        <% msg_special_needs << msg + "\n" %>
+      <% end %>
     <% end %>
   <% end %>
   <% field_size = 70 %>
@@ -68,20 +72,21 @@
       <li>
         <span class="form_label"><%= f.label "#{t(:form_special_needs)}*" %></span>
         <span class="form_field">
-            <%= radio_button_tag "radio_special" , "true", !@user.special_needs.blank?, {:id=>"sim", :onclick=>"show_special_needs('special_needs_line')"} %>
-            <%= label_tag("radio_special", t('special_needs_yes'), :class=>"form_inner_label") %>
-            <%= radio_button_tag "radio_special" , "false", @user.special_needs.blank?, {:id=>"nao", :onclick=>"hide_special_needs('special_needs_line')"} %>
-            <%= label_tag("radio_special", t('special_needs_no'), :class=>"form_inner_label") %>
-          </span>
+            <%= f.radio_button(:has_special_needs , true, :checked => (!@user.special_needs.blank? || !msg_special_needs.blank?), :onclick => "show_special_needs('special_needs_line')") %>
+            <%= label_tag("has_special_needs", t('special_needs_yes'), :class=>"form_inner_label") %>
+            <%= f.radio_button(:has_special_needs , false, :checked => (@user.special_needs.blank? && msg_special_needs.blank?), :onclick => "hide_special_needs('special_needs_line')") %>
+            <%= label_tag("has_special_needs", t('special_needs_no'), :class=>"form_inner_label") %>
+        </span>
       </li>
-      <% if @user.special_needs.blank? 
+      <% if (@user.special_needs.blank? && msg_special_needs.blank?)
         display_special_needs_line = 'none'
       else
         display_special_needs_line = 'inline-block'
       end %>
       <li id="special_needs_line" style="display: <%=display_special_needs_line%>;">
-        <span class="form_label"><%= f.label :special_needs, t(:which) %></span>
-        <span class="form_field"><%= f.text_field :special_needs,:size=>field_size %></span>
+        <span class="form_label"><%= f.label t(:which) %></span>
+        <span class="form_field"><%= f.text_field :special_needs, :size=>field_size %></span>
+        <td class="form_error"><%= msg_special_needs %></td>
       </li>
     </ul>
     </div>

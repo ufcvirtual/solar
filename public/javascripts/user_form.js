@@ -4,6 +4,3 @@ function show_special_needs(elementId){
 function hide_special_needs(elementId){
     $('#'+ elementId).slideUp();
 }
-
-
-
