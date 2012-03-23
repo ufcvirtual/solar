@@ -68,12 +68,13 @@ class User < ActiveRecord::Base
   #  end
 
   ##
-  # Verifica se o radio_button escolhido na view é verdadeiro ou falso. Mas, como o valor vem como string, este método
-  # retorna o resultado da comparação
+  # Verifica se o radio_button escolhido na view é verdadeiro ou falso. 
+  # Este método também define as necessidades especiais como sendo vazia caso a pessoa tenha 
+  # selecionado que não as possui
   ##
   def has_special_needs?
-    # raise @request.params
-    (@has_special_needs == 'true')
+    self.special_needs = "" unless @has_special_needs
+    @has_special_needs
   end
 
   ##
@@ -97,15 +98,22 @@ class User < ActiveRecord::Base
   def update_with_password(params={})
     if (params[:password].blank? && params[:current_password].blank? && params[:password_confirmation].blank?)
       params.delete(:current_password)
-      @has_special_needs = params[:has_special_needs]
+      @has_special_needs = (params[:has_special_needs] == 'true')
       params.delete(:has_special_needs)
       self.update_without_password(params)
     else
-      @has_special_needs = params[:has_special_needs]
+      @has_special_needs = (params[:has_special_needs] == 'true')
       params.delete(:has_special_needs)
       super(params)
     end
   end
+
+  # def save(params={})
+  #   raise "#{params}"
+  #   @has_special_needs = (params[:has_special_needs] == 'true')
+  #   params.delete(:has_special_needs)
+  #   super(params)
+  # end
 
   def cpf_ok
     cpf_verify = Cpf.new(self[:cpf])
