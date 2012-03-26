@@ -73,8 +73,8 @@ class User < ActiveRecord::Base
   # selecionado que não as possui
   ##
   def has_special_needs?
-    self.special_needs = "" unless (@has_special_needs == 'true')
-    (@has_special_needs == 'true')
+    self.special_needs = "" unless @has_special_needs
+    @has_special_needs
   end
 
   ##
@@ -96,7 +96,7 @@ class User < ActiveRecord::Base
   # Permite modificação dos dados do usuário sem necessidade de informar a senha - para usuários já logados
   ##
   def update_with_password(params={})
-    @has_special_needs = params[:has_special_needs]
+    @has_special_needs = (params[:has_special_needs] == 'true')
     params.delete(:has_special_needs)
     if (params[:password].blank? && params[:current_password].blank? && params[:password_confirmation].blank?)
       params.delete(:current_password)
@@ -112,7 +112,7 @@ class User < ActiveRecord::Base
 ##
 def initialize(attributes = {})
    super(attributes)
-   @has_special_needs = attributes[:has_special_needs]
+   @has_special_needs = (attributes[:has_special_needs] == 'true')
 end
 
   def cpf_ok

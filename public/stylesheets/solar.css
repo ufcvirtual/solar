@@ -2951,6 +2951,16 @@ div.support_material_folder_actions img {
     width: 160px;
 }
 
+select#user_state {
+    width: 132px;
+    height: 29px;
+}
+
+td#form_field {
+    width: 313px;
+    height: 19px;
+}
+
 .form_label label {
     padding-left: 10px;
     padding-right: 10px;
@@ -2971,6 +2981,7 @@ td.form_error {
 #special_needs_line {
     display: none;
 }
+
 .label_gender{
     text-align: right;
 }
@@ -2994,6 +3005,7 @@ td.form_error {
     text-align          : center;
     line-height         : 25px;
 }
+
 .login_form_link_return:hover{
     color               : #222;
     text-decoration     : none;
@@ -3009,15 +3021,18 @@ td.form_error {
     display: block;
     text-align: right;
 }
+
 .form_usuario_table{
     color: #fff;
     line-height: 15px;
     margin-bottom: 25px;
 
 }
+
 .form_usuario_tr{
     height: 30px;
 }
+
 .label_usuario{
     white-space         : pre-wrap;
 }
