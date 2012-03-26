@@ -73,8 +73,8 @@ class User < ActiveRecord::Base
   # selecionado que não as possui
   ##
   def has_special_needs?
-    self.special_needs = "" unless @has_special_needs
-    @has_special_needs
+    self.special_needs = "" unless (@has_special_needs == 'true')
+    (@has_special_needs == 'true')
   end
 
   ##
@@ -98,22 +98,24 @@ class User < ActiveRecord::Base
   def update_with_password(params={})
     if (params[:password].blank? && params[:current_password].blank? && params[:password_confirmation].blank?)
       params.delete(:current_password)
-      @has_special_needs = (params[:has_special_needs] == 'true')
+      @has_special_needs = params[:has_special_needs]
       params.delete(:has_special_needs)
       self.update_without_password(params)
     else
-      @has_special_needs = (params[:has_special_needs] == 'true')
+      @has_special_needs = params[:has_special_needs]
       params.delete(:has_special_needs)
       super(params)
     end
   end
 
-  # def save(params={})
-  #   raise "#{params}"
-  #   @has_special_needs = (params[:has_special_needs] == 'true')
-  #   params.delete(:has_special_needs)
-  #   super(params)
-  # end
+##
+# Este método define os atributos na hora de criar um objeto. Logo, redefine os atributos já existentes e define
+# o valor de @has_special_needs a partir do que é passado da página
+##
+def initialize(attributes = {})
+   super(attributes)
+   @has_special_needs=attributes[:has_special_needs]
+end
 
   def cpf_ok
     cpf_verify = Cpf.new(self[:cpf])
