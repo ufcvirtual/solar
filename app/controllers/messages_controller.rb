@@ -119,27 +119,26 @@ class MessagesController < ApplicationController
   # Restaura uma msg da lixeira
   ##
   def restore
-    id = params[:id]
-    restore_id = id.split('$')
-    restore_id.each { |i| change_message_status(i, 'restore') if has_permission(i) }
-
-    search_text = params.include?('search') ? params[:search] : ''
-    type = params.include?('type') ? params[:type] : 'trashbox'
-
-    redirect_to :action => :index, :type => type, :search => search_text
+    restore_or_destroy('restore', 'trashbox')
   end
 
   ##
   # Muda status para apagado
   ##
-  def destroy
+  def destroy    
+    restore_or_destroy('trash', 'index')
+  end
+  
+  ##
+  # Apaga ou restaura da lixeira
+  ##
+  def restore_or_destroy(status, type)
     id = params[:id]
-
-    deleted_id = id.split('$')
-    deleted_id.each { |i| change_message_status(i,'trash') if has_permission(i) }
+    message_ids = id.split('$')
+    message_ids.each { |message_id| change_message_status(message_id, status) if has_permission(message_id) }
 
     search_text = params.include?('search') ? params[:search] : ''
-    type = params.include?('type') ? params[:type] : 'index'
+    type = params.include?('type') ? params[:type] : type
 
     redirect_to :action => :index, :type => type, :search => search_text
   end
@@ -490,14 +489,14 @@ class MessagesController < ApplicationController
       status = m.status.to_i
 
       case new_status
-        when 'read'
-          m.status = status | Message_Filter_Read
-        when 'unread'
-          m.status = status & Message_Filter_Unread
-        when 'trash'
-          m.status = status | Message_Filter_Trash
-        when 'restore'
-          m.status = status & Message_Filter_Restore
+      when 'read'
+        m.status = status | Message_Filter_Read
+      when 'unread'
+        m.status = status & Message_Filter_Unread
+      when 'trash'
+        m.status = status | Message_Filter_Trash
+      when 'restore'
+        m.status = status & Message_Filter_Restore
       end
 
       m.save
