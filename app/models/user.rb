@@ -96,14 +96,12 @@ class User < ActiveRecord::Base
   # Permite modificação dos dados do usuário sem necessidade de informar a senha - para usuários já logados
   ##
   def update_with_password(params={})
+    @has_special_needs = params[:has_special_needs]
+    params.delete(:has_special_needs)
     if (params[:password].blank? && params[:current_password].blank? && params[:password_confirmation].blank?)
       params.delete(:current_password)
-      @has_special_needs = params[:has_special_needs]
-      params.delete(:has_special_needs)
       self.update_without_password(params)
     else
-      @has_special_needs = params[:has_special_needs]
-      params.delete(:has_special_needs)
       super(params)
     end
   end
@@ -114,7 +112,7 @@ class User < ActiveRecord::Base
 ##
 def initialize(attributes = {})
    super(attributes)
-   @has_special_needs=attributes[:has_special_needs]
+   @has_special_needs = attributes[:has_special_needs]
 end
 
   def cpf_ok
