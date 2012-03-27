@@ -1467,7 +1467,7 @@ h2, table tr.block_title th {
     width: 100%;
     height: 161px; 
     overflow: auto;
-+   word-wrap: break-word;
+   word-wrap: break-word;
 }
 
 .block_small {
