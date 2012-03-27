@@ -224,8 +224,8 @@ registration:
   resource_id: 8
 
 # MENU PAI - 120
-support_material_file_editor:
+menu_support_material_record:
   id: 120
-  name: menu_support_material_editor
+  name: menu_support_material_record
   order: 11
   resource_id: 63
