@@ -73,7 +73,7 @@ Cenário: Alterar dados Cadastrais
        E que eu preenchi "address" com "Rua Sei Não"
        E que eu preenchi "address_number" com "123"
        E que eu preenchi "zipcode" com "60000000"
-       E que eu preenchi "address_neighborhood" com "Sei lá qual"
+       E que eu preenchi "address_neighborhood" com "Sei la qual"
        E que eu preenchi "city" com "Fortaleza"
        E que eu selecionei "user_state" com "CE"
        E que eu preenchi "country" com "Brasil"
