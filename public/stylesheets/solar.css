@@ -143,6 +143,7 @@ h2 {
 .field_with_errors{
     display:inline-block;
     border: 1px solid #e03838;
+    height: 23px;
 }
 
 label
@@ -1467,7 +1468,7 @@ h2, table tr.block_title th {
     width: 100%;
     height: 161px; 
     overflow: auto;
-   word-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .block_small {
@@ -2908,10 +2909,12 @@ div.support_material_folder_actions img {
 
 
 /******** Atualização de dados de usuário **********/
-.user_data_form_buttons{
+
+.user_data_form_buttons{ 
     text-align: center;
     font-size: 9pt;
 }
+
 .form_user_table {
     margin-top: 5px;
 }
@@ -2922,7 +2925,7 @@ div.support_material_folder_actions img {
 
 .form_user_content textarea {
     margin-bottom: 5px;
-    width: 415px;
+    width: 413px; /*425px;*/
     padding: 2px;
 }
 
@@ -2935,7 +2938,7 @@ div.support_material_folder_actions img {
 }
 
 .form_label label {
-    padding-right: 5px;
+    padding-right: 5px; 
     padding-top: 2px;
     vertical-align: top;
 }
@@ -2943,8 +2946,8 @@ div.support_material_folder_actions img {
     vertical-align: top;
 }
 
-.form_field input {
-    
+.form_field input[type="text"] {
+    width: 413px;
 }
 
 .form_field input, .form_field select {
@@ -3026,7 +3029,6 @@ td.form_error {
 
 #address_complement, #zipcode, #cell_phone {
     width: 128px;
-    margin: 0px;
 }
 
 #user_state {
