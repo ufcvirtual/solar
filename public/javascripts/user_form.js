@@ -1,6 +1,6 @@
 function show_special_needs(elementId){
-    $('#'+ elementId).slideDown();
+    $(elementId).slideDown();
 }
 function hide_special_needs(elementId){
-    $('#'+ elementId).slideUp();
+    $(elementId).slideUp();
 }
