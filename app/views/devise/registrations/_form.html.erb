@@ -23,8 +23,8 @@
       <%  if (msg.include?(t(:form_login))) %>
         <%  msg_login << msg %>
       <%  end %>
-      <%  if (msg.include?(t(:form_password))) %>
-        <%  msg_password << msg + "\n" %>
+      <%  unless @user.errors[:password].empty?  %>
+        <%  msg_password = t(:form_password) + " " + @user.errors[:password].last.to_s %>
       <%  end %>
       <%  if (msg.include?(t(:form_nick))) %>
         <%  msg_nick << msg + "\n" %>

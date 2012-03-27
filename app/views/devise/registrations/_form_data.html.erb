@@ -4,9 +4,10 @@
   <% if @user.errors.any? %>
     <%  msg_login ="" %>
     <%  msg_password ="" %>
+    <%  msg_current_password ="" %>
     <%  msg_nick ="" %>
     <%  msg_email ="" %>
-    <% msg_alternate_email = "" %>
+    <%  msg_alternate_email = "" %>
     <%  msg_institution ="" %>
     <%  msg_name ="" %>
     <%  msg_cpf ="" %>
@@ -15,8 +16,11 @@
       <%  if (msg.include?(t(:form_login))) %>
         <%  msg_login << msg %>
       <%  end %>
-      <%  if (msg.include?(t(:form_password))) %>
-        <%  msg_password << msg + "\n" %>
+      <%  unless @user.errors[:password].empty?  %>
+        <%  msg_password = t(:form_password) + " " + @user.errors[:password].last.to_s %>
+      <%  end %>
+      <%  unless @user.errors[:current_password].empty?  %>
+        <%  msg_current_password = t(:form_password) + " " + @user.errors[:current_password].last.to_s %>
       <%  end %>
       <%  if (msg.include?(t(:form_nick))) %>
         <%  msg_nick << msg + "\n" %>
@@ -115,13 +119,14 @@
         <li>
           <span class="form_label"><%= f.label t(:current_password) %></span>
           <span class="form_field"><%= f.password_field :current_password, :size => "15" %></span>
-          <span class="form_error"><%= msg_password %></span>
+          <span class="form_error"><%= msg_current_password %></span>
         </li>
       </ul>
       <ul>
         <li>
           <span class="form_label"><%= f.label t(:new_password)%></span>
           <span class="form_field"><%= f.password_field :password, :size=>"15" %></span>
+          <span class="form_error"><%= msg_password %></span>
         </li>
       </ul>
       <ul>
