@@ -2,6 +2,7 @@
 
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
   <% if @user.errors.any? %>
+<<<<<<< HEAD
     <% msg_login ="" %>
     <% msg_password ="" %>
     <% msg_nick ="" %>
@@ -10,12 +11,27 @@
     <% msg_name ="" %>
     <% msg_cpf ="" %>
     <% msg_alternate_email = "" %>
+=======
+    <%  msg_login ="" %>
+    <%  msg_password ="" %>
+    <%  msg_current_password ="" %>
+    <%  msg_nick ="" %>
+    <%  msg_email ="" %>
+    <%  msg_alternate_email = "" %>
+    <%  msg_institution ="" %>
+    <%  msg_name ="" %>
+    <%  msg_cpf ="" %>
+    <% msg_special_needs = "" %>
+>>>>>>> 26753497
     <% for msg in @user.errors.full_messages %>
       <%  if (msg.include?(t(:form_login))) %>
         <%  msg_login << msg %>
       <%  end %>
-      <%  if (msg.include?(t(:form_password))) %>
-        <%  msg_password << msg + "\n" %>
+      <%  unless @user.errors[:password].empty?  %>
+        <%  msg_password = t(:form_password) + " " + @user.errors[:password].last.to_s %>
+      <%  end %>
+      <%  unless @user.errors[:current_password].empty?  %>
+        <%  msg_current_password = t(:form_password) + " " + @user.errors[:current_password].last.to_s %>
       <%  end %>
       <%  if (msg.include?(t(:form_nick))) %>
         <%  msg_nick << msg + "\n" %>
@@ -35,6 +51,9 @@
       <%  if (msg.include?(t(:form_cpf))) %>
         <%  msg_cpf << msg + "\n" %>
       <%  end %>
+      <% if (msg.include?(t(:form_special_needs))) %>
+        <% msg_special_needs << msg + "\n" %>
+      <% end %>
     <% end %>
   <% end %>
   <% field_size = 70 %>
@@ -46,6 +65,7 @@
       <h2><%= t(:new_user_personal_data) %><span class="form_requirement"><%= t(:required_fields) %></span></h2>
     </div>
     <div class="block_content block_content_spacing">
+<<<<<<< HEAD
       <ul class="form_user_content">
         <li>
           <span class="form_label"><%= f.label "#{t(:form_name)}*" %></span>
@@ -79,6 +99,46 @@
           <span class="form_field"><%= f.text_field :special_needs,:size=>field_size %></span>
         </li>
       </ul>
+=======
+    <ul class="form_user_content">
+      <li>
+        <span class="form_label"><%= f.label "#{t(:form_name)}*" %></span>
+        <span class="form_field"><%= f.text_field :name, :id => "name", :size=>field_size %></span>
+        <span class="form_error"><%= msg_name %></span>
+      </li>
+      <li>
+        <span class="form_label"><%= f.label "#{t(:form_cpf)}*" %></span>
+        <span class="form_field"><%= f.text_field :cpf, :size=>field_size, :id=>"cpf" %></span>
+        <span class="form_error"><%= msg_cpf %></span>
+      </li>
+      <li>
+        <span class="form_label"><%= f.label :birthdate, :class=>"label_usuario"%></span>
+        <span class="form_field"><%= f.date_select :birthdate, :start_year => Time.now.year - 2, :end_year => 1900, :id => 'user_birthdate' %></span>
+      </li>
+      <li>
+        <span class="form_label"><%= f.label :gender, :class => 'label_gender'%></span>
+        <span class="form_field"><%= f.select :gender, ([["M", true], ["F", false]]) , :id => 'gender',:size=>2 %></span>
+      </li>
+      <li>
+        <span class="form_label"><%= f.label "#{t(:form_special_needs)}*" %></span>
+        <span class="form_field">
+            <% condition_special_needs = @user.special_needs.blank? && msg_special_needs.blank? %>
+            <%= f.radio_button(:has_special_needs , true, :checked => !condition_special_needs, :onclick => "show_special_needs('#special_needs_line')") %>
+            <%= label_tag("has_special_needs", t('special_needs_yes'), :class=>"form_inner_label") %>
+            <%= f.radio_button(:has_special_needs , false, :checked => condition_special_needs, :onclick => "hide_special_needs('#special_needs_line')") %>
+            <%= label_tag("has_special_needs", t('special_needs_no'), :class=>"form_inner_label") %>
+        </span>
+      </li>
+      <% unless condition_special_needs
+        display_special_needs_line = "style='display: inline-block;'"
+      end %>
+      <li id="special_needs_line" <%=display_special_needs_line%>>
+        <span class="form_label"><%= f.label "#{t(:which)}*" %></span>
+        <span class="form_field"><%= f.text_field :special_needs, :size => field_size %></span>
+        <td class="form_error"><%= msg_special_needs %></td>
+      </li>
+    </ul>
+>>>>>>> 26753497
     </div>
   </div>
 
@@ -104,20 +164,21 @@
       </ul>
       <ul>
         <li>
-          <span class="form_label"><%= f.label :current_password, t(:current_password) %></span>
+          <span class="form_label"><%= f.label t(:current_password) %></span>
           <span class="form_field"><%= f.password_field :current_password, :size => "15" %></span>
+          <span class="form_error"><%= msg_current_password %></span>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <span class="form_label"><%= f.label t(:new_password)%></span>
+          <span class="form_field"><%= f.password_field :password, :size=>"15" %></span>
           <span class="form_error"><%= msg_password %></span>
         </li>
       </ul>
       <ul>
         <li>
-          <span class="form_label"><%= f.label :password, t(:new_password)%></span>
-          <span class="form_field"><%= f.password_field :password, :size=>"15" %></span>
-        </li>
-      </ul>
-      <ul>
-        <li>
-          <span class="form_label"><%= f.label :password_confirmation, t(:password_confirmation)%></span>
+          <span class="form_label"><%= f.label t(:password_confirmation)%></span>
           <span class="form_field"><%= f.password_field :password_confirmation, :size=>"15" %></span>
         </li>
       </ul>

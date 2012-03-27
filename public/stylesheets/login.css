@@ -486,7 +486,7 @@ td.form_error {
     padding-left: 10px;
 }
 
-#special_needs_line {
+.special_needs_lines {
     display: none;
 }
 

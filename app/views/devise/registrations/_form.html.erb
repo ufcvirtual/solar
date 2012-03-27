@@ -10,6 +10,7 @@
 
 <%= form_for(@user) do |f| %>
   <% if @user.errors.any? %>
+<<<<<<< HEAD
     <% msg_login ="" %>
     <% msg_password ="" %>
     <% msg_nick ="" %>
@@ -19,12 +20,23 @@
     <% msg_cpf ="" %>
     <% msg_alternate_email = "" %>
 
+=======
+    <%  msg_login ="" %>
+    <%  msg_password ="" %>
+    <%  msg_nick ="" %>
+    <%  msg_email ="" %>
+    <% msg_alternate_email = "" %>
+    <%  msg_institution ="" %>
+    <%  msg_name ="" %>
+    <%  msg_cpf ="" %>
+    <% msg_special_needs = "" %>
+>>>>>>> 26753497
     <% for msg in @user.errors.full_messages %>
       <%  if (msg.include?(t(:form_login))) %>
         <%  msg_login << msg %>
       <%  end %>
-      <%  if (msg.include?(t(:form_password))) %>
-        <%  msg_password << msg + "\n" %>
+      <%  unless @user.errors[:password].empty?  %>
+        <%  msg_password = t(:form_password) + " " + @user.errors[:password].last.to_s %>
       <%  end %>
       <%  if (msg.include?(t(:form_nick))) %>
         <%  msg_nick << msg + "\n" %>
@@ -44,6 +56,9 @@
       <%  if (msg.include?(t(:form_cpf))) %>
         <%  msg_cpf << msg + "\n" %>
       <%  end %>
+      <% if (msg.include?(t(:form_special_needs))) %>
+        <% msg_special_needs << msg + "\n" %>
+      <% end %>
     <% end %>
   <% end %>
   <% field_size = 50 %>
@@ -57,32 +72,39 @@
       <table class="form_user_table">
         <tr>
           <td class="form_label"><%= f.label "#{t(:form_name)}*" %></td>
-          <td class="form_field" colspan="3"><%= f.text_field :name, :id => "name", :size=>field_size %></td>
+          <td class="form_field"><%= f.text_field :name, :id => "name", :size=>field_size %></td>
           <td class="form_error"><%= msg_name %></td>
         </tr>
         <tr>
           <td class="form_label"><%= f.label "#{t(:form_cpf)}*" %></td>
-          <td class="form_field" colspan="3"><%= f.text_field :cpf, :size=>field_size, :id=>"cpf" %></td>
+          <td class="form_field"><%= f.text_field :cpf, :size=>field_size, :id=>"cpf" %></td>
           <td class="form_error"><%= msg_cpf %></td>
         </tr>
         <tr>
           <td class="form_label"><%= f.label :birthdate, :class=>"label_usuario"%></td>
           <td class="form_field"><%= f.date_select :birthdate, :start_year => Time.now.year - 2, :end_year => 1900, :id => 'user_birthdate' %></td>
+        </tr>
+        <tr>
           <td class="form_label"><%= f.label :gender %></td>
           <td class="form_field"><%= f.select :gender, ([["M", true], ["F", false]]) , :id => 'gender',:size=>2 %></td>
         </tr>
         <tr>
           <td class="form_label"><%= f.label "#{t(:form_special_needs)}*" %></td>
           <td class="form_field">
-            <%= radio_button_tag "radio_special" , "true", true, {:id=>"sim", :onclick=>"show_special_needs('special_needs_line')"} %>
-            <%= label_tag("radio_special", t('special_needs_yes'), :class=>"form_inner_label") %>
-            <%= radio_button_tag "radio_special" , "false", true, {:id=>"nao", :onclick=>"hide_special_needs('special_needs_line')"} %>
-            <%= label_tag("radio_special", t('special_needs_no'), :class=>"form_inner_label") %>
+            <% condition_special_needs = @user.special_needs.blank? && msg_special_needs.blank? %>
+            <%= f.radio_button(:has_special_needs , true, :checked => !condition_special_needs, :onclick => "show_special_needs('.special_needs_lines')") %>
+            <%= label_tag("has_special_needs", t('special_needs_yes'), :class=>"form_inner_label") %>
+            <%= f.radio_button(:has_special_needs , false, :checked => condition_special_needs, :onclick => "hide_special_needs('.special_needs_lines')") %>
+            <%= label_tag("has_special_needs", t('special_needs_no'), :class=>"form_inner_label") %>
           </td>
         </tr>
-        <tr id="special_needs_line">
-          <td class="form_label"><%= f.label :special_needs, t(:which) %> </td>
-          <td class="form_field"><%= f.text_field :special_needs,:size=>field_size %></td>
+        <% unless condition_special_needs
+          display_special_needs_lines = "style='display: inline-block;'"
+        end %>
+        <tr>
+          <td class="form_label"> <div class="special_needs_lines" <%= display_special_needs_lines %>><%= f.label "#{t(:which)}*" %> </div></td> 
+          <td class="form_field"> <div class="special_needs_lines" <%= display_special_needs_lines %>><%= f.text_field :special_needs, :size => field_size %></div></td>
+          <td class="form_error"> <div class="special_needs_lines" <%= display_special_needs_lines %>><%= msg_special_needs %></div></td>
         </tr>
       </table>
     </div>

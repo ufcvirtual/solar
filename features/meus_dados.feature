@@ -52,7 +52,8 @@ Cenário: Alterar dados Pessoais
            E que eu preenchi "Livros" com "The Hobbit"
            E que eu preenchi "Frase" com "Bazzinga"
            E que eu preenchi "Site" com "www.kibeloco.com.br"
-           E que eu preenchi "Senha" com "123456"
+           E que eu preenchi "user_current_password" com "123456"
+
     Quando eu clicar em "confirm"
     Então eu deverei ver "Dados atualizados com sucesso."
 
@@ -72,7 +73,7 @@ Cenário: Alterar dados Cadastrais
        E que eu preenchi "address" com "Rua Sei Não"
        E que eu preenchi "address_number" com "123"
        E que eu preenchi "zipcode" com "60000000"
-       E que eu preenchi "address_neighborhood" com "Sei lá qual"
+       E que eu preenchi "address_neighborhood" com "Sei la qual"
        E que eu preenchi "city" com "Fortaleza"
        E que eu selecionei "user_state" com "CE"
        E que eu preenchi "country" com "Brasil"
