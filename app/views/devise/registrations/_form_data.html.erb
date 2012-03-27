@@ -46,6 +46,7 @@
       <h2><%= t(:new_user_personal_data) %><span class="form_requirement"><%= t(:required_fields) %></span></h2>
     </div>
     <div class="block_content block_content_spacing">
+<<<<<<< HEAD
       <ul class="form_user_content">
         <li>
           <span class="form_label"><%= f.label "#{t(:form_name)}*" %></span>
@@ -69,16 +70,55 @@
           <span class="form_label"><%= f.label "#{t(:form_special_needs)}*" %></span>
           <span class="form_field">
             <%= radio_button_tag "radio_special" , "true", true, {:id=>"sim", :onclick=>"show_special_needs('special_needs_line')"} %>
+=======
+    <ul class="form_user_content">
+      <li>
+        <span class="form_label"><%= f.label "#{t(:form_name)}*" %></span>
+        <span class="form_field"><%= f.text_field :name, :id => "name", :size=>field_size %></span>
+        <span class="form_error"><%= msg_name %></span>
+      </li>
+      <li>
+        <span class="form_label"><%= f.label "#{t(:form_cpf)}*" %></span>
+        <span class="form_field"><%= f.text_field :cpf, :size=>field_size, :id=>"cpf" %></span>
+        <span class="form_error"><%= msg_cpf %></span>
+      </li>
+      <li>
+        <span class="form_label"><%= f.label :birthdate, :class=>"label_usuario"%></span>
+        <span class="form_field"><%= f.date_select :birthdate, :start_year => Time.now.year - 2, :end_year => 1900, :id => 'user_birthdate' %></span>
+      </li>
+      <li>
+        <span class="form_label"><%= f.label :gender, :class => 'label_gender'%></span>
+        <span class="form_field"><%= f.select :gender, ([["M", true], ["F", false]]) , :id => 'gender',:size=>2 %></span>
+      </li>
+      <li>
+        <span class="form_label"><%= f.label "#{t(:form_special_needs)}*" %></span>
+        <span class="form_field">
+            <%= radio_button_tag "radio_special" , "true", !@user.special_needs.blank?, {:id=>"sim", :onclick=>"show_special_needs('special_needs_line')"} %>
+>>>>>>> [#26753497] Na edição de um usuário, se ele possui necessidades especiais, o radio_button, agora, vem selecionado como 'sim' e o campo com a necessidade aparece habilitado e preenchido
             <%= label_tag("radio_special", t('special_needs_yes'), :class=>"form_inner_label") %>
-            <%= radio_button_tag "radio_special" , "false", true, {:id=>"nao", :onclick=>"hide_special_needs('special_needs_line')"} %>
+            <%= radio_button_tag "radio_special" , "false", @user.special_needs.blank?, {:id=>"nao", :onclick=>"hide_special_needs('special_needs_line')"} %>
             <%= label_tag("radio_special", t('special_needs_no'), :class=>"form_inner_label") %>
           </span>
+<<<<<<< HEAD
         </li>
         <li id="special_needs_line">
           <span class="form_label"><%= f.label :special_needs, t(:which) %></span>
           <span class="form_field"><%= f.text_field :special_needs,:size=>field_size %></span>
         </li>
       </ul>
+=======
+      </li>
+      <% if @user.special_needs.blank? 
+        display_special_needs_line = 'none'
+      else
+        display_special_needs_line = 'inline-block'
+      end %>
+      <li id="special_needs_line" style="display: <%=display_special_needs_line%>;">
+        <span class="form_label"><%= f.label :special_needs, t(:which) %></span>
+        <span class="form_field"><%= f.text_field :special_needs,:size=>field_size %></span>
+      </li>
+    </ul>
+>>>>>>> [#26753497] Na edição de um usuário, se ele possui necessidades especiais, o radio_button, agora, vem selecionado como 'sim' e o campo com a necessidade aparece habilitado e preenchido
     </div>
   </div>
 
