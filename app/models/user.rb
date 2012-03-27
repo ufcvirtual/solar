@@ -94,6 +94,7 @@ class User < ActiveRecord::Base
 
   ##
   # Permite modificação dos dados do usuário sem necessidade de informar a senha - para usuários já logados
+  # Define o valor de @has_special_needs na edição de um usuário (update)
   ##
   def update_with_password(params={})
     @has_special_needs = (params[:has_special_needs] == 'true')
@@ -108,7 +109,7 @@ class User < ActiveRecord::Base
 
 ##
 # Este método define os atributos na hora de criar um objeto. Logo, redefine os atributos já existentes e define
-# o valor de @has_special_needs a partir do que é passado da página
+# o valor de @has_special_needs a partir do que é passado da página na criação de um usuário (create)
 ##
 def initialize(attributes = {})
    super(attributes)
