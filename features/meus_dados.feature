@@ -52,7 +52,8 @@ Cenário: Alterar dados Pessoais
            E que eu preenchi "Livros" com "The Hobbit"
            E que eu preenchi "Frase" com "Bazzinga"
            E que eu preenchi "Site" com "www.kibeloco.com.br"
-           E que eu preenchi "Senha" com "123456"
+           E que eu preenchi "user_current_password" com "123456"
+
     Quando eu clicar em "confirm"
     Então eu deverei ver "Dados atualizados com sucesso."
 
