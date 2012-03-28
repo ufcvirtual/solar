@@ -1547,6 +1547,7 @@ h2, table tr.block_title th {
     position:relative;
     width:155px;
     text-align:center;
+    white-space: nowrap;
 }
 
 .participants_list_item > img {
