@@ -85,7 +85,7 @@
         <%= user_session[:tabs][:active] %> ->
         <%= @semester_current  %> ->
         <% @select_options_editor.each do |loc| %>
-          Polos <%= loc['code'] + " " %>
+          <%= loc['code'] + " " %>
           <% break %>
         <% end %>
       </div>
