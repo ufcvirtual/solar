@@ -10,17 +10,6 @@
 
 <%= form_for(@user) do |f| %>
   <% if @user.errors.any? %>
-<<<<<<< HEAD
-    <% msg_login ="" %>
-    <% msg_password ="" %>
-    <% msg_nick ="" %>
-    <% msg_email ="" %>
-    <% msg_institution ="" %>
-    <% msg_name ="" %>
-    <% msg_cpf ="" %>
-    <% msg_alternate_email = "" %>
-
-=======
     <%  msg_login ="" %>
     <%  msg_password ="" %>
     <%  msg_nick ="" %>
@@ -30,7 +19,6 @@
     <%  msg_name ="" %>
     <%  msg_cpf ="" %>
     <% msg_special_needs = "" %>
->>>>>>> 26753497
     <% for msg in @user.errors.full_messages %>
       <%  if (msg.include?(t(:form_login))) %>
         <%  msg_login << msg %>
