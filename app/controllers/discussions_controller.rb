@@ -11,10 +11,16 @@ class DiscussionsController < ApplicationController
   def list
     authorize! :list, Discussion
 
-    allocation_tag_id = active_tab[:url]['allocation_tag_id']
-    allocations = AllocationTag.find_related_ids(allocation_tag_id)
-    @discussions = Discussion.all_by_allocations(allocations.join(','))
+    curriculum_unit_id = active_tab[:url]['id']
 
+    # O grupo (turma) a ter seus fóruns exibidos será o grupo selecionado na aba de seleção ('selected_group')
+    group_selected = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
+    # Se o group_select estiver vazio, ou seja, nenhum grupo foi selecionado pelo usuário,
+    # o grupo a ter seus fóruns exibidos será o primeiro grupo encontrado para o usuário em questão
+    group_selected = CurriculumUnit.find_user_groups_by_curriculum_unit(curriculum_unit_id, current_user.id).first.id if group_selected.blank?
+
+    allocation_group = AllocationTag.all(:conditions => ["group_id = #{group_selected}"], :select => 'id').map( &:id )
+    @discussions = Discussion.all_by_allocations(allocation_group.join(','))
   end
 
   def show
