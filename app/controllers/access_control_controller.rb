@@ -58,7 +58,13 @@ class AccessControlController < ApplicationController
     end   
   end
 
-  def lesson   
+  def lesson
+    type = return_type(params[:extension])
+
+    # path do arquivo da aula
+    send_file("#{Rails.root}/media/lessons/#{params[:id]}/#{params[:file]}.#{params[:extension]}", { :disposition => 'inline', :type => type} )
+    
+=begin
     # verificar se usuario logado tem aula passada em na(s) disciplina(s) aberta(s)
 
     groups = ""
@@ -78,7 +84,7 @@ class AccessControlController < ApplicationController
     end
 
     # ex de formato do campo address da tabela lessons:
-    #     /media/lessons/7/migrations.pdf
+    #     migrations.pdf
     #     http://www.virtual.ufc.br
 
     # retorna aulas
@@ -91,6 +97,7 @@ class AccessControlController < ApplicationController
       # path do arquivo da aula
       send_file("#{Rails.root}/media/lessons/#{params[:id]}/#{params[:file]}.#{params[:extension]}", { :disposition => 'inline', :type => type} )
     end
+=end
   end
 
   def message
