@@ -1,8 +1,18 @@
 module DiscussionPostsHelper
 
+  # Verifica se a data em questão permite que o usuário possa postar no fórum
   def valid_date
+    # Período ativo fórum
     schedule = Schedule.find(@discussion.schedule_id)
-    schedule.start_date <= Date.today && Date.today <= schedule.end_date
+    # Ids dos perfis do usuário para o allocation_tag do fórum
+    profiles = Profile.find_by_allocation_tag_and_user_id(@discussion.allocation_tag.id, current_user.id).map(&:id)
+    # Verifica se a data de hoje está dentro do período ativo do fórum
+    today_between_start_end = (schedule.start_date <= Date.today and Date.today <= schedule.end_date)
+    # Verifica se o usuário tem perfil de responsável e se hoje ultrapassou a data final da ativação do fórum em apenas 
+    # os dias determinados por 'Forum_Responsible_Extra_Time'
+    responsible_and_have_extra_time = (profiles.include?(Profile_Type_Class_Responsible) and Date.today - schedule.end_date <= Forum_Responsible_Extra_Time)
+    # Retorna o resultado da comparação final
+    today_between_start_end or responsible_and_have_extra_time
   end
 
   # Renderiza um post na tela de interação do portólio.

@@ -41,3 +41,6 @@ Profile_Type_Student            = 0b00000100  # (3o bit = 1)
 # Contextos de abas e menus
 Context_General            = 1 #Context.find_by_name('general').id
 Context_Curriculum_Unit    = 2 #Context.find_by_name('curriculum_unit').id
+
+# Tempo extra, em dias, para o responsável poder postar no fórum
+Forum_Responsible_Extra_Time = 1
