@@ -599,7 +599,7 @@
   navigation_last: "Última >>"
 
   icon_agenda: "Ícone da agenda"
-  icon_forum: "Ícone do forum"
+  icon_forum: "Ícone do fórum"
   icon_message: "Ícone de mensagem"
   icon_curriculum_unit: "Ícone de unidade curricular"
   icon_lesson: "Ícone de aula"
@@ -716,7 +716,7 @@
   menu_support_material: Material de Apoio
   menu_support_material_record: Cadastro de Material de Apoio
   menu_activity: Atividades
-  menu_discussion: Forum
+  menu_discussion: Fórum
   menu_portfolio: Portfolio
   menu_test: Prova
   menu_chat: Chat
