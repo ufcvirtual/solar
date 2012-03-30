@@ -13,6 +13,8 @@ class Lesson < ActiveRecord::Base
                             l.name,
                             l.address,
                             l.order,
+                            l.type_lesson,
+                            l.allocation_tag_id,
                             l.schedule_id
                        FROM lessons         AS l
                   LEFT JOIN schedules       AS s  ON l.schedule_id = s.id
