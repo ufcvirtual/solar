@@ -455,14 +455,18 @@ h1.page_title{
     border: 0px;
     cursor: pointer;
 }
-.select_category{
+.select_category {
     height:19px;
     font-size: 10px;
 }
 .enrollment_label {
     color: #000;
-    font-size: 12px;
+    font-size: 10pt;
     width: auto;
+}
+#offer_category {
+    height: 24px;
+    padding: 3px;
 }
 .enrollment_link {
     color: #214684;
@@ -472,25 +476,29 @@ h1.page_title{
     border: 0;
     background-color: transparent;
 }
+.enrollment_bar {
+    padding: 2px 4px;
+    overflow: hidden;
+}
 .enrollment_left{
     float: left;
     width: 545px;
     left: 0px;
     position: relative;
-    top: 10px;
 }
 .enrollment_right{
+    float: right;
     position: relative;
     margin-right: 0px;
-    text-align: right;
+    right: 0;
+    top: 5px;
 }
 .link_gray {
-    background-color: #eeeeed;
-    color           : #222;
     font-weight:bold;
     padding:6px 4px 6px 4px;
     cursor: pointer;
     font-size: 12px;
+    text-decoration: underline;
 }
 
 /**
@@ -2533,6 +2541,12 @@ th {
 tbody tr.lines {
     border-bottom: solid #B4B2B1 1px;
     background-color: #F5F8FB;
+}
+
+tr.lines td img {
+    margin: 0;
+    padding: 0;
+    vertical-align: bottom;
 }
 
 /*

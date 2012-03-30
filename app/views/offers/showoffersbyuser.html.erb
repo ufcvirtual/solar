@@ -2,67 +2,73 @@
   <div id="page_title">
     <h1><%=t(:enrollm_title)%></h1>
   </div>
+  <div class="block_content enrollment_bar">
+    <%= form_for :offer, :url => { :controller=>"offers", :action => "showoffersbyuser" } do |f| %>
+
+      <div class="enrollment_left">
+        <%= f.label t(:enrollm_search), :class => "enrollment_label" %>:&nbsp;
+        <%= f.text_field  :search, :size=>"30", :class=>'enrollment_search', :value => @search_text %>
+
+        <%= f.label t(:enrollm_search_in), :class => "enrollment_label" %>
+
+        <%= f.collection_select(:category, @types, :id, :description, {:include_blank => true, :class => "select_category", :selected => @search_category} ) %>
+
+        <%= image_submit_tag("search.png", :class => 'enrollment_search_icon')%>
+      </div>
+
+      <div class="enrollment_right">
+        <%= f.label t(:enrollm_view), :class => "enrollment_label" %>
+        <%= f.label ': ', :class => "enrollment_label" %>&nbsp;
+        <%= link_to t(:enrollm_view_all),{:controller=>"offers", :action=>"showoffersbyuser", :category_query => 'all'}, :class=>"link_gray"%>&nbsp;
+        <%= link_to t(:enrollm_view_enrolled),{:controller=>"offers", :action=>"showoffersbyuser", :category_query => 'enroll'}, :class=>"link_gray"%>
+      </div>
+    <% end %>
+  </div>
 </div>
-<div>
-  <%= form_for :offer, :url => { :controller=>"offers", :action => "showoffersbyuser" } do |f| %>
-
-    <div class="enrollment_left">
-      <%= f.label t(:enrollm_search), :class => "enrollment_label" %>&nbsp;
-      <%= f.text_field  :search, :size=>"30", :class=>'enrollment_search', :value => @search_text %>
-
-      <%= f.label t(:enrollm_search_in), :class => "enrollment_label" %>
-
-      <%= f.collection_select(:category, @types, :id, :description, {:include_blank => true, :class => "select_category", :selected => @search_category} ) %>
-
-      <%= image_submit_tag("search.png", :class => 'enrollment_search_icon')%>
-    </div>
-
-    <div class="enrollment_right">
-      <%= f.label t(:enrollm_view), :class => "enrollment_label" %>
-      <%= f.label ': ', :class => "enrollment_label" %>&nbsp;
-      <%= link_to t(:enrollm_view_all),{:controller=>"offers", :action=>"showoffersbyuser", :category_query => 'all'}, :class=>"link_gray"%>&nbsp;
-      <%= link_to t(:enrollm_view_enrolled),{:controller=>"offers", :action=>"showoffersbyuser", :category_query => 'enroll'}, :class=>"link_gray"%>
-    </div>
-  <% end %>
-
-  <div style="padding-top: 50px; min-height: 120px">
-
-    <table cellpadding="5" cellspacing="0" width="745px">
-      <tr class="headtable_blue">
-        <td class="td_head_blue"><%= t(:enrollm_curriculum_unit) %></td>
-        <td class="td_head_blue" align="center"><%= t(:enrollm_category) %></td>
-        <td class="td_head_blue" align="center"><%= t(:enrollm_group) %></td>
-        <td class="td_head_blue" align="center"><%= t(:mysolar_mn_enrollment)%></td>
-      </tr>
-
-      <% if @offers %>
-        <% @offers.each do |offer| %>
-          <tr class="<%= cycle('rowtable_odd', 'rowtable_even') %>" >
-            <td class="td_blue_first"><%= offer.name %></td>
-            <td class="td_blue"><%= image_tag(offer.icon_name) if !offer.icon_name.nil? %>&nbsp;<%= offer.categorydesc %></td>
-            <td class="td_blue" align="center"><%= offer.code %></td>
-            <td class="td_blue" align="center">
-              <% case offer.status %>
-              <% when Allocation_Pending.to_s %>
-                <%= button_to t(:enrollm_cancel_request),{:controller=>"allocations", :action=>"cancel_request", :id => offer.allocationid}, :confirm => t(:enrollm_confirm), :class=>'enrollment_link' %>
-              <% when Allocation_Pending_Reactivate.to_s %>
-                <%= button_to t(:enrollm_cancel_request),{:controller=>"allocations", :action=>"cancel_request", :id => offer.allocationid}, :confirm => t(:enrollm_confirm), :class=>'enrollment_link' %>
-              <% when Allocation_Activated.to_s %>
-                <% if (offer.allows_enrollment == 't') %>
-                  <%= button_to t(:enrollm_cancel),{:controller=>"allocations", :action=>"cancel", :id => offer.allocationid}, :confirm => t(:enrollm_confirm), :class => 'enrollment_link' %>
+<div class="block_wrapper">
+  <div class="block_title">
+    <h2>Unidades Curriculares</h2>
+  </div>
+  <div class="block_content">
+    <table class="tb_list">
+      <thead>
+        <tr class="lines">
+          <th><%= t(:enrollm_curriculum_unit) %></th>
+          <th align="center"><%= t(:enrollm_category) %></th>
+          <th align="center"><%= t(:enrollm_group) %></th>
+          <th align="center"><%= t(:mysolar_mn_enrollment)%></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @offers %>
+          <% @offers.each do |offer| %>
+            <!-- <tr class="<%= cycle('rowtable_odd', 'rowtable_even') %>" > -->
+            <tr class="lines">
+              <td><%= offer.name %></td>
+              <td><%= image_tag(offer.icon_name) if !offer.icon_name.nil? %>&nbsp;<%= offer.categorydesc %></td>
+              <td align="center"><%= offer.code %></td>
+              <td align="center">
+                <% case offer.status %>
+                <% when Allocation_Pending.to_s %>
+                  <%= button_to t(:enrollm_cancel_request),{:controller=>"allocations", :action=>"cancel_request", :id => offer.allocationid}, :confirm => t(:enrollm_confirm), :class=>'enrollment_link' %>
+                <% when Allocation_Pending_Reactivate.to_s %>
+                  <%= button_to t(:enrollm_cancel_request),{:controller=>"allocations", :action=>"cancel_request", :id => offer.allocationid}, :confirm => t(:enrollm_confirm), :class=>'enrollment_link' %>
+                <% when Allocation_Activated.to_s %>
+                  <% if (offer.allows_enrollment == 't') %>
+                    <%= button_to t(:enrollm_cancel),{:controller=>"allocations", :action=>"cancel", :id => offer.allocationid}, :confirm => t(:enrollm_confirm), :class => 'enrollment_link' %>
+                  <% else %>
+                    <%= label_tag "lb_enrollm", t(:enrollm_enrolled), :class => "enrollment_label" %>
+                  <% end %>
+                <% when Allocation_Cancelled.to_s %>
+                  <%= button_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"reactivate", :id => offer.allocationid }, :class=>'enrollment_link' %>
                 <% else %>
-                  <%= label_tag "lb_enrollm", t(:enrollm_enrolled), :class => "enrollment_label" %>
+                  <%= button_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"send_request", :id => offer.allocationid, :tagid => offer.allocationtagid, :userid => current_user.id }, :class=>'enrollment_link' %>
                 <% end %>
-              <% when Allocation_Cancelled.to_s %>
-                <%= button_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"reactivate", :id => offer.allocationid }, :class=>'enrollment_link' %>
-              <% else %>
-                <%= button_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"send_request", :id => offer.allocationid, :tagid => offer.allocationtagid, :userid => current_user.id }, :class=>'enrollment_link' %>
-              <% end %>
-            </td>
-          </tr>
+              </td>
+            </tr>
+          <% end %>
         <% end %>
-      <% end %>
-
+      </tbody>
     </table>
   </div>
 
