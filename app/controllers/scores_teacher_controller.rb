@@ -1,6 +1,7 @@
 class ScoresTeacherController < ApplicationController
 
   before_filter :prepare_for_pagination, :only => [:list]
+  before_filter :prepare_for_group_selection, :only => [:list]
 
   # lista de alunos paginados
   def list

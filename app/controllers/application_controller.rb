@@ -275,7 +275,11 @@ class ApplicationController < ActionController::Base
   # Preparando para seleção genérica de turmas
   ##
   def prepare_for_group_selection
-    if params.include?('selected_group') and active_tab[:url]['context'] == Context_Curriculum_Unit
+    if active_tab[:url]['context'] == Context_Curriculum_Unit
+      if !params.include?('selected_group')
+        curriculum_unit_id = active_tab[:url]['id']
+        params[:selected_group] = CurriculumUnit.find_user_groups_by_curriculum_unit(curriculum_unit_id, current_user.id).first.id
+      end
       allocation_tag_id = AllocationTag.find_by_group_id(params[:selected_group]).id
       user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['allocation_tag_id'] = allocation_tag_id
     end

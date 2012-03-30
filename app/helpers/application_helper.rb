@@ -81,18 +81,20 @@ module ApplicationHelper
   ##
   def render_group_selection(hash_params = nil)
     active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
-
     curriculum_unit_id = active_tab[:url]['id']
     groups = CurriculumUnit.find_user_groups_by_curriculum_unit(curriculum_unit_id, current_user.id)
-
-    group_id_active = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
+    # O grupo (turma) a ter seus fóruns exibidos será o grupo selecionado na aba de seleção ('selected_group')
+    group_selected = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
+    # Se o group_select estiver vazio, ou seja, nenhum grupo foi selecionado pelo usuário,
+    # o grupo a ter seus fóruns exibidos será o primeiro grupo encontrado para o usuário em questão
+    group_selected = groups.first.id if group_selected.blank?
 
     if (groups.length > 1)
       result = "<form accept-charset='UTF-8' action='' method='#{request.method}' name='groupSelectionForm' style='display:inline'>"
       result <<  t(:group) << ":&nbsp"
       result << select_tag(
         :selected_group,
-        options_from_collection_for_select(groups, :id, :code_semester, group_id_active),
+        options_from_collection_for_select(groups, :id, :code_semester, group_selected),
         #{:onchange => "$(this).parent().submit();"}#Versao SEM AJAX
         {:onchange => "reloadContentByForm($(this).parent());"}#Versao AJAX
       )
