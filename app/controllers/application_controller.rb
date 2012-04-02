@@ -226,7 +226,7 @@ class ApplicationController < ActionController::Base
   # Grava log de acesso a unidade curricular
   ##
   def log_access
-    Log.create(:log_type => Log::TYPE[:course_access], :user_id => current_user.id, :curriculum_unit_id => params[:id]) if (params[:type] == Context_Curriculum_Unit)
+    Log.create(:log_type => Log::TYPE[:course_access], :user_id => current_user.id, :curriculum_unit_id => params[:id]) if (params[:context].to_i == Context_Curriculum_Unit)
   end
 
   ##
