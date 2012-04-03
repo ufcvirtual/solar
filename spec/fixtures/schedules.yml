@@ -95,3 +95,8 @@ schedule 19:
   id: 19
   start_date: <%= Date.today << 2 %> #2011-07-04
   end_date: <%= Date.today >> 1 %> #2011-10-19 23:59:59
+
+schedule 20:
+  id: 20
+  start_date: <%= Date.today << 2 %>
+  end_date: <%= Date.today >> 1 %>

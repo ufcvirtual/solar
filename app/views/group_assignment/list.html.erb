@@ -1,0 +1,39 @@
+<div class="block_wrapper" id="group_assignments">
+
+  <div class="block_title">
+    <h2><%= image_tag "icon_suitcase_portfolio.png", :alt => t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:group_assignments)%></h2>
+  </div>
+
+  <div class="block_content" id="group_assignments">
+
+    <% unless @group_assignments.nil? or @group_assignments.empty? %>
+      <table class="tb_list">
+        <tbody>
+          <% @group_assignments.each_with_index do |pa, idx| %>
+
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="block_content block_content_text"><%= t(:itens_not_found) %></div>
+    <% end %>
+   
+  </div>
+
+</div>
+
+<script type="text/javascript">
+  $(function(){
+    $(".enunciation_more").click(function(){
+      $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "none");
+      $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "block");
+      return false;
+    });
+
+    $(".enunciation_less").click(function(){
+      $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "block");
+      $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "none");
+      return false;
+    });
+  });
+</script>

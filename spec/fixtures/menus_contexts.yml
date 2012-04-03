@@ -49,6 +49,10 @@ acomp_ativ_teacher:
   menu_id: 208
   context_id: 2
 
+trab_grupo:
+  menu_id: 209
+  context_id: 2
+
 # MENU PAI - 30
 info_geral:
   menu_id: 30
@@ -87,7 +91,7 @@ blog_soc:
 mensagem_soc_geral:
   menu_id: 50
   context_id: 1
-  
+
 mensagem_soc_uc:
   menu_id: 50
   context_id: 2

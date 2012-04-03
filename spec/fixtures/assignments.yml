@@ -21,3 +21,12 @@ a3:
   name: Atividade III
   enunciation: Podemos já vislumbrar o modo pelo qual a crescente influência da mídia talvez venha a ressaltar a relatividade do levantamento das variáveis envolvidas.Podemos já vislumbrar o modo pelo qual a crescente influência da mídia talvez venha a ressaltar a relatividade do levantamento das variáveis envolvidas.
   schedule_id: 19
+
+# quimica I - trabalho em grupo
+a4:
+  id: 4
+  allocation_tag_id: 3
+  name: Atividade em grupo I
+  enunciation: esse é o enunciado de um trabalho em grupo... :)
+  schedule_id: 20
+  type_assignment: 2

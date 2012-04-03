@@ -96,3 +96,10 @@ basic:
   user_id: 13
   profile_id: 12
   status: 1
+
+professor_as_tutor:
+  id: 39
+  user_id: 6
+  allocation_tag_id: 2
+  profile_id: 3
+  status: 1
