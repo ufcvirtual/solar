@@ -308,4 +308,27 @@ class ApplicationController < ActionController::Base
     }
   end
 
+
+
+
+
+
+ def is_class_responsible?
+    query = <<SQL
+      SELECT DISTINCT 
+        FROM profiles AS profile ON profile.type = #{Profile_Type_Class_Responsible} and profile.status = TRUE
+        JOIN allocations AS allocation ON allocation.profile_id = profile.id and allocation.user_id = #{current_user.id} and allocation.status = 1
+SQL
+
+    raise "#{Discussion.find_by_sql(query)}"
+
+#and allocation_tag_id = 
+
+  end
+
+
+
+
+
+
 end

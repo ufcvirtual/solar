@@ -2,15 +2,39 @@ module DiscussionPostsHelper
 
   # Verifica se a data em questão permite que o usuário possa postar no fórum
   def valid_date
+    # Se estiver acessando o método do before_filter, o objeto "@discussion" não existe, logo tem que definí-lo 
+    # a partir dos parâmetros enviados da página
+    if params[:discussion_id]
+      @discussion = Discussion.find(params[:discussion_id])
+    end
     # Período ativo fórum
     schedule = Schedule.find(@discussion.schedule_id)
-    # Ids dos perfis do usuário para o allocation_tag do fórum
-    profiles = Profile.find_by_allocation_tag_and_user_id(@discussion.allocation_tag.id, current_user.id).map(&:id)
+
+    # Allocations tags relacionadas ao fórum
+    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
+    allocation_tag_id = active_tab[:url]['allocation_tag_id']
+    allocations_tags = AllocationTag.find_related_ids(allocation_tag_id)
+
+    # Pesquisa pelas allocations relacionadas ao usuário que possua um perfil de tipo igual a 'Profile_Type_Class_Responsible'
+    query = <<SQL
+        SELECT DISTINCT allocation.allocation_tag_id
+          FROM profiles      AS profile 
+          JOIN allocations   AS allocation ON allocation.profile_id = profile.id AND allocation.user_id = #{current_user.id} AND allocation.status = 1
+         WHERE profile.types = #{Profile_Type_Class_Responsible} AND profile.status = true
+SQL
+
+    # Verificação se a allocation_tag de cada allocation retornada pelo query está inclusa nas allocations_tags relacionadas ao fórum
+    user_is_class_responsible = false
+    for allocation in Allocation.find_by_sql(query)
+      user_is_class_responsible = true if allocations_tags.include?(allocation.allocation_tag_id)
+      break if user_is_class_responsible
+    end
+
     # Verifica se a data de hoje está dentro do período ativo do fórum
     today_between_start_end = (schedule.start_date <= Date.today and Date.today <= schedule.end_date)
-    # Verifica se o usuário tem perfil de responsável e se hoje ultrapassou a data final da ativação do fórum em apenas 
-    # os dias determinados por 'Forum_Responsible_Extra_Time'
-    responsible_and_have_extra_time = (profiles.include?(Profile_Type_Class_Responsible) and Date.today - schedule.end_date <= Forum_Responsible_Extra_Time)
+    # Verifica se o usuário tem perfil de responsável para o fórum (ou allocations_tags relacionadas) 
+    # e se hoje ultrapassou a data final da ativação do fórum em apenas os dias determinados por 'Forum_Responsible_Extra_Time'
+    responsible_and_have_extra_time = (user_is_class_responsible and Date.today - schedule.end_date <= Forum_Responsible_Extra_Time)
     # Retorna o resultado da comparação final
     today_between_start_end or responsible_and_have_extra_time
   end
