@@ -2,6 +2,8 @@ class PortfolioTeacherController < ApplicationController
 
   include FilesHelper
 
+  before_filter :prepare_for_group_selection, :only => [:list]
+
   ##
   # Lista de portfolio dos alunos de uma turma
   ##
@@ -10,10 +12,10 @@ class PortfolioTeacherController < ApplicationController
     authorize! :list, PortfolioTeacher
 
     allocation_tag_id = active_tab[:url]['allocation_tag_id']
-    allocations = AllocationTag.find_related_ids(allocation_tag_id)
+    allocations = allocation_tag_id.nil? ? nil : AllocationTag.find_related_ids(allocation_tag_id).join(', ')
 
     # grupo selecionado
-    @group = AllocationTag.where("id IN (#{allocations.join(',')}) AND group_id IS NOT NULL").first.group
+    @group = AllocationTag.where("id IN (#{allocations}) AND group_id IS NOT NULL").first.group
     @students = PortfolioTeacher.list_students_by_allocations(allocations)
 
   end

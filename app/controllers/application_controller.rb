@@ -226,7 +226,7 @@ class ApplicationController < ActionController::Base
   # Grava log de acesso a unidade curricular
   ##
   def log_access
-    Log.create(:log_type => Log::TYPE[:course_access], :user_id => current_user.id, :curriculum_unit_id => params[:id]) if (params[:type] == Context_Curriculum_Unit)
+    Log.create(:log_type => Log::TYPE[:course_access], :user_id => current_user.id, :curriculum_unit_id => params[:id]) if (params[:context].to_i == Context_Curriculum_Unit)
   end
 
   ##
@@ -275,7 +275,11 @@ class ApplicationController < ActionController::Base
   # Preparando para seleção genérica de turmas
   ##
   def prepare_for_group_selection
-    if params.include?('selected_group') and active_tab[:url]['context'] == Context_Curriculum_Unit
+    if active_tab[:url]['context'] == Context_Curriculum_Unit
+      if !params.include?('selected_group')
+        curriculum_unit_id = active_tab[:url]['id']
+        params[:selected_group] = CurriculumUnit.find_user_groups_by_curriculum_unit(curriculum_unit_id, current_user.id).first.id
+      end
       allocation_tag_id = AllocationTag.find_by_group_id(params[:selected_group]).id
       user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['allocation_tag_id'] = allocation_tag_id
     end
@@ -304,4 +308,14 @@ class ApplicationController < ActionController::Base
     }
   end
 
+ def is_class_responsible?
+    query = <<SQL
+      SELECT DISTINCT 
+        FROM profiles AS profile ON profile.type = #{Profile_Type_Class_Responsible} and profile.status = TRUE
+        JOIN allocations AS allocation ON allocation.profile_id = profile.id and allocation.user_id = #{current_user.id} and allocation.status = 1
+SQL
+
+    raise "#{Discussion.find_by_sql(query)}"
+  end
+  
 end

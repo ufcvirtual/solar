@@ -12,7 +12,7 @@
   <!--//------------- Barra Superior------------- -->
   <div class="block_title forum_navigation">
       <span id="forum_new_message">
-        <% if valid_date %>
+        <% if @valid_date %>
           <button type="button" class="btn btn_default" id="NewPostButton" value="<%= t("forum_new_message")%>" onclick="javascript:clearFormData()">
             <%= t("forum_new_message")%><%= image_tag "icon_write.png", :alt => '' %>
           </button>
@@ -48,11 +48,11 @@
   <div class="forum_posts_wrapper">
     <%if @display_mode == "PLAINLIST"%>
       <% @posts.each do |post|%>
-        <%= raw show_post(post, false)%>
+        <%= raw show_post(post, false, @valid_date)%>
       <%end%>
     <%else%>
       <% @posts.each do |post|%>
-        <%= raw show_post(post)%>
+        <%= raw show_post(post, true, @valid_date)%>
       <%end%>
     <%end%>
   </div>

@@ -14,7 +14,7 @@ class PortfolioTeacher < ActiveRecord::Base
         JOIN allocation_tags  AS t2 ON t2.id = t1.allocation_tag_id
         JOIN users            AS t3 ON t3.id = t1.user_id
         JOIN profiles         AS t4 ON t4.id = t1.profile_id
-       WHERE t2.id IN (#{allocations.join(',')})
+       WHERE t2.id IN (#{allocations})
          AND t2.group_id IS NOT NULL
          AND cast( t4.types & '#{Profile_Type_Student}' as boolean) 
        ORDER BY t3.name
