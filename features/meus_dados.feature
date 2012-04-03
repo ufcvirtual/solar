@@ -117,7 +117,7 @@ Cenário:  Acessar Edição de foto
     E eu clicar no link "mysolar_change_picture"
     Então eu deverei ver o botao "Enviar"
 
-#@wip
+@wip
 @javascript
 Esquema do Cenário: Enviar foto
     Dado que estou logado com o usuario "user" e com a senha "123456"
