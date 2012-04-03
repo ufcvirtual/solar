@@ -2,6 +2,7 @@ module DiscussionPostsHelper
 
   # Verifica se a data em questão permite que o usuário possa postar no fórum
   def valid_date
+    print " --------------- oi --------------- "
     # Se estiver acessando o método do before_filter, o objeto "@discussion" não existe, logo tem que definí-lo 
     # a partir dos parâmetros enviados da página
     if params[:discussion_id]
@@ -41,11 +42,10 @@ SQL
 
   # Renderiza um post na tela de interação do portólio.
   # threaded indica se as respostas deste post devem ser renderizadas com ele.
-  def show_post(post = nil, threaded=true)
+  def show_post(post=nil, threaded=true, can_interact=false)
     childs = {}
     editable = false
     childs_count = DiscussionPost.child_count(post.id)
-    can_interact= valid_date
 
     #Um post pode ser editado se é do próprio usuário e se não possui respostas.
     editable = true if (post.user.id == current_user.id) && (childs_count == 0)
@@ -86,7 +86,7 @@ SQL
 
     #Renderizando as respostas ao post
     childs.each do |child|
-      post_string << show_post(child, true)
+      post_string << show_post(child, true, can_interact)
     end
 
     post_string <<      '</td>'
