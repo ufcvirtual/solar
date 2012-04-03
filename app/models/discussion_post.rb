@@ -6,6 +6,8 @@ class DiscussionPost < ActiveRecord::Base
   belongs_to :discussion
   belongs_to :user
 
+  validates :content, :presence => true
+
   #Falta implementar as validações aqui!!
 
   # Recupera todos os posts do usuario para a discussion passada

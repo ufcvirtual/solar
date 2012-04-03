@@ -69,6 +69,8 @@
       course: 
         name: Name
         code: Code 
+      discussion_post: 
+        content: Content
       public_file:
         attachment_content_type: ""
         attachment_file_size: "File too large. The maximum size should be up to 5MB."

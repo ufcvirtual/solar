@@ -199,6 +199,8 @@
       course: 
         name: Nome
         code: Codigo   
+      discussion_post: 
+        content: Conteúdo
       public_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
