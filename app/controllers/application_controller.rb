@@ -308,11 +308,6 @@ class ApplicationController < ActionController::Base
     }
   end
 
-
-
-
-
-
  def is_class_responsible?
     query = <<SQL
       SELECT DISTINCT 
@@ -321,14 +316,6 @@ class ApplicationController < ActionController::Base
 SQL
 
     raise "#{Discussion.find_by_sql(query)}"
-
-#and allocation_tag_id = 
-
   end
-
-
-
-
-
-
+  
 end

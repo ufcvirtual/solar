@@ -2,7 +2,6 @@ module DiscussionPostsHelper
 
   # Verifica se a data em questão permite que o usuário possa postar no fórum
   def valid_date
-    print " --------------- oi --------------- "
     # Se estiver acessando o método do before_filter, o objeto "@discussion" não existe, logo tem que definí-lo 
     # a partir dos parâmetros enviados da página
     if params[:discussion_id]
@@ -11,24 +10,34 @@ module DiscussionPostsHelper
     # Período ativo fórum
     schedule = Schedule.find(@discussion.schedule_id)
 
-    # Allocations tags relacionadas ao fórum
-    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
-    allocation_tag_id = active_tab[:url]['allocation_tag_id']
-    allocations_tags = AllocationTag.find_related_ids(allocation_tag_id)
+    # Verifica se a data de hoje está dentro do período ativo do fórum
+    today_between_start_end = (schedule.start_date <= Date.today and Date.today <= schedule.end_date)
+    # Variável que indicará se o usuário é o responsável pelo fórum
+    user_is_class_responsible = false
 
-    # Pesquisa pelas allocations relacionadas ao usuário que possua um perfil de tipo igual a 'Profile_Type_Class_Responsible'
-    query = <<SQL
-        SELECT DISTINCT allocation.allocation_tag_id
-          FROM profiles      AS profile 
-          JOIN allocations   AS allocation ON allocation.profile_id = profile.id AND allocation.user_id = #{current_user.id} AND allocation.status = 1
-         WHERE profile.types = #{Profile_Type_Class_Responsible} AND profile.status = true
+    # Só precisa fazer a segunda verificação se a primeira for falsa. Ou seja, só precisa verificar o "tempo extra" e 
+    # se o usuário é responsável daquele fórum se não estiver no prazo permitido
+    unless today_between_start_end
+
+      # Allocations tags relacionadas ao fórum
+      active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
+      allocation_tag_id = active_tab[:url]['allocation_tag_id']
+      allocations_tags = AllocationTag.find_related_ids(allocation_tag_id)
+
+      # Pesquisa pelas allocations relacionadas ao usuário que possua um perfil de tipo igual a 'Profile_Type_Class_Responsible'
+      query = <<SQL
+          SELECT DISTINCT allocation.allocation_tag_id
+            FROM profiles      AS profile 
+            JOIN allocations   AS allocation ON allocation.profile_id = profile.id AND allocation.user_id = #{current_user.id} AND allocation.status = 1
+           WHERE profile.types = #{Profile_Type_Class_Responsible} AND profile.status = true
 SQL
 
-    # Verificação se a allocation_tag de cada allocation retornada pelo query está inclusa nas allocations_tags relacionadas ao fórum
-    user_is_class_responsible = false
-    for allocation in Allocation.find_by_sql(query)
-      user_is_class_responsible = true if allocations_tags.include?(allocation.allocation_tag_id)
-      break if user_is_class_responsible
+      # Verificação se a allocation_tag de cada allocation retornada pelo query está inclusa nas allocations_tags relacionadas ao fórum
+      for allocation in Allocation.find_by_sql(query)
+        user_is_class_responsible = true if allocations_tags.include?(allocation.allocation_tag_id)
+        break if user_is_class_responsible
+      end
+
     end
 
     # Verifica se a data de hoje está dentro do período ativo do fórum
@@ -36,8 +45,17 @@ SQL
     # Verifica se o usuário tem perfil de responsável para o fórum (ou allocations_tags relacionadas) 
     # e se hoje ultrapassou a data final da ativação do fórum em apenas os dias determinados por 'Forum_Responsible_Extra_Time'
     responsible_and_have_extra_time = (user_is_class_responsible and Date.today - schedule.end_date <= Forum_Responsible_Extra_Time)
-    # Retorna o resultado da comparação final
-    today_between_start_end or responsible_and_have_extra_time
+    # Resultado da comparação final
+    is_an_valid_date = today_between_start_end or responsible_and_have_extra_time
+
+    # Se estiver acessando o método do before_filter, o parâmetro abaixo irá existir. 
+    # Logo, se for o before_filter e tiver tentado postar no fórum indevidamente, aparecerá mensagem de erro
+    if params[:discussion_id] and !is_an_valid_date
+      flash[:error] = t(:forum_post_before_valid_date_error)
+    end
+
+    # Retorna o resultado final
+    return is_an_valid_date
   end
 
   # Renderiza um post na tela de interação do portólio.

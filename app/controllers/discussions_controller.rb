@@ -8,7 +8,7 @@ class DiscussionsController < ApplicationController
 
   before_filter :prepare_for_pagination
   before_filter :prepare_for_group_selection, :only => [:list]
-  # before_filter :valid_date, :except => [:list, :show, :download_post_file, :show_posts]
+  before_filter :valid_date, :except => [:list, :show, :download_post_file, :show_posts]
 
  def list
     authorize! :list, Discussion
