@@ -9,9 +9,14 @@
     <% unless @group_assignments.nil? or @group_assignments.empty? %>
       <table class="tb_list">
         <tbody>
-          <% @group_assignments.each_with_index do |pa, idx| %>
-
-          <% end %>
+        <% @group_assignments.each do |ga| %>
+          <tr class="lines">
+            <td>
+              <%=   %>
+              <%=link_to ga["name"], {:action => :assignment_details, :id => ga["id"]}, :class => "" %>
+            </td>
+          </tr>
+        <% end %>
         </tbody>
       </table>
     <% else %>
@@ -21,19 +26,3 @@
   </div>
 
 </div>
-
-<script type="text/javascript">
-  $(function(){
-    $(".enunciation_more").click(function(){
-      $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "none");
-      $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "block");
-      return false;
-    });
-
-    $(".enunciation_less").click(function(){
-      $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "block");
-      $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "none");
-      return false;
-    });
-  });
-</script>

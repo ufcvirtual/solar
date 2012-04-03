@@ -100,6 +100,6 @@ basic:
 professor_as_tutor:
   id: 39
   user_id: 6
-  allocation_tag_id: 2
+  allocation_tag_id: 3
   profile_id: 3
   status: 1

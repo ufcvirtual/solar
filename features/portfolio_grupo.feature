@@ -19,6 +19,7 @@ Cenário: Exibir Tela de Cadastro de Portfolio de Grupo
         Então eu deverei ver o link "Grupos"
     Quando eu clicar no link "Grupos"
         Então eu deverei ver o link "Atividade em grupo I"
+        Então eu deverei ver o link "Atividade em grupo II"
 
 
         #Então eu deverei ver "Trabalhos em Grupo"
