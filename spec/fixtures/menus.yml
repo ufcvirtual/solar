@@ -78,6 +78,13 @@ acomp_ativ_teacher:
   order: 8
   resource_id: 48
 
+trab_grupo:
+  id: 209
+  parent_id: 20
+  name: menu_group_assignment
+  order: 9
+  resource_id: 69
+
 # MENU PAI - 30
 
 info_geral:

@@ -1,13 +1,13 @@
 
 ########################
-#        PERFIS        #
+# PERFIS #
 ########################
 
 ###############
-#    ALUNO    #
+# ALUNO #
 ###############
 
-puts "  - Criando Permissoes do perfil aluno"
+puts " - Criando Permissoes do perfil aluno"
 
 perm_alunos = PermissionsResource.create([
     # offer
@@ -65,10 +65,10 @@ perm_alunos = PermissionsResource.create([
   ])
 
 ##############################
-#      PROFESSOR TITULAR     #
+# PROFESSOR TITULAR #
 ##############################
 
-puts "  - Criando Permissoes do perfil prof. titular"
+puts " - Criando Permissoes do perfil prof. titular"
 
 perm_prof_titular = PermissionsResource.create([
     # offer
@@ -95,6 +95,7 @@ perm_prof_titular = PermissionsResource.create([
     {:profile_id => 2, :resource_id => 38, :per_id => false},
     {:profile_id => 2, :resource_id => 39, :per_id => false},
     {:profile_id => 2, :resource_id => 40, :per_id => false},
+
     #discussion
     {:profile_id => 2, :resource_id => 42, :per_id => false},
     {:profile_id => 2, :resource_id => 43, :per_id => false},
@@ -124,10 +125,10 @@ perm_prof_titular = PermissionsResource.create([
   ])
 
 ##############################
-#      TUTOR A DISTANCIA     #
+# TUTOR A DISTANCIA #
 ##############################
 
-puts "  - Criando Permissoes do perfil tutor a dist."
+puts " - Criando Permissoes do perfil tutor a dist."
 
 perm_prof_titular = PermissionsResource.create([
     # offer
@@ -154,7 +155,8 @@ perm_prof_titular = PermissionsResource.create([
     {:profile_id => 3, :resource_id => 38, :per_id => false},
     {:profile_id => 3, :resource_id => 39, :per_id => false},
     {:profile_id => 3, :resource_id => 40, :per_id => false},
-
+    # trabalho de grupo
+    {:profile_id => 3, :resource_id => 69, :per_id => false},
     #discussion
     {:profile_id => 3, :resource_id => 42, :per_id => false},
     {:profile_id => 3, :resource_id => 43, :per_id => false},
@@ -185,17 +187,17 @@ perm_prof_titular = PermissionsResource.create([
 
 
 ##############################
-#           EDITOR           #
+# EDITOR #
 ##############################
 
-puts "  - Criando Permissoes do perfil editor"
+puts " - Criando Permissoes do perfil editor"
 
 perm_editor = PermissionsResource.create([
     {:profile_id => 5, :resource_id => 63, :per_id => false},
     {:profile_id => 5, :resource_id => 64, :per_id => false},
     {:profile_id => 5, :resource_id => 65, :per_id => false},
     {:profile_id => 5, :resource_id => 66, :per_id => false},
-    
+
     # Material de apoio
     {:profile_id => 5, :resource_id => 54, :per_id => false},
     {:profile_id => 5, :resource_id => 55, :per_id => true},
@@ -212,17 +214,17 @@ perm_editor = PermissionsResource.create([
   ])
 
 ##############################
-#           BASICO           #
+# BASICO #
 ##############################
 
-puts "  - Criando Permissoes do perfil basico"
+puts " - Criando Permissoes do perfil basico"
 
 perm_basico = PermissionsResource.create([
     {:profile_id => 12, :resource_id => 2, :per_id => false},
     {:profile_id => 12, :resource_id => 3, :per_id => true},
     {:profile_id => 12, :resource_id => 4, :per_id => true},
     {:profile_id => 12, :resource_id => 8, :per_id => true},
-        
+
     {:profile_id => 12, :resource_id => 14, :per_id => false},
     {:profile_id => 12, :resource_id => 15, :per_id => false},
     {:profile_id => 12, :resource_id => 16, :per_id => false},
@@ -246,7 +248,7 @@ perm_basico = PermissionsResource.create([
 
 ######## PERMISSIONS MENUS #########
 
-puts "  - Criando Permissoes de Menu"
+puts " - Criando Permissoes de Menu"
 
 PermissionsMenu.create([
     {:profile_id => 1, :menu_id => 10},
@@ -281,7 +283,7 @@ PermissionsMenu.create([
     #{:profile_id => 2, :menu_id => 70},
     {:profile_id => 2, :menu_id => 302},
     {:profile_id => 2, :menu_id => 102},
-
+    
     # tutor a distancia
     {:profile_id => 3, :menu_id => 10},
     {:profile_id => 3, :menu_id => 101},
@@ -297,6 +299,7 @@ PermissionsMenu.create([
     #{:profile_id => 3, :menu_id => 70},
     {:profile_id => 3, :menu_id => 302},
     {:profile_id => 3, :menu_id => 102},
+    {:profile_id => 3, :menu_id => 209},
 
     #editor
     {:profile_id => 5, :menu_id => 10},
@@ -314,7 +317,7 @@ PermissionsMenu.create([
     {:profile_id => 5, :menu_id => 302},
     # {:profile_id => 5, :menu_id => 102},
     {:profile_id => 5, :menu_id => 120},
-    
+
     #basico
     {:profile_id => 12, :menu_id => 100}
   ])

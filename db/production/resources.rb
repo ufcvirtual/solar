@@ -87,7 +87,10 @@ resources_arr = [
   {:id => 65, :controller => 'support_material_file', :action => 'select_action_file', :description => 'Envia para o metodo de adicionar ou excluir arquivos ou renomeia uma pasta do material de apoio do editor'},
   {:id => 66, :controller => 'support_material_file', :action => 'folder_verify', :description => 'Metodo que cria uma pasta temporaria e envia para a pagina do material de apoio do editor para aguardar o upload de um arquivo'},
   {:id => 67, :controller => 'support_material_file', :action => 'delete_folder', :description => 'Exclui uma pasta da pagina de material de apoio do editor'},
-  {:id => 68, :controller => 'support_material_file', :action => 'edit_link', :description => 'Edita um ou mais links da pagina de material de apoio do editor'}
+  {:id => 68, :controller => 'support_material_file', :action => 'edit_link', :description => 'Edita um ou mais links da pagina de material de apoio do editor'},
+
+  # Trabalho de grupo
+  {:id => 69, :controller => 'group_assignment', :action => 'list', :description => 'Grupos'}
 ]
 
 puts "  - Criando resources"

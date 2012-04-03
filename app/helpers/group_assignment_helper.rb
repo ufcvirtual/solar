@@ -1,0 +1,2 @@
+module GroupAssignmentHelper
+end
