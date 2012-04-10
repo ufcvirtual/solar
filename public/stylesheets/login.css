@@ -252,6 +252,9 @@ input{
     border: 1px solid #dedede;
     font-family: 'PT Sans', sans-serif;
 }
+input[type='password'] {
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
 
 textarea{
     color           : #222;
