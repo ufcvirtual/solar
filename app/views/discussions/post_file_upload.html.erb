@@ -24,7 +24,7 @@
   }
 </script>
 <div id="post_attachment_wrapper">
-  <form id="post_attachment_form" accept-charset="UTF-8" action="/discussions/attach_file" enctype="multipart/form-data" method="post" >
+  <form id="post_attachment_form" accept-charset="UTF-8" action="<%= url_for :controller => :discussions, :action => :attach_file %>" enctype="multipart/form-data" method="post" >
     <input type="hidden" value="<%=form_authenticity_token%>" name="authenticity_token"/>
     <input type="hidden" value="<%=params['id']%>" name="id" id="id"/>
     <input type="hidden" value="<%=params['post_id']%>" name="post_id" id="post_id"/>
