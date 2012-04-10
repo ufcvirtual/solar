@@ -30,7 +30,7 @@ SQL
   def self.posts_child(parent_id = -1)
     #posts = ActiveRecord::Base.connection.select_all
     posts = DiscussionPost.find_by_sql <<SQL
-      SELECT dp.id, dp.discussion_id, dp.user_id, content, dp.created_at, dp.updated_at,
+      SELECT dp.id, dp.discussion_id, dp.user_id, dp.content, dp.level, dp.created_at, dp.updated_at,
              dp.parent_id, u.nick as user_nick, u.photo_file_name as photo_file_name, p.name as profile
         FROM discussion_posts dp
   INNER JOIN users u on u.id = dp.user_id
@@ -55,8 +55,8 @@ SQL
 
   #Consulta página de postagens de uma discussion
   def self.discussion_posts(discussion_id = nil, plain_list = true, page = 1)
-    query = "SELECT dp.id, dp.discussion_id, dp.user_id, content, dp.created_at,
-                    dp.updated_at, dp.parent_id, u.nick as user_nick,
+    query = "SELECT dp.id, dp.discussion_id, dp.user_id, dp.content, dp.created_at,
+                    dp.updated_at, dp.parent_id, dp.level, u.nick as user_nick,
                     u.photo_file_name as photo_file_name, p.name as profile
                FROM discussion_posts dp
          INNER JOIN users    u on u.id = dp.user_id
@@ -98,6 +98,14 @@ SQL
 
     return DiscussionPost.find_by_sql(query)
 
+  end
+
+  def can_be_answered?
+    if self.level < Discussion_Post_Max_Indent_Level
+      return true
+    else
+      return false
+    end
   end
 
 end

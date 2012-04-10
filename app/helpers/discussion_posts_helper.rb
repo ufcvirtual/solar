@@ -171,19 +171,21 @@ SQL
   def show_buttons(editable = false, can_interact = false, post=nil)
     post_string = '<div class="forum_post_buttons">'
 
-    if editable && can_interact
-      post_string << '<button type="button" class="btn btn_default forum_button_attachment" onclick="showUploadForm(\''<< post[:discussion_id].to_s << '\',\'' << post[:id].to_s << '\');">'<< t(:forum_attach_file) << (image_tag "icon_attachment.png", :alt => t(:forum_attach_file)) << '</button>' if editable and can_interact
-      post_string << '<input type="button" onclick="removePost(' << post[:id].to_s << ')" class="btn btn_caution" value="' << t(:forum_show_remove) << '"/>'
-      post_string << '<input type="button" onclick="setDiscussionPostId(' << post[:id].to_s << ')" class="btn btn_default updateDialogLink" value="' << t(:forum_show_edit) << '"/>'
-      post_string << '<input type="button" onclick="setParentPostId(' << post[:id].to_s << ')" class="btn btn_default postDialogLink" value="' << t(:forum_show_answer) << '"/>'
-
-    elsif editable && !can_interact
+    if can_interact
+      if editable
+        post_string << '<button type="button" class="btn btn_default forum_button_attachment" onclick="showUploadForm(\''<< post[:discussion_id].to_s << '\',\'' << post[:id].to_s << '\');">'<< t(:forum_attach_file) << (image_tag "icon_attachment.png", :alt => t(:forum_attach_file)) << '</button>' if editable and can_interact
+        post_string << '<input type="button" onclick="removePost(' << post[:id].to_s << ')" class="btn btn_caution" value="' << t(:forum_show_remove) << '"/>'
+        post_string << '<input type="button" onclick="setDiscussionPostId(' << post[:id].to_s << ')" class="btn btn_default updateDialogLink" value="' << t(:forum_show_edit) << '"/>'
+      end
+      if post.can_be_answered?
+        post_string << '<input type="button" onclick="setParentPostId(' << post[:id].to_s << ')" class="btn btn_default postDialogLink" value="' << t(:forum_show_answer) << '" />'      
+      end
+    else
       post_string <<      '    <a class="forum_post_link_disabled forum_post_link_remove_disabled">' << t('forum_show_remove') << '</a>&nbsp;&nbsp;
                                <a class="forum_post_link_disabled">' << t('forum_show_edit') << '</a>&nbsp;&nbsp;
                                <a class="forum_post_link_disabled">' << t('forum_show_answer') << '</a>'
-    elsif !editable && can_interact      
-      post_string << '<input type="button" onclick="setParentPostId(' << post[:id].to_s << ')" class="btn btn_default postDialogLink" value="' << t(:forum_show_answer) << '" />'
-    end
+    end  
+   
     post_string <<      '</div></div>'
 
     return post_string

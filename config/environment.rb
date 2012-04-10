@@ -44,3 +44,5 @@ Context_Curriculum_Unit    = 2 #Context.find_by_name('curriculum_unit').id
 
 # Tempo extra, em dias, para o responsável poder postar no fórum
 Forum_Responsible_Extra_Time = 3
+
+Discussion_Post_Max_Indent_Level = 4

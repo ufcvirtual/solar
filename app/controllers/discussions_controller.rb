@@ -39,7 +39,6 @@ class DiscussionsController < ApplicationController
       plain_list = (@display_mode == "PLAINLIST")
 
       @posts = DiscussionPost.discussion_posts(@discussion.id, plain_list, @current_page)
-
       @valid_date = valid_date
     else
       redirect_to :controller => :discussions, :action => :list # "/discussions/list"
@@ -69,7 +68,8 @@ class DiscussionsController < ApplicationController
             :user_id => current_user.id,
             :profile_id => profile_id,
             :content => content,
-            :parent_id => parent_id
+            :parent_id => parent_id,
+            :level => find_post_level(parent_id)
           new_discussion_post.save!
         end
       rescue Exception => error
@@ -265,6 +265,14 @@ class DiscussionsController < ApplicationController
     # nenhum perfil com permissao de acesso
     return -1
 
+  end
+
+  def find_post_level(parent_id)
+    if parent_id.nil?
+      return 1
+    else
+      return DiscussionPost.find(parent_id).level + 1
+    end
   end
 
 end
