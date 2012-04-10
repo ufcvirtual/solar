@@ -1,5 +1,3 @@
-<%#= @object.association.variable rescue nil %>
-
 <div class="block_wrapper">
   <div id="page_title">
     <h1>
@@ -215,11 +213,13 @@
     <input type="button" value="<%=t :back%>" class="solar_button" onclick="document.location.href='<%=login_path%>'"/>
     <%= f.submit t(:confirm), :id=>"confirm", :class=>"solar_button", :alt=> t(:confirm) %>
   </div>
-
 <% end %>
 
 <script type="text/javascript">
   $(function(){
-    $('#password,#password_confirmation').val('');
+    $('#password, #password_confirmation').val('');
+    $('#username').keydown(function(event){
+      $('#username').val($('#username').val().toLowerCase());
+    });
   });
 </script>

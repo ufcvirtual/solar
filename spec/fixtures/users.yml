@@ -134,8 +134,8 @@ professor2:
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: 9qUpqgvLDSa7R5EYDPmV
-  
-Professor:
+
+professor:
   id: 6
   username: prof
   email: prof@solar.ufc.br
@@ -164,7 +164,7 @@ Professor:
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: qwBqKTuU6XTAxEZxymjC
 
-aluno 1:
+aluno1:
   id: 7
   username: aluno1
   email: aluno1@solar.ufc.br
@@ -192,8 +192,8 @@ aluno 1:
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: WhxdcZhWhEMVAauWg41h
-  
-aluno 2:
+
+aluno2:
   id: 8
   username: aluno2
   email: aluno2@solar.ufc.br
@@ -221,8 +221,8 @@ aluno 2:
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: aq1pyZWxcphCzouEzGzt
-  
-aluno 3:
+
+aluno3:
   id: 9
   username: aluno3
   email: aluno3@aluno3.br
@@ -279,7 +279,7 @@ tutor_presencial:
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: 7sec5gtrn5CiiXpqfmrz
-  
+
 tutor_distancia:
   id: 11
   username: tutordist
@@ -308,7 +308,7 @@ tutor_distancia:
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: nerd51wudWkq6vk3by3c
-  
+
 coordenador:
   id: 12
   username: coorddisc
@@ -337,7 +337,7 @@ coordenador:
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: ZxChgdpRbQuypvZfMV3x
-  
+
 basico:
   id: 13
   username: basico

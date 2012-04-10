@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :validatable,
     :recoverable, :encryptable, :token_authenticatable # autenticacao por token
 
-  before_save :ensure_authentication_token!
+  before_save :ensure_authentication_token!, :downcase_username
 
   @has_special_needs
 
@@ -107,14 +107,14 @@ class User < ActiveRecord::Base
     end
   end
 
-##
-# Este método define os atributos na hora de criar um objeto. Logo, redefine os atributos já existentes e define
-# o valor de @has_special_needs a partir do que é passado da página na criação de um usuário (create)
-##
-def initialize(attributes = {})
-   super(attributes)
-   @has_special_needs = (attributes[:has_special_needs] == 'true')
-end
+  ##
+  # Este método define os atributos na hora de criar um objeto. Logo, redefine os atributos já existentes e define
+  # o valor de @has_special_needs a partir do que é passado da página na criação de um usuário (create)
+  ##
+  def initialize(attributes = {})
+     super(attributes)
+     @has_special_needs = (attributes[:has_special_needs] == 'true')
+  end
 
   def cpf_ok
     cpf_verify = Cpf.new(self[:cpf])
@@ -131,5 +131,8 @@ end
     reset_authentication_token! if authentication_token.blank? 
   end
 
-end
+  def downcase_username
+    self.username = self.username.downcase
+  end
 
+end
