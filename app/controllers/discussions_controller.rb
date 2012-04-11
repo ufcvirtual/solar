@@ -50,9 +50,8 @@ class DiscussionsController < ApplicationController
     discussion_id = params[:discussion_id]
     content       = params[:content]
     parent_id     = params[:parent_post_id]
+    parent_post_level = params[:parent_post_level].to_i
     profile_id    = -1
-
-    @discussion = Discussion.find_by_id(discussion_id)
 
     #Investigando um perfil com permissão para o usuário
     has_permission = false
@@ -69,7 +68,7 @@ class DiscussionsController < ApplicationController
             :profile_id => profile_id,
             :content => content,
             :parent_id => parent_id,
-            :level => find_post_level(parent_id)
+            :level => parent_post_level + 1
           new_discussion_post.save!
         end
       rescue Exception => error
@@ -266,10 +265,4 @@ class DiscussionsController < ApplicationController
     return -1
 
   end
-
-  def find_post_level(parent_id)
-    return 1 if parent_id.empty? or parent_id.nil?
-    return DiscussionPost.find(parent_id).level + 1
-  end
-
 end

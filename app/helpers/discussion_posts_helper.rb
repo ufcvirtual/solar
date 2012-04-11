@@ -178,7 +178,7 @@ SQL
         post_string << '<input type="button" onclick="setDiscussionPostId(' << post[:id].to_s << ')" class="btn btn_default updateDialogLink" value="' << t(:forum_show_edit) << '"/>'
       end
       if post.can_be_answered?
-        post_string << '<input type="button" onclick="setParentPostId(' << post[:id].to_s << ')" class="btn btn_default postDialogLink" value="' << t(:forum_show_answer) << '" />'      
+        post_string << '<input type="button" onclick="setParentPostId(' << post[:id].to_s << '); setParentPostLevel(' << post[:level].to_s << ');" class="btn btn_default postDialogLink" value="' << t(:forum_show_answer) << '" />'      
       end
     else
       post_string <<      '    <a class="forum_post_link_disabled forum_post_link_remove_disabled">' << t('forum_show_remove') << '</a>&nbsp;&nbsp;

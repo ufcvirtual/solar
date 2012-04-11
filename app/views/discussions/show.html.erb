@@ -62,6 +62,7 @@
     <%= hidden_field_tag(:discussion_id, @discussion["id"]) %>
     <%= hidden_field_tag(:discussion_post_id, "") %>
     <%= hidden_field_tag(:parent_post_id, "") %>
+    <%= hidden_field_tag(:parent_post_level, "0") %>
     <%= hidden_field_tag(:display_mode, @display_mode) %>
     <%= hidden_field_tag(:current_page, @current_page) %>
   <% end %>
@@ -137,6 +138,10 @@
   function setParentPostId(post_id) {
     $('#parent_post_id').attr('value',post_id);
     $('#update_post_id').attr('value','');
+  }
+
+  function setParentPostLevel(post_level) {
+    $('#parent_post_level').attr('value',post_level);
   }
 
   function setDiscussionPostId(post_id) {
