@@ -268,11 +268,8 @@ class DiscussionsController < ApplicationController
   end
 
   def find_post_level(parent_id)
-    if parent_id.nil?
-      return 1
-    else
-      return DiscussionPost.find(parent_id).level + 1
-    end
+    return 1 if parent_id.empty? or parent_id.nil?
+    return DiscussionPost.find(parent_id).level + 1
   end
 
 end
