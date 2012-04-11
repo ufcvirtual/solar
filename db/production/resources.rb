@@ -69,7 +69,7 @@ resources_arr = [
   {:id => 53, :controller => 'discussions', :action => 'post_file_upload', :description => 'Exibir janela para upload de arquivos no foruns'},
 
   # Material de apoio
-  {:id => 54, :controller => 'support_material_file', :action => 'list_visualization', :description => 'Visualizar material de apoio'},
+  {:id => 54, :controller => 'support_material_file', :action => 'list', :description => 'Visualizar material de apoio'},
   {:id => 55, :controller => 'support_material_file', :action => 'download', :description => 'Baixar um arquivo de material de apoio'},
   {:id => 56, :controller => 'support_material_file', :action => 'download_all_file_ziped', :description => 'Baixar todos os arquivos de material de apoio ZIPADO'},
   {:id => 57, :controller => 'support_material_file', :action => 'download_folder_file_ziped', :description => 'Baixar arquivos de uma pasta do material de apoio ZIPADO'},

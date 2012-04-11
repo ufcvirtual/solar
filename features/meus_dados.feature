@@ -6,9 +6,9 @@ Funcionalidade: Internacionalizacao
   Para atualizar as minhas informações no sistema
 
 Cenário: Acessar página de Edição de Dados Pessoais
-	Dado que estou logado com o usuario "user" e com a senha "123456"
+  Dado que estou logado com o usuario "user" e com a senha "123456"
             E que estou em "Meus Dados"
-	Então eu deverei ver "Nome"
+  Então eu deverei ver "Nome"
             E eu deverei ver "Bio"
             E eu deverei ver "Interesses"
             E eu deverei ver "Música"
@@ -18,9 +18,9 @@ Cenário: Acessar página de Edição de Dados Pessoais
             E eu deverei ver "Site"
 
 Cenário: Acessar página de Edição de Dados Cadastrais
-	Dado que estou logado com o usuario "user" e com a senha "123456"
+  Dado que estou logado com o usuario "user" e com a senha "123456"
             E que estou em "Meus Dados"
-	Então eu deverei ver "Nome"
+  Então eu deverei ver "Nome"
             E eu deverei ver "Apelido"
             E eu deverei ver "Data de Nascimento"
             E eu deverei ver "Sexo"
@@ -86,16 +86,16 @@ Cenário: Alterar dados Cadastrais
     Então eu deverei ver "Dados atualizados com sucesso."
 
 Esquema do Cenário: Alteração de senha
-	Dado que estou logado com o usuario "user" e com a senha "123456"
+  Dado que estou logado com o usuario "user" e com a senha "123456"
             E que estou em "Meus Dados"
             E que eu preenchi "user_current_password" com "<antiga_senha>"
             E que eu preenchi "user_password" com "<nova_senha>"
             E que eu preenchi "user_password_confirmation" com "<confirmar_senha>"
-	Quando eu clicar em "confirm"
-	Então eu deverei ver "<action>"
+  Quando eu clicar em "confirm"
+  Então eu deverei ver "<action>"
 Exemplos:
-	| antiga_senha         |  nova_senha       |  confirmar_senha      | action                                        |
-	| xyz                  |                   |                       | Senha não é válido(a)                         |
+        | antiga_senha         |  nova_senha       |  confirmar_senha      | action                                        |
+        | xyz                  |                   |                       | Senha não é válido(a)                         |
         | xyz                  |  user456          |  user456              | Senha não é válido(a)                         |
 #        | 123456               |                   |                       | Senha não está de acordo com a confirmação    |
         | 123456               |  user456          |  user789              | Senha não está de acordo com a confirmação    |
@@ -117,23 +117,22 @@ Cenário:  Acessar Edição de foto
     E eu clicar no link "mysolar_change_picture"
     Então eu deverei ver o botao "Enviar"
 
-@wip
-@javascript
-Esquema do Cenário: Enviar foto
-    Dado que estou logado com o usuario "user" e com a senha "123456"
-       E que estou em "Meu Solar"
-    Quando eu clicar no link "mysolar_top_user_nick"
-    E eu clicar no link "mysolar_change_picture"
-    E eu envio o arquivo "<foto>" no campo "user_photo"
-    Quando eu clicar em "Enviar"
-    Então eu deverei ver "<saida>"
-Exemplos:
-	| foto                                                    | saida                                                                               |
-	| images/photo_valid.png                                  | Foto alterada com sucesso!                                                          |
-	| images/photo_valid_no_extension                         | Foto alterada com sucesso!                                                          |
-	| images/photo_invalid_type.txt                           | Tipo de arquivo inválido. Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG. |
-	| images/photo_invalid_type_size_and_valid_extension.png  | Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB.           |
-	| images/photo_invalid_size.png                           | Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB.           |
-	| images/photo_invalid_type_and_valid_extension.png       | Tipo de arquivo inválido. Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG. |
-	| images/photo_invalid_no_extension                       | Tipo de arquivo inválido. Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG. |
-    
+#@wip
+#@javascript
+#Esquema do Cenário: Enviar foto
+#    Dado que estou logado com o usuario "user" e com a senha "123456"
+#       E que estou em "Meu Solar"
+#    Quando eu clicar no link "mysolar_top_user_nick"
+#    E eu clicar no link "mysolar_change_picture"
+#    E eu envio o arquivo "<foto>" no campo "user_photo"
+#    Quando eu clicar em "Enviar"
+#    Então eu deverei ver "<saida>"
+#Exemplos:
+#    | foto                                                    | saida                                                                               |
+#    | images/photo_valid.png                                  | Foto alterada com sucesso!                                                          |
+#    | images/photo_valid_no_extension                         | Foto alterada com sucesso!                                                          |
+#    | images/photo_invalid_type.txt                           | Tipo de arquivo inválido. Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG. |
+#    | images/photo_invalid_type_size_and_valid_extension.png  | Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB.           |
+#    | images/photo_invalid_size.png                           | Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB.           |
+#    | images/photo_invalid_type_and_valid_extension.png       | Tipo de arquivo inválido. Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG. |
+#    | images/photo_invalid_no_extension                       | Tipo de arquivo inválido. Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG. |

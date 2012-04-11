@@ -2,12 +2,12 @@ class SupportMaterialFileController < ApplicationController
 
   include FilesHelper
 
-  before_filter :prepare_for_group_selection, :only => [:list_visualization]
+  before_filter :prepare_for_group_selection, :only => [:list]
 
   load_and_authorize_resource
 
-  def list_visualization
-    authorize! :list_visualization, SupportMaterialFile
+  def list
+    authorize! :list, SupportMaterialFile
 
     allocation_tag_ids = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
     @list_files = SupportMaterialFile.find_files(allocation_tag_ids)
@@ -19,12 +19,12 @@ class SupportMaterialFileController < ApplicationController
     }
   end
 
- def download
+  def download
     authorize! :download, SupportMaterialFile
 
     curriculum_unit_id = active_tab[:url]['id']
     file = SupportMaterialFile.find(params[:id])
-    download_file({:action => 'list_visualization', :id => curriculum_unit_id}, file.attachment.path, file.attachment_file_name)
+    download_file({:action => :list, :id => curriculum_unit_id}, file.attachment.path, file.attachment_file_name)
   end
 
   def download_all_file_ziped
@@ -32,7 +32,7 @@ class SupportMaterialFileController < ApplicationController
 
     allocation_tag_ids = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
     curriculum_unit_id = active_tab[:url]["id"]
-    redirect_error = {:action => 'list_visualization', :id => curriculum_unit_id}
+    redirect_error = {:action => :list, :id => curriculum_unit_id}
 
     # Recupearndo todos os arquivos e separando por folder
     all_files = SupportMaterialFile.find_files(allocation_tag_ids)
@@ -47,7 +47,7 @@ class SupportMaterialFileController < ApplicationController
 
     allocation_tag_ids = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
     curriculum_unit_id = active_tab[:url]["id"]
-    redirect_error = {:action => 'list_visualization', :id => curriculum_unit_id}
+    redirect_error = {:action => :list, :id => curriculum_unit_id}
     
     all_files = SupportMaterialFile.find_files(allocation_tag_ids, params[:folder])
     path_zip = make_folders_zip(all_files, 'attachment_file_name', t(:support_folder_name))
@@ -165,8 +165,8 @@ class SupportMaterialFileController < ApplicationController
     end
     redirect_to :action => :list_edition
   end
-   
-private
+
+  private
 
   ##
   # Método que cria a lista com os ids dos arquivos de uma determinada pasta (utilizado pelo select_action_link e _file)
