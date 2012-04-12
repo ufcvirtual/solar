@@ -21,4 +21,15 @@ class GroupAssignment < ActiveRecord::Base
 SQL
   end
 
+  #retorna participantes de um grupo de trabalho
+  def self.all_by_group_assignment_id(group_assignment_id)
+    ActiveRecord::Base.connection.select_all <<SQL
+    SELECT t1.*, t2.name, t2.nick, t2.email, t2.photo_file_name
+      FROM group_participants AS t1
+      INNER JOIN users AS t2 ON t1.user_id = t2.id
+    WHERE t1.group_assignment_id=#{group_assignment_id}
+    ORDER BY t2.name;
+SQL
+  end
+
 end

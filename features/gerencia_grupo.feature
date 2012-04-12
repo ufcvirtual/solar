@@ -18,9 +18,11 @@ Cenário: Exibir Tela de Cadastro de Trabalho de Grupo
         Então eu deverei ver o link "Grupos"
     Quando eu clicar no link "Grupos"
         Então eu deverei ver o link "Atividade em grupo I"
-        Então eu deverei ver o link "Atividade em grupo II"
+        E eu deverei ver o link "Atividade em grupo II"
+        E eu nao deverei ver "Atividade I"
+        E eu nao deverei ver "Atividade II"
+        E eu nao deverei ver "Atividade III"
 
-@wip
 @javascript
 Cenário: Exibir Grupos de Trabalho
     Dado que estou logado com o usuario "prof" e com a senha "123456"

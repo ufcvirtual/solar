@@ -17,18 +17,27 @@
               <% gps = group_assignments(a["id"])%>
               <div style="display:none" id="div_group_<%=a["id"]%>">
 
+                <div><%=a["enunciation"]%></div>
+
+                Data de entrega:
+                <div><%= a["start_date"] %> - <%= a["end_date"] %></div>
+
+                Grupos
                 <% unless gps.nil? or gps.empty? %>
 
                   <% gps.each do |g| %>
-                    <%= g["group_name"] %>
+                    <div>
+                      <%= g["group_name"] %>
 
-                    <% gp = group_participants(g["id"])%>
-                    <% gp.each do |p| %>
-                      <%= p["user_id"] %>
-                    <% end %>
-                    
+                      <% gp = group_participants(g["id"])%>
+                      <% gp.each do |p| %>
+                        <%= p["user_id"] %> <%= p["name"] %>
+                      <% end %>
+                      <%= link_to "editar", {:controller => :group_assignment, :action => :edit, :id => g["id"], :assignment_id => a["id"]}, {:class => 'link_content'} %>
+                    </div>
                   <% end %>
-                  <br/>criar novo grupo
+
+                  <%= link_to "Novo grupo", {:controller => :group_assignment, :action => :new, :assignment_id => a["id"]}, {:class => 'link_content'} %>
 
                 <% end %>
                 &nbsp;

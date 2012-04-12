@@ -5,7 +5,7 @@ module GroupAssignmentHelper
   end
 
   def group_participants(group_assignment)
-    return(GroupParticipant.find_all_by_group_assignment_id(group_assignment))
+    return(GroupParticipant.all_by_group_assignment(group_assignment))
   end
 
 end
