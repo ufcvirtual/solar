@@ -12,6 +12,7 @@ module DiscussionPostsHelper
 
     # Verifica se a data de hoje está dentro do período ativo do fórum
     today_between_start_end = (schedule.start_date <= Date.today and Date.today <= schedule.end_date)
+
     # Variável que indicará se o usuário é o responsável pelo fórum
     user_is_class_responsible = false
 
@@ -22,7 +23,7 @@ module DiscussionPostsHelper
       # Allocations tags relacionadas ao fórum
       active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
       allocation_tag_id = active_tab[:url]['allocation_tag_id']
-      allocations_tags = AllocationTag.find_related_ids(allocation_tag_id)
+      discussion_related_allocations_tags = AllocationTag.find_related_ids(allocation_tag_id)
 
       # Pesquisa pelas allocations relacionadas ao usuário que possua um perfil de tipo igual a 'Profile_Type_Class_Responsible'
       query = <<SQL
@@ -34,19 +35,18 @@ SQL
 
       # Verificação se a allocation_tag de cada allocation retornada pelo query está inclusa nas allocations_tags relacionadas ao fórum
       for allocation in Allocation.find_by_sql(query)
-        user_is_class_responsible = true if allocations_tags.include?(allocation.allocation_tag_id)
+        user_is_class_responsible = true if discussion_related_allocations_tags.include?(allocation.allocation_tag_id)
         break if user_is_class_responsible
       end
 
     end
 
-    # Verifica se a data de hoje está dentro do período ativo do fórum
-    today_between_start_end = (schedule.start_date <= Date.today and Date.today <= schedule.end_date)
     # Verifica se o usuário tem perfil de responsável para o fórum (ou allocations_tags relacionadas) 
     # e se hoje ultrapassou a data final da ativação do fórum em apenas os dias determinados por 'Forum_Responsible_Extra_Time'
-    responsible_and_have_extra_time = (user_is_class_responsible and Date.today - schedule.end_date <= Forum_Responsible_Extra_Time)
+    responsible_and_have_extra_time = (user_is_class_responsible and (Date.today - schedule.end_date <= Forum_Responsible_Extra_Time))
+
     # Resultado da comparação final
-    is_an_valid_date = today_between_start_end or responsible_and_have_extra_time
+    is_an_valid_date = (today_between_start_end or responsible_and_have_extra_time)
 
     # Se estiver acessando o método do before_filter, o parâmetro abaixo irá existir. 
     # Logo, se for o before_filter e tiver tentado postar no fórum indevidamente, aparecerá mensagem de erro
