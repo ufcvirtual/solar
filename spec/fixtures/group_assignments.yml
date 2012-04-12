@@ -1,0 +1,29 @@
+# grupo do trabalho I
+a1:
+  id: 1
+  assignment_id: 4
+  group_name: grupo1 tI
+
+# grupo do trabalho I
+a2:
+  id: 2
+  assignment_id: 4
+  group_name: grupo2 tI
+
+# grupo do trabalho I
+a3:
+  id: 3
+  assignment_id: 4
+  group_name: grupo3 tI
+
+# grupo do trabalho II
+a4:
+  id: 4
+  assignment_id: 5
+  group_name: grupo1 - tII
+
+# grupo do trabalho II
+a5:
+  id: 5
+  assignment_id: 5
+  group_name: grupo2 - tII

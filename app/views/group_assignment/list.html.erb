@@ -6,14 +6,34 @@
 
   <div class="block_content" id="group_assignments">
 
-    <% unless @group_assignments.nil? or @group_assignments.empty? %>
+    <% unless @assignments.nil? or @assignments.empty? %>
       <table class="tb_list">
         <tbody>
-        <% @group_assignments.each do |ga| %>
+        <% @assignments.each do |a| %>
           <tr class="lines">
             <td>
-              <%=   %>
-              <%=link_to ga["name"], {:action => :assignment_details, :id => ga["id"]}, :class => "" %>
+              <a class="link_content" href="javascript:toggle_div('div_group_<%=a["id"]%>');"><%=a["name"]%></a>
+              
+              <% gps = group_assignments(a["id"])%>
+              <div style="display:none" id="div_group_<%=a["id"]%>">
+
+                <% unless gps.nil? or gps.empty? %>
+
+                  <% gps.each do |g| %>
+                    <%= g["group_name"] %>
+
+                    <% gp = group_participants(g["id"])%>
+                    <% gp.each do |p| %>
+                      <%= p["user_id"] %>
+                    <% end %>
+                    
+                  <% end %>
+                  <br/>criar novo grupo
+
+                <% end %>
+                &nbsp;
+              </div>
+              
             </td>
           </tr>
         <% end %>
@@ -26,3 +46,9 @@
   </div>
 
 </div>
+
+<script type="text/javascript">
+    function toggle_div(elementId) {
+    $('#'+ elementId).toggle();
+  }
+</script>

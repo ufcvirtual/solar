@@ -20,10 +20,22 @@ Cenário: Exibir Tela de Cadastro de Trabalho de Grupo
         Então eu deverei ver o link "Atividade em grupo I"
         Então eu deverei ver o link "Atividade em grupo II"
 
-#@wip
-#Cenário: Exibir Detalhes de Trabalho de Grupo
-        #Então eu deverei ver "Trabalhos em Grupo"
-        #E eu deverei ver "Atividades Individuais"
-        #E eu deverei ver "Descrição"
-        #E eu deverei ver o link "Atividade III"
-    #Quando eu clicar no link "Atividade III"
+@wip
+@javascript
+Cenário: Exibir Grupos de Trabalho
+    Dado que estou logado com o usuario "prof" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu deverei ver o link "Grupos"
+    Quando eu clicar no link "Grupos"
+        Então eu deverei ver o link "Atividade em grupo I"
+        Então eu deverei ver o link "Atividade em grupo II"
+    Quando eu clicar no link "Atividade em grupo I"
+        Então eu deverei ver "grupo1 tI"
+        E eu deverei ver "grupo2 tI"
+        E eu deverei ver "grupo3 tI"
+    Quando eu clicar no link "Atividade em grupo II"
+        Então eu deverei ver "grupo1 - tII"
+        E eu deverei ver "grupo2 - tII"
