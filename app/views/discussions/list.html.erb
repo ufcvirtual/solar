@@ -1,6 +1,5 @@
 <div class="block_wrapper">
-
-  <% if !(@discussions.nil? || @discussions.empty?) %>
+  <% unless @discussions.nil? or @discussions.empty? %>
     <div class="block_title">
       <h2><%= image_tag "icon_forum.png", :alt=>t(:icon_forum), :class=>:block_title_icon %><%= t(:forum_table_title) %></h2>
     </div>
@@ -8,7 +7,7 @@
       <thead>
         <tr class="lines">
           <th align="left"><%=t :title %></th>
-          <th align="center" style="width: 22%;"><%= t(:forum_table_date) %></th>
+          <th align="center" style="width: 22%;"><%=t :forum_table_date %></th>
         </tr>
       </thead>
       <tbody>
@@ -27,5 +26,4 @@
   <% else %>
     <div class="block_content block_content_text"><%= t(:forum_message) %></div>
   <% end %>
-
 </div>

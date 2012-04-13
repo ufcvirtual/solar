@@ -20,7 +20,6 @@ class LessonsController < ApplicationController
 
   def list
     authorize! :list, Lesson
-
     @lessons = lessons_to_open
   end
 

@@ -277,7 +277,7 @@
 			\n\n\nSOLAR Virtual Environment: http://www.solar2.virtual.ufc.br
 			\n\n\n[This is an automatic message. Please do not reply.]"
 
-# Página de alterar foto
+  # Página de alterar foto"
   choose_file: "Choose file"
   photo_text: "You can upload a JPG, GIF or PNG (Do not upload
        \n\n pictures containing celebrities, nudity, artwork and images
@@ -291,7 +291,7 @@
   url: "Enter here the URL of the image in the textbox above."
   send: "Send"
 
-  # página de matrícula
+  # página de matrícula"
   enrollm_search: "Search"
   enrollm_search_in: " in "
   enrollm_view: "View"
@@ -338,13 +338,17 @@
   participants_title: "Participants"
   participants_none: "No participant found"
 
+  #Aulas
   lesson_title: "Lessons"
   lesson_table_title: "Available Lessons"
   lesson_table_date: "Access date"
   lesson_message: "No lesson available"
   lesson: "Lesson"
   lesson_goto: "Go to lesson"
+  lesson_closed: "Lesson closed"
+  lesson_closed_short: "closed"
 
+  #Foruns
   title: "Title"
   forum_title: "Discussions"
   forum_table_title: "Available Discussions"

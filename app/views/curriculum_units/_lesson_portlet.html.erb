@@ -3,26 +3,26 @@
     <h2><%= image_tag "icon_lesson.png", :alt=>t(:icon_lesson), :class=>(:block_title_icon) %><%= t(:curriculum_access_lesson) %></h2>
   </div>
   <div class="block_content" id="block_lessons">
-    <% if !(@lessons.nil? || @lessons.empty?) %>
+    <% unless @lessons.nil? or @lessons.empty? %>
       <% @lessons.each do |lesson| %>
-        <div class="block_content_line">
-          <%schedule= Schedule.find(lesson.schedule_id)%>
-          <%if lesson.schedule.end_date.nil?%>
+        <div class="block_content_line <%= 'period_ended' if lesson.closed == 't' %>">
+          <% schedule= Schedule.find(lesson.schedule_id) %>
+          <% if lesson.schedule.end_date.nil? %>
             <span class="block_content_gray">
-              <%= l schedule.start_date  %>
+              <%= l schedule.start_date %>
             </span>
-            <a class="link_content" href="javascript:show_lesson('/lessons/show?id=<%=@curriculum_unit.id%>&l=<%=lesson.lesson_id%>')"><%=lesson.name%></a>
-          <%elsif lesson.schedule.end_date >= Date.today%>
-            <span class="block_content_gray">
-              <%= l schedule.start_date  %> - <%= l schedule.end_date %>
-            </span>
-            <a class="link_content" href="javascript:show_lesson('/lessons/show?id=<%=@curriculum_unit.id%>&l=<%=lesson.lesson_id%>')"><%=lesson.name%></a>
-          <%elsif lesson.schedule.end_date < Date.today%>
+          <% elsif lesson.schedule.end_date >= Date.today or lesson.schedule.end_date < Date.today %>
             <span class="block_content_gray">
               <%= l schedule.start_date  %> - <%= l schedule.end_date %>
             </span>
-            <%=lesson.name%>
-          <%end%>
+          <% end %>
+          <% unless lesson.schedule.end_date < Date.today %>
+            <a class="link_content" href="javascript:show_lesson('<%= url_for :controller => :lessons, :action => :show, :id => @curriculum_unit.id, :l => lesson.lesson_id %>')">
+              <%= lesson.name %>
+            </a>
+          <% else %>
+            <%=lesson.name%> <%= "(#{t(:lesson_closed_short)})" if lesson.closed == 't' %>
+          <% end %>
         </div>
       <% end %>
     <% else %>

@@ -1822,12 +1822,12 @@ h2, table tr.block_title th {
     background-color:#fff6f6;
 }*/
 
-.lines.period_ended {
+.lines.period_ended, .period_ended {
     background-color:#f6f6f6;
     color:#989898;
 }
 
-.lines.period_ended a {
+.lines.period_ended a, .period_ended a {
     color:#989898;
 }
 

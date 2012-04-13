@@ -1,42 +1,38 @@
 <div class="block_wrapper">
-
   <% unless @lessons.nil? or @lessons.empty? %>
     <div class="block_title">
       <h2><%= image_tag "icon_lesson.png", :alt=>t(:icon_lesson), :class=>(:block_title_icon) %><%= t(:lesson_title) %></h2>
     </div>
-    <table class="tb_list" border="0" cellpadding="10" cellspacing="0" width="100%">
+    <table class="tb_list" cellpadding="10" cellspacing="0" width="100%" border="0">
       <thead>
-        <tr>
-          <th align="left"><%= t(:lesson_table_title) %></th>
-          <th style="width: 150px"><%= t(:lesson_table_date) %></th>
+        <tr class="lines">
+          <th align="left"><%=t :lesson_table_title %></th>
+          <th align="center" style="width: 22%;"><%=t :lesson_table_date %></th>
         </tr>
       </thead>
       <tbody>
         <% curriculum_unit_id = @curriculum_unit.id %>
         <% @lessons.each do |lesson| %>
-          <tr class="lines">
-            <%if lesson.schedule.end_date.nil?%>
-              <td>
-                <a class="link_content" href="javascript:show_lesson('/lessons/show?id=<%=curriculum_unit_id%>&l=<%= lesson.lesson_id %>')"><%= lesson.name %></a>
-              </td>
-              <td>
+          <tr class="lines <%= 'period_ended' if lesson.closed == 't' %>">
+            <td>
+              <% if lesson.schedule.end_date < Date.today %>
+                <%= lesson.name %>
+                <%= "(#{t(:lesson_closed_short)})" if lesson.closed == 't' %>
+              <% else %>
+                <a class="link_content" href="javascript:show_lesson('<%= url_for :controller => :lessons, :action => :show, :id => curriculum_unit_id, :l => lesson.lesson_id %>')">
+                  <%= lesson.name %>
+                </a>
+              <% end %>
+            </td>
+            <td>
+              <% if lesson.schedule.end_date.nil? %>
                 <%= l lesson.schedule.start_date %>
-              </td>
-            <%elsif lesson.schedule.end_date >= Date.today%>
-              <td>
-                <a class="link_content" href="javascript:show_lesson('/lessons/show?id=<%=curriculum_unit_id%>&l=<%= lesson.lesson_id %>')"><%= lesson.name %></a>
-              </td>
-              <td>
-                <%= l lesson.schedule.start_date %> - <%= l lesson.schedule.end_date %>
-              </td>
-            <%elsif lesson.schedule.end_date < Date.today%>
-              <td>
-                <%=lesson.name%>
-              </td>
-              <td>
-                <%= l lesson.schedule.start_date %> - <%= l lesson.schedule.end_date %>
-              </td>
-            <%end%>
+              <% elsif lesson.schedule.end_date >= Date.today %>
+                  <%= l lesson.schedule.start_date %> - <%= l lesson.schedule.end_date %>
+              <% elsif lesson.schedule.end_date < Date.today %>
+                  <%= l lesson.schedule.start_date %> - <%= l lesson.schedule.end_date %>
+              <%end%>                
+            </td>
           </tr>
         <% end %>
       </tbody>
@@ -44,5 +40,4 @@
   <% else %>
     <div class="block_content block_content_text"><%= t(:lesson_message) %></div>
   <% end %>
-
 </div>
