@@ -12,35 +12,40 @@
         <% @assignments.each do |a| %>
           <tr class="lines">
             <td>
-              <a class="link_content" href="javascript:toggle_div('div_group_<%=a["id"]%>');"><%=a["name"]%></a>
-              
+              <div class="group_assignment_title" onClick="javascript:toggle_div('div_group_<%=a["id"]%>');">
+                <a class="link_content"><%=a["name"]%></a>
+              </div>
               <% gps = group_assignments(a["id"])%>
-              <div style="display:none" id="div_group_<%=a["id"]%>">
+              <div id="div_group_<%=a["id"]%>" class="group_assignment_details">
 
-                <div><%=a["enunciation"]%></div>
+                <div class="group_assignment_content"><%=a["enunciation"]%></div>
 
-                Data de entrega:
-                <div><%= a["start_date"] %> - <%= a["end_date"] %></div>
+                <h3><%= t(:group_assignment_date)%></h3>
+                <div class="group_assignment_content"><%= a["start_date"] %> - <%= a["end_date"] %></div>
 
-                Grupos
+                <h3><%= t(:group_assignment_title)%></h3>
+                <div class="group_assignment_content">
                 <% unless gps.nil? or gps.empty? %>
 
                   <% gps.each do |g| %>
-                    <div>
-                      <%= g["group_name"] %>
+                    <div class="group_participants">
+                      <h3 class="group_assignment_name"><%= g["group_name"] %></h3>
 
                       <% gp = group_participants(g["id"])%>
+                      <ul>
                       <% gp.each do |p| %>
-                        <%= p["user_id"] %> <%= p["name"] %>
+                        <li><%= p["name"] %></li>
                       <% end %>
-                      <%= link_to "editar", {:controller => :group_assignment, :action => :edit, :id => g["id"], :assignment_id => a["id"]}, {:class => 'link_content'} %>
+                      </ul>
+                      <%= link_to t(:group_assignment_edit), {:controller => :group_assignment, :action => :edit, :id => g["id"], :assignment_id => a["id"]}, {:class => 'link_content group_edit'} %>
                     </div>
                   <% end %>
-
-                  <%= link_to "Novo grupo", {:controller => :group_assignment, :action => :new, :assignment_id => a["id"]}, {:class => 'link_content'} %>
+                  <div class="group_new">
+                    <%= button_to t(:group_assignment_new), {:controller => :group_assignment, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
+                  </div>
 
                 <% end %>
-                &nbsp;
+                </div>
               </div>
               
             </td>
@@ -57,7 +62,10 @@
 </div>
 
 <script type="text/javascript">
-    function toggle_div(elementId) {
-    $('#'+ elementId).toggle();
+  function toggle_div(elementId) {
+    $('#'+ elementId).slideToggle();
   }
+  $(".group_assignment_title").click(function(){
+    $(this).toggleClass('group_assignment_title_contract');
+  })
 </script>

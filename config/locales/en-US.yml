@@ -535,6 +535,12 @@
   assignment_correction_of: "Correction Of"
   error_find_ajax: "Error trying to query. Try again later."
 
+  # grupos de trabalho
+  group_assignment_title: "Groups"
+  group_assignment_date: "Delivery date"
+  group_assignment_edit: "Edit"
+  group_assignment_new: "New group"
+
   # Mensagem de erro para permissão
   no_permission: "you haven't permission to access this page"
 

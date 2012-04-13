@@ -171,6 +171,10 @@ h2 {
     font-weight: 500;
 }
 
+h3 {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+}
 #body_wrapper {
     width: 980px;
     margin: 0 auto;
@@ -3103,4 +3107,55 @@ td.form_error {
 
 #user_state {
     width: 134px;
+}
+
+/* gerenciamento de grupos */
+.group_assignment_content {
+    margin-bottom: 10px;
+}
+#group_assignments tr.lines > td {
+    padding: 0;
+}
+#group_assignments tr.lines:hover {
+    background-color: #f5f8fb;
+}
+.group_assignment_title {
+    padding: 6px 10px;
+    cursor: pointer;
+    background: url('../images/group_assignment_expand.png') no-repeat right center;
+}
+.group_assignment_title_contract {
+    background: url('../images/group_assignment_contract.png') no-repeat right center;
+}
+.group_assignment_title:hover {
+    background-color: #eef3fb;
+}
+.group_assignment_details {
+    display: none;
+    margin-left: 20px;
+}
+.group_participants {
+    border: 1px solid #d0d0d0;
+    background-color: white;
+    float: left;
+    width: 230px;
+    min-height: 50px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+/*    padding: 5px;*/
+}
+.group_participants ul {
+    padding: 5px;
+}
+.group_new {
+    clear: both;
+}
+.group_edit {
+    float: right;
+    margin-right: 5px;
+}
+.group_assignment_name {
+    text-align: center;
+    background-color: #f1f1f1;
+    padding: 2px 5px;
 }

@@ -714,6 +714,12 @@
   assignment_correction_of: "Correção de"
   error_find_ajax: "Erro ao tentar consultar. Tente novamente mais tarde."
 
+  # grupos de trabalho
+  group_assignment_title: "Grupos"
+  group_assignment_date: "Data de entrega"
+  group_assignment_edit: "Editar"
+  group_assignment_new: "Novo grupo"
+
   # Mensagem de erro para permissão
   no_permission: "Você não tem permissão para acessar esta página"
 
