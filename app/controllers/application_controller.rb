@@ -276,10 +276,21 @@ class ApplicationController < ActionController::Base
   ##
   def prepare_for_group_selection
     if active_tab[:url]['context'] == Context_Curriculum_Unit
-      if !params.include?('selected_group')
-        curriculum_unit_id = active_tab[:url]['id']
-        params[:selected_group] = CurriculumUnit.find_user_groups_by_curriculum_unit(curriculum_unit_id, current_user.id).first.id
+      # Variável que armazena o valor do id da turma da allocation_tag atual 
+      # (que varia de acordo com a unidade curricular e a seleção de turmas)
+      allocation_tag_group = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
+      unless params.include?('selected_group')
+        # se não existir nenhuma turma nos parâmetros, verifica se há alguma turma na allocation_tag
+        if allocation_tag_group.blank?
+          # se não houver, armazena como a turma a ser selecionado a primeira turma disponível para o usuário
+          curriculum_unit_id = active_tab[:url]['id']
+          params[:selected_group] = CurriculumUnit.find_user_groups_by_curriculum_unit(curriculum_unit_id, current_user.id).first.id
+        else
+          # se houver, armazena a turma da allocation_tag
+          params[:selected_group] = allocation_tag_group
+        end
       end
+      # atualiza o valor da allocation_tag para a referente à turma selecionada
       allocation_tag_id = AllocationTag.find_by_group_id(params[:selected_group]).id
       user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['allocation_tag_id'] = allocation_tag_id
     end
