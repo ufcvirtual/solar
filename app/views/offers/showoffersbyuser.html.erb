@@ -30,7 +30,7 @@
     <h2>Unidades Curriculares</h2>
   </div>
   <div class="block_content">
-    <table class="tb_list">
+    <table class="tb_list enrollment_list">
       <thead>
         <tr class="lines">
           <th><%= t(:enrollm_curriculum_unit) %></th>
@@ -50,19 +50,19 @@
               <td align="center">
                 <% case offer.status %>
                 <% when Allocation_Pending.to_s %>
-                  <%= button_to t(:enrollm_cancel_request),{:controller=>"allocations", :action=>"cancel_request", :id => offer.allocationid}, :confirm => t(:enrollm_confirm), :class=>'enrollment_link' %>
+                  <%= button_to t(:enrollm_cancel_request),{:controller=>"allocations", :action=>"cancel_request", :id => offer.allocationid}, :confirm => t(:enrollm_confirm), :class=>'btn btn_caution' %>
                 <% when Allocation_Pending_Reactivate.to_s %>
-                  <%= button_to t(:enrollm_cancel_request),{:controller=>"allocations", :action=>"cancel_request", :id => offer.allocationid}, :confirm => t(:enrollm_confirm), :class=>'enrollment_link' %>
+                  <%= button_to t(:enrollm_cancel_request),{:controller=>"allocations", :action=>"cancel_request", :id => offer.allocationid}, :confirm => t(:enrollm_confirm), :class=>'btn btn_caution' %>
                 <% when Allocation_Activated.to_s %>
                   <% if (offer.allows_enrollment == 't') %>
-                    <%= button_to t(:enrollm_cancel),{:controller=>"allocations", :action=>"cancel", :id => offer.allocationid}, :confirm => t(:enrollm_confirm), :class => 'enrollment_link' %>
+                    <%= button_to t(:enrollm_cancel),{:controller=>"allocations", :action=>"cancel", :id => offer.allocationid}, :confirm => t(:enrollm_confirm), :class => 'btn btn_caution' %>
                   <% else %>
                     <%= label_tag "lb_enrollm", t(:enrollm_enrolled), :class => "enrollment_label" %>
                   <% end %>
                 <% when Allocation_Cancelled.to_s %>
-                  <%= button_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"reactivate", :id => offer.allocationid }, :class=>'enrollment_link' %>
+                  <%= button_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"reactivate", :id => offer.allocationid }, :class=>'btn btn_default' %>
                 <% else %>
-                  <%= button_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"send_request", :id => offer.allocationid, :tagid => offer.allocationtagid, :userid => current_user.id }, :class=>'enrollment_link' %>
+                  <%= button_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"send_request", :id => offer.allocationid, :tagid => offer.allocationtagid, :userid => current_user.id }, :class=>'btn btn_default' %>
                 <% end %>
               </td>
             </tr>

@@ -446,6 +446,12 @@ h1.page_title{
     color: #000;
     background-color: #eaeaea;
 }
+.enrollment_list label {
+    margin: 5px 0 3px 0;
+}
+.enrollment_list tr.lines td {
+    vertical-align: middle;
+}
 .enrollment_search{
     height:12px;
     font-size: 12px;
