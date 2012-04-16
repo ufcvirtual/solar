@@ -7,7 +7,12 @@ class SchedulesController < ApplicationController
     allocation_tags = allocation_tag_id.nil? ? nil : AllocationTag.find_related_ids(allocation_tag_id).join(', ')
 
     @curriculum_unit = CurriculumUnit.find(active_tab[:url]['id']) unless active_tab[:url]['id'].nil?
-    @schedule = Schedule.all_by_allocation_tags(allocation_tags)
+
+    if !allocation_tags.nil?
+      @schedule = Schedule.all_by_allocation_tags(allocation_tags)
+    else
+      @schedule = Schedule.all_by_allocation_tags(AllocationTag.all_by_user_id(current_user.id))
+    end
   end
 
   ##
