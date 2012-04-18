@@ -99,13 +99,6 @@ module DiscussionPostsHelper
   end
 
   ##
-  # Utilizado na paginação
-  ##
-  def count_discussion_posts(discussion_id = nil, plain_list = true)
-    DiscussionPost.count_discussion_posts(discussion_id, plain_list)
-  end
-
-  ##
   # Utilizado nas consultas para portlets
   ##
   def list_portlet_discussion_posts(allocations)

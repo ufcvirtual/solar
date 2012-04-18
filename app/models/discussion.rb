@@ -49,5 +49,15 @@ SQL
 
     Discussion.find_by_sql(query)
   end
+  
+  def discussion_posts_count(plain_list = true)
+    return self.discussion_posts.count() if plain_list
+    self.discussion_posts.where(:parent_id => nil).count
+  end
+  
+  def discussion_posts_page(plain_list = true, page = 1)
+    return self.discussion_posts.paginate(:per_page => Rails.application.config.items_per_page, :page => page) if plain_list
+    self.discussion_posts.where(:parent_id => nil).paginate(:per_page => Rails.application.config.items_per_page, :page => page)
+  end
 
 end

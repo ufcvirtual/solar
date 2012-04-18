@@ -68,18 +68,6 @@ SQL
     return DiscussionPost.paginate_by_sql(query, {:per_page => Rails.application.config.items_per_page, :page => page})
   end
 
-  #Consulta número de postagens de uma discussion
-  def self.count_discussion_posts(discussion_id = nil, plain_list = true)
-    discussion_id = discussion_id.to_s
-
-    query = "SELECT count (*) as total
-               FROM discussion_posts dp
-              WHERE dp.discussion_id = #{discussion_id}"
-    query << " AND parent_id IS NULL" unless plain_list
-    return ActiveRecord::Base.connection.select_one(query)["total"].to_i
-
-  end
-
   ##
   # Consulta retorna postagens mais recentes dos dados forúns
   ##

@@ -39,7 +39,7 @@
         <%end%>
       </span>
       <div id="forum_pagination">
-        <%=raw render_pagination_bar(count_discussion_posts(@discussion.id,(@display_mode=="PLAINLIST")).to_s)%>
+        <%=raw render_pagination_bar(@discussion.discussion_posts_count(@display_mode=="PLAINLIST").to_s)%>
       </div>
   </div>
   <!--//------------- Fim da Barra Superior------------- -->
