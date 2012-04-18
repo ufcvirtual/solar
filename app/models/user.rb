@@ -18,11 +18,12 @@ class User < ActiveRecord::Base
 
   @has_special_needs
 
-  # Setup accessible (or protected) attributes for your model
   attr_accessible :username, :email, :email_confirmation, :alternate_email, :password, :password_confirmation, :remember_me, :name, :nick, :birthdate,
     :address, :address_number, :address_complement, :address_neighborhood, :zipcode, :country, :state, :city,
     :telephone, :cell_phone, :institution, :gender, :cpf, :bio, :interests, :music, :movies, :books, :phrase, :site, :photo,
     :special_needs
+
+  attr_accessor :login # permitir acesso por login
 
   email_format = %r{^((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?$}i # regex para validacao de email
 
@@ -52,10 +53,6 @@ class User < ActiveRecord::Base
     :url => "/media/:class/:id/photos/:style.:extension",
     :default_url => "/images/no_image_:style.png"
 
-  # path and URL define that images will be in "public/images/"
-  # and will be created a folder called "users" with object id (eg users/1)
-  # default_url define default image (if image is dropped or not exists)
-
   # validates_attachment_presence :photo
   validates_attachment_size :photo, :less_than => 700.kilobyte, :message => " " # Esse :message => " " deve permanecer dessa forma enquanto não descobrirmos como passar a mensagem de forma correta. Se o message for vazio a validação não é feita.
   validates_attachment_content_type :photo,
@@ -69,8 +66,7 @@ class User < ActiveRecord::Base
 
   ##
   # Verifica se o radio_button escolhido na view é verdadeiro ou falso. 
-  # Este método também define as necessidades especiais como sendo vazia caso a pessoa tenha 
-  # selecionado que não as possui
+  # Este método também define as necessidades especiais como sendo vazia caso a pessoa tenha selecionado que não as possui
   ##
   def has_special_needs?
     self.special_needs = "" unless @has_special_needs
@@ -121,7 +117,9 @@ class User < ActiveRecord::Base
     errors.add(:cpf, I18n.t(:new_user_msg_cpf_error)) unless cpf_verify.valido? unless cpf_verify.nil?
   end
 
-  # Alocar usuario para acesso com o perfil básico no ato da sua criação
+  ##
+  # Na criação, o usuário recebe o perfil de usuario basico
+  ##
   def basic_profile_allocation
     new_allocation_user = Allocation.new :profile_id => Profile.find_by_types(Profile_Type_Basic).id, :status => Allocation_Activated, :user_id => self.id
     new_allocation_user.save!
@@ -133,6 +131,12 @@ class User < ActiveRecord::Base
 
   def downcase_username
     self.username = self.username.downcase
+  end
+
+  def self.find_for_database_authentication(warden_conditions)
+    conditions = warden_conditions.dup
+    login = conditions.delete(:login)
+    where(conditions).where(["translate(cpf,'.-','') = :value OR lower(username) = :value", { :value => login.strip.downcase }]).first
   end
 
 end
