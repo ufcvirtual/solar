@@ -37,7 +37,7 @@ module DiscussionPostsHelper
   end
 
   def is_current_user_class_responsible?
-      AllocationTag.find(@discussion.allocation_tag_id).is_user_class_responsible?(current_user.id)
+    AllocationTag.find(@discussion.allocation_tag_id).is_user_class_responsible?(current_user.id)
   end
 
   # Renderiza um post na tela de interação do portólio.
