@@ -22,7 +22,6 @@ module DiscussionPostsHelper
 
     unless today_between_discussion_start_end
       today_is_in_extra_time_period = ( (Date.today - discussion_schedule.end_date) <= Discussion_Responsible_Extra_Time)
-
       is_an_valid_date = (is_current_user_class_responsible? and today_is_in_extra_time_period)
     end
 

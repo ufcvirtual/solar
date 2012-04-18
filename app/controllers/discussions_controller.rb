@@ -10,7 +10,7 @@ class DiscussionsController < ApplicationController
   before_filter :prepare_for_group_selection, :only => [:list]
   before_filter :valid_date_bf, :except => [:list, :show, :download_post_file, :show_posts]
 
- def list
+  def list
     authorize! :list, Discussion
 
     allocation_tag_id = active_tab[:url]['allocation_tag_id']
@@ -92,8 +92,7 @@ class DiscussionsController < ApplicationController
     @discussion_post= DiscussionPost.find_by_id(discussion_post_id)
     @discussion= Discussion.find_by_id(discussion_id)
     ActiveRecord::Base.transaction do
-      if (owned_by_current_user && valid_date && has_no_response)
-
+      if current_user_can_edit?
         filenameArray = []
         error = false
         path = ""
@@ -133,7 +132,7 @@ class DiscussionsController < ApplicationController
     @discussion_post= DiscussionPost.find_by_id(discussion_post_id)
     @discussion= Discussion.find_by_id(discussion_id)
 
-    if (owned_by_current_user && valid_date && has_no_response)
+    if current_user_can_edit?
       post = DiscussionPost.find(discussion_post_id);
       post.update_attributes({:content => new_content})
     end
@@ -157,17 +156,13 @@ class DiscussionsController < ApplicationController
 
   #Envio de arquivo anexo
   def attach_file
-
     @display_mode = params[:display_mode]
     discussion_id = params[:id]
     post_id     = params[:post_id]
-    post = DiscussionPost.find(post_id.to_i)
     @discussion = Discussion.find(discussion_id.to_i)
+    @discussion_post = file.discussion_post
 
-    owned_by_current_user = (post.user.id == current_user.id)
-    has_no_response = DiscussionPost.find_all_by_parent_id(post_id).empty?
-
-    if (owned_by_current_user&& valid_date && has_no_response)
+    if current_user_can_edit?
       begin
         ActiveRecord::Base.transaction do
           #Salvando os novos arquivos anexados
@@ -196,13 +191,9 @@ class DiscussionsController < ApplicationController
     post_file_id  = params[:idFile]
     file          = DiscussionPostFile.find(post_file_id.to_i)
     @discussion = Discussion.find(discussion_id.to_i)
+    @discussion_post = file.discussion_post
 
-    post = file.discussion_post
-
-    owned_by_current_user = (post.user.id == current_user.id)
-    has_no_response = DiscussionPost.find_all_by_parent_id(post.id).empty?
-
-    if (owned_by_current_user && valid_date && has_no_response)
+    if current_user_can_edit?
       #Removendo arquivo da base de dados
       DiscussionPostFile.delete(file.id)
 
@@ -215,12 +206,10 @@ class DiscussionsController < ApplicationController
     end
 
     redirect_to :controller => :discussions, :action => :show, :id => discussion_id # "/discussions/show/#{discussion_id}"
-
   end
 
   # Posts do aluno
   def show_posts
-
     # recupera todos os posts do aluno de acordo com o id da discussion enviada
     discussion_id = params[:id]
     student_id = params[:student_id]
@@ -229,10 +218,13 @@ class DiscussionsController < ApplicationController
 
     # nao renderiza o layout
     render :layout => false
-
   end
 
   private
+  
+  def current_user_can_edit?
+    (owned_by_current_user && valid_date && has_no_response)
+  end
 
   def has_no_response
     DiscussionPost.find_all_by_parent_id(@discussion_post.id).empty?
