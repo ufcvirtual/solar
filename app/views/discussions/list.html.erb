@@ -12,10 +12,11 @@
       </thead>
       <tbody>
         <% @discussions.each do |discussion| %>
-          <tr class="lines <%= 'period_ended' if discussion.closed == 't' %>">
+          <tr class="lines <%= 'period_ended' if discussion.closed == 't' && !extra_period(discussion)%>">
             <td>
               <%=link_to discussion.name, {:controller => "discussions", :action => "show", :id => discussion.id}, {:class => 'link_content'} %>
-              <%= "(#{t(:forum_closed_short)})" if discussion.closed == 't' %>
+                <%= "(#{t(:forum_closed_short)})" if discussion.closed == 't' && !extra_period(discussion)%>
+                <%= "(#{t(:discussion_closed_to_students)})" if extra_period(discussion)%>
             </td>
             <td style="width: 200px;">
               <%= l discussion.start_date.to_date %> - <%= l discussion.end_date.to_date %></td>

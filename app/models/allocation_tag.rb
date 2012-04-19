@@ -139,4 +139,28 @@ SQL
     }
 
   end
+
+  def is_user_class_responsible?(user_id)
+
+    related_allocations_tags = AllocationTag.find_related_ids(id)
+
+    user_is_class_responsible = false
+
+    # Pesquisa pelas allocations relacionadas ao usuário que possua um perfil de tipo igual a 'Profile_Type_Class_Responsible'
+      query = <<SQL
+          SELECT DISTINCT allocation.allocation_tag_id
+            FROM profiles      AS profile
+            JOIN allocations   AS allocation ON allocation.profile_id = profile.id AND allocation.user_id = #{user_id} AND allocation.status = 1
+           WHERE profile.types = #{Profile_Type_Class_Responsible} AND profile.status = true
+SQL
+
+      # Verificação se a allocation_tag de cada allocation retornada pelo query está inclusa nas allocations_tags relacionadas
+      for allocation in Allocation.find_by_sql(query)
+        user_is_class_responsible = true if related_allocations_tags.include?(allocation.allocation_tag_id)
+        break if user_is_class_responsible
+      end
+
+      return user_is_class_responsible
+
+  end
 end

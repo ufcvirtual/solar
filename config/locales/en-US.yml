@@ -359,6 +359,7 @@
   forum_file_list: "Attachment"
   forum_closed: "Discussion closed"
   forum_closed_short: "closed"
+  discussion_closed_to_students: "closed to students"
 
   #Exibição/Interação Fóruns
   forum_show_plainlist: "Show as List"

@@ -1,61 +1,43 @@
 module DiscussionPostsHelper
 
-  # Verifica se a data em questão permite que o usuário possa postar no fórum
-  def valid_date
-    # Se estiver acessando o método do before_filter, o objeto "@discussion" não existe, logo tem que definí-lo 
-    # a partir dos parâmetros enviados da página
+  def valid_date_bf
     if params[:discussion_id]
       @discussion = Discussion.find(params[:discussion_id])
     end
-    # Período ativo fórum
-    schedule = Schedule.find(@discussion.schedule_id)
 
-    # Verifica se a data de hoje está dentro do período ativo do fórum
-    today_between_start_end = (schedule.start_date <= Date.today and Date.today <= schedule.end_date)
+    is_an_valid_date = valid_date
 
-    # Variável que indicará se o usuário é o responsável pelo fórum
-    user_is_class_responsible = false
-
-    # Só precisa fazer a segunda verificação se a primeira for falsa. Ou seja, só precisa verificar o "tempo extra" e 
-    # se o usuário é responsável daquele fórum se não estiver no prazo permitido
-    unless today_between_start_end
-
-      # Allocations tags relacionadas ao fórum
-      active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
-      allocation_tag_id = active_tab[:url]['allocation_tag_id']
-      discussion_related_allocations_tags = AllocationTag.find_related_ids(allocation_tag_id)
-
-      # Pesquisa pelas allocations relacionadas ao usuário que possua um perfil de tipo igual a 'Profile_Type_Class_Responsible'
-      query = <<SQL
-          SELECT DISTINCT allocation.allocation_tag_id
-            FROM profiles      AS profile 
-            JOIN allocations   AS allocation ON allocation.profile_id = profile.id AND allocation.user_id = #{current_user.id} AND allocation.status = 1
-           WHERE profile.types = #{Profile_Type_Class_Responsible} AND profile.status = true
-SQL
-
-      # Verificação se a allocation_tag de cada allocation retornada pelo query está inclusa nas allocations_tags relacionadas ao fórum
-      for allocation in Allocation.find_by_sql(query)
-        user_is_class_responsible = true if discussion_related_allocations_tags.include?(allocation.allocation_tag_id)
-        break if user_is_class_responsible
-      end
-
-    end
-
-    # Verifica se o usuário tem perfil de responsável para o fórum (ou allocations_tags relacionadas) 
-    # e se hoje ultrapassou a data final da ativação do fórum em apenas os dias determinados por 'Forum_Responsible_Extra_Time'
-    responsible_and_have_extra_time = (user_is_class_responsible and (Date.today - schedule.end_date <= Forum_Responsible_Extra_Time))
-
-    # Resultado da comparação final
-    is_an_valid_date = (today_between_start_end or responsible_and_have_extra_time)
-
-    # Se estiver acessando o método do before_filter, o parâmetro abaixo irá existir. 
-    # Logo, se for o before_filter e tiver tentado postar no fórum indevidamente, aparecerá mensagem de erro
     if params[:discussion_id] and !is_an_valid_date
       flash[:alert] = t(:forum_post_before_valid_date_error)
     end
 
-    # Retorna o resultado final
     return is_an_valid_date
+  end
+
+  def valid_date
+    discussion_schedule = Schedule.find(@discussion.schedule_id)
+    today_between_discussion_start_end = (discussion_schedule.start_date <= Date.today && Date.today <= discussion_schedule.end_date)
+
+    is_an_valid_date = today_between_discussion_start_end
+
+    unless today_between_discussion_start_end
+      today_is_in_extra_time_period = ( (Date.today - discussion_schedule.end_date) <= Discussion_Responsible_Extra_Time)
+
+      is_an_valid_date = (is_current_user_class_responsible? and today_is_in_extra_time_period)
+    end
+
+    return is_an_valid_date
+  end
+
+  def extra_period(discussion)
+    discussion_schedule = Schedule.find(discussion.schedule_id)
+    today_is_in_extra_time_period = ((Date.today - discussion_schedule.end_date) <= Discussion_Responsible_Extra_Time && (Date.today - discussion_schedule.end_date) > 0)
+    current_user_class_responsible = AllocationTag.find(discussion.allocation_tag_id).is_user_class_responsible?(current_user.id)
+    return (current_user_class_responsible and today_is_in_extra_time_period)
+  end
+
+  def is_current_user_class_responsible?
+      AllocationTag.find(@discussion.allocation_tag_id).is_user_class_responsible?(current_user.id)
   end
 
   # Renderiza um post na tela de interação do portólio.

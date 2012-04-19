@@ -534,6 +534,7 @@
   forum_file_list: "Arquivos"
   forum_closed: "Fórum encerrado"
   forum_closed_short: "encerrado"
+  discussion_closed_to_students: "encerrado para alunos"
 
   #Exibição/Interação Fóruns
   forum_show_plainlist: "Ver em Lista"

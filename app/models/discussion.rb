@@ -37,7 +37,7 @@ SQL
   ##
   def self.all_by_allocations(allocations)
     query = <<SQL
-      SELECT t1.id, t1.name, t1.description, t1.schedule_id, t3.start_date, t3.end_date,
+      SELECT t1.id, t1.name, t1.description, t1.schedule_id, t1.allocation_tag_id, t3.start_date, t3.end_date,
         CASE WHEN t3.end_date < now()::date THEN true
              ELSE false
          END AS closed
