@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
 
   # Mensagem de erro de permissão
   rescue_from CanCan::AccessDenied do |exception|
-    flash[:error] = t(:no_permission)
+    flash[:alert] = t(:no_permission)
     redirect_to :controller => :home, :flash => flash
   end
 

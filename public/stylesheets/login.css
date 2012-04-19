@@ -161,48 +161,15 @@ html, body {
     height: 100%;
 }
 
-/*Classes de mensagens flash*/
-.error, .alert span, #error_explanation li {
-    color: #660000;
-    font-size: 10pt;
-    font-weight: bold;
-}
-.notice{
-    font-size: 10pt;
-    font-weight: bold;
-    color: #e9ba00;
-}
-.success{
-    font-size: 10pt;
-    font-weight: bold;
-    color: #2F4F2F;
-}
-
-/*Classes de erros*/
-.error_explanation{
-/*    font-size: 11pt;
-    font-style: italic;
-    color: #e03838;*/
-    line-height: 25px;
-/*    margin-left: 10px;*/
-}
-
-.field_with_errors{
-    display: inline-block;
-    border: 1px solid #e03838;
-}
-
-
-label{
+label {
     color: #003e7a;
-/*    display: inline-block;*/
     white-space: nowrap;
     width: 90px;
     white-space: nowrap;
     text-align: right;
 }
 
-label.menor{
+label.menor {
     display: inline-block;
     white-space: nowrap;
     width: auto;
@@ -212,19 +179,19 @@ label.menor{
     bottom: 3px;
 }
 
-a{
+a {
     text-decoration : none;
     font-size       : 10pt;
 }
 
-a.black{
+a.black {
     color           : #333;
 }
-a.black:hover{
+a.black:hover {
     color           : #444;
 }
 
-a.menor{
+a.menor {
     color           : #222;
     font-size       : 9pt;
     text-decoration : underline;
@@ -517,32 +484,30 @@ textarea{
     text-align: center;
 }
 
-#flash_message, #error_explanation {
+#flash_message {
     border: 1px solid #d0d0d0;
-    padding: 5px 10px 4px 10px;
-    margin: 10px 0 0 0;
+    padding: 5px 10px 4px 25px;
+    margin: 10px 0;
     font-size: 10pt;
 }
 
-#error_explanation {
-    margin: 10px 10px 0 10px;
+/*Classes de mensagens flash*/
+.alert {
+    font-weight: bold;
+    color: #660000;
 }
 
-#flash_message span, #error_explanation ul {
-    margin-left: 15px;
+.notice {
+    font-weight: bold;
+    color: #2F4F2F;
 }
 
-#flash_message.alert, #error_explanation {
-    background: url('../images/error.gif') no-repeat 5px center #fff6f6;
+#flash_message.alert {
+    background: url('../images/alert.gif') no-repeat 5px center #fff6f6;
 }
 
 #flash_message.notice {
-    background: url('../images/warning.png') no-repeat 5px center #fff6f6;
-    background-color: #ffffe2;
-}
-
-#flash_message.success {
-    background: url('../images/success.gif') no-repeat 5px center #f5ffec;
+    background: url('../images/notice.gif') no-repeat 5px center #f5ffec;
 }
 
 /******** cadastro de novo usuario com layout do login **********/

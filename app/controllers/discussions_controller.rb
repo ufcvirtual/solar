@@ -72,7 +72,7 @@ class DiscussionsController < ApplicationController
           new_discussion_post.save!
         end
       rescue Exception => error
-        flash[:error] = error.message
+        flash[:alert] = error.message
       end
 
       #Se a exibição for do tipo PLAINLIST, a nova postagem aparece no inicio, logo, não devemos manter a página atual
@@ -114,7 +114,7 @@ class DiscussionsController < ApplicationController
             File.delete(path) if File.exist?(path)
           end
         else
-          flash[:error] = t(:forum_remove_error)
+          flash[:alert] = t(:forum_remove_error)
         end
 
       end
@@ -180,7 +180,7 @@ class DiscussionsController < ApplicationController
           end
         end
       rescue Exception => error
-        flash[:error] = error.message
+        flash[:alert] = error.message
       end
     end
 

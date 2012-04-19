@@ -51,7 +51,7 @@ SQL
     # Se estiver acessando o método do before_filter, o parâmetro abaixo irá existir. 
     # Logo, se for o before_filter e tiver tentado postar no fórum indevidamente, aparecerá mensagem de erro
     if params[:discussion_id] and !is_an_valid_date
-      flash[:error] = t(:forum_post_before_valid_date_error)
+      flash[:alert] = t(:forum_post_before_valid_date_error)
     end
 
     # Retorna o resultado final

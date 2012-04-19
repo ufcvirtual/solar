@@ -56,23 +56,17 @@ class UsersController < ApplicationController
   end
   
   def update_photo
-
     breadcrumb = active_tab[:breadcrumb].last
     redirect = breadcrumb.nil? ? {:controller => :home} : breadcrumb[:url]
 
     respond_to do |format|
       begin
-
-        # verifica se o arquivo foi adicionado
         raise t(:error_no_file_sent) unless params.include?(:user) && params[:user].include?(:photo)
-
         @user.update_attributes!(params[:user])
-
-        flash[:success] = t(:successful_update_photo)
+        flash[:notice] = t(:successful_update_photo)
         format.html { redirect_to(redirect) }
 
       rescue Exception => error
-
         error_msg = ''
         if error.message.index("not recognized by the 'identify'") # erro que nao teve tratamento
           # se aparecer outro erro nao exibe o erro de arquivo nao identificado
@@ -82,11 +76,9 @@ class UsersController < ApplicationController
           error_msg << error.message
         end
 
-        flash[:error] = error_msg
+        flash[:alert] = error_msg
         format.html { redirect_to(redirect) }
       end
     end
-
   end
-
 end

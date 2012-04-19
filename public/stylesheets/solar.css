@@ -186,17 +186,12 @@ h3 {
 }
 
 /*Classes de mensagens flash*/
-.error{
+.alert {
     font-weight: bold;
     color: #660000;
 }
 
-.notice{
-    font-weight: bold;
-    color: #e9ba00;
-}
-
-.success{
+.notice {
     font-weight: bold;
     color: #2F4F2F;
 }
@@ -208,42 +203,21 @@ h3 {
     font-size: 10pt;
 }
 
-#flash_message.success {
-    background: url('../images/success.gif') no-repeat 5px center #f5ffec;
-}
-
-#flash_message.error {
-    background: url('../images/error.gif') no-repeat 5px center #fff6f6;
-}
-
 #flash_message.notice {
-    background: url('../images/warning.png') no-repeat 5px center #fff6f6;
-    background-color: #ffffe2;
+    background: url('../images/notice.gif') no-repeat 5px center #f5ffec;
 }
 
-/*Classes de erros*/
-.error_explanation{
-    font-size: 11pt;
-    font-style: italic;
-    color: #e03838;
-    line-height: 25px;
-    margin-left: 10px;
+#flash_message.alert {
+    background: url('../images/alert.gif') no-repeat 5px center #fff6f6;
 }
 
-.field_with_errors{
-    display:inline-block;
-    border: 1px solid #e03838;
-    height: 23px;
-}
-
-label
-{
+label {
     color: #003e7a;
     display: inline-block;
     width: 140px;
 }
 
-label.menor{
+label.menor {
     display: inline-block;
     white-space: nowrap;
     width: auto;

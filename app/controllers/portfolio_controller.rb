@@ -108,7 +108,7 @@ class PortfolioController < ApplicationController
         unless error
           File.delete(file_del) if File.exist?(file_del)
 
-          flash[:success] = t(:file_deleted)
+          flash[:notice] = t(:file_deleted)
           format.html { redirect_to(redirect) }
 
         else
@@ -116,7 +116,7 @@ class PortfolioController < ApplicationController
         end
 
       rescue Exception
-        flash[:error] = t(:error_delete_file)
+        flash[:alert] = t(:error_delete_file)
         format.html {redirect_to(redirect)}
       end
     end
@@ -160,12 +160,12 @@ class PortfolioController < ApplicationController
         @public_file.save!
 
         # arquivo salvo com sucesso
-        flash[:success] = t(:file_uploaded)
+        flash[:notice] = t(:file_uploaded)
         format.html { redirect_to(redirect) }
 
       rescue Exception => error
 
-        flash[:error] = error.message # @public_file.errors.full_messages
+        flash[:alert] = error.message # @public_file.errors.full_messages
         format.html { redirect_to(redirect) }
 
       end
@@ -195,7 +195,7 @@ class PortfolioController < ApplicationController
         unless error
           File.delete(file_del) if File.exist?(file_del)
 
-          flash[:success] = t(:file_deleted)
+          flash[:notice] = t(:file_deleted)
           format.html { redirect_to(redirect) }
 
         else
@@ -203,7 +203,7 @@ class PortfolioController < ApplicationController
         end
 
       rescue Exception
-        flash[:success] = t(:error_delete_file)
+        flash[:alert] = t(:error_delete_file)
         format.html { redirect_to(redirect) }
       end
     end
@@ -255,7 +255,6 @@ class PortfolioController < ApplicationController
             sa.user_id = current_user.id
           end
 
-          # salvando atividade do aluno
           send_assignment.save!
         end
 
@@ -264,15 +263,11 @@ class PortfolioController < ApplicationController
         assignment_file.send_assignment_id = send_assignment.id
         assignment_file.save!
 
-        # arquivo salvo com sucesso
-        flash[:success] = t(:file_uploaded)
+        flash[:notice] = t(:file_uploaded)
         format.html { redirect_to(redirect) }
-
       rescue Exception => error
-
-        flash[:error] = error.message
+        flash[:alert] = error.message
         format.html { redirect_to(redirect) }
-
       end
     end
   end

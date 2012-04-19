@@ -119,7 +119,7 @@ class SupportMaterialFileController < ApplicationController
       end
       # não houve erro
       if error_message == ""
-        flash[:success] = t(:support_folder_renamed)
+        flash[:notice] = t(:support_folder_renamed)
         allocation_tag_id = allocation_tag_choosed(params[:value_for_allocation_tag_id], params[:type_for_allocation_tag_id])
         # recupera todos os arquivos da pasta renomeada considerando o allocation_tag
         files_folder = SupportMaterialFile.find_all_by_folder_and_allocation_tag_id(params[:folder_name], allocation_tag_id)
@@ -129,10 +129,9 @@ class SupportMaterialFileController < ApplicationController
         end
       # não alterou nome
       elsif error_message == "same_name"
-        flash[:notice] = t(:support_no_changes)
-      # houve erro
+        flash[:alert] = t(:support_no_changes)
       else
-        flash[:error] = error_message
+        flash[:alert] = error_message
       end
       redirect_to :action => "list_edition"
     end
@@ -149,7 +148,7 @@ class SupportMaterialFileController < ApplicationController
         redirect_to :action => :list_edition, :folder_temp => params[:support_material][:folder_name]
       # houve erro
       else
-        flash[:error] = error_message
+        flash[:alert] = error_message
         redirect_to :action => :list_edition
       end
   end
@@ -199,13 +198,11 @@ class SupportMaterialFileController < ApplicationController
   def upload_link(url, id_of_choosen_type, type_is_curriculum_unit_or_offer_or_group)
     # se o usuário tiver clicado em 'adicionar' com o link com a mensagem padrão ou vazio
     if (url.blank? or url == t(:support_text_field_link))
-      # exibe erro
-      flash[:error] = t(:support_error_missing_link)
-    # se tiver escrito algo
+      flash[:alert] = t(:support_error_missing_link)
     else
       allocation_tag_id = allocation_tag_choosed(value_for_allocation_tag_id,type_for_allocation_tag_id)
       SupportMaterialFile.upload_link(allocation_tag_id, url)
-      flash[:success] = t(:support_sent_link)
+      flash[:notice] = t(:support_sent_link)
     end
     redirect_to :action => :list_edition
   end
@@ -286,9 +283,9 @@ class SupportMaterialFileController < ApplicationController
         file.save!
 
         # arquivo salvo com sucesso
-        flash[:success] = t(:file_uploaded)
+        flash[:notice] = t(:file_uploaded)
       rescue Exception => error
-        flash[:error] = error.message
+        flash[:alert] = error.message
       end
       format.html { redirect_to(redirect) }
     end
@@ -331,7 +328,7 @@ class SupportMaterialFileController < ApplicationController
       begin
         # verifica se não foi selecionado nenhum checkbox  
         if list_checked_itens.empty?
-          flash[:error] = t(:support_error_no_item_selected)
+          flash[:alert] = t(:support_error_no_item_selected)
         else
           list_checked_itens.each do |value_id|
             # arquivo a ser deletado
@@ -345,14 +342,14 @@ class SupportMaterialFileController < ApplicationController
             # deletar arquivo do servidor
             unless file_can_be_deleted
               File.delete(deleting_file) if File.exist?(deleting_file)
-              flash[:success] = t(:file_deleted)
+              flash[:notice] = t(:file_deleted)
             else
               raise t(:error_delete_file)
             end
           end
         end
       rescue Exception
-            flash[:error] = t(:error_delete_file)
+        flash[:alert] = t(:error_delete_file)
       end
       format.html { redirect_to(redirect) }
     end

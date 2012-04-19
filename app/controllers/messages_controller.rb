@@ -336,7 +336,7 @@ class MessagesController < ApplicationController
           end
 
         rescue Exception => error
-          flash[:error] =  error.message.empty? ? t(:message_send_error) : error.message
+          flash[:alert] =  error.message.empty? ? t(:message_send_error) : error.message
 
           # apaga arquivos copiados fisicamente de mensagem original quando ha rollback
           unless all_files_destiny.empty?
@@ -348,11 +348,10 @@ class MessagesController < ApplicationController
           raise ActiveRecord::Rollback
         else
           if real_receivers.empty?
-            flash[:notice] = t(:message_send_error_no_receiver)
-            # efetua rollback
+            flash[:alert] = t(:message_send_error_no_receiver)
             raise ActiveRecord::Rollback
           else
-            flash[:success] = t(:message_send_ok)
+            flash[:notice] = t(:message_send_ok)
             # envia email apenas uma vez, em caso de sucesso da gravacao no banco
             Notifier.deliver_send_mail(real_receivers, subject, message_header + message, Path_Message_Files, all_files_destiny) unless real_receivers.empty? #, from = nil
           end
@@ -519,7 +518,7 @@ class MessagesController < ApplicationController
       change_message_status(message_id,'read')
     else
       @show_message = ''
-      flash[:error] = t(:no_permission)
+      flash[:alert] = t(:no_permission)
       redirect_to :action => "index"
     end
   end

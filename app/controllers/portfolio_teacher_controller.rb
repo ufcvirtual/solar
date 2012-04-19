@@ -144,11 +144,11 @@ class PortfolioTeacherController < ApplicationController
           students_grade.save!
         end
 
-        flash[:success] = t(:comment_updated_successfully)
+        flash[:notice] = t(:comment_updated_successfully)
         format.html { redirect_to(redirect) }
 
       rescue Exception => except
-        flash[:error] = except.message
+        flash[:alert] = except.message
         format.html { redirect_to(redirect) }
       end
 
@@ -188,21 +188,16 @@ class PortfolioTeacherController < ApplicationController
 
         # deletar arquivos do servidor
         unless error
-
           File.delete(file_del) if File.exist?(file_del)
-
-          flash[:success] = t(:file_deleted)
+          flash[:notice] = t(:file_deleted)
           format.html { redirect_to(redirect) }
-
         else
           raise t(:error_delete_file)
         end
-
       rescue Exception
-        flash[:error] = t(:error_delete_file)
+        flash[:alert] = t(:error_delete_file)
         format.html { redirect_to(redirect) }
       end
-
     end
   end
 
@@ -235,10 +230,7 @@ class PortfolioTeacherController < ApplicationController
     redirect = {:action => :student_detail, :id => student_id, :send_assignment_id => send_assignment_id}
 
     respond_to do |format|
-
       begin
-
-        # verifica se o arquivo foi adicionado
         raise t(:error_no_file_sent) unless params.include? :comments_files
 
         assignment_comment = AssignmentComment.where(["send_assignment_id = ? AND user_id = ?", send_assignment_id, teachers_id]).first
@@ -251,25 +243,17 @@ class PortfolioTeacherController < ApplicationController
             ac.send_assignment_id = send_assignment_id
             ac.user_id = teachers_id
           end
-
-          # salvando registro de comentario
           assignment_comment.save!
-
         end
-
         comments_files = CommentFile.new params[:comments_files]
         comments_files.assignment_comment_id = assignment_comment.id
         comments_files.save!
 
-        # arquivo salvo com sucesso
-        flash[:success] = t(:file_uploaded)
+        flash[:notice] = t(:file_uploaded)
         format.html { redirect_to(redirect) }
-
       rescue Exception => error
-
-        flash[:error] = error.message
+        flash[:alert] = error.message
         format.html { redirect_to(redirect) }
-
       end
     end
   end
@@ -283,5 +267,4 @@ class PortfolioTeacherController < ApplicationController
     redirect_error = {:action => :student_detail, :id => params[:students_id], :send_assignment_id => params[:send_assignment_id]}
     download_file(redirect_error, AssignmentFile.find(params[:id]).attachment.path)
   end
-
 end

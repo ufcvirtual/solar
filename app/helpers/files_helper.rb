@@ -8,7 +8,7 @@ module FilesHelper
       send_file pathfile, :filename => filename
     else
       respond_to do |format|
-        flash[:error] = t(:error_nonexistent_file)
+        flash[:alert] = t(:error_nonexistent_file)
         format.html {redirect_to(redirect_error)}
       end
     end
@@ -41,7 +41,6 @@ module FilesHelper
           list_group_and_offer << d['code'] + " " + d['semester']
           offer_value_id << d['id']
       end
-
     
       editor_tab << "<div id='mysolar_tabs'>" # Estrutura de colunas da lista
       editor_tab << " <ul  id='mysolar_tabs_wrapper'>"
