@@ -26,14 +26,12 @@ class ScoresController < ApplicationController
     from_date = Date.today << 2 # dois meses atras
     until_date = Date.today
     @amount = Score.find_amount_access_by_student_id_and_interval(active_tab[:url]['id'], @student.id, from_date, until_date)
-
   end
 
   ##
   # Quantidade de acessos do aluno a unidade curricular
   ##
   def amount_history_access
-
     @from_date = params['from-date']
     @until_date = params['until-date']
     @student_id = params[:id]
@@ -46,7 +44,6 @@ class ScoresController < ApplicationController
     @amount = Score.find_amount_access_by_student_id_and_interval(curriculum_unit_id, @student_id, @from_date, @until_date)
 
     render :layout => false
-
   end
 
   ##

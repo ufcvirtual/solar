@@ -4,7 +4,6 @@ class ScoresTeacher < ActiveRecord::Base
 
   # Listagem dos alunos por turma
   def self.list_students_by_curriculum_unit_id_and_group_id(curriculum_unit_id, group_id, page = 1)
-
     sql = <<SQL
     WITH cte_assignments AS (
       SELECT t2.id              AS allocation_tag_id,
@@ -71,7 +70,7 @@ class ScoresTeacher < ActiveRecord::Base
          )
     --
     SELECT t1.student_id,
-           t1.student_name,
+           initcap(t1.student_name) AS student_name,
            translate(array_agg(t1.grade)::text,'{}NULL','')              AS grades,
            translate(array_agg(t1.assignment_id)::text,'{}NULL','')      AS assignment_ids,
            translate(array_agg(t1.send_assignment_id)::text,'{}NULL','') AS send_assignment_ids,

@@ -3,9 +3,7 @@ class ScoresTeacherController < ApplicationController
   before_filter :prepare_for_pagination, :only => [:list]
   before_filter :prepare_for_group_selection, :only => [:list]
 
-  # lista de alunos paginados
   def list
-
     authorize! :list, ScoresTeacher
 
     curriculum_unit_id = active_tab[:url]['id']
@@ -18,15 +16,12 @@ class ScoresTeacherController < ApplicationController
     @students, @activities, @cnt_students = [], [], 0
 
     unless group_id.nil?
-
-      # lista de estudantes paginada
       @cnt_students = ScoresTeacher.number_of_students_by_group_id(group_id)
       @activities = Assignment.all_by_group_id(group_id)
 
       curriculum_unit_id = params[:id]
       @students = ScoresTeacher.list_students_by_curriculum_unit_id_and_group_id(curriculum_unit_id, group_id, @current_page)
     end
-    
   end
 
 end
