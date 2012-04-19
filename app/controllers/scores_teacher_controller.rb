@@ -11,7 +11,7 @@ class ScoresTeacherController < ApplicationController
 
     allocations = AllocationTag.find_related_ids(allocation_tag_id)
 
-    groups = AllocationTag.find_all_groups(allocations)
+    groups = AllocationTag.find_all_groups(allocations.join(','))
     @group, group_id = groups.first.code, groups.first.id
     @students, @activities, @cnt_students = [], [], 0
 

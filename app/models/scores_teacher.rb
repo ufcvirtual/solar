@@ -4,7 +4,7 @@ class ScoresTeacher < ActiveRecord::Base
 
   # Listagem dos alunos por turma
   def self.list_students_by_curriculum_unit_id_and_group_id(curriculum_unit_id, group_id, page = 1)
-    sql = <<SQL
+    query = <<SQL
     WITH cte_assignments AS (
       SELECT t2.id              AS allocation_tag_id,
              t1.id              AS assignment_id,
@@ -70,10 +70,10 @@ class ScoresTeacher < ActiveRecord::Base
          )
     --
     SELECT t1.student_id,
-           initcap(t1.student_name) AS student_name,
-           translate(array_agg(t1.grade)::text,'{}NULL','')              AS grades,
-           translate(array_agg(t1.assignment_id)::text,'{}NULL','')      AS assignment_ids,
-           translate(array_agg(t1.send_assignment_id)::text,'{}NULL','') AS send_assignment_ids,
+           initcap(t1.student_name)                                       AS student_name,
+           translate(array_agg(t1.grade)::text,'{}NULL','')               AS grades,
+           translate(array_agg(t1.assignment_id)::text,'{}NULL','')       AS assignment_ids,
+           translate(array_agg(t1.send_assignment_id)::text,'{}NULL','')  AS send_assignment_ids,
            t2.cnt_public_files,
            t3.cnt_access
       FROM cte_grades                   AS t1
@@ -83,8 +83,7 @@ class ScoresTeacher < ActiveRecord::Base
      ORDER BY t1.student_name
 SQL
 
-    paginate_by_sql sql, {:per_page => Rails.application.config.items_per_page, :page => page}
-
+    paginate_by_sql query, {:per_page => Rails.application.config.items_per_page, :page => page}
   end
 
   # Numero de estudantes por group

@@ -4,11 +4,7 @@ class PortfolioTeacherController < ApplicationController
 
   before_filter :prepare_for_group_selection, :only => [:list]
 
-  ##
-  # Lista de portfolio dos alunos de uma turma
-  ##
   def list
-
     authorize! :list, PortfolioTeacher
 
     allocation_tag_id = active_tab[:url]['allocation_tag_id']
@@ -17,14 +13,9 @@ class PortfolioTeacherController < ApplicationController
     # grupo selecionado
     @group = AllocationTag.where("id IN (#{allocations}) AND group_id IS NOT NULL").first.group
     @students = PortfolioTeacher.list_students_by_allocations(allocations)
-
   end
 
-  ##
-  # Detalha o portfolio do aluno para a turma em questao
-  ##
   def student_detail
-
     authorize! :student_detail, PortfolioTeacher
 
     @assignment_id = params[:assignment_id]

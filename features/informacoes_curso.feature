@@ -31,4 +31,4 @@ Cenário: Acessar pagina de informacoes do curso
         E eu deverei ver "7"
         E eu deverei ver "Responsáveis"
         E eu deverei ver "Ricardo Palacio (Prof. Titular)"
-        E eu deverei ver "Usuario do Sistema (Tutor a Distancia)"
+        E eu deverei ver "Usuario Do Sistema (Tutor a Distancia)"
