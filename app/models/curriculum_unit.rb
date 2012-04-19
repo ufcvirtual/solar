@@ -8,7 +8,7 @@ class CurriculumUnit < ActiveRecord::Base
            SELECT
             DISTINCT *
             FROM (
-            (	--(cns 1 - usuarios vinculados direto a unidade curricular)
+            ( --(cns 1 - usuarios vinculados direto a unidade curricular)
               SELECT
                 gr.id, gr.code, of.semester
               FROM
@@ -21,7 +21,7 @@ class CurriculumUnit < ActiveRecord::Base
                 user_id = #{user_id} AND al.status = #{Allocation_Activated} AND cr.id = #{curriculum_unit_id}
             )
             union
-            (	--(cns 2 - usuarios vinculados a oferta)
+            ( --(cns 2 - usuarios vinculados a oferta)
               SELECT
                 gr.id, gr.code, of.semester
               FROM
@@ -34,7 +34,7 @@ class CurriculumUnit < ActiveRecord::Base
                 user_id = #{user_id} AND al.status = #{Allocation_Activated} AND cr.id = #{curriculum_unit_id}
             )
             union
-            (	--(cns 3 - usuarios vinculados a turma)
+            ( --(cns 3 - usuarios vinculados a turma)
               SELECT
                 gr.id, gr.code, of.semester
               FROM
@@ -47,7 +47,7 @@ class CurriculumUnit < ActiveRecord::Base
                 user_id = #{user_id} AND al.status = #{Allocation_Activated} AND cr.id = #{curriculum_unit_id}
             )
             union
-            (	--(cns 4 - usuarios vinculados a graduacao)
+            ( --(cns 4 - usuarios vinculados a graduacao)
               SELECT
                 gr.id, gr.code, of.semester
               FROM
@@ -67,28 +67,35 @@ class CurriculumUnit < ActiveRecord::Base
     return (groups1.nil?) ? [] : groups1
   end
 
-  
+  ##  
   # participantes que nao sao TAL TIPO DE PERFIL
+  ##
   def self.class_participants_by_allocations_tags_and_is_not_profile_type(allocation_tags, profile_flag)
     class_participants_by_allocations(allocation_tags, profile_flag, false)
   end
-  
+
+  ##
   # Participantes que sao determinado tipo de perfil
+  ##
   def self.class_participants_by_allocations_tags_and_is_profile_type(allocation_tags, profile_flag)
     class_participants_by_allocations(allocation_tags, profile_flag)
   end
-  
+
   def self.class_participants_by_allocations(allocation_tags, profile_flag, have_profile = true )
-       
     negative = have_profile ? '' : 'NOT'
-    
+
     query = <<SQL
-      SELECT t3.id, t3.name, t3.photo_file_name, t3.email, t4.name AS profile_name, t4.id AS profile_id
+      SELECT t3.id,
+             initcap(t3.name) AS name,
+             t3.photo_file_name,
+             t3.email,
+             t4.name AS profile_name,
+             t4.id AS profile_id
         FROM allocations     AS t1
         JOIN allocation_tags AS t2 ON t1.allocation_tag_id = t2.id
         JOIN users           AS t3 ON t1.user_id = t3.id
         JOIN profiles        AS t4 ON t4.id = t1.profile_id
-       WHERE t2.id IN (#{allocation_tags.join(',')})
+       WHERE t2.id IN (#{allocation_tags})
          AND #{negative} cast(t4.types & '#{profile_flag.to_s(2)}' as boolean)
          AND t1.status = #{Allocation_Activated}
        ORDER BY profile_name, t3.name
@@ -142,4 +149,5 @@ SQL
 
     ActiveRecord::Base.connection.select_all query
   end
+
 end

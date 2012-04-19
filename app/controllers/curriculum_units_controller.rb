@@ -62,29 +62,21 @@ class CurriculumUnitsController < ApplicationController
 
   def participants
     curriculum_data
+    @student_profile = student_profile # retorna perfil em que se pede matricula (~aluno)
 
-    # retorna perfil em que se pede matricula (~aluno)
-    @student_profile = student_profile
-
-    # retorna participantes da turma (que nao sejam responsaveis)
-    allocation_tag_id = active_tab[:url]['allocation_tag_id']
-    allocation_tags = AllocationTag.find_related_ids(allocation_tag_id)
-
-    responsible = Profile_Type_Class_Responsible
-    @participants = CurriculumUnit.class_participants_by_allocations_tags_and_is_not_profile_type allocation_tags, responsible
-
+    allocation_tags = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
+    @participants = CurriculumUnit.class_participants_by_allocations_tags_and_is_not_profile_type(allocation_tags.join(','), Profile_Type_Class_Responsible)
   end
 
   private
 
   def curriculum_data
-    # localiza unidade curricular
     @curriculum_unit = CurriculumUnit.find(active_tab[:url]['id'])
 
     @allocation_tag_id = active_tab[:url]['allocation_tag_id']
     allocation_tags = AllocationTag.find_related_ids(@allocation_tag_id)
     responsible = Profile_Type_Class_Responsible
-    @responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type allocation_tags, responsible
+    @responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(allocation_tags.join(','), responsible)
   end
 
 end
