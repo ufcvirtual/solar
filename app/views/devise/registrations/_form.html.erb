@@ -62,7 +62,7 @@
           <td class="form_error"><%= msg_name %></td>
         </tr>
         <tr>
-          <td class="form_label"><%= f.label "#{t(:form_cpf)}*" %></td>
+          <td class="form_label"><%= f.label :cpf, "#{t(:form_cpf)}*" %></td>
           <td class="form_field"><%= f.text_field :cpf, :size=>field_size, :id=>"cpf" %></td>
           <td class="form_error"><%= msg_cpf %></td>
         </tr>

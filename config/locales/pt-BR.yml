@@ -346,7 +346,7 @@
   form_password: "Senha"
   form_name: "Nome"
   form_nick: "Apelido"
-  form_cpf: "CPF "
+  form_cpf: "CPF"
   form_institution: "Instituição"
   form_special_needs: "Necessidades especiais"
   form_password_confirmation: "Confirmação da senha"

@@ -24,7 +24,7 @@ Cenário: Acessar página de Edição de Dados Cadastrais
             E eu deverei ver "Apelido"
             E eu deverei ver "Data de Nascimento"
             E eu deverei ver "Sexo"
-            E eu deverei ver "Cpf"
+            E eu deverei ver "CPF"
             E eu deverei ver "Contato"
             E eu deverei ver "E-mail"
             E eu deverei ver "E-mail alternativo"
