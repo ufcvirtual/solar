@@ -1606,6 +1606,7 @@ h2, table tr.block_title th {
     background: #F5F8FB;
     height: 51px;
     padding: 3px 8px 2px 8px;
+    overflow: auto;
 }
 
 /* tela de participantes */
