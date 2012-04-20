@@ -57,7 +57,7 @@
   <!-- Informacoes -->
 
   <div class="block_content">
-  	<% unless @discussions.empty? %>
+    <% unless @discussions.empty? %>
         <table class="tb_list">
           <thead>
             <tr class="lines">
@@ -70,7 +70,11 @@
               <tr class="lines">
                 <% link = {:controller => :discussions, :action => :show_posts, :id => discussion["discussion_id"], :student_id => @student.id} %>
                 <td class="show_posts">
-                  <%= link_to(discussion["name"], link, {:class => 'link_content'}) %>
+                  <% if discussion['qtd'].to_i > 0 %>
+                    <%= link_to(discussion['name'], link, {:class => 'link_content'}) %>
+                  <% else %>
+                    <%= discussion['name'] %>
+                  <% end %>
                 </td>
                 <td class="show_posts" align="center">
                   <% if discussion['qtd'].to_i > 0 %>
@@ -85,7 +89,7 @@
         </table>
     <% else %>
         <div class="block_content block_content_text"><%= t(:itens_not_found) %></div>
-  	<% end %>
+    <% end %>
 
   </div>
 </div>

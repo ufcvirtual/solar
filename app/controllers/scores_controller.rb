@@ -50,7 +50,6 @@ class ScoresController < ApplicationController
   # Historico de acesso do aluno
   ##
   def history_access
-
     from_date = params['from-date']
     until_date = params['until-date']
     student_id = params['id']
@@ -63,7 +62,6 @@ class ScoresController < ApplicationController
     @history = Score.history_student_id_and_interval(curriculum_unit_id, student_id, from_date, until_date)
 
     render :layout => false
-
   end
 
   private
