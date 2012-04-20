@@ -67,20 +67,23 @@ class ScoresTeacher < ActiveRecord::Base
           FROM cte_students AS t1
      LEFT JOIN logs AS t2 ON t2.user_id = t1.student_id AND log_type = 3 AND curriculum_unit_id = #{curriculum_unit_id}
          GROUP BY t1.student_id
-         )
+    ),
+    -- resultado
+    cte_result AS (
+      SELECT t1.student_id,
+             initcap(t1.student_name)                                       AS student_name,
+             translate(array_agg(t1.grade)::text,'{}NULL','')               AS grades,
+             translate(array_agg(t1.assignment_id)::text,'{}NULL','')       AS assignment_ids,
+             translate(array_agg(t1.send_assignment_id)::text,'{}NULL','')  AS send_assignment_ids,
+             t2.cnt_public_files,
+             t3.cnt_access
+        FROM cte_grades                   AS t1
+        JOIN cte_public_files             AS t2 ON t2.student_id = t1.student_id
+        JOIN cte_access                   AS t3 ON t3.student_id = t1.student_id
+       GROUP BY t1.student_id, t2.cnt_public_files, t3.cnt_access, t1.student_name
+    )
     --
-    SELECT t1.student_id,
-           initcap(t1.student_name)                                       AS student_name,
-           translate(array_agg(t1.grade)::text,'{}NULL','')               AS grades,
-           translate(array_agg(t1.assignment_id)::text,'{}NULL','')       AS assignment_ids,
-           translate(array_agg(t1.send_assignment_id)::text,'{}NULL','')  AS send_assignment_ids,
-           t2.cnt_public_files,
-           t3.cnt_access
-      FROM cte_grades                   AS t1
-      JOIN cte_public_files             AS t2 ON t2.student_id = t1.student_id
-      JOIN cte_access                   AS t3 ON t3.student_id = t1.student_id
-     GROUP BY t1.student_id, t1.student_name, t2.cnt_public_files, t3.cnt_access
-     ORDER BY t1.student_name
+    SELECT * FROM cte_result ORDER BY student_name
 SQL
 
     paginate_by_sql query, {:per_page => Rails.application.config.items_per_page, :page => page}
