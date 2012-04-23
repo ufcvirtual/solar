@@ -14,12 +14,13 @@ class PortfolioTeacher < ActiveRecord::Base
         JOIN users            AS t3 ON t3.id = t1.user_id
         JOIN profiles         AS t4 ON t4.id = t1.profile_id
        WHERE t2.id IN (#{allocations})
-         AND t2.group_id IS NOT NULL
          AND cast( t4.types & '#{Profile_Type_Student}' as boolean) 
+         AND t1.status = #{Allocation_Activated}
+         AND t2.group_id IS NOT NULL
        ORDER BY name
 SQL
 
-    User.find_by_sql query
+    ActiveRecord::Base.connection.select_all query
   end
 
   ##

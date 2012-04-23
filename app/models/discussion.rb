@@ -8,7 +8,6 @@ class Discussion < ActiveRecord::Base
   # Todas as discussoes por estudante no grupo
   ##
   def self.all_by_allocations_and_student_id(allocations, student_id)
-
     query = <<SQL
       WITH cte_discussions AS (
           SELECT t2.id            AS allocation_tag_id,
@@ -29,7 +28,6 @@ class Discussion < ActiveRecord::Base
 SQL
 
     ActiveRecord::Base.connection.select_all query
-
   end
 
   ##
