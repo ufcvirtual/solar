@@ -639,6 +639,7 @@
   portfolio_null: "Nenhum portfolio cadastrado"
   portfolio_upload_file: "Enviar arquivos para a área pública"
   individual_activity: "Atividades Individuais"
+  group_activities: "Atividades em grupo"
   group_assignments: "Trabalhos de Grupo"
   activity_description: "Descrição"
   situation: "Situação"

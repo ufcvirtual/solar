@@ -49,4 +49,4 @@ Discussion_Post_Max_Indent_Level = 4
 
 # Constantes que indicam se a atividade é individual ou em grupo
 Individual_Activity = 1
-Group_Assignment = 2
+Group_Activity = 2
