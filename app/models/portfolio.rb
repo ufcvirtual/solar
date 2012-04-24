@@ -4,10 +4,7 @@ class Portfolio < ActiveRecord::Base
 
   belongs_to :schedule
 
-  ##
-  # Atividades individuais
-  ##
-  def self.individual_activities(group_id, students_id)
+  def self.student_activities(group_id, students_id, type_assignment)
 
     ia = ActiveRecord::Base.connection.select_all <<SQL
     SELECT DISTINCT
@@ -35,6 +32,7 @@ class Portfolio < ActiveRecord::Base
  LEFT JOIN schedules           AS t7 ON t7.id = t1.schedule_id
      WHERE t4.group_id = #{group_id}
        AND t5.user_id = #{students_id}
+       AND t1.type_assignment = #{type_assignment}
   GROUP BY t1.id, t2.id, t1.name, t1.enunciation, t7.start_date, t7.end_date, t2.grade, t3.comment
   ORDER BY t7.end_date, t7.start_date DESC;
 SQL

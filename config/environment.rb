@@ -46,3 +46,7 @@ Context_Curriculum_Unit    = 2 #Context.find_by_name('curriculum_unit').id
 Discussion_Responsible_Extra_Time = 3
 
 Discussion_Post_Max_Indent_Level = 4
+
+# Constantes que indicam se a atividade é individual ou em grupo
+Individual_Activity = 1
+Group_Assignment = 2

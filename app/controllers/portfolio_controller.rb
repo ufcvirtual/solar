@@ -13,7 +13,9 @@ class PortfolioController < ApplicationController
     group_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
 
     # listando atividades individuais pelo grupo_id em que o usuario esta inserido
-    @individual_activities = Portfolio.individual_activities(group_id, current_user.id)
+    @individual_activities = Portfolio.student_activities(group_id, current_user.id, Individual_Activity)
+    # listando atividades em grupo pelo grupo_id em que o usuario esta inserido
+    @group_activities = Portfolio.student_activities(group_id, current_user.id, Group_Assignment)
 
     # area publica
     @public_area = Portfolio.public_area(group_id, current_user.id)
