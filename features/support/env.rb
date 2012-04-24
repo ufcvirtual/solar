@@ -3,8 +3,8 @@
 # newer version of cucumber-rails. Consider adding your own code to a new file 
 # instead of editing this one. Cucumber will automatically load all features/**/*.rb
 # files.
-require 'simplecov'
-SimpleCov.start 'rails'
+# require 'simplecov'
+# SimpleCov.start 'rails'
 require 'cucumber/rails'
 #require 'ruby-debug'
 
@@ -40,11 +40,11 @@ ActionController::Base.allow_rescue = false
 
 # Remove/comment out the lines below if your app doesn't have a database.
 # For some databases (like MongoDB and CouchDB) you may need to use :truncation instead.
-begin
-  DatabaseCleaner.strategy = :transaction
-rescue NameError
-  raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
-end
+# begin
+#   DatabaseCleaner.strategy = :transaction
+# rescue NameError
+#   raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
+# end
 
 # You may also want to configure DatabaseCleaner to use different strategies for certain features and scenarios.
 # See the DatabaseCleaner documentation for details. Example:
@@ -58,13 +58,17 @@ end
 #   end
 #
 
+Before('~@selenium','~@javascript') do
+  DatabaseCleaner.strategy = :transaction
+end
+
+Before('@selenium,@javascript') do
+  DatabaseCleaner.strategy = :truncation #, {:except => %w[resources permissions_resources]}
+end
+
 Before do
   Fixtures.reset_cache
   fixtures_folder = File.join(::Rails.root.to_s, 'spec', 'fixtures')
   fixtures = Dir[File.join(fixtures_folder, '*.yml')].map {|f| File.basename(f, '.yml') }
   Fixtures.create_fixtures(fixtures_folder, fixtures)
-
-  # insere os registros de permissoes para os profiles cadastrados
-  load File.join(::Rails.root.to_s, 'db', 'production', 'resources.rb')
-  load File.join(::Rails.root.to_s, 'db', 'production', 'permissions.rb')
 end

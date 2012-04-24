@@ -1,0 +1,416 @@
+res1:
+  id: 1
+  controller: 'users'
+  action: 'create'
+  description: 'Incluir novos usuarios no sistema'
+
+res2:
+  id: 2
+  controller: 'users'
+  action: 'update'
+  description: 'Alteracao dos dados do usuario'
+
+res3:
+  id: 3
+  controller: 'users'
+  action: 'mysolar'
+  description: 'Lista dos Portlest/Pagina inicial'
+
+res4:
+  id: 4
+  controller: 'users'
+  action: 'update_photo'
+  description: 'Trocar foto'
+
+res5:
+  id: 5
+  controller: 'users'
+  action: 'pwd_recovery'
+  description: 'Recuperar senha'
+
+res6:
+  id: 6
+  controller: 'offers'
+  action: 'show'
+  description: 'Visualizacao de ofertas'
+
+res7:
+  id: 7
+  controller: 'offers'
+  action: 'update'
+  description: 'Edicao de ofertas'
+
+res8:
+  id: 8
+  controller: 'offers'
+  action: 'showoffersbyuser'
+  description: 'Exibe oferta atraves de busca'
+
+res9:
+  id: 9
+  controller: 'groups'
+  action: 'show'
+  description: 'Visualizar turmas'
+
+res10:
+  id: 10
+  controller: 'groups'
+  action: 'update'
+  description: 'Editar turmas'
+
+res11:
+  id: 11
+  controller: 'curriculum_units'
+  action: 'show'
+  description: 'Acessar Unidade Curricular'
+
+res12:
+  id: 12
+  controller: 'curriculum_units'
+  action: 'participants'
+  description: 'Listar participantes de uma Unidade Curricular'
+
+res13:
+  id: 13
+  controller: 'curriculum_units'
+  action: 'informations'
+  description: 'Listar informacoes de uma Unidade Curricular'
+
+res14:
+  id: 14
+  controller: 'allocations'
+  action: 'cancel'
+  description: 'Cancelar matricula'
+
+res15:
+  id: 15
+  controller: 'allocations'
+  action: 'reactivate'
+  description: 'Pedir reativacao de matricula'
+
+res16:
+  id: 16
+  controller: 'allocations'
+  action: 'send_request'
+  description: 'Pedir matricula'
+
+res17:
+  id: 17
+  controller: 'allocations'
+  action: 'cancel_request'
+  description: 'Cancelar pedido de matricula'
+
+res18:
+  id: 18
+  controller: 'lessons'
+  action: 'show'
+  description: 'Ver aula'
+
+res19:
+  id: 19
+  controller: 'lessons'
+  action: 'list'
+  description: 'Listar aulas de uma Unidade Curricular'
+
+res20:
+  id: 20
+  controller: 'lessons'
+  action: 'show_header'
+  description: 'Ver aula - header'
+
+res21:
+  id: 21
+  controller: 'lessons'
+  action: 'show_content'
+  description: 'Ver aula - content'
+
+res22:
+  id: 22
+  controller: 'discussions'
+  action: 'list'
+  description: 'Listar Foruns'
+
+res23:
+  id: 23
+  controller: 'bibliography'
+  action: 'list'
+  description: 'Bibliografia do curso'
+
+res24:
+  id: 24
+  controller: 'portfolio'
+  action: 'list'
+  description: 'Portfolio da Unidade Curricular'
+
+res25:
+  id: 25
+  controller: 'messages'
+  action: 'index'
+  description: 'Mensagens'
+
+res26:
+  id: 26
+  controller: 'schedules'
+  action: 'list'
+  description: 'Agenda'
+
+res27:
+  id: 27
+  controller: 'portfolio'
+  action: 'activity_details'
+  description: 'Atividades Individuais'
+
+res28:
+  id: 28
+  controller: 'portfolio'
+  action: 'delete_file_individual_area'
+  description: 'Delecao de arquivos da area privada'
+
+res29:
+  id: 29
+  controller: 'portfolio'
+  action: 'delete_file_public_area'
+  description: 'Delecao de arquivos da area publica'
+
+res30:
+  id: 30
+  controller: 'portfolio'
+  action: 'download_file_comment'
+  description: 'Download de arquivos enviados pelo professor'
+
+res31:
+  id: 31
+  controller: 'portfolio'
+  action: 'upload_files_public_area'
+  description: 'Upload de arquivos para a area publica'
+
+res32:
+  id: 32
+  controller: 'portfolio'
+  action: 'download_file_public_area'
+  description: 'Download de arquivos da area publica'
+
+res33:
+  id: 33
+  controller: 'portfolio'
+  action: 'upload_files_individual_area'
+  description: 'Upload de arquivos para a area privada'
+
+res34:
+  id: 34
+  controller: 'portfolio'
+  action: 'download_file_individual_area'
+  description: 'Download de arquivos da area privada'
+
+res35:
+  id: 35
+  controller: 'portfolio_teacher'
+  action: 'list'
+  description: 'Lista os alunos da turma'
+
+res36:
+  id: 36
+  controller: 'portfolio_teacher'
+  action: 'student_detail'
+  description: 'Detalha portfolio do aluno'
+
+res37:
+  id: 37
+  controller: 'portfolio_teacher'
+  action: 'update_comment'
+  description: 'Comentar atividade do aluno'
+
+res38:
+  id: 38
+  controller: 'portfolio_teacher'
+  action: 'delete_file'
+  description: 'Deletar arquivos de comentarios'
+
+res39:
+  id: 39
+  controller: 'portfolio_teacher'
+  action: 'upload_files'
+  description: 'Upload de arquivos de correcao'
+
+res40:
+  id: 40
+  controller: 'portfolio_teacher'
+  action: 'download_files_student'
+  description: 'Download de arquivos enviados pelo aluno'
+
+res42:
+  id: 42
+  controller: 'discussions'
+  action: 'new_post'
+  description: 'Cria um novo post'
+
+res43:
+  id: 43
+  controller: 'discussions'
+  action: 'remove_post'
+  description: 'Remove um post'
+
+res44:
+  id: 44
+  controller: 'discussions'
+  action: 'update_post'
+  description: 'Atualiza o conteudo de um post'
+
+res45:
+  id: 45
+  controller: 'discussions'
+  action: 'show'
+  description: 'Exibe todos os posts'
+
+res46:
+  id: 46
+  controller: 'discussions'
+  action: 'list'
+  description: 'Lista os foruns'
+
+
+# acompanhamento
+res47:
+  id: 47
+  controller: 'scores'
+  action: 'show'
+  description: 'Exibicao dos dados do aluno'
+
+
+# acompanhamento do professor
+res48:
+  id: 48
+  controller: 'scores_teacher'
+  action: 'list'
+  description: 'Lista dos alunos da turma'
+
+res49:
+  id: 49
+  controller: 'discussions'
+  action: 'download_post_file'
+  description: 'Baixar arquivos de foruns'
+
+res50:
+  id: 50
+  controller: 'discussions'
+  action: 'attach_file'
+  description: 'Anexar arquivos de foruns'
+
+res51:
+  id: 51
+  controller: 'discussions'
+  action: 'remove_attached_file'
+  description: 'Remover arquivos de postagens'
+
+res52:
+  id: 52
+  controller: 'users'
+  action: 'find'
+  description: 'Consultar dados do usuario'
+
+res53:
+  id: 53
+  controller: 'discussions'
+  action: 'post_file_upload'
+  description: 'Exibir janela para upload de arquivos no foruns'
+
+
+# Material de apoio
+res54:
+  id: 54
+  controller: 'support_material_file'
+  action: 'list'
+  description: 'Visualizar material de apoio'
+
+res55:
+  id: 55
+  controller: 'support_material_file'
+  action: 'download'
+  description: 'Baixar um arquivo de material de apoio'
+
+res56:
+  id: 56
+  controller: 'support_material_file'
+  action: 'download_all_file_ziped'
+  description: 'Baixar todos os arquivos de material de apoio ZIPADO'
+
+res57:
+  id: 57
+  controller: 'support_material_file'
+  action: 'download_folder_file_ziped'
+  description: 'Baixar arquivos de uma pasta do material de apoio ZIPADO'
+
+# curso
+res58:
+  id: 58
+  controller: 'courses'
+  action: 'create'
+  description: 'Criar novo curso'
+
+res59:
+  id: 59
+  controller: 'courses'
+  action: 'update'
+  description: 'Editar um curso'
+
+res60:
+  id: 60
+  controller: 'courses'
+  action: 'show'
+  description: 'Mostrar um curso'
+
+res61:
+  id: 61
+  controller: 'courses'
+  action: 'index'
+  description: 'inicio'
+
+res62:
+  id: 62
+  controller: 'courses'
+  action: 'destroy'
+  description: 'Apaga um curso'
+
+# Material de apoio - editor
+res63:
+  id: 63
+  controller: 'support_material_file'
+  action: 'list_edition'
+  description: 'Visulalizar arquivos do material de apoio do editor'
+
+res64:
+  id: 64
+  controller: 'support_material_file'
+  action: 'select_action_link'
+  description: 'Envia para o metodo de adicionar ou excluir links do material de apoio do editor'
+
+res65:
+  id: 65
+  controller: 'support_material_file'
+  action: 'select_action_file'
+  description: 'Envia para o metodo de adicionar ou excluir arquivos ou renomeia uma pasta do material de apoio do editor'
+
+res66:
+  id: 66
+  controller: 'support_material_file'
+  action: 'folder_verify'
+  description: 'Metodo que cria uma pasta temporaria e envia para a pagina do material de apoio do editor para aguardar o upload de um arquivo'
+
+res67:
+  id: 67
+  controller: 'support_material_file'
+  action: 'delete_folder'
+  description: 'Exclui uma pasta da pagina de material de apoio do editor'
+
+res68:
+  id: 68
+  controller: 'support_material_file'
+  action: 'edit_link'
+  description: 'Edita um ou mais links da pagina de material de apoio do editor'
+
+# Trabalho de grupo
+res69:
+  id: 69
+  controller: 'group_assignment'
+  action: 'list'
+  description: 'Grupos'

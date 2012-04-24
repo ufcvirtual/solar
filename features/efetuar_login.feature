@@ -44,5 +44,3 @@ Cenário: Efetuar logout
     Quando eu clicar no link "Sair"
     Então eu deverei ver "Usuário"
     E eu deverei ver "Senha"
-
-

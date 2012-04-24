@@ -19,10 +19,6 @@ puts "  - Executando fixtures: #{fixtures}"
 
 Fixtures.create_fixtures(fixtures_folder, fixtures)
 
-# Criando resources
-require File.join(::Rails.root.to_s, 'db', 'production', 'resources')
-require File.join(::Rails.root.to_s, 'db', 'production', 'permissions')
-
 allocations = Allocation.create([
     {:user_id => 1, :profile_id => 12, :status => 1},
     {:user_id => 1, :allocation_tag_id => 1, :profile_id => 1, :status => 1},
