@@ -14,9 +14,19 @@ class PortfolioController < ApplicationController
 
     # listando atividades individuais pelo grupo_id em que o usuario esta inserido
     @individual_activities = Portfolio.student_activities(group_id, current_user.id, Individual_Activity)
-    # listando atividades em grupo pelo grupo_id em que o usuario esta inserido
+    # Listando atividades em grupo pelo grupo_id em que o usuario esta inserido
     @group_activities = Portfolio.student_activities(group_id, current_user.id, Group_Activity)
 
+    # Receberá os participantes do grupo de determinada atividade
+    @groups_participants = []
+    # Receberá o grupo de determinada atividade
+    @groups_assignments = []
+
+    for activity in @group_activities
+      @groups_participants[activity["id"].to_i] = Portfolio.find_group_participants(activity["id"].to_i, current_user.id)
+      @groups_assignments[activity["id"].to_i] = @groups_participants[activity["id"].to_i].first.group_assignment.group_name unless @groups_participants[activity["id"].to_i].nil?
+    end
+    
     # area publica
     @public_area = Portfolio.public_area(group_id, current_user.id)
   end

@@ -91,18 +91,31 @@
           <tr class="lines">
             <td>
               <h4><%= link_to ia["name"], {:controller => :portfolio, :action => :activity_details, :id => ia["id"]}, {:class => 'link_content'} %></h4>
-              <% if ia["enunciation"].size > 180 %>
                 <div class="enunciation">
                   <div class="enunciation_slice"><%= ia["enunciation"].slice(0..180) << '...' %></div>
-                  <div class="enunciation_complete"><%= ia["enunciation"] %></div>
+                  <div class="enunciation_complete"><%= ia["enunciation"] %>
+                      <% unless @groups_assignments[ia["id"].to_i].nil? %>
+                        <div>
+                          <%= t(:group_name) %>: <%= @groups_assignments[ia["id"].to_i] %>
+                        </div>
+                        <div>
+                          <%= t(:group_participants) %>: 
+                          <% for participant in @groups_participants[ia["id"].to_i] %>
+                            <%= participant.user.name %>
+                            <% unless participant == @groups_participants[ia["id"].to_i].last %> , <% end %>
+                          <% end %>
+                        </div>
+                      <% else %>
+                        <div>
+                          <%= t(:student_with_no_group) %>
+                        </div>
+                      <% end %>
+                  </div>
                   <div class="more_or_less">
                     <a href="#" class="enunciation_more link_content"><%= t(:more)%></a>
                     <a href="#" class="enunciation_less link_content"><%= t(:less)%></a>
                   </div>
                 </div>
-              <% else %>
-                <%= ia["enunciation"] %>
-              <% end %>
             </td>
             <td class="center">
               <%=l ia["start_date"].to_time, :format => :files %><br /><%=l ia["end_date"].to_time, :format => :files %>

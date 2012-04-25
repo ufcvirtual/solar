@@ -42,6 +42,29 @@ SQL
   end
 
   ##
+  # Participantes do grupo do aluno e da atividade em questão
+  ##
+  def self.find_group_participants(activity, user_id)
+    # acha o grupo de determinado aluno para determinado trabalho
+    group_assignment = ActiveRecord::Base.connection.select_all <<SQL
+    SELECT  t1.group_assignment_id
+      FROM group_participants AS t1
+      JOIN group_assignments AS t2 ON t1.group_assignment_id = t2.id AND t2.assignment_id = #{activity}
+    WHERE #{user_id} = t1.user_id;
+SQL
+
+  # se o aluno não estiver em nenhum grupo, retorna nulo
+  if group_assignment.empty?
+    return nil
+  else
+  # caso contrário, pesquisa os participantes do grupo encontrado
+    group_participants = GroupParticipant.find_all_by_group_assignment_id(group_assignment[0]["group_assignment_id"].to_i)
+    return group_participants
+  end
+
+  end
+
+  ##
   # Arquivos da area publica
   ##
   def self.public_area(group_id, user_id)
