@@ -2579,6 +2579,14 @@ div.send_files {
     background-color: #F7F7F8;
 }
 
+.red_notice {
+    font-size: 10pt;
+    background-color: white;
+    white-space: nowrap;
+    color: #e12227;
+    padding-top:6px
+}
+
 .portfolio_activity {
     width: 500px;
 }

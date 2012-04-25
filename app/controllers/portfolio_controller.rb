@@ -271,6 +271,7 @@ class PortfolioController < ApplicationController
           send_assignment = SendAssignment.new do |sa|
             sa.assignment_id = params[:assignment_id]
             sa.user_id = current_user.id
+            sa.group_assignment_id = params[:group_assignment_id]
           end
 
           send_assignment.save!

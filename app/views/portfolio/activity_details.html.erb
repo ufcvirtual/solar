@@ -1,5 +1,4 @@
 <div>
-
   <!-- Descricao da atividade -->
   <div id="activities" class="block_wrapper">
     <div class="block_title">
@@ -41,8 +40,39 @@
       </table>
     </div>
   </div>
-  <!-- Comentarios do professor -->
 
+<!-- Integrantes do grupo -->
+<% student_with_group_in_group_activity = true if (@activity.type_assignment == Group_Activity and !@group_name.nil?) %>
+<% if student_with_group_in_group_activity %>
+  <div id="group_participants" class="block_wrapper">
+    <div class="block_title">
+      <h2><%= image_tag "icon_participants.png", :alt => t(:icon_participants), :class=>'block_title_icon' %><%= @group_name %></h2>
+    </div>
+
+    <div id="grade" class="block_content">
+     <!-- Descricao da atividade -->
+      <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <thead>
+          <tr class="lines">
+            <th><%=t(:group_participants)%></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="lines" >
+            <td>
+              <% for participant in @group_participants %>
+                <% unless participant == @group_participants.first %> <br/>  <% end %>
+                <%= participant.user.name %>
+              <% end %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% end %>
+
+ <!-- Comentarios do professor -->
   <div id="professors_comments" class="block_wrapper">
     <div class="block_title">
       <h2><%= image_tag "icon_comments.png", :alt => t(:comments_icon), :class=>'block_title_icon' %><%= t(:comments_teacher) %></h2>
@@ -93,12 +123,9 @@
     </div>
   </div>
 
-  <!-- Arquivos enviados -->
-
-  <% verify = "display: none" if (@activity.type_assignment == Group_Activity and @group_name.nil?) %>
-
-  <div id="files_sent" class="block_wrapper" style="<%=verify%>">
-
+ <!-- Arquivos enviados -->
+  <% student_with_no_group_in_group_activity = true if (@activity.type_assignment == Group_Activity and @group_name.nil?) %>
+  <% unless student_with_no_group_in_group_activity %>
     <div class="block_title">
       <h2><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:sent_files) %></h2>
     </div>
@@ -139,7 +166,6 @@
                 <% end %>
               </tr>
             <% end %>
-
           </tbody>
         </table>
       <% else %>
@@ -148,7 +174,8 @@
         <!-- Enviar arquivos -->
         <div style="background-color:white;padding-top:6px">
           <% if @situation != 'not_started' && @delete_files %>
-            <%= form_for(:assignment_file, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files_individual_area', :assignment_id => params[:id]}) do |f| %>
+          <% group_assignment_id = @group_participants.first.group_assignment_id unless @group_participants.nil? %>
+            <%= form_for(:assignment_file, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files_individual_area', :assignment_id => params[:id], :group_assignment_id => group_assignment_id}) do |f| %>
               <p><%= f.file_field :attachment%><%= f.submit t(:send), :class => "btn btn_default"%></p>
               <p class="block_content_gray"><%= t(:send_file_portfolio_obs)%></p>
               <p class="block_content_gray"><%=raw t(:send_file_portfolio_text)%></p>
@@ -158,7 +185,7 @@
           <% end %>
         </div>
     </div>
+    <% else %>
+      <div class="red_notice"><%= t(:student_with_no_group) %></div>
+    <% end %>
   </div>
-
-  
-</div>
