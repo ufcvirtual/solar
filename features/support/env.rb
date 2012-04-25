@@ -38,37 +38,17 @@ end
 #
 ActionController::Base.allow_rescue = false
 
-# Remove/comment out the lines below if your app doesn't have a database.
-# For some databases (like MongoDB and CouchDB) you may need to use :truncation instead.
-# begin
-#   DatabaseCleaner.strategy = :transaction
-# rescue NameError
-#   raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
-# end
-
-# You may also want to configure DatabaseCleaner to use different strategies for certain features and scenarios.
-# See the DatabaseCleaner documentation for details. Example:
-#
-#   Before('@no-txn,@selenium,@culerity,@celerity,@javascript') do
-#     DatabaseCleaner.strategy = :truncation, {:except => %w[widgets]}
-#   end
-#
-#   Before('~@no-txn', '~@selenium', '~@culerity', '~@celerity', '~@javascript') do
-#     DatabaseCleaner.strategy = :transaction
-#   end
-#
-
 Before('~@selenium','~@javascript') do
   DatabaseCleaner.strategy = :transaction
 end
 
 Before('@selenium,@javascript') do
-  DatabaseCleaner.strategy = :truncation #, {:except => %w[resources permissions_resources]}
+  DatabaseCleaner.strategy = :truncation
 end
 
 Before do
   Fixtures.reset_cache
-  fixtures_folder = File.join(::Rails.root.to_s, 'spec', 'fixtures')
+  fixtures_folder = File.join(::Rails.root.to_s, 'test', 'fixtures')
   fixtures = Dir[File.join(fixtures_folder, '*.yml')].map {|f| File.basename(f, '.yml') }
   Fixtures.create_fixtures(fixtures_folder, fixtures)
 end

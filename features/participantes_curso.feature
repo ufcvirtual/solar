@@ -14,7 +14,7 @@ Dado que tenho "allocations"
 |    7    |         3         |     5      |    1   |
 
   @javascript
-  Cenário: Visulizar participantes da turma
+  Cenário: Visualizar participantes da turma
     Dado que estou logado com o usuario "user" e com a senha "123456"
         E que estou em "Meu Solar"
     Quando eu clicar no link "Introducao a Linguistica"
