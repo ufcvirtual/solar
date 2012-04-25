@@ -94,9 +94,9 @@
                 <div class="enunciation">
                   <div class="enunciation_slice"><%= ia["enunciation"].slice(0..180) << '...' %></div>
                   <div class="enunciation_complete"><%= ia["enunciation"] %>
-                      <% unless @groups_assignments[ia["id"].to_i].nil? %>
+                      <% unless @groups_names[ia["id"].to_i].nil? %>
                         <div>
-                          <%= t(:group_name) %>: <%= @groups_assignments[ia["id"].to_i] %>
+                          <%= t(:group_name) %>: <%= @groups_names[ia["id"].to_i] %>
                         </div>
                         <div>
                           <%= t(:group_participants) %>: 

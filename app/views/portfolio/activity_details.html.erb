@@ -95,7 +95,9 @@
 
   <!-- Arquivos enviados -->
 
-  <div id="files_sent" class="block_wrapper">
+  <% verify = "display: none" if (@activity.type_assignment == Group_Activity and @group_name.nil?) %>
+
+  <div id="files_sent" class="block_wrapper" style="<%=verify%>">
 
     <div class="block_title">
       <h2><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:sent_files) %></h2>

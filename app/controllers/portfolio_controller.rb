@@ -19,12 +19,12 @@ class PortfolioController < ApplicationController
 
     # Receberá os participantes do grupo de determinada atividade
     @groups_participants = []
-    # Receberá o grupo de determinada atividade
-    @groups_assignments = []
+    # Receberá o nome do grupo de determinada atividade
+    @groups_names = []
 
     for activity in @group_activities
       @groups_participants[activity["id"].to_i] = Portfolio.find_group_participants(activity["id"].to_i, current_user.id)
-      @groups_assignments[activity["id"].to_i] = @groups_participants[activity["id"].to_i].first.group_assignment.group_name unless @groups_participants[activity["id"].to_i].nil?
+      @groups_names[activity["id"].to_i] = @groups_participants[activity["id"].to_i].first.group_assignment.group_name unless @groups_participants[activity["id"].to_i].nil?
     end
     
     # area publica
@@ -82,6 +82,12 @@ class PortfolioController < ApplicationController
     end
 
     @situation = Assignment.status_of_actitivy_by_assignment_id_and_student_id(assignment_id, student_id)
+
+
+    # Nome do grupo da atividade e uma lista com o "group_participants" desse grupo.
+    # Caso o aluno não esteja em nenhum grupo ou seja trabalho individual, serão nulos.
+    @group_participants = Portfolio.find_group_participants(@activity.id, current_user.id)
+    @group_name = @group_participants.first.group_assignment.group_name unless @group_participants.nil?
 
   end
 
