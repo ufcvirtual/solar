@@ -1,0 +1,10 @@
+#Course
+c1:
+  id: 1
+  name: Letras Portugues
+  code: LLPT
+
+c2:
+  id: 2
+  name: Licenciatura em Quimica
+  code: LQUIM

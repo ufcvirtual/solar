@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  user_id: 1
+  default_locale: pt-BR
+
+two:
+  user_id: 2
+  default_locale: pt-BR
+
+three:
+  user_id: 3
+  default_locale: pt-BR
+
+four:
+  user_id: 4
+  default_locale: pt-BR

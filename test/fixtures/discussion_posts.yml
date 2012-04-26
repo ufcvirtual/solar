@@ -1,0 +1,57 @@
+#forums
+
+post_1_forum_1:
+  id: 1
+  discussion_id: 1
+  user_id: 1
+  profile_id: 1
+  level: 1
+  content: 'Ola, turma! como voces estao? eh um lindo dia, nao acham?'
+  created_at: '2011-03-01'
+
+post_2_forum_1:
+  id: 2
+  discussion_id: 1
+  user_id: 2
+  profile_id: 2
+  parent_id: 1
+  level: 2
+  content: 'Ihhh, rapa... que papo mais estranho... tah na turma errada, hein? aqui soh tem macho!'
+  created_at: '2011-03-01'
+
+post_3_forum_1:
+  id: 3
+  discussion_id: 1
+  user_id: 1
+  profile_id: 3
+  level: 1
+  content: 'Pessoal, roubaram minha senha. Juro que sou homem.'
+  created_at: '2011-03-01'
+
+post_1_forum_2:
+  id: 4
+  discussion_id: 2
+  user_id: 1
+  profile_id: 4
+  level: 1
+  content: 'Bem vindos ao forum 2! Este forum eh legal.'
+  created_at: '2011-03-01'
+
+post_2_forum_2:
+  id: 5
+  discussion_id: 2
+  user_id: 2
+  profile_id: 1
+  level: 1
+  content: 'como estao todos? blablabla blabal ablabababl ablablabla blabbal'
+  created_at: '2011-03-01'
+
+post_3_forum_2:
+  id: 6
+  discussion_id: 1
+  user_id: 2
+  profile_id: 2
+  parent_id: 1
+  level: 2
+  content: 'Tambem acho!!!'
+  created_at: '2011-03-01'

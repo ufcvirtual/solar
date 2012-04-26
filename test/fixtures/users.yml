@@ -1,0 +1,368 @@
+user:
+  id: 1
+  username: user
+  email: user@user.com
+  name: Usuario do Sistema
+  nick: Usuario do Sistema
+  cpf: 43463518678
+  birthdate: 2005-03-02
+  gender: true
+  address: perto do pici
+  address_number: 58
+  address_neighborhood: bons
+  country: brazil
+  state: CE
+  city: fortaleza
+  institution: ufc
+  zipcode: 60450170
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: k9Dq7yfax83NZ3QRQoXr
+
+palacio:
+  id: 2
+  username: rosacrinaldo
+  email: palacio@qualquer.br
+  name: Ricardo Palacio
+  nick: Ricardo Palacio
+  birthdate: 2005-01-01
+  cpf: 23885393905
+  gender: true
+  address: Rua B
+  address_number: 333
+  address_neighborhood: Jose Walter
+  zipcode: 500000000
+  country: Brasil
+  state: CE
+  city: Fortaleza
+  institution: UFC
+  alternate_email: outrmail@gmail.com
+  bio: corinthiano desde muleque ia ao estadio com seu brother brunuh
+  interests: timao
+  music: Restart, Metallica e Exaltassamba
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: sarqmbpiY2DKWUyRkgzA
+
+bezerra:
+  id: 3
+  username: dexter
+  email: bezerra@qualquer.br
+  name: Bezerra
+  nick: Bezerra
+  birthdate: 2005-01-01
+  cpf: 11016853521
+  gender: true
+  address: Rua B
+  address_number: 333
+  address_neighborhood: Jose Walter
+  zipcode: 500000000
+  country: Brasil
+  state: CE
+  city: Fortaleza
+  institution: UFC
+  alternate_email: outrmail@gmail.com
+  bio: corinthiano desde muleque ia ao estadio com seu brother brunuh
+  interests: timao
+  music: Restart, Metallica e Exaltassamba
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: kqAgG9hYkBj6TFnps9A2
+
+ariovaldo:
+  id: 4
+  username: ariovaldo
+  email: amaral@qualquer.br
+  name: Ariovaldo Amaral
+  nick: Ariovaldo Amaral
+  birthdate: 2005-01-01
+  cpf: 57215688798
+  gender: true
+  address: Rua B
+  address_number: 333
+  address_neighborhood: Jose Walter
+  zipcode: 500000000
+  country: Brasil
+  state: CE
+  city: Fortaleza
+  institution: UFC
+  alternate_email: outrmail@gmail.com
+  bio: corinthiano desde muleque ia ao estadio com seu brother brunuh
+  interests: timao
+  music: Restart, Metallica e Exaltassamba
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: J3ymer6aYPtTVWQuxJq3
+
+professor2:
+  id: 5
+  username: prof2
+  email: prof2@prof2.br
+  name: professor2
+  nick: prof2
+  birthdate: 2005-01-01
+  cpf: 21569104646
+  gender: true
+  address: Rua ABC
+  address_number: 999
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: Paraguay
+  state: importado
+  city: Irmã de Assunção
+  institution: UFP
+  alternate_email: prof2@gmail.com
+  bio: prof2
+  interests: ensinar
+  music: Clássica
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: 9qUpqgvLDSa7R5EYDPmV
+
+professor:
+  id: 6
+  username: prof
+  email: prof@solar.ufc.br
+  name: Professor
+  nick: Professor
+  birthdate: 2000-03-02
+  cpf: 21872285848
+  gender: true
+  address: em algum lugar
+  address_number: 58
+  address_neighborhood: UFC
+  zipcode: 60450170
+  country: Brazil
+  state: CE
+  city: Fortaleza
+  institution: UFC
+  alternate_email: prof@gmail.com
+  bio: Professor
+  interests: ensinar
+  music: Clássica
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: qwBqKTuU6XTAxEZxymjC
+
+aluno1:
+  id: 7
+  username: aluno1
+  email: aluno1@solar.ufc.br
+  name: Aluno 1
+  nick: Aluno 1
+  birthdate: 2006-03-02
+  cpf: 32305605153
+  gender: true
+  address: Rua ABC
+  address_number: 999
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: Paraguay
+  state: importado
+  city: Irmã de Assunção
+  institution: UFP
+  alternate_email: aluno1@gmail.com
+  bio: Professor
+  interests: ensinar
+  music: Clássica
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: WhxdcZhWhEMVAauWg41h
+
+aluno2:
+  id: 8
+  username: aluno2
+  email: aluno2@solar.ufc.br
+  name: Aluno 2
+  nick: Aluno 2
+  birthdate: 2004-03-02
+  cpf: 98447432904
+  gender: true
+  address: Rua ABC
+  address_number: 999
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: Paraguay
+  state: importado
+  city: Irmã de Assunção
+  institution: UFP
+  alternate_email: aluno2@gmail.com
+  bio: Professor
+  interests: ensinar
+  music: Clássica
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: aq1pyZWxcphCzouEzGzt
+
+aluno3:
+  id: 9
+  username: aluno3
+  email: aluno3@aluno3.br
+  name: Aluno 3
+  nick: Aluno 3
+  birthdate: 2002-03-02
+  cpf: 47382348113
+  gender: true
+  address: Rua ABC
+  address_number: 999
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: Paraguay
+  state: importado
+  city: Irmã de Assunção
+  institution: UFP
+  alternate_email: aluno3@gmail.com
+  bio: Professor
+  interests: ensinar
+  music: Clássica
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: wdfyBr312os1yqyzhQuf
+
+tutor_presencial:
+  id: 10
+  username: tutorp
+  email: tutorp@solar.ufc.br
+  name: Tutor Presencial
+  nick: Tutor Presencial
+  birthdate: 2000-03-02
+  cpf: 31877336203
+  gender: true
+  address: Rua ABC
+  address_number: 999
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: Paraguay
+  state: importado
+  city: Irmã de Assunção
+  institution: UFP
+  alternate_email: tutorp@gmail.com
+  bio: Professor
+  interests: ensinar
+  music: Clássica
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: 7sec5gtrn5CiiXpqfmrz
+
+tutor_distancia:
+  id: 11
+  username: tutordist
+  email: tutordist@tutorp.br
+  name: Tutor a Dist
+  nick: Tutor a Dist
+  birthdate: 2004-03-02
+  cpf: 10145734595
+  gender: true
+  address: Rua ABC
+  address_number: 999
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: Paraguay
+  state: importado
+  city: Irmã de Assunção
+  institution: UFP
+  alternate_email: tutordist@gmail.com
+  bio: Professor
+  interests: ensinar
+  music: Clássica
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: nerd51wudWkq6vk3by3c
+
+coordenador:
+  id: 12
+  username: coorddisc
+  email: coorddisc@coorddisc.br
+  name: Coordenador
+  nick: Coordenador
+  birthdate: 2004-03-02
+  cpf: 04982281505
+  gender: true
+  address: Rua ABC
+  address_number: 999
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: Paraguay
+  state: importado
+  city: Irmã de Assunção
+  institution: UFP
+  alternate_email: coorddisc@gmail.com
+  bio: Professor
+  interests: ensinar
+  music: Clássica
+  movies: Senhor do anel
+  books: Biblia, Pequeno Principe
+  phrase: Timao eeeoo!!!
+  site: timao.com
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: ZxChgdpRbQuypvZfMV3x
+
+basico:
+  id: 13
+  username: basico
+  email: basico@basico.br
+  name: Basico
+  nick: Basico
+  birthdate: 2000-03-02
+  cpf: 34137559511
+  gender: true
+  address: Rua ABCDEF
+  address_number: 111
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: China
+  state: bem baratinho
+  city: Olho de coco
+  institution: UFP
+  alternate_email:
+  bio: Basico
+  interests: me matricular 
+  music:
+  movies:
+  books:
+  phrase:
+  site:
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: ppbT4Ue132asgpkCAB1q

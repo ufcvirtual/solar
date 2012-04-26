@@ -1,0 +1,31 @@
+#Enrollments
+
+enrollments1:
+  id: 1
+  offer_id: 1
+  start: '2011-01-01'
+  end: '2021-03-02'
+
+enrollments2:
+  id: 2
+  offer_id: 2
+  start: '2011-01-01'
+  end: '2021-03-02'
+
+enrollments3:
+  id: 3
+  offer_id: 3
+  start: '2011-01-01'
+  end: '2021-03-02'  
+
+enrollments4:
+  id: 4
+  offer_id: 4
+  start: '2011-01-01'
+  end: '2021-03-02'
+
+enrollments5:
+  id: 5
+  offer_id: 5
+  start: '2011-01-01'
+  end: '2021-03-02'

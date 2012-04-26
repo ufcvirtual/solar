@@ -1,0 +1,105 @@
+user_as_professor:
+  id: 23
+  user_id: 1
+  allocation_tag_id: 4
+  profile_id: 2
+  status: 1
+
+palacio_as_student:
+  id: 24
+  user_id: 2
+  allocation_tag_id: 4
+  profile_id: 1
+  status: 1
+
+bezerra_as_student:
+  id: 25
+  user_id: 3
+  allocation_tag_id: 4
+  profile_id: 1
+  status: 1
+
+user_as_basic:
+  id: 26
+  user_id: 1
+  profile_id: 12
+  status: 1
+
+palacio_as_basic:
+  id: 27
+  user_id: 2
+  profile_id: 12
+  status: 1
+
+bezerra_as_basic:
+  id: 28
+  user_id: 3
+  profile_id: 12
+  status: 1
+
+ariovaldo_as_basic:
+  id: 29
+  user_id: 4
+  profile_id: 12
+  status: 1
+
+professor2_as_basic:
+  id: 30
+  user_id: 5
+  profile_id: 12
+  status: 1
+
+professor_as_basic:
+  id: 31
+  user_id: 6
+  profile_id: 12
+  status: 1
+
+aluno1_as_basic:
+  id: 32
+  user_id: 7
+  profile_id: 12
+  status: 1
+
+aluno2_as_basic:
+  id: 33
+  user_id: 8
+  profile_id: 12
+  status: 1
+
+aluno3_as_basic:
+  id: 34
+  user_id: 9
+  profile_id: 12
+  status: 1
+
+tutor_presencial_as_basic:
+  id: 35
+  user_id: 10
+  profile_id: 12
+  status: 1
+
+tutor_distancia_as_basic:
+  id: 36
+  user_id: 11
+  profile_id: 12
+  status: 1
+
+coordenador_as_basic:
+  id: 37
+  user_id: 12
+  profile_id: 12
+  status: 1
+
+basic:
+  id: 38
+  user_id: 13
+  profile_id: 12
+  status: 1
+
+professor_as_tutor:
+  id: 39
+  user_id: 6
+  allocation_tag_id: 3
+  profile_id: 3
+  status: 1
