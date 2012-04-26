@@ -1,4 +1,3 @@
-
 Dado /^que eu nao estou cadastrado$/ do
 end
 
@@ -14,9 +13,8 @@ Dado /^que eu preenchi "([^"]*)" com "([^"]*)"$/ do |selector, value|
   fill_in selector, :with => value
 end
 
-
 Dado /^que eu preencho os seguintes(?: within "([^"]*)")?:$/ do |selector, fields|
-   with_scope(selector) do
+  with_scope(selector) do
     fields.rows_hash.each do |name, value|
       When %{I fill in "#{name}" with "#{value}"}
     end
@@ -28,14 +26,14 @@ Dado /^que eu selecionei a "([^"]*)" com "([^"]*)"$/ do |label, value|
 end
 
 Dado /^que eu selecionei "([^"]*)" com "([^"]*)"$/ do |field, value|
-   select(value, :from => field)
+  select(value, :from => field)
 end
 
 Dado /^que eu escolhi "([^"]*)" com "([^"]*)"$/ do |field, value|
-   select(value, :from => field)
+  select(value, :from => field)
 end
 
 Quando /^eu clicar no link da imagem "([^"]*)"$/ do |img_alt|
-   #find(:xpath, "//input[@name = '#{img_alt}']").click()
-   find(img_alt).click
+  #find(:xpath, "//input[@name = '#{img_alt}']").click()
+  find(img_alt).click
 end
