@@ -11,7 +11,6 @@
 
     <% @responsible.each do |resp| %>
       <div class="participants_list_item">
-
         <% if resp.photo_file_name %>
           <%=image_tag resp.photo.url(:medium), :alt => t(:mysolar_alt_img_user) + ' ' + resp.name %>
         <% else %>
@@ -25,9 +24,8 @@
             <%=resp.name%>
           <% end %>
         </div>
-
         <div class="participant_role">
-          <%= "(#{resp.profile_name})" %>
+          <%= raw("(#{resp.profile_name})") %>
         </div>
       </div>
     <% end %>
@@ -65,7 +63,7 @@
 
         <div class="participant_role">
           <% if part.profile_id.to_s != @student_profile.to_s %>
-            <%= "(#{part.profile_name})" %>
+            <%= raw("(#{part.profile_name})") %>
           <% else %>
             <br/>
           <% end %>

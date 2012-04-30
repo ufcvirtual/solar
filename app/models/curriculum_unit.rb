@@ -89,8 +89,8 @@ class CurriculumUnit < ActiveRecord::Base
              initcap(t3.name) AS name,
              t3.photo_file_name,
              t3.email,
-             t4.name AS profile_name,
-             t4.id AS profile_id
+             replace(translate(array_agg(t4.name)::text,'{""}',''),',',', ') AS profile_name,
+             translate(array_agg(t4.id)::text,'{}','') AS profile_id
         FROM allocations     AS t1
         JOIN allocation_tags AS t2 ON t1.allocation_tag_id = t2.id
         JOIN users           AS t3 ON t1.user_id = t3.id
@@ -98,8 +98,10 @@ class CurriculumUnit < ActiveRecord::Base
        WHERE t2.id IN (#{allocation_tags})
          AND #{negative} cast(t4.types & '#{profile_flag.to_s(2)}' as boolean)
          AND t1.status = #{Allocation_Activated}
-       ORDER BY profile_name, t3.name
+       GROUP BY t3.id
+       ORDER BY t3.name, profile_name
 SQL
+
     User.find_by_sql query
   end
 
