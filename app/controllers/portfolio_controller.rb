@@ -297,9 +297,24 @@ class PortfolioController < ApplicationController
   def download_file_individual_area
     authorize! :download_file_individual_area, Portfolio
 
+    file_id = params[:id]
+
     # id da atividade
-    id = SendAssignment.find(AssignmentFile.find(params[:id]).send_assignment_id).assignment_id
-    download_file({:action => 'activity_details', :id => id}, AssignmentFile.find(params[:id]).attachment.path)
+    assignment_id = SendAssignment.find(AssignmentFile.find(params[:id]).send_assignment_id).assignment_id
+
+    # verificação se usuário está relacionado com a atividade em questão
+    user_is_related = Portfolio.user_related_with_activity(assignment_id, current_user.id)
+    # verificação se o arquivo individual é dele ou se faz parte do grupo
+    individual_activity_or_part_of_group = Portfolio.verify_student_individual_activity_or_part_of_the_group(assignment_id, current_user.id, file_id)
+    
+    if user_is_related && individual_activity_or_part_of_group
+      download_file({:action => 'activity_details', :id => assignment_id}, AssignmentFile.find(file_id).attachment.path)
+    else
+      controller_curriculum_unit = {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']}
+      redirect = ((active_tab[:url]['context'] == Context_Curriculum_Unit) ? controller_curriculum_unit : {:controller => :home})
+      flash[:alert] = t(:no_permission)
+      redirect_to redirect
+    end
   end
 
   #Formulário de upload exibido numa lightbox

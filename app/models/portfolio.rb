@@ -55,15 +55,53 @@ SQL
       AND #{activity_type_assignment} = #{Group_Activity};
 SQL
 
-  # se o aluno não estiver em nenhum grupo, retorna nulo
-  if group_assignment.empty?
-    return nil
-  else
-  # caso contrário, pesquisa os participantes do grupo encontrado
-    group_participants = GroupParticipant.find_all_by_group_assignment_id(group_assignment[0]["group_assignment_id"].to_i)
-    return group_participants
+    # se o aluno não estiver em nenhum grupo, retorna nulo
+    if group_assignment.empty?
+      return nil
+    else
+    # caso contrário, pesquisa os participantes do grupo encontrado
+      group_participants = GroupParticipant.find_all_by_group_assignment_id(group_assignment[0]["group_assignment_id"].to_i)
+      return group_participants
+    end
   end
 
+  ##
+  # Verifica se o usuário tem acesso à atividade que tenta acessar
+  ##
+  def self.user_related_with_activity(activity_id, user_id)
+    # allocation_tag da atividade
+    allocation_tag_assignment_id = Assignment.find(activity_id).allocation_tag_id
+
+    # verifica se o usuário está relacionado a essa allocation_tag
+    related_allocations_tags_assignment = AllocationTag.find_related_ids(allocation_tag_assignment_id)
+    user_is_related = false
+    for related_allocation_tag_assignment in related_allocations_tags_assignment
+      unless Allocation.find_by_allocation_tag_id_and_user_id(related_allocation_tag_assignment, user_id).nil?
+        user_is_related = true
+        break
+      end
+    end
+
+    return user_is_related
+
+  end
+
+  ##
+  # Verifica se o arquivo a ser acessado é de uma atividade individual e do próprio aluno ou se é de um trabalho em grupo e o aluno faz parte deste
+  ##
+  def self.verify_student_individual_activity_or_part_of_the_group(activity_id, user_id, file_id)
+    # Participantes do grupo da atividade e aluno em questão (caso exista)
+    group_participants = Portfolio.find_group_participants(activity_id, user_id)
+    send_assignment_id = AssignmentFile.find(file_id).send_assignment_id
+    # Se for atividade individual
+    if Assignment.find(activity_id).type_assignment == Individual_Activity
+      # Permite acesso a não ser que o arquivo não seja do aluno
+      individual_activity_or_part_of_group = true unless SendAssignment.find_by_id_and_user_id(send_assignment_id, user_id).nil?
+    else
+      # Permite acesso a não ser que não faça parte do grupo ou que o grupo não tenha enviado o arquivo a ser acessado
+      individual_activity_or_part_of_group = (group_participants.first.group_assignment.assignment_id == activity_id && group_participants.map(&:user_id).include?(SendAssignment.find(send_assignment_id).user_id)) unless group_participants.nil?
+    end
+    return individual_activity_or_part_of_group
   end
 
   ##
