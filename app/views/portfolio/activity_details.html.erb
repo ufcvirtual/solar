@@ -48,9 +48,7 @@
     <div class="block_title">
       <h2><%= image_tag "icon_participants.png", :alt => t(:icon_participants), :class=>'block_title_icon' %><%= @group_name %></h2>
     </div>
-
     <div id="grade" class="block_content">
-     <!-- Descricao da atividade -->
       <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%">
         <thead>
           <tr class="lines">
@@ -180,12 +178,13 @@
               <p class="block_content_gray"><%= t(:send_file_portfolio_obs)%></p>
               <p class="block_content_gray"><%=raw t(:send_file_portfolio_text)%></p>
             <% end %>
-          <% else %>
-            <div class="expired"><%= t(:expired) %></div>
           <% end %>
         </div>
     </div>
     <% else %>
       <div class="red_notice"><%= t(:student_with_no_group) %></div>
+    <% end %>
+    <% if !(@situation != 'not_started' && @delete_files) %>
+      <div class="red_notice"><%= t(:expired) %></div>
     <% end %>
   </div>
