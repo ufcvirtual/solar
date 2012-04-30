@@ -333,16 +333,23 @@ textarea{
     height: 60px;
 }
 
-#login_footer{
+#login_footer {
     text-align: center;
 /*    height: 20px;*/
-    font-size: 9pt;
     margin: 0 auto;
     width: 100%;
 /*    margin-top: 20px;*/
-    color: #BBB;
     bottom: 0;
     position: absolute;
+}
+
+#login_footer, #login_footer a {
+    color: #bbb;
+    font-size: 9pt;
+}
+
+#login_footer a:hover {
+    text-decoration: underline;
 }
 
 #login_footer img:first-child {

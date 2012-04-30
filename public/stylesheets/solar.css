@@ -897,18 +897,21 @@ a.mysolar_top_link{
 #footer {
     background-color:#f9f9f9;
     overflow: hidden;
-    font-size: 9pt;
     margin: 0 auto;
     text-align: center;
     padding: 10px 0;
-    color: #666;
     width: 980px;
     bottom: 0;
     position: absolute;
 }
 
-#footer ul {
+#footer, #footer a {
+    color: #666;
+    font-size: 9pt;
+}
 
+#footer a:hover {
+    text-decoration: underline;
 }
 
 #footer ul li {
