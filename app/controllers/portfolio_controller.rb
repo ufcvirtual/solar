@@ -120,7 +120,7 @@ class PortfolioController < ApplicationController
     user_is_related = Portfolio.user_related_with_activity(assignment_id, current_user.id)
     # verificação se o arquivo individual é dele ou se faz parte do grupo
     individual_activity_or_part_of_group = Portfolio.verify_student_individual_activity_or_part_of_the_group(assignment_id, current_user.id, file_id)
-    
+
     if user_is_related && individual_activity_or_part_of_group
       respond_to do |format|
         begin

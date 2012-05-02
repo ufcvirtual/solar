@@ -99,7 +99,7 @@ SQL
       individual_activity_or_part_of_group = true unless SendAssignment.find_by_id_and_user_id(send_assignment_id, user_id).nil?
     else
       # Permite acesso a não ser que não faça parte do grupo ou que o grupo não tenha enviado o arquivo a ser acessado
-      individual_activity_or_part_of_group = (group_participants.first.group_assignment.assignment_id == activity_id && group_participants.map(&:user_id).include?(SendAssignment.find(send_assignment_id).user_id)) unless group_participants.nil?
+      individual_activity_or_part_of_group = (group_participants.first.group_assignment.assignment_id == activity_id.to_i && group_participants.map(&:user_id).include?(SendAssignment.find(send_assignment_id).user_id)) unless group_participants.nil?
     end
     return individual_activity_or_part_of_group
   end
