@@ -169,4 +169,15 @@ module ApplicationHelper
     return content.slice(0..position-1)
   end
 
+  # recebe um conjunto de allocation_tags e retorna esse conjunto acrescido das allocation_tags relacionadas
+  def all_allocation_tags (allocation_tags)
+    if !allocation_tags.empty?
+      other_allocations = Array.new
+      allocation_tags.each { |a|
+        other_allocations = other_allocations.push( AllocationTag.find_related_ids(a).join(', ') )
+      }
+      allocation_tags = allocation_tags.push(other_allocations)
+    end
+  end
+
 end

@@ -2671,7 +2671,7 @@ td.td_student a {color: #2a538d;}
     display: inline-block;
 }
 
-.block_title_icon.lessons, .block_title_icon.assignments, .block_title_icon.schedule_events {
+.block_title_icon.lessons, .block_title_icon.assignment, .block_title_icon.schedule_events {
     background: url('../images/schedule/assignments_16x16.png') no-repeat;
     display: inline-block;
 }

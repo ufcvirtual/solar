@@ -450,6 +450,10 @@
   agenda_title: "Agenda of"
   new_activity: "New activity"
   agenda_null: "No actives programed for this schedule"
+  discussions: "Forum"
+  lessons: "Lesson"
+  assignment: "Assignment"
+  schedule_events: "Schedule Event"
   no_events: "No events to selected day"
 
   #PORTFOLIO

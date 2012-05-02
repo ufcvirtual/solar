@@ -4,7 +4,7 @@
     <div class="block_wrapper">
 
       <div class="block_title">
-        <h2><div class="block_title_icon <%= schedule['schedule_type'] %>"></div><%=t :"#{schedule['schedule_type']}" %></h2>
+        <h2><div class="block_title_icon <%= schedule['schedule_type'] %>"></div><%=t :"#{schedule['schedule_type']}" %><%= ": " << schedule['curriculum_name'] unless !@visible_name %></h2>
       </div>
 
       <div class="agenda_left">

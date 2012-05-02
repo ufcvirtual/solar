@@ -34,6 +34,9 @@ class UsersController < ApplicationController
     allocation_tags = c_units.collect { |unit|
       unit['allocation_tag_id'].to_i
     }
+
+    allocation_tags = all_allocation_tags(allocation_tags)
+
     # verificando a possibilidade de existir um usuario sem alocacao
     unless allocation_tags.empty?
       schedules_events = Schedule.all_by_allocation_tags(allocation_tags)

@@ -25,34 +25,62 @@ class Schedule < ActiveRecord::Base
     -- consulta
    SELECT * FROM (
       (
-        SELECT t1.name, t1.description, t2.start_date, t2.end_date , 'discussions' AS schedule_type
+        SELECT t1.name, t1.description, t2.start_date, t2.end_date , 'discussions' AS schedule_type, t1.allocation_tag_id
+          ,t4.code, t5.semester, t6.name as curriculum_name
+
           FROM discussions             AS t1
           JOIN schedules               AS t2 ON t2.id = t1.schedule_id
           JOIN cte_all_allocation_tags AS t3 ON t3.allocation_tag_id = t1.allocation_tag_id
+
+          join groups as t4 on t3.group_id = t4.id
+          join offers as t5 on t3.offer_id = t5.id or t4.offer_id = t5.id
+          join curriculum_units as t6 on t3.curriculum_unit_id = t6.id or t5.curriculum_unit_id = t6.id
+
            #{date_search_option}
       )
       UNION
       (
-        SELECT t1.name, t1.description, t2.start_date, t2.end_date, 'lessons' AS schedule_type
+        SELECT t1.name, t1.description, t2.start_date, t2.end_date, 'lessons' AS schedule_type, t1.allocation_tag_id
+          ,t4.code, t5.semester, t6.name as curriculum_name
+
           FROM lessons                 AS t1
           JOIN schedules               AS t2 ON t2.id = t1.schedule_id
           JOIN cte_all_allocation_tags AS t3 ON t3.allocation_tag_id = t1.allocation_tag_id
+
+          join groups as t4 on t3.group_id = t4.id
+          join offers as t5 on t3.offer_id = t5.id or t4.offer_id = t5.id
+          join curriculum_units as t6 on t3.curriculum_unit_id = t6.id or t5.curriculum_unit_id = t6.id
+
            #{date_search_option}
       )
       UNION
       (
-      SELECT t1.name, t1.enunciation AS description, t2.start_date, t2.end_date, 'assignments' AS schedule_type
+      SELECT t1.name, t1.enunciation AS description, t2.start_date, t2.end_date, 'assignment' AS schedule_type, t1.allocation_tag_id
+        ,t4.code, t5.semester, t6.name as curriculum_name
+
         FROM assignments             AS t1
         JOIN schedules               AS t2 ON t2.id = t1.schedule_id
         JOIN cte_all_allocation_tags AS t3 ON t3.allocation_tag_id = t1.allocation_tag_id
+
+        join groups as t4 on t3.group_id = t4.id
+        join offers as t5 on t3.offer_id = t5.id or t4.offer_id = t5.id
+        join curriculum_units as t6 on t3.curriculum_unit_id = t6.id or t5.curriculum_unit_id = t6.id
+
            #{date_search_option}
       )
       UNION
       (
-      SELECT t1.title AS name, t1.description, t2.start_date, t2.end_date, 'schedule_events' AS schedule_type
+      SELECT t1.title AS name, t1.description, t2.start_date, t2.end_date, 'schedule_events' AS schedule_type, t1.allocation_tag_id
+        ,t4.code, t5.semester, t6.name as curriculum_name
+
         FROM schedule_events         AS t1
         JOIN schedules               AS t2 ON t2.id = t1.schedule_id
         JOIN cte_all_allocation_tags AS t3 ON t3.allocation_tag_id = t1.allocation_tag_id
+
+        join groups as t4 on t3.group_id = t4.id
+        join offers as t5 on t3.offer_id = t5.id or t4.offer_id = t5.id
+        join curriculum_units as t6 on t3.curriculum_unit_id = t6.id or t5.curriculum_unit_id = t6.id
+
            #{date_search_option}
       )
     ) AS t1

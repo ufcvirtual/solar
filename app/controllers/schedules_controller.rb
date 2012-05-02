@@ -1,5 +1,7 @@
 class SchedulesController < ApplicationController
 
+  include ApplicationHelper
+  
   before_filter :prepare_for_group_selection, :only => [:list]
 
   def list
@@ -9,10 +11,14 @@ class SchedulesController < ApplicationController
     @curriculum_unit = CurriculumUnit.find(active_tab[:url]['id']) unless active_tab[:url]['id'].nil?
 
     if !allocation_tags.nil?
-      @schedule = Schedule.all_by_allocation_tags(allocation_tags)
+      @visible_name = false
     else
-      @schedule = Schedule.all_by_allocation_tags(AllocationTag.all_by_user_id(current_user.id))
+      @visible_name = true
+      allocation_tags = AllocationTag.all_by_user_id(current_user.id)
+      allocation_tags = all_allocation_tags(allocation_tags)
     end
+    
+    @schedule = Schedule.all_by_allocation_tags(allocation_tags)
   end
 
   ##

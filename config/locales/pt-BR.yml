@@ -627,9 +627,10 @@
   agenda_title: "Agenda de"
   new_activity: "Nova atividade"
   agenda_null: "Nenhuma atividade marcada para esta agenda"
-  discussions: "Foruns"
-  lessons: "Aulas"
+  discussions: "Forum"
+  lessons: "Aula"
   schedule_events: "Evento da Agenda"
+  assignment: "Trabalho"
   no_events: "Sem eventos para o dia selecionado"
 
   #PORTFOLIO

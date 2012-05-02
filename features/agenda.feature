@@ -33,7 +33,7 @@ Cenário: Exibir Agenda do professor
     Quando eu clicar no link "Informações Gerais"
         Então eu deverei ver o link "Agenda"
     Quando eu clicar no link "Agenda"
-        Então eu deverei ver "Trabalhos"
+        Então eu deverei ver "Trabalho"
         E eu deverei ver "13/Ago - 17/Set"
         E eu deverei ver "Atividade I"
 
