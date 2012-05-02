@@ -77,10 +77,12 @@
     </div>
 
     <div id="grade" class="block_content">
-      <% unless (@comment.nil? or @comment.empty?) and (@files_comments.nil? or @files_comments.empty?) %>
-      <% unless @comment.nil? %>
+      <% unless (@comments.nil? or @comments.empty?) and (@files_comments.nil? or @files_comments.empty?) %>
+      <% unless @comments.nil? %>
         <div class="block_content_text">
-          <%= @comment %>
+          <% for comment in @comments %>
+          <%= comment %><br/>
+          <% end %>
         </div>
       <% end %>
       <div class="block_content">

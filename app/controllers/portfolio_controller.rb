@@ -48,37 +48,52 @@ class PortfolioController < ApplicationController
     # recuperar o send_assignment
     student_id = current_user.id
 
+   if @activity.type_assignment == Individual_Activity
     # recupera os arquivos enviados pelo aluno
-    send_assignment = Portfolio.assignments_student(student_id, assignment_id)
+    send_assignment1 = Portfolio.assignments_student(student_id, assignment_id)
+   elsif @activity.type_assignment == Group_Activity
+    # recupera os arquivos enviados pelo grupo
+    groups_participants = Portfolio.find_group_participants(@activity.id, current_user.id)
+    group_assignment_id = groups_participants.first.group_assignment_id unless groups_participants.nil?
+    send_assignments = SendAssignment.find_all_by_assignment_id_and_group_assignment_id(assignment_id, group_assignment_id)
+   end
 
     @grade = nil # nota dada pelo professor a atividade enviada
-    @comment = nil # comentario do professor
-    @files_sent = [] # arquivos enviados pelo aluno
+    @comments = [] # comentario do professor
+    @files_sent = [] # arquivos enviados pelo aluno ou grupo
     @files_comments = [] # arquivos dos comentarios enviados pelo professor
 
-    # verifica se o aluno respondeu a atividade
-    unless send_assignment.first.nil?
-
-      # recupera o primeiro registro
-      send_assignment = send_assignment.first
-
+    # verifica se o aluno ou o grupo respondeu a atividade
+    unless send_assignments.nil?
       # nota
-      @grade = send_assignment.grade
+      @grade = send_assignments.first.grade
 
-      # listagem de arquivos enviados pelo aluno para a atividade
-      @files_sent = AssignmentFile.where(["send_assignment_id = ?", send_assignment.id])
+      # listagem de arquivos enviados pelo aluno ou grupo para a atividade
+      for send_assignment2 in send_assignments
+        for file in AssignmentFile.find_all_by_send_assignment_id(send_assignment2.id)
+          @files_sent << file
+        end
+        comment_assignment = AssignmentComment.find_by_send_assignment_id(send_assignment2.id)
+        @comments << comment_assignment.comment unless comment_assignment.nil?
+        unless comment_assignment.nil?
+          for comment_file in CommentFile.all(:conditions => ["assignment_comment_id = ?", AssignmentComment.find_by_comment(comment_assignment.comment).id]) 
+            @files_comments << comment_file
+          end
+        end
+      end 
+    end
 
-      # comentarios do professor com informacoes de arquivos para download
-      comment = AssignmentComment.find_by_send_assignment_id(send_assignment.id)
-
-      unless comment.nil?
-        # comentario do professor
-        @comment = comment.comment
-
-        # arquivos enviados pelo professor para este comentario
-        @files_comments = CommentFile.all(:conditions => ["assignment_comment_id = ?", comment.id])
+    unless send_assignment1.nil?
+      for file in AssignmentFile.find_all_by_send_assignment_id(send_assignment1.id)
+          @files_sent << file
       end
-
+      comment_assignment = AssignmentComment.find_by_send_assignment_id(send_assignment1.id)
+      @comment << comment_assignment.comment unless comment_assignment.nil?
+      unless comment_assignment.nil?
+          for comment_file in CommentFile.all(:conditions => ["assignment_comment_id = ?", AssignmentComment.find_by_comment(comment_assignment.comment).id]) 
+            @files_comments << comment_file
+          end
+      end
     end
 
     @situation = Assignment.status_of_actitivy_by_assignment_id_and_student_id(assignment_id, student_id)
@@ -98,45 +113,56 @@ class PortfolioController < ApplicationController
     authorize! :delete_file_individual_area, Portfolio
 
     assignment_id = params[:assignment_id]
+    file_id = params[:id]
     redirect = {:controller => :portfolio, :action => :activity_details, :id => assignment_id}
 
-    respond_to do |format|
-      begin
-        # verifica periodo para delecao das atividades
-        assignment = Portfolio.find(assignment_id)
-        start_date = assignment.schedule.start_date
-        end_date = assignment.schedule.end_date
+    # verificação se usuário está relacionado com a atividade em questão
+    user_is_related = Portfolio.user_related_with_activity(assignment_id, current_user.id)
+    # verificação se o arquivo individual é dele ou se faz parte do grupo
+    individual_activity_or_part_of_group = Portfolio.verify_student_individual_activity_or_part_of_the_group(assignment_id, current_user.id, file_id)
+    
+    if user_is_related && individual_activity_or_part_of_group
+      respond_to do |format|
+        begin
+          # verifica periodo para delecao das atividades
+          assignment = Portfolio.find(assignment_id)
+          start_date = assignment.schedule.start_date
+          end_date = assignment.schedule.end_date
 
-        # verifica permissao de intervalo de datas para deletar arquivos
-        raise t(:delete_file_interval_error) unless verify_date_range(start_date.to_time, end_date.to_time, Time.now)
+          # verifica permissao de intervalo de datas para deletar arquivos
+          raise t(:delete_file_interval_error) unless verify_date_range(start_date.to_time, end_date.to_time, Time.now)
 
-        assignment_file_id = params[:id]
+          # recupera o nome do arquivo a ser feito o download
+          filename = AssignmentFile.find(file_id).attachment_file_name
 
-        # recupera o nome do arquivo a ser feito o download
-        filename = AssignmentFile.find(assignment_file_id).attachment_file_name
+          # arquivo a ser deletado
+          file_del = "#{::Rails.root.to_s}/media/portfolio/individual_area/#{file_id}_#{filename}"
+          error = false
 
-        # arquivo a ser deletado
-        file_del = "#{::Rails.root.to_s}/media/portfolio/individual_area/#{assignment_file_id}_#{filename}"
-        error = false
+          # deletar o arquivo da base de dados
+          error = true unless AssignmentFile.find(file_id).delete
 
-        # deletar o arquivo da base de dados
-        error = true unless AssignmentFile.find(assignment_file_id).delete
+          # deletar o arquivo do servidor
+          unless error
+            File.delete(file_del) if File.exist?(file_del)
 
-        # deletar o arquivo do servidor
-        unless error
-          File.delete(file_del) if File.exist?(file_del)
+            flash[:notice] = t(:file_deleted)
+            format.html { redirect_to(redirect) }
 
-          flash[:notice] = t(:file_deleted)
-          format.html { redirect_to(redirect) }
+          else
+            raise t(:error_delete_file)
+          end
 
-        else
-          raise t(:error_delete_file)
+        rescue Exception
+          flash[:alert] = t(:error_delete_file)
+          format.html {redirect_to(redirect)}
         end
-
-      rescue Exception
-        flash[:alert] = t(:error_delete_file)
-        format.html {redirect_to(redirect)}
       end
+    else
+      controller_curriculum_unit = {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']}
+      redirect = ((active_tab[:url]['context'] == Context_Curriculum_Unit) ? controller_curriculum_unit : {:controller => :home})
+      flash[:alert] = t(:no_permission)
+      redirect_to redirect
     end
   end
 
