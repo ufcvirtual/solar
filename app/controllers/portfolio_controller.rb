@@ -116,12 +116,10 @@ class PortfolioController < ApplicationController
     file_id = params[:id]
     redirect = {:controller => :portfolio, :action => :activity_details, :id => assignment_id}
 
-    # verificação se usuário está relacionado com a atividade em questão
-    user_is_related = Portfolio.user_related_with_activity(assignment_id, current_user.id)
     # verificação se o arquivo individual é dele ou se faz parte do grupo
     individual_activity_or_part_of_group = Portfolio.verify_student_individual_activity_or_part_of_the_group(assignment_id, current_user.id, file_id)
 
-    if user_is_related && individual_activity_or_part_of_group
+    if individual_activity_or_part_of_group
       respond_to do |format|
         begin
           # verifica periodo para delecao das atividades
@@ -277,12 +275,10 @@ class PortfolioController < ApplicationController
     # redireciona para os detalhes da atividade individual
     redirect = {:action => :activity_details, :id => assignment_id}
 
-    # verificação se usuário está relacionado com a atividade em questão
-    user_is_related = Portfolio.user_related_with_activity(assignment_id, current_user.id)
     # verificação se o arquivo individual é dele ou se faz parte do grupo
     individual_activity_or_part_of_group = Portfolio.verify_student_individual_activity_or_part_of_the_group(assignment_id, current_user.id)
 
-    if user_is_related && individual_activity_or_part_of_group
+    if individual_activity_or_part_of_group
       respond_to do |format|
         begin
           # verificar intervalo de envio de arquivos
@@ -339,12 +335,10 @@ class PortfolioController < ApplicationController
     # id da atividade
     assignment_id = SendAssignment.find(AssignmentFile.find(params[:id]).send_assignment_id).assignment_id
 
-    # verificação se usuário está relacionado com a atividade em questão
-    user_is_related = Portfolio.user_related_with_activity(assignment_id, current_user.id)
     # verificação se o arquivo individual é dele ou se faz parte do grupo
     individual_activity_or_part_of_group = Portfolio.verify_student_individual_activity_or_part_of_the_group(assignment_id, current_user.id, file_id)
     
-    if user_is_related && individual_activity_or_part_of_group
+    if individual_activity_or_part_of_group
       download_file({:action => 'activity_details', :id => assignment_id}, AssignmentFile.find(file_id).attachment.path)
     else
       controller_curriculum_unit = {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']}

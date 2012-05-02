@@ -66,27 +66,6 @@ SQL
   end
 
   ##
-  # Verifica se o usuário tem acesso à atividade que tenta acessar
-  ##
-  def self.user_related_with_activity(activity_id, user_id)
-    # allocation_tag da atividade
-    allocation_tag_assignment_id = Assignment.find(activity_id).allocation_tag_id
-
-    # verifica se o usuário está relacionado a essa allocation_tag
-    related_allocations_tags_assignment = AllocationTag.find_related_ids(allocation_tag_assignment_id)
-    user_is_related = false
-    for related_allocation_tag_assignment in related_allocations_tags_assignment
-      unless Allocation.find_by_allocation_tag_id_and_user_id(related_allocation_tag_assignment, user_id).nil?
-        user_is_related = true
-        break
-      end
-    end
-
-    return user_is_related
-
-  end
-
-  ##
   # Verifica se o arquivo a ser acessado é de uma atividade individual e do próprio aluno ou se é de um trabalho em grupo e o aluno faz parte deste
   ##
   def self.verify_student_individual_activity_or_part_of_the_group(activity_id, user_id, file_id = nil)
@@ -101,7 +80,7 @@ SQL
       end 
     else
       # Verifica se alguém do grupo enviou o arquivo a ser acessado se o arquivo já existir. Se não existir, ou seja, está tentando enviar um, fica nil
-      someone_group_send_file = !group_participants.map(&:user_id).include?(SendAssignment.find(send_assignment_id).user_id) unless send_assignment_id.nil?
+      someone_group_send_file = !group_participants.map(&:user_id).include?(SendAssignment.find(send_assignment_id).user_id) unless send_assignment_id.nil? or group_participants.nil?
       # Permite acesso a não ser que não faça parte do grupo ou que o grupo não tenha enviado o arquivo a ser acessado
       individual_activity_or_part_of_group = (group_participants.first.group_assignment.assignment_id == activity_id.to_i and !someone_group_send_file) unless group_participants.nil?
     end

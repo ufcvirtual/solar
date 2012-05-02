@@ -58,28 +58,26 @@ class AccessControlController < ApplicationController
     end   
   end
 
+  ##
+  # Método que verifica se o usuário tem algum acesso ao arquivo que ele está tentando visualizar
+  ##
   def portfolio
-    name_attachment = params[:file]
+    name_attachment = params[:file] 
+    id_file = name_attachment.slice(0..name_attachment.index("_")-1)
+    assignment = AssignmentFile.find(id_file).send_assignment.assignment
 
-    if name_attachment.index("_")>0 #wtf this does?
-      id_file = name_attachment.slice(0..name_attachment.index("_")-1)
-      file = AssignmentFile.find(id_file)
-      send_assignment = file.send_assignment
-      assignment = send_assignment.assignment
+    # Verifica se o arquivo a ser acessado é dele ou do grupo dele
+    student_individual_activity_or_part_of_the_group = Portfolio.verify_student_individual_activity_or_part_of_the_group(assignment.id, current_user.id, id_file)
 
-      user_related_with_activity = Portfolio.user_related_with_activity(assignment.id, current_user.id)
-      student_individual_activity_or_part_of_the_group = Portfolio.verify_student_individual_activity_or_part_of_the_group(assignment.id, current_user.id, id_file)
-
-      if user_related_with_activity and student_individual_activity_or_part_of_the_group
-        # path do arquivo anexo a postagem
-        type = return_type(params[:extension])
-        send_file("#{Rails.root}/media/portfolio/individual_area/#{name_attachment}.#{params[:extension]}", { :disposition => 'inline', :type => type} )
-      else
-        controller_curriculum_unit = {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']}
-        redirect = ((active_tab[:url]['context'] == Context_Curriculum_Unit) ? controller_curriculum_unit : {:controller => :home})
-        flash[:alert] = t(:no_permission)
-        redirect_to redirect
-      end
+    if student_individual_activity_or_part_of_the_group
+      # path do arquivo anexo a postagem
+      type = return_type(params[:extension])
+      send_file("#{Rails.root}/media/portfolio/individual_area/#{name_attachment}.#{params[:extension]}", { :disposition => 'inline', :type => type} )
+    else
+      controller_curriculum_unit = {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']}
+      redirect = ((active_tab[:url]['context'] == Context_Curriculum_Unit) ? controller_curriculum_unit : {:controller => :home})
+      flash[:alert] = t(:no_permission)
+      redirect_to redirect
     end
   end
 
