@@ -518,8 +518,7 @@ class MessagesController < ApplicationController
       change_message_status(message_id,'read')
     else
       @show_message = ''
-      flash[:alert] = t(:no_permission)
-      redirect_to :action => "index"
+      redirect_to({:action => "index"}, :alert => t(:no_permission))
     end
   end
 

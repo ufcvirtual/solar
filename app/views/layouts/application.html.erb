@@ -8,8 +8,6 @@
     <%= stylesheet_link_tag "calendar.css" %>
     <%= stylesheet_link_tag "security.css" %>
     <%= stylesheet_link_tag "jquery.qtip.min.css" %>
-    
-
     <%= javascript_include_tag "jquery-1.4.4.js" %>
     <%= javascript_include_tag "jquery-ui-1.8.6.js" %>
     <%= javascript_include_tag "jquery.ui.datepicker-en-US" %>
@@ -53,10 +51,9 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
 
-
-      /*******************************************************************************
+      /*********************
        * Relógio do Sistema
-       * */
+       *********************/
 
       $(document).ready(function() {
         new showLocalTime("server_clock");
@@ -94,9 +91,7 @@
             <%= image_tag 'solar_logo_small.png', :alt => t(:mysolar_alt_img_solar), :id => "solar_logo" %>
           </div>
           <ul id="mysolar_top_options">
-            <li>
-              
-            </li>
+            <li></li>
             <li id="mysolar_top_submenu_label" class="mysolar_top_submenu_label_regular">
               <%= image_tag current_user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{current_user.nick}", :id => "image_user", :onclick => "mysolarTopSubmenuToggle();return false;"%>
               <% if can? :update, current_user %>
@@ -122,7 +117,6 @@
             <div id="mysolar_top_submenu_username"><%=current_user.name%></div>
             <div id="mysolar_top_submenu_useremail"><%=current_user.email%></div>
           </div>
-
           <ul>
             <li>
               <%= link_to t(:mysolar_edit_profile), {:action=>"edit", :controller=>"devise/registrations"}, :id => 'my_data' %>
@@ -164,11 +158,7 @@
       <!-- Barra Lateral #########################-->
       <div id="mysolar_sidebar">
         <div id="mysolar_menu_accordion" style="z-index:10">
-          <% profiles = Profile.all_by_user_id(current_user.id) %>
-
-          <% context = nil %>
-
-          <%=raw create_menu_list(profiles, @context_id, @context_allocation_tag_id, user_session[:menu][:current]) if user_signed_in? %>
+          <%=raw create_menu_list(@profiles, @context_id, @context_uc, user_session[:menu][:current]) if user_signed_in? %>
         </div>
       </div>
 

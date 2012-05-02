@@ -1,12 +1,6 @@
 module MenuHelper
-
-  # Lista os menus de todos os perfis
   def create_menu_list(profile_id, context_id, id = nil, current_menu = nil)
-
-    # Recupera a lista de menus
     menus = Menu.list_by_profile_id_and_context_id(profile_id, context_id)
-    
-    # variaveis de controle
     html_menu, previous_parent_id, first_iteration = '', 0, false
 
     # classes de css utilizadas pelos menus
@@ -28,7 +22,6 @@ module MenuHelper
 
       # verifica se o menu pai foi modificado para gerar um novo menu
       unless previous_parent_id == menu['parent_id'].to_i
-
         html_menu << "</ul>" if first_iteration
 
         if !(!menu['resource_id'].nil? && menu['child'].nil?)
@@ -60,10 +53,7 @@ module MenuHelper
           end
         end
 
-        # menus pai tbm podem ter links diretamente para funcionalidades
-        html_menu = "<ul>#{link}"
-
-        # indica primeira iteracao
+        html_menu = "<ul>#{link}" # menus pai tbm podem ter links diretamente para funcionalidades
         first_iteration = true
       end
 
@@ -77,12 +67,10 @@ module MenuHelper
 
       # sempre atualiza o previous_parent
       previous_parent_id = menu['parent_id'].to_i
-
     end
-    html_menu << "</ul>"
 
+    html_menu << "</ul>"
     html_menu_group << "<div class='#{class_menu_div_topo}'>#{html_menu}</div>"
     return html_menu_group.join('') # fechando a ultima div aberta
   end
-
 end

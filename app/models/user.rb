@@ -139,4 +139,28 @@ class User < ActiveRecord::Base
     where(conditions).where(["translate(cpf,'.-','') = :value OR lower(username) = :value", { :value => login.strip.downcase }]).first
   end
 
+  def profiles_on_allocation_tag(allocation_tag_id)
+    query = <<SQL
+      SELECT DISTINCT t1.profile_id AS id
+        FROM allocations  AS t1
+        JOIN profiles     AS t2 ON t2.id = t1.profile_id
+       WHERE t1.user_id = #{self.id}
+         AND t1.status = #{Allocation_Activated}
+         AND (t1.allocation_tag_id IN (#{allocation_tag_id}) OR t2.types = #{Profile_Type_Basic})
+SQL
+    profiles = ActiveRecord::Base.connection.select_all query
+    profiles.map { |p| p['id'].to_i }
+  end
+
+  def profiles
+    query = <<SQL
+      SELECT DISTINCT t1.profile_id AS id
+        FROM allocations  AS t1
+       WHERE t1.user_id = #{self.id}
+         AND t1.status = #{Allocation_Activated}
+SQL
+    profiles = ActiveRecord::Base.connection.select_all query
+    profiles.map { |p| p['id'].to_i }
+  end
+
 end

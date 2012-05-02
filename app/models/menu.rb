@@ -62,9 +62,7 @@ class Menu < ActiveRecord::Base
        ORDER BY t1.parent_order, t1.child_order, t1.parent_id, t1.parent;"
 
     menus = ActiveRecord::Base.connection.select_all query
-
-    return (menus.first.nil?) ? [] : menus
-
+    (menus.first.nil?) ? [] : menus
   end
 
 end

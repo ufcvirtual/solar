@@ -15,7 +15,7 @@ class AllocationTag < ActiveRecord::Base
   # Retorna ids de AllocationTags relacionadas
   ##
   def self.find_related_ids(allocation_tag_id)
-    hierarchy = ActiveRecord::Base.connection.select_all <<SQL
+    query = <<SQL
       select allocation_tag_id, offer_parent_tag_id, curriculum_unit_parent_tag_id, course_parent_tag_id from
       (select
         root.id as allocation_tag_id,
@@ -93,6 +93,8 @@ class AllocationTag < ActiveRecord::Base
         (hierarchy.curriculum_unit_parent_tag_id = #{allocation_tag_id}) or
         (hierarchy.course_parent_tag_id = #{allocation_tag_id})
 SQL
+
+    hierarchy = ActiveRecord::Base.connection.select_all query
 
     result = []
     hierarchy.each do |line|

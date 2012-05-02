@@ -26,15 +26,10 @@ class ApplicationController < ActionController::Base
   before_filter :another_level_breadcrumb
   before_filter :log_access, :only => :add_tab
 
-  # Mensagem de erro de permissão
   rescue_from CanCan::AccessDenied do |exception|
-    flash[:alert] = t(:no_permission)
-    redirect_to :controller => :home, :flash => flash
+    redirect_to({:controller => :home}, :alert => t(:no_permission))
   end
 
-  ##
-  # Inicializa valores da sessao quando o usuário se loga
-  ##
   def start_user_session
     return nil unless user_signed_in?
 
@@ -50,9 +45,6 @@ class ApplicationController < ActionController::Base
     user_session[:menu] = { :current => nil } if user_session[:menu].blank?
   end
 
-  ##
-  # Id do perfil estudante na tabela profiles
-  ##
   def student_profile
     Profile.find_by_types(Profile_Type_Student).id
   end
@@ -61,9 +53,6 @@ class ApplicationController < ActionController::Base
   # BREADCRUMB
   ###########################################
 
-  ##
-  # Define um novo nivel no breadcrumb da aba atual
-  ##
   def another_level_breadcrumb
     same_level_for_all = 1 # ultimo nivel, por enquanto o breadcrumb só comporta 3 níveis
     user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb][same_level_for_all] = {
@@ -75,48 +64,24 @@ class ApplicationController < ActionController::Base
     user_session[:tabs][:opened]['Home'][:breadcrumb] = [user_session[:tabs][:opened]['Home'][:breadcrumb].first]
   end
 
-  ##
-  # Recupera o contexto que esta sendo acessado
-  ##
   def application_context
     return nil unless user_signed_in?
-    context_id = nil
-    context_id = Context_General if params.include?('action') and params['action'] == 'mysolar'
+
     set_tab_by_context
-    @context_id = context_id || active_tab[:url]['context']
-    @context_allocation_tag_id = context_id.nil? ? active_tab[:url]['id'] : nil
-  end
-  
-  ##
-  # Abre aba adequada para o contexto
-  ##  
-  def set_tab_by_context
-    
-    if user_signed_in? 
-      # Aba Home para edição de dados do usuário (devise)
-      set_active_tab_to_home if controller_path == "devise/registrations"
-      
-      # Seleciona aba de acordo com o contexto do menu
-      if params.include?('mid')
-        tab_context_id = active_tab[:url]['context']
-        current_menu_id = params[:mid]
-        
-        if MenusContexts.find_all_by_menu_id_and_context_id(current_menu_id, tab_context_id).empty?
-          menu_context_id = MenusContexts.find_by_menu_id(current_menu_id).context_id
-     
-          # Econtra a aba de mesmo contexto       
-          tab_name = find_tab_by_context(menu_context_id)
-      
-          # Abre aba de mesmo contexto    
-          set_active_tab(tab_name)
-        end
-      end
+
+    is_mysolar = (params.include?('action') and params['action'] == 'mysolar')
+    @context_id = is_mysolar ? Context_General : active_tab[:url]['context']
+    @context_uc = is_mysolar ? nil : active_tab[:url]['id']
+
+    # recuperando profiles do usuario logado dependendo do contexto
+    if active_tab[:url]['context'].to_i == Context_Curriculum_Unit
+      related = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id']).join(',')
+      @profiles = current_user.profiles_on_allocation_tag(related).join(',')
+    else
+      @profiles = current_user.profiles.join(',')
     end
   end
 
-  ##
-  # Seta o valor do menu corrente
-  ##
   def current_menu
     user_session[:menu] = { :current => params[:mid] } if user_signed_in? and params.include?('mid')
     user_session[:menu] = { :current => nil } if (params.include?('context'))
@@ -126,16 +91,28 @@ class ApplicationController < ActionController::Base
   # ABAS
   ###############################
 
-  ##
-  # Modifica aba ativa
-  ##
+  def set_tab_by_context
+    if user_signed_in? 
+      set_active_tab_to_home if controller_path == "devise/registrations" # Aba Home para edição de dados do usuário (devise)
+      
+      # Seleciona aba de acordo com o contexto do menu
+      if params.include?('mid')
+        tab_context_id = active_tab[:url]['context']
+        current_menu_id = params[:mid]
+        
+        if MenusContexts.find_all_by_menu_id_and_context_id(current_menu_id, tab_context_id).empty?
+          menu_context_id = MenusContexts.find_by_menu_id(current_menu_id).context_id
+          tab_name = find_tab_by_context(menu_context_id)
+          set_active_tab(tab_name)
+        end
+      end
+    end
+  end
+
   def set_active_tab(tab_name)
     user_session[:tabs][:active] = tab_name
   end
 
-  ##
-  # Seta aba ativa para Home
-  ##
   def set_active_tab_to_home
     set_active_tab('Home')
   end
@@ -158,10 +135,6 @@ class ApplicationController < ActionController::Base
     redirect_to redirect, :flash => flash
   end
 
-  ##
-  # Adiciona uma aba ao conjunto de abas abertas
-  # Obs.: A quantidade de abas abertas é limitada
-  ##
   def add_tab
     clear_breadcrumb_home
     tab_name, context_id = params[:name], params[:context].to_i # Home, Curriculum_Unit ou outro nao mapeado
@@ -175,16 +148,12 @@ class ApplicationController < ActionController::Base
       hash_tab = {"id" => id, "context" => context_id, "allocation_tag_id" => allocation_tag_id}
       set_session_opened_tabs(tab_name, hash_tab, params)
 
-      # redireciona de acordo com o tipo de aba
       redirect = { :controller => :curriculum_units, :action => :show, :id => id, :allocation_tag_id => allocation_tag_id } if context_id == Context_Curriculum_Unit
     end
 
     redirect_to redirect, :flash => flash
   end
 
-  ##
-  # Fecha abas
-  ##
   def close_tab
     tab_name = params[:name]
     set_active_tab_to_home if user_session[:tabs][:active] == tab_name
@@ -195,25 +164,16 @@ class ApplicationController < ActionController::Base
     redirect_to redirect, :flash => flash
   end
 
-  ##
-  # Retora o hash, com as informações da aba ativa
-  ##
   def active_tab
     user_session[:tabs][:opened][user_session[:tabs][:active]] if user_signed_in?
   end
 
   private
 
-  ##
-  # Verifica se existe uma aba criada com o nome passado
-  ##
   def opened_or_new_tab?(tab_name)
     (user_session[:tabs][:opened].has_key?(tab_name)) or (user_session[:tabs][:opened].length < Max_Tabs_Open.to_i)
   end
 
-  ##
-  # Atualiza a sessao com as abas abertas e ativas destruindo o ultimo nivel
-  ##
   def set_session_opened_tabs(tab_name, hash_url, params_url)
     user_session[:tabs][:opened][tab_name] = {
       :breadcrumb => [{:name => params[:name], :url => params_url}],
@@ -222,9 +182,6 @@ class ApplicationController < ActionController::Base
     set_active_tab tab_name
   end
 
-  ##
-  # Grava log de acesso a unidade curricular
-  ##
   def log_access
     Log.create(:log_type => Log::TYPE[:course_access], :user_id => current_user.id, :curriculum_unit_id => params[:id]) if (params[:context].to_i == Context_Curriculum_Unit)
   end
@@ -253,9 +210,6 @@ class ApplicationController < ActionController::Base
     I18n.locale = locale
   end
 
-  ##
-  # Preparando o uso da paginação
-  ##
   def prepare_for_pagination
     @current_page = user_session[:current_page]
     user_session[:current_page] = nil
@@ -307,10 +261,7 @@ class ApplicationController < ActionController::Base
   def after_update_path_for(resource)
     '/home'
   end
-  
-  ##
-  # Encontra uma aba com o contexto passado
-  ##
+
   def find_tab_by_context(context_id)
     user_session[:tabs][:opened].each { |tab|    
       if (tab[1][:url]['context'].to_i == context_id.to_i)
@@ -319,14 +270,4 @@ class ApplicationController < ActionController::Base
     }
   end
 
- def is_class_responsible?
-    query = <<SQL
-      SELECT DISTINCT 
-        FROM profiles AS profile ON profile.type = #{Profile_Type_Class_Responsible} and profile.status = TRUE
-        JOIN allocations AS allocation ON allocation.profile_id = profile.id and allocation.user_id = #{current_user.id} and allocation.status = 1
-SQL
-
-    raise "#{Discussion.find_by_sql(query)}"
-  end
-  
 end

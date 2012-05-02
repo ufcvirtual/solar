@@ -95,7 +95,7 @@ class Profile < ActiveRecord::Base
 
   # Verifica se é estudante ou responsal
   def self.types_perfil(user_id)
-    tps = ActiveRecord::Base.connection.select_all <<SQL
+    query = <<SQL
        SELECT DISTINCT
               CASE
                   WHEN      cast( t3.types & '#{Profile_Type_Student}' as boolean)    IS TRUE THEN 'student'
@@ -108,6 +108,7 @@ class Profile < ActiveRecord::Base
         WHERE t1.id = #{user_id};
 SQL
 
+    tps = ActiveRecord::Base.connection.select_all query
     tps = [] if tps.nil?
 
     # Transformando o hash da consulta em um array
@@ -117,15 +118,6 @@ SQL
     end
 
     return array_types
-
-  end
-
-  ##
-  # Recupera todos os profiles do usuario
-  ##
-  def self.all_by_user_id(user_id)
-    profiles = Allocation.find(:all, :select => "DISTINCT profile_id AS id", :conditions => ["user_id = ? AND status = ?", user_id, Allocation_Activated]).collect{|p| p.id}
-    return (profiles.length > 0) ? profiles.join(',') : 0
   end
 
 end
