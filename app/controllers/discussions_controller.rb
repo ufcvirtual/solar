@@ -160,7 +160,7 @@ class DiscussionsController < ApplicationController
     discussion_id = params[:id]
     post_id     = params[:post_id]
     @discussion = Discussion.find(discussion_id.to_i)
-    @discussion_post = file.discussion_post
+    @discussion_post = DiscussionPost.find(post_id.to_i)
 
     if current_user_can_edit?
       begin
