@@ -177,6 +177,8 @@ module ApplicationHelper
         other_allocations = other_allocations.push( AllocationTag.find_related_ids(a).join(', ') )
       }
       allocation_tags = allocation_tags.push(other_allocations)
+    else
+      allocation_tags = ''
     end
   end
 
