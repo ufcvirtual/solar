@@ -70,30 +70,18 @@ class PortfolioController < ApplicationController
 
       # listagem de arquivos enviados pelo aluno ou grupo para a atividade
       for send_assignment2 in send_assignments
-        for file in AssignmentFile.find_all_by_send_assignment_id(send_assignment2.id)
-          @files_sent << file
-        end
+        @files_sent += AssignmentFile.find_all_by_send_assignment_id(send_assignment2.id) 
         comment_assignment = AssignmentComment.find_by_send_assignment_id(send_assignment2.id)
         @comments << comment_assignment.comment unless comment_assignment.nil?
-        unless comment_assignment.nil?
-          for comment_file in CommentFile.all(:conditions => ["assignment_comment_id = ?", AssignmentComment.find_by_comment(comment_assignment.comment).id]) 
-            @files_comments << comment_file
-          end
-        end
+        @files_comments += CommentFile.all(:conditions => ["assignment_comment_id = ?", AssignmentComment.find_by_comment(comment_assignment.comment).id]) comment_assignment.nil?
       end 
     end
 
     unless send_assignment1.nil?
-      for file in AssignmentFile.find_all_by_send_assignment_id(send_assignment1)
-          @files_sent << file
-      end
+      @files_sent += AssignmentFile.find_all_by_send_assignment_id(send_assignment1)
       comment_assignment = AssignmentComment.find_by_send_assignment_id(send_assignment1)
       @comment << comment_assignment.comment unless comment_assignment.nil?
-      unless comment_assignment.nil?
-          for comment_file in CommentFile.all(:conditions => ["assignment_comment_id = ?", AssignmentComment.find_by_comment(comment_assignment.comment).id]) 
-            @files_comments << comment_file
-          end
-      end
+      @files_comments += CommentFile.all(:conditions => ["assignment_comment_id = ?", AssignmentComment.find_by_comment(comment_assignment.comment).id]) comment_assignment.nil?
     end
 
     @situation = Assignment.status_of_actitivy_by_assignment_id_and_student_id(assignment_id, student_id)

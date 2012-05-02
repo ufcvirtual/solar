@@ -78,45 +78,44 @@
 
     <div id="grade" class="block_content">
       <% unless (@comments.nil? or @comments.empty?) and (@files_comments.nil? or @files_comments.empty?) %>
-      <% unless @comments.nil? %>
-        <div class="block_content_text">
-          <% for comment in @comments %>
-          <%= comment %><br/>
-          <% end %>
-        </div>
-      <% end %>
-      <div class="block_content">
-        <table class="tb_list" border="0" cellpadding="5" cellspacing="0" width="100%">
-          <tbody>
-            <% @files_comments.each_with_index do |reg, idx| %>
-              <tr class="lines">
-                <td>
-                  <%= image_tag icon_attachment(reg["attachment_file_name"]), {:class => 'file_icon'} %>
-                  <% file_name = reg["attachment_file_name"].length > 35 ? reg["attachment_file_name"].slice(0..35) + '...' : reg["attachment_file_name"] %>
-                  <%= link_to file_name, {:controller => :portfolio, :action => :download_file_comment, :id => reg["id"]}, {:class => 'link_content'} %>
-                </td>
-                <td style="width:50px;">
-                  <span class="date_info">
-                    <%= t(:size) %>:&nbsp;
-                  </span>
-                </td>
-                <td style="width:60px;text-align:right">
-                  <%= format('%.2f KB', reg["attachment_file_size"].to_i/1024.0) %>
-                </td>
-                <td style="width:70px;">
-                  <span class="date_info">
-                    <%= t(:sent_in) %>:&nbsp;
-                  </span>
-                </td>
-                <td style="width:70px">
-                  <%=l reg["attachment_updated_at"], :format => :files unless reg["attachment_updated_at"].nil? %>
-                </td>
-              </tr>
+        <% unless @comments.nil? %>
+          <div class="block_content_text">
+            <% for comment in @comments %>
+              <%= comment %><br/>
             <% end %>
-
-          </tbody>
-        </table>
-      </div>
+          </div>
+        <% end %>
+        <div class="block_content">
+          <table class="tb_list" border="0" cellpadding="5" cellspacing="0" width="100%">
+            <tbody>
+              <% @files_comments.each_with_index do |reg, idx| %>
+                <tr class="lines">
+                  <td>
+                    <%= image_tag icon_attachment(reg["attachment_file_name"]), {:class => 'file_icon'} %>
+                    <% file_name = reg["attachment_file_name"].length > 35 ? reg["attachment_file_name"].slice(0..35) + '...' : reg["attachment_file_name"] %>
+                    <%= link_to file_name, {:controller => :portfolio, :action => :download_file_comment, :id => reg["id"]}, {:class => 'link_content'} %>
+                  </td>
+                  <td style="width:50px;">
+                    <span class="date_info">
+                      <%= t(:size) %>:&nbsp;
+                    </span>
+                  </td>
+                  <td style="width:60px;text-align:right">
+                    <%= format('%.2f KB', reg["attachment_file_size"].to_i/1024.0) %>
+                  </td>
+                  <td style="width:70px;">
+                    <span class="date_info">
+                      <%= t(:sent_in) %>:&nbsp;
+                    </span>
+                  </td>
+                  <td style="width:70px">
+                    <%=l reg["attachment_updated_at"], :format => :files unless reg["attachment_updated_at"].nil? %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
       <% else %>
         <div class="block_content_text"><%= t(:itens_not_found) %></div>
       <% end %>
@@ -159,8 +158,6 @@
                 </td>
                 <% if @delete_files  %>
                   <td>
-                    <%#= link_to t(:delete), {:controller => :portfolio, :action => :delete_file_individual_area,
-                      :id => file_sent["id"], :assignment_id => params[:id]}, {:confirm => "#{t(:delete_file_msg)}", :class => 'link_content_del'} %>
                     <%= button_to t(:delete), {:controller => :portfolio, :action => :delete_file_individual_area, :id => file_sent["id"], :assignment_id => params[:id]}, :confirm => t(:delete_file_msg), :class=>'btn btn_caution' %>
                   </td>
                 <% end %>
