@@ -95,10 +95,10 @@ SQL
     send_assignment_id = AssignmentFile.find(file_id).send_assignment_id unless file_id.nil?
     # Se for atividade individual
     if Assignment.find(activity_id).type_assignment == Individual_Activity
-      # Permite acesso a não ser que o arquivo não seja do aluno
-      individual_activity_or_part_of_group = true unless SendAssignment.find_by_id_and_user_id(send_assignment_id, user_id).nil?
-      # Se o arquivo não existir ainda, 
-      individual_activity_or_part_of_group = true if send_assignment_id.nil?      
+      # Permite acesso criação de um arquivo novo ou a deleção/download de um arquivo existente a não ser que o arquivo não seja do aluno
+      if send_assignment_id.nil? or !SendAssignment.find_by_id_and_user_id(send_assignment_id, user_id).nil?
+        individual_activity_or_part_of_group = true
+      end 
     else
       # Verifica se alguém do grupo enviou o arquivo a ser acessado se o arquivo já existir. Se não existir, ou seja, está tentando enviar um, fica nil
       someone_group_send_file = !group_participants.map(&:user_id).include?(SendAssignment.find(send_assignment_id).user_id) unless send_assignment_id.nil?
