@@ -84,10 +84,10 @@ class PortfolioController < ApplicationController
     end
 
     unless send_assignment1.nil?
-      for file in AssignmentFile.find_all_by_send_assignment_id(send_assignment1.id)
+      for file in AssignmentFile.find_all_by_send_assignment_id(send_assignment1)
           @files_sent << file
       end
-      comment_assignment = AssignmentComment.find_by_send_assignment_id(send_assignment1.id)
+      comment_assignment = AssignmentComment.find_by_send_assignment_id(send_assignment1)
       @comment << comment_assignment.comment unless comment_assignment.nil?
       unless comment_assignment.nil?
           for comment_file in CommentFile.all(:conditions => ["assignment_comment_id = ?", AssignmentComment.find_by_comment(comment_assignment.comment).id]) 
@@ -277,43 +277,54 @@ class PortfolioController < ApplicationController
     # redireciona para os detalhes da atividade individual
     redirect = {:action => :activity_details, :id => assignment_id}
 
-    respond_to do |format|
-      begin
+    # verificação se usuário está relacionado com a atividade em questão
+    user_is_related = Portfolio.user_related_with_activity(assignment_id, current_user.id)
+    # verificação se o arquivo individual é dele ou se faz parte do grupo
+    individual_activity_or_part_of_group = Portfolio.verify_student_individual_activity_or_part_of_the_group(assignment_id, current_user.id)
 
-        # verificar intervalo de envio de arquivos
-        activity = Portfolio.find(assignment_id)
-        # verifica se os arquivos podem ser deletados
-        raise t(:send_file_interval_error) unless verify_date_range(activity.schedule.start_date.to_time, activity.schedule.end_date.to_time, Time.now)
+    if user_is_related && individual_activity_or_part_of_group
+      respond_to do |format|
+        begin
+          # verificar intervalo de envio de arquivos
+          activity = Portfolio.find(assignment_id)
+          # verifica se os arquivos podem ser deletados
+          raise t(:send_file_interval_error) unless verify_date_range(activity.schedule.start_date.to_time, activity.schedule.end_date.to_time, Time.now)
 
-        # verifica se o arquivo foi adicionado
-        raise t(:error_no_file_sent) unless params.include?(:assignment_file)
+          # verifica se o arquivo foi adicionado
+          raise t(:error_no_file_sent) unless params.include?(:assignment_file)
 
-        # verifica se a atividade ja foi respondida para aquele usuario
-        send_assignment = SendAssignment.where(["assignment_id = ? AND user_id = ?", params[:assignment_id], current_user.id]).first
-        send_assignment_id = send_assignment.nil? ? nil : send_assignment[:id] # verificando se ja existe um id para setar na tabela de arquivos
+          # verifica se a atividade ja foi respondida para aquele usuario
+          send_assignment = SendAssignment.where(["assignment_id = ? AND user_id = ?", params[:assignment_id], current_user.id]).first
+          send_assignment_id = send_assignment.nil? ? nil : send_assignment[:id] # verificando se ja existe um id para setar na tabela de arquivos
 
-        # se nao existir id criado no send_assignment, devera ser criado
-        if send_assignment_id.nil?
-          send_assignment = SendAssignment.new do |sa|
-            sa.assignment_id = params[:assignment_id]
-            sa.user_id = current_user.id
-            sa.group_assignment_id = params[:group_assignment_id]
+          # se nao existir id criado no send_assignment, devera ser criado
+          if send_assignment_id.nil?
+            send_assignment = SendAssignment.new do |sa|
+              sa.assignment_id = params[:assignment_id]
+              sa.user_id = current_user.id
+              sa.group_assignment_id = params[:group_assignment_id]
+            end
+
+            send_assignment.save!
           end
 
-          send_assignment.save!
+          # salvando arquivos na base de dados
+          assignment_file = AssignmentFile.new params[:assignment_file]
+          assignment_file.send_assignment_id = send_assignment.id
+          assignment_file.save!
+
+          flash[:notice] = t(:file_uploaded)
+          format.html { redirect_to(redirect) }
+        rescue Exception => error
+          flash[:alert] = error.message
+          format.html { redirect_to(redirect) }
         end
-
-        # salvando arquivos na base de dados
-        assignment_file = AssignmentFile.new params[:assignment_file]
-        assignment_file.send_assignment_id = send_assignment.id
-        assignment_file.save!
-
-        flash[:notice] = t(:file_uploaded)
-        format.html { redirect_to(redirect) }
-      rescue Exception => error
-        flash[:alert] = error.message
-        format.html { redirect_to(redirect) }
       end
+    else
+      controller_curriculum_unit = {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']}
+      redirect = ((active_tab[:url]['context'] == Context_Curriculum_Unit) ? controller_curriculum_unit : {:controller => :home})
+      flash[:alert] = t(:no_permission)
+      redirect_to redirect
     end
   end
 

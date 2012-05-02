@@ -89,17 +89,21 @@ SQL
   ##
   # Verifica se o arquivo a ser acessado é de uma atividade individual e do próprio aluno ou se é de um trabalho em grupo e o aluno faz parte deste
   ##
-  def self.verify_student_individual_activity_or_part_of_the_group(activity_id, user_id, file_id)
+  def self.verify_student_individual_activity_or_part_of_the_group(activity_id, user_id, file_id = nil)
     # Participantes do grupo da atividade e aluno em questão (caso exista)
     group_participants = Portfolio.find_group_participants(activity_id, user_id)
-    send_assignment_id = AssignmentFile.find(file_id).send_assignment_id
+    send_assignment_id = AssignmentFile.find(file_id).send_assignment_id unless file_id.nil?
     # Se for atividade individual
     if Assignment.find(activity_id).type_assignment == Individual_Activity
       # Permite acesso a não ser que o arquivo não seja do aluno
       individual_activity_or_part_of_group = true unless SendAssignment.find_by_id_and_user_id(send_assignment_id, user_id).nil?
+      # Se o arquivo não existir ainda, 
+      individual_activity_or_part_of_group = true if send_assignment_id.nil?      
     else
+      # Verifica se alguém do grupo enviou o arquivo a ser acessado se o arquivo já existir. Se não existir, ou seja, está tentando enviar um, fica nil
+      someone_group_send_file = !group_participants.map(&:user_id).include?(SendAssignment.find(send_assignment_id).user_id) unless send_assignment_id.nil?
       # Permite acesso a não ser que não faça parte do grupo ou que o grupo não tenha enviado o arquivo a ser acessado
-      individual_activity_or_part_of_group = (group_participants.first.group_assignment.assignment_id == activity_id.to_i && group_participants.map(&:user_id).include?(SendAssignment.find(send_assignment_id).user_id)) unless group_participants.nil?
+      individual_activity_or_part_of_group = (group_participants.first.group_assignment.assignment_id == activity_id.to_i and !someone_group_send_file) unless group_participants.nil?
     end
     return individual_activity_or_part_of_group
   end
