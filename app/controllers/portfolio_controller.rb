@@ -67,7 +67,7 @@ class PortfolioController < ApplicationController
     unless send_assignments.nil?
       # se for trabalho individual, só existirá um send_assignment, logo, apenas uma nota.
       # se for trabalho em grupo, a nota será a mesma para todos os integrantes, logo, recupera a primeira nota.
-      @grade = send_assignments.first.grade
+      @grade = send_assignments.first.grade unless send_assignments.first.nil?
 
       for send_assignment in send_assignments
         # listagem de arquivos enviados pelo aluno ou grupo para a atividade
