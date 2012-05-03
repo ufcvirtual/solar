@@ -50,7 +50,7 @@ class PortfolioController < ApplicationController
 
    if @activity.type_assignment == Individual_Activity
     # recupera os arquivos enviados pelo aluno
-    send_assignment1 = Portfolio.assignments_student(student_id, assignment_id)
+    send_assignments = Portfolio.assignments_student(student_id, assignment_id).uniq
    elsif @activity.type_assignment == Group_Activity
     # recupera os arquivos enviados pelo grupo
     groups_participants = Portfolio.find_group_participants(@activity.id, current_user.id)
@@ -65,33 +65,27 @@ class PortfolioController < ApplicationController
 
     # verifica se o aluno ou o grupo respondeu a atividade
     unless send_assignments.nil?
-      # nota
+      # se for trabalho individual, só existirá um send_assignment, logo, apenas uma nota.
+      # se for trabalho em grupo, a nota será a mesma para todos os integrantes, logo, recupera a primeira nota.
       @grade = send_assignments.first.grade
 
-      # listagem de arquivos enviados pelo aluno ou grupo para a atividade
-      for send_assignment2 in send_assignments
-        @files_sent += AssignmentFile.find_all_by_send_assignment_id(send_assignment2.id) 
-        comment_assignment = AssignmentComment.find_by_send_assignment_id(send_assignment2.id)
+      for send_assignment in send_assignments
+        # listagem de arquivos enviados pelo aluno ou grupo para a atividade
+        @files_sent += AssignmentFile.find_all_by_send_assignment_id(send_assignment.id)
+        comment_assignment = AssignmentComment.find_by_send_assignment_id(send_assignment.id)
+        # listagem de comentários para cada send_assignment existente (no caso de grupo, pois em trabalho individual existirá apenas um)
         @comments << comment_assignment.comment unless comment_assignment.nil?
-        @files_comments += CommentFile.all(:conditions => ["assignment_comment_id = ?", AssignmentComment.find_by_comment(comment_assignment.comment).id]) comment_assignment.nil?
+        # listagem dos arquivos anexados pelo professor
+        @files_comments += CommentFile.all(:conditions => ["assignment_comment_id = ?", AssignmentComment.find_by_comment(comment_assignment.comment).id]) unless comment_assignment.nil?
       end 
     end
 
-    unless send_assignment1.nil?
-      @files_sent += AssignmentFile.find_all_by_send_assignment_id(send_assignment1)
-      comment_assignment = AssignmentComment.find_by_send_assignment_id(send_assignment1)
-      @comment << comment_assignment.comment unless comment_assignment.nil?
-      @files_comments += CommentFile.all(:conditions => ["assignment_comment_id = ?", AssignmentComment.find_by_comment(comment_assignment.comment).id]) comment_assignment.nil?
-    end
-
     @situation = Assignment.status_of_actitivy_by_assignment_id_and_student_id(assignment_id, student_id)
-
 
     # Nome do grupo da atividade e uma lista com o "group_participants" desse grupo.
     # Caso o aluno não esteja em nenhum grupo ou seja trabalho individual, serão nulos.
     @group_participants = Portfolio.find_group_participants(@activity.id, current_user.id)
     @group_name = @group_participants.first.group_assignment.group_name unless @group_participants.nil?
-
   end
 
   ##
@@ -145,8 +139,7 @@ class PortfolioController < ApplicationController
         end
       end
     else
-      controller_curriculum_unit = {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']}
-      redirect = ((active_tab[:url]['context'] == Context_Curriculum_Unit) ? controller_curriculum_unit : {:controller => :home})
+      redirect = {:controller => :home}
       flash[:alert] = t(:no_permission)
       redirect_to redirect
     end
@@ -305,8 +298,7 @@ class PortfolioController < ApplicationController
         end
       end
     else
-      controller_curriculum_unit = {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']}
-      redirect = ((active_tab[:url]['context'] == Context_Curriculum_Unit) ? controller_curriculum_unit : {:controller => :home})
+      redirect = {:controller => :home}
       flash[:alert] = t(:no_permission)
       redirect_to redirect
     end
@@ -329,8 +321,7 @@ class PortfolioController < ApplicationController
     if individual_activity_or_part_of_group
       download_file({:action => 'activity_details', :id => assignment_id}, AssignmentFile.find(file_id).attachment.path)
     else
-      controller_curriculum_unit = {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']}
-      redirect = ((active_tab[:url]['context'] == Context_Curriculum_Unit) ? controller_curriculum_unit : {:controller => :home})
+      redirect = {:controller => :home}
       flash[:alert] = t(:no_permission)
       redirect_to redirect
     end
