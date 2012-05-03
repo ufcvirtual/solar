@@ -33,7 +33,7 @@ class PostsController < ApplicationController
   def list
     @posts, count = [], []
 
-    # begin
+    begin
       @discussion = Discussion.find(params[:discussion_id])
       @can_see = @discussion.user_can_see?(current_user.id)
 
@@ -47,8 +47,8 @@ class PostsController < ApplicationController
         period = (@posts.empty?) ? [p['date'], p['date']] : [@posts.first.updated_at, @posts.last.updated_at].sort
         count = @discussion.count_posts_after_and_before_period(period)
       end
-    # rescue
-    # end
+    rescue
+    end
 
     respond_to do |format|
       format.html # list.html.erb

@@ -24,7 +24,7 @@ class Discussion < ActiveRecord::Base
     allocation_tags = AllocationTag.find_related_ids(self.allocation_tag_id).join(',')
     allocations = Allocation.where("allocation_tag_id IN (#{allocation_tags}) AND status = #{Allocation_Activated} AND user_id = #{user_id}")
 
-    (allocations.length > 0)
+    (allocations.length > 0) and (self.schedule.start_date <= Date.today)
   end
 
   def user_can_interact?(user_id)
