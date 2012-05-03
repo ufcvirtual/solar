@@ -35,6 +35,11 @@ module DiscussionPostsHelper
     return (current_user_class_responsible and today_is_in_extra_time_period)
   end
 
+
+
+
+
+
   def is_current_user_class_responsible?
     AllocationTag.find(@discussion.allocation_tag_id).is_user_class_responsible?(current_user.id)
   end

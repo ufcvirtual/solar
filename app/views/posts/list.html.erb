@@ -1,0 +1,63 @@
+<% if @can_see %>
+  <div class="block_wrapper">
+    <div class="block_title">
+      <h2><%= image_tag "icon_forum.png", :alt=>t(:icon_forum), :class=>'block_title_icon' %><%= @discussion.name %></h2>
+    </div>
+
+    <div id="forum_description" class="block_content block_content_text">
+      <%= sanitize @discussion.description %>
+    </div>
+  </div>
+
+  <div class="block_wrapper">
+    <!--//------------- Barra Superior------------- -->
+    <div class="block_title forum_navigation">
+        <span id="forum_new_message">
+          <% if @can_interact %>
+            <button type="button" class="btn btn_default" id="NewPostButton" value="<%= t("forum_new_message")%>" onclick="javascript:clearFormData()">
+              <%= t("forum_new_message")%><%= image_tag "icon_write.png", :alt => '' %>
+            </button>
+          <%else%>
+            <div id="forum_closed"><%= t("forum_closed")%></div>
+          <%end%>
+        </span>
+
+        <span id="forum_view_mode">
+          <% if @display_mode == "list" %>
+              <button type="button" class="btn btn_disable" value="<%= t("forum_show_plainlist")%>" data-tooltip="<%= t("forum_show_plainlist")%>">
+                <%= image_tag "discussion_plainlist.png", :alt => '' %>
+              </button>
+              <button type="button" class="btn btn_default" value="<%= t("forum_show_thread")%>" onclick="javascript:showAsThread()" data-tooltip="<%= t("forum_show_thread")%>">
+                <%= image_tag "discussion_thread.png", :alt => '' %>
+              </button>
+          <% else %>
+              <button type="button" class="btn btn_default" value="<%= t("forum_show_plainlist")%>" onclick="javascript:showAsPlainList()" data-tooltip="<%= t("forum_show_plainlist")%>">
+                <%= image_tag "discussion_plainlist.png", :alt => '' %>
+              </button>
+              <button type="button" class="btn btn_disable" value="<%=  t("forum_show_thread")%>" data-tooltip="<%= t("forum_show_thread")%>">
+                <%= image_tag "discussion_thread.png", :alt => '' %>
+              </button>
+          <%end%>
+        </span>
+        <div id="forum_pagination">
+          <%#=raw render_pagination_bar(@discussion.discussion_posts_count(@display_mode=="PLAINLIST").to_s)%>
+        </div>
+    </div>
+
+    <div class="forum_posts_wrapper">
+      <% @posts.each do |post|%>
+        <%= raw post_html(post, @display_mode, @can_interact)%>
+      <%end%>
+    </div>
+
+    <%= form_for(:new_discussion_post, :url => {:action => "new_post"}, :html => { :id => "new_post_form", :multipart => true} ) do |f| %>
+      <%= hidden_field_tag(:content, "") %>
+      <%= hidden_field_tag(:discussion_id, @discussion.id) %>
+      <%= hidden_field_tag(:discussion_post_id, "") %>
+      <%= hidden_field_tag(:parent_post_id, "") %>
+      <%= hidden_field_tag(:parent_post_level, "0") %>
+      <%= hidden_field_tag(:display_mode, @display_mode) %>
+      <%= hidden_field_tag(:current_page, @current_page) %>
+    <% end %>
+  </div>
+<% end %>

@@ -8,11 +8,12 @@ class DiscussionPost < ActiveRecord::Base
 
   validates :content, :presence => true
 
-  #Falta implementar as validações aqui!!
+  def can_be_answered?
+    (self.level < Discussion_Post_Max_Indent_Level)
+  end
 
-  # Recupera todos os posts do usuario para a discussion passada
   def self.all_by_discussion_id_and_student_id(discussion_id, student_id)
-    posts = ActiveRecord::Base.connection.select_all <<SQL
+     query = <<SQL
       SELECT t1.id,
              t2.user_id,
              t2.content,
@@ -23,13 +24,14 @@ class DiscussionPost < ActiveRecord::Base
          AND t1.id = #{discussion_id}
        ORDER BY t2.created_at, t2.updated_at
 SQL
+
+    posts = ActiveRecord::Base.connection.select_all query
     return (posts.nil?) ? [] : posts
   end
 
-  #Respostas diretas a um post
   def self.posts_child(parent_id = -1)
     #posts = ActiveRecord::Base.connection.select_all
-    posts = DiscussionPost.find_by_sql <<SQL
+    query = <<SQL
       SELECT dp.id, dp.discussion_id, dp.user_id, dp.content, dp.level, dp.created_at, dp.updated_at,
              dp.parent_id, u.nick as user_nick, u.photo_file_name as photo_file_name, p.name as profile
         FROM discussion_posts dp
@@ -39,21 +41,17 @@ SQL
        ORDER BY created_at desc
 SQL
 
+    posts = DiscussionPost.find_by_sql query
     return (posts.nil?) ? [] : posts
   end
 
-  #Número de respostas diretas a um post
   def self.child_count(parent_id = -1)
+    query = "SELECT count(id) FROM discussion_posts WHERE parent_id = '#{parent_id}'"
+    count = ActiveRecord::Base.connection.select_one query
 
-    count = ActiveRecord::Base.connection.select_one <<SQL
-      SELECT count (*)
-        FROM discussion_posts dp
-       WHERE dp.parent_id = '#{parent_id}'
-SQL
     return (count.nil?) ? 0 : count["count"].to_i
   end
 
-  #Consulta página de postagens de uma discussion
   def self.discussion_posts(discussion_id = nil, plain_list = true, page = 1)
     query = "SELECT dp.id, dp.discussion_id, dp.user_id, dp.content, dp.created_at,
                     dp.updated_at, dp.parent_id, dp.level, u.nick as user_nick,
@@ -68,11 +66,7 @@ SQL
     return DiscussionPost.paginate_by_sql(query, {:per_page => Rails.application.config.items_per_page, :page => page})
   end
 
-  ##
-  # Consulta retorna postagens mais recentes dos dados forúns
-  ##
   def self.recent_by_discussions(discussions, limit = 0, content_size = 255)
-
     query = <<SQL
         SELECT id, user_id, discussion_id, profile_id,
                substring("content" from 0 for #{content_size}) AS content,
@@ -83,17 +77,7 @@ SQL
 SQL
 
     query << "LIMIT #{limit}" if limit > 0
-
     return DiscussionPost.find_by_sql(query)
-
-  end
-
-  def can_be_answered?
-    if self.level < Discussion_Post_Max_Indent_Level
-      return true
-    else
-      return false
-    end
   end
 
 end
