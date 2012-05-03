@@ -59,9 +59,9 @@ class AccessControlController < ApplicationController
   end
 
   ##
-  # Método que verifica se o usuário tem algum acesso ao arquivo que ele está tentando visualizar
+  # Método que verifica se o usuário tem algum acesso ao arquivo que ele está tentando visualizar (na área individual)
   ##
-  def portfolio
+  def portfolio_individual_area
     name_attachment = params[:file] 
     id_file = name_attachment.slice(0..name_attachment.index("_")-1)
     assignment = AssignmentFile.find(id_file).send_assignment.assignment
@@ -74,8 +74,28 @@ class AccessControlController < ApplicationController
       type = return_type(params[:extension])
       send_file("#{Rails.root}/media/portfolio/individual_area/#{name_attachment}.#{params[:extension]}", { :disposition => 'inline', :type => type} )
     else
-      controller_curriculum_unit = {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']}
-      redirect = ((active_tab[:url]['context'] == Context_Curriculum_Unit) ? controller_curriculum_unit : {:controller => :home})
+      redirect = {:controller => :home}
+      flash[:alert] = t(:no_permission)
+      redirect_to redirect
+    end
+  end
+
+  ##
+  # Método que verifica se o usuário tem algum acesso ao arquivo que ele está tentando visualizar (na área pública)
+  ##
+  def portfolio_public_area
+    name_attachment = params[:file] 
+    id_file = name_attachment.slice(0..name_attachment.index("_")-1)
+    file = PublicFile.find(id_file)
+
+    same_class = Allocation.find_all_by_user_id(current_user.id).map(&:allocation_tag_id).include?(file.allocation_tag_id)
+
+    if same_class
+      # path do arquivo anexo a postagem
+      type = return_type(params[:extension])
+      send_file("#{Rails.root}/media/portfolio/public_area/#{name_attachment}.#{params[:extension]}", { :disposition => 'inline', :type => type} )
+    else
+      redirect = {:controller => :home}
       flash[:alert] = t(:no_permission)
       redirect_to redirect
     end

@@ -203,32 +203,38 @@ class PortfolioController < ApplicationController
     curriculum_unit_id = active_tab[:url]['id']
     redirect = {:action => :list, :id => curriculum_unit_id}
 
-    respond_to do |format|
-      begin
-        # arquivo a ser deletado
-        file_name = PublicFile.find(params[:id]).attachment_file_name
-        file_del = "#{::Rails.root.to_s}/media/portfolio/public_area/#{params[:id]}_#{file_name}"
+    if PublicFile.find(params[:id]).user_id == current_user.id
+      respond_to do |format|
+        begin
+          # arquivo a ser deletado
+          file_name = PublicFile.find(params[:id]).attachment_file_name
+          file_del = "#{::Rails.root.to_s}/media/portfolio/public_area/#{params[:id]}_#{file_name}"
 
-        error = false
+          error = false
 
-        # deletar arquivo da base de dados
-        error = true unless PublicFile.find(params[:id]).delete
+          # deletar arquivo da base de dados
+          error = true unless PublicFile.find(params[:id]).delete
 
-        # deletar arquivo do servidor
-        unless error
-          File.delete(file_del) if File.exist?(file_del)
+          # deletar arquivo do servidor
+          unless error
+            File.delete(file_del) if File.exist?(file_del)
 
-          flash[:notice] = t(:file_deleted)
+            flash[:notice] = t(:file_deleted)
+            format.html { redirect_to(redirect) }
+
+          else
+            raise t(:error_delete_file) unless error == 0
+          end
+
+        rescue Exception
+          flash[:alert] = t(:error_delete_file)
           format.html { redirect_to(redirect) }
-
-        else
-          raise t(:error_delete_file) unless error == 0
         end
-
-      rescue Exception
-        flash[:alert] = t(:error_delete_file)
-        format.html { redirect_to(redirect) }
       end
+    else
+      redirect = {:controller => :home}
+      flash[:alert] = t(:no_permission)
+      redirect_to redirect
     end
   end
 
@@ -236,8 +242,18 @@ class PortfolioController < ApplicationController
   def download_file_public_area
     authorize! :download_file_public_area, Portfolio
 
-    curriculum_unit_id = active_tab[:url]["id"]
-    download_file({:action => 'list', :id => curriculum_unit_id}, PublicFile.find(params[:id]).attachment.path)
+    file = PublicFile.find(params[:id])
+
+    same_class = Allocation.find_all_by_user_id(current_user.id).map(&:allocation_tag_id).include?(file.allocation_tag_id)
+
+    if same_class
+      curriculum_unit_id = active_tab[:url]["id"]
+      download_file({:action => 'list', :id => curriculum_unit_id}, PublicFile.find(file.id).attachment.path)
+    else
+      redirect = {:controller => :home}
+      flash[:alert] = t(:no_permission)
+      redirect_to redirect
+    end
   end
 
   ####################

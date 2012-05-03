@@ -23,8 +23,11 @@ Solar::Application.routes.draw do
   # roteamento para controle de acesso a arquivos anexos a uma postagem
   match "/media/discussions/post/:file.:extension", :to => "access_control#discussion"
 
-  # roteamento para controle de acesso a arquivos de atividades individuais/em grupo do portfolio de aluno
-  match "/media/portfolio/individual_area/:file.:extension", :to => "access_control#portfolio"
+  # roteamento para controle de acesso a arquivos de atividades individuais/em grupo do portfolio de aluno (área individual)
+  match "/media/portfolio/individual_area/:file.:extension", :to => "access_control#portfolio_individual_area"
+
+  # roteamento para controle de acesso a arquivos de atividades individuais/em grupo do portfolio de aluno (área pública)
+  match "/media/portfolio/public_area/:file.:extension", :to => "access_control#portfolio_public_area"
 
   # roteamento para controle de acesso as imagens do usuario
   match "/media/users/:id/photos/:style.:extension", :to => "access_control#photo"
