@@ -1,8 +1,8 @@
 class DiscussionPost < ActiveRecord::Base
   has_many :children, :class_name => "DiscussionPost", :foreign_key => "parent_id"
-  has_many :discussion_post_files
-  belongs_to :parent, :class_name => "DiscussionPost"
+  has_many :files, :class_name => "DiscussionPostFile"
 
+  belongs_to :parent, :class_name => "DiscussionPost"
   belongs_to :discussion
   belongs_to :user
 
@@ -30,7 +30,6 @@ SQL
   end
 
   def self.posts_child(parent_id = -1)
-    #posts = ActiveRecord::Base.connection.select_all
     query = <<SQL
       SELECT dp.id, dp.discussion_id, dp.user_id, dp.content, dp.level, dp.created_at, dp.updated_at,
              dp.parent_id, u.nick as user_nick, u.photo_file_name as photo_file_name, p.name as profile

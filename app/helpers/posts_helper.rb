@@ -1,6 +1,6 @@
 module PostsHelper
 
-  def post_html(post, display_mode='list', can_interact=false)
+  def post_html(post, display_mode = 'list', can_interact = false)
     user = User.find(post.user_id)
     photo_url = user.photo.url(:forum)
 
@@ -34,7 +34,7 @@ module PostsHelper
             </div>
 
             #{attachments(post, editable, can_interact)}
-            #{buttons(post, editable,can_interact)}
+            #{buttons(post, editable, can_interact)}
             #{child_html}
 
           </td>
@@ -42,30 +42,34 @@ module PostsHelper
         <tr></tr>
       </table>
 HTML
-
   end
 
   def attachments(post, editable = false, can_interact = false)
-    html =  ''
+    files = post.files
+    return '' if files.count == 0
 
-    files = post.discussion_post_files
+    html, html_files =  '', ''
+    files.each do |file|
+      link_to_down = (link_to file.attachment_file_name, :controller => "discussions", :action => "download_post_file", :idFile => file.id, :id => @discussion.id)
+      link_to_remove = (editable and can_interact) ? (link_to (image_tag "icon_delete_small.png", :alt => t(:forum_remove_file)), {:controller => "discussions", :action => "remove_attached_file",
+                        :idFile => file.id, :current_page => @current_page, :id => @discussion.id},
+                        :confirm=>t(:forum_remove_file_confirm), :title => t(:forum_remove_file), 'data-tooltip' => t(:forum_remove_file)) : ''
 
-    unless files.count == 0
-      html <<   '<div class="forum_post_attachment">'
-      html <<   '<h3>' << t(:forum_file_list) << '</h3>'
-
-      html <<     '<ul class="forum_post_attachment_list">'
-      files.each do |file|
-        html <<    '<li>'
-        html <<      '<a href="#">'<<(link_to file.attachment_file_name, :controller => "discussions", :action => "download_post_file", :idFile => file.id, :id => @discussion.id)<<'</a>&nbsp;&nbsp;'
-        html <<   (link_to (image_tag "icon_delete_small.png", :alt => t(:forum_remove_file)), {:controller => "discussions", :action => "remove_attached_file", :idFile => file.id, :current_page => @current_page, :id => @discussion.id}, :confirm=>t(:forum_remove_file_confirm), :title => t(:forum_remove_file), 'data-tooltip' => t(:forum_remove_file)) if editable && can_interact
-        html <<    '</li>'
-      end
-      html <<     '</ul>'
-      html <<   '</div>'
+      html_files << '<li>'
+      html_files <<     "#{link_to_down}&nbsp;&nbsp;#{link_to_remove}"
+      html_files << '</li>'
     end
 
-    return html
+    html = <<HTML
+      <div class="forum_post_attachment">
+        <h3>
+          #{t(:forum_file_list)}
+        </h3>
+        <ul class="forum_post_attachment_list">
+          #{html_files}
+        </ul>
+      </div>
+HTML
   end
 
   def buttons(post, editable = false, can_interact = false)
@@ -73,22 +77,23 @@ HTML
 
     if can_interact
       if editable
-        post_string << '<button type="button" class="btn btn_default forum_button_attachment" onclick="showUploadForm(\''<< post[:discussion_id].to_s << '\',\'' << post[:id].to_s << '\');">'<< t(:forum_attach_file) << (image_tag "icon_attachment.png", :alt => t(:forum_attach_file)) << '</button>' if editable and can_interact
-        post_string << '<input type="button" onclick="removePost(' << post[:id].to_s << ')" class="btn btn_caution" value="' << t(:forum_show_remove) << '"/>'
-        post_string << '<input type="button" onclick="setDiscussionPostId(' << post[:id].to_s << ')" class="btn btn_default updateDialogLink" value="' << t(:forum_show_edit) << '"/>'
+        post_string << "<button type='button' class='btn btn_default forum_button_attachment' onclick='showUploadForm(#{post.discussion.id}, #{post.id});'>"
+        post_string <<    t(:forum_attach_file) << (image_tag "icon_attachment.png", :alt => t(:forum_attach_file))
+        post_string << "</button>"
+        post_string << "<input type='button' onclick='removePost(#{post.id})' class='btn btn_caution' value='#{t(:forum_show_remove)}'/>"
+        post_string << "<input type='button' onclick='setDiscussionPostId(#{post.id})' class='btn btn_default updateDialogLink' value='#{t(:forum_show_edit)}'/>"
       end
+
       if post.can_be_answered?
-        post_string << '<input type="button" onclick="setParentPostId(' << post[:id].to_s << '); setParentPostLevel(' << post[:level].to_s << ');" class="btn btn_default postDialogLink" value="' << t(:forum_show_answer) << '" />'      
+        post_string << "<input type='button' onclick='setParentPostId(#{post.id}); setParentPostLevel(#{post.level});' class='btn btn_default postDialogLink' value='#{t(:forum_show_answer)}'/>"
       end
     else
-      post_string <<      '    <a class="forum_post_link_disabled forum_post_link_remove_disabled">' << t('forum_show_remove') << '</a>&nbsp;&nbsp;
-                               <a class="forum_post_link_disabled">' << t('forum_show_edit') << '</a>&nbsp;&nbsp;
-                               <a class="forum_post_link_disabled">' << t('forum_show_answer') << '</a>'
+      post_string << "<a class='forum_post_link_disabled forum_post_link_remove_disabled'>#{t(:forum_show_remove)}</a>&nbsp;&nbsp;"
+      post_string << "<a class='forum_post_link_disabled'>#{t(:forum_show_edit)}</a>&nbsp;&nbsp;"
+      post_string << "<a class='forum_post_link_disabled'>#{t(:forum_show_answer)}</a>"
     end  
-   
-    post_string <<      '</div></div>'
 
-    return post_string
+    post_string << '</div></div>'
   end
 
 end
