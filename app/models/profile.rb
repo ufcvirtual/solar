@@ -120,4 +120,25 @@ SQL
     return array_types
   end
 
+  ##
+  # Verifica se o usuário é responsável pela turma do arquivo que acessa (NÃO CONCLUÍDO)
+  ##
+  def self.user_responsible_of_class(allocation_tag_id, user_id)
+    # verifica se o usuário está relacionado a allocation_tag da turma
+    related_allocations_tags = AllocationTag.find_related_ids(allocation_tag_id)
+    user_is_responsible = false
+    for allocation_tag in related_allocations_tags
+      a = Allocation.find_by_allocation_tag_id_and_user_id(allocation_tag, user_id)
+      unless a.nil?
+        if a.profile.types == Profile_Type_Class_Responsible
+          user_is_responsible = true
+          break
+        end
+      end
+    end
+
+    return user_is_responsible
+
+  end
+
 end

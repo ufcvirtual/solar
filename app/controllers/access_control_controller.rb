@@ -89,8 +89,9 @@ class AccessControlController < ApplicationController
     file = PublicFile.find(id_file)
 
     same_class = Allocation.find_all_by_user_id(current_user.id).map(&:allocation_tag_id).include?(file.allocation_tag_id)
+    responsible_class = Profile.user_responsible_of_class(file.allocation_tag_id, current_user.id)
 
-    if same_class
+    if same_class or responsible_class
       # path do arquivo anexo a postagem
       type = return_type(params[:extension])
       send_file("#{Rails.root}/media/portfolio/public_area/#{name_attachment}.#{params[:extension]}", { :disposition => 'inline', :type => type} )
