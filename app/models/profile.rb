@@ -128,9 +128,9 @@ SQL
     related_allocations_tags = AllocationTag.find_related_ids(allocation_tag_id)
     user_is_responsible = false
     for allocation_tag in related_allocations_tags
-      a = Allocation.find_by_allocation_tag_id_and_user_id(allocation_tag, user_id)
-      unless a.nil?
-        if a.profile.types == Profile_Type_Class_Responsible
+      allocation_user = Allocation.find_by_allocation_tag_id_and_user_id(allocation_tag, user_id)
+      unless allocation_user.nil?
+        if allocation_user.profile.types == Profile_Type_Class_Responsible
           user_is_responsible = true
           break
         end
