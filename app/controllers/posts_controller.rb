@@ -122,7 +122,7 @@ class PostsController < ApplicationController
     @discussion_post.destroy
 
     respond_to do |format|
-      format.html { redirect_to(discussion_posts_url) }
+      format.html { render :json => {:result => :ok} }
       format.xml  { head :ok }
     end
   end

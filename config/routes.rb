@@ -18,21 +18,21 @@ Solar::Application.routes.draw do
 
 
   # discussions/:id/posts
-  resources :discussions, :only => [:show] do
-    resources :posts, :except => [:show]
-    controller :posts do
-      # news
-      match "posts/:date/news" => :list, :type => "news"
-      match "posts/:date/news/:order/order" => :list, :type => "news"
-      match "posts/:date/news/:limit/limit" => :list, :type => "news"
-      match "posts/:date/news/:order/order/:limit/limit" => :list, :type => "news"
-      # history
-      match "posts/:date/history" => :list, :type => "history"
-      match "posts/:date/history/:order/order" => :list, :type => "history"
-      match "posts/:date/history/:limit/limit" => :list, :type => "history"
-      match "posts/:date/history/:order/order/:limit/limit" => :list, :type => "history"
-    end
-  end
+  # resources :discussions, :only => [:show] do
+  #   resources :posts, :except => [:show]
+  #   controller :posts do
+  #     # news
+  #     match "posts/:date/news" => :list, :type => "news"
+  #     match "posts/:date/news/:order/order" => :list, :type => "news"
+  #     match "posts/:date/news/:limit/limit" => :list, :type => "news"
+  #     match "posts/:date/news/:order/order/:limit/limit" => :list, :type => "news"
+  #     # history
+  #     match "posts/:date/history" => :list, :type => "history"
+  #     match "posts/:date/history/:order/order" => :list, :type => "history"
+  #     match "posts/:date/history/:limit/limit" => :list, :type => "history"
+  #     match "posts/:date/history/:order/order/:limit/limit" => :list, :type => "history"
+  #   end
+  # end
 
   #################################
   # rotas regulares - Nao RESTful #

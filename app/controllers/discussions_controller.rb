@@ -98,7 +98,7 @@ class DiscussionsController < ApplicationController
         path = ""
 
         #Removendo arquivos da postagem na base de dados
-        @discussion_post.discussion_post_files.each do |file|
+        @discussion_post.files.each do |file|
           filenameArray.push("#{file.id.to_s}_#{file.attachment_file_name}")
           error = true unless DiscussionPostFile.delete(file.id)
         end

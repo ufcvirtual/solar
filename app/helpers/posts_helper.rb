@@ -11,7 +11,7 @@ module PostsHelper
     childs.each { |child| child_html << post_html(child, true, can_interact)} unless display_mode == 'list'
 
     html = <<HTML
-      <table border="0" cellpadding="0" cellspacing="0" class="forum_post">
+      <table border="0" cellpadding="0" cellspacing="0" class="forum_post" id="#{post.id}">
         <tr>
           <td rowspan="3" class="forum_post_icon">
             #{image_tag(photo_url, :alt => t(:mysolar_alt_img_user) + ' ' + user.nick)}
@@ -80,8 +80,11 @@ HTML
         post_string << "<button type='button' class='btn btn_default forum_button_attachment' onclick='showUploadForm(#{post.discussion.id}, #{post.id});'>"
         post_string <<    t(:forum_attach_file) << (image_tag "icon_attachment.png", :alt => t(:forum_attach_file))
         post_string << "</button>"
-        post_string << "<input type='button' onclick='removePost(#{post.id})' class='btn btn_caution' value='#{t(:forum_show_remove)}'/>"
-        post_string << "<input type='button' onclick='setDiscussionPostId(#{post.id})' class='btn btn_default updateDialogLink' value='#{t(:forum_show_edit)}'/>"
+        post_string << "<input type='button' onclick='removePost(#{post.id}, \"#{discussion_post_path(post.discussion, post)}\")' class='btn btn_caution' value='#{t(:forum_show_remove)}'/>"
+
+        # post_string << button_to(t(:forum_show_remove), discussion_post_path(post.discussion, post), :confirm => t(:message_confirm), :method => :delete, :class => 'btn btn_caution')
+
+        # post_string << "<input type='button' onclick='setDiscussionPostId(#{post.id})' class='btn btn_default updateDialogLink' value='#{t(:forum_show_edit)}'/>"
       end
 
       if post.can_be_answered?

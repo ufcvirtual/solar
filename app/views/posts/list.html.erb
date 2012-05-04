@@ -60,3 +60,147 @@
     <% end %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  //// Modos de exibição ////////////////////////////////////////////
+  function showAsThread() {
+    $('#display_mode').attr('value','');
+    $('#new_post_form').attr('action', '<%= url_for :controller => :discussions, :action => :show, :id => @discussion.id %>');
+    $('#new_post_form').submit();
+  }
+
+  function showAsPlainList() {
+    $('#display_mode').attr('value','list');
+    $('#new_post_form').attr('action', '<%= url_for :controller => :discussions, :action => :show, :id => @discussion.id %>');
+    $('#new_post_form').submit();
+  }
+
+  //// Manipulação de arquivos anexos ///////////////////////////////
+
+  function showUploadForm(discussionId, postId) {
+    var url_for = '<%= url_for :controller => :discussions, :action => :post_file_upload, :current_page => @current_page %>' + '&id=' + discussionId + '&post_id=' + postId;
+    showLightBoxURL(url_for ,400,250,true,'<%=t(:forum_attach_file_title)%>');
+    return false;
+  }
+
+  //// Manipulação da caixa de edição ///////////////////////////////
+  function appendRichTextBox(postContainer){
+    newFormCode = '' +
+      '<div id="new_post_dialog">' +
+      '<textarea id="newPostTextBox">' +
+      '</textarea>' +
+      '<div class="new_post_dialog_buttons">' +
+      '<input type="button" onclick="cancelPosting();" class="btn btn_caution postDialogLink" value="<%=t("cancel")%>">' +
+      '<input type="button" onclick="sendPost();" class="btn btn_default postDialogLink" value="<%=t("send")%>">' +
+      '</div>' +
+      '</div>';
+
+    //Removendo outra caixa de entrada de postagem que possam
+    //estar abertas, possivelmente.
+    $('#new_post_dialog').attr('id', 'oldPostDialog').slideUp(function(){
+      $(this).remove();
+    });
+    $('#newPostTextBox').attr('id', 'oldPostTextBox').remove();
+    if (CKEDITOR.instances.newPostTextBox) {
+      CKEDITOR.instances.newPostTextBox.destroy();
+    }
+
+    //Criando a nova caixa de entrada e exibindo-a
+    postContainer.append(newFormCode);
+
+    $('#newPostTextBox').ckeditor( function () {
+      $('#new_post_dialog').css('width','100%');
+      $('#new_post_dialog').show(300)
+    }, {
+      toolbar: 'SolarToolbar'
+    });
+  }
+
+  function cancelPosting() {
+    $('#new_post_dialog').attr('id', 'oldPostDialog').slideUp(function () {
+      $(this).remove();
+    });
+    $('#newPostTextBox').attr('id', 'oldPostTextBox').remove();
+    if (CKEDITOR.instances.newPostTextBox) {
+      CKEDITOR.instances.newPostTextBox.destroy();
+    }
+  }
+
+  //// Manipulação de variaveis internas ////////////////////////////
+  function setParentPostId(post_id) {
+    $('#parent_post_id').attr('value',post_id);
+    $('#update_post_id').attr('value','');
+  }
+
+  function setParentPostLevel(post_level) {
+    $('#parent_post_level').attr('value',post_level);
+  }
+
+  function setDiscussionPostId(post_id) {
+    $('#discussion_post_id').attr('value',post_id);
+    $('#parent_post_id').attr('value','');
+  }
+
+  function clearFormData(){
+    $('#parent_post_id').attr('value','');
+    $('#discussion_post_id').attr('value', '');
+  }
+
+  function sendPost() {
+    $('#content').attr('value',$('#newPostTextBox').val());
+    //caso de atualização de post
+    if ($('#discussion_post_id').attr('value') != '')
+      updatePost();
+    else//caso de novo post
+      $('#new_post_form').submit();
+  }
+
+  function removePost(post_id, url) {
+    var answer = confirm("<%=t(:message_confirm)%>");
+    if (!answer) return;
+
+    $.ajax({
+      type: "DELETE",
+      url: url,
+      success: function(data) {
+        $('#' + post_id).fadeOut(100, function() {
+          $(this).remove();
+        });
+      },
+      error: function(obj, status) {
+        alert('tratamento de erro ainda nao feito');
+      }
+    });
+  }
+
+  function updatePost() {
+    $('#new_post_form').attr('action', '<%= url_for :controller => :discussions, :action => :update_post %>');
+    $('#new_post_form').submit();
+  }
+
+  //// Eventos e comportamentos dos links ///////////////////////////
+  $(document).ready( function () {
+
+    //Botões de responder postagem
+    $('.postDialogLink').click( function () {
+      var postContainer = $(this).parent();
+      appendRichTextBox(postContainer);
+      return false;
+    });
+
+    //Botão de editar postagem
+    $('.updateDialogLink').click( function () {
+      var postContainer = $(this).parent().parent();
+      appendRichTextBox(postContainer);
+      $('#newPostTextBox').val(postContainer.children('.forum_post_inner_content').html());
+      return false;
+    });
+
+    //Botão de nova postagem
+    $('#NewPostButton').click( function () {
+      clearFormData();
+      var postContainer = $(this).parents('.block_title');
+      appendRichTextBox(postContainer);
+    });
+  });
+</script>
