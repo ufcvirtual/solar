@@ -124,21 +124,21 @@ SQL
   # Verifica se o usuário é responsável pela turma do arquivo que acessa (NÃO CONCLUÍDO)
   ##
   def self.user_responsible_of_class(allocation_tag_id, user_id)
-    # verifica se o usuário está relacionado a allocation_tag da turma
+    # coleta todas as allocations_tags relacinadas à turma em questão, pois um responsável pode não estar associado diretamente a ela
     related_allocations_tags = AllocationTag.find_related_ids(allocation_tag_id)
     user_is_responsible = false
     for allocation_tag in related_allocations_tags
+      # para cada allocation_tag, verifica se o usuário está relacionado à ela
       allocation_user = Allocation.find_by_allocation_tag_id_and_user_id(allocation_tag, user_id)
       unless allocation_user.nil?
+        # verifica se sua relação com tal allocation é de responsável
         if allocation_user.profile.types == Profile_Type_Class_Responsible
           user_is_responsible = true
           break
         end
       end
     end
-
     return user_is_responsible
-
   end
 
 end
