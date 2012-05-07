@@ -59,15 +59,15 @@ class PostsController < ApplicationController
 
   # GET /posts/new
   # GET /posts/new.xml
-  def new
-    @discussion = Discussion.find(params[:discussion_id])
-    @discussion_post = DiscussionPost.new
+  # def new
+  #   @discussion = Discussion.find(params[:discussion_id])
+  #   @discussion_post = DiscussionPost.new
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @discussion_post }
-    end
-  end
+  #   respond_to do |format|
+  #     format.html # new.html.erb
+  #     format.xml  { render :xml => @discussion_post }
+  #   end
+  # end
 
   # GET /posts/1/edit
   # def edit
@@ -77,10 +77,9 @@ class PostsController < ApplicationController
   # POST /discussions/:id/posts
   # POST /discussions/:id/posts.xml
   def create
-    # parametros necessarios para se criar um post
     params[:discussion_post][:user_id] = current_user.id
-    params[:discussion_post][:discussion_id] = params[:discussion_id]
-    params[:discussion_post][:profile_id] = Profile.find_by_user_id(current_user.id) # recuperacao de profile temporaria 2012-02-02
+    at_id = Discussion.find(params[:discussion_post][:discussion_id]).allocation_tag_id
+    params[:discussion_post][:profile_id] = current_user.profiles_with_access_on('create', 'posts', at_id).first
 
     @discussion_post = DiscussionPost.new(params[:discussion_post])
 

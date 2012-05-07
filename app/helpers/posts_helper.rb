@@ -21,6 +21,9 @@ module PostsHelper
               <div class="forum_participant_nick" alt="#{user.nick}">
                 #{user.nick}
               </div>
+              <div class="forum_participant_profile" >
+                #{(profile = post.profile).nil? ? '' : profile.name}
+              </div>
             </div>
             <div class="forum_post_date">
               #{l(post.updated_at.to_time, :format => :discussion_post_date)}<br />#{l(post.updated_at.to_time, :format => :discussion_post_hour)}
@@ -80,21 +83,17 @@ HTML
         post_string << "<button type='button' class='btn btn_default forum_button_attachment' onclick='showUploadForm(#{post.discussion.id}, #{post.id});'>"
         post_string <<    t(:forum_attach_file) << (image_tag "icon_attachment.png", :alt => t(:forum_attach_file))
         post_string << "</button>"
-        post_string << "<input type='button' onclick='removePost(#{post.id}, \"#{discussion_post_path(post.discussion, post)}\")' class='btn btn_caution' value='#{t(:forum_show_remove)}'/>"
-
-        # post_string << button_to(t(:forum_show_remove), discussion_post_path(post.discussion, post), :confirm => t(:message_confirm), :method => :delete, :class => 'btn btn_caution')
-
-        # post_string << "<input type='button' onclick='setDiscussionPostId(#{post.id})' class='btn btn_default updateDialogLink' value='#{t(:forum_show_edit)}'/>"
+        post_string << "<input type='button' onclick='del_post(#{post.id}, \"#{discussion_post_path(post.discussion, post)}\")' class='btn btn_caution' value='#{t(:forum_show_remove)}'/>"
       end
 
       if post.can_be_answered?
-        post_string << "<input type='button' onclick='setParentPostId(#{post.id}); setParentPostLevel(#{post.level});' class='btn btn_default postDialogLink' value='#{t(:forum_show_answer)}'/>"
+        post_string << "<input type='button' post_id='#{post.id}' level='#{post.level}' class='btn btn_default postDialogLink' value='#{t(:forum_show_answer)}'/>"
       end
     else
       post_string << "<a class='forum_post_link_disabled forum_post_link_remove_disabled'>#{t(:forum_show_remove)}</a>&nbsp;&nbsp;"
       post_string << "<a class='forum_post_link_disabled'>#{t(:forum_show_edit)}</a>&nbsp;&nbsp;"
       post_string << "<a class='forum_post_link_disabled'>#{t(:forum_show_answer)}</a>"
-    end  
+    end
 
     post_string << '</div></div>'
   end

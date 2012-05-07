@@ -2,6 +2,7 @@ class DiscussionPost < ActiveRecord::Base
   has_many :children, :class_name => "DiscussionPost", :foreign_key => "parent_id"
   has_many :files, :class_name => "DiscussionPostFile"
 
+  belongs_to :profile
   belongs_to :parent, :class_name => "DiscussionPost"
   belongs_to :discussion
   belongs_to :user

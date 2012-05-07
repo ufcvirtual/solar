@@ -163,4 +163,26 @@ SQL
     profiles.map { |p| p['id'].to_i }
   end
 
+  def profiles_with_access_on(action, controller, allocation_tag_id = nil)
+    if allocation_tag_id.nil?
+      user_profiles = self.profiles
+    else
+      user_profiles = self.profiles_on_allocation_tag(allocation_tag_id)
+    end
+
+    query = <<SQL
+      SELECT DISTINCT t1.id
+        FROM profiles               AS t1
+        JOIN permissions_resources  AS t2 ON t2.profile_id = t1.id
+        JOIN resources              AS t3 ON t3.id = t2.resource_id
+       WHERE t3.action = '#{action}'
+         AND t3.controller = '#{controller}'
+         AND t1.id IN (#{user_profiles.join(',')})
+       ORDER BY 1 DESC
+SQL
+
+    profiles = ActiveRecord::Base.connection.select_all query
+    profiles.map { |p| p['id'].to_i }
+  end
+
 end
