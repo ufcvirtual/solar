@@ -26,11 +26,11 @@
             </td>
             <td>
               <% if lesson.schedule.end_date.nil? %>
-                <%= l lesson.schedule.start_date %>
+                <%= l lesson.schedule.start_date, :format => :normal %>
               <% elsif lesson.schedule.end_date >= Date.today %>
-                  <%= l lesson.schedule.start_date %> - <%= l lesson.schedule.end_date %>
+                  <%= l lesson.schedule.start_date, :format => :normal %> - <%= l lesson.schedule.end_date, :format => :normal %>
               <% elsif lesson.schedule.end_date < Date.today %>
-                  <%= l lesson.schedule.start_date %> - <%= l lesson.schedule.end_date %>
+                  <%= l lesson.schedule.start_date, :format => :normal %> - <%= l lesson.schedule.end_date, :format => :normal %>
               <%end%>                
             </td>
           </tr>

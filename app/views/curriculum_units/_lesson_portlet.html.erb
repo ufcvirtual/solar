@@ -9,11 +9,11 @@
           <% schedule= Schedule.find(lesson.schedule_id) %>
           <% if lesson.schedule.end_date.nil? %>
             <span class="block_content_gray">
-              <%= l schedule.start_date %>
+              <%= l schedule.start_date, :format => :normal %>
             </span>
           <% elsif lesson.schedule.end_date >= Date.today or lesson.schedule.end_date < Date.today %>
             <span class="block_content_gray">
-              <%= l schedule.start_date  %> - <%= l schedule.end_date %>
+              <%= l schedule.start_date, :format => :normal  %> - <%= l schedule.end_date, :format => :normal %>
             </span>
           <% end %>
           <% unless lesson.schedule.end_date < Date.today %>

@@ -16,12 +16,12 @@ module DiscussionPostsHelper
 
   def valid_date
     discussion_schedule = Schedule.find(@discussion.schedule_id)
-    today_between_discussion_start_end = (discussion_schedule.start_date <= Date.today && Date.today <= discussion_schedule.end_date)
+    today_between_discussion_start_end = (discussion_schedule.start_date.to_date <= Date.today && Date.today <= discussion_schedule.end_date.to_date)
 
     is_an_valid_date = today_between_discussion_start_end
 
     unless today_between_discussion_start_end
-      today_is_in_extra_time_period = ( (Date.today - discussion_schedule.end_date) <= Discussion_Responsible_Extra_Time)
+      today_is_in_extra_time_period = ( (Date.today - discussion_schedule.end_date.to_date) <= Discussion_Responsible_Extra_Time)
       is_an_valid_date = (is_current_user_class_responsible? and today_is_in_extra_time_period)
     end
 
@@ -30,7 +30,7 @@ module DiscussionPostsHelper
 
   def extra_period(discussion)
     discussion_schedule = Schedule.find(discussion.schedule_id)
-    today_is_in_extra_time_period = ((Date.today - discussion_schedule.end_date) <= Discussion_Responsible_Extra_Time && (Date.today - discussion_schedule.end_date) > 0)
+    today_is_in_extra_time_period = ((Date.today - discussion_schedule.end_date.to_date) <= Discussion_Responsible_Extra_Time && (Date.today - discussion_schedule.end_date.to_date) > 0)
     current_user_class_responsible = AllocationTag.find(discussion.allocation_tag_id).is_user_class_responsible?(current_user.id)
     return (current_user_class_responsible and today_is_in_extra_time_period)
   end
