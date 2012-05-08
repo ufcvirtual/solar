@@ -49,13 +49,13 @@ module DiscussionPostsHelper
   def show_post(post=nil, threaded=true, can_interact=false)
     childs = {}
     editable = false
-    childs_count = DiscussionPost.child_count(post.id)
+    childs_count = Post.child_count(post.id)
 
     #Um post pode ser editado se é do próprio usuário e se não possui respostas.
     editable = true if (post.user.id == current_user.id) && (childs_count == 0)
 
     #Recuperando posts filhos para renderização
-    childs = DiscussionPost.posts_child(post[:id]) if threaded
+    childs = Post.posts_child(post[:id]) if threaded
 
     #Tratando nick para exibição
     nick = post.user_nick
@@ -117,7 +117,7 @@ module DiscussionPostsHelper
       discussions_ids << discussion.id
     end
     
-    DiscussionPost.recent_by_discussions(discussions_ids.join(','), Rails.application.config.items_per_page.to_i)
+    Post.recent_by_discussions(discussions_ids.join(','), Rails.application.config.items_per_page.to_i)
   end
 
   private

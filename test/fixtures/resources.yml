@@ -240,26 +240,26 @@ res40:
 
 res42:
   id: 42
-  controller: 'discussions'
-  action: 'new_post'
+  controller: 'posts'
+  action: 'create'
   description: 'Cria um novo post'
 
 res43:
   id: 43
-  controller: 'discussions'
-  action: 'remove_post'
+  controller: 'posts'
+  action: 'destroy'
   description: 'Remove um post'
 
 res44:
   id: 44
-  controller: 'discussions'
-  action: 'update_post'
+  controller: 'posts'
+  action: 'update'
   description: 'Atualiza o conteudo de um post'
 
 res45:
   id: 45
-  controller: 'discussions'
-  action: 'show'
+  controller: 'posts'
+  action: 'list'
   description: 'Exibe todos os posts'
 
 res46:

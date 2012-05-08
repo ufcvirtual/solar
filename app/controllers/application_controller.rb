@@ -76,9 +76,9 @@ class ApplicationController < ActionController::Base
     # recuperando profiles do usuario logado dependendo do contexto
     if active_tab[:url]['context'].to_i == Context_Curriculum_Unit
       related = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id']).join(',')
-      @profiles = current_user.profiles_on_allocation_tag(related).join(',')
+      @profiles = current_user.profiles_on_allocation_tag(related, only_id = true).join(',')
     else
-      @profiles = current_user.profiles.join(',')
+      @profiles = current_user.profiles_activated(only_id = true).join(',')
     end
   end
 

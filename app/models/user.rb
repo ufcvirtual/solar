@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
 
   has_many :allocations
+  has_many :profiles, :through => :allocations, :uniq => true
   has_many :lessons
   has_many :discussion_posts
   has_many :user_messages
@@ -139,35 +140,30 @@ class User < ActiveRecord::Base
     where(conditions).where(["translate(cpf,'.-','') = :value OR lower(username) = :value", { :value => login.strip.downcase }]).first
   end
 
-  def profiles_on_allocation_tag(allocation_tag_id)
+  def profiles_activated(only_id = false)
+    profiles = self.profiles.where("allocations.status = ?", Allocation_Activated).uniq
+    return (only_id) ? profiles.map { |p| p.id.to_i } : profiles
+  end
+
+  def profiles_on_allocation_tag(allocation_tag_id, only_id = false)
     query = <<SQL
       SELECT DISTINCT t1.profile_id AS id
         FROM allocations  AS t1
         JOIN profiles     AS t2 ON t2.id = t1.profile_id
-       WHERE t1.user_id = #{self.id}
-         AND t1.status = #{Allocation_Activated}
-         AND (t1.allocation_tag_id IN (#{allocation_tag_id}) OR t2.types = #{Profile_Type_Basic})
+       WHERE t1.user_id = ?
+         AND t1.status = ?
+         AND (t1.allocation_tag_id IN (#{allocation_tag_id}) OR t2.types = ?)
 SQL
-    profiles = ActiveRecord::Base.connection.select_all query
-    profiles.map { |p| p['id'].to_i }
+
+    profiles = Profile.find_by_sql([query, self.id, Allocation_Activated, Profile_Type_Basic])
+    return (only_id) ? profiles.map { |p| p.id.to_i } : profiles
   end
 
-  def profiles
-    query = <<SQL
-      SELECT DISTINCT t1.profile_id AS id
-        FROM allocations  AS t1
-       WHERE t1.user_id = #{self.id}
-         AND t1.status = #{Allocation_Activated}
-SQL
-    profiles = ActiveRecord::Base.connection.select_all query
-    profiles.map { |p| p['id'].to_i }
-  end
-
-  def profiles_with_access_on(action, controller, allocation_tag_id = nil)
+  def profiles_with_access_on(action, controller, allocation_tag_id = nil, only_id = false)
     if allocation_tag_id.nil?
-      user_profiles = self.profiles
+      user_profiles = self.profiles_activated(true)
     else
-      user_profiles = self.profiles_on_allocation_tag(allocation_tag_id)
+      user_profiles = self.profiles_on_allocation_tag(allocation_tag_id, true)
     end
 
     query = <<SQL
@@ -175,14 +171,14 @@ SQL
         FROM profiles               AS t1
         JOIN permissions_resources  AS t2 ON t2.profile_id = t1.id
         JOIN resources              AS t3 ON t3.id = t2.resource_id
-       WHERE t3.action = '#{action}'
-         AND t3.controller = '#{controller}'
+       WHERE t3.action = ?
+         AND t3.controller = ?
          AND t1.id IN (#{user_profiles.join(',')})
        ORDER BY 1 DESC
 SQL
 
-    profiles = ActiveRecord::Base.connection.select_all query
-    profiles.map { |p| p['id'].to_i }
+    profiles = Profile.find_by_sql([query, action, controller])
+    return (only_id) ? profiles.map { |p| p.id.to_i } : profiles
   end
 
 end

@@ -1,8 +1,9 @@
 class Profile < ActiveRecord::Base
 
-  has_many :allocation
-  has_many :permissions_resource
-  has_many :permissions_menu
+  has_many :allocations
+  has_many :users, :through => :allocations
+  has_many :permissions_resources
+  has_many :permissions_menus
 
   # Recupera perfis do usuario dependendo da allocation_tag
   def self.find_by_allocation_tag_and_user_id(activity_allocation_tag_id, user_id)

@@ -3,14 +3,7 @@ class Discussion < ActiveRecord::Base
   belongs_to :allocation_tag
   belongs_to :schedule
 
-  has_many :discussion_posts
-
-
-
-
-
-
-  #############
+  has_many :discussion_posts, :class_name => "Post", :foreign_key => "discussion_id"
 
   def closed?
     self.schedule.end_date < Date.today
@@ -33,28 +26,14 @@ class Discussion < ActiveRecord::Base
   end
 
   def posts(opts = {})
-    opts = { "type" => 'news', "order" => 'desc', "limit" => 20, "display_mode" => 'list' }.merge(opts)
+    opts = { "type" => 'news', "order" => 'desc', "limit" => Rails.application.config.items_per_page.to_i, "display_mode" => 'list', "page" => 1 }.merge(opts)
     type = (opts["type"] == 'news') ? '>' : '<'
 
-    query = <<SQL
-        SELECT t1.id,
-               t1.level,
-               t1.parent_id,
-               t1.profile_id,
-               t1.discussion_id,
-               t1.user_id,
-               t1.content,
-               t1.updated_at
-          FROM discussion_posts AS t1
-          JOIN discussions      AS t2 ON t2.id = t1.discussion_id
-         WHERE t2.id = #{self.id}
-           AND t1.updated_at::timestamp(0) #{type} '#{opts["date"].to_time}'::timestamp(0)
-        #{"AND parent_id IS NULL" unless opts["display_mode"] == 'list'}
-         ORDER BY t1.updated_at #{opts["order"]}, t1.id #{opts["order"]}
-         LIMIT #{opts["limit"]}
-SQL
+    where = []
+    where << "discussion_posts.updated_at::timestamp(0) #{type} '#{opts["date"].to_time}'::timestamp(0)" if opts.include?('date')
+    where << "parent_id IS NULL" unless opts["display_mode"] == 'list'
 
-    DiscussionPost.find_by_sql query
+    self.discussion_posts.where("#{where.join(' AND ')}").paginate(:per_page => opts['limit'], :page => opts['page']).order("discussion_posts.updated_at #{opts['order']}, discussion_posts.id #{opts['order']}")
   end
 
   def count_posts_after_and_before_period(period)
@@ -134,13 +113,8 @@ SQL
   end
 
   def discussion_posts_count(plain_list = true)
-    return self.discussion_posts.count() if plain_list
-    self.discussion_posts.where(:parent_id => nil).count
-  end
-  
-  def discussion_posts_page(plain_list = true, page = 1)
-    return self.discussion_posts.paginate(:per_page => Rails.application.config.items_per_page, :page => page) if plain_list
-    self.discussion_posts.where(:parent_id => nil).paginate(:per_page => Rails.application.config.items_per_page, :page => page)
+    return self.posts.count if plain_list
+    return self.discussion_posts.where(:parent_id => nil).count
   end
 
 end

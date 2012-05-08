@@ -1,9 +1,12 @@
-class DiscussionPost < ActiveRecord::Base
-  has_many :children, :class_name => "DiscussionPost", :foreign_key => "parent_id"
-  has_many :files, :class_name => "DiscussionPostFile"
+class Post < ActiveRecord::Base
+
+  set_table_name "discussion_posts"
+
+  has_many :children, :class_name => "Post", :foreign_key => "parent_id"
+  has_many :files, :class_name => "DiscussionPostFile", :foreign_key => "discussion_post_id"
 
   belongs_to :profile
-  belongs_to :parent, :class_name => "DiscussionPost"
+  belongs_to :parent, :class_name => "Post"
   belongs_to :discussion
   belongs_to :user
 
@@ -41,7 +44,7 @@ SQL
        ORDER BY created_at desc
 SQL
 
-    posts = DiscussionPost.find_by_sql query
+    posts = Post.find_by_sql query
     return (posts.nil?) ? [] : posts
   end
 
@@ -63,7 +66,7 @@ SQL
     query << " AND parent_id is null" unless plain_list
     query << " ORDER BY created_at DESC"
 
-    return DiscussionPost.paginate_by_sql(query, {:per_page => Rails.application.config.items_per_page, :page => page})
+    return Post.paginate_by_sql(query, {:per_page => Rails.application.config.items_per_page, :page => page})
   end
 
   def self.recent_by_discussions(discussions, limit = 0, content_size = 255)
@@ -77,7 +80,7 @@ SQL
 SQL
 
     query << "LIMIT #{limit}" if limit > 0
-    return DiscussionPost.find_by_sql(query)
+    return Post.find_by_sql(query)
   end
 
 end

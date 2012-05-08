@@ -19,18 +19,18 @@ Solar::Application.routes.draw do
 
   # discussions/:id/posts
   resources :discussions, :only => [:show] do
-    resources :posts, :except => [:show]
+    resources :posts, :except => [:show, :new, :edit]
     controller :posts do
       # news
-      match "posts/:date/news" => :list, :type => "news"
-      match "posts/:date/news/:order/order" => :list, :type => "news"
-      match "posts/:date/news/:limit/limit" => :list, :type => "news"
-      match "posts/:date/news/:order/order/:limit/limit" => :list, :type => "news"
+      match "posts/:date/news"                              => :index, :type => "news", :via => :get
+      match "posts/:date/news/:order/order"                 => :index, :type => "news", :via => :get
+      match "posts/:date/news/:limit/limit"                 => :index, :type => "news", :via => :get
+      match "posts/:date/news/:order/order/:limit/limit"    => :index, :type => "news", :via => :get
       # history
-      match "posts/:date/history" => :list, :type => "history"
-      match "posts/:date/history/:order/order" => :list, :type => "history"
-      match "posts/:date/history/:limit/limit" => :list, :type => "history"
-      match "posts/:date/history/:order/order/:limit/limit" => :list, :type => "history"
+      match "posts/:date/history"                           => :index, :type => "history", :via => :get
+      match "posts/:date/history/:order/order"              => :index, :type => "history", :via => :get
+      match "posts/:date/history/:limit/limit"              => :index, :type => "history", :via => :get
+      match "posts/:date/history/:order/order/:limit/limit" => :index, :type => "history", :via => :get
     end
   end
 

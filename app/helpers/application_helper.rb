@@ -47,7 +47,7 @@ module ApplicationHelper
 
     result << '<form accept-charset="UTF-8" action="" method="' << request.method << '" name="paginationForm">'
 
-    if !hash_params.nil?
+    unless hash_params.nil?
       # ex: type=index&search=1 2 3
       hash_params.split("&").each { |item|
         individual_param = item.split("=")
@@ -68,7 +68,7 @@ module ApplicationHelper
       result << '<a class="link_navigation" onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)+1).to_s << ');$(this).parent().submit();">&gt;&gt;</a>'
     end
 
-    result << ' <input name="authenticity_token" value="' << form_authenticity_token << '" type="hidden">'
+    # result << ' <input name="authenticity_token" value="' << form_authenticity_token << '" type="hidden">'
     result << '<input type="hidden" id="current_page" name="current_page" value="' << @current_page << '"/>'
 
     result << '</form>'

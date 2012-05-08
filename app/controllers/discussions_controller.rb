@@ -38,7 +38,7 @@ class DiscussionsController < ApplicationController
       @discussion = Discussion.find(discussion_id)
       plain_list = (@display_mode == "PLAINLIST")
 
-      @posts = DiscussionPost.discussion_posts(@discussion.id, plain_list, @current_page)
+      @posts = Post.discussion_posts(@discussion.id, plain_list, @current_page)
       @valid_date = valid_date
     else
       redirect_to :controller => :discussions, :action => :list # "/discussions/list"
@@ -63,7 +63,7 @@ class DiscussionsController < ApplicationController
       begin
         ActiveRecord::Base.transaction do
           #Criando nova postagem
-          new_discussion_post = DiscussionPost.new :discussion_id => discussion_id,
+          new_discussion_post = Post.new :discussion_id => discussion_id,
             :user_id => current_user.id,
             :profile_id => profile_id,
             :content => content,
@@ -89,7 +89,7 @@ class DiscussionsController < ApplicationController
 
     #Relação de usuário com o post
     #(# Só o dono do post pode apagar, se estiver no período ativo do fórum e se a postagem não tiver resposta(filhos))
-    @discussion_post= DiscussionPost.find_by_id(discussion_post_id)
+    @discussion_post= Post.find_by_id(discussion_post_id)
     @discussion= Discussion.find_by_id(discussion_id)
     ActiveRecord::Base.transaction do
       if current_user_can_edit?
@@ -104,7 +104,7 @@ class DiscussionsController < ApplicationController
         end
 
         #Removendo a postagem propriamente dita
-        error = true unless DiscussionPost.delete(discussion_post_id)
+        error = true unless Post.delete(discussion_post_id)
 
         #caso não tenha havido problema algum, remove o arquivo do disco.
         unless error
@@ -129,11 +129,11 @@ class DiscussionsController < ApplicationController
     new_content = params[:content]
 
     #(# Só o dono do post pode editar, se estiver no período ativo do fórum e se a postagem não tiver resposta(filhos))
-    @discussion_post= DiscussionPost.find_by_id(discussion_post_id)
+    @discussion_post= Post.find_by_id(discussion_post_id)
     @discussion= Discussion.find_by_id(discussion_id)
 
     if current_user_can_edit?
-      post = DiscussionPost.find(discussion_post_id);
+      post = Post.find(discussion_post_id);
       post.update_attributes({:content => new_content})
     end
 
@@ -160,7 +160,7 @@ class DiscussionsController < ApplicationController
     discussion_id = params[:id]
     post_id     = params[:post_id]
     @discussion = Discussion.find(discussion_id.to_i)
-    @discussion_post = DiscussionPost.find(post_id.to_i)
+    @discussion_post = Post.find(post_id.to_i)
 
     if current_user_can_edit?
       begin
@@ -214,7 +214,7 @@ class DiscussionsController < ApplicationController
     discussion_id = params[:id]
     student_id = params[:student_id]
     @discussion = Discussion.find(discussion_id)
-    @posts = DiscussionPost.all_by_discussion_id_and_student_id(discussion_id, student_id)
+    @posts = Post.all_by_discussion_id_and_student_id(discussion_id, student_id)
 
     # nao renderiza o layout
     render :layout => false
@@ -227,7 +227,7 @@ class DiscussionsController < ApplicationController
   end
 
   def has_no_response
-    DiscussionPost.find_all_by_parent_id(@discussion_post.id).empty?
+    Post.find_all_by_parent_id(@discussion_post.id).empty?
   end
 
   def owned_by_current_user

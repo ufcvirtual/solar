@@ -1,2 +1,173 @@
-<h1>Posts#index</h1>
-<p>Find me in app/views/posts/index.html.erb</p>
+<% if @can_see %>
+  <div class="block_wrapper">
+    <div class="block_title">
+      <h2><%= image_tag "icon_forum.png", :alt=>t(:icon_forum), :class=>'block_title_icon' %><%= @discussion.name %></h2>
+    </div>
+
+    <div id="forum_description" class="block_content block_content_text">
+      <%= sanitize @discussion.description %>
+    </div>
+  </div>
+
+  <div class="block_wrapper">
+    <div class="block_title forum_navigation">
+        <span id="forum_new_message">
+          <% if @can_interact %>
+            <button type="button" class="btn btn_default" id="button_new_post" value="<%= t("forum_new_message")%>">
+              <%= t("forum_new_message")%><%= image_tag "icon_write.png", :alt => '' %>
+            </button>
+          <%else%>
+            <div id="forum_closed"><%= t("forum_closed")%></div>
+          <%end%>
+        </span>
+
+        <span id="forum_view_mode">
+          <% class_l = (@display_mode == "list") ? 'btn_disable' : 'btn_default' %>
+          <% class_t = (@display_mode == "tree") ? 'btn_disable' : 'btn_default' %>
+
+          <%= link_to(image_tag("discussion_plainlist.png"), discussion_posts_path(@discussion, {:display_mode => 'list'}),
+              {:class => "btn #{class_l}", :"data-tooltip" => t("forum_show_plainlist")}) %>
+          <%= link_to(image_tag("discussion_thread.png"), discussion_posts_path(@discussion, {:display_mode => 'tree'}),
+              {:class => "btn #{class_t}", :"data-tooltip" => t("forum_show_thread")}) %>
+        </span>
+        <div id="forum_pagination">
+          <%=raw render_pagination_bar(@discussion.discussion_posts_count(@display_mode == "list").to_s, "display_mode=#{@display_mode}")%>
+        </div>
+    </div>
+
+    <div class="forum_posts_wrapper">
+      <% @posts.each do |post|%>
+        <%= raw post_html(post, @display_mode, @can_interact)%>
+      <%end%>
+    </div>
+
+    <%= form_for(:discussion_post, :url => {:action => :create}, :html => { :id => "new_post_form", :multipart => true} ) do |f| %>
+      <%= hidden_field(:discussion_post, :content, {:value => ""}) %>
+      <%= hidden_field(:discussion_post, :discussion_id, {:value => @discussion.id}) %>
+      <%= hidden_field(:discussion_post, :parent_id, {:value => ""}) %>
+      <%= hidden_field_tag(:parent_post_level, "0") %>
+      <%= hidden_field_tag(:display_mode, @display_mode) %>
+      <%= hidden_field_tag(:current_page, @current_page) %>
+    <% end %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  function showUploadForm(discussionId, postId) {
+    var url_for = '<%= url_for :controller => :discussions, :action => :post_file_upload, :current_page => @current_page %>' + '&id=' + discussionId + '&post_id=' + postId;
+    showLightBoxURL(url_for, 400, 250, true, '<%=t(:forum_attach_file_title)%>');
+    return false;
+  }
+
+  //// Manipulação da caixa de edição ///////////////////////////////
+  function appendRichTextBox(postContainer){
+    newFormCode = '' +
+      '<div id="new_post_dialog">' +
+      '<textarea id="newPostTextBox">' +
+      '</textarea>' +
+      '<div class="new_post_dialog_buttons">' +
+      '<input type="button" onclick="cancelPosting();" class="btn btn_caution postDialogLink" value="<%=t("cancel")%>">' +
+      '<input type="button" onclick="sendPost();" class="btn btn_default postDialogLink" value="<%=t("send")%>">' +
+      '</div>' +
+      '</div>';
+
+    //Removendo outra caixa de entrada de postagem que possam
+    //estar abertas, possivelmente.
+    $('#new_post_dialog').attr('id', 'oldPostDialog').slideUp(function(){
+      $(this).remove();
+    });
+
+    $('#newPostTextBox').attr('id', 'oldPostTextBox').remove();
+
+    if (CKEDITOR.instances.newPostTextBox) {
+      CKEDITOR.instances.newPostTextBox.destroy();
+    }
+
+    //Criando a nova caixa de entrada e exibindo-a
+    postContainer.append(newFormCode);
+
+    $('#newPostTextBox').ckeditor( function () {
+      $('#new_post_dialog').css('width','100%');
+      $('#new_post_dialog').show(300)
+    }, {
+      toolbar: 'SolarToolbar'
+    });
+  }
+
+  function cancelPosting() {
+    $('#new_post_dialog').attr('id', 'oldPostDialog').slideUp(function () {
+      $(this).remove();
+    });
+    $('#newPostTextBox').attr('id', 'oldPostTextBox').remove();
+    if (CKEDITOR.instances.newPostTextBox) {
+      CKEDITOR.instances.newPostTextBox.destroy();
+    }
+  }
+
+  function sendPost() {
+    $('#discussion_post_content').attr('value',$('#newPostTextBox').val());
+    // atualização de post
+    // if ($('#discussion_post_discussion_post_id').attr('value') != '')
+    //   updatePost();
+    // else // novo post
+      $('#new_post_form').submit();
+  }
+
+  function clearFormData() {
+    $('#parent_post_id').attr('value','');
+    $('#discussion_post_id').attr('value', '');
+  }
+
+  function del_post(post_id, url) {
+    var answer = confirm("<%=t(:message_confirm)%>");
+    if (!answer) return;
+
+    $.ajax({
+      type: "DELETE",
+      url: url,
+      success: function(data) {
+        $('#' + post_id).fadeOut(100, function() {
+          $(this).remove();
+        });
+      },
+      error: function(obj, status) {
+        alert('tratamento de erro ainda nao feito');
+      }
+    });
+  }
+
+  // function updatePost() {
+  //   $('#new_post_form').attr('action', '<%= url_for :controller => :discussions, :action => :update_post %>');
+  //   $('#new_post_form').submit();
+  // }
+
+  //// Eventos e comportamentos dos links ///////////////////////////
+  $(document).ready( function () {
+
+    //Botões de responder postagem
+    $('.postDialogLink').click(function () {
+
+      $('#discussion_post_parent_id').attr('value', $(this).attr('post_id'));
+      $('#parent_post_level').attr('value', $(this).attr('level'));
+
+      var postContainer = $(this).parent();
+      appendRichTextBox(postContainer);
+      return false;
+    });
+
+    //Botão de editar postagem
+    $('.updateDialogLink').click( function () {
+      var postContainer = $(this).parent().parent();
+      appendRichTextBox(postContainer);
+      $('#newPostTextBox').val(postContainer.children('.forum_post_inner_content').html());
+      return false;
+    });
+
+    //Botão de nova postagem
+    $('#button_new_post').click( function () {
+      clearFormData();
+      var postContainer = $(this).parents('.block_title');
+      appendRichTextBox(postContainer);
+    });
+  });
+</script>
