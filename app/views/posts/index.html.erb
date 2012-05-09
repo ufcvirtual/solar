@@ -54,9 +54,8 @@
 
 <script type="text/javascript">
 
-  function showUploadForm(discussionId, postId) {
-    var url_for = '<%= url_for :controller => :discussions, :action => :post_file_upload, :current_page => @current_page %>' + '&id=' + discussionId + '&post_id=' + postId;
-    showLightBoxURL(url_for, 400, 250, true, '<%=t(:forum_attach_file_title)%>');
+  function showUploadForm(url) {
+    showLightBoxURL(url, 400, 250, true, '<%=t(:forum_attach_file_title)%>');
     return false;
   }
 

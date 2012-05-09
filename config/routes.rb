@@ -33,6 +33,10 @@ Solar::Application.routes.draw do
     end
   end
 
+  resources :posts, :only => [] do
+    resources :post_files, :only => [:new, :create, :destroy]
+  end
+
   #################################
   # rotas regulares - Nao RESTful #
   #################################

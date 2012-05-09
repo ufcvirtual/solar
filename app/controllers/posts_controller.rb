@@ -66,11 +66,11 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.update_attributes(params[:discussion_post])
-        format.html { redirect_to(discussion_posts_path(Discussion.find(params[:discussion_id])), :notice => t(:discussion_post_updated)) }
+        format.html { redirect_to(discussion_posts_path(@post.discussion), :notice => t(:discussion_post_updated)) }
         format.xml  { head :ok }
         format.json  { head :ok }
       else
-        format.html { redirect_to(discussion_posts_path(Discussion.find(params[:discussion_id])), :notice => t(:discussion_post_not_updated)) }
+        format.html { redirect_to(discussion_posts_path(@post.discussion), :notice => t(:discussion_post_not_updated)) }
         format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
         format.json  { render :json => @post.errors, :status => :unprocessable_entity }
       end
@@ -83,7 +83,7 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
 
     @post.files.each do |file|
-      file.delete!
+      file.delete
       File.delete(file.attachment.path) if File.exist?(file.attachment.path)
     end
 
@@ -93,33 +93,6 @@ class PostsController < ApplicationController
       format.html { render :json => {:result => :ok} }
       format.xml  { head :ok }
       format.json  { render :json => {:result => :ok} }
-    end
-  end
-
-  ##
-  # Anexa arquivo a um post -- principalmente arquivos de audio
-  ##
-  def attach_file
-    @file = nil
-    post_id = params[:id]
-
-    post = Post.find(post_id)
-    # verifica se o forum ainda esta aberto
-    discussion_closed = Discussion.find(post.discussion_id).closed?
-
-    # verifica se o post é do usuário
-    if ((not discussion_closed) and (post.user_id == current_user.id))
-      attachment = {:attachment => params[:attachment]}
-      @file = PostFile.new attachment
-      @file.discussion_post_id = post_id
-    end
-
-    respond_to do |format|
-      if ((not @file.nil?) and @file.save!)
-        format.html { render :json => {:result => 1}, :status => :created }
-      else
-        format.html { render :json => {:result => 0}, :status => :unprocessable_entity }
-      end
     end
   end
 

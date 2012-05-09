@@ -38,7 +38,7 @@ module PostsHelper
 
             #{attachments(post, editable, can_interact)}
             #{buttons(post, editable, can_interact)}
-            #{form_update(post)}
+            #{form_update(post) if (editable and can_interact)}
             #{child_html}
 
           </td>
@@ -55,9 +55,8 @@ HTML
     html, html_files =  '', ''
     files.each do |file|
       link_to_down = (link_to file.attachment_file_name, :controller => "discussions", :action => "download_post_file", :idFile => file.id, :id => @discussion.id)
-      link_to_remove = (editable and can_interact) ? (link_to (image_tag "icon_delete_small.png", :alt => t(:forum_remove_file)), {:controller => "discussions", :action => "remove_attached_file",
-                        :idFile => file.id, :current_page => @current_page, :id => @discussion.id},
-                        :confirm=>t(:forum_remove_file_confirm), :title => t(:forum_remove_file), 'data-tooltip' => t(:forum_remove_file)) : ''
+      link_to_remove = (editable and can_interact) ? (link_to (image_tag "icon_delete_small.png", :alt => t(:forum_remove_file)), 
+        post_post_file_path(post, file), :confirm => t(:forum_remove_file_confirm), :method => :delete, :title => t(:forum_remove_file), 'data-tooltip' => t(:forum_remove_file)) : ''
 
       html_files << '<li>'
       html_files <<     "#{link_to_down}&nbsp;&nbsp;#{link_to_remove}"
@@ -81,7 +80,7 @@ HTML
 
     if can_interact
       if editable
-        post_string << "<button type='button' class='btn btn_default forum_button_attachment' onclick='showUploadForm(#{post.discussion.id}, #{post.id});'>"
+        post_string << "<button type='button' class='btn btn_default forum_button_attachment' onclick='showUploadForm(\"#{new_post_post_file_path(post)}\");'>"
         post_string <<    t(:forum_attach_file) << (image_tag "icon_attachment.png", :alt => t(:forum_attach_file))
         post_string << "</button>"
         post_string << "<input type='button' onclick='del_post(#{post.id}, \"#{discussion_post_path(post.discussion, post)}\")' class='btn btn_caution' value='#{t(:forum_show_remove)}'/>"
