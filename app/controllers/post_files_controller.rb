@@ -1,3 +1,5 @@
+include FilesHelper
+
 class PostFilesController < ApplicationController
 
   def new
@@ -55,6 +57,12 @@ class PostFilesController < ApplicationController
         format.json  { render :json => {:result => 0} }
       end
     end
+  end
+
+  def download
+    file = PostFile.find(params[:id])
+    post = file.post
+    download_file(discussion_posts_path(post.discussion), file.attachment.path, file.attachment_file_name)
   end
 
 end

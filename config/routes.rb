@@ -34,7 +34,9 @@ Solar::Application.routes.draw do
   end
 
   resources :posts, :only => [] do
-    resources :post_files, :only => [:new, :create, :destroy]
+    resources :post_files, :only => [:new, :create, :destroy, :download] do
+      get :download, :on => :member
+    end
   end
 
   #################################
