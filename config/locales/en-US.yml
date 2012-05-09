@@ -378,6 +378,9 @@
   forum_remove_file_confirm: "Your file will be deleted permanently. Proceed?"
   forum_remove_error: "Error removing post"
   forum_post_before_valid_date_error: "The deadline to post in this forum expired"
+  discussion_post_created: 'Post was successfully created.'
+  discussion_post_updated: "Post was successfully updated."
+  discussion_post_not_updated: "Post was not updated"
 
   message_title: "Messages"
   message_inbox: "Inbox"

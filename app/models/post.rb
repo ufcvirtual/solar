@@ -3,7 +3,7 @@ class Post < ActiveRecord::Base
   set_table_name "discussion_posts"
 
   has_many :children, :class_name => "Post", :foreign_key => "parent_id"
-  has_many :files, :class_name => "DiscussionPostFile", :foreign_key => "discussion_post_id"
+  has_many :files, :class_name => "PostFile", :foreign_key => "discussion_post_id"
 
   belongs_to :profile
   belongs_to :parent, :class_name => "Post"

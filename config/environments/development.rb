@@ -21,7 +21,7 @@ Solar::Application.configure do
   config.log_level = :info
 
   # Mostra log do activerecord
-  config.active_record.logger = Logger.new(STDOUT)
+  # config.active_record.logger = Logger.new(STDOUT)
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log

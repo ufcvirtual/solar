@@ -25,7 +25,7 @@ class AccessControlController < ApplicationController
     name_attachment = params[:file]
     if name_attachment.index("_")>0
       id_file = name_attachment.slice(0..name_attachment.index("_")-1)
-      file= DiscussionPostFile.find(id_file)
+      file= PostFile.find(id_file)
       discussion= file.discussion_post.discussion
       
       # verificar se usuario logado tem forum na(s) disciplina(s) aberta(s)

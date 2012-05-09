@@ -16,7 +16,6 @@ Solar::Application.routes.draw do
   get "portfolio/public_files_send"
   get "users/photo"
 
-
   # discussions/:id/posts
   resources :discussions, :only => [:show] do
     resources :posts, :except => [:show, :new, :edit]

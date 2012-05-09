@@ -1,6 +1,8 @@
-class DiscussionPostFile < ActiveRecord::Base
+class PostFile < ActiveRecord::Base
 
-  belongs_to :discussion_post
+  set_table_name "discussion_post_files"
+
+  belongs_to :post, :class_name => "Post", :foreign_key => "discussion_post_id"
   
   validates :attachment_file_name, :presence => true
 
@@ -11,4 +13,5 @@ class DiscussionPostFile < ActiveRecord::Base
   has_attached_file :attachment,
     :path => ":rails_root/media/discussions/post/:id_:basename.:extension",
     :url => "/media/discussions/post/:id_:basename.:extension"
+
 end

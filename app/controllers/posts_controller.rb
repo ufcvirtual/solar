@@ -17,8 +17,8 @@ class PostsController < ApplicationController
 
       if @can_see
         @can_interact = @discussion.user_can_interact?(current_user.id)
-        p = params.select { |k, v| ['date', 'type', 'order', 'limit', 'display_mode'].include?(k) }
-        p['page'] = @current_page
+        p = params.select { |k, v| ['date', 'type', 'order', 'limit', 'display_mode', 'page'].include?(k) }
+        p['page'] ||= @current_page
 
         @display_mode = p['display_mode'] = p['display_mode'] || 'tree'
         @posts = @discussion.posts(p)
@@ -42,17 +42,18 @@ class PostsController < ApplicationController
     params[:discussion_post][:user_id] = current_user.id
     at_id = Discussion.find(params[:discussion_post][:discussion_id]).allocation_tag_id
     params[:discussion_post][:profile_id] = current_user.profiles_with_access_on('create', 'posts', at_id, only_id = true).first
+    params[:discussion_post][:level] = params[:discussion_post][:level].to_i + 1
 
-    @discussion_post = Post.new(params[:discussion_post])
+    @post = Post.new(params[:discussion_post])
 
     respond_to do |format|
-      if @discussion_post.save
-        format.html { redirect_to(discussion_posts_path(Discussion.find(params[:discussion_id])), :notice => 'Postagem criada com sucesso.') }
-        format.xml  { render :xml => @discussion_post, :status => :created }
-        format.json  { render :json => {:result => 1, :post_id => @discussion_post.id}, :status => :created }
+      if @post.save
+        format.html { redirect_to(discussion_posts_path(Discussion.find(params[:discussion_id])), :notice => t(:discussion_post_created)) }
+        format.xml  { render :xml => @post, :status => :created }
+        format.json  { render :json => {:result => 1, :post_id => @post.id}, :status => :created }
       else
         format.html { render :json => {:result => 0} }
-        format.xml  { render :xml => @discussion_post.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
         format.json  { render :json => {:result => 0}, :status => :unprocessable_entity }
       end
     end
@@ -61,17 +62,17 @@ class PostsController < ApplicationController
   # PUT /discussions/:id/posts/1
   # PUT /discussions/:id/posts/1.xml
   def update
-    @discussion_post = Post.find(params[:id])
+    @post = Post.find(params[:id])
 
     respond_to do |format|
-      if @discussion_post.update_attributes(params[:discussion_post])
-        format.html { redirect_to(@discussion_post, :notice => 'Discussion post was successfully updated.') }
+      if @post.update_attributes(params[:discussion_post])
+        format.html { redirect_to(discussion_posts_path(Discussion.find(params[:discussion_id])), :notice => t(:discussion_post_updated)) }
         format.xml  { head :ok }
         format.json  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @discussion_post.errors, :status => :unprocessable_entity }
-        format.json  { render :json => @discussion_post.errors, :status => :unprocessable_entity }
+        format.html { redirect_to(discussion_posts_path(Discussion.find(params[:discussion_id])), :notice => t(:discussion_post_not_updated)) }
+        format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
+        format.json  { render :json => @post.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -79,12 +80,19 @@ class PostsController < ApplicationController
   # DELETE /posts/1
   # DELETE /posts/1.xml
   def destroy
-    @discussion_post = Post.find(params[:id])
-    @discussion_post.destroy
+    @post = Post.find(params[:id])
+
+    @post.files.each do |file|
+      file.delete!
+      File.delete(file.attachment.path) if File.exist?(file.attachment.path)
+    end
+
+    @post.destroy
 
     respond_to do |format|
       format.html { render :json => {:result => :ok} }
       format.xml  { head :ok }
+      format.json  { render :json => {:result => :ok} }
     end
   end
 
@@ -102,7 +110,7 @@ class PostsController < ApplicationController
     # verifica se o post é do usuário
     if ((not discussion_closed) and (post.user_id == current_user.id))
       attachment = {:attachment => params[:attachment]}
-      @file = DiscussionPostFiles.new attachment
+      @file = PostFile.new attachment
       @file.discussion_post_id = post_id
     end
 

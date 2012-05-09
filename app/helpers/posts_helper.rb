@@ -38,6 +38,7 @@ module PostsHelper
 
             #{attachments(post, editable, can_interact)}
             #{buttons(post, editable, can_interact)}
+            #{form_update(post)}
             #{child_html}
 
           </td>
@@ -84,6 +85,7 @@ HTML
         post_string <<    t(:forum_attach_file) << (image_tag "icon_attachment.png", :alt => t(:forum_attach_file))
         post_string << "</button>"
         post_string << "<input type='button' onclick='del_post(#{post.id}, \"#{discussion_post_path(post.discussion, post)}\")' class='btn btn_caution' value='#{t(:forum_show_remove)}'/>"
+        post_string << "<input type='button' post-id=#{post.id} class='btn btn_default updateDialogLink' value='#{t(:forum_show_edit)}'/>"
       end
 
       if post.can_be_answered?
@@ -95,7 +97,15 @@ HTML
       post_string << "<a class='forum_post_link_disabled'>#{t(:forum_show_answer)}</a>"
     end
 
-    post_string << '</div></div>'
+    post_string << '</div>'
+  end
+
+  def form_update(post)
+    post_string = "<div class='forum_post_form' post_id=#{post.id}>"
+    post_string << form_for(post, :url => discussion_post_path(post.discussion, post), :html => { :method => "put", :id => "form_post_#{post.id}" }) {|f|
+      hidden_field(:discussion_post, :content, {:value => ""})
+    }
+    post_string << '</div>'
   end
 
 end

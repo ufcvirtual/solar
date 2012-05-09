@@ -553,7 +553,10 @@
   forum_remove_file: "Remover arquivo"
   forum_remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
   forum_remove_error: "Erro ao remover postagem"
-  forum_post_before_valid_date_error: O prazo para postar neste fórum expirou
+  forum_post_before_valid_date_error: "O prazo para postar neste fórum expirou"
+  discussion_post_created: "Postagem criada com sucesso."
+  discussion_post_updated: "Postagem atualizada com sucesso."
+  discussion_post_not_updated: "A postagem não foi atualizada"
 
   # messages
   message_title: "Mensagens"

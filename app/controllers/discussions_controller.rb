@@ -100,7 +100,7 @@ class DiscussionsController < ApplicationController
         #Removendo arquivos da postagem na base de dados
         @discussion_post.files.each do |file|
           filenameArray.push("#{file.id.to_s}_#{file.attachment_file_name}")
-          error = true unless DiscussionPostFile.delete(file.id)
+          error = true unless PostFile.delete(file.id)
         end
 
         #Removendo a postagem propriamente dita
@@ -151,7 +151,7 @@ class DiscussionsController < ApplicationController
   ##
   def download_post_file
     post_file_id = params[:idFile]
-    download_file({:action => :show, :id => params[:id], :idFile => post_file_id}, DiscussionPostFile.find(post_file_id).attachment.path)
+    download_file({:action => :show, :id => params[:id], :idFile => post_file_id}, PostFile.find(post_file_id).attachment.path)
   end
 
   #Envio de arquivo anexo
@@ -168,7 +168,7 @@ class DiscussionsController < ApplicationController
           #Salvando os novos arquivos anexados
           unless params[:attachment].nil?
             params[:attachment].each do |file|
-              post_file = DiscussionPostFile.new Hash["attachment", file[1]]
+              post_file = PostFile.new Hash["attachment", file[1]]
               post_file[:discussion_post_id] = post_id.to_i
               post_file.save!
             end
@@ -189,13 +189,13 @@ class DiscussionsController < ApplicationController
     @display_mode = params[:display_mode]
     discussion_id = params[:id]
     post_file_id  = params[:idFile]
-    file          = DiscussionPostFile.find(post_file_id.to_i)
+    file          = PostFile.find(post_file_id.to_i)
     @discussion = Discussion.find(discussion_id.to_i)
     @discussion_post = file.discussion_post
 
     if current_user_can_edit?
       #Removendo arquivo da base de dados
-      DiscussionPostFile.delete(file.id)
+      PostFile.delete(file.id)
 
       #Removendo o arquivo do disco
       filename = "#{file.id.to_s}_#{file.attachment_file_name}"
