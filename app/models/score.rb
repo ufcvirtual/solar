@@ -6,17 +6,12 @@ class Score < ActiveRecord::Base
   # Recupera a quantidade de acessos de um usuario em uma unidade curricular
   ##
   def self.find_amount_access_by_student_id_and_interval(curriculum_unit_id, student_id, from_date, until_date)
-    query =  <<SQL
-    SELECT COUNT(id) AS cnt_access
-      FROM logs
-      WHERE user_id = #{student_id}
+    conditions = "user_id = #{student_id}
         AND curriculum_unit_id = #{curriculum_unit_id}
         AND log_type = #{Log::TYPE[:course_access]}
-        AND created_at::date BETWEEN '#{from_date}' AND '#{until_date}';
-SQL
-
-    amount = ActiveRecord::Base.connection.select_all query
-    return amount.first['cnt_access']
+        AND created_at::date BETWEEN '#{from_date}' AND '#{until_date}'"
+    
+    Log.where(conditions).count
   end
 
   ##

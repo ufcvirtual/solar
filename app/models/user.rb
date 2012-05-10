@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
 
   has_many :allocations
   has_many :profiles, :through => :allocations, :uniq => true
+  has_many :logs
   has_many :lessons
   has_many :discussion_posts
   has_many :user_messages

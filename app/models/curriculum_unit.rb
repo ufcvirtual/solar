@@ -2,6 +2,7 @@ class CurriculumUnit < ActiveRecord::Base
 
   has_one :allocation_tag
   has_many :offers
+  has_many :logs
 
   def self.find_user_groups_by_curriculum_unit(curriculum_unit_id, user_id)
     query = "
