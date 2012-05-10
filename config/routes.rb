@@ -17,7 +17,7 @@ Solar::Application.routes.draw do
   get "users/photo"
 
   # discussions/:id/posts
-  resources :discussions, :only => [:show] do
+  resources :discussions, :only => [:index] do
     resources :posts, :except => [:show, :new, :edit]
     controller :posts do
       # news

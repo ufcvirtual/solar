@@ -1,4 +1,5 @@
 module MenuHelper
+
   def create_menu_list(profile_id, context_id, id = nil, current_menu = nil)
     menus = Menu.list_by_profile_id_and_context_id(profile_id, context_id)
     html_menu, previous_parent_id, first_iteration = '', 0, false
@@ -73,4 +74,5 @@ module MenuHelper
     html_menu_group << "<div class='#{class_menu_div_topo}'>#{html_menu}</div>"
     return html_menu_group.join('') # fechando a ultima div aberta
   end
+
 end

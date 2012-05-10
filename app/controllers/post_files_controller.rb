@@ -2,17 +2,21 @@ include FilesHelper
 
 class PostFilesController < ApplicationController
 
+  load_and_authorize_resource :except => :create
+
   def new
     @post = Post.find(params[:post_id])
     render :layout => false
   end
 
   def create
+    authorize! :create, PostFile
+
     post = Post.find(params[:post_id])
-    discussion_closed = Discussion.find(post.discussion_id).closed?
+    discussion = Discussion.find(post.discussion_id)
     error = false
     begin
-      if ((not discussion_closed) and (post.user_id == current_user.id))
+      if ((not discussion.closed? or discussion.extra_time?(current_user.id)) and (post.user_id == current_user.id))
         params[:post_file].each do |file|
           @file = PostFile.new({:attachment => file.last})
           @file.discussion_post_id = post.id
@@ -60,6 +64,8 @@ class PostFilesController < ApplicationController
   end
 
   def download
+    authorize! :download, PostFile
+
     file = PostFile.find(params[:id])
     post = file.post
     download_file(discussion_posts_path(post.discussion), file.attachment.path, file.attachment_file_name)

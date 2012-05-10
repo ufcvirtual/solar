@@ -4,7 +4,6 @@ Funcionalidade: Exibir Foruns
   Eu quero visualizar os foruns
   Para poder acessá-los
 
-
 Contexto:
     Dado que tenho "allocations"
         | user_id  | allocation_tag_id  | profile_id  | status |
@@ -89,4 +88,3 @@ Cenário: Acessar Fórum como professor em período Extra
         Então eu deverei ver "Segundo fórum de testes"
         E eu deverei ver "Usuario do Sistema"
         E eu deverei ver "Bem vindos ao forum 2! Este forum eh legal."
-        

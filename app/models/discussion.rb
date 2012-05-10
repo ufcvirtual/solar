@@ -10,7 +10,8 @@ class Discussion < ActiveRecord::Base
   end
 
   def extra_time?(user_id)
-    (self.allocation_tag.is_user_class_responsible?(user_id) and self.closed?) ? ((self.schedule.end_date + Discussion_Responsible_Extra_Time) >= Date.today) : false
+    (self.allocation_tag.is_user_class_responsible?(user_id) and self.closed?) ?
+      ((self.schedule.end_date.to_datetime + Discussion_Responsible_Extra_Time) >= Date.today) : false
   end
 
   def user_can_see?(user_id)
@@ -111,6 +112,10 @@ SQL
 
     Discussion.find_by_sql(query)
   end
+
+
+
+
 
   def discussion_posts_count(plain_list = true)
     return self.posts.count if plain_list

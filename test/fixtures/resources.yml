@@ -127,7 +127,7 @@ res21:
 res22:
   id: 22
   controller: 'discussions'
-  action: 'list'
+  action: 'index'
   description: 'Listar Foruns'
 
 res23:
@@ -259,14 +259,14 @@ res44:
 res45:
   id: 45
   controller: 'posts'
-  action: 'list'
+  action: 'index'
   description: 'Exibe todos os posts'
 
-res46:
-  id: 46
-  controller: 'discussions'
-  action: 'list'
-  description: 'Lista os foruns'
+# res46:# repetido
+#   id: 46
+#   controller: 'discussions'
+#   action: 'index'
+#   description: 'Lista foruns'
 
 
 # acompanhamento
@@ -286,21 +286,21 @@ res48:
 
 res49:
   id: 49
-  controller: 'discussions'
-  action: 'download_post_file'
-  description: 'Baixar arquivos de foruns'
+  controller: 'post_file'
+  action: 'download'
+  description: 'Baixar arquivos de uma postagem'
 
 res50:
   id: 50
-  controller: 'discussions'
-  action: 'attach_file'
-  description: 'Anexar arquivos de foruns'
+  controller: 'post_file'
+  action: 'create'
+  description: 'Anexar arquivos a uma postagem'
 
 res51:
   id: 51
-  controller: 'discussions'
-  action: 'remove_attached_file'
-  description: 'Remover arquivos de postagens'
+  controller: 'post_file'
+  action: 'destroy'
+  description: 'Remover arquivo de uma postagem'
 
 res52:
   id: 52
@@ -310,9 +310,9 @@ res52:
 
 res53:
   id: 53
-  controller: 'discussions'
-  action: 'post_file_upload'
-  description: 'Exibir janela para upload de arquivos no foruns'
+  controller: 'post_file'
+  action: 'new'
+  description: 'Exibir janela para upload de arquivos em uma postagem'
 
 
 # Material de apoio

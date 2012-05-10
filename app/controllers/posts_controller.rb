@@ -3,7 +3,7 @@ class PostsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :prepare_for_pagination
 
-  # load_and_authorize_resource
+  load_and_authorize_resource
 
   # GET /discussions/1/posts
   # GET /discussions/1/posts/20120217/news/asc/order/10/limit
