@@ -12,11 +12,10 @@
       </thead>
       <tbody>
         <% @discussions.each do |discussion| %>
-          <tr class="lines <%= 'period_ended' if discussion.closed? and !extra_period(discussion)%>">
+          <tr class="lines <%= 'period_ended' if discussion.closed? and (not discussion.extra_time?(current_user.id)) %>">
             <td>
               <% if discussion.user_can_see?(current_user.id) %>
                 <%=link_to discussion.name, discussion_posts_path(discussion), {:class => 'link_content'} %>
-                <%#= raise "#{discussion.extra_time?(current_user.id)}"%>
                 <%= "(#{t(:forum_closed_short)})" if discussion.closed? and (not discussion.extra_time?(current_user.id)) %>
                 <%= "(#{t(:discussion_closed_to_students)})" if discussion.extra_time?(current_user.id) %>
               <% else %>

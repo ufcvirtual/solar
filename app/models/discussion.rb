@@ -37,6 +37,11 @@ class Discussion < ActiveRecord::Base
     self.discussion_posts.where("#{where.join(' AND ')}").paginate(:per_page => opts['limit'], :page => opts['page']).order("discussion_posts.updated_at #{opts['order']}, discussion_posts.id #{opts['order']}")
   end
 
+  def discussion_posts_count(plain_list = true)
+    return self.posts.count if plain_list
+    return self.discussion_posts.where(:parent_id => nil).count
+  end
+
   def count_posts_after_and_before_period(period)
     query = <<SQL
       WITH cte_before AS (
@@ -60,18 +65,6 @@ SQL
     ActiveRecord::Base.connection.select_all query
   end
 
-
-
-
-
-
-
-
-
-
-  ##
-  # Todas as discussoes por estudante no grupo
-  ##
   def self.all_by_allocations_and_student_id(allocations, student_id)
     query = <<SQL
       WITH cte_discussions AS (
@@ -111,15 +104,6 @@ SQL
 SQL
 
     Discussion.find_by_sql(query)
-  end
-
-
-
-
-
-  def discussion_posts_count(plain_list = true)
-    return self.posts.count if plain_list
-    return self.discussion_posts.where(:parent_id => nil).count
   end
 
 end

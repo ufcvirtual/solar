@@ -2,9 +2,11 @@ include FilesHelper
 
 class PostFilesController < ApplicationController
 
-  load_and_authorize_resource :except => :create
+  load_and_authorize_resource :except => [:new, :create]
 
   def new
+    authorize! :new, PostFile
+
     @post = Post.find(params[:post_id])
     render :layout => false
   end
@@ -39,13 +41,12 @@ class PostFilesController < ApplicationController
   end
 
   def destroy
-    file = PostFile.find(params[:id])
-    post = file.post
     error = false
+    post = @post_file.post
 
     if post.user_id == current_user.id and post.id == params[:post_id].to_i
-      file.delete
-      File.delete(file.attachment.path) if File.exist?(file.attachment.path)
+      @post_file.delete
+      File.delete(@post_file.attachment.path) if File.exist?(@post_file.attachment.path)
     else
       error = true
     end
@@ -64,11 +65,8 @@ class PostFilesController < ApplicationController
   end
 
   def download
-    authorize! :download, PostFile
-
-    file = PostFile.find(params[:id])
-    post = file.post
-    download_file(discussion_posts_path(post.discussion), file.attachment.path, file.attachment_file_name)
+    post = @post_file.post
+    download_file(discussion_posts_path(post.discussion), @post_file.attachment.path, @post_file.attachment_file_name)
   end
 
 end

@@ -45,7 +45,6 @@
       <%= hidden_field(:discussion_post, :content, {:value => ""}) %>
       <%= hidden_field(:discussion_post, :discussion_id, {:value => @discussion.id}) %>
       <%= hidden_field(:discussion_post, :parent_id, {:value => ""}) %>
-      <%= hidden_field(:discussion_post, :level, {:value => 1}) %>
       <%= hidden_field_tag(:display_mode, @display_mode) %>
       <%= hidden_field_tag(:current_page, @current_page) %>
     <% end %>
@@ -53,7 +52,6 @@
 <% end %>
 
 <script type="text/javascript">
-
   function showUploadForm(url) {
     showLightBoxURL(url, 400, 250, true, '<%=t(:forum_attach_file_title)%>');
     return false;
@@ -70,20 +68,12 @@
       '</div>';
 
     // Removendo outra caixa de entrada de postagem que possam estar abertas, possivelmente.
-    $('#new_post_dialog').attr('id', 'oldPostDialog').slideUp(function(){
-      $(this).remove();
-    });
-
+    $('#new_post_dialog').attr('id', 'oldPostDialog').slideUp(function(){ $(this).remove(); });
     $('#newPostTextBox').attr('id', 'oldPostTextBox').remove();
+    if (CKEDITOR.instances.newPostTextBox) CKEDITOR.instances.newPostTextBox.destroy();
+    postContainer.append(newFormCode); // Criando a nova caixa de entrada e exibindo-a
 
-    if (CKEDITOR.instances.newPostTextBox) {
-      CKEDITOR.instances.newPostTextBox.destroy();
-    }
-
-    // Criando a nova caixa de entrada e exibindo-a
-    postContainer.append(newFormCode);
-
-    $('#newPostTextBox').ckeditor( function () {
+    $('#newPostTextBox').ckeditor(function() {
       $('#new_post_dialog').css('width','100%');
       $('#new_post_dialog').show(300)
     }, {
@@ -108,19 +98,19 @@
   }
 
   function del_post(post_id, url) {
-    var answer = confirm("<%=t(:message_confirm)%>");
-    if (!answer) return;
+    if (!confirm("<%=t(:message_confirm)%>")) return;
 
     $.ajax({
       type: "DELETE",
       url: url,
       success: function(data) {
+        // console.log(data);
         $('#' + post_id).fadeOut(100, function() {
           $(this).remove();
         });
       },
       error: function(obj, status) {
-        alert('tratamento de erro ainda nao feito');
+        // tratamento de erro ainda nao feito
       }
     });
   }
@@ -129,7 +119,6 @@
     // Botões de responder postagem
     $('.postDialogLink').click(function () {
       $('#discussion_post_parent_id').attr('value', $(this).attr('post_id'));
-      $('#discussion_post_level').attr('value', $(this).attr('level'));
 
       var postContainer = $(this).parent();
       appendRichTextBox(postContainer);

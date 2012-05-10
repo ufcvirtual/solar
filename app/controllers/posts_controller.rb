@@ -3,26 +3,27 @@ class PostsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :prepare_for_pagination
 
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:index, :create]
 
   # GET /discussions/1/posts
   # GET /discussions/1/posts/20120217/news/asc/order/10/limit
   # GET /discussions/1/posts/20120217/history/asc/order/10/limit
   def index
-    @posts, count = [], []
+    authorize! :index, Post
 
+    @posts, count = [], []
     begin
       @discussion = Discussion.find(params[:discussion_id])
-      @can_see = @discussion.user_can_see?(current_user.id)
 
-      if @can_see
+      if @can_see = @discussion.user_can_see?(current_user.id)
         @can_interact = @discussion.user_can_interact?(current_user.id)
         p = params.select { |k, v| ['date', 'type', 'order', 'limit', 'display_mode', 'page'].include?(k) }
         p['page'] ||= @current_page
 
-        @display_mode = p['display_mode'] = p['display_mode'] || 'tree'
+        @display_mode = p['display_mode'] ||= 'tree'
         @posts = @discussion.posts(p)
 
+        # verificar se eh json ou xml para fazer isso
         period = (@posts.empty?) ? [p['date'], p['date']] : [@posts.first.updated_at, @posts.last.updated_at].sort
         count = @discussion.count_posts_after_and_before_period(period)
       end
@@ -39,12 +40,14 @@ class PostsController < ApplicationController
   # POST /discussions/:id/posts
   # POST /discussions/:id/posts.xml
   def create
-    params[:discussion_post][:user_id] = current_user.id
-    at_id = Discussion.find(params[:discussion_post][:discussion_id]).allocation_tag_id
-    params[:discussion_post][:profile_id] = current_user.profiles_with_access_on('create', 'posts', at_id, only_id = true).first
-    params[:discussion_post][:level] = params[:discussion_post][:level].to_i + 1
+    authorize! :create, Post
 
     @post = Post.new(params[:discussion_post])
+    allocation_tag_id = Discussion.find(@post.discussion_id).allocation_tag_id
+
+    @post.user_id = current_user.id
+    @post.profile_id = current_user.profiles_with_access_on('create', 'posts', allocation_tag_id, only_id = true).first
+    @post.level = @post.parent.level.to_i + 1 unless @post.parent_id.nil?
 
     respond_to do |format|
       if @post.save
@@ -62,15 +65,13 @@ class PostsController < ApplicationController
   # PUT /discussions/:id/posts/1
   # PUT /discussions/:id/posts/1.xml
   def update
-    @post = Post.find(params[:id])
-
     respond_to do |format|
       if @post.update_attributes(params[:discussion_post])
         format.html { redirect_to(discussion_posts_path(@post.discussion), :notice => t(:discussion_post_updated)) }
         format.xml  { head :ok }
         format.json  { head :ok }
       else
-        format.html { redirect_to(discussion_posts_path(@post.discussion), :notice => t(:discussion_post_not_updated)) }
+        format.html { redirect_to(discussion_posts_path(@post.discussion), :alert => t(:discussion_post_not_updated)) }
         format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
         format.json  { render :json => @post.errors, :status => :unprocessable_entity }
       end
@@ -80,8 +81,6 @@ class PostsController < ApplicationController
   # DELETE /posts/1
   # DELETE /posts/1.xml
   def destroy
-    @post = Post.find(params[:id])
-
     @post.files.each do |file|
       file.delete
       File.delete(file.attachment.path) if File.exist?(file.attachment.path)

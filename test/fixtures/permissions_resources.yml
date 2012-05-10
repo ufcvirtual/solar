@@ -120,7 +120,7 @@ dis1:
 dis2:
   profile_id: 1
   resource_id: 43
-  per_id: false
+  per_id: true
 
 dis3:
   profile_id: 1
@@ -150,7 +150,7 @@ dis7:
 dis8:
   profile_id: 1
   resource_id: 51
-  per_id: false
+  per_id: true
 
 dis9:
   profile_id: 1
@@ -338,7 +338,7 @@ dipt1:
 dipt2:
   profile_id: 2
   resource_id: 43
-  per_id: false
+  per_id: true
 
 dipt3:
   profile_id: 2
@@ -368,7 +368,7 @@ dipt7:
 dipt8:
   profile_id: 2
   resource_id: 51
-  per_id: false
+  per_id: true
 
 dipt9:
   profile_id: 2
@@ -566,7 +566,7 @@ dita1:
 dita2:
   profile_id: 3
   resource_id: 43
-  per_id: false
+  per_id: true
 
 dita3:
   profile_id: 3
@@ -606,7 +606,7 @@ dita9:
 dita10:
   profile_id: 3
   resource_id: 51
-  per_id: false
+  per_id: true
 
 dita11:
   profile_id: 3
