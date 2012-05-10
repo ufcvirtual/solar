@@ -37,7 +37,7 @@ class CurriculumUnitsController < ApplicationController
     # destacando dias que possuem eventos
     schedules_events = Schedule.all_by_allocation_tags(allocation_tags)
     @scheduled_events = schedules_events.collect { |schedule_event|
-      [schedule_event['start_date'], schedule_event['end_date']]
+      [schedule_event['start_date'].to_date.to_s(), schedule_event['end_date'].to_date.to_s()]
     }.flatten.uniq
 
   end
