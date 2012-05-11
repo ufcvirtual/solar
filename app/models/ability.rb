@@ -19,10 +19,9 @@ class Ability
            ORDER BY 1, 2;"
 
       permissions = ActiveRecord::Base.connection.select_all query
-
       permissions.each do |permission|
         can permission['action'].to_sym, model_name(permission['controller']) do |object|
-          permission['per_id'] == 'f' or ((object.respond_to?(:user_id) and object.user_id == user.id) or (object.class.to_s == 'User' and object.id == user.id))
+          permission['per_id'] == 'f' or (user_permission_to(user, object) or (object.class.to_s == 'User' and object.id == user.id))
         end
       end
     else
@@ -33,8 +32,16 @@ class Ability
   private
 
   def model_name(word)
-    word = word[0..-2] if word[-1] == 's' # retira o s do final dos nomes dos controllers
-    word.split('_').map {|w| w.capitalize}.join('').constantize
+    word.capitalize.singularize.camelize.constantize
+  end
+
+  def user_permission_to(user, object)
+    return true if (object.respond_to?(:user_id) and object.user_id == user.id)
+
+    object.class.reflect_on_all_associations(:belongs_to).each do |class_related|
+      return true if (object.respond_to?(class_related.name) and object.send(class_related.name).respond_to?(:user_id) and (object.send(class_related.name).user_id == user.id))
+    end
+    return false
   end
 
 end

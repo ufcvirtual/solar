@@ -5,9 +5,7 @@ class PostFile < ActiveRecord::Base
   belongs_to :post, :class_name => "Post", :foreign_key => "discussion_post_id"
   
   validates :attachment_file_name, :presence => true
-
   validates_attachment_size :attachment, :less_than => 10.megabyte, :message => " "
-
   validates_attachment_content_type_in_black_list :attachment
 
   has_attached_file :attachment,

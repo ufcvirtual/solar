@@ -44,10 +44,10 @@ class PostFilesController < ApplicationController
     error = false
     post = @post_file.post
 
-    if post.user_id == current_user.id and post.id == params[:post_id].to_i
+    begin
       @post_file.delete
       File.delete(@post_file.attachment.path) if File.exist?(@post_file.attachment.path)
-    else
+    rescue
       error = true
     end
 
