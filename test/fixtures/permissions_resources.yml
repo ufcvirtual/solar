@@ -125,7 +125,7 @@ dis2:
 dis3:
   profile_id: 1
   resource_id: 44
-  per_id: false
+  per_id: true
 
 dis4:
   profile_id: 1
@@ -343,7 +343,7 @@ dipt2:
 dipt3:
   profile_id: 2
   resource_id: 44
-  per_id: false
+  per_id: true
 
 dipt4:
   profile_id: 2
@@ -571,7 +571,7 @@ dita2:
 dita3:
   profile_id: 3
   resource_id: 44
-  per_id: false
+  per_id: true
 
 dita4:
   profile_id: 3
