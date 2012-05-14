@@ -3,9 +3,9 @@ class Schedule < ActiveRecord::Base
   has_many :discussions
   has_many :lessons
   has_many :schedule_events
-  has_many :portfolio
-  has_many :assignment
-
+  has_many :portfolios
+  has_many :assignments
+  
   def self.all_by_allocation_tags(allocation_tags, period = false, date_search = nil)
 
     allocation_tags = allocation_tags.join(',') if allocation_tags.is_a?(Array)

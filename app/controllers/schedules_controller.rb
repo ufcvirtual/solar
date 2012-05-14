@@ -14,7 +14,7 @@ class SchedulesController < ApplicationController
       @visible_name = false
     else
       @visible_name = true
-      allocation_tags = AllocationTag.all_by_user_id(current_user.id)
+      allocation_tags = current_user.allocation_tag_activated_ids
       allocation_tags = all_allocation_tags(allocation_tags)
     end
     

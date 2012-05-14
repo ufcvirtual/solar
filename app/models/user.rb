@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
 
   has_many :allocations
+  has_many :allocation_tags, :through => :allocations, :uniq => true
   has_many :profiles, :through => :allocations, :uniq => true
   has_many :logs
   has_many :lessons
@@ -180,6 +181,14 @@ SQL
 
     profiles = Profile.find_by_sql([query, action, controller])
     return (only_id) ? profiles.map { |p| p.id.to_i } : profiles
+  end
+  
+  def allocation_tag_activated_ids
+    allocation_tags = self.allocation_tags.where('allocations.status = ?', Allocation_Activated)
+        
+    return  allocation_tags.collect { |allocation_tag|
+      allocation_tag['id'].to_i
+    }
   end
 
 end

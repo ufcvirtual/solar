@@ -121,25 +121,6 @@ SQL
     Group.find_by_sql(query)
   end
 
-  ##
-  # Todas as allocations do usuario
-  ##
-  def self.all_by_user_id(user_id)
-    query = <<SQL
-    SELECT DISTINCT t2.id
-          FROM allocations      AS t1
-          JOIN allocation_tags  AS t2 ON t2.id = t1.allocation_tag_id
-         WHERE t1.status = #{Allocation_Activated}
-           AND t1.user_id = #{user_id}
-SQL
-
-    allocation_tags = ActiveRecord::Base.connection.select_all query
-    return allocation_tags.collect { |allocation_tag|
-      allocation_tag['id'].to_i
-    }
-
-  end
-
   def is_user_class_responsible?(user_id)
 
     related_allocations_tags = AllocationTag.find_related_ids(id)
