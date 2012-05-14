@@ -311,6 +311,8 @@
   enrollm_request_message: "Request for enrollment made!"
   enrollm_request_cancel_message: "Request for enrollment cancelled!"
   enrollm_confirm: "Are you sure you want to cancel?"
+  enrollm_acepted_message: "Enrollment effected."
+  enrollm_rejected_message: "Enrollment rejected."
 
   # informacoes da unidade curricular
   syllabus: Syllabus

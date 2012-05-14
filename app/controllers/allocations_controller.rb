@@ -2,9 +2,12 @@ class AllocationsController < ApplicationController
 
   load_and_authorize_resource
 
+  # todas as matriculas da alocation_tag selecionada
   def index
+    
   end
 
+  # mostra alocacao de aluno
   def show
     respond_to do |format|
       format.html
@@ -12,6 +15,7 @@ class AllocationsController < ApplicationController
     end
   end
 
+  # aloca aluno
   def new
     respond_to do |format|
       format.html
@@ -19,13 +23,40 @@ class AllocationsController < ApplicationController
     end
   end
 
+  # altera turma da alocacao
   def edit
+
   end
 
-  def create
+  # aceita matricula (alocacao)
+  def acept
+    @allocation = Allocation.find(params[:id])
+    @allocation.status = Allocation_Activated
+
+    message = ''
+    if @allocation.save
+      message = t(:enrollm_acepted_message)
+    end
+
     respond_to do |format|
-      format.html
-      format.xml  { render :xml => @allocation }
+      format.html { redirect_to(index, :notice => message) }
+      format.xml  { head :ok }
+    end
+  end
+
+  # rejeita matricula (alocacao)
+  def reject
+    @allocation = Allocation.find(params[:id])
+    @allocation.status = Allocation_Rejected
+
+    message = ''
+    if @allocation.save
+      message = t(:enrollm_rejected_message)
+    end
+
+    respond_to do |format|
+      format.html { redirect_to(index, :notice => message) }
+      format.xml  { head :ok }
     end
   end
 

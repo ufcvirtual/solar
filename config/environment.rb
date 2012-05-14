@@ -17,6 +17,7 @@ Allocation_Pending   = 0           # quando pede alocação(matricula) pela 1a v
 Allocation_Activated = 1           # com alocação ativa
 Allocation_Cancelled = 2           # com alocação cancelada
 Allocation_Pending_Reactivate = 3  # quando pede alocação(matricula) depois de ter sido cancelado
+Allocation_Rejected  = 4           # quando pedido de matricula eh rejeitado
 
 # constantes de status de aula - table LESSONS
 Lesson_Test      = 0               # aula em teste

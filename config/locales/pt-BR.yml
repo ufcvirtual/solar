@@ -486,6 +486,8 @@
   enrollm_request_message: "Pedido de matrícula realizado!"
   enrollm_request_cancel_message: "Pedido de matrícula cancelado!"
   enrollm_confirm: "Tem certeza de que deseja cancelar?"
+  enrollm_acepted_message: "Matrícula efetivada."
+  enrollm_rejected_message: "Matrícula rejeitada."
 
   # informacoes da unidade curricular
   syllabus: "Ementa"
