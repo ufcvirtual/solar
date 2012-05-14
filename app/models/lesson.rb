@@ -1,31 +1,32 @@
 class Lesson < ActiveRecord::Base
 
-  belongs_to :allocation_tag
+  belongs_to :lesson_module
   belongs_to :user
   belongs_to :schedule
 
   def self.to_open(allocation_tag_id = nil, lesson_id = nil)
     all_allocations = AllocationTag.find_related_ids(allocation_tag_id)
 
-    # uma aula é ligada a uma turma ou a uma oferta
+    # uma aula é ligada a um modulo que eh ligado a uma turma ou a uma oferta
     query_lessons = <<SQL
        SELECT DISTINCT l.id AS lesson_id,
               l.name,
               l.address,
               l.order,
               l.type_lesson,
-              l.allocation_tag_id,
+              m.allocation_tag_id,
               l.schedule_id,
               CASE WHEN s.end_date < current_date THEN true ELSE false END AS closed
          FROM lessons         AS l
     LEFT JOIN schedules       AS s  ON l.schedule_id = s.id
-    LEFT JOIN allocation_tags AS at ON l.allocation_tag_id = at.id
+    INNER JOIN lesson_modules AS m  ON l.lesson_module_id = m.id
+    LEFT JOIN allocation_tags AS at ON m.allocation_tag_id = at.id
         WHERE status = #{Lesson_Approved}
           AND s.start_date <= current_date
           AND at.id IN (#{all_allocations.join(', ')})
 SQL
 
-    # id da aula foi passada
+    # id da aula foi passado
     query_lessons << " AND l.id = #{lesson_id} " unless lesson_id.nil?
     query_lessons << " ORDER BY l.order"
 

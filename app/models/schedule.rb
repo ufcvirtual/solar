@@ -40,16 +40,18 @@ class Schedule < ActiveRecord::Base
       )
       UNION
       (
-        SELECT t1.name, t1.description, t2.start_date, t2.end_date, 'lessons' AS schedule_type, t1.allocation_tag_id
-          ,t4.code, t5.semester, t6.name as curriculum_name
 
-          FROM lessons                 AS t1
-          JOIN schedules               AS t2 ON t2.id = t1.schedule_id
-          JOIN cte_all_allocation_tags AS t3 ON t3.allocation_tag_id = t1.allocation_tag_id
+        SELECT t1.name, t1.description, t2.start_date, t2.end_date, 'lessons' AS schedule_type, t3.allocation_tag_id
+                  ,t5.code, t6.semester, t7.name as curriculum_name
 
-          join groups as t4 on t3.group_id = t4.id
-          join offers as t5 on t3.offer_id = t5.id or t4.offer_id = t5.id
-          join curriculum_units as t6 on t3.curriculum_unit_id = t6.id or t5.curriculum_unit_id = t6.id
+                  FROM lessons                 AS t1
+                  JOIN schedules               AS t2 ON t2.id = t1.schedule_id
+
+        join lesson_modules as t3 on t1.lesson_module_id = t3.id
+        JOIN cte_all_allocation_tags AS t4 ON t4.allocation_tag_id = t3.allocation_tag_id
+        join groups as t5 on t4.group_id = t5.id
+        join offers as t6 on t4.offer_id = t6.id or t5.offer_id = t6.id
+        join curriculum_units as t7 on t4.curriculum_unit_id = t7.id or t6.curriculum_unit_id = t7.id
 
            #{date_search_option}
       )
