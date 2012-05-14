@@ -21,7 +21,7 @@ class Ability
       permissions = ActiveRecord::Base.connection.select_all query
       permissions.each do |permission|
         can permission['action'].to_sym, model_name(permission['controller']) do |object|
-          permission['per_id'] == 'f' or (user_permission_to(user, object) or (object.class.to_s == 'User' and object.id == user.id))
+          permission['per_id'] == 'f' or (user_have_permission_to?(user, object) or (object.class.to_s == 'User' and object.id == user.id))
         end
       end
     else
@@ -35,7 +35,7 @@ class Ability
     word.capitalize.singularize.camelize.constantize
   end
 
-  def user_permission_to(user, object)
+  def user_have_permission_to?(user, object)
     return true if (object.respond_to?(:user_id) and object.user_id == user.id)
 
     object.class.reflect_on_all_associations(:belongs_to).each do |class_related|
