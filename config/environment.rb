@@ -1,7 +1,5 @@
-# Load the rails application
 require File.expand_path('../application', __FILE__)
 
-# Initialize the rails application
 Solar::Application.initialize!
 
 mailer_config = YAML::load(File.open('config/mailer.yml'))

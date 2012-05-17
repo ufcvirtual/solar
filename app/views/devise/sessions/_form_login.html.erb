@@ -17,7 +17,7 @@
         <%= link_to t(:forgot_my_password), new_password_path(resource_name), :class => "black" %>
       </div>
       <div id="login_form_submit">
-        <%= f.submit t(:sign_in), :class => "solar_button", :tabindex => "3" %>
+        <%= f.submit t(:sign_in), :class => "solar_button", :id => "user_submit", :tabindex => "3" %>
       </div>
     </div>
   <% end %>
