@@ -1,6 +1,7 @@
 class CurriculumUnit < ActiveRecord::Base
 
-  has_one :allocation_tag
+  belongs_to :curriculum_unit_type
+  has_one :allocation_tag, :dependent => :destroy
   has_many :offers
   has_many :logs
 
