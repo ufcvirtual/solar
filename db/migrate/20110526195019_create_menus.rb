@@ -13,6 +13,8 @@ class CreateMenus < ActiveRecord::Migration
       ALTER TABLE menus ADD COLUMN father_id INTEGER NULL REFERENCES menus(id)
     SQL
 
+    add_foreign_key(:menus, :resources)
+    add_foreign_key(:menus, :contexts)
   end
 
   def self.down

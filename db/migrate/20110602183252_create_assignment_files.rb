@@ -7,6 +7,8 @@ class CreateAssignmentFiles < ActiveRecord::Migration
       t.integer :attachment_file_size
       t.datetime :attachment_updated_at
     end
+
+    add_foreign_key(:assignment_files, :send_assignments)
   end
 
   def self.down

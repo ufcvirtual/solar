@@ -5,6 +5,9 @@ class CreateUserMessages < ActiveRecord::Migration
       t.integer "user_id"
       t.integer "status"
     end
+
+    add_foreign_key(:user_messages, :messages)
+    add_foreign_key(:user_messages, :users)
   end
 
   def self.down

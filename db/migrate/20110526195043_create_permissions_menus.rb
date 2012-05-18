@@ -4,6 +4,9 @@ class CreatePermissionsMenus < ActiveRecord::Migration
       t.integer "profile_id", :null => false
       t.integer "menu_id",    :null => false
     end
+
+	add_foreign_key(:permissions_menus, :profiles)
+	add_foreign_key(:permissions_menus, :menus)
   end
 
   def self.down

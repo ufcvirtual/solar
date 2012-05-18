@@ -10,6 +10,8 @@ class User < ActiveRecord::Base
   has_many :user_contacts, :class_name => "UserContact", :foreign_key => "user_id"
   has_many :user_contacts, :class_name => "UserContact", :foreign_key => "user_related_id"
 
+  has_one :personal_configuration
+
   after_create :basic_profile_allocation
 
   # Include default devise modules. Others available are:

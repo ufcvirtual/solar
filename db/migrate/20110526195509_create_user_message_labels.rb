@@ -8,6 +8,9 @@ class CreateUserMessageLabels < ActiveRecord::Migration
     execute <<-SQL
       ALTER TABLE user_message_labels ADD PRIMARY KEY (user_message_id, message_label_id);
     SQL
+
+    add_foreign_key(:user_message_labels, :user_messages)
+    add_foreign_key(:user_message_labels, :message_labels)
   end
 
   def self.down

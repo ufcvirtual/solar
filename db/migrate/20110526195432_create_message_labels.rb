@@ -5,6 +5,8 @@ class CreateMessageLabels < ActiveRecord::Migration
       t.boolean "label_system", :default => true
       t.string  "title", :limit => 120, :null => false
     end
+
+    add_foreign_key(:message_labels, :users)
   end
 
   def self.down

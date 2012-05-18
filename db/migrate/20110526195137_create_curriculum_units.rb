@@ -12,6 +12,8 @@ class CreateCurriculumUnits < ActiveRecord::Migration
     end
 
     add_index "curriculum_units", ["code"], :name => "index_curriculum_unit_on_code", :unique => true
+
+    add_foreign_key(:curriculum_units, :curriculum_unit_types)
   end
 
   def self.down

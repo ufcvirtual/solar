@@ -16,6 +16,7 @@ gem 'paperclip', '3.0.3'
 gem 'will_paginate', "~> 3.0.3"
 gem 'jquery-rails', '2.0.2'
 
+gem 'foreigner', :group => [:development, :test]
 gem 'factory_girl_rails', '3.3.0', :group => [:development, :test]
 gem 'rspec-rails', '2.10.1', :group => [:development, :test]
 gem 'capistrano', '2.12.0', :group => [:development]
