@@ -86,7 +86,6 @@ Dado /^que estou logado com o usuario "([^\"]*)" e com a senha "([^\"]*)"$/ do |
   fill_in "login", :with => username
   fill_in "password", :with => password
   click_button "user_submit"
-  # selenium.wait_for_page_to_load
 end
 
 
