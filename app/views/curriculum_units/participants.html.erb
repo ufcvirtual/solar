@@ -47,7 +47,7 @@
 
     <% @participants.each do |part| %>
       <div class="participants_list_item">
-        <% if part.photo_file_name %>
+        <% unless part.photo_file_name.nil? %>
           <%=image_tag part.photo.url(:medium), :alt => t(:mysolar_alt_img_user) + ' ' + part.name %>
         <% else %>
           <%=image_tag 'no_image.png', :alt => t(:mysolar_alt_img_user) + ' ' + part.name %>

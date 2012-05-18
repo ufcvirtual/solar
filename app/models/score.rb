@@ -1,6 +1,6 @@
 class Score < ActiveRecord::Base
 
-  set_table_name "assignment_comments"
+  self.table_name = "assignment_comments"
 
   ##
   # Recupera a quantidade de acessos de um usuario em uma unidade curricular

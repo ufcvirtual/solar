@@ -17,8 +17,10 @@ Cenário: Acessar página de Edição de Dados Pessoais
             E eu deverei ver "Frase"
             E eu deverei ver "Site"
 
+@javascript @wip
 Cenário: Acessar página de Edição de Dados Cadastrais
   Dado que estou logado com o usuario "user" e com a senha "123456"
+            E eu deverei ver "HOME"
             E que estou em "Meus Dados"
   Então eu deverei ver "Nome"
             E eu deverei ver "Apelido"

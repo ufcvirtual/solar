@@ -4,7 +4,7 @@ Dado /^que tenho "([^"]*)"$/ do |name, table|
   # table is a Cucumber::Ast::Table
 	table.hashes.each do |hash|
     #		User.create(hash)
-		Factory( name.singularize, hash )
+		FactoryGirl.create(name.singularize, hash)
 	end
 
 end

@@ -1,5 +1,7 @@
-Factory.define :group do |group|
-  group.offer_id	1
-  group.code "FOR"
-  group.status "TRUE"
+FactoryGirl.define do 
+  factory :group do
+    offer_id  1
+    code "FOR"
+    status "TRUE"
+  end
 end

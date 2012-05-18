@@ -89,6 +89,7 @@ class CurriculumUnit < ActiveRecord::Base
       SELECT t3.id,
              initcap(t3.name) AS name,
              t3.photo_file_name,
+             t3.photo_updated_at,
              t3.email,
              replace(translate(array_agg(t4.name)::text,'{""}',''),',',', ') AS profile_name,
              translate(array_agg(t4.id)::text,'{}','') AS profile_id

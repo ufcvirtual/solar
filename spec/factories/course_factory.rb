@@ -1,4 +1,6 @@
-Factory.define :course do |course|
-  course.name	"test"
-  course.code	"tst1"
+FactoryGirl.define do 
+  factory :course do
+    name "test"
+    code "tst1"
+  end
 end

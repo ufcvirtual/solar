@@ -4,7 +4,6 @@ class CreateUsers < ActiveRecord::Migration
       t.string   "name", :limit => 100
       t.string   "nick", :limit => 35, :null => false
       t.string   "username", :null => false, :unique => true
-      # t.string   "email", :null => false, :unique => true # create by devise
       t.date     "birthdate"
       t.string   "enrollment_code",      :limit => 20
       t.string   "photo_file_name"
@@ -35,7 +34,6 @@ class CreateUsers < ActiveRecord::Migration
       t.text     "site"
       t.string   "status", :limit => 1
     end
-
   end
 
   def self.down

@@ -1,6 +1,8 @@
-Factory.define :allocation_tag do |allocation_tag|
-  allocation_tag.group_id 1
-  allocation_tag.offer_id nil
-  allocation_tag.curriculum_unit_id nil
-  allocation_tag.course_id nil
+FactoryGirl.define do
+  factory :allocation_tag do
+    group_id 1
+    offer_id nil
+    curriculum_unit_id nil
+    course_id nil
+  end
 end

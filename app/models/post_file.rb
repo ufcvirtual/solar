@@ -1,6 +1,6 @@
 class PostFile < ActiveRecord::Base
 
-  set_table_name "discussion_post_files"
+  self.table_name = "discussion_post_files"
 
   belongs_to :post, :class_name => "Post", :foreign_key => "discussion_post_id"
   

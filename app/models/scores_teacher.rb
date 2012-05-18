@@ -1,6 +1,6 @@
 class ScoresTeacher < ActiveRecord::Base
 
-  set_table_name "assignment_comments"
+  self.table_name = "assignment_comments"
 
   # Listagem dos alunos por turma
   def self.list_students_by_curriculum_unit_id_and_group_id(curriculum_unit_id, group_id, page = 1)

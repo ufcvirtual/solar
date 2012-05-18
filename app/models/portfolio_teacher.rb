@@ -1,6 +1,6 @@
 class PortfolioTeacher < ActiveRecord::Base
 
-  set_table_name "assignment_comments"
+  self.table_name = "assignment_comments"
 
   ##
   # Lista de alunos presentes nas turmas

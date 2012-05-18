@@ -1,35 +1,14 @@
-class UsersController < ApplicationController
+include ApplicationHelper
 
-  include ApplicationHelper
+class UsersController < ApplicationController
 
   load_and_authorize_resource :except => [:photo]
 
-  # GET /users
-  def index
-    render :action => :mysolar
-  end
-
-  # GET /users/1/edit
-  def edit
-    # utilizando devise
-    set_active_tab_to_home
-    render :action => :mysolar
-    #    redirect_to :action => "edit", :controller => "devise/registrations"
-  end
-
-  ##############################
-  #     PORTLETS DO USUARIO    #
-  ##############################
-
   def mysolar
-
     set_active_tab_to_home
     @user = current_user
 
-    ######
-    # Portlet do calendario
-    # destacando dias que possuem eventos
-    ######
+    ## Portlet do calendario; destacando dias que possuem eventos
     c_units = CurriculumUnit.find_default_by_user_id(current_user.id)
     allocation_tags = c_units.collect { |unit|
       unit['allocation_tag_id'].to_i
@@ -46,14 +25,9 @@ class UsersController < ApplicationController
 
       @scheduled_events = schedules_events_dates.flatten.uniq
     end
-
   end
 
-  ##################################
-  # modificacao da foto do usuario #
-  ##################################
-
-  #Formulário de upload de foto exibido numa lightbox
+  ## Formulário de upload de foto exibido numa lightbox
   def photo
     render :layout => false
   end

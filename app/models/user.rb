@@ -56,7 +56,6 @@ class User < ActiveRecord::Base
     :url => "/media/:class/:id/photos/:style.:extension",
     :default_url => "/images/no_image_:style.png"
 
-  validates_attachment_presence :photo
   validates_attachment_size :photo, :less_than => 700.kilobyte, :message => " " # Esse :message => " " deve permanecer dessa forma enquanto não descobrirmos como passar a mensagem de forma correta. Se o message for vazio a validação não é feita.
   validates_attachment_content_type :photo,
     :content_type => ['image/jpeg','image/png','image/gif','image/pjpeg'],
