@@ -1,2 +1,0 @@
-class UserContactsController < ApplicationController
-end
