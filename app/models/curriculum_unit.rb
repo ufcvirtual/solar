@@ -100,7 +100,7 @@ class CurriculumUnit < ActiveRecord::Base
        WHERE t2.id IN (#{allocation_tags})
          AND #{negative} cast(t4.types & '#{profile_flag.to_s(2)}' as boolean)
          AND t1.status = #{Allocation_Activated}
-       GROUP BY t3.id, t3.name, t3.photo_file_name, t3.email
+       GROUP BY t3.id, t3.name, t3.photo_file_name, t3.email, t3.photo_updated_at
        ORDER BY t3.name, profile_name
 SQL
 

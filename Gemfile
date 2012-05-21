@@ -4,6 +4,7 @@ gem 'rails', '3.2.3'
 gem 'rack', '1.4.1'
 gem 'rake', '0.9.2.2'
 gem 'pg', '0.13.2'
+gem 'foreigner', '1.1.6'
 
 gem 'devise', '2.1.0'
 gem 'devise-encryptable', '0.1.1'
@@ -17,7 +18,6 @@ gem 'will_paginate', "~> 3.0.3"
 gem 'jquery-rails', '2.0.2'
 
 gem 'passenger', '3.0.12', :group => [:production]
-gem 'foreigner', :group => [:development, :test]
 gem 'factory_girl_rails', '3.3.0', :group => [:development, :test]
 gem 'rspec-rails', '2.10.1', :group => [:development, :test]
 gem 'capistrano', '2.12.0', :group => [:development]
