@@ -21,16 +21,7 @@ Solar::Application.routes.draw do
   resources :discussions, :only => [:index] do
     resources :posts, :except => [:show, :new, :edit]
     controller :posts do
-      # news
-      match "posts/:date/news"                              => :index, :type => "news", :via => :get
-      match "posts/:date/news/:order/order"                 => :index, :type => "news", :via => :get
-      match "posts/:date/news/:limit/limit"                 => :index, :type => "news", :via => :get
-      match "posts/:date/news/:order/order/:limit/limit"    => :index, :type => "news", :via => :get
-      # history
-      match "posts/:date/history"                           => :index, :type => "history", :via => :get
-      match "posts/:date/history/:order/order"              => :index, :type => "history", :via => :get
-      match "posts/:date/history/:limit/limit"              => :index, :type => "history", :via => :get
-      match "posts/:date/history/:order/order/:limit/limit" => :index, :type => "history", :via => :get
+      get "posts/:type/:date(/order/:order(/limit/:limit))" => 'posts#index' # types [:news, :history]; order [:asc, :desc]
     end
   end
 
