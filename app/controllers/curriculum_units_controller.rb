@@ -1,16 +1,23 @@
-class CurriculumUnitsController < ApplicationController
+include CurriculumUnitsHelper
+include DiscussionPostsHelper
+include MessagesHelper
 
-  include CurriculumUnitsHelper
-  include DiscussionPostsHelper
-  include MessagesHelper
+class CurriculumUnitsController < ApplicationController
 
   before_filter :prepare_for_group_selection, :only => [:show, :participants, :informations]
 
   #  load_and_authorize_resource
 
-  ##
-  # Apresentacao de todas as informacoes relevantes para o usuario
-  ##
+  def index
+    @curriculum_units = CurriculumUnit.find_default_by_user_id(current_user.id)
+
+    respond_to do |format|
+      # format.html
+      format.xml  { render :xml => @curriculum_units }
+      format.json  { render :json => @curriculum_units }
+    end
+  end
+
   def show
     curriculum_data
 
@@ -39,15 +46,14 @@ class CurriculumUnitsController < ApplicationController
     @scheduled_events = schedules_events.collect { |schedule_event|
       [schedule_event['start_date'].to_date.to_s(), schedule_event['end_date'].to_date.to_s()]
     }.flatten.uniq
-
   end
 
   def destroy
     @curriculum_unit.destroy
 
     respond_to do |format|
-      format.html #{ redirect_to(users_url, :notice => 'Usuario excluido com sucesso!') }
-      format.xml  { head :ok }
+      format.html
+      format.xml { head :ok }
     end
   end
 
@@ -56,14 +62,13 @@ class CurriculumUnitsController < ApplicationController
 
     allocations = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
     allocation_offer = AllocationTag.all(:conditions => "id IN (#{allocations.join(', ')}) AND offer_id IS NOT NULL").first
-
     @offer = allocation_offer.offer
   end
 
   def participants
     curriculum_data
-    @student_profile = student_profile # retorna perfil em que se pede matricula (~aluno)
 
+    @student_profile = student_profile # retorna perfil em que se pede matricula (~aluno)
     allocation_tags = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
     @participants = CurriculumUnit.class_participants_by_allocations_tags_and_is_not_profile_type(allocation_tags.join(','), Profile_Type_Class_Responsible)
   end
@@ -72,11 +77,9 @@ class CurriculumUnitsController < ApplicationController
 
   def curriculum_data
     @curriculum_unit = CurriculumUnit.find(active_tab[:url]['id'])
-
     @allocation_tag_id = active_tab[:url]['allocation_tag_id']
-    allocation_tags = AllocationTag.find_related_ids(@allocation_tag_id)
-    responsible = Profile_Type_Class_Responsible
-    @responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(allocation_tags.join(','), responsible)
+    @responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(AllocationTag.find_related_ids(@allocation_tag_id).join(','),
+      Profile_Type_Class_Responsible)
   end
 
 end

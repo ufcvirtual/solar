@@ -1,17 +1,14 @@
 class GroupsController < ApplicationController
 
-  load_and_authorize_resource
+  # load_and_authorize_resource
 
   def index
-    #if current_user
-    #  @user = Group.find(current_user.id)
-    #end
-    #render :action => :mysolar
+    @groups = CurriculumUnit.find_user_groups_by_curriculum_unit(params[:curriculum_unit_id], current_user.id)
 
-    #respond_to do |format|
-    #  format.html # index.html.erb
-    #  format.xml  { render :xml => @users }
-    #end
+    respond_to do |format|
+      format.xml  { render :xml => @groups }
+      format.json  { render :json => @groups }
+    end
   end
 
   def show
@@ -51,7 +48,7 @@ class GroupsController < ApplicationController
     @group.destroy
 
     respond_to do |format|
-      format.html #{ redirect_to(users_url, :notice => 'Usuario excluido com sucesso!') }
+      format.html
       format.xml  { head :ok }
     end
   end

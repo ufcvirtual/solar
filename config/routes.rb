@@ -17,21 +17,35 @@ Solar::Application.routes.draw do
     resources :sessions, :only => [:create]
   end
 
-  # discussions/:id/posts
-  resources :discussions, :only => [:index] do
+  ## curriculum_units/:curriculum_unit_id/groups
+  resources :curriculum_units, :only => [:index, :show] do
+    get :participants, :on => :member
+    get :informations, :on => :member
+    resources :groups, :only => [:index]
+  end
+
+  ## groups/:group_id/discussions
+  resources :groups, :only => [] do
+    resources :discussions, :only => [:index]
+  end
+
+  ## discussions/:id/posts
+  resources :discussions, :only => [] do
     resources :posts, :except => [:show, :new, :edit]
     controller :posts do
-      get "posts/:type/:date(/order/:order(/limit/:limit))" => 'posts#index' # types [:news, :history]; order [:asc, :desc]
+      get "posts/:type/:date(/order/:order(/limit/:limit))" => 'posts#index' # :types => [:news, :history]; :order => [:asc, :desc]
     end
   end
 
+  ## posts/:post_id/post_files
   resources :posts, :only => [] do
     resources :post_files, :only => [:new, :create, :destroy, :download] do
       get :download, :on => :member
     end
   end
 
-  resources :users, :curriculum_units, :participants, :allocations, :courses, :scores
+  resources :users
+  resources :allocations, :courses, :scores
 
   match "/media/users/:id/photos/:style.:extension", :to => "access_control#photo"
   match "/media/portfolio/individual_area/:file.:extension", :to => "access_control#portfolio_individual_area"

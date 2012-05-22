@@ -107,7 +107,7 @@ SQL
     User.find_by_sql query
   end
 
-  def self.find_default_by_user_id(user_id)
+  def self.find_default_by_user_id(user_id, as_object = false)
     query = <<SQL
     WITH cte_all_by_user AS (
         SELECT DISTINCT t2.id AS allocation_tag_id, t2.group_id, t2.offer_id, t2.curriculum_unit_id, t2.course_id
@@ -117,8 +117,9 @@ SQL
            AND t1.user_id = #{user_id}
     )
     --
-    SELECT DISTINCT ON (name, id) * FROM (
-        SELECT * FROM (
+    SELECT DISTINCT ON (name, curriculum_unit_id) curriculum_unit_id AS id, name, allocation_tag_id, offer_id, group_id, semester
+      FROM (
+        SELECT id AS curriculum_unit_id, name, allocation_tag_id, offer_id, group_id, semester FROM (
             (
                 SELECT t2.*, NULL AS offer_id, NULL::integer AS group_id, NULL::varchar AS semester, t1.allocation_tag_id --usuarios vinculados direto a unidade curricular
                   FROM cte_all_by_user  AS t1
@@ -151,7 +152,7 @@ SQL
     ) AS curriculum_units_with_allocations;
 SQL
 
-    ActiveRecord::Base.connection.select_all query
+    as_object ? CurriculumUnit.find_by_sql(query) : ActiveRecord::Base.connection.select_all(query)
   end
 
 end
