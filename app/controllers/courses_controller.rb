@@ -2,11 +2,11 @@ class CoursesController < ApplicationController
 
   load_and_authorize_resource
   
-   def index
-   @courses = Course.find(:all) 
-   respond_to do |format| 
-     format.html # index.html.erb format.xml { render :xml => @posts } end
-   end
+  def index
+    @courses = Course.find(:all) 
+    respond_to do |format| 
+      format.html # index.html.erb format.xml { render :xml => @posts } end
+    end
   end
 
   def show
@@ -41,7 +41,6 @@ class CoursesController < ApplicationController
       end 
     end 
   end
-  
 
   def update
     @course = Course.find(params[:id])

@@ -4,7 +4,15 @@ class CurriculumUnit < ActiveRecord::Base
   has_one :allocation_tag, :dependent => :destroy
   has_many :offers
   has_many :logs
+  
+  validates :name, :presence => true
+  validates :curriculum_unit_type, :presence => true  
+  validates :resume, :presence => true
+  validates :syllabus, :presence => true
+  validates :objectives, :presence => true
 
+  after_create :allocation_tag_association
+  
   def self.find_user_groups_by_curriculum_unit(curriculum_unit_id, user_id)
     query = "
            SELECT
@@ -154,6 +162,11 @@ SQL
 SQL
 
     as_object ? CurriculumUnit.find_by_sql(query) : ActiveRecord::Base.connection.select_all(query)
+  end
+  
+  private 
+  def allocation_tag_association
+    AllocationTag.create(:curriculum_unit => self)
   end
 
 end

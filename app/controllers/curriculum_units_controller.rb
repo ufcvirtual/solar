@@ -56,6 +56,28 @@ class CurriculumUnitsController < ApplicationController
       format.xml { head :ok }
     end
   end
+  
+  def new
+    @curriculum_unit = CurriculumUnit.new
+    respond_to do |format|
+      format.html  # new.html.erb
+      format.json  { render :json => @curriculum_unit }
+    end
+  end
+  
+  def create
+    params[:curriculum_unit].delete('code') if params[:curriculum_unit][:code] == ''
+
+    @curriculum_unit = CurriculumUnit.new(params[:curriculum_unit])
+    respond_to do |format| 
+      if @curriculum_unit.save :validate => 'UC was successfully created.'
+        format.html { redirect_to(@curriculum_unit) } 
+        format.xml { render :xml => @curriculum_unit, :status => :created, :location => @curriculum_unit } 
+      else format.html { render :action => "new" } 
+        format.xml { render :xml => @curriculum_unit.errors, :status => :unprocessable_entity } 
+      end 
+    end 
+  end
 
   def informations
     curriculum_data
