@@ -1,30 +1,9 @@
+include LessonsHelper
+include MessagesHelper
+include DiscussionPostsHelper
+
 class AccessControlController < ApplicationController
 
-  include LessonsHelper
-  include MessagesHelper
-  include DiscussionPostsHelper
-
-  # exibicao das imagens do usuario
-  def photo
-    # raise "aqui"
-    user = User.find_by_id(params[:id])
-
-    # verifica se o usuario requisitado existe
-    head(:bad_request) and return if user.nil?
-
-    # path da foto do usuario. style => medium | small
-    path = user.photo.path(params[:style])
-
-    # bad request(404) caso o arquivo nao seja encontrado
-    head(:bad_request) and return unless File.exist?(path)
-
-    # envia a imagem
-    send_file(path, { :disposition => 'inline', :content_type => 'image' }) # content-type espcífico pra imagem
-  end
-
-  ##
-  # Método que verifica se o usuário tem algum acesso ao arquivo que ele está tentando visualizar (na área individual)
-  ##
   def portfolio_individual_area
     name_attachment = params[:file] 
     id_file = name_attachment.slice(0..name_attachment.index("_")-1)
@@ -44,9 +23,6 @@ class AccessControlController < ApplicationController
     end
   end
 
-  ##
-  # Método que verifica se o usuário tem algum acesso ao arquivo que ele está tentando visualizar (na área pública)
-  ##
   def portfolio_public_area
     name_attachment = params[:file] 
     id_file = name_attachment.slice(0..name_attachment.index("_")-1)
@@ -68,44 +44,7 @@ class AccessControlController < ApplicationController
 
   def lesson
     type = return_type(params[:extension])
-
-    # path do arquivo da aula
     send_file("#{Rails.root}/media/lessons/#{params[:id]}/#{params[:file]}.#{params[:extension]}", { :disposition => 'inline', :type => type} )
-    
-=begin
-    # verificar se usuario logado tem aula passada em na(s) disciplina(s) aberta(s)
-
-    groups = ""
-    offers = ""
-
-    # pega valores de offer e group das abas abertas pra consultar aulas
-    tabs = session[:opened_tabs]
-    tabs.each do |key, value|
-      if (!value["groups_id"].nil?)
-        groups += "," unless groups==""
-        groups += value["groups_id"]
-      end
-      if (!value["offers_id"].nil?)
-        offers += "," unless offers==""
-        offers += value["offers_id"]
-      end
-    end
-
-    # ex de formato do campo address da tabela lessons:
-    #     migrations.pdf
-    #     http://www.virtual.ufc.br
-
-    # retorna aulas
-    permited_lessons = return_lessons_to_open(offers, groups, params[:id])
-
-    # se tem aula passada em disciplina aberta, pode acessar
-    if (permited_lessons.length>0)
-      type = return_type(params[:extension])
-
-      # path do arquivo da aula
-      send_file("#{Rails.root}/media/lessons/#{params[:id]}/#{params[:file]}.#{params[:extension]}", { :disposition => 'inline', :type => type} )
-    end
-=end
   end
 
   def message
@@ -133,12 +72,6 @@ class AccessControlController < ApplicationController
     end
   end
 
-  # acesso ao material de apoio do curso
-#  def support_material_file
-#    send_file("#{Rails.root}/media/support_material_file/allocation_tags/#{params[:file_allocation_tag_id]}")
-#  end
-
-  
   private
 
   def return_type(extension)

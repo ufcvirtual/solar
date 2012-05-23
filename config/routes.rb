@@ -1,13 +1,5 @@
 Solar::Application.routes.draw do 
 
-  get "pages/index"
-  get "pages/team"
-  get "access_control/index"
-  get "offers/showoffersbyuser"
-  get "schedules/show"
-  get "portfolio/public_files_send"
-  get "users/photo"
-
   devise_for :users, :path_names => {:sign_up => :register}
 
   devise_scope :user do
@@ -44,18 +36,29 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :users
+  ## users/:user_id/edit_photo
+  resources :users do
+    get :photo, :on => :member
+    get :edit_photo, :on => :collection
+  end
+
   resources :allocations, :courses, :scores
 
-  match "/media/users/:id/photos/:style.:extension", :to => "access_control#photo"
-  match "/media/portfolio/individual_area/:file.:extension", :to => "access_control#portfolio_individual_area"
-  match "/media/portfolio/public_area/:file.:extension", :to => "access_control#portfolio_public_area"
-  match "/media/lessons/:id/:file.:extension", :to => "access_control#lesson"
-  match "/media/messages/:file.:extension", :to => "access_control#message"
+  get "pages/index"
+  get "pages/team"
+  get "access_control/index"
+  get "offers/showoffersbyuser"
+  get "schedules/show"
+  get "portfolio/public_files_send"
+  get "scores/:id/history_access" => "scores#history_access"
+  get 'home' => "users#mysolar", :as => :home
+  get 'user_root' => 'users#mysolar'
 
-  match "scores/:id/history_access" => "scores#history_access"
-  match 'home' => "users#mysolar", :as => :home
-  match 'user_root' => 'users#mysolar'  
+  get "/media/users/:id/photos/:style.:extension", :to => "users#photo"
+  get "/media/portfolio/individual_area/:file.:extension", :to => "access_control#portfolio_individual_area"
+  get "/media/portfolio/public_area/:file.:extension", :to => "access_control#portfolio_public_area"
+  get "/media/lessons/:id/:file.:extension", :to => "access_control#lesson"
+  get "/media/messages/:file.:extension", :to => "access_control#message"
 
   match ':controller(/:action(/:id(.:format)))'
 

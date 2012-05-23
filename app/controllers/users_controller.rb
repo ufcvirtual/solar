@@ -2,7 +2,7 @@ include ApplicationHelper
 
 class UsersController < ApplicationController
 
-  load_and_authorize_resource :except => [:photo]
+  load_and_authorize_resource :except => [:photo, :edit_photo]
 
   def mysolar
     set_active_tab_to_home
@@ -16,7 +16,6 @@ class UsersController < ApplicationController
 
     allocation_tags = all_allocation_tags(allocation_tags)
 
-    # verificando a possibilidade de existir um usuario sem alocacao
     unless allocation_tags.empty?
       schedules_events = Schedule.all_by_allocation_tags(allocation_tags)
       schedules_events_dates = schedules_events.collect { |schedule_event|
@@ -27,11 +26,16 @@ class UsersController < ApplicationController
     end
   end
 
-  ## Formulário de upload de foto exibido numa lightbox
   def photo
+    file_path = User.find(params[:id]).photo.path(params[:style] || :small)
+    head(:bad_request) and return unless not file_path.nil? and File.exist?(file_path)
+    send_file(file_path, { :disposition => 'inline', :content_type => 'image' })
+  end
+
+  def edit_photo
     render :layout => false
   end
-  
+
   def update_photo
     breadcrumb = active_tab[:breadcrumb].last
     redirect = breadcrumb.nil? ? {:controller => :home} : breadcrumb[:url]

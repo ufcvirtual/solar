@@ -1,18 +1,19 @@
 class DiscussionsController < ApplicationController
 
-  load_and_authorize_resource :only => [:index]
-
   def index
-    @discussions = []
-    ids = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
+    authorize! :index, Discussion
 
-    allocation_tags = AllocationTag.where(:id => ids)
-    allocation_tags.each do |at|
-      @discussions += at.discussions
+    begin
+      at_id = (active_tab[:url].include?('allocation_tag_id')) ? active_tab[:url]['allocation_tag_id'] : AllocationTag.find_by_group_id(params[:group_id] || []).id
+      @discussions = AllocationTag.where(:id => AllocationTag.find_related_ids(at_id)).map { |at|
+        at.discussions unless at.discussions.empty?
+      }.compact.flatten
+    rescue
+      @discussions = []
     end
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html
       format.xml  { render :xml => @discussions }
       format.json  { render :json => @discussions }
     end
