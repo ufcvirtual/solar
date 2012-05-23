@@ -9,14 +9,14 @@ Solar::Application.routes.draw do
     resources :sessions, :only => [:create]
   end
 
-  ## curriculum_units/:curriculum_unit_id/groups
+  ## curriculum_units/:id/groups
   resources :curriculum_units, :only => [:index, :show] do
     get :participants, :on => :member
     get :informations, :on => :member
     resources :groups, :only => [:index]
   end
 
-  ## groups/:group_id/discussions
+  ## groups/:id/discussions
   resources :groups, :only => [] do
     resources :discussions, :only => [:index]
   end
@@ -29,14 +29,15 @@ Solar::Application.routes.draw do
     end
   end
 
-  ## posts/:post_id/post_files
+  ## posts/:id/post_files
   resources :posts, :only => [] do
     resources :post_files, :only => [:new, :create, :destroy, :download] do
       get :download, :on => :member
     end
   end
 
-  ## users/:user_id/edit_photo
+  ## users/:id/photo
+  ## users/edit_photo
   resources :users do
     get :photo, :on => :member
     get :edit_photo, :on => :collection
