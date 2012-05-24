@@ -88,6 +88,8 @@
       comment_file:
         attachment_content_type: ""
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
+      group_assignment:
+        group_name: "Group name"
 
     errors:
       messages:
@@ -563,7 +565,17 @@
   group_assignment_title: "Groups"
   group_assignment_date: "Delivery date"
   group_assignment_edit: "Edit"
+  edit_group: "Edit group"
   group_assignment_new: "New group"
+  group_assignment_create: "Save"
+  group_assignment_cancel: "Cancel"
+  group_assignment_delete_error: "This group already post files"
+  group_assignment_delete_success: "Group deleted with success"
+  group_assignment_existing_name_error: "already exists"
+  no_participant_group_assignment: "Group with no participants"
+  groups_of_assignment: "Groups of assignment "
+  students_with_no_group: "Students with no group"
+  are_you_sure: "Are you sure?"
 
   # Mensagem de erro para permissão
   no_permission: "you haven't permission to access this page"

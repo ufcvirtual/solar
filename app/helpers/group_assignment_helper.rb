@@ -8,4 +8,19 @@ module GroupAssignmentHelper
     return(GroupParticipant.all_by_group_assignment(group_assignment))
   end
 
+  ##
+  # Retorna os alunos sem grupo daquela atividade
+  ##
+  def no_group_students(assignment_id)
+  	return(GroupAssignment.all_without_group(assignment_id))
+  end
+
+  ##
+  # Retorna todos os alunos daquela turma
+  ##
+  def all_students(assignment_id)
+    assignment_allocation_tag_id = Assignment.find(assignment_id).allocation_tag_id
+    return(Profile.students_of_class(assignment_allocation_tag_id))
+  end
+
 end

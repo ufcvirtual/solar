@@ -3150,7 +3150,6 @@ td.form_error {
     min-height: 50px;
     margin-right: 10px;
     margin-bottom: 10px;
-/*    padding: 5px;*/
 }
 .group_participants ul {
     padding: 5px;
@@ -3166,4 +3165,75 @@ td.form_error {
     text-align: center;
     background-color: #f1f1f1;
     padding: 2px 5px;
+}
+
+.participants{
+    border-left: 2px solid #d0d0d0;
+    float: left;
+    width: 225px;
+    min-height: 50px;
+    margin: 20px 10px 30px 15px;
+    padding-left: 5px;
+}
+
+.division{
+    border-bottom: 1px solid #D0D0D0;
+}
+
+.group_edition{
+    padding: 20px 10px 15px 15px;
+}
+
+.edition_title{
+    color: #003E7A;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+}
+
+.form_group_managment{
+    width: 400px;
+}
+
+.form_group_managment input{
+    width: 180px;
+    margin-bottom: 10px;
+}
+
+.form_group_managment label{
+    color: #000000;
+    margin-right: 10px;
+    padding-right: 5px; 
+}
+
+.all_students{
+    border: 1px solid #dedede;
+    background-color: #ffffff;
+    width: 380px;
+    min-height: 100px;
+    margin-right: 5px;
+    margin-left: 1px;
+    padding-right: 10px;
+    display: inline-block;
+}
+
+.all_students label{
+    margin-left: 5px;
+    color: #000000;
+}
+
+.all_students input{
+    width: 20px;
+}
+
+.all_students_padding{
+    padding: 10px 5px 2px 5px;
+}
+
+.each_student {
+    padding: 2px 2px 2px 2px;
+}
+
+.group_links{
+    display: inline;
+    font-weight: normal;
 }

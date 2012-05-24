@@ -226,6 +226,8 @@
       comment_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
+      group_assignment:
+        group_name: "Nome do grupo"
 
     errors:
       template:
@@ -723,7 +725,18 @@
   group_assignment_title: "Grupos"
   group_assignment_date: "Data de entrega"
   group_assignment_edit: "Editar"
+  edit_group: "Editar grupo"
   group_assignment_new: "Novo grupo"
+  group_assignment_save: "Salvar"
+  group_assignment_cancel: "Cancelar"
+  group_assignment_success: "Grupo salvo com sucesso"
+  group_assignment_delete_error: "Este grupo já enviou arquivos"
+  group_assignment_delete_success: "Grupo excluído com sucesso"
+  group_assignment_existing_name_error: "já existe"
+  no_participant_group_assignment: "Grupo sem participantes"
+  students_with_no_group: "Alunos sem grupo"
+  groups_of_assignment: "Grupos da atividade "
+  are_you_sure: "Você tem certeza?"
 
   # Mensagem de erro para permissão
   no_permission: "Você não tem permissão para acessar esta página"

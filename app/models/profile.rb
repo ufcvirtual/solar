@@ -138,7 +138,7 @@ SQL
   end
 
   ##
-  # Verifica se o usuário é responsável pela turma do arquivo que acessa (NÃO CONCLUÍDO)
+  # Verifica se o usuário é responsável pela turma do arquivo que acessa
   ##
   def self.user_responsible_of_class(allocation_tag_id, user_id)
     # coleta todas as allocations_tags relacinadas à turma em questão, pois um responsável pode não estar associado diretamente a ela
@@ -156,6 +156,18 @@ SQL
       end
     end
     return user_is_responsible
+  end
+
+  ##
+  # Retorna todos os alunos da turma
+  ##
+  def self.students_of_class(allocation_tag_id)
+    allocations_of_class = Allocation.find_all_by_allocation_tag_id(allocation_tag_id)
+    students_of_class = []
+    for allocation in allocations_of_class
+      students_of_class << User.find(allocation.user_id) unless allocation.profile.types != Profile_Type_Student
+    end
+    return students_of_class
   end
 
 end

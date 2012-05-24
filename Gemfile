@@ -21,6 +21,7 @@ gem 'jquery-rails', '2.0.2'
 gem 'passenger', '3.0.12', :group => [:production]
 gem 'factory_girl_rails', '3.3.0', :group => [:development, :test]
 gem 'rspec-rails', '2.10.1', :group => [:development, :test]
+gem 'net-ssh',  '2.4.0', :group => [:development] # dependencia capistrano
 gem 'capistrano', '2.12.0', :group => [:development]
 
 group :test do

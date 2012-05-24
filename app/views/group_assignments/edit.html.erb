@@ -1,0 +1,92 @@
+<%= form_for(@group_assignment) do |f| %>
+  <%= hidden_field_tag :group_assignment_id, @group_assignment.id %>
+  <div class="block_wrapper" id="group_assignments">
+
+    <div class="block_title">
+      <h2><%= t(:groups_of_assignment) %> <%= @group_assignment.assignment.name%></h2>
+    </div>
+
+    <div class="block_content" id="group_assignments">
+        <table class="tb_list">
+          <tbody>
+              <tr class="lines">
+                <td>
+                    <div class="group_assignment_content">
+                      <% unless @groups.nil? or @groups.empty? %>
+                        <% @groups.each do |g| %>
+                          <div class="participants">
+                            <h3 class="groupname"><%= g["group_name"] %>
+                              <div class="group_links">
+                                <%= link_to "excluir", {:action => :destroy, :id => g["id"]}, :confirm => t(:are_you_sure), :method => "delete"%>
+                              </div>
+                              <div class="group_links">
+                                <%= link_to "editar", :action => :edit, :id => g["id"] %>
+                              </div>
+                            </h3>
+                            <% gp = group_participants(g["id"])%>
+                            <% unless gp.empty? %>
+                              <ul>
+                                <% gp.each do |p| %>
+                                  <li><%= p["name"] %></li>
+                                <% end %>
+                              </ul>
+                            <% else %>
+                              <%= t(:no_participant_group_assignment) %>
+                            <% end %>
+                          </div>
+                        <% end %>
+                        <div class="participants">
+                          <h3 class="groupname"><%= t(:students_with_no_group) %></h3>
+                          <% @studens_with_no_group.each do |g| %>
+                              <ul>
+                                <li><%= g.name %></li>
+                              </ul>
+                          <% end %>
+                        </div>
+                      <% end %>
+                    </div>
+                </td>
+          </tbody>
+        </table>
+
+      <div class="division"></div>
+      <div class="group_edition">
+        <div class="edition_title"><%= t(:edit_group) %></div>    
+          <table class="tb_list">
+            <tbody>
+              <tr class="lines">
+                <td class = "form_group_managment">
+                  <div>
+                    <%=f.label t(:group_name) %> 
+                    <%= f.text_field :group_name, :value => @group_assignment.group_name %>
+                  </div>
+                  <div>
+                    <%=f.label "Participantes"%> 
+                    <% participants_names = []
+                    for participant in group_participants(@group_assignment.id) 
+                      participants_names << participant["name"]
+                    end %>
+                    <div class="all_students">
+                      <div class="all_students_padding">
+                        <% @students_of_class.each do |student| %>
+                          <div class="each_student">
+                            <%= check_box_tag "students[]", student.id, participants_names.include?(student.name) %>
+                            <%= f.label student.name %>
+                          </div>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>      
+        </div>
+    </div>
+  </div>
+  <div class="group_assignment_buttons">
+    <%= f.submit t(:group_assignment_save), :id=>"confirm", :class=>"solar_button btn btn_main", :alt=> t(:group_assignment_save) %>
+    <button type="button" class="btn btn_caution" id="folder_cancel" value="<%=t :back%>"><%= t(:group_assignment_cancel) %></button>
+    <%#= button_to t(:group_assignment_cancel), {:controller => :group_assignments, :action => :list, :id => @group_assignment.assignment.id}, :class=>'btn btn_caution' %>
+  </div>
+<% end %>
