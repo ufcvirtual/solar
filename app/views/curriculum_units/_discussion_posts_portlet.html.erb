@@ -17,12 +17,12 @@
               <%= l(discussion_post.updated_at, :format => :not_today) %> 
             <% end %>  
           </span>
-          <a class="link_content" href="<%= url_for :controller => :discussions, :action => :show, :id => discussion_post.discussion_id %>"><%= discussion_post.user.nick %></a>
-        <%
-          clear_content = strip_tags discussion_post.content
-          clear_content = clear_content.rpartition("&")[0] if clear_content.rpartition("&")[2].length < 8 
-          clear_content = slice_content(clear_content, 107) << ' (...)' if clear_content.length > 110
-        %>
+          <%= link_to discussion_post.user.nick, discussion_posts_path(discussion_post.discussion_id), {:class => "link_content"} %>
+          <%
+            clear_content = strip_tags discussion_post.content
+            clear_content = clear_content.rpartition("&")[0] if clear_content.rpartition("&")[2].length < 8 
+            clear_content = slice_content(clear_content, 107) << ' (...)' if clear_content.length > 110
+          %>
           <%= raw clear_content %>
         </div>
       <% end %>

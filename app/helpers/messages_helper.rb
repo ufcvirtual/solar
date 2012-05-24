@@ -95,20 +95,13 @@ module MessagesHelper
 
     end
     query_order = " ORDER BY send_date desc, m.id "
-
     query_all = query_fields << query_messages << query_order
-
-    # retorna total de mensagens
     query_count = " select count(distinct m.id) total " << query_messages
 
     @messages_count = ActiveRecord::Base.connection.execute(query_count)[0]["total"]
 
-    if (@messages_count.to_i > 0)
-      # retorna mensagens paginadas
-      return Message.paginate_by_sql(query_all, {:per_page => Rails.application.config.items_per_page, :page => @current_page})
-    else
-      return nil
-    end
+    return nil unless (@messages_count.to_i > 0)
+    return Message.paginate_by_sql(query_all, {:per_page => Rails.application.config.items_per_page, :page => @current_page})
   end
   
   def unread_inbox(userid, tag=nil)

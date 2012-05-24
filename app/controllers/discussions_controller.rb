@@ -5,9 +5,7 @@ class DiscussionsController < ApplicationController
 
     begin
       at_id = (active_tab[:url].include?('allocation_tag_id')) ? active_tab[:url]['allocation_tag_id'] : AllocationTag.find_by_group_id(params[:group_id] || []).id
-      @discussions = AllocationTag.where(:id => AllocationTag.find_related_ids(at_id)).map { |at|
-        at.discussions unless at.discussions.empty?
-      }.compact.flatten
+      @discussions = Discussion.all_by_allocation_tags(AllocationTag.find_related_ids(at_id))
     rescue
       @discussions = []
     end

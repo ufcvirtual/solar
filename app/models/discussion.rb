@@ -31,10 +31,27 @@ class Discussion < ActiveRecord::Base
     type = (opts["type"] == 'news') ? '>' : '<'
 
     where = []
-    where << "discussion_posts.updated_at::timestamp(0) #{type} '#{opts["date"].to_time}'::timestamp(0)" if opts.include?('date')
+    where << "t1.updated_at::timestamp(0) #{type} '#{opts["date"].to_time}'::timestamp(0)" if opts.include?('date')
     where << "parent_id IS NULL" unless opts["display_mode"] == 'list'
 
-    self.discussion_posts.where("#{where.join(' AND ')}").paginate(:per_page => opts['limit'], :page => opts['page']).order("discussion_posts.updated_at #{opts['order']}, discussion_posts.id #{opts['order']}")
+    query = <<SQL
+      SELECT t1.id,
+             t1.parent_id,
+             t1.profile_id,
+             t1.discussion_id,
+             t3.id            AS user_id,
+             t3.nick          AS user_nick,
+             t1.level,
+             t1.content,
+             t1.updated_at::timestamp(0)
+        FROM discussion_posts AS t1
+        JOIN discussions      AS t2 ON t2.id = t1.discussion_id
+        JOIN users            AS t3 ON t3.id = t1.user_id
+       WHERE #{where.join(' AND ')}
+       ORDER BY t1.updated_at #{opts['order']}, t1.id #{opts['order']}
+SQL
+
+    Post.paginate_by_sql(query, {:per_page => opts['limit'], :page => opts['page']})
   end
 
   def discussion_posts_count(plain_list = true)
@@ -65,7 +82,7 @@ SQL
     ActiveRecord::Base.connection.select_all query
   end
 
-  def self.all_by_allocations_and_student_id(allocations, student_id)
+  def self.all_by_allocations_and_student_id(allocation_tags, student_id)
     query = <<SQL
       WITH cte_discussions AS (
           SELECT t2.id            AS allocation_tag_id,
@@ -73,7 +90,7 @@ SQL
                  t1.name          AS discussion_name
             FROM discussions      AS t1
             JOIN allocation_tags  AS t2 ON t2.id = t1.allocation_tag_id
-           WHERE t2.id IN (#{allocations.join(',')})
+           WHERE t2.id IN (#{allocation_tags.join(',')})
              AND t2.group_id IS NOT NULL
       )
       -- todos os posts de cada forum
@@ -88,19 +105,25 @@ SQL
     ActiveRecord::Base.connection.select_all query
   end
 
-  ##
-  # Recupera discussions com informacoes de que o mesmo foi finalizado
-  ##
-  def self.all_by_allocations(allocations)
+  def self.all_by_allocation_tags(allocation_tags)
     query = <<SQL
-      SELECT t1.id, t1.name, t1.description, t1.schedule_id, t1.allocation_tag_id, t3.start_date, t3.end_date,
-        CASE WHEN t3.end_date < now()::date THEN true
-             ELSE false
-         END AS closed
+      SELECT t1.id,
+             t1.name,
+             t1.description,
+             t1.schedule_id,
+             t1.allocation_tag_id,
+             CASE WHEN t3.start_date >= now() THEN 0 -- nao iniciado
+                  WHEN t3.end_date >= now() THEN 1 -- aberto
+                  WHEN t3.end_date < now() THEN 2 -- fechado
+                  ELSE 0
+             END AS status,
+             max(t4.updated_at::timestamp(0)) AS last_post_date
         FROM discussions      AS t1
         JOIN allocation_tags  AS t2 ON t2.id = t1.allocation_tag_id
         JOIN schedules        AS t3 ON t1.schedule_id = t3.id
-       WHERE t2.id IN (#{allocations})
+   LEFT JOIN discussion_posts AS t4 ON t4.discussion_id = t1.id
+       WHERE t2.id IN (#{allocation_tags.join(',')})
+       GROUP BY t1.id, t1.name, t1.description, t1.schedule_id, t1.allocation_tag_id, t3.start_date, t3.end_date
 SQL
 
     Discussion.find_by_sql(query)

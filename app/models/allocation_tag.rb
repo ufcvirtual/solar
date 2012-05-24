@@ -6,14 +6,11 @@ class AllocationTag < ActiveRecord::Base
   has_many :schedule_events
   has_many :assignments
 
-  belongs_to :group
-  belongs_to :offer
-  belongs_to :curriculum_unit
   belongs_to :course
+  belongs_to :curriculum_unit
+  belongs_to :offer
+  belongs_to :group
 
-  ##
-  # Retorna ids de AllocationTags relacionadas
-  ##
   def self.find_related_ids(allocation_tag_id)
     query = <<SQL
       select allocation_tag_id, offer_parent_tag_id, curriculum_unit_parent_tag_id, course_parent_tag_id from
@@ -122,9 +119,7 @@ SQL
   end
 
   def is_user_class_responsible?(user_id)
-
     related_allocations_tags = AllocationTag.find_related_ids(id)
-
     user_is_class_responsible = false
 
     # Pesquisa pelas allocations relacionadas ao usuário que possua um perfil de tipo igual a 'Profile_Type_Class_Responsible'
@@ -142,6 +137,5 @@ SQL
     end
 
     return user_is_class_responsible
-
   end
 end

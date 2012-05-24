@@ -12,7 +12,7 @@ class PostsController < ApplicationController
     authorize! :index, Post
 
     @posts, count = [], []
-    begin
+    # begin
       @discussion = Discussion.find(params[:discussion_id])
 
       if @can_see = @discussion.user_can_see?(current_user.id)
@@ -22,13 +22,14 @@ class PostsController < ApplicationController
 
         @display_mode = p['display_mode'] ||= 'tree'
         @posts = @discussion.posts(p)
+        # raise "#{@posts.first}"
 
         # verificar se eh json ou xml para fazer isso
         period = (@posts.empty?) ? [p['date'], p['date']] : [@posts.first.updated_at, @posts.last.updated_at].sort
         count = @discussion.count_posts_after_and_before_period(period)
       end
-    rescue
-    end
+    # rescue
+    # end
 
     respond_to do |format|
       format.html # list.html.erb
@@ -47,6 +48,7 @@ class PostsController < ApplicationController
   def create
     authorize! :create, Post
 
+    params[:discussion_post][:discussion_id] = params[:discussion_id] unless params[:discussion_post].include?(:discussion_id)
     @post = Post.new(params[:discussion_post])
     allocation_tag_id = Discussion.find(@post.discussion_id).allocation_tag_id
 

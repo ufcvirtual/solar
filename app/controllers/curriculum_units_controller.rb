@@ -38,7 +38,7 @@ class CurriculumUnitsController < ApplicationController
 
     # retorna aulas, posts nos foruns e mensagens relacionados a UC mais atuais
     @lessons = Lesson.to_open(@allocation_tag_id)
-    @discussion_posts = list_portlet_discussion_posts allocation_tags
+    @discussion_posts = list_portlet_discussion_posts(allocation_tags)
     @messages = return_messages(current_user.id, 'portlet', message_tag)
 
     # destacando dias que possuem eventos

@@ -1,17 +1,9 @@
 module DiscussionPostsHelper
 
-  def list_portlet_discussion_posts(allocations)
-    all_discussions = Discussion.all_by_allocations(allocations)
-
-    return [] if all_discussions.empty? # sem discussions
-
-    # lista de ids das discussions
-    discussions_ids = []
-    all_discussions.each do |discussion|
-      discussions_ids << discussion.id
-    end
-    
-    Post.recent_by_discussions(discussions_ids.join(','), Rails.application.config.items_per_page.to_i)
+  def list_portlet_discussion_posts(allocation_tags)
+    discussions = Discussion.where(:allocation_tag_id => allocation_tags).map { |d| d.id }.join(',')
+    return [] if discussions.empty? 
+    Post.recent_by_discussions(discussions, Rails.application.config.items_per_page.to_i)
   end
 
   private
