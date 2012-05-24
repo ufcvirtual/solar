@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   has_many :lessons
   has_many :discussion_posts
   has_many :user_messages
+  has_many :message_labels
   has_many :user_contacts, :class_name => "UserContact", :foreign_key => "user_id"
   has_many :user_contacts, :class_name => "UserContact", :foreign_key => "user_related_id"
 

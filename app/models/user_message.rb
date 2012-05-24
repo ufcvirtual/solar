@@ -1,6 +1,6 @@
 class UserMessage < ActiveRecord::Base
-  belongs_to :message
-  belongs_to :user
+  has_many :user_message_labels
 
-  has_many   :user_message_labels
+  belongs_to :user
+  belongs_to :message
 end

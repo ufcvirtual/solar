@@ -292,7 +292,7 @@ class MessagesController < ApplicationController
               end
 
               #associa label do remetente
-              UserMessageLabel.transaction(:requires_new => true)do
+              UserMessageLabel.transaction(:requires_new => true) do
                 UserMessageLabel.create! :user_message_id => sender_message.id, :message_label_id => message_label.id
               end
             end
@@ -327,7 +327,7 @@ class MessagesController < ApplicationController
                   end
 
                   #associa label do destinatario
-                  UserMessageLabel.transaction(:requires_new => true)do
+                  UserMessageLabel.transaction(:requires_new => true) do
                     UserMessageLabel.create! :user_message_id => receiver_message.id, :message_label_id => message_label.id
                   end
                 end
@@ -336,7 +336,7 @@ class MessagesController < ApplicationController
           end
 
         rescue Exception => error
-          flash[:alert] =  error.message.empty? ? t(:message_send_error) : error.message
+          flash[:alert] = error.message.empty? ? t(:message_send_error) : error.message
 
           # apaga arquivos copiados fisicamente de mensagem original quando ha rollback
           unless all_files_destiny.empty?
@@ -353,7 +353,7 @@ class MessagesController < ApplicationController
           else
             flash[:notice] = t(:message_send_ok)
             # envia email apenas uma vez, em caso de sucesso da gravacao no banco
-            Notifier.deliver_send_mail(real_receivers, subject, message_header + message, Path_Message_Files, all_files_destiny) unless real_receivers.empty? #, from = nil
+            Notifier.send_mail(real_receivers, subject, message_header + message, Path_Message_Files, all_files_destiny).deliver unless real_receivers.empty? #, from = nil
           end
         end
       end
