@@ -3,11 +3,11 @@ class PostsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :prepare_for_pagination
 
-  load_and_authorize_resource :except => [:index, :create]
+  load_and_authorize_resource :except => [:index, :show, :create]
 
-  # GET /discussions/1/posts
-  # GET /discussions/1/posts/20120217/news/asc/order/10/limit
-  # GET /discussions/1/posts/20120217/history/asc/order/10/limit
+  ## GET /discussions/1/posts
+  ## GET /discussions/1/posts/20120217/news/order/asc/limit/10
+  ## GET /discussions/1/posts/20120217/history/order/asc/limit/10
   def index
     authorize! :index, Post
 
@@ -37,8 +37,13 @@ class PostsController < ApplicationController
     end
   end
 
-  # POST /discussions/:id/posts
-  # POST /discussions/:id/posts.xml
+  ## all posts of the user
+  def show
+    @posts = Discussion.find(params[:discussion_id]).posts.where(:user_id => params[:user_id])
+    render :layout => false
+  end
+
+  ## POST /discussions/:id/posts
   def create
     authorize! :create, Post
 
@@ -62,8 +67,7 @@ class PostsController < ApplicationController
     end
   end
 
-  # PUT /discussions/:id/posts/1
-  # PUT /discussions/:id/posts/1.xml
+  ## PUT /discussions/:id/posts/1
   def update
     respond_to do |format|
       if @post.update_attributes(params[:discussion_post])
@@ -78,8 +82,7 @@ class PostsController < ApplicationController
     end
   end
 
-  # DELETE /posts/1
-  # DELETE /posts/1.xml
+  ## DELETE /posts/1
   def destroy
     @post.files.each do |file|
       file.delete

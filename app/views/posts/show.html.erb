@@ -1,0 +1,18 @@
+<div id="historyposts">
+  <div>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tbody>
+        <% @posts.each_with_index do |post, idx| %>
+          <tr class="<%= (idx % 2 == 0) ? 'post_content' : 'noclass' %>">
+            <td style="overflow: auto; float: right; color: #676767; fontsize: 10px;">
+              <%=l post['updated_at'].to_time, :format => :files %>
+            </td>
+          </tr>
+          <tr class="<%= (idx % 2 == 0) ? 'post_content' : 'noclass' %>">
+            <td><%=raw post['content'] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
