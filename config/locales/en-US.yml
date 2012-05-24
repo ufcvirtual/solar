@@ -68,7 +68,7 @@
         photo_content_type: "Invalid file type"
         photo_file_size: "File too large. The maximum size of your photo should be up to 700KB."
       curriculum_unit:
-        category: "Category"
+        curriculum_unit_type_id: Type
       course: 
         name: Name
         code: Code 
@@ -325,6 +325,7 @@
   resume: Resume
   semester_date: Date
   passing_grade: Passing Grade
+  curriculum_unit_type_id: Type
 
   curriculum_unit_information_title: "Curriculum Unit Informartion"
   curriculum_unit_responsible: "Responsible"

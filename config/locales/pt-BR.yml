@@ -198,7 +198,15 @@
         photo_content_type: "Tipo de arquivo inválido."
         photo_file_size: "Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB."
       curriculum_unit:
-        category: "Categoria"
+        name: Nome
+        code: Código
+        category: Categoria
+        curriculum_unit_type_id: Tipo
+        syllabus: Ementa
+        objectives: Objetivos
+        prerequisites: Pré-requisitos
+        resume: Resumo
+        passing_grade: Média
       course: 
         name: Nome
         code: Codigo   
@@ -474,6 +482,7 @@
   resume: "Resumo"
   semester_date: "Período"
   passing_grade: "Média"
+  curriculum_unit_type_id: Tipo
 
   curriculum_unit_information_title: "Informações da Unidade Curricular"
   curriculum_unit_responsible: "Responsáveis"
