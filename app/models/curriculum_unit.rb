@@ -4,12 +4,12 @@ class CurriculumUnit < ActiveRecord::Base
   has_one :allocation_tag, :dependent => :destroy
   has_many :offers
   has_many :logs
-  
-  validates :name, :presence => true
+  validates :code, :uniqueness => true, :length => { :maximum   => 10 }
+  validates :name, :presence => true, :length => { :maximum   => 120 }
   validates :curriculum_unit_type, :presence => true  
   validates :resume, :presence => true
   validates :syllabus, :presence => true
-  validates :objectives, :presence => true
+  validates :objectives, :presence => true, :length => { :maximum   => 255 }
 
   after_create :allocation_tag_association
   

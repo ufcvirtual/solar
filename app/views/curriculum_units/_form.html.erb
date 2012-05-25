@@ -1,61 +1,18 @@
-
-<%= form_for(@curriculum_unit) do |f| %>
-  <% if @curriculum_unit.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@curriculum_unit.errors.count, "error") %> prohibited this user from being saved:</h2>
-
-      <ul>
-        <% @curriculum_unit.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-  <% text_area_field_size = '80x8' %>
-  <% default_field_size = 50 %>
-
-  <span class="form_requirement"><%= t(:required_fields) %></span>
-
-  <div class="field">
-    <%= f.label :name, "#{t(:name)}*"  %><br />
-    <%= f.text_field :name, :size => default_field_size %>
-  </div>
-  <div class="field">
-    <%= f.label :code %><br />
-    <%= f.text_field :code, :size => default_field_size %>
-  </div>
-
-  <div class="field">
-    <%= f.label :passing_grade %><br />
-    <%= f.text_field :passing_grade, :size => default_field_size %>
-  </div>
-  <div class="field">
-
-    <%= f.label :curriculum_unit_type_id, "#{t(:curriculum_unit_type_id)}*" %><br />
-    <%= f.select :curriculum_unit_type_id, options_from_collection_for_select(CurriculumUnitType.all, :id, :description)  %>
-    <%=  options_from_collection_for_select(CurriculumUnitType.all, :id, :description) %>
-  </div>
-  <div class="field">
-    <%= f.label :resume, "#{t(:resume)}*" %><br />
-    <%= f.text_area :resume, :size => text_area_field_size %>
-  </div>
-  <div class="field">
-    <%= f.label :syllabus, "#{t(:syllabus)}*" %><br />
-    <%= f.text_area :syllabus, :size => text_area_field_size %>
-  </div>
-  <div class="field">
-    <%= f.label :objectives, "#{t(:objectives)}*" %><br />
-    <%= f.text_area :objectives, :size => text_area_field_size %>
-  </div>
-  <div class="field">
-    <%= f.label :prerequisites %><br />
-    <%= f.text_area :prerequisites, :size => text_area_field_size %>
-  </div>
-
-  <div class="actions">
-
+<span class="form_requirement"><%= t(:required_fields) %></span>
+<% text_area_field_size = '80x8' %>
+<%= simple_form_for @curriculum_unit do |f| %>
+  <%= f.input :name, :class=>"btn btn_default" %>
+    <%= f.input :code %>
+    <%= f.input :passing_grade, :collection => 1..10 %>
+    <%= f.input :curriculum_unit_type do %>
+      <%=  f.select :curriculum_unit_type_id, options_from_collection_for_select(CurriculumUnitType.all, :id, :description, :order => :description ) %>
+    <% end %>
+    <%= f.input :resume %>
+    <%= f.input :syllabus %>
+    <%= f.input :objectives, :class=>"btn btn_default" %>
+    <%= f.input :prerequisites , :size => text_area_field_size%>
     <%= f.submit t(:confirm), :id=>"confirm", :class=>"btn btn_default", :alt=> t(:confirm) %>
-  </div>
-<% end %>
 
-<%= link_to t(:back), curriculum_units_path %>
+  <% end %>
+
+  <%= link_to t(:back), curriculum_units_path %>

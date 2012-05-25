@@ -69,6 +69,7 @@
         photo_file_size: "File too large. The maximum size of your photo should be up to 700KB."
       curriculum_unit:
         curriculum_unit_type_id: Type
+        curriculum_unit_type: Type
       course: 
         name: Name
         code: Code 

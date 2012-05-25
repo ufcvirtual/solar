@@ -202,6 +202,7 @@
         code: Código
         category: Categoria
         curriculum_unit_type_id: Tipo
+        curriculum_unit_type: Tipo
         syllabus: Ementa
         objectives: Objetivos
         prerequisites: Pré-requisitos

@@ -12,6 +12,7 @@ gem 'cancan', '1.6.7'
 
 gem 'chronic', '0.6.1'
 gem 'brazilian-rails', '3.1.0'
+gem 'simple_form'
 
 gem 'paperclip', '3.0.3'
 gem 'will_paginate', "~> 3.0.3"

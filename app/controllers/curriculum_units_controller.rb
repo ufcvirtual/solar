@@ -12,7 +12,7 @@ class CurriculumUnitsController < ApplicationController
     @curriculum_units = CurriculumUnit.find_default_by_user_id(current_user.id)
 
     respond_to do |format|
-      # format.html
+      format.html
       format.xml  { render :xml => @curriculum_units }
       format.json  { render :json => @curriculum_units }
     end
@@ -67,6 +67,7 @@ class CurriculumUnitsController < ApplicationController
   
   def create
     params[:curriculum_unit].delete('code') if params[:curriculum_unit][:code] == ''
+    params[:curriculum_unit].delete('prerequisites') if params[:curriculum_unit][:prerequisites] == ''
 
     @curriculum_unit = CurriculumUnit.new(params[:curriculum_unit])
     respond_to do |format| 
