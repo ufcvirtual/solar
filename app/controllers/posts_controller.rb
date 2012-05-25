@@ -39,7 +39,7 @@ class PostsController < ApplicationController
 
   ## all posts of the user
   def show
-    @posts = Discussion.find(params[:discussion_id]).posts.where(:user_id => params[:user_id])
+    @posts = Discussion.find(params[:discussion_id]).discussion_posts.where(:user_id => params[:user_id])
     render :layout => false
   end
 
