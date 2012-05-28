@@ -148,7 +148,7 @@ class ApplicationController < ActionController::Base
       hash_tab = {"id" => id, "context" => context_id, "allocation_tag_id" => allocation_tag_id}
       set_session_opened_tabs(tab_name, hash_tab, params)
 
-      redirect = { :controller => :curriculum_units, :action => :show, :id => id, :allocation_tag_id => allocation_tag_id } if context_id == Context_Curriculum_Unit
+      redirect = { :controller => :curriculum_units, :action => :home, :id => id, :allocation_tag_id => allocation_tag_id } if context_id == Context_Curriculum_Unit
     end
 
     redirect_to redirect, :flash => flash
@@ -159,7 +159,7 @@ class ApplicationController < ActionController::Base
     set_active_tab_to_home if user_session[:tabs][:active] == tab_name
     user_session[:tabs][:opened].delete(tab_name)
 
-    controller_curriculum_unit = {:controller => :curriculum_units, :action => :show, :id => active_tab[:url]['id']}
+    controller_curriculum_unit = {:controller => :curriculum_units, :action => :home, :id => active_tab[:url]['id']}
     redirect = ((active_tab[:url]['context'] == Context_Curriculum_Unit) ? controller_curriculum_unit : {:controller => :home})
     redirect_to redirect, :flash => flash
   end

@@ -13,6 +13,7 @@ Solar::Application.routes.draw do
   resources :curriculum_units do
     get :participants, :on => :member
     get :informations, :on => :member
+    get :home, :on => :member
     resources :groups, :only => [:index]
   end
 

@@ -1,7 +1,7 @@
 # language: pt
-Funcionalidade: Acessar Unidade Curricular
-  Como um usuario do solar
-  Eu quero visualizar os dados da página de uma unidade curricular
+Funcionalidade: Criar de Unidade Curricular
+  Como um usuario do solar com permissão de editar unidade cuirricular
+  Eu quero criar uma unidade curricular
 
 Contexto:
     Dado que tenho "allocations"

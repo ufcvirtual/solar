@@ -18,7 +18,7 @@ class CurriculumUnitsController < ApplicationController
     end
   end
 
-  def show
+  def home
     curriculum_data
 
     allocation_tags = AllocationTag.find_related_ids(@allocation_tag_id).join(', ');
