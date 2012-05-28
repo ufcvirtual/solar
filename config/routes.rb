@@ -44,7 +44,12 @@ Solar::Application.routes.draw do
     get :edit_photo, :on => :collection
   end
 
-  resources :allocations, :courses, :scores
+  ## allocations/enrollments
+  resources :allocations, :only => [:create, :update] do
+    get :enrollments, :action => :index, :on => :collection
+    delete :cancel, :action => :destroy, :on => :member
+    delete :cancel_request, :action => :destroy, :on => :member, :defaults => {:type => 'request'}
+  end
 
   get "pages/index"
   get "pages/team"

@@ -1,1 +1,21 @@
-<%= "manage_allocations.html" %>
+<h1>Listing allocations</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @allocations.each do |allocation| %>
+  <tr>
+    <td><%= link_to 'Show', allocation %></td>
+    <td><%= link_to 'Edit', edit_allocation_path(allocation) %></td>
+    <td><%= link_to 'Destroy', allocation, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Allocation', new_allocation_path %>

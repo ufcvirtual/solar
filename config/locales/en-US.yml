@@ -310,6 +310,7 @@
   enrollm_enrolled: "Enrolled"
   enrollm_cancel_request: "Cancel Request"
   enrollm_cancelled_message: "Enrollment cancelled!"
+  enrollm_not_cancelled_message: "Enrollment not cancelled!"
   enrollm_reactivated_message: "Enrollment reactivated!"
   enrollm_request_message: "Request for enrollment made!"
   enrollm_request_cancel_message: "Request for enrollment cancelled!"

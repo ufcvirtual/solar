@@ -459,6 +459,7 @@
   enrollm_enrolled: "Matriculado"
   enrollm_cancel_request: "Cancelar pedido"
   enrollm_cancelled_message: "Matrícula cancelada!"
+  enrollm_not_cancelled_message: "Matrícula não cancelada!"
   enrollm_reactivated_message: "Matrícula reativada!"
   enrollm_request_message: "Pedido de matrícula realizado!"
   enrollm_request_cancel_message: "Pedido de matrícula cancelado!"

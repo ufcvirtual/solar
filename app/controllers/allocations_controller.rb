@@ -1,95 +1,108 @@
 class AllocationsController < ApplicationController
 
-  load_and_authorize_resource
+  # load_and_authorize_resource
 
-  # todas as matriculas da alocation_tag selecionada
+  # GET /allocations
+  # GET /allocations.json
   def index
-    
-  end
-
-  # mostra alocacao de aluno
-  def show
-    respond_to do |format|
-      format.html
-      format.xml  { render :xml => @allocation }
-    end
-  end
-
-  # aloca aluno
-  def new
-    respond_to do |format|
-      format.html
-      format.xml  { render :xml => @allocation }
-    end
-  end
-
-  # altera turma da alocacao
-  def edit
-
-  end
-
-  # aceita matricula (alocacao)
-  def acept
-    @allocation = Allocation.find(params[:id])
-    @allocation.status = Allocation_Activated
-
-    message = ''
-    if @allocation.save
-      message = t(:enrollm_acepted_message)
-    end
+    @allocations = Allocation.all
 
     respond_to do |format|
-      format.html { redirect_to(index, :notice => message) }
-      format.xml  { head :ok }
+      format.html # index.html.erb
+      format.json { render json: @allocations }
     end
   end
 
-  # rejeita matricula (alocacao)
-  def reject
-    @allocation = Allocation.find(params[:id])
-    @allocation.status = Allocation_Rejected
+  # GET /allocations/1
+  # GET /allocations/1.json
+  # def show
+  #   @allocation = Allocation.find(params[:id])
 
-    message = ''
-    if @allocation.save
-      message = t(:enrollm_rejected_message)
-    end
+  #   respond_to do |format|
+  #     format.html # show.html.erb
+  #     format.json { render json: @allocation }
+  #   end
+  # end
+
+  # GET /allocations/new
+  # GET /allocations/new.json
+  # def new
+  #   @allocation = Allocation.new
+
+  #   respond_to do |format|
+  #     format.html # new.html.erb
+  #     format.json { render json: @allocation }
+  #   end
+  # end
+
+  # GET /allocations/1/edit
+  # def edit
+  #   @allocation = Allocation.find(params[:id])
+  # end
+
+  # POST /allocations
+  # POST /allocations.json
+  def create
+    @allocation = Allocation.new(params[:allocation])
 
     respond_to do |format|
-      format.html { redirect_to(index, :notice => message) }
-      format.xml  { head :ok }
+      if @allocation.save
+        format.html { redirect_to @allocation, notice: 'Allocation was successfully created.' }
+        format.json { render json: @allocation, status: :created, location: @allocation }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @allocation.errors, status: :unprocessable_entity }
+      end
     end
   end
 
+  # PUT /allocations/1
+  # PUT /allocations/1.json
   def update
-    respond_to do |format|
-      format.html
-      format.xml  { render :xml => @allocation }
-    end
-  end
-
-  # remove matricula (alocacao)
-  def destroy
-    @allocation.destroy
-
-    respond_to do |format|
-      format.html #{ redirect_to(users_url, :notice => 'Usuario excluido com sucesso!') }
-      format.xml  { head :ok }
-    end
-  end
-
-  # cancela matricula (alocacao)
-  def cancel
     @allocation = Allocation.find(params[:id])
-    @allocation.status = Allocation_Cancelled
 
-    message = ''
-    if @allocation.save
-      message = t(:enrollm_cancelled_message)
+    respond_to do |format|
+      if @allocation.update_attributes(params[:allocation])
+        format.html { redirect_to @allocation, notice: 'Allocation was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @allocation.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /allocations/1/cancel
+  # DELETE /allocations/1/cancel_request
+  def destroy
+    authorize! :cancel, Allocation if not params.include?(:type)
+    authorize! :cancel_request, Allocation if params.include?(:type) and params[:type] == 'request'
+
+    @allocation = Allocation.find(params[:id])
+
+    begin
+      error = false
+      if params.include?(:type) and params[:type] == 'request' and @allocation.status == Allocation_Pending
+        @allocation.destroy
+        message = t(:enrollm_request_cancel_message)
+      else
+        @allocation.status = Allocation_Cancelled
+        @allocation.save!
+        message = t(:enrollm_cancelled_message)
+      end
+    rescue Exception => e
+      message = t(:enrollm_not_cancelled_message)
+      error = true
     end
 
     respond_to do |format|
-      format.html { redirect_to(offers_showoffersbyuser_url, :notice => message) }
-      format.xml  { head :ok }
+      unless error
+        format.html { redirect_to(offers_showoffersbyuser_url, :notice => message) }
+        format.json { head :ok }
+      else
+        format.html { redirect_to(offers_showoffersbyuser_url, :alert => message) }
+        format.json { head :error }
+      end
     end
   end
 
@@ -135,37 +148,6 @@ class AllocationsController < ApplicationController
         format.html { redirect_to(offers_showoffersbyuser_url, :notice => message) }
         format.xml  { head :ok }
       end
-    end
-  end
-
-  # cancela pedido de matricula (alocacao)
-  def cancel_request
-    @allocation = Allocation.find(params[:id])
-    status = @allocation.status
-    message = ''
-
-    # se cancela 1o pedido de matricula (nao havia alocacao), remove pedido
-    if status == Allocation_Pending
-
-      if @allocation.destroy
-         message = t(:enrollm_request_cancel_message)
-      end
-
-    else
-      
-      # se havia status cancelado anterior (havia alocacao), apenas cancela pedido
-      if status == Allocation_Pending_Reactivate
-        @allocation.status = Allocation_Cancelled
-        if @allocation.save
-          message = t(:enrollm_request_cancel_message)
-        end
-      end
-
-    end
-
-    respond_to do |format|
-      format.html { redirect_to(offers_showoffersbyuser_url, :notice => message) }
-      format.xml  { head :ok }
     end
   end
 
