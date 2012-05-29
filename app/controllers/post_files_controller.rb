@@ -14,29 +14,41 @@ class PostFilesController < ApplicationController
   def create
     authorize! :create, PostFile
 
-    post = Post.find(params[:post_id])
-    discussion = Discussion.find(post.discussion_id)
     error = false
     begin
+      post = Post.find(params[:post_id])
+      discussion = post.discussion
+
       if ((not discussion.closed? or discussion.extra_time?(current_user.id)) and (post.user_id == current_user.id))
-        params[:post_file].each do |file|
-          @file = PostFile.new({:attachment => file.last})
+        files = params[:post_file].is_a?(Hash) ? params[:post_file].values : params[:post_file]
+        [files].flatten.each do |file|
+          @file = PostFile.new({ :attachment => file })
           @file.discussion_post_id = post.id
           @file.save!
         end
+      else
+        raise "not_permited"
       end
     rescue
       error = true
     end
 
     respond_to do |format|
-      unless error
-        format.html { redirect_to(discussion_posts_path(post.discussion), :notice => t(:discussion_post_updated)) }
-        format.json  { render :json => {:result => 1} }
-      else
-        format.html { redirect_to(discussion_posts_path(post.discussion), :alert => t(:discussion_post_not_updated)) }
-        format.json  { render :json => {:result => 0} }
-      end
+      format.html {
+        unless error
+          if params.include?('auth_token')
+            render :json => {:result => 1}, :status => :created
+          else
+            redirect_to(discussion_posts_path(post.discussion), :notice => t(:discussion_post_updated))
+          end
+        else
+          if params.include?('auth_token')
+            render :json => {:result => 0}, :status => :unprocessable_entity
+          else
+            redirect_to(discussion_posts_path(post.discussion), :alert => t(:discussion_post_not_updated))
+          end
+        end
+      }
     end
   end
 
