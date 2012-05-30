@@ -168,11 +168,13 @@
         <!-- titulo das paginas -->
         <div class="block_wrapper">
 
-          <% flash.each do |name, msg| %>
-            <div id="flash_message" class="<%= name %>">
-              <%= content_tag :span, msg %>
-            </div>
-          <% end %>
+          <div class="flash_message_wrapper">
+            <% flash.each do |name, msg| %>
+              <div id="flash_message" class="<%= name %>">
+                <%= content_tag :span, msg %>
+              </div>
+            <% end %>
+          </div>
 
           <% active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]] %>
           <div id="breadcrumb"><%= raw show_breadcrumb %></div>

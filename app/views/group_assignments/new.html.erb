@@ -35,7 +35,8 @@
                             <% end %>
                           </div>
                         <% end %>
-                        <div class="participants">
+                      <% end %>
+                      <div class="participants">
                           <h3 class="groupname"><%= t(:students_with_no_group) %></h3>
                           <% @studens_with_no_group.each do |g| %>
                               <ul>
@@ -43,7 +44,6 @@
                               </ul>
                           <% end %>
                         </div>
-                      <% end %>
                     </div>
                 </td>
           </tbody>

@@ -1,15 +1,16 @@
-class GroupAssignmentsController < ApplicationController
+include GroupAssignmentHelper
 
-	include GroupAssignmentHelper
+class GroupAssignmentsController < ApplicationController
 
   before_filter :prepare_for_group_selection#, :only => [:list]
 
   # lista trabalhos em grupo
-  def list
+  def index
     #authorize! :list, Portfolio
 
     # group_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
-    group_id = AllocationTag.find(params[:id]).group_id
+
+    group_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
 
     #traz apenas os trabalhos de grupo dessa turma
     @assignments = GroupAssignment.all_by_group_id(group_id)
@@ -37,11 +38,11 @@ class GroupAssignmentsController < ApplicationController
     if new_group_assignment.save
       change_students_group(new_group_assignment)
       flash[:notice] = t(:group_assignment_success)
-      redirect_to :action => :list, :id => 3
+      redirect_to :action => :index, :id => 3
     else
       flash[:alert] = new_group_assignment.errors.full_messages[0]
       redirect_to :action => :new, :id => params[:assignment_id]
-    end
+    end #list
   end
 
   ##
@@ -62,14 +63,26 @@ class GroupAssignmentsController < ApplicationController
   ##
   def update
     group_assignment = GroupAssignment.find(params[:group_assignment_id])
+
     if group_assignment.update_attributes(params[:group_assignment])
       change_students_group(group_assignment)
-      flash[:notice] = t(:group_assignment_success)
-      redirect_to :action => :list, :id => 3
+      flash_msg = t(:group_assignment_success)
+      flash_class = 'notice'
+      redirect = group_assignments_url
+      success = true
     else
-      flash[:alert] = group_assignment.errors.full_messages[0]
-      redirect_to :action => :edit, :id => group_assignment.id
+      flash_msg = group_assignment.errors.full_messages[0]
+      flash_class = 'alert'
+      redirect = {:action => :edit, :id => group_assignment.id}
+      success = false
     end
+
+    respond_to do |format|
+      format.html { redirect_to(redirect) }
+      format.xml  { render :xml => { :success => success } }
+      format.json  { render :json => { :success => success, :flash_msg => flash_msg, :flash_class => flash_class } }
+    end
+
   end
 
   ##
@@ -79,17 +92,17 @@ class GroupAssignmentsController < ApplicationController
     group_assignment = GroupAssignment.find(params[:id])
     if SendAssignment.find_all_by_group_assignment_id(group_assignment.id).empty?
       participants = group_participants(group_assignment.id)
-      participants.each{|participant| GroupParticipant.find(participant["id"]).delete}
-      GroupAssignment.find(group_assignment.id).delete
+      participants.each{|participant| GroupParticipant.find(participant["id"]).destroy}
+      GroupAssignment.find(group_assignment.id).destroy
       flash[:notice] = t(:group_assignment_delete_success)
-      redirect_to :action => :new, :id => group_assignment.assignment_id
+      redirect_to :action => :index, :id => 3
     else
       flash[:alert] = t(:group_assignment_delete_error)
       redirect_to :action => :edit, :id => group_assignment.id
     end
   end
 
-private
+  private
   ##
   # Método que realiza as mudanças de um grupo e realiza as trocas de alunos
   # => group_assingment: objeto do grupo_assignment a ser alterado/criado
@@ -114,7 +127,7 @@ private
       end
       for no_group in @studens_with_no_group
         # associa
-        GroupParticipant.create(:group_assignment_id => group_assignment.id, :user_id => no_group.id) if !params[:students].nil? and params[:students].include?(no_group.id.to_s)
+       GroupParticipant.create(:group_assignment_id => group_assignment.id, :user_id => no_group.id) if !params[:students].nil? and params[:students].include?(no_group.id.to_s)
       end
   end
 

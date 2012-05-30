@@ -3156,6 +3156,7 @@ td.form_error {
 }
 .group_new {
     clear: both;
+    padding-bottom: 5px;
 }
 .group_edit {
     float: right;
