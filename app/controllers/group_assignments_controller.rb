@@ -77,6 +77,8 @@ class GroupAssignmentsController < ApplicationController
       success = false
     end
 
+    flash[flash_class] = flash_msg
+    
     respond_to do |format|
       format.html { redirect_to(redirect) }
       format.xml  { render :xml => { :success => success } }
