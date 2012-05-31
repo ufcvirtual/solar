@@ -1,20 +1,18 @@
 module PostsHelper
 
   def post_html(post, display_mode = 'list', can_interact = false)
-    user = User.find(post.user_id)
-    photo_url = user.photo.url(:forum)
-
-    childs = post.children
-    editable = ((post.user.id == current_user.id) && (childs.count == 0))
+    user = post.user
+    children = post.children
+    editable = ((post.user_id == current_user.id) && (children.count == 0))
 
     child_html = ''
-    childs.each { |child| child_html << post_html(child, true, can_interact)} unless display_mode == 'list'
+    children.each { |child| child_html << post_html(child, true, can_interact)} unless display_mode == 'list'
 
     html = <<HTML
       <table border="0" cellpadding="0" cellspacing="0" class="forum_post" id="#{post.id}">
         <tr>
           <td rowspan="3" class="forum_post_icon">
-            #{image_tag(photo_url, :alt => t(:mysolar_alt_img_user) + ' ' + user.nick)}
+            #{image_tag(user.photo.url(:forum), :alt => t(:mysolar_alt_img_user) + ' ' + user.nick)}
           </td>
           <td class="forum_post_head">
             <div class="forum_post_author">

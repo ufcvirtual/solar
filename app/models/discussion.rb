@@ -27,7 +27,8 @@ class Discussion < ActiveRecord::Base
   end
 
   def posts(opts = {})
-    opts = { "type" => 'news', "order" => 'desc', "limit" => Rails.application.config.items_per_page.to_i, "display_mode" => 'list', "page" => 1 }.merge(opts)
+    opts = { "type" => 'news', "order" => 'desc', "limit" => Rails.application.config.items_per_page.to_i,
+      "display_mode" => 'list', "page" => 1 }.merge(opts)
     type = (opts["type"] == 'news') ? '>' : '<'
 
     where = ["t2.id = #{self.id}"]
@@ -35,51 +36,39 @@ class Discussion < ActiveRecord::Base
     where << "parent_id IS NULL" unless opts["display_mode"] == 'list'
 
     query = <<SQL
-      SELECT t1.id,
-             t1.parent_id,
-             t1.profile_id,
-             t1.discussion_id,
-             t3.id            AS user_id,
-             t3.nick          AS user_nick,
-             t1.level,
-             t1.content,
-             t1.updated_at::timestamp(0)
-        FROM discussion_posts AS t1
-        JOIN discussions      AS t2 ON t2.id = t1.discussion_id
-        JOIN users            AS t3 ON t3.id = t1.user_id
-       WHERE #{where.join(' AND ')}
-       ORDER BY t1.updated_at #{opts['order']}, t1.id #{opts['order']}
+      WITH posts AS (
+        SELECT t1.id,
+               t1.parent_id,
+               t1.profile_id,
+               t1.discussion_id,
+               t3.id AS user_id,
+               t3.nick AS user_nick,
+               t1.level,
+               t1.content,
+               t1.updated_at::timestamp(0)
+          FROM discussion_posts AS t1
+          JOIN discussions      AS t2 ON t2.id = t1.discussion_id
+          JOIN users            AS t3 ON t3.id = t1.user_id
+         WHERE #{where.join(' AND ')}
+         LIMIT #{opts['limit']} OFFSET #{(opts['page'].to_i * opts['limit'].to_i) - opts['limit'].to_i}
+      )
+      --
+      SELECT *
+        FROM posts
+       ORDER BY updated_at #{opts['order']}, id #{opts['order']}
 SQL
 
-    Post.paginate_by_sql(query, {:per_page => opts['limit'], :page => opts['page']})
+    Post.find_by_sql(query)
   end
 
   def discussion_posts_count(plain_list = true)
-    return self.posts.count if plain_list
+    return self.discussion_posts.count if plain_list
     return self.discussion_posts.where(:parent_id => nil).count
   end
 
   def count_posts_after_and_before_period(period)
-    query = <<SQL
-      WITH cte_before AS (
-        SELECT count(DISTINCT t1.id) AS before
-          FROM discussion_posts AS t1
-          JOIN discussions      AS t2 ON t2.id = t1.discussion_id
-         WHERE t2.id = #{self.id}
-           AND updated_at::timestamp(0) < '#{period.first.to_time}'::timestamp(0)
-      ),
-      cte_after AS (
-        SELECT count(DISTINCT t1.id) AS after
-          FROM discussion_posts AS t1
-          JOIN discussions      AS t2 ON t2.id = t1.discussion_id
-         WHERE t2.id = #{self.id}
-           AND updated_at::timestamp(0) > '#{period.last.to_time}'::timestamp(0)
-      )
-      --
-      SELECT (SELECT before FROM cte_before) AS before, (SELECT after FROM cte_after) AS after
-SQL
-
-    ActiveRecord::Base.connection.select_all query
+    [{"before" => self.discussion_posts.where("updated_at < '#{period.first}'").count,
+      "after" => self.discussion_posts.where("updated_at > '#{period.last}'").count}]
   end
 
   def self.all_by_allocations_and_student_id(allocation_tags, student_id)
@@ -102,7 +91,7 @@ SQL
        GROUP BY t2.discussion_id, t2.discussion_name
 SQL
 
-    ActiveRecord::Base.connection.select_all query
+    ActiveRecord::Base.connection.select_all(query)
   end
 
   def self.all_by_allocation_tags(allocation_tags)

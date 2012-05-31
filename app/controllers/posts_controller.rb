@@ -6,8 +6,7 @@ class PostsController < ApplicationController
   load_and_authorize_resource :except => [:index, :show, :create]
 
   ## GET /discussions/1/posts
-  ## GET /discussions/1/posts/20120217/news/order/asc/limit/10
-  ## GET /discussions/1/posts/20120217/history/order/asc/limit/10
+  ## GET /discussions/1/posts/20120217/[news, history]/order/asc/limit/10
   def index
     authorize! :index, Post
 
@@ -22,25 +21,28 @@ class PostsController < ApplicationController
 
         @display_mode = p['display_mode'] ||= 'tree'
         @posts = @discussion.posts(p)
-
-        # verificar se eh json ou xml para fazer isso
-        period = (@posts.empty?) ? [p['date'], p['date']] : [@posts.first.updated_at, @posts.last.updated_at].sort
-        count = @discussion.count_posts_after_and_before_period(period)
       end
     rescue
     end
 
     respond_to do |format|
-      format.html # list.html.erb
-      format.xml  { render :xml => count + @posts }
-      format.json  { render :json => count + @posts }
+      format.html
+      format.json  {
+        period = (@posts.empty?) ? [p['date'], p['date']] : [@posts.first.updated_at, @posts.last.updated_at].sort
+        render :json => @discussion.count_posts_after_and_before_period(period) + @posts
+      }
     end
   end
 
+  ## GET /discussions/1/posts/user/1
   ## all posts of the user
   def show
     @posts = Discussion.find(params[:discussion_id]).discussion_posts.where(:user_id => params[:user_id])
-    render :layout => false
+
+    respond_to do |format|
+      format.html { render :layout => false }
+      format.json { render :json => @posts }
+    end
   end
 
   ## POST /discussions/:id/posts

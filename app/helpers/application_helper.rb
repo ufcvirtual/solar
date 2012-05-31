@@ -10,7 +10,7 @@ module ApplicationHelper
 		text
 	end
 
-  # Ver se existe outro lugar melhor para este método.
+  ## Ver se existe outro lugar melhor para este método.
   def render_tabs
     text = ""
     tabs_opened = user_session[:tabs][:opened]
@@ -29,18 +29,15 @@ module ApplicationHelper
     return text
   end
 
-  # Renderiza a navegação da paginação.
+  ## Renderiza a navegação da paginação.
   def render_pagination_bar(total_itens = "1", hash_params = nil)
-    #Limpando as variaveis
-
-    #descobrindo o número total de páginas
     total_pages = (total_itens.to_f/Rails.application.config.items_per_page.to_f).ceil.to_i
     total_pages = 1 unless total_itens.to_i > 0
 
     result = ''
     if @current_page.to_i > total_pages
       @current_page = total_pages.to_s
-      result << '<script>$(function() {  $(\'form[name="paginationForm"]\').submit();  });</script>'
+      result << '<script>$(function() { $(\'form[name="paginationForm"]\').submit();  });</script>'
     end
 
     total_pages = total_pages.to_s
@@ -56,29 +53,20 @@ module ApplicationHelper
       }
     end
 
-    unless (@current_page.eql? "1")# voltar uma página: <<
+    unless (@current_page.eql? "1") # voltar uma página: <<
       result << '<a class="link_navigation" onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)-1).to_s << ');$(this).parent().submit();">&lt;&lt;</a>'
     end
 
-    # página atual:
     result << ' ' << @current_page << t(:navigation_of) << total_pages << ' '
-
     unless (@current_page.eql? total_pages)# avançar uma página: >>
-      #result << '<a href="javascript:$(\'#current_page\').val(' << ((current_page.to_i)+1).to_s << ');$(\'#current_page\').parent().submit();">&gt;&gt;</a>'
       result << '<a class="link_navigation" onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)+1).to_s << ');$(this).parent().submit();">&gt;&gt;</a>'
     end
 
-    # result << ' <input name="authenticity_token" value="' << form_authenticity_token << '" type="hidden">'
     result << '<input type="hidden" id="current_page" name="current_page" value="' << @current_page << '"/>'
-
     result << '</form>'
-
-    return result
   end
 
-  ##
-  # Renderiza a seleção de turmas
-  ##
+  ## Renderiza a seleção de turmas
   def render_group_selection(hash_params = nil)
     active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
     curriculum_unit_id = active_tab[:url]['id']
