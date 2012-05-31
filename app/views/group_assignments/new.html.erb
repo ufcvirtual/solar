@@ -36,14 +36,6 @@
                           </div>
                         <% end %>
                       <% end %>
-                      <div class="participants">
-                          <h3 class="groupname"><%= t(:students_with_no_group) %></h3>
-                          <% @studens_with_no_group.each do |g| %>
-                              <ul>
-                                <li><%= g.name %></li>
-                              </ul>
-                          <% end %>
-                        </div>
                     </div>
                 </td>
           </tbody>
@@ -61,7 +53,8 @@
                       <%= f.text_field :group_name %>
                     </div>
                     <div>
-                      <%=f.label "Participantes"%> 
+                      <%= f.label "Alunos" %> 
+                    </div>
                     <div class="all_students">
                       <div class="all_students_padding">
                         <% @students_of_class.each do |student| %>

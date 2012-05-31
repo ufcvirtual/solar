@@ -3202,8 +3202,11 @@ td.form_error {
 
 .form_group_managment label{
     color: #000000;
-    margin-right: 10px;
-    padding-right: 5px; 
+    width: 100px;
+    text-align: right;
+    margin-left: -13px;
+    padding-right: 10px; 
+    padding-top: -10px;
 }
 
 .all_students{
@@ -3211,15 +3214,16 @@ td.form_error {
     background-color: #ffffff;
     width: 380px;
     min-height: 100px;
-    margin-right: 5px;
-    margin-left: 1px;
-    padding-right: 10px;
+    margin-left: 100px;
+    margin-top: -18px;
     display: inline-block;
 }
 
 .all_students label{
     margin-left: 5px;
     color: #000000;
+    text-align: left;
+    width: 320px;
 }
 
 .all_students input{
@@ -3227,11 +3231,15 @@ td.form_error {
 }
 
 .all_students_padding{
-    padding: 10px 5px 2px 5px;
+    padding: 5px 5px 2px 5px;
 }
 
 .each_student {
     padding: 2px 2px 2px 2px;
+}
+
+.all_students_padding li{
+    list-style-type: none;
 }
 
 .group_links{
