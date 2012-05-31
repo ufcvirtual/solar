@@ -26,7 +26,7 @@ Solar::Application.routes.draw do
     resources :posts, :except => [:show, :new, :edit]
     controller :posts do
       get "posts/user/:user_id", :to => :show, :as => "posts_of_the_user"
-      get "posts/:type/:date(/order/:order(/limit/:limit))", :to => :index # :types => [:news, :history]; :order => [:asc, :desc]
+      get "posts/:type/:date(/order/:order(/limit/:limit))", :to => :index, :defaults => {:display_mode => 'list'} # :types => [:news, :history]; :order => [:asc, :desc]
     end
   end
 

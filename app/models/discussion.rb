@@ -36,7 +36,6 @@ class Discussion < ActiveRecord::Base
     where << "parent_id IS NULL" unless opts["display_mode"] == 'list'
 
     query = <<SQL
-      WITH posts AS (
         SELECT t1.id,
                t1.parent_id,
                t1.profile_id,
@@ -50,12 +49,8 @@ class Discussion < ActiveRecord::Base
           JOIN discussions      AS t2 ON t2.id = t1.discussion_id
           JOIN users            AS t3 ON t3.id = t1.user_id
          WHERE #{where.join(' AND ')}
+         ORDER BY updated_at #{opts['order']}, id #{opts['order']}
          LIMIT #{opts['limit']} OFFSET #{(opts['page'].to_i * opts['limit'].to_i) - opts['limit'].to_i}
-      )
-      --
-      SELECT *
-        FROM posts
-       ORDER BY updated_at #{opts['order']}, id #{opts['order']}
 SQL
 
     Post.find_by_sql(query)
@@ -67,8 +62,8 @@ SQL
   end
 
   def count_posts_after_and_before_period(period)
-    [{"before" => self.discussion_posts.where("updated_at < '#{period.first}'").count,
-      "after" => self.discussion_posts.where("updated_at > '#{period.last}'").count}]
+    [{"before" => self.discussion_posts.where("updated_at::timestamp(0) < '#{period.first}'").count,
+      "after" => self.discussion_posts.where("updated_at::timestamp(0) > '#{period.last}'").count}]
   end
 
   def self.all_by_allocations_and_student_id(allocation_tags, student_id)
