@@ -64,12 +64,9 @@ class GroupAssignmentsController < ApplicationController
     @groups = group_assignments(group_assignment.assignment_id)
 
     students = []
-    #  list_checked_links = create_list_checked_itens('LINKS', params[:list_check_file])
-    @groups.each{|grupo| students += create_list_checked_students(grupo.id.to_s, params[:students]) }
+    @groups.each{|group| students += create_list_checked_students(group.id.to_s, params[:students]) }
   
     students += params[:students_no_group] unless params[:students_no_group].nil?
-
-    print "#{students}"
 
     if group_assignment.update_attributes(params[:group_assignment])
       change_students_group(group_assignment, students)
@@ -139,15 +136,11 @@ private
       end
   end
 
-######################################
-######################################
-######################################
-
   ##
-  # Método que cria a lista com os ids dos arquivos de uma determinada pasta (utilizado pelo select_action_link e _file)
+  # Método que cria a lista com os ids dos group_participants checkados de um determinado grupo (utilizado em update)
   #
   # Parameters:
-  # - folder: pasta que teve a "ação"
+  # - group_id: id de cada grupo existente nas opções de escolha dos participantes
   # - selected_itens: recupera todos os ids dos itens selecionados de determinada pasta
   ##
   def create_list_checked_students(group_id, selected_students)
@@ -162,9 +155,5 @@ private
       # retorna uma lista de ids referentes aos checkbox marcados na página
       return list_checked_students
   end
-
-######################################
-######################################
-######################################
 
 end
