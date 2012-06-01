@@ -11,8 +11,8 @@ module LessonsHelper
       path_lesson = l.type_lesson==1 ? l.address : "/media/lessons/#{l.allocation_tag_id}/#{l.address}"
      
       text_lesson = t(:lesson) + ' ' + count.to_s + ' - ' + total_lesson.to_s
-       
-       unless (l.schedule.end_date < Date.today || l.schedule.start_date > Date.today)
+
+       unless (l.schedule.end_date.to_date < Date.today || l.schedule.start_date.to_date > Date.today)
           text += "<span class='lesson_link' id='lesson_link#{count.to_s}' onclick=javascript:reload_frame('#{path_lesson}','#{URI.escape(text_lesson)}','#{count.to_s}')>"+count.to_s+"</span>"
        end
        
