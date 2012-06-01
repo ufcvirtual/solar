@@ -17,10 +17,10 @@
                           <div class="participants">
                             <h3 class="groupname"><%= g["group_name"] %>
                               <div class="group_links">
-                                <%= link_to 'excluir', g, :method => :delete, :class => 'group_assig_delete' %>
+                                <%= link_to t(:group_assignment_edit).downcase, edit_group_assignment_path(g), {:class => 'group_assig_edit'} %>
                               </div>
                               <div class="group_links">
-                                <%= link_to "editar", edit_group_assignment_path(g), {:class => 'group_assig_edit'} %>
+                                <%= link_to t(:group_assignment_delete).downcase, g, :method => :delete, :confirm => t(:confirm_deletion, :group_name => g["group_name"]), :class => 'group_assig_delete' %>
                               </div>
                             </h3>
                             <% gp = group_participants(g["id"])%>
@@ -53,7 +53,7 @@
                     <%= f.text_field :group_name, :value => @group_assignment.group_name %>
                   </div>
                   <div>
-                    <%= f.label "Alunos" %> 
+                    <%= f.label t(:students) %> 
                   </div>
                   <div class="all_students">
                         <div class="all_students_padding">
@@ -71,20 +71,21 @@
                                         </ul>
                                       <% end %>
                                     <%else%>
-                                      <%= f.label "Ninguém" %>
+                                      <%= f.label t(:no_participant_group_assignment) %>
                                     <% end %>
                                   </div>
                                 </li>
                             <% end %>
                             <li >
-                               <h3 class="groupname" onclick="clickOnGroup('without_group');"><div class="menu_icon_arrow">‣</div>Sem grupo (<%= @studens_with_no_group.size %>) </h3>
+                               <h3 class="groupname" onclick="clickOnGroup('without_group');"><div class="menu_icon_arrow">‣</div> <%= t(:with_no_group) %> (<%= @students_with_no_group.size %>) </h3>
                                <div id="students_without_group" style="display: none;">
-                                 <% @studens_with_no_group.each do |g| %>
+                                 <% @students_with_no_group.each do |g| %>
                                     <ul class="each_student">
                                         <%= check_box_tag "students_no_group[]", g.id %>
                                         <%= g.name %>
                                     </ul>
                                 <% end %>
+                                <% if @students_with_no_group.empty? %> <%= f.label t(:group_assingnment_no_student_without_group) %> <% end %>
                               </div>
                             </li>
                         </div>
@@ -137,13 +138,12 @@
     });
 
     $('.group_assig_delete').click(function(){
-      if (confirm('quer excluir mesmo?')) {
-        return submit_form_with_ajax();
-      }
+      return submit_form_with_ajax();
     });
 
      function submit_form_with_ajax(){
-        if (confirm('quer salvar?')) {
+      confirm_edition_message = '<%= t(:confirm_edition_message, :actual_group_name => @group_assignment.group_name) %>';
+        if (confirm(confirm_edition_message)) {
           var form = $('form#form_group_assignment');
           var continue_with_request = true;
 

@@ -565,6 +565,7 @@
   group_assignment_title: "Groups"
   group_assignment_date: "Delivery date"
   group_assignment_edit: "Edit"
+  group_assignment_delete: "Delete"
   edit_group: "Edit group"
   group_assignment_new: "New group"
   group_assignment_create: "Save"
@@ -576,6 +577,12 @@
   groups_of_assignment: "Groups of assignment "
   students_with_no_group: "Students with no group"
   are_you_sure: "Are you sure?"
+  confirm_deletion: "Confirm deletion of group %{group_name} ?"
+  students: "Students"
+  group_assingnment_no_student_without_group: "There is no students without group"
+  confirm_edition_message: "Save changes of group %{actual_group_name} ?"
+  confirm_creation_message: "Create group?"
+  with_no_group: "With no group"
 
   # Mensagem de erro para permissão
   no_permission: "you haven't permission to access this page"

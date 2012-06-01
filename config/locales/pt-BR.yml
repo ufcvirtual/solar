@@ -210,7 +210,7 @@
         passing_grade: Média
       course: 
         name: Nome
-        code: Codigo   
+        code: Código   
       discussion_post: 
         content: Conteúdo
       public_file:
@@ -725,6 +725,7 @@
   group_assignment_title: "Grupos"
   group_assignment_date: "Data de entrega"
   group_assignment_edit: "Editar"
+  group_assignment_delete: "Deletar"
   edit_group: "Editar grupo"
   group_assignment_new: "Novo grupo"
   group_assignment_save: "Salvar"
@@ -737,6 +738,12 @@
   students_with_no_group: "Alunos sem grupo"
   groups_of_assignment: "Grupos da atividade "
   are_you_sure: "Você tem certeza?"
+  confirm_deletion: "Confirma deleção do grupo %{group_name} ?"
+  students: "Alunos"
+  group_assingnment_no_student_without_group: "Não há alunos sem grupo"
+  confirm_edition_message: "Salvar as alterações do grupo %{actual_group_name} ?"
+  confirm_creation_message: "Criar grupo?"
+  with_no_group: "Sem grupo"
 
   # Mensagem de erro para permissão
   no_permission: "Você não tem permissão para acessar esta página"

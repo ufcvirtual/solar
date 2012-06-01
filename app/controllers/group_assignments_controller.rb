@@ -65,7 +65,7 @@ class GroupAssignmentsController < ApplicationController
   def edit
     @group_assignment = GroupAssignment.find(params[:id])
     @groups = group_assignments(@group_assignment.assignment_id)
-    @studens_with_no_group = no_group_students(@group_assignment.assignment_id)
+    @students_with_no_group = no_group_students(@group_assignment.assignment_id)
   end
 
   ##
@@ -112,7 +112,7 @@ class GroupAssignmentsController < ApplicationController
       participants.each{|participant| GroupParticipant.find(participant["id"]).destroy}
       GroupAssignment.find(group_assignment.id).destroy
       flash[:notice] = t(:group_assignment_delete_success)
-      redirect_to :action => :index, :id => 3
+      redirect_to group_assignments_url
     else
       flash[:alert] = t(:group_assignment_delete_error)
       redirect_to :action => :edit, :id => group_assignment.id
