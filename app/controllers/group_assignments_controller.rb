@@ -24,8 +24,7 @@ class GroupAssignmentsController < ApplicationController
     @group_assignment = GroupAssignment.new(params[:group_assignment])
     @assignment = Assignment.find(params[:id])
     @groups = group_assignments(@assignment.id)
-    @studens_with_no_group = no_group_students(@assignment.id)
-    @students_of_class = all_students(@assignment.id)
+    @students_with_no_group = no_group_students(@assignment.id)
   end
 
   ##
@@ -33,14 +32,28 @@ class GroupAssignmentsController < ApplicationController
   ##
   def create
     new_group_assignment = GroupAssignment.new(:assignment_id => params[:assignment_id], :group_name => params[:group_assignment][:group_name])
+    
     if new_group_assignment.save
-      change_students_group(new_group_assignment)
-      flash[:notice] = t(:group_assignment_success)
-      redirect_to group_assignments_url
+      change_students_group(new_group_assignment, params[:students_no_group])
+      flash_msg = t(:group_assignment_success)
+      flash_class = 'notice'
+      redirect = group_assignments_url
+      success = true
     else
-      flash[:alert] = new_group_assignment.errors.full_messages[0]
-      redirect_to :action => :new, :id => params[:assignment_id]
+      flash_msg = new_group_assignment.errors.full_messages[0]
+      flash_class = 'alert'
+      redirect = {:action => :new, :id => params[:assignment_id]}
+      success = false
     end
+
+    flash[flash_class] = flash_msg
+    
+    respond_to do |format|
+      format.html { redirect_to(redirect) }
+      format.xml  { render :xml => { :success => success } }
+      format.json  { render :json => { :success => success, :flash_msg => flash_msg, :flash_class => flash_class } }
+    end
+
   end
 
   ##
@@ -53,7 +66,6 @@ class GroupAssignmentsController < ApplicationController
     @group_assignment = GroupAssignment.find(params[:id])
     @groups = group_assignments(@group_assignment.assignment_id)
     @studens_with_no_group = no_group_students(@group_assignment.assignment_id)
-    @students_of_class = all_students(@group_assignment.assignment_id)
   end
 
   ##
@@ -141,18 +153,18 @@ private
   #
   # Parameters:
   # - group_id: id de cada grupo existente nas opções de escolha dos participantes
-  # - selected_itens: recupera todos os ids dos itens selecionados de determinada pasta
+  # - selected_students: recupera todos os ids dos group_participant dos estudantes selecionados de determinado grupo
   ##
   def create_list_checked_students(group_id, selected_students)
 
      list_checked_students = []
      # a menos que nenhum item tenha sido selecionado
       unless selected_students.nil?
-        # selected itens vem no formato: [{"pasta"=>"id do item checado"}]
-        # logo, o collect abaixo pega o valor do id do item checado associado à pasta que realizou o "commit"
+        # selected students vem no formato: [{"grupo_id"=>"id do group_participant do aluno checado"}]
+        # logo, o collect abaixo pega o valor do id do usuário do group_participant checado associado à cada grupo que existia nas opções
         list_checked_students = selected_students.collect{|student| GroupParticipant.find(student[group_id]).user_id.to_s unless student[group_id].nil?}
       end
-      # retorna uma lista de ids referentes aos checkbox marcados na página
+      # retorna uma lista de ids referentes aos alunos marcados na página
       return list_checked_students
   end
 

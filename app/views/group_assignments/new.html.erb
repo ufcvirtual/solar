@@ -17,10 +17,10 @@
                           <div class="participants">
                             <h3 class="groupname"><%= g["group_name"] %>
                               <div class="group_links">
-                                <%= link_to "excluir", {:action => :destroy, :id => g["id"]}, :confirm => t(:are_you_sure), :method => "delete"%>
+                                <%= link_to 'excluir', g, :method => :delete, :class => 'group_assig_delete' %>
                               </div>
                               <div class="group_links">
-                                <%= link_to "editar", :action => :edit, :id => g["id"] %>
+                                <%= link_to "editar", edit_group_assignment_path(g), {:class => 'group_assig_edit'} %>
                               </div>
                             </h3>
                             <% gp = group_participants(g["id"])%>
@@ -57,12 +57,18 @@
                     </div>
                     <div class="all_students">
                       <div class="all_students_padding">
-                        <% @students_of_class.each do |student| %>
-                          <div class="each_student">
-                            <%= check_box_tag "students[]", student.id %>
-                            <%= f.label student.name %>
+                        <li >
+                          <h3 class="groupname"><div class="menu_icon_arrow">‣</div>Sem grupo (<%= @students_with_no_group.size %>) </h3>
+                          <div id="students_without_group">
+                            <% @students_with_no_group.each do |g| %>
+                              <ul class="each_student">
+                                <%= check_box_tag "students_no_group[]", g.id %>
+                                <%= f.label g.name %>
+                              </ul>
+                            <% end %>
+                            <% if @students_with_no_group.empty? %> <%= f.label "Não há alunos sem grupo" %> <% end %>
                           </div>
-                        <% end %>
+                        </li>
                       </div>
                     </div>
                   </td>
@@ -74,13 +80,62 @@
   </div>
   <div class="group_assignment_buttons">
     <%= f.submit t(:group_assignment_save), :id=>"confirm", :class=>"solar_button btn btn_main", :alt=> t(:group_assignment_save) %>
-    <!-- corrigir css desse link -->
-    <!-- <%= link_to "voltar", :action => :management, :class => "btn btn_caution" %> -->
-    <button type="button" class="btn btn_caution" id="folder_cancel"><%= t(:group_assignment_cancel) %></button>
+    <input type="button" value='<%=t(:group_assignment_cancel)%>' class="btn btn_caution" onclick="document.location.href='<%=group_assignments_path%>'"/>
   </div>
 <% end %>
 
 <script type="text/javascript">
-// @studens_with_no_group
-// @students_of_class
+
+  function flash_message(msg, css_class) {
+    if ($('#flash_message')) { $('#flash_message').remove(); }
+    var html = '<div id="flash_message" class="' + css_class + '"><span>' + msg + '</span></div>';
+    $('.flash_message_wrapper').append(html);
+  }
+
+  function changeOpendedGroupArrow(group_assignment_id){
+    this_div = $('#students_'+group_assignment_id);
+    if (this_div.css('display') == 'block'){
+      this_div.parents('li').find('.menu_icon_arrow').addClass('menu_icon_animate');
+    }
+  }
+
+  $(function(){
+
+    changeOpendedGroupArrow('without_group');
+    
+    $('.group_assig_edit').click(function(){
+      return submit_form_with_ajax();
+    });
+
+    $('.group_assig_delete').click(function(){
+      if (confirm('quer excluir mesmo?')) {
+        return submit_form_with_ajax();
+      }
+    });
+
+     function submit_form_with_ajax(){
+        if (confirm('quer salvar?')) {
+          var form = $('form#new_group_assignment');
+          var continue_with_request = true;
+
+          $.ajax({
+            url: form[0].action + '.json',
+            type: 'POST',
+            data: form.serialize(),
+            async: false,
+            success: function(data) {
+              if (data.success == false) {
+                continue_with_request = false;
+                flash_message(data.flash_msg, data.flash_class);
+              }
+            }
+          });
+
+          return continue_with_request;
+          
+        }
+     }
+
+  });
+
 </script>

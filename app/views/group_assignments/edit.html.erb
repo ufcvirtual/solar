@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
 <%= form_for(@group_assignment, :html => {:id => 'form_group_assignment'}) do |f| %>
-=======
-<%= form_for(@group_assignment) do |f| %>
->>>>>>> Stashed changes
   <%= hidden_field_tag :group_assignment_id, @group_assignment.id %>
   <div class="block_wrapper" id="group_assignments">
 
@@ -57,7 +53,7 @@
                     <%= f.text_field :group_name, :value => @group_assignment.group_name %>
                   </div>
                   <div>
-                      <%= f.label "Alunos" %> 
+                    <%= f.label "Alunos" %> 
                   </div>
                   <div class="all_students">
                         <div class="all_students_padding">
@@ -66,16 +62,18 @@
                                 <li>
                                   <% gp = group_participants(g["id"])%>
                                   <h3 class="groupname" onclick="clickOnGroup('<%= g['id'] %>');" ><div class="menu_icon_arrow">‣</div><%= g["group_name"] %> (<%= gp.size %>) </h3>
-                                  <% unless gp.empty? %>
-                                    <div id="students_<%= g["id"] %>" style="<%=display_students%>">
+                                  <div id="students_<%= g["id"] %>" style="<%=display_students%>">
+                                    <% unless gp.empty? %>
                                       <% gp.each do |p| %>
                                         <ul class="each_student">
                                           <%= check_box_tag "students[][#{g['id']}]", p["id"], p["group_assignment_id"].to_i == @group_assignment.id  %> 
                                           <%= f.label p["name"] %>
                                         </ul>
                                       <% end %>
-                                    </div>
-                                  <% end %>
+                                    <%else%>
+                                      <%= f.label "Ninguém" %>
+                                    <% end %>
+                                  </div>
                                 </li>
                             <% end %>
                             <li >
@@ -100,8 +98,7 @@
   </div>
   <div class="group_assignment_buttons">
     <%= f.submit t(:group_assignment_save), :id=>"confirm", :class=>"solar_button btn btn_main", :alt=> t(:group_assignment_save) %>
-    <button type="button" class="btn btn_caution" id="folder_cancel" value="<%=t :back%>"><%= t(:group_assignment_cancel) %></button>
-    <%#= button_to t(:group_assignment_cancel), {:controller => :group_assignments, :action => :list, :id => @group_assignment.assignment.id}, :class=>'btn btn_caution' %>
+    <input type="button" value='<%=t(:group_assignment_cancel)%>' class="btn btn_caution" onclick="document.location.href='<%=group_assignments_path%>'"/>
   </div>
 <% end %>
 
@@ -124,8 +121,7 @@
     }
   }
 
-  function changeOpendedGroupArrow(){
-    var group_assignment_id = <%= @group_assignment.id %>;
+  function changeOpendedGroupArrow(group_assignment_id){
     this_div = $('#students_'+group_assignment_id);
     if (this_div.css('display') == 'block'){
       this_div.parents('li').find('.menu_icon_arrow').addClass('menu_icon_animate');
@@ -134,7 +130,7 @@
 
   $(function(){
 
-    changeOpendedGroupArrow();
+    changeOpendedGroupArrow(<%= @group_assignment.id %>);
     
     $('.group_assig_edit').click(function(){
       return submit_form_with_ajax();
