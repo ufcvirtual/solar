@@ -4,20 +4,32 @@ include MessagesHelper
 
 class CurriculumUnitsController < ApplicationController
 
-  before_filter :prepare_for_group_selection, :only => [:show, :participants, :informations]
+  before_filter :prepare_for_group_selection, :only => [:home, :participants, :informations]
 
   #  load_and_authorize_resource
 
+  # GET /curriculum_units
+  # GET /curriculum_units.json
   def index
-    @curriculum_units = CurriculumUnit.find_default_by_user_id(current_user.id)
+    @curriculum_units = CurriculumUnit.find_default_by_user_id(current_user.id, true)
 
     respond_to do |format|
-      format.html
-      format.xml  { render :xml => @curriculum_units }
-      format.json  { render :json => @curriculum_units }
+      format.html # index.html.erb
+      format.json { render json: @curriculum_units }
     end
   end
 
+  # GET /curriculum_units/1
+  # GET /curriculum_units/1.json
+  def show
+    @curriculum_unit = CurriculumUnit.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @curriculum_unit }
+    end
+  end
+  
   def home
     curriculum_data
 
@@ -48,36 +60,68 @@ class CurriculumUnitsController < ApplicationController
     }.flatten.uniq
   end
 
+  # DELETE /curriculum_units/1
+  # DELETE /curriculum_units/1.json
   def destroy
+    @curriculum_unit = CurriculumUnit.find(params[:id])
     @curriculum_unit.destroy
 
     respond_to do |format|
-      format.html
+      format.html { redirect_to curriculum_units_url }
+      format.json { head :no_content }
       format.xml { head :ok }
     end
   end
-  
+
+  # GET /curriculum_units/new
+  # GET /curriculum_units/new.json
   def new
     @curriculum_unit = CurriculumUnit.new
+
     respond_to do |format|
-      format.html  # new.html.erb
-      format.json  { render :json => @curriculum_unit }
+      format.html # new.html.erb
+      format.json { render json: @curriculum_unit }
     end
   end
-  
+
+  # GET /curriculum_units/1/edit
+  def edit
+    @curriculum_unit = CurriculumUnit.find(params[:id])
+  end
+
+  # POST /curriculum_units
+  # POST /curriculum_units.json
   def create
     params[:curriculum_unit].delete('code') if params[:curriculum_unit][:code] == ''
     params[:curriculum_unit].delete('prerequisites') if params[:curriculum_unit][:prerequisites] == ''
 
     @curriculum_unit = CurriculumUnit.new(params[:curriculum_unit])
-    respond_to do |format| 
-      if @curriculum_unit.save :validate => 'UC was successfully created.'
-        format.html { redirect_to(@curriculum_unit) } 
-        format.xml { render :xml => @curriculum_unit, :status => :created, :location => @curriculum_unit } 
-      else format.html { render :action => "new" } 
-        format.xml { render :xml => @curriculum_unit.errors, :status => :unprocessable_entity } 
-      end 
-    end 
+
+    respond_to do |format|
+      if @curriculum_unit.save
+        format.html { redirect_to @curriculum_unit, notice: 'Curriculum unit was successfully created.' }
+        format.json { render json: @curriculum_unit, status: :created, location: @curriculum_unit }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @curriculum_unit.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PUT /curriculum_units/1
+  # PUT /curriculum_units/1.json
+  def update
+    @curriculum_unit = CurriculumUnit.find(params[:id])
+
+    respond_to do |format|
+      if @curriculum_unit.update_attributes(params[:curriculum_unit])
+        format.html { redirect_to @curriculum_unit, notice: 'Curriculum unit was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @curriculum_unit.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def informations

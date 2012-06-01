@@ -68,8 +68,8 @@
         photo_content_type: "Invalid file type"
         photo_file_size: "File too large. The maximum size of your photo should be up to 700KB."
       curriculum_unit:
-        curriculum_unit_type_id: Type
-        curriculum_unit_type: Type
+        curriculum_unit_type_id: Category
+        curriculum_unit_type: Category
       course: 
         name: Name
         code: Code 
@@ -197,6 +197,7 @@
   confirm: "Confirm"
   back: "Back"
   save: "Save"
+  destroy: "Delete"
   new_user_msg_cpf_error: " invalid"
   itens_not_found: "No itens to display"
 
@@ -328,6 +329,7 @@
   passing_grade: Passing Grade
   curriculum_unit_type_id: Type
 
+  curriculum_unit_new_title: "New Curriculum Unit"
   curriculum_unit_information_title: "Curriculum Unit Informartion"
   curriculum_unit_responsible: "Responsible"
   curriculum_unit_participants: "Participants"

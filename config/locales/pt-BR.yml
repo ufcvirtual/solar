@@ -201,8 +201,8 @@
         name: Nome
         code: Código
         category: Categoria
-        curriculum_unit_type_id: Tipo
-        curriculum_unit_type: Tipo
+        curriculum_unit_type_id: Categoria
+        curriculum_unit_type: Categoria
         syllabus: Ementa
         objectives: Objetivos
         prerequisites: Pré-requisitos
@@ -354,6 +354,9 @@
   confirm: "Confirmar"
   back: "Voltar"
   save: "Salvar"
+  edit: "Editar"
+  show: "Visualizar"
+  destroy: "Deletar"
   new_user_msg_cpf_error: " inválido"
   itens_not_found: "Sem itens para exibir"
 
@@ -485,6 +488,7 @@
   passing_grade: "Média"
   curriculum_unit_type_id: Tipo
 
+  curriculum_unit_new_title: Nova Unidade Curricular
   curriculum_unit_information_title: "Informações da Unidade Curricular"
   curriculum_unit_responsible: "Responsáveis"
   curriculum_unit_participants: "Participantes da turma"

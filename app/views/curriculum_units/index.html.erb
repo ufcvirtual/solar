@@ -1,0 +1,27 @@
+<h1><%= CurriculumUnit.model_name.human %></h1>
+
+<table>
+  <tr>
+    <th><%= CurriculumUnit.human_attribute_name("code")%></th>
+    <th><%= CurriculumUnit.human_attribute_name("name")%></th>
+    <th><%= CurriculumUnit.human_attribute_name("category")%></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @curriculum_units.each do |curriculum_unit| %>
+  <tr>
+    <td><%= curriculum_unit.code %></td>
+    <td><%= curriculum_unit.name %></td>
+    <td><%= curriculum_unit.curriculum_unit_type.description %></td>
+    <td><%= link_to t(:show), curriculum_unit %></td>
+    <td><%= link_to t(:edit), edit_curriculum_unit_path(curriculum_unit) %></td>
+    <td><%= link_to t(:destroy), curriculum_unit, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Curriculum unit', new_curriculum_unit_path %>
