@@ -1,3 +1,5 @@
+<%= javascript_include_tag 'group_assignments.js' %>
+
 <%= form_for(@group_assignment, :html => {:id => 'form_group_assignment'}) do |f| %>
   <%= hidden_field_tag :group_assignment_id, @group_assignment.id %>
   <div class="block_wrapper" id="group_assignments">
@@ -17,10 +19,10 @@
                           <div class="participants">
                             <h3 class="groupname"><%= g["group_name"] %>
                               <div class="group_links">
-                                <%= link_to t(:group_assignment_edit).downcase, edit_group_assignment_path(g), {:class => 'group_assig_edit'} %>
+                                <%= link_to t(:group_assignment_edit).downcase, edit_group_assignment_path(g), {:class => 'group_assig_link'} %>
                               </div>
                               <div class="group_links">
-                                <%= link_to t(:group_assignment_delete).downcase, g, :method => :delete, :confirm => t(:confirm_deletion, :group_name => g["group_name"]), :class => 'group_assig_delete' %>
+                                <%= link_to t(:group_assignment_delete).downcase, g, :method => :delete, :confirm => t(:confirm_deletion, :group_name => g["group_name"]), :class => 'group_assig_link' %>
                               </div>
                             </h3>
                             <% gp = group_participants(g["id"])%>
@@ -107,44 +109,16 @@
 
 <script type="text/javascript">
 
-  function flash_message(msg, css_class) {
-    if ($('#flash_message')) { $('#flash_message').remove(); }
-    var html = '<div id="flash_message" class="' + css_class + '"><span>' + msg + '</span></div>';
-    $('.flash_message_wrapper').append(html);
-  }
-
-  function clickOnGroup(group_div_id){
-    this_div = $('#students_'+group_div_id);
-    if (this_div.css('display') == 'none'){
-      this_div.slideDown(); 
-      this_div.parents('li').find('.menu_icon_arrow').addClass('menu_icon_animate');
-    }else{
-      this_div.slideUp(); 
-      this_div.parents('li').find('.menu_icon_animate').removeClass('menu_icon_animate');
-    }
-  }
-
-  function changeOpendedGroupArrow(group_assignment_id){
-    this_div = $('#students_'+group_assignment_id);
-    if (this_div.css('display') == 'block'){
-      this_div.parents('li').find('.menu_icon_arrow').addClass('menu_icon_animate');
-    }
-  }
-
   $(function(){
 
     changeOpendedGroupArrow(<%= @group_assignment.id %>);
     
-    $('.group_assig_edit').click(function(){
-      return submit_form_with_ajax();
-    });
-
-    $('.group_assig_delete').click(function(){
+    $('.group_assig_link').click(function(){
       return submit_form_with_ajax();
     });
 
      function submit_form_with_ajax(){
-      confirm_edition_message = '<%= t(:confirm_edition_message, :actual_group_name => @group_assignment.group_name) %>';
+        var confirm_edition_message = '<%= t(:confirm_edition_message, :actual_group_name => @group_assignment.group_name) %>';
         if (confirm(confirm_edition_message)) {
           var form = $('form#form_group_assignment');
           var continue_with_request = true;
