@@ -65,8 +65,10 @@
                                   <div id="students_<%= g["id"] %>" style="<%=display_students%>">
                                     <% unless gp.empty? %>
                                       <% gp.each do |p| %>
-                                        <ul class="each_student">
-                                          <%= check_box_tag "students[][#{g['id']}]", p["id"], p["group_assignment_id"].to_i == @group_assignment.id  %> 
+                                      <% student_sent_file = !SendAssignment.find_all_by_group_assignment_id_and_user_id(g["id"], p["user_id"].to_i).empty? %>
+                                      <% data_tooltip = t(:student_already_sent_files) unless !student_sent_file %>
+                                        <ul class="each_student" data-tooltip='<%=data_tooltip%>'>
+                                          <%= check_box_tag "students[][#{g['id']}]", p["id"], p["group_assignment_id"].to_i == @group_assignment.id, :disabled => student_sent_file %> 
                                           <%= f.label p["name"] %>
                                         </ul>
                                       <% end %>
