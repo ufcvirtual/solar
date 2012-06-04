@@ -5,7 +5,7 @@ class GroupAssignmentsController < ApplicationController
   before_filter :prepare_for_group_selection#, :only => [:list]
 
   # lista trabalhos em grupo
-  def list
+  def index
     #authorize! :list, Portfolio
 
     group_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
