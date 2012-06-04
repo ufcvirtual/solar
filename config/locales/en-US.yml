@@ -583,7 +583,7 @@
   confirm_edition_message: "Save changes of group %{actual_group_name} ?"
   confirm_creation_message: "Create group?"
   with_no_group: "With no group"
-  student_already_sent_files: "Student already sent files for his group"
+  student_already_sent_files: "Student can't be removed, becaus already sent files for his current group"
 
   # Mensagem de erro para permissão
   no_permission: "you haven't permission to access this page"
