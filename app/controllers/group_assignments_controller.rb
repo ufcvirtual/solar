@@ -62,7 +62,7 @@ class GroupAssignmentsController < ApplicationController
   ##
   def edit
     @group_assignment = GroupAssignment.find(params[:id])
-    @groups = group_assignments(@group_assignment.assignment_id)
+    @groups = group_assignments(@group_assignment.assignment_id, @group_assignment.id)
     @students_with_no_group = no_group_students(@group_assignment.assignment_id)
   end
 

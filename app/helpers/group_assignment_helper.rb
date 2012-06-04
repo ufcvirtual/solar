@@ -1,7 +1,11 @@
 module GroupAssignmentHelper
   
-  def group_assignments(assignment)
-    return(GroupAssignment.find_all_by_assignment_id(assignment))
+  def group_assignments(assignment, first_of_list = nil)
+    groups = []
+    groups << GroupAssignment.find(first_of_list) unless first_of_list.nil?
+    groups += GroupAssignment.find_all_by_assignment_id(assignment)
+    return(groups.uniq)
+    
   end
 
   def group_participants(group_assignment)
