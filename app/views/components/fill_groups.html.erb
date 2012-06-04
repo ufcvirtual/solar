@@ -1,0 +1,9 @@
+<ul>
+	<% unless @groups.nil? or @groups.empty? %>
+      <% @groups.each do |group| %>
+      <li id="groupItem_<%=group.id%>#<%=group.allocation_tag_id%>">
+      	<%=group.code%>
+      </li>
+      <%end%>
+	<%end%>
+</ul>
