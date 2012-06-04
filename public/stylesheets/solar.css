@@ -3181,11 +3181,11 @@ td.form_error {
     border-bottom: 1px solid #D0D0D0;
 }
 
-.group_edition{
+.group_div{
     padding: 20px 10px 15px 15px;
 }
 
-.edition_title{
+.page_title{
     color: #003E7A;
     font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
@@ -3217,6 +3217,11 @@ td.form_error {
     margin-left: 100px;
     margin-top: -18px;
     display: inline-block;
+    padding: 6px 6px 5px 8px;
+}
+
+.all_students li{
+    list-style-type: none;
 }
 
 .all_students label{
@@ -3230,16 +3235,8 @@ td.form_error {
     width: 20px;
 }
 
-.all_students_padding{
-    padding: 5px 5px 2px 5px;
-}
-
 .each_student {
     padding: 2px 2px 2px 2px;
-}
-
-.all_students_padding li{
-    list-style-type: none;
 }
 
 .group_links{

@@ -18,7 +18,6 @@ class GroupAssignmentsController < ApplicationController
   # Novo grupo
   # @groups: todos os grupos da atividade
   # @students_with_no_group: lista de alunos sem grupo
-  # @students_of_class: lista com todos os alunos da turma
   ##
   def new
     @group_assignment = GroupAssignment.new(params[:group_assignment])
@@ -60,7 +59,6 @@ class GroupAssignmentsController < ApplicationController
   # Edição de grupo
   # @groups: todos os grupos da atividade
   # @students_with_no_group: lista de alunos sem grupo
-  # @students_of_class: lista com todos os alunos da turma
   ##
   def edit
     @group_assignment = GroupAssignment.find(params[:id])
@@ -76,8 +74,9 @@ class GroupAssignmentsController < ApplicationController
     @groups = group_assignments(group_assignment.assignment_id)
 
     students = []
+    # para cada grupo da atividade, verifica e acrescenta no array 'students' os alunos selecionados
     @groups.each{|group| students += create_list_checked_students(group.id.to_s, params[:students]) }
-  
+    # acrescenta os alunos selecionados que estavam sem grupo  
     students += params[:students_no_group] unless params[:students_no_group].nil?
 
     if group_assignment.update_attributes(params[:group_assignment])
@@ -143,7 +142,6 @@ private
         end
       end
       for no_group in @studens_with_no_group
-        # associa
        GroupParticipant.create(:group_assignment_id => group_assignment.id, :user_id => no_group.id) if !students.nil? and students.include?(no_group.id.to_s)
       end
   end

@@ -44,8 +44,9 @@
         </table>
 
       <div class="division"></div>
-      <div class="group_edition">
-        <div class="edition_title"><%= t(:edit_group) %></div>    
+
+      <div class="group_div">
+        <div class="page_title"><%= t(:edit_group) %></div>    
           <table class="tb_list">
             <tbody>
               <tr class="lines">
@@ -58,41 +59,41 @@
                     <%= f.label t(:students) %> 
                   </div>
                   <div class="all_students">
-                        <div class="all_students_padding">
-                            <% @groups.each do |g| %>
-                                <% display_students = 'display: none;' unless g["id"].to_i == @group_assignment.id %>
-                                <li>
-                                  <% gp = group_participants(g["id"])%>
-                                  <h3 class="groupname" onclick="clickOnGroup('<%= g['id'] %>');" ><div class="menu_icon_arrow">‣</div><%= g["group_name"] %> (<%= gp.size %>) </h3>
-                                  <div id="students_<%= g["id"] %>" style="<%=display_students%>">
-                                    <% unless gp.empty? %>
-                                      <% gp.each do |p| %>
-                                      <% student_sent_file = !SendAssignment.find_all_by_group_assignment_id_and_user_id(g["id"], p["user_id"].to_i).empty? %>
-                                      <% data_tooltip = t(:student_already_sent_files) unless !student_sent_file %>
-                                        <ul class="each_student" data-tooltip='<%=data_tooltip%>'>
-                                          <%= check_box_tag "students[][#{g['id']}]", p["id"], p["group_assignment_id"].to_i == @group_assignment.id, :disabled => student_sent_file %> 
-                                          <%= f.label p["name"] %>
-                                        </ul>
-                                      <% end %>
-                                    <%else%>
-                                      <%= f.label t(:no_participant_group_assignment) %>
-                                    <% end %>
-                                  </div>
-                                </li>
+                    <% @groups.each do |g| %>
+                      <% display_students = 'display: none;' unless g["id"].to_i == @group_assignment.id %>
+                      <li>
+                        <% gp = group_participants(g["id"])%>
+                        <h3 class="groupname" onclick="clickOnGroup('<%= g['id'] %>');" ><div class="menu_icon_arrow">‣</div><%= g["group_name"] %> (<%= gp.size %>) </h3>
+                        <div id="students_<%= g["id"] %>" style="<%=display_students%>">
+                          <% unless gp.empty? %>
+                            <% gp.each do |p| %>
+                              <% student_sent_file = !SendAssignment.find_all_by_group_assignment_id_and_user_id(g["id"], p["user_id"].to_i).empty? %>
+                              <% data_tooltip = t(:student_already_sent_files) unless !student_sent_file %>
+                              <ul class="each_student" data-tooltip='<%=data_tooltip%>'>
+                                <%= check_box_tag "students[][#{g['id']}]", p["id"], p["group_assignment_id"].to_i == @group_assignment.id, :disabled => student_sent_file %> 
+                                <%= f.label p["name"] %>
+                              </ul>
                             <% end %>
-                            <li >
-                               <h3 class="groupname" onclick="clickOnGroup('without_group');"><div class="menu_icon_arrow">‣</div> <%= t(:with_no_group) %> (<%= @students_with_no_group.size %>) </h3>
-                               <div id="students_without_group" style="display: none;">
-                                 <% @students_with_no_group.each do |g| %>
-                                    <ul class="each_student">
-                                        <%= check_box_tag "students_no_group[]", g.id %>
-                                        <%= g.name %>
-                                    </ul>
-                                <% end %>
-                                <% if @students_with_no_group.empty? %> <%= f.label t(:group_assingnment_no_student_without_group) %> <% end %>
-                              </div>
-                            </li>
+                          <%else%>
+                            <%= f.label t(:no_participant_group_assignment) %>
+                          <% end %>
                         </div>
+                      </li>
+                    <% end %>
+                    <li >
+                      <h3 class="groupname" onclick="clickOnGroup('without_group');"><div class="menu_icon_arrow">‣</div> <%= t(:with_no_group) %> (<%= @students_with_no_group.size %>) </h3>
+                      <div id="students_without_group" style="display: none;">
+                        <% @students_with_no_group.each do |g| %>
+                          <ul class="each_student">
+                            <%= check_box_tag "students_no_group[]", g.id %>
+                            <%= g.name %>
+                          </ul>
+                        <% end %>
+                        <% if @students_with_no_group.empty? %> 
+                          <%= f.label t(:group_assingnment_no_student_without_group) %> 
+                        <% end %>
+                     </div>
+                    </li>
                   </div>
                 </td>
               </tr>
@@ -101,10 +102,12 @@
         </div>
     </div>
   </div>
+
   <div class="group_assignment_buttons">
     <%= f.submit t(:group_assignment_save), :id=>"confirm", :class=>"solar_button btn btn_main", :alt=> t(:group_assignment_save) %>
     <input type="button" value='<%=t(:group_assignment_cancel)%>' class="btn btn_caution" onclick="document.location.href='<%=group_assignments_path%>'"/>
   </div>
+
 <% end %>
 
 <script type="text/javascript">
@@ -122,7 +125,6 @@
         if (confirm(confirm_edition_message)) {
           var form = $('form#form_group_assignment');
           var continue_with_request = true;
-
           $.ajax({
             url: form[0].action + '.json',
             type: 'PUT',
@@ -135,9 +137,7 @@
               }
             }
           });
-
-          return continue_with_request;
-          
+          return continue_with_request; 
         }
      }
 
