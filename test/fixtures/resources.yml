@@ -404,8 +404,8 @@ res68:
 # Trabalho de grupo
 res69:
   id: 69
-  controller: 'group_assignment'
-  action: 'list'
+  controller: 'group_assignments'
+  action: 'index'
   description: 'Grupos'
 
 # Edicao de pedidos de matriculas
