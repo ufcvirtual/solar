@@ -2,7 +2,6 @@ class ComponentsController < ApplicationController
 
 #Falta:
 # Receber os Resources corretamente
-# Colocar as chamadas AJAX para nao chamar endereços como http://localhost:3000/components/fill_curriculum_units'
 # Checar se o componente se comporta adequadamente para usuários com perfil em turma, oferta e UC
 # Será que é legal colocar um model soh para o componente?
 # visual: Colocar Migalha de pão para exibição compacta
