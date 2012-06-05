@@ -20,7 +20,7 @@
           <td><%= allocation.group %></td>
           <td><%= name_of(allocation.status) %></td>
           <td>
-            <input value="Gerenciar" show-link="<%= allocation_path(allocation) %>" edit-link="<%= edit_allocation_path(allocation) %>" type="button" class="btn btn_default btn_manage_enrollment" />
+            <input value="Gerenciar" show-link="<%= allocation_path(allocation) %>" edit-link="<%= edit_allocation_path(allocation) %>" type="button" class="btn btn_default btn_manage_enrollment" onclick="javascript:manage_enrollment(this);"/>
           </td>
         </tr>
       <% end %>
@@ -29,30 +29,22 @@
 </div>
 
 <script type="text/javascript">
+  function manage_cancel(obj) {
+    $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
+  }
 
-  $(function() {
+  function manage_enrollment(obj) {
+    $.get($(obj).attr('edit-link'), function(data) { $(obj).closest('tr').html(data); });
+  }
 
-    // button manage
-    $('.btn_manage_enrollment').click(function() {
-      var tr_parent = $(this).closest('tr');
-      var url_show_allocation = $(this).attr('show-link');
-      $.get($(this).attr('edit-link'), function(data) {
-        tr_parent.html(data);
-
-        // button cancel manage
-        $('.btn_cancel_manage').click(function() {
-          $.get(url_show_allocation, function(data) {
-            tr_parent.html(data);
-          });
-        });
-
-        // button cancel manage
-        $('.btn_save_manage').click(function() {
-          console.log(tr_parent);
-        });
-
-      });
+  function save_allocation(obj) {
+    $.ajax({
+      type: 'PUT',
+      url: $(obj).attr('save-link'),
+      data: {"id": $(obj).attr('allocation-id'), "allocation": {
+        "status": $('#status_id option:selected', $(obj).closest('tr')).val(), "group_id": $('#code_id option:selected', $(obj).closest('tr')).val()
+      }},
+      success: function(data) { $(obj).closest('tr').html(data); }
     });
-
-  });
+  }
 </script>

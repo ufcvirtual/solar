@@ -47,7 +47,7 @@ Solar::Application.routes.draw do
   end
 
   ## allocations/enrollments
-  resources :allocations do
+  resources :allocations, :except => [:new] do
     get :enrollments, :action => :index, :on => :collection
     delete :cancel, :action => :destroy, :on => :member
     delete :cancel_request, :action => :destroy, :on => :member, :defaults => {:type => 'request'}

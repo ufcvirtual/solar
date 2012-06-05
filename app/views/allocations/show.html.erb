@@ -2,7 +2,7 @@
 <td>-</td>
 <td><%= @allocation.user.name %></td>
 <td><%= @allocation.allocation_tag.group.code %></td>
-<td><%= @allocation.status %></td>
+<td><%= name_of(@allocation.status) %></td>
 <td>
-	<input value="Gerenciar" show-link="<%= allocation_path(@allocation) %>" edit-link="<%= edit_allocation_path(@allocation) %>" type="button" class="btn btn_default btn_manage_enrollment" />
+  <input value="Gerenciar" show-link="<%= allocation_path(@allocation) %>" edit-link="<%= edit_allocation_path(@allocation) %>" type="button" class="btn btn_default btn_manage_enrollment" onclick="javascript:manage_enrollment(this);"/>
 </td>

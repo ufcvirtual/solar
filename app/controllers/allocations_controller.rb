@@ -44,7 +44,9 @@ class AllocationsController < ApplicationController
     offers = AllocationTag.where("id in (?) and offer_id is not null", relateds).map {|at| at.offer_id }
     @groups = Group.where(:offer_id => offers)
 
-    render :layout => false
+    respond_to do |format|
+      format.html { render layout: false }
+    end
   end
 
   # POST /allocations
@@ -66,14 +68,15 @@ class AllocationsController < ApplicationController
   # PUT /allocations/1
   # PUT /allocations/1.json
   def update
+    params[:allocation][:allocation_tag_id] = AllocationTag.find_by_group_id(params[:allocation].delete(:group_id)).id if params[:allocation].include?(:group_id)
     @allocation = Allocation.find(params[:id])
 
     respond_to do |format|
       if @allocation.update_attributes(params[:allocation])
-        format.html { redirect_to @allocation, notice: 'Allocation was successfully updated.' }
-        format.json { head :no_content }
+        format.html { render action: "show", layout: false }
+        format.json { render json: {:success => true} }
       else
-        format.html { render action: "edit" }
+        format.html { render action: "edit", layout: false }
         format.json { render json: @allocation.errors, status: :unprocessable_entity }
       end
     end
@@ -119,9 +122,7 @@ class AllocationsController < ApplicationController
     @allocation.status = Allocation_Pending_Reactivate
 
     message = ''
-    if @allocation.save
-      message = t(:enrollm_request_message)
-    end
+    message = t(:enrollm_request_message) if @allocation.save
 
     respond_to do |format|
       format.html { redirect_to(offers_showoffersbyuser_url, :notice => message) }
@@ -147,9 +148,7 @@ class AllocationsController < ApplicationController
       end
 
       message = ''
-      if @allocation.save
-        message = t(:enrollm_request_message)
-      end
+      message = t(:enrollm_request_message) if @allocation.save
 
       respond_to do |format|
         format.html { redirect_to(offers_showoffersbyuser_url, :notice => message) }
