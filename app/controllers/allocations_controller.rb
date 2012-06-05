@@ -5,7 +5,7 @@ class AllocationsController < ApplicationController
   # GET /allocations
   # GET /allocations.json
   def index
-    @allocations = Allocation.all
+    @allocations = Allocation.enrollments(params.select { |k, v| ['offer_id', 'group_id'].include?(k) })
 
     respond_to do |format|
       format.html # index.html.erb
@@ -15,14 +15,14 @@ class AllocationsController < ApplicationController
 
   # GET /allocations/1
   # GET /allocations/1.json
-  # def show
-  #   @allocation = Allocation.find(params[:id])
+  def show
+    @allocation = Allocation.find(params[:id])
 
-  #   respond_to do |format|
-  #     format.html # show.html.erb
-  #     format.json { render json: @allocation }
-  #   end
-  # end
+    respond_to do |format|
+      format.html { render layout: false }
+      format.json { render json: @allocation }
+    end
+  end
 
   # GET /allocations/new
   # GET /allocations/new.json
@@ -36,9 +36,16 @@ class AllocationsController < ApplicationController
   # end
 
   # GET /allocations/1/edit
-  # def edit
-  #   @allocation = Allocation.find(params[:id])
-  # end
+  def edit
+    @allocation = Allocation.find(params[:id])
+
+    relateds = AllocationTag.find_related_ids(@allocation.allocation_tag_id)
+
+    offers = AllocationTag.where("id in (?) and offer_id is not null", relateds).map {|at| at.offer_id }
+    @groups = Group.where(:offer_id => offers)
+
+    render :layout => false
+  end
 
   # POST /allocations
   # POST /allocations.json

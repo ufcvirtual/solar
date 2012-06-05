@@ -1,21 +1,58 @@
-<h1>Listing allocations</h1>
+<div class="block_title">
+  <h2>Matriculas solicitadas</h2>
+</div>
+<div class="block_content">
+  <table class="tb_list enrollments">
+    <thead>
+      <tr class="lines">
+        <th>-</th>
+        <th>Aluno</th>
+        <th>Turma</th>
+        <th>Status</th>
+        <th>Opcoes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @allocations.each do |allocation| %>
+        <tr class="lines">
+          <td>-</td>
+          <td><%= allocation.user_name %></td>
+          <td><%= allocation.group %></td>
+          <td><%= name_of(allocation.status) %></td>
+          <td>
+            <input value="Gerenciar" show-link="<%= allocation_path(allocation) %>" edit-link="<%= edit_allocation_path(allocation) %>" type="button" class="btn btn_default btn_manage_enrollment" />
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
-<table>
-  <tr>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<script type="text/javascript">
 
-<% @allocations.each do |allocation| %>
-  <tr>
-    <td><%= link_to 'Show', allocation %></td>
-    <td><%= link_to 'Edit', edit_allocation_path(allocation) %></td>
-    <td><%= link_to 'Destroy', allocation, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
-<% end %>
-</table>
+  $(function() {
 
-<br />
+    // button manage
+    $('.btn_manage_enrollment').click(function() {
+      var tr_parent = $(this).closest('tr');
+      var url_show_allocation = $(this).attr('show-link');
+      $.get($(this).attr('edit-link'), function(data) {
+        tr_parent.html(data);
 
-<%= link_to 'New Allocation', new_allocation_path %>
+        // button cancel manage
+        $('.btn_cancel_manage').click(function() {
+          $.get(url_show_allocation, function(data) {
+            tr_parent.html(data);
+          });
+        });
+
+        // button cancel manage
+        $('.btn_save_manage').click(function() {
+          console.log(tr_parent);
+        });
+
+      });
+    });
+
+  });
+</script>

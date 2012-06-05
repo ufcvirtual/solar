@@ -1,66 +1,10 @@
+include ApplicationHelper
+
 class OffersController < ApplicationController
-  
-  include ApplicationHelper
-
-  load_and_authorize_resource
-#  skip_authorize_resource :only => :showoffersbyuser
-
-#  before_filter :require_user, :only => [:new, :edit, :create, :update, :destroy, :showoffersbyuser]
-
-  def index
-
-    #if current_user
-    #  @user = Offer.find(current_user.id)
-    #end
-    #render :action => :mysolar
-
-    #respond_to do |format|
-    #  format.html # index.html.erb
-    #  format.xml  { render :xml => @users }
-    #end
-  end
-
-  def show
-    respond_to do |format|
-      format.html
-      format.xml  { render :xml => @offer }
-    end
-  end
-
-  def new
-    respond_to do |format|
-      format.html
-      format.xml  { render :xml => @offer }
-    end
-  end
-
-  def edit
-  end
-
-  def create
-    respond_to do |format|
-      format.html
-      format.xml  { render :xml => @offer }
-    end
-  end
-
-  def update
-    respond_to do |format|
-      format.html
-      format.xml  { render :xml => @offer }
-    end
-  end
-
-  def destroy
-    @offer.destroy
-
-    respond_to do |format|
-      format.html #{ redirect_to(users_url, :notice => 'Usuario excluido com sucesso!') }
-      format.xml  { head :ok }
-    end
-  end
 
   def showoffersbyuser
+    authorize! :showoffersbyuser, Offer
+
     @types = CurriculumUnitType.order("description")
     @student_profile = student_profile
 
@@ -69,7 +13,6 @@ class OffersController < ApplicationController
       query_category = ""
       query_text = ""
 
-      # consulta para matriculas ativas
       query_enroll =
         " SELECT DISTINCT of.id, cr.name as name, t.id AS categoryid, t.description AS categorydesc,
                  t.allows_enrollment, al.status AS status, al.id AS allocationid,
@@ -101,9 +44,7 @@ class OffersController < ApplicationController
       # se params[:category_query]=='enroll' traz apenas MATRICULADOS
       if params[:category_query]=='enroll'
         query_offer = "#{query_enroll} AND al.status = #{Allocation_Activated} ORDER BY name"
-
       else
-
         # traz todos: data de matricula ativa e q seja matriculavel + matriculados
         query_offer = "SELECT * FROM (
           SELECT DISTINCT of.id,cr.name as name, t.id as categoryid, t.description as categorydesc,

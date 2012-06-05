@@ -843,3 +843,10 @@
   support_allocation_offer: Oferta
   support_allocation_group: Turma
   support_folder_temporary_message: 'Esta pasta é temporária. Para concluir sua criação, envie um arquivo'
+
+  ## allocations
+  allocation_status_pending: Pendente
+  allocation_status_activated: Matriculado
+  allocation_status_cancelled: Cancelado
+  allocation_status_pending_reactivate: Pendente
+  allocation_status_rejected: Rejeitado

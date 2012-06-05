@@ -686,3 +686,10 @@
   support_allocation_offer: Offer
   support_allocation_group: Class
   support_folder_temporary_message: "This folder is temporary. To conclude it's creation, send a file"
+
+  ## allocations
+  allocation_status_pending: Pending
+  allocation_status_activated: Activated
+  allocation_status_cancelled: Cancelled
+  allocation_status_pending_reactivate: Pending
+  allocation_status_rejected: Rejected
