@@ -53,6 +53,8 @@ Solar::Application.routes.draw do
     delete :cancel_request, :action => :destroy, :on => :member, :defaults => {:type => 'request'}
   end
 
+  resources :scores, :only => [:show]
+
   get "pages/index"
   get "pages/team"
   get "access_control/index"
