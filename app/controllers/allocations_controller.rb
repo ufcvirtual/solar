@@ -60,7 +60,7 @@ class AllocationsController < ApplicationController
         format.json { render json: @allocation, status: :created, location: @allocation }
       else
         format.html { render action: "new" }
-        format.json { render json: @allocation.errors, status: :unprocessable_entity }
+        format.json { render json: @allocation.errors, status: :error }
       end
     end
   end
@@ -77,7 +77,7 @@ class AllocationsController < ApplicationController
         format.json { render json: {:success => true} }
       else
         format.html { render action: "edit", layout: false }
-        format.json { render json: @allocation.errors, status: :unprocessable_entity }
+        format.json { render json: @allocation.errors, status: :error }
       end
     end
   end
@@ -107,52 +107,57 @@ class AllocationsController < ApplicationController
 
     respond_to do |format|
       unless error
-        format.html { redirect_to(offers_showoffersbyuser_url, :notice => message) }
+        format.html { redirect_to(offers_showoffersbyuser_url, notice: message) }
         format.json { head :ok }
       else
-        format.html { redirect_to(offers_showoffersbyuser_url, :alert => message) }
+        format.html { redirect_to(offers_showoffersbyuser_url, alert: message) }
         format.json { head :error }
       end
     end
   end
 
-  # pede reativacao de matricula (alocacao)
   def reactivate
+    authorize! :reactivate, Allocation
+
     @allocation = Allocation.find(params[:id])
     @allocation.status = Allocation_Pending_Reactivate
 
-    message = ''
-    message = t(:enrollm_request_message) if @allocation.save
-
     respond_to do |format|
-      format.html { redirect_to(offers_showoffersbyuser_url, :notice => message) }
-      format.xml  { head :ok }
+      if @allocation.save
+        format.html { redirect_to(offers_showoffersbyuser_url, notice: t(:enrollm_request_message)) }
+        format.json { head :ok }
+      else
+        format.html { redirect_to(offers_showoffersbyuser_url, alert: t(:enrollm_request_message_error)) }
+        format.json { head :error }
+      end
+      
     end
   end
 
-  # pede matricula (alocacao)
   def send_request
-    if params[:tagid] && params[:userid] && (student_profile!='')
+    authorize! :send_request, Allocation
 
-      # se havia status anterior, reativa
-      if params[:id]
+    if params.include?(:tagid) and params.include?(:userid) and (student_profile != '')
+      if params.include?(:id) # se havia status anterior, reativa
         @allocation = Allocation.find(params[:id])
         @allocation.status = Allocation_Pending_Reactivate
       else
-        # senao gera novo pedido (alocacao) de matricula
-        @allocation = Allocation.new
-        @allocation.user_id = params[:userid]
-        @allocation.allocation_tag_id = params[:tagid]
-        @allocation.profile_id = student_profile
-        @allocation.status = Allocation_Pending
+        @allocation = Allocation.new({
+          :user_id => params[:userid],
+          :allocation_tag_id => params[:tagid],
+          :profile_id => student_profile,
+          :status => Allocation_Pending
+        })
       end
 
-      message = ''
-      message = t(:enrollm_request_message) if @allocation.save
-
       respond_to do |format|
-        format.html { redirect_to(offers_showoffersbyuser_url, :notice => message) }
-        format.xml  { head :ok }
+        if @allocation.save
+          format.html { redirect_to(offers_showoffersbyuser_url, notice: t(:enrollm_request_message)) }
+          format.json { head :ok }
+        else
+          format.html { redirect_to(offers_showoffersbyuser_url, alert: t(:enrollm_request_message_error)) }
+          format.json { head :error }
+        end
       end
     end
   end
