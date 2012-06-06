@@ -11,6 +11,10 @@ class AllocationTag < ActiveRecord::Base
   belongs_to :offer
   belongs_to :group
 
+  def related
+    AllocationTag.find_related_ids(self.id)
+  end
+
   def self.find_related_ids(allocation_tag_id)
     query = <<SQL
       select allocation_tag_id, offer_parent_tag_id, curriculum_unit_parent_tag_id, course_parent_tag_id from

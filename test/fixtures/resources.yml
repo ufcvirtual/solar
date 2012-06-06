@@ -91,7 +91,7 @@ res15:
 res16:
   id: 16
   controller: 'allocations'
-  action: 'send_request'
+  action: 'create'
   description: 'Pedir matricula'
 
 res17:
@@ -262,13 +262,6 @@ res45:
   action: 'index'
   description: 'Exibe todos os posts'
 
-# res46:# repetido
-#   id: 46
-#   controller: 'discussions'
-#   action: 'index'
-#   description: 'Lista foruns'
-
-
 # acompanhamento
 res47:
   id: 47
@@ -414,3 +407,22 @@ res69:
   controller: 'group_assignment'
   action: 'list'
   description: 'Grupos'
+
+# Edicao de pedidos de matriculas
+res70:
+  id: 70
+  controller: 'allocations'
+  action: 'index'
+  description: 'Lista de pedidos de matricula'
+
+res71:
+  id: 71
+  controller: 'allocations'
+  action: 'show'
+  description: 'Visualizar pedido de matricula'
+
+res72:
+  id: 72
+  controller: 'allocations'
+  action: 'update'
+  description: 'Editar matricula'

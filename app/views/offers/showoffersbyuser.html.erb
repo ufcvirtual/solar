@@ -42,7 +42,6 @@
       <tbody>
         <% if @offers %>
           <% @offers.each do |offer| %>
-            <!-- <tr class="<%= cycle('rowtable_odd', 'rowtable_even') %>" > -->
             <tr class="lines">
               <td><%= offer.name %></td>
               <td><%= image_tag(offer.icon_name) if !offer.icon_name.nil? %>&nbsp;<%= offer.categorydesc %></td>
@@ -60,9 +59,13 @@
                     <%= label_tag "lb_enrollm", t(:enrollm_enrolled), :class => "enrollment_label" %>
                   <% end %>
                 <% when Allocation_Cancelled.to_s %>
-                  <%= button_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"reactivate", :id => offer.allocationid }, :class=>'btn btn_default' %>
+                  <%= button_to t(:enrollm_enroll), {:controller=>"allocations", :action=>"reactivate", :id => offer.allocationid }, :class=>'btn btn_default' %>
                 <% else %>
-                  <%= button_to t(:enrollm_enroll),{:controller=>"allocations", :action=>"send_request", :id => offer.allocationid, :tagid => offer.allocationtagid, :userid => current_user.id }, :class=>'btn btn_default' %>
+                  <%= button_to t(:enrollm_enroll), {:controller => "allocations", :action => "create",
+                    :id => offer.allocationid,
+                    :allocation_tag_id => offer.allocationtagid,
+                    :user_id => current_user.id
+                  }, :class=>'btn btn_default' %>
                 <% end %>
               </td>
             </tr>

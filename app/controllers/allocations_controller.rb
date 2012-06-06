@@ -1,6 +1,6 @@
 class AllocationsController < ApplicationController
 
-  # load_and_authorize_resource
+  authorize_resource :except => [:destroy]
 
   # GET /allocations
   # GET /allocations.json
@@ -24,25 +24,12 @@ class AllocationsController < ApplicationController
     end
   end
 
-  # GET /allocations/new
-  # GET /allocations/new.json
-  # def new
-  #   @allocation = Allocation.new
-
-  #   respond_to do |format|
-  #     format.html # new.html.erb
-  #     format.json { render json: @allocation }
-  #   end
-  # end
-
   # GET /allocations/1/edit
   def edit
     @allocation = Allocation.find(params[:id])
 
-    relateds = AllocationTag.find_related_ids(@allocation.allocation_tag_id)
-
-    offers = AllocationTag.where("id in (?) and offer_id is not null", relateds).map {|at| at.offer_id }
-    @groups = Group.where(:offer_id => offers)
+    ats = AllocationTag.where("id in (?) and (group_id is not null or offer_id is not null)", @allocation.allocation_tag.related)
+    @groups = Group.where("id in (?) or offer_id in (?)", ats.map(&:group_id).compact.uniq, ats.map(&:offer_id).compact.uniq)
 
     respond_to do |format|
       format.html { render layout: false }
@@ -52,15 +39,27 @@ class AllocationsController < ApplicationController
   # POST /allocations
   # POST /allocations.json
   def create
-    @allocation = Allocation.new(params[:allocation])
-
-    respond_to do |format|
-      if @allocation.save
-        format.html { redirect_to @allocation, notice: 'Allocation was successfully created.' }
-        format.json { render json: @allocation, status: :created, location: @allocation }
+    if params.include?(:allocation_tag_id) and params.include?(:user_id) and (student_profile != '')
+      if params.include?(:id) # se havia status anterior, reativa
+        @allocation = Allocation.find(params[:id])
+        @allocation.status = Allocation_Pending_Reactivate
       else
-        format.html { render action: "new" }
-        format.json { render json: @allocation.errors, status: :error }
+        @allocation = Allocation.new({
+          :user_id => params[:user_id],
+          :allocation_tag_id => params[:allocation_tag_id],
+          :profile_id => student_profile,
+          :status => Allocation_Pending
+        })
+      end
+
+      respond_to do |format|
+        if @allocation.save
+          format.html { redirect_to(offers_showoffersbyuser_url, notice: t(:enrollm_request_message)) }
+          format.json { render json: @allocation, status: :created }
+        else
+          format.html { redirect_to(offers_showoffersbyuser_url, alert: t(:enrollm_request_message_error)) }
+          format.json { render json: @allocation.errors, status: :error }
+        end
       end
     end
   end
@@ -74,7 +73,7 @@ class AllocationsController < ApplicationController
     respond_to do |format|
       if @allocation.update_attributes(params[:allocation])
         format.html { render action: "show", layout: false }
-        format.json { render json: {:success => true} }
+        format.json { render json: {:status => "ok"} }
       else
         format.html { render action: "edit", layout: false }
         format.json { render json: @allocation.errors, status: :error }
@@ -117,8 +116,6 @@ class AllocationsController < ApplicationController
   end
 
   def reactivate
-    authorize! :reactivate, Allocation
-
     @allocation = Allocation.find(params[:id])
     @allocation.status = Allocation_Pending_Reactivate
 
@@ -131,34 +128,6 @@ class AllocationsController < ApplicationController
         format.json { head :error }
       end
       
-    end
-  end
-
-  def send_request
-    authorize! :send_request, Allocation
-
-    if params.include?(:tagid) and params.include?(:userid) and (student_profile != '')
-      if params.include?(:id) # se havia status anterior, reativa
-        @allocation = Allocation.find(params[:id])
-        @allocation.status = Allocation_Pending_Reactivate
-      else
-        @allocation = Allocation.new({
-          :user_id => params[:userid],
-          :allocation_tag_id => params[:tagid],
-          :profile_id => student_profile,
-          :status => Allocation_Pending
-        })
-      end
-
-      respond_to do |format|
-        if @allocation.save
-          format.html { redirect_to(offers_showoffersbyuser_url, notice: t(:enrollm_request_message)) }
-          format.json { head :ok }
-        else
-          format.html { redirect_to(offers_showoffersbyuser_url, alert: t(:enrollm_request_message_error)) }
-          format.json { head :error }
-        end
-      end
     end
   end
 

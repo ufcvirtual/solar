@@ -742,6 +742,23 @@ mapedit10:
   resource_id: 68
   per_id: true
 
+# edicao de matricula
+
+matedit1:
+  profile_id: 5
+  resource_id: 70
+  per_id: false
+
+matedit2:
+  profile_id: 5
+  resource_id: 71
+  per_id: false
+
+matedit3:
+  profile_id: 5
+  resource_id: 72
+  per_id: false
+
 ##############################
 # BASICO #
 ##############################
@@ -769,7 +786,7 @@ pbsc4:
 pbsc5:
   profile_id: 12
   resource_id: 14
-  per_id: false
+  per_id: true
 
 pbsc6:
   profile_id: 12
@@ -784,8 +801,7 @@ pbsc7:
 pbsc8:
   profile_id: 12
   resource_id: 17
-  per_id: false
-
+  per_id: true
 
 # Material de apoio
 pbsc9:
