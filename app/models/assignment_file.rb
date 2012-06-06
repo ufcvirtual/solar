@@ -1,6 +1,7 @@
 class AssignmentFile < ActiveRecord::Base
 
   belongs_to :send_assignment
+  has_one :assignment, :through => :send_assignment
 
   validates :attachment_file_name, :presence => true
 

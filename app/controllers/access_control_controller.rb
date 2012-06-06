@@ -5,40 +5,34 @@ include DiscussionPostsHelper
 class AccessControlController < ApplicationController
 
   def portfolio_individual_area
-    name_attachment = params[:file] 
-    id_file = name_attachment.slice(0..name_attachment.index("_")-1)
-    assignment = AssignmentFile.find(id_file).send_assignment.assignment
-
-    # Verifica se o arquivo a ser acessado é dele ou do grupo dele
-    student_individual_activity_or_part_of_the_group = Portfolio.verify_student_individual_activity_or_part_of_the_group(assignment.id, current_user.id, id_file)
+    attachment_name = params[:file]
+    file_id = attachment_name.slice(0..attachment_name.index("_")-1)
+    assignment_file = AssignmentFile.find(file_id)
+    assignment = assignment_file.assignment
+    
+    student_individual_activity_or_part_of_the_group = Portfolio.verify_student_individual_activity_or_part_of_the_group(assignment.id, current_user.id, file_id)
 
     if student_individual_activity_or_part_of_the_group
-      # path do arquivo anexo a postagem
       type = return_type(params[:extension])
-      send_file("#{Rails.root}/media/portfolio/individual_area/#{name_attachment}.#{params[:extension]}", { :disposition => 'inline', :type => type} )
+      send_file(assignment_file.attachment.path, { :disposition => 'inline', :type => type} )
     else
-      redirect = {:controller => :home}
-      flash[:alert] = t(:no_permission)
-      redirect_to redirect
+      no_permission_redirect
     end
   end
 
   def portfolio_public_area
-    name_attachment = params[:file] 
-    id_file = name_attachment.slice(0..name_attachment.index("_")-1)
-    file = PublicFile.find(id_file)
+    attachment_name = params[:file]
+    file_id = attachment_name.slice(0..attachment_name.index("_")-1)
+    file = PublicFile.select("allocation_tag_id, id, attachment_file_name").includes(:allocation_tag).find(file_id)
 
     same_class = Allocation.find_all_by_user_id(current_user.id).map(&:allocation_tag_id).include?(file.allocation_tag_id)
-    responsible_class = Profile.user_responsible_of_class(file.allocation_tag_id, current_user.id)
+    class_responsible = file.allocation_tag.is_user_class_responsible?(current_user.id)
 
-    if same_class or responsible_class
-      # path do arquivo anexo a postagem
+    if same_class or class_responsible
       type = return_type(params[:extension])
-      send_file("#{Rails.root}/media/portfolio/public_area/#{name_attachment}.#{params[:extension]}", { :disposition => 'inline', :type => type} )
+      send_file(file.attachment.path, { :disposition => 'inline', :type => type} )
     else
-      redirect = {:controller => :home}
-      flash[:alert] = t(:no_permission)
-      redirect_to redirect
+      no_permission_redirect
     end
   end
 
@@ -73,6 +67,12 @@ class AccessControlController < ApplicationController
   end
 
   private
+  
+  def no_permission_redirect
+    redirect = {:controller => :home}
+    flash[:alert] = t(:no_permission)
+    redirect_to redirect
+  end
 
   def return_type(extension)
     case extension
