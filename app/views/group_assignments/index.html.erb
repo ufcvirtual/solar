@@ -43,7 +43,7 @@
                 <% end %>
                 </div>
                  <div class="group_new">
-                      <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :id => a["id"]}, :class=>'btn btn_default' %>
+                      <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :id => a["id"], :assignment_id => a["id"]}, :class=>'btn btn_default' %>
                  </div>
               </div>
             </td>

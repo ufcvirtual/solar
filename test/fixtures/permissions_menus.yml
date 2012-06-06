@@ -104,6 +104,10 @@ pm26:
   profile_id: 2
   menu_id: 102
 
+pm58:
+  profile_id: 2
+  menu_id: 209
+
 # tutor a distancia
 pm27:
   profile_id: 3
@@ -163,6 +167,11 @@ pm40:
 
 pm41:
   profile_id: 3
+  menu_id: 209
+
+# tutor presencial
+pm59:
+  profile_id: 4
   menu_id: 209
 
 # editor

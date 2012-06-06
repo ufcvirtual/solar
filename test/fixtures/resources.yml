@@ -408,6 +408,36 @@ res69:
   action: 'index'
   description: 'Grupos'
 
+res70:
+  id: 73
+  controller: 'group_assignments'
+  action: 'new'
+  description: 'Pagina de novo grupo'  
+
+res71:
+  id: 74
+  controller: 'group_assignments'
+  action: 'create'
+  description: 'Cria um novo grupo'  
+
+res72:
+  id: 75
+  controller: 'group_assignments'
+  action: 'edit'
+  description: 'Pagina de edicao de grupo'  
+
+res73:
+  id: 76
+  controller: 'group_assignments'
+  action: 'update'
+  description: 'Edita um grupo'  
+
+res74:
+  id: 77
+  controller: 'group_assignments'
+  action: 'destroy'
+  description: 'Exclui um grupo'  
+
 # Edicao de pedidos de matriculas
 res70:
   id: 70

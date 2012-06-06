@@ -168,6 +168,19 @@ class ApplicationController < ActionController::Base
     user_session[:tabs][:opened][user_session[:tabs][:active]] if user_signed_in?
   end
 
+  def user_related_to_assignment?
+    related_allocation_tags     = AllocationTag.find_related_ids(Assignment.find(params[:assignment_id]).allocation_tag_id)
+    related_allocations_to_user = Allocation.where(:allocation_tag_id => related_allocation_tags, :user_id => current_user.id) unless related_allocation_tags.empty?
+    user_related = true unless related_allocation_tags.empty? or related_allocations_to_user.empty?
+    if user_related
+      return true 
+    else
+      flash[:alert] = t(:no_permission)
+      redirect_to :controller => :home
+      return false
+    end
+  end
+
   private
 
   def opened_or_new_tab?(tab_name)

@@ -1,8 +1,10 @@
+include GroupAssignmentHelper
+
 class GroupAssignmentsController < ApplicationController
 
-	include GroupAssignmentHelper
-
-  before_filter :prepare_for_group_selection#, :only => [:list]
+  before_filter :prepare_for_group_selection #, :only => [:list]
+  before_filter :user_related_to_assignment?, :except => [:index]
+  load_and_authorize_resource
 
   # lista trabalhos em grupo
   def index
@@ -88,7 +90,7 @@ class GroupAssignmentsController < ApplicationController
     else
       flash_msg = group_assignment.errors.full_messages[0]
       flash_class = 'alert'
-      redirect = {:action => :edit, :id => group_assignment.id}
+      redirect = {:action => :edit, :id => group_assignment.id, :assignment_id => group_assignment.assignment_id}
       success = false
     end
 
@@ -114,7 +116,7 @@ class GroupAssignmentsController < ApplicationController
       redirect_to group_assignments_url
     else
       flash[:alert] = t(:group_assignment_delete_error)
-      redirect_to :action => :edit, :id => group_assignment.id
+      redirect_to :action => :edit, :id => group_assignment.id, :assignment_id => group_assignment.assignment_id
     end
   end
 
