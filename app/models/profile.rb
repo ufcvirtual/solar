@@ -25,7 +25,7 @@ SQL
     (self.types & type) == type
   end
    
-  def self.students_of_class2(allocation_tag_id)
+  def self.students_of_class(allocation_tag_id)
     allocations_of_class = Allocation.find_all_by_allocation_tag_id(allocation_tag_id)
     students_of_class = []
     for allocation in allocations_of_class
