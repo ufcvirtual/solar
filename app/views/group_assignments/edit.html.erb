@@ -134,8 +134,8 @@
             success: function(data) {
               if (data.success == false) {
                 continue_with_request = false;
-                flash_message(data.flash_msg, data.flash_class);
               }
+              flash_message(data.flash_msg, data.flash_class);
             }
           });
           return continue_with_request; 
