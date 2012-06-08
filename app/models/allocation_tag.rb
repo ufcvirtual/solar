@@ -11,104 +11,6 @@ class AllocationTag < ActiveRecord::Base
   belongs_to :offer
   belongs_to :group
 
-  def related
-    AllocationTag.find_related_ids(self.id)
-  end
-
-  def self.find_related_ids(allocation_tag_id)
-    query = <<SQL
-      select allocation_tag_id, offer_parent_tag_id, curriculum_unit_parent_tag_id, course_parent_tag_id from
-      (select
-        root.id as allocation_tag_id,
-        CASE
-          WHEN group_id is not null THEN 'GROUP'::text
-          WHEN offer_id is not null THEN 'OFFER'::text
-          WHEN course_id is not null THEN 'COURSE'::text
-          ELSE 'CURRICULUM_UNIT'::text
-        END as entity_type,
-
-        (coalesce(group_id, 0) + coalesce(offer_id, 0) + coalesce(curriculum_unit_id, 0) + coalesce(course_id, 0)) as entity_id,
-
-        --parents do tipo offer
-         CASE
-           WHEN group_id is not null THEN (
-             select coalesce(t.id,0)
-             from
-         groups g
-         left join allocation_tags t on t.offer_id = g.offer_id
-             where
-         g.id = root.group_id
-           )
-           ELSE (select 0)
-         END as offer_parent_tag_id,
-
-         --parents do tipo curriculum unit
-         CASE
-           WHEN group_id is not null THEN (
-             select coalesce(t.id,0)
-             from
-         groups g
-         left join offers o on g.offer_id = o.id
-         left join allocation_tags t on t.curriculum_unit_id = o.curriculum_unit_id
-             where
-         g.id = root.group_id
-           )
-           WHEN offer_id is not null THEN (
-             select coalesce(t.id,0)
-             from
-         offers o
-         left join allocation_tags t on t.curriculum_unit_id = o.curriculum_unit_id
-             where
-         o.id = root.offer_id
-           )
-           ELSE (select 0)
-         END as curriculum_unit_parent_tag_id,
-
-         --parents do tipo course
-         CASE
-           WHEN group_id is not null THEN (
-             select coalesce(t.id,0)
-             from
-         groups g
-         left join offers o on g.offer_id = o.id
-         left join allocation_tags t on t.course_id = o.course_id
-             where
-         g.id = root.group_id
-           )
-           WHEN offer_id is not null THEN (
-             select coalesce(t.id,0)
-             from
-         offers o
-         left join allocation_tags t on t.course_id = o.course_id
-             where
-         o.id = root.offer_id
-           )
-           ELSE (select 0)
-         END as course_parent_tag_id
-      FROM
-        allocation_tags root
-      ) as hierarchy
-      where
-        (hierarchy.allocation_tag_id = #{allocation_tag_id}) or
-        (hierarchy.offer_parent_tag_id = #{allocation_tag_id}) or
-        (hierarchy.curriculum_unit_parent_tag_id = #{allocation_tag_id}) or
-        (hierarchy.course_parent_tag_id = #{allocation_tag_id})
-SQL
-
-    hierarchy = ActiveRecord::Base.connection.select_all query
-
-    result = []
-    hierarchy.each do |line|
-      result << line["allocation_tag_id"].to_i
-      result << line["offer_parent_tag_id"].to_i
-      result << line["curriculum_unit_parent_tag_id"].to_i
-      result << line["course_parent_tag_id"].to_i
-    end
-
-    return result.flatten.uniq
-
-  end
-
   def self.find_all_groups(allocations)
     query = <<SQL
          SELECT t2.id, t2.code, t3.semester
@@ -142,4 +44,89 @@ SQL
 
     return user_is_class_responsible
   end
+
+  ## Deprecated - use related
+  def self.find_related_ids(allocation_tag_id)
+    AllocationTag.find(allocation_tag_id).related
+  end
+
+  def related
+    at_obj = self.attributes
+    at_obj.delete('id')
+    at = at_obj.select {|k,v| not v.nil? }
+
+    atgs = case at.keys.first.to_s
+      when 'group_id'
+        groups_related(Group.find(at['group_id']))
+      when 'offer_id'
+        offers_related(Offer.find(at['offer_id']), down = true)
+      when 'curriculum_unit_id'
+        curriculum_units_related(CurriculumUnit.find(at['curriculum_unit_id']), down = true)
+      when 'course_id'
+        courses_related(course.find(at['course_id']), down = true)
+    end
+
+    [self.id, atgs].flatten.compact.uniq.sort
+  end
+
+  private
+
+  ##
+  # Metodos de relacionamento entre allocation_tags
+  ##
+
+  def groups_related(group)
+    offers_related(group.offer)
+  end
+
+  def offers_related(offer, down = false)
+    begin
+      at_offer = [offer.allocation_tag.id]
+    rescue
+      at_offer = []
+    end
+
+    at_groups = AllocationTag.where(:group_id => offer.groups.map(&:id)).map(&:id) if not at_offer.compact.empty? and down
+    at_uc = curriculum_units_related(offer.curriculum_unit)
+    at_c = courses_related(offer.course)
+
+    [at_groups] + at_offer + [at_uc] + [at_c]
+  end
+
+  def curriculum_units_related(curriculum_unit, down = false)
+    begin
+      at_uc = [curriculum_unit.allocation_tag.id]
+    rescue
+      at_uc = []
+    end
+
+    if not at_uc.compact.empty? and down
+      offers = curriculum_unit.offers.map(&:id)
+      at_offers = AllocationTag.where(:offer_id => offers).map(&:id)
+
+      groups = Group.where(:offer_id => offers).map(&:id)
+      at_groups = AllocationTag.where(:group_id => groups).map(&:id)
+    end
+
+    [at_groups] + [at_offers] + at_uc
+  end
+
+  def courses_related(course, down = false)
+    begin
+      at_c = [course.allocation_tag.id]
+    rescue
+      at_c = []
+    end
+
+    if not at_c.compact.empty? and down
+      offers = course.offers.map(&:id)
+      at_offers = AllocationTag.where(:offer_id => offers).map(&:id)
+
+      groups = Group.where(:offer_id => offers).map(&:id)
+      at_groups = AllocationTag.where(:group_id => groups).map(&:id)
+    end
+
+    [at_groups] + [at_offers] + at_c
+  end
+
 end
