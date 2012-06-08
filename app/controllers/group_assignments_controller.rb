@@ -75,6 +75,10 @@ class GroupAssignmentsController < ApplicationController
     group_assignment = GroupAssignment.find(params[:group_assignment_id])
     @groups = group_assignments(group_assignment.assignment_id)
 
+
+    @students_with_no_group = no_group_students(@group_assignment.assignment_id)
+
+
     students = []
     # para cada grupo da atividade, verifica e acrescenta no array 'students' os alunos selecionados
     @groups.each{|group| students += create_list_checked_students(group.id.to_s, params[:students]) }
@@ -97,7 +101,7 @@ class GroupAssignmentsController < ApplicationController
     flash[flash_class] = flash_msg
     
     respond_to do |format|
-      format.html { redirect_to(redirect) }
+      format.html { redirect_to (redirect) }
       format.xml  { render :xml => { :success => success } }
       format.json  { render :json => { :success => success, :flash_msg => flash_msg, :flash_class => flash_class } }
     end

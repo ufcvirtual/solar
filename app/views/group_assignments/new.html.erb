@@ -94,14 +94,24 @@
   $(function(){
 
     changeOpendedGroupArrow('without_group');
+
+    $('#confirm').click(function(){
+      return submit_form_with_ajax(false);
+    });
     
     $('.group_assig_link').click(function(){
-      return submit_form_with_ajax();
+      return submit_form_with_ajax(true);
     });
 
-     function submit_form_with_ajax(){
-        var confirm_creation_message = '<%= t(:confirm_creation_message) %>';
-        if (confirm(confirm_creation_message)) {
+    function submit_form_with_ajax(verify_call){
+      
+      if (verify_call){
+        var confirm_creation_message = confirm('<%= t(:confirm_creation_message) %>');
+      }else{
+        var confirm_creation_message = true;
+      }
+
+        if (confirm_creation_message) {
           var form = $('form#new_group_assignment');
           var continue_with_request = true;
           $.ajax({

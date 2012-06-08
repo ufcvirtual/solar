@@ -116,14 +116,24 @@
   $(function(){
 
     changeOpendedGroupArrow(<%= @group_assignment.id %>);
+
+    $('#confirm').click(function(){
+      return submit_form_with_ajax(false);
+    });
     
     $('.group_assig_link').click(function(){
-      return submit_form_with_ajax();
+      return submit_form_with_ajax(true);
     });
 
-     function submit_form_with_ajax(){
-        var confirm_edition_message = '<%= t(:confirm_edition_message, :actual_group_name => @group_assignment.group_name) %>';
-        if (confirm(confirm_edition_message)) {
+     function submit_form_with_ajax(verify_call){
+      
+      if (verify_call){
+        var confirm_edition_message = confirm('<%= t(:confirm_edition_message, :actual_group_name => @group_assignment.group_name) %>');
+      }else{
+        var confirm_edition_message = true;
+      }
+
+        if (confirm_edition_message) {
           var form = $('form#form_group_assignment');
           var continue_with_request = true;
           $.ajax({
