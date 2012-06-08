@@ -23,7 +23,7 @@ class GroupAssignmentsController < ApplicationController
   ##
   def new
     @group_assignment = GroupAssignment.new(params[:group_assignment])
-    @assignment = Assignment.find(params[:id])
+    @assignment = Assignment.find(params[:assignment_id])
     @groups = group_assignments(@assignment.id)
     @students_with_no_group = no_group_students(@assignment.id)
   end
@@ -43,7 +43,7 @@ class GroupAssignmentsController < ApplicationController
     else
       flash_msg = new_group_assignment.errors.full_messages[0]
       flash_class = 'alert'
-      redirect = {:action => :new, :id => params[:assignment_id]}
+      redirect = {:action => :new, :assignment_id => params[:assignment_id]}
       success = false
     end
 

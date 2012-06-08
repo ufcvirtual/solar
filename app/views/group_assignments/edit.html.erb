@@ -2,6 +2,7 @@
 
 <%= form_for(@group_assignment, :html => {:id => 'form_group_assignment'}) do |f| %>
   <%= hidden_field_tag :group_assignment_id, @group_assignment.id %>
+  <%= hidden_field_tag :assignment_id, @group_assignment.assignment_id %>
   <div class="block_wrapper" id="group_assignments">
 
     <div class="block_title">
