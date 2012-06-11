@@ -3,7 +3,7 @@
     <%= @curriculum_unit.name %> > <span id="lesson_name"></span>
   </div>
   <div id="lesson_content_header">
-    <% lessons_opened_id = params[:l] %>
+    <% lessons_opened_id = params[:id] %>
     <% lessons = @lessons %>
 
     <% unless lessons.nil? %>

@@ -68,12 +68,6 @@ class AccessControlController < ApplicationController
 
   private
   
-  def no_permission_redirect
-    redirect = {:controller => :home}
-    flash[:alert] = t(:no_permission)
-    redirect_to redirect
-  end
-
   def return_type(extension)
     case extension
     when "jpg", "jpeg"
