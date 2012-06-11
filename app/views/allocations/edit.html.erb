@@ -2,10 +2,14 @@
 <td>-</td>
 <td><%= @allocation.user.name %></td>
 <td>
-  <%= select(:code, :id, @groups.collect { |g| [g.code, g.id] }, {:selected => @allocation.allocation_tag.group_id}) %>
+  <% if @change_group %>
+    <%= select(:code, :id, @groups.collect { |g| [g.code, g.id] }, {:selected => @allocation.allocation_tag.group_id}) %>
+  <% else %>
+    <%= @groups.code %>
+  <% end %>
 </td>
 <td>
-  <%= select(:status, :id, status_hash.invert.to_a, {:selected => @allocation.status}) %>
+  <%= select(:status, :id, @status_hash.invert.to_a, {:selected => @allocation.status}) %>
 </td>
 <td>
   <input value="<%= t(:save) %>" allocation-id="<%= @allocation.id %>" save-link="<%= allocation_path(@allocation) %>" type="button" class="btn btn_default btn_save_allocation" onclick="javascript:save_allocation(this);">

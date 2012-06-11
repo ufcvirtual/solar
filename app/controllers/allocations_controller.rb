@@ -27,9 +27,24 @@ class AllocationsController < ApplicationController
   # GET /allocations/1/edit
   def edit
     @allocation = Allocation.find(params[:id])
+    @change_group = true
 
-    ats = AllocationTag.where("id in (?) and (group_id is not null or offer_id is not null)", @allocation.allocation_tag.related)
-    @groups = Group.where("id in (?) or offer_id in (?)", ats.map(&:group_id).compact.uniq, ats.map(&:offer_id).compact.uniq)
+    case @allocation.status
+      when Allocation_Pending, Allocation_Pending_Reactivate
+        @status_hash = status_hash.select {|k,v| [@allocation.status, Allocation_Activated, Allocation_Rejected].include?(k)}
+      when Allocation_Activated
+        @status_hash = status_hash.select {|k,v| [@allocation.status, Allocation_Cancelled].include?(k)}
+      when Allocation_Cancelled, Allocation_Rejected
+        @change_group = false
+        @status_hash = status_hash.select {|k,v| [@allocation.status, Allocation_Activated].include?(k)}
+    end
+
+    if @change_group
+      ats = AllocationTag.where("id in (?) and (group_id is not null or offer_id is not null)", @allocation.allocation_tag.related)
+      @groups = Group.where("id in (?) or offer_id in (?)", ats.map(&:group_id).compact.uniq, ats.map(&:offer_id).compact.uniq)
+    else
+      @groups = @allocation.allocation_tag.group
+    end
 
     respond_to do |format|
       format.html { render layout: false }
@@ -68,10 +83,40 @@ class AllocationsController < ApplicationController
   # PUT /allocations/1.json
   def update
     params[:allocation][:allocation_tag_id] = AllocationTag.find_by_group_id(params[:allocation].delete(:group_id)).id if params[:allocation].include?(:group_id)
-    @allocation = Allocation.find(params[:id])
+    allocation = Allocation.find(params[:id])
+
+    # mudanca de turma - cancela allocation antiga e cria uma nova
+    if params[:allocation].include?(:status) and params[:allocation][:status].to_i == Allocation_Activated.to_i and \
+      params[:allocation].include?(:allocation_tag_id) and params[:allocation][:allocation_tag_id] != allocation.allocation_tag_id
+
+      new_allocation = Allocation.new({
+        :user_id => allocation.user_id,
+        :allocation_tag_id => params[:allocation][:allocation_tag_id],
+        :profile_id => allocation.profile_id,
+        :status => params[:allocation][:status]
+      })
+
+      allocation.status = Allocation_Cancelled
+
+      begin
+        ActiveRecord::Base.transaction do
+          allocation.save
+          new_allocation.save
+        end
+        @allocation = new_allocation
+        error = false
+      rescue
+        error = true
+      end
+    elsif allocation.update_attributes(params[:allocation])
+      @allocation = allocation
+      error = false
+    else
+      error = true
+    end
 
     respond_to do |format|
-      if @allocation.update_attributes(params[:allocation])
+      unless error
         format.html { render action: "show", layout: false }
         format.json { render json: {:status => "ok"} }
       else
@@ -128,6 +173,16 @@ class AllocationsController < ApplicationController
         format.json { head :error }
       end
     end
+  end
+
+  private
+
+  def status_hash
+    { Allocation_Pending_Reactivate => t(:allocation_status_pending),
+      Allocation_Pending => t(:allocation_status_pending),
+      Allocation_Activated => t(:allocation_status_activated),
+      Allocation_Cancelled => t(:allocation_status_cancelled),
+      Allocation_Rejected => t(:allocation_status_rejected) }
   end
 
 end
