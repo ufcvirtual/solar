@@ -175,8 +175,7 @@ class ApplicationController < ActionController::Base
     if user_related
       return true 
     else
-      flash[:alert] = t(:no_permission)
-      redirect_to :controller => :home
+      no_permission_redirect
       return false
     end
   end
@@ -281,6 +280,12 @@ class ApplicationController < ActionController::Base
         return tab[0]
       end
     }
+  end
+  
+  protected
+
+  def no_permission_redirect
+    redirect_to({:controller => :home}, :alert => t(:no_permission))
   end
 
 end

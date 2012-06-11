@@ -139,9 +139,7 @@ class PortfolioController < ApplicationController
         end
       end
     else
-      redirect = {:controller => :home}
-      flash[:alert] = t(:no_permission)
-      redirect_to redirect
+      no_permission_redirect
     end
   end
 
@@ -232,9 +230,7 @@ class PortfolioController < ApplicationController
         end
       end
     else
-      redirect = {:controller => :home}
-      flash[:alert] = t(:no_permission)
-      redirect_to redirect
+      no_permission_redirect
     end
   end
 
@@ -250,9 +246,7 @@ class PortfolioController < ApplicationController
       curriculum_unit_id = active_tab[:url]["id"]
       download_file({:action => 'list', :id => curriculum_unit_id}, PublicFile.find(file.id).attachment.path)
     else
-      redirect = {:controller => :home}
-      flash[:alert] = t(:no_permission)
-      redirect_to redirect
+      no_permission_redirect
     end
   end
 
@@ -314,9 +308,7 @@ class PortfolioController < ApplicationController
         end
       end
     else
-      redirect = {:controller => :home}
-      flash[:alert] = t(:no_permission)
-      redirect_to redirect
+      no_permission_redirect
     end
   end
 
@@ -337,9 +329,7 @@ class PortfolioController < ApplicationController
     if individual_activity_or_part_of_group
       download_file({:action => 'activity_details', :id => assignment_id}, AssignmentFile.find(file_id).attachment.path)
     else
-      redirect = {:controller => :home}
-      flash[:alert] = t(:no_permission)
-      redirect_to redirect
+      no_permission_redirect
     end
   end
 
