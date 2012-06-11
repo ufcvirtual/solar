@@ -30,12 +30,14 @@ class Discussion < ActiveRecord::Base
     opts = { "type" => 'news', "order" => 'desc', "limit" => Rails.application.config.items_per_page.to_i,
       "display_mode" => 'list', "page" => 1 }.merge(opts)
     type = (opts["type"] == 'news') ? '>' : '<'
+    innder_order = (opts["type"] == 'news') ? 'desc' : 'asc'
 
     where = ["t2.id = #{self.id}"]
     where << "t1.updated_at::timestamp(0) #{type} '#{opts["date"].to_time}'::timestamp(0)" if opts.include?('date')
     where << "parent_id IS NULL" unless opts["display_mode"] == 'list'
 
     query = <<SQL
+      WITH cte_posts AS (
         SELECT t1.id,
                t1.parent_id,
                t1.profile_id,
@@ -49,8 +51,13 @@ class Discussion < ActiveRecord::Base
           JOIN discussions      AS t2 ON t2.id = t1.discussion_id
           JOIN users            AS t3 ON t3.id = t1.user_id
          WHERE #{where.join(' AND ')}
-         ORDER BY updated_at #{opts['order']}, id #{opts['order']}
+         ORDER BY updated_at #{innder_order}
          LIMIT #{opts['limit']} OFFSET #{(opts['page'].to_i * opts['limit'].to_i) - opts['limit'].to_i}
+      )
+      --
+      SELECT *
+        FROM cte_posts
+       ORDER BY updated_at #{opts['order']}, id #{opts['order']}
 SQL
 
     Post.find_by_sql(query)

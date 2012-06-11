@@ -127,7 +127,6 @@ class AllocationsController < ApplicationController
         format.html { redirect_to(offers_showoffersbyuser_url, alert: t(:enrollm_request_message_error)) }
         format.json { head :error }
       end
-      
     end
   end
 

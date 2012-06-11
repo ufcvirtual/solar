@@ -148,7 +148,6 @@ class CurriculumUnitsController < ApplicationController
       Profile_Type_Class_Responsible)
   end
 
-
   def list_portlet_discussion_posts(allocation_tags)
     discussions = Discussion.where(:allocation_tag_id => allocation_tags).map { |d| d.id }.join(',')
     return [] if discussions.empty? 

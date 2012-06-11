@@ -8,6 +8,6 @@
   <%= select(:status, :id, status_hash.invert.to_a, {:selected => @allocation.status}) %>
 </td>
 <td>
-  <input value="Salvar" allocation-id="<%= @allocation.id %>" save-link="<%= allocation_path(@allocation) %>" type="button" class="btn btn_default btn_save_allocation" onclick="javascript:save_allocation(this);">
-  <input value="Cancelar" show-link="<%= allocation_path(@allocation) %>" edit-link="<%= edit_allocation_path(@allocation) %>" type="button" class="btn btn_default btn_manage_cancel" onclick="javascript:manage_cancel(this);">
+  <input value="<%= t(:save) %>" allocation-id="<%= @allocation.id %>" save-link="<%= allocation_path(@allocation) %>" type="button" class="btn btn_default btn_save_allocation" onclick="javascript:save_allocation(this);">
+  <input value="<%= t(:cancel) %>" show-link="<%= allocation_path(@allocation) %>" edit-link="<%= edit_allocation_path(@allocation) %>" type="button" class="btn btn_default btn_manage_cancel" onclick="javascript:manage_cancel(this);">
 </td>
