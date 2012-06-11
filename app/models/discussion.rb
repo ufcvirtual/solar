@@ -30,7 +30,7 @@ class Discussion < ActiveRecord::Base
     opts = { "type" => 'news', "order" => 'desc', "limit" => Rails.application.config.items_per_page.to_i,
       "display_mode" => 'list', "page" => 1 }.merge(opts)
     type = (opts["type"] == 'news') ? '>' : '<'
-    innder_order = (opts["type"] == 'news') ? 'desc' : 'asc'
+    innder_order = (opts["type"] == 'news') ? 'asc' : 'desc'
 
     where = ["t2.id = #{self.id}"]
     where << "t1.updated_at::timestamp(0) #{type} '#{opts["date"].to_time}'::timestamp(0)" if opts.include?('date')
