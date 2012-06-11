@@ -17,7 +17,7 @@
             </span>
           <% end %>
           <% unless lesson.schedule.end_date < Date.today %>
-            <a class="link_content" href="javascript:show_lesson('<%= url_for :controller => :lessons, :action => :show, :id => @curriculum_unit.id, :l => lesson.lesson_id %>')">
+            <a class="link_content" href="javascript:show_lesson('<%= url_for :controller => :lessons, :action => :show, :id => lesson.lesson_id %>')">
               <%= lesson.name %>
             </a>
           <% else %>

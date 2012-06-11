@@ -1,4 +1,4 @@
 <frameset rows="52,*" frameborder="0" framespacing="0">
-  <frame name="frame_lesson_header" src="<%= url_for :controller => :lessons, :action => :show_header, :id => @curriculum_unit.id, :l => params[:l] %>" target="_self" scrolling="no" noresize>
+  <frame name="frame_lesson_header" src="<%= url_for :controller => :lessons, :action => :show_header, :id => params[:id] %>" target="_self" scrolling="no" noresize>
   <frame name="frame_lesson_content"  src="<%= url_for :controller => :lessons, :action => :show_content %>" target="_self">
 </frameset>
