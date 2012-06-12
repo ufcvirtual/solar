@@ -5,6 +5,7 @@ class AllocationTag < ActiveRecord::Base
   has_many :discussions
   has_many :schedule_events
   has_many :assignments
+  has_many :users, :through => :allocations, :uniq => true
 
   belongs_to :course
   belongs_to :curriculum_unit
