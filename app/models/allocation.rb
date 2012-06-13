@@ -9,6 +9,7 @@ class Allocation < ActiveRecord::Base
     unless args.empty? or args.nil?
       where << "t3.offer_id = #{args['offer_id']}" if args.include?('offer_id')
       where << "t3.id = #{args['group_id']}" if args.include?('group_id')
+      where << "t1.status = #{args['status']}" if args.include?('status') and args['status'] != ''
     end
 
     query = <<SQL

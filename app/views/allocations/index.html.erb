@@ -1,3 +1,12 @@
+<div>
+  <%= form_for('enrollments', url: enrollments_allocations_path, method: :get) do |f| %>
+    <%= f.hidden_field(:offer_id, {:value => params[:offer_id], :name => :offer_id}) if params.include?(:offer_id) %>
+    <%= f.hidden_field(:group_id, {:value => params[:group_id], :name => :group_id}) if params.include?(:group_id) %>
+    <%= t(:status) %>:<%= select(:status, :id, status_hash.invert.to_a, {:prompt => t(:all), :selected => params[:status]},
+    {:name => 'status', :onchange => "javascript:this.form.submit();"}) %>
+  <% end %>
+</div>
+
 <div class="block_title">
   <h2>Matriculas solicitadas</h2>
 </div>

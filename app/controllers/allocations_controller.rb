@@ -5,7 +5,7 @@ class AllocationsController < ApplicationController
   # GET /allocations
   # GET /allocations.json
   def index
-    @allocations = Allocation.enrollments(params.select { |k, v| ['offer_id', 'group_id'].include?(k) })
+    @allocations = Allocation.enrollments(params.select { |k, v| ['offer_id', 'group_id', 'status'].include?(k) })
 
     respond_to do |format|
       format.html # index.html.erb
@@ -173,16 +173,6 @@ class AllocationsController < ApplicationController
         format.json { head :error }
       end
     end
-  end
-
-  private
-
-  def status_hash
-    { Allocation_Pending_Reactivate => t(:allocation_status_pending),
-      Allocation_Pending => t(:allocation_status_pending),
-      Allocation_Activated => t(:allocation_status_activated),
-      Allocation_Cancelled => t(:allocation_status_cancelled),
-      Allocation_Rejected => t(:allocation_status_rejected) }
   end
 
 end

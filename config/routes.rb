@@ -54,9 +54,7 @@ Solar::Application.routes.draw do
   end
 
   resources :scores, :only => [:show]
-  resources :allocations, :courses, :group_assignments
-
-  resources :allocations, :courses, :scores, :group_assignments
+  resources :courses, :group_assignments
 
   get "pages/index"
   get "pages/team"
