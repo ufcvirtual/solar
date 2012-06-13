@@ -141,7 +141,7 @@ Cenário: Edição de grupo
                             E eu deverei ver "Aluno 2"
                             E eu deverei ver "Aluno 3"
         
-@javascript @wip
+@javascript
 Cenário: Acessar página de exclusão de grupo
     Dado que estou logado com o usuario "prof" e com a senha "123456"
         E que estou em "Meu Solar"
@@ -158,3 +158,26 @@ Cenário: Acessar página de exclusão de grupo
         Então eu deverei ver "Grupos da atividade Atividade em grupo I"
             Então eu deverei ver "grupo1 tI"
                 E eu deverei ver o link "deletar"
+
+@javascript @wip
+Cenário: Confirmando exclusão de grupo 
+    Dado que estou logado com o usuario "prof" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu deverei ver o link "Grupos"
+    Quando eu clicar no link "Grupos"
+        Então eu deverei ver "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I"
+        Então eu deverei ver "grupo1 tI"
+            E eu deverei ver o link "Editar"
+    Quando eu clico no link "Editar"
+        Então eu deverei ver "Grupos da atividade Atividade em grupo I"
+            E eu deverei ver "grupo1 tI"
+            E eu deverei ver o link "deletar"
+        Quando eu clicar no link "deletar"
+            E eu clicar em "Ok" no popup
+        Quando eu clicar em "Ok" no popup
+            Então eu deverei ver "Grupo excluído com sucesso"
+                E eu nao deverei ver "grupo1 tI "

@@ -18,3 +18,13 @@ end
 Entao 'eu deverei ver os alunos do grupo com id "$id" selecionados' do |id|
 	find('#students__'+id).should be_checked
 end
+
+E 'eu clicar em "$resposta" no popup' do |resposta|
+	a = page.driver.browser.switch_to.alert
+	if a.text == resposta
+  		a.dismiss
+	else
+  		a.accept
+	end
+	sleep 2
+end
