@@ -69,10 +69,10 @@ class AllocationsController < ApplicationController
 
       respond_to do |format|
         if @allocation.save
-          format.html { redirect_to(offers_showoffersbyuser_url, notice: t(:enrollm_request_message)) }
+          format.html { redirect_to(enrollments_url, notice: t(:enrollm_request_message)) }
           format.json { render json: @allocation, status: :created }
         else
-          format.html { redirect_to(offers_showoffersbyuser_url, alert: t(:enrollm_request_message_error)) }
+          format.html { redirect_to(enrollments_url, alert: t(:enrollm_request_message_error)) }
           format.json { render json: @allocation.errors, status: :error }
         end
       end
@@ -151,10 +151,10 @@ class AllocationsController < ApplicationController
 
     respond_to do |format|
       unless error
-        format.html { redirect_to(offers_showoffersbyuser_url, notice: message) }
+        format.html { redirect_to(enrollments_url, notice: message) }
         format.json { head :ok }
       else
-        format.html { redirect_to(offers_showoffersbyuser_url, alert: message) }
+        format.html { redirect_to(enrollments_url, alert: message) }
         format.json { head :error }
       end
     end
@@ -166,10 +166,10 @@ class AllocationsController < ApplicationController
 
     respond_to do |format|
       if @allocation.save
-        format.html { redirect_to(offers_showoffersbyuser_url, notice: t(:enrollm_request_message)) }
+        format.html { redirect_to(enrollments_url, notice: t(:enrollm_request_message)) }
         format.json { head :ok }
       else
-        format.html { redirect_to(offers_showoffersbyuser_url, alert: t(:enrollm_request_message_error)) }
+        format.html { redirect_to(enrollments_url, alert: t(:enrollm_request_message_error)) }
         format.json { head :error }
       end
     end

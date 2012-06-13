@@ -53,13 +53,14 @@ Solar::Application.routes.draw do
     delete :cancel_request, :action => :destroy, :on => :member, :defaults => {:type => 'request'}
   end
 
+  resources :enrollments, :only => [:index]
+  resources :offers
   resources :scores, :only => [:show]
   resources :courses, :group_assignments
 
   get "pages/index"
   get "pages/team"
   get "access_control/index"
-  get "offers/showoffersbyuser"
   get "schedules/show"
   get "portfolio/public_files_send"
   get "scores/:id/history_access" => "scores#history_access"

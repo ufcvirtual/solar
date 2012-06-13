@@ -3,7 +3,7 @@
     <h1><%=t(:enrollm_title)%></h1>
   </div>
   <div class="block_content enrollment_bar">
-    <%= form_for :offer, :url => { :controller=>"offers", :action => "showoffersbyuser" } do |f| %>
+    <%= form_for :offer, :url => enrollments_path do |f| %>
 
       <div class="enrollment_left">
         <%= f.label t(:enrollm_search), :class => "enrollment_label" %>:&nbsp;
@@ -19,8 +19,8 @@
       <div class="enrollment_right">
         <%= f.label t(:enrollm_view), :class => "enrollment_label" %>
         <%= f.label ': ', :class => "enrollment_label" %>&nbsp;
-        <%= link_to t(:enrollm_view_all),{:controller=>"offers", :action=>"showoffersbyuser", :category_query => 'all'}, :class=>"link_gray"%>&nbsp;
-        <%= link_to t(:enrollm_view_enrolled),{:controller=>"offers", :action=>"showoffersbyuser", :category_query => 'enroll'}, :class=>"link_gray"%>
+        <%= link_to t(:enrollm_view_all), enrollments_path(:category_query => 'all'), :class=>"link_gray"%>&nbsp;
+        <%= link_to t(:enrollm_view_enrolled), enrollments_path(:category_query => 'enroll'), :class=>"link_gray"%>
       </div>
     <% end %>
   </div>

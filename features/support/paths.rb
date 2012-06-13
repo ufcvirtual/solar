@@ -23,7 +23,7 @@ module NavigationHelpers
         '/users/edit'
 
       when /Matricula/
-        '/offers/showoffersbyuser'
+        '/enrollments'
     else
       begin
         page_name =~ /^the (.*) page$/

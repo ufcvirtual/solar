@@ -42,8 +42,8 @@ res7:
 
 res8:
   id: 8
-  controller: 'offers'
-  action: 'showoffersbyuser'
+  controller: 'enrollments'
+  action: 'index'
   description: 'Exibe oferta atraves de busca'
 
 res9:
