@@ -83,7 +83,7 @@
   </div>
 
   <div class="group_assignment_buttons">
-    <%= f.submit t(:group_assignment_save), :id=>"confirm", :class=>"solar_button btn btn_main", :alt=> t(:group_assignment_save) %>
+    <input type="button" value='<%=t(:group_assignment_save)%>' id="confirm" class="btn btn_main" alt='<%=t(:group_assignment_save)%>'/>
     <input type="button" value='<%=t(:group_assignment_cancel)%>' class="btn btn_caution" onclick="document.location.href='<%=group_assignments_path%>'"/>
   </div>
 
@@ -95,11 +95,18 @@
 
     changeOpendedGroupArrow('without_group');
 
+    var submit_by_link = false;
+
     $('#confirm').click(function(){
-      return submit_form_with_ajax(false);
+      if (submit_by_link){
+        return submit_form_with_ajax(false);
+      }else{
+        $('form#new_group_assignment').submit();    
+      }
     });
     
     $('.group_assig_link').click(function(){
+      submit_by_link = true;
       return submit_form_with_ajax(true);
     });
 
@@ -122,8 +129,8 @@
             success: function(data) {
               if (data.success == false) {
                 continue_with_request = false;
-                flash_message(data.flash_msg, data.flash_class);
               }
+              flash_message(data.flash_msg, data.flash_class);
             }
           });
           return continue_with_request;

@@ -408,31 +408,31 @@ res69:
   action: 'index'
   description: 'Grupos'
 
-res70:
+res73:
   id: 73
   controller: 'group_assignments'
   action: 'new'
   description: 'Pagina de novo grupo'  
 
-res71:
+res74:
   id: 74
   controller: 'group_assignments'
   action: 'create'
   description: 'Cria um novo grupo'  
 
-res72:
+res75:
   id: 75
   controller: 'group_assignments'
   action: 'edit'
   description: 'Pagina de edicao de grupo'  
 
-res73:
+res76:
   id: 76
   controller: 'group_assignments'
   action: 'update'
   description: 'Edita um grupo'  
 
-res74:
+res77:
   id: 77
   controller: 'group_assignments'
   action: 'destroy'
