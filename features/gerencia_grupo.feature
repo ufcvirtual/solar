@@ -42,7 +42,7 @@ Cenário: Exibir Grupos de Trabalho
         Então eu deverei ver "grupo1 - tII"
         E eu deverei ver "grupo2 - tII"
 
-@javascript
+@javascript 
 Cenário: Acessar página de cadastro de novo grupo
     Dado que estou logado com o usuario "prof" e com a senha "123456"
         E que estou em "Meu Solar"
@@ -72,16 +72,68 @@ Cenário: Acessar página de cadastro de novo grupo
             E eu deverei ver "Nome do grupo"
             E eu deverei ver "Alunos"
 
-@javascript @wip
+@javascript 
 Cenário: Cadastro de novo grupo
     Dado que estou logado com o usuario "prof" e com a senha "123456"
-        E que estou em "Cadastrar grupo para Atividade em grupo I"
-        E que eu preenchi "group_assignment_group_name" com "grupo100 tI"
-    Então eu deverei ver o botao "Salvar"
-        E eu deverei ver o botao "Cancelar"
-    Quando eu clicar em "Salvar"
-        Então deverei ir para "Lista de trabalhos em grupo de Quimica 1"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu deverei ver o link "Grupos"
+    Quando eu clicar no link "Grupos"
+        Então eu deverei ver "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I"
+        E eu deverei ver o botao "Novo grupo"
+    Quando eu clicar em "Novo grupo"
+        Dado que eu preenchi "group_assignment_group_name" com "grupo100 tI"
+        Então eu deverei ver o botao "Salvar"
+            E eu deverei ver o botao "Cancelar"
+        Quando eu clicar em "Salvar"
+            Então eu deverei ver "Grupo salvo com sucesso"
 
+@javascript
+Cenário: Acessar página de edição de grupo
+    Dado que estou logado com o usuario "prof" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu deverei ver o link "Grupos"
+    Quando eu clicar no link "Grupos"
+        Então eu deverei ver "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I"
+        Então eu deverei ver "grupo1 tI"
+            E eu deverei ver o link "Editar"
+    Quando eu clico no link "Editar"
+        Então eu deverei ver "Grupos da atividade Atividade em grupo I"
+            Então eu deverei ver "Editar grupo"
+                E eu deverei ver "Nome do grupo"
+                E eu deverei ver "Alunos"
+
+@javascript  @wip
+Cenário: Edição de grupo
+    Dado que estou logado com o usuario "prof" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu deverei ver o link "Grupos"
+    Quando eu clicar no link "Grupos"
+        Então eu deverei ver "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I"
+        Então eu deverei ver "grupo1 tI"
+            E eu deverei ver o link "Editar"
+    Quando eu clico no link "Editar"
+        Dado que eu preenchi "group_assignment_group_name" com "grupo1.2 tI"
+            E que eu cliquei no grupo "2"
+        Então eu deverei ver "Aluno 3"
+            E eu deverei ver "Usuario do sistema"
+        Quando eu selecionar o usuario de id "2"
+            Então eu deverei ver o botao "Salvar"
+                E eu deverei ver o botao "Cancelar"
+            Quando eu clicar em "Salvar"
+                Então eu deverei ver "Grupo salvo com sucesso"
+        
 
 #Cenário: Acessar página de cadastro de novo usuário
 #    Dado que eu nao estou cadastrado

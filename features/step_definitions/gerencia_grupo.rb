@@ -7,6 +7,10 @@ Quando 'eu clicar no item "$locator"' do |locator|
   page.execute_script("toggle_div('div_group_4')")
 end
 
-Entao /^deverei ir para "([^"]*)"$/ do |page_name|
-  visit path_to(page_name)
+E 'que eu cliquei no grupo "$grupo_id"' do |grupo_id|
+	page.execute_script("clickOnGroup("+grupo_id+")")
+end
+
+Quando 'eu selecionar o usuario de id "$id"' do |id|
+	check('students__'+id)
 end
