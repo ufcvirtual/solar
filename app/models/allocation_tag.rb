@@ -55,7 +55,7 @@ SQL
       when 'curriculum_unit_id'
         curriculum_units_related(CurriculumUnit.find(at['curriculum_unit_id']), down = true)
       when 'course_id'
-        courses_related(course.find(at['course_id']), down = true)
+        courses_related(Course.find(at['course_id']), down = true)
     end
 
     [self.id, atgs].flatten.compact.uniq.sort

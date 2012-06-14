@@ -250,7 +250,7 @@ class ApplicationController < ActionController::Base
         if allocation_tag_group.blank?
           # se não houver, armazena como a turma a ser selecionado a primeira turma disponível para o usuário
           curriculum_unit_id = active_tab[:url]['id']
-          params[:selected_group] = CurriculumUnit.find_user_groups_by_curriculum_unit(curriculum_unit_id, current_user.id).first.id
+          params[:selected_group] = Group.find_all_by_curriculum_unit_id_and_user_id(curriculum_unit_id, current_user.id).first.id
         else
           # se houver, armazena a turma da allocation_tag
           params[:selected_group] = allocation_tag_group

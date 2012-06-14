@@ -70,7 +70,7 @@ module ApplicationHelper
   def render_group_selection(hash_params = nil)
     active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
     curriculum_unit_id = active_tab[:url]['id']
-    groups = CurriculumUnit.find_user_groups_by_curriculum_unit(curriculum_unit_id, current_user.id)
+    groups = Group.find_all_by_curriculum_unit_id_and_user_id(curriculum_unit_id, current_user.id)
     # O grupo (turma) a ter seus fóruns exibidos será o grupo selecionado na aba de seleção ('selected_group')
     group_selected = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
     # Se o group_select estiver vazio, ou seja, nenhum grupo foi selecionado pelo usuário,

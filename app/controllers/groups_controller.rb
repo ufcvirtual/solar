@@ -3,7 +3,7 @@ class GroupsController < ApplicationController
   # load_and_authorize_resource
 
   def index
-    @groups = CurriculumUnit.find_user_groups_by_curriculum_unit(params[:curriculum_unit_id], current_user.id) if params.include?(:curriculum_unit_id)
+    @groups = Group.find_all_by_curriculum_unit_id_and_user_id(params[:curriculum_unit_id], current_user.id) if params.include?(:curriculum_unit_id)
 
     respond_to do |format|
       format.xml  { render :xml => @groups }
