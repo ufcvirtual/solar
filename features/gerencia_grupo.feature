@@ -114,7 +114,7 @@ Cenário: Cadastro de novo grupo com confirm Ok
                 E eu deverei ver "Grupo salvo com sucesso"
                 E eu deverei ver "grupo100 tI"
 
-@javascript @wip
+@javascript
 Cenário: Cadastro de novo grupo com confirm Cancel
     Dado que estou logado com o usuario "prof" e com a senha "123456"
         E que estou em "Meu Solar"
