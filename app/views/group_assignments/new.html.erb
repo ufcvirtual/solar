@@ -19,10 +19,10 @@
                           <div class="participants">
                             <h3 class="groupname"><%= g["group_name"] %>
                               <div class="group_links">
-                                <%= link_to t(:group_assignment_edit).downcase, edit_group_assignment_path(g, :assignment_id => g.assignment_id), {:class => 'group_assig_link'} %>
+                                <%= link_to t(:group_assignment_edit).downcase, edit_group_assignment_path(g, :assignment_id => g.assignment_id), {:class => 'group_assig_link', :id => 'edit_'+g["id"].to_s} %>
                               </div>
                               <div class="group_links">
-                                <%= link_to t(:group_assignment_delete).downcase, group_assignment_path(g, :assignment_id => g.assignment_id), :method => :delete, :confirm => t(:confirm_deletion, :group_name => g["group_name"]), :class => 'group_assig_link' %>
+                                <%= link_to t(:group_assignment_delete).downcase, group_assignment_path(g, :assignment_id => g.assignment_id), :method => :delete, :confirm => t(:confirm_deletion, :group_name => g["group_name"]), :class => 'group_assig_link', :id => 'delete_'+g["id"].to_s %>
                               </div>
                             </h3>
                             <% gp = group_participants(g["id"])%>

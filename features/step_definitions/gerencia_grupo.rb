@@ -19,12 +19,16 @@ Entao 'eu deverei ver os alunos do grupo com id "$id" selecionados' do |id|
 	find('#students__'+id).should be_checked
 end
 
-E 'eu clicar em "$resposta" no popup' do |resposta|
+E 'eu clicar em "$resposta_confirm" no popup' do |resposta_confirm|
 	a = page.driver.browser.switch_to.alert
-	if a.text == resposta
-  		a.dismiss
-	else
+	if resposta_confirm == "Ok"
   		a.accept
+	else
+  		a.dismiss
 	end
 	sleep 2
+end
+
+Entao 'eu deverei estar em "$nome_pagina"' do |nome_pagina|
+	 current_path.should == path_to(nome_pagina)
 end

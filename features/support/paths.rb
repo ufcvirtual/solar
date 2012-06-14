@@ -24,6 +24,15 @@ module NavigationHelpers
 
       when /Matricula/
         '/enrollments'
+
+      when /Lista de atividades em grupo/
+        '/group_assignments'
+
+      when /Edicao do grupo1 tI/
+        '/group_assignments/1/edit'
+
+      when /Edicao do grupo2 tI/
+        '/group_assignments/2/edit'
     else
       begin
         page_name =~ /^the (.*) page$/
