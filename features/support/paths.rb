@@ -33,6 +33,7 @@ module NavigationHelpers
 
       when /Edicao do grupo2 tI/
         '/group_assignments/2/edit'
+        
     else
       begin
         page_name =~ /^the (.*) page$/
