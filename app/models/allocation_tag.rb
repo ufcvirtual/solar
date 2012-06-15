@@ -17,21 +17,9 @@ class AllocationTag < ActiveRecord::Base
     elsif not offer_id.nil?
       %Q{ SELECT * FROM groups WHERE offer_id = #{offer_id} }
     elsif not curriculum_unit_id.nil?
-      %Q{
-          SELECT DISTINCT t1.* \
-            FROM groups           AS t1 \
-            JOIN offers           AS t2 ON t2.id = t1.offer_id \
-            JOIN curriculum_units AS t3 ON t3.id = t2.curriculum_unit_id \
-           WHERE t3.id = #{curriculum_unit_id}
-      }
-    elsif not course.nil?
-      %Q{
-          SELECT DISTINCT t1.* \
-            FROM groups   AS t1 \
-            JOIN offers   AS t2 ON t2.id = t1.offer_id \
-            JOIN courses  AS t3 ON t3.id = t2.course_id \
-           WHERE t3.id = #{course_id}
-      }
+      %Q{ SELECT DISTINCT t1.* FROM groups AS t1 JOIN offers AS t2 ON t2.id = t1.offer_id WHERE t2.curriculum_unit_id = #{curriculum_unit_id} }
+    elsif not course_id.nil?
+      %Q{ SELECT DISTINCT t1.* FROM groups AS t1 JOIN offers AS t2 ON t2.id = t1.offer_id WHERE t2.course_id = #{course_id} }
     end
   }
 

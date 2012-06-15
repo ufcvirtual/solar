@@ -14,7 +14,7 @@ class Group < ActiveRecord::Base
   end
   
   def self.find_all_by_curriculum_unit_id_and_user_id(curriculum_unit_id, user_id)
-    CurriculumUnit.find(curriculum_unit_id).groups.where(["groups.id IN (?)", User.find(user_id).groups.map(&:id)])
+    CurriculumUnit.select('id').find(curriculum_unit_id).groups.where(["groups.id IN (?)", User.select('id').find(user_id).groups.map(&:id)])
   end
 
 end
