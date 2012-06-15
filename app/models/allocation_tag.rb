@@ -1,16 +1,39 @@
 class AllocationTag < ActiveRecord::Base
 
+  belongs_to :course
+  belongs_to :curriculum_unit
+  belongs_to :offer
+  belongs_to :group
+
   has_many :allocations
   has_many :lessons
   has_many :discussions
   has_many :schedule_events
   has_many :assignments
   has_many :users, :through => :allocations, :uniq => true
-
-  belongs_to :course
-  belongs_to :curriculum_unit
-  belongs_to :offer
-  belongs_to :group
+  has_many :groups, :finder_sql => Proc.new {
+    if not group_id.nil?
+      %Q{ SELECT * FROM groups WHERE id = #{group_id} }
+    elsif not offer_id.nil?
+      %Q{ SELECT * FROM groups WHERE offer_id = #{offer_id} }
+    elsif not curriculum_unit_id.nil?
+      %Q{
+          SELECT DISTINCT t1.* \
+            FROM groups           AS t1 \
+            JOIN offers           AS t2 ON t2.id = t1.offer_id \
+            JOIN curriculum_units AS t3 ON t3.id = t2.curriculum_unit_id \
+           WHERE t3.id = #{curriculum_unit_id}
+      }
+    elsif not course.nil?
+      %Q{
+          SELECT DISTINCT t1.* \
+            FROM groups   AS t1 \
+            JOIN offers   AS t2 ON t2.id = t1.offer_id \
+            JOIN courses  AS t3 ON t3.id = t2.course_id \
+           WHERE t3.id = #{course_id}
+      }
+    end
+  }
 
   def self.find_all_groups(allocations)
     query = <<SQL

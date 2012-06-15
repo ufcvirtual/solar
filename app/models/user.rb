@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+  has_one :personal_configuration
+
   has_many :allocations
   has_many :allocation_tags, :through => :allocations, :uniq => true
   has_many :profiles, :through => :allocations, :uniq => true
@@ -10,8 +12,6 @@ class User < ActiveRecord::Base
   has_many :message_labels
   has_many :user_contacts, :class_name => "UserContact", :foreign_key => "user_id"
   has_many :user_contacts, :class_name => "UserContact", :foreign_key => "user_related_id"
-
-  has_one :personal_configuration
 
   after_create :basic_profile_allocation
 
@@ -86,9 +86,6 @@ class User < ActiveRecord::Base
     (errors[:email].any? || !email_changed?)
   end
 
-  ##
-  # Verifica se existe um erro no campo de cpf
-  ##
   def already_cpf_error?
     errors[:cpf].any?
   end
@@ -122,9 +119,7 @@ class User < ActiveRecord::Base
     errors.add(:cpf, I18n.t(:new_user_msg_cpf_error)) unless cpf_verify.valido? unless cpf_verify.nil?
   end
 
-  ##
-  # Na criação, o usuário recebe o perfil de usuario basico
-  ##
+  ## Na criação, o usuário recebe o perfil de usuario basico
   def basic_profile_allocation
     new_allocation_user = Allocation.new :profile_id => Profile.find_by_types(Profile_Type_Basic).id, :status => Allocation_Activated, :user_id => self.id
     new_allocation_user.save!
@@ -142,6 +137,12 @@ class User < ActiveRecord::Base
     conditions = warden_conditions.dup
     login = conditions.delete(:login)
     where(conditions).where(["translate(cpf,'.-','') = :value OR lower(username) = :value", { :value => login.strip.downcase }]).first
+  end
+
+  def groups
+    at = allocation_tags
+    [Group.where("id in (?) or offer_id in (?)", at.map(&:group_id).compact, at.map(&:offer_id).compact),
+      at.select {|a| a.group_id.nil? and a.offer_id.nil?}.collect {|a| a.groups}.flatten].flatten.uniq
   end
 
   def profiles_activated(only_id = false)

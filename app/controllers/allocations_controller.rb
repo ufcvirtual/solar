@@ -1,3 +1,5 @@
+include AllocationsHelper
+
 class AllocationsController < ApplicationController
 
   authorize_resource :except => [:destroy]
