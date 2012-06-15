@@ -6,7 +6,7 @@
 
   <div class="mysolar_header">
     <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
-    <h1 class="mysolar_title"><%= t(:group)%> <%= @group %></h1>
+    <h1 class="mysolar_title"><%= t(:group)%> <%= @group.code %></h1>
   </div>
 
   <!-- Lista dos alunos com notas -->
@@ -73,7 +73,7 @@
   <!-- Paginacao -->
 
   <div id="scores_pagination" style="text-align: center;" class="legend">
-    <span><%=raw render_pagination_bar(@cnt_students) unless @cnt_students == 0%></span>
+    <span><%=raw render_pagination_bar(@students_count) unless @students_count == 0%></span>
   </div>
 
   <!-- Legendas -->

@@ -7,23 +7,6 @@ class Assignment < ActiveRecord::Base
   has_many :send_assignments
 
   ##
-  # Recupera as atividades por turma
-  ##
-  def self.all_by_group_id(group_id)
-    ActiveRecord::Base.connection.select_all <<SQL
-    SELECT t1.id,
-           t1.name,
-           t3.start_date,
-           t3.end_date
-      FROM assignments     AS t1
-      JOIN allocation_tags AS t2 ON t2.id = t1.allocation_tag_id
-      JOIN schedules       AS t3 ON t3.id = t1.schedule_id
-     WHERE t2.group_id = #{group_id}
-     ORDER BY t3.start_date;
-SQL
-  end
-
-  ##
   # Recupera status da atividade
   ##
   def self.status_of_actitivy_by_assignment_id_and_student_id(assignment_id, student_id)

@@ -9,18 +9,15 @@ class ScoresTeacherController < ApplicationController
     curriculum_unit_id = active_tab[:url]['id']
     allocation_tag_id = active_tab[:url]['allocation_tag_id']
 
-    allocations = AllocationTag.find_related_ids(allocation_tag_id)
+    @group = Group.joins(:allocation_tag).where("allocation_tags.id = ?", allocation_tag_id).first
+    @students, @activities, @students_count = [], [], 0
 
-    groups = AllocationTag.find_all_groups(allocations.join(','))
-    @group, group_id = groups.first.code, groups.first.id
-    @students, @activities, @cnt_students = [], [], 0
-
-    unless group_id.nil?
-      @cnt_students = ScoresTeacher.number_of_students_by_group_id(group_id)
-      @activities = Assignment.all_by_group_id(group_id)
+    unless @group.nil?
+      @students_count = ScoresTeacher.number_of_students_by_group_id(@group.id)
+      @activities = @group.assignments + @group.offer.assignments
 
       curriculum_unit_id = params[:id]
-      @students = ScoresTeacher.list_students_by_curriculum_unit_id_and_group_id(curriculum_unit_id, group_id, @current_page)
+      @students = ScoresTeacher.list_students_by_curriculum_unit_id_and_group_id(curriculum_unit_id, @group.id, @current_page)
     end
   end
 
