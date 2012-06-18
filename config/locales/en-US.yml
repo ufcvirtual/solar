@@ -584,6 +584,9 @@
   confirm_creation_message: "Create group?"
   with_no_group: "With no group"
   student_already_sent_files: "Student can't be removed, becaus already sent files for his current group"
+  group_assignment_import: "Import groups"
+  import: "Import"
+  assignment_without_groups: "Assignment haven't groups"
 
   # Mensagem de erro para permissão
   no_permission: "you haven't permission to access this page"

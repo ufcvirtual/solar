@@ -2904,7 +2904,6 @@ td.td_student a {color: #2a538d;}
     color: #000;
 }
 
-
 .delete_support_material_file_editor, .support_material_add, .support_material_add_link{
     background-color: white;
     border-color:white;
@@ -3118,30 +3117,38 @@ td.form_error {
 }
 
 /* gerenciamento de grupos */
+
 .group_assignment_content {
     margin-bottom: 10px;
 }
+
 #group_assignments tr.lines > td {
     padding: 0;
 }
+
 #group_assignments tr.lines:hover {
     background-color: #f5f8fb;
 }
+
 .group_assignment_title {
     padding: 6px 10px;
     cursor: pointer;
     background: url('../images/group_assignment_expand.png') no-repeat right center;
 }
+
 .group_assignment_title_contract {
     background: url('../images/group_assignment_contract.png') no-repeat right center;
 }
+
 .group_assignment_title:hover {
     background-color: #eef3fb;
 }
+
 .group_assignment_details {
     display: none;
     margin-left: 20px;
 }
+
 .group_participants {
     border: 1px solid #d0d0d0;
     background-color: white;
@@ -3151,17 +3158,21 @@ td.form_error {
     margin-right: 10px;
     margin-bottom: 10px;
 }
+
 .group_participants ul {
     padding: 5px;
 }
+
 .group_new {
     clear: both;
     padding-bottom: 5px;
 }
+
 .group_edit {
     float: right;
     margin-right: 5px;
 }
+
 .group_assignment_name {
     text-align: center;
     background-color: #f1f1f1;
@@ -3242,4 +3253,32 @@ td.form_error {
 .group_links{
     display: inline;
     font-weight: normal;
+}
+
+.group_assignments_import{
+    padding: 10px 6px 5px 8px;
+}
+
+.all_students_to_import{
+    border: 1px solid #dedede;
+    background-color: #ffffff;
+    width: 390px;
+    min-height: 100px;
+    margin: 10px 20px 20px 20px;
+    display: inline-block;
+    padding: 6px 6px 5px 8px;
+}
+
+.all_students_to_import li{
+    list-style-type: none;
+}
+
+.import_buttons{
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.group_assignment_buttons{
+    margin-bottom: 20px;
+    clear: both;
 }

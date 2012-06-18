@@ -21,3 +21,8 @@
       this_div.parents('li').find('.menu_icon_arrow').addClass('menu_icon_animate');
     }
   }
+
+function showImportGroupBox(url, title){
+    showLightBoxURL(url, 500, 400, true, title);
+    return false;
+}

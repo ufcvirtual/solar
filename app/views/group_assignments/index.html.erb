@@ -1,3 +1,5 @@
+<%= javascript_include_tag 'group_assignments.js' %>
+
 <div class="block_wrapper" id="group_assignments">
 
   <div class="block_title">
@@ -42,9 +44,14 @@
                   <% end %>
                 <% end %>
                 </div>
-                 <div class="group_new">
-                      <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
-                 </div>
+                <div class="group_assignment_buttons">
+                  <%= form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}) do |f| %>
+                    <%= f.submit t(:group_assignment_new), :class=>'btn btn_default' %>
+                    <% if verify_group_of_assignments(a["id"]) %>
+                      <input type="button" value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => GroupAssignment.first.id, :assignment_id => a["id"].to_i)%>', '');"/>
+                    <% end %>
+                  <% end %>
+                </div>
               </div>
             </td>
           </tr>

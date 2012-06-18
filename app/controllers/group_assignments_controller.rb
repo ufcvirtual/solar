@@ -4,6 +4,7 @@ class GroupAssignmentsController < ApplicationController
 
   before_filter :prepare_for_group_selection #, :only => [:list]
   before_filter :user_related_to_assignment?, :except => [:index]
+  before_filter :can_import?, :only => [:import_groups_page, :import_groups]
   load_and_authorize_resource
 
   # lista trabalhos em grupo
@@ -122,6 +123,41 @@ class GroupAssignmentsController < ApplicationController
       flash[:alert] = t(:group_assignment_delete_error)
       redirect_to :action => :edit, :id => group_assignment.id, :assignment_id => group_assignment.assignment_id
     end
+  end
+
+  ##
+  # Página de importação de grupos (lightbox)
+  ##
+  def import_groups_page
+    group_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
+    @assignments = GroupAssignment.all_by_group_id(group_id)
+    @assignment_id = params[:assignment_id]
+    render :layout => false
+  end
+
+  ##
+  # Importação de grupos
+  ##
+  def import_groups
+    import_from_assignment_id = params[:assignment_id_import_from]
+    import_to_assignment_id = params[:assignment_id]
+
+    groups_to_import = GroupAssignment.find_all_by_assignment_id(import_from_assignment_id)
+
+    unless groups_to_import.empty?
+      groups_to_import.each do |group_to_import|
+        group_imported = GroupAssignment.new(:group_name => group_to_import.group_name, :assignment_id => import_to_assignment_id)
+        group_imported.save
+        group_participants_to_import = GroupParticipant.find_all_by_group_assignment_id(group_to_import.id)
+        unless group_participants_to_import.empty?
+          group_participants_to_import.each do |participant_to_import|
+            GroupParticipant.create(:group_assignment_id => group_imported.id, :user_id => participant_to_import.user_id)
+          end
+        end
+      end
+    end
+
+    redirect_to group_assignments_url
   end
 
 private
