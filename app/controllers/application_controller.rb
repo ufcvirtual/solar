@@ -172,6 +172,9 @@ class ApplicationController < ActionController::Base
   ## Verifcações de permissões de acesso ##
   #########################################
 
+  ##
+  # Verifica se o usuário está relacionado com a atividade que está tentando acessar
+  ##
   def user_related_to_assignment?
     related_allocation_tags     = AllocationTag.find_related_ids(Assignment.find(params[:assignment_id]).allocation_tag_id)
     related_allocations_to_user = Allocation.where(:allocation_tag_id => related_allocation_tags, :user_id => current_user.id) unless related_allocation_tags.empty?
@@ -184,6 +187,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  ##
+  # Verifica se a atividade que o usuário está tentando importar grupos realmente pode importar grupos
+  ##
   def can_import?
     if verify_group_of_assignments(params[:assignment_id])
       return true

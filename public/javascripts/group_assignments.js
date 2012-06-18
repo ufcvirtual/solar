@@ -26,3 +26,7 @@ function showImportGroupBox(url, title){
     showLightBoxURL(url, 500, 400, true, title);
     return false;
 }
+
+function toggle_div(elementId) {
+    $('#'+ elementId).slideToggle();
+}

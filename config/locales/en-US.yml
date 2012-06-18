@@ -587,6 +587,7 @@
   group_assignment_import: "Import groups"
   import: "Import"
   assignment_without_groups: "Assignment haven't groups"
+  group_assignment_import_success: "Groups imported with success"
 
   # Mensagem de erro para permissão
   no_permission: "you haven't permission to access this page"

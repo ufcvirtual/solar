@@ -748,6 +748,7 @@
   group_assignment_import: "Importar grupos"
   import: "Importar"
   assignment_without_groups: "Atividade não possui grupos"
+  group_assignment_import_success: "Grupos importados com sucesso"
 
   # Mensagem de erro para permissão
   no_permission: "Você não tem permissão para acessar esta página"

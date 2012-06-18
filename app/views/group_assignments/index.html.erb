@@ -27,22 +27,22 @@
 
                 <h3><%= t(:group_assignment_title)%></h3>
                 <div class="group_assignment_content">
-                <% unless gps.nil? or gps.empty? %>
 
-                  <% gps.each do |g| %>
-                    <div class="group_participants">
-                      <h3 class="group_assignment_name"><%= g["group_name"] %></h3>
-
-                      <% gp = group_participants(g["id"])%>
-                      <ul>
-                      <% gp.each do |p| %>
-                        <li><%= p["name"] %></li>
-                      <% end %>
-                      </ul>
-                      <%= link_to t(:group_assignment_edit), {:controller => :group_assignments, :action => :edit, :id => g["id"], :assignment_id => a["id"]}, {:class => 'link_content group_edit'} %>
-                    </div>
+                  <% unless gps.nil? or gps.empty? %>
+                    <% gps.each do |g| %>
+                      <div class="group_participants">
+                        <h3 class="group_assignment_name"><%= g["group_name"] %></h3>
+                        <% gp = group_participants(g["id"])%>
+                        <ul>
+                          <% gp.each do |p| %>
+                            <li><%= p["name"] %></li>
+                          <% end %>
+                        </ul>
+                        <%= link_to t(:group_assignment_edit), {:controller => :group_assignments, :action => :edit, :id => g["id"], :assignment_id => a["id"]}, {:class => 'link_content group_edit'} %>
+                      </div>
+                    <% end %>
                   <% end %>
-                <% end %>
+
                 </div>
                 <div class="group_assignment_buttons">
                   <%= form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}) do |f| %>
@@ -52,6 +52,7 @@
                     <% end %>
                   <% end %>
                 </div>
+                
               </div>
             </td>
           </tr>
@@ -67,9 +68,6 @@
 </div>
 
 <script type="text/javascript">
-  function toggle_div(elementId) {
-    $('#'+ elementId).slideToggle();
-  }
   $(".group_assignment_title").click(function(){
     $(this).toggleClass('group_assignment_title_contract');
   })

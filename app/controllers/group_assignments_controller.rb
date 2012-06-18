@@ -18,9 +18,9 @@ class GroupAssignmentsController < ApplicationController
   end
 
   ##
-  # Novo grupo
-  # @groups: todos os grupos da atividade
-  # @students_with_no_group: lista de alunos sem grupo
+  # Página de criação grupo
+  # => @groups: todos os grupos da atividade
+  # => @students_with_no_group: lista de alunos sem grupo
   ##
   def new
     @group_assignment = GroupAssignment.new(params[:group_assignment])
@@ -59,9 +59,9 @@ class GroupAssignmentsController < ApplicationController
   end
 
   ##
-  # Edição de grupo
-  # @groups: todos os grupos da atividade
-  # @students_with_no_group: lista de alunos sem grupo
+  # Página de edição de grupo
+  # => @groups: todos os grupos da atividade
+  # => @students_with_no_group: lista de alunos sem grupo
   ##
   def edit
     @group_assignment = GroupAssignment.find(params[:id])
@@ -75,10 +75,7 @@ class GroupAssignmentsController < ApplicationController
   def update
     group_assignment = GroupAssignment.find(params[:group_assignment_id])
     @groups = group_assignments(group_assignment.assignment_id)
-
-
     @students_with_no_group = no_group_students(@group_assignment.assignment_id)
-
 
     students = []
     # para cada grupo da atividade, verifica e acrescenta no array 'students' os alunos selecionados
@@ -127,6 +124,8 @@ class GroupAssignmentsController < ApplicationController
 
   ##
   # Página de importação de grupos (lightbox)
+  # => @assignments: todas as atividades da turma acessada pelo usuário no momento
+  # => @assignment_id: a atividade que irá importar os grupos
   ##
   def import_groups_page
     group_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
@@ -146,8 +145,7 @@ class GroupAssignmentsController < ApplicationController
 
     unless groups_to_import.empty?
       groups_to_import.each do |group_to_import|
-        group_imported = GroupAssignment.new(:group_name => group_to_import.group_name, :assignment_id => import_to_assignment_id)
-        group_imported.save
+        group_imported = GroupAssignment.create(:group_name => group_to_import.group_name, :assignment_id => import_to_assignment_id)
         group_participants_to_import = GroupParticipant.find_all_by_group_assignment_id(group_to_import.id)
         unless group_participants_to_import.empty?
           group_participants_to_import.each do |participant_to_import|
@@ -157,6 +155,7 @@ class GroupAssignmentsController < ApplicationController
       end
     end
 
+    flash[:notice] = t(:group_assignment_import_success)
     redirect_to group_assignments_url
   end
 
