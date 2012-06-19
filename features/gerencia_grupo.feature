@@ -422,8 +422,8 @@ Cenário: Acessar página que tem o botão de importação de grupo
         E eu deverei ver "Atividade em grupo II"
         E eu deverei ver "Atividade em grupo III"
     Quando eu clicar no item "Atividade em grupo I" de id "4"
-        Então eu nao deverei ver o elemento de id "4"
-    Quando eu clicar no item "Atividade em grupo III" de id "6"
+        Então eu nao deverei ver o elemento de id "import_to_4"
+    Quando eu clicar no item "Atividade em grupo III" de id "import_to_6"
         Então eu deverei ver o elemento de id "6"
 
 @javascript
