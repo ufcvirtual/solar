@@ -39,3 +39,12 @@ a5:
   enunciation: esse é o enunciado do 2o trabalho em grupo... :)
   schedule_id: 21
   type_assignment: 2
+
+# quimica I - trabalho em grupo3
+a6:
+  id: 6
+  allocation_tag_id: 3
+  name: Atividade em grupo III
+  enunciation: esta é uma atividade sem grupo algum.
+  schedule_id: 21
+  type_assignment: 2

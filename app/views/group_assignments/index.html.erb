@@ -15,7 +15,7 @@
           <tr class="lines">
             <td>
               <div class="group_assignment_title" onClick="javascript:toggle_div('div_group_<%=a["id"]%>');">
-                <a class="link_content"><%=a["name"]%></a>
+                <a id="<%=a["id"].to_i%>" class="link_content"><%=a["name"]%></a>
               </div>
               <% gps = group_assignments(a["id"])%>
               <div id="div_group_<%=a["id"]%>" class="group_assignment_details">
@@ -48,7 +48,7 @@
                   <%= form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}) do |f| %>
                     <%= f.submit t(:group_assignment_new), :class=>'btn btn_default' %>
                     <% if verify_group_of_assignments(a["id"]) %>
-                      <input type="button" value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => GroupAssignment.first.id, :assignment_id => a["id"].to_i)%>', '');"/>
+                      <input type="button" id='import_to_<%=a["id"]%>' value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => GroupAssignment.first.id, :assignment_id => a["id"].to_i)%>', '');"/>
                     <% end %>
                   <% end %>
                 </div>
