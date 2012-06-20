@@ -8,6 +8,7 @@ Contexto:
     Dado que tenho "allocations"
         | user_id  | allocation_tag_id  | profile_id  | status |
         | 1        | 3                  | 3           | 1      |
+        | 7        | 3                  | 1           | 1      |
 
 Cenário: Exibir Tela de Cadastro de Trabalho de Grupo
     Dado que estou logado com o usuario "prof" e com a senha "123456"
@@ -93,6 +94,30 @@ Cenário: Cadastro de novo grupo
             E eu deverei ver "Grupo salvo com sucesso"
 
 @javascript
+Cenário: Cadastro de novo grupo com erros
+    Dado que estou logado com o usuario "prof" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu deverei ver o link "Grupos"
+    Quando eu clicar no link "Grupos"
+        Então eu deverei ver "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
+        E eu deverei ver o botao "Novo grupo"
+    Quando eu clicar em "Novo grupo"
+        Dado que eu preenchi "group_assignment_group_name" com ""
+            Então eu deverei ver o botao "Salvar"
+    Quando eu clicar em "Salvar"
+        Então eu deverei estar em "Criacao de grupo"
+        E eu deverei ver "Nome do grupo deve ser preenchido(a)"
+    Dado que eu preenchi "group_assignment_group_name" com "grupo1 tI"
+            Então eu deverei ver o botao "Salvar"
+    Quando eu clicar em "Salvar"
+        Então eu deverei estar em "Criacao de grupo"
+        E eu deverei ver "Nome do grupo já existe"
+
+@javascript
 Cenário: Cadastro de novo grupo com confirm Ok
     Dado que estou logado com o usuario "prof" e com a senha "123456"
         E que estou em "Meu Solar"
@@ -135,6 +160,34 @@ Cenário: Cadastro de novo grupo com confirm Cancel
                 Então eu deverei estar em "Edicao do grupo2 tI"
                 E eu nao deverei ver "Grupo salvo com sucesso"
                 E eu nao deverei ver "grupo100 tI"
+
+@javascript @wip
+Cenário: Cadastro de novo grupo com erro e salvando pelos confirms
+    Dado que estou logado com o usuario "prof" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu deverei ver o link "Grupos"
+    Quando eu clicar no link "Grupos"
+        Então eu deverei ver "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
+        E eu deverei ver o botao "Novo grupo"
+    Quando eu clicar em "Novo grupo"
+        Dado que eu preenchi "group_assignment_group_name" com ""
+            Então eu deverei ver "grupo2 tI"
+            E eu deverei ver o link "edit_2"
+        Quando eu clicar no link "edit_2"
+            E eu clicar em "Ok" no popup
+                Então eu deverei estar em "Criacao de grupo"
+                E eu deverei ver "Nome do grupo deve ser preenchido(a)"
+        Dado que eu preenchi "group_assignment_group_name" com ""
+            Então eu deverei ver "grupo2 tI"
+            E eu deverei ver o link "edit_2"
+        Quando eu clicar no link "edit_2"
+            E eu clicar em "Cancel" no popup
+                Então eu deverei estar em "Edicao do grupo2 tI"
+                E eu nao deverei ver "Nome do grupo deve ser preenchido(a)"
 
 @javascript
 Cenário: Acessar página de edição de grupo
@@ -512,3 +565,26 @@ Cenário: Acessar lightbox importação de grupo e cancelar
         Então eu nao deverei ver o elemento de id "lightBoxDialog"
         E eu deverei estar em "Lista de atividades em grupo"
         E eu nao deverei ver "Grupos importados com sucesso"
+
+@javascript
+Cenário: Não visualizar link de grupos com usuário sem permissão
+    Dado que estou logado com o usuario "aluno1" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu nao deverei ver "Grupos"
+
+@javascript
+Cenário: Tentar acessar grupos com usuário sem permissão
+    Dado que estou logado com o usuario "aluno1" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu nao deverei ver "Grupos"
+    Quando tento acessar "Lista de atividades em grupo"
+        Então eu deverei ver "Você não tem permissão para acessar esta página"
+
+
+        

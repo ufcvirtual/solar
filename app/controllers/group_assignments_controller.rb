@@ -47,11 +47,9 @@ class GroupAssignmentsController < ApplicationController
       redirect = {:action => :new, :assignment_id => params[:assignment_id]}
       success = false
     end
-
-    flash[flash_class] = flash_msg
-    
+ 
     respond_to do |format|
-      format.html { redirect_to(redirect) }
+      format.html { redirect_to(redirect, flash_class.to_sym => flash_msg) }
       format.xml  { render :xml => { :success => success } }
       format.json  { render :json => { :success => success, :flash_msg => flash_msg, :flash_class => flash_class } }
     end
@@ -95,11 +93,9 @@ class GroupAssignmentsController < ApplicationController
       redirect = {:action => :edit, :id => group_assignment.id, :assignment_id => group_assignment.assignment_id}
       success = false
     end
-
-    flash[flash_class] = flash_msg
     
     respond_to do |format|
-      format.html { redirect_to (redirect) }
+        format.html { redirect_to(redirect, flash_class.to_sym => flash_msg) }
       format.xml  { render :xml => { :success => success } }
       format.json  { render :json => { :success => success, :flash_msg => flash_msg, :flash_class => flash_class } }
     end
