@@ -872,3 +872,10 @@
   allocation_status_cancelled: Cancelado
   allocation_status_pending_reactivate: Pendente
   allocation_status_rejected: Rejeitado
+
+  allocation_manage_title: "Matrículas Solicitadas"
+  allocation_manage_student: "Aluno"
+  allocation_manage_group: "Turma"
+  allocation_manage_status: "Status"
+  allocation_manage_options: "Opções"
+  allocation_manage_manage: "Gerenciar"

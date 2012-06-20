@@ -1,12 +1,7 @@
-##
-# Para ambiente de desenvolvimento
-##
-
 puts "- Environment: #{Rails.env} - Executando fixtures"
 Rake::Task['db:fixtures:load'].invoke
 
 allocations = Allocation.create([
-  # {:user_id => 1, :profile_id => 12, :status => 1},
   {:user_id => 1, :allocation_tag_id => 1, :profile_id => 1, :status => 1},
   {:user_id => 1, :allocation_tag_id => 2, :profile_id => 1, :status => 1},
   {:user_id => 1, :allocation_tag_id => 3, :profile_id => 1, :status => 1},
@@ -42,5 +37,5 @@ allocations = Allocation.create([
   {:user_id => 10, :profile_id => 12, :status => 1},
 
   {:user_id => 12, :allocation_tag_id => 8, :profile_id => 5, :status => 1},
-  {:user_id => 12, :profile_id => 12, :status => 1}
+  {:user_id => 12, :allocation_tag_id => 7, :profile_id => 5, :status => 1}
 ])

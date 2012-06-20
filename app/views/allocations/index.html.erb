@@ -8,28 +8,32 @@
 </div>
 
 <div class="block_title">
-  <h2>Matriculas solicitadas</h2>
+  <h2><%= t(:allocation_manage_title) %></h2>
 </div>
 <div class="block_content">
   <table class="tb_list enrollments">
     <thead>
       <tr class="lines">
-        <th>-</th>
-        <th>Aluno</th>
-        <th>Turma</th>
-        <th>Status</th>
-        <th>Opcoes</th>
+        <th>
+          <input type="checkbox" name="all" value="all" id="cbx_all"/>
+        </th>
+        <th><%= t(:allocation_manage_student) %></th>
+        <th><%= t(:allocation_manage_group) %></th>
+        <th><%= t(:allocation_manage_status) %></th>
+        <th><%= t(:allocation_manage_options) %></th>
       </tr>
     </thead>
     <tbody>
       <% @allocations.each do |allocation| %>
         <tr class="lines">
-          <td>-</td>
+          <td>
+            <input type="checkbox" name="<%= allocation.id %>" value="<%= allocation.id %>" class="cbx_value"/>
+          </td>
           <td><%= allocation.user_name %></td>
           <td><%= allocation.group %></td>
           <td><%= name_of(allocation.status) %></td>
           <td>
-            <input value="Gerenciar" show-link="<%= allocation_path(allocation) %>" edit-link="<%= edit_allocation_path(allocation) %>" type="button" class="btn btn_default btn_manage_enrollment" onclick="javascript:manage_enrollment(this);"/>
+            <input value="<%= t(:allocation_manage_manage) %>" show-link="<%= allocation_path(allocation) %>" edit-link="<%= edit_allocation_path(allocation) %>" type="button" class="btn btn_default btn_manage_enrollment" onclick="javascript:manage_enrollment(this);"/>
           </td>
         </tr>
       <% end %>
@@ -38,6 +42,23 @@
 </div>
 
 <script type="text/javascript">
+
+  jQuery.fn.checkbox_all = function() {
+    var args = $.extend({ 'cbx_id_all': 'cbx_all', 'cbx_class': 'cbx_value' }, arguments[0]);
+    $('input:checkbox', this).click(function() {
+      if ( $(this).attr("id") == args['cbx_id_all'] ) {
+        var cbx_all = this;
+        $('.' + args['cbx_class']).each(function() { $(this).attr('checked', $(cbx_all).attr('checked')); });
+      } else if ( $(this).attr('checked') == false && $('#' + args['cbx_id_all']).attr('checked') == true ) {
+        $('#' + args['cbx_id_all']).attr('checked', false);
+      } else if ( $(this).attr('checked') == true && $('.' + args['cbx_class']).length == $('.' + args['cbx_class'] + ':checked').length ) {
+        $('#' + args['cbx_id_all']).attr('checked', true);
+      }
+    });
+  }
+
+  $(".enrollments").checkbox_all();
+
   function manage_cancel(obj) {
     $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
   }

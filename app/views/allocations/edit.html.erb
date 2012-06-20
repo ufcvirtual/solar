@@ -1,5 +1,7 @@
 
-<td>-</td>
+<td>
+  <input type="checkbox" name="<%= @allocation.id %>" value="<%= @allocation.id %>" class="cbx_value"/>
+</td>
 <td><%= @allocation.user.name %></td>
 <td>
   <% if @change_group %>

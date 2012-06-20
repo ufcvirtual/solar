@@ -4,11 +4,15 @@ class Allocation < ActiveRecord::Base
   belongs_to :user
   belongs_to :profile
 
+  def groups
+    allocation_tag.groups
+  end
+
   def self.enrollments(args = {})
     where = ["t1.profile_id = #{Profile.find_by_types(Profile_Type_Student).id}", 't2.group_id IS NOT NULL']
     unless args.empty? or args.nil?
       where << "t3.offer_id = #{args['offer_id']}" if args.include?('offer_id')
-      where << "t3.id = #{args['group_id']}" if args.include?('group_id')
+      where << "t3.id IN (#{args['group_id'].join(',')})" if args.include?('group_id')
       where << "t1.status = #{args['status']}" if args.include?('status') and args['status'] != ''
     end
 
