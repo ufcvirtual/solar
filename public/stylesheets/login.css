@@ -219,9 +219,6 @@ input{
     border: 1px solid #dedede;
     font-family: 'PT Sans', sans-serif;
 }
-input[type='password'] {
-    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-}
 
 textarea{
     color           : #222;
@@ -234,8 +231,8 @@ textarea{
 /* blocos */
 /* div que engloba tudo */
 .block_wrapper {
-    width: 100%;
-    margin-bottom: 15px;
+    width: 40em;
+    margin: 0 auto 15px auto;
     overflow: hidden;
 }
 
@@ -276,6 +273,34 @@ textarea{
 .solar_button:hover {
     background-image: -moz-linear-gradient(center top , #016ee5, #005CC0);
     background-image: -webkit-linear-gradient(top,#016ee5,#005CC0);
+}
+.btn {
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    padding: 2px 4px;
+    font-size: 8pt;
+    margin:0 2px;
+    border: 1px solid #DEDEDE;
+    /*min-width: 60px;*/
+    height: 26px;
+}
+.btn:hover {
+    text-decoration: none;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.1);
+    box-shadow: 0px 0px 1px rgba(0,0,0,.2);
+}
+.btn_default{
+    color: #111;
+    background-image: -moz-linear-gradient(center top , rgba(255,255,255,1), rgba(232,232,232,1));
+    background-image: -webkit-linear-gradient(top,rgba(255,255,255,1),rgba(232,232,232,1));
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e8e8e8');
+}
+.btn_default:hover {
+    border: solid 1px #d9d9d9;
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#d0d0d0');
 }
 
 /******************************** Página de login: *******/
@@ -550,8 +575,14 @@ textarea{
 /*    background-color: blue;*/
 }
 
-.form_field input {
-    
+.form_field input{
+    font-size: 10pt;
+    line-height: 18pt;
+    height: 20px;
+}
+.form_field input[type='password'] {
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    width: 311px;
 }
 
 td.form_error {
@@ -596,9 +627,11 @@ td.form_error {
 .form_requirement {
     font-style: italic;
     font-size: 9pt;
-    color: #666;
-    padding-bottom: 10px;
-    padding-left: 10px;
+    color: #E03838;
+    display: block;
+    margin-right: 2px;
+    margin-top: 2px;
+    float: right;
 }
 .form_usuario_table{
     color: #fff;

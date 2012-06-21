@@ -51,10 +51,9 @@
 
   <div class="block_wrapper">
     <div class="block_title">
-      <h2><%= t(:new_user_personal_data) %></h2>
+      <h2><%= t(:new_user_personal_data) %><span class="form_requirement"><%= t(:required_fields) %></span></h2>
     </div>
     <div class="block_content">
-      <span class="form_requirement"><%= t(:required_fields) %></span>
       <table class="form_user_table">
         <tr>
           <td class="form_label"><%= f.label "#{t(:form_name)}*" %></td>
@@ -97,10 +96,9 @@
   </div>
   <div class="block_wrapper">
     <div class="block_title">
-      <h2><%= t(:new_user_access_data) %></h2>
+      <h2><%= t(:new_user_access_data) %><span class="form_requirement"><%= t(:required_fields) %></span></h2>
     </div>
     <div class="block_content">
-      <span class="form_requirement"><%= t(:required_fields) %></span>
       <table class="form_user_table">
         <tr>
           <td class="form_label"><%= f.label "#{t(:form_nick)}*" %></td>
@@ -209,9 +207,9 @@
     </div>
   </div>
 
-  <div class="form_buttons">
-    <input type="button" value="<%=t :back%>" class="solar_button" onclick="document.location.href='<%=login_path%>'"/>
+  <div class="block_wrapper form_buttons">
     <%= f.submit t(:confirm), :id=>"confirm", :class=>"solar_button", :alt=> t(:confirm) %>
+    <input type="button" value="<%=t :back%>" class="btn btn_default" onclick="document.location.href='<%=login_path%>'"/>
   </div>
 <% end %>
 
