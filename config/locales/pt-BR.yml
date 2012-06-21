@@ -745,6 +745,10 @@
   confirm_creation_message: "Criar grupo?"
   with_no_group: "Sem grupo"
   student_already_sent_files: "Aluno não pode ser removido, pois já enviou arquivos para seu grupo atual"
+  group_assignment_import: "Importar grupos"
+  import: "Importar"
+  assignment_without_groups: "Atividade não possui grupos"
+  group_assignment_import_success: "Grupos importados com sucesso"
 
   # Mensagem de erro para permissão
   no_permission: "Você não tem permissão para acessar esta página"

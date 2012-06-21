@@ -4,6 +4,7 @@ class GroupAssignmentsController < ApplicationController
 
   before_filter :prepare_for_group_selection #, :only => [:list]
   before_filter :user_related_to_assignment?, :except => [:index]
+  before_filter :can_import?, :only => [:import_groups_page, :import_groups]
   load_and_authorize_resource
 
   # lista trabalhos em grupo
@@ -17,9 +18,9 @@ class GroupAssignmentsController < ApplicationController
   end
 
   ##
-  # Novo grupo
-  # @groups: todos os grupos da atividade
-  # @students_with_no_group: lista de alunos sem grupo
+  # Página de criação grupo
+  # => @groups: todos os grupos da atividade
+  # => @students_with_no_group: lista de alunos sem grupo
   ##
   def new
     @group_assignment = GroupAssignment.new(params[:group_assignment])
@@ -46,11 +47,9 @@ class GroupAssignmentsController < ApplicationController
       redirect = {:action => :new, :assignment_id => params[:assignment_id]}
       success = false
     end
-
-    flash[flash_class] = flash_msg
-    
+ 
     respond_to do |format|
-      format.html { redirect_to(redirect) }
+      format.html { redirect_to(redirect, flash_class.to_sym => flash_msg) }
       format.xml  { render :xml => { :success => success } }
       format.json  { render :json => { :success => success, :flash_msg => flash_msg, :flash_class => flash_class } }
     end
@@ -58,9 +57,9 @@ class GroupAssignmentsController < ApplicationController
   end
 
   ##
-  # Edição de grupo
-  # @groups: todos os grupos da atividade
-  # @students_with_no_group: lista de alunos sem grupo
+  # Página de edição de grupo
+  # => @groups: todos os grupos da atividade
+  # => @students_with_no_group: lista de alunos sem grupo
   ##
   def edit
     @group_assignment = GroupAssignment.find(params[:id])
@@ -74,10 +73,7 @@ class GroupAssignmentsController < ApplicationController
   def update
     group_assignment = GroupAssignment.find(params[:group_assignment_id])
     @groups = group_assignments(group_assignment.assignment_id)
-
-
     @students_with_no_group = no_group_students(@group_assignment.assignment_id)
-
 
     students = []
     # para cada grupo da atividade, verifica e acrescenta no array 'students' os alunos selecionados
@@ -91,6 +87,7 @@ class GroupAssignmentsController < ApplicationController
       flash_class = 'notice'
       redirect = group_assignments_url
       success = true
+      flash[flash_class] = flash_msg
     else
       flash_msg = group_assignment.errors.full_messages[0]
       flash_class = 'alert'
@@ -98,13 +95,15 @@ class GroupAssignmentsController < ApplicationController
       success = false
     end
 
-    flash[flash_class] = flash_msg
-    
     respond_to do |format|
-      format.html { redirect_to (redirect) }
-      format.xml  { render :xml => { :success => success } }
+      format.html { 
+        flash[flash_class] = flash_msg unless success
+        redirect_to(redirect) 
+      }
+      format.xml  { render :xml => { :success => success , :flash_msg => flash_msg, :flash_class => flash_class} }
       format.json  { render :json => { :success => success, :flash_msg => flash_msg, :flash_class => flash_class } }
     end
+    
   end
 
   ##
@@ -122,6 +121,43 @@ class GroupAssignmentsController < ApplicationController
       flash[:alert] = t(:group_assignment_delete_error)
       redirect_to :action => :edit, :id => group_assignment.id, :assignment_id => group_assignment.assignment_id
     end
+  end
+
+  ##
+  # Página de importação de grupos (lightbox)
+  # => @assignments: todas as atividades da turma acessada pelo usuário no momento
+  # => @assignment_id: a atividade que irá importar os grupos
+  ##
+  def import_groups_page
+    group_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
+    @assignments = GroupAssignment.all_by_group_id(group_id)
+    @assignment_id = params[:assignment_id]
+    render :layout => false
+  end
+
+  ##
+  # Importação de grupos
+  ##
+  def import_groups
+    import_from_assignment_id = params[:assignment_id_import_from]
+    import_to_assignment_id = params[:assignment_id]
+
+    groups_to_import = GroupAssignment.find_all_by_assignment_id(import_from_assignment_id)
+
+    unless groups_to_import.empty?
+      groups_to_import.each do |group_to_import|
+        group_imported = GroupAssignment.create(:group_name => group_to_import.group_name, :assignment_id => import_to_assignment_id)
+        group_participants_to_import = GroupParticipant.find_all_by_group_assignment_id(group_to_import.id)
+        unless group_participants_to_import.empty?
+          group_participants_to_import.each do |participant_to_import|
+            GroupParticipant.create(:group_assignment_id => group_imported.id, :user_id => participant_to_import.user_id)
+          end
+        end
+      end
+    end
+
+    flash[:notice] = t(:group_assignment_import_success)
+    redirect_to group_assignments_url
   end
 
 private

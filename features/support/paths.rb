@@ -33,6 +33,9 @@ module NavigationHelpers
 
       when /Edicao do grupo2 tI/
         '/group_assignments/2/edit'
+
+      when /Criacao de grupo/
+        '/group_assignments/new'
         
     else
       begin

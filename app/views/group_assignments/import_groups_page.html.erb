@@ -1,0 +1,80 @@
+<%= javascript_include_tag 'group_assignments.js' %>
+
+<div class="group_assignments_import">
+
+  <div class="block_title">
+    <h2><%=t(:group_assignment_import)%></h2>
+  </div>
+
+  <div class="block_content" id="group_assignments">
+
+    <% unless @assignments.nil? or @assignments.empty? %>
+      <table class="tb_list">
+        <tbody>
+        <% @assignments.each do |a| %>
+          <% unless a["id"] == @assignment_id.to_s %>
+            <tr class="lines">
+              <td>
+                <div class="group_assignment_title" onClick="javascript:toggle_div('div_group_import_<%=a["id"]%>');">
+                  <a class="link_content" id="name_<%=a["id"]%>"><%=a["name"]%></a>
+                </div>
+                <% gps = group_assignments(a["id"])%>
+                <div id="div_group_import_<%=a["id"]%>" class="group_assignment_details">
+
+                    <% unless gps.nil? or gps.empty? %>
+
+                      <div class="all_students_to_import">
+
+                        <% gps.each do |g| %>
+                          
+                          <li>
+                            <% gp = group_participants(g["id"])%>
+                            <h3 class="groupname" onclick="clickOnGroup('import_<%= g['id'] %>');" ><div class="menu_icon_arrow">‣</div><%= g["group_name"] %> (<%= gp.size %>) </h3>
+                            <div id="students_import_<%= g["id"] %>" style="display: none">
+                              <% unless gp.empty? %>
+                                <% gp.each do |p| %>
+                                  <ul class="each_student">
+                                    <%= p["name"] %>
+                                  </ul>
+                                <% end %>
+                              <%else%>
+                                <%= t(:no_participant_group_assignment) %>
+                              <% end %>
+                            </div>
+                          </li>
+
+                        <% end %>
+
+                      </div>
+
+                      <div class="import_buttons">
+                        <%= form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :group_assignments, :action => :import_groups, :assignment_id_import_from => a["id"], :assignment_id => @assignment_id}) do |f| %>
+                          <%= f.submit t(:import), :class=>'btn btn_main' %>
+                          <input type="button" value='<%=t(:group_assignment_cancel)%>' class="btn btn_caution" onclick="removeLightBox();"/>
+                        <% end %>
+                      </div>
+
+                    <% else %>
+                      <%= t(:assignment_without_groups) %>
+                    <% end %>
+
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="block_content block_content_text"><%= t(:itens_not_found) %></div>
+    <% end %>
+   
+  </div>
+
+</div>
+
+<script type="text/javascript">
+  $(".group_assignment_title").click(function(){
+    $(this).toggleClass('group_assignment_title_contract');
+  })
+</script>

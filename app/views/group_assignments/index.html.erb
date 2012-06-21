@@ -1,3 +1,5 @@
+<%= javascript_include_tag 'group_assignments.js' %>
+
 <div class="block_wrapper" id="group_assignments">
 
   <div class="block_title">
@@ -13,7 +15,7 @@
           <tr class="lines">
             <td>
               <div class="group_assignment_title" onClick="javascript:toggle_div('div_group_<%=a["id"]%>');">
-                <a class="link_content"><%=a["name"]%></a>
+                <a id="<%=a["id"].to_i%>" class="link_content"><%=a["name"]%></a>
               </div>
               <% gps = group_assignments(a["id"])%>
               <div id="div_group_<%=a["id"]%>" class="group_assignment_details">
@@ -25,26 +27,32 @@
 
                 <h3><%= t(:group_assignment_title)%></h3>
                 <div class="group_assignment_content">
-                <% unless gps.nil? or gps.empty? %>
 
-                  <% gps.each do |g| %>
-                    <div class="group_participants">
-                      <h3 class="group_assignment_name"><%= g["group_name"] %></h3>
-
-                      <% gp = group_participants(g["id"])%>
-                      <ul>
-                      <% gp.each do |p| %>
-                        <li><%= p["name"] %></li>
-                      <% end %>
-                      </ul>
-                      <%= link_to t(:group_assignment_edit), {:controller => :group_assignments, :action => :edit, :id => g["id"], :assignment_id => a["id"]}, {:class => 'link_content group_edit'} %>
-                    </div>
+                  <% unless gps.nil? or gps.empty? %>
+                    <% gps.each do |g| %>
+                      <div class="group_participants">
+                        <h3 class="group_assignment_name"><%= g["group_name"] %></h3>
+                        <% gp = group_participants(g["id"])%>
+                        <ul>
+                          <% gp.each do |p| %>
+                            <li><%= p["name"] %></li>
+                          <% end %>
+                        </ul>
+                        <%= link_to t(:group_assignment_edit), {:controller => :group_assignments, :action => :edit, :id => g["id"], :assignment_id => a["id"]}, {:class => 'link_content group_edit'} %>
+                      </div>
+                    <% end %>
                   <% end %>
-                <% end %>
+
                 </div>
-                 <div class="group_new">
-                      <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
-                 </div>
+                <div class="group_assignment_buttons">
+                  <%= form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}) do |f| %>
+                    <%= f.submit t(:group_assignment_new), :class=>'btn btn_default' %>
+                    <% if verify_group_of_assignments(a["id"]) %>
+                      <input type="button" id='import_to_<%=a["id"]%>' value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => GroupAssignment.first.id, :assignment_id => a["id"].to_i)%>', '');"/>
+                    <% end %>
+                  <% end %>
+                </div>
+                
               </div>
             </td>
           </tr>
@@ -60,9 +68,6 @@
 </div>
 
 <script type="text/javascript">
-  function toggle_div(elementId) {
-    $('#'+ elementId).slideToggle();
-  }
   $(".group_assignment_title").click(function(){
     $(this).toggleClass('group_assignment_title_contract');
   })

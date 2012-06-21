@@ -8,6 +8,7 @@ Contexto:
     Dado que tenho "allocations"
         | user_id  | allocation_tag_id  | profile_id  | status |
         | 1        | 3                  | 3           | 1      |
+        | 7        | 3                  | 1           | 1      |
 
 Cenário: Exibir Tela de Cadastro de Trabalho de Grupo
     Dado que estou logado com o usuario "prof" e com a senha "123456"
@@ -34,11 +35,11 @@ Cenário: Exibir Grupos de Trabalho
     Quando eu clicar no link "Grupos"
         Então eu deverei ver "Atividade em grupo I"
         Então eu deverei ver "Atividade em grupo II"
-    Quando eu clicar no item "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
         Então eu deverei ver "grupo1 tI"
         E eu deverei ver "grupo2 tI"
         E eu deverei ver "grupo3 tI"
-    Quando eu clicar no item "Atividade em grupo II"
+    Quando eu clicar no item "Atividade em grupo II" de id "5"
         Então eu deverei ver "grupo1 - tII"
         E eu deverei ver "grupo2 - tII"
 
@@ -53,7 +54,7 @@ Cenário: Acessar página de cadastro de novo grupo
     Quando eu clicar no link "Grupos"
         Então eu deverei ver "Atividade em grupo I"
         Então eu deverei ver "Atividade em grupo II"
-    Quando eu clicar no item "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
         Então eu deverei ver "grupo1 tI"
         E eu deverei ver "grupo2 tI"
         E eu deverei ver "grupo3 tI"
@@ -82,7 +83,7 @@ Cenário: Cadastro de novo grupo
         Então eu deverei ver o link "Grupos"
     Quando eu clicar no link "Grupos"
         Então eu deverei ver "Atividade em grupo I"
-    Quando eu clicar no item "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
         E eu deverei ver o botao "Novo grupo"
     Quando eu clicar em "Novo grupo"
         Dado que eu preenchi "group_assignment_group_name" com "grupo100 tI"
@@ -91,6 +92,30 @@ Cenário: Cadastro de novo grupo
         Quando eu clicar em "Salvar"
             Então eu deverei estar em "Lista de atividades em grupo"
             E eu deverei ver "Grupo salvo com sucesso"
+
+@javascript
+Cenário: Cadastro de novo grupo com erros
+    Dado que estou logado com o usuario "prof" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu deverei ver o link "Grupos"
+    Quando eu clicar no link "Grupos"
+        Então eu deverei ver "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
+        E eu deverei ver o botao "Novo grupo"
+    Quando eu clicar em "Novo grupo"
+        Dado que eu preenchi "group_assignment_group_name" com ""
+            Então eu deverei ver o botao "Salvar"
+    Quando eu clicar em "Salvar"
+        Então eu deverei estar em "Criacao de grupo"
+        E eu deverei ver "Nome do grupo deve ser preenchido(a)"
+    Dado que eu preenchi "group_assignment_group_name" com "grupo1 tI"
+            Então eu deverei ver o botao "Salvar"
+    Quando eu clicar em "Salvar"
+        Então eu deverei estar em "Criacao de grupo"
+        E eu deverei ver "Nome do grupo já existe"
 
 @javascript
 Cenário: Cadastro de novo grupo com confirm Ok
@@ -102,7 +127,7 @@ Cenário: Cadastro de novo grupo com confirm Ok
         Então eu deverei ver o link "Grupos"
     Quando eu clicar no link "Grupos"
         Então eu deverei ver "Atividade em grupo I"
-    Quando eu clicar no item "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
         E eu deverei ver o botao "Novo grupo"
     Quando eu clicar em "Novo grupo"
         Dado que eu preenchi "group_assignment_group_name" com "grupo100 tI"
@@ -124,7 +149,7 @@ Cenário: Cadastro de novo grupo com confirm Cancel
         Então eu deverei ver o link "Grupos"
     Quando eu clicar no link "Grupos"
         Então eu deverei ver "Atividade em grupo I"
-    Quando eu clicar no item "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
         E eu deverei ver o botao "Novo grupo"
     Quando eu clicar em "Novo grupo"
         Dado que eu preenchi "group_assignment_group_name" com "grupo100 tI"
@@ -137,6 +162,111 @@ Cenário: Cadastro de novo grupo com confirm Cancel
                 E eu nao deverei ver "grupo100 tI"
 
 @javascript
+Cenário: Confirmando novo grupo e exclusão de grupo com erros e sem erros
+    Dado que estou logado com o usuario "prof" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu deverei ver o link "Grupos"
+    Quando eu clicar no link "Grupos"
+        Então eu deverei ver "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
+        E eu deverei ver o botao "Novo grupo"
+    Quando eu clicar em "Novo grupo"
+        Dado que eu preenchi "group_assignment_group_name" com ""
+            E eu deverei ver "grupo1 tI"
+            E eu deverei ver o link "delete_1"
+        Quando eu clicar no link "delete_1"
+            E eu clicar em "Ok" no popup
+        Então eu deverei ver "Nome do grupo deve ser preenchido(a)"
+            E eu deverei estar em "Criacao de grupo"
+        Dado que eu preenchi "group_assignment_group_name" com "grupo1 tI"
+            E eu deverei ver "grupo1 tI"
+            E eu deverei ver o link "delete_1"
+        Quando eu clicar no link "delete_1"
+            E eu clicar em "Ok" no popup
+        Então eu deverei ver "Nome do grupo já existe"
+            E eu deverei estar em "Criacao de grupo"
+        Dado que eu preenchi "group_assignment_group_name" com "grupo100 tI"
+            E eu deverei ver "grupo1 tI"
+            E eu deverei ver o link "delete_1"
+        Quando eu clicar no link "delete_1"
+            E eu clicar em "Ok" no popup
+            #Então eu deverei ver "Grupo salvo com sucesso"
+        Quando eu clicar em "Ok" no popup
+            Então eu deverei estar em "Lista de atividades em grupo"
+            E eu deverei ver "Grupo excluído com sucesso"
+        Quando eu clicar no item "Atividade em grupo I" de id "4"
+            Então eu nao deverei ver "grupo1 tI"
+
+@javascript
+Cenário: Confirmando novo grupo e cancelando exclusão de grupo com erros e sem erros
+    Dado que estou logado com o usuario "prof" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu deverei ver o link "Grupos"
+    Quando eu clicar no link "Grupos"
+        Então eu deverei ver "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
+        E eu deverei ver o botao "Novo grupo"
+    Quando eu clicar em "Novo grupo"
+        Dado que eu preenchi "group_assignment_group_name" com ""
+            E eu deverei ver "grupo1 tI"
+            E eu deverei ver o link "delete_1"
+        Quando eu clicar no link "delete_1"
+            E eu clicar em "Ok" no popup
+        Então eu deverei ver "Nome do grupo deve ser preenchido(a)"
+            E eu deverei estar em "Criacao de grupo"
+        Dado que eu preenchi "group_assignment_group_name" com "grupo1 tI"
+            E eu deverei ver "grupo1 tI"
+            E eu deverei ver o link "delete_1"
+        Quando eu clicar no link "delete_1"
+            E eu clicar em "Ok" no popup
+        Então eu deverei ver "Nome do grupo já existe"
+            E eu deverei estar em "Criacao de grupo"
+        Dado que eu preenchi "group_assignment_group_name" com "grupo100 tI"
+            E eu deverei ver "grupo1 tI"
+            E eu deverei ver o link "delete_1"
+        Quando eu clicar no link "delete_1"
+            E eu clicar em "Ok" no popup
+            #Então eu deverei ver "Grupo salvo com sucesso"
+        Quando eu clicar em "Cancel" no popup
+            Então eu deverei estar em "Criacao de grupo"
+            E eu nao deverei ver "Grupo excluído com sucesso"
+            E eu deverei ver "grupo1 tI"
+
+@javascript
+Cenário: Cadastro de novo grupo com erro e salvando pelos confirms
+    Dado que estou logado com o usuario "prof" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu deverei ver o link "Grupos"
+    Quando eu clicar no link "Grupos"
+        Então eu deverei ver "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
+        E eu deverei ver o botao "Novo grupo"
+    Quando eu clicar em "Novo grupo"
+        Dado que eu preenchi "group_assignment_group_name" com ""
+            Então eu deverei ver "grupo2 tI"
+            E eu deverei ver o link "edit_2"
+        Quando eu clicar no link "edit_2"
+            E eu clicar em "Ok" no popup
+                Então eu deverei estar em "Criacao de grupo"
+                E eu deverei ver "Nome do grupo deve ser preenchido(a)"
+        Dado que eu preenchi "group_assignment_group_name" com ""
+            Então eu deverei ver "grupo2 tI"
+            E eu deverei ver o link "edit_2"
+        Quando eu clicar no link "edit_2"
+            E eu clicar em "Cancel" no popup
+                Então eu deverei estar em "Edicao do grupo2 tI"
+                E eu nao deverei ver "Nome do grupo deve ser preenchido(a)"
+
+@javascript
 Cenário: Acessar página de edição de grupo
     Dado que estou logado com o usuario "prof" e com a senha "123456"
         E que estou em "Meu Solar"
@@ -146,7 +276,7 @@ Cenário: Acessar página de edição de grupo
         Então eu deverei ver o link "Grupos"
     Quando eu clicar no link "Grupos"
         Então eu deverei ver "Atividade em grupo I"
-    Quando eu clicar no item "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
         Então eu deverei ver "grupo1 tI"
             E eu deverei ver o link "Editar"
     Quando eu clico no link "Editar"
@@ -155,8 +285,8 @@ Cenário: Acessar página de edição de grupo
                 E eu deverei ver "Nome do grupo"
                 E eu deverei ver "Alunos"
 
-@javascript 
-Cenário: Edição de grupo
+@javascript
+Cenário: Edição de grupo com e sem erro
     Dado que estou logado com o usuario "prof" e com a senha "123456"
         E que estou em "Meu Solar"
     Quando eu clicar no link "Quimica I"
@@ -165,10 +295,24 @@ Cenário: Edição de grupo
         Então eu deverei ver o link "Grupos"
     Quando eu clicar no link "Grupos"
         Então eu deverei ver "Atividade em grupo I"
-    Quando eu clicar no item "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
         Então eu deverei ver "grupo1 tI"
             E eu deverei ver o link "Editar"
     Quando eu clico no link "Editar"
+        Dado que eu preenchi "group_assignment_group_name" com ""
+            Então eu deverei ver "grupo2 tI"
+            E eu deverei ver o link "edit_2"
+        Quando eu clicar no link "edit_2"
+            E eu clicar em "Ok" no popup
+                Então eu deverei estar em "Edicao do grupo1 tI"
+                E eu deverei ver "Nome do grupo deve ser preenchido(a)"
+        Dado que eu preenchi "group_assignment_group_name" com "grupo2 tI"
+            Então eu deverei ver "grupo2 tI"
+            E eu deverei ver o link "edit_2"
+        Quando eu clicar no link "edit_2"
+            E eu clicar em "Ok" no popup
+                Então eu deverei estar em "Edicao do grupo1 tI"
+                E eu deverei ver "Nome do grupo já existe"
         Dado que eu preenchi "group_assignment_group_name" com "grupo1.2 tI"
             Então eu deverei ver os alunos do grupo com id "1" selecionados
         Quando eu clicar no grupo "2"
@@ -181,14 +325,14 @@ Cenário: Edição de grupo
                     Então eu deverei estar em "Lista de atividades em grupo"
                         E eu deverei ver "Grupo salvo com sucesso"
                         E eu deverei ver "Atividade em grupo I"
-                     Quando eu clicar no item "Atividade em grupo I"
+                     Quando eu clicar no item "Atividade em grupo I" de id "4"
                         Então eu deverei ver "grupo1.2 tI"
                             E eu deverei ver "Aluno 1"
                             E eu deverei ver "Aluno 2"
                             E eu deverei ver "Aluno 3"
 
 @javascript
-Cenário: Edição de grupo com confirm Ok
+Cenário: Edição de grupo com confirm Ok com e sem erros
     Dado que estou logado com o usuario "prof" e com a senha "123456"
         E que estou em "Meu Solar"
     Quando eu clicar no link "Quimica I"
@@ -197,10 +341,24 @@ Cenário: Edição de grupo com confirm Ok
         Então eu deverei ver o link "Grupos"
     Quando eu clicar no link "Grupos"
         Então eu deverei ver "Atividade em grupo I"
-    Quando eu clicar no item "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
         Então eu deverei ver "grupo1 tI"
             E eu deverei ver o link "Editar"
     Quando eu clico no link "Editar"
+        Dado que eu preenchi "group_assignment_group_name" com ""
+            Então eu deverei ver "grupo2 tI"
+            E eu deverei ver o link "edit_2"
+        Quando eu clicar no link "edit_2"
+            E eu clicar em "Ok" no popup
+                Então eu deverei estar em "Edicao do grupo1 tI"
+                E eu deverei ver "Nome do grupo deve ser preenchido(a)"
+        Dado que eu preenchi "group_assignment_group_name" com "grupo2 tI"
+            Então eu deverei ver "grupo2 tI"
+            E eu deverei ver o link "edit_2"
+        Quando eu clicar no link "edit_2"
+            E eu clicar em "Ok" no popup
+                Então eu deverei estar em "Edicao do grupo1 tI"
+                E eu deverei ver "Nome do grupo já existe"
         Dado que eu preenchi "group_assignment_group_name" com "grupo1.2 tI"
             Então eu deverei ver os alunos do grupo com id "1" selecionados
         Quando eu clicar no grupo "2"
@@ -212,13 +370,13 @@ Cenário: Edição de grupo com confirm Ok
             Quando eu clicar no link "edit_2"
                 E eu clicar em "Ok" no popup
                     Então eu deverei estar em "Edicao do grupo2 tI"
-                    E eu deverei ver "Grupo salvo com sucesso"
                     E eu deverei ver "grupo1.2 tI"
                         E eu deverei ver "Aluno 1"
                         E eu deverei ver "Aluno 2"
                         E eu deverei ver "Aluno 3"
                     E eu deverei ver "grupo2 tI"
                         E eu deverei ver "Usuario do Sistema"
+                    E eu deverei ver "Grupo salvo com sucesso"
 
 @javascript
 Cenário: Edição de grupo com confirm Cancel
@@ -230,7 +388,7 @@ Cenário: Edição de grupo com confirm Cancel
         Então eu deverei ver o link "Grupos"
     Quando eu clicar no link "Grupos"
         Então eu deverei ver "Atividade em grupo I"
-    Quando eu clicar no item "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
         Então eu deverei ver "grupo1 tI"
             E eu deverei ver o link "Editar"
     Quando eu clicar no link "Editar"
@@ -264,7 +422,7 @@ Cenário: Acessar página de exclusão de grupo
         Então eu deverei ver o link "Grupos"
     Quando eu clicar no link "Grupos"
         Então eu deverei ver "Atividade em grupo I"
-    Quando eu clicar no item "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
         Então eu deverei ver "grupo1 tI"
             E eu deverei ver o link "Editar"
     Quando eu clico no link "Editar"
@@ -273,7 +431,7 @@ Cenário: Acessar página de exclusão de grupo
                 E eu deverei ver o link "delete_1"
 
 @javascript
-Cenário: Confirmando edição e exclusão de grupo 
+Cenário: Confirmando edição, com e sem erros, e exclusão de grupo 
     Dado que estou logado com o usuario "prof" e com a senha "123456"
         E que estou em "Meu Solar"
     Quando eu clicar no link "Quimica I"
@@ -282,24 +440,35 @@ Cenário: Confirmando edição e exclusão de grupo
         Então eu deverei ver o link "Grupos"
     Quando eu clicar no link "Grupos"
         Então eu deverei ver "Atividade em grupo I"
-    Quando eu clicar no item "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
         Então eu deverei ver "grupo1 tI"
             E eu deverei ver o link "Editar"
     Quando eu clico no link "Editar"
         Então eu deverei ver "Grupos da atividade Atividade em grupo I"
             E eu deverei ver "grupo1 tI"
             E eu deverei ver o link "delete_1"
+        Dado que eu preenchi "group_assignment_group_name" com ""
+        Quando eu clicar no link "delete_1"
+            E eu clicar em "Ok" no popup
+                Então eu deverei estar em "Edicao do grupo1 tI"
+                E eu deverei ver "Nome do grupo deve ser preenchido(a)"
+        Dado que eu preenchi "group_assignment_group_name" com "grupo2 tI"
+        Quando eu clicar no link "delete_1"
+            E eu clicar em "Ok" no popup
+                Então eu deverei estar em "Edicao do grupo1 tI"
+                E eu deverei ver "Nome do grupo já existe"
+        Dado que eu preenchi "group_assignment_group_name" com "grupo100 tI"
         Quando eu clicar no link "delete_1"
             E eu clicar em "Ok" no popup
             #Então eu deverei ver "Grupo salvo com sucesso"
         Quando eu clicar em "Ok" no popup
             Então eu deverei estar em "Lista de atividades em grupo"
             E eu deverei ver "Grupo excluído com sucesso"
-        Quando eu clicar no item "Atividade em grupo I"
-            Então eu nao deverei ver "grupo1 tI"
+        Quando eu clicar no item "Atividade em grupo I" de id "4"
+            Então eu nao deverei ver "grupo100 tI"
 
 @javascript
-Cenário: Confirmando edição e cancelando exclusão de grupo 
+Cenário: Confirmando edição, com e sem erros, e cancelando exclusão de grupo 
     Dado que estou logado com o usuario "prof" e com a senha "123456"
         E que estou em "Meu Solar"
     Quando eu clicar no link "Quimica I"
@@ -308,13 +477,24 @@ Cenário: Confirmando edição e cancelando exclusão de grupo
         Então eu deverei ver o link "Grupos"
     Quando eu clicar no link "Grupos"
         Então eu deverei ver "Atividade em grupo I"
-    Quando eu clicar no item "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
         Então eu deverei ver "grupo1 tI"
             E eu deverei ver o link "Editar"
     Quando eu clico no link "Editar"
         Então eu deverei ver "Grupos da atividade Atividade em grupo I"
             E eu deverei ver "grupo1 tI"
             E eu deverei ver o link "delete_1"
+        Dado que eu preenchi "group_assignment_group_name" com ""
+        Quando eu clicar no link "delete_1"
+            E eu clicar em "Ok" no popup
+                Então eu deverei estar em "Edicao do grupo1 tI"
+                E eu deverei ver "Nome do grupo deve ser preenchido(a)"
+        Dado que eu preenchi "group_assignment_group_name" com "grupo2 tI"
+        Quando eu clicar no link "delete_1"
+            E eu clicar em "Ok" no popup
+                Então eu deverei estar em "Edicao do grupo1 tI"
+                E eu deverei ver "Nome do grupo já existe"
+        Dado que eu preenchi "group_assignment_group_name" com "grupo1 tI"
         Quando eu clicar no link "delete_1"
             E eu clicar em "Ok" no popup
             E eu clicar em "Cancelar" no popup
@@ -332,7 +512,7 @@ Cenário: Cancelando edição e confirmando exclusão de grupo
         Então eu deverei ver o link "Grupos"
     Quando eu clicar no link "Grupos"
         Então eu deverei ver "Atividade em grupo I"
-    Quando eu clicar no item "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
         Então eu deverei ver "grupo1 tI"
             E eu deverei ver o link "Editar"
     Quando eu clico no link "Editar"
@@ -345,7 +525,7 @@ Cenário: Cancelando edição e confirmando exclusão de grupo
                 Então eu nao deverei ver "Grupo salvo com sucesso"
                 E eu deverei estar em "Lista de atividades em grupo"
                 E eu deverei ver "Grupo excluído com sucesso"
-            Quando eu clicar no item "Atividade em grupo I"
+            Quando eu clicar no item "Atividade em grupo I" de id "4"
                 Então eu nao deverei ver "grupo1 tI"
 
 @javascript
@@ -358,7 +538,7 @@ Cenário: Cancelando edição e cancelando exclusão de grupo
         Então eu deverei ver o link "Grupos"
     Quando eu clicar no link "Grupos"
         Então eu deverei ver "Atividade em grupo I"
-    Quando eu clicar no item "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
         Então eu deverei ver "grupo1 tI"
             E eu deverei ver o link "Editar"
     Quando eu clico no link "Editar"
@@ -382,7 +562,7 @@ Cenário: Botão de cancelar na página de edição
         Então eu deverei ver o link "Grupos"
     Quando eu clicar no link "Grupos"
         Então eu deverei ver "Atividade em grupo I"
-    Quando eu clicar no item "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
         Então eu deverei ver "grupo1 tI"
             E eu deverei ver o link "Editar"
     Quando eu clico no link "Editar"
@@ -401,7 +581,7 @@ Cenário: Botão de cancelar na página de criação
         Então eu deverei ver o link "Grupos"
     Quando eu clicar no link "Grupos"
         Então eu deverei ver "Atividade em grupo I"
-    Quando eu clicar no item "Atividade em grupo I"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
         E eu deverei ver o botao "Novo grupo"
     Quando eu clicar em "Novo grupo"
         Então eu deverei ver "Grupos da atividade Atividade em grupo I"
@@ -409,3 +589,129 @@ Cenário: Botão de cancelar na página de criação
         Quando eu clicar em "Cancelar"
             Então eu deverei estar em "Lista de atividades em grupo"
 
+@javascript
+Cenário: Acessar página que tem o botão de importação de grupo
+    Dado que estou logado com o usuario "prof" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu deverei ver o link "Grupos"
+    Quando eu clicar no link "Grupos"
+        Então eu deverei ver "Atividade em grupo I"
+        E eu deverei ver "Atividade em grupo II"
+        E eu deverei ver "Atividade em grupo III"
+    Quando eu clicar no item "Atividade em grupo I" de id "4"
+        Então eu nao deverei ver o elemento de id "import_to_4"
+    Quando eu clicar no item "Atividade em grupo III" de id "import_to_6"
+        Então eu deverei ver o elemento de id "6"
+
+@javascript
+Cenário: Acessar lightbox importação de grupo
+    Dado que estou logado com o usuario "prof" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu deverei ver o link "Grupos"
+    Quando eu clicar no link "Grupos"
+        Então eu deverei ver "Atividade em grupo III"
+    Quando eu clicar no item "Atividade em grupo III" de id "import_to_6"
+        Então eu deverei ver o elemento de id "import_to_6"
+    Quando eu clicar no botao de importacao de id "6"
+        Então eu deverei aguardar "3" segundos
+        E eu deverei ver o elemento de id "lightBoxDialog"
+
+@javascript
+Cenário: Importar grupos pelo lightbox
+    Dado que estou logado com o usuario "prof" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu deverei ver o link "Grupos"
+    Quando eu clicar no link "Grupos"
+        Então eu deverei ver "Atividade em grupo III"
+    Quando eu clicar no item "Atividade em grupo III" de id "6"
+        Então eu deverei ver o elemento de id "import_to_6"
+    Quando eu clicar no botao de importacao de id "6"
+        Então eu deverei aguardar "2" segundos
+        E eu deverei ver o elemento de id "lightBoxDialog"
+        E eu deverei ver o elemento de id "name_4"
+        E eu deverei ver o elemento de id "name_5"
+        E eu nao deverei ver o elemento de id "name_6"
+    Quando eu clicar no item "Atividade em grupo I" de id "import_4"
+        Então eu deverei ver "grupo1 tI"
+        E eu deverei ver "grupo2 tI"
+        E eu deverei ver "grupo3 tI"
+        E eu deverei ver o botao "Importar"
+        E eu deverei ver o botao "Cancelar"
+    Quando eu clicar no grupo "import_1"
+        Então eu deverei ver "Aluno 1"
+        Então eu deverei ver "Aluno 2"
+    Quando eu clicar em "Importar"
+        Então eu nao deverei ver o elemento de id "lightBoxDialog"
+        E eu deverei estar em "Lista de atividades em grupo"
+        E eu deverei ver "Grupos importados com sucesso"
+        E eu deverei ver "Atividade em grupo III"
+    Quando eu clicar no item "Atividade em grupo III" de id "6"
+        Então eu deverei aguardar "2" segundos
+        E eu deverei ver "grupo1 tI"
+            E eu deverei ver "Aluno 1"
+            E eu deverei ver "Aluno 2"
+        E eu deverei ver "grupo2 tI"
+            E eu deverei ver "Aluno 3"
+            E eu deverei ver "Usuario do Sistema"
+        E eu deverei ver "grupo3 tI"
+
+@javascript
+Cenário: Acessar lightbox importação de grupo e cancelar
+    Dado que estou logado com o usuario "prof" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu deverei ver o link "Grupos"
+    Quando eu clicar no link "Grupos"
+        Então eu deverei ver "Atividade em grupo III"
+    Quando eu clicar no item "Atividade em grupo III" de id "import_to_6"
+        Então eu deverei ver o elemento de id "import_to_6"
+    Quando eu clicar no botao de importacao de id "6"
+        Então eu deverei aguardar "3" segundos
+        E eu deverei ver o elemento de id "lightBoxDialog"
+        E eu deverei ver o elemento de id "name_4"
+        E eu deverei ver o elemento de id "name_5"
+        E eu nao deverei ver o elemento de id "name_6"
+    Quando eu clicar no item "Atividade em grupo I" de id "import_4"
+        Então eu deverei ver "grupo1 tI"
+        E eu deverei ver "grupo2 tI"
+        E eu deverei ver "grupo3 tI"
+        E eu deverei ver o botao "Importar"
+        E eu deverei ver o botao "Cancelar"
+    Quando eu clicar em "Cancelar"
+        Então eu nao deverei ver o elemento de id "lightBoxDialog"
+        E eu deverei estar em "Lista de atividades em grupo"
+        E eu nao deverei ver "Grupos importados com sucesso"
+
+@javascript
+Cenário: Não visualizar link de grupos com usuário sem permissão
+    Dado que estou logado com o usuario "aluno1" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu nao deverei ver "Grupos"
+
+@javascript
+Cenário: Tentar acessar grupos com usuário sem permissão
+    Dado que estou logado com o usuario "aluno1" e com a senha "123456"
+        E que estou em "Meu Solar"
+    Quando eu clicar no link "Quimica I"
+        Então eu deverei ver "Atividades"
+    Quando eu clicar no link "Atividades"
+        Então eu nao deverei ver "Grupos"
+    Quando tento acessar "Lista de atividades em grupo"
+        Então eu deverei ver "Você não tem permissão para acessar esta página"
+
+
+        

@@ -1,5 +1,5 @@
  function flash_message(msg, css_class) {
-    if ($('#flash_message')) { $('#flash_message').remove(); }
+    if ($('#flash_message')) {  $('#flash_message').remove(); }
     var html = '<div id="flash_message" class="' + css_class + '"><span>' + msg + '</span></div>';
     $('.flash_message_wrapper').append(html);
   }
@@ -20,4 +20,13 @@
     if (this_div.css('display') == 'block'){
       this_div.parents('li').find('.menu_icon_arrow').addClass('menu_icon_animate');
     }
+  }
+
+  function showImportGroupBox(url, title){
+    showLightBoxURL(url, 500, 400, true, title);
+    return false;
+  } 
+
+  function toggle_div(elementId) {
+    $('#'+ elementId).slideToggle();
   }
