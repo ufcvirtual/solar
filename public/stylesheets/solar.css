@@ -1426,9 +1426,9 @@ div.alter_photo_text {
 
 /* titulo do bloco */
 
-.block_title {
+div.block_title {
     border-bottom: 2px solid #003E7A;
-    padding-bottom: 2px !important;
+    padding-bottom: 2px;
 }
 
 .block_title h1 {
@@ -1780,10 +1780,10 @@ h2, table tr.block_title th {
     margin-bottom: 10px;
 }
 
-.forum_navigation {
+div.forum_navigation {
     text-align: center;
     min-height: 28px;
-    /*overflow: hidden; */
+    padding-bottom: 0;
 }
 
 .forum_button, .forum_button_attachment{
@@ -1841,18 +1841,18 @@ h2, table tr.block_title th {
     float: right;
 }
 
-#forum_view_mode button {
-    min-width: 30px;
-    height: 26px;
+#forum_view_mode a {
+    margin: 0;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
-#forum_view_mode button, #forum_view_mode button img {
-    margin:0;
-    padding: 0;
+#forum_view_mode a:first-child {
+    border-right:none;
 }
 
-#forum_view_mode button img {
-    padding-bottom: 2px;
+#forum_view_mode a:nth-child(2) {
+    border-left:none;
 }
 
 .forum_post_buttons .forum_button_attachment {
@@ -2768,9 +2768,12 @@ td.td_student a {color: #2a538d;}
     /*min-width: 60px;*/
     height: 26px;
 }
+a.btn {
+    height: 20px;
+}
 .btn img {
     vertical-align: bottom;
-    margin-left: 5px;
+    padding-top: 1px;
 }
 .btn:hover {
     text-decoration: none;
