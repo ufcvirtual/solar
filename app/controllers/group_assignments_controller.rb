@@ -87,18 +87,23 @@ class GroupAssignmentsController < ApplicationController
       flash_class = 'notice'
       redirect = group_assignments_url
       success = true
+      flash[flash_class] = flash_msg
     else
       flash_msg = group_assignment.errors.full_messages[0]
       flash_class = 'alert'
       redirect = {:action => :edit, :id => group_assignment.id, :assignment_id => group_assignment.assignment_id}
       success = false
     end
-    
+
     respond_to do |format|
-        format.html { redirect_to(redirect, flash_class.to_sym => flash_msg) }
-      format.xml  { render :xml => { :success => success } }
+      format.html { 
+        flash[flash_class] = flash_msg unless success
+        redirect_to(redirect) 
+      }
+      format.xml  { render :xml => { :success => success , :flash_msg => flash_msg, :flash_class => flash_class} }
       format.json  { render :json => { :success => success, :flash_msg => flash_msg, :flash_class => flash_class } }
     end
+    
   end
 
   ##
