@@ -695,7 +695,7 @@
   # suport material file
   support_folder_name: Support Material
   support_download_all: Download all as zip
-  support_download_all_folder: Download all folder as zip
+  support_download_all_folder: Download all folders as zip
 
   # Support Material File Editor
   support_delete: Delete

@@ -1334,7 +1334,9 @@ div.alter_photo_text {
 
 div.block_title {
     border-bottom: 2px solid #003E7A;
-    padding-bottom: 2px;
+    padding-bottom: 2px !important;
+    position: relative;
+    overflow: hidden;
 }
 
 .block_title h1 {
@@ -1345,7 +1347,9 @@ div.block_title {
 
 .block_title h2 {
     display: inline;
+    vertical-align: bottom;
 }
+
 
 /* icone que fica ao lado do titulo do bloco */
 .block_title_icon {
@@ -1450,7 +1454,7 @@ div.block_title {
     padding: 6px 10px;
 }
 
-h2, table tr.block_title th {
+table tr.block_title th {
     width: 100%;
     height: 161px; 
     overflow: auto;
@@ -2872,20 +2876,21 @@ a.btn {
     margin-right:5px;
 }
 
+h2.support_material_title {
+    position: absolute;
+    bottom: 1px;
+}
+
 div.support_material_select {
     width: 30px;
     margin-left: 2px;
 }
 
-div.support_material_folder_actions {
+.support_material_folder_actions {
+    /*position: absolute;
+    right: 0;*/
     float: right;
     font-size: 11px;
-}
-
-div.support_material_folder_actions img {
-    padding: 0 0 0 5px;
-    margin: 0;
-    vertical-align: bottom;
 }
 
 #support_material_new_folder {
