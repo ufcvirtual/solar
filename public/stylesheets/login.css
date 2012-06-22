@@ -231,7 +231,7 @@ textarea{
 /* blocos */
 /* div que engloba tudo */
 .block_wrapper {
-    width: 40em;
+    width: 45em;
     margin: 0 auto 15px auto;
     overflow: hidden;
 }
@@ -253,7 +253,7 @@ textarea{
 .block_content {
     font-size: 10pt;
     background-color: #F5F8FB;
-    padding: 2px 0 7px 0;
+    padding: 2px 0 7px 30px;
 }
 
 /************ Layout dos botões ****************/
