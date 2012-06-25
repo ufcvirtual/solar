@@ -4,6 +4,8 @@ class Allocation < ActiveRecord::Base
   belongs_to :user
   belongs_to :profile
 
+  has_one :group, :through => :allocation_tag, :conditions => ["group_id is not null"]
+
   def groups
     allocation_tag.groups
   end
@@ -18,7 +20,7 @@ class Allocation < ActiveRecord::Base
 
     query = <<SQL
       SELECT t1.*,
-             t3.code          AS group,
+             t3.code          AS group_code,
              t4.name          AS user_name
         FROM allocations      AS t1
         JOIN allocation_tags  AS t2 ON t2.id = t1.allocation_tag_id

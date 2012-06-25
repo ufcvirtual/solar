@@ -1,19 +1,39 @@
 
-<td>
-  <input type="checkbox" name="<%= @allocation.id %>" value="<%= @allocation.id %>" class="cbx_value"/>
-</td>
-<td><%= @allocation.user.name %></td>
-<td>
+<% unless @multiple %>
+  <td>
+    <input type="checkbox" name="<%= @allocation.id %>" value="<%= @allocation.id %>" class="cbx_value"/>
+  </td>
+  <td><%= @allocation.user.name %></td>
+  <td>
+    <% if @change_group %>
+      <%= select(:code, :id, @groups.collect { |g| [g.code, g.id] }, {:selected => @allocation.allocation_tag.group_id}) %>
+    <% else %>
+      <%= @groups.code %>
+    <% end %>
+  </td>
+  <td>
+    <%= select(:status, :id, @status_hash.invert.to_a, {:selected => @allocation.status}) %>
+  </td>
+  <td>
+    <input value="<%= t(:save) %>" allocation-id="<%= @allocation.id %>" save-link="<%= allocation_path(@allocation) %>" type="button" class="btn btn_main btn_save_allocation" onclick="javascript:save_allocation(this);">
+    <input value="<%= t(:cancel) %>" show-link="<%= allocation_path(@allocation) %>" edit-link="<%= edit_allocation_path(@allocation) %>" type="button" class="btn btn_default btn_manage_cancel" onclick="javascript:manage_cancel(this);">
+  </td>
+<% else %>
+
+  Alunos:<br />
+
+  <% @users.each do |user| %>
+    <%= user %><br />
+  <% end %>
+  <br />
+  Turma:
   <% if @change_group %>
     <%= select(:code, :id, @groups.collect { |g| [g.code, g.id] }, {:selected => @allocation.allocation_tag.group_id}) %>
   <% else %>
     <%= @groups.code %>
   <% end %>
-</td>
-<td>
-  <%= select(:status, :id, @status_hash.invert.to_a, {:selected => @allocation.status}) %>
-</td>
-<td>
-  <input value="<%= t(:save) %>" allocation-id="<%= @allocation.id %>" save-link="<%= allocation_path(@allocation) %>" type="button" class="btn btn_default btn_save_allocation" onclick="javascript:save_allocation(this);">
-  <input value="<%= t(:cancel) %>" show-link="<%= allocation_path(@allocation) %>" edit-link="<%= edit_allocation_path(@allocation) %>" type="button" class="btn btn_default btn_manage_cancel" onclick="javascript:manage_cancel(this);">
-</td>
+  <br \>
+  Status: <%= select(:status, :id, @status_hash.invert.to_a, {:selected => @allocation.status}) %>
+
+
+<% end %>

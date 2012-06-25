@@ -32,25 +32,21 @@ class AllocationsController < ApplicationController
 
   # GET /allocations/1/edit
   def edit
-    @allocation = Allocation.find(params[:id])
-    @change_group = true
+    ids = params[:id].split(',')
+    @multiple = (ids.length > 1 or (params.include?('multiple') and params['multiple'] == 'yes'))
+    @allocation = Allocation.find(ids)
+    @status_hash = status_hash_of_allocation(@allocation.first.status)
+    @users = @allocation.map(&:user).uniq.map(&:name)
 
-    case @allocation.status
-      when Allocation_Pending, Allocation_Pending_Reactivate
-        @status_hash = status_hash.select {|k,v| [@allocation.status, Allocation_Activated, Allocation_Rejected].include?(k)}
-      when Allocation_Activated
-        @status_hash = status_hash.select {|k,v| [@allocation.status, Allocation_Cancelled].include?(k)}
-      when Allocation_Cancelled, Allocation_Rejected
-        @change_group = false
-        @status_hash = status_hash.select {|k,v| [@allocation.status, Allocation_Activated].include?(k)}
-    end
+    allocation = @allocation.first
 
-    if @change_group
-      ats = AllocationTag.where("id in (?) and (group_id is not null or offer_id is not null)", @allocation.allocation_tag.related)
-      @groups = Group.where("id in (?) or offer_id in (?)", ats.map(&:group_id).compact.uniq, ats.map(&:offer_id).compact.uniq)
+    if @change_group = (not [Allocation_Cancelled, Allocation_Rejected].include?(allocation.status))
+      @groups = Group.where(:offer_id => allocation.group.offer_id) # transicao entre grupos apenas da mesma oferta
     else
-      @groups = @allocation.allocation_tag.group
+      @groups = allocation.allocation_tag.group
     end
+
+    @allocation = allocation unless @multiples
 
     respond_to do |format|
       format.html { render layout: false }
@@ -180,5 +176,18 @@ class AllocationsController < ApplicationController
       end
     end
   end
+
+  private
+    def status_hash_of_allocation(allocation_status)
+      case allocation_status
+        when Allocation_Pending, Allocation_Pending_Reactivate
+          status_hash.select {|k,v| [allocation_status, Allocation_Activated, Allocation_Rejected].include?(k)}
+        when Allocation_Activated
+          status_hash.select {|k,v| [allocation_status, Allocation_Cancelled].include?(k)}
+        when Allocation_Cancelled, Allocation_Rejected
+          # @change_group = false
+          status_hash.select {|k,v| [allocation_status, Allocation_Activated].include?(k)}
+      end
+    end
 
 end

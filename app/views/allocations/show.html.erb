@@ -6,5 +6,5 @@
 <td><%= @allocation.allocation_tag.group.code %></td>
 <td><%= name_of(@allocation.status) %></td>
 <td>
-  <input value="<%= t(:allocation_manage_manage) %>" show-link="<%= allocation_path(@allocation) %>" edit-link="<%= edit_allocation_path(@allocation) %>" type="button" class="btn btn_default btn_manage_enrollment" onclick="javascript:manage_enrollment(this);"/>
+  <input value="<%= t(:allocation_manage_manage) %>" show-link="<%= allocation_path(@allocation) %>" edit-link="<%= edit_allocation_path(@allocation) %>" type="button" class="btn btn_default btn_main btn_manage_enrollment" onclick="javascript:manage_enrollment(this);"/>
 </td>

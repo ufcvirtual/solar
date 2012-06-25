@@ -9,6 +9,9 @@
 
 <div class="block_title">
   <h2><%= t(:allocation_manage_title) %></h2>
+  <span>
+    <input value="<%= t(:allocation_manage_selected) %>" type="button" class="btn btn_default btn_disable btn_manage_enrollment_selected"/>
+  </span>
 </div>
 <div class="block_content">
   <table class="tb_list enrollments">
@@ -30,10 +33,10 @@
             <input type="checkbox" name="<%= allocation.id %>" value="<%= allocation.id %>" class="cbx_value"/>
           </td>
           <td><%= allocation.user_name %></td>
-          <td><%= allocation.group %></td>
+          <td><%= allocation.group_code %></td>
           <td><%= name_of(allocation.status) %></td>
           <td>
-            <input value="<%= t(:allocation_manage_manage) %>" show-link="<%= allocation_path(allocation) %>" edit-link="<%= edit_allocation_path(allocation) %>" type="button" class="btn btn_default btn_manage_enrollment" onclick="javascript:manage_enrollment(this);"/>
+            <input value="<%= t(:allocation_manage_manage) %>" show-link="<%= allocation_path(allocation) %>" edit-link="<%= edit_allocation_path(allocation) %>" type="button" class="btn btn_default btn_main btn_manage_enrollment" onclick="javascript:manage_enrollment(this);"/>
           </td>
         </tr>
       <% end %>
@@ -43,21 +46,40 @@
 
 <script type="text/javascript">
 
-  jQuery.fn.checkbox_all = function() {
-    var args = $.extend({ 'cbx_id_all': 'cbx_all', 'cbx_class': 'cbx_value' }, arguments[0]);
-    $('input:checkbox', this).click(function() {
-      if ( $(this).attr("id") == args['cbx_id_all'] ) {
+  $(function() {
+    $('.enrollments input:checkbox').click(function() {
+      if ( $(this).attr("id") == 'cbx_all' ) {
         var cbx_all = this;
-        $('.' + args['cbx_class']).each(function() { $(this).attr('checked', $(cbx_all).attr('checked')); });
-      } else if ( $(this).attr('checked') == false && $('#' + args['cbx_id_all']).attr('checked') == true ) {
-        $('#' + args['cbx_id_all']).attr('checked', false);
-      } else if ( $(this).attr('checked') == true && $('.' + args['cbx_class']).length == $('.' + args['cbx_class'] + ':checked').length ) {
-        $('#' + args['cbx_id_all']).attr('checked', true);
+        $('.cbx_value').each(function() { $(this).attr('checked', $(cbx_all).attr('checked')); });
+      } else if ( $(this).attr('checked') == false && $('#cbx_all').attr('checked') == true ) {
+        $('#cbx_all').attr('checked', false);
+      } else if ( $(this).attr('checked') == true && $('.cbx_value').length == $('.cbx_value:checked').length ) {
+        $('#cbx_all').attr('checked', true);
+      }
+
+      // habilitar botao de gerencia de registros selecionados
+      if ($('.cbx_value:checked').length > 0) {
+        $('.btn_manage_enrollment_selected').removeClass('btn_disable');
+      } else {
+        $('.btn_manage_enrollment_selected').addClass('btn_disable');
       }
     });
-  }
 
-  $(".enrollments").checkbox_all();
+    $('.btn_manage_enrollment_selected').click(function() {
+      var ch = $('.cbx_value:checked');
+      if ($('#status_id').val() == '' || ch.length == 0) return false; // Desabilitado quando nenhum pedido de matrícula é selecionado
+
+      var sel = new Array();
+      if (ch.length > 0) {
+        for (var i = 0; i < ch.length; i++) {
+          sel.push(ch[i].value);
+        }
+      }
+      var url = "<%= edit_allocation_path('something', :multiple => 'yes') %>".replace('something', sel.join(','));
+      showLightBoxURL(url, 400, 250, true, '<%= t(:allocation_manage_selected)%>');
+    });
+
+  });
 
   function manage_cancel(obj) {
     $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
