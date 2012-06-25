@@ -2,9 +2,32 @@
 
   <table class="form_user_table">
     <tr>
-      <td class="form_label"><%= f.label ':semester' %></td>
-      <td class="form_field" colspan="3"><%= f.text_field :semester, :id => "semester", :size=>6 %></td>
-      <td class="form_error"></td>
+      <td class="form_label"><%= f.label 'course' %></td>
+      <td>
+        <%= select_tag(:course_id, options_from_collection_for_select(@courses, :id, :name)) %>
+      </td>
+    </tr>
+    <tr>
+      <td class="form_label"><%= f.label 'curriculum unit' %></td>
+      <td>
+        <%= select_tag(:curriculum_unit_id, options_from_collection_for_select(@curriculum_units, :id, :name)) %>
+      </td>
+    </tr>
+    <tr>
+      <td class="form_label"><%= f.label 'semester' %></td>
+      <td><%= f.text_field :semester, :id => "semester", :size=>6 %></td>
+    </tr>
+    <tr>
+      <td class="form_error"><%= f.label 'start date' %></td>
+      <td>
+        <%= f.text_field :start, :id => "start_date", :size=>10, :value => Date.today, :format => :datepicker %>
+      </td>
+    </tr>
+    <tr>
+      <td class="form_error"><%= f.label 'end date' %></td>
+      <td>
+        <%= f.text_field :end, :id => "end_date", :size=>10, :value => Date.today, :format => :datepicker %>
+      </td>
     </tr>
   </table>
 
@@ -14,3 +37,10 @@
   </p>
 
 <% end %>
+
+<script type="text/javascript">
+  $(function(){
+    $( "#start_date" ).datepicker();
+    $( "#end_date" ).datepicker();
+  });
+</script>

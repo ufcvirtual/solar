@@ -2,8 +2,10 @@ include ApplicationHelper
 
 class OffersController < ApplicationController
 
+  before_filter :get_values, :only => [:new, :edit]
+
   def index
-    @offers = Offer.find(:all)
+    @offers = Offer.find(:all, :order => 'semester desc')
 
 #    return User.find(:all,
 #      :joins => "INNER JOIN user_messages ON users.id = user_messages.user_id",
@@ -18,11 +20,6 @@ class OffersController < ApplicationController
 
   def new
     @offer = Offer.new
-
-    respond_to do |format|
-      format.html
-      format.xml  { render :xml => @offer }
-    end
   end
 
   def edit
@@ -30,34 +27,36 @@ class OffersController < ApplicationController
   end
 
   def create
-    @offer = Offer.new(params[:offer])
+    @offer = Offer.new(
+          :course_id => params[:course_id],
+          :curriculum_unit_id => params[:curriculum_unit_id],
+          :semester => params[:offer][:semester],
+          :start => params[:offer][:start],
+          :end => params[:offer][:end]
+    )
 
-    #respond_to do |format|
-      if @offer.save
-
-      else
-
-      end
-    #end
     respond_to do |format|
-      format.html
-      format.xml  { render :xml => @offer }
+      if @offer.save
+        format.html { redirect_to(offers_url) }
+        format.xml  { render :xml => @offer }
+      else
+        format.html
+        format.xml
+      end
     end
   end
 
   def update
     @offer = Offer.find(params[:id])
 
-    #respond_to do |format|
-      if @offer.update_attributes(params[:offer])
-
-      else
-
-      end
-    #end
     respond_to do |format|
-      format.html
-      format.xml  { render :xml => @offer }
+      if @offer.update_attributes(params[:offer])
+        format.html { redirect_to(offers_url) }
+        format.xml  { render :xml => @offer }
+      else
+        format.html
+        format.xml
+      end
     end
   end
 
@@ -72,13 +71,23 @@ class OffersController < ApplicationController
     end
   end
 
+  # POST /offers/1
+  # POST /offers/1.json
   def destroy
+    @offer.find(params[:id])
     @offer.destroy
 
     respond_to do |format|
-      format.html #{ redirect_to(users_url, :notice => 'Oferta excluida com sucesso!') }
+      format.html { redirect_to(offers_url) }
       format.xml  { head :ok }
     end
+  end
+
+  private
+
+  def get_values
+    @courses = Course.find(:all)
+    @curriculum_units = CurriculumUnit.find(:all)
   end
 
 end

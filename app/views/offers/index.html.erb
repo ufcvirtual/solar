@@ -6,20 +6,27 @@
   <div>
     <table class="tb_list">
       <tbody>
-      <% unless @offers.nil? or @offers.empty? %>
-        <% @offers.each do |offer| %>
-          <tr>
-            <td><%= offer.semester %></td>
-            <td><%= link_to t(:show), offer %></td>
-            <td><%= link_to t(:edit), edit_offer_path(offer) %></td>
-            <td><%#= link_to t(:destroy), offer, confirm: 'Are you sure?', method: :delete %></td>
-          </tr>
+        <% unless @offers.nil? or @offers.empty? %>
+          <% @offers.each do |offer| %>
+            <tr>
+              <td><%= offer.course.code %></td>
+              <td><%= offer.semester %></td>
+              <td><%= offer.curriculum_unit.name %></td>
+              <td><%=l offer.start, :format => :default %> - <%=l offer.end, :format => :default %></td>
+              <td><%= link_to t(:edit), edit_offer_path(offer) %></td>
+              <td>
+                <%= button_to t(:delete), {:controller => :offer, :action => :destroy, :id => offer["id"]}, :confirm => 'deseja deletar mesmo? olha...', :class=>'btn btn_caution' %>
+              </td>
+            </tr>
+          <% end %>
+        <% else %>
+            <tr>
+              <td>nenhuma oferta</td>
+            </tr>
         <% end %>
-      <% else %>
-          nenhuma oferta
-      <% end %>
       </tbody>
     </table>
+    <%= link_to t(:new), new_offer_path %>
   </div>
 
 </div>
