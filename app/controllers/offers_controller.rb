@@ -3,10 +3,12 @@ include ApplicationHelper
 class OffersController < ApplicationController
 
   def index
-    #if current_user
-    #  @user = Enrollment.find(current_user.id)
-    #end
-    #render :action => :mysolar
+    @offers = Offer.find(:all)
+
+#    return User.find(:all,
+#      :joins => "INNER JOIN user_messages ON users.id = user_messages.user_id",
+#      :select => "users.*",
+#      :conditions => "user_messages.message_id = #{message_id} AND NOT cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -44,7 +46,7 @@ class OffersController < ApplicationController
   end
 
   def update
-    @offer = CurriculumUnit.find(params[:id])
+    @offer = Offer.find(params[:id])
 
     #respond_to do |format|
       if @offer.update_attributes(params[:offer])

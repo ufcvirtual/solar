@@ -1,0 +1,25 @@
+<div class="block_wrapper">
+  <div class="block_title">
+    <h2><h1>Offers</h1></h2>
+  </div>
+
+  <div>
+    <table class="tb_list">
+      <tbody>
+      <% unless @offers.nil? or @offers.empty? %>
+        <% @offers.each do |offer| %>
+          <tr>
+            <td><%= offer.semester %></td>
+            <td><%= link_to t(:show), offer %></td>
+            <td><%= link_to t(:edit), edit_offer_path(offer) %></td>
+            <td><%#= link_to t(:destroy), offer, confirm: 'Are you sure?', method: :delete %></td>
+          </tr>
+        <% end %>
+      <% else %>
+          nenhuma oferta
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+
+</div>

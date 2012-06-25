@@ -1,8 +1,8 @@
-<% form_for(@offer) do |f| %>
+<%= form_for(@offer) do |f| %>
 
   <table class="form_user_table">
     <tr>
-      <td class="form_label"><%= f.label :semester %></td> <!-- "#{t(:form_name)}*" -->
+      <td class="form_label"><%= f.label ':semester' %></td>
       <td class="form_field" colspan="3"><%= f.text_field :semester, :id => "semester", :size=>6 %></td>
       <td class="form_error"></td>
     </tr>
@@ -10,6 +10,7 @@
 
   <p>
    <%= f.submit t(:confirm), :id=>"confirm", :class=>"btn btn_default", :alt=> t(:confirm) %>
+   <%= link_to t(:back), offers_path %>
   </p>
 
 <% end %>
