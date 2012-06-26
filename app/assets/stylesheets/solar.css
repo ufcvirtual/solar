@@ -3242,6 +3242,9 @@ td.form_error {
     clear: both;
 }
 
+.rename_group{
+    width: 205px;
+}
 /* FORM: criação de unidade curricular */
 .form-inputs.block_content {
     padding-top: 5px;
