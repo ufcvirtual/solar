@@ -1,6 +1,6 @@
 <div class="block_wrapper">
   <div class="block_title">
-    <h2><h1>Offers</h1></h2>
+    <h2><h1><%= t(:offers) %></h1></h2>
   </div>
 
   <div>
@@ -15,13 +15,13 @@
               <td><%=l offer.start, :format => :default %> - <%=l offer.end, :format => :default %></td>
               <td><%= link_to t(:edit), edit_offer_path(offer) %></td>
               <td>
-                <%= button_to t(:delete), {:controller => :offer, :action => :destroy, :id => offer["id"]}, :confirm => 'deseja deletar mesmo? olha...', :class=>'btn btn_caution' %>
+                <%= link_to t(:destroy), offer, :method => :delete, :confirm => t(:offer_confirm) %>
               </td>
             </tr>
           <% end %>
         <% else %>
             <tr>
-              <td>nenhuma oferta</td>
+              <td><%= t(:no_offer) %></td>
             </tr>
         <% end %>
       </tbody>

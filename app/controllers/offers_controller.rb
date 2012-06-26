@@ -20,10 +20,14 @@ class OffersController < ApplicationController
 
   def new
     @offer = Offer.new
+    @start_date = l Date.today
+    @end_date = l Date.today
   end
 
   def edit
     @offer = Offer.find(params[:id])
+    @start_date = l @offer.start
+    @end_date = l @offer.end
   end
 
   def create
@@ -47,10 +51,10 @@ class OffersController < ApplicationController
   end
 
   def update
-    @offer = Offer.find(params[:id])
+    offer = Offer.find(params[:id])
 
     respond_to do |format|
-      if @offer.update_attributes(params[:offer])
+      if offer.update_attributes(params[:offer])
         format.html { redirect_to(offers_url) }
         format.xml  { render :xml => @offer }
       else
@@ -71,11 +75,11 @@ class OffersController < ApplicationController
     end
   end
 
-  # POST /offers/1
-  # POST /offers/1.json
+  # DELETE /offers/1
+  # DELETE /offers/1.json
   def destroy
-    @offer.find(params[:id])
-    @offer.destroy
+    offer = Offer.find(params[:id])
+    offer.destroy
 
     respond_to do |format|
       format.html { redirect_to(offers_url) }

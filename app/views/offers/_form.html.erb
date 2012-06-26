@@ -2,31 +2,31 @@
 
   <table class="form_user_table">
     <tr>
-      <td class="form_label"><%= f.label 'course' %></td>
+      <td class="form_label"><%= f.label t(:course) %></td>
       <td>
         <%= select_tag(:course_id, options_from_collection_for_select(@courses, :id, :name)) %>
       </td>
     </tr>
     <tr>
-      <td class="form_label"><%= f.label 'curriculum unit' %></td>
+      <td class="form_label"><%= f.label t(:curriculum_unit) %></td>
       <td>
         <%= select_tag(:curriculum_unit_id, options_from_collection_for_select(@curriculum_units, :id, :name)) %>
       </td>
     </tr>
     <tr>
-      <td class="form_label"><%= f.label 'semester' %></td>
+      <td class="form_label"><%= f.label t(:semester) %></td>
       <td><%= f.text_field :semester, :id => "semester", :size=>6 %></td>
     </tr>
     <tr>
-      <td class="form_error"><%= f.label 'start date' %></td>
+      <td class="form_error"><%= f.label t(:start_date) %></td>
       <td>
-        <%= f.text_field :start, :id => "start_date", :size=>10, :value => Date.today, :format => :datepicker %>
+        <%= f.text_field :start, :id => "start_date", :size=>10, :value => @start_date, :format => :datepicker %>
       </td>
     </tr>
     <tr>
-      <td class="form_error"><%= f.label 'end date' %></td>
+      <td class="form_error"><%= f.label t(:end_date) %></td>
       <td>
-        <%= f.text_field :end, :id => "end_date", :size=>10, :value => Date.today, :format => :datepicker %>
+        <%= f.text_field :end, :id => "end_date", :size=>10, :value => @end_date, :format => :datepicker %>
       </td>
     </tr>
   </table>

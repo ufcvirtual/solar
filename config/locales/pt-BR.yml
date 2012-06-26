@@ -792,6 +792,17 @@
   new_course_title: Cadastro de Curso
   update_course_title: Atualização de Curso
 
+  #Offer
+  offer: "Oferta"
+  offers: "Ofertas"
+  offer_confirm: "Você tem certeza que deseja deletar?"
+  no_offer: "Nenhuma oferta cadastrada."
+  semester: "Semestre"
+  start_date: "Data inicial"
+  end_date: "Data final"
+  course: "Curso"
+  curriculum_unit: "Unidade curricular"
+
   devise:
     failure:
       already_authenticated: 'Você já está logado.'

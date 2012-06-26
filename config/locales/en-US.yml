@@ -631,6 +631,17 @@
   new_course_title: New Course
   update_course_title: Update Course
 
+  #Offer
+  offer: "Offer"
+  offers: "Offers"
+  offer_confirm: "Are you sure you want to delete?"
+  no_offer: "No offer registered."
+  semester: "Semester"
+  start_date: "Start date"
+  end_date: "End date"
+  course: "Course"
+  curriculum_unit: "Curricular unit"
+  
   devise:
     failure:
       already_authenticated: 'You are already signed in.'
