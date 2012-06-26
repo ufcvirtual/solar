@@ -34,3 +34,10 @@ Cenário: Exibir Portfolio
 
 
 #Cenário: Enviar arquivo
+#Cenário: Deletar arquivo
+#Cenário: Como aluno, baixar arquivo da área publica de um aluno da mesma turma
+#Cenário: Como aluno, tentar baixar arquivo da área publica de um aluno de outra turma
+#Cenário: Como responsável, Tentar baixar arquivo da área publica de um aluno de outra turma
+#Cenário: Estando alocado em oferta, tentar baixar arquivo da área publica de aluno de alguma turma relacionada
+#Cenário: Estando alocado em Unidade Curricular, tentar baixar arquivo da área publica de aluno de alguma turma relacionada
+#Cenário: Estando alocado em Curso, tentar baixar arquivo da área publica de aluno de alguma turma relacionada
