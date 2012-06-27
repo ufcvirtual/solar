@@ -579,6 +579,7 @@
   are_you_sure: "Are you sure?"
   confirm_deletion: "Confirm deletion of group %{group_name} ?"
   students: "Students"
+  status: "Status"
   group_assingnment_no_student_without_group: "There is no students without group"
   confirm_edition_message: "Save changes of group %{actual_group_name} ?"
   confirm_creation_message: "Create group?"
@@ -730,10 +731,12 @@
   allocation_status_pending_reactivate: Pending
   allocation_status_rejected: Rejected
 
-  allocation_manage_title: "Registrations requested"
-  allocation_manage_student: "Student"
-  allocation_manage_group: "Group"
-  allocation_manage_status: "Status"
-  allocation_manage_options: "Options"
-  allocation_manage_manage: "Manage"
-  allocation_manage_selected: "Manage Selected"
+  allocation_manage_title: Registrations requested
+  allocation_manage_student: Student
+  allocation_manage_group: Group
+  allocation_manage_status: Status
+  allocation_manage_options: Options
+  allocation_manage_manage: Manage
+  allocation_manage_selected: Manage Selected
+  allocation_manage_enrollment_successful_update: Successful update
+  allocation_manage_enrollment_unsuccessful_update: Unsuccessful update

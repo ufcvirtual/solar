@@ -740,6 +740,7 @@
   are_you_sure: "Você tem certeza?"
   confirm_deletion: "Confirma deleção do grupo %{group_name} ?"
   students: "Alunos"
+  status: "Status"
   group_assingnment_no_student_without_group: "Não há alunos sem grupo"
   confirm_edition_message: "Salvar as alterações do grupo %{actual_group_name} ?"
   confirm_creation_message: "Criar grupo?"
@@ -888,10 +889,12 @@
   allocation_status_pending_reactivate: Pendente
   allocation_status_rejected: Rejeitado
 
-  allocation_manage_title: "Matrículas Solicitadas"
-  allocation_manage_student: "Aluno"
-  allocation_manage_group: "Turma"
-  allocation_manage_status: "Status"
-  allocation_manage_options: "Opções"
-  allocation_manage_manage: "Gerenciar"
-  allocation_manage_selected: "Gerenciar Selecionados"
+  allocation_manage_title: Matrículas Solicitadas
+  allocation_manage_student: Aluno
+  allocation_manage_group: Turma
+  allocation_manage_status: Status
+  allocation_manage_options: Opções
+  allocation_manage_manage: Gerenciar
+  allocation_manage_selected: Gerenciar Selecionados
+  allocation_manage_enrollment_successful_update: Atualização realizada com sucesso
+  allocation_manage_enrollment_unsuccessful_update: Atualização não realizada

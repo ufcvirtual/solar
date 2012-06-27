@@ -93,10 +93,37 @@
     $.ajax({
       type: 'PUT',
       url: $(obj).attr('save-link'),
-      data: {"id": $(obj).attr('allocation-id'), "allocation": {
-        "status": $('#status_id option:selected', $(obj).closest('tr')).val(), "group_id": $('#code_id option:selected', $(obj).closest('tr')).val()
-      }},
+      data: {
+        "id": $(obj).attr('allocation-id'),
+        "allocation": {
+          "status": $('#status_id option:selected', $(obj).closest('tr')).val(),
+          "group_id": $('#code_id option:selected', $(obj).closest('tr')).val()
+        }
+      },
       success: function(data) { $(obj).closest('tr').html(data); }
     });
   }
+
+  function save_allocations(obj) {
+    $.ajax({
+      type: 'PUT',
+      url: $(obj).attr('save-link') + '.json',
+      data: {
+        "multiple": "yes",
+        "allocation": {
+          "status": $('#allocations_manage_selected #status_id').val(),
+          "group_id": $('#allocations_manage_selected #group_id').val()
+        }
+      },
+      success: function(data) {
+        if (data.status = 'ok') {
+          $(window).attr("location", '<%= enrollments_allocations_path(:status => params[:status]) %>');
+          // removeLightBox();
+        } else {
+          alert('<%= t(:allocation_manage_enrollment_unsuccessful_update) %>');
+        }
+      }
+    });
+  }
+
 </script>

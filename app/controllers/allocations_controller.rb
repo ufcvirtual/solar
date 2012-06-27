@@ -35,6 +35,7 @@ class AllocationsController < ApplicationController
     ids = params[:id].split(',')
     @multiple = (ids.length > 1 or (params.include?('multiple') and params['multiple'] == 'yes'))
     @allocation = Allocation.find(ids)
+    @allocation_ids = @allocation.map(&:id)
     @status_hash = status_hash_of_allocation(@allocation.first.status)
     @users = @allocation.map(&:user).uniq.map(&:name)
 
@@ -46,7 +47,7 @@ class AllocationsController < ApplicationController
       @groups = allocation.allocation_tag.group
     end
 
-    @allocation = allocation unless @multiples
+    @allocation = allocation # unless @multiple
 
     respond_to do |format|
       format.html { render layout: false }
@@ -85,37 +86,46 @@ class AllocationsController < ApplicationController
   # PUT /allocations/1.json
   def update
     params[:allocation][:allocation_tag_id] = AllocationTag.find_by_group_id(params[:allocation].delete(:group_id)).id if params[:allocation].include?(:group_id)
-    allocation = Allocation.find(params[:id])
 
-    # mudanca de turma - cancela allocation antiga e cria uma nova
-    if params[:allocation].include?(:status) and params[:allocation][:status].to_i == Allocation_Activated.to_i and \
-      params[:allocation].include?(:allocation_tag_id) and params[:allocation][:allocation_tag_id] != allocation.allocation_tag_id
+    ids = params[:id].split(',')
+    allocations = Allocation.find(ids)
+    @allocation = allocations.first unless params.include?(:multiple) and params[:multiple] == 'yes'
 
-      new_allocation = Allocation.new({
-        :user_id => allocation.user_id,
-        :allocation_tag_id => params[:allocation][:allocation_tag_id],
-        :profile_id => allocation.profile_id,
-        :status => params[:allocation][:status]
-      })
+    # verifica se existe mudanca de turma
+      # se sim, todas as alocacoes serao canceladas e serao criadas novas com a nova turma
+      # se não, somente o status das alocacoes serao modificados
 
-      allocation.status = Allocation_Cancelled
+    error = false
+    begin
+      ActiveRecord::Base.transaction do
+        if params[:allocation].include?(:status) and params[:allocation][:status].to_i == Allocation_Activated.to_i and \
+          params[:allocation].include?(:allocation_tag_id) and params[:allocation][:allocation_tag_id] != allocations.first.allocation_tag_id
 
-      begin
-        ActiveRecord::Base.transaction do
-          allocation.save
-          new_allocation.save
-        end
-        @allocation = new_allocation
-        error = false
-      rescue
-        error = true
-      end
-    elsif allocation.update_attributes(params[:allocation])
-      @allocation = allocation
-      error = false
-    else
+          allocations.each do |allocation|
+            # criando novas allocations
+            Allocation.new({
+              :user_id => allocation.user_id,
+              :allocation_tag_id => params[:allocation][:allocation_tag_id],
+              :profile_id => allocation.profile_id,
+              :status => params[:allocation][:status]
+            }).save
+
+            # cancelando allocations
+            allocation.status = Allocation_Cancelled
+            allocation.save
+          end # each allocations
+        else
+          allocations.each do |allocation|
+            allocation.status = params[:allocation][:status]
+            allocation.save
+          end # allocations
+        end # if
+      end # transaction
+      flash[:notice] = t(:allocation_manage_enrollment_successful_update) if params.include?(:multiple) and params[:multiple] == 'yes'
+    rescue
       error = true
-    end
+      flash[:alert] = t(:allocation_manage_enrollment_unsuccessful_update) if params.include?(:multiple) and params[:multiple] == 'yes'
+    end # rescue
 
     respond_to do |format|
       unless error
@@ -123,7 +133,7 @@ class AllocationsController < ApplicationController
         format.json { render json: {:status => "ok"} }
       else
         format.html { render action: "edit", layout: false }
-        format.json { render json: @allocation.errors, status: :error }
+        format.json { render json: {:status => "error"} }
       end
     end
   end

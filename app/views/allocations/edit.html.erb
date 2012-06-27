@@ -20,20 +20,23 @@
   </td>
 <% else %>
 
-  Alunos:<br />
-
+<div id="allocations_manage_selected">
+  <%= t(:students) %>:<br />
   <% @users.each do |user| %>
     <%= user %><br />
   <% end %>
   <br />
-  Turma:
+  <%= t(:group) %>:
   <% if @change_group %>
-    <%= select(:code, :id, @groups.collect { |g| [g.code, g.id] }, {:selected => @allocation.allocation_tag.group_id}) %>
+    <%= select(:group, :id, @groups.collect { |g| [g.code, g.id] }, {:selected => @allocation.allocation_tag.group_id}) %>
   <% else %>
     <%= @groups.code %>
   <% end %>
   <br \>
-  Status: <%= select(:status, :id, @status_hash.invert.to_a, {:selected => @allocation.status}) %>
-
+  <%= t(:status) %>: <%= select(:status, :id, @status_hash.invert.to_a, {:selected => @allocation.status}) %>
+  <br \><br \>
+  <input value="<%= t(:save) %>" save-link="<%= allocation_path(@allocation_ids.join(',')) %>" type="button" class="btn btn_main btn_save_allocation" onclick="javascript:save_allocations(this);">
+  <input value="<%= t(:cancel) %>" type="button" class="btn btn_default btn_manage_cancel" onclick="javascript:removeLightBox();">
+</div>
 
 <% end %>
