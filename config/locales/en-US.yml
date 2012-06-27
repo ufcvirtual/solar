@@ -330,6 +330,7 @@
   resume: Resume
   semester_date: Date
   passing_grade: Passing Grade
+  error_no_item_selected: No item selected
   curriculum_unit_type_id: Type
 
   curriculum_unit_new_title: "New Curriculum Unit"
@@ -740,3 +741,4 @@
   allocation_manage_selected: Manage Selected
   allocation_manage_enrollment_successful_update: Successful update
   allocation_manage_enrollment_unsuccessful_update: Unsuccessful update
+  allocation_manage_error_not_same_status: Select only items with the same status

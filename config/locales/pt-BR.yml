@@ -489,6 +489,7 @@
   resume: "Resumo"
   semester_date: "Período"
   passing_grade: "Média"
+  error_no_item_selected: Nenhum registro selecionado
   curriculum_unit_type_id: Tipo
 
   curriculum_unit_new_title: Nova Unidade Curricular
@@ -898,3 +899,4 @@
   allocation_manage_selected: Gerenciar Selecionados
   allocation_manage_enrollment_successful_update: Atualização realizada com sucesso
   allocation_manage_enrollment_unsuccessful_update: Atualização não realizada
+  allocation_manage_error_not_same_status: Selecione apenas registros com o mesmo status

@@ -30,7 +30,7 @@
       <% @allocations.each do |allocation| %>
         <tr class="lines">
           <td>
-            <input type="checkbox" name="<%= allocation.id %>" value="<%= allocation.id %>" class="cbx_value"/>
+            <input type="checkbox" name="<%= allocation.id %>" value="<%= allocation.id %>" status-value="<%= allocation.status %>" class="cbx_value"/>
           </td>
           <td><%= allocation.user_name %></td>
           <td><%= allocation.group_code %></td>
@@ -67,7 +67,18 @@
 
     $('.btn_manage_enrollment_selected').click(function() {
       var ch = $('.cbx_value:checked');
-      if ($('#status_id').val() == '' || ch.length == 0) return false; // Desabilitado quando nenhum pedido de matrícula é selecionado
+
+      if (ch.length == 0) { // nenhum selecionado
+        alert('<%= t(:error_no_item_selected) %>');
+        return;
+      } else { // verificar se todos os selecionados possuem o mesmo status
+        for (var i = 1; i < ch.length; i++) {
+          if ( $(ch[i]).attr('status-value') != $(ch[i-1]).attr('status-value')) {
+            alert('<%= t(:allocation_manage_error_not_same_status) %>');
+            return;
+          }
+        }
+      }
 
       var sel = new Array();
       if (ch.length > 0) {
@@ -78,7 +89,6 @@
       var url = "<%= edit_allocation_path('something', :multiple => 'yes') %>".replace('something', sel.join(','));
       showLightBoxURL(url, 400, 250, true, '<%= t(:allocation_manage_selected)%>');
     });
-
   });
 
   function manage_cancel(obj) {
@@ -118,7 +128,6 @@
       success: function(data) {
         if (data.status = 'ok') {
           $(window).attr("location", '<%= enrollments_allocations_path(:status => params[:status]) %>');
-          // removeLightBox();
         } else {
           alert('<%= t(:allocation_manage_enrollment_unsuccessful_update) %>');
         }
