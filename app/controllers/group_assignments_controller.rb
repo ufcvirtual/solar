@@ -71,38 +71,46 @@ class GroupAssignmentsController < ApplicationController
   # Edita o grupo
   ##
   def update
-    group_assignment = GroupAssignment.find(params[:group_assignment_id])
-    @groups = group_assignments(group_assignment.assignment_id)
-    @students_with_no_group = no_group_students(@group_assignment.assignment_id)
+   raise "#{params['groups']['0']['student_ids'].size}"
+   # params[nome do "data" passado pelo ajax][posição do grupo-string][campo que se quer][se for student_ids, aqui vai a posição de cada participante-string]
+   # usar o .size retorna a quantidade de alunos e grupos (inclui o "grupo" de alunos sem grupo)
+   # se params['groups']['algum']['group_name'] = nil, então são os sem grupo
+   # se params['groups']['algum']['group_id'] = 0, então é um novo grupo
 
-    students = []
-    # para cada grupo da atividade, verifica e acrescenta no array 'students' os alunos selecionados
-    @groups.each{|group| students += create_list_checked_students(group.id.to_s, params[:students]) }
-    # acrescenta os alunos selecionados que estavam sem grupo  
-    students += params[:students_no_group] unless params[:students_no_group].nil?
+   
 
-    if group_assignment.update_attributes(params[:group_assignment])
-      change_students_group(group_assignment, students)
-      flash_msg = t(:group_assignment_success)
-      flash_class = 'notice'
-      redirect = group_assignments_url
-      success = true
-      flash[flash_class] = flash_msg
-    else
-      flash_msg = group_assignment.errors.full_messages[0]
-      flash_class = 'alert'
-      redirect = {:action => :edit, :id => group_assignment.id, :assignment_id => group_assignment.assignment_id}
-      success = false
-    end
+    # group_assignment = GroupAssignment.find(params[:group_assignment_id])
+    # @groups = group_assignments(group_assignment.assignment_id)
+    # @students_with_no_group = no_group_students(@group_assignment.assignment_id)
 
-    respond_to do |format|
-      format.html { 
-        flash[flash_class] = flash_msg unless success
-        redirect_to(redirect) 
-      }
-      format.xml  { render :xml => { :success => success , :flash_msg => flash_msg, :flash_class => flash_class} }
-      format.json  { render :json => { :success => success, :flash_msg => flash_msg, :flash_class => flash_class } }
-    end
+    # students = []
+    # # para cada grupo da atividade, verifica e acrescenta no array 'students' os alunos selecionados
+    # @groups.each{|group| students += create_list_checked_students(group.id.to_s, params[:students]) }
+    # # acrescenta os alunos selecionados que estavam sem grupo  
+    # students += params[:students_no_group] unless params[:students_no_group].nil?
+
+    # if group_assignment.update_attributes(params[:group_assignment])
+    #   change_students_group(group_assignment, students)
+    #   flash_msg = t(:group_assignment_success)
+    #   flash_class = 'notice'
+    #   redirect = group_assignments_url
+    #   success = true
+    #   flash[flash_class] = flash_msg
+    # else
+    #   flash_msg = group_assignment.errors.full_messages[0]
+    #   flash_class = 'alert'
+    #   redirect = {:action => :edit, :id => group_assignment.id, :assignment_id => group_assignment.assignment_id}
+    #   success = false
+    # end
+
+    # respond_to do |format|
+    #   format.html { 
+    #     flash[flash_class] = flash_msg unless success
+    #     redirect_to(redirect) 
+    #   }
+    #   format.xml  { render :xml => { :success => success , :flash_msg => flash_msg, :flash_class => flash_class} }
+    #   format.json  { render :json => { :success => success, :flash_msg => flash_msg, :flash_class => flash_class } }
+    # end
     
   end
 

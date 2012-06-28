@@ -29,7 +29,7 @@
                 <div class="group_assignment_content">
 
                   <% unless gps.nil? or gps.empty? %>
-                    <% gps.each do |g, idx| %>
+                    <% gps.each do |g| %>
                       <div class="group_participants">
                         <h3 class="group_assignment_name" id="group_name_<%=g["group_name"].tr(' ', '')%>"><%= g["group_name"] %></h3>
                         <div id="edit_group_<%=g["group_name"].tr(' ', '')%>" style="display:none;">
@@ -38,13 +38,13 @@
                           <% group_has_files = !SendAssignment.find_all_by_group_assignment_id(g["id"]).empty? %>
                           <% data_tooltip = t(:group_assignment_delete_error) unless !group_has_files %>
                           <a class='' onclick='delete_group(<%=g["id"]%>, <%=a["id"]%>);' data-tooltip='<%=data_tooltip%>'>x</a>
-                          <%#= hidden_field_tag 'deleted_groups[][#{a["id"]}]'%>
+                          <%#= hidden_field_tag 'deleted_groups[][#{a["id"]}]', :id => 'deleted_groups_hidden_field' %>
 
                         </div>
                         <% gp = group_participants(g["id"])%>
-                        <ul class="oi" id="<%=idx%>">
+                        <ul value="<%=g['id']%>">
                           <% gp.each do |p| %>
-                            <li><%= p["name"] %></li>
+                            <li value="<%=p['id']%>"><%=p["id"]%>-<%= p["name"] %>
                           <% end %>
                         </ul>
                         <%#= link_to t(:group_assignment_edit), {:controller => :group_assignments, :action => :edit, :id => g["id"], :assignment_id => a["id"]}, {:class => 'link_content group_edit'} %>
@@ -58,7 +58,7 @@
                     <% unless students_without_group.nil? or students_without_group.empty? %>
                       <ul>
                         <% students_without_group.each do |student_without_group| %>
-                          <li><%= student_without_group.name %></li>
+                          <li value="<%=student_without_group.id%>"><%= student_without_group.name %></li>
                         <% end %>
                       </ul>
                     <%# else %>
@@ -71,13 +71,15 @@
                 <div class="group_assignment_buttons">
                   <%= form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}) do |f| %>
                     <input type="button" id='new_group_<%=a["id"]%>' value='<%=t(:group_assignment_new)%>' class="btn btn_default"/>
+
                     <!-- \/ se houver grupos (a definir regra) \/ -->
-                    <input type="button" id='edit_group_assignment_<%=a["id"]%>' value='<%=t(:group_assignment_edit)%>' class="btn btn_default" onclick="click_edit_button('<%=a["id"]%>');"/>
-                    <span id='save_changes_assignment_<%=a["id"]%>' style="display:none;">
-                      <%= f.submit t(:group_assignment_save), :class=>'btn btn_main' %>
-                    </span>
+                    <input type="button" id='edit_group_assignment_<%=a["id"]%>' value='<%=t(:group_assignment_edit)%>' class="btn btn_default" onclick="click_edit_button('<%=a["id"]%>', 'div_group_<%=a["id"]%>');"/>
+
+                    <input type="button" value="<%= t(:group_assignment_save) %>" class="btn btn_main" onclick="btn_save('div_group_<%=a["id"]%>');" id='save_changes_assignment_<%=a["id"]%>' style="display:none;"/>
+
                     <input type="button" id='cancel_changes_assignment_<%=a["id"]%>' value='<%=t(:group_assignment_cancel)%>' class="btn btn_caution" onclick="click_cancel_button('<%=a["id"]%>');" style="display: none;"/>
                     <!-- /\ se houver grupos (a definir regra) /\ -->
+
                     <% if verify_group_of_assignments(a["id"]) %>
                       <input type="button" id='import_to_<%=a["id"]%>' value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => GroupAssignment.first.id, :assignment_id => a["id"].to_i)%>', '');"/>
                     <% end %>
@@ -104,12 +106,12 @@
     $(this).toggleClass('group_assignment_title_contract');
   })
 
-  function click_edit_button(assignment_id){
+  function click_edit_button(assignment_id, div_group){
     group_name_to_text_field(assignment_id);
     $('#edit_group_assignment_'+assignment_id).hide();
     $('#save_changes_assignment_'+assignment_id).show();
     $('#cancel_changes_assignment_'+assignment_id).show();
-    dragndrop();
+    dragndrop($('#'+div_group));
   }
 
   function click_cancel_button(assignment_id){
@@ -128,32 +130,69 @@
     }
   }
 
-  function delete_group(group_id, assignment_id){
-
+  function delete_group(group_id, assignment_id) {
+    // deleted_groups = $("#deleted_groups_hidden_field");
   }
 
-  function dragndrop(){
-    active_draggable_element(".group_participants li");
-    
-    $( ".group_participants ul" ).droppable({
+  function dragndrop(div_group_obj){
+    active_draggable_element($(".group_participants li", div_group_obj));
+
+    $( ".group_participants ul", div_group_obj).droppable({
       accept: ".group_participants li",
       // activeClass: "ui-state-highlight",
       drop: function( event, ui ) {
+        var participant_id = ui.draggable.attr('value');
+        // remove o elemento draggable da lista que esta sendo movido
         ui.draggable.remove();
-        $( "<li style='position: relative; ' class='ui-draggable'></li>" ).text( ui.draggable.text() ).appendTo( this );
-        active_draggable_element(".group_participants li");
-        alert('oi');
+        $( "<li value='"+participant_id+"' style='position: relative; ' class='ui-draggable'></li>" ).text( ui.draggable.text() ).appendTo( this );
+        // define como draggable o novo elemento criado
+        active_draggable_element($(".group_participants li", div_group_obj));
       }
 
     });
-
   }
 
-  function active_draggable_element(element){
-    $( element ).draggable({
+  function active_draggable_element(obj) {
+    obj.draggable({
       cursor: "move",
       revert: true
     });
   }
+
+  function btn_save(div_group_id) {
+    var groups = $(".group_participants ul", $('#' + div_group_id));
+    var text_fields = $(".rename_group", $('#' + div_group_id));
+    var groups_to_save = new Array();
+
+    for (var i = 0; i < groups.length; i++) {
+      var groups_names = $(text_fields[i]).map(function(){return this.value});
+      var each_group_students_ids = $('li', groups[i]).map(function(){return this.value});
+
+      groups_to_save.push({
+        'group_id'   : $(groups[i]).attr('value'),
+        'group_name' : groups_names,
+        'student_ids': each_group_students_ids
+      });
+
+    }
+          var url = '../group_assignments/update/1?assignment_id=4';
+          var params = '';
+          $.ajax({
+            url: url,
+            type: 'PUT',
+            dataType: "html",
+            data:  {'groups': groups_to_save}
+            // success: function(data) {
+            //   if (data.success == false) {
+            //     continue_with_request = false;
+            //   }
+            //   flash_message(data.flash_msg, data.flash_class);
+            // }
+          });
+    // console.log(document.getElementsByName('new_groups_names[][4]').map(function(){return this.value}));
+  }
+
+// groups_to_send[0]['student_ids']
+// groups_to_send[0]['group_name']
 
 </script>
