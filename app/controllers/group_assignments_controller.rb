@@ -74,10 +74,10 @@ class GroupAssignmentsController < ApplicationController
    raise "#{params['groups']['0']['student_ids'].size}"
    # params[nome do "data" passado pelo ajax][posição do grupo-string][campo que se quer][se for student_ids, aqui vai a posição de cada participante-string]
    # usar o .size retorna a quantidade de alunos e grupos (inclui o "grupo" de alunos sem grupo)
-   # se params['groups']['algum']['group_name'] = nil, então são os sem grupo
+   # se params['groups']['algum']['group_id'] = nil, então são os sem grupo
    # se params['groups']['algum']['group_id'] = 0, então é um novo grupo
 
-   
+
 
     # group_assignment = GroupAssignment.find(params[:group_assignment_id])
     # @groups = group_assignments(group_assignment.assignment_id)

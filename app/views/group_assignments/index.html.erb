@@ -30,7 +30,7 @@
 
                   <% unless gps.nil? or gps.empty? %>
                     <% gps.each do |g| %>
-                      <div class="group_participants">
+                      <div class="group_participants" id="group_<%=g['id']%>">
                         <h3 class="group_assignment_name" id="group_name_<%=g["group_name"].tr(' ', '')%>"><%= g["group_name"] %></h3>
                         <div id="edit_group_<%=g["group_name"].tr(' ', '')%>" style="display:none;">
                           <%= text_field_tag "new_groups_names[][#{a["id"]}]", g["group_name"], :id => g["group_name"].tr(' ', '') ,:class => "rename_group" %>
@@ -55,8 +55,9 @@
                   <% students_without_group = no_group_students(a["id"].to_i) %>
                   <div class="group_participants">
                     <h3 class="group_assignment_name"><%= t(:students_with_no_group) %></h3>
+                    <%= hidden_field_tag "new_groups_names[][#{a["id"]}]", 'no_group' ,:class => "rename_group" %>
                     <% unless students_without_group.nil? or students_without_group.empty? %>
-                      <ul>
+                      <ul id='ul_no_group'>
                         <% students_without_group.each do |student_without_group| %>
                           <li value="<%=student_without_group.id%>"><%= student_without_group.name %></li>
                         <% end %>
@@ -70,14 +71,15 @@
 
                 <div class="group_assignment_buttons">
                   <%= form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}) do |f| %>
-                    <input type="button" id='new_group_<%=a["id"]%>' value='<%=t(:group_assignment_new)%>' class="btn btn_default"/>
 
                     <!-- \/ se houver grupos (a definir regra) \/ -->
-                    <input type="button" id='edit_group_assignment_<%=a["id"]%>' value='<%=t(:group_assignment_edit)%>' class="btn btn_default" onclick="click_edit_button('<%=a["id"]%>', 'div_group_<%=a["id"]%>');"/>
+                    <input type="button" id='edit_group_assignment_<%=a["id"]%>' value='<%=t(:group_assignment_edit)%>' class="btn btn_default" onclick="btn_edit('<%=a["id"]%>');"/>
 
-                    <input type="button" value="<%= t(:group_assignment_save) %>" class="btn btn_main" onclick="btn_save('div_group_<%=a["id"]%>');" id='save_changes_assignment_<%=a["id"]%>' style="display:none;"/>
+                    <input type="button" id='new_group_assignment_<%=a["id"]%>' value='<%=t(:group_assignment_new)%>' class="btn btn_default" onclick="btn_new_group('<%=a["id"]%>');" style="display: none;"/>
 
-                    <input type="button" id='cancel_changes_assignment_<%=a["id"]%>' value='<%=t(:group_assignment_cancel)%>' class="btn btn_caution" onclick="click_cancel_button('<%=a["id"]%>');" style="display: none;"/>
+                    <input type="button" value="<%= t(:group_assignment_save) %>" class="btn btn_main" onclick="btn_save('<%=a["id"]%>');" id='save_changes_assignment_<%=a["id"]%>' style="display:none;"/>
+
+                    <input type="button" id='cancel_changes_assignment_<%=a["id"]%>' value='<%=t(:group_assignment_cancel)%>' class="btn btn_caution" onclick="btn_cancel('<%=a["id"]%>');" style="display: none;"/>
                     <!-- /\ se houver grupos (a definir regra) /\ -->
 
                     <% if verify_group_of_assignments(a["id"]) %>
@@ -106,20 +108,28 @@
     $(this).toggleClass('group_assignment_title_contract');
   })
 
-  function click_edit_button(assignment_id, div_group){
+  function btn_edit(assignment_id, div_group){
     group_name_to_text_field(assignment_id);
     $('#edit_group_assignment_'+assignment_id).hide();
     $('#save_changes_assignment_'+assignment_id).show();
     $('#cancel_changes_assignment_'+assignment_id).show();
-    dragndrop($('#'+div_group));
+    $('#cancel_changes_assignment_'+assignment_id).show();
+    $('#new_group_assignment_'+assignment_id).show();
+    dragndrop($('#div_group_'+assignment_id));
   }
 
-  function click_cancel_button(assignment_id){
+  function btn_cancel(assignment_id){
     if (confirm('Quer cancelar todas as alterações?')){
       // $('#group_assignment_content').append('<input type="hidden_field" id="assignment_id" name="assignment_id" value='+assignment_id+'/>;');
       document.location.href='<%=group_assignments_path%>';
       //recarrega página com o assignment em questão aberto. :|
     }
+  }
+
+  function btn_new_group(assignment_id){
+    $( "<div class='group_participants' id='group_0'><div id='edit_group_new%>'><input type='text_field' name='new_groups_names[]["+assignment_id+"]' class='rename_group' />x</div><ul value='0'></ul></div>" ).appendTo($('.group_assignment_content', $('#div_group_'+assignment_id) ).last());
+    var new_group_ul = $('.group_participants ul', $('#div_group_'+assignment_id)).last();
+    active_droppable_element(new_group_ul, $('#div_group_'+assignment_id));
   }
 
   function group_name_to_text_field(assignment_id){
@@ -131,25 +141,17 @@
   }
 
   function delete_group(group_id, assignment_id) {
-    // deleted_groups = $("#deleted_groups_hidden_field");
+    var deleted_div = $('#group_'+group_id);
+    var all_li = $('li', deleted_div);
+    for (var i = 0; i < all_li.length; i++){
+      $(all_li[i]).appendTo($('#ul_no_group'));
+    }
+    deleted_div.remove();
   }
 
-  function dragndrop(div_group_obj){
-    active_draggable_element($(".group_participants li", div_group_obj));
-
-    $( ".group_participants ul", div_group_obj).droppable({
-      accept: ".group_participants li",
-      // activeClass: "ui-state-highlight",
-      drop: function( event, ui ) {
-        var participant_id = ui.draggable.attr('value');
-        // remove o elemento draggable da lista que esta sendo movido
-        ui.draggable.remove();
-        $( "<li value='"+participant_id+"' style='position: relative; ' class='ui-draggable'></li>" ).text( ui.draggable.text() ).appendTo( this );
-        // define como draggable o novo elemento criado
-        active_draggable_element($(".group_participants li", div_group_obj));
-      }
-
-    });
+  function dragndrop(assignment_div){
+    active_draggable_element($(".group_participants li", assignment_div));
+    active_droppable_element($( ".group_participants ul", assignment_div), assignment_div);
   }
 
   function active_draggable_element(obj) {
@@ -159,12 +161,28 @@
     });
   }
 
-  function btn_save(div_group_id) {
-    var groups = $(".group_participants ul", $('#' + div_group_id));
-    var text_fields = $(".rename_group", $('#' + div_group_id));
+  function active_droppable_element(obj, assignment_div) {
+    obj.droppable({
+      accept: ".group_participants li",
+      // activeClass: "ui-state-highlight",
+      drop: function( event, ui ) {
+        var participant_id = ui.draggable.attr('value');
+        // remove o elemento draggable da lista que esta sendo movido
+        ui.draggable.remove();
+        $( "<li value='"+participant_id+"' style='position: relative; ' class='ui-draggable'></li>" ).text( ui.draggable.text() ).appendTo(this);
+        // define como draggable o novo elemento criado
+        active_draggable_element($(".group_participants li", assignment_div));
+      }
+    });
+  }
+
+  function btn_save(assignment_id) {
+    var groups = $(".group_participants ul", $('#div_group_' + assignment_id));
+    var text_fields = $(".rename_group", $('#div_group_' + assignment_id));
     var groups_to_save = new Array();
 
     for (var i = 0; i < groups.length; i++) {
+      // var groups_names = $(text_fields[i]).attr('value');
       var groups_names = $(text_fields[i]).map(function(){return this.value});
       var each_group_students_ids = $('li', groups[i]).map(function(){return this.value});
 
@@ -175,7 +193,7 @@
       });
 
     }
-          var url = '../group_assignments/update/1?assignment_id=4';
+          var url = '../group_assignments/update/1?assignment_id='+assignment_id;
           var params = '';
           $.ajax({
             url: url,
