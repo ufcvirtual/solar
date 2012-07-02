@@ -10,7 +10,6 @@ class GroupAssignmentsController < ApplicationController
   # lista trabalhos em grupo
   def index
     #authorize! :list, Portfolio
-
     group_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
 
     #traz apenas os trabalhos de grupo dessa turma
@@ -71,38 +70,64 @@ class GroupAssignmentsController < ApplicationController
   # Edita o grupo
   ##
   def update
-   raise "#{params['groups']['0']['student_ids'].size}"
-   # params[nome do "data" passado pelo ajax][posição do grupo-string][campo que se quer][se for student_ids, aqui vai a posição de cada participante-string]
-   # usar o .size retorna a quantidade de alunos e grupos (inclui o "grupo" de alunos sem grupo)
-   # se params['groups']['algum']['group_id'] = nil, então são os sem grupo
-   # se params['groups']['algum']['group_id'] = 0, então é um novo grupo
+#transaction \/
+    # verificação de erros
+    # some_error = false
+    # params['groups'].each { |group|
+    #   unless group[1]['group_id'].nil?
+    #     group_name = group[1]['group_name']['0']
+    #     if group[1]['group_id'] == '0'
+    #       group = GroupAssignment.new(:assignment_id => params[:assignment_id], :group_name => group_name)
+    #       #   flash_msg = new_group_assignment.errors.full_messages[0]
+    #       #   flash_class = 'alert'
+    #       #   redirect = {:action => :new, :assignment_id => params[:assignment_id]}
+    #       #   success = false
+    #     else
+    #       group = GroupAssignment.find(group[1]['group_id'].to_i)
+    #       group.group_name = group_name
+    #       #   flash_msg = group_assignment.errors.full_messages[0]
+    #       #   flash_class = 'alert'
+    #       #   redirect = {:action => :edit, :id => group_assignment.id, :assignment_id => group_assignment.assignment_id}
+    #       #   success = false
+    #     end
+    #     some_error = !group.valid?
+    #     break if some_error
+    #   end
+    # }
+#transaction/\
 
+    # criação/edição de grupos
+    params['groups'].each { |group|
+      group_id = group[1]['group_id']
+      group_participants_ids = (group[1]['student_ids']).collect{|participant| participant[1].to_i} unless group[1]['student_ids'].nil?
+      unless group_id.nil?
+        group_name = group[1]['group_name']['0']
+        # novo grupo
+        if group_id == '0'
+          group_assignment = GroupAssignment.create(:assignment_id => params[:assignment_id], :group_name => group_name)
+        # grupo já existente
+        else
+          group_assignment = GroupAssignment.find(group_id)
+          group_assignment.update_attributes(:group_name => group_name)
+        end
+      #alunos sem grupo
+      else
+        group_assignment = nil
+      end
+      change_students_group(group_assignment, group_participants_ids, params[:assignment_id])
+    }
 
+    #sucesso:
 
-    # group_assignment = GroupAssignment.find(params[:group_assignment_id])
-    # @groups = group_assignments(group_assignment.assignment_id)
-    # @students_with_no_group = no_group_students(@group_assignment.assignment_id)
+          #   flash_msg = t(:group_assignment_success)
+          #   flash_class = 'notice'
+          #   redirect = group_assignments_url
+          #   success = true
+          #   flash[flash_class] = flash_msg
 
-    # students = []
-    # # para cada grupo da atividade, verifica e acrescenta no array 'students' os alunos selecionados
-    # @groups.each{|group| students += create_list_checked_students(group.id.to_s, params[:students]) }
-    # # acrescenta os alunos selecionados que estavam sem grupo  
-    # students += params[:students_no_group] unless params[:students_no_group].nil?
+      redirect_to group_assignments_url
 
-    # if group_assignment.update_attributes(params[:group_assignment])
-    #   change_students_group(group_assignment, students)
-    #   flash_msg = t(:group_assignment_success)
-    #   flash_class = 'notice'
-    #   redirect = group_assignments_url
-    #   success = true
-    #   flash[flash_class] = flash_msg
-    # else
-    #   flash_msg = group_assignment.errors.full_messages[0]
-    #   flash_class = 'alert'
-    #   redirect = {:action => :edit, :id => group_assignment.id, :assignment_id => group_assignment.assignment_id}
-    #   success = false
-    # end
-
+    # edita
     # respond_to do |format|
     #   format.html { 
     #     flash[flash_class] = flash_msg unless success
@@ -112,6 +137,13 @@ class GroupAssignmentsController < ApplicationController
     #   format.json  { render :json => { :success => success, :flash_msg => flash_msg, :flash_class => flash_class } }
     # end
     
+      # cria
+      # respond_to do |format|
+      #   format.html { redirect_to(redirect, flash_class.to_sym => flash_msg) }
+      #   format.xml  { render :xml => { :success => success } }
+      #   format.json  { render :json => { :success => success, :flash_msg => flash_msg, :flash_class => flash_class } }
+      # end
+
   end
 
   ##
@@ -169,51 +201,81 @@ class GroupAssignmentsController < ApplicationController
   end
 
 private
+  
   ##
   # Método que realiza as mudanças de um grupo e realiza as trocas de alunos
   # => group_assingment: objeto do grupo_assignment a ser alterado/criado
+  # => students: lista dos ids dos participantes do grupo passado
   ##
-  def change_students_group(group_assignment, students)
-    @groups = group_assignments(group_assignment.assignment_id)
-    @studens_with_no_group = no_group_students(group_assignment.assignment_id)
-    group_assignment.group_name = params[:group_assignment][:group_name]
-      for group in @groups
-        gp = group_participants(group["id"])
-        for p in gp
-          # se o participante em questão tiver sido selecionado
-          if !students.nil? and students.include?(p["user_id"])
-            # troca seu grupo
-            participant = GroupParticipant.find(p["id"])
-            participant.update_attribute(:group_assignment_id, group_assignment.id)
+  def change_students_group(group_assignment, students_ids, assignment_id)
+    unless students_ids.nil?
+      students_ids.each{|student_id|
+        group_participant = GroupParticipant.includes(:group_assignment).where("group_participants.user_id = ? AND group_assignments.assignment_id = ?",
+                                                                               student_id, assignment_id).first
+        unless group_assignment.nil?
+          if group_participant.nil?
+            GroupParticipant.create(:group_assignment_id => group_assignment.id, :user_id => student_id)
+          elsif group_participant.group_assignment_id != group_assignment.id
+            student_sent_files_to_other_group = !SendAssignment.where("send_assignments.user_id = ? AND send_assignments.group_assignment_id != ? AND 
+                                                send_assignments.assignment_id = ?", student_id, group_assignment.id, assignment_id).empty?
+            group_participant.update_attributes(:group_assignment_id => group_assignment.id) unless student_sent_files_to_other_group
           end
-          # se o grupo do participante em questão for o grupo que foi alterado E (nenhum aluno tiver sido selecionado OU o participante em questão não estiver incluso na lista de alunos) E o participante em questão não tiver enviado nenhum arquivo pelo grupo
-          # remove o aluno do grupo
-          GroupParticipant.find(p["id"]).delete if p["group_assignment_id"].to_i == group_assignment.id and (students.nil? or !students.include?(p["user_id"])) and SendAssignment.find_all_by_group_assignment_id_and_user_id(group_assignment.id, p["user_id"].to_i).empty?
+        else
+          student_sent_files_to_some_group = !SendAssignment.where("send_assignments.user_id = ? AND send_assignments.assignment_id = ?", 
+                                                                    student_id, assignment_id).empty?
+          group_participant.delete unless student_sent_files_to_some_group
         end
-      end
-      for no_group in @studens_with_no_group
-       GroupParticipant.create(:group_assignment_id => group_assignment.id, :user_id => no_group.id) if !students.nil? and students.include?(no_group.id.to_s)
-      end
+      }
+    end
   end
 
-  ##
-  # Método que cria a lista com os ids dos group_participants checkados de um determinado grupo (utilizado em update)
-  #
-  # Parameters:
-  # - group_id: id de cada grupo existente nas opções de escolha dos participantes
-  # - selected_students: recupera todos os ids dos group_participant dos estudantes selecionados de determinado grupo
-  ##
-  def create_list_checked_students(group_id, selected_students)
 
-     list_checked_students = []
-     # a menos que nenhum item tenha sido selecionado
-      unless selected_students.nil?
-        # selected students vem no formato: [{"grupo_id"=>"id do group_participant do aluno checado"}]
-        # logo, o collect abaixo pega o valor do id do usuário do group_participant checado associado à cada grupo que existia nas opções
-        list_checked_students = selected_students.collect{|student| GroupParticipant.find(student[group_id]).user_id.to_s unless student[group_id].nil?}
-      end
-      # retorna uma lista de ids referentes aos alunos marcados na página
-      return list_checked_students
-  end
+  # ##
+  # # Método que realiza as mudanças de um grupo e realiza as trocas de alunos
+  # # => group_assingment: objeto do grupo_assignment a ser alterado/criado
+  # # => students: lista dos ids dos participantes do grupo passado
+  # ##
+  # def change_students_group2(group_assignment, students)
+  #   groups = group_assignments(group_assignment.assignment_id)
+  #   studens_with_no_group = no_group_students(group_assignment.assignment_id)
+  #   group_assignment.group_name = params[:group_assignment][:group_name]
+  #     for group in groups
+  #       gp = group_participants(group["id"])
+  #       for p in gp
+  #         # se o participante em questão tiver sido selecionado
+  #         if !students.nil? and students.include?(p["user_id"])
+  #           # troca seu grupo
+  #           participant = GroupParticipant.find(p["id"])
+  #           participant.update_attribute(:group_assignment_id, group_assignment.id)
+  #         end
+  #         # se o grupo do participante em questão for o grupo que foi alterado E (nenhum aluno tiver sido selecionado OU o participante em questão não estiver incluso na lista de alunos) E o participante em questão não tiver enviado nenhum arquivo pelo grupo
+  #         # remove o aluno do grupo
+  #         GroupParticipant.find(p["id"]).delete if p["group_assignment_id"].to_i == group_assignment.id and (students.nil? or !students.include?(p["user_id"])) and SendAssignment.find_all_by_group_assignment_id_and_user_id(group_assignment.id, p["user_id"].to_i).empty?
+  #       end
+  #     end
+  #     for no_group in studens_with_no_group
+  #      GroupParticipant.create(:group_assignment_id => group_assignment.id, :user_id => no_group.id) if !students.nil? and students.include?(no_group.id.to_s)
+  #     end
+  # end
+
+  # ##
+  # # Método que cria a lista com os ids dos group_participants checkados de um determinado grupo (utilizado em update)
+  # #
+  # # Parameters:
+  # # - group_id: id de cada grupo existente nas opções de escolha dos participantes
+  # # - selected_students: recupera todos os ids dos group_participant dos estudantes selecionados de determinado grupo
+  # ##
+  # def create_list_checked_students(group_id, selected_students)
+
+  #    list_checked_students = []
+  #    # a menos que nenhum item tenha sido selecionado
+  #     unless selected_students.nil?
+  #       # selected students vem no formato: [{"grupo_id"=>"id do group_participant do aluno checado"}]
+  #       # logo, o collect abaixo pega o valor do id do usuário do group_participant checado associado à cada grupo que existia nas opções
+  #       list_checked_students = selected_students.collect{|student| GroupParticipant.find(student[group_id]).user_id.to_s unless student[group_id].nil?}
+  #     end
+  #     # retorna uma lista de ids referentes aos alunos marcados na página
+  #     return list_checked_students
+  # end
 
 end

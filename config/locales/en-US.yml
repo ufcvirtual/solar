@@ -592,6 +592,7 @@
   student_already_sent_files: "Student can't be removed, becaus already sent files for his current group"
   group_assignment_import: "Import groups"
   import: "Import"
+  manage_groups_assignments: "Manage groups"
   assignment_without_groups: "Assignment haven't groups"
   group_assignment_import_success: "Groups imported with success"
 

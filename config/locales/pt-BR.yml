@@ -752,6 +752,7 @@
   student_already_sent_files: "Aluno não pode ser removido, pois já enviou arquivos para seu grupo atual"
   group_assignment_import: "Importar grupos"
   import: "Importar"
+  manage_groups_assignments: "Gerenciar grupos"
   assignment_without_groups: "Atividade não possui grupos"
   group_assignment_import_success: "Grupos importados com sucesso"
 

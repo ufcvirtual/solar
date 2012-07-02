@@ -14,11 +14,11 @@
         <% @assignments.each do |a| %>
           <tr class="lines">
             <td>
-              <div class="group_assignment_title" onClick="javascript:toggle_div('div_group_<%=a["id"]%>');">
+              <div class="group_assignment_title" onClick="javascript:toggle_div('div_assignment_<%=a["id"]%>');">
                 <a id="<%=a["id"].to_i%>" class="link_content"><%=a["name"]%></a>
               </div>
               <% gps = group_assignments(a["id"])%>
-              <div id="div_group_<%=a["id"]%>" class="group_assignment_details">
+              <div id="div_assignment_<%=a["id"]%>" class="group_assignment_details">
 
                 <div class="group_assignment_content"><%=a["enunciation"]%></div>
 
@@ -37,17 +37,20 @@
 
                           <% group_has_files = !SendAssignment.find_all_by_group_assignment_id(g["id"]).empty? %>
                           <% data_tooltip = t(:group_assignment_delete_error) unless !group_has_files %>
-                          <a class='' onclick='delete_group(<%=g["id"]%>, <%=a["id"]%>);' data-tooltip='<%=data_tooltip%>'>x</a>
-                          <%#= hidden_field_tag 'deleted_groups[][#{a["id"]}]', :id => 'deleted_groups_hidden_field' %>
+                          <a class="" onclick="delete_group('group_<%=g['id']%>', <%=a['id']%>);" data-tooltip="<%=data_tooltip%>">x</a>
 
                         </div>
                         <% gp = group_participants(g["id"])%>
-                        <ul value="<%=g['id']%>">
-                          <% gp.each do |p| %>
-                            <li value="<%=p['id']%>"><%=p["id"]%>-<%= p["name"] %>
+                        <ul value="<%=g['id']%>" name="groups_ul">
+                          <% unless gp.empty? %>
+                            <% gp.each do |p| %>
+                              <li value="<%=p['user_id']%>"><%= p["name"] %>
+                            <% end %>
+                          <% else %>
+                            <li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>
                           <% end %>
                         </ul>
-                        <%#= link_to t(:group_assignment_edit), {:controller => :group_assignments, :action => :edit, :id => g["id"], :assignment_id => a["id"]}, {:class => 'link_content group_edit'} %>
+
                       </div>
                     <% end %>
                   <% end %>
@@ -56,24 +59,28 @@
                   <div class="group_participants">
                     <h3 class="group_assignment_name"><%= t(:students_with_no_group) %></h3>
                     <%= hidden_field_tag "new_groups_names[][#{a["id"]}]", 'no_group' ,:class => "rename_group" %>
-                    <% unless students_without_group.nil? or students_without_group.empty? %>
                       <ul id='ul_no_group'>
-                        <% students_without_group.each do |student_without_group| %>
-                          <li value="<%=student_without_group.id%>"><%= student_without_group.name %></li>
+                        <% unless students_without_group.nil? or students_without_group.empty? %>
+                          <% students_without_group.each do |student_without_group| %>
+                            <li value="<%=student_without_group.id%>"><%= student_without_group.name %></li>
+                          <% end %>
+                        <% else %>
+                          <li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>
                         <% end %>
                       </ul>
-                    <%# else %>
-                      <!-- <ul><%#= t(:group_assingnment_no_student_without_group) %></ul> -->
-                    <% end %>
                   </div>
                 </div>
 
-
                 <div class="group_assignment_buttons">
-                  <%= form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}) do |f| %>
 
                     <!-- \/ se houver grupos (a definir regra) \/ -->
-                    <input type="button" id='edit_group_assignment_<%=a["id"]%>' value='<%=t(:group_assignment_edit)%>' class="btn btn_default" onclick="btn_edit('<%=a["id"]%>');"/>
+                    <input type="button" id='edit_group_assignment_<%=a["id"]%>' value='<%=t(:manage_groups_assignments)%>' class="btn btn_default" onclick="btn_edit('<%=a["id"]%>');"/>
+
+                    <span id='btn_import_<%=a["id"]%>' style='display: none;'>
+                      <% if verify_group_of_assignments(a["id"]) %>
+                        <input type="button" id='import_to_<%=a["id"]%>' value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => GroupAssignment.first.id, :assignment_id => a["id"].to_i)%>', '');"/>
+                      <% end %>
+                    </span>
 
                     <input type="button" id='new_group_assignment_<%=a["id"]%>' value='<%=t(:group_assignment_new)%>' class="btn btn_default" onclick="btn_new_group('<%=a["id"]%>');" style="display: none;"/>
 
@@ -82,10 +89,6 @@
                     <input type="button" id='cancel_changes_assignment_<%=a["id"]%>' value='<%=t(:group_assignment_cancel)%>' class="btn btn_caution" onclick="btn_cancel('<%=a["id"]%>');" style="display: none;"/>
                     <!-- /\ se houver grupos (a definir regra) /\ -->
 
-                    <% if verify_group_of_assignments(a["id"]) %>
-                      <input type="button" id='import_to_<%=a["id"]%>' value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => GroupAssignment.first.id, :assignment_id => a["id"].to_i)%>', '');"/>
-                    <% end %>
-                  <% end %>
                 </div>
                 
               </div>
@@ -115,21 +118,37 @@
     $('#cancel_changes_assignment_'+assignment_id).show();
     $('#cancel_changes_assignment_'+assignment_id).show();
     $('#new_group_assignment_'+assignment_id).show();
-    dragndrop($('#div_group_'+assignment_id));
+    $('#btn_import_'+assignment_id).show();
+    dragndrop($('#div_assignment_'+assignment_id));
   }
 
   function btn_cancel(assignment_id){
     if (confirm('Quer cancelar todas as alterações?')){
       // $('#group_assignment_content').append('<input type="hidden_field" id="assignment_id" name="assignment_id" value='+assignment_id+'/>;');
-      document.location.href='<%=group_assignments_path%>';
+      document.location.href='<%=group_assignments_path%>'; //EVITAR USAR DOCUMENT -> USAR JQUERY
+      // $(document).attr('href', '<%= group_assignments_path %>');
       //recarrega página com o assignment em questão aberto. :|
     }
   }
 
-  function btn_new_group(assignment_id){
-    $( "<div class='group_participants' id='group_0'><div id='edit_group_new%>'><input type='text_field' name='new_groups_names[]["+assignment_id+"]' class='rename_group' />x</div><ul value='0'></ul></div>" ).appendTo($('.group_assignment_content', $('#div_group_'+assignment_id) ).last());
-    var new_group_ul = $('.group_participants ul', $('#div_group_'+assignment_id)).last();
-    active_droppable_element(new_group_ul, $('#div_group_'+assignment_id));
+  function btn_new_group(assignment_id) {
+    var new_idx = "group_new_" + $('.another_new_group').length;
+
+    var new_group_hmtl = new Array();
+    new_group_hmtl.push('<div class="group_participants another_new_group" id="' + new_idx + '">');
+      new_group_hmtl.push('<div id="edit_group_new">');
+        new_group_hmtl.push('<input type="text_field" name="new_groups_names[][' + assignment_id + ']" class="rename_group" />');
+        new_group_hmtl.push('<a onclick="delete_group(\'' + new_idx + '\', \'' + assignment_id + '\');">x</a>');
+      new_group_hmtl.push('</div>');
+      new_group_hmtl.push('<ul value="0">');
+      new_group_hmtl.push('</ul>');
+    new_group_hmtl.push('</div>');
+
+    $(new_group_hmtl.join('')).appendTo($('.group_assignment_content', $('#div_assignment_'+assignment_id)).last());
+
+    var new_group_ul = $('.group_participants ul', $('#div_assignment_'+assignment_id)).last();
+    active_droppable_element(new_group_ul, $('#div_assignment_'+assignment_id));
+
   }
 
   function group_name_to_text_field(assignment_id){
@@ -141,7 +160,8 @@
   }
 
   function delete_group(group_id, assignment_id) {
-    var deleted_div = $('#group_'+group_id);
+    console.log(group_id);
+    var deleted_div = $('#'+group_id);
     var all_li = $('li', deleted_div);
     for (var i = 0; i < all_li.length; i++){
       $(all_li[i]).appendTo($('#ul_no_group'));
@@ -170,6 +190,12 @@
         // remove o elemento draggable da lista que esta sendo movido
         ui.draggable.remove();
         $( "<li value='"+participant_id+"' style='position: relative; ' class='ui-draggable'></li>" ).text( ui.draggable.text() ).appendTo(this);
+        
+        if($('#no_students_message', this)){
+          $('#no_students_message', this).remove();
+        }
+        // if($()) a div ul tá vazia, daí tem que colocar mensagem
+
         // define como draggable o novo elemento criado
         active_draggable_element($(".group_participants li", assignment_div));
       }
@@ -177,8 +203,8 @@
   }
 
   function btn_save(assignment_id) {
-    var groups = $(".group_participants ul", $('#div_group_' + assignment_id));
-    var text_fields = $(".rename_group", $('#div_group_' + assignment_id));
+    var groups = $(".group_participants ul", $('#div_assignment_' + assignment_id));
+    var text_fields = $(".rename_group", $('#div_assignment_' + assignment_id));
     var groups_to_save = new Array();
 
     for (var i = 0; i < groups.length; i++) {
@@ -199,7 +225,7 @@
             url: url,
             type: 'PUT',
             dataType: "html",
-            data:  {'groups': groups_to_save}
+            data:  {'groups': groups_to_save, 'assignment_id': assignment_id}
             // success: function(data) {
             //   if (data.success == false) {
             //     continue_with_request = false;
