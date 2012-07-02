@@ -94,12 +94,15 @@
               </div>
             </td>
           </tr>
+          <%= hidden_field_tag "deleted_groups[][#{a["id"]}]" %>
         <% end %>
         </tbody>
       </table>
     <% else %>
       <div class="block_content block_content_text"><%= t(:itens_not_found) %></div>
     <% end %>
+
+
    
   </div>
 
@@ -111,8 +114,8 @@
     $(this).toggleClass('group_assignment_title_contract');
   })
 
-  function btn_edit(assignment_id, div_group){
-    group_name_to_text_field(assignment_id);
+  function btn_edit(assignment_id){
+    group_name_text_field_or_label(assignment_id, 'edit');
     $('#edit_group_assignment_'+assignment_id).hide();
     $('#save_changes_assignment_'+assignment_id).show();
     $('#cancel_changes_assignment_'+assignment_id).show();
@@ -120,6 +123,17 @@
     $('#new_group_assignment_'+assignment_id).show();
     $('#btn_import_'+assignment_id).show();
     dragndrop($('#div_assignment_'+assignment_id));
+  }
+
+  function get_back_to_normal(assignment_id){
+    group_name_text_field_or_label(assignment_id, 'label');
+    $('#edit_group_assignment_'+assignment_id).show();
+    $('#save_changes_assignment_'+assignment_id).hide();
+    $('#cancel_changes_assignment_'+assignment_id).hide();
+    $('#cancel_changes_assignment_'+assignment_id).hide();
+    $('#new_group_assignment_'+assignment_id).hide();
+    $('#btn_import_'+assignment_id).hide();
+    disable_dragndrop($('#div_assignment_'+assignment_id));
   }
 
   function btn_cancel(assignment_id){
@@ -151,22 +165,38 @@
 
   }
 
-  function group_name_to_text_field(assignment_id){
+  function group_name_text_field_or_label(assignment_id, situation){
     var all_groups = document.getElementsByName("new_groups_names[]["+assignment_id+"]");
     for(var i = 0; i < all_groups.length; i++) {
-      $('#group_name_'+all_groups[i]['id']).hide();
-      $('#edit_group_'+all_groups[i]['id']).fadeIn();  
+      var text_field = $('#edit_group_'+all_groups[i]['id']);
+      var label = $('#group_name_'+all_groups[i]['id'])
+      if(situation == 'edit'){
+        label.hide();
+        text_field.fadeIn();  
+      }
+      if(situation == 'label'){
+        text_field.hide();  
+        console.log($(label).text($('.rename_group', $(text_field)).attr('value')));
+        label.fadeIn();
+      } 
     }
   }
 
   function delete_group(group_id, assignment_id) {
-    console.log(group_id);
     var deleted_div = $('#'+group_id);
     var all_li = $('li', deleted_div);
     for (var i = 0; i < all_li.length; i++){
       $(all_li[i]).appendTo($('#ul_no_group'));
     }
     deleted_div.remove();
+    // deleted_groups.push(group_id);
+    // var deleted_groups = $("name=deleted_groups", $('#div_assignment_' + assignment_id));
+    // deleted_groups.push(group_id);
+  }
+
+  function disable_dragndrop(assignment_div){
+    $(".group_participants li", assignment_div).draggable({ disabled: true });
+    $($( ".group_participants ul", assignment_div), assignment_div).droppable({ disabled: true });
   }
 
   function dragndrop(assignment_div){
@@ -205,12 +235,14 @@
   function btn_save(assignment_id) {
     var groups = $(".group_participants ul", $('#div_assignment_' + assignment_id));
     var text_fields = $(".rename_group", $('#div_assignment_' + assignment_id));
+    // var deleted_groups = $("name=deleted_groups", $('#div_assignment_' + assignment_id));
     var groups_to_save = new Array();
 
     for (var i = 0; i < groups.length; i++) {
       // var groups_names = $(text_fields[i]).attr('value');
       var groups_names = $(text_fields[i]).map(function(){return this.value});
-      var each_group_students_ids = $('li', groups[i]).map(function(){return this.value});
+      var each_group_students_ids = $('li', groups[i]).map(function(){
+        if(this.id != 'no_students_message'){return this.value}});
 
       groups_to_save.push({
         'group_id'   : $(groups[i]).attr('value'),
@@ -219,24 +251,24 @@
       });
 
     }
-          var url = '../group_assignments/update/1?assignment_id='+assignment_id;
-          var params = '';
+
+    // console.log(deleted_groups);
+
+          var url = '../group_assignments/'+assignment_id+'.json';
+          var continue_with_request = true;
           $.ajax({
             url: url,
             type: 'PUT',
-            dataType: "html",
-            data:  {'groups': groups_to_save, 'assignment_id': assignment_id}
-            // success: function(data) {
-            //   if (data.success == false) {
-            //     continue_with_request = false;
-            //   }
-            //   flash_message(data.flash_msg, data.flash_class);
-            // }
+            data:  {'groups': groups_to_save, 'assignment_id': assignment_id},
+            success: function(data) {
+              if (data.success == false) {
+                continue_with_request = false;
+              }
+              get_back_to_normal(assignment_id);
+              flash_message(data.flash_msg, data.flash_class);
+            }
           });
-    // console.log(document.getElementsByName('new_groups_names[][4]').map(function(){return this.value}));
+          return continue_with_request; 
   }
-
-// groups_to_send[0]['student_ids']
-// groups_to_send[0]['group_name']
 
 </script>

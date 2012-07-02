@@ -70,79 +70,43 @@ class GroupAssignmentsController < ApplicationController
   # Edita o grupo
   ##
   def update
-#transaction \/
-    # verificação de erros
-    # some_error = false
-    # params['groups'].each { |group|
-    #   unless group[1]['group_id'].nil?
-    #     group_name = group[1]['group_name']['0']
-    #     if group[1]['group_id'] == '0'
-    #       group = GroupAssignment.new(:assignment_id => params[:assignment_id], :group_name => group_name)
-    #       #   flash_msg = new_group_assignment.errors.full_messages[0]
-    #       #   flash_class = 'alert'
-    #       #   redirect = {:action => :new, :assignment_id => params[:assignment_id]}
-    #       #   success = false
-    #     else
-    #       group = GroupAssignment.find(group[1]['group_id'].to_i)
-    #       group.group_name = group_name
-    #       #   flash_msg = group_assignment.errors.full_messages[0]
-    #       #   flash_class = 'alert'
-    #       #   redirect = {:action => :edit, :id => group_assignment.id, :assignment_id => group_assignment.assignment_id}
-    #       #   success = false
-    #     end
-    #     some_error = !group.valid?
-    #     break if some_error
-    #   end
-    # }
-#transaction/\
 
-    # criação/edição de grupos
-    params['groups'].each { |group|
-      group_id = group[1]['group_id']
-      group_participants_ids = (group[1]['student_ids']).collect{|participant| participant[1].to_i} unless group[1]['student_ids'].nil?
-      unless group_id.nil?
-        group_name = group[1]['group_name']['0']
-        # novo grupo
-        if group_id == '0'
-          group_assignment = GroupAssignment.create(:assignment_id => params[:assignment_id], :group_name => group_name)
-        # grupo já existente
-        else
-          group_assignment = GroupAssignment.find(group_id)
-          group_assignment.update_attributes(:group_name => group_name)
+    GroupAssignment.transaction do
+
+      begin
+        # criação/edição de grupos
+        params['groups'].each { |group|
+          group_id = group[1]['group_id']
+          group_participants_ids = (group[1]['student_ids']).collect{|participant| participant[1].to_i} unless group[1]['student_ids'].nil?
+          # se não forem alunos sem grupo
+          unless group_id.nil?
+            group_name = group[1]['group_name']['0']
+            # novo grupo
+            if group_id == '0'
+              group_assignment = GroupAssignment.create!(:assignment_id => params[:assignment_id], :group_name => group_name)
+            # grupo já existente
+            else
+              group_assignment = GroupAssignment.find(group_id)
+              group_assignment.update_attributes!(:group_name => group_name)
+            end
+          end
+          change_students_group(group_assignment, group_participants_ids, params[:assignment_id])
+        }
+
+        respond_to do |format|
+          format.html { redirect_to(group_assignments_url) }#, flash_class.to_sym => flash_msg) }
+          format.xml  { render :xml => { :success => true } }
+          format.json  { render :json => { :success => true, :flash_msg => t(:group_assignment_success), :flash_class => 'notice' } }
         end
-      #alunos sem grupo
-      else
-        group_assignment = nil
+      rescue Exception => error
+        respond_to do |format|
+          format.html { redirect_to(group_assignments_url) }#, flash_class.to_sym => flash_msg) }
+          format.xml  { render :xml => { :success => false } }
+          format.json  { render :json => { :success => false, :flash_msg => error.message, :flash_class => 'alert' } }
+        end
       end
-      change_students_group(group_assignment, group_participants_ids, params[:assignment_id])
-    }
 
-    #sucesso:
-
-          #   flash_msg = t(:group_assignment_success)
-          #   flash_class = 'notice'
-          #   redirect = group_assignments_url
-          #   success = true
-          #   flash[flash_class] = flash_msg
-
-      redirect_to group_assignments_url
-
-    # edita
-    # respond_to do |format|
-    #   format.html { 
-    #     flash[flash_class] = flash_msg unless success
-    #     redirect_to(redirect) 
-    #   }
-    #   format.xml  { render :xml => { :success => success , :flash_msg => flash_msg, :flash_class => flash_class} }
-    #   format.json  { render :json => { :success => success, :flash_msg => flash_msg, :flash_class => flash_class } }
-    # end
-    
-      # cria
-      # respond_to do |format|
-      #   format.html { redirect_to(redirect, flash_class.to_sym => flash_msg) }
-      #   format.xml  { render :xml => { :success => success } }
-      #   format.json  { render :json => { :success => success, :flash_msg => flash_msg, :flash_class => flash_class } }
-      # end
+    end
 
   end
 
@@ -208,25 +172,31 @@ private
   # => students: lista dos ids dos participantes do grupo passado
   ##
   def change_students_group(group_assignment, students_ids, assignment_id)
-    unless students_ids.nil?
-      students_ids.each{|student_id|
-        group_participant = GroupParticipant.includes(:group_assignment).where("group_participants.user_id = ? AND group_assignments.assignment_id = ?",
-                                                                               student_id, assignment_id).first
-        unless group_assignment.nil?
-          if group_participant.nil?
-            GroupParticipant.create(:group_assignment_id => group_assignment.id, :user_id => student_id)
-          elsif group_participant.group_assignment_id != group_assignment.id
-            student_sent_files_to_other_group = !SendAssignment.where("send_assignments.user_id = ? AND send_assignments.group_assignment_id != ? AND 
-                                                send_assignments.assignment_id = ?", student_id, group_assignment.id, assignment_id).empty?
-            group_participant.update_attributes(:group_assignment_id => group_assignment.id) unless student_sent_files_to_other_group
+
+    begin 
+      unless students_ids.nil?
+        students_ids.each{|student_id|
+          group_participant = GroupParticipant.includes(:group_assignment).where("group_participants.user_id = ? AND group_assignments.assignment_id = ?",
+                                                                                 student_id, assignment_id).first
+          unless group_assignment.nil?
+            if group_participant.nil?
+              GroupParticipant.create!(:group_assignment_id => group_assignment.id, :user_id => student_id)
+            elsif group_participant.group_assignment_id != group_assignment.id
+              student_sent_files_to_other_group = !SendAssignment.where("send_assignments.user_id = ? AND send_assignments.group_assignment_id != ? AND 
+                                                  send_assignments.assignment_id = ?", student_id, group_assignment.id, assignment_id).empty?
+              group_participant.update_attributes!(:group_assignment_id => group_assignment.id) unless student_sent_files_to_other_group
+            end
+          else
+            student_sent_files_to_some_group = !SendAssignment.where("send_assignments.user_id = ? AND send_assignments.assignment_id = ?", 
+                                                                      student_id, assignment_id).empty?
+            group_participant.delete unless student_sent_files_to_some_group or group_participant.nil? 
           end
-        else
-          student_sent_files_to_some_group = !SendAssignment.where("send_assignments.user_id = ? AND send_assignments.assignment_id = ?", 
-                                                                    student_id, assignment_id).empty?
-          group_participant.delete unless student_sent_files_to_some_group
-        end
-      }
+        }
+      end
+    rescue Exception => error
+      raise "#{error.message}"
     end
+
   end
 
 
