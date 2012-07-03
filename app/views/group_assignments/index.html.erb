@@ -125,8 +125,8 @@
     dragndrop($('#div_assignment_'+assignment_id));
   }
 
-  function get_back_to_normal(assignment_id){
-    group_name_text_field_or_label(assignment_id, 'label');
+  function get_back_to_normal(assignment_id, situation){
+    group_name_text_field_or_label(assignment_id, situation);
     $('#edit_group_assignment_'+assignment_id).show();
     $('#save_changes_assignment_'+assignment_id).hide();
     $('#cancel_changes_assignment_'+assignment_id).hide();
@@ -138,10 +138,7 @@
 
   function btn_cancel(assignment_id){
     if (confirm('Quer cancelar todas as alterações?')){
-      // $('#group_assignment_content').append('<input type="hidden_field" id="assignment_id" name="assignment_id" value='+assignment_id+'/>;');
-      document.location.href='<%=group_assignments_path%>'; //EVITAR USAR DOCUMENT -> USAR JQUERY
-      // $(document).attr('href', '<%= group_assignments_path %>');
-      //recarrega página com o assignment em questão aberto. :|
+      get_back_to_normal(assignment_id, 'cancel')
     }
   }
 
@@ -174,9 +171,11 @@
         label.hide();
         text_field.fadeIn();  
       }
-      if(situation == 'label'){
+      if(situation == 'save' || situation == 'cancel'){
         text_field.hide();  
-        console.log($(label).text($('.rename_group', $(text_field)).attr('value')));
+        if(situation == 'save'){
+          console.log($(label).text($('.rename_group', $(text_field)).attr('value')));
+        }
         label.fadeIn();
       } 
     }
@@ -201,13 +200,15 @@
 
   function dragndrop(assignment_div){
     active_draggable_element($(".group_participants li", assignment_div));
+    $("#no_students_message", assignment_div).draggable({ disabled: true });
+    no_students_message
     active_droppable_element($( ".group_participants ul", assignment_div), assignment_div);
   }
 
   function active_draggable_element(obj) {
     obj.draggable({
       cursor: "move",
-      revert: true
+      revert: true,
     });
   }
 
@@ -263,8 +264,9 @@
             success: function(data) {
               if (data.success == false) {
                 continue_with_request = false;
+              }else{
+                get_back_to_normal(assignment_id, 'save');
               }
-              get_back_to_normal(assignment_id);
               flash_message(data.flash_msg, data.flash_class);
             }
           });
