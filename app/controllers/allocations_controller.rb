@@ -114,13 +114,18 @@ class AllocationsController < ApplicationController
             allocation.status = Allocation_Cancelled
             allocation.save
           end # each allocations
-        else
+        else # sem mudanca de turma
           allocations.each do |allocation|
+            send_mail = (allocation.status.to_i != Allocation_Activated.to_i and params[:allocation][:status].to_i == Allocation_Activated.to_i)
+
             allocation.status = params[:allocation][:status]
             allocation.save
+
+            Notifier.send_mail(allocation.user.email, 'Matricula aceita', "Matricula aceita na seguinte turma: #{allocation.group.code_semester}", '', '').deliver if send_mail
           end # allocations
         end # if
       end # transaction
+
       flash[:notice] = t(:allocation_manage_enrollment_successful_update) if params.include?(:multiple) and params[:multiple] == 'yes'
     rescue
       error = true

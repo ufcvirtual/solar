@@ -34,131 +34,131 @@ describe CurriculumUnitsController do
     {}
   end
 
-  describe "GET index" do
-    it "assigns all curriculum_units as @curriculum_units" do
-      curriculum_unit = CurriculumUnit.create! valid_attributes
-      get :index, {}, valid_session
-      assigns(:curriculum_units).should eq([curriculum_unit])
-    end
-  end
+  # describe "GET index" do
+  #   it "assigns all curriculum_units as @curriculum_units" do
+  #     curriculum_unit = CurriculumUnit.create! valid_attributes
+  #     get :index, {}, valid_session
+  #     assigns(:curriculum_units).should eq([curriculum_unit])
+  #   end
+  # end
 
-  describe "GET show" do
-    it "assigns the requested curriculum_unit as @curriculum_unit" do
-      curriculum_unit = CurriculumUnit.create! valid_attributes
-      get :show, {:id => curriculum_unit.to_param}, valid_session
-      assigns(:curriculum_unit).should eq(curriculum_unit)
-    end
-  end
+  # describe "GET show" do
+  #   it "assigns the requested curriculum_unit as @curriculum_unit" do
+  #     curriculum_unit = CurriculumUnit.create! valid_attributes
+  #     get :show, {:id => curriculum_unit.to_param}, valid_session
+  #     assigns(:curriculum_unit).should eq(curriculum_unit)
+  #   end
+  # end
 
-  describe "GET new" do
-    it "assigns a new curriculum_unit as @curriculum_unit" do
-      get :new, {}, valid_session
-      assigns(:curriculum_unit).should be_a_new(CurriculumUnit)
-    end
-  end
+  # describe "GET new" do
+  #   it "assigns a new curriculum_unit as @curriculum_unit" do
+  #     get :new, {}, valid_session
+  #     assigns(:curriculum_unit).should be_a_new(CurriculumUnit)
+  #   end
+  # end
 
-  describe "GET edit" do
-    it "assigns the requested curriculum_unit as @curriculum_unit" do
-      curriculum_unit = CurriculumUnit.create! valid_attributes
-      get :edit, {:id => curriculum_unit.to_param}, valid_session
-      assigns(:curriculum_unit).should eq(curriculum_unit)
-    end
-  end
+  # describe "GET edit" do
+  #   it "assigns the requested curriculum_unit as @curriculum_unit" do
+  #     curriculum_unit = CurriculumUnit.create! valid_attributes
+  #     get :edit, {:id => curriculum_unit.to_param}, valid_session
+  #     assigns(:curriculum_unit).should eq(curriculum_unit)
+  #   end
+  # end
 
-  describe "POST create" do
-    describe "with valid params" do
-      it "creates a new CurriculumUnit" do
-        expect {
-          post :create, {:curriculum_unit => valid_attributes}, valid_session
-        }.to change(CurriculumUnit, :count).by(1)
-      end
+  # describe "POST create" do
+  #   describe "with valid params" do
+  #     it "creates a new CurriculumUnit" do
+  #       expect {
+  #         post :create, {:curriculum_unit => valid_attributes}, valid_session
+  #       }.to change(CurriculumUnit, :count).by(1)
+  #     end
 
-      it "assigns a newly created curriculum_unit as @curriculum_unit" do
-        post :create, {:curriculum_unit => valid_attributes}, valid_session
-        assigns(:curriculum_unit).should be_a(CurriculumUnit)
-        assigns(:curriculum_unit).should be_persisted
-      end
+  #     it "assigns a newly created curriculum_unit as @curriculum_unit" do
+  #       post :create, {:curriculum_unit => valid_attributes}, valid_session
+  #       assigns(:curriculum_unit).should be_a(CurriculumUnit)
+  #       assigns(:curriculum_unit).should be_persisted
+  #     end
 
-      it "redirects to the created curriculum_unit" do
-        post :create, {:curriculum_unit => valid_attributes}, valid_session
-        response.should redirect_to(CurriculumUnit.last)
-      end
-    end
+  #     it "redirects to the created curriculum_unit" do
+  #       post :create, {:curriculum_unit => valid_attributes}, valid_session
+  #       response.should redirect_to(CurriculumUnit.last)
+  #     end
+  #   end
 
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved curriculum_unit as @curriculum_unit" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        CurriculumUnit.any_instance.stub(:save).and_return(false)
-        post :create, {:curriculum_unit => {}}, valid_session
-        assigns(:curriculum_unit).should be_a_new(CurriculumUnit)
-      end
+  #   describe "with invalid params" do
+  #     it "assigns a newly created but unsaved curriculum_unit as @curriculum_unit" do
+  #       # Trigger the behavior that occurs when invalid params are submitted
+  #       CurriculumUnit.any_instance.stub(:save).and_return(false)
+  #       post :create, {:curriculum_unit => {}}, valid_session
+  #       assigns(:curriculum_unit).should be_a_new(CurriculumUnit)
+  #     end
 
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        CurriculumUnit.any_instance.stub(:save).and_return(false)
-        post :create, {:curriculum_unit => {}}, valid_session
-        response.should render_template("new")
-      end
-    end
-  end
+  #     it "re-renders the 'new' template" do
+  #       # Trigger the behavior that occurs when invalid params are submitted
+  #       CurriculumUnit.any_instance.stub(:save).and_return(false)
+  #       post :create, {:curriculum_unit => {}}, valid_session
+  #       response.should render_template("new")
+  #     end
+  #   end
+  # end
 
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested curriculum_unit" do
-        curriculum_unit = CurriculumUnit.create! valid_attributes
-        # Assuming there are no other curriculum_units in the database, this
-        # specifies that the CurriculumUnit created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        CurriculumUnit.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => curriculum_unit.to_param, :curriculum_unit => {'these' => 'params'}}, valid_session
-      end
+  # describe "PUT update" do
+  #   describe "with valid params" do
+  #     it "updates the requested curriculum_unit" do
+  #       curriculum_unit = CurriculumUnit.create! valid_attributes
+  #       # Assuming there are no other curriculum_units in the database, this
+  #       # specifies that the CurriculumUnit created on the previous line
+  #       # receives the :update_attributes message with whatever params are
+  #       # submitted in the request.
+  #       CurriculumUnit.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
+  #       put :update, {:id => curriculum_unit.to_param, :curriculum_unit => {'these' => 'params'}}, valid_session
+  #     end
 
-      it "assigns the requested curriculum_unit as @curriculum_unit" do
-        curriculum_unit = CurriculumUnit.create! valid_attributes
-        put :update, {:id => curriculum_unit.to_param, :curriculum_unit => valid_attributes}, valid_session
-        assigns(:curriculum_unit).should eq(curriculum_unit)
-      end
+  #     it "assigns the requested curriculum_unit as @curriculum_unit" do
+  #       curriculum_unit = CurriculumUnit.create! valid_attributes
+  #       put :update, {:id => curriculum_unit.to_param, :curriculum_unit => valid_attributes}, valid_session
+  #       assigns(:curriculum_unit).should eq(curriculum_unit)
+  #     end
 
-      it "redirects to the curriculum_unit" do
-        curriculum_unit = CurriculumUnit.create! valid_attributes
-        put :update, {:id => curriculum_unit.to_param, :curriculum_unit => valid_attributes}, valid_session
-        response.should redirect_to(curriculum_unit)
-      end
-    end
+  #     it "redirects to the curriculum_unit" do
+  #       curriculum_unit = CurriculumUnit.create! valid_attributes
+  #       put :update, {:id => curriculum_unit.to_param, :curriculum_unit => valid_attributes}, valid_session
+  #       response.should redirect_to(curriculum_unit)
+  #     end
+  #   end
 
-    describe "with invalid params" do
-      it "assigns the curriculum_unit as @curriculum_unit" do
-        curriculum_unit = CurriculumUnit.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        CurriculumUnit.any_instance.stub(:save).and_return(false)
-        put :update, {:id => curriculum_unit.to_param, :curriculum_unit => {}}, valid_session
-        assigns(:curriculum_unit).should eq(curriculum_unit)
-      end
+  #   describe "with invalid params" do
+  #     it "assigns the curriculum_unit as @curriculum_unit" do
+  #       curriculum_unit = CurriculumUnit.create! valid_attributes
+  #       # Trigger the behavior that occurs when invalid params are submitted
+  #       CurriculumUnit.any_instance.stub(:save).and_return(false)
+  #       put :update, {:id => curriculum_unit.to_param, :curriculum_unit => {}}, valid_session
+  #       assigns(:curriculum_unit).should eq(curriculum_unit)
+  #     end
 
-      it "re-renders the 'edit' template" do
-        curriculum_unit = CurriculumUnit.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        CurriculumUnit.any_instance.stub(:save).and_return(false)
-        put :update, {:id => curriculum_unit.to_param, :curriculum_unit => {}}, valid_session
-        response.should render_template("edit")
-      end
-    end
-  end
+  #     it "re-renders the 'edit' template" do
+  #       curriculum_unit = CurriculumUnit.create! valid_attributes
+  #       # Trigger the behavior that occurs when invalid params are submitted
+  #       CurriculumUnit.any_instance.stub(:save).and_return(false)
+  #       put :update, {:id => curriculum_unit.to_param, :curriculum_unit => {}}, valid_session
+  #       response.should render_template("edit")
+  #     end
+  #   end
+  # end
 
-  describe "DELETE destroy" do
-    it "destroys the requested curriculum_unit" do
-      curriculum_unit = CurriculumUnit.create! valid_attributes
-      expect {
-        delete :destroy, {:id => curriculum_unit.to_param}, valid_session
-      }.to change(CurriculumUnit, :count).by(-1)
-    end
+  # describe "DELETE destroy" do
+  #   it "destroys the requested curriculum_unit" do
+  #     curriculum_unit = CurriculumUnit.create! valid_attributes
+  #     expect {
+  #       delete :destroy, {:id => curriculum_unit.to_param}, valid_session
+  #     }.to change(CurriculumUnit, :count).by(-1)
+  #   end
 
-    it "redirects to the curriculum_units list" do
-      curriculum_unit = CurriculumUnit.create! valid_attributes
-      delete :destroy, {:id => curriculum_unit.to_param}, valid_session
-      response.should redirect_to(curriculum_units_url)
-    end
-  end
+  #   it "redirects to the curriculum_units list" do
+  #     curriculum_unit = CurriculumUnit.create! valid_attributes
+  #     delete :destroy, {:id => curriculum_unit.to_param}, valid_session
+  #     response.should redirect_to(curriculum_units_url)
+  #   end
+  # end
 
 end
