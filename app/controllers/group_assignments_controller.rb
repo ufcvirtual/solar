@@ -23,7 +23,7 @@ class GroupAssignmentsController < ApplicationController
 
     begin
       GroupAssignment.transaction do
-         # criação/edição de grupos
+        # criação/edição de grupos
         params['groups'].each { |group|
           group_id = group[1]['group_id']
           group_participants_ids = (group[1]['student_ids']).collect{|participant| participant[1].to_i} unless group[1]['student_ids'].nil?
@@ -42,37 +42,23 @@ class GroupAssignmentsController < ApplicationController
           change_students_group(group_assignment, group_participants_ids, params[:assignment_id])
         }
 
+
+        unless params['deleted_groups_divs_ids'].blank?
+          params['deleted_groups_divs_ids'].each{ |deleted_group| 
+            delete_group(deleted_group.tr('_', ' ').split[1])
+          }
+        end
+
+        @assignment = Assignment.find(params[:assignment_id])
+
         respond_to do |format|
-          format.html { redirect_to(group_assignments_url) }#, flash_class.to_sym => flash_msg) }
-          format.xml  { render :xml => { :success => true } }
-          format.json  { render :json => { :success => true, :flash_msg => t(:group_assignment_success), :flash_class => 'notice' } }
+          format.html { render 'assignment_div', :layout => false }
         end
       end
     rescue Exception => error
-      respond_to do |format|
-        format.html { redirect_to(group_assignments_url) }#, flash_class.to_sym => flash_msg) }
-        format.xml  { render :xml => { :success => false } }
-        format.json  { render :json => { :success => false, :flash_msg => error.message, :flash_class => 'alert' } }
-      end
+      render :json => { :success => false, :flash_msg => error.message, :flash_class => 'alert' }
     end
 
-  end
-
-  ##
-  # Exclui o grupo
-  ##
-  def destroy
-    group_assignment = GroupAssignment.find(params[:id])
-    if SendAssignment.find_all_by_group_assignment_id(group_assignment.id).empty?
-      participants = group_participants(group_assignment.id)
-      participants.each{|participant| GroupParticipant.find(participant["id"]).destroy}
-      GroupAssignment.find(group_assignment.id).destroy
-      flash[:notice] = t(:group_assignment_delete_success)
-      redirect_to group_assignments_url
-    else
-      flash[:alert] = t(:group_assignment_delete_error)
-      redirect_to :action => :edit, :id => group_assignment.id, :assignment_id => group_assignment.assignment_id
-    end
   end
 
   ##
@@ -114,6 +100,18 @@ class GroupAssignmentsController < ApplicationController
 
 private
   
+  ##
+  # Método que exclui grupos
+  ##
+  def delete_group(group_id)
+    group_assignment = GroupAssignment.find(params[:id])
+    if SendAssignment.find_all_by_group_assignment_id(group_assignment.id).empty?
+      participants = group_participants(group_assignment.id)
+      participants.each{|participant| GroupParticipant.find(participant["id"]).destroy}
+      GroupAssignment.find(group_assignment.id).destroy
+    end
+  end
+
   ##
   # Método que realiza as mudanças de um grupo e realiza as trocas de alunos
   # => group_assingment: objeto do grupo_assignment a ser alterado/criado

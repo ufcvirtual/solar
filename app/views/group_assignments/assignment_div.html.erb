@@ -1,0 +1,45 @@
+<% gps = group_assignments(@assignment.id)%>
+<div class="group_assignment_content">
+
+  <% unless gps.nil? or gps.empty? %>
+    <% gps.each do |g| %>
+      <div class="group_participants" id="group_<%=g['id']%>">
+        <h3 class="group_assignment_name" id="group_name_<%=g["group_name"].tr(' ', '')%>"><%= g["group_name"] %></h3>
+        <div id="edit_group_<%=g["group_name"].tr(' ', '')%>" style="display:none;">
+          <%= text_field_tag "new_groups_names[][#{@assignment.id}]", g["group_name"], :id => g["group_name"].tr(' ', '') ,:class => "rename_group" %>
+
+          <% group_has_files = !SendAssignment.find_all_by_group_assignment_id(g["id"]).empty? %>
+          <% data_tooltip = t(:group_assignment_delete_error) unless !group_has_files %>
+          <a class="" onclick="delete_group('group_<%=g['id']%>', <%=@assignment.id%>);" data-tooltip="<%=data_tooltip%>">x</a>
+
+        </div>
+        <% gp = group_participants(g["id"])%>
+        <ul value="<%=g['id']%>" name="groups_ul">
+          <% unless gp.empty? %>
+            <% gp.each do |p| %>
+              <li value="<%=p['user_id']%>"><%= p["name"] %>
+            <% end %>
+          <% else %>
+            <li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>
+          <% end %>
+        </ul>
+
+      </div>
+    <% end %>
+  <% end %>
+
+  <% students_without_group = no_group_students(@assignment.id.to_i) %>
+  <div class="group_participants">
+    <h3 class="group_assignment_name"><%= t(:students_with_no_group) %></h3>
+    <%= hidden_field_tag "new_groups_names[][#{@assignment.id}]", 'no_group' ,:class => "rename_group" %>
+      <ul id='ul_no_group'>
+        <% unless students_without_group.nil? or students_without_group.empty? %>
+          <% students_without_group.each do |student_without_group| %>
+            <li value="<%=student_without_group.id%>"><%= student_without_group.name %></li>
+          <% end %>
+        <% else %>
+          <li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>
+        <% end %>
+      </ul>
+  </div>
+</div>
