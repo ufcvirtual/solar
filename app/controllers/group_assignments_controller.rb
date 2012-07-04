@@ -42,7 +42,6 @@ class GroupAssignmentsController < ApplicationController
           change_students_group(group_assignment, group_participants_ids, params[:assignment_id])
         }
 
-
         unless params['deleted_groups_divs_ids'].blank?
           params['deleted_groups_divs_ids'].each{ |deleted_group| 
             delete_group(deleted_group.tr('_', ' ').split[1])
@@ -104,7 +103,7 @@ private
   # Método que exclui grupos
   ##
   def delete_group(group_id)
-    group_assignment = GroupAssignment.find(params[:id])
+    group_assignment = GroupAssignment.find(group_id)
     if SendAssignment.find_all_by_group_assignment_id(group_assignment.id).empty?
       participants = group_participants(group_assignment.id)
       participants.each{|participant| GroupParticipant.find(participant["id"]).destroy}
@@ -118,7 +117,6 @@ private
   # => students: lista dos ids dos participantes do grupo passado
   ##
   def change_students_group(group_assignment, students_ids, assignment_id)
-
     begin 
       unless students_ids.nil?
         students_ids.each{|student_id|
@@ -142,7 +140,6 @@ private
     rescue Exception => error
       raise "#{error.message}"
     end
-
   end
 
 end

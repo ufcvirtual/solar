@@ -7,17 +7,17 @@
         <h3 class="group_assignment_name" id="group_name_<%=g["group_name"].tr(' ', '')%>"><%= g["group_name"] %></h3>
         <div id="edit_group_<%=g["group_name"].tr(' ', '')%>" style="display:none;">
           <%= text_field_tag "new_groups_names[][#{@assignment.id}]", g["group_name"], :id => g["group_name"].tr(' ', '') ,:class => "rename_group" %>
-
           <% group_has_files = !SendAssignment.find_all_by_group_assignment_id(g["id"]).empty? %>
           <% data_tooltip = t(:group_assignment_delete_error) unless !group_has_files %>
-          <a class="" onclick="delete_group('group_<%=g['id']%>', <%=@assignment.id%>);" data-tooltip="<%=data_tooltip%>">x</a>
-
+          <a class="" onclick="delete_group('group_<%=g['id']%>', <%=@assignment.id%>, <%=group_has_files%>);" data-tooltip="<%=data_tooltip%>">x</a>
         </div>
         <% gp = group_participants(g["id"])%>
         <ul value="<%=g['id']%>" name="groups_ul">
           <% unless gp.empty? %>
             <% gp.each do |p| %>
-              <li value="<%=p['user_id']%>"><%= p["name"] %>
+              <% can_be_moved = SendAssignment.find_all_by_group_assignment_id_and_user_id(g["id"], p["user_id"]).empty? %>
+              <% data_tooltip = can_be_moved ? nil : t(:student_already_sent_files) %>
+              <li value="<%=p['user_id']%>" id="<%=can_be_moved%>" data-tooltip="<%=data_tooltip%>"><%= p["name"] %>
             <% end %>
           <% else %>
             <li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>
