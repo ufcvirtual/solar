@@ -131,14 +131,12 @@
   }
 
   function btn_save(assignment_id) {
-
     if (confirm('<%= t(:group_assignment_confirm_save) %>')){
       var groups = $(".group_participants ul", $('#div_assignment_' + assignment_id));
       var text_fields = $(".rename_group", $('#div_assignment_' + assignment_id));
       var groups_to_save = new Array();
 
       for (var i = 0; i < groups.length; i++) {
-        // var groups_names = $(text_fields[i]).attr('value');
         var groups_names = $(text_fields[i]).map(function(){return this.value});
         var each_group_students_ids = $('li', groups[i]).map(function(){
           if(this.id != 'no_students_message'){return this.value}});

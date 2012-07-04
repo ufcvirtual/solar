@@ -42,6 +42,7 @@ class GroupAssignmentsController < ApplicationController
           change_students_group(group_assignment, group_participants_ids, params[:assignment_id])
         }
 
+        # deleção de grupos
         unless params['deleted_groups_divs_ids'].blank?
           params['deleted_groups_divs_ids'].each{ |deleted_group| 
             delete_group(deleted_group.tr('_', ' ').split[1])
@@ -120,6 +121,7 @@ private
     begin 
       unless students_ids.nil?
         students_ids.each{|student_id|
+          
           group_participant = GroupParticipant.includes(:group_assignment).where("group_participants.user_id = ? AND group_assignments.assignment_id = ?",
                                                                                  student_id, assignment_id).first
           unless group_assignment.nil?
@@ -135,6 +137,7 @@ private
                                                                       student_id, assignment_id).empty?
             group_participant.delete unless student_sent_files_to_some_group or group_participant.nil? 
           end
+
         }
       end
     rescue Exception => error
