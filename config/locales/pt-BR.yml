@@ -739,6 +739,7 @@
   students_with_no_group: "Alunos sem grupo"
   group_assignment_confirm_cancel: "Cancelar alterações?"
   group_assignment_confirm_save: "Salvar alterações?"
+  group_assignment_cancel_message: "Alterações canceladas"
   are_you_sure: "Você tem certeza?"
   students: "Alunos"
   status: "Status"

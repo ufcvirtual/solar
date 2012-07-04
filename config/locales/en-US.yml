@@ -580,6 +580,7 @@
   students_with_no_group: "Students with no group"
   group_assignment_confirm_cancel: "Cancel changes?"
   group_assignment_confirm_save: "Save changes?"
+  group_assignment_cancel_message: "Changes canceled"
   are_you_sure: "Are you sure?"
   students: "Students"
   status: "Status"

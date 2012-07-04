@@ -106,6 +106,8 @@
 <script type="text/javascript">
 
   var deleted_groups = new Array();
+  var fake_group = <%=GroupAssignment.first.id%>;
+  var url = '<%= group_assignments_path %>/' + fake_group;
 
   $(".group_assignment_title").click(function(){
     $(this).toggleClass('group_assignment_title_contract');
@@ -113,8 +115,19 @@
 
   function btn_cancel(assignment_id){
     if (confirm('<%= t(:group_assignment_confirm_cancel) %>')){
-      // fazer refresh da div
-      undo_btn_manage_groups_divs_changes(assignment_id, 'cancel');
+      var continue_with_request = true;
+      $.ajax({
+        url: url,
+        type: 'PUT',
+        data:  {'btn_cancel': 'cancel', 'assignment_id': assignment_id},
+        success: function(data) {
+          $('#group_assignment_content_' + assignment_id).html(data);
+          undo_btn_manage_groups_divs_changes(assignment_id, 'cancel');
+          // mostra mensagem?
+          flash_message('<%= t(:group_assignment_cancel_message) %>', 'notice');
+        }
+      });
+      return continue_with_request; 
     }
   }
 
@@ -147,9 +160,6 @@
           'student_ids': each_group_students_ids
         });
       } // for -> groups
-
-      var fake_group = <%=GroupAssignment.first.id%>;
-      var url = '<%= group_assignments_path %>/' + fake_group;
 
       var continue_with_request = true;
       $.ajax({

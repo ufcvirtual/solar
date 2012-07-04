@@ -21,42 +21,52 @@ class GroupAssignmentsController < ApplicationController
   ##
   def update
 
-    begin
-      GroupAssignment.transaction do
-        # criação/edição de grupos
-        params['groups'].each { |group|
-          group_id = group[1]['group_id']
-          group_participants_ids = (group[1]['student_ids']).collect{|participant| participant[1].to_i} unless group[1]['student_ids'].nil?
-          # se não forem alunos sem grupo
-          unless group_id.nil?
-            group_name = group[1]['group_name']['0']
-            # novo grupo
-            if group_id == '0'
-              group_assignment = GroupAssignment.create!(:assignment_id => params[:assignment_id], :group_name => group_name)
-            # grupo já existente
-            else
-              group_assignment = GroupAssignment.find(group_id)
-              group_assignment.update_attributes!(:group_name => group_name)
+    @assignment = Assignment.find(params[:assignment_id])
+
+    # clicou em "salvar"
+    unless params['btn_cancel']
+
+      begin
+        GroupAssignment.transaction do
+          # criação/edição de grupos
+          params['groups'].each { |group|
+            group_id = group[1]['group_id']
+            group_participants_ids = (group[1]['student_ids']).collect{|participant| participant[1].to_i} unless group[1]['student_ids'].nil?
+            # se não forem alunos sem grupo
+            unless group_id.nil?
+              group_name = group[1]['group_name']['0']
+              # novo grupo
+              if group_id == '0'
+                group_assignment = GroupAssignment.create!(:assignment_id => params[:assignment_id], :group_name => group_name)
+              # grupo já existente
+              else
+                group_assignment = GroupAssignment.find(group_id)
+                group_assignment.update_attributes!(:group_name => group_name)
+              end
             end
-          end
-          change_students_group(group_assignment, group_participants_ids, params[:assignment_id])
-        }
-
-        # deleção de grupos
-        unless params['deleted_groups_divs_ids'].blank?
-          params['deleted_groups_divs_ids'].each{ |deleted_group| 
-            delete_group(deleted_group.tr('_', ' ').split[1])
+            change_students_group(group_assignment, group_participants_ids, params[:assignment_id])
           }
-        end
 
-        @assignment = Assignment.find(params[:assignment_id])
+          # deleção de grupos
+          unless params['deleted_groups_divs_ids'].blank?
+            params['deleted_groups_divs_ids'].each{ |deleted_group| 
+              delete_group(deleted_group.tr('_', ' ').split[1])
+            }
+          end
 
-        respond_to do |format|
-          format.html { render 'assignment_div', :layout => false }
+          respond_to do |format|
+            format.html { render 'assignment_div', :layout => false }
+          end
         end
+      rescue Exception => error
+        render :json => { :success => false, :flash_msg => error.message, :flash_class => 'alert' }
       end
-    rescue Exception => error
-      render :json => { :success => false, :flash_msg => error.message, :flash_class => 'alert' }
+
+    # clicou em "cancelar"
+    else
+      respond_to do |format|
+        format.html { render 'assignment_div', :layout => false }
+      end
     end
 
   end
@@ -121,7 +131,7 @@ private
     begin 
       unless students_ids.nil?
         students_ids.each{|student_id|
-          
+
           group_participant = GroupParticipant.includes(:group_assignment).where("group_participants.user_id = ? AND group_assignments.assignment_id = ?",
                                                                                  student_id, assignment_id).first
           unless group_assignment.nil?
