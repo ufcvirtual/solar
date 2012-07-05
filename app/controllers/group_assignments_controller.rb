@@ -19,7 +19,7 @@ class GroupAssignmentsController < ApplicationController
   ##
   # Edita o grupo
   ##
-  def update
+  def manage_groups
 
     @assignment = Assignment.find(params[:assignment_id])
 

@@ -17,7 +17,7 @@
             <% gp.each do |p| %>
               <% can_be_moved = SendAssignment.find_all_by_group_assignment_id_and_user_id(g["id"], p["user_id"]).empty? %>
               <% data_tooltip = can_be_moved ? nil : t(:student_already_sent_files) %>
-              <li value="<%=p['user_id']%>" id="<%=can_be_moved%>" data-tooltip="<%=data_tooltip%>"><%= p["name"] %>
+              <li value="<%=p['user_id']%>" id="<%=can_be_moved%>" onmouseover="student_mouseover(this, '<%=t(:student_already_sent_files)%>');" onmouseout="student_mouseout(this);"><%= p["name"] %>
             <% end %>
           <% else %>
             <li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>
@@ -35,7 +35,7 @@
       <ul id='ul_no_group'>
         <% unless students_without_group.nil? or students_without_group.empty? %>
           <% students_without_group.each do |student_without_group| %>
-            <li value="<%=student_without_group.id%>"><%= student_without_group.name %></li>
+            <li value="<%=student_without_group.id%>" id="true" onmouseover="student_mouseover(this, 'no_message');" onmouseout="student_mouseout(this);"><%= student_without_group.name %></li>
           <% end %>
         <% else %>
           <li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>

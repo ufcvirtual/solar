@@ -36,7 +36,35 @@
     dragndrop($('#div_assignment_'+assignment_id));
   }
 
-  function btn_new_group(assignment_id) {
+  function student_mouseover(this_div, tooltip_message){
+    student_div = $(this_div);
+    student_can_move = student_div.attr('id');
+    student_class = student_div.attr('class');
+
+    if (student_can_move == 'true' && student_class == 'ui-draggable'){
+      student_div.css("fontWeight","bold");
+    } 
+    if (student_can_move == 'false' && student_class != 'ui-draggable'){
+      // student_div.attr("data-tooltip", tooltip_message);
+      // student_div.data("tooltip", "oi");
+      // student_div.attr('data-tooltip', student_div.data("tooltip"));
+    }
+  }
+
+  function student_mouseout(this_div){
+    student_div = $(this_div);
+    student_can_move = student_div.attr('id');
+    student_class = student_div.attr('class');
+    
+    if (student_can_move == 'true' && student_class == 'ui-draggable'){
+      student_div.css("fontWeight","normal");
+    } 
+    if (student_can_move == 'false' && student_class != 'ui-draggable'){
+    // remover data-tooltip
+    }
+  }
+
+  function btn_new_group(assignment_id, message_empty_group) {
     var new_idx = "group_new_" + $('.another_new_group').length;
 
     var new_group_hmtl = new Array();
@@ -46,6 +74,7 @@
         new_group_hmtl.push('<a onclick="delete_group(\'' + new_idx + '\', \'' + assignment_id + '\', false);">x</a>');
       new_group_hmtl.push('</div>');
       new_group_hmtl.push('<ul value="0">');
+      new_group_hmtl.push('<li id="no_students_message">' + message_empty_group + '</li>')
       new_group_hmtl.push('</ul>');
     new_group_hmtl.push('</div>');
     // cria a nova div de novo grupo 
@@ -113,7 +142,8 @@
     // <li> de estudantes que já enviaram arquivos tem o id = false
     obj.not("#false").draggable({
       cursor: "move",
-      revert: true
+      revert: true//,
+      // opacity: 0.3
     });
   }
 
@@ -121,14 +151,14 @@
     // cria objetos "droppable"
     obj.droppable({
       accept: ".group_participants li",
-      // activeClass: "ui-state-highlight",
+      hoverClass: "ui-state-active",
       drop: function( event, ui ) {
         // recolhe o id do estudante antes de remover o elemento que tem a informação
         var participant_id = ui.draggable.attr('value');
         // remove o elemento draggable da lista que esta sendo movido
         ui.draggable.remove();
         // cria novo elemento, mas agora no novo grupo a que ele foi levado
-        $( "<li value='"+participant_id+"' style='position: relative; ' class='ui-draggable'></li>" ).text( ui.draggable.text() ).appendTo(this);
+        $( "<li value='"+participant_id+"' style='position: relative;' class='ui-draggable' onmouseover='this.style.fontWeight=\"bold\"' onmouseout='this.style.fontWeight=\"normal\"'></li>" ).text( ui.draggable.text() ).appendTo(this);
         // remove mensagem de "sem alunos" caso necessário
         if($('#no_students_message', this)){
           $('#no_students_message', this).remove();
