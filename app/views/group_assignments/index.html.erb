@@ -160,9 +160,10 @@
       } // for -> groups
 
       var continue_with_request = true;
+      url = '<%= manage_groups_group_assignments_path %>'
       $.ajax({
         url: url,
-        type: 'PUT',
+        type: 'POST',
         data:  {'groups': groups_to_save, 'assignment_id': assignment_id, 'deleted_groups_divs_ids': deleted_groups},
         success: function(data) {
           if (data.success == false) {

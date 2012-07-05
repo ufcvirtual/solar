@@ -3,7 +3,7 @@ include GroupAssignmentHelper
 class GroupAssignmentsController < ApplicationController
 
   before_filter :prepare_for_group_selection #, :only => [:list]
-  before_filter :user_related_to_assignment?, :except => [:index]
+  # before_filter :user_related_to_assignment?, :except => [:index]
   before_filter :can_import?, :only => [:import_groups_page, :import_groups]
   load_and_authorize_resource
 
@@ -17,7 +17,7 @@ class GroupAssignmentsController < ApplicationController
   end
 
   ##
-  # Edita o grupo
+  # Gerenciamento de grupos da atividade
   ##
   def manage_groups
 

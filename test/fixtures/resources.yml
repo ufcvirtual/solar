@@ -401,54 +401,12 @@ res68:
   action: 'edit_link'
   description: 'Edita um ou mais links da pagina de material de apoio do editor'
 
-# Trabalho de grupo
+# Trabalho de grupo - parte1
 res69:
   id: 69
   controller: 'group_assignments'
   action: 'index'
   description: 'Grupos'
-
-res73:
-  id: 73
-  controller: 'group_assignments'
-  action: 'new'
-  description: 'Pagina de novo grupo'  
-
-res74:
-  id: 74
-  controller: 'group_assignments'
-  action: 'create'
-  description: 'Cria um novo grupo'  
-
-res75:
-  id: 75
-  controller: 'group_assignments'
-  action: 'edit'
-  description: 'Pagina de edicao de grupo'  
-
-res76:
-  id: 76
-  controller: 'group_assignments'
-  action: 'update'
-  description: 'Edita um grupo'  
-
-res77:
-  id: 77
-  controller: 'group_assignments'
-  action: 'destroy'
-  description: 'Exclui um grupo'
-
-res78:
-  id: 78
-  controller: 'group_assignments'
-  action: 'import_groups_page'
-  description: 'Pagina de importacao de grupos para outros trabalhos'
-
-res79:
-  id: 79
-  controller: 'group_assignments'
-  action: 'import_groups'
-  description: 'Importacao de grupos para outros trabalhos'
 
 # Edicao de pedidos de matriculas
 res70:
@@ -468,3 +426,23 @@ res72:
   controller: 'allocations'
   action: 'update'
   description: 'Editar matricula'
+
+# Trabalho de grupo - parte2
+
+res75:
+  id: 73
+  controller: 'group_assignments'
+  action: 'manage_groups'
+  description: 'Pagina de edicao de grupo'  
+
+res78:
+  id: 74
+  controller: 'group_assignments'
+  action: 'import_groups_page'
+  description: 'Pagina de importacao de grupos para outros trabalhos'
+
+res79:
+  id: 75
+  controller: 'group_assignments'
+  action: 'import_groups'
+  description: 'Importacao de grupos para outros trabalhos'
