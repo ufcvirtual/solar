@@ -358,7 +358,7 @@
   save: "Salvar"
   edit: "Editar"
   show: "Visualizar"
-  destroy: "Deletar"
+  destroy: "Excluir"
   new_user_msg_cpf_error: " inválido"
   itens_not_found: "Sem itens para exibir"
 
@@ -490,7 +490,8 @@
   semester_date: "Período"
   passing_grade: "Média"
   error_no_item_selected: Nenhum registro selecionado
-  curriculum_unit_type_id: Tipo
+  curriculum_unit_type_id: Categoria
+  curriculum_unit_new_button: Nova
 
   curriculum_unit_new_title: Nova Unidade Curricular
   curriculum_unit_information_title: "Informações da Unidade Curricular"
@@ -678,7 +679,7 @@
   sent_files: "Arquivos Enviados"
   send_files: "Enviar Arquivos"
   download_attachment: "Baixar Anexo"
-  error_delete_file: "Erro ao tentar deletar arquivo"
+  error_delete_file: "Erro ao tentar excluir arquivo"
   sent_in: "Enviado em"
   comment_updated_successfully: "Comentário atualizado com sucesso"
   files_assignments: "Arquivos do Trabalho"
@@ -726,7 +727,7 @@
   group_assignment_title: "Grupos"
   group_assignment_date: "Data de entrega"
   group_assignment_edit: "Editar"
-  group_assignment_delete: "Deletar"
+  group_assignment_delete: "Excluir"
   edit_group: "Editar grupo"
   group_assignment_new: "Novo grupo"
   group_assignment_save: "Salvar"
@@ -862,7 +863,7 @@
   support_cancel: Cancelar
   support_edit: Editar
   support_rename: Renomear
-  support_error_no_item_selected: Erro ao deletar. Nenhum item foi selecionado
+  support_error_no_item_selected: Erro ao excluir. Nenhum item foi selecionado
   support_error_missing_link: Link deve ser preenchido
   support_sent_link: Link enviado com sucesso
   support_error_existing_folder: Pasta já existente
@@ -872,9 +873,9 @@
   support_file_message: 'O tamanho não deve exceder 5MB. Formato suportados: doc, docx, xls, xlsx, ppt, pptx, odf, zip, rar, wmv, avi, mp4, mp3, pdf'
   support_no_link_added: Nenhum link adicionado
   support_no_file_added: Nenhum arquivo adicionado
-  support_confirm_exclusion_folder: Você tem certeza que deseja deletar esta pasta?
+  support_confirm_exclusion_folder: Você tem certeza que deseja excluir esta pasta?
   support_rename_folder: Renomear pasta
-  support_delete_folder: Deletar pasta
+  support_delete_folder: Excluir pasta
   support_folder_renamed: Pasta renomeada com sucesso
   support_no_changes: Nenhuma alteração feita
   support_download_folder: Baixar pasta
@@ -900,3 +901,6 @@
   allocation_manage_enrollment_successful_update: Atualização realizada com sucesso
   allocation_manage_enrollment_unsuccessful_update: Atualização não realizada
   allocation_manage_error_not_same_status: Selecione apenas registros com o mesmo status
+
+  ## Edição
+  options: "Opções"
