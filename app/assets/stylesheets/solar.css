@@ -3122,61 +3122,16 @@ td.form_error {
     padding: 5px;
 }
 
-.group_new {
-    clear: both;
-    padding-bottom: 5px;
-}
-
-.group_edit {
-    float: right;
-    margin-right: 5px;
-}
-
 .group_assignment_name {
     text-align: center;
     background-color: #f1f1f1;
     padding: 2px 5px;
 }
 
-.participants{
-    border-left: 2px solid #d0d0d0;
-    float: left;
-    width: 225px;
-    min-height: 50px;
-    margin: 20px 10px 30px 15px;
-    padding-left: 5px;
-}
-
-.division{
-    border-bottom: 1px solid #D0D0D0;
-}
-
-.group_div{
-    padding: 20px 10px 15px 15px;
-}
-
 .page_title{
     color: #003E7A;
     font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
-}
-
-.form_group_managment{
-    width: 400px;
-}
-
-.form_group_managment input{
-    width: 180px;
-    margin-bottom: 10px;
-}
-
-.form_group_managment label{
-    color: #000000;
-    width: 100px;
-    text-align: right;
-    margin-left: -13px;
-    padding-right: 10px; 
-    padding-top: -10px;
 }
 
 .all_students{
@@ -3207,11 +3162,6 @@ td.form_error {
 
 .each_student {
     padding: 2px 2px 2px 2px;
-}
-
-.group_links{
-    display: inline;
-    font-weight: normal;
 }
 
 .group_assignments_import{
