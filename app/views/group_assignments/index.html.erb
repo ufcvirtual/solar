@@ -36,7 +36,7 @@
                           <%= text_field_tag "new_groups_names[][#{a["id"]}]", g["group_name"], :id => g["id"], :class => "rename_group" %>
                           <% group_has_files = !SendAssignment.find_all_by_group_assignment_id(g["id"]).empty? %>
                           <% data_tooltip = !group_has_files ? nil : t(:group_assignment_delete_error) %>
-                          <a class="" onclick="delete_group('group_<%=g['id']%>', <%=a['id']%>, <%=group_has_files%>);" data-tooltip="<%=data_tooltip%>">x</a>
+                          <a class="" onclick="delete_group('group_<%=g['id']%>', <%=a['id']%>, <%=group_has_files%>);" title="<%=data_tooltip%>">x</a>
                         </div>
                         <% gp = group_participants(g["id"])%>
                         <ul value="<%=g['id']%>" name="groups_ul">
@@ -44,7 +44,7 @@
                             <% gp.each do |p| %>
                               <% can_be_moved = SendAssignment.find_all_by_group_assignment_id_and_user_id(g["id"], p["user_id"]).empty? %>
                               <% data_tooltip = can_be_moved ? nil : t(:student_already_sent_files) %>
-                              <li value="<%=p['user_id']%>" id="<%=can_be_moved%>" data-tooltip="<%=data_tooltip%>" onmouseover="student_mouseover(this, '<%=t(:student_already_sent_files)%>');" onmouseout="student_mouseout(this);"><%= p["name"] %>
+                              <li value="<%=p['user_id']%>" id="<%=can_be_moved%>" onmouseover="student_mouseover(this, '<%=t(:student_already_sent_files)%>');" onmouseout="student_mouseout(this);"><%= p["name"] %>
                             <% end %>
                           <% else %>
                             <li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>
@@ -106,6 +106,7 @@
   // Variáveis
 
   var deleted_groups = new Array();
+  var url = '<%= manage_groups_group_assignments_path %>';
 
   // Métodos
 
@@ -164,7 +165,6 @@
       } // for -> groups
 
       var continue_with_request = true;
-      url = '<%= manage_groups_group_assignments_path %>'
       $.ajax({
         url: url,
         type: 'POST',

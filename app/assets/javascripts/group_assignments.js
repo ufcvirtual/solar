@@ -44,10 +44,8 @@
     if (student_can_move == 'true' && student_class == 'ui-draggable'){
       student_div.css("fontWeight","bold");
     } 
-    if (student_can_move == 'false' && student_class != 'ui-draggable'){
-      // student_div.attr("data-tooltip", tooltip_message);
-      // student_div.data("tooltip", "oi");
-      // student_div.attr('data-tooltip', student_div.data("tooltip"));
+    if (student_can_move == 'false' && student_class != 'ui-draggable' && $('.ui-draggable', student_div.parent().parent().parent()).length > 0){
+      student_div.attr("title", tooltip_message);
     }
   }
 
@@ -59,9 +57,6 @@
     if (student_can_move == 'true' && student_class == 'ui-draggable'){
       student_div.css("fontWeight","normal");
     } 
-    if (student_can_move == 'false' && student_class != 'ui-draggable'){
-    // remover data-tooltip
-    }
   }
 
   function btn_new_group(assignment_id, message_empty_group) {
