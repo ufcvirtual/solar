@@ -44,7 +44,7 @@
                             <% gp.each do |p| %>
                               <% can_be_moved = SendAssignment.find_all_by_group_assignment_id_and_user_id(g["id"], p["user_id"]).empty? %>
                               <% data_tooltip = can_be_moved ? nil : t(:student_already_sent_files) %>
-                              <li value="<%=p['user_id']%>" id="<%=can_be_moved%>" data-tooltip="" onmouseover="student_mouseover(this, '<%=t(:student_already_sent_files)%>');" onmouseout="student_mouseout(this);"><%= p["name"] %>
+                              <li value="<%=p['user_id']%>" id="<%=can_be_moved%>" data-tooltip="<%=data_tooltip%>" onmouseover="student_mouseover(this, '<%=t(:student_already_sent_files)%>');" onmouseout="student_mouseout(this);"><%= p["name"] %>
                             <% end %>
                           <% else %>
                             <li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>
@@ -103,13 +103,29 @@
 
 <script type="text/javascript">
 
+  // Variáveis
+
   var deleted_groups = new Array();
-  var fake_group = <%=GroupAssignment.first.id%>;
-  var url = '<%= group_assignments_path %>/' + fake_group;
+
+  // Métodos
 
   $(".group_assignment_title").click(function(){
     $(this).toggleClass('group_assignment_title_contract');
   })
+
+  function put_empty_message(assignment_div){
+    // recupera todos os grupos da atividade
+    var all_groups = $('ul', assignment_div);
+    for(var i = 0; i<all_groups.length; i++){
+      var all_participants_each_group = $('li', all_groups[i]);
+      // quando ele estiver vazio, acrescenta uma mensagem informativa
+      if(all_participants_each_group.length == 0){
+        $('<li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>').appendTo(all_groups[i]);
+      }
+    }
+  }
+
+  // Botões
 
   function btn_cancel(assignment_id){
     if (confirm('<%= t(:group_assignment_confirm_cancel) %>')){
@@ -121,23 +137,11 @@
         success: function(data) {
           $('#group_assignment_content_' + assignment_id).html(data);
           undo_btn_manage_groups_divs_changes(assignment_id, 'cancel');
-          // mostra mensagem?
+          // mostra mensagem
           flash_message('<%= t(:group_assignment_cancel_message) %>', 'notice');
         }
       });
       return continue_with_request; 
-    }
-  }
-
-  function put_empty_message(assignment_div){
-    // recupera todos os grupos da atividade
-    var all_groups = $('ul', assignment_div);
-    for(var i = 0; i<all_groups.length; i++){
-      var all_participants_each_group = $('li', all_groups[i]);
-      // quando ele estiver vazio, acrescenta uma mensagem informativa
-      if(all_participants_each_group.length == 0){
-        $('<li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>').appendTo(all_groups[i]);
-      }
     }
   }
 

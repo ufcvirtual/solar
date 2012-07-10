@@ -33,7 +33,7 @@
     $('#cancel_changes_assignment_'+assignment_id).show();
     $('#new_group_assignment_'+assignment_id).show();
     $('#btn_import_'+assignment_id).show();
-    dragndrop($('#div_assignment_'+assignment_id));
+    dragndrop($('#div_assignment_'+assignment_id), assignment_id);
   }
 
   function student_mouseover(this_div, tooltip_message){
@@ -78,11 +78,11 @@
       new_group_hmtl.push('</ul>');
     new_group_hmtl.push('</div>');
     // cria a nova div de novo grupo 
-    $(new_group_hmtl.join('')).appendTo($('.group_assignment_content', $('#div_assignment_'+assignment_id)).last());
+    $(new_group_hmtl.join('')).appendTo($('#group_assignment_content_'+assignment_id, $('#div_assignment_'+assignment_id)).last());
     // pega o último grupo criado
     var new_group_ul = $('.group_participants ul', $('#div_assignment_'+assignment_id)).last();
     // e permite que ele receba participantes
-    active_droppable_element(new_group_ul, $('#div_assignment_'+assignment_id));
+    active_droppable_element(new_group_ul, $('#div_assignment_'+assignment_id), assignment_id);
   }
 
 // Métodos
@@ -128,13 +128,13 @@
 
 // Drag'n'drop
 
-  function dragndrop(assignment_div){
+  function dragndrop(assignment_div, assignment_id){
     // habilita todos os <li> dessa atividade para serem "draggable"
     active_draggable_element($(".group_participants li", assignment_div));
     // desabilita os <li> que são apenas ilustrativos
     $("#no_students_message", assignment_div).draggable({ disabled: true });
     // habilita os grupos dessa atividade como elementos "droppable"
-    active_droppable_element($(".group_participants ul", assignment_div), assignment_div);
+    active_droppable_element($(".group_participants ul", assignment_div), assignment_div, assignment_id);
   }
 
   function active_draggable_element(obj) {
@@ -147,10 +147,10 @@
     });
   }
 
-  function active_droppable_element(obj, assignment_div) {
+  function active_droppable_element(obj, assignment_div, assignment_id) {
     // cria objetos "droppable"
     obj.droppable({
-      accept: ".group_participants li",
+      accept: "#group_assignment_content_"+assignment_id + " li",
       hoverClass: "ui-state-active",
       drop: function( event, ui ) {
         // recolhe o id do estudante antes de remover o elemento que tem a informação
