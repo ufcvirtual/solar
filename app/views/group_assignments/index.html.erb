@@ -33,18 +33,18 @@
                       <div class="group_participants" id="group_<%=g['id']%>">
                         <h3 class="group_assignment_name" id="group_name_<%=g["id"]%>"><%= g["group_name"] %></h3>
                         <div id="edit_group_<%=g["id"]%>" style="display:none;">
-                          <%= text_field_tag "new_groups_names[][#{a["id"]}]", g["group_name"], :id => g["id"], :class => "rename_group" %>
+                          <%= text_field_tag "new_groups_names[][#{a["id"]}]", g["group_name"], :group_id => g["id"], :id => "text_field_group_#{g['id']}", :class => "rename_group" %>
                           <% group_has_files = !SendAssignment.find_all_by_group_assignment_id(g["id"]).empty? %>
                           <% data_tooltip = !group_has_files ? nil : t(:group_assignment_delete_error) %>
-                          <a class="" onclick="delete_group('group_<%=g['id']%>', <%=a['id']%>, <%=group_has_files%>);" title="<%=data_tooltip%>">x</a>
+                          <a id="remove_group_<%=g['id']%>" class="" onclick="delete_group('group_<%=g['id']%>', <%=a['id']%>, <%=group_has_files%>);" title="<%=data_tooltip%>">x</a>
                         </div>
                         <% gp = group_participants(g["id"])%>
-                        <ul value="<%=g['id']%>" name="groups_ul">
+                        <ul id="group_ul_<%=g['id']%>" value="<%=g['id']%>" name="groups_ul">
                           <% unless gp.empty? %>
                             <% gp.each do |p| %>
                               <% can_be_moved = SendAssignment.find_all_by_group_assignment_id_and_user_id(g["id"], p["user_id"]).empty? %>
                               <% data_tooltip = can_be_moved ? nil : t(:student_already_sent_files) %>
-                              <li value="<%=p['user_id']%>" id="<%=can_be_moved%>" onmouseover="student_mouseover(this, '<%=t(:student_already_sent_files)%>');" onmouseout="student_mouseout(this);"><%= p["name"] %>
+                              <li class="student_<%=p['user_id']%>" value="<%=p['user_id']%>" id="<%=can_be_moved%>" onmouseover="student_mouseover(this, '<%=t(:student_already_sent_files)%>');" onmouseout="student_mouseout(this);"><%= p["name"] %>
                             <% end %>
                           <% else %>
                             <li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>
@@ -61,7 +61,7 @@
                       <ul id='ul_no_group'>
                         <% unless students_without_group.nil? or students_without_group.empty? %>
                           <% students_without_group.each do |student_without_group| %>
-                            <li value="<%=student_without_group.id%>" id="true" onmouseover="student_mouseover(this, 'no_message');" onmouseout="student_mouseout(this);"><%= student_without_group.name %></li>
+                            <li class="student_<%=student_without_group.id%>" value="<%=student_without_group.id%>" id="true" onmouseover="student_mouseover(this, 'no_message');" onmouseout="student_mouseout(this);"><%= student_without_group.name %></li>
                           <% end %>
                         <% else %>
                           <li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>
@@ -72,7 +72,7 @@
 
                 <div class="group_assignment_buttons">
 
-                    <input type="button" id='edit_group_assignment_<%=a["id"]%>' value='<%=t(:manage_groups_assignments)%>' class="btn btn_default" onclick="btn_manage_groups('<%=a["id"]%>');"/>
+                    <input type="button" id='manage_group_assignment_<%=a["id"]%>' value='<%=t(:manage_groups_assignments)%>' class="btn btn_default" onclick="btn_manage_groups('<%=a["id"]%>');"/>
 
                     <span id='btn_import_<%=a["id"]%>' style='display: none;'>
                       <% if verify_group_of_assignments(a["id"]) %>

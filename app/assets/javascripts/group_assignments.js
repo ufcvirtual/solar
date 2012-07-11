@@ -28,7 +28,7 @@
 
   function btn_manage_groups(assignment_id){
     group_name_label_to_text_field(assignment_id);
-    $('#edit_group_assignment_'+assignment_id).hide();
+    $('#manage_group_assignment_'+assignment_id).hide();
     $('#save_changes_assignment_'+assignment_id).show();
     $('#cancel_changes_assignment_'+assignment_id).show();
     $('#new_group_assignment_'+assignment_id).show();
@@ -65,7 +65,7 @@
     var new_group_hmtl = new Array();
     new_group_hmtl.push('<div class="group_participants another_new_group" id="' + new_idx + '">');
       new_group_hmtl.push('<div class="new_group" id="edit_'+new_idx+'">');
-        new_group_hmtl.push('<input type="text_field" name="new_groups_names[][' + assignment_id + ']" class="rename_group" />');
+        new_group_hmtl.push('<input type="text_field" name="new_groups_names[][' + assignment_id + ']" id="text_field_'+ new_idx +'" class="rename_group" />');
         new_group_hmtl.push('<a onclick="delete_group(\'' + new_idx + '\', \'' + assignment_id + '\', false);">x</a>');
       new_group_hmtl.push('</div>');
       new_group_hmtl.push('<ul value="0">');
@@ -83,7 +83,7 @@
 // Métodos
 
   function undo_btn_manage_groups_divs_changes(assignment_id, situation){
-    $('#edit_group_assignment_'+assignment_id).show();
+    $('#manage_group_assignment_'+assignment_id).show();
     $('#save_changes_assignment_'+assignment_id).hide();
     $('#cancel_changes_assignment_'+assignment_id).hide();
     $('#new_group_assignment_'+assignment_id).hide();
@@ -95,8 +95,8 @@
     var all_text_fields_groups = document.getElementsByName("new_groups_names[]["+assignment_id+"]");
     for(var i = 0; i < all_text_fields_groups.length; i++) {
       // encontra a div com parte da edição de grupo e a div com a label
-      var text_field = $('#edit_group_'+all_text_fields_groups[i]['id']);
-      var label = $('#group_name_'+all_text_fields_groups[i]['id']);
+      var text_field = $('#edit_group_' + $(all_text_fields_groups[i]).attr('group_id'));
+      var label = $('#group_name_'+ $(all_text_fields_groups[i]).attr('group_id'));
       label.hide();
       text_field.fadeIn();  
     }
