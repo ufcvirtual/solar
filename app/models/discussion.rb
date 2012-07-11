@@ -108,7 +108,9 @@ SQL
                   WHEN t3.end_date < now() THEN 2 -- fechado
                   ELSE 0
              END AS status,
-             max(t4.updated_at::timestamp(0)) AS last_post_date
+             max(t4.updated_at::timestamp(0)) AS last_post_date,
+             t3.start_date,
+             t3.end_date
         FROM discussions      AS t1
         JOIN allocation_tags  AS t2 ON t2.id = t1.allocation_tag_id
         JOIN schedules        AS t3 ON t1.schedule_id = t3.id
