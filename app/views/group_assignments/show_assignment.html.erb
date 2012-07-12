@@ -1,0 +1,197 @@
+<%= javascript_include_tag 'group_assignments.js' %>
+
+
+<div class="block_title">
+  <h2><%= image_tag "icon_suitcase_portfolio.png", :alt => '', :class=>'block_title_icon' %><%= @assignment.name %></h2>
+</div>
+
+<div class="group_assignment_titles">
+  Descrição
+  <span class="group_assignment_delivery_date">
+    Entrega de <%= @assignment.schedule.start_date.strftime("%d/%m/%Y %H:%M") %> até <%= @assignment.schedule.end_date.strftime("%d/%m/%Y %H:%M") %>
+  </span>
+</div>
+<div class="group_assignment_details">
+  <%=@assignment.enunciation%>
+</div>
+
+<div class="group_assignment_titles">
+  Arquivos
+  <span class="group_assignment_download_icon">
+    -baixar tudo-
+  </span>
+</div>
+<div class="group_assignment_details">
+  Arquivos aqui (enviados pelos alunos? então é bom informar o grupo que enviou)
+</div>
+
+<div class="group_assignment_titles">
+  <%= t(:group_assignment_title)%>
+</div>
+<div class="group_assignment_details">
+  <div class="group_assignment_content" id="group_assignment_content_<%=@assignment.id%>">
+
+      <% unless @groups.nil? or @groups.empty? %>
+        <% @groups.each do |group| %>
+          <div class="group_participants" id="group_<%=group['id']%>">
+            <h3 class="group_assignment_name" id="group_name_<%=group["id"]%>"><%= group["group_name"] %></h3>
+            <div id="edit_group_<%=group["id"]%>" style="display:none;">
+              <%= text_field_tag "new_groups_names[][#{@assignment.id}]", group["group_name"], :group_id => group["id"], :id => "text_field_group_#{group['id']}", :class => "rename_group" %>
+              <% group_has_files = !SendAssignment.find_all_by_group_assignment_id(group["id"]).empty? %>
+              <% data_tooltip = !group_has_files ? nil : t(:group_assignment_delete_error) %>
+              <a id="remove_group_<%=group['id']%>" class="remove_group" onclick="delete_group('group_<%=group['id']%>', <%=@assignment.id%>, <%=group_has_files%>);" title="<%=data_tooltip%>">x</a>
+            </div>
+            <% gp = group_participants(group["id"])%>
+            <ul id="group_ul_<%=group['id']%>" value="<%=group['id']%>" name="groups_ul">
+              <% unless gp.empty? %>
+                <% gp.each do |p| %>
+                  <% can_be_moved = SendAssignment.find_all_by_group_assignment_id_and_user_id(group["id"], p["user_id"]).empty? %>
+                  <% data_tooltip = can_be_moved ? nil : t(:student_already_sent_files) %>
+                  <li class="student_<%=p['user_id']%>" value="<%=p['user_id']%>" id="<%=can_be_moved%>" onmouseover="student_mouseover(this, '<%=t(:student_already_sent_files)%>');" onmouseout="student_mouseout(this);"><%= p["name"] %>
+                <% end %>
+              <% else %>
+                <li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      <% end %>
+
+      <div class="group_participants">
+        <h3 class="group_assignment_name"><%= t(:students_with_no_group) %></h3>
+        <%= hidden_field_tag "new_groups_names[][#{@assignment.id}]", 'no_group', :class => "rename_group" %>
+          <ul id='ul_no_group'>
+            <% unless @students_without_group.nil? or @students_without_group.empty? %>
+              <% @students_without_group.each do |student_without_group| %>
+                <li class="student_<%=student_without_group.id%>" value="<%=student_without_group.id%>" id="true" onmouseover="student_mouseover(this, 'no_message');" onmouseout="student_mouseout(this);"><%= student_without_group.name %></li>
+              <% end %>
+            <% else %>
+              <li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>
+            <% end %>
+          </ul>
+      </div>
+
+      <div class="import_and_new_groups">
+      </div>
+
+    </div>
+
+</div>
+
+
+    <div class="group_assignment_buttons">
+
+        <input type="button" id='manage_group_assignment_<%=@assignment.id%>' value='<%=t(:manage_groups_assignments)%>' class="btn btn_default" onclick="btn_manage_groups('<%=@assignment.id%>', '<%=verify_group_of_assignments(@assignment.id)%>');"/>
+
+        <input type="button" value="<%= t(:group_assignment_save) %>" class="btn btn_main" onclick="btn_save('<%=@assignment.id%>');" id='save_changes_assignment_<%=@assignment.id%>' style="display:none;"/>
+
+        <input type="button" id='cancel_changes_assignment_<%=@assignment.id%>' value='<%=t(:group_assignment_cancel)%>' class="btn btn_caution" onclick="btn_cancel('<%=@assignment.id%>');" style="display: none;"/>
+
+    </div>
+
+<script type="text/javascript">
+
+  // Variáveis
+
+  var deleted_groups = new Array();
+  var url = '<%= manage_groups_group_assignments_path %>';
+
+  // Métodos
+
+  $(".group_assignment_title").click(function(){
+    $(this).toggleClass('group_assignment_title_contract');
+  })
+
+  function put_empty_message(){
+    // recupera todos os grupos da atividade
+    var all_groups = $('ul');
+    for(var i = 0; i<all_groups.length; i++){
+      var all_participants_each_group = $('li', all_groups[i]);
+      // quando ele estiver vazio, acrescenta uma mensagem informativa
+      if(all_participants_each_group.length == 0){
+        $('<li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>').appendTo(all_groups[i]);
+      }
+    }
+  }
+
+  function show_import_and_new_groups_box(show_import_button) {
+    var new_and_import_groups_box = new Array();
+
+    new_and_import_groups_box.push('<div class="group_assignments_manage_buttons">');
+      new_and_import_groups_box.push('<div class="group_assignments_manage_buttons_title">');
+      new_and_import_groups_box.push('</div>');
+      new_and_import_groups_box.push('<ul>');
+        new_and_import_groups_box.push('<li>');
+          new_and_import_groups_box.push('<input type="button" id="new_group_assignment" value="<%=t(:group_assignment_new)%>" class="btn btn_default" onclick="btn_new_group(\'<%=@assignment.id%>\', \'<%= t(:no_participant_group_assignment) %>\');"/>');        
+        new_and_import_groups_box.push('</li>');
+          // if (!show_import_button){
+            new_and_import_groups_box.push('<li id="btn_import">');
+              new_and_import_groups_box.push('<input type="button" id="import" value="<%=t(:group_assignment_import)%>" class="btn btn_default" onclick="showImportGroupBox(\'<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => GroupAssignment.first.id, :assignment_id => @assignment.id)%>\', \'\');"/>');
+            new_and_import_groups_box.push('</li>');
+          // }
+      new_and_import_groups_box.push('</ul>');
+    new_and_import_groups_box.push('</div>');
+
+    // cria a nova div de novo grupo 
+    $(new_and_import_groups_box.join("")).appendTo($(".import_and_new_groups"));
+  }
+
+  // Botões
+
+  function btn_cancel(assignment_id){
+    if (confirm('<%= t(:group_assignment_confirm_cancel) %>')){
+      var continue_with_request = true;
+      $.ajax({
+        url: url,
+        type: 'PUT',
+        data:  {'btn_cancel': 'cancel', 'assignment_id': assignment_id},
+        success: function(data) {
+          $('#group_assignment_content_' + assignment_id).html(data);
+          undo_btn_manage_groups_divs_changes(assignment_id, 'cancel');
+          // mostra mensagem
+          flash_message('<%= t(:group_assignment_cancel_message) %>', 'notice');
+        }
+      });
+      return continue_with_request; 
+    }
+  }
+
+  function btn_save(assignment_id) {
+    if (confirm('<%= t(:group_assignment_confirm_save) %>')){
+      var groups = $(".group_participants ul");
+      var text_fields = $(".rename_group");
+      var groups_to_save = new Array();
+
+      for (var i = 0; i < groups.length; i++) {
+        var groups_names = $(text_fields[i]).map(function(){return this.value});
+        var each_group_students_ids = $('li', groups[i]).map(function(){
+          if(this.id != 'no_students_message'){return this.value}});
+
+        groups_to_save.push({
+          'group_id'   : $(groups[i]).attr('value'),
+          'group_name' : groups_names,
+          'student_ids': each_group_students_ids
+        });
+      } // for -> groups
+
+      var continue_with_request = true;
+      $.ajax({
+        url: url,
+        type: 'POST',
+        data:  {'groups': groups_to_save, 'assignment_id': assignment_id, 'deleted_groups_divs_ids': deleted_groups},
+        success: function(data) {
+          if (data.success == false) {
+            continue_with_request = false;
+            flash_message(data.flash_msg, data.flash_class);
+          }else{
+            $('#group_assignment_content_' + assignment_id).html(data);
+            undo_btn_manage_groups_divs_changes(assignment_id, 'save');
+            flash_message('<%= t(:group_assignment_management_success) %>', 'notice')
+          }
+        }
+      });
+      return continue_with_request; 
+    }
+  }
+
+</script>

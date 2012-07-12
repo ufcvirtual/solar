@@ -5,7 +5,7 @@ class GroupAssignmentsController < ApplicationController
   before_filter :prepare_for_group_selection #, :only => [:list]
   # before_filter :user_related_to_assignment?, :except => [:index]
   before_filter :can_import?, :only => [:import_groups_page, :import_groups]
-  load_and_authorize_resource
+  # load_and_authorize_resource
 
   # lista trabalhos em grupo
   def index
@@ -14,6 +14,15 @@ class GroupAssignmentsController < ApplicationController
 
     #traz apenas os trabalhos de grupo dessa turma
     @assignments = GroupAssignment.all_by_group_id(group_id)
+  end
+
+  # exibe detalhes do trabalho e os grupos
+  def show_assignment
+
+    @assignment = Assignment.find(params[:assignment_id])
+    @groups = group_assignments(@assignment.id)
+    @students_without_group = no_group_students(@assignment.id)
+
   end
 
   ##

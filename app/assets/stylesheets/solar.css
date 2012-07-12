@@ -3092,7 +3092,6 @@ td.form_error {
 .group_assignment_title {
     padding: 6px 10px;
     cursor: pointer;
-    background: url('../images/group_assignment_expand.png') no-repeat right center;
 }
 
 .group_assignment_title_contract {
@@ -3104,28 +3103,71 @@ td.form_error {
 }
 
 .group_assignment_details {
-    display: none;
-    margin-left: 20px;
+    font-size: 13px;
 }
 
 .group_participants {
-    border: 1px solid #d0d0d0;
-    background-color: white;
+    background-color: #e9edf2;
     float: left;
     width: 230px;
-    min-height: 50px;
+    min-height: 100px;
     margin-right: 10px;
     margin-bottom: 10px;
 }
 
 .group_participants ul {
-    padding: 5px;
+    padding: 7px;
 }
 
 .group_assignment_name {
-    text-align: center;
-    background-color: #f1f1f1;
-    padding: 2px 5px;
+    background-color: #134076;
+    color: #FFFFFF;
+    font-weight: normal;
+    padding: 2px 7px 2px 7px;
+}
+
+.group_participants_manage {
+    background-color: #fefce6;
+    float: left;
+    width: 230px;
+    min-height: 100px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.group_participants_manage ul{
+    padding: 7px;
+}
+
+.group_assignment_name_manage{
+    background-color: #fcda17;
+    color: #000000;
+    font-weight: normal;
+    padding: 2px 7px 2px 7px;   
+}
+
+.group_assignments_manage_buttons{
+    background-color: #f7f7f7;
+    float: left;
+    width: 230px;
+    min-height: 95px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #a9a9aa;
+}
+
+.group_assignments_manage_buttons ul{
+    margin-left: 32%;
+    margin-top: 10px;
+}
+
+.group_assignments_manage_buttons li{
+    margin-bottom: 7px;
+}
+
+.group_assignments_manage_buttons_title{
+    background-color: #a9a9aa;
+    height: 15px;
 }
 
 .page_title{
@@ -3134,34 +3176,11 @@ td.form_error {
     font-weight: bold;
 }
 
-.all_students{
-    border: 1px solid #dedede;
-    background-color: #ffffff;
-    width: 380px;
-    min-height: 100px;
-    margin-left: 100px;
-    margin-top: -18px;
-    display: inline-block;
-    padding: 6px 6px 5px 8px;
-}
-
-.all_students li{
-    list-style-type: none;
-}
-
 .all_students label{
     margin-left: 5px;
     color: #000000;
     text-align: left;
     width: 320px;
-}
-
-.all_students input{
-    width: 20px;
-}
-
-.each_student {
-    padding: 2px 2px 2px 2px;
 }
 
 .group_assignments_import{
@@ -3193,8 +3212,33 @@ td.form_error {
 }
 
 .rename_group{
-    width: 205px;
+    width: 202px;
+    height: 8px;
+    border: 3px solid #fcda17;
 }
+
+.group_assignment_titles{
+    margin-top: 10px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #D0D0D0;
+}
+
+.group_assignment_delivery_date{
+    float: right;
+    font-size: 13px;
+    /*falta imagem do relógio*/
+}
+
+.group_assignment_download_icon{
+    float: right;
+    font-size: 13px;
+    /*imagem para baixar*/
+}
+
+.remove_group{
+    cursor: pointer;
+}
+
 /* FORM: criação de unidade curricular */
 .form-inputs.block_content {
     padding-top: 5px;

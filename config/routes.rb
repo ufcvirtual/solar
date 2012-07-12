@@ -56,10 +56,11 @@ Solar::Application.routes.draw do
   resources :enrollments, :only => [:index]
   resources :offers
   resources :scores, :only => [:show]
-  resources :courses#, :group_assignments
+  resources :courses
 
   resources :group_assignments, :only => [:index] do
     post :manage_groups, :on => :collection
+    # get :show_assignment, :on => :collection
   end
 
   get "pages/index"
