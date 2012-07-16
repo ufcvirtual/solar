@@ -1,0 +1,10 @@
+%td
+  %input{type: "checkbox", name: @allocation.id, value: @allocation.id, class: "cbx_value"}
+%td
+  = @allocation.user.name
+%td
+  = @allocation.allocation_tag.group.code
+%td
+  = name_of(@allocation.status)
+%td
+  %input{value: t(:allocation_manage_manage), :"show-link" => allocation_path(@allocation), :"edit-link" => edit_allocation_path(@allocation), type: "button", onclick: "javascript:manage_enrollment(this);", class: "btn btn_default btn_main btn_manage_enrollment"}

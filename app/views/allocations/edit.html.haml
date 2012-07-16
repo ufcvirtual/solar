@@ -1,0 +1,34 @@
+- unless @multiple
+  %td
+    %input{type: "checkbox", name: @allocation.id, value: @allocation.id, class: "cbx_value"}
+  %td
+    = @allocation.user.name
+  %td
+    - if @change_group
+      = select(:code, :id, @groups.collect { |g| [g.code, g.id] }, {selected: @allocation.allocation_tag.group_id})
+    - else
+      = @groups.code
+  %td
+    = select(:status, :id, @status_hash.invert.to_a, {selected: @allocation.status})
+  %td
+    %input{type: "button", value: t(:save), :"allocation-id" => @allocation.id, :"save-link" => allocation_path(@allocation), class: "btn btn_main btn_save_allocation", onclick: "javascript:save_allocation(this);"}
+    %input{type: "button", value: t(:cancel), :"show-link" => allocation_path(@allocation), :"edit-link" => edit_allocation_path(@allocation), class: "btn btn_default btn_manage_cancel", onclick: "javascript:manage_cancel(this);"}
+- else
+  #allocations_manage_selected
+    = t(:students) + ':'
+    %br
+    = raw @users.join('<br />')
+    %br
+    %br
+    = t(:group)
+    - if @change_group
+      = select(:group, :id, @groups.collect { |g| [g.code, g.id] }, {selected: @allocation.allocation_tag.group_id})
+    - else
+      = @groups.code
+    %br
+    = t(:status) + ':'
+    = select(:status, :id, @status_hash.invert.to_a, {selected: @allocation.status})
+    %br
+    %br
+    %input{type: "button", value: t(:save), :"save-link" => allocation_path(@allocation_ids.join(',')), class: "btn btn_main btn_save_allocation", onclick: "javascript:save_allocations(this);"}
+    %input{type: "button", value: t(:cancel), class: "btn btn_default btn_manage_cancel", onclick: "javascript:removeLightBox();"}

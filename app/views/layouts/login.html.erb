@@ -1,32 +1,18 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Solar</title>
     <%= favicon_link_tag '/images/favicon.ico' %>
-    <%= stylesheet_link_tag "login.css" %>
-    <%= javascript_include_tag "jquery-1.4.4.js" %>
-    <%= javascript_include_tag "jquery-ui-1.8.6.js" %>
-    <%= javascript_include_tag "user_form.js" %>
-    <%= javascript_include_tag "mysolar.js" %>
-    <%= javascript_include_tag "jquery.maskedinput-1.2.2"%>
+    <%= stylesheet_link_tag "login/login" %>
+
     <%= csrf_meta_tag %>
-
-    <script type="text/javascript">
-      jQuery(function($){
-        $("#cpf").mask("999.999.999-99");
-        $("#telephone").mask("(99)9999-9999");
-        $("#cell_phone").mask("(99)9999-9999");
-        $("#zipcode").mask("99999-999");
-      });
-    </script>
-
   </head>
   <body>
     <div id="login_wrapper">
+
       <%= yield %>
 
-      <!--Rodapé-->
       <div id="login_footer_push"></div>
       <%= render '/user_sessions/footer' %>
     </div>

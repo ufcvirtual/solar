@@ -36,3 +36,10 @@ group :test do
   gem "launchy", "2.1.0"
   # gem 'simplecov', '>= 0.5.3', :require => false
 end
+
+group :assets do
+  gem 'uglifier', '>= 1.0.3'
+end
+
+gem "haml", ">= 3.1.6"
+gem "haml-rails", ">= 0.3.4", :group => :development

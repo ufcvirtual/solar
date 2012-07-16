@@ -61,6 +61,13 @@ module Solar
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
+    # Enable the asset pipeline
+    config.assets.enabled = true
+    config.assets.compress = true
+
+    # Version of your assets, change this if you want to expire all your assets
+    config.assets.version = '1.0'
+
     # layout
     config.to_prepare do
       Devise::SessionsController.layout "login"
@@ -69,6 +76,5 @@ module Solar
       Devise::UnlocksController.layout "login"
       Devise::PasswordsController.layout "login"
     end
-
   end
 end

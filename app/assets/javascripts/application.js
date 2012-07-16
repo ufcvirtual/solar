@@ -1,11 +1,11 @@
-/*******************************************************************************
- * Submenu da conta do usuário
- * */
+//= require jquery
+//= require jquery_ujs
+//= require_tree .
 
 
-/*******************************************************************************
+/* *****************************************************************************
  * LightBox genérico do sistema
- * */
+ * *****************************************************************************/
 function showLightBoxURL(url, width, height, canClose, title){
     showLightBox('', width, height, canClose,title);
 
