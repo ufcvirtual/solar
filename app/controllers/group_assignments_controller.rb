@@ -1,4 +1,5 @@
 include GroupAssignmentHelper
+include FilesHelper
 
 class GroupAssignmentsController < ApplicationController
 
@@ -22,7 +23,12 @@ class GroupAssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
     @groups = group_assignments(@assignment.id)
     @students_without_group = no_group_students(@assignment.id)
-
+    @assignment_files = []
+    send_assignments = SendAssignment.find_all_by_assignment_id(@assignment.id)
+    send_assignments.each{ |send_assignment|
+      @assignment_files += AssignmentFile.find_all_by_send_assignment_id(send_assignment.id)
+    }
+    
   end
 
   ##
@@ -115,6 +121,27 @@ class GroupAssignmentsController < ApplicationController
 
     flash[:notice] = t(:group_assignment_import_success)
     redirect_to group_assignments_url
+  end
+
+  def download_single_file
+    assignment_id = params[:assignment_id]
+    assignment_file = AssignmentFile.find_by_id(params[:file_id])
+    error_redirect = {:controller => :group_assignments, :action => :show_assignment, :assignment_id => assignment_id}
+    download_file(error_redirect, assignment_file.attachment.path, assignment_file.attachment_file_name)
+  end
+
+## não feito
+  def download_folder_files_ziped
+    # allocation_tag_ids = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
+    # curriculum_unit_id = active_tab[:url]["id"]
+    # redirect_error = {:action => :list, :id => curriculum_unit_id}
+    assignment_id = params[:assignment_id]
+    
+    all_files = SupportMaterialFile.find_files(allocation_tag_ids, params[:folder])
+    path_zip = make_folders_zip(all_files, 'attachment_file_name', t(:support_folder_name))
+
+    # download do zip
+    download_file(redirect_error, path_zip)
   end
 
 private

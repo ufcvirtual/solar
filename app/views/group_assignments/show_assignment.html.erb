@@ -6,7 +6,9 @@
 </div>
 
 <div class="group_assignment_titles">
-  Descrição
+  <%= t(:activity_description) %>
+  <span class="no_permission_message"> 
+  </span>
   <span class="group_assignment_delivery_date">
     Entrega de <%= @assignment.schedule.start_date.strftime("%d/%m/%Y %H:%M") %> até <%= @assignment.schedule.end_date.strftime("%d/%m/%Y %H:%M") %>
   </span>
@@ -16,17 +18,30 @@
 </div>
 
 <div class="group_assignment_titles">
-  Arquivos
+  <%= t(:group_assignment_files) %>
+  <span class="no_permission_message"> 
+  </span>
   <span class="group_assignment_download_icon">
     -baixar tudo-
   </span>
 </div>
 <div class="group_assignment_details">
-  Arquivos aqui (enviados pelos alunos? então é bom informar o grupo que enviou)
+  <% @assignment_files.each{ |file|  %>
+  <div class="group_assignment_files">
+    <%= link_to image_tag(icon_attachment(file.attachment_file_name)), {:controller => :group_assignments, :action => :download_single_file, 
+                                                                        :file_id => file.id, :assignment_id => @assignment.id },{:class => 'file_icon'} %>
+    <%= link_to file.attachment_file_name, {:controller => :group_assignments, :action => :download_single_file, :file_id => file.id, 
+                                            :assignment_id => @assignment.id } %>
+  </div>
+  <% } %>
+  -informar grupo que enviou-
 </div>
 
 <div class="group_assignment_titles">
   <%= t(:group_assignment_title)%>
+  <span class="group_assignment_manage_button">
+    <input type="button" id='manage_group_assignment_<%=@assignment.id%>' value='<%=t(:manage_groups_assignments)%>' class="btn btn_main" onclick="btn_manage_groups('<%=@assignment.id%>', '<%=verify_group_of_assignments(@assignment.id)%>');"/>
+  </span>
 </div>
 <div class="group_assignment_details">
   <div class="group_assignment_content" id="group_assignment_content_<%=@assignment.id%>">
@@ -71,9 +86,9 @@
           </ul>
       </div>
 
-      <div class="import_and_new_groups">
-      </div>
+    </div>
 
+    <div class="import_and_new_groups">
     </div>
 
 </div>
@@ -81,11 +96,9 @@
 
     <div class="group_assignment_buttons">
 
-        <input type="button" id='manage_group_assignment_<%=@assignment.id%>' value='<%=t(:manage_groups_assignments)%>' class="btn btn_default" onclick="btn_manage_groups('<%=@assignment.id%>', '<%=verify_group_of_assignments(@assignment.id)%>');"/>
+        <input type="button" id='cancel_changes_assignment_<%=@assignment.id%>' value='<%=t(:group_assignment_cancel)%>' class="btn btn_default" onclick="btn_cancel('<%=@assignment.id%>');" style="display: none;"/>
 
         <input type="button" value="<%= t(:group_assignment_save) %>" class="btn btn_main" onclick="btn_save('<%=@assignment.id%>');" id='save_changes_assignment_<%=@assignment.id%>' style="display:none;"/>
-
-        <input type="button" id='cancel_changes_assignment_<%=@assignment.id%>' value='<%=t(:group_assignment_cancel)%>' class="btn btn_caution" onclick="btn_cancel('<%=@assignment.id%>');" style="display: none;"/>
 
     </div>
 
@@ -115,6 +128,7 @@
   }
 
   function show_import_and_new_groups_box(show_import_button) {
+
     var new_and_import_groups_box = new Array();
 
     new_and_import_groups_box.push('<div class="group_assignments_manage_buttons">');
@@ -124,16 +138,17 @@
         new_and_import_groups_box.push('<li>');
           new_and_import_groups_box.push('<input type="button" id="new_group_assignment" value="<%=t(:group_assignment_new)%>" class="btn btn_default" onclick="btn_new_group(\'<%=@assignment.id%>\', \'<%= t(:no_participant_group_assignment) %>\');"/>');        
         new_and_import_groups_box.push('</li>');
-          // if (!show_import_button){
+          if (!show_import_button){
             new_and_import_groups_box.push('<li id="btn_import">');
               new_and_import_groups_box.push('<input type="button" id="import" value="<%=t(:group_assignment_import)%>" class="btn btn_default" onclick="showImportGroupBox(\'<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => GroupAssignment.first.id, :assignment_id => @assignment.id)%>\', \'\');"/>');
             new_and_import_groups_box.push('</li>');
-          // }
+          }
       new_and_import_groups_box.push('</ul>');
     new_and_import_groups_box.push('</div>');
 
     // cria a nova div de novo grupo 
     $(new_and_import_groups_box.join("")).appendTo($(".import_and_new_groups"));
+
   }
 
   // Botões
@@ -158,7 +173,7 @@
 
   function btn_save(assignment_id) {
     if (confirm('<%= t(:group_assignment_confirm_save) %>')){
-      var groups = $(".group_participants ul");
+      var groups = $(".group_participants_manage ul");
       var text_fields = $(".rename_group");
       var groups_to_save = new Array();
 

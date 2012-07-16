@@ -3137,6 +3137,7 @@ td.form_error {
 
 .group_participants_manage ul{
     padding: 7px;
+    min-height: 60px;
 }
 
 .group_assignment_name_manage{
@@ -3226,7 +3227,7 @@ td.form_error {
 .group_assignment_delivery_date{
     float: right;
     font-size: 13px;
-    /*falta imagem do relógio*/
+    background: url('../images/1341841517_clock.png') no-repeat left;
 }
 
 .group_assignment_download_icon{
@@ -3237,6 +3238,22 @@ td.form_error {
 
 .remove_group{
     cursor: pointer;
+}
+
+.group_assignment_manage_button{
+    float: right;
+    /*margin-top: -6px;*/
+    margin-top: -8px;
+}
+
+.group_assignment_files a{
+    color: #134076;
+    text-decoration: underline;
+}
+
+.no_permission_message{
+    font-size: 10px;
+    text-decoration: italic;
 }
 
 /* FORM: criação de unidade curricular */

@@ -590,6 +590,8 @@
   manage_groups_assignments: "Manage groups"
   assignment_without_groups: "Assignment haven't groups"
   group_assignment_import_success: "Groups imported with success"
+  group_assignment_files: Files
+  group_assignment_description: Description
 
   # Mensagem de erro para permissão
   no_permission: "you haven't permission to access this page"

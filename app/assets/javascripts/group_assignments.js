@@ -33,8 +33,8 @@
     $('#cancel_changes_assignment_'+assignment_id).show();
     $(".group_participants").attr("class", "group_participants_manage");
     $(".group_assignment_name").attr("class", "group_assignment_name_manage");
-    show_import_and_new_groups_box(show_import_button);
     dragndrop(assignment_id);
+    show_import_and_new_groups_box(show_import_button);
   }
 
   function student_mouseover(this_div, tooltip_message){
@@ -45,6 +45,7 @@
     if (student_can_move == 'true' && student_class.indexOf('ui-draggable') != -1 ){
       student_div.css("color","#134076");
       student_div.css("border-bottom","2px dashed #fdec9c");
+      // student_div.css("cursor", "../public/btn-arrastar.png");
       student_div.css("cursor", "crosshair");
       // url(smiley.gif),url(myBall.cur),auto
     } 
@@ -73,7 +74,7 @@
     new_group_hmtl.push('<div class="group_participants_manage another_new_group" id="' + new_idx + '">');
       new_group_hmtl.push('<div class="new_group" id="edit_'+new_idx+'">');
         new_group_hmtl.push('<input type="text_field" name="new_groups_names[][' + assignment_id + ']" id="text_field_'+ new_idx +'" class="rename_group" />');
-        new_group_hmtl.push('<a onclick="delete_group(\'' + new_idx + '\', \'' + assignment_id + '\', false);">x</a>');
+        new_group_hmtl.push('<a class="remove_group" onclick="delete_group(\'' + new_idx + '\', \'' + assignment_id + '\', false);"> x</a>');
       new_group_hmtl.push('</div>');
       new_group_hmtl.push('<ul value="0">');
       new_group_hmtl.push('<li id="no_students_message">' + message_empty_group + '</li>')
@@ -82,7 +83,7 @@
     // cria a nova div de novo grupo 
     $(new_group_hmtl.join('')).appendTo($('#group_assignment_content_'+assignment_id).last());
     // pega o último grupo criado
-    var new_group_ul = $('.group_participants ul').last();
+    var new_group_ul = $('.group_participants_manage ul').last();
     // e permite que ele receba participantes
     active_droppable_element(new_group_ul, assignment_id);
   }
@@ -93,6 +94,7 @@
     $('#manage_group_assignment_'+assignment_id).show();
     $('#save_changes_assignment_'+assignment_id).hide();
     $('#cancel_changes_assignment_'+assignment_id).hide();
+    $('.group_assignments_manage_buttons').remove();
   }
 
   function group_name_label_to_text_field(assignment_id){
@@ -149,7 +151,7 @@
     // cria objetos "droppable"
     obj.droppable({
       accept: ".group_participants_manage li",
-      hoverClass: "ui-state-active",
+      // hoverClass: "ui-state-active",
       drop: function( event, ui ) {
         // recolhe o id do estudante antes de remover o elemento que tem a informação
         var participant_id = ui.draggable.attr('value');
