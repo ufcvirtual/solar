@@ -1,0 +1,16 @@
+!!!
+%html
+  %head
+    %meta{:charset => "utf-8"}
+    %meta{"http-equiv" => "X-UA-Compatible", :content => "IE=edge,chrome=1"}
+    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1"}
+    %title= content_for?(:title) ? yield(:title) : "Solar"
+    = stylesheet_link_tag "div_layout", :media => "all"
+    = javascript_include_tag "jquery"
+    = javascript_include_tag "lesson"
+    = csrf_meta_tags
+    = yield(:head)
+  %body{style: "overflow-x: hidden; overflow-Y: hidden; overflow:hidden;"}
+    %iframe.frame_navigation#frame_content{src: url_for(:home), frameborder: 0}
+    / Div a ser manipulada para apresentação de aulas
+    #lesson_external_div

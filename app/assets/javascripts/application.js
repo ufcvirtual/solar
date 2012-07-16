@@ -1,7 +1,9 @@
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
-
+//= require mysolar
+//= require rails
+//= require message
+//= require lesson
 
 /* *****************************************************************************
  * LightBox genérico do sistema

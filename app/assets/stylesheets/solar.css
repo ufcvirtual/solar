@@ -1,3 +1,8 @@
+/*
+ *= require fonts
+ */
+
+
 /* css reset */
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {
     margin:0;
@@ -109,11 +114,11 @@ h3 {
 }
 
 #flash_message.notice {
-    background: url('../images/notice.gif') no-repeat 5px center #f5ffec;
+    background: url('notice.gif') no-repeat 5px center #f5ffec;
 }
 
 #flash_message.alert {
-    background: url('../images/alert.gif') no-repeat 5px center #fff6f6;
+    background: url('alert.gif') no-repeat 5px center #fff6f6;
 }
 
 label {
@@ -618,7 +623,7 @@ a.mysolar_top_link{
 
 /* fechar das abas */
 .tabs_close {
-    background: url('../assets/tabs_close.png') no-repeat right bottom;
+    background: url('tabs_close.png') no-repeat right bottom;
     display: inline-block;
     width: 11px;
     height: 11px;

@@ -22,13 +22,13 @@
 	z-index:20;
 }
 #lessonf {
-        position: relative;
-        display: block;
-        left: 0px;        
+  position: relative;
+  display: block;
+  left: 0px;        
 	width: 100%;
-        border: none;
-        height: 100%;
-        top: 0px;
+  border: none;
+  height: 100%;
+  top: 0px;
 }
 
 #lesson_external_div {

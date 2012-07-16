@@ -217,7 +217,6 @@ textarea{
     position: relative;
 }
 #login_header {
-    /*    background:url('../images/solar_logo.png') no-repeat center 15px #003e7a;*/
     background: #003e7a;
     height: 165px;
     text-align: center;
@@ -443,11 +442,11 @@ textarea{
 }
 
 #flash_message.alert {
-    background: url('../images/alert.gif') no-repeat 5px center #fff6f6;
+    background: url('../alert.gif') no-repeat 5px center #fff6f6;
 }
 
 #flash_message.notice {
-    background: url('../images/notice.gif') no-repeat 5px center #f5ffec;
+    background: url('../notice.gif') no-repeat 5px center #f5ffec;
 }
 
 /******** cadastro de novo usuario com layout do login **********/
