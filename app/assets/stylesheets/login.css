@@ -442,11 +442,11 @@ textarea{
 }
 
 #flash_message.alert {
-    background: url('../alert.gif') no-repeat 5px center #fff6f6;
+    background: url('alert.gif') no-repeat 5px center #fff6f6;
 }
 
 #flash_message.notice {
-    background: url('../notice.gif') no-repeat 5px center #f5ffec;
+    background: url('notice.gif') no-repeat 5px center #f5ffec;
 }
 
 /******** cadastro de novo usuario com layout do login **********/

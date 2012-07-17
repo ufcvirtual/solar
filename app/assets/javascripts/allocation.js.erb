@@ -21,12 +21,12 @@ $(function() {
     var ch = $('.cbx_value:checked');
 
     if (ch.length == 0) { // nenhum selecionado
-      alert('<%= t(:error_no_item_selected) %>');
+      alert('<%= I18n.t(:error_no_item_selected) %>');
       return;
     } else { // verificar se todos os selecionados possuem o mesmo status
       for (var i = 1; i < ch.length; i++) {
         if ( $(ch[i]).attr('status-value') != $(ch[i-1]).attr('status-value')) {
-          alert('<%= t(:allocation_manage_error_not_same_status) %>');
+          alert('<%= I18n.t(:allocation_manage_error_not_same_status) %>');
           return;
         }
       }
@@ -38,8 +38,9 @@ $(function() {
         sel.push(ch[i].value);
       }
     }
-    var url = "<%= edit_allocation_path('something', :multiple => 'yes') %>".replace('something', sel.join(','));
-    showLightBoxURL(url, 400, 250, true, '<%= t(:allocation_manage_selected)%>');
+
+    var url = "<%= Rails.application.routes.url_helpers.edit_allocation_path('something', :multiple => 'yes') %>".replace('something', sel.join(','));
+    showLightBoxURL(url, 400, 250, true, '<%= I18n.t(:allocation_manage_selected)%>');
   });
 });
 
@@ -79,9 +80,9 @@ function save_allocations(obj) {
     },
     success: function(data) {
       if (data.status = 'ok') {
-        $(window).attr("location", '<%= enrollments_allocations_path(:status => params[:status]) %>');
+        $(window).attr("location", '<%= Rails.application.routes.url_helpers.enrollments_allocations_path %>');
       } else {
-        alert('<%= t(:allocation_manage_enrollment_unsuccessful_update) %>');
+        alert('<%= I18n.t(:allocation_manage_enrollment_unsuccessful_update) %>');
       }
     }
   });

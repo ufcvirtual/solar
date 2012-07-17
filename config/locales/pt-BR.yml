@@ -898,8 +898,8 @@
   allocation_manage_options: Opções
   allocation_manage_manage: Gerenciar
   allocation_manage_selected: Gerenciar Selecionados
-  allocation_manage_enrollment_successful_update: Atualização realizada com sucesso
-  allocation_manage_enrollment_unsuccessful_update: Atualização não realizada
+  allocation_manage_enrollment_successful_update: Atualizacao realizada com sucesso
+  allocation_manage_enrollment_unsuccessful_update: Atualizacao nao realizada
   allocation_manage_error_not_same_status: Selecione apenas registros com o mesmo status
 
   ## Edição

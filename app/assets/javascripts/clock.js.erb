@@ -1,0 +1,28 @@
+/**
+ * Clock of system
+ */
+
+$(function() {
+  new showLocalTime("server_clock");
+
+  function showLocalTime(container){
+    if (!$('#'+container).length) return;
+    //formato: 9/5/2011 9:53:30 (9/5 => 5/set)
+    updateTime(container, "<%= DateTime.now.strftime("%m/%d/%Y %H:%M:%S") %>");
+  }
+
+  function updateTime(el, server_time) {
+    var localtime = new Date(server_time);
+    localtime.setSeconds(localtime.getSeconds()+1);
+
+    var hour    = localtime.getHours();
+    var minutes = localtime.getMinutes();
+    var seconds = localtime.getSeconds();
+    $("#"+el).html(formatNumber(hour)+":"+formatNumber(minutes)+":"+formatNumber(seconds));
+    setTimeout(function(){updateTime(el, localtime);},1000);
+  }
+
+  function formatNumber(num) {
+    return (num<=9)? "0"+num : num;
+  }
+});

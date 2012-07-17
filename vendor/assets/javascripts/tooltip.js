@@ -12,8 +12,7 @@ $(document).ready(function(){
       }
     },
     style: {
-      // classes: 'ui-tooltip-shadow ui-tooltip-dark'
       classes: 'ui-tooltip-tipsy'
     }
   });
-})
+});

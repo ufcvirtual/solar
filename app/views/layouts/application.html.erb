@@ -16,11 +16,10 @@
       global_config.locale.I18n = '<%=I18n.locale%>';
       global_config.locale.dateFormat = '<%=t :search_format_date %>';
 
-      jQuery(function($){
+      $(function($){
         // altura da linha divisória entre o menu e o conteúdo
         // 10px do margin-top de mysolar_sidebar, 10 do margin-top do block_locale e 5 de espaco mesmo... :)
         $("#mysolar_sidebar").height($('#body_wrapper').height() - $('#mysolar_topbar').height() - $('#block_locale').height() - 25);
-
       });
 
       var _gaq = _gaq || [];
@@ -33,35 +32,6 @@
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
-
-      /*********************
-       * Relógio do Sistema
-       *********************/
-
-      $(document).ready(function() {
-        new showLocalTime("server_clock");
-      })
-      
-      function showLocalTime(container){
-          if (!$('#'+container).length) return;
-          //formato: 9/5/2011 9:53:30 (9/5 => 5/set)
-          updateTime(container, "<%=DateTime.now.strftime("%m/%d/%Y %H:%M:%S")%>");
-      }
-
-      function updateTime(el, server_time){
-          var localtime = new Date(server_time);
-          localtime.setSeconds(localtime.getSeconds()+1);
-
-          var hour    = localtime.getHours();
-          var minutes = localtime.getMinutes();
-          var seconds = localtime.getSeconds();
-          $("#"+el).html(formatNumber(hour)+":"+formatNumber(minutes)+":"+formatNumber(seconds));
-          setTimeout(function(){updateTime(el, localtime);},1000);
-      }
-
-      function formatNumber(num){
-          return (num<=9)? "0"+num : num;
-      }
     </script>
   </head>
   <body>

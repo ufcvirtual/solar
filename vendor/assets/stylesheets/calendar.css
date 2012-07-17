@@ -10,11 +10,11 @@
  * http://docs.jquery.com/UI/Theming/API
  */
 
- .highlight-date-mark a {
+.highlight-date-mark a {
     background-color: #C2D0E2;
     color: #fff;
 }
- .ui-helper-hidden-accessible { display: none; }
+.ui-helper-hidden-accessible { display: none; }
 
 /* ... Component containers ... */
 
