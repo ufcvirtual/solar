@@ -24,9 +24,9 @@ class GroupAssignmentsController < ApplicationController
     @groups = group_assignments(@assignment.id)
     @students_without_group = no_group_students(@assignment.id)
     @assignment_files = []
-    send_assignments = SendAssignment.find_all_by_assignment_id(@assignment.id)
-    send_assignments.each{ |send_assignment|
-      @assignment_files += AssignmentFile.find_all_by_send_assignment_id(send_assignment.id)
+    send_assignments = SendAssignment.all(:conditions => ["assignment_id = ? AND user_id = ?", @assignment["id"], session["warden.user.user.key"][1][0]])
+    send_assignments.each_with_index{ |send_assignment, idx|
+      @assignment_files += AssignmentFile.find_all_by_send_assignment_id(send_assignment.id) unless (send_assignments[idx].group_assignment_id != nil)
     }
     
   end
@@ -130,18 +130,11 @@ class GroupAssignmentsController < ApplicationController
     download_file(error_redirect, assignment_file.attachment.path, assignment_file.attachment_file_name)
   end
 
-## não feito
-  def download_folder_files_ziped
-    # allocation_tag_ids = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
-    # curriculum_unit_id = active_tab[:url]["id"]
-    # redirect_error = {:action => :list, :id => curriculum_unit_id}
-    assignment_id = params[:assignment_id]
-    
-    all_files = SupportMaterialFile.find_files(allocation_tag_ids, params[:folder])
-    path_zip = make_folders_zip(all_files, 'attachment_file_name', t(:support_folder_name))
-
-    # download do zip
-    download_file(redirect_error, path_zip)
+  def download_all_files_zip
+    assignment_files = params[:all_files].collect{|file_id| AssignmentFile.find(file_id)}
+    error_redirect = {:controller => :group_assignments, :action => :show_assignment, :assignment_id => assignment_files.first.send_assignment.assignment_id}
+    path_zip = make_zip_files(assignment_files, 'attachment_file_name', 'Portfolio')
+    download_file(error_redirect, path_zip)
   end
 
 private

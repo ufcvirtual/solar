@@ -60,7 +60,6 @@ Solar::Application.routes.draw do
 
   resources :group_assignments, :only => [:index] do
     post :manage_groups, :on => :collection
-    # get :show_assignment, :on => :collection
   end
 
   get "pages/index"

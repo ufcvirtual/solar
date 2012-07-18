@@ -19,6 +19,7 @@ class ScoresTeacherController < ApplicationController
       curriculum_unit_id = params[:id]
       @students = ScoresTeacher.list_students_by_curriculum_unit_id_and_group_id(curriculum_unit_id, @group.id, @current_page)
     end
+
   end
 
 end

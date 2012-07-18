@@ -3227,13 +3227,11 @@ td.form_error {
 .group_assignment_delivery_date{
     float: right;
     font-size: 13px;
-    background: url('../images/1341841517_clock.png') no-repeat left;
 }
 
-.group_assignment_download_icon{
+.group_assignment_download_all{
     float: right;
     font-size: 13px;
-    /*imagem para baixar*/
 }
 
 .remove_group{
