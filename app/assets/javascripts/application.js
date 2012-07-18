@@ -4,7 +4,6 @@
 //= require tooltip
 //= require jquery-ui-1.8.6
 //= require jquery.ui.datepicker-en-GB
-//= require rails
 //= require mysolar
 //= require clock
 //= require lightbox
