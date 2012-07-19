@@ -24,11 +24,11 @@
                   <% if can? :student_detail, PortfolioTeacher %>
                     <%=link_to activity["name"], {:controller => :portfolio_teacher,
                       :action => :student_detail, :id => @student.id,
-                      :assignment_id => activity["assignment_id"],
+                      :assignment_id => activity["id"],
                       :send_assignment_id => activity["send_assignment_id"]}, {:class => 'link_content'} %>
                   <% elsif can? :activity_details, Portfolio %>
-                    <%=link_to activity["assignments_name"], {:controller => :portfolio,
-                      :action => :activity_details, :id => activity["assignment_id"],
+                    <%=link_to activity["name"], {:controller => :portfolio,
+                      :action => :activity_details, :id => activity["id"],
                       :bread => :menu_portfolio}, {:class => 'link_content'} %>
                   <% else %>
                     <%= activity["name"] %>
@@ -45,11 +45,11 @@
                   <% if can? :student_detail, PortfolioTeacher %>
                     <%=link_to activity["name"], {:controller => :portfolio_teacher,
                       :action => :student_detail, :id => @student.id,
-                      :assignment_id => activity["assignment_id"],
+                      :assignment_id => activity["id"],
                       :send_assignment_id => activity["send_assignment_id"]}, {:class => 'link_content'} %>
                   <% elsif can? :activity_details, Portfolio %>
-                    <%=link_to activity["assignments_name"], {:controller => :portfolio,
-                      :action => :activity_details, :id => activity["assignment_id"],
+                    <%=link_to activity["name"], {:controller => :portfolio,
+                      :action => :activity_details, :id => activity["id"],
                       :bread => :menu_portfolio}, {:class => 'link_content'} %>
                   <% else %>
                     <%= activity["name"] %>

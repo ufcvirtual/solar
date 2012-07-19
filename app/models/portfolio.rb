@@ -14,6 +14,7 @@ class Portfolio < ActiveRecord::Base
            t7.start_date,
            t7.end_date,
            t2.grade,
+           t2.id AS send_assignment_id,
            CASE WHEN t3.comment IS NOT NULL THEN 1 ELSE 0 END AS comments,
            CASE
             WHEN t7.start_date > now() THEN 'not_started'
