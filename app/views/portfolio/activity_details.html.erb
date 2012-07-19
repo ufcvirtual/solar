@@ -80,9 +80,7 @@
       <% unless (@comments.nil? or @comments.empty?) and (@files_comments.nil? or @files_comments.empty?) %>
         <% unless @comments.nil? %>
           <div class="block_content_text">
-            <% for comment in @comments %>
-              <%= comment %><br/>
-            <% end %>
+              <%= @comments %>
           </div>
         <% end %>
         <div class="block_content">

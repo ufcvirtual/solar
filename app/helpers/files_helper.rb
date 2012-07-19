@@ -11,7 +11,7 @@ module FilesHelper
   end
 
 
-   ##
+  ##
   # Cria zip de arquivos com folders internos e retorna o path do zip
   #
   # Obs.: O zip será gerado com um hash. Se o um arquivo com um mesmo hash já existir ele não será criado, apenas o path será retornado.
@@ -25,7 +25,6 @@ module FilesHelper
 
     all_file_names = files.collect{|file| [file[table_column_name]]}.flatten
     hash_name = Digest::SHA1.hexdigest(all_file_names.to_s)
-    ##
     zip_name_folder = hash_name if zip_name_folder.nil?
 
     # hash que será usado como nome do arquivo zip
@@ -45,7 +44,6 @@ module FilesHelper
       Zip::ZipFile.open(all_files_ziped_name, Zip::ZipFile::CREATE) { |zipfile|
         files.each do |file|
 
-      ##
           unless file.attachment_file_name.nil?
             unless zip_created
               zipfile.mkdir(zip_name_folder) # cria folder geral para colocar todos os outros folders dentro dele
@@ -57,13 +55,10 @@ module FilesHelper
               name_internal_folder = file.folder
               zipfile.mkdir(File.join(zip_name_folder, name_internal_folder))
             end
-      ##
 
-            zipfile.add(File.join(zip_name_folder, file.attachment_file_name), file.attachment.path) if File.exists?(file.attachment.path.to_s)
+            zipfile.add(File.join(zip_name_folder, name_internal_folder, file.attachment_file_name), file.attachment.path) if File.exists?(file.attachment.path.to_s)
           end
-        ##
         end
-        ##
       }
     end
 

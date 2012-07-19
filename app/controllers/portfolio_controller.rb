@@ -14,6 +14,7 @@ class PortfolioController < ApplicationController
 
     # listando atividades individuais pelo grupo_id em que o usuario esta inserido
     @individual_activities = Portfolio.student_activities(group_id, current_user.id, Individual_Activity)
+
     # Listando atividades em grupo pelo grupo_id em que o usuario esta inserido
     @group_activities = Portfolio.student_activities(group_id, current_user.id, Group_Activity)
 
@@ -48,14 +49,18 @@ class PortfolioController < ApplicationController
     # recuperar o send_assignment
     student_id = current_user.id
 
+    # Nome do grupo da atividade e uma lista com o "group_participants" desse grupo.
+    # Caso o aluno não esteja em nenhum grupo ou seja trabalho individual, serão nulos.
+    @group_participants = Portfolio.find_group_participants(@activity.id, current_user.id)
+    @group_name = @group_participants.first.group_assignment.group_name unless @group_participants.nil?
+
    if @activity.type_assignment == Individual_Activity
     # recupera os arquivos enviados pelo aluno
-    send_assignments = Portfolio.assignments_student(student_id, assignment_id).uniq
+    send_assignment = Portfolio.assignments_student(student_id, assignment_id).uniq
    elsif @activity.type_assignment == Group_Activity
     # recupera os arquivos enviados pelo grupo
-    groups_participants = Portfolio.find_group_participants(@activity.id, current_user.id)
-    group_assignment_id = groups_participants.first.group_assignment_id unless groups_participants.nil?
-    send_assignments = SendAssignment.find_all_by_assignment_id_and_group_assignment_id(assignment_id, group_assignment_id)
+    group_assignment_id = @group_participants.first.group_assignment_id unless @group_participants.nil?
+    send_assignment = SendAssignment.find_by_assignment_id_and_group_assignment_id(assignment_id, group_assignment_id)
    end
 
     @grade = nil # nota dada pelo professor a atividade enviada
@@ -64,28 +69,18 @@ class PortfolioController < ApplicationController
     @files_comments = [] # arquivos dos comentarios enviados pelo professor
 
     # verifica se o aluno ou o grupo respondeu a atividade
-    unless send_assignments.nil?
-      # se for trabalho individual, só existirá um send_assignment, logo, apenas uma nota.
-      # se for trabalho em grupo, a nota será a mesma para todos os integrantes, logo, recupera a primeira nota.
-      @grade = send_assignments.first.grade unless send_assignments.first.nil?
-
-      for send_assignment in send_assignments
-        # listagem de arquivos enviados pelo aluno ou grupo para a atividade
-        @files_sent += AssignmentFile.find_all_by_send_assignment_id(send_assignment.id)
-        comment_assignment = AssignmentComment.find_by_send_assignment_id(send_assignment.id)
-        # listagem de comentários para cada send_assignment existente (no caso de grupo, pois em trabalho individual existirá apenas um)
-        @comments << comment_assignment.comment unless comment_assignment.nil?
-        # listagem dos arquivos anexados pelo professor
-        @files_comments += CommentFile.all(:conditions => ["assignment_comment_id = ?", AssignmentComment.find_by_comment(comment_assignment.comment).id]) unless comment_assignment.nil?
-      end 
+    unless send_assignment.nil?
+      @grade = send_assignment.grade
+      # listagem de arquivos enviados pelo aluno ou grupo para a atividade
+      @files_sent = AssignmentFile.find_all_by_send_assignment_id(send_assignment.id)
+      comment_assignment = AssignmentComment.find_by_send_assignment_id(send_assignment.id)
+      # listagem de comentários para cada send_assignment existente (no caso de grupo, pois em trabalho individual existirá apenas um)
+      @comments = comment_assignment.comment unless comment_assignment.nil?
+      # listagem dos arquivos anexados pelo professor
+      @files_comments = CommentFile.all(:conditions => ["assignment_comment_id = ?", AssignmentComment.find_by_comment(comment_assignment.comment).id]) unless comment_assignment.nil?
     end
 
     @situation = Assignment.status_of_actitivy_by_assignment_id_and_student_id(assignment_id, student_id)
-
-    # Nome do grupo da atividade e uma lista com o "group_participants" desse grupo.
-    # Caso o aluno não esteja em nenhum grupo ou seja trabalho individual, serão nulos.
-    @group_participants = Portfolio.find_group_participants(@activity.id, current_user.id)
-    @group_name = @group_participants.first.group_assignment.group_name unless @group_participants.nil?
   end
 
   ##
@@ -261,19 +256,19 @@ class PortfolioController < ApplicationController
 
     authorize! :upload_files_individual_area, Portfolio
 
-    assignment_id = params[:assignment_id]
+    assignment = Assignment.find(params[:assignment_id])
 
     # redireciona para os detalhes da atividade individual
-    redirect = {:action => :activity_details, :id => assignment_id}
+    redirect = {:action => :activity_details, :id => assignment.id}
 
     # verificação se o arquivo individual é dele ou se faz parte do grupo
-    individual_activity_or_part_of_group = Portfolio.verify_student_individual_activity_or_part_of_the_group(assignment_id, current_user.id)
+    individual_activity_or_part_of_group = Portfolio.verify_student_individual_activity_or_part_of_the_group(assignment.id, current_user.id)
 
     if individual_activity_or_part_of_group
       respond_to do |format|
         begin
           # verificar intervalo de envio de arquivos
-          activity = Portfolio.find(assignment_id)
+          activity = Portfolio.find(assignment.id)
           # verifica se os arquivos podem ser deletados
           raise t(:send_file_interval_error) unless verify_date_range(activity.schedule.start_date.to_time, activity.schedule.end_date.to_time, Time.now)
 
@@ -281,14 +276,18 @@ class PortfolioController < ApplicationController
           raise t(:error_no_file_sent) unless params.include?(:assignment_file)
 
           # verifica se a atividade ja foi respondida para aquele usuario
-          send_assignment = SendAssignment.where(["assignment_id = ? AND user_id = ?", params[:assignment_id], current_user.id]).first
+          if assignment.type_assignment == Individual_Activity
+            send_assignment = SendAssignment.first(:conditions => ["assignment_id = ? AND user_id = ?", params[:assignment_id], current_user.id])
+          elsif assignment.type_assignment == Group_Activity
+            send_assignment = SendAssignment.first(:conditions => ["assignment_id = ? AND group_assignment_id = ?", params[:assignment_id], params[:group_assignment_id]])
+          end
           send_assignment_id = send_assignment.nil? ? nil : send_assignment[:id] # verificando se ja existe um id para setar na tabela de arquivos
 
           # se nao existir id criado no send_assignment, devera ser criado
           if send_assignment_id.nil?
             send_assignment = SendAssignment.new do |sa|
               sa.assignment_id = params[:assignment_id]
-              sa.user_id = current_user.id
+              sa.user_id = current_user.id unless !params[:group_assignment_id].nil?
               sa.group_assignment_id = params[:group_assignment_id]
             end
 
@@ -298,6 +297,7 @@ class PortfolioController < ApplicationController
           # salvando arquivos na base de dados
           assignment_file = AssignmentFile.new params[:assignment_file]
           assignment_file.send_assignment_id = send_assignment.id
+          assignment_file.user_id = current_user.id
           assignment_file.save!
 
           flash[:notice] = t(:file_uploaded)

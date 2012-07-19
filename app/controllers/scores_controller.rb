@@ -10,17 +10,18 @@ class ScoresController < ApplicationController
 
     student_id = params[:student_id] || current_user.id
     allocation_tag_id = active_tab[:url]['allocation_tag_id']
-
+    group_id = AllocationTag.find(allocation_tag_id).group_id
     allocations = AllocationTag.find_related_ids(allocation_tag_id)
 
     # verifica se o usuario logado tem permissao para consultar o usuario informado
-    student = User.find(student_id)
+    @student = User.find(student_id)
 
     # verifica autorizacao para consultar dados do usuario
-    authorize! :find, student
+    authorize! :find, @student
 
-    @student = student
-    @activities = PortfolioTeacher.list_assignments_by_allocations_and_student_id(allocations, student_id)
+
+    @individual_activities = Portfolio.student_activities(group_id, student_id, Individual_Activity)
+    @group_activities = Portfolio.student_activities(group_id, student_id, Group_Activity)
     @discussions = Discussion.all_by_allocations_and_student_id(allocations, student_id)
 
     from_date = Date.today << 2 # dois meses atras

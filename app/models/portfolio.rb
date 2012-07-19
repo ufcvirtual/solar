@@ -26,7 +26,8 @@ class Portfolio < ActiveRecord::Base
       FROM assignments         AS t1
       JOIN allocation_tags     AS t4 ON t4.id = t1.allocation_tag_id
       JOIN allocations         AS t5 ON t5.allocation_tag_id = t4.id
- LEFT JOIN send_assignments    AS t2 ON t2.assignment_id = t1.id AND t2.user_id = #{students_id}
+ LEFT JOIN group_participants  AS t9 ON t9.user_id = #{students_id}
+ LEFT JOIN send_assignments    AS t2 ON t2.assignment_id = t1.id AND (t2.group_assignment_id = t9.group_assignment_id OR t2.user_id = #{students_id} )
  LEFT JOIN assignment_comments AS t3 ON t3.send_assignment_id = t2.id
  LEFT JOIN assignment_files    AS t6 ON t6.send_assignment_id = t2.id
  LEFT JOIN schedules           AS t7 ON t7.id = t1.schedule_id

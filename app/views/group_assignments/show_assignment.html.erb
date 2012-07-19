@@ -103,7 +103,7 @@
               <%= text_field_tag "new_groups_names[][#{@assignment.id}]", group["group_name"], :group_id => group["id"], :id => "text_field_group_#{group['id']}", :class => "rename_group" %>
               <% group_has_files = !SendAssignment.find_all_by_group_assignment_id(group["id"]).empty? %>
               <% data_tooltip = !group_has_files ? nil : t(:group_assignment_delete_error) %>
-              <a id="remove_group_<%=group['id']%>" class="remove_group" onclick="delete_group('group_<%=group['id']%>', <%=@assignment.id%>, <%=group_has_files%>);" title="<%=data_tooltip%>">x</a>
+              <a id="remove_group_<%=group['id']%>" class="remove_group" onclick="delete_group('group_<%=group['id']%>', <%=@assignment.id%>, false);" title="<%=data_tooltip%>">x</a>
             </div>
             <% gp = group_participants(group["id"])%>
             <ul id="group_ul_<%=group['id']%>" value="<%=group['id']%>" name="groups_ul">
@@ -380,6 +380,7 @@
         // remove os participantes do grupo e acrescenta na lista de sem grupo
         if($(all_li[i]).attr('id') != "no_students_message"){
           $(all_li[i]).appendTo($('#ul_no_group'));
+          $('#no_students_message', $('#ul_no_group')).remove();
         }
       }
       deleted_div.remove();

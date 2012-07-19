@@ -34,4 +34,24 @@ module GroupAssignmentHelper
     return (assignment_without_groups and some_assignment_has_groups)
   end
 
+  ##
+  #
+  ##
+  def group_situation(group_assignment_id)
+    group = GroupAssignment.find(group_assignment_id)
+    if group.schedule.start_date > Date.current()
+      return "not_started"
+    elsif !SendAssignment.find_by_assignment_id(group.assignment_id).empty? and !SendAssignment.find_by_assignment_id(group.assignment_id).grade.nil?
+      return "corrected"
+    elsif !SendAssignment.find_by_assignment_id(group.assignment_id).empty?
+      return "sent"
+    elsif SendAssignment.find_by_assignment_id(group.assignment_id).empty? and group.schedule.end_date > Date.current()
+      return "send"
+    elsif SendAssignment.find_by_assignment_id(group.assignment_id).empty? and group.schedule.end_date < Date.current()
+      return "not_sent"
+    else
+      return "-"
+    end
+  end
+
 end

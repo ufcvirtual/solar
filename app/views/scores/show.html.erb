@@ -7,7 +7,7 @@
   <!-- Tabelas de atividades -->
 
   <div  class="block_content">
-    <% unless @activities.empty? %>
+    <% unless @individual_activities.empty? or @group_activities.empty? %>
         <table id="assignments_list" class="tb_list">
           <thead>
             <tr class="lines">
@@ -18,11 +18,11 @@
             </tr>
           </thead>
           <tbody>
-            <% @activities.each_with_index do |activity, idx| %>
+            <% @individual_activities.each_with_index do |activity, idx| %>
               <tr class="lines">
                 <td align="left">
                   <% if can? :student_detail, PortfolioTeacher %>
-                    <%=link_to activity["assignments_name"], {:controller => :portfolio_teacher,
+                    <%=link_to activity["name"], {:controller => :portfolio_teacher,
                       :action => :student_detail, :id => @student.id,
                       :assignment_id => activity["assignment_id"],
                       :send_assignment_id => activity["send_assignment_id"]}, {:class => 'link_content'} %>
@@ -31,11 +31,32 @@
                       :action => :activity_details, :id => activity["assignment_id"],
                       :bread => :menu_portfolio}, {:class => 'link_content'} %>
                   <% else %>
-                    <%= activity["assignments_name"] %>
+                    <%= activity["name"] %>
                   <% end %>
                 </td>
                 <td align="center"><%=l activity["start_date"].to_time, :format => :normal %> - <%=l activity["end_date"].to_time, :format => :normal %></td>
-                <td class="assignment_<%= activity["situation"] %>" align="center"><%= t(activity["situation"].to_sym) %></td>
+                <td class="assignment_<%= activity["correction"] %>" align="center"><%= t(activity["correction"].to_sym) %></td>
+                <td align="center"><%= (activity["grade"].nil?) ? '-' : activity["grade"].to_f %></td>
+              </tr>
+            <% end %>
+            <% @group_activities.each_with_index do |activity, idx| %>
+              <tr class="lines">
+                <td align="left">
+                  <% if can? :student_detail, PortfolioTeacher %>
+                    <%=link_to activity["name"], {:controller => :portfolio_teacher,
+                      :action => :student_detail, :id => @student.id,
+                      :assignment_id => activity["assignment_id"],
+                      :send_assignment_id => activity["send_assignment_id"]}, {:class => 'link_content'} %>
+                  <% elsif can? :activity_details, Portfolio %>
+                    <%=link_to activity["assignments_name"], {:controller => :portfolio,
+                      :action => :activity_details, :id => activity["assignment_id"],
+                      :bread => :menu_portfolio}, {:class => 'link_content'} %>
+                  <% else %>
+                    <%= activity["name"] %>
+                  <% end %>
+                </td>
+                <td align="center"><%=l activity["start_date"].to_time, :format => :normal %> - <%=l activity["end_date"].to_time, :format => :normal %></td>
+                <td class="assignment_<%= activity["correction"] %>" align="center"><%= t(activity["correction"].to_sym) %></td>
                 <td align="center"><%= (activity["grade"].nil?) ? '-' : activity["grade"].to_f %></td>
               </tr>
             <% end %>

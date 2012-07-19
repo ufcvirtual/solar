@@ -28,6 +28,8 @@ class GroupAssignmentsController < ApplicationController
     send_assignments.each_with_index{ |send_assignment, idx|
       @assignment_files += AssignmentFile.find_all_by_send_assignment_id(send_assignment.id) unless (send_assignments[idx].group_assignment_id != nil)
     }
+
+    @group_situation
     
   end
 
@@ -43,6 +45,18 @@ class GroupAssignmentsController < ApplicationController
 
       begin
         GroupAssignment.transaction do
+
+          # deleção de grupos
+          groups_that_cant_delete = []
+          all_deleted_groups_ids = []
+          unless params['deleted_groups_divs_ids'].blank?
+            all_deleted_groups_ids = params['deleted_groups_divs_ids'].collect{ |group| group.tr('_', ' ').split[1]}
+            params['deleted_groups_divs_ids'].each{ |deleted_group| 
+              group_not_deleted = delete_group(deleted_group.tr('_', ' ').split[1])
+              groups_that_cant_delete += group_not_deleted unless group_not_deleted.nil?
+            }
+          end
+
           # criação/edição de grupos
           params['groups'].each { |group|
             group_id = group[1]['group_id']
@@ -59,15 +73,10 @@ class GroupAssignmentsController < ApplicationController
                 group_assignment.update_attributes!(:group_name => group_name)
               end
             end
-            change_students_group(group_assignment, group_participants_ids, params[:assignment_id])
+            change_students_group(group_assignment, group_participants_ids, params[:assignment_id]) unless (!can_remove_group?(group_id) and all_deleted_groups_ids.include?("#{group_id}"))
           }
 
-          # deleção de grupos
-          unless params['deleted_groups_divs_ids'].blank?
-            params['deleted_groups_divs_ids'].each{ |deleted_group| 
-              delete_group(deleted_group.tr('_', ' ').split[1])
-            }
-          end
+          @students_without_group = no_group_students(@assignment.id)
 
           respond_to do |format|
             format.html { render 'assignment_div', :layout => false }
@@ -139,16 +148,16 @@ class GroupAssignmentsController < ApplicationController
 
 private
   
-  ##
-  # Método que exclui grupos
-  ##
   def delete_group(group_id)
-    group_assignment = GroupAssignment.find(group_id)
-    if SendAssignment.find_all_by_group_assignment_id(group_assignment.id).empty?
-      participants = group_participants(group_assignment.id)
+    if can_remove_group?(group_id)
+      participants = group_participants(group_id)
       participants.each{|participant| GroupParticipant.find(participant["id"]).destroy}
-      GroupAssignment.find(group_assignment.id).destroy
+      GroupAssignment.find(group_id).destroy
     end
+  end
+
+  def can_remove_group?(group_id)
+    return SendAssignment.find_all_by_group_assignment_id(group_id).empty?
   end
 
   ##
