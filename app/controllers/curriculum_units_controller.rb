@@ -86,6 +86,11 @@ class CurriculumUnitsController < ApplicationController
   # GET /curriculum_units/1/edit
   def edit
     @curriculum_unit = CurriculumUnit.find(params[:id])
+    
+    respond_to do |format|
+      format.html { render layout: false } # new.html.erb
+      format.json { render json: @curriculum_unit }
+    end
   end
 
   # POST /curriculum_units

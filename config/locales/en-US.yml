@@ -199,6 +199,7 @@
   confirm: "Confirm"
   back: "Back"
   save: "Save"
+  edit: Edit
   destroy: "Delete"
   new_user_msg_cpf_error: " invalid"
   itens_not_found: "No itens to display"
@@ -332,8 +333,11 @@
   passing_grade: Passing Grade
   error_no_item_selected: No item selected
   curriculum_unit_type_id: Type
-
+  
+  curriculum_unit_new_button: New
   curriculum_unit_new_title: "New Curriculum Unit"
+  curriculum_unit_edit_title: Edit Curriculum Unit
+  curriculum_unit_delete_confirm: Are you sure you want to delete %{curriculum_unit_name}?
   curriculum_unit_information_title: "Curriculum Unit Informartion"
   curriculum_unit_responsible: "Responsible"
   curriculum_unit_participants: "Participants"

@@ -1,23 +1,25 @@
 <span class="form_requirement"><%= t(:required_fields) %></span>
-<% text_area_field_size = '80x8' %>
+<% text_area_field_size = '40x4' %>
 <%= simple_form_for(@curriculum_unit) do |f| %>
   <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :name, :class=>"btn btn_default" %>
-    <%= f.input :code %>
-    <%= f.input :passing_grade %>
+  <div class="form-inputs block_content">
     <%= f.input :curriculum_unit_type do %>
       <%=  f.select :curriculum_unit_type_id, options_from_collection_for_select(CurriculumUnitType.order("description"), :id, :description ) %>
     <% end %>
+    <%= f.input :name %> 
+    <%= f.input :code %> 
+    <%= f.input :passing_grade %> 
     <%= f.input :resume %>
     <%= f.input :syllabus %>
     <%= f.input :objectives, :class=>"btn btn_default" %>
     <%= f.input :prerequisites, :size => text_area_field_size %>
   </div>
-
-  <div class="form-actions">
-    <%= f.submit t(:confirm), :id=>"confirm", :class=>"btn btn_default", :alt=> t(:confirm) %>
+  <div class="block_content form-actions">
+    <%= f.submit t(:confirm), :id=>"confirm", :class=>"btn btn_main", :alt=> t(:confirm) %>
+    <input value="<%= t(:back) %>" type="button" class="btn btn_default" onClick="removeLightBox();" />
+    <%#= link_to t(:back), curriculum_units_path, :class=>"btn btn_default" %>
+   
   </div>
 
 

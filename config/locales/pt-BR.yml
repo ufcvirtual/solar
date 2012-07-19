@@ -494,6 +494,8 @@
   curriculum_unit_new_button: Nova
 
   curriculum_unit_new_title: Nova Unidade Curricular
+  curriculum_unit_edit_title: Editar Unidade Curricular
+  curriculum_unit_delete_confirm: Tem certeza de que deseja excluir %{curriculum_unit_name}?
   curriculum_unit_information_title: "Informações da Unidade Curricular"
   curriculum_unit_responsible: "Responsáveis"
   curriculum_unit_participants: "Participantes da turma"

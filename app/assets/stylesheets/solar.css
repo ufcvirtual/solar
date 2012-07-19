@@ -117,7 +117,7 @@ h3 {
 }
 
 label {
-    color: #003e7a;
+    color: black;
     display: inline-block;
     width: 140px;
 }
@@ -174,6 +174,7 @@ a.menor {
 }
 
 select{
+    font-family:'PT Sans', sans-serif;
     color: #222;
     background-color: #fff;
     border: 1px solid #dedede;
@@ -1351,7 +1352,7 @@ div.block_title {
     margin-right: 5px;
     width: 18px;
     height: 18px;
-    vertical-align: bottom;
+    vertical-align: text-bottom;
 }
 
 #page_title_icon {
@@ -1378,10 +1379,17 @@ div.block_title {
 /* garantindo que o titulo do bloco fique proximo a linha inferior */
 .block_title {
     vertical-align: bottom;
+    overflow: auto;
+    line-height: 20px;
 }
 
 .block_title > .block_right {
     padding-left: 6px;
+}
+
+/* posicionando objetos alinhados a direita (normalment botoes) */
+.right_buttons {
+    float: right;
 }
 
 /* largura dos blocos internos */
@@ -2475,6 +2483,11 @@ td.td_student a {
     text-decoration: underline;
 }
 
+/* tratando form dentro de tabela */
+.tb_list .button_to {
+    display: inline-block;
+}
+
 /**
 * Portfolio
 */
@@ -2913,8 +2926,15 @@ div.support_material_folder_actions img {
 }
 
 .form_user_content textarea {
-    margin-bottom: 5px;
     width: 413px; /*425px;*/
+}
+
+.form-inputs > .input > textarea {
+    height: 120px;
+}
+
+.form_user_content textarea, .form-inputs > .input > textarea {
+    margin-bottom: 5px;
     padding: 2px;
 }
 
@@ -2926,7 +2946,7 @@ div.support_material_folder_actions img {
     width: 160px;
 }
 
-.form_label label {
+.form_label label, .form-inputs .control-label {
     padding-right: 5px; 
     padding-top: 2px;
     vertical-align: top;
@@ -2939,10 +2959,26 @@ div.support_material_folder_actions img {
     width: 413px;
 }
 
-.form_field input, .form_field select {
+.form_field input, .form_field select, .form-inputs > .input > input, .form-inputs > .input > select {
     padding: 2px;
     margin-bottom: 4px;
     font-size: 10pt;
+}
+
+.form-inputs > .input > input, .form-inputs > .input > textarea {
+    margin-left: 4px;
+}
+
+.form-inputs > .input > input, .form-inputs > .input > textarea {
+    width: 340px;
+}
+
+.form-inputs > .input > select {
+    width: 346px;
+}
+
+#curriculum_unit_code, #curriculum_unit_passing_grade {
+    width: 65px;
 }
 
 .form_inner_label {
@@ -3189,4 +3225,24 @@ td.form_error {
 .group_assignment_buttons{
     margin-bottom: 20px;
     clear: both;
+}
+
+/* FORM: criação de unidade curricular */
+.form-inputs.block_content {
+    padding-top: 5px;
+}
+
+.form-inputs .form_label:first-child {
+    width: 130px;
+}
+
+/* ajustando aviso de campos obrigatorios dentro do lightbox de criacao de unidade curricular */
+#lightBoxDialogContent .form_requirement {
+    margin-top: -16px;
+}
+
+/* posicionando botões do form */
+.block_content.form-actions {
+    padding-left: 137px;
+    padding-bottom: 5px;
 }
