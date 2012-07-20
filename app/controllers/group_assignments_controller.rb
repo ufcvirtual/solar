@@ -29,7 +29,7 @@ class GroupAssignmentsController < ApplicationController
       @assignment_files += AssignmentFile.find_all_by_send_assignment_id(send_assignment.id) unless (send_assignments[idx].group_assignment_id != nil)
     }
 
-    @group_situation
+    # @group_situation
     
   end
 
@@ -60,10 +60,10 @@ class GroupAssignmentsController < ApplicationController
           # criação/edição de grupos
           params['groups'].each { |group|
             group_id = group[1]['group_id']
-            group_participants_ids = (group[1]['student_ids']).collect{|participant| participant[1].to_i} unless group[1]['student_ids'].nil?
+            group_participants_ids = (group[1]['student_ids'].split).collect{|participant| participant.to_i} unless group[1]['student_ids'].nil?
             # se não forem alunos sem grupo
             unless group_id.nil?
-              group_name = group[1]['group_name']['0']
+              group_name = group[1]['group_name']
               # novo grupo
               if group_id == '0'
                 group_assignment = GroupAssignment.create!(:assignment_id => params[:assignment_id], :group_name => group_name)
