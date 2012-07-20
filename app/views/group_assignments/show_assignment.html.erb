@@ -51,23 +51,28 @@
 
       <% unless @groups.nil? or @groups.empty? %>
         <% @groups.each do |group| %>
+
+          <% send_assignment = SendAssignment.find_by_group_assignment_id(group["id"]) %>
+          <% can_manage_group = (send_assignment.nil? or send_assignment["grade"].nil?) ? true : false %>
+          <% tooltip_group = can_manage_group ? nil : t(:group_aready_evaluated) %>
+
           <div class="group_participants" id="group_<%=group['id']%>">
             <h3 class="group_assignment_name" id="group_name_<%=group["id"]%>"><%= group["group_name"] %></h3>
             <div id="edit_group_<%=group["id"]%>" style="display:none;">
               <%= text_field_tag "new_groups_names[][#{@assignment.id}]", group["group_name"], :group_id => group["id"], :id => "text_field_group_#{group['id']}", :class => "rename_group" %>
               <% group_has_files = !SendAssignment.find_all_by_group_assignment_id(group["id"]).empty? %>
-              <% data_tooltip = !group_has_files ? nil : t(:group_assignment_delete_error) %>
-              <a id="remove_group_<%=group['id']%>" class="remove_group" onclick="delete_group('group_<%=group['id']%>', <%=@assignment.id%>, false);" title="<%=data_tooltip%>">x</a>
+              <% tooltip_delete = (!group_has_files or !can_manage_group) ? tooltip_group : t(:group_assignment_delete_error) %>
+              <a id="remove_group_<%=group['id']%>" class="remove_group" onclick="delete_group('group_<%=group['id']%>', <%=@assignment.id%>, false);" title="<%=tooltip_delete%>">x</a>
             </div>
+
             <% gp = group_participants(group["id"])%>
-            <ul id="group_ul_<%=group['id']%>" value="<%=group['id']%>" name="groups_ul">
+
+            <ul id="group_ul_<%=group['id']%>" value="<%=group['id']%>" name="groups_ul" class="<%=can_manage_group%>">
               <% unless gp.empty? %>
                 <% gp.each do |p| %>
-                <!-- pesquisar pelos assignmentfiles que o usuário enviou para aquela atividade -->
-                  <% send_assignment = SendAssignment.find_by_group_assignment_id (group["id"]) %>
                   <% can_be_moved = AssignmentFile.find_all_by_user_id_and_send_assignment_id(p["user_id"], send_assignment.id).empty? unless send_assignment.nil? %>
-                  <% data_tooltip = can_be_moved ? nil : t(:student_already_sent_files) %>
-                  <li class="student_<%=p['user_id']%>" value="<%=p['user_id']%>" id="<%=can_be_moved%>" onmouseover="student_mouseover(this, '<%=t(:student_already_sent_files)%>');" onmouseout="student_mouseout(this);"><%= p["name"] %>
+                  <% tooltip = (can_be_moved or !can_manage_group) ? tooltip_group : t(:student_already_sent_files) %>
+                  <li class="student_<%=p['user_id']%>" value="<%=p['user_id']%>" id="<%=can_be_moved%>" onmouseover="student_mouseover(this, '<%=tooltip%>');" onmouseout="student_mouseout(this);"><%= p["name"] %>
                 <% end %>
               <% else %>
                 <li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>
@@ -202,7 +207,7 @@
           'group_name' : groups_names[i],
           'student_ids': each_group_students_ids
         });
-          
+
       } // for -> groups
 
       var continue_with_request = true;

@@ -751,6 +751,7 @@
   group_assignment_import_success: "Grupos importados com sucesso"
   group_assignment_files: Arquivos
   group_assignment_description: Descrição
+  group_aready_evaluated: Grupo já avaliado
 
   # Mensagem de erro para permissão
   no_permission: "Você não tem permissão para acessar esta página"

@@ -42,14 +42,13 @@ function flash_message(msg, css_class) {
     student_can_move = student_div.attr('id');
     student_class = student_div.attr('class');
 
-    if (student_can_move != 'false' && student_class.indexOf('ui-draggable') != -1 ){
+    if ((student_can_move != 'false' && student_div.parent().attr('class') != "false") && student_class.indexOf('ui-draggable') != -1 ){
       student_div.css("color","#134076");
       student_div.css("border-bottom","2px dashed #fdec9c");
-      // student_div.css("cursor", "../public/btn-arrastar.png");
       student_div.css("cursor", "crosshair");
-      // url(smiley.gif),url(myBall.cur),auto
     } 
-    if (student_can_move == 'false' && student_class.indexOf('ui-draggable') == -1 && $('.ui-draggable', student_div.parent().parent().parent()).length > 0){
+
+    if ((student_can_move == 'false' || student_div.parent().attr('class') == "false") && $('.ui-draggable', student_div.parent().parent().parent()).length > 0){
       student_div.attr("title", tooltip_message);
       student_div.css("cursor", "default");
     }
@@ -60,7 +59,7 @@ function flash_message(msg, css_class) {
     student_can_move = student_div.attr('id');
     student_class = student_div.attr('class');
     
-    if (student_can_move != 'false' && student_class.indexOf('ui-draggable') != -1){
+    if ((student_can_move != 'false' && student_div.parent().attr('class') != "false") && student_class.indexOf('ui-draggable') != -1){
       student_div.css("color","#000000");
       student_div.css("border-bottom","");
       student_div.css("cursor", "default");
@@ -136,6 +135,11 @@ function flash_message(msg, css_class) {
     active_draggable_element($(".group_participants_manage li"));
     // desabilita os <li> que são apenas ilustrativos
     $("#no_students_message").draggable({ disabled: true });
+    // desabilita os <li> de grupos que não podem ser alterados
+    groups_cant_manage = $(".false");
+    for(var i = 0; i < groups_cant_manage.length; i++){
+      $('li', groups_cant_manage.eq(i)).draggable({ disabled: true });
+    }
     // habilita os grupos dessa atividade como elementos "droppable"
     active_droppable_element($(".group_participants_manage ul"));
   }
@@ -150,9 +154,8 @@ function flash_message(msg, css_class) {
 
   function active_droppable_element(obj) {
     // cria objetos "droppable"
-    obj.droppable({
+    obj.not(".false").droppable({
       accept: ".group_participants_manage li",
-      // hoverClass: "ui-state-active",
       drop: function( event, ui ) {
         // recolhe o id do estudante antes de remover o elemento que tem a informação
         var participant_id = ui.draggable.attr('value');

@@ -592,6 +592,7 @@
   group_assignment_import_success: "Groups imported with success"
   group_assignment_files: Files
   group_assignment_description: Description
+  group_aready_evaluated: Group already evaluated
 
   # Mensagem de erro para permissão
   no_permission: "you haven't permission to access this page"
