@@ -66,7 +66,7 @@ class CurriculumUnitsController < ApplicationController
     @curriculum_unit.destroy
 
     respond_to do |format|
-      format.html { redirect_to curriculum_units_url }
+      format.html { redirect_to curriculum_units_url, notice: t(:successfully_deleted, :register => @curriculum_unit.name) }
       format.json { head :no_content }
       format.xml { head :ok }
     end
@@ -103,7 +103,7 @@ class CurriculumUnitsController < ApplicationController
 
     respond_to do |format|
       if @curriculum_unit.save
-        format.html { redirect_to @curriculum_unit, notice: 'Curriculum unit was successfully created.' }
+        format.html { redirect_to curriculum_units_url, notice: t(:successfully_created, :register => @curriculum_unit.name) }
         format.json { render json: @curriculum_unit, status: :created, location: @curriculum_unit }
       else
         format.html { render action: "new" }
@@ -119,7 +119,7 @@ class CurriculumUnitsController < ApplicationController
 
     respond_to do |format|
       if @curriculum_unit.update_attributes(params[:curriculum_unit])
-        format.html { redirect_to @curriculum_unit, notice: 'Curriculum unit was successfully updated.' }
+        format.html { redirect_to curriculum_units_url, notice: t(:successfully_updated, :register => @curriculum_unit.name)  }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

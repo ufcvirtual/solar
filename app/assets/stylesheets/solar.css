@@ -2966,10 +2966,6 @@ div.support_material_folder_actions img {
 }
 
 .form-inputs > .input > input, .form-inputs > .input > textarea {
-    margin-left: 4px;
-}
-
-.form-inputs > .input > input, .form-inputs > .input > textarea {
     width: 340px;
 }
 
@@ -3243,6 +3239,6 @@ td.form_error {
 
 /* posicionando botões do form */
 .block_content.form-actions {
-    padding-left: 137px;
+    padding-left: 143px;
     padding-bottom: 5px;
 }

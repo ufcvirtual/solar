@@ -746,3 +746,8 @@
   allocation_manage_enrollment_successful_update: Successful update
   allocation_manage_enrollment_unsuccessful_update: Unsuccessful update
   allocation_manage_error_not_same_status: Select only items with the same status
+
+  ## CRUD
+  successfully_created: '%{register} was successfully created.'
+  successfully_updated: '%{register} was successfully updated.'
+  successfully_deleted: '%{register} was successfully deleted.'

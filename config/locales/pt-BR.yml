@@ -904,5 +904,9 @@
   allocation_manage_enrollment_unsuccessful_update: Atualizacao nao realizada
   allocation_manage_error_not_same_status: Selecione apenas registros com o mesmo status
 
-  ## Edição
+  ## CRUD
   options: "Opções"
+  successfully_created: '%{register} foi criado(a) com sucesso.'
+  successfully_updated: '%{register} foi atualizado(a) com sucesso.'
+  successfully_deleted: '%{register} foi excluído(a) com sucesso.'
+  #adicionar erros. Ex: nao foi possivel...
