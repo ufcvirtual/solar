@@ -1334,9 +1334,10 @@ div.alter_photo_text {
 
 div.block_title {
     border-bottom: 2px solid #003E7A;
-    padding-bottom: 2px !important;
+    padding-bottom: 1px !important;
     position: relative;
     overflow: hidden;
+    height: 26px;
 }
 
 .block_title h1 {
@@ -1348,12 +1349,15 @@ div.block_title {
 .block_title h2 {
     display: inline;
     vertical-align: bottom;
+    position: absolute;
+    bottom: 2px;
 }
 
 
 /* icone que fica ao lado do titulo do bloco */
 .block_title_icon {
     margin-right: 5px;
+    margin-bottom: 2px;
     width: 18px;
     height: 18px;
     vertical-align: text-bottom;
@@ -1384,7 +1388,7 @@ div.block_title {
 .block_title {
     vertical-align: bottom;
     overflow: auto;
-    line-height: 20px;
+    /*line-height: 20px;*/
 }
 
 .block_title > .block_right {
@@ -1762,6 +1766,7 @@ div.forum_navigation {
     margin: 0;
     padding-left: 5px;
     padding-right: 5px;
+    padding-top: 5px;
 }
 
 #forum_view_mode a:first-child {
@@ -1770,6 +1775,10 @@ div.forum_navigation {
 
 #forum_view_mode a:nth-child(2) {
     border-left:none;
+}
+
+#forum_view_mode .btn img {
+    padding-left: 0px;
 }
 
 .forum_post_buttons .forum_button_attachment {
@@ -2683,7 +2692,7 @@ td.td_student a {color: #2a538d;}
     cursor: pointer;
     text-align: center;
     text-decoration: none;
-    padding: 2px 4px;
+    padding: 0px 4px 2px;
     font-size: 8pt;
     margin:0 2px;
     border: 1px solid #DEDEDE;
@@ -2691,11 +2700,15 @@ td.td_student a {color: #2a538d;}
     height: 26px;
 }
 a.btn {
-    height: 20px;
+    /*height: 20px;*/
+    height: auto;
+    padding-top: 7px;
+    padding-bottom: 3px;
 }
 .btn img {
-    vertical-align: bottom;
-    padding-top: 1px;
+    vertical-align: text-bottom;
+    padding-bottom: 0px;
+    padding-left: 5px;
 }
 .btn:hover {
     text-decoration: none;
@@ -2886,7 +2899,7 @@ div.support_material_select {
     margin-left: 2px;
 }
 
-.support_material_folder_actions {
+.block_actions {
     /*position: absolute;
     right: 0;*/
     float: right;
