@@ -1,42 +1,44 @@
-<div>
-  <div class="block_wrapper">
 
-    <div class="block_title">
-      <h2><%= image_tag "icon_curriculum_unit.png", :alt=>t(:icon_curriculum_unit), :class=>(:block_title_icon) %><%= t(:my_solar_curriculum_units) %></h2>
-      <span class="right_buttons">
-        <input value="<%= t(:curriculum_unit_new_button) %>" type="button" class="btn btn_main btn_new_curriculum_unit"/>
-      </span>
-    </div>
+<div class="block_wrapper">
 
-    <table class="tb_list" cellpadding="10" cellspacing="0" width="100%" style="table-layout: fixed">
-      <thead>
-        <tr class="lines">
-          <th align="left" width="8%"><%= CurriculumUnit.human_attribute_name(:code) %></th>
-          <th align="left" width="45%"><%= CurriculumUnit.human_attribute_name(:name)%></th>
-          <th align="left" width="30%"><%= CurriculumUnit.human_attribute_name(:category)%></th>
-          <th align="left" width="15%"><%= t(:options)%></th>
+  <div class="block_title">
+    <h2><%= image_tag "icon_curriculum_unit.png", :alt=>t(:icon_curriculum_unit), :class=>(:block_title_icon) %><%= t(:my_solar_curriculum_units) %></h2>
+    <span class="right_buttons">
+      <input value="<%= t(:curriculum_unit_new_button) %>" type="button" class="btn btn_main btn_new_curriculum_unit"/>
+    </span>
+  </div>
+
+  <table class="tb_list" cellpadding="10" cellspacing="0" width="100%" style="table-layout: fixed">
+    <thead>
+      <tr class="lines">
+        <th align="left" width="8%"><%= CurriculumUnit.human_attribute_name(:code) %></th>
+        <th align="left" width="45%"><%= CurriculumUnit.human_attribute_name(:name)%></th>
+        <th align="left" width="30%"><%= CurriculumUnit.human_attribute_name(:category)%></th>
+        <th align="left" width="15%"><%= t(:options)%></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @curriculum_units.each do |curriculum_unit| %>
+        <tr class="lines" >
+          <td><%= curriculum_unit.code %></td>
+          <td><%= curriculum_unit.name %></td>
+          <td align="left"><%= curriculum_unit.curriculum_unit_type.description %></td>
+          <td>
+            <input value="<%= t(:edit) %>" type="button" class="btn btn_default btn_main" onclick="javascript:showLightBoxURL('<%=edit_curriculum_unit_path(curriculum_unit) %>', 540, 605, true, '<%= t(:curriculum_unit_edit_title)%>');"/>
+            <%= button_to t(:destroy), curriculum_unit, { confirm: t(:curriculum_unit_delete_confirm, :curriculum_unit_name => curriculum_unit.name), method: :delete, class: "btn btn_caution"} %>
+          </td>
         </tr>
-      </thead>
-      <tbody>
-        <% @curriculum_units.each do |curriculum_unit| %>
-          <tr class="lines" >
-            <td><%= curriculum_unit.code %></td>
-            <td><%= curriculum_unit.name %></td>
-            <td align="left"><%= curriculum_unit.curriculum_unit_type.description %></td>
-            <td>
-              <input value="<%= t(:edit) %>" type="button" class="btn btn_default btn_main" onclick="javascript:showLightBoxURL('<%=edit_curriculum_unit_path(curriculum_unit) %>', 540, 590, true, '<%= t(:curriculum_unit_edit_title)%>');"/>
-              <%= button_to t(:destroy), curriculum_unit, { confirm: t(:curriculum_unit_delete_confirm, :curriculum_unit_name => curriculum_unit.name), method: :delete, class: "btn btn_caution"} %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
 
 <script type="text/javascript">
 
   $(function() {
     $('.btn_new_curriculum_unit').click(function() {
-      showLightBoxURL('<%= new_curriculum_unit_path %>', 540, 590, true, '<%= t(:curriculum_unit_new_title)%>');
+      showLightBoxURL('<%= new_curriculum_unit_path %>', 540, 605, true, '<%= t(:curriculum_unit_new_title)%>');
     });
   });
 
