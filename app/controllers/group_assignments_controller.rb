@@ -169,23 +169,38 @@ private
     begin 
       unless students_ids.nil?
         students_ids.each{|student_id|
+          # grupo atual do aluno
+          group_participant = GroupParticipant.includes(:group_assignment).where("group_participants.user_id = ? AND 
+                                                                                  group_assignments.assignment_id = ?",
+                                                                                  student_id, assignment_id).first
 
-          group_participant = GroupParticipant.includes(:group_assignment).where("group_participants.user_id = ? AND group_assignments.assignment_id = ?",
-                                                                                 student_id, assignment_id).first
-          unless group_assignment.nil?
-            if group_participant.nil?
-              GroupParticipant.create!(:group_assignment_id => group_assignment.id, :user_id => student_id)
-            elsif group_participant.group_assignment_id != group_assignment.id
-              student_sent_files_to_other_group = !SendAssignment.where("send_assignments.user_id = ? AND send_assignments.group_assignment_id != ? AND 
-                                                  send_assignments.assignment_id = ?", student_id, group_assignment.id, assignment_id).empty?
-              group_participant.update_attributes!(:group_assignment_id => group_assignment.id) unless student_sent_files_to_other_group
+          # arquivos enviados pelo aluno para grupo atual
+          student_files_group = AssignmentFile.includes(:send_assignment).where("send_assignments.group_assignment_id = ? AND 
+                                                                                    assignment_files.user_id = ?", 
+                                                                                    group_participant["group_assignment_id"], student_id).first unless group_participant.nil?
+          # send_assignment do grupo atual
+          group_send_assignment = SendAssignment.find_by_group_assignment_id(group_participant["group_assignment_id"]) unless group_participant.nil?
+
+          # send_assignment do grupo ao qual aluno tentará ser movido
+          choosen_group_send_assignment = SendAssignment.find_by_group_assignment_id(group_assignment["id"]) unless group_assignment.nil?
+
+          # a não ser que:
+          # => aluno tenha enviado arquivos ao grupo atual OU send_assignment do grupo existe sem arquivos e foi avaliado
+          # => novo grupo tenha um send_assignment e foi avaliado
+          student_can_be_removed_from_current_group = (student_files_group.nil? and (group_send_assignment.nil? or group_send_assignment.grade.nil?))
+          student_can_be_moved_to_choosen_group = choosen_group_send_assignment.nil? or choosen_group_send_assignment["grade"].nil?
+
+          if (student_can_be_removed_from_current_group and student_can_be_moved_to_choosen_group)
+            unless group_assignment.nil?
+              if group_participant.nil?
+                GroupParticipant.create!(:group_assignment_id => group_assignment["id"], :user_id => student_id)
+              elsif group_participant["group_assignment_id"] != group_assignment["id"]
+                group_participant.update_attributes!(:group_assignment_id => group_assignment["id"]) # unless student_sent_files_to_current_group
+              end
+            else
+              group_participant.delete unless group_participant.nil? 
             end
-          else
-            student_sent_files_to_some_group = !SendAssignment.where("send_assignments.user_id = ? AND send_assignments.assignment_id = ?", 
-                                                                      student_id, assignment_id).empty?
-            group_participant.delete unless student_sent_files_to_some_group or group_participant.nil? 
           end
-
         }
       end
     rescue Exception => error
