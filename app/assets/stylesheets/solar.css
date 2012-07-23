@@ -2741,7 +2741,7 @@ a.btn {
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e8e8e8');
 }
 
-.btn_default{
+.btn_default, .btn_caution {
     color: #111;
     background-image: -moz-linear-gradient(center top , rgba(255,255,255,1), rgba(232,232,232,1));
     background-image: -webkit-linear-gradient(top,rgba(255,255,255,1),rgba(232,232,232,1));
@@ -2757,19 +2757,20 @@ a.btn {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
 }
 
-.btn_caution {
+.btn_caution_extra {
     color: #ffffff;
     background-color: #f55254;
     background-image: -moz-linear-gradient(center top , #f67a7b, #f55254);
     background-image: -webkit-linear-gradient(top,#f67a7b,#f55254);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f67a7b', endColorstr='#f55254');
 }
-.btn_caution:hover {
+.btn_caution:hover, .btn_caution_extra:hover {
+    color: #ffffff;
     background-image: -moz-linear-gradient(center top , #f65f60, #f0292d);
     background-image: -webkit-linear-gradient(top,#f65f60,#f0292d);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f65f60', endColorstr='#f0292d');
 }
-.btn_caution:active {
+.btn_caution:active, .btn_caution_extra:active {
     background-image: -moz-linear-gradient(center top , #f0292d, #f65f60);
     background-image: -webkit-linear-gradient(top,#f0292d,#f65f60);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
