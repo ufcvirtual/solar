@@ -1334,7 +1334,10 @@ div.alter_photo_text {
 
 div.block_title {
     border-bottom: 2px solid #003E7A;
-    padding-bottom: 2px;
+    padding-bottom: 1px !important;
+    position: relative;
+    overflow: hidden;
+    height: 26px;
 }
 
 .block_title h1 {
@@ -1345,11 +1348,16 @@ div.block_title {
 
 .block_title h2 {
     display: inline;
+    vertical-align: bottom;
+    position: absolute;
+    bottom: 2px;
 }
+
 
 /* icone que fica ao lado do titulo do bloco */
 .block_title_icon {
     margin-right: 5px;
+    margin-bottom: 2px;
     width: 18px;
     height: 18px;
     vertical-align: text-bottom;
@@ -1380,7 +1388,7 @@ div.block_title {
 .block_title {
     vertical-align: bottom;
     overflow: auto;
-    line-height: 20px;
+    /*line-height: 20px;*/
 }
 
 .block_title > .block_right {
@@ -1450,7 +1458,7 @@ div.block_title {
     padding: 6px 10px;
 }
 
-h2, table tr.block_title th {
+table tr.block_title th {
     width: 100%;
     height: 161px; 
     overflow: auto;
@@ -1758,6 +1766,7 @@ div.forum_navigation {
     margin: 0;
     padding-left: 5px;
     padding-right: 5px;
+    padding-top: 5px;
 }
 
 #forum_view_mode a:first-child {
@@ -1766,6 +1775,10 @@ div.forum_navigation {
 
 #forum_view_mode a:nth-child(2) {
     border-left:none;
+}
+
+#forum_view_mode .btn img {
+    padding-left: 0px;
 }
 
 .forum_post_buttons .forum_button_attachment {
@@ -2679,7 +2692,7 @@ td.td_student a {color: #2a538d;}
     cursor: pointer;
     text-align: center;
     text-decoration: none;
-    padding: 2px 4px;
+    padding: 0px 4px 2px;
     font-size: 8pt;
     margin:0 2px;
     border: 1px solid #DEDEDE;
@@ -2687,11 +2700,15 @@ td.td_student a {color: #2a538d;}
     height: 26px;
 }
 a.btn {
-    height: 20px;
+    /*height: 20px;*/
+    height: auto;
+    padding-top: 7px;
+    padding-bottom: 3px;
 }
 .btn img {
-    vertical-align: bottom;
-    padding-top: 1px;
+    vertical-align: text-bottom;
+    padding-bottom: 0px;
+    padding-left: 5px;
 }
 .btn:hover {
     text-decoration: none;
@@ -2724,7 +2741,7 @@ a.btn {
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e8e8e8');
 }
 
-.btn_default{
+.btn_default, .btn_caution {
     color: #111;
     background-image: -moz-linear-gradient(center top , rgba(255,255,255,1), rgba(232,232,232,1));
     background-image: -webkit-linear-gradient(top,rgba(255,255,255,1),rgba(232,232,232,1));
@@ -2740,19 +2757,20 @@ a.btn {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
 }
 
-.btn_caution {
+.btn_caution_extra {
     color: #ffffff;
     background-color: #f55254;
     background-image: -moz-linear-gradient(center top , #f67a7b, #f55254);
     background-image: -webkit-linear-gradient(top,#f67a7b,#f55254);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f67a7b', endColorstr='#f55254');
 }
-.btn_caution:hover {
+.btn_caution:hover, .btn_caution_extra:hover {
+    color: #ffffff;
     background-image: -moz-linear-gradient(center top , #f65f60, #f0292d);
     background-image: -webkit-linear-gradient(top,#f65f60,#f0292d);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f65f60', endColorstr='#f0292d');
 }
-.btn_caution:active {
+.btn_caution:active, .btn_caution_extra:active {
     background-image: -moz-linear-gradient(center top , #f0292d, #f65f60);
     background-image: -webkit-linear-gradient(top,#f0292d,#f65f60);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
@@ -2872,20 +2890,21 @@ a.btn {
     margin-right:5px;
 }
 
+h2.support_material_title {
+    position: absolute;
+    bottom: 1px;
+}
+
 div.support_material_select {
     width: 30px;
     margin-left: 2px;
 }
 
-div.support_material_folder_actions {
+.block_actions {
+    /*position: absolute;
+    right: 0;*/
     float: right;
     font-size: 11px;
-}
-
-div.support_material_folder_actions img {
-    padding: 0 0 0 5px;
-    margin: 0;
-    vertical-align: bottom;
 }
 
 #support_material_new_folder {
