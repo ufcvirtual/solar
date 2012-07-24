@@ -4,9 +4,9 @@ include FilesHelper
 class GroupAssignmentsController < ApplicationController
 
   before_filter :prepare_for_group_selection #, :only => [:list]
-  # before_filter :user_related_to_assignment?, :except => [:index]
+  before_filter :user_related_to_assignment?, :except => [:index]
   before_filter :can_import?, :only => [:import_groups_page, :import_groups]
-  # load_and_authorize_resource
+  load_and_authorize_resource
 
   # lista trabalhos em grupo
   def index
@@ -23,14 +23,8 @@ class GroupAssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
     @groups = group_assignments(@assignment.id)
     @students_without_group = no_group_students(@assignment.id)
-    @assignment_files = []
-    send_assignments = SendAssignment.all(:conditions => ["assignment_id = ? AND user_id = ?", @assignment["id"], session["warden.user.user.key"][1][0]])
-    send_assignments.each_with_index{ |send_assignment, idx|
-      @assignment_files += AssignmentFile.find_all_by_send_assignment_id(send_assignment.id) unless (send_assignments[idx].group_assignment_id != nil)
-    }
+    @assignment_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)
 
-    # @group_situation
-    
   end
 
   ##
@@ -47,13 +41,11 @@ class GroupAssignmentsController < ApplicationController
         GroupAssignment.transaction do
 
           # deleção de grupos
-          groups_that_cant_delete = []
           all_deleted_groups_ids = []
           unless params['deleted_groups_divs_ids'].blank?
             all_deleted_groups_ids = params['deleted_groups_divs_ids'].collect{ |group| group.tr('_', ' ').split[1]}
             params['deleted_groups_divs_ids'].each{ |deleted_group| 
               group_not_deleted = delete_group(deleted_group.tr('_', ' ').split[1])
-              groups_that_cant_delete += group_not_deleted unless group_not_deleted.nil?
             }
           end
 
@@ -133,15 +125,19 @@ class GroupAssignmentsController < ApplicationController
   end
 
   def download_single_file
+    authorize! :download_single_file, GroupAssignments
+
     assignment_id = params[:assignment_id]
-    assignment_file = AssignmentFile.find_by_id(params[:file_id])
+    assignment_file = AssignmentEnunciationFile.find_by_id(params[:file_id])
     error_redirect = {:controller => :group_assignments, :action => :show_assignment, :assignment_id => assignment_id}
     download_file(error_redirect, assignment_file.attachment.path, assignment_file.attachment_file_name)
   end
 
   def download_all_files_zip
-    assignment_files = params[:all_files].collect{|file_id| AssignmentFile.find(file_id)}
-    error_redirect = {:controller => :group_assignments, :action => :show_assignment, :assignment_id => assignment_files.first.send_assignment.assignment_id}
+    authorize! :download_all_files_zip, GroupAssignments
+
+    assignment_files = params[:all_files].collect{|file_id| AssignmentEnunciationFile.find(file_id)}
+    error_redirect = {:controller => :group_assignments, :action => :show_assignment, :assignment_id => params[:assignment_id]}
     path_zip = make_zip_files(assignment_files, 'attachment_file_name', 'Portfolio')
     download_file(error_redirect, path_zip)
   end
@@ -154,6 +150,7 @@ private
       participants.each{|participant| GroupParticipant.find(participant["id"]).destroy}
       GroupAssignment.find(group_id).destroy
     end
+
   end
 
   def can_remove_group?(group_id)

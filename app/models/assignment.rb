@@ -3,7 +3,7 @@ class Assignment < ActiveRecord::Base
   belongs_to :allocation_tag
   belongs_to :schedule
 
-  has_many :files_enunciations
+  has_many :assignment_enunciation_files
   has_many :send_assignments
 
   ##

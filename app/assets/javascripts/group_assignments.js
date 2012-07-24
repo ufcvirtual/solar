@@ -20,17 +20,13 @@ function flash_message(msg, css_class) {
     return false;
   } 
 
-  function toggle_div(elementId) {
-    $('#'+ elementId).slideToggle();
-  }
-
 // Botões
 
   function btn_manage_groups(assignment_id, show_import_button){
-    group_name_label_to_text_field(assignment_id);
-    $('#manage_group_assignment_'+assignment_id).hide();
-    $('#save_changes_assignment_'+assignment_id).show();
-    $('#cancel_changes_assignment_'+assignment_id).show();
+    group_name_label_to_text_field();
+    $('#manage_group_assignment').hide();
+    $('#save_changes_assignment').show();
+    $('#cancel_changes_assignment').show();
     $(".group_participants").attr("class", "group_participants_manage");
     $(".group_assignment_name").attr("class", "group_assignment_name_manage");
     dragndrop(assignment_id);
@@ -41,14 +37,15 @@ function flash_message(msg, css_class) {
     student_div = $(this_div);
     student_can_move = student_div.attr('id');
     student_class = student_div.attr('class');
+    student_group_can_change = student_div.parent().attr('class');
 
-    if ((student_can_move != 'false' && student_div.parent().attr('class') != "false") && student_class.indexOf('ui-draggable') != -1 ){
+    if ((student_can_move != 'false' && student_group_can_change != "false") && student_class.indexOf('ui-draggable') != -1 ){
       student_div.css("color","#134076");
       student_div.css("border-bottom","2px dashed #fdec9c");
       student_div.css("cursor", "crosshair");
     } 
 
-    if ((student_can_move == 'false' || student_div.parent().attr('class') == "false") && $('.ui-draggable', student_div.parent().parent().parent()).length > 0){
+    if ((student_can_move == 'false' || student_group_can_change == "false") && $('.ui-draggable', student_div.parent().parent().parent()).length > 0){
       student_div.attr("title", tooltip_message);
       student_div.css("cursor", "default");
     }
@@ -58,8 +55,9 @@ function flash_message(msg, css_class) {
     student_div = $(this_div);
     student_can_move = student_div.attr('id');
     student_class = student_div.attr('class');
+    student_group_can_change = student_div.parent().attr('class');
     
-    if ((student_can_move != 'false' && student_div.parent().attr('class') != "false") && student_class.indexOf('ui-draggable') != -1){
+    if ((student_can_move != 'false' && student_group_can_change != "false") && student_class.indexOf('ui-draggable') != -1){
       student_div.css("color","#000000");
       student_div.css("border-bottom","");
       student_div.css("cursor", "default");
@@ -79,34 +77,31 @@ function flash_message(msg, css_class) {
       new_group_hmtl.push('<li id="no_students_message">' + message_empty_group + '</li>')
       new_group_hmtl.push('</ul>');
     new_group_hmtl.push('</div>');
+    
     // cria a nova div de novo grupo 
-    $(new_group_hmtl.join('')).appendTo($('#group_assignment_content_'+assignment_id).last());
+    $(new_group_hmtl.join('')).appendTo($('.group_assignment_content').last());
+
     // pega o último grupo criado
     var new_group_ul = $('.group_participants_manage ul').last();
+    
     // e permite que ele receba participantes
-    active_droppable_element(new_group_ul, assignment_id);
+    active_droppable_element(new_group_ul, ".group_participants_manage li", "#false");
   }
 
 // Métodos
 
-  function undo_btn_manage_groups_divs_changes(assignment_id, situation){
-    $('#manage_group_assignment_'+assignment_id).show();
-    $('#save_changes_assignment_'+assignment_id).hide();
-    $('#cancel_changes_assignment_'+assignment_id).hide();
+  function undo_btn_manage_groups_divs_changes(){
+    $('#manage_group_assignment').show();
+    $('#save_changes_assignment').hide();
+    $('#cancel_changes_assignment').hide();
     $('.group_assignments_manage_buttons').remove();
   }
 
-  function group_name_label_to_text_field(assignment_id){
-    // "recolhe" todos os text_fields dos grupos
-    var all_text_fields_groups = document.getElementsByName("new_groups_names[]["+assignment_id+"]");
-    for(var i = 0; i < all_text_fields_groups.length; i++) {
-      // encontra a div com parte da edição de grupo e a div com a label
-      var text_field = $('#edit_group_' + $(all_text_fields_groups[i]).attr('group_id'));
-      var label = $('#group_name_'+ $(all_text_fields_groups[i]).attr('group_id'));
-      label.hide();
-      text_field.fadeIn();  
-    }
+  function group_name_label_to_text_field(){
+    var text_field = $('.edit_group_true').fadeIn();
+    var label = $('.group_name_true').hide();
   }
+
 
   function delete_group(group_div_id, assignment_id, has_files) {
     // apenas permite deleção se o grupo não tiver arquivos enviados
@@ -120,11 +115,14 @@ function flash_message(msg, css_class) {
           $('#no_students_message', $('#ul_no_group')).remove();
         }
       }
+
       deleted_div.remove();
+
       // acrescenta o id da div do grupo apenas se não for um novo grupo sendo excluído
       if (group_div_id.indexOf('group_new') == -1) {
         deleted_groups.push(group_div_id);
       }
+
     }
   }
 
@@ -132,30 +130,30 @@ function flash_message(msg, css_class) {
 
   function dragndrop(assignment_id){
     // habilita todos os <li> dessa atividade para serem "draggable"
-    active_draggable_element($(".group_participants_manage li"));
+    active_draggable_element($(".group_participants_manage li"), "#false");
     // desabilita os <li> que são apenas ilustrativos
     $("#no_students_message").draggable({ disabled: true });
     // desabilita os <li> de grupos que não podem ser alterados
-    groups_cant_manage = $(".false");
+    groups_cant_manage = $("#false");
     for(var i = 0; i < groups_cant_manage.length; i++){
       $('li', groups_cant_manage.eq(i)).draggable({ disabled: true });
     }
     // habilita os grupos dessa atividade como elementos "droppable"
-    active_droppable_element($(".group_participants_manage ul"));
+    active_droppable_element($(".group_participants_manage ul"), ".group_participants_manage li", "#false");
   }
 
-  function active_draggable_element(obj) {
-    // cria objetos "draggable" a não ser que tenham id false
+  function active_draggable_element(draggable_div, except) {
+    // cria divs "draggable" a não ser que tenham id false
     // <li> de estudantes que já enviaram arquivos tem o id = false
-    obj.not("#false").draggable({
+    draggable_div.not(except).draggable({
       revert: true
     });
   }
 
-  function active_droppable_element(obj) {
-    // cria objetos "droppable"
-    obj.not(".false").droppable({
-      accept: ".group_participants_manage li",
+  function active_droppable_element(droppable_div, div_acepted, except) {
+    // cria divs "droppable"
+    droppable_div.not(except).droppable({
+      accept: div_acepted,
       drop: function( event, ui ) {
         // recolhe o id do estudante antes de remover o elemento que tem a informação
         var participant_id = ui.draggable.attr('value');
@@ -168,7 +166,7 @@ function flash_message(msg, css_class) {
           $('#no_students_message', this).remove();
         }
         // define como draggable o novo elemento criado
-        active_draggable_element($(".group_participants_manage li"));
+        active_draggable_element($(".group_participants_manage li"), "#false");
         // acrescenta mensagem de "sem alunos" caso necessário
         put_empty_message();
       }

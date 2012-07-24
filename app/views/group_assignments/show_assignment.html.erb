@@ -20,34 +20,34 @@
   <span class="group_assignment_download_all">
     <% unless @assignment_files.empty? %>
       <%= image_tag "mimetypes/zip.png", :alt => '', :class=>'block_title_icon' %>
-      <%= link_to "Baixar tudo (zip)", {:controller => :group_assignments, :action => :download_all_files_zip, :all_files => @assignment_files}, :class => "link_content" %>
+      <%= link_to "Baixar tudo (zip)", {:controller => :group_assignments, :action => :download_all_files_zip, :all_files => @assignment_files, :assignment_id => @assignment.id}, :class => "link_content" %>
     <% end %>
   </span>
 </div>
 <div class="group_assignment_details">
-  <% unless @assignment_files.empty? %>
-    <% @assignment_files.each{ |file|  %>
+  <%# unless @assignment_files.empty? %>
+    <%# @assignment_files.each{ |file|  %>
     <div class="group_assignment_files">
-      <%= link_to image_tag(icon_attachment(file.attachment_file_name)), {:controller => :group_assignments, :action => :download_single_file, 
+      <%#= link_to image_tag(icon_attachment(file.attachment_file_name)), {:controller=>:group_assignments, :action=>:download_single_file, 
                                                                           :file_id => file.id, :assignment_id => @assignment.id },
                                                                           {:class => 'file_icon'} %>
-      <%= link_to file.attachment_file_name, {:controller => :group_assignments, :action => :download_single_file, :file_id => file.id, 
+      <%#= link_to file.attachment_file_name, {:controller => :group_assignments, :action => :download_single_file, :file_id => file.id, 
                                               :assignment_id => @assignment.id } %>
     </div>
-    <% } %>
-  <% else %>
+    <%# } %>
+  <%# else %>
     <%= t(:itens_not_found) %>
-  <% end %>
+  <%# end %>
 </div>
 
 <div class="group_assignment_titles">
   <%= t(:group_assignment_title)%>
   <span class="group_assignment_manage_button">
-    <input type="button" id='manage_group_assignment_<%=@assignment.id%>' value='<%=t(:manage_groups_assignments)%>' class="btn btn_main" onclick="btn_manage_groups('<%=@assignment.id%>', '<%=verify_group_of_assignments(@assignment.id)%>');"/>
+    <input type="button" id='manage_group_assignment' value='<%=t(:manage_groups_assignments)%>' class="btn btn_main" onclick="btn_manage_groups('<%=@assignment.id%>', '<%=verify_group_of_assignments(@assignment.id)%>');"/>
   </span>
 </div>
 <div class="group_assignment_details">
-  <div class="group_assignment_content" id="group_assignment_content_<%=@assignment.id%>">
+  <div class="group_assignment_content">
 
       <% unless @groups.nil? or @groups.empty? %>
         <% @groups.each do |group| %>
@@ -57,17 +57,19 @@
           <% tooltip_group = can_manage_group ? nil : t(:group_aready_evaluated) %>
 
           <div class="group_participants" id="group_<%=group['id']%>">
-            <h3 class="group_assignment_name" id="group_name_<%=group["id"]%>"><%= group["group_name"] %></h3>
-            <div id="edit_group_<%=group["id"]%>" style="display:none;">
-              <%= text_field_tag "new_groups_names[][#{@assignment.id}]", group["group_name"], :group_id => group["id"], :id => "text_field_group_#{group['id']}", :class => "rename_group" %>
+            <h3 class="group_assignment_name group_name_<%=can_manage_group%>"><%= group["group_name"] %></h3>
+            <div class="edit_group_<%=can_manage_group%>" style="display:none;">
+              <%= text_field_tag "new_groups_names[][#{@assignment.id}]", group["group_name"], :id => "text_field_group_#{group['id']}", :class => "rename_group" %>
+              
               <% group_has_files = !SendAssignment.find_all_by_group_assignment_id(group["id"]).empty? %>
               <% tooltip_delete = (!group_has_files or !can_manage_group) ? tooltip_group : t(:group_assignment_delete_error) %>
-              <a id="remove_group_<%=group['id']%>" class="remove_group" onclick="delete_group('group_<%=group['id']%>', <%=@assignment.id%>, false);" title="<%=tooltip_delete%>">x</a>
+              
+              <a class="remove_group" onclick="delete_group('group_<%=group['id']%>', <%=@assignment.id%>, false);" title="<%=tooltip_delete%>">x</a>
             </div>
 
             <% gp = group_participants(group["id"])%>
 
-            <ul id="group_ul_<%=group['id']%>" value="<%=group['id']%>" name="groups_ul" class="<%=can_manage_group%>">
+            <ul id="<%=can_manage_group%>" value="<%=group['id']%>">
               <% unless gp.empty? %>
                 <% gp.each do |p| %>
                   <% can_be_moved = AssignmentFile.find_all_by_user_id_and_send_assignment_id(p["user_id"], send_assignment.id).empty? unless send_assignment.nil? %>
@@ -106,9 +108,9 @@
 
     <div class="group_assignment_buttons">
 
-        <input type="button" id='cancel_changes_assignment_<%=@assignment.id%>' value='<%=t(:group_assignment_cancel)%>' class="btn btn_default" onclick="btn_cancel('<%=@assignment.id%>');" style="display: none;"/>
+        <input type="button" id='cancel_changes_assignment' value='<%=t(:group_assignment_cancel)%>' class="btn btn_default" onclick="btn_cancel('<%=@assignment.id%>');" style="display: none;"/>
 
-        <input type="button" value="<%= t(:group_assignment_save) %>" class="btn btn_main" onclick="btn_save('<%=@assignment.id%>');" id='save_changes_assignment_<%=@assignment.id%>' style="display:none;"/>
+        <input type="button" value="<%= t(:group_assignment_save) %>" class="btn btn_main" onclick="btn_save('<%=@assignment.id%>');" id='save_changes_assignment' style="display:none;"/>
 
     </div>
 
@@ -171,10 +173,10 @@
         type: 'POST',
         data:  {'btn_cancel': 'cancel', 'assignment_id': assignment_id},
         success: function(data) {
-          $('#group_assignment_content_' + assignment_id).html(data);
-          undo_btn_manage_groups_divs_changes(assignment_id, 'cancel');
-          // mostra mensagem
+          $('.group_assignment_content').html(data);
+          undo_btn_manage_groups_divs_changes();
           flash_message('<%= t(:group_assignment_cancel_message) %>', 'notice');
+          deleted_groups = new Array();
         }
       });
       return continue_with_request; 
@@ -196,11 +198,10 @@
         });
 
         var each_group_students_ids = new String();
-
         for (var j = 0; j < array_group_students_ids.length; j++){
           if(j != 0){ each_group_students_ids += " "; }
           each_group_students_ids += array_group_students_ids[j]
-        }
+        } // recebe cada id dos estudantes do grupo em questão como string (array gera erro)
 
         groups_to_save.push({
           'group_id'   : $(groups[i]).attr('value'),
@@ -220,9 +221,10 @@
             continue_with_request = false;
             flash_message(data.flash_msg, data.flash_class);
           }else{
-            $('#group_assignment_content_' + assignment_id).html(data);
-            undo_btn_manage_groups_divs_changes(assignment_id, 'save');
+            $('.group_assignment_content').html(data);
+            undo_btn_manage_groups_divs_changes();
             flash_message('<%= t(:group_assignment_management_success) %>', 'notice');
+            deleted_groups = new Array();
           }
         }
       });

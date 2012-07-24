@@ -464,6 +464,21 @@ tgpt4:
   resource_id: 75
   per_id: false
 
+tgpt5:
+  profile_id: 4
+  resource_id: 76
+  per_id: false
+
+tgpt6:
+  profile_id: 4
+  resource_id: 77
+  per_id: false
+
+tgpt7:
+  profile_id: 4
+  resource_id: 78
+  per_id: false
+
 ##############################
 # TUTOR A DISTANCIA #
 ##############################
@@ -591,6 +606,21 @@ tgta3:
 tgta4:
   profile_id: 3
   resource_id: 75
+  per_id: false
+
+tgta5:
+  profile_id: 4
+  resource_id: 76
+  per_id: false
+
+tgta6:
+  profile_id: 4
+  resource_id: 77
+  per_id: false
+
+tgta7:
+  profile_id: 4
+  resource_id: 78
   per_id: false
 
 # discussion
@@ -724,6 +754,21 @@ tgtp3:
 tgtp4:
   profile_id: 4
   resource_id: 75
+  per_id: false
+
+tgtp5:
+  profile_id: 4
+  resource_id: 76
+  per_id: false
+
+tgtp6:
+  profile_id: 4
+  resource_id: 77
+  per_id: false
+
+tgtp7:
+  profile_id: 4
+  resource_id: 78
   per_id: false
 
 ##############################

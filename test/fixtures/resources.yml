@@ -429,20 +429,38 @@ res72:
 
 # Trabalho de grupo - parte2
 
-res75:
+res73:
   id: 73
   controller: 'group_assignments'
-  action: 'manage_groups'
-  description: 'Pagina de edicao de grupo'  
+  action: 'show_assignment'
+  description: 'Pagina de exibicao das informacoes da atividade e gerenciamento de grupos'
 
-res78:
+res74:
   id: 74
+  controller: 'group_assignments'
+  action: 'manage_groups'
+  description: 'Metodo de gerenciamento de grupos'  
+
+res75:
+  id: 75
   controller: 'group_assignments'
   action: 'import_groups_page'
   description: 'Pagina de importacao de grupos para outros trabalhos'
 
-res79:
-  id: 75
+res76:
+  id: 76
   controller: 'group_assignments'
   action: 'import_groups'
   description: 'Importacao de grupos para outros trabalhos'
+
+res77:
+  id: 77
+  controller: 'group_assignments'
+  action: 'download_single_file'
+  description: 'Metodo de download de cada arquivo individualmente'
+
+res78:
+  id: 78
+  controller: 'group_assignments'
+  action: 'download_all_files_zip'
+  description: 'Metodo de download de todos os arquivos'

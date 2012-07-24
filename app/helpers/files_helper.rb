@@ -23,6 +23,7 @@ module FilesHelper
   def make_zip_files(files, table_column_name, zip_name_folder = nil)
     require 'zip/zip'
 
+
     all_file_names = files.collect{|file| [file[table_column_name]]}.flatten
     hash_name = Digest::SHA1.hexdigest(all_file_names.to_s)
     zip_name_folder = hash_name if zip_name_folder.nil?
@@ -36,7 +37,6 @@ module FilesHelper
     ##
     existing_zip_files = Dir.glob('tmp/*') # lista dos arquivos .zip existentes no '/tmp'
     zip_created = existing_zip_files.include?(all_files_ziped_name) # informa se ja existe o arquivo de zip desejado
-    ##
     name_internal_folder = ''
 
     # cria o zip caso nao esteja criado
@@ -51,9 +51,11 @@ module FilesHelper
             end
 
             # cria um novo folder interno
-            if name_internal_folder != file.folder and file.folder != ''
-              name_internal_folder = file.folder
-              zipfile.mkdir(File.join(zip_name_folder, name_internal_folder))
+            unless file.folder.nil?
+              if name_internal_folder != file.folder and file.folder != ''
+                name_internal_folder = file.folder
+                zipfile.mkdir(File.join(zip_name_folder, name_internal_folder))
+              end
             end
 
             zipfile.add(File.join(zip_name_folder, name_internal_folder, file.attachment_file_name), file.attachment.path) if File.exists?(file.attachment.path.to_s)
@@ -62,9 +64,14 @@ module FilesHelper
       }
     end
 
-    # recupera arquivo
-    zip_name = Zip::ZipFile.open(hash_name + ".zip", Zip::ZipFile::CREATE).to_s
-    path_zip = File.join(Rails.root.to_s, 'tmp', zip_name)
+    unless zip_created
+      # recupera arquivo
+      zip_name = Zip::ZipFile.open(hash_name + ".zip", Zip::ZipFile::CREATE).to_s
+      path_zip = File.join(Rails.root.to_s, 'tmp', zip_name)
+    else
+      pathfile = "#{Rails.root}/#{all_files_ziped_name}"
+      send_file pathfile, :filename => all_files_ziped_name
+    end
   end
 
 end
