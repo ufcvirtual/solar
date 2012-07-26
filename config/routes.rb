@@ -82,6 +82,7 @@ Solar::Application.routes.draw do
   get "scores/:id/history_access" => "scores#history_access"
   get 'home' => "users#mysolar", :as => :home
   get 'user_root' => 'users#mysolar'
+  post "portfolio_teacher/evaluate_student_assignment"
 
   get "/media/users/:id/photos/:style.:extension", :to => "users#photo"
   get "/media/portfolio/individual_area/:file.:extension", :to => "access_control#portfolio_individual_area"

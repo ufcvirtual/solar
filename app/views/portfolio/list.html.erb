@@ -98,7 +98,7 @@
                           <%= t(:group_name) %>: <%= @groups_names[ia["id"].to_i] %>
                         </div>
                         <div>
-                          <%= t(:group_participants) %>: 
+                          <%= t(:portfolio_group_participants) %>: 
                           <% for participant in @groups_participants[ia["id"].to_i] %>
                             <%= participant.user.name %>
                             <% unless participant == @groups_participants[ia["id"].to_i].last %> , <% end %>

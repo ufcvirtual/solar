@@ -13,9 +13,9 @@ class Assignment < ActiveRecord::Base
     status_assignment = ActiveRecord::Base.connection.select_all <<SQL
     SELECT
            CASE
-            WHEN t4.start_date > now() THEN 'not_started'
-            WHEN t2.grade IS NOT NULL AND COUNT(t3.id) > 0 THEN 'corrected'
-            WHEN COUNT(t3.id) > 0 THEN 'sent'
+            WHEN t4.start_date > now()                    THEN 'not_started'
+            WHEN t2.grade IS NOT NULL                     THEN 'corrected'
+            WHEN COUNT(t3.id) > 0                         THEN 'sent'
             WHEN COUNT(t3.id) = 0 AND t4.end_date > now() THEN 'send'
             WHEN COUNT(t3.id) = 0 AND t4.end_date < now() THEN 'not_sent'
             ELSE '-'

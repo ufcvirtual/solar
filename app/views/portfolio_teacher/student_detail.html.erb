@@ -1,144 +1,241 @@
 <div>
-  <span class="page_title">
-    <%= t(:assignment_correction_of) %>&nbsp;<%=raw @activity << "&nbsp;#{t(:of)}&nbsp;" unless @activity.nil? %><%= curriculum_unit_name %>
-  </span>
-</div>
-
-<!-- Portfolio -->
-
-<div class="portfolio_activity">
-
-  <div class="mysolar_header">
-    <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
-    <h1 class="mysolar_title"><%= @student.name %></h1>
-  </div>
-
-  <!-- Arquivos do aluno e comentarios -->
-
-  <div>
-
-    <%= form_for(:comments, :html => { :multipart => true }, :url => {
-        :action => :update_comment, :students_id => @student_id,
-        :assignment_id => @assignment_id, :send_assignment_id => @send_assignment_id
-      }) do |f| %>
-
-      <!-- Arquivos de trabalho -->
-
-      <div id="list_files_and_grade" style="overflow: auto;">
-        <div id="list_files" style="float: left;">
-          <table class="tb_list_files" cellpadding="5" cellspacing="0" border="0" style="width: 380px;">
-            <thead>
-              <tr>
-                <th style="text-align: left;"><%= t(:files_assignments) %>:</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @files.each do |f| %>
-                <tr>
-                  <td style="text-align: right;">
-                    <div class="files_name">
-                      <% file_name = f["attachment_file_name"].length > 35? f["attachment_file_name"].slice(0..35) + '...' : f["attachment_file_name"] %>
-                      <%= link_to file_name, {:action => :download_files_student,
-                        :id => f["id"], :students_id => @student_id,
-                        :send_assignment_id => @send_assignment_id}, {:class => 'link_content'} %>
-                    </div>
-                    <div class="date_info">
-                      <%= t(:sent_in) %> <%=l f["attachment_updated_at"].to_time, :format => :files %>
-                    </div>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-        <div id="list_grade" style="float: right; width: 95px;">
-          <div><%= t(:grade) %>:</div>
-          <%= f.text_field :grade, :value => @grade, :size => 4 %>
-        </div>
-      </div>
-
-      <div id="comment_teacher" style="padding-top: 10px;">
-        <span><%= t(:comment) %>:</span>
-        <div id="teachers_comments" style="text-align: center; padding-bottom: 10px;">
-          <%= f.text_area :comment, :value => @comment, :rows => 10, :cols => 50 %>
-        </div>
-        <span class="portfolio_activity_mright" style="float: right;">
-          <span>
-            <input type="button" class="btn btn_default" name="<%= t(:back).downcase %>" value="<%= t(:back) %>" id="back_to_show" />
-          </span>
-          <span><%= f.submit t(:save), {:class => 'btn btn_default'} %></span>
-        </span>
-        &nbsp;
-      </div>
-
-    <% end %>
-
-  </div>
-
-  <!-- Arquivos enviados -->
-
-  <div id="list_files_sent" style="padding-top: 10px;">
-
-    <div class="mysolar_header">
-      <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
-      <h1 class="mysolar_title"><%= t(:sent_files) %></h1>
+  <!-- Descricao da atividade -->
+  <div id="activities" class="block_wrapper">
+    <div class="block_title">
+      <h2>
+        <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %><%= @assignment.name %>
+      </h2>
     </div>
+    <div id="individual_activity_description" class="block_content">
+      <!-- Descricao da atividade -->
+      <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <thead>
+          <tr class="lines">
+            <th><%=t(:activity_description)%></th>
+            <th align="center" style="width:80px">
+              <%= image_tag "clock.png", :alt => t(:clock_icon), :class=>"block_title_icon" %>
+              <span>
+                <%= t(:portfolio_delivery_date) %>
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="lines" >
+            <td>
+              <%= @assignment.enunciation %>
+            </td>
+            <td class="center">
+              <%= @assignment.schedule.end_date.strftime("%d/%m/%Y") %> <%= t(:portfolio_date_to) %> <%= @assignment.schedule.end_date.strftime("%H:%M") %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-    <% unless @comments_files.first.nil? %>
-      <div id="list_files_sent">
-        <table class="tb_list_files" border="0" width="100%" cellspacing="0" cellpadding="5">
+  <!-- Arquivos enviados pelo aluno -->
+  <div id="activities" class="block_wrapper">
+    <div class="block_title">
+      <h2>
+        <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %>Arquivos enviados
+      </h2>
+      <span class="download_all_icon">
+        <% unless @files_student_assignment.empty? %>
+          <%= image_tag "mimetypes/zip.png", :alt => "zipped_folder_icon", :class=>'block_title_icon' %>
+          <%= link_to t(:portfolio_download_all_zip), {:controller => :group_assignments, :action => :download_all_files_zip, :all_files => @files_student_assignment, :assignment_id => @assignment.id}, :class => "link_content" %>
+        <% end %>
+      </span>
+    </div>
+    <div id="files_assignment_student" class="block_content">
+      <% unless @files_student_assignment.empty? %>
+        <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%">
+          <thead>
+            <tr class="lines">
+              <th>Nome</th>
+              <th align="right" style="width: 80px">Tamanho</th>
+              <th align="center" style="width:80px">
+                <%= image_tag "clock.png", :alt => t(:clock_icon), :class=>"block_title_icon" %>
+                <span>
+                  Enviado em
+                </span>
+              </th>
+            </tr>
+          </thead>
           <tbody>
-            <% @comments_files.each do |file_sent| %>
-              <tr>
-                <td style="width: 10px;">
-                  <%= image_tag icon_attachment(file_sent["attachment_file_name"]) %>
-                </td>
+            <% @files_student_assignment.each{ |file|  %>
+              <tr class="lines" >
                 <td>
-                  <% file_name = file_sent["attachment_file_name"].length > 35 ? file_sent["attachment_file_name"].slice(0..35) + '...' : file_sent["attachment_file_name"] %>
-                  <%= link_to file_name, {:controller => :portfolio, :action => :download_file_comment,
-                    :id => file_sent["id"]}, {:class => 'link_content'}%>
+                  <%= link_to image_tag(icon_attachment(file.attachment_file_name)), {:controller=>:group_assignments, :action=>:download_single_file, 
+                                                                          :file_id => file.id, :assignment_id => @assignment.id },
+                                                                          {:class => "file_icon", :alt => t(:file_type_icon)} %>
+                  <%= link_to file.attachment_file_name, {:controller => :group_assignments, :action => :download_single_file, :file_id => file.id, 
+                                              :assignment_id => @assignment.id }, :class => "link_content" %>
                 </td>
-                <td class="file_data_info">
-                  <span><%=l file_sent["attachment_updated_at"], :format => :files %></span>
-                  
+                <td class="right">
+                  <%= format('%.2f KB', file.attachment_file_size/1024.0) %>
                 </td>
-                <td>
-                  <%= link_to t(:delete), {
-                    :action => :delete_file, :comment_file_id => file_sent["id"],
-                    :students_id => @student_id, :send_assignment_id => @send_assignment_id
-                  }, {:confirm => "#{t(:delete_file_msg)}", :class => 'link_content_del'} %>
+                <td class="center">
+                  <%= file.attachment_updated_at.strftime("%d/%m/%Y") %> às <%= file.attachment_updated_at.strftime("%H:%M") %>
                 </td>
               </tr>
-            <% end %>
+            <% } %>      
           </tbody>
         </table>
-      </div>
-    <% end %>
-  </div>
-
-  <div id="send_files" style="padding-top: 10px;">
-    <div class="mysolar_header">
-      <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon) %>
-      <h1 class="mysolar_title"><%= t(:send_files) %></h1>
-    </div>
-    <div id="form_send_file" class="send_files">
-      <%= form_for(:comments_files, :html => { :multipart => true }, :url => {
-          :controller => :portfolio_teacher, :action => :upload_files,
-          :students_id => @student_id, :assignment_id => @assignment_id,
-          :send_assignment_id => @send_assignment_id
-        }) do |f| %>
-        <%= f.file_field :attachment %><%= f.submit t(:send), {:class => 'btn btn_default'} %>
-        <div style="padding-top: 10px;"><%=raw t(:send_file_portfolio_obs)%></div>
-        <div style="padding-top: 10px;"><%=raw t(:send_file_portfolio_text)%></div>
+      <% else %>
+        <div class="portfolio_div_padding">
+          <%= t(:itens_not_found) %>
+        </div>
       <% end %>
     </div>
   </div>
-</div>
+  
+  <!-- Área de comentários -->
+  <div id="activities" class="block_wrapper">
+    <div class="block_title">
+      <h2><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %>Comentários</h2>
+    </div>
+    <div id="comment_assignment_student" class="block_content">
+      <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <% unless @comments.nil? %>
+          <thead>
+            <tr class="lines">
+              <th><%= t(:comment) %></th>
+              <th align="right" style="width:200px">Arquivos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @comments.each_with_index{ |comment, idx| %>
+              <tr class="lines" >
+                <td>
+                  <%= comment.comment %>
+                </td>
+                <td>
+                  <% @comments_files[idx].each{| comment_file | %>
+                    <p>
+                      <%= link_to image_tag(icon_attachment(comment_file.attachment_file_name)), {:controller=>:group_assignments,                                   :action=>:download_single_file, :file_id => comment_file.id,                                   :assignment_id => @assignment.id }, {:class => "file_icon", :alt => t(:file_type_icon)} %>
+                      <%= link_to comment_file.attachment_file_name, {:controller => :group_assignments, :action => :download_single_file,                                                      :file_id => comment_file.id, :assignment_id => @assignment.id },                                                      :class => "link_content" %>
+                    </p>
+                  <% } %>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        <% else %>
+          <div class="portfolio_div_padding">
+            <%= t(:itens_not_found) %>
+          </div>
+        <% end %>
+      </table>
+    </div>
+  </div>
+
+  <!-- Área de avaliação -->
+  <div id="activities" class="block_wrapper">
+    <div class="block_title">
+      <h2><%= image_tag "icon_participants.png", :alt=>t(:icon_participants), :class=>'block_title_icon' %>Avaliação</h2>
+      <span class="portfolio_title_button">
+        <input id="btn_evaluate" type="button" value='Avaliar' class="btn btn_main" onclick="btn_evaluate();"/>
+        <input id="btn_cancel_evaluation" type="button" value='Cancelar' class="btn btn_default" style="display:none" onclick="btn_cancel_evaluation();"/>
+        <input id="btn_save_evaluation" type="button" value='Salvar' class="btn btn_main" style="display:none" onclick="btn_save_evaluation('<%=@assignment.id%>', '<%=@student.id%>');"/>
+      </span>
+    </div>
+    <div id="evaluate_assignment_student" class="block_content">
+      <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%" id="tb_student_assignment">
+        <% unless @send_assignment.nil? or (@send_assignment.grade.nil? and @send_assignment.comment.nil?) %>
+          <thead>
+            <tr class="lines">
+              <th align="right" style="width:30px"><%= t(:grade) %></th>
+              <th><%= t(:comment) %></th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr class="lines" >
+                <td><%= @send_assignment.grade %></td>
+                <td><%= @send_assignment.comment %></td>
+              </tr>
+          </tbody>
+        <% else %>
+          <div class="portfolio_div_padding" id="no_itens_tb">
+            <%= t(:itens_not_found) %>
+          </div>
+        <% end %>
+      </table>
+
+      <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%" id="tb_student_assignment_evaluate" style="display: none">
+        <thead>
+          <tr class="lines">
+            <th align="right" style="width:30px"><%= t(:grade) %></th>
+            <th><%= t(:comment) %></th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr class="lines" >
+              <td><%= text_field_tag :grade, @send_assignment.nil? ? "" : @send_assignment.grade, :size => 3 %></td>
+              <td><%= text_area_tag :comment, @send_assignment.nil? ? "" : @send_assignment.comment, :rows => 4, :cols => 113 %></td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 
 <script type="text/javascript">
-  $(function(){
-    $('#back_to_show').click(function(){
-      window.location.href = '<%= score_path(@student_id, :student_id => @student_id) %>';
-    });
-  });
+
+  function btn_evaluate(){
+    $("#tb_student_assignment").hide();
+    $("#no_itens_tb").hide();
+    $("#tb_student_assignment_evaluate").fadeIn();
+    $("#btn_evaluate").hide();
+    $("#btn_cancel_evaluation").fadeIn();
+    $("#btn_save_evaluation").fadeIn();
+  }
+
+  function btn_cancel_evaluation(){
+    if (confirm('<%= t(:portfolio_cancel_evaluation) %>')){
+      undo_btn_evaluate_changes();  
+      flash_message('<%= t(:student_evaluation_canceled) %>', 'notice');
+    }
+  }
+
+  function btn_save_evaluation(assignment_id, student_id){
+    if (confirm('<%= t(:portfolio_confirm_evaluation) %>')){
+     
+      var grade = $("#grade").attr('value');
+      var comment = $("#comment").attr('value');
+      var url = '<%= portfolio_teacher_evaluate_student_assignment_path %>';
+
+      var continue_with_request = true;
+      $.ajax({
+        url: url,
+        type: 'POST',
+        data:  {'grade': grade, 'assignment_id': assignment_id, 'comment': comment, 'student_id': student_id},
+        success: function(data) {
+          if (data.success == false) {
+            continue_with_request = false;
+            flash_message(data.flash_msg, data.flash_class);
+          }else{
+            $("#evaluate_assignment_student").html(data);
+            undo_btn_evaluate_changes();
+            flash_message('<%= t(:student_evaluated_success) %>', 'notice');
+          }
+        }
+      });
+      return continue_with_request; 
+    }
+
+  }
+
+  function undo_btn_evaluate_changes(){
+    $("#tb_student_assignment_evaluate").hide(); 
+    $("#tb_student_assignment").fadeIn();
+    $("#btn_cancel_evaluation").hide();
+    $("#btn_save_evaluation").hide();
+    $("#btn_evaluate").fadeIn(); 
+    show_no_itens_div = $('td', '#tb_student_assignment').length == 0;
+    if(show_no_itens_div){
+      $("#no_itens_tb").fadeIn();
+    }
+  }
+
 </script>

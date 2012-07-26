@@ -1,6 +1,7 @@
 class PortfolioTeacherController < ApplicationController
 
   include FilesHelper
+  include PortfolioHelper
 
   before_filter :prepare_for_group_selection, :only => [:list]
 
@@ -8,50 +9,97 @@ class PortfolioTeacherController < ApplicationController
     authorize! :list, PortfolioTeacher
 
     allocation_tag_id = active_tab[:url]['allocation_tag_id']
-    allocations = allocation_tag_id.nil? ? nil : AllocationTag.find_related_ids(allocation_tag_id).join(', ')
 
-    # grupo selecionado
-    @group = AllocationTag.where("id IN (#{allocations}) AND group_id IS NOT NULL").first.group
-    @students = PortfolioTeacher.list_students_by_allocations(allocations)
+    # listando atividades individuais pela turma
+    @individual_activities = Assignment.find_all_by_allocation_tag_id_and_type_assignment(allocation_tag_id, Individual_Activity)
+    @group_activities = Assignment.find_all_by_allocation_tag_id_and_type_assignment(allocation_tag_id, Group_Activity)
+  end
+
+  def individual_activity_details
+    assignment_id = params[:id]
+
+    # recupera a atividade selecionada
+    @activity = Assignment.find(assignment_id)
+
+    # verifica se os arquivos podem ser deletados
+    # @delete_files = verify_date_range(@activity.schedule.start_date.to_time, @activity.schedule.end_date.to_time, Time.now)
+
+    # alunos da atividade
+
+    allocation_tags = AllocationTag.find_related_ids(@activity.allocation_tag_id).join(',')
+    @students = PortfolioTeacher.list_students_by_allocations(allocation_tags)
+
+    # arquivos anexados à atividade
+    @assignment_files = AssignmentEnunciationFile.find_all_by_assignment_id(assignment_id)
+
+    # informações do andamento do trabalho de cada aluno
+    @grade = []
+    @comments = []
+    @situation = []
+    @file_delivery_date = []
+
+    @students.each_with_index{|student, idx|
+      @situation[idx] = Assignment.status_of_actitivy_by_assignment_id_and_student_id(assignment_id, student['id'])
+      student_send_assignment = SendAssignment.find_by_assignment_id_and_user_id(assignment_id, student['id'])
+      @comments[idx] = student_send_assignment.nil? ? false : (!student_send_assignment.comment.nil? or !AssignmentComment.find_all_by_send_assignment_id(student_send_assignment.id).empty?)
+      @grade[idx] = student_send_assignment.nil? ? '-' : student_send_assignment.grade
+      @file_delivery_date[idx] = student_send_assignment.nil? ? '-' : AssignmentFile.find_all_by_send_assignment_id(student_send_assignment.id).first.attachment_updated_at.strftime("%d/%m/%Y") 
+    }
+
   end
 
   def student_detail
     authorize! :student_detail, PortfolioTeacher
 
-    @assignment_id = params[:assignment_id]
-    @send_assignment_id = params[:send_assignment_id]
-    @student_id = params[:id]
+    @assignment = Assignment.find(params[:assignment_id])
+    @student = User.find(params[:id])
 
-    # recuperar o nome da atividade
-    begin
-      @activity = Assignment.find(@assignment_id).name
-    rescue
-      @activity = nil
+    @files_student_assignment = AssignmentFile.joins(:send_assignment).where("send_assignments.assignment_id = ? AND assignment_files.user_id = ?",
+                                                                            @assignment.id, @student.id).order("assignment_files.attachment_updated_at 
+                                                                            DESC")
+    
+    @send_assignment = SendAssignment.find_by_assignment_id_and_user_id(@assignment.id, @student.id)
+
+    unless @send_assignment.nil?
+      @comments = AssignmentComment.find_all_by_send_assignment_id(@send_assignment.id, current_user.id) 
+      @comments_files = []
+
+      @comments.each_with_index{|comment, idx|
+        @comments_files[idx] = CommentFile.find_all_by_assignment_comment_id(comment.id)
+      }
     end
+  end
 
-    # estudante
-    @student = User.select("name").where(["id = ?", @student_id]).first
+  ##
+  # Avalia trabalho do aluno
+  ##
+  def evaluate_student_assignment
+    assignment_id   = params['assignment_id']
+    student_id      = params['student_id']
+    grade           = (params['grade'].nil? or params['grade'].blank?) ? nil : params['grade'].to_f
+    comment         = (params['comment'].nil? or params['comment'].blank?) ? nil : params['comment']
+    @send_assignment = SendAssignment.find_by_assignment_id_and_user_id(assignment_id, student_id)
 
-    # consulta a atividade do aluno em questao
-    assignments = SendAssignment.joins("LEFT JOIN assignment_files ON assignment_files.send_assignment_id = send_assignments.id").
-      where("send_assignments.id = ?", @send_assignment_id).
-      order("assignment_files.attachment_updated_at DESC").first
+    begin
 
-    # recuperando os arquivos enviados pelo aluno
-    @files = []
-    @files = assignments.assignment_files unless assignments.nil?
+      if grade < 0 || grade > 10
+        raise t(:invalid_grade)
+      end unless grade.nil?
 
-    @grade = nil
-    @grade = assignments.grade unless assignments.nil?
+      if @send_assignment.nil?
+        @send_assignment = SendAssignment.create(:assignment_id => assignment_id, :user_id => students_id, :comment => comment, :grade => grade)
+      else
+        @send_assignment.update_attribute(:grade, grade)
+        @send_assignment.update_attribute(:comment, comment)
+      end
 
-    # comentarios e arquivos do professor
-    professor_id = current_user.id
-    assignment_comment = AssignmentComment.find_by_send_assignment_id_and_user_id(@send_assignment_id, professor_id)
-    @comment = assignment_comment.comment unless assignment_comment.nil?
+      respond_to do |format|
+        format.html { render 'evaluate_assignment_student_div', :layout => false }
+      end
 
-    # arquivos
-    @comments_files = []
-    @comments_files = CommentFile.find(:all, :conditions => ["assignment_comment_id = ?", assignment_comment.id], :order => "attachment_updated_at DESC") unless assignment_comment.nil?
+    rescue Exception => error
+      render :json => { :success => false, :flash_msg => error.message, :flash_class => 'alert' }
+    end
 
   end
 

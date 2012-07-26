@@ -641,39 +641,39 @@
   no_events: "Sem eventos para o dia selecionado"
 
   #PORTFOLIO
-  portfolio_icon: "Ícone Portfolio"
-  portfolio_title: "Portfolio de"
-  portfolio_null: "Nenhum portfolio cadastrado"
-  portfolio_upload_file: "Enviar arquivos para a área pública"
-  individual_activity: "Atividades Individuais"
-  group_activities: "Atividades em Grupo"
-  group_assignments: "Trabalhos de Grupo"
-  group_name: "Nome do Grupo"
-  group_participants: "Participantes"
-  student_with_no_group: "Você não faz parte de nenhum grupo"
-  activity_description: "Descrição"
-  situation: "Situação"
-  grade: "Nota"
-  comments: "Comentários"
-  comments_teacher: "Comentários do Professor"
-  comment: "Comentário"
-  task: "Prova"
-  tasks: "Provas"
-  public_area: "Área Pública"
-  delete: "Excluir"
-  more: "mais"
-  less: "menos"
-  not_started: "Não Iniciado"
-  corrected: "Corrigido"
-  sent: "Enviado"
-  make: "Fazer"
-  delete_file_msg: "Deseja realmente excluir este arquivo?"
-  file_uploaded: "Arquivo enviado com sucesso"
-  file_deleted: "Arquivo deletado com sucesso"
-  error_nonexistent_file: "Arquivo não encontrado"
-  error_no_file_sent: "Nenhum arquivo enviado"
-  send_file_portfolio: "Upload de Arquivos Para Portfolio"
-  send_file_portfolio_obs: "Aguarde o envio completo do arquivo. O tamanho não deve exceder 5MB."
+  portfolio_icon: Ícone Portfolio
+  portfolio_title: Portfolio de
+  portfolio_null: Nenhum portfolio cadastrado
+  portfolio_upload_file: Enviar arquivos para a área pública
+  individual_activity: Atividades Individuais
+  group_activities: Atividades em Grupo
+  group_assignments: Trabalhos de Grupo
+  group_name: Nome do Grupo
+  portfolio_group_participants: Participantes
+  student_with_no_group: Você não faz parte de nenhum grupo
+  activity_description: Descrição
+  situation: Situação
+  grade: Nota
+  comments: Comentários
+  comments_teacher: Comentários do Professor
+  comment: Comentário
+  task: Prova
+  tasks: Provas
+  public_area: Área Pública
+  delete: Excluir
+  more: mais
+  less: menos
+  not_started: Não Iniciado
+  corrected: Corrigido
+  sent: Enviado
+  make: Fazer
+  delete_file_msg: Deseja realmente excluir este arquivo?
+  file_uploaded: Arquivo enviado com sucesso
+  file_deleted: Arquivo deletado com sucesso
+  error_nonexistent_file: Arquivo não encontrado
+  error_no_file_sent: Nenhum arquivo enviado
+  send_file_portfolio: Upload de Arquivos Para Portfolio
+  send_file_portfolio_obs: Aguarde o envio completo do arquivo. O tamanho não deve exceder 5MB.
   send_file_portfolio_text: "Exemplos de arquivos aceitos:<br />
   &nbsp;&nbsp;- Documentos do Microsoft Office<br />
   &nbsp;&nbsp;- Documentos do OpenOffice.org (ODF)<br />
@@ -681,20 +681,36 @@
   &nbsp;&nbsp;- Documentos PDF<br />
   &nbsp;&nbsp;- Arquivos de Video (avi, mpeg,...)<br />
   &nbsp;&nbsp;- Arquivos de Audio (mp3, wma...)"
-  sent_files: "Arquivos Enviados"
-  send_files: "Enviar Arquivos"
-  download_attachment: "Baixar Anexo"
-  error_delete_file: "Erro ao tentar excluir arquivo"
-  sent_in: "Enviado em"
-  comment_updated_successfully: "Comentário atualizado com sucesso"
-  files_assignments: "Arquivos do Trabalho"
-  invalid_grade: "Nota Inválida"
-  delete_file_interval_error: "Modificação de arquivos fora do intervalo permitido"
-  send_file_interval_error: "Envio de arquivos fora do intervalo permitido"
-  not_sent: "Não Enviado"
+  sent_files: Arquivos Enviados
+  send_files: Enviar Arquivos
+  download_attachment: Baixar Anexo
+  error_delete_file: Erro ao tentar excluir arquivo
+  sent_in: Enviado em
+  comment_updated_successfully: Comentário atualizado com sucesso
+  files_assignments: Arquivos do Trabalho
+  invalid_grade: Nota Inválida
+  delete_file_interval_error: Modificação de arquivos fora do intervalo permitido
+  send_file_interval_error: Envio de arquivos fora do intervalo permitido
+  not_sent: Não Enviado
   -: "-"
-  pending: "Pendente"
-  comments_icon: "Comentários"
+  pending: Pendente
+  comments_icon: Comentários
+  portfolio_title: Título
+  portfolio_date_range: Período
+  portfolio_delivery_date: Entrega
+  portfolio_date_to: até
+  portfolio_download_all_zip: Baixar tudo (zip)
+  portfolio_participants: Participantes
+  portfolio_students: Alunos
+  portfolio_date: Data
+  portfolio_situation: Situação
+  clock_icon: Ícone relógio
+  zipped_folder_icon: Ícone de pasta como zip
+  file_type_icon: Ícone tipo do arquivo
+  student_evaluated_success: Aluno avaliado com sucesso
+  portfolio_confirm_evaluation: Confirma avaliação?
+  portfolio_cancel_evaluation: Cancelar avaliação?
+  student_evaluation_canceled: Avaliação cancelada
 
   # acompanhamento
   student: "Aluno"

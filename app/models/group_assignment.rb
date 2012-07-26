@@ -5,7 +5,7 @@ class GroupAssignment < ActiveRecord::Base
   has_many :group_participants
   has_many :send_assignments
 
-  validates :group_name, :presence => true
+  validates :group_name, :presence => true, :length => { :maximum => 20 }
 
   validate :unique_group_name
 

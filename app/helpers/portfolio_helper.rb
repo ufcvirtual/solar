@@ -40,4 +40,9 @@ module PortfolioHelper
     end
   end
 
+  # Verifica se uma data esta em um intervalo de outras
+  def verify_date_range(start_date, end_date, date)
+    return date > start_date && date < end_date
+  end
+
 end

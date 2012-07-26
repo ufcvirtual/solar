@@ -1,5 +1,6 @@
 class PortfolioController < ApplicationController
   include FilesHelper
+  include PortfolioHelper
 
 #  before_filter :require_user
   before_filter :prepare_for_group_selection, :only => [:list]
@@ -336,17 +337,6 @@ class PortfolioController < ApplicationController
   #Formulário de upload exibido numa lightbox
   def public_files_send
     render :layout => false
-  end
-
-  ###################
-  # Funcoes privadas
-  ###################
-
-  private
-
-  # Verifica se uma data esta em um intervalo de outras
-  def verify_date_range(start_date, end_date, date)
-    return date > start_date && date < end_date
   end
 
 end

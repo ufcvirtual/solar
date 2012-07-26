@@ -177,3 +177,10 @@ jQuery.extend({
     return _ajax_request(url, data, callback, type, 'DELETE');
   }
 });
+
+/* Exibindo mensagens (flash_message) via javascript */
+function flash_message(msg, css_class) {
+  if ($('#flash_message')) {  $('#flash_message').remove(); }
+  var html = '<div id="flash_message" class="' + css_class + '"><span>' + msg + '</span></div>';
+  $('.flash_message_wrapper').append(html);
+}

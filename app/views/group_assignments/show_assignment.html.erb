@@ -7,7 +7,7 @@
 <div class="group_assignment_titles">
   <%= t(:activity_description) %>
   <span class="group_assignment_delivery_date">
-    <%= image_tag "1341841517_clock.png", :alt => '', :class=>'block_title_icon' %>
+    <%= image_tag "clock.png", :alt => " ", :class=>"block_title_icon" %>
     Entrega de <%= @assignment.schedule.start_date.strftime("%d/%m/%Y %H:%M") %> até <%= @assignment.schedule.end_date.strftime("%d/%m/%Y %H:%M") %>
   </span>
 </div>
@@ -17,7 +17,7 @@
 
 <div class="group_assignment_titles">
   <%= t(:group_assignment_files) %>
-  <span class="group_assignment_download_all">
+  <span class="download_all_icon">
     <% unless @assignment_files.empty? %>
       <%= image_tag "mimetypes/zip.png", :alt => '', :class=>'block_title_icon' %>
       <%= link_to "Baixar tudo (zip)", {:controller => :group_assignments, :action => :download_all_files_zip, :all_files => @assignment_files, :assignment_id => @assignment.id}, :class => "link_content" %>

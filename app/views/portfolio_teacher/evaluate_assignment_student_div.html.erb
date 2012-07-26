@@ -1,0 +1,37 @@
+<div id="evaluate_assignment_student" class="block_content">
+  <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%" id="tb_student_assignment">
+    <% unless @send_assignment.nil? or (@send_assignment.grade.nil? and @send_assignment.comment.nil?) %>
+      <thead>
+        <tr class="lines">
+          <th align="right" style="width:30px"><%= t(:grade) %></th>
+          <th><%= t(:comment) %></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="lines" >
+            <td><%= @send_assignment.grade %></td>
+            <td><%= @send_assignment.comment %></td>
+          </tr>
+      </tbody>
+    <% else %>
+      <div class="portfolio_div_padding" id="no_itens_tb">
+        <%= t(:itens_not_found) %>
+      </div>
+    <% end %>
+  </table>
+
+  <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%" id="tb_student_assignment_evaluate" style="display: none">
+    <thead>
+      <tr class="lines">
+        <th align="right" style="width:30px"><%= t(:grade) %></th>
+        <th><%= t(:comment) %></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr class="lines" >
+          <td><%= text_field_tag :grade, @send_assignment.nil? ? "" : @send_assignment.grade, :size => 3 %></td>
+          <td><%= text_area_tag :comment, @send_assignment.nil? ? "" : @send_assignment.comment, :rows => 4, :cols => 113 %></td>
+        </tr>
+    </tbody>
+  </table>
+</div>

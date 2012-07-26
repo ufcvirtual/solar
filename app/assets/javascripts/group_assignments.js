@@ -1,9 +1,3 @@
-function flash_message(msg, css_class) {
-    if ($('#flash_message')) {  $('#flash_message').remove(); }
-    var html = '<div id="flash_message" class="' + css_class + '"><span>' + msg + '</span></div>';
-    $('.flash_message_wrapper').append(html);
-  }
-
   function clickOnGroup(group_div_id){
     this_div = $('#students_'+group_div_id);
     if (this_div.css('display') == 'none'){

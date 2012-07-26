@@ -1,0 +1,134 @@
+<div>
+  <!-- Descricao da atividade -->
+  <div id="activities" class="block_wrapper">
+    <div class="block_title">
+      <h2>
+        <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %><%= @activity.name %>
+      </h2>
+    </div>
+    <div id="individual_activity" class="block_content">
+      <!-- Descricao da atividade -->
+      <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <thead>
+          <tr class="lines">
+            <th><%=t(:activity_description)%></th>
+            <th align="center" style="width:80px">
+              <%= image_tag "clock.png", :alt => t(:clock_icon), :class=>"block_title_icon" %>
+              <span>
+                <%= t(:portfolio_delivery_date) %>
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="lines" >
+            <td>
+              <%= @activity.enunciation %>
+            </td>
+            <td class="center">
+              <%= @activity.schedule.end_date.strftime("%d/%m/%Y") %> <%= t(:portfolio_date_to) %> <%= @activity.schedule.end_date.strftime("%H:%M") %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Arquivos enviados pelo professor -->
+  <div id="activities" class="block_wrapper">
+    <div class="block_title">
+      <h2>
+        <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %>Arquivos enviados
+      </h2>
+      <span class="download_all_icon">
+        <% unless @assignment_files.empty? %>
+          <%= image_tag "mimetypes/zip.png", :alt => "zipped_folder_icon", :class=>'block_title_icon' %>
+          <%= link_to t(:portfolio_download_all_zip), {:controller => :group_assignments, :action => :download_all_files_zip, :all_files => @assignment_files, :assignment_id => @activity.id}, :class => "link_content" %>
+        <% end %>
+      </span>
+    </div>
+    <div id="individual_activity" class="block_content">
+      <% unless @assignment_files.empty? %>
+        <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%">
+          <thead>
+            <tr class="lines">
+              <th>Nome</th>
+              <th align="right" style="width: 80px">Tamanho</th>
+              <th align="center" style="width:80px">
+                <%= image_tag "clock.png", :alt => t(:clock_icon), :class=>"block_title_icon" %>
+                <span>
+                  Enviado em
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @assignment_files.each{ |file|  %>
+              <tr class="lines" >
+                <td>
+                  <%= link_to image_tag(icon_attachment(file.attachment_file_name)), {:controller=>:group_assignments, :action=>:download_single_file, 
+                                                                          :file_id => file.id, :assignment_id => @activity.id },
+                                                                          {:class => "file_icon", :alt => t(:file_type_icon)} %>
+                  <%= link_to file.attachment_file_name, {:controller => :group_assignments, :action => :download_single_file, :file_id => file.id, 
+                                              :assignment_id => @activity.id }, :class => "link_content" %>
+                </td>
+                <td class="right">
+                  <%= format('%.2f KB', file.attachment_file_size/1024.0) %>
+                </td>
+                <td class="center">
+                  <%= file.attachment_updated_at.strftime("%d/%m/%Y") %> às <%= file.attachment_updated_at.strftime("%H:%M") %>
+                </td>
+              </tr>
+            <% } %>      
+          </tbody>
+        </table>
+      <% else %>
+        <div class="assignment_files">
+          <%= t(:itens_not_found) %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  
+
+  <!-- Lista de alunos -->
+  <div id="activities" class="block_wrapper">
+    <div class="block_title">
+      <h2><%= image_tag "icon_participants.png", :alt=>t(:icon_participants), :class=>'block_title_icon' %><%= t(:portfolio_participants) %></h2>
+    </div>
+    <div id="individual_activity" class="block_content">
+      <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <thead>
+          <tr class="lines">
+            <th><%= t(:portfolio_students) %></th>
+            <th align="center" style="width:30px"><%= t(:portfolio_date) %></th>
+            <th align="right" style="width:80px"><%= t(:portfolio_situation) %></th>
+            <th align="right" style="width:30px"><%= t(:grade) %></th>
+            <th align="center" style="width:50px"><%= t(:comments) %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @students.each_with_index{ |student, idx| %>
+            <tr class="lines" >
+              <td>
+                <%= link_to student["name"], {:controller => :portfolio_teacher, :action => :student_detail, :id => student["id"], :assignment_id => @activity.id}, :class => :link_content %>
+              </td>
+              <td class="center">
+                <%= @file_delivery_date[idx] %>
+              </td>
+              <td class="assignment_<%=@situation[idx]%>">
+                <%= t(@situation[idx].to_sym) %>
+              </td>
+              <td class="center">
+                <%= @grade[idx] %>
+              </td>
+              <td class="center">
+                <%= image_tag( (@comments[idx] == false) ? "icon_no_comments.png" : "icon_comments.png" )%>
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+

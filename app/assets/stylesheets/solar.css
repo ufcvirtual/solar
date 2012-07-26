@@ -2573,6 +2573,14 @@ div.label_score {
 
 td.td_student a {color: #2a538d;}
 
+.portfolio_div_padding{
+    padding: 5px;
+}
+
+.portfolio_title_button{
+    float: right;
+}
+
 /**
 * AGENDA
 */
@@ -3314,7 +3322,7 @@ div.support_material_select {
     font-size: 13px;
 }
 
-.group_assignment_download_all{
+.download_all_icon{
     float: right;
     font-size: 13px;
 }
@@ -3325,7 +3333,6 @@ div.support_material_select {
 
 .group_assignment_manage_button{
     float: right;
-    /*margin-top: -6px;*/
     margin-top: -8px;
 }
 

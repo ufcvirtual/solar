@@ -484,39 +484,39 @@
   no_events: "No events to selected day"
 
   #PORTFOLIO
-  portfolio_icon: "Portfolio Icon"
-  portfolio_title: "Portfolio of"
-  portfolio_null: "None portfolio registered"
-  portfolio_upload_file: "Upload files for public area"
-  individual_activity: "Individual Activities"
-  group_activities: "Group Activities"
-  group_assignments: "Group Assignments"
-  group_name: "Group Name"
-  group_participants: "Participants"
-  student_with_no_group: "You aren't in any group"
-  activity_description: "Description"
-  situation: "Situation"
-  grade: "Grade"
-  comments: "Comments"
-  comments_teacher: "Teacher's comments"
-  comment: "Comment"
-  task: "Task"
-  tasks: "Tasks"
-  public_area: "Public Area"
-  delete: "Delete"
-  more: "more"
-  less: "less"
-  not_started: "Not Started"
-  corrected: "Corrected"
-  sent: "Sent"
-  make: "Make"
-  delete_file_msg: "Really delete this file?"
-  file_uploaded: "File uploaded"
-  file_deleted: "File deleted"
-  error_nonexistent_file: "File not found"
-  error_no_file_sent: "File not sent"
-  send_file_portfolio: "Upload Files To Portfolio"
-  send_file_portfolio_obs: "Wait for the complete submission of the file. The size should not exceed 5MB."
+  portfolio_icon: Portfolio Icon
+  portfolio_title: Portfolio of
+  portfolio_null: None portfolio registered
+  portfolio_upload_file: Upload files for public area
+  individual_activity: Individual Activities
+  group_activities: Group Activities
+  group_assignments: Group Assignments
+  group_name: Group Name
+  portfolio_group_participants: Participants
+  student_with_no_group: You aren't in any group
+  activity_description: Description
+  situation: Situation
+  grade: Grade
+  comments: Comments
+  comments_teacher: Teacher's comments
+  comment: Comment
+  task: Task
+  tasks: Tasks
+  public_area: Public Area
+  delete: Delete
+  more: more
+  less: less
+  not_started: Not Started
+  corrected: Corrected
+  sent: Sent
+  make: Make
+  delete_file_msg: Really delete this file?
+  file_uploaded: File uploaded
+  file_deleted: File deleted
+  error_nonexistent_file: File not found
+  error_no_file_sent: File not sent
+  send_file_portfolio: Upload Files To Portfolio
+  send_file_portfolio_obs: Wait for the complete submission of the file. The size should not exceed 5MB.
   send_file_portfolio_text: "Allowed file example:<br />
   &nbsp;&nbsp;- Microsoft Office Documents<br />
   &nbsp;&nbsp;- OpenOffice.org Documents (ODF)<br />
@@ -524,21 +524,37 @@
   &nbsp;&nbsp;- PDF Documents<br />
   &nbsp;&nbsp;- Video Files (avi, mpeg,...)<br />
   &nbsp;&nbsp;- Audio Files (mp3, wma...)"
-  sent_files: "Sent Files"
-  send_files: "Send Files"
-  download_attachment: "Download Attachment"
-  error_delete_file: "Error when trying to delete file"
-  sent_in: "Sent In"
-  comment_updated_successfully: "Comment Updated Successfully"
-  files_assignments: "Files Assignments"
-  invalid_grade: "Invalid Grade"
-  delete_file_interval_error: "Modification of files out of range"
-  send_file_interval_error: "Sending files out of range"
-  not_sent: "Not Sent"
-  tests: "Tests"
+  sent_files: Sent Files
+  send_files: Send Files
+  download_attachment: Download Attachment
+  error_delete_file: Error when trying to delete file
+  sent_in: Sent In
+  comment_updated_successfully: Comment Updated Successfully
+  files_assignments: Files Assignments
+  invalid_grade: Invalid Grade
+  delete_file_interval_error: Modification of files out of range
+  send_file_interval_error: Sending files out of range
+  not_sent: Not Sent
+  tests: Tests
   -: "-"
-  pending: "Pending"
-  comments_icon: "Comments"
+  pending: Pending
+  comments_icon: Comments
+  portfolio_title: Title
+  portfolio_date_range: Date range
+  portfolio_delivery_date: Delivery
+  portfolio_date_to: to
+  portfolio_download_all_zip: Download all (zip)
+  portfolio_participants: Participants
+  portfolio_students: Students
+  portfolio_date: Date
+  portfolio_situation: Situation
+  clock_icon: Clock icon
+  zipped_folder_icon: Folder as zip icon
+  file_type_icon: File type icon
+  student_evaluated_success: Student evaluated successfully
+  portfolio_confirm_evaluation: Confirm evaluation?
+  portfolio_cancel_evaluation: Cancel evaluation?
+  student_evaluation_canceled: Canceled evaluation
 
   # acompanhamento
   student: "Student"

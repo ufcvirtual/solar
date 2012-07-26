@@ -1,21 +1,78 @@
-<!-- Portfolio -->
-<div class="block_wrapper">
+<div class="block_wrapper" id="activities_area">
   <div class="block_title">
-    <h2><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:group) %>&nbsp;<%= @group.code %></h2>
+    <h2><%= image_tag "icon_suitcase_portfolio.png", :alt => t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:individual_activity)%></h2>
   </div>
 
-  <!-- lista de alunos -->
-  <div id="individual_activity" class="block_content">
-
+  <!-- Atividades individuais -->
+  <div class="block_content" id="individual_activity">
+  <% unless @individual_activities.nil? or @individual_activities.empty? %>
     <table class="tb_list">
+      <thead>
+        <tr class="lines">
+          <th style="">
+            <span>
+              <%= t(:portfolio_title) %>
+            </span>                
+          </th>
+          <th align="right" style="width:170px"><%= t(:portfolio_date_range) %></th>
+        </tr>
+      </thead>
+
       <tbody>
-        <% @students.each_with_index do |student, idx| %>
+        <% @individual_activities.each_with_index do |individual_activity, idx| %>
           <tr class="lines">
-            <td><%=link_to student["name"], score_path(student["id"], :student_id => student["id"]), {:class => 'link_content'} %></td>
+            <td>
+              <h4><%= link_to individual_activity["name"], {:controller => :portfolio_teacher, :action => :individual_activity_details, :id => individual_activity["id"]}, {:class => 'link_content'} %></h4>
+            </td>
+            <td class="right">
+              <%= individual_activity.schedule.start_date.strftime("%d/%m/%Y") %> - <%= individual_activity.schedule.end_date.strftime("%d/%m/%Y") %>
+            </td>
           </tr>
         <% end %>
       </tbody>
     </table>
+    <% else %>
+      <div class="block_content block_content_text"><%= t(:itens_not_found) %></div>
+    <% end %>
+  </div>
+</div>
 
+<!-- Atividades em grupo -->
+
+<div class="block_wrapper" id="activities_area">
+  <div class="block_title">
+    <h2><%= image_tag "icon_suitcase_portfolio.png", :alt => t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:group_activities)%></h2>
+  </div>
+
+  <div class="block_content" id="individual_activity">
+  <% unless @group_activities.nil? or @group_activities.empty? %>
+    <table class="tb_list">
+      <thead>
+        <tr class="lines">
+          <th style="">
+            <span>
+              <%= t(:portfolio_title) %>
+            </span>                
+          </th>
+          <th align="right" style="width:170px"><%= t(:portfolio_date_range) %></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @group_activities.each_with_index do |group_activity, idx| %>
+          <tr class="lines">
+            <td>
+              <h4><%= link_to group_activity["name"], {:controller => :portfolio, :action => :activity_details, :id => group_activity["id"]}, {:class => 'link_content'} %></h4>
+            </td>
+            <td class="right">
+              <%= group_activity.schedule.start_date.strftime("%d/%m/%Y") %> - <%= group_activity.schedule.end_date.strftime("%d/%m/%Y") %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% else %>
+      <div class="block_content block_content_text"><%= t(:itens_not_found) %></div>
+    <% end %>
   </div>
 </div>
