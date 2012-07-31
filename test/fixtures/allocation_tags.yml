@@ -50,3 +50,15 @@ al10:
 al11:
   id: 11
   group_id: 7
+
+
+## Unidade Curriculares
+## Teoria da Literatura I
+al12:
+  id: 12
+  curriculum_unit_id: 2
+
+## Quimica I
+al13:
+  id: 13
+  curriculum_unit_id: 3

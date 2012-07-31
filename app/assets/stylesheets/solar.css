@@ -3081,9 +3081,14 @@ div.support_material_select {
     width: auto;
 }
 
-td.form_error {
+.form_error {
     color: #E03838;
     padding-left: 10px;
+    vertical-align: top;
+}
+
+.field_with_errors input, .field_with_errors textarea {
+    border: 1px solid red;
 }
 
 #special_needs_line {

@@ -366,3 +366,32 @@ basico:
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: ppbT4Ue132asgpkCAB1q
+
+editor:
+  id: 14
+  username: editor
+  email: editor@com.br
+  name: editor
+  nick: Editor
+  birthdate: 1900-03-02
+  cpf: 87789615211
+  gender: true
+  address: Rua ABCDEF
+  address_number: 111
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: Brasil
+  state: AL
+  city: Bom Conselho
+  institution: UFAL
+  alternate_email:
+  bio: 
+  interests: editar
+  music:
+  movies:
+  books:
+  phrase:
+  site:
+  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: ppbT4Ue132asgpkCAB1q

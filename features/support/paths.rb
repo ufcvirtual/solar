@@ -36,7 +36,10 @@ module NavigationHelpers
 
       when /Criacao de grupo/
         '/group_assignments/new'
-        
+
+      when /Cadastro de Unidade Curricular/
+        '/curriculum_units'
+
     else
       begin
         page_name =~ /^the (.*) page$/
