@@ -91,6 +91,8 @@
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
       group_assignment:
         group_name: "Group name"
+      assignment_comment:
+        comment: Comment
 
     errors:
       messages:
@@ -548,13 +550,20 @@
   portfolio_students: Students
   portfolio_date: Date
   portfolio_situation: Situation
-  clock_icon: Clock icon
-  zipped_folder_icon: Folder as zip icon
   file_type_icon: File type icon
   student_evaluated_success: Student evaluated successfully
   portfolio_confirm_evaluation: Confirm evaluation?
   portfolio_cancel_evaluation: Cancel evaluation?
-  student_evaluation_canceled: Canceled evaluation
+  student_evaluation_canceled: Evaluation canceled
+  portfolio_cancel: Cancel
+  portfolio_save: Save
+  portfolio_evaluate: Evaluate
+  portfolio_comment: Comment
+  comment_sent_success: Comment sent sucessfully
+  portfolio_confirm_comment: Confirm comment?
+  portfolio_cancel_comment: Cancel comment?
+  comment_canceled: Comment canceled
+  comment_files_uploaded_successfully: Files uploaded successfully
 
   # acompanhamento
   student: "Student"

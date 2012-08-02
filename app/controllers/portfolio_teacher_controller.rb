@@ -2,6 +2,7 @@ class PortfolioTeacherController < ApplicationController
 
   include FilesHelper
   include PortfolioHelper
+  include AccessControlHelper
 
   before_filter :prepare_for_group_selection, :only => [:list]
 
@@ -17,8 +18,6 @@ class PortfolioTeacherController < ApplicationController
 
   def individual_activity_details
     assignment_id = params[:id]
-
-    # recupera a atividade selecionada
     @activity = Assignment.find(assignment_id)
 
     # verifica se os arquivos podem ser deletados
@@ -43,7 +42,9 @@ class PortfolioTeacherController < ApplicationController
       student_send_assignment = SendAssignment.find_by_assignment_id_and_user_id(assignment_id, student['id'])
       @comments[idx] = student_send_assignment.nil? ? false : (!student_send_assignment.comment.nil? or !AssignmentComment.find_all_by_send_assignment_id(student_send_assignment.id).empty?)
       @grade[idx] = student_send_assignment.nil? ? '-' : student_send_assignment.grade
-      @file_delivery_date[idx] = student_send_assignment.nil? ? '-' : AssignmentFile.find_all_by_send_assignment_id(student_send_assignment.id).first.attachment_updated_at.strftime("%d/%m/%Y") 
+      assignments_send_assignment = student_send_assignment.nil? ? [] : AssignmentFile.find_all_by_send_assignment_id(student_send_assignment.id) 
+      @file_delivery_date[idx] = (student_send_assignment.nil? or assignments_send_assignment.empty?) ? '-' : assignments_send_assignment.first.attachment_updated_at.strftime("%d/%m/%Y") 
+
     }
 
   end
@@ -51,23 +52,39 @@ class PortfolioTeacherController < ApplicationController
   def student_detail
     authorize! :student_detail, PortfolioTeacher
 
-    @assignment = Assignment.find(params[:assignment_id])
-    @student = User.find(params[:id])
+    @assignment         = Assignment.find(params[:assignment_id])
+    @user               = User.find(current_user.id)
+    if @assignment.type_assignment == Individual_Activity
 
-    @files_student_assignment = AssignmentFile.joins(:send_assignment).where("send_assignments.assignment_id = ? AND assignment_files.user_id = ?",
-                                                                            @assignment.id, @student.id).order("assignment_files.attachment_updated_at 
+      @student_or_group = User.find(params[:id])
+      @files_sent_assignment = AssignmentFile.joins(:send_assignment).where("send_assignments.assignment_id = ? AND assignment_files.user_id = ?",
+                                                                            @assignment.id, @student_or_group.id).order("assignment_files.attachment_updated_at 
                                                                             DESC")
-    
-    @send_assignment = SendAssignment.find_by_assignment_id_and_user_id(@assignment.id, @student.id)
+      @send_assignment = SendAssignment.find_by_assignment_id_and_user_id(@assignment.id, @student_or_group.id)
 
+    elsif @assignment.type_assignment == Group_Activity
+
+      @student_or_group = GroupAssignment.find(params[:id]) 
+      @files_sent_assignment = AssignmentFile.joins(:send_assignment).where("send_assignments.assignment_id = ? AND send_assignments.group_assignment_id = ?",
+                                                                            @assignment.id, @student_or_group.id).order("assignment_files.attachment_updated_at 
+                                                                            DESC")
+      @send_assignment = SendAssignment.find_by_assignment_id_and_group_assignment_id(@assignment.id, @student_or_group.id)
+
+    end
+    
     unless @send_assignment.nil?
-      @comments = AssignmentComment.find_all_by_send_assignment_id(@send_assignment.id, current_user.id) 
+      @comments = AssignmentComment.find_all_by_send_assignment_id_and_user_id(@send_assignment.id, current_user.id) 
       @comments_files = []
 
       @comments.each_with_index{|comment, idx|
         @comments_files[idx] = CommentFile.find_all_by_assignment_comment_id(comment.id)
       }
     end
+
+    profile_id    = Allocation.find_by_allocation_tag_id_and_user_id(@assignment.allocation_tag_id, current_user.id).profile_id
+    # user_profile_id = current_user.profiles_with_access_on('student_detail', 'portfolio_teacher', allocation_tag_id, only_id = true).first
+    @user_profile = Profile.find(profile_id)
+
   end
 
   ##
@@ -108,90 +125,71 @@ class PortfolioTeacherController < ApplicationController
   ##
   def update_comment
 
-    authorize! :update_comment, PortfolioTeacher
+    # authorize! :update_comment, PortfolioTeacher
 
-    # id da atividade
-    assignment_id = params[:assignment_id]
+    @assignment_id       = params[:assignment_id]
+    student_id           = params[:student_id]
+    professor_id         = current_user.id
+    comment              = params['comment']
+    send_assignment      = SendAssignment.find_by_assignment_id_and_user_id(@assignment_id, student_id)
+    send_assignment      = SendAssignment.create(:user_id => student_id, :assignment_id => @assignment_id) if send_assignment.nil?
 
-    # id da resposta do aluno
-    send_assignment_id = params[:send_assignment_id]
+    begin
 
-    # usuarios envolvidos
-    professors_id = current_user.id
-    students_id = params[:students_id]
+      ActiveRecord::Base.transaction do
+        
+        assignment_comment = AssignmentComment.create!(:user_id => professor_id, :comment => comment, :send_assignment_id => send_assignment.id)
 
-    # nota do aluno
-    grade = (params[:comments][:grade].nil? || params[:comments][:grade] == '') ? nil : params[:comments][:grade].to_f
+        @comments = AssignmentComment.find_all_by_send_assignment_id_and_user_id(send_assignment.id, professor_id) 
+        @comments_files = []
 
-    # comentario enviado pelo professor
-    comment = (params[:comments][:comment].nil? || params[:comments][:comment] == '') ? nil : params[:comments][:comment]
-
-    respond_to do |format|
-
-      begin
-
-        # verifica se ja existe um send_assignment
-        if send_assignment_id.nil?
-
-          send_assignment = SendAssignment.new do |s|
-            s.assignment_id = assignment_id
-            s.user_id = students_id
-          end
-
-          send_assignment.save!
-          send_assignment_id = send_assignment.id
-
-        end
-
-        redirect = {
-          :controller => :portfolio_teacher,
-          :action => :student_detail,
-          :id => students_id,
-          :assignment_id => assignment_id,
-          :send_assignment_id => send_assignment_id
+        @comments.each_with_index{|comment, idx|
+          @comments_files[idx] = CommentFile.find_all_by_assignment_comment_id(comment.id)
         }
 
-        # update comment do professor
-        comment_teacher = AssignmentComment.find_by_send_assignment_id_and_user_id(send_assignment_id, professors_id)
-
-        # registro de comentario do professor inexistente
-        if comment_teacher.nil? # && !send_assignment_id.nil?
-
-          # se nao fez comentario o registro nao existe na tarefa
-          comment_teacher = AssignmentComment.new do |ac|
-            ac.send_assignment_id = send_assignment_id
-            ac.user_id = professors_id
-          end
-
-        end
-
-        # insere comentario se nao for vazio
-        comment_teacher.comment = comment unless comment_teacher.nil? || comment_teacher == ''
-
-        # modifica nota do aluno
-        students_grade = SendAssignment.find(send_assignment_id)
-
-        students_grade.grade = grade unless students_grade.nil?
-
-        if grade < 0 || grade > 10
-          raise t(:invalid_grade)
-        end unless grade.nil?
-
-        # executar as modificacoes em uma transacao
-        ActiveRecord::Base.transaction do
-          comment_teacher.save!
-          students_grade.save!
-        end
-
-        flash[:notice] = t(:comment_updated_successfully)
-        format.html { redirect_to(redirect) }
-
-      rescue Exception => except
-        flash[:alert] = except.message
-        format.html { redirect_to(redirect) }
       end
 
+      respond_to do |format|
+          format.html { render 'comment_assignment_student_div', :layout => false }
+      end
+
+    rescue Exception => error
+      render :json => { :success => false, :flash_msg => error.message, :flash_class => 'alert' }
     end
+
+  end
+
+  ##
+  # Upload de arquivos em um comentário
+  ##
+
+  def upload_files_comment_page
+    @comment_id = params[:id]
+    @assignment_id = params[:assignment_id]
+    @student_id = params[:student_id]
+    render :layout => false
+  end
+
+  def upload_files_comment
+
+    begin
+      assignment = Assignment.find(params[:assignment_id])
+      comment = AssignmentComment.find(params[:comment_id])
+
+      # if ((not discussion.closed? or discussion.extra_time?(current_user.id)) and (post.user_id == current_user.id))
+        files = params['comment_files'].nil? ? [] : params['comment_files']
+        files.each do |file|
+          @file = CommentFile.create!(:assignment_comment_id => comment.id, :attachment_updated_at => Date.current, :attachment_file_name => file.original_filename, :attachment_content_type => file.content_type, :attachment_file_size => file.size)
+        end
+      # else
+        # raise "not_permited"
+      # end
+    rescue Exception => error
+      raise "#{error.message}"
+    end
+
+    flash[:notice] = t(:comment_files_uploaded_successfully)
+    redirect_to :controller => :portfolio_teacher, :action => :student_detail, :id => params[:student_id], :assignment_id => params[:assignment_id]
 
   end
 

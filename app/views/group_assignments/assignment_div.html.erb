@@ -1,16 +1,20 @@
 <% gps = group_assignments(@assignment.id)%>
-    
-<div class="group_assignment_content">
 
+<div class="group_assignment_content">
   <% unless gps.nil? or gps.empty? %>
     <% gps.each do |group| %>
 
-      <% send_assignment = SendAssignment.find_by_group_assignment_id(group["id"]) %>
+      <% send_assignment  = SendAssignment.find_by_group_assignment_id(group["id"]) %>
       <% can_manage_group = (send_assignment.nil? or send_assignment["grade"].nil?) ? true : false %>
-      <% tooltip_group = can_manage_group ? nil : t(:group_aready_evaluated) %>
+      <% tooltip_group    = can_manage_group ? nil : t(:group_aready_evaluated) %>
 
       <div class="group_participants" id="group_<%=group['id']%>">
-        <h3 class="group_assignment_name group_name_<%=can_manage_group%>"><%= group["group_name"] %></h3>
+        <h3 class="group_assignment_name group_name_<%=can_manage_group%>">
+          <%= group["group_name"] %>
+          <span class="group_assignment_manage_button">
+            <input type="button" value='Avaliar' class="btn btn_default evaluate_group" onclick="btn_evaluate_group('grupo_id', 'assignment_id');"/>
+          </span>
+        </h3>
         <div class="edit_group_<%=can_manage_group%>" style="display:none;">
           <%= text_field_tag "new_groups_names[][#{@assignment.id}]", group["group_name"], :id => "text_field_group_#{group['id']}", :class => "rename_group" %>
           
@@ -18,6 +22,16 @@
           <% tooltip_delete = (!group_has_files or !can_manage_group) ? tooltip_group : t(:group_assignment_delete_error) %>
           
           <a class="remove_group" onclick="delete_group('group_<%=group['id']%>', <%=@assignment.id%>, false);" title="<%=tooltip_delete%>">x</a>
+        </div>
+        <div class="group_assignment_information info_<%=can_manage_group%>">
+          <span class="group_quantity_files">
+            <% files_sent           = send_assignment.nil? ? nil : AssignmentFile.find_all_by_send_assignment_id(send_assignment.id) %>
+            <% quantity_files_sent  = files_sent.nil?      ? "0" : files_sent.size  %>
+            <%= quantity_files_sent %> arquivo(s)
+          </span>
+          <span class="group_grade" >
+            Nota: <%= (send_assignment.nil? or send_assignment.grade.nil?) ? "-" : send_assignment.grade %>
+          </span>
         </div>
 
         <% gp = group_participants(group["id"])%>
@@ -38,7 +52,8 @@
   <% end %>
 
   <div class="group_participants">
-    <h3 class="group_assignment_name"><%= t(:students_with_no_group) %></h3>
+    <h3 class="group_assignment_name group_name_true"><%= t(:students_with_no_group) %></h3>
+    <div class="edit_group_true" style="display:none;"><%= t(:students_with_no_group) %></div>
     <%= hidden_field_tag "new_groups_names[][#{@assignment.id}]", 'no_group', :class => "rename_group" %>
       <ul id='ul_no_group'>
         <% unless @students_without_group.nil? or @students_without_group.empty? %>

@@ -17,14 +17,14 @@ class GroupAssignmentsController < ApplicationController
     @assignments = GroupAssignment.all_by_group_id(group_id)
   end
 
-  # exibe detalhes do trabalho e os grupos
+  ##
+  # Exibe detalhes do trabalho e os grupos
+  ##
   def show_assignment
-
     @assignment = Assignment.find(params[:assignment_id])
     @groups = group_assignments(@assignment.id)
     @students_without_group = no_group_students(@assignment.id)
     @assignment_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)
-
   end
 
   ##

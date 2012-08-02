@@ -229,6 +229,9 @@
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
       group_assignment:
         group_name: "Nome do grupo"
+      assignment_comment:
+        comment: Comentário
+
 
     errors:
       template:
@@ -704,13 +707,20 @@
   portfolio_students: Alunos
   portfolio_date: Data
   portfolio_situation: Situação
-  clock_icon: Ícone relógio
-  zipped_folder_icon: Ícone de pasta como zip
   file_type_icon: Ícone tipo do arquivo
   student_evaluated_success: Aluno avaliado com sucesso
   portfolio_confirm_evaluation: Confirma avaliação?
   portfolio_cancel_evaluation: Cancelar avaliação?
   student_evaluation_canceled: Avaliação cancelada
+  portfolio_cancel: Cancelar
+  portfolio_save: Salvar
+  portfolio_evaluate: Avaliar
+  portfolio_comment: Comentar
+  comment_sent_success: Comentário enviado com sucesso
+  portfolio_confirm_comment: Confirma comentário?
+  portfolio_cancel_comment: Cancelar comentário?
+  comment_canceled: Comentário cancelado
+  comment_files_uploaded_successfully: Arquivos anexados com sucesso
 
   # acompanhamento
   student: "Aluno"

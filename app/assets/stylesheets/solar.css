@@ -270,13 +270,11 @@ h1.page_title{
     position : absolute;
     top : 3px;
     right : 3px;
-
     width : 11px;
     height : 11px;
-
     border : 0px;
     cursor : pointer;
-    background-image: url('closeLightBox.png');
+    background-image: url('/assets/closeLightBox.png');
     background-position:0px 0px;
     font-size : 3px;
 }
@@ -2581,6 +2579,24 @@ td.td_student a {color: #2a538d;}
     float: right;
 }
 
+.comments_files{
+    margin: 10px 20px 0 20px;
+}
+
+.more_comment_files_link{
+    float: center;
+    font-size: 9pt;
+    text-decoration: underline;
+    cursor: pointer;
+    color: #1c4785;
+}
+
+.upload_comment_files_buttons{
+    padding-top: 15px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
 /**
 * AGENDA
 */
@@ -3199,55 +3215,79 @@ div.support_material_select {
     font-size: 13px;
 }
 
-.group_participants {
-    background-color: #e9edf2;
-    float: left;
-    width: 230px;
-    min-height: 100px;
-    margin-right: 10px;
+.group_grade{
+    float: right;
+}
+
+.group_participants, .group_participants_manage, .group_assignments_manage_buttons{
+    min-height: 150px;
+    margin-right: 11px;
     margin-bottom: 10px;
-}
-
-.group_participants ul {
-    padding: 7px;
-}
-
-.group_assignment_name {
-    background-color: #134076;
-    color: #FFFFFF;
-    font-weight: normal;
-    padding: 2px 7px 2px 7px;
-}
-
-.group_participants_manage {
-    background-color: #fefce6;
+    border-bottom: 1px solid #c0c1c2;
     float: left;
-    width: 230px;
-    min-height: 100px;
-    margin-right: 10px;
-    margin-bottom: 10px;
+    width: 250px;
+    background-color: #ffffff;
 }
 
-.group_participants_manage ul{
-    padding: 7px;
-    min-height: 60px;
-}
-
-.group_assignment_name_manage{
-    background-color: #fcda17;
-    color: #000000;
-    font-weight: normal;
-    padding: 2px 7px 2px 7px;   
+.btn_new, .btn_import{
+    margin-top: 30px;
 }
 
 .group_assignments_manage_buttons{
     background-color: #f7f7f7;
-    float: left;
-    width: 230px;
-    min-height: 95px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    border: 2px solid #a9a9aa;
+}
+
+.group_participants ul, .group_participants_manage ul {
+    padding: 7px;
+}
+
+.group_participants_manage ul{
+    min-height: 60px;
+}
+
+.group_assignment_name, .group_assignment_name_manage, .group_assignments_manage_buttons_title, .edit_group_true, .disabled_groups_assignments_name{
+    font-weight: normal;
+    height: 20px;
+    padding: 6px 7px 2px 7px;
+}
+
+.group_assignment_name{
+    background-color: #0d487d;
+    color: #FFFFFF;
+}
+
+.group_assignment_name_manage, .edit_group_true{
+    background-color: #fcd927;
+    color: #000000;
+}
+
+.group_assignments_manage_buttons_title, .disabled_groups_assignments_name{
+    background-color: #9ea2a3;
+    color: #ffffff;
+}
+
+.group_assignment_information, .group_assignment_information_manage, .disabled_groups_assignments_information{
+    height: 16px;
+    padding: 6px 10px 2px 7px;
+    font-size: 12px;
+    color: #000000;
+}
+
+.group_assignment_information{
+    background-color: #f2f6fa;
+}
+
+.group_assignment_information_manage{
+    background-color: #fdfce1;
+}
+
+.disabled_groups_assignments_information{
+    background-color: #f7f7f7;
+}
+
+.evaluate_group{
+    margin-top: -20px;
+    height: 16px;
 }
 
 .group_assignments_manage_buttons ul{
@@ -3257,11 +3297,6 @@ div.support_material_select {
 
 .group_assignments_manage_buttons li{
     margin-bottom: 7px;
-}
-
-.group_assignments_manage_buttons_title{
-    background-color: #a9a9aa;
-    height: 15px;
 }
 
 .page_title{
@@ -3306,20 +3341,10 @@ div.support_material_select {
 }
 
 .rename_group{
-    width: 202px;
+    width: 180px;
     height: 8px;
-    border: 3px solid #fcda17;
-}
-
-.group_assignment_titles{
-    margin-top: 10px;
-    margin-bottom: 5px;
-    border-bottom: 1px solid #D0D0D0;
-}
-
-.group_assignment_delivery_date{
-    float: right;
-    font-size: 13px;
+    border: 0;
+    margin-top: -5px;
 }
 
 .download_all_icon{
@@ -3329,11 +3354,11 @@ div.support_material_select {
 
 .remove_group{
     cursor: pointer;
+    float:right;
 }
 
 .group_assignment_manage_button{
     float: right;
-    margin-top: -8px;
 }
 
 .group_assignment_files a{

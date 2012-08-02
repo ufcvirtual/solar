@@ -62,7 +62,7 @@
         <% @group_activities.each_with_index do |group_activity, idx| %>
           <tr class="lines">
             <td>
-              <h4><%= link_to group_activity["name"], {:controller => :portfolio, :action => :activity_details, :id => group_activity["id"]}, {:class => 'link_content'} %></h4>
+              <h4><%= link_to group_activity["name"], {:controller => :group_assignments, :action => :show_assignment, :assignment_id => group_activity["id"]}, {:class => 'link_content'} %></h4>
             </td>
             <td class="right">
               <%= group_activity.schedule.start_date.strftime("%d/%m/%Y") %> - <%= group_activity.schedule.end_date.strftime("%d/%m/%Y") %>

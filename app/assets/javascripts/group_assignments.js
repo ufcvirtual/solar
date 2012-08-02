@@ -22,7 +22,11 @@
     $('#save_changes_assignment').show();
     $('#cancel_changes_assignment').show();
     $(".group_participants").attr("class", "group_participants_manage");
-    $(".group_assignment_name").attr("class", "group_assignment_name_manage");
+    $(".group_name_true").attr("class", "group_assignment_name_manage");
+    $(".group_name_false").attr("class", "disabled_groups_assignments_name");
+    $(".evaluate_group").hide();
+    $(".info_true").attr("class", "group_assignment_information_manage");
+    $(".info_false").attr("class", "disabled_groups_assignments_information");
     dragndrop(assignment_id);
     show_import_and_new_groups_box(show_import_button);
   }
@@ -31,10 +35,9 @@
     student_div = $(this_div);
     student_can_move = student_div.attr('id');
     student_class = student_div.attr('class');
-    student_group_can_change = student_div.parent().attr('class');
+    student_group_can_change = student_div.parent().attr('id');
 
     if ((student_can_move != 'false' && student_group_can_change != "false") && student_class.indexOf('ui-draggable') != -1 ){
-      student_div.css("color","#134076");
       student_div.css("border-bottom","2px dashed #fdec9c");
       student_div.css("cursor", "crosshair");
     } 
@@ -52,7 +55,6 @@
     student_group_can_change = student_div.parent().attr('class');
     
     if ((student_can_move != 'false' && student_group_can_change != "false") && student_class.indexOf('ui-draggable') != -1){
-      student_div.css("color","#000000");
       student_div.css("border-bottom","");
       student_div.css("cursor", "default");
     } 
@@ -62,9 +64,9 @@
     var new_idx = "group_new_" + $('.another_new_group').length;
 
     var new_group_hmtl = new Array();
-    new_group_hmtl.push('<div class="group_participants_manage another_new_group" id="' + new_idx + '">');
-      new_group_hmtl.push('<div class="new_group" id="edit_'+new_idx+'">');
-        new_group_hmtl.push('<input type="text_field" name="new_groups_names[][' + assignment_id + ']" id="text_field_'+ new_idx +'" class="rename_group" />');
+    new_group_hmtl.push('<div class="group_participants_manage another_new_group " id="' + new_idx + '">');
+      new_group_hmtl.push('<div class="new_group edit_group_true" id="edit_'+new_idx+'">');
+        new_group_hmtl.push('<input type="text_field" value="Novo Grupo" name="new_groups_names[][' + assignment_id + ']" id="text_field_'+ new_idx +'" class="rename_group" />');
         new_group_hmtl.push('<a class="remove_group" onclick="delete_group(\'' + new_idx + '\', \'' + assignment_id + '\', false);"> x</a>');
       new_group_hmtl.push('</div>');
       new_group_hmtl.push('<ul value="0">');

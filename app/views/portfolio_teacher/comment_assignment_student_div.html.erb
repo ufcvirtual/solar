@@ -1,0 +1,52 @@
+<div id="comment_assignment_student" class="forum_posts_wrapper">
+      <% unless @comments.nil? %>
+        <% @comments.each_with_index{ |comment, idx| %>
+          <table class="forum_post tb_comments" border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+              <td rowspan="3" class="forum_post_icon">
+                <%= image_tag "no_image_forum.png", :alt => " ", :class=>'block_title_icon' %>
+              </td>
+              <td class="forum_post_head">
+                <div class="forum_post_author">
+                  <div class="forum_participant_nick" alt="fulano">
+                    Fulano 
+                    <!-- nick -->
+                  </div>
+                  <div class="forum_participant_profile" >
+                    Professor
+                    <!-- profile.name -->
+                  </div>
+                </div>
+                <div class="forum_post_date">
+                  Data de postagem do comentário de fulano
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="forum_post_content" colspan="2">
+                <div class="forum_post_inner_content">
+                  <%= comment.comment %>
+                </div>
+                <div class="forum_post_attachment">
+                  <h3>
+                    Anexos
+                  </h3>
+                  <ul class="forum_post_attachment_list">
+                    <% @comments_files[idx].each{| comment_file | %>
+                      <li>
+                        <%= link_to comment_file.attachment_file_name, {:controller => :group_assignments, :action => :download_single_file,                                    :file_id => comment_file.id, :assignment_id => @assignment_id }, :class => "link_content" %>
+                      </li>
+                    <% } %>  
+                  </ul>
+                </div>
+              </td>
+            </tr>
+            <tr></tr>
+          </table>
+        <% } %>
+      <% else %>
+        <div class="block_content portfolio_div_padding">
+          <%= t(:itens_not_found) %>
+        </div>
+      <% end %>    
+    </div>

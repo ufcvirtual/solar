@@ -5,4 +5,6 @@ class AssignmentComment < ActiveRecord::Base
 
   has_many :comment_files
 
+  validates :comment, :presence => true
+
 end
