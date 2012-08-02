@@ -5,12 +5,11 @@ class CurriculumUnitsController < ApplicationController
 
   before_filter :prepare_for_group_selection, :only => [:home, :participants, :informations]
 
-  #  load_and_authorize_resource
-
   # GET /curriculum_units
   # GET /curriculum_units.json
   def index
-    @curriculum_units = CurriculumUnit.find_default_by_user_id(current_user.id, true)
+    authorize! :index, CurriculumUnit
+    @curriculum_units = CurriculumUnit.joins(:allocations).where(:allocations => { :profile_id => Curriculum_Unit_Initial_Profile, :user_id => current_user.id } )
 
     respond_to do |format|
       format.html # index.html.erb
@@ -21,6 +20,7 @@ class CurriculumUnitsController < ApplicationController
   # GET /curriculum_units/1
   # GET /curriculum_units/1.json
   def show
+    authorize! :show, CurriculumUnit
     @curriculum_unit = CurriculumUnit.find(params[:id])
 
     respond_to do |format|
@@ -62,6 +62,7 @@ class CurriculumUnitsController < ApplicationController
   # DELETE /curriculum_units/1
   # DELETE /curriculum_units/1.json
   def destroy
+    authorize! :destroy, CurriculumUnit
     @curriculum_unit = CurriculumUnit.find(params[:id])
     @curriculum_unit.destroy
 
@@ -75,6 +76,7 @@ class CurriculumUnitsController < ApplicationController
   # GET /curriculum_units/new
   # GET /curriculum_units/new.json
   def new
+    authorize! :new, CurriculumUnit
     @curriculum_unit = CurriculumUnit.new
 
     respond_to do |format|
@@ -85,6 +87,7 @@ class CurriculumUnitsController < ApplicationController
 
   # GET /curriculum_units/1/edit
   def edit
+    authorize! :edit, CurriculumUnit
     @curriculum_unit = CurriculumUnit.find(params[:id])
     
     respond_to do |format|
@@ -96,6 +99,7 @@ class CurriculumUnitsController < ApplicationController
   # POST /curriculum_units
   # POST /curriculum_units.json
   def create
+    authorize! :create, CurriculumUnit
     params[:curriculum_unit].delete('code') if params[:curriculum_unit][:code] == ''
     params[:curriculum_unit].delete('prerequisites') if params[:curriculum_unit][:prerequisites] == ''
 
@@ -115,6 +119,7 @@ class CurriculumUnitsController < ApplicationController
   # PUT /curriculum_units/1
   # PUT /curriculum_units/1.json
   def update
+    authorize! :update, CurriculumUnit
     @curriculum_unit = CurriculumUnit.find(params[:id])
 
     respond_to do |format|

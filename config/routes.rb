@@ -11,8 +11,7 @@ Solar::Application.routes.draw do
   end
 
   ## curriculum_units/:id/groups
-  #  O ":only" fica enquanto edição de UC não for finalizada
-  resources :curriculum_units, :only => [:index, :show] do
+  resources :curriculum_units do
     member do
       get :participants
       get :informations

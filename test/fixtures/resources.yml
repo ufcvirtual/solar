@@ -464,3 +464,30 @@ res78:
   controller: 'group_assignments'
   action: 'download_all_files_zip'
   description: 'Metodo de download de todos os arquivos'
+
+
+# Unidade Curricular - Editor
+res79:
+  id: 79
+  controller: 'curriculum_units'
+  action: 'index'
+  description: 'Listagem de Unidades Curriculares para edição'
+
+res80:
+  id: 80
+  controller: 'curriculum_units'
+  action: 'destroy'
+  description: 'Excluir Unidade Curricular'
+
+res81:
+  id: 81
+  controller: 'curriculum_units'
+  action: 'update'
+  description: 'Editar Unidade Curricular'
+
+res82:
+  id: 82
+  controller: 'curriculum_units'
+  action: 'create'
+  description: 'Criar Unidade Curricular'
+

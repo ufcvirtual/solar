@@ -5,6 +5,7 @@ class CurriculumUnit < ActiveRecord::Base
   has_many :offers
   has_many :groups, :through => :offers, :uniq => true
   has_many :logs
+  has_many :allocations, :through => :allocation_tag
 
   validates :code, :uniqueness => true, :length => { :maximum   => 10 }
   validates :name, :presence => true, :length => { :maximum   => 120 }

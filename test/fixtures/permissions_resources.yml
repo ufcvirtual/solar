@@ -865,6 +865,27 @@ matedit3:
   resource_id: 72
   per_id: false
 
+# Unidade Curricular - Editor
+ucedit1:
+  profile_id: 5
+  resource_id: 79
+  per_id: false
+
+ucedit2:
+  profile_id: 5
+  resource_id: 80
+  per_id: false
+
+ucedit3:
+  profile_id: 5
+  resource_id: 81
+  per_id: false
+
+ucedit4:
+  profile_id: 5
+  resource_id: 82
+  per_id: false
+
 ##############################
 # BASICO #
 ##############################
@@ -931,7 +952,7 @@ pbsc12:
   per_id: false
 
 
-# Material de apoio - Editor
+# Material de apoio - Basico
 pbsc13:
   profile_id: 12
   resource_id: 63

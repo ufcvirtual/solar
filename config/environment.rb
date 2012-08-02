@@ -37,6 +37,9 @@ Profile_Type_Basic              = 0b00000001  # (1o bit = 1)
 Profile_Type_Class_Responsible  = 0b00000010  # (2o bit = 1)
 Profile_Type_Student            = 0b00000100  # (3o bit = 1)
 
+# Perfis de editor inicialmente alocados ao criar
+Curriculum_Unit_Initial_Profile = 5
+
 # Contextos de abas e menus
 Context_General            = 1 #Context.find_by_name('general').id
 Context_Curriculum_Unit    = 2 #Context.find_by_name('curriculum_unit').id
