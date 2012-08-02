@@ -109,13 +109,4 @@ SQL
 
   end
 
-  ##
-  # Informacoes sobre a atividade do aluno
-  ##
-  def self.assignments_student(student_id, assignment_id)
-    SendAssignment.
-      joins("LEFT JOIN assignment_files ON assignment_files.send_assignment_id = send_assignments.id").
-      where(["send_assignments.assignment_id = ? AND send_assignments.user_id = ?", assignment_id, student_id])
-  end
-
 end

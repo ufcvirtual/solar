@@ -23,8 +23,8 @@ Cenário: Listar aulas do curso
     Então eu deverei ver "Aulas disponíveis"
     E eu deverei ver a linha de aulas disponiveis
       | AulasDisponiveis  | DataAcesso              |
-      | aula 4            | 16/03/2011 - 01/08/2012 |
-      | aula 5            | 25/03/2011 - 06/05/2015 |
+      | aula 4            | 16/03/2011 - 01/08/2312 |
+      | aula 5            | 25/03/2011 - 06/05/2315 |
 
 #@wip
 #Cenário: Exibir aula do curso

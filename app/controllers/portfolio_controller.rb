@@ -56,7 +56,7 @@ class PortfolioController < ApplicationController
 
    if @activity.type_assignment == Individual_Activity
     # recupera os arquivos enviados pelo aluno
-    send_assignment = Portfolio.assignments_student(student_id, assignment_id).uniq
+    send_assignment = SendAssignment.find_by_assignment_id_and_user_id(assignment_id, student_id)
    elsif @activity.type_assignment == Group_Activity
     # recupera os arquivos enviados pelo grupo
     group_assignment_id = @group_participants.first.group_assignment_id unless @group_participants.nil?
