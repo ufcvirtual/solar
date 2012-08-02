@@ -49,10 +49,6 @@ acomp_ativ_teacher:
   menu_id: 208
   context_id: 2
 
-trab_grupo:
-  menu_id: 209
-  context_id: 2
-
 # MENU PAI - 30
 info_geral:
   menu_id: 30

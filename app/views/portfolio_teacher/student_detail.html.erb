@@ -45,6 +45,36 @@
     </div>
   </div>
 
+  <!-- Participantes do grupo -->
+  <% if @assignment.type_assignment == Group_Activity %>
+    <div id="activities" class="block_wrapper">
+      <div class="block_title">
+        <h2>
+          <%= image_tag "icon_participants.png", :alt => " ", :class=>'block_title_icon' %><%= @student_or_group.group_name %>
+        </h2>
+      </div>
+      <div id="individual_activity_description" class="block_content">
+        <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%">
+          <thead>
+            <tr class="lines">
+              <th>Participantes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% gp = group_participants(@student_or_group.id)
+            gp.each{ |participant| %>
+              <tr class="lines" >
+                <td>
+                  <%= participant['name'] %>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% end %>
+
   <!-- Arquivos enviados pelo aluno -->
   <div id="activities" class="block_wrapper">
     <div class="block_title">
@@ -173,20 +203,23 @@
           <table class="forum_post tb_comments" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td rowspan="3" class="forum_post_icon">
-                <%#= image_tag "no_image_forum.png", :alt => " ", :class=>'block_title_icon' %>
-                <%= image_tag(@user.photo.url(:forum), :alt => t(:mysolar_alt_img_user) + ' ' + @user.nick) %>
+                <%= image_tag(comment.user.photo.url(:forum), :alt => t(:mysolar_alt_img_user) + ' ' + comment.user.nick) %>
               </td>
               <td class="forum_post_head">
                 <div class="forum_post_author">
                   <div class="forum_participant_nick" alt="fulano">
-                    <%= @user.nick %>
+                    <%= comment.user.nick %>
                   </div>
                   <div class="forum_participant_profile" >
-                    <%= @user_profile.name %>
+                    <%= @users_profiles[idx].name %>
                   </div>
                 </div>
                 <div class="forum_post_date">
-                  Data de postagem do comentário de fulano
+                  <% unless comment.updated_at.blank? %>
+                    <%= comment.updated_at.strftime("%d/%m/%Y") %>
+                  <% else %>
+                    Sem data
+                  <% end %>
                 </div>
               </td>
             </tr>
@@ -203,9 +236,12 @@
                     <% @comments_files[idx].each{| comment_file | %>
                       <li>
                         <%= link_to comment_file.attachment_file_name, {:controller => :group_assignments, :action => :download_single_file,                                    :file_id => comment_file.id, :assignment_id => @assignment.id }, :class => "link_content" %>
+                        <div class="forum_post_date">
+                          <%= comment_file.attachment_updated_at.strftime("%d/%m/%Y") %>
+                        </div>
                       </li>
                     <% } %>  
-                    <button type="button" class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :portfolio_teacher, :action => :upload_files_comment_page, :id => comment.id, :assignment_id => @assignment.id, :student_id => @send_assignment.user_id)%>', '');">Anexar arquivo<img alt="Anexar arquivo" src="/assets/icon_attachment.png"></button>
+                    <button type="button" class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :portfolio_teacher, :action => :upload_files_comment_page, :id => comment.id, :assignment_id => @assignment.id, :student_or_group_id => @student_or_group.id)%>', '');">Anexar arquivo<img alt="Anexar arquivo" src="/assets/icon_attachment.png"></button>
                   </ul>
                 </div>
               </td>
@@ -248,15 +284,15 @@
     new_comment_div.push('<table class="forum_post new_comment tb_comments" border="0" cellpadding="0" cellspacing="0" width="100%">');
       new_comment_div.push('<tr>');
         new_comment_div.push('<td rowspan="3" class="forum_post_icon">');
-          new_comment_div.push('<img src="/assets/no_image_forum.png" alt=" " class="block_title_icon" />');
+          new_comment_div.push('<%= image_tag(@user.photo.url(:forum), :alt => t(:mysolar_alt_img_user) + ' ' + @user.nick) %>');
         new_comment_div.push('</td>');
         new_comment_div.push('<td class="forum_post_head">');
           new_comment_div.push('<div class="forum_post_author">');
             new_comment_div.push('<div class="forum_participant_nick" alt="fulano">');
-              new_comment_div.push('nick');
+              new_comment_div.push('<%=@user.nick%>');
             new_comment_div.push('</div>');  
             new_comment_div.push('<div class="forum_participant_profile" alt="fulano">');
-              new_comment_div.push('perfil');
+              new_comment_div.push('<%=@user_profile.name%>');
             new_comment_div.push('</div>');  
           new_comment_div.push('</div>');
           new_comment_div.push('<div class="forum_post_date">');
@@ -296,7 +332,7 @@
     }
   }
 
-  function btn_save_comment(assignment_id, student_id){
+  function btn_save_comment(assignment_id, student_or_group_id){
     if (confirm('<%= t(:portfolio_confirm_comment) %>')){
      
       var comments_comment      = $("#comments_comment").attr('value');
@@ -315,7 +351,7 @@
       $.ajax({
         url: url,
         type: 'POST',
-        data:  {'comment': comments_comment, 'assignment_id': assignment_id, 'files_names': comments_files_names, 'student_id': student_id},
+        data:  {'comment': comments_comment, 'assignment_id': assignment_id, 'files_names': comments_files_names, 'student_or_group_id': student_or_group_id},
         success: function(data) {
           if (data.success == false) {
             continue_with_request = false;
@@ -362,10 +398,10 @@
     }
   }
 
-  function btn_save_evaluation(assignment_id, student_id){
+  function btn_save_evaluation(assignment_id, student_or_group_id){
     if (confirm('<%= t(:portfolio_confirm_evaluation) %>')){
      
-      var evaluation_grade    = $("#evaluation_grade").attr('value');
+      var evaluation_grade    = ''+$("#evaluation_grade").attr('value')+'';
       var evaluation_comment  = $("#evaluation_comment").attr('value');
       var url                 = '<%= portfolio_teacher_evaluate_student_assignment_path %>';
 
@@ -373,7 +409,7 @@
       $.ajax({
         url: url,
         type: 'POST',
-        data:  {'grade': evaluation_grade, 'assignment_id': assignment_id, 'comment': evaluation_comment, 'student_id': student_id},
+        data:  {'grade': evaluation_grade, 'assignment_id': assignment_id, 'comment': evaluation_comment, 'student_or_group_id': student_or_group_id},
         success: function(data) {
           if (data.success == false) {
             continue_with_request = false;

@@ -54,6 +54,7 @@ class PortfolioTeacherController < ApplicationController
 
     @assignment         = Assignment.find(params[:assignment_id])
     @user               = User.find(current_user.id)
+
     if @assignment.type_assignment == Individual_Activity
 
       @student_or_group = User.find(params[:id])
@@ -73,17 +74,22 @@ class PortfolioTeacherController < ApplicationController
     end
     
     unless @send_assignment.nil?
-      @comments = AssignmentComment.find_all_by_send_assignment_id_and_user_id(@send_assignment.id, current_user.id) 
+      @comments       = AssignmentComment.find_all_by_send_assignment_id(@send_assignment.id) 
       @comments_files = []
+      @users_profiles  = []
 
       @comments.each_with_index{|comment, idx|
+        profile_id           = Allocation.find_by_allocation_tag_id_and_user_id(@assignment.allocation_tag_id, comment.user_id).profile_id
+        # user_profile_id = current_user.profiles_with_access_on('student_detail', 'portfolio_teacher', allocation_tag_id, only_id = true).first
+        @users_profiles[idx] = Profile.find(profile_id)
+
         @comments_files[idx] = CommentFile.find_all_by_assignment_comment_id(comment.id)
       }
-    end
 
-    profile_id    = Allocation.find_by_allocation_tag_id_and_user_id(@assignment.allocation_tag_id, current_user.id).profile_id
-    # user_profile_id = current_user.profiles_with_access_on('student_detail', 'portfolio_teacher', allocation_tag_id, only_id = true).first
-    @user_profile = Profile.find(profile_id)
+      profile_id    = Allocation.find_by_allocation_tag_id_and_user_id(@assignment.allocation_tag_id, current_user.id).profile_id
+        # user_profile_id = current_user.profiles_with_access_on('student_detail', 'portfolio_teacher', allocation_tag_id, only_id = true).first
+      @user_profile = Profile.find(profile_id)
+    end
 
   end
 
@@ -91,11 +97,16 @@ class PortfolioTeacherController < ApplicationController
   # Avalia trabalho do aluno
   ##
   def evaluate_student_assignment
-    assignment_id   = params['assignment_id']
-    student_id      = params['student_id']
-    grade           = (params['grade'].nil? or params['grade'].blank?) ? nil : params['grade'].to_f
-    comment         = (params['comment'].nil? or params['comment'].blank?) ? nil : params['comment']
-    @send_assignment = SendAssignment.find_by_assignment_id_and_user_id(assignment_id, student_id)
+    @assignment         = Assignment.find(params['assignment_id'])
+    student_or_group_id = params['student_or_group_id']
+    grade               = (params['grade'].nil? or params['grade'].blank?) ? nil : params['grade'].tr(',', '.').to_f
+    comment             = (params['comment'].nil? or params['comment'].blank?) ? nil : params['comment']
+
+    if @assignment.type_assignment == Group_Activity
+      @send_assignment    = SendAssignment.find_by_assignment_id_and_group_assignment_id(@assignment.id, student_or_group_id)
+    elsif @assignment.type_assignment == Individual_Activity
+      @send_assignment    = SendAssignment.find_by_assignment_id_and_user_id(@assignment.id, student_or_group_id)
+    end
 
     begin
 
@@ -104,7 +115,11 @@ class PortfolioTeacherController < ApplicationController
       end unless grade.nil?
 
       if @send_assignment.nil?
-        @send_assignment = SendAssignment.create(:assignment_id => assignment_id, :user_id => students_id, :comment => comment, :grade => grade)
+        if @assignment.type_assignment == Group_Activity
+          @send_assignment = SendAssignment.create(:assignment_id => @assignment.id, :group_assignment_id => student_or_group_id, :comment => comment, :grade => grade)
+        elsif @assignment.type_assignment == Individual_Activity
+          @send_assignment = SendAssignment.create(:assignment_id => @assignment.id, :user_id => student_or_group_id, :comment => comment, :grade => grade)
+        end
       else
         @send_assignment.update_attribute(:grade, grade)
         @send_assignment.update_attribute(:comment, comment)
@@ -126,28 +141,37 @@ class PortfolioTeacherController < ApplicationController
   def update_comment
 
     # authorize! :update_comment, PortfolioTeacher
-
-    @assignment_id       = params[:assignment_id]
-    student_id           = params[:student_id]
-    professor_id         = current_user.id
-    comment              = params['comment']
-    send_assignment      = SendAssignment.find_by_assignment_id_and_user_id(@assignment_id, student_id)
-    send_assignment      = SendAssignment.create(:user_id => student_id, :assignment_id => @assignment_id) if send_assignment.nil?
+    @assignment           = Assignment.find(params[:assignment_id])
+    @student_or_group_id  = params['student_or_group_id']
+    @user                 = User.find(current_user.id)
+    comment               = params['comment']
+    if @assignment.type_assignment == Group_Activity
+      send_assignment      = SendAssignment.find_by_assignment_id_and_group_assignment_id(@assignment.id, @student_or_group_id)
+      send_assignment      = SendAssignment.create(:group_assignment_id => @student_or_group_id, :assignment_id => @assignment.id) if send_assignment.nil?
+    elsif @assignment.type_assignment == Individual_Activity
+      send_assignment      = SendAssignment.find_by_assignment_id_and_user_id(@assignment.id, @student_or_group_id)
+      send_assignment      = SendAssignment.create(:user_id => @student_or_group_id, :assignment_id => @assignment.id) if send_assignment.nil?
+    end
+    
 
     begin
 
       ActiveRecord::Base.transaction do
-        
-        assignment_comment = AssignmentComment.create!(:user_id => professor_id, :comment => comment, :send_assignment_id => send_assignment.id)
-
-        @comments = AssignmentComment.find_all_by_send_assignment_id_and_user_id(send_assignment.id, professor_id) 
-        @comments_files = []
-
+        assignment_comment  = AssignmentComment.create!(:user_id => @user.id, :comment => comment, :send_assignment_id => send_assignment.id, :updated_at => Date.current)
+        @comments           = AssignmentComment.find_all_by_send_assignment_id(send_assignment.id) 
+        @comments_files     = []
+        @users_profiles     = []
         @comments.each_with_index{|comment, idx|
+          profile_id           = Allocation.find_by_allocation_tag_id_and_user_id(@assignment.allocation_tag_id, comment.user_id).profile_id
+          # user_profile_id = current_user.profiles_with_access_on('student_detail', 'portfolio_teacher', allocation_tag_id, only_id = true).first
+          @users_profiles[idx] = Profile.find(profile_id)
           @comments_files[idx] = CommentFile.find_all_by_assignment_comment_id(comment.id)
         }
-
       end
+
+      profile_id    = Allocation.find_by_allocation_tag_id_and_user_id(@assignment.allocation_tag_id, @user.id).profile_id
+      # user_profile_id = current_user.profiles_with_access_on('student_detail', 'portfolio_teacher', allocation_tag_id, only_id = true).first
+      @user_profile = Profile.find(@user.id)
 
       respond_to do |format|
           format.html { render 'comment_assignment_student_div', :layout => false }
@@ -166,7 +190,7 @@ class PortfolioTeacherController < ApplicationController
   def upload_files_comment_page
     @comment_id = params[:id]
     @assignment_id = params[:assignment_id]
-    @student_id = params[:student_id]
+    @student_or_group_id = params[:student_or_group_id]
     render :layout => false
   end
 
@@ -189,7 +213,7 @@ class PortfolioTeacherController < ApplicationController
     end
 
     flash[:notice] = t(:comment_files_uploaded_successfully)
-    redirect_to :controller => :portfolio_teacher, :action => :student_detail, :id => params[:student_id], :assignment_id => params[:assignment_id]
+    redirect_to :controller => :portfolio_teacher, :action => :student_detail, :id => params[:student_or_group_id], :assignment_id => params[:assignment_id]
 
   end
 

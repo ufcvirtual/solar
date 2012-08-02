@@ -4,21 +4,22 @@
           <table class="forum_post tb_comments" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td rowspan="3" class="forum_post_icon">
-                <%= image_tag "no_image_forum.png", :alt => " ", :class=>'block_title_icon' %>
+                <%#= image_tag "no_image_forum.png", :alt => " ", :class=>'block_title_icon' %>
+                <%= image_tag(@user.photo.url(:forum), :alt => t(:mysolar_alt_img_user) + ' ' + @user.nick) %>
               </td>
               <td class="forum_post_head">
                 <div class="forum_post_author">
                   <div class="forum_participant_nick" alt="fulano">
-                    Fulano 
-                    <!-- nick -->
+                    <%= @user.nick %>
                   </div>
                   <div class="forum_participant_profile" >
-                    Professor
-                    <!-- profile.name -->
+                    <%= @users_profiles[idx].name %>
                   </div>
                 </div>
                 <div class="forum_post_date">
-                  Data de postagem do comentário de fulano
+                  <% unless comment.updated_at.blank? %>
+                    <%= comment.updated_at.strftime("%d/%m/%Y") %>
+                  <% end %>
                 </div>
               </td>
             </tr>
@@ -34,9 +35,13 @@
                   <ul class="forum_post_attachment_list">
                     <% @comments_files[idx].each{| comment_file | %>
                       <li>
-                        <%= link_to comment_file.attachment_file_name, {:controller => :group_assignments, :action => :download_single_file,                                    :file_id => comment_file.id, :assignment_id => @assignment_id }, :class => "link_content" %>
+                        <%= link_to comment_file.attachment_file_name, {:controller => :group_assignments, :action => :download_single_file,                                    :file_id => comment_file.id, :assignment_id => @assignment.id }, :class => "link_content" %>
+                        <div class="forum_post_date">
+                          <%= comment_file.attachment_updated_at.strftime("%d/%m/%Y") %>
+                        </div>
                       </li>
                     <% } %>  
+                    <button type="button" class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :portfolio_teacher, :action => :upload_files_comment_page, :id => comment.id, :assignment_id => @assignment.id, :student_or_group_id => @student_or_group_id)%>', '');">Anexar arquivo<img alt="Anexar arquivo" src="/assets/icon_attachment.png"></button>
                   </ul>
                 </div>
               </td>

@@ -15,7 +15,7 @@
 
   <div class="block_content">
 	  
-	    <%= form_for(:files_comment, :html => { :multipart => true }, :url => {:controller => :portfolio_teacher, :action => :upload_files_comment, :assignment_id => @assignment_id, :comment_id => @comment_id, :student_id => @student_id}) do |f| %>
+	    <%= form_for(:files_comment, :html => { :multipart => true }, :url => {:controller => :portfolio_teacher, :action => :upload_files_comment, :assignment_id => @assignment_id, :comment_id => @comment_id, :student_or_group_id => @student_or_group_id}) do |f| %>
 	    	<div class="comments_files_div">
 	    		<%= file_field_tag 'comment_files[]', :class => "comments_files" %>
           <a href="#" class="more_comment_files_link" onclick="more_files();" ><%= t(:forum_attach_another_file) %></a>
