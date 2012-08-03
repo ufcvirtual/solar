@@ -32,10 +32,10 @@
               <%= @activity.enunciation %>
             </td>
             <td class="center">
-              <%= @activity.schedule.start_date.strftime("%d/%m/%Y") %> às <%= @activity.schedule.start_date.strftime("%H:%M") %> 
+              <%= l(@activity.schedule.start_date, :format => :files) %>
             </td>
             <td class="center">
-              <%= @activity.schedule.end_date.strftime("%d/%m/%Y") %>  <%= t(:portfolio_date_to) %> <%= @activity.schedule.end_date.strftime("%H:%M") %>
+              <%= l(@activity.schedule.end_date, :format => :files) %>
             </td>
           </tr>
         </tbody>
@@ -75,17 +75,14 @@
             <% @assignment_files.each{ |file|  %>
               <tr class="lines" >
                 <td>
-                  <%= link_to image_tag(icon_attachment(file.attachment_file_name)), {:controller=>:group_assignments, :action=>:download_single_file, 
-                                                                          :file_id => file.id, :assignment_id => @activity.id },
-                                                                          {:class => "file_icon", :alt => t(:file_type_icon)} %>
-                  <%= link_to file.attachment_file_name, {:controller => :group_assignments, :action => :download_single_file, :file_id => file.id, 
-                                              :assignment_id => @activity.id }, :class => "link_content" %>
+                  <%= link_to image_tag(icon_attachment(file.attachment_file_name)), {:controller => :group_assignments, :action => :download_single_file, :file_id => file.id, :assignment_id => @activity.id}, {:class => "file_icon", :alt => t(:file_type_icon)} %>
+                  <%= link_to file.attachment_file_name, {:controller => :group_assignments, :action => :download_single_file, :file_id => file.id, :assignment_id => @activity.id }, :class => "link_content" %>
                 </td>
                 <td class="right">
                   <%= format('%.2f KB', file.attachment_file_size/1024.0) %>
                 </td>
                 <td class="center">
-                  <%= file.attachment_updated_at.strftime("%d/%m/%Y") %> às <%= file.attachment_updated_at.strftime("%H:%M") %>
+                  <%= l(file.attachment_updated_at, :format => :files) %>
                 </td>
               </tr>
             <% } %>      
@@ -119,7 +116,7 @@
           <% @students.each_with_index{ |student, idx| %>
             <tr class="lines" >
               <td>
-                <%= link_to student["name"], {:controller => :portfolio_teacher, :action => :student_detail, :id => student["id"], :assignment_id => @activity.id}, :class => :link_content %>
+                <%= link_to student["name"], {:controller => :portfolio_teacher, :action => :student_detail, :student_id => student["id"], :group_id => nil, :assignment_id => @activity.id}, :class => :link_content %>
               </td>
               <td class="center">
                 <%= @file_delivery_date[idx] %>

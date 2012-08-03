@@ -564,6 +564,7 @@
   portfolio_cancel_comment: Cancel comment?
   comment_canceled: Comment canceled
   comment_files_uploaded_successfully: Files uploaded successfully
+  date_range_expired: Date range to this action expired
 
   # acompanhamento
   student: "Student"

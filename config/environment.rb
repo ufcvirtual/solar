@@ -44,10 +44,10 @@ Curriculum_Unit_Initial_Profile = 5
 Context_General            = 1 #Context.find_by_name('general').id
 Context_Curriculum_Unit    = 2 #Context.find_by_name('curriculum_unit').id
 
-# Tempo extra, em dias, para o responsável poder postar no fórum
-Discussion_Responsible_Extra_Time = 3
-
-Discussion_Post_Max_Indent_Level = 4
+# Tempo extra, em dias, para o responsável poder executar uma ação
+Discussion_Responsible_Extra_Time 	= 3
+Discussion_Post_Max_Indent_Level 	= 4
+Assignment_Responsible_Extra_Time 	= 3 
 
 # Constantes que indicam se a atividade é individual ou em grupo
 Individual_Activity = 1

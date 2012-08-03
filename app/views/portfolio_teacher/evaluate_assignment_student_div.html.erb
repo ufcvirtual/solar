@@ -29,8 +29,8 @@
     </thead>
     <tbody>
         <tr class="lines" >
-          <td><%= text_field_tag :grade, @send_assignment.nil? ? "" : @send_assignment.grade, :size => 3 %></td>
-          <td><%= text_area_tag :comment, @send_assignment.nil? ? "" : @send_assignment.comment, :rows => 4, :cols => 113 %></td>
+          <td><%= text_field_tag :evaluation_grade, @send_assignment.nil? ? "" : @send_assignment.grade, :size => 3 %></td>
+          <td><%= text_area_tag :evaluation_comment, @send_assignment.nil? ? "" : @send_assignment.comment, :rows => 4, :cols => 113 %></td>
         </tr>
     </tbody>
   </table>

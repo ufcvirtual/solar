@@ -31,4 +31,14 @@ SQL
 
     return (status_assignment.first.nil?) ? '-' : status_assignment.first['assignment_status']
   end
+
+  def closed?
+    self.schedule.end_date < Date.today
+  end
+
+  def extra_time?(user_id)
+    (self.allocation_tag.is_user_class_responsible?(user_id) and self.closed?) ?
+      ((self.schedule.end_date.to_datetime + Assignment_Responsible_Extra_Time) >= Date.today) : false
+  end
+  
 end

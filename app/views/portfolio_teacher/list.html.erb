@@ -25,7 +25,7 @@
               <h4><%= link_to individual_activity["name"], {:controller => :portfolio_teacher, :action => :individual_activity_details, :id => individual_activity["id"]}, {:class => 'link_content'} %></h4>
             </td>
             <td class="right">
-              <%= individual_activity.schedule.start_date.strftime("%d/%m/%Y") %> - <%= individual_activity.schedule.end_date.strftime("%d/%m/%Y") %>
+              <%= l(individual_activity.schedule.start_date, :format => :short) %> - <%= l(individual_activity.schedule.end_date, :format => :short) %>
             </td>
           </tr>
         <% end %>
@@ -65,7 +65,7 @@
               <h4><%= link_to group_activity["name"], {:controller => :group_assignments, :action => :show_assignment, :assignment_id => group_activity["id"]}, {:class => 'link_content'} %></h4>
             </td>
             <td class="right">
-              <%= group_activity.schedule.start_date.strftime("%d/%m/%Y") %> - <%= group_activity.schedule.end_date.strftime("%d/%m/%Y") %>
+              <%= l(group_activity.schedule.start_date, :format => :short) %> - <%= l(group_activity.schedule.end_date, :format => :short) %>
             </td>
           </tr>
         <% end %>

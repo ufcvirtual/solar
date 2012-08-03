@@ -721,6 +721,7 @@
   portfolio_cancel_comment: Cancelar comentário?
   comment_canceled: Comentário cancelado
   comment_files_uploaded_successfully: Arquivos anexados com sucesso
+  date_range_expired: Prazo para realizar esta ação expirou
 
   # acompanhamento
   student: "Aluno"
