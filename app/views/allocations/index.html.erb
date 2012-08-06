@@ -11,9 +11,9 @@
 </div>
 
 <div class="block_title">
-  <h2><%= t(:allocation_manage_title) %></h2>
+  <h2><%= t(".manage_title") %></h2>
   <span>
-    <input value="<%= t(:allocation_manage_selected) %>" type="button" class="btn btn_default btn_disable btn_manage_enrollment_selected"/>
+    <input value="<%= t(".manage_selected") %>" type="button" class="btn btn_default btn_disable btn_manage_enrollment_selected"/>
   </span>
 </div>
 <div class="block_content">
@@ -23,10 +23,10 @@
         <th>
           <input type="checkbox" name="all" value="all" id="cbx_all"/>
         </th>
-        <th><%= t(:allocation_manage_student) %></th>
-        <th><%= t(:allocation_manage_group) %></th>
-        <th><%= t(:allocation_manage_status) %></th>
-        <th><%= t(:allocation_manage_options) %></th>
+        <th><%= t(".manage_student") %></th>
+        <th><%= t(".manage_group") %></th>
+        <th><%= t(".manage_status") %></th>
+        <th><%= t(".manage_options") %></th>
       </tr>
     </thead>
     <tbody>
@@ -39,7 +39,7 @@
           <td><%= allocation.group_code %></td>
           <td><%= name_of(allocation.status) %></td>
           <td>
-            <input value="<%= t(:allocation_manage_manage) %>" show-link="<%= allocation_path(allocation) %>" edit-link="<%= edit_allocation_path(allocation) %>" type="button" class="btn btn_default btn_main btn_manage_enrollment" onclick="javascript:manage_enrollment(this);"/>
+            <input value="<%= t(".manage") %>" show-link="<%= allocation_path(allocation) %>" edit-link="<%= edit_allocation_path(allocation) %>" type="button" class="btn btn_default btn_main btn_manage_enrollment" onclick="javascript:manage_enrollment(this);"/>
           </td>
         </tr>
       <% end %>

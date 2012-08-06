@@ -527,37 +527,38 @@
 
   #Listagem de Fóruns
   title: "Título"
-  forum_title: "Fóruns"
   forum_table_title: "Fóruns disponíveis"
   forum_table_date: "Data de acesso"
   forum_message: "Nenhum fórum disponível"
   forum: "Fórum"
   forum_new_message: "Nova Postagem"
-  forum_file_list: "Arquivos"
   forum_closed: "Fórum encerrado"
   forum_closed_short: "encerrado"
   discussion_closed_to_students: "encerrado para alunos"
 
-  #Exibição/Interação Fóruns
-  forum_show_plainlist: "Ver em Lista"
-  forum_show_thread: "Ver em Árvore"
-  forum_show_answer: "Responder"
-  forum_show_remove: "Excluir"
-  forum_show_edit: "Editar"
-  forum_file_list: "Anexos"
-  forum_empty_file_list: "Nenhum arquivo"
-  forum_attach_file_title: "Envio de arquivos"
-  forum_attach_file: "Anexar arquivo"
-  forum_attach_another_file: "Anexar outro arquivo"
-  forum_attach_cancel: "Cancelar"
-  forum_attach_save: "Salvar"
-  forum_remove_file: "Remover arquivo"
-  forum_remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
-  forum_remove_error: "Erro ao remover postagem"
-  forum_post_before_valid_date_error: "O prazo para postar neste fórum expirou"
-  discussion_post_created: "Postagem criada com sucesso."
-  discussion_post_updated: "Postagem atualizada com sucesso."
-  discussion_post_not_updated: "A postagem não foi atualizada"
+  # FORUNS
+  posts:
+    index:
+      show_plainlist: "Ver em lista"
+      show_thread: "Ver em Árvore"
+      answer: "Responder"
+      edit: "Editar"
+      remove: "Excluir"
+      remove_file: "Remover arquivo"
+      remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
+      attach_file: "Anexar arquivo"
+      file_list: "Anexos"
+      attach_file_title: "Envio de arquivos"
+    create:
+      created: "Postagem criada com sucesso"
+    update:
+      updated: "Postagem atualizada com sucesso"
+      not_updated: "A postagem não foi atualizada"
+
+  post_files:
+    new:
+      attach_save: "Salvar"
+      attach_another_file: "Anexar outro arquivo"
 
   # messages
   message_title: "Mensagens"
@@ -885,22 +886,27 @@
   support_folder_temporary_message: 'Esta pasta é temporária. Para concluir sua criação, envie um arquivo'
 
   ## allocations
-  allocation_status_pending: Pendente
-  allocation_status_activated: Matriculado
-  allocation_status_cancelled: Cancelado
-  allocation_status_pending_reactivate: Pendente
-  allocation_status_rejected: Rejeitado
 
-  allocation_manage_title: Matrículas Solicitadas
-  allocation_manage_student: Aluno
-  allocation_manage_group: Turma
-  allocation_manage_status: Status
-  allocation_manage_options: Opções
-  allocation_manage_manage: Gerenciar
-  allocation_manage_selected: Gerenciar Selecionados
-  allocation_manage_enrollment_successful_update: Atualizacao realizada com sucesso
-  allocation_manage_enrollment_unsuccessful_update: Atualizacao nao realizada
-  allocation_manage_error_not_same_status: Selecione apenas registros com o mesmo status
+  allocations:
+    index:
+      manage: Gerenciar
+      manage_title: Matrículas Solicitadas
+      manage_student: Aluno
+      manage_group: Turma
+      manage_status: Status
+      manage_options: Opções
+      manage_selected: Gerenciar Selecionados
+    status:
+      pending: Pendente
+      activated: Matriculado
+      cancelled: Cancelado
+      pending_reactivate: Pendente
+      rejected: Rejeitado
+    manage:
+      enrollment_successful_update: Atualizacao realizada com sucesso
+      enrollment_unsuccessful_update: Atualizacao nao realizada
+      not_same_status: Selecione apenas registros com o mesmo status
+
 
   ## CRUD
   options: "Opções"
@@ -908,3 +914,7 @@
   successfully_updated: '%{register} foi atualizado(a) com sucesso.'
   successfully_deleted: '%{register} foi excluído(a) com sucesso.'
   #adicionar erros. Ex: nao foi possivel...
+
+  notifier:
+    enrollment_accepted:
+      subject: "[SOLAR] Matrícula aceita"

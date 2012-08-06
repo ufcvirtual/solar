@@ -7,4 +7,4 @@
 %td
   = name_of(@allocation.status)
 %td
-  %input{value: t(:allocation_manage_manage), :"show-link" => allocation_path(@allocation), :"edit-link" => edit_allocation_path(@allocation), type: "button", onclick: "javascript:manage_enrollment(this);", class: "btn btn_default btn_main btn_manage_enrollment"}
+  %input{value: t(:manage, :scope => [:allocations, :index]), :"show-link" => allocation_path(@allocation), :"edit-link" => edit_allocation_path(@allocation), type: "button", onclick: "javascript:manage_enrollment(this);", class: "btn btn_default btn_main btn_manage_enrollment"}

@@ -59,7 +59,7 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
-        format.html { redirect_to(discussion_posts_path(Discussion.find(params[:discussion_id])), :notice => t(:discussion_post_created)) }
+        format.html { redirect_to(discussion_posts_path(Discussion.find(params[:discussion_id])), :notice => t(:created, :scope => [:posts, :create])) }
         format.xml  { render :xml => @post, :status => :created }
         format.json  { render :json => {:result => 1, :post_id => @post.id}, :status => :created }
       else
@@ -74,11 +74,11 @@ class PostsController < ApplicationController
   def update
     respond_to do |format|
       if @post.update_attributes(params[:discussion_post])
-        format.html { redirect_to(discussion_posts_path(@post.discussion), :notice => t(:discussion_post_updated)) }
+        format.html { redirect_to(discussion_posts_path(@post.discussion), :notice => t(:updated, :scope => [:posts, :update])) }
         format.xml  { head :ok }
         format.json  { head :ok }
       else
-        format.html { redirect_to(discussion_posts_path(@post.discussion), :alert => t(:discussion_post_not_updated)) }
+        format.html { redirect_to(discussion_posts_path(@post.discussion), :alert => t(:not_updated, :scope => [:posts, :update])) }
         format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
         format.json  { render :json => @post.errors, :status => :unprocessable_entity }
       end

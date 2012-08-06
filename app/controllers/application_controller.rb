@@ -217,9 +217,6 @@ class ApplicationController < ActionController::Base
     Log.create(:log_type => Log::TYPE[:course_access], :user_id => current_user.id, :curriculum_unit_id => params[:id]) if (params[:context].to_i == Context_Curriculum_Unit)
   end
 
-  ##
-  # Default locale da aplicação
-  ##
   def set_locale
     # se o usuario estiver logado e passar locale nos parametros eh salvo
     if user_signed_in?
@@ -227,18 +224,15 @@ class ApplicationController < ActionController::Base
 
       # configuracoes pessoais sao criadas se nao existir
       if personal_options.nil?
-        personal_options = PersonalConfiguration.new(:user_id => current_user.id, :default_locale => (params[:locale] || I18n.default_locale) )
-        personal_options.save
-      elsif params.include?('locale')
+        personal_options = PersonalConfiguration.create(:user_id => current_user.id, :default_locale => (params[:locale] || I18n.default_locale))
+      elsif params.include?('locale') and params['locale'].to_s != personal_options.default_locale.to_s
         personal_options.default_locale = params[:locale]
         personal_options.save
       end
-      locale = params[:locale] || personal_options.default_locale
-    else
-      locale = params[:locale] || I18n.default_locale
+      locale = personal_options.default_locale
     end
 
-    I18n.locale = locale
+    I18n.locale = params[:locale] || locale || I18n.default_locale
   end
 
   def prepare_for_pagination
@@ -294,17 +288,13 @@ class ApplicationController < ActionController::Base
   end
 
   def find_tab_by_context(context_id)
-    user_session[:tabs][:opened].each { |tab|    
-      if (tab[1][:url]['context'].to_i == context_id.to_i)
-        return tab[0]
-      end
-    }
+    user_session[:tabs][:opened].each { |tab| return tab[0] if (tab[1][:url]['context'].to_i == context_id.to_i) }
   end
   
   protected
 
-  def no_permission_redirect
-    redirect_to({:controller => :home}, :alert => t(:no_permission))
-  end
+    def no_permission_redirect
+      redirect_to({:controller => :home}, :alert => t(:no_permission))
+    end
 
 end

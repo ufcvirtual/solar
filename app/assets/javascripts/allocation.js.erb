@@ -26,7 +26,7 @@ $(function() {
     } else { // verificar se todos os selecionados possuem o mesmo status
       for (var i = 1; i < ch.length; i++) {
         if ( $(ch[i]).attr('status-value') != $(ch[i-1]).attr('status-value')) {
-          alert('<%= I18n.t(:allocation_manage_error_not_same_status) %>');
+          alert('<%= I18n.t(:not_same_status, :scope => [:allocations, :manage]) %>');
           return;
         }
       }
@@ -40,7 +40,7 @@ $(function() {
     }
 
     var url = "<%= Rails.application.routes.url_helpers.edit_allocation_path('something', :multiple => 'yes') %>".replace('something', sel.join(','));
-    showLightBoxURL(url, 400, 250, true, '<%= I18n.t(:allocation_manage_selected)%>');
+    showLightBoxURL(url, 400, 250, true, '<%= I18n.t(:manage_selected, :scope => [:allocations, :index])%>');
   });
 });
 

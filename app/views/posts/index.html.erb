@@ -4,7 +4,7 @@
 <% if @can_see %>
   <div class="block_wrapper">
     <div class="block_title">
-      <h2><%= image_tag "icon_forum.png", :alt=>t(:icon_forum), :class=>'block_title_icon' %><%= @discussion.name %></h2>
+      <h2><%= image_tag "icon_forum.png", :alt => t(:icon_forum), :class=>'block_title_icon' %><%= @discussion.name %></h2>
     </div>
 
     <div id="forum_description" class="block_content block_content_text">
@@ -28,7 +28,7 @@
           <% class_l = (@display_mode == "list") ? 'btn_disable' : 'btn_default' %>
           <% class_t = (@display_mode == "tree") ? 'btn_disable' : 'btn_default' %>
 
-          <%= link_to(image_tag("discussion_plainlist.png"), discussion_posts_path(@discussion, {:display_mode => 'list'}), {:class => "btn #{class_l}", :"data-tooltip" => t("forum_show_plainlist")}) %><%= link_to(image_tag("discussion_thread.png"), discussion_posts_path(@discussion, {:display_mode => 'tree'}), {:class => "btn #{class_t}", :"data-tooltip" => t("forum_show_thread")}) %>
+          <%= link_to(image_tag("discussion_plainlist.png"), discussion_posts_path(@discussion, {:display_mode => 'list'}), {:class => "btn #{class_l}", :"data-tooltip" => t(".show_plainlist")}) %><%= link_to(image_tag("discussion_thread.png"), discussion_posts_path(@discussion, {:display_mode => 'tree'}), {:class => "btn #{class_t}", :"data-tooltip" => t(".show_thread")}) %>
         </span>
         <div id="forum_pagination">
           <%=raw render_pagination_bar(@discussion.discussion_posts_count(@display_mode == "list").to_s, "display_mode=#{@display_mode}")%>
@@ -53,7 +53,7 @@
 
 <script type="text/javascript">
   function showUploadForm(url) {
-    showLightBoxURL(url, 400, 250, true, '<%=t(:forum_attach_file_title)%>');
+    showLightBoxURL(url, 400, 250, true, '<%=t(".attach_file_title")%>');
     return false;
   }
 

@@ -87,8 +87,7 @@ class AllocationsController < ApplicationController
   def update
     params[:allocation][:allocation_tag_id] = AllocationTag.find_by_group_id(params[:allocation].delete(:group_id)).id if params[:allocation].include?(:group_id)
 
-    ids = params[:id].split(',')
-    allocations = Allocation.find(ids)
+    allocations = Allocation.find(params[:id].split(','))
     @allocation = allocations.first unless params.include?(:multiple) and params[:multiple] == 'yes'
 
     # verifica se existe mudanca de turma
@@ -98,38 +97,38 @@ class AllocationsController < ApplicationController
     error = false
     begin
       ActiveRecord::Base.transaction do
-        if params[:allocation].include?(:status) and params[:allocation][:status].to_i == Allocation_Activated.to_i and \
-          params[:allocation].include?(:allocation_tag_id) and params[:allocation][:allocation_tag_id] != allocations.first.allocation_tag_id
-
+        # mudanca de turma
+        if params[:allocation].include?(:allocation_tag_id) and params[:allocation][:allocation_tag_id] != allocations.first.allocation_tag_id
+          # criando novas alocacoes e cancelando as antigas
           allocations.each do |allocation|
-            # criando novas allocations
-            Allocation.new({
+            Allocation.create!({
               :user_id => allocation.user_id,
               :allocation_tag_id => params[:allocation][:allocation_tag_id],
               :profile_id => allocation.profile_id,
               :status => params[:allocation][:status]
-            }).save
+            })
 
-            # cancelando allocations
             allocation.status = Allocation_Cancelled
-            allocation.save
+            allocation.save!
+
+            Notifier.enrollment_accepted(allocation.user.email, allocation.group.code_semester).deliver if params[:allocation][:status].to_i == Allocation_Activated.to_i
           end # each allocations
         else # sem mudanca de turma
           allocations.each do |allocation|
-            send_mail = (allocation.status.to_i != Allocation_Activated.to_i and params[:allocation][:status].to_i == Allocation_Activated.to_i)
+            changed_status_to_accepted = (allocation.status.to_i != Allocation_Activated.to_i and params[:allocation][:status].to_i == Allocation_Activated.to_i)
 
             allocation.status = params[:allocation][:status]
-            allocation.save
+            allocation.save!
 
-            Notifier.send_mail(allocation.user.email, 'Matricula aceita', "Matricula aceita na seguinte turma: #{allocation.group.code_semester}", '', '').deliver if send_mail
+            Notifier.enrollment_accepted(allocation.user.email, allocation.group.code_semester).deliver if changed_status_to_accepted
           end # allocations
         end # if
       end # transaction
 
-      flash[:notice] = t(:allocation_manage_enrollment_successful_update) if params.include?(:multiple) and params[:multiple] == 'yes'
+      flash[:notice] = t(:enrollment_successful_update, :scope => [:allocations, :manage]) if params.include?(:multiple) and params[:multiple] == 'yes'
     rescue
       error = true
-      flash[:alert] = t(:allocation_manage_enrollment_unsuccessful_update) if params.include?(:multiple) and params[:multiple] == 'yes'
+      flash[:alert] = t(:enrollment_unsuccessful_update, :scope => [:allocations, :manage]) if params.include?(:multiple) and params[:multiple] == 'yes'
     end # rescue
 
     respond_to do |format|

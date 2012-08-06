@@ -333,7 +333,7 @@
   passing_grade: Passing Grade
   error_no_item_selected: No item selected
   curriculum_unit_type_id: Type
-  
+
   curriculum_unit_new_button: New
   curriculum_unit_new_title: "New Curriculum Unit"
   curriculum_unit_edit_title: Edit Curriculum Unit
@@ -375,30 +375,34 @@
   forum_message: "No discussion available"
   forum: "Discussion"
   forum_new_message: "New Post"
-  forum_file_list: "Attachment"
+
   forum_closed: "Discussion closed"
   forum_closed_short: "closed"
   discussion_closed_to_students: "closed to students"
 
-  #Exibição/Interação Fóruns
-  forum_show_plainlist: "Show as List"
-  forum_show_thread: "Show as Thread"
-  forum_show_answer: "Answer"
-  forum_show_remove: "Remove"
-  forum_show_edit: "Edit"
-  forum_empty_file_list: "No files"
-  forum_attach_file_title: "Send files"
-  forum_attach_file: "Attach file"
-  forum_attach_another_file: "Attach another file"
-  forum_attach_cancel: "Cancel"
-  forum_attach_save: "Save"
-  forum_remove_file: "Remove file"
-  forum_remove_file_confirm: "Your file will be deleted permanently. Proceed?"
-  forum_remove_error: "Error removing post"
-  forum_post_before_valid_date_error: "The deadline to post in this forum expired"
-  discussion_post_created: 'Post was successfully created.'
-  discussion_post_updated: "Post was successfully updated."
-  discussion_post_not_updated: "Post was not updated"
+  # FORUNS
+  posts:
+    index:
+      show_plainlist: "Show as List"
+      show_thread: "Show as Thread"
+      answer: "Answer"
+      edit: "Edit"
+      remove: "Remove"
+      remove_file: "Remove file"
+      remove_file_confirm: "Your file will be deleted permanently. Proceed?"
+      attach_file: "Attach file"
+      file_list: "Attachment"
+      attach_file_title: "Send files"
+    create:
+      created: "Post was successfully created"
+    update:
+      updated: "Post was successfully updated"
+      not_updated: "Post was not updated"
+
+  post_files:
+    new:
+      attach_save: "Save"
+      attach_another_file: "Attach another file"
 
   message_title: "Messages"
   message_inbox: "Inbox"
@@ -646,7 +650,7 @@
   end_date: "End date"
   course: "Course"
   curriculum_unit: "Curricular unit"
-  
+
   devise:
     failure:
       already_authenticated: 'You are already signed in.'
@@ -729,24 +733,32 @@
   support_folder_temporary_message: "This folder is temporary. To conclude it's creation, send a file"
 
   ## allocations
-  allocation_status_pending: Pending
-  allocation_status_activated: Activated
-  allocation_status_cancelled: Cancelled
-  allocation_status_pending_reactivate: Pending
-  allocation_status_rejected: Rejected
 
-  allocation_manage_title: Registrations requested
-  allocation_manage_student: Student
-  allocation_manage_group: Group
-  allocation_manage_status: Status
-  allocation_manage_options: Options
-  allocation_manage_manage: Manage
-  allocation_manage_selected: Manage Selected
-  allocation_manage_enrollment_successful_update: Successful update
-  allocation_manage_enrollment_unsuccessful_update: Unsuccessful update
-  allocation_manage_error_not_same_status: Select only items with the same status
+  allocations:
+    index:
+      manage: Manage
+      manage_title: Registrations requested
+      manage_student: Student
+      manage_group: Group
+      manage_status: Status
+      manage_options: Options
+      manage_selected: Manage Selected
+    status:
+      pending: Pending
+      activated: Activated
+      cancelled: Cancelled
+      pending_reactivate: Pending
+      rejected: Rejected
+    manage:
+      enrollment_successful_update: Successful update
+      enrollment_unsuccessful_update: Unsuccessful update
+      not_same_status: Select only items with the same status
 
   ## CRUD
   successfully_created: '%{register} was successfully created.'
   successfully_updated: '%{register} was successfully updated.'
   successfully_deleted: '%{register} was successfully deleted.'
+
+  notifier:
+    enrollment_accepted:
+      subject: "[SOLAR] Enrollment accepted"

@@ -8,8 +8,8 @@
 
 <%= form_for([@post, PostFile.new], :html => { :multipart => true, :id => 'form_post_new_file' }) do |f| %>
   <%= f.file_field :attachment1, {:link_id => '1'} %>
-  <a href="#" class="forum_button_attachment" onclick="add_another_file(this);" style="float:none"><%= t(:forum_attach_another_file) %></a><br/>
+  <a href="#" class="forum_button_attachment" onclick="add_another_file(this);" style="float:none"><%= t(".attach_another_file") %></a><br/>
   <div id="post_attachment_form_submit">
-    <a href="#" class="UploadFileSubmit forum_button" onclick="$('#form_post_new_file').submit();return false;"><%=t(:forum_attach_save)%></a>
+    <a href="#" class="UploadFileSubmit forum_button" onclick="$('#form_post_new_file').submit();return false;"><%=t(".attach_save")%></a>
   </div>
 <% end %>

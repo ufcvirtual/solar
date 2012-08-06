@@ -39,13 +39,13 @@ class PostFilesController < ApplicationController
           if params.include?('auth_token')
             render :json => {:result => 1}, :status => :created
           else
-            redirect_to(discussion_posts_path(post.discussion), :notice => t(:discussion_post_updated))
+            redirect_to(discussion_posts_path(post.discussion), :notice => t(:updated, :scope => [:posts, :update]))
           end
         else
           if params.include?('auth_token')
             render :json => {:result => 0}, :status => :unprocessable_entity
           else
-            redirect_to(discussion_posts_path(post.discussion), :alert => t(:discussion_post_not_updated))
+            redirect_to(discussion_posts_path(post.discussion), :alert => t(:not_updated, :scope => [:posts, :update]))
           end
         end
       }
@@ -65,11 +65,11 @@ class PostFilesController < ApplicationController
 
     respond_to do |format|
       unless error
-        format.html { redirect_to(discussion_posts_path(post.discussion), :notice => t(:discussion_post_updated)) }
+        format.html { redirect_to(discussion_posts_path(post.discussion), :notice => t(:updated, :scope => [:posts, :update])) }
         format.xml  { head :ok }
         format.json  { render :json => {:result => 1} }
       else
-        format.html { redirect_to(discussion_posts_path(post.discussion), :alert => t(:discussion_post_not_updated)) }
+        format.html { redirect_to(discussion_posts_path(post.discussion), :alert => t(:not_updated, :scope => [:posts, :update])) }
         format.xml  { head :error }
         format.json  { render :json => {:result => 0} }
       end
