@@ -2458,7 +2458,7 @@ tbody tr.lines {
 tr.lines td img {
     margin: 0;
     padding: 0;
-    vertical-align: bottom;
+    vertical-align: text-top;
 }
 
 /*
@@ -2472,7 +2472,7 @@ th, tr.lines td {
     /*    border-left: solid #B4B2B1 1px;*/
     /*    padding: 7px 5px 6px 5px;*/
     padding: 6px 10px;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 tr.post_content {
