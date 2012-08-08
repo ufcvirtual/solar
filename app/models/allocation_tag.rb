@@ -72,64 +72,68 @@ SQL
     [self.id, atgs].flatten.compact.uniq.sort
   end
 
+  def user_allocation(user_id, profile_id)
+     Allocation.create(:user_id => user_id, :allocation_tag_id => self.id, :profile_id => profile_id, :status => 1)
+  end
+
   private
 
-  ##
-  # Metodos de relacionamento entre allocation_tags
-  ##
+    ##
+    # Metodos de relacionamento entre allocation_tags
+    ##
 
-  def groups_related(group)
-    offers_related(group.offer)
-  end
-
-  def offers_related(offer, down = false)
-    begin
-      at_offer = [offer.allocation_tag.id]
-    rescue
-      at_offer = []
+    def groups_related(group)
+      offers_related(group.offer)
     end
 
-    at_groups = AllocationTag.where(:group_id => offer.groups.map(&:id)).map(&:id) if not at_offer.compact.empty? and down
-    at_uc = curriculum_units_related(offer.curriculum_unit)
-    at_c = courses_related(offer.course)
+    def offers_related(offer, down = false)
+      begin
+        at_offer = [offer.allocation_tag.id]
+      rescue
+        at_offer = []
+      end
 
-    [at_groups] + at_offer + [at_uc] + [at_c]
-  end
+      at_groups = AllocationTag.where(:group_id => offer.groups.map(&:id)).map(&:id) if not at_offer.compact.empty? and down
+      at_uc = curriculum_units_related(offer.curriculum_unit)
+      at_c = courses_related(offer.course)
 
-  def curriculum_units_related(curriculum_unit, down = false)
-    begin
-      at_uc = [curriculum_unit.allocation_tag.id]
-    rescue
-      at_uc = []
+      [at_groups] + at_offer + [at_uc] + [at_c]
     end
 
-    if not at_uc.compact.empty? and down
-      offers = curriculum_unit.offers.map(&:id)
-      at_offers = AllocationTag.where(:offer_id => offers).map(&:id)
+    def curriculum_units_related(curriculum_unit, down = false)
+      begin
+        at_uc = [curriculum_unit.allocation_tag.id]
+      rescue
+        at_uc = []
+      end
 
-      groups = Group.where(:offer_id => offers).map(&:id)
-      at_groups = AllocationTag.where(:group_id => groups).map(&:id)
+      if not at_uc.compact.empty? and down
+        offers = curriculum_unit.offers.map(&:id)
+        at_offers = AllocationTag.where(:offer_id => offers).map(&:id)
+
+        groups = Group.where(:offer_id => offers).map(&:id)
+        at_groups = AllocationTag.where(:group_id => groups).map(&:id)
+      end
+
+      [at_groups] + [at_offers] + at_uc
     end
 
-    [at_groups] + [at_offers] + at_uc
-  end
+    def courses_related(course, down = false)
+      begin
+        at_c = [course.allocation_tag.id]
+      rescue
+        at_c = []
+      end
 
-  def courses_related(course, down = false)
-    begin
-      at_c = [course.allocation_tag.id]
-    rescue
-      at_c = []
+      if not at_c.compact.empty? and down
+        offers = course.offers.map(&:id)
+        at_offers = AllocationTag.where(:offer_id => offers).map(&:id)
+
+        groups = Group.where(:offer_id => offers).map(&:id)
+        at_groups = AllocationTag.where(:group_id => groups).map(&:id)
+      end
+
+      [at_groups] + [at_offers] + at_c
     end
-
-    if not at_c.compact.empty? and down
-      offers = course.offers.map(&:id)
-      at_offers = AllocationTag.where(:offer_id => offers).map(&:id)
-
-      groups = Group.where(:offer_id => offers).map(&:id)
-      at_groups = AllocationTag.where(:group_id => groups).map(&:id)
-    end
-
-    [at_groups] + [at_offers] + at_c
-  end
 
 end

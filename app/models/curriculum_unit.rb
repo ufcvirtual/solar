@@ -15,6 +15,10 @@ class CurriculumUnit < ActiveRecord::Base
   validates :objectives, :presence => true, :length => { :maximum   => 255 }
 
   after_create :allocation_tag_association
+  after_create :user_editor_allocation
+  before_destroy :allocations_check
+
+  attr_accessor :user_id # permitir acesso por login
   
   ##  
   # participantes que nao sao TAL TIPO DE PERFIL
@@ -104,8 +108,6 @@ SQL
   end
   
   private 
-  def allocation_tag_association
-    AllocationTag.create(:curriculum_unit => self)
-  end
+  include Taggable
 
 end

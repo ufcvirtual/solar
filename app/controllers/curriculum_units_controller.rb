@@ -102,6 +102,7 @@ class CurriculumUnitsController < ApplicationController
     authorize! :create, CurriculumUnit
     params[:curriculum_unit].delete('code') if params[:curriculum_unit][:code] == ''
     params[:curriculum_unit].delete('prerequisites') if params[:curriculum_unit][:prerequisites] == ''
+    params[:curriculum_unit][:user_id] = current_user.id
 
     @curriculum_unit = CurriculumUnit.new(params[:curriculum_unit])
 

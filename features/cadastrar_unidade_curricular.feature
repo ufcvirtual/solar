@@ -25,13 +25,12 @@ Dado que estou logado com o usuario "editor" e com a senha "123456"
         | Codigo        | Nome                          | Categoria                             |
         | RM414         | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial     |
 
-@wip
 Cenário: tentar Acessar listagem de unidades curriculares como usuário sem permissão para isso
 Dado que estou logado com o usuario "user" e com a senha "123456"
         E que estou em "Cadastro de Unidade Curricular"
         Então eu deverei ver "Você não tem permissão para acessar esta página"
 
-@javascript 
+@javascript @wip
 Cenário: Criar e excluir unidade curricular como usuário com permissão para isso
 Dado que estou logado com o usuario "editor" e com a senha "123456"
         E que estou em "Cadastro de Unidade Curricular"
@@ -50,9 +49,9 @@ Dado que estou logado com o usuario "editor" e com a senha "123456"
                 E eu deverei ver a linha de Unidade Curricular
                         | Codigo        | Nome                          | Categoria                             |
                         | UC0004        | Unidade Curricular IV         | Curso de Graduacao Presencial         |
-                #E eu nao deverei ver a linha de Unidade Curricular
-                        #| Codigo        | Nome                          | Categoria                             |
-                        #| RM414         | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial     |
+                E eu nao deverei ver a linha de Unidade Curricular
+                        | Codigo        | Nome                          | Categoria                             |
+                        | RM414         | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial     |
         Quando eu clicar no botao "Excluir" da linha que contem o item "UC0004" da tabela
                 E eu clicar em "Ok" no popup
         Entao eu deverei ver "Unidade Curricular IV foi excluído(a) com sucesso."
@@ -61,7 +60,7 @@ Dado que estou logado com o usuario "editor" e com a senha "123456"
                 | UC0004        | Unidade Curricular IV         | Curso de Graduacao Presencial         |
 
 
-@javascript @wip
+@javascript
 Cenário: Editar uma unidade curricular como usuário com permissão para isso
 Dado que estou logado com o usuario "editor" e com a senha "123456"
         E que estou em "Cadastro de Unidade Curricular"
@@ -77,7 +76,7 @@ Dado que estou logado com o usuario "editor" e com a senha "123456"
         | RM414         | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial     |
 
 
-@javascript @wip
+@javascript
 Cenário: Excluir uma unidade curricular com alocações além da do usuário que tentará fazer a exclusão
 Dado que estou logado com o usuario "editor" e com a senha "123456"
         E que estou em "Cadastro de Unidade Curricular"
