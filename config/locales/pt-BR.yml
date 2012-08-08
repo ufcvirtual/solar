@@ -722,6 +722,7 @@
   comment_canceled: Comentário cancelado
   comment_files_uploaded_successfully: Arquivos anexados com sucesso
   date_range_expired: Prazo para realizar esta ação expirou
+  attach_another_file: Anexar outro arquivo
 
   # acompanhamento
   student: "Aluno"

@@ -50,7 +50,7 @@
     <div id="activities" class="block_wrapper">
       <div class="block_title">
         <h2>
-          <%= image_tag "icon_participants.png", :alt => " ", :class=>'block_title_icon' %><%#= @group.group_name %>
+          <%= image_tag "icon_participants.png", :alt => " ", :class=>'block_title_icon' %><%= @group.group_name %>
         </h2>
       </div>
       <div id="individual_activity_description" class="block_content">
@@ -143,7 +143,7 @@
       <span class="portfolio_title_button">
         <input id="btn_evaluate" type="button" value='<%=t(:portfolio_evaluate)%>' class="btn btn_main" onclick="btn_evaluate();"/>
         <input id="btn_cancel_evaluation" type="button" value='<%=t(:portfolio_cancel)%>' class="btn btn_caution" style="display:none" onclick="btn_cancel_evaluation();"/>
-        <input id="btn_save_evaluation" type="button" value='<%=t(:portfolio_save)%>' class="btn btn_main" style="display:none" onclick="btn_save_evaluation('<%=@assignment.id%>', '<%=@student_id%>' ,'<%=@group_id%>');"/>
+        <input id="btn_save_evaluation" type="button" value='<%=t(:portfolio_save)%>' class="btn btn_main" style="display:none" onclick="btn_save_evaluation();"/>
       </span>
     </div>
     <div id="evaluate_assignment_student" class="block_content">
@@ -195,29 +195,30 @@
     </div>
 
     <div id="comment_assignment_student" class="forum_posts_wrapper">
-      <div class="comment_form" style="display:none">
-         <%= form_for(:assignment_comment, :html => {:id => 'comment_form', :multipart => true}, :url => {:controller => :portfolio_teacher, :action => :update_comment, :assignment_id => @assignment.id, :student_id => @student_id, :group_id => @group_id}) do |f| %>
-            <table class="forum_post" border="0" cellpadding="0" cellspacing="0" width="100%">
-            <tr>
-              <td rowspan="3" class="forum_post_icon">
-                <%= image_tag('no_image_forum.png') %>
-              </td>
-              <td class="forum_post_head">
-                <div class="forum_post_author">
-                  <div class="forum_participant_nick" alt="fulano">
-                    <%= @user.nick %>
-                  </div>
-                  <div class="forum_participant_profile" >
-                    <%= @user_profile.name %>
-                  </div>
+      <% display_comment = @error_message.nil? ? "display:none" : "display:block"%>
+      <div class="comment_form" style="<%=display_comment%>">
+        <table class="forum_post" border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td rowspan="3" class="forum_post_icon">
+              <%= image_tag('no_image_forum.png') %>
+            </td>
+            <td class="forum_post_head">
+              <div class="forum_post_author">
+                <div class="forum_participant_nick" alt="fulano">
+                  <%= @user.nick %>
                 </div>
-                <div class="forum_post_date">
-                    <%=l Date.current %>
+                <div class="forum_participant_profile" >
+                  <%= @user_profile.name %>
                 </div>
-              </td>
-            </tr>
-            <tr>
-              <td class="forum_post_content" colspan="2">
+              </div>
+              <div class="forum_post_date">
+                  <%=l Date.current %>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="forum_post_content" colspan="2">
+              <%= form_for(:assignment_comment, :html => {:id => 'comment_form', :multipart => true}, :url => {:controller => :portfolio_teacher, :action => :create_comment, :assignment_id => @assignment.id, :student_id => @student_id, :group_id => @group_id}) do |f| %>
                 <div class="forum_post_inner_content">
                   <%= text_area_tag :comment, '', :rows => 4, :cols => 116 %>
                 </div>
@@ -228,24 +229,24 @@
                   <ul class="forum_post_attachment_list comments_files_div">
                     <%= file_field_tag 'comment_files[]', :class => "comments_files" %>
                     <a href="#" class="more_comment_files_link" onclick="more_files();" >
-                      <%= t(:forum_attach_another_file) %>
+                      <%= t(:attach_another_file) %>
                     </a>
                   </ul>
                 </div>
-              </td>
-            </tr>
-            <tr></tr>
-          </table>
-          <div class="portfolio_title_button">
-      <input id="btn_cancel_comment" type="button" value='<%=t(:portfolio_cancel)%>' class="btn btn_caution" onclick="btn_cancel_comment_();"/>
-            <input id="btn_save_comment" type="button" value='<%=t(:portfolio_save)%>' class="btn btn_main"  onclick="btn_save_comment_('<%=@assignment.id%>', '<%=@student_id%>', '<%=@group_id%>');"/>
-            <%#= submit_tag "Enviar", :class=>'btn btn_main' %>
-          </div>
-        <% end %>
+                <div class="portfolio_title_button">
+                  <input id="btn_cancel_comment_new" type="button" value='<%=t(:portfolio_cancel)%>' class="btn btn_caution" onclick="btn_cancel_comment_('new');"/>
+                  <!-- <input id="btn_save_comment" type="button" value='<%=t(:portfolio_save)%>' class="btn btn_main"  onclick="btn_save_comment_();"/> -->
+                  <%= submit_tag "Enviar", :class=>'btn btn_main' %>
+                </div>
+              <% end %>
+            </td>
+          </tr>
+          <tr></tr>
+        </table>
       </div>
       <% unless @comments.empty? %>
         <% @comments.each_with_index{ |comment, idx| %>
-          <table class="forum_post tb_comments" border="0" cellpadding="0" cellspacing="0" width="100%">
+          <table class="forum_post tb_comments tb_comment_<%=comment.id%>" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td rowspan="3" class="forum_post_icon">
                 <%= image_tag(comment.user.photo.url(:forum), :alt => t(:mysolar_alt_img_user) + ' ' + comment.user.nick) %>
@@ -269,7 +270,7 @@
               </td>
             </tr>
             <tr>
-              <td class="forum_post_content" colspan="2">
+              <td class="forum_post_content comment_<%=comment.id%> assignment_comment" colspan="2">
                 <div class="forum_post_inner_content">
                   <%= comment.comment %>
                 </div>
@@ -278,19 +279,63 @@
                     Anexos
                   </h3>
                   <ul class="forum_post_attachment_list">
-                    <% @comments_files[idx].each{| comment_file | %>
-                      <li>
-                        <%= link_to comment_file.attachment_file_name, {:controller => :group_assignments, :action => :download_single_file,                                    :file_id => comment_file.id, :assignment_id => @assignment.id}, :class => "link_content" %>
-                        <div class="forum_post_date">
-                          <%=l comment_file.attachment_updated_at %>
-                        </div>
-                      </li>
-                    <% } %>  
+                    <% unless @comments_files[idx].empty?
+                      @comments_files[idx].each{| comment_file | %>
+                        <li>
+                          <%= link_to comment_file.attachment_file_name, {:controller => :group_assignments, :action => :download_single_file,                                    :file_id => comment_file.id, :assignment_id => @assignment.id}, :class => "link_content" %>
+                          <div class="forum_post_date">
+                            <%=l comment_file.attachment_updated_at %>
+                          </div>
+                        </li>
+                      <% } 
+                    else %>  
+                    Não há anexos
+                    <% end %>
                   </ul>
+                  <% if comment.user_id == @user.id %>
+                    <div class="portfolio_comment_button">
+                      <%= button_tag "Excluir", :class => "btn btn_caution", :onclick => "remove_comment(#{comment.id}, #{@assignment.id});" %>
+                      <input type="button" value='Editar' class="btn btn_default btn_edit_comment_<%=comment.id%>" onclick="btn_edit_comment(this, <%=comment.id%>);"/>
+                    </div>
+                  <% end %>
                 </div>
               </td>
+              <td class="forum_post_content form_comment_<%=comment.id%> form_comment" colspan="2" style="display:none">
+                <%= form_for(:assignment_comment, :html => {:id => "comment_form_#{comment.id}", :multipart => true}, :url => {:controller => :portfolio_teacher, :action => :update_comment, :assignment_id => @assignment.id, :student_id => @student_id, :group_id => @group_id, :comment_id => comment.id}) do |f| %>
+                  <div class="forum_post_inner_content">
+                    <%= text_area_tag :comment, comment.comment, :rows => 4, :cols => 116 %>
+                  </div>
+                  <div class="forum_post_attachment">
+                    <h3>
+                      Anexos
+                    </h3>
+                    <ul class="forum_post_attachment_list comments_files_div">
+                      <% unless @comments_files[idx].empty?
+                        @comments_files[idx].each{| comment_file | %>
+                          <li>
+                            <%= link_to comment_file.attachment_file_name, {:controller => :group_assignments, :action => :download_single_file,                                    :file_id => comment_file.id, :assignment_id => @assignment.id}, :class => "link_content   link_comment_#{comment_file.id}", :id => "#{comment_file.id}" %>
+                            <div class="forum_post_date">
+                              <%=l comment_file.attachment_updated_at %>
+                            </div>
+                            <%= image_tag("icon_delete_small.png", :onclick => "remove_file(#{comment_file.id}, #{comment.id}, this);", :id=>"remove_file_#{comment_file.id}") %>
+                            <%= image_tag("icon_delete_small.png", :onclick => "return_file(#{comment_file.id}, #{comment.id}, this);", :id=>"return_file_#{comment_file.id}", :class => "return_file") %>
+                          </li>
+                        <% } 
+                      end %>
+                      <%= hidden_field_tag 'deleted_files[]', "", {:id => "delete_file_#{comment.id}"} %>
+                      <%= file_field_tag 'comment_files[]', :class => "comments_files" %>
+                      <a href="#" class="more_comment_files_link" onclick="more_files();" >
+                        <%= t(:attach_another_file) %>
+                      </a>
+                    </ul>
+                  </div>
+                  <div class="portfolio_title_button">
+                    <input id="btn_cancel_comment_<%=comment.id%>" type="button" value='<%=t(:portfolio_cancel)%>' class="btn btn_caution" onclick="btn_cancel_comment_(<%=comment.id%>);"/>
+                    <input class="btn btn_main" type="button" value="Enviar" onclick="submit_edit_comment_form(<%=comment.id%>);" >
+                  </div>
+                <% end %>
+              </td>
             </tr>
-            <tr></tr>
           </table>
         <% } %>
       <% else %>
@@ -303,74 +348,27 @@
 
 <script type="text/javascript">
 
-// Comentários
+  student_id    = <%= @student_id %>
+  group_id      = <%= @group_id %>
+  assignment_id = <%= @assignment.id %>
 
- function btn_comment(){
-    $("#no_itens_message_comment").hide();
-    $("#btn_comment").hide();
-    $(".comment_form").fadeIn();
-  }
+// Desfaz mudanças
 
-  function undo_btn_comment_changes(){
-    $("#btn_comment").fadeIn(); 
-    $(".comment_form").hide();
-    show_no_itens_div = $('td', '#tb_comments').length == 0;
-    if(show_no_itens_div){
-      $("#no_itens_message_comment").fadeIn();
-    }
-  }
-
-  function more_files() {
-    $(".more_comment_files_link").remove();
-    $('<div><input id="comment_files_" class="comments_files" name="comment_files[]" type="file"><a href="#" class="more_comment_files_link" onclick="more_files();" ><%= t(:forum_attach_another_file) %></a></div>').appendTo($(".comments_files_div"));
-  }
-
-  function btn_cancel_comment_(){
-    if (confirm('<%= t(:portfolio_cancel_comment) %>')){
-      undo_btn_comment_changes();  
-      flash_message('<%= t(:comment_canceled) %>', 'notice');
-      var dont_have_comments = $('.tb_comments').length == 0;
-      if(dont_have_comments){
-        $('<div id="no_itens_message_comment" class="block_content portfolio_div_padding"><%= t(:itens_not_found) %></div>').appendTo($("#comment_assignment_student"));
+function undo_btn_comment_changes(comment_id){
+    if(comment_id == 'new'){
+      $("#btn_comment").fadeIn(); 
+      $(".comment_form").hide();
+      show_no_itens_div = $('td', '#tb_comments').length == 0;
+      if(show_no_itens_div){
+        $("#no_itens_message_comment").fadeIn();
       }
+    }else{
+      $(".btn_edit_comment_"+comment_id).fadeIn();
+      $("#comment_form_"+comment_id).hide();
+      $(".comment_"+comment_id).fadeIn();
+      $(".form_comment").hide();
+      $(".assignment_comment").fadeIn();
     }
-  }
-
-  function btn_save_comment_(assignment_id, student_id, group_id){
-    if (confirm('<%= t(:portfolio_confirm_comment) %>')){
-     
-      $.ajax({
-        url: $('#comment_form').submit(),
-        type: 'POST',
-        success: function(data) {
-          if (data.success == false) {
-            continue_with_request = false;
-            flash_message(data.flash_msg, data.flash_class);
-            if (data.cancel == true) {
-              undo_btn_comment_changes();
-              show_no_itens_div = $('td', '#tb_comments').length == 0;
-              $('<div id="no_itens_message_comment" class="block_content portfolio_div_padding"><%= t(:itens_not_found) %></div>').appendTo($('#comment_assignment_student'));
-            }
-          }else{
-            $("#comment_assignment_student").html(data);
-            undo_btn_comment_changes();
-            flash_message('<%= t(:comment_sent_success) %>', 'notice');
-          }
-        }
-      });
-      return continue_with_request; 
-    }
-  }
-
-// Avaliação
-
-  function btn_evaluate(){
-    $("#tb_student_assignment").hide();
-    $("#no_itens_evaluation_tb").hide();
-    $("#tb_student_assignment_evaluate").fadeIn();
-    $("#btn_evaluate").hide();
-    $("#btn_cancel_evaluation").fadeIn();
-    $("#btn_save_evaluation").fadeIn();
   }
 
   function undo_btn_evaluate_changes(){
@@ -385,14 +383,53 @@
     }
   }
 
-  function btn_cancel_evaluation(){
-    if (confirm('<%= t(:portfolio_cancel_evaluation) %>')){
-      undo_btn_evaluate_changes();  
-      flash_message('<%= t(:student_evaluation_canceled) %>', 'notice');
-    }
+  function undo_everything(){
+    undo_btn_evaluate_changes();
+    undo_btn_comment_changes("new");
+    undo_btn_comment_changes();
   }
 
-  function btn_save_evaluation(assignment_id, student_id, group_id){
+// Botões
+
+  //
+
+  function btn_comment(){
+    undo_everything();
+    $("#no_itens_message_comment").hide();
+    $("#btn_comment").hide();
+    $(".comment_form").fadeIn();
+  }
+  
+  function btn_edit_comment(this_div, comment_id){
+    undo_everything();
+    $(".comment_"+comment_id).hide();
+    $(".form_comment_"+comment_id).fadeIn(); 
+  }
+
+  function btn_evaluate(){
+    undo_everything();
+    $("#tb_student_assignment").hide();
+    $("#no_itens_evaluation_tb").hide();
+    $("#tb_student_assignment_evaluate").fadeIn();
+    $("#btn_evaluate").hide();
+    $("#btn_cancel_evaluation").fadeIn();
+    $("#btn_save_evaluation").fadeIn();
+  }
+
+
+  // Salvar
+
+  function submit_edit_comment_form(comment_id){
+    var deleted_files = new Array();
+    var disabled_files = $(".disabled_file_"+comment_id);
+    for(var i = 0; i<$(disabled_files).length; i++){
+      deleted_files.push($(disabled_files)[i].id);
+    }
+   $("#delete_file_"+comment_id).val(deleted_files); 
+   $("#comment_form_"+comment_id).submit();
+  }
+
+  function btn_save_evaluation(){
     if (confirm('<%= t(:portfolio_confirm_evaluation) %>')){
      
       var evaluation_grade    = ''+$("#evaluation_grade").attr('value')+'';
@@ -405,7 +442,6 @@
         type: 'POST',
         data:  {'grade': evaluation_grade, 'assignment_id': assignment_id, 'comment': evaluation_comment, 'student_id': student_id, 'group_id': group_id},
         success: function(data) {
-          console.log(data.success);
           if (data.success == false) {
             continue_with_request = false;
             flash_message(data.flash_msg, data.flash_class);
@@ -421,7 +457,94 @@
       });
       return continue_with_request; 
     }
-
   }
+
+  // Cancelar
+
+  function btn_cancel_comment_(comment_id){
+    if (confirm('<%= t(:portfolio_cancel_comment) %>')){
+      undo_btn_comment_changes(comment_id);  
+      flash_message('<%= t(:comment_canceled) %>', 'notice');
+      var dont_have_comments = $('.tb_comments').length == 0;
+      if(dont_have_comments){
+        $('<div id="no_itens_message_comment" class="block_content portfolio_div_padding"><%= t(:itens_not_found) %></div>').appendTo($("#comment_assignment_student"));
+      }
+    }
+  }
+
+  function btn_cancel_evaluation(){
+    if (confirm('<%= t(:portfolio_cancel_evaluation) %>')){
+      undo_btn_evaluate_changes();  
+      flash_message('<%= t(:student_evaluation_canceled) %>', 'notice');
+    }
+  }
+
+  // Excluir
+
+  function remove_file(comment_file_id, comment_id, this_div){
+    $(this_div).hide();
+    $("#return_file_"+comment_file_id).fadeIn();
+    $(".link_comment_"+comment_file_id).css("text-decoration", "line-through");
+    $(".link_comment_"+comment_file_id).attr("class", "link_content link_comment_"+comment_file_id+" disabled_file_"+comment_id);
+  }
+
+  function remove_comment(comment_id){
+    url = '<%= portfolio_teacher_remove_comment_path %>';
+    if (!confirm("<%=t(:message_confirm)%>")) return;
+      $.ajax({
+        type: "DELETE",
+        url: url,
+        data: {'comment_id': comment_id, 'assignment_id': assignment_id},
+        success: function(data) {
+          if (data.success == true) {
+            $('.tb_comment_' + comment_id).fadeOut(100, function() {
+              $(this).remove();
+            });
+          }
+          flash_message(data.flash_msg, data.flash_class);
+        },
+      });
+  }
+
+  // Retornar
+
+  function return_file(comment_file_id, comment_id, this_div){
+    $(this_div).hide();
+    $("#remove_file_"+comment_file_id).fadeIn();
+    $(".link_comment_"+comment_file_id).css("text-decoration", "none");
+    $(".link_comment_"+comment_file_id).attr("class", "link_content link_comment_"+comment_file_id);
+  }
+
+  // Outros
+
+  function more_files() {
+    $(".more_comment_files_link").remove();
+    $('<div><input id="comment_files_" class="comments_files" name="comment_files[]" type="file"><a href="#" class="more_comment_files_link" onclick="more_files();" ><%= t(:attach_another_file) %></a></div>').appendTo($(".comments_files_div"));
+  }
+
+  // function btn_save_comment_(){
+  //   if (confirm('<%= t(:portfolio_confirm_comment) %>')){
+     
+  //     $.ajax({
+  //       url: $('#comment_form').submit(),
+  //       success: function(data) {
+  //         if (data.success == false) {
+  //           continue_with_request = false;
+  //           flash_message(data.flash_msg, data.flash_class);
+  //           if (data.cancel == true) {
+  //             undo_btn_comment_changes();
+  //             show_no_itens_div = $('td', '#tb_comments').length == 0;
+  //             $('<div id="no_itens_message_comment" class="block_content portfolio_div_padding"><%= t(:itens_not_found) %></div>').appendTo($('#comment_assignment_student'));
+  //           }
+  //         }else{
+  //           $("#comment_assignment_student").html(data);
+  //           undo_btn_comment_changes();
+  //           flash_message('<%= t(:comment_sent_success) %>', 'notice');
+  //         }
+  //       }
+  //     });
+  //     return continue_with_request; 
+  //   }
+  // }
 
 </script>

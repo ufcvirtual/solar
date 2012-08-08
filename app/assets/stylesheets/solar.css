@@ -2579,8 +2579,18 @@ td.td_student a {color: #2a538d;}
     float: right;
 }
 
+.portfolio_comment_button{
+    float: right;
+    margin-top: 8px;
+}
+
 .comments_files{
     margin: 0px 20px 10px 20px;
+}
+
+.removed_comment_file{
+    color: red;
+    text-decoration: line-through;
 }
 
 .more_comment_files_link{
@@ -2595,6 +2605,14 @@ td.td_student a {color: #2a538d;}
     padding-top: 15px;
     padding-bottom: 10px;
     text-align: center;
+}
+
+.return_file{
+    display:none;
+}
+
+#oi{
+    text-decoration: line-through;
 }
 
 /**

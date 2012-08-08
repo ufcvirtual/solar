@@ -84,6 +84,8 @@ Solar::Application.routes.draw do
   get 'user_root' => 'users#mysolar'
   post "portfolio_teacher/evaluate_student_assignment"
   post "portfolio_teacher/update_comment"
+  get "portfolio_teacher/student_detail"
+  post "portfolio_teacher/remove_comment"
 
   get "/media/users/:id/photos/:style.:extension", :to => "users#photo"
   get "/media/portfolio/individual_area/:file.:extension", :to => "access_control#portfolio_individual_area"

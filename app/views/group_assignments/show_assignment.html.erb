@@ -241,8 +241,8 @@
   // Botões
 
   function btn_evaluate_group(group_id, assignment_id){
-    url_evaluation = '<%= url_for(:controller => :portfolio_teacher, :action => :student_detail)%>';
-    window.location.href = url_evaluation+'/'+group_id+'?assignment_id='+assignment_id;
+    url_evaluation       = '<%= portfolio_teacher_student_detail_path %>';
+    window.location.href = url_evaluation+'/'+group_id+'?group_id='+group_id+'&assignment_id='+assignment_id;
   }
 
   function btn_cancel(assignment_id){

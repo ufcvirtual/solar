@@ -48,12 +48,11 @@ class PortfolioTeacherController < ApplicationController
   def student_detail
     authorize! :student_detail, PortfolioTeacher
 
-    @assignment = Assignment.find(params[:assignment_id])
-    @user       = current_user
-    @student_id = params[:student_id].nil? ? nil : params[:student_id]
-    @student    = User.find(params[:student_id]) unless @student_id.nil?
-    @group_id   = params[:group_id].nil? ? nil : params[:group_id]
-    @group      = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
+    @assignment   = Assignment.find(params[:assignment_id])
+    @user         = current_user
+    @student_id   = params[:student_id].nil? ? nil : params[:student_id]
+    @group_id     = params[:group_id].nil? ? nil : params[:group_id]
+    @group        = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
 
     @files_sent_assignment = AssignmentFile.joins(:send_assignment).where("send_assignments.assignment_id = ? AND send_assignments.user_id = ? 
                                               AND send_assignments.group_assignment_id = ?", @assignment.id, @student_id, @group_id).order("
@@ -75,10 +74,17 @@ class PortfolioTeacherController < ApplicationController
       }
 
       profile_id    = Allocation.find_by_allocation_tag_id_and_user_id(@assignment.allocation_tag_id, current_user.id).profile_id
+      # raise "#{Profile.find(profile_id)}"
 
       # user_profile_id = current_user.profiles_with_access_on('student_detail', 'portfolio_teacher', allocation_tag_id, only_id = true).first
       @user_profile = Profile.find(profile_id)
     end
+
+    # @error_message = params[:error_message]
+    # unless @error_message.nil?
+    #   flash['alert'] = @error_message
+    #   comment
+    # end
 
   end
 
@@ -126,9 +132,9 @@ class PortfolioTeacherController < ApplicationController
   end
 
   ##
-  # Cria comentarios do professor -> já que vai ter edição, é bom mudar nome ou fazer tudo em um método só ._.
+  # Cria comentarios do professor
   ##
-  def update_comment
+  def create_comment
     # authorize! :update_comment, PortfolioTeacher
     @assignment = Assignment.find(params[:assignment_id])
     student_id  = params[:student_id].nil? ? nil : params[:student_id]
@@ -149,51 +155,82 @@ class PortfolioTeacherController < ApplicationController
           end
         end
 
-        redirect_to :action => :student_detail, :student_id => student_id, :group_id => group_id, :assignment_id => @assignment.id
+        redirect_to :action => :student_detail, :student_id => student_id, :group_id => group_id, :assignment_id => @assignment.id, :error_message => nil
 
       rescue Exception => error
-        # redirect_to :action => :student_detail, :assignment_id => @assignment.id, :student_id => student_id, :group_id => group_id
+        # redirect_to :action => :student_detail, :assignment_id => @assignment.id, :student_id => student_id, :group_id => group_id, :error_message => error.message
         render :json => { :success => false, :flash_msg => error.message, :flash_class => 'alert' }
-        # render :student_detail, :xml => {}
+        # render :student_detail
       end
     else
-      render :json => { :success => false, :flash_msg => t(:date_range_expired), :flash_class => 'alert', :cancel => true }
+      redirect_to :action => :student_detail, :assignment_id => @assignment.id, :student_id => student_id, :group_id => group_id, :error_message => t(:date_range_expired)
+      # render :json => { :success => false, :flash_msg => t(:date_range_expired), :flash_class => 'alert', :cancel => true}
     end
 
   end
 
   ##
-  # Upload de arquivos em um comentário ---> unir com comentário
+  # Edita comentarios
   ##
+  def update_comment
+    # authorize! :update_comment, PortfolioTeacher
+    @assignment       = Assignment.find(params[:assignment_id])
+    comment           = AssignmentComment.find(params[:comment_id])
+    student_id        = params[:student_id].nil? ? nil : params[:student_id]
+    group_id          = params[:group_id].nil? ? nil : params[:group_id]
+    comment_text      = params['comment']
+    files             = params['comment_files'].nil? ? [] : params['comment_files']
+    deleted_files_ids = params['deleted_files'].nil? ? [] : params['deleted_files'][0].split(",")
+    
+    if assignment_in_time?
 
-# ---> excluir
+      begin
+        ActiveRecord::Base.transaction do
+          comment.update_attribute(:comment, comment_text)
+          comment.update_attribute(:updated_at, Time.now)
+          
+          files.each do |file|
+            CommentFile.create!({ :attachment => file, :assignment_comment_id => comment.id})
+          end
 
-  def upload_files_comment_page
-    @comment_id = params[:id]
-    @assignment_id = params[:assignment_id]
-    @student_or_group_id = params[:student_or_group_id]
-    render :layout => false
-  end
+          deleted_files_ids.each do |deleted_file_id|
+            delete_file(deleted_file_id) unless deleted_file_id.blank?
+          end
 
-# ---> unir com comentário
+        end
 
-  def upload_files_comment
+        redirect_to :action => :student_detail, :student_id => student_id, :group_id => group_id, :assignment_id => @assignment.id, :error_message => nil
 
-    begin
-      assignment = Assignment.find(params[:assignment_id])
-      comment = AssignmentComment.find(params[:comment_id])
-
-      files = params['comment_files'].nil? ? [] : params['comment_files']
-      files.each do |file|
-        @file = CommentFile.create!(:assignment_comment_id => comment.id, :attachment_updated_at => Date.current, :attachment_file_name => file.original_filename, :attachment_content_type => file.content_type, :attachment_file_size => file.size)
+      rescue Exception => error
+        # redirect_to :action => :student_detail, :assignment_id => @assignment.id, :student_id => student_id, :group_id => group_id, :error_message => error.message
+        render :json => { :success => false, :flash_msg => error.message, :flash_class => 'alert' }
+        # render :student_detail
       end
-    rescue Exception => error
-      raise "#{error.message}"
+    else
+      redirect_to :action => :student_detail, :assignment_id => @assignment.id, :student_id => student_id, :group_id => group_id, :error_message => t(:date_range_expired)
+      # render :json => { :success => false, :flash_msg => t(:date_range_expired), :flash_class => 'alert', :cancel => true}
     end
 
-    flash[:notice] = t(:comment_files_uploaded_successfully)
-    redirect_to :controller => :portfolio_teacher, :action => :student_detail, :id => params[:student_or_group_id], :assignment_id => params[:assignment_id]
+  end
 
+  def remove_comment
+    comment = AssignmentComment.find(params[:comment_id])
+    if assignment_in_time?
+      begin
+        ActiveRecord::Base.transaction do
+          files_comment = CommentFile.find_all_by_assignment_comment_id(comment.id)
+          files_comment.each do |file|
+            delete_file(file.id)
+          end
+          comment.delete
+        end
+        render :json => { :success => true, :flash_msg => "comentario removido", :flash_class => 'notice' }
+      rescue Exception => error
+        render :json => { :success => false, :flash_msg => error.message, :flash_class => 'alert' }
+      end
+    else
+      render :json => { :success => false, :flash_msg => "nao pode", :flash_class => 'alert' }
+    end
   end
 
   #####################
@@ -204,43 +241,23 @@ class PortfolioTeacherController < ApplicationController
   # Deleta arquivos enviados
   ##
 
-# ---> transformar em método e deixar dentro com edição de comentário (diminuir)
-
-  def delete_file
-
-    authorize! :delete_file, PortfolioTeacher
-
-    redirect = {:action => :student_detail, :id => params[:students_id], :send_assignment_id => params[:send_assignment_id]}
-
-    respond_to do |format|
-
-      begin
-
-        comment_file_id = params[:comment_file_id]
-
-        # recupera o nome do arquivo a ser feito o download
-        filename = CommentFile.find(comment_file_id).attachment_file_name
-
-        # arquivo a ser deletado
-        file_del = "#{::Rails.root.to_s}/media/portfolio/comments/#{comment_file_id}_#{filename}"
-
-        error = false
-
-        # deletar arquivo da base de dados
-        error = true unless CommentFile.find(comment_file_id).delete
-
-        # deletar arquivos do servidor
-        unless error
-          File.delete(file_del) if File.exist?(file_del)
-          flash[:notice] = t(:file_deleted)
-          format.html { redirect_to(redirect) }
-        else
-          raise t(:error_delete_file)
-        end
-      rescue Exception
-        flash[:alert] = t(:error_delete_file)
-        format.html { redirect_to(redirect) }
+  def delete_file(file_id)
+    begin
+      # recupera o nome do arquivo a ser feito o download
+      filename = CommentFile.find(file_id).attachment_file_name
+      # arquivo a ser deletado
+      file_del = "#{::Rails.root.to_s}/media/portfolio/comments/#{file_id}_#{filename}"
+      error = false
+      # deletar arquivo da base de dados
+      error = true unless CommentFile.find(file_id).delete
+      # deletar arquivos do servidor
+      unless error
+        File.delete(file_del) if File.exist?(file_del)
+      else
+        raise t(:error_delete_file)
       end
+    rescue Exception
+      flash[:alert] = t(:error_delete_file)
     end
   end
 
