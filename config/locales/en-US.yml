@@ -743,6 +743,10 @@
       manage_status: Status
       manage_options: Options
       manage_selected: Manage Selected
+      total_students:
+        zero: Without students
+        one: 'Total: 1 student'
+        other: 'Total: %{count} students'
     status:
       pending: Pending
       activated: Activated

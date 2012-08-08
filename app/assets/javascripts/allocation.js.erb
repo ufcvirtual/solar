@@ -2,18 +2,11 @@ $(function() {
   $('.enrollments input:checkbox').click(function() {
     if ( $(this).attr("id") == 'cbx_all' ) {
       var cbx_all = this;
-      $('.cbx_value').each(function() { $(this).attr('checked', $(cbx_all).attr('checked')); });
-    } else if ( $(this).attr('checked') == false && $('#cbx_all').attr('checked') == true ) {
+      $('.cbx_value').each(function() { $(this).attr('checked', $(cbx_all).attr('checked') == 'checked'); });
+    } else if ( $(this).attr('checked') != 'checked' && $('#cbx_all').attr('checked') == 'checked' ) {
       $('#cbx_all').attr('checked', false);
-    } else if ( $(this).attr('checked') == true && $('.cbx_value').length == $('.cbx_value:checked').length ) {
+    } else if ( $(this).attr('checked') == 'checked' && $('.cbx_value').length == $('.cbx_value:checked').length ) {
       $('#cbx_all').attr('checked', true);
-    }
-
-    // habilitar botao de gerencia de registros selecionados
-    if ($('.cbx_value:checked').length > 0) {
-      $('.btn_manage_enrollment_selected').removeClass('btn_disable');
-    } else {
-      $('.btn_manage_enrollment_selected').addClass('btn_disable');
     }
   });
 
@@ -40,15 +33,17 @@ $(function() {
     }
 
     var url = "<%= Rails.application.routes.url_helpers.edit_allocation_path('something', :multiple => 'yes') %>".replace('something', sel.join(','));
-    showLightBoxURL(url, 400, 250, true, '<%= I18n.t(:manage_selected, :scope => [:allocations, :index])%>');
+    showLightBoxURL(url, 300, 250, true, '<%= I18n.t(:manage_selected, :scope => [:allocations, :index])%>');
   });
 });
 
 function manage_cancel(obj) {
+  $(obj).closest('tr').removeClass('active');
   $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
 }
 
 function manage_enrollment(obj) {
+  $(obj).closest('tr').addClass('active');
   $.get($(obj).attr('edit-link'), function(data) { $(obj).closest('tr').html(data); });
 }
 
@@ -63,7 +58,10 @@ function save_allocation(obj) {
         "group_id": $('#code_id option:selected', $(obj).closest('tr')).val()
       }
     },
-    success: function(data) { $(obj).closest('tr').html(data); }
+    success: function(data) {
+      $(obj).closest('tr').removeClass('active');
+      $(obj).closest('tr').html(data);
+    }
   });
 }
 

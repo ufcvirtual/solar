@@ -896,6 +896,10 @@
       manage_status: Status
       manage_options: Opções
       manage_selected: Gerenciar Selecionados
+      total_students:
+        zero: Sem alunos
+        one: 'Total: 1 aluno'
+        other: 'Total: %{count} alunos'
     status:
       pending: Pendente
       activated: Matriculado
@@ -906,7 +910,6 @@
       enrollment_successful_update: Atualizacao realizada com sucesso
       enrollment_unsuccessful_update: Atualizacao nao realizada
       not_same_status: Selecione apenas registros com o mesmo status
-
 
   ## CRUD
   options: "Opções"

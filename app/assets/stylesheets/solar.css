@@ -178,6 +178,7 @@ select{
     color: #222;
     background-color: #fff;
     border: 1px solid #dedede;
+    padding-top: 2px;
     /*    min-width: 180px;*/
 }
 
@@ -275,7 +276,7 @@ h1.page_title{
 
     border : 0px;
     cursor : pointer;
-    background-image: url('/images/closeLightBox.png');
+    background-image: url('closeLightBox.png');
     background-position:0px 0px;
     font-size : 3px;
 }
@@ -378,6 +379,29 @@ h1.page_title{
     margin-right: 0px;
     right: 0;
     top: 5px;
+}
+#allocations_manage_selected .block_content {
+    min-height: 215px;
+    position: relative;
+}
+#allocations_manage_selected .block_content ul {
+    margin-left: 20px;
+}
+#allocations_manage_selected .block_content ul li {
+    list-style-type: disc;
+}
+#allocations_manage_selected .block_content select {
+    min-width: 120px;
+}
+#manage_enrollment_lightbox_list, #manage_enrollment_lightbox_group {
+    margin-bottom: 5px;
+}
+#manage_enrollment_lightbox_status {
+    margin-bottom: 30px;
+}
+#manage_enrollment_lightbox_buttons {
+    position: absolute;
+    bottom: 5px;
 }
 .link_gray {
     font-weight:bold;
@@ -2455,6 +2479,15 @@ tbody tr.lines {
     background-color: #F5F8FB;
 }
 
+tbody tr.lines.active {
+    border-bottom: solid #B4B2B1 1px;
+    background-color: #FFFBE4;
+}
+
+tbody tr.lines.active:hover {
+    background-color: #fffbd1;
+}
+
 tr.lines td img {
     margin: 0;
     padding: 0;
@@ -2692,7 +2725,7 @@ td.td_student a {color: #2a538d;}
     cursor: pointer;
     text-align: center;
     text-decoration: none;
-    padding: 0px 4px 2px;
+    padding: 0px 4px 0px;
     font-size: 8pt;
     margin:0 2px;
     border: 1px solid #DEDEDE;
@@ -3037,13 +3070,15 @@ td.form_error {
     text-decoration     : none;
 }
 
-.form_requirement {
+.form_requirement, .filter_counter {
     font-style: italic;
     font-size: 9pt;
     color: #E03838;
-    display: block;
     margin-right: 2px;
     margin-top: 2px;
+}
+.form_requirement {
+    display: block;
     float: right;
 }
 .form_usuario_table{
