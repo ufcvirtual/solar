@@ -1,15 +1,13 @@
 - unless @multiple
   %td
     %input{type: "checkbox", name: @allocation.id, value: @allocation.id, class: "cbx_value"}
-  %td
-    = @allocation.user.name
+  %td= @allocation.user.name
   %td
     - if @change_group
       = select(:code, :id, @groups.collect { |g| [g.code, g.id] }, {selected: @allocation.allocation_tag.group_id})
     - else
-      = @groups.code
-  %td
-    = select(:status, :id, @status_hash.invert.to_a, {selected: @allocation.status})
+      = @groups.code_semester
+  %td= select(:status, :id, @status_hash.invert.to_a, {selected: @allocation.status})
   %td
     %input{type: "button", value: t(:save), :"allocation-id" => @allocation.id, :"save-link" => allocation_path(@allocation), class: "btn btn_main btn_save_allocation", onclick: "javascript:save_allocation(this);"}
     %input{type: "button", value: t(:cancel), :"show-link" => allocation_path(@allocation), :"edit-link" => edit_allocation_path(@allocation), class: "btn btn_default btn_manage_cancel", onclick: "javascript:manage_cancel(this);"}

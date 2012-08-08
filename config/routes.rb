@@ -1,10 +1,11 @@
 Solar::Application.routes.draw do 
 
-  devise_for :users, :path_names => {:sign_up => :register}
+  devise_for :users, :path_names => {:sign_up => :register}, :skip => [:sessions]
 
   devise_scope :user do
-    get "login", :to => "devise/sessions#new"
-    get "logout", :to => "devise/sessions#destroy"
+    get  :login, :to => "devise/sessions#new"
+    post :login, :to => "devise/sessions#create"
+    get  :logout, :to => "devise/sessions#destroy"
     get "/", :to => "devise/sessions#new"
     resources :sessions, :only => [:create]
   end
@@ -12,9 +13,11 @@ Solar::Application.routes.draw do
   ## curriculum_units/:id/groups
   #  O ":only" fica enquanto edição de UC não for finalizada
   resources :curriculum_units, :only => [:index, :show] do
-    get :participants, :on => :member
-    get :informations, :on => :member
-    get :home, :on => :member
+    member do
+      get :participants
+      get :informations
+      get :home
+    end
     resources :groups, :only => [:index]
   end
 
@@ -49,8 +52,10 @@ Solar::Application.routes.draw do
   ## allocations/enrollments
   resources :allocations, :except => [:new] do
     get :enrollments, :action => :index, :on => :collection
-    delete :cancel, :action => :destroy, :on => :member
-    delete :cancel_request, :action => :destroy, :on => :member, :defaults => {:type => 'request'}
+    member do
+      delete :cancel, :action => :destroy
+      delete :cancel_request, :action => :destroy, :defaults => {:type => 'request'}
+    end
   end
 
   resources :enrollments, :only => [:index]

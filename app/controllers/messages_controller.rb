@@ -1,10 +1,9 @@
+include FilesHelper
+include MessagesHelper
+include CurriculumUnitsHelper
+include MysolarHelper
+
 class MessagesController < ApplicationController
-
-  include FilesHelper
-  include MessagesHelper
-  include CurriculumUnitsHelper
-  include MysolarHelper
-
   before_filter :prepare_for_group_selection, :only => [:index]
   before_filter :message_data
   before_filter :get_curriculum_units
