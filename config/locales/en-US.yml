@@ -15,6 +15,7 @@
         - :year
   time:
     formats:
+      clock: "%m/%d/%Y %H:%M:%S"
       default: "%b/%d/%Y, %H:%M:%S"
       short: "%b/%d %H:%M"
       today: "%H:%M"

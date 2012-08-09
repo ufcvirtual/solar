@@ -5,7 +5,6 @@
 //= require jquery-ui-1.8.6
 //= require jquery.ui.datepicker-en-GB
 //= require mysolar
-//= require clock
 //= require lightbox
 //= require message
 //= require lesson

@@ -4,24 +4,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Solar</title>
     <%= favicon_link_tag 'favicon.ico' %>
-
     <%= stylesheet_link_tag "application" %>
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tag %>
 
     <script type="text/javascript">
-      // variavel global com a configuracao do locale
-      global_config = {};
-      global_config.locale = {};
-      global_config.locale.I18n = '<%=I18n.locale%>';
-      global_config.locale.dateFormat = '<%=t :search_format_date %>';
-
-      $(function($){
-        // altura da linha divisória entre o menu e o conteúdo
-        // 10px do margin-top de mysolar_sidebar, 10 do margin-top do block_locale e 5 de espaco mesmo... :)
-        $("#mysolar_sidebar").height($('#body_wrapper').height() - $('#mysolar_topbar').height() - $('#block_locale').height() - 25);
-      });
-
+      /**
+       * Google Analytics
+       */
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-25482431-1']);
       _gaq.push(['_setDomainName', '.virtual.ufc.br']);
@@ -32,6 +22,41 @@
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
+
+      // sistema e clock
+
+      global_config = {
+        'locale': {
+          'I18n': '<%= I18n.locale %>',
+          'dateFormat': '<%=t :search_format_date %>'
+        }
+      };
+
+      jQuery(function($) {
+        // altura da linha divisória entre o menu e o conteúdo
+        // 10px do margin-top de mysolar_sidebar, 10 do margin-top do block_locale e 5 de espaco mesmo... :)
+        $("#mysolar_sidebar").height($('#body_wrapper').height() - $('#mysolar_topbar').height() - $('#block_locale').height() - 25);
+
+        /**
+         * Relogio do sistema
+         */
+        new showLocalTime("server_clock");
+
+        function showLocalTime(container) {
+          if (!$('#'+container).length) return;
+          updateTime(container, "<%=l DateTime.now, :format => :clock %>");
+        }
+
+        function updateTime(el, server_time) {
+          var localtime = new Date(server_time);
+          localtime.setSeconds(localtime.getSeconds()+1);
+
+          $("#"+el).html(formatNumber(localtime.getHours()) + ":" + formatNumber(localtime.getMinutes()) + ":" + formatNumber(localtime.getSeconds()));
+          setTimeout(function(){updateTime(el, localtime);}, 1000);
+        }
+
+        function formatNumber(num) { return (num<=9)? "0" + num : num; }
+      });
     </script>
   </head>
   <body>
@@ -141,9 +166,7 @@
           <li><%= link_to t(:license_terms), 'https://github.com/wwagner33/solar/blob/master/doc/gpl-3.0.txt', :target => '_blank' %></li>
         </ul>
       </div>
-
 <%#= render '/portlets/chat' %>
     </div>
-
   </body>
 </html>
