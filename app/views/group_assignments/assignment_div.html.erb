@@ -12,7 +12,7 @@
         <h3 class="group_assignment_name group_name_<%=can_manage_group%>">
           <%= group["group_name"] %>
           <span class="group_assignment_manage_button">
-            <input type="button" value='Avaliar' class="btn btn_default evaluate_group" onclick="btn_evaluate_group('grupo_id', 'assignment_id');"/>
+            <input type="button" value='Avaliar' class="btn btn_default evaluate_group" onclick="btn_evaluate_group(<%= group['id'] %>, <%= @assignment.id %>)"/>
           </span>
         </h3>
         <div class="edit_group_<%=can_manage_group%>" style="display:none;">

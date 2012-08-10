@@ -2575,12 +2575,11 @@ td.td_student a {color: #2a538d;}
     padding: 5px;
 }
 
-.portfolio_title_button{
+.portfolio_title_button, .portfolio_comment_button{
     float: right;
 }
 
 .portfolio_comment_button{
-    float: right;
     margin-top: 8px;
 }
 
@@ -2607,12 +2606,14 @@ td.td_student a {color: #2a538d;}
     text-align: center;
 }
 
-.return_file{
+.return_file, #btn_cancel_evaluation, #btn_save_evaluation, #cancel_changes_assignment, #save_changes_assignment{
     display:none;
 }
 
-#oi{
-    text-decoration: line-through;
+.portfolio_link_disabled{
+    color: #999999;
+    font-size: 11pt;
+    text-decoration: underline line-through;
 }
 
 /**

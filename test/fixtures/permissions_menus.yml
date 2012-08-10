@@ -169,6 +169,10 @@ pm41:
   profile_id: 3
   menu_id: 209
 
+pm60:
+  profile_id: 3
+  menu_id: 207
+
 # tutor presencial
 pm59:
   profile_id: 4

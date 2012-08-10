@@ -340,6 +340,3 @@ class PortfolioController < ApplicationController
   end
 
 end
-
-
-

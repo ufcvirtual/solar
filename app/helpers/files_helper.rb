@@ -10,7 +10,6 @@ module FilesHelper
     end
   end
 
-
   ##
   # Cria zip de arquivos com folders internos e retorna o path do zip
   #
@@ -22,7 +21,6 @@ module FilesHelper
   ##
   def make_zip_files(files, table_column_name, zip_name_folder = nil)
     require 'zip/zip'
-
 
     all_file_names = files.collect{|file| [file[table_column_name]]}.flatten
     hash_name = Digest::SHA1.hexdigest(all_file_names.to_s)
@@ -41,9 +39,8 @@ module FilesHelper
 
     # cria o zip caso nao esteja criado
     unless zip_created
-      Zip::ZipFile.open(all_files_ziped_name, Zip::ZipFile::CREATE) { |zipfile|
+      Zip::ZipFile.open(all_files_ziped_name, Zip::ZipFile::CREATE) do |zipfile|
         files.each do |file|
-
           unless file.attachment_file_name.nil?
             unless zip_created
               zipfile.mkdir(zip_name_folder) # cria folder geral para colocar todos os outros folders dentro dele
@@ -51,7 +48,7 @@ module FilesHelper
             end
 
             # cria um novo folder interno
-            unless file.folder.nil?
+            unless !file.attributes.include?('folder') or file.folder.nil?
               if name_internal_folder != file.folder and file.folder != ''
                 name_internal_folder = file.folder
                 zipfile.mkdir(File.join(zip_name_folder, name_internal_folder))
@@ -61,7 +58,7 @@ module FilesHelper
             zipfile.add(File.join(zip_name_folder, name_internal_folder, file.attachment_file_name), file.attachment.path) if File.exists?(file.attachment.path.to_s)
           end
         end
-      }
+      end
     end
 
     unless zip_created

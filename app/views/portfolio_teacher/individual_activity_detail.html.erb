@@ -52,7 +52,7 @@
       <span class="download_all_icon">
         <% unless @assignment_files.empty? %>
           <%= image_tag "mimetypes/zip.png", :alt => " ", :class=>'block_title_icon' %>
-          <%= link_to t(:portfolio_download_all_zip), {:controller => :group_assignments, :action => :download_all_files_zip, :all_files => @assignment_files, :assignment_id => @activity.id}, :class => "link_content" %>
+          <%= link_to t(:portfolio_download_all_zip), {:controller => :portfolio_teacher, :action => :download_all_enunciation_files_zip, :all_files => @assignment_files, :assignment_id => @activity.id}, :class => "link_content" %>
         <% end %>
       </span>
     </div>
@@ -72,11 +72,11 @@
             </tr>
           </thead>
           <tbody>
-            <% @assignment_files.each{ |file|  %>
+            <% @assignment_files.each do |file|  %>
               <tr class="lines" >
                 <td>
-                  <%= link_to image_tag(icon_attachment(file.attachment_file_name)), {:controller => :group_assignments, :action => :download_single_file, :file_id => file.id, :assignment_id => @activity.id}, {:class => "file_icon", :alt => t(:file_type_icon)} %>
-                  <%= link_to file.attachment_file_name, {:controller => :group_assignments, :action => :download_single_file, :file_id => file.id, :assignment_id => @activity.id }, :class => "link_content" %>
+                  <%= link_to image_tag(icon_attachment(file.attachment_file_name)), {:controller => :portfolio_teacher, :action => :download_individual_file, :id => file.id, :assignment_id => @activity.id, :type => "enunciation"}, {:class => "file_icon", :alt => " "} %>
+                  <%= link_to file.attachment_file_name, {:controller => :portfolio_teacher, :action => :download_individual_file, :id => file.id, :assignment_id => @activity.id, :type => "enunciation"}, :class => "link_content" %>
                 </td>
                 <td class="right">
                   <%= format('%.2f KB', file.attachment_file_size/1024.0) %>
@@ -85,7 +85,7 @@
                   <%= l(file.attachment_updated_at, :format => :files) %>
                 </td>
               </tr>
-            <% } %>      
+            <% end %>      
           </tbody>
         </table>
       <% else %>
@@ -113,10 +113,10 @@
           </tr>
         </thead>
         <tbody>
-          <% @students.each_with_index{ |student, idx| %>
+          <% @students.each_with_index do |student, idx| %>
             <tr class="lines" >
               <td>
-                <%= link_to student["name"], {:controller => :portfolio_teacher, :action => :student_detail, :student_id => student["id"], :group_id => nil, :assignment_id => @activity.id}, :class => :link_content %>
+                <%= link_to student["name"], {:controller => :portfolio_teacher, :action => :student_or_group_assignment, :student_id => student["id"], :group_id => nil, :assignment_id => @activity.id}, :class => :link_content %>
               </td>
               <td class="center">
                 <%= @file_delivery_date[idx] %>
@@ -131,9 +131,8 @@
                 <%= image_tag( (@comments[idx] == false) ? "icon_no_comments.png" : "icon_comments.png" , :alt => " ")%>
               </td>
             </tr>
-          <% } %>
+          <% end %>
         </tbody>
       </table>
     </div>
   </div>
-

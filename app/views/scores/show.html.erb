@@ -21,9 +21,9 @@
             <% @individual_activities.each_with_index do |activity, idx| %>
               <tr class="lines">
                 <td align="left">
-                  <% if can? :student_detail, PortfolioTeacher %>
+                  <% if can? :student_or_group_assignment, PortfolioTeacher %>
                     <%=link_to activity["name"], {:controller => :portfolio_teacher,
-                      :action => :student_detail, :id => @student.id,
+                      :action => :student_or_group_assignment, :student_id => @student.id,
                       :assignment_id => activity["id"],
                       :send_assignment_id => activity["send_assignment_id"]}, {:class => 'link_content'} %>
                   <% elsif can? :activity_details, Portfolio %>
@@ -42,9 +42,9 @@
             <% @group_activities.each_with_index do |activity, idx| %>
               <tr class="lines">
                 <td align="left">
-                  <% if can? :student_detail, PortfolioTeacher %>
+                  <% if can? :student_or_group_assignment, PortfolioTeacher %>
                     <%=link_to activity["name"], {:controller => :portfolio_teacher,
-                      :action => :student_detail, :id => @student.id,
+                      :action => :student_or_group_assignment, :student_id => @student.id,
                       :assignment_id => activity["id"],
                       :send_assignment_id => activity["send_assignment_id"]}, {:class => 'link_content'} %>
                   <% elsif can? :activity_details, Portfolio %>

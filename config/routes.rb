@@ -74,6 +74,8 @@ Solar::Application.routes.draw do
 
   mount Ckeditor::Engine => "/ckeditor"
 
+  resources :portfolio_teacher, :only => [:index]
+
   get "pages/index"
   get "pages/team"
   get "access_control/index"
@@ -83,9 +85,10 @@ Solar::Application.routes.draw do
   get 'home' => "users#mysolar", :as => :home
   get 'user_root' => 'users#mysolar'
   post "portfolio_teacher/evaluate_student_assignment"
-  post "portfolio_teacher/update_comment"
-  get "portfolio_teacher/student_detail"
+  post "portfolio_teacher/send_comment"
+  get "portfolio_teacher/student_or_group_assignment"
   post "portfolio_teacher/remove_comment"
+  get "portfolio_teacher/individual_activity_detail"
 
   get "/media/users/:id/photos/:style.:extension", :to => "users#photo"
   get "/media/portfolio/individual_area/:file.:extension", :to => "access_control#portfolio_individual_area"

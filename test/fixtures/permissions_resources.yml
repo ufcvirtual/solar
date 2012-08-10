@@ -220,6 +220,21 @@ ma10:
   resource_id: 68
   per_id: false
 
+ma11:
+  profile_id: 1
+  resource_id: 78
+  per_id: false
+
+ma12:
+  profile_id: 1
+  resource_id: 79
+  per_id: false
+
+ma13:
+  profile_id: 1
+  resource_id: 80
+  per_id: false
+
 ##############################
 # PROFESSOR TITULAR #
 ##############################
@@ -328,6 +343,20 @@ popt7:
   resource_id: 40
   per_id: false
 
+popt8:
+  profile_id: 2
+  resource_id: 78
+  per_id: false
+
+popt9:
+  profile_id: 2
+  resource_id: 79
+  per_id: false
+
+popt10:
+  profile_id: 2
+  resource_id: 80
+  per_id: false
 
 #discussion
 dipt1:
@@ -474,11 +503,6 @@ tgpt6:
   resource_id: 77
   per_id: false
 
-tgpt7:
-  profile_id: 4
-  resource_id: 78
-  per_id: false
-
 ##############################
 # TUTOR A DISTANCIA #
 ##############################
@@ -587,6 +611,21 @@ pota6:
   resource_id: 40
   per_id: false
 
+pota7:
+  profile_id: 3
+  resource_id: 78
+  per_id: false
+
+pota8:
+  profile_id: 3
+  resource_id: 79
+  per_id: false
+
+pota9:
+  profile_id: 3
+  resource_id: 80
+  per_id: false
+
 # trabalho de grupo
 tgta1:
   profile_id: 3
@@ -616,11 +655,6 @@ tgta5:
 tgta6:
   profile_id: 4
   resource_id: 77
-  per_id: false
-
-tgta7:
-  profile_id: 4
-  resource_id: 78
   per_id: false
 
 # discussion
@@ -735,41 +769,36 @@ mapedi6:
 # TUTOR PRESENCIAL           #
 ##############################
 
-# trabalho de grupo
-tgtp1:
-  profile_id: 4
-  resource_id: 69
-  per_id: true
+# # trabalho de grupo
+# tgtp1:
+#   profile_id: 4
+#   resource_id: 69
+#   per_id: true
 
-tgtp2:
-  profile_id: 4
-  resource_id: 73
-  per_id: false
+# tgtp2:
+#   profile_id: 4
+#   resource_id: 73
+#   per_id: false
 
-tgtp3:
-  profile_id: 4
-  resource_id: 74
-  per_id: false
+# tgtp3:
+#   profile_id: 4
+#   resource_id: 74
+#   per_id: false
 
-tgtp4:
-  profile_id: 4
-  resource_id: 75
-  per_id: false
+# tgtp4:
+#   profile_id: 4
+#   resource_id: 75
+#   per_id: false
 
-tgtp5:
-  profile_id: 4
-  resource_id: 76
-  per_id: false
+# tgtp5:
+#   profile_id: 4
+#   resource_id: 76
+#   per_id: false
 
-tgtp6:
-  profile_id: 4
-  resource_id: 77
-  per_id: false
-
-tgtp7:
-  profile_id: 4
-  resource_id: 78
-  per_id: false
+# tgtp6:
+#   profile_id: 4
+#   resource_id: 77
+#   per_id: false
 
 ##############################
 # EDITOR #
