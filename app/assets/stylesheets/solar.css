@@ -1729,6 +1729,7 @@ div.forum_navigation {
     text-align: center;
     min-height: 28px;
     padding-bottom: 0;
+    height: auto;
 }
 
 .forum_button, .forum_button_attachment{
