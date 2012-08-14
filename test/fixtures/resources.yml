@@ -139,7 +139,7 @@ res23:
 res24:
   id: 24
   controller: 'portfolio'
-  action: 'list'
+  action: 'index'
   description: 'Portfolio da Unidade Curricular'
 
 res25:
@@ -213,7 +213,7 @@ res35:
 res36:
   id: 36
   controller: 'portfolio_teacher'
-  action: 'student_or_group_assignment'
+  action: 'assignment'
   description: 'Detalha a atividade de um aluno ou grupo'
 
 res37:
@@ -231,14 +231,14 @@ res38:
 res39:
   id: 39
   controller: 'portfolio_teacher'
-  action: 'evaluate_student_assignment'
+  action: 'evaluate'
   description: 'Avalia a atividade de um aluno ou grupo'
 
 res40:
   id: 40
   controller: 'portfolio_teacher'
-  action: 'individual_activity_detail'
-  description: 'Download de arquivos enviados pelo aluno'
+  action: 'individual_activity'
+  description: 'Exibe informacoes da atividade individual'
 
 ## Posts
 
@@ -428,7 +428,7 @@ res72:
 res73:
   id: 73
   controller: 'group_assignments'
-  action: 'show_assignment'
+  action: 'group_activity'
   description: 'Pagina de exibicao das informacoes da atividade e gerenciamento de grupos'
 
 res74:
@@ -490,17 +490,17 @@ res82:
 res78:
   id: 78
   controller: 'portfolio_teacher'
-  action: 'download_individual_file'
-  description: 'Download de um arquivo tanto do comentario como de enunciado da atividade como do aluno'
+  action: 'download_files'
+  description: 'Download de arquivos'
 
-res79:
-  id: 79
-  controller: 'portfolio_teacher'
-  action: 'download_all_student_or_group_files_zip'
-  description: 'Download de uma pasta zip dos arquivos enviados pelo aluno ou grupo'
+# res79:
+#   id: 79
+#   controller: 'portfolio_teacher'
+#   action: 'download_individual_files_zip'
+#   description: 'Download de uma pasta zip dos arquivos'
 
-res80:
-  id: 80
-  controller: 'portfolio_teacher'
-  action: 'download_all_enunciation_files_zip'
-  description: 'Download de uma pasta zip dos arquivos enviados como enunciado da atividade'
+# res80:
+#   id: 80
+#   controller: 'portfolio_teacher'
+#   action: 'download_all_enunciation_files_zip'
+#   description: 'Download de uma pasta zip dos arquivos enviados como enunciado da atividade'

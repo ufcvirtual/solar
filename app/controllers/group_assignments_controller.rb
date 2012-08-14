@@ -6,13 +6,13 @@ class GroupAssignmentsController < ApplicationController
 
   before_filter :prepare_for_group_selection, :user_related_to_assignment?, :user_related_to_assignment?
   before_filter :can_import?, :only => [:import_groups_page, :import_groups]
-  before_filter :assignment_in_time?, :except => [:show_assignment]
+  before_filter :assignment_in_time?, :except => [:assignment]
   load_and_authorize_resource
 
   ##
   # Exibe detalhes do trabalho e os grupos
   ##
-  def show_assignment
+  def group_activity
     @assignment             = Assignment.find(params[:assignment_id])
     @groups                 = group_assignments(@assignment.id)
     @students_without_group = no_group_students(@assignment.id)

@@ -225,15 +225,15 @@ ma11:
   resource_id: 78
   per_id: false
 
-ma12:
-  profile_id: 1
-  resource_id: 79
-  per_id: false
+# ma12:
+#   profile_id: 1
+#   resource_id: 79
+#   per_id: false
 
-ma13:
-  profile_id: 1
-  resource_id: 80
-  per_id: false
+# ma13:
+#   profile_id: 1
+#   resource_id: 80
+#   per_id: false
 
 ##############################
 # PROFESSOR TITULAR #
@@ -348,15 +348,15 @@ popt8:
   resource_id: 78
   per_id: false
 
-popt9:
-  profile_id: 2
-  resource_id: 79
-  per_id: false
+# popt9:
+#   profile_id: 2
+#   resource_id: 79
+#   per_id: false
 
-popt10:
-  profile_id: 2
-  resource_id: 80
-  per_id: false
+# popt10:
+#   profile_id: 2
+#   resource_id: 80
+#   per_id: false
 
 #discussion
 dipt1:
@@ -616,15 +616,15 @@ pota7:
   resource_id: 78
   per_id: false
 
-pota8:
-  profile_id: 3
-  resource_id: 79
-  per_id: false
+# pota8:
+#   profile_id: 3
+#   resource_id: 79
+#   per_id: false
 
-pota9:
-  profile_id: 3
-  resource_id: 80
-  per_id: false
+# pota9:
+#   profile_id: 3
+#   resource_id: 80
+#   per_id: false
 
 # trabalho de grupo
 tgta1:

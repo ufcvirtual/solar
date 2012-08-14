@@ -52,7 +52,7 @@
       <span class="download_all_icon">
         <% unless @assignment_files.empty? %>
           <%= image_tag "mimetypes/zip.png", :alt => " ", :class=>'block_title_icon' %>
-          <%= link_to t(:portfolio_download_all_zip), {:controller => :portfolio_teacher, :action => :download_all_enunciation_files_zip, :all_files => @assignment_files, :assignment_id => @assignment.id}, :class => "link_content" %>
+          <%= link_to t(:portfolio_download_all_zip), download_files_portfolio_teacher_path(:assignment_id => @assignment.id, :type => "enunciation", :zip => true), {:class => "link_content"} %>
         <% end %>
       </span>
     </div>
@@ -75,8 +75,8 @@
             <% @assignment_files.each do |file|  %>
               <tr class="lines" >
                 <td>
-                  <%= link_to image_tag( icon_attachment(file.attachment_file_name) ), { :controller =>  :portfolio_teacher, :action=>:download_individual_file, :id => file.id, :assignment_id => @assignment.id, :type => "enunciation" }, { :class => "file_icon", :alt => " " } %>
-                  <%= link_to file.attachment_file_name, { :controller => :portfolio_teacher, :action => :download_individual_file, :id => file.id, :assignment_id => @assignment.id, :type => "enunciation" }, :class => "link_content" %>
+                  <%= link_to image_tag( icon_attachment(file.attachment_file_name) ), download_files_portfolio_teacher_path(:file_id => file.id, :assignment_id => @assignment.id, :type => "enunciation"), { :class => "file_icon", :alt => " " } %>
+                  <%= link_to file.attachment_file_name, download_files_portfolio_teacher_path(:id => file.id, :assignment_id => @assignment.id, :type => "enunciation"), {:class => "link_content"} %>
                 </td>
                 <td class="right">
                   <%= format('%.2f KB', file.attachment_file_size/1024.0) %>
@@ -117,7 +117,7 @@
               <h3 class="group_assignment_name group_name_<%=can_manage_group%>">
                 <%= group["group_name"] %>
                 <span class="group_assignment_manage_button">
-                  <%= button_to "Avaliar", {:controller => "portfolio_teacher", :action => "student_or_group_assignment", :group_id => group["id"], :assignment_id => @assignment.id}, :class => "btn btn_default evaluate_group" %>
+                  <%= button_to "Avaliar", assignment_portfolio_teacher_path(:group_id => group["id"], :assignment_id => @assignment.id), {:class => "btn btn_default evaluate_group"} %>
                 </span>
               </h3>
               <div class="edit_group_<%=can_manage_group%>" style="display:none;">

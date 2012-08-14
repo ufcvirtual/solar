@@ -69,32 +69,47 @@ Solar::Application.routes.draw do
   resources :courses
 
   resources :group_assignments, :only => [:index] do
-    post :manage_groups, :on => :collection
+    collection do 
+      post :manage_groups
+      get :group_activity
+      get :import_groups_page
+      get :import_groups
+    end
   end
 
   mount Ckeditor::Engine => "/ckeditor"
 
-  resources :portfolio_teacher, :only => [:index]
+  resource :portfolio_teacher, :only => [:index], :controller => 'portfolio_teacher' do
+    collection do
+      get :assignment
+      get :individual_activity
+      get :download_files
+      post :evaluate
+      post :send_comment
+      post :remove_comment
+    end
+  end
+
+  resource :portfolio, :only => [:index], :controller => 'portfolio' do
+    collection do
+      get :public_files_send
+    end
+  end
 
   get "pages/index"
   get "pages/team"
   get "access_control/index"
   get "schedules/show"
-  get "portfolio/public_files_send"
   get "scores/:id/history_access" => "scores#history_access"
   get 'home' => "users#mysolar", :as => :home
   get 'user_root' => 'users#mysolar'
-  post "portfolio_teacher/evaluate_student_assignment"
-  post "portfolio_teacher/send_comment"
-  get "portfolio_teacher/student_or_group_assignment"
-  post "portfolio_teacher/remove_comment"
-  get "portfolio_teacher/individual_activity_detail"
-
+  
   get "/media/users/:id/photos/:style.:extension", :to => "users#photo"
   get "/media/portfolio/individual_area/:file.:extension", :to => "access_control#portfolio_individual_area"
   get "/media/portfolio/public_area/:file.:extension", :to => "access_control#portfolio_public_area"
   get "/media/lessons/:id/:file.:extension", :to => "access_control#lesson"
   get "/media/messages/:file.:extension", :to => "access_control#message"
+  # get "/media/portfolio_teacher/public_area/:file.:extension", :to => "access_control#portfolio_public_area"
 
   match ':controller(/:action(/:id(.:format)))'
 

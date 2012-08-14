@@ -3,13 +3,13 @@ class PortfolioController < ApplicationController
   include PortfolioHelper
 
 #  before_filter :require_user
-  before_filter :prepare_for_group_selection, :only => [:list]
+  before_filter :prepare_for_group_selection, :only => [:index]
 
   ##
   # Lista as atividades
   ##
-  def list
-    authorize! :list, Portfolio
+  def index
+    authorize! :index, Portfolio
 
     group_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
 
@@ -146,7 +146,7 @@ class PortfolioController < ApplicationController
     authorize! :download_file_comment, Portfolio
 
     curriculum_unit_id = active_tab[:url]["id"]
-    download_file({:action => :list, :id => curriculum_unit_id}, CommentFile.find(params[:id]).attachment.path)
+    download_file({:action => :index, :id => curriculum_unit_id}, CommentFile.find(params[:id]).attachment.path)
   end
 
   ##################
@@ -163,7 +163,7 @@ class PortfolioController < ApplicationController
     respond_to do |format|
       begin
         # redireciona para a lista
-        redirect = {:action => :list, :id => params[:curriculum_unit_id]}
+        redirect = {:action => :index, :id => params[:curriculum_unit_id]}
 
         # verifica se o arquivo foi adicionado
         raise t(:error_no_file_sent) unless params.include?(:portfolio)
@@ -195,7 +195,7 @@ class PortfolioController < ApplicationController
     authorize! :delete_file_public_area, Portfolio
 
     curriculum_unit_id = active_tab[:url]['id']
-    redirect = {:action => :list, :id => curriculum_unit_id}
+    redirect = {:action => :index, :id => curriculum_unit_id}
 
     if PublicFile.find(params[:id]).user_id == current_user.id
       respond_to do |format|
@@ -240,7 +240,7 @@ class PortfolioController < ApplicationController
 
     if same_class
       curriculum_unit_id = active_tab[:url]["id"]
-      download_file({:action => 'list', :id => curriculum_unit_id}, PublicFile.find(file.id).attachment.path)
+      download_file({:action => :index, :id => curriculum_unit_id}, PublicFile.find(file.id).attachment.path)
     else
       no_permission_redirect
     end

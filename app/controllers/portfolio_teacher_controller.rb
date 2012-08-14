@@ -5,9 +5,11 @@ class PortfolioTeacherController < ApplicationController
   include AccessControlHelper
 
   before_filter :prepare_for_group_selection, :only => [:index]
+  # filtro para: deve ser relacionado com turma
   before_filter :user_related_to_assignment?, :except => [:index]
-  before_filter :assignment_in_time?, :must_be_responsible, :except => [:index, :individual_activity_detail, :student_or_group_assignment]
-  # load_and_authorize_resource
+  before_filter :assignment_in_time?, :must_be_responsible, :except => [:index, :individual_activity, :assignment, :download_files]
+  before_filter :assignment_file_download, :only => [:download_files]
+  load_and_authorize_resource
 
   def index
     allocation_tag_id      = active_tab[:url]['allocation_tag_id']
@@ -15,9 +17,8 @@ class PortfolioTeacherController < ApplicationController
     @group_activities      = Assignment.find_all_by_allocation_tag_id_and_type_assignment(allocation_tag_id, Group_Activity)
   end
 
-  def individual_activity_detail
+  def individual_activity
     @activity     = Assignment.find(params[:assignment_id])
-
     # alunos da atividade
     allocation_tags     = AllocationTag.find_related_ids(@activity.allocation_tag_id).join(',')
     @students           = PortfolioTeacher.list_students_by_allocations(allocation_tags)
@@ -32,32 +33,28 @@ class PortfolioTeacherController < ApplicationController
     @students.each_with_index do |student, idx|
       @situation[idx] = Assignment.status_of_actitivy_by_assignment_id_and_student_id(@activity.id, student['id'])
       student_send_assignment = SendAssignment.find_by_assignment_id_and_user_id(@activity.id, student['id'])
-      @comments[idx] = student_send_assignment.nil? ? false : (!student_send_assignment.comment.nil? or !AssignmentComment.find_all_by_send_assignment_id(student_send_assignment.id).empty?)
+      @comments[idx] = student_send_assignment.nil? ? false : (!student_send_assignment.comment.nil? or !student_send_assignment.assignment_comments.empty?)
       @grade[idx] = (student_send_assignment.nil? or student_send_assignment.grade.nil?) ? '-' : student_send_assignment.grade
-      send_assignment_files = student_send_assignment.nil? ? [] : AssignmentFile.find_all_by_send_assignment_id(student_send_assignment.id) 
+      send_assignment_files = student_send_assignment.nil? ? [] : student_send_assignment.assignment_files
       @file_delivery_date[idx] = (student_send_assignment.nil? or send_assignment_files.empty?) ? '-' : send_assignment_files.first.attachment_updated_at.strftime("%d/%m/%Y") 
     end
 
   end
 
-  def student_or_group_assignment
-    @assignment            = Assignment.find(params[:assignment_id])
-    @student_id            = params[:student_id].nil? ? nil : params[:student_id]
-    @group_id              = params[:group_id].nil? ? nil : params[:group_id]
-    @group                 = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
-    @user                  = current_user
-    @comments              = []
-    @comments_files        = []
-    @users_profiles        = []
-    @files_sent_assignment = []
-    
-    @send_assignment       = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(@assignment.id, @student_id, @group_id)
-    @files_sent_assignment = AssignmentFile.find_all_by_send_assignment_id(@send_assignment.id) unless @send_assignment.nil?
-    
+  def assignment
+    @assignment      = Assignment.find(params[:assignment_id])
+    @student_id      = params[:student_id].nil? ? nil : params[:student_id]
+    @group_id        = params[:group_id].nil? ? nil : params[:group_id]
+    @group           = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
+    @user            = current_user
+    @comments_files  = []
+    @users_profiles  = []
+
+    @send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(@assignment.id, @student_id, @group_id)
+   
     unless @send_assignment.nil?
-      assignment_comments = AssignmentComment.find_all_by_send_assignment_id(@send_assignment.id, :order => "updated_at DESC")
-      @comments           = assignment_comments.nil? ? [] : assignment_comments
-      
+      @files_sent_assignment = @send_assignment.assignment_files
+      @comments = @send_assignment.assignment_comments.order("updated_at DESC")
 
       @comments.each_with_index do |comment, idx|
         profile_id           = Allocation.find_by_allocation_tag_id_and_user_id(@assignment.allocation_tag_id, comment.user_id).profile_id
@@ -65,20 +62,19 @@ class PortfolioTeacherController < ApplicationController
         # user_profile_id = current_user.profiles_with_access_on('student_detail', 'portfolio_teacher', allocation_tag_id, only_id = true).first
         @users_profiles[idx] = Profile.find(profile_id)
 
-        @comments_files[idx] = CommentFile.find_all_by_assignment_comment_id(comment.id)
+        @comments_files[idx] = comment.comment_files
       end
     end
 
     profile_id    = Allocation.find_by_allocation_tag_id_and_user_id(@assignment.allocation_tag_id, current_user.id).profile_id
     # user_profile_id = current_user.profiles_with_access_on('student_detail', 'portfolio_teacher', allocation_tag_id, only_id = true).first
     @user_profile = Profile.find(profile_id)
-
   end
 
   ##
   # Avalia trabalho do aluno
   ##
-  def evaluate_student_assignment
+  def evaluate
     @assignment = Assignment.find(params['assignment_id'])
     student_id  = (params[:student_id].nil? or params[:student_id].blank?) ? nil : params[:student_id]
     group_id    = (params[:group_id].nil? or params[:group_id].blank?) ? nil : params[:group_id]
@@ -91,7 +87,6 @@ class PortfolioTeacherController < ApplicationController
         end unless grade.nil?
 
         @send_assignment = SendAssignment.find_or_create_by_assignment_id_and_group_assignment_id_and_user_id(@assignment.id, group_id, student_id)
-
         @send_assignment.update_attribute(:grade, grade)
         @send_assignment.update_attribute(:comment, comment)
 
@@ -123,33 +118,29 @@ class PortfolioTeacherController < ApplicationController
         ActiveRecord::Base.transaction do
           if comment.nil?
             comment = AssignmentComment.create!(:user_id => current_user.id, :comment => comment_text, :send_assignment_id => send_assignment.id)
-            comment.update_attribute(:updated_at, Time.now)
           else
             comment.update_attribute(:comment, comment_text)
-            comment.update_attribute(:updated_at, Time.now)
           end
+          comment.update_attribute(:updated_at, Time.now)
           
           comment_files.each do |file|
             comment = CommentFile.create!({ :attachment => file, :assignment_comment_id => comment.id})
           end
 
-          unless comment.nil?
-            deleted_files_ids.each do |deleted_file_id|
-              delete_file(deleted_file_id) unless deleted_file_id.blank?
-            end
+          deleted_files_ids.each do |deleted_file_id|
+            delete_file(deleted_file_id) unless deleted_file_id.blank?
           end
         end
 
-        redirect_to :action => :student_or_group_assignment, :student_id => student_id, :group_id => group_id, :assignment_id => @assignment.id, :error_message => nil
+        redirect_to request.referer
 
       rescue Exception => error
-        # redirect_to :action => :student_or_group_assignment, :assignment_id => @assignment.id, :student_id => student_id, :group_id => group_id, :error_message => error.message
-        render :json => { :success => false, :flash_msg => error.message, :flash_class => 'alert' }
-        # render :student_or_group_assignment
+        flash[:alert] = error.message
+        redirect_to request.referer
       end
     else
-      # redirect_to :action => :student_or_group_assignment, :assignment_id => @assignment.id, :student_id => student_id, :group_id => group_id, :error_message => t(:date_range_expired)
-      render :json => { :success => false, :flash_msg => "sem permissao", :flash_class => 'alert', :cancel => true}
+      flash[:alert] = "sem permicao"
+      redirect_to request.referer
     end
 
   end
@@ -182,85 +173,61 @@ class PortfolioTeacherController < ApplicationController
   ##
   # Download dos arquivos do comentario do professor ou enviados pelo aluno
   ##
-  def download_individual_file
-    ########################
-    #precisa ter permissão, ser o responsável ou o próprio aluno/participante do grupo
-    #mas essa página só é acessada pelos responsáveis, entãoe sse método específico não considera aluno/participante do grupo, mas filtro de arquivo sim
-    ########################
-    redirect_error = {:action => :student_or_group_assignment, :assignment_id => params[:assignment_id], :student_id => params[:student_id], :group_id => params[:group_id]}
-    if params[:type] == "comment"
-      file_path = CommentFile.find(params[:id]).attachment.path
-    elsif params[:type] == "assignment"
-      file_path = AssignmentFile.find(params[:id]).attachment.path
-    elsif params[:type] == "enunciation"
-      file_path = AssignmentEnunciationFile.find(params[:id]).attachment.path
-      redirect_error = {:action => :individual_activity_detail, :assignment_id => params[:assignment_id]}
-    end
-    download_file(redirect_error, file_path)
-  end
+  def download_files
+    if params.include?('zip')
+      folder_name = ''
+      assignment = Assignment.find(params[:assignment_id])
 
-  ##
-  # Download dos arquivos enviados pelo aluno zipados
-  ##
-  def download_all_student_or_group_files_zip
-    ########################
-    #precisa ter permissão, ser o responsável ou o próprio aluno/participante do grupo
-    #mas essa página só é acessada pelos responsáveis, entãoe sse método específico não considera aluno/participante do grupo, mas filtro de arquivo sim
-    ########################
-    assignment     = Assignment.find(params[:assignment_id])
-    name           = params[:group_id].nil? ? User.find(params[:student_id]).nick : GroupAssignment.find(params[:group_id]).group_name
-    all_files      = params[:all_files].collect{ |file_id| AssignmentFile.find(file_id)}
-    path_zip       = make_zip_files(all_files, 'attachment_file_name', assignment.name+" - "+name)
-    redirect_error = {:action => :student_or_group_assignment, :assignment_id => params[:assignment_id], :student_id => params[:student_id], :group_id => params[:group_id]}
-    download_file(redirect_error, path_zip)
-  end
+      case params[:type]
+        when 'assignment'
+          sa = assignment.send_assignments.where(:user_id => params[:student_id], :group_assignment_id => params[:group_id]).first
 
-  ##
-  # Download dos arquivos enviados pelo aluno zipados
-  ##
-  def download_all_enunciation_files_zip
-    ########################
-    #precisa ter permissão, ser o responsável ou o próprio aluno
-    #mas essa página só é acessada pelos responsáveis, entãoe sse método específico não considera aluno, mas filtro de arquivo sim
-    ########################
-    assignment     = Assignment.find(params[:assignment_id])
-    all_files      = params[:all_files].collect{ |file_id| AssignmentEnunciationFile.find(file_id)}
-    path_zip       = make_zip_files(all_files, 'attachment_file_name', assignment.name)
-    redirect_error = {:action => :individual_activity_detail, :assignment_id => params[:assignment_id]}
-    download_file(redirect_error, path_zip)
-  end
-
-private
-
-  ##
-  # Deleta arquivos enviados
-  ##
-  def delete_file(file_id)
-    begin
-      # recupera o nome do arquivo a ser feito o download
-      filename = CommentFile.find(file_id).attachment_file_name
-      # arquivo a ser deletado
-      file_del = "#{::Rails.root.to_s}/media/portfolio/comments/#{file_id}_#{filename}"
-      # deletar arquivo da base de dados
-      if CommentFile.find(file_id).delete
-        # deletar arquivos do servidor
-        File.delete(file_del) if File.exist?(file_del)
-      else
-        raise t(:error_delete_file)
+          # "atv1 - aluno1"
+          folder_name = [assignment.name, (params[:group_id].nil? ? sa.user.nick : sa.group_assignment.group_name)].join(' - ')
+          all_files = sa.assignment_files
+        when 'enunciation'
+          folder_name = assignment.name
+          all_files = assignment.assignment_enunciation_files
       end
-    rescue Exception => error
-      flash[:alert] = error.message
+
+      file_path = make_zip_files(all_files, 'attachment_file_name', folder_name)
+    else
+      file = case params[:type]
+        when 'comment'
+          CommentFile.find(params[:file_id])
+        when 'assignment'
+          AssignmentFile.find(params[:file_id])
+        when 'enunciation'
+          AssignmentEnunciationFile.find(params[:file_id])
+      end
+
+      file_path = file.attachment.path
     end
+
+    download_file(request.referer, file_path)
   end
 
-  ##
-  # Download de arquivos
-  ##
-  def download_files_student
-    authorize! :download_files_student, PortfolioTeacher
+  private
 
-    redirect_error = {:action => :student_or_group_assignment, :id => params[:students_id], :send_assignment_id => params[:send_assignment_id]}
-    download_file(redirect_error, AssignmentFile.find(params[:id]).attachment.path)
-  end
+    ##
+    # Deleta arquivos enviados
+    ##
+    def delete_file(file_id)
+      begin
+        # recupera o nome do arquivo a ser feito o download
+        filename = CommentFile.find(file_id).attachment_file_name
+        # arquivo a ser deletado
+        file = "#{::Rails.root.to_s}/media/portfolio/comments/#{file_id}_#{filename}"
+        # deletar arquivo da base de dados
+        if CommentFile.find(file_id).delete
+          # deletar arquivos do servidor
+          File.delete(file) if File.exist?(file)
+        else
+          raise t(:error_delete_file)
+        end
+      rescue Exception => error
+        flash[:alert] = error.message
+      end
+    end
 
 end

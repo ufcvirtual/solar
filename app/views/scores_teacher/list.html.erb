@@ -48,8 +48,7 @@
               <!-- no mesmo campo pode vir tanto a nota quanto o status do trabalho -> enviado ou nao enviado-->
               <% grade_link = (grade.match(/[a-z-A-Z]/)) ? t("assignment_#{grade}".to_s) : grade.to_f %>
               <td align="center" class="assignment_<%= grade %>">
-                <%=link_to grade_link, {:controller => :portfolio_teacher, :action => :student_or_group_assignment, :student_id => student["student_id"],
-                  :assignment_id => assignments_ids[idx], :send_assignment_id => send_assignment_ids[idx]} %>
+                <%=link_to grade_link, assignment_portfolio_teacher_path(:student_id => student["student_id"], :assignment_id => assignments_ids[idx], :send_assignment_id => send_assignment_ids[idx]) %>
               </td>
 
             <% end %>

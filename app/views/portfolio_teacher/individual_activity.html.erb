@@ -52,7 +52,7 @@
       <span class="download_all_icon">
         <% unless @assignment_files.empty? %>
           <%= image_tag "mimetypes/zip.png", :alt => " ", :class=>'block_title_icon' %>
-          <%= link_to t(:portfolio_download_all_zip), {:controller => :portfolio_teacher, :action => :download_all_enunciation_files_zip, :all_files => @assignment_files, :assignment_id => @activity.id}, :class => "link_content" %>
+          <%= link_to t(:portfolio_download_all_zip), download_files_portfolio_teacher_path(:assignment_id => @activity.id, :type => "enunciation", :zip => true), :class => "link_content" %>
         <% end %>
       </span>
     </div>
@@ -75,8 +75,8 @@
             <% @assignment_files.each do |file|  %>
               <tr class="lines" >
                 <td>
-                  <%= link_to image_tag(icon_attachment(file.attachment_file_name)), {:controller => :portfolio_teacher, :action => :download_individual_file, :id => file.id, :assignment_id => @activity.id, :type => "enunciation"}, {:class => "file_icon", :alt => " "} %>
-                  <%= link_to file.attachment_file_name, {:controller => :portfolio_teacher, :action => :download_individual_file, :id => file.id, :assignment_id => @activity.id, :type => "enunciation"}, :class => "link_content" %>
+                  <%= link_to image_tag(icon_attachment(file.attachment_file_name)), download_files_portfolio_teacher_path(:file_id => file.id, :assignment_id => @activity.id, :type => "enunciation"), {:class => "file_icon", :alt => " "} %>
+                  <%= link_to file.attachment_file_name, download_files_portfolio_teacher_path(:file_id => file.id, :assignment_id => @activity.id, :type => "enunciation"), {:class => "link_content"} %>
                 </td>
                 <td class="right">
                   <%= format('%.2f KB', file.attachment_file_size/1024.0) %>
@@ -116,7 +116,7 @@
           <% @students.each_with_index do |student, idx| %>
             <tr class="lines" >
               <td>
-                <%= link_to student["name"], {:controller => :portfolio_teacher, :action => :student_or_group_assignment, :student_id => student["id"], :group_id => nil, :assignment_id => @activity.id}, :class => :link_content %>
+                <%= link_to student["name"], assignment_portfolio_teacher_path(:student_id => student["id"], :group_id => nil, :assignment_id => @activity.id), :class => :link_content %>
               </td>
               <td class="center">
                 <%= @file_delivery_date[idx] %>

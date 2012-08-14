@@ -199,6 +199,42 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  ##
+  #
+  ##
+  def assignment_file_download
+      # vê se é responsável pela assignment ou se arquivo é do aluno ou do grupo
+    assignment = Assignment.find(params[:assignment_id])
+    if params.include?('zip')
+      case params[:type]
+        when 'assignment'
+          send_assignment = assignment.send_assignments.where(:user_id => params[:student_id], :group_assignment_id => params[:group_id]).first
+        when 'enunciation'
+          can_access_file = true
+      end
+    else
+      case params[:type]
+        when 'comment'
+          send_assignment = CommentFile.find(params[:file_id]).assignment_comment.send_assignment
+        when 'assignment'
+          send_assignment = AssignmentFile.find(params[:file_id]).send_assignment
+          can_access_file = true
+        when 'enunciation'
+          can_access_file = true
+      end
+    end
+
+    can_access_file = params[:group_id].nil? ? send_assignment.user_id == current_user.id : !GroupParticipant.find_by_user_id_and_group_assignment_id(current_user.id, send_assignment.group_assignment_id).empty? unless send_assignment.nil?
+    if assignment.allocation_tag.is_user_class_responsible?(current_user.id) or can_access_file
+      # raise "#{can_access_file}"
+      return true
+    else
+      no_permission_redirect
+      return false
+    end
+
+  end
+
   private
 
   def opened_or_new_tab?(tab_name)
