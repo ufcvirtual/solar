@@ -903,9 +903,9 @@
         other: 'Total: %{count} alunos'
     status:
       pending: Pendente
+      pending_reactivate: Reat. Pendente
       activated: Matriculado
       cancelled: Cancelado
-      pending_reactivate: Pendente
       rejected: Rejeitado
     manage:
       enrollment_successful_update: Atualizacao realizada com sucesso

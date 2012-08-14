@@ -750,9 +750,9 @@
         other: 'Total: %{count} students'
     status:
       pending: Pending
+      pending_reactivate: Pending React.
       activated: Activated
       cancelled: Cancelled
-      pending_reactivate: Pending
       rejected: Rejected
     manage:
       enrollment_successful_update: Successful update
