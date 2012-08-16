@@ -309,7 +309,7 @@ tutor_distancia:
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: nerd51wudWkq6vk3by3c
 
-coordenador:
+coorddisc:
   id: 12
   username: coorddisc
   email: coorddisc@coorddisc.br

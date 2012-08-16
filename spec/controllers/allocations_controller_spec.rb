@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe AllocationsController do
 
-  login_user(:user)
+  user = login_user(:coorddisc)
 
   def valid_attributes
     {}
@@ -14,9 +14,14 @@ describe AllocationsController do
 
   describe "GET index" do
     it "assigns all allocations as @allocations" do
-      allocation = Allocation.first #create! valid_attributes
+
+      pending "faltando groups dos usuarios"
+      # allocation = Allocation.where(:status => 0) #create! valid_attributes
+
+      allocations = Allocation.enrollments({:group_id => user.groups.map(&:id)})
+
       get :index, {}, valid_session
-      assigns(:allocations).should eq([allocation])
+      assigns(:allocations).should eq(allocations)
     end
   end
 

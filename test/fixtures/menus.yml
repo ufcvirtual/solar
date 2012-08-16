@@ -214,8 +214,9 @@ unidades_curriculares:
 matricula_uc:
   id: 901
   parent_id: 90
-  name: menu_registration
+  name: menu_manage_registration
   order: 1
+  resource_id: 70
 
 hist_uc:
   id: 902
@@ -236,3 +237,9 @@ menu_support_material_record:
   name: menu_support_material_record
   order: 11
   resource_id: 63
+
+# enrollments:
+#   id:
+#   name:
+#   order:
+#   resource_id:

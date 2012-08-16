@@ -153,9 +153,9 @@ pm37:
   profile_id: 3
   menu_id: 100
 
-pm38:
-  profile_id: 3
-  menu_id: 70
+# pm38:
+#   profile_id: 3
+#   menu_id: 70
 
 pm39:
   profile_id: 3
@@ -219,9 +219,9 @@ pm52:
   profile_id: 5
   menu_id: 100
 
-pm53:
-  profile_id: 5
-  menu_id: 70
+# pm53:
+#   profile_id: 5
+#   menu_id: 70
 
 pm54:
   profile_id: 5
@@ -235,7 +235,15 @@ pm56:
   profile_id: 5
   menu_id: 120
 
-# basico
 pm57:
+  profile_id: 5
+  menu_id: 90
+
+pm58:
+  profile_id: 5
+  menu_id: 901
+
+# basico
+pm60:
   profile_id: 12
   menu_id: 100
