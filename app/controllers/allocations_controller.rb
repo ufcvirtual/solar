@@ -4,8 +4,8 @@ class AllocationsController < ApplicationController
 
   authorize_resource :except => [:destroy]
 
-  # GET /allocations
-  # GET /allocations.json
+  # GET /allocations/enrollments
+  # GET /allocations/enrollments.json
   def index
     groups = current_user.groups.map(&:id)
     p = params.select { |k, v| ['offer_id', 'group_id', 'status'].include?(k) }
@@ -47,7 +47,7 @@ class AllocationsController < ApplicationController
       @groups = allocation.allocation_tag.group
     end
 
-    @allocation = allocation # unless @multiple
+    @allocation = allocation
 
     respond_to do |format|
       format.html { render layout: false }
@@ -195,12 +195,11 @@ class AllocationsController < ApplicationController
     def status_hash_of_allocation(allocation_status)
       case allocation_status
         when Allocation_Pending, Allocation_Pending_Reactivate
-          status_hash.select {|k,v| [allocation_status, Allocation_Activated, Allocation_Rejected].include?(k)}
+          status_hash.select { |k,v| [allocation_status, Allocation_Activated, Allocation_Rejected].include?(k) }
         when Allocation_Activated
-          status_hash.select {|k,v| [allocation_status, Allocation_Cancelled].include?(k)}
+          status_hash.select { |k,v| [allocation_status, Allocation_Cancelled].include?(k) }
         when Allocation_Cancelled, Allocation_Rejected
-          # @change_group = false
-          status_hash.select {|k,v| [allocation_status, Allocation_Activated].include?(k)}
+          status_hash.select { |k,v| [allocation_status, Allocation_Activated].include?(k) }
       end
     end
 

@@ -31,7 +31,7 @@ Cenário: Listar cursos matriculados ou disponíveis
   Então eu deverei visualizar a linha de opcao de matricula
     | UnidadeCurricular             | Categoria                           | Turma  | Matricula       |
     | Introducao a Linguistica      | Curso Livre                         | FOR    | Cancelar        |
-    | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | FOR    | Cancelar pedido |
+    | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | CAR-A  | Cancelar pedido |
     | Quimica I                     | Curso de Graduacao a Distancia      | CAU-B  | Matriculado     |
     | Teoria da Literatura I        | Curso de Graduacao Presencial       | CAU-A  | Matricular      |
   E eu nao deverei visualizar a linha de opcao de matricula
@@ -45,7 +45,7 @@ Cenário: Pedir cancelamento de matricula
   Então eu deverei ver a linha de opcao de matricula
     | UnidadeCurricular             | Categoria                           | Turma  | Matricula       |
     | Introducao a Linguistica      | Curso Livre                         | FOR    | Matricular      |
-    | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | FOR    | Cancelar pedido |
+    | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | CAR-A  | Cancelar pedido |
     | Quimica I                     | Curso de Graduacao a Distancia      | CAU-B  | Matriculado     |
     | Teoria da Literatura I        | Curso de Graduacao Presencial       | CAU-A  | Matricular      |
 
@@ -56,7 +56,7 @@ Cenário: Pedir matricula em curso disponível
   Então eu deverei ver a linha de opcao de matricula
     | UnidadeCurricular             | Categoria                           | Turma  | Matricula       |
     | Introducao a Linguistica      | Curso Livre                         | FOR    | Cancelar        |
-    | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | FOR    | Cancelar pedido |
+    | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | CAR-A  | Cancelar pedido |
     | Quimica I                     | Curso de Graduacao a Distancia      | CAU-B  | Matriculado     |
     | Teoria da Literatura I        | Curso de Graduacao Presencial       | CAU-A  | Cancelar pedido |
 
@@ -67,6 +67,6 @@ Cenário: Cancelar pedido de matricula
   Então eu deverei ver a linha de opcao de matricula
     | UnidadeCurricular             | Categoria                           | Turma  | Matricula       |
     | Introducao a Linguistica      | Curso Livre                         | FOR    | Cancelar        |
-    | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | FOR    | Matricular      |
+    | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | CAR-A  | Matricular      |
     | Quimica I                     | Curso de Graduacao a Distancia      | CAU-B  | Matriculado     |
     | Teoria da Literatura I        | Curso de Graduacao Presencial       | CAU-A  | Matricular      |

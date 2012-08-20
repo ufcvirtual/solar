@@ -1,0 +1,49 @@
+.block_wrapper
+  #page_title
+    %h1= t(:enrollm_title)
+  .block_content.enrollment_bar
+    = form_for :offer, :url => enrollments_path do |f|
+      .enrollment_left
+        = f.label t(:enrollm_search), :class => "enrollment_label"
+        = f.text_field :search, :size=>"30", :class=>'enrollment_search', :value => @search_text
+        = f.label t(:enrollm_search_in), :class => "enrollment_label"
+        = f.collection_select(:category, @types, :id, :description, {:include_blank => true, :class => "select_category", :selected => @search_category} )
+        = image_submit_tag("search.png", :class => 'enrollment_search_icon')
+      .enrollment_right
+        = f.label t(:enrollm_view), :class => "enrollment_label"
+        = f.label ': ', :class => "enrollment_label"
+        = link_to t(:enrollm_view_all), enrollments_path(:category_query => 'all'), :class => 'link_gray'
+        = link_to t(:enrollm_view_enrolled), enrollments_path(:category_query => 'enroll'), :class => 'link_gray'
+
+.block_wrapper
+  .block_title
+    %h2= 'Unidades Curriculares'
+  .block_content
+    %table.tb_list.enrollment_list
+      %thead
+        %tr.lines
+          %th= t(:enrollm_curriculum_unit)
+          %th{:align => "center"}= t(:enrollm_category)
+          %th{:align => "center"}= t(:enrollm_group)
+          %th{:align => "center"}= t(:mysolar_mn_enrollment)
+      %tbody
+        - @offers.each do |offer|
+          %tr.lines
+            %td= offer.name
+            %td
+              = image_tag(offer.icon_name) if not offer.icon_name.nil?
+              = offer.categorydesc
+            %td{:align => "center"}= offer.code
+            %td{:align => "center"}
+              - case offer.status
+                - when Allocation_Pending.to_s, Allocation_Pending_Reactivate.to_s
+                  = button_to t(:enrollm_cancel_request), cancel_request_allocation_path(offer.allocationid), :method => :delete, :confirm => t(:enrollm_confirm), :class => 'btn btn_caution'
+                - when Allocation_Activated.to_s
+                  - if offer.allows_enrollment == 't' # nao aceita mais matricula
+                    = button_to t(:enrollm_cancel), cancel_allocation_path(offer.allocationid), :method => :delete, :confirm => t(:enrollm_confirm), :class => 'btn btn_caution'
+                  - else
+                    = label_tag "lb_enrollm", t(:enrollm_enrolled), :class => 'enrollment_label'
+                - when Allocation_Cancelled.to_s
+                  = button_to t(:enrollm_enroll), {:controller => "allocations", :action => "reactivate", :id => offer.allocationid }, :class=>'btn btn_default'
+                - else
+                  = button_to t(:enrollm_enroll), {:controller => "allocations", :action => "create", :id => offer.allocationid, :allocation_tag_id => offer.allocationtagid, :user_id => current_user.id}, :class=>'btn btn_default'
