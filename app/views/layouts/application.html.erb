@@ -69,7 +69,6 @@
             <%= image_tag 'solar_logo_small.png', :alt => t(:mysolar_alt_img_solar), :id => "solar_logo" %>
           </div>
           <ul id="mysolar_top_options">
-            <li></li>
             <li id="mysolar_top_submenu_label" class="mysolar_top_submenu_label_regular">
               <%= image_tag current_user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{current_user.nick}", :id => "image_user", :onclick => "mysolarTopSubmenuToggle();return false;"%>
               <% if can? :update, current_user %>
@@ -147,7 +146,7 @@
 
           <% if is_curriculum_unit_selected?  %>          
             <div id="page_title">
-              <h1><%=t active_tab[:breadcrumb].last[:name] unless active_tab[:breadcrumb].last.nil? %></h1>
+              <h1 style="float:left"><%=t active_tab[:breadcrumb].last[:name] unless active_tab[:breadcrumb].last.nil? %></h1>
               <span class="block_content_text"><%= raw(render_group_selection) %></span>
             </div>
           <% end %>

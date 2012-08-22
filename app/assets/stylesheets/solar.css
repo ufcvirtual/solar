@@ -562,6 +562,8 @@ h1.page_title{
     /*    vertical-align: text-bottom;*/
     height: 30px;
     cursor: pointer;
+    float: left;
+    margin-right: 7px;
 }
 
 /* relogio */
@@ -571,6 +573,10 @@ h1.page_title{
 
 a.mysolar_top_link{
     color: #FFF;
+}
+
+#mysolar_top_user_nick {
+    margin-top: 10px;
 }
 
 /* barra tabs */
@@ -845,8 +851,10 @@ a.mysolar_top_link{
 }
 
 #footer ul li {
-    display: inline-block;
     margin:0 5px;
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
 }
 
 
@@ -1322,13 +1330,16 @@ div.alter_photo_text {
 /* id do titulo geral da página */
 #page_title, #lightBoxDialogTitle {
     border-bottom: 1px solid #d0d0d0;
+    overflow: hidden;
 }
 
 #page_title h1, #lightBoxDialogTitle h1 {
     font-size: 14pt;
     /*    font-weight: bold;*/
     /*    font-variant: small-caps;*/
-    display: inline;
+    zoom: 1;
+    display: inline-block;
+    *display: inline;
     /*    border-bottom: 1px solid #fff;*/
 }
 
@@ -1400,7 +1411,9 @@ div.block_title {
 
 /* definindo as divs de conteudo como inline-table */
 .block_title > div, .block_content > .block_left, .block_content > .block_right {
-    display: inline-table;
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
     border-spacing: 0;
 }
 
