@@ -2090,9 +2090,15 @@ div.forum_navigation {
     padding-bottom: 0px !important;
     height: 25px;
 }
+
+#message_general_title h2 {
+    position: relative;
+    bottom: 0px;
+}
+
 #message_general_title > div {
     /*float: left;*/
-    height: 22px;
+    height: 23px;
 }
 .message_general_div_option, .message_general_div_option_active {
     display: inline-block;
