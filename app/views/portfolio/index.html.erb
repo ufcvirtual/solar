@@ -195,7 +195,7 @@
 
     $('#send_attachment').click(function(e){
       e.preventDefault(); // cancel the link behavior
-      url = "<%= url_for :portfolio_public_files_send %>"
+      url = "<%= url_for :public_files_send_portfolio %>"
       showLightBoxURL(url,500,320,true,'<%=t(:send_file_portfolio)%>');
     });
   });

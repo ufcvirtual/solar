@@ -1,0 +1,81 @@
+-# Descricao da atividade
+.block_wrapper
+  .block_title
+    %h2
+    = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
+    = @activity.name
+  .block_content
+    -# Descricao da atividade
+    %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+      %thead
+        %tr.lines
+          %th=t(:activity_description)
+          %th.clock_icon
+            = image_tag "clock.png", :alt => " ", :class=>"block_title_icon"
+            = t(:activity_begin)
+          %th.clock_icon
+            = image_tag "clock.png", :alt => " ", :class=>"block_title_icon"
+            = t(:activity_end)
+      %tbody>
+        %tr.lines
+          %td= @activity.enunciation
+          %td.center= l(@activity.schedule.start_date, :format => :files)
+          %td.center= l(@activity.schedule.end_date, :format => :files)
+
+  -# Arquivos enviados pelo professor
+  .block_wrapper
+    .block_title
+      %h2
+      = image_tag "icon_suitcase_portfolio.png", :alt=> " ", :class=>'block_title_icon'
+      = t(:sent_files)
+      %span.download_all_icon
+        - unless @assignment_files.empty?
+          = link_to (image_tag "mimetypes/zip.png", :alt => t(:download_all_files_zip), :class=>'block_title_icon'), download_files_portfolio_teacher_path(:assignment_id => @activity.id, :type => "enunciation", :zip => true)
+          = link_to t(:download_all_files_zip), download_files_portfolio_teacher_path(:assignment_id => @activity.id, :type => "enunciation", :zip => true), :class => "link_content"
+    .block_content
+      - unless @assignment_files.empty?
+        %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+          %thead
+            %tr.lines
+              %th= t(:file_name)
+              %th{:align => "right"}= t(:file_size)
+              %th.clock_icon
+                = image_tag "clock.png", :alt => " ", :class=>"block_title_icon"
+                = t(:file_date_sent)
+          %tbody
+            - @assignment_files.each do |file|
+              %tr.lines
+                %td
+                  = link_to image_tag(icon_attachment(file.attachment_file_name)), download_files_portfolio_teacher_path(:file_id => file.id, :assignment_id => @activity.id, :type => "enunciation"), {:class => "file_icon", :alt => t(:download_file, :file_name => file.attachment_file_name) }
+                  = link_to file.attachment_file_name, download_files_portfolio_teacher_path(:file_id => file.id, :assignment_id => @activity.id, :type => "enunciation"), {:class => "link_content"}
+                %td.right= format('%.2f KB', file.attachment_file_size/1024.0)
+                %td.center= l(file.attachment_updated_at, :format => :files)
+      - else 
+        .portfolio_div_padding= t(:itens_not_found)
+
+  -# Lista de alunos
+  .block_wrapper
+    .block_title
+      %h2
+        = image_tag "icon_participants.png", :alt => " ", :class=>'block_title_icon'
+        = t(:portfolio_participants)
+    .block_content
+      %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+        %thead
+          %tr.lines
+            %th= t(:portfolio_students)
+            %th{:align => "center", :style => "width:30px"}= t(:portfolio_date)
+            %th{:align => "right", :style => "width:80px"}= t(:portfolio_situation)
+            %th{:align => "right", :style => "width:30px"}= t(:grade)
+            %th{:align => "center", :style => "width:50px"}= t(:comments)
+        %tbody
+          - @students.each_with_index do |student, idx|
+            %tr.lines
+              %td
+                = link_to student["name"], assignment_portfolio_teacher_path(:student_id => student["id"], :group_id => nil, :assignment_id => @activity.id), :class => :link_content
+              %td.center
+                = @file_delivery_date[idx]
+              %td{:class => "assignment_#{@situation[idx]}"}
+                = t(@situation[idx].to_sym)
+              %td.center= @grade[idx]
+              %td.center= image_tag( (@comments[idx] == false) ? "icon_no_comments.png" : "icon_comments.png" , :alt => " ")

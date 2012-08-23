@@ -2616,6 +2616,14 @@ td.td_student a {color: #2a538d;}
     text-decoration: underline line-through;
 }
 
+.clock_icon{
+    width:70px;
+}
+
+[class^="edit_group_"]{
+    display: none;
+}
+
 /**
 * AGENDA
 */
@@ -3207,6 +3215,7 @@ div.support_material_select {
 
 .group_assignment_content {
     margin-bottom: 10px;
+    font-size: 13px;
 }
 
 #group_assignments tr.lines > td {
@@ -3228,14 +3237,6 @@ div.support_material_select {
 
 .group_assignment_title:hover {
     background-color: #eef3fb;
-}
-
-.group_assignment_details {
-    font-size: 13px;
-}
-
-.group_grade{
-    float: right;
 }
 
 .group_participants, .group_participants_manage, .group_assignments_manage_buttons{
@@ -3264,39 +3265,38 @@ div.support_material_select {
     min-height: 60px;
 }
 
-.group_assignment_name, .group_assignment_name_manage, .group_assignments_manage_buttons_title, .edit_group_true, .disabled_groups_assignments_name{
+[class^="group_name"], .group_name_manage, .group_assignments_manage_buttons_title, .edit_group_true, .disabled_groups_assignments_name{
     font-weight: normal;
     height: 20px;
     padding: 6px 7px 2px 7px;
 }
 
-.group_assignment_name{
-    background-color: #0d487d;
-    color: #FFFFFF;
-}
-
-.group_assignment_name_manage, .edit_group_true{
+.group_name_manage, .edit_group_true{
     background-color: #fcd927;
     color: #000000;
 }
 
-.group_assignments_manage_buttons_title, .disabled_groups_assignments_name{
+[class^="group_name"], .group_assignments_manage_buttons_title, .disabled_groups_assignments_name{
     background-color: #9ea2a3;
     color: #ffffff;
 }
 
-.group_assignment_information, .group_assignment_information_manage, .disabled_groups_assignments_information{
+[class^="group_name"]{
+    background-color: #0d487d;
+}
+
+[class^="group_information"], .group_information_manage, .disabled_groups_assignments_information{
     height: 16px;
     padding: 6px 10px 2px 7px;
     font-size: 12px;
     color: #000000;
 }
 
-.group_assignment_information{
+[class^="group_information"]{
     background-color: #f2f6fa;
 }
 
-.group_assignment_information_manage{
+.group_information_manage{
     background-color: #fdfce1;
 }
 
@@ -3367,16 +3367,14 @@ div.support_material_select {
 }
 
 .download_all_icon{
-    float: right;
     font-size: 13px;
 }
 
 .remove_group{
     cursor: pointer;
-    float:right;
 }
 
-.group_assignment_manage_button{
+.group_elements_float, .remove_group, .download_all_icon{
     float: right;
 }
 

@@ -6,31 +6,32 @@
 
       <% send_assignment  = SendAssignment.find_by_group_assignment_id(group["id"]) %>
       <% can_manage_group = (send_assignment.nil? or send_assignment["grade"].nil?) ? true : false %>
-      <% tooltip_group    = can_manage_group ? nil : t(:group_aready_evaluated) %>
+      <% tooltip_group    = can_manage_group ? nil : t(:already_evaluated) %>
+
+      <% files_sent           = send_assignment.nil? ? nil : AssignmentFile.find_all_by_send_assignment_id(send_assignment.id) %>
+      <% quantity_files_sent  = files_sent.nil?      ? "0" : files_sent.size  %>
+
+      <% delete_group         = (!files_sent.nil? or can_manage_group) ? tooltip_group : t(:already_sent_files) %>
+      <% tooltip_delete_group = delete_group.nil? ? nil : t(:group_assignment_delete_error) + ", " + delete_group.to_s %>
 
       <div class="group_participants" id="group_<%=group['id']%>">
-        <h3 class="group_assignment_name group_name_<%=can_manage_group%>">
+        <h3 class="group_name_<%=can_manage_group%>" alt="<%=tooltip_delete_group%>">
           <%= group["group_name"] %>
-          <span class="group_assignment_manage_button">
-            <input type="button" value='Avaliar' class="btn btn_default evaluate_group" onclick="btn_evaluate_group(<%= group['id'] %>, <%= @assignment.id %>)"/>
+          <span class="group_elements_float">
+            <%= button_to t(:portfolio_evaluate), assignment_portfolio_teacher_path(:group_id => group["id"], :assignment_id => @assignment.id), {:class => "btn btn_default evaluate_group", :alt => t(:portfolio_evaluate)} %>
           </span>
         </h3>
+
         <div class="edit_group_<%=can_manage_group%>" style="display:none;">
           <%= text_field_tag "new_groups_names[][#{@assignment.id}]", group["group_name"], :id => "text_field_group_#{group['id']}", :class => "rename_group" %>
-          
-          <% group_has_files = !SendAssignment.find_all_by_group_assignment_id(group["id"]).empty? %>
-          <% tooltip_delete = (!group_has_files or !can_manage_group) ? tooltip_group : t(:group_assignment_delete_error) %>
-          
-          <a class="remove_group" onclick="delete_group('group_<%=group['id']%>', <%=@assignment.id%>, false);" title="<%=tooltip_delete%>">x</a>
+          <a class="remove_group" onclick="delete_group('group_<%=group['id']%>', <%=@assignment.id%>, false);" title="<%=tooltip_delete_group%>" alt="<%=t(:remove_group, :group_name => group['group_name'])%>">x</a>
         </div>
-        <div class="group_assignment_information info_<%=can_manage_group%>">
-          <span class="group_quantity_files">
-            <% files_sent           = send_assignment.nil? ? nil : AssignmentFile.find_all_by_send_assignment_id(send_assignment.id) %>
-            <% quantity_files_sent  = files_sent.nil?      ? "0" : files_sent.size  %>
-            <%= quantity_files_sent %> arquivo(s)
-          </span>
-          <span class="group_grade" >
-            Nota: <%= (send_assignment.nil? or send_assignment.grade.nil?) ? "-" : send_assignment.grade %>
+
+        <div class="group_information_<%=can_manage_group%>">
+          <%= quantity_files_sent %> <%= t(:files) %>
+          <span class="group_elements_float" >
+            <%= t(:grade) %>
+            <%= (send_assignment.nil? or send_assignment.grade.nil?) ? "-" : send_assignment.grade %>
           </span>
         </div>
 
@@ -39,12 +40,15 @@
         <ul id="<%=can_manage_group%>" value="<%=group['id']%>">
           <% unless gp.empty? %>
             <% gp.each do |p| %>
+
               <% can_be_moved = AssignmentFile.find_all_by_user_id_and_send_assignment_id(p["user_id"], send_assignment.id).empty? unless send_assignment.nil? %>
-              <% tooltip = (can_be_moved or !can_manage_group) ? tooltip_group : t(:student_already_sent_files) %>
-              <li class="student_<%=p['user_id']%>" value="<%=p['user_id']%>" id="<%=can_be_moved%>" onmouseover="student_mouseover(this, '<%=tooltip%>');" onmouseout="student_mouseout(this);"><%= p["name"] %>
+              <% tooltip_student = (can_be_moved or !can_manage_group) ? tooltip_group : t(:already_sent_files) %>
+              <% tooltip_student = t(:student_move_error) + ", " + tooltip_student.to_s unless tooltip_student.nil? %>
+
+              <li class="student_<%=p['user_id']%>" value="<%=p['user_id']%>" id="<%=can_be_moved%>" onmouseover="student_mouseover(this, '<%=tooltip_student%>');" onmouseout="student_mouseout(this);"><%= p["name"] %>
             <% end %>
           <% else %>
-            <li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>
+            <li class="no_students_message"><%= t(:no_participant_group_assignment) %></li>
           <% end %>
         </ul>
       </div>
@@ -52,16 +56,16 @@
   <% end %>
 
   <div class="group_participants">
-    <h3 class="group_assignment_name group_name_true"><%= t(:students_with_no_group) %></h3>
+    <h3 class="group_name_true"><%= t(:students_with_no_group) %></h3>
     <div class="edit_group_true" style="display:none;"><%= t(:students_with_no_group) %></div>
     <%= hidden_field_tag "new_groups_names[][#{@assignment.id}]", 'no_group', :class => "rename_group" %>
-      <ul id='ul_no_group'>
+      <ul class='ul_no_group'>
         <% unless @students_without_group.nil? or @students_without_group.empty? %>
           <% @students_without_group.each do |student_without_group| %>
             <li class="student_<%=student_without_group.id%>" value="<%=student_without_group.id%>" id="true" onmouseover="student_mouseover(this, 'no_message');" onmouseout="student_mouseout(this);"><%= student_without_group.name %></li>
           <% end %>
         <% else %>
-          <li id="no_students_message"><%= t(:no_participant_group_assignment) %></li>
+          <li class="no_students_message"><%= t(:no_participant_group_assignment) %></li>
         <% end %>
       </ul>
   </div>

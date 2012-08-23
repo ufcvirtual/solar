@@ -105,11 +105,12 @@ Solar::Application.routes.draw do
   get 'user_root' => 'users#mysolar'
   
   get "/media/users/:id/photos/:style.:extension", :to => "users#photo"
-  get "/media/portfolio/individual_area/:file.:extension", :to => "access_control#portfolio_individual_area"
   get "/media/portfolio/public_area/:file.:extension", :to => "access_control#portfolio_public_area"
   get "/media/lessons/:id/:file.:extension", :to => "access_control#lesson"
   get "/media/messages/:file.:extension", :to => "access_control#message"
-  # get "/media/portfolio_teacher/public_area/:file.:extension", :to => "access_control#portfolio_public_area"
+
+  get "/media/portfolio/individual_area/:file.:extension", :to => "access_control#portfolio_files"
+  get "/media/portfolio/comments/:file.:extension", :to => "access_control#portfolio_files"
 
   match ':controller(/:action(/:id(.:format)))'
 

@@ -1,0 +1,49 @@
+.block_wrapper
+  .block_title
+    %h2
+      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
+      = t(:individual_activity)
+  -# Atividades individuais
+  .block_content
+    - unless @individual_activities.nil? or @individual_activities.empty?
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th= t(:portfolio_title)
+            %th{:align => "right", :style => "width:170px"}= t(:portfolio_date_range)
+        %tbody
+          - @individual_activities.each_with_index do |individual_activity, idx|
+            %tr.lines
+              %td
+                %h4= link_to individual_activity["name"], individual_activity_portfolio_teacher_path(:assignment_id => individual_activity["id"]), {:class => 'link_content'}
+              %td.right 
+                = l(individual_activity.schedule.start_date, :format => :short) 
+                = t(:-)
+                = l(individual_activity.schedule.end_date, :format => :short)
+    - else
+      .block_content.block_content_text= t(:itens_not_found)
+
+.block_wrapper
+  .block_title
+    %h2
+      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
+      = t(:group_activities)
+  -# Atividades em grupo
+  .block_content
+    - unless @group_activities.nil? or @group_activities.empty?
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th= t(:portfolio_title)
+            %th{:align => "right", :style => "width:170px"}= t(:portfolio_date_range)
+        %tbody
+          - @group_activities.each_with_index do |group_activity, idx|
+            %tr.lines
+              %td
+                %h4= link_to group_activity["name"], group_activity_group_assignments_path(:assignment_id => group_activity["id"]), {:class => 'link_content'}
+              %td.right
+                = l(group_activity.schedule.start_date, :format => :short) 
+                = t(:-) 
+                = l(group_activity.schedule.end_date, :format => :short)
+    - else
+      .block_content.block_content_text= t(:itens_not_found)

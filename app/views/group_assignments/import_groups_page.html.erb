@@ -29,7 +29,9 @@
                           
                           <li>
                             <% gp = group_participants(g["id"])%>
-                            <h3 class="groupname" onclick="clickOnGroup('import_<%= g['id'] %>');" ><div class="menu_icon_arrow">‣</div><%= g["group_name"] %> (<%= gp.size %>) </h3>
+                            <h3 class="groupname" onclick="clickOnGroup('import_<%= g['id'] %>');" >
+                              <div class="menu_icon_arrow">‣</div>
+                              <%= g["group_name"] %> (<%= gp.size %>) </h3>
                             <div id="students_import_<%= g["id"] %>" style="display: none">
                               <% unless gp.empty? %>
                                 <% gp.each do |p| %>
@@ -50,7 +52,9 @@
                       <div class="import_buttons">
                         <%= form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :group_assignments, :action => :import_groups, :assignment_id_import_from => a["id"], :assignment_id => @assignment_id}) do |f| %>
                           <%= f.submit t(:import), :class=>'btn btn_main' %>
-                          <input type="button" value='<%=t(:group_assignment_cancel)%>' class="btn btn_caution" onclick="removeLightBox();"/>
+                          <% button_tag(:type => 'button', :class => "btn btn_caution", :alt => t(:group_assignment_cancel), :onclick => "removeLightBox();") do %>
+                            <%= content_tag(:span, t(:group_assignment_cancel)) %>
+                          <% end %>
                         <% end %>
                       </div>
 

@@ -545,7 +545,7 @@
   portfolio_date_range: Date range
   portfolio_delivery_date: Delivery
   portfolio_date_to: to
-  portfolio_download_all_zip: Download all (zip)
+  download_all_files_zip: Download all files (zip)
   portfolio_participants: Participants
   portfolio_students: Students
   portfolio_date: Date
@@ -566,6 +566,21 @@
   comment_files_uploaded_successfully: Files uploaded successfully
   date_range_expired: Date range to this action expired
   attach_another_file: Attach another file
+  activity_begin: Begin
+  activity_end: End
+  activity_files: Activity files
+  file_name: Name
+  file_date_sent: Sent on
+  file_sent_by: Enviado por
+  file_size: Size
+  download_file: Download file %{file_name}
+  files: file(s)
+  portfolio_evaluation: Evaluation
+  attached_files : Attachments
+  portfolio_edit: Edit
+  portfolio_remove_file: Remove file
+  portfolio_return_file: Return file
+  portfolio_send_comment: Send
 
   # acompanhamento
   student: "Student"
@@ -607,7 +622,7 @@
   group_assignment_create: "Save"
   group_assignment_cancel: "Cancel"
   group_assignment_management_success: "Groups managed successfully"
-  group_assignment_delete_error: "This group already post files"
+  group_assignment_delete_error: "Group can't be removed"
   group_assignment_existing_name_error: "already exists"
   no_participant_group_assignment: "Group with no participants"
   students_with_no_group: "Students with no group"
@@ -617,7 +632,7 @@
   are_you_sure: "Are you sure?"
   students: "Students"
   status: "Status"
-  student_already_sent_files: "Student can't be removed, because already sent files for his current group"
+  student_already_sent_files: "Student can't be removed"
   group_assignment_import: "Import groups"
   import: "Import"
   manage_groups_assignments: "Manage groups"
@@ -625,7 +640,9 @@
   group_assignment_import_success: "Groups imported with success"
   group_assignment_files: Files
   group_assignment_description: Description
-  group_aready_evaluated: Group already evaluated
+  group_aready_evaluated: already evaluated
+  group_already_sent_files: already sent files
+  remove_group: Remove group %{group_name}
 
   # Mensagem de erro para permissão
   no_permission: "you haven't permission to access this page"

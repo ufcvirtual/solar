@@ -9,7 +9,7 @@ class PortfolioTeacherController < ApplicationController
   before_filter :user_related_to_assignment?, :except => [:index]
   before_filter :assignment_in_time?, :must_be_responsible, :except => [:index, :individual_activity, :assignment, :download_files]
   before_filter :assignment_file_download, :only => [:download_files]
-  load_and_authorize_resource
+  authorize_resource
 
   def index
     allocation_tag_id      = active_tab[:url]['allocation_tag_id']
@@ -124,7 +124,7 @@ class PortfolioTeacherController < ApplicationController
           comment.update_attribute(:updated_at, Time.now)
           
           comment_files.each do |file|
-            comment = CommentFile.create!({ :attachment => file, :assignment_comment_id => comment.id})
+            CommentFile.create!({ :attachment => file, :assignment_comment_id => comment.id})
           end
 
           deleted_files_ids.each do |deleted_file_id|
@@ -132,17 +132,13 @@ class PortfolioTeacherController < ApplicationController
           end
         end
 
-        redirect_to request.referer
-
       rescue Exception => error
         flash[:alert] = error.message
-        redirect_to request.referer
       end
     else
       flash[:alert] = "sem permicao"
-      redirect_to request.referer
     end
-
+    redirect_to request.referer
   end
 
   ##
@@ -167,8 +163,6 @@ class PortfolioTeacherController < ApplicationController
       render :json => { :success => false, :flash_msg => "sem permissao", :flash_class => 'alert' }
     end
   end
-
-  ## Downloads
 
   ##
   # Download dos arquivos do comentario do professor ou enviados pelo aluno

@@ -200,10 +200,9 @@ class ApplicationController < ActionController::Base
   end
 
   ##
-  #
+  # Verifica se é responsável pela assignment ou se arquivo é do aluno ou do grupo
   ##
   def assignment_file_download
-      # vê se é responsável pela assignment ou se arquivo é do aluno ou do grupo
     assignment = Assignment.find(params[:assignment_id])
     if params.include?('zip')
       case params[:type]
@@ -226,7 +225,6 @@ class ApplicationController < ActionController::Base
 
     can_access_file = params[:group_id].nil? ? send_assignment.user_id == current_user.id : !GroupParticipant.find_by_user_id_and_group_assignment_id(current_user.id, send_assignment.group_assignment_id).empty? unless send_assignment.nil?
     if assignment.allocation_tag.is_user_class_responsible?(current_user.id) or can_access_file
-      # raise "#{can_access_file}"
       return true
     else
       no_permission_redirect

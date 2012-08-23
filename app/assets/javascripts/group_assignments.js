@@ -22,11 +22,11 @@
     $('#save_changes_assignment').show();
     $('#cancel_changes_assignment').show();
     $(".group_participants").attr("class", "group_participants_manage");
-    $(".group_name_true").attr("class", "group_assignment_name_manage");
+    $(".group_name_true").attr("class", "group_name_manage");
     $(".group_name_false").attr("class", "disabled_groups_assignments_name");
     $(".evaluate_group").hide();
-    $(".info_true").attr("class", "group_assignment_information_manage");
-    $(".info_false").attr("class", "disabled_groups_assignments_information");
+    $(".group_information_true").attr("class", "group_information_manage");
+    $(".group_information_false").attr("class", "disabled_groups_assignments_information");
     dragndrop(assignment_id);
     show_import_and_new_groups_box(show_import_button);
   }
@@ -60,17 +60,17 @@
     } 
   }
 
-  function btn_new_group(assignment_id, message_empty_group) {
+  function btn_new_group(assignment_id, message_empty_group, new_group_message) {
     var new_idx = "group_new_" + $('.another_new_group').length;
 
     var new_group_hmtl = new Array();
     new_group_hmtl.push('<div class="group_participants_manage another_new_group " id="' + new_idx + '">');
       new_group_hmtl.push('<div class="new_group edit_group_true" id="edit_'+new_idx+'">');
-        new_group_hmtl.push('<input type="text_field" value="Novo Grupo" name="new_groups_names[][' + assignment_id + ']" id="text_field_'+ new_idx +'" class="rename_group" />');
+        new_group_hmtl.push('<input type="text_field" value="'+new_group_message+'" name="new_groups_names[][' + assignment_id + ']" id="text_field_'+ new_idx +'" class="rename_group" />');
         new_group_hmtl.push('<a class="remove_group" onclick="delete_group(\'' + new_idx + '\', \'' + assignment_id + '\', false);"> x</a>');
       new_group_hmtl.push('</div>');
       new_group_hmtl.push('<ul value="0">');
-      new_group_hmtl.push('<li id="no_students_message">' + message_empty_group + '</li>')
+      new_group_hmtl.push('<li class="no_students_message">' + message_empty_group + '</li>')
       new_group_hmtl.push('</ul>');
     new_group_hmtl.push('</div>');
     
@@ -106,9 +106,9 @@
       var all_li = $('li', deleted_div);
       for (var i = 0; i < all_li.length; i++){
         // remove os participantes do grupo e acrescenta na lista de sem grupo
-        if($(all_li[i]).attr('id') != "no_students_message"){
-          $(all_li[i]).appendTo($('#ul_no_group'));
-          $('#no_students_message', $('#ul_no_group')).remove();
+        if($(all_li[i]).attr('class').indexOf("no_students_message") == -1){
+          $(all_li[i]).appendTo($('.ul_no_group'));
+          $('.no_students_message', $('.ul_no_group')).remove();
         }
       }
 
@@ -128,7 +128,7 @@
     // habilita todos os <li> dessa atividade para serem "draggable"
     active_draggable_element($(".group_participants_manage li"), "#false");
     // desabilita os <li> que são apenas ilustrativos
-    $("#no_students_message").draggable({ disabled: true });
+    $(".no_students_message").draggable({ disabled: true });
     // desabilita os <li> de grupos que não podem ser alterados
     groups_cant_manage = $("#false");
     for(var i = 0; i < groups_cant_manage.length; i++){
@@ -158,8 +158,8 @@
         // cria novo elemento, mas agora no novo grupo a que ele foi levado
         $( "<li value='"+participant_id+"' id='true' style='position: relative;' class='ui-draggable' onmouseover='student_mouseover(this, \"no_message\");' onmouseout='student_mouseout(this);'></li>").text( ui.draggable.text() ).appendTo(this);
         // remove mensagem de "sem alunos" caso necessário
-        if($('#no_students_message', this)){
-          $('#no_students_message', this).remove();
+        if($('.no_students_message', this)){
+          $('.no_students_message', this).remove();
         }
         // define como draggable o novo elemento criado
         active_draggable_element($(".group_participants_manage li"), "#false");
