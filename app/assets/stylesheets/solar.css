@@ -1342,6 +1342,7 @@ div.alter_photo_text {
     zoom: 1;
     display: inline-block;
     *display: inline;
+    float: left;
     /*    border-bottom: 1px solid #fff;*/
 }
 

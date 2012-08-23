@@ -146,7 +146,7 @@
 
           <% if is_curriculum_unit_selected?  %>          
             <div id="page_title">
-              <h1 style="float:left"><%=t active_tab[:breadcrumb].last[:name] unless active_tab[:breadcrumb].last.nil? %></h1>
+              <h1><%=t active_tab[:breadcrumb].last[:name] unless active_tab[:breadcrumb].last.nil? %></h1>
               <span class="block_content_text"><%= raw(render_group_selection) %></span>
             </div>
           <% end %>
