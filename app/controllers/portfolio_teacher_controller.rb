@@ -5,7 +5,6 @@ class PortfolioTeacherController < ApplicationController
   include AccessControlHelper
 
   before_filter :prepare_for_group_selection, :only => [:index]
-  # filtro para: deve ser relacionado com turma
   before_filter :user_related_to_assignment?, :except => [:index]
   before_filter :assignment_in_time?, :must_be_responsible, :except => [:index, :individual_activity, :assignment, :download_files]
   before_filter :assignment_file_download, :only => [:download_files]
@@ -18,7 +17,7 @@ class PortfolioTeacherController < ApplicationController
   end
 
   def individual_activity
-    @activity     = Assignment.find(params[:assignment_id])
+    @activity           = Assignment.find(params[:assignment_id])
     # alunos da atividade
     allocation_tags     = AllocationTag.find_related_ids(@activity.allocation_tag_id).join(',')
     @students           = PortfolioTeacher.list_students_by_allocations(allocation_tags)
@@ -31,11 +30,11 @@ class PortfolioTeacherController < ApplicationController
     @file_delivery_date = []
 
     @students.each_with_index do |student, idx|
-      @situation[idx] = Assignment.status_of_actitivy_by_assignment_id_and_student_id(@activity.id, student['id'])
-      student_send_assignment = SendAssignment.find_by_assignment_id_and_user_id(@activity.id, student['id'])
-      @comments[idx] = student_send_assignment.nil? ? false : (!student_send_assignment.comment.nil? or !student_send_assignment.assignment_comments.empty?)
-      @grade[idx] = (student_send_assignment.nil? or student_send_assignment.grade.nil?) ? '-' : student_send_assignment.grade
-      send_assignment_files = student_send_assignment.nil? ? [] : student_send_assignment.assignment_files
+      @situation[idx]          = Assignment.status_of_actitivy_by_assignment_id_and_student_id(@activity.id, student['id'])
+      student_send_assignment  = SendAssignment.find_by_assignment_id_and_user_id(@activity.id, student['id'])
+      @comments[idx]           = student_send_assignment.nil? ? false : (!student_send_assignment.comment.nil? or !student_send_assignment.assignment_comments.empty?)
+      @grade[idx]              = (student_send_assignment.nil? or student_send_assignment.grade.nil?) ? '-' : student_send_assignment.grade
+      send_assignment_files    = student_send_assignment.nil? ? [] : student_send_assignment.assignment_files
       @file_delivery_date[idx] = (student_send_assignment.nil? or send_assignment_files.empty?) ? '-' : send_assignment_files.first.attachment_updated_at.strftime("%d/%m/%Y") 
     end
 
@@ -54,20 +53,16 @@ class PortfolioTeacherController < ApplicationController
    
     unless @send_assignment.nil?
       @files_sent_assignment = @send_assignment.assignment_files
-      @comments = @send_assignment.assignment_comments.order("updated_at DESC")
+      @comments              = @send_assignment.assignment_comments.order("updated_at DESC")
 
       @comments.each_with_index do |comment, idx|
         profile_id           = Allocation.find_by_allocation_tag_id_and_user_id(@assignment.allocation_tag_id, comment.user_id).profile_id
-        
-        # user_profile_id = current_user.profiles_with_access_on('student_detail', 'portfolio_teacher', allocation_tag_id, only_id = true).first
         @users_profiles[idx] = Profile.find(profile_id)
-
         @comments_files[idx] = comment.comment_files
       end
     end
 
     profile_id    = Allocation.find_by_allocation_tag_id_and_user_id(@assignment.allocation_tag_id, current_user.id).profile_id
-    # user_profile_id = current_user.profiles_with_access_on('student_detail', 'portfolio_teacher', allocation_tag_id, only_id = true).first
     @user_profile = Profile.find(profile_id)
   end
 
@@ -136,7 +131,7 @@ class PortfolioTeacherController < ApplicationController
         flash[:alert] = error.message
       end
     else
-      flash[:alert] = "sem permicao"
+      flash[:alert] = t(:no_permission)
     end
     redirect_to request.referer
   end
@@ -155,12 +150,12 @@ class PortfolioTeacherController < ApplicationController
           end
           comment.delete
         end
-        render :json => { :success => true, :flash_msg => "comentario removido", :flash_class => 'notice' }
+        render :json => { :success => true, :flash_msg => t(:portfolio_removed_comment), :flash_class => 'notice' }
       rescue Exception => error
         render :json => { :success => false, :flash_msg => error.message, :flash_class => 'alert' }
       end
     else
-      render :json => { :success => false, :flash_msg => "sem permissao", :flash_class => 'alert' }
+      render :json => { :success => false, :flash_msg => t(:no_permission), :flash_class => 'alert' }
     end
   end
 

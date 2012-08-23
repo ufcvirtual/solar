@@ -3,7 +3,7 @@
   <div id="activities" class="block_wrapper">
     <div class="block_title">
       <h2>
-        <%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %><%= @activity.name %>
+        <%= image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon' %><%= @activity.name %>
       </h2>
     </div>
     <div id="individual_activity" class="block_content">
@@ -103,7 +103,7 @@
                   </td>
                   <td style="width:70px;">
                     <span class="date_info">
-                      <%= t(:sent_in) %>:&nbsp;
+                      <%= t(:sent_on) %>:&nbsp;
                     </span>
                   </td>
                   <td style="width:70px">
@@ -124,7 +124,7 @@
   <% student_with_no_group_in_group_activity = true if (@activity.type_assignment == Group_Activity and @group_name.nil?) %>
   <% unless student_with_no_group_in_group_activity %>
     <div class="block_title">
-      <h2><%= image_tag "icon_suitcase_portfolio.png", :alt=>t(:portfolio_icon), :class=>'block_title_icon' %><%= t(:sent_files) %></h2>
+      <h2><%= image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon' %><%= t(:sent_files) %></h2>
     </div>
 
     <div id="files_sent" class="block_content">
@@ -134,7 +134,7 @@
             <tr>
                 <th><%= t(:name) %></th>
                 <th style="width:80px"><%= t(:size) %></th>
-                <th style="width:80px"><%= t(:sent_in) %></th>
+                <th style="width:80px"><%= t(:sent_on) %></th>
                 <th style="width:50px"></th>
               </tr>
           </thead>

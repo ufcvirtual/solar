@@ -4,10 +4,11 @@ include PortfolioHelper
 
 class GroupAssignmentsController < ApplicationController
 
-  before_filter :prepare_for_group_selection, :user_related_to_assignment?, :user_related_to_assignment?
+  before_filter :prepare_for_group_selection, :user_related_to_assignment?
   before_filter :can_import?, :only => [:import_groups_page, :import_groups]
   before_filter :assignment_in_time?, :except => [:assignment]
-  load_and_authorize_resource
+  before_filter :must_be_responsible, :except => [:group_activity]
+  authorize_resource
 
   ##
   # Exibe detalhes do trabalho e os grupos
@@ -41,8 +42,9 @@ class GroupAssignmentsController < ApplicationController
   # Gerenciamento de grupos da atividade
   ##
   def manage_groups
-    @assignment        = Assignment.find(params[:assignment_id])
-    deleted_groups_ids = params['deleted_groups_divs_ids'].blank? ? [] : params['deleted_groups_divs_ids'].collect{ |group| group.tr('_', ' ').split[1] }
+    @assignment             = Assignment.find(params[:assignment_id])
+    @students_without_group = no_group_students(@assignment.id)
+    deleted_groups_ids      = params['deleted_groups_divs_ids'].blank? ? [] : params['deleted_groups_divs_ids'].collect{ |group| group.tr('_', ' ').split[1] }
     
     # clicou em "salvar"
     unless params['btn_cancel']
@@ -73,8 +75,6 @@ class GroupAssignmentsController < ApplicationController
             end
             change_students_group(group_assignment, group_participants_ids, @assignment.id) unless (!can_remove_group?(group_id) and deleted_groups_ids.include?("#{group_id}"))
           end
-
-          @students_without_group = no_group_students(@assignment.id)
 
           respond_to do |format|
             format.html { render 'assignment_div', :layout => false }

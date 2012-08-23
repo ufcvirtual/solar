@@ -486,13 +486,11 @@
   no_events: "No events to selected day"
 
   #PORTFOLIO
-  portfolio_icon: Portfolio Icon
   portfolio_title: Portfolio of
   portfolio_null: None portfolio registered
   portfolio_upload_file: Upload files for public area
   individual_activity: Individual Activities
   group_activities: Group Activities
-  group_assignments: Group Assignments
   group_name: Group Name
   portfolio_group_participants: Participants
   student_with_no_group: You aren't in any group
@@ -511,10 +509,9 @@
   not_started: Not Started
   corrected: Corrected
   sent: Sent
-  make: Make
-  delete_file_msg: Really delete this file?
-  file_uploaded: File uploaded
-  file_deleted: File deleted
+  delete_file_msg: Really want to delete this file?
+  file_uploaded: File uploaded successfully
+  file_deleted: File deleted successfully
   error_nonexistent_file: File not found
   error_no_file_sent: File not sent
   send_file_portfolio: Upload Files To Portfolio
@@ -528,9 +525,7 @@
   &nbsp;&nbsp;- Audio Files (mp3, wma...)"
   sent_files: Sent Files
   send_files: Send Files
-  download_attachment: Download Attachment
   error_delete_file: Error when trying to delete file
-  sent_in: Sent In
   comment_updated_successfully: Comment Updated Successfully
   files_assignments: Files Assignments
   invalid_grade: Invalid Grade
@@ -544,13 +539,10 @@
   portfolio_title: Title
   portfolio_date_range: Date range
   portfolio_delivery_date: Delivery
-  portfolio_date_to: to
   download_all_files_zip: Download all files (zip)
   portfolio_participants: Participants
   portfolio_students: Students
   portfolio_date: Date
-  portfolio_situation: Situation
-  file_type_icon: File type icon
   student_evaluated_success: Student evaluated successfully
   portfolio_confirm_evaluation: Confirm evaluation?
   portfolio_cancel_evaluation: Cancel evaluation?
@@ -570,7 +562,7 @@
   activity_end: End
   activity_files: Activity files
   file_name: Name
-  file_date_sent: Sent on
+  sent_on: Sent on
   file_sent_by: Enviado por
   file_size: Size
   download_file: Download file %{file_name}
@@ -581,6 +573,7 @@
   portfolio_remove_file: Remove file
   portfolio_return_file: Return file
   portfolio_send_comment: Send
+  portfolio_removed_comment: Comment removed sucessfully
 
   # acompanhamento
   student: "Student"

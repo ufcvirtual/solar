@@ -50,7 +50,7 @@
   .block_title
     %h2
       = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
-      =t(:sent_files)
+      = t(:sent_files)
     %span.download_all_icon
       - unless @files_sent_assignment.nil? or @files_sent_assignment.empty?
         = link_to (image_tag "mimetypes/zip.png", :alt => t(:download_all_files_zip), :class => 'block_title_icon'), download_files_portfolio_teacher_path(:assignment_id => @assignment.id, :student_id => @student_id, :group_id => @group_id, :type => "assignment", :zip => true)
@@ -66,7 +66,7 @@
               %th{:align => "right", :style => "width: 80px"}= t(:file_sent_by)
             %th.clock_icon
               = image_tag "clock.png", :alt => " ", :class=>"block_title_icon"
-              = t(:file_date_sent)
+              = t(:sent_on)
         %tbody
           - @files_sent_assignment.each do |file|
             %tr.lines
@@ -89,9 +89,9 @@
     %span.portfolio_title_button
       - if can? :evaluate, PortfolioTeacher and must_be_responsible(@assignment.id)
         - if assignment_in_time?(@assignment.id)
-          = button_tag t(:portfolio_evaluate), :class => "btn btn_main", :id => "btn_evaluate", :onclick => "btn_evaluate();"
-          = button_tag t(:portfolio_cancel), :class => "btn btn_caution", :id => "btn_cancel_evaluation", :onclick => "btn_cancel_evaluation();"
-          = button_tag t(:portfolio_save), :class => "btn btn_main", :id => "btn_save_evaluation", :onclick => "btn_save_evaluation();"
+          = button_tag t(:portfolio_evaluate), :class => "btn btn_main", :id => "btn_evaluate", :onclick => "javascript:btn_evaluate();"
+          = button_tag t(:portfolio_cancel), :class => "btn btn_caution", :id => "btn_cancel_evaluation", :onclick => "javascript:btn_cancel_evaluation();"
+          = button_tag t(:portfolio_save), :class => "btn btn_main", :id => "btn_save_evaluation", :onclick => "javascript:btn_save_evaluation();"
         - else
           desabilitado
   .block_content#evaluate_assignment_student
@@ -126,7 +126,7 @@
     %span.portfolio_title_button
       - if can? :send_comment, PortfolioTeacher and must_be_responsible(@assignment.id)
         - if assignment_in_time?(@assignment.id)
-          = button_tag t(:portfolio_comment), :class => "btn btn_main", :id => "btn_comment", :onclick => "btn_comment();"
+          = button_tag t(:portfolio_comment), :class => "btn btn_main", :id => "btn_comment", :onclick => "javascript:btn_comment();"
         - else
           botão desabilitado
   .forum_posts_wrapper
@@ -148,13 +148,13 @@
                 %h3= t(:attached_files)
                 %ul.forum_post_attachment_list.comments_files_div
                   = file_field_tag 'comment_files[]', :class => "comments_files"
-                  %a.more_comment_files_link{:href => "#", :onclick => "more_files();"}
+                  %a.more_comment_files_link{:href => "#", :onclick => "javascript:more_files();"}
                     = t(:attach_another_file)
               .portfolio_title_button
-                = button_tag(:type => 'button', :class => "btn btn_caution", :id => "btn_cancel_comment_new", :alt => t(:portfolio_cancel), :onclick => "btn_cancel_comment('new');") do
+                = button_tag(:type => 'button', :class => "btn btn_caution", :id => "btn_cancel_comment_new", :alt => t(:portfolio_cancel), :onclick => "javascript:btn_cancel_comment('new');") do
                   = content_tag(:span, t(:portfolio_cancel))
                 = submit_tag t(:portfolio_send_comment), :class=>'btn btn_main'
-        / %tr
+
     - unless @comments.nil? or @comments.empty?
       - @comments.each_with_index do |comment, idx|
         %table{:class => ["forum_post", "tb_comments", "tb_comment_#{comment.id}"], :border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
@@ -168,7 +168,7 @@
                 - unless comment.updated_at.blank?
                   =l comment.updated_at
                 - else
-                  = t(:-)
+                  = '-'
           %tr
             %td{:class => ["forum_post_content comment_#{comment.id}", "assignment_comment"], :colspan => "2"}
               .forum_post_inner_content= comment.comment
@@ -181,17 +181,17 @@
                         = link_to comment_file.attachment_file_name, download_files_portfolio_teacher_path(:file_id => comment_file.id, :assignment_id => @assignment.id, :student_id => @student_id, :group_id => @group_id, :type => "comment"), {:class => "link_content"}
                         .forum_post_date=l comment_file.attachment_updated_at
                   - else
-                    = t(:-)
+                    = '-'
                 .portfolio_comment_button
                   - if comment.user_id == @user.id
                     - if can? :remove_comment, PortfolioTeacher and must_be_responsible(@assignment.id)
                       - if assignment_in_time?(@assignment.id)
-                        = button_tag t(:delete), :class => "btn btn_caution", :onclick => "remove_comment(#{comment.id}, #{@assignment.id});"
+                        = button_tag t(:delete), :class => "btn btn_caution", :onclick => "javascript:remove_comment(#{comment.id}, #{@assignment.id});"
                       - else 
                         botao desabilitado
                     - if can? :send_comment, PortfolioTeacher and must_be_responsible(@assignment.id)
                       - if assignment_in_time?(@assignment.id)
-                        = button_tag t(:portfolio_edit), :class => "btn btn_default btn_edit_comment_#{comment.id}", :onclick => "btn_edit_comment(this, #{comment.id});"
+                        = button_tag t(:portfolio_edit), :class => "btn btn_default btn_edit_comment_#{comment.id}", :onclick => "javascript:btn_edit_comment(this, #{comment.id});"
                       - else 
                         botao desabilitado
               %td{:class => ["forum_post_content", "form_comment_#{comment.id}", "form_comment"], :colspan => "2", :style => "display:none"}
@@ -205,15 +205,15 @@
                           %li
                             = link_to comment_file.attachment_file_name, download_files_portfolio_teacher_path(:file_id => comment_file.id, :assignment_id => @assignment.id), {:class => "link_content link_comment_#{comment_file.id}", :id => "#{comment_file.id}"}
                             .forum_post_date=l comment_file.attachment_updated_at
-                            = image_tag("icon_delete_small.png", :onclick => "remove_file(#{comment_file.id}, #{comment.id}, this);", :id=>"remove_file_#{comment_file.id}", :alt => t(:portfolio_remove_file))
-                            = image_tag("icon_delete_small.png", :onclick => "return_file(#{comment_file.id}, #{comment.id}, this);", :id=>"return_file_#{comment_file.id}", :class => "return_file", :alt => t(:portfolio_return_file))
+                            = image_tag("icon_delete_small.png", :onclick => "javascript:remove_file(#{comment_file.id}, #{comment.id}, this);", :id=>"remove_file_#{comment_file.id}", :alt => t(:portfolio_remove_file))
+                            = image_tag("icon_delete_small.png", :onclick => "javascript:return_file(#{comment_file.id}, #{comment.id}, this);", :id=>"return_file_#{comment_file.id}", :class => "return_file", :alt => t(:portfolio_return_file))
                       = hidden_field_tag 'deleted_files[]', "", {:id => "delete_file_#{comment.id}"}
                       = file_field_tag 'comment_files[]', :class => "comments_files"
-                      %a.more_comment_files_link{:href => "#", :onclick => "more_files();"}= t(:attach_another_file)
+                      %a.more_comment_files_link{:href => "#", :onclick => "javascript:more_files();"}= t(:attach_another_file)
                   .portfolio_title_button
-                    = button_tag(:type => 'button', :class => "btn btn_caution", :id => "btn_cancel_comment_#{comment.id}", :alt => t(:portfolio_cancel), :onclick => "btn_cancel_comment('#{comment.id}');") do
+                    = button_tag(:type => 'button', :class => "btn btn_caution", :id => "btn_cancel_comment_#{comment.id}", :alt => t(:portfolio_cancel), :onclick => "javascript:btn_cancel_comment('#{comment.id}');") do
                       = content_tag(:span, t(:portfolio_cancel))
-                    = button_tag t(:portfolio_send_comment), :class => "btn btn_main", :id => "btn_cancel_comment_new", :onclick => "submit_edit_comment_form(#{comment.id});"
+                    = button_tag t(:portfolio_send_comment), :class => "btn btn_main", :id => "btn_cancel_comment_new", :onclick => "javascript:submit_edit_comment_form(#{comment.id});"
     - else
       .block_content.portfolio_div_padding#no_itens_message_comment
         = t(:itens_not_found)
@@ -223,7 +223,6 @@
   var group_id      = '#{@group_id}';
   var assignment_id = '#{@assignment.id}';
 
-:javascript
   function undo_btn_comment_changes(comment_id){
     if(comment_id == 'new'){
       $("#btn_comment").fadeIn(); 
@@ -240,7 +239,6 @@
     }
   }
 
-:javascript
   function undo_btn_evaluate_changes(){
     $("#tb_student_assignment_evaluate").hide(); 
     $("#tb_student_assignment").fadeIn();
@@ -253,14 +251,12 @@
     }
   }
 
-:javascript
   function undo_everything(){
     undo_btn_evaluate_changes();
     undo_btn_comment_changes("new");
     undo_btn_comment_changes();
   }
 
-:javascript
   function btn_comment(){
     undo_everything();
     $("#no_itens_message_comment").hide();
@@ -268,14 +264,12 @@
     $(".comment_form").fadeIn();
   }
   
-:javascript
   function btn_edit_comment(this_div, comment_id){
     undo_everything();
     $(".comment_"+comment_id).hide();
     $(".form_comment_"+comment_id).fadeIn(); 
   }
 
-:javascript
   function btn_evaluate(){
     undo_everything();
     $("#tb_student_assignment").hide();
@@ -286,7 +280,6 @@
     $("#btn_save_evaluation").fadeIn();
   }
 
-:javascript
   function submit_edit_comment_form(comment_id){
     var deleted_files = new Array();
     var disabled_files = $(".disabled_file_"+comment_id);
@@ -297,7 +290,6 @@
    $("#comment_form_"+comment_id).submit();
   }
 
-:javascript
   function btn_save_evaluation(){
     if (confirm('#{t(:portfolio_confirm_evaluation)}')){
 
@@ -328,7 +320,6 @@
     }
   }
 
-:javascript
   function btn_cancel_comment(comment_id){
     if (confirm('#{t(:portfolio_cancel_comment)}')){
       undo_btn_comment_changes(comment_id);  
@@ -340,7 +331,6 @@
     }
   }
 
-:javascript
   function btn_cancel_evaluation(){
     if (confirm('#{t(:portfolio_cancel_evaluation)}')){
       undo_btn_evaluate_changes();  
@@ -348,7 +338,6 @@
     }
   }
 
-:javascript
   function remove_file(comment_file_id, comment_id, this_div){
     $(this_div).hide();
     $("#return_file_"+comment_file_id).fadeIn();
@@ -356,7 +345,6 @@
     $(".link_comment_"+comment_file_id).attr("class", "link_content link_comment_"+comment_file_id+" disabled_file_"+comment_id);
   }
 
-:javascript
   function remove_comment(comment_id){
     url = '#{remove_comment_portfolio_teacher_path}';
     if (!confirm("#{t(:message_confirm)}")) return;
@@ -375,7 +363,6 @@
       });
   }
 
-:javascript
   function return_file(comment_file_id, comment_id, this_div){
     $(this_div).hide();
     $("#remove_file_"+comment_file_id).fadeIn();
@@ -383,8 +370,7 @@
     $(".link_comment_"+comment_file_id).attr("class", "link_content link_comment_"+comment_file_id);
   }
 
-:javascript
   function more_files() {
     $(".more_comment_files_link").remove();
-    $('<div><input id="comment_files_" class="comments_files" name="comment_files[]" type="file"><a href="#" class="more_comment_files_link" onclick="more_files();" >#{t(:attach_another_file)}</a></div>').appendTo($(".comments_files_div"));
+    $('<div><input id="comment_files_" class="comments_files" name="comment_files[]" type="file"><a href="#" class="more_comment_files_link" onclick="javascript:more_files();" >#{t(:attach_another_file)}</a></div>').appendTo($(".comments_files_div"));
   }

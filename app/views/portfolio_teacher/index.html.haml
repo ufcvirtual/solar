@@ -18,7 +18,7 @@
                 %h4= link_to individual_activity["name"], individual_activity_portfolio_teacher_path(:assignment_id => individual_activity["id"]), {:class => 'link_content'}
               %td.right 
                 = l(individual_activity.schedule.start_date, :format => :short) 
-                = t(:-)
+                = '-'
                 = l(individual_activity.schedule.end_date, :format => :short)
     - else
       .block_content.block_content_text= t(:itens_not_found)
@@ -43,7 +43,7 @@
                 %h4= link_to group_activity["name"], group_activity_group_assignments_path(:assignment_id => group_activity["id"]), {:class => 'link_content'}
               %td.right
                 = l(group_activity.schedule.start_date, :format => :short) 
-                = t(:-) 
+                = '-'
                 = l(group_activity.schedule.end_date, :format => :short)
     - else
       .block_content.block_content_text= t(:itens_not_found)
