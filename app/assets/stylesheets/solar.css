@@ -713,24 +713,10 @@ a.mysolar_top_link{
     *display: inline;
     margin-top: 10px;
     padding-top: 0;
-
-    /*
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    margin-top: 80px;
-    padding-left: 10px;
-    */
-    /*border-right: 1px solid #d0d0d0;*/
 }
 
-/********Menu do meuSolar*****************/
 #mysolar_menu_accordion{
     display: inline-block;
-    /*    position: absolute;
-        top: 250px;
-        left: 0px;
-    */
     padding-top: 0;
     margin-top: 0;
     width: 100%;
@@ -1822,6 +1808,7 @@ div.forum_navigation {
 
 #forum_view_mode .btn {
     min-width: 20px;
+    *width: 20px;
 }
 
 #forum_view_mode .btn img {
@@ -2759,6 +2746,7 @@ td.td_student a {color: #2a538d;}
     margin:0 2px;
     border: 1px solid #DEDEDE;
     min-width: 65px;
+    *width: 125px;
     height: 26px;
 }
 a.btn {
