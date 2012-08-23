@@ -1819,6 +1819,10 @@ div.forum_navigation {
     border-left:none;
 }
 
+#forum_view_mode .btn {
+    min-width: 20px;
+}
+
 #forum_view_mode .btn img {
     padding-left: 0px;
 }
@@ -2747,7 +2751,7 @@ td.td_student a {color: #2a538d;}
     font-size: 8pt;
     margin:0 2px;
     border: 1px solid #DEDEDE;
-    /*min-width: 60px;*/
+    min-width: 65px;
     height: 26px;
 }
 a.btn {
