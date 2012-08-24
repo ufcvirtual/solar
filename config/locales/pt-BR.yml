@@ -552,6 +552,7 @@
       attach_file_title: "Envio de arquivos"
     create:
       created: "Postagem criada com sucesso"
+      not_created: "A postagem não foi criada"
     update:
       updated: "Postagem atualizada com sucesso"
       not_updated: "A postagem não foi atualizada"

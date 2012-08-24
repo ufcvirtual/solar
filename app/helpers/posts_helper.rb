@@ -36,7 +36,6 @@ module PostsHelper
 
             #{attachments(post, editable, can_interact)}
             #{buttons(post, editable, can_interact)}
-            #{form_update(post) if (editable and can_interact)}
             #{child_html}
 
           </td>
@@ -80,12 +79,12 @@ HTML
         post_string << "<button type='button' class='btn btn_default forum_button_attachment' onclick='showUploadForm(\"#{new_post_post_file_path(post)}\");'>"
         post_string <<    t(".attach_file") << (image_tag "icon_attachment.png", :alt => t(".attach_file"))
         post_string << "</button>"
-        post_string << "<input type='button' onclick='del_post(#{post.id}, \"#{discussion_post_path(post.discussion, post)}\")' class='btn btn_caution' value='#{t(".remove")}'/>"
-        post_string << "<input type='button' post-id=#{post.id} class='btn btn_default updateDialogLink' value='#{t(".edit")}'/>"
+        post_string << "<input type='button' onclick='delete_post(#{post.id}, \"#{discussion_post_path(post.discussion, post)}\")' class='btn btn_caution' value='#{t(".remove")}'/>"
+        post_string << "<input type='button' onclick='javascript:update_post(this, #{post.id}, #{post.parent_id || 0})' class='btn btn_default update_post' value='#{t(".edit")}' />"
       end
 
       if post.can_be_answered?
-        post_string << "<input type='button' post_id='#{post.id}' level='#{post.level}' class='btn btn_default postDialogLink' value='#{t(".answer")}'/>"
+        post_string << "<input type='button' level='#{post.level}' class='btn btn_default response_post' value='#{t(".answer")}' onclick='javascript:new_post(this, #{post.id})' />"
       end
     else
       post_string << "<a class='forum_post_link_disabled forum_post_link_remove_disabled'>#{t(".remove")}</a>&nbsp;&nbsp;"
@@ -93,14 +92,6 @@ HTML
       post_string << "<a class='forum_post_link_disabled'>#{t(".answer")}</a>"
     end
 
-    post_string << '</div>'
-  end
-
-  def form_update(post)
-    post_string = "<div class='forum_post_form' post_id=#{post.id}>"
-    post_string << form_for(post, :url => discussion_post_path(post.discussion, post), :html => { :method => "put", :id => "form_post_#{post.id}" }) {|f|
-      hidden_field(:discussion_post, :content, {:value => ""})
-    }
     post_string << '</div>'
   end
 

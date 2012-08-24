@@ -22,6 +22,10 @@ gem 'passenger', '3.0.12', :group => [:production]
 gem 'factory_girl_rails', '3.3.0', :group => [:development, :test]
 gem 'rspec-rails', '2.10.1', :group => [:development, :test]
 
+gem "haml", ">= 3.1.6"
+gem "haml-rails", ">= 0.3.4", :group => :development
+gem "ckeditor", "3.7.1"
+
 group :development do
   gem 'net-ssh',  '2.4.0' # dependencia capistrano
   gem 'capistrano', '2.12.0'
@@ -38,8 +42,5 @@ group :test do
 end
 
 group :assets do
-  gem 'uglifier', '>= 1.0.3'
+  gem 'uglifier', '>= 1.2.7'
 end
-
-gem "haml", ">= 3.1.6"
-gem "haml-rails", ">= 0.3.4", :group => :development

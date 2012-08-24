@@ -67,6 +67,8 @@ Solar::Application.routes.draw do
     post :manage_groups, :on => :collection
   end
 
+  mount Ckeditor::Engine => "/ckeditor"
+
   get "pages/index"
   get "pages/team"
   get "access_control/index"
@@ -85,4 +87,5 @@ Solar::Application.routes.draw do
   match ':controller(/:action(/:id(.:format)))'
 
   root :to => 'devise/sessions#new'
+
 end

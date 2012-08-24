@@ -2037,19 +2037,8 @@ div.forum_navigation {
     text-align: right;
 }
 
-/*.forum_post_content .forum_post {
-    margin-left: 5px;
-    width: auto;
-}*/
-
-#new_post_dialog{
-    text-align:left;
-    background-color: #F4F4F4;
-    border: 1px solid #EEE;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
+#new_post {
     display: none;
-    margin-top: 2px;
 }
 
 .new_post_dialog_buttons {

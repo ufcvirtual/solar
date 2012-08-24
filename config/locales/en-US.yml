@@ -396,6 +396,7 @@
       attach_file_title: "Send files"
     create:
       created: "Post was successfully created"
+      not_created: "Post was not created"
     update:
       updated: "Post was successfully updated"
       not_updated: "Post was not updated"

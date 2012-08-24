@@ -63,7 +63,7 @@ class PostsController < ApplicationController
         format.xml  { render :xml => @post, :status => :created }
         format.json  { render :json => {:result => 1, :post_id => @post.id}, :status => :created }
       else
-        format.html { render :json => {:result => 0} }
+        format.html { redirect_to(discussion_posts_path(@post.discussion), :alert => t(:not_created, :scope => [:posts, :create])) }
         format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
         format.json  { render :json => {:result => 0}, :status => :unprocessable_entity }
       end
