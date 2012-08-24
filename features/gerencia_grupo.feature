@@ -5,21 +5,25 @@ Funcionalidade: Exibir Página de Grupos de Portfolio
   Eu quero listar os trabalhos de grupo disponíveis
   Para poder gerenciar os grupos de trabalho
 
-@javascript
-Cenário: Exibir Tela de Cadastro de Trabalho de Grupo
-  Dado que estou logado com o usuario "prof" e com a senha "123456"
-    E que estou em "Meu Solar"
-  Quando eu clicar no link "Quimica I"
-    E que eu selecionei "selected_group" com "CAU-B - 2011.1"
-    Então eu deverei ver "Atividades"
-  Quando eu clicar no link "Atividades"
-    Então eu deverei ver o link "Grupos"
-  Quando eu clicar no link "Grupos"
-    Então eu deverei ver "Atividade em grupo I"
-    E eu deverei ver "Atividade em grupo II"
-    E eu nao deverei ver "Atividade I"
-    E eu nao deverei ver "Atividade II"
-    E eu nao deverei ver "Atividade III"
+Contexto:
+  Dado que tenho "allocations"
+    | user_id  | allocation_tag_id  | profile_id  | status |
+    | 1        | 3                  | 3           | 1      |
+    | 7        | 3                  | 1           | 1      |
+
+#Cenário: Exibir Tela de Cadastro de Trabalho de Grupo
+#  Dado que estou logado com o usuario "prof" e com a senha "123456"
+#    E que estou em "Meu Solar"
+#  Quando eu clicar no link "Quimica I"
+#    Então eu deverei ver "Atividades"
+#  Quando eu clicar no link "Atividades"
+#    Então eu deverei ver o link "Grupos"
+#  Quando eu clicar no link "Grupos"
+#    Então eu deverei ver "Atividade em grupo I"
+#    E eu deverei ver "Atividade em grupo II"
+#    E eu nao deverei ver "Atividade I"
+#    E eu nao deverei ver "Atividade II"
+#    E eu nao deverei ver "Atividade III"
 
 #@javascript
 #Cenário: Exibir Grupos de Trabalho
@@ -144,22 +148,22 @@ Cenário: Exibir Tela de Cadastro de Trabalho de Grupo
 #        E eu deverei estar em "Lista de atividades em grupo"
 #        E eu nao deverei ver "Grupos importados com sucesso"
 
-@javascript
-Cenário: Não visualizar link de grupos com usuário sem permissão
-    Dado que estou logado com o usuario "aluno1" e com a senha "123456"
-        E que estou em "Meu Solar"
-    Quando eu clicar no link "Quimica I"
-        Então eu deverei ver "Atividades"
-    Quando eu clicar no link "Atividades"
-        Então eu nao deverei ver "Grupos"
+#@javascript
+#Cenário: Não visualizar link de grupos com usuário sem permissão
+#    Dado que estou logado com o usuario "aluno1" e com a senha "123456"
+#        E que estou em "Meu Solar"
+#    Quando eu clicar no link "Quimica I"
+#        Então eu deverei ver "Atividades"
+#    Quando eu clicar no link "Atividades"
+#        Então eu nao deverei ver "Grupos"
 
-@javascript
-Cenário: Tentar acessar grupos com usuário sem permissão
-    Dado que estou logado com o usuario "aluno1" e com a senha "123456"
-        E que estou em "Meu Solar"
-    Quando eu clicar no link "Quimica I"
-        Então eu deverei ver "Atividades"
-    Quando eu clicar no link "Atividades"
-        Então eu nao deverei ver "Grupos"
-    Quando tento acessar "Lista de atividades em grupo"
-        Então eu deverei ver "Você não tem permissão para acessar esta página"
+#@javascript
+#Cenário: Tentar acessar grupos com usuário sem permissão
+#    Dado que estou logado com o usuario "aluno1" e com a senha "123456"
+#        E que estou em "Meu Solar"
+#    Quando eu clicar no link "Quimica I"
+#        Então eu deverei ver "Atividades"
+#    Quando eu clicar no link "Atividades"
+#        Então eu nao deverei ver "Grupos"
+#    Quando tento acessar "Lista de atividades em grupo"
+#        Então eu deverei ver "Você não tem permissão para acessar esta página"

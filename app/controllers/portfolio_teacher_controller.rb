@@ -16,14 +16,15 @@ class PortfolioTeacherController < ApplicationController
     @group_activities      = Assignment.find_all_by_allocation_tag_id_and_type_assignment(allocation_tag_id, Group_Activity)
   end
 
+
+  ##
+  # Informações da atividade individual escolhida na listagem com a lista de alunos daquela turma
+  ##
   def individual_activity
-    @activity           = Assignment.find(params[:assignment_id])
-    # alunos da atividade
+    @activity           = Assignment.find(params[:assignment_id]) #atividiade individual
     allocation_tags     = AllocationTag.find_related_ids(@activity.allocation_tag_id).join(',')
-    @students           = PortfolioTeacher.list_students_by_allocations(allocation_tags)
-    # arquivos anexados à atividade
-    @assignment_files   = AssignmentEnunciationFile.find_all_by_assignment_id(@activity.id)
-    # informações do andamento do trabalho de cada aluno
+    @students           = PortfolioTeacher.list_students_by_allocations(allocation_tags) #alunos participantes da atividade (da turma)
+    @assignment_files   = AssignmentEnunciationFile.find_all_by_assignment_id(@activity.id) 
     @grade              = []
     @comments           = []
     @situation          = []
@@ -37,9 +38,12 @@ class PortfolioTeacherController < ApplicationController
       send_assignment_files    = student_send_assignment.nil? ? [] : student_send_assignment.assignment_files
       @file_delivery_date[idx] = (student_send_assignment.nil? or send_assignment_files.empty?) ? '-' : send_assignment_files.first.attachment_updated_at.strftime("%d/%m/%Y") 
     end
-
   end
 
+  ##
+  # Informações do andamento da atividade para um aluno/grupo escolhido
+  # Nesta página, há as opções de comentários para o trabalho do aluno/grupo, avaliação e afins
+  ##
   def assignment
     @assignment      = Assignment.find(params[:assignment_id])
     @student_id      = params[:student_id].nil? ? nil : params[:student_id]
@@ -48,7 +52,6 @@ class PortfolioTeacherController < ApplicationController
     @user            = current_user
     @comments_files  = []
     @users_profiles  = []
-
     @send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(@assignment.id, @student_id, @group_id)
    
     unless @send_assignment.nil?
