@@ -7,5 +7,6 @@ class SendAssignment < ActiveRecord::Base
   has_many :assignment_comments
   has_many :assignment_files
 
+  validates :grade, :numericality => { :greater_than_or_equal_to => 0, :less_than_or_equal_to => 10, :allow_blank => true}
 
 end

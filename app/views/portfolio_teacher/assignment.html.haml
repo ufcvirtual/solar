@@ -96,7 +96,7 @@
           desabilitado
   .block_content#evaluate_assignment_student
     %table.tb_list#tb_student_assignment{:border => "0",  :cellpadding => "0", :cellspacing => "0", :width => "100%"}
-      - unless @send_assignment.nil? or (@send_assignment.grade.nil? and @send_assignment.comment.nil?)
+      - unless @send_assignment.nil? or ((@send_assignment.grade.nil? or @send_assignment.grade.blank?) and (@send_assignment.comment.nil? or @send_assignment.comment.blank?))
         %thead
           %tr.lines
             %th{:align => "right", :style => "width:30px"}= t(:grade)

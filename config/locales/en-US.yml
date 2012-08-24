@@ -93,6 +93,9 @@
         group_name: "Group name"
       assignment_comment:
         comment: Comment
+      send_assignment:
+        grade: Grade
+        comment: Comment
 
     errors:
       messages:
@@ -609,6 +612,7 @@
 
   # grupos de trabalho
   group_assignment_title: "Groups"
+  group_assignment: Group
   group_assignment_date: "Delivery date"
   group_assignment_delete: "Delete"
   group_assignment_new: "New group"
@@ -631,7 +635,6 @@
   manage_groups_assignments: "Manage groups"
   assignment_without_groups: "Assignment haven't groups"
   group_assignment_import_success: "Groups imported with success"
-  group_assignment_files: Files
   group_assignment_description: Description
   group_aready_evaluated: already evaluated
   group_already_sent_files: already sent files

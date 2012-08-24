@@ -73,24 +73,19 @@ class PortfolioTeacherController < ApplicationController
     @assignment = Assignment.find(params['assignment_id'])
     student_id  = (params[:student_id].nil? or params[:student_id].blank?) ? nil : params[:student_id]
     group_id    = (params[:group_id].nil? or params[:group_id].blank?) ? nil : params[:group_id]
-    grade       = (params['grade'].nil? or params['grade'].blank?) ? nil : params['grade'].tr(',', '.').to_f
-    comment     = (params['comment'].nil? or params['comment'].blank?) ? nil : params['comment']
+    grade       = params['grade'].blank? ? params['grade'] : params['grade'].tr(',', '.').to_f 
+    comment     = params['comment']
 
-      begin
-        if grade < 0 || grade > 10
-          raise t(:invalid_grade)
-        end unless grade.nil?
+    begin
+      @send_assignment = SendAssignment.find_or_create_by_assignment_id_and_group_assignment_id_and_user_id(@assignment.id, group_id, student_id)
+      @send_assignment.update_attributes!(:grade => grade, :comment => comment)
 
-        @send_assignment = SendAssignment.find_or_create_by_assignment_id_and_group_assignment_id_and_user_id(@assignment.id, group_id, student_id)
-        @send_assignment.update_attribute(:grade, grade)
-        @send_assignment.update_attribute(:comment, comment)
-
-        respond_to do |format|
-          format.html { render 'evaluate_assignment_student_div', :layout => false }
-        end
-      rescue Exception => error
-        render :json => { :success => false, :flash_msg => error.message, :flash_class => 'alert' }
+      respond_to do |format|
+        format.html { render 'evaluate_assignment_student_div', :layout => false }
       end
+    rescue Exception => error
+      render :json => { :success => false, :flash_msg => error.message.split(',')[0], :flash_class => 'alert' }
+    end
 
   end
 
