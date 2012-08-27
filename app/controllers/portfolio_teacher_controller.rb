@@ -122,7 +122,7 @@ class PortfolioTeacherController < ApplicationController
           end
 
           deleted_files_ids.each do |deleted_file_id|
-            delete_file(deleted_file_id) unless deleted_file_id.blank?
+            CommentFile.find(deleted_file_id).delete_comment_file unless deleted_file_id.blank?
           end
         end
 
@@ -197,24 +197,5 @@ class PortfolioTeacherController < ApplicationController
 
     download_file(request.referer, file_path)
   end
-
-  private
-
-    ##
-    # Deleta arquivos enviados
-    ##
-    def delete_file(file_id)
-      begin
-        filename = CommentFile.find(file_id).attachment_file_name #recupera o nome do arquivo
-        file = "#{::Rails.root.to_s}/media/portfolio/comments/#{file_id}_#{filename}" #recupera arquivo
-        if CommentFile.find(file_id).delete #se deletar arquivo da base de dados com sucesso
-          File.delete(file) if File.exist?(file) #deleta arquivo do servidor
-        else
-          raise t(:error_delete_file)
-        end
-      rescue Exception => error
-        flash[:alert] = error.message
-      end
-    end
 
 end
