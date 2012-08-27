@@ -764,6 +764,7 @@
   successfully_created: '%{register} was successfully created.'
   successfully_updated: '%{register} was successfully updated.'
   successfully_deleted: '%{register} was successfully deleted.'
+  cant_delete: "%{register} has associations and can't be deleted!"
 
   notifier:
     enrollment_accepted:

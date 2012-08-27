@@ -62,14 +62,17 @@ class CurriculumUnitsController < ApplicationController
   # DELETE /curriculum_units/1
   # DELETE /curriculum_units/1.json
   def destroy
-    authorize! :destroy, CurriculumUnit
     @curriculum_unit = CurriculumUnit.find(params[:id])
-    @curriculum_unit.destroy
+    authorize! :destroy, @curriculum_unit
 
     respond_to do |format|
-      format.html { redirect_to curriculum_units_url, notice: t(:successfully_deleted, :register => @curriculum_unit.name) }
-      format.json { head :no_content }
-      format.xml { head :ok }
+     if @curriculum_unit.destroy
+        format.html { redirect_to curriculum_units_url, notice: t(:successfully_deleted, :register => @curriculum_unit.name) }
+        format.json { head :ok }
+      else
+        format.html { redirect_to curriculum_units_url, alert: t(:cant_delete, :register => @curriculum_unit.name) }
+        format.json { render json: @curriculum_unit.errors }
+      end
     end
   end
 

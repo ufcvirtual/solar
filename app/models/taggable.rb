@@ -1,19 +1,58 @@
 module Taggable
 
-	def allocation_tag_association
-		AllocationTag.create({self.class.to_s.underscore.to_sym => self})
-	end
+  def self.included(base)   
+    base.before_destroy :check_associations
+    base.after_create :allocation_tag_association
+    base.after_create :user_editor_allocation
 
-	def user_editor_allocation
-		user_allocation(user_id, Curriculum_Unit_Initial_Profile)
-	end
+    base.has_one :allocation_tag, :dependent => :destroy
+    base.has_many :allocations, :through => :allocation_tag
+  end
 
- 	def user_allocation(user_id, profile_id)
-    	allocation_tag.user_allocation(user_id, profile_id)
- 	end
+  def check_associations
+    if has_associations?
+      return false
+    end
+    unallocate_if_up_to_one_user
+  end
 
- 	def allocations_check
- 		
- 	end
+  def has_associations?
+    self.allocation_tag.related.count > 1
+  end
 
+  def unallocate_if_up_to_one_user
+    if is_up_to_one_user_allocated?
+      unallocate_user(self.allocations.select(:user_id).first.user_id)
+      return true
+    end
+    return false
+  end
+
+  def is_up_to_one_user_allocated?
+    not (self.allocations.select("DISTINCT user_id").count  > 1)
+  end
+
+  def unallocate_user(user_id)
+    self.allocation_tag.unallocate_user_in_related(user_id)
+  end
+
+  def allocation_tag_association
+    AllocationTag.create({self.class.name.underscore.to_sym => self})
+  end
+
+  def user_editor_allocation
+    allocate_user(user_id, Curriculum_Unit_Initial_Profile)
+  end
+
+  def allocate_user(user_id, profile_id)
+    allocation_tag.allocate_user(user_id, profile_id)
+  end
+
+  def is_only_user_allocated?(user_id)
+    self.allocation_tag.is_only_user_allocated_in_related?(user_id)
+  end
+
+  def can_destroy?
+    ((is_up_to_one_user?) and (no_associations?))
+  end
 end

@@ -919,6 +919,7 @@
   successfully_created: '%{register} foi criado(a) com sucesso.'
   successfully_updated: '%{register} foi atualizado(a) com sucesso.'
   successfully_deleted: '%{register} foi excluído(a) com sucesso.'
+  cant_delete: '%{register} possui associações quem impedem sua exclusão!'
   #adicionar erros. Ex: nao foi possivel...
 
   notifier:

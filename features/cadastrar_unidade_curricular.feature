@@ -30,7 +30,7 @@ Dado que estou logado com o usuario "user" e com a senha "123456"
         E que estou em "Cadastro de Unidade Curricular"
         Então eu deverei ver "Você não tem permissão para acessar esta página"
 
-@javascript @wip
+@javascript
 Cenário: Criar e excluir unidade curricular como usuário com permissão para isso
 Dado que estou logado com o usuario "editor" e com a senha "123456"
         E que estou em "Cadastro de Unidade Curricular"
@@ -76,13 +76,13 @@ Dado que estou logado com o usuario "editor" e com a senha "123456"
         | RM414         | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial     |
 
 
-@javascript
+@javascript @wip
 Cenário: Excluir uma unidade curricular com alocações além da do usuário que tentará fazer a exclusão
 Dado que estou logado com o usuario "editor" e com a senha "123456"
         E que estou em "Cadastro de Unidade Curricular"
         Quando eu clicar no botao "Excluir" da linha que contem o item "Quimica I" da tabela
         E eu clicar em "Ok" no popup
-        Entao eu deverei ver "Quimica I possui alocações quem impedem sua exclusão!"
+        Entao eu deverei ver "Quimica I possui associações quem impedem sua exclusão!"
         E eu deverei ver a linha de Unidade Curricular
         | Codigo        | Nome                          | Categoria                             |
         | RM301         | Quimica I                     | Curso de Graduacao a Distancia        |

@@ -42,6 +42,7 @@ class Ability
     object.class.reflect_on_all_associations(:belongs_to).each do |class_related|
       return true if (object.respond_to?(class_related.name) and object.send(class_related.name).respond_to?(:user_id) and (object.send(class_related.name).user_id == user.id))
     end
+    return true if (object.respond_to?(:allocations) and not object.send(:allocations).where(user_id: user.id).empty?)
     return false
   end
 

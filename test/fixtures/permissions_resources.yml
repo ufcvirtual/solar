@@ -871,10 +871,10 @@ ucedit1:
   resource_id: 79
   per_id: false
 
-ucedit2:
+ucdestroy:
   profile_id: 5
   resource_id: 80
-  per_id: false
+  per_id: true
 
 ucedit3:
   profile_id: 5
