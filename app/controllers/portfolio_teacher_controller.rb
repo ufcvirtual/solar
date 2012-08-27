@@ -21,17 +21,17 @@ class PortfolioTeacherController < ApplicationController
   # Informações da atividade individual escolhida na listagem com a lista de alunos daquela turma
   ##
   def individual_activity
-    @activity           = Assignment.find(params[:assignment_id]) #atividiade individual
+    @activity           = Assignment.find(params[:assignment_id])
     allocation_tags     = AllocationTag.find_related_ids(@activity.allocation_tag_id).join(',')
-    @students           = PortfolioTeacher.list_students_by_allocations(allocation_tags) #alunos participantes da atividade (da turma)
-    @assignment_files   = AssignmentEnunciationFile.find_all_by_assignment_id(@activity.id) 
+    @students           = PortfolioTeacher.list_students_by_allocations(allocation_tags) #alunos participantes da atividade
+    @assignment_files   = AssignmentEnunciationFile.find_all_by_assignment_id(@activity.id)  #arquivos que fazem parte da descrição da atividade
     @grade              = []
     @comments           = []
     @situation          = []
     @file_delivery_date = []
 
-    @students.each_with_index do |student, idx|
-      @situation[idx]          = Assignment.status_of_actitivy_by_assignment_id_and_student_id(@activity.id, student['id'])
+    @students.each_with_index do |student, idx| #informações de cada aluno
+      @situation[idx]          = Assignment.status_of_actitivy_by_assignment_id_and_student_id(@activity.id, student['id']) 
       student_send_assignment  = SendAssignment.find_by_assignment_id_and_user_id(@activity.id, student['id'])
       @comments[idx]           = student_send_assignment.nil? ? false : (!student_send_assignment.comment.nil? or !student_send_assignment.assignment_comments.empty?)
       @grade[idx]              = (student_send_assignment.nil? or student_send_assignment.grade.nil?) ? '-' : student_send_assignment.grade
@@ -45,16 +45,16 @@ class PortfolioTeacherController < ApplicationController
   # Nesta página, há as opções de comentários para o trabalho do aluno/grupo, avaliação e afins
   ##
   def assignment
-    @assignment      = Assignment.find(params[:assignment_id])
-    @student_id      = params[:student_id].nil? ? nil : params[:student_id]
-    @group_id        = params[:group_id].nil? ? nil : params[:group_id]
-    @group           = GroupAssignment.find(params[:group_id]) unless @group_id.nil?
+    @assignment      = Assignment.find(params[:assignment_id]) 
+    @student_id      = params[:student_id].nil? ? nil : params[:student_id] 
+    @group_id        = params[:group_id].nil? ? nil : params[:group_id] 
+    @group           = GroupAssignment.find(params[:group_id]) unless @group_id.nil? #grupo
     @user            = current_user
     @comments_files  = []
     @users_profiles  = []
     @send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(@assignment.id, @student_id, @group_id)
    
-    unless @send_assignment.nil?
+    unless @send_assignment.nil? #informações do andamento da atividade do aluno
       @files_sent_assignment = @send_assignment.assignment_files
       @comments              = @send_assignment.assignment_comments.order("updated_at DESC")
 
@@ -65,12 +65,13 @@ class PortfolioTeacherController < ApplicationController
       end
     end
 
+    # perfil do usuário para exibir em possíveis novos comentários
     profile_id    = Allocation.find_by_allocation_tag_id_and_user_id(@assignment.allocation_tag_id, current_user.id).profile_id
     @user_profile = Profile.find(profile_id)
   end
 
   ##
-  # Avalia trabalho do aluno
+  # Avalia trabalho do aluno / grupo
   ##
   def evaluate
     @assignment = Assignment.find(params['assignment_id'])
@@ -97,27 +98,27 @@ class PortfolioTeacherController < ApplicationController
   ##
   def send_comment
     @assignment       = Assignment.find(params[:assignment_id])
-    comment           = params[:comment_id].nil? ? nil : AssignmentComment.find(params[:comment_id]) 
+    comment           = params[:comment_id].nil? ? nil : AssignmentComment.find(params[:comment_id]) #verifica se comentário já existe. se sim, é edição; se não, é criação.
     student_id        = params[:student_id].nil? ? nil : params[:student_id]
     group_id          = params[:group_id].nil? ? nil : params[:group_id]
     comment_text      = params['comment']
     comment_files     = params['comment_files'].nil? ? [] : params['comment_files']
-    deleted_files_ids = params['deleted_files'].nil? ? [] : params['deleted_files'][0].split(",")
+    deleted_files_ids = params['deleted_files'].nil? ? [] : params['deleted_files'][0].split(",") #["id_arquivo_del1,id_arquivo_del2"] => ["id_arquivo_del1", "id_arquivo_del2"]
 
-    if (comment.nil? or comment.user_id == current_user.id)
+    if (comment.nil? or comment.user_id == current_user.id) #se for criar comentário ou se estiver editando o próprio comentário
       send_assignment = SendAssignment.find_or_create_by_group_assignment_id_and_assignment_id_and_user_id(group_id, @assignment.id, student_id)
 
       begin
         ActiveRecord::Base.transaction do
+
           if comment.nil?
-            comment = AssignmentComment.create!(:user_id => current_user.id, :comment => comment_text, :send_assignment_id => send_assignment.id)
+            comment = AssignmentComment.create!(:user_id => current_user.id, :comment => comment_text, :send_assignment_id => send_assignment.id, :updated_at => Time.now)
           else
-            comment.update_attribute(:comment, comment_text)
+            comment.update_attributes!(:comment => comment_text, :updated_at => Time.now)
           end
-          comment.update_attribute(:updated_at, Time.now)
           
           comment_files.each do |file|
-            CommentFile.create!({ :attachment => file, :assignment_comment_id => comment.id})
+            CommentFile.create!({ :attachment => file, :assignment_comment_id => comment.id })
           end
 
           deleted_files_ids.each do |deleted_file_id|
@@ -139,14 +140,17 @@ class PortfolioTeacherController < ApplicationController
   ##
   def remove_comment
     comment = AssignmentComment.find(params[:comment_id])
-    if comment.user_id == current_user.id
+
+    if comment.user_id == current_user.id #se for dono do comentário
       begin
         ActiveRecord::Base.transaction do
+
           files_comment = CommentFile.find_all_by_assignment_comment_id(comment.id)
           files_comment.each do |file|
             delete_file(file.id)
           end
           comment.delete
+
         end
         render :json => { :success => true, :flash_msg => t(:portfolio_removed_comment), :flash_class => 'notice' }
       rescue Exception => error
@@ -155,40 +159,40 @@ class PortfolioTeacherController < ApplicationController
     else
       render :json => { :success => false, :flash_msg => t(:no_permission), :flash_class => 'alert' }
     end
+
   end
 
   ##
-  # Download dos arquivos do comentario do professor ou enviados pelo aluno
+  # Download dos arquivos do portfolio (seja enviado pelo aluno/grupo, enviado no comentário do professor ou que faça parte da descrição da atividade)
   ##
   def download_files
-    if params.include?('zip')
+    if params.include?('zip') #se for baixar todos como zip
       folder_name = ''
       assignment = Assignment.find(params[:assignment_id])
 
       case params[:type]
-        when 'assignment'
-          sa = assignment.send_assignments.where(:user_id => params[:student_id], :group_assignment_id => params[:group_id]).first
-
-          # "atv1 - aluno1"
-          folder_name = [assignment.name, (params[:group_id].nil? ? sa.user.nick : sa.group_assignment.group_name)].join(' - ')
-          all_files = sa.assignment_files
-        when 'enunciation'
-          folder_name = assignment.name
+        when 'assignment' #arquivos enviados pelo aluno/grupo
+          send_assignment = assignment.send_assignments.where(:user_id => params[:student_id], :group_assignment_id => params[:group_id]).first
+          folder_name = [assignment.name, (params[:group_id].nil? ? send_assignment.user.nick : send_assignment.group_assignment.group_name)].join(' - ')#pasta: "atv1 - aluno1"
+          all_files = send_assignment.assignment_files
+        when 'enunciation' #arquivos que fazem parte da descrição da atividade
+          folder_name = assignment.name #pasta: "atv1"
           all_files = assignment.assignment_enunciation_files
       end
 
-      file_path = make_zip_files(all_files, 'attachment_file_name', folder_name)
+      file_path = make_zip_files(all_files, 'attachment_file_name', folder_name) #caminho do zip criado
     else
+
       file = case params[:type]
-        when 'comment'
+        when 'comment' #arquivo de um comentário
           CommentFile.find(params[:file_id])
-        when 'assignment'
+        when 'assignment' #arquivo enviado pelo aluno/grupo
           AssignmentFile.find(params[:file_id])
-        when 'enunciation'
+        when 'enunciation' #arquivo que faz parte da descrição da atividade
           AssignmentEnunciationFile.find(params[:file_id])
       end
 
-      file_path = file.attachment.path
+      file_path = file.attachment.path #caminho do arquivo
     end
 
     download_file(request.referer, file_path)
@@ -201,14 +205,10 @@ class PortfolioTeacherController < ApplicationController
     ##
     def delete_file(file_id)
       begin
-        # recupera o nome do arquivo a ser feito o download
-        filename = CommentFile.find(file_id).attachment_file_name
-        # arquivo a ser deletado
-        file = "#{::Rails.root.to_s}/media/portfolio/comments/#{file_id}_#{filename}"
-        # deletar arquivo da base de dados
-        if CommentFile.find(file_id).delete
-          # deletar arquivos do servidor
-          File.delete(file) if File.exist?(file)
+        filename = CommentFile.find(file_id).attachment_file_name #recupera o nome do arquivo
+        file = "#{::Rails.root.to_s}/media/portfolio/comments/#{file_id}_#{filename}" #recupera arquivo
+        if CommentFile.find(file_id).delete #se deletar arquivo da base de dados com sucesso
+          File.delete(file) if File.exist?(file) #deleta arquivo do servidor
         else
           raise t(:error_delete_file)
         end

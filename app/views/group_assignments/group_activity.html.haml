@@ -77,7 +77,8 @@
                 = button_to t(:portfolio_evaluate), assignment_portfolio_teacher_path(:group_id => group["id"], :assignment_id => @assignment.id), {:class => "btn btn_default evaluate_group", :alt => t(:portfolio_evaluate)}
             %div{:class => "edit_group_#{@can_manage_group[idx]}"}
               = text_field_tag "new_groups_names[][#{@assignment.id}]", group["group_name"], :id => "text_field_group_#{group['id']}", :class => "rename_group"
-              %a.remove_group{:onclick => "javascript:delete_group('group_#{group['id']}', #{@assignment.id}, #{@can_manage_group[idx]});", :alt => "#{t(:remove_group, :group_name => group['group_name'])}"}x
+              %a.remove_group{:onclick => "javascript:delete_group('group_#{group['id']}', #{@assignment.id}, #{@can_manage_group[idx]});", :alt => "#{t(:remove_group, :group_name => group['group_name'])}"}= "x"
+              
             %div{:class => "group_information_#{@can_manage_group[idx]}"}
               = @quantity_files_sent[idx] 
               = t(:files)
@@ -185,7 +186,9 @@
         var each_group_students_ids = new String();
         for (var j = 0; j < array_group_students_ids.length; j++){
           if(j != 0){ each_group_students_ids += " "; }
-          each_group_students_ids += array_group_students_ids[j]
+          if(array_group_students_ids[j] != 0){
+            each_group_students_ids += array_group_students_ids[j];
+          }
         } 
         // recebe cada id dos estudantes do grupo em questão como string (array gera erro)
 

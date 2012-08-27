@@ -99,9 +99,9 @@
   }
 
 
-  function delete_group(group_div_id, assignment_id, has_files) {
+  function delete_group(group_div_id, assignment_id, can_manage_group) {
     // apenas permite deleção se o grupo não tiver arquivos enviados
-    if (!has_files){
+    if (can_manage_group){
       var deleted_div = $('#'+group_div_id);
       var all_li = $('li', deleted_div);
       for (var i = 0; i < all_li.length; i++){
