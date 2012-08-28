@@ -31,8 +31,9 @@
       = t(:activity_files)
     %span.download_all_icon
       - unless @assignment_files.empty?
-        = link_to image_tag("mimetypes/zip.png", :alt => t(:download_all_files_zip), :class=>'block_title_icon'), download_files_portfolio_teacher_path(:assignment_id => @assignment.id, :type => "enunciation", :zip => true)
-        = link_to t(:download_all_files_zip), download_files_portfolio_teacher_path(:assignment_id => @assignment.id, :type => "enunciation", :zip => true), {:class => "link_content"}
+        = button_tag(:type => :button, :onclick => "javascript:window.location.href='#{download_files_portfolio_teacher_path(:assignment_id => @assignment.id, :type => "enunciation", :zip => true)}'", :class => "btn btn_default") do
+          = content_tag(:span, t(:download_all_files_zip))
+          = content_tag(:span, image_tag("icon_folder_compressed.png"))
 
   .block_content
     - unless @assignment_files.empty?
@@ -95,7 +96,8 @@
                   - tooltip_student = (can_be_moved or !@can_manage_group[idx]) ? @tooltip_group[idx] : t(:already_sent_files)
                   - tooltip_student = t(:student_move_error) + ", " + tooltip_student.to_s unless tooltip_student.nil?
 
-                  %li{:class => "student_#{p['user_id']}", :value => "#{p['user_id']}", :id => "#{can_be_moved}", :onmouseover => "student_mouseover(this, '#{tooltip_student}');", :onmouseout => "student_mouseout(this);"}= p["name"]
+                  %li{:class => "student_#{p['user_id']}", :value => "#{p['user_id']}", :id => "#{can_be_moved}", :onmouseover => "javascript:student_mouseover(this, '#{tooltip_student}');", :onmouseout => "javascript:student_mouseout(this);"}= p["name"]
+
               - else
                 %li.no_students_message= t(:no_participant_group_assignment)
 
@@ -107,7 +109,7 @@
         %ul.ul_no_group
           - unless @students_without_group.nil? or @students_without_group.empty?
             - @students_without_group.each do |student_without_group| 
-              %li{:class => "student_#{student_without_group.id}", :value => "#{student_without_group.id}", :id => "true", :onmouseover => "student_mouseover(this, 'no_message');", :onmouseout => "student_mouseout(this);"}= student_without_group.name
+              %li#true{:class => "student_#{student_without_group.id}", :value => "#{student_without_group.id}", :onmouseover => "javascript:student_mouseover(this, 'no_message');", :onmouseout => "student_mouseout(this);"}= student_without_group.name
           - else 
             %li.no_students_message= t(:no_participant_group_assignment)
       .import_and_new_groups

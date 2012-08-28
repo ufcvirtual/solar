@@ -145,9 +145,8 @@ class PortfolioTeacherController < ApplicationController
       begin
         ActiveRecord::Base.transaction do
 
-          files_comment = CommentFile.find_all_by_assignment_comment_id(comment.id)
-          files_comment.each do |file|
-            delete_file(file.id)
+          comment.comment_files.each do |file|
+            file.delete_comment_file
           end
           comment.delete
 

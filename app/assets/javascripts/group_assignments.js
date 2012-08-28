@@ -18,17 +18,52 @@
 
   function btn_manage_groups(assignment_id, show_import_button){
     group_name_label_to_text_field();
-    $('#manage_group_assignment').hide();
-    $('#save_changes_assignment').show();
-    $('#cancel_changes_assignment').show();
+    toggle_divs();
+    $(".evaluate_group").hide();
     $(".group_participants").attr("class", "group_participants_manage");
     $(".group_name_true").attr("class", "group_name_manage");
     $(".group_name_false").attr("class", "disabled_groups_assignments_name");
-    $(".evaluate_group").hide();
     $(".group_information_true").attr("class", "group_information_manage");
     $(".group_information_false").attr("class", "disabled_groups_assignments_information");
     dragndrop(assignment_id);
     show_import_and_new_groups_box(show_import_button);
+  }
+
+  function btn_new_group(assignment_id, message_empty_group, new_group_message) {
+    var new_idx = "group_new_" + $('.another_new_group').length;
+
+    var new_group_hmtl = new Array();
+    new_group_hmtl.push('<div class="group_participants_manage another_new_group " id="' + new_idx + '">');
+      new_group_hmtl.push('<div class="new_group edit_group_true" id="edit_'+new_idx+'">');
+        new_group_hmtl.push('<input type="text_field" value="'+new_group_message+'" name="new_groups_names[][' + assignment_id + ']" id="text_field_'+ new_idx +'" class="rename_group" />');
+        new_group_hmtl.push('<a class="remove_group" onclick="delete_group(\'' + new_idx + '\', \'' + assignment_id + '\', false);"> x</a>');
+      new_group_hmtl.push('</div>');
+      new_group_hmtl.push('<ul value="0">');
+      new_group_hmtl.push('<li class="no_students_message">' + message_empty_group + '</li>')
+      new_group_hmtl.push('</ul>');
+    new_group_hmtl.push('</div>');
+    
+    // cria a nova div de novo grupo 
+    $(new_group_hmtl.join('')).appendTo($('.group_assignment_content').last());
+
+    // pega o último grupo criado
+    var new_group_ul = $('.group_participants_manage ul').last();
+    
+    // e permite que ele receba participantes
+    active_droppable_element(new_group_ul, ".group_participants_manage li", "#false");
+  }
+
+// Métodos
+
+  function toggle_divs(){
+    $('#manage_group_assignment').toggle();
+    $('#save_changes_assignment').toggle();
+    $('#cancel_changes_assignment').toggle();
+  }
+
+  function undo_btn_manage_groups_divs_changes(){
+    toggle_divs();
+    $('.group_assignments_manage_buttons').remove();
   }
 
   function student_mouseover(this_div, tooltip_message){
@@ -60,44 +95,10 @@
     } 
   }
 
-  function btn_new_group(assignment_id, message_empty_group, new_group_message) {
-    var new_idx = "group_new_" + $('.another_new_group').length;
-
-    var new_group_hmtl = new Array();
-    new_group_hmtl.push('<div class="group_participants_manage another_new_group " id="' + new_idx + '">');
-      new_group_hmtl.push('<div class="new_group edit_group_true" id="edit_'+new_idx+'">');
-        new_group_hmtl.push('<input type="text_field" value="'+new_group_message+'" name="new_groups_names[][' + assignment_id + ']" id="text_field_'+ new_idx +'" class="rename_group" />');
-        new_group_hmtl.push('<a class="remove_group" onclick="delete_group(\'' + new_idx + '\', \'' + assignment_id + '\', false);"> x</a>');
-      new_group_hmtl.push('</div>');
-      new_group_hmtl.push('<ul value="0">');
-      new_group_hmtl.push('<li class="no_students_message">' + message_empty_group + '</li>')
-      new_group_hmtl.push('</ul>');
-    new_group_hmtl.push('</div>');
-    
-    // cria a nova div de novo grupo 
-    $(new_group_hmtl.join('')).appendTo($('.group_assignment_content').last());
-
-    // pega o último grupo criado
-    var new_group_ul = $('.group_participants_manage ul').last();
-    
-    // e permite que ele receba participantes
-    active_droppable_element(new_group_ul, ".group_participants_manage li", "#false");
-  }
-
-// Métodos
-
-  function undo_btn_manage_groups_divs_changes(){
-    $('#manage_group_assignment').show();
-    $('#save_changes_assignment').hide();
-    $('#cancel_changes_assignment').hide();
-    $('.group_assignments_manage_buttons').remove();
-  }
-
   function group_name_label_to_text_field(){
     var text_field = $('.edit_group_true').fadeIn();
     var label = $('.group_name_true').hide();
   }
-
 
   function delete_group(group_div_id, assignment_id, can_manage_group) {
     // apenas permite deleção se o grupo não tiver arquivos enviados
@@ -108,7 +109,7 @@
         // remove os participantes do grupo e acrescenta na lista de sem grupo
         if($(all_li[i]).attr('class').indexOf("no_students_message") == -1){
           $(all_li[i]).appendTo($('.ul_no_group'));
-          $('.no_students_message', $('.ul_no_group')).remove();
+          $('.ul_no_group > .no_students_message').remove();
         }
       }
 
@@ -168,3 +169,4 @@
       }
     });
   }
+  

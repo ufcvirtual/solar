@@ -1,5 +1,3 @@
-= javascript_include_tag "group_assignments"
-
 -# Descricao da atividade 
 .block_wrapper
   .block_title
@@ -53,8 +51,9 @@
       = t(:sent_files)
     %span.download_all_icon
       - unless @files_sent_assignment.nil? or @files_sent_assignment.empty?
-        = link_to (image_tag "mimetypes/zip.png", :alt => t(:download_all_files_zip), :class => 'block_title_icon'), download_files_portfolio_teacher_path(:assignment_id => @assignment.id, :student_id => @student_id, :group_id => @group_id, :type => "assignment", :zip => true)
-        = link_to t(:download_all_files_zip), download_files_portfolio_teacher_path(:assignment_id => @assignment.id, :student_id => @student_id, :group_id => @group_id, :type => "assignment", :zip => true), {:class => "link_content"}
+        = button_tag(:type => :button, :onclick => "javascript:window.location.href='#{download_files_portfolio_teacher_path(:assignment_id => @assignment.id, :student_id => @student_id, :group_id => @group_id, :type => "assignment", :zip => true)}'", :class => "btn btn_default") do
+          = content_tag(:span, t(:download_all_files_zip))
+          = content_tag(:span, image_tag("icon_folder_compressed.png"))
   .block_content
     - unless @files_sent_assignment.nil? or @files_sent_assignment.empty?
       %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
@@ -342,7 +341,7 @@
     $(this_div).hide();
     $("#return_file_"+comment_file_id).fadeIn();
     $(".link_comment_"+comment_file_id).css("text-decoration", "underline line-through");
-    $(".link_comment_"+comment_file_id).attr("class", "link_content link_comment_"+comment_file_id+" disabled_file_"+comment_id);
+    $(".link_comment_"+comment_file_id).addClass("disabled_file_"+comment_id);
   }
 
   function remove_comment(comment_id){
@@ -367,7 +366,7 @@
     $(this_div).hide();
     $("#remove_file_"+comment_file_id).fadeIn();
     $(".link_comment_"+comment_file_id).css("text-decoration", "underline");
-    $(".link_comment_"+comment_file_id).attr("class", "link_content link_comment_"+comment_file_id);
+    $(".link_comment_"+comment_file_id).removeClass("disabled_file_"+comment_id);
   }
 
   function more_files() {

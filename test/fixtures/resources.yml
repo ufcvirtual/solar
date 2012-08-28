@@ -492,15 +492,3 @@ res78:
   controller: 'portfolio_teacher'
   action: 'download_files'
   description: 'Download de arquivos'
-
-# res79:
-#   id: 79
-#   controller: 'portfolio_teacher'
-#   action: 'download_individual_files_zip'
-#   description: 'Download de uma pasta zip dos arquivos'
-
-# res80:
-#   id: 80
-#   controller: 'portfolio_teacher'
-#   action: 'download_all_enunciation_files_zip'
-#   description: 'Download de uma pasta zip dos arquivos enviados como enunciado da atividade'

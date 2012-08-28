@@ -14,10 +14,11 @@
       - delete_group         = (!files_sent.nil? or can_manage_group) ? tooltip_group : t(:already_sent_files)
       - tooltip_delete_group = delete_group.nil? ? nil : t(:group_assignment_delete_error) + ", " + delete_group.to_s
 
-      .group_participants{:id => "group_#{group['id']}"}
+      .group_participants{:id => ["group", group['id']]}
         %h3{:class => "group_name_#{can_manage_group}", :alt => "#{tooltip_delete_group}"}
           = group["group_name"]
-          %span.group_elements_float= button_to t(:portfolio_evaluate), assignment_portfolio_teacher_path(:group_id => group["id"], :assignment_id => @assignment.id), {:class => "btn btn_default evaluate_group", :alt => t(:portfolio_evaluate)}
+          %span.group_elements_float
+            = button_to t(:portfolio_evaluate), assignment_portfolio_teacher_path(:group_id => group["id"], :assignment_id => @assignment.id), {:class => "btn btn_default evaluate_group", :alt => t(:portfolio_evaluate)}
         %div{:class => "edit_group_#{can_manage_group}", :style => "display:none;"}
           = text_field_tag "new_groups_names[][#{@assignment.id}]", group["group_name"], :id => "text_field_group_#{group['id']}", :class => "rename_group" 
           %a.remove_group{:onclick => "javascript:delete_group('group_#{group['id']}', #{@assignment.id}, false);", :title => "#{tooltip_delete_group}", :alt => "#{t(:remove_group, :group_name => group['group_name'])}"}= "x"
@@ -39,7 +40,7 @@
               - tooltip_student = (can_be_moved or !can_manage_group) ? tooltip_group : t(:already_sent_files)
               - tooltip_student = t(:student_move_error) + ", " + tooltip_student.to_s unless tooltip_student.nil?
 
-              %li{:class => "student_#{p['user_id']}", :value => "#{p['user_id']}", :id => "#{can_be_moved}", :onmouseover => "javascript:student_mouseover(this, #{tooltip_student});", :onmouseout => "javascript:student_mouseout(this);"}= p["name"]
+              %li{:class => "student_#{p['user_id']}", :value => "#{p['user_id']}", :id => "#{can_be_moved}", :onmouseover => "javascript:student_mouseover(this, '#{tooltip_student}');", :onmouseout => "javascript:student_mouseout(this);"}= p["name"]
           - else
             %li.no_students_message= t(:no_participant_group_assignment)
 

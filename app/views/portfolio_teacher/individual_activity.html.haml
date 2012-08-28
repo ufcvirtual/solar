@@ -30,8 +30,10 @@
     = t(:sent_files)
     %span.download_all_icon
       - unless @assignment_files.empty?
-        = link_to (image_tag "mimetypes/zip.png", :alt => t(:download_all_files_zip), :class=>'block_title_icon'), download_files_portfolio_teacher_path(:assignment_id => @activity.id, :type => "enunciation", :zip => true)
-        = link_to t(:download_all_files_zip), download_files_portfolio_teacher_path(:assignment_id => @activity.id, :type => "enunciation", :zip => true), :class => "link_content"
+        = button_tag(:type => :button, :onclick => "javascript:window.location.href='#{download_files_portfolio_teacher_path(:assignment_id => @activity.id, :type => "enunciation", :zip => true)}'", :class => "btn btn_default") do
+          = content_tag(:span, t(:download_all_files_zip))
+          = content_tag(:span, image_tag("icon_folder_compressed.png"))
+
   .block_content
     - unless @assignment_files.empty?
       %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
