@@ -394,4 +394,4 @@ editor:
   site:
   encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
   password_salt: ziApLgRyXbqJPBN18g4g
-  authentication_token: ppbT4Ue132asgpkCAB1q
+  authentication_token: apbT4Ue132asgpkCAB1q
