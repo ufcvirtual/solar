@@ -282,11 +282,11 @@
   function submit_edit_comment_form(comment_id){
     var deleted_files = new Array();
     var disabled_files = $(".disabled_file_"+comment_id);
-    for(var i = 0; i<$(disabled_files).length; i++){
+    $(disabled_files).each(function(i){
       deleted_files.push($(disabled_files)[i].id);
-    }
-   $("#delete_file_"+comment_id).val(deleted_files); 
-   $("#comment_form_"+comment_id).submit();
+    });
+    $("#delete_file_"+comment_id).val(deleted_files); 
+    $("#comment_form_"+comment_id).submit();
   }
 
   function btn_save_evaluation(){
@@ -296,14 +296,12 @@
       var evaluation_comment  = $("#evaluation_comment").attr('value');
       var url                 = '#{evaluate_portfolio_teacher_path}';
 
-      var continue_with_request = true;
       $.ajax({
         url: url,
         type: 'POST',
         data:  {'grade': evaluation_grade, 'assignment_id': assignment_id, 'comment': evaluation_comment, 'student_id': student_id, 'group_id': group_id},
         success: function(data) {
           if (data.success == false) {
-            continue_with_request = false;
             flash_message(data.flash_msg, data.flash_class);
             if (data.cancel == true) {
               undo_btn_evaluate_changes();
@@ -315,7 +313,6 @@
           }
         }
       });
-      return continue_with_request; 
     }
   }
 

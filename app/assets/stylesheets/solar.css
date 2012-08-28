@@ -3388,6 +3388,11 @@ div.support_material_select {
     text-decoration: italic;
 }
 
+.draggable_student{
+    border-bottom: 2px dashed #fdec9c;
+    cursor: crosshair;
+}
+
 /* FORM: criação de unidade curricular */
 .form-inputs.block_content {
     padding-top: 5px;
