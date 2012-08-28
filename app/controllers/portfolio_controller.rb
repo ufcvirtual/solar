@@ -139,16 +139,6 @@ class PortfolioController < ApplicationController
     end
   end
 
-  ##
-  # Download dos arquivos do comentario do professor
-  ##
-  def download_file_comment
-    authorize! :download_file_comment, Portfolio
-
-    curriculum_unit_id = active_tab[:url]["id"]
-    download_file({:action => :index, :id => curriculum_unit_id}, CommentFile.find(params[:id]).attachment.path)
-  end
-
   ##################
   #  AREA PUBLICA
   ##################
@@ -157,7 +147,6 @@ class PortfolioController < ApplicationController
   # Envio de arquivos para a area publica
   ##
   def upload_files_public_area
-
     authorize! :upload_files_public_area, Portfolio
 
     respond_to do |format|
@@ -191,7 +180,6 @@ class PortfolioController < ApplicationController
 
   # Delecao de arquivos da area publica
   def delete_file_public_area
-
     authorize! :delete_file_public_area, Portfolio
 
     curriculum_unit_id = active_tab[:url]['id']
@@ -244,6 +232,11 @@ class PortfolioController < ApplicationController
     else
       no_permission_redirect
     end
+  end
+
+  # Formulário de upload exibido numa lightbox
+  def public_files_send
+    render :layout => false
   end
 
   ####################
@@ -311,32 +304,6 @@ class PortfolioController < ApplicationController
     else
       no_permission_redirect
     end
-  end
-
-  ##
-  # Download dos arquivos da area individual
-  ##
-  def download_file_individual_area
-    authorize! :download_file_individual_area, Portfolio
-
-    file_id = params[:id]
-
-    # id da atividade
-    assignment_id = SendAssignment.find(AssignmentFile.find(params[:id]).send_assignment_id).assignment_id
-
-    # verificação se o arquivo individual é dele ou se faz parte do grupo
-    individual_activity_or_part_of_group = Portfolio.verify_student_individual_activity_or_part_of_the_group(assignment_id, current_user.id, file_id)
-    
-    if individual_activity_or_part_of_group
-      download_file({:action => 'activity_details', :id => assignment_id}, AssignmentFile.find(file_id).attachment.path)
-    else
-      no_permission_redirect
-    end
-  end
-
-  #Formulário de upload exibido numa lightbox
-  def public_files_send
-    render :layout => false
   end
 
 end

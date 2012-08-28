@@ -173,11 +173,11 @@ res29:
   action: 'delete_file_public_area'
   description: 'Delecao de arquivos da area publica'
 
-res30:
-  id: 30
-  controller: 'portfolio'
-  action: 'download_file_comment'
-  description: 'Download de arquivos enviados pelo professor'
+# res30:
+#   id: 30
+#   controller: 'portfolio'
+#   action: 'download_file_comment'
+#   description: 'Download de arquivos enviados pelo professor'
 
 res31:
   id: 31
@@ -196,12 +196,6 @@ res33:
   controller: 'portfolio'
   action: 'upload_files_individual_area'
   description: 'Upload de arquivos para a area privada'
-
-res34:
-  id: 34
-  controller: 'portfolio'
-  action: 'download_file_individual_area'
-  description: 'Download de arquivos da area privada'
 
 ## Portfolio responsavel - parte 1
 res35:
@@ -405,6 +399,13 @@ res68:
   action: 'edit_link'
   description: 'Edita um ou mais links da pagina de material de apoio do editor'
 
+# Portfolio responsavel - parte 2
+res69:
+  id: 69
+  controller: 'portfolio_teacher'
+  action: 'download_files'
+  description: 'Download de arquivos'
+
 # Edicao de pedidos de matriculas
 res70:
   id: 70
@@ -455,11 +456,12 @@ res77:
   action: 'download_single_file'
   description: 'Metodo de download de cada arquivo individualmente'
 
-res69:
-  id: 69
-  controller: 'group_assignments'
-  action: 'download_all_files_zip'
-  description: 'Metodo de download de todos os arquivos'
+# Resource vazia
+res78:
+  id: 78
+  controller: ''
+  action: ''
+  description: ''
 
 # Unidade Curricular - Editor
 res79:
@@ -485,10 +487,3 @@ res82:
   controller: 'curriculum_units'
   action: 'create'
   description: 'Criar Unidade Curricular'
-
-#Portfolio responsavel - parte 2
-res78:
-  id: 78
-  controller: 'portfolio_teacher'
-  action: 'download_files'
-  description: 'Download de arquivos'

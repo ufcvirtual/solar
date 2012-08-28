@@ -155,7 +155,7 @@
                 <%= image_tag icon_attachment(pa["attachment_file_name"]) %>
               </td>
               <td>
-                <%= link_to pa["attachment_file_name"], {:controller => :portfolio, :action => :download_file_public_area, :id => pa["id"]}, {:class => 'link_content'} %>
+                <%= link_to pa["attachment_file_name"], portfolio_teacher_download_files_path(:file_id => pa["id"], :type => "public"), {:class => 'link_content'} %>
               </td>
               <td class="file_data_info" style="width: 80px;" align="center">
                 <%= format('%.2f KB', pa["attachment_file_size"].to_i/1024.0) %>

@@ -86,11 +86,6 @@ uc13:
   resource_id: 29
   per_id: false
 
-uc14:
-  profile_id: 1
-  resource_id: 30
-  per_id: false
-
 uc15:
   profile_id: 1
   resource_id: 31
@@ -104,11 +99,6 @@ uc16:
 uc17:
   profile_id: 1
   resource_id: 33
-  per_id: false
-
-uc18:
-  profile_id: 1
-  resource_id: 34
   per_id: false
 
 # discussion
@@ -222,18 +212,8 @@ ma10:
 
 ma11:
   profile_id: 1
-  resource_id: 78
+  resource_id: 69
   per_id: false
-
-# ma12:
-#   profile_id: 1
-#   resource_id: 79
-#   per_id: false
-
-# ma13:
-#   profile_id: 1
-#   resource_id: 80
-#   per_id: false
 
 ##############################
 # PROFESSOR TITULAR #
@@ -308,11 +288,6 @@ ucpt9:
   per_id: false
 
 # portfolio
-popt1:
-  profile_id: 2
-  resource_id: 30
-  per_id: false
-
 popt2:
   profile_id: 2
   resource_id: 35
@@ -345,18 +320,8 @@ popt7:
 
 popt8:
   profile_id: 2
-  resource_id: 78
+  resource_id: 69
   per_id: false
-
-# popt9:
-#   profile_id: 2
-#   resource_id: 79
-#   per_id: false
-
-# popt10:
-#   profile_id: 2
-#   resource_id: 80
-#   per_id: false
 
 #discussion
 dipt1:
@@ -473,10 +438,6 @@ maed6:
   per_id: false
 
 # trabalho de grupo
-tgpt1:
-  profile_id: 2
-  resource_id: 69
-  per_id: true
 
 tgpt2:
   profile_id: 2
@@ -613,25 +574,10 @@ pota6:
 
 pota7:
   profile_id: 3
-  resource_id: 78
+  resource_id: 69
   per_id: false
 
-# pota8:
-#   profile_id: 3
-#   resource_id: 79
-#   per_id: false
-
-# pota9:
-#   profile_id: 3
-#   resource_id: 80
-#   per_id: false
-
 # trabalho de grupo
-tgta1:
-  profile_id: 3
-  resource_id: 69
-  per_id: true
-
 tgta2:
   profile_id: 3
   resource_id: 73
@@ -769,36 +715,6 @@ mapedi6:
 # TUTOR PRESENCIAL           #
 ##############################
 
-# # trabalho de grupo
-# tgtp1:
-#   profile_id: 4
-#   resource_id: 69
-#   per_id: true
-
-# tgtp2:
-#   profile_id: 4
-#   resource_id: 73
-#   per_id: false
-
-# tgtp3:
-#   profile_id: 4
-#   resource_id: 74
-#   per_id: false
-
-# tgtp4:
-#   profile_id: 4
-#   resource_id: 75
-#   per_id: false
-
-# tgtp5:
-#   profile_id: 4
-#   resource_id: 76
-#   per_id: false
-
-# tgtp6:
-#   profile_id: 4
-#   resource_id: 77
-#   per_id: false
 
 ##############################
 # EDITOR #

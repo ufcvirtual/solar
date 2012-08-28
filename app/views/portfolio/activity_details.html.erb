@@ -91,7 +91,7 @@
                   <td>
                     <%= image_tag icon_attachment(reg["attachment_file_name"]), {:class => 'file_icon'} %>
                     <% file_name = reg["attachment_file_name"].length > 35 ? reg["attachment_file_name"].slice(0..35) + '...' : reg["attachment_file_name"] %>
-                    <%= link_to file_name, {:controller => :portfolio, :action => :download_file_comment, :id => reg["id"]}, {:class => 'link_content'} %>
+                    <%= link_to file_name, download_files_portfolio_teacher_path(:assignment_id => params[:id], :file_id => reg["id"], :type => "comment"), {:class => 'link_content'} %>
                   </td>
                   <td style="width:50px;">
                     <span class="date_info">
@@ -143,10 +143,8 @@
               <tr class="lines">
                 <td>
                   <% file_name = file_sent["attachment_file_name"].length > 35 ? file_sent["attachment_file_name"].slice(0..35) + '...' : file_sent["attachment_file_name"] %>
-                  <% controller = {:controller => :portfolio, :action => :download_file_individual_area, :id => file_sent["id"]} %>
-
-                  <%= link_to image_tag(icon_attachment(file_sent["attachment_file_name"])), controller, {:class => 'file_icon'} %>
-                  <%= link_to file_name, controller, {:class => 'link_content'} %>
+                  <%= link_to image_tag(icon_attachment(file_sent["attachment_file_name"])), download_files_portfolio_teacher_path(:assignment_id => params[:id], :file_id => file_sent["id"], :type => "assignment"), {:class => 'file_icon'} %>
+                  <%= link_to file_name, download_files_portfolio_teacher_path(:assignment_id => params[:id], :file_id => file_sent["id"], :type => "assignment"), {:class => 'link_content'} %>
                 </td>
                 <td style="text-align:right">
                   <span><%= format('%.2f KB', file_sent["attachment_file_size"].to_i/1024.0) %></span>
