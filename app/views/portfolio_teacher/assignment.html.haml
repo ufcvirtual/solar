@@ -205,7 +205,7 @@
                             = link_to comment_file.attachment_file_name, download_files_portfolio_teacher_path(:file_id => comment_file.id, :assignment_id => @assignment.id), {:class => "link_content link_comment_#{comment_file.id}", :id => "#{comment_file.id}"}
                             .forum_post_date=l comment_file.attachment_updated_at
                             = image_tag("icon_delete_small.png", :onclick => "javascript:remove_file(#{comment_file.id}, #{comment.id}, this);", :id=>"remove_file_#{comment_file.id}", :alt => t(:portfolio_remove_file))
-                            = image_tag("icon_delete_small.png", :onclick => "javascript:return_file(#{comment_file.id}, #{comment.id}, this);", :id=>"return_file_#{comment_file.id}", :class => "return_file", :alt => t(:portfolio_return_file))
+                            = image_tag("return_file.png", :onclick => "javascript:return_file(#{comment_file.id}, #{comment.id}, this);", :id=>"return_file_#{comment_file.id}", :class => "return_file", :alt => t(:portfolio_return_file))
                       = hidden_field_tag 'deleted_files[]', "", {:id => "delete_file_#{comment.id}"}
                       = file_field_tag 'comment_files[]', :class => "comments_files"
                       %a.more_comment_files_link{:href => "#", :onclick => "javascript:more_files();"}= t(:attach_another_file)
