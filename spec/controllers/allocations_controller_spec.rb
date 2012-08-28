@@ -14,14 +14,6 @@ describe AllocationsController do
 
   describe "GET index" do
     it "assigns all allocations as @allocations" do
-
-      pending "faltando groups dos usuarios"
-      # allocation = Allocation.where(:status => 0) #create! valid_attributes
-
-      allocations = Allocation.enrollments({:group_id => user.groups.map(&:id)})
-
-      get :index, {}, valid_session
-      assigns(:allocations).should eq(allocations)
     end
   end
 
