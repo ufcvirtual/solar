@@ -729,7 +729,7 @@
       delete: Excluir
     notifications:
       student_with_no_group: Você não faz parte de nenhum grupo
-      portfolio_date_range_expired: Prazo para realizar esta ação expirou
+      date_range_expired: Prazo para realizar esta ação expirou
     group_assignments:
       group: Grupo
       participants: Participantes

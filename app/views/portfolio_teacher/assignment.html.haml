@@ -1,3 +1,6 @@
+-# classe utilizada em botões que podem ou não estar desabilitados
+- btn_class = assignment_in_time?(@assignment.id) ? "btn btn_main" : "btn btn_disabled"
+
 -# Descricao da atividade 
 .block_wrapper
   .block_title
@@ -87,12 +90,9 @@
       = t(:evaluation, :scope => [:portfolio, :evaluation])
     %span.portfolio_title_button
       - if can? :evaluate, PortfolioTeacher and must_be_responsible(@assignment.id)
-        - if assignment_in_time?(@assignment.id)
-          = button_tag t(:evaluate, :scope => [:portfolio, :evaluation]), :class => "btn btn_main", :id => "btn_evaluate", :onclick => "javascript:btn_evaluate();"
-          = button_tag t(:cancel, :scope => [:portfolio, :evaluation]), :class => "btn btn_caution", :id => "btn_cancel_evaluation", :onclick => "javascript:btn_cancel_evaluation();"
-          = button_tag t(:save, :scope => [:portfolio, :evaluation]), :class => "btn btn_main", :id => "btn_save_evaluation", :onclick => "javascript:btn_save_evaluation();"
-        - else
-          desabilitado
+        = button_tag t(:evaluate, :scope => [:portfolio, :evaluation]), :class => btn_class, :id => "btn_evaluate", :onclick => "javascript:btn_evaluate();", :disabled => !assignment_in_time?(@assignment.id)
+        = button_tag t(:cancel, :scope => [:portfolio, :evaluation]), :class => "btn btn_caution", :id => "btn_cancel_evaluation", :onclick => "javascript:btn_cancel_evaluation();"
+        = button_tag t(:save, :scope => [:portfolio, :evaluation]), :class => "btn btn_main", :id => "btn_save_evaluation", :onclick => "javascript:btn_save_evaluation();"
   .block_content#evaluate_assignment_student
     %table.tb_list#tb_student_assignment{:border => "0",  :cellpadding => "0", :cellspacing => "0", :width => "100%"}
       - unless @send_assignment.nil? or ((@send_assignment.grade.nil? or @send_assignment.grade.blank?) and (@send_assignment.comment.nil? or @send_assignment.comment.blank?))
@@ -124,10 +124,7 @@
       = t(:comments, :scope => [:portfolio, :comments])
     %span.portfolio_title_button
       - if can? :send_comment, PortfolioTeacher and must_be_responsible(@assignment.id)
-        - if assignment_in_time?(@assignment.id)
-          = button_tag t(:to_comment, :scope => [:portfolio, :comments]), :class => "btn btn_main", :id => "btn_comment", :onclick => "javascript:btn_comment();"
-        - else
-          botão desabilitado
+        = button_tag t(:to_comment, :scope => [:portfolio, :comments]), :class => btn_class, :id => "btn_comment", :onclick => "javascript:btn_comment();", :disabled => !assignment_in_time?(@assignment.id)
   .forum_posts_wrapper
     - display_comment = @error_message.nil? ? "display:none" : "display:block"
     .comment_form{:style => "#{display_comment}"}
@@ -184,15 +181,11 @@
                 .portfolio_comment_button
                   - if comment.user_id == @user.id
                     - if can? :remove_comment, PortfolioTeacher and must_be_responsible(@assignment.id)
-                      - if assignment_in_time?(@assignment.id)
-                        = button_tag t(:delete, :scope => [:portfolio, :comments]), :class => "btn btn_caution", :onclick => "javascript:remove_comment(#{comment.id}, #{@assignment.id});"
-                      - else 
-                        botao desabilitado
+                      - btn_remove = assignment_in_time?(@assignment.id) ? "btn btn_caution" : "btn btn_disabled"
+                      = button_tag t(:delete, :scope => [:portfolio, :comments]), :class => btn_remove, :onclick => "javascript:remove_comment(#{comment.id}, #{@assignment.id});", :disabled => !assignment_in_time?(@assignment.id)
                     - if can? :send_comment, PortfolioTeacher and must_be_responsible(@assignment.id)
-                      - if assignment_in_time?(@assignment.id)
-                        = button_tag t(:edit, :scope => [:portfolio, :comments]), :class => "btn btn_default btn_edit_comment_#{comment.id}", :onclick => "javascript:btn_edit_comment(this, #{comment.id});"
-                      - else 
-                        botao desabilitado
+                      = button_tag t(:edit, :scope => [:portfolio, :comments]), :class => btn_class + " btn_edit_comment_#{comment.id}", :onclick => "javascript:btn_edit_comment(this, #{comment.id});", :disabled => !assignment_in_time?(@assignment.id)
+
               %td{:class => ["forum_post_content", "form_comment_#{comment.id}", "form_comment"], :colspan => "2", :style => "display:none"}
                 = form_for(:assignment_comment, :html => {:id => "comment_form_#{comment.id}", :multipart => true}, :url => send_comment_portfolio_teacher_path(:assignment_id => @assignment.id, :student_id => @student_id, :group_id => @group_id, :comment_id => comment.id)) do |f|
                   .forum_post_inner_content= text_area_tag :comment, comment.comment, :rows => 4, :cols => 116

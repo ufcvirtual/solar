@@ -6,7 +6,7 @@ class GroupAssignmentsController < ApplicationController
 
   before_filter :prepare_for_group_selection, :user_related_to_assignment?
   before_filter :can_import?, :only => [:import_groups_page, :import_groups]
-  before_filter :assignment_in_time?, :except => [:assignment]
+  before_filter :assignment_in_time?, :except => [:assignment, :group_activity]
   before_filter :must_be_responsible, :except => [:group_activity]
   authorize_resource
 

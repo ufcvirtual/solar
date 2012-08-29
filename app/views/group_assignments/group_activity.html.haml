@@ -63,10 +63,12 @@
       = image_tag("icon_participants.png", :alt => " ", :class=>'block_title_icon')
       = @assignment.name
     %span.group_elements_float
-      = button_tag t(:manage_groups, :scope => [:portfolio, :group_assignments]), :class => "btn btn_main", :id => "manage_group_assignment", :alt => t(:manage_groups, :scope => [:portfolio, :group_assignments]), :onclick => "javascript:btn_manage_groups('#{@assignment.id}', '#{verify_group_of_assignments(@assignment.id)}');"
-      = button_tag(:type => 'button', :class => "btn btn_caution", :id => "cancel_changes_assignment", :alt => t(:cancel, :scope => [:portfolio, :group_assignments]), :onclick => "javascript:btn_cancel('#{@assignment.id}');") do
-        =content_tag(:span, t(:cancel, :scope => [:portfolio, :group_assignments]))
-      = button_tag t(:save, :scope => [:portfolio, :group_assignments]), :class => "btn btn_main", :id => "save_changes_assignment", :alt => t(:save, :scope => [:portfolio, :group_assignments]), :onclick => "javascript:btn_save('#{@assignment.id}');"
+      - if can? :manage_groups, GroupAssignment and must_be_responsible(@assignment.id)
+        - btn_class = assignment_in_time?(@assignment.id) ? "btn btn_main" : "btn btn_disabled"
+        = button_tag t(:manage_groups, :scope => [:portfolio, :group_assignments]), :class => btn_class, :id => "manage_group_assignment", :alt => t(:manage_groups, :scope => [:portfolio, :group_assignments]), :onclick => "javascript:btn_manage_groups('#{@assignment.id}', '#{verify_group_of_assignments(@assignment.id)}');", :disabled => !assignment_in_time?(@assignment.id)
+        = button_tag(:type => 'button', :class => "btn btn_caution", :id => "cancel_changes_assignment", :alt => t(:cancel, :scope => [:portfolio, :group_assignments]), :onclick => "javascript:btn_cancel('#{@assignment.id}');") do
+          =content_tag(:span, t(:cancel, :scope => [:portfolio, :group_assignments]))
+        = button_tag t(:save, :scope => [:portfolio, :group_assignments]), :class => "btn btn_main", :id => "save_changes_assignment", :alt => t(:save, :scope => [:portfolio, :group_assignments]), :onclick => "javascript:btn_save('#{@assignment.id}');"
   .group_assignment_content
     .group_assignment_content
       - unless @groups.nil? or @groups.empty?
