@@ -87,9 +87,9 @@ HTML
         post_string << "<input type='button' level='#{post.level}' class='btn btn_default response_post' value='#{t(".answer")}' onclick='javascript:new_post(this, #{post.id})' />"
       end
     else
-      post_string << "<a class='forum_post_link_disabled forum_post_link_remove_disabled'>#{t(".remove")}</a>&nbsp;&nbsp;"
-      post_string << "<a class='forum_post_link_disabled'>#{t(".edit")}</a>&nbsp;&nbsp;"
-      post_string << "<a class='forum_post_link_disabled'>#{t(".answer")}</a>"
+      post_string << "<input type='button' class='btn btn_default btn_disabled' value='#{t(".remove")}' disabled='disabled' />"
+      post_string << "<input type='button' class='btn btn_default btn_disabled' value='#{t(".edit")}' disabled='disabled' />"
+      post_string << "<input type='button' class='btn btn_default btn_disabled' value='#{t(".answer")}' disabled='disabled' />"
     end
 
     post_string << '</div>'

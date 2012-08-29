@@ -20,8 +20,8 @@
           #forum_closed= t("forum_closed")
 
       %span#forum_view_mode
-        - class_l = (@display_mode == "list") ? 'btn_disable' : 'btn_default'
-        - class_t = (@display_mode == "tree") ? 'btn_disable' : 'btn_default'
+        - class_l = (@display_mode == "list") ? 'btn_pressed' : 'btn_default'
+        - class_t = (@display_mode == "tree") ? 'btn_pressed' : 'btn_default'
 
         = link_to(image_tag("discussion_plainlist.png"), discussion_posts_path(@discussion, {:display_mode => 'list'}), {:class => "btn #{class_l}", :"data-tooltip" => t(".show_plainlist")})
         = link_to(image_tag("discussion_thread.png"), discussion_posts_path(@discussion, {:display_mode => 'tree'}), {:class => "btn #{class_t}", :"data-tooltip" => t(".show_thread")})
