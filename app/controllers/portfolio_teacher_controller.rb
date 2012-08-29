@@ -7,6 +7,8 @@ class PortfolioTeacherController < ApplicationController
   before_filter :prepare_for_group_selection, :only => [:index]
   before_filter :user_related_to_assignment?, :except => [:index]
   before_filter :assignment_in_time?, :must_be_responsible, :except => [:index, :individual_activity, :assignment, :download_files]
+  # fazer pra assignment (atualmente, aluno pode ver atividades de outros alunos)
+  # before_filter :must_have_access, :only => 
   before_filter :assignment_file_download, :only => [:download_files]
   authorize_resource
 
@@ -15,7 +17,6 @@ class PortfolioTeacherController < ApplicationController
     @individual_activities = Assignment.find_all_by_allocation_tag_id_and_type_assignment(allocation_tag_id, Individual_Activity)
     @group_activities      = Assignment.find_all_by_allocation_tag_id_and_type_assignment(allocation_tag_id, Group_Activity)
   end
-
 
   ##
   # Informações da atividade individual escolhida na listagem com a lista de alunos daquela turma

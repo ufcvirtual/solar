@@ -291,37 +291,37 @@ ucpt9:
 popt2:
   profile_id: 2
   resource_id: 35
-  per_id: false
+  per_id: true
 
 popt3:
   profile_id: 2
   resource_id: 36
-  per_id: false
+  per_id: true
 
 popt4:
   profile_id: 2
   resource_id: 37
-  per_id: false
+  per_id: true
 
 popt5:
   profile_id: 2
   resource_id: 38
-  per_id: false
+  per_id: true
 
 popt6:
   profile_id: 2
   resource_id: 39
-  per_id: false
+  per_id: true
 
 popt7:
   profile_id: 2
   resource_id: 40
-  per_id: false
+  per_id: true
 
 popt8:
   profile_id: 2
   resource_id: 69
-  per_id: false
+  per_id: true
 
 #discussion
 dipt1:
@@ -545,37 +545,37 @@ ucta10:
 pota1:
   profile_id: 3
   resource_id: 35
-  per_id: false
+  per_id: true
 
 pota2:
   profile_id: 3
   resource_id: 36
-  per_id: false
+  per_id: true
 
 pota3:
   profile_id: 3
   resource_id: 37
-  per_id: false
+  per_id: true
 
 pota4:
   profile_id: 3
   resource_id: 38
-  per_id: false
+  per_id: true
 
 pota5:
   profile_id: 3
   resource_id: 39
-  per_id: false
+  per_id: true
 
 pota6:
   profile_id: 3
   resource_id: 40
-  per_id: false
+  per_id: true
 
 pota7:
   profile_id: 3
   resource_id: 69
-  per_id: false
+  per_id: true
 
 # trabalho de grupo
 tgta2:
