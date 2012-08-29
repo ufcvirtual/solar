@@ -53,7 +53,7 @@ module PortfolioHelper
     if (verify_date_range(assignment.schedule.start_date, assignment.schedule.end_date, Time.now) or (assignment.closed? and assignment.extra_time?(current_user.id))) 
       return true
     else
-      render :json => { :success => false, :flash_msg => t(:date_range_expired), :flash_class => 'alert' } unless !assignment_id.nil?
+      render :json => { :success => false, :flash_msg => t(:date_range_expired, :scope => [:portfolio, :notifications]), :flash_class => 'alert' } unless !assignment_id.nil?
       return false
     end
   end

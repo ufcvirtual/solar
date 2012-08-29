@@ -38,7 +38,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       begin
-        raise t(:error_no_file_sent) unless params.include?(:user) && params[:user].include?(:photo)
+        raise t(:user_error_no_file_sent) unless params.include?(:user) && params[:user].include?(:photo)
         @user.update_attributes!(params[:user])
         flash[:notice] = t(:successful_update_photo)
         format.html { redirect_to(redirect) }

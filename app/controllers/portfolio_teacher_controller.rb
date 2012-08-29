@@ -132,6 +132,7 @@ class PortfolioTeacherController < ApplicationController
     else
       flash[:alert] = t(:no_permission)
     end
+    # flash[:notice] = t(:comment_updated_successfully)
     redirect_to request.referer
   end
 
@@ -151,7 +152,7 @@ class PortfolioTeacherController < ApplicationController
           comment.delete
 
         end
-        render :json => { :success => true, :flash_msg => t(:portfolio_removed_comment), :flash_class => 'notice' }
+        render :json => { :success => true, :flash_msg => t(:removed_comment, :scope => [:portfolio, :comments]), :flash_class => 'notice' }
       rescue Exception => error
         render :json => { :success => false, :flash_msg => error.message, :flash_class => 'alert' }
       end

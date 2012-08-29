@@ -2,8 +2,8 @@
     <%= form_for(:portfolio, :html => { :multipart => true, :id => 'post_attachment_form' }, :url => {:controller => :portfolio,
         :action => :upload_files_public_area, :curriculum_unit_id => params[:id]}) do |f| %>
       <%= f.file_field :attachment%>
-      <div class="alter_photo_text"><%=raw t(:send_file_portfolio_obs)%></div>
-      <div class="alter_photo_text"><%=raw t(:send_file_portfolio_text)%></div>
+      <div class="alter_photo_text"><%=raw t(:send_file_obs, :scope => [:portfolio, :files])%></div>
+      <div class="alter_photo_text"><%=raw t(:send_file_text, :scope => [:portfolio, :files])%></div>
       <div id="post_attachment_form_submit">
         <a href="#" class="UploadFileSubmit forum_button" onclick="$('#post_attachment_form').submit();return false;"><%=t(:save)%></a>
       </div>

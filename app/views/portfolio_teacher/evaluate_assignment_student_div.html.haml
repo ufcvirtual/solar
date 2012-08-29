@@ -3,8 +3,8 @@
     - unless @send_assignment.nil? or ((@send_assignment.grade.nil? or @send_assignment.grade.blank?) and (@send_assignment.comment.nil? or @send_assignment.comment.blank?))
       %thead
         %tr.lines
-          %th{:align => "right", :style => "width:30px"}= t(:grade)
-          %th= t(:comment)
+          %th{:align => "right", :style => "width:30px"}= t(:grade, :scope => [:portfolio, :information])
+          %th= t(:comments, :scope => [:portfolio, :comments])
       %tbody
         %tr.lines
           %td= @send_assignment.grade
@@ -14,8 +14,8 @@
   %table.tb_list#tb_student_assignment_evaluate{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%", :style => "display: none"}
     %thead
       %tr.lines
-        %th{:align => "right", :style => "width:30px"}= t(:grade)
-        %th= t(:comment)
+        %th{:align => "right", :style => "width:30px"}= t(:grade, :scope => [:portfolio, :information])
+        %th= t(:comments, :scope => [:portfolio, :comments])
     %tbody
       %tr.lines
         %td= text_field_tag :evaluation_grade, @send_assignment.nil? ? "" : @send_assignment.grade, :size => 3

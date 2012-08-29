@@ -2,15 +2,15 @@
   .block_title
     %h2
       = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
-      = t(:individual_activity)
+      = t(:individual_activities, :scope => [:portfolio, :information])
   -# Atividades individuais
   .block_content
     - unless @individual_activities.nil? or @individual_activities.empty?
       %table.tb_list
         %thead
           %tr.lines
-            %th= t(:portfolio_title)
-            %th{:align => "right", :style => "width:170px"}= t(:portfolio_date_range)
+            %th= t(:title, :scope => [:portfolio, :information])
+            %th{:align => "right", :style => "width:170px"}= t(:date_range, :scope => [:portfolio, :information])
         %tbody
           - @individual_activities.each_with_index do |individual_activity, idx|
             %tr.lines
@@ -27,15 +27,15 @@
   .block_title
     %h2
       = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
-      = t(:group_activities)
+      = t(:group_activities, :scope => [:portfolio, :information])
   -# Atividades em grupo
   .block_content
     - unless @group_activities.nil? or @group_activities.empty?
       %table.tb_list
         %thead
           %tr.lines
-            %th= t(:portfolio_title)
-            %th{:align => "right", :style => "width:170px"}= t(:portfolio_date_range)
+            %th= t(:title, :scope => [:portfolio, :information])
+            %th{:align => "right", :style => "width:170px"}= t(:date_range, :scope => [:portfolio, :information])
         %tbody
           - @group_activities.each_with_index do |group_activity, idx|
             %tr.lines

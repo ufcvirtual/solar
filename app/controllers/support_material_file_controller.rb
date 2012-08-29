@@ -262,7 +262,7 @@ class SupportMaterialFileController < ApplicationController
         allocation_tag_id = allocation_tag_choosed(id_of_choosen_type, type_is_curriculum_unit_or_offer_or_group)
 
         # verifica se o arquivo foi adicionado
-        raise t(:error_no_file_sent) unless file_uploaded
+        raise t(:support_material_error_no_file_sent) unless file_uploaded
 
         # verifica se o arquivo enviado já existe na pasta selecionada
         file = SupportMaterialFile.new(support_material_params)
@@ -283,7 +283,7 @@ class SupportMaterialFileController < ApplicationController
         file.save!
 
         # arquivo salvo com sucesso
-        flash[:notice] = t(:file_uploaded)
+        flash[:notice] = t(:support_material_file_uploaded)
       rescue Exception => error
         flash[:alert] = error.message
       end
@@ -342,14 +342,14 @@ class SupportMaterialFileController < ApplicationController
             # deletar arquivo do servidor
             unless file_can_be_deleted
               File.delete(deleting_file) if File.exist?(deleting_file)
-              flash[:notice] = t(:file_deleted)
+              flash[:notice] = t(:support_material_file_deleted)
             else
-              raise t(:error_delete_file)
+              raise t(:support_material_error_delete_file)
             end
           end
         end
       rescue Exception
-        flash[:alert] = t(:error_delete_file)
+        flash[:alert] = t(:support_material_error_delete_file)
       end
       format.html { redirect_to(redirect) }
     end

@@ -5,7 +5,7 @@ module FilesHelper
       send_file pathfile, :filename => filename
     else
       respond_to do |format|
-        format.html { redirect_to redirect_error, :alert => t(:error_nonexistent_file) }
+        format.html { redirect_to redirect_error, :alert => t(:file_error_nonexistent_file) }
       end
     end
   end

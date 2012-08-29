@@ -210,6 +210,9 @@
   new_user_msg_cpf_error: " invalid"
   itens_not_found: "No itens to display"
 
+  # User
+  user_error_no_file_sent: No file sent
+
   #pagina meus dados
   my_data: "My Data"
   my_personal_data: "Personal"
@@ -488,95 +491,117 @@
   schedule_events: "Schedule Event"
   no_events: "No events to selected day"
 
-  #PORTFOLIO
-  portfolio_title: Portfolio of
-  portfolio_null: None portfolio registered
-  portfolio_upload_file: Upload files for public area
-  individual_activity: Individual Activities
-  group_activities: Group Activities
-  group_name: Group Name
-  portfolio_group_participants: Participants
-  student_with_no_group: You aren't in any group
-  activity_description: Description
-  situation: Situation
-  grade: Grade
-  comments: Comments
-  comments_teacher: Teacher's comments
-  comment: Comment
-  task: Task
-  tasks: Tasks
-  public_area: Public Area
-  delete: Delete
-  more: more
-  less: less
+  # Portfolio / Portfolio_teacher / Group_assignment (ja que faz parte de portfolio)
   not_started: Not Started
   corrected: Corrected
   sent: Sent
-  delete_file_msg: Really want to delete this file?
-  file_uploaded: File uploaded successfully
-  file_deleted: File deleted successfully
-  error_nonexistent_file: File not found
-  error_no_file_sent: File not sent
-  send_file_portfolio: Upload Files To Portfolio
-  send_file_portfolio_obs: Wait for the complete submission of the file. The size should not exceed 5MB.
-  send_file_portfolio_text: "Allowed file example:<br />
-  &nbsp;&nbsp;- Microsoft Office Documents<br />
-  &nbsp;&nbsp;- OpenOffice.org Documents (ODF)<br />
-  &nbsp;&nbsp;- Archives (.zip, .rar...)<br />
-  &nbsp;&nbsp;- PDF Documents<br />
-  &nbsp;&nbsp;- Video Files (avi, mpeg,...)<br />
-  &nbsp;&nbsp;- Audio Files (mp3, wma...)"
-  sent_files: Sent Files
-  send_files: Send Files
-  error_delete_file: Error when trying to delete file
-  comment_updated_successfully: Comment Updated Successfully
-  files_assignments: Files Assignments
-  invalid_grade: Invalid Grade
-  delete_file_interval_error: Modification of files out of range
-  send_file_interval_error: Sending files out of range
-  not_sent: Not Sent
-  tests: Tests
-  -: "-"
-  pending: Pending
-  comments_icon: Comments
-  portfolio_title: Title
-  portfolio_date_range: Date range
-  portfolio_delivery_date: Delivery
-  download_all_files_zip: Download all files (zip)
-  portfolio_participants: Participants
-  portfolio_students: Students
-  portfolio_date: Date
-  student_evaluated_success: Student evaluated successfully
-  portfolio_confirm_evaluation: Confirm evaluation?
-  portfolio_cancel_evaluation: Cancel evaluation?
-  student_evaluation_canceled: Evaluation canceled
-  portfolio_cancel: Cancel
-  portfolio_save: Save
-  portfolio_evaluate: Evaluate
-  portfolio_comment: Comment
-  comment_sent_success: Comment sent sucessfully
-  portfolio_confirm_comment: Confirm comment?
-  portfolio_cancel_comment: Cancel comment?
-  comment_canceled: Comment canceled
-  comment_files_uploaded_successfully: Files uploaded successfully
-  date_range_expired: Date range to this action expired
-  attach_another_file: Attach another file
-  activity_begin: Begin
-  activity_end: End
-  activity_files: Activity files
-  file_name: Name
-  sent_on: Sent on
-  file_sent_by: Enviado por
-  file_size: Size
-  download_file: Download file %{file_name}
-  files: file(s)
-  portfolio_evaluation: Evaluation
-  attached_files : Attachments
-  portfolio_edit: Edit
-  portfolio_remove_file: Remove file
-  portfolio_return_file: Return file
-  portfolio_send_comment: Send
-  portfolio_removed_comment: Comment removed sucessfully
+
+  portfolio:
+    information:
+      activity_begin: Begin
+      activity_end: End
+      individual_activities: Atividades individuais
+      group_activities: Group Activities
+      title: Title
+      date_range: Date range
+      description: Description
+      situation: Situation
+      grade: Grade
+      public_area: Public Area
+      more: more
+      less: less
+      students: Students
+      title: Portfolio of
+      date: Date
+    comments:
+      send_comment: Enviar
+      removed_comment: Comment removed sucessfully
+      comments: Comments
+      comments_teacher: Teacher's comments
+      comment: Comment
+      comment_sent_success: Comment sent sucessfully
+      confirm_comment: Confirm comment?
+      cancel_comment: Cancel comment?
+      comment_canceled: Comment canceled
+      to_comment: Comment
+      edit: Edit
+      cancel: Cancel
+      delete: Delete
+    evaluation:
+      evaluated_success: Evaluation performed successfully
+      confirm_evaluation: Confirm evaluation?
+      cancel_evaluation: Cancel evaluation?
+      evaluation_canceled: Evaluation canceled
+      evaluate: Evaluate
+      evaluation: Evaluation
+      save: Save
+      cancel: Cancel
+    files:
+      remove_file: Remove file
+      return_file: Return file
+      sent_by: Sent by
+      size: Size
+      download_file: Download file %{file_name}
+      files: file(s)
+      attached_files : Attachments
+      activity_files: Activity files
+      name: Name
+      delete_msg: Really want to delete this file?
+      uploaded_success: File uploaded successfully
+      deleted_success: File deleted successfully
+      error_no_file_sent: File not sent
+      send_file: Upload Files To Portfolio
+      send_file_obs: Wait for the complete submission of the file. The size should not exceed 5MB.
+      send_file_text: "Allowed file example:<br />
+      &nbsp;&nbsp;- Microsoft Office Documents<br />
+      &nbsp;&nbsp;- OpenOffice.org Documents (ODF)<br />
+      &nbsp;&nbsp;- Archives (.zip, .rar...)<br />
+      &nbsp;&nbsp;- PDF Documents<br />
+      &nbsp;&nbsp;- Video Files (avi, mpeg,...)<br />
+      &nbsp;&nbsp;- Audio Files (mp3, wma...)"
+      sent_files: Sent Files
+      error_delete: Error when trying to delete file
+      delete_interval_error: Modification of files out of range
+      send_interval_error: Sending files out of range
+      download_all_files_zip: Download all files (zip)
+      upload_on_public_area: Upload files for public area
+      sent_on: Sent on
+      attach_another: Attach another file
+      delete: Delete
+    notifications:
+      student_with_no_group: You aren't in any group
+      date_range_expired: Date range to this action expired
+    group_assignments:
+      group: Group
+      participants: Participants
+      cancel: Cancel
+      new_group: New group
+      import_groups: Import groups
+      save: Save
+      manage_groups: Manage groups
+      remove: Remove group %{group_name}
+      management_cancel: Changes canceled
+      no_participant: Group with no participants
+      students_with_no_group: Students with no group
+      management_success: Groups managed successfully
+      delete_error: Group can't be removed
+      student_move_error: Student can't be removed
+      assignment_without_groups: Assignment haven't groups
+      already_evaluated: already evaluated
+      already_sent_files: already sent files
+      save_management: Save changes?
+      cancel_management: Cancel changes?
+      existing_name_error: already exists
+      evaluate: Evaluate
+    import_groups:
+      cancel: Cancel
+      import_groups: Import groups
+      import: Import
+      no_participant: Group with no participants
+      import_success: Groups imported with success
+
+  # Assignment Comments
+  comment_error_delete_file: Error when trying to delete file
 
   # acompanhamento
   student: "Student"
@@ -609,36 +634,6 @@
   scores_history_access: "Scores History Access"
   assignment_correction_of: "Correction Of"
   error_find_ajax: "Error trying to query. Try again later."
-
-  # grupos de trabalho
-  group_assignment_title: "Groups"
-  group_assignment: Group
-  group_assignment_date: "Delivery date"
-  group_assignment_delete: "Delete"
-  group_assignment_new: "New group"
-  group_assignment_create: "Save"
-  group_assignment_cancel: "Cancel"
-  group_assignment_management_success: "Groups managed successfully"
-  group_assignment_delete_error: "Group can't be removed"
-  group_assignment_existing_name_error: "already exists"
-  no_participant_group_assignment: "Group with no participants"
-  students_with_no_group: "Students with no group"
-  group_assignment_confirm_cancel: "Cancel changes?"
-  group_assignment_confirm_save: "Save changes?"
-  group_assignment_cancel_message: "Changes canceled"
-  are_you_sure: "Are you sure?"
-  students: "Students"
-  status: "Status"
-  student_already_sent_files: "Student can't be removed"
-  group_assignment_import: "Import groups"
-  import: "Import"
-  manage_groups_assignments: "Manage groups"
-  assignment_without_groups: "Assignment haven't groups"
-  group_assignment_import_success: "Groups imported with success"
-  group_assignment_description: Description
-  group_aready_evaluated: already evaluated
-  group_already_sent_files: already sent files
-  remove_group: Remove group %{group_name}
 
   # Mensagem de erro para permissão
   no_permission: "you haven't permission to access this page"
@@ -741,6 +736,13 @@
   support_folder_name: Support Material
   support_download_all: Download all as zip
   support_download_all_folder: Download all folders as zip
+  support_material_file_uploaded: File uploaded successfully
+  support_material_file_deleted: File deleted successfully
+  support_material_error_no_file_sent: No file sent
+  support_material_error_delete_file: Error when trying to delete file
+  support_material_sent_on: Sent on
+  support_material_size: Size
+  support_material_name: Name
 
   # Support Material File Editor
   support_delete: Delete
@@ -774,6 +776,9 @@
   support_allocation_group: Class
   support_folder_temporary_message: "This folder is temporary. To conclude it's creation, send a file"
 
+  # File
+  file_error_nonexistent_file: File not found
+
   ## allocations
 
   allocations:
@@ -799,6 +804,8 @@
       enrollment_successful_update: Successful update
       enrollment_unsuccessful_update: Unsuccessful update
       not_same_status: Select only items with the same status
+
+  allocation_pending: Pending
 
   ## CRUD
   successfully_created: '%{register} was successfully created.'

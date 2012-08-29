@@ -11,10 +11,10 @@
       <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%">
         <thead>
           <tr class="lines">
-            <th><%=t(:activity_description)%></th>
+            <th><%=t(:description, :scope => [:portfolio, :information])%></th>
             <th align="center" style="width:80px"><%= t(:date_name)%></th>
-            <th align="center" style="width:80px"><%= t(:situation) %></th>
-            <th align="center" style="width:50px"><%= t(:grade) %></th>
+            <th align="center" style="width:80px"><%= t(:situation, :scope => [:portfolio, :information]) %></th>
+            <th align="center" style="width:50px"><%= t(:grade, :scope => [:portfolio, :information]) %></th>
           </tr>
         </thead>
         <tbody>
@@ -46,13 +46,13 @@
 <% if student_with_group_in_group_activity %>
   <div id="group_participants" class="block_wrapper">
     <div class="block_title">
-      <h2><%= image_tag "icon_participants.png", :alt => t(:icon_participants), :class=>'block_title_icon' %><%= @group_name %></h2>
+      <h2><%= image_tag "icon_participants.png", :alt => " ", :class=>'block_title_icon' %><%= @group_name %></h2>
     </div>
     <div id="grade" class="block_content">
       <table class="tb_list" border="0" cellpadding="0" cellspacing="0" width="100%">
         <thead>
           <tr class="lines">
-            <th><%=t(:portfolio_group_participants)%></th>
+            <th><%=t(:participants, :scope => [:portfolio, :group_assignments])%></th>
           </tr>
         </thead>
         <tbody>
@@ -73,7 +73,7 @@
  <!-- Comentarios do professor -->
   <div id="professors_comments" class="block_wrapper">
     <div class="block_title">
-      <h2><%= image_tag "icon_comments.png", :alt => t(:comments_icon), :class=>'block_title_icon' %><%= t(:comments_teacher) %></h2>
+      <h2><%= image_tag "icon_comments.png", :alt => " ", :class=>'block_title_icon' %><%= t(:comments_teacher, :scope => [:portfolio, :comments]) %></h2>
     </div>
 
     <div id="grade" class="block_content">
@@ -103,7 +103,7 @@
                   </td>
                   <td style="width:70px;">
                     <span class="date_info">
-                      <%= t(:sent_on) %>:&nbsp;
+                      <%= t(:sent_on, :scope => [:portfolio, :files]) %>:&nbsp;
                     </span>
                   </td>
                   <td style="width:70px">
@@ -124,7 +124,7 @@
   <% student_with_no_group_in_group_activity = true if (@activity.type_assignment == Group_Activity and @group_name.nil?) %>
   <% unless student_with_no_group_in_group_activity %>
     <div class="block_title">
-      <h2><%= image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon' %><%= t(:sent_files) %></h2>
+      <h2><%= image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon' %><%= t(:sent_files, :scope => [:portfolio, :files]) %></h2>
     </div>
 
     <div id="files_sent" class="block_content">
@@ -132,9 +132,9 @@
         <table class="tb_list">
           <thead>
             <tr>
-                <th><%= t(:name) %></th>
-                <th style="width:80px"><%= t(:size) %></th>
-                <th style="width:80px"><%= t(:sent_on) %></th>
+                <th><%= t(:name, :scope => [:portfolio, :files]) %></th>
+                <th style="width:80px"><%= t(:size, :scope => [:portfolio, :files]) %></th>
+                <th style="width:80px"><%= t(:sent_on, :scope => [:portfolio, :files]) %></th>
                 <th style="width:50px"></th>
               </tr>
           </thead>
@@ -154,7 +154,7 @@
                 </td>
                 <% if @delete_files  %>
                   <td>
-                    <%= button_to t(:delete), {:controller => :portfolio, :action => :delete_file_individual_area, :id => file_sent["id"], :assignment_id => params[:id]}, :confirm => t(:delete_file_msg), :class=>'btn btn_caution' %>
+                    <%= button_to t(:delete, :scope => [:portfolio, :files]), {:controller => :portfolio, :action => :delete_file_individual_area, :id => file_sent["id"], :assignment_id => params[:id]}, :confirm => t(:delete_msg, :scope => [:portfolio, :files]), :class=>'btn btn_caution' %>
                   </td>
                 <% end %>
               </tr>
@@ -170,14 +170,14 @@
           <% group_assignment_id = @group_participants.first.group_assignment_id unless @group_participants.nil? %>
             <%= form_for(:assignment_file, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files_individual_area', :assignment_id => params[:id], :group_assignment_id => group_assignment_id}) do |f| %>
               <p><%= f.file_field :attachment%><%= f.submit t(:send), :class => "btn btn_default"%></p>
-              <p class="block_content_gray"><%= t(:send_file_portfolio_obs)%></p>
-              <p class="block_content_gray"><%=raw t(:send_file_portfolio_text)%></p>
+              <p class="block_content_gray"><%= t(:send_file_obs, :scope => [:portfolio, :files])%></p>
+              <p class="block_content_gray"><%=raw t(:send_file_text, :scope => [:portfolio, :files])%></p>
             <% end %>
           <% end %>
         </div>
     </div>
     <% else %>
-      <div class="red_notice"><%= t(:student_with_no_group) %></div>
+      <div class="red_notice"><%= t(:student_with_no_group, :scope => [:portfolio, :notifications]) %></div>
     <% end %>
     <% if !(@situation != 'not_started' && @delete_files) %>
       <div class="red_notice"><%= t(:expired) %></div>

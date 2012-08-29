@@ -369,6 +369,9 @@
   new_user_msg_cpf_error: " inválido"
   itens_not_found: "Sem itens para exibir"
 
+  # User
+  user_error_no_file_sent: Nenhum arquivo enviado
+
   #Meus dados
   my_data: "Meus Dados"
   my_personal_data: "Pessoais"
@@ -646,93 +649,117 @@
   assignment: "Trabalho"
   no_events: "Sem eventos para o dia selecionado"
 
-  #PORTFOLIO
-  portfolio_title: Portfolio de
-  portfolio_null: Nenhum portfolio cadastrado
-  portfolio_upload_file: Enviar arquivos para a área pública
-  individual_activity: Atividades Individuais
-  group_activities: Atividades em Grupo
-  group_name: Nome do Grupo
-  portfolio_group_participants: Participantes
-  student_with_no_group: Você não faz parte de nenhum grupo
-  activity_description: Descrição
-  situation: Situação
-  grade: Nota
-  comments: Comentários
-  comments_teacher: Comentários do Professor
-  comment: Comentário
-  task: Prova
-  tasks: Provas
-  public_area: Área Pública
-  delete: Excluir
-  more: mais
-  less: menos
+  # Portfolio / Portfolio_teacher / Group_assignment (ja que faz parte de portfolio)
   not_started: Não Iniciado
   corrected: Corrigido
   sent: Enviado
-  delete_file_msg: Deseja realmente excluir este arquivo?
-  file_uploaded: Arquivo enviado com sucesso
-  file_deleted: Arquivo deletado com sucesso
-  error_nonexistent_file: Arquivo não encontrado
-  error_no_file_sent: Nenhum arquivo enviado
-  send_file_portfolio: Upload de Arquivos Para Portfolio
-  send_file_portfolio_obs: Aguarde o envio completo do arquivo. O tamanho não deve exceder 5MB.
-  send_file_portfolio_text: "Exemplos de arquivos aceitos:<br />
-  &nbsp;&nbsp;- Documentos do Microsoft Office<br />
-  &nbsp;&nbsp;- Documentos do OpenOffice.org (ODF)<br />
-  &nbsp;&nbsp;- Arquivos Compactados (.zip, .rar...)<br />
-  &nbsp;&nbsp;- Documentos PDF<br />
-  &nbsp;&nbsp;- Arquivos de Video (avi, mpeg,...)<br />
-  &nbsp;&nbsp;- Arquivos de Audio (mp3, wma...)"
-  sent_files: Arquivos Enviados
-  send_files: Enviar Arquivos
-  error_delete_file: Erro ao tentar excluir arquivo
-  comment_updated_successfully: Comentário atualizado com sucesso
-  files_assignments: Arquivos do Trabalho
-  invalid_grade: Nota Inválida
-  delete_file_interval_error: Modificação de arquivos fora do intervalo permitido
-  send_file_interval_error: Envio de arquivos fora do intervalo permitido
-  not_sent: Não Enviado
-  pending: Pendente
-  comments_icon: Comentários
-  portfolio_title: Título
-  portfolio_date_range: Período
-  portfolio_delivery_date: Entrega
-  download_all_files_zip: Baixar todos arquivos (zip)
-  portfolio_participants: Participantes
-  portfolio_students: Alunos
-  portfolio_date: Data
-  student_evaluated_success: Aluno avaliado com sucesso
-  portfolio_confirm_evaluation: Confirma avaliação?
-  portfolio_cancel_evaluation: Cancelar avaliação?
-  student_evaluation_canceled: Avaliação cancelada
-  portfolio_cancel: Cancelar
-  portfolio_save: Salvar
-  portfolio_evaluate: Avaliar
-  portfolio_comment: Comentar
-  comment_sent_success: Comentário enviado com sucesso
-  portfolio_confirm_comment: Confirma comentário?
-  portfolio_cancel_comment: Cancelar comentário?
-  comment_canceled: Comentário cancelado
-  comment_files_uploaded_successfully: Arquivos anexados com sucesso
-  date_range_expired: Prazo para realizar esta ação expirou
-  attach_another_file: Anexar outro arquivo
-  activity_begin: Início
-  activity_end: Fim
-  activity_files: Arquivos da atividade
-  file_name: Nome
-  sent_on: Enviado em
-  file_sent_by: Enviado por
-  file_size: Tamanho
-  download_file: Baixar arquivo %{file_name}
-  files: arquivo(s)
-  portfolio_evaluation: Avaliação
-  attached_files : Anexos
-  portfolio_edit: Editar
-  portfolio_remove_file: Remover arquivo
-  portfolio_return_file: Retornar arquivo
-  portfolio_send_comment: Enviar
-  portfolio_removed_comment: Comentário removido com sucesso
+
+  portfolio:
+    information:
+      activity_begin: Início
+      activity_end: Fim
+      individual_activities: Atividades individuais
+      group_activities: Atividades em Grupo
+      title: Título
+      date_range: Período
+      description: Descrição
+      situation: Situação
+      grade: Nota
+      public_area: Área Pública
+      more: mais
+      less: menos
+      students: Alunos
+      title: Portfolio de
+      date: Data
+    comments:
+      send_comment: Enviar
+      removed_comment: Comentário removido com sucesso
+      comments: Comentários
+      comments_teacher: Comentários do Professor
+      comment: Comentário
+      comment_sent_success: Comentário enviado com sucesso
+      confirm_comment: Confirma comentário?
+      cancel_comment: Cancelar comentário?
+      comment_canceled: Comentário cancelado
+      to_comment: Comentar
+      edit: Editar
+      cancel: Cancelar
+      delete: Excluir
+    evaluation:
+      evaluated_success: Avaliação realizada com sucesso
+      confirm_evaluation: Confirma avaliação?
+      cancel_evaluation: Cancelar avaliação?
+      evaluation_canceled: Avaliação cancelada
+      evaluate: Avaliar
+      evaluation: Avaliação
+      save: Salvar
+      cancel: Cancelar
+    files:
+      remove_file: Remover arquivo
+      return_file: Retornar arquivo
+      sent_by: Enviado por
+      size: Tamanho
+      download_file: Baixar arquivo %{file_name}
+      files: arquivo(s)
+      attached_files : Anexos
+      activity_files: Arquivos da atividade
+      name: Nome
+      delete_msg: Deseja realmente excluir este arquivo?
+      uploaded_success: Arquivo enviado com sucesso
+      deleted_success: Arquivo deletado com sucesso
+      error_no_file_sent: Nenhum arquivo enviado
+      send_file: Upload de Arquivos Para Portfolio
+      send_file_obs: Aguarde o envio completo do arquivo. O tamanho não deve exceder 5MB.
+      send_file_text: "Exemplos de arquivos aceitos:<br />
+      &nbsp;&nbsp;- Documentos do Microsoft Office<br />
+      &nbsp;&nbsp;- Documentos do OpenOffice.org (ODF)<br />
+      &nbsp;&nbsp;- Arquivos Compactados (.zip, .rar...)<br />
+      &nbsp;&nbsp;- Documentos PDF<br />
+      &nbsp;&nbsp;- Arquivos de Video (avi, mpeg,...)<br />
+      &nbsp;&nbsp;- Arquivos de Audio (mp3, wma...)"
+      sent_files: Arquivos Enviados
+      error_delete: Erro ao tentar excluir arquivo
+      delete_interval_error: Modificação de arquivos fora do intervalo permitido
+      send_interval_error: Envio de arquivos fora do intervalo permitido
+      download_all_files_zip: Baixar todos arquivos (zip)
+      upload_on_public_area: Enviar arquivos para a área pública
+      sent_on: Enviado em
+      attach_another: Anexar outro arquivo
+      delete: Excluir
+    notifications:
+      student_with_no_group: Você não faz parte de nenhum grupo
+      portfolio_date_range_expired: Prazo para realizar esta ação expirou
+    group_assignments:
+      group: Grupo
+      participants: Participantes
+      cancel: Cancelar
+      new_group: Novo grupo
+      import_groups: Importar grupos
+      save: Salvar
+      manage_groups: Gerenciar grupos
+      remove: Remover grupo %{group_name}
+      management_cancel: Alterações canceladas
+      no_participant: Grupo sem participantes
+      students_with_no_group: Alunos sem grupo
+      management_success: Grupos gerenciados com sucesso
+      delete_error: Grupo não pode ser removido
+      student_move_error: Aluno não pode ser removido
+      assignment_without_groups: Atividade não possui grupos
+      already_evaluated: já avaliado
+      already_sent_files: já enviou arquivos
+      save_management: Salvar alterações?
+      cancel_management: Cancelar alterações?
+      existing_name_error: já existe
+      evaluate: Avaliar
+    import_groups:
+      cancel: Cancelar
+      import_groups: Importar grupos
+      import: Importar
+      no_participant: Grupo sem participantes
+      import_success: Grupos importados com sucesso
+
+  # Assignment Comments
+  comment_error_delete_file: Erro ao tentar excluir arquivo
 
   # acompanhamento
   student: "Aluno"
@@ -765,37 +792,6 @@
   scores_history_access: "Acompanhamento de Histórico de Acesso do Aluno"
   assignment_correction_of: "Correção de"
   error_find_ajax: "Erro ao tentar consultar. Tente novamente mais tarde."
-
-  # grupos de trabalho
-  group_assignment_title: "Grupos"
-  group_assignment: Grupo
-  group_assignment_date: "Data de entrega"
-  group_assignment_delete: "Deletar"
-  group_assignment_new: "Novo grupo"
-  group_assignment_save: "Salvar"
-  group_assignment_cancel: "Cancelar"
-  group_assignment_management_success: "Grupos gerenciados com sucesso"
-  group_assignment_delete_error: "Grupo não pode ser removido"
-  group_assignment_existing_name_error: "já existe"
-  no_participant_group_assignment: "Grupo sem participantes"
-  students_with_no_group: "Alunos sem grupo"
-  group_assignment_confirm_cancel: "Cancelar alterações?"
-  group_assignment_confirm_save: "Salvar alterações?"
-  group_assignment_cancel_message: "Alterações canceladas"
-  are_you_sure: "Você tem certeza?"
-  students: "Alunos"
-  status: "Status"
-  student_move_error: "Aluno não pode ser removido"
-  group_assignment_import: "Importar grupos"
-  import: "Importar"
-  manage_groups_assignments: "Gerenciar grupos"
-  assignment_without_groups: "Atividade não possui grupos"
-  group_assignment_import_success: "Grupos importados com sucesso"
-  group_assignment_description: Descrição
-  already_evaluated: já avaliado
-  already_sent_files: já enviou arquivos
-  remove_group: Remover grupo %{group_name}
-
 
   # Mensagem de erro para permissão
   no_permission: "Você não tem permissão para acessar esta página"
@@ -896,6 +892,13 @@
   support_folder_name: Material de Apoio
   support_download_all: Baixar todo o material de apoio como zip
   support_download_all_folder: Baixar toda a pasta como zip
+  support_material_file_uploaded: Arquivo enviado com sucesso
+  support_material_file_deleted: Arquivo deletado com sucesso
+  support_material_error_no_file_sent: Nenhum arquivo enviado
+  support_material_error_delete_file: Erro ao tentar excluir arquivo
+  support_material_sent_on: Enviado em
+  support_material_size: Tamanho
+  support_material_name: Nome
 
   # Support Material File Editor
   support_send_document: DOCUMENTO
@@ -929,6 +932,9 @@
   support_allocation_group: Turma
   support_folder_temporary_message: 'Esta pasta é temporária. Para concluir sua criação, envie um arquivo'
 
+  # Files
+  file_error_nonexistent_file: Arquivo não encontrado
+
   ## allocations
 
   allocations:
@@ -954,6 +960,8 @@
       enrollment_successful_update: Atualizacao realizada com sucesso
       enrollment_unsuccessful_update: Atualizacao nao realizada
       not_same_status: Selecione apenas registros com o mesmo status
+
+  allocation_pending: Pendente
 
   ## CRUD
   options: "Opções"

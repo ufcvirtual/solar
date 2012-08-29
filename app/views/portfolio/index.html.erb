@@ -1,6 +1,6 @@
 <div class="block_wrapper" id="activities_area">
   <div class="block_title">
-    <h2><%= image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon' %><%= t(:individual_activity)%></h2>
+    <h2><%= image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon' %><%= t(:individual_activities, :scope => [:portfolio, :information])%></h2>
   </div>
 
   <!-- Atividades individuais -->
@@ -11,13 +11,13 @@
         <tr class="lines">
           <th style="">
             <span>
-              <%=t(:activity_description)%>
+              <%=t(:description, :scope => [:portfolio, :information])%>
             </span>                
           </th>
           <th align="center" style="width:70px"><%= t(:date_name)%></th>
-          <th align="center" style="width:80px"><%= t(:situation) %></th>
-          <th align="center" style="width:40px"><%= t(:grade) %></th>
-          <th align="center" style="width:80px"><%= t(:comments) %></th>
+          <th align="center" style="width:80px"><%= t(:situation, :scope => [:portfolio, :information]) %></th>
+          <th align="center" style="width:40px"><%= t(:grade, :scope => [:portfolio, :information]) %></th>
+          <th align="center" style="width:80px"><%= t(:comments, :scope => [:portfolio, :comments]) %></th>
         </tr>
       </thead>
 
@@ -31,8 +31,8 @@
                   <div class="enunciation_slice"><%= ia["enunciation"].slice(0..180) << '...' %></div>
                   <div class="enunciation_complete"><%= ia["enunciation"] %></div>
                   <div class="more_or_less">
-                    <a href="#" class="enunciation_more link_content"><%= t(:more)%></a>
-                    <a href="#" class="enunciation_less link_content"><%= t(:less)%></a>
+                    <a href="#" class="enunciation_more link_content"><%= t(:more, :scope => [:portfolio, :information])%></a>
+                    <a href="#" class="enunciation_less link_content"><%= t(:less, :scope => [:portfolio, :information])%></a>
                   </div>
                 </div>
               <% else %>
@@ -65,7 +65,7 @@
 
 <div class="block_wrapper" id="activities_area">
   <div class="block_title">
-    <h2><%= image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon' %><%= t(:group_activities)%></h2>
+    <h2><%= image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon' %><%= t(:group_activities, :scope => [:portfolio, :information])%></h2>
   </div>
 
   <div class="block_content" id="individual_activity">
@@ -75,13 +75,13 @@
         <tr class="lines">
           <th style="">
             <span>
-              <%=t(:activity_description)%>
+              <%=t(:description, :scope => [:portfolio, :information])%>
             </span>                
           </th>
           <th align="center" style="width:70px"><%= t(:date_name)%></th>
-          <th align="center" style="width:80px"><%= t(:situation) %></th>
-          <th align="center" style="width:40px"><%= t(:grade) %></th>
-          <th align="center" style="width:80px"><%= t(:comments) %></th>
+          <th align="center" style="width:80px"><%= t(:situation, :scope => [:portfolio, :information]) %></th>
+          <th align="center" style="width:40px"><%= t(:grade, :scope => [:portfolio, :information]) %></th>
+          <th align="center" style="width:80px"><%= t(:comments, :scope => [:portfolio, :comments]) %></th>
         </tr>
       </thead>
 
@@ -95,10 +95,10 @@
                   <div class="enunciation_complete"><%= ia["enunciation"] %>
                       <% unless @groups_names[ia["id"].to_i].nil? %>
                         <div>
-                          <%= t(:group_name) %>: <%= @groups_names[ia["id"].to_i] %>
+                          <%= t(:group, :scope => [:portfolio, :group_assignments]) %>: <%= @groups_names[ia["id"].to_i] %>
                         </div>
                         <div>
-                          <%= t(:portfolio_group_participants) %>: 
+                          <%= t(:participants, :scope => [:portfolio, :group_assignments]) %>: 
                           <% for participant in @groups_participants[ia["id"].to_i] %>
                             <%= participant.user.name %>
                             <% unless participant == @groups_participants[ia["id"].to_i].last %> , <% end %>
@@ -106,13 +106,13 @@
                         </div>
                       <% else %>
                         <div>
-                          <%= t(:student_with_no_group) %>
+                          <%= t(:student_with_no_group, :scope => [:portfolio, :notifications]) %>
                         </div>
                       <% end %>
                   </div>
                   <div class="more_or_less">
-                    <a href="#" class="enunciation_more link_content"><%= t(:more)%></a>
-                    <a href="#" class="enunciation_less link_content"><%= t(:less)%></a>
+                    <a href="#" class="enunciation_more link_content"><%= t(:more, :scope => [:portfolio, :information])%></a>
+                    <a href="#" class="enunciation_less link_content"><%= t(:less, :scope => [:portfolio, :information])%></a>
                   </div>
                 </div>
             </td>
@@ -141,7 +141,7 @@
 <div class="block_wrapper" id="public_area">
   <!-- area publica -->
   <div class="block_title">
-    <h2><%= image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon' %><%= t(:public_area)%></h2>
+    <h2><%= image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon' %><%= t(:public_area, :scope => [:portfolio, :information])%></h2>
   </div>
   <div class="block_content" id="files_public_area">
 
@@ -155,7 +155,7 @@
                 <%= image_tag icon_attachment(pa["attachment_file_name"]) %>
               </td>
               <td>
-                <%= link_to pa["attachment_file_name"], portfolio_teacher_download_files_path(:file_id => pa["id"], :type => "public"), {:class => 'link_content'} %>
+                <%= link_to pa["attachment_file_name"], download_files_portfolio_teacher_path(:file_id => pa["id"], :type => "public"), {:class => 'link_content'} %>
               </td>
               <td class="file_data_info" style="width: 80px;" align="center">
                 <%= format('%.2f KB', pa["attachment_file_size"].to_i/1024.0) %>
@@ -164,7 +164,7 @@
                 <%=l pa["attachment_updated_at"].to_time, :format => :files  %>
               </td>
               <td style="width: 60px" align="center">
-                <%= button_to t(:delete), {:controller => :portfolio, :action => :delete_file_public_area, :id => pa["id"]}, :confirm => t(:delete_file_msg), :class=>'btn btn_caution' %>
+                <%= button_to t(:delete, :scope => [:portfolio, :files]), {:controller => :portfolio, :action => :delete_file_public_area, :id => pa["id"]}, :confirm => t(:delete_msg, :scope => [:portfolio, :files]), :class=>'btn btn_caution' %>
               </td>
             </tr>
           <% end %>
@@ -174,7 +174,7 @@
       <div class="block_content block_content_text"><%= t(:itens_not_found) %></div>
     <% end %>
     <div style="background-color: white;padding-top:6px">
-      <input type="button" value="<%= t(:portfolio_upload_file) %>" id="send_attachment" class="btn btn_default"></input>
+      <input type="button" value="<%= t(:upload_on_public_area, :scope => [:portfolio, :files]) %>" id="send_attachment" class="btn btn_default"></input>
     </div>      
   </div>
 </div>
@@ -196,7 +196,7 @@
     $('#send_attachment').click(function(e){
       e.preventDefault(); // cancel the link behavior
       url = "<%= url_for :public_files_send_portfolio %>"
-      showLightBoxURL(url,500,320,true,'<%=t(:send_file_portfolio)%>');
+      showLightBoxURL(url,500,320,true,'<%=t(:send_file, :scope => [:portfolio, :files])%>');
     });
   });
 </script>

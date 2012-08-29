@@ -21,7 +21,7 @@ class CommentFile < ActiveRecord::Base
       if delete #se deletar arquivo da base de dados com sucesso
         File.delete(file) if File.exist?(file) #deleta arquivo do servidor
       else
-        raise t(:error_delete_file)
+        raise t(:comment_error_delete_file)
       end
     rescue Exception => error
       flash[:alert] = error.message

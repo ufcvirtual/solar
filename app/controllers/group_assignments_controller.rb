@@ -28,11 +28,11 @@ class GroupAssignmentsController < ApplicationController
     @groups.each_with_index do |group, idx|
       @send_assignment[idx]      = SendAssignment.find_by_group_assignment_id(group["id"])
       @can_manage_group[idx]     = (@send_assignment[idx].nil? or @send_assignment[idx]["grade"].nil?) ? true : false
-      @tooltip_group[idx]        = @can_manage_group[idx] ? nil : t(:already_evaluated)
+      @tooltip_group[idx]        = @can_manage_group[idx] ? nil : t(:already_evaluated, :scope => [:portfolio, :group_assignments])
       files_sent                 = (@send_assignment[idx].nil? ? nil : AssignmentFile.find_all_by_send_assignment_id(@send_assignment[idx].id))
       @quantity_files_sent[idx]  = (files_sent.nil? ? "0" : files_sent.size)
-      delete_group               = (!files_sent.nil? or @can_manage_group[idx]) ? @tooltip_group[idx] : t(:already_sent_files) 
-      @tooltip_delete_group[idx] = delete_group.nil? ? nil : t(:group_assignment_delete_error) + ", " + delete_group.to_s
+      delete_group               = (!files_sent.nil? or @can_manage_group[idx]) ? @tooltip_group[idx] : t(:already_sent_files, :scope => [:portfolio, :group_assignments]) 
+      @tooltip_delete_group[idx] = delete_group.nil? ? nil : t(:delete_error, :scope => [:portfolio, :group_assignments]) + ", " + delete_group.to_s
     end
 
   end
@@ -122,7 +122,7 @@ class GroupAssignmentsController < ApplicationController
       end
     end
 
-    flash[:notice] = t(:group_assignment_import_success)
+    flash[:notice] = t(:import_success, :scope => [:portfolio, :import_groups])
     redirect_to group_assignments_url
   end
 

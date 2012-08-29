@@ -36,7 +36,7 @@ function btn_new_group(assignment_id, message_empty_group, new_group_message) {
   new_group_hmtl.push('<div class="group_participants_manage another_new_group " id="' + new_idx + '">');
     new_group_hmtl.push('<div class="new_group edit_group_true" id="edit_'+new_idx+'">');
       new_group_hmtl.push('<input type="text_field" value="'+new_group_message+'" name="new_groups_names[][' + assignment_id + ']" id="text_field_'+ new_idx +'" class="rename_group" />');
-      new_group_hmtl.push('<a class="remove_group" onclick="delete_group(\'' + new_idx + '\', \'' + assignment_id + '\', false);"> x</a>');
+      new_group_hmtl.push('<a class="remove_group" onclick="delete_group(\'' + new_idx + '\', \'' + assignment_id + '\', true);"> x</a>');
     new_group_hmtl.push('</div>');
     new_group_hmtl.push('<ul value="0">');
     new_group_hmtl.push('<li class="no_students_message">' + message_empty_group + '</li>')

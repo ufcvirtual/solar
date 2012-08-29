@@ -106,7 +106,7 @@ class PortfolioController < ApplicationController
           end_date = assignment.schedule.end_date
 
           # verifica permissao de intervalo de datas para deletar arquivos
-          raise t(:delete_file_interval_error) unless verify_date_range(start_date.to_time, end_date.to_time, Time.now)
+          raise t(:delete_interval_error, :scope => [:portfolio, :files]) unless verify_date_range(start_date.to_time, end_date.to_time, Time.now)
 
           # recupera o nome do arquivo a ser feito o download
           filename = AssignmentFile.find(file_id).attachment_file_name
@@ -122,15 +122,15 @@ class PortfolioController < ApplicationController
           unless error
             File.delete(file_del) if File.exist?(file_del)
 
-            flash[:notice] = t(:file_deleted)
+            flash[:notice] = t(:deleted_success, :scope => [:portfolio, :files])
             format.html { redirect_to(redirect) }
 
           else
-            raise t(:error_delete_file)
+            raise t(:error_delete, :scope => [:portfolio, :files])
           end
 
         rescue Exception
-          flash[:alert] = t(:error_delete_file)
+          flash[:alert] = t(:error_delete, :scope => [:portfolio, :files])
           format.html {redirect_to(redirect)}
         end
       end
@@ -155,7 +155,7 @@ class PortfolioController < ApplicationController
         redirect = {:action => :index, :id => params[:curriculum_unit_id]}
 
         # verifica se o arquivo foi adicionado
-        raise t(:error_no_file_sent) unless params.include?(:portfolio)
+        raise t(:error_no_file_sent, :scope => [:portfolio, :files]) unless params.include?(:portfolio)
 
         # allocation_tag do grupo selecionada
         allocation_tag_id = active_tab[:url]['allocation_tag_id']
@@ -166,7 +166,7 @@ class PortfolioController < ApplicationController
         @public_file.save!
 
         # arquivo salvo com sucesso
-        flash[:notice] = t(:file_uploaded)
+        flash[:notice] = t(:uploaded_success, :scope => [:portfolio, :files])
         format.html { redirect_to(redirect) }
 
       rescue Exception => error
@@ -201,15 +201,15 @@ class PortfolioController < ApplicationController
           unless error
             File.delete(file_del) if File.exist?(file_del)
 
-            flash[:notice] = t(:file_deleted)
+            flash[:notice] = t(:deleted_success, :scope => [:portfolio, :files])
             format.html { redirect_to(redirect) }
 
           else
-            raise t(:error_delete_file) unless error == 0
+            raise t(:error_delete, :scope => [:portfolio, :files]) unless error == 0
           end
 
         rescue Exception
-          flash[:alert] = t(:error_delete_file)
+          flash[:alert] = t(:error_delete, :scope => [:portfolio, :files])
           format.html { redirect_to(redirect) }
         end
       end
@@ -264,10 +264,10 @@ class PortfolioController < ApplicationController
           # verificar intervalo de envio de arquivos
           activity = Portfolio.find(assignment.id)
           # verifica se os arquivos podem ser deletados
-          raise t(:send_file_interval_error) unless verify_date_range(activity.schedule.start_date.to_time, activity.schedule.end_date.to_time, Time.now)
+          raise t(:send_interval_error) unless verify_date_range(activity.schedule.start_date.to_time, activity.schedule.end_date.to_time, Time.now)
 
           # verifica se o arquivo foi adicionado
-          raise t(:error_no_file_sent) unless params.include?(:assignment_file)
+          raise t(:error_no_file_sent, :scope => [:portfolio, :files]) unless params.include?(:assignment_file)
 
           # verifica se a atividade ja foi respondida para aquele usuario
           if assignment.type_assignment == Individual_Activity
@@ -294,7 +294,7 @@ class PortfolioController < ApplicationController
           assignment_file.user_id = current_user.id
           assignment_file.save!
 
-          flash[:notice] = t(:file_uploaded)
+          flash[:notice] = t(:uploaded_success, :scope => [:portfolio, :files])
           format.html { redirect_to(redirect) }
         rescue Exception => error
           flash[:alert] = error.message

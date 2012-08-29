@@ -2,7 +2,7 @@
 
 .group_assignments_import
   .block_title
-    %h2=t(:group_assignment_import)
+    %h2=t(:import_groups, :scope => [:portfolio, :import_groups])
 
   .block_content#group_assignments
     - unless @assignments.nil? or @assignments.empty?
@@ -34,14 +34,14 @@
                                   %ul.each_student
                                     = p["name"]
                               - else
-                                = t(:no_participant_group_assignment)
+                                = t(:no_participant, :scope => [:portfolio, :import_groups])
                       .import_buttons
                         = form_for(:support_material, :html => { :multipart => true }, :url => {:controller => :group_assignments, :action => :import_groups, :assignment_id_import_from => a["id"], :assignment_id => @assignment_id}) do |f|
-                          = f.submit t(:import), :class=>'btn btn_main'
-                          = button_tag(:type => 'button', :class => "btn btn_caution", :alt => t(:group_assignment_cancel), :onclick => "removeLightBox();") do
-                            = content_tag(:span, t(:group_assignment_cancel))
+                          = f.submit t(:import, :scope => [:portfolio, :import_groups]), :class=>'btn btn_main'
+                          = button_tag(:type => 'button', :class => "btn btn_caution", :alt => t(:cancel, :scope => [:portfolio, :import_groups]), :onclick => "removeLightBox();") do
+                            = content_tag(:span, t(:cancel, :scope => [:portfolio, :import_groups]))
                     - else
-                      = t(:assignment_without_groups)
+                      = t(:assignment_without_groups, :scope => [:portfolio, :group_assignments])
     - else
       .block_content.block_content_text= t(:itens_not_found)
 
