@@ -12,6 +12,7 @@ Solar::Application.routes.draw do
 
   ## curriculum_units/:id/groups
   resources :curriculum_units do
+    get :list, :on => :collection
     member do
       get :participants
       get :informations

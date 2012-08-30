@@ -64,7 +64,7 @@ SQL
            AND t1.user_id = #{user_id}
     )
     --
-    SELECT DISTINCT ON (name, curriculum_unit_id) curriculum_unit_id AS id, code, name, curriculum_unit_type_id, allocation_tag_id, offer_id, group_id, semester
+    SELECT DISTINCT ON (name, curriculum_unit_id) curriculum_unit_id AS id, code, name, curriculum_unit_type_id, allocation_tag_id
       FROM (
         SELECT id AS curriculum_unit_id, code, name, curriculum_unit_type_id, allocation_tag_id, offer_id, group_id, semester FROM (
             (

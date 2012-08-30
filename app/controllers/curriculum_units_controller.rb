@@ -17,6 +17,14 @@ class CurriculumUnitsController < ApplicationController
     end
   end
 
+  # GET /curriculum_units/list.json
+  def list
+    @curriculum_units = CurriculumUnit.find_default_by_user_id(current_user.id, true)
+    respond_to do |format|
+      format.json { render json: @curriculum_units }
+    end
+  end
+
   # GET /curriculum_units/1
   # GET /curriculum_units/1.json
   def show
