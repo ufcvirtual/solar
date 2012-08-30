@@ -14,27 +14,15 @@ class GroupAssignmentsController < ApplicationController
   # Exibe detalhes do trabalho e os grupos
   ##
   def group_activity
-    @assignment             = Assignment.find(params[:assignment_id])
-    @groups                 = group_assignments(@assignment.id)
-    @students_without_group = no_group_students(@assignment.id) #alunos da turma sem grupo
-    @assignment_files       = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id) #arquivos que fazem parte da descrição da atividade
-    @send_assignment        = [] #send_assignment de cada grupo
-    @can_manage_group       = [] #variável utilizada para informar quando um grupo pode ser alterado
-    @quantity_files_sent    = [] #utilizado para informar quantos arquivos foram enviados pelo grupo
-    @tooltip_group          = [] #utilizado quando um grupo não pode ser modificado (frase geral para grupo já avaliado)
-    @tooltip_delete_group   = [] #utilizado quando um grupo não pode ser excluído (frase específica para quando grupo enviou arquivos)
-    @tooltip_student        = [] #utilizado quando um aluno não pode ser movido de grupo (frase específica para quando aluno enviou arquivo do grupo)
-
-    @groups.each_with_index do |group, idx|
-      @send_assignment[idx]      = SendAssignment.find_by_group_assignment_id(group["id"])
-      @can_manage_group[idx]     = (@send_assignment[idx].nil? or @send_assignment[idx]["grade"].nil?) ? true : false
-      @tooltip_group[idx]        = @can_manage_group[idx] ? nil : t(:already_evaluated, :scope => [:portfolio, :group_assignments])
-      files_sent                 = (@send_assignment[idx].nil? ? nil : AssignmentFile.find_all_by_send_assignment_id(@send_assignment[idx].id))
-      @quantity_files_sent[idx]  = (files_sent.nil? ? "0" : files_sent.size)
-      delete_group               = (!files_sent.nil? or @can_manage_group[idx]) ? @tooltip_group[idx] : t(:already_sent_files, :scope => [:portfolio, :group_assignments]) 
-      @tooltip_delete_group[idx] = delete_group.nil? ? nil : t(:delete_error, :scope => [:portfolio, :group_assignments]) + ", " + delete_group.to_s
+    @assignment                    = Assignment.find(params[:assignment_id])
+    @assignment_enounciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  #arquivos que fazem parte da descrição da atividade
+    if @assignment.type_assignment == Group_Activity 
+      @groups                 = GroupAssignment.find_all_by_assignment_id(@assignment.id)
+      @students_without_group = no_group_students(@assignment.id) #alunos da turma sem grupo  
+    else
+      allocation_tags = AllocationTag.find_related_ids(@assignment.allocation_tag_id).join(',')
+      @students       = PortfolioTeacher.list_students_by_allocations(allocation_tags) #alunos participantes da atividade
     end
-
   end
 
   ##

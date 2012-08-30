@@ -671,6 +671,7 @@
       less: menos
       students: Alunos
       title: Portfolio de
+      name: Nome
       date: Data
     comments:
       send_comment: Enviar

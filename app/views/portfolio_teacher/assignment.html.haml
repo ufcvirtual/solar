@@ -33,7 +33,7 @@
         = image_tag "icon_participants.png", :alt => " ", :class => 'block_title_icon'
         = @group.group_name
     .block_content
-      - gp = group_participants(@group_id)
+      - gp = GroupParticipant.all_by_group_assignment(@group_id)
       - unless gp.empty?
         %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
           %thead
@@ -120,7 +120,7 @@
 .block_wrapper
   .block_title
     %h2
-      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
+      = image_tag "icon_comments.png", :alt => " ", :class=>'block_title_icon'
       = t(:comments, :scope => [:portfolio, :comments])
     %span.portfolio_title_button
       - if can? :send_comment, PortfolioTeacher and must_be_responsible(@assignment.id)

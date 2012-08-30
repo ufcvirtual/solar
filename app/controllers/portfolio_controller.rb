@@ -34,7 +34,7 @@ class PortfolioController < ApplicationController
   end
 
   ##
-  # Detalhes de uma atividade e arquivos da area publica
+  # Detalhes de uma atividade e arquivos da area publica -> usar o mesmo de portfolio_teacher
   ##
   def activity_details
     authorize! :activity_details, Portfolio

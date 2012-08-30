@@ -14,13 +14,13 @@
                 %td
                   .group_assignment_title{:onclick => "javascript:toggle_div('div_group_import_#{a["id"]}');"}
                     %a.link_content{id="name_#{a["id"]}"}=a["name"]
-                  - gps = group_assignments(a["id"])
+                  - gps = GroupAssignment.find_all_by_assignment_id(a["id"])
                   %div{:id => "div_group_import_#{a["id"]}"}
                     - unless gps.nil? or gps.empty?
                       .all_students_to_import
                         - gps.each do |g|
                           %li
-                            - gp = group_participants(g["id"])
+                            - gp = GroupParticipant.all_by_group_assignment(g["id"])
                             %h3.groupname{:onclick => "javascript:clickOnGroup('import_#{g['id']}');"}
                               .menu_icon_arrow 
                                 = "‣"

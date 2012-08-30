@@ -71,4 +71,18 @@ module PortfolioHelper
     end
   end
 
+  ##
+  #
+  ##
+  def student_info_on_assignment(student, assignment)
+    situation               = Assignment.status_of_actitivy_by_assignment_id_and_student_id(assignment.id, student['id']) 
+    student_send_assignment = SendAssignment.find_by_assignment_id_and_user_id(assignment.id, student['id'])
+    have_comments           = student_send_assignment.nil? ? false : (!student_send_assignment.comment.nil? or !student_send_assignment.assignment_comments.empty?)
+    grade                   = (student_send_assignment.nil? or student_send_assignment.grade.nil?) ? '-' : student_send_assignment.grade
+    send_assignment_files   = student_send_assignment.nil? ? [] : student_send_assignment.assignment_files
+    file_delivery_date      = (student_send_assignment.nil? or send_assignment_files.empty?) ? '-' : send_assignment_files.first.attachment_updated_at.strftime("%d/%m/%Y") 
+    return {"situation" => situation, "have_comments" => have_comments, "grade" => grade, "file_delivery_date" => file_delivery_date}
+  end
+
+
 end

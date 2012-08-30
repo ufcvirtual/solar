@@ -6,7 +6,7 @@ class PortfolioTeacherController < ApplicationController
 
   before_filter :prepare_for_group_selection, :only => [:index]
   before_filter :user_related_to_assignment?, :except => [:index]
-  before_filter :assignment_in_time?, :must_be_responsible, :except => [:index, :individual_activity, :assignment, :download_files]
+  before_filter :assignment_in_time?, :must_be_responsible, :except => [:index, :assignment, :download_files]
   # fazer pra assignment (atualmente, aluno pode ver atividades de outros alunos)
   # before_filter :must_have_access, :only => 
   before_filter :assignment_file_download, :only => [:download_files]
@@ -16,29 +16,6 @@ class PortfolioTeacherController < ApplicationController
     allocation_tag_id      = active_tab[:url]['allocation_tag_id']
     @individual_activities = Assignment.find_all_by_allocation_tag_id_and_type_assignment(allocation_tag_id, Individual_Activity)
     @group_activities      = Assignment.find_all_by_allocation_tag_id_and_type_assignment(allocation_tag_id, Group_Activity)
-  end
-
-  ##
-  # Informações da atividade individual escolhida na listagem com a lista de alunos daquela turma
-  ##
-  def individual_activity
-    @activity           = Assignment.find(params[:assignment_id])
-    allocation_tags     = AllocationTag.find_related_ids(@activity.allocation_tag_id).join(',')
-    @students           = PortfolioTeacher.list_students_by_allocations(allocation_tags) #alunos participantes da atividade
-    @assignment_files   = AssignmentEnunciationFile.find_all_by_assignment_id(@activity.id)  #arquivos que fazem parte da descrição da atividade
-    @grade              = []
-    @comments           = []
-    @situation          = []
-    @file_delivery_date = []
-
-    @students.each_with_index do |student, idx| #informações de cada aluno
-      @situation[idx]          = Assignment.status_of_actitivy_by_assignment_id_and_student_id(@activity.id, student['id']) 
-      student_send_assignment  = SendAssignment.find_by_assignment_id_and_user_id(@activity.id, student['id'])
-      @comments[idx]           = student_send_assignment.nil? ? false : (!student_send_assignment.comment.nil? or !student_send_assignment.assignment_comments.empty?)
-      @grade[idx]              = (student_send_assignment.nil? or student_send_assignment.grade.nil?) ? '-' : student_send_assignment.grade
-      send_assignment_files    = student_send_assignment.nil? ? [] : student_send_assignment.assignment_files
-      @file_delivery_date[idx] = (student_send_assignment.nil? or send_assignment_files.empty?) ? '-' : send_assignment_files.first.attachment_updated_at.strftime("%d/%m/%Y") 
-    end
   end
 
   ##

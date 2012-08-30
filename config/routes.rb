@@ -82,7 +82,6 @@ Solar::Application.routes.draw do
   resource :portfolio_teacher, :only => [:index], :controller => 'portfolio_teacher' do
     collection do
       get :assignment
-      get :individual_activity
       get :download_files
       post :evaluate
       post :send_comment
@@ -93,6 +92,14 @@ Solar::Application.routes.draw do
   resource :portfolio, :only => [:index], :controller => 'portfolio' do
     collection do
       get :public_files_send
+    end
+  end
+
+  resources :assignments, :only => [:show] do
+    collection do
+      get :list
+      get :list_to_student
+      get :assignment
     end
   end
 

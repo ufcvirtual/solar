@@ -9,13 +9,13 @@
       %table.tb_list
         %thead
           %tr.lines
-            %th= t(:title, :scope => [:portfolio, :information])
+            %th= t(:name, :scope => [:portfolio, :information])
             %th{:align => "right", :style => "width:170px"}= t(:date_range, :scope => [:portfolio, :information])
         %tbody
           - @individual_activities.each_with_index do |individual_activity, idx|
             %tr.lines
               %td
-                %h4= link_to individual_activity["name"], individual_activity_portfolio_teacher_path(:assignment_id => individual_activity["id"]), {:class => 'link_content'}
+                %h4= link_to individual_activity["name"], group_activity_group_assignments_path(:assignment_id => individual_activity["id"]), {:class => 'link_content'}
               %td.right 
                 = l(individual_activity.schedule.start_date, :format => :short) 
                 = '-'
@@ -34,7 +34,7 @@
       %table.tb_list
         %thead
           %tr.lines
-            %th= t(:title, :scope => [:portfolio, :information])
+            %th= t(:name, :scope => [:portfolio, :information])
             %th{:align => "right", :style => "width:170px"}= t(:date_range, :scope => [:portfolio, :information])
         %tbody
           - @group_activities.each_with_index do |group_activity, idx|

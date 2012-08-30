@@ -1,19 +1,16 @@
 module GroupAssignmentHelper
-  
-  ##
-  # Retorna os grupos de determinada atividade (assignment).
-  # Se for a edição de um grupo, há a necessidade de passar o valor do grupo que deve vir em primeiro lugar na lista. 
-  # Por isso o campo "first_of_list"
-  ##
-  def group_assignments(assignment, first_of_list = nil)
-    groups = []
-    groups << GroupAssignment.find(first_of_list) unless first_of_list.nil?
-    groups += GroupAssignment.find_all_by_assignment_id(assignment)
-    return(groups.uniq)
-  end
 
-  def group_participants(group_assignment)
-    return(GroupParticipant.all_by_group_assignment(group_assignment))
+  ##
+  # Retorna informações do grupo
+  ##
+  def info_assignment_group(group_assignment)
+    evaluated           = (group_assignment.send_assignment.nil? or group_assignment.send_assignment.grade.nil?) ? false : true
+    quantity_files_sent = (group_assignment.send_assignment.nil? ? 0 : AssignmentFile.find_all_by_send_assignment_id(group_assignment.send_assignment.id).size) 
+    can_remove          = (!evaluated and quantity_files_sent == 0 )
+    error_message       = evaluated ? t(:already_evaluated, :scope => [:portfolio, :group_assignments]) : nil
+    error_message       = (quantity_files_sent == 0) ? error_message : t(:already_sent_files, :scope => [:portfolio, :group_assignments]) 
+    error_message       = t(:delete_error, :scope => [:portfolio, :group_assignments]) + ", " + error_message.to_s unless error_message.nil?
+    return {"evaluated" => evaluated, "can_remove" => can_remove, "quantity_files_sent" => quantity_files_sent, "error_message" => error_message}
   end
 
   ##

@@ -513,6 +513,7 @@
       less: less
       students: Students
       title: Portfolio of
+      name: Name
       date: Date
     comments:
       send_comment: Enviar

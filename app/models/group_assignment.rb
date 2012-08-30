@@ -3,7 +3,7 @@ class GroupAssignment < ActiveRecord::Base
   belongs_to :assignment
 
   has_many :group_participants
-  has_many :send_assignments
+  has_one :send_assignment
 
   validates :group_name, :presence => true, :length => { :maximum => 20 }
 
@@ -73,7 +73,7 @@ end
 ##
 def delete_group
   if GroupAssignment.can_remove_group?(id)
-    participants = group_participants(id)
+    participants = GroupParticipant.all_by_group_assignment(id)
     participants.each do |participant| 
       GroupParticipant.find(participant["id"]).destroy
     end

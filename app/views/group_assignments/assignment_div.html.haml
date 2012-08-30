@@ -1,48 +1,31 @@
-- gps = group_assignments(@assignment.id)
+- groups = GroupAssignment.find_all_by_assignment_id(@assignment.id)
 
 .group_assignment_content
-  - unless gps.nil? or gps.empty?
-    - gps.each do |group|
-
-      - send_assignment  = SendAssignment.find_by_group_assignment_id(group["id"])
-      - can_manage_group = (send_assignment.nil? or send_assignment["grade"].nil?) ? true : false
-      - tooltip_group    = can_manage_group ? nil : t(:already_evaluated, :scope => [:portfolio, :group_assignments])
-
-      - files_sent           = send_assignment.nil? ? nil : AssignmentFile.find_all_by_send_assignment_id(send_assignment.id)
-      - quantity_files_sent  = files_sent.nil?      ? "0" : files_sent.size
-
-      - delete_group         = (!files_sent.nil? or can_manage_group) ? tooltip_group : t(:already_sent_files, :scope => [:portfolio, :group_assignments])
-      - tooltip_delete_group = delete_group.nil? ? nil : t(:delete_error, :scope => [:portfolio, :group_assignments]) + ", " + delete_group.to_s
-
-      .group_participants{:id => ["group", group['id']]}
-        %h3{:class => "group_name_#{can_manage_group}", :alt => "#{tooltip_delete_group}"}
-          = group["group_name"]
+  - unless groups.nil? or groups.empty?
+    - groups.each do |group|
+      - group_info = info_assignment_group(group)
+      .group_participants{:id => ["group", group.id]}
+        %h3{:class => "group_name_#{!group_info["evaluated"]}", :alt => "#{group_info["error_message"]}"}
+          = group.group_name
           %span.group_elements_float
-            = button_to t(:evaluate, :scope => [:portfolio, :evaluation]), assignment_portfolio_teacher_path(:group_id => group["id"], :assignment_id => @assignment.id), {:class => "btn btn_default evaluate_group", :alt => t(:evaluate, :scope => [:portfolio, :evaluation])}
-        %div{:class => "edit_group_#{can_manage_group}", :style => "display:none;"}
-          = text_field_tag "new_groups_names[][#{@assignment.id}]", group["group_name"], :id => "text_field_group_#{group['id']}", :class => "rename_group" 
-          %a.remove_group{:onclick => "javascript:delete_group('group_#{group['id']}', #{@assignment.id}, #{can_manage_group});", :title => "#{tooltip_delete_group}", :alt => "#{t(:remove, :group_name => group['group_name'], :scope => [:portfolio, :group_assignments])}"}= "x"
-
-        %div{:class => "group_information_#{can_manage_group}"}
-          = quantity_files_sent
+            = button_to t(:evaluate, :scope => [:portfolio, :evaluation]), assignment_portfolio_teacher_path(:group_id => group.id, :assignment_id => @assignment.id), {:class => "btn btn_default evaluate_group", :alt => t(:evaluate, :scope => [:portfolio, :evaluation])}
+        %div{:class => "edit_group_#{!group_info["evaluated"]}", :style => "display:none;"}
+          = text_field_tag "new_groups_names[][#{@assignment.id}]", group.group_name, :id => "text_field_group_#{group.id}", :class => "rename_group" 
+          %a.remove_group{:onclick => "javascript:delete_group('group_#{group.id}', #{@assignment.id}, #{group_info["can_remove"]});", :title => "#{group_info["error_message"]}", :alt => "#{t(:remove, :group_name => group.group_name, :scope => [:portfolio, :group_assignments])}"}= "x"
+        %div{:class => "group_information_#{!group_info["evaluated"]}"}
+          = group_info["quantity_files_sent"]
           = t(:files, :scope => [:portfolio, :files])
           %span.group_elements_float
             = t(:grade, :scope => [:portfolio, :information])
-            = (send_assignment.nil? or send_assignment.grade.nil?) ? "-" : send_assignment.grade
-
-        - gp = group_participants(group["id"])
-
-        %ul{:id => "#{can_manage_group}", :value => "#{group['id']}"}
-          - unless gp.empty?
-            - gp.each do |p|
-
-              - can_be_moved = AssignmentFile.find_all_by_user_id_and_send_assignment_id(p["user_id"], send_assignment.id).empty? unless send_assignment.nil?
-              - tooltip_student = (can_be_moved or !can_manage_group) ? tooltip_group : t(:already_sent_files, :scope => [:portfolio, :group_assignments])
-              - tooltip_student = t(:student_move_error, :scope => [:portfolio, :group_assignments]) + ", " + tooltip_student.to_s unless tooltip_student.nil?
-
-              %li{:class => "student_#{p['user_id']}", :value => "#{p['user_id']}", :id => "#{can_be_moved}", :onmouseover => "javascript:student_mouseover(this, '#{tooltip_student}');", :onmouseout => "javascript:student_mouseout(this);"}= p["name"]
+            = (group.send_assignment.nil? or group.send_assignment.grade.nil?) ? "-" : group.send_assignment.grade
+        - group_participants = GroupParticipant.all_by_group_assignment(group.id)
+        %ul{:id => "#{!group_info["evaluated"]}", :value => "#{group.id}"}
+          - unless group_participants.empty?
+            - group_participants.each do |participant|
+              - participant_info = info_assignment_group_participant(participant.user_id, !group_info["evaluated"], group) 
+              %li{:class => "student_#{participant.user_id}", :value => "#{participant.user_id}", :id => "#{participant_info["can_be_moved"]}", :onmouseover => "javascript:student_mouseover(this, '#{participant_info["error_message"]}');", :onmouseout => "javascript:student_mouseout(this);"}= participant.user.name
           - else
-            %li.no_students_message= t(:no_participant, :scope => [:portfolio, :group_participants])
+            %li.no_students_message= t(:no_participant, :scope => [:portfolio, :group_assignments])
 
   .group_participants
     %h3.group_name_true= t(:students_with_no_group, :scope => [:portfolio, :group_assignments])
@@ -54,6 +37,6 @@
         - @students_without_group.each do |student_without_group| 
           %li#true{:class => "student_#{student_without_group.id}", :value => "#{student_without_group.id}", :onmouseover => "javascript:student_mouseover(this, 'no_message');", :onmouseout => "student_mouseout(this);"}= student_without_group.name
       - else
-        %li.no_students_message= t(:no_participant, :scope => [:portfolio, :group_participants])
+        %li.no_students_message= t(:no_participant, :scope => [:portfolio, :group_assignments])
 
   .import_and_new_groups
