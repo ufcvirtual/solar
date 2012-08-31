@@ -5,6 +5,7 @@ class Assignment < ActiveRecord::Base
 
   has_many :assignment_enunciation_files
   has_many :send_assignments
+  has_many :group_assignments
 
   ##
   # Recupera status da atividade

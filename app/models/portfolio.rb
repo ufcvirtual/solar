@@ -48,22 +48,12 @@ SQL
   ##
   def self.find_group_participants(activity_id, user_id)
     activity_type_assignment = Assignment.find(activity_id).type_assignment
-    # acha o grupo de determinado aluno para determinado trabalho
-    group_assignment = ActiveRecord::Base.connection.select_all <<SQL
-    SELECT  t1.group_assignment_id
-      FROM group_participants AS t1
-      JOIN group_assignments  AS t2 ON t1.group_assignment_id = t2.id AND t2.assignment_id = #{activity_id}
-    WHERE #{user_id} = t1.user_id
-      AND #{activity_type_assignment} = #{Group_Activity};
-SQL
-
-    # se o aluno não estiver em nenhum grupo, retorna nulo
-    if group_assignment.empty?
-      return nil
+    #acha o grupo de determinado aluno para determinado trabalho
+    group_assignment = GroupAssignment.first(:conditions => ["group_participants.user_id = #{user_id} AND assignments.type_assignment = #{Group_Activity}"], :include => [:assignment, :group_participants])
+    if group_assignment.nil?
+      return nil #se o aluno não estiver em nenhum grupo, retorna nulo
     else
-    # caso contrário, pesquisa os participantes do grupo encontrado
-      group_participants = GroupParticipant.find_all_by_group_assignment_id(group_assignment[0]["group_assignment_id"].to_i)
-      return group_participants
+      return(GroupParticipant.find_all_by_group_assignment_id(group_assignment.id)) #caso contrário, pesquisa os participantes do grupo encontrado
     end
   end
 
@@ -91,22 +81,7 @@ SQL
   # Arquivos da area publica
   ##
   def self.public_area(group_id, user_id)
-
-    pa = ActiveRecord::Base.connection.select_all <<SQL
-    SELECT t1.id,
-           t1.attachment_file_name,
-           t1.attachment_content_type,
-           t1.attachment_file_size,
-           t1.attachment_updated_at
-      FROM public_files AS t1
-      JOIN allocation_tags AS t2 ON t2.id = t1.allocation_tag_id
-      JOIN users AS t3 ON t3.id = t1.user_id
-     WHERE t3.id = #{user_id}
-       AND t2.group_id = #{group_id};
-SQL
-
-    return (pa.nil?) ? [] : pa
-
+    return(PublicFile.all(:conditions => ["users.id = #{user_id} AND allocation_tags.group_id = #{group_id}"], :include => [:allocation_tag, :user], :select => ["attachment_file_name, attachment_content_type, attachment_file_size, attachment_updated_at"]))
   end
 
 end

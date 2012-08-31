@@ -99,7 +99,11 @@ Solar::Application.routes.draw do
     collection do
       get :list
       get :list_to_student
-      get :assignment
+    end
+    member do
+      get :information
+      post :evaluate
+      post :send_comment
     end
   end
 

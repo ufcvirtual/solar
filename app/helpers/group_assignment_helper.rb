@@ -13,13 +13,6 @@ module GroupAssignmentHelper
     return {"evaluated" => evaluated, "can_remove" => can_remove, "quantity_files_sent" => quantity_files_sent, "error_message" => error_message}
   end
 
-  ##
-  # Retorna os alunos sem grupo daquela atividade
-  ##
-  def no_group_students(assignment_id)
-  	return(GroupAssignment.all_without_group(assignment_id))
-  end
-
   ##        
   # Verifica se a atividade enviada já possui grupos e se alguma outra atividade já tem grupos criados
   ##          

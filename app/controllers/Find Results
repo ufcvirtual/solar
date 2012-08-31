@@ -1,0 +1,372 @@
+Searching 927 files for "all_by_group_id" (whole word)
+
+/home/bianca/Projects/solar/app/controllers/group_assignments_controller.rb:
+   84    def import_groups_page
+   85      group_id       = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
+   86:     @assignments   = GroupAssignment.all_by_group_id(group_id)
+   87      @assignment_id = params[:assignment_id]
+   88      render :layout => false
+
+/home/bianca/Projects/solar/app/helpers/group_assignment_helper.rb:
+   19    def verify_group_of_assignments(assignment_id) 
+   20      assignment_without_groups = GroupAssignment.find_all_by_assignment_id(assignment_id).empty?
+   21:     all_assignments = GroupAssignment.all_by_group_id(Assignment.find(assignment_id).allocation_tag.group_id)
+   22      all_assignments_id = all_assignments.collect{|assignment| assignment["id"].to_i} unless all_assignments.empty?
+   23      some_assignment_has_groups = !GroupAssignment.where(:assignment_id => all_assignments_id).empty? unless all_assignments_id.nil?
+
+/home/bianca/Projects/solar/app/models/group_assignment.rb:
+   17   
+   18    #retorna atividades de grupo de acordo com a turma
+   19:   def self.all_by_group_id(group_id)
+   20      oi1 = Assignment.all(:select => ["id, name, enunciation, schedules.start_date, schedules.end_date"], :join => [:allocation_tags, :schedules], :order => "schedules.start_date")
+   21  
+
+3 matches across 3 files
+
+
+Searching 927 files for "verify_group_of_assignments" (whole word)
+
+/home/bianca/Projects/solar/app/controllers/application_controller.rb:
+  192    ##
+  193    def can_import?
+  194:     if verify_group_of_assignments(params[:assignment_id])
+  195        return true
+  196      else
+
+/home/bianca/Projects/solar/app/helpers/group_assignment_helper.rb:
+   17    # Verifica se a atividade enviada já possui grupos e se alguma outra atividade já tem grupos criados
+   18    ##          
+   19:   def verify_group_of_assignments(assignment_id) 
+   20      assignment_without_groups = GroupAssignment.find_all_by_assignment_id(assignment_id).empty?
+   21      all_assignments = GroupAssignment.all_by_group_id(Assignment.find(assignment_id).allocation_tag.group_id)
+
+/home/bianca/Projects/solar/app/views/group_assignments/group_activity.html.haml:
+   66          - if can? :manage_groups, GroupAssignment and must_be_responsible(@assignment.id)
+   67            - btn_class = assignment_in_time?(@assignment.id) ? "btn btn_main" : "btn btn_disabled"
+   68:           = button_tag t(:manage_groups, :scope => [:portfolio, :group_assignments]), :class => btn_class, :id => "manage_group_assignment", :alt => t(:manage_groups, :scope => [:portfolio, :group_assignments]), :onclick => "javascript:btn_manage_groups('#{@assignment.id}', '#{verify_group_of_assignments(@assignment.id)}');", :disabled => !assignment_in_time?(@assignment.id)
+   69            = button_tag(:type => 'button', :class => "btn btn_caution", :id => "cancel_changes_assignment", :alt => t(:cancel, :scope => [:portfolio, :group_assignments]), :onclick => "javascript:btn_cancel('#{@assignment.id}');") do
+   70              =content_tag(:span, t(:cancel, :scope => [:portfolio, :group_assignments]))
+
+/home/bianca/Projects/solar/log/development.log:
+ 45408  end_date: ''2012-07-13 00:00:00''
+ 45409  ')):
+ 45410:   app/helpers/group_assignment_helper.rb:32:in `verify_group_of_assignments'
+ 45411    app/controllers/application_controller.rb:188:in `can_import?'
+ 45412  
+ .....
+ 45482  end_date: ''2012-07-13 00:00:00''
+ 45483  ')):
+ 45484:   app/helpers/group_assignment_helper.rb:32:in `verify_group_of_assignments'
+ 45485    app/controllers/application_controller.rb:188:in `can_import?'
+ 45486  
+ .....
+ 45518  end_date: ''2012-07-13 00:00:00''
+ 45519  ')):
+ 45520:   app/helpers/group_assignment_helper.rb:32:in `verify_group_of_assignments'
+ 45521    app/controllers/application_controller.rb:188:in `can_import?'
+ 45522  
+ .....
+ 45573  end_date: ''2012-07-13 00:00:00''
+ 45574  ')):
+ 45575:   app/helpers/group_assignment_helper.rb:32:in `verify_group_of_assignments'
+ 45576    app/controllers/application_controller.rb:188:in `can_import?'
+ 45577  
+ .....
+ 45609  end_date: ''2012-07-13 00:00:00''
+ 45610  ')):
+ 45611:   app/helpers/group_assignment_helper.rb:33:in `verify_group_of_assignments'
+ 45612    app/controllers/application_controller.rb:188:in `can_import?'
+ 45613  
+ .....
+ 45645  end_date: ''2012-07-13 00:00:00''
+ 45646  ')):
+ 45647:   app/helpers/group_assignment_helper.rb:32:in `verify_group_of_assignments'
+ 45648    app/controllers/application_controller.rb:188:in `can_import?'
+ 45649  
+ .....
+ 45660  
+ 45661  RuntimeError (true):
+ 45662:   app/helpers/group_assignment_helper.rb:31:in `verify_group_of_assignments'
+ 45663    app/controllers/application_controller.rb:188:in `can_import?'
+ 45664  
+ .....
+ 45675  
+ 45676  RuntimeError ([{"id"=>"4", "name"=>"Atividade em grupo I", "enunciation"=>"esse Ã© o enunciado de um trabalho em grupo... :)", "start_date"=>"2012-04-13 00:00:00", "end_date"=>"2012-07-13 00:00:00"}, {"id"=>"5", "name"=>"Atividade em grupo II", "enunciation"=>"esse Ã© o enunciado do 2o trabalho em grupo... :)", "start_date"=>"2012-04-13 00:00:00", "end_date"=>"2012-07-13 00:00:00"}]):
+ 45677:   app/helpers/group_assignment_helper.rb:32:in `verify_group_of_assignments'
+ 45678    app/controllers/application_controller.rb:188:in `can_import?'
+ 45679  
+ .....
+ 45711  end_date: ''2012-07-13 00:00:00''
+ 45712  ')):
+ 45713:   app/helpers/group_assignment_helper.rb:32:in `verify_group_of_assignments'
+ 45714    app/controllers/application_controller.rb:188:in `can_import?'
+ 45715  
+ .....
+ 45850  end_date: ''2012-07-13 00:00:00''
+ 45851  ')):
+ 45852:   app/helpers/group_assignment_helper.rb:32:in `verify_group_of_assignments'
+ 45853    app/controllers/application_controller.rb:188:in `can_import?'
+ 45854  
+ .....
+ 46216      48:                       <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
+ 46217      49:                  </div>
+ 46218:     50:                  <% if verify_group_of_assignments(a["id"]) %>
+ 46219      51:                   <input type="button" value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => 1, :assignment_id => a["id"].to_i)%>', '');"/>
+ 46220      52:                  <% end %>
+ 46221      53:               </div>
+ 46222:   app/helpers/group_assignment_helper.rb:32:in `verify_group_of_assignments'
+ 46223    app/views/group_assignments/index.html.erb:50:in `block in _app_views_group_assignments_index_html_erb__201615939_101121680'
+ 46224    app/views/group_assignments/index.html.erb:14:in `each'
+ .....
+ 46269      48:                       <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
+ 46270      49:                  </div>
+ 46271:     50:                  <% if verify_group_of_assignments(a["id"]) %>
+ 46272      51:                   <input type="button" value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => 1, :assignment_id => a["id"].to_i)%>', '');"/>
+ 46273      52:                  <% end %>
+ 46274      53:               </div>
+ 46275:   app/helpers/group_assignment_helper.rb:32:in `verify_group_of_assignments'
+ 46276    app/views/group_assignments/index.html.erb:50:in `block in _app_views_group_assignments_index_html_erb__201615939_101121680'
+ 46277    app/views/group_assignments/index.html.erb:14:in `each'
+ .....
+ 46301      48:                       <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
+ 46302      49:                  </div>
+ 46303:     50:                  <% if verify_group_of_assignments(a["id"]) %>
+ 46304      51:                   <input type="button" value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => 1, :assignment_id => a["id"].to_i)%>', '');"/>
+ 46305      52:                  <% end %>
+ 46306      53:               </div>
+ 46307:   app/helpers/group_assignment_helper.rb:32:in `verify_group_of_assignments'
+ 46308    app/views/group_assignments/index.html.erb:50:in `block in _app_views_group_assignments_index_html_erb__201615939_101121680'
+ 46309    app/views/group_assignments/index.html.erb:14:in `each'
+ .....
+ 46333      48:                       <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
+ 46334      49:                  </div>
+ 46335:     50:                  <% if verify_group_of_assignments(a["id"]) %>
+ 46336      51:                   <input type="button" value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => 1, :assignment_id => a["id"].to_i)%>', '');"/>
+ 46337      52:                  <% end %>
+ 46338      53:               </div>
+ 46339    app/helpers/group_assignment_helper.rb:33:in `map'
+ 46340:   app/helpers/group_assignment_helper.rb:33:in `verify_group_of_assignments'
+ 46341    app/views/group_assignments/index.html.erb:50:in `block in _app_views_group_assignments_index_html_erb__201615939_101121680'
+ 46342    app/views/group_assignments/index.html.erb:14:in `each'
+ .....
+ 46366      48:                       <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
+ 46367      49:                  </div>
+ 46368:     50:                  <% if verify_group_of_assignments(a["id"]) %>
+ 46369      51:                   <input type="button" value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => 1, :assignment_id => a["id"].to_i)%>', '');"/>
+ 46370      52:                  <% end %>
+ 46371      53:               </div>
+ 46372:   app/helpers/group_assignment_helper.rb:32:in `verify_group_of_assignments'
+ 46373    app/views/group_assignments/index.html.erb:50:in `block in _app_views_group_assignments_index_html_erb__201615939_101121680'
+ 46374    app/views/group_assignments/index.html.erb:14:in `each'
+ .....
+ 46398      48:                       <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
+ 46399      49:                  </div>
+ 46400:     50:                  <% if verify_group_of_assignments(a["id"]) %>
+ 46401      51:                   <input type="button" value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => 1, :assignment_id => a["id"].to_i)%>', '');"/>
+ 46402      52:                  <% end %>
+ 46403      53:               </div>
+ 46404:   app/helpers/group_assignment_helper.rb:33:in `verify_group_of_assignments'
+ 46405    app/views/group_assignments/index.html.erb:50:in `block in _app_views_group_assignments_index_html_erb__201615939_101121680'
+ 46406    app/views/group_assignments/index.html.erb:14:in `each'
+ .....
+ 46430      48:                       <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
+ 46431      49:                  </div>
+ 46432:     50:                  <% if verify_group_of_assignments(a["id"]) %>
+ 46433      51:                   <input type="button" value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => 1, :assignment_id => a["id"].to_i)%>', '');"/>
+ 46434      52:                  <% end %>
+ 46435      53:               </div>
+ 46436:   app/helpers/group_assignment_helper.rb:33:in `verify_group_of_assignments'
+ 46437    app/views/group_assignments/index.html.erb:50:in `block in _app_views_group_assignments_index_html_erb__201615939_101121680'
+ 46438    app/views/group_assignments/index.html.erb:14:in `each'
+ .....
+ 46462      48:                       <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
+ 46463      49:                  </div>
+ 46464:     50:                  <% if verify_group_of_assignments(a["id"]) %>
+ 46465      51:                   <input type="button" value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => 1, :assignment_id => a["id"].to_i)%>', '');"/>
+ 46466      52:                  <% end %>
+ 46467      53:               </div>
+ 46468:   app/helpers/group_assignment_helper.rb:32:in `block in verify_group_of_assignments'
+ 46469    app/helpers/group_assignment_helper.rb:32:in `each'
+ 46470:   app/helpers/group_assignment_helper.rb:32:in `verify_group_of_assignments'
+ 46471    app/views/group_assignments/index.html.erb:50:in `block in _app_views_group_assignments_index_html_erb__201615939_101121680'
+ 46472    app/views/group_assignments/index.html.erb:14:in `each'
+ .....
+ 46496      48:                       <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
+ 46497      49:                  </div>
+ 46498:     50:                  <% if verify_group_of_assignments(a["id"]) %>
+ 46499      51:                   <input type="button" value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => 1, :assignment_id => a["id"].to_i)%>', '');"/>
+ 46500      52:                  <% end %>
+ 46501      53:               </div>
+ 46502:   app/helpers/group_assignment_helper.rb:33:in `verify_group_of_assignments'
+ 46503    app/views/group_assignments/index.html.erb:50:in `block in _app_views_group_assignments_index_html_erb__201615939_101121680'
+ 46504    app/views/group_assignments/index.html.erb:14:in `each'
+ .....
+ 46549      48:                       <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
+ 46550      49:                  </div>
+ 46551:     50:                  <% if verify_group_of_assignments(a["id"]) %>
+ 46552      51:                   <input type="button" value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => 1, :assignment_id => a["id"].to_i)%>', '');"/>
+ 46553      52:                  <% end %>
+ 46554      53:               </div>
+ 46555:   app/helpers/group_assignment_helper.rb:34:in `verify_group_of_assignments'
+ 46556    app/views/group_assignments/index.html.erb:50:in `block in _app_views_group_assignments_index_html_erb__201615939_101121680'
+ 46557    app/views/group_assignments/index.html.erb:14:in `each'
+ .....
+ 46602      48:                       <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
+ 46603      49:                  </div>
+ 46604:     50:                  <% if verify_group_of_assignments(a["id"]) %>
+ 46605      51:                   <input type="button" value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => 1, :assignment_id => a["id"].to_i)%>', '');"/>
+ 46606      52:                  <% end %>
+ 46607      53:               </div>
+ 46608:   app/helpers/group_assignment_helper.rb:34:in `verify_group_of_assignments'
+ 46609    app/views/group_assignments/index.html.erb:50:in `block in _app_views_group_assignments_index_html_erb__201615939_101121680'
+ 46610    app/views/group_assignments/index.html.erb:14:in `each'
+ .....
+ 46634      48:                       <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
+ 46635      49:                  </div>
+ 46636:     50:                  <% if verify_group_of_assignments(a["id"]) %>
+ 46637      51:                   <input type="button" value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => 1, :assignment_id => a["id"].to_i)%>', '');"/>
+ 46638      52:                  <% end %>
+ 46639      53:               </div>
+ 46640:   app/helpers/group_assignment_helper.rb:33:in `verify_group_of_assignments'
+ 46641    app/views/group_assignments/index.html.erb:50:in `block in _app_views_group_assignments_index_html_erb__201615939_101121680'
+ 46642    app/views/group_assignments/index.html.erb:14:in `each'
+ .....
+ 46666      48:                       <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
+ 46667      49:                  </div>
+ 46668:     50:                  <% if verify_group_of_assignments(a["id"]) %>
+ 46669      51:                   <input type="button" value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => 1, :assignment_id => a["id"].to_i)%>', '');"/>
+ 46670      52:                  <% end %>
+ 46671      53:               </div>
+ 46672:   app/helpers/group_assignment_helper.rb:33:in `verify_group_of_assignments'
+ 46673    app/views/group_assignments/index.html.erb:50:in `block in _app_views_group_assignments_index_html_erb__201615939_101121680'
+ 46674    app/views/group_assignments/index.html.erb:14:in `each'
+ .....
+ 46698      48:                       <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
+ 46699      49:                  </div>
+ 46700:     50:                  <% if verify_group_of_assignments(a["id"]) %>
+ 46701      51:                   <input type="button" value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => 1, :assignment_id => a["id"].to_i)%>', '');"/>
+ 46702      52:                  <% end %>
+ 46703      53:               </div>
+ 46704:   app/helpers/group_assignment_helper.rb:33:in `verify_group_of_assignments'
+ 46705    app/views/group_assignments/index.html.erb:50:in `block in _app_views_group_assignments_index_html_erb__201615939_101121680'
+ 46706    app/views/group_assignments/index.html.erb:14:in `each'
+ .....
+ 47761      48:                       <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
+ 47762      49:                  </div>
+ 47763:     50:                  <% if verify_group_of_assignments(a["id"]) %>
+ 47764      51:                     <input type="button" value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => group_assignments.first.id, :assignment_id => a["id"].to_i)%>', '');"/>
+ 47765      52:                  <% end %>
+ .....
+ 47793      48:                       <%= button_to t(:group_assignment_new), {:controller => :group_assignments, :action => :new, :assignment_id => a["id"]}, :class=>'btn btn_default' %>
+ 47794      49:                  </div>
+ 47795:     50:                  <% if verify_group_of_assignments(a["id"]) %>
+ 47796      51:                     <input type="button" value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => GroupAssignments.first.id, :assignment_id => a["id"].to_i)%>', '');"/>
+ 47797      52:                  <% end %>
+ .....
+ 86265      62: 
+ 86266      63:         <span id='btn_import_<%=@assignment.id%>' style='display: none;'>
+ 86267:     64:           <% if verify_group_of_assignments(a["id"]) %>
+ 86268      65:             <input type="button" id='import_to_<%=@assignment.id%>' value='<%=t(:group_assignment_import)%>' class="btn btn_default" onclick="showImportGroupBox('<%= url_for(:controller => :group_assignments, :action => :import_groups_page, :id => GroupAssignment.first.id, :assignment_id => @assignment.id)%>', '');"/>
+ 86269      66:           <% end %>
+ .....
+ 498901    var url            = \'');@output_buffer.append= ( ...
+ 498902                          ^):
+ 498903:     86:         <%= button_tag t(:manage_groups_assignments), :class => "btn btn_main", :id => "manage_group_assignment", :onclick => "btn_manage_groups('#{@assignment.id}', '#{verify_group_of_assignments(@assignment.id)}');" %>
+ 498904      87:         <%= button_tag(:type => 'button', :class => "btn btn_caution", :id => "cancel_changes_assignment", :onclick => "btn_cancel('<%=@assignment.id%>');") do
+ 498905      88:           content_tag(t(:group_assignment_cancel))
+ .....
+ 499153    var url            = \'');@output_buffer.append= ( ...
+ 499154                          ^):
+ 499155:     86:         <%= button_tag t(:manage_groups_assignments), :class => "btn btn_main", :id => "manage_group_assignment", :onclick => "btn_manage_groups('#{@assignment.id}', '#{verify_group_of_assignments(@assignment.id)}');" %>
+ 499156      87:         <%= button_tag(:type => 'button', :class => "btn btn_caution", :id => "cancel_changes_assignment", :onclick => "btn_cancel('<%=@assignment.id%>');") do
+ 499157      88:           content_tag(:strong, t(:group_assignment_cancel))
+ .....
+ 499409    var url            = \'');@output_buffer.append= ( ...
+ 499410                          ^):
+ 499411:     86:         <%= button_tag t(:manage_groups_assignments), :class => "btn btn_main", :id => "manage_group_assignment", :onclick => "btn_manage_groups('#{@assignment.id}', '#{verify_group_of_assignments(@assignment.id)}');" %>
+ 499412      87:         <%= button_tag(:type => 'button', :class => "btn btn_caution", :id => "cancel_changes_assignment", :onclick => "btn_cancel('<%=@assignment.id%>');") do
+ 499413      88:           content_tag(:strong, t(:group_assignment_cancel))
+ .....
+ 499665    var url            = \'');@output_buffer.append= ( ...
+ 499666                          ^):
+ 499667:     86:         <%= button_tag t(:manage_groups_assignments), :class => "btn btn_main", :id => "manage_group_assignment", :onclick => "btn_manage_groups('#{@assignment.id}', '#{verify_group_of_assignments(@assignment.id)}');" %>
+ 499668      87:         <%= button_tag(:type => 'button', :class => "btn btn_caution", :id => "cancel_changes_assignment", :onclick => "btn_cancel('<%=@assignment.id%>');") do
+ 499669      88:           content_tag(:strong, t(:group_assignment_cancel))
+
+49 matches across 4 files
+
+
+Searching 927 files for "students_without_groups" (whole word)
+
+/home/bianca/Projects/solar/app/controllers/assignments_controller.rb:
+   54      @students               = is_group_assignment ? [] : PortfolioTeacher.list_students_by_allocations(allocation_tags) #alunos participantes da atividade
+   55      @groups                 = is_group_assignment ? group_assignments(@assignment.id) : []
+   56:     @students_without_group = is_group_assignment ? GroupAssignment.students_without_groups(@assignment.id) : [] #alunos da turma sem grupo
+   57  
+   58      @grade              = []
+
+/home/bianca/Projects/solar/app/controllers/group_assignments_controller.rb:
+   19      if @assignment.type_assignment == Group_Activity 
+   20        @groups                 = GroupAssignment.find_all_by_assignment_id(@assignment.id)
+   21:       @students_without_group = GroupAssignment.students_without_groups(@assignment.id) #alunos da turma sem grupo  
+   22      else
+   23        allocation_tags = AllocationTag.find_related_ids(@assignment.allocation_tag_id).join(',')
+   ..
+   33      #id dos grupos excluídos
+   34      deleted_groups_ids      = params['deleted_groups_divs_ids'].blank? ? [] : params['deleted_groups_divs_ids'].collect{ |group| group.tr('_', ' ').split[1] } #"group_2" => 2
+   35:     @students_without_group = GroupAssignment.students_without_groups(@assignment.id) #alunos da turma sem grupo
+   36      
+   37      unless params['btn_cancel'] # clicou em "salvar"
+   ..
+   61            end
+   62            
+   63:           @students_without_group = GroupAssignment.students_without_groups(@assignment.id) #alunos da turma sem grupo (após alterações)
+   64            respond_to do |format|
+   65              format.html { render 'assignment_div', :layout => false }
+
+/home/bianca/Projects/solar/log/development.log:
+ 606036  Completed 500 Internal Server Error in 77ms
+ 606037  
+ 606038: NoMethodError (undefined method `students_without_groups' for #<Class:0xb5d96b64>):
+ 606039    app/controllers/group_assignments_controller.rb:21:in `group_activity'
+ 606040  
+
+5 matches across 3 files
+
+
+Searching 927 files for "students_without_groups"
+
+/home/bianca/Projects/solar/app/controllers/assignments_controller.rb:
+   54      @students               = is_group_assignment ? [] : PortfolioTeacher.list_students_by_allocations(allocation_tags) #alunos participantes da atividade
+   55      @groups                 = is_group_assignment ? group_assignments(@assignment.id) : []
+   56:     @students_without_group = is_group_assignment ? GroupAssignment.students_without_groups(@assignment.id) : [] #alunos da turma sem grupo
+   57  
+   58      @grade              = []
+
+/home/bianca/Projects/solar/app/controllers/group_assignments_controller.rb:
+   19      if @assignment.type_assignment == Group_Activity 
+   20        @groups                 = GroupAssignment.find_all_by_assignment_id(@assignment.id)
+   21:       @students_without_group = GroupAssignment.students_without_groups(@assignment.id) #alunos da turma sem grupo  
+   22      else
+   23        allocation_tags = AllocationTag.find_related_ids(@assignment.allocation_tag_id).join(',')
+   ..
+   33      #id dos grupos excluídos
+   34      deleted_groups_ids      = params['deleted_groups_divs_ids'].blank? ? [] : params['deleted_groups_divs_ids'].collect{ |group| group.tr('_', ' ').split[1] } #"group_2" => 2
+   35:     @students_without_group = GroupAssignment.students_without_groups(@assignment.id) #alunos da turma sem grupo
+   36      
+   37      unless params['btn_cancel'] # clicou em "salvar"
+   ..
+   61            end
+   62            
+   63:           @students_without_group = GroupAssignment.students_without_groups(@assignment.id) #alunos da turma sem grupo (após alterações)
+   64            respond_to do |format|
+   65              format.html { render 'assignment_div', :layout => false }
+
+/home/bianca/Projects/solar/log/development.log:
+ 606036  Completed 500 Internal Server Error in 77ms
+ 606037  
+ 606038: NoMethodError (undefined method `students_without_groups' for #<Class:0xb5d96b64>):
+ 606039    app/controllers/group_assignments_controller.rb:21:in `group_activity'
+ 606040  
+
+5 matches across 3 files

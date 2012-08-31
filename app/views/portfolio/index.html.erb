@@ -15,7 +15,7 @@
             </span>                
           </th>
           <th align="center" style="width:70px"><%= t(:date_name)%></th>
-          <th align="center" style="width:80px"><%= t(:situation, :scope => [:portfolio, :information]) %></th>
+          <th align="right" style="width:80px"><%= t(:situation, :scope => [:portfolio, :information]) %></th>
           <th align="center" style="width:40px"><%= t(:grade, :scope => [:portfolio, :information]) %></th>
           <th align="center" style="width:80px"><%= t(:comments, :scope => [:portfolio, :comments]) %></th>
         </tr>
@@ -42,7 +42,7 @@
             <td class="center">
               <%=l ia["start_date"].to_time, :format => :files %><br /><%=l ia["end_date"].to_time, :format => :files %>
             </td>
-            <td class="center">
+            <td>
               <%=link_to t(ia["correction"].to_sym), {:action => :activity_details, :id => ia["id"]}, :class => "assignment_#{ia["correction"]}" %>
             </td>
             <td class="center">
@@ -79,7 +79,7 @@
             </span>                
           </th>
           <th align="center" style="width:70px"><%= t(:date_name)%></th>
-          <th align="center" style="width:80px"><%= t(:situation, :scope => [:portfolio, :information]) %></th>
+          <th align="right" style="width:80px"><%= t(:situation, :scope => [:portfolio, :information]) %></th>
           <th align="center" style="width:40px"><%= t(:grade, :scope => [:portfolio, :information]) %></th>
           <th align="center" style="width:80px"><%= t(:comments, :scope => [:portfolio, :comments]) %></th>
         </tr>
@@ -87,21 +87,22 @@
 
       <tbody>
         <% @group_activities.each_with_index do |ia, idx| %>
+          <% group_info = student_assignment_group_info(ia["id"], @student_id) %>
           <tr class="lines">
             <td>
               <h4><%= link_to ia["name"], {:controller => :portfolio, :action => :activity_details, :id => ia["id"]}, {:class => 'link_content'} %></h4>
                 <div class="enunciation">
                   <div class="enunciation_slice"><%= ia["enunciation"].slice(0..180) << '...' %></div>
                   <div class="enunciation_complete"><%= ia["enunciation"] %>
-                      <% unless @groups_names[ia["id"].to_i].nil? %>
+                      <% unless group_info["group_name"].nil? %>
                         <div>
-                          <%= t(:group, :scope => [:portfolio, :group_assignments]) %>: <%= @groups_names[ia["id"].to_i] %>
+                          <%= t(:group, :scope => [:portfolio, :group_assignments]) %>: <%= group_info["group_name"] %>
                         </div>
                         <div>
                           <%= t(:participants, :scope => [:portfolio, :group_assignments]) %>: 
-                          <% for participant in @groups_participants[ia["id"].to_i] %>
+                          <% group_info["groups_participants"].each do |participant| %>
                             <%= participant.user.name %>
-                            <% unless participant == @groups_participants[ia["id"].to_i].last %> , <% end %>
+                            <% unless participant == group_info["groups_participants"].last %> , <% end %>
                           <% end %>
                         </div>
                       <% else %>
@@ -119,7 +120,7 @@
             <td class="center">
               <%=l ia["start_date"].to_time, :format => :files %><br /><%=l ia["end_date"].to_time, :format => :files %>
             </td>
-            <td class="center">
+            <td>
               <%=link_to t(ia["correction"].to_sym), {:action => :activity_details, :id => ia["id"]}, :class => "assignment_#{ia["correction"]}" %>
             </td>
             <td class="center">
@@ -155,16 +156,16 @@
                 <%= image_tag icon_attachment(pa["attachment_file_name"]) %>
               </td>
               <td>
-                <%= link_to pa["attachment_file_name"], download_files_portfolio_teacher_path(:file_id => pa["id"], :type => "public"), {:class => 'link_content'} %>
+                <%= link_to pa.attachment_file_name, download_files_portfolio_teacher_path(:file_id => pa["id"], :type => "public"), {:class => 'link_content'} %>
               </td>
               <td class="file_data_info" style="width: 80px;" align="center">
-                <%= format('%.2f KB', pa["attachment_file_size"].to_i/1024.0) %>
+                <%= format('%.2f KB', pa.attachment_file_size.to_i/1024.0) %>
               </td>
               <td class="file_data_info" style="width: 100px;" align="center">
-                <%=l pa["attachment_updated_at"].to_time, :format => :files  %>
+                <%=l pa.attachment_updated_at.to_time, :format => :files  %>
               </td>
               <td style="width: 60px" align="center">
-                <%= button_to t(:delete, :scope => [:portfolio, :files]), {:controller => :portfolio, :action => :delete_file_public_area, :id => pa["id"]}, :confirm => t(:delete_msg, :scope => [:portfolio, :files]), :class=>'btn btn_caution' %>
+                <%= button_to t(:delete, :scope => [:portfolio, :files]), {:controller => :portfolio, :action => :delete_file_public_area, :id => pa.id}, :confirm => t(:delete_msg, :scope => [:portfolio, :files]), :class=>'btn btn_caution' %>
               </td>
             </tr>
           <% end %>

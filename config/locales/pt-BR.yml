@@ -719,7 +719,7 @@
       &nbsp;&nbsp;- Documentos PDF<br />
       &nbsp;&nbsp;- Arquivos de Video (avi, mpeg,...)<br />
       &nbsp;&nbsp;- Arquivos de Audio (mp3, wma...)"
-      sent_files: Arquivos Enviados
+      sent_files: Arquivos enviados
       error_delete: Erro ao tentar excluir arquivo
       delete_interval_error: Modificação de arquivos fora do intervalo permitido
       send_interval_error: Envio de arquivos fora do intervalo permitido
@@ -733,6 +733,7 @@
       date_range_expired: Prazo para realizar esta ação expirou
     group_assignments:
       group: Grupo
+      groups: Grupos
       participants: Participantes
       cancel: Cancelar
       new_group: Novo grupo

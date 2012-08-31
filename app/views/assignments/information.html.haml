@@ -61,14 +61,14 @@
     .block_title
       %h2
         = image_tag("icon_participants.png", :alt => " ", :class=>'block_title_icon')
-        = @assignment.name
+        = t(:groups, :scope => [:portfolio, :group_assignments])
       %span.group_elements_float
-        - if can? :manage_groups, GroupAssignment and must_be_responsible(@assignment.id)
-          - btn_class = assignment_in_time?(@assignment.id) ? "btn btn_main" : "btn btn_disabled"
-          = button_tag t(:manage_groups, :scope => [:portfolio, :group_assignments]), :class => btn_class, :id => "manage_group_assignment", :alt => t(:manage_groups, :scope => [:portfolio, :group_assignments]), :onclick => "javascript:btn_manage_groups('#{@assignment.id}', '#{verify_group_of_assignments(@assignment.id)}');", :disabled => !assignment_in_time?(@assignment.id)
-          = button_tag(:type => 'button', :class => "btn btn_caution", :id => "cancel_changes_assignment", :alt => t(:cancel, :scope => [:portfolio, :group_assignments]), :onclick => "javascript:btn_cancel('#{@assignment.id}');") do
-            =content_tag(:span, t(:cancel, :scope => [:portfolio, :group_assignments]))
-          = button_tag t(:save, :scope => [:portfolio, :group_assignments]), :class => "btn btn_main", :id => "save_changes_assignment", :alt => t(:save, :scope => [:portfolio, :group_assignments]), :onclick => "javascript:btn_save('#{@assignment.id}');"
+        -# if can? :manage_groups, GroupAssignment and must_be_responsible(@assignment.id)
+          -# btn_class = assignment_in_time?(@assignment.id) ? "btn btn_main" : "btn btn_disabled"
+          =# button_tag t(:manage_groups, :scope => [:portfolio, :group_assignments]), :class => btn_class, :id => "manage_group_assignment", :alt => t(:manage_groups, :scope => [:portfolio, :group_assignments]), :onclick => "javascript:btn_manage_groups('#{@assignment.id}', '#{verify_group_of_assignments(@assignment.id)}');", :disabled => !assignment_in_time?(@assignment.id)
+          =# button_tag(:type => 'button', :class => "btn btn_caution", :id => "cancel_changes_assignment", :alt => t(:cancel, :scope => [:portfolio, :group_assignments]), :onclick => "javascript:btn_cancel('#{@assignment.id}');") do
+            =#content_tag(:span, t(:cancel, :scope => [:portfolio, :group_assignments]))
+          =# button_tag t(:save, :scope => [:portfolio, :group_assignments]), :class => "btn btn_main", :id => "save_changes_assignment", :alt => t(:save, :scope => [:portfolio, :group_assignments]), :onclick => "javascript:btn_save('#{@assignment.id}');"
     .group_assignment_content
       .group_assignment_content
         - unless @groups.nil? or @groups.empty?
@@ -78,7 +78,7 @@
               %h3{:class => "group_name_#{!group_info["evaluated"]}", :alt => "#{group_info["error_message"]}"}
                 = group.group_name
                 %span.group_elements_float
-                  = button_to t(:evaluate, :scope => [:portfolio, :group_assignments]), assignment_portfolio_teacher_path(:group_id => group.id, :assignment_id => @assignment.id), {:class => "btn btn_default evaluate_group", :alt => t(:evaluate, :scope => [:portfolio, :group_assignments])}
+                  = button_to t(:evaluate, :scope => [:portfolio, :group_assignments]), assignment_path(@assignment.id, :group_id => group.id), {:class => "btn btn_default evaluate_group", :alt => t(:evaluate, :scope => [:portfolio, :group_assignments])}
               %div{:class => "edit_group_#{!group_info["evaluated"]}"}
                 = text_field_tag "new_groups_names[][#{@assignment.id}]", group.group_name, :id => "text_field_group_#{group.id}", :class => "rename_group"
                 %a.remove_group{:onclick => "javascript:delete_group('group_#{group.id}', #{@assignment.id}, #{group_info["can_remove"]});", :alt => "#{t(:remove, :group_name => group.group_name, :scope => [:portfolio, :group_assignments])}", :title => group_info["error_message"]}= "x"
@@ -131,7 +131,7 @@
             - student_info = assignment_participant_info(student, @assignment)
             %tr.lines
               %td
-                = link_to student["name"], assignment_portfolio_teacher_path(:student_id => student["id"], :group_id => nil, :assignment_id => @assignment.id), :class => :link_content
+                = link_to student["name"], assignment_path(@assignment.id, :student_id => student["id"]), :class => :link_content
               %td{:align => "center"}
                 = student_info["file_delivery_date"]
               %td{:class => "assignment_#{student_info["situation"]}"}

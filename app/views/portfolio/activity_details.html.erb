@@ -164,17 +164,17 @@
       <% else %>
         <div class="block_content_text"><%= t(:itens_not_found) %></div>
       <% end %>
-        <!-- Enviar arquivos -->
-        <div style="background-color:white;padding-top:6px">
-          <% if @situation != 'not_started' && @delete_files %>
-          <% group_assignment_id = @group_participants.first.group_assignment_id unless @group_participants.nil? %>
-            <%= form_for(:assignment_file, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files_individual_area', :assignment_id => params[:id], :group_assignment_id => group_assignment_id}) do |f| %>
-              <p><%= f.file_field :attachment%><%= f.submit t(:send), :class => "btn btn_default"%></p>
-              <p class="block_content_gray"><%= t(:send_file_obs, :scope => [:portfolio, :files])%></p>
-              <p class="block_content_gray"><%=raw t(:send_file_text, :scope => [:portfolio, :files])%></p>
-            <% end %>
+      <!-- Enviar arquivos -->
+      <div style="background-color:white;padding-top:6px">
+        <% if @situation != 'not_started' && @delete_files %>
+        <% group_assignment_id = @group_participants.first.group_assignment_id unless @group_participants.nil? %>
+          <%= form_for(:assignment_file, :html => { :multipart => true }, :url => {:controller => 'portfolio', :action => 'upload_files_individual_area', :assignment_id => params[:id], :group_assignment_id => group_assignment_id}) do |f| %>
+            <p><%= f.file_field :attachment%><%= f.submit t(:send), :class => "btn btn_default"%></p>
+            <p class="block_content_gray"><%= t(:send_file_obs, :scope => [:portfolio, :files])%></p>
+            <p class="block_content_gray"><%=raw t(:send_file_text, :scope => [:portfolio, :files])%></p>
           <% end %>
-        </div>
+        <% end %>
+      </div>
     </div>
     <% else %>
       <div class="red_notice"><%= t(:student_with_no_group, :scope => [:portfolio, :notifications]) %></div>

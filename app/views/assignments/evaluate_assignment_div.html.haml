@@ -1,0 +1,22 @@
+.block_content#evaluate_assignment_student
+  %table.tb_list#tb_student_assignment{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+    - unless @send_assignment.nil? or ((@send_assignment.grade.nil? or @send_assignment.grade.blank?) and (@send_assignment.comment.nil? or @send_assignment.comment.blank?))
+      %thead
+        %tr.lines
+          %th{:align => "right", :style => "width:30px"}= t(:grade, :scope => [:portfolio, :information])
+          %th= t(:comments, :scope => [:portfolio, :comments])
+      %tbody
+        %tr.lines
+          %td= @send_assignment.grade
+          %td= @send_assignment.comment
+    - else
+      .portfolio_div_padding#no_itens_evaluation_tb= t(:itens_not_found)
+  %table.tb_list#tb_student_assignment_evaluate{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%", :style => "display: none"}
+    %thead
+      %tr.lines
+        %th{:align => "right", :style => "width:30px"}= t(:grade, :scope => [:portfolio, :information])
+        %th= t(:comments, :scope => [:portfolio, :comments])
+    %tbody
+      %tr.lines
+        %td= text_field_tag :evaluation_grade, @send_assignment.nil? ? "" : @send_assignment.grade, :size => 3
+        %td= text_area_tag :evaluation_comment, @send_assignment.nil? ? "" : @send_assignment.comment, :rows => 4, :cols => 113

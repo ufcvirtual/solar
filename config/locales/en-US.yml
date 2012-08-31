@@ -561,7 +561,7 @@
       &nbsp;&nbsp;- PDF Documents<br />
       &nbsp;&nbsp;- Video Files (avi, mpeg,...)<br />
       &nbsp;&nbsp;- Audio Files (mp3, wma...)"
-      sent_files: Sent Files
+      sent_files: Sent files
       error_delete: Error when trying to delete file
       delete_interval_error: Modification of files out of range
       send_interval_error: Sending files out of range
@@ -575,6 +575,7 @@
       date_range_expired: Date range to this action expired
     group_assignments:
       group: Group
+      groups: Groups
       participants: Participants
       cancel: Cancel
       new_group: New group

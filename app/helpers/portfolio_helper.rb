@@ -49,7 +49,8 @@ module PortfolioHelper
   # Verifica período que o responsável pode alterar algo na atividade
   ##
   def assignment_in_time?(assignment_id = nil)
-    assignment = assignment.nil? ? Assignment.find(params['assignment_id']) : assignment_id
+    # assignment_id = params[:id]
+    assignment = assignment.nil? ? Assignment.find(params['id']) : assignment_id
     if (verify_date_range(assignment.schedule.start_date, assignment.schedule.end_date, Time.now) or (assignment.closed? and assignment.extra_time?(current_user.id))) 
       return true
     else
@@ -74,15 +75,20 @@ module PortfolioHelper
   ##
   #
   ##
-  def student_info_on_assignment(student, assignment)
+  def assignment_participant_info(student, assignment)
     situation               = Assignment.status_of_actitivy_by_assignment_id_and_student_id(assignment.id, student['id']) 
-    student_send_assignment = SendAssignment.find_by_assignment_id_and_user_id(assignment.id, student['id'])
-    have_comments           = student_send_assignment.nil? ? false : (!student_send_assignment.comment.nil? or !student_send_assignment.assignment_comments.empty?)
-    grade                   = (student_send_assignment.nil? or student_send_assignment.grade.nil?) ? '-' : student_send_assignment.grade
-    send_assignment_files   = student_send_assignment.nil? ? [] : student_send_assignment.assignment_files
-    file_delivery_date      = (student_send_assignment.nil? or send_assignment_files.empty?) ? '-' : send_assignment_files.first.attachment_updated_at.strftime("%d/%m/%Y") 
+    send_assignment         = SendAssignment.find_by_assignment_id_and_user_id(assignment.id, student['id'])
+    have_comments           = send_assignment.nil? ? false : (!send_assignment.comment.nil? or !send_assignment.assignment_comments.empty?)
+    grade                   = (send_assignment.nil? or send_assignment.grade.nil?) ? '-' : send_assignment.grade
+    send_assignment_files   = send_assignment.nil? ? [] : send_assignment.assignment_files
+    file_delivery_date      = (send_assignment.nil? or send_assignment_files.empty?) ? '-' : send_assignment_files.first.attachment_updated_at.strftime("%d/%m/%Y") 
     return {"situation" => situation, "have_comments" => have_comments, "grade" => grade, "file_delivery_date" => file_delivery_date}
   end
 
+  def student_assignment_group_info(assignment_id, student_id)
+    groups_participants = Portfolio.find_group_participants(assignment_id, student_id)
+    group_name          = groups_participants.first.group_assignment.group_name unless groups_participants.nil?
+    return {"group_name" => group_name, "groups_participants" => groups_participants}
+  end
 
 end

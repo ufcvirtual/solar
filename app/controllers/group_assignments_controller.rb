@@ -18,7 +18,7 @@ class GroupAssignmentsController < ApplicationController
     @assignment_enounciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  #arquivos que fazem parte da descrição da atividade
     if @assignment.type_assignment == Group_Activity 
       @groups                 = GroupAssignment.find_all_by_assignment_id(@assignment.id)
-      @students_without_group = no_group_students(@assignment.id) #alunos da turma sem grupo  
+      @students_without_group = GroupAssignment.students_without_groups(@assignment.id) #alunos da turma sem grupo  
     else
       allocation_tags = AllocationTag.find_related_ids(@assignment.allocation_tag_id).join(',')
       @students       = PortfolioTeacher.list_students_by_allocations(allocation_tags) #alunos participantes da atividade
@@ -32,21 +32,20 @@ class GroupAssignmentsController < ApplicationController
     @assignment             = Assignment.find(params[:assignment_id])
     #id dos grupos excluídos
     deleted_groups_ids      = params['deleted_groups_divs_ids'].blank? ? [] : params['deleted_groups_divs_ids'].collect{ |group| group.tr('_', ' ').split[1] } #"group_2" => 2
+    @students_without_group = GroupAssignment.students_without_groups(@assignment.id) #alunos da turma sem grupo
     
     unless params['btn_cancel'] # clicou em "salvar"
       begin
         GroupAssignment.transaction do
 
-            deleted_groups_ids.each do |deleted_group_id| #deleção de grupos
-              GroupAssignment.find(deleted_group_id).delete_group
-            end
+          deleted_groups_ids.each do |deleted_group_id| #deleção de grupos
+            GroupAssignment.find(deleted_group_id).delete_group
+          end
 
           #params['groups'] = {"0"=>{"group_id"=>"1", "group_name"=>"grupo1", "student_ids"=>"1 2"}, "1"=>{"group_id"=>"2", "group_name"=>"grupo2", "student_ids"=>"3"}}
           params['groups'].each do |group| # criação/edição de grupos
-
             group_id = group[1]['group_id'] #["0", {"group_id"=>"1", "group_name"=>"grupo1", "student_ids"=>"1 2"}] => 1
             group_participants_ids = (group[1]['student_ids'].split).collect{|participant| participant.to_i} unless group[1]['student_ids'].nil? #or group[1]['student_ids'] == 0 # => "1 2" => ["1","2"] => [1,2]
-
             unless group_id.nil? # se não forem alunos sem grupo
               group_name = group[1]['group_name']
               if group_id == '0' #novo grupo
@@ -60,9 +59,8 @@ class GroupAssignmentsController < ApplicationController
             #altera os alunos de grupo a não ser que o grupo não possa ser removido e que ele esteja na lista de grupos que foram excluídos
             change_students_group(group_assignment, group_participants_ids, @assignment.id) unless (!GroupAssignment.can_remove_group?(group_id) and deleted_groups_ids.include?("#{group_id}"))
           end
-
-          @students_without_group = no_group_students(@assignment.id) #alunos da turma sem grupo
-
+          
+          @students_without_group = GroupAssignment.students_without_groups(@assignment.id) #alunos da turma sem grupo (após alterações)
           respond_to do |format|
             format.html { render 'assignment_div', :layout => false }
           end
@@ -126,18 +124,18 @@ private
 
           # grupo_participant atual do aluno
           current_group_participant = GroupParticipant.includes(:group_assignment).where("group_participants.user_id = ? AND 
-           group_assignments.assignment_id = ?", student_id, assignment_id).first
+           group_assignments.assignment_id = ?", student_id, assignment_id)
+          current_group_participant = current_group_participant.nil? ? nil : current_group_participant.first
           # arquivos enviados pelo aluno para grupo atual
           student_files_current_group = AssignmentFile.includes(:send_assignment).where("send_assignments.group_assignment_id = ?
-           AND assignment_files.user_id = ?", current_group_participant["group_assignment_id"], student_id).first unless current_group_participant.nil?
+           AND assignment_files.user_id = ?", current_group_participant.group_assignment_id, student_id).first unless current_group_participant.nil?
           # send_assignment do grupo atual
-          current_group_send_assignment = SendAssignment.find_by_group_assignment_id(current_group_participant["group_assignment_id"]) unless current_group_participant.nil?
+          current_group_send_assignment = SendAssignment.find_by_group_assignment_id(current_group_participant.group_assignment_id) unless current_group_participant.nil?
           # send_assignment do grupo ao qual aluno tentará ser movido
           choosen_group_send_assignment = SendAssignment.find_by_group_assignment_id(group_assignment["id"]) unless group_assignment.nil?
 
           student_can_be_removed_from_current_group = (student_files_current_group.nil? and (current_group_send_assignment.nil? or current_group_send_assignment.grade.nil?))
-          student_can_be_moved_to_choosen_group = choosen_group_send_assignment.nil? or choosen_group_send_assignment["grade"].nil?
-          
+          student_can_be_moved_to_choosen_group = (choosen_group_send_assignment.nil? or choosen_group_send_assignment.grade.nil?)
           # se:
           # => aluno não enviou arquivos ao grupo atual E send_assignment do grupo não existe ou não foi avaliado
           # => novo grupo não tenha send_assignment ou não tenha sido avaliado
@@ -145,8 +143,8 @@ private
             unless group_assignment.nil?
               if current_group_participant.nil?
                 GroupParticipant.create!(:group_assignment_id => group_assignment["id"], :user_id => student_id)
-              elsif current_group_participant["group_assignment_id"] != group_assignment["id"]
-                current_group_participant.update_attributes!(:group_assignment_id => group_assignment["id"])
+              elsif current_group_participant.group_assignment_id != group_assignment.id
+                current_group_participant.update_attributes!(:group_assignment_id => group_assignment.id)
               end
             else
               current_group_participant.delete unless current_group_participant.nil? 

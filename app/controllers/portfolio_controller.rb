@@ -12,25 +12,10 @@ class PortfolioController < ApplicationController
     authorize! :index, Portfolio
 
     group_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
-
-    # listando atividades individuais pelo grupo_id em que o usuario esta inserido
-    @individual_activities = Portfolio.student_activities(group_id, current_user.id, Individual_Activity)
-
-    # Listando atividades em grupo pelo grupo_id em que o usuario esta inserido
-    @group_activities = Portfolio.student_activities(group_id, current_user.id, Group_Activity)
-
-    # Receberá os participantes do grupo de determinada atividade
-    @groups_participants = []
-    # Receberá o nome do grupo de determinada atividade
-    @groups_names = []
-
-    for activity in @group_activities
-      @groups_participants[activity["id"].to_i] = Portfolio.find_group_participants(activity["id"].to_i, current_user.id)
-      @groups_names[activity["id"].to_i] = @groups_participants[activity["id"].to_i].first.group_assignment.group_name unless @groups_participants[activity["id"].to_i].nil?
-    end
-    
-    # area publica
-    @public_area = Portfolio.public_area(group_id, current_user.id)
+    @student_id = current_user.id
+    @individual_activities = Portfolio.student_activities(group_id, @student_id, Individual_Activity) #atividades individuais pelo grupo_id em que o usuario esta inserido
+    @group_activities = Portfolio.student_activities(group_id, @student_id, Group_Activity) #atividades em grupo pelo grupo_id em que o usuario esta inserido
+    @public_area = Portfolio.public_area(group_id, @student_id) #area publica
   end
 
   ##

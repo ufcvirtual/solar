@@ -1,0 +1,49 @@
+.block_wrapper
+  .block_title
+    %h2
+      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
+      = t(:individual_activities, :scope => [:portfolio, :information])
+  -# Atividades individuais
+  .block_content
+    - unless @individual_activities.nil? or @individual_activities.empty?
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th= t(:name, :scope => [:portfolio, :information])
+            %th{:align => "right", :style => "width:170px"}= t(:date_range, :scope => [:portfolio, :information])
+        %tbody
+          - @individual_activities.each_with_index do |individual_activity, idx|
+            %tr.lines
+              %td
+                %h4= link_to individual_activity["name"], information_assignment_path(individual_activity["id"]), {:class => 'link_content'}
+              %td.right 
+                = l(individual_activity.schedule.start_date, :format => :short) 
+                = '-'
+                = l(individual_activity.schedule.end_date, :format => :short)
+    - else
+      .block_content.block_content_text= t(:itens_not_found)
+
+.block_wrapper
+  .block_title
+    %h2
+      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
+      = t(:group_activities, :scope => [:portfolio, :information])
+  -# Atividades em grupo
+  .block_content
+    - unless @group_activities.nil? or @group_activities.empty?
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th= t(:name, :scope => [:portfolio, :information])
+            %th{:align => "right", :style => "width:170px"}= t(:date_range, :scope => [:portfolio, :information])
+        %tbody
+          - @group_activities.each_with_index do |group_activity, idx|
+            %tr.lines
+              %td
+                %h4= link_to group_activity["name"], information_assignment_path(group_activity["id"]), {:class => 'link_content'}
+              %td.right
+                = l(group_activity.schedule.start_date, :format => :short) 
+                = '-'
+                = l(group_activity.schedule.end_date, :format => :short)
+    - else
+      .block_content.block_content_text= t(:itens_not_found)
