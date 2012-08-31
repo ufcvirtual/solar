@@ -20,3 +20,4 @@ db/schema.rb
 config/database.yml
 config/mailer.yml
 config/deploy.rb
+public/assets

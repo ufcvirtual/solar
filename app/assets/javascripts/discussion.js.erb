@@ -1,5 +1,5 @@
 function showUploadForm(url) {
-  showLightBoxURL(url, 400, 250, true, '<%= I18n.t(".attach_file_title", :scope => [:posts, :index]) %>');
+  showLightBoxURL(url, 400, 250, true, '<%= I18n.t(:attach_file_title, :scope => [:posts, :index]) %>');
   return false;
 }
 
@@ -14,7 +14,7 @@ function destroy_editor() {
   if (CKEDITOR.instances['discussion_post_content']) {
     CKEDITOR.instances['discussion_post_content'].setData(null);
     CKEDITOR.instances['discussion_post_content'].destroy();
-  }    
+  }
 }
 
 function append_rich_text(container) {
@@ -23,11 +23,34 @@ function append_rich_text(container) {
 
   $("#new_post").detach().appendTo(container);
   $('#new_post').show(300);
+  CKEDITOR.instances['discussion_post_content'].setData(null); // retira erro do chrome, edicao desabilitada ao abrir o editor mais de uma vez sem reload da pagina
 }
 
 function cancel_posting() {
   $('#new_post').hide(300);
   destroy_editor();
+}
+
+function new_post(obj, parent) {
+  form_post_reset_parameters();
+
+  $('form#new_post_form input[name=_method]').val('post');
+  if (parent > 0) { $('form#new_post_form #discussion_post_parent_id').val(parent); } // resposta
+
+  append_rich_text($(obj).closest("div"));
+  return false;
+};
+
+function update_post(obj, post, parent) {
+  form_post_reset_parameters();
+
+  if (parent > 0) { $('form#new_post_form #discussion_post_parent_id').val(parent); } // post com parent
+  var action = $('form#new_post_form').attr('action-default');
+  $('form#new_post_form').attr('action', [action, post].join('/')); // discussion/1/posts/1
+
+  append_rich_text($(obj).closest('div'));
+  CKEDITOR.instances['discussion_post_content'].setData($(obj).parent().parent().children('.forum_post_inner_content').html());
+  return false;
 }
 
 function delete_post(post_id, url) {
@@ -45,26 +68,4 @@ function delete_post(post_id, url) {
       // tratamento de erro ainda nao feito
     }
   });
-}
-
-function new_post(obj, parent) {
-  form_post_reset_parameters();
-
-  $('form#new_post_form input[name=_method]').val('post');
-  if (parent > 0) { $('form#new_post_form #discussion_post_parent_id').val(parent); }
-
-  append_rich_text($(obj).closest("div"));
-  return false;
-};
-
-function update_post(obj, post, parent) {
-  form_post_reset_parameters();
-
-  if (parent > 0) { $('form#new_post_form #discussion_post_parent_id').val(parent); } // post com parent
-  var action = $('form#new_post_form').attr('action-default');
-  $('form#new_post_form').attr('action', [action, post].join('/')); // discussion/1/posts/1
-
-  append_rich_text($(obj).closest('div'));
-  CKEDITOR.instances['discussion_post_content'].setData($(obj).parent().parent().children('.forum_post_inner_content').html());
-  return false;    
 }
