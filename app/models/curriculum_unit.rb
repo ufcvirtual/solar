@@ -4,7 +4,6 @@ class CurriculumUnit < ActiveRecord::Base
   belongs_to :curriculum_unit_type
   has_many :offers
   has_many :groups, :through => :offers, :uniq => true
-  has_many :logs
 
   validates :code, :uniqueness => true, :length => { :maximum   => 10 }
   validates :name, :presence => true, :length => { :maximum   => 120 }

@@ -7,7 +7,6 @@ class Group < ActiveRecord::Base
   has_one :course, :through => :offer
 
   has_many :users, :through => :allocation_tag
-  has_many :logs
   has_many :assignments, :through => :allocation_tag
 
   def code_semester
