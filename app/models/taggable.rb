@@ -7,6 +7,7 @@ module Taggable
 
     base.has_one :allocation_tag, :dependent => :destroy
     base.has_many :allocations, :through => :allocation_tag
+    base.has_many :users, :through => :allocation_tag
   end
 
   def check_associations
@@ -22,7 +23,8 @@ module Taggable
 
   def unallocate_if_up_to_one_user
     if is_up_to_one_user_allocated?
-      unallocate_user(self.allocations.select(:user_id).first.user_id)
+      @user_id = self.allocations.select(:user_id).first.user_id if self.allocations.count > 0
+      unallocate_user(user_id) if user_id
       return true
     end
     return false
@@ -41,7 +43,7 @@ module Taggable
   end
 
   def user_editor_allocation
-    allocate_user(user_id, Curriculum_Unit_Initial_Profile)
+    allocate_user(user_id, Curriculum_Unit_Initial_Profile) if user_id
   end
 
   def allocate_user(user_id, profile_id)

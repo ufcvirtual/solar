@@ -25,7 +25,7 @@ Dado que estou logado com o usuario "editor" e com a senha "123456"
         | Codigo        | Nome                          | Categoria                             |
         | RM414         | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial     |
 
-Cenário: tentar Acessar listagem de unidades curriculares como usuário sem permissão para isso
+Cenário: Tentar acessar listagem de unidades curriculares como usuário sem permissão para isso
 Dado que estou logado com o usuario "user" e com a senha "123456"
         E que estou em "Cadastro de Unidade Curricular"
         Então eu deverei ver "Você não tem permissão para acessar esta página"
