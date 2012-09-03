@@ -21,7 +21,7 @@
         %th= t(".manage_student")
         %th{style: 'width:100px'}= t(".manage_group")
         %th{style: 'width:100px'}= t(".manage_status")
-        %th{style: 'width:100px'}= t(".manage_options")
+        %th{style: 'width:150px'}= t(".manage_options")
     %tbody
       - @allocations.each do |allocation|
         %tr.lines
@@ -31,4 +31,4 @@
           %td= allocation.group.code_semester
           %td= name_of allocation.status
           %td
-            %input.btn.btn_default.btn_main.btn_manage_enrollment{type: 'button', value: t(".manage"), onclick: "javascript:manage_enrollment(this);", :"show-link" => allocation_path(allocation), :"edit-link" => edit_allocation_path(allocation)}
+            %input.btn.btn_default.btn_manage_enrollment{type: 'button', value: t(".manage"), onclick: "javascript:manage_enrollment(this);", :"show-link" => allocation_path(allocation), :"edit-link" => edit_allocation_path(allocation)}
