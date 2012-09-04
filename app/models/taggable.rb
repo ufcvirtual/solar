@@ -51,6 +51,6 @@ module Taggable
   end
 
   def can_destroy?
-    ((is_up_to_one_user?) and (has_any_down_association?)
+    ((is_up_to_one_user?) and (not has_any_down_association?))
   end
 end
