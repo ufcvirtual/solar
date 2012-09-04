@@ -7,4 +7,8 @@ class Offer < ActiveRecord::Base
 
   has_many :groups
   has_many :assignments, :through => :allocation_tag
+
+  def has_any_down_association?
+      self.groups.count > 0
+  end
 end

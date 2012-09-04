@@ -11,14 +11,10 @@ module Taggable
   end
 
   def check_associations
-    if has_associations?
+    if self.has_any_down_association?
       return false
     end
     unallocate_if_up_to_one_user
-  end
-
-  def has_associations?
-    self.allocation_tag.related.count > 1
   end
 
   def unallocate_if_up_to_one_user
@@ -55,6 +51,6 @@ module Taggable
   end
 
   def can_destroy?
-    ((is_up_to_one_user?) and (no_associations?))
+    ((is_up_to_one_user?) and (has_any_down_association?)
   end
 end

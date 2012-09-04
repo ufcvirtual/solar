@@ -100,6 +100,10 @@ SQL
 
     as_object ? CurriculumUnit.includes(:curriculum_unit_type).find_by_sql(query) : ActiveRecord::Base.connection.select_all(query)
   end
+
+  def has_any_down_association?
+      self.offers.count > 0
+  end
   
   private 
   include Taggable

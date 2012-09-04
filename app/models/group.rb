@@ -17,4 +17,8 @@ class Group < ActiveRecord::Base
     CurriculumUnit.select('id').find(curriculum_unit_id).groups.where(["groups.id IN (?)", User.select('id').find(user_id).groups.map(&:id)])
   end
 
+  def has_any_down_association?
+      false
+  end
+
 end
