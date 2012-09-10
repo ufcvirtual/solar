@@ -20,8 +20,8 @@ class ScoresController < ApplicationController
     authorize! :find, @student
 
 
-    @individual_activities = Portfolio.student_activities(group_id, student_id, Individual_Activity)
-    @group_activities = Portfolio.student_activities(group_id, student_id, Group_Activity)
+    @individual_activities = Assignment.student_activities(group_id, student_id, Individual_Activity)
+    @group_activities = Assignment.student_activities(group_id, student_id, Group_Activity)
     @discussions = Discussion.all_by_allocations_and_student_id(allocations, student_id)
 
     from_date = Date.today << 2 # dois meses atras

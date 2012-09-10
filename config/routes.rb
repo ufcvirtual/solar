@@ -68,42 +68,25 @@ Solar::Application.routes.draw do
   resources :scores, :only => [:show]
   resources :courses
 
-  resources :group_assignments, :only => [:index] do
-    collection do 
-      post :manage_groups
-      get :group_activity
-      get :import_groups_page
-      get :import_groups
-    end
-  end
-
   mount Ckeditor::Engine => "/ckeditor"
-
-  resource :portfolio_teacher, :only => [:index], :controller => 'portfolio_teacher' do
-    collection do
-      get :assignment
-      get :download_files
-      post :evaluate
-      post :send_comment
-      post :remove_comment
-    end
-  end
-
-  resource :portfolio, :only => [:index], :controller => 'portfolio' do
-    collection do
-      get :public_files_send
-    end
-  end
 
   resources :assignments, :only => [:show] do
     collection do
       get :list
+      get :download_files
       get :list_to_student
+      get :send_public_files_page
+      post :upload_file
+      delete :delete_file
     end
     member do
       get :information
+      get :import_groups_page
       post :evaluate
       post :send_comment
+      post :manage_groups
+      post :import_groups
+      delete :remove_comment
     end
   end
 
@@ -116,12 +99,12 @@ Solar::Application.routes.draw do
   get 'user_root' => 'users#mysolar'
   
   get "/media/users/:id/photos/:style.:extension", :to => "users#photo"
-  get "/media/portfolio/public_area/:file.:extension", :to => "access_control#portfolio_public_area"
+  get "/media/assignment/public_area/:file.:extension", :to => "access_control#portfolio_public_area"
   get "/media/lessons/:id/:file.:extension", :to => "access_control#lesson"
   get "/media/messages/:file.:extension", :to => "access_control#message"
 
-  get "/media/portfolio/individual_area/:file.:extension", :to => "access_control#portfolio_files"
-  get "/media/portfolio/comments/:file.:extension", :to => "access_control#portfolio_files"
+  get "/media/assignment/individual_area/:file.:extension", :to => "access_control#portfolio_files"
+  get "/media/assignment/comments/:file.:extension", :to => "access_control#portfolio_files"
 
   match ':controller(/:action(/:id(.:format)))'
 

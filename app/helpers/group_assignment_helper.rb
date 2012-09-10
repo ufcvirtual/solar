@@ -17,9 +17,9 @@ module GroupAssignmentHelper
   # Verifica se a atividade enviada já possui grupos e se alguma outra atividade já tem grupos criados
   ##          
   def verify_group_of_assignments(assignment_id) 
-    assignment_without_groups = GroupAssignment.find_all_by_assignment_id(assignment_id).empty?
-    all_assignments = GroupAssignment.all_by_group_id(Assignment.find(assignment_id).allocation_tag.group_id)
-    all_assignments_id = all_assignments.collect{|assignment| assignment["id"].to_i} unless all_assignments.empty?
+    assignment_without_groups  = GroupAssignment.find_all_by_assignment_id(assignment_id).empty?
+    all_assignments            = GroupAssignment.all_by_group_id(Assignment.find(assignment_id).allocation_tag.group_id)
+    all_assignments_id         = all_assignments.collect{|assignment| assignment["id"].to_i} unless all_assignments.empty?
     some_assignment_has_groups = !GroupAssignment.where(:assignment_id => all_assignments_id).empty? unless all_assignments_id.nil?
     return (assignment_without_groups and some_assignment_has_groups)
   end

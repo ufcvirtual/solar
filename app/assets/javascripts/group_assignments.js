@@ -1,12 +1,11 @@
+function toggle_div(div_id){
+  $("#"+div_id).slideToggle();
+}
+
 function clickOnGroup(group_div_id){
-  this_div = $('#students_'+group_div_id);
-  if (this_div.css('display') == 'none'){
-    this_div.slideDown(); 
-    this_div.parents('li').find('.menu_icon_arrow').addClass('menu_icon_animate');
-  }else{
-    this_div.slideUp(); 
-    this_div.parents('li').find('.menu_icon_animate').removeClass('menu_icon_animate');
-  }
+  this_div = $('.students_'+group_div_id);
+  this_div.fadeToggle();
+  this_div.parents('li').find(".menu_icon_arrow").toggleClass("menu_icon_animate");
 }
 
 function showImportGroupBox(url, title){
@@ -53,8 +52,8 @@ function btn_new_group(assignment_id, message_empty_group, new_group_message) {
 
 function toggle_divs(){
   $('#manage_group_assignment').toggle();
-  $('#save_changes_assignment').toggle();
-  $('#cancel_changes_assignment').toggle();
+  $('#btn_save_management').toggle();
+  $('#btn_cancel_management').toggle();
 }
 
 function undo_btn_manage_groups_divs_changes(){

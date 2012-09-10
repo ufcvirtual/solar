@@ -34,4 +34,9 @@ SQL
     return students_of_class
   end
 
+  def self.user_allocation_tag_profile(allocation_tag_id, user_id)
+      profile_id = Allocation.find_by_allocation_tag_id_and_user_id(allocation_tag_id, user_id).profile_id
+      return Profile.find(profile_id)
+  end
+
 end

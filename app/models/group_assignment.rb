@@ -26,7 +26,8 @@ class GroupAssignment < ActiveRecord::Base
     assignment_allocation_tag_id = Assignment.find(assignment_id).allocation_tag_id
     ids_students_of_class = Profile.students_of_class(assignment_allocation_tag_id).map(&:id)
     all_participants_all_groups = GroupParticipant.find_all_by_group_assignment_id(groups_assignments_ids).map(&:user_id)
-    no_group_students = User.all(:conditions => ["id NOT IN (?) AND id IN (?)", all_participants_all_groups, ids_students_of_class], :select => ["id, name"])
+    no_group_students = User.select("id, name").all(:conditions => ["id NOT IN (?) AND id IN (?)", all_participants_all_groups, ids_students_of_class])
+    # raise "#{ids_students_of_class} e #{all_participants_all_groups} e #{no_group_students}"
     return no_group_students
   end
 
@@ -43,8 +44,8 @@ end
 def delete_group
   if GroupAssignment.can_remove_group?(id)
     participants = GroupParticipant.all_by_group_assignment(id)
-    participants.each do |participant| 
-      GroupParticipant.find(participant["id"]).destroy
+    participants.each do |participant|
+      GroupParticipant.find(participant.id).destroy
     end
     destroy
   end

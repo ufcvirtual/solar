@@ -136,11 +136,12 @@ res23:
   action: 'list'
   description: 'Bibliografia do curso'
 
+# Assignments - parte 1
 res24:
   id: 24
-  controller: 'portfolio'
-  action: 'index'
-  description: 'Portfolio da Unidade Curricular'
+  controller: 'assignments'
+  action: 'list'
+  description: 'Lista das atividades - visao geral'
 
 res25:
   id: 25
@@ -154,85 +155,90 @@ res26:
   action: 'list'
   description: 'Agenda'
 
-## Portfolio
+# Assignments - parte 2
 res27:
   id: 27
-  controller: 'portfolio'
-  action: 'activity_details'
-  description: 'Atividades Individuais'
+  controller: 'assignments'
+  action: 'list_to_student'
+  description: 'Lista das atividades - visao do aluno'
 
 res28:
   id: 28
-  controller: 'portfolio'
-  action: 'delete_file_individual_area'
-  description: 'Delecao de arquivos da area privada'
+  controller: 'assignments'
+  action: 'information'
+  description: 'Informacoes basicas sobre a atividade, bem como seus participantes'
 
 res29:
   id: 29
-  controller: 'portfolio'
-  action: 'delete_file_public_area'
-  description: 'Delecao de arquivos da area publica'
+  controller: 'assignments'
+  action: 'manage_groups'
+  description: 'Metodo de gerenciamento dos grupos de uma atividade'
 
-# res30:
-#   id: 30
-#   controller: 'portfolio'
-#   action: 'download_file_comment'
-#   description: 'Download de arquivos enviados pelo professor'
+res30:
+  id: 30
+  controller: 'assignments'
+  action: 'show'
+  description: 'Informacoes completas sobre a atividade'
 
 res31:
   id: 31
-  controller: 'portfolio'
-  action: 'upload_files_public_area'
-  description: 'Upload de arquivos para a area publica'
+  controller: 'assignments'
+  action: 'evaluate'
+  description: 'Metodo de avaliacao de uma atividade para aluno/grupo'
 
 res32:
   id: 32
-  controller: 'portfolio'
-  action: 'download_file_public_area'
-  description: 'Download de arquivos da area publica'
+  controller: 'assignment_comments'
+  action: 'send_comment'
+  description: 'Metodo para envio de comentarios a respeito do arquivo enviado por um aluno/grupo a uma atividade'
 
 res33:
   id: 33
-  controller: 'portfolio'
-  action: 'upload_files_individual_area'
-  description: 'Upload de arquivos para a area privada'
+  controller: 'assignment_comments'
+  action: 'remove_comment'
+  description: 'Metodo para remover determinados comentarios a respeito do arquivo enviado por um aluno/grupo a uma atividade'
 
-## Portfolio responsavel - parte 1
+res34:
+  id: 34
+  controller: 'assignments'
+  action: 'download_files'
+  description: 'Metodo para realizar o download de arquivos (publicos ou privados) individualmente ou como zip'
+
 res35:
   id: 35
-  controller: 'portfolio_teacher'
-  action: 'index'
-  description: 'Lista dos trabalhos individuais e em grupo'
+  controller: 'assignments'
+  action: 'send_public_files_page'
+  description: 'Pagina de envio de arquivos publicos (lightbox)'
 
 res36:
   id: 36
-  controller: 'portfolio_teacher'
-  action: 'assignment'
-  description: 'Detalha a atividade de um aluno ou grupo'
+  controller: 'assignments'
+  action: 'upload_file'
+  description: 'Upload de arquivo (publico ou privado)'
 
 res37:
   id: 37
-  controller: 'portfolio_teacher'
-  action: 'send_comment'
-  description: 'Criar ou editar comentario na atividade do aluno ou grupo'
+  controller: 'assignments'
+  action: 'delete_file'
+  description: 'Delecao de arquivo (publico ou privado)'
 
 res38:
   id: 38
-  controller: 'portfolio_teacher'
-  action: 'remove_comment'
-  description: 'Deletar comentario'
+  controller: 'assignments'
+  action: 'import_groups_page'
+  description: 'Pagina de importacao de grupos entre atividades (lightbox)'
 
 res39:
   id: 39
-  controller: 'portfolio_teacher'
-  action: 'evaluate'
-  description: 'Avalia a atividade de um aluno ou grupo'
+  controller: 'assignments'
+  action: 'import_groups'
+  description: 'Metodo de importacao de grupos entre atividades'
 
-res40:
-  id: 40
-  controller: 'portfolio_teacher'
-  action: 'individual_activity'
-  description: 'Exibe informacoes da atividade individual'
+# res40:
+#   id: 40
+#   controller: 'portfolio_teacher'
+#   action: 'individual_activity'
+#   description: 'Exibe informacoes da atividade individual'
 
 ## Posts
 
@@ -399,12 +405,12 @@ res68:
   action: 'edit_link'
   description: 'Edita um ou mais links da pagina de material de apoio do editor'
 
-# Portfolio responsavel - parte 2
-res69:
-  id: 69
-  controller: 'portfolio_teacher'
-  action: 'download_files'
-  description: 'Download de arquivos'
+# # Portfolio responsavel - parte 2
+# res69:
+#   id: 69
+#   controller: 'portfolio_teacher'
+#   action: 'download_files'
+#   description: 'Download de arquivos'
 
 # Edicao de pedidos de matriculas
 res70:
@@ -425,43 +431,43 @@ res72:
   action: 'update'
   description: 'Editar matricula'
 
-# Trabalho de grupo
-res73:
-  id: 73
-  controller: 'group_assignments'
-  action: 'group_activity'
-  description: 'Pagina de exibicao das informacoes da atividade e gerenciamento de grupos'
+# # Trabalho de grupo
+# res73:
+#   id: 73
+#   controller: 'group_assignments'
+#   action: 'group_activity'
+#   description: 'Pagina de exibicao das informacoes da atividade e gerenciamento de grupos'
 
-res74:
-  id: 74
-  controller: 'group_assignments'
-  action: 'manage_groups'
-  description: 'Metodo de gerenciamento de grupos'  
+# res74:
+#   id: 74
+#   controller: 'group_assignments'
+#   action: 'manage_groups'
+#   description: 'Metodo de gerenciamento de grupos'  
 
-res75:
-  id: 75
-  controller: 'group_assignments'
-  action: 'import_groups_page'
-  description: 'Pagina de importacao de grupos para outros trabalhos'
+# res75:
+#   id: 75
+#   controller: 'group_assignments'
+#   action: 'import_groups_page'
+#   description: 'Pagina de importacao de grupos para outros trabalhos'
 
-res76:
-  id: 76
-  controller: 'group_assignments'
-  action: 'import_groups'
-  description: 'Importacao de grupos para outros trabalhos'
+# res76:
+#   id: 76
+#   controller: 'group_assignments'
+#   action: 'import_groups'
+#   description: 'Importacao de grupos para outros trabalhos'
 
-res77:
-  id: 77
-  controller: 'group_assignments'
-  action: 'download_single_file'
-  description: 'Metodo de download de cada arquivo individualmente'
+# res77:
+#   id: 77
+#   controller: 'group_assignments'
+#   action: 'download_single_file'
+#   description: 'Metodo de download de cada arquivo individualmente'
 
-# Resource vazia
-res78:
-  id: 78
-  controller: ''
-  action: ''
-  description: ''
+# # Resource vazia
+# res78:
+#   id: 78
+#   controller: ''
+#   action: ''
+#   description: ''
 
 # Unidade Curricular - Editor
 res79:

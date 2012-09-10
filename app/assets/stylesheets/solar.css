@@ -2606,7 +2606,7 @@ td.td_student a {color: #2a538d;}
     text-align: center;
 }
 
-.return_file, #btn_cancel_evaluation, #btn_save_evaluation, #cancel_changes_assignment, #save_changes_assignment{
+.return_file, #btn_cancel_evaluation, #btn_save_evaluation, #btn_cancel_management, #btn_save_management, [class^="students_import_"], [class^="edit_group_"]{
     display:none;
 }
 
@@ -2618,10 +2618,6 @@ td.td_student a {color: #2a538d;}
 
 .clock_icon{
     width:70px;
-}
-
-[class^="edit_group_"]{
-    display: none;
 }
 
 /**

@@ -21,12 +21,8 @@
             <% @individual_activities.each_with_index do |activity, idx| %>
               <tr class="lines">
                 <td align="left">
-                  <% if can? :assignment, PortfolioTeacher %>
-                    <%=link_to activity["name"], assignment_portfolio_teacher_path(:student_id => @student.id, :assignment_id => activity["id"], :send_assignment_id => activity["send_assignment_id"]), {:class => 'link_content'} %>
-                  <% elsif can? :activity_details, Portfolio %>
-                    <%=link_to activity["name"], {:controller => :portfolio,
-                      :action => :activity_details, :id => activity["id"],
-                      :bread => :menu_portfolio}, {:class => 'link_content'} %>
+                  <% if can? :show, Assignment %>
+                    <%=link_to activity["name"], assignment_path(activity["id"], :student_id => @student.id), {:class => 'link_content'} %>
                   <% else %>
                     <%= activity["name"] %>
                   <% end %>
@@ -39,12 +35,8 @@
             <% @group_activities.each_with_index do |activity, idx| %>
               <tr class="lines">
                 <td align="left">
-                  <% if can? :assignment, PortfolioTeacher %>
-                    <%=link_to activity["name"], assignment_portfolio_teacher_path(:student_id => @student.id, :assignment_id => activity["id"], :send_assignment_id => activity["send_assignment_id"]), {:class => 'link_content'} %>
-                  <% elsif can? :activity_details, Portfolio %>
-                    <%=link_to activity["name"], {:controller => :portfolio,
-                      :action => :activity_details, :id => activity["id"],
-                      :bread => :menu_portfolio}, {:class => 'link_content'} %>
+                  <% if can? :show, Assignment %>
+                    <%=link_to activity["name"], assignment_path(activity["id"], :student_id => @student.id), {:class => 'link_content'} %>
                   <% else %>
                     <%= activity["name"] %>
                   <% end %>

@@ -86,6 +86,7 @@
       assignment_file:
         attachment_content_type: ""
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
+        attachment_file_name: File
       comment_file:
         attachment_content_type: ""
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
@@ -122,6 +123,8 @@
           attributes:
             attachment_content_type:
               invalid_type: "Invalid file type."
+            attachment_file_name:
+              blank: must be choosen
         public_file:
           attributes:
             attachment_content_type:
@@ -572,7 +575,7 @@
       delete: Delete
     notifications:
       student_with_no_group: You aren't in any group
-      date_range_expired: Date range to this action expired
+      date_range_expired: Expired date range
     group_assignments:
       group: Group
       groups: Groups

@@ -5,8 +5,8 @@ class CommentFile < ActiveRecord::Base
   validates :attachment_file_name, :presence => true
 
   has_attached_file :attachment,
-    :path => ":rails_root/media/portfolio/comments/:id_:basename.:extension",
-    :url => "/media/portfolio/comments/:id_:basename.:extension"
+    :path => ":rails_root/media/assignment/comments/:id_:basename.:extension",
+    :url => "/media/assignment/comments/:id_:basename.:extension"
 
   validates_attachment_size :attachment, :less_than => 5.megabyte, :message => " "
 
@@ -17,7 +17,7 @@ class CommentFile < ActiveRecord::Base
   ##
   def delete_comment_file
     begin
-      file = "#{::Rails.root.to_s}/media/portfolio/comments/#{id}_#{attachment_file_name}" #recupera arquivo
+      file = "#{::Rails.root.to_s}/media/assignment/comments/#{id}_#{attachment_file_name}" #recupera arquivo
       if delete #se deletar arquivo da base de dados com sucesso
         File.delete(file) if File.exist?(file) #deleta arquivo do servidor
       else

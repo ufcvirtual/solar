@@ -224,6 +224,7 @@
       assignment_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
+        attachment_file_name: Arquivo
       comment_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
@@ -234,7 +235,6 @@
       send_assignment:
         grade: Nota
         comment: Comentário
-
 
     errors:
       template:
@@ -275,6 +275,8 @@
           attributes:
             attachment_content_type:
               invalid_type: "Tipo de arquivo inválido."
+            attachment_file_name:
+              blank: "deve ser selecionado"
         public_file:
           attributes:
             attachment_content_type:
@@ -730,7 +732,7 @@
       delete: Excluir
     notifications:
       student_with_no_group: Você não faz parte de nenhum grupo
-      date_range_expired: Prazo para realizar esta ação expirou
+      date_range_expired: Prazo expirado
     group_assignments:
       group: Grupo
       groups: Grupos
