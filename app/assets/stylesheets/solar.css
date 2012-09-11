@@ -2754,7 +2754,7 @@ td.td_student a {color: #2a538d;}
     color: #204783;
 }
 
-.assignment_without_group{
+.assignment_without_group, td.assignment_without_group a {
     white-space: nowrap;
     color: #e37073;
 }

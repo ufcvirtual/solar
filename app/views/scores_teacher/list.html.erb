@@ -43,19 +43,19 @@
             <% assignments_ids = student["assignment_ids"].split(',') %>
             <% send_assignment_ids = student["send_assignment_ids"].split(',') %>
             <% student["grades"].split(',').each_with_index do |grade, idx| %>
-
-              <!-- no mesmo campo pode vir tanto a nota quanto o status do trabalho -> enviado ou nao enviado-->
-              <% grade_link = (grade.match(/[a-z-A-Z]/)) ? t("assignment_#{grade}".to_s) : grade.to_f %>
-              <td align="center" class="assignment_<%= grade %>">
-                <% assignment = Assignment.find(assignments_ids[idx]) %>
-                <% group_id   = (assignment.type_assignment == Group_Activity) ? GroupAssignment.first(:include => [:group_participants], :conditions => ["group_participants.user_id = #{student["student_id"]} AND assignment_id = #{assignment.id}"]) : nil %>
-                <% if (assignment.type_assignment == Group_Activity) and group_id.nil? %>
-                  <%= link_to t(:assignment_wg), information_assignment_path(assignments_ids[idx]) %>
-                <% else %>
-                  <%= link_to grade_link, assignment_path(assignments_ids[idx], :student_id => student["student_id"], :group_id => group_id) %>
-                <% end %>
+            <!-- no mesmo campo pode vir tanto a nota quanto o status do trabalho -> enviado ou nao enviado-->
+            <% grade_link = (grade.match(/[a-z-A-Z]/)) ? t("assignment_#{grade}".to_s) : grade.to_f %>
+            <% assignment = Assignment.find(assignments_ids[idx]) %>
+            <% group_id   = (assignment.type_assignment == Group_Activity) ? GroupAssignment.first(:include => [:group_participants], :conditions => ["group_participants.user_id = #{student["student_id"]} AND assignment_id = #{assignment.id}"]) : nil %>
+            <% if (assignment.type_assignment == Group_Activity) and group_id.nil? %>
+              <td class="assignment_without_group">
+                <%= link_to t(:assignment_wg), information_assignment_path(assignments_ids[idx]) %>
               </td>
-
+            <% else %>
+              <td align="center" class="assignment_<%= grade %>">
+                <%= link_to grade_link, assignment_path(assignments_ids[idx], :student_id => student["student_id"], :group_id => group_id) %>
+              </td>
+            <% end %>
             <% end %>
             <% if leng_assignments == 0 %>
               <td align="center">-</td>
