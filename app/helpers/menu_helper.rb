@@ -26,7 +26,7 @@ module MenuHelper
         html_menu << "</ul>" if first_iteration
 
         if !(!menu['resource_id'].nil? && menu['child'].nil?)
-          html_menu << "</li></ul>"
+          # html_menu << "</li></ul>"
         elsif !menu['link'].nil?
           html_menu << "</ul>"
         elsif (menu['parent_id'] == current_menu)
@@ -36,13 +36,15 @@ module MenuHelper
         end
 
         # coloca as divs anteriores em uma nova div
-        html_menu_group << "<div class='#{class_menu_div_topo}'>#{html_menu}</div>" if first_iteration # verifica se ja entrou aqui
+        html_menu_group << %{<div class="#{class_menu_div_topo}">#{html_menu}</div>} if first_iteration # verifica se ja entrou aqui
 
         # para um menu pai ser um link ele nao deve ter filhos
         if !menu['resource_id'].nil? && menu['child'].nil?
           access_controller[:bread] = menu['parent']
           style_single = "mysolar_menu_title_single_active" if menu['parent_id'] == current_menu and params.include?('mid')
-          link = "<li class='mysolar_menu_title_single #{style_single}' id='parent_#{menu['parent_id']}'>" << link_to("#{t(menu['parent'].to_sym)}", access_controller, :class =>  class_menu_title) << "</li>"
+          link = %{<li class="mysolar_menu_title_single #{style_single}" id="parent_#{menu['parent_id']}">}
+          link << link_to("#{t(menu['parent'].to_sym)}", access_controller, :class => class_menu_title)
+          link << "</li>"
         elsif !menu["link"].nil?
           link = "<li><a href='#{menu['link']}'>#{t(menu['parent'].to_sym)}</a></li>"
         else
@@ -63,7 +65,7 @@ module MenuHelper
 
       unless menu['child'].nil?
         access_controller[:bread] = menu['child']
-        html_menu << "<li class='#{class_menu_list}'>" << link_to("#{t(menu['child'].to_sym)}", access_controller) << "</li>"
+        html_menu << %{<li class="#{class_menu_list}">} << link_to("#{t(menu['child'].to_sym)}", access_controller) << "</li>"
       end
 
       # sempre atualiza o previous_parent
@@ -71,7 +73,8 @@ module MenuHelper
     end
 
     html_menu << "</ul>"
-    html_menu_group << "<div class='#{class_menu_div_topo}'>#{html_menu}</div>"
+    html_menu_group << %{<div class="#{class_menu_div_topo}">#{html_menu}</div>}
+
     return html_menu_group.join('') # fechando a ultima div aberta
   end
 

@@ -5,16 +5,12 @@ Funcionalidade: Exibir Página de Grupos de Portfolio
   Eu quero listar os trabalhos de grupo disponíveis
   Para poder gerenciar os grupos de trabalho
 
-Contexto:
-  Dado que tenho "allocations"
-    | user_id  | allocation_tag_id  | profile_id  | status |
-    | 1        | 3                  | 3           | 1      |
-    | 7        | 3                  | 1           | 1      |
-
+@javascript
 Cenário: Exibir Tela de Cadastro de Trabalho de Grupo
   Dado que estou logado com o usuario "prof" e com a senha "123456"
     E que estou em "Meu Solar"
   Quando eu clicar no link "Quimica I"
+    E que eu selecionei "selected_group" com "CAU-B - 2011.1"
     Então eu deverei ver "Atividades"
   Quando eu clicar no link "Atividades"
     Então eu deverei ver o link "Grupos"

@@ -5,13 +5,6 @@ Funcionalidade: Exibir tela de matricula
   Eu quero acessar a listagem de unidades curriculares
   Para verificar e alterar matricula
 
-Contexto:
-Dado que tenho "allocations"
-  | user_id  | allocation_tag_id  | profile_id  | status |
-  | 1        | 1                  | 1           | 1      |
-  | 1        | 3                  | 1           | 1      |
-  | 1        | 8                  | 1           | 0      |
-
 @javascript
 Cenário: Acessar página de matricula
   Dado que estou logado com o usuario "user" e com a senha "123456"

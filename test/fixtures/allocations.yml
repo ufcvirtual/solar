@@ -1,3 +1,165 @@
+a:
+  user_id: 1
+  allocation_tag_id: 1
+  profile_id: 1
+  status: 1
+
+c:
+  user_id: 1
+  allocation_tag_id: 3
+  profile_id: 1
+  status: 1
+
+d:
+  user_id: 1
+  allocation_tag_id: 8
+  profile_id: 1
+  status: 0
+
+e:
+  user_id: 1
+  allocation_tag_id: 9
+  profile_id: 1
+  status: 1
+
+f:
+  user_id: 6
+  allocation_tag_id: 4
+  profile_id: 2
+  status: 1
+
+g:
+  user_id: 6
+  allocation_tag_id: 5
+  profile_id: 2
+  status: 1
+
+h:
+  user_id: 6
+  allocation_tag_id: 6
+  profile_id: 2
+  status: 1
+
+i:
+  user_id: 6
+  profile_id: 12
+  status: 1
+
+j:
+  user_id: 7
+  allocation_tag_id: 1
+  profile_id: 1
+  status: 1
+
+k:
+  user_id: 7
+  allocation_tag_id: 2
+  profile_id: 1
+  status: 1
+
+l:
+  user_id: 7
+  allocation_tag_id: 3
+  profile_id: 1
+  status: 1
+
+m:
+  user_id: 7
+  profile_id: 12
+  status: 1
+
+n:
+  user_id: 8
+  allocation_tag_id: 1
+  profile_id: 1
+  status: 1
+
+o:
+  user_id: 8
+  allocation_tag_id: 2
+  profile_id: 1
+  status: 1
+
+p:
+  user_id: 8
+  allocation_tag_id: 3
+  profile_id: 1
+  status: 1
+
+q:
+  user_id: 8
+  profile_id: 12
+  status: 1
+
+r:
+  user_id: 9
+  allocation_tag_id: 1
+  profile_id: 1
+  status: 1
+
+s:
+  user_id: 9
+  allocation_tag_id: 2
+  profile_id: 1
+  status: 1
+
+t:
+  user_id: 9
+  allocation_tag_id: 3
+  profile_id: 1
+  status: 1
+
+u:
+  user_id: 9
+  profile_id: 12
+  status: 1
+
+v:
+  user_id: 11
+  allocation_tag_id: 2
+  profile_id: 3
+  status: 1
+
+w:
+  user_id: 11
+  allocation_tag_id: 3
+  profile_id: 3
+  status: 1
+
+x:
+  user_id: 11
+  profile_id: 12
+  status: 1
+
+y:
+  user_id: 10
+  allocation_tag_id: 2
+  profile_id: 4
+  status: 1
+
+z:
+  user_id: 10
+  allocation_tag_id: 3
+  profile_id: 4
+  status: 1
+
+aa:
+  user_id: 10
+  profile_id: 12
+  status: 1
+
+ab:
+  user_id: 12
+  allocation_tag_id: 8
+  profile_id: 5
+  status: 1
+
+ac:
+  user_id: 12
+  allocation_tag_id: 7
+  profile_id: 5
+  status: 1
+
 user_as_professor:
   id: 23
   user_id: 1
@@ -49,41 +211,41 @@ professor2_as_basic:
   profile_id: 12
   status: 1
 
-professor_as_basic:
-  id: 31
-  user_id: 6
-  profile_id: 12
-  status: 1
+# professor_as_basic:
+#   id: 31
+#   user_id: 6
+#   profile_id: 12
+#   status: 1
 
-aluno1_as_basic:
-  id: 32
-  user_id: 7
-  profile_id: 12
-  status: 1
+# aluno1_as_basic:
+#   id: 32
+#   user_id: 7
+#   profile_id: 12
+#   status: 1
 
-aluno2_as_basic:
-  id: 33
-  user_id: 8
-  profile_id: 12
-  status: 1
+# aluno2_as_basic:
+#   id: 33
+#   user_id: 8
+#   profile_id: 12
+#   status: 1
 
-aluno3_as_basic:
-  id: 34
-  user_id: 9
-  profile_id: 12
-  status: 1
+# aluno3_as_basic:
+#   id: 34
+#   user_id: 9
+#   profile_id: 12
+#   status: 1
 
-tutor_presencial_as_basic:
-  id: 35
-  user_id: 10
-  profile_id: 12
-  status: 1
+# tutor_presencial_as_basic:
+#   id: 35
+#   user_id: 10
+#   profile_id: 12
+#   status: 1
 
-tutor_distancia_as_basic:
-  id: 36
-  user_id: 11
-  profile_id: 12
-  status: 1
+# tutor_distancia_as_basic:
+#   id: 36
+#   user_id: 11
+#   profile_id: 12
+#   status: 1
 
 coordenador_as_basic:
   id: 37

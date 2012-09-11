@@ -2,6 +2,8 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
 
+  fixtures :users
+
   def setup
     @user_test = {
       username: 'user_test',
@@ -67,7 +69,7 @@ class UserTest < ActiveSupport::TestCase
   #   pending "ainda nao feito"
   # end
 
-  test "senha do usuario com md5" do
+  test "senha do usuario com md5 correta" do
     @professor = users(:professor)
     assert_equal @professor.encrypted_password, Digest::MD5.hexdigest('123456')
   end

@@ -55,7 +55,7 @@
           setTimeout(function(){updateTime(el, localtime);}, 1000);
         }
 
-        function formatNumber(num) { return (num<=9)? "0" + num : num; }
+        function formatNumber(num) { return (num < 10) ? "0" + num : num; }
       });
     </script>
   </head>
