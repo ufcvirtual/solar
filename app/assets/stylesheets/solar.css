@@ -2754,6 +2754,11 @@ td.td_student a {color: #2a538d;}
     color: #204783;
 }
 
+.assignment_without_group{
+    white-space: nowrap;
+    color: #e37073;
+}
+
 .activity_grade {
     font-weight: bold;
 }

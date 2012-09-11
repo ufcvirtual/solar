@@ -10,13 +10,13 @@
     %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
       %thead
         %tr.lines
-          %th= t(:description, :scope => [:portfolio, :information])
+          %th= t(:description, :scope => [:assignment, :information])
           %th.clock_icon
             = image_tag("clock.png", :alt => " ", :class=>"block_title_icon")
-            = t(:activity_begin, :scope => [:portfolio, :information])
+            = t(:begin, :scope => [:assignment, :information])
           %th.clock_icon
             = image_tag("clock.png", :alt => " ", :class=>"block_title_icon")
-            = t(:activity_end, :scope => [:portfolio, :information])
+            = t(:end, :scope => [:assignment, :information])
       %tbody
         %tr.lines
           %td= @assignment.enunciation
@@ -28,11 +28,11 @@
   .block_title
     %h2
       = image_tag("icon_suitcase_portfolio.png", :alt=> " ", :class=>'block_title_icon')
-      = t(:activity_files, :scope => [:portfolio, :files])
+      = t(:activity_files, :scope => [:assignment, :files])
     %span.download_all_icon
       - unless @assignment_enounciation_files.empty?
         = button_tag(:type => :button, :onclick => "javascript:window.location.href='#{download_files_assignments_path(:assignment_id => @assignment.id, :type => "enunciation", :zip => true)}'", :class => "btn btn_default") do
-          = content_tag(:span, t(:download_all_files_zip, :scope => [:portfolio, :files]))
+          = content_tag(:span, t(:download_all_files_zip, :scope => [:assignment, :files]))
           = content_tag(:span, image_tag("icon_folder_compressed.png"))
 
   .block_content
@@ -40,15 +40,15 @@
       %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
         %thead
           %tr.lines
-            %th= t(:name, :scope => [:portfolio, :files])
-            %th{:align => "right", :style => "width: 30px;"}= t(:size, :scope => [:portfolio, :files])
+            %th= t(:name, :scope => [:assignment, :files])
+            %th{:align => "right", :style => "width: 30px;"}= t(:size, :scope => [:assignment, :files])
             %th.clock_icon
               = image_tag "clock.png", :alt => " ", :class=>"block_title_icon"
-              = t(:sent_on, :scope => [:portfolio, :files])
+              = t(:sent_on, :scope => [:assignment, :files])
           - @assignment_enounciation_files.each do |file|
             %tr.lines
               %td
-                = link_to image_tag( icon_attachment(file.attachment_file_name) ), download_files_assignments_path(:assignment_id => @assignment.id, :file_id => file.id, :type => "enunciation"), { :class => "file_icon", :alt => t(:download_file, :file_name => file.attachment_file_name, :scope => [:portfolio, :files]) }
+                = link_to image_tag( icon_attachment(file.attachment_file_name) ), download_files_assignments_path(:assignment_id => @assignment.id, :file_id => file.id, :type => "enunciation"), { :class => "file_icon", :alt => t(:download_file, :file_name => file.attachment_file_name, :scope => [:assignment, :files]) }
                 = link_to file.attachment_file_name, download_files_assignments_path(:assignment_id => @assignment.id, :file_id => file.id, :type => "enunciation"), {:class => "link_content"}
               %td= format('%.2f KB', file.attachment_file_size/1024.0)
               %td{:align => "center"}= l(file.attachment_updated_at, :format => :files)
@@ -61,14 +61,14 @@
     .block_title
       %h2
         = image_tag("icon_participants.png", :alt => " ", :class=>'block_title_icon')
-        = t(:groups, :scope => [:portfolio, :group_assignments])
+        = t(:groups, :scope => [:assignment, :group_assignments])
       %span.group_elements_float
         - if can? :manage_groups, @assignment
           - btn_class = assignment_in_time?(@assignment) ? "btn btn_main" : "btn btn_disabled"
-          = button_tag t(:manage_groups, :scope => [:portfolio, :group_assignments]), :class => btn_class, :id => "manage_group_assignment", :alt => t(:manage_groups, :scope => [:portfolio, :group_assignments]), :onclick => "javascript:btn_manage_groups('#{@assignment.id}', '#{verify_group_of_assignments(@assignment.id)}');", :disabled => !assignment_in_time?(@assignment)
-          = button_tag(:type => 'button', :class => "btn btn_caution", :id => "btn_cancel_management", :alt => t(:cancel, :scope => [:portfolio, :group_assignments])) do
-            = content_tag(:span, t(:cancel, :scope => [:portfolio, :group_assignments]))
-          = button_tag t(:save, :scope => [:portfolio, :group_assignments]), :class => "btn btn_main", :id => "btn_save_management", :alt => t(:save, :scope => [:portfolio, :group_assignments])
+          = button_tag t(:manage_groups, :scope => [:assignment, :group_assignments]), :class => btn_class, :id => "manage_group_assignment", :alt => t(:manage_groups, :scope => [:assignment, :group_assignments]), :onclick => "javascript:btn_manage_groups('#{@assignment.id}', '#{verify_group_of_assignments(@assignment.id)}');", :disabled => !assignment_in_time?(@assignment)
+          = button_tag(:type => 'button', :class => "btn btn_caution", :id => "btn_cancel_management", :alt => t(:cancel, :scope => [:assignment, :group_assignments])) do
+            = content_tag(:span, t(:cancel, :scope => [:assignment, :group_assignments]))
+          = button_tag t(:save, :scope => [:assignment, :group_assignments]), :class => "btn btn_main", :id => "btn_save_management", :alt => t(:save, :scope => [:assignment, :group_assignments])
     .group_assignment_content
       .group_assignment_content
         - unless @groups.nil? or @groups.empty?
@@ -78,16 +78,16 @@
               %h3{:class => "group_name_#{!group_info["evaluated"]}", :alt => "#{group_info["error_message"]}"}
                 = group.group_name
                 %span.group_elements_float
-                  =# button_to t(:evaluate, :scope => [:portfolio, :group_assignments]), assignment_path(@assignment.id, :group_id => group.id), {:class => "btn btn_default evaluate_group", :alt => t(:evaluate, :scope => [:portfolio, :group_assignments]), :method => :get} #se tirar "method". envia como post; se deixar, ignora o "group_id"
-                  = button_tag t(:evaluate, :scope => [:portfolio, :group_assignments]), :onclick => "javascript:window.location.href='#{assignment_path(@assignment.id, :group_id => group.id)}'", :class => "btn btn_default evaluate_group"
+                  =# button_to t(:evaluate, :scope => [:assignment, :group_assignments]), assignment_path(@assignment.id, :group_id => group.id), {:class => "btn btn_default evaluate_group", :alt => t(:evaluate, :scope => [:assignment, :group_assignments]), :method => :get} #se tirar "method". envia como post; se deixar, ignora o "group_id"
+                  = button_tag t(:evaluate, :scope => [:assignment, :group_assignments]), :onclick => "javascript:window.location.href='#{assignment_path(@assignment.id, :group_id => group.id)}'", :class => "btn btn_default evaluate_group"
               %div{:class => "edit_group_#{!group_info["evaluated"]}"}
                 = text_field_tag "new_groups_names[][#{@assignment.id}]", group.group_name, :id => "text_field_group_#{group.id}", :class => "rename_group"
-                %a.remove_group{:onclick => "javascript:delete_group('group_#{group.id}', #{@assignment.id}, #{group_info["can_remove"]});", :alt => "#{t(:remove, :group_name => group.group_name, :scope => [:portfolio, :group_assignments])}", :title => group_info["error_message"]}= "x"
+                %a.remove_group{:onclick => "javascript:delete_group('group_#{group.id}', #{@assignment.id}, #{group_info["can_remove"]});", :alt => "#{t(:remove, :group_name => group.group_name, :scope => [:assignment, :group_assignments])}", :title => group_info["error_message"]}= "x"
               %div{:class => "group_information_#{!group_info["evaluated"]}"}
                 = group_info["quantity_files_sent"] 
-                = t(:files, :scope => [:portfolio, :files])
+                = t(:files, :scope => [:assignment, :files])
                 %span.group_elements_float
-                  = t(:grade, :scope => [:portfolio, :information])
+                  = t(:grade, :scope => [:assignment, :information])
                   = @grade
                   = (group.send_assignment.nil? or group.send_assignment.grade.nil?) ? '-' : group.send_assignment.grade
               - group_participants = GroupParticipant.all_by_group_assignment(group.id)
@@ -97,19 +97,19 @@
                     - participant_info = info_assignment_group_participant(participant.user_id, !group_info["evaluated"], group) 
                     %li{:class => "student_#{participant.user_id}", :value => "#{participant.user_id}", :id => "#{participant_info["can_be_moved"]}", :onmouseover => "javascript:student_mouseover(this, '#{participant_info["error_message"]}');", :onmouseout => "javascript:student_mouseout(this);"}= participant.user.name
                 - else
-                  %li.no_students_message= t(:no_participant, :scope => [:portfolio, :group_assignments])
+                  %li.no_students_message= t(:no_participant, :scope => [:assignment, :group_assignments])
 
         .group_participants
-          %h3.group_name_true= t(:students_with_no_group, :scope => [:portfolio, :group_assignments])
+          %h3.group_name_true= t(:students_with_no_group, :scope => [:assignment, :group_assignments])
           .edit_group_true
-            = t(:students_with_no_group, :scope => [:portfolio, :group_assignments])
+            = t(:students_with_no_group, :scope => [:assignment, :group_assignments])
             = hidden_field_tag("new_groups_names[][#{@assignment.id}]", 'no_group', :class => "rename_group")
           %ul.ul_no_group
             - unless @students_without_group.nil? or @students_without_group.empty?
               - @students_without_group.each do |student_without_group| 
                 %li#true{:class => "student_#{student_without_group.id}", :value => "#{student_without_group.id}", :onmouseover => "javascript:student_mouseover(this, 'no_message');", :onmouseout => "student_mouseout(this);"}= student_without_group.name
             - else 
-              %li.no_students_message= t(:no_participant, :scope => [:portfolio, :group_assignments])
+              %li.no_students_message= t(:no_participant, :scope => [:assignment, :group_assignments])
         .import_and_new_groups
 - else
   -# Lista de alunos
@@ -117,16 +117,16 @@
     .block_title
       %h2
         = image_tag "icon_participants.png", :alt => " ", :class=>'block_title_icon'
-        = t(:participants, :scope => [:portfolio, :group_assignments])
+        = t(:participants, :scope => [:assignment, :group_assignments])
     .block_content
       %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
         %thead
           %tr.lines
-            %th= t(:students, :scope => [:portfolio, :information])
-            %th{:align => "center", :style => "width:30px"}= t(:date, :scope => [:portfolio, :information])
-            %th{:align => "right", :style => "width:80px"}= t(:situation, :scope => [:portfolio, :information])
-            %th{:align => "right", :style => "width:30px"}= t(:grade, :scope => [:portfolio, :information])
-            %th{:align => "center", :style => "width:50px"}= t(:comments, :scope => [:portfolio, :comments])
+            %th= t(:students, :scope => [:assignment, :information])
+            %th{:align => "center", :style => "width:30px"}= t(:date, :scope => [:assignment, :information])
+            %th{:align => "right", :style => "width:80px"}= t(:situation, :scope => [:assignment, :information])
+            %th{:align => "right", :style => "width:30px"}= t(:grade, :scope => [:assignment, :information])
+            %th{:align => "center", :style => "width:50px"}= t(:comments, :scope => [:assignment, :comments])
         %tbody
           - @students.each_with_index do |student, idx|
             - student_info = assignment_participant_info(student["id"], @assignment.id)
@@ -152,7 +152,7 @@
       var all_participants_each_group = $('li', all_groups[i]);
       // quando ele estiver vazio, acrescenta uma mensagem informativa
       if(all_participants_each_group.length == 0){
-        $('<li class="no_students_message">#{t(:no_participant, :scope => [:portfolio, :group_assignments])}</li>').appendTo(all_groups[i]);
+        $('<li class="no_students_message">#{t(:no_participant, :scope => [:assignment, :group_assignments])}</li>').appendTo(all_groups[i]);
       }
     }
   }
@@ -166,11 +166,11 @@
       new_and_import_groups_box.push('</div>');
       new_and_import_groups_box.push('<ul>');
         new_and_import_groups_box.push('<li class="btn_new">');
-          new_and_import_groups_box.push('<input type="button" style="width:90px" id="new_group_assignment" value="#{t(:new_group, :scope => [:portfolio,:group_assignments])}" class="btn btn_default" onclick="javascript:btn_new_group(#{@assignment.id}, \'#{t(:no_participant, :scope => [:portfolio, :group_assignments])}\', \'#{t(:new_group, :scope => [:portfolio, :group_assignments])}\');"/>');        
+          new_and_import_groups_box.push('<input type="button" style="width:90px" id="new_group_assignment" value="#{t(:new_group, :scope => [:assignment,:group_assignments])}" class="btn btn_default" onclick="javascript:btn_new_group(#{@assignment.id}, \'#{t(:no_participant, :scope => [:assignment, :group_assignments])}\', \'#{t(:new_group, :scope => [:assignment, :group_assignments])}\');"/>');        
         new_and_import_groups_box.push('</li>');
           if (show_import_button == 'true'){
             new_and_import_groups_box.push('<li id="btn_import">');
-              new_and_import_groups_box.push('<input type="button" style="width:90px" id="import" value="#{t(:import_groups, :scope => [:portfolio, :group_assignments])}" class="btn btn_default" onclick="javascript:showImportGroupBox(\'#{import_groups_page_assignment_path(@assignment.id)}\', \'\');"/>');
+              new_and_import_groups_box.push('<input type="button" style="width:90px" id="import" value="#{t(:import_groups, :scope => [:assignment, :group_assignments])}" class="btn btn_default" onclick="javascript:showImportGroupBox(\'#{import_groups_page_assignment_path(@assignment.id)}\', \'\');"/>');
             new_and_import_groups_box.push('</li>');
           }
       new_and_import_groups_box.push('</ul>');
@@ -181,7 +181,7 @@
   }
 
   $("#btn_cancel_management").click(function(){
-    if (confirm("#{t(:cancel_management, :scope => [:portfolio, :group_assignments])}")){
+    if (confirm("#{t(:cancel_management, :scope => [:assignment, :group_assignments])}")){
 
       $.ajax({
         url: url,
@@ -190,7 +190,7 @@
         success: function(data) {
           $('.group_assignment_content').html(data);
           undo_btn_manage_groups_divs_changes();
-          flash_message('#{t(:management_cancel, :scope => [:portfolio, :group_assignments])}', 'notice');
+          flash_message('#{t(:management_cancel, :scope => [:assignment, :group_assignments])}', 'notice');
           // redefine o array de grupos excluídos para vazio
           deleted_groups = new Array();
         }
@@ -200,7 +200,7 @@
   });
 
   $("#btn_save_management").click(function(){
-    if (confirm('#{t(:save_management, :scope => [:portfolio, :group_assignments])}')){
+    if (confirm('#{t(:save_management, :scope => [:assignment, :group_assignments])}')){
 
       // todos os grupos
       var groups = $(".group_participants_manage ul"); 
@@ -250,7 +250,7 @@
             }else{
               $('.group_assignment_content').html(data);
               undo_btn_manage_groups_divs_changes();
-              flash_message('#{t(:management_success, :scope => [:portfolio, :group_assignments])}', 'notice');
+              flash_message('#{t(:management_success, :scope => [:assignment, :group_assignments])}', 'notice');
               // redefine o array de grupos excluídos para vazio
               deleted_groups = new Array();
             }

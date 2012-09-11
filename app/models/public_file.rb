@@ -29,7 +29,7 @@ class PublicFile < ActiveRecord::Base
       if delete #se deletar arquivo da base de dados com sucesso
         File.delete(file) if File.exist?(file) #deleta arquivo do servidor
       else
-        flash[:alert] = t(:error_delete, :scope => [:portfolio, :files])
+        flash[:alert] = t(:error_delete, :scope => [:assignment, :files])
       end
     rescue Exception => error
       flash[:alert] = error.message

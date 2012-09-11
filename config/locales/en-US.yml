@@ -494,18 +494,18 @@
   schedule_events: "Schedule Event"
   no_events: "No events to selected day"
 
-  # Portfolio / Portfolio_teacher / Group_assignment (ja que faz parte de portfolio)
+  # Assignments
   not_started: Not Started
   corrected: Corrected
   sent: Sent
   not_sent: Not Sent
 
-  portfolio:
+  assignment:
     information:
-      activity_begin: Begin
-      activity_end: End
-      individual_activities: Atividades individuais
-      group_activities: Group Activities
+      begin: Begin
+      end: End
+      individual_assignments: Atividades individuais
+      group_assignments: Group Activities
       title: Title
       date_range: Date range
       description: Description
@@ -589,6 +589,7 @@
       management_cancel: Changes canceled
       no_participant: Group with no participants
       students_with_no_group: Students with no group
+      without_group: Without group
       management_success: Groups managed successfully
       delete_error: Group can't be removed
       student_move_error: Student can't be removed

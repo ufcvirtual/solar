@@ -651,18 +651,18 @@
   assignment: "Trabalho"
   no_events: "Sem eventos para o dia selecionado"
 
-  # Portfolio / Portfolio_teacher / Group_assignment (ja que faz parte de portfolio)
+  # Assignments
   not_started: Não Iniciado
   corrected: Corrigido
   sent: Enviado
   not_sent: Não Enviado
 
-  portfolio:
+  assignment:
     information:
-      activity_begin: Início
-      activity_end: Fim
-      individual_activities: Atividades individuais
-      group_activities: Atividades em Grupo
+      begin: Início
+      end: Fim
+      individual_assignments: Atividades individuais
+      group_assignments: Atividades em Grupo
       title: Título
       date_range: Período
       description: Descrição
@@ -746,6 +746,7 @@
       management_cancel: Alterações canceladas
       no_participant: Grupo sem participantes
       students_with_no_group: Alunos sem grupo
+      without_group: Sem grupo
       management_success: Grupos gerenciados com sucesso
       delete_error: Grupo não pode ser removido
       student_move_error: Aluno não pode ser removido

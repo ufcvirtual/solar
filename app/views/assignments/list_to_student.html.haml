@@ -3,17 +3,17 @@
   .block_title
     %h2
       = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class => "block_title_icon"
-      = t(:individual_activities, :scope => [:portfolio, :information])
+      =t :individual_assignments, :scope => [:assignment, :information]
   .block_content
     - unless @individual_activities.nil? or @individual_activities.empty?
       %table.tb_list
         %thead
           %tr.lines
-            %th= t(:description, :scope => [:portfolio, :information])
-            %th{:align => "center", :style => "width:70px"}= t(:date, :scope => [:portfolio, :information])
-            %th{:align => "right", :style => "width:80px"}= t(:situation, :scope => [:portfolio, :information])
-            %th{:align => "center", :style => "width:40px"}= t(:grade, :scope => [:portfolio, :information])
-            %th{:align => "center", :style => "width:80px"}= t(:comments, :scope => [:portfolio, :comments])
+            %th= t(:description, :scope => [:assignment, :information])
+            %th{:align => "center", :style => "width:70px"}= t(:date, :scope => [:assignment, :information])
+            %th{:align => "right", :style => "width:80px"}= t(:situation, :scope => [:assignment, :information])
+            %th{:align => "center", :style => "width:40px"}= t(:grade, :scope => [:assignment, :information])
+            %th{:align => "center", :style => "width:80px"}= t(:comments, :scope => [:assignment, :comments])
         %tbody
           - @individual_activities.each_with_index do |ia, idx|
             %tr.lines
@@ -27,8 +27,8 @@
                       .enunciation_complete
                         = ia["enunciation"]
                       .more_or_less
-                        %a.enunciation_more.link_content{:href => "#"}= t(:more, :scope => [:portfolio, :information])
-                        %a.enunciation_less.link_content{:href => "#"}= t(:less, :scope => [:portfolio, :information])
+                        %a.enunciation_more.link_content{:href => "#"}= t(:more, :scope => [:assignment, :information])
+                        %a.enunciation_less.link_content{:href => "#"}= t(:less, :scope => [:assignment, :information])
                   - else
                     = ia["enunciation"]
               %td{:align => "center"}
@@ -47,17 +47,17 @@
   .block_title
     %h2
       = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
-      = t(:group_activities, :scope => [:portfolio, :information])
+      =t :group_assignments, :scope => [:assignment, :information]
   .block_content
     - unless @group_activities.nil? or @group_activities.empty?
       %table.tb_list
         %thead
           %tr.lines
-            %th=t(:description, :scope => [:portfolio, :information])
-            %th{:align => "center", :style => "width:70px"}= t(:date, :scope => [:portfolio, :information])
-            %th{:align => "right", :style => "width:80px"}= t(:situation, :scope => [:portfolio, :information])
-            %th{:align => "center", :style => "width:40px"}= t(:grade, :scope => [:portfolio, :information]) 
-            %th{:align => "center", :style => "width:80px"}= t(:comments, :scope => [:portfolio, :comments]) 
+            %th=t(:description, :scope => [:assignment, :information])
+            %th{:align => "center", :style => "width:70px"}= t(:date, :scope => [:assignment, :information])
+            %th{:align => "right", :style => "width:80px"}= t(:situation, :scope => [:assignment, :information])
+            %th{:align => "center", :style => "width:40px"}= t(:grade, :scope => [:assignment, :information]) 
+            %th{:align => "center", :style => "width:80px"}= t(:comments, :scope => [:assignment, :comments]) 
         %tbody
           - @group_activities.each_with_index do |ia, idx|
             - group_info = student_assignment_group_info(ia["id"], @student_id)
@@ -75,28 +75,28 @@
                       = ia["enunciation"]
                       - unless group_info["group_name"].nil?
                         %div
-                          = t(:group, :scope => [:portfolio, :group_assignments]) 
+                          = t(:group, :scope => [:assignment, :group_assignments]) 
                           = ":"
                           = group_info["group_name"]
                         %div
-                          = t(:participants, :scope => [:portfolio, :group_assignments])
+                          = t(:participants, :scope => [:assignment, :group_assignments])
                           = ":" 
                           - group_info["groups_participants"].each do |participant|
                             = participant.user.name
                             - unless participant == group_info["groups_participants"].last
                               = ","
                       - else
-                        %div= t(:student_with_no_group, :scope => [:portfolio, :notifications])
+                        %div= t(:student_with_no_group, :scope => [:assignment, :notifications])
                     .more_or_less
-                      %a.enunciation_more.link_content{:href => "#"}= t(:more, :scope => [:portfolio, :information])
-                      %a.enunciation_less.link_content{:href => "#"}= t(:less, :scope => [:portfolio, :information])
+                      %a.enunciation_more.link_content{:href => "#"}= t(:more, :scope => [:assignment, :information])
+                      %a.enunciation_less.link_content{:href => "#"}= t(:less, :scope => [:assignment, :information])
               %td{:align => "center"}
                 =l ia["start_date"].to_time, :format => :files
                 %br
                 =l ia["end_date"].to_time, :format => :files
               %td
                 - if group_info["group_name"].nil?
-                  %span{:style => ""}= "Sem grupo"
+                  %span.assignment_without_group=t :without_group, :scope => [:assignment, :group_assignments]
                 - else
                   =link_to t(ia["correction"].to_sym), assignment_path(ia["id"], :group_id => group_info["groups_participants"].first.group_assignment_id), :class => "assignment_#{ia["correction"]}"
               %td{:align => "center"}
@@ -110,7 +110,7 @@
   .block_title
     %h2
       = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
-      = t(:public_area, :scope => [:portfolio, :information])
+      = t(:public_area, :scope => [:assignment, :information])
   .block_content
     - unless @public_area.nil? or @public_area.empty?
       %table.tb_list
@@ -121,11 +121,11 @@
               %td= link_to pa.attachment_file_name, download_files_assignments_path(:file_id => pa["id"], :type => "public"), {:class => 'link_content'}
               %td.file_data_info{:style => "width: 80px;", :align => "center"}= format('%.2f KB', pa.attachment_file_size.to_i/1024.0)
               %td.file_data_info{:style => "width: 100px;", :align => "center"}=l pa.attachment_updated_at.to_time, :format => :files
-              %td{:style => "width: 60px", :align => "center"}= button_to t(:delete, :scope => [:portfolio, :files]), delete_file_assignments_path(:file_id => pa.id, :type => 'public'), :confirm => t(:delete_msg, :scope => [:portfolio, :files]), :class => "btn btn_caution"
+              %td{:style => "width: 60px", :align => "center"}= button_to t(:delete, :scope => [:assignment, :files]), delete_file_assignments_path(:file_id => pa.id, :type => 'public'), :confirm => t(:delete_msg, :scope => [:assignment, :files]), :class => "btn btn_caution"
     - else
       .block_content.block_content_text= t(:itens_not_found)
     %div{:style => "background-color: white; padding-top:6px"}
-      = button_tag t(:upload_on_public_area, :scope => [:portfolio, :files]), :class => "btn btn_default", :id => "send_attachment"
+      = button_tag t(:upload_on_public_area, :scope => [:assignment, :files]), :class => "btn btn_default", :id => "send_attachment"
 
 :javascript
   $(function(){
@@ -144,6 +144,6 @@
     $('#send_attachment').click(function(e){
       e.preventDefault(); // cancel the link behavior
       url = "#{send_public_files_page_assignments_path}"
-      showLightBoxURL(url,500,320,true,'#{t(:send_file, :scope => [:portfolio, :files])}');
+      showLightBoxURL(url,500,320,true,'#{t(:send_file, :scope => [:assignment, :files])}');
     });
   });

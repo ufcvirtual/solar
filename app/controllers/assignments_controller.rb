@@ -56,7 +56,7 @@ class AssignmentsController < ApplicationController
       begin
 
         # verifica se ainda está no prazo
-        raise t(:date_range_expired, :scope => [:portfolio, :notifications]) unless assignment_in_time?(@assignment)
+        raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment_in_time?(@assignment)
 
         GroupAssignment.transaction do
 
@@ -130,7 +130,7 @@ class AssignmentsController < ApplicationController
     comment     = params['comment']
     begin
       # verifica se está no prazo
-      raise t(:date_range_expired, :scope => [:portfolio, :notifications]) unless assignment_in_time?(@assignment)
+      raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment_in_time?(@assignment)
       @send_assignment = SendAssignment.find_or_create_by_assignment_id_and_group_assignment_id_and_user_id(@assignment.id, group_id, student_id)
       @send_assignment.update_attributes!(:grade => grade, :comment => comment)
       respond_to do |format|
@@ -159,7 +159,7 @@ class AssignmentsController < ApplicationController
 
     begin
       # verifica se está no prazo
-      raise t(:date_range_expired, :scope => [:portfolio, :notifications]) unless assignment_in_time?(@assignment)
+      raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment_in_time?(@assignment)
       ActiveRecord::Base.transaction do
 
         if comment.nil?
@@ -177,7 +177,7 @@ class AssignmentsController < ApplicationController
         end
       end
 
-      flash[:notice] = t(:comment_sent_success, :scope => [:portfolio, :comments])
+      flash[:notice] = t(:comment_sent_success, :scope => [:assignment, :comments])
     rescue Exception => error
       flash[:alert] = error.message
     end
@@ -198,7 +198,7 @@ class AssignmentsController < ApplicationController
         end
         comment.delete
       end
-      render :json => { :success => true, :flash_msg => t(:removed_comment, :scope => [:portfolio, :comments]), :flash_class => 'notice' }
+      render :json => { :success => true, :flash_msg => t(:removed_comment, :scope => [:assignment, :comments]), :flash_class => 'notice' }
     rescue Exception => error
       render :json => { :success => false, :flash_msg => error.message, :flash_class => 'alert' }
     end
@@ -272,13 +272,13 @@ class AssignmentsController < ApplicationController
           #verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
           raise CanCan::AccessDenied unless assignment.user_can_access_assignment(current_user.id, current_user.id, group_id)
           # verifica período para envio do arquivo
-          raise t(:date_range_expired, :scope => [:portfolio, :notifications]) unless assignment_in_time?(assignment)
+          raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment_in_time?(assignment)
 
           send_assignment = SendAssignment.find_or_create_by_assignment_id_and_user_id_and_group_assignment_id!(assignment.id, user_id, group_id)
           AssignmentFile.create!({ :attachment => params[:file], :send_assignment_id => send_assignment.id, :user_id => current_user.id })
       end
 
-      flash[:notice] = t(:uploaded_success, :scope => [:portfolio, :files])
+      flash[:notice] = t(:uploaded_success, :scope => [:assignment, :files])
     rescue Exception => error
       flash[:alert] = error.message.split(',')[0]
     end
@@ -297,13 +297,13 @@ class AssignmentsController < ApplicationController
           authorize! :delete_file, assignment
 
           # verifica prazo
-          raise t(:date_range_expired, :scope => [:portfolio, :notifications]) unless assignment_in_time?(assignment)
+          raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment_in_time?(assignment)
           # verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
           raise CanCan::AccessDenied unless assignment.user_can_access_assignment(current_user.id, AssignmentFile.find(params[:file_id]).user_id)
 
           AssignmentFile.find(params[:file_id]).delete_assignment_file
       end
-      flash[:notice] = t(:deleted_success, :scope => [:portfolio, :files])
+      flash[:notice] = t(:deleted_success, :scope => [:assignment, :files])
     rescue Exception => error
       flash[:alert] = error.message
     end
@@ -332,7 +332,7 @@ class AssignmentsController < ApplicationController
 
     begin 
       # verifica período para envio do arquivo
-      raise t(:date_range_expired, :scope => [:portfolio, :notifications]) unless assignment_in_time?(@assignment)
+      raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment_in_time?(@assignment)
 
       unless groups_to_import.empty?
         groups_to_import.each do |group_to_import|
@@ -343,7 +343,7 @@ class AssignmentsController < ApplicationController
         end
       end
 
-      flash[:notice] = t(:import_success, :scope => [:portfolio, :import_groups])
+      flash[:notice] = t(:import_success, :scope => [:assignment, :import_groups])
 
     rescue Exception => error
       flash[:alert] = error.message

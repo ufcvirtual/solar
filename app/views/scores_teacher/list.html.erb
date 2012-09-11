@@ -50,7 +50,7 @@
                 <% assignment = Assignment.find(assignments_ids[idx]) %>
                 <% group_id   = (assignment.type_assignment == Group_Activity) ? GroupAssignment.first(:include => [:group_participants], :conditions => ["group_participants.user_id = #{student["student_id"]} AND assignment_id = #{assignment.id}"]) : nil %>
                 <% if (assignment.type_assignment == Group_Activity) and group_id.nil? %>
-                  <%= t(:assignment_wg) %>  <!-- aluno sem grupo -->
+                  <%= link_to t(:assignment_wg), information_assignment_path(assignments_ids[idx]) %>
                 <% else %>
                   <%= link_to grade_link, assignment_path(assignments_ids[idx], :student_id => student["student_id"], :group_id => group_id) %>
                 <% end %>
