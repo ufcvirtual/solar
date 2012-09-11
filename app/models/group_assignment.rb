@@ -27,8 +27,7 @@ class GroupAssignment < ActiveRecord::Base
     ids_students_of_class = Profile.students_of_class(assignment_allocation_tag_id).map(&:id)
     all_participants_all_groups = GroupParticipant.find_all_by_group_assignment_id(groups_assignments_ids).map(&:user_id)
     no_group_students = User.select("id, name").all(:conditions => ["id NOT IN (?) AND id IN (?)", all_participants_all_groups, ids_students_of_class])
-    # raise "#{ids_students_of_class} e #{all_participants_all_groups} e #{no_group_students}"
-    return no_group_students
+    return all_participants_all_groups.empty? ? User.select("id, name").find(ids_students_of_class) : no_group_students
   end
 
 ##

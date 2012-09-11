@@ -623,8 +623,10 @@
   legend_assignments: "Legend Of Assignments"
   assignment_without_correction: "Assignment sent but not corrected(without grade)."
   assignment_not_sent: "Assignment not sent."
+  student_without_group: Student without group
   assignment_as: "AS"
   assignment_an: "AN"
+  assignment_wg: WG
   amount: "Amount"
   amount_participation_discussions: "Participation in Discussions"
   from_date: "From Date"

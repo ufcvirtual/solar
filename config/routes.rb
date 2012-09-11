@@ -99,12 +99,12 @@ Solar::Application.routes.draw do
   get 'user_root' => 'users#mysolar'
   
   get "/media/users/:id/photos/:style.:extension", :to => "users#photo"
-  get "/media/assignment/public_area/:file.:extension", :to => "access_control#portfolio_public_area"
   get "/media/lessons/:id/:file.:extension", :to => "access_control#lesson"
   get "/media/messages/:file.:extension", :to => "access_control#message"
 
-  get "/media/assignment/individual_area/:file.:extension", :to => "access_control#portfolio_files"
-  get "/media/assignment/comments/:file.:extension", :to => "access_control#portfolio_files"
+  get "/media/assignment/individual_area/:file.:extension", :to => "access_control#assignment"
+  get "/media/assignment/comments/:file.:extension", :to => "access_control#assignment"
+  get "/media/assignment/public_area/:file.:extension", :to => "access_control#assignment"
 
   match ':controller(/:action(/:id(.:format)))'
 

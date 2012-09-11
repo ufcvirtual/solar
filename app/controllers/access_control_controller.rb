@@ -5,52 +5,34 @@ include AccessControlHelper
 
 class AccessControlController < ApplicationController
 
-  def portfolio_public_area
-    attachment_name = params[:file]
-    file_id = attachment_name.slice(0..attachment_name.index("_")-1)
-    file = PublicFile.select("allocation_tag_id, id, attachment_file_name").includes(:allocation_tag).find(file_id)
-
-    same_class = Allocation.find_all_by_user_id(current_user.id).map(&:allocation_tag_id).include?(file.allocation_tag_id)
-    class_responsible = file.allocation_tag.is_user_class_responsible?(current_user.id)
-
-    if same_class or class_responsible
-      type = return_type(params[:extension])
-      send_file(file.attachment.path, { :disposition => 'inline', :type => type} )
-    else
-      no_permission_redirect
-    end
-  end
-
-  # http://localhost:3000/media/portfolio/comments/113_ForumDesabilitado.png
-  # http://localhost:3000/media/portfolio/individual_area/42_TelaProfessor.png
+  ## 
+  # Verificação de acesso ao realizar download de um arquivo relacionado à atividades ou um arquivo público
   ##
-  # 
-  ##
-  def portfolio_files
-    attachment_name = params[:file]
-    file_id         = attachment_name.slice(0..attachment_name.index("_")-1)
-    current_path_split = request.env['PATH_INFO'].split("/")
+  def assignment
+    attachment_name    = params[:file] 
+    file_id            = attachment_name.slice(0..attachment_name.index("_")-1) 
+    current_path_split = request.env['PATH_INFO'].split("/") #ex: /media/assignment/public_area/20_crimescene.png => ["", "media", "assignment", "public_area", "20_crimescene.png"]
 
-    case current_path_split[current_path_split.size-2]
-      when 'comments'
+    case current_path_split[current_path_split.size-2] #ex: ["", "media", "assignment", "public_area", "20_crimescene.png"] => public_area
+      when 'comments' #arquivo de um comentário
         file = CommentFile.find(file_id)
-        file_send_assignment = file.assignment_comment.send_assignment
-        can_access_file = file_send_assignment.assignment.type_assignment != Group_Activity ? file_send_assignment.user_id == current_user.id : !GroupParticipant.find_by_user_id_and_group_assignment_id(current_user.id, file_send_assignment.group_assignment_id).empty? unless file_send_assignment.nil?
-      when 'individual_area'
+        send_assignment = file.assignment_comment.send_assignment
+        authorize! :download_files, send_assignment.assignment
+      when 'individual_area' #arquivo enviado pelo aluno/grupo
         file = AssignmentFile.find(file_id)
-        file_send_assignment = file.send_assignment
-        can_access_file = true
-      when 'enunciation'
-        file = AssignmentEnounciationFile.find(file_id)
-        file_send_assignment = file.send_assignment
-        can_access_file = true
+        send_assignment = file.send_assignment
+        authorize! :download_files, send_assignment.assignment
+      when 'enunciation' #arquivo que faz parte da descrição da atividade
+        file = AssignmentEnunciationFile.find(file_id)
+        authorize! :download_files, file.assignment
+      when 'public_area' #área pública do aluno
+        file = PublicFile.find(file_id) 
+        authorize! :download_files, Assignment
+        same_class = Allocation.find_all_by_user_id(current_user.id).map(&:allocation_tag_id).include?(file.allocation_tag_id)
     end
 
-    related_allocation_tags     = AllocationTag.find_related_ids(file_send_assignment.assignment.allocation_tag_id)
-    related_allocations_to_user = Allocation.where(:allocation_tag_id => related_allocation_tags, :user_id => current_user.id) unless related_allocation_tags.empty?
-    user_related = true unless related_allocation_tags.empty? or related_allocations_to_user.empty?
-
-    if (file_send_assignment.assignment.allocation_tag.is_user_class_responsible?(current_user.id) or can_access_file) and user_related
+    #verifica se tem acesso a arquivo ou se é da mesma turma (definido apenas para arquivos públicos)
+    if (!send_assignment.nil? and send_assignment.assignment.user_can_access_assignment(current_user.id, send_assignment.user_id, send_assignment.group_assignment_id)) or (same_class)
       type = return_type(params[:extension])
       send_file(file.attachment.path, { :disposition => 'inline', :type => type} )
     else
@@ -58,6 +40,7 @@ class AccessControlController < ApplicationController
     end
 
   end
+
 
   def lesson
     type = return_type(params[:extension])

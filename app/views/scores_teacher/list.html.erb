@@ -47,7 +47,13 @@
               <!-- no mesmo campo pode vir tanto a nota quanto o status do trabalho -> enviado ou nao enviado-->
               <% grade_link = (grade.match(/[a-z-A-Z]/)) ? t("assignment_#{grade}".to_s) : grade.to_f %>
               <td align="center" class="assignment_<%= grade %>">
-                <%=link_to grade_link, assignment_path(assignments_ids[idx], :student_id => student["student_id"]) %>
+                <% assignment = Assignment.find(assignments_ids[idx]) %>
+                <% group_id   = (assignment.type_assignment == Group_Activity) ? GroupAssignment.first(:include => [:group_participants], :conditions => ["group_participants.user_id = #{student["student_id"]} AND assignment_id = #{assignment.id}"]) : nil %>
+                <% if (assignment.type_assignment == Group_Activity) and group_id.nil? %>
+                  <%= t(:assignment_wg) %>  <!-- aluno sem grupo -->
+                <% else %>
+                  <%= link_to grade_link, assignment_path(assignments_ids[idx], :student_id => student["student_id"], :group_id => group_id) %>
+                <% end %>
               </td>
 
             <% end %>
@@ -66,7 +72,8 @@
 
   <div id="scores_notes" class="legend_score_footer">
     <span><%= t(:assignment_as) %>:&nbsp;<%= t(:assignment_without_correction) %></span><br />
-    <span><%= t(:assignment_an) %>:&nbsp;<%= t(:assignment_not_sent) %></span>
+    <span><%= t(:assignment_an) %>:&nbsp;<%= t(:assignment_not_sent) %></span><br/>
+    <span><%= t(:assignment_wg) %>:&nbsp;<%= t(:student_without_group) %></span>
   </div>
 
   <!-- Paginacao -->
@@ -81,8 +88,10 @@
     <div class="legend">
       <ul>
         <li><h1><%= t(:legend_assignments) %></h1></li>
-        <% @activities.each_with_index do |activity, idx| %>
-          <li><%= idx + 1 %>&deg; - <%= activity["name"] %></li>
+        <% for i in 0..leng_assignments - 1 %>
+          <% assig_id = @students.first["assignment_ids"].split(',')[i]%>
+          <%assignment = Assignment.find(assig_id)%>
+          <li><%= i + 1 %>&deg; - <%= assignment.name %></li>
         <% end %>
       </ul>
     </div>

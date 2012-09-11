@@ -2620,6 +2620,19 @@ td.td_student a {color: #2a538d;}
     width:70px;
 }
 
+.assignment_files_info{
+    font-family: 'PT Sans', sans-serif;
+    font-weight: normal;
+    font-size: 8pt;
+    text-align: right;
+    font-style: italic;
+    color: #888;
+    margin-right: 8px;
+    margin-top: 5px;
+    margin-left: 10px;
+    float: right;
+}
+
 /**
 * AGENDA
 */

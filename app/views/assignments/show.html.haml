@@ -1,5 +1,6 @@
 -# classe utilizada em botões que podem ou não estar desabilitados
-- btn_class = assignment_in_time?(@assignment) ? "btn btn_main" : "btn btn_disabled"
+- btn_class        = assignment_in_time?(@assignment) ? "btn btn_main" : "btn btn_disabled"
+- btn_cancel_class = assignment_in_time?(@assignment) ? "btn btn_caution" : "btn btn_disabled"
 
 -# Descricao da atividade 
 .block_wrapper
@@ -13,10 +14,10 @@
         %tr.lines
           %th=t(:description, :scope => [:portfolio, :information])
           %th{:align => "right", :style => "width:70px"}
-            = image_tag "clock.png", :alt => " ", :class=>"block_title_icon"
+            = image_tag "clock.png", :alt => " ", :class => "block_title_icon"
             = t(:activity_begin, :scope => [:portfolio, :information])
           %th.clock_icon
-            = image_tag "clock.png", :alt => " ", :class=>"block_title_icon"
+            = image_tag "clock.png", :alt => " ", :class => "block_title_icon"
             = t(:activity_end, :scope => [:portfolio, :information])
       %tbody
         %tr.lines
@@ -28,14 +29,13 @@
 .block_wrapper
   .block_title
     %h2
-      = image_tag("icon_suitcase_portfolio.png", :alt=> " ", :class=>'block_title_icon')
+      = image_tag("icon_suitcase_portfolio.png", :alt => " ", :class => 'block_title_icon')
       = t(:activity_files, :scope => [:portfolio, :files])
     %span.download_all_icon
       - unless @assignment_enounciation_files.empty?
         = button_tag(:type => :button, :onclick => "javascript:window.location.href='#{download_files_assignments_path(:assignment_id => @assignment.id, :type => "enunciation", :zip => true)}'", :class => "btn btn_default") do
           = content_tag(:span, t(:download_all_files_zip, :scope => [:portfolio, :files]))
           = content_tag(:span, image_tag("icon_folder_compressed.png"))
-
   .block_content
     - unless @assignment_enounciation_files.empty?
       %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
@@ -69,7 +69,7 @@
         %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
           %thead
             %tr.lines
-              %th=t(:participants, :scope => [:portfolio, :group_assignments])
+              %th= t(:participants, :scope => [:portfolio, :group_assignments])
           %tbody
             - gp.each do |participant|
               %tr.lines
@@ -113,7 +113,7 @@
                 %td.right= file.user.nick
               %td.center= l(file.attachment_updated_at, :format => :files)
               - if can? :delete_file, @assignment and @assignment.user_can_access_assignment(@user.id, @student_id, @group_id)
-                %td= button_to t(:delete, :scope => [:portfolio, :files]), delete_file_assignments_path(:assignment_id => params[:id], :file_id => file.id, :type => 'assignment'), :confirm => t(:delete_msg, :scope => [:portfolio, :files]), :class => btn_class, :disabled => !@assignment_in_time?(@assignment)
+                %td= button_to t(:delete, :scope => [:portfolio, :files]), delete_file_assignments_path(:assignment_id => params[:id], :file_id => file.id, :type => 'assignment'), :confirm => t(:delete_msg, :scope => [:portfolio, :files]), :class => btn_cancel_class, :disabled => !assignment_in_time?(@assignment)
     - else
       .portfolio_div_padding= t(:itens_not_found)
     -# Enviar arquivos
@@ -123,7 +123,7 @@
         = form_for(:assignment, :url => upload_file_assignments_path(:assignment_id => @assignment.id, :type => 'assignment')) do |f|
           %p
             = f.file_field :file, :name => :file
-            = f.submit t(:send), :class => btn_class, :disabled => !@assignment_in_time?(@assignment)
+            = f.submit t(:send), :class => btn_class, :disabled => !assignment_in_time?(@assignment)
           %p.block_content_gray
             = t(:send_file_obs, :scope => [:portfolio, :files])
           %p.block_content_gray=raw t(:send_file_text, :scope => [:portfolio, :files])
@@ -135,7 +135,7 @@
       = image_tag "icon_participants.png", :alt => " ", :class=>'block_title_icon'
       = t(:evaluation, :scope => [:portfolio, :evaluation])
     %span.portfolio_title_button
-      - if can? :evaluate, @assignment
+      - if (can? :evaluate, @assignment)
         = button_tag t(:evaluate, :scope => [:portfolio, :evaluation]), :class => btn_class, :id => "btn_evaluate", :onclick => "javascript:btn_evaluate();", :disabled => !assignment_in_time?(@assignment)
         = button_tag t(:cancel, :scope => [:portfolio, :evaluation]), :class => "btn btn_caution", :id => "btn_cancel_evaluation", :onclick => "javascript:btn_cancel_evaluation();", :disabled => !assignment_in_time?(@assignment)
         = button_tag t(:save, :scope => [:portfolio, :evaluation]), :class => "btn btn_main", :id => "btn_save_evaluation", :disabled => !assignment_in_time?(@assignment)
@@ -169,7 +169,7 @@
       = image_tag "icon_comments.png", :alt => " ", :class=>'block_title_icon'
       = t(:comments, :scope => [:portfolio, :comments])
     %span.portfolio_title_button
-      - if can? :send_comment, AssignmentComment
+      - if (can? :send_comment, AssignmentComment)
         = button_tag t(:to_comment, :scope => [:portfolio, :comments]), :class => btn_class, :id => "btn_comment", :onclick => "javascript:btn_comment();", :disabled => !assignment_in_time?(@assignment)
   .forum_posts_wrapper
     - display_comment = @error_message.nil? ? "display:none" : "display:block"
@@ -181,8 +181,8 @@
             .forum_post_author
               .forum_participant_nick= @user.nick
               .forum_participant_profile
-                -# user_profile = Profile.user_allocation_tag_profile(@assignment.allocation_tag_id, @user.id)
-                =# user_profile.name
+                - user_profile = Profile.user_allocation_tag_profile(@assignment.allocation_tag_id, @user.id)
+                = user_profile.name
             .forum_post_date=l Date.current
         %tr
           %td.forum_post_content{:colspan => "2"}
@@ -208,8 +208,8 @@
               .forum_post_author
                 .forum_participant_nick= comment.user.nick
                 .forum_participant_profile
-                  -# user_profile = Profile.user_allocation_tag_profile(@assignment.allocation_tag_id, comment.user_id)
-                  =# user_profile.name
+                  - user_profile = Profile.user_allocation_tag_profile(@assignment.allocation_tag_id, comment.user_id)
+                  = user_profile.name
               .forum_post_date
                 - unless comment.updated_at.blank?
                   = l(comment.updated_at, :format => :files)
@@ -223,16 +223,18 @@
                 %ul.forum_post_attachment_list
                   - unless comment.comment_files.empty?
                     - comment.comment_files.each do |comment_file|
-                      %li
+                      %li{:style => "list-style-type: none"}
+                        = link_to image_tag(icon_attachment(comment_file.attachment_file_name), :alt => "oi"), download_files_assignments_path(:assignment_id => @assignment.id, :file_id => comment_file.id, :student_id => @student_id, :group_id => @group_id, :type => "comment"), {:class => "file_icon"}
                         = link_to comment_file.attachment_file_name, download_files_assignments_path(:assignment_id => @assignment.id, :file_id => comment_file.id, :student_id => @student_id, :group_id => @group_id, :type => "comment"), {:class => "link_content"}
-                        .forum_post_date= l(comment_file.attachment_updated_at, :format => :files)
+                        .assignment_files_info= l(comment_file.attachment_updated_at, :format => :files)
+                        .assignment_files_info= format('%.2f KB', comment_file.attachment_file_size/1024.0)
                   - else
                     = '-'
                 .portfolio_comment_button
-                  - if can? :remove_comment, AssignmentComment
+                  - if (can? :remove_comment, AssignmentComment)
                     - btn_remove = assignment_in_time?(@assignment) ? "btn btn_caution" : "btn btn_disabled"
                     = button_tag t(:delete, :scope => [:portfolio, :comments]), :class => btn_remove, :onclick => "javascript:remove_comment(#{comment.id}, #{@assignment.id});", :disabled => !assignment_in_time?(@assignment)
-                  - if can? :send_comment, comment
+                  - if (can? :send_comment, comment)
                     = button_tag t(:edit, :scope => [:portfolio, :comments]), :class => btn_class + " btn_edit_comment_#{comment.id}", :onclick => "javascript:btn_edit_comment(this, #{comment.id});", :disabled => !assignment_in_time?(@assignment)
 
               %td{:class => ["forum_post_content", "form_comment_#{comment.id}", "form_comment"], :colspan => "2", :style => "display:none"}

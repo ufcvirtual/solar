@@ -780,8 +780,10 @@
   legend_assignments: "Legenda dos Trabalhos"
   assignment_without_correction: "Trabalho enviado mas não corrigido(sem nota)."
   assignment_not_sent: "Trabalho não enviado"
+  student_without_group: Aluno sem grupo
   assignment_as: "TE"
   assignment_an: "TN"
+  assignment_wg: SG
   amount: "Qtd"
   amount_participation_discussions: "Participações em Fóruns"
   from_date: "Da Data"
