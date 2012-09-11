@@ -116,7 +116,7 @@ class AssignmentsController < ApplicationController
    
     unless @send_assignment.nil?
       @send_assignment_files = @send_assignment.assignment_files
-      @comments              = @send_assignment.assignment_comments.order("updated_at DESC")
+      @comments              = @send_assignment.assignment_comments
     end
   end
 

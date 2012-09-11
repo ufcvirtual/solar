@@ -126,7 +126,7 @@ SQL
   end
 
   ##
-  # 
+  # Verifica se usuário pode acessar o que está tentando - Atividades e arquivos referentes a elas
   ##
   def user_can_access_assignment(current_user_id, user_id, group_id = nil)
     profile_student   = Profile.select(:id).where("cast(types & '#{Profile_Type_Student}' as boolean)").first

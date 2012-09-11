@@ -17,6 +17,9 @@ class PublicFile < ActiveRecord::Base
 
   validates_attachment_content_type_in_black_list :attachment
 
+  default_scope :order => 'attachment_updated_at DESC'
+  # default_scope :order => 'attachment_content_type ASC'
+
   ##
   # Deleta arquivo publico
   ##

@@ -18,7 +18,7 @@ class AccessControlController < ApplicationController
         file = CommentFile.find(file_id)
         send_assignment = file.assignment_comment.send_assignment
         authorize! :download_files, send_assignment.assignment
-      when 'individual_area' #arquivo enviado pelo aluno/grupo
+      when 'sent_assignment_files' #arquivo enviado pelo aluno/grupo
         file = AssignmentFile.find(file_id)
         send_assignment = file.send_assignment
         authorize! :download_files, send_assignment.assignment
