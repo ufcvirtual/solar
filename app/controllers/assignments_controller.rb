@@ -118,8 +118,6 @@ class AssignmentsController < ApplicationController
       @send_assignment_files = @send_assignment.assignment_files
       @comments              = @send_assignment.assignment_comments.order("updated_at DESC")
     end
-    
-    student_id = @group_id.nil? ? @student_id : @group.group_participants.first.user_id
   end
 
   ##
@@ -179,6 +177,7 @@ class AssignmentsController < ApplicationController
         end
       end
 
+      flash[:notice] = t(:comment_sent_success, :scope => [:portfolio, :comments])
     rescue Exception => error
       flash[:alert] = error.message
     end
