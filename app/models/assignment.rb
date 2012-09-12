@@ -32,27 +32,6 @@ class Assignment < ActiveRecord::Base
      GROUP BY t1.id, t2.id, t4.start_date, t4.end_date, t2.grade;
 SQL
 
-    # send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignment_id, student_id, group_id)
-    # # raise "#{send_assignment.assignment}"
-    # situation = case true
-    #   # when send_assignment.nil?
-    #   #   "-"
-    #   when send_assignment.assignment.schedule.start_date > Date.current 
-    #     "not_started"
-    #   when !send_assignment.grade.nil?
-    #     "corrected"
-    #   when send_assignment.assignment_files.size > 0
-    #     "sent"
-    #   when (send_assignment.assignment_files.size == 0 and send_assignment.assignment.schedule.end_date > Date.current)
-    #     "send"
-    #   when (send_assignment.assignment_files.size == 0 and send_assignment.assignment.schedule.end_date < Date.current)
-    #     "not_sent"
-    # end
-    # # situation ="oi"
-    # return situation.nil? ? "-" : situation
-
-    # raise "#{status_assignment.first['assignment_status']} e #{situation}"
-
     return (status_assignment.first.nil?) ? '-' : status_assignment.first['assignment_status']
   end
 
