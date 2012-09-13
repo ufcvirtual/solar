@@ -132,7 +132,9 @@ function active_draggable_element(draggable_div, except) {
   // cria divs "draggable" a não ser que tenham id false
   // <li> de estudantes que já enviaram arquivos ou que já foram avaliados tem o id = false
   draggable_div.not(except).draggable({
-    revert: true
+    revert: true, // impede de arrastar elemento para áreas não permitidas
+    scroll: false, // permite que o scroll dentro da caixa seja delimitado
+    helper: 'clone' // cria clone que será removido. o helper é utilizado para o uso do "scroll:false" e para que, no momento de arrastar um elemento, ele fique visível não só na "caixa" de origem dele
   });
 }
 
@@ -142,16 +144,19 @@ function active_droppable_element(droppable_div, div_acepted, except) {
   droppable_div.not(except).droppable({
     accept: div_acepted,
     drop: function( event, ui ) {
-      var participant_id = ui.draggable.attr('value'); // recolhe o id do estudante antes de remover o elemento que tem a informação
-      ui.draggable.remove(); // remove o elemento draggable da lista que esta sendo movido
-      // cria novo elemento, mas agora no novo grupo a que ele foi levado
-      $( "<li value='"+participant_id+"' id='true' style='position: relative;' class='ui-draggable' onmouseover='student_mouseover(this, \"no_message\");' onmouseout='student_mouseout(this);'></li>").text( ui.draggable.text() ).appendTo(this);
+
+      draggable_element_class = ui.draggable.attr("class").split(" ")[0]; // ex: student_1 ui-draggable => student_1
+      cloned_element_div = $("."+draggable_element_class); //o helper clone, no momento que o elemento é arrastado, move o clone e remove o elemento de origem (remove da página, mas o elemento continua existindo)
+      $(cloned_element_div).attr("style", "position: relative"); // altera o estilo do clone (originalmente, ele fica "jogado" onde foi arrastado)
+      $(cloned_element_div).appendTo(this); // embora, visualmente, o clone pareça estar na "caixa" nova, sua div está na "caixa" de origem. com isso, ele é levado, de fato, à "caixa" nova.
+      ui.draggable.remove(); // como o elemento movido ainda existe, ele interfere no momento de "largar" o clone na nova "caixa" (barras de rolagem aparecem temporariamente). logo, há a necessidade de remove-lo.
       
       if($('.no_students_message', this)){ // caso exista a mensagem de "sem alunos" no grupo que está recebendo o aluno
         $('.no_students_message', this).remove(); // remove mensagem
       }
       active_draggable_element($(".group_participants_manage li"), "#false"); // redefine como draggable os <li>
       put_empty_message(); // acrescenta mensagem de "sem alunos", caso necessário, ao grupo que teve o aluno removido
+
     }
   });
 }

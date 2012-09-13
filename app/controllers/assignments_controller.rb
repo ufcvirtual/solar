@@ -84,7 +84,7 @@ class AssignmentsController < ApplicationController
           
           @students_without_group = GroupAssignment.students_without_groups(@assignment.id) #alunos da turma sem grupo (após alterações)
           respond_to do |format|
-            format.html { render 'assignment_div', :layout => false }
+            format.html { render 'group_assignment_content_div', :layout => false }
           end
 
         end
@@ -93,7 +93,7 @@ class AssignmentsController < ApplicationController
       end
     else #clicou em "cancelar"
       respond_to do |format|
-        format.html { render 'assignment_div', :layout => false }
+        format.html { render 'group_assignment_content_div', :layout => false }
       end
     end
   end

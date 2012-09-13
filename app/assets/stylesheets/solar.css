@@ -3275,8 +3275,9 @@ div.support_material_select {
     padding: 7px;
 }
 
-.group_participants_manage ul{
-    min-height: 60px;
+.group_participants_manage ul, .group_participants ul{
+    height: 100px;
+    overflow: auto;
 }
 
 [class^="group_name"], .group_name_manage, .group_assignments_manage_buttons_title, .edit_group_true, .disabled_groups_assignments_name{
