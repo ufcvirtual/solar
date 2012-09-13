@@ -99,7 +99,7 @@
                 - else
                   %li.no_students_message=t :no_participant, :scope => [:assignment, :group_assignments]
 
-        .group_participants
+        .group_participants.students_without_group
           %h3.group_name_true=t :students_with_no_group, :scope => [:assignment, :group_assignments]
           .edit_group_true
             =t :students_with_no_group, :scope => [:assignment, :group_assignments]

@@ -125,10 +125,6 @@ pm30:
   profile_id: 3
   menu_id: 201
 
-pm31:
-  profile_id: 3
-  menu_id: 202
-
 pm32:
   profile_id: 3
   menu_id: 30
@@ -194,10 +190,6 @@ pm44:
 pm45:
   profile_id: 5
   menu_id: 201
-
-pm46:
-  profile_id: 5
-  menu_id: 202
 
 pm47:
   profile_id: 5

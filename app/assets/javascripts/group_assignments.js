@@ -19,7 +19,7 @@ function btn_manage_groups(assignment_id, show_import_button){
   group_name_label_to_text_field();
   toggle_divs();
   $(".evaluate_group").hide();
-  $(".group_participants").attr("class", "group_participants_manage");
+  $(".group_participants").toggleClass("group_participants_manage");
   $(".group_name_true").attr("class", "group_name_manage");
   $(".group_name_false").attr("class", "disabled_groups_assignments_name");
   $(".group_information_true").attr("class", "group_information_manage");

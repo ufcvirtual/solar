@@ -234,12 +234,6 @@ res39:
   action: 'import_groups'
   description: 'Metodo de importacao de grupos entre atividades'
 
-# res40:
-#   id: 40
-#   controller: 'portfolio_teacher'
-#   action: 'individual_activity'
-#   description: 'Exibe informacoes da atividade individual'
-
 ## Posts
 
 res42:
@@ -405,13 +399,6 @@ res68:
   action: 'edit_link'
   description: 'Edita um ou mais links da pagina de material de apoio do editor'
 
-# # Portfolio responsavel - parte 2
-# res69:
-#   id: 69
-#   controller: 'portfolio_teacher'
-#   action: 'download_files'
-#   description: 'Download de arquivos'
-
 # Edicao de pedidos de matriculas
 res70:
   id: 70
@@ -430,44 +417,6 @@ res72:
   controller: 'allocations'
   action: 'update'
   description: 'Editar matricula'
-
-# # Trabalho de grupo
-# res73:
-#   id: 73
-#   controller: 'group_assignments'
-#   action: 'group_activity'
-#   description: 'Pagina de exibicao das informacoes da atividade e gerenciamento de grupos'
-
-# res74:
-#   id: 74
-#   controller: 'group_assignments'
-#   action: 'manage_groups'
-#   description: 'Metodo de gerenciamento de grupos'  
-
-# res75:
-#   id: 75
-#   controller: 'group_assignments'
-#   action: 'import_groups_page'
-#   description: 'Pagina de importacao de grupos para outros trabalhos'
-
-# res76:
-#   id: 76
-#   controller: 'group_assignments'
-#   action: 'import_groups'
-#   description: 'Importacao de grupos para outros trabalhos'
-
-# res77:
-#   id: 77
-#   controller: 'group_assignments'
-#   action: 'download_single_file'
-#   description: 'Metodo de download de cada arquivo individualmente'
-
-# # Resource vazia
-# res78:
-#   id: 78
-#   controller: ''
-#   action: ''
-#   description: ''
 
 # Unidade Curricular - Editor
 res79:

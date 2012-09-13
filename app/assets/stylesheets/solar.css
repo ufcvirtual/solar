@@ -3286,6 +3286,10 @@ div.support_material_select {
     padding: 6px 7px 2px 7px;
 }
 
+.students_without_group{
+    height: 166px;
+}
+
 .group_name_manage, .edit_group_true{
     background-color: #fcd927;
     color: #000000;
