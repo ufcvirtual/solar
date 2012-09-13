@@ -8,7 +8,8 @@
         %h3{:class => "group_name_#{!group_info["evaluated"]}", :alt => "#{group_info["error_message"]}"}
           = group.group_name
           %span.group_elements_float
-            = button_to t(:evaluate, :scope => [:assignment, :evaluation]), assignment_path(@assignment.id, :group_id => group.id), {:class => "btn btn_default evaluate_group", :alt => t(:evaluate, :scope => [:assignment, :evaluation])}
+            =# button_to t(:evaluate, :scope => [:assignment, :group_assignments]), assignment_path(@assignment.id, :group_id => group.id), {:class => "btn btn_default evaluate_group", :alt => t(:evaluate, :scope => [:assignment, :group_assignments]), :method => :get} #se tirar "method". envia como post; se deixar, ignora o "group_id"
+            = button_tag t(:evaluate, :scope => [:assignment, :group_assignments]), :onclick => "javascript:window.location.href='#{assignment_path(@assignment.id, :group_id => group.id)}'", :class => "btn btn_default evaluate_group"
         %div{:class => "edit_group_#{!group_info["evaluated"]}", :style => "display:none;"}
           = text_field_tag "new_groups_names[][#{@assignment.id}]", group.group_name, :id => "text_field_group_#{group.id}", :class => "rename_group" 
           %a.remove_group{:onclick => "javascript:delete_group('group_#{group.id}', #{@assignment.id}, #{group_info["can_remove"]});", :title => "#{group_info["error_message"]}", :alt => "#{t(:remove, :group_name => group.group_name, :scope => [:assignment, :group_assignments])}"}= "x"
