@@ -4,7 +4,7 @@ class AssignmentsController < ApplicationController
   include FilesHelper
 
 	before_filter :prepare_for_group_selection, :only => [:list, :list_to_student]
-  load_and_authorize_resource :only => [:information, :show, :import_groups_page, :import_groups, :manage_groups, :evaluate]
+  load_and_authorize_resource :only => [:information, :show, :import_groups_page, :import_groups, :manage_groups, :evaluate, :send_comment, :remove_comment]
   authorize_resource :only => [:list, :list_to_student, :download_files, :upload_file, :send_public_files_page, :delete_file]
 
 
@@ -144,9 +144,9 @@ class AssignmentsController < ApplicationController
   # Envia comentarios do professor (cria e edita)
   ##
   def send_comment
-    @assignment       = Assignment.find(params[:id])
+    # @assignment       = Assignment.find(params[:id])
     comment           = params[:comment_id].nil? ? nil : AssignmentComment.find(params[:comment_id]) #verifica se comentário já existe. se sim, é edição; se não, é criação.
-    authorize! :send_comment, AssignmentComment
+    # authorize! :send_comment, AssignmentComment
     authorize! :send_comment, comment unless comment.nil?
     student_id        = params[:student_id].nil? ? nil : params[:student_id]
     group_id          = params[:group_id].nil? ? nil : params[:group_id]

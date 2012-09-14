@@ -339,6 +339,16 @@ assigpt11:
   resource_id: 39
   per_id: true
 
+assigpt12:
+  profile_id: 2
+  resource_id: 40
+  per_id: true
+
+assigpt13:
+  profile_id: 2
+  resource_id: 41
+  per_id: true
+
 #discussion
 dipt1:
   profile_id: 2
@@ -606,6 +616,16 @@ assigta10:
 assigta11:
   profile_id: 3
   resource_id: 39
+  per_id: true
+
+assigpt11:
+  profile_id: 3
+  resource_id: 40
+  per_id: true
+
+assigpt11:
+  profile_id: 3
+  resource_id: 41
   per_id: true
 
 # discussion

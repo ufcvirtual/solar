@@ -190,13 +190,13 @@ res32:
   id: 32
   controller: 'assignment_comments'
   action: 'send_comment'
-  description: 'Metodo para envio de comentarios a respeito do arquivo enviado por um aluno/grupo a uma atividade'
+  description: 'Metodo para envio de comentarios a respeito do arquivo enviado por um aluno/grupo a uma atividade - verificacao de acordo com o comentario'
 
 res33:
   id: 33
   controller: 'assignment_comments'
   action: 'remove_comment'
-  description: 'Metodo para remover determinados comentarios a respeito do arquivo enviado por um aluno/grupo a uma atividade'
+  description: 'Metodo para remover determinados comentarios a respeito do arquivo enviado por um aluno/grupo a uma atividade - verificacao de acordo com o comentario'
 
 res34:
   id: 34
@@ -233,6 +233,17 @@ res39:
   controller: 'assignments'
   action: 'import_groups'
   description: 'Metodo de importacao de grupos entre atividades'
+
+res40:
+  id: 40
+  controller: 'assignments'
+  action: 'send_comment'
+  description: 'Metodo para envio de comentarios a respeito do arquivo enviado por um aluno/grupo a uma atividade - verificacao de acordo com a atividade'
+
+id: 41
+  controller: 'assignments'
+  action: 'remove_comment'
+  description: 'Metodo para remover determinados comentarios a respeito do arquivo enviado por um aluno/grupo a uma atividade - verificacao de acordo com a atividade'
 
 ## Posts
 

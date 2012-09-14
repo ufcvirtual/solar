@@ -122,11 +122,12 @@
         - group_assignment_id = @group_participants.first.group_assignment_id unless @group_participants.nil?
         = form_for(:assignment, :url => upload_file_assignments_path(:assignment_id => @assignment.id, :type => 'assignment')) do |f|
           %p
-            = f.file_field :file, :name => :file
+            = f.file_field :file, :name => :file, :disabled => !assignment_in_time?(@assignment)
             = f.submit t(:send), :class => btn_class, :disabled => !assignment_in_time?(@assignment)
-          %p.block_content_gray
-            = t(:send_file_obs, :scope => [:assignment, :files])
-          %p.block_content_gray=raw t(:send_file_text, :scope => [:assignment, :files])
+          - if assignment_in_time?(@assignment)
+            %p.block_content_gray
+              = t(:send_file_obs, :scope => [:assignment, :files])
+            %p.block_content_gray=raw t(:send_file_text, :scope => [:assignment, :files])
 
 -# Área de avaliação
 .block_wrapper
@@ -169,7 +170,7 @@
       = image_tag "icon_comments.png", :alt => " ", :class=>'block_title_icon'
       = t(:comments, :scope => [:assignment, :comments])
     %span.portfolio_title_button
-      - if can? :send_comment, AssignmentComment
+      - if can? :send_comment, AssignmentComment and can? :send_comment, @assignment
         = button_tag t(:to_comment, :scope => [:assignment, :comments]), :class => btn_class, :id => "btn_comment", :onclick => "javascript:btn_comment();", :disabled => !assignment_in_time?(@assignment)
   .forum_posts_wrapper
     - display_comment = @error_message.nil? ? "display:none" : "display:block"
@@ -231,7 +232,7 @@
                   - else
                     = '-'
                 .portfolio_comment_button
-                  - if can? :remove_comment, AssignmentComment
+                  - if can? :remove_comment, AssignmentComment and can? :remove_comment, @assignment
                     - btn_remove = assignment_in_time?(@assignment) ? "btn btn_caution" : "btn btn_disabled"
                     = button_tag t(:delete, :scope => [:assignment, :comments]), :class => btn_remove, :onclick => "javascript:remove_comment(#{comment.id}, #{@assignment.id});", :disabled => !assignment_in_time?(@assignment)
                   - if can? :send_comment, comment
