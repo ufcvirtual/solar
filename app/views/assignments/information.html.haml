@@ -57,7 +57,7 @@
 
 - # Grupos
 - if @assignment.type_assignment == Group_Activity
-  #activities.block_wrapper
+  .block_wrapper
     .block_title
       %h2
         = image_tag("icon_participants.png", :alt => " ", :class=>'block_title_icon')
@@ -99,7 +99,7 @@
                 - else
                   %li.no_students_message=t :no_participant, :scope => [:assignment, :group_assignments]
 
-        .group_participants.students_without_group
+        .group_participants.group_box_without_info
           %h3.group_name_true=t :students_with_no_group, :scope => [:assignment, :group_assignments]
           .edit_group_true
             =t :students_with_no_group, :scope => [:assignment, :group_assignments]
@@ -148,20 +148,20 @@
   function put_empty_message(){
     // recupera todos os grupos da atividade
     var all_groups = $('ul');
-    for(var i = 0; i<all_groups.length; i++){
+    all_groups.each(function(i){
       var all_participants_each_group = $('li', all_groups[i]);
       // quando ele estiver vazio, acrescenta uma mensagem informativa
       if(all_participants_each_group.length == 0){
         $('<li class="no_students_message">#{t(:no_participant, :scope => [:assignment, :group_assignments])}</li>').appendTo(all_groups[i]);
       }
-    }
+    });
   }
 
   function show_import_and_new_groups_box(show_import_button) {
 
     var new_and_import_groups_box = new Array();
 
-    new_and_import_groups_box.push('<div class="group_assignments_manage_buttons">');
+    new_and_import_groups_box.push('<div class="group_assignments_manage_buttons group_box_without_info">');
       new_and_import_groups_box.push('<div class="group_assignments_manage_buttons_title">');
       new_and_import_groups_box.push('</div>');
       new_and_import_groups_box.push('<ul>');
@@ -202,24 +202,22 @@
   $("#btn_save_management").click(function(){
     if (confirm('#{t(:save_management, :scope => [:assignment, :group_assignments])}')){
 
+      var groups_to_save = new Array();
       // todos os grupos
       var groups = $(".group_participants_manage ul"); 
-      // todos os campos de nome
-      var text_fields = $(".rename_group");
-      var groups_to_save = new Array();
-      // todos os nomes digitados nos campos
-      var groups_names = $(text_fields).map(function(){return ''+this.value+''});
+      // todos os nomes digitados nos campos de texto para o nome do grupo
+      var groups_names = $(".rename_group").map(function(){return ''+this.value+''});
 
       groups.each(function(i){
 
         // recupera os ids dos participantes do grupo [i]
         var array_group_students_ids = $('li', groups[i]).map(function(){
-          if(this.id != 'no_students_message' && this.value != 0){return ''+this.value+''}
+          if(this.id != 'no_students_message'){return ''+this.value+''}
         });
 
         var each_group_students_ids = new String();
 
-        // recebe cada id dos estudantes do grupo em questão como string (array gera erro ao salvar por ajax)
+        // transforma a lista dos ids dos estudantes do grupo em questão e transforma em string (array gera erro ao salvar por ajax)
         // [1, 2, 3, 4] => ["1 2 3 4"]
         array_group_students_ids.each(function(j){
           if(j !=  0){ each_group_students_ids += " "; }
@@ -242,11 +240,15 @@
         type: 'POST',
         data:  {'groups': groups_to_save, 'deleted_groups_divs_ids': deleted_groups},
         success: function(data) {
+          // salvou corretamente
           if (data.success == false) {
             flash_message(data.flash_msg, data.flash_class);
+          // algum erro
           }else{
+            // erro de permissão dentro do método
             if($(".mysolar_portlets_content", data).length != 0){
               $("#body_wrapper").html(data);
+            // erro na hora de salvar
             }else{
               $('.group_assignment_content').html(data);
               undo_btn_manage_groups_divs_changes();

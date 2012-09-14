@@ -648,7 +648,7 @@
   discussions: "Forum"
   lessons: "Aula"
   schedule_events: "Evento da Agenda"
-  assignment: "Trabalho"
+  schedule_assignment: "Trabalho"
   no_events: "Sem eventos para o dia selecionado"
 
   # Assignments

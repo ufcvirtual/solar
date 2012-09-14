@@ -50,7 +50,7 @@ class AssignmentsController < ApplicationController
   def manage_groups
     #id dos grupos excluídos
     deleted_groups_ids      = params['deleted_groups_divs_ids'].blank? ? [] : params['deleted_groups_divs_ids'].collect{ |group| group.tr('_', ' ').split[1] } #"group_2" => 2
-    @students_without_group = GroupAssignment.students_without_groups(@assignment.id) #alunos da turma sem grupo
+    @students_without_group = GroupAssignment.students_without_groups(@assignment.id) #alunos da turma sem grupo (antes das alterações)
     
     unless params['btn_cancel'] # clicou em "salvar"
       begin
@@ -124,13 +124,12 @@ class AssignmentsController < ApplicationController
   # Avalia trabalho do aluno / grupo
   ##
   def evaluate
-    student_id  = (params[:student_id].nil? or params[:student_id].blank?) ? nil : params[:student_id]
-    group_id    = (params[:group_id].nil? or params[:group_id].blank?) ? nil : params[:group_id]
-    grade       = params['grade'].blank? ? params['grade'] : params['grade'].tr(',', '.').to_f 
-    comment     = params['comment']
+    student_id = (params[:student_id].nil? or params[:student_id].blank?) ? nil : params[:student_id]
+    group_id   = (params[:group_id].nil? or params[:group_id].blank?) ? nil : params[:group_id]
+    grade      = params['grade'].blank? ? params['grade'] : params['grade'].tr(',', '.').to_f 
+    comment    = params['comment']
     begin
-      # verifica se está no prazo
-      raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment_in_time?(@assignment)
+      raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment_in_time?(@assignment) #verifica se está no prazo
       @send_assignment = SendAssignment.find_or_create_by_assignment_id_and_group_assignment_id_and_user_id(@assignment.id, group_id, student_id)
       @send_assignment.update_attributes!(:grade => grade, :comment => comment)
       respond_to do |format|
@@ -154,12 +153,10 @@ class AssignmentsController < ApplicationController
     comment_text      = params['comment']
     comment_files     = params['comment_files'].nil? ? [] : params['comment_files']
     deleted_files_ids = params['deleted_files'].nil? ? [] : params['deleted_files'][0].split(",") #["id_arquivo_del1,id_arquivo_del2"] => ["id_arquivo_del1", "id_arquivo_del2"]
-
-    send_assignment = SendAssignment.find_or_create_by_group_assignment_id_and_assignment_id_and_user_id(group_id, @assignment.id, student_id)
+    send_assignment   = SendAssignment.find_or_create_by_group_assignment_id_and_assignment_id_and_user_id(group_id, @assignment.id, student_id) #busca ou cria send_assignment ao aluno/grupo
 
     begin
-      # verifica se está no prazo
-      raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment_in_time?(@assignment)
+      raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment_in_time?(@assignment) #verifica se está no prazo
       ActiveRecord::Base.transaction do
 
         if comment.nil?
@@ -271,8 +268,7 @@ class AssignmentsController < ApplicationController
 
           #verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
           raise CanCan::AccessDenied unless assignment.user_can_access_assignment(current_user.id, current_user.id, group_id)
-          # verifica período para envio do arquivo
-          raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment_in_time?(assignment)
+          raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment_in_time?(assignment) #verifica período para envio do arquivo
 
           send_assignment = SendAssignment.find_or_create_by_assignment_id_and_user_id_and_group_assignment_id!(assignment.id, user_id, group_id)
           AssignmentFile.create!({ :attachment => params[:file], :send_assignment_id => send_assignment.id, :user_id => current_user.id })
@@ -296,8 +292,7 @@ class AssignmentsController < ApplicationController
           assignment = Assignment.find(params[:assignment_id])
           authorize! :delete_file, assignment
 
-          # verifica prazo
-          raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment_in_time?(assignment)
+          raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment_in_time?(assignment) #verifica prazo
           # verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
           raise CanCan::AccessDenied unless assignment.user_can_access_assignment(current_user.id, AssignmentFile.find(params[:file_id]).user_id)
 

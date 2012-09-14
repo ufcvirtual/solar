@@ -490,7 +490,7 @@
   agenda_null: "No actives programed for this schedule"
   discussions: "Forum"
   lessons: "Lesson"
-  assignment: "Assignment"
+  schedule_assignment: "Assignment"
   schedule_events: "Schedule Event"
   no_events: "No events to selected day"
 

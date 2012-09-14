@@ -57,7 +57,7 @@ class Schedule < ActiveRecord::Base
       )
       UNION
       (
-      SELECT t1.name, t1.enunciation AS description, t2.start_date, t2.end_date, 'assignment' AS schedule_type, t1.allocation_tag_id
+      SELECT t1.name, t1.enunciation AS description, t2.start_date, t2.end_date, 'schedule_assignment' AS schedule_type, t1.allocation_tag_id
         ,t4.code, t5.semester, t6.name as curriculum_name
 
         FROM assignments             AS t1

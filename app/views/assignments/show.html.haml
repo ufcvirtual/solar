@@ -135,7 +135,7 @@
       = image_tag "icon_participants.png", :alt => " ", :class=>'block_title_icon'
       = t(:evaluation, :scope => [:assignment, :evaluation])
     %span.portfolio_title_button
-      - if (can? :evaluate, @assignment)
+      - if can? :evaluate, @assignment
         = button_tag t(:evaluate, :scope => [:assignment, :evaluation]), :class => btn_class, :id => "btn_evaluate", :onclick => "javascript:btn_evaluate();", :disabled => !assignment_in_time?(@assignment)
         = button_tag t(:cancel, :scope => [:assignment, :evaluation]), :class => "btn btn_caution", :id => "btn_cancel_evaluation", :onclick => "javascript:btn_cancel_evaluation();", :disabled => !assignment_in_time?(@assignment)
         = button_tag t(:save, :scope => [:assignment, :evaluation]), :class => "btn btn_main", :id => "btn_save_evaluation", :disabled => !assignment_in_time?(@assignment)
@@ -169,7 +169,7 @@
       = image_tag "icon_comments.png", :alt => " ", :class=>'block_title_icon'
       = t(:comments, :scope => [:assignment, :comments])
     %span.portfolio_title_button
-      - if (can? :send_comment, AssignmentComment)
+      - if can? :send_comment, AssignmentComment
         = button_tag t(:to_comment, :scope => [:assignment, :comments]), :class => btn_class, :id => "btn_comment", :onclick => "javascript:btn_comment();", :disabled => !assignment_in_time?(@assignment)
   .forum_posts_wrapper
     - display_comment = @error_message.nil? ? "display:none" : "display:block"
@@ -231,10 +231,10 @@
                   - else
                     = '-'
                 .portfolio_comment_button
-                  - if (can? :remove_comment, AssignmentComment)
+                  - if can? :remove_comment, AssignmentComment
                     - btn_remove = assignment_in_time?(@assignment) ? "btn btn_caution" : "btn btn_disabled"
                     = button_tag t(:delete, :scope => [:assignment, :comments]), :class => btn_remove, :onclick => "javascript:remove_comment(#{comment.id}, #{@assignment.id});", :disabled => !assignment_in_time?(@assignment)
-                  - if (can? :send_comment, comment)
+                  - if can? :send_comment, comment
                     = button_tag t(:edit, :scope => [:assignment, :comments]), :class => btn_class + " btn_edit_comment_#{comment.id}", :onclick => "javascript:btn_edit_comment(this, #{comment.id});", :disabled => !assignment_in_time?(@assignment)
 
               %td{:class => ["forum_post_content", "form_comment_#{comment.id}", "form_comment"], :colspan => "2", :style => "display:none"}
