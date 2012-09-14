@@ -1,3 +1,5 @@
+<% password = Digest::MD5.hexdigest('123456') %>
+
 user:
   id: 1
   username: user
@@ -7,131 +9,114 @@ user:
   cpf: 43463518678
   birthdate: 2005-03-02
   gender: true
-  address: Av. Humberto Monte
+  address: Lorem ipsum dolor sit amet.
   address_number: 58
-  address_neighborhood: bons
   country: Brazil
   state: CE
   city: Fortaleza
   institution: UFC
   zipcode: 60450170
-  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: k9Dq7yfax83NZ3QRQoXr
 
-palacio:
+user2:
   id: 2
-  username: rosacrinaldo
-  email: palacio@qualquer.br
-  name: Ricardo Palacio
-  nick: Ricardo Palacio
+  username: user2
+  email: user2@email.com
+  alternate_email: user2other@email.com
+  name: User 2
+  nick: User 2
   birthdate: 2005-01-01
   cpf: 23885393905
   gender: true
-  address: Rua B
+  address: Lorem ipsum dolor sit amet.
   address_number: 333
-  address_neighborhood: Jose Walter
   zipcode: 500000000
   country: Brasil
   state: CE
   city: Fortaleza
   institution: UFC
-  alternate_email: outrmail@gmail.com
-  bio: corinthiano desde muleque ia ao estadio com seu brother brunuh
+  bio: Lorem ipsum dolor sit amet.
   interests: timao
-  music: Restart, Metallica e Exaltassamba
-  movies: Senhor do anel
-  books: Biblia, Pequeno Principe
-  phrase: Timao eeeoo!!!
-  site: timao.com
-  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  music: Lorem ipsum dolor sit amet.
+  movies: Lorem ipsum dolor sit amet.
+  books: Lorem ipsum dolor sit amet.
+  phrase: Lorem ipsum dolor sit amet.
+  site: www.site.com
+  encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: sarqmbpiY2DKWUyRkgzA
 
-bezerra:
+user3:
   id: 3
-  username: dexter
-  email: bezerra@qualquer.br
-  name: Bezerra
-  nick: Bezerra
+  username: user3
+  email: user3@email.com
+  alternate_email: user3other@email.com
+  name: User 3
+  nick: User 3
   birthdate: 2005-01-01
   cpf: 11016853521
   gender: true
-  address: Rua B
+  address: Lorem ipsum dolor sit amet.
   address_number: 333
-  address_neighborhood: Jose Walter
+  address_neighborhood: Lorem ipsum dolor sit amet.
   zipcode: 500000000
   country: Brasil
   state: CE
   city: Fortaleza
   institution: UFC
-  alternate_email: outrmail@gmail.com
-  bio: corinthiano desde muleque ia ao estadio com seu brother brunuh
-  interests: timao
-  music: Restart, Metallica e Exaltassamba
-  movies: Senhor do anel
-  books: Biblia, Pequeno Principe
-  phrase: Timao eeeoo!!!
-  site: timao.com
-  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  bio: Lorem ipsum dolor sit amet.
+  interests: Lorem ipsum dolor sit amet.
+  music: Lorem ipsum dolor sit amet.
+  movies: Lorem ipsum dolor sit amet.
+  books: Lorem ipsum dolor sit amet.
+  phrase: Lorem ipsum dolor sit amet.
+  site: www.site.com
+  encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: kqAgG9hYkBj6TFnps9A2
 
-ariovaldo:
+user4:
   id: 4
-  username: ariovaldo
-  email: amaral@qualquer.br
-  name: Ariovaldo Amaral
-  nick: Ariovaldo Amaral
+  username: user4
+  email: user4@email.br
+  name: User 4
+  nick: User 4
   birthdate: 2005-01-01
   cpf: 57215688798
   gender: true
   address: Rua B
   address_number: 333
-  address_neighborhood: Jose Walter
+  address_neighborhood: Lorem ipsum dolor sit amet.
   zipcode: 500000000
   country: Brasil
   state: CE
   city: Fortaleza
   institution: UFC
-  alternate_email: outrmail@gmail.com
-  bio: corinthiano desde muleque ia ao estadio com seu brother brunuh
-  interests: timao
-  music: Restart, Metallica e Exaltassamba
-  movies: Senhor do anel
-  books: Biblia, Pequeno Principe
-  phrase: Timao eeeoo!!!
-  site: timao.com
-  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: J3ymer6aYPtTVWQuxJq3
 
 professor2:
   id: 5
   username: prof2
-  email: prof2@prof2.br
-  name: professor2
-  nick: prof2
+  email: prof2@email.com
+  alternate_email: prof2other@email.com
+  name: Professor 2
+  nick: Professor 2
   birthdate: 2005-01-01
   cpf: 21569104646
   gender: true
-  address: Rua ABC
+  address: Lorem ipsum dolor sit amet.
   address_number: 999
   address_neighborhood: UFC
   zipcode: 60000000
   country: Paraguay
-  state: importado
-  city: Irmã de Assunção
+  # state: importado
+  # city: Irmã de Assunção
   institution: UFP
-  alternate_email: prof2@gmail.com
-  bio: prof2
-  interests: ensinar
-  music: Clássica
-  movies: Senhor do anel
-  books: Biblia, Pequeno Principe
-  phrase: Timao eeeoo!!!
-  site: timao.com
-  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: 9qUpqgvLDSa7R5EYDPmV
 
@@ -139,12 +124,13 @@ professor:
   id: 6
   username: prof
   email: prof@solar.ufc.br
+  alternate_email: prof@gmail.com
   name: Professor
   nick: Professor
   birthdate: 2000-03-02
   cpf: 21872285848
   gender: true
-  address: em algum lugar
+  address: Lorem ipsum dolor sit amet.
   address_number: 58
   address_neighborhood: UFC
   zipcode: 60450170
@@ -152,15 +138,14 @@ professor:
   state: CE
   city: Fortaleza
   institution: UFC
-  alternate_email: prof@gmail.com
-  bio: Professor
-  interests: ensinar
-  music: Clássica
-  movies: Senhor do anel
-  books: Biblia, Pequeno Principe
-  phrase: Timao eeeoo!!!
-  site: timao.com
-  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  bio: Lorem ipsum dolor sit amet.
+  interests: Lorem ipsum dolor sit amet.
+  music: Lorem ipsum dolor sit amet.
+  movies: Lorem ipsum dolor sit amet.
+  books: Lorem ipsum dolor sit amet.
+  phrase: Lorem ipsum dolor sit amet.
+  site: www.site.com
+  encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: qwBqKTuU6XTAxEZxymjC
 
@@ -168,6 +153,7 @@ aluno1:
   id: 7
   username: aluno1
   email: aluno1@solar.ufc.br
+  alternate_email: aluno1other@email.com
   name: Aluno 1
   nick: Aluno 1
   birthdate: 2006-03-02
@@ -178,18 +164,17 @@ aluno1:
   address_neighborhood: UFC
   zipcode: 60000000
   country: Paraguay
-  state: importado
-  city: Irmã de Assunção
+  # state: importado
+  # city: Irmã de Assunção
   institution: UFP
-  alternate_email: aluno1@gmail.com
-  bio: Professor
-  interests: ensinar
-  music: Clássica
-  movies: Senhor do anel
-  books: Biblia, Pequeno Principe
-  phrase: Timao eeeoo!!!
-  site: timao.com
-  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  bio: Lorem ipsum dolor sit amet.
+  interests: Lorem ipsum dolor sit amet.
+  music: Lorem ipsum dolor sit amet.
+  movies: Lorem ipsum dolor sit amet.
+  books: Lorem ipsum dolor sit amet.
+  phrase: Lorem ipsum dolor sit amet.
+  site: www.site.com
+  encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: WhxdcZhWhEMVAauWg41h
 
@@ -197,6 +182,7 @@ aluno2:
   id: 8
   username: aluno2
   email: aluno2@solar.ufc.br
+  alternate_email: aluno2@gmail.com
   name: Aluno 2
   nick: Aluno 2
   birthdate: 2004-03-02
@@ -210,15 +196,14 @@ aluno2:
   state: importado
   city: Irmã de Assunção
   institution: UFP
-  alternate_email: aluno2@gmail.com
-  bio: Professor
-  interests: ensinar
-  music: Clássica
-  movies: Senhor do anel
-  books: Biblia, Pequeno Principe
-  phrase: Timao eeeoo!!!
-  site: timao.com
-  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  bio: Lorem ipsum dolor sit amet.
+  interests: Lorem ipsum dolor sit amet.
+  music: Lorem ipsum dolor sit amet.
+  movies: Lorem ipsum dolor sit amet.
+  books: Lorem ipsum dolor sit amet.
+  phrase: Lorem ipsum dolor sit amet.
+  site: www.site.com
+  encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: aq1pyZWxcphCzouEzGzt
 
@@ -226,6 +211,7 @@ aluno3:
   id: 9
   username: aluno3
   email: aluno3@aluno3.br
+  alternate_email: aluno3@gmail.com
   name: Aluno 3
   nick: Aluno 3
   birthdate: 2002-03-02
@@ -239,21 +225,21 @@ aluno3:
   state: importado
   city: Irmã de Assunção
   institution: UFP
-  alternate_email: aluno3@gmail.com
-  bio: Professor
-  interests: ensinar
-  music: Clássica
-  movies: Senhor do anel
-  books: Biblia, Pequeno Principe
-  phrase: Timao eeeoo!!!
-  site: timao.com
-  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  bio: Lorem ipsum dolor sit amet.
+  interests: Lorem ipsum dolor sit amet.
+  music: Lorem ipsum dolor sit amet.
+  movies: Lorem ipsum dolor sit amet.
+  books: Lorem ipsum dolor sit amet.
+  phrase: Lorem ipsum dolor sit amet.
+  site: www.site.com
+  encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: wdfyBr312os1yqyzhQuf
 
 tutor_presencial:
   id: 10
   username: tutorp
+  alternate_email: tutorp@gmail.com
   email: tutorp@solar.ufc.br
   name: Tutor Presencial
   nick: Tutor Presencial
@@ -268,15 +254,14 @@ tutor_presencial:
   state: importado
   city: Irmã de Assunção
   institution: UFP
-  alternate_email: tutorp@gmail.com
-  bio: Professor
-  interests: ensinar
-  music: Clássica
-  movies: Senhor do anel
-  books: Biblia, Pequeno Principe
-  phrase: Timao eeeoo!!!
-  site: timao.com
-  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  bio: Lorem ipsum dolor sit amet.
+  interests: Lorem ipsum dolor sit amet.
+  music: Lorem ipsum dolor sit amet.
+  movies: Lorem ipsum dolor sit amet.
+  books: Lorem ipsum dolor sit amet.
+  phrase: Lorem ipsum dolor sit amet.
+  site: www.site.com
+  encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: 7sec5gtrn5CiiXpqfmrz
 
@@ -284,6 +269,7 @@ tutor_distancia:
   id: 11
   username: tutordist
   email: tutordist@tutorp.br
+  alternate_email: tutordist@gmail.com
   name: Tutor a Dist
   nick: Tutor a Dist
   birthdate: 2004-03-02
@@ -297,15 +283,14 @@ tutor_distancia:
   state: importado
   city: Irmã de Assunção
   institution: UFP
-  alternate_email: tutordist@gmail.com
-  bio: Professor
-  interests: ensinar
-  music: Clássica
-  movies: Senhor do anel
-  books: Biblia, Pequeno Principe
-  phrase: Timao eeeoo!!!
-  site: timao.com
-  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  bio: Lorem ipsum dolor sit amet.
+  interests: Lorem ipsum dolor sit amet.
+  music: Lorem ipsum dolor sit amet.
+  movies: Lorem ipsum dolor sit amet.
+  books: Lorem ipsum dolor sit amet.
+  phrase: Lorem ipsum dolor sit amet.
+  site: www.site.com
+  encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: nerd51wudWkq6vk3by3c
 
@@ -313,6 +298,7 @@ coorddisc:
   id: 12
   username: coorddisc
   email: coorddisc@coorddisc.br
+  alternate_email: coorddisc@gmail.com
   name: Coordenador
   nick: Coordenador
   birthdate: 2004-03-02
@@ -326,15 +312,14 @@ coorddisc:
   state: importado
   city: Irmã de Assunção
   institution: UFP
-  alternate_email: coorddisc@gmail.com
-  bio: Professor
-  interests: ensinar
-  music: Clássica
-  movies: Senhor do anel
-  books: Biblia, Pequeno Principe
-  phrase: Timao eeeoo!!!
-  site: timao.com
-  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  bio: Lorem ipsum dolor sit amet.
+  interests: Lorem ipsum dolor sit amet.
+  music: Lorem ipsum dolor sit amet.
+  movies: Lorem ipsum dolor sit amet.
+  books: Lorem ipsum dolor sit amet.
+  phrase: Lorem ipsum dolor sit amet.
+  site: www.site.com
+  encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: ZxChgdpRbQuypvZfMV3x
 
@@ -347,23 +332,22 @@ basico:
   birthdate: 2000-03-02
   cpf: 34137559511
   gender: true
-  address: Rua ABCDEF
+  address: Lorem ipsum dolor sit amet.
   address_number: 111
-  address_neighborhood: UFC
+  address_neighborhood: Lorem ipsum dolor sit amet.
   zipcode: 60000000
   country: China
-  state: bem baratinho
-  city: Olho de coco
+  # state: bem baratinho
+  # city: Olho de coco
   institution: UFP
-  alternate_email:
-  bio: Basico
-  interests: me matricular 
-  music:
-  movies:
-  books:
-  phrase:
-  site:
-  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  bio: Lorem ipsum dolor sit amet.
+  interests: Lorem ipsum dolor sit amet.
+  music: Lorem ipsum dolor sit amet.
+  movies: Lorem ipsum dolor sit amet.
+  books: Lorem ipsum dolor sit amet.
+  phrase: Lorem ipsum dolor sit amet.
+  site: www.site.com
+  encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: ppbT4Ue132asgpkCAB1q
 
@@ -376,7 +360,7 @@ editor:
   birthdate: 1900-03-02
   cpf: 87789615211
   gender: true
-  address: Rua ABCDEF
+  address: Lorem ipsum dolor sit amet.
   address_number: 111
   address_neighborhood: UFC
   zipcode: 60000000
@@ -384,14 +368,13 @@ editor:
   state: AL
   city: Bom Conselho
   institution: UFAL
-  alternate_email:
-  bio: 
-  interests: editar
-  music:
-  movies:
-  books:
-  phrase:
-  site:
-  encrypted_password: <%= Digest::MD5.hexdigest('123456') %>
+  bio: Lorem ipsum dolor sit amet.
+  interests: Lorem ipsum dolor sit amet.
+  music: Lorem ipsum dolor sit amet.
+  movies: Lorem ipsum dolor sit amet.
+  books: Lorem ipsum dolor sit amet.
+  phrase: Lorem ipsum dolor sit amet.
+  site: www.site.com
+  encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: apbT4Ue132asgpkCAB1q
