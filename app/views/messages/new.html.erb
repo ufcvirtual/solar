@@ -1,5 +1,8 @@
+<script type="text/javascript">
+  CKEDITOR_BASEPATH = <%= "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/" %>
+</script>
+
 <%= javascript_include_tag "ckeditor/init" %>
-<%= javascript_include_tag "discussion" %>
 
 <div class="message_external_div">
     <span class="page_title"><%= t(:message_title) %></span>
@@ -24,18 +27,7 @@
 </div>
 
 <script type="text/javascript">
-  CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
-  CKEDITOR.replace('newMessageTextBox');
-
-
-  // $(document).ready( function () {
-  //   //identificando idioma corrente para config ckeditor
-  //   var local = '<%=I18n.locale%>';
-    
-  //   $('#newMessageTextBox').ckeditor({
-  //     toolbar: 'SolarToolbar',
-  //     resize_enabled: false,
-  //     language: local
-  //   });
-  // })
+  $(document).ready(function(){
+    CKEDITOR.replace('newMessageTextBox');
+  });
 </script>
