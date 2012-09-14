@@ -374,10 +374,12 @@
   function no_comments_div(){
     var dont_have_comments = $('.tb_comments').length == 0;
     var dont_already_have_message = $("#no_itens_message_comment").length == 0;
-    if(dont_have_comments && dont_already_have_message){
-      $('<div id="no_itens_message_comment" class="block_content portfolio_div_padding">#{t(:itens_not_found)}</div>').appendTo($(".forum_posts_wrapper"));
-    }else{
-      $('#no_itens_message_comment').remove();
+    if (dont_already_have_message){
+      if(dont_have_comments){
+        $('<div id="no_itens_message_comment" class="block_content portfolio_div_padding">#{t(:itens_not_found)}</div>').appendTo($(".forum_posts_wrapper"));
+      }else{
+        $('#no_itens_message_comment').remove();
+      }
     }
   }
 
