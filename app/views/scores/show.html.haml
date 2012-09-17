@@ -1,0 +1,189 @@
+-# Lista de atividades do aluno
+.block_wrapper#assignments
+  .block_title
+    %h2
+      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
+      = @student.name
+
+  -# Tabelas de atividades 
+  .block_content
+    - unless @individual_activities.empty? or @group_activities.empty?
+      %table.tb_list#assignments_list
+        %thead
+          %tr.lines
+            %th{:align => "left"}= t(:assignments)
+            %th{:align => "right", :style => "width: 24%;"}= t(:date_name)
+            %th{:align => "center", :style => "width: 12%;"}= t(:situation, :scope => [:assignment, :information])
+            %th{:align => "center", :style => "width: 8%;"}= t(:grade, :scope => [:assignment, :information])
+        %tbody
+          - @individual_activities["assignments"].each_with_index do |activity, idx|
+            %tr.lines
+              %td{:align => "left"}
+                - if can? :show, Assignment
+                  = link_to activity.name, assignment_path(activity.id, :student_id => @student.id), {:class => 'link_content'}
+                - else
+                  = activity.name
+              %td{:align => "left"}
+                =l activity.schedule.start_date.to_time, :format => :normal
+                = "-" 
+                =l activity.schedule.end_date.to_time, :format => :normal
+              %td{:class => "assignment_#{@individual_activities["situation"][idx]}", :align => "center"}= t(@individual_activities["situation"][idx].to_sym)
+              %td{:align => "center"}= (@individual_activities["assignments_grades"][idx].nil?) ? '-' : @individual_activities["assignments_grades"][idx].to_f
+          - @group_activities["assignments"].each_with_index do |activity, idx|
+            %tr.lines
+              %td{:align => "left"}
+                - if can? :show, Assignment
+                  - if @group_activities["groups_ids"][idx].nil?
+                    =link_to activity.name, information_assignment_path(activity.id), {:class => 'link_content'}
+                  -else 
+                    =link_to activity.name, assignment_path(activity.id, :student_id => @student.id, :group_id => @group_activities["groups_ids"][idx]), {:class => 'link_content'}
+                - else
+                  = activity.name
+              %td{:align => "left"}
+                =l activity.schedule.start_date.to_time, :format => :normal 
+                = "-" 
+                =l activity.schedule.end_date.to_time, :format => :normal
+              %td{:class => "assignment_#{@group_activities["situation"][idx]}", :align => "center"}= t(@group_activities["situation"][idx].to_sym)
+              %td{:align => "center"}= (@group_activities["assignments_grades"][idx].nil?) ? '-' : @group_activities["assignments_grades"][idx].to_f
+    - else
+      .block_content.block_content_text= t(:itens_not_found)
+
+-# Quantidade de participacoes em foruns
+.block_wrapper
+  .block_title
+    %h2
+      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
+      = t(:amount_participation_discussions)
+  .block_content
+    - unless @discussions.empty?
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th{:style => "width: 80%;"}= t(:title)
+            %th{:style => "width: 7%;", :align => "center"}= t(:amount)
+        %tbody
+          - @discussions.each_with_index do |discussion, idx|
+            %tr.lines
+              - link = discussion_posts_of_the_user_path(discussion['discussion_id'].to_i, @student.id)
+              %td.show_posts
+                - if discussion['qtd'].to_i > 0 
+                  = link_to(discussion['name'], link, {:class => 'link_content'})
+                - else 
+                  = discussion['name'] 
+              %td.show_posts{:align => "center"}
+                - if discussion['qtd'].to_i > 0 
+                  = link_to(discussion['qtd'], link, {:class => 'link_content'})
+                - else
+                  = discussion['qtd']
+    - else
+      .block_content.block_content_text= t(:itens_not_found)
+
+-# Historico de acesso
+.block_wrapper
+  .block_title
+    %h2
+      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
+      = t(:history_access)
+  .block_content.block_content_text
+    #history_search_content
+      %input{:type => "text", :id => "from-date", :title => "#{t(:from_date)}", :size => "9", :value => "#{l(two_months_ago, :format => :datepicker)}"}
+      = t(:to)
+      %input{:type => "text", :id => "until-date", :title => "#{t(:until_date)}", :size => "9", :value => "#{l(Date.today, :format => :datepicker)}"}
+      %span
+        %input.btn.btn_default{:type => "button", :value => "#{t(:history_find)}", :id => "bt-amount-history-access"}
+    #history-body
+      %span{:id => "history-body-label"}
+        =t :amount_access
+        = ":"
+      %span{:id => "history-body-value"}
+        - if @amount.to_i > 0
+          = link_to @amount, {:controller => :scores, :action => :history_access, :id => @student.id}, :class => 'link_content'
+        - else
+          = @amount
+
+-# Scripts
+
+:css
+  .ui-datepicker { width: 15em; padding: .2em .2em 0; display: none; }
+
+:javascript
+
+  $(function(){
+    var options = $.extend($.datepicker.regional['#{I18n.locale}']);
+    options.dateFormat = global_config.locale.dateFormat;
+    $('#from-date, #until-date').datepicker(options);
+
+    // requisicao ajax para recuperar quantidade de acessos de um usuario
+    $('#bt-amount-history-access').click(function(){
+
+      // verificar se as datas foram preenchidas - as duas sao obrigatorias
+      $.post("/scores/amount_history_access", {
+        'from-date': $('#from-date').val(),
+        'until-date': $('#until-date').val(),
+        'id': #{@student.id}
+      },
+      function(response){
+        $('#history-body-value').html(response);
+      });
+
+      // parar o evento de click
+      return false;
+
+    });
+
+    // requisicao ajax para recuperar posts do usuario
+    $('td.show_posts').click(function(){
+
+      var url = $('a', $(this)).attr('href');
+      if (typeof(url) === 'undefined'){
+        return false;
+      }
+
+      $.ajax({
+        type: 'GET',
+        url: url,
+        cache: false,
+        success: function(response){
+          var canClose = true;
+          var title = '<span style="font-weight: bold;"><%= t(:scores_discussions) %></span><br />#{@student.name}';
+          showLightBox(response, 500, 600, canClose, title);
+        },
+        error: function(response){
+          alert('<%=t :error_find_ajax%>');
+        }
+      });
+
+      return false;
+
+    });
+
+    // requisicao ajax para recuperar historico de acesso do usuario
+    $('#history-body-value').click(function(){
+
+      var url = $('a', $(this)).attr('href');
+      if (typeof(url) === 'undefined'){
+        return false;
+      }
+
+      $.ajax({
+        type: 'GET',
+        data: {
+          'from-date': $('#from-date').val(),
+          'until-date': $('#until-date').val()
+        },
+        url: url,
+        cache: false,
+        success: function(response){
+          var canClose = true;
+          var title = '<span style="font-weight: bold;">#{t(:scores_history_access)}</span><br />#{@student.name}';
+          showLightBox(response, 500, 600, canClose, title);
+        },
+        error: function(response){
+          alert('#{t :error_find_ajax}');
+        }
+      });
+
+      return false;
+
+    });
+  });

@@ -3,32 +3,32 @@ class AssignmentsController < ApplicationController
   include AssignmentsHelper
   include FilesHelper
 
-	before_filter :prepare_for_group_selection, :only => [:list, :list_to_student]
+  before_filter :prepare_for_group_selection, :only => [:list, :list_to_student]
   load_and_authorize_resource :only => [:information, :show, :import_groups_page, :import_groups, :manage_groups, :evaluate, :send_comment, :remove_comment]
   authorize_resource :only => [:list, :list_to_student, :download_files, :upload_file, :send_public_files_page, :delete_file]
 
 
-	##
-	# Lista as atividades - visão geral
-	##	
-	def list
-		allocation_tag_id      = active_tab[:url]['allocation_tag_id']
+  ##
+  # Lista as atividades - visão geral
+  ##  
+  def list
+    allocation_tag_id      = active_tab[:url]['allocation_tag_id']
     @individual_activities = Assignment.find_all_by_allocation_tag_id_and_type_assignment(allocation_tag_id, Individual_Activity)
     @group_activities      = Assignment.find_all_by_allocation_tag_id_and_type_assignment(allocation_tag_id, Group_Activity)
-	end
+  end
 
-	##
-	# Lista as atividades - visão aluno
-	##
-	def list_to_student
-    group_id               = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
-    @student_id            = current_user.id
-    @individual_activities = Assignment.student_activities(group_id, @student_id, Individual_Activity) #atividades individuais pelo grupo_id em que o usuario esta inserido
-    @group_activities      = Assignment.student_activities(group_id, @student_id, Group_Activity) #atividades em grupo pelo grupo_id em que o usuario esta inserido
-    @public_area           = Assignment.public_area(group_id, @student_id) #area publica
-	end
+  ##
+  # Lista as atividades - visão aluno
+  ##
+  def list_to_student
+    group_id                     = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
+    @student_id                  = current_user.id
+    @individual_assignments_info = Assignment.student_assignments_info(group_id, @student_id, Individual_Activity) #atividades individuais pelo grupo_id em que o usuario esta inserido
+    @group_assignments_info      = Assignment.student_assignments_info(group_id, @student_id, Group_Activity) #atividades em grupo pelo grupo_id em que o usuario esta inserido
+    @public_area                 = Assignment.public_area(group_id, @student_id) #área pública
+  end
 
-	##
+  ##
   # Informações da atividade individual escolhida na listagem com a lista de alunos daquela turma
   # Informações da atividade em grupo escolhida na listagem com a lista dos grupos daquela turma, permitindo seu gerenciamento
   ##
@@ -106,7 +106,7 @@ class AssignmentsController < ApplicationController
   ##
   def show
     @user            = current_user
-    @student_id      = params[:student_id].nil? ? nil : params[:student_id] 
+    @student_id      = params[:group_id].nil? ? params[:student_id] : nil
     @group_id        = params[:group_id].nil? ? nil : params[:group_id] 
     @group           = GroupAssignment.find(params[:group_id]) unless @group_id.nil? #grupo
     @send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(@assignment.id, @student_id, @group_id)
@@ -144,9 +144,7 @@ class AssignmentsController < ApplicationController
   # Envia comentarios do professor (cria e edita)
   ##
   def send_comment
-    # @assignment       = Assignment.find(params[:id])
     comment           = params[:comment_id].nil? ? nil : AssignmentComment.find(params[:comment_id]) #verifica se comentário já existe. se sim, é edição; se não, é criação.
-    # authorize! :send_comment, AssignmentComment
     authorize! :send_comment, comment unless comment.nil?
     student_id        = params[:student_id].nil? ? nil : params[:student_id]
     group_id          = params[:group_id].nil? ? nil : params[:group_id]

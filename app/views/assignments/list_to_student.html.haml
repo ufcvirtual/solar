@@ -5,7 +5,7 @@
       = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class => "block_title_icon"
       =t :individual_assignments, :scope => [:assignment, :information]
   .block_content
-    - unless @individual_activities.nil? or @individual_activities.empty?
+    - unless @individual_assignments_info["assignments"].empty?
       %table.tb_list
         %thead
           %tr.lines
@@ -15,30 +15,30 @@
             %th{:align => "center", :style => "width:40px"}= t(:grade, :scope => [:assignment, :information])
             %th{:align => "center", :style => "width:80px"}= t(:comments, :scope => [:assignment, :comments])
         %tbody
-          - @individual_activities.each_with_index do |ia, idx|
+          - @individual_assignments_info["assignments"].each_with_index do |assignment, idx|
             %tr.lines
               %td
                 %h4
-                  = link_to ia["name"], assignment_path(ia["id"], :student_id => @student_id), {:class => 'link_content'}
-                  - if ia["enunciation"].size > 180 
+                  = link_to assignment.name, assignment_path(assignment.id, :student_id => @student_id), {:class => 'link_content'} 
+                  - if assignment.enunciation.size > 180 
                     .enunciation
                       .enunciation_slice
-                        = ia["enunciation"].slice(0..180) << "..."
+                        = assignment.enunciation.slice(0..180) << "..."
                       .enunciation_complete
-                        = ia["enunciation"]
+                        = assignment.enunciation
                       .more_or_less
                         %a.enunciation_more.link_content{:href => "#"}= t(:more, :scope => [:assignment, :information])
                         %a.enunciation_less.link_content{:href => "#"}= t(:less, :scope => [:assignment, :information])
                   - else
-                    = ia["enunciation"]
+                    = assignment.enunciation
               %td{:align => "center"}
-                =l ia["start_date"].to_time, :format => :files
+                =l assignment.schedule.start_date.to_time, :format => :files
                 %br
-                =l ia["end_date"].to_time, :format => :files
-              %td=link_to t(ia["correction"].to_sym), assignment_path(ia["id"], :student_id => @student_id), :class => "assignment_#{ia["correction"]}"
+                =l assignment.schedule.end_date.to_time, :format => :files
+              %td=link_to t(@individual_assignments_info["situation"][idx].to_sym), assignment_path(assignment.id, :student_id => @student_id), :class => "assignment_#{@individual_assignments_info["situation"][idx]}"
               %td{:align => "center"}
-                %span.activity_grade= (ia["grade"].nil?) ? "-" : ia["grade"].to_f
-              %td{:align => "center"}= image_tag( (ia["comments"].to_i > 0) ? "icon_comments.png" : "icon_no_comments.png" )
+                %span.activity_grade= (@individual_assignments_info["assignments_grades"][idx].nil?) ? "-" : @individual_assignments_info["assignments_grades"][idx].to_f
+              %td{:align => "center"}= image_tag((@individual_assignments_info["has_comments"][idx]) ? "icon_comments.png" : "icon_no_comments.png" )
     - else
       .block_content.block_content_text= t(:itens_not_found)
 
@@ -49,7 +49,7 @@
       = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
       =t :group_assignments, :scope => [:assignment, :information]
   .block_content
-    - unless @group_activities.nil? or @group_activities.empty?
+    - unless @group_assignments_info["assignments"].empty?
       %table.tb_list
         %thead
           %tr.lines
@@ -59,31 +59,31 @@
             %th{:align => "center", :style => "width:40px"}= t(:grade, :scope => [:assignment, :information]) 
             %th{:align => "center", :style => "width:80px"}= t(:comments, :scope => [:assignment, :comments]) 
         %tbody
-          - @group_activities.each_with_index do |ia, idx|
-            - group_info = student_assignment_group_info(ia["id"], @student_id)
+          - @group_assignments_info["assignments"].each_with_index do |assignment, idx|
+            - group = GroupAssignment.find(@group_assignments_info["groups_ids"][idx])
             %tr.lines
               %td
                 %h4
-                  - if group_info["group_name"].nil?
-                    %span{:style => "color: #204783;"}= ia["name"]
+                  - if group.nil?
+                    %span{:style => "color: #204783;"}= assignment.name
                   - else
-                    = link_to ia["name"], assignment_path(ia["id"], :group_id => group_info["groups_participants"].first.group_assignment_id), {:class => 'link_content'}
+                    = link_to assignment.name, assignment_path(assignment.id, :group_id => group.id), {:class => 'link_content'}
                   .enunciation
                     .enunciation_slice
-                      = ia["enunciation"].slice(0..180) << "..."
+                      = assignment.enunciation.slice(0..180) << "..."
                     .enunciation_complete
-                      = ia["enunciation"]
-                      - unless group_info["group_name"].nil?
+                      = assignment.enunciation
+                      - unless group.nil?
                         %div
                           = t(:group, :scope => [:assignment, :group_assignments]) 
                           = ":"
-                          = group_info["group_name"]
+                          = group.group_name
                         %div
                           = t(:participants, :scope => [:assignment, :group_assignments])
                           = ":" 
-                          - group_info["groups_participants"].each do |participant|
+                          - group.groups_participants.each do |participant|
                             = participant.user.name
-                            - unless participant == group_info["groups_participants"].last
+                            - unless participant == group.groups_participants.last
                               = ","
                       - else
                         %div= t(:student_with_no_group, :scope => [:assignment, :notifications])
@@ -91,17 +91,17 @@
                       %a.enunciation_more.link_content{:href => "#"}= t(:more, :scope => [:assignment, :information])
                       %a.enunciation_less.link_content{:href => "#"}= t(:less, :scope => [:assignment, :information])
               %td{:align => "center"}
-                =l ia["start_date"].to_time, :format => :files
+                =l assignment.schedule.start_date.to_time, :format => :files
                 %br
-                =l ia["end_date"].to_time, :format => :files
+                =l assignment.schedule.end_date.to_time, :format => :files
               %td
-                - if group_info["group_name"].nil?
+                - if group.nil?
                   %span.assignment_without_group=t :without_group, :scope => [:assignment, :group_assignments]
                 - else
-                  =link_to t(ia["correction"].to_sym), assignment_path(ia["id"], :group_id => group_info["groups_participants"].first.group_assignment_id), :class => "assignment_#{ia["correction"]}"
+                  =link_to t(@group_assignments_info["situation"][idx].to_sym), assignment_path(assignment.id, :group_id => group.id), :class => "assignment_#{@group_assignments_info["situation"][idx]}"
               %td{:align => "center"}
-                %span.activity_grade= (ia["grade"].nil?) ? '-' : ia["grade"].to_f
-              %td{:align => "center"}= image_tag( (ia["comments"].to_i > 0) ? "icon_comments.png" : "icon_no_comments.png" )
+                %span.activity_grade= (@group_assignments_info["assignments_grades"][idx].nil?) ? '-' : @group_assignments_info["assignments_grades"][idx].to_f
+              %td{:align => "center"}= image_tag( (@group_assignments_info["has_comments"][idx]) ? "icon_comments.png" : "icon_no_comments.png" )
     - else
       .block_content.block_content_text= t(:itens_not_found)
 

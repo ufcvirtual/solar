@@ -291,12 +291,12 @@
   pwd_recovery_unknown_user_msg: "User not found!"
 
   pwd_recovery_mail_body: "Dear %{recipient}, \n\nYou requested the recovery of your Solar data access.
-			\n\nYour data to access the environment are:
-			\n    Login: %{login}
-			\n    New password: %{password}
-   			\n\nRegards,\nAdministration.
-			\n\n\nSOLAR Virtual Environment: http://www.solar2.virtual.ufc.br
-			\n\n\n[This is an automatic message. Please do not reply.]"
+      \n\nYour data to access the environment are:
+      \n    Login: %{login}
+      \n    New password: %{password}
+        \n\nRegards,\nAdministration.
+      \n\n\nSOLAR Virtual Environment: http://www.solar2.virtual.ufc.br
+      \n\n\n[This is an automatic message. Please do not reply.]"
 
   # Página de alterar foto"
   choose_file: "Choose file"
@@ -499,6 +499,7 @@
   corrected: Corrected
   sent: Sent
   not_sent: Not Sent
+  without_group: Without Group
 
   assignment:
     information:

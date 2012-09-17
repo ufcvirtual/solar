@@ -2,93 +2,42 @@ class ScoresTeacher < ActiveRecord::Base
 
   self.table_name = "assignment_comments"
 
-  # Listagem dos alunos por turma
-  def self.list_students_by_curriculum_unit_id_and_group_id(curriculum_unit_id, group_id, page = 1)
-    query = <<SQL
-    WITH cte_assignments AS (
-      SELECT t2.id              AS allocation_tag_id,
-             t1.id              AS assignment_id,
-             t1.name            AS assignment_name,
-             t3.start_date,
-             t3.end_date
-        FROM assignments        AS t1
-        JOIN allocation_tags    AS t2 ON t2.id = t1.allocation_tag_id
-        JOIN schedules          AS t3 ON t3.id = t1.schedule_id
-       WHERE t2.group_id = #{group_id}
-       ORDER BY t3.start_date
-    ),
-    -- alunos da turma
-    cte_students AS (
-      SELECT t1.id              AS student_id,
-             t1.name            AS student_name,
-             t2.id              AS allocation_id,
-             t4.id              AS allocation_tag_id
-        FROM users              AS t1
-        JOIN allocations        AS t2 ON t2.user_id = t1.id
-        JOIN profiles           AS t3 ON t3.id = t2.profile_id
-        JOIN allocation_tags    AS t4 ON t4.id = t2.allocation_tag_id
-       WHERE cast( t3.types & '#{Profile_Type_Student}' as boolean)
-         AND t4.group_id = #{group_id}
-         AND t2.status = #{Allocation_Activated}
-       ORDER BY t1.id
-    ),
-    -- contador de arquivos publicos por usuario
-    cte_public_files AS (
-        SELECT t2.student_id,
-               COUNT(t1.id)     AS cnt_public_files
-          FROM public_files     AS t1
-    RIGHT JOIN cte_students     AS t2 ON t2.student_id = t1.user_id AND t2.allocation_tag_id = t1.allocation_tag_id
-         GROUP BY t2.student_id
-         ORDER BY t2.student_id
-    ),
-    -- notas dos alunos
-    cte_grades AS (
-        SELECT DISTINCT t2.student_id,
-               t2.student_name,
-               t1.assignment_id,
-               t1.start_date,
-               CASE
-                  WHEN t1.assignment_id IS NULL THEN NULL
-                  WHEN t3.grade IS NOT NULL THEN t3.grade::text -- nota do aluno
-                  WHEN t4.id    IS NOT NULL THEN 'as' -- trabalho enviado e nao corrigido
-                  WHEN t4.id    IS NULL     THEN 'an' -- trabalho nao enviado
-               END AS grade,
-               t3.id                AS send_assignment_id
-          FROM cte_assignments      AS t1
-    RIGHT JOIN cte_students         AS t2 ON t2.allocation_tag_id = t1.allocation_tag_id
-     LEFT JOIN send_assignments     AS t3 ON t3.assignment_id = t1.assignment_id AND t3.user_id = t2.student_id
-     LEFT JOIN assignment_files     AS t4 ON t4.send_assignment_id = t3.id
-         ORDER BY t2.student_id, t1.start_date
-    ),
-    -- acessos de cada aluno no curso
-    cte_access AS (
-        SELECT t1.student_id,
-               count(t2.id) AS cnt_access
-          FROM cte_students AS t1
-     LEFT JOIN logs AS t2 ON t2.user_id = t1.student_id AND log_type = 3 AND curriculum_unit_id = #{curriculum_unit_id}
-         GROUP BY t1.student_id
-    ),
-    -- resultado
-    cte_result AS (
-      SELECT t1.student_id,
-             initcap(t1.student_name)                                       AS student_name,
-             translate(array_agg(t1.grade)::text,'{}NULL','')               AS grades,
-             translate(array_agg(t1.assignment_id)::text,'{}NULL','')       AS assignment_ids,
-             translate(array_agg(t1.send_assignment_id)::text,'{}NULL','')  AS send_assignment_ids,
-             t2.cnt_public_files,
-             t3.cnt_access
-        FROM cte_grades                   AS t1
-        JOIN cte_public_files             AS t2 ON t2.student_id = t1.student_id
-        JOIN cte_access                   AS t3 ON t3.student_id = t1.student_id
-       GROUP BY t1.student_id, t2.cnt_public_files, t3.cnt_access, t1.student_name
-    )
-    --
-    SELECT * FROM cte_result ORDER BY student_name
-SQL
+  ## 
+  # Recupera informações de todos os alunos para todas as atividades de uma turma
+  ##
+  def self.students_information(students, assignments, curriculum_unit_id, allocation_tag_id)
+    students_grades, students_groups, student_count_access, student_count_public_files = [], [], [], [] #informações do aluno
 
-    paginate_by_sql query, {:per_page => Rails.application.config.items_per_page, :page => page}
+    students.each_with_index do |student, idx|
+
+      assignments_grades, groups_ids = [], [] #informações do aluno na atividade
+
+      assignments.each do |assignment|
+
+        student_group = (assignment.type_assignment == Group_Activity) ? (GroupAssignment.first(:joins => [:group_participants], :conditions => ["group_participants.user_id = #{student.id} 
+          AND group_assignments.assignment_id = #{assignment.id}"])) : nil #grupo do aluno
+        student_id = (assignment.type_assignment == Group_Activity) ? nil : student.id #id do aluno
+        groups_ids << (student_group.nil? ? nil : student_group.id) #se aluno estiver em grupo, recupera id
+        send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignment.id, student_id, groups_ids)
+        grade = ((send_assignment.nil? or send_assignment.assignment_files.empty?) ? "an" : "as") #nota ou situação do aluno (an: trabalho não enviado, as: trabalho não corrigido)
+        if (assignment.type_assignment == Group_Activity and student_group.nil?)
+          assignments_grades << "without_group" #aluno sem grupo
+        else 
+          assignments_grades << ((send_assignment and not send_assignment.grade.nil?) ? send_assignment.grade : grade)
+        end
+
+      end  
+
+      students_grades[idx] = assignments_grades #notas ou situação do aluno nas atividades
+      students_groups[idx] = groups_ids #id dos grupos do aluno na atividade (quando individual: nil)
+      student_count_access[idx] = Log.find_all_by_user_id_and_log_type_and_curriculum_unit_id(student.id, 3, curriculum_unit_id).size #quantidade de acessos do aluno na unidade curricular
+      student_count_public_files[idx] = PublicFile.find_all_by_user_id_and_allocation_tag_id(student.id, allocation_tag_id).size #quantidade de arquivos públicos do aluno na turma
+
+    end
+
+    return {"students_grades" => students_grades, "students_groups" => students_groups, "student_count_access" => student_count_access, "student_count_public_files" => student_count_public_files}
   end
-
+  
   # Numero de estudantes por group
   def self.number_of_students_by_group_id(group_id)
     query = <<SQL

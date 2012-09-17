@@ -9,4 +9,15 @@ class SendAssignment < ActiveRecord::Base
 
   validates :grade, :numericality => { :greater_than_or_equal_to => 0, :less_than_or_equal_to => 10, :allow_blank => true}
 
+  before_save :if_group_assignment_remove_user_id
+
+  ## 
+  # Em situações de trabalho em grupo avaliado a partir de links que tenham um id do aluno, remover o id do aluno no momento de salvar o send_assignment
+  ##
+  def if_group_assignment_remove_user_id
+  	if group_assignment_id
+  		self.user_id = nil
+  	end
+  end
+
 end

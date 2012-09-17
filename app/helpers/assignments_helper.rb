@@ -73,14 +73,4 @@ module AssignmentsHelper
     return {"situation" => situation, "have_comments" => have_comments, "grade" => grade, "file_delivery_date" => file_delivery_date}
   end
 
-
-  ##
-  # Informações sobre o grupo que o aluno participa na atividade
-  ##
-  def student_assignment_group_info(assignment_id, student_id)
-    groups_participants = GroupParticipant.find_group_participants(assignment_id, student_id)
-    group_name          = groups_participants.first.group_assignment.group_name unless groups_participants.nil? unless groups_participants.nil?
-    return {"group_name" => group_name, "groups_participants" => groups_participants}
-  end
-
 end

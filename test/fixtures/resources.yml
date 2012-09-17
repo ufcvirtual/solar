@@ -240,7 +240,8 @@ res40:
   action: 'send_comment'
   description: 'Metodo para envio de comentarios a respeito do arquivo enviado por um aluno/grupo a uma atividade - verificacao de acordo com a atividade'
 
-id: 41
+res41:
+  id: 41
   controller: 'assignments'
   action: 'remove_comment'
   description: 'Metodo para remover determinados comentarios a respeito do arquivo enviado por um aluno/grupo a uma atividade - verificacao de acordo com a atividade'

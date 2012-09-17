@@ -3254,13 +3254,14 @@ div.support_material_select {
 }
 
 .group_participants, .group_participants_manage, .group_assignments_manage_buttons{
-    min-height: 150px;
+    min-height: 140px;
     margin-right: 11px;
     margin-bottom: 10px;
     border-bottom: 1px solid #c0c1c2;
     float: left;
     width: 250px;
     background-color: #ffffff;
+    padding-bottom: 7px;
 }
 
 .btn_new, .btn_import{

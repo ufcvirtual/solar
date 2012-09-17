@@ -10,16 +10,17 @@ class ScoresTeacherController < ApplicationController
     allocation_tag_id = active_tab[:url]['allocation_tag_id']
 
     @group = Group.joins(:allocation_tag).where("allocation_tags.id = ?", allocation_tag_id).first
-    @students, @activities, @students_count = [], [], 0
 
     unless @group.nil?
-      @students_count = ScoresTeacher.number_of_students_by_group_id(@group.id)
-      @activities = @group.assignments + @group.offer.assignments
-
-      curriculum_unit_id = params[:id]
-      @students = ScoresTeacher.list_students_by_curriculum_unit_id_and_group_id(curriculum_unit_id, @group.id, @current_page)
+      @assignments = Assignment.all(:joins => [:allocation_tag, :schedule], :conditions => ["allocation_tags.group_id = 
+        #{@group.id}"], :select => ["assignments.id", "schedule_id", "type_assignment", "name"])
+      students_ids = Allocation.all(:select => :user_id, :joins => [:allocation_tag, :profile], :conditions => ["
+        allocation_tags.group_id = #{@group.id} AND allocations.status = #{Allocation_Activated} AND 
+        cast(profiles.types & #{Profile_Type_Student} as boolean)"]).map(&:user_id)
+      @students = User.select("name, id").find(students_ids)
+      @scores = ScoresTeacher.students_information(@students, @assignments, curriculum_unit_id, allocation_tag_id)
     end
 
   end
-
+  
 end

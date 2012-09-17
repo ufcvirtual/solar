@@ -58,24 +58,25 @@
 
 -# Participantes do grupo
 - if @assignment.type_assignment == Group_Activity
-  .block_wrapper
-    .block_title
-      %h2
-        = image_tag "icon_participants.png", :alt => " ", :class => 'block_title_icon'
-        = @group.group_name
-    .block_content
-      - gp = GroupParticipant.all_by_group_assignment(@group_id)
-      - unless gp.empty?
-        %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
-          %thead
-            %tr.lines
-              %th= t(:participants, :scope => [:assignment, :group_assignments])
-          %tbody
-            - gp.each do |participant|
+  - unless @group.nil?
+    .block_wrapper
+      .block_title
+        %h2
+          = image_tag "icon_participants.png", :alt => " ", :class => 'block_title_icon'
+          = @group.group_name
+      .block_content
+        - gp = GroupParticipant.all_by_group_assignment(@group_id)
+        - unless gp.empty?
+          %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+            %thead
               %tr.lines
-                %td= participant.user.name
-      - else
-        .portfolio_div_padding= t(:itens_not_found)
+                %th= t(:participants, :scope => [:assignment, :group_assignments])
+            %tbody
+              - gp.each do |participant|
+                %tr.lines
+                  %td= participant.user.name
+        - else
+          .portfolio_div_padding= t(:itens_not_found)
 
 -# Arquivos enviados pelo aluno
 .block_wrapper
@@ -232,7 +233,7 @@
                   - else
                     = '-'
                 .portfolio_comment_button
-                  - if can? :remove_comment, AssignmentComment and can? :remove_comment, @assignment
+                  - if can? :remove_comment, comment and can? :remove_comment, @assignment
                     - btn_remove = assignment_in_time?(@assignment) ? "btn btn_caution" : "btn btn_disabled"
                     = button_tag t(:delete, :scope => [:assignment, :comments]), :class => btn_remove, :onclick => "javascript:remove_comment(#{comment.id}, #{@assignment.id});", :disabled => !assignment_in_time?(@assignment)
                   - if can? :send_comment, comment

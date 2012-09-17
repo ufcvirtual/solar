@@ -65,44 +65,51 @@ SQL
     ActiveRecord::Base.connection.select_all query
   end
 
-  def self.student_activities(group_id, students_id, type_assignment)
 
-    ia = ActiveRecord::Base.connection.select_all <<SQL
-    SELECT DISTINCT
-           t1.id,
-           t1.name,
-           t1.enunciation,
-           t7.start_date,
-           t7.end_date,
-           t2.grade,
-           t2.id AS send_assignment_id,
-           CASE WHEN t3.comment IS NOT NULL THEN 1 ELSE 0 END AS comments,
-           CASE
-            WHEN t7.start_date > now() THEN 'not_started'
-            WHEN t2.grade IS NOT NULL AND COUNT(t6.id) > 0 THEN 'corrected'
-            WHEN COUNT(t6.id) > 0 THEN 'sent'
-            WHEN COUNT(t6.id) = 0 AND t7.end_date > now() THEN 'send'
-            WHEN COUNT(t6.id) = 0 AND t7.end_date < now() THEN 'not_sent'
-            ELSE '-'
-           END AS correction
-      FROM assignments         AS t1
-      JOIN allocation_tags     AS t4 ON t4.id = t1.allocation_tag_id
-      JOIN allocations         AS t5 ON t5.allocation_tag_id = t4.id
- LEFT JOIN group_participants  AS t9 ON t9.user_id = #{students_id}
- LEFT JOIN send_assignments    AS t2 ON t2.assignment_id = t1.id AND (t2.group_assignment_id = t9.group_assignment_id OR t2.user_id = #{students_id} )
- LEFT JOIN assignment_comments AS t3 ON t3.send_assignment_id = t2.id
- LEFT JOIN assignment_files    AS t6 ON t6.send_assignment_id = t2.id
- LEFT JOIN schedules           AS t7 ON t7.id = t1.schedule_id
-     WHERE t4.group_id = #{group_id}
-       AND t5.user_id = #{students_id}
-       AND t1.type_assignment = #{type_assignment}
-  GROUP BY t1.id, t2.id, t1.name, t1.enunciation, t7.start_date, t7.end_date, t2.grade, t3.comment
-  ORDER BY t7.end_date, t7.start_date DESC;
-SQL
+  ##
+  # Recupera as atividades de determinado tipo de uma turma e informações da situação de determinado aluno nela
+  ##
+  def self.student_assignments_info(class_id, student_id, type_assignment)
 
-    return (ia.nil?) ? [] : ia
+    assignments = Assignment.all(:joins => [:allocation_tag, :schedule], :conditions => ["allocation_tags.group_id = #{class_id} AND assignments.type_assignment = #{type_assignment}"],
+     :select => ["assignments.id", "schedule_id", "name", "enunciation", "type_assignment"]) #atividades da turma do tipo escolhido
+  
+    assignments_grades, groups_ids, has_comments, situation = [], [], [], [] # informações da situação do aluno
 
+    assignments.each_with_index do |assignment, idx|
+
+      student_group = (assignment.type_assignment == Group_Activity) ? (GroupAssignment.first(:include => [:group_participants], :conditions => ["group_participants.user_id = #{student_id} 
+        AND group_assignments.assignment_id = #{assignment.id}"])) : nil #grupo do aluno
+      user_id = (assignment.type_assignment == Group_Activity) ? nil : student_id #id do aluno
+      groups_ids[idx] = (student_group.nil? ? nil : student_group.id) #se aluno estiver em grupo, recupera id
+      send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignment.id, user_id, groups_ids[idx])
+
+      assignments_grades[idx] = send_assignment.nil? ? nil : send_assignment.grade #se tiver send_assignment, tenta pegar nota
+      has_comments[idx] = send_assignment.nil? ? nil :  !(send_assignment.assignment_comments.empty? and send_assignment.comment.blank?) #verifica se há comentários para o aluno
+
+      #situação do aluno na atividade
+      if assignment.schedule.start_date > Date.current()
+        situation[idx] = "not_started"  
+      elsif (not assignments_grades[idx].nil?)
+        situation[idx] = "corrected"
+      elsif assignment.type_assignment == Group_Activity and groups_ids[idx].nil?
+        situation[idx] = "without_group"
+      elsif (not send_assignment.nil? and send_assignment.assignment_files.size > 0)
+        situation[idx] = "sent"
+      elsif (send_assignment.nil? or send_assignment.assignment_files.size == 0) and assignment.schedule.end_date > Date.current
+        situation[idx] = "send"
+      elsif (send_assignment.nil? or send_assignment.assignment_files.size == 0) and assignment.schedule.end_date < Date.current
+        situation[idx] = "not_sent"
+      else
+        situation[idx] = "-"
+      end
+
+    end
+
+    return {"assignments" => assignments, "groups_ids" => groups_ids, "assignments_grades" => assignments_grades, "has_comments" => has_comments, "situation" => situation}
   end
+
+  
 
   ##
   # Verifica se usuário pode acessar o que está tentando - Atividades e arquivos referentes a elas

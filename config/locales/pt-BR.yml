@@ -449,12 +449,12 @@
   pwd_recovery_unknown_user_msg: "Usuario não encontrado!"
 
   pwd_recovery_mail_body: "Caro(a) %{recipient}, \n\nVocê solicitou recuperação de acesso ao Solar.
-			\n\nSeus dados para acessar o ambiente são:
-			\n    Login: %{login}
-			\n    Nova Senha: %{password}
-  			\n\nAtenciosamente,\nAdministração do ambiente.
-			\n\n\nAmbiente Virtual SOLAR: http://www.solar2.virtual.ufc.br
-			\n\n\n[Esta é uma mensagem automática. Por favor, não a responda.]"
+      \n\nSeus dados para acessar o ambiente são:
+      \n    Login: %{login}
+      \n    Nova Senha: %{password}
+        \n\nAtenciosamente,\nAdministração do ambiente.
+      \n\n\nAmbiente Virtual SOLAR: http://www.solar2.virtual.ufc.br
+      \n\n\n[Esta é uma mensagem automática. Por favor, não a responda.]"
 
 # Página de alterar foto
   choose_file: "Escolher arquivo"
@@ -656,6 +656,7 @@
   corrected: Corrigido
   sent: Enviado
   not_sent: Não Enviado
+  without_group: Sem Grupo
 
   assignment:
     information:
@@ -982,7 +983,3 @@
   notifier:
     enrollment_accepted:
       subject: "[SOLAR] Matrícula aceita"
-
-  groups:
-    form:
-      code: "Código"
