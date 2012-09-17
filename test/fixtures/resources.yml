@@ -280,7 +280,7 @@ res47:
   description: 'Exibicao dos dados do aluno'
 
 
-# acompanhamento do professor
+# acompanhamento do responsável - parte 1
 res48:
   id: 48
   controller: 'scores_teacher'
@@ -410,6 +410,13 @@ res68:
   controller: 'support_material_file'
   action: 'edit_link'
   description: 'Edita um ou mais links da pagina de material de apoio do editor'
+
+# acompanhamento do responsável - parte 2
+res69:
+  id: 69
+  controller: 'allocation_tag'
+  action: 'list'
+  description: 'Acompanhamento geral de todos os alunos da turma - verificacao de relacao com turma'
 
 # Edicao de pedidos de matriculas
 res70:

@@ -145,7 +145,7 @@
         cache: false,
         success: function(response){
           var canClose = true;
-          var title = '<span style="font-weight: bold;"><%= t(:scores_discussions) %></span><br />#{@student.name}';
+          var title = '<span style="font-weight: bold;">#{t(:scores_discussions)}</span><br />#{@student.name}';
           showLightBox(response, 500, 600, canClose, title);
         },
         error: function(response){
