@@ -183,8 +183,7 @@
             .forum_post_author
               .forum_participant_nick= @user.nick
               .forum_participant_profile
-                - user_profile = Profile.user_allocation_tag_profile(@assignment.allocation_tag_id, @user.id)
-                = user_profile.name
+                = Profile.user_allocation_tag_profile(@assignment.allocation_tag_id, @user.id)
             .forum_post_date=l Date.current
         %tr
           %td.forum_post_content{:colspan => "2"}
@@ -210,8 +209,7 @@
               .forum_post_author
                 .forum_participant_nick= comment.user.nick
                 .forum_participant_profile
-                  - user_profile = Profile.user_allocation_tag_profile(@assignment.allocation_tag_id, comment.user_id)
-                  = user_profile.name
+                  = Profile.user_allocation_tag_profile(@assignment.allocation_tag_id, @user.id)
               .forum_post_date
                 - unless comment.updated_at.blank?
                   = l(comment.updated_at, :format => :files)
