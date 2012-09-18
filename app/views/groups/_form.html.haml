@@ -1,0 +1,16 @@
+%span.form_requirement= t(:required_fields)
+
+= simple_form_for(@group) do |f|
+  = f.error_notification
+
+  %div
+    %label.form_label= t(:course)
+    = select_tag(:course_id, options_from_collection_for_select(@courses, :id, :name))
+  %div
+    %label.form_label= t(:curriculum_unit)
+    = select_tag(:curriculum_unit_id, options_from_collection_for_select(@curriculum_units, :id, :name))
+  
+  = f.association :offer, :include_blank => false, :label_method => :semester
+  = f.input :code
+  = f.submit t(:confirm), :class => "btn btn_default", :alt => t(:confirm)
+  = link_to t(:back), list_groups_path

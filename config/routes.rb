@@ -22,8 +22,9 @@ Solar::Application.routes.draw do
   end
 
   ## groups/:id/discussions
-  resources :groups, :only => [] do
+  resources :groups, :except => [:show] do
     resources :discussions, :only => [:index]
+    get :list, :on => :collection
   end
 
   ## discussions/:id/posts

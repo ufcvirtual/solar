@@ -1,9 +1,10 @@
 class CurriculumUnit < ActiveRecord::Base
-  
 
   belongs_to :curriculum_unit_type
+
   has_many :offers
   has_many :groups, :through => :offers, :uniq => true
+  has_many :courses, :through => :offers, :uniq => true
 
   validates :code, :uniqueness => true, :length => { :maximum   => 10 }
   validates :name, :presence => true, :length => { :maximum   => 120 }
@@ -12,7 +13,7 @@ class CurriculumUnit < ActiveRecord::Base
   validates :syllabus, :presence => true
   validates :objectives, :presence => true, :length => { :maximum   => 255 }
 
-  attr_accessor :user_id # permitir acesso por login
+  attr_accessor :user_id
 
   ##  
   # participantes que nao sao TAL TIPO DE PERFIL
