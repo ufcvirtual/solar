@@ -879,7 +879,7 @@ ucdestroy:
 ucedit3:
   profile_id: 5
   resource_id: 81
-  per_id: false
+  per_id: true
 
 ucedit4:
   profile_id: 5

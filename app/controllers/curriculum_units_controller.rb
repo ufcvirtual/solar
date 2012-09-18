@@ -98,9 +98,9 @@ class CurriculumUnitsController < ApplicationController
 
   # GET /curriculum_units/1/edit
   def edit
-    authorize! :edit, CurriculumUnit
     @curriculum_unit = CurriculumUnit.find(params[:id])
-    
+    authorize! :edit,  @curriculum_unit
+
     respond_to do |format|
       format.html { render layout: false } # new.html.erb
       format.json { render json: @curriculum_unit }
