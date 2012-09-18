@@ -40,10 +40,16 @@ class Assignment < ActiveRecord::Base
     return situation
   end
 
+  ##
+  # Verifica se período da atividade terminou
+  ##
   def closed?
     self.schedule.end_date < Date.today
   end
 
+  ##
+  # Verifica se o usuário tem permissão a "tempo extra" na atividade em que está acessando
+  ##
   def extra_time?(user_id)
     (self.allocation_tag.is_user_class_responsible?(user_id) and self.closed?) ?
       ((self.schedule.end_date.to_datetime + Assignment_Responsible_Extra_Time) >= Date.today) : false
@@ -103,11 +109,4 @@ class Assignment < ActiveRecord::Base
     return (class_responsible or (student_of_class and can_access))
   end
 
-  ##
-  # Arquivos da area publica
-  ##
-  def self.public_area(group_id, user_id)
-    return(PublicFile.all(:conditions => ["users.id = #{user_id} AND allocation_tags.group_id = #{group_id}"], :include => [:allocation_tag, :user], :select => ["attachment_file_name, attachment_content_type, attachment_file_size, attachment_updated_at"]))
-  end
-  
 end

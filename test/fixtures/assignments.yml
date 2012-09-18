@@ -72,3 +72,12 @@ a9:
   enunciation: esta é outra atividade de campo
   schedule_id: 19 #prazo em aberto
   type_assignment: 1 #individual
+
+a10:
+  id: 10
+  allocation_tag_id: 8 # ## literatura brasileria I - group id 5 - al8
+  name: Atividade I
+  enunciation: esta é uma atividade de outra disciplina
+  schedule_id: 19 #prazo em aberto
+  type_assignment: 1 #individual
+

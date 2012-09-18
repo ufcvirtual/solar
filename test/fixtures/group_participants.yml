@@ -19,3 +19,8 @@ p4:
   id: 4
   group_assignment_id: 2
   user_id: 1
+
+gp5:
+  id: 5
+  group_assignment_id: 6 ##quimica I - atividade em grupo III - grupo 1
+  user_id: 7

@@ -21,11 +21,11 @@ class AssignmentsController < ApplicationController
   # Lista as atividades - visão aluno
   ##
   def list_to_student
-    group_id                     = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
+    class_id                     = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
     @student_id                  = current_user.id
-    @individual_assignments_info = Assignment.student_assignments_info(group_id, @student_id, Individual_Activity) #atividades individuais pelo grupo_id em que o usuario esta inserido
-    @group_assignments_info      = Assignment.student_assignments_info(group_id, @student_id, Group_Activity) #atividades em grupo pelo grupo_id em que o usuario esta inserido
-    @public_area                 = Assignment.public_area(group_id, @student_id) #área pública
+    @individual_assignments_info = Assignment.student_assignments_info(class_id, @student_id, Individual_Activity) #atividades individuais pelo grupo_id em que o usuario esta inserido
+    @group_assignments_info      = Assignment.student_assignments_info(class_id, @student_id, Group_Activity) #atividades em grupo pelo grupo_id em que o usuario esta inserido
+    @public_area                 = PublicFile.all_by_class_id_and_user_id(class_id, @student_id) #área pública
   end
 
   ##
