@@ -20,15 +20,15 @@
               %td
                 %h4
                   = link_to assignment.name, assignment_path(assignment.id, :student_id => @student_id), {:class => 'link_content'} 
-                  - if assignment.enunciation.size > 180 
-                    .enunciation
-                      .enunciation_slice
-                        = assignment.enunciation.slice(0..180) << "..."
-                      .enunciation_complete
-                        = assignment.enunciation
-                      .more_or_less
-                        %a.enunciation_more.link_content{:href => "#"}= t(:more, :scope => [:assignment, :information])
-                        %a.enunciation_less.link_content{:href => "#"}= t(:less, :scope => [:assignment, :information])
+                - if assignment.enunciation.size > 180 
+                  .enunciation
+                    .enunciation_slice
+                      = assignment.enunciation.slice(0..180) << "..."
+                    .enunciation_complete
+                      = assignment.enunciation
+                    .more_or_less
+                      %a.enunciation_more.link_content{:href => "#"}= t(:more, :scope => [:assignment, :information])
+                      %a.enunciation_less.link_content{:href => "#"}= t(:less, :scope => [:assignment, :information])
                   - else
                     = assignment.enunciation
               %td{:align => "center"}
@@ -60,7 +60,7 @@
             %th{:align => "center", :style => "width:80px"}= t(:comments, :scope => [:assignment, :comments]) 
         %tbody
           - @group_assignments_info["assignments"].each_with_index do |assignment, idx|
-            - group = GroupAssignment.find(@group_assignments_info["groups_ids"][idx])
+            - group = GroupAssignment.find(@group_assignments_info["groups_ids"][idx]) unless @group_assignments_info["groups_ids"][idx].nil?
             %tr.lines
               %td
                 %h4
@@ -81,9 +81,9 @@
                         %div
                           = t(:participants, :scope => [:assignment, :group_assignments])
                           = ":" 
-                          - group.groups_participants.each do |participant|
+                          - group.group_participants.each do |participant|
                             = participant.user.name
-                            - unless participant == group.groups_participants.last
+                            - unless participant == group.group_participants.last
                               = ","
                       - else
                         %div= t(:student_with_no_group, :scope => [:assignment, :notifications])

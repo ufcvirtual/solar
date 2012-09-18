@@ -1,8 +1,8 @@
 class GroupAssignment < ActiveRecord::Base
 
   belongs_to :assignment
-  has_one :send_assignment
-  has_many :group_participants
+  has_one :send_assignment, :dependent => :destroy
+  has_many :group_participants, :dependent => :destroy
 
   validates :group_name, :presence => true, :length => { :maximum => 20 }
   validate :unique_group_name
@@ -34,20 +34,8 @@ class GroupAssignment < ActiveRecord::Base
 # Caso grupo não tenha sido avaliado ou comentado ou enviado arquivos, pode ser excluído (para tudo isso, um "send_assignment" deve existir)
 ##
 def self.can_remove_group?(group_id)
-  return SendAssignment.find_all_by_group_assignment_id(group_id).empty?
-end
-
-##
-# Deletar um grupo
-##
-def delete_group
-  if GroupAssignment.can_remove_group?(id)
-    participants = GroupParticipant.all_by_group_assignment(id)
-    participants.each do |participant|
-      GroupParticipant.find(participant.id).destroy
-    end
-    destroy
-  end
+  send_assignment = SendAssignment.find_by_group_assignment_id(group_id)
+  return (send_assignment.nil? or (send_assignment.assignment_files.empty? and send_assignment.grade.nil?))
 end
 
 end

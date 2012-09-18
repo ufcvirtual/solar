@@ -15,10 +15,8 @@ class ScoresTeacherController < ApplicationController
     unless @group.nil?
       @assignments = Assignment.all(:joins => [:allocation_tag, :schedule], :conditions => ["allocation_tags.group_id = 
         #{@group.id}"], :select => ["assignments.id", "schedule_id", "type_assignment", "name"]) #assignments da turma
-      students_ids = Allocation.all(:select => :user_id, :joins => [:allocation_tag, :profile], :conditions => ["
-        allocation_tags.group_id = #{@group.id} AND allocations.status = #{Allocation_Activated} AND 
-        cast(profiles.types & #{Profile_Type_Student} as boolean)"]).map(&:user_id) 
-      @students = User.select("name, id").find(students_ids) #alunos da turma
+      allocation_tags = AllocationTag.find_related_ids(allocation_tag_id).join(',')
+      @students = Assignment.list_students_by_allocations(allocation_tags)
       @scores = ScoresTeacher.students_information(@students, @assignments, curriculum_unit_id, allocation_tag_id) #dados dos alunos nas atividades
     end
   end

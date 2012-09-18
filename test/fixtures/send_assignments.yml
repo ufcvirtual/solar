@@ -1,7 +1,17 @@
-# quimica I - atividade III
 sa1:
   id: 1
-  assignment_id: 3
+  assignment_id: 3 # quimica I - atividade III
   user_id: 7
   comment: "Olá, alunos"
   grade: 6.3
+
+sa2:
+  id: 2
+  assignment_id: 5
+  group_assignment_id: 5 # quimica I - trabalho em grupo2
+  grade: 3
+
+sa3:
+  id: 3
+  assignment_id: 9 # quimica I - atividade III
+  user_id: 7 

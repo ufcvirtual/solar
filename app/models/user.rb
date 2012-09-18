@@ -65,6 +65,8 @@ class User < ActiveRecord::Base
     :content_type => ['image/jpeg','image/png','image/gif','image/pjpeg'],
     :message => :invalid_type
 
+  default_scope :order => 'name ASC'
+
   #Garantindo que o cpf nao será salvo com os separadores.
   #  def cpf=(value)
   #    self[:cpf] = value.gsub(/\D/, '')

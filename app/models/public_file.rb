@@ -5,10 +5,6 @@ class PublicFile < ActiveRecord::Base
 
   validates :attachment_file_name, :presence => true
 
-  ################################
-  # attachment files
-  ################################
-
   has_attached_file :attachment,
     :path => ":rails_root/media/assignment/public_area/:id_:basename.:extension",
     :url => "/media/assignment/public_area/:id_:basename.:extension"
@@ -18,7 +14,6 @@ class PublicFile < ActiveRecord::Base
   validates_attachment_content_type_in_black_list :attachment
 
   default_scope :order => 'attachment_updated_at DESC'
-  # default_scope :order => 'attachment_content_type ASC'
 
   ##
   # Deleta arquivo publico

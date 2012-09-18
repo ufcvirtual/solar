@@ -79,6 +79,7 @@
       public_file:
         attachment_content_type: ""
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
+        attachment_file_name: File
       discussion_post_file:
         attachment_content_type: ""
       message_file:
@@ -129,6 +130,8 @@
           attributes:
             attachment_content_type:
               invalid_type: "Invalid file type."
+            attachment_file_name:
+              blank: must be choosen
         comment_file:
           attributes:
             attachment_content_type:

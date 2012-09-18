@@ -61,7 +61,7 @@ class AssignmentsController < ApplicationController
         GroupAssignment.transaction do
 
           deleted_groups_ids.each do |deleted_group_id| #deleção de grupos
-            GroupAssignment.find(deleted_group_id).delete_group
+            GroupAssignment.find(deleted_group_id).destroy unless (not GroupAssignment.can_remove_group?(deleted_group_id))
           end
 
           #params['groups'] = {"0"=>{"group_id"=>"1", "group_name"=>"grupo1", "student_ids"=>"1 2"}, "1"=>{"group_id"=>"2", "group_name"=>"grupo2", "student_ids"=>"3"}}
@@ -255,7 +255,7 @@ class AssignmentsController < ApplicationController
       file = case params[:type]
         when 'public'
           allocation_tag_id = active_tab[:url]['allocation_tag_id']
-          PublicFile.create!({ :attachment => params[:public_area][:file], :user_id => current_user.id, :allocation_tag_id => allocation_tag_id })
+          PublicFile.create!({ :attachment => params[:file], :user_id => current_user.id, :allocation_tag_id => allocation_tag_id })
         when 'assignment'
           assignment = Assignment.find(params[:assignment_id])
           authorize! :upload_file, assignment

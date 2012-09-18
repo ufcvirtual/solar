@@ -14,7 +14,7 @@ a2:
   enunciation: Acima de tudo, é fundamental ressaltar que a contínua expansão de nossa atividade ainda não demonstrou convincentemente que vai participar na mudança dos conhecimentos estratégicos para atingir a excelência.Acima de tudo, é fundamental ressaltar que a contínua expansão de nossa atividade ainda não demonstrou convincentemente que vai participar na mudança dos conhecimentos estratégicos para atingir a excelência.Acima de tudo, é fundamental ressaltar que a contínua expansão de nossa atividade ainda não demonstrou convincentemente que vai participar na mudança dos conhecimentos estratégicos para atingir a excelência.Acima de tudo, é fundamental ressaltar que a contínua expansão de nossa atividade ainda não demonstrou convincentemente que vai participar na mudança dos conhecimentos estratégicos para atingir a excelência.
   schedule_id: 18
 
-# quimica I
+# quimica I - atividade III
 a3:
   id: 3
   allocation_tag_id: 3
@@ -48,3 +48,27 @@ a6:
   enunciation: esta é uma atividade sem grupo algum.
   schedule_id: 21
   type_assignment: 2
+
+a7:
+  id: 7
+  allocation_tag_id: 3 # quimica I
+  name: Atividade de campo I
+  enunciation: esta é uma atividade de campo
+  schedule_id: 22 #prazo concluído
+  type_assignment: 1 #individual
+
+a8:
+  id: 8
+  allocation_tag_id: 3 #quimica I
+  name: Atividade em campo II
+  enunciation: esta é outra atividade de campo
+  schedule_id: 18 #prazo não iniciado
+  type_assignment: 1 #individual
+
+a9:
+  id: 9
+  allocation_tag_id: 3 #quimica I
+  name: Atividade em campo III
+  enunciation: esta é outra atividade de campo
+  schedule_id: 19 #prazo em aberto
+  type_assignment: 1 #individual

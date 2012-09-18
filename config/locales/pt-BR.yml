@@ -217,6 +217,7 @@
       public_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
+        attachment_file_name: Arquivo
       discussion_post_file:
         attachment_content_type: ""
       message_file:
@@ -276,11 +277,13 @@
             attachment_content_type:
               invalid_type: "Tipo de arquivo inválido."
             attachment_file_name:
-              blank: "deve ser selecionado"
+              blank: deve ser selecionado
         public_file:
           attributes:
             attachment_content_type:
               invalid_type: "Tipo de arquivo inválido."
+            attachment_file_name:
+              blank: deve ser selecionado
         comment_file:
           attributes:
             attachment_content_type:
