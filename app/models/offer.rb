@@ -8,7 +8,14 @@ class Offer < ActiveRecord::Base
   has_many :groups
   has_many :assignments, :through => :allocation_tag
 
-  def has_any_down_association?
+  include Taggable
+
+  def has_any_lower_association?
       self.groups.count > 0
   end
+
+  def lower_associated_objects
+    groups
+  end
+
 end

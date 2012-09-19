@@ -12,8 +12,6 @@ class CurriculumUnit < ActiveRecord::Base
   validates :syllabus, :presence => true
   validates :objectives, :presence => true, :length => { :maximum   => 255 }
 
-  attr_accessor :user_id # permitir acesso por login
-
   ##  
   # participantes que nao sao TAL TIPO DE PERFIL
   ##
@@ -101,8 +99,12 @@ SQL
     as_object ? CurriculumUnit.includes(:curriculum_unit_type).find_by_sql(query) : ActiveRecord::Base.connection.select_all(query)
   end
 
-  def has_any_down_association?
+  def has_any_lower_association?
       self.offers.count > 0
+  end
+
+  def lower_associated_objects
+    offers
   end
   
   private 

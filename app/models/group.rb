@@ -9,6 +9,8 @@ class Group < ActiveRecord::Base
   has_many :users, :through => :allocation_tag
   has_many :assignments, :through => :allocation_tag
 
+  include Taggable
+
   def code_semester
     "#{code} - #{offer.semester}"
   end
@@ -17,7 +19,7 @@ class Group < ActiveRecord::Base
     CurriculumUnit.select('id').find(curriculum_unit_id).groups.where(["groups.id IN (?)", User.select('id').find(user_id).groups.map(&:id)])
   end
 
-  def has_any_down_association?
+  def has_any_lower_association?
       false
   end
 

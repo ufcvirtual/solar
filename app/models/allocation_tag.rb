@@ -72,8 +72,8 @@ SQL
     [self.id, atgs].flatten.compact.uniq.sort
   end
 
-  def allocate_user(user_id, profile_id)
-     Allocation.create(:user_id => user_id, :allocation_tag_id => self.id, :profile_id => profile_id, :status => 1)
+  def unallocate_user_in_related(user_id)
+    Allocation.destroy_all(user_id: user_id, allocation_tag_id: self.related)
   end
 
   def is_user_allocated_in_related?(user_id)
@@ -91,10 +91,6 @@ SQL
       where("user_id != ?", user_id).
       where(:allocation_tag_id => self.related
     ).uniq.empty?
-  end
-
-  def unallocate_user_in_related(user_id)
-    Allocation.destroy_all(user_id: user_id, allocation_tag_id: self.related)
   end
 
   private
