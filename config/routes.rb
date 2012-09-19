@@ -10,7 +10,8 @@ Solar::Application.routes.draw do
     resources :sessions, :only => [:create]
   end
 
-  ## curriculum_units/:id/groups
+  ## curriculum_units/:id/participants
+  ## curriculum_units/:id/informations
   resources :curriculum_units do
     get :list, :on => :collection
     member do
@@ -20,6 +21,9 @@ Solar::Application.routes.draw do
     end
     resources :groups, :only => [:index]
   end
+
+  ## curriculum_units/:id/groups
+  # get 'curriculum_units/:curriculum_unit_id/groups' => "groups#list", :as => :groups_curriculum_unit
 
   ## groups/:id/discussions
   resources :groups, :except => [:show] do

@@ -2,7 +2,6 @@ class Course < ActiveRecord::Base
 
   include Taggable
 
-  has_one :allocation_tag
   has_many :offers
   has_many :groups, :through => :offers, :uniq => true
   has_many :curriculum_units, :through => :offers, :uniq => true

@@ -4,7 +4,6 @@ class Group < ActiveRecord::Base
 
   belongs_to :offer
 
-  has_one :allocation_tag
   has_one :curriculum_unit, :through => :offer
   has_one :course, :through => :offer
 
