@@ -1,5 +1,7 @@
 class Group < ActiveRecord::Base
 
+  include Taggable
+
   belongs_to :offer
 
   has_one :allocation_tag
@@ -9,7 +11,8 @@ class Group < ActiveRecord::Base
   has_many :users, :through => :allocation_tag
   has_many :assignments, :through => :allocation_tag
 
-  include Taggable
+  validates :offer_id, :presence => true
+  validates :code, :presence => true
 
   def code_semester
     "#{code} - #{offer.semester}"
@@ -20,7 +23,7 @@ class Group < ActiveRecord::Base
   end
 
   def has_any_lower_association?
-      false
+    false
   end
 
 end

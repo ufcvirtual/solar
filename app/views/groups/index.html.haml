@@ -1,0 +1,10 @@
+%table.tb_list
+  %tbody
+    - unless @groups.nil? or @groups.empty?
+      - @groups.each do |group|
+        %tr
+          %td= group.code_semester
+          %td= link_to t(:edit), edit_group_path(group)
+          %td= link_to t(:destroy), group, {:method => :delete, :confirm => t(:message_confirm)}
+
+= link_to t(:new), new_group_path if @create_group

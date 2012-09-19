@@ -925,3 +925,7 @@
   notifier:
     enrollment_accepted:
       subject: "[SOLAR] Matrícula aceita"
+
+  groups:
+    form:
+      code: "Código"

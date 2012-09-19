@@ -32,11 +32,11 @@ class OffersController < ApplicationController
 
   def create
     @offer = Offer.new(
-          :course_id => params[:course_id],
-          :curriculum_unit_id => params[:curriculum_unit_id],
-          :semester => params[:offer][:semester],
-          :start => params[:offer][:start],
-          :end => params[:offer][:end]
+      :course_id => params[:course_id],
+      :curriculum_unit_id => params[:curriculum_unit_id],
+      :semester => params[:offer][:semester],
+      :start => params[:offer][:start],
+      :end => params[:offer][:end]
     )
 
     respond_to do |format|

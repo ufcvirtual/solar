@@ -1,4 +1,7 @@
 class Offer < ActiveRecord::Base
+
+  include Taggable
+
   belongs_to :course
   belongs_to :curriculum_unit
 
@@ -7,8 +10,6 @@ class Offer < ActiveRecord::Base
 
   has_many :groups
   has_many :assignments, :through => :allocation_tag
-
-  include Taggable
 
   def has_any_lower_association?
       self.groups.count > 0

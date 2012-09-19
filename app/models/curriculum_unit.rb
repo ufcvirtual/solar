@@ -1,9 +1,12 @@
 class CurriculumUnit < ActiveRecord::Base
-  
+
+  include Taggable
 
   belongs_to :curriculum_unit_type
+
   has_many :offers
   has_many :groups, :through => :offers, :uniq => true
+  has_many :courses, :through => :offers, :uniq => true
 
   validates :code, :uniqueness => true, :length => { :maximum   => 10 }
   validates :name, :presence => true, :length => { :maximum   => 120 }
@@ -106,8 +109,5 @@ SQL
   def lower_associated_objects
     offers
   end
-  
-  private 
-  include Taggable
 
 end

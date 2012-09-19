@@ -1,0 +1,36 @@
+= render '/user_sessions/header'
+
+#login_content_password_recovery
+  .block_wrapper
+    #page_title
+      %h1= t(:pwd_recovery_security)
+
+  .block_wrapper
+    .block_title
+      %h2= t(:pwd_recovery_subtitle)
+    .block_content#pwd_recovery
+      = form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f|
+        = devise_error_messages!
+        %p= t(:pwd_recovery_text)
+        %p= t(:pwd_recovery_text2)
+
+        #pwd_box
+          %table
+            %tr
+              %td
+                %label{:for => 'email', :class => 'pwd_recovery_label'}
+                  = t(:pwd_recovery_email)
+              %td
+                = f.email_field(:email, :id => 'email', :tabindex=>"1")
+            %tr
+              %td
+                %label{:for => 'cpf', :class => 'pwd_recovery_label'}
+                  = t(:pwd_recovery_cpf)
+              %td
+                = f.text_field(:cpf, :id => 'cpf', :tabindex=>"2")
+            %tr
+              %td#pwd_box_buttons{:colspan => '2'}
+                %input{type: 'button', value:t(:pwd_recovery_back), :class => 'btn btn_default', :onclick => "document.location.href='#{login_path}'"}
+                = f.submit t(:pwd_recovery_send), :class=>'btn solar_button', :tabindex=>"3"
+
+= render '/user_sessions/footer'

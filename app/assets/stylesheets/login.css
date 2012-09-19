@@ -161,7 +161,7 @@ textarea{
 .block_content {
     font-size: 10pt;
     background-color: #F5F8FB;
-    padding: 2px 0 7px 30px;
+    padding: 2px 10px 7px 10px;
 }
 
 /************ Layout dos botões ****************/
@@ -585,6 +585,22 @@ td.form_error {
 
 /****** security ******/
 
+#login_content_password_recovery {
+    width: 400px;
+    margin: 0 auto 10px auto;
+    padding-top: 10px;
+    font-size: 10pt;
+    overflow: hidden;
+}
+
+#login_content_password_recovery .block_wrapper {
+    width: auto;
+}
+
+#login_content_password_recovery input[type='text'], #login_content_password_recovery input[type='email'] {
+    font-size: 11pt;
+}
+
 #pwd_recovery p {
     padding-left: 10px;
     padding-right: 10px;
@@ -594,20 +610,20 @@ td.form_error {
     text-align: right;
     margin-right: 10px;
     color: #003E7A;
-    font-size: 11pt;
+    font-size: 10pt;
     float: right;
 }
 #pwd_box{
-    margin-left: 10px;
+    /*margin-left: 10px;*/
     padding: 5px 5px 5px 0;
 }
 
 #pwd_box table {
-    margin-bottom: 5px;
+    margin: 0 auto;
 }
 
 #pwd_box td {
-    padding: 5px 0;
+    padding: 5px 5px;
 }
 #pwd_box td label {
     width: 70px;
@@ -617,7 +633,7 @@ td.form_error {
 }
 
 #pwd_box_buttons {
-    margin-left: 165px;
+    text-align: right;
 }
 
 /* Página da equipe */

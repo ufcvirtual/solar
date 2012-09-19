@@ -1,0 +1,32 @@
+= render '/user_sessions/header'
+
+#login_content_password_recovery
+  .block_wrapper
+    #page_title
+      %h1= t(:pwd_recovery_security)
+
+  .block_wrapper
+    .block_title
+      %h2 Alterar sua senha
+    .block_content#pwd_recovery
+      = form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f|
+        = devise_error_messages!
+        = f.hidden_field(:reset_password_token)
+        #pwd_box
+          %table
+            %tr
+              %td
+                = f.label(:password, "New password")
+              %td
+                = f.password_field(:password)
+            %tr
+              %td
+                = f.label(:password_confirmation, "Confirm new password")
+              %td
+                = f.password_field(:password_confirmation)
+            %tr
+              %td#pwd_box_buttons{:colspan => '2'}
+                = f.submit "Change my password", :class => 'btn solar_button'
+
+/ links que levam para a página de login e de cadastro - achamos que não eram relevantes para a página de recuperar senha
+/ = render :partial => "devise/shared/links"

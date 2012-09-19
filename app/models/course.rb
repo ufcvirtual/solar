@@ -1,11 +1,12 @@
 class Course < ActiveRecord::Base
 
+  include Taggable
+
   has_one :allocation_tag
   has_many :offers
   has_many :groups, :through => :offers, :uniq => true
+  has_many :curriculum_units, :through => :offers, :uniq => true
 
-  include Taggable
-  
   def has_any_lower_association?
       self.offers.count > 0
   end
@@ -13,5 +14,5 @@ class Course < ActiveRecord::Base
   def lower_associated_objects
     offers
   end
-  
+
 end
