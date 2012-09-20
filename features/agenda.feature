@@ -8,7 +8,6 @@ Funcionalidade: Exibir Agenda da oferta
 Contexto:
   Dado que tenho "allocations"
     | user_id  | allocation_tag_id  | profile_id  | status |
-    | 1        | 3                  | 1           | 1      |
     | 5        | 4                  | 2           | 1      |
     | 5        | 5                  | 2           | 1      |
     | 5        | 6                  | 2           | 1      |

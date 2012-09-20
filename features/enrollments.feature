@@ -7,8 +7,6 @@ Funcionalidade: Aceitar Matriculas
 Contexto:
   Dado que tenho "allocations"
     | user_id  | allocation_tag_id  | profile_id  | status |
-    | 12       | 8                  | 5           | 1      |
-    # Aluno 1 - pendente
     | 7        | 8                  | 1           | 0      |
     # Aluno 2 - cancelado
     | 8        | 8                  | 1           | 2      |

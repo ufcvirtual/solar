@@ -6,20 +6,12 @@ Funcionalidade: Enviar, receber e visualizar mensagens
   Para me comunicar com os demais usuários do sistema
 
 Contexto:
-#    Dado que tenho "courses"
-#        | id | name                    | code   |
-#        | 1  | Letras Português        | LLPT   |
-#        | 2  | Licenciatura em Química | LQUIM  |
-Dado que tenho "allocations"
-  | user_id  | allocation_tag_id  | profile_id  | status |
-  | 1        | 1                  | 1           | 1      |
-  | 1        | 2                  | 1           | 1      |
-  | 1        | 3                  | 1           | 1      |
-  | 1        | 8                  | 1           | 0      |
-  | 1        | 8                  | 1           | 1      |
-  | 5        | 4                  | 2           | 1      |
-  | 5        | 5                  | 2           | 1      |
-  | 5        | 6                  | 2           | 1      |
+  Dado que tenho "allocations"
+    | user_id  | allocation_tag_id  | profile_id  | status |
+    | 1        | 2                  | 1           | 1      |
+    | 5        | 4                  | 2           | 1      |
+    | 5        | 5                  | 2           | 1      |
+    | 5        | 6                  | 2           | 1      |
 
 Cenário: Abrir mensagem
   Dado que estou logado com o usuario "user" e com a senha "123456"
