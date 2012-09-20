@@ -1,163 +1,151 @@
 a:
+  id: 1
   user_id: 1
   allocation_tag_id: 1
   profile_id: 1
   status: 1
 
 c:
+  id: 2
   user_id: 1
   allocation_tag_id: 3
   profile_id: 1
   status: 1
 
 d:
+  id: 3
   user_id: 1
   allocation_tag_id: 8
   profile_id: 1
   status: 0
 
 e:
+  id: 4
   user_id: 1
   allocation_tag_id: 9
   profile_id: 1
   status: 1
 
 f:
+  id: 5
   user_id: 6
   allocation_tag_id: 4
   profile_id: 2
   status: 1
 
 g:
+  id: 6
   user_id: 6
   allocation_tag_id: 5
   profile_id: 2
   status: 1
 
 h:
+  id: 7
   user_id: 6
   allocation_tag_id: 6
   profile_id: 2
   status: 1
 
 i:
+  id: 8
   user_id: 6
   profile_id: 12
   status: 1
 
 j:
+  id: 9
   user_id: 7
   allocation_tag_id: 1
   profile_id: 1
   status: 1
 
 k:
+  id: 10
   user_id: 7
   allocation_tag_id: 2
   profile_id: 1
   status: 1
 
 l:
+  id: 11
   user_id: 7
   allocation_tag_id: 3
   profile_id: 1
   status: 1
 
 m:
+  id: 12
   user_id: 7
   profile_id: 12
   status: 1
 
 n:
+  id: 13
   user_id: 8
   allocation_tag_id: 1
   profile_id: 1
   status: 1
 
 o:
+  id: 14
   user_id: 8
   allocation_tag_id: 2
   profile_id: 1
   status: 1
 
 p:
+  id: 15
   user_id: 8
   allocation_tag_id: 3
   profile_id: 1
   status: 1
 
 q:
+  id: 16
   user_id: 8
   profile_id: 12
   status: 1
 
 r:
+  id: 17
   user_id: 9
   allocation_tag_id: 1
   profile_id: 1
   status: 1
 
 s:
+  id: 18
   user_id: 9
   allocation_tag_id: 2
   profile_id: 1
   status: 1
 
 t:
+  id: 19
   user_id: 9
   allocation_tag_id: 3
   profile_id: 1
   status: 1
 
 u:
+  id: 20
   user_id: 9
   profile_id: 12
   status: 1
 
 v:
+  id: 21
   user_id: 11
   allocation_tag_id: 2
   profile_id: 3
   status: 1
 
 w:
+  id: 22
   user_id: 11
   allocation_tag_id: 3
   profile_id: 3
-  status: 1
-
-x:
-  user_id: 11
-  profile_id: 12
-  status: 1
-
-y:
-  user_id: 10
-  allocation_tag_id: 2
-  profile_id: 4
-  status: 1
-
-z:
-  user_id: 10
-  allocation_tag_id: 3
-  profile_id: 4
-  status: 1
-
-aa:
-  user_id: 10
-  profile_id: 12
-  status: 1
-
-ab:
-  user_id: 12
-  allocation_tag_id: 8
-  profile_id: 5
-  status: 1
-
-ac:
-  user_id: 12
-  allocation_tag_id: 7
-  profile_id: 5
   status: 1
 
 user_as_professor:
@@ -283,4 +271,44 @@ curriculum_unit_editor:
   user_id: 14
   profile_id: 5
   allocation_tag_id: 2
+  status: 1
+
+x:
+  id: 43
+  user_id: 11
+  profile_id: 12
+  status: 1
+
+y:
+  id: 44
+  user_id: 10
+  allocation_tag_id: 2
+  profile_id: 4
+  status: 1
+
+z:
+  id: 45
+  user_id: 10
+  allocation_tag_id: 3
+  profile_id: 4
+  status: 1
+
+aa:
+  id: 46
+  user_id: 10
+  profile_id: 12
+  status: 1
+
+ab:
+  id: 47
+  user_id: 12
+  allocation_tag_id: 8
+  profile_id: 5
+  status: 1
+
+ac:
+  id: 48
+  user_id: 12
+  allocation_tag_id: 7
+  profile_id: 5
   status: 1

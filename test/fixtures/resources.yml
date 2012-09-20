@@ -465,7 +465,6 @@ res78:
   action: 'download_all_files_zip'
   description: 'Metodo de download de todos os arquivos'
 
-
 # Unidade Curricular - Editor
 res79:
   id: 79
