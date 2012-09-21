@@ -4,26 +4,26 @@ class AssignmentTest < ActiveSupport::TestCase
 
   fixtures :assignments, :users, :groups, :group_assignments
 
-  test 'retorna o status da atividade de um aluno' do
-  	assert_equal("not_sent", Assignment.assignment_situation_of_student(assignments(:a7).id, users(:aluno1).id))
+  test "retorna o status da atividade de um aluno" do
+  	assert_equal("not_sent", Assignment.assignment_situation_of_student(assignments(:a13).id, users(:aluno1).id))
   	assert_equal("sent", Assignment.assignment_situation_of_student(assignments(:a9).id, users(:aluno1).id))
   	assert_equal("corrected", Assignment.assignment_situation_of_student(assignments(:a3).id, users(:aluno1).id))
-  	assert_equal("without_group", Assignment.assignment_situation_of_student(assignments(:a5).id, users(:aluno1).id))
+  	assert_equal("without_group", Assignment.assignment_situation_of_student(assignments(:a12).id, users(:aluno3).id))
   	assert_equal("send", Assignment.assignment_situation_of_student(assignments(:a9).id, users(:aluno2).id))
   	assert_equal("not_started", Assignment.assignment_situation_of_student(assignments(:a8).id, users(:aluno1).id))
   end
 
-  test 'retorna se a atividade ja terminou seu prazo' do  	
+  test "retorna se a atividade ja terminou seu prazo" do  	
   	assert assignments(:a7).closed?
   	assert not(assignments(:a2).closed?)
   end
 
-  test 'retorna se o usuario tem tempo extra na atividade' do
+  test "retorna se o usuario tem tempo extra na atividade" do
   	assert assignments(:a7).extra_time?(users(:professor).id)
   	assert not(assignments(:a7).extra_time?(users(:aluno1).id))
   end
 
-  test 'retorna alunos presentes em uma turma' do
+  test "retorna alunos presentes em uma turma" do
   	allocation_tags = AllocationTag.find_related_ids(assignments(:a7).allocation_tag_id).join(',')
   	students_of_class_method = Assignment.list_students_by_allocations(allocation_tags)
   	students_of_class = Allocation.all(:include => [:allocation_tag, :user, :profile], :conditions => ["cast( profiles.types & '#{Profile_Type_Student}' as boolean) 
@@ -33,7 +33,7 @@ class AssignmentTest < ActiveSupport::TestCase
   	assert_equal(students_of_class_method, students_of_class)
   end
 
-  test 'informacoes das atividades que um aluno participa - atividades individuais' do
+  test "informacoes das atividades que um aluno participa - atividades individuais" do
   	student_assignment_info = Assignment.student_assignments_info(groups(:g3).id, users(:aluno1).id, Individual_Activity)
   	
   	assignments_of_class = Assignment.all(:joins => [:allocation_tag, :schedule], :conditions => ["allocation_tags.group_id = #{groups(:g3).id} AND assignments.type_assignment = #{Individual_Activity}"],
@@ -63,7 +63,7 @@ class AssignmentTest < ActiveSupport::TestCase
     assert_equal(situation, "corrected")
   end
 
-  test 'informacoes das atividades que um aluno participa - atividades em grupo' do
+  test "informacoes das atividades que um aluno participa - atividades em grupo" do
   	student_assignment_info = Assignment.student_assignments_info(groups(:g3).id, users(:aluno1).id, Group_Activity)
   	
   	assignments_of_class = Assignment.all(:joins => [:allocation_tag, :schedule], :conditions => ["allocation_tags.group_id = #{groups(:g3).id} AND assignments.type_assignment = #{Group_Activity}"],
@@ -93,7 +93,7 @@ class AssignmentTest < ActiveSupport::TestCase
     assert_equal(situation, "send")
   end
 
-  test 'usuario nao pode acessar atividade que nao tem relacao' do
+  test "usuario nao pode acessar atividade que nao tem relacao" do
   	assert not(assignments(:a10).user_can_access_assignment(users(:aluno1).id, users(:aluno2).id))
   	assert assignments(:a9).user_can_access_assignment(users(:professor).id, users(:aluno1).id)
   end

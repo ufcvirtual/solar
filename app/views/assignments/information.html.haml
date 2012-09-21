@@ -30,13 +30,13 @@
       = image_tag("icon_suitcase_portfolio.png", :alt=> " ", :class=>'block_title_icon')
       =t :activity_files, :scope => [:assignment, :files]
     %span.download_all_icon
-      - unless @assignment_enounciation_files.empty?
+      - unless @assignment_enunciation_files.empty?
         = button_tag(:type => :button, :onclick => "javascript:window.location.href='#{download_files_assignments_path(:assignment_id => @assignment.id, :type => "enunciation", :zip => true)}'", :class => "btn btn_default") do
           = content_tag(:span, t(:download_all_files_zip, :scope => [:assignment, :files]))
           = content_tag(:span, image_tag("icon_folder_compressed.png"))
 
   .block_content
-    - unless @assignment_enounciation_files.empty?
+    - unless @assignment_enunciation_files.empty?
       %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
         %thead
           %tr.lines
@@ -45,7 +45,7 @@
             %th.clock_icon
               = image_tag "clock.png", :alt => " ", :class=>"block_title_icon"
               =t :sent_on, :scope => [:assignment, :files]
-          - @assignment_enounciation_files.each do |file|
+          - @assignment_enunciation_files.each do |file|
             %tr.lines
               %td
                 = link_to image_tag( icon_attachment(file.attachment_file_name) ), download_files_assignments_path(:assignment_id => @assignment.id, :file_id => file.id, :type => "enunciation"), { :class => "file_icon", :alt => t(:download_file, :file_name => file.attachment_file_name, :scope => [:assignment, :files]) }

@@ -13,5 +13,20 @@ sa2:
 
 sa3:
   id: 3
-  assignment_id: 9 # quimica I - atividade III
+  assignment_id: 9 # quimica I - Atividade em campo III
   user_id: 7 
+
+sa4:
+  id: 4
+  assignment_id: 11 # literatura brasileria I - group id 5 - al8
+  group_assignment_id: 7 # ## literatura brasileria I - group id 5 - al8 - grupo 1 (ga7)
+
+sa5:
+  id: 5
+  assignment_id: 10 # literatura brasileria I - group id 5 - al8
+  user_id: 9 #aluno3
+
+sa6:
+  id: 6
+  assignment_id: 7 #quimica I - Atividade de campo I - al7: atividade concluída
+  user_id: 7

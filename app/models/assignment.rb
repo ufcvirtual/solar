@@ -1,9 +1,9 @@
 class Assignment < ActiveRecord::Base
 
-  has_many :allocations, :through => :allocation_tag
-  has_one :group, :through => :allocation_tag
   belongs_to :allocation_tag
   belongs_to :schedule
+  has_one :group, :through => :allocation_tag
+  has_many :allocations, :through => :allocation_tag
   has_many :assignment_enunciation_files
   has_many :send_assignments
   has_many :group_assignments
@@ -99,10 +99,9 @@ class Assignment < ActiveRecord::Base
     profile_student   = Profile.select(:id).where("cast(types & '#{Profile_Type_Student}' as boolean)").first
     student_of_class  = !allocations.where(:profile_id => profile_student.id).where(:user_id => current_user_id).empty?
     class_responsible = allocation_tag.is_user_class_responsible?(current_user_id)
+    can_access = (user_id.to_i == current_user_id)
 
-    if type_assignment == Individual_Activity
-      can_access = (user_id.to_i == current_user_id)
-    else
+    if type_assignment == Group_Activity
       group      = GroupAssignment.find_by_id_and_assignment_id(group_id, id)
       can_access = group.group_participants.map(&:user_id).include?(current_user_id) unless group.nil?
     end

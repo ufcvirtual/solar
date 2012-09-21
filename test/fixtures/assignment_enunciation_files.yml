@@ -1,0 +1,13 @@
+aef1:
+  id: 1
+  assignment_id: 9 #a9
+  attachment_file_name: "teste1.txt"
+  attachment_file_size: 1024
+  attachment_updated_at: "2012-09-18"
+
+aef2:
+  id: 2
+  assignment_id: 10 #a10
+  attachment_file_name: "teste2.txt"
+  attachment_file_size: 1024
+  attachment_updated_at: "2012-09-18"

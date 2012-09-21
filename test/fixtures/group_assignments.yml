@@ -32,3 +32,8 @@ ga6:
   id: 6
   assignment_id: 6 #quimica I - atividade em grupo III
   group_name: grupo 1
+
+ga7:
+  id: 7
+  assignment_id: 11 # ## literatura brasileria I - group id 5 - al8
+  group_name: grupo 1

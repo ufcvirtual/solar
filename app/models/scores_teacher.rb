@@ -38,7 +38,7 @@ class ScoresTeacher < ActiveRecord::Base
     return {"students_grades" => students_grades, "students_groups" => students_groups, "student_count_access" => student_count_access, "student_count_public_files" => student_count_public_files}
   end
   
-  # Numero de estudantes por group
+  # Numero de estudantes por turma
   def self.number_of_students_by_group_id(group_id)
     query = <<SQL
   SELECT COUNT(DISTINCT t1.id)::int AS cnt

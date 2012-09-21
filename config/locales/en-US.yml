@@ -829,3 +829,7 @@
   notifier:
     enrollment_accepted:
       subject: "[SOLAR] Enrollment accepted"
+
+  groups:
+    form:
+      code: "Code"

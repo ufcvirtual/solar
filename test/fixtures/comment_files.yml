@@ -1,0 +1,13 @@
+acf1:
+  id: 1
+  assignment_comment_id: 1 #ac1
+  attachment_file_name: "teste1.txt"
+  attachment_file_size: 1024
+  attachment_updated_at: "2012-09-18"
+
+acf2:
+  id: 2
+  assignment_comment_id: 3 #ac3
+  attachment_file_name: "teste2.txt"
+  attachment_file_size: 1024
+  attachment_updated_at: "2012-09-18"

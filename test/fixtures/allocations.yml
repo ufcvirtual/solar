@@ -134,6 +134,12 @@ u:
   profile_id: 12
   status: 1
 
+aluno3_al8:
+  user_id: 9
+  allocation_tag_id: 8
+  profile_id: 1
+  status: 1
+
 v:
   id: 21
   user_id: 11
@@ -146,6 +152,46 @@ w:
   user_id: 11
   allocation_tag_id: 3
   profile_id: 3
+  status: 1
+
+x:
+  user_id: 11
+  profile_id: 12
+  status: 1
+
+tutor_distancia_al8:
+  user_id: 11
+  allocation_tag_id: 8
+  profile_id: 3
+  status: 1
+
+y:
+  user_id: 10
+  allocation_tag_id: 2
+  profile_id: 4
+  status: 1
+
+z:
+  user_id: 10
+  allocation_tag_id: 3
+  profile_id: 4
+  status: 1
+
+aa:
+  user_id: 10
+  profile_id: 12
+  status: 1
+
+ab:
+  user_id: 12
+  allocation_tag_id: 8
+  profile_id: 5
+  status: 1
+
+ac:
+  user_id: 12
+  allocation_tag_id: 7
+  profile_id: 5
   status: 1
 
 user_as_professor:

@@ -34,7 +34,7 @@ class AssignmentsController < ApplicationController
   ##
   def information
     @assignment = Assignment.find(params[:id])
-    @assignment_enounciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  #arquivos que fazem parte da descrição da atividade
+    @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  #arquivos que fazem parte da descrição da atividade
     if @assignment.type_assignment == Group_Activity 
       @groups                 = GroupAssignment.find_all_by_assignment_id(@assignment.id)
       @students_without_group = GroupAssignment.students_without_groups(@assignment.id) #alunos da turma sem grupo  
@@ -110,7 +110,7 @@ class AssignmentsController < ApplicationController
     @group_id        = params[:group_id].nil? ? nil : params[:group_id] 
     @group           = GroupAssignment.find(params[:group_id]) unless @group_id.nil? #grupo
     @send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(@assignment.id, @student_id, @group_id)
-    @assignment_enounciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  #arquivos que fazem parte da descrição da atividade
+    @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  #arquivos que fazem parte da descrição da atividade
 
     raise CanCan::AccessDenied unless @assignment.user_can_access_assignment(current_user.id, @student_id, @group_id)
    
@@ -177,7 +177,8 @@ class AssignmentsController < ApplicationController
       flash[:alert] = error.message
     end
 
-    redirect_to request.referer
+    redirect = request.referer.nil? ? root_url(:only_path => false) : request.referer
+    redirect_to redirect
   end
 
   ##
@@ -237,7 +238,9 @@ class AssignmentsController < ApplicationController
 
     #verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
     raise CanCan::AccessDenied unless (assignment.nil? or send_assignment.nil? or assignment.user_can_access_assignment(current_user.id, send_assignment.user_id, send_assignment.group_assignment_id))
-    download_file(request.referer, file_path)
+
+    redirect = request.referer.nil? ? root_url(:only_path => false) : request.referer
+    download_file(redirect, file_path)
   end
 
   ##
@@ -276,7 +279,7 @@ class AssignmentsController < ApplicationController
     rescue Exception => error
       flash[:alert] = error.message.split(',')[0]
     end
-    redirect_to request.referer
+    redirect_to (request.referer.nil? ? root_url(:only_path => false) : request.referer)
   end
 
   def delete_file
@@ -300,7 +303,7 @@ class AssignmentsController < ApplicationController
     rescue Exception => error
       flash[:alert] = error.message
     end
-    redirect_to request.referer
+    redirect_to (request.referer.nil? ? root_url(:only_path => false) : request.referer)
   end
 
   ##
@@ -341,7 +344,8 @@ class AssignmentsController < ApplicationController
     rescue Exception => error
       flash[:alert] = error.message
     end
-    redirect_to request.referer
+    # redirect_to request.referer
+    redirect_to information_assignment_path(@assignment)
   end
 
 private

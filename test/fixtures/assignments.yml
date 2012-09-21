@@ -81,3 +81,26 @@ a10:
   schedule_id: 19 #prazo em aberto
   type_assignment: 1 #individual
 
+a11:
+  id: 11
+  allocation_tag_id: 8 # ## literatura brasileria I - group id 5 - al8
+  name: Atividade em grupo I
+  enunciation: esta é uma atividade em grupo de outra disciplina
+  schedule_id: 19 #prazo em aberto
+  type_assignment: 2 #grupo
+
+a12:
+  id: 12
+  allocation_tag_id: 8 # ## literatura brasileria I - group id 5 - al8
+  name: Atividade em grupo II
+  enunciation: esta é outra atividade em grupo de outra disciplina
+  schedule_id: 19 #prazo em aberto
+  type_assignment: 2 #grupo
+
+a13:
+  id: 13
+  allocation_tag_id: 3 # quimica I
+  name: Aula de artes
+  enunciation: Pinte um quadro utilizando tecnicas e conceitos expressionistas
+  schedule_id: 22 #prazo concluído
+  type_assignment: 1 #individual
