@@ -120,7 +120,11 @@
               %td.file_data_icon{:style => "width: 10px;"}= image_tag icon_attachment(pa["attachment_file_name"]), :alt => " "
               %td= link_to pa.attachment_file_name, download_files_assignments_path(:file_id => pa["id"], :type => "public"), {:class => 'link_content'}
               %td.file_data_info{:style => "width: 80px;", :align => "center"}= format('%.2f KB', pa.attachment_file_size.to_i/1024.0)
-              %td.file_data_info{:style => "width: 100px;", :align => "center"}=l pa.attachment_updated_at.to_time, :format => :files
+              %td.file_data_info{:style => "width: 100px;", :align => "center"}
+                - if pa.attachment_updated_at.nil?
+                  = " "
+                - else
+                  =l pa.attachment_updated_at.to_time, :format => :files
               %td{:style => "width: 60px", :align => "center"}= button_to t(:delete, :scope => [:assignment, :files]), delete_file_assignments_path(:file_id => pa.id, :type => 'public'), :confirm => t(:delete_msg, :scope => [:assignment, :files]), :class => "btn btn_caution"
     - else
       .block_content.block_content_text= t(:itens_not_found)

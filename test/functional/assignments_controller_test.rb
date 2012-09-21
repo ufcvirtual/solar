@@ -14,7 +14,6 @@ class AssignmentsControllerTest < ActionController::TestCase
     @aluno1 = users(:aluno1)
     @aluno2 = users(:aluno2)
     @aluno3 = users(:aluno3)
-    # sign_in @coordenador
   end
 
   ##
@@ -27,6 +26,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil assigns(:individual_activities)
     assert_not_nil assigns(:group_activities)
+    assert_template :list
   end
 
   test "nao listar as atividiades de uma turma para usuario sem permissao" do 
@@ -76,6 +76,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:students)
     assert_nil assigns(:groups)
     assert_nil assigns(:students_without_group)
+    assert_template :information
   end
 
   # Perfil com permissao e usuario com acesso a atividade
@@ -88,6 +89,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_nil assigns(:students)
     assert_not_nil assigns(:groups)
     assert_not_nil assigns(:students_without_group)
+    assert_template :information
   end
 
   # Perfil sem permissao e usuario com acesso a atividade
@@ -96,7 +98,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     get(:information, {:id => assignments(:a9).id})   
     assert_response :redirect
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # Perfil sem permissao e usuario com acesso a atividade
@@ -105,7 +107,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     get(:information, {:id => assignments(:a6).id})   
     assert_response :redirect
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # Perfil com permissao e usuario sem acesso a atividade
@@ -114,7 +116,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     get(:information, {:id => assignments(:a10).id})    
     assert_response :redirect
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # Perfil com permissao e usuario sem acesso a atividade
@@ -123,7 +125,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     get(:information, {:id => assignments(:a11).id})    
     assert_response :redirect
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   ##
@@ -136,6 +138,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     groups_hash = {"0"=>{"group_id"=>group_assignments(:ga6).id, "group_name"=>"grupo 1", "student_ids"=>"7 8"}, "1"=>{"group_id"=>"0", "group_name"=>"grupo 2", "student_ids"=>"9"}}
     post(:manage_groups, {:id => assignments(:a6).id, :groups => groups_hash})
     assert_response :success
+    assert_template :group_assignment_content_div
     assert_tag :tag => "div", 
       :attributes => { :id => "group_#{group_assignments(:ga6).id}" },
       :child => { 
@@ -144,13 +147,12 @@ class AssignmentsControllerTest < ActionController::TestCase
           :tag => "li", :attributes => {:class => "student_#{users(:aluno2).id}"} 
         } #o aluno1 já existia no grupo, foi adicionado o aluno 2.
      } #logo, verifica se ele foi adicionado ao grupo (validação do método)
-
     #após ajax
     # assert_equal(flash[:notice], I18n.t(:management_success, :scope => [:assignment, :group_assignments]))
   end
 
   # Perfil com permissao e usuario sem acesso a atividade
-  test 'nao permitir a gerenciamento de grupos para usuario com permissao e sem acesso' do
+  test 'nao permitir o gerenciamento de grupos para usuario com permissao e sem acesso' do
     sign_in @professor1
     groups_hash = {"0"=>{"group_id"=>group_assignments(:ga7).id, "group_name"=>"grupo 1", "student_ids"=>"7 8"}, "1"=>{"group_id"=>"0", "group_name"=>"grupo 2", "student_ids"=>"9"}}
     post(:manage_groups, {:id => assignments(:a11).id, :groups => groups_hash})
@@ -172,7 +174,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   end
 
   # Perfil sem permissao e usuario com acesso a atividade
-  test 'nao permitir a gerenciamento de grupos para usuario sem permissao e com acesso' do
+  test 'nao permitir o gerenciamento de grupos para usuario sem permissao e com acesso' do
     sign_in users(:aluno3)
     groups_hash = {"0"=>{"group_id"=>group_assignments(:ga7).id, "group_name"=>"grupo 1", "student_ids"=>"7 8"}, "1"=>{"group_id"=>"0", "group_name"=>"grupo 2", "student_ids"=>"9"}}
     post(:manage_groups, {:id => assignments(:a11).id, :groups => groups_hash})
@@ -209,6 +211,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:assignment_enunciation_files)
     assert_not_nil assigns(:send_assignment_files)
     assert_not_nil assigns(:comments)
+    assert_template :show
   end
 
   # Perfil com permissao e usuario com acesso a atividade
@@ -223,18 +226,19 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:assignment_enunciation_files)
     assert_nil assigns(:send_assignment_files)
     assert_nil assigns(:comments)
+    assert_template :show
   end
 
   # Perfil com permissao e usuario sem acesso a atividade
   test "nao exibir pagina de avaliacao da atividade individual para usuario com permissao e sem acesso" do
-    sign_in users(:aluno2)
+    sign_in @aluno2
     get(:show, {:id => assignments(:a9).id}, :student_id => users(:aluno1).id)    
+    # assert_equal I18n.t(:no_permission), flash[:alert]
     assert_response :redirect
     # Expected response to be a redirect to <http://test.host/home> but was a redirect to <http://test.host/>
     # assert_redirected_to({:controller => :home})
     #<"Você precisa logar antes de continuar."> expected but was
     # <"Você não tem permissão para acessar esta página">.
-    # assert_equal( flash[:alert], I18n.t(:no_permission) )
   end
 
   # Perfil com permissao e usuario sem acesso a atividade
@@ -243,9 +247,8 @@ class AssignmentsControllerTest < ActionController::TestCase
     get(:show, {:id => assignments(:a6).id, :student_id => users(:aluno2).id, :group_id => group_assignments(:ga6).id})   
     assert_response :redirect
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
-
 
   ##
   # Evaluate
@@ -254,8 +257,9 @@ class AssignmentsControllerTest < ActionController::TestCase
   # Perfil com permissao e usuario com acesso
   test "permitir avaliar atividade individual para usuario com permissao" do
     sign_in @professor1
-    post(:evaluate, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :grade => 7, :comment => "parabens, aluno."})
+    post(:evaluate, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :grade => 7, :comment => "comentario5"})
     assert_response :success
+    assert_template :evaluate_assignment_div
     # após ajax
     # assert_equal( flash[:alert], I18n.t(:evaluated_success, :scope => [:assignment, :evaluation]) )
   end
@@ -263,7 +267,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   # Perfil com permissao e usuario sem acesso
   test "nao permitir avaliar atividade individual para usuario com permissao e sem acesso" do
     sign_in @professor1
-    post(:evaluate, {:id => assignments(:a10).id, :student_id => users(:aluno1).id, :grade => 7, :comment => "parabens, aluno."})
+    post(:evaluate, {:id => assignments(:a10).id, :student_id => users(:aluno1).id, :grade => 7, :comment => "comentario6"})
     assert_response :redirect
     assert_redirected_to({:controller => :home})
     assert_equal( flash[:alert], I18n.t(:no_permission) )
@@ -272,7 +276,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   # Perfil sem permissao e usuario com acesso
   test "nao permitir avaliar atividade individual para usuario sem permissao e com acesso" do
     sign_in users(:aluno1)
-    post(:evaluate, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :grade => 10, :comment => "parabens, aluno."})
+    post(:evaluate, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :grade => 10, :comment => "comentario7"})
     assert_response :redirect
     assert_redirected_to({:controller => :home})
     assert_equal( flash[:alert], I18n.t(:no_permission) )
@@ -287,25 +291,25 @@ class AssignmentsControllerTest < ActionController::TestCase
   # Perfil com permissao e usuario com acesso
   test "permitir comentar em atividade individual para usuario com permissao e com acesso" do
     sign_in @professor1
-    post(:send_comment, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :comment => "bom trabalho."})
+    post(:send_comment, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :comment => "comentario8"})
     assert_response :redirect
-    assert_equal( flash[:notice], I18n.t(:comment_sent_success, :scope => [:assignment, :comments]) )
+    assert_equal I18n.t(:comment_sent_success, :scope => [:assignment, :comments]), flash[:notice]
   end
 
   # Perfil com permissao e usuario sem acesso
   test "nao permitir comentar em atividade individual para usuario com permissao e sem acesso" do
     sign_in @professor1
-    post(:send_comment, {:id => assignments(:a10).id, :student_id => users(:aluno1).id, :comment => "bom trabalho."})
+    post(:send_comment, {:id => assignments(:a10).id, :student_id => users(:aluno1).id, :comment => "comentario9"})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # Perfil sem permissao e usuario com acesso
   test "nao permitir comentar em atividade individual para usuario sem permissao e com acesso" do
     sign_in users(:aluno1)
-    post(:send_comment, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :comment => "bom trabalho."})
+    post(:send_comment, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :comment => "comentario10"})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # Editar comentário
@@ -315,7 +319,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in @professor1
     post(:send_comment, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :comment_id => assignment_comments(:ac2).id, :comment => "trabalho mediano."})
     assert_response :redirect
-    assert_equal( flash[:notice], I18n.t(:comment_sent_success, :scope => [:assignment, :comments]) )
+    assert_equal I18n.t(:comment_sent_success, :scope => [:assignment, :comments]), flash[:notice]
   end
 
   # Perfil com permissao e usuario sem acesso
@@ -323,7 +327,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in users(:professor2)
     post(:send_comment, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :comment_id => assignment_comments(:ac2).id, :comment => "trabalho mediano."})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # Perfil sem permissao e usuario com acesso
@@ -331,7 +335,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in users(:aluno1)
     post(:send_comment, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :comment_id => assignment_comments(:ac2).id, :comment => "trabalho otimo."})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   ##
@@ -345,6 +349,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_response :success
     get(:show, {:id => assignments(:a9).id, :student_id => users(:aluno1).id})    
     assert_no_tag :tag => "table", :attributes => { :class => "forum_post tb_comments tb_comment_#{assignment_comments(:ac2).id}" }
+    assert_template :show
     # após ajax
     # assert_equal( flash[:notice], I18n.t(:comment_sent_success, :scope => [:assignment, :comments]) )
   end
@@ -354,11 +359,12 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in @professor2
     delete(:remove_comment, {:id => assignments(:a9).id, :comment_id => assignment_comments(:ac2).id})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
     sign_out @professor2
 
     # sign_in @professor1
-    # get(:show, {:id => assignments(:a9).id, :student_id => users(:aluno1).id})    
+    # get(:show, {:id => assignments(:a9).id, :student_id => @aluno1.id})    
+    # assert_template :show
     # assert_tag :tag => "table", :attributes => { :class => "forum_post tb_comments tb_comment_#{assignment_comments(:ac2).id}" }
   end
 
@@ -367,11 +373,12 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in @aluno1
     delete(:remove_comment, {:id => assignments(:a9).id, :comment_id => assignment_comments(:ac2).id})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
-
+    assert_equal I18n.t(:no_permission), flash[:alert]
     sign_out @aluno1
+
     sign_in @professor1
     get(:show, {:id => assignments(:a9).id, :student_id => users(:aluno1).id})    
+    assert_template :show
     assert_tag :tag => "table", :attributes => { :class => "forum_post tb_comments tb_comment_#{assignment_comments(:ac2).id}" }
   end
 
@@ -399,9 +406,8 @@ class AssignmentsControllerTest < ActionController::TestCase
       post :upload_file, {:assignment_id => assignments(:a11), :file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'), :type => "assignment"}
     end
 
-    # assert_response :redirect
-    assert_equal(flash[:notice], I18n.t(:uploaded_success, :scope => [:assignment, :files]))
-
+    assert_response :redirect
+    assert_equal I18n.t(:uploaded_success, :scope => [:assignment, :files]), flash[:notice]
 
     sign_out @aluno3
     sign_in @aluno2
@@ -411,11 +417,6 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_response :redirect
     assert_equal(flash[:notice], I18n.t(:uploaded_success, :scope => [:assignment, :files]))
   end
-
-  test 'permitirasds upload de arquivo enviado pelo grupo por usuario com permissao e com acesso' do
-    
-  end
-
 
   # Público
   ## PROBLEMA COM ALOCATION TAG 
@@ -460,7 +461,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in users(:aluno1)
     post :upload_file, {:assignment_id => assignments(:a7), :file => fixture_file_upload('files/assignments/sent_assignment_files/teste5.txt', 'text/plain'), :type => "assignment"}
     assert_response :redirect
-    assert_equal( flash[:alert], I18n.t(:date_range_expired, :scope => [:assignment, :notifications]) )
+    assert_equal I18n.t(:date_range_expired, :scope => [:assignment, :notifications]), flash[:alert]
   end
 
   # Perfil sem permissao
@@ -470,7 +471,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in users(:coorddisc)
     post :upload_file, {:assignment_id => assignments(:a7), :file => fixture_file_upload('files/assignments/sent_assignment_files/teste5.txt', 'text/plain'), :type => "assignment"}
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # Grupo
@@ -478,7 +479,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in users(:coorddisc)
     post :upload_file, {:assignment_id => assignments(:a11), :file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'), :type => "assignment"}
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # # Público
@@ -520,7 +521,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   end
 
   # Grupo
-  test "permitir fazer download de arquivos de grupo para usuario com permissao" do
+  test "permitir fazer download de arquivos de grupo para usuario com permissao - professor" do
     sign_in @aluno2
     assert_difference('AssignmentFile.count', +1) do
       post :upload_file, {:assignment_id => assignments(:a5), :file => fixture_file_upload('files/assignments/sent_assignment_files/teste2.txt', 'text/plain'), :type => "assignment"}
@@ -531,7 +532,14 @@ class AssignmentsControllerTest < ActionController::TestCase
     assignment_file = AssignmentFile.find_by_send_assignment_id_and_attachment_file_name(send_assignments(:sa2).id, "teste2.txt")
     get(:download_files, {:assignment_id => assignments(:a5).id, :file_id => assignment_file.id, :type => 'assignment'})
     assert_response :success
-    sign_out @professor1 
+  end
+
+  test "permitir fazer download de arquivos de grupo para usuario com permissao - aluno" do
+    sign_in @aluno2
+    assert_difference('AssignmentFile.count', +1) do
+      post :upload_file, {:assignment_id => assignments(:a5), :file => fixture_file_upload('files/assignments/sent_assignment_files/teste2.txt', 'text/plain'), :type => "assignment"}
+    end
+    sign_out @aluno2
 
     sign_in @aluno1
     assignment_file = AssignmentFile.find_by_send_assignment_id_and_attachment_file_name(send_assignments(:sa2).id, "teste2.txt")
@@ -578,7 +586,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   # Perfil com permissao e usuario sem acesso
 
   # Aluno
-  test "nao permitir fazer download de arquivos de aluno para usuario com permissao e sem acesso" do
+  test "nao permitir fazer download de arquivos de aluno para usuario com permissao e sem acesso - professor" do
     sign_in @aluno1
     assert_difference('AssignmentFile.count', +1) do
       post :upload_file, {:assignment_id => assignments(:a9), :file => fixture_file_upload('files/assignments/sent_assignment_files/teste1.txt', 'text/plain'), :type => "assignment"}
@@ -589,21 +597,22 @@ class AssignmentsControllerTest < ActionController::TestCase
     assignment_file = AssignmentFile.find_by_send_assignment_id_and_attachment_file_name(send_assignments(:sa3).id, "teste1.txt")
     get(:download_files, {:assignment_id => assignments(:a9).id, :file_id => assignment_file.id, :type => 'assignment'})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
-    sign_out @professor2 #não está funcionando
+    assert_equal I18n.t(:no_permission), flash[:alert]
+    sign_out @professor2
+  end
 
-    # sign_in @aluno3
-    # # raise "#{current_user.id}"
-    # assert_difference('AssignmentFile.count', +1) do
-    #   post :upload_file, {:assignment_id => assignments(:a10), :file => fixture_file_upload('files/assignments/sent_assignment_files/teste4.txt', 'text/plain'), :type => "assignment"}
-    # end
-    # sign_out @aluno3
+  test "nao permitir fazer download de arquivos de aluno para usuario com permissao e sem acesso - aluno" do
+    sign_in @aluno3
+    assert_difference('AssignmentFile.count', +1) do
+      post :upload_file, {:assignment_id => assignments(:a10), :file => fixture_file_upload('files/assignments/sent_assignment_files/teste4.txt', 'text/plain'), :type => "assignment"}
+    end
+    sign_out @aluno3
 
-    # sign_in users(:aluno1)
-    # assignment_file = AssignmentFile.find_by_send_assignment_id_and_attachment_file_name(send_assignments(:sa5).id, "teste4.txt")
-    # get(:download_files, {:assignment_id => assignments(:a10).id, :file_id => assignment_file.id, :type => 'assignment'})
-    # assert_redirected_to({:controller => :home})
-    # assert_equal( flash[:alert], I18n.t(:no_permission) )
+    sign_in @aluno1
+    assignment_file = AssignmentFile.find_by_send_assignment_id_and_attachment_file_name(send_assignments(:sa5).id, "teste4.txt")
+    get(:download_files, {:assignment_id => assignments(:a10).id, :file_id => assignment_file.id, :type => 'assignment'})
+    assert_redirected_to({:controller => :home})
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # Grupo
@@ -618,14 +627,14 @@ class AssignmentsControllerTest < ActionController::TestCase
     assignment_file = AssignmentFile.find_by_send_assignment_id_and_attachment_file_name(send_assignments(:sa4).id, "teste3.txt")
     get(:download_files, {:assignment_id => assignments(:a11).id, :file_id => assignment_file.id, :type => 'assignment'})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
     sign_out @professor2 
 
     sign_in @aluno1
     assignment_file = AssignmentFile.find_by_send_assignment_id_and_attachment_file_name(send_assignments(:sa4).id, "teste3.txt")
     get(:download_files, {:assignment_id => assignments(:a11).id, :file_id => assignment_file.id, :type => 'assignment'})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # # Comentario
@@ -633,19 +642,19 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in @professor2
     get(:download_files, {:assignment_id => assignments(:a9).id, :file_id => comment_files(:acf1).id, :type => 'comment'})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
     sign_out @professor2
 
     sign_in @aluno3
     get(:download_files, {:assignment_id => assignments(:a9).id, :file_id => comment_files(:acf1).id, :type => 'comment'})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
 
     sign_out @aluno1 
     sign_in users(:aluno1)
     get(:download_files, {:assignment_id => assignments(:a11).id, :file_id => comment_files(:acf2).id, :type => 'comment'})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )   
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # Publico
@@ -653,13 +662,13 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in @professor2
     get(:download_files, {:assignment_id => assignments(:a9).id, :file_id => public_files(:pf1).id, :type => 'enunciation'})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
     sign_out @professor2
 
     sign_in @aluno1
     get(:download_files, {:assignment_id => assignments(:a10).id, :file_id => public_files(:pf3).id, :type => 'enunciation'})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )   
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # Do enunciado da atividade
@@ -667,13 +676,13 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in @professor2
     get(:download_files, {:assignment_id => assignments(:a9).id, :file_id => assignment_enunciation_files(:aef1).id, :type => 'enunciation'})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
     sign_out @professor2
 
     sign_in @aluno1
     get(:download_files, {:assignment_id => assignments(:a10).id, :file_id => assignment_enunciation_files(:aef2).id, :type => 'enunciation'})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # # Perfil sem permissao
@@ -690,7 +699,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     assignment_file = AssignmentFile.find_by_send_assignment_id_and_attachment_file_name(send_assignments(:sa3).id, "teste1.txt")
     get(:download_files, {:assignment_id => assignments(:a9).id, :file_id => assignment_file.id, :type => 'assignment'})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # Grupo
@@ -705,7 +714,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     assignment_file = AssignmentFile.find_by_send_assignment_id_and_attachment_file_name(send_assignments(:sa4).id, "teste3.txt")
     get(:download_files, {:assignment_id => assignments(:a11).id, :file_id => assignment_file.id, :type => 'assignment'})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # Comentario
@@ -713,27 +722,27 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in users(:coorddisc)
     get(:download_files, {:assignment_id => assignments(:a9).id, :file_id => comment_files(:acf1).id, :type => 'comment'})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # Publico
   test "nao permitir fazer download de arquivos publicos para usuario sem permissao" do
-    sign_in users(:coorddisc)
+    sign_in @coordenador
     get(:download_files, {:assignment_id => assignments(:a9).id, :file_id => public_files(:pf1).id, :type => 'enunciation'})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # Do enunciado da atividade
   test "nao permitir fazer download de arquivos do enunciado da atividade para usuario sem permissao" do
-    sign_in users(:coorddisc)
+    sign_in @coordenador
     get(:download_files, {:assignment_id => assignments(:a9).id, :file_id => assignment_enunciation_files(:aef1).id, :type => 'enunciation'})
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   ##
-  # Delete_file => ## REQUEST REFERER ERROR
+  # Delete_file
   ##
 
   # Perfil com permissao e usuario com acesso
@@ -754,7 +763,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_response :redirect
     assert_equal I18n.t(:deleted_success, :scope => [:assignment, :files]), flash[:notice]
     assert_nil flash[:alert]
-    assert_not_equal(flash[:alert], I18n.t(:no_permission))
+    assert_not_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # Grupo
@@ -772,7 +781,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_response :redirect
     assert_equal I18n.t(:deleted_success, :scope => [:assignment, :files]), flash[:notice]
     assert_nil flash[:alert]
-    assert_not_equal(flash[:alert], I18n.t(:no_permission))
+    assert_not_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # Público
@@ -796,10 +805,8 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_out @aluno3
 
     sign_in @aluno1
-
     assignment_file = AssignmentFile.find_by_send_assignment_id_and_attachment_file_name(send_assignments(:sa4).id, "teste3.txt")
     delete(:delete_file, {:assignment_id => assignments(:a10).id, :file_id => assignment_file.id, :type => 'assignment'})
-
     assert_response :redirect
     # assert_equal( flash[:alert], I18n.t(:no_permission) ) #tá recebendo em inglês e tá esperando em português
   end
@@ -812,12 +819,9 @@ class AssignmentsControllerTest < ActionController::TestCase
     end
     sign_out @aluno3
 
-
     sign_in users(:aluno2)
-
     assignment_file = AssignmentFile.find_by_send_assignment_id_and_attachment_file_name(send_assignments(:sa5).id, "teste4.txt")
     delete(:delete_file, {:assignment_id => assignments(:a5).id, :file_id => assignment_file.id, :type => 'assignment'})
-
     assert_response :redirect
     # assert_equal( flash[:alert], I18n.t(:no_permission) ) #tá recebendo em inglês e tá esperando em português
   end
@@ -879,6 +883,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in @aluno1
     get :send_public_files_page
     assert_response :success
+    assert_template :send_public_files_page
   end
 
   # Perfil sem permissao

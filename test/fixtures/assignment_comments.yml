@@ -8,10 +8,10 @@ ac2:
   id: 2
   send_assignment_id: 3 # quimica I - Atividade em campo III - sa3
   user_id: 6 #professor
-  comment: "melhore a pontuacao do seu trabalho"
+  comment: "comentário2"
 
 ac3:
   id: 3
   send_assignment_id: 4 #sa4
   user_id: 7 #professor
-  comment: "muito bem"
+  comment: "comentário3"

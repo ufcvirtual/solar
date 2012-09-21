@@ -72,7 +72,7 @@ class Assignment < ActiveRecord::Base
   def self.student_assignments_info(class_id, student_id, type_assignment)
 
     assignments = Assignment.all(:joins => [:allocation_tag, :schedule], :conditions => ["allocation_tags.group_id = #{class_id} AND assignments.type_assignment = #{type_assignment}"],
-     :select => ["assignments.id", "schedule_id", "name", "enunciation", "type_assignment"]) #atividades da turma do tipo escolhido
+     :select => ["assignments.id", "schedule_id", "schedules.end_date", "name", "enunciation", "type_assignment"]) #atividades da turma do tipo escolhido
   
     assignments_grades, groups_ids, has_comments, situation = [], [], [], [] # informações da situação do aluno
 
