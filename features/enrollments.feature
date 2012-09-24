@@ -8,10 +8,7 @@ Contexto:
   Dado que tenho "allocations"
     | user_id  | allocation_tag_id  | profile_id  | status |
     | 7        | 8                  | 1           | 0      |
-    # Aluno 2 - cancelado
     | 8        | 8                  | 1           | 2      |
-    # Aluno 3 - rejeitado
-    | 9        | 8                  | 1           | 4      |
 
 Cenário: Acessar pagina de matriculas solicitadas
   Dado que estou logado com o usuario "coorddisc" e com a senha "123456"

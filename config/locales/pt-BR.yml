@@ -620,6 +620,7 @@
   message_subject_reply: "Res: "
   message_subject_route: "Enc: "
   message_confirm: "Tem certeza de que deseja excluir?"
+  message_confirm_status: "Tem certeza de que deseja %{status}?"
 
   navigation_of: " de "
   navigation_next: "Próxima >"
@@ -857,7 +858,7 @@
   start_date: "Data inicial"
   end_date: "Data final"
   course: "Curso"
-  curriculum_unit: "Unidade curricular"
+  curriculum_unit: "Unidade Curricular"
 
   devise:
     failure:
@@ -988,6 +989,15 @@
       subject: "[SOLAR] Matrícula aceita"
 
   groups:
-    form:
-      code: "Código"
-      
+    index:
+      new: "Novo"
+      enable: "Ativar"
+      disable: "Desativar"
+      new_group: "Nova Turma"
+      edit_group: "Edição de Turma"
+
+  simple_form:
+    labels:
+      group:
+        offer: "Oferta"
+        code: "Código"

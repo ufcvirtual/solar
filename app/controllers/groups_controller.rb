@@ -6,7 +6,7 @@ class GroupsController < ApplicationController
     if params.include?(:curriculum_unit_id)
       @groups = Group.find_all_by_curriculum_unit_id_and_user_id(params[:curriculum_unit_id], current_user.id) if params.include?(:curriculum_unit_id)
     else
-      @groups = Group.all # verificar quais grupos o usuario pode acessar
+      @groups = Group.find(:all, :order => "code") # verificar quais grupos o usuario pode acessar
     end
 
     respond_to do |format|
@@ -16,32 +16,29 @@ class GroupsController < ApplicationController
     end
   end
 
-  ##
-  # API mobilis
-  ##
-  # def list
-  #   @groups = Group.find_all_by_curriculum_unit_id_and_user_id(params[:curriculum_unit_id], current_user.id) if params.include?(:curriculum_unit_id)
-
-  #   respond_to do |format|
-  #     format.xml  { render :xml => @groups }
-  #     format.json  { render :json => @groups }
-  #   end
-  # end
-
   def new
     @group = Group.new
+
+    ## verificar o que carregar de dados => ainda nao pronto
 
     @offers = Offer.all
     @courses = Course.all
     @curriculum_units = CurriculumUnit.all
+
+    render layout: false
   end
 
   def edit
     @group = Group.find(params[:id])
 
+    ## verificar o que carregar de dados => ainda nao pronto
+
+    @edit = true
     @offers = [@group.offer]
     @curriculum_units = [@offers.first.curriculum_unit]
     @courses = Course.all
+
+    render layout: false
   end
 
   def create
@@ -59,6 +56,8 @@ class GroupsController < ApplicationController
 
   def update
     @group = Group.find(params[:id])
+
+    # raise "#{params}"
 
     if @group.update_attributes(params[:group])
       redirect_to groups_url, notice: t(:successfully_updated, :register => @group.code)

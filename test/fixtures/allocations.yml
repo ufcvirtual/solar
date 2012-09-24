@@ -134,12 +134,6 @@ u:
   profile_id: 12
   status: 1
 
-aluno3_al8:
-  user_id: 9
-  allocation_tag_id: 8
-  profile_id: 1
-  status: 1
-
 v:
   id: 21
   user_id: 11
@@ -357,4 +351,11 @@ ac:
   user_id: 12
   allocation_tag_id: 7
   profile_id: 5
+  status: 1
+
+aluno3_al8:
+  id: 49
+  user_id: 9
+  allocation_tag_id: 8
+  profile_id: 1
   status: 1

@@ -1,6 +1,6 @@
 Solar::Application.routes.draw do 
 
-  devise_for :users, :path_names => {:sign_up => :register}, :skip => [:sessions]
+  devise_for :users, :path_names => {:sign_up => :register}#, :skip => [:sessions]
 
   devise_scope :user do
     get  :login, :to => "devise/sessions#new"
