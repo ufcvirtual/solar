@@ -1,5 +1,18 @@
 module MenuHelper
 
+  ## menu pai com filhos
+  # mysolar_menu_group
+    # ul
+      # li
+        # a
+        # ul.submenu
+
+  ## menu pai como lnk
+  # mysolar_menu_group
+    # ul
+      # li
+        #a
+
   def create_menu_list(profile_id, context_id, id = nil, current_menu = nil)
     menus = Menu.list_by_profile_id_and_context_id(profile_id, context_id)
     html_menu, previous_parent_id, first_iteration = '', 0, false
@@ -10,7 +23,6 @@ module MenuHelper
 
     is_link_father_with_no_childs = false
 
-    # raise "#{menus}"
     menus.each do |menu|
 
       access_controller = {
@@ -20,8 +32,7 @@ module MenuHelper
         :bread => nil
       }
 
-      # verifica se o menu pai muda para gerar um novo menu
-      unless previous_parent_id.to_i == menu['parent_id'].to_i
+      unless previous_parent_id.to_i == menu['parent_id'].to_i # se o menu pai muda, gera-se um novo groupo de menus
         html_menu << "</ul>" if first_iteration
 
         if (not menu['link'].nil?)
@@ -33,23 +44,9 @@ module MenuHelper
         is_link, is_not_a_child = (not menu['resource_id'].nil?), menu['child'].nil?
         is_link_father_with_no_childs = (is_link and is_not_a_child)
 
-        # mysolar_menu_group
-          # ul
-            # li
-              # a
-              # ul.submenu
-
-        # mysolar_menu_group
-          # ul
-            # li
-              #a
-
-
-        # coloca as divs anteriores em uma nova div
         html_menu_group << %{<div class="#{class_menu_div_topo}">#{html_menu}</div>} if first_iteration # verifica se ja entrou aqui
 
-        # para um menu pai ser um link ele nao deve ter filhos
-        if is_link_father_with_no_childs
+        if is_link_father_with_no_childs # para um menu pai ser um link ele nao deve ter filhos
           access_controller[:bread] = menu['parent']
           style_single = "mysolar_menu_title_single_active" if (menu['parent_id'] == current_menu and params.include?('mid'))
           link = 
@@ -58,8 +55,6 @@ module MenuHelper
                 #{link_to("#{t(menu['parent'].to_sym)}", access_controller, :class => class_menu_title)}
               </li>
             }
-          # link << link_to("#{t(menu['parent'].to_sym)}", access_controller, :class => class_menu_title)
-          # link << "</li>"
         elsif (not menu["link"].nil?)
           link = %{<li><a href="#{menu['link']}">#{t(menu['parent'].to_sym)}</a></li>}
         else
@@ -101,8 +96,6 @@ module MenuHelper
 
     html_menu << "</ul>"
     html_menu_group << %{<div class="#{class_menu_div_topo}">#{html_menu}</div>}
-
-# raise "#{html_menu_group.join('')}"
 
     return html_menu_group.join('')
 
