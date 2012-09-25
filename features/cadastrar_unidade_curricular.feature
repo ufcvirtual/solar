@@ -61,6 +61,23 @@ Dado que estou logado com o usuario "editor" e com a senha "123456"
 
 
 @javascript
+Cenário: Criar unidade curricular com dado inválido
+Dado que estou logado com o usuario "editor" e com a senha "123456"
+        E que estou em "Cadastro de Unidade Curricular"
+        E eu deverei ver o botao "Nova"
+        Quando eu clicar em "Nova"
+        E que eu selecionei "Categoria" com "Curso de Graduacao Presencial"
+        E que eu preenchi "Nome" com "Unidade Curricular IV"
+        E que eu preenchi "Código" com "UC0004"
+        E que eu preenchi "Média" com "8"
+        E que eu preenchi "Resumo" com ""
+        E que eu preenchi "Ementa" com "Ementa da Unidade Curricular IV"
+        E que eu preenchi "Objetivos" com "Objetivos da Unidade Curricular IV"
+        E que eu preenchi "Pré-requisitos" com "Pré-requisitos da Unidade Curricular IV"
+        Quando eu clicar em "Confirmar"
+        Entao eu deverei ver "deve ser preenchido(a)"
+
+@javascript
 Cenário: Editar uma unidade curricular como usuário com permissão para isso
 Dado que estou logado com o usuario "editor" e com a senha "123456"
         E que estou em "Cadastro de Unidade Curricular"
@@ -76,7 +93,7 @@ Dado que estou logado com o usuario "editor" e com a senha "123456"
         | RM414         | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial     |
 
 
-@javascript @wip
+@javascript
 Cenário: Excluir uma unidade curricular com alocações além da do usuário que tentará fazer a exclusão
 Dado que estou logado com o usuario "editor" e com a senha "123456"
         E que estou em "Cadastro de Unidade Curricular"
