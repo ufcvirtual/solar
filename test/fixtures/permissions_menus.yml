@@ -104,24 +104,24 @@ pm26:
   profile_id: 2
   menu_id: 102
 
-pm58:
+pm27:
   profile_id: 2
   menu_id: 209
 
 # tutor a distancia
-pm27:
+pm28:
   profile_id: 3
   menu_id: 10
 
-pm28:
+pm29:
   profile_id: 3
   menu_id: 101
 
-pm29:
+pm30:
   profile_id: 3
   menu_id: 20
 
-pm30:
+pm31:
   profile_id: 3
   menu_id: 201
 
@@ -165,81 +165,85 @@ pm41:
   profile_id: 3
   menu_id: 209
 
-pm60:
+pm42:
   profile_id: 3
   menu_id: 207
 
+pm43:
+  profile_id: 3
+  menu_id: 208
+
 # tutor presencial
-pm59:
+pm44:
   profile_id: 4
   menu_id: 209
 
 # editor
-pm42:
+pm45:
   profile_id: 5
   menu_id: 10
 
-pm43:
+pm46:
   profile_id: 5
   menu_id: 101
 
-pm44:
+pm47:
   profile_id: 5
   menu_id: 20
 
-pm45:
+pm48:
   profile_id: 5
   menu_id: 201
 
-pm47:
+pm49:
   profile_id: 5
   menu_id: 30
 
-pm48:
+pm50:
   profile_id: 5
   menu_id: 301
 
-pm49:
+pm51:
   profile_id: 5
   menu_id: 303
 
-pm50:
+pm52:
   profile_id: 5
   menu_id: 304
 
-pm51:
+pm53:
   profile_id: 5
   menu_id: 50
 
-pm52:
+pm54:
   profile_id: 5
   menu_id: 100
 
-# pm53:
+# pm55:
 #   profile_id: 5
 #   menu_id: 70
 
-pm54:
+pm56:
   profile_id: 5
   menu_id: 302
 
-pm55:
+pm57:
   profile_id: 5
   menu_id: 102
 
-pm56:
+pm58:
   profile_id: 5
   menu_id: 120
 
-pm57:
+pm59:
   profile_id: 5
   menu_id: 90
 
-pm58:
+pm60:
   profile_id: 5
   menu_id: 901
 
 # basico
-pm60:
+pm61:
   profile_id: 12
   menu_id: 100

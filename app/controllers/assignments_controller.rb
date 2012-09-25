@@ -238,7 +238,6 @@ class AssignmentsController < ApplicationController
 
     #verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
     raise CanCan::AccessDenied unless (assignment.nil? or send_assignment.nil? or assignment.user_can_access_assignment(current_user.id, send_assignment.user_id, send_assignment.group_assignment_id))
-
     redirect = request.referer.nil? ? root_url(:only_path => false) : request.referer
     download_file(redirect, file_path)
   end
@@ -256,10 +255,10 @@ class AssignmentsController < ApplicationController
   def upload_file
     begin 
       file = case params[:type]
-        when 'public'
+        when "public"
           allocation_tag_id = active_tab[:url]['allocation_tag_id']
           PublicFile.create!({ :attachment => params[:file], :user_id => current_user.id, :allocation_tag_id => allocation_tag_id })
-        when 'assignment'
+        when "assignment"
           assignment = Assignment.find(params[:assignment_id])
           authorize! :upload_file, assignment
 

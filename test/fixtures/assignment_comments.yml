@@ -1,7 +1,7 @@
 ac1:
   id: 1
   send_assignment_id: 1
-  user_id: 1
+  user_id: 1 #user1
   comment: "comentário1"
 
 ac2:
@@ -13,5 +13,11 @@ ac2:
 ac3:
   id: 3
   send_assignment_id: 4 #sa4
-  user_id: 7 #professor
+  user_id: 7 #professor2
   comment: "comentário3"
+
+ac4:
+  id: 4
+  send_assignment_id: 4 #sa4
+  user_id: 11 #tutor distância
+  comment: "comentario 4"

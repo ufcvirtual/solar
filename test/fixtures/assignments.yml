@@ -52,7 +52,7 @@ a6:
 a7:
   id: 7
   allocation_tag_id: 3 # quimica I
-  name: Atividade de campo VII
+  name: Atividade individual VII
   enunciation: esta é uma atividade individual
   schedule_id: 22 #prazo concluído
   type_assignment: 1 #individual
