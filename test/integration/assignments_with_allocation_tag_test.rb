@@ -194,8 +194,10 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
       post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste3.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
     end
 
-    public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno1).id, allocation_tags(:al3).id, "teste3.txt")
-    delete delete_file_assignments_path(:file_id => public_file.id, :type => 'public')
+    assert_difference("PublicFile.count", -1) do
+      public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno1).id, allocation_tags(:al3).id, "teste3.txt")
+      delete delete_file_assignments_path(:file_id => public_file.id, :type => 'public')
+    end
     assert_response :redirect
     assert_equal I18n.t(:deleted_success, :scope => [:assignment, :files]), flash[:notice]
   end
@@ -211,8 +213,10 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     end
 
     login(users(:aluno1))
-    public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno3).id, allocation_tags(:al8).id, "teste1.txt")
-    delete delete_file_assignments_path(:file_id => public_file.id, :type => 'public')
+    assert_no_difference("PublicFile.count") do
+      public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno3).id, allocation_tags(:al8).id, "teste1.txt")
+      delete delete_file_assignments_path(:file_id => public_file.id, :type => 'public')
+    end
     assert_response :redirect
     # assert_equal I18n.t(:no_permission), flash[:alert] #tá recebendo em inglês e tá esperando em português
   end
@@ -228,8 +232,10 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     end
 
     login(users(:coorddisc))
-    public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno1).id, allocation_tags(:al3).id, "teste3.txt")
-    delete delete_file_assignments_path(:file_id => public_file.id, :type => 'public')
+    assert_no_difference("PublicFile.count") do
+      public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno1).id, allocation_tags(:al3).id, "teste3.txt")
+      delete delete_file_assignments_path(:file_id => public_file.id, :type => 'public')
+    end
     assert_response :redirect
     assert_equal I18n.t(:no_permission), flash[:alert]
   end

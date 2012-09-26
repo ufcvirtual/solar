@@ -29,10 +29,15 @@ class ScoresController < ApplicationController
   # Quantidade de acessos do aluno a unidade curricular
   ##
   def amount_history_access
+    authorize! :show, Score
+
     @from_date = params['from-date']
     @until_date = params['until-date']
     @student_id = params[:id]
     curriculum_unit_id = active_tab[:url]['id']
+    student = User.find(@student_id)
+
+    authorize! :find, student #verifica autorizacao para consultar dados do usuario
 
     # validar as datas
     @from_date = date_valid?(@from_date) ? Date.parse(@from_date) : Date.today << 2
@@ -47,10 +52,17 @@ class ScoresController < ApplicationController
   # Historico de acesso do aluno
   ##
   def history_access
+    authorize! :show, Score
+
     from_date = params['from-date']
     until_date = params['until-date']
     student_id = params['id']
     curriculum_unit_id = active_tab[:url]["id"]
+    student = User.find(student_id)
+    allocation_tag = AllocationTag.find(curriculum_unit_id)
+
+    authorize! :find, student #verifica autorizacao para consultar dados do usuario
+    # raise CanCan::AccessDenied unless (student_id.to_i == current_user.id or allocation_tag.is_user_class_responsible?(current_user.id) )
 
     # validar as datas
     from_date = Date.today << 2 unless date_valid?(@from_date)

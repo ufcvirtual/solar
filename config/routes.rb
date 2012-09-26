@@ -90,6 +90,12 @@ Solar::Application.routes.draw do
     end
   end
 
+  # resource :scores_teacher, :only => [], :controller => "scores_teacher" do
+  #   get :list, :on => :collection
+  # end
+
+  # get "scores_teacher/list"
+
   get "pages/index"
   get "pages/team"
   get "access_control/index"

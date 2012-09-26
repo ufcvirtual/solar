@@ -1,23 +1,7 @@
-# pf4:
-#  id: 4
-#  user_id: 7 #aluno1
-#  allocation_tag_id: 3
-#  attachment_file_name: "teste1.txt"
-#  attachment_file_size: 70400
-#  attachment_updated_at: "2012-06-15"
-
-# pf2:
-#  id: 2
-#  user_id: 7 #aluno1
-#  allocation_tag_id: 3
-#  attachment_file_name: "teste2.txt"
-#  attachment_file_size: 6.megabyte
-#  attachment_updated_at: "2012-06-15"
-
-# pf3:
-#  id: 3
-#  user_id: 9 #aluno3
-#  allocation_tag_id: 8 # literatura brasileria I - group id 5 - al8
-#  attachment_file_name: "teste3.txt"
-#  attachment_file_size: 458
-#  attachment_updated_at: "2012-06-15"
+pf4:
+ id: 4
+ user_id: 7 #aluno1
+ allocation_tag_id: 3
+ attachment_file_name: "teste1.txt"
+ attachment_file_size: 70400
+ attachment_updated_at: "2012-06-15"

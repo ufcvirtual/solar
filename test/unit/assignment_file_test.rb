@@ -10,4 +10,10 @@ class  AssignmentFileTest < ActiveSupport::TestCase
   	assert_equal assignment_file.errors[:attachment_file_name].first, "deve ser selecionado" #I18n.t(:blank, :scope => [:activerecord, :errors, :models, :assignment_file])
   end
 
+  test "remove arquivo enviado por aluno ou grupo" do
+    assert_difference("AssignmentFile.count", -1) do
+      assignment_files(:af6).delete_assignment_file
+    end
+  end
+
 end

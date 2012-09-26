@@ -25,15 +25,6 @@ SQL
     (self.types & type) == type
   end
    
-  def self.students_of_class(allocation_tag_id)
-    allocations_of_class = Allocation.find_all_by_allocation_tag_id(allocation_tag_id)
-    students_of_class = []
-    for allocation in allocations_of_class
-      students_of_class << User.find(allocation.user_id) if allocation.profile.has_type?(Profile_Type_Student)
-    end
-    return students_of_class
-  end
-
   def self.user_allocation_tag_profile(allocation_tag_id, user_id)
     profile_name = Allocation.find_by_allocation_tag_id_and_user_id(allocation_tag_id, user_id).profile.name
     return (profile_name)
