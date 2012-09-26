@@ -4,26 +4,33 @@ forum_1:
   id: 1
   allocation_tag_id: 3
   name: 'Forum 1'
-  description: 'Forum inicial para testes'
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
   schedule_id: 6
 
 forum_2:
   id: 2
   allocation_tag_id: 3
   name: 'Forum 2'
-  description: 'Segundo fórum de testes'
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
   schedule_id: 7
 
 forum_3:
   id: 3
   allocation_tag_id: 1
-  name: 'Forum 1 - Introdução a Linguística FOR 2011'
-  description: 'Forum para Introdução a Linguística FOR 2011'
+  name: 'Forum 1'
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
   schedule_id: 7
 
 forum_4:
   id: 4
   allocation_tag_id: 9
-  name: 'Forum 1 - Introdução a Linguística FOR 2012'
-  description: 'Forum para Introdução a Linguística FOR 2012'
+  name: 'Forum 1'
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
   schedule_id: 7
+
+forum_5:
+  id: 5
+  allocation_tag_id: 3
+  name: 'Forum 3'
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  schedule_id: 23

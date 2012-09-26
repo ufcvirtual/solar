@@ -88,13 +88,13 @@ schedule 17:
 
 schedule 18:
   id: 18
-  start_date: <%= Date.today >> 1 %> #2011-11-20
-  end_date: <%= Date.today >> 5%> #2011-12-14 23:59:59
+  start_date: <%= Date.today >> 1 %>
+  end_date: <%= Date.today >> 5%>
 
 schedule 19:
   id: 19
-  start_date: <%= Date.today << 2 %> #2011-07-04
-  end_date: <%= Date.today >> 1 %> #2011-10-19 23:59:59
+  start_date: <%= Date.today << 2 %>
+  end_date: <%= Date.today >> 1 %>
 
 schedule 20:
   id: 20
@@ -110,3 +110,9 @@ schedule 22:
   id: 22
   start_date: <%= Date.today - 2.days %>
   end_date: <%= Date.today - 1.days %>
+
+# para datas posteriores
+schedule 23:
+  id: 23
+  start_date: <%= Date.today >> 1 %> # um mes à frente
+  end_date: <%= Date.today >> 4 %> # 3 meses depois da data inicial
