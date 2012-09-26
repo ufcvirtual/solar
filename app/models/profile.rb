@@ -39,4 +39,9 @@ SQL
     return (profile_name)
   end
 
+  def self.student_from_class?(user_id, allocation_tag_id)
+    students_of_class = Assignment.list_students_by_allocations(allocation_tag_id).map(&:id)
+    return (students_of_class.include?(user_id))
+  end
+
 end

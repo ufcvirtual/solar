@@ -58,9 +58,9 @@ class Assignment < ActiveRecord::Base
   ##
   # Lista de alunos presentes nas turmas
   ##
-  def self.list_students_by_allocations(allocations)
+  def self.list_students_by_allocations(allocations_ids)
     students_of_class_ids = Allocation.all(:include => [:allocation_tag, :user, :profile], :conditions => ["cast( profiles.types & '#{Profile_Type_Student}' as boolean) 
-      AND allocations.status = #{Allocation_Activated} AND allocation_tags.group_id IS NOT NULL AND allocation_tags.id IN (#{allocations})"]).map(&:user_id)
+      AND allocations.status = #{Allocation_Activated} AND allocation_tags.group_id IS NOT NULL AND allocation_tags.id IN (#{allocations_ids})"]).map(&:user_id)
     students_of_class = User.select("name, id").find(students_of_class_ids)
     return students_of_class
   end

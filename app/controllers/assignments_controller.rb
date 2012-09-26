@@ -232,6 +232,8 @@ class AssignmentsController < ApplicationController
           file = AssignmentEnunciationFile.find(params[:file_id])
         when 'public'
           file = PublicFile.find(params[:file_id]) #área pública do aluno
+          allocation_tag = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
+          raise CanCan::AccessDenied unless (Profile.student_from_class?(current_user.id, allocation_tag.id) or allocation_tag.is_user_class_responsible?(current_user.id))
       end
       file_path = file.attachment.path #caminho do arquivo
     end
@@ -257,6 +259,7 @@ class AssignmentsController < ApplicationController
       file = case params[:type]
         when "public"
           allocation_tag_id = active_tab[:url]['allocation_tag_id']
+          raise CanCan::AccessDenied unless Profile.student_from_class?(current_user.id, allocation_tag_id)
           PublicFile.create!({ :attachment => params[:file], :user_id => current_user.id, :allocation_tag_id => allocation_tag_id })
         when "assignment"
           assignment = Assignment.find(params[:assignment_id])
@@ -286,7 +289,7 @@ class AssignmentsController < ApplicationController
       file = case params[:type]
         when 'public'
           file = PublicFile.find(params[:file_id])
-          raise CanCan::AccessDenied if file.user_id != current_user.id
+          raise CanCan::AccessDenied unless file.user_id == current_user.id
           file.delete_public_file
         when 'assignment'
           assignment = Assignment.find(params[:assignment_id])

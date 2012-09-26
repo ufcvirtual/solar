@@ -26,8 +26,6 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   # List_to_student
   ##
 
-  # ActionView::Template::Error: undefined method `code_semester' for nil:NilClass
-  # /home/bianca/Projects/solar/app/helpers/application_helper.rb:102:in `render_group_selection'
   test "listar as atividades de um aluno para usuario com permissao" do 
     login(users(:aluno1))
     get @quimica_tab
@@ -69,17 +67,15 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   # Perfil com permissao e usuario sem acesso
 
   # Público
-  # ele está deixando ele fazer upload em uma turma que ele não pertence
-  # test 'nao permitir upload de arquivo publico por usuario com permissao e sem acesso' do
-  #   login(users(:aluno2))
-  #   get @literatura_brasileira_tab
-  #   assert_no_difference("PublicFile.count") do
-  #     post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste2.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
-  #   end
-  #   assert_response :redirect
-  #   assert_redirected_to({:controller => :home})
-  #   assert_equal( flash[:alert], I18n.t(:no_permission) )
-  # end
+  test 'nao permitir upload de arquivo publico por usuario com permissao e sem acesso' do
+    login(users(:aluno2))
+    get @literatura_brasileira_tab
+    assert_no_difference("PublicFile.count") do
+      post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste2.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
+    end
+    assert_response :redirect
+    # assert_equal I18n.t(:no_permission), flash[:alert]
+  end
 
   # Perfil sem permissao
 
@@ -92,7 +88,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     end
     assert_response :redirect
     assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   ##
@@ -149,22 +145,21 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
-  # ele está deixando ele fazer upload em uma turma que ele não pertence
-  # test "nao permitir fazer download de arquivos publicos para usuario com permissao e sem acesso - aluno" do
-  #   login(users(:aluno3))
-  #   get @literatura_brasileira_tab
-  #   assert_difference("PublicFile.count", +1) do
-  #     post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste1.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
-  #   end
+  test "nao permitir fazer download de arquivos publicos para usuario com permissao e sem acesso - aluno" do
+    login(users(:aluno3))
+    get @literatura_brasileira_tab
+    assert_difference("PublicFile.count", +1) do
+      post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste1.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
+    end
 
-  #   login(users(:aluno1))
-  #   get @literatura_brasileira_tab
-  #   public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno3).id, allocation_tags(:al8).id, "teste1.txt")
-  #   get download_files_assignments_path(:file_id => public_file.id, :type => 'public')
-  #   assert_response :redirect
-  #   assert_redirected_to({:controller => :home})
-  #   assert_equal I18n.t(:no_permission), flash[:alert]
-  # end
+    login(users(:aluno1))
+    get @literatura_brasileira_tab
+    public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno3).id, allocation_tags(:al8).id, "teste1.txt")
+    get download_files_assignments_path(:file_id => public_file.id, :type => 'public')
+    assert_response :redirect
+    assert_redirected_to({:controller => :home})
+    assert_equal I18n.t(:no_permission), flash[:alert]
+  end
 
   # Perfil sem permissao
 
