@@ -42,9 +42,10 @@ al9:
   id: 9
   group_id: 6
 
-al10:
-  id: 10
-  offer_id: 7
+## nao existe oferta com id 7
+# al10:
+#   id: 10
+#   offer_id: 7
 
 ## quimica I
 al11:
