@@ -51,6 +51,7 @@ class PostsController < ApplicationController
 
     params[:discussion_post][:discussion_id] = params[:discussion_id] unless params[:discussion_post].include?(:discussion_id)
     @post = Post.new(params[:discussion_post])
+
     allocation_tag_id = Discussion.find(@post.discussion_id).allocation_tag_id
 
     @post.user_id = current_user.id
@@ -59,7 +60,7 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
-        format.html { redirect_to(discussion_posts_path(Discussion.find(params[:discussion_id])), :notice => t(:created, :scope => [:posts, :create])) }
+        format.html { redirect_to(discussion_posts_path(Discussion.find(params[:discussion_post][:discussion_id])), :notice => t(:created, :scope => [:posts, :create])) }
         format.xml  { render :xml => @post, :status => :created }
         format.json  { render :json => {:result => 1, :post_id => @post.id}, :status => :created }
       else
