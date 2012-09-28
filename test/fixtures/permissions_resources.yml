@@ -209,7 +209,7 @@ ma10:
 ma11:
   profile_id: 1
   resource_id: 69
-  per_id: false
+  per_id: true
 
 ##############################
 # PROFESSOR TITULAR #

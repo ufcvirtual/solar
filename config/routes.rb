@@ -65,7 +65,7 @@ Solar::Application.routes.draw do
 
   resources :enrollments, :only => [:index]
   resources :offers
-  resources :scores, :only => [:show]
+  resources :scores, :only => [:show, :index]
   resources :courses
 
   mount Ckeditor::Engine => "/ckeditor"
@@ -89,12 +89,6 @@ Solar::Application.routes.draw do
       delete :remove_comment
     end
   end
-
-  # resource :scores_teacher, :only => [], :controller => "scores_teacher" do
-  #   get :list, :on => :collection
-  # end
-
-  # get "scores_teacher/list"
 
   get "pages/index"
   get "pages/team"

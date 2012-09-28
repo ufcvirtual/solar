@@ -224,4 +224,49 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_nil assigns(:history)
   end  
 
+  ##
+  # Index
+  ##
+
+  # Usuário com permissão e acesso
+  test "exibir acompanhamento de uma turma para usuario com permissao e acesso" do 
+    login(users(:professor))
+    get @quimica_tab
+    get scores_path
+    assert_response :success
+    assert_not_nil assigns(:group)
+    assert_not_nil assigns(:assignments)
+    assert_not_nil assigns(:students)
+    assert_not_nil assigns(:scores)
+    assert_template :index
+  end
+
+  # Usuário com permissão e sem acesso
+  test "nao exibir acompanhamento de uma turma para usuario com permissao e sem acesso" do 
+    login(users(:professor))
+    get @literatura_brasileira_tab
+    get scores_path
+    assert_response :redirect
+    assert_redirected_to({:controller => :home})
+    assert_equal I18n.t(:no_permission), flash[:alert]
+    assert_not_nil assigns(:group)
+    assert_nil assigns(:assignments)
+    assert_nil assigns(:students)
+    assert_nil assigns(:scores)
+  end
+
+  # Usuário sem permissão
+  test "nao exibir acompanhamento de uma turma para usuario sem permissao" do 
+    login(users(:aluno1))
+    get @quimica_tab
+    get scores_path
+    assert_response :redirect
+    assert_redirected_to({:controller => :home})
+    assert_equal I18n.t(:no_permission), flash[:alert]
+    assert_nil assigns(:group)
+    assert_nil assigns(:assignments)
+    assert_nil assigns(:students)
+    assert_nil assigns(:scores)
+  end
+
 end

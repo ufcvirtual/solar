@@ -31,7 +31,7 @@
               %th= "#{idx + 1}º"
         - @students.each_with_index do |student, idx|
           %tr.lines
-            %td.td_student{:align => "left"}= link_to student.name, score_path(:student_id => student.id)
+            %td.td_student{:align => "left"}= link_to student.name, score_path(student.id, :student_id => student.id)
             %td{:align => "center"}= @scores["student_count_public_files"][idx]
             - @assignments.each_with_index do |assignment, idx2|
               - grade = @scores["students_grades"][idx][idx2]

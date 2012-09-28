@@ -283,8 +283,8 @@ res47:
 # acompanhamento do responsável - parte 1
 res48:
   id: 48
-  controller: 'scores_teacher'
-  action: 'list'
+  controller: 'scores'
+  action: 'index'
   description: 'Lista dos alunos da turma'
 
 res49:
@@ -415,7 +415,7 @@ res68:
 res69:
   id: 69
   controller: 'allocation_tag'
-  action: 'list'
+  action: 'index'
   description: 'Acompanhamento geral de todos os alunos da turma - verificacao de relacao com turma'
 
 # Edicao de pedidos de matriculas
