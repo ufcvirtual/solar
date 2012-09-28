@@ -1,104 +1,76 @@
 module MenuHelper
 
-  ## menu pai com filhos
-  # mysolar_menu_group
-    # ul
-      # li
-        # a
-        # ul.submenu
+  # div.mysolar_menu_group
+  #   ul
+  #     li.mysolar_menu_title_multiple
+  #       a.mysolar_menu_title
+  #       ul.submenu
+  #         li.mysolar_menu_list
+  #           a
+  #         li.mysolar_menu_list
+  #           a
 
-  ## menu pai como lnk
-  # mysolar_menu_group
-    # ul
-      # li
-        #a
-
-  def create_menu_list(profile_id, context_id, id = nil, current_menu = nil)
+  def menu(profile_id, context_id, id = nil, current_menu = nil)
     menus = Menu.list_by_profile_id_and_context_id(profile_id, context_id)
-    html_menu, previous_parent_id, first_iteration = '', 0, false
-
-    # classes de css utilizadas pelos menus
-    class_menu_div_topo, class_menu_title, class_menu_list = %w(mysolar_menu_group mysolar_menu_title mysolar_menu_list)
-    html_menu_group = []
-
-    is_link_father_with_no_childs = false
+    divs_group, div_group_opened, previous_parent_id = [], false, 0
 
     menus.each do |menu|
+      access_controller = {:controller => "/#{menu["controller"]}", :action => menu["action"], :mid => menu['parent_id'], :bread => nil}
+      div_group_opened = false if (previous_parent_id != menu['parent_id'].to_i) # quando o pai muda, outra div deve ser criada
 
-      access_controller = {
-        :controller => "/#{menu["controller"]}",
-        :action => menu["action"],
-        :mid => menu['parent_id'],
-        :bread => nil
-      }
+      unless div_group_opened # menu pai
+        div_group_opened = true
+        link_class = ['mysolar_menu_title', ((menu['parent_id'].to_i == current_menu.to_i and params.include?(:mid)) ? 'open_menu' : nil)].compact.join(' ')
+        a_link = ((menu['child'].nil?) ? link_to(t(menu['parent'].to_sym), access_controller, :class => link_class) : %{<a href="#" class="#{link_class}">#{t(menu['parent'].to_sym)}</a>})
 
-      unless previous_parent_id.to_i == menu['parent_id'].to_i # se o menu pai muda, gera-se um novo groupo de menus
-        html_menu << "</ul>" if first_iteration
-
-        if (not menu['link'].nil?)
-          html_menu << "</ul>"
-        elsif (not is_link_father_with_no_childs)
-          html_menu << "</li></ul>"
-        end
-
-        is_link, is_not_a_child = (not menu['resource_id'].nil?), menu['child'].nil?
-        is_link_father_with_no_childs = (is_link and is_not_a_child)
-
-        html_menu_group << %{<div class="#{class_menu_div_topo}">#{html_menu}</div>} if first_iteration # verifica se ja entrou aqui
-
-        if is_link_father_with_no_childs # para um menu pai ser um link ele nao deve ter filhos
-          access_controller[:bread] = menu['parent']
-          style_single = "mysolar_menu_title_single_active" if (menu['parent_id'] == current_menu and params.include?('mid'))
-          link = 
-            %{
-              <li class="mysolar_menu_title_single #{style_single}" id="parent_#{menu['parent_id']}">
-                #{link_to("#{t(menu['parent'].to_sym)}", access_controller, :class => class_menu_title)}
-              </li>
+        divs_group[menu['parent_id'].to_i] = {
+          :ul => {
+            :li => {
+              :id => "parent_#{menu['parent_id']}", :a => a_link, :ul => []
             }
-        elsif (not menu["link"].nil?)
-          link = %{<li><a href="#{menu['link']}">#{t(menu['parent'].to_sym)}</a></li>}
-        else
-          if (menu['parent_id'] == current_menu) # mesmo pai
-            link = 
-              %{
-                <li class="mysolar_menu_title_multiple">
-                  <a href="#" class="#{class_menu_title} open_menu">#{t(menu['parent'].to_sym)}</a>
-                  <ul class="submenu">
-              }
-          else
-            link =
-              %{
-                <li class="mysolar_menu_title_multiple" id="parent_#{menu['parent_id']}">
-                  <a href="#" class="#{class_menu_title}">#{t(menu['parent'].to_sym)}</a>
-                  <ul class="submenu">
-              }
-          end
-        end
+          }
+        }
+      end # end if
 
-        html_menu = "<ul>#{link}" # menu pai com link direto para funcionalidades
-        first_iteration = true
-      end
-
-      access_controller[:id] = id unless id.nil? # verifica se existe filho para imprimir
-
-      unless is_not_a_child # eh um filho
+      if div_group_opened and (not menu['child'].nil?) # filhos do menu pai
+        access_controller[:id] = id unless id.nil?
         access_controller[:bread] = menu['child']
-        html_menu <<
+        divs_group[menu['parent_id'].to_i][:ul][:li][:ul] << 
           %{
-            <li class="#{class_menu_list}">
-              #{link_to("#{t(menu['child'].to_sym)}", access_controller)}
+            <li class="mysolar_menu_list">
+              #{link_to(t(menu['child'].to_sym), access_controller)}
             </li>
           }
+      end # end if
+
+      previous_parent_id = menu['parent_id'].to_i
+
+    end # end menu each
+
+    return to_html(divs_group)
+  end
+
+  private
+
+    def to_html(divs)
+      html = ''
+      divs.compact.each do |div|
+        without_childs = div[:ul][:li][:ul].empty?
+        li_class = ['mysolar_menu_title_', (without_childs ? 'single' : 'multiple')].join('')
+        submenu = without_childs ? '' : %{<ul class="submenu">#{div[:ul][:li][:ul].join('')}</ul>}
+
+        html << %{
+          <div class="mysolar_menu_group">
+            <ul>
+              <li class="#{li_class}" id="#{div[:ul][:li][:id]}">
+                #{div[:ul][:li][:a]}
+                #{submenu}
+              </li>
+            </ul>
+          </div>
+        }
       end
-
-      previous_parent_id = menu['parent_id'].to_i # sempre atualiza
-    end # menu each
-
-    html_menu << "</ul>"
-    html_menu_group << %{<div class="#{class_menu_div_topo}">#{html_menu}</div>}
-
-    return html_menu_group.join('')
-
-  end # end crate menu list
+      return html
+    end # end transforme_to_html
 
 end # end module

@@ -123,7 +123,7 @@
       <!-- Barra Lateral #########################-->
       <div id="mysolar_sidebar">
         <div id="mysolar_menu_accordion" style="z-index:10">
-          <%=raw create_menu_list(@profiles, @context_id, @context_uc, user_session[:menu][:current]) if user_signed_in? %>
+          <%=raw menu(@profiles, @context_id, @context_uc, user_session[:menu][:current]) if user_signed_in? %>
         </div>
       </div>
 
