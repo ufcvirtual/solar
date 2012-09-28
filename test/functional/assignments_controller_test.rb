@@ -230,8 +230,6 @@ class AssignmentsControllerTest < ActionController::TestCase
     post(:evaluate, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :grade => 7, :comment => "comentario5"})
     assert_response :success
     assert_template :evaluate_assignment_div
-    # após ajax
-    # assert_equal( flash[:alert], I18n.t(:evaluated_success, :scope => [:assignment, :evaluation]) )
   end
 
   # Perfil com permissao e usuario sem acesso
@@ -272,7 +270,9 @@ class AssignmentsControllerTest < ActionController::TestCase
   # Perfil com permissao e usuario sem acesso
   test "nao permitir comentar em atividade individual para usuario com permissao e sem acesso" do
     sign_in users(:professor)
-    post(:send_comment, {:id => assignments(:a10).id, :student_id => users(:aluno1).id, :comment => "comentario9"})
+    assert_no_difference("AssignmentComment") do
+      post(:send_comment, {:id => assignments(:a10).id, :student_id => users(:aluno1).id, :comment => "comentario9"})
+    end
     assert_redirected_to({:controller => :home})
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
@@ -280,7 +280,9 @@ class AssignmentsControllerTest < ActionController::TestCase
   # Perfil sem permissao e usuario com acesso
   test "nao permitir comentar em atividade individual para usuario sem permissao e com acesso" do
     sign_in users(:aluno1)
-    post(:send_comment, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :comment => "comentario10"})
+    assert_no_difference("AssignmentComment") do
+      post(:send_comment, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :comment => "comentario10"})
+    end
     assert_redirected_to({:controller => :home})
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
@@ -318,13 +320,13 @@ class AssignmentsControllerTest < ActionController::TestCase
   # Perfil com permissao e usuario com acesso
   test "permitir remover comentario para usuario com permissao e com acesso" do
     sign_in users(:professor)
-    delete(:remove_comment, {:id => assignments(:a9).id, :comment_id => assignment_comments(:ac2).id})
+    assert_difference("AssignmentComment.count", -1) do
+      delete(:remove_comment, {:id => assignments(:a9).id, :comment_id => assignment_comments(:ac2).id})
+    end
     assert_response :success
     get(:show, {:id => assignments(:a9).id, :student_id => users(:aluno1).id})    
     assert_no_tag :tag => "table", :attributes => { :class => "forum_post tb_comments tb_comment_#{assignment_comments(:ac2).id}" }
     assert_template :show
-    # após ajax
-    # assert_equal( flash[:notice], I18n.t(:comment_sent_success, :scope => [:assignment, :comments]) )
   end
 
   # Perfil com permissao e usuario sem acesso

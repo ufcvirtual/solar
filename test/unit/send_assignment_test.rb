@@ -24,4 +24,9 @@ class  SendAssignmentTest < ActiveSupport::TestCase
     assert (send_assignment.user_id.nil?)
   end
 
+  test "send assignment valido" do
+    send_assignment = SendAssignment.create(:assignment_id => assignments(:a4).id, :user_id => users(:aluno1).id, :grade => 7)
+    assert send_assignment.valid?
+  end
+
 end

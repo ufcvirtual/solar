@@ -2,6 +2,9 @@ require 'test_helper'
 
 class  CommentFileTest < ActiveSupport::TestCase
 
+  # para reconhecer o método "fixture_file_upload" no teste de unitário
+  include ActionDispatch::TestProcess
+
   fixtures :comment_files, :assignment_comments, :users
 
 	test "arquivo deve ter nome" do
@@ -16,5 +19,9 @@ class  CommentFileTest < ActiveSupport::TestCase
     end
   end
 
+  test "arquivo valido" do
+    comment_file = CommentFile.create(:assignment_comment_id => assignment_comments(:ac2).id, :attachment => fixture_file_upload('files/assignments/comment_files/teste1.txt', 'text/plain'))
+    assert comment_file.valid?
+  end
 
 end

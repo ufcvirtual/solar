@@ -9,12 +9,13 @@ class ScoresController < ApplicationController
     authorize! :show, Score
 
     student_id = params[:student_id] || current_user.id
-    allocation_tag_id = active_tab[:url]['allocation_tag_id']
-    group_id = AllocationTag.find(allocation_tag_id).group_id
-    allocations = AllocationTag.find_related_ids(allocation_tag_id)
+    allocation_tag = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
+    group_id = allocation_tag.group_id
+    allocations = AllocationTag.find_related_ids(allocation_tag.id)
     @student = User.find(student_id ) #verifica se o usuario logado tem permissao para consultar o usuario informado
 
     authorize! :find, @student #verifica autorizacao para consultar dados do usuario
+    authorize! :list, Group.find(group_id).allocation_tag #verifica se pode acessar turma
 
     @individual_activities = Assignment.student_assignments_info(group_id, student_id, Individual_Activity)
     @group_activities = Assignment.student_assignments_info(group_id, student_id, Group_Activity)
@@ -36,8 +37,10 @@ class ScoresController < ApplicationController
     @student_id = params[:id]
     curriculum_unit_id = active_tab[:url]['id']
     student = User.find(@student_id)
+    allocation_tag = AllocationTag.find(curriculum_unit_id)
 
     authorize! :find, student #verifica autorizacao para consultar dados do usuario
+    authorize! :list, allocation_tag #verifica se pode acessar turma
 
     # validar as datas
     @from_date = date_valid?(@from_date) ? Date.parse(@from_date) : Date.today << 2
@@ -60,9 +63,9 @@ class ScoresController < ApplicationController
     curriculum_unit_id = active_tab[:url]["id"]
     student = User.find(student_id)
     allocation_tag = AllocationTag.find(curriculum_unit_id)
-
+    
     authorize! :find, student #verifica autorizacao para consultar dados do usuario
-    # raise CanCan::AccessDenied unless (student_id.to_i == current_user.id or allocation_tag.is_user_class_responsible?(current_user.id) )
+    authorize! :list, allocation_tag #verifica se pode acessar turma
 
     # validar as datas
     from_date = Date.today << 2 unless date_valid?(@from_date)

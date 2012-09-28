@@ -44,7 +44,6 @@ class AssignmentsControllerTest < ActionController::TestCase
 
   # Público
   # => assignments_with_allocation_tag_test.rb
-  
 
   # Perfil com permissao e usuario sem acesso
 
@@ -152,7 +151,6 @@ class AssignmentsControllerTest < ActionController::TestCase
   # Comentario
   test "permitir fazer download de arquivos de comentario para usuario com permissao" do
     sign_in(users(:professor))
-
     assert_difference('CommentFile.count', +1) do
       comment_files = [fixture_file_upload('files/assignments/comment_files/teste1.txt', 'text/plain')]
       post :send_comment, {:id => assignments(:a9).id, :comment_files => comment_files, :student_id => users(:aluno1).id, :comment => "comentario"}
@@ -175,6 +173,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   # => assignments_with_allocation_tag_test.rb
   
   # Do enunciado da atividade
+  # Não existe o upload de arquivos para uma atividade (editor)
   # test "permitir fazer download de arquivos do enunciado da atividade para usuario com permissao" do
     # sign_in users(:professor)
     # get(:download_files, {:assignment_id => assignments(:a9).id, :file_id => assignment_enunciation_files(:aef1).id, :type => 'enunciation'})

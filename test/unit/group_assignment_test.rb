@@ -37,6 +37,11 @@ class  GroupAssignmentTest < ActiveSupport::TestCase
     assert (group_assignment2.valid?)
   end
 
+  test "novo grupo valido" do
+    group_assignment = GroupAssignment.create(:assignment_id => assignments(:a4).id, :group_name => "grupo 1")
+    assert group_assignment.valid?
+  end
+
   # Métodos
 
   test "nao pode excluir grupo que seja falso em 'can_remove_group'" do

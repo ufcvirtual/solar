@@ -2,6 +2,9 @@ require 'test_helper'
 
 class  AssignmentFileTest < ActiveSupport::TestCase
 
+  # para reconhecer o método "fixture_file_upload" no teste de unitário
+  include ActionDispatch::TestProcess
+
   fixtures :assignment_files, :send_assignments, :users
 
   test "arquivo deve ter nome" do
@@ -14,6 +17,11 @@ class  AssignmentFileTest < ActiveSupport::TestCase
     assert_difference("AssignmentFile.count", -1) do
       assignment_files(:af6).delete_assignment_file
     end
+  end
+
+  test "arquivo valido" do
+    assignment_file = AssignmentFile.create(:send_assignment_id => send_assignments(:sa2).id, :user_id => users(:aluno1), :attachment => fixture_file_upload('files/assignments/sent_assignment_files/teste1.txt', 'text/plain'))
+    assert assignment_file.valid?
   end
 
 end
