@@ -270,7 +270,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   # Perfil com permissao e usuario sem acesso
   test "nao permitir comentar em atividade individual para usuario com permissao e sem acesso" do
     sign_in users(:professor)
-    assert_no_difference("AssignmentComment") do
+    assert_no_difference("AssignmentComment.count") do
       post(:send_comment, {:id => assignments(:a10).id, :student_id => users(:aluno1).id, :comment => "comentario9"})
     end
     assert_redirected_to({:controller => :home})
@@ -280,7 +280,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   # Perfil sem permissao e usuario com acesso
   test "nao permitir comentar em atividade individual para usuario sem permissao e com acesso" do
     sign_in users(:aluno1)
-    assert_no_difference("AssignmentComment") do
+    assert_no_difference("AssignmentComment.count") do
       post(:send_comment, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :comment => "comentario10"})
     end
     assert_redirected_to({:controller => :home})
