@@ -1,11 +1,11 @@
--# Lista de atividades do aluno
+/ Lista de atividades do aluno
 .block_wrapper#assignments
   .block_title
     %h2
       = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
       = @student.name
 
-  -# Tabelas de atividades 
+  / Tabelas de atividades 
   .block_content
     - unless @individual_activities.empty? or @group_activities.empty?
       %table.tb_list#assignments_list
@@ -47,7 +47,7 @@
     - else
       .block_content.block_content_text= t(:itens_not_found)
 
--# Quantidade de participacoes em foruns
+/ Quantidade de participacoes em foruns
 .block_wrapper
   .block_title
     %h2
@@ -77,7 +77,7 @@
     - else
       .block_content.block_content_text= t(:itens_not_found)
 
--# Historico de acesso
+/ Historico de acesso
 .block_wrapper
   .block_title
     %h2
@@ -100,7 +100,7 @@
         - else
           = @amount
 
--# Scripts
+/ Scripts
 
 :css
   .ui-datepicker { width: 15em; padding: .2em .2em 0; display: none; }

@@ -548,7 +548,7 @@
       cancel: Cancel
     files:
       remove_file: Remove file
-      return_file: Return file
+      recover_file: Recover file
       sent_by: Sent by
       size: Size
       download_file: Download file %{file_name}

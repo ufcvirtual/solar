@@ -705,7 +705,7 @@
       cancel: Cancelar
     files:
       remove_file: Remover arquivo
-      return_file: Retornar arquivo
+      recover_file: Recuperar arquivo
       sent_by: Enviado por
       size: Tamanho
       download_file: Baixar arquivo %{file_name}

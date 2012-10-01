@@ -191,7 +191,7 @@
               .forum_post_inner_content= text_area_tag :comment, '', :rows => 4, :cols => 116
               .forum_post_attachment
                 %h3= t(:attached_files, :scope => [:assignment, :files])
-                %ul.forum_post_attachment_list.comments_files_div
+                %ul.comments_files_div
                   = file_field_tag 'comment_files[]', :class => "comments_files"
                   %a.more_comment_files_link{:href => "#", :onclick => "javascript:more_files();"}
                     = t(:attach_another, :scope => [:assignment, :files])
@@ -242,14 +242,16 @@
                   .forum_post_inner_content= text_area_tag :comment, comment.comment, :rows => 4, :cols => 116
                   .forum_post_attachment
                     %h3= t(:attached_files, :scope => [:assignment, :files])
-                    %ul.forum_post_attachment_list.comments_files_div
+                    %ul.comments_files_div
                       - unless comment.comment_files.empty?
                         - comment.comment_files.each do |comment_file|
                           %li
                             = link_to comment_file.attachment_file_name, download_files_assignments_path(:assignment_id => @assignment.id, :file_id => comment_file.id), {:class => "link_content link_comment_#{comment_file.id}", :id => "#{comment_file.id}"}
                             .forum_post_date= l(comment_file.attachment_updated_at, :format => :files)
-                            = image_tag("icon_delete_small.png", :onclick => "javascript:remove_file(#{comment_file.id}, #{comment.id}, this);", :id=>"remove_file_#{comment_file.id}", :alt => t(:remove_file, :scope => [:assignment, :files]))
-                            = image_tag("return_file.png", :onclick => "javascript:return_file(#{comment_file.id}, #{comment.id}, this);", :id=>"return_file_#{comment_file.id}", :class => "return_file", :alt => t(:return_file, :scope => [:assignment, :files]))
+                            = button_tag(:type => :button, :onclick => "javascript:remove_file(#{comment_file.id}, #{comment.id}, this);", :id=>"remove_file_#{comment_file.id}", :class => "btn btn_default", :'data-tooltip' => t(:remove_file, :scope => [:assignment, :files]), :alt => t(:remove_file, :scope => [:assignment, :files])) do
+                              = content_tag(:span, image_tag("remove_file.png"))
+                            = button_tag(:type => :button, :onclick => "javascript:recover_file(#{comment_file.id}, #{comment.id}, this);", :id=>"recover_file#{comment_file.id}", :class => "btn btn_default recover_file", :'data-tooltip' => t(:recover_file, :scope => [:assignment, :files]), :alt => t(:recover_file, :scope => [:assignment, :files])) do
+                              = content_tag(:span, image_tag("recover_file.png"))
                       = hidden_field_tag 'deleted_files[]', "", {:id => "delete_file_#{comment.id}"}
                       = file_field_tag 'comment_files[]', :class => "comments_files"
                       %a.more_comment_files_link{:href => "#", :onclick => "javascript:more_files();"}= t(:attach_another, :scope => [:assignment, :files])
@@ -391,7 +393,7 @@
 
   function remove_file(comment_file_id, comment_id, this_div){
     $(this_div).hide();
-    $("#return_file_"+comment_file_id).fadeIn();
+    $("#recover_file"+comment_file_id).fadeIn();
     $(".link_comment_"+comment_file_id).css("text-decoration", "underline line-through");
     $(".link_comment_"+comment_file_id).addClass("disabled_file_"+comment_id);
   }
@@ -417,7 +419,7 @@
     flash_message("#{t(:no_permission)}", "alert");
   }); 
 
-  function return_file(comment_file_id, comment_id, this_div){
+  function recover_file(comment_file_id, comment_id, this_div){
     $(this_div).hide();
     $("#remove_file_"+comment_file_id).fadeIn();
     $(".link_comment_"+comment_file_id).css("text-decoration", "underline");
