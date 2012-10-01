@@ -2610,12 +2610,6 @@ td.td_student a {color: #2a538d;}
     display:none;
 }
 
-.portfolio_link_disabled{
-    color: #999999;
-    font-size: 11pt;
-    text-decoration: underline line-through;
-}
-
 .clock_icon{
     width:70px;
 }
