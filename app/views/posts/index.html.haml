@@ -26,8 +26,8 @@
         - class_l = (@display_mode == "list") ? 'btn_pressed' : 'btn_default'
         - class_t = (@display_mode == "tree") ? 'btn_pressed' : 'btn_default'
 
-        = link_to(image_tag("discussion_plainlist.png"), discussion_posts_path(@discussion, {:display_mode => 'list'}), {:class => "btn #{class_l}", :"data-tooltip" => t(".show_plainlist")})
-        = link_to(image_tag("discussion_thread.png"), discussion_posts_path(@discussion, {:display_mode => 'tree'}), {:class => "btn #{class_t}", :"data-tooltip" => t(".show_thread")})
+        = link_to(image_tag("discussion_plainlist.png"), discussion_posts_path(@discussion, {:display_mode => 'list'}), {:class => "btn #{class_l}", :id => 'forum_view_mode-list', :"data-tooltip" => t(".show_plainlist")})
+        = link_to(image_tag("discussion_thread.png"), discussion_posts_path(@discussion, {:display_mode => 'tree'}), {:class => "btn #{class_t}", :id => 'forum_view_mode-thread', :"data-tooltip" => t(".show_thread")})
 
       #forum_pagination
         = raw render_pagination_bar(@discussion.discussion_posts_count(@display_mode == "list").to_s, "display_mode=#{@display_mode}")
