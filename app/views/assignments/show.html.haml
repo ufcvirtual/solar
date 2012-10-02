@@ -220,10 +220,10 @@
               .forum_post_inner_content= comment.comment
               .forum_post_attachment
                 %h3= t(:attached_files, :scope => [:assignment, :files])
-                %ul.forum_post_attachment_list
+                %ul.comments_files_div
                   - unless comment.comment_files.empty?
                     - comment.comment_files.each do |comment_file|
-                      %li{:style => "list-style-type: none"}
+                      %li
                         = link_to image_tag(icon_attachment(comment_file.attachment_file_name)), download_files_assignments_path(:assignment_id => @assignment.id, :file_id => comment_file.id, :student_id => @student_id, :group_id => @group_id, :type => "comment"), {:class => "file_icon", :alt => t(:download_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files])}
                         = link_to comment_file.attachment_file_name, download_files_assignments_path(:assignment_id => @assignment.id, :file_id => comment_file.id, :student_id => @student_id, :group_id => @group_id, :type => "comment"), {:class => "link_content"}
                         .assignment_files_info= l(comment_file.attachment_updated_at, :format => :files)
@@ -246,11 +246,12 @@
                       - unless comment.comment_files.empty?
                         - comment.comment_files.each do |comment_file|
                           %li
+                            = link_to image_tag(icon_attachment(comment_file.attachment_file_name)), download_files_assignments_path(:assignment_id => @assignment.id, :file_id => comment_file.id, :student_id => @student_id, :group_id => @group_id, :type => "comment"), {:class => "file_icon", :alt => t(:download_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files])}
                             = link_to comment_file.attachment_file_name, download_files_assignments_path(:assignment_id => @assignment.id, :file_id => comment_file.id, :student_id => @student_id, :group_id => @group_id, :type => "comment"), {:class => "link_content link_comment_#{comment_file.id}", :id => "#{comment_file.id}", :alt => t(:download_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files])}
                             .forum_post_date= l(comment_file.attachment_updated_at, :format => :files)
-                            = button_tag(:type => :button, :onclick => "javascript:remove_file(#{comment_file.id}, #{comment.id}, this);", :id=>"remove_file_#{comment_file.id}", :class => "btn btn_default", :'data-tooltip' => t(:remove_file, :scope => [:assignment, :files]), :alt => t(:remove_file, :scope => [:assignment, :files])) do
+                            = button_tag(:type => :button, :onclick => "javascript:remove_file(#{comment_file.id}, #{comment.id}, this);", :id=>"remove_file_#{comment_file.id}", :class => "btn btn_default", :title => t(:remove_file, :scope => [:assignment, :files]), :alt => t(:remove_file, :scope => [:assignment, :files])) do
                               = content_tag(:span, image_tag("remove_file.png"))
-                            = button_tag(:type => :button, :onclick => "javascript:recover_file(#{comment_file.id}, #{comment.id}, this);", :id=>"recover_file#{comment_file.id}", :class => "btn btn_default recover_file", :'data-tooltip' => t(:recover_file, :scope => [:assignment, :files]), :alt => t(:recover_file, :scope => [:assignment, :files])) do
+                            = button_tag(:type => :button, :onclick => "javascript:recover_file(#{comment_file.id}, #{comment.id}, this);", :id=>"recover_file#{comment_file.id}", :class => "btn btn_default recover_file", :title => t(:recover_file, :scope => [:assignment, :files]), :alt => t(:recover_file, :scope => [:assignment, :files])) do
                               = content_tag(:span, image_tag("recover_file.png"))
                       = hidden_field_tag 'deleted_files[]', "", {:id => "delete_file_#{comment.id}"}
                       = file_field_tag 'comment_files[]', :class => "comments_files"
@@ -393,9 +394,6 @@
 
   function remove_file(comment_file_id, comment_id, this_div){
     $(this_div).hide();
-    //var parent = $(this_div).parent();
-    //$(this_div).remove();
-    //$('<button alt="Recuperar arquivo" class="btn btn_default recover_file" data-tooltip="Recuperar arquivo" id="recover_file'+comment_file_id+'" onclick="javascript:recover_file('+ comment_file_id +', ' + comment_id + ', this);" type="button" style="display: inline-block; " aria-describedby="ui-tooltip-'+comment_file_id+'"><span><img alt="Recover_file" src="/assets/recover_file.png"></span></button>').appendTo(parent);
     $("#recover_file"+comment_file_id).fadeIn();
     $(".link_comment_"+comment_file_id).css("text-decoration", "underline line-through");
     $(".link_comment_"+comment_file_id).addClass("disabled_file_"+comment_id);
@@ -424,12 +422,8 @@
 
   function recover_file(comment_file_id, comment_id, this_div){
     $(this_div).hide();
-    //var parent = $(this_div).parent();
-    //$(this_div).remove();
-    //$('<button alt="Remover arquivo" class="btn btn_default" data-tooltip="Remover arquivo" id="remove_file_'+comment_file_id+'" onclick="javascript:remove_file('+comment_file_id+', '+comment_id+', this);" type="button" aria-describedby="ui-tooltip-'+comment_file_id+'"><span><img alt="Remove_file" src="/assets/remove_file.png"></span></button>').appendTo(parent);
     $("#remove_file_"+comment_file_id).fadeIn();
     $(".link_comment_"+comment_file_id).css("text-decoration", "underline");
-    //$(".link_comment_"+comment_file_id).attr("data-tooltip", "oi");
     $(".link_comment_"+comment_file_id).removeClass("disabled_file_"+comment_id);
   }
 

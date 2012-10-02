@@ -2003,8 +2003,11 @@ a#forum_view_mode-thread {
 }
 
 .forum_post_attachment_list, .comments_files_div {
-    list-style: circle;
     padding-left: 15px;
+}
+
+.forum_post_attachment_list {
+    list-style: circle;
 }
 
 .forum_post_attachment_list li, .comments_files_div li {
