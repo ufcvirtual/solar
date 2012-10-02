@@ -6,6 +6,8 @@
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1"}
     %title= content_for?(:title) ? yield(:title) : "Solar"
     = stylesheet_link_tag "login", :media => "all"
+    = javascript_include_tag "application"
+    = javascript_include_tag "user_form"
     = csrf_meta_tags
     = yield(:head)
   %body

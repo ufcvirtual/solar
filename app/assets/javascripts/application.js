@@ -2,6 +2,7 @@
 //= require jquery_ujs
 //= require jquery.qtip.min
 //= require tooltip
+//= require jquery.maskedinput
 //= require jquery-ui-1.8.6
 //= require jquery.ui.datepicker-en-GB
 //= require mysolar

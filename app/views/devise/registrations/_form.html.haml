@@ -1,0 +1,165 @@
+.block_wrapper
+  #page_title
+    %h1=t(:new_user_title)
+
+= form_for(@user) do |f|
+  - if @user.errors.any?
+    - msg_login, msg_password, msg_nick, msg_email, msg_alternate_email, msg_institution, msg_name, msg_cpf, msg_special_needs = "", "", "", "", "", "", "", "", ""
+    - for msg in @user.errors.full_messages
+      -  if (msg.include?(t(:form_login)))
+        -  msg_login << msg
+      -  unless @user.errors[:password].empty? 
+        -  msg_password = t(:form_password) + " " + @user.errors[:password].last.to_s
+      -  if (msg.include?(t(:form_nick)))
+        -  msg_nick << msg + "\n" 
+      -  if (msg.include?(t(:form_email)) and !msg.include?(t(:form_alternate_email)))
+        -  msg_email << msg + "\n" 
+      - if (msg.include?(t(:form_alternate_email)))
+        - msg_alternate_email << msg + "\n"
+      -  if (msg.include?(t(:form_institution)))
+        -  msg_institution << msg + "\n" 
+      -  if (msg.include?(t(:form_name)))
+        -  msg_name << msg + "\n"
+      -  if (msg.include?(t(:form_cpf)))
+        -  msg_cpf << msg + "\n"
+      - if (msg.include?(t(:form_special_needs)))
+        - msg_special_needs << msg + "\n"
+  - field_size = 50
+
+  .block_wrapper
+    .block_title
+      %h2
+        = t(:new_user_personal_data)
+        %span.form_requirement= t(:required_fields)
+    .block_content
+      %table.form_user_table
+        %tr
+          %td.form_label= f.label "#{t(:form_name)}*" 
+          %td.form_field= f.text_field :name, :id => "name", :size=>field_size 
+          %td.form_error= msg_name 
+        %tr
+          %td.form_label= f.label :cpf, "#{t(:form_cpf)}*"
+          %td.form_field= f.text_field :cpf, :size=>field_size, :id=>"cpf"
+          %td.form_error= msg_cpf
+        %tr
+          %td.form_label= f.label :birthdate, :class=>"label_usuario"
+          %td.form_field= f.date_select :birthdate, :start_year => Time.now.year - 2, :end_year => 1900, :id => 'user_birthdate'
+        %tr
+          %td.form_label= f.label :gender
+          %td.form_field= f.select :gender, ([["M", true], ["F", false]]) , :id => 'gender',:size=>2
+        %tr
+          %td.form_label= f.label "#{t(:form_special_needs)}*"
+          %td.form_field
+            - condition_special_needs = @user.special_needs.blank? && msg_special_needs.blank? 
+            = f.radio_button(:has_special_needs , true, :checked => !condition_special_needs, :onclick => "show_special_needs('.special_needs_lines')")
+            = label_tag("has_special_needs", t('special_needs_yes'), :class=>"form_inner_label")
+            = f.radio_button(:has_special_needs , false, :checked => condition_special_needs, :onclick => "hide_special_needs('.special_needs_lines')")
+            = label_tag("has_special_needs", t('special_needs_no'), :class=>"form_inner_label")
+        - unless condition_special_needs
+          - display_special_needs_lines = "display: inline-block;"
+        %tr
+          %td.form_label
+            .special_needs_lines{:style => display_special_needs_lines}= f.label "#{t(:which)}*"
+          %td.form_field
+            .special_needs_lines{:style => display_special_needs_lines}= f.text_field :special_needs, :size => field_size
+          %td.form_error
+            .special_needs_lines{:style => display_special_needs_lines}= msg_special_needs
+  .block_wrapper
+    .block_title
+      %h2
+        = t(:new_user_access_data)
+        %span.form_requirement= t(:required_fields)
+    .block_content
+      %table.form_user_table
+        %tr
+          %td.form_label= f.label "#{t(:form_nick)}*" 
+          %td.form_field= f.text_field :nick, :id => 'nick', :size=>field_size 
+          %td.form_error= msg_nick 
+        %tr
+          %td.form_label= f.label "#{t(:form_login)}*" 
+          %td.form_field= f.text_field :username, :id => 'username', :size=>field_size 
+          %td.form_error= msg_login 
+        %tr
+          %td.form_label= f.label "#{t(:form_password)}*" 
+          %td.form_field= f.password_field :password , :id => 'password', :size=>field_size
+          %td.form_error= msg_password 
+        %tr
+          %td.form_label= f.label "#{t(:form_password_confirmation)}*", :class=>"label_usuario" 
+          %td.form_field= f.password_field :password_confirmation , :id => 'password_confirmation', :size=>field_size
+          %td.form_e
+        %tr
+          %td.form_label= f.label "#{t(:form_email)}*" 
+          %td.form_field= f.text_field :email, :id => 'email', :size=>field_size 
+          %td.form_error= msg_email 
+        %tr
+          %td.form_label= f.label "#{t(:form_email_confirmation)}*", :class=>"label_usuario" 
+          %td.form_field= f.text_field  :email_confirmation ,:id => 'email_confirmation', :size=>field_size
+          %td.form_e
+        %tr
+          %td.form_label= f.label "#{t(:form_alternate_email)}", :class=>"label_usuario"
+          %td.form_field= f.text_field :alternate_email, :size=>field_size 
+          %td.form_error= msg_alternate_email 
+  .block_wrapper
+    .block_title
+      %h2= t(:new_user_contact_data)
+    .block_content
+      %table.form_user_table
+        %tr
+          %td.form_label= f.label :address 
+          %td.form_field{:colspan => "3"}= f.text_field :address , :id => 'address', :size=>field_size
+          %td.form_error
+        %tr
+          %td.form_label= f.label :address_number 
+          %td.form_field= f.text_field :address_number , :id => 'address_number', :size=>10
+          %td.form_label= f.label :address_complement 
+          %td.form_field= f.text_field :address_complement, :id => 'address_complement', :size=>16 
+          %td.form_error
+        %tr
+          %td.form_label= f.label :address_neighborhood 
+          %td.form_field= f.text_field :address_neighborhood, :id => 'address_neighborhood', :size=>10 
+          %td.form_label= f.label :zipcode 
+          %td.form_field= f.text_field :zipcode, :size=>16,:id=>"zipcode" 
+          %td.form_error
+        %tr
+          %td.form_label= f.label :country 
+          %td.form_field= f.text_field :country, :id => 'country', :size=>10 
+          %td.form_label= f.label :state 
+          %td.form_field= f.select :state, ([["AC", "AC"], ["AL", "AL"], ["AP", "AP"],
+                ["AM", "AM"], ["BA", "BA"], ["CE", "CE"], ["DF", "DF"], ["ES", "ES"],
+                ["GO", "GO"], ["MA", "MA"], ["MT", "MT"], ["MS", "MS"], ["MG", "MG"],
+                ["PA", "PA"], ["PB", "PB"], ["PR", "PR"], ["PE", "PE"], ["PI", "PI"],
+                ["RJ", "RJ"], ["RN", "RN"], ["RS", "RS"], ["RO", "RO"], ["RR", "RR"],
+                ["SC", "SC"], ["SP", "SP"], ["SE", "SE"], ["TO", "TO"]]), :include_blank => true
+          %td.form_error
+        %tr
+          %td.form_label= f.label :city 
+          %td.form_field{:colspan => "3"}= f.text_field :city,  :id => 'city', :size=>field_size
+          %td.form_error
+        %tr
+          %td.form_label= f.label :telephone 
+          %td.form_field= f.text_field :telephone, :size=> 10,:id=>"telephone" 
+          %td.form_label= f.label :cell_phone 
+          %td.form_field= f.text_field :cell_phone, :size=>16,:id=>"cell_phone" 
+          %td.form_error
+
+  .block_wrapper
+    .block_title
+      %h2= t(:new_user_other_info)
+    .block_content
+      %table.form_user_table
+        %tr
+          %td.form_label= f.label "#{t(:form_institution)}" 
+          %td.form_field= f.text_field :institution, :id => 'institution',:size=>field_size 
+          %td.form_error= msg_institution 
+
+  .block_wrapper.form_buttons
+    = f.submit t(:confirm), :id=>"confirm", :class=>"solar_button", :alt=> t(:confirm)
+    %input.btn.btn_default{:type => "button", :value => "#{t(:back)}", :onclick => "document.location.href='#{login_path}'"} 
+
+:javascript
+  $(function(){
+    $('#password, #password_confirmation').val('');
+    $('#username').keydown(function(event){
+      $('#username').val($('#username').val().toLowerCase());
+    });
+  });
