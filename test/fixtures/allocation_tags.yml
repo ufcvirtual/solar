@@ -63,3 +63,8 @@ al12:
 al13:
   id: 13
   curriculum_unit_id: 3
+
+## Turma FOR de literatura brasileira
+al14:
+  id: 14
+  group_id: 8

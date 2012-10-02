@@ -112,8 +112,6 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
     get @quimica_tab
     get "/scores/amount_history_access/#{users(:aluno1).id}?#{@from_date.to_param}&#{@until_date.to_param}"
     assert_response :success
-    assert_not_nil assigns(:from_date)
-    assert_not_nil assigns(:until_date)
     assert_not_nil assigns(:student_id)
     assert_not_nil assigns(:amount)
   end
@@ -123,8 +121,6 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
     get @quimica_tab
     get "/scores/amount_history_access/#{users(:aluno1).id}?#{@from_date.to_param}&#{@until_date.to_param}"
     assert_response :success
-    assert_not_nil assigns(:from_date)
-    assert_not_nil assigns(:until_date)
     assert_not_nil assigns(:student_id)
     assert_not_nil assigns(:amount)
   end

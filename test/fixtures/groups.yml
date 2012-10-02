@@ -1,41 +1,47 @@
 g1:
   id: 1
   offer_id: 1
-  code: 'FOR'
+  code: 'IL-FOR'
   status: TRUE
 
 g2:
   id: 2
   offer_id: 2
-  code: 'CAU-A'
+  code: 'TL-CAU'
   status: TRUE
 
 g3:
   id: 3
   offer_id: 3
-  code: 'CAU-B'
+  code: 'QM-CAU'
   status: TRUE
 
 g4:
   id: 4
   offer_id: 4
-  code: 'FOR'
+  code: 'SP-FOR'
   status: TRUE
 
 g5:
   id: 5
   offer_id: 5
-  code: 'CAR-A'
+  code: 'LB-CAR'
   status: TRUE
 
 g6:
   id: 6
   offer_id: 6
-  code: 'FOR'
+  code: 'IL-FOR'
   status: TRUE
 
 g7:
   id: 7
   offer_id: 3
-  code: 'MAR'
+  code: 'QM-MAR'
+  status: TRUE
+
+g8:
+  id: 8
+  offer_id: 6
+  code: 'IL-CAU'
   status: TRUE

@@ -22,44 +22,44 @@ Cenário: Listar cursos matriculados ou disponíveis
   Dado que estou logado com o usuario "user" e com a senha "123456"
   Quando eu clicar no link de conteudo "Matrícula"
   Então eu deverei visualizar a linha de opcao de matricula
-    | UnidadeCurricular             | Categoria                           | Turma  | Matricula       |
-    | Introducao a Linguistica      | Curso Livre                         | FOR    | Cancelar        |
-    | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | CAR-A  | Cancelar pedido |
-    | Quimica I                     | Curso de Graduacao a Distancia      | CAU-B  | Matriculado     |
-    | Teoria da Literatura I        | Curso de Graduacao Presencial       | CAU-A  | Matricular      |
+    | UnidadeCurricular             | Categoria                           | Turma   | Matricula       |
+    | Introducao a Linguistica      | Curso Livre                         | IL-FOR  | Cancelar        |
+    | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | LB-CAR  | Cancelar pedido |
+    | Quimica I                     | Curso de Graduacao a Distancia      | QM-CAU  | Matriculado     |
+    | Teoria da Literatura I        | Curso de Graduacao Presencial       | TL-CAU  | Matricular      |
   E eu nao deverei visualizar a linha de opcao de matricula
-    | UnidadeCurricular             | Categoria                           | Turma  | Matricula   |
-    | Semipresencial sm nvista      | Curso de Pos-Graduacao a Distancia  | FOR    | Matricular  |
+    | UnidadeCurricular             | Categoria                           | Turma   | Matricula   |
+    | Semipresencial sm nvista      | Curso de Pos-Graduacao a Distancia  | SP-FOR  | Matricular  |
 
 Cenário: Pedir cancelamento de matricula
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Matricula"
   Quando eu clicar na opcao "Cancelar" do item de matricula "Introducao a Linguistica"
   Então eu deverei ver a linha de opcao de matricula
-    | UnidadeCurricular             | Categoria                           | Turma  | Matricula       |
-    | Introducao a Linguistica      | Curso Livre                         | FOR    | Matricular      |
-    | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | CAR-A  | Cancelar pedido |
-    | Quimica I                     | Curso de Graduacao a Distancia      | CAU-B  | Matriculado     |
-    | Teoria da Literatura I        | Curso de Graduacao Presencial       | CAU-A  | Matricular      |
+    | UnidadeCurricular             | Categoria                           | Turma   | Matricula       |
+    | Introducao a Linguistica      | Curso Livre                         | IL-FOR  | Matricular      |
+    | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | LB-CAR  | Cancelar pedido |
+    | Quimica I                     | Curso de Graduacao a Distancia      | QM-CAU  | Matriculado     |
+    | Teoria da Literatura I        | Curso de Graduacao Presencial       | TL-CAU  | Matricular      |
 
 Cenário: Pedir matricula em curso disponível
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Matricula"
   Quando eu clicar na opcao "Matricular" do item de matricula "Teoria da Literatura I"
   Então eu deverei ver a linha de opcao de matricula
-    | UnidadeCurricular             | Categoria                           | Turma  | Matricula       |
-    | Introducao a Linguistica      | Curso Livre                         | FOR    | Cancelar        |
-    | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | CAR-A  | Cancelar pedido |
-    | Quimica I                     | Curso de Graduacao a Distancia      | CAU-B  | Matriculado     |
-    | Teoria da Literatura I        | Curso de Graduacao Presencial       | CAU-A  | Cancelar pedido |
+    | UnidadeCurricular             | Categoria                           | Turma   | Matricula       |
+    | Introducao a Linguistica      | Curso Livre                         | IL-FOR  | Cancelar        |
+    | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | LB-CAR  | Cancelar pedido |
+    | Quimica I                     | Curso de Graduacao a Distancia      | QM-CAU  | Matriculado     |
+    | Teoria da Literatura I        | Curso de Graduacao Presencial       | TL-CAU  | Cancelar pedido |
 
 Cenário: Cancelar pedido de matricula
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Matricula"
   Quando eu clicar na opcao "Cancelar pedido" do item de matricula "Literatura Brasileira I"
   Então eu deverei ver a linha de opcao de matricula
-    | UnidadeCurricular             | Categoria                           | Turma  | Matricula       |
-    | Introducao a Linguistica      | Curso Livre                         | FOR    | Cancelar        |
-    | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | CAR-A  | Matricular      |
-    | Quimica I                     | Curso de Graduacao a Distancia      | CAU-B  | Matriculado     |
-    | Teoria da Literatura I        | Curso de Graduacao Presencial       | CAU-A  | Matricular      |
+    | UnidadeCurricular             | Categoria                           | Turma   | Matricula       |
+    | Introducao a Linguistica      | Curso Livre                         | IL-FOR  | Cancelar        |
+    | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | LB-CAR  | Matricular      |
+    | Quimica I                     | Curso de Graduacao a Distancia      | QM-CAU  | Matriculado     |
+    | Teoria da Literatura I        | Curso de Graduacao Presencial       | TL-CAU  | Matricular      |

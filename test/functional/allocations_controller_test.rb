@@ -97,8 +97,16 @@ class AllocationsControllerTest < ActionController::TestCase
     assert_select 'td', {:html => "Cancelado"}
   end
 
-  test "mudar aluno de turma" do
-    pending "mudar aluno de turma"
-  end
+  # test "mudar aluno de turma" do
+
+  #   get :index
+  #   assert_response :success
+
+  #   @allocations = assigns(:allocations)
+  #   assert_not_nil @allocations
+
+  #   raise "#{@allocations}"
+
+  # end
 
 end

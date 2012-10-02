@@ -70,14 +70,12 @@ class Assignment < ActiveRecord::Base
   # Recupera as atividades de determinado tipo de uma turma e informações da situação de determinado aluno nela
   ##
   def self.student_assignments_info(class_id, student_id, type_assignment)
-
     assignments = Assignment.all(:joins => [:allocation_tag, :schedule], :conditions => ["allocation_tags.group_id = #{class_id} AND assignments.type_assignment = #{type_assignment}"],
      :select => ["assignments.id", "schedule_id", "schedules.end_date", "name", "enunciation", "type_assignment"]) #atividades da turma do tipo escolhido
   
     assignments_grades, groups_ids, has_comments, situation = [], [], [], [] # informações da situação do aluno
 
     assignments.each_with_index do |assignment, idx|
-
       student_group = (assignment.type_assignment == Group_Activity) ? (GroupAssignment.first(:include => [:group_participants], :conditions => ["group_participants.user_id = #{student_id} 
         AND group_assignments.assignment_id = #{assignment.id}"])) : nil #grupo do aluno
       user_id = (assignment.type_assignment == Group_Activity) ? nil : student_id #id do aluno
@@ -86,7 +84,6 @@ class Assignment < ActiveRecord::Base
       assignments_grades[idx] = send_assignment.nil? ? nil : send_assignment.grade #se tiver send_assignment, tenta pegar nota
       has_comments[idx] = send_assignment.nil? ? nil :  !(send_assignment.assignment_comments.empty? and send_assignment.comment.blank?) #verifica se há comentários para o aluno
       situation[idx] = Assignment.assignment_situation_of_student(assignment.id, student_id)
-
     end
 
     return {"assignments" => assignments, "groups_ids" => groups_ids, "assignments_grades" => assignments_grades, "has_comments" => has_comments, "situation" => situation}
