@@ -704,8 +704,8 @@
       save: Salvar
       cancel: Cancelar
     files:
-      remove_file: Remover arquivo
-      recover_file: Recuperar arquivo
+      remove_file: Remover arquivo %{file_name}
+      recover_file: Recuperar arquivo %{file_name}
       sent_by: Enviado por
       size: Tamanho
       download_file: Baixar arquivo %{file_name}

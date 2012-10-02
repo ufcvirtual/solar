@@ -547,8 +547,8 @@
       save: Save
       cancel: Cancel
     files:
-      remove_file: Remove file
-      recover_file: Recover file
+      remove_file: Remove file %{file_name}
+      recover_file: Recover file %{file_name}
       sent_by: Sent by
       size: Size
       download_file: Download file %{file_name}
