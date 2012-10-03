@@ -415,8 +415,8 @@ res68:
 res69:
   id: 69
   controller: 'allocation_tag'
-  action: 'index'
-  description: 'Acompanhamento geral de todos os alunos da turma - verificacao de relacao com turma'
+  action: 'related_with_allocation_tag'
+  description: 'Verificacao relacao com a allocation_tag passada'
 
 # Edicao de pedidos de matriculas
 res70:
