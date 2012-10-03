@@ -42,11 +42,11 @@
     - else
       .block_content.block_content_text= t(:itens_not_found)
 
--# Atividades em grupo
+/ Atividades em grupo
 .block_wrapper
   .block_title
     %h2
-      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
+      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class => 'block_title_icon'
       =t :group_assignments, :scope => [:assignment, :information]
   .block_content
     - unless @group_assignments_info["assignments"].empty?
@@ -81,10 +81,7 @@
                         %div
                           = t(:participants, :scope => [:assignment, :group_assignments])
                           = ":" 
-                          - group.group_participants.each do |participant|
-                            = participant.user.name
-                            - unless participant == group.group_participants.last
-                              = ","
+                          = group.group_participants.map(&:user).map(&:name).sort.join(', ')
                       - else
                         %div= t(:student_with_no_group, :scope => [:assignment, :notifications])
                     .more_or_less
@@ -105,7 +102,7 @@
     - else
       .block_content.block_content_text= t(:itens_not_found)
 
--# Área Pública
+/ Área Pública
 .block_wrapper
   .block_title
     %h2

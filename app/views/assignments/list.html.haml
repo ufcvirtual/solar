@@ -3,7 +3,7 @@
     %h2
       = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
       =t :individual_assignments, :scope => [:assignment, :information]
-  -# Atividades individuais
+  / Atividades individuais
   .block_content
     - unless @individual_activities.nil? or @individual_activities.empty?
       %table.tb_list
@@ -28,7 +28,7 @@
     %h2
       = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
       =t :group_assignments, :scope => [:assignment, :information]
-  -# Atividades em grupo
+  / Atividades em grupo
   .block_content
     - unless @group_activities.nil? or @group_activities.empty?
       %table.tb_list

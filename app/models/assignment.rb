@@ -2,7 +2,9 @@ class Assignment < ActiveRecord::Base
 
   belongs_to :allocation_tag
   belongs_to :schedule
+
   has_one :group, :through => :allocation_tag
+
   has_many :allocations, :through => :allocation_tag
   has_many :assignment_enunciation_files
   has_many :send_assignments
@@ -69,17 +71,17 @@ class Assignment < ActiveRecord::Base
   ##
   # Recupera as atividades de determinado tipo de uma turma e informações da situação de determinado aluno nela
   ##
-  def self.student_assignments_info(class_id, student_id, type_assignment)
-    assignments = Assignment.all(:joins => [:allocation_tag, :schedule], :conditions => ["allocation_tags.group_id = #{class_id} AND assignments.type_assignment = #{type_assignment}"],
-     :select => ["assignments.id", "schedule_id", "schedules.end_date", "name", "enunciation", "type_assignment"]) #atividades da turma do tipo escolhido
+  def self.student_assignments_info(group_id, student_id, type_assignment)
+    assignments = Assignment.all(:joins => [:allocation_tag, :schedule], :conditions => ["allocation_tags.group_id = #{group_id} AND assignments.type_assignment = #{type_assignment}"],
+     :select => ["assignments.id", "schedule_id", "schedules.end_date", "name", "enunciation", "type_assignment"]) # atividades da turma do tipo escolhido
   
     assignments_grades, groups_ids, has_comments, situation = [], [], [], [] # informações da situação do aluno
 
     assignments.each_with_index do |assignment, idx|
       student_group = (assignment.type_assignment == Group_Activity) ? (GroupAssignment.first(:include => [:group_participants], :conditions => ["group_participants.user_id = #{student_id} 
-        AND group_assignments.assignment_id = #{assignment.id}"])) : nil #grupo do aluno
-      user_id = (assignment.type_assignment == Group_Activity) ? nil : student_id #id do aluno
-      groups_ids[idx] = (student_group.nil? ? nil : student_group.id) #se aluno estiver em grupo, recupera id
+        AND group_assignments.assignment_id = #{assignment.id}"])) : nil
+      user_id = (assignment.type_assignment == Group_Activity) ? nil : student_id
+      groups_ids[idx] = (student_group.nil? ? nil : student_group.id) # se aluno estiver em grupo, recupera id deste
       send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignment.id, user_id, groups_ids[idx])
       assignments_grades[idx] = send_assignment.nil? ? nil : send_assignment.grade #se tiver send_assignment, tenta pegar nota
       has_comments[idx] = send_assignment.nil? ? nil :  !(send_assignment.assignment_comments.empty? and send_assignment.comment.blank?) #verifica se há comentários para o aluno
@@ -104,5 +106,18 @@ class Assignment < ActiveRecord::Base
     end
     return (class_responsible or (student_of_class and can_access))
   end
+
+
+  ##
+  # Retorna apenas os alunos, daquela atividade, que não estão em nenhum grupo
+  ##
+  def students_without_groups
+    students_in_class   = Assignment.list_students_by_allocations(self.allocation_tag_id).map(&:id)
+    students_with_group = self.group_assignments.map(&:group_participants).flatten.map(&:user_id)
+    students            = [students_in_class - students_with_group].flatten.compact.uniq
+
+    return students.empty? ? [] : User.select('id, name').find(students)
+  end
+
 
 end
