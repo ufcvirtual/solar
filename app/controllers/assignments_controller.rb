@@ -236,13 +236,14 @@ class AssignmentsController < ApplicationController
           raise CanCan::AccessDenied if group.nil? # turma não existe
           authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(group.id, current_user.id) # verifica se pode acessar turma
       end
-      file_path = file.attachment.path # caminho do arquivo
+      file_path = file.attachment.path
+      file_name = file.attachment_file_name unless file.nil?
     end
 
     # verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
     raise CanCan::AccessDenied unless (assignment.nil? or send_assignment.nil? or assignment.user_can_access_assignment(current_user.id, send_assignment.user_id, send_assignment.group_assignment_id))
     redirect = request.referer.nil? ? root_url(:only_path => false) : request.referer
-    download_file(redirect, file_path)
+    download_file(redirect, file_path, file_name)
   end
 
   ##

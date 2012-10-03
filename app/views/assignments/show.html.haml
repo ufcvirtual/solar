@@ -219,17 +219,15 @@
             %td{:class => ["forum_post_content comment_#{comment.id}", "assignment_comment"], :colspan => "2"}
               .forum_post_inner_content= comment.comment
               .forum_post_attachment
-                %h3= t(:attached_files, :scope => [:assignment, :files])
-                %ul.comments_files_div
-                  - unless comment.comment_files.empty?
+                - unless comment.comment_files.empty?
+                  %h3= t(:attached_files, :scope => [:assignment, :files])
+                  %ul.comments_files_div
                     - comment.comment_files.each do |comment_file|
                       %li
                         = link_to image_tag(icon_attachment(comment_file.attachment_file_name)), download_files_assignments_path(:assignment_id => @assignment.id, :file_id => comment_file.id, :student_id => @student_id, :group_id => @group_id, :type => "comment"), {:class => "file_icon", :alt => t(:download_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files])}
                         = link_to comment_file.attachment_file_name, download_files_assignments_path(:assignment_id => @assignment.id, :file_id => comment_file.id, :student_id => @student_id, :group_id => @group_id, :type => "comment"), {:class => "link_content"}
                         .assignment_files_info= l(comment_file.attachment_updated_at, :format => :files)
                         .assignment_files_info= format('%.2f KB', comment_file.attachment_file_size/1024.0)
-                  - else
-                    = '-'
                 .portfolio_comment_button
                   - if can? :remove_comment, comment and can? :remove_comment, @assignment
                     - btn_remove = assignment_in_time?(@assignment) ? "btn btn_caution" : "btn btn_disabled"
