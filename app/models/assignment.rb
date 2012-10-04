@@ -10,6 +10,7 @@ class Assignment < ActiveRecord::Base
   has_many :send_assignments
   has_many :group_assignments
 
+  has_many :group_participants, :through => :group_assignments
 
   ##
   # Recupera situação do aluno na atividade
