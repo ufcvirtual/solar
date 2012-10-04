@@ -2,7 +2,6 @@ sa1:
   id: 1
   assignment_id: 3 # quimica I - atividade III
   user_id: 7
-  comment: "Olá, alunos"
   grade: 6.3
 
 sa2:

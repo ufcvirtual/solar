@@ -1,8 +1,8 @@
--# classe utilizada em botões que podem ou não estar desabilitados
+/ classe utilizada em botões que podem ou não estar desabilitados
 - btn_class        = assignment_in_time?(@assignment) ? "btn btn_main" : "btn btn_disabled"
 - btn_cancel_class = assignment_in_time?(@assignment) ? "btn btn_caution" : "btn btn_disabled"
 
--# Descricao da atividade 
+/ Descricao da atividade 
 .block_wrapper
   .block_title
     %h2
@@ -25,7 +25,7 @@
           %td.center= l(@assignment.schedule.start_date, :format => :files)
           %td.center= l(@assignment.schedule.end_date, :format => :files)
 
--# Arquivos enviados pelo professor
+/ Arquivos enviados pelo professor
 .block_wrapper
   .block_title
     %h2
@@ -56,7 +56,7 @@
     - else
       .portfolio_div_padding= t(:itens_not_found)
 
--# Participantes do grupo
+/ Participantes do grupo
 - if @assignment.type_assignment == Group_Activity
   - unless @group.nil?
     .block_wrapper
@@ -78,7 +78,7 @@
         - else
           .portfolio_div_padding= t(:itens_not_found)
 
--# Arquivos enviados pelo aluno
+/ Arquivos enviados pelo aluno
 .block_wrapper
   .block_title
     %h2
@@ -114,23 +114,23 @@
                 %td.right= file.user.nick
               %td.center= l(file.attachment_updated_at, :format => :files)
               - if can? :delete_file, @assignment and file.user_id == @user.id
-                %td= button_to t(:delete, :scope => [:assignment, :files]), delete_file_assignments_path(:assignment_id => params[:id], :file_id => file.id, :type => 'assignment'), :confirm => t(:delete_msg, :scope => [:assignment, :files]), :class => btn_cancel_class, :disabled => !assignment_in_time?(@assignment)
+                %td= button_to t(:delete, :scope => [:assignment, :files]), delete_file_assignments_path(:assignment_id => params[:id], :file_id => file.id, :type => 'assignment'), :confirm => t(:delete_msg, :scope => [:assignment, :files]), :class => btn_cancel_class, :disabled => (not assignment_in_time?(@assignment))
     - else
       .portfolio_div_padding= t(:itens_not_found)
-    -# Enviar arquivos
+    / Enviar arquivos
     - if can? :upload_file, @assignment and @assignment.user_can_access_assignment(@user.id, @student_id, @group_id)
       %div{:style => "background-color:white;padding-top:6px"}
         - group_assignment_id = @group_participants.first.group_assignment_id unless @group_participants.nil?
         = form_for(:assignment, :url => upload_file_assignments_path(:assignment_id => @assignment.id, :type => 'assignment')) do |f|
           %p
-            = f.file_field :file, :name => :file, :disabled => !assignment_in_time?(@assignment)
-            = f.submit t(:send), :class => btn_class, :disabled => !assignment_in_time?(@assignment)
+            = f.file_field :file, :name => :file, :disabled => (not assignment_in_time?(@assignment))
+            = f.submit t(:send), :class => btn_class, :disabled => (not assignment_in_time?(@assignment))
           - if assignment_in_time?(@assignment)
             %p.block_content_gray
               = t(:send_file_obs, :scope => [:assignment, :files])
             %p.block_content_gray=raw t(:send_file_text, :scope => [:assignment, :files])
 
--# Área de avaliação
+/ Área de avaliação
 .block_wrapper
   .block_title
     %h2
@@ -138,33 +138,29 @@
       = t(:evaluation, :scope => [:assignment, :evaluation])
     %span.portfolio_title_button
       - if can? :evaluate, @assignment
-        = button_tag t(:evaluate, :scope => [:assignment, :evaluation]), :class => btn_class, :id => "btn_evaluate", :onclick => "javascript:btn_evaluate();", :disabled => !assignment_in_time?(@assignment)
-        = button_tag t(:cancel, :scope => [:assignment, :evaluation]), :class => "btn btn_caution", :id => "btn_cancel_evaluation", :onclick => "javascript:btn_cancel_evaluation();", :disabled => !assignment_in_time?(@assignment)
-        = button_tag t(:save, :scope => [:assignment, :evaluation]), :class => "btn btn_main", :id => "btn_save_evaluation", :disabled => !assignment_in_time?(@assignment)
+        = button_tag t(:evaluate, :scope => [:assignment, :evaluation]), :class => btn_class, :id => "btn_evaluate", :onclick => "javascript:btn_evaluate();", :disabled => (not assignment_in_time?(@assignment))
+        = button_tag t(:cancel, :scope => [:assignment, :evaluation]), :class => "btn btn_caution", :id => "btn_cancel_evaluation", :onclick => "javascript:btn_cancel_evaluation();", :disabled => (not assignment_in_time?(@assignment))
+        = button_tag t(:save, :scope => [:assignment, :evaluation]), :class => "btn btn_main", :id => "btn_save_evaluation", :disabled => (not assignment_in_time?(@assignment))
   .block_content#evaluate_assignment_student
     %table.tb_list#tb_student_assignment{:border => "0",  :cellpadding => "0", :cellspacing => "0", :width => "100%"}
-      - unless @send_assignment.nil? or ((@send_assignment.grade.nil? or @send_assignment.grade.blank?) and (@send_assignment.comment.nil? or @send_assignment.comment.blank?))
+      - unless @send_assignment.nil? or @send_assignment.grade.nil? or @send_assignment.grade.blank?
         %thead
           %tr.lines
             %th{:align => "right", :style => "width:30px"}= t(:grade, :scope => [:assignment, :information])
-            %th= t(:comment, :scope => [:assignment, :comments])
         %tbody
           %tr.lines
             %td= @send_assignment.grade
-            %td= @send_assignment.comment
       - else
         .portfolio_div_padding#no_itens_evaluation_tb= t(:itens_not_found)
     %table.tb_list#tb_student_assignment_evaluate{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%", :style => "display: none"}
       %thead
         %tr.lines
           %th.right{:style => "width:30px"}= t(:grade, :scope => [:assignment, :information])
-          %th= t(:comment, :scope => [:assignment, :comments])
       %tbody
         %tr.lines
           %td= text_field_tag :evaluation_grade, @send_assignment.nil? ? "" : @send_assignment.grade, :size => 3
-          %td= text_area_tag :evaluation_comment, @send_assignment.nil? ? "" : @send_assignment.comment, :rows => 4, :cols => 113
 
--# Área de comentários
+/ Área de comentários
 .block_wrapper
   .block_title
     %h2
@@ -172,7 +168,7 @@
       = t(:comments, :scope => [:assignment, :comments])
     %span.portfolio_title_button
       - if can? :send_comment, AssignmentComment and can? :send_comment, @assignment
-        = button_tag t(:to_comment, :scope => [:assignment, :comments]), :class => btn_class, :id => "btn_comment", :onclick => "javascript:btn_comment();", :disabled => !assignment_in_time?(@assignment)
+        = button_tag t(:to_comment, :scope => [:assignment, :comments]), :class => btn_class, :id => "btn_comment", :onclick => "javascript:btn_comment();", :disabled => (not assignment_in_time?(@assignment))
   .forum_posts_wrapper
     - display_comment = @error_message.nil? ? "display:none" : "display:block"
     .comment_form{:style => "#{display_comment}"}
@@ -231,9 +227,9 @@
                 .portfolio_comment_button
                   - if can? :remove_comment, comment and can? :remove_comment, @assignment
                     - btn_remove = assignment_in_time?(@assignment) ? "btn btn_caution" : "btn btn_disabled"
-                    = button_tag t(:delete, :scope => [:assignment, :comments]), :class => btn_remove, :onclick => "javascript:remove_comment(#{comment.id}, #{@assignment.id});", :disabled => !assignment_in_time?(@assignment)
+                    = button_tag t(:delete, :scope => [:assignment, :comments]), :class => btn_remove, :onclick => "javascript:remove_comment(#{comment.id}, #{@assignment.id});", :disabled => (not assignment_in_time?(@assignment))
                   - if can? :send_comment, comment
-                    = button_tag t(:edit, :scope => [:assignment, :comments]), :class => btn_class + " btn_edit_comment_#{comment.id}", :onclick => "javascript:btn_edit_comment(this, #{comment.id});", :disabled => !assignment_in_time?(@assignment)
+                    = button_tag t(:edit, :scope => [:assignment, :comments]), :class => btn_class + " btn_edit_comment_#{comment.id}", :onclick => "javascript:btn_edit_comment(this, #{comment.id});", :disabled => (not assignment_in_time?(@assignment))
 
               %td{:class => ["forum_post_content", "form_comment_#{comment.id}", "form_comment"], :colspan => "2", :style => "display:none"}
                 = form_for(:assignment_comment, :html => {:id => "comment_form_#{comment.id}", :multipart => true}, :url => send_comment_assignment_path(@assignment.id, :student_id => @student_id, :group_id => @group_id, :comment_id => comment.id)) do |f|
@@ -334,16 +330,14 @@
   $("#btn_save_evaluation").click(function(){
       if (confirm('#{t(:confirm_evaluation, :scope => [:assignment, :evaluation])}')){
 
-      var evaluation_grade    = ''+$("#evaluation_grade").attr('value')+'';
-      var evaluation_comment  = $("#evaluation_comment").attr('value');
-      var url                 = '#{evaluate_assignment_path(@assignment.id)}';
+      var evaluation_grade = ''+$("#evaluation_grade").attr('value')+'';
+      var url              = '#{evaluate_assignment_path(@assignment.id)}';
 
       $.ajax({
         url: url,
         type: 'POST',
-        data:  {'grade': evaluation_grade, 'comment': evaluation_comment, 'student_id': student_id, 'group_id': group_id},
+        data:  {'grade': evaluation_grade, 'student_id': student_id, 'group_id': group_id},
         success: function(data) {
-          console.log(data);
           if (data.success == false) {
             flash_message(data.flash_msg, data.flash_class);
             if (data.cancel == true) {

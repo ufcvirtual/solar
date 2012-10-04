@@ -66,7 +66,7 @@ module AssignmentsHelper
   def assignment_participant_info(student_id, assignment_id)
     situation               = Assignment.assignment_situation_of_student(assignment_id, student_id)
     send_assignment         = SendAssignment.find_by_assignment_id_and_user_id(assignment_id, student_id)
-    have_comments           = send_assignment.nil? ? false : (!send_assignment.comment.nil? or !send_assignment.assignment_comments.empty?)
+    have_comments           = send_assignment.nil? ? false : (not send_assignment.assignment_comments.empty?)
     grade                   = (send_assignment.nil? or send_assignment.grade.nil?) ? '-' : send_assignment.grade
     send_assignment_files   = send_assignment.nil? ? [] : send_assignment.assignment_files
     file_delivery_date      = (send_assignment.nil? or send_assignment_files.empty?) ? '-' : send_assignment_files.first.attachment_updated_at.strftime("%d/%m/%Y") 

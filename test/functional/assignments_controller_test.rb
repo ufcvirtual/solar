@@ -227,7 +227,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   # Perfil com permissao e usuario com acesso
   test "permitir avaliar atividade individual para usuario com permissao" do
     sign_in users(:professor)
-    post(:evaluate, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :grade => 7, :comment => "comentario5"})
+    post(:evaluate, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :grade => 7})
     assert_response :success
     assert_template :evaluate_assignment_div
   end
@@ -235,7 +235,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   # Perfil com permissao e usuario sem acesso
   test "nao permitir avaliar atividade individual para usuario com permissao e sem acesso" do
     sign_in users(:professor)
-    post(:evaluate, {:id => assignments(:a10).id, :student_id => users(:aluno1).id, :grade => 7, :comment => "comentario6"})
+    post(:evaluate, {:id => assignments(:a10).id, :student_id => users(:aluno1).id, :grade => 7})
     assert_response :redirect
     assert_redirected_to({:controller => :home})
     assert_equal( flash[:alert], I18n.t(:no_permission) )
@@ -244,7 +244,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   # Perfil sem permissao e usuario com acesso
   test "nao permitir avaliar atividade individual para usuario sem permissao e com acesso" do
     sign_in users(:aluno1)
-    post(:evaluate, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :grade => 10, :comment => "comentario7"})
+    post(:evaluate, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :grade => 10})
     assert_response :redirect
     assert_redirected_to({:controller => :home})
     assert_equal( flash[:alert], I18n.t(:no_permission) )

@@ -84,7 +84,7 @@ class Assignment < ActiveRecord::Base
       groups_ids[idx] = (student_group.nil? ? nil : student_group.id) # se aluno estiver em grupo, recupera id deste
       send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignment.id, user_id, groups_ids[idx])
       assignments_grades[idx] = send_assignment.nil? ? nil : send_assignment.grade #se tiver send_assignment, tenta pegar nota
-      has_comments[idx] = send_assignment.nil? ? nil :  !(send_assignment.assignment_comments.empty? and send_assignment.comment.blank?) #verifica se há comentários para o aluno
+      has_comments[idx] = send_assignment.nil? ? nil :  (not send_assignment.assignment_comments.empty?) # verifica se há comentários para o aluno
       situation[idx] = Assignment.assignment_situation_of_student(assignment.id, student_id)
     end
 

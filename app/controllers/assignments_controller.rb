@@ -120,15 +120,13 @@ class AssignmentsController < ApplicationController
   # Avalia trabalho do aluno / grupo
   ##
   def evaluate
-    raise "#{params}"
     student_id = (params[:student_id].nil? or params[:student_id].blank?) ? nil : params[:student_id]
     group_id   = (params[:group_id].nil? or params[:group_id].blank?) ? nil : params[:group_id]
     grade      = params['grade'].blank? ? params['grade'] : params['grade'].tr(',', '.').to_f 
-    comment    = params['comment']
     begin
       raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment_in_time?(@assignment) # verifica se está no prazo
       @send_assignment = SendAssignment.find_or_create_by_assignment_id_and_group_assignment_id_and_user_id(@assignment.id, group_id, student_id)
-      @send_assignment.update_attributes!(:grade => grade, :comment => comment)
+      @send_assignment.update_attributes!(:grade => grade)
       respond_to do |format|
         format.html { render 'evaluate_assignment_div', :layout => false }
       end
