@@ -5,6 +5,8 @@ class AllocationTag < ActiveRecord::Base
   belongs_to :offer
   belongs_to :group
 
+  has_many :offers, :through => :curriculum_unit
+
   has_many :allocations
   has_many :lessons
   has_many :discussions
