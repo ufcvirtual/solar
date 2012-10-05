@@ -21,18 +21,8 @@ class Post < ActiveRecord::Base
     (self.level < Discussion_Post_Max_Indent_Level)
   end
 
-  def self.recent_by_discussions(discussions, limit = 0, content_size = 255)
-    query = <<SQL
-        SELECT id, user_id, discussion_id, profile_id,
-               substring("content" from 0 for #{content_size}) AS content,
-               created_at, updated_at, parent_id
-          FROM discussion_posts
-         WHERE discussion_id IN (#{discussions})
-         ORDER BY updated_at DESC
-SQL
-
-    query << "LIMIT #{limit}" if limit > 0
-    Post.find_by_sql(query)
+  def self.recent_by_discussions(discussions, limit = nil, content_size = 255)
+    Post.select("substring(\"content\" from 0 for #{content_size}) AS content").select('*').where(discussion_id: discussions).order("updated_at DESC").limit(limit)
   end
 
 end
