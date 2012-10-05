@@ -48,17 +48,104 @@ function btn_new_group(assignment_id, message_empty_group, new_group_message) {
   active_droppable_element(new_group_ul, ".group_participants_manage li", "#false"); // e permite que ele receba participantes
 }
 
+function save_management(url){
+  if (confirm('<%=I18n.t(:save_management, :scope => [:assignment, :group_assignments])%>')){
+
+    var groups_to_save = new Array();
+    // todos os grupos
+    var groups = $(".group_participants_manage ul"); 
+    // todos os nomes digitados nos campos de texto para o nome do grupo
+    var groups_names = $(".rename_group").map(function(){return ''+this.value+''});
+
+    groups.each(function(i){
+
+      // recupera os ids dos participantes do grupo [i]
+      var array_group_students_ids = $('li', groups[i]).map(function(){
+        if(this.id != 'no_students_message'){return ''+this.value+''}
+      });
+
+      var each_group_students_ids = new String();
+
+      // transforma a lista dos ids dos estudantes do grupo em questão e transforma em string (array gera erro ao salvar por ajax)
+      // [1, 2, 3, 4] => ["1 2 3 4"]
+      array_group_students_ids.each(function(j){
+        if(j !=  0){ each_group_students_ids += " "; }
+        if(array_group_students_ids[j] != 0){
+          each_group_students_ids += array_group_students_ids[j];
+        }
+      });
+
+      groups_to_save.push({
+        'group_id'   : $(groups[i]).attr('value'),
+        'group_name' : groups_names[i],
+        'student_ids': each_group_students_ids
+      });
+
+    });
+    // each -> groups
+
+    $.ajax({
+      url: url,
+      type: 'POST',
+      data:  {'groups': groups_to_save, 'deleted_groups_divs_ids': deleted_groups},
+      success: function(data) {
+        // salvou corretamente
+        if (data.success == false) {
+          flash_message(data.flash_msg, data.flash_class);
+        // algum erro
+        }else{
+          // erro de permissão dentro do método
+          if($(".mysolar_portlets_content", data).length != 0){
+            $("#body_wrapper").html(data);
+          // erro na hora de salvar
+          }else{
+            $('.manage_groups').html(data);
+            flash_message('<%= I18n.t(:management_success, :scope => [:assignment, :group_assignments]) %>', 'notice');
+            // redefine o array de grupos excluídos para vazio
+            deleted_groups = new Array();
+          }
+        }
+      }
+    });
+  }
+}
+
+function cancel_management(url){
+  if (confirm("<%= I18n.t(:cancel_management, :scope => [:assignment, :group_assignments]) %>")){
+
+    $.ajax({
+      url: url,
+      type: 'POST',
+      data:  {'btn_cancel': 'true'},
+      success: function(data) {
+        $('.manage_groups').html(data);
+        flash_message('<%= I18n.t(:management_cancel, :scope => [:assignment, :group_assignments]) %>', 'notice');
+        // redefine o array de grupos excluídos para vazio
+        deleted_groups = new Array();
+      }
+    });
+
+  }
+}
+
 // Métodos
+
+function put_empty_message(){
+  // recupera todos os grupos da atividade
+  var all_groups = $('ul');
+  all_groups.each(function(i){
+    var all_participants_each_group = $('li', all_groups[i]);
+    // quando ele estiver vazio, acrescenta uma mensagem informativa
+    if(all_participants_each_group.length == 0){
+      $('<li class="no_students_message"><%= I18n.t(:no_participant, :scope => [:assignment, :group_assignments]) %></li>').appendTo(all_groups[i]);
+    }
+  });
+}
 
 function toggle_management_divs(){
   $('#manage_group_assignment').toggle();
   $('#btn_save_management').toggle();
   $('#btn_cancel_management').toggle();
-}
-
-function undo_btn_manage_groups_divs_changes(){
-  toggle_management_divs();
-  $('.group_assignments_manage_buttons').remove();
 }
 
 function student_mouseover(this_div, tooltip_message){
@@ -91,28 +178,6 @@ function student_mouseout(this_div){
 function group_name_label_to_text_field(){
   var text_field = $('.edit_group_true').fadeIn();
   var label      = $('.group_name_true').hide();
-}
-
-function delete_group(group_div_id, assignment_id, can_manage_group) {
-  // apenas permite deleção se o grupo não tiver arquivos enviados
-  if (can_manage_group){
-    var deleted_div = $('#'+group_div_id);
-    var all_li      = $('li', deleted_div); // todos os "li" de uma "ul" = todos os participantes de um grupo
-
-    all_li.each(function(i){
-      if($(all_li[i]).attr('class').indexOf("no_students_message") == -1){
-        $(all_li[i]).appendTo($('.ul_no_group'));  // remove os participantes do grupo e acrescenta na lista de sem grupo
-        $('.ul_no_group > .no_students_message').remove(); // remove a mensagem de "sem participantes" em "alunos sem grupo"
-      }
-    });
-
-    deleted_div.remove(); // remove o grupo
-
-    if (group_div_id.indexOf('group_new') == -1) { //se não for um novo grupo sendo excluído
-      deleted_groups.push(group_div_id); // acrescenta o id da div do grupo aos grupos excluídos
-    }
-
-  }
 }
 
 // Drag'n'drop

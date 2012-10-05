@@ -48,8 +48,7 @@ class AssignmentsController < ApplicationController
   ##
   def manage_groups
     deleted_groups_ids      = params['deleted_groups_divs_ids'].blank? ? [] : params['deleted_groups_divs_ids'].collect{ |group| group.tr('_', ' ').split[1] } #"group_2" => 2
-    @students_without_group = @assignment.students_without_groups
-    
+   
     unless params['btn_cancel'] # clicou em "salvar"
       begin
         # verifica se ainda está no prazo
@@ -79,6 +78,7 @@ class AssignmentsController < ApplicationController
           end
 
           @students_without_group = @assignment.students_without_groups
+
           respond_to do |format|
             format.html { render 'group_assignment_content_div', :layout => false }
           end
@@ -88,6 +88,7 @@ class AssignmentsController < ApplicationController
         render :json => { :success => false, :flash_msg => error.message, :flash_class => 'alert' }
       end
     else # clicou em "cancelar"
+      @students_without_group = @assignment.students_without_groups
       respond_to do |format|
         format.html { render 'group_assignment_content_div', :layout => false }
       end

@@ -116,7 +116,6 @@ class Assignment < ActiveRecord::Base
     students_in_class   = Assignment.list_students_by_allocations(self.allocation_tag_id).map(&:id)
     students_with_group = self.group_assignments.map(&:group_participants).flatten.map(&:user_id)
     students            = [students_in_class - students_with_group].flatten.compact.uniq
-
     return students.empty? ? [] : User.select('id, name').find(students)
   end
 
