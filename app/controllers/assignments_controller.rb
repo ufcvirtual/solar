@@ -287,7 +287,13 @@ class AssignmentsController < ApplicationController
         when 'public'
           file = PublicFile.find(params[:file_id])
           raise CanCan::AccessDenied unless file.user_id == current_user.id
-          file.delete_public_file
+
+          if file.delete
+            File.delete(file.attachment.path) if File.exist?(file.attachment.path)
+          else
+            raise t(:error_delete, :scope => [:assignment, :files])
+          end
+
         when 'assignment'
           assignment = Assignment.find(params[:assignment_id])
           authorize! :delete_file, assignment

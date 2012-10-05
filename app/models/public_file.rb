@@ -16,22 +16,6 @@ class PublicFile < ActiveRecord::Base
   default_scope :order => 'attachment_updated_at DESC'
 
   ##
-  # Deleta arquivo publico
-  ##
-  def delete_public_file
-    begin
-      file = "#{::Rails.root.to_s}/media/assignment/public_area/#{id}_#{attachment_file_name}" #recupera arquivo
-      if delete #se deletar arquivo da base de dados com sucesso
-        File.delete(file) if File.exist?(file) #deleta arquivo do servidor
-      else
-        flash[:alert] = t(:error_delete, :scope => [:assignment, :files])
-      end
-    rescue Exception => error
-      flash[:alert] = error.message
-    end
-  end
-
-  ##
   # Arquivos da area publica
   ##
   def self.all_by_class_id_and_user_id(class_id, user_id)
