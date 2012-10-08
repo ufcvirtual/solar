@@ -15,7 +15,7 @@ class  PublicFileTest < ActiveSupport::TestCase
 
   test "remove arquivo publico" do
     assert_difference("PublicFile.count", -1) do
-      public_files(:pf4).delete_public_file
+      public_files(:pf4).delete
     end
   end
 
