@@ -107,6 +107,7 @@ class AssignmentsController < ApplicationController
     @group_id        = params[:group_id].nil? ? nil : params[:group_id] 
     @group           = GroupAssignment.find(params[:group_id]) unless @group_id.nil? # grupo
     @send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(@assignment.id, @student_id, @group_id)
+    @situation       = Assignment.assignment_situation_of_student(@assignment.id, @student_id, @group_id)
     @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  # arquivos que fazem parte da descrição da atividade
 
     raise CanCan::AccessDenied unless @assignment.user_can_access_assignment(current_user.id, @student_id, @group_id)
@@ -121,13 +122,14 @@ class AssignmentsController < ApplicationController
   # Avalia trabalho do aluno / grupo
   ##
   def evaluate
-    student_id = (params[:student_id].nil? or params[:student_id].blank?) ? nil : params[:student_id]
-    group_id   = (params[:group_id].nil? or params[:group_id].blank?) ? nil : params[:group_id]
-    grade      = params['grade'].blank? ? params['grade'] : params['grade'].tr(',', '.').to_f 
+    @student_id = (params[:student_id].nil? or params[:student_id].blank?) ? nil : params[:student_id]
+    @group_id   = (params[:group_id].nil? or params[:group_id].blank?) ? nil : params[:group_id]
+    grade       = params['grade'].blank? ? params['grade'] : params['grade'].tr(',', '.') 
     begin
       raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment_in_time?(@assignment) # verifica se está no prazo
-      @send_assignment = SendAssignment.find_or_create_by_assignment_id_and_group_assignment_id_and_user_id(@assignment.id, group_id, student_id)
+      @send_assignment = SendAssignment.find_or_create_by_assignment_id_and_group_assignment_id_and_user_id(@assignment.id, @group_id, @student_id)
       @send_assignment.update_attributes!(:grade => grade)
+      @situation       = Assignment.assignment_situation_of_student(@assignment.id, @student_id, @group_id)
       respond_to do |format|
         format.html { render 'evaluate_assignment_div', :layout => false }
       end

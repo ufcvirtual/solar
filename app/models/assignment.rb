@@ -15,13 +15,12 @@ class Assignment < ActiveRecord::Base
   ##
   # Recupera situação do aluno na atividade
   ##
-  def self.assignment_situation_of_student(assignment_id, student_id)
-
+  def self.assignment_situation_of_student(assignment_id, student_id, group_id = nil)
     assignment = Assignment.find(assignment_id)
     student_group = (assignment.type_assignment == Group_Activity) ? (GroupAssignment.first(:include => [:group_participants], :conditions => ["group_participants.user_id = #{student_id} 
-      AND group_assignments.assignment_id = #{assignment.id}"])) : nil #grupo do aluno
-    user_id = (assignment.type_assignment == Group_Activity) ? nil : student_id #id do aluno
-    group_id = (student_group.nil? ? nil : student_group.id) #se aluno estiver em grupo, recupera id
+      AND group_assignments.assignment_id = #{assignment.id}"])) : nil unless student_id.nil?
+    user_id = (assignment.type_assignment == Group_Activity) ? nil : student_id
+    group_id = (student_group.nil? ? group_id : student_group.id) # se aluno estiver em grupo, recupera id
     send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignment_id, user_id, group_id)
 
     if assignment.schedule.start_date > Date.current()

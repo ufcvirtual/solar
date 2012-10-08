@@ -2578,12 +2578,27 @@ td.td_student a {color: #2a538d;}
     padding: 5px;
 }
 
-.portfolio_title_button, .portfolio_comment_button{
+.assignment_comment_form{
+    width: 100%;
+    font-family:'PT Sans', sans-serif;
+    font-size: 10pt;
+    vertical-align: top;
+}
+
+.assignment_inner_content{
+    background-color: #F5F8FB;
+    word-wrap: break-word;
+    width: 100%;
+    padding: 5px 5px 0px 5px;
+    min-height: 27px;
+}
+
+.portfolio_title_button, .portfolio_comment_button, #btn_cancel_evaluation, #btn_save_evaluation, #btn_evaluate{
     float: right;
 }
 
 .portfolio_comment_button{
-    margin-top: 8px;
+    margin-right: 10px;
 }
 
 .comments_files{
@@ -2609,15 +2624,41 @@ td.td_student a {color: #2a538d;}
     text-align: center;
 }
 
-#btn_cancel_evaluation, #btn_save_evaluation, #btn_cancel_management, #btn_save_management, [class^="students_import_"], [class^="edit_group_"]{
+#btn_cancel_evaluation, #btn_save_evaluation, #btn_cancel_management, #btn_save_management, [class^="students_import_"], [class^="edit_group_"], 
+.upload_assignment_files, .student_assignment_evaluation, .comments_files_div .btn.btn_default.recover_file, #btn_cancel_comment, #btn_save_comment_new{
     display:none;
 }
 
-.clock_icon{
-    width:70px;
+.link_upload_file{
+    margin-left: 1%;
 }
 
-.assignment_files_info{
+.image_upload_file{
+    margin-left: 34%;   
+}
+
+.assignment_inner_content.upload_files{
+    border-top: solid #B4B2B1 1px;
+    padding-top: 10px;
+}
+
+.disabled.link_upload_file{
+    text-decoration: line-through;
+}
+
+.upload_assignment_files{
+    padding: 5px 15px 5px 15px;
+}
+
+.date_column, .student_assignment_evaluate{
+    text-align: center;
+}
+
+.date_column{
+    width:70px;
+}
+    
+.assignment_files_info, .assignment_comment_date{
     font-family: 'PT Sans', sans-serif;
     font-weight: normal;
     font-size: 8pt;
@@ -2625,26 +2666,54 @@ td.td_student a {color: #2a538d;}
     font-style: italic;
     color: #888;
     margin-right: 8px;
-    margin-top: 5px;
     margin-left: 10px;
     float: right;
 }
 
-.comments_files_div .btn {
+.assignment_comment_date{
+    float: right;
+}
+
+.assignment_files_info{
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.assignment_user_comment{
+    float:left;
+    padding-left:10px;
+}
+
+.assignment_comment{
+    min-height: 40px;
+    white-space: normal;
+    max-width: 785px;
+    width:100%;
+    margin-top: 5px;
+}
+
+.assignment_comment_head{
+    height: 17px;
+    font-size: 12px;
+    white-space: normal;
+    font-family: 'Ubuntu';
+    width:100%;
+    display: block;
+    text-align:left;
+    border-bottom: 1px solid #003E7A;
+}
+
+.comments_files_div .btn{
     min-width: 10px;
     height: 22px;
     padding: 0 2px;
     vertical-align: bottom;
 }
 
-.comments_files_div .btn img {
+.comments_files_div .btn img{
     width: 20px;
     padding: 0;
     margin: 0;
-}
-
-.comments_files_div .btn.btn_default.recover_file{
-    display: none;
 }
 
 /**
@@ -2739,9 +2808,6 @@ td.td_student a {color: #2a538d;}
 /**
 * Situacao das tarefas
 */
-/*.assignment_corrected, .assignment_sent, td.assignment_as a, .assignment_not_sent, .assignment_not_started, .assignment_send, .assignment_pending, td.assignment_an a {
-    text-decoration: underline;
-}*/
 
 .assignment_corrected {
     white-space: nowrap;

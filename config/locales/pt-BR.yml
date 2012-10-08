@@ -30,6 +30,7 @@
       discussion_post_date: "%d/%m/%Y"
       discussion_post_hour: "%H:%M h"
       simple_day_and_month: "%d/%b"
+      at_date: "%m/%d/%Y às %H:%M"
     am: ''
     pm: ''
 
@@ -681,7 +682,7 @@
       name: Nome
       date: Data
     comments:
-      send_comment: Enviar
+      save: Salvar
       removed_comment: Comentário removido com sucesso
       comments: Comentários
       comments_teacher: Comentários do Professor
@@ -690,7 +691,7 @@
       confirm_comment: Confirma comentário?
       cancel_comment: Cancelar comentário?
       comment_canceled: Comentário cancelado
-      to_comment: Comentar
+      new: Novo
       edit: Editar
       cancel: Cancelar
       delete: Excluir
@@ -700,6 +701,7 @@
       cancel_evaluation: Cancelar avaliação?
       evaluation_canceled: Avaliação cancelada
       evaluate: Avaliar
+      change_grade: Editar nota
       evaluation: Avaliação
       save: Salvar
       cancel: Cancelar
@@ -735,6 +737,8 @@
       sent_on: Enviado em
       attach_another: Anexar outro arquivo
       delete: Excluir
+      must_be_selected: Arquivo deve ser selecionado
+      click_to_add_file: Clique aqui para adicionar arquivo
     notifications:
       student_with_no_group: Você não faz parte de nenhum grupo
       date_range_expired: Prazo expirado

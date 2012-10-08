@@ -26,6 +26,7 @@
       discussion_post_date: "%m/%d/%Y"
       discussion_post_hour: "%H:%M h"
       simple_day_and_month: "%d/%b"
+      at_date: "%m/%d/%Y at %H:%M"
     am: "am"
     pm: "pm"
 
@@ -125,13 +126,13 @@
             attachment_content_type:
               invalid_type: "Invalid file type."
             attachment_file_name:
-              blank: must be choosen
+              blank: must be selected
         public_file:
           attributes:
             attachment_content_type:
               invalid_type: "Invalid file type."
             attachment_file_name:
-              blank: must be choosen
+              blank: must be selected
         comment_file:
           attributes:
             attachment_content_type:
@@ -524,7 +525,7 @@
       name: Name
       date: Date
     comments:
-      send_comment: Enviar
+      save: Save
       removed_comment: Comment removed sucessfully
       comments: Comments
       comments_teacher: Teacher's comments
@@ -533,7 +534,7 @@
       confirm_comment: Confirm comment?
       cancel_comment: Cancel comment?
       comment_canceled: Comment canceled
-      to_comment: Comment
+      new: New
       edit: Edit
       cancel: Cancel
       delete: Delete
@@ -543,6 +544,7 @@
       cancel_evaluation: Cancel evaluation?
       evaluation_canceled: Evaluation canceled
       evaluate: Evaluate
+      change_grade: Change grade
       evaluation: Evaluation
       save: Save
       cancel: Cancel
@@ -578,6 +580,8 @@
       sent_on: Sent on
       attach_another: Attach another file
       delete: Delete
+      must_be_selected: File must be selected
+      click_to_add_file: Click here to add file
     notifications:
       student_with_no_group: You aren't in any group
       date_range_expired: Expired date range

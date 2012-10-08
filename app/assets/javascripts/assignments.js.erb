@@ -1,0 +1,89 @@
+function btn_evaluate(this_div){
+  undo_everything();
+  $(".student_assignment_evaluate").hide();
+  $(".student_assignment_evaluation").fadeIn();
+  $(this_div).hide();
+  $("#btn_cancel_evaluation").fadeIn();
+  $("#btn_save_evaluation").fadeIn();
+}
+
+function undo_btn_evaluate_changes(){
+  $(".student_assignment_evaluation").hide();
+  $(".student_assignment_evaluate").fadeIn(); 
+  $("#btn_cancel_evaluation").hide();
+  $("#btn_save_evaluation").hide();
+  $("#btn_evaluate").fadeIn(); 
+}
+
+function undo_btn_comment_changes(comment_id){
+  if(comment_id == 'new'){
+    $("#btn_comment").fadeIn(); 
+    $(".comment_form").hide();
+    $("#btn_cancel_comment").hide();
+    $("#btn_save_comment_new").hide();
+    no_comments_div();
+  }else{
+    $(".btn_edit_comment_"+comment_id).fadeIn();
+    $(".comment_"+comment_id).fadeIn();
+    $(".form_comment").hide();
+    $(".assignment_comment").fadeIn();
+  }
+}
+
+function undo_everything(){
+  undo_btn_evaluate_changes();
+  undo_btn_comment_changes("new");
+  undo_btn_comment_changes();
+}
+
+function btn_comment(){
+  undo_everything();
+  $("#no_itens_message_comment").remove();
+  $("#btn_comment").hide();
+  $(".comment_form").fadeIn();
+  $("#btn_cancel_comment").fadeIn();
+  $("#btn_save_comment_new").fadeIn();
+  
+}
+
+function btn_edit_comment(this_div, comment_id){
+  undo_everything();
+  $(".comment_"+comment_id).hide();
+  $(".form_comment_"+comment_id).fadeIn(); 
+}
+
+function remove_file(comment_file_id, comment_id, this_div){
+  $(this_div).hide();
+  $("#recover_file"+comment_file_id).fadeIn();
+  $(".link_comment_"+comment_file_id).css("text-decoration", "underline line-through");
+  $(".link_comment_"+comment_file_id).addClass("disabled_file_"+comment_id);
+}
+
+function recover_file(comment_file_id, comment_id, this_div){
+  $(this_div).hide();
+  $("#remove_file_"+comment_file_id).fadeIn();
+  $(".link_comment_"+comment_file_id).css("text-decoration", "underline");
+  $(".link_comment_"+comment_file_id).removeClass("disabled_file_"+comment_id);
+}
+
+function more_files() {
+  $(".more_comment_files_link").remove();
+  $('<div><input id="comment_files_" class="comments_files" name="comment_files[]" type="file"><a href="#" class="more_comment_files_link" onclick="javascript:more_files();" >#{t(:attach_another, :scope => [:assignment, :files])}</a></div>').appendTo($(".comments_files_div"));
+}
+
+function toggle_upload_div(){
+	$('.upload_assignment_files').slideToggle();
+	$('.link_upload_file').toggle(); 
+  $('.image_upload_file').toggle(); 
+
+}
+
+function btn_upload_file(){
+  if($("#assignment_file").val() == ""){
+		alert("<%= I18n.t(:must_be_selected, :scope => [:assignment, :files]) %>"); //translation missing
+		return false;
+	}else{
+		return true;
+	}
+
+}
