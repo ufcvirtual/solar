@@ -325,7 +325,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     end
     assert_response :success
     get(:show, {:id => assignments(:a9).id, :student_id => users(:aluno1).id})    
-    assert_no_tag :tag => "table", :attributes => { :class => "forum_post tb_comments tb_comment_#{assignment_comments(:ac2).id}" }
+    assert_no_tag :tag => "table", :attributes => { :class => "assignment_comment tb_comments tb_comment_#{assignment_comments(:ac2).id}" }
     assert_template :show
   end
 
@@ -342,7 +342,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     # sign_in users(:professor)
     # get(:show, {:id => assignments(:a9).id, :student_id => users(:aluno1).id})    
     # assert_response :success
-    # assert_tag :tag => "table", :attributes => { :class => "forum_post tb_comments tb_comment_#{assignment_comments(:ac2).id}" }
+    # assert_tag :tag => "table", :attributes => { :class => "assignment_comment tb_comments tb_comment_#{assignment_comments(:ac2).id}" }
   end
 
   # Perfil sem permissao e usuario com acesso
@@ -358,7 +358,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in users(:professor)
     get(:show, {:id => assignments(:a9).id, :student_id => users(:aluno1).id})    
     assert_template :show
-    assert_tag :tag => "table", :attributes => { :class => "forum_post tb_comments tb_comment_#{assignment_comments(:ac2).id}" }
+    assert_tag :tag => "table", :attributes => { :class => "assignment_comment tb_comment_#{assignment_comments(:ac2).id} tb_comments" }
   end
 
   ##

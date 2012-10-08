@@ -25,14 +25,6 @@ SQL
     (self.types & type) == type
   end
 
-
-### só usa em show de assignment
-   
-  def self.user_allocation_tag_profile(allocation_tag_id, user_id)
-    profile_name = Allocation.find_by_allocation_tag_id_and_user_id(allocation_tag_id, user_id).profile.name
-    return (profile_name)
-  end
-
   def self.student_from_class?(user_id, allocation_tag_id)
     students_of_class = Assignment.list_students_by_allocations(allocation_tag_id).map(&:id)
     return (students_of_class.include?(user_id))
