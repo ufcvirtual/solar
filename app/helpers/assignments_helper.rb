@@ -1,6 +1,6 @@
 module AssignmentsHelper
 
-	  # recupera o icone correspondente ao tipo de arquivo
+  ## recupera o icone correspondente ao tipo de arquivo
   def icon_attachment(file)
     case File.extname(file)
       when '.pdf'
@@ -40,33 +40,24 @@ module AssignmentsHelper
     end
   end
 
-  # Verifica se uma data esta em um intervalo de outras
+  ## Verifica se uma data esta em um intervalo de outras
   def verify_date_range(start_date, end_date, date)
     return date > start_date && date < end_date
   end
 
-  ##
-  # Verifica período que o responsável pode alterar algo na atividade
-  ##
+  ## Verifica período que o responsável pode alterar algo na atividade
   def assignment_in_time?(assignment)
-    # se responsável
-    if assignment.allocation_tag.is_user_class_responsible?(current_user.id)
+    if assignment.allocation_tag.is_user_class_responsible?(current_user.id) # se responsável
       can_access_assignment = (assignment.closed? and assignment.extra_time?(current_user.id)) #verifica se possui tempo extra
     end
-    if verify_date_range(assignment.schedule.start_date, assignment.schedule.end_date, Time.now) or can_access_assignment
-      return true
-    else
-      return false
-    end
+    return (verify_date_range(assignment.schedule.start_date, assignment.schedule.end_date, Time.now) or can_access_assignment)
   end
 
-  ##
-  # Informações do andamento da atividade de um aluno
-  ##
+  ## Informações do andamento da atividade de um aluno
   def assignment_participant_info(student_id, assignment_id)
     situation               = Assignment.assignment_situation_of_student(assignment_id, student_id)
     send_assignment         = SendAssignment.find_by_assignment_id_and_user_id(assignment_id, student_id)
-    have_comments           = send_assignment.nil? ? false : (not send_assignment.assignment_comments.empty?)
+    have_comments           = ((not send_assignment.nil?) and (not send_assignment.assignment_comments.empty?))
     grade                   = (send_assignment.nil? or send_assignment.grade.nil?) ? '-' : send_assignment.grade
     send_assignment_files   = send_assignment.nil? ? [] : send_assignment.assignment_files
     file_delivery_date      = (send_assignment.nil? or send_assignment_files.empty?) ? '-' : send_assignment_files.first.attachment_updated_at.strftime("%d/%m/%Y") 
