@@ -42,9 +42,6 @@ class Assignment < ActiveRecord::Base
     return situation
   end
 
-  ##
-  # Verifica se período da atividade terminou
-  ##
   def closed?
     self.schedule.end_date < Date.today
   end
@@ -66,7 +63,6 @@ class Assignment < ActiveRecord::Base
     students_of_class = User.select("name, id").find(students_of_class_ids)
     return students_of_class
   end
-
 
   ##
   # Recupera as atividades de determinado tipo de uma turma e informações da situação de determinado aluno nela
@@ -91,9 +87,6 @@ class Assignment < ActiveRecord::Base
     return {"assignments" => assignments, "groups_ids" => groups_ids, "assignments_grades" => assignments_grades, "has_comments" => has_comments, "situation" => situation}
   end
 
-  ##
-  # Verifica se usuário pode acessar o que está tentando - Atividades e arquivos referentes a elas
-  ##
   def user_can_access_assignment(current_user_id, user_id, group_id = nil)
     profile_student   = Profile.select(:id).where("cast(types & '#{Profile_Type_Student}' as boolean)").first
     student_of_class  = !allocations.where(:profile_id => profile_student.id).where(:user_id => current_user_id).empty?
@@ -107,16 +100,11 @@ class Assignment < ActiveRecord::Base
     return (class_responsible or (student_of_class and can_access))
   end
 
-
-  ##
-  # Retorna apenas os alunos, daquela atividade, que não estão em nenhum grupo
-  ##
   def students_without_groups
     students_in_class   = Assignment.list_students_by_allocations(self.allocation_tag_id).map(&:id)
     students_with_group = self.group_assignments.map(&:group_participants).flatten.map(&:user_id)
     students            = [students_in_class - students_with_group].flatten.compact.uniq
     return students.empty? ? [] : User.select('id, name').find(students)
   end
-
 
 end

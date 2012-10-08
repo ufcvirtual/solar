@@ -1,7 +1,6 @@
 = javascript_include_tag "assignments"
 
-- btn_class        = assignment_in_time?(@assignment) ? "btn btn_main" : "btn btn_disabled"
-- btn_edit_class   = assignment_in_time?(@assignment) ? "btn btn_default" : "btn btn_disabled"
+- btn_class, btn_edit_class = assignment_in_time?(@assignment) ? ["btn btn_main", "btn btn_default"] : ["btn btn_disabled", "btn btn_disabled"]
 
 / Área de avaliação
 .block_wrapper.assingment_info
