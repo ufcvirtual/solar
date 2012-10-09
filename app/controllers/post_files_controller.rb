@@ -3,28 +3,23 @@ include FilesHelper
 class PostFilesController < ApplicationController
 
   load_and_authorize_resource :except => [:new, :create]
+  authorize_resource :only => [:new, :create]
 
   def new
-    authorize! :new, PostFile
-
     @post = Post.find(params[:post_id])
     render :layout => false
   end
 
   def create
-    authorize! :create, PostFile
-
     error = false
     begin
-      post = Post.find(params[:post_id])
+      post       = Post.find(params[:post_id])
       discussion = post.discussion
 
       if ((not discussion.closed? or discussion.extra_time?(current_user.id)) and (post.user_id == current_user.id))
-        files = params[:post_file].is_a?(Hash) ? params[:post_file].values : params[:post_file]
+        files = params[:post_file].is_a?(Hash) ? params[:post_file].values : params[:post_file] # {attachment1 => [valores1], attachment2 => [valores2]} => [valores1, valores2]
         [files].flatten.each do |file|
-          @file = PostFile.new({ :attachment => file })
-          @file.discussion_post_id = post.id
-          @file.save!
+          PostFile.create!({ :attachment => file, :discussion_post_id => post.id })
         end
       else
         raise "not_permited"
@@ -54,7 +49,7 @@ class PostFilesController < ApplicationController
 
   def destroy
     error = false
-    post = @post_file.post
+    post  = @post_file.post
 
     begin
       @post_file.delete

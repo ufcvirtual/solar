@@ -16,7 +16,7 @@ class Discussion < ActiveRecord::Base
 
   def user_can_see?(user_id)
     allocation_tags = AllocationTag.find_related_ids(self.allocation_tag_id).join(',')
-    allocations = Allocation.where("allocation_tag_id IN (#{allocation_tags}) AND status = #{Allocation_Activated} AND user_id = #{user_id}")
+    allocations     = Allocation.where("allocation_tag_id IN (#{allocation_tags}) AND status = #{Allocation_Activated} AND user_id = #{user_id}")
 
     (allocations.length > 0) and (self.schedule.start_date <= Date.today)
   end
@@ -42,8 +42,8 @@ class Discussion < ActiveRecord::Base
                t1.parent_id,
                t1.profile_id,
                t1.discussion_id,
-               t3.id AS user_id,
-               t3.nick AS user_nick,
+               t3.id            AS user_id,
+               t3.nick          AS user_nick,
                t1.level,
                t1.content,
                t1.updated_at::timestamp(0)

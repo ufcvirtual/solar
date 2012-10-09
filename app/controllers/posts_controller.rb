@@ -4,12 +4,11 @@ class PostsController < ApplicationController
   before_filter :prepare_for_pagination
 
   load_and_authorize_resource :except => [:index, :show, :create]
+  authorize_resource :only => [:index, :create]
 
   ## GET /discussions/1/posts
   ## GET /discussions/1/posts/20120217/[news, history]/order/asc/limit/10
   def index
-    authorize! :index, Post
-
     @posts, count = [], []
     begin
       @discussion = Discussion.find(params[:discussion_id])
@@ -47,26 +46,22 @@ class PostsController < ApplicationController
 
   ## POST /discussions/:id/posts
   def create
-    authorize! :create, Post
-
     params[:discussion_post][:discussion_id] = params[:discussion_id] unless params[:discussion_post].include?(:discussion_id)
     @post = Post.new(params[:discussion_post])
 
-    allocation_tag_id = Discussion.find(@post.discussion_id).allocation_tag_id
-
-    @post.user_id = current_user.id
-    @post.profile_id = current_user.profiles_with_access_on('create', 'posts', allocation_tag_id, only_id = true).first
-    @post.level = @post.parent.level.to_i + 1 unless @post.parent_id.nil?
+    @post.user_id    = current_user.id
+    @post.profile_id = current_user.profiles_with_access_on('create', 'posts', @post.discussion.allocation_tag_id, only_id = true).first
+    @post.level      = @post.parent.level.to_i + 1 unless @post.parent_id.nil?
 
     respond_to do |format|
       if @post.save
         format.html { redirect_to(discussion_posts_path(Discussion.find(params[:discussion_post][:discussion_id])), :notice => t(:created, :scope => [:posts, :create])) }
         format.xml  { render :xml => @post, :status => :created }
-        format.json  { render :json => {:result => 1, :post_id => @post.id}, :status => :created }
+        format.json { render :json => {:result => 1, :post_id => @post.id}, :status => :created }
       else
         format.html { redirect_to(discussion_posts_path(@post.discussion), :alert => t(:not_created, :scope => [:posts, :create])) }
         format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
-        format.json  { render :json => {:result => 0}, :status => :unprocessable_entity }
+        format.json { render :json => {:result => 0}, :status => :unprocessable_entity }
       end
     end
   end
@@ -77,11 +72,11 @@ class PostsController < ApplicationController
       if @post.update_attributes(params[:discussion_post])
         format.html { redirect_to(discussion_posts_path(@post.discussion), :notice => t(:updated, :scope => [:posts, :update])) }
         format.xml  { head :ok }
-        format.json  { head :ok }
+        format.json { head :ok }
       else
         format.html { redirect_to(discussion_posts_path(@post.discussion), :alert => t(:not_updated, :scope => [:posts, :update])) }
         format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
-        format.json  { render :json => @post.errors, :status => :unprocessable_entity }
+        format.json { render :json => @post.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -98,7 +93,7 @@ class PostsController < ApplicationController
     respond_to do |format|
       format.html { render :json => {:result => :ok} }
       format.xml  { head :ok }
-      format.json  { render :json => {:result => :ok} }
+      format.json { render :json => {:result => :ok} }
     end
   end
 

@@ -13,7 +13,7 @@ module ApplicationHelper
   ## Ver se existe outro lugar melhor para este método.
   def render_tabs
     text = ""
-    tabs_opened = user_session[:tabs][:opened]
+    tabs_opened     = user_session[:tabs][:opened]
     tab_active_name = user_session[:tabs][:active]
 
     unless tabs_opened.nil?
@@ -46,11 +46,11 @@ module ApplicationHelper
 
     unless hash_params.nil?
       # ex: type=index&search=1 2 3
-      hash_params.split("&").each { |item|
+      hash_params.split("&").each do |item| 
         individual_param = item.split("=")
         v = individual_param[1].nil? ? "" : individual_param[1]
         result << '<input id="' << individual_param[0] << '" name="' << individual_param[0] << '" value="' << v << '" type="hidden">'
-      }
+      end
     end
 
     unless (@current_page.eql? "1") # voltar uma página: <<
@@ -58,7 +58,7 @@ module ApplicationHelper
     end
 
     result << ' ' << @current_page << t(:navigation_of) << total_pages << ' '
-    unless (@current_page.eql? total_pages)# avançar uma página: >>
+    unless (@current_page.eql? total_pages) # avançar uma página: >>
       result << '<a class="link_navigation" onclick="$(this).siblings(\'[name=\\\'current_page\\\']\').val(' << ((@current_page.to_i)+1).to_s << ');$(this).parent().submit();">&gt;&gt;</a>'
     end
 
@@ -68,14 +68,14 @@ module ApplicationHelper
 
   ## Renderiza a seleção de turmas
   def render_group_selection(hash_params = nil)
-    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
+    active_tab         = user_session[:tabs][:opened][user_session[:tabs][:active]]
     curriculum_unit_id = active_tab[:url]['id']
-    groups = Group.find_all_by_curriculum_unit_id_and_user_id(curriculum_unit_id, current_user.id)
+    groups             = Group.find_all_by_curriculum_unit_id_and_user_id(curriculum_unit_id, current_user.id)
     # O grupo (turma) a ter seus fóruns exibidos será o grupo selecionado na aba de seleção ('selected_group')
-    group_selected = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
+    group_selected     = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
     # Se o group_select estiver vazio, ou seja, nenhum grupo foi selecionado pelo usuário,
     # o grupo a ter seus fóruns exibidos será o primeiro grupo encontrado para o usuário em questão
-    group_selected = groups.first.id if group_selected.blank?
+    group_selected     = groups.first.id if group_selected.blank?
 
     if (groups.length > 1)
       result = "<form accept-charset='UTF-8' action='' method='#{request.method}' name='groupSelectionForm' style='display:inline'>"
@@ -119,7 +119,7 @@ module ApplicationHelper
   def show_curriculum_unit_selection?(active_tab)
     # Mostrar quando a aba não está no contexto geral e o menu tem o mesmo contexto   
     
-    tab_context = active_tab[:url]['context'] 
+    tab_context     = active_tab[:url]['context'] 
     current_menu_id = user_session[:menu][:current]
    
     if tab_context == Context_General

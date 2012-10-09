@@ -8,7 +8,7 @@
   .block_wrapper
     .block_title
       %h2
-        = image_tag("icon_forum.png", :alt => t(:icon_forum), :class=>'block_title_icon')
+        = image_tag("icon_forum.png", :alt => " ", :class=>'block_title_icon')
         = @discussion.name
     #forum_description.block_content.block_content_text= sanitize @discussion.description
 
@@ -16,9 +16,9 @@
     .block_title.forum_navigation
       %span#forum_new_message
         - if @can_interact
-          %button#button_new_post.btn.btn_default{:type => 'button', :value => t("forum_new_message"), :onclick => "javascript:new_post(this);"}
-            = t("forum_new_message")
-            = image_tag "icon_write.png"
+          = button_tag(:type => 'button', :onclick => "javascript:new_post(this);", :class => "btn btn_default", :id => "button_new_post") do
+            = content_tag(:span, t(:forum_new_message))
+            = content_tag(:span, image_tag("icon_write.png", :alt => " "))
         - else
           #forum_closed= t("forum_closed")
 
@@ -39,7 +39,8 @@
             = form.text_area :content
             .new_post_dialog_buttons
               = form.submit( t(:send), :class => 'btn btn_main' )
-              %input#btn_cancel_post.btn.btn_caution{:type => "button", :onclick => "javascript:cancel_posting();", :value => t(:cancel) } 
+              = button_tag(:type => 'button', :onclick => "javascript:cancel_posting(this);", :class => "btn btn_caution", :id => "btn_cancel_post") do
+                = content_tag(:span, t(:cancel))
 
     .forum_posts_wrapper
       - @posts.each do |post|

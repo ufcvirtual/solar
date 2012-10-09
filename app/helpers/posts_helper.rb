@@ -1,7 +1,7 @@
 module PostsHelper
 
   def post_html(post, display_mode = 'list', can_interact = false)
-    user = post.user
+    user     = post.user
     children = post.children
     editable = ((post.user_id == current_user.id) && (children.count == 0))
 
@@ -51,7 +51,7 @@ HTML
 
     html, html_files =  '', ''
     files.each do |file|
-      link_to_down = (link_to file.attachment_file_name, download_post_post_file_path(post, file))
+      link_to_down   = (link_to file.attachment_file_name, download_post_post_file_path(post, file))
       link_to_remove = (editable and can_interact) ? (link_to (image_tag "icon_delete_small.png", :alt => t(".remove_file")), 
         post_post_file_path(post, file), :confirm => t(".remove_file_confirm"), :method => :delete, :title => t(".remove_file"), 'data-tooltip' => t(".remove_file")) : ''
       html_files << '<li>'
