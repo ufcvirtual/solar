@@ -1,69 +1,23 @@
 class CoursesController < ApplicationController
 
-  load_and_authorize_resource
-  
   def index
-    @courses = Course.find(:all) 
-    respond_to do |format| 
-      format.html # index.html.erb format.xml { render :xml => @posts } end
-    end
-  end
+    # authorize! :index, Course
 
-  def show
-    @course = Course.find(params[:id])
-    
-    respond_to do |format|
+    # recuperando todas as unidades curriculares que o usuario interage
+    al        = current_user.allocations
+    courses_d = al.joins(:course).where(courses: {name: params[:name]}).compact # cursos diretamente
+    courses_a = al.map(&:offer).compact.map(&:course) + al.map(&:group).compact.map(&:course).compact # atraves das associacoes
+    @courses  = [courses_d + courses_a].flatten.compact.uniq
+
+    ## aplicando filtro
+    if params.include?(:search)
+      @courses  = @courses.select {|course| course.name.downcase.include?(params[:search].downcase) or course.code.downcase.include?(params[:search].downcase) }
+    end
+
+    respond_to do |format| 
       format.html
-      format.xml  { render :xml => @course }
-    end
-  end
-
-  def new
-    respond_to do |format|
-      
-      format.html
-      format.xml  { render :xml => @course }
-    end
-  end
-
-  def edit
-    @course = Course.find(params[:id])
-  end
-
-  def create 
-    @course = Course.new(params[:course]) 
-    respond_to do |format| 
-      if @course.save flash[:notice] = 'Post was successfully created.' 
-        format.html { redirect_to(@course) } 
-        format.xml { render :xml => @course, :status => :created, :location => @course } 
-      else format.html { render :action => "new" } 
-        format.xml { render :xml => @course.errors, :status => :unprocessable_entity } 
-      end 
-    end 
-  end
-
-  def update
-    @course = Course.find(params[:id])
-    respond_to do |format| 
-      if @course.update_attributes(params[:course])
-        flash[:notice] = 'Post was successfully updated.' 
-        format.html { redirect_to(@course) } 
-        format.xml { head :ok } 
-      else 
-        format.html { render :action => "edit" } 
-        format.xml { render :xml => @post.errors, :status => :unprocessable_entity } 
-      end 
-    end 
-  end
-  
-
-  def destroy
-    @course = Course.find(params[:id])
-    @course.destroy
-
-    respond_to do |format|
-      format.html #{ redirect_to(users_url, :notice => 'Usuario excluido com sucesso!') }
-      format.xml  { head :ok }
+      format.xml { render xml: @courses }
+      format.json { render json: @courses }
     end
   end
 

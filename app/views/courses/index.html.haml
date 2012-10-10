@@ -1,0 +1,11 @@
+
+%table.tb_list
+  %head
+    %tr.lines
+      %th= t(:code)
+      %th= t(:name)
+  %body
+    - @courses.each do |course|
+      %tr.lines
+        %td= course.code
+        %td= course.name
