@@ -3,7 +3,7 @@ class EnrollmentsController < ApplicationController
   def index
     authorize! :index, Enrollment
 
-    @types = CurriculumUnitType.order("description")
+    @types = CurriculumUnitType.order(:description)
     @student_profile = student_profile
     @offers = []
 

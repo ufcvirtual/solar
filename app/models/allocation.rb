@@ -34,6 +34,9 @@ class Allocation < ActiveRecord::Base
 SQL
 
     self.find_by_sql(query)
+    
+    # Allocation.joins([:allocation_tag => :group], :user).where(profile_id: 1).order("users.name").order("allocations.status")
+
   end
 
   def self.enrollments_of_user(user, profile)
