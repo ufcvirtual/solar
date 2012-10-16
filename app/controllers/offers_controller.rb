@@ -5,16 +5,27 @@ class OffersController < ApplicationController
   before_filter :get_values, :only => [:new, :edit]
 
   def index
-    @offers = Offer.find(:all, :order => 'semester desc')
+    # authorize! :index, Offer
 
-#    return User.find(:all,
-#      :joins => "INNER JOIN user_messages ON users.id = user_messages.user_id",
-#      :select => "users.*",
-#      :conditions => "user_messages.message_id = #{message_id} AND NOT cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)")
+    al                = current_user.allocations
+    my_direct_offers  = al.map(&:offer).compact
+    offer_by_courses  = al.map(&:course).compact.map(&:offer).uniq
+    offer_by_ucs      = al.map(&:curriculum_unit).compact.map(&:offer).uniq
+    offer_by_groups   = al.map(&:group).compact.map(&:offer).uniq
+    @offers           = [my_direct_offers + offer_by_courses + offer_by_ucs + offer_by_groups].flatten.compact.uniq
+
+    if params.include?(:course)
+      @offers = @offers.select { |offer| offer.course_id == params[:course].to_i }
+    end
+
+    if params.include?(:period)
+      @offers = @offers.select { |offer| offer.semester.downcase.include?(params[:period].downcase) }
+    end
 
     respond_to do |format|
-      format.html # index.html.erb
-      #format.xml  { render :xml => @users }
+      format.html
+      format.json { render json: @offers }
+      format.xml { render :xml => @offers }
     end
   end
 

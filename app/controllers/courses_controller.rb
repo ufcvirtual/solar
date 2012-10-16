@@ -4,20 +4,22 @@ class CoursesController < ApplicationController
     # authorize! :index, Course
 
     # recuperando todas as unidades curriculares que o usuario interage
-    al        = current_user.allocations
-    courses_d = al.joins(:course).where(courses: {name: params[:name]}).compact # cursos diretamente
-    courses_a = al.map(&:offer).compact.map(&:course) + al.map(&:group).compact.map(&:course).compact # atraves das associacoes
-    @courses  = [courses_d + courses_a].flatten.compact.uniq
+    al                = current_user.allocations
+    my_direct_courses = al.map(&:course).compact.uniq
+    course_by_period  = al.map(&:offer).compact.map(&:course).uniq
+    course_by_ucs     = al.map(&:curriculum_unit).compact.map(&:course).uniq # apenas cursos ligados a disciplina pela oferta
+    course_by_groups  = al.map(&:group).compact.map(&:course).uniq
+    @courses          = [my_direct_courses + course_by_period + course_by_uc + course_by_groups].flatten.compact.uniq
 
-    ## aplicando filtro
+    # name or code
     if params.include?(:search)
-      @courses  = @courses.select {|course| course.name.downcase.include?(params[:search].downcase) or course.code.downcase.include?(params[:search].downcase) }
+      @courses  = @courses.select { |course| course.name.downcase.include?(params[:search].downcase) or course.code.downcase.include?(params[:search].downcase) }
     end
 
     respond_to do |format| 
       format.html
-      format.xml { render xml: @courses }
       format.json { render json: @courses }
+      format.xml { render xml: @courses }
     end
   end
 

@@ -1,0 +1,13 @@
+
+%table.tb_list
+  %head
+    %tr.lines
+      %th= t(:course)
+      %th= t(:curriculum_unit)
+      %th= t(:period)
+  %body
+    - @offers.each do |offer|
+      %tr.lines
+        %td= offer.course.name
+        %td= offer.curriculum_unit.name
+        %td= offer.semester
