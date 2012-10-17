@@ -1109,22 +1109,12 @@ a.mysolar_top_link{
     padding-bottom: 5px;
 }
 
-/* REMOVER */
-/*
-.mysolar_portlets_agenda {
-    float: right;
-    margin-right: -220px;
-    margin-top: 6px;
-    font-variant: small-caps;
-    text-transform: capitalize;
-}
-.mysolar_portlets_agenda_events {
-    min-width: 262px;
-    max-width: 262px;
-    font-size: 12px;
-}
-*/
 
+#mysolar_curriculum_unit_wrapper li > .disabled{
+    text-decoration: line-through underline;
+    padding-left: 0;
+    /*width: auto;*/
+}
 
 /**
 * Legendas

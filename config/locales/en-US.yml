@@ -273,6 +273,8 @@
   # Unidades curriculares
   my_solar_curriculum_units: "Curriculum Unit"
   my_solar_curriculum_without: "No curriculum unit found."
+  my_solar_uc_without_group: There are no groups
+  my_solar_uc_without_offer: There are no offers
 
   # msg de erro ,ainda no login    #
   login_data_invalid: "Login details incorrect!"

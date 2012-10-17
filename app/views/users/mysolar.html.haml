@@ -1,0 +1,8 @@
+.block_wrapper
+  = render '/portlets/curricular_unit'
+  = render '/portlets/calendar'
+
+#block_locale
+  %ul
+    %li= link_to "English", url_for(:locale => 'en-US')
+    %li= link_to "Português(BR)", url_for(:locale => 'pt-BR')

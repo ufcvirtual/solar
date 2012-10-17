@@ -431,6 +431,8 @@
   # Unidades curriculares
   my_solar_curriculum_units: "Unidade Curricular"
   my_solar_curriculum_without: "Nenhuma unidade curricular encontrada."
+  my_solar_uc_without_group: Não há turmas
+  my_solar_uc_without_offer: Não há ofertas
 
   #       msg de erro ,ainda no login    #
   login_data_invalid: "Dados de login incorretos!"
