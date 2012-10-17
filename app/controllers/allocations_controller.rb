@@ -4,6 +4,22 @@ class AllocationsController < ApplicationController
 
   authorize_resource :except => [:destroy]
 
+  # GET /allocations/designates
+  # GET /allocations/designates.json
+  def new
+=begin    
+    groups = current_user.groups.map(&:id)
+    p = params.select { |k, v| ['offer_id', 'group_id', 'status'].include?(k) }
+    p['group_id'] = (params.include?('group_id') and groups.include?(params['group_id'].to_i)) ? [params['group_id']] : groups.flatten.compact.uniq
+=end
+    @allocations = Allocation.all
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @allocations }
+    end
+  end
+
   # GET /allocations/enrollments
   # GET /allocations/enrollments.json
   def index
@@ -57,7 +73,9 @@ class AllocationsController < ApplicationController
   # POST /allocations
   # POST /allocations.json
   def create
-    if params.include?(:allocation_tag_id) and params.include?(:user_id) and (student_profile != '')
+    profile = (params.include?(:profile_id)) ? params[:profile_id] : student_profile
+
+    if params.include?(:allocation_tag_id) and params.include?(:user_id) and (profile != '')
       if params.include?(:id) # se havia status anterior, reativa
         @allocation = Allocation.find(params[:id])
         @allocation.status = Allocation_Pending_Reactivate
@@ -176,6 +194,21 @@ class AllocationsController < ApplicationController
     end
   end
 
+  def deactivate
+    @allocation = Allocation.find(params[:id])
+    @allocation.status = Allocation_Cancelled
+
+    respond_to do |format|
+      if @allocation.save
+        format.html { redirect_to(designate_url, notice: t(:enrollm_request_message)) }
+        format.json { head :ok }
+      else
+        format.html { redirect_to(designate_url, alert: t(:enrollm_request_message_error)) }
+        format.json { head :error }
+      end
+    end
+  end
+
   def reactivate
     @allocation = Allocation.find(params[:id])
     @allocation.status = Allocation_Pending_Reactivate
@@ -189,7 +222,7 @@ class AllocationsController < ApplicationController
         format.json { head :error }
       end
     end
-  end
+  end  
 
   private
     def status_hash_of_allocation(allocation_status)

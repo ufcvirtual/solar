@@ -476,6 +476,13 @@
   url: "Digite aqui a URL da imagem no campo de texto acima."
   send: "Enviar"
 
+  # página de alocação de usuário
+  designate_title: "Alocação de Usuários"
+  designate_users: "Usuários Alocados"
+  profile: "Perfil"
+  activate: "Ativar"
+  deactivate: "Desativar"
+
   # página de matrícula
   enrollm_search: "Buscar"
   enrollm_search_in: " em "
