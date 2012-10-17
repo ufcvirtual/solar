@@ -17,7 +17,7 @@ class Ability
             LEFT JOIN allocation_tags       AS t5 ON t5.id = t4.allocation_tag_id
            WHERE t4.user_id = #{user.id}
              AND t2.status = TRUE
-             AND t4.status = 1
+             AND t4.status = #{Allocation_Activated}
            GROUP BY t1.id, t3.controller, t3.action, t2.per_id
            ORDER BY 1, 2;"
 
