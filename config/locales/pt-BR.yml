@@ -479,6 +479,7 @@
   # página de alocação de usuário
   designate_title: "Alocação de Usuários"
   designate_users: "Usuários Alocados"
+  new_designate: "Nova Alocação"
   profile: "Perfil"
   activate: "Ativar"
   deactivate: "Desativar"

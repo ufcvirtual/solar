@@ -2,7 +2,6 @@
   = filter
 
 .block_wrapper
-
   %div
     = form_for(:allocations, url: designates_allocations_path, method: :get) do |f|
       = f.hidden_field(:offer_id, {:value => params[:offer_id], :name => :offer_id}) if params.include?(:offer_id)
@@ -10,6 +9,32 @@
 
   .block_title
     %h2= t(:designate_users)
+
+  .block_content
+    %table.tb_list.allocations_list
+      %thead
+        %tr.lines
+          %th{style: 'width:80px'}= t(:profile)
+          %th= t(:name)
+          %th{style: 'width:80px'}= t(:cpf)
+          %th{style: 'width:200px'}= t(:email)
+          %th{style: 'width:100px'}= ""
+      %tbody
+      - unless @allocations.nil? or @allocations.empty?
+        - @allocations.each do |allocation|
+          %tr.lines
+            %td{style: 'width:80px'}= allocation.profile.name
+            %td= allocation.user.name
+            %td{style: 'width:80px'}= allocation.user.cpf
+            %td{style: 'width:200px'}= allocation.user.email
+            %td{style: 'width:100px'}
+              -if allocation.status==Allocation_Activated
+                %input.btn.btn_caution{type: 'button', value: t(:deactivate), :action => :deactivate, :id => allocation.id, :method => :put}
+              -else
+                %input.btn.btn_default{type: 'button', value: t(:activate), :action => :reactivate, :id => allocation.id, :method => :put}
+  
+  .block_title
+    %h2= t(:new_designate)
 
   .block_content
     %table.tb_list
@@ -21,13 +46,6 @@
           %th{style: 'width:200px'}= t(:email)
           %th{style: 'width:100px'}= ""
       %tbody
-      - unless @allocations.nil? or @allocations.empty?
-        - @allocations.each do |allocation|
-          %tr.lines
-            %td= allocation.profile.name
-            %td= allocation.user.name
-            %td= allocation.user.cpf
-            %td= allocation.user.email
-            %td= (allocation.status==Allocation_Activated) ? (button_to t(:deactivate), {:action => :deactivate, :id => allocation.id, :method => :put, :confirm => t(:message_confirm_status), :class => 'btn.active'}) : (button_to t(:activate), {:action => :reactivate, :id => allocation.id, :method => :put, :confirm => t(:message_confirm_status), :class => 'btn'})
+      
   
     

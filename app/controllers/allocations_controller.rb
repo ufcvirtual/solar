@@ -7,12 +7,12 @@ class AllocationsController < ApplicationController
   # GET /allocations/designates
   # GET /allocations/designates.json
   def new
-=begin    
-    groups = current_user.groups.map(&:id)
-    p = params.select { |k, v| ['offer_id', 'group_id', 'status'].include?(k) }
-    p['group_id'] = (params.include?('group_id') and groups.include?(params['group_id'].to_i)) ? [params['group_id']] : groups.flatten.compact.uniq
-=end
-    @allocations = Allocation.all
+    level = (params[:permissions]!="all") ? "responsible" : nil
+
+    @allocations = Allocation.find(:all,
+      :joins => [:profile, :user], 
+      :conditions => ("#{level.nil?}") ? [("not(profiles.types & #{Profile_Type_Student})::boolean and not(profiles.types & #{Profile_Type_Basic})::boolean")] : [("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")],
+      :order => ["users.name","profiles.name"])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -74,6 +74,7 @@ class AllocationsController < ApplicationController
   # POST /allocations.json
   def create
     profile = (params.include?(:profile_id)) ? params[:profile_id] : student_profile
+    status = (params.include?(:status)) ? params[:status] : Allocation_Pending
 
     if params.include?(:allocation_tag_id) and params.include?(:user_id) and (profile != '')
       if params.include?(:id) # se havia status anterior, reativa
@@ -83,8 +84,8 @@ class AllocationsController < ApplicationController
         @allocation = Allocation.new({
           :user_id => params[:user_id],
           :allocation_tag_id => params[:allocation_tag_id],
-          :profile_id => student_profile,
-          :status => Allocation_Pending
+          :profile_id => profile,
+          :status => status
         })
       end
 
