@@ -72,6 +72,7 @@ Solar::Application.routes.draw do
   resources :offers
   resources :scores, :only => [:show, :index]
   resources :courses
+  resources :publishing
 
   mount Ckeditor::Engine => "/ckeditor"
 
