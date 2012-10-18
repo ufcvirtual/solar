@@ -42,10 +42,9 @@ al9:
   id: 9
   group_id: 6
 
-## nao existe oferta com id 7
-# al10:
-#   id: 10
-#   offer_id: 7
+al10:
+  id: 10
+  curriculum_unit_id: 5
 
 ## quimica I
 al11:
@@ -68,3 +67,24 @@ al13:
 al14:
   id: 14
   group_id: 8
+
+## ofertas
+al15:
+  id: 15
+  offer_id: 4
+
+al16:
+  id: 16
+  offer_id: 5
+
+al17:
+  id: 17
+  offer_id: 6
+
+al18:
+  id: 18
+  course_id: 1
+
+al19:
+  id: 19
+  course_id: 2

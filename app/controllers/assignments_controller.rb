@@ -32,7 +32,6 @@ class AssignmentsController < ApplicationController
   # Informações da atividade em grupo escolhida na listagem com a lista dos grupos daquela turma, permitindo seu gerenciamento
   ##
   def information
-    @assignment = Assignment.find(params[:id])
     @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  #arquivos que fazem parte da descrição da atividade
     if @assignment.type_assignment == Group_Activity 
       @groups                 = GroupAssignment.find_all_by_assignment_id(@assignment.id)
