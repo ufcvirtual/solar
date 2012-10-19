@@ -1,0 +1,17 @@
+%table.tb_list
+  %thead
+    %tr.lines
+      %th{style: 'width:100px'}= t(:profile)
+      %th= t(:name)
+      %th{style: 'width:100px'}= t(:cpf)
+      %th{style: 'width:200px'}= t(:email)
+      %th{style: 'width:100px'}= ""
+  %tbody
+  - unless @users.nil?
+    - @users.each do |u|
+      %tr.lines
+        %td= ""
+        %td= u.name
+        %td= u.cpf
+        %td= u.email
+        %td= ""        
