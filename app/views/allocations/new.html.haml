@@ -37,15 +37,19 @@
     %h2= t(:new_designate)
 
   .block_content
-    %table.tb_list
-      %thead
-        %tr.lines
-          %th{style: 'width:100px'}= t(:profile)
-          %th= t(:name)
-          %th{style: 'width:100px'}= t(:cpf)
-          %th{style: 'width:200px'}= t(:email)
-          %th{style: 'width:100px'}= ""
-      %tbody
-      
+    %div
+      ="nome"
+      %input{type: 'text', :id => 'text_search'}
+      %input.btn.btn_default{type: 'button', value: 'busca', :id => 'search' }
+    #search_user.allocations_list
+
   
+:javascript
+  $(function() {
+    $("#search").click(function() {
+      //var url_for = "<%= url_for :controller => :allocations, :action => :search_users %>";
+      var url_for = "/allocations/search_users/";
+      $("#search_user").load(url_for, { data: encodeURIComponent($("#text_search").val()) });
+    })
+  });
     

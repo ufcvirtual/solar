@@ -2,13 +2,14 @@ include AllocationsHelper
 
 class AllocationsController < ApplicationController
 
-  authorize_resource :except => [:destroy]
+  authorize_resource :except => [:destroy, :search_users]
 
   # GET /allocations/designates
   # GET /allocations/designates.json
   def new
     level = (params[:permissions]!="all") ? "responsible" : nil
 
+    @users = ":P"
     @allocations = Allocation.find(:all,
       :joins => [:profile, :user], 
       :conditions => ("#{level.nil?}") ? [("not(profiles.types & #{Profile_Type_Student})::boolean and not(profiles.types & #{Profile_Type_Basic})::boolean")] : [("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")],
@@ -18,6 +19,17 @@ class AllocationsController < ApplicationController
       format.html # index.html.erb
       format.json { render json: @allocations }
     end
+  end
+
+  # metodo chamado por ajax para buscar usuários para alocação
+  def search_users
+    text = URI.unescape(params[:data])
+
+    @users = User.find_by_name(text)
+
+    #@users = User.find(:all, :conditions => ['users.name LIKE ? or users.email LIKE ? or users.cpf LIKE ?', text, text, text])
+puts "\n\n\nusers: \n#{@users}\n\n\n"
+    render :layout => false
   end
 
   # GET /allocations/enrollments
