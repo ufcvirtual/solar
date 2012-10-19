@@ -55,23 +55,52 @@ SQL
     AllocationTag.find(allocation_tag_id).related
   end
 
-  def related
-    at_obj = self.attributes
-    at_obj.delete('id')
-    at = at_obj.select {|k,v| not v.nil? }
+  def related(args = {all: true, lower: false, upper: false, objects: false})
+    option = self.attributes.delete_if {|key, value| key == 'id' or value.nil?}.map {|k,v| k}.first
+    lower, upper = [], []
 
-    atgs = case at.keys.first.to_s
+    case option
       when 'group_id'
-        groups_related(Group.find(at['group_id']))
+        if args[:all] or args[:lower]
+          lower = [self]
+        end
+
+        if args[:all] or args[:upper]
+          group = self.group
+          upper = [group.offer.allocation_tag, group.curriculum_unit.allocation_tag, group.course.allocation_tag]
+        end
       when 'offer_id'
-        offers_related(Offer.find(at['offer_id']), down = true)
+        if args[:all] or args[:lower]
+          lower = [self.offer.groups.map(&:allocation_tag).compact.uniq, self]
+        end
+
+        if args[:all] or args[:upper]
+          offer = self.offer
+          upper = [offer.curriculum_unit.allocation_tag, offer.course.allocation_tag]
+        end
       when 'curriculum_unit_id'
-        curriculum_units_related(CurriculumUnit.find(at['curriculum_unit_id']), down = true)
+        if args[:all] or args[:lower]
+          uc = self.curriculum_unit
+          lower = [uc.offers.map(&:allocation_tag).compact.uniq, uc.groups.map(&:allocation_tag).compact.uniq, self]
+        end
+
+        if args[:all] or args[:upper]
+          upper = [self]
+        end
       when 'course_id'
-        courses_related(Course.find(at['course_id']), down = true)
+        if args[:all] or args[:lower]
+          course = self.course
+          lower = [course.offers.map(&:allocation_tag).compact.uniq, course.groups.map(&:allocation_tag).compact.uniq, self]
+        end
+
+        if args[:all] or args[:upper]
+          upper = [self]
+        end
     end
 
-    [self.id, atgs].flatten.compact.uniq.sort
+    at = (lower + upper).flatten.compact.uniq.sort
+    return at if args[:objects]
+    return at.map(&:id)
   end
 
   def unallocate_user_in_related(user_id)
@@ -100,65 +129,5 @@ SQL
     allocation = Allocation.first(:conditions => ["allocation_tag_id IN (?) AND user_id = #{user_id}", related_allocations])
     return (allocation.nil? ? nil : allocation.allocation_tag)
   end
-
-  private
-
-    ##
-    # Metodos de relacionamento entre allocation_tags
-    ##
-
-    def groups_related(group)
-      offers_related(group.offer)
-    end
-
-    def offers_related(offer, down = false)
-      begin
-        at_offer = [offer.allocation_tag.id]
-      rescue
-        at_offer = []
-      end
-
-      at_groups = AllocationTag.where(:group_id => offer.groups.map(&:id)).map(&:id) if not at_offer.compact.empty? and down
-      at_uc = curriculum_units_related(offer.curriculum_unit)
-      at_c = courses_related(offer.course)
-
-      [at_groups] + at_offer + [at_uc] + [at_c]
-    end
-
-    def curriculum_units_related(curriculum_unit, down = false)
-      begin
-        at_uc = [curriculum_unit.allocation_tag.id]
-      rescue
-        at_uc = []
-      end
-
-      if not at_uc.compact.empty? and down
-        offers = curriculum_unit.offers.map(&:id)
-        at_offers = AllocationTag.where(:offer_id => offers).map(&:id)
-
-        groups = Group.where(:offer_id => offers).map(&:id)
-        at_groups = AllocationTag.where(:group_id => groups).map(&:id)
-      end
-
-      [at_groups] + [at_offers] + at_uc
-    end
-
-    def courses_related(course, down = false)
-      begin
-        at_c = [course.allocation_tag.id]
-      rescue
-        at_c = []
-      end
-
-      if not at_c.compact.empty? and down
-        offers = course.offers.map(&:id)
-        at_offers = AllocationTag.where(:offer_id => offers).map(&:id)
-
-        groups = Group.where(:offer_id => offers).map(&:id)
-        at_groups = AllocationTag.where(:group_id => groups).map(&:id)
-      end
-
-      [at_groups] + [at_offers] + at_c
-    end
 
 end

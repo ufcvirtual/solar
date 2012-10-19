@@ -52,25 +52,12 @@ class Ability
       allocation_tag       = object.send(:allocation_tag)
 
       ## se o usuario já está ligado diretamente à allocation_tag ou por meio da hierarquia
-      return true if (user_allocations_tag.include?(allocation_tag) or (not (user_allocations_tag.map(&:id) & up_related(allocation_tag)).empty?))
+      return true if (user_allocations_tag.include?(allocation_tag) or (not (user_allocations_tag.map(&:id) & allocation_tag.related(upper: true)).empty?))
     end
 
     ## ligada a allocation diretamente
     return true if (object.respond_to?(:allocations) and (not object.send(:allocations).where(user_id: user.id, profile_id: profile_id.to_i, status: Allocation_Activated.to_i).empty?))
     return false
-  end
-
-  def up_related(allocation_tag)
-    option = allocation_tag.attributes.delete_if {|key, value| key == 'id' or value.nil?}.map {|k,v| k}.first
-
-    return case option
-      when 'group_id'
-        [allocation_tag.group.offer.allocation_tag.id, allocation_tag.group.curriculum_unit.allocation_tag.id, allocation_tag.group.course.allocation_tag.id]
-      when 'offer_id'
-        [allocation_tag.offer.curriculum_unit.allocation_tag.id, allocation_tag.offer.course.allocation_tag.id]
-      when 'curriculum_unit_id', 'course_id'
-        []
-    end
   end
 
 end
