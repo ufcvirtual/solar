@@ -10,7 +10,7 @@ class OffersController < ApplicationController
     al                = current_user.allocations
     my_direct_offers  = al.map(&:offer).compact
     offer_by_courses  = al.map(&:course).compact.map(&:offer).uniq
-    offer_by_ucs      = al.map(&:curriculum_unit).compact.map(&:offer).uniq
+    offer_by_ucs      = al.map(&:curriculum_unit).compact.map(&:offers).flatten.uniq
     offer_by_groups   = al.map(&:group).compact.map(&:offer).uniq
     @offers           = [my_direct_offers + offer_by_courses + offer_by_ucs + offer_by_groups].flatten.compact.uniq
 
