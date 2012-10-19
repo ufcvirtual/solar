@@ -1,0 +1,75 @@
+/*
+Precisamos:
+	- Tratar acentos;
+	- ícone com engrenagem para o botão
+	- Corrigir caminho e variáveis da busca
+*/
+$(document).ready(function(){
+	var courseHint = 'Digite o nome do curso ou parte dele';
+	var semesterHint = 'Digite o semestre';
+	var curriculumUnitHint = 'Digite o nome da disciplina ou parte dele';
+	var groupHint = 'Digite o código da turma';
+	var searchingText = 'Procurando...';
+	var noResultsText = 'Nenhum resultado';
+
+	$( "#txtCourse").tokenInput("http://shell.loopj.com/tokeninput/tvshows.php", {
+		hintText: courseHint,
+		searchingText: searchingText,
+		noResultsText: noResultsText
+	});
+	$( "#txtSemester").tokenInput("http://shell.loopj.com/tokeninput/tvshows.php", {
+		hintText: semesterHint,
+		searchingText: searchingText,
+		noResultsText: noResultsText
+	});
+	$( "#txtCurriculumUnit").tokenInput("http://shell.loopj.com/tokeninput/tvshows.php", {
+		hintText: curriculumUnitHint,
+		searchingText: searchingText,
+		noResultsText: noResultsText
+	});
+	$( "#txtGroup").tokenInput("http://shell.loopj.com/tokeninput/tvshows.php", {
+		hintText: groupHint,
+		searchingText: searchingText,
+		noResultsText: noResultsText
+	});
+
+	$('.placesNavPanel input[type="button"]').click(function(){
+		showNavPanelMenu(this);
+	});
+
+	$(window).click(function(e){
+		if ($(e.target).parents('#navPanelMenu').length == 0 && $(e.target).filter('.placesNavPanel input[type="button"]').length == 0)
+			$('#navPanelMenu').remove();	
+	});
+
+});
+
+function showNavPanelMenu(element){
+	if ($('#navPanelMenu').length)
+		$('#navPanelMenu').remove();
+
+	var pnl = '<ul id="navPanelMenu" style="display:none;opacity:0.9">';
+	pnl += '<li><a href="#" onclick="return false;">Novo</a></li>';
+	pnl += '<li><a href="#" onclick="return false;">Alterar</a></li>';
+	pnl += '<li><a href="#" onclick="return false;">Excluir</a></li>';
+	pnl += '<li><a href="#" onclick="return false;">Ofertar</a></li>';
+	pnl += '</ul>';
+
+	//var left = $(element).position().left + $(element).outerWidth();
+	$('body').append(pnl);
+	
+	console.log(element);
+	//$('#navPanelMenu').css('left', ''+ left + 'px')
+	$('#navPanelMenu').position({
+		my: 'left top',
+		at: 'right top',
+		of: $(element)
+	});
+
+	$('#navPanelMenu').slideDown('fast');
+	//console.log(pnl);
+	//console.log($('#navPanelMenu'));
+}
+
+
+

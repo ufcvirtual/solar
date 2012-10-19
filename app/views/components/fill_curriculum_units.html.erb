@@ -1,9 +1,0 @@
-<ul>
-	<% unless @curricular_units.nil? or @curricular_units.empty? %>
-      <% @curricular_units.each do |curricular_unit| %>
-      <li id="curricularUnitItem_<%=curricular_unit.id%>#<%=curricular_unit.allocation_tag_id%>">
-      	<%=curricular_unit.name%>
-      </li>
-      <%end%>
-	<%end%>
-</ul>
