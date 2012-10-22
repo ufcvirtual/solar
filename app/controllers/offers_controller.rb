@@ -7,7 +7,7 @@ class OffersController < ApplicationController
   def index
     # authorize! :index, Offer
 
-    al                = current_user.allocations
+    al                = current_user.allocations.where(status: Allocation_Activated)
     my_direct_offers  = al.map(&:offer).compact
     offer_by_courses  = al.map(&:course).compact.map(&:offer).uniq
     offer_by_ucs      = al.map(&:curriculum_unit).compact.map(&:offers).flatten.uniq

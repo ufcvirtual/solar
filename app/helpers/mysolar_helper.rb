@@ -1,13 +1,15 @@
 module MysolarHelper
 
-	##
-	# Retorna as unidades curriculares que o usuário atual está relacionado na seguinte ordenação:
-	# Maior quantidade de acessos nas últimas 3 semanas > Ter perfil de aluno ou responsável > Nome
-	##
+  ##
+  # Retorna as unidades curriculares que o usuário atual está relacionado na seguinte ordenação:
+  # Maior quantidade de acessos nas últimas 3 semanas > Ter perfil de aluno ou responsável > Nome
+  ##
   def load_curriculum_unit_data
-  	curriculum_units_info = CurriculumUnit.find_default_by_user_id(current_user.id)
+    # CurriculumUnit.all_by_user(current_user)
+
+    curriculum_units_info = CurriculumUnit.find_default_by_user_id(current_user.id)
     allocation_tags_ids   = curriculum_units_info["allocation_tags_ids"]
-  	curriculum_units 			= curriculum_units_info["curriculum_units"].flatten
+    curriculum_units      = curriculum_units_info["curriculum_units"].flatten
 
     # array com o resultado da comparação de bit entre o tipo do perfil do usuário em cada uc e o de responsável/aluno
     # ex.: 
@@ -19,18 +21,18 @@ module MysolarHelper
     }
 
     # re-ordena as uc de acordo com o resultado dos tipos de perfil e o nome
-  	curriculum_units = curriculum_units.sort_by{ |curriculum_unit|
+    curriculum_units = curriculum_units.sort_by{ |curriculum_unit|
       curriculum_unit["name"] # a verificação do nome vem primeiro para ser sobreposta pela de maior prioridade
       is_responsible_or_student[curriculum_units.index(curriculum_unit)] ? 0 : 1 
     }
 
     # re-ordena as uc de acordo com a maior quantidade de acessos nas últimas três semanas
-  	curriculum_units = curriculum_units.sort_by{ |curriculum_unit| 
+    curriculum_units = curriculum_units.sort_by{ |curriculum_unit| 
       -(Log.count(:id, :conditions => {:log_type => 3, :user_id => current_user.id, :curriculum_unit_id => curriculum_unit["id"], :created_at => 3.week.ago.to_date..Date.current}))
     }
 
     # após ordenação, allocation_tags_ids não está ordenado, mas sua presença é desnecessária a partir do momento que pode-se ter "curriculum_unit.allocation_tag.id"
-  	return {"curriculum_units" => curriculum_units, "offers" => curriculum_units_info["offers"], "groups" => curriculum_units_info["groups"]}
+    return {"curriculum_units" => curriculum_units, "offers" => curriculum_units_info["offers"], "groups" => curriculum_units_info["groups"]}
   end
 
 end

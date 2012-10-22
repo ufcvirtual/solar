@@ -78,8 +78,21 @@ SQL
     return {"curriculum_units" => curriculum_units.uniq, "allocation_tags_ids" => allocation_tags_ids, "offers" => offers.flatten, "groups" => groups.flatten}
   end
 
+  ##
+  # Todas as UCs do usuario, atraves das allocations
+  ##
+  def self.all_by_user(user)
+    al              = user.allocations.where(status: Allocation_Activated)
+    my_direct_uc    = al.map(&:curriculum_unit)
+    ucs_by_offers   = al.map(&:offer).compact.map(&:curriculum_unit).uniq
+    ucs_by_courses  = al.map(&:course).compact.map(&:curriculum_units).uniq
+    ucs_by_groups   = al.map(&:group).compact.map(&:curriculum_unit).uniq
+
+    return [my_direct_uc + ucs_by_offers + ucs_by_courses + ucs_by_groups].flatten.compact.uniq.sort
+  end
+
   def has_any_lower_association?
-      self.offers.count > 0
+    self.offers.count > 0
   end
 
   def lower_associated_objects

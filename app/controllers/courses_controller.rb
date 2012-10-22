@@ -3,8 +3,7 @@ class CoursesController < ApplicationController
   def index
     # authorize! :index, Course
 
-    # recuperando todas as unidades curriculares que o usuario interage
-    al                = current_user.allocations
+    al                = current_user.allocations.where(status: Allocation_Activated)
     my_direct_courses = al.map(&:course).compact.uniq
     course_by_period  = al.map(&:offer).compact.map(&:course).uniq
     course_by_ucs     = al.map(&:curriculum_unit).compact.map(&:courses).flatten.uniq # apenas cursos ligados a disciplina pela oferta

@@ -19,9 +19,15 @@ class CurriculumUnitsController < ApplicationController
 
   # GET /curriculum_units/list.json
   def list
-    @curriculum_units = CurriculumUnit.find_default_by_user_id(current_user.id, true)
+    @curriculum_units = CurriculumUnit.all_by_user(current_user).collect {|uc| {id: uc.id, code: uc.code, name: uc.name}}
+
+    if params.include?(:search)
+      @curriculum_units = @curriculum_units.select {|uc| uc[:code].downcase.include?(params[:search].downcase) or uc[:name].downcase.include?(params[:search].downcase)}
+    end
+
     respond_to do |format|
       format.json { render json: @curriculum_units }
+      format.xml { render xml: @curriculum_units }
     end
   end
 

@@ -1,4 +1,4 @@
-include ApplicationHelper
+# include ApplicationHelper
 
 class UsersController < ApplicationController
 
@@ -6,12 +6,11 @@ class UsersController < ApplicationController
 
   def mysolar
     set_active_tab_to_home
-    @user = current_user
+
+    @user           = current_user
+    allocation_tags = @user.allocations.where(status: Allocation_Activated).map(&:allocation_tag).compact.map(&:related).flatten.uniq.sort
 
     ## Portlet do calendario; destacando dias que possuem eventos
-    c_units         = CurriculumUnit.find_default_by_user_id(current_user.id)
-    allocation_tags = all_allocation_tags(c_units["allocation_tags_ids"])
-
     unless allocation_tags.empty?
       schedules_events       = Schedule.all_by_allocation_tags(allocation_tags)
       schedules_events_dates = schedules_events.collect do |schedule_event|
@@ -19,7 +18,6 @@ class UsersController < ApplicationController
       end
       @scheduled_events = schedules_events_dates.flatten.uniq
     end
-
   end
 
   def photo
