@@ -28,7 +28,7 @@ class MessagesController < ApplicationController
 
   # edicao de mensagem (nova, responder, encaminhar)
   def new
-    #recebe nil quando esta em pagina de leitura/edicao de msg
+    # recebe nil quando esta em pagina de leitura/edicao de msg
     @type = nil
 
     @search_text = params[:search].nil? ? "" : params[:search]
@@ -36,10 +36,7 @@ class MessagesController < ApplicationController
     @show_message = 'new'
     get_contacts
 
-    @target  = ''
-    @subject = ''
-    @original_message = ''
-    @target_html = ''
+    @target, @subject, @original_message, @target_html  = '', '', '', ''
 
     if !params[:id].nil?
       @original_message_id = params[:id]
@@ -55,12 +52,10 @@ class MessagesController < ApplicationController
       @files = get_files(@original_message_id)
 
       # destinatarios
-      all_recipients = ''
-      all_recipients_name = ''
-      all_recipients_html = ''
+      all_recipients,all_recipients_name, all_recipients_html = '', '', ''
       get_recipients(@original_message_id).each { |r|
         all_recipients = all_recipients << r.name << ' [' << r.email << '], ' unless r.email == current_user.email
-        #all_recipients_html = all_recipients_html << "<span onclick='$(this).remove()' class='message_recipient_box' >#{r.email}, </span>" unless r.email == current_user.email
+        # all_recipients_html = all_recipients_html << "<span onclick='$(this).remove()' class='message_recipient_box' >#{r.email}, </span>" unless r.email == current_user.email
         all_jquery = "'#u#{r.id}'"
         all_recipients_html = all_recipients_html << "<span onclick=""$(#{all_jquery}).show();$(this).remove()"" class='message_recipient_box' >#{r.name} [#{r.email}], </span>" unless r.email == current_user.email
         # apenas para identificacao do email - informa todos, inclusive o logado
@@ -106,7 +101,7 @@ class MessagesController < ApplicationController
   ##
   def show
     if params.include?('id') and not params[:id].nil?
-      message_id = params[:id]
+      message_id    = params[:id]
       @show_message = 'show'
       get_message_data(message_id)
     end
@@ -150,7 +145,7 @@ class MessagesController < ApplicationController
     new_status = params[:new_status]
 
     if id != ""
-      #eh apenas um id
+      # eh apenas um id
       if id.index("$").nil?
         if has_permission(id)
           if new_status == "read"
@@ -160,7 +155,7 @@ class MessagesController < ApplicationController
           end
         end
       else
-        #mais de um id
+        # mais de um id
         deleted_id = id.split("$")
         deleted_id.each { |i|
           if has_permission(i)
@@ -191,16 +186,16 @@ class MessagesController < ApplicationController
       subject = params[:subject]
       message = params[:newMessageTextBox]
 
-      #apenas usuarios que sao cadastrados no ambiente; se algum destinarario nao eh, nao envia...
+      # apenas usuarios que sao cadastrados no ambiente; se algum destinarario nao eh, nao envia...
       real_receivers = ""
 
-      #anexos de mensagem original quando encaminhando ou respondendo mensagem
+      # anexos de mensagem original quando encaminhando ou respondendo mensagem
       all_files_destiny = ""
 
-      #troca ";" por "," para split e envio para destinatarios
+      # troca ";" por "," para split e envio para destinatarios
       to.gsub(";", ",")
 
-      #divide destinatarios
+      # divide destinatarios
       individual_to = to.split(",").map{|r|r.strip}
 
       update_tab_values
@@ -221,7 +216,7 @@ class MessagesController < ApplicationController
         label_name = get_label_name(group, offer, curriculum_unit)
       end
 
-      #informacoes do usuario atual para identificacao na msg
+      # informacoes do usuario atual para identificacao na msg
       atual_user = User.find(current_user.id)
       message_header = "<b>" + t(:message_header) + atual_user.name + " [" + atual_user.email + "]</b><br/>"
       if label_name != ""
@@ -229,17 +224,17 @@ class MessagesController < ApplicationController
       end
       message_header << "________________________________________________________________________<br/><br/>"
 
-      #":requires_new => true" permite rollback
+      # ":requires_new => true" permite rollback
       Message.transaction do
         begin
-          #salva nova mensagem
+          # salva nova mensagem
           new_message = Message.new :subject => subject, :content => message, :send_date => DateTime.now
           new_message.save!
 
-          #recupera arquivos da mensagem original, caso esteja encaminhando ou respondendo
+          # recupera arquivos da mensagem original, caso esteja encaminhando ou respondendo
           original_message_id = params[:id]
           unless original_message_id.nil?
-            #verifica permissao na mensagem original
+            # verifica permissao na mensagem original
             if has_permission(original_message_id)
               files = get_files(original_message_id)
               unless files.nil?
@@ -253,14 +248,14 @@ class MessagesController < ApplicationController
 
                   origin  = f.id.to_s + "_" + f.message_file_name
                   destiny = message_file.id.to_s + "_" + f.message_file_name
-                  #copia fisicamente arquivo do anexo original
+                  # copia fisicamente arquivo do anexo original
                   all_files_destiny = copy_file(origin, destiny, all_files_destiny, true)
                 end
               end
             end
           end
 
-          #recupera os arquivos anexados
+          # recupera os arquivos anexados
           unless params[:attachment].nil?
             params[:attachment].each do |file|
               message_file = MessageFile.new Hash["message", file[1]]
@@ -274,15 +269,15 @@ class MessagesController < ApplicationController
             end
           end
 
-          #salva dados de remetente
+          # salva dados de remetente
           UserMessage.transaction(:requires_new => true) do
-            #status=3 => 00000011 {origem, lida, nao_excluida}
+            # status=3 => 00000011 {origem, lida, nao_excluida}
             sender_message = UserMessage.new :message_id => new_message.id, :user_id => current_user.id, :status => 3
             sender_message.save!
 
             if label_name != ""
               message_label = MessageLabel.find_all_by_title_and_user_id(label_name,current_user.id).first
-              #se precisa mas nao existe no banco, cria
+              # se precisa mas nao existe no banco, cria
               if message_label.nil?
                 MessageLabel.transaction(:requires_new => true) do
                   message_label = MessageLabel.new :user_id => current_user.id, :title => label_name, :label_system => true
@@ -290,7 +285,7 @@ class MessagesController < ApplicationController
                 end
               end
 
-              #associa label do remetente
+              # associa label do remetente
               UserMessageLabel.transaction(:requires_new => true) do
                 UserMessageLabel.create! :user_message_id => sender_message.id, :message_label_id => message_label.id
               end
@@ -405,7 +400,6 @@ class MessagesController < ApplicationController
 
       allocation_tag_id = active_tab[:url]['allocation_tag_id']
       allocations       = AllocationTag.find_related_ids(allocation_tag_id).join(', ');
-      # raise "#{allocation_tag_id}"
 
       # relacionado diretamente com a allocation_tag
       group     = AllocationTag.find(allocation_tag_id).group
@@ -413,9 +407,9 @@ class MessagesController < ApplicationController
       offer     = al_offer.nil? ? nil : al_offer.offer
       al_c_unit = AllocationTag.where("id IN (#{allocations}) AND curriculum_unit_id IS NOT NULL").first
       curriculum_unit = al_c_unit.nil? ? CurriculumUnit.find(active_tab[:url]['id']) : al_c_unit.curriculum_unit
-      @message_tag = get_label_name(group, offer, curriculum_unit)
+      @message_tag    = get_label_name(group, offer, curriculum_unit)
     else
-      @message_tag = nil
+      @message_tag    = nil
     end
 
     # qtde de msgs nao lidas
@@ -452,7 +446,7 @@ class MessagesController < ApplicationController
     id = active_tab[:url]["id"]
     update_tab_values
 
-    #unidade curricular ativa ou home ("")
+    # unidade curricular ativa ou home ("")
     if @curriculum_unit_id == id
       @curriculum_units_name = (active_tab[:url]["context"] == Context_General) ? "" : user_session[:tabs][:active]
     else
