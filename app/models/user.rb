@@ -143,9 +143,7 @@ class User < ActiveRecord::Base
   end
 
   def groups
-    at = allocation_tags
-    [Group.where("id in (?) or offer_id in (?)", at.map(&:group_id).compact, at.map(&:offer_id).compact),
-      at.select {|a| a.group_id.nil? and a.offer_id.nil?}.collect {|a| a.groups}.flatten].flatten.uniq
+    allocations.where(status: Allocation_Activated).map(&:allocation_tag).compact.map(&:groups).flatten.compact.uniq
   end
 
   def profiles_activated(only_id = false)

@@ -3,16 +3,21 @@ class GroupsController < ApplicationController
   # load_and_authorize_resource
 
   def index
+    @groups = current_user.groups
+
     if params.include?(:curriculum_unit_id)
-      @groups = Group.find_all_by_curriculum_unit_id_and_user_id(params[:curriculum_unit_id], current_user.id) if params.include?(:curriculum_unit_id)
-    else
-      @groups = Group.find(:all, :order => "code") # verificar quais grupos o usuario pode acessar
+      ucs_groups = CurriculumUnit.find(params[:curriculum_unit_id]).groups
+      @groups = ucs_groups.select {|g| (ucs_groups.map(&:id) & @groups.map(&:id)).include?(g.id) }
+    end
+
+    if params.include?(:search)
+      @groups = @groups.select { |group| group.code.downcase.include?(params[:search].downcase) }
     end
 
     respond_to do |format|
       format.html
-      format.xml  { render :xml => @groups }
-      format.json  { render :json => @groups }
+      format.xml  { render :xml => @groups.map {|g| {id: g.id, code: g.code, semester: g.offer.semester} } }
+      format.json  { render :json => @groups.map {|g| {id: g.id, code: g.code, semester: g.offer.semester} } }
     end
   end
 

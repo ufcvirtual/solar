@@ -1,5 +1,3 @@
-# include ApplicationHelper
-
 class UsersController < ApplicationController
 
   load_and_authorize_resource :except => [:photo, :edit_photo]
