@@ -377,7 +377,10 @@ class MessagesController < ApplicationController
 
   # unidades curriculares do usuario logado
   def get_curriculum_units
-    @curriculum_units_user = load_curriculum_unit_data
+    curriculum_units_info  = load_curriculum_unit_data()
+    @curriculum_units_user = curriculum_units_info["curriculum_units"]
+    @offers                = curriculum_units_info["offers"]
+    @groups                = curriculum_units_info["groups"]
   end
 
   # retorna (1 a varios) destinatarios
@@ -398,19 +401,18 @@ class MessagesController < ApplicationController
   # verifica aba aberta, se Home ou se aba de unidade curricular
   # se Home, traz todas; senao, traz com filtro da unidade curricular
   def message_data
-
     unless active_tab[:url]['context'] == Context_General
 
       allocation_tag_id = active_tab[:url]['allocation_tag_id']
-      allocations = AllocationTag.find_related_ids(allocation_tag_id).join(', ');
+      allocations       = AllocationTag.find_related_ids(allocation_tag_id).join(', ');
+      # raise "#{allocation_tag_id}"
 
       # relacionado diretamente com a allocation_tag
-      group = AllocationTag.find(allocation_tag_id).group
-      al_offer = AllocationTag.where("id IN (#{allocations}) AND offer_id IS NOT NULL").first
-      offer = al_offer.nil? ? nil : al_offer.offer
+      group     = AllocationTag.find(allocation_tag_id).group
+      al_offer  = AllocationTag.where("id IN (#{allocations}) AND offer_id IS NOT NULL").first
+      offer     = al_offer.nil? ? nil : al_offer.offer
       al_c_unit = AllocationTag.where("id IN (#{allocations}) AND curriculum_unit_id IS NOT NULL").first
       curriculum_unit = al_c_unit.nil? ? CurriculumUnit.find(active_tab[:url]['id']) : al_c_unit.curriculum_unit
-
       @message_tag = get_label_name(group, offer, curriculum_unit)
     else
       @message_tag = nil

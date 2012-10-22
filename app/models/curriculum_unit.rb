@@ -15,6 +15,8 @@ class CurriculumUnit < ActiveRecord::Base
   validates :syllabus, :presence => true
   validates :objectives, :presence => true, :length => { :maximum   => 255 }
 
+  default_scope :order => 'name ASC'
+
   ##  
   # participantes que nao sao TAL TIPO DE PERFIL
   ##
@@ -54,52 +56,26 @@ SQL
     User.find_by_sql query
   end
 
+  ##
+  # Retorna as unidades curriculares que o usuário atual está relacionado
+  ##
   def self.find_default_by_user_id(user_id, as_object = false)
-    query = <<SQL
-    WITH cte_user_activated_allocation_tags AS (
-        SELECT DISTINCT t2.id AS allocation_tag_id, t2.group_id, t2.offer_id, t2.curriculum_unit_id, t2.course_id
-          FROM allocations      AS t1
-          JOIN allocation_tags  AS t2 ON t2.id = t1.allocation_tag_id
-         WHERE t1.status = #{Allocation_Activated}
-           AND t1.user_id = #{user_id}
-    )
-    --
-    SELECT DISTINCT ON (name, curriculum_unit_id) curriculum_unit_id AS id, code, name, curriculum_unit_type_id, allocation_tag_id
-      FROM (
-        SELECT id AS curriculum_unit_id, code, name, curriculum_unit_type_id, allocation_tag_id, offer_id, group_id, semester FROM (
-            (
-                SELECT t2.*, NULL AS offer_id, NULL::integer AS group_id, NULL::varchar AS semester, t1.allocation_tag_id --usuarios vinculados direto a unidade curricular
-                  FROM cte_user_activated_allocation_tags  AS t1
-                  JOIN curriculum_units AS t2 ON t2.id = t1.curriculum_unit_id
-            )
-              UNION
-            (
-                SELECT t3.*, t2.id AS offer_id, NULL::integer AS group_id, semester, t1.allocation_tag_id --usuarios vinculados a oferta
-                  FROM cte_user_activated_allocation_tags  AS t1
-                  JOIN offers           AS t2 ON t2.id = t1.offer_id
-                  JOIN curriculum_units AS t3 ON t3.id = t2.curriculum_unit_id
-            )
-              UNION
-            (
-                SELECT t4.*, t3.id AS offer_id, t2.id AS group_id, semester, t1.allocation_tag_id -- usuarios vinculados a turma
-                  FROM cte_user_activated_allocation_tags  AS t1
-                  JOIN groups           AS t2 ON t2.id = t1.group_id
-                  JOIN offers           AS t3 ON t3.id = t2.offer_id
-                  JOIN curriculum_units AS t4 ON t4.id = t3.curriculum_unit_id
-            )
-              UNION
-            (
-                select t4.*, t3.id AS offer_id, NULL::integer AS group_id, semester, t1.allocation_tag_id --usuarios vinculados a graduacao
-                  FROM cte_user_activated_allocation_tags  AS t1
-                  JOIN courses          AS t2 ON t2.id = t1.course_id
-                  JOIN offers           AS t3 ON t3.course_id = t2.id
-                  JOIN curriculum_units AS t4 ON t4.id = t3.curriculum_unit_id
-            )
-        ) AS curriculum_units ORDER BY name, semester DESC, id
-    ) AS curriculum_units_with_allocations;
-SQL
+    user_activated_allocations = Allocation.joins(:allocation_tag, :profile).where("allocations.status = '#{Allocation_Activated}' AND allocations.user_id = '#{user_id}'")
+    allocation_tags_ids        = user_activated_allocations.flatten.map(&:allocation_tag_id).uniq
 
-    as_object ? CurriculumUnit.includes(:curriculum_unit_type).find_by_sql(query) : ActiveRecord::Base.connection.select_all(query)
+    curriculum_units, offers, groups = [], [], []
+    allocation_tags_ids.each_with_index do |at, idx|
+      curriculum_units[idx] =  CurriculumUnit.joins(:allocation_tag).where("allocation_tags.id = #{at.to_i}").flatten 
+      offers[idx] = Offer.joins(:allocation_tag).where("allocation_tags.id = #{at.to_i}") 
+      curriculum_units[idx] = offers[idx].collect{|offer| offer.curriculum_unit} if curriculum_units[idx].empty?
+      groups[idx] = Group.joins(:allocation_tag).where("allocation_tags.id = #{at.to_i}") 
+      curriculum_units[idx] = groups[idx].collect{|group| group.curriculum_unit} if curriculum_units[idx].empty?
+      curriculum_units[idx] = Course.joins(:allocation_tag).where("allocation_tags.id = #{at.to_i}").collect{|course| course.curriculum_units} if curriculum_units[idx].empty?
+      offers[idx] = offers[idx].empty? ? "" : offers[idx][0].id
+      groups[idx] = groups[idx].empty? ? "" : groups[idx][0].id
+    end
+
+    return {"curriculum_units" => curriculum_units.uniq, "allocation_tags_ids" => allocation_tags_ids, "offers" => offers.flatten, "groups" => groups.flatten}
   end
 
   def has_any_lower_association?

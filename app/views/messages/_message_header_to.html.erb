@@ -12,13 +12,12 @@
         <td class="message_text_to"><%= text_field_tag  'subject', @subject, :class=> "message_new_textbox" %></td>
       </tr>
       <tr class="message_new_upload">
-        <td class="message_text_to_label">&nbsp;</td>
+        <td class="message_text_to_label"></td>
         <td class="message_text_to">
           <% unless @files.nil? %>
             <% @files.each do |f| %>
                <%= image_tag("message_file.png",:alt=>t(:message_attach))+f.message_file_name %><br/>
             <% end %>
-            <%#= raw "<br/>"%>
           <% end %>
           <div id="newPostUploadPanel">
             <!-- <input type="button" id="link_upload" onclick="appendFileField(); return false;" class="btn btn_default" value="<%=t("message_attach_file")%>"> -->
@@ -38,10 +37,8 @@
 
     <select id="curriculum_unit_select" style="width:440px">
       <option value="" <%=" selected=true " unless !@curriculum_units_name.nil?%> ><%=t(:message_personal_contacts)%></option>
-      <% @curriculum_units_user.each do |curriculum_unit| %>
-        <% offer_id = curriculum_unit["offer_id"].nil? ? "" : curriculum_unit["offer_id"] %>
-        <% group_id = curriculum_unit["group_id"].nil? ? "" : curriculum_unit["group_id"] %>
-        <option value="<%=curriculum_unit["id"] << ';' << offer_id << ';' << group_id %>" <%=" selected=true " unless @curriculum_units_name!=curriculum_unit["name"]%> ><%=curriculum_unit["name"]%></option>
+      <% @curriculum_units_user.each_with_index do |curriculum_unit, idx| %>
+        <option value="<%= curriculum_unit.id %>" + ";" + "<%= @offers[idx] %>" + ";" + "<%= @groups[idx] %>" <%=" selected=true " unless @curriculum_units_name!=curriculum_unit.name%> ><%=curriculum_unit.name%></option>
       <% end %>
     </select>
   <% end %>

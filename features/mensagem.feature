@@ -29,6 +29,7 @@ Cenário: Abrir mensagem
     E eu deverei ver o link "Responder para todos"
     E eu deverei ver o link "Encaminhar"
 
+@javascript
 Cenário: Acessar página de mensagens a partir de "Unidade curricular"
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"

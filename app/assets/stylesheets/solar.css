@@ -1117,9 +1117,7 @@ a.mysolar_top_link{
 
 
 #mysolar_curriculum_unit_wrapper li > .disabled{
-    text-decoration: line-through underline;
     padding-left: 0;
-    /*width: auto;*/
 }
 
 /**

@@ -9,17 +9,17 @@ class UsersController < ApplicationController
     @user = current_user
 
     ## Portlet do calendario; destacando dias que possuem eventos
-    c_units = CurriculumUnit.find_default_by_user_id(current_user.id)
-    allocation_tags = all_allocation_tags(c_units.map { |unit| unit['allocation_tag_id'].to_i })
+    c_units         = CurriculumUnit.find_default_by_user_id(current_user.id)
+    allocation_tags = all_allocation_tags(c_units["allocation_tags_ids"])
 
     unless allocation_tags.empty?
-      schedules_events = Schedule.all_by_allocation_tags(allocation_tags)
-      schedules_events_dates = schedules_events.collect { |schedule_event|
+      schedules_events       = Schedule.all_by_allocation_tags(allocation_tags)
+      schedules_events_dates = schedules_events.collect do |schedule_event|
         [schedule_event['start_date'].to_date.to_s(), schedule_event['end_date'].to_date.to_s()]
-      }
-
+      end
       @scheduled_events = schedules_events_dates.flatten.uniq
     end
+
   end
 
   def photo

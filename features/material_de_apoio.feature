@@ -28,6 +28,7 @@ Cenário: Exibir Material de apoio
       E eu deverei ver o link "3.pdf"
 
 #COMBOBOX-TESTE1
+@javascript
 Cenário: Trocar material de apoio com a combo
     Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"
