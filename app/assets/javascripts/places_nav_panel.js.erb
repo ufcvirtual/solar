@@ -1,8 +1,10 @@
 /*
 Precisamos:
 	- Tratar acentos;
-	- ícone com engrenagem para o botão
 	- Corrigir caminho e variáveis da busca
+	- Remover o 'Localhost' dos caminhos
+	- Criar interdependências nas buscas
+	-Internacionalizar hints
 */
 $(document).ready(function(){
 	var courseHint = 'Digite o nome do curso ou parte dele';
@@ -12,9 +14,10 @@ $(document).ready(function(){
 	var searchingText = 'Procurando...';
 	var noResultsText = 'Nenhum resultado';
 
-	$( "#txtCourse").tokenInput("http://shell.loopj.com/tokeninput/tvshows.php", {
+	$( "#txtCourse").tokenInput("http://localhost:3000/courses.json", {
 		hintText: courseHint,
 		searchingText: searchingText,
+		queryParam : 'search',
 		noResultsText: noResultsText
 	});
 	$( "#txtSemester").tokenInput("http://shell.loopj.com/tokeninput/tvshows.php", {
