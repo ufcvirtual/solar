@@ -10,9 +10,9 @@
       = @assignment.name
     - if can? :evaluate, @assignment
       - if @send_assignment.nil? or @send_assignment.grade.nil? or @send_assignment.grade.blank?
-        = button_tag t(:evaluate, :scope => [:assignment, :evaluation]), :class => btn_class, :id => "btn_evaluate", :onclick => "javascript:btn_evaluate(this);", :disabled => (not assignment_in_time?(@assignment))
+        = button_tag t(:evaluate, :scope => [:assignment, :evaluation]), :class => btn_class, :id => "btn_evaluate", :onclick => "javascript:btn_evaluate(this, ' ');", :disabled => (not assignment_in_time?(@assignment))
       - else
-        = button_tag t(:change_grade, :scope => [:assignment, :evaluation]), :class => btn_edit_class, :id => "btn_evaluate", :onclick => "javascript:btn_evaluate(this);", :disabled => (not assignment_in_time?(@assignment))
+        = button_tag t(:change_grade, :scope => [:assignment, :evaluation]), :class => btn_edit_class, :id => "btn_evaluate", :onclick => "javascript:btn_evaluate(this, '#{@send_assignment.grade}');", :disabled => (not assignment_in_time?(@assignment))
       = button_tag t(:save, :scope => [:assignment, :evaluation]), :class => "btn btn_main", :id => "btn_save_evaluation", :disabled => (not assignment_in_time?(@assignment))
       = button_tag t(:cancel, :scope => [:assignment, :evaluation]), :class => "btn btn_caution", :id => "btn_cancel_evaluation", :onclick => "javascript:btn_cancel_evaluation();", :disabled => (not assignment_in_time?(@assignment))
   .block_content
