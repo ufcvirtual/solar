@@ -24,11 +24,7 @@ class AllocationsController < ApplicationController
   # metodo chamado por ajax para buscar usuários para alocação
   def search_users
     text = URI.unescape(params[:data])
-
-    @users = User.find_by_name(text)
-
-    #@users = User.find(:all, :conditions => ['users.name LIKE ? or users.email LIKE ? or users.cpf LIKE ?', text, text, text])
-puts "\n\n\nusers: \n#{@users}\n\n\n"
+    @users = User.where("lower(name) ~ '#{text.downcase}'")
     render :layout => false
   end
 

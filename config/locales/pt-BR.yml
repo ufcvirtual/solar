@@ -495,6 +495,7 @@
   profile: "Perfil"
   activate: "Ativar"
   deactivate: "Desativar"
+  designate: "Alocar"
 
   # página de matrícula
   enrollm_search: "Buscar"

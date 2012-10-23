@@ -335,6 +335,7 @@
   profile: "Profile"
   activate: "Ativar"
   deactivate: "Desativar"
+  designate: "Designate"
 
   # página de matrícula"
   enrollm_search: "Search"
