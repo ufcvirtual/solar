@@ -2,7 +2,7 @@ include AllocationsHelper
 
 class AllocationsController < ApplicationController
 
-  authorize_resource :except => [:destroy, :search_users]
+  authorize_resource :except => [:destroy, :search_users, :activate, :deactivate]
 
   # GET /allocations/designates
   # GET /allocations/designates.json
@@ -25,6 +25,8 @@ class AllocationsController < ApplicationController
   def search_users
     text = URI.unescape(params[:data])
     @users = User.where("lower(name) ~ '#{text.downcase}'")
+    @responsibles = Profile.where("(types & #{Profile_Type_Class_Responsible})::boolean")
+
     render :layout => false
   end
 
@@ -69,6 +71,7 @@ class AllocationsController < ApplicationController
   # POST /allocations
   # POST /allocations.json
   def create
+puts "\n\n\n *** create - params: #{params} \n*** \n\n"
     profile = (params.include?(:profile_id)) ? params[:profile_id] : student_profile
     status = (params.include?(:status)) ? params[:status] : Allocation_Pending
 
@@ -190,26 +193,44 @@ class AllocationsController < ApplicationController
 
     respond_to do |format|
       if @allocation.save
-        format.html { redirect_to(designate_url, notice: t(:enrollm_request_message)) }
+        format.html { redirect_to(designates_allocations_url, notice: t(:deactivated_user)) }
         format.json { head :ok }
       else
-        format.html { redirect_to(designate_url, alert: t(:enrollm_request_message_error)) }
+        format.html { redirect_to(designates_allocations_url, alert: t(:deactivated_user_error)) }
         format.json { head :error }
       end
     end
   end
+
+  def activate
+    @allocation = Allocation.find(params[:id])
+    @allocation.status = Allocation_Activated
+
+    respond_to do |format|
+      if @allocation.save        
+        format.html { redirect_to(designates_allocations_url, notice: t(:activated_user)) }        
+        format.json { head :ok }
+
+      else
+        format.html { redirect_to(designates_allocations_url, alert: t(:activated_user_error)) }
+        format.json { head :error }
+      end
+    end
+  end  
 
   def reactivate
     @allocation = Allocation.find(params[:id])
     @allocation.status = Allocation_Pending_Reactivate
 
     respond_to do |format|
-      if @allocation.save
-        format.html { redirect_to(enrollments_url, notice: t(:enrollm_request_message)) }
+      if @allocation.save        
+        format.html { redirect_to(enrollments_url, notice: t(:enrollm_request_message)) }        
         format.json { head :ok }
+
       else
-        format.html { redirect_to(enrollments_url, alert: t(:enrollm_request_message_error)) }
+        format.html { redirect_to(enrollments_url, alert: t(:enrollm_request_message_error)) }        
         format.json { head :error }
+
       end
     end
   end  

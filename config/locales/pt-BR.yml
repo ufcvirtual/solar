@@ -496,6 +496,10 @@
   activate: "Ativar"
   deactivate: "Desativar"
   designate: "Alocar"
+  activated_user: "Usuário ativado"
+  activated_user_error: "Não foi possível ativar usuário"
+  deactivated_user: "Usuário desativado"
+  deactivated_user_error: "Não foi possível desativar usuário"
 
   # página de matrícula
   enrollm_search: "Buscar"

@@ -1,18 +1,19 @@
 %table.tb_list.allocations_list
   %thead
-    %tr.lines
-      %th{style: 'width:80px'}= ""
+    %tr.lines      
       %th= t(:name)
       %th{style: 'width:80px'}= t(:cpf)
       %th{style: 'width:200px'}= t(:email)
+      %th{style: 'width:120px'}= ""
       %th{style: 'width:100px'}= ""
   %tbody
   - unless @users.nil?
     - @users.each do |u|
-      %tr.lines
-        %td{style: 'width:80px'}= ""
+      %tr.lines        
         %td= u.name
         %td{style: 'width:80px'}= u.cpf
         %td{style: 'width:200px'}= u.email
+        %td{style: 'width:120px'}
+          =select_tag(:profile_id, options_from_collection_for_select(@responsibles, :id, :name))
         %td{style: 'width:100px'}
-          %input.btn.btn_default{type: 'button', value: t(:designate), :action => :create, :id => u.id, :method => :put}
+          =button_to t(:designate), {:controller => "allocations", :action => "create", :id => u.id }, :class=>'btn btn_default'

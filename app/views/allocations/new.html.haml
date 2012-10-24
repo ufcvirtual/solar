@@ -1,49 +1,49 @@
 .block_filter
   = filter
 
-.block_wrapper
-  %div
-    = form_for(:allocations, url: designates_allocations_path, method: :get) do |f|
-      = f.hidden_field(:offer_id, {:value => params[:offer_id], :name => :offer_id}) if params.include?(:offer_id)
-      = f.hidden_field(:group_id, {:value => params[:group_id], :name => :group_id}) if params.include?(:group_id)
+%div
+  = form_for(:allocations, url: designates_allocations_path, method: :get) do |f|
+    = f.hidden_field(:offer_id, {:value => params[:offer_id], :name => :offer_id}) if params.include?(:offer_id)
+    = f.hidden_field(:group_id, {:value => params[:group_id], :name => :group_id}) if params.include?(:group_id)
 
+.block_wrapper  
   .block_title
     %h2= t(:designate_users)
 
   .block_content
     %table.tb_list.allocations_list
       %thead
-        %tr.lines
-          %th{style: 'width:80px'}= t(:profile)
+        %tr.lines          
           %th= t(:name)
           %th{style: 'width:80px'}= t(:cpf)
           %th{style: 'width:200px'}= t(:email)
+          %th{style: 'width:120px'}= t(:profile)
           %th{style: 'width:100px'}= ""
       %tbody
       - unless @allocations.nil? or @allocations.empty?
         - @allocations.each do |allocation|
-          %tr.lines
-            %td{style: 'width:80px'}= allocation.profile.name
+          %tr.lines            
             %td= allocation.user.name
             %td{style: 'width:80px'}= allocation.user.cpf
             %td{style: 'width:200px'}= allocation.user.email
+            %td{style: 'width:120px'}= allocation.profile.name
             %td{style: 'width:100px'}
-              -if allocation.status==Allocation_Activated
-                %input.btn.btn_caution{type: 'button', value: t(:deactivate), :action => :deactivate, :id => allocation.id, :method => :put}
+              -if allocation.status==Allocation_Activated 
+                =button_to t(:deactivate), {:controller => "allocations", :action => "deactivate", :id => allocation.id }, :class=>'btn btn_caution'
               -else
-                %input.btn.btn_default{type: 'button', value: t(:activate), :action => :reactivate, :id => allocation.id, :method => :put}
-  
+                =button_to t(:activate), {:controller => "allocations", :action => "activate", :id => allocation.id }, :class=>'btn btn_default'
+
+.block_wrapper
   .block_title
     %h2= t(:new_designate)
 
   .block_content
     %div
       ="nome"
-      %input{type: 'text', :id => 'text_search'}
-      %input.btn.btn_default{type: 'button', value: 'busca', :id => 'search' }
+      %input{type: 'text', :id => 'text_search' }
+      %input.btn.btn_default{type: 'button', value: 'busca', :id => 'search'}
     #search_user.allocations_list
-
-  
+    
 :javascript
   $(function() {
     $("#search").click(function() {
