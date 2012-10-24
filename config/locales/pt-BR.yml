@@ -987,6 +987,12 @@
       enrollment_successful_update: Atualizacao realizada com sucesso
       enrollment_unsuccessful_update: Atualizacao nao realizada
       not_same_status: Selecione apenas registros com o mesmo status
+    edit:
+      students: Alunos
+      group: Turma
+      status: Status
+      save: Salvar
+      cancel: Cancelar
 
   allocation_pending: Pendente
 

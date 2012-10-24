@@ -831,6 +831,12 @@
       enrollment_successful_update: Successful update
       enrollment_unsuccessful_update: Unsuccessful update
       not_same_status: Select only items with the same status
+    edit:
+      students: Students
+      group: Group
+      status: Status
+      save: Save
+      cancel: Cancel
 
   allocation_pending: Pending
 

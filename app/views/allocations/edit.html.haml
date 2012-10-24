@@ -9,26 +9,26 @@
       = @groups.code_semester
   %td= select(:status, :id, @status_hash.invert.to_a, {selected: @allocation.status})
   %td
-    %input{type: "button", value: t(:save), :"allocation-id" => @allocation.id, :"save-link" => allocation_path(@allocation), class: "btn btn_main btn_save_allocation", onclick: "javascript:save_allocation(this);"}
-    %input{type: "button", value: t(:cancel), :"show-link" => allocation_path(@allocation), :"edit-link" => edit_allocation_path(@allocation), class: "btn btn_default btn_manage_cancel", onclick: "javascript:manage_cancel(this);"}
+    %input{type: "button", value: t(".save"), :"allocation-id" => @allocation.id, :"save-link" => allocation_path(@allocation), class: "btn btn_main btn_save_allocation", onclick: "javascript:save_allocation(this);"}
+    %input{type: "button", value: t(".cancel"), :"show-link" => allocation_path(@allocation), :"edit-link" => edit_allocation_path(@allocation), class: "btn btn_default btn_manage_cancel", onclick: "javascript:manage_cancel(this);"}
 - else
   #allocations_manage_selected
     .block_content.block_content_text
       #manage_enrollment_lightbox_list
         %h3
-          = t(:students) + ':'
+          = t(".students") + ':'
         %ul
           - @users.sort.each do |user|
             %li= user
       #manage_enrollment_lightbox_group
-        %b= t(:group) + ':'
+        %b= t(".group") + ':'
         - if @change_group
           = select(:group, :id, @groups.collect { |g| [g.code, g.id] }, {selected: @allocation.allocation_tag.group_id})
         - else
           = @groups.code
       #manage_enrollment_lightbox_status
-        %b= t(:status) + ':'
+        %b= t(".status") + ':'
         = select(:status, :id, @status_hash.invert.to_a, {selected: @allocation.status})
       #manage_enrollment_lightbox_buttons
-        %input{type: "button", value: t(:save), :"save-link" => allocation_path(@allocation_ids.join(',')), class: "btn btn_main btn_save_allocation", onclick: "javascript:save_allocations(this);"}
-        %input{type: "button", value: t(:cancel), class: "btn btn_default btn_manage_cancel", onclick: "javascript:removeLightBox();"}
+        = button_tag( t(".save"), :"save-link" => allocation_path(@allocation_ids.join(',')), :class => "btn btn_main btn_save_allocation", onclick: "javascript:save_allocations(this);" )
+        = button_tag( t(".cancel"), :class => "btn btn_default btn_manage_cancel", onclick: "javascript:removeLightBox();" )
