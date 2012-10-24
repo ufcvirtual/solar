@@ -903,6 +903,14 @@
   menu_history: Historico
   menu_group_assignment: Grupos
 
+  # Componente de filtro/busca de allocationTags (places_nav_panel)
+  places_nav_panel_course_hint: "Digite o nome do curso ou parte dele"
+  places_nav_panel_semester_hint: "Digite o semestre"
+  places_nav_panel_curriculum_unit_hint: "Digite o nome da disciplina ou parte dele"
+  places_nav_panel_group_hint: "Digite o código da turma ou parte dele"
+  places_nav_panel_searching_text: "Procurando..."
+  places_nav_panel_empty_text: "Nenhum resultado"
+  
   #Course 
   new_course_title: Cadastro de Curso
   update_course_title: Atualização de Curso

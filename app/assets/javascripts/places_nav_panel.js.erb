@@ -1,39 +1,55 @@
 /*
 Precisamos:
 	- Tratar acentos;
-	- Corrigir caminho e variáveis da busca
-	- Remover o 'Localhost' dos caminhos
 	- Criar interdependências nas buscas
-	-Internacionalizar hints
+	- Trocar o tokenValue: para allocationTagId
+	- Colocar as opções de cada menu num json
+	- Manter valores selecionados em caso de refresh
 */
-$(document).ready(function(){
-	var courseHint = 'Digite o nome do curso ou parte dele';
-	var semesterHint = 'Digite o semestre';
-	var curriculumUnitHint = 'Digite o nome da disciplina ou parte dele';
-	var groupHint = 'Digite o código da turma';
-	var searchingText = 'Procurando...';
-	var noResultsText = 'Nenhum resultado';
 
-	$( "#txtCourse").tokenInput("http://localhost:3000/courses.json", {
-		hintText: courseHint,
-		searchingText: searchingText,
+
+$(document).ready(function(){
+
+	function recountItems(){
+		console.log(Date() + 'Recontando...');
+		$(".placesNavPanel #counter").text('99');
+	
+	}
+
+	$( "#txtCourse").tokenInput(search_urls["course"], {
+		hintText: hints["course"],
+		searchingText: messages["searching"],
 		queryParam : 'search',
-		noResultsText: noResultsText
+		propertyToSearch: 'name',
+		tokenValue: 'id', //trocar por allocationTagId
+		preventDuplicates: 'true',
+		noResultsText: messages["noResults"],
+		onAdd: function (item) {
+            recountItems();
+        },
+        onDelete: function (item) {
+            recountItems();
+        }
 	});
+	
 	$( "#txtSemester").tokenInput("http://shell.loopj.com/tokeninput/tvshows.php", {
-		hintText: semesterHint,
-		searchingText: searchingText,
-		noResultsText: noResultsText
+		hintText: hints["semester"],
+		searchingText: messages["searching"],
+		noResultsText: messages["noResults"]
 	});
-	$( "#txtCurriculumUnit").tokenInput("http://shell.loopj.com/tokeninput/tvshows.php", {
-		hintText: curriculumUnitHint,
-		searchingText: searchingText,
-		noResultsText: noResultsText
+	$( "#txtCurriculumUnit").tokenInput("http://localhost:3000/curriculum_units/list.json", {
+		hintText: hints["curriculumUnit"],
+		searchingText: messages["searching"],
+		queryParam : 'search',
+		propertyToSearch: 'name',
+		tokenValue: 'id', //trocar por allocationTagId
+		preventDuplicates: 'true',
+		noResultsText: messages["noResults"]
 	});
 	$( "#txtGroup").tokenInput("http://shell.loopj.com/tokeninput/tvshows.php", {
-		hintText: groupHint,
-		searchingText: searchingText,
-		noResultsText: noResultsText
+		hintText: hints["group"],
+		searchingText: messages["searching"],
+		noResultsText: messages["noResults"]
 	});
 
 	$('.placesNavPanel input[type="button"]').click(function(){
@@ -52,10 +68,10 @@ function showNavPanelMenu(element){
 		$('#navPanelMenu').remove();
 
 	var pnl = '<ul id="navPanelMenu" style="display:none;opacity:0.9">';
-	pnl += '<li><a href="#" onclick="return false;">Novo</a></li>';
-	pnl += '<li><a href="#" onclick="return false;">Alterar</a></li>';
-	pnl += '<li><a href="#" onclick="return false;">Excluir</a></li>';
-	pnl += '<li><a href="#" onclick="return false;">Ofertar</a></li>';
+	pnl += '<li><a href="#" onclick="return false;">[Novo]</a></li>';
+	pnl += '<li><a href="#" onclick="return false;">[Alterar]</a></li>';
+	pnl += '<li><a href="#" onclick="return false;">[Excluir]</a></li>';
+	pnl += '<li><a href="#" onclick="return false;">[Ofertar]</a></li>';
 	pnl += '</ul>';
 
 	//var left = $(element).position().left + $(element).outerWidth();

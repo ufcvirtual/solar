@@ -23,12 +23,13 @@
 
 TODO: 
 	- Internacionalizar
-	- Separar css da página
-	- Configurar caminho para consultas ajax de Curso, unidade curricular, etc...
 	- Colocar label indicando quais e quantas entidades estão selecionadas
 	- colocar "alt" nas imagens
 	- remover o '/assets' dos caminhos de imagens
-
+	- Pesquisa deve selecionar (Todos)
+	- Preparar retorno (conjunto de allocationTags)
+	- Colocar o Tab pra funcionar
+    - Ver necessidade de indexar no BD os campos de busca para melhorar a performance de tudo.
 =end
 
 module PlacesNavPanelHelper
@@ -37,32 +38,57 @@ module PlacesNavPanelHelper
     raw %{
 	#{ javascript_include_tag "places_nav_panel"}
 	#{ javascript_include_tag "jquery.tokeninput.js"}
-	#{ javascript_include_tag "jquery.tokeninput.js"}
     #{ stylesheet_link_tag "places_nav_panel" }
 
+	<script type="text/javascript">
+
+		//Declarando caminhos para a busca do componente. Nao conseguimos colocar isso no javascript		
+		var search_urls = {
+			"course": "#{url_for :controller => :courses, :format => "json"}", 
+			"semester": "123", 
+			"curriculumUnit": "#{url_for :controller => :curriculum_units, :format => "json"}",
+			"group": "123"
+		};
+		
+		var hints = {
+			"course": "#{I18n.t(:places_nav_panel_course_hint)}", 
+			"semester": "#{I18n.t(:places_nav_panel_semester_hint)}", 
+			"curriculumUnit": "#{I18n.t(:places_nav_panel_curriculum_unit_hint)}",
+			"group": "#{I18n.t(:places_nav_panel_group_hint)}"
+		};
+		
+		var messages = {
+			"searching": "#{I18n.t(:places_nav_panel_searching_text)}", 
+			"noResults": "#{I18n.t(:places_nav_panel_empty_text)}"
+		};
+		
+		
+	</script>
+	
 	<div class="placesNavPanel">
 		<div><span 
-			class="label">[Gradua&ccedil;&atilde;o]:</span><input 
+			class="label">#{t(:course)}:</span><input 
 			type="text" id="txtCourse"/>
 			<input type="button" value="" class ="btShowMenu"/>
 		</div>
 		<div><span 
-			class="label">[Per&iacute;odo]:</span><input 
+			class="label">#{t(:semester_date)}:</span><input 
 			type="text" id="txtSemester"/>
 			<input type="button" value="" class ="btShowMenu"/>
 		</div>
 		<div><span 
-			class="label">[Disciplina]:</span><input 
+			class="label" style=";">#{t(:curriculum_unit)}:</span><input 
 			type="text" id="txtCurriculumUnit"/>
 			<input type="button" value="" class ="btShowMenu"/>
 		</div>
 		<div><span 
-			class="label">[Turma]:</span><input 
+			class="label">#{t(:group)}:</span><input 
 			type="text" id="txtGroup"/>
 			<input type="button" value="" class ="btShowMenu"/>
 		</div>
-		<div class="label summary">
-			[qtd] [tipo] Selecionad[o/a(s)]
+		<div id="counterLabel" class="label summary">
+			<span id="counter">0</span>
+			<span id="counterDescription">[Turma(s) selecionada(s)]</span>
 		</div>
 	</div>
 
