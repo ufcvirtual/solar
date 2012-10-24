@@ -19,7 +19,7 @@
         - :year
   time:
     formats:
-      clock: "%m/%d/%Y %H:%M:%S"
+      clock: "%d/%m/%Y %H:%M:%S"
       default: "%A, %d de %B de %Y, %H:%M h"
       short: "%d/%m %H:%M h"
       today: "%H:%M"
@@ -30,7 +30,7 @@
       discussion_post_date: "%d/%m/%Y"
       discussion_post_hour: "%H:%M h"
       simple_day_and_month: "%d/%b"
-      at_date: "%m/%d/%Y às %H:%M"
+      at_date: "%d/%m/%Y às %H:%M"
     am: ''
     pm: ''
 
