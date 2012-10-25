@@ -60,26 +60,14 @@ puts "\n\n\nusers: \n#{@users}\n\n\n"
 
   # GET /allocations/1/edit
   def edit
-    ids = params[:id].split(',')
-    @multiple = (ids.length > 1 or (params.include?('multiple') and params['multiple'] == 'yes'))
-    @allocation = Allocation.find(ids)
-    @allocation_ids = @allocation.map(&:id)
-    @status_hash = status_hash_of_allocation(@allocation.first.status)
-    @users = @allocation.map(&:user).uniq.map(&:name)
+    @allocation   = Allocation.find(params[:id])
+    @status_hash  = status_hash_of_allocation(@allocation.status)
+    @change_group = (not [Allocation_Cancelled, Allocation_Rejected].include?(@allocation.status))
 
-    allocation = @allocation.first
+    # transicao entre grupos apenas da mesma oferta
+    @groups = @change_group ? Group.where(:offer_id => @allocation.group.offer_id) : @allocation.group
 
-    if @change_group = (not [Allocation_Cancelled, Allocation_Rejected].include?(allocation.status))
-      @groups = Group.where(:offer_id => allocation.group.offer_id) # transicao entre grupos apenas da mesma oferta
-    else
-      @groups = allocation.allocation_tag.group
-    end
-
-    @allocation = allocation
-
-    respond_to do |format|
-      format.html { render layout: false }
-    end
+    render layout: false
   end
 
   # POST /allocations
@@ -116,10 +104,11 @@ puts "\n\n\nusers: \n#{@users}\n\n\n"
   # PUT /allocations/1
   # PUT /allocations/1.json
   def update
-    params[:allocation][:allocation_tag_id] = AllocationTag.find_by_group_id(params[:allocation].delete(:group_id)).id if params[:allocation].include?(:group_id)
-
-    allocations = Allocation.find(params[:id].split(','))
-    @allocation = allocations.first unless params.include?(:multiple) and params[:multiple] == 'yes'
+    allocation_tag_id = nil
+    allocation_tag_id = Group.find(params[:allocation][:group_id]).allocation_tag.id if params.include?(:allocation) and params[:allocation].include?(:group_id)
+    allocations       = Allocation.find(params[:id].split(','))
+    allocation        = allocations.first
+    new_status        = params.include?(:enroll) ? Allocation_Activated.to_i : ((params.include?(:allocation) and params[:allocation].include?(:status)) ? params[:allocation][:status] : 0)
 
     # verifica se existe mudanca de turma
       # se sim, todas as alocacoes serao canceladas e serao criadas novas com a nova turma
@@ -128,47 +117,39 @@ puts "\n\n\nusers: \n#{@users}\n\n\n"
     error = false
     begin
       ActiveRecord::Base.transaction do
-        # mudanca de turma
-        if params[:allocation].include?(:allocation_tag_id) and params[:allocation][:allocation_tag_id] != allocations.first.allocation_tag_id
+        # mudanca de turma, nao existe chamada multipla para esta funcionalidade
+        if ((not params.include?(:multiple)) and (not allocation_tag_id.nil?) and (allocation_tag_id != allocations.first.allocation_tag_id))
           # criando novas alocacoes e cancelando as antigas
-          allocations.each do |allocation|
-            Allocation.create!({
-              :user_id => allocation.user_id,
-              :allocation_tag_id => params[:allocation][:allocation_tag_id],
-              :profile_id => allocation.profile_id,
-              :status => params[:allocation][:status]
-            })
+          @allocation = Allocation.create!({:user_id => allocation.user_id, :allocation_tag_id => allocation_tag_id, :profile_id => allocation.profile_id, :status => params[:allocation][:status]})
+          allocation.update_attributes(:status => Allocation_Cancelled) # cancelando a anterior
 
-            allocation.status = Allocation_Cancelled
-            allocation.save!
-
-            Notifier.enrollment_accepted(allocation.user.email, allocation.group.code_semester).deliver if params[:allocation][:status].to_i == Allocation_Activated.to_i
-          end # each allocations
+          Notifier.enrollment_accepted(@allocation.user.email, @allocation.group.code_semester).deliver if params[:allocation][:status].to_i == Allocation_Activated.to_i
         else # sem mudanca de turma
-          allocations.each do |allocation|
-            changed_status_to_accepted = (allocation.status.to_i != Allocation_Activated.to_i and params[:allocation][:status].to_i == Allocation_Activated.to_i)
-
-            allocation.status = params[:allocation][:status]
-            allocation.save!
+          @allocation = allocation
+          allocations.each do |al|
+            changed_status_to_accepted = ((al.status.to_i != Allocation_Activated.to_i) and (new_status.to_i == Allocation_Activated.to_i))
+            al.update_attributes(:status => new_status)
 
             Notifier.enrollment_accepted(allocation.user.email, allocation.group.code_semester).deliver if changed_status_to_accepted
           end # allocations
         end # if
       end # transaction
 
-      flash[:notice] = t(:enrollment_successful_update, :scope => [:allocations, :manage]) if params.include?(:multiple) and params[:multiple] == 'yes'
-    rescue
+      flash[:notice] = t(:enrollment_successful_update, :scope => [:allocations, :manage])
+    rescue ActiveRecord::RecordNotUnique
       error = true
-      flash[:alert] = t(:enrollment_unsuccessful_update, :scope => [:allocations, :manage]) if params.include?(:multiple) and params[:multiple] == 'yes'
-    end # rescue
+      msg_error = t(:student_already_in_group, :scope => [:allocations, :error])
+    rescue Exception => e
+      error = true
+      msg_error = t(:enrollment_unsuccessful_update, :scope => [:allocations, :manage])
+    end
 
-    respond_to do |format|
-      unless error
-        format.html { render action: "show", layout: false }
-        format.json { render json: {:status => "ok"} }
-      else
-        format.html { render action: "edit", layout: false }
-        format.json { render json: {:status => "error"} }
+    if error
+      render :js => "javascript:flash_message('#{msg_error}', 'alert');"
+    else
+      respond_to do |format|
+        format.html { render :action => :show, :layout => false }
+        format.json { render :json => {:status => "ok"}  }
       end
     end
   end

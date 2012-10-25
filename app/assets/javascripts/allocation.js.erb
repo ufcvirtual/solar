@@ -10,7 +10,7 @@ $(function() {
     }
   });
 
-  $('.btn_manage_enrollment_selected').click(function() {
+  $('.btn_enroll_selected').click(function() {
     var ch = $('.cbx_value:checked');
 
     if (ch.length == 0) { // nenhum selecionado
@@ -32,8 +32,23 @@ $(function() {
       }
     }
 
-    var url = "<%= Rails.application.routes.url_helpers.edit_allocation_path('something', :multiple => 'yes') %>".replace('something', sel.join(','));
-    showLightBoxURL(url, 300, 250, true, '<%= I18n.t(:manage_selected, :scope => [:allocations, :index])%>');
+    var url = "<%= Rails.application.routes.url_helpers.allocation_path('something') %>".replace('something', sel.join(','));
+
+    $.ajax({
+      type: 'PUT',
+      url: url + '.json',
+      data: {
+        "multiple": "yes",
+        "enroll": "all",
+      },
+      success: function(data) {
+        if (data.status = 'ok') {
+          $(window).attr("location", '<%= Rails.application.routes.url_helpers.enrollments_allocations_path %>');
+        } else {
+          alert('<%= I18n.t(:allocation_manage_enrollment_unsuccessful_update) %>');
+        }
+      }
+    });
   });
 });
 
@@ -58,29 +73,10 @@ function save_allocation(obj) {
         "group_id": $('#code_id option:selected', $(obj).closest('tr')).val()
       }
     },
-    success: function(data) {
-      $(obj).closest('tr').removeClass('active');
-      $(obj).closest('tr').html(data);
-    }
-  });
-}
-
-function save_allocations(obj) {
-  $.ajax({
-    type: 'PUT',
-    url: $(obj).attr('save-link') + '.json',
-    data: {
-      "multiple": "yes",
-      "allocation": {
-        "status": $('#allocations_manage_selected #status_id').val(),
-        "group_id": $('#allocations_manage_selected #group_id').val()
-      }
-    },
-    success: function(data) {
-      if (data.status = 'ok') {
-        $(window).attr("location", '<%= Rails.application.routes.url_helpers.enrollments_allocations_path %>');
-      } else {
-        alert('<%= I18n.t(:allocation_manage_enrollment_unsuccessful_update) %>');
+    success: function(data, textStatus, jqXHR) {
+      if (jqXHR.getResponseHeader('Content-Type').split(';')[0] != 'text/javascript') {
+        $(obj).closest('tr').removeClass('active');
+        $(obj).closest('tr').html(data);
       }
     }
   });

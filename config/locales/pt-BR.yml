@@ -972,7 +972,7 @@
       manage_group: Turma
       manage_status: Status
       manage_options: Opções
-      manage_selected: Gerenciar Selecionados
+      enroll_selected: Matricular Selecionados
       total_students:
         zero: Sem alunos
         one: 'Total: 1 aluno'
@@ -993,6 +993,8 @@
       status: Status
       save: Salvar
       cancel: Cancelar
+    error:
+      student_already_in_group: Aluno já está nesta turma
 
   allocation_pending: Pendente
 

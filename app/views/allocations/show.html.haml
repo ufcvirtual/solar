@@ -1,5 +1,8 @@
 %td= check_box_tag( @allocation.id, @allocation.id, {:"status-value" => @allocation.status, :class => "cbx_value"} )
 %td= @allocation.user.name
-%td= @allocation.allocation_tag.group.code_semester
+%td= @allocation.group.code_semester
 %td= name_of(@allocation.status)
 %td= button_tag( t(:manage, :scope => [:allocations, :index]), :"show-link" => allocation_path(@allocation), :"edit-link" => edit_allocation_path(@allocation), :onclick => "javascript:manage_enrollment(this);", :class => "btn btn_default btn_manage_enrollment" )
+
+:javascript
+  eval("#{show_flash}")

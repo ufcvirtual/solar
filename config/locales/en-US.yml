@@ -816,7 +816,7 @@
       manage_group: Group
       manage_status: Status
       manage_options: Options
-      manage_selected: Manage Selected
+      enroll_selected: Enroll Selected
       total_students:
         zero: Without students
         one: 'Total: 1 student'
@@ -837,6 +837,8 @@
       status: Status
       save: Save
       cancel: Cancel
+    error:
+      student_already_in_group: Student is already in the class
 
   allocation_pending: Pending
 
