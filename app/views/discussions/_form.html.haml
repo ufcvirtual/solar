@@ -1,0 +1,38 @@
+%span.form_requirement= t(:required_fields)
+= simple_form_for(@discussion) do |f| 
+
+  .form-inputs.block_content
+    = hidden_field_tag :offer_id, @offer_id
+    = hidden_field_tag :group_id, @group_id
+    = f.input :name, :required => true
+    = f.input :description, :required => true 
+    / a fim de deixar o layout semelhante ao do simple_form utilizado nos "f.input"
+    - error_class = "field_with_errors" unless @schedule_error.blank?
+    .string.required{:class => error_class}
+      = f.label "Período", :required => true
+      - start_date = @discussion.schedule.nil? ? two_months_ago : @discussion.schedule.start_date.to_date
+      = text_field_tag "start_date", "", :id => "from-date", :title => "#{t(:from_date)}", :size => "9", :value => "#{l(start_date, :format => :datepicker)}", :class => "date_text_field", :size => 10
+      = "à"
+      - end_date = @discussion.schedule.nil? ? Date.today : @discussion.schedule.end_date.to_date
+      = text_field_tag "end_date", "", :id => "until-date", :title => "#{t(:until_date)}", :size => "9", :value => "#{l(end_date, :format => :datepicker)}", :class => "date_text_field", :size => 10
+      %span{:style => "display: inline-block;"}= @schedule_error
+
+  .block_content.form-actions
+    = f.submit "Salvar", :class => "btn btn_main", :alt => "Salvar"
+    = button_tag "Cancelar", :class => "btn btn_default", :onclick => "removeLightBox();", :type => "button"
+
+:css
+  .ui-datepicker{ 
+    width: 15em; 
+    padding: .2em .2em 0; 
+    display: none;
+    background-color: white;
+  }
+
+:javascript
+
+  $(function(){
+    var options = $.extend($.datepicker.regional['#{I18n.locale}']);
+    options.dateFormat = global_config.locale.dateFormat;
+    $('#from-date, #until-date').datepicker(options);
+  });

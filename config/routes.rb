@@ -25,6 +25,10 @@ Solar::Application.routes.draw do
   ## curriculum_units/:id/groups
   # get 'curriculum_units/:curriculum_unit_id/groups' => "groups#list", :as => :groups_curriculum_unit
 
+  resources :discussions do
+    get :list, :on => :collection
+  end
+
   ## groups/:id/discussions
   resources :groups, :except => [:show] do
     resources :discussions, :only => [:index]

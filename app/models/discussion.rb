@@ -5,6 +5,48 @@ class Discussion < ActiveRecord::Base
 
   has_many :discussion_posts, :class_name => "Post", :foreign_key => "discussion_id"
 
+  validates :name, :description, :presence => true
+  validate :unique_name
+
+  before_destroy :can_destroy?
+
+  # scope :by_date_and_name, order("schedule.start_date ASC, name ASC")
+  # default_scope :by_date_and_name
+  # não tá nem olhando pra cá
+  # default_scope includes(:schedule).order('schedules.start_date ASC')
+
+  # default_scope :order => "schedule.start_date ASC, name ASC"
+
+  ##
+  # Verifica se pode deletar o fórum
+  # Permite apenas se ainda não tiver iniciado ou não tiver concluído e não tiver nenhuma participação
+  ##
+  def can_destroy?
+    if (schedule.start_date < Date.today) #or (closed?) or (not discussion_posts.empty?)
+      errors.add(:base, "Nao pode excluir") 
+      return false
+    else
+      return true
+    end
+  end
+
+  ##
+  # Verifica se pode editar o fórum
+  # Permite apenas se ainda não tiver concluído
+  # ##
+  def can_edit?
+    return true unless closed?
+  end
+
+  ##
+  # Validação que verifica se o nome do fórum já existe naquela allocation_tag
+  ##
+  def unique_name
+    discussions_with_same_name = Discussion.find_all_by_allocation_tag_id_and_name(allocation_tag_id, name)
+    # ALTERAR INTERNACIONALIZAÇÃO \/
+    errors.add(:base, I18n.t(:existing_name_error, :scope => [:assignment, :group_assignments])) if (@new_record == true or name_changed?) and discussions_with_same_name.size > 0
+  end
+
   def closed?
     self.schedule.end_date < Date.today
   end

@@ -124,6 +124,7 @@ res21:
   action: 'show_content'
   description: 'Ver aula - content'
 
+# Discussions - parte 1
 res22:
   id: 22
   controller: 'discussions'
@@ -246,8 +247,7 @@ res41:
   action: 'remove_comment'
   description: 'Metodo para remover determinados comentarios a respeito do arquivo enviado por um aluno/grupo a uma atividade - verificacao de acordo com a atividade'
 
-## Posts
-
+# Posts
 res42:
   id: 42
   controller: 'posts'
@@ -272,7 +272,7 @@ res45:
   action: 'index'
   description: 'Exibe todos os posts'
 
-# acompanhamento
+# Acompanhamento
 res47:
   id: 47
   controller: 'scores'
@@ -280,7 +280,7 @@ res47:
   description: 'Exibicao dos dados do aluno'
 
 
-# acompanhamento do responsável - parte 1
+# Acompanhamento do responsável - parte 1
 res48:
   id: 48
   controller: 'scores'
@@ -343,7 +343,7 @@ res57:
   action: 'download_folder_file_ziped'
   description: 'Baixar arquivos de uma pasta do material de apoio ZIPADO'
 
-# curso
+# Curso
 res58:
   id: 58
   controller: 'courses'
@@ -461,3 +461,41 @@ res82:
   controller: 'curriculum_units'
   action: 'create'
   description: 'Criar Unidade Curricular'
+
+# Discussions - parte 2
+res83:
+  id: 83
+  controller: 'discussions'
+  action: 'new'
+  description: 'Pagina de criacao de foruns para a oferta ou turma selecionadas previamente'
+
+res84:
+  id: 84
+  controller: 'discussions'
+  action: 'create'
+  description: 'Criacao de foruns para para a oferta ou turma selecionadas previamente'
+
+res85:
+  id: 85
+  controller: 'discussions'
+  action: 'edit'
+  description: 'Pagina de edicao de forum'
+
+res86:
+  id: 86
+  controller: 'discussions'
+  action: 'update'
+  description: 'Edicao de dados de forum'
+
+res87:
+  id: 87
+  controller: 'discussions'
+  action: 'destroy'
+  description: 'Delecao de forum'
+
+res88:
+  id: 88
+  controller: 'discussions'
+  action: 'list'
+  description: 'Listagem de foruns para a oferta ou turma selecionadas previamente'
+

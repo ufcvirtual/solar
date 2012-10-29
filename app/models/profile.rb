@@ -30,4 +30,21 @@ SQL
     return (students_of_class.include?(user_id))
   end
 
+  ##
+  # Verifica se o usuário, para a oferta e turma informadas, tem permissão de responsável ou de aluno
+  ##
+  def self.is_responsible_or_student?(user_id, offer_id, group_id)
+    offer        = Offer.find(offer_id)
+    access_offer = (offer.allocation_tag.is_user_class_responsible?(user_id) or offer.allocation_tag.is_student?(user_id))
+    if group_id == 0 # nenhuma turma
+      return access_offer
+    elsif group_id == "all" # todas as turmas
+      access_groups = offer.groups.collect{|group| group.allocation_tag.is_user_class_responsible?(user_id) or group.allocation_tag.is_student?(user_id)}
+      return (not(access_groups.include?(false)) or access_offer)
+    else # alguma turma específica
+      group = Group.find(group_id)
+      return (group.allocation_tag.is_user_class_responsible?(user_id) or group.allocation_tag.is_student?(user_id))
+    end
+  end
+
 end

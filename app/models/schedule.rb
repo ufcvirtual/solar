@@ -5,6 +5,30 @@ class Schedule < ActiveRecord::Base
   has_many :schedule_events
   has_many :portfolios
   has_many :assignments
+
+  validates :start_date, :end_date, :presence => true
+  validate :start_date_before_end_date 
+
+  before_destroy :can_destroy?
+  
+  ##
+  # Validação que verifica se a data inicial é anterior à data final
+  ##
+  def start_date_before_end_date
+    unless start_date.nil? or end_date.nil?
+      errors.add(:start_date, "deve ser menor que a final") if (start_date > end_date)
+    end
+  end
+
+  ##
+  # Verifica se pode deletar o schedule: permite apenas se não tiver dependências
+  ##
+  def can_destroy?
+    if not(discussions.empty? and lessons.empty? and assignments.empty? and schedule_events.empty?)
+      return false
+    end
+  end
+
   
   def self.all_by_allocation_tags(allocation_tags, period = false, date_search = nil)
 

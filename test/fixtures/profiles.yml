@@ -20,6 +20,7 @@ tutor_presencial:
 editor:
   id: 5
   name: Editor
+  types: 8
 
 adm:
   id: 6

@@ -872,6 +872,38 @@ ucedit4:
   resource_id: 82
   per_id: false
 
+# Discussions - Fóruns
+
+discedit1:
+  profile_id: 5
+  resource_id: 83
+  per_id: false
+
+discedit2:
+  profile_id: 5
+  resource_id: 84
+  per_id: false
+
+discedit3:
+  profile_id: 5
+  resource_id: 85
+  per_id: true
+
+discedit4:
+  profile_id: 5
+  resource_id: 86
+  per_id: true
+
+discedit5:
+  profile_id: 5
+  resource_id: 87
+  per_id: true
+
+discedit6:
+  profile_id: 5
+  resource_id: 88
+  per_id: false
+
 ##############################
 # BASICO #
 ##############################

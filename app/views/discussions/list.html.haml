@@ -1,0 +1,42 @@
+.block_wrapper
+  - unless @discussions.nil? or @discussions.empty?
+    .block_title
+      %h2
+        = image_tag "icon_forum.png", :alt => " ", :class=>:block_title_icon
+        = t(:forum_table_title) + " para " + @turma + " de " + @oferta
+      .right_buttons
+        = button_tag("Novo", :class => "btn btn_main", :type => "button", :onclick => "javascript:open_lightbox('#{new_discussion_path}', 'Novo Fórum');")
+    %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :style => "table-layout: fixed"}
+      %thead
+        %tr.lines
+          %th{:align => "left"}=t :title
+          %th{:align => "center", :style => "width: 22%;"}=t :forum_table_date
+          %th{:align => "center", :style => "width: 22%;"}
+      %tbody
+        - @discussions.each do |discussion|
+          %tr{:class => "lines #{'period_ended' if discussion.closed? and (not discussion.extra_time?(current_user.id))}"}
+            %td
+              - if discussion.user_can_see?(current_user.id)
+                = link_to discussion.name, discussion_posts_path(discussion), {:class => 'link_content'}
+                = "(#{t(:forum_closed_short)})" if discussion.closed? and (not discussion.extra_time?(current_user.id))
+                = "(#{t(:discussion_closed_to_students)})" if discussion.extra_time?(current_user.id)
+              - else
+                = discussion.name
+            %td{:style => "width: 200px;"}
+              - schedule = discussion.schedule
+              = l schedule.start_date.to_date
+              = "-"
+              = l schedule.end_date.to_date
+            %td{:style => "width: 200px;"}
+              - btn_class = discussion.can_edit? ? "btn btn_default" : "btn btn_disabled"
+              = button_tag("Editar", :class => btn_class, :onclick => "javascript:open_lightbox('#{edit_discussion_path(discussion.id)}', 'Editar Fórum');", :type => "button", :disabled => (not discussion.can_edit?))
+              - btn_class = discussion.can_destroy? ? "btn btn_caution" : "btn btn_disabled"
+              = button_to('Excluir', discussion_path(discussion), :confirm => 'Are you sure?', :method => "delete", :class => btn_class, :disabled => (not discussion.can_destroy?))
+  - else
+    .block_content.block_content_text= t(:forum_message)
+
+:javascript
+
+  function open_lightbox(url, title){
+    showLightBoxURL(url, 540, 255, true, title);
+  }

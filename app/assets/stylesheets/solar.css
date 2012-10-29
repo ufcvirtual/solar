@@ -1716,6 +1716,12 @@ table tr.block_title th {
 }
 
 /*Tela de fórum*/
+.date_text_field{
+    margin-top: -20px;
+    margin-left: -2px;
+    margin-bottom: 10px;
+}
+
 #forum_description{
     white-space: normal;
     margin-bottom: 10px;
