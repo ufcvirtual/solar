@@ -237,6 +237,14 @@
       send_assignment:
         grade: Nota
         comment: Comentário
+      discussion:
+        name: Título
+        description: Descrição
+        schedule: Período
+      schedule:
+        start_date: Data inicial
+        end_date: Data final
+
 
     errors:
       template:
@@ -586,6 +594,28 @@
     new:
       attach_save: "Salvar"
       attach_another_file: "Anexar outro arquivo"
+
+  discussion:
+    errors:
+      existing_name: já existe
+      cant_edit: Fórum não pode ser editado
+      cant_delete: Fórum não pode ser excluído
+      range_date_error: deve ser menor que a data final
+    success:
+      updated: Fórum atualizado com sucesso
+      deleted: Fórum excluido com sucesso
+      created: Fórum criado com sucesso
+    buttons:
+      save: Salvar
+      cancel: Cancelar
+      edit: Editar
+      delete: Excluir
+      new: Novo
+    edit_discussion: Editar %{discussion_name}
+    new_discussion: Novo fórum
+    all_groups: todas as turmas
+    discussion_table_title: Fóruns disponíveis para %{to} de %{of}
+    group: Turma
 
   # messages
   message_title: "Mensagens"

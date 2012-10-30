@@ -36,10 +36,10 @@ SQL
   def self.is_responsible_or_student?(user_id, offer_id, group_id)
     offer        = Offer.find(offer_id)
     access_offer = (offer.allocation_tag.is_user_class_responsible?(user_id) or offer.allocation_tag.is_student?(user_id))
-    if group_id == 0 # nenhuma turma
+    if group_id == 0 # nenhuma turma (verifica oferta)
       return access_offer
-    elsif group_id == "all" # todas as turmas
-      access_groups = offer.groups.collect{|group| group.allocation_tag.is_user_class_responsible?(user_id) or group.allocation_tag.is_student?(user_id)}
+    elsif group_id == "all" # todas as turmas da oferta
+      access_groups = offer.groups.where("status = #{true}").collect{|group| group.allocation_tag.is_user_class_responsible?(user_id) or group.allocation_tag.is_student?(user_id)}
       return (not(access_groups.include?(false)) or access_offer)
     else # alguma turma específica
       group = Group.find(group_id)

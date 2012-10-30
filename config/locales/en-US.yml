@@ -99,6 +99,13 @@
       send_assignment:
         grade: Grade
         comment: Comment
+      discussion:
+        name: Title
+        description: Description
+        schedule: Date range
+      schedule:
+        start_date: Initial date
+        end_date: Final date
 
     errors:
       messages:
@@ -429,6 +436,28 @@
     new:
       attach_save: "Save"
       attach_another_file: "Attach another file"
+
+  discussion:
+    errors:
+      existing_name_error: already exists
+      cant_edit: Discussion can't be edited
+      cant_delete: Discussion can't be deleted
+      range_date_error: must be smaller then the final date
+    success:
+      updated: Discussion updated successfully
+      deleted: Discussion deleted successfully
+      created: Discussion created successfully
+    buttons:
+      save: Save
+      cancel: Cancel
+      edit: Edit
+      delete: Delete
+      new: New
+    edit_discussion: Edit discussion %{discussion_name}
+    new_discussion: New discussion
+    all_groups: all groups
+    discussion_table_title: Available Discussions to %{to} of %{of}
+    group: Group
 
   message_title: "Messages"
   message_inbox: "Inbox"

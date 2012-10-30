@@ -3,15 +3,19 @@
     .block_title
       %h2
         = image_tag "icon_forum.png", :alt => " ", :class=>:block_title_icon
-        = t(:forum_table_title) + " para " + @turma + " de " + @oferta
+        = t(:discussion_table_title, :scope => [:discussion], :to => @group_code, :of => @offer_semester)
       .right_buttons
-        = button_tag("Novo", :class => "btn btn_main", :type => "button", :onclick => "javascript:open_lightbox('#{new_discussion_path}', 'Novo Fórum');")
+        - if can? :new, Discussion and @responsible_or_student
+          = button_tag t(:new, :scope => [:discussion, :buttons]), :class => "btn btn_main", :type => "button", :onclick => "javascript:open_lightbox('#{new_discussion_path(:offer_id => @offer_id, :group_id => @group_id)}', '#{t(:new_discussion, :scope => [:discussion])}');", :alt => t(:new, :scope => [:discussion, :buttons])
     %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :style => "table-layout: fixed"}
       %thead
         %tr.lines
           %th{:align => "left"}=t :title
+          - if @group_code == t(:all_groups, :scope => [:discussion])
+            %th{:align => "center", :style => "width: 10%;"}= t(:group, :scope => [:discussion]) 
           %th{:align => "center", :style => "width: 22%;"}=t :forum_table_date
-          %th{:align => "center", :style => "width: 22%;"}
+          - if @discussions.collect{ |discussion| (can? :edit, discussion or can? :destroy, discussion) and @responsible_or_student }.include?(true)
+            %th{:align => "center", :style => "width: 22%;"}
       %tbody
         - @discussions.each do |discussion|
           %tr{:class => "lines #{'period_ended' if discussion.closed? and (not discussion.extra_time?(current_user.id))}"}
@@ -22,16 +26,21 @@
                 = "(#{t(:discussion_closed_to_students)})" if discussion.extra_time?(current_user.id)
               - else
                 = discussion.name
+            - if @group_code == t(:all_groups, :scope => [:discussion])
+              %td{:style => "width: 100px;"}= discussion.allocation_tag.group.code
             %td{:style => "width: 200px;"}
               - schedule = discussion.schedule
-              = l schedule.start_date.to_date
+              =l schedule.start_date.to_date
               = "-"
-              = l schedule.end_date.to_date
-            %td{:style => "width: 200px;"}
-              - btn_class = discussion.can_edit? ? "btn btn_default" : "btn btn_disabled"
-              = button_tag("Editar", :class => btn_class, :onclick => "javascript:open_lightbox('#{edit_discussion_path(discussion.id)}', 'Editar Fórum');", :type => "button", :disabled => (not discussion.can_edit?))
-              - btn_class = discussion.can_destroy? ? "btn btn_caution" : "btn btn_disabled"
-              = button_to('Excluir', discussion_path(discussion), :confirm => 'Are you sure?', :method => "delete", :class => btn_class, :disabled => (not discussion.can_destroy?))
+              =l schedule.end_date.to_date
+            - if (can? :edit, discussion or can? :destroy, discussion) and @responsible_or_student
+              %td{:style => "width: 200px;"}
+                - if can? :edit, discussion
+                  - btn_class = (not discussion.closed?) ? "btn btn_default" : "btn btn_disabled"
+                  = button_tag t(:edit, :scope => [:discussion, :buttons]), :class => btn_class, :onclick => "javascript:open_lightbox('#{edit_discussion_path(discussion.id, :offer_id => @offer_id, :group_id => @group_id)}', '#{t(:edit_discussion, :scope => [:discussion], :discussion_name => discussion.name)}');", :type => "button", :disabled => (discussion.closed?), :alt => t(:edit, :scope => [:discussion, :buttons])
+                - if can? :destroy, discussion
+                  - btn_class = discussion.can_destroy? ? "btn btn_caution" : "btn btn_disabled"
+                  = button_to t(:delete, :scope => [:discussion, :buttons]), discussion_path(discussion, :offer_id => @offer_id, :group_id => @group_id), :confirm => 'Are you sure?', :method => "delete", :class => btn_class, :disabled => (not discussion.can_destroy?), :alt => t(:delete, :scope => [:discussion, :buttons])
   - else
     .block_content.block_content_text= t(:forum_message)
 

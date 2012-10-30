@@ -50,3 +50,8 @@ basico:
   id: 12
   name: Basico
   types: 1
+
+aluno_monitor:
+  id: 13
+  name: Aluno Monitor
+  types: 12

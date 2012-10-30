@@ -124,6 +124,9 @@ SQL
     ).uniq.empty?
   end
 
+  ##
+  # Verifica se o usuário tem bit de aluno no perfil para a allocation_tag
+  ##
   def is_student?(user_id)
     allocation = Allocation.find_by_user_id_and_allocation_tag_id(user_id, id)
     return allocation.nil? ? false : (allocation.profile.types & Profile_Type_Student) == Profile_Type_Student
@@ -133,6 +136,20 @@ SQL
     related_allocations = AllocationTag.find_related_ids(Group.find(class_id).allocation_tag.id) #allocations relacionadas à turma
     allocation = Allocation.first(:conditions => ["allocation_tag_id IN (?) AND user_id = #{user_id}", related_allocations])
     return (allocation.nil? ? nil : allocation.allocation_tag)
+  end
+
+  ##
+  # Recupera os ids das allocations_tags verificando a oferta e grupo passados (sendo que grupo pode ser nenhum, algum ou todos)
+  ##
+  def self.by_offer_and_group(offer_id, group_id)
+    if group_id == 0 # nenhuma turma (verifica oferta)
+      allocations_tags_ids = [AllocationTag.find_by_offer_id(offer_id).id]
+    elsif group_id == "all" # todas as turmas da oferta
+      allocations_tags_ids = Group.find_all_by_offer_id_and_status(offer_id, true).collect{|group| AllocationTag.find_by_group_id(group.id).id }
+    else # alguma turma específica
+      allocations_tags_ids = [AllocationTag.find_by_group_id(group_id).id]
+    end
+    return allocations_tags_ids
   end
 
 end

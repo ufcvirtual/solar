@@ -6,10 +6,10 @@
     = hidden_field_tag :group_id, @group_id
     = f.input :name, :required => true
     = f.input :description, :required => true 
-    / a fim de deixar o layout semelhante ao do simple_form utilizado nos "f.input"
+    / classes ".string.required.field_with_errors" adicionadas a fim de deixar o layout semelhante ao do simple_form utilizado nos "f.input"
     - error_class = "field_with_errors" unless @schedule_error.blank?
     .string.required{:class => error_class}
-      = f.label "Período", :required => true
+      = f.label :schedule, :required => true
       - start_date = @discussion.schedule.nil? ? two_months_ago : @discussion.schedule.start_date.to_date
       = text_field_tag "start_date", "", :id => "from-date", :title => "#{t(:from_date)}", :size => "9", :value => "#{l(start_date, :format => :datepicker)}", :class => "date_text_field", :size => 10
       = "à"
@@ -18,8 +18,8 @@
       %span{:style => "display: inline-block;"}= @schedule_error
 
   .block_content.form-actions
-    = f.submit "Salvar", :class => "btn btn_main", :alt => "Salvar"
-    = button_tag "Cancelar", :class => "btn btn_default", :onclick => "removeLightBox();", :type => "button"
+    = f.submit t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons])
+    = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default", :onclick => "removeLightBox();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
 
 :css
   .ui-datepicker{ 

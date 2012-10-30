@@ -10,20 +10,13 @@ class Discussion < ActiveRecord::Base
 
   before_destroy :can_destroy?
 
-  # scope :by_date_and_name, order("schedule.start_date ASC, name ASC")
-  # default_scope :by_date_and_name
-  # não tá nem olhando pra cá
-  # default_scope includes(:schedule).order('schedules.start_date ASC')
-
-  # default_scope :order => "schedule.start_date ASC, name ASC"
-
   ##
   # Verifica se pode deletar o fórum
-  # Permite apenas se ainda não tiver iniciado ou não tiver concluído e não tiver nenhuma participação
+  # Permite apenas se ainda não tiver iniciado ou estiver concluído e não tiver nenhuma participação
   ##
   def can_destroy?
-    if (schedule.start_date < Date.today) #or (closed?) or (not discussion_posts.empty?)
-      errors.add(:base, "Nao pode excluir") 
+    if (schedule.start_date < Date.today) or (closed? and (not discussion_posts.empty?))
+      errors.add(:base, I18n.t(:cant_delete, :scope => [:discussion, :errors])) 
       return false
     else
       return true
@@ -31,20 +24,11 @@ class Discussion < ActiveRecord::Base
   end
 
   ##
-  # Verifica se pode editar o fórum
-  # Permite apenas se ainda não tiver concluído
-  # ##
-  def can_edit?
-    return true unless closed?
-  end
-
-  ##
   # Validação que verifica se o nome do fórum já existe naquela allocation_tag
   ##
   def unique_name
     discussions_with_same_name = Discussion.find_all_by_allocation_tag_id_and_name(allocation_tag_id, name)
-    # ALTERAR INTERNACIONALIZAÇÃO \/
-    errors.add(:base, I18n.t(:existing_name_error, :scope => [:assignment, :group_assignments])) if (@new_record == true or name_changed?) and discussions_with_same_name.size > 0
+    errors.add(:base, I18n.t(:existing_name, :scope => [:discussion, :errors])) if (@new_record == true or name_changed?) and discussions_with_same_name.size > 0
   end
 
   def closed?
@@ -159,6 +143,7 @@ SQL
    LEFT JOIN discussion_posts AS t4 ON t4.discussion_id = t1.id
        WHERE t2.id IN (#{allocation_tags.join(',')})
        GROUP BY t1.id, t1.name, t1.description, t1.schedule_id, t1.allocation_tag_id, t3.start_date, t3.end_date
+       ORDER BY t3.start_date, t3.end_date, t1.name
 SQL
 
     Discussion.find_by_sql(query)
