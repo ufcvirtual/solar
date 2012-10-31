@@ -31,7 +31,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     end
 
     test "nao listar foruns por allocation_tag - sem permissao" do
-      login(users(:coorddisc))
+      login(users(:tutor_presencial))
       get @quimica_tab
       get discussions_path
       assert_nil assigns(:discussions)
@@ -44,7 +44,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   ##
   
     test "criar novo forum" do
-      login(users(:coorddisc))
+      login(users(:aluno3))
       get(new_discussion_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
       assert_not_nil assigns(:group_id)
       assert_not_nil assigns(:offer_id)
@@ -61,7 +61,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     end
 
     test "nao criar novo forum - erro de validacao" do
-      login(users(:coorddisc))
+      login(users(:aluno3))
       get(new_discussion_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
       assert_not_nil assigns(:group_id)
       assert_not_nil assigns(:offer_id)
@@ -97,7 +97,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   ##
   
     test "editar forum" do
-      login(users(:coorddisc))
+      login(users(:aluno3))
       get(edit_discussion_path(discussions(:forum_7).id, :offer_id => offers(:of3).id, :group_id => "all"))
       assert_not_nil assigns(:offer_id)
       assert_not_nil assigns(:group_id)
@@ -131,7 +131,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     end
 
     test "nao editar forum - erro de validacao" do
-      login(users(:coorddisc))
+      login(users(:aluno3))
       get(edit_discussion_path(discussions(:forum_7).id, :offer_id => offers(:of3).id, :group_id => "all"))
       assert_not_nil assigns(:discussion)
       assert_template :edit
@@ -175,7 +175,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
       assert_redirected_to({:controller => :home})
       assert_equal flash[:alert], I18n.t(:no_permission)
 
-      login(users(:coorddisc))
+      login(users(:aluno3))
       get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
       # verifica se não há nenhum fórum de nome "discussion 2" (nome alterado de "Forum 5")
       assert_no_tag :tag => "table", 
@@ -200,7 +200,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   ##
 
     test "excluir forum" do
-      login(users(:coorddisc))
+      login(users(:aluno3))
       get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
       assert_not_nil assigns(:offer_id)
       assert_not_nil assigns(:group_id)
@@ -239,7 +239,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     end
 
     test "nao excluir forum - forum ja possui postagens" do
-      login(users(:coorddisc))
+      login(users(:aluno3))
       get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
       assert_not_nil assigns(:offer_id)
       assert_not_nil assigns(:group_id)
@@ -287,7 +287,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
       assert_redirected_to({:controller => :home})
       assert_equal flash[:alert], I18n.t(:no_permission)
 
-      login(users(:coorddisc))
+      login(users(:aluno3))
 
       get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
       # verifica se há algum fórum de nome "discussion 2" (nome alterado de "Forum 5")

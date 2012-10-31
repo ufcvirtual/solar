@@ -22,7 +22,7 @@ class DiscussionsControllerTest < ActionController::TestCase
   ##
 
     test "listar foruns de acordo com dados de oferta e turma passados" do
-      sign_in users(:coorddisc)
+      sign_in users(:aluno3)
       get :list, {:offer_id => offers(:of3).id, :group_id => "all"}
       assert_not_nil assigns(:offer_id)
       assert_not_nil assigns(:group_id)
