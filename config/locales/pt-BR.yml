@@ -601,6 +601,7 @@
       cant_edit: Fórum não pode ser editado
       cant_delete: Fórum não pode ser excluído
       range_date_error: deve ser menor que a data final
+      offer_period: deve estar dentro do período da oferta (%{start} - %{end})
     success:
       updated: Fórum atualizado com sucesso
       deleted: Fórum excluido com sucesso

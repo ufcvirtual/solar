@@ -142,12 +142,13 @@ SQL
   # Recupera os ids das allocations_tags verificando a oferta e grupo passados (sendo que grupo pode ser nenhum, algum ou todos)
   ##
   def self.by_offer_and_group(offer_id, group_id)
+    offer = Offer.find(offer_id)
     if group_id == 0 # nenhuma turma (verifica oferta)
-      allocations_tags_ids = [AllocationTag.find_by_offer_id(offer_id).id]
+      allocations_tags_ids = [offer.allocation_tag_id]
     elsif group_id == "all" # todas as turmas da oferta
-      allocations_tags_ids = Group.find_all_by_offer_id_and_status(offer_id, true).collect{|group| AllocationTag.find_by_group_id(group.id).id }
+      allocations_tags_ids = offer.groups.where("status = #{true}").collect{|group| group.allocation_tag.id }
     else # alguma turma específica
-      allocations_tags_ids = [AllocationTag.find_by_group_id(group_id).id]
+      allocations_tags_ids = [Group.find(group_id).allocation_tag_id]
     end
     return allocations_tags_ids
   end

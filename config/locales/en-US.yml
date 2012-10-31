@@ -443,6 +443,7 @@
       cant_edit: Discussion can't be edited
       cant_delete: Discussion can't be deleted
       range_date_error: must be smaller then the final date
+      offer_period: must be on the date range of offer (%{start} - %{end})
     success:
       updated: Discussion updated successfully
       deleted: Discussion deleted successfully
