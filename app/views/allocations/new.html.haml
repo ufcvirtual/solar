@@ -1,10 +1,7 @@
 .block_filter
   = filter
 
-%div
-  = form_for(:allocations, url: designates_allocations_path, method: :get) do |f|
-    = f.hidden_field(:offer_id, {:value => params[:offer_id], :name => :offer_id}) if params.include?(:offer_id)
-    = f.hidden_field(:group_id, {:value => params[:group_id], :name => :group_id}) if params.include?(:group_id)
+=hidden_field_tag(:allocation_tag, '1,2,3') 
 
 .block_wrapper  
   .block_title
@@ -29,9 +26,9 @@
             %td{style: 'width:120px'}= allocation.profile.name
             %td{style: 'width:100px'}
               -if allocation.status==Allocation_Activated 
-                =button_to t(:deactivate), {:controller => "allocations", :action => "deactivate", :id => allocation.id }, :class=>'btn btn_caution'
+                =button_to t(:deactivate), { :controller => "allocations", :action => "deactivate", :id => allocation.id, :text_search => @text_search }, :class=>'btn btn_caution'
               -else
-                =button_to t(:activate), {:controller => "allocations", :action => "activate", :id => allocation.id }, :class=>'btn btn_default'
+                =button_to t(:activate), { :controller => "allocations", :action => "activate", :id => allocation.id, :text_search => @text_search }, :class=>'btn btn_default'
 
 .block_wrapper
   .block_title
@@ -40,16 +37,19 @@
   .block_content
     %div
       ="nome"
-      %input{type: 'text', :id => 'text_search' }
+      %input{type: 'text', :id => 'text_search', :value => @text_search }
       %input.btn.btn_default{type: 'button', value: 'busca', :id => 'search'}
+
     #search_user.allocations_list
     
 :javascript
   $(function() {
+    
     $("#search").click(function() {
       //var url_for = "<%= url_for :controller => :allocations, :action => :search_users %>";
       var url_for = "/allocations/search_users/";
       $("#search_user").load(url_for, { data: encodeURIComponent($("#text_search").val()) });
     })
+
   });
     

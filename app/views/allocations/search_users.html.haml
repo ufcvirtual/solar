@@ -14,6 +14,38 @@
         %td{style: 'width:80px'}= u.cpf
         %td{style: 'width:200px'}= u.email
         %td{style: 'width:120px'}
-          =select_tag(:profile_id, options_from_collection_for_select(@responsibles, :id, :name))
+          = select_tag(:profile_id, options_from_collection_for_select(@responsibles, :id, :name))
         %td{style: 'width:100px'}
-          =button_to t(:designate), {:controller => "allocations", :action => "create", :id => u.id }, :class=>'btn btn_default'
+          =hidden_field_tag(:user_id, u.id)
+          %input.btn.btn_default.btn_designate{type: 'button', value: t(:designate) }
+
+:javascript
+  $(document).ready(function() {
+
+    $(".btn_designate").click(function(){
+      var parent = $(this).parents("tr");
+      var profile = $("#profile_id", parent).val();
+      var user = $(this).siblings("#user_id").val();
+      var status = '#{Allocation_Activated}';
+      
+      $.ajax({
+        type: 'POST',
+        url: '/allocations/create',
+        data: {
+          "user_id": user,
+          "allocation_tag_id": $("#allocation_tag").val(),
+          "status": status,
+          "profile": profile          
+        },
+        success: function(data) {
+          if (data.status = 'ok') {
+            $(window).attr("location", '<%= Rails.application.routes.url_helpers.designates_allocations_path %>');
+          } 
+          //else {
+            //alert('<%= I18n.t() %>');
+          //}
+        }
+      }); 
+    });
+    
+  });

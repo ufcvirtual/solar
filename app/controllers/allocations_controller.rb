@@ -24,6 +24,7 @@ class AllocationsController < ApplicationController
   # metodo chamado por ajax para buscar usuários para alocação
   def search_users
     text = URI.unescape(params[:data])
+    @text_search = text
     @users = User.where("lower(name) ~ '#{text.downcase}'")
     @responsibles = Profile.where("(types & #{Profile_Type_Class_Responsible})::boolean")
 
@@ -71,30 +72,46 @@ class AllocationsController < ApplicationController
   # POST /allocations
   # POST /allocations.json
   def create
-puts "\n\n\n *** create - params: #{params} \n*** \n\n"
-    profile = (params.include?(:profile_id)) ? params[:profile_id] : student_profile
+    profile = (params.include?(:profile)) ? params[:profile] : student_profile
     status = (params.include?(:status)) ? params[:status] : Allocation_Pending
+    total = 0
+    corrects = 0
 
     if params.include?(:allocation_tag_id) and params.include?(:user_id) and (profile != '')
       if params.include?(:id) # se havia status anterior, reativa
-        @allocation = Allocation.find(params[:id])
-        @allocation.status = Allocation_Pending_Reactivate
+        allocation = Allocation.find(params[:id])
+        allocation.status = Allocation_Pending_Reactivate
+        total = 1
+        corrects = 1 if allocation.save
       else
-        @allocation = Allocation.new({
-          :user_id => params[:user_id],
-          :allocation_tag_id => params[:allocation_tag_id],
-          :profile_id => profile,
-          :status => status
-        })
+        allocations = params[:allocation_tag_id].split(',')
+        total = allocations.count()
+        allocations.each { |id|
+          allocation = Allocation.new({
+            :user_id => params[:user_id],
+            :allocation_tag_id => id,
+            :profile_id => profile,
+            :status => status
+          })
+          corrects =+ 1 if allocation.save
+        }
       end
 
       respond_to do |format|
-        if @allocation.save
-          format.html { redirect_to(enrollments_url, notice: t(:enrollm_request_message)) }
-          format.json { render json: @allocation, status: :created }
+        if corrects == total
+          if !params.include?(:status) and !params.include?(:profile)
+            format.html { redirect_to(enrollments_url, notice: t(:enrollm_request_message)) }
+          else
+            format.html { redirect_to(designates_allocations_url, notice: t(:allocated_user)) }
+          end
+          format.json { render json: {status: :ok } }
         else
-          format.html { redirect_to(enrollments_url, alert: t(:enrollm_request_message_error)) }
-          format.json { render json: @allocation.errors, status: :error }
+          if !params.include?(:status) and !params.include?(:profile)
+            format.html { redirect_to(enrollments_url, alert: t(:enrollm_request_message_error)) }
+          else
+            format.html { redirect_to(designates_allocations_url, notice: t(:allocated_user_error)) }
+          end
+          format.json { render json: {status: :error } }
         end
       end
     end
@@ -190,6 +207,7 @@ puts "\n\n\n *** create - params: #{params} \n*** \n\n"
   def deactivate
     @allocation = Allocation.find(params[:id])
     @allocation.status = Allocation_Cancelled
+    @text_search = params[:text_search]
 
     respond_to do |format|
       if @allocation.save

@@ -336,6 +336,8 @@
   activate: "Ativar"
   deactivate: "Desativar"
   designate: "Designate"
+  allocated_user: "Allocated user"
+  allocated_user_error: "Cannot allocate user"
   activated_user: "Activated user"
   activated_user_error: "Cannot activate user"
   deactivated_user: "Deactivated user"

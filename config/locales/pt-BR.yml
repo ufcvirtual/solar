@@ -496,6 +496,8 @@
   activate: "Ativar"
   deactivate: "Desativar"
   designate: "Alocar"
+  allocated_user: "Usuário alocado"
+  allocated_user_error: "Não foi possível alocar usuário"
   activated_user: "Usuário ativado"
   activated_user_error: "Não foi possível ativar usuário"
   deactivated_user: "Usuário desativado"
