@@ -106,6 +106,10 @@
       schedule:
         start_date: Initial date
         end_date: Final date
+      assignment:
+        name: Name
+        enunciation: Enunciation
+        end_evaluation_period: Final date to evaluation period
 
     errors:
       messages:

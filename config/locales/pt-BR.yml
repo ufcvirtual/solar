@@ -244,6 +244,10 @@
       schedule:
         start_date: Data inicial
         end_date: Data final
+      assignment:
+        name: Nome
+        enunciation: Enunciado
+        end_evaluation_period: Data final do período de avaliação
 
 
     errors:
