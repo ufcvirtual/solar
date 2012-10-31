@@ -131,3 +131,8 @@ schedule26:
   id: 26
   start_date: <%= Date.today >> 3 %> 
   end_date: <%= Date.today >> 7 %> 
+
+schedule27:
+  id: 27
+  start_date: <%= Date.today - 2.days %> 
+  end_date: <%= Date.today + 1.days %> 

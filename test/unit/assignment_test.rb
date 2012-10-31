@@ -2,7 +2,7 @@ require 'test_helper'
 
 class AssignmentTest < ActiveSupport::TestCase
 
-  fixtures :assignments, :users, :groups, :group_assignments
+  fixtures :assignments, :users, :groups, :group_assignments, :schedules, :allocation_tags
 
   test "retorna o status da atividade de um aluno" do
   	assert_equal("not_sent", Assignment.assignment_situation_of_student(assignments(:a13).id, users(:aluno1).id))
@@ -96,6 +96,13 @@ class AssignmentTest < ActiveSupport::TestCase
   test "usuario nao pode acessar atividade que nao tem relacao" do
   	assert not(assignments(:a10).user_can_access_assignment(users(:aluno1).id, users(:aluno2).id))
   	assert assignments(:a9).user_can_access_assignment(users(:professor).id, users(:aluno1).id)
+  end
+
+  test "nao pode criar atividade cuja data final de avaliacao seja menor que a data final da atividade" do 
+    assignment = Assignment.create(:name => "assignment 1", :enunciation => "assignment 1", :schedule_id => schedules(:schedule27).id, :type_assignment => Individual_Activity, :allocation_tag_id => allocation_tags(:al3).id, :end_evaluation_date => Date.today)
+
+    assert (not assignment.valid?)
+    assert_equal assignment.errors[:end_evaluation_date].first, I18n.t(:greater_than_or_equal_to, :scope => [:activerecord, :errors, :messages], :count => schedules(:schedule27).end_date.to_date)
   end
 
 end

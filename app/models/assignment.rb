@@ -12,6 +12,28 @@ class Assignment < ActiveRecord::Base
 
   has_many :group_participants, :through => :group_assignments
 
+  before_save :define_end_evaluation_date
+
+  validate :min_end_evaluation_date
+
+  ##
+  # Define o valor "default"
+  ##
+  def define_end_evaluation_date
+    offer = self.group.offer
+    self.end_evaluation_date = offer.end if (end_evaluation_date.blank? or end_evaluation_date.nil?)
+  end
+
+  ##
+  # Verifica o valor mínimo permitido para o campo 
+  ##
+  def min_end_evaluation_date
+    schedule = Schedule.find(schedule_id)
+    if end_evaluation_date < schedule.end_date.to_date
+      errors.add(:end_evaluation_date, I18n.t(:greater_than_or_equal_to, :scope => [:activerecord, :errors, :messages], :count => schedule.end_date.to_date))
+    end
+  end
+
   ##
   # Recupera situação do aluno na atividade
   ##
@@ -50,8 +72,10 @@ class Assignment < ActiveRecord::Base
   # Verifica se o usuário tem permissão a "tempo extra" na atividade em que está acessando
   ##
   def extra_time?(user_id)
+    define_end_evaluation_date if self.end_evaluation_date.nil? 
     (self.allocation_tag.is_user_class_responsible?(user_id) and self.closed?) ?
-      ((self.schedule.end_date.to_datetime + Assignment_Responsible_Extra_Time) >= Date.today) : false
+      # verifica se o último dia da avaliação já passou
+      (Date.today <= self.end_evaluation_date) : false
   end
 
   ##
