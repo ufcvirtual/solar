@@ -2,21 +2,22 @@ include AllocationsHelper
 
 class AllocationsController < ApplicationController
 
-  authorize_resource :except => [:destroy, :search_users, :activate, :deactivate]
+  authorize_resource :except => [:destroy, :search_users, :activate, :deactivate, :get_allocated]
 
   # GET /allocations/designates
   # GET /allocations/designates.json
   def new
     level = (params[:permissions]!="all") ? "responsible" : nil
 
-    @users = ":P"
     @allocations = Allocation.find(:all,
       :joins => [:profile, :user], 
       :conditions => ("#{level.nil?}") ? [("not(profiles.types & #{Profile_Type_Student})::boolean and not(profiles.types & #{Profile_Type_Basic})::boolean")] : [("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")],
-      :order => ["users.name","profiles.name"])
+      :order => ["users.name","profiles.name"]) 
 
     respond_to do |format|
-      format.html # index.html.erb
+      flash[:notice] = t(:allocated_user) if params.include?(:notice)
+      flash[:alert] = t(:allocated_user_error) if params.include?(:alert)
+      format.html #
       format.json { render json: @allocations }
     end
   end
@@ -93,25 +94,29 @@ class AllocationsController < ApplicationController
             :profile_id => profile,
             :status => status
           })
-          corrects =+ 1 if allocation.save
+          corrects = corrects + 1 if allocation.save
         }
+      end
+
+      if !params.include?(:status) and !params.include?(:profile)
+        local = enrollments_url
+        message_ok = t(:enrollm_request_message)
+        message_error = t(:enrollm_request_message_error)
+      #else
+        #local = designates_allocations_url
+        #message_ok = t(:allocated_user)
+        #message_error = t(:allocated_user_error)
       end
 
       respond_to do |format|
         if corrects == total
-          if !params.include?(:status) and !params.include?(:profile)
-            format.html { redirect_to(enrollments_url, notice: t(:enrollm_request_message)) }
-          else
-            format.html { redirect_to(designates_allocations_url, notice: t(:allocated_user)) }
-          end
-          format.json { render json: {status: :ok } }
+          #format.html { redirect_to(local, notice: message_ok) } 
+          format.html { redirect_to(enrollments_url, alert: t(:enrollm_request_message)) }
+          format.json { render json: {:success => true, status: :ok } }
         else
-          if !params.include?(:status) and !params.include?(:profile)
-            format.html { redirect_to(enrollments_url, alert: t(:enrollm_request_message_error)) }
-          else
-            format.html { redirect_to(designates_allocations_url, notice: t(:allocated_user_error)) }
-          end
-          format.json { render json: {status: :error } }
+          #format.html { redirect_to(local, alert: message_error) }
+          format.html { redirect_to(enrollments_url, alert: t(:enrollm_request_message_error)) }
+          format.json { render json: {:success => false, status: :ok } }
         end
       end
     end

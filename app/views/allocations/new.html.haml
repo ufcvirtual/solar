@@ -46,7 +46,6 @@
   $(function() {
     
     $("#search").click(function() {
-      //var url_for = "<%= url_for :controller => :allocations, :action => :search_users %>";
       var url_for = "/allocations/search_users/";
       $("#search_user").load(url_for, { data: encodeURIComponent($("#text_search").val()) });
     })

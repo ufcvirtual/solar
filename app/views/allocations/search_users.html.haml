@@ -20,6 +20,7 @@
           %input.btn.btn_default.btn_designate{type: 'button', value: t(:designate) }
 
 :javascript
+
   $(document).ready(function() {
 
     $(".btn_designate").click(function(){
@@ -27,7 +28,8 @@
       var profile = $("#profile_id", parent).val();
       var user = $(this).siblings("#user_id").val();
       var status = '#{Allocation_Activated}';
-      
+      var url_for = "/allocations/designates";
+
       $.ajax({
         type: 'POST',
         url: '/allocations/create',
@@ -37,15 +39,14 @@
           "status": status,
           "profile": profile          
         },
-        success: function(data) {
-          if (data.status = 'ok') {
-            $(window).attr("location", '<%= Rails.application.routes.url_helpers.designates_allocations_path %>');
-          } 
-          //else {
-            //alert('<%= I18n.t() %>');
-          //}
+        success: function() {
+          location.href = url_for + "?notice=1";
+        },
+        error: function() {
+          location.href = url_for + "?alert=1";
         }
-      }); 
+      });
+
     });
     
   });
