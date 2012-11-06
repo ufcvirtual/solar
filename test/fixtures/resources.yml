@@ -14,7 +14,7 @@ res3:
   id: 3
   controller: 'users'
   action: 'mysolar'
-  description: 'Lista dos Portlest/Pagina inicial'
+  description: 'Lista dos Portlet/Pagina inicial'
 
 res4:
   id: 4
