@@ -9,10 +9,10 @@ class OffersController < ApplicationController
 
     al                = current_user.allocations.where(status: Allocation_Activated)
     my_direct_offers  = al.map(&:offer).compact
-    offer_by_courses  = al.map(&:course).compact.map(&:offer).uniq
-    offer_by_ucs      = al.map(&:curriculum_unit).compact.map(&:offers).flatten.uniq
-    offer_by_groups   = al.map(&:group).compact.map(&:offer).uniq
-    @offers           = [my_direct_offers + offer_by_courses + offer_by_ucs + offer_by_groups].flatten.compact.uniq
+    offers_by_courses  = al.map(&:course).compact.map(&:offer).uniq
+    offers_by_ucs      = al.map(&:curriculum_unit).compact.map(&:offers).flatten.uniq
+    offers_by_groups   = al.map(&:group).compact.map(&:offer).uniq
+    @offers           = [my_direct_offers + offers_by_courses + offers_by_ucs + offers_by_groups].flatten.compact.uniq
 
     if params.include?(:course)
       @offers = @offers.select { |offer| offer.course_id == params[:course].to_i }
@@ -21,6 +21,31 @@ class OffersController < ApplicationController
     if params.include?(:period)
       @offers = @offers.select { |offer| offer.semester.downcase.include?(params[:period].downcase) }
     end
+    
+    # Filtrando por período para o componente de edição
+    if params.include?(:searchSemester)
+      @offers = @offers.select { |offer| offer.semester.downcase.include?(params[:searchSemester].downcase) }
+	  @offers.each do |offer|
+        offer[:allocation_tag_id] = offer.allocation_tag.id
+        offer[:name] = offer.curriculum_unit.name
+	  end
+
+      all = {:semester => params[:searchSemester]+"...", :id => @offers.map(&:allocation_tag).map(&:id)}
+      @offers.push(all)
+    end
+    
+    # Filtrando por nome de unidade curricular
+    if params.include?(:searchCurriculumUnit)
+      @offers = @offers.select { |offer| offer.curriculum_unit.name.downcase.include?(params[:searchCurriculumUnit].downcase) }
+	  @offers.each do |offer|
+        offer[:allocation_tag_id] = offer.allocation_tag.id
+        offer[:name] = offer.curriculum_unit.name
+	  end
+
+      all = {:name => params[:searchCurriculumUnit]+"...", :id => @offers.map(&:allocation_tag).map(&:id)}
+      @offers.push(all)
+    end
+    
 
     respond_to do |format|
       format.html
