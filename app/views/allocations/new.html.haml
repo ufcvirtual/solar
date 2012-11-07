@@ -1,14 +1,14 @@
 .block_filter
   = filter
 
-=hidden_field_tag(:allocation_tag, '1,2,3') 
+=hidden_field_tag(:allocation_tag, '6') 
 
 .block_wrapper  
   .block_title
     %h2= t(:designate_users)
 
-  .block_content
-    %table.tb_list.allocations_list
+  .block_content.allocations_list
+    %table.tb_list
       %thead
         %tr.lines          
           %th= t(:name)
@@ -34,13 +34,13 @@
   .block_title
     %h2= t(:new_designate)
 
-  .block_content
-    %div
-      ="nome"
-      %input{type: 'text', :id => 'text_search', :value => @text_search }
-      %input.btn.btn_default{type: 'button', value: 'busca', :id => 'search'}
+  .block_content.block_content_text
+    =t(:user)
+    %input{type: 'text', :id => 'text_search', :value => @text_search }
+    %input.btn.btn_default{type: 'button', value: t(:designate_search), :id => 'search'}
 
-    #search_user.allocations_list
+  .block_content.allocations_list
+    #search_user
     
 :javascript
   $(function() {

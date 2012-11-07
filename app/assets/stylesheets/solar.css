@@ -409,9 +409,8 @@ h1.page_title{
     text-decoration: underline;
 }
 
-.tb_list.allocations_list {
+.allocations_list {
     max-height: 260px;
-    display: inline-block;
     overflow: auto;
 }
 

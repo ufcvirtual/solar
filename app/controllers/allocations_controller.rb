@@ -2,16 +2,17 @@ include AllocationsHelper
 
 class AllocationsController < ApplicationController
 
-  authorize_resource :except => [:destroy, :search_users, :activate, :deactivate, :get_allocated]
+  authorize_resource :except => [:destroy, :search_users, :activate, :deactivate]
 
   # GET /allocations/designates
   # GET /allocations/designates.json
   def new
     level = (params[:permissions]!="all") ? "responsible" : nil
+    allocations = params[:allocation_tag_id].split(',') if params.include?(params[:allocation_tag_id])
 
     @allocations = Allocation.find(:all,
       :joins => [:profile, :user], 
-      :conditions => ("#{level.nil?}") ? [("not(profiles.types & #{Profile_Type_Student})::boolean and not(profiles.types & #{Profile_Type_Basic})::boolean")] : [("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")],
+      :conditions => " allocation_tag_id IN (#{allocations}) and " + ("#{level.nil?}") ? [("not(profiles.types & #{Profile_Type_Student})::boolean and not(profiles.types & #{Profile_Type_Basic})::boolean")] : [("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")],
       :order => ["users.name","profiles.name"]) 
 
     respond_to do |format|
@@ -73,6 +74,7 @@ class AllocationsController < ApplicationController
   # POST /allocations
   # POST /allocations.json
   def create
+
     profile = (params.include?(:profile)) ? params[:profile] : student_profile
     status = (params.include?(:status)) ? params[:status] : Allocation_Pending
     total = 0
@@ -111,7 +113,7 @@ class AllocationsController < ApplicationController
       respond_to do |format|
         if corrects == total
           #format.html { redirect_to(local, notice: message_ok) } 
-          format.html { redirect_to(enrollments_url, alert: t(:enrollm_request_message)) }
+          format.html { redirect_to(enrollments_url, notice: t(:enrollm_request_message)) }
           format.json { render json: {:success => true, status: :ok } }
         else
           #format.html { redirect_to(local, alert: message_error) }

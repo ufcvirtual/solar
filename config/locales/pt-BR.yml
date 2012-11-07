@@ -464,7 +464,7 @@
 
   pwd_recovery_sucess_msg: "Senha enviada com sucesso!"
   pwd_recovery_error_msg: "Não foi possivel enviar nova senha. Por favor, tente novamente."
-  pwd_recovery_unknown_user_msg: "Usuario não encontrado!"
+  pwd_recovery_unknown_user_msg: "Usuário não encontrado."
 
   pwd_recovery_mail_body: "Caro(a) %{recipient}, \n\nVocê solicitou recuperação de acesso ao Solar.
       \n\nSeus dados para acessar o ambiente são:
@@ -496,6 +496,8 @@
   activate: "Ativar"
   deactivate: "Desativar"
   designate: "Alocar"
+  designate_search: "Buscar"
+  designate_search_no_found: "Nenhum usuário encontrado."
   allocated_user: "Usuário alocado"
   allocated_user_error: "Não foi possível alocar usuário"
   activated_user: "Usuário ativado"

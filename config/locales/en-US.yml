@@ -336,6 +336,8 @@
   activate: "Ativar"
   deactivate: "Desativar"
   designate: "Designate"
+  designate_search: "Search"
+  designate_search_no_found: "User not found."
   allocated_user: "Allocated user"
   allocated_user_error: "Cannot allocate user"
   activated_user: "Activated user"

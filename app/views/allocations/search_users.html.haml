@@ -1,15 +1,15 @@
-%table.tb_list.allocations_list
-  %thead
-    %tr.lines      
-      %th= t(:name)
-      %th{style: 'width:80px'}= t(:cpf)
-      %th{style: 'width:200px'}= t(:email)
-      %th{style: 'width:120px'}= ""
-      %th{style: 'width:100px'}= ""
-  %tbody
-  - unless @users.nil?
+- unless @users.nil? or @users.empty?
+  %table.tb_list
+    %thead
+      %tr.lines
+        %th= t(:name)
+        %th{style: 'width:80px'}= t(:cpf)
+        %th{style: 'width:200px'}= t(:email)
+        %th{style: 'width:120px'}= ""
+        %th{style: 'width:100px'}= ""
+    %tbody
     - @users.each do |u|
-      %tr.lines        
+      %tr.lines
         %td= u.name
         %td{style: 'width:80px'}= u.cpf
         %td{style: 'width:200px'}= u.email
@@ -18,6 +18,9 @@
         %td{style: 'width:100px'}
           =hidden_field_tag(:user_id, u.id)
           %input.btn.btn_default.btn_designate{type: 'button', value: t(:designate) }
+- else
+  .block_content_text 
+    =t(:designate_search_no_found)
 
 :javascript
 
