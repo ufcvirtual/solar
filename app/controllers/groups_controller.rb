@@ -39,12 +39,32 @@ class GroupsController < ApplicationController
 
 			all_allocation_tag_ids = Array.new(@groups.count)
 			@groups.each_with_index do |group,i|
+				respects_chained_filter = false
+
 				group[:allocation_tag_id] = group.allocation_tag.id
-				all_allocation_tag_ids[i] = group[:allocation_tag_id]
+
+		        params[:chained_filter] = [] unless params.include?(:chained_filter)
+
+				# se group.offer.allocation_tag.id estiver nos parametros, ok
+				respects_chained_filter = true if params[:chained_filter].include?(group.offer.allocation_tag.id.to_s)    
+				
+				# se group.course.allocation_tag.id estiver nos parametros, ok
+				respects_chained_filter = true if params[:chained_filter].include?(group.course.allocation_tag.id.to_s)    
+
+				#senão, se parametro estiver vazio, ok
+				respects_chained_filter = true if params[:chained_filter].empty?
+				
+				all_allocation_tag_ids[i] = group[:allocation_tag_id] if respects_chained_filter
+
+				@groups[i] = nil unless respects_chained_filter		
 			end
+			@groups = @groups.compact			
+			all_allocation_tag_ids = all_allocation_tag_ids.compact
 
 			optionAll = {:code => params[:search]+"...", :id =>nil , :allocation_tag_id => all_allocation_tag_ids, :name =>"*"}
 			@groups << optionAll
+			
+			raise @groups.to_yaml
 		end
 
 		respond_to do |format|
