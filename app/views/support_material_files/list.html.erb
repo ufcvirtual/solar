@@ -1,5 +1,5 @@
 <div style="margin-bottom:5px">
-  <button type="button" class="btn btn_default" id="button_new_post" value="<%= t("support_download_all")%>" onclick="javascript:window.location.href='<%= url_for( {:controler => :support_material_file, :action => :download_all_file_ziped} ) %>'">
+  <button type="button" class="btn btn_default" id="button_new_post" value="<%= t("support_download_all")%>" onclick="javascript:window.location.href='<%= url_for( {:controller => :support_material_files, :action => :download_all_file_ziped} ) %>'">
     <%= t("support_download_all")%><%= image_tag "icon_folder_compressed.png", :alt => '' %>
   </button>
 </div>
@@ -9,7 +9,7 @@
       <% unless folder_name == 'LINKS' %>
         <h2 class="support_material_title"><%= folder_name %></h2>
         <span class="block_actions">
-          <button type="button" class="btn btn_default" id="button_new_post" value="<%= t("support_download_folder")%>" onclick="javascript:window.location.href='<%= url_for( {:controler => :support_material_file, :action => :download_folder_file_ziped, :folder=> folder_name} ) %>'">
+          <button type="button" class="btn btn_default" id="button_new_post" value="<%= t("support_download_folder")%>" onclick="javascript:window.location.href='<%= url_for( {:controler => :support_material_files, :action => :download_folder_file_ziped, :folder=> folder_name} ) %>'">
             <%= t("support_download_folder")%><%= image_tag "icon_folder_compressed.png", :alt => '' %>
           </button>
         </span>
@@ -32,9 +32,9 @@
             <td>
               <% if file['url'] == nil %>
                 <%= link_to image_tag(icon_attachment(file["attachment_file_name"])),
-                  {:controller => :support_material_file, :action => :download, :id => file['id'], :file_allocation_tag_id => file['allocation_tag_id']},
+                  {:controller => :support_material_files, :action => :download, :id => file['id'], :file_allocation_tag_id => file['allocation_tag_id']},
                   {:class => 'file_icon'} %>
-                <%= link_to file['attachment_file_name'], :controller => :support_material_file, :action => :download, :id => file['id'], :file_allocation_tag_id => file['allocation_tag_id'] %>
+                <%= link_to file['attachment_file_name'], :controller => :support_material_files, :action => :download, :id => file['id'], :file_allocation_tag_id => file['allocation_tag_id'] %>
               <% else %>
                 <%= image_tag 'icon_file_link.png', :alt => '' %>
                 <%= link_to file['url'], file['url'], :target => '_blank' %>

@@ -5,6 +5,8 @@ class Profile < ActiveRecord::Base
   has_many :permissions_resources
   has_many :permissions_menus
 
+  has_many :resources, :through => :permissions_resources
+
   ##
   # recupera uma lista perfis que possuem quaisquer permissões requisitadas
   ##

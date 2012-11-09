@@ -4,44 +4,43 @@
 = javascript_include_tag "ckeditor/init"
 = javascript_include_tag "discussion"
 
-- if @can_see
-  .block_wrapper
-    .block_title
-      %h2
-        = image_tag("icon_forum.png", :alt => " ", :class=>'block_title_icon')
-        = @discussion.name
-    #forum_description.block_content.block_content_text= sanitize @discussion.description
+.block_wrapper
+  .block_title
+    %h2
+      = image_tag("icon_forum.png", :alt => " ", :class=>'block_title_icon')
+      = @discussion.name
+  #forum_description.block_content.block_content_text= sanitize @discussion.description
 
-  .block_wrapper
-    .block_title.forum_navigation
-      %span#forum_new_message
-        - if @can_interact
-          = button_tag(:type => 'button', :onclick => "javascript:new_post(this);", :class => "btn btn_default", :id => "button_new_post") do
-            = content_tag(:span, t(:forum_new_message))
-            = content_tag(:span, image_tag("icon_write.png", :alt => " "))
-        - else
-          #forum_closed= t("forum_closed")
+.block_wrapper
+  .block_title.forum_navigation
+    %span#forum_new_message
+      - if @can_interact
+        = button_tag(:type => 'button', :onclick => "javascript:new_post(this);", :class => "btn btn_default", :id => "button_new_post") do
+          = content_tag(:span, t(:forum_new_message))
+          = content_tag(:span, image_tag("icon_write.png", :alt => " "))
+      - else
+        #forum_closed= t("forum_closed")
 
-      %span#forum_view_mode
-        - class_l = (@display_mode == "list") ? 'btn_pressed' : 'btn_default'
-        - class_t = (@display_mode == "tree") ? 'btn_pressed' : 'btn_default'
+    %span#forum_view_mode
+      - class_l = (@display_mode == "list") ? 'btn_pressed' : 'btn_default'
+      - class_t = (@display_mode == "tree") ? 'btn_pressed' : 'btn_default'
 
-        = link_to(image_tag("discussion_plainlist.png"), discussion_posts_path(@discussion, {:display_mode => 'list'}), {:class => "btn #{class_l}", :id => 'forum_view_mode-list', :"data-tooltip" => t(".show_plainlist")})
-        = link_to(image_tag("discussion_thread.png"), discussion_posts_path(@discussion, {:display_mode => 'tree'}), {:class => "btn #{class_t}", :id => 'forum_view_mode-thread', :"data-tooltip" => t(".show_thread")})
+      = link_to(image_tag("discussion_plainlist.png"), discussion_posts_path(@discussion, {:display_mode => 'list'}), {:class => "btn #{class_l}", :id => 'forum_view_mode-list', :"data-tooltip" => t(".show_plainlist")})
+      = link_to(image_tag("discussion_thread.png"), discussion_posts_path(@discussion, {:display_mode => 'tree'}), {:class => "btn #{class_t}", :id => 'forum_view_mode-thread', :"data-tooltip" => t(".show_thread")})
 
-      #forum_pagination
-        = raw render_pagination_bar(@discussion.discussion_posts_count(@display_mode == "list").to_s, "display_mode=#{@display_mode}")
-        #new_post
-          = form_for(:discussion_post, :url => {:action => :create}, :method => :put, :html => { :id => "new_post_form", :"action-default" => discussion_posts_path(@discussion.id) }) do |form|
-            = hidden_field(:discussion_post, :parent_id, {:value => ""})
-            = hidden_field_tag(:display_mode, @display_mode)
-            = hidden_field_tag(:current_page, @current_page)
-            = form.text_area :content
-            .new_post_dialog_buttons
-              = form.submit( t(:send), :class => 'btn btn_main' )
-              = button_tag(:type => 'button', :onclick => "javascript:cancel_posting(this);", :class => "btn btn_caution", :id => "btn_cancel_post") do
-                = content_tag(:span, t(:cancel))
+    #forum_pagination
+      = raw render_pagination_bar(@discussion.discussion_posts_count(@display_mode == "list").to_s, "display_mode=#{@display_mode}")
+      #new_post
+        = form_for(:discussion_post, :url => {:action => :create}, :method => :put, :html => { :id => "new_post_form", :"action-default" => discussion_posts_path(@discussion.id) }) do |form|
+          = hidden_field(:discussion_post, :parent_id, {:value => ""})
+          = hidden_field_tag(:display_mode, @display_mode)
+          = hidden_field_tag(:current_page, @current_page)
+          = form.text_area :content
+          .new_post_dialog_buttons
+            = form.submit( t(:send), :class => 'btn btn_main' )
+            = button_tag(:type => 'button', :onclick => "javascript:cancel_posting(this);", :class => "btn btn_caution", :id => "btn_cancel_post") do
+              = content_tag(:span, t(:cancel))
 
-    .forum_posts_wrapper
-      - @posts.each do |post|
-        = raw post_html(post, @display_mode, @can_interact)
+  .forum_posts_wrapper
+    - @posts.each do |post|
+      = raw post_html(post, @display_mode, @can_interact)

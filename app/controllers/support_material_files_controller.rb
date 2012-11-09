@@ -1,4 +1,4 @@
-class SupportMaterialFileController < ApplicationController
+class SupportMaterialFilesController < ApplicationController
 
   include FilesHelper
 

@@ -108,8 +108,8 @@ class AllocationsController < ApplicationController
 
       if !params.include?(:status) and !params.include?(:profile)
         local = enrollments_url
-        message_ok = t(:enrollm_request_message)
-        message_error = t(:enrollm_request_message_error)
+        # message_ok = t(:enrollm_request_message)
+        # message_error = t(:enrollm_request_message_error)
       else
         local = designates_allocations_url + "?allocation_tag_id=" + params[:allocation_tag_id]
       end
@@ -131,6 +131,8 @@ class AllocationsController < ApplicationController
   # PUT /allocations/1
   # PUT /allocations/1.json
   def update
+    authorize! :update, Allocation #.find(params[:id])
+
     allocation_tag_id = nil
     allocation_tag_id = Group.find(params[:allocation][:group_id]).allocation_tag.id if params.include?(:allocation) and params[:allocation].include?(:group_id)
     allocations       = Allocation.find(params[:id].split(','))
@@ -166,7 +168,7 @@ class AllocationsController < ApplicationController
     rescue ActiveRecord::RecordNotUnique
       error = true
       msg_error = t(:student_already_in_group, :scope => [:allocations, :error])
-    rescue Exception => e
+    rescue Exception
       error = true
       msg_error = t(:enrollment_unsuccessful_update, :scope => [:allocations, :manage])
     end

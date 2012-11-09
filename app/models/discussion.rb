@@ -4,6 +4,7 @@ class Discussion < ActiveRecord::Base
   belongs_to :schedule
 
   has_many :discussion_posts, :class_name => "Post", :foreign_key => "discussion_id"
+  has_many :allocations, :through => :allocation_tag
 
   validates :name, :description, :presence => true
   validate :unique_name
@@ -39,6 +40,11 @@ class Discussion < ActiveRecord::Base
     errors.add(:base, I18n.t(:existing_name, :scope => [:discussion, :errors])) if (@new_record == true or name_changed?) and discussions_with_same_name.size > 0
   end
 
+  def opened?
+    schedule = self.schedule
+    schedule.start_date <= Date.today and schedule.end_date >= Date.today
+  end
+
   def closed?
     self.schedule.end_date < Date.today
   end
@@ -48,15 +54,7 @@ class Discussion < ActiveRecord::Base
       ((self.schedule.end_date.to_datetime + Discussion_Responsible_Extra_Time) >= Date.today) : false
   end
 
-  def user_can_see?(user_id)
-    allocation_tags = AllocationTag.find_related_ids(self.allocation_tag_id).join(',')
-    allocations     = Allocation.where("allocation_tag_id IN (#{allocation_tags}) AND status = #{Allocation_Activated} AND user_id = #{user_id}")
-
-    (allocations.length > 0) and (self.schedule.start_date <= Date.today)
-  end
-
   def user_can_interact?(user_id)
-    return false unless user_can_see?(user_id)
     return (!self.closed? or extra_time?(user_id))
   end
 

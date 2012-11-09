@@ -362,7 +362,6 @@ SQL
 SQL
 
     return Group.find_by_sql(query)
-
   end
 
 end

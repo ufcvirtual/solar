@@ -83,15 +83,15 @@ class AllocationsControllerTest < ActionController::TestCase
     get :index
     assert_response :success
 
-    al_matriculado = assigns(:allocations).select {|al| al.user_id == users(:user).id and al.status == Allocation_Activated and al.allocation_tag_id == 1}
+    al_matriculado = assigns(:allocations).select {|al| al.user_id == users(:user).id and al.status == Allocation_Activated and al.allocation_tag_id == allocation_tags(:al1).id}.first
 
-    # o aluno user esta matriculado na turma?
-    assert (not al_matriculado.empty?)
+    # o aluno User, esta matriculado na turma?
+    assert not(al_matriculado.nil?)
 
-    get :edit, :id => al_matriculado.first.id
+    get :edit, :id => al_matriculado.id
     assert_response :success
 
-    put :update, {:id => al_matriculado.first.id, :allocation => {:status => Allocation_Cancelled}}
+    put :update, {:id => al_matriculado.id, :allocation => {:status => Allocation_Cancelled}}
     assert_response :success
 
     assert_select 'td', {:html => "Cancelado"}

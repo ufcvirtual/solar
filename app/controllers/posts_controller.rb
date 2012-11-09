@@ -4,25 +4,20 @@ class PostsController < ApplicationController
   before_filter :prepare_for_pagination
 
   load_and_authorize_resource :except => [:index, :show, :create]
-  authorize_resource :only => [:index, :create]
 
   ## GET /discussions/1/posts
   ## GET /discussions/1/posts/20120217/[news, history]/order/asc/limit/10
   def index
-    @posts, count = [], []
-    begin
-      @discussion = Discussion.find(params[:discussion_id])
+    @discussion = Discussion.find(params[:discussion_id])
+    authorize! :index, @discussion
 
-      if @can_see = @discussion.user_can_see?(current_user.id)
-        @can_interact = @discussion.user_can_interact?(current_user.id)
-        p = params.select { |k, v| ['date', 'type', 'order', 'limit', 'display_mode', 'page'].include?(k) }
-        p['page'] ||= @current_page
+    @posts = []
+    @can_interact = @discussion.user_can_interact?(current_user.id)
+    p = params.select { |k, v| ['date', 'type', 'order', 'limit', 'display_mode', 'page'].include?(k) }
+    p['page'] ||= @current_page
 
-        @display_mode = p['display_mode'] ||= 'tree'
-        @posts = @discussion.posts(p)
-      end
-    rescue
-    end
+    @display_mode = p['display_mode'] ||= 'tree'
+    @posts = @discussion.posts(p)
 
     respond_to do |format|
       format.html
@@ -46,6 +41,8 @@ class PostsController < ApplicationController
 
   ## POST /discussions/:id/posts
   def create
+    authorize! :create, Post
+
     params[:discussion_post][:discussion_id] = params[:discussion_id] unless params[:discussion_post].include?(:discussion_id)
     @post = Post.new(params[:discussion_post])
 
