@@ -64,7 +64,6 @@ class GroupsController < ApplicationController
 			optionAll = {:code => params[:search]+"...", :id =>nil , :allocation_tag_id => all_allocation_tag_ids, :name =>"*"}
 			@groups << optionAll
 			
-			raise @groups.to_yaml
 		end
 
 		respond_to do |format|

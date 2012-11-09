@@ -45,9 +45,9 @@ module PlacesNavPanelHelper
 		//Declarando caminhos para a busca do componente. Nao conseguimos colocar isso no javascript		
 		var search_urls = {
 			"course": "#{url_for :controller => :courses, :format => "json"}", 
-			"semester": "123", 
-			"curriculumUnit": "#{url_for :controller => :curriculum_units, :format => "json"}",
-			"group": "123"
+			"semester": "#{url_for :controller => :offers, :format => "json"}", 
+			"curriculumUnit": "#{url_for :controller => :offers, :format => "json"}",
+			"group": "#{url_for :controller => :groups, :action => "list", :format => "json"}"
 		};
 		
 		var hints = {

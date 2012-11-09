@@ -47,7 +47,7 @@ class OffersController < ApplicationController
 	  @offers = @offers.compact
 	  all_allocation_tag_ids = all_allocation_tag_ids.compact
 
-      all = {:semester => params[:search_semester]+"...", :id => all_allocation_tag_ids}
+      all = {:semester => "..."+params[:search_semester]+"...", :id => all_allocation_tag_ids}
       @offers.push(all)
     end
     
@@ -78,7 +78,7 @@ class OffersController < ApplicationController
 	  @offers = @offers.compact
 	  all_allocation_tag_ids = all_allocation_tag_ids.compact
 
-      all = {:name => params[:search_curriculum_unit]+"...", :id => all_allocation_tag_ids}
+      all = {:name => "..."+params[:search_curriculum_unit]+"...", :id => all_allocation_tag_ids}
       @offers.push(all)
     end
     

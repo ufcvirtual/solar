@@ -7,6 +7,9 @@ Precisamos:
 	- Manter valores selecionados em caso de refresh
 	- Só um item deve ser selecionado em cada TokenInput
 	
+	- Ordenar resultados das consultas
+	- Agrupar semestres/disciplinas/turmas de nome igual
+	
 Id sempre é allocationTagId
 Curso:
 	- A pesquisa deve retornar a lista de todos os cursos aos quais o usuário é relacionado em algum nível.
@@ -48,36 +51,73 @@ $(document).ready(function(){
 		hintText: hints["course"],
 		searchingText: messages["searching"],
 		queryParam : 'search',
+		tokenLimit: 1,
 		propertyToSearch: 'name',
-		tokenValue: 'id', //trocar por allocationTagId
-		preventDuplicates: 'true',
+		tokenValue: 'allocation_tag',
 		noResultsText: messages["noResults"],
 		onAdd: function (item) {
-            recountItems();
+            $('#txtSemester').tokenInput('clear');
+            $('#txtCurriculumUnit').tokenInput('clear');
+            $('#txtGroup').tokenInput('clear');
+            $('#token-input-txtSemester').focus();
         },
         onDelete: function (item) {
-            recountItems();
+            $('#txtSemester').tokenInput('clear');
+            $('#txtCurriculumUnit').tokenInput('clear');
+            $('#txtGroup').tokenInput('clear');
+            $('#token-input-txtCourse').focus();
+        }
+	});
+
+	$( "#txtSemester").tokenInput(search_urls["semester"], {
+		hintText: hints["semester"],
+		searchingText: messages["searching"],
+		noResultsText: messages["noResults"],
+		queryParam : 'search_semester',
+		tokenLimit: 1,
+		propertyToSearch: 'semester',
+		tokenValue: 'allocation_tag',
+		onAdd: function (item) {
+            $('#txtCurriculumUnit').tokenInput('clear');
+            $('#txtGroup').tokenInput('clear');
+            $('#token-input-txtCurriculumUnit').focus();
+        },
+        onDelete: function (item) {
+            $('#txtCurriculumUnit').tokenInput('clear');
+            $('#txtGroup').tokenInput('clear');
+            $('#token-input-txtSemester').focus();
         }
 	});
 	
-	$( "#txtSemester").tokenInput("http://shell.loopj.com/tokeninput/tvshows.php", {
-		hintText: hints["semester"],
-		searchingText: messages["searching"],
-		noResultsText: messages["noResults"]
-	});
-	$( "#txtCurriculumUnit").tokenInput("http://localhost:3000/curriculum_units/list.json", {
+	$( "#txtCurriculumUnit").tokenInput(search_urls["curriculumUnit"], {
 		hintText: hints["curriculumUnit"],
 		searchingText: messages["searching"],
-		queryParam : 'search',
+		noResultsText: messages["noResults"],
+		queryParam : 'search_curriculum_unit',
+		tokenLimit: 1,
 		propertyToSearch: 'name',
-		tokenValue: 'id', //trocar por allocationTagId
-		preventDuplicates: 'true',
-		noResultsText: messages["noResults"]
+		tokenValue: 'allocation_tag',
+		onAdd: function (item) {
+		    $('#txtGroup').tokenInput('clear');
+            $('#token-input-txtGroup').focus();
+		},
+		onDelete: function(item) {
+            $('#txtGroup').tokenInput('clear');
+			$('#token-input-txtCurriculumUnit').focus();
+		}
+		
 	});
-	$( "#txtGroup").tokenInput("http://shell.loopj.com/tokeninput/tvshows.php", {
+	$( "#txtGroup").tokenInput(search_urls["group"], {
 		hintText: hints["group"],
 		searchingText: messages["searching"],
-		noResultsText: messages["noResults"]
+		noResultsText: messages["noResults"],
+		queryParam : 'search',
+		tokenLimit: 1,
+		propertyToSearch: 'code',
+		tokenValue: 'allocation_tag',
+		onDelete: function(item) {
+			$('#token-input-txtGroup').focus();
+		}
 	});
 
 	$('.placesNavPanel input[type="button"]').click(function(){
