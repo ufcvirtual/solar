@@ -69,7 +69,11 @@ $(document).ready(function(){
         }
 	});
 
-	$( "#txtSemester").tokenInput(search_urls["semester"], {
+	$( "#txtSemester").tokenInput(function() {
+			if ($("#txtCourse").tokenInput("get").length > 0) 
+				return search_urls["semester"]+"?chained_filter="+ $("#txtCourse").tokenInput("get")[0].allocation_tag_id + "&";
+			return search_urls["semester"];
+		}, {
 		hintText: hints["semester"],
 		searchingText: messages["searching"],
 		noResultsText: messages["noResults"],
@@ -89,7 +93,14 @@ $(document).ready(function(){
         }
 	});
 	
-	$( "#txtCurriculumUnit").tokenInput(search_urls["curriculumUnit"], {
+	$( "#txtCurriculumUnit").tokenInput(function() {
+			if ($("#txtSemester").tokenInput("get").length > 0) 
+				return search_urls["curriculumUnit"]+"?chained_filter="+ $("#txtSemester").tokenInput("get")[0].allocation_tag_id + "&";
+			if ($("#txtCourse").tokenInput("get").length > 0) 
+				return search_urls["curriculumUnit"]+"?chained_filter="+ $("#txtCourse").tokenInput("get")[0].allocation_tag_id + "&";
+			return search_urls["curriculumUnit"];
+		}
+		, {
 		hintText: hints["curriculumUnit"],
 		searchingText: messages["searching"],
 		noResultsText: messages["noResults"],
@@ -107,7 +118,15 @@ $(document).ready(function(){
 		}
 		
 	});
-	$( "#txtGroup").tokenInput(search_urls["group"], {
+	$( "#txtGroup").tokenInput(function() {
+			if ($("#txtCurriculumUnit").tokenInput("get").length > 0) 
+				return search_urls["group"]+"?chained_filter="+ $("#txtCurriculumUnit").tokenInput("get")[0].allocation_tag_id + "&";
+			if ($("#txtSemester").tokenInput("get").length > 0) 
+				return search_urls["group"]+"?chained_filter="+ $("#txtSemester").tokenInput("get")[0].allocation_tag_id + "&";
+			if ($("#txtCourse").tokenInput("get").length > 0) 
+				return search_urls["group"]+"?chained_filter="+ $("#txtCourse").tokenInput("get")[0].allocation_tag_id + "&";
+			return search_urls["group"]
+		}, {
 		hintText: hints["group"],
 		searchingText: messages["searching"],
 		noResultsText: messages["noResults"],

@@ -61,7 +61,7 @@ class GroupsController < ApplicationController
 			@groups = @groups.compact			
 			all_allocation_tag_ids = all_allocation_tag_ids.compact
 
-			optionAll = {:code => params[:search]+"...", :id =>nil , :allocation_tag_id => all_allocation_tag_ids, :name =>"*"}
+			optionAll = {:code => "..."+params[:search]+"...", :allocation_tag_id => all_allocation_tag_ids, :name =>"*"}
 			@groups << optionAll
 			
 		end
