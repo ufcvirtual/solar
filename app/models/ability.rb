@@ -27,12 +27,18 @@ class Ability
 
     ## usuario relacionado com o objeto por allocation_tag
     if object.respond_to?(:allocation_tag)
-      at_all_or_lower = (alias_action(action).select {|a| a == :create or a == :update}.empty?) ? {all: true} : {lower: true} # modificar objeto?
-      return true unless Allocation.where(allocation_tag_id: object.allocation_tag.related(at_all_or_lower), profile_id: profiles, user_id: user.id, status: Allocation_Activated.to_i).empty?
+      # modificar objeto?
+      at_all_or_lower = (alias_action(action).select {|a| a == :create or a == :update}.empty?) ? {all: true} : {lower: true}
+
+      # allocations do usuario com perfil para executar a acao
+      at_of_user = user.allocations.where(profile_id: profiles, status: Allocation_Activated.to_i).map(&:allocation_tag).map {|at| at.related(at_all_or_lower) }.flatten.compact.uniq
+      match = at_of_user & [object.allocation_tag.id]
+
+      return false if match.empty?
+      return true unless Allocation.where(allocation_tag_id: at_of_user, profile_id: profiles, user_id: user.id, status: Allocation_Activated.to_i).empty?
     end
 
     return false
-
   end # have permission
 
   ## evitando criacao de muitos resources com alias
