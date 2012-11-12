@@ -97,6 +97,27 @@ class AllocationsControllerTest < ActionController::TestCase
     assert_select 'td', {:html => "Cancelado"}
   end
 
+  test "exibir usuarios alocados para um usuario com permissao" do
+    get :new, { :allocation_tag_id => 5 }
+    assert_response :success
+    assert_not_nil assigns(:allocations)
+
+    assert_select "table tbody tr" do
+      assert_select 'td:nth-child(1)', {:html => "Professor"}
+      assert_select 'td:nth-child(4)', {:html => "Prof. Titular"}
+    end
+  end
+
+=begin
+  test "exibir usuarios alocados para usuario sem permissao" do
+    sign_out @coordenador
+    sign_in users(:aluno1)
+
+    get :new
+    assert_response :redirect
+  end
+=end
+
   # test "mudar aluno de turma" do
 
   #   get :index

@@ -1,6 +1,3 @@
-.block_filter
-  = filter
-
 =hidden_field_tag(:allocation_tag, '6') 
 
 .block_wrapper  
@@ -17,18 +14,18 @@
           %th{style: 'width:120px'}= t(:profile)
           %th{style: 'width:100px'}= ""
       %tbody
-      - unless @allocations.nil? or @allocations.empty?
-        - @allocations.each do |allocation|
-          %tr.lines            
-            %td= allocation.user.name
-            %td{style: 'width:80px'}= allocation.user.cpf
-            %td{style: 'width:200px'}= allocation.user.email
-            %td{style: 'width:120px'}= allocation.profile.name
-            %td{style: 'width:100px'}
-              -if allocation.status==Allocation_Activated 
-                =button_to t(:deactivate), { :controller => "allocations", :action => "deactivate", :id => allocation.id, :text_search => @text_search }, :class=>'btn btn_caution'
-              -else
-                =button_to t(:activate), { :controller => "allocations", :action => "activate", :id => allocation.id, :text_search => @text_search }, :class=>'btn btn_default'
+        - unless @allocations.nil? or @allocations.empty?
+          - @allocations.each do |allocation|
+            %tr.lines            
+              %td= allocation.user.name
+              %td{style: 'width:80px'}= allocation.user.cpf
+              %td{style: 'width:200px'}= allocation.user.email
+              %td{style: 'width:120px'}= allocation.profile.name
+              %td{style: 'width:100px'}
+                -if allocation.status==Allocation_Activated 
+                  =button_to t(:deactivate), { :controller => "allocations", :action => "deactivate", :id => allocation.id, :text_search => @text_search }, :class=>'btn btn_caution'
+                -else
+                  =button_to t(:activate), { :controller => "allocations", :action => "activate", :id => allocation.id, :text_search => @text_search }, :class=>'btn btn_default'
 
 .block_wrapper
   .block_title
