@@ -618,8 +618,6 @@
       cant_delete: Fórum não pode ser excluído
       range_date_error: deve ser menor que a data final
       offer_period: deve estar dentro do período da oferta (%{start} - %{end})
-    success:
-      deleted: Fórum excluido com sucesso
     buttons:
       save: Salvar
       cancel: Cancelar
@@ -1098,5 +1096,7 @@
       support_material: Material de apoio
       assignment: Atividade
       test: Prova
+      link_to: Link para %{to}
     success:
       saved: Salvo com sucesso
+      deleted: Excluido com sucesso

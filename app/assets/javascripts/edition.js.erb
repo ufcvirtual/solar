@@ -46,3 +46,23 @@ function submit_form(form_id, div_class_to_update, controller){
     }
   });
 }
+
+function delete_object(url){
+  $.ajax({
+    type: "DELETE",
+    url: url,
+    success: function(data) {
+      // atualiza div da página de edição com conteúdo de listagem
+      $("#curriculum_unit_items").html(data);
+      // se existir algum erro após deleção
+      if(data.search(".error_deletion") != -1){
+        // aviso de erro
+        flash_message($(".error_deletion").html(), 'alert');
+      // se não existir erros
+      }else{
+        // aviso de sucesso
+        flash_message('<%= I18n.t(:deleted, :scope => [:editions, :success]) %>', 'notice');
+      }
+    }
+  });
+}

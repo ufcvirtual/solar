@@ -460,8 +460,6 @@
       cant_delete: Discussion can't be deleted
       range_date_error: must be smaller then the final date
       offer_period: must be on the date range of offer (%{start} - %{end})
-    success:
-      deleted: Discussion deleted successfully
     buttons:
       save: Save
       cancel: Cancel
@@ -942,3 +940,4 @@
       test: Test
     success:
       saved: Saved successfully
+      deleted: Deleted successfully

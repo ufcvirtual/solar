@@ -38,6 +38,7 @@ class DiscussionsController < ApplicationController
     @allocation_tags_ids  = params[:allocation_tags_ids] # ids das allocations_tags de acordo com os dados passados
     offer                 = Offer.find(@offer_id)
     @group_and_offer_info = group_and_offer_info(@group_id, @offer_id)
+
     # verifica se usuário, além de ter perfil de editor (authorize), é responsável ou estudante para a oferta e turma
     # raise CanCan::AccessDenied unless Profile.is_responsible_or_student?(current_user.id, @offer_id, @group_id)
 
@@ -147,7 +148,9 @@ class DiscussionsController < ApplicationController
   end
 
   def destroy
-    @offer_id, @group_id = params[:offer_id], params[:group_id]
+    @offer_id, @group_id  = params[:offer_id], params[:group_id]
+    @allocation_tags_ids  = params[:allocation_tags_ids]
+    @group_and_offer_info = group_and_offer_info(@group_id, @offer_id)
 
     # verifica se usuário, além de ter perfil de editor (authorize), é responsável ou estudante para a oferta e turma
     # raise CanCan::AccessDenied unless Profile.is_responsible_or_student?(current_user.id, @offer_id, @group_id) 
@@ -155,9 +158,15 @@ class DiscussionsController < ApplicationController
     schedule = @discussion.schedule
     if @discussion.destroy
       schedule.destroy
-      redirect_to list_discussions_url, :notice => t(:deleted, :scope => [:discussion, :success])
+      
+      @discussions = Discussion.all_by_allocation_tags(@allocation_tags_ids)
+      render :list, :layout => false
     else
-      redirect_to list_discussions_url, :alert => @discussion.errors.full_messages[0]
+      @error_deletion = @discussion.errors.full_messages[0]
+      @discussions    = Discussion.all_by_allocation_tags(@allocation_tags_ids)
+      respond_to do |format|
+        format.html{render :list, :layout => false}
+      end
     end
   end
 
