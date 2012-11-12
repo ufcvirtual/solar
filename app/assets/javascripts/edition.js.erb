@@ -1,0 +1,48 @@
+function call_page(url){
+  $.get(url, function(data) {
+    $('#curriculum_unit_items').html(data);
+  });
+}
+
+function back_to_edition(){
+  $.ajax({
+    type: 'GET',
+    url: '#{editions_path}',
+    data: {'layout': false},
+    success: function(data) {
+      $(".edition_div").html(data);
+    }
+  });
+}
+
+function open_lightbox(url, title){
+  showLightBoxURL(url, 550, 255, true, title);
+}
+
+function submit_form(form_id, div_class_to_update, controller){
+  $.ajax({
+    type: "POST",
+    url: $("#"+form_id).attr("action"),
+    data: $("#"+form_id).serialize(),
+    success: function(data) {
+      // se existir algum erro, o simple_form acrescenta a classe "error" aos campos
+      if(data.search(".error") != -1){
+        // atualiza conteúdo com o formulário
+        $("."+div_class_to_update).html(data);
+      // se não existir erros
+      }else{
+        removeLightBox();  
+        // atualiza div da página de edição com conteúdo de listagem
+        $("#curriculum_unit_items").html(data);
+        // mas o resultado conter uma div de erro e for o formulário de fóruns
+        if(data.search(".access_denied") != -1 && controller == "discussion"){
+          // mensagem de não pode editar (se for criação a div nunca existirá)
+          flash_message('<%= I18n.t(:cant_edit, :scope => [:discussion, :errors]) %>', 'alert');
+        } else {
+          // mensagem de sucesso
+          flash_message('<%= I18n.t(:saved, :scope => [:editions, :success]) %>', 'notice');
+        }
+      }
+    }
+  });
+}

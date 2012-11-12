@@ -2,6 +2,7 @@ class AssignmentsController < ApplicationController
 
   include AssignmentsHelper
   include FilesHelper
+  include EditionHelper
 
   before_filter :prepare_for_group_selection, :only => [:list, :list_to_student]
   load_and_authorize_resource :only => [:information, :show, :import_groups_page, :import_groups, :manage_groups, :evaluate, :send_comment, :remove_comment]
@@ -11,9 +12,12 @@ class AssignmentsController < ApplicationController
   # Lista as atividades - visão geral
   ##  
   def list
-    allocation_tag_id      = active_tab[:url]['allocation_tag_id']
-    @individual_activities = Assignment.find_all_by_allocation_tag_id_and_type_assignment(allocation_tag_id, Individual_Activity)
-    @group_activities      = Assignment.find_all_by_allocation_tag_id_and_type_assignment(allocation_tag_id, Group_Activity)
+    allocation_tags_ids    = params[:allocation_tags_ids] || [active_tab[:url]['allocation_tag_id']]
+    @individual_activities = allocation_tags_ids.collect{|at| Assignment.find_all_by_allocation_tag_id_and_type_assignment(at, Individual_Activity)}.flatten.uniq
+    @group_activities      = allocation_tags_ids.collect{|at| Assignment.find_all_by_allocation_tag_id_and_type_assignment(at, Group_Activity)}.flatten.uniq
+    # @group_and_offer_info  = group_and_offer_info(params[:group_id], params[:offer_id]) # complementará o texto do título da página quando for acessada pela página de edição
+
+    render :layout => false if params[:allocation_tags_ids]
   end
 
   ##

@@ -1,67 +1,67 @@
   <% if !(@bibliography_filter.nil? || @bibliography_filter.empty?) %>
     <% @bibliography_filter.each do |bib| %>
-  <div class="block_wrapper">
-    <div class="block_title">
-      <h2><%= image_tag "icon_bibliografia.png", :class=>(:block_title_icon) %><%= bib["title"] %></h2>
-      </div>
+      <div class="block_wrapper">
+        <div class="block_title">
+          <h2><%= image_tag "icon_bibliografia.png", :alt => " ", :class => (:block_title_icon) %><%= bib["title"] %></h2>
+          </div>
 
-    <div class="block_content block_content_text">
-      <div>
-    <%#*Autor%>
-          <% unless  bib["author"] == nil  %>
-            <% author = bib["author"].to_s.split(' ') %>
-            <%= (author.last).upcase %>
-            <%= ', ' << author.first if author.length > 1 %>.
-          <% end %>
+        <div class="block_content block_content_text">
+          <div>
+        <%#*Autor%>
+              <% unless  bib["author"] == nil  %>
+                <% author = bib["author"].to_s.split(' ') %>
+                <%= (author.last).upcase %>
+                <%= ', ' << author.first if author.length > 1 %>.
+              <% end %>
 
-    <%#*Titulo%>
-          <% unless  bib["title"] == nil  %>
-            <span style="font-weight: bold"><%=  bib["title"] %> </span>.
-          <% end %>
+        <%#*Titulo%>
+              <% unless  bib["title"] == nil  %>
+                <span style="font-weight: bold"><%=  bib["title"] %> </span>.
+              <% end %>
 
-    <%#*Edicao%>
-          <% unless  bib["edition"] == nil  %>
-            <%=  bib["edition"]%>.ed .
-          <% end %>
+        <%#*Edicao%>
+              <% unless  bib["edition"] == nil  %>
+                <%=  bib["edition"]%>.ed .
+              <% end %>
 
-    <%#*local%>
-          <% unless  bib["locale"] == nil  %>
-            <%= bib["locale"]%>:
-          <% end %>
+        <%#*local%>
+              <% unless  bib["locale"] == nil  %>
+                <%= bib["locale"]%>:
+              <% end %>
 
-    <%#*Editora%>
-          <% unless  bib["publisher"] == nil  %>
-            <%= bib["publisher"]%> ,
-          <% end %>
+        <%#*Editora%>
+              <% unless  bib["publisher"] == nil  %>
+                <%= bib["publisher"]%> ,
+              <% end %>
 
-    <%#*ano%>
-          <% unless  bib["year"] == nil  %>
-            <%= bib["year"] %>.
-          <% end %>
+        <%#*ano%>
+              <% unless  bib["year"] == nil  %>
+                <%= bib["year"] %>.
+              <% end %>
 
-    <%#*Texto complementar%>
-          <% unless  bib["additional_text"] == nil  %>
-            <%= bib["additional_text"]%>
-          <% end %>
+        <%#*Texto complementar%>
+              <% unless  bib["additional_text"] == nil  %>
+                <%= bib["additional_text"]%>
+              <% end %>
 
-    <%#*ISBN%>
-          <% unless  bib["isbn_issn"] == nil  %>
-            <p style="margin-top: 4px">ISBN/ISSN: <%=bib["isbn_issn"]%></p>
-          <% end %>
+        <%#*ISBN%>
+              <% unless  bib["isbn_issn"] == nil  %>
+                <p style="margin-top: 4px">ISBN/ISSN: <%=bib["isbn_issn"]%></p>
+              <% end %>
 
-    <%#*URL%>
-          <% unless  bib["url"] == nil  %>
-          URL: <a target="_blank" class="link_content" href= <%= bib["url"] %>><%= bib["url"] %></a><br />
-          <% end %>
-        </div>
-        </div>
-      </div>
+        <%#*URL%>
+              <% unless  bib["url"] == nil  %>
+              URL: <a target="_blank" class="link_content" href= <%= bib["url"] %>><%= bib["url"] %></a><br />
+              <% end %>
+            </div>
+            </div>
+          </div>
     <%  end %>
 
   <% else %>
-  <div class="block_wrapper">
-    <div class="block_content block_content_text">
-      <%= t(:bibliography_null) %>
+    <div class="block_wrapper">
+      <div class="block_content block_content_text">
+        <%= t(:bibliography_null) %>
+      </div>
     </div>
-  </div>
   <% end %>

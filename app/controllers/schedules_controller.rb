@@ -5,20 +5,22 @@ class SchedulesController < ApplicationController
   before_filter :prepare_for_group_selection, :only => [:list]
 
   def list
-    allocation_tag_id = active_tab[:url]['allocation_tag_id']
-    allocation_tags = allocation_tag_id.nil? ? nil : AllocationTag.find_related_ids(allocation_tag_id).join(', ')
-
-    @curriculum_unit = CurriculumUnit.find(active_tab[:url]['id']) unless active_tab[:url]['id'].nil?
+    allocation_tag_id  = active_tab[:url]['allocation_tag_id']
+    allocation_tags    = params[:allocation_tags_ids].nil? ? nil : (params[:allocation_tags_ids] || AllocationTag.find_related_ids(allocation_tag_id).join(', '))
+    curriculum_unit_id = params[:curriculum_unit_id] || active_tab[:url]['id']
+    @curriculum_unit   = CurriculumUnit.find(curriculum_unit_id) unless curriculum_unit_id.nil?
 
     if !allocation_tags.nil?
-      @visible_name = false
+      @visible_name    = false
     else
-      @visible_name = true
-      allocation_tags = current_user.allocation_tag_activated_ids
-      allocation_tags = all_allocation_tags(allocation_tags)
+      @visible_name    = true
+      allocation_tags  = current_user.allocation_tag_activated_ids
+      allocation_tags  = all_allocation_tags(allocation_tags)
     end
     
     @schedule = Schedule.all_by_allocation_tags(allocation_tags)
+
+    render :layout => false if params[:allocation_tags_ids]
   end
 
   ##
@@ -26,11 +28,11 @@ class SchedulesController < ApplicationController
   ##
   def show
     allocation_tag_id = active_tab[:url]['allocation_tag_id']
-    allocation_tags = allocation_tag_id.nil? ? nil : AllocationTag.find_related_ids(allocation_tag_id).join(', ')
-    period = true
+    allocation_tags   = allocation_tag_id.nil? ? nil : AllocationTag.find_related_ids(allocation_tag_id).join(', ')
+    period            = true
 
     # apresentacao dos links de todas as schedules
-    @link = params[:list_all_schedule].nil? ? false : true
+    @link     = params[:list_all_schedule].nil? ? false : true
     @schedule = Schedule.all_by_allocation_tags(allocation_tags, period, Date.parse(params[:date]))
 
     render :layout => false

@@ -1,0 +1,100 @@
+%fieldset#uc_informations
+  %legend= t(".information")
+  .block_content.block_content_alt
+    / if uc ou oferta = valor de id e can? :list, Discussion, :on => relacionado à uc ou oferta
+    / falta verificar relação com uc
+    / verifica se possui permissão e se alguma uc foi selecionada para a criação de bibliografia
+    - if (can? :list, Bibliography) and (@curriculum_unit_id != "all" and @curriculum_unit_id != 0)
+      .uc_item
+        %div
+          = image_tag "/assets/edition/bibliography.png", :alt => "Imagem", :class=>'btn_default', :onclick => "javascript: call_page('#{url_for(:controller => :bibliography, :action => :list, :group_id => @group_id, :offer_id => @offer_id, :allocation_tags_ids => @allocation_tags_ids)}');"
+        %div
+          %span=t(".bibliography")
+    / falta verificar relação com oferta
+    / verifica se possui permissão e se alguma oferta foi selecionada para a criação de agenda
+    - if (can? :list, Schedule) and (@offer_id != "all" and @offer_id != 0)
+      .uc_item
+        %div
+        = image_tag "/assets/edition/schedule.png", :alt => "Imagem", :class=>'btn_default', :onclick => "javascript: call_page('#{list_schedules_path(:allocation_tags_ids => @allocation_tags_ids, :curriculum_unit_id => @curriculum_unit_id)}');"
+        %div
+          %span=t(".schedule")
+    / sem nível mínimo
+    / falta verificar relação com "maior" valor escolhido
+    / if can? :index, Allocation
+    .uc_item
+      %div
+      = (image_tag "/assets/edition/allocation.png", :alt => "Imagem", :class=>'btn_default', :onclick => "javascript:alert('Em desenvolvimento');" )
+      %div
+        %span=t(".allocation")
+    / sem nível mínimo
+    / falta verificar relação com "maior" valor escolhido
+    / if can? :index, Warning 
+    .uc_item
+      %div
+      = image_tag "", :alt => "Imagem", :class=>'btn_default', :onclick => "javascript:alert('Em desenvolvimento');" 
+      %div
+        %span=t(".warning")
+
+%fieldset#uc_comunication
+  %legend=t(".comunication")
+  .block_content.block_content_alt
+    / falta verificar relação com oferta
+    / if oferta = valor de id e can? :list, Discussion, :on => relacionado à oferta
+    - if (can? :list, Discussion) and (@offer_id != "all" and @offer_id != 0)
+      .uc_item
+        %div
+          = image_tag "/assets/edition/discussion.png", :alt => "Imagem", :class=>'btn_default', :onclick => "javascript: call_page('#{list_discussions_path(:group_id => @group_id, :offer_id => @offer_id, :allocation_tags_ids => @allocation_tags_ids)}');"
+        %div
+          %span=t(".discussion")
+    / falta verificar relação com o nível escolhido e definir qual nível é necessário
+    / if can? :index, Chat and verificação do nível
+    .uc_item
+      %div
+        = image_tag "/assets/edition/chat.png", :alt => "Imagem", :class=>'btn_default', :onclick => "javascript:alert('Em desenvolvimento');" 
+      %div
+        %span=t(".chat")
+    / falta verificar relação com o nível escolhido e definir qual nível é necessário
+    / if can? :index, Videoconference and verificação do nível
+    .uc_item
+      %div
+        = image_tag "/assets/edition/videoconference.png", :alt => "Imagem", :class=>'btn_default', :onclick => "javascript:alert('Em desenvolvimento');" 
+      %div
+        %span=t(".videoconference")
+
+%fieldset#uc_education
+  %legend=t(".education")
+  .block_content.block_content_alt
+    / falta verificar relação com oferta
+    / if oferta = valor de id e can? :list, Discussion, :on => relacionado à oferta
+    / verifica se possui permissão e se alguma oferta foi selecionada para a criação de aula
+    - if (can? :list, Lesson) and (@offer_id != "all" and @offer_id != 0)
+      .uc_item
+        %div
+          = image_tag "/assets/edition/lesson.png", :alt => "Imagem", :class=>'btn_default', :onclick => "javascript: call_page('#{list_lessons_path(:group_id => @group_id, :offer_id => @offer_id, :allocation_tags_ids => @allocation_tags_ids, :curriculum_unit_id => @curriculum_unit_id)}');"
+        %div
+          %span=t(".lesson")
+    / falta verificar relação com uc
+    / verifica se possui permissão e se alguma uc foi selecionada para a criação do material de apoio
+    - if (can? :list_edition, SupportMaterialFile) and (@curriculum_unit_id != "all" and @curriculum_unit_id != 0)
+      .uc_item 
+        %div
+          /= image_tag "/assets/edition/support_material.png", :alt => "Imagem", :class=>'btn_default', :onclick => "javascript: call_page('#{url_for(:controller => :support_material_file, :action => :list_edition, :allocation_tags_ids => @allocation_tags_ids, :curriculum_unit_id => @curriculum_unit_id)}');"
+          = image_tag "/assets/edition/support_material.png", :alt => "Imagem", :class=>'btn_default', :onclick => "javascript:alert('Em desenvolvimento');" 
+        %div
+          %span=t(".support_material")
+    / falta verificar relação com oferta
+    / verifica se possui permissão e se alguma oferta foi selecionada para a criação da atividade
+    - if (can? :list, Assignment) and (@offer_id != "all" and @offer_id != 0)
+      .uc_item
+        %div
+          = image_tag "/assets/edition/assignment.png", :alt => "Imagem", :class=>'btn_default', :onclick => "javascript: call_page('#{list_assignments_path(:group_id => @group_id, :offer_id => @offer_id, :allocation_tags_ids => @allocation_tags_ids)}');"
+        %div
+          %span=t(".assignment")
+    / falta verificar relação com oferta
+    / verifica se possui permissão e se alguma oferta foi selecionada para a criação da prova
+    - if (@offer_id != "all" and @offer_id != 0) # and (can? :list, Test)
+      .uc_item
+        %div
+          = image_tag "", :alt => "Imagem", :class=>'btn_default', :onclick => "javascript:alert('Em desenvolvimento');" 
+        %div
+          %span=t(".test")

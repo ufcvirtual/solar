@@ -123,6 +123,12 @@ SQL
   end
 
   def self.all_by_allocation_tags(allocation_tags)
+    begin 
+      allocation_tags = allocation_tags.join(", ") # ["1", "2"] => 1, 2
+    rescue
+      allocation_tags = allocation_tags.split(" ").join(", ") # "1 2" => ["1", "2"] => 1, 2
+    end
+
     query = <<SQL
       SELECT t1.id,
              t1.name,
@@ -141,7 +147,7 @@ SQL
         JOIN allocation_tags  AS t2 ON t2.id = t1.allocation_tag_id
         JOIN schedules        AS t3 ON t1.schedule_id = t3.id
    LEFT JOIN discussion_posts AS t4 ON t4.discussion_id = t1.id
-       WHERE t2.id IN (#{allocation_tags.join(',')})
+       WHERE t2.id IN (#{allocation_tags})
        GROUP BY t1.id, t1.name, t1.description, t1.schedule_id, t1.allocation_tag_id, t3.start_date, t3.end_date
        ORDER BY t3.start_date, t3.end_date, t1.name
 SQL

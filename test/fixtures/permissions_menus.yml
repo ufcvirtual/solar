@@ -247,3 +247,8 @@ pm60:
 pm61:
   profile_id: 12
   menu_id: 100
+
+# editor
+pm62:
+  profile_id: 5
+  menu_id: 130

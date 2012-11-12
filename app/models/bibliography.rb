@@ -1,6 +1,6 @@
 class Bibliography < ActiveRecord::Base
 
-  def self.bibliography_filter(list_allocations)
+  def self.bibliography_filter(allocation_tags_ids)
     ActiveRecord::Base.connection.select_all  <<SQL
      SELECT DISTINCT t1.*
          FROM bibliographies as t1
@@ -10,7 +10,7 @@ class Bibliography < ActiveRecord::Base
          LEFT JOIN courses as t6 ON (t2.course_id = t6.id)
         WHERE t2.course_id is null
           AND t2.curriculum_unit_id is null
-          AND t2.id IN (#{list_allocations.join(',')})
+          AND t2.id IN (#{allocation_tags_ids.join(',')})
 SQL
   end
 

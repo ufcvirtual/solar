@@ -4,9 +4,7 @@ class Lesson < ActiveRecord::Base
   belongs_to :user
   belongs_to :schedule
 
-  def self.to_open(allocation_tag_id = nil, lesson_id = nil)
-    all_allocations = AllocationTag.find_related_ids(allocation_tag_id)
-
+  def self.to_open(allocation_tags_ids = nil, lesson_id = nil)
     # uma aula é ligada a um modulo que eh ligado a uma turma ou a uma oferta
     query_lessons = <<SQL
        SELECT DISTINCT l.id AS lesson_id,
@@ -23,7 +21,7 @@ class Lesson < ActiveRecord::Base
     LEFT JOIN allocation_tags AS at ON m.allocation_tag_id = at.id
         WHERE status = #{Lesson_Approved}
           AND s.start_date <= current_date
-          AND at.id IN (#{all_allocations.join(', ')})
+          AND at.id IN (#{allocation_tags_ids})
 SQL
 
     # id da aula foi passado

@@ -157,3 +157,8 @@ registration:
 support_material_file_editor:
   menu_id: 120
   context_id: 2
+
+# MENU PAI - 130
+edition: 
+  menu_id: 130
+  context_id: 1

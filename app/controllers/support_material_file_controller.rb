@@ -57,33 +57,36 @@ class SupportMaterialFileController < ApplicationController
   end
 
   def list_edition
-#    allocation_tag_ids = AllocationTag.find_related_ids(user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['allocation_tag_id'])
-#    @list_files = SupportMaterialFile.find_files(allocation_tag_ids)
-#
-#    @folders_list = {}
-#    # cria uma lista de arquivos relacionados a uma chave "folder", por exemplo: {"pasta1"=>[#<arquivo 1>, #<arquivo 2>], "pasta2"=>[#<arquivo1>]}
-#    @list_files.collect {|file| 
-#      @folders_list[file["folder"]] = [] unless @folders_list[file["folder"]].is_a?(Array)
-#      @folders_list[file["folder"]] << file
-#    }
-#    
-#    ###
-#    # Início das variáveis necessárias para o elemento de allocation superior (escolha de unidade, oferta e turma)
-#    ###
-#    # semestre mais atual
-#    curriculum_unit_id = user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['id'] #user_session[:tabs][:opened][user_session[:tabs][:active]]
-#    @semester_current = Offer.find_all_by_curriculum_unit_id(curriculum_unit_id)
-#    semester_temp = @semester_current[0].semester.to_f
-#    @semester_current.each do |f|
-#       semester_temp = f.semester.to_f if semester_temp < f.semester.to_f
-#    end
-#    @semester_current = semester_temp
-#
-#    # lista para o 'select'
-#    @select_options_editor = SupportMaterialFile.select_unit_editor(user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['allocation_tag_id'])
-#    ###
-#    # Fim das variáveis necessárias para o elemento de allocation superior (escolha de unidade, oferta e turma)
-#    ###
+    # allocation_tag_id   = user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['allocation_tag_id']
+    # allocation_tags_ids = params[:allocation_tags_ids] || AllocationTag.find_related_ids(allocation_tag_id)
+    # @list_files         = SupportMaterialFile.find_files(allocation_tags_ids)
+
+    # @folders_list = {}
+    # # cria uma lista de arquivos relacionados a uma chave "folder", por exemplo: {"pasta1"=>[#<arquivo 1>, #<arquivo 2>], "pasta2"=>[#<arquivo1>]}
+    # @list_files.collect {|file| 
+    #   @folders_list[file["folder"]] = [] unless @folders_list[file["folder"]].is_a?(Array)
+    #   @folders_list[file["folder"]] << file
+    # }
+    
+    # ###
+    # # Início das variáveis necessárias para o elemento de allocation superior (escolha de unidade, oferta e turma)
+    # ###
+    # # semestre mais atual
+    # curriculum_unit_id = params[:curriculum_unit_id] || user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['id']
+    # @semester_current  = Offer.find_all_by_curriculum_unit_id(curriculum_unit_id)
+    # semester_temp      = @semester_current[0].semester.to_f
+    # @semester_current.each do |f|
+    #    semester_temp = f.semester.to_f if semester_temp < f.semester.to_f
+    # end
+    # @semester_current = semester_temp
+
+    # # lista para o 'select'
+    # @select_options_editor = SupportMaterialFile.select_unit_editor(user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['allocation_tag_id'] ||  allocation_tags_ids.first)
+    # ###
+    # # Fim das variáveis necessárias para o elemento de allocation superior (escolha de unidade, oferta e turma)
+    # ###
+
+    # render :layout => false if params[:allocation_tags_ids]
   end
 
   # seleciona o upload_link() ou delete_select_file(), somente para links

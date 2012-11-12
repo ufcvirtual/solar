@@ -1,25 +1,35 @@
+= javascript_include_tag "edition.js"
+
 %span.form_requirement= t(:required_fields)
-= simple_form_for(@discussion) do |f| 
+.discussion_form{:style => "text-align: left;"}
+  = simple_form_for(@discussion, :html => {:id => "discussion_form"}) do |f| 
+    
+    .form-inputs.block_content
+      = hidden_field_tag :offer_id, @offer_id
+      = hidden_field_tag :group_id, @group_id
+      = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
-  .form-inputs.block_content
-    = hidden_field_tag :offer_id, @offer_id
-    = hidden_field_tag :group_id, @group_id
-    = f.input :name, :required => true
-    = f.input :description, :required => true 
-    / classes ".string.required.field_with_errors" adicionadas a fim de deixar o layout semelhante ao do simple_form utilizado nos "f.input"
-    - error_class = "field_with_errors" unless @schedule_error.blank?
-    .string.required{:class => error_class}
-      = f.label :schedule, :required => true
-      - start_date = @discussion.schedule.nil? ? two_months_ago : @discussion.schedule.start_date.to_date
-      = text_field_tag "start_date", "", :id => "from-date", :title => "#{t(:from_date)}", :size => "9", :value => "#{l(start_date, :format => :datepicker)}", :class => "date_text_field", :size => 10
-      = "à"
-      - end_date = @discussion.schedule.nil? ? Date.today : @discussion.schedule.end_date.to_date
-      = text_field_tag "end_date", "", :id => "until-date", :title => "#{t(:until_date)}", :size => "9", :value => "#{l(end_date, :format => :datepicker)}", :class => "date_text_field", :size => 10
-      %span{:style => "display: inline-block;"}= @schedule_error
+      - name_error = (@discussion.errors.full_messages[0] == t(:existing_name, :scope => [:discussion, :errors]))
 
-  .block_content.form-actions
-    = f.submit t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons])
-    = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default", :onclick => "removeLightBox();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
+      %span{:class => (name_error ? "field_with_errors" : "")}
+        = f.input :name, :required => true
+        - if name_error
+          %span{:style => "display: inline-block;"}= @discussion.errors.full_messages[0]
+      = f.input :description, :required => true 
+      / classes ".string.required.field_with_errors" adicionadas a fim de deixar o layout semelhante ao do simple_form utilizado nos "f.input"
+      - error_class = "field_with_errors" unless @schedule_error.blank?
+      .string.required{:class => error_class}
+        = f.label :schedule, :required => true
+        - start_date = @discussion.schedule.nil? ? two_months_ago : (@discussion.schedule.start_date || two_months_ago)
+        = text_field_tag "start_date", "", :id => "from-date", :title => "#{t(:from_date)}", :size => "9", :value => "#{l(start_date.to_date, :format => :datepicker)}", :class => "date_text_field", :size => 10
+        = "à"
+        - end_date = @discussion.schedule.nil? ? Date.today : (@discussion.schedule.end_date || Date.today)
+        = text_field_tag "end_date", "", :id => "until-date", :title => "#{t(:until_date)}", :size => "9", :value => "#{l(end_date.to_date, :format => :datepicker)}", :class => "date_text_field", :size => 10
+        %span{:style => "display: inline-block;"}= @schedule_error
+
+    .block_content.form-actions
+      = button_tag t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :onclick => "javascript:submit_form('discussion_form', 'discussion_form', 'discussion');", :type => "button"
+      = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default", :onclick => "removeLightBox();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
 
 :css
   .ui-datepicker{ 

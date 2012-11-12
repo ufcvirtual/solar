@@ -572,6 +572,9 @@
   lesson_closed: "Aula encerrada"
   lesson_closed_short: "encerrada"
 
+  lesson:
+    lesson_table_title: Aulas disponíveis para %{group_and_offer}
+
   #Listagem de Fóruns
   title: "Título"
   forum_table_title: "Fóruns disponíveis"
@@ -616,9 +619,7 @@
       range_date_error: deve ser menor que a data final
       offer_period: deve estar dentro do período da oferta (%{start} - %{end})
     success:
-      updated: Fórum atualizado com sucesso
       deleted: Fórum excluido com sucesso
-      created: Fórum criado com sucesso
     buttons:
       save: Salvar
       cancel: Cancelar
@@ -628,8 +629,9 @@
     edit_discussion: Editar %{discussion_name}
     new_discussion: Novo fórum
     all_groups: todas as turmas
-    discussion_table_title: Fóruns disponíveis para %{to} de %{of}
+    discussion_table_title: Fóruns disponíveis para %{group_and_offer}
     group: Turma
+    back: Voltar
 
   # messages
   message_title: "Mensagens"
@@ -902,6 +904,7 @@
   menu_registration: Matrícula
   menu_history: Historico
   menu_group_assignment: Grupos
+  menu_edition: Edição
 
   # Componente de filtro/busca de allocationTags (places_nav_panel)
   places_nav_panel_course_hint: "Digite o nome do curso ou parte dele"
@@ -1075,3 +1078,25 @@
       group:
         offer: "Oferta"
         code: "Código"
+
+  editions:
+    index:
+      edition: Edição
+      filter: Filtro
+    items:
+      information: Informação
+      education: Educação
+      comunication: Comunicação
+      bibliography: Bibliografia
+      schedule: Agenda
+      allocation: Alocação
+      warning: Aviso
+      discussion: Fórum
+      chat: Chat
+      videoconference: Videoconferência
+      lesson: Aula
+      support_material: Material de apoio
+      assignment: Atividade
+      test: Prova
+    success:
+      saved: Salvo com sucesso

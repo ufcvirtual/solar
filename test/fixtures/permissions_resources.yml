@@ -874,35 +874,42 @@ ucedit4:
 
 # # Discussions - Fóruns
 
-# discedit1:
-#   profile_id: 5
-#   resource_id: 83
-#   per_id: false
+discedit1:
+  profile_id: 5
+  resource_id: 83
+  per_id: false
 
-# discedit2:
-#   profile_id: 5
-#   resource_id: 84
-#   per_id: false
+discedit2:
+  profile_id: 5
+  resource_id: 84
+  per_id: false
 
-# discedit3:
-#   profile_id: 5
-#   resource_id: 85
-#   per_id: true
+discedit3:
+  profile_id: 5
+  resource_id: 85
+  per_id: false
 
-# discedit4:
-#   profile_id: 5
-#   resource_id: 86
-#   per_id: true
+discedit4:
+  profile_id: 5
+  resource_id: 86
+  per_id: false
 
-# discedit5:
-#   profile_id: 5
-#   resource_id: 87
-#   per_id: true
+discedit5:
+  profile_id: 5
+  resource_id: 87
+  per_id: false
 
-# discedit6:
-#   profile_id: 5
-#   resource_id: 88
-#   per_id: false
+discedit6:
+  profile_id: 5
+  resource_id: 88
+  per_id: false
+
+# Editions - Página de edição
+
+edition1:
+  profile_id: 5
+  resource_id: 89
+  per_id: false
 
 ##############################
 # BASICO #

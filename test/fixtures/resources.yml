@@ -499,3 +499,8 @@ res88:
   action: 'list'
   description: 'Listagem de foruns para a oferta ou turma selecionadas previamente'
 
+res89:
+  id: 89
+  controller: 'editions'
+  action: 'index'
+  description: 'Página que permite acesso aos cadastros do sistema'

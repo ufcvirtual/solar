@@ -231,8 +231,9 @@ menu_support_material_record:
   order: 11
   resource_id: 63
 
-# enrollments:
-#   id:
-#   name:
-#   order:
-#   resource_id:
+# MENU PAI - 130
+edition:
+  id: 130
+  name: menu_edition
+  order: 12
+  resource_id: 89

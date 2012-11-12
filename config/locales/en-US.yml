@@ -412,6 +412,9 @@
   lesson_closed: "Lesson closed"
   lesson_closed_short: "closed"
 
+  lesson:
+    lesson_table_title: Available lessons to %{group_and_offer}
+
   #Foruns
   title: "Title"
   forum_title: "Discussions"
@@ -458,9 +461,7 @@
       range_date_error: must be smaller then the final date
       offer_period: must be on the date range of offer (%{start} - %{end})
     success:
-      updated: Discussion updated successfully
       deleted: Discussion deleted successfully
-      created: Discussion created successfully
     buttons:
       save: Save
       cancel: Cancel
@@ -470,8 +471,9 @@
     edit_discussion: Edit discussion %{discussion_name}
     new_discussion: New discussion
     all_groups: all groups
-    discussion_table_title: Available Discussions to %{to} of %{of}
+    discussion_table_title: Available discussions to %{group_and_offer}
     group: Group
+    back: Back
 
   message_title: "Messages"
   message_inbox: "Inbox"
@@ -742,6 +744,7 @@
   menu_registration: Registration
   menu_history: History
   menu_group_assignment: Groups
+  menu_edition: Edition
   
   # Componente de filtro/busca de allocationTags (places_nav_panel)
   #Type the courses name or part of it
@@ -917,3 +920,25 @@
       group:
         offer: "Offer"
         code: "Code"
+
+  editions:
+    index:
+      edition: Edition
+      filter: Filter
+    items:
+      information: Information
+      education: Education
+      comunication: Comunication
+      bibliography: Bibliography
+      schedule: Schedule
+      allocation: Allocation
+      warning: Warning
+      discussion: Discussion
+      chat: Chat
+      videoconference: Videoconference
+      lesson: Lesson
+      support_material: Support material
+      assignment: Assignment
+      test: Test
+    success:
+      saved: Saved successfully

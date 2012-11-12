@@ -1,5 +1,7 @@
 class LessonsController < ApplicationController
 
+  include EditionHelper
+
   before_filter :prepare_for_group_selection, :only => [:list]
   before_filter :curriculum_data
 
@@ -20,17 +22,20 @@ class LessonsController < ApplicationController
 
   def list
     authorize! :list, Lesson
-    @lessons = lessons_to_open
+    @lessons              = lessons_to_open(params[:allocation_tags_ids])
+    @group_and_offer_info = group_and_offer_info(params[:group_id], params[:offer_id]) if params[:allocation_tags_ids]
+
+    render :layout => false if params[:allocation_tags_ids]
   end
 
   private
 
   def curriculum_data
-    @curriculum_unit = CurriculumUnit.find(active_tab[:url]['id'])
+    @curriculum_unit = CurriculumUnit.find(params[:curriculum_unit_id] || active_tab[:url]['id'])
   end
 
-  def lessons_to_open
-    Lesson.to_open(active_tab[:url]['allocation_tag_id'])
+  def lessons_to_open(allocation_tags_ids = nil)
+    allocation_tags_ids = allocation_tags_ids || AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
+    Lesson.to_open(allocation_tags_ids.join(", "))
   end
-
 end

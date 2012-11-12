@@ -133,24 +133,42 @@ SQL
   end
 
   def self.user_allocation_tag_related_with_class(class_id, user_id)
-    related_allocations = AllocationTag.find_related_ids(Group.find(class_id).allocation_tag.id) #allocations relacionadas à turma
+    related_allocations = AllocationTag.find_related_ids(Group.find(class_id).allocation_tag.id) # allocations relacionadas à turma
     allocation = Allocation.first(:conditions => ["allocation_tag_id IN (?) AND user_id = #{user_id}", related_allocations])
     return (allocation.nil? ? nil : allocation.allocation_tag)
   end
 
   ##
-  # Recupera os ids das allocations_tags verificando a oferta e grupo passados (sendo que grupo pode ser nenhum, algum ou todos)
+  # Recupera os ids das allocations_tags verificando o curso, uc, oferta e grupo passados
   ##
-  def self.by_offer_and_group(offer_id, group_id)
-    offer = Offer.find(offer_id)
-    if group_id == 0 # nenhuma turma (verifica oferta)
-      allocations_tags_ids = [offer.allocation_tag_id]
+  
+  def self.by_course_and_curriculum_unit_and_offer_and_group(course_id, curriculum_unit_id, offer_id, group_id)
+    offer           = Offer.find(offer_id) unless offer_id.nil? or offer_id == "all" or offer_id == 0
+    course          = Course.find(course_id) unless course_id.nil? or course_id == "all" or course_id == 0
+    curriculum_unit = CurriculumUnit.find(curriculum_unit_id) unless curriculum_unit_id.nil? or curriculum_unit_id == "all" or curriculum_unit_id == 0
+
+    allocations_tags_ids = Array.new
+
+    if group_id != 0 and group_id != "all" # alguma turma específica
+      allocations_tags_ids = [Group.find(group_id).allocation_tag.id]
     elsif group_id == "all" # todas as turmas da oferta
-      allocations_tags_ids = offer.groups.where("status = #{true}").collect{|group| group.allocation_tag.id }
-    else # alguma turma específica
-      allocations_tags_ids = [Group.find(group_id).allocation_tag_id]
+      if offer_id != 0 and offer_id != "all" # alguma oferta específica
+        allocations_tags_ids = offer.groups.where("status = #{true}").collect{|group| group.allocation_tag.id }  
+      elsif offer_id == "all" # todas as ofertas do curso e uc 
+        allocations_tags_ids << course.offers.collect{|offer| offer.groups.collect{|group| group.allocation_tag.id}} unless course.nil?
+        allocations_tags_ids << curriculum_unit.offers.collect{|offer| offer.groups.collect{|group| group.allocation_tag.id}} unless curriculum_unit.nil?
+      end
+    else # nenhuma turma selecionada
+      if offer_id != 0 and offer_id != "all" # alguma oferta específica
+        allocations_tags_ids = offer.allocation_tag.id
+      elsif offer_id == "all" # todas as ofertas do curso e uc 
+        allocations_tags_ids << course.offers.collect{|offer| offer.allocation_tag.id} unless course.nil?
+        allocations_tags_ids << curriculum_unit.offers.collect{|offer| offer.allocation_tag.id} unless curriculum_unit.nil?
+      else # nenhuma oferta selecionada
+        allocations_tags_ids << course.allocation_tag.id unless course.nil?
+        allocations_tags_ids << curriculum_unit.allocation_tag.id unless curriculum_unit.nil?
+      end
     end
-    return allocations_tags_ids
   end
 
 end

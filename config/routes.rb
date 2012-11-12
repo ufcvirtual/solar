@@ -13,7 +13,11 @@ Solar::Application.routes.draw do
   ## curriculum_units/:id/participants
   ## curriculum_units/:id/informations
   resources :curriculum_units do
-    get :list, :on => :collection
+    collection do 
+      get :list
+      get :list_informations
+      get :list_participants
+    end
     member do
       get :participants
       get :informations
@@ -72,7 +76,15 @@ Solar::Application.routes.draw do
   resources :offers
   resources :scores, :only => [:show, :index]
   resources :courses
-  resources :publishing
+  resources :editions, :only => [:index]
+
+  resources :lessons, :only => [:show] do
+    collection do
+      get :show_header
+      get :show_content
+      get :list
+    end
+  end
 
   mount Ckeditor::Engine => "/ckeditor"
 
@@ -94,6 +106,10 @@ Solar::Application.routes.draw do
       post :import_groups
       delete :remove_comment
     end
+  end
+
+  resources :schedules, :only => [] do
+    get :list, :on => :collection
   end
 
   get "pages/index"

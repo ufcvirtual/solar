@@ -5,13 +5,14 @@ require 'test_helper'
 # Há, também, o método index que precisa estar em uma allocation_tag
 # para poder ser executado.
 
-class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
+class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTest
   fixtures :all
   # para poder realizar o "login_as" sabendo que o sign_in do devise não funciona no teste de integração
   include Warden::Test::Helpers 
   
   def setup
-    @quimica_tab = "/application/add_tab/3?allocation_tag_id=3&context=2"
+    @quimica_tab  = "/application/add_tab/3?allocation_tag_id=3&context=2"
+    @edition_page = "/editions/index"
   end
 
   def login(user)
@@ -39,274 +40,311 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
       assert_equal flash[:alert], I18n.t(:no_permission)
     end
 
+
+  ## 
+  # Listar fóruns de uma oferta, de todas as turmas da oferta ou de uma turma (list)
   ##
-  # Novo fórum (new/create)
-  ##
+
+  #acessar pela página de edição
+
+    # test "listar foruns de acordo com dados de oferta e turma passados" do
+    #   login users(:coorddisc)
+    #   get @edition_page
+    #   assert_not_nil assigns(:allocation_tags_ids)
+    #   get :list, {:offer_id => offers(:of3).id, :group_id => "all", :allocation_tags_ids => assigns(:allocation_tags_ids)}
+    #   assert_not_nil assigns(:offer_id)
+    #   assert_not_nil assigns(:group_id)
+    #   assert_not_nil assigns(:discussions)
+    #   assert_not_nil assigns(:group_and_offer_info)
+    #   # assert_not_nil assigns(:responsible_or_student)
+    #   # assert_not_nil assigns(:group_code)
+    #   # assert_not_nil assigns(:offer_semester)
+      
+    #   assert_template :list
+    # end
+
+  #   test "nao listar foruns de acordo com dados de oferta e turma passados - sem permissao" do
+  #     sign_in users(:professor)
+  #     get :list, {:offer_id => offers(:of3).id, :group_id => "all"}
+  #     assert_nil assigns(:offer_id)
+  #     assert_nil assigns(:group_id)
+  #     assert_nil assigns(:discussions)
+  #     assert_nil assigns(:responsible_or_student)
+  #     assert_nil assigns(:group_code)
+  #     assert_nil assigns(:offer_semester)
+      
+  #     assert_redirected_to({:controller => :home})
+  #     assert_equal flash[:alert], I18n.t(:no_permission)
+  #   end
+
+  # ##
+  # # Novo fórum (new/create)
+  # ##
   
-    test "criar novo forum" do
-      login(users(:aluno3))
-      get(new_discussion_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      assert_not_nil assigns(:group_id)
-      assert_not_nil assigns(:offer_id)
-      assert_not_nil assigns(:discussion)
-      assert_template :new
+  #   test "criar novo forum" do
+  #     login(users(:aluno3))
+  #     get(new_discussion_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     assert_not_nil assigns(:group_id)
+  #     assert_not_nil assigns(:offer_id)
+  #     assert_not_nil assigns(:discussion)
+  #     assert_template :new
 
-      assert_difference(["Discussion.count", "Schedule.count"], +(offers(:of3).groups.size)) do
-        post("/discussions/", {:discussion => {:name => "discussion 1", :description => "discussion 1"}, :start_date => "30-08-2012", :end_date => "30-11-2012", :offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      end
+  #     assert_difference(["Discussion.count", "Schedule.count"], +(offers(:of3).groups.size)) do
+  #       post("/discussions/", {:discussion => {:name => "discussion 1", :description => "discussion 1"}, :start_date => "30-08-2012", :end_date => "30-11-2012", :offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     end
 
-      assert_response :redirect
-      assert_redirected_to(list_discussions_url)
-      assert_equal( flash[:notice], I18n.t(:created, :scope => [:discussion, :success]) )
-    end
+  #     assert_response :redirect
+  #     assert_redirected_to(list_discussions_url)
+  #     assert_equal( flash[:notice], I18n.t(:created, :scope => [:discussion, :success]) )
+  #   end
 
-    test "nao criar novo forum - erro de validacao" do
-      login(users(:aluno3))
-      get(new_discussion_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      assert_not_nil assigns(:group_id)
-      assert_not_nil assigns(:offer_id)
-      assert_not_nil assigns(:discussion)
-      assert_template :new
+  #   test "nao criar novo forum - erro de validacao" do
+  #     login(users(:aluno3))
+  #     get(new_discussion_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     assert_not_nil assigns(:group_id)
+  #     assert_not_nil assigns(:offer_id)
+  #     assert_not_nil assigns(:discussion)
+  #     assert_template :new
 
-      assert_no_difference(["Discussion.count", "Schedule.count"]) do
-        post("/discussions/", {:discussion => {:description => "discussion 1"}, :start_date => "30-08-2012", :end_date => "30-11-2012", :offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      end
+  #     assert_no_difference(["Discussion.count", "Schedule.count"]) do
+  #       post("/discussions/", {:discussion => {:description => "discussion 1"}, :start_date => "30-08-2012", :end_date => "30-11-2012", :offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     end
 
-      assert_template :new
-    end
+  #     assert_template :new
+  #   end
 
-    test "nao criar novo forum - sem permissao" do
-      login(users(:professor))
-      get(new_discussion_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      assert_nil assigns(:group_id)
-      assert_nil assigns(:offer_id)
-      assert_nil assigns(:discussion)
-      assert_redirected_to({:controller => :home})
-      assert_equal flash[:alert], I18n.t(:no_permission)
+  #   test "nao criar novo forum - sem permissao" do
+  #     login(users(:professor))
+  #     get(new_discussion_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     assert_nil assigns(:group_id)
+  #     assert_nil assigns(:offer_id)
+  #     assert_nil assigns(:discussion)
+  #     assert_redirected_to({:controller => :home})
+  #     assert_equal flash[:alert], I18n.t(:no_permission)
 
-      assert_no_difference(["Discussion.count", "Schedule.count"]) do
-        post("/discussions/", {:discussion => {:name => "discussion 1", :description => "discussion 1"}, :start_date => "30-08-2012", :end_date => "30-11-2012", :offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      end
+  #     assert_no_difference(["Discussion.count", "Schedule.count"]) do
+  #       post("/discussions/", {:discussion => {:name => "discussion 1", :description => "discussion 1"}, :start_date => "30-08-2012", :end_date => "30-11-2012", :offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     end
 
-      assert_redirected_to({:controller => :home})
-      assert_equal flash[:alert], I18n.t(:no_permission)
-    end
+  #     assert_redirected_to({:controller => :home})
+  #     assert_equal flash[:alert], I18n.t(:no_permission)
+  #   end
 
-  ##
-  # Editar fórum (edit/update)
-  ##
+  # ##
+  # # Editar fórum (edit/update)
+  # ##
   
-    test "editar forum" do
-      login(users(:aluno3))
-      get(edit_discussion_path(discussions(:forum_7).id, :offer_id => offers(:of3).id, :group_id => "all"))
-      assert_not_nil assigns(:offer_id)
-      assert_not_nil assigns(:group_id)
-      assert_not_nil assigns(:discussion)
-      assert_template :edit
+  #   test "editar forum" do
+  #     login(users(:aluno3))
+  #     get(edit_discussion_path(discussions(:forum_7).id, :offer_id => offers(:of3).id, :group_id => "all"))
+  #     assert_not_nil assigns(:offer_id)
+  #     assert_not_nil assigns(:group_id)
+  #     assert_not_nil assigns(:discussion)
+  #     assert_template :edit
 
-      put("/discussions/#{discussions(:forum_7).id}/", {:discussion => {:name => "discussion 2", :description => "discussion 1"}, :start_date => "31-08-2012", :end_date => "30-11-2012", :offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      assert_equal discussions(:forum_7).schedule.start_date.strftime("%d-%m-%Y"), "31-08-2012"
+  #     put("/discussions/#{discussions(:forum_7).id}/", {:discussion => {:name => "discussion 2", :description => "discussion 1"}, :start_date => "31-08-2012", :end_date => "30-11-2012", :offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     assert_equal discussions(:forum_7).schedule.start_date.strftime("%d-%m-%Y"), "31-08-2012"
 
-      assert_response :redirect
-      assert_redirected_to(list_discussions_url)
-      assert_equal( flash[:notice], I18n.t(:updated, :scope => [:discussion, :success]) )
+  #     assert_response :redirect
+  #     assert_redirected_to(list_discussions_url)
+  #     assert_equal( flash[:notice], I18n.t(:updated, :scope => [:discussion, :success]) )
 
-      get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      # verifica se há algum fórum de nome "discussion 2" (nome alterado de "Forum 5")
-      assert_tag :tag => "table", 
-      :attributes => { :class => "tb_list" },
-      :child => { 
-        :tag => "tbody",
-        :child => {
-          :tag => "tr", 
-          :child => {
-            :tag => "td",
-            :child => {
-              :tag => "a",
-              :content => "discussion 2"
-            } #child td
-          } # child tr
-        } # child tbody
-     } # child table
-    end
+  #     get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     # verifica se há algum fórum de nome "discussion 2" (nome alterado de "Forum 5")
+  #     assert_tag :tag => "table", 
+  #     :attributes => { :class => "tb_list" },
+  #     :child => { 
+  #       :tag => "tbody",
+  #       :child => {
+  #         :tag => "tr", 
+  #         :child => {
+  #           :tag => "td",
+  #           :child => {
+  #             :tag => "a",
+  #             :content => "discussion 2"
+  #           } #child td
+  #         } # child tr
+  #       } # child tbody
+  #    } # child table
+  #   end
 
-    test "nao editar forum - erro de validacao" do
-      login(users(:aluno3))
-      get(edit_discussion_path(discussions(:forum_7).id, :offer_id => offers(:of3).id, :group_id => "all"))
-      assert_not_nil assigns(:discussion)
-      assert_template :edit
+  #   test "nao editar forum - erro de validacao" do
+  #     login(users(:aluno3))
+  #     get(edit_discussion_path(discussions(:forum_7).id, :offer_id => offers(:of3).id, :group_id => "all"))
+  #     assert_not_nil assigns(:discussion)
+  #     assert_template :edit
 
-      put("/discussions/#{discussions(:forum_7).id}/", {:discussion => {:name => "discussion 2", :description => ""}, :start_date => "30-08-2012", :end_date => "30-11-2012", :offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      assert_not_equal discussions(:forum_7).schedule.start_date.strftime("%d-%m-%Y"), "31-08-2012"
+  #     put("/discussions/#{discussions(:forum_7).id}/", {:discussion => {:name => "discussion 2", :description => ""}, :start_date => "30-08-2012", :end_date => "30-11-2012", :offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     assert_not_equal discussions(:forum_7).schedule.start_date.strftime("%d-%m-%Y"), "31-08-2012"
       
-      assert_template :edit
+  #     assert_template :edit
 
-      get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      # verifica se não há nenhum fórum de nome "discussion 2" (nome alterado de "Forum 5")
-      assert_no_tag :tag => "table", 
-      :attributes => { :class => "tb_list" },
-      :child => { 
-        :tag => "tbody",
-        :child => {
-          :tag => "tr", 
-          :child => {
-            :tag => "td",
-            :child => {
-              :tag => "a",
-              :content => "discussion 2"
-            } #child td
-          } # child tr
-        } # child tbody
-     } # child table
-    end
+  #     get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     # verifica se não há nenhum fórum de nome "discussion 2" (nome alterado de "Forum 5")
+  #     assert_no_tag :tag => "table", 
+  #     :attributes => { :class => "tb_list" },
+  #     :child => { 
+  #       :tag => "tbody",
+  #       :child => {
+  #         :tag => "tr", 
+  #         :child => {
+  #           :tag => "td",
+  #           :child => {
+  #             :tag => "a",
+  #             :content => "discussion 2"
+  #           } #child td
+  #         } # child tr
+  #       } # child tbody
+  #    } # child table
+  #   end
 
-    test "nao editar forum - sem permissao" do
-      login(users(:professor))
-      get(edit_discussion_path(discussions(:forum_7).id, :offer_id => offers(:of3).id, :group_id => "all"))
-      assert_nil assigns(:group_id)
-      assert_nil assigns(:offer_id)
+  #   test "nao editar forum - sem permissao" do
+  #     login(users(:professor))
+  #     get(edit_discussion_path(discussions(:forum_7).id, :offer_id => offers(:of3).id, :group_id => "all"))
+  #     assert_nil assigns(:group_id)
+  #     assert_nil assigns(:offer_id)
 
-      assert_redirected_to({:controller => :home})
-      assert_equal flash[:alert], I18n.t(:no_permission)
+  #     assert_redirected_to({:controller => :home})
+  #     assert_equal flash[:alert], I18n.t(:no_permission)
 
-      put("/discussions/#{discussions(:forum_7).id}/", {:discussion => {:name => "discussion 2", :description => "discussion 1"}, :start_date => "30-08-2012", :end_date => "30-11-2012", :offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      assert_not_equal discussions(:forum_7).schedule.start_date.strftime("%d-%m-%Y"), "31-08-2012"
+  #     put("/discussions/#{discussions(:forum_7).id}/", {:discussion => {:name => "discussion 2", :description => "discussion 1"}, :start_date => "30-08-2012", :end_date => "30-11-2012", :offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     assert_not_equal discussions(:forum_7).schedule.start_date.strftime("%d-%m-%Y"), "31-08-2012"
 
-      assert_redirected_to({:controller => :home})
-      assert_equal flash[:alert], I18n.t(:no_permission)
+  #     assert_redirected_to({:controller => :home})
+  #     assert_equal flash[:alert], I18n.t(:no_permission)
 
-      login(users(:aluno3))
-      get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      # verifica se não há nenhum fórum de nome "discussion 2" (nome alterado de "Forum 5")
-      assert_no_tag :tag => "table", 
-      :attributes => { :class => "tb_list" },
-      :child => { 
-        :tag => "tbody",
-        :child => {
-          :tag => "tr", 
-          :child => {
-            :tag => "td",
-            :child => {
-              :tag => "a",
-              :content => "discussion 2"
-            } #child td
-          } # child tr
-        } # child tbody
-     } # child table
-    end
+  #     login(users(:aluno3))
+  #     get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     # verifica se não há nenhum fórum de nome "discussion 2" (nome alterado de "Forum 5")
+  #     assert_no_tag :tag => "table", 
+  #     :attributes => { :class => "tb_list" },
+  #     :child => { 
+  #       :tag => "tbody",
+  #       :child => {
+  #         :tag => "tr", 
+  #         :child => {
+  #           :tag => "td",
+  #           :child => {
+  #             :tag => "a",
+  #             :content => "discussion 2"
+  #           } #child td
+  #         } # child tr
+  #       } # child tbody
+  #    } # child table
+  #   end
 
-  ##
-  # Excluir fórum (destroy)
-  ##
+  # ##
+  # # Excluir fórum (destroy)
+  # ##
 
-    test "excluir forum" do
-      login(users(:aluno3))
-      get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      assert_not_nil assigns(:offer_id)
-      assert_not_nil assigns(:group_id)
-      assert_not_nil assigns(:discussions)
-      assert_not_nil assigns(:responsible_or_student)
-      assert_not_nil assigns(:group_code)
-      assert_not_nil assigns(:offer_semester)
+  #   test "excluir forum" do
+  #     login(users(:aluno3))
+  #     get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     assert_not_nil assigns(:offer_id)
+  #     assert_not_nil assigns(:group_id)
+  #     assert_not_nil assigns(:discussions)
+  #     assert_not_nil assigns(:responsible_or_student)
+  #     assert_not_nil assigns(:group_code)
+  #     assert_not_nil assigns(:offer_semester)
       
-      assert_template :list
+  #     assert_template :list
 
-      assert_difference(["Discussion.count", "Schedule.count"], -1) do
-        delete("/discussions/#{discussions(:forum_8).id}/", {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      end
+  #     assert_difference(["Discussion.count", "Schedule.count"], -1) do
+  #       delete("/discussions/#{discussions(:forum_8).id}/", {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     end
 
-      assert_response :redirect
-      assert_redirected_to(list_discussions_url)
-      assert_equal( flash[:notice], I18n.t(:deleted, :scope => [:discussion, :success]) )
+  #     assert_response :redirect
+  #     assert_redirected_to(list_discussions_url)
+  #     assert_equal( flash[:notice], I18n.t(:deleted, :scope => [:discussion, :success]) )
 
-      get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      # verifica se há algum fórum de nome "discussion 2" (nome alterado de "Forum 5")
-      assert_no_tag :tag => "table", 
-      :attributes => { :class => "tb_list" },
-      :child => { 
-        :tag => "tbody",
-        :child => {
-          :tag => "tr", 
-          :child => {
-            :tag => "td",
-            :child => {
-              :tag => "a",
-              :content => "Forum 6"
-            } #child td
-          } # child tr
-        } # child tbody
-     } # child table
-    end
+  #     get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     # verifica se há algum fórum de nome "discussion 2" (nome alterado de "Forum 5")
+  #     assert_no_tag :tag => "table", 
+  #     :attributes => { :class => "tb_list" },
+  #     :child => { 
+  #       :tag => "tbody",
+  #       :child => {
+  #         :tag => "tr", 
+  #         :child => {
+  #           :tag => "td",
+  #           :child => {
+  #             :tag => "a",
+  #             :content => "Forum 6"
+  #           } #child td
+  #         } # child tr
+  #       } # child tbody
+  #    } # child table
+  #   end
 
-    test "nao excluir forum - forum ja possui postagens" do
-      login(users(:aluno3))
-      get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      assert_not_nil assigns(:offer_id)
-      assert_not_nil assigns(:group_id)
-      assert_not_nil assigns(:discussions)
-      assert_not_nil assigns(:responsible_or_student)
-      assert_not_nil assigns(:group_code)
-      assert_not_nil assigns(:offer_semester)
+  #   test "nao excluir forum - forum ja possui postagens" do
+  #     login(users(:aluno3))
+  #     get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     assert_not_nil assigns(:offer_id)
+  #     assert_not_nil assigns(:group_id)
+  #     assert_not_nil assigns(:discussions)
+  #     assert_not_nil assigns(:responsible_or_student)
+  #     assert_not_nil assigns(:group_code)
+  #     assert_not_nil assigns(:offer_semester)
       
-      assert_template :list
+  #     assert_template :list
 
-      assert_no_difference(["Discussion.count", "Schedule.count"]) do
-        delete("/discussions/#{discussions(:forum_1).id}/", {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      end
+  #     assert_no_difference(["Discussion.count", "Schedule.count"]) do
+  #       delete("/discussions/#{discussions(:forum_1).id}/", {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     end
 
-      assert_response :redirect
-      assert_redirected_to(list_discussions_url)
-      assert_equal( flash[:alert], I18n.t(:cant_delete, :scope => [:discussion, :errors]) )
+  #     assert_response :redirect
+  #     assert_redirected_to(list_discussions_url)
+  #     assert_equal( flash[:alert], I18n.t(:cant_delete, :scope => [:discussion, :errors]) )
 
-      get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      # verifica se há algum fórum de nome "discussion 2" (nome alterado de "Forum 5")
-      assert_tag :tag => "table", 
-      :attributes => { :class => "tb_list" },
-      :child => { 
-        :tag => "tbody",
-        :child => {
-          :tag => "tr", 
-          :child => {
-            :tag => "td",
-            :child => {
-              :tag => "a",
-              :content => "Forum 1"
-            } #child td
-          } # child tr
-        } # child tbody
-     } # child table
-    end
+  #     get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     # verifica se há algum fórum de nome "discussion 2" (nome alterado de "Forum 5")
+  #     assert_tag :tag => "table", 
+  #     :attributes => { :class => "tb_list" },
+  #     :child => { 
+  #       :tag => "tbody",
+  #       :child => {
+  #         :tag => "tr", 
+  #         :child => {
+  #           :tag => "td",
+  #           :child => {
+  #             :tag => "a",
+  #             :content => "Forum 1"
+  #           } #child td
+  #         } # child tr
+  #       } # child tbody
+  #    } # child table
+  #   end
 
-    test "nao excluir forum - sem permissao" do
-      login(users(:professor))
+  #   test "nao excluir forum - sem permissao" do
+  #     login(users(:professor))
 
-      assert_no_difference(["Discussion.count", "Schedule.count"]) do
-        delete("/discussions/#{discussions(:forum_1).id}/", {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      end
+  #     assert_no_difference(["Discussion.count", "Schedule.count"]) do
+  #       delete("/discussions/#{discussions(:forum_1).id}/", {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     end
 
-      assert_redirected_to({:controller => :home})
-      assert_equal flash[:alert], I18n.t(:no_permission)
+  #     assert_redirected_to({:controller => :home})
+  #     assert_equal flash[:alert], I18n.t(:no_permission)
 
-      login(users(:aluno3))
+  #     login(users(:aluno3))
 
-      get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
-      # verifica se há algum fórum de nome "discussion 2" (nome alterado de "Forum 5")
-      assert_tag :tag => "table", 
-      :attributes => { :class => "tb_list" },
-      :child => { 
-        :tag => "tbody",
-        :child => {
-          :tag => "tr", 
-          :child => {
-            :tag => "td",
-            :child => {
-              :tag => "a",
-              :content => "Forum 1"
-            } #child td
-          } # child tr
-        } # child tbody
-     } # child table
-    end
+  #     get(list_discussions_path, {:offer_id => offers(:of3).id, :group_id => "all"}.to_param)
+  #     # verifica se há algum fórum de nome "discussion 2" (nome alterado de "Forum 5")
+  #     assert_tag :tag => "table", 
+  #     :attributes => { :class => "tb_list" },
+  #     :child => { 
+  #       :tag => "tbody",
+  #       :child => {
+  #         :tag => "tr", 
+  #         :child => {
+  #           :tag => "td",
+  #           :child => {
+  #             :tag => "a",
+  #             :content => "Forum 1"
+  #           } #child td
+  #         } # child tr
+  #       } # child tbody
+  #    } # child table
+  #   end
 
 
 end

@@ -1,0 +1,39 @@
+.block_wrapper
+  
+  .block_title
+    %h2
+      = image_tag "icon_curriculum_unit.png", :alt => " ", :class => (:block_title_icon) 
+      = t(:curriculum_unit_information_title)
+
+  %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+    %tbody
+      %tr.lines
+        %td{:style => "width: 20%;"}= t(:syllabus) 
+        %td= @curriculum_unit.syllabus 
+      %tr.lines
+        %td= t(:objectives)
+        %td= @curriculum_unit.objectives
+      %tr.lines
+        %td= t(:prerequisites) 
+        %td= @curriculum_unit.prerequisites 
+      %tr.lines
+        %td= t(:resume) 
+        %td= @curriculum_unit.resume 
+      - unless @offer.nil?
+        %tr.lines
+          %td= t(:semester_date) 
+          %td
+            =l @offer.start
+            = "-"
+            =l @offer.end 
+      %tr.lines
+        %td= t(:passing_grade) 
+        %td= @curriculum_unit.passing_grade 
+      %tr.lines
+        %td= t(:curriculum_unit_responsible) 
+        %td
+          - if @responsible
+            - @responsible.each do |resp|
+              =resp.name + ' (' + resp.profile_name + ') '
+              %span= link_to (image_tag "icon_message.png", :alt=>t(:icon_send_email))
+              %br

@@ -12,6 +12,7 @@ Contexto:
     | 2        | 1                  | 1           | 1      |
     | 3        | 1                  | 1           | 1      |
 
+@javascript
 Cenário: Listar aulas do curso
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"
@@ -22,6 +23,6 @@ Cenário: Listar aulas do curso
   Quando eu clicar no link "Aulas"
   Então eu deverei ver "Aulas disponíveis"
   E eu deverei ver a linha de aulas disponiveis
-    | AulasDisponiveis  | DataAcesso              |
-    | aula 4            | 16/03/2011 - 01/08/2312 |
-    | aula 5            | 25/03/2011 - 06/05/2315 |
+    | AulasDisponiveis  | DataAcesso | DataAcesso | DataAcesso |
+    | aula 4            | 16/03/2011 |      -     | 01/08/2312 |
+    | aula 5            | 25/03/2011 |      -     | 06/05/2315 |
