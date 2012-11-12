@@ -25,6 +25,7 @@ class OffersController < ApplicationController
     # Filtrando por período para o componente de edição
     if params.include?(:search_semester)
 		
+      params[:search_semester].strip!
       @offers = @offers.select { |offer| offer.semester.downcase.include?(params[:search_semester].downcase) }
       
       all_allocation_tag_ids = Array.new(@offers.count)
@@ -53,6 +54,8 @@ class OffersController < ApplicationController
     
     # Filtrando por nome de unidade curricular
     if params.include?(:search_curriculum_unit)
+
+      params[:search_curriculum_unit].strip!
       @offers = @offers.select { |offer| offer.curriculum_unit.name.downcase.include?(params[:search_curriculum_unit].downcase)}
 
 	  all_allocation_tag_ids = Array.new(@offers.count)

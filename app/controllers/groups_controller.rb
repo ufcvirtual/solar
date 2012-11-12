@@ -35,6 +35,7 @@ class GroupsController < ApplicationController
 		end
 
 		if params.include?(:search)
+			params[:search].strip!
 			@groups = @groups.select { |group| group.code.downcase.include?(params[:search].downcase) }
 
 			all_allocation_tag_ids = Array.new(@groups.count)

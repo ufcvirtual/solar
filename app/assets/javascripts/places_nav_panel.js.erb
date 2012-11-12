@@ -148,7 +148,25 @@ $(document).ready(function(){
 			$('#navPanelMenu').remove();	
 	});
 
+
+	//Chamando a lista completa de elementos quando se aperta a seta para baixo no teclado.
+	//$('#token-input-txtCourse').keydown(function(e){
+	
+	$('[id^="token-input-"]').keydown(function(e){
+    	if (e.keyCode == 40) { 
+	    	if (isSearchPanelClosed(this)){
+				console.log('Clicou para baixo'+new Date().getTime());
+				$(this).val(' ');
+				$(this).trigger('keydown');
+			}
+    	}
+	});
 });
+
+function isSearchPanelClosed(element){
+	return ($(element).siblings('tester').html() == '');
+}
+
 
 function showNavPanelMenu(element){
 	if ($('#navPanelMenu').length)
