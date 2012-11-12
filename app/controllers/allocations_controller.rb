@@ -2,15 +2,19 @@ include AllocationsHelper
 
 class AllocationsController < ApplicationController
 
-  authorize_resource :except => [:destroy, :search_users, :activate, :deactivate]
+  authorize_resource :except => [:destroy, :designates, :search_users, :activate, :deactivate]
+
+  def new
+    
+  end
 
   # GET /allocations/designates
   # GET /allocations/designates.json
-  def new
+  def designates
     level = (params[:permissions]!="all") ? "responsible" : nil
     level_search = ("#{level.nil?}") ? ("not(profiles.types & #{Profile_Type_Student})::boolean and not(profiles.types & #{Profile_Type_Basic})::boolean") : ("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")
 
-    allocations = params[:allocation_tag_id] 
+    allocations = (params.include?('allocation_tag_id')) ? params[:allocation_tag_id] : 0
 
     @allocations = Allocation.find(:all,
       :joins => [:profile, :user], 

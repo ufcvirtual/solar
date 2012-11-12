@@ -98,7 +98,7 @@ class AllocationsControllerTest < ActionController::TestCase
   end
 
   test "exibir usuarios alocados para um usuario com permissao" do
-    get :new, { :allocation_tag_id => 5 }
+    get :designates, { :allocation_tag_id => 5 }
     assert_response :success
     assert_not_nil assigns(:allocations)
 
