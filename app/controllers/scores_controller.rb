@@ -15,7 +15,7 @@ class ScoresController < ApplicationController
     related_allocations = AllocationTag.find_related_ids(allocation_tag_id) # allocations relacionadas à turma
 
     authorize! :find, @student # verifica se o usuario logado tem permissao para consultar o usuario informado
-    authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(group_id, current_user.id) # verifica se pode acessar turma
+    # authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(group_id, current_user.id) # verifica se pode acessar turma
 
     @individual_activities = Assignment.student_assignments_info(group_id, @student.id, Individual_Activity)
     @group_activities = Assignment.student_assignments_info(group_id, @student.id, Group_Activity)
@@ -37,7 +37,7 @@ class ScoresController < ApplicationController
     group_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
 
     authorize! :find, User.find(@student_id) # verifica autorizacao para consultar dados do usuario
-    authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(group_id, current_user.id) # verifica se pode acessar turma
+    # authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(group_id, current_user.id) # verifica se pode acessar turma
 
     from_date = date_valid?(params['from-date']) ? Date.parse(params['from-date']) : (Date.today << 2).to_s(:db)
     until_date = date_valid?(params['until-date']) ? Date.parse(params['until-date']) : Date.today.to_s(:db)
@@ -58,7 +58,7 @@ class ScoresController < ApplicationController
     class_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
     
     authorize! :find, User.find(student_id) # verifica autorizacao para consultar dados do usuario
-    authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(class_id, current_user.id) # verifica se pode acessar turma
+    # authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(class_id, current_user.id) # verifica se pode acessar turma
     
     from_date = (Date.today << 2).to_s(:db) unless date_valid?(@from_date)
     until_date = Date.today.to_s(:db) unless date_valid?(@until_date)
@@ -78,7 +78,7 @@ class ScoresController < ApplicationController
     @group = AllocationTag.find(allocation_tag_id).groups.first
 
     raise CanCan::AccessDenied if @group.nil? # turma nao existe
-    authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(@group.id, current_user.id) # verifica se pode acessar turma
+    # authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(@group.id, current_user.id) # verifica se pode acessar turma
 
     @assignments = Assignment.all(:joins => [:allocation_tag, :schedule],
       :conditions => ["allocation_tags.group_id = #{@group.id}"], :select => ["assignments.id", "schedule_id", "type_assignment", "name"]) # atividades da turma

@@ -31,7 +31,7 @@ class Ability
       at_all_or_lower = (alias_action(action).select {|a| a == :create or a == :update}.empty?) ? {all: true} : {lower: true}
 
       # allocations do usuario com perfil para executar a acao
-      at_of_user = user.allocations.where(profile_id: profiles, status: Allocation_Activated.to_i).map(&:allocation_tag).map {|at| at.related(at_all_or_lower) }.flatten.compact.uniq
+      at_of_user = user.allocations.where(profile_id: profiles, status: Allocation_Activated.to_i).map(&:allocation_tag).compact.map {|at| at.related(at_all_or_lower) }.flatten.compact.uniq
       match = at_of_user & [object.allocation_tag.id]
 
       return false if match.empty?
@@ -44,8 +44,10 @@ class Ability
   ## evitando criacao de muitos resources com alias
   def alias_action(action)
     return case action
-      when :index, :show, :read
-        [:index, :show, :read]
+      when :index, :list
+        [:index, :list]
+      when :show, :read
+        [:show, :read]
       when :new, :create
         [:new, :create]
       when :edit, :update

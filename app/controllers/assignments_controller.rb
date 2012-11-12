@@ -234,7 +234,7 @@ class AssignmentsController < ApplicationController
           file = PublicFile.find(params[:file_id]) # área pública do aluno
           group = file.allocation_tag.groups.first
           raise CanCan::AccessDenied if group.nil? # turma não existe
-          authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(group.id, current_user.id) # verifica se pode acessar turma
+          # authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(group.id, current_user.id) # verifica se pode acessar turma
       end
       file_path = file.attachment.path
       file_name = file.attachment_file_name unless file.nil?
