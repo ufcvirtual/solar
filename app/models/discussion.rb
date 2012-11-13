@@ -9,6 +9,7 @@ class Discussion < ActiveRecord::Base
   validate :unique_name
 
   before_destroy :can_destroy?
+  after_destroy :delete_schedule
 
   ##
   # Verifica se pode deletar o fórum
@@ -21,6 +22,13 @@ class Discussion < ActiveRecord::Base
     else
       return true
     end
+  end
+
+  ##
+  # Deleta o schedule criado para o fórum deletado
+  ##
+  def delete_schedule
+    self.schedule.destroy
   end
 
   ##

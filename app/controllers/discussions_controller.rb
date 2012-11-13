@@ -22,28 +22,20 @@ class DiscussionsController < ApplicationController
 
   def new
     @offer_id, @group_id, @allocation_tags_ids = params[:offer_id], params[:group_id], params[:allocation_tags_ids]
-
-    # verifica se usuário, além de ter perfil de editor (authorize), é responsável ou estudante para a oferta e turma
-    # raise CanCan::AccessDenied unless Profile.is_responsible_or_student?(current_user.id, @offer_id, @group_id)
-
     @discussion = Discussion.new
     render :layout => false
   end
 
   def create
     @offer_id, @group_id, @allocation_tags_ids  = params[:offer_id], params[:group_id], params[:allocation_tags_ids]
-    @discussion           = Discussion.new(params[:discussion])
-    @schedule             = Schedule.new(:start_date => params["start_date"], :end_date => params["end_date"])
-    offer                 = Offer.find(@offer_id)
-    @group_and_offer_info = group_and_offer_info(@group_id, @offer_id)
-
-    # verifica se usuário, além de ter perfil de editor (authorize), é responsável ou estudante para a oferta e turma
-    # raise CanCan::AccessDenied unless Profile.is_responsible_or_student?(current_user.id, @offer_id, @group_id)
+    @discussion, @schedule = Discussion.new(params[:discussion]), Schedule.new(:start_date => params["start_date"], :end_date => params["end_date"]) # utilizados para validação
+    offer                  = Offer.find(@offer_id) # utilizado para validação
+    @group_and_offer_info  = group_and_offer_info(@group_id, @offer_id) # informação na página
 
     begin 
 
-      # período escolhido deve estar dentro do período da oferta
-      raise "date_range_error" if @schedule.valid? and params["start_date"].to_date < offer.start or params["end_date"].to_date > offer.end
+      raise  "validation_error" unless @discussion.valid?
+      raise "date_range_error" if @schedule.start_date < offer.start or @schedule.end_date > offer.end # período escolhido deve estar dentro do período da oferta
 
       ActiveRecord::Base.transaction do
         @allocation_tags_ids.split(" ").each do |allocation_tag_id|
@@ -58,15 +50,11 @@ class DiscussionsController < ApplicationController
       end
 
     rescue Exception => error
+      @discussion.errors.add(:name, t(:existing_name, :scope => [:discussion, :errors])) if error.message == t(:existing_name, :scope => [:discussion, :errors])
 
       if error.message == "date_range_error"
         @schedule_error = t(:offer_period, :scope => [:discussion, :errors], :start => l(offer.start, :formats => :default), :end => l(offer.end, :formats => :default))
-      elsif @discussion.valid? # se dados do fórum é válido e execução deu erro, o problema está na validação de nome único ou no período do schedule
-        if @schedule.valid? # se o período do schedule é válido e execução deu erro, o problema está na validação de nome único 
-          @discussion.errors.add(:name, t(:existing_name, :scope => [:discussion, :errors]))
-        end
       end
-
       @schedule_error = @schedule.errors.full_messages[0] unless @schedule.valid?
 
       respond_to do |format|
@@ -78,39 +66,32 @@ class DiscussionsController < ApplicationController
 
   def list
     @offer_id, @group_id, @allocation_tags_ids  = params[:offer_id], params[:group_id], params[:allocation_tags_ids]
-
-    # verifica se usuário, além de ter perfil de editor (authorize), é responsável ou estudante para a oferta e turma
-    # raise CanCan::AccessDenied unless Profile.is_responsible_or_student?(current_user.id, @offer_id, @group_id)
-    
     @group_and_offer_info = group_and_offer_info(@group_id, @offer_id)
     @discussions          = Discussion.all_by_allocation_tags(@allocation_tags_ids)
-    # @responsible_or_student = Profile.is_responsible_or_student?(current_user.id, @offer_id, @group_id) # verifica se usuário é responsável ou estudante para a oferta e turma
-
     render :layout => false
   end
 
   def edit
     @offer_id, @group_id, @allocation_tags_ids  = params[:offer_id], params[:group_id], params[:allocation_tags_ids]
-    # verifica se usuário, além de ter perfil de editor (authorize), é responsável ou estudante para a oferta e turma
-    # raise CanCan::AccessDenied unless Profile.is_responsible_or_student?(current_user.id, @offer_id, @group_id)
     render :layout => false
   end
 
   def update
     @offer_id, @group_id, @allocation_tags_ids  = params[:offer_id], params[:group_id], params[:allocation_tags_ids]
-    schedule              = @discussion.schedule
     @group_and_offer_info = group_and_offer_info(@group_id, @offer_id)
-    offer                 = Offer.find(@offer_id)
     @discussions          = Discussion.all_by_allocation_tags(@allocation_tags_ids)
 
-    # verifica se usuário, além de ter perfil de editor (authorize), é responsável ou estudante para a oferta e turma
-    # raise CanCan::AccessDenied unless Profile.is_responsible_or_student?(current_user.id, params[:offer_id], params[:group_id])
     unless @discussion.closed?
+      
+      offer, @schedule = Offer.find(@offer_id), Schedule.new(:start_date => params[:start_date], :end_date => params[:end_date]) # utilizados para validação
+      schedule         = @discussion.schedule
       
       begin
         
+        raise  "validation_error" unless @discussion.valid? and @schedule.valid?
+        raise "date_range_error" if @schedule.start_date < offer.start or @schedule.end_date > offer.end # período escolhido deve estar dentro do período da oferta
+
         schedule.update_attributes!(:start_date => params["start_date"], :end_date => params["end_date"])
-        raise "date_range_error" if params["start_date"].to_date < offer.start or params["end_date"].to_date > offer.end
         @discussion.update_attributes!(params[:discussion])
         @discussions = Discussion.all_by_allocation_tags(@allocation_tags_ids)
         respond_to do |format|
@@ -118,15 +99,13 @@ class DiscussionsController < ApplicationController
         end
 
       rescue Exception => error
+        @discussion.errors.add(:name, t(:existing_name, :scope => [:discussion, :errors])) if error.message == t(:existing_name, :scope => [:discussion, :errors])
 
         if error.message == "date_range_error"
           @schedule_error = t(:offer_period, :scope => [:discussion, :errors], :start => l(offer.start, :formats => :default), :end => l(offer.end, :formats => :default))
-        elsif @discussion.valid? # se dados do fórum é válido e execução deu erro, o problema está na validação de nome único ou no período do schedule
-          if schedule.valid? # se o período do schedule é válido e execução deu erro, o problema está na validação de nome único 
-            @discussion.errors.add(:name, t(:existing_name, :scope => [:discussion, :errors]))
-          end
+        else 
+          @schedule_error = @schedule.errors.full_messages[0] unless @schedule.valid?
         end
-        @schedule_error = schedule.errors.full_messages[0] unless schedule.valid?
 
         respond_to do |format|
           format.html { render :edit, :layout => false}
@@ -146,22 +125,14 @@ class DiscussionsController < ApplicationController
     @offer_id, @group_id, @allocation_tags_ids  = params[:offer_id], params[:group_id], params[:allocation_tags_ids]
     @group_and_offer_info = group_and_offer_info(@group_id, @offer_id)
 
-    # verifica se usuário, além de ter perfil de editor (authorize), é responsável ou estudante para a oferta e turma
-    # raise CanCan::AccessDenied unless Profile.is_responsible_or_student?(current_user.id, @offer_id, @group_id) 
-
-    schedule = @discussion.schedule
     if @discussion.destroy
-      schedule.destroy
-      
       @discussions = Discussion.all_by_allocation_tags(@allocation_tags_ids)
-      render :list, :layout => false
     else
       @error_deletion = @discussion.errors.full_messages[0]
       @discussions    = Discussion.all_by_allocation_tags(@allocation_tags_ids)
-      respond_to do |format|
-        format.html{render :list, :layout => false}
-      end
     end
+    
+    render :list, :layout => false
   end
 
 end

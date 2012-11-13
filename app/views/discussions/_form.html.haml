@@ -9,12 +9,7 @@
       = hidden_field_tag :group_id, @group_id
       = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
-      - name_error = (@discussion.errors.full_messages[0] == t(:existing_name, :scope => [:discussion, :errors]))
-
-      %span{:class => (name_error ? "field_with_errors" : "")}
-        = f.input :name, :required => true
-        - if name_error
-          %span{:style => "display: inline-block;"}= @discussion.errors.full_messages[0]
+      = f.input :name, :required => true
       = f.input :description, :required => true 
       / classes ".string.required.field_with_errors" adicionadas a fim de deixar o layout semelhante ao do simple_form utilizado nos "f.input"
       - error_class = "field_with_errors" unless @schedule_error.blank?

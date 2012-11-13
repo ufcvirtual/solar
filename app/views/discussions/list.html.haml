@@ -7,7 +7,7 @@
         = image_tag "icon_forum.png", :alt => " ", :class=>:block_title_icon
         = t(:discussion_table_title, :scope => [:discussion], :group_and_offer => @group_and_offer_info)
       .right_buttons
-        - if can? :new, Discussion# and @responsible_or_student
+        - if can? :new, Discussion
           = button_tag t(:new, :scope => [:discussion, :buttons]), :class => "btn btn_main", :type => "button", :onclick => "javascript:open_lightbox('#{new_discussion_path(:offer_id => @offer_id, :group_id => @group_id, :allocation_tags_ids => @allocation_tags_ids)}', '#{t(:new_discussion, :scope => [:discussion])}');", :alt => t(:new, :scope => [:discussion, :buttons])
     %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :style => "table-layout: fixed"}
       %thead
@@ -16,7 +16,7 @@
           - if @group_code == t(:all_groups, :scope => [:discussion])
             %th{:align => "center", :style => "width: 10%;"}= t(:group, :scope => [:discussion]) 
           %th{:align => "center", :style => "width: 22%;"}=t :forum_table_date
-          - if @discussions.collect{ |discussion| (can? :edit, discussion or can? :destroy, discussion) }.include?(true)# and @responsible_or_student }.include?(true)
+          - if @discussions.collect{ |discussion| (can? :edit, discussion or can? :destroy, discussion) }.include?(true)
             %th{:align => "center", :style => "width: 22%;"}
       %tbody
         - @discussions.each do |discussion|
@@ -35,7 +35,7 @@
               =l schedule.start_date.to_date
               = "-"
               =l schedule.end_date.to_date
-            - if (can? :edit, discussion or can? :destroy, discussion)# and @responsible_or_student
+            - if can? :edit, discussion or can? :destroy, discussion
               %td{:style => "width: 200px;"}
                 - if can? :edit, discussion
                   - btn_class = (not discussion.closed?) ? "btn btn_default" : "btn btn_disabled"
