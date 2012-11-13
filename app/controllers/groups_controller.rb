@@ -28,6 +28,7 @@ class GroupsController < ApplicationController
 		groups_by_ucs      = al.map(&:curriculum_unit).compact.map(&:groups).uniq
 		
 		@groups            = [my_direct_groups + groups_by_offers + groups_by_courses + groups_by_ucs].flatten.compact.uniq
+		@groups.sort! { |a,b| a.code <=> b.code }
 
 		if params.include?(:curriculum_unit_id)
 			ucs_groups = CurriculumUnit.find(params[:curriculum_unit_id]).groups
@@ -42,7 +43,7 @@ class GroupsController < ApplicationController
 			@groups.each_with_index do |group,i|
 				respects_chained_filter = false
 
-				group[:allocation_tag_id] = group.allocation_tag.id
+				group[:allocation_tag_id] = [group.allocation_tag.id]
 
 		        params[:chained_filter] = [] unless params.include?(:chained_filter)
 
@@ -57,12 +58,29 @@ class GroupsController < ApplicationController
 				
 				all_allocation_tag_ids[i] = group[:allocation_tag_id] if respects_chained_filter
 
-				@groups[i] = nil unless respects_chained_filter		
+				@groups[i] = nil unless respects_chained_filter
+		
 			end
-			@groups = @groups.compact			
-			all_allocation_tag_ids = all_allocation_tag_ids.compact
+			@groups = @groups.compact
+			
+			reference_code = ''
+      		reference_index = 0
+			@groups.each_with_index do |group,i|
+				if reference_code == group.code
+					@groups[reference_index][:allocation_tag_id] += group[:allocation_tag_id]
+					@groups[reference_index].status = nil
+					@groups[reference_index].offer_id = nil
+					@groups[reference_index].id = nil
+					@groups[i] = nil
+				else
+					reference_code = group.code
+					reference_index = i
+				end
+			end
+			@groups = @groups.compact
+			all_allocation_tag_ids = all_allocation_tag_ids.compact.flatten
 
-			optionAll = {:code => "..."+params[:search]+"...", :allocation_tag_id => all_allocation_tag_ids, :name =>"*"}
+			optionAll = {:code => '...' << params[:search] << "... (#{@groups.count})", :allocation_tag_id => all_allocation_tag_ids, :name =>"*"}
 			@groups << optionAll
 			
 		end

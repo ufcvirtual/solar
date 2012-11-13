@@ -25,13 +25,15 @@ class OffersController < ApplicationController
     # Filtrando por período para o componente de edição
     if params.include?(:search_semester)
 		
+      @offers.sort! { |a,b| a.semester <=> b.semester }
+		
       params[:search_semester].strip!
       @offers = @offers.select { |offer| offer.semester.downcase.include?(params[:search_semester].downcase) }
       
       all_allocation_tag_ids = Array.new(@offers.count)
 	  @offers.each_with_index do |offer,i|
         respects_chained_filter = false
-        offer[:allocation_tag_id] = offer.allocation_tag.id
+        offer[:allocation_tag_id] = [offer.allocation_tag.id]
         offer[:name] = offer.curriculum_unit.name
         
         params[:chained_filter] = [] unless params.include?(:chained_filter)
@@ -44,9 +46,30 @@ class OffersController < ApplicationController
 		
 		@offers[i] = nil unless respects_chained_filter
 		all_allocation_tag_ids[i] = offer[:allocation_tag_id] if respects_chained_filter
-	  end
+	  end	  
 	  @offers = @offers.compact
-	  all_allocation_tag_ids = all_allocation_tag_ids.compact
+
+	  # Agrupando 
+	  reference_semester = ''
+      reference_index = 0
+	  @offers.each_with_index do |offer,i|
+		if (offer.semester == reference_semester)
+			@offers[reference_index][:allocation_tag_id] += offer[:allocation_tag_id]
+			@offers[reference_index].course = nil
+			@offers[reference_index].name = nil
+			@offers[reference_index].curriculum_unit = nil
+			@offers[reference_index].start = nil
+			@offers[reference_index].end = nil
+			@offers[reference_index].id = nil
+			@offers[i] = nil
+		else
+			reference_semester = offer.semester 
+			reference_index = i
+		end
+	  end
+
+	  @offers = @offers.compact
+	  all_allocation_tag_ids = all_allocation_tag_ids.compact.flatten
 
       all = {:semester => "..."+params[:search_semester]+"...", :allocation_tag_id => all_allocation_tag_ids}
       @offers.push(all)
@@ -54,20 +77,20 @@ class OffersController < ApplicationController
     
     # Filtrando por nome de unidade curricular
     if params.include?(:search_curriculum_unit)
-
+      @offers.sort! { |a,b| a.curriculum_unit.name <=> b.curriculum_unit.name }
       params[:search_curriculum_unit].strip!
       @offers = @offers.select { |offer| offer.curriculum_unit.name.downcase.include?(params[:search_curriculum_unit].downcase)}
 
 	  all_allocation_tag_ids = Array.new(@offers.count)
 	  @offers.each_with_index do |offer,i|
 	  	respects_chained_filter = false
-        offer[:allocation_tag_id] = offer.allocation_tag.id.to_s
+        offer[:allocation_tag_id] = [offer.allocation_tag.id.to_s]
         offer[:name] = offer.curriculum_unit.name
         
 		params[:chained_filter] = [] unless params.include?(:chained_filter)
 		
 		#se offer.allocationTagId estiver em parametros, ok 		
-		respects_chained_filter = true if params[:chained_filter].include?(offer[:allocation_tag_id])
+		respects_chained_filter = true if params[:chained_filter].include?(offer.allocation_tag.id.to_s)
 			
 		#offer.course.allocationTag.id estiver em parametros, ok 
 		respects_chained_filter = true if params[:chained_filter].include?(offer.course.allocation_tag.id.to_s)
@@ -79,13 +102,31 @@ class OffersController < ApplicationController
 		all_allocation_tag_ids[i] = offer[:allocation_tag_id] if respects_chained_filter
 	  end
 	  @offers = @offers.compact
-	  all_allocation_tag_ids = all_allocation_tag_ids.compact
 
-      all = {:name => "..."+params[:search_curriculum_unit]+"...", :allocation_tag_id => all_allocation_tag_ids}
+	  # Agrupando 
+	  reference_code = ''
+      reference_index = 0
+	  @offers.each_with_index do |offer,i|
+		if (offer.curriculum_unit.code == reference_code)
+			@offers[reference_index][:allocation_tag_id] += offer[:allocation_tag_id]
+			@offers[reference_index].course = nil
+			@offers[reference_index].semester = nil
+			@offers[reference_index].start = nil
+			@offers[reference_index].end = nil
+			@offers[reference_index].id = nil
+			@offers[i] = nil
+		else
+			reference_code = offer.curriculum_unit.code
+			reference_index = i
+		end
+	  end
+	  @offers = @offers.compact
+	  all_allocation_tag_ids = all_allocation_tag_ids.compact.flatten
+
+      all = {:name => '...' << params[:search_curriculum_unit] << "... (#{@offers.count})", :allocation_tag_id => all_allocation_tag_ids}
       @offers.push(all)
     end
     
-
     respond_to do |format|
       format.html
       format.json { render json: @offers }
