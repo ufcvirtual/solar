@@ -36,5 +36,4 @@ end
 Quando /^eu clicar no link da imagem "([^"]*)"$/ do |img_alt|
   #find(:xpath, "//input[@name = '#{img_alt}']").click()
   find(img_alt).click
-  # find(:xpath, "//img[@alt = '#{img_alt}']/parent::a").click()
 end

@@ -1027,19 +1027,24 @@ discmon2:
 discmon3:
   profile_id: 13
   resource_id: 85
-  per_id: true
+  per_id: false
 
 discmon4:
   profile_id: 13
   resource_id: 86
-  per_id: true
+  per_id: false
 
 discmon5:
   profile_id: 13
   resource_id: 87
-  per_id: true
+  per_id: false
 
 discmon6:
   profile_id: 13
   resource_id: 88
+  per_id: false
+
+editmon1:
+  profile_id: 13
+  resource_id: 89
   per_id: false

@@ -472,6 +472,7 @@
     discussion_table_title: Available discussions to %{group_and_offer}
     group: Group
     back: Back
+    to: to
 
   message_title: "Messages"
   message_inbox: "Inbox"
@@ -938,6 +939,8 @@
       support_material: Support material
       assignment: Assignment
       test: Test
+      edition_of: Edition of %{of}
+      in_development: In development
     success:
       saved: Saved successfully
       deleted: Deleted successfully

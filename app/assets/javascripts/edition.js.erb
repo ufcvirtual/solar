@@ -36,7 +36,7 @@ function submit_form(form_id, div_class_to_update, controller){
         $("#curriculum_unit_items").html(data);
         // mas o resultado conter uma div de erro e for o formulário de fóruns
         if(data.search(".access_denied") != -1 && controller == "discussion"){
-          // mensagem de não pode editar (se for criação a div nunca existirá)
+          // mensagem de não pode editar (se for criação, a div nunca existirá)
           flash_message('<%= I18n.t(:cant_edit, :scope => [:discussion, :errors]) %>', 'alert');
         } else {
           // mensagem de sucesso

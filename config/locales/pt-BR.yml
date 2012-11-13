@@ -630,6 +630,7 @@
     discussion_table_title: Fóruns disponíveis para %{group_and_offer}
     group: Turma
     back: Voltar
+    to: à
 
   # messages
   message_title: "Mensagens"
@@ -1096,7 +1097,8 @@
       support_material: Material de apoio
       assignment: Atividade
       test: Prova
-      link_to: Link para %{to}
+      edition_of: Edição de %{of}
+      in_development: Em desenvolvimento
     success:
       saved: Salvo com sucesso
       deleted: Excluido com sucesso

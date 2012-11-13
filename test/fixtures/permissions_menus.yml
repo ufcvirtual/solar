@@ -252,3 +252,8 @@ pm61:
 pm62:
   profile_id: 5
   menu_id: 130
+
+# aluno monitor
+pm63:
+  profile_id: 13
+  menu_id: 130

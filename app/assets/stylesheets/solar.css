@@ -3514,3 +3514,91 @@ div.support_material_select {
     padding-left: 143px;
     padding-bottom: 5px;
 }
+
+/* Tela de edição */
+
+fieldset {
+    border: 1px solid #D0D0D0;
+    padding: 15px 20px 5px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+fieldset legend {
+    color: #003E7A;
+    font-family: 'Ubuntu Condensed';
+}
+
+
+.uc_item {
+    position: relative;
+    float: left;
+    margin: 10px 5px 20px 5px;
+    text-align: center;
+    outline: none;
+    text-decoration: none;
+    width: 110px;
+    font-size: 9pt;
+}
+
+.uc_item a{
+    color: #003E7A;
+}
+
+.uc_item img:hover {
+    text-decoration: none;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.1);
+    box-shadow: 0px 0px 1px rgba(0,0,0,.2);
+    border: solid 1px #d9d9d9;
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#d0d0d0');
+}
+
+.uc_item img:active {
+    background-image: -moz-linear-gradient(center top , rgba(232,232,232,.50), rgba(255,255,255,.85));
+    background-image: -webkit-linear-gradient(top,rgba(232,232,232,.50),rgba(255,255,255,.85));
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
+}
+
+.uc_item img {
+    text-align: center;
+    padding: 12px;
+    border: 1px solid #DEDEDE;
+    border-radius: 10px;
+    margin-bottom: 5px;
+}
+
+.block_title.edition {
+    border-bottom: solid 1px #D0D0D0;
+    margin-bottom: 15px;
+}
+
+/*
+
+    Para o filtro:
+
+fieldset .block_content_alt {
+    background-color: #ffffff;
+}
+
+fieldset .block_content_alt li {
+    margin-bottom: 10px;
+}
+
+select[disabled] {
+    color: red;
+    border: 1px solid #D0D0D0;
+    background-color: #F2F2F2;
+}
+
+    Para o Wizzard:
+
+.uc_item_ok {
+    position: absolute;
+    top: -5px;
+    right: 20px;
+    background: url("index_files/icones/item_ok.png") no-repeat scroll 0 0 transparent;
+    width: 23px;
+    height: 23px;
+}
+
+*/

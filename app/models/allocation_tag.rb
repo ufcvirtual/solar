@@ -139,9 +139,8 @@ SQL
   end
 
   ##
-  # Recupera os ids das allocations_tags verificando o curso, uc, oferta e grupo passados
+  # Recupera os ids das allocations_tags verificando o curso, uc, oferta e turma passados
   ##
-  
   def self.by_course_and_curriculum_unit_and_offer_and_group(course_id, curriculum_unit_id, offer_id, group_id)
     offer           = Offer.find(offer_id) unless offer_id.nil? or offer_id == "all" or offer_id == 0
     course          = Course.find(course_id) unless course_id.nil? or course_id == "all" or course_id == 0

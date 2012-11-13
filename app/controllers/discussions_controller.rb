@@ -21,8 +21,7 @@ class DiscussionsController < ApplicationController
   end
 
   def new
-    @offer_id, @group_id = params[:offer_id], params[:group_id]
-    @allocation_tags_ids = params[:allocation_tags_ids]
+    @offer_id, @group_id, @allocation_tags_ids = params[:offer_id], params[:group_id], params[:allocation_tags_ids]
 
     # verifica se usuário, além de ter perfil de editor (authorize), é responsável ou estudante para a oferta e turma
     # raise CanCan::AccessDenied unless Profile.is_responsible_or_student?(current_user.id, @offer_id, @group_id)
@@ -32,10 +31,9 @@ class DiscussionsController < ApplicationController
   end
 
   def create
+    @offer_id, @group_id, @allocation_tags_ids  = params[:offer_id], params[:group_id], params[:allocation_tags_ids]
     @discussion           = Discussion.new(params[:discussion])
     @schedule             = Schedule.new(:start_date => params["start_date"], :end_date => params["end_date"])
-    @offer_id, @group_id  = params[:offer_id], params[:group_id]
-    @allocation_tags_ids  = params[:allocation_tags_ids] # ids das allocations_tags de acordo com os dados passados
     offer                 = Offer.find(@offer_id)
     @group_and_offer_info = group_and_offer_info(@group_id, @offer_id)
 
@@ -79,8 +77,7 @@ class DiscussionsController < ApplicationController
   end
 
   def list
-    @offer_id, @group_id = params[:offer_id], params[:group_id]
-    @allocation_tags_ids = params[:allocation_tags_ids]
+    @offer_id, @group_id, @allocation_tags_ids  = params[:offer_id], params[:group_id], params[:allocation_tags_ids]
 
     # verifica se usuário, além de ter perfil de editor (authorize), é responsável ou estudante para a oferta e turma
     # raise CanCan::AccessDenied unless Profile.is_responsible_or_student?(current_user.id, @offer_id, @group_id)
@@ -93,17 +90,15 @@ class DiscussionsController < ApplicationController
   end
 
   def edit
-    @offer_id, @group_id = params[:offer_id], params[:group_id]
-    @allocation_tags_ids = params[:allocation_tags_ids]
+    @offer_id, @group_id, @allocation_tags_ids  = params[:offer_id], params[:group_id], params[:allocation_tags_ids]
     # verifica se usuário, além de ter perfil de editor (authorize), é responsável ou estudante para a oferta e turma
     # raise CanCan::AccessDenied unless Profile.is_responsible_or_student?(current_user.id, @offer_id, @group_id)
     render :layout => false
   end
 
   def update
+    @offer_id, @group_id, @allocation_tags_ids  = params[:offer_id], params[:group_id], params[:allocation_tags_ids]
     schedule              = @discussion.schedule
-    @offer_id, @group_id  = params[:offer_id], params[:group_id]
-    @allocation_tags_ids  = params[:allocation_tags_ids]
     @group_and_offer_info = group_and_offer_info(@group_id, @offer_id)
     offer                 = Offer.find(@offer_id)
     @discussions          = Discussion.all_by_allocation_tags(@allocation_tags_ids)
@@ -148,8 +143,7 @@ class DiscussionsController < ApplicationController
   end
 
   def destroy
-    @offer_id, @group_id  = params[:offer_id], params[:group_id]
-    @allocation_tags_ids  = params[:allocation_tags_ids]
+    @offer_id, @group_id, @allocation_tags_ids  = params[:offer_id], params[:group_id], params[:allocation_tags_ids]
     @group_and_offer_info = group_and_offer_info(@group_id, @offer_id)
 
     # verifica se usuário, além de ter perfil de editor (authorize), é responsável ou estudante para a oferta e turma

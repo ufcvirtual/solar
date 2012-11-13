@@ -235,5 +235,4 @@ menu_support_material_record:
 edition:
   id: 130
   name: menu_edition
-  order: 12
   resource_id: 89
