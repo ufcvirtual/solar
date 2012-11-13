@@ -63,8 +63,8 @@ class GroupsController < ApplicationController
 			end
 			@groups = @groups.compact
 			
-			reference_code = ''
-      		reference_index = 0
+			reference_code = nil
+      		reference_index = -1
 			@groups.each_with_index do |group,i|
 				if reference_code == group.code
 					@groups[reference_index][:allocation_tag_id] += group[:allocation_tag_id]
@@ -77,10 +77,16 @@ class GroupsController < ApplicationController
 					reference_index = i
 				end
 			end
+			
 			@groups = @groups.compact
+			
+			@groups.each do |group|
+				group.code << " (#{group[:allocation_tag_id].count.to_s})" if (group[:allocation_tag_id].count > 1) 
+			end
+			
 			all_allocation_tag_ids = all_allocation_tag_ids.compact.flatten
 
-			optionAll = {:code => '...' << params[:search] << "... (#{@groups.count})", :allocation_tag_id => all_allocation_tag_ids, :name =>"*"}
+			optionAll = {:code => '...' << params[:search] << "... (#{all_allocation_tag_ids.count})", :allocation_tag_id => all_allocation_tag_ids, :name =>"*"}
 			@groups << optionAll
 			
 		end
