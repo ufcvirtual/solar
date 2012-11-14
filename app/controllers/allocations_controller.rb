@@ -110,16 +110,18 @@ class AllocationsController < ApplicationController
         local = enrollments_url
         message_ok = t(:enrollm_request_message)
         message_error = t(:enrollm_request_message_error)
+      else
+        local = designates_allocations_url + "?allocation_tag_id=" + params[:allocation_tag_id]
       end
 
       respond_to do |format|
         if corrects == total
           #format.html { redirect_to(local, notice: message_ok) } 
-          format.html { redirect_to(enrollments_url, notice: t(:enrollm_request_message)) }
+          format.html { redirect_to(local, notice: t(:enrollm_request_message)) }
           format.json { render json: {:success => true, status: :ok } }
         else
           #format.html { redirect_to(local, alert: message_error) }
-          format.html { redirect_to(enrollments_url, alert: t(:enrollm_request_message_error)) }
+          format.html { redirect_to(local, alert: t(:enrollm_request_message_error)) }
           format.json { render json: {:success => false, status: :ok } }
         end
       end

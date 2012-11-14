@@ -366,3 +366,10 @@ aluno3_monitor: # offer 3 -> quimica I
   allocation_tag_id: 6
   profile_id: 13
   status: 1
+
+ad:
+  id: 51
+  user_id: 9
+  allocation_tag_id: 5
+  profile_id: 2
+  status: 0

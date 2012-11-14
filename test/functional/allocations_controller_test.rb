@@ -98,25 +98,39 @@ class AllocationsControllerTest < ActionController::TestCase
   end
 
   test "exibir usuarios alocados para um usuario com permissao" do
-    get :designates, { :allocation_tag_id => 5 }
+    get :designates, { :allocation_tag_id => allocation_tags(:al5).id }
     assert_response :success
     assert_not_nil assigns(:allocations)
 
-    assert_select "table tbody tr" do
+    assert_select "table tbody tr:nth-child(1)" do
+      assert_select 'td:nth-child(1)', {:html => "Aluno 3"}
+      assert_select 'td:nth-child(4)', {:html => "Prof. Titular"}
+      assert_select 'td:nth-child(5) input[type=submit]', {:value => "Ativar"}
+    end
+
+    assert_select "table tbody tr:nth-child(2)" do
       assert_select 'td:nth-child(1)', {:html => "Professor"}
       assert_select 'td:nth-child(4)', {:html => "Prof. Titular"}
+      assert_select 'td:nth-child(5) input[type=submit]', {:value => "Desativar"}
     end
   end
 
-=begin
-  test "exibir usuarios alocados para usuario sem permissao" do
-    sign_out @coordenador
-    sign_in users(:aluno1)
-
-    get :new
-    assert_response :redirect
+  test "ativar perfil inativo de usuario" do
+    get :activate, { :id => allocations(:ad).id }
+    assert_redirected_to({:action => :designates, :allocation_tag_id => allocations(:ad).allocation_tag_id })
+    assert_equal I18n.t(:activated_user), flash[:notice]
   end
-=end
+
+  test "desativar perfil de usuario" do
+    get :deactivate, { :id => allocations(:g).id }
+    assert_redirected_to({:action => :designates, :allocation_tag_id => allocations(:g).allocation_tag_id })
+    assert_equal I18n.t(:deactivated_user), flash[:notice]
+  end
+
+  test "alocar usuario com perfil tutor a distancia" do
+    post :create, { :allocation_tag_id => allocation_tags(:al5).id, :user_id => users(:user2).id, :profile => profiles(:tutor_distancia).id, :status => Allocation_Activated }
+    assert_redirected_to({:action => :designates, :allocation_tag_id => allocation_tags(:al5).id })
+  end
 
   # test "mudar aluno de turma" do
 
