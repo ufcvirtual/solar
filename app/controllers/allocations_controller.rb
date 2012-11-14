@@ -22,8 +22,8 @@ class AllocationsController < ApplicationController
       :order => ["users.name","profiles.name"]) 
 
     respond_to do |format|
-      flash[:notice] = t(:allocated_user) if params.include?(:notice)
-      flash[:alert] = t(:allocated_user_error) if params.include?(:alert)
+      flash[:notice] = t(:allocated_user) if params.include?(:notice_allocated)
+      flash[:alert] = t(:allocated_user_error) if params.include?(:alert_allocated)
       format.html #
       format.json { render json: @allocations }
     end
@@ -110,10 +110,6 @@ class AllocationsController < ApplicationController
         local = enrollments_url
         message_ok = t(:enrollm_request_message)
         message_error = t(:enrollm_request_message_error)
-      #else
-        #local = designates_allocations_url
-        #message_ok = t(:allocated_user)
-        #message_error = t(:allocated_user_error)
       end
 
       respond_to do |format|
@@ -221,13 +217,16 @@ class AllocationsController < ApplicationController
     @allocation = Allocation.find(params[:id])
     @allocation.status = Allocation_Cancelled
     @text_search = params[:text_search]
+    id = @allocation.allocation_tag_id
 
     respond_to do |format|
       if @allocation.save
-        format.html { redirect_to(designates_allocations_url, notice: t(:deactivated_user)) }
+        flash[:notice] = t(:deactivated_user)
+        format.html { redirect_to :action => :designates, :allocation_tag_id => id }
         format.json { head :ok }
       else
-        format.html { redirect_to(designates_allocations_url, alert: t(:deactivated_user_error)) }
+        flash[:alert] = t(:deactivated_user_error)
+        format.html { redirect_to :action => :designates, :allocation_tag_id => id }
         format.json { head :error }
       end
     end
@@ -236,14 +235,16 @@ class AllocationsController < ApplicationController
   def activate
     @allocation = Allocation.find(params[:id])
     @allocation.status = Allocation_Activated
+    id = @allocation.allocation_tag_id
 
     respond_to do |format|
-      if @allocation.save        
-        format.html { redirect_to(designates_allocations_url, notice: t(:activated_user)) }        
+      if @allocation.save
+        flash[:notice] = t(:activated_user)
+        format.html { redirect_to :action => :designates, :allocation_tag_id => id }
         format.json { head :ok }
-
       else
-        format.html { redirect_to(designates_allocations_url, alert: t(:activated_user_error)) }
+        flash[:alert] = t(:activated_user_error)
+        format.html { redirect_to :action => :designates, :allocation_tag_id => id }
         format.json { head :error }
       end
     end
@@ -257,11 +258,9 @@ class AllocationsController < ApplicationController
       if @allocation.save        
         format.html { redirect_to(enrollments_url, notice: t(:enrollm_request_message)) }        
         format.json { head :ok }
-
       else
         format.html { redirect_to(enrollments_url, alert: t(:enrollm_request_message_error)) }        
         format.json { head :error }
-
       end
     end
   end  

@@ -32,21 +32,22 @@
       var user = $(this).siblings("#user_id").val();
       var status = '#{Allocation_Activated}';
       var url_for = "/allocations/designates";
+      var alloc = $("#allocation_tag_id").val();
 
       $.ajax({
         type: 'POST',
         url: '/allocations/create',
         data: {
           "user_id": user,
-          "allocation_tag_id": $("#allocation_tag").val(),
+          "allocation_tag_id": alloc,
           "status": status,
           "profile": profile          
         },
         success: function() {
-          location.href = url_for + "?notice=1";
+          location.href = url_for + "?notice_allocated=1&allocation_tag_id="+alloc;
         },
         error: function() {
-          location.href = url_for + "?alert=1";
+          location.href = url_for + "?alert_allocated=1&allocation_tag_id="+alloc;
         }
       });
 
