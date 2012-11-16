@@ -625,6 +625,7 @@
       delete: Excluir
       new: Novo
     edit_discussion: Editar %{discussion_name}
+    delete_discussion: Excluir %{discussion_name}
     new_discussion: Novo fórum
     all_groups: todas as turmas
     discussion_table_title: Fóruns disponíveis para %{group_and_offer}
@@ -1102,3 +1103,11 @@
     success:
       saved: Salvo com sucesso
       deleted: Excluido com sucesso
+
+  curriculum_units:
+    index:
+      new: Nova
+      edit: Editar
+      delete: Excluir
+      edit_curriculum_unit: Editar %{curriculum_unit}
+      delete_curriculum_unit: Excluir %{curriculum_unit}

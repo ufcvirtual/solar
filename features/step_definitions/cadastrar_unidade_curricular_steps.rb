@@ -13,9 +13,15 @@ Entao /^eu nao deverei ver a linha de Unidade Curricular$/ do |tabela|
 end
 
 #Quando /^eu clicar no botão "([^"]*)" da linha que contem o item "([^"]*)"$/ da tabela do |link, texto|
-Quando /^eu clicar no botao "(.*?)" da linha que contem o item "(.*?)" da tabela$/ do |link, texto|
+Quando /^eu clicar no botao "(.*?)" da linha que contem o item "(.*?)" da tabela$/ do |id, texto|
   xpath = "//table/tbody/tr[ child::td[contains(.,'#{texto}')] ]"
   within(:xpath, xpath) do
-    find_button("#{link}").click
+  	page.execute_script("document.getElementById('#{id}').click()")
+  	sleep 5
   end
+end
+
+
+Entao "a pagina deve aceitar a proxima confirmacao" do
+  page.evaluate_script('window.confirm = function() { return true; }')
 end

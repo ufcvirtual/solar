@@ -15,27 +15,34 @@ function back_to_edition(){
   });
 }
 
-function open_lightbox(url, title){
+function open_lightbox1(url, title){
   showLightBoxURL(url, 550, 255, true, title);
 }
 
-function submit_form(form_id, div_class_to_update, controller){
+function open_lightbox2(url, title){
+  showLightBoxURL(url, 540, 605, true, title);
+}
+
+function submit_form(form_id, class_to_update_success, controller){
+  var div_to_update_fail = curriculum_unit_or_edition_div(controller);
+
   $.ajax({
     type: "POST",
     url: $("#"+form_id).attr("action"),
     data: $("#"+form_id).serialize(),
     success: function(data) {
+      console.log(data);
       // se existir algum erro, o simple_form acrescenta a classe "error" aos campos
       if(data.search(".error") != -1){
         // atualiza conteúdo com o formulário
-        $("."+div_class_to_update).html(data);
+        $("."+class_to_update_success).html(data);
       // se não existir erros
       }else{
         removeLightBox();  
         // atualiza div da página de edição com conteúdo de listagem
-        $("#curriculum_unit_items").html(data);
+        $("#"+div_to_update_fail).html(data);
         // mas o resultado conter uma div de erro e for o formulário de fóruns
-        if(data.search(".access_denied") != -1 && controller == "discussion"){
+        if(controller == "discussion" && data.search(".access_denied") != -1){
           // mensagem de não pode editar (se for criação, a div nunca existirá)
           flash_message('<%= I18n.t(:cant_edit, :scope => [:discussion, :errors]) %>', 'alert');
         } else {
@@ -53,7 +60,7 @@ function delete_object(url){
     url: url,
     success: function(data) {
       // atualiza div da página de edição com conteúdo de listagem
-      $("#curriculum_unit_items").html(data);
+      $("#"+div_to_update).html(data);
       // se existir algum erro após deleção
       if(data.search(".error_deletion") != -1){
         // aviso de erro
@@ -65,4 +72,13 @@ function delete_object(url){
       }
     }
   });
+}
+
+function curriculum_unit_or_edition_div(controller){
+  if(controller == "curriculum_unit"){
+    var div_to_update = 'list_curriculum_units';
+  }else{
+    var div_to_update = 'curriculum_unit_items';
+  }
+  return div_to_update;
 }

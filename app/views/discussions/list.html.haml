@@ -8,7 +8,7 @@
         = t(:discussion_table_title, :scope => [:discussion], :group_and_offer => @group_and_offer_info)
       .right_buttons
         - if can? :new, Discussion
-          = button_tag t(:new, :scope => [:discussion, :buttons]), :class => "btn btn_main", :type => "button", :onclick => "javascript:open_lightbox('#{new_discussion_path(:offer_id => @offer_id, :group_id => @group_id, :allocation_tags_ids => @allocation_tags_ids)}', '#{t(:new_discussion, :scope => [:discussion])}');", :alt => t(:new, :scope => [:discussion, :buttons])
+          = button_tag t(:new, :scope => [:discussion, :buttons]), :class => "btn btn_main", :type => "button", :onclick => "javascript:open_lightbox1('#{new_discussion_path(:offer_id => @offer_id, :group_id => @group_id, :allocation_tags_ids => @allocation_tags_ids)}', '#{t(:new_discussion, :scope => [:discussion])}');", :alt => t(:new, :scope => [:discussion, :buttons])
     %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :style => "table-layout: fixed"}
       %thead
         %tr.lines
@@ -39,10 +39,10 @@
               %td{:style => "width: 200px;"}
                 - if can? :edit, discussion
                   - btn_class = (not discussion.closed?) ? "btn btn_default" : "btn btn_disabled"
-                  = button_tag t(:edit, :scope => [:discussion, :buttons]), :class => btn_class, :onclick => "javascript:open_lightbox('#{edit_discussion_path(discussion.id, :offer_id => @offer_id, :group_id => @group_id, :allocation_tags_ids => @allocation_tags_ids)}', '#{t(:edit_discussion, :scope => [:discussion], :discussion_name => discussion.name)}');", :type => "button", :disabled => (discussion.closed?), :alt => t(:edit, :scope => [:discussion, :buttons])
+                  = button_tag t(:edit, :scope => [:discussion, :buttons]), :class => btn_class, :onclick => "javascript:open_lightbox1('#{edit_discussion_path(discussion.id, :offer_id => @offer_id, :group_id => @group_id, :allocation_tags_ids => @allocation_tags_ids)}', '#{t(:edit_discussion, :scope => [:discussion], :discussion_name => discussion.name)}');", :type => "button", :disabled => (discussion.closed?), :alt => t(:edit_discussion, :scope => [:discussion], :discussion_name => discussion.name)
                 - if can? :destroy, discussion
                   - btn_class = discussion.can_destroy? ? "btn btn_caution" : "btn btn_disabled"
-                  = button_tag t(:delete, :scope => [:discussion, :buttons]), :onclick => "javascript:delete_object('#{discussion_path(discussion, :offer_id => @offer_id, :group_id => @group_id, :allocation_tags_ids => @allocation_tags_ids)}');", :type => "button", :class => btn_class, :disabled => (not discussion.can_destroy?), :alt => t(:delete, :scope => [:discussion, :buttons])
+                  = button_tag t(:delete, :scope => [:discussion, :buttons]), :onclick => "javascript:delete_object('#{discussion_path(discussion, :offer_id => @offer_id, :group_id => @group_id, :allocation_tags_ids => @allocation_tags_ids)}');", :type => "button", :class => btn_class, :disabled => (not discussion.can_destroy?), :alt => t(:delete_discussion, :scope => [:discussion], :discussion_name => discussion.name)
                   
   - else
     .block_content.block_content_text= t(:forum_message)

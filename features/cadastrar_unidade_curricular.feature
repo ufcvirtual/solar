@@ -44,17 +44,18 @@ Dado que estou logado com o usuario "editor" e com a senha "123456"
         E que eu preenchi "Ementa" com "Ementa da Unidade Curricular IV"
         E que eu preenchi "Objetivos" com "Objetivos da Unidade Curricular IV"
         E que eu preenchi "Pré-requisitos" com "Pré-requisitos da Unidade Curricular IV"
-        Quando eu clicar em "Confirmar"
-                Entao eu deverei ver "Unidade Curricular IV foi criado(a) com sucesso."
+        Quando eu clicar em "Salvar"
+            Entao eu deverei ver "Salvo com sucesso"
                 E eu deverei ver a linha de Unidade Curricular
                         | Codigo        | Nome                          | Categoria                             |
                         | UC0004        | Unidade Curricular IV         | Curso de Graduacao Presencial         |
                 E eu nao deverei ver a linha de Unidade Curricular
                         | Codigo        | Nome                          | Categoria                             |
                         | RM414         | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial     |
-        Quando eu clicar no botao "Excluir" da linha que contem o item "UC0004" da tabela
-                E eu clicar em "Ok" no popup
-        Entao eu deverei ver "Unidade Curricular IV foi excluído(a) com sucesso."
+                E eu deverei aguardar "2" segundos
+            Então a pagina deve aceitar a proxima confirmacao
+        Quando eu clicar no botao "Excluir Unidade Curricular IV" da linha que contem o item "UC0004" da tabela
+            Entao eu deverei ver "Unidade Curricular IV foi excluído(a) com sucesso."
                 E eu nao deverei ver a linha de Unidade Curricular
                 | Codigo        | Nome                          | Categoria                             |
                 | UC0004        | Unidade Curricular IV         | Curso de Graduacao Presencial         |
@@ -74,17 +75,17 @@ Dado que estou logado com o usuario "editor" e com a senha "123456"
         E que eu preenchi "Ementa" com "Ementa da Unidade Curricular IV"
         E que eu preenchi "Objetivos" com "Objetivos da Unidade Curricular IV"
         E que eu preenchi "Pré-requisitos" com "Pré-requisitos da Unidade Curricular IV"
-        Quando eu clicar em "Confirmar"
+        Quando eu clicar em "Salvar"
         Entao eu deverei ver "deve ser preenchido(a)"
 
 @javascript
 Cenário: Editar uma unidade curricular como usuário com permissão para isso
 Dado que estou logado com o usuario "editor" e com a senha "123456"
         E que estou em "Cadastro de Unidade Curricular"
-        Quando eu clicar no botao "Editar" da linha que contem o item "Quimica I" da tabela
+        Quando eu clicar no botao "Editar Quimica I" da linha que contem o item "Quimica I" da tabela
                 E preencho o campo "Nome" com "Quimica I v2.75"
-        Quando eu clicar em "Confirmar"
-                Entao eu deverei ver "Quimica I v2.75 foi atualizado(a) com sucesso."
+        Quando eu clicar em "Salvar"
+                Entao eu deverei ver "Salvo com sucesso"
         E eu deverei ver a linha de Unidade Curricular
         | Codigo        | Nome                          | Categoria                             |
         | RM301         | Quimica I v2.75               | Curso de Graduacao a Distancia        |
@@ -96,9 +97,9 @@ Dado que estou logado com o usuario "editor" e com a senha "123456"
 @javascript
 Cenário: Excluir uma unidade curricular com alocações além da do usuário que tentará fazer a exclusão
 Dado que estou logado com o usuario "editor" e com a senha "123456"
-        E que estou em "Cadastro de Unidade Curricular"
-        Quando eu clicar no botao "Excluir" da linha que contem o item "Quimica I" da tabela
-        E eu clicar em "Ok" no popup
+    E que estou em "Cadastro de Unidade Curricular"
+    Então a pagina deve aceitar a proxima confirmacao
+    Quando eu clicar no botao "Excluir Quimica I" da linha que contem o item "Quimica I" da tabela
         Entao eu deverei ver "Quimica I possui associações quem impedem sua exclusão!"
         E eu deverei ver a linha de Unidade Curricular
         | Codigo        | Nome                          | Categoria                             |

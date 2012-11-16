@@ -20,6 +20,7 @@ end
 # end
 
 E 'eu clicar em "$resposta_confirm" no popup' do |resposta_confirm|
+  sleep 3
 	a = page.driver.browser.switch_to.alert
 	if resposta_confirm == "Ok"
   		a.accept

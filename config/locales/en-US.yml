@@ -466,7 +466,8 @@
       edit: Edit
       delete: Delete
       new: New
-    edit_discussion: Edit discussion %{discussion_name}
+    edit_discussion: Edit %{discussion_name}
+    delete_discussion: Delete %{discussion_name}
     new_discussion: New discussion
     all_groups: all groups
     discussion_table_title: Available discussions to %{group_and_offer}
@@ -944,3 +945,11 @@
     success:
       saved: Saved successfully
       deleted: Deleted successfully
+
+  curriculum_units:
+    index:
+      new: New
+      edit: Edit
+      delete: Delete
+      edit_curriculum_unit: Edit %{curriculum_unit}
+      delete_curriculum_unit: Delete %{curriculum_unit}

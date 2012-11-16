@@ -14,11 +14,12 @@ class CurriculumUnit < ActiveRecord::Base
   validates :resume, :presence => true
   validates :syllabus, :presence => true
   validates :objectives, :presence => true, :length => { :maximum   => 255 }
+  validates :passing_grade, :numericality => { :greater_than_or_equal_to => 0, :less_than_or_equal_to => 10, :allow_blank => true}
 
   default_scope :order => 'name ASC'
 
   ##  
-  # participantes que nao sao TAL TIPO DE PERFIL
+  # Participantes que não são TAL TIPO DE PERFIL
   ##
   def self.class_participants_by_allocations_tags_and_is_not_profile_type(allocation_tags, profile_flag)
     class_participants_by_allocations(allocation_tags, profile_flag, false)
