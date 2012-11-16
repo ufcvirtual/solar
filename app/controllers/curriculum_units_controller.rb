@@ -42,26 +42,22 @@ class CurriculumUnitsController < ApplicationController
       format.json { render json: @curriculum_unit }
     end
   end
-  
+
   def home
     curriculum_data
-    allocation_tags = AllocationTag.find_related_ids(@allocation_tag_id).join(', ');
+    allocation_tags = AllocationTag.find(@allocation_tag_id).related.join(', ')
 
-    # relacionado diretamente com a allocation_tag
-    group = AllocationTag.where("id IN (#{allocation_tags}) AND group_id IS NOT NULL").first.group
-
-    # offer
-    al_offer = AllocationTag.where("id IN (#{allocation_tags}) AND offer_id IS NOT NULL").first
-    offer    = al_offer.nil? ? nil : al_offer.offer
+    group           = AllocationTag.where("id IN (#{allocation_tags}) AND group_id IS NOT NULL").first.group
+    al_offer        = AllocationTag.where("id IN (#{allocation_tags}) AND offer_id IS NOT NULL").first
+    offer           = al_offer.nil? ? nil : al_offer.offer
 
     # curriculum_unit
     al_c_unit       = AllocationTag.where("id IN (#{allocation_tags}) AND curriculum_unit_id IS NOT NULL").first
     curriculum_unit = al_c_unit.nil? ? CurriculumUnit.find(active_tab[:url]['id']) : al_c_unit.curriculum_unit
-
-    message_tag = get_label_name(group, offer, curriculum_unit)
+    message_tag     = get_label_name(group, offer, curriculum_unit)
 
     # retorna aulas, posts nos foruns e mensagens relacionados a UC mais atuais
-    @lessons          = Lesson.to_open(@allocation_tag_id)
+    @lessons          = Lesson.to_open(allocation_tags)
     @discussion_posts = list_portlet_discussion_posts(allocation_tags)
     @messages         = return_messages(current_user.id, 'portlet', message_tag)
 
@@ -76,7 +72,7 @@ class CurriculumUnitsController < ApplicationController
   # DELETE /curriculum_units/1.json
   def destroy
     respond_to do |format|
-     if @curriculum_unit.destroy
+      if @curriculum_unit.destroy
         format.html { redirect_to curriculum_units_url, notice: t(:successfully_deleted, :register => @curriculum_unit.name) }
         format.json { head :ok }
       else
@@ -165,6 +161,7 @@ class CurriculumUnitsController < ApplicationController
       authorize! :show, @curriculum_unit
 
       @allocation_tag_id = active_tab[:url]['allocation_tag_id']
+
       @responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(AllocationTag.find_related_ids(@allocation_tag_id).join(','),
         Profile_Type_Class_Responsible)
     end

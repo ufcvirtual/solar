@@ -41,7 +41,7 @@
 <%=path_lesson%>
 <script type="text/javascript">
   window.parent.frame_lesson_content.location.href = "<%= path_lesson %>";
-  $("#lesson_name").html("<%=t(:lesson) << ' ' << order_lesson.to_s << ' - ' << total_lesson.to_s %>");
+  $("#lesson_name").html("<%= [t(:lesson, :scope => :lesson), ' ', order_lesson.to_s, ' - ', total_lesson.to_s].join('') %>");
   $("#mov_atual").html("<%=order_lesson%>");
   move(0);
 </script>

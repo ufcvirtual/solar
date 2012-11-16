@@ -567,12 +567,13 @@
   lesson_table_title: "Aulas disponíveis"
   lesson_table_date: "Data de acesso"
   lesson_message: "Nenhuma aula disponível"
-  lesson: "Aula"
+  # lesson: "Aula"
   lesson_goto: "Ir para aula"
   lesson_closed: "Aula encerrada"
   lesson_closed_short: "encerrada"
 
   lesson:
+    lesson: "Aula"
     lesson_table_title: Aulas disponíveis para %{group_and_offer}
 
   #Listagem de Fóruns

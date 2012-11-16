@@ -407,12 +407,13 @@
   lesson_table_title: "Available Lessons"
   lesson_table_date: "Access date"
   lesson_message: "No lesson available"
-  lesson: "Lesson"
+  # lesson: "Lesson"
   lesson_goto: "Go to lesson"
   lesson_closed: "Lesson closed"
   lesson_closed_short: "closed"
 
   lesson:
+    lesson: "Lesson"
     lesson_table_title: Available lessons to %{group_and_offer}
 
   #Foruns
