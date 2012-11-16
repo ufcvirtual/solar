@@ -756,6 +756,13 @@ mapedi6:
 # TUTOR PRESENCIAL           #
 ##############################
 
+# unidade curricular
+
+uctp:
+  profile_id: 4
+  resource_id: 11
+  per_id: true
+
 
 ##############################
 # EDITOR #
@@ -874,6 +881,11 @@ allocation4:
   per_id: false
 
 # Unidade Curricular - Editor
+ucedit0:
+  profile_id: 5
+  resource_id: 11
+  per_id: true
+
 ucedit1:
   profile_id: 5
   resource_id: 79

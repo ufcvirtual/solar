@@ -45,7 +45,6 @@ class CurriculumUnitsController < ApplicationController
   
   def home
     curriculum_data
-
     allocation_tags = AllocationTag.find_related_ids(@allocation_tag_id).join(', ');
 
     # relacionado diretamente com a allocation_tag
@@ -160,17 +159,20 @@ class CurriculumUnitsController < ApplicationController
 
   private
 
-  def curriculum_data
-    @curriculum_unit   = CurriculumUnit.find(active_tab[:url]['id'])
-    @allocation_tag_id = active_tab[:url]['allocation_tag_id']
-    @responsible       = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(AllocationTag.find_related_ids(@allocation_tag_id).join(','),
-      Profile_Type_Class_Responsible)
-  end
+    def curriculum_data
+      @curriculum_unit = CurriculumUnit.find(active_tab[:url]['id'])
 
-  def list_portlet_discussion_posts(allocation_tags)
-    discussions = Discussion.where(:allocation_tag_id => allocation_tags).map { |d| d.id }
-    return [] if discussions.empty? 
-    Post.recent_by_discussions(discussions, Rails.application.config.items_per_page.to_i)
-  end
+      authorize! :show, @curriculum_unit
+
+      @allocation_tag_id = active_tab[:url]['allocation_tag_id']
+      @responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(AllocationTag.find_related_ids(@allocation_tag_id).join(','),
+        Profile_Type_Class_Responsible)
+    end
+
+    def list_portlet_discussion_posts(allocation_tags)
+      discussions = Discussion.where(:allocation_tag_id => allocation_tags).map { |d| d.id }
+      return [] if discussions.empty? 
+      Post.recent_by_discussions(discussions, Rails.application.config.items_per_page.to_i)
+    end
 
 end

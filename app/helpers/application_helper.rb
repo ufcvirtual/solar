@@ -77,6 +77,7 @@ module ApplicationHelper
     # o grupo a ter seus fóruns exibidos será o primeiro grupo encontrado para o usuário em questão
     group_selected     = groups.first.id if group_selected.blank?
 
+    result = ''
     if (groups.length > 1)
       result = "<form accept-charset='UTF-8' action='' method='#{request.method}' name='groupSelectionForm' style='display:inline'>"
       result <<  t(:group) << ":&nbsp"
@@ -98,8 +99,8 @@ module ApplicationHelper
 
       result << " <input name='authenticity_token' value='#{form_authenticity_token}' type='hidden'>"
       result << '</form>'
-    else
-      result =  t(:group) << ":&nbsp #{groups[0].code_semester}"
+    elsif groups.length == 1
+      result = t(:group) << ":&nbsp #{groups[0].code_semester}"
     end
 
     return result

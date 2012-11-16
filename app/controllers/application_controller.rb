@@ -136,6 +136,8 @@ class ApplicationController < ActionController::Base
   end
 
   def add_tab
+    authorize! :show, CurriculumUnit.find(params[:id])
+
     clear_breadcrumb_home
     tab_name, context_id = params[:name], params[:context].to_i # Home, Curriculum_Unit ou outro nao mapeado
     id, allocation_tag_id = params[:id], params[:allocation_tag_id]

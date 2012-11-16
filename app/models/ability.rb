@@ -12,13 +12,14 @@ class Ability
 
   def have_permission?(user, action, object_class, object)
     profiles = user.profiles.joins(:resources).where(resources: {action: alias_action(action), controller: object_class.to_s.underscore << 's'})
-    have = (not profiles.empty?)
+    have = (not profiles.to_ary.empty?)
 
     return false unless have # nao tem permissao de acessar funcionalidade
     return true if have and object.nil? # nao verifica objeto
 
     ## se é ou está relacionado diretamente com usuario
-    return true if (object_class == User and object.id == user.id)
+    return true if object_class == User and profiles.select("permissions_resources.per_id").map(&:per_id).include?('f') # qndo o usuario tem permissoes de ver apenas seus dados
+    return true if object_class == User and object.id == user.id
     return true if object.respond_to?(:user_id) and object.user_id == user.id
 
     ## diferenciar no tipo das actions
@@ -27,8 +28,7 @@ class Ability
 
     ## usuario relacionado com o objeto por allocation_tag
     if object.respond_to?(:allocation_tag)
-      # modificar objeto?
-      at_all_or_lower = (alias_action(action).select {|a| a == :create or a == :update}.empty?) ? {all: true} : {lower: true}
+      at_all_or_lower = (alias_action(action).select {|a| a == :create or a == :update}.empty?) ? {all: true} : {lower: true} # modificar objeto?
 
       # allocations do usuario com perfil para executar a acao
       at_of_user = user.allocations.where(profile_id: profiles, status: Allocation_Activated.to_i).map(&:allocation_tag).compact.map {|at| at.related(at_all_or_lower) }.flatten.compact.uniq
@@ -38,14 +38,15 @@ class Ability
       return true unless Allocation.where(allocation_tag_id: at_of_user, profile_id: profiles, user_id: user.id, status: Allocation_Activated.to_i).empty?
     end
 
+    ## allocation_tag por exemplo
+    return true if (object.respond_to?(:allocations) and not(object.allocations.where(user_id: user.id, profile_id: profiles, status: Allocation_Activated.to_i).empty?))
+
     return false
   end # have permission
 
   ## evitando criacao de muitos resources com alias
   def alias_action(action)
     return case action
-      when :index, :list
-        [:index, :list]
       when :show, :read
         [:show, :read]
       when :new, :create
@@ -53,7 +54,7 @@ class Ability
       when :edit, :update
         [:edit, :update]
       else
-        [action]
+        [action] # index, list e outros
     end
   end
 

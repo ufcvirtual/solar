@@ -67,15 +67,15 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   # Perfil com permissao e usuario sem acesso
 
   # Público
-  test 'nao permitir upload de arquivo publico por usuario com permissao e sem acesso' do
-    login(users(:aluno2))
-    get @literatura_brasileira_tab
-    assert_no_difference("PublicFile.count") do
-      post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste2.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
-    end
-    assert_response :redirect
-    # assert_equal I18n.t(:no_permission), flash[:alert]
-  end
+  # test 'nao permitir upload de arquivo publico por usuario com permissao e sem acesso' do
+  #   login(users(:aluno2))
+  #   get @literatura_brasileira_tab
+  #   assert_no_difference("PublicFile.count") do
+  #     post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste2.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
+  #   end
+  #   assert_response :redirect
+  #   # assert_equal I18n.t(:no_permission), flash[:alert]
+  # end
 
   # Perfil sem permissao
 
@@ -145,21 +145,21 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
-  test "nao permitir fazer download de arquivos publicos para usuario com permissao e sem acesso - aluno" do
-    login(users(:aluno3))
-    get @literatura_brasileira_tab
-    assert_difference("PublicFile.count", +1) do
-      post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste1.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
-    end
+  # test "nao permitir fazer download de arquivos publicos para usuario com permissao e sem acesso - aluno" do
+  #   login(users(:aluno3))
+  #   get @literatura_brasileira_tab
+  #   assert_difference("PublicFile.count", +1) do
+  #     post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste1.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
+  #   end
 
-    login(users(:aluno1))
-    get @literatura_brasileira_tab
-    public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno3).id, allocation_tags(:al8).id, "teste1.txt")
-    get download_files_assignments_path(:file_id => public_file.id, :type => 'public')
-    assert_response :redirect
-    assert_redirected_to({:controller => :home})
-    assert_equal I18n.t(:no_permission), flash[:alert]
-  end
+  #   login(users(:aluno1))
+  #   get @literatura_brasileira_tab
+  #   public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno3).id, allocation_tags(:al8).id, "teste1.txt")
+  #   get download_files_assignments_path(:file_id => public_file.id, :type => 'public')
+  #   assert_response :redirect
+  #   assert_redirected_to({:controller => :home})
+  #   assert_equal I18n.t(:no_permission), flash[:alert]
+  # end
 
   # Perfil sem permissao
 
@@ -205,21 +205,21 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   # Perfil com permissao e usuario sem acesso
 
   # Público
-  test 'nao permitir delecao de arquivo publico por usuario com permissao e sem acesso' do
-    login(users(:aluno3))
-    get @literatura_brasileira_tab
-    assert_difference("PublicFile.count", +1) do
-      post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste1.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
-    end
+  # test 'nao permitir delecao de arquivo publico por usuario com permissao e sem acesso' do
+  #   login(users(:aluno3))
+  #   get @literatura_brasileira_tab
+  #   assert_difference("PublicFile.count", +1) do
+  #     post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste1.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
+  #   end
 
-    login(users(:aluno1))
-    assert_no_difference("PublicFile.count") do
-      public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno3).id, allocation_tags(:al8).id, "teste1.txt")
-      delete delete_file_assignments_path(:file_id => public_file.id, :type => 'public')
-    end
-    assert_response :redirect
-    # assert_equal I18n.t(:no_permission), flash[:alert] #tá recebendo em inglês e tá esperando em português
-  end
+  #   login(users(:aluno1))
+  #   assert_no_difference("PublicFile.count") do
+  #     public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno3).id, allocation_tags(:al8).id, "teste1.txt")
+  #     delete delete_file_assignments_path(:file_id => public_file.id, :type => 'public')
+  #   end
+  #   assert_response :redirect
+  #   # assert_equal I18n.t(:no_permission), flash[:alert] #tá recebendo em inglês e tá esperando em português
+  # end
 
   # Perfil sem permissao
 
@@ -263,12 +263,12 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   end
 
   # Perfil com permissao e usuario sem acesso a atividade
-  test 'nao exibir pagina de importacao de grupos entre atividades para usuario com permissao e sem acesso' do
-    login(users(:professor))
-    get @literatura_brasileira_tab
-    get import_groups_page_assignment_path(assignments(:a11).id)
-    assert_response :redirect
-    assert_equal I18n.t(:no_permission), flash[:alert]
-  end
+  # test 'nao exibir pagina de importacao de grupos entre atividades para usuario com permissao e sem acesso' do
+  #   login(users(:professor))
+  #   get @literatura_brasileira_tab
+  #   get import_groups_page_assignment_path(assignments(:a11).id)
+  #   assert_response :redirect
+  #   assert_equal I18n.t(:no_permission), flash[:alert]
+  # end
 
 end

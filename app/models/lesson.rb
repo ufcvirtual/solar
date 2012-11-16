@@ -1,8 +1,9 @@
 class Lesson < ActiveRecord::Base
-
   belongs_to :lesson_module
   belongs_to :user
   belongs_to :schedule
+
+  has_one :allocation_tag, :through => :lesson_module
 
   def self.to_open(allocation_tags_ids = nil, lesson_id = nil)
     # uma aula é ligada a um modulo que eh ligado a uma turma ou a uma oferta

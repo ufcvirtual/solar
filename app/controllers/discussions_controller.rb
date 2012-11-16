@@ -32,15 +32,15 @@ class DiscussionsController < ApplicationController
     offer                  = Offer.find(@offer_id) # utilizado para validação
     @group_and_offer_info  = group_and_offer_info(@group_id, @offer_id) # informação na página
 
-    begin 
+    begin
 
       raise  "validation_error" unless @discussion.valid?
       raise "date_range_error" if @schedule.start_date < offer.start or @schedule.end_date > offer.end # período escolhido deve estar dentro do período da oferta
 
       ActiveRecord::Base.transaction do
         @allocation_tags_ids.split(" ").each do |allocation_tag_id|
-          schedule   = Schedule.create!(:start_date => params["start_date"], :end_date => params["end_date"])
-          discussion = Discussion.create!(:name => @discussion.name, :description => @discussion.description, :schedule_id => schedule.id, :allocation_tag_id => allocation_tag_id.to_i)
+          schedule = Schedule.create!(:start_date => params["start_date"], :end_date => params["end_date"])
+          Discussion.create!(:name => @discussion.name, :description => @discussion.description, :schedule_id => schedule.id, :allocation_tag_id => allocation_tag_id.to_i)
         end
       end
       @discussions = Discussion.all_by_allocation_tags(@allocation_tags_ids)
@@ -67,7 +67,9 @@ class DiscussionsController < ApplicationController
   def list
     @offer_id, @group_id, @allocation_tags_ids  = params[:offer_id], params[:group_id], params[:allocation_tags_ids]
     @group_and_offer_info = group_and_offer_info(@group_id, @offer_id)
-    @discussions          = Discussion.all_by_allocation_tags(@allocation_tags_ids)
+    # @discussions          = Discussion.all_by_allocation_tags(@allocation_tags_ids)
+    @discussions = Discussion.where(allocation_tag_id: @allocation_tags_ids)
+
     render :layout => false
   end
 

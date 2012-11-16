@@ -34,7 +34,7 @@ class ScoresController < ApplicationController
 
     @student_id = params[:id]
     curriculum_unit_id = active_tab[:url]['id']
-    group_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
+    # group_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
 
     authorize! :find, User.find(@student_id) # verifica autorizacao para consultar dados do usuario
     # authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(group_id, current_user.id) # verifica se pode acessar turma
@@ -55,7 +55,7 @@ class ScoresController < ApplicationController
 
     student_id = params['id']
     curriculum_unit_id = active_tab[:url]["id"]
-    class_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
+    # class_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
     
     authorize! :find, User.find(student_id) # verifica autorizacao para consultar dados do usuario
     # authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(class_id, current_user.id) # verifica se pode acessar turma
@@ -78,7 +78,7 @@ class ScoresController < ApplicationController
     @group = AllocationTag.find(allocation_tag_id).groups.first
 
     raise CanCan::AccessDenied if @group.nil? # turma nao existe
-    # authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(@group.id, current_user.id) # verifica se pode acessar turma
+    # authorize! :related_with_allocation_tag, AllocationTag.user_allocation_tag_related_with_class(@group.id, current_user.id) # verifica se pode acessar turma
 
     @assignments = Assignment.all(:joins => [:allocation_tag, :schedule],
       :conditions => ["allocation_tags.group_id = #{@group.id}"], :select => ["assignments.id", "schedule_id", "type_assignment", "name"]) # atividades da turma
