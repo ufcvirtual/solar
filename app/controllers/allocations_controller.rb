@@ -2,7 +2,7 @@ include AllocationsHelper
 
 class AllocationsController < ApplicationController
 
-  authorize_resource :except => [:destroy, :designates, :search_users, :activate, :deactivate]
+  authorize_resource :except => [:destroy]
 
   def new
     

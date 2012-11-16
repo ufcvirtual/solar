@@ -851,6 +851,28 @@ matedit3:
   resource_id: 72
   per_id: false
 
+# alocacao de usuario
+
+allocation1:
+  profile_id: 5
+  resource_id: 90
+  per_id: false
+
+allocation2:
+  profile_id: 5
+  resource_id: 91
+  per_id: false
+
+allocation3:
+  profile_id: 5
+  resource_id: 92
+  per_id: false
+
+allocation4:
+  profile_id: 5
+  resource_id: 93
+  per_id: false
+
 # Unidade Curricular - Editor
 ucedit1:
   profile_id: 5

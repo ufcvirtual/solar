@@ -504,3 +504,27 @@ res89:
   controller: 'editions'
   action: 'index'
   description: 'Página que permite acesso aos cadastros do sistema'
+
+res90:
+  id: 90
+  controller: 'allocations'
+  action: 'designates'
+  description: 'Listar usuarios alocados'
+
+res91:
+  id: 91
+  controller: 'allocations'
+  action: 'deactivate'
+  description: 'Cancelar perfil de usuario'
+
+res92:
+  id: 92
+  controller: 'allocations'
+  action: 'activate'
+  description: 'Ativar perfil de usuario'
+
+res93:
+  id: 93
+  controller: 'allocations'
+  action: 'search_users'
+  description: 'Busca usuario para alocar'
