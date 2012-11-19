@@ -9,15 +9,21 @@
         %th{style: 'width:100px'}= ""
     %tbody
     - @users.each do |user|
+      - profiles_allocable = profiles_available_for_allocation(user.id, @allocation_tags)
       %tr.lines
         %td= user.name
         %td{style: 'width:80px'}= user.cpf
         %td{style: 'width:200px'}= user.email
-        %td{style: 'width:120px'}
-          = select_tag(:profile_id, options_from_collection_for_select(@responsibles, :id, :name))
-        %td{style: 'width:100px'}
-          = hidden_field_tag(:user_id, user.id)
-          = button_tag t(".designate"), :type => "button", :class => "btn btn_default btn_designate", :alt => t(".designate_user", :user_name => user.name)
+        - unless (profiles_allocable.nil? or profiles_allocable.empty?)
+          %td{style: 'width:120px'}
+            = select_tag(:profile_id, options_from_collection_for_select(profiles_allocable, :id, :name))
+          %td{style: 'width:100px'}
+            = hidden_field_tag(:user_id, user.id)
+            = button_tag t(".designate"), :type => "button", :class => "btn btn_default btn_designate", :alt => t(".designate_user", :user_name => user.name)
+        - else
+          %td{:colspan => 2}
+            .search_keyword_inactive
+              = t(".designate_profile_no_found")
 - else
   .block_content_text 
     =t(".designate_search_no_found")

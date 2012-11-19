@@ -890,6 +890,7 @@
     search_users:
       designate: Designate
       designate_search_no_found: No user found
+      designate_profile_no_found: No profile available for allocation
       designate_user: Designate %{user_name}
     profile: Profile
     cpf: Cpf

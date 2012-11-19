@@ -44,7 +44,7 @@
     
     $("#search").click(function() {
       var url_for = "#{search_users_allocations_path}";
-      $("#search_user").load(url_for, { data: encodeURIComponent($("#text_search").val()) });
+      $("#search_user").load(url_for, { data: encodeURIComponent($("#text_search").val()), allocation_tag_id: $("#allocation_tag_id").val() });
     })
 
   });

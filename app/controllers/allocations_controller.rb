@@ -10,11 +10,11 @@ class AllocationsController < ApplicationController
     level        = (params[:permissions] != "all") ? "responsible" : nil
     level_search = level.nil? ? ("not(profiles.types & #{Profile_Type_Student})::boolean and not(profiles.types & #{Profile_Type_Basic})::boolean") : ("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")
     
-    allocations  = (params.include?('allocation_tag_id')) ? params[:allocation_tag_id] : 5 # era 0
+    @allocation_tags  = (params.include?('allocation_tag_id')) ? params[:allocation_tag_id] : 0
 
     @allocations = Allocation.find(:all,
       :joins => [:profile, :user], 
-      :conditions => ["#{level_search} and allocation_tag_id IN (#{allocations}) "],
+      :conditions => ["#{level_search} and allocation_tag_id IN (#{@allocation_tags}) "],
       :order => ["users.name", "profiles.name"]) 
 
     respond_to do |format|
@@ -29,8 +29,8 @@ class AllocationsController < ApplicationController
   def search_users
     text          = URI.unescape(params[:data])
     @text_search  = text
+    @allocation_tags = params[:allocation_tag_id]
     @users        = User.where("lower(name) ~ '#{text.downcase}'")
-    @responsibles = Profile.where("(types & #{Profile_Type_Class_Responsible})::boolean")
 
     render :layout => false
   end

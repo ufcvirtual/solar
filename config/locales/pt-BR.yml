@@ -1045,6 +1045,7 @@
     search_users:
       designate: Alocar
       designate_search_no_found: Nenhum usuário encontrado
+      designate_profile_no_found: Nenhum perfil disponível para alocação
       designate_user: Alocar %{user_name}
     profile: Perfil
     cpf: Cpf
