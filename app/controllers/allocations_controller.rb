@@ -75,8 +75,8 @@ class AllocationsController < ApplicationController
   # POST /allocations
   # POST /allocations.json
   def create
-    profile  = (params.include?(:profile)) ? params[:profile] : student_profile
-    status   = (params.include?(:status)) ? params[:status] : Allocation_Pending
+    profile = (params.include?(:profile)) ? params[:profile] : student_profile
+    status  = (params.include?(:status)) ? params[:status] : Allocation_Pending
     total, corrects = 0, 0
 
     if params.include?(:allocation_tag_id) and params.include?(:user_id) and (profile != '')
@@ -103,10 +103,10 @@ class AllocationsController < ApplicationController
 
       respond_to do |format|
         if corrects == total
-          format.html { redirect_to(local, notice: t(:enrollm_request_message)) }
+          format.html { redirect_to(local, notice: t(:enrollm_request, :scope => [:allocations, :success])) }
           format.json { render json: {:success => true, status: :ok } }
         else
-          format.html { redirect_to(local, alert: t(:enrollm_request_message_error)) }
+          format.html { redirect_to(local, alert: t(:enrollm_request, :scope => [:allocations, :error])) }
           format.json { render json: {:success => false, status: :ok } }
         end
       end

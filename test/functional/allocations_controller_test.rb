@@ -115,10 +115,29 @@ class AllocationsControllerTest < ActionController::TestCase
     end
   end
 
+  test "nao exibir usuarios alocados para um usuario sem permissao" do
+    sign_out @coordenador
+    sign_in users(:user2)
+
+    get :designates, { :allocation_tag_id => allocation_tags(:al5).id }
+    assert_nil assigns(:allocations)
+    assert_redirected_to({:controller => :home})
+    assert_equal( flash[:alert], I18n.t(:no_permission) )
+  end
+
   test "ativar perfil inativo de usuario" do
     get :activate, { :id => allocations(:ad).id }
     assert_redirected_to({:action => :designates, :allocation_tag_id => allocations(:ad).allocation_tag_id })
     assert_equal I18n.t(:activated, :scope => [:allocations, :success]), flash[:notice]
+  end
+
+  test "nao ativar perfil inativo de usuario para usuario sem permissao" do
+    sign_out @coordenador
+    sign_in users(:professor)
+
+    get :activate, { :id => allocations(:ad).id }
+    assert_redirected_to({:controller => :home})
+    assert_equal( flash[:alert], I18n.t(:no_permission) )
   end
 
   test "desativar perfil de usuario" do
@@ -127,10 +146,43 @@ class AllocationsControllerTest < ActionController::TestCase
     assert_equal I18n.t(:deactivated, :scope => [:allocations, :success]), flash[:notice]
   end
 
-  test "alocar usuario com perfil tutor a distancia" do
-    post :create, { :allocation_tag_id => allocation_tags(:al5).id, :user_id => users(:user2).id, :profile => profiles(:tutor_distancia).id, :status => Allocation_Activated }
-    assert_redirected_to({:action => :designates, :allocation_tag_id => allocation_tags(:al5).id })
+  test "nao desativar perfil de usuario para usuario sem permissao" do
+    sign_out @coordenador
+    sign_in users(:professor)
+
+    get :deactivate, { :id => allocations(:g).id }
+    assert_redirected_to({:controller => :home})
+    assert_equal( flash[:alert], I18n.t(:no_permission) )
   end
+
+  test "alocar usuario com perfil tutor a distancia" do
+    assert_difference("Allocation.count", +1) do
+      post :create, { :allocation_tag_id => allocation_tags(:al5).id, :user_id => users(:user2).id, :profile => profiles(:tutor_distancia).id, :status => Allocation_Activated }
+    end
+    assert_redirected_to({:action => :designates, :allocation_tag_id => allocation_tags(:al5).id })
+    assert allocation_tags(:al5).is_user_class_responsible?(users(:user2).id)    
+  end
+
+
+  ########### Teste abaixo falhando, pois o create não está com as permissões corretas ################
+
+  # test "nao alocar usuario com perfil tutor a distancia para usuario sem permissao" do
+  #   sign_out @coordenador
+  #   sign_in users(:professor)
+
+  #   assert_no_difference("Allocation.count") do
+  #     post :create, { :allocation_tag_id => allocation_tags(:al5).id, :user_id => users(:user2).id, :profile => profiles(:tutor_distancia).id, :status => Allocation_Activated }
+  #   end
+    
+  #   assert_redirected_to({:controller => :home})
+  #   assert_equal( flash[:alert], I18n.t(:no_permission) )
+  #   assert (not allocation_tags(:al5).is_user_class_responsible?(users(:user2).id))
+  # end
+
+
+
+
+
 
   # test "mudar aluno de turma" do
 
