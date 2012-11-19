@@ -118,13 +118,13 @@ class AllocationsControllerTest < ActionController::TestCase
   test "ativar perfil inativo de usuario" do
     get :activate, { :id => allocations(:ad).id }
     assert_redirected_to({:action => :designates, :allocation_tag_id => allocations(:ad).allocation_tag_id })
-    assert_equal I18n.t(:activated_user), flash[:notice]
+    assert_equal I18n.t(:activated, :scope => [:allocations, :success]), flash[:notice]
   end
 
   test "desativar perfil de usuario" do
     get :deactivate, { :id => allocations(:g).id }
     assert_redirected_to({:action => :designates, :allocation_tag_id => allocations(:g).allocation_tag_id })
-    assert_equal I18n.t(:deactivated_user), flash[:notice]
+    assert_equal I18n.t(:deactivated, :scope => [:allocations, :success]), flash[:notice]
   end
 
   test "alocar usuario com perfil tutor a distancia" do

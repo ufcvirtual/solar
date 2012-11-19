@@ -488,23 +488,6 @@
   url: "Digite aqui a URL da imagem no campo de texto acima."
   send: "Enviar"
 
-  # página de alocação de usuário
-  designate_title: "Alocação de Usuários"
-  designate_users: "Usuários Alocados"
-  new_designate: "Nova Alocação"
-  profile: "Perfil"
-  activate: "Ativar"
-  deactivate: "Desativar"
-  designate: "Alocar"
-  designate_search: "Buscar"
-  designate_search_no_found: "Nenhum usuário encontrado."
-  allocated_user: "Usuário alocado"
-  allocated_user_error: "Não foi possível alocar usuário"
-  activated_user: "Usuário ativado"
-  activated_user_error: "Não foi possível ativar usuário"
-  deactivated_user: "Usuário desativado"
-  deactivated_user_error: "Não foi possível desativar usuário"
-
   # página de matrícula
   enrollm_search: "Buscar"
   enrollm_search_in: " em "
@@ -522,8 +505,6 @@
   enrollm_cancelled_message: "Matrícula cancelada"
   enrollm_not_cancelled_message: "Matrícula não cancelada"
   enrollm_reactivated_message: "Matrícula reativada"
-  enrollm_request_message: "Pedido de matrícula realizado"
-  enrollm_request_message_error: "Pedido de matrícula não realizado"
   enrollm_request_cancel_message: "Pedido de matrícula cancelado"
   enrollm_confirm: "Tem certeza de que deseja cancelar?"
   enrollm_acepted_message: "Matrícula efetivada."
@@ -1051,6 +1032,34 @@
       cancel: Cancelar
     error:
       student_already_in_group: Aluno já está nesta turma
+    designates:
+      activate: Ativar
+      deactivate: Desativar
+      designate_users: Usuários Alocados
+      new_designate: Nova Alocação
+      search_users: Buscar Usuários
+      search: Buscar
+      user: Usuário
+      activate_user: Ativar %{user_name}
+      deactivate_user: Desativar %{user_name}
+    search_users:
+      designate: Alocar
+      designate_search_no_found: Nenhum usuário encontrado
+      designate_user: Alocar %{user_name}
+    profile: Perfil
+    cpf: Cpf
+    email: Email
+    name: Nome
+    success:
+      enrollm_request: Pedido de matrícula realizado
+      allocated: Usuário alocado
+      activated: Usuário ativado
+      deactivated: Usuário desativado
+    error:
+      enrollm_request: Pedido de matrícula não realizado
+      not_allocated: Não foi possível alocar usuário
+      not_activated: Não foi possível ativar usuário
+      not_deactivated: Não foi possível desativar usuário
 
   allocation_pending: Pendente
 

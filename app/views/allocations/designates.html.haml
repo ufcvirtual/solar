@@ -1,17 +1,17 @@
-=hidden_field_tag(:allocation_tag_id, params[:allocation_tag_id]) 
+= hidden_field_tag(:allocation_tag_id, params[:allocation_tag_id]) 
 
 .block_wrapper  
   .block_title
-    %h2= t(:designate_users)
+    %h2= t(".designate_users")
 
   .block_content.allocations_list
     %table.tb_list
       %thead
         %tr.lines          
-          %th= t(:name)
-          %th{style: 'width:80px'}= t(:cpf)
-          %th{style: 'width:200px'}= t(:email)
-          %th{style: 'width:120px'}= t(:profile)
+          %th= t(:name, :scope => [:allocations])
+          %th{style: 'width:80px'}= t(:cpf, :scope => [:allocations])
+          %th{style: 'width:200px'}= t(:email, :scope => [:allocations])
+          %th{style: 'width:120px'}= t(:profile, :scope => [:allocations])
           %th{style: 'width:100px'}= ""
       %tbody
         - unless @allocations.nil? or @allocations.empty?
@@ -22,19 +22,19 @@
               %td{style: 'width:200px'}= allocation.user.email
               %td{style: 'width:120px'}= allocation.profile.name
               %td{style: 'width:100px'}
-                -if allocation.status==Allocation_Activated 
-                  =button_to t(:deactivate), { :controller => "allocations", :action => "deactivate", :id => allocation.id, :text_search => @text_search }, :class=>'btn btn_caution'
+                -if allocation.status == Allocation_Activated 
+                  = button_to t(".deactivate"), deactivate_allocation_path(allocation, :text_search => @text_search), :class => 'btn btn_caution', :alt => t(".deactivate_user", :user_name => allocation.user.name)
                 -else
-                  =button_to t(:activate), { :controller => "allocations", :action => "activate", :id => allocation.id, :text_search => @text_search }, :class=>'btn btn_default'
+                  = button_to t(".activate"), activate_allocation_path(allocation, :text_search => @text_search), :class => 'btn btn_default', :alt => t(".activate_user", :user_name => allocation.user.name)
 
 .block_wrapper
   .block_title
-    %h2= t(:new_designate)
+    %h2= t(".new_designate")
 
   .block_content.block_content_text
-    =t(:user)
-    %input{type: 'text', :id => 'text_search', :value => @text_search }
-    %input.btn.btn_default{type: 'button', value: t(:designate_search), :id => 'search'}
+    = t(".user")
+    = text_field_tag "text_search", @text_search
+    = button_tag t(".search"), :type => :button, :class => "btn btn_default", :id => "search", :alt => t(".search_users")
 
   .block_content.allocations_list
     #search_user
@@ -43,7 +43,7 @@
   $(function() {
     
     $("#search").click(function() {
-      var url_for = "/allocations/search_users/";
+      var url_for = "#{search_users_allocations_path}";
       $("#search_user").load(url_for, { data: encodeURIComponent($("#text_search").val()) });
     })
 

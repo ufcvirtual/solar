@@ -2,45 +2,45 @@
   %table.tb_list
     %thead
       %tr.lines
-        %th= t(:name)
-        %th{style: 'width:80px'}= t(:cpf)
-        %th{style: 'width:200px'}= t(:email)
-        %th{style: 'width:120px'}= ""
+        %th= t(:name, :scope => [:allocations])
+        %th{style: 'width:80px'}= t(:cpf, :scope => [:allocations])
+        %th{style: 'width:200px'}= t(:email, :scope => [:allocations])
+        %th{style: 'width:120px'}= t(:profile, :scope => [:allocations])
         %th{style: 'width:100px'}= ""
     %tbody
-    - @users.each do |u|
+    - @users.each do |user|
       %tr.lines
-        %td= u.name
-        %td{style: 'width:80px'}= u.cpf
-        %td{style: 'width:200px'}= u.email
+        %td= user.name
+        %td{style: 'width:80px'}= user.cpf
+        %td{style: 'width:200px'}= user.email
         %td{style: 'width:120px'}
           = select_tag(:profile_id, options_from_collection_for_select(@responsibles, :id, :name))
         %td{style: 'width:100px'}
-          =hidden_field_tag(:user_id, u.id)
-          %input.btn.btn_default.btn_designate{type: 'button', value: t(:designate) }
+          = hidden_field_tag(:user_id, user.id)
+          = button_tag t(".designate"), :type => "button", :class => "btn btn_default btn_designate", :alt => t(".designate_user", :user_name => user.name)
 - else
   .block_content_text 
-    =t(:designate_search_no_found)
+    =t(".designate_search_no_found")
 
 :javascript
 
   $(document).ready(function() {
 
     $(".btn_designate").click(function(){
-      var parent = $(this).parents("tr");
+      var parent  = $(this).parents("tr");
       var profile = $("#profile_id", parent).val();
-      var user = $(this).siblings("#user_id").val();
-      var status = '#{Allocation_Activated}';
+      var user    = $(this).siblings("#user_id").val();
+      var status  = "#{Allocation_Activated}"
+      var alloc   = $("#allocation_tag_id").val();
       var url_for = "/allocations/designates";
-      var alloc = $("#allocation_tag_id").val();
 
       $.ajax({
         type: 'POST',
-        url: '/allocations/create',
+        url: '#{allocations_path}',
         data: {
           "user_id": user,
-          "allocation_tag_id": alloc,
           "status": status,
+          "allocation_tag_id": alloc,
           "profile": profile          
         },
         success: function() {
