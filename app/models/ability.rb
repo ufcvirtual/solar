@@ -5,85 +5,53 @@ class Ability
     user ||= User.new # guest user
     can do |action, object_class, object|
       have_permission?(user, action, object_class, object)
-    end # end can
+    end # can
   end
 
   private
 
-  def have_permission?(user, action, object_class, object)
-    profiles = user.profiles.joins(:resources).where(resources: {action: alias_action(action), controller: object_class.to_s.underscore << 's'})
-    have = (not profiles.to_ary.empty?)
+    def have_permission?(user, action, object_class, object)
+      ## perfis do usuario que podem realizar acao
+      profiles = user.profiles.joins(:resources).where(resources: {action: alias_action(action), controller: object_class.to_s.underscore << 's'})
+      have     = not(profiles.to_ary.empty?) # tem permissao para acessar acao
 
-    return false unless have # nao tem permissao de acessar funcionalidade
-    return true if have and object.nil? # nao verifica objeto
+      return false unless have # nao tem permissao de realizar acao
+      return true if have and object.nil? # tem permissao de realizar acao na classe e objeto nao e passado
 
-    ## se é ou está relacionado diretamente com usuario
-    return true if object_class == User and profiles.select("permissions_resources.per_id").map(&:per_id).include?('f') # qndo o usuario tem permissoes de ver apenas seus dados
-    return true if object_class == User and object.id == user.id
-    return true if object.respond_to?(:user_id) and object.user_id == user.id
+      ## se é ou está relacionado diretamente com usuario
+      return true if object_class == User and (object.id == user.id or profiles.select("permissions_resources.per_id").map(&:per_id).include?('f')) # qndo o usuario tem permissoes de ver apenas seus dados
+      return true if object.respond_to?(:user_id) and object.user_id == user.id
 
-    ## diferenciar no tipo das actions
-      ## se for pra ler, pode ser em qualquer nivel
-      ## se for modificar, verifica associacoes apenas pra baixo
+      ## diferenciar tipo das actions (ler/modificar)
+        ## se for pra ler, pode ser em qualquer nivel
+        ## se for modificar, verifica associacoes apenas pra baixo
 
-    ## usuario relacionado com o objeto por allocation_tag
-    if object.respond_to?(:allocation_tag)
-      at_all_or_lower = (alias_action(action).select {|a| a == :create or a == :update}.empty?) ? {all: true} : {lower: true} # modificar objeto?
+      ## usuario relacionado com o objeto atraves das allocation_tags
+      if object.respond_to?(:allocation_tag)
+        at_all_or_lower = (alias_action(action).select { |a| [:create, :update].include?(a) }.empty?) ? {all: true} : {lower: true} # modificar objeto?
+        at_of_user      = user.allocations.where(profile_id: profiles, status: Allocation_Activated.to_i).map(&:allocation_tag).compact.map {|at| at.related(at_all_or_lower) }.flatten.compact.uniq ## allocations do usuario com perfil para executar a acao
+        match           = not((at_of_user & [object.allocation_tag.id]).empty?) # at em comum entre o usuario e o objeto
 
-      # allocations do usuario com perfil para executar a acao
-      at_of_user = user.allocations.where(profile_id: profiles, status: Allocation_Activated.to_i).map(&:allocation_tag).compact.map {|at| at.related(at_all_or_lower) }.flatten.compact.uniq
-      match = at_of_user & [object.allocation_tag.id]
+        return match
+      end
 
-      return false if match.empty?
-      return true unless Allocation.where(allocation_tag_id: at_of_user, profile_id: profiles, user_id: user.id, status: Allocation_Activated.to_i).empty?
-    end
+      ## no caso de allocation_tag
+      return true if object.respond_to?(:allocations) and not(object.allocations.where(user_id: user.id, profile_id: profiles, status: Allocation_Activated.to_i).empty?)
+      return false # default e nao ter permissao
+    end # have permission
 
-    ## allocation_tag por exemplo
-    return true if (object.respond_to?(:allocations) and not(object.allocations.where(user_id: user.id, profile_id: profiles, status: Allocation_Activated.to_i).empty?))
-
-    return false
-  end # have permission
-
-  ## evitando criacao de muitos resources com alias
-  def alias_action(action)
-    return case action
-      when :show, :read
-        [:show, :read]
-      when :new, :create
-        [:new, :create]
-      when :edit, :update
-        [:edit, :update]
-      else
-        [action] # index, list e outros
-    end
-  end
-
-  # def profiles_of_user_has_permission_to_access?(user, action, object_class)
-
-  # # def has_permission_to_access?(user, action, object_class, object)
-  #   user.profiles.joins(:resources).where(resources: {action: action, controller: object_class.to_s.underscore << 's'})
-  # end
-
-  # def user_have_permission_to?(user, object, profile_id)
-  #   return true if (object.respond_to?(:user_id) and object.user_id == user.id)
-
-  #   ## usuario está associado às uma das associacoes por belongs_to
-  #   object.class.reflect_on_all_associations(:belongs_to).each do |class_related|
-  #     return true if (object.respond_to?(class_related.name) and object.send(class_related.name).respond_to?(:user_id) and (object.send(class_related.name).user_id == user.id))
-  #   end
-
-  #   ## associacoes por allocation_tag
-  #   if object.respond_to?(:allocation_tag)
-  #     user_allocations_tag = user.allocations.where(profile_id: profile_id.to_i, status: Allocation_Activated.to_i).map(&:allocation_tag)
-  #     allocation_tag       = object.send(:allocation_tag)
-
-  #     ## se o usuario já está ligado diretamente à allocation_tag ou por meio da hierarquia
-  #     return true if (user_allocations_tag.include?(allocation_tag) or (not (user_allocations_tag.map(&:id) & allocation_tag.related(upper: true)).empty?))
-  #   end
-
-  #   ## ligada a allocation diretamente
-  #   return true if (object.respond_to?(:allocations) and (not object.send(:allocations).where(user_id: user.id, profile_id: profile_id.to_i, status: Allocation_Activated.to_i).empty?))
-  #   return false
-  # end
+    ## com alias, evitamos criacoes de muitos resources (ex. permissao :create, para :new e :create)
+    def alias_action(action)
+      return case action
+        when :show, :read
+          [:show, :read]
+        when :new, :create
+          [:new, :create]
+        when :edit, :update
+          [:edit, :update]
+        else
+          [action] # index, list e outros
+      end
+    end # alias action
 
 end
