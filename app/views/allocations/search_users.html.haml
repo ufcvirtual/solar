@@ -1,5 +1,5 @@
 - unless @users.nil? or @users.empty?
-  %table.tb_list
+  %table.tb_list.tb_allocation
     %thead
       %tr.lines
         %th= t(:name, :scope => [:allocations])
@@ -22,7 +22,7 @@
             = button_tag t(".designate"), :type => "button", :class => "btn btn_default btn_designate", :alt => t(".designate_user", :user_name => user.name)
         - else
           %td{:colspan => 2}
-            .search_keyword_inactive
+            .unavailable
               = t(".designate_profile_no_found")
 - else
   .block_content_text 
@@ -38,11 +38,11 @@
       var user    = $(this).siblings("#user_id").val();
       var status  = "#{Allocation_Activated}"
       var alloc   = $("#allocation_tag_id").val();
-      var url_for = "/allocations/designates";
+      var url_for = "#{designates_allocations_path}";
 
       $.ajax({
         type: 'POST',
-        url: '#{allocations_path}',
+        url: '#{create_designation_allocations_path}',
         data: {
           "user_id": user,
           "status": status,

@@ -68,13 +68,14 @@ Solar::Application.routes.draw do
       get :designates
       get :enrollments, :action => :index
       get :search_users
+      post :create_designation
     end
     member do
       delete :cancel, :action => :destroy
       delete :cancel_request, :action => :destroy, :defaults => {:type => 'request'}
       post :deactivate
       post :activate
-    end    
+    end
   end
 
   resources :enrollments, :only => [:index]

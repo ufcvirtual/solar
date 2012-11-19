@@ -880,6 +880,11 @@ allocation4:
   resource_id: 93
   per_id: false
 
+allocation5:
+  profile_id: 5
+  resource_id: 94
+  per_id: false
+
 # Unidade Curricular - Editor
 ucedit0:
   profile_id: 5

@@ -527,4 +527,10 @@ res93:
   id: 93
   controller: 'allocations'
   action: 'search_users'
-  description: 'Busca usuario para alocar'
+  description: 'Buscar usuario para alocar'
+
+res94:
+  id: 94
+  controller: 'allocations'
+  action: 'create_designation'
+  description: 'Alocar perfil para usuario'

@@ -2,7 +2,7 @@ include AllocationsHelper
 
 class AllocationsController < ApplicationController
 
-  authorize_resource :except => [:destroy]
+  authorize_resource :except => [:destroy, :allocate, :search_users, :create_designation]
 
   # GET /allocations/designates
   # GET /allocations/designates.json
@@ -75,43 +75,35 @@ class AllocationsController < ApplicationController
   # POST /allocations
   # POST /allocations.json
   def create
-    profile = (params.include?(:profile)) ? params[:profile] : student_profile
-    status  = (params.include?(:status)) ? params[:status] : Allocation_Pending
-    total, corrects = 0, 0
+    profile = student_profile
+    status  = Allocation_Pending
 
-    if params.include?(:allocation_tag_id) and params.include?(:user_id) and (profile != '')
-      if params.include?(:id) # se alocação já existe, então está desativada e deve ser reativada
-        allocation        = Allocation.find(params[:id])
-        allocation.status = Allocation_Pending_Reactivate
-        total    = 1
-        corrects = 1 if allocation.save
-      else # se alocação está sendo realizada agora, deve ser criada
-        allocations = params[:allocation_tag_id].split(',')
-        total       = allocations.count()
-        allocations.each { |id|
-          allocation = Allocation.new({
-            :user_id => params[:user_id],
-            :allocation_tag_id => id,
-            :profile_id => profile,
-            :status => status
-          })
-          corrects = corrects + 1 if allocation.save
-        }
-      end
+    ok = allocate(params[:allocation_tag_id], params[:user_id], profile, status, params[:id])
 
-      local = (!params.include?(:status) and !params.include?(:profile)) ? enrollments_url : designates_allocations_path(:allocation_tag_id => params[:allocation_tag_id])
-
-      respond_to do |format|
-        if corrects == total
-          format.html { redirect_to(local, notice: t(:enrollm_request, :scope => [:allocations, :success])) }
-          format.json { render json: {:success => true, status: :ok } }
-        else
-          format.html { redirect_to(local, alert: t(:enrollm_request, :scope => [:allocations, :error])) }
-          format.json { render json: {:success => false, status: :ok } }
-        end
+    respond_to do |format|
+      if ok
+        format.html { redirect_to(enrollments_url, notice: t(:enrollm_request, :scope => [:allocations, :success])) }
+      else
+        format.html { redirect_to(enrollments_url, alert: t(:enrollm_request, :scope => [:allocations, :error])) }
       end
     end
+  end
 
+  def create_designation
+    profile = (params.include?(:profile)) ? params[:profile] : student_profile
+    status  = (params.include?(:status)) ? params[:status] : Allocation_Pending
+
+    ok = allocate(params[:allocation_tag_id], params[:user_id], profile, status)
+
+    respond_to do |format|
+      if ok
+        format.html { redirect_to(designates_allocations_path(:allocation_tag_id => params[:allocation_tag_id]), notice: t(:enrollm_request, :scope => [:allocations, :success])) }
+        format.json { render json: {:success => true, status: :ok } }
+      else
+        format.html { redirect_to(designates_allocations_path(:allocation_tag_id => params[:allocation_tag_id]), alert: t(:enrollm_request, :scope => [:allocations, :error])) }
+        format.json { render json: {:success => false, status: :ok } }
+      end
+    end
   end
 
   # PUT /allocations/1
@@ -260,6 +252,31 @@ class AllocationsController < ApplicationController
         when Allocation_Cancelled, Allocation_Rejected
           status_hash.select { |k,v| [allocation_status, Allocation_Activated].include?(k) }
       end
+    end
+
+    def allocate(allocation_tag_id, user_id, profile, status, id = nil)
+      total, corrects = 0, 0
+      if params.include?(:allocation_tag_id) and params.include?(:user_id) and (profile != '')
+        if !params[:id].nil? # se alocação já existe, então está desativada e deve ser reativada
+          allocation        = Allocation.find(params[:id])
+          allocation.status = Allocation_Pending_Reactivate
+          total    = 1
+          corrects = 1 if allocation.save
+        else # se alocação está sendo realizada agora, deve ser criada
+          allocations = params[:allocation_tag_id].split(',')
+          total       = allocations.count()
+          allocations.each { |id|
+            allocation = Allocation.new({
+              :user_id => params[:user_id],
+              :allocation_tag_id => id,
+              :profile_id => profile,
+              :status => status
+            })
+            corrects = corrects + 1 if allocation.save
+          }
+        end
+      end
+      return (corrects == total) ? true : false
     end
 
 end

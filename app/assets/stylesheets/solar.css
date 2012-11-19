@@ -414,6 +414,7 @@ h1.page_title{
     overflow: auto;
 }
 
+
 /**
 * Meu Solar
 */
@@ -2414,6 +2415,15 @@ table.tb_list tbody tr:last-child {
     width: 18px;
     height: 18px;
 }
+
+.tb_allocation tr.lines {
+    height: 39px;
+}
+
+.tb_allocation .unavailable {
+    color: #888;
+}
+
 table.tb_list_files {
     border-right: 0px;
 }
