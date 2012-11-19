@@ -414,6 +414,7 @@ h1.page_title{
     overflow: auto;
 }
 
+
 /**
 * Meu Solar
 */
@@ -1475,6 +1476,11 @@ div.block_title {
     padding: 6px 10px;
 }
 
+.block_content_toolbar {
+    background-color: rgb(232,239,246);
+    border-bottom: 1px solid rgba(0,62,122,0.3);
+}
+
 table tr.block_title th {
     width: 100%;
     height: 161px; 
@@ -2414,6 +2420,15 @@ table.tb_list tbody tr:last-child {
     width: 18px;
     height: 18px;
 }
+
+.tb_allocation tr.lines {
+    height: 39px;
+}
+
+.tb_allocation .unavailable {
+    color: #888;
+}
+
 table.tb_list_files {
     border-right: 0px;
 }

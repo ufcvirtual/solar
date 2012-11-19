@@ -31,7 +31,7 @@
   .block_title
     %h2= t(".new_designate")
 
-  .block_content.block_content_text
+  .block_content.block_content_text.block_content_toolbar
     = t(".user")
     = text_field_tag "text_search", @text_search
     = button_tag t(".search"), :type => :button, :class => "btn btn_default", :id => "search", :alt => t(".search_users")
