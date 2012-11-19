@@ -2,7 +2,7 @@ include AllocationsHelper
 
 class AllocationsController < ApplicationController
 
-  authorize_resource :except => [:destroy, :allocate, :search_users, :create_designation]
+  authorize_resource :except => [:destroy, :allocate]
 
   # GET /allocations/designates
   # GET /allocations/designates.json
@@ -89,6 +89,7 @@ class AllocationsController < ApplicationController
     end
   end
 
+  # usado na alocacao de usuarios
   def create_designation
     profile = (params.include?(:profile)) ? params[:profile] : student_profile
     status  = (params.include?(:status)) ? params[:status] : Allocation_Pending
@@ -98,10 +99,10 @@ class AllocationsController < ApplicationController
     respond_to do |format|
       if ok
         format.html { redirect_to(designates_allocations_path(:allocation_tag_id => params[:allocation_tag_id]), notice: t(:enrollm_request, :scope => [:allocations, :success])) }
-        format.json { render json: {:success => true, status: :ok } }
+        format.json { render json: {:success => true } }
       else
         format.html { redirect_to(designates_allocations_path(:allocation_tag_id => params[:allocation_tag_id]), alert: t(:enrollm_request, :scope => [:allocations, :error])) }
-        format.json { render json: {:success => false, status: :ok } }
+        format.json { render json: {:success => false } }
       end
     end
   end
