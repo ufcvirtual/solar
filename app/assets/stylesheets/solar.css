@@ -1476,6 +1476,11 @@ div.block_title {
     padding: 6px 10px;
 }
 
+.block_content_toolbar {
+    background-color: rgb(232,239,246);
+    border-bottom: 1px solid rgba(0,62,122,0.3);
+}
+
 table tr.block_title th {
     width: 100%;
     height: 161px; 
