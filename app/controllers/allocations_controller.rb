@@ -2,7 +2,7 @@ include AllocationsHelper
 
 class AllocationsController < ApplicationController
 
-  authorize_resource :except => [:destroy, :allocate]
+  authorize_resource :except => [:destroy]
 
   # GET /allocations/designates
   # GET /allocations/designates.json
@@ -72,38 +72,31 @@ class AllocationsController < ApplicationController
     render layout: false
   end
 
-  # POST /allocations
-  # POST /allocations.json
+  
+  # Usado para matrícula
   def create
     profile = student_profile
     status  = Allocation_Pending
 
-    ok = allocate(params[:allocation_tag_id], params[:user_id], profile, status, params[:id])
+    ok      = allocate(params[:allocation_tag_id], params[:user_id], profile, status, params[:id])
+    message = ok ? ['notice', 'success'] : ['alert', 'error']
 
     respond_to do |format|
-      if ok
-        format.html { redirect_to(enrollments_url, notice: t(:enrollm_request, :scope => [:allocations, :success])) }
-      else
-        format.html { redirect_to(enrollments_url, alert: t(:enrollm_request, :scope => [:allocations, :error])) }
-      end
+      format.html { redirect_to(enrollments_url, message[0].to_sym => t(:enrollm_request, :scope => [:allocations, message[1].to_sym])) }
     end
   end
 
-  # usado na alocacao de usuarios
+  # Usado na alocacao de usuarios
   def create_designation
     profile = (params.include?(:profile)) ? params[:profile] : student_profile
     status  = (params.include?(:status)) ? params[:status] : Allocation_Pending
 
-    ok = allocate(params[:allocation_tag_id], params[:user_id], profile, status)
+    ok      = allocate(params[:allocation_tag_id], params[:user_id], profile, status)
+    message = ok ? ['notice', 'success'] : ['alert', 'error']
 
     respond_to do |format|
-      if ok
-        format.html { redirect_to(designates_allocations_path(:allocation_tag_id => params[:allocation_tag_id]), notice: t(:enrollm_request, :scope => [:allocations, :success])) }
-        format.json { render json: {:success => true } }
-      else
-        format.html { redirect_to(designates_allocations_path(:allocation_tag_id => params[:allocation_tag_id]), alert: t(:enrollm_request, :scope => [:allocations, :error])) }
-        format.json { render json: {:success => false } }
-      end
+      format.html { redirect_to(designates_allocations_path(:allocation_tag_id => params[:allocation_tag_id]), message[0].to_sym => t(:enrollm_request, :scope => [:allocations, message[1].to_sym])) }
+      format.json { render json: {:success => ok } }
     end
   end
 
@@ -258,7 +251,7 @@ class AllocationsController < ApplicationController
     def allocate(allocation_tag_id, user_id, profile, status, id = nil)
       total, corrects = 0, 0
       if params.include?(:allocation_tag_id) and params.include?(:user_id) and (profile != '')
-        if !params[:id].nil? # se alocação já existe, então está desativada e deve ser reativada
+        unless params[:id].nil? # se alocação já existe (id não será nulo), então está desativada e deve ser reativada
           allocation        = Allocation.find(params[:id])
           allocation.status = Allocation_Pending_Reactivate
           total    = 1
@@ -266,7 +259,7 @@ class AllocationsController < ApplicationController
         else # se alocação está sendo realizada agora, deve ser criada
           allocations = params[:allocation_tag_id].split(',')
           total       = allocations.count()
-          allocations.each { |id|
+          allocations.each do |id|
             allocation = Allocation.new({
               :user_id => params[:user_id],
               :allocation_tag_id => id,
@@ -274,10 +267,10 @@ class AllocationsController < ApplicationController
               :status => status
             })
             corrects = corrects + 1 if allocation.save
-          }
-        end
+          end # allocations.each
+        end # unless params[:id].nil?
       end
-      return (corrects == total) ? true : false
+      return (corrects == total)
     end
 
 end
