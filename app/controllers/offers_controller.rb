@@ -152,7 +152,8 @@ class OffersController < ApplicationController
       :curriculum_unit_id => params[:curriculum_unit_id],
       :semester => params[:offer][:semester],
       :start => params[:offer][:start],
-      :end => params[:offer][:end]
+      :end => params[:offer][:end],
+      :user_id => current_user.id
     )
 
     respond_to do |format|

@@ -534,3 +534,4 @@ res94:
   controller: 'allocations'
   action: 'create_designation'
   description: 'Alocar perfil para usuario'
+  

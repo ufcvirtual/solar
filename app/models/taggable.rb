@@ -3,7 +3,7 @@ module Taggable
   def self.included(base)   
     base.before_destroy :unallocate_if_possible
     base.after_create :allocation_tag_association
-    base.after_create :user_editor_allocation
+    base.after_create :allocate_profiles 
 
     base.has_one :allocation_tag, :dependent => :destroy
     base.has_many :allocations, :through => :allocation_tag
@@ -42,10 +42,6 @@ module Taggable
     AllocationTag.create({self.class.name.underscore.to_sym => self})
   end
 
-  def user_editor_allocation
-    allocate_user(user_id, Curriculum_Unit_Initial_Profile) if user_id
-  end
-
   def allocate_user(user_id, profile_id)
     Allocation.create(:user_id => user_id, :allocation_tag_id => self.allocation_tag.id, :profile_id => profile_id, :status => Allocation_Activated)
   end
@@ -58,12 +54,26 @@ module Taggable
     ((is_up_to_one_user?) and (not has_any_lower_association?))
   end
 
-  private
-  def unallocate_user_in_lower_associations(user_id)    
-    self.lower_associated_objects do |down_associated_object| 
-      down_associated_object.unallocate_user_in_lower_associations(user_id)
-    end if self.respond_to?(:lower_associated_objects)
-    unallocate_user(user_id)
+  ##
+  # Após criar algum elemento taggable (uc, curso, turma, oferta), verifica todos os perfis que o usuário possui 
+  # e, para cada um daqueles que possuem permissão de realizar a ação previamente realizada, é criada uma alocação
+  ##
+  def allocate_profiles
+    if user_id
+      profiles_with_access = User.find(user_id).profiles.joins(:resources).where(resources: {action: 'create', controller: self.class.name.underscore << 's'}).flatten
+
+      profiles_with_access.each do |profile|
+        allocate_user(user_id, profile.id)
+      end
+    end
   end
+
+  private
+    def unallocate_user_in_lower_associations(user_id)    
+      self.lower_associated_objects do |down_associated_object| 
+        down_associated_object.unallocate_user_in_lower_associations(user_id)
+      end if self.respond_to?(:lower_associated_objects)
+      unallocate_user(user_id)
+    end
 
 end

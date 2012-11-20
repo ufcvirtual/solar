@@ -31,4 +31,6 @@ class CoursesController < ApplicationController
     end
   end
 
+  # no método create, deve ser passado: params[:course][:user_id] = current_user.id
+
 end

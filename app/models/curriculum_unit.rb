@@ -8,7 +8,7 @@ class CurriculumUnit < ActiveRecord::Base
   has_many :groups, :through => :offers, :uniq => true
   has_many :courses, :through => :offers, :uniq => true
 
-  validates :code, :uniqueness => true, :length => { :maximum   => 10 }
+  validates :code, :uniqueness => true, :length => { :maximum   => 10 }, :allow_blank => true
   validates :name, :presence => true, :length => { :maximum   => 120 }
   validates :curriculum_unit_type, :presence => true  
   validates :resume, :presence => true
