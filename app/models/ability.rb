@@ -3,14 +3,26 @@ class Ability
 
   def initialize(user)
     user ||= User.new # guest user
-    can do |action, object_class, object|
-      have_permission?(user, action, object_class, object)
+    can do |action, object_class, object, options = []|
+      have_permission?(user, action, object_class, object, options)
     end # can
   end
 
   private
 
-    def have_permission?(user, action, object_class, object)
+    def have_permission?(user, action, object_class, object, options)
+      if options.include?(:on) # on allocation_tags
+        return (have_permission_on_allocation_tags?(user, options[:on]) and have_permission_access?(user, action, object_class, object))
+      else
+        return have_permission_access?(user, action, object_class, object)
+      end
+    end # have permission?
+
+    def have_permission_on_allocation_tags?(user, allocation_tags)
+      (user.allocation_tags.uniq.map {|at| at.related({lower: true})}.flatten.compact.uniq & allocation_tags).sort == allocation_tags.sort
+    end # have permission on allocation tags
+
+    def have_permission_access?(user, action, object_class, object)
       ## perfis do usuario que podem realizar acao
       profiles = user.profiles.joins(:resources).where(resources: {action: alias_action(action), controller: object_class.to_s.underscore << 's'})
       have     = not(profiles.to_ary.empty?) # tem permissao para acessar acao
@@ -28,17 +40,17 @@ class Ability
 
       ## usuario relacionado com o objeto atraves das allocation_tags
       if object.respond_to?(:allocation_tag)
-        at_all_or_lower = (alias_action(action).select { |a| [:create, :update].include?(a) }.empty?) ? {all: true} : {lower: true} # modificar objeto?
-        at_of_user      = user.allocations.where(profile_id: profiles, status: Allocation_Activated.to_i).map(&:allocation_tag).compact.map {|at| at.related(at_all_or_lower) }.flatten.compact.uniq ## allocations do usuario com perfil para executar a acao
-        match           = not((at_of_user & [object.allocation_tag.id]).empty?) # at em comum entre o usuario e o objeto
+        all_or_lower = (alias_action(action).select { |a| [:create, :update].include?(a) }.empty?) ? {all: true} : {lower: true} # modificar objeto?
+        at_of_user   = user.allocations.where(profile_id: profiles, status: Allocation_Activated.to_i).map(&:allocation_tag).compact.map {|at| at.related(all_or_lower) }.flatten.compact.uniq ## allocations do usuario com perfil para executar a acao
+        match        = not((at_of_user & [object.allocation_tag.id]).empty?) # at em comum entre o usuario e o objeto
 
         return match
-      end
+      end # respond to
 
       ## no caso de allocation_tag
       return true if object.respond_to?(:allocations) and not(object.allocations.where(user_id: user.id, profile_id: profiles, status: Allocation_Activated.to_i).empty?)
       return false # default e nao ter permissao
-    end # have permission
+    end # have permission access?
 
     ## com alias, evitamos criacoes de muitos resources (ex. permissao :create, para :new e :create)
     def alias_action(action)
