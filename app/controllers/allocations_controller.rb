@@ -2,16 +2,20 @@ include AllocationsHelper
 
 class AllocationsController < ApplicationController
 
-  authorize_resource :except => [:destroy]
+  authorize_resource :except => [:destroy, :create_designation, :activate, :deactivate]
 
   # GET /allocations/designates
   # GET /allocations/designates.json
   def designates
+    
+    # verifica permissao de acessar alocacao das allocation tags passadas
+    authorize! :designates, Allocation, :on => [params[:allocation_tag_id].to_i]
+    
     level        = (params[:permissions] != "all") ? "responsible" : nil
     level_search = level.nil? ? ("not(profiles.types & #{Profile_Type_Student})::boolean and not(profiles.types & #{Profile_Type_Basic})::boolean") : ("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")
     
     @allocation_tags  = (params.include?('allocation_tag_id')) ? params[:allocation_tag_id] : 0
-
+    
     @allocations = Allocation.find(:all,
       :joins => [:profile, :user], 
       :conditions => ["#{level_search} and allocation_tag_id IN (#{@allocation_tags}) "],
@@ -71,9 +75,8 @@ class AllocationsController < ApplicationController
 
     render layout: false
   end
-
   
-  # Usado para matrícula
+  # Usado na matrícula
   def create
     profile = student_profile
     status  = Allocation_Pending
@@ -88,6 +91,10 @@ class AllocationsController < ApplicationController
 
   # Usado na alocacao de usuarios
   def create_designation
+
+    # verifica permissao de alocacao nas allocation tags passadas
+    authorize! :create_designation, Allocation, :on => [params[:allocation_tag_id].to_i] 
+
     profile = (params.include?(:profile)) ? params[:profile] : student_profile
     status  = (params.include?(:status)) ? params[:status] : Allocation_Pending
 
@@ -189,9 +196,13 @@ class AllocationsController < ApplicationController
   end
 
   def deactivate
+
     @allocation       = Allocation.find(params[:id])
     @text_search      = params[:text_search]
     allocation_tag_id = @allocation.allocation_tag_id
+
+    # verifica permissao de desativar alocacao na allocation tag passada
+    authorize! :deactivate, Allocation, :on => [allocation_tag_id.to_i]
 
     respond_to do |format|
       if @allocation.update_attribute(:status, Allocation_Cancelled)
@@ -209,6 +220,9 @@ class AllocationsController < ApplicationController
   def activate
     @allocation       = Allocation.find(params[:id])
     allocation_tag_id = @allocation.allocation_tag_id
+
+    # verifica permissao de ativar alocacao na allocation tag passada
+    authorize! :deactivate, Allocation, :on => [allocation_tag_id.to_i]
 
     respond_to do |format|
       if @allocation.update_attribute(:status, Allocation_Activated)

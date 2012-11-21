@@ -373,3 +373,10 @@ ad:
   allocation_tag_id: 5
   profile_id: 2
   status: 0
+
+coord_ad:
+  id: 52
+  user_id: 12
+  allocation_tag_id: 5
+  profile_id: 5
+  status: 1
