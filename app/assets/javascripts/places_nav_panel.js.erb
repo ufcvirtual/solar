@@ -1,51 +1,11 @@
 /*
 Precisamos:
 	- Tratar acentos;
-	- Criar interdependências nas buscas
-	- Trocar o tokenValue: para allocationTagId
-	- Colocar as opções de cada menu num json
 	- Manter valores selecionados em caso de refresh
-	- Só um item deve ser selecionado em cada TokenInput
-	
-	- Ordenar resultados das consultas
-	- Agrupar semestres/disciplinas/turmas de nome igual
-	
-Id sempre é allocationTagId
-Curso:
-	- A pesquisa deve retornar a lista de todos os cursos aos quais o usuário é relacionado em algum nível.
-	- Não depende de nenhum outro filtro
-Semestre
-	- Deve listar (Sem repetir) as ofertas de acordo com o string "semestre" delas.
-	- Como há mais de uma oferta por semestre, semestre retornado deve ter um array de AllocationTagIds de todas as ofertas
-	- Este filtro deve respeitar o filtro de Curso.
-Unidade Curricular
-	- Deve listar as ofertas (sem repetir) de acordo com o nome(ou código) da unidade curricular
-	- Este filtro deve respeitar os filtros de Graduação e de Semestre
-		- Deve receber um array de graduações (podendo ser vazio)
-		- Deve receber um array de ofertas (podendo ser vazio)	
-	- Havendo mais de uma oferta com o mesmo nome, a oferta selecionada vai ter um array de allocationTagIds
-Turma
-	- Deve listar as turmas (sem repetir) de acordo com seu código
-	- Este filtro deve respeitar os filtros de Graduação, de Semestre e unidade curricular
-		- Deve receber um array de graduações (podendo ser vazio)
-		- Deve receber um array de ofertas (podendo ser vazio)	
-	- Havendo mais de uma turma com o mesmo código, a oferta selecionada vai ter um array de allocationTagIds
-Tudos
-	-Devem ter um valor a mais na resposta equivalente a Todos os allocationTags deste nível 
-	ignorando a chave de busca mas respeitando os filtros anteriores
-	- A palavra "Todos" deve ser internacionalizada
-
-
 */
 
 
 $(document).ready(function(){
-
-	function recountItems(){
-		console.log(Date() + 'Recontando...');
-		$(".placesNavPanel #counter").text('99');
-	
-	}
 
 	$( "#txtCourse").tokenInput(search_urls["course"], {
 		hintText: hints["course"],
@@ -152,12 +112,24 @@ $(document).ready(function(){
 	//Chamando a lista completa de elementos quando se aperta a seta para baixo no teclado.
 	//$('#token-input-txtCourse').keydown(function(e){
 	
-	$('[id^="token-input-"]').keydown(function(e){
+	$('[id^="token-input-"]').keyup(function(e){
+		console.log('Clicou:'+ e.keyCode);
     	if (e.keyCode == 40) { 
 	    	if (isSearchPanelClosed(this)){
-				console.log('Clicou para baixo'+new Date().getTime());
 				$(this).val(' ');
 				$(this).trigger('keydown');
+			}
+    	}
+
+    	if (e.keyCode == 9) { 
+	    	if (isSearchPanelClosed(this)){
+		    	var $parent = null;
+		    	if (e.shiftKey)
+			    	$parent = $(this).parent().parent().parent().prev();
+		    	else
+		    		$parent = $(this).parent().parent().parent().next();
+				if ($parent != undefined)
+					$parent.find('[id^="token-input-"]').focus();
 			}
     	}
 	});
@@ -195,5 +167,20 @@ function showNavPanelMenu(element){
 	//console.log($('#navPanelMenu'));
 }
 
+/* Retorna as allocationTagIds selecionadas*/
+function navPanelSelectedItems(){
+	var $selectedItem = $("#txtGroup").tokenInput("get")[0];
+	if ($selectedItem == undefined) 
+		$selectedItem = $( "#txtSemester").tokenInput("get")[0];
+	if ($selectedItem == undefined) 
+		$selectedItem = $( "#txtCurriculumUnit").tokenInput("get")[0];
+	if ($selectedItem == undefined) 
+		$selectedItem = $( "#txtCourse").tokenInput("get")[0];
+
+	if ($selectedItem == undefined) 
+		return [];
+	
+	return $selectedItem.allocation_tag_id
+}
 
 

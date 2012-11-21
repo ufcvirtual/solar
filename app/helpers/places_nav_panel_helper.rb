@@ -1,40 +1,38 @@
 =begin
 
-  = Campos do filtro
-    - Curso/Graduacao
-    - Periodo/Oferta
-    - Unidade Curricular
-    - Turma
-
   = Listar apenas informações em que o usuário tem alguma ligação com permissão de edição
     - verificar em qual ponto da hierarquia o usuario tem permissao para visualizar
       - listar todas as informacoes abaixo desse ponto
         - uc, oferta, turma
 
-  =====
-  -- o usuario é obrigado a selecionar a allocation_tag onde tem associação (e as allocation_tags acima na hierarquia)
-    -- se é associado a uma unidade curricular
-      -- é obrigado a escolhar uma graduacao em um periodo, e o periodo
-        -- esses campos nao podem ficar vazios ou com opcao --TODOSO--
-
-
-  -- obrigar usuario a escolher uma opcao quando nem tem alocacao na hierarquia pra cima
-
-
 TODO: 
-	- Internacionalizar
-	- Colocar label indicando quais e quantas entidades estão selecionadas
 	- colocar "alt" nas imagens
 	- remover o '/assets' dos caminhos de imagens
-	- Pesquisa deve selecionar (Todos)
-	- Preparar retorno (conjunto de allocationTags)
-	- Colocar o Tab pra funcionar
     - Ver necessidade de indexar no BD os campos de busca para melhorar a performance de tudo.
 =end
 
 module PlacesNavPanelHelper
 
   def places_nav_panel_helper
+  
+	selectedCourseName = ''
+	selectedCourseValue = ''
+	selectedSemesterName = ''
+	selectedSemesterValue = ''
+	selectedCurriculumUnitName = ''
+	selectedCurriculumUnitValue = ''
+	selectedGroupName = ''
+	selectedGroupValue = ''
+	
+	selectedCourseName = params[:selectedCourseName] if params.include?(:selectedCourseName)
+	selectedCourseValue = params[:selectedCourseValue] if params.include?(:selectedCourseValue)
+	selectedSemesterName = params[:selectedSemesterName] if params.include?(:selectedSemesterName)
+	selectedSemesterValue = params[:selectedSemesterValue] if params.include?(:selectedSemesterValue)
+	selectedCurriculumUnitName = params[:selectedCurriculumUnitName] if params.include?(:selectedCurriculumUnitName)
+	selectedCurriculumUnitValue = params[:selectedCurriculumUnitValue] if params.include?(:selectedCurriculumUnitValue)
+	selectedGroupName = params[:selectedGroupName] if params.include?(:selectedGroupName)
+	selectedGroupValue = params[:selectedGroupValue] if params.include?(:selectedGroupValue)
+    
     raw %{
 	#{ javascript_include_tag "places_nav_panel"}
 	#{ javascript_include_tag "jquery.tokeninput.js"}
@@ -70,28 +68,31 @@ module PlacesNavPanelHelper
 			class="label">#{t(:course)}:</span><input 
 			type="text" id="txtCourse"/>
 			<input type="button" value="" class ="btShowMenu"/>
+			<input type="hidden" id="selectedCourseName" name="selectedCourseName"/>
+			<input type="hidden" id="selectedCourseValue" name="selectedCourseValue"/>
 		</div>
 		<div><span 
 			class="label">#{t(:semester_date)}:</span><input 
 			type="text" id="txtSemester"/>
 			<input type="button" value="" class ="btShowMenu"/>
+			<input type="hidden" id="selectedSemesterName" name="selectedSemesterName"/>
+			<input type="hidden" id="selectedSemesterValue" name="selectedSemesterValue"/>
 		</div>
 		<div><span 
 			class="label" style=";">#{t(:curriculum_unit)}:</span><input 
 			type="text" id="txtCurriculumUnit"/>
 			<input type="button" value="" class ="btShowMenu"/>
+			<input type="hidden" id="selectedCurriculumUnitName" name="selectedCurriculumUnitName"/>
+			<input type="hidden" id="selectedCurriculumUnitValue" name="selectedCurriculumUnitValue"/>
 		</div>
 		<div><span 
 			class="label">#{t(:group)}:</span><input 
 			type="text" id="txtGroup"/>
 			<input type="button" value="" class ="btShowMenu"/>
-		</div>
-		<div id="counterLabel" class="label summary">
-			<span id="counter">0</span>
-			<span id="counterDescription">[Turma(s) selecionada(s)]</span>
+			<input type="hidden" id="selectedGroupName" name="selectedGroupName"/>
+			<input type="hidden" id="selectedGroupValue" name="selectedGroupValue"/>
 		</div>
 	</div>
-
     }
   end
 
