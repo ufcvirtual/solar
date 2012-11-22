@@ -1,0 +1,39 @@
+= hidden_field_tag(:allocation_tag_id, params[:allocation_tag_id]) 
+
+.block_wrapper
+  - unless @lesson_modules.nil? or @lesson_modules.empty?
+
+    - @lesson_modules.each do |m|
+      .block_title
+        %h2= m.name
+        
+      .block_content.block_content_text.block_content_toolbar
+        ='opções do módulo'
+
+      %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :border => "1"}
+        %thead
+          %tr.lines
+            %th{:align => 'center'}
+              = check_box_tag( 'all', 'all', false, {:id => "cbx_all"} )
+            %th{:align => 'center'}= 'Ordem'
+            //t :lesson_table_title 
+            %th= 'Nome da aula'
+            %th{:align => 'center'}= 'Disponibilidade'
+            %th{:align => 'center'}= 'Aprovação'
+        %tbody
+          - lessons = lessons_by_module(m.id)
+          - lessons.each do |lesson|
+            %tr.lines
+              %td{:style => "width: 40px;", :align => 'center' }
+                = check_box_tag( m.id, lesson.id, false, {} )
+              %td{:style => "width: 60px;", :align => 'center'}= lesson.order
+              %td= lesson.name
+              %td{:style => "width: 160px", :align => 'center'}
+                =l lesson.schedule.start_date, :format => :normal
+              %td{:style => "width: 100px", :align => 'center'}
+
+  - else
+    .block_content.block_content_text 
+      ='nenhum modulo :P'
+
+  =button_to 'Novo módulo', list_lessons_path(:allocation_tag_id => params[:allocation_tag_id]), :class => 'btn btn_default', :alt => 'sem alt'

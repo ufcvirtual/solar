@@ -2,7 +2,7 @@ include AllocationsHelper
 
 class AllocationsController < ApplicationController
 
-  authorize_resource :except => [:destroy, :create_designation, :activate, :deactivate]
+  authorize_resource :except => [:destroy, :designates, :create_designation, :activate, :deactivate]
 
   # GET /allocations/designates
   # GET /allocations/designates.json

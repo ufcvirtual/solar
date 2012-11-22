@@ -1,5 +1,12 @@
 module LessonsHelper
 
+  def lessons_by_module(lesson_module_id)
+    lessons = Lesson.find(:all,
+      :joins => [:lesson_module, :schedule], 
+      :conditions => ["lesson_module_id IN (#{lesson_module_id}) "],
+      :order => ["lessons.order"]) 
+  end
+
   def lessons_list(lessons, atual_id_open = nil)
     count, total_lesson = 1, lessons.length
     order_lesson, text = '', ''
