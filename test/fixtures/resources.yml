@@ -109,7 +109,7 @@ res18:
 res19:
   id: 19
   controller: 'lessons'
-  action: 'list'
+  action: 'index'
   description: 'Listar aulas de uma Unidade Curricular'
 
 res20:

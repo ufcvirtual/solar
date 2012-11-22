@@ -88,7 +88,7 @@ Solar::Application.routes.draw do
     collection do
       get :show_header
       get :show_content
-      get :list
+      get :index
     end
   end
 
