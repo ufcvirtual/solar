@@ -30,47 +30,40 @@ class MessagesController < ApplicationController
   def new
     # recebe nil quando esta em pagina de leitura/edicao de msg
     @type = nil
-
-    @search_text = params[:search].nil? ? "" : params[:search]
-
+    @search_text = params[:search] || ''
     @show_message = 'new'
     get_contacts
 
     @target, @subject, @original_message, @target_html  = '', '', '', ''
 
-    if !params[:id].nil?
+    if not(params[:id].nil?)
       @original_message_id = params[:id]
 
       get_message_data(@original_message_id)
 
       @subject = @message.subject
-
-      # remetente
       sender = get_sender(@original_message_id)
-
-      # arquivos
       @files = get_files(@original_message_id)
 
       # destinatarios
       all_recipients,all_recipients_name, all_recipients_html = '', '', ''
       get_recipients(@original_message_id).each { |r|
-        all_recipients = all_recipients << r.name << ' [' << r.email << '], ' unless r.email == current_user.email
-        # all_recipients_html = all_recipients_html << "<span onclick='$(this).remove()' class='message_recipient_box' >#{r.email}, </span>" unless r.email == current_user.email
+        all_recipients = [all_recipients, r.name, ' [', r.email, '], '].join unless r.email == current_user.email
         all_jquery = "'#u#{r.id}'"
         all_recipients_html = all_recipients_html << "<span onclick=""$(#{all_jquery}).show();$(this).remove()"" class='message_recipient_box' >#{r.name} [#{r.email}], </span>" unless r.email == current_user.email
         # apenas para identificacao do email - informa todos, inclusive o logado
-        all_recipients_name = all_recipients_name << r.name << " [" << r.email << "], "
+        all_recipients_name = [all_recipients_name, r.name, " [", r.email, "], "].join
       }
 
       # identificacao da mensagem original para juntar ao texto
-      message_header =  t(:message_from) << ": " << sender.name << " [" << sender.email << "]<br/>"
-      message_header << t(:message_date) << ": " << @message.send_date.to_s << "<br/>"
-      message_header << t(:message_subject) << ": " << @subject << "<br/>"
-      message_header << t(:message_to) << ": " << all_recipients_name << "<br/>"
+      message_header =  [t(:message_from), ": ", sender.name, " [", sender.email, "]<br/>"].join
+      message_header << [t(:message_date), ": ", @message.send_date.to_s(:db), "<br/>"].join
+      message_header << [t(:message_subject), ": ", @subject, "<br/>"].join
+      message_header << [t(:message_to), ": ", all_recipients_name, "<br/>"].join
 
-      @original_message = "<p>&nbsp;</p><p>&nbsp;</p><hr/>" << message_header << "<p>&nbsp;</p>" << @message.content
+      @original_message =  ["<p>&nbsp;</p><p>&nbsp;</p><hr/>", message_header, "<p>&nbsp;</p>", @message.content].join
 
-      if !params[:target].nil?
+      if not(params[:target].nil?)
         target = params[:target]
 
         # encaminhando

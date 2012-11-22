@@ -188,11 +188,7 @@ SQL
   end
   
   def allocation_tag_activated_ids
-    allocation_tags = self.allocation_tags.where('allocations.status = ?', Allocation_Activated)
-        
-    return  allocation_tags.collect { |allocation_tag|
-      allocation_tag['id'].to_i
-    }
+    allocation_tags.where('allocations.status = ?', Allocation_Activated).map(&:id)
   end
 
   #Retorna unidades curriculares que o usuário acessa (incluindo ofertas e turmas)

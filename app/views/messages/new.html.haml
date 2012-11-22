@@ -2,24 +2,19 @@
   %span.page_title= t(:message_title)
 
   = render 'message_header'
-
   = form_for :message, :url => {:action => 'send_message'}, :html => {:id => 'form_message_text', :multipart => true} do |f|
-
     = render 'message_header_to'
 
     #div_new_message
       %textarea#newMessageTextBox{:name => "newMessageTextBox"}= @original_message
 
     .message_new_action
-      = f.submit t(:message_send)+' ', :id => 'send_message', :class=> 'btn btn_main', :alt=> t(:message_send)
+      = f.submit [t(:message_send), ' '].join, :id => 'send_message', :class=> 'btn btn_main', :alt=> t(:message_send)
       = hidden_field_tag :id, @original_message_id
-      = link_to t(:message_discard)+' ', {:action => 'index', :type => 'index'}, {:class=>'btn btn_caution'}
-
-= javascript_include_tag "ckeditor/init"
+      = link_to [t(:message_discard), ' '].join, {:action => 'index', :type => 'index'}, {:class=>'btn btn_caution'}
 
 :javascript
-  CKEDITOR_BASEPATH = '<%= "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/" %>';
+  CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
+  $(function(){ CKEDITOR.replace('newMessageTextBox'); });
 
-  $(document).ready(function(){
-    CKEDITOR.replace('newMessageTextBox');
-  });
+= javascript_include_tag "ckeditor/init"

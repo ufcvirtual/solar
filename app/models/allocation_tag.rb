@@ -8,7 +8,8 @@ class AllocationTag < ActiveRecord::Base
   has_many :offers, :through => :curriculum_unit
 
   has_many :allocations
-  has_many :lessons
+  has_many :lesson_modules
+  has_many :lessons, :through => :lesson_modules
   has_many :discussions
   has_many :schedule_events
   has_many :assignments

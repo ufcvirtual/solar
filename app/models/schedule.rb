@@ -11,110 +11,39 @@ class Schedule < ActiveRecord::Base
 
   before_destroy :can_destroy?
   
-  ##
-  # Validação que verifica se a data inicial é anterior à data final
-  ##
+  ## Validação que verifica se a data inicial é anterior à data final
   def start_date_before_end_date
     unless start_date.nil? or end_date.nil?
       errors.add(:start_date, I18n.t(:range_date_error, :scope => [:discussion, :errors])) if (start_date > end_date)
     end
   end
 
-  ##
-  # Verifica se pode deletar o schedule: permite apenas se não tiver dependências
-  ##
+  ## Verifica se pode deletar o schedule: permite apenas se não tiver dependências
   def can_destroy?
-    if not(discussions.empty? and lessons.empty? and assignments.empty? and schedule_events.empty?)
-      return false
-    end
+    return false if not(discussions.empty? and lessons.empty? and assignments.empty? and schedule_events.empty?)
   end
 
-  
-  def self.all_by_allocation_tags(allocation_tags, period = false, date_search = nil)
+  def self.events(allocation_tags, period = false, date_search = nil)
+    where, where_hash = [], {}
+    unless allocation_tags.nil?
+      where_hash[:allocation_tags] = allocation_tags
+      where << "allocation_tags.id IN (:allocation_tags)"
+    end
+    unless date_search.nil?
+      where_hash[:date_search] = date_search.to_s(:db)
+      where << "schedules.start_date = :date_search OR schedules.end_date = :date_search"
+    end
 
-    allocation_tags = allocation_tags.join(',') if allocation_tags.is_a?(Array)
+    where = [where.join(' AND '), where_hash]
 
-    date_search_option, limit = '', ''
-    limit = 'LIMIT 2' if period
+    schedules_events   = ScheduleEvent.joins(:schedule, :allocation_tag).where(where).select("'schedule_events' AS schedule_type, schedule_events.title AS name, schedule_events.description, schedules.start_date, schedules.end_date")
+    assignments_events = Assignment.joins(:schedule, :allocation_tag).where(where).select("'assignments' AS schedule_type, assignments.name AS name, assignments.enunciation AS description, schedules.start_date, schedules.end_date")
+    discussions_events = Discussion.joins(:schedule, :allocation_tag).where(where).select("'discussions' AS schedule_type, discussions.name AS name, discussions.description, schedules.start_date, schedules.end_date")
+    lessons_events     = Lesson.joins(:schedule, :allocation_tag).where(where).select("'lessons' AS schedule_type, lessons.name AS name, lessons.description, schedules.start_date, schedules.end_date")
+    events             = [schedules_events + assignments_events + discussions_events + lessons_events].flatten.compact.map(&:attributes).sort_by {|e| e['end_date'] }
 
-    date_search_option = "AND (t2.start_date = current_date OR t2.end_date = current_date)" if date_search.nil? and period
-    date_search_option = "AND (t2.start_date = '#{date_search}' OR t2.end_date = '#{date_search}')" unless date_search.nil?
-
-    allocations_where = allocation_tags.nil? ? '' : "WHERE id IN (#{allocation_tags})"
-
-    query = <<SQL
-    WITH cte_all_allocation_tags AS (
-      SELECT id AS allocation_tag_id, * FROM allocation_tags #{allocations_where}
-     )
-    -- consulta
-   SELECT * FROM (
-      (
-        SELECT t1.name, t1.description, t2.start_date, t2.end_date , 'discussions' AS schedule_type, t1.allocation_tag_id
-          ,t4.code, t5.semester, t6.name as curriculum_name
-
-          FROM discussions             AS t1
-          JOIN schedules               AS t2 ON t2.id = t1.schedule_id
-          JOIN cte_all_allocation_tags AS t3 ON t3.allocation_tag_id = t1.allocation_tag_id
-
-          join groups as t4 on t3.group_id = t4.id
-          join offers as t5 on t3.offer_id = t5.id or t4.offer_id = t5.id
-          join curriculum_units as t6 on t3.curriculum_unit_id = t6.id or t5.curriculum_unit_id = t6.id
-
-           #{date_search_option}
-      )
-      UNION
-      (
-
-        SELECT t1.name, t1.description, t2.start_date, t2.end_date, 'lessons' AS schedule_type, t3.allocation_tag_id
-                  ,t5.code, t6.semester, t7.name as curriculum_name
-
-                  FROM lessons                 AS t1
-                  JOIN schedules               AS t2 ON t2.id = t1.schedule_id
-
-        join lesson_modules as t3 on t1.lesson_module_id = t3.id
-        JOIN cte_all_allocation_tags AS t4 ON t4.allocation_tag_id = t3.allocation_tag_id
-        join groups as t5 on t4.group_id = t5.id
-        join offers as t6 on t4.offer_id = t6.id or t5.offer_id = t6.id
-        join curriculum_units as t7 on t4.curriculum_unit_id = t7.id or t6.curriculum_unit_id = t7.id
-
-           #{date_search_option}
-      )
-      UNION
-      (
-      SELECT t1.name, t1.enunciation AS description, t2.start_date, t2.end_date, 'schedule_assignment' AS schedule_type, t1.allocation_tag_id
-        ,t4.code, t5.semester, t6.name as curriculum_name
-
-        FROM assignments             AS t1
-        JOIN schedules               AS t2 ON t2.id = t1.schedule_id
-        JOIN cte_all_allocation_tags AS t3 ON t3.allocation_tag_id = t1.allocation_tag_id
-
-        join groups as t4 on t3.group_id = t4.id
-        join offers as t5 on t3.offer_id = t5.id or t4.offer_id = t5.id
-        join curriculum_units as t6 on t3.curriculum_unit_id = t6.id or t5.curriculum_unit_id = t6.id
-
-           #{date_search_option}
-      )
-      UNION
-      (
-      SELECT t1.title AS name, t1.description, t2.start_date, t2.end_date, 'schedule_events' AS schedule_type, t1.allocation_tag_id
-        ,t4.code, t5.semester, t6.name as curriculum_name
-
-        FROM schedule_events         AS t1
-        JOIN schedules               AS t2 ON t2.id = t1.schedule_id
-        JOIN cte_all_allocation_tags AS t3 ON t3.allocation_tag_id = t1.allocation_tag_id
-
-        join groups as t4 on t3.group_id = t4.id
-        join offers as t5 on t3.offer_id = t5.id or t4.offer_id = t5.id
-        join curriculum_units as t6 on t3.curriculum_unit_id = t6.id or t5.curriculum_unit_id = t6.id
-
-           #{date_search_option}
-      )
-    ) AS t1
-   ORDER BY t1.end_date
-   #{limit}
-SQL
-
-    ActiveRecord::Base.connection.select_all query
+    return events.slice(0,2) if period # apenas os dois primeiros
+    return events
   end
 
 end

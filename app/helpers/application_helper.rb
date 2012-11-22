@@ -1,14 +1,8 @@
 module ApplicationHelper
 
   def message
-		text = ""
-		[:notice,:success,:error].each {|type|
-			if flash[type]
-				text += "<span class=\"#{type}\">#{flash[type]}</span>"
-      end
-		}
-		text
-	end
+    [:notice,:success,:error].map {|type| %{<span class="#{type}">#{flash[type]}</span>} if flash[type] }.compact.join
+  end
 
   ## Ver se existe outro lugar melhor para este método.
   def render_tabs
@@ -159,16 +153,16 @@ module ApplicationHelper
   end
 
   # recebe um conjunto de allocation_tags e retorna esse conjunto acrescido das allocation_tags relacionadas
-  def all_allocation_tags (allocation_tags)
-    if !allocation_tags.empty?
-      other_allocations = Array.new
-      allocation_tags.each { |a|
-        other_allocations = other_allocations.push( AllocationTag.find_related_ids(a).join(', ') )
-      }
-      allocation_tags = allocation_tags.push(other_allocations)
-    else
-      allocation_tags = ''
-    end
-  end
+  # def all_allocation_tags (allocation_tags)
+  #   if !allocation_tags.empty?
+  #     other_allocations = Array.new
+  #     allocation_tags.each { |a|
+  #       other_allocations = other_allocations.push( AllocationTag.find_related_ids(a).join(', ') )
+  #     }
+  #     allocation_tags = allocation_tags.push(other_allocations)
+  #   else
+  #     allocation_tags = ''
+  #   end
+  # end
 
 end

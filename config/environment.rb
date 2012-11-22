@@ -5,21 +5,21 @@ Solar::Application.initialize!
 mailer_config = YAML::load(File.open('config/mailer.yml'))
 
 # configuracoes do action mailer para o gmail - porta: 465 ou 587
-ActionMailer::Base.perform_deliveries 	= true
-ActionMailer::Base.delivery_method 		= :smtp
-ActionMailer::Base.default_url_options 	= mailer_config['default_url_options']
-ActionMailer::Base.smtp_settings 		= mailer_config['smtp_settings']
+ActionMailer::Base.perform_deliveries   = true
+ActionMailer::Base.delivery_method      = :smtp
+ActionMailer::Base.default_url_options  = mailer_config['default_url_options']
+ActionMailer::Base.smtp_settings        = mailer_config['smtp_settings']
 
 # constantes de status de matricula e pedido de matricula - table ALLOCATIONS
-Allocation_Pending   = 0           # quando pede alocação(matricula) pela 1a vez
-Allocation_Activated = 1           # com alocação ativa
-Allocation_Cancelled = 2           # com alocação cancelada
-Allocation_Pending_Reactivate = 3  # quando pede alocação(matricula) depois de ter sido cancelado
-Allocation_Rejected  = 4           # quando pedido de matricula eh rejeitado
+Allocation_Pending            = 0 # quando pede alocação(matricula) pela 1a vez
+Allocation_Activated          = 1 # com alocação ativa
+Allocation_Cancelled          = 2 # com alocação cancelada
+Allocation_Pending_Reactivate = 3 # quando pede alocação(matricula) depois de ter sido cancelado
+Allocation_Rejected           = 4 # quando pedido de matricula eh rejeitado
 
 # constantes de status de aula - table LESSONS
-Lesson_Test      = 0               # aula em teste
-Lesson_Approved  = 1               # aula aprovada
+Lesson_Test      = 0 # aula em teste
+Lesson_Approved  = 1 # aula aprovada
 
 # constante que indica numero maximo de abas abertas
 Max_Tabs_Open = 4
@@ -42,14 +42,14 @@ Profile_Type_Editor             = 0b00001000  # (4o bit = 1)
 Curriculum_Unit_Initial_Profile = 5
 
 # Contextos de abas e menus
-Context_General            = 1 #Context.find_by_name('general').id
-Context_Curriculum_Unit    = 2 #Context.find_by_name('curriculum_unit').id
+Context_General         = 1 #Context.find_by_name('general').id
+Context_Curriculum_Unit = 2 #Context.find_by_name('curriculum_unit').id
 
 # Tempo extra, em dias, para o responsável poder executar uma ação
-Discussion_Responsible_Extra_Time 	= 3
-Discussion_Post_Max_Indent_Level 	= 4
-Assignment_Responsible_Extra_Time 	= 3 
+Discussion_Responsible_Extra_Time   = 3
+Discussion_Post_Max_Indent_Level    = 4
+Assignment_Responsible_Extra_Time   = 3 
 
 # Constantes que indicam se a atividade é individual ou em grupo
 Individual_Activity = 1
-Group_Activity = 2
+Group_Activity      = 2
