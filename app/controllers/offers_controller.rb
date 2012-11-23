@@ -5,7 +5,7 @@ class OffersController < ApplicationController
 
   def index
     # não poderão vir com o valor 0 (indicando que "nenhum" foi selecionado, pois as ofertas dependem de ambos)
-    @course_id, @curriculum_unit_id = "all", "all"
+    @course_id, @curriculum_unit_id = "all", "all" # a fim de testes: editor, atualmente, tem permissão para uc: 5 e curso: 2
     # @course_id, @curriculum_unit_id = params[:course_id], params[:curriculum_unit_id] # descomentar esta linha após adição do filtro
     authorize! :index, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e cursos selecionados
 
@@ -22,7 +22,7 @@ class OffersController < ApplicationController
 
   def edit
     @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
-    authorize! :edit, Offer, :on => @offer.allocation_tag.id # verifica se tem acesso à oferta a ser editada
+    authorize! :edit, Offer, :on => [@offer.allocation_tag.id] # verifica se tem acesso à oferta a ser editada
 
     @offer = Offer.find(params[:id])
     render :layout => false
@@ -75,7 +75,7 @@ class OffersController < ApplicationController
 
   def update
     @offer = Offer.find(params[:id])
-    authorize! :update, Offer, :on => @offer.allocation_tag.id # verifica se tem acesso à oferta a ser editada
+    authorize! :update, Offer, :on => [@offer.allocation_tag.id] # verifica se tem acesso à oferta a ser editada
 
     params[:offer][:curriculum_unit_id], params[:offer][:course_id] = params[:curriculum_unit_id], params[:course_id]
     @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
@@ -113,7 +113,7 @@ class OffersController < ApplicationController
   # Método que desabilita todos os grupos da oferta
   def deactivate_groups
     offer = Offer.find(params[:id])
-    authorize! :deactivate_groups, Offer, :on => offer.allocation_tag.id # verifica se tem acesso à oferta a ter suas turmas desativadas
+    authorize! :deactivate_groups, Offer, :on => [offer.allocation_tag.id] # verifica se tem acesso à oferta a ter suas turmas desativadas
 
     offer.groups.each { |group| group.update_attributes!(:status => false) }
 

@@ -380,3 +380,20 @@ coord_ad:
   allocation_tag_id: 5
   profile_id: 5
   status: 1
+
+# acesso do editor à uc Literatura Brasileira I
+editor_al10:
+  id: 53
+  user_id: 14
+  allocation_tag_id: 10
+  profile_id: 5
+  status: 1
+
+# acesso do editor ao curso Licenciatura em Quimica
+editor_al19:
+  id: 54
+  user_id: 14
+  allocation_tag_id: 19
+  profile_id: 5
+  status: 1
+

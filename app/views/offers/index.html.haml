@@ -32,7 +32,7 @@
             / deactivate_class[mensagem_no_title, classe_do_botão]
             - deactivate_class = allow_deactivate ? [nil, "btn btn_caution"] : [(groups.empty? ? t(".no_groups") : t(".groups_already_deactivated")), "btn btn_disabled"]
 
-            = button_tag t(".deactivate_groups"), :class => deactivate_class[1], :alt => t(".deactivate_groups"), :type => :button, :onclick => "javascript:deactivate_groups_offer(#{offer.id}, '#{deactivate_groups_offer_path(offer)}');", :disabled => (not allow_deactivate), :title => deactivate_class[0]
+            = button_tag t(".deactivate_groups"), :class => deactivate_class[1], :alt => t(".deactivate_groups"), :type => :button, :onclick => "javascript:deactivate_groups_offer(#{offer.id}, '#{deactivate_groups_offer_path(offer, :curriculum_unit_id => @curriculum_unit_id, :course_id => @course_id)}');", :disabled => (not allow_deactivate), :title => deactivate_class[0]
             = button_tag t(".delete"), :onclick => "javascript: delete_object('#{offer_path(offer, :curriculum_unit_id => @curriculum_unit_id, :course_id => @course_id)}', 'list_offers')", :class => "btn btn_caution", :alt => t(".delete")
 
 - if @error_deletion
