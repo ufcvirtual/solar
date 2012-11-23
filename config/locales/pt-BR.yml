@@ -251,8 +251,8 @@
       offer:
         course: Curso
         curriculum_unit: Unidade Curricular
-        start: Data inicial
-        end: Data final
+        start_date: Data inicial
+        end_date: Data final
         semester: Semestre
 
 
@@ -1155,3 +1155,4 @@
       all: Todos(as)
     not_possible_to_delete: Não é possível deletar oferta com dependências
     existing_semester: já existe
+    range_date_error: deve ser menor que a final

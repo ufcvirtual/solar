@@ -21,7 +21,7 @@ class Assignment < ActiveRecord::Base
   ##
   def define_end_evaluation_date
     offer = self.group.offer
-    self.end_evaluation_date = offer.end if (end_evaluation_date.blank? or end_evaluation_date.nil?)
+    self.end_evaluation_date = offer.end_date if (end_evaluation_date.blank? or end_evaluation_date.nil?)
   end
 
   ##

@@ -113,8 +113,8 @@
       offer:
         course: Course
         curriculum_unit: Curriculum Unit
-        start: Start date
-        end: End date
+        start_date: Start date
+        end_date: End date
         semester: Semester
 
 
@@ -448,7 +448,7 @@
       existing_name_error: already exists
       cant_edit: Discussion can't be edited
       cant_delete: Discussion can't be deleted
-      range_date_error: must be smaller then the final date
+      range_date_error: must be smaller than the final date
       offer_period: must be on the date range of offer (%{start} - %{end})
     buttons:
       save: Save
@@ -994,7 +994,8 @@
       save: Save
       cancel: Cancel
       date_range: Date range
-      not_possible_to_delete: It's not possible to delete offer with dependencies
       to:  to  
       all: All
+    not_possible_to_delete: It's not possible to delete offer with dependencies
     existing_semester: already exists
+    range_date_error: must be smaller than end

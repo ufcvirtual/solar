@@ -35,7 +35,7 @@ class DiscussionsController < ApplicationController
     begin
 
       raise  "validation_error" unless @discussion.valid?
-      raise "date_range_error" if @schedule.start_date < offer.start or @schedule.end_date > offer.end # período escolhido deve estar dentro do período da oferta
+      raise "date_range_error" if @schedule.start_date < offer.start_date or @schedule.end_date > offer.end_date # período escolhido deve estar dentro do período da oferta
 
       ActiveRecord::Base.transaction do
         @allocation_tags_ids.split(" ").each do |allocation_tag_id|
@@ -53,7 +53,7 @@ class DiscussionsController < ApplicationController
       @discussion.errors.add(:name, t(:existing_name, :scope => [:discussion, :errors])) if error.message == t(:existing_name, :scope => [:discussion, :errors])
 
       if error.message == "date_range_error"
-        @schedule_error = t(:offer_period, :scope => [:discussion, :errors], :start => l(offer.start, :formats => :default), :end => l(offer.end, :formats => :default))
+        @schedule_error = t(:offer_period, :scope => [:discussion, :errors], :start => l(offer.start_date, :formats => :default), :end => l(offer.end_date, :formats => :default))
       end
       @schedule_error = @schedule.errors.full_messages[0] unless @schedule.valid?
 
@@ -91,7 +91,7 @@ class DiscussionsController < ApplicationController
       begin
         
         raise  "validation_error" unless @discussion.valid? and @schedule.valid?
-        raise "date_range_error" if @schedule.start_date < offer.start or @schedule.end_date > offer.end # período escolhido deve estar dentro do período da oferta
+        raise "date_range_error" if @schedule.start_date < offer.start_date or @schedule.end_date > offer.end_date # período escolhido deve estar dentro do período da oferta
 
         schedule.update_attributes!(:start_date => params["start_date"], :end_date => params["end_date"])
         @discussion.update_attributes!(params[:discussion])
@@ -104,7 +104,7 @@ class DiscussionsController < ApplicationController
         @discussion.errors.add(:name, t(:existing_name, :scope => [:discussion, :errors])) if error.message == t(:existing_name, :scope => [:discussion, :errors])
 
         if error.message == "date_range_error"
-          @schedule_error = t(:offer_period, :scope => [:discussion, :errors], :start => l(offer.start, :formats => :default), :end => l(offer.end, :formats => :default))
+          @schedule_error = t(:offer_period, :scope => [:discussion, :errors], :start => l(offer.start_date, :formats => :default), :end => l(offer.end_date, :formats => :default))
         else 
           @schedule_error = @schedule.errors.full_messages[0] unless @schedule.valid?
         end

@@ -23,7 +23,7 @@
           %td= offer.course.name
           %td= offer.curriculum_unit.name
           %td= offer.semester
-          %td= [l(offer.start), l(offer.end)].join(" - ")
+          %td= [l(offer.start_date), l(offer.end_date)].join(" - ")
           %td
             = button_tag t(".edit"), :class => "btn btn_default", :type => :button, :onclick => "javascript:open_lightbox3('#{edit_offer_path(offer, :course_id => @course_id, :curriculum_unit_id => @curriculum_unit_id)}', '#{t(".edit_offer")}');", :alt => t(".edit")
 

@@ -4,7 +4,7 @@ class AddEvaluationPeriodToAssignment < ActiveRecord::Migration
 
    	Assignment.all.each do |assignment|
    		offer = assignment.group.offer
-      assignment.update_attributes!(:end_evaluation_date => offer.end)
+      assignment.update_attributes!(:end_evaluation_date => offer.end_date)
     end
 
   end

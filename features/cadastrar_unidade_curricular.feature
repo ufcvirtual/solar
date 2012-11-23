@@ -10,7 +10,6 @@ Contexto:
         | 2        | 1                  | 2           | 1      |
         | 14       | 7                  | 5           | 1      |
         | 14       | 12                 | 5           | 1      |
-        | 14       | 13                 | 5           | 1      |
 
 Cenário: Acessar listagem de unidades curriculares como usuário com permissão para isso
 Dado que estou logado com o usuario "editor" e com a senha "123456"

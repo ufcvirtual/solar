@@ -381,11 +381,11 @@ coord_ad:
   profile_id: 5
   status: 1
 
-# acesso do editor à uc Literatura Brasileira I
-editor_al10:
+# acesso do editor à uc Quimica I
+editor_al3:
   id: 53
   user_id: 14
-  allocation_tag_id: 10
+  allocation_tag_id: 13
   profile_id: 5
   status: 1
 

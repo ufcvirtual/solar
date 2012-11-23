@@ -22,9 +22,10 @@ class OffersController < ApplicationController
 
   def edit
     @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
+    @offer = Offer.find(params[:id])
+
     authorize! :edit, Offer, :on => [@offer.allocation_tag.id] # verifica se tem acesso à oferta a ser editada
 
-    @offer = Offer.find(params[:id])
     render :layout => false
   end
 
@@ -65,7 +66,7 @@ class OffersController < ApplicationController
     rescue Exception => error
 
       respond_to do |format|
-        @date_range_error = @offer.errors.full_messages.last unless @offer.errors[:start].blank? and @offer.errors[:end].blank?
+        @date_range_error = @offer.errors.full_messages.last unless @offer.errors[:start_date].blank? and @offer.errors[:end_date].blank?
         format.html { render :new, :layout => false }
       end
 
@@ -77,17 +78,23 @@ class OffersController < ApplicationController
     @offer = Offer.find(params[:id])
     authorize! :update, Offer, :on => [@offer.allocation_tag.id] # verifica se tem acesso à oferta a ser editada
 
-    params[:offer][:curriculum_unit_id], params[:offer][:course_id] = params[:curriculum_unit_id], params[:course_id]
+    params[:offer][:curriculum_unit_id], params[:offer][:course_id] = @offer.curriculum_unit_id, @offer.course_id
     @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
 
-    respond_to do |format|
-      if @offer.update_attributes(params[:offer])
+    begin
+
+      @offer.update_attributes!(params[:offer])
+      respond_to do |format|
         get_offers(params[:curriculum_unit_id], params[:course_id])
         format.html { render :index, :layout => false }
-      else
-        @date_range_error = @offer.errors.full_messages.last unless @offer.errors[:start].blank? and @offer.errors[:end].blank?
+      end
+
+    rescue Exception => error
+      respond_to do |format|
+        @date_range_error = @offer.errors.full_messages.last unless @offer.errors[:start_date].blank? and @offer.errors[:end_date].blank?
         format.html { render :edit, :layout => false }
       end
+
     end
   end
 
