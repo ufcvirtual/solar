@@ -1,3 +1,5 @@
+include MessagesHelper
+
 class CurriculumUnitsController < ApplicationController
 
   before_filter :curriculum_data, :only => [:home, :informations, :curriculum_data]

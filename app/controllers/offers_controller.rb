@@ -1,214 +1,127 @@
 include ApplicationHelper
+include OffersHelper
 
 class OffersController < ApplicationController
 
-  before_filter :get_values, :only => [:new, :edit]
-
   def index
-    # authorize! :index, Offer
+    # não poderão vir com o valor 0 (indicando que "nenhum" foi selecionado, pois as ofertas dependem de ambos)
+    @course_id, @curriculum_unit_id = "all", "all"
+    # @course_id, @curriculum_unit_id = params[:course_id], params[:curriculum_unit_id] # descomentar esta linha após adição do filtro
+    authorize! :index, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e cursos selecionados
 
-    al                = current_user.allocations.where(status: Allocation_Activated)
-    my_direct_offers  = al.map(&:offer).compact
-    offers_by_courses  = al.map(&:course).compact.map(&:offer).uniq
-    offers_by_ucs      = al.map(&:curriculum_unit).compact.map(&:offers).flatten.uniq
-    offers_by_groups   = al.map(&:group).compact.map(&:offer).uniq
-    @offers           = [my_direct_offers + offers_by_courses + offers_by_ucs + offers_by_groups].flatten.compact.uniq
-
-    if params.include?(:course)
-      @offers = @offers.select { |offer| offer.course_id == params[:course].to_i }
-    end
-
-    if params.include?(:period)
-      @offers = @offers.select { |offer| offer.semester.downcase.include?(params[:period].downcase) }
-    end
-
-    # Filtrando por período para o componente de edição
-    if params.include?(:search_semester)
-		
-      @offers.sort! { |a,b| a.semester <=> b.semester }
-		
-      params[:search_semester].strip!
-      @offers = @offers.select { |offer| offer.semester.downcase.include?(params[:search_semester].downcase) }
-      
-      all_allocation_tag_ids = Array.new(@offers.count)
-	  @offers.each_with_index do |offer,i|
-        respects_chained_filter = false
-        offer[:allocation_tag_id] = [offer.allocation_tag.id]
-        offer[:name] = offer.curriculum_unit.name
-        
-        params[:chained_filter] = [] unless params.include?(:chained_filter)
-		
-		# se offer.course.allocation_tag.id estiver nos parametros, ok
-		respects_chained_filter = true if params[:chained_filter].include?(offer.course.allocation_tag.id.to_s)    
-		
-		#senão, se parametro estiver vazio, ok
-		respects_chained_filter = true if params[:chained_filter].empty?
-		
-		@offers[i] = nil unless respects_chained_filter
-		all_allocation_tag_ids[i] = offer[:allocation_tag_id] if respects_chained_filter
-	  end	  
-	  @offers = @offers.compact
-
-	  # Agrupando 
-	  reference_semester = ''
-      reference_index = 0
-	  @offers.each_with_index do |offer,i|
-		if (offer.semester == reference_semester)
-			@offers[reference_index][:allocation_tag_id] += offer[:allocation_tag_id]
-			@offers[reference_index].course = nil
-			@offers[reference_index].name = nil
-			@offers[reference_index].curriculum_unit = nil
-			@offers[reference_index].start = nil
-			@offers[reference_index].end = nil
-			@offers[reference_index].id = nil
-			@offers[i] = nil
-		else
-			reference_semester = offer.semester 
-			reference_index = i
-		end
-	  end
-
-	  @offers = @offers.compact
-	  all_allocation_tag_ids = all_allocation_tag_ids.compact.flatten
-
-      all = {:semester => "..."+params[:search_semester]+"...", :allocation_tag_id => all_allocation_tag_ids}
-      @offers.push(all)
-    end
-    
-    # Filtrando por nome de unidade curricular
-    if params.include?(:search_curriculum_unit)
-      @offers.sort! { |a,b| a.curriculum_unit.name <=> b.curriculum_unit.name }
-      params[:search_curriculum_unit].strip!
-      @offers = @offers.select { |offer| offer.curriculum_unit.name.downcase.include?(params[:search_curriculum_unit].downcase)}
-
-	  all_allocation_tag_ids = Array.new(@offers.count)
-	  @offers.each_with_index do |offer,i|
-	  	respects_chained_filter = false
-        offer[:allocation_tag_id] = [offer.allocation_tag.id.to_s]
-        offer[:name] = offer.curriculum_unit.name
-        
-		params[:chained_filter] = [] unless params.include?(:chained_filter)
-		
-		#se offer.allocationTagId estiver em parametros, ok 		
-		respects_chained_filter = true if params[:chained_filter].include?(offer.allocation_tag.id.to_s)
-			
-		#offer.course.allocationTag.id estiver em parametros, ok 
-		respects_chained_filter = true if params[:chained_filter].include?(offer.course.allocation_tag.id.to_s)
-			
-		#senão, se parametro estiver vazio, ok
-		respects_chained_filter = true if params[:chained_filter].empty?
-		
-		@offers[i] = nil unless respects_chained_filter
-		all_allocation_tag_ids[i] = offer[:allocation_tag_id] if respects_chained_filter
-	  end
-	  @offers = @offers.compact
-
-	  # Agrupando 
-	  reference_code = ''
-      reference_index = 0
-	  @offers.each_with_index do |offer,i|
-		if (offer.curriculum_unit.code == reference_code)
-			@offers[reference_index][:allocation_tag_id] += offer[:allocation_tag_id]
-			@offers[reference_index].course = nil
-			@offers[reference_index].semester = nil
-			@offers[reference_index].start = nil
-			@offers[reference_index].end = nil
-			@offers[reference_index].id = nil
-			@offers[i] = nil
-		else
-			reference_code = offer.curriculum_unit.code
-			reference_index = i
-		end
-	  end
-	  @offers = @offers.compact
-	  all_allocation_tag_ids = all_allocation_tag_ids.compact.flatten
-
-      all = {:name => '...' << params[:search_curriculum_unit] << "... (#{@offers.count})", :allocation_tag_id => all_allocation_tag_ids}
-      @offers.push(all)
-    end
-    
-    respond_to do |format|
-      format.html
-      format.json { render json: @offers }
-      format.xml { render :xml => @offers }
-    end
+    get_offers(@curriculum_unit_id, @course_id)
   end
 
   def new
+    @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
+    authorize! :new, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e curso selecionados
+
     @offer = Offer.new
-    @start_date = l Date.today
-    @end_date = l Date.today
+    render :layout => false
   end
 
   def edit
+    @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
+    authorize! :edit, Offer, :on => @offer.allocation_tag.id # verifica se tem acesso à oferta a ser editada
+
     @offer = Offer.find(params[:id])
-    @start_date = l @offer.start
-    @end_date = l @offer.end
+    render :layout => false
   end
 
+  # Método que, a partir das ucs e cursos selecionados, cria ofertas para todas as combinações possíveis entre aqueles
   def create
-    @offer = Offer.new(
-      :course_id => params[:course_id],
-      :curriculum_unit_id => params[:curriculum_unit_id],
-      :semester => params[:offer][:semester],
-      :start => params[:offer][:start],
-      :end => params[:offer][:end],
-      :user_id => current_user.id
-    )
+    params[:offer][:curriculum_unit_id], params[:offer][:course_id] = CurriculumUnit.first, Course.first # valores aleatórios utilizados apenas para testar a validade da oferta
+    params[:offer][:user_id] = current_user.id # para a alocação
+    @offer = Offer.new(params[:offer])
 
-    respond_to do |format|
-      if @offer.save
-        format.html { redirect_to(offers_url) }
-        format.xml  { render :xml => @offer }
-      else
-        format.html
-        format.xml
+    @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
+    get_curriculum_units_and_courses(@curriculum_unit_id, @course_id)
+
+    begin
+      
+      authorize! :create, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e curso selecionados
+      raise "erro" unless @offer.valid? # utilizado para validar os campos preenchidos e exibir erros quando necessário
+
+      @courses.each do |course| # lista de cursos dependendo do que foi selecionado previamente 
+        @curriculum_units.each do |curriculum_unit| # lista de ucs dependendo do que foi selecionado previamente 
+          params[:offer][:curriculum_unit_id], params[:offer][:course_id] = curriculum_unit.id, course.id
+          offer = Offer.create!(params[:offer]) # cria uma oferta para cada combinação de uc e curso
+        end
       end
+
+      respond_to do |format|
+        get_offers(@curriculum_unit_id, @course_id)
+        format.html { render :index, :layout => false }
+      end
+
+    rescue CanCan::AccessDenied
+
+      respond_to do |format|
+        get_offers(@curriculum_unit_id, @course_id)
+        @access_denied = true
+        format.html { render :index, :layout => false }
+      end
+
+    rescue Exception => error
+
+      respond_to do |format|
+        @date_range_error = @offer.errors.full_messages.last unless @offer.errors[:start].blank? and @offer.errors[:end].blank?
+        format.html { render :new, :layout => false }
+      end
+
     end
+
   end
 
   def update
-    offer = Offer.find(params[:id])
+    @offer = Offer.find(params[:id])
+    authorize! :update, Offer, :on => @offer.allocation_tag.id # verifica se tem acesso à oferta a ser editada
+
+    params[:offer][:curriculum_unit_id], params[:offer][:course_id] = params[:curriculum_unit_id], params[:course_id]
+    @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
 
     respond_to do |format|
-      if offer.update_attributes(params[:offer])
-        format.html { redirect_to(offers_url) }
-        format.xml  { render :xml => @offer }
+      if @offer.update_attributes(params[:offer])
+        get_offers(params[:curriculum_unit_id], params[:course_id])
+        format.html { render :index, :layout => false }
       else
-        format.html
-        format.xml
+        @date_range_error = @offer.errors.full_messages.last unless @offer.errors[:start].blank? and @offer.errors[:end].blank?
+        format.html { render :edit, :layout => false }
       end
     end
   end
 
-  # GET /offers/1
-  # GET /offers/1.json
-  def show
-    @offer = Offer.find(params[:id])
-
-    respond_to do |format|
-      format.html
-      format.xml  { render :xml => @offer }
-    end
-  end
-
-  # DELETE /offers/1
-  # DELETE /offers/1.json
   def destroy
     offer = Offer.find(params[:id])
-    offer.destroy
+    @course_id, @curriculum_unit_id = params[:course_id], params[:curriculum_unit_id]
+
+    begin
+      authorize! :destroy, Offer, :on => [offer.allocation_tag.id] # verifica se tem acesso à oferta a ser excluída
+      offer.destroy
+    rescue CanCan::AccessDenied
+      @access_denied = true
+    rescue Exception => error
+      @error_deletion = t(:not_possible_to_delete, :scope => [:offers])
+    end
 
     respond_to do |format|
-      format.html { redirect_to(offers_url) }
-      format.xml  { head :ok }
+      get_offers(@curriculum_unit_id, @course_id)
+      format.html { render :index, :layout => false }
     end
   end
 
-  private
+  # Método que desabilita todos os grupos da oferta
+  def deactivate_groups
+    offer = Offer.find(params[:id])
+    authorize! :deactivate_groups, Offer, :on => offer.allocation_tag.id # verifica se tem acesso à oferta a ter suas turmas desativadas
 
-  def get_values
-    @courses = Course.find(:all)
-    @curriculum_units = CurriculumUnit.find(:all)
+    offer.groups.each { |group| group.update_attributes!(:status => false) }
+
+    respond_to do |format|
+      @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
+      get_offers(@curriculum_unit_id, @course_id)
+      format.html {render :index, :layout => false}
+    end
   end
 
 end

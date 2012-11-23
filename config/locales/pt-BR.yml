@@ -248,6 +248,12 @@
         name: Nome
         enunciation: Enunciado
         end_evaluation_period: Data final do período de avaliação
+      offer:
+        course: Curso
+        curriculum_unit: Unidade Curricular
+        start: Data inicial
+        end: Data final
+        semester: Semestre
 
 
     errors:
@@ -902,9 +908,7 @@
 
   #Offer
   offer: "Oferta"
-  offers: "Ofertas"
   offer_confirm: "Você tem certeza que deseja deletar?"
-  no_offer: "Nenhuma oferta cadastrada."
   semester: "Semestre"
   start_date: "Data inicial"
   end_date: "Data final"
@@ -1114,6 +1118,7 @@
     success:
       saved: Salvo com sucesso
       deleted: Excluido com sucesso
+    are_you_sure_of_deletion: Você tem certeza de que deseja excluir?
 
   curriculum_units:
     index:
@@ -1122,3 +1127,31 @@
       delete: Excluir
       edit_curriculum_unit: Editar %{curriculum_unit}
       delete_curriculum_unit: Excluir %{curriculum_unit}
+
+  offers:
+    index:
+      offers: Ofertas
+      new: Nova
+      new_offer: Nova Oferta
+      edit_offer: Editar Oferta
+      edit: Editar
+      delete: Excluir
+      course: Curso
+      curriculum_unit: Unidade Curricular
+      date_range: Período
+      semester: Semestre
+      options: Opções
+      no_groups: Não há turmas
+      groups_already_deactivated: Turmas já desativadas
+      all_groups_deactivated: Todas as turmas desativadas
+      deactivate_groups: Desativar turmas
+    form:
+      save: Salvar
+      cancel: Cancelar
+      date_range: Período
+      course: Curso
+      curriculum_unit: Unidade Curricular
+      to:  à 
+      all: Todos(as)
+    not_possible_to_delete: Não é possível deletar oferta com dependências
+    existing_semester: já existe

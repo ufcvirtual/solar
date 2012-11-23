@@ -110,6 +110,13 @@
         name: Name
         enunciation: Enunciation
         end_evaluation_period: Final date to evaluation period
+      offer:
+        course: Course
+        curriculum_unit: Curriculum Unit
+        start: Start date
+        end: End date
+        semester: Semester
+
 
     errors:
       messages:
@@ -746,7 +753,6 @@
   offer: "Offer"
   offers: "Offers"
   offer_confirm: "Are you sure you want to delete?"
-  no_offer: "No offer registered."
   semester: "Semester"
   start_date: "Start date"
   end_date: "End date"
@@ -957,6 +963,7 @@
     success:
       saved: Saved successfully
       deleted: Deleted successfully
+    are_you_sure_of_deletion: Are you sure that you want to delete?
 
   curriculum_units:
     index:
@@ -965,3 +972,29 @@
       delete: Delete
       edit_curriculum_unit: Edit %{curriculum_unit}
       delete_curriculum_unit: Delete %{curriculum_unit}
+
+  offers:
+    index:
+      offers: Offers
+      new: New
+      new_offer: New Offer
+      edit_offer: Edit Offer
+      edit: Edit
+      delete: Delete
+      course: Course
+      curriculum_unit: Curriculum Unit
+      date_range: Date range
+      semester: Semester
+      options: Options
+      no_groups: There are no groups
+      groups_already_deactivated: Groups already disabled
+      all_groups_deactivated: All groups disabled
+      deactivate_groups: Disable groups
+    form:
+      save: Save
+      cancel: Cancel
+      date_range: Date range
+      not_possible_to_delete: It's not possible to delete offer with dependencies
+      to:  to  
+      all: All
+    existing_semester: already exists

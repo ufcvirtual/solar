@@ -1,13 +1,56 @@
+= javascript_include_tag "edition.js"
 
-%table.tb_list
-  %head
-    %tr.lines
-      %th= t(:course)
-      %th= t(:curriculum_unit)
-      %th= t(:period)
-  %body
-    - @offers.each do |offer|
+.block_wrapper#list_offers
+
+  .block_title
+    %h2
+      = image_tag "icon_curriculum_unit.png", :alt => " ", :class => (:block_title_icon) # qual o ícone de oferta?
+      = t(".offers")
+    %span.right_buttons
+      = button_tag t(".new"), :class => "btn btn_main", :type => :button, :onclick => "javascript:open_lightbox3('#{new_offer_path(:course_id => @course_id, :curriculum_unit_id => @curriculum_unit_id)}', '#{t(".new_offer")}');"
+
+  %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :style => "table-layout: fixed"}
+    %thead
       %tr.lines
-        %td= offer.course.name
-        %td= offer.curriculum_unit.name
-        %td= offer.semester
+        %th{:width => "18%"}= t(".course") 
+        %th{:width => "34%"}= t(".curriculum_unit")
+        %th{:width => "12%"}= t(".semester")
+        %th{:width => "29%"}= t(".date_range")
+        %th{:width => "46%"}= t(".options")
+    %tbody
+      - @offers.each do |offer|
+        %tr.lines
+          %td= offer.course.name
+          %td= offer.curriculum_unit.name
+          %td= offer.semester
+          %td= [l(offer.start), l(offer.end)].join(" - ")
+          %td
+            = button_tag t(".edit"), :class => "btn btn_default", :type => :button, :onclick => "javascript:open_lightbox3('#{edit_offer_path(offer, :course_id => @course_id, :curriculum_unit_id => @curriculum_unit_id)}', '#{t(".edit_offer")}');", :alt => t(".edit")
+
+            - groups           = offer.groups
+            - allow_deactivate = (not (groups.empty? or (groups.size == groups.where("status = #{false}").size)))
+            / deactivate_class[mensagem_no_title, classe_do_botão]
+            - deactivate_class = allow_deactivate ? [nil, "btn btn_caution"] : [(groups.empty? ? t(".no_groups") : t(".groups_already_deactivated")), "btn btn_disabled"]
+
+            = button_tag t(".deactivate_groups"), :class => deactivate_class[1], :alt => t(".deactivate_groups"), :type => :button, :onclick => "javascript:deactivate_groups_offer(#{offer.id}, '#{deactivate_groups_offer_path(offer)}');", :disabled => (not allow_deactivate), :title => deactivate_class[0]
+            = button_tag t(".delete"), :onclick => "javascript: delete_object('#{offer_path(offer, :curriculum_unit_id => @curriculum_unit_id, :course_id => @course_id)}', 'list_offers')", :class => "btn btn_caution", :alt => t(".delete")
+
+- if @error_deletion
+  .error_deletion{:style=>"display:none"}
+- if @access_denied
+  .access_denied{:style=>"display:none"}
+
+
+:javascript
+
+  function deactivate_groups_offer(offer_id, url){
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: {'id': offer_id},
+      success: function(data){
+        $("#list_offers").html(data);
+        flash_message("#{t('.all_groups_deactivated')}", 'notice');
+      }
+    });
+  }

@@ -39,4 +39,11 @@ SQL
 
   end
 
+  ##
+  # Verifica se o usuário tem alguma allocation para aquele allocation_tag_id
+  ##
+  def self.have_access?(user_id, allocation_tag_id)
+    return (not Allocation.find_by_user_id_and_allocation_tag_id(user_id, allocation_tag_id).nil?)
+  end
+
 end

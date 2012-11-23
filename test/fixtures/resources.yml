@@ -28,6 +28,7 @@ res5:
   action: 'pwd_recovery'
   description: 'Recuperar senha'
 
+# Offers - Parte 1
 res6:
   id: 6
   controller: 'offers'
@@ -535,3 +536,40 @@ res94:
   action: 'create_designation'
   description: 'Alocar perfil para usuario'
   
+# Offers - Parte 2
+
+res95:
+  id: 95
+  controller: 'offers'
+  action: 'index'
+  description: 'Listagem de ofertas a partir da uc e curso selecionados e permissoes do usuario'
+
+res96:
+  id: 96
+  controller: 'offers'
+  action: 'new'
+  description: 'Tela de novas ofertas'
+
+res97:
+  id: 97
+  controller: 'offers'
+  action: 'create'
+  description: 'Criacao de ofertas para as uc e cursos selecionados'
+
+res98:
+  id: 98
+  controller: 'offers'
+  action: 'edit'
+  description: 'Tela de edicao de oferta'
+
+res99:
+  id: 99
+  controller: 'offers'
+  action: 'destroy'
+  description: 'Delecao de oferta'
+
+res100:
+  id: 100
+  controller: 'offers'
+  action: 'deactivate_groups'
+  description: 'Desativacao de todas as turmas de uma oferta'

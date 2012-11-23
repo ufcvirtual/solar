@@ -77,9 +77,12 @@ Solar::Application.routes.draw do
       post :activate
     end
   end
+  
+  resources :offers do
+    post :deactivate_groups, :on => :member
+  end
 
   resources :enrollments, :only => [:index]
-  resources :offers
   resources :scores, :only => [:show, :index]
   resources :courses
   resources :editions, :only => [:index]

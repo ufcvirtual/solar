@@ -88,3 +88,11 @@ al18:
 al19:
   id: 19
   course_id: 2
+
+## Unidade Curricular
+## Semipresencial sm nvista
+
+al20: 
+  id: 20
+  curriculum_unit_id: 4
+

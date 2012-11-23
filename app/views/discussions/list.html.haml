@@ -42,7 +42,7 @@
                   = button_tag t(:edit, :scope => [:discussion, :buttons]), :class => btn_class, :onclick => "javascript:open_lightbox1('#{edit_discussion_path(discussion.id, :offer_id => @offer_id, :group_id => @group_id, :allocation_tags_ids => @allocation_tags_ids)}', '#{t(:edit_discussion, :scope => [:discussion], :discussion_name => discussion.name)}');", :type => "button", :disabled => (discussion.closed?), :alt => t(:edit_discussion, :scope => [:discussion], :discussion_name => discussion.name)
                 - if can? :destroy, discussion
                   - btn_class = discussion.can_destroy? ? "btn btn_caution" : "btn btn_disabled"
-                  = button_tag t(:delete, :scope => [:discussion, :buttons]), :onclick => "javascript:delete_object('#{discussion_path(discussion, :offer_id => @offer_id, :group_id => @group_id, :allocation_tags_ids => @allocation_tags_ids)}');", :type => "button", :class => btn_class, :disabled => (not discussion.can_destroy?), :alt => t(:delete_discussion, :scope => [:discussion], :discussion_name => discussion.name)
+                  = button_tag t(:delete, :scope => [:discussion, :buttons]), :onclick => "javascript:delete_object('#{discussion_path(discussion, :offer_id => @offer_id, :group_id => @group_id, :allocation_tags_ids => @allocation_tags_ids)}', 'curriculum_unit_items');", :type => "button", :class => btn_class, :disabled => (not discussion.can_destroy?), :alt => t(:delete_discussion, :scope => [:discussion], :discussion_name => discussion.name)
                   
   - else
     .block_content.block_content_text= t(:forum_message)
