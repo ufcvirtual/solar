@@ -24,7 +24,7 @@ class Ability
 
     def have_permission_access?(user, action, object_class, object)
       ## perfis do usuario que podem realizar acao
-      profiles = user.profiles.joins(:resources).where(resources: {action: alias_action(action), controller: object_class.to_s.underscore << 's'})
+      profiles = user.profiles.joins(:resources).where(resources: {action: alias_action(action), controller: object_class.to_s.underscore.pluralize})
       have     = not(profiles.to_ary.empty?) # tem permissao para acessar acao
 
       return false unless have # nao tem permissao de realizar acao
@@ -32,7 +32,8 @@ class Ability
 
       ## se é ou está relacionado diretamente com usuario
       return true if object_class == User and (object.id == user.id or profiles.select("permissions_resources.per_id").map(&:per_id).include?('f')) # qndo o usuario tem permissoes de ver apenas seus dados
-      return true if object.respond_to?(:user_id) and object.user_id == user.id
+      return true if object.respond_to?(:user) and object.user.id == user.id
+      # return true if object.respond_to?(:user_id) and object.user_id == user.id
 
       ## diferenciar tipo das actions (ler/modificar)
         ## se for pra ler, pode ser em qualquer nivel

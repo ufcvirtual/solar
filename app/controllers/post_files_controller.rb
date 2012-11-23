@@ -61,19 +61,16 @@ class PostFilesController < ApplicationController
     respond_to do |format|
       unless error
         format.html { redirect_to(discussion_posts_path(post.discussion), :notice => t(:updated, :scope => [:posts, :update])) }
-        format.xml  { head :ok }
         format.json  { render :json => {:result => 1} }
       else
         format.html { redirect_to(discussion_posts_path(post.discussion), :alert => t(:not_updated, :scope => [:posts, :update])) }
-        format.xml  { head :error }
         format.json  { render :json => {:result => 0} }
       end
     end
   end
 
   def download
-    post = @post_file.post
-    download_file(discussion_posts_path(post.discussion), @post_file.attachment.path, @post_file.attachment_file_name)
+    download_file(discussion_posts_path(@post_file.post.discussion), @post_file.attachment.path, @post_file.attachment_file_name)
   end
 
 end

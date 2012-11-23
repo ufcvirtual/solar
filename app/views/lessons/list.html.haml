@@ -1,7 +1,7 @@
 = hidden_field_tag(:allocation_tag_id, params[:allocation_tag_id]) 
 
 .block_wrapper
-  - unless @lesson_modules.nil? or @lesson_modules.empty?
+  - if (not(@lesson_modules.nil?) and not(@lesson_modules.empty?))
 
     - @lesson_modules.each do |m|
       .block_title

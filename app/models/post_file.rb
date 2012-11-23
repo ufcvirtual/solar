@@ -1,7 +1,7 @@
 class PostFile < ActiveRecord::Base
-
   self.table_name = "discussion_post_files"
 
+  has_one :user, :through => :post
   belongs_to :post, :class_name => "Post", :foreign_key => "discussion_post_id"
   
   validates :attachment_file_name, :presence => true

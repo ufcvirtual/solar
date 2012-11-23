@@ -290,19 +290,19 @@ res48:
 
 res49:
   id: 49
-  controller: 'post_file'
+  controller: 'post_files'
   action: 'download'
   description: 'Baixar arquivos de uma postagem'
 
 res50:
   id: 50
-  controller: 'post_file'
+  controller: 'post_files'
   action: 'create'
   description: 'Anexar arquivos a uma postagem'
 
 res51:
   id: 51
-  controller: 'post_file'
+  controller: 'post_files'
   action: 'destroy'
   description: 'Remover arquivo de uma postagem'
 
@@ -314,7 +314,7 @@ res52:
 
 res53:
   id: 53
-  controller: 'post_file'
+  controller: 'post_files'
   action: 'new'
   description: 'Exibir janela para upload de arquivos em uma postagem'
 

@@ -46,16 +46,15 @@ class CurriculumUnitsController < ApplicationController
 
   def home
     allocation_tags = AllocationTag.find(@allocation_tag_id).related({all: true, objects: true})
+
+    # messages
     group           = allocation_tags.select { |at| not(at.group_id.nil?) }
     offer           = allocation_tags.select { |at| not(at.offer_id.nil?) }.first.offer
-    curriculum_unit = allocation_tags.select { |at| not(at.curriculum_unit_id.nil?) }.first.curriculum_unit || CurriculumUnit.find(active_tab[:url]['id'])
-    message_tag     = get_label_name(group, offer, curriculum_unit)
-    allocation_tags = allocation_tags.map(&:id)
+    @messages       = return_messages(current_user.id, 'portlet', get_label_name(group, offer, @curriculum_unit))
 
-    # retorna aulas, posts nos foruns e mensagens relacionados a UC mais atuais
+    allocation_tags   = allocation_tags.map(&:id)
     @lessons          = Lesson.to_open(allocation_tags.join(', '))
     @discussion_posts = list_portlet_discussion_posts(allocation_tags.join(', '))
-    @messages         = return_messages(current_user.id, 'portlet', message_tag)
 
     schedules_events  = Schedule.events(allocation_tags)
     @scheduled_events = schedules_events.collect { |schedule_event|
@@ -147,12 +146,9 @@ class CurriculumUnitsController < ApplicationController
   private
 
     def curriculum_data
-      @curriculum_unit = CurriculumUnit.find(active_tab[:url]['id'])
-
-      authorize! :show, @curriculum_unit
+      authorize! :show, @curriculum_unit = CurriculumUnit.find(active_tab[:url]['id'])
 
       @allocation_tag_id = active_tab[:url]['allocation_tag_id']
-
       @responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(AllocationTag.find_related_ids(@allocation_tag_id).join(','),
         Profile_Type_Class_Responsible)
     end

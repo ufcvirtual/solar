@@ -1,6 +1,6 @@
 module MessagesHelper
 
-  def return_messages (userid, type='index', tag=nil, search_text='')
+  def return_messages(userid, type='index', tag=nil, search_text='')
 
     query_fields = "
     SELECT DISTINCT ON (m.id, m.send_date)
@@ -141,18 +141,13 @@ module MessagesHelper
     return total[0].n.to_i 
   end
 
-  ##
-  # Recupera label
-  ##
   def get_label_name(group, offer, c_unit)
+    label_name = []
+    label_name << offer.semester.slice(0..5)  if offer.respond_to?(:semester)
+    label_name << group.code.slice(0..9)      if group.respond_to?(:code)
+    label_name << c_unit.name.slice(0..15)    if c_unit.respond_to?(:name)
 
-    #formato: 2011.1|FOR|Física I
-    label_name = ''
-    label_name << offer.semester.slice(0..5) << '|' if offer.respond_to?('semester')
-    label_name << group.code.slice(0..9) << '|' if group.respond_to?('code')
-    label_name << c_unit.name.slice(0..15) if c_unit.respond_to?('name')
-
-    return label_name
+    return label_name.join('|') # formato: 2011.1|FOR|Física I
   end
 
   #chamada depois de get_contacts para montar os contatos atualizados
@@ -176,28 +171,14 @@ module MessagesHelper
     return text
   end
 
-  # retorna (1) usuario que enviou a msg
   def get_sender(message_id)
-    return User.find(:first,
-      :joins => "INNER JOIN user_messages ON users.id = user_messages.user_id",
-      :conditions => "user_messages.message_id = #{message_id} and cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' AS boolean)")
+    User.joins(:user_messages).where(["message_id = ? AND cast(user_messages.status & ? AS boolean)", message_id, Message_Filter_Sender.to_s(2)]).first
   end
 
-  # verifica se usuario logado tem permissao de acessar a mensagem com id passado
   def has_permission(message_id)
-    # traz usuarios relacionados a msg - pra verificar permissao de acesso
-    user_messages = UserMessage.find_all_by_message_id(message_id)
-
-    # procura usuario logado ente usuarios que podem acessar msg
-    search = user_messages.find { |i| i.user_id==current_user.id }
-
-    if search.nil?
-      return false
-    end
-    return true
+    not(UserMessage.where(user_id: current_user.id, message_id: message_id).nil?)
   end
   
-  #Verifica se a messagem foi postada hoje ou não!
   def sent_today?(message_datetime)
     message_datetime === Date.today
   end
