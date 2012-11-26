@@ -138,7 +138,7 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def participants
-    @student_profile = student_profile # retorna perfil em que se pede matricula (~aluno)
+    @student_profile = Profile.student_profile # retorna perfil em que se pede matricula (~aluno)
     allocation_tags  = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
     @participants    = CurriculumUnit.class_participants_by_allocations_tags_and_is_not_profile_type(allocation_tags.join(','), Profile_Type_Class_Responsible)
   end

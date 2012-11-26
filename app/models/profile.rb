@@ -7,9 +7,7 @@ class Profile < ActiveRecord::Base
 
   has_many :resources, :through => :permissions_resources
 
-  ##
-  # recupera uma lista perfis que possuem quaisquer permissões requisitadas
-  ##
+  ## recupera uma lista perfis que possuem quaisquer permissões requisitadas
   def self.authorized_profiles(resources)
 
     query = <<SQL
@@ -32,9 +30,7 @@ SQL
     return (students_of_class.include?(user_id))
   end
 
-  ##
-  # Verifica se o usuário, para a oferta e turma informadas, tem permissão de responsável ou de aluno
-  ##
+  ## Verifica se o usuário, para a oferta e turma informadas, tem permissão de responsável ou de aluno
   def self.is_responsible_or_student?(user_id, offer_id, group_id)
     offer        = Offer.find(offer_id)
     unless offer.nil?
@@ -49,6 +45,10 @@ SQL
         return (group.allocation_tag.is_user_class_responsible?(user_id) or group.allocation_tag.is_student?(user_id))
       end
     end
+  end
+
+  def self.student_profile
+    find_by_types(Profile_Type_Student).id
   end
 
 end

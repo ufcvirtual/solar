@@ -30,13 +30,13 @@ Solar::Application.routes.draw do
   # get 'curriculum_units/:curriculum_unit_id/groups' => "groups#list", :as => :groups_curriculum_unit
 
   resources :discussions do
-    get :list, :on => :collection
+    get :list, on: :collection
   end
 
   ## groups/:id/discussions
   resources :groups, :except => [:show] do
     resources :discussions, :only => [:index]
-    get :list, :on => :collection
+    get :list, on: :collection
   end
 
   ## discussions/:id/posts
@@ -51,15 +51,15 @@ Solar::Application.routes.draw do
   ## posts/:id/post_files
   resources :posts, :only => [] do
     resources :post_files, :only => [:new, :create, :destroy, :download] do
-      get :download, :on => :member
+      get :download, on: :member
     end
   end
 
   ## users/:id/photo
   ## users/edit_photo
   resources :users do
-    get :photo, :on => :member
-    get :edit_photo, :on => :collection
+    get :photo, on: :member
+    get :edit_photo, on: :collection
   end
 
   ## allocations/enrollments
@@ -79,7 +79,7 @@ Solar::Application.routes.draw do
   end
   
   resources :offers do
-    post :deactivate_groups, :on => :member
+    post :deactivate_groups, on: :member
   end
 
   resources :enrollments, :only => [:index]
@@ -119,8 +119,16 @@ Solar::Application.routes.draw do
   end
 
   resources :schedules, :only => [] do
-    get :list, :on => :collection
+    get :list, on: :collection
   end
+
+  resources :messages do
+    get :restore, on: :collection
+  end
+
+  get "activate_tab" => "application#activate_tab", as: :activate_tab
+  get "add_tab" => "application#add_tab", as: :add_tab
+  get "close_tab" => "application#close_tab", as: :close_tab
 
   get "pages/index"
   get "pages/team"

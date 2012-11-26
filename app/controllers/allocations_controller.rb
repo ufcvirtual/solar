@@ -78,7 +78,7 @@ class AllocationsController < ApplicationController
   
   # Usado na matrícula
   def create
-    profile = student_profile
+    profile = Profile.student_profile
     status  = Allocation_Pending
 
     ok      = allocate(params[:allocation_tag_id], params[:user_id], profile, status, params[:id])
@@ -95,7 +95,7 @@ class AllocationsController < ApplicationController
     # verifica permissao de alocacao nas allocation tags passadas
     authorize! :create_designation, Allocation, :on => [params[:allocation_tag_id].to_i] 
 
-    profile = (params.include?(:profile)) ? params[:profile] : student_profile
+    profile = (params.include?(:profile)) ? params[:profile] : Profile.student_profile
     status  = (params.include?(:status)) ? params[:status] : Allocation_Pending
 
     ok      = allocate(params[:allocation_tag_id], params[:user_id], profile, status)

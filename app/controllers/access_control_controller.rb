@@ -30,7 +30,7 @@ class AccessControlController < ApplicationController
     if (not(send_assignment.nil?) and send_assignment.assignment.user_can_access_assignment(current_user.id, send_assignment.user_id, send_assignment.group_assignment_id)) or (same_class)
       send_file(file.attachment.path, { disposition: 'inline', type: return_type(params[:extension])} )
     else
-      no_permission_redirect
+      raise CanCan::AccessDenied
     end
 
   end

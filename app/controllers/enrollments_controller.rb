@@ -4,7 +4,7 @@ class EnrollmentsController < ApplicationController
     authorize! :index, Enrollment
 
     @types = CurriculumUnitType.order(:description)
-    @student_profile = student_profile
+    @student_profile = Profile.student_profile
     @offers = []
 
     if current_user and (@student_profile != '')

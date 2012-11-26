@@ -15,9 +15,9 @@ class Group < ActiveRecord::Base
   def code_semester
     "#{code} - #{offer.semester}"
   end
-  
+
   def self.find_all_by_curriculum_unit_id_and_user_id(curriculum_unit_id, user_id)
-    CurriculumUnit.select('id').find(curriculum_unit_id).groups.where(["groups.id IN (?)", User.select('id').find(user_id).groups.map(&:id)])
+    Group.joins(:offer).where(offers: {curriculum_unit_id: curriculum_unit_id}, groups: {id: User.find(user_id).groups})
   end
 
   def has_any_lower_association?

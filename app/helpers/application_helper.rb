@@ -4,23 +4,19 @@ module ApplicationHelper
     [:notice,:success,:error].map {|type| %{<span class="#{type}">#{flash[type]}</span>} if flash[type] }.compact.join
   end
 
-  ## Ver se existe outro lugar melhor para este método.
   def render_tabs
-    text = ""
-    tabs_opened     = user_session[:tabs][:opened]
-    tab_active_name = user_session[:tabs][:active]
+    tabs_opened = user_session[:tabs][:opened]
 
-    unless tabs_opened.nil?
-      tabs_opened.each do |name, link|
-        text << "<li class="
-        text << ((tab_active_name == name) ? 'mysolar_unit_active_tab' : 'mysolar_unit_tab') << ">"
-        text << link_to(name, {:controller => '/application', :action => :activate_tab, :name => name})
-        text << link_to_if(tabs_opened[name][:url]['context'] != Context_General, '', {:controller => '/application', :action => :close_tab, :name => name}, {:class => 'tabs_close'})
-        text << "</li>"
-      end
-    end
+    return if tabs_opened.nil?
 
-    return text
+    tabs_opened.map { |name, link|
+      %{
+        <li class="#{'mysolar_unit%s_tab' % [('_active' if (user_session[:tabs][:active] == name))]}">
+          #{link_to(name, activate_tab_path(name: name))}
+          #{link_to_if(tabs_opened[name][:url]['context'] != Context_General, '', close_tab_path(name: name), {:class => 'tabs_close'})}
+        </li>
+      }
+    }.join
   end
 
   ## Renderiza a navegação da paginação.
@@ -100,37 +96,8 @@ module ApplicationHelper
     return result
   end
 
-  ##
-  # Recupera o nome da unidade curricular em questao
-  ##
-  def curriculum_unit_name
-    active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
-    CurriculumUnit.find(active_tab[:url]['id']).name
-  end
-
-  ##
-  # Verifica se deve apresentar seleção de unidade curricular
-  ##
-  def show_curriculum_unit_selection?(active_tab)
-    # Mostrar quando a aba não está no contexto geral e o menu tem o mesmo contexto   
-    
-    tab_context     = active_tab[:url]['context'] 
-    current_menu_id = user_session[:menu][:current]
-   
-    if tab_context == Context_General
-      return false
-    elsif current_menu_id.nil?      
-      return true
-    else        
-      return !MenusContexts.find_all_by_menu_id_and_context_id(current_menu_id, tab_context).empty?
-    end
-  end
-  
-  ##
-  # Verifica se uma unidade curricular já foi selecionada
-  ##
   def is_curriculum_unit_selected?
-    return !user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['id'].nil?
+    not(user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['id'].nil?)
   end
   
   def slice_content(content, slice_size)        
@@ -151,18 +118,5 @@ module ApplicationHelper
 
     return content.slice(0..position-1)
   end
-
-  # recebe um conjunto de allocation_tags e retorna esse conjunto acrescido das allocation_tags relacionadas
-  # def all_allocation_tags (allocation_tags)
-  #   if !allocation_tags.empty?
-  #     other_allocations = Array.new
-  #     allocation_tags.each { |a|
-  #       other_allocations = other_allocations.push( AllocationTag.find_related_ids(a).join(', ') )
-  #     }
-  #     allocation_tags = allocation_tags.push(other_allocations)
-  #   else
-  #     allocation_tags = ''
-  #   end
-  # end
 
 end

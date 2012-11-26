@@ -1,4 +1,4 @@
-<%= form_for :message, :url => {:action => ''}, :html => {:id => 'message_list', :class => 'message_div_options'} do |f| %>
+<%= form_for :message, :url => {:action => 'index'}, :html => {:id => 'message_list', :class => 'message_div_options'} do |f| %>
   <%= link_to t(:message_new)+' ', {:action => 'new', :search => @search_text}, {:class=>'message_link'} %>
   <% if (@type!="trashbox" && !@type.nil?) %>
     <ul class="message_menu_listbox">
