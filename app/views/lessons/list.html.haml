@@ -1,14 +1,24 @@
 = hidden_field_tag(:allocation_tag_id, params[:allocation_tag_id]) 
 
 .block_wrapper
-  - if (not(@lesson_modules.nil?) and not(@lesson_modules.empty?))
+  - unless @lesson_modules.nil? or @lesson_modules.empty?
 
     - @lesson_modules.each do |m|
       .block_title
-        %h2= m.name
-        
+        %h2
+          =m.name
+          =link_to (image_tag "/assets/lesson/edit_module.png", :alt => ''), "#", :onclick => "javascript: alert('abrir edicao de modulo');", :id => 'edit_module'
+          =link_to (image_tag "/assets/lesson/delete_module.png", :alt => ''), "#", :onclick => "javascript: alert('excluir modulo');", :id => 'delete_module'
+
       .block_content.block_content_text.block_content_toolbar
-        ='opções do módulo'
+        =link_to (image_tag "/assets/lesson/add_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('nova aula');", :id => 'new_lesson'
+        =link_to (image_tag "/assets/lesson/import_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('importar aula');", :id => 'import_lesson'
+
+        =link_to (image_tag "/assets/lesson/edit_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('editar aula');", :id => 'edit_lesson'
+        =link_to (image_tag "/assets/lesson/delete_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('excluir aula');", :id => 'delete_lesson'
+        =link_to (image_tag "/assets/lesson/download.png", :alt => ''), "#", :onclick => "javascript: alert('download da aula');", :id => 'download_lesson'
+
+        =link_to (image_tag "/assets/lesson/release_lessons.png", :alt => ''), "#", :onclick => "javascript: alert('libera aulas');", :id => 'release_lessons'
 
       %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :border => "1"}
         %thead
