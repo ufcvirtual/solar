@@ -71,7 +71,7 @@ schedule 14:
   start_date: 2011-03-16
   end_date: 2312-08-01
 
-schedule 15:
+schedule15:
   id: 15
   start_date: 2011-03-25
   end_date: 2315-05-06

@@ -104,3 +104,12 @@ a13:
   enunciation: esta é uma atividade individual
   schedule_id: 22 #prazo concluído
   type_assignment: 1 #individual
+
+a14:
+  id: 14
+  allocation_tag_id: 14 # IL-CAU
+  name: Atividade individual VII
+  enunciation: esta é uma atividade individual
+  schedule_id: 27 #prazo em aberto
+  type_assignment: 1 #individual
+

@@ -9,18 +9,18 @@ class Assignment < ActiveRecord::Base
   has_many :assignment_enunciation_files
   has_many :send_assignments
   has_many :group_assignments
-
   has_many :group_participants, :through => :group_assignments
 
   before_save :define_end_evaluation_date
 
   validate :min_end_evaluation_date
+  validate :verify_offer_date_range
 
   ##
   # Define o valor "default"
   ##
   def define_end_evaluation_date
-    offer = self.group.offer
+    offer = AllocationTag.find(allocation_tag_id).group.offer
     self.end_evaluation_date = offer.end_date if (end_evaluation_date.blank? or end_evaluation_date.nil?)
   end
 
@@ -28,9 +28,23 @@ class Assignment < ActiveRecord::Base
   # Verifica o valor mínimo permitido para o campo 
   ##
   def min_end_evaluation_date
+    define_end_evaluation_date
     schedule = Schedule.find(schedule_id)
     if end_evaluation_date < schedule.end_date.to_date
       errors.add(:end_evaluation_date, I18n.t(:greater_than_or_equal_to, :scope => [:activerecord, :errors, :messages], :count => schedule.end_date.to_date))
+    end
+  end
+
+  ##
+  # Datas da atividade devem estar no intervalo de datas da oferta
+  ##
+  def verify_offer_date_range
+    offer    = AllocationTag.find(allocation_tag_id).group.offer
+    schedule = Schedule.find(schedule_id)
+    if schedule.end_date > offer.end_date
+      errors.add(:base, I18n.t(:final_date_smaller_than_offer, :scope => [:assignment, :notifications], :end_date_offer => offer.end_date.to_date))
+    elsif schedule.start_date > offer.start_date
+      errors.add(:base, I18n.t(:start_date_greater_than_offer, :scope => [:assignment, :notifications], :end_date_offer => offer.start_date.to_date))
     end
   end
 
@@ -72,10 +86,28 @@ class Assignment < ActiveRecord::Base
   # Verifica se o usuário tem permissão a "tempo extra" na atividade em que está acessando
   ##
   def extra_time?(user_id)
-    define_end_evaluation_date if self.end_evaluation_date.nil? 
-    (self.allocation_tag.is_user_class_responsible?(user_id) and self.closed?) ?
-      # verifica se o último dia da avaliação já passou
-      (Date.today <= self.end_evaluation_date) : false
+    return (self.allocation_tag.is_user_class_responsible?(user_id) and self.closed?)
+  end
+
+  ##
+  # Verifica se está no prazo de avaliação
+  ##
+  def on_evaluation_period?(user_id)
+    define_end_evaluation_date if self.end_evaluation_date.nil?
+    return ((Date.today <= self.end_evaluation_date) and self.assignment_in_time?(user_id))
+  end
+
+  ## Verifica período que o responsável pode alterar algo na atividade
+  def assignment_in_time?(user_id)
+    if self.allocation_tag.is_user_class_responsible?(user_id) # se responsável
+      can_access_assignment = (self.closed? and self.extra_time?(user_id)) # verifica se possui tempo extra
+    end
+    return (verify_date_range(self.schedule.start_date, self.schedule.end_date, Time.now) or can_access_assignment)
+  end
+
+  ## Verifica se uma data esta em um intervalo de outras
+  def verify_date_range(start_date, end_date, date)
+    return date > start_date && date < end_date
   end
 
   ##

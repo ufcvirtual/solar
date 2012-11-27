@@ -232,6 +232,13 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_template :evaluate_assignment_div
   end
 
+  # Perfil com permissao e usuario com acesso, mas fora do período permitido
+  test "nao permitir avaliar atividade individual para usuario com permissao e atividade fora do periodo" do
+    sign_in users(:professor)
+    post(:evaluate, {:id => assignments(:a14).id, :student_id => users(:aluno1).id, :grade => 7})
+    assert (SendAssignment.find_by_assignment_id_and_user_id(assignments(:a9).id, users(:aluno1).id).grade != 7) # não realizou mudança
+  end
+
   # Perfil com permissao e usuario sem acesso
   test "nao permitir avaliar atividade individual para usuario com permissao e sem acesso" do
     sign_in users(:professor)
@@ -267,6 +274,15 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_equal I18n.t(:comment_sent_success, :scope => [:assignment, :comments]), flash[:notice]
   end
 
+  # Perfil com permissao e usuario com acesso, mas fora do período permitido
+  test "nao permitir comentar em atividade individual para usuario com permissao e com acesso e atividade fora do periodo" do
+    sign_in users(:professor)
+    assert_no_difference("CommentFile.count") do
+      comment_files = [fixture_file_upload('files/assignments/comment_files/teste1.txt', 'text/plain')]
+      post(:send_comment, {:id => assignments(:a14).id, :student_id => users(:aluno1).id, :comment => "comentario8", :comment_files => comment_files})
+    end
+  end
+
   # Perfil com permissao e usuario sem acesso
   test "nao permitir comentar em atividade individual para usuario com permissao e sem acesso" do
     sign_in users(:professor)
@@ -295,6 +311,13 @@ class AssignmentsControllerTest < ActionController::TestCase
     post(:send_comment, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :comment_id => assignment_comments(:ac2).id, :comment => "trabalho mediano."})
     assert_response :redirect
     assert_equal I18n.t(:comment_sent_success, :scope => [:assignment, :comments]), flash[:notice]
+  end
+
+  # Perfil com permissao e usuario com acesso, mas fora do período permitido
+  test "nao permitir editar comentario para usuario com permissao e com acesso e atividade fora do periodo" do
+    sign_in users(:professor)
+    post(:send_comment, {:id => assignments(:a14).id, :student_id => users(:aluno1).id, :comment_id => assignment_comments(:ac2).id, :comment => "trabalho mediano."})
+    assert_not_equal assignment_comments(:ac2).comment, "trabalho mediano."    
   end
 
   # Perfil com permissao e usuario sem acesso
@@ -327,6 +350,14 @@ class AssignmentsControllerTest < ActionController::TestCase
     get(:show, {:id => assignments(:a9).id, :student_id => users(:aluno1).id})    
     assert_no_tag :tag => "table", :attributes => { :class => "assignment_comment tb_comments tb_comment_#{assignment_comments(:ac2).id}" }
     assert_template :show
+  end
+
+  # Perfil com permissao e usuario com acesso, mas fora do período permitido
+  test "nao permitir remover comentario para usuario com permissao e com acesso e atividade fora do periodo" do
+    sign_in users(:professor)
+    assert_no_difference("AssignmentComment.count") do
+      delete(:remove_comment, {:id => assignments(:a14).id, :comment_id => assignment_comments(:ac2).id})
+    end
   end
 
   # Perfil com permissao e usuario sem acesso
