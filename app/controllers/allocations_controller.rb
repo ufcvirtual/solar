@@ -16,7 +16,7 @@ class AllocationsController < ApplicationController
     
     @allocation_tags  = (params.include?('allocation_tag_id')) ? params[:allocation_tag_id] : 0
     
-    @allocations = Allocation.find(:all,
+    @allocations = Allocation.all(
       :joins => [:profile, :user], 
       :conditions => ["#{level_search} and allocation_tag_id IN (#{@allocation_tags}) "],
       :order => ["users.name", "profiles.name"]) 
@@ -31,10 +31,10 @@ class AllocationsController < ApplicationController
 
   # Método, chamado por ajax, para buscar usuários para alocação
   def search_users
-    text          = URI.unescape(params[:data])
-    @text_search  = text
+    text             = URI.unescape(params[:data])
+    @text_search     = text
     @allocation_tags = params[:allocation_tag_id]
-    @users        = User.where("lower(name) ~ '#{text.downcase}'")
+    @users           = User.where("lower(name) ~ '#{text.downcase}'")
 
     render :layout => false
   end
