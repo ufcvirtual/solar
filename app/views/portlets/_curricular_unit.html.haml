@@ -1,4 +1,4 @@
-- curriculum_units = load_curriculum_unit_data["curriculum_units"] || [] 
+- curriculum_units = load_curriculum_unit_data() || [] 
 
 .block_large
   .block_title
@@ -12,7 +12,6 @@
       - if curriculum_units.length > 0
         - curriculum_units.each do |curriculum_unit| 
           %li
-            - curriculum_unit = CurriculumUnit.find(curriculum_unit["id"])       
             - unless curriculum_unit.offers.empty? or curriculum_unit.groups.empty?
               - if ((user_session[:tabs][:opened].length >= Max_Tabs_Open.to_i) and (!user_session[:tabs][:opened].has_key?(curriculum_unit.name)))
                 - options = {} 

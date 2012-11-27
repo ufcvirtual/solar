@@ -61,7 +61,7 @@ SQL
   # Retorna as unidades curriculares que o usuário atual está relacionado
   ##
   def self.find_default_by_user_id(user_id, as_object = false)
-    user_activated_allocations = Allocation.joins(:allocation_tag, :profile).where("allocations.status = '#{Allocation_Activated}' AND allocations.user_id = '#{user_id}'")
+    user_activated_allocations = User.find(user_id).allocations.where(status: Allocation_Activated)
     allocation_tags_ids        = user_activated_allocations.flatten.map(&:allocation_tag_id).uniq
 
     curriculum_units, offers, groups = [], [], []
@@ -76,7 +76,7 @@ SQL
       groups[idx] = groups[idx].empty? ? "" : groups[idx][0].id
     end
 
-    return {"curriculum_units" => curriculum_units.uniq, "allocation_tags_ids" => allocation_tags_ids, "offers" => offers.flatten, "groups" => groups.flatten}
+    return {"curriculum_units" => curriculum_units.uniq, "allocation_tags_ids" => allocation_tags_ids}
   end
 
   ##

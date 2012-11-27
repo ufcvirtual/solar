@@ -32,7 +32,7 @@ module MysolarHelper
     }
 
     # após ordenação, allocation_tags_ids não está ordenado, mas sua presença é desnecessária a partir do momento que pode-se ter "curriculum_unit.allocation_tag.id"
-    return {"curriculum_units" => curriculum_units, "offers" => curriculum_units_info["offers"], "groups" => curriculum_units_info["groups"]}
+    return curriculum_units.uniq
   end
 
 end

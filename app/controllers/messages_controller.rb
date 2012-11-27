@@ -365,10 +365,7 @@ class MessagesController < ApplicationController
 
   # unidades curriculares do usuario logado
   def get_curriculum_units
-    curriculum_units_info  = load_curriculum_unit_data()
-    @curriculum_units_user = curriculum_units_info["curriculum_units"]
-    @offers                = curriculum_units_info["offers"]
-    @groups                = curriculum_units_info["groups"]
+    @curriculum_units_user = load_curriculum_unit_data()
   end
 
   # retorna (1 a varios) destinatarios
