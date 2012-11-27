@@ -11,7 +11,7 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
   include Warden::Test::Helpers 
   
   def setup
-    @quimica_tab  = "/application/add_tab/3?allocation_tag_id=3&context=2"
+    @quimica_tab = add_tab_path(id: 3, context:2, allocation_tag_id: 3)
     @edition_page = editions_path
   end
 

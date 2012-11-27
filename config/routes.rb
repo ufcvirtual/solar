@@ -126,9 +126,12 @@ Solar::Application.routes.draw do
     get :restore, on: :collection
   end
 
-  get "activate_tab" => "application#activate_tab", as: :activate_tab
-  get "add_tab" => "application#add_tab", as: :add_tab
-  get "close_tab" => "application#close_tab", as: :close_tab
+  # resources :tabs, only: [:show, :create, :destroy]
+  get "activate_tab" => "tabs#show", as: :activate_tab
+  get "add_tab"      => "tabs#create", as: :add_tab
+  get "close_tab"    => "tabs#destroy", as: :close_tab
+
+
 
   get "pages/index"
   get "pages/team"

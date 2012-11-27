@@ -14,8 +14,8 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   include ActionDispatch::TestProcess
 
   def setup
-    @quimica_tab = "/application/add_tab/3?allocation_tag_id=3&context=2"
-    @literatura_brasileira_tab = "/application/add_tab/5?allocation_tag_id=8&context=2"
+    @quimica_tab = add_tab_path(id: 3, context:2, allocation_tag_id: 3)
+    @literatura_brasileira_tab = add_tab_path(id: 5, context:2, allocation_tag_id: 8)
     @from_date = Date.current
     @until_date = Date.current
   end

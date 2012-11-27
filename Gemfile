@@ -38,6 +38,7 @@ group :test do
   gem 'database_cleaner', '0.7.2'
   gem 'cucumber-rails', '1.3.0', :require => false
   gem "launchy", "2.1.0"
+  gem "nokogiri", "1.5.5"
   # gem 'simplecov', '>= 0.5.3', :require => false
 end
 

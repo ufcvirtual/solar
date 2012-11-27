@@ -280,7 +280,6 @@ res47:
   action: 'show'
   description: 'Exibicao dos dados do aluno'
 
-
 # Acompanhamento do responsável - parte 1
 res48:
   id: 48
@@ -535,9 +534,8 @@ res94:
   controller: 'allocations'
   action: 'create_designation'
   description: 'Alocar perfil para usuario'
-  
-# Offers - Parte 2
 
+# Offers - Parte 2
 res95:
   id: 95
   controller: 'offers'

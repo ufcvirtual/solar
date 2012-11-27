@@ -17,7 +17,7 @@
                 - options = {} 
                 - html_options = {:onclick => "javascript:alert('"+t(:curriculum_access_alert)+"');return false;", :class=>'link_content' }
               - else 
-                - options = {:controller => :application, :action => :add_tab, :context => Context_Curriculum_Unit, :name => curriculum_unit.name, :id => curriculum_unit.id, :allocation_tag_id => curriculum_unit.allocation_tag.id }
+                - options = add_tab_path(id: curriculum_unit.id, context: Context_Curriculum_Unit, name: curriculum_unit.name, allocation_tag_id: curriculum_unit.allocation_tag.id)
                 - html_options = {:class=>'link_content'}
 
               = link_to curriculum_unit.name, options, html_options
