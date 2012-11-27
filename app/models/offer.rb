@@ -36,7 +36,7 @@ class Offer < ActiveRecord::Base
   end
 
   ##
-  #
+  # Data inicial deve ser anterior à data final
   ##
   def start_must_be_previous_than_end
     unless start_date.nil? or end_date.nil?

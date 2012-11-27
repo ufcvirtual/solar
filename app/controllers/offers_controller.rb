@@ -5,10 +5,8 @@ class OffersController < ApplicationController
 
   def index
     # não poderão vir com o valor 0 (indicando que "nenhum" foi selecionado, pois as ofertas dependem de ambos)
-    @course_id, @curriculum_unit_id = "all", "all" # a fim de testes: editor, atualmente, tem permissão para uc: 5 e curso: 2
-    # @course_id, @curriculum_unit_id = params[:course_id], params[:curriculum_unit_id] # descomentar esta linha após adição do filtro
+    @course_id, @curriculum_unit_id = (params[:course_id] || "all"), (params[:curriculum_unit_id] || "all") # a fim de testes: editor, atualmente, tem permissão para uc: 3 e curso: 2
     authorize! :index, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e cursos selecionados
-
     get_offers(@curriculum_unit_id, @course_id)
   end
 
@@ -25,7 +23,6 @@ class OffersController < ApplicationController
     @offer = Offer.find(params[:id])
 
     authorize! :edit, Offer, :on => [@offer.allocation_tag.id] # verifica se tem acesso à oferta a ser editada
-
     render :layout => false
   end
 
@@ -92,7 +89,7 @@ class OffersController < ApplicationController
     rescue Exception => error
       respond_to do |format|
         @date_range_error = @offer.errors.full_messages.last unless @offer.errors[:start_date].blank? and @offer.errors[:end_date].blank?
-        format.html { render :edit, :layout => false }
+        format.html { re__nder :edit, :layout => false }
       end
 
     end

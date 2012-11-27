@@ -87,7 +87,7 @@ module OffersHelper
       else
         curriculum_unit = CurriculumUnit.find(curriculum_unit_id)
         # a não ser que o usuário não tenha acesso, adiciona a uc à lista
-        @curriculum_units << [curriculum_unit] unless Allocation.have_access?(current_user.id, curriculum_unit.allocation_tag.id)
+        @curriculum_units << [curriculum_unit] if Allocation.have_access?(current_user.id, curriculum_unit.allocation_tag.id)
       end
 
       @curriculum_units.flatten!
