@@ -562,6 +562,17 @@
   lesson:
     lesson: "Aula"
     lesson_table_title: Aulas disponíveis para %{group_and_offer}
+    order: "Ordem"
+    name: "Nome da aula"
+    availability: "Disponibilidade"
+    acceptance: "Aprovação"
+    since: "A partir de "
+    none: "Nenhuma aula cadastrada"
+
+  module:
+    none: "Nenhum módulo cadastrado"
+    buttons:
+      new: "Novo módulo"
 
   #Listagem de Fóruns
   title: "Título"

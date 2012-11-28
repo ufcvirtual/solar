@@ -1720,6 +1720,28 @@ table tr.block_title th {
     display: none;
 }
 
+/* Tela de cadastro de aula */
+.lesson_description {
+    text-transform: capitalize;
+}
+.remove_bottom_line {
+    border-bottom: 0 !important;
+}
+.block_content_toolbar_left, .block_content_toolbar_right {
+    position: relative;
+    display: inline-block;
+    padding: 0;
+    margin:0;
+    top: 2px;
+}
+.block_content_toolbar_button {
+    padding: 0;
+    margin: 0;
+}
+.lesson_arrow {
+    display: table;
+}
+
 /*Tela de fórum*/
 .date_text_field{
     margin-top: -20px;

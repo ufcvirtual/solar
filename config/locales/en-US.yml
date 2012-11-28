@@ -404,6 +404,17 @@
   lesson:
     lesson: "Lesson"
     lesson_table_title: Available lessons to %{group_and_offer}
+    order: "Order"
+    name: "Name of the lesson"
+    availability: "Availability"
+    acceptance: "Acceptance"
+    since: "Since "
+    none: "No lesson registered"
+
+  module:
+    none: "No module registered"
+    buttons:
+      new: "New"
 
   #Foruns
   title: "Title"

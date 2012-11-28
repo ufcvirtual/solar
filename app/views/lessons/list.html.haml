@@ -3,47 +3,94 @@
 .block_wrapper
   - unless @lesson_modules.nil? or @lesson_modules.empty?
 
-    - @lesson_modules.each do |m|
+    - @lesson_modules.each_with_index do |m, idxm|
+      - lessons = lessons_by_module(m.id)
+
       .block_title
         %h2
+          =link_to (image_tag "/assets/lesson/up_arrow.png", :alt => ''), "#", :onclick => "javascript: alert('sobe');", :id => 'up' unless idxm == 0
+          =link_to (image_tag "/assets/lesson/down_arrow.png", :alt => ''), "#", :onclick => "javascript: alert('desce');", :id => 'down' unless idxm == @lesson_modules.count-1
           =m.name
           =link_to (image_tag "/assets/lesson/edit_module.png", :alt => ''), "#", :onclick => "javascript: alert('abrir edicao de modulo');", :id => 'edit_module'
           =link_to (image_tag "/assets/lesson/delete_module.png", :alt => ''), "#", :onclick => "javascript: alert('excluir modulo');", :id => 'delete_module'
 
       .block_content.block_content_text.block_content_toolbar
-        =link_to (image_tag "/assets/lesson/add_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('nova aula');", :id => 'new_lesson'
-        =link_to (image_tag "/assets/lesson/import_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('importar aula');", :id => 'import_lesson'
+        .block_content_toolbar_left
+          =link_to (image_tag "/assets/lesson/add_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('nova aula');", :id => 'new_lesson'
+          =link_to (image_tag "/assets/lesson/import_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('importar aula');", :id => 'import_lesson'
 
-        =link_to (image_tag "/assets/lesson/edit_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('editar aula');", :id => 'edit_lesson'
-        =link_to (image_tag "/assets/lesson/delete_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('excluir aula');", :id => 'delete_lesson'
-        =link_to (image_tag "/assets/lesson/download.png", :alt => ''), "#", :onclick => "javascript: alert('download da aula');", :id => 'download_lesson'
+        .block_content_toolbar_right
+          =link_to (image_tag "/assets/lesson/edit_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('editar aula');", :id => 'edit_lesson'
+          =link_to (image_tag "/assets/lesson/delete_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('excluir aula');", :id => 'delete_lesson'
+          =link_to (image_tag "/assets/lesson/download.png", :alt => ''), "#", :onclick => "javascript: alert('download da aula');", :id => 'download_lesson'
 
-        =link_to (image_tag "/assets/lesson/release_lessons.png", :alt => ''), "#", :onclick => "javascript: alert('libera aulas');", :id => 'release_lessons'
+          =link_to (image_tag "/assets/lesson/release_lessons.png", :alt => ''), "#", :onclick => "javascript: alert('libera aulas');", :id => 'release_lessons'
 
-      %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :border => "1"}
+      %table.tb_list
         %thead
           %tr.lines
-            %th{:align => 'center'}
-              = check_box_tag( 'all', 'all', false, {:id => "cbx_all"} )
-            %th{:align => 'center'}= 'Ordem'
-            //t :lesson_table_title 
-            %th= 'Nome da aula'
-            %th{:align => 'center'}= 'Disponibilidade'
-            %th{:align => 'center'}= 'Aprovação'
+            %th{:style => 'text-align:center;'}
+              = check_box_tag( 'all', 'all', false, {:id => "all_m_#{m.id}", :class => 'lesson_check_all'} )
+            %th{:style => 'text-align:center;'}= t(:order, :scope => [:lesson])
+            %th= t(:name, :scope => [:lesson])
+            %th{:style => 'text-align:center;'}= t(:availability, :scope => [:lesson])
+            %th{:style => 'text-align:center;'}= t(:acceptance, :scope => [:lesson])
         %tbody
-          - lessons = lessons_by_module(m.id)
-          - lessons.each do |lesson|
+          
+          - unless lessons.nil? or lessons.empty?
+
+            - lessons.each_with_index do |lesson, idxl|
+              - css_class = (!lesson.description.nil? and !lesson.description.empty?) ? "lines remove_bottom_line" : "lines"
+
+              %tr{:class => css_class}
+                %td{:style => "width: 25px;", :align => 'center' }
+                  =check_box_tag( "m_#{m.id}", lesson.id, false, {} )
+                %td{:style => "width: 50px;", :align => 'center'}
+                  =link_to (image_tag "/assets/lesson/up_arrow.png", :alt => ''), "#", :onclick => "javascript: alert('sobe');", :id => 'up', :class => 'lesson_arrow' unless idxl == 0
+                  =link_to (image_tag "/assets/lesson/down_arrow.png", :alt => ''), "#", :onclick => "javascript: alert('desce');", :id => 'down', :class => 'lesson_arrow' unless idxl == lessons.count-1
+                %td 
+                  =link_to lesson.name, "#", { :onclick => "javascript: alert('abre aula');", :id => "lesson#{lesson.id}", :class => 'link_content' }
+
+                %td{:style => "width: 160px", :align => 'center'}
+                  =t(:since, :scope => [:lesson]) unless !lesson.schedule.end_date.nil?
+                  =l lesson.schedule.start_date, :format => :normal
+                  - unless lesson.schedule.end_date.nil?
+                    =' - '
+                    =l lesson.schedule.end_date, :format => :normal
+
+                %td{:style => "width: 70px", :align => 'center'}
+                  - if lesson.status == Lesson_Test
+                    =link_to (image_tag "/assets/lesson/rejected_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('rejeita aula');", :id => 'reject_lesson'
+                  - else
+                    =link_to (image_tag "/assets/lesson/released_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('libera aula');", :id => 'release_lesson'
+
+                  - if (!lesson.description.nil? and !lesson.description.empty?)
+                    %tr.lines
+                      %td{:style => "width: 25px;", :align => 'center' }
+                      %td{:style => "width: 50px;", :align => 'center' }
+                      %td{:colspan => 3, :class => 'lesson_description' }=lesson.description
+          - else
             %tr.lines
-              %td{:style => "width: 40px;", :align => 'center' }
-                = check_box_tag( m.id, lesson.id, false, {} )
-              %td{:style => "width: 60px;", :align => 'center'}= lesson.order
-              %td= lesson.name
-              %td{:style => "width: 160px", :align => 'center'}
-                =l lesson.schedule.start_date, :format => :normal
-              %td{:style => "width: 100px", :align => 'center'}
+              %td{:colspan => 3, :class => 'lesson_description' }
+                =t(:none, :scope => [:lesson])
 
   - else
     .block_content.block_content_text 
-      ='nenhum modulo :P'
+      =t(:none, :scope => [:module])
 
-  =button_to 'Novo módulo', list_lessons_path(:allocation_tag_id => params[:allocation_tag_id]), :class => 'btn btn_default', :alt => 'sem alt'
+  =button_to t(:new, :scope => [:module, :buttons]), list_lessons_path(:allocation_tag_id => params[:allocation_tag_id]), :class => 'btn btn_default'
+
+:javascript
+  $(function() {
+
+    $(".lesson_check_all").click(function() {
+      
+      var name = this.id.slice(4);
+      alert(name);
+
+      //$(".selected_messages").each(function(i) {
+      //    $(this).attr("checked","checked");
+      //});
+    });
+
+  });
