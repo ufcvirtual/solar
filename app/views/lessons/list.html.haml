@@ -44,7 +44,7 @@
 
               %tr{:class => css_class}
                 %td{:style => "width: 25px;", :align => 'center' }
-                  =check_box_tag( "m_#{m.id}", lesson.id, false, {} )
+                  =check_box_tag( "m_#{m.id}", lesson.id, false, {:class => "m_#{m.id}"} )
                 %td{:style => "width: 50px;", :align => 'center'}
                   =link_to (image_tag "/assets/lesson/up_arrow.png", :alt => ''), "#", :onclick => "javascript: alert('sobe');", :id => 'up', :class => 'lesson_arrow' unless idxl == 0
                   =link_to (image_tag "/assets/lesson/down_arrow.png", :alt => ''), "#", :onclick => "javascript: alert('desce');", :id => 'down', :class => 'lesson_arrow' unless idxl == lessons.count-1
@@ -84,13 +84,11 @@
   $(function() {
 
     $(".lesson_check_all").click(function() {
-      
-      var name = this.id.slice(4);
-      alert(name);
-
-      //$(".selected_messages").each(function(i) {
-      //    $(this).attr("checked","checked");
-      //});
+      var check = this.checked;
+      var module = this.id.slice(4);
+      $("."+module).each(function(i) {
+          $(this).attr("checked",check);
+      });
     });
 
   });
