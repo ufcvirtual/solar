@@ -49,11 +49,12 @@ class LessonsController < ApplicationController
   end
 
   def download_files
+    # authorize! :download_files, Lesson, :on => [params[:allocation_tags_ids]].flatten
+
     lessons_ids = params[:lessons_ids] || []
 
-    file_path = './media/lessons/1/arquivo1.txt' # apenas para teste enquanto o método não é concluído
     redirect  = request.referer.nil? ? root_url(:only_path => false) : request.referer
-    download_file(redirect, file_path, "arquivo1")
+    # download_file(redirect, file_path, file_name)
   end
 
   private

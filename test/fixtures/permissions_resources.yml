@@ -959,6 +959,13 @@ offedit8:
   resource_id: 100
   per_id:  false
 
+# Lessons - Aulas
+
+# lessonedit1:
+#   profile_id: 5
+#   resource_id: 101
+#   per_id: false
+
 ##############################
 # BASICO #
 ##############################

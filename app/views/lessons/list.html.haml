@@ -22,7 +22,8 @@
         .block_content_toolbar_right
           = link_to (image_tag "/assets/lesson/edit.png", :alt => ''), "#", :onclick => "javascript: alert('editar aula');", :id => 'edit_lesson', :class => 'block_content_toolbar_button'
           = link_to (image_tag "/assets/lesson/delete.png", :alt => ''), "#", :onclick => "javascript: alert('excluir aula');", :id => 'delete_lesson', :class => 'block_content_toolbar_button'
-          = link_to (image_tag "/assets/lesson/download.png", :alt => ''), "#", :onclick => "javascript: download_lesson_zip('#{m.id}');", :id => 'download_lesson', :class => 'block_content_toolbar_button'
+          /= link_to (image_tag "/assets/lesson/download.png", :alt => ''), "#", :onclick => "javascript: download_lesson_zip('#{m.id}');", :id => 'download_lesson', :class => 'block_content_toolbar_button'
+          = link_to (image_tag "/assets/lesson/download.png", :alt => ''), "#", :onclick => "javascript: alert('download do zip');", :id => 'download_lesson', :class => 'block_content_toolbar_button'
           = link_to (image_tag "/assets/lesson/release_lessons.png", :alt => ''), "#", :onclick => "javascript: alert('libera aulas');", :id => 'release_lessons', :class => 'block_content_toolbar_button'
 
       %table.tb_list
@@ -93,11 +94,12 @@
   });
 
   function download_lesson_zip(module_id){
+    allocations_tags_ids = $("#allocation_tag_id");
     lessons_ids = new Array;
     module_check_boxes = $('[name="m_'+module_id+'"]');
     // coloca, no array, todos os ids das aulas selecionadas para efetuar o download pelo módulo
     module_check_boxes.map(function(){
       if(this.checked == true){ lessons_ids.push(this.value) }
     });
-    window.location.href='#{download_files_lessons_path}?lessons_ids='+lessons_ids
+    window.location.href='#{download_files_lessons_path}?lessons_ids='+lessons_ids+'&allocations_tags_ids='+allocations_tags_ids;
   }
