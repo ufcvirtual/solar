@@ -7,31 +7,47 @@ Precisamos:
 
 $(document).ready(function(){
 
+	var preselectedCourses = null;
+	var preselectedCourseVal = $('#selectedCourseValue').val();
+	var preselectedCourseName = $('#selectedCourseName').val();
+	if ((preselectedCourseVal != '') && (preselectedCourseName != ''))
+		preselectedCourses = [{allocation_tag: preselectedCourseVal, name: preselectedCourseName}];
+	
 	$( "#txtCourse").tokenInput(search_urls["course"], {
 		hintText: hints["course"],
 		searchingText: messages["searching"],
 		queryParam : 'search',
 		tokenLimit: 1,
 		propertyToSearch: 'name',
-		tokenValue: 'allocation_tag',
 		noResultsText: messages["noResults"],
+		prePopulate: preselectedCourses,
 		onAdd: function (item) {
             $('#txtSemester').tokenInput('clear');
             $('#txtCurriculumUnit').tokenInput('clear');
             $('#txtGroup').tokenInput('clear');
             $('#token-input-txtSemester').focus();
+            $('#selectedCourseValue').val(item.allocation_tag_id);
+            $('#selectedCourseName').val(item.name);
         },
         onDelete: function (item) {
             $('#txtSemester').tokenInput('clear');
             $('#txtCurriculumUnit').tokenInput('clear');
             $('#txtGroup').tokenInput('clear');
             $('#token-input-txtCourse').focus();
+            $('#selectedCourseValue').val('');
+            $('#selectedCourseName').val('');
         }
 	});
 
+	var preselectedSemesters = null;
+	var selectedSemesterVal = $('#selectedSemesterValue').val();
+	var selectedSemesterName = $('#selectedSemesterName').val();
+	if ((selectedSemesterVal != '') && (selectedSemesterName != ''))
+		preselectedSemesters = [{allocation_tag: selectedSemesterVal, semester: selectedSemesterName}];
+
 	$( "#txtSemester").tokenInput(function() {
 			if ($("#txtCourse").tokenInput("get").length > 0) 
-				return search_urls["semester"]+"?chained_filter="+ $("#txtCourse").tokenInput("get")[0].allocation_tag_id + "&";
+				return search_urls["semester"]+"?chained_filter="+ $('#selectedCourseValue').val() + "&";
 			return search_urls["semester"];
 		}, {
 		hintText: hints["semester"],
@@ -40,24 +56,35 @@ $(document).ready(function(){
 		queryParam : 'search_semester',
 		tokenLimit: 1,
 		propertyToSearch: 'semester',
-		tokenValue: 'allocation_tag',
+		prePopulate: preselectedSemesters,
 		onAdd: function (item) {
             $('#txtCurriculumUnit').tokenInput('clear');
             $('#txtGroup').tokenInput('clear');
             $('#token-input-txtCurriculumUnit').focus();
+            $('#selectedSemesterValue').val(item.allocation_tag_id);
+            $('#selectedSemesterName').val(item.semester);
         },
         onDelete: function (item) {
             $('#txtCurriculumUnit').tokenInput('clear');
             $('#txtGroup').tokenInput('clear');
             $('#token-input-txtSemester').focus();
+            $('#selectedSemesterValue').val('');
+            $('#selectedSemesterName').val('');            
         }
 	});
 	
+
+	var preselectedCurriculumUnits = null;
+	var selectedCurriculumUnitVal = $('#selectedCurriculumUnitValue').val();
+	var selectedCurriculumUnitName = $('#selectedCurriculumUnitName').val();
+	if ((selectedCurriculumUnitVal != '') && (selectedCurriculumUnitName != ''))
+		preselectedCurriculumUnits = [{allocation_tag: selectedCurriculumUnitVal, name: selectedCurriculumUnitName}];
+	
 	$( "#txtCurriculumUnit").tokenInput(function() {
 			if ($("#txtSemester").tokenInput("get").length > 0) 
-				return search_urls["curriculumUnit"]+"?chained_filter="+ $("#txtSemester").tokenInput("get")[0].allocation_tag_id + "&";
+				return search_urls["curriculumUnit"]+"?chained_filter="+  $('#selectedSemesterValue').val() + "&";
 			if ($("#txtCourse").tokenInput("get").length > 0) 
-				return search_urls["curriculumUnit"]+"?chained_filter="+ $("#txtCourse").tokenInput("get")[0].allocation_tag_id + "&";
+				return search_urls["curriculumUnit"]+"?chained_filter="+  $('#selectedCourseValue').val() + "&";
 			return search_urls["curriculumUnit"];
 		}
 		, {
@@ -67,24 +94,36 @@ $(document).ready(function(){
 		queryParam : 'search_curriculum_unit',
 		tokenLimit: 1,
 		propertyToSearch: 'name',
-		tokenValue: 'allocation_tag',
+		prePopulate: preselectedCurriculumUnits,
 		onAdd: function (item) {
 		    $('#txtGroup').tokenInput('clear');
             $('#token-input-txtGroup').focus();
+            $('#selectedCurriculumUnitValue').val(item.allocation_tag_id);
+            $('#selectedCurriculumUnitName').val(item.name);
 		},
 		onDelete: function(item) {
             $('#txtGroup').tokenInput('clear');
 			$('#token-input-txtCurriculumUnit').focus();
+	        $('#selectedCurriculumUnitValue').val('');
+            $('#selectedCurriculumUnitName').val('');
 		}
 		
 	});
+
+
+	var preselectedGroups = null;
+	var selectedGroupVal = $('#selectedGroupValue').val();
+	var selectedGroupName = $('#selectedGroupName').val();
+	if ((selectedGroupVal != '') && (selectedGroupName != ''))
+		preselectedGroups = [{allocation_tag: selectedGroupValue, code: selectedGroupName}];
+
 	$( "#txtGroup").tokenInput(function() {
 			if ($("#txtCurriculumUnit").tokenInput("get").length > 0) 
-				return search_urls["group"]+"?chained_filter="+ $("#txtCurriculumUnit").tokenInput("get")[0].allocation_tag_id + "&";
+				return search_urls["group"]+"?chained_filter="+ $('#selectedCurriculumUnitValue').val(); + "&";
 			if ($("#txtSemester").tokenInput("get").length > 0) 
-				return search_urls["group"]+"?chained_filter="+ $("#txtSemester").tokenInput("get")[0].allocation_tag_id + "&";
+				return search_urls["group"]+"?chained_filter="+ $('#selectedSemesterValue').val() + "&";
 			if ($("#txtCourse").tokenInput("get").length > 0) 
-				return search_urls["group"]+"?chained_filter="+ $("#txtCourse").tokenInput("get")[0].allocation_tag_id + "&";
+				return search_urls["group"]+"?chained_filter="+ $('#selectedCourseValue').val() + "&";
 			return search_urls["group"]
 		}, {
 		hintText: hints["group"],
@@ -93,9 +132,16 @@ $(document).ready(function(){
 		queryParam : 'search',
 		tokenLimit: 1,
 		propertyToSearch: 'code',
-		tokenValue: 'allocation_tag',
+		prePopulate: preselectedGroups,
+		onAdd: function (item) {
+            $('#token-input-txtGroup').focus();
+            $('#selectedGroupValue').val(item.allocation_tag_id);
+            $('#selectedGroupName').val(item.code);
+		},
 		onDelete: function(item) {
 			$('#token-input-txtGroup').focus();
+            $('#selectedGroupValue').val();
+            $('#selectedGroupName').val();
 		}
 	});
 
@@ -113,7 +159,6 @@ $(document).ready(function(){
 	//$('#token-input-txtCourse').keydown(function(e){
 	
 	$('[id^="token-input-"]').keyup(function(e){
-		console.log('Clicou:'+ e.keyCode);
     	if (e.keyCode == 40) { 
 	    	if (isSearchPanelClosed(this)){
 				$(this).val(' ');
@@ -154,7 +199,6 @@ function showNavPanelMenu(element){
 	//var left = $(element).position().left + $(element).outerWidth();
 	$('body').append(pnl);
 	
-	console.log(element);
 	//$('#navPanelMenu').css('left', ''+ left + 'px')
 	$('#navPanelMenu').position({
 		my: 'left top',
@@ -163,8 +207,6 @@ function showNavPanelMenu(element){
 	});
 
 	$('#navPanelMenu').slideDown('fast');
-	//console.log(pnl);
-	//console.log($('#navPanelMenu'));
 }
 
 /* Retorna as allocationTagIds selecionadas*/

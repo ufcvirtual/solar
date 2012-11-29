@@ -68,29 +68,29 @@ module PlacesNavPanelHelper
 			class="label">#{t(:course)}:</span><input 
 			type="text" id="txtCourse"/>
 			<input type="button" value="" class ="btShowMenu"/>
-			<input type="hidden" id="selectedCourseName" name="selectedCourseName"/>
-			<input type="hidden" id="selectedCourseValue" name="selectedCourseValue"/>
+			<input type="hidden" id="selectedCourseName" name="selectedCourseName" value="#{params[:selectedCourseName]}"/>
+			<input type="hidden" id="selectedCourseValue" name="selectedCourseValue" value="#{params[:selectedCourseValue]}"/>
 		</div>
 		<div><span 
 			class="label">#{t(:semester_date)}:</span><input 
 			type="text" id="txtSemester"/>
 			<input type="button" value="" class ="btShowMenu"/>
-			<input type="hidden" id="selectedSemesterName" name="selectedSemesterName"/>
-			<input type="hidden" id="selectedSemesterValue" name="selectedSemesterValue"/>
+			<input type="hidden" id="selectedSemesterName" name="selectedSemesterName" value="#{params[:selectedSemesterName]}"/>
+			<input type="hidden" id="selectedSemesterValue" name="selectedSemesterValue" value="#{params[:selectedSemesterValue]}"/>
 		</div>
 		<div><span 
 			class="label" style=";">#{t(:curriculum_unit)}:</span><input 
 			type="text" id="txtCurriculumUnit"/>
 			<input type="button" value="" class ="btShowMenu"/>
-			<input type="hidden" id="selectedCurriculumUnitName" name="selectedCurriculumUnitName"/>
-			<input type="hidden" id="selectedCurriculumUnitValue" name="selectedCurriculumUnitValue"/>
+			<input type="hidden" id="selectedCurriculumUnitName" name="selectedCurriculumUnitName" value="#{params[:selectedCurriculumUnitName]}"/>
+			<input type="hidden" id="selectedCurriculumUnitValue" name="selectedCurriculumUnitValue" value="#{params[:selectedCurriculumUnitValue]}"/>
 		</div>
 		<div><span 
 			class="label">#{t(:group)}:</span><input 
 			type="text" id="txtGroup"/>
 			<input type="button" value="" class ="btShowMenu"/>
-			<input type="hidden" id="selectedGroupName" name="selectedGroupName"/>
-			<input type="hidden" id="selectedGroupValue" name="selectedGroupValue"/>
+			<input type="hidden" id="selectedGroupName" name="selectedGroupName" value="#{params[:selectedGroupName]}"/>
+			<input type="hidden" id="selectedGroupValue" name="selectedGroupValue"value="#{params[:selectedGroupValue]}"/>
 		</div>
 	</div>
     }

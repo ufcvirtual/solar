@@ -3,12 +3,163 @@ include OffersHelper
 
 class OffersController < ApplicationController
 
+# Versão da Bianca
+#  def index
+#    # não poderão vir com o valor 0 (indicando que "nenhum" foi selecionado, pois as ofertas dependem de ambos)
+#    @course_id, @curriculum_unit_id = (params[:course_id] || "all"), (params[:curriculum_unit_id] || "all") # a fim de testes: editor, atualmente, tem permissão para uc: 3 e curso: 2
+#    authorize! :index, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e cursos selecionados
+#    get_offers(@curriculum_unit_id, @course_id)
+#  end
+
+
+  def getAllOffers
+	al                = current_user.allocations.where(status: Allocation_Activated)
+    my_direct_offers  = al.map(&:offer).compact
+    offers_by_courses  = al.map(&:course).compact.map(&:offer).uniq
+    offers_by_ucs      = al.map(&:curriculum_unit).compact.map(&:offers).flatten.uniq
+    offers_by_groups   = al.map(&:group).compact.map(&:offer).uniq
+    result = [my_direct_offers + offers_by_courses + offers_by_ucs + offers_by_groups].flatten.compact.uniq
+    return result
+  end 
+
+
   def index
-    # não poderão vir com o valor 0 (indicando que "nenhum" foi selecionado, pois as ofertas dependem de ambos)
-    @course_id, @curriculum_unit_id = (params[:course_id] || "all"), (params[:curriculum_unit_id] || "all") # a fim de testes: editor, atualmente, tem permissão para uc: 3 e curso: 2
-    authorize! :index, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e cursos selecionados
-    get_offers(@curriculum_unit_id, @course_id)
+    @offers = getAllOffers
+
+    if params.include?(:course)
+      @offers = @offers.select { |offer| offer.course_id == params[:course].to_i }
+    end
+
+    if params.include?(:period)
+      @offers = @offers.select { |offer| offer.semester.downcase.include?(params[:period].downcase) }
+    end
+
+	#ordenando os resultados
+    if params.include?(:search_semester)
+      @offers.sort! { |a,b| a.semester <=> b.semester }
+    end
+	if params.include?(:search_curriculum_unit)
+      @offers.sort! { |a,b| a.curriculum_unit.name <=> b.curriculum_unit.name }
+    end
+
+    # Filtrando por período para o componente de edição
+    if params.include?(:search_semester)
+      params[:search_semester].strip!
+      @offers = @offers.select { |offer| offer.semester.downcase.include?(params[:search_semester].downcase) }
+      
+      all_allocation_tag_ids = Array.new(@offers.count)
+	  @offers.each_with_index do |offer,i|
+        respects_chained_filter = false
+        offer[:allocation_tag_id] = [offer.allocation_tag.id]
+        offer[:name] = offer.curriculum_unit.name
+        
+        params[:chained_filter] = [] unless params.include?(:chained_filter)
+		
+		# se offer.course.allocation_tag.id estiver nos parametros, ok
+		respects_chained_filter = true if params[:chained_filter].include?(offer.course.allocation_tag.id.to_s)    
+		
+		#senão, se parametro estiver vazio, ok
+		respects_chained_filter = true if params[:chained_filter].empty?
+		
+		@offers[i] = nil unless respects_chained_filter
+		all_allocation_tag_ids[i] = offer[:allocation_tag_id] if respects_chained_filter
+	  end	  
+	  @offers = @offers.compact
+
+	  # Agrupando 
+	  reference_semester = ''
+      reference_index = 0
+
+	  @offers.each_with_index do |offer,i|
+		if (offer.semester == reference_semester)
+			@offers[reference_index][:allocation_tag_id] += offer[:allocation_tag_id]
+			@offers[reference_index].course = nil
+			@offers[reference_index].name = nil
+			@offers[reference_index].curriculum_unit = nil
+			@offers[reference_index].start_date = nil
+			@offers[reference_index].end_date = nil
+			@offers[reference_index].id = nil
+			@offers[i] = nil
+		else
+			reference_semester = offer.semester 
+			reference_index = i
+		end
+	  end
+
+	  @offers = @offers.compact
+	  all_allocation_tag_ids = all_allocation_tag_ids.compact.flatten
+
+      all = {:semester => "..."+params[:search_semester]+"...", :allocation_tag_id => all_allocation_tag_ids}
+      @offers.push(all)
+    end
+    
+    # Filtrando por nome de unidade curricular
+    if params.include?(:search_curriculum_unit)
+      params[:search_curriculum_unit].strip!
+      @offers = @offers.select { |offer| offer.curriculum_unit.name.downcase.include?(params[:search_curriculum_unit].downcase)}
+
+	  all_allocation_tag_ids = Array.new(@offers.count)
+	  @offers.each_with_index do |offer,i|
+	  	respects_chained_filter = false
+        offer[:allocation_tag_id] = [offer.allocation_tag.id.to_s]
+        offer[:name] = offer.curriculum_unit.name
+        
+		params[:chained_filter] = [] unless params.include?(:chained_filter)
+		
+		#se offer.allocationTagId estiver em parametros, ok 		
+		respects_chained_filter = true if params[:chained_filter].include?(offer.allocation_tag.id.to_s)
+			
+		#offer.course.allocationTag.id estiver em parametros, ok 
+		respects_chained_filter = true if params[:chained_filter].include?(offer.course.allocation_tag.id.to_s)
+			
+		#senão, se parametro estiver vazio, ok
+		respects_chained_filter = true if params[:chained_filter].empty?
+		
+		@offers[i] = nil unless respects_chained_filter
+		all_allocation_tag_ids[i] = offer[:allocation_tag_id] if respects_chained_filter
+	  end
+	  @offers = @offers.compact
+
+	  # Agrupando 
+	  reference_code = ''
+      reference_index = 0
+	  @offers.each_with_index do |offer,i|
+		if (offer.curriculum_unit.code == reference_code)
+			@offers[reference_index][:allocation_tag_id] += offer[:allocation_tag_id]
+			@offers[reference_index].course = nil
+			@offers[reference_index].semester = nil
+			@offers[reference_index].start_date = nil
+			@offers[reference_index].end_date = nil
+			@offers[reference_index].id = nil
+			@offers[i] = nil
+		else
+			reference_code = offer.curriculum_unit.code
+			reference_index = i
+		end
+	  end
+	  @offers = @offers.compact
+	  all_allocation_tag_ids = all_allocation_tag_ids.compact.flatten
+
+      all = {:name => '...' << params[:search_curriculum_unit] << "... (#{@offers.count})", :allocation_tag_id => all_allocation_tag_ids}
+      @offers.push(all)
+    end
+    
+    respond_to do |format|
+      format.html
+      format.json { render json: @offers }
+      format.xml { render :xml => @offers }
+    end
+  
   end
+
+
+
+
+
+
+
+
+
 
   def new
     @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
