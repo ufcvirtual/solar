@@ -1727,28 +1727,37 @@ table tr.block_title th {
 .remove_bottom_line {
     border-bottom: 0 !important;
 }
-.block_content_toolbar_left, .block_content_toolbar_right {
-    position: relative;
+.block_lesson_toolbar_left, .block_lesson_toolbar_right {
     display: inline-block;
+    position: relative;
     padding: 0;
     margin:0;
+}
+.block_lesson_toolbar_left {    
     top: 2px;
 }
-.block_content_toolbar_button {
-    padding: 0;
-    margin: 0;
+.block_lesson_toolbar_right {
+    top: -5px;
+    right: -520px;
+}
+.block_lesson_toolbar_button {
+    display: inline-block;
     width: 32px;
     height: 26px;
     background-color: #f9f9f9;
-    border: 1px solid #fafafa;
-    display: inline-block;
-    position: inherit;
     text-align: center;
-    top: -7px;
-    right: -540px;
+    border: 1px solid #ccc;
+}
+.block_lesson_toolbar_button_release {
+    margin-left: 20px !important;
+}
+.lesson_arrows {
+    display: inline-block;
+    position: relative;
+    width: 18px;
 }
 .lesson_arrow {
-   
+
 }
 
 /*Tela de fórum*/

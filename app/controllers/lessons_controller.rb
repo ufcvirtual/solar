@@ -6,7 +6,7 @@ class LessonsController < ApplicationController
   before_filter :prepare_for_group_selection, :only => [:index, :download_files]
   before_filter :curriculum_data, :except => [:list, :download_files]
 
-  load_and_authorize_resource :except => [:index, :download_files]
+  load_and_authorize_resource :except => [:index, :list, :download_files]
 
   def show
     render :layout => 'lesson_frame'
@@ -32,7 +32,7 @@ class LessonsController < ApplicationController
   # listagem do cadastro de aulas  
   def list
     # verifica permissao de acessar aulas cadastradas nas allocation tags passadas
-    #authorize! :list, Lesson, :on => [params[:allocation_tag_id].to_i]
+    authorize! :list, Lesson, :on => [params[:allocation_tag_id].to_i]
 
     @allocation_tags  = (params.include?('allocation_tag_id')) ? params[:allocation_tag_id] : 0
 
