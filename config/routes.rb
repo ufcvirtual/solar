@@ -93,6 +93,7 @@ Solar::Application.routes.draw do
       get :show_content
       get :index
       get :list
+      get :download_files
     end
   end
 

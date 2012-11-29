@@ -1,11 +1,12 @@
 class LessonsController < ApplicationController
 
   include EditionHelper
+  include FilesHelper
 
-  before_filter :prepare_for_group_selection, :only => [:index]
-  before_filter :curriculum_data, :except => [:list]
+  before_filter :prepare_for_group_selection, :only => [:index, :download_files]
+  before_filter :curriculum_data, :except => [:list, :download_files]
 
-  load_and_authorize_resource :except => [:index, :list]
+  load_and_authorize_resource :except => [:index, :list, :download_files]
 
   def show
     render :layout => 'lesson_frame'
@@ -45,6 +46,14 @@ class LessonsController < ApplicationController
       format.html 
       format.json { render json: @allocations }
     end
+  end
+
+  def download_files
+    lessons_ids = params[:lessons_ids] || []
+
+    file_path = './media/lessons/1/arquivo1.txt' # apenas para teste enquanto o método não é concluído
+    redirect  = request.referer.nil? ? root_url(:only_path => false) : request.referer
+    download_file(redirect, file_path, "arquivo1")
   end
 
   private
