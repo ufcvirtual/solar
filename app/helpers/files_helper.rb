@@ -23,7 +23,7 @@ module FilesHelper
   # {
   #   under_path: ['/path/to/1', '/path/to/2'],
   #   name_zip_file: 'ziped_file'
-  #   folders_names: ['folder_file1', 'folder_file2']
+  #   folders_names: ['folder_path1', 'folder_path2']
   # }
   ##
   def compress(opts = {})

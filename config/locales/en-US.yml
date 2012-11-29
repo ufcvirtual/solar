@@ -394,22 +394,26 @@
   #Aulas
   lesson_title: "Lessons"
   lesson_table_title: "Available Lessons"
-  lesson_table_date: "Access date"
   lesson_message: "No lesson available"
-  # lesson: "Lesson"
   lesson_goto: "Go to lesson"
   lesson_closed: "Lesson closed"
   lesson_closed_short: "closed"
 
-  lesson:
-    lesson: "Lesson"
-    lesson_table_title: Available lessons to %{group_and_offer}
-    order: "Order"
-    name: "Name of the lesson"
-    availability: "Availability"
-    acceptance: "Acceptance"
-    since: "Since "
-    none: "No lesson registered"
+  lessons:
+    index:
+      lesson_table_title: Available lessons to %{group_and_offer}
+      lesson_table_date: "Access date"
+    list:
+      lesson: Lesson
+      order: Order
+      name: Name of the lesson
+      availability: Availability
+      acceptance: Acceptance
+      since: Since
+      none: No lesson registered
+      new: New
+    notifications:
+      must_select_lessons: One or more lessons must be selected
 
   module:
     none: "No module registered"
@@ -549,7 +553,7 @@
   new_activity: "New activity"
   agenda_null: "No actives programed for this schedule"
   discussions: "Forum"
-  lessons: "Lesson"
+  lesson: "Lesson"
   schedule_assignment: "Assignment"
   schedule_events: "Schedule Event"
   no_events: "No events to selected day"

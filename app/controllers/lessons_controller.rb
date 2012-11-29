@@ -51,15 +51,25 @@ class LessonsController < ApplicationController
   def download_files
     authorize! :download_files, Lesson, :on => [params[:allocation_tags_ids]].flatten.collect{|id| id.to_i}
 
-    lessons_ids     = params[:lessons_ids].split(",") || []
-    all_files_paths = lessons_ids.collect{ |lesson_id| './media/lessons/'+lesson_id }
-    lessons_names   = lessons_ids.collect{ |lesson_id| Lesson.find(lesson_id).name }
+    unless params[:lessons_ids].empty?
 
-    zip_file_path   = compress(:under_path => all_files_paths, :folders_names => lessons_names)
-    zip_file_name   = zip_file_path.split("/").last
+      lessons_ids     = params[:lessons_ids].split(",").flatten
+      # all_files_paths = lessons_ids.collect{ |lesson_id| './media/lessons/'+lesson_id }
+      all_files_paths = lessons_ids.collect{ |lesson_id| File.join(Rails.root.to_s, 'media', 'lessons', lesson_id) }
 
-    redirect        = request.referer.nil? ? root_url(:only_path => false) : request.referer
-    download_file(redirect, zip_file_path, zip_file_name)
+      # File.join(Rails.root.to_s, 'media', 'lessons', lesson_id)
+      lessons_names   = lessons_ids.collect{ |lesson_id| Lesson.find(lesson_id).name }
+
+      zip_file_path   = compress(:under_path => all_files_paths, :folders_names => lessons_names)
+      zip_file_name   = zip_file_path.split("/").last
+
+      redirect        = request.referer.nil? ? root_url(:only_path => false) : request.referer
+      download_file(redirect, zip_file_path, zip_file_name)
+
+    else
+      flash[:alert] = t(:must_select_lessons, :scope => [:lessons, :notifications])
+      redirect_to list_lessons_url(:allocation_tag_id => params[:allocation_tags_ids])
+    end
 
   end
 

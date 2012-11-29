@@ -39,7 +39,7 @@ class Schedule < ActiveRecord::Base
     schedules_events   = ScheduleEvent.joins(:schedule, :allocation_tag).where(where).select("'schedule_events' AS schedule_type, schedule_events.title AS name, schedule_events.description, schedules.start_date, schedules.end_date")
     assignments_events = Assignment.joins(:schedule, :allocation_tag).where(where).select("'assignments' AS schedule_type, assignments.name AS name, assignments.enunciation AS description, schedules.start_date, schedules.end_date")
     discussions_events = Discussion.joins(:schedule, :allocation_tag).where(where).select("'discussions' AS schedule_type, discussions.name AS name, discussions.description, schedules.start_date, schedules.end_date")
-    lessons_events     = Lesson.joins(:schedule, :allocation_tag).where(where).select("'lessons' AS schedule_type, lessons.name AS name, lessons.description, schedules.start_date, schedules.end_date")
+    lessons_events     = Lesson.joins(:schedule, :allocation_tag).where(where).select("'lesson' AS schedule_type, lessons.name AS name, lessons.description, schedules.start_date, schedules.end_date")
     events             = [schedules_events + assignments_events + discussions_events + lessons_events].flatten.compact.map(&:attributes).sort_by {|e| e['end_date'] }
 
     return events.slice(0,2) if period # apenas os dois primeiros

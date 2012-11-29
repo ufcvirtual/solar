@@ -30,10 +30,10 @@
           %tr.lines
             %th{:style => 'text-align:center;'}
               = check_box_tag( 'all', 'all', false, {:id => "all_m_#{m.id}", :class => 'lesson_check_all'} )
-            %th{:style => 'text-align:center;'}= t(:order, :scope => [:lesson])
-            %th= t(:name, :scope => [:lesson])
-            %th{:style => 'text-align:center;'}= t(:availability, :scope => [:lesson])
-            %th{:style => 'text-align:center;'}= t(:acceptance, :scope => [:lesson])
+            %th{:style => 'text-align:center;'}= t(".order")
+            %th= t(".name")
+            %th{:style => 'text-align:center;'}= t(".availability")
+            %th{:style => 'text-align:center;'}= t(".acceptance")
         %tbody
           
           - unless lessons.nil? or lessons.empty?
@@ -51,7 +51,7 @@
                   = link_to lesson.name, "#", { :onclick => "javascript: alert('abre aula');", :id => "lesson#{lesson.id}", :class => 'link_content' }
 
                 %td{:style => "width: 160px", :align => 'center'}
-                  =t(:since, :scope => [:lesson]) unless !lesson.schedule.end_date.nil?
+                  =t(".since") unless !lesson.schedule.end_date.nil?
                   =l lesson.schedule.start_date, :format => :normal
                   - unless lesson.schedule.end_date.nil?
                     =' - '
@@ -71,13 +71,13 @@
           - else
             %tr.lines
               %td{:colspan => 3, :class => 'lesson_description' }
-                =t(:none, :scope => [:lesson])
+                =t(".none")
 
   - else
     .block_content.block_content_text 
-      =t(:none, :scope => [:module])
+      =t(".none")
 
-  = button_to t(:new, :scope => [:module, :buttons]), list_lessons_path(:allocation_tag_id => params[:allocation_tag_id]), :class => 'btn btn_default'
+  = button_to t(".new"), list_lessons_path(:allocation_tag_id => params[:allocation_tag_id]), :class => 'btn btn_default'
 
 :javascript
   $(function() {
@@ -92,13 +92,34 @@
 
   });
 
-  function download_lesson_zip(module_id){
-    allocation_tags_ids = $("#allocation_tag_id").val();
+  // função que retorna uma lista de ids das aulas selecionadas em determinado módulo
+  function get_selected_lessons(module_id){
     lessons_ids = new Array;
     module_check_boxes = $('[name="m_'+module_id+'"]');
-    // coloca, no array, todos os ids das aulas selecionadas para efetuar o download pelo módulo
+    // coloca, no array, todos os ids das aulas selecionadas para efetuar a ação do módulo
     module_check_boxes.map(function(){
       if(this.checked == true){ lessons_ids.push(this.value) }
     });
-    window.location.href='#{download_files_lessons_path}?lessons_ids='+lessons_ids+'&allocation_tags_ids='+allocation_tags_ids;
+    return lessons_ids;
+  }
+
+  // verifica se pode realizar a ação (não permitirá e exibirá alerta se nenhuma aula tiver sido selecionada)
+  function can_do_action(selected_lessons){
+    if(selected_lessons.length == 0){
+      alert('#{I18n.t(:must_select_lessons, :scope => [:lessons, :notifications])}');
+      return false;
+    }else{
+      return true;
+    }
+  }
+
+
+  // download dos arquivos das aulas selecionadas em um módulo
+  function download_lesson_zip(module_id){
+    allocation_tags_ids = $("#allocation_tag_id").val();
+    lessons_ids         = get_selected_lessons(module_id);  
+
+    if(can_do_action(lessons_ids)){
+      window.location.href='#{download_files_lessons_path}?lessons_ids='+lessons_ids+'&allocation_tags_ids='+allocation_tags_ids;
+    }
   }
