@@ -569,7 +569,7 @@
       acceptance: Aprovação
       since: A partir de 
       none: Nenhuma aula cadastrada
-      new: Nova
+      new: Nova aula
     notifications:
       must_select_lessons: Uma ou mais aulas devem ser selecionadas
 
