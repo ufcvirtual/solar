@@ -49,12 +49,18 @@ class LessonsController < ApplicationController
   end
 
   def download_files
-    # authorize! :download_files, Lesson, :on => [params[:allocation_tags_ids]].flatten
+    authorize! :download_files, Lesson, :on => [params[:allocation_tags_ids]].flatten.collect{|id| id.to_i}
 
-    lessons_ids = params[:lessons_ids] || []
+    lessons_ids     = params[:lessons_ids].split(",") || []
+    all_files_paths = lessons_ids.collect{ |lesson_id| './media/lessons/'+lesson_id }
+    lessons_names   = lessons_ids.collect{ |lesson_id| Lesson.find(lesson_id).name }
 
-    redirect  = request.referer.nil? ? root_url(:only_path => false) : request.referer
-    # download_file(redirect, file_path, file_name)
+    zip_file_path   = compress(:under_path => all_files_paths, :folders_names => lessons_names)
+    zip_file_name   = zip_file_path.split("/").last
+
+    redirect        = request.referer.nil? ? root_url(:only_path => false) : request.referer
+    download_file(redirect, zip_file_path, zip_file_name)
+
   end
 
   private

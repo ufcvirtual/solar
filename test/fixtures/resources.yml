@@ -572,8 +572,8 @@ res100:
   action: 'deactivate_groups'
   description: 'Desativacao de todas as turmas de uma oferta'
 
-# res101:
-#   id: 101
-#   controller: 'lessons'
-#   action: 'download_files'
-#   description: 'Download dos arquivos das aulas selecionadas'  
+res101:
+  id: 101
+  controller: 'lessons'
+  action: 'download_files'
+  description: 'Download dos arquivos das aulas selecionadas'  

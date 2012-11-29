@@ -23,6 +23,7 @@ module FilesHelper
   # {
   #   under_path: ['/path/to/1', '/path/to/2'],
   #   name_zip_file: 'ziped_file'
+  #   folders_names: ['folder_file1', 'folder_file2']
   # }
   ##
   def compress(opts = {})
@@ -39,8 +40,8 @@ module FilesHelper
 
       FileUtils.rm archive, force: true
       Zip::ZipFile.open(archive, Zip::ZipFile::CREATE) do |zipfile|
-        paths.each do |path|
-          dir = path.split('/').last
+        paths.each_with_index do |path, idx|
+          dir = (opts[:under_path].present? and opts[:folders_names].present?) ? opts[:folders_names][idx] : dir = path.split('/').last
           zipfile.mkdir(dir)
           Dir["#{path}/**/**"].each do |file|
             zipfile.add(File.join(dir, file.sub(path + '/', '')), file) # nome do arquivo, path do arquivo
