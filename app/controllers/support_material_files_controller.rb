@@ -36,7 +36,7 @@ class SupportMaterialFilesController < ApplicationController
 
     # Recupearndo todos os arquivos e separando por folder
     all_files = SupportMaterialFile.find_files(allocation_tag_ids)
-    path_zip = make_zip_files(all_files, 'attachment_file_name', t(:support_folder_name))
+    path_zip = compress({ files: all_files, table_column_name: 'attachment_file_name', name_zip_file: t(:support_folder_name) })
 
     # download do zip
     download_file(redirect_error, path_zip)
@@ -50,7 +50,7 @@ class SupportMaterialFilesController < ApplicationController
     redirect_error = {:action => :list, :id => curriculum_unit_id}
     
     all_files = SupportMaterialFile.find_files(allocation_tag_ids, params[:folder])
-    path_zip = make_zip_files(all_files, 'attachment_file_name', t(:support_folder_name))
+    path_zip = compress({ files: all_files, table_column_name: 'attachment_file_name', name_zip_file: t(:support_folder_name) })
 
     # download do zip
     download_file(redirect_error, path_zip)

@@ -220,7 +220,7 @@ class AssignmentsController < ApplicationController
           folder_name = assignment.name # pasta: "atv1"
           all_files = assignment.assignment_enunciation_files
       end
-      file_path = make_zip_files(all_files, 'attachment_file_name', folder_name) # caminho do zip criado
+      file_path = compress({ files: all_files, table_column_name: 'attachment_file_name', name_zip_file: folder_name })
     else
       case params[:type]
         when 'comment' # arquivo de um comentário

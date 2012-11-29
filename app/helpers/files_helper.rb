@@ -8,11 +8,6 @@ module FilesHelper
     end
   end
 
-  ## DEPRECATED: use compress
-  def make_zip_files(files, table_column_name, zip_name_folder = nil)
-    compress({ files: files, table_column_name: table_column_name, name_zip_file: zip_name_folder })
-  end
-
   ##
   # {
   #   files: ['objfile1', 'objfile2', 'objfile3'],
@@ -41,7 +36,7 @@ module FilesHelper
       FileUtils.rm archive, force: true
       Zip::ZipFile.open(archive, Zip::ZipFile::CREATE) do |zipfile|
         paths.each_with_index do |path, idx|
-          dir = (opts[:under_path].present? and opts[:folders_names].present?) ? opts[:folders_names][idx] : dir = path.split('/').last
+          dir = (opts[:folders_names].present?) ? opts[:folders_names][idx] : path.split('/').last
           zipfile.mkdir(dir)
           Dir["#{path}/**/**"].each do |file|
             zipfile.add(File.join(dir, file.sub(path + '/', '')), file) # nome do arquivo, path do arquivo
@@ -68,9 +63,20 @@ module FilesHelper
     return archive
   end # compress
 
-  def extract
-    raise "not done yet"
-  end
+  ##
+  # path_zip_file: File.join(Rails.root, 'media', 'lessons', 'module_1', 'aula_1', 'aula.zip') # ./media/lessons/module_1/aula_1/aula.zip
+  # destination: File.join(Rails.root, 'media', 'lessons', 'module_1', 'aula_1', 'aula')       # ./media/lessons/module_1/aula_1/aula/
+  ##
+  def extract(path_zip_file, destination)
+    Zip::ZipFile.open(path_zip_file) do |zipfile|
+      zipfile.each do |f|
+        f_path = File.join(destination, f.name)
+
+        FileUtils.mkdir_p(File.dirname(f_path))
+        zipfile.extract(f, f_path) unless File.exist?(f_path)
+      end # each
+    end # zip
+  end # extract
 
   private
 
