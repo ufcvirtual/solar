@@ -3,14 +3,15 @@ require 'test_helper'
 class LessonsControllerTest < ActionController::TestCase
 
   include Devise::TestHelpers
+
   fixtures :lessons, :allocation_tags
 
   def setup
     @editor    = users(:editor)
     @professor = users(:professor)
+    @coordenador = users(:coorddisc)
     sign_in @editor
   end
-
 
   ##
   # Download_files
@@ -70,4 +71,22 @@ class LessonsControllerTest < ActionController::TestCase
   #   assert (not File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name)))
   # end
 
+  test "exibir cadastro de modulos e aulas para um usuario com permissao" do
+    sign_in @coordenador
+    get :list, { :allocation_tag_id => allocation_tags(:al5).id }
+    assert_response :success
+    assert_not_nil assigns(:lesson_modules)
+  end
+
+  test "nao exibir cadastro de modulos e aulas para um usuario sem permissao" do
+    sign_out @editor
+    sign_in users(:user2)
+
+    get :list, { :allocation_tag_id => allocation_tags(:al5).id }
+    assert_nil assigns(:lesson_modules)
+    assert_redirected_to({:controller => :home})
+    assert_equal( flash[:alert], I18n.t(:no_permission) )
+  end
+
 end
+

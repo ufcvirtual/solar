@@ -6,7 +6,7 @@ class LessonsController < ApplicationController
   before_filter :prepare_for_group_selection, :only => [:index, :download_files]
   before_filter :curriculum_data, :except => [:list, :download_files]
 
-  load_and_authorize_resource :except => [:index, :list, :download_files]
+  load_and_authorize_resource :except => [:index, :download_files]
 
   def show
     render :layout => 'lesson_frame'

@@ -577,3 +577,9 @@ res101:
   controller: 'lessons'
   action: 'download_files'
   description: 'Download dos arquivos das aulas selecionadas'  
+
+res102:
+  id: 102
+  controller: 'lessons'
+  action: 'list'
+  description: 'Listar aulas cadastradas'

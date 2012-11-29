@@ -59,9 +59,9 @@
 
                 %td{:style => "width: 70px", :align => 'center'}
                   - if lesson.status == Lesson_Test
-                    = link_to (image_tag "/assets/lesson/rejected_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('rejeita aula');", :id => 'reject_lesson'
+                    =link_to (image_tag "/assets/lesson/rejected_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('libera aula');", :id => 'reject_lesson'
                   - else
-                    = link_to (image_tag "/assets/lesson/released_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('libera aula');", :id => 'release_lesson'
+                    =link_to (image_tag "/assets/lesson/released_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('bloqueia aula');", :id => 'release_lesson'
 
                   - if (!lesson.description.nil? and !lesson.description.empty?)
                     %tr.lines
