@@ -4,7 +4,7 @@ class LessonsController < ApplicationController
   include FilesHelper
 
   before_filter :prepare_for_group_selection, :only => [:index, :download_files]
-  before_filter :curriculum_data, :except => [:list, :download_files]
+  before_filter :curriculum_data, :except => [:list, :download_files, :extract_files]
 
   load_and_authorize_resource :except => [:index, :list, :download_files]
 
@@ -71,6 +71,15 @@ class LessonsController < ApplicationController
       redirect_to list_lessons_url(:allocation_tag_id => params[:allocation_tags_ids])
     end
 
+  end
+
+  def extract_files
+    path_zip_file = File.join(Lesson::FILES_PATH, params[:id], [params[:file], params[:extension]].join('.'))
+    destination   = File.join(Lesson::FILES_PATH, params[:id])
+
+    respond_to do |format|
+      format.json { render json: {success: extract(path_zip_file, destination)} }
+    end
   end
 
   private

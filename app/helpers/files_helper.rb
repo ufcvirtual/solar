@@ -64,18 +64,23 @@ module FilesHelper
   end # compress
 
   ##
-  # path_zip_file: File.join(Rails.root, 'media', 'lessons', 'module_1', 'aula_1', 'aula.zip') # ./media/lessons/module_1/aula_1/aula.zip
-  # destination: File.join(Rails.root, 'media', 'lessons', 'module_1', 'aula_1', 'aula')       # ./media/lessons/module_1/aula_1/aula/
+  # path_zip_file: File.join(Rails.root, 'media', 'lessons', 'lesson_id', 'aula_1', 'aula.zip') # ./media/lessons/lesson_id/aula_1/aula.zip
+  # destination: File.join(Rails.root, 'media', 'lessons', 'lesson_id', 'aula_1', 'aula')       # ./media/lessons/lesson_id/aula_1/aula/
   ##
   def extract(path_zip_file, destination)
+    require 'zip/zip'
+
+    return false unless File.exist?(path_zip_file)
+
     Zip::ZipFile.open(path_zip_file) do |zipfile|
       zipfile.each do |f|
         f_path = File.join(destination, f.name)
-
         FileUtils.mkdir_p(File.dirname(f_path))
         zipfile.extract(f, f_path) unless File.exist?(f_path)
       end # each
     end # zip
+
+    return true
   end # extract
 
   private

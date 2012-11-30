@@ -1,5 +1,3 @@
-#modules
-
 module1:
   id: 1
   allocation_tag_id: 6
@@ -9,3 +7,8 @@ module2:
   id: 2
   allocation_tag_id: 6
   name: modulo 2
+
+module3:
+  id: 3
+  allocation_tag_id: 2
+  name: modulo 1 / turma 2

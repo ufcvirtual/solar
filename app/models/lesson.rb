@@ -5,6 +5,8 @@ class Lesson < ActiveRecord::Base
 
   has_one :allocation_tag, :through => :lesson_module
 
+  FILES_PATH = File.join(Rails.root, 'media', 'lessons') # nao existe paperclip para lessons
+
   def self.to_open(allocation_tags_ids = nil, lesson_id = nil)
     # uma aula é ligada a um modulo que eh ligado a uma turma ou a uma oferta
     query_lessons = <<SQL
