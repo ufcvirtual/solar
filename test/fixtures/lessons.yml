@@ -54,3 +54,13 @@ pag_bbc:
   status: 1
   schedule_id: 15
   lesson_module_id: 2
+
+pag_goo:
+  id: 6
+  name: aula 6
+  address: 'http://www.google.com'
+  type_lesson: 1
+  order: 6
+  status: 1
+  schedule_id: 15
+  lesson_module_id: 3

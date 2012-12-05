@@ -4,7 +4,7 @@ class LessonsControllerTest < ActionController::TestCase
 
   include Devise::TestHelpers
 
-  fixtures :lessons, :allocation_tags
+  # fixtures :lessons, :allocation_tags
 
   def setup
     @editor    = users(:editor)
@@ -39,7 +39,7 @@ class LessonsControllerTest < ActionController::TestCase
     assert_equal I18n.t(:must_select_lessons, :scope => [:lessons, :notifications]), flash[:alert]
 
     zip_name = Digest::SHA1.hexdigest(lessons_ids.collect{ |lesson_id| File.join(Rails.root.to_s, 'media', 'lessons', lesson_id) }.join) << '.zip'
-    assert (not File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name)))
+    assert not(File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name)))
   end
 
   # Usuário com permissão, mas sem acesso às aulas selecionadas # INICIAR
@@ -88,5 +88,27 @@ class LessonsControllerTest < ActionController::TestCase
     assert_equal( flash[:alert], I18n.t(:no_permission) )
   end
 
-end
+  test "rota para extrair arquivos de ual" do
+    assert_routing extract_file_lesson_path("1", "file", "zip"), {
+      controller: "lessons", action: "extract_files", id: "1", file: "file", extension: "zip"
+    }
+  end
 
+  test "extrair arquivo de aula" do
+    require 'zip/zip'
+    sign_in @coordenador
+
+    lesson_id = lessons(:pag_goo).id.to_s
+    file_name = 'lesson_test.zip'
+
+    ## copiando arquivo de aula de teste para o local adequado
+    FileUtils.mkdir_p(File.join(Lesson::FILES_PATH, lesson_id)) # criando diretorio da aula
+    FileUtils.cp(File.join(Rails.root, 'test', 'fixtures', 'files', 'lessons', file_name), File.join(Lesson::FILES_PATH, lesson_id, file_name))
+
+    get :extract_files, {id: lesson_id, file: "lesson_test", extension: "zip", format: "json"}
+
+    assert_response :success
+    assert_equal response.body, {success: true}.to_json
+  end
+
+end
