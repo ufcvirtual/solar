@@ -80,6 +80,7 @@ Solar::Application.routes.draw do
   
   resources :offers do
     post :deactivate_groups, on: :member
+    get :list, on: :collection
   end
 
   resources :scores, only: [:index] do

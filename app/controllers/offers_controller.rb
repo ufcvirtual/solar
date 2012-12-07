@@ -4,15 +4,15 @@ include OffersHelper
 class OffersController < ApplicationController
 
 # Versão da Bianca
-#  def index
-#    # não poderão vir com o valor 0 (indicando que "nenhum" foi selecionado, pois as ofertas dependem de ambos)
-#    @course_id, @curriculum_unit_id = (params[:course_id] || "all"), (params[:curriculum_unit_id] || "all") # a fim de testes: editor, atualmente, tem permissão para uc: 3 e curso: 2
-#    authorize! :index, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e cursos selecionados
-#    get_offers(@curriculum_unit_id, @course_id)
-#  end
+  def index
+    # não poderão vir com o valor 0 (indicando que "nenhum" foi selecionado, pois as ofertas dependem de ambos)
+    @course_id, @curriculum_unit_id = (params[:course_id] || "all"), (params[:curriculum_unit_id] || "all") # a fim de testes: editor, atualmente, tem permissão para uc: 3 e curso: 2
+    authorize! :index, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e cursos selecionados
+    get_offers(@curriculum_unit_id, @course_id)
+  end
 
 
-  def getAllOffers
+  def get_all_offers
 	al                = current_user.allocations.where(status: Allocation_Activated)
     my_direct_offers  = al.map(&:offer).compact
     offers_by_courses  = al.map(&:course).compact.map(&:offer).uniq
@@ -23,16 +23,20 @@ class OffersController < ApplicationController
   end 
 
 
-  def index
-    @offers = getAllOffers
+  def list
+	@course_id, @curriculum_unit_id = (params[:course_id] || "all"), (params[:curriculum_unit_id] || "all") # a fim de testes: editor, atualmente, tem permissão para uc: 3 e curso: 2
+	authorize! :index, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e cursos selecionados
+	get_offers(@curriculum_unit_id, @course_id)
+  
+    @offers = get_all_offers
 
-    if params.include?(:course)
-      @offers = @offers.select { |offer| offer.course_id == params[:course].to_i }
-    end
+#    if params.include?(:course)
+#      @offers = @offers.select { |offer| offer.course_id == params[:course].to_i }
+#    end
 
-    if params.include?(:period)
-      @offers = @offers.select { |offer| offer.semester.downcase.include?(params[:period].downcase) }
-    end
+#    if params.include?(:period)
+#      @offers = @offers.select { |offer| offer.semester.downcase.include?(params[:period].downcase) }
+#    end
 
 	#ordenando os resultados
     if params.include?(:search_semester)
