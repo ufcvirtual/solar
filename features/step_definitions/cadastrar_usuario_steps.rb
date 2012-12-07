@@ -1,6 +1,10 @@
 Dado /^que eu nao estou cadastrado$/ do
 end
 
+Dado /^que eu espero (\d+) segundos$/ do |n|
+  sleep(n.to_i)
+end
+
 Dado /^eu clico no link "([^"]*)"$/ do |link|
   click_link(link)
 end
