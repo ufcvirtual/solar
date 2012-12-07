@@ -852,13 +852,6 @@ allocation5:
   resource_id: 94
   per_id: false
 
-# cadastro de aulas
-
-lesson1:
-  profile_id: 5
-  resource_id: 101
-  per_id: false
-
 # Unidade Curricular - Editor
 ucedit0:
   profile_id: 5
