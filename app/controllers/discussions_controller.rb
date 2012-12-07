@@ -5,6 +5,8 @@ class DiscussionsController < ApplicationController
   authorize_resource :only => [:index, :new, :create, :list]
   load_and_authorize_resource :only => [:edit, :update, :destroy]
 
+  before_filter :prepare_for_group_selection, only: :index
+
   def index
     begin
       allocation_tag_id = (active_tab[:url].include?('allocation_tag_id')) ? active_tab[:url]['allocation_tag_id'] : AllocationTag.find_by_group_id(params[:group_id] || []).id
@@ -34,7 +36,7 @@ class DiscussionsController < ApplicationController
 
     begin
 
-      raise  "validation_error" unless @discussion.valid?
+      raise "validation_error" unless @discussion.valid?
       raise "date_range_error" if @schedule.start_date < offer.start_date or @schedule.end_date > offer.end_date # período escolhido deve estar dentro do período da oferta
 
       ActiveRecord::Base.transaction do

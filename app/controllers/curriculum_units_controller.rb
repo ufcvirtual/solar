@@ -2,8 +2,8 @@ include MessagesHelper
 
 class CurriculumUnitsController < ApplicationController
 
-  before_filter :curriculum_data, :only => [:home, :informations, :curriculum_data]
   before_filter :prepare_for_group_selection, :only => [:home, :participants, :informations]
+  before_filter :curriculum_data, :only => [:home, :informations, :curriculum_data]
 
   authorize_resource :only => [:index, :show, :new, :create]
   load_and_authorize_resource :only => [:destroy, :edit, :update]
@@ -45,12 +45,10 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def home
-    allocation_tags = AllocationTag.find(@allocation_tag_id).related({all: true, objects: true})
-
-    # messages
-    group           = allocation_tags.select { |at| not(at.group_id.nil?) }
-    offer           = allocation_tags.select { |at| not(at.offer_id.nil?) }.first.offer
-    @messages       = return_messages(current_user.id, 'portlet', get_label_name(group, offer, @curriculum_unit))
+    allocation_tags   = AllocationTag.find(@allocation_tag_id).related({all: true, objects: true})
+    group             = allocation_tags.select { |at| not(at.group_id.nil?) }
+    offer             = allocation_tags.select { |at| not(at.offer_id.nil?) }.first.offer
+    @messages         = return_messages(current_user.id, 'portlet', get_label_name(group, offer, @curriculum_unit))
 
     allocation_tags   = allocation_tags.map(&:id)
     @lessons          = Lesson.to_open(allocation_tags.join(', '))
@@ -154,9 +152,7 @@ class CurriculumUnitsController < ApplicationController
     end
 
     def list_portlet_discussion_posts(allocation_tags)
-      discussions = Discussion.where(:allocation_tag_id => allocation_tags).map { |d| d.id }
-      return [] if discussions.empty? 
-      Post.recent_by_discussions(discussions, Rails.application.config.items_per_page.to_i)
+      Post.joins(:discussion).where(discussions: {allocation_tag_id: allocation_tags}).select(%{substring("content" from 0 for 255) AS content}).select('*').order("updated_at DESC").limit(Rails.application.config.items_per_page.to_i)
     end
 
 end

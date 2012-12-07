@@ -1,6 +1,6 @@
 class ScoresController < ApplicationController
 
-  before_filter :prepare_for_group_selection, :only => [:show, :index]
+  before_filter :prepare_for_group_selection, :only => [:index]
   before_filter :prepare_for_pagination, :only => [:index]
 
   ##
@@ -31,11 +31,11 @@ class ScoresController < ApplicationController
 
     @student = params.include?(:student_id) ? User.find(params[:student_id]) : current_user
 
-    allocation_tag_id, group_id = active_tab[:url]['allocation_tag_id'], params[:selected_group] # allocation_tag da turma, id da turma
-    related_allocations = AllocationTag.find_related_ids(allocation_tag_id) # allocations relacionadas à turma
+    allocation_tag = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
+    group_id = allocation_tag.group_id
+    related_allocations = allocation_tag.related
 
     authorize! :find, @student # verifica se o usuario logado tem permissao para consultar o usuario informado
-    # authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(group_id, current_user.id) # verifica se pode acessar turma
 
     @individual_activities = Assignment.student_assignments_info(group_id, @student.id, Individual_Activity)
     @group_activities = Assignment.student_assignments_info(group_id, @student.id, Group_Activity)

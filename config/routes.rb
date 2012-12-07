@@ -82,7 +82,8 @@ Solar::Application.routes.draw do
     post :deactivate_groups, on: :member
   end
 
-  resources :scores, only: [:show, :index] do
+  resources :scores, only: [:index] do
+    get ":student_id", action: :show, on: :collection, as: :student
     get :history_access, on: :member
   end
 

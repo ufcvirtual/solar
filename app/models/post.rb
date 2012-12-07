@@ -21,8 +21,4 @@ class Post < ActiveRecord::Base
     (self.level < Discussion_Post_Max_Indent_Level)
   end
 
-  def self.recent_by_discussions(discussions, limit = nil, content_size = 255)
-    Post.select("substring(\"content\" from 0 for #{content_size}) AS content").select('*').where(discussion_id: discussions).order("updated_at DESC").limit(limit)
-  end
-
 end

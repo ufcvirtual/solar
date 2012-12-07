@@ -33,7 +33,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "listar as atividades de um aluno para usuario com permissao e acesso - aluno" do 
     login(users(:aluno1))
     get @quimica_tab
-    get score_path(allocation_tags(:al3).id)
+    get student_scores_path(users(:aluno1).id)
     assert_response :success
     assert_not_nil assigns(:individual_activities)
     assert_not_nil assigns(:group_activities)
@@ -46,7 +46,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "listar as atividades de um aluno para usuario com permissao e acesso - professor" do 
     login(users(:professor))
     get @quimica_tab
-    get score_path(allocation_tags(:al3).id)
+    get student_scores_path(users(:aluno1).id)
     assert_response :success
     assert_not_nil assigns(:individual_activities)
     assert_not_nil assigns(:group_activities)
@@ -60,9 +60,9 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao listar as atividades de um aluno para usuario com permissao e sem acesso - aluno" do 
     login(users(:aluno1))
     get @quimica_tab
-    get score_path(allocation_tags(:al3).id, :student_id => users(:aluno2).id)
+    get student_scores_path(users(:aluno2).id)
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
     assert_nil assigns(:individual_activities)
     assert_nil assigns(:group_activities)
@@ -74,24 +74,24 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   # test "nao listar as atividades de um aluno para usuario com permissao e sem acesso - professor" do 
   #   login(users(:professor))
   #   get @literatura_brasileira_tab
-  #   get score_path(allocation_tags(:al8).id, :student_id => users(:aluno3).id)
+  #   get student_scores_path(users(:aluno3).id)
   #   assert_response :redirect
-  #   assert_redirected_to({:controller => :home})
+  #   assert_redirected_to(home_path)
   #   assert_equal I18n.t(:no_permission), flash[:alert]
   #   assert_nil assigns(:individual_activities)
   #   assert_nil assigns(:group_activities)
   #   assert_nil assigns(:discussions)
   #   assert_not_nil assigns(:student)
   #   assert_nil assigns(:amount)
-  # end  
+  # end
 
   # Usuário sem permissão
   test "nao listar as atividades de um aluno para usuario sem permissao" do 
     login(users(:coorddisc))
     get @quimica_tab
-    get score_path(allocation_tags(:al3).id, :student_id => users(:aluno1).id)
+    get student_scores_path(users(:aluno1).id)
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
     assert_nil assigns(:individual_activities)
     assert_nil assigns(:group_activities)
@@ -131,7 +131,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
     get @quimica_tab
     get "/scores/amount_history_access/#{users(:aluno3).id}?#{@from_date.to_param}&#{@until_date.to_param}"
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
     assert_not_nil assigns(:student_id)
     assert_nil assigns(:amount)
@@ -142,7 +142,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   #   get @literatura_brasileira_tab
   #   get "/scores/amount_history_access/#{users(:aluno1).id}?#{@from_date.to_param}&#{@until_date.to_param}"
   #   assert_response :redirect
-  #   assert_redirected_to({:controller => :home})
+  #   assert_redirected_to(home_path)
   #   assert_equal I18n.t(:no_permission), flash[:alert]
   #   assert_nil assigns(:from_date)
   #   assert_nil assigns(:until_date)
@@ -157,7 +157,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
     get @quimica_tab
     get "/scores/amount_history_access/#{users(:aluno3).id}?#{@from_date.to_param}&#{@until_date.to_param}"
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
     assert_nil assigns(:from_date)
     assert_nil assigns(:until_date)
@@ -192,7 +192,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
     get @quimica_tab
     get "/scores/history_access/#{users(:aluno3).id}?#{@from_date.to_param}&#{@until_date.to_param}"
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
     assert_nil assigns(:history)
   end
@@ -202,7 +202,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   #   get @literatura_brasileira_tab
   #   get "/scores/history_access/#{users(:aluno3).id}?#{@from_date.to_param}&#{@until_date.to_param}"
   #   assert_response :redirect
-  #   assert_redirected_to({:controller => :home})
+  #   assert_redirected_to(home_path)
   #   assert_equal I18n.t(:no_permission), flash[:alert]
   #   assert_nil assigns(:history)
   # end
@@ -214,7 +214,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
     get @quimica_tab
     get "/scores/history_access/#{users(:aluno3).id}?#{@from_date.to_param}&#{@until_date.to_param}"
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
     assert_nil assigns(:history)
   end  
@@ -242,7 +242,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   #   get @literatura_brasileira_tab
   #   get scores_path
   #   assert_response :redirect
-  #   assert_redirected_to({:controller => :home})
+  #   assert_redirected_to(home_path)
   #   assert_equal I18n.t(:no_permission), flash[:alert]
   #   assert_not_nil assigns(:group)
   #   assert_nil assigns(:assignments)
@@ -256,7 +256,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
     get @quimica_tab
     get scores_path
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
     assert_nil assigns(:group)
     assert_nil assigns(:assignments)

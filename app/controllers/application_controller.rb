@@ -93,11 +93,11 @@ class ApplicationController < ActionController::Base
     if params[:selected_group].present?
       allocation_tag_id_group = AllocationTag.find_by_group_id(params[:selected_group]).id
     else
-      allocation_tag = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
+      allocation_tag          = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
       allocation_tag_id_group = (allocation_tag.group_id.nil?) ? Group.find_all_by_curriculum_unit_id_and_user_id(active_tab[:url]['id'], current_user.id).first.allocation_tag.id : allocation_tag.id
     end
 
-    params[:selected_group] = allocation_tag_id_group
+    params[:selected_group] = allocation_tag_id_group # assume o valor da allocation_tag da turma
     user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['allocation_tag_id'] = allocation_tag_id_group
   end
 

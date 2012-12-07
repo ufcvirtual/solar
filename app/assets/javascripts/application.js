@@ -17,23 +17,24 @@
  * */
 function reloadContentByForm(form){
   var rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
-  
+
   var type = $(form).attr("method");
-  var url = '';//window.location;
+  var url = ''; // window.location;
   var selector = "#mysolar_content";
   var target = $("#mysolar_content");
-  
+
   var params = '';
   var isFirst = true;
   $.each($(form).children(), function(index, value) {
     var name = $(value).attr("name");
     var val = $(value).attr("value");
-    
+
     if (!isFirst)
       params += "&"
     params += name + "="+val;
     isFirst = false;
   });
+
   // Request the remote document
   jQuery.ajax({
     url: url,
@@ -43,9 +44,7 @@ function reloadContentByForm(form){
     complete: function( jqXHR, status, responseText ) {
       responseText = jqXHR.responseText;
       target.html(jQuery("<div>").append(responseText.replace(rscript, "")).find(selector));
-      // chamar a funcao que atualiza a agenda
       showAgenda();
-      // atualiza clique em dia do mes
     }
   });
   return false;
