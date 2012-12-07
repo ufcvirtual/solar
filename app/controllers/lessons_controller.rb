@@ -31,18 +31,16 @@ class LessonsController < ApplicationController
 
   # listagem do cadastro de aulas  
   def list
-    # verifica permissao de acessar aulas cadastradas nas allocation tags passadas
-    authorize! :list, Lesson, :on => [params[:allocation_tag_id].to_i]
+    allocation_tags = params[:allocation_tag_id].present? ? [params[:allocation_tag_id].split(',')].uniq.flatten : 0
+    authorize! :list, Lesson, :on => [allocation_tags]
 
-    @allocation_tags  = (params.include?('allocation_tag_id')) ? params[:allocation_tag_id] : 0
+    allocation_tags = allocation_tags.first unless allocation_tags.count > 1 # agiliza na consulta caso seja apenas um id
+    @lesson_modules  = LessonModule.find_all_by_allocation_tag_id(allocation_tags, order: "lesson_modules.order")
 
-    @lesson_modules = LessonModule.find(:all,
-      :conditions => ["allocation_tag_id IN (#{@allocation_tags}) "],
-      :order => ["lesson_modules.order"]) 
+    flash[:notice] = t(:allocated, :scope => [:allocations, :success]) if params[:notice_allocated].present?
+    flash[:alert]  = t(:not_allocated, :scope => [:allocations, :error]) if params[:alert_allocated].present?
 
     respond_to do |format|
-      flash[:notice] = t(:allocated, :scope => [:allocations, :success]) if params.include?(:notice_allocated)
-      flash[:alert]  = t(:not_allocated, :scope => [:allocations, :error]) if params.include?(:alert_allocated)
       format.html 
       format.json { render json: @allocations }
     end

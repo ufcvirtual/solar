@@ -1,6 +1,5 @@
 = hidden_field_tag(:allocation_tag_id, params[:allocation_tag_id]) 
 
-
 - unless @lesson_modules.nil? or @lesson_modules.empty?
   
   - @lesson_modules.each_with_index do |m, idxm|
@@ -16,7 +15,7 @@
             - unless idxm == @lesson_modules.count-1
               .lesson_arrow_down
                 = link_to (image_tag "/assets/lesson/down_arrow.png", :alt => ''), "#", :onclick => "javascript: alert('desce');", :id => 'down' 
-          =m.name
+          = m.name
           = link_to (image_tag "/assets/lesson/edit.png", :alt => ''), "#", :onclick => "javascript: alert('abrir edicao de modulo');", :id => 'edit_module', :class => 'block_title_button'
           = link_to (image_tag "/assets/lesson/delete.png", :alt => ''), "#", :onclick => "javascript: alert('excluir modulo');", :id => 'delete_module', :class => 'block_title_button'
 

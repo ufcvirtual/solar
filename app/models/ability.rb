@@ -12,7 +12,7 @@ class Ability
 
     def have_permission?(user, action, object_class, object, options)
       if options.include?(:on) # on allocation_tags
-        return (have_permission_on_allocation_tags?(user, options[:on]) and have_permission_access?(user, action, object_class, object))
+        return (have_permission_on_allocation_tags?(user, options[:on].flatten.map(&:to_i)) and have_permission_access?(user, action, object_class, object))
       else
         return have_permission_access?(user, action, object_class, object)
       end

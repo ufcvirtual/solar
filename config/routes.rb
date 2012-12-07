@@ -91,12 +91,11 @@ Solar::Application.routes.draw do
   resources :courses
   resources :editions, only: [:index]
 
-  resources :lessons, only: [:show] do
+  resources :lessons, only: [:index, :show] do
     collection do
+      get :list
       get :show_header
       get :show_content
-      get :index
-      get :list
       get :download_files
     end
     get "extract_files/:file.:extension", action: :extract_files, on: :member, as: :extract_file
