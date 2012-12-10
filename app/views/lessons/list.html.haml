@@ -21,11 +21,11 @@
 
       .block_content_toolbar
         .block_toolbar_left
-          = link_to (image_tag "/assets/lesson/add_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('nova aula');", :id => 'new_lesson', :class => 'btn btn_main'
+          = link_to (image_tag "/assets/lesson/add_lesson.png", :alt => ''), {:action => 'new', :id => m.id, :allocation_tags_ids => params[:allocation_tag_id]}, :id => 'new_lesson', :class => 'btn btn_main'
           = link_to (image_tag "/assets/lesson/import_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('importar aula');", :id => 'import_lesson', :class => 'btn btn_main'
 
         .block_toolbar_right
-          = link_to (image_tag "/assets/lesson/edit.png", :alt => ''), "#", :onclick => "javascript: alert('editar aula');", :id => 'edit_lesson', :class => 'btn btn_default'
+          = link_to (image_tag "/assets/lesson/edit.png", :alt => ''), "#", :onclick => "javascript: edit_lesson('#{m.id}');", :id => 'edit_lesson', :class => 'btn btn_default'
           = link_to (image_tag "/assets/lesson/delete.png", :alt => ''), "#", :onclick => "javascript: alert('excluir aula');", :id => 'delete_lesson', :class => 'btn btn_default'
           = link_to (image_tag "/assets/lesson/download.png", :alt => ''), "#", :onclick => "javascript: download_lesson_zip('#{m.id}');", :id => 'download_lesson', :class => 'btn btn_default'
           = link_to (image_tag "/assets/lesson/release_lessons.png", :alt => ''), "#", :onclick => "javascript: alert('libera aulas');", :id => 'release_lessons', :class => 'btn btn_default btn_spacing_left'
@@ -124,13 +124,26 @@
     }
   }
 
-
   // download dos arquivos das aulas selecionadas em um módulo
   function download_lesson_zip(module_id){
     allocation_tags_ids = $("#allocation_tag_id").val();
-    lessons_ids         = get_selected_lessons(module_id);  
+    lessons_ids         = get_selected_lessons(module_id);
 
     if(can_do_action(lessons_ids)){
       window.location.href='#{download_files_lessons_path}?lessons_ids='+lessons_ids+'&allocation_tags_ids='+allocation_tags_ids;
     }
+  }
+
+  function edit_lesson(module_id){
+    lessons = String(get_selected_lessons(module_id));
+    allocation_tags_ids = $("#allocation_tag_id").val();
+    there_tab = lessons.indexOf(",") > -1 ? true : false;
+    
+    if (!there_tab) 
+      if (lessons.length>0)
+        location.href = "/lessons/"+lessons+"/edit?allocation_tag_ids="+allocation_tags_ids;
+      else
+        alert("aff... selecione uma aula :P");
+    else
+      alert("selecione apenas uma aula :P");
   }

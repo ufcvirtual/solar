@@ -4,9 +4,9 @@ class LessonsController < ApplicationController
   include FilesHelper
 
   before_filter :prepare_for_group_selection, :only => [:index, :download_files]
-  before_filter :curriculum_data, :except => [:list, :download_files, :extract_files]
+  before_filter :curriculum_data, :except => [:list, :download_files, :extract_files, :new, :create, :edit, :update]
 
-  load_and_authorize_resource :except => [:index, :list, :download_files]
+  load_and_authorize_resource :except => [:index, :list, :download_files, :new, :create, :edit, :update, :show]
 
   def show
     render :layout => 'lesson_frame'
@@ -41,8 +41,51 @@ class LessonsController < ApplicationController
     flash[:alert]  = t(:not_allocated, :scope => [:allocations, :error]) if params[:alert_allocated].present?
 
     respond_to do |format|
-      format.html 
+      format.html
       format.json { render json: @allocations }
+    end
+  end
+
+  # GET /lessons/new
+  # GET /lessons/new.json
+  def new
+    @lesson = Lesson.new
+
+    respond_to do |format|
+      format.html 
+    end
+  end
+
+  # POST /lessons
+  # POST /lessons.json
+  def create
+    @lesson = Lesson.new(params[:lesson])
+    respond_to do |format|
+      if @lesson.save
+        format.html { render :list }
+      else
+        format.html { render :new }
+      end
+    end
+  end
+
+  # GET /lessons/1/edit
+  def edit
+    @lesson = Lesson.find(params[:id])
+    respond_to do |format|
+      format.html 
+    end
+  end
+
+  # PUT /lessons/1
+  # PUT /lessons/1.json
+  def update
+    respond_to do |format|
+      if @lesson.update_attributes(params[:lesson])
+        format.html { render :list }
+      else
+        format.html { render :edit }
+      end
     end
   end
 

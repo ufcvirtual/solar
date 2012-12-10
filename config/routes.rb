@@ -92,9 +92,9 @@ Solar::Application.routes.draw do
   resources :courses
   resources :editions, only: [:index]
 
-  resources :lessons, only: [:index, :show] do
+  resources :lessons do #, only: [:index, :show, :new, :create, :edit, :update] do
     collection do
-      get :list
+      get :list, action: :list
       get :show_header
       get :show_content
       get :download_files
