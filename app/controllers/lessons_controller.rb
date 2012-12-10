@@ -52,10 +52,7 @@ class LessonsController < ApplicationController
     unless params[:lessons_ids].empty?
 
       lessons_ids     = params[:lessons_ids].split(",").flatten
-      # all_files_paths = lessons_ids.collect{ |lesson_id| './media/lessons/'+lesson_id }
       all_files_paths = lessons_ids.collect{ |lesson_id| File.join(Rails.root.to_s, 'media', 'lessons', lesson_id) }
-
-      # File.join(Rails.root.to_s, 'media', 'lessons', lesson_id)
       lessons_names   = lessons_ids.collect{ |lesson_id| Lesson.find(lesson_id).name }
 
       zip_file_path   = compress(:under_path => all_files_paths, :folders_names => lessons_names)

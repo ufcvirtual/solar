@@ -6,11 +6,20 @@ class LessonsControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
   def setup
-    @editor    = users(:editor)
-    @professor = users(:professor)
+    @editor      = users(:editor)
+    @professor   = users(:professor)
     @coordenador = users(:coorddisc)
     sign_in @editor
   end
+
+  def create_zip_name(lessons_ids)
+    return Digest::SHA1.hexdigest(lessons_ids.collect{ |lesson_id| File.join(Rails.root.to_s, 'media', 'lessons', lesson_id) }.join) << '.zip'
+  end
+
+
+  ##
+  # Download files
+  ##
 
   # Usuário com permissão
   test "permitir zipar e realizar download de arquivos de aulas" do
@@ -19,7 +28,7 @@ class LessonsControllerTest < ActionController::TestCase
     get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => [allocation_tags(:al6)]})
     assert_response :success
 
-    zip_name = Digest::SHA1.hexdigest(lessons_ids.collect{ |lesson_id| File.join(Rails.root.to_s, 'media', 'lessons', lesson_id) }.join) << '.zip'
+    zip_name = create_zip_name(lessons_ids)
     assert File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name))
   end
 
@@ -28,12 +37,10 @@ class LessonsControllerTest < ActionController::TestCase
     lessons_ids = []
 
     get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => [allocation_tags(:al6)]})
-    # assert_template :list
-    # assert_redirected_to({:controller => :lessons, :action => :list, :allocation_tag_id => assigns(:allocation_tags_ids)})
-    # assert_redirected_to( list_lessons_url(:allocation_tag_id => assigns(:allocation_tags_ids)) )
-    assert_equal I18n.t(:must_select_lessons, :scope => [:lessons, :notifications]), flash[:alert]
+    assert_response :redirect
+    assert_equal flash[:alert], I18n.t(:must_select_lessons, :scope => [:lessons, :notifications])
 
-    zip_name = Digest::SHA1.hexdigest(lessons_ids.collect{ |lesson_id| File.join(Rails.root.to_s, 'media', 'lessons', lesson_id) }.join) << '.zip'
+    zip_name = create_zip_name(lessons_ids)
     assert not(File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name)))
   end
 
@@ -42,8 +49,8 @@ class LessonsControllerTest < ActionController::TestCase
     sign_in @professor
 
     lessons_ids = [lessons(:pag_ufc).id.to_s, lessons(:pag_uol).id.to_s]
-    zip_name = Digest::SHA1.hexdigest(lessons_ids.collect{ |lesson_id| File.join(Rails.root.to_s, 'media', 'lessons', lesson_id) }.join) << '.zip'
-    FileUtils.rm File.join(Rails.root.to_s, 'tmp', zip_name), force: true ## deleta arquivo para testar se foi criado
+    zip_name    = create_zip_name(lessons_ids)
+    FileUtils.rm File.join(Rails.root.to_s, 'tmp', zip_name), force: true # deleta arquivo para testar se foi criado
 
     get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => [allocation_tags(:al6)]})
     assert_redirected_to home_path
@@ -51,6 +58,10 @@ class LessonsControllerTest < ActionController::TestCase
 
     assert not(File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name)))
   end
+
+  ##
+  # List
+  ##
 
   test "exibir cadastro de modulos e aulas para um usuario com permissao" do
     sign_in @coordenador
@@ -74,13 +85,17 @@ class LessonsControllerTest < ActionController::TestCase
     }
   end
 
+  ##
+  # Extract files
+  ##
+
   test "extrair arquivo de aula" do
     sign_in @coordenador
 
     lesson_id = lessons(:pag_goo).id.to_s
     file_name = 'lesson_test.zip'
 
-    ## copiando arquivo de aula de teste para o local adequado
+    # copiando arquivo de aula de teste para o local adequado
     FileUtils.mkdir_p(File.join(Lesson::FILES_PATH, lesson_id)) # criando diretorio da aula
     FileUtils.cp(File.join(Rails.root, 'test', 'fixtures', 'files', 'lessons', file_name), File.join(Lesson::FILES_PATH, lesson_id, file_name))
 
