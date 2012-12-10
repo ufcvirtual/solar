@@ -15,7 +15,7 @@ class OffersController < ApplicationController
   def get_all_offers
 	al                = current_user.allocations.where(status: Allocation_Activated)
     my_direct_offers  = al.map(&:offer).compact
-    offers_by_courses  = al.map(&:course).compact.map(&:offer).uniq
+    offers_by_courses  = al.map(&:course).compact.map(&:offers).uniq
     offers_by_ucs      = al.map(&:curriculum_unit).compact.map(&:offers).flatten.uniq
     offers_by_groups   = al.map(&:group).compact.map(&:offer).uniq
     result = [my_direct_offers + offers_by_courses + offers_by_ucs + offers_by_groups].flatten.compact.uniq
