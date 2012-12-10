@@ -23,7 +23,7 @@
     / if can? :index, Warning and se algo foi selecionado >> falta verificar relação com as allocation_tags passadas <<
     - if @curriculum_unit_id != 0 or @course_id != 0 or @curriculum_unit_id != 0 or @offer_id != 0 or @group_id != 0
       .uc_item
-        %div= link_to (image_tag "", :alt => t(".edition_of", :of => t(".warning")), :class => 'btn_default'), "#", :onclick => "javascript:alert('#{t(".in_development")}');", :id => "warning"
+        %div= link_to (image_tag "/assets/edition/warning.png", :alt => t(".edition_of", :of => t(".warning")), :class => 'btn_default'), "#", :onclick => "javascript:alert('#{t(".in_development")}');", :id => "warning"
         %div= link_to t(".warning"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
 
 %fieldset#uc_comunication
@@ -73,5 +73,5 @@
     / verifica se possui permissão e se alguma oferta foi selecionada para a criação da prova >> falta verificar relação com as allocation_tags passadas <<
     - if (@offer_id != "all" and @offer_id != 0) # and (can? :list, Test)
       .uc_item
-        %div= link_to (image_tag "", :alt => t(".edition_of", :of => t(".test")), :class => 'btn_default'), "#", :onclick => "javascript:alert('#{t(".in_development")}');", :id => "test"
+        %div= link_to (image_tag "/assets/edition/test.png", :alt => t(".edition_of", :of => t(".test")), :class => 'btn_default'), "#", :onclick => "javascript:alert('#{t(".in_development")}');", :id => "test"
         %div= link_to t(".test"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
