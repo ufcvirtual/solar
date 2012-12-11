@@ -66,31 +66,31 @@ module PlacesNavPanelHelper
 	<div class="placesNavPanel">
 		<div><span 
 			class="label">#{t(:course)}:</span><input 
-			type="text" id="txtCourse"/>
+			type="text" id="places_nav_panel_txtCourse"/>
 			<input type="button" value="" class ="btShowMenu"/>
-			<input type="hidden" id="selectedCourseName" name="selectedCourseName" value="#{params[:selectedCourseName]}"/>
-			<input type="hidden" id="selectedCourseValue" name="selectedCourseValue" value="#{params[:selectedCourseValue]}"/>
+			<input type="hidden" id="places_nav_panel_selectedCourseName" name="places_nav_panel_selectedCourseName" value="#{params[:selectedCourseName]}"/>
+			<input type="hidden" id="places_nav_panel_selectedCourseValue" name="places_nav_panel_selectedCourseValue" value="#{params[:selectedCourseValue]}"/>
 		</div>
 		<div><span 
 			class="label">#{t(:semester_date)}:</span><input 
-			type="text" id="txtSemester"/>
+			type="text" id="places_nav_panel_txtSemester"/>
 			<input type="button" value="" class ="btShowMenu"/>
-			<input type="hidden" id="selectedSemesterName" name="selectedSemesterName" value="#{params[:selectedSemesterName]}"/>
-			<input type="hidden" id="selectedSemesterValue" name="selectedSemesterValue" value="#{params[:selectedSemesterValue]}"/>
+			<input type="hidden" id="places_nav_panel_selectedSemesterName" name="places_nav_panel_selectedSemesterName" value="#{params[:selectedSemesterName]}"/>
+			<input type="hidden" id="places_nav_panel_selectedSemesterValue" name="places_nav_panel_selectedSemesterValue" value="#{params[:selectedSemesterValue]}"/>
 		</div>
 		<div><span 
 			class="label" style=";">#{t(:curriculum_unit)}:</span><input 
-			type="text" id="txtCurriculumUnit"/>
+			type="text" id="places_nav_panel_txtCurriculumUnit"/>
 			<input type="button" value="" class ="btShowMenu"/>
-			<input type="hidden" id="selectedCurriculumUnitName" name="selectedCurriculumUnitName" value="#{params[:selectedCurriculumUnitName]}"/>
-			<input type="hidden" id="selectedCurriculumUnitValue" name="selectedCurriculumUnitValue" value="#{params[:selectedCurriculumUnitValue]}"/>
+			<input type="hidden" id="places_nav_panel_selectedCurriculumUnitName" name="places_nav_panel_selectedCurriculumUnitName" value="#{params[:selectedCurriculumUnitName]}"/>
+			<input type="hidden" id="places_nav_panel_selectedCurriculumUnitValue" name="places_nav_panel_selectedCurriculumUnitValue" value="#{params[:selectedCurriculumUnitValue]}"/>
 		</div>
 		<div><span 
 			class="label">#{t(:group)}:</span><input 
-			type="text" id="txtGroup"/>
+			type="text" id="places_nav_panel_txtGroup"/>
 			<input type="button" value="" class ="btShowMenu"/>
-			<input type="hidden" id="selectedGroupName" name="selectedGroupName" value="#{params[:selectedGroupName]}"/>
-			<input type="hidden" id="selectedGroupValue" name="selectedGroupValue"value="#{params[:selectedGroupValue]}"/>
+			<input type="hidden" id="places_nav_panel_selectedGroupName" name="places_nav_panel_selectedGroupName" value="#{params[:selectedGroupName]}"/>
+			<input type="hidden" id="places_nav_panel_selectedGroupValue" name="places_nav_panel_selectedGroupValue"value="#{params[:selectedGroupValue]}"/>
 		</div>
 	</div>
     }
