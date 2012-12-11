@@ -88,11 +88,12 @@ Solar::Application.routes.draw do
     get :history_access, on: :member
   end
 
-  resources :enrollments, only: [:index]
+  resources :enrollments, only: :index
   resources :courses
-  resources :editions, only: [:index]
+  resources :editions, only: :index
 
-  resources :lessons do #, only: [:index, :show, :new, :create, :edit, :update] do
+  resources :lessons do
+    resources :files, controller: :lesson_files
     collection do
       get :list, action: :list
       get :show_header
