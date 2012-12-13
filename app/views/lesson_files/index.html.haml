@@ -2,65 +2,37 @@
 = stylesheet_link_tag "ui.dynatree.css"
 
 %p
-  %a#btnSelectAll{href: "#"} Select All
-  %a#btnDeselectAll{href: "#"} Deselect all
-#tree2
+  %a#btnSelectAll{href: "#"} Selecionar todos
+  %a#btnDeselectAll{href: "#"} Deselecionar todos
+#tree
 %div
-  Selected keys:
+  Chaves selecionadas:
   %span#echoSelection2 -
 
+/ add new node
+/ var rootNode = $("#tree").dynatree("getRoot");
+/ var childNode = rootNode.addChild({
+/   title: "Add folder",
+/ });
+
+/ rename node
+/ var node = $("#tree").dynatree("getActiveNode");
+/ node.data.title = "My new title";
+/ node.render();
 
 :javascript
-
-  var treeData = [
-    {title: "item1 with key and tooltip", tooltip: "Look, a tool tip!" },
-    {title: "item2: selected on init", select: true },
-    {title: "Folder", isFolder: true, key: "id3",
-      children: [
-        {title: "Sub-item 3.1", isFolder: true,
-          children: [
-            {title: "Sub-item 3.1.1", key: "id3.1.1" },
-            {title: "Sub-item 3.1.2", key: "id3.1.2" }
-          ]
-        },
-        {title: "Sub-item 3.2", isFolder: true,
-          children: [
-            {title: "Sub-item 3.2.1", key: "id3.2.1" },
-            {title: "Sub-item 3.2.2", key: "id3.2.2" }
-          ]
-        }
-      ]
-    },
-    {title: "Document with some children (expanded on init)", key: "id4", expand: true, isFolder: true,
-      children: [
-        {title: "Sub-item 4.1 (active on init)", activate: true, isFolder: true,
-          children: [
-            {title: "Sub-item 4.1.1", key: "id4.1.1" },
-            {title: "Sub-item 4.1.2", key: "id4.1.2" }
-          ]
-        },
-        {title: "Sub-item 4.2 (selected on init)", select: true, isFolder: true,
-          children: [
-            {title: "Sub-item 4.2.1", key: "id4.2.1" },
-            {title: "Sub-item 4.2.2", key: "id4.2.2" }
-          ]
-        },
-        {title: "Sub-item 4.3 (hideCheckbox)", hideCheckbox: true },
-        {title: "Sub-item 4.4 (unselectable)", unselectable: true }
-      ]
-    }
-  ];
+  var treeData = #{@files};
 
   $(function(){
 
-    $("#tree2").dynatree({
-      // persist: true, // need cookie
+    $("#tree").dynatree({
+      minExpandLevel: 2,
       checkbox: true,
       selectMode: 2,
       children: treeData,
       onSelect: function(select, node) {
         var selNodes = node.tree.getSelectedNodes();
-        var selKeys = $.map(selNodes, function(node){
+        var selKeys = $.map(selNodes, function(node) {
              return "[" + node.data.key + "]: '" + node.data.title + "'";
         });
         $("#echoSelection2").text(selKeys.join(", "));
@@ -75,23 +47,19 @@
           return false;
         }
       }
-      // The following options are only required, if we have more than one tree on one page:
-      // cookieId: "dynatree-Cb2",
-      // idPrefix: "dynatree-Cb2-"
     });
 
     $("#btnDeselectAll").click(function(){
-      $("#tree2").dynatree("getRoot").visit(function(node){
+      $("#tree").dynatree("getRoot").visit(function(node) {
         node.select(false);
       });
       return false;
     });
     $("#btnSelectAll").click(function(){
-      $("#tree2").dynatree("getRoot").visit(function(node){
+      $("#tree").dynatree("getRoot").visit(function(node) {
         node.select(true);
       });
       return false;
     });
 
   });
-
