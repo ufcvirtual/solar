@@ -1,3 +1,5 @@
+= javascript_include_tag "edition.js"
+
 = hidden_field_tag(:allocation_tag_id, params[:allocation_tag_id]) 
 
 - unless @lesson_modules.nil? or @lesson_modules.empty?
@@ -21,7 +23,8 @@
 
       .block_content_toolbar
         .block_toolbar_left
-          = link_to (image_tag "/assets/lesson/add_lesson.png", :alt => ''), {:action => 'new', :id => m.id, :allocation_tags_ids => params[:allocation_tag_id]}, :id => 'new_lesson', :class => 'btn btn_main'
+          =link_to (image_tag "/assets/lesson/add_lesson.png", :alt => ''), "#", :onclick => "javascript:open_lightbox2('#{new_lesson_path(:allocation_tag_ids => params[:allocation_tag_id])}','');", :class => 'btn btn_main'
+
           = link_to (image_tag "/assets/lesson/import_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('importar aula');", :id => 'import_lesson', :class => 'btn btn_main'
 
         .block_toolbar_right
