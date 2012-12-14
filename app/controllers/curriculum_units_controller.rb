@@ -2,11 +2,13 @@ include MessagesHelper
 
 class CurriculumUnitsController < ApplicationController
 
+  layout false, :only => [:new, :edit, :show, :create, :update]
+
   before_filter :prepare_for_group_selection, :only => [:home, :participants, :informations]
   before_filter :curriculum_data, :only => [:home, :informations, :curriculum_data]
 
-  authorize_resource :only => [:index, :show, :new, :create]
-  load_and_authorize_resource :only => [:destroy, :edit, :update]
+  authorize_resource :only => [:index, :show, :new]
+  load_and_authorize_resource :only => [:destroy, :edit]
 
   # GET /curriculum_units
   # GET /curriculum_units.json
@@ -80,7 +82,7 @@ class CurriculumUnitsController < ApplicationController
     @curriculum_unit = CurriculumUnit.new
 
     respond_to do |format|
-      format.html { render layout: false } # new.html.erb
+      format.html # new.html.erb
       format.json { render json: @curriculum_unit }
     end
   end
@@ -88,7 +90,7 @@ class CurriculumUnitsController < ApplicationController
   # GET /curriculum_units/1/edit
   def edit
     respond_to do |format|
-      format.html { render layout: false } # new.html.erb
+      format.html # new.html.erb
       format.json { render json: @curriculum_unit }
     end
   end
@@ -102,31 +104,42 @@ class CurriculumUnitsController < ApplicationController
 
     @curriculum_unit = CurriculumUnit.new(params[:curriculum_unit])
 
-    respond_to do |format|
-      if @curriculum_unit.save
-        @curriculum_units = CurriculumUnit.joins(:allocations).where(:allocations => { :profile_id => Curriculum_Unit_Initial_Profile, :user_id => current_user.id } )
-        format.html { render :index, :layout => false }
-        format.json { render json: @curriculum_unit, status: :created, location: @curriculum_unit }
-      else
-        format.html { render :new, :layout => false }
-        format.json { render json: @curriculum_unit.errors, status: :unprocessable_entity }
+    begin
+      authorize! :create, CurriculumUnit
+      raise "error" unless @curriculum_unit.save
+
+      @curriculum_units = CurriculumUnit.joins(:allocations).where(:allocations => { :profile_id => Curriculum_Unit_Initial_Profile, :user_id => current_user.id } )
+      respond_to do |format|
+        format.html { render :index, :status => 200 }
+      end
+    rescue Exception => error
+      respond_to do |format|
+        format.html { render :new, :status => ((error.message == "error") ? 200 : 500 ) }
       end
     end
+
   end
 
   # PUT /curriculum_units/1
   # PUT /curriculum_units/1.json
   def update
-    respond_to do |format|
-      if @curriculum_unit.update_attributes(params[:curriculum_unit])
-        @curriculum_units = CurriculumUnit.joins(:allocations).where(:allocations => { :profile_id => Curriculum_Unit_Initial_Profile, :user_id => current_user.id } )
-        format.html{ render :index, :layout => false }
-        format.json { head :no_content }
-      else
-        format.html { render :edit, :layout => false }
-        format.json { render json: @curriculum_unit.errors, status: :unprocessable_entity }
+    @curriculum_unit = CurriculumUnit.find(params[:id])
+    params[:curriculum_unit].delete :code if params[:code].blank? # o parâmetro deve não existir para que possa ser aceito como vazio
+
+    begin
+      authorize! :update, @curriculum_unit
+      raise "error" unless @curriculum_unit.update_attributes(params[:curriculum_unit])
+
+      @curriculum_units = CurriculumUnit.joins(:allocations).where(:allocations => { :profile_id => Curriculum_Unit_Initial_Profile, :user_id => current_user.id } )
+      respond_to do |format|
+        format.html{ render :index, :status => 200 }
+      end
+    rescue Exception => error
+      respond_to do |format|
+        format.html { render :edit, :status => ((error.message == "error") ? 200 : 500 ) }
       end
     end
+
   end
 
   def informations

@@ -180,7 +180,12 @@ jQuery.extend({
 
 /* Exibindo mensagens (flash_message) via javascript */
 function flash_message(msg, css_class) {
-  if ($('#flash_message')) {  $('#flash_message').remove(); }
+  erase_flash_messages();
   var html = '<div id="flash_message" class="' + css_class + '"><span>' + msg + '</span></div>';
   $('.flash_message_wrapper').append(html);
+}
+
+/* Limpando mensagens existentes */
+function erase_flash_messages() {
+  if ($('#flash_message')) {  $('#flash_message').remove(); }
 }

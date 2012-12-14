@@ -2,41 +2,39 @@ include AllocationsHelper
 
 class AllocationsController < ApplicationController
 
+  layout false, :except => [:index]
+
   authorize_resource :except => [:destroy, :designates, :create_designation, :activate, :deactivate]
 
   # GET /allocations/designates
   # GET /allocations/designates.json
   def designates
+    @allocation_tags_ids  = params[:allocation_tags_ids].split(" ")
     
     # verifica permissao de acessar alocacao das allocation tags passadas
-    authorize! :designates, Allocation, :on => [params[:allocation_tag_id].to_i]
+    authorize! :designates, Allocation, :on => @allocation_tags_ids
     
     level        = (params[:permissions] != "all") ? "responsible" : nil
     level_search = level.nil? ? ("not(profiles.types & #{Profile_Type_Student})::boolean and not(profiles.types & #{Profile_Type_Basic})::boolean") : ("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")
     
-    @allocation_tags  = (params.include?('allocation_tag_id')) ? params[:allocation_tag_id] : 0
     
     @allocations = Allocation.all(
       :joins => [:profile, :user], 
-      :conditions => ["#{level_search} and allocation_tag_id IN (#{@allocation_tags}) "],
+      :conditions => ["#{level_search} and allocation_tag_id IN (#{@allocation_tags_ids.join(",")}) "],
       :order => ["users.name", "profiles.name"]) 
 
     respond_to do |format|
-      flash[:notice] = t(:allocated, :scope => [:allocations, :success]) if params.include?(:notice_allocated)
-      flash[:alert]  = t(:not_allocated, :scope => [:allocations, :error]) if params.include?(:alert_allocated)
-      format.html 
+      format.html
       format.json { render json: @allocations }
     end
   end
 
   # Método, chamado por ajax, para buscar usuários para alocação
   def search_users
-    text             = URI.unescape(params[:data])
-    @text_search     = text
-    @allocation_tags = params[:allocation_tag_id]
-    @users           = User.where("lower(name) ~ '#{text.downcase}'")
-
-    render :layout => false
+    text                 = URI.unescape(params[:data])
+    @text_search         = text
+    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    @users               = User.where("lower(name) ~ '#{text.downcase}'")
   end
 
   # GET /allocations/enrollments
@@ -59,7 +57,7 @@ class AllocationsController < ApplicationController
   def show
     @allocation = Allocation.find(params[:id])
     respond_to do |format|
-      format.html { render layout: false }
+      format.html
       format.json { render json: @allocation }
     end
   end
@@ -72,8 +70,6 @@ class AllocationsController < ApplicationController
 
     # transicao entre grupos apenas da mesma oferta
     @groups = @change_group ? Group.where(:offer_id => @allocation.group.offer_id) : @allocation.group
-
-    render layout: false
   end
   
   # Usado na matrícula
@@ -91,20 +87,28 @@ class AllocationsController < ApplicationController
 
   # Usado na alocacao de usuarios
   def create_designation
-
     # verifica permissao de alocacao nas allocation tags passadas
-    authorize! :create_designation, Allocation, :on => [params[:allocation_tag_id].to_i] 
+    allocation_tags_ids = params[:allocation_tags_ids].split(" ")
 
-    profile = (params.include?(:profile)) ? params[:profile] : Profile.student_profile
-    status  = (params.include?(:status)) ? params[:status] : Allocation_Pending
+    begin 
 
-    ok      = allocate(params[:allocation_tag_id], params[:user_id], profile, status)
-    message = ok ? ['notice', 'success'] : ['alert', 'error']
+      authorize! :create_designation, Allocation, :on => allocation_tags_ids.flatten
 
-    respond_to do |format|
-      format.html { redirect_to(designates_allocations_path(:allocation_tag_id => params[:allocation_tag_id]), message[0].to_sym => t(:enrollm_request, :scope => [:allocations, message[1].to_sym])) }
-      format.json { render json: {:success => ok } }
+      profile = (params.include?(:profile)) ? params[:profile] : Profile.student_profile
+      status  = (params.include?(:status)) ? params[:status] : Allocation_Pending
+      ok      = allocate(allocation_tags_ids, params[:user_id], profile, status)
+
+      respond_to do |format|
+        format.html { render :action => :designates, :status => (ok ? 200 : 500) } 
+      end
+
+    rescue Exception => error
+      respond_to do |format|
+        format.html { render :status => 500 } 
+      end      
     end
+
+
   end
 
   # PUT /allocations/1
@@ -156,7 +160,7 @@ class AllocationsController < ApplicationController
       render :js => "javascript:flash_message('#{msg_error}', 'alert');"
     else
       respond_to do |format|
-        format.html { render :action => :show, :layout => false }
+        format.html { render :action => :show }
         format.json { render :json => {:status => "ok"}  }
       end
     end
@@ -196,44 +200,39 @@ class AllocationsController < ApplicationController
   end
 
   def deactivate
+    @allocation  = Allocation.find(params[:id])
+    @text_search = params[:text_search]
 
-    @allocation       = Allocation.find(params[:id])
-    @text_search      = params[:text_search]
-    allocation_tag_id = @allocation.allocation_tag_id
+    begin 
+      authorize! :deactivate, @allocation
+      raise "error" unless @allocation.update_attribute(:status, Allocation_Cancelled)
 
-    # verifica permissao de desativar alocacao na allocation tag passada
-    authorize! :deactivate, Allocation, :on => [allocation_tag_id.to_i]
-
-    respond_to do |format|
-      if @allocation.update_attribute(:status, Allocation_Cancelled)
-        flash[:notice] = t(:deactivated, :scope => [:allocations, :success])
-        format.html { redirect_to :action => :designates, :allocation_tag_id => allocation_tag_id }
-        format.json { head :ok }
-      else
-        flash[:alert] = t(:not_deactivated, :scope => [:allocations, :error])
-        format.html { redirect_to :action => :designates, :allocation_tag_id => allocation_tag_id }
-        format.json { head :error }
+      respond_to do |format|
+        format.html{ render :action => :designates, :status => 200 }
+      end
+    rescue
+      respond_to do |format|
+        format.html{ render :status => 500 }
       end
     end
+
   end
 
   def activate
     @allocation       = Allocation.find(params[:id])
     allocation_tag_id = @allocation.allocation_tag_id
 
-    # verifica permissao de ativar alocacao na allocation tag passada
-    authorize! :deactivate, Allocation, :on => [allocation_tag_id.to_i]
-
-    respond_to do |format|
-      if @allocation.update_attribute(:status, Allocation_Activated)
-        flash[:notice] = t(:activated, :scope => [:allocations, :success])
-        format.html { redirect_to :action => :designates, :allocation_tag_id => allocation_tag_id }
-        format.json { head :ok }
-      else
-        flash[:alert] = t(:not_activated, :scope => [:allocations, :error])
-        format.html { redirect_to :action => :designates, :allocation_tag_id => allocation_tag_id }
-        format.json { head :error }
+    begin
+      authorize! :activate, @allocation
+      raise "error" unless @allocation.update_attribute(:status, Allocation_Activated)
+      respond_to do |format|
+        format.html{ render :action => :designates, :status => 200 }
       end
+    rescue
+      respond_to do |format|
+        format.html{ render :status => 500 }
+      end
+
     end
   end  
 
@@ -262,18 +261,17 @@ class AllocationsController < ApplicationController
       end
     end
 
-    def allocate(allocation_tag_id, user_id, profile, status, id = nil)
+    def allocate(allocation_tags_ids, user_id, profile, status, id = nil)
       total, corrects = 0, 0
-      if params.include?(:allocation_tag_id) and params.include?(:user_id) and (profile != '')
+      if (params.include?(:allocation_tags_ids) or params.include?(:allocation_tag_id)) and params.include?(:user_id) and (profile != '')
         unless params[:id].nil? # se alocação já existe (id não será nulo), então está desativada e deve ser reativada
           allocation        = Allocation.find(params[:id])
           allocation.status = Allocation_Pending_Reactivate
           total    = 1
           corrects = 1 if allocation.save
         else # se alocação está sendo realizada agora, deve ser criada
-          allocations = params[:allocation_tag_id].split(',')
-          total       = allocations.count()
-          allocations.each do |id|
+          total = allocation_tags_ids.size
+          [allocation_tags_ids].flatten.each do |id|
             allocation = Allocation.new({
               :user_id => params[:user_id],
               :allocation_tag_id => id,
@@ -281,7 +279,7 @@ class AllocationsController < ApplicationController
               :status => status
             })
             corrects = corrects + 1 if allocation.save
-          end # allocations.each
+          end # allocation_tags_ids.each
         end # unless params[:id].nil?
       end
       return (corrects == total)

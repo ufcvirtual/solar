@@ -1,19 +1,80 @@
-function call_page(url){
-  $.get(url, function(data) {
-    $('#curriculum_unit_items').html(data);
-  });
-}
+/* chama página informada passando as allocation_tags do filtro */
+function call_page(url){ 
+  var allocation_tags_ids = navPanelSelectedItems(); // recupera as allocations_tags dos itens escolhidos
 
-function back_to_edition(){
+  if($.type(allocation_tags_ids) == "number"){ // se o retorno for apenas um allocation_tag_id, será um número. nos demais casos, será um array de strings
+    allocation_tags_ids = $.makeArray(allocation_tags_ids); // transforma número em array para não ter necessidade de tratamentos diferenciados no destino
+  }
+
   $.ajax({
     type: 'GET',
-    url: '#{editions_path}',
-    data: {'layout': false},
+    url: url,
+    data: {"allocation_tags_ids": allocation_tags_ids},
     success: function(data) {
-      $(".edition_div").html(data);
+      $('#edition_content').html(data); // atualiza conteúdo da página com o retorno da url informada
+    }
+  });
+
+}
+
+/* atualiza informação do conteúdo atual */
+function update_content_url(url){
+  $('#choosed_content_url').val(url); // atualizar valor do campo que indica a página escolhida
+  update_edition_content(); // substitui conteúdo
+}
+
+/* submete formulário (form_id = atributo html do formulário, class_to_update_fail = nome da classe que terá seu conteúdo atualizado caso 
+  haja falha - utilizado para formulários de lightboxes, esta classe é da div que engloba o formulário, redirect_url = url para a qual o 
+  conteúdo será atualizado em caso de sucesso, div_to_update = informação de qual div é para atualizar caso não esteja "incluso" na página
+  de edição) */
+function submit_form(form_id, class_to_update_fail, redirect_url, div_to_update){
+  $.ajax({
+    type: "POST",
+    url: $("#"+form_id).attr("action"),
+    data: $("#"+form_id).serialize(),
+    success: function(data) {
+      if(data.search(".error") != -1){ // se existir algum erro nas validações, o simple_form acrescenta a classe "error" aos campos
+        $("."+class_to_update_fail).html(data); // atualiza conteúdo com o formulário com os erros
+      }else{ // se não existir erros de validação
+        removeLightBox();  
+        if(div_to_update){ // página fora da tela de edição
+          $("#"+div_to_update).html(data); // atualiza conteúdo da página
+        }else{
+          update_content_url(redirect_url); // atualiza div da página de edição com conteúdo de listagem
+        }
+        flash_message('<%= I18n.t(:saved, :scope => [:editions, :success]) %>', 'notice'); // mensagem de sucesso
+      }
+    },
+    error: function() {
+      removeLightBox();  
+      flash_message('<%= I18n.t(:cant_save, :scope => [:editions]) %>', 'alert'); // mensagem de erro
     }
   });
 }
+
+/* deleção de algum objeto (url = url do método de deleção, redirect_url = url para a qual o conteúdo será atualizado em caso de sucesso, 
+  div_to_update = informação de qual div é para atualizar caso não esteja "incluso" na página de edição) */
+function delete_object(url, redirect_url, div_to_update){
+  if(confirm('<%= I18n.t(:are_you_sure_of_deletion, :scope => [:editions]) %>')){
+    $.ajax({
+      type: "DELETE",
+      url: url,
+      success: function(data) {
+        if(div_to_update){ // página fora da tela de edição
+          $("#"+div_to_update).html(data); // atualiza conteúdo da página
+        }else{
+          update_content_url(redirect_url); // atualiza div da página de edição com conteúdo de listagem
+        }
+        flash_message('<%= I18n.t(:deleted, :scope => [:editions, :success]) %>', 'notice'); // aviso de sucesso
+      },
+      error: function(){
+        flash_message('<%= I18n.t(:cant_delete, :scope => [:editions])  %>', 'alert'); // aviso de erro
+      }
+    });
+  }
+}
+
+/* funções para abrir lightbox de diferentes tamanhos */
 
 function open_lightbox1(url, title){
   showLightBoxURL(url, 550, 255, true, title);
@@ -25,78 +86,4 @@ function open_lightbox2(url, title){
 
 function open_lightbox3(url, title){
   showLightBoxURL(url, 540, 157, true, title);
-}
-
-function submit_form(form_id, class_to_update_fail, controller){
-  var div_to_update_success = div_to_update(controller);
-
-  $.ajax({
-    type: "POST",
-    url: $("#"+form_id).attr("action"),
-    data: $("#"+form_id).serialize(),
-    success: function(data) {
-      // se o resultado conter uma div de erro 
-      if(data.search(".access_denied") != -1){
-        removeLightBox();  
-        // atualiza div da página de edição com conteúdo de listagem
-        $("#"+div_to_update_success).html(data);
-        // se é o controller de fóruns
-        if(controller == 'discussion'){
-          // mensagem de não pode editar (se for criação, a div nunca existirá)
-          flash_message('<%= I18n.t(:cant_edit, :scope => [:discussion, :errors]) %>', 'alert');
-        }else{
-          // mensagem de acesso negado
-          flash_message('<%= I18n.t(:no_permission) %>', 'alert');
-        }
-      }else{
-        // se existir algum erro, o simple_form acrescenta a classe "error" aos campos
-        if(data.search(".error") != -1){
-          // atualiza conteúdo com o formulário
-          $("."+class_to_update_fail).html(data);
-        // se não existir erros
-        }else{
-          removeLightBox();  
-          // atualiza div da página de edição com conteúdo de listagem
-          $("#"+div_to_update_success).html(data);
-          // mensagem de sucesso
-          flash_message('<%= I18n.t(:saved, :scope => [:editions, :success]) %>', 'notice');
-        }
-      }
-    }
-  });
-}
-
-function delete_object(url, div_to_update){
-  if(confirm('<%= I18n.t(:are_you_sure_of_deletion, :scope => [:editions]) %>')){
-    $.ajax({
-      type: "DELETE",
-      url: url,
-      success: function(data) {
-        // atualiza div da página de edição com conteúdo de listagem
-        $("#"+div_to_update).html(data);
-        // se existir algum erro após deleção
-        if(data.search(".error_deletion") != -1){
-          // aviso de erro
-          flash_message($(".error_deletion").html(), 'alert');
-        // se não existir erros
-        }else{
-          // aviso de sucesso
-          flash_message('<%= I18n.t(:deleted, :scope => [:editions, :success]) %>', 'notice');
-        }
-      }
-    });
-  }
-}
-
-function div_to_update(controller){
-  if(controller == "curriculum_unit"){
-    var div_to_update = 'list_curriculum_units';
-  }else{
-    if(controller == "offer"){
-      var div_to_update = 'list_offers';
-    }else{
-      var div_to_update = 'curriculum_unit_items';
-    }
-  }
-  return div_to_update;
 }

@@ -18,7 +18,6 @@ class Discussion < ActiveRecord::Base
   ##
   def can_destroy?
     if (schedule.start_date < Date.today) or (closed? and (not discussion_posts.empty?))
-      errors.add(:base, I18n.t(:cant_delete, :scope => [:discussion, :errors])) 
       return false
     else
       return true

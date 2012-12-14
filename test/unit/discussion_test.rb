@@ -35,7 +35,6 @@ class  DiscussionTest < ActiveSupport::TestCase
     end
 
     assert (Discussion.exists?(discussion))
-    assert_equal discussion.errors[:base].first, I18n.t(:cant_delete, :scope => [:discussion, :errors])
   end
 
   test "forum iniciado nao pode ser excluido" do
@@ -45,7 +44,6 @@ class  DiscussionTest < ActiveSupport::TestCase
     end
 
     assert (Discussion.exists?(discussion))
-    assert_equal discussion.errors[:base].first, I18n.t(:cant_delete, :scope => [:discussion, :errors])
   end
 
   test "exclusao de forum com sucesso" do

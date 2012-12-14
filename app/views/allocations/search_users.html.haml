@@ -2,14 +2,14 @@
   %table.tb_list.tb_allocation
     %thead
       %tr.lines
-        %th= t(:name, :scope => [:allocations])
-        %th{style: 'width:80px'}= t(:cpf, :scope => [:allocations])
-        %th{style: 'width:200px'}= t(:email, :scope => [:allocations])
-        %th{style: 'width:120px'}= t(:profile, :scope => [:allocations])
+        %th= t(".name")
+        %th{style: 'width:80px'}= t(".cpf")
+        %th{style: 'width:200px'}= t(".email")
+        %th{style: 'width:120px'}= t(".profile")
         %th{style: 'width:100px'}= ""
     %tbody
     - @users.each do |user|
-      - profiles_allocable = profiles_available_for_allocation(user.id, @allocation_tags)
+      - profiles_allocable = profiles_available_for_allocation(user.id, @allocation_tags_ids.join(","))
       %tr.lines
         %td= user.name
         %td{style: 'width:80px'}= user.cpf
@@ -36,9 +36,8 @@
       var parent  = $(this).parents("tr");
       var profile = $("#profile_id", parent).val();
       var user    = $(this).siblings("#user_id").val();
-      var status  = "#{Allocation_Activated}"
-      var alloc   = $("#allocation_tag_id").val();
-      var url_for = "#{designates_allocations_path}";
+      var status  = "#{Allocation_Activated}";
+      var alloc   = $("#allocation_tags_ids").val();
 
       $.ajax({
         type: 'POST',
@@ -46,14 +45,15 @@
         data: {
           "user_id": user,
           "status": status,
-          "allocation_tag_id": alloc,
+          "allocation_tags_ids": alloc,
           "profile": profile          
         },
-        success: function() {
-          location.href = url_for + "?notice_allocated=1&allocation_tag_id="+alloc;
+        success: function(data) {
+          update_content_url('#{designates_allocations_path}');
+          flash_message('#{I18n.t(:allocated, :scope => [:allocations, :success])}', 'notice');
         },
         error: function() {
-          location.href = url_for + "?alert_allocated=1&allocation_tag_id="+alloc;
+          flash_message('#{I18n.t(:not_allocated, :scope => [:allocations, :error])}', 'alert');
         }
       });
 

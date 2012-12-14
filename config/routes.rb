@@ -90,7 +90,10 @@ Solar::Application.routes.draw do
 
   resources :enrollments, only: :index
   resources :courses
-  resources :editions, only: :index
+
+  resources :editions, only: [:index] do
+    get :items, :on => :collection
+  end
 
   resources :lessons do
     resources :files, controller: :lesson_files

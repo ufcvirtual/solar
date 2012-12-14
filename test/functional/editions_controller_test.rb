@@ -8,6 +8,7 @@ class EditionsControllerTest < ActionController::TestCase
     sign_in users(:editor)
   end
 
+=begin
   test "exibir pagina de edicao" do
   	get :index
   	assert_not_nil assigns(:course_id)
@@ -26,5 +27,6 @@ class EditionsControllerTest < ActionController::TestCase
   	assert_nil assigns(:group_id)
   	assert_nil assigns(:allocation_tags_ids)
 	end
+=end
 
 end

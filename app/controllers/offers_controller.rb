@@ -3,6 +3,8 @@ include OffersHelper
 
 class OffersController < ApplicationController
 
+  layout false, :except => [:index, :list]
+
 # Versão da Bianca
   def index
     # não poderão vir com o valor 0 (indicando que "nenhum" foi selecionado, pois as ofertas dependem de ambos)
@@ -24,9 +26,9 @@ class OffersController < ApplicationController
 
 
   def list
-	@course_id, @curriculum_unit_id = (params[:course_id] || "all"), (params[:curriculum_unit_id] || "all") # a fim de testes: editor, atualmente, tem permissão para uc: 3 e curso: 2
-	authorize! :index, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e cursos selecionados
-	get_offers(@curriculum_unit_id, @course_id)
+	# @course_id, @curriculum_unit_id = (params[:course_id] || "all"), (params[:curriculum_unit_id] || "all") # a fim de testes: editor, atualmente, tem permissão para uc: 3 e curso: 2
+	# authorize! :index, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e cursos selecionados
+	# get_offers(@curriculum_unit_id, @course_id)
   
     @offers = get_all_offers
 
@@ -157,20 +159,11 @@ class OffersController < ApplicationController
   end
 
 
-
-
-
-
-
-
-
-
   def new
     @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
     authorize! :new, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e curso selecionados
 
     @offer = Offer.new
-    render :layout => false
   end
 
   def edit
@@ -178,7 +171,6 @@ class OffersController < ApplicationController
     @offer = Offer.find(params[:id])
 
     authorize! :edit, Offer, :on => [@offer.allocation_tag.id] # verifica se tem acesso à oferta a ser editada
-    render :layout => false
   end
 
   # Método que, a partir das ucs e cursos selecionados, cria ofertas para todas as combinações possíveis entre aqueles
@@ -204,22 +196,21 @@ class OffersController < ApplicationController
 
       respond_to do |format|
         get_offers(@curriculum_unit_id, @course_id)
-        format.html { render :index, :layout => false }
+        format.html { render :index, :status => 200 }
       end
 
     rescue CanCan::AccessDenied
 
       respond_to do |format|
         get_offers(@curriculum_unit_id, @course_id)
-        @access_denied = true
-        format.html { render :index, :layout => false }
+        format.html { render :index, :status => 500 }
       end
 
     rescue Exception => error
 
       respond_to do |format|
         @date_range_error = @offer.errors.full_messages.last unless @offer.errors[:start_date].blank? and @offer.errors[:end_date].blank?
-        format.html { render :new, :layout => false }
+        format.html { render :new, :status => 200 }
       end
 
     end
@@ -228,23 +219,30 @@ class OffersController < ApplicationController
 
   def update
     @offer = Offer.find(params[:id])
-    authorize! :update, Offer, :on => [@offer.allocation_tag.id] # verifica se tem acesso à oferta a ser editada
-
     params[:offer][:curriculum_unit_id], params[:offer][:course_id] = @offer.curriculum_unit_id, @offer.course_id
     @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
 
     begin
 
+      authorize! :update, Offer, :on => [@offer.allocation_tag.id] # verifica se tem acesso à oferta a ser editada
+
       @offer.update_attributes!(params[:offer])
       respond_to do |format|
         get_offers(params[:curriculum_unit_id], params[:course_id])
-        format.html { render :index, :layout => false }
+        format.html { render :index, :status => 200 }
+      end
+
+    rescue CanCan::AccessDenied
+
+      respond_to do |format|
+        get_offers(@curriculum_unit_id, @course_id)
+        format.html { render :index, :status => 500 }
       end
 
     rescue Exception => error
       respond_to do |format|
         @date_range_error = @offer.errors.full_messages.last unless @offer.errors[:start_date].blank? and @offer.errors[:end_date].blank?
-        format.html { re__nder :edit, :layout => false }
+        format.html { render :edit, :status => 200 }
       end
 
     end
@@ -256,17 +254,18 @@ class OffersController < ApplicationController
 
     begin
       authorize! :destroy, Offer, :on => [offer.allocation_tag.id] # verifica se tem acesso à oferta a ser excluída
-      offer.destroy
-    rescue CanCan::AccessDenied
-      @access_denied = true
+      return "error" unless offer.destroy
+
+      get_offers(@curriculum_unit_id, @course_id)
+      respond_to do |format|
+        format.html { render :index, :status => 200 }
+      end
     rescue Exception => error
-      @error_deletion = t(:not_possible_to_delete, :scope => [:offers])
+      respond_to do |format|
+        format.html { render :index, :status => 500 }
+      end
     end
 
-    respond_to do |format|
-      get_offers(@curriculum_unit_id, @course_id)
-      format.html { render :index, :layout => false }
-    end
   end
 
   # Método que desabilita todos os grupos da oferta
@@ -279,7 +278,7 @@ class OffersController < ApplicationController
     respond_to do |format|
       @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
       get_offers(@curriculum_unit_id, @course_id)
-      format.html {render :index, :layout => false}
+      format.html {render :index}
     end
   end
 

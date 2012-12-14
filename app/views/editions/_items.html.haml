@@ -1,77 +1,142 @@
-%fieldset#uc_informations
-  %legend= t(".information")
-  .block_content.block_content_alt
+.edition_items
 
-    / verifica se possui permissão e se alguma uc foi selecionada para a criação de bibliografia >> falta verificar relação com as allocation_tags passadas <<
-    - if (can? :list, Bibliography) and (@curriculum_unit_id != "all" and @curriculum_unit_id != 0)
-      .uc_item
-        %div= link_to (image_tag "/assets/edition/bibliography.png", :alt => t(".edition_of", :of => t(".bibliography")), :class => 'btn_default'), "#", :onclick => "javascript: call_page('#{url_for(:controller => :bibliography, :action => :list, :group_id => @group_id, :offer_id => @offer_id, :allocation_tags_ids => @allocation_tags_ids)}');", :id => "bibliography"
-        %div= link_to t(".bibliography"), "#", :onclick => "javascript: call_page('#{url_for(:controller => :bibliography, :action => :list, :group_id => @group_id, :offer_id => @offer_id, :allocation_tags_ids => @allocation_tags_ids)}');"
+  %fieldset#uc_informations
+    %legend= t(".information")
+    .block_content.block_content_alt
 
-    / verifica se possui permissão e se alguma oferta foi selecionada para a criação de agenda >> falta verificar relação com as allocation_tags passadas <<
-    - if (can? :list, Schedule) and (@offer_id != "all" and @offer_id != 0)
-      .uc_item
-        %div= link_to (image_tag "/assets/edition/schedule.png", :alt => t(".edition_of", :of => t(".schedule")), :class => 'btn_default'), "#", :onclick => "javascript: call_page('#{list_schedules_path(:allocation_tags_ids => @allocation_tags_ids, :curriculum_unit_id => @curriculum_unit_id)}');", :id => "schedule"
-        %div= link_to t(".schedule"), "#", :onclick => "javascript: call_page('#{list_schedules_path(:allocation_tags_ids => @allocation_tags_ids, :curriculum_unit_id => @curriculum_unit_id)}');"
+      / verifica se possui permissão e se alguma uc foi selecionada para a criação de bibliografia >> falta verificar relação com as allocation_tags passadas <<
+      - if (can? :list, Bibliography) #, :on => @allocation_tags_ids) # and (@curriculum_unit_id != "all" and @curriculum_unit_id != 0)
+        .uc_item
+          %div= link_to (image_tag "/assets/edition/bibliography.png", :alt => t(".edition_of", :of => t(".bibliography")), :class => 'btn_default'), "#", :id => "bibliography"
+          %div= link_to t(".bibliography"), "#"
 
-    / if can? :index, Allocation and se algo foi selecionado >> falta verificar relação com as allocation_tags passadas <<
-    - if @curriculum_unit_id != 0 or @course_id != 0 or @curriculum_unit_id != 0 or @offer_id != 0 or @group_id != 0
-      .uc_item
-        %div= link_to (image_tag "/assets/edition/allocation.png", :alt => t(".edition_of", :of => t(".allocation")), :class => 'btn_default'), "#", :onclick => "javascript:alert('#{t(".in_development")}');", :id => "allocation"
-        %div= link_to t(".allocation"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
+      / verifica se possui permissão e se alguma oferta foi selecionada para a criação de agenda >> falta verificar relação com as allocation_tags passadas <<
+      - if (can? :list, Schedule) #, :on => @allocation_tags_ids) # and (@offer_id != "all" and @offer_id != 0)
+        .uc_item
+          %div= link_to (image_tag "/assets/edition/schedule.png", :alt => t(".edition_of", :of => t(".schedule")), :class => 'btn_default'), "#", :id => "schedule"
+          %div= link_to t(".schedule"), "#"
 
-    / if can? :index, Warning and se algo foi selecionado >> falta verificar relação com as allocation_tags passadas <<
-    - if @curriculum_unit_id != 0 or @course_id != 0 or @curriculum_unit_id != 0 or @offer_id != 0 or @group_id != 0
+      /- if @curriculum_unit_id != 0 or @course_id != 0 or @curriculum_unit_id != 0 or @offer_id != 0 or @group_id != 0
+      - if (can? :designates, Allocation, :on => @allocation_tags_ids)
+        .uc_item
+          %div= link_to (image_tag "/assets/edition/allocation.png", :alt => t(".edition_of", :of => t(".allocation")), :class => "btn_default"), "#", :id => "allocation"
+          %div= link_to t(".allocation"), "#"
+
+      /- if @curriculum_unit_id != 0 or @course_id != 0 or @curriculum_unit_id != 0 or @offer_id != 0 or @group_id != 0
+      / if can? :index, Warning # on -> alloc / 
       .uc_item
-        %div= link_to (image_tag "/assets/edition/warning.png", :alt => t(".edition_of", :of => t(".warning")), :class => 'btn_default'), "#", :onclick => "javascript:alert('#{t(".in_development")}');", :id => "warning"
+        %div= link_to (image_tag "/assets/edition/warning.png", :alt => t(".edition_of", :of => t(".warning")), :class => 'btn_default'), "#", :onclick => "javascript:", :id => "warning"
         %div= link_to t(".warning"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
 
-%fieldset#uc_comunication
-  %legend=t(".comunication")
-  .block_content.block_content_alt
+  %fieldset#uc_comunication
+    %legend=t(".comunication")
+    .block_content.block_content_alt
 
-    / verifica se possui permissão e se alguma oferta foi selecionada para a criação de fórum >> falta verificar relação com as allocation_tags passadas <<
-    - if (can? :list, Discussion) and (@offer_id != "all" and @offer_id != 0)
+      / verifica se possui permissão e se alguma oferta foi selecionada para a criação de fórum >> falta verificar relação com as allocation_tags passadas <<
+      - if (can? :list, Discussion) #, :on => @allocation_tags_ids) # and (@offer_id != "all" and @offer_id != 0)
+        .uc_item
+          %div= link_to (image_tag "/assets/edition/discussion.png", :alt => t(".edition_of", :of => t(".discussion")), :class => 'btn_default'), "#", :id => "discussion"
+          %div= link_to t(".discussion"), "#"
+
+      / falta verificar relação com o nível escolhido e definir qual nível é necessário
+      / if can? :index, Chat and (verificação do nível - a ser definido) # on -> alloc / 
       .uc_item
-        %div= link_to (image_tag "/assets/edition/discussion.png", :alt => t(".edition_of", :of => t(".discussion")), :class => 'btn_default', :id => "discussion"), "#", :onclick => "javascript: call_page('#{list_discussions_path(:group_id => @group_id, :offer_id => @offer_id, :allocation_tags_ids => @allocation_tags_ids)}');", :id => "discussion"
-        %div= link_to t(".discussion"), "#", :onclick => "javascript: call_page('#{list_discussions_path(:group_id => @group_id, :offer_id => @offer_id, :allocation_tags_ids => @allocation_tags_ids)}');"
+        %div= link_to (image_tag "/assets/edition/chat.png", :alt => t(".edition_of", :of => t(".chat")), :class => 'btn_default'), "#", :id => "chat"
+        %div= link_to t(".chat"), "#"
 
-    / falta verificar relação com o nível escolhido e definir qual nível é necessário
-    / if can? :index, Chat and (verificação do nível - a ser definido)
-    .uc_item
-      %div= link_to (image_tag "/assets/edition/chat.png", :alt => t(".edition_of", :of => t(".chat")), :class => 'btn_default'), "#", :onclick => "javascript:alert('#{t(".in_development")}');" , :id => "chat"
-      %div= link_to t(".chat"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
-
-    / falta verificar relação com o nível escolhido e definir qual nível é necessário
-    / if can? :index, Videoconference and (verificação do nível - a ser definido)
-    .uc_item
-      %div= link_to (image_tag "/assets/edition/videoconference.png", :alt => t(".edition_of", :of => t(".videoconference")), :class => 'btn_default'), "#", :onclick => "javascript:alert('#{t(".in_development")}');", :id => "videoconference"
-      %div= link_to t(".videoconference"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
-
-%fieldset#uc_education
-  %legend=t(".education")
-  .block_content.block_content_alt
-
-    / verifica se possui permissão e se alguma oferta foi selecionada para a criação de aula >> falta verificar relação com as allocation_tags passadas <<
-    - if (can? :list, Lesson) and (@offer_id != "all" and @offer_id != 0)
+      / falta verificar relação com o nível escolhido e definir qual nível é necessário
+      / if can? :index, Videoconference and (verificação do nível - a ser definido)
       .uc_item
-        %div= link_to (image_tag "/assets/edition/lesson.png", :alt => t(".edition_of", :of => t(".lesson")), :class => 'btn_default'), "#", :onclick => "javascript: call_page('#{list_lessons_path(:group_id => @group_id, :offer_id => @offer_id, :allocation_tags_ids => @allocation_tags_ids, :curriculum_unit_id => @curriculum_unit_id)}');", :id => "lesson"
-        %div= link_to t(".lesson"), "#", :onclick => "javascript: call_page('#{list_lessons_path(:group_id => @group_id, :offer_id => @offer_id, :allocation_tags_ids => @allocation_tags_ids, :curriculum_unit_id => @curriculum_unit_id)}');"
+        %div= link_to (image_tag "/assets/edition/videoconference.png", :alt => t(".edition_of", :of => t(".videoconference")), :class => 'btn_default'), "#", :id => "videoconference"
+        %div= link_to t(".videoconference"), "#"
 
-    / verifica se possui permissão e se alguma uc foi selecionada para a criação do material de apoio >> falta verificar relação com as allocation_tags passadas <<
-    - if (can? :list_edition, SupportMaterialFile) and (@curriculum_unit_id != "all" and @curriculum_unit_id != 0)
-      .uc_item 
-        %div= link_to (image_tag "/assets/edition/support_material.png", :alt => t(".edition_of", :of => t(".support_material")), :class => 'btn_default'), "#", :onclick => "javascript:alert('#{t(".in_development")}');", :id => "support_material"
-        %div= link_to t(".support_material"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
+  %fieldset#uc_education
+    %legend=t(".education")
+    .block_content.block_content_alt
 
-    / verifica se possui permissão e se alguma oferta foi selecionada para a criação da atividade >> falta verificar relação com as allocation_tags passadas <<
-    - if (can? :list, Assignment) and (@offer_id != "all" and @offer_id != 0)
+      / verifica se possui permissão e se alguma oferta foi selecionada para a criação de aula >> falta verificar relação com as allocation_tags passadas <<
+      - if (can? :list, Lesson) #, :on => @allocation_tags_ids) # and (@offer_id != "all" and @offer_id != 0)
+        .uc_item
+          %div= link_to (image_tag "/assets/edition/lesson.png", :alt => t(".edition_of", :of => t(".lesson")), :class => 'btn_default'), "#", :id => "lesson"
+          %div= link_to t(".lesson"), "#"
+
+      / verifica se possui permissão e se alguma uc foi selecionada para a criação do material de apoio >> falta verificar relação com as allocation_tags passadas <<
+      - if (can? :list_edition, SupportMaterialFile)#, :on => @allocation_tags_ids) # on -> alloc / and (@curriculum_unit_id != "all" and @curriculum_unit_id != 0)
+        .uc_item 
+          %div= link_to (image_tag "/assets/edition/support_material.png", :alt => t(".edition_of", :of => t(".support_material")), :class => 'btn_default'), "#", :id => "support_material"
+          %div= link_to t(".support_material"), "#"
+
+      / verifica se possui permissão e se alguma oferta foi selecionada para a criação da atividade >> falta verificar relação com as allocation_tags passadas <<
+      - if (can? :list, Assignment) #, :on => @allocation_tags_ids) # nd (@offer_id != "all" and @offer_id != 0) 
+        .uc_item
+          %div= link_to (image_tag "/assets/edition/assignment.png", :alt => t(".edition_of", :of => t(".assignment")), :class => 'btn_default'), "#", :id => "assignment"
+          %div= link_to t(".assignment"), "#"
+
+      / verifica se possui permissão e se alguma oferta foi selecionada para a criação da prova >> falta verificar relação com as allocation_tags passadas <<
+      /- if (@offer_id != "all" and @offer_id != 0) # and (can? :list, Test)
       .uc_item
-        %div= link_to (image_tag "/assets/edition/assignment.png", :alt => t(".edition_of", :of => t(".assignment")), :class => 'btn_default'), "#", :onclick => "javascript: call_page('#{list_assignments_path(:group_id => @group_id, :offer_id => @offer_id, :allocation_tags_ids => @allocation_tags_ids)}');", :id => "assignment"
-        %div= link_to t(".assignment"), "#", :onclick => "javascript: call_page('#{list_assignments_path(:group_id => @group_id, :offer_id => @offer_id, :allocation_tags_ids => @allocation_tags_ids)}');"
+        %div= link_to (image_tag "/assets/edition/test.png", :alt => t(".edition_of", :of => t(".test")), :class => 'btn_default'), "#", :id => "test"
+        %div= link_to t(".test"), "#"
 
-    / verifica se possui permissão e se alguma oferta foi selecionada para a criação da prova >> falta verificar relação com as allocation_tags passadas <<
-    - if (@offer_id != "all" and @offer_id != 0) # and (can? :list, Test)
-      .uc_item
-        %div= link_to (image_tag "/assets/edition/test.png", :alt => t(".edition_of", :of => t(".test")), :class => 'btn_default'), "#", :onclick => "javascript:alert('#{t(".in_development")}');", :id => "test"
-        %div= link_to t(".test"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
+:javascript 
+
+  $(document).ready(function(){
+
+    // área de informação (information)
+
+    $('#bibliography').click(function(){
+      // update_content_url('url_de_bibliography_aqui)');
+      alert('#{t(".in_development")}');
+    });
+
+    $('#schedule').click(function(){
+      // update_content_url('url_de_schedules_aqui');
+      alert('#{t(".in_development")}');
+    });
+
+    $('#allocation').click(function(){
+      update_content_url('#{designates_allocations_path}');
+    });
+
+    $('#warning').click(function(){
+      //update_content_url('url_de_warning_aqui');
+      alert('#{t(".in_development")}');
+    });
+
+    // área de comunicação (comunication)
+
+    $('#discussion').click(function(){
+      update_content_url('#{list_discussions_path}');
+    });
+
+    $('#chat').click(function(){
+      //update_content_url('url_de_chat_aqui');
+      alert('#{t(".in_development")}');
+    });
+
+    $('#videoconference').click(function(){
+      //update_content_url('url_de_videoconference_aqui');
+      alert('#{t(".in_development")}');
+    });
+
+    // área de educação (education)
+    
+    $('#lesson').click(function(){
+      update_content_url('#{list_lessons_path}');
+    });
+
+    $('#support_material').click(function(){
+      //update_content_url('url_de_support_material_aqui');
+      alert('#{t(".in_development")}');
+    });
+
+    $('#assignment').click(function(){
+      // update_content_url('url_de_assignments_aqui');
+      alert('#{t(".in_development")}');
+    });
+
+    $('#test').click(function(){
+      alert('#{t(".in_development")}');
+    });
+
+  });

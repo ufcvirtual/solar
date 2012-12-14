@@ -14,5 +14,17 @@
       = f.input :objectives, :class => "btn btn_default"
       = f.input :prerequisites 
     .block_content.form-actions
-      = button_tag t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :onclick => "javascript:submit_form('curriculum_unit_form', 'curriculum_unit_form', 'curriculum_unit');", :type => "button"
-      = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default", :onclick => "removeLightBox();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
+      = button_tag t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :type => "button", :id => "save"
+      = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons]), :id => "cancel"
+
+:javascript
+
+  $(document).ready(function(){
+    $("#save").click(function(){
+      submit_form('curriculum_unit_form', 'curriculum_unit_form', '#{curriculum_units_path}', 'list_curriculum_units');
+    });
+    $("#cancel").click(function(){
+      removeLightBox();
+    });
+  });
+

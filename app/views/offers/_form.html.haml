@@ -39,8 +39,8 @@
         %span{:style => "display: inline-block;"}= @date_range_error
 
   .block_content.form-actions{:style => "padding-top: 10px;"}
-    = button_tag t(".save"), :class => "btn btn_main", :alt => t(".save"), :onclick => "javascript:submit_form('offer_form', 'offer_form', 'offer');", :type => "button"
-    = button_tag t(".cancel"), :class => "btn btn_default", :onclick => "javascript:removeLightBox();", :type => "button", :alt => t(".cancel")
+    = button_tag t(".save"), :class => "btn btn_main", :alt => t(".save"), :type => "button", :id => "save"
+    = button_tag t(".cancel"), :class => "btn btn_default", :type => "button", :alt => t(".cancel"), :id => "cancel"
 
 :css
   .ui-datepicker{ 
@@ -52,11 +52,25 @@
 
 :javascript
 
-  $(function(){
-    $( "#start_date" ).datepicker();
-    $( "#end_date" ).datepicker();
+  $(document).ready(function(){
+
+    $(function(){
+      $( "#start_date" ).datepicker();
+      $( "#end_date" ).datepicker();
+    });
+
+    jQuery(function($){
+      $("#offer_semester").mask("9999.9");
+    });
+
+    $("#save").click(function(){
+      submit_form('offer_form', 'offer_form', '#{offers_path}', 'list_offers');
+    });
+
+    $("#cancel").click(function(){
+      removeLightBox();
+    });
+
   });
 
-  jQuery(function($){
-    $("#offer_semester").mask("9999.9");
-  });
+  

@@ -25,8 +25,8 @@
           ="digite isso: www.qq.com"
 
     .block_content.form-actions
-      =button_tag t(:save), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :onclick => "javascript:submit_form('lesson_form', 'lesson_form', 'lesson');", :type => "button"
-      =button_tag t(:cancel), :class => "btn btn_default", :onclick => "removeLightBox();", :type => "button", :alt => t(:cancel)
+      =button_tag t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :onclick => "javascript:submit_form('curriculum_unit_form', 'curriculum_unit_form', '#{list_lessons_path}', '');", :type => "button"
+      =button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default", :onclick => "removeLightBox();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
 
 :css
   .ui-datepicker{ 

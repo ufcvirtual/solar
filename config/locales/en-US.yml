@@ -461,7 +461,6 @@
   discussion:
     errors:
       existing_name_error: already exists
-      cant_edit: Discussion can't be edited
       cant_delete: Discussion can't be deleted
       range_date_error: must be smaller than the final date
       offer_period: must be on the date range of offer (%{start} - %{end})
@@ -475,10 +474,11 @@
     delete_discussion: Delete %{discussion_name}
     new_discussion: New discussion
     all_groups: all groups
-    discussion_table_title: Available discussions to %{group_and_offer}
+    discussion_table_title: Available discussions
     group: Group
     back: Back
     to: to
+    offer: Offer
 
   message_title: "Messages"
   message_inbox: "Inbox"
@@ -910,6 +910,7 @@
       user: User
       activate_user: Activate %{user_name}
       deactivate_user: Deactivate %{user_name}
+      designated_on: Desginated on
     search_users:
       designate: Designate
       designate_search_no_found: No user found
@@ -980,7 +981,9 @@
     success:
       saved: Saved successfully
       deleted: Deleted successfully
+    cant_save: It wasn't possible to save
     are_you_sure_of_deletion: Are you sure that you want to delete?
+    cant_delete: It wasn't possible to delete
 
   curriculum_units:
     index:

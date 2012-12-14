@@ -65,7 +65,7 @@ class LessonsControllerTest < ActionController::TestCase
 
   test "exibir cadastro de modulos e aulas para um usuario com permissao" do
     sign_in @coordenador
-    get :list, { :allocation_tag_id => allocation_tags(:al5).id }
+    get :list, { :allocation_tags_ids => [allocation_tags(:al5).id] }
     assert_response :success
     assert_not_nil assigns(:lesson_modules)
   end
@@ -73,7 +73,7 @@ class LessonsControllerTest < ActionController::TestCase
   test "nao exibir cadastro de modulos e aulas para um usuario sem permissao" do
     sign_in users(:user2)
 
-    get :list, { :allocation_tag_id => allocation_tags(:al5).id }
+    get :list, { :allocation_tags_ids => [allocation_tags(:al5).id] }
     assert_nil assigns(:lesson_modules)
     assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )

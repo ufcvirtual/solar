@@ -10,6 +10,7 @@ class SchedulesController < ApplicationController
   end
 
   def list
+    # params[:allocation_tags_ids]
     @schedule = Schedule.events(current_user.allocation_tags.map(&:related).flatten.uniq)
   end
 

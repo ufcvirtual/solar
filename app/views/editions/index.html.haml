@@ -1,4 +1,5 @@
 = javascript_include_tag "edition.js"
+= hidden_field_tag :choosed_content_url, 0 # define 0 como padrão para carregar a lista de itens
 
 .edition_div
 
@@ -7,7 +8,53 @@
 
   %fieldset#allocation_tag_selection
     %legend=t(".filter")
-    .block_content.block_content_alt
+    .block_content.block_content_alt= places_nav_panel_helper
 
-  #curriculum_unit_items
-    = render "items"
+  #edition_content
+
+
+  #back_button{:style => "display: none"}
+    = button_tag t(:back, :scope => [:discussion]), :class => "btn btn_default", :type => "button", :id => "back_button", :alt => t(:back, :scope => [:discussion])
+
+
+:javascript
+
+  $(document).ready(function(){
+    
+    // quando houver mudanças na seleção do filtro
+    $('.placesNavPanel').bind('navPanelChange', function (e,type, data ) {
+      // atualiza conteúdo da página
+  	  update_edition_content();
+    });
+
+    $("#back_button").click(function(){
+      // por default, é 0 para carregar a lista de itens
+      update_content_url(); 
+    });
+
+  });
+
+
+  function update_edition_content(){
+    erase_flash_messages();
+    // se nenhum item foi selecionado no filtro
+    if(navPanelSelectedItems().length == 0){
+      // avisa -> colocar flash message talvez seja menos agressivo... algo tipo "é necessário selecionar algo do filtro"
+      //flash_message('alert', 'hey!');
+      // remove conteúdo
+      $('#edition_content').children().remove();
+      $('#back_button').hide();
+    }else{
+      // se a div "curriculum_unit_items" tiver seu conteúdo vazio ou for a lista, então ainda não foi exibido nada na página e é para exibir a lista de itens
+      if($('#choosed_content_url').val() == 0){
+        // adiciona conteúdo com itens
+        call_page('#{items_editions_path}');
+        $('#back_button').hide();
+      }else{
+        // chama página escolhida para substituir o conteúdo
+        call_page($('#choosed_content_url').val());
+        $('#back_button').show();
+      }
+    }
+
+  }

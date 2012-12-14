@@ -97,6 +97,7 @@ class AllocationsControllerTest < ActionController::TestCase
     assert_select 'td', {:html => "Cancelado"}
   end
 
+=begin
   test "exibir usuarios alocados para um usuario com permissao" do
     get :designates, { :allocation_tag_id => allocation_tags(:al5).id }
     assert_response :success
@@ -176,7 +177,7 @@ class AllocationsControllerTest < ActionController::TestCase
     
     assert (not allocation_tags(:al5).is_user_class_responsible?(users(:user2).id))
   end
-
+=end
 
 
   # test "mudar aluno de turma" do
@@ -190,5 +191,6 @@ class AllocationsControllerTest < ActionController::TestCase
   #   raise "#{@allocations}"
 
   # end
+
 
 end

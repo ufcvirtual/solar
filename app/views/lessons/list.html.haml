@@ -1,11 +1,11 @@
 = javascript_include_tag "edition.js"
 
-= hidden_field_tag(:allocation_tag_id, params[:allocation_tag_id]) 
+= hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids]) 
 
 - unless @lesson_modules.nil? or @lesson_modules.empty?
   
   - @lesson_modules.each_with_index do |m, idxm|
-    .block_wrapper
+    .block_wrapper.list_lessons
       - lessons = lessons_by_module(m.id)
 
       .block_title
@@ -23,7 +23,7 @@
 
       .block_content_toolbar
         .block_toolbar_left
-          =link_to (image_tag "/assets/lesson/add_lesson.png", :alt => ''), "#", :onclick => "javascript:open_lightbox2('#{new_lesson_path(:allocation_tag_ids => params[:allocation_tag_id])}','');", :class => 'btn btn_main'
+          =link_to (image_tag "/assets/lesson/add_lesson.png", :alt => ''), "#", :onclick => "javascript:open_lightbox2('#{new_lesson_path(:allocation_tags_ids => params[:allocation_tags_ids])}','');", :class => 'btn btn_main'
 
           = link_to (image_tag "/assets/lesson/import_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('importar aula');", :id => 'import_lesson', :class => 'btn btn_main'
 
@@ -90,8 +90,8 @@
   .block_content.block_content_text 
     =t(:none, :scope => [:module])
 
-.block_wrapper
-  = button_to t(:new, :scope => [:module, :buttons]), list_lessons_path(:allocation_tag_id => params[:allocation_tag_id]), :class => 'btn btn_main'
+.block_wrapper.list_lessons
+  = button_to t(:new, :scope => [:module, :buttons]), list_lessons_path(:allocation_tags_ids => params[:allocation_tags_ids]), :class => 'btn btn_main'
 
 :javascript
   $(function() {
@@ -129,22 +129,22 @@
 
   // download dos arquivos das aulas selecionadas em um módulo
   function download_lesson_zip(module_id){
-    allocation_tags_ids = $("#allocation_tag_id").val();
+    allocation_tags_ids = $("#allocation_tags_ids").val();
     lessons_ids         = get_selected_lessons(module_id);
 
     if(can_do_action(lessons_ids)){
       window.location.href='#{download_files_lessons_path}?lessons_ids='+lessons_ids+'&allocation_tags_ids='+allocation_tags_ids;
-    }
+    }alo
   }
 
   function edit_lesson(module_id){
     lessons = String(get_selected_lessons(module_id));
-    allocation_tags_ids = $("#allocation_tag_id").val();
+    allocation_tags_ids = $("#allocation_tags_ids").val();
     there_tab = lessons.indexOf(",") > -1 ? true : false;
     
     if (!there_tab) 
       if (lessons.length>0)
-        location.href = "/lessons/"+lessons+"/edit?allocation_tag_ids="+allocation_tags_ids;
+        location.href = "/lessons/"+lessons+"/edit?allocation_tags_ids="+allocation_tags_ids;
       else
         alert("aff... selecione uma aula :P");
     else

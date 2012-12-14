@@ -617,7 +617,6 @@
   discussion:
     errors:
       existing_name: já existe
-      cant_edit: Fórum não pode ser editado
       cant_delete: Fórum não pode ser excluído
       range_date_error: deve ser menor que a data final
       offer_period: deve estar dentro do período da oferta (%{start} - %{end})
@@ -631,10 +630,11 @@
     delete_discussion: Excluir %{discussion_name}
     new_discussion: Novo fórum
     all_groups: todas as turmas
-    discussion_table_title: Fóruns disponíveis para %{group_and_offer}
+    discussion_table_title: Fóruns disponíveis
     group: Turma
     back: Voltar
     to: à
+    offer: Oferta
 
   # messages
   message_title: "Mensagens"
@@ -1063,15 +1063,20 @@
       user: Usuário
       activate_user: Ativar %{user_name}
       deactivate_user: Desativar %{user_name}
+      designated_on: Alocado em
+      profile: Perfil
+      cpf: Cpf
+      email: Email
+      name: Nome
     search_users:
       designate: Alocar
       designate_search_no_found: Nenhum usuário encontrado
       designate_profile_no_found: Nenhum perfil disponível para alocação
       designate_user: Alocar %{user_name}
-    profile: Perfil
-    cpf: Cpf
-    email: Email
-    name: Nome
+      profile: Perfil
+      cpf: Cpf
+      email: Email
+      name: Nome
     success:
       enrollm_request: Pedido de matrícula realizado
       allocated: Usuário alocado
@@ -1135,7 +1140,9 @@
     success:
       saved: Salvo com sucesso
       deleted: Excluido com sucesso
+    cant_save: Não foi possível salvar
     are_you_sure_of_deletion: Você tem certeza de que deseja excluir?
+    cant_delete: Não foi possível excluir
 
   curriculum_units:
     index:
