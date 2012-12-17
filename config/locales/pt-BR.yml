@@ -559,7 +559,6 @@
 
   lessons:
     index:
-      lesson_table_title: Aulas disponíveis para %{group_and_offer}
       lesson_table_date: Data de acesso
     list: 
       lesson: Aula
@@ -617,7 +616,6 @@
   discussion:
     errors:
       existing_name: já existe
-      cant_delete: Fórum não pode ser excluído
       range_date_error: deve ser menor que a data final
       offer_period: deve estar dentro do período da oferta (%{start} - %{end})
     buttons:
@@ -629,7 +627,6 @@
     edit_discussion: Editar %{discussion_name}
     delete_discussion: Excluir %{discussion_name}
     new_discussion: Novo fórum
-    all_groups: todas as turmas
     discussion_table_title: Fóruns disponíveis
     group: Turma
     back: Voltar
@@ -1120,6 +1117,7 @@
     index:
       edition: Edição
       filter: Filtro
+      select_something: É necessário preencher ao menos um campo do filtro
     items:
       information: Informação
       education: Educação

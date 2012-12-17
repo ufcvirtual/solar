@@ -401,7 +401,6 @@
 
   lessons:
     index:
-      lesson_table_title: Available lessons to %{group_and_offer}
       lesson_table_date: "Access date"
     list:
       lesson: Lesson
@@ -461,7 +460,6 @@
   discussion:
     errors:
       existing_name_error: already exists
-      cant_delete: Discussion can't be deleted
       range_date_error: must be smaller than the final date
       offer_period: must be on the date range of offer (%{start} - %{end})
     buttons:
@@ -473,7 +471,6 @@
     edit_discussion: Edit %{discussion_name}
     delete_discussion: Delete %{discussion_name}
     new_discussion: New discussion
-    all_groups: all groups
     discussion_table_title: Available discussions
     group: Group
     back: Back
@@ -961,6 +958,7 @@
     index:
       edition: Edition
       filter: Filter
+      select_something: It's necessary to fill at least one field of the filter
     items:
       information: Information
       education: Education

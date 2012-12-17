@@ -21,8 +21,8 @@
         %span{:style => "display: inline-block;"}= @schedule_error
 
     .block_content.form-actions
-      = button_tag t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :onclick => "javascript:submit_form('discussion_form', 'discussion_form', '#{list_discussions_path(:allocation_tags_ids => @allocation_tags_ids.compact!)}');", :type => "button"
-      = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default", :onclick => "removeLightBox();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
+      = button_tag t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :type => "button", :id => "save"
+      = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons]), :id => "cancel"
 
 :css
   .ui-datepicker{ 
@@ -34,8 +34,20 @@
 
 :javascript
 
-  $(function(){
-    var options = $.extend($.datepicker.regional['#{I18n.locale}']);
-    options.dateFormat = global_config.locale.dateFormat;
-    $('#from-date, #until-date').datepicker(options);
+  $(document).ready(function(){
+
+    $(function(){
+      var options = $.extend($.datepicker.regional['#{I18n.locale}']);
+      options.dateFormat = global_config.locale.dateFormat;
+      $('#from-date, #until-date').datepicker(options);
+    });
+
+    $('#save').click(function(){
+      submit_form('discussion_form', 'discussion_form', '#{list_discussions_path(:allocation_tags_ids => @allocation_tags_ids.compact!)}');
+    });
+
+    $('#cancel').click(function(){
+      removeLightBox();
+    });
+
   });

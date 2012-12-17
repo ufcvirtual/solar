@@ -82,7 +82,6 @@ class DiscussionsController < ApplicationController
   def list
     @allocation_tags_ids = params[:allocation_tags_ids]
     authorize! :list, Discussion, :on => params[:allocation_tags_ids]
-
     @discussions         = Discussion.where(allocation_tag_id: @allocation_tags_ids)
   end
 
@@ -146,10 +145,11 @@ class DiscussionsController < ApplicationController
     begin
       authorize! :destroy, discussion
       raise "error" unless discussion.destroy
+      @allocation_tags_ids = params[:allocation_tags_ids]
       respond_to do |format|
-        format.html {render :list, :satus => 200}
+        format.html { render :list, :satus => 200 }
       end
-    rescue
+    rescue Exception => error
       respond_to do |format|
         format.html { render :satus => 500 }
       end

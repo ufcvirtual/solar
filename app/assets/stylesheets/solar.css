@@ -3660,13 +3660,19 @@ fieldset legend {
     margin-bottom: 15px;
 }
 
-/*
+.filter_notice{
+    text-align: center;
+    font-size: 11px;
+    color: gray;
+}
 
-    Para o filtro:
+/* Para o filtro */
 
 fieldset .block_content_alt {
     background-color: #ffffff;
+    margin-bottom: 20px;
 }
+
 
 fieldset .block_content_alt li {
     margin-bottom: 10px;
@@ -3678,8 +3684,9 @@ select[disabled] {
     background-color: #F2F2F2;
 }
 
-    Para o Wizzard:
+/* Para o Wizzard */
 
+/*
 .uc_item_ok {
     position: absolute;
     top: -5px;
@@ -3688,5 +3695,4 @@ select[disabled] {
     width: 23px;
     height: 23px;
 }
-
 */

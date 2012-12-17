@@ -57,7 +57,6 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
       assert_not_nil assigns(:offer_id)
       assert_not_nil assigns(:group_id)
       assert_not_nil assigns(:discussions)
-      assert_not_nil assigns(:group_and_offer_info)
       assert_template :list
     end
 

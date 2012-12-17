@@ -95,7 +95,7 @@ class OffersController < ApplicationController
 	  @offers = @offers.compact
 	  all_allocation_tag_ids = all_allocation_tag_ids.compact.flatten
 
-      all = {:semester => "..."+params[:search_semester]+"...", :allocation_tag_id => all_allocation_tag_ids}
+      all = {:semester => "..."+params[:search_semester]+"... (#{@offers.count})", :allocation_tag_id => all_allocation_tag_ids}
       @offers.push(all)
     end
     

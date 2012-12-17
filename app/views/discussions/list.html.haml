@@ -16,8 +16,10 @@
           %th{:align => "center", :style => "width: 22%;"}=t :forum_table_date
           %th{:align => "right", :style => "width: 13%;"}=t :offer, :scope => [:discussion]
           %th{:align => "right", :style => "width: 13%;"}=t :group, :scope => [:discussion]
-          - if @discussions.collect{ |discussion| (can? :edit, discussion or can? :destroy, discussion) }.include?(true)
-            %th{:align => "center", :style => "width: 22%;"}
+          - if @discussions.collect{ |discussion| (can? :edit, discussion) }.include?(true)
+            %th{:align => "center", :style => "width: 10%;"}
+          - if @discussions.collect{ |discussion| (can? :destroy, discussion) }.include?(true)
+            %th{:align => "center", :style => "width: 10%;"}
       %tbody
         - @discussions.each do |discussion|
           %tr{:class => "lines #{'period_ended' if discussion.closed? and (not discussion.extra_time?(current_user.id))}"}
@@ -36,13 +38,30 @@
             %td{:align => "left", :style => "width: 50px;"}= discussion.allocation_tag.offer ?  discussion.allocation_tag.offer.semester : discussion.allocation_tag.group.offer.semester 
             %td{:align => "left", :style => "width: 50px;"}= discussion.allocation_tag.group ?  discussion.allocation_tag.group.code : "-" 
             - if can? :edit, discussion or can? :destroy, discussion
-              %td{:style => "width: 200px;"}
+              %td{:style => "width: 40px;"}
                 - if can? :edit, discussion
                   - btn_class = (not discussion.closed?) ? "btn btn_default" : "btn btn_disabled"
-                  = button_tag t(:edit, :scope => [:discussion, :buttons]), :class => btn_class, :onclick => "javascript:open_lightbox1('#{edit_discussion_path(discussion.id, :allocation_tags_ids => @allocation_tags_ids)}', '#{t(:edit_discussion, :scope => [:discussion], :discussion_name => discussion.name)}');", :type => "button", :disabled => (discussion.closed?), :alt => t(:edit_discussion, :scope => [:discussion], :discussion_name => discussion.name)
+                  = form_for(:discussion, :url => edit_discussion_path(discussion.id, :allocation_tags_ids => @allocation_tags_ids)) do |f|
+                    = button_tag t(:edit, :scope => [:discussion, :buttons]), :class => btn_class + " edit", :type => "button", :disabled => (discussion.closed?), :alt => t(:edit_discussion, :scope => [:discussion], :discussion_name => discussion.name)
+              %td{:style => "width: 40px;"}
                 - if can? :destroy, discussion
                   - btn_class = discussion.can_destroy? ? "btn btn_caution" : "btn btn_disabled"
-                  = button_tag t(:delete, :scope => [:discussion, :buttons]), :onclick => "javascript:delete_object('#{discussion_path(discussion)}', '#{list_discussions_path(:allocation_tags_ids => @allocation_tags_ids.uniq!)}');", :type => "button", :class => btn_class, :disabled => (not discussion.can_destroy?), :alt => t(:delete_discussion, :scope => [:discussion], :discussion_name => discussion.name)
+                  = form_for(:discussion, :url => discussion_path(discussion, :allocation_tags_ids => @allocation_tags_ids), :method => :delete) do |f|
+                    .span{:style => "display: inline;"}= button_tag t(:delete, :scope => [:discussion, :buttons]), :type => "button", :class => btn_class + " delete", :disabled => (not discussion.can_destroy?), :alt => t(:delete_discussion, :scope => [:discussion], :discussion_name => discussion.name)
                   
   - else
     .block_content.block_content_text= t(:forum_message)
+
+:javascript
+
+  $(document).ready(function(){
+
+    $('.edit').click(function(){
+      open_lightbox1($(this).parent().attr('action'), $(this).attr('alt'));
+    });
+
+    $('.delete').click(function(){
+      delete_object($(this).parent().attr('action'), '#{list_discussions_path(:allocation_tags_ids => @allocation_tags_ids.uniq!)}');
+    });
+
+  });

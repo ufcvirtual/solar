@@ -20,11 +20,14 @@
 :javascript
 
   $(document).ready(function(){
+
     $("#save").click(function(){
       submit_form('curriculum_unit_form', 'curriculum_unit_form', '#{curriculum_units_path}', 'list_curriculum_units');
     });
+
     $("#cancel").click(function(){
       removeLightBox();
     });
+    
   });
 

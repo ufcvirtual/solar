@@ -3,10 +3,7 @@
     .block_title
       %h2
         = image_tag "icon_lesson.png", :alt => " ", :class => (:block_title_icon)
-        - if @group_and_offer_info.nil?
-          = t(:lesson_title)
-        - else 
-          = t(".lesson_table_title", :group_and_offer => @group_and_offer_info)
+        = t(:lesson_title)
     %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :border => "0"}
       %thead
         %tr.lines

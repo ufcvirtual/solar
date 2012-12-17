@@ -9,9 +9,9 @@
   %fieldset#allocation_tag_selection
     %legend=t(".filter")
     .block_content.block_content_alt= places_nav_panel_helper
+    .filter_notice=t(".select_something")
 
   #edition_content
-
 
   #back_button{:style => "display: none"}
     = button_tag t(:back, :scope => [:discussion]), :class => "btn btn_default", :type => "button", :id => "back_button", :alt => t(:back, :scope => [:discussion])
@@ -34,17 +34,19 @@
 
   });
 
-
+  /* atualiza conteúdo da div de edição. pode exibir a página do ícone chamado ou a lista de itens */
   function update_edition_content(){
     erase_flash_messages();
     // se nenhum item foi selecionado no filtro
     if(navPanelSelectedItems().length == 0){
-      // avisa -> colocar flash message talvez seja menos agressivo... algo tipo "é necessário selecionar algo do filtro"
-      //flash_message('alert', 'hey!');
       // remove conteúdo
       $('#edition_content').children().remove();
       $('#back_button').hide();
+      // adiciona mensagem
+      $(".filter_notice").show();
+      //$('<div class="filter_notice"> Selecione algo :) </div>').appendTo($('#edition_content'));
     }else{
+      $(".filter_notice").hide();
       // se a div "curriculum_unit_items" tiver seu conteúdo vazio ou for a lista, então ainda não foi exibido nada na página e é para exibir a lista de itens
       if($('#choosed_content_url').val() == 0){
         // adiciona conteúdo com itens

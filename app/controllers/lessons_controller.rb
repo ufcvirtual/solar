@@ -23,9 +23,7 @@ class LessonsController < ApplicationController
 
   def index
     authorize! :index, Lesson
-    @lessons              = lessons_to_open(params[:allocation_tags_ids])
-    @group_and_offer_info = group_and_offer_info(params[:group_id], params[:offer_id]) if params[:allocation_tags_ids]
-
+    @lessons = lessons_to_open(params[:allocation_tags_ids])
     render :layout => false if params[:allocation_tags_ids]
   end
 
