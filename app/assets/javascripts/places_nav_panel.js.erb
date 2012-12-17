@@ -150,6 +150,7 @@ $(document).ready(function(){
             $('#places_nav_panel_selectedGroupValue').val('');
             $('#places_nav_panel_selectedGroupName').val('');
             navPanelChangeEvent('group','');
+<<<<<<< HEAD
     }
   });
 
@@ -186,6 +187,40 @@ $(document).ready(function(){
       }
       }
   });
+=======
+		}
+	});
+
+	$(window).click(function(e){
+		if ($(e.target).parents('#navPanelMenu').length == 0 && $(e.target).filter('.placesNavPanel input[type="button"]').length == 0)
+			$('#navPanelMenu').remove();
+	});
+
+
+	//Chamando a lista completa de elementos quando se aperta a seta para baixo no teclado.
+	//$('#token-input-txtCourse').keydown(function(e){
+	
+	$('[id^="token-input-"]').keyup(function(e){
+    	if (e.keyCode == 40) { 
+	    	if (isSearchPanelClosed(this)){
+				$(this).val(' ');
+				$(this).trigger('keydown');
+			}
+    	}
+
+    	if (e.keyCode == 9) { 
+	    	if (isSearchPanelClosed(this)){
+		    	var $parent = null;
+		    	if (e.shiftKey)
+			    	$parent = $(this).parent().parent().parent().prev();
+		    	else
+		    		$parent = $(this).parent().parent().parent().next();
+				if ($parent != undefined)
+					$parent.find('[id^="token-input-"]').focus();
+			}
+    	}
+	});
+>>>>>>> [#29588949] Botoes de atalho do filtro tiveram a implementacao iniciada e corrigidobug na manutencao do estado
 
 });
 
@@ -267,13 +302,52 @@ function navPanelChangeEvent(type, data){
   $('.placesNavPanel').trigger('navPanelChange',param);
 }
 
-/* Exemplo de código para capturar o evento
+function navPanelDisableButton($button){
+	$button.addClass('btn_disabled');
+	$button.attr("disabled", "disabled");
+}
+function navPanelEnableButton($button){
+	$button.removeClass('btn_disabled');
+	$button.removeAttr("disabled");
+}
+
+function navPanelUpdateGroupsButtonState(){
+	$selectedCurriculumUnit = $( "#places_nav_panel_txtCurriculumUnit").tokenInput("get")[0];
+	$selectedSemester = $( "#places_nav_panel_txtSemester").tokenInput("get")[0];
+	
+	//Botão de oferta partindo de semestre
+	if ($selectedSemester != undefined)
+		navPanelEnableButton($('#places_nav_panel_btManageOfferBySemester'));
+	else
+		navPanelDisableButton($('#places_nav_panel_btManageOfferBySemester'));
+
+	//Botão de oferta partindo de UC
+	if ($selectedCurriculumUnit != undefined)
+		navPanelEnableButton($('#places_nav_panel_btManageOfferByCurriculumUnit'));
+	else
+		navPanelDisableButton($('#places_nav_panel_btManageOfferByCurriculumUnit'));
+	
+	//Botão de turmas
+	if (($selectedCurriculumUnit != undefined) && ($selectedSemester != undefined))
+		navPanelEnableButton($('#places_nav_panel_btManageGroups'));
+	else
+		navPanelDisableButton($('#places_nav_panel_btManageGroups'));
+}
+
 $(document).ready(function(){
+<<<<<<< HEAD
   $('.placesNavPanel').bind('navPanelChange', function (e,type, data ) {
     console.log('type:' + type);
     console.log('data:' + data);
   });
+=======
+	//Ajustando os estados dos botões do filtro
+	navPanelUpdateGroupsButtonState();
+
+	$('.placesNavPanel').bind('navPanelChange', function (e,type, data ) {
+		navPanelUpdateGroupsButtonState();
+	});
+>>>>>>> [#29588949] Botoes de atalho do filtro tiveram a implementacao iniciada e corrigidobug na manutencao do estado
 });
-*/
 
 
