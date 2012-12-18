@@ -252,13 +252,14 @@ class OffersController < ApplicationController
 
     begin
       authorize! :destroy, Offer, :on => [offer.allocation_tag.id] # verifica se tem acesso à oferta a ser excluída
-      return "error" unless offer.destroy
+      raise "error" unless offer.destroy
 
       respond_to do |format|
         get_offers(@curriculum_unit_id, @course_id)
         format.html { render :index, :status => 200 }
       end
     rescue 
+      get_offers(@curriculum_unit_id, @course_id)
       respond_to do |format|
         format.html { render :index, :status => 500 }
       end
@@ -269,14 +270,19 @@ class OffersController < ApplicationController
   # Método que desabilita todos os grupos da oferta
   def deactivate_groups
     offer = Offer.find(params[:id])
-    authorize! :deactivate_groups, Offer, :on => [offer.allocation_tag.id] # verifica se tem acesso à oferta a ter suas turmas desativadas
+    @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
+    get_offers(@curriculum_unit_id, @course_id)
 
-    offer.groups.each { |group| group.update_attributes!(:status => false) }
-
-    respond_to do |format|
-      @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
-      get_offers(@curriculum_unit_id, @course_id)
-      format.html { render :index }
+    begin 
+      authorize! :deactivate_groups, Offer, :on => [offer.allocation_tag.id] # verifica se tem acesso à oferta a ter suas turmas desativadas
+      offer.groups.each { |group| group.update_attributes!(:status => false) }
+      respond_to do |format|
+        format.html{ render :index, :status => 200 }
+      end
+    rescue
+      respond_to do |format|
+        format.html{ render :index, :status => 500 }
+      end
     end
   end
 

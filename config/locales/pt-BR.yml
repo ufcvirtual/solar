@@ -1172,6 +1172,7 @@
       groups_already_deactivated: Turmas já desativadas
       all_groups_deactivated: Todas as turmas desativadas
       deactivate_groups: Desativar turmas
+      cant_deactivate: Não foi possível desativar as turmas
     form:
       save: Salvar
       cancel: Cancelar

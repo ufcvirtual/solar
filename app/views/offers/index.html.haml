@@ -54,6 +54,9 @@
         success: function(data){
           $("#list_offers").html(data);
           flash_message("#{t('.all_groups_deactivated')}", 'notice');
+        },
+        error: function(){
+          flash_message("#{t('.cant_deactivate')}", 'alert');
         }
       });
     });

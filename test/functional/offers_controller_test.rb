@@ -158,17 +158,16 @@ class OffersControllerTest < ActionController::TestCase
   # Usuário com permissão e acesso
   test "remover oferta" do 
     assert_difference("Offer.count", -1) do 
-      delete :destroy, {:id => offers(:of7).id, :course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r3).id}
+      get(:destroy, {:id => offers(:of7).id, :course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r3).id})
     end
     assert_template :index
     assert_response :success
   end
 
-=begin
   # Usuário com permissão e acesso, mas a oferta não permite
   test "nao remove oferta - niveis inferiores" do
     assert_no_difference("Offer.count") do 
-      delete :destroy, {:id => offers(:of3).id, :course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r3).id}
+      get :destroy, {:id => offers(:of3).id, :course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r3).id}
     end
     assert_template :index
     assert_response :error
@@ -177,7 +176,7 @@ class OffersControllerTest < ActionController::TestCase
   # Usuário com permissão e sem acesso
   test "nao remove oferta - sem acesso" do
     assert_no_difference("Offer.count") do 
-      delete :destroy, {:id => offers(:of4).id, :course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r4).id}
+      get :destroy, {:id => offers(:of4).id, :course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r4).id}
     end
     assert_template :index
     assert_response :error
@@ -188,7 +187,7 @@ class OffersControllerTest < ActionController::TestCase
     sign_out @editor
     sign_in users(:professor)
     assert_no_difference("Offer.count") do 
-      delete :destroy, {:id => offers(:of3).id, :course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r3).id}
+      get :destroy, {:id => offers(:of3).id, :course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r3).id}
     end
     assert_template :index
     assert_response :error
@@ -205,7 +204,7 @@ class OffersControllerTest < ActionController::TestCase
     assert_tag :button, 
       :attributes => {
         :id => "deactivate_groups_"+offers(:of3).id.to_s, 
-        :class => "btn btn_caution"
+        :class => "btn btn_caution deactivate_groups"
       }
     post :deactivate_groups, {:id => offers(:of3).id, :course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r3).id}
     assert_template :index
@@ -213,16 +212,17 @@ class OffersControllerTest < ActionController::TestCase
     assert_tag :button, 
       :attributes => {
         :id => "deactivate_groups_"+offers(:of3).id.to_s, 
-        :class => "btn btn_disabled"
+        :class => "btn btn_disabled deactivate_groups"
       }
+
+    assert_response :success
   end
 
   # Usuário com permissão e sem acesso
   test "nao desativar todas as turmas - sem acesso" do
     post :deactivate_groups, {:id => offers(:of4).id, :course_id => courses(:c1).id, :curriculum_unit_id => curriculum_units(:r4).id}
-    assert_redirected_to({:controller => :home})
-    assert_equal flash[:alert], I18n.t(:no_permission) 
     assert_not_equal offers(:of4).groups, offers(:of4).groups.where(:status => false)
+    assert_response :error
   end
 
   # Usuário sem permissão 
@@ -230,11 +230,8 @@ class OffersControllerTest < ActionController::TestCase
     sign_out @editor
     sign_in users(:professor)
     post :deactivate_groups, {:id => offers(:of3).id, :course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r3).id}
-    assert_redirected_to({:controller => :home})
-    assert_equal flash[:alert], I18n.t(:no_permission) 
     assert_not_equal offers(:of3).groups, offers(:of3).groups.where(:status => false)
+    assert_response :error
   end
-
-=end
 
 end

@@ -1010,9 +1010,10 @@
       semester: Semester
       options: Options
       no_groups: There are no groups
-      groups_already_deactivated: Groups already disabled
-      all_groups_deactivated: All groups disabled
-      deactivate_groups: Disable groups
+      groups_already_deactivated: Groups already deactivated
+      all_groups_deactivated: All groups deactivated
+      deactivate_groups: Deactivate groups
+      cant_deactivate: It wasn't possible to deactivate groups
     form:
       save: Save
       cancel: Cancel
