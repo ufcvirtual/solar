@@ -1,65 +1,15 @@
-= javascript_include_tag "jquery.dynatree.js"
-= stylesheet_link_tag "ui.dynatree.css"
+:javascript
+  var treeData = #{@files};
+
+= stylesheet_link_tag "ui.dynatree"
+= javascript_include_tag "jquery.dynatree"
+= javascript_include_tag "lesson_files"
 
 %p
-  %a#btnSelectAll{href: "#"} Selecionar todos
-  %a#btnDeselectAll{href: "#"} Deselecionar todos
+  %a#btn-select-all{href: "#"} Selecionar todos
+  %a#btn-deselect-all{href: "#"} Deselecionar todos
+  %a#btn-new-folder{href: "#"} Nova pasta
 #tree
 %div
   Chaves selecionadas:
   %span#echoSelection2 -
-
-/ add new node
-/ var rootNode = $("#tree").dynatree("getRoot");
-/ var childNode = rootNode.addChild({
-/   title: "Add folder",
-/ });
-
-/ rename node
-/ var node = $("#tree").dynatree("getActiveNode");
-/ node.data.title = "My new title";
-/ node.render();
-
-:javascript
-  var treeData = #{@files};
-
-  $(function(){
-
-    $("#tree").dynatree({
-      minExpandLevel: 2,
-      checkbox: true,
-      selectMode: 2,
-      children: treeData,
-      onSelect: function(select, node) {
-        var selNodes = node.tree.getSelectedNodes();
-        var selKeys = $.map(selNodes, function(node) {
-             return "[" + node.data.key + "]: '" + node.data.title + "'";
-        });
-        $("#echoSelection2").text(selKeys.join(", "));
-      },
-      onClick: function(node, event) {
-        if( node.getEventTargetType(event) == "title" )
-          node.toggleSelect();
-      },
-      onKeydown: function(node, event) {
-        if( event.which == 32 ) {
-          node.toggleSelect();
-          return false;
-        }
-      }
-    });
-
-    $("#btnDeselectAll").click(function(){
-      $("#tree").dynatree("getRoot").visit(function(node) {
-        node.select(false);
-      });
-      return false;
-    });
-    $("#btnSelectAll").click(function(){
-      $("#tree").dynatree("getRoot").visit(function(node) {
-        node.select(true);
-      });
-      return false;
-    });
-
-  });

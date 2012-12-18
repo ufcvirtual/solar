@@ -1,0 +1,105 @@
+$(function(){
+  $("#tree").dynatree({
+    minExpandLevel: 2,
+    checkbox: true,
+    selectMode: 3,
+    children: treeData,
+    onSelect: function(select, node) {
+      var selNodes = node.tree.getSelectedNodes();
+      var selKeys = $.map(selNodes, function(node) {
+        return "[" + node.data.key + "]: '" + node.data.title + "'";
+      });
+
+      $("#echoSelection2").text(selKeys.join(", "));
+
+    },
+    onClick: function(node, event) {
+      if ( event.shiftKey ) {
+        editNode(node);
+        return false;
+      }
+      if ( node.getEventTargetType(event) == "title" )
+        node.toggleSelect();
+    },
+    onDblClick: function(node, event) {
+      editNode(node);
+      return false;
+    },
+    onKeydown: function(node, event) {
+      switch( event.which ) {
+        case 113: // [F2]
+          editNode(node);
+          return false;
+        case 32: // barra
+          node.toggleSelect();
+          return false;
+      }
+    }
+  });
+
+  // criar novo folder com texto padrao e foco para editar
+  $("#btn-new-folder").click(function() {
+    var node = $("#tree").dynatree("getActiveNode");
+
+    if (node != null && node.data.isFolder) {
+      node.addChild({ title: '<%= I18n.t(:new_folder, scope: [:lessons, :files]) %>', isFolder: true, focus: true });
+
+      // fazer ajax para criar pasta no filesystem
+
+    }
+
+    return false;
+  });
+
+
+  $("#btn-deselect-all").click(function(){
+    $("#tree").dynatree("getRoot").visit(function(node) {
+      node.select(false);
+    });
+    return false;
+  });
+
+  $("#btn-select-all").click(function(){
+    $("#tree").dynatree("getRoot").visit(function(node) {
+      node.select(true);
+    });
+    return false;
+  });
+
+});
+
+function editNode(node) {
+  if (node.data.key == '_2') // raiz visivel
+    return false;
+
+  var prevTitle = node.data.title,
+  tree = node.tree;
+  // Disable dynatree mouse- and key handling
+  tree.$widget.unbind();
+  // Replace node with <input>
+  $(".dynatree-title", node.span).html("<input id='editNode' value='" + prevTitle + "'>");
+
+  // Focus <input> and bind keyboard handler
+  $("input#editNode")
+    .focus()
+    .keydown(function(event) {
+      switch( event.which ) {
+        case 27: // [esc]
+          // discard changes on [esc]
+          $("input#editNode").val(prevTitle);
+          $(this).blur();
+          break;
+        case 13: // [enter]
+          // simulate blur to accept new value
+          $(this).blur();
+          break;
+      }
+    }).blur(function(event){
+      // Accept new value, when user leaves <input>
+      var title = $("input#editNode").val();
+      node.setTitle(title);
+      // Re-enable mouse and keyboard handlling
+      tree.$widget.bind();
+      node.focus();
+    });
+}

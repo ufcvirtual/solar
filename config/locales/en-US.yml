@@ -413,6 +413,8 @@
       new: New
     notifications:
       must_select_lessons: One or more lessons must be selected
+    files:
+      new_folder: "New Folder"
 
   module:
     none: "No module registered"

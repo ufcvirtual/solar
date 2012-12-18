@@ -1,10 +1,13 @@
 class LessonFilesController < ApplicationController
 
   def index
-    ## verificar se a lesson existe
-    # lesson = Lesson.find(params[:lesson_id])
-    file = File.join(Lesson::FILES_PATH, params[:lesson_id])
-    @files = directory_hash(file, 'RAIZ').to_json
+    lesson = Lesson.where(id: params[:lesson_id]).first
+
+    if lesson and lesson.type_lesson == Lesson_Type_File
+      # file_default = lesson.address
+      file    = File.join(Lesson::FILES_PATH, params[:lesson_id])
+      @files  = directory_hash(file, 'Raiz').to_json if File.exist?(file)
+    end
   end
 
   def show
@@ -23,14 +26,15 @@ class LessonFilesController < ApplicationController
   end
 
   private
+
     def directory_hash(path, name=nil)
       data = {title: (name || path)}
       data[:children] = children = []
+      data[:isFolder] = true
       Dir.foreach(path) do |entry|
-        next if (entry == '..' || entry == '.')
+        next if ['.', '..'].include?(entry)
         full_path = File.join(path, entry)
         if File.directory?(full_path)
-          data[:isFolder] = true
           children << directory_hash(full_path, entry)
         else
           children << entry

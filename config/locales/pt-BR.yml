@@ -571,6 +571,8 @@
       new: Nova aula
     notifications:
       must_select_lessons: Uma ou mais aulas devem ser selecionadas
+    files:
+      new_folder: "Nova Pasta"
 
   module:
     none: "Nenhum módulo cadastrado"
