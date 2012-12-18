@@ -31,7 +31,7 @@ class DiscussionsController < ApplicationController
   end
 
   def create
-    @allocation_tags_ids   = params[:allocation_tags_ids].split(" ")
+    @allocation_tags_ids   = params[:allocation_tags_ids].split(" ").flatten
     @discussion, @schedule = Discussion.new(params[:discussion]), Schedule.new(:start_date => params["start_date"], :end_date => params["end_date"]) # utilizados para validação
 
     begin
@@ -52,13 +52,13 @@ class DiscussionsController < ApplicationController
       end
 
       respond_to do |format|
-        format.html { render :action => :list, :status => 200 }
+        format.html { render :list, :status => 200 }
       end
 
     rescue CanCan::AccessDenied
 
       respond_to do |format|
-        format.html { render :status => 500 }
+        format.html { render :list, :status => 500 }
       end  
 
     rescue Exception => error
@@ -89,7 +89,8 @@ class DiscussionsController < ApplicationController
 
   def update
     @discussion          = Discussion.find(params[:id])
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+
+    @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
 
     unless @discussion.closed?
       
@@ -99,18 +100,23 @@ class DiscussionsController < ApplicationController
       begin
 
         authorize! :update, @discussion
-        raise  "validation_error" unless @discussion.valid? and @schedule.valid?
+        raise  "validation_error" unless @schedule.valid?
         @allocation_tags_ids.each do |allocation_tag_id| # como pode haver mais de uma allocation_tag_id, é necessário verificar cada uma
           allocation_tag  = AllocationTag.find(allocation_tag_id.to_i)
           offer           = allocation_tag.offer || allocation_tag.group.offer
           raise "date_range_error" if @schedule.start_date < offer.start_date or @schedule.end_date > offer.end_date # período escolhido deve estar dentro do período da oferta
         end
 
-        schedule.update_attributes!(:start_date => params["start_date"], :end_date => params["end_date"])
         @discussion.update_attributes!(params[:discussion])
-
+        schedule.update_attributes!(:start_date => params["start_date"], :end_date => params["end_date"])
         respond_to do |format|
           format.html { render :list, :status => 200 }
+        end
+
+      rescue CanCan::AccessDenied
+
+        respond_to do |format|
+          format.html { render :list, :status => 500 } 
         end
 
       rescue Exception => error
@@ -141,13 +147,15 @@ class DiscussionsController < ApplicationController
     
     begin
       authorize! :destroy, discussion
+      schedule = discussion.schedule
       raise "error" unless discussion.destroy
+      schedule.destroy if schedule.can_destroy?
       respond_to do |format|
         format.html { render :list, :status => 200 }
       end
     rescue Exception => error
       respond_to do |format|
-        format.html { render :status => 500 }
+        format.html { render :list, :status => 500 }
       end
     end
     

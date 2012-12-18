@@ -87,11 +87,11 @@ class AllocationsController < ApplicationController
 
   # Usado na alocacao de usuarios
   def create_designation
-    # verifica permissao de alocacao nas allocation tags passadas
     allocation_tags_ids = params[:allocation_tags_ids].split(" ")
 
     begin 
 
+      # verifica permissao de alocacao nas allocation tags passadas
       authorize! :create_designation, Allocation, :on => allocation_tags_ids.flatten
 
       profile = (params.include?(:profile)) ? params[:profile] : Profile.student_profile
@@ -99,12 +99,12 @@ class AllocationsController < ApplicationController
       ok      = allocate(allocation_tags_ids, params[:user_id], profile, status)
 
       respond_to do |format|
-        format.html { render :action => :designates, :status => (ok ? 200 : 500) } 
+        format.html { render :designates, :status => (ok ? 200 : 500) } 
       end
 
     rescue Exception => error
       respond_to do |format|
-        format.html { render :status => 500 } 
+        format.html { render :designates, :status => 500 } 
       end      
     end
 
@@ -208,11 +208,11 @@ class AllocationsController < ApplicationController
       raise "error" unless @allocation.update_attribute(:status, Allocation_Cancelled)
 
       respond_to do |format|
-        format.html{ render :action => :designates, :status => 200 }
+        format.html{ render :designates, :status => 200 }
       end
     rescue
       respond_to do |format|
-        format.html{ render :status => 500 }
+        format.html{ render :designates, :status => 500 }
       end
     end
 
@@ -226,11 +226,11 @@ class AllocationsController < ApplicationController
       authorize! :activate, @allocation
       raise "error" unless @allocation.update_attribute(:status, Allocation_Activated)
       respond_to do |format|
-        format.html{ render :action => :designates, :status => 200 }
+        format.html{ render :designates, :status => 200 }
       end
     rescue
       respond_to do |format|
-        format.html{ render :status => 500 }
+        format.html{ render :designates, :status => 500 }
       end
 
     end

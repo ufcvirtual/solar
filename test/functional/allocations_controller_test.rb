@@ -97,22 +97,21 @@ class AllocationsControllerTest < ActionController::TestCase
     assert_select 'td', {:html => "Cancelado"}
   end
 
-=begin
   test "exibir usuarios alocados para um usuario com permissao" do
-    get :designates, { :allocation_tag_id => allocation_tags(:al5).id }
+    get :designates, { :allocation_tags_ids => [allocation_tags(:al5).id] }
     assert_response :success
     assert_not_nil assigns(:allocations)
 
     assert_select "table tbody tr:nth-child(1)" do
       assert_select 'td:nth-child(1)', {:html => "Aluno 3"}
       assert_select 'td:nth-child(4)', {:html => "Prof. Titular"}
-      assert_select 'td:nth-child(5) input[type=submit]', {:value => "Ativar"}
+      assert_select 'form input', {:value => "Ativar"}
     end
 
     assert_select "table tbody tr:nth-child(2)" do
       assert_select 'td:nth-child(1)', {:html => "Professor"}
       assert_select 'td:nth-child(4)', {:html => "Prof. Titular"}
-      assert_select 'td:nth-child(5) input[type=submit]', {:value => "Desativar"}
+      assert_select 'form input', {:value => "Desativar"}
     end
   end
 
@@ -120,7 +119,7 @@ class AllocationsControllerTest < ActionController::TestCase
     sign_out @coordenador
     sign_in users(:user2)
 
-    get :designates, { :allocation_tag_id => allocation_tags(:al5).id }
+    get :designates, { :allocation_tags_ids => [allocation_tags(:al5).id] }
     assert_nil assigns(:allocations)
     assert_redirected_to({:controller => :home})
     assert_equal( flash[:alert], I18n.t(:no_permission) )
@@ -128,8 +127,7 @@ class AllocationsControllerTest < ActionController::TestCase
 
   test "ativar perfil inativo de usuario" do
     get :activate, { :id => allocations(:ad).id }
-    assert_redirected_to({:action => :designates, :allocation_tag_id => allocations(:ad).allocation_tag_id })
-    assert_equal I18n.t(:activated, :scope => [:allocations, :success]), flash[:notice]
+    assert_response :success
   end
 
   test "nao ativar perfil inativo de usuario para usuario sem permissao" do
@@ -137,14 +135,12 @@ class AllocationsControllerTest < ActionController::TestCase
     sign_in users(:professor)
 
     get :activate, { :id => allocations(:ad).id }
-    assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_response :error
   end
 
   test "desativar perfil de usuario" do
     get :deactivate, { :id => allocations(:g).id }
-    assert_redirected_to({:action => :designates, :allocation_tag_id => allocations(:g).allocation_tag_id })
-    assert_equal I18n.t(:deactivated, :scope => [:allocations, :success]), flash[:notice]
+    assert_response :success
   end
 
   test "nao desativar perfil de usuario para usuario sem permissao" do
@@ -152,15 +148,15 @@ class AllocationsControllerTest < ActionController::TestCase
     sign_in users(:professor)
 
     get :deactivate, { :id => allocations(:g).id }
-    assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_response :error
   end
 
   test "alocar usuario com perfil tutor a distancia" do
     assert_difference("Allocation.count", +1) do
-      post :create_designation, { :allocation_tag_id => allocation_tags(:al5).id, :user_id => users(:user2).id, :profile => profiles(:tutor_distancia).id, :status => Allocation_Activated }
+      post :create_designation, { :allocation_tags_ids => [allocation_tags(:al5).id], :user_id => users(:user2).id, :profile => profiles(:tutor_distancia).id, :status => Allocation_Activated }
     end
-    assert_redirected_to({:action => :designates, :allocation_tag_id => allocation_tags(:al5).id })
+
+    assert_response :success
     assert allocation_tags(:al5).is_user_class_responsible?(users(:user2).id)    
   end
 
@@ -169,15 +165,12 @@ class AllocationsControllerTest < ActionController::TestCase
     sign_in users(:professor)
     
     assert_no_difference("Allocation.count") do
-      post :create_designation, { :allocation_tag_id => allocation_tags(:al5).id, :user_id => users(:user2).id, :profile => profiles(:tutor_distancia).id, :status => Allocation_Activated }
+      post :create_designation, { :allocation_tags_ids => [allocation_tags(:al5).id], :user_id => users(:user2).id, :profile => profiles(:tutor_distancia).id, :status => Allocation_Activated }
     end
     
-    assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
-    
+    assert_response :error
     assert (not allocation_tags(:al5).is_user_class_responsible?(users(:user2).id))
   end
-=end
 
 
   # test "mudar aluno de turma" do

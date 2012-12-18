@@ -55,3 +55,10 @@ forum_8:
   name: 'Forum 6'
   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
   schedule_id: 26
+
+forum_9:
+  id: 9
+  allocation_tag_id: 2
+  name: 'Forum 7'
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  schedule_id: 18
