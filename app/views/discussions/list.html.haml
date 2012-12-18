@@ -1,14 +1,14 @@
 = javascript_include_tag "edition.js"
 
 .block_wrapper.list_discussions
+  .block_title
+    %h2
+      = image_tag "icon_forum.png", :alt => " ", :class=>:block_title_icon
+      = t(:discussion_table_title, :scope => [:discussion])
+    .right_buttons
+      - if can? :new, Discussion
+        = button_tag t(:new, :scope => [:discussion, :buttons]), :class => "btn btn_main", :type => "button", :alt => t(:new, :scope => [:discussion, :buttons]), :id => "new"
   - unless @discussions.nil? or @discussions.empty?
-    .block_title
-      %h2
-        = image_tag "icon_forum.png", :alt => " ", :class=>:block_title_icon
-        = t(:discussion_table_title, :scope => [:discussion])
-      .right_buttons
-        - if can? :new, Discussion
-          = button_tag t(:new, :scope => [:discussion, :buttons]), :class => "btn btn_main", :type => "button", :alt => t(:new, :scope => [:discussion, :buttons]), :id => "new"
     %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :style => "table-layout: fixed"}
       %thead
         %tr.lines
@@ -53,7 +53,7 @@
 
 :javascript
 
-  $(document).ready(function(){
+  $(function(){
 
     $('.edit').click(function(){
       open_lightbox1($(this).parent().attr('action'), $(this).attr('alt'));
