@@ -1149,6 +1149,9 @@
       delete: Excluir
       edit_curriculum_unit: Editar %{curriculum_unit}
       delete_curriculum_unit: Excluir %{curriculum_unit}
+    form:
+      save: Salvar
+      cancel: Cancelar
 
   offers:
     index:

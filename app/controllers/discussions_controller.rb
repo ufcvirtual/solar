@@ -27,7 +27,6 @@ class DiscussionsController < ApplicationController
   def new
     @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
     authorize! :new, Discussion, :on => @allocation_tags_ids
-    
     @discussion          = Discussion.new
   end
 
@@ -38,12 +37,11 @@ class DiscussionsController < ApplicationController
     begin
 
       authorize! :create, Discussion, :on => @allocation_tags_ids
-
       raise "validation_error" unless (not @discussion.nil?) and @discussion.valid? 
       @allocation_tags_ids.each do |allocation_tag_id|
         allocation_tag  = AllocationTag.find(allocation_tag_id.to_i)
-        offer           = allocation_tag.offer || allocation_tag.group.offer
-        raise "date_range_error" if @schedule.start_date < offer.start_date or @schedule.end_date > offer.end_date # período escolhido deve estar dentro do período da oferta
+        @offer           = allocation_tag.offer || allocation_tag.group.offer
+        raise "date_range_error" if @schedule.start_date < @offer.start_date or @schedule.end_date > @offer.end_date # período escolhido deve estar dentro do período da oferta
       end
 
       ActiveRecord::Base.transaction do
@@ -54,13 +52,13 @@ class DiscussionsController < ApplicationController
       end
 
       respond_to do |format|
-        format.html {render :action => :list, :status => 200}
+        format.html { render :action => :list, :status => 200 }
       end
 
     rescue CanCan::AccessDenied
 
       respond_to do |format|
-        format.html { render :status => 500}
+        format.html { render :status => 500 }
       end  
 
     rescue Exception => error
@@ -68,20 +66,20 @@ class DiscussionsController < ApplicationController
       @discussion.errors.add(:name, t(:existing_name, :scope => [:discussion, :errors])) if error.message == t(:existing_name, :scope => [:discussion, :errors])
 
       if error.message == "date_range_error"
-        @schedule_error = t(:offer_period, :scope => [:discussion, :errors], :start => l(offer.start_date, :formats => :default), :end => l(offer.end_date, :formats => :default))
+        @schedule_error = t(:offer_period, :scope => [:discussion, :errors], :start => l(@offer.start_date, :formats => :default), :end => l(@offer.end_date, :formats => :default))
       end
       @schedule_error = @schedule.errors.full_messages[0] unless @schedule.valid?
 
       respond_to do |format|
-        format.html { render :new, :status => 200} # envia com status de sucesso, mas no ajax há verificação para erros no formulário
+        format.html { render :new, :status => 200 } # envia com status de sucesso, mas no ajax há verificação para erros no formulário
       end    
 
     end # begin/rescue
   end
 
   def list
-    @allocation_tags_ids = params[:allocation_tags_ids]
-    authorize! :list, Discussion, :on => params[:allocation_tags_ids]
+    @allocation_tags_ids = params[:allocation_tags_ids].uniq
+    authorize! :list, Discussion, :on => @allocation_tags_ids
     @discussions         = Discussion.where(allocation_tag_id: @allocation_tags_ids)
   end
 
@@ -101,7 +99,6 @@ class DiscussionsController < ApplicationController
       begin
 
         authorize! :update, @discussion
-        
         raise  "validation_error" unless @discussion.valid? and @schedule.valid?
         @allocation_tags_ids.each do |allocation_tag_id| # como pode haver mais de uma allocation_tag_id, é necessário verificar cada uma
           allocation_tag  = AllocationTag.find(allocation_tag_id.to_i)
@@ -113,7 +110,7 @@ class DiscussionsController < ApplicationController
         @discussion.update_attributes!(params[:discussion])
 
         respond_to do |format|
-          format.html {render :list, :status => 200}
+          format.html { render :list, :status => 200 }
         end
 
       rescue Exception => error
@@ -126,13 +123,13 @@ class DiscussionsController < ApplicationController
         end
 
         respond_to do |format|
-          format.html { render :edit, :status => 200} # envia com status de sucesso, mas no ajax há verificação para erros no formulário
+          format.html { render :edit, :status => 200 } # envia com status de sucesso, mas no ajax há verificação para erros no formulário
         end
       end
 
     else  
       respond_to do |format|
-        format.html { render :list, :status => 500}
+        format.html { render :list, :status => 500 }
       end
     end
 
@@ -145,13 +142,12 @@ class DiscussionsController < ApplicationController
     begin
       authorize! :destroy, discussion
       raise "error" unless discussion.destroy
-      @allocation_tags_ids = params[:allocation_tags_ids]
       respond_to do |format|
-        format.html { render :list, :satus => 200 }
+        format.html { render :list, :status => 200 }
       end
     rescue Exception => error
       respond_to do |format|
-        format.html { render :satus => 500 }
+        format.html { render :status => 500 }
       end
     end
     

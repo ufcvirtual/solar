@@ -990,6 +990,9 @@
       delete: Delete
       edit_curriculum_unit: Edit %{curriculum_unit}
       delete_curriculum_unit: Delete %{curriculum_unit}
+    form:
+      save: Save
+      cancel: Cancel
 
   offers:
     index:

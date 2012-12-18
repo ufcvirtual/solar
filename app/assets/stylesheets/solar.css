@@ -3664,6 +3664,8 @@ fieldset legend {
     text-align: center;
     font-size: 11px;
     color: gray;
+    margin-bottom: 15px;
+    margin-top: -20px;
 }
 
 /* Para o filtro */

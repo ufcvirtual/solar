@@ -8,7 +8,7 @@
         = t(:discussion_table_title, :scope => [:discussion])
       .right_buttons
         - if can? :new, Discussion
-          = button_tag t(:new, :scope => [:discussion, :buttons]), :class => "btn btn_main", :type => "button", :onclick => "javascript:open_lightbox1('#{new_discussion_path(:allocation_tags_ids => @allocation_tags_ids)}', '#{t(:new_discussion, :scope => [:discussion])}');", :alt => t(:new, :scope => [:discussion, :buttons])
+          = button_tag t(:new, :scope => [:discussion, :buttons]), :class => "btn btn_main", :type => "button", :alt => t(:new, :scope => [:discussion, :buttons]), :id => "new"
     %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :style => "table-layout: fixed"}
       %thead
         %tr.lines
@@ -46,8 +46,7 @@
               %td{:style => "width: 40px;"}
                 - if can? :destroy, discussion
                   - btn_class = discussion.can_destroy? ? "btn btn_caution" : "btn btn_disabled"
-                  = form_for(:discussion, :url => discussion_path(discussion, :allocation_tags_ids => @allocation_tags_ids), :method => :delete) do |f|
-                    .span{:style => "display: inline;"}= button_tag t(:delete, :scope => [:discussion, :buttons]), :type => "button", :class => btn_class + " delete", :disabled => (not discussion.can_destroy?), :alt => t(:delete_discussion, :scope => [:discussion], :discussion_name => discussion.name)
+                  = button_tag t(:delete, :scope => [:discussion, :buttons]), :onclick => "javascript:delete_object('#{discussion_path(discussion, :allocation_tags_ids => @allocation_tags_ids)}', '#{list_discussions_path(:allocation_tags_ids => @allocation_tags_ids)}');", :type => "button", :class => btn_class, :disabled => (not discussion.can_destroy?), :alt => t(:delete_discussion, :scope => [:discussion], :discussion_name => discussion.name)
                   
   - else
     .block_content.block_content_text= t(:forum_message)
@@ -60,8 +59,8 @@
       open_lightbox1($(this).parent().attr('action'), $(this).attr('alt'));
     });
 
-    $('.delete').click(function(){
-      delete_object($(this).parent().attr('action'), '#{list_discussions_path(:allocation_tags_ids => @allocation_tags_ids.uniq!)}');
+    $('#new').click(function(){
+      open_lightbox1('#{new_discussion_path(:allocation_tags_ids => @allocation_tags_ids)}', '#{t(:new_discussion, :scope => [:discussion])}');
     });
 
   });

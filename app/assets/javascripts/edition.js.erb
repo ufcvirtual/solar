@@ -55,14 +55,17 @@ function submit_form(form_id, class_to_update_fail, redirect_url, div_to_update)
 /* deleção de algum objeto (url = url do método de deleção, redirect_url = url para a qual o conteúdo será atualizado em caso de sucesso, 
   div_to_update = informação de qual div é para atualizar caso não esteja "incluso" na página de edição) */
 function delete_object(url, redirect_url, div_to_update){
+  console.log(redirect_url);
   if(confirm('<%= I18n.t(:are_you_sure_of_deletion, :scope => [:editions]) %>')){
     $.ajax({
       type: "DELETE",
       url: url,
       success: function(data) {
-        if(div_to_update){ // página fora da tela de edição
+        if(typeof div_to_update != "undefined"){ // página fora da tela de edição
+          console.log('1');
           $("#"+div_to_update).html(data); // atualiza conteúdo da página
         }else{
+          console.log('2');
           update_content_url(redirect_url); // atualiza div da página de edição com conteúdo de listagem
         }
         flash_message('<%= I18n.t(:deleted, :scope => [:editions, :success]) %>', 'notice'); // aviso de sucesso

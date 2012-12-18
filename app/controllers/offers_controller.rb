@@ -162,14 +162,12 @@ class OffersController < ApplicationController
   def new
     @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
     authorize! :new, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e curso selecionados
-
     @offer = Offer.new
   end
 
   def edit
     @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
     @offer = Offer.find(params[:id])
-
     authorize! :edit, Offer, :on => [@offer.allocation_tag.id] # verifica se tem acesso à oferta a ser editada
   end
 
@@ -256,11 +254,11 @@ class OffersController < ApplicationController
       authorize! :destroy, Offer, :on => [offer.allocation_tag.id] # verifica se tem acesso à oferta a ser excluída
       return "error" unless offer.destroy
 
-      get_offers(@curriculum_unit_id, @course_id)
       respond_to do |format|
+        get_offers(@curriculum_unit_id, @course_id)
         format.html { render :index, :status => 200 }
       end
-    rescue Exception => error
+    rescue 
       respond_to do |format|
         format.html { render :index, :status => 500 }
       end
@@ -278,7 +276,7 @@ class OffersController < ApplicationController
     respond_to do |format|
       @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
       get_offers(@curriculum_unit_id, @course_id)
-      format.html {render :index}
+      format.html { render :index }
     end
   end
 
