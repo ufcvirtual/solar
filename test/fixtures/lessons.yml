@@ -63,7 +63,7 @@ pag_goo:
   schedule_id: 15
   lesson_module_id: 3
 
-pag_goo:
+pag_index:
   id: 7
   name: aula 7
   address: 'index.html'
