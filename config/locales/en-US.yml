@@ -393,7 +393,6 @@
 
   #Aulas
   lesson_title: "Lessons"
-  lesson_table_title: "Available Lessons"
   lesson_message: "No lesson available"
   lesson_goto: "Go to lesson"
   lesson_closed: "Lesson closed"
@@ -402,6 +401,7 @@
   lessons:
     index:
       lesson_table_date: "Access date"
+      lesson_table_title: "Available Lessons"
     list:
       lesson: Lesson
       order: Order

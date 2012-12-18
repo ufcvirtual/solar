@@ -551,7 +551,6 @@
 
   #Aulas
   lesson_title: "Aulas"
-  lesson_table_title: "Aulas disponíveis"
   lesson_message: "Nenhuma aula disponível"
   lesson_goto: "Ir para aula"
   lesson_closed: "Aula encerrada"
@@ -560,6 +559,7 @@
   lessons:
     index:
       lesson_table_date: Data de acesso
+      lesson_table_title: "Aulas disponíveis"
     list: 
       lesson: Aula
       order: Ordem

@@ -25,7 +25,7 @@
           %td{:align => "left"}= curriculum_unit.curriculum_unit_type.description
           %td
             = form_for(:curriculum_unit, :url => edit_curriculum_unit_path(curriculum_unit)) do |f|
-              = button_tag t(".edit"), :class => "btn btn_default edit", :type => :button, :alt => t(".edit_curriculum_unit", :curriculum_unit => curriculum_unit.name)
+              = button_tag t(".edit"), :class => "btn btn_default edit", :type => :button, :alt => t(".edit_curriculum_unit", :curriculum_unit => curriculum_unit.name), :id => t(".edit_curriculum_unit", :curriculum_unit => curriculum_unit.name)
           %td
             = button_to t(".delete"), curriculum_unit, { method: :delete, class: "btn btn_caution delete", :alt => t(".delete_curriculum_unit", :curriculum_unit => curriculum_unit.name), :id => t(".delete_curriculum_unit", :curriculum_unit => curriculum_unit.name), confirm: t(:curriculum_unit_delete_confirm, :curriculum_unit_name => curriculum_unit.name)}
 
