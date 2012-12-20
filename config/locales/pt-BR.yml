@@ -254,7 +254,13 @@
         start_date: Data inicial
         end_date: Data final
         semester: Semestre
-
+      lesson:
+        name: Nome
+        description: Descrição
+        start_date: Início
+        end_date: Fim
+        status: Status
+        address: URL
 
     errors:
       template:
@@ -569,6 +575,12 @@
       since: A partir de 
       none: Nenhuma aula cadastrada
       new: Nova aula
+      new_lesson: Nova aula
+    new:
+      type_lesson: Tipo
+      status: Status
+      enable_end_date: Habilitar data final
+      example: "(exemplo: http://www.seusite.com.br)"
     notifications:
       must_select_lessons: Uma ou mais aulas devem ser selecionadas
     files:

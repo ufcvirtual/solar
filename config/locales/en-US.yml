@@ -116,7 +116,13 @@
         start_date: Start date
         end_date: End date
         semester: Semester
-
+      lesson:
+        name: Name
+        description: Description
+        start_date: Start
+        end_date: End
+        status: Status
+        address: URL
 
     errors:
       messages:
@@ -411,6 +417,12 @@
       since: Since
       none: No lesson registered
       new: New
+      new_lesson: New lesson
+    new:
+      type_lesson: Type
+      status: Status
+      enable_end_date: Enable end date
+      example: "(example: http://www.yourwebsite.com.br)"
     notifications:
       must_select_lessons: One or more lessons must be selected
     files:

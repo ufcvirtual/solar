@@ -30,16 +30,17 @@ class LessonsController < ApplicationController
   # listagem do cadastro de aulas  
   def list
     allocation_tags = params[:allocation_tags_ids]
-    authorize! :list, Lesson, :on => allocation_tags
+    authorize! :list, Lesson, :on => [allocation_tags]
 
-    allocation_tags = allocation_tags.first unless allocation_tags.count > 1 # agiliza na consulta caso seja apenas um id
+    # comentei até ver chamada ajax
+    #allocation_tags = allocation_tags.first unless allocation_tags.count > 1 # agiliza na consulta caso seja apenas um id
     @lesson_modules  = LessonModule.find_all_by_allocation_tag_id(allocation_tags, order: "lesson_modules.order")
 
     flash[:notice] = t(:allocated, :scope => [:allocations, :success]) if params[:notice_allocated].present?
     flash[:alert]  = t(:not_allocated, :scope => [:allocations, :error]) if params[:alert_allocated].present?
 
     respond_to do |format|
-      format.html {render :layout => false}
+      format.html #{render :layout => false}
       format.json { render json: @allocations }
     end
   end

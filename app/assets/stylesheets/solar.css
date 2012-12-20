@@ -3290,13 +3290,13 @@ div.support_material_select {
     width: 413px;
 }
 
-.form_field input, .form_field select, .form-inputs > .input > input, .form-inputs > .input > select {
+.form_field input, .form_field select, .form-inputs .input input, .form-inputs > .input > select {
     padding: 2px;
     margin-bottom: 4px;
     font-size: 10pt;
 }
 
-.form-inputs > .input > input, .form-inputs > .input > textarea {
+.form-inputs .input input, .form-inputs > .input > textarea {
     width: 340px;
 }
 

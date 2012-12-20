@@ -23,7 +23,7 @@
 
       .block_content_toolbar
         .block_toolbar_left
-          =link_to (image_tag "/assets/lesson/add_lesson.png", :alt => ''), "#", :onclick => "javascript:open_lightbox2('#{new_lesson_path(:allocation_tags_ids => params[:allocation_tags_ids])}','');", :class => 'btn btn_main'
+          =link_to (image_tag "/assets/lesson/add_lesson.png", :alt => ''), "#", :onclick => "javascript:open_lightbox('#{new_lesson_path(:allocation_tags_ids => params[:allocation_tags_ids])}','#{t(:new_lesson, :scope => [:lessons, :list])}',550,270);", :class => 'btn btn_main'
 
           = link_to (image_tag "/assets/lesson/import_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('importar aula');", :id => 'import_lesson', :class => 'btn btn_main'
 

@@ -76,6 +76,10 @@ function delete_object(url, redirect_url, div_to_update){
 
 /* funções para abrir lightbox de diferentes tamanhos */
 
+function open_lightbox(url, title, w, h){
+  showLightBoxURL(url, w, h, true, title);
+}
+
 function open_lightbox1(url, title){
   showLightBoxURL(url, 550, 255, true, title);
 }
