@@ -11,14 +11,18 @@
 
       %div
         = f.label t(".course")+"*"
-        - if @course_id == "all"
+        - if @offer.curriculum_unit_id
+          = @offer.course.name
+        - elsif @course_id == "all"
           = t(".all")
         - elsif @course_id != 0
           = Course.find(@course_id).name
 
       %div
         = f.label t(".curriculum_unit")+"*"
-        - if @curriculum_unit_id == "all"
+        - if @offer.curriculum_unit_id
+          = @offer.curriculum_unit.name
+        - elsif @curriculum_unit_id == "all"
           = t(".all")
         - elsif @curriculum_unit_id != 0
           = CurriculumUnit.find(@curriculum_unit_id).name
