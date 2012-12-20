@@ -12,28 +12,15 @@ class Discussion < ActiveRecord::Base
   before_destroy :can_destroy?
   after_destroy :delete_schedule
 
-  ##
-  # Verifica se pode deletar o fórum
-  # Permite apenas se ainda não tiver iniciado ou estiver concluído e não tiver nenhuma participação
-  ##
   def can_destroy?
-    if (schedule.start_date < Date.today) or (closed? and (not discussion_posts.empty?))
-      return false
-    else
-      return true
-    end
+    discussion_posts.empty?
   end
 
-  ##
-  # Deleta o schedule criado para o fórum deletado
-  ##
   def delete_schedule
     self.schedule.destroy
   end
 
-  ##
-  # Validação que verifica se o nome do fórum já existe naquela allocation_tag
-  ##
+  ## para a mesma allocation_tag
   def unique_name
     discussions_with_same_name = Discussion.find_all_by_allocation_tag_id_and_name(allocation_tag_id, name)
     errors.add(:base, I18n.t(:existing_name, :scope => [:discussion, :errors])) if (@new_record == true or name_changed?) and discussions_with_same_name.size > 0
