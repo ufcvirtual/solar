@@ -40,7 +40,7 @@ class DiscussionsController < ApplicationController
       raise "validation_error" unless (not @discussion.nil?) and @discussion.valid? 
       @allocation_tags_ids.each do |allocation_tag_id|
         allocation_tag  = AllocationTag.find(allocation_tag_id.to_i)
-        @offer           = allocation_tag.offer || allocation_tag.group.offer
+        @offer          = allocation_tag.offer || allocation_tag.group.offer
         raise "date_range_error" if @schedule.start_date < @offer.start_date or @schedule.end_date > @offer.end_date # período escolhido deve estar dentro do período da oferta
       end
 

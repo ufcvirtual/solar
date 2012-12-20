@@ -6,23 +6,23 @@
 
       / - if (can? :lista_de_bibliography, Bibliography, :on => @allocation_tags_ids) and (@selected_offer)
       .uc_item
-        %div= link_to (image_tag "/assets/edition/bibliography.png", :alt => t(".edition_of", :of => t(".bibliography")), :class => 'btn_default'), "#", :id => "bibliography"
-        %div= link_to t(".bibliography"), "#"
+        .bibliography= link_to (image_tag "/assets/edition/bibliography.png", :alt => t(".edition_of", :of => t(".bibliography")), :class => 'btn_default'), "#"
+        .bibliography= link_to t(".bibliography"), "#"
 
       / - if (can? :lista_de_schedules, Schedule, :on => @allocation_tags_ids) and (@selected_offer)
       .uc_item
-        %div= link_to (image_tag "/assets/edition/schedule.png", :alt => t(".edition_of", :of => t(".schedule")), :class => 'btn_default'), "#", :id => "schedule"
-        %div= link_to t(".schedule"), "#"
+        .schedule= link_to (image_tag "/assets/edition/schedule.png", :alt => t(".edition_of", :of => t(".schedule")), :class => 'btn_default'), "#"
+        .schedule= link_to t(".schedule"), "#"
 
       - if (can? :designates, Allocation, :on => @allocation_tags_ids) and (@selected_offer or @selected_group or @selected_course)
         .uc_item
-          %div= link_to (image_tag "/assets/edition/allocation.png", :alt => t(".edition_of", :of => t(".allocation")), :class => "btn_default"), "#", :id => "allocation"
-          %div= link_to t(".allocation"), "#"
+          .allocation= link_to (image_tag "/assets/edition/allocation.png", :alt => t(".edition_of", :of => t(".allocation")), :class => "btn_default"), "#"
+          .allocation= link_to t(".allocation"), "#"
 
       / - if (can? :lista_de_warnings, Warning, :on => @allocation_tags_ids) and (@selected_offer or @selected_group or @selected_course) 
       .uc_item
-        %div= link_to (image_tag "/assets/edition/warning.png", :alt => t(".edition_of", :of => t(".warning")), :class => 'btn_default'), "#", :onclick => "javascript:", :id => "warning"
-        %div= link_to t(".warning"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
+        .warning= link_to (image_tag "/assets/edition/warning.png", :alt => t(".edition_of", :of => t(".warning")), :class => 'btn_default'), "#", :onclick => "javascript:"
+        .warning= link_to t(".warning"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
 
   %fieldset#uc_comunication
     %legend=t(".comunication")
@@ -30,18 +30,18 @@
 
       - if (can? :list, Discussion, :on => @allocation_tags_ids)  and (@selected_offer or @selected_group)
         .uc_item
-          %div= link_to (image_tag "/assets/edition/discussion.png", :alt => t(".edition_of", :of => t(".discussion")), :class => 'btn_default'), "#", :id => "discussion"
-          %div= link_to t(".discussion"), "#"
+          .discussion= link_to (image_tag "/assets/edition/discussion.png", :alt => t(".edition_of", :of => t(".discussion")), :class => 'btn_default'), "#"
+          .discussion= link_to t(".discussion"), "#"
 
       / - if (can? :lista_de_chat, Chat, :on => @allocation_tags_ids) and (@selected_...)
       .uc_item
-        %div= link_to (image_tag "/assets/edition/chat.png", :alt => t(".edition_of", :of => t(".chat")), :class => 'btn_default'), "#", :id => "chat"
-        %div= link_to t(".chat"), "#"
+        .chat= link_to (image_tag "/assets/edition/chat.png", :alt => t(".edition_of", :of => t(".chat")), :class => 'btn_default'), "#"
+        .chat= link_to t(".chat"), "#"
 
       / - if (can? :lista_de_videoconference, Videoconference, :on => @allocation_tags_ids) and (@selected_...)
       .uc_item
-        %div= link_to (image_tag "/assets/edition/videoconference.png", :alt => t(".edition_of", :of => t(".videoconference")), :class => 'btn_default'), "#", :id => "videoconference"
-        %div= link_to t(".videoconference"), "#"
+        .videoconference= link_to (image_tag "/assets/edition/videoconference.png", :alt => t(".edition_of", :of => t(".videoconference")), :class => 'btn_default'), "#"
+        .videoconference= link_to t(".videoconference"), "#"
 
   %fieldset#uc_education
     %legend=t(".education")
@@ -49,23 +49,23 @@
 
       - if (can? :list, Lesson, :on => @allocation_tags_ids) and (@selected_offer or @selected_group)
         .uc_item
-          %div= link_to (image_tag "/assets/edition/lesson.png", :alt => t(".edition_of", :of => t(".lesson")), :class => 'btn_default'), "#", :id => "lesson"
-          %div= link_to t(".lesson"), "#"
+          .lesson= link_to (image_tag "/assets/edition/lesson.png", :alt => t(".edition_of", :of => t(".lesson")), :class => 'btn_default'), "#"
+          .lesson= link_to t(".lesson"), "#"
 
       / - if (can? lista_de_suport_material, SupportMaterial, :on => @allocation_tags_ids) and (@selected_offer or @selected_group)
       .uc_item 
-        %div= link_to (image_tag "/assets/edition/support_material.png", :alt => t(".edition_of", :of => t(".support_material")), :class => 'btn_default'), "#", :id => "support_material"
-        %div= link_to t(".support_material"), "#"
+        .support_material= link_to (image_tag "/assets/edition/support_material.png", :alt => t(".edition_of", :of => t(".support_material")), :class => 'btn_default'), "#"
+        .support_material= link_to t(".support_material"), "#"
 
       / - if (can? lista_de_assignments, Assignment, :on => @allocation_tags_ids) and (@selected_offer or @selected_group)
       .uc_item
-        %div= link_to (image_tag "/assets/edition/assignment.png", :alt => t(".edition_of", :of => t(".assignment")), :class => 'btn_default'), "#", :id => "assignment"
-        %div= link_to t(".assignment"), "#"
+        .assignment= link_to (image_tag "/assets/edition/assignment.png", :alt => t(".edition_of", :of => t(".assignment")), :class => 'btn_default'), "#"
+        .assignment= link_to t(".assignment"), "#"
 
       / - if (can? lista_de_tests, Test, :on => @allocation_tags_ids) and (@selected_offer or @selected_group)
       .uc_item
-        %div= link_to (image_tag "/assets/edition/test.png", :alt => t(".edition_of", :of => t(".test")), :class => 'btn_default'), "#", :id => "test"
-        %div= link_to t(".test"), "#"
+        .test= link_to (image_tag "/assets/edition/test.png", :alt => t(".edition_of", :of => t(".test")), :class => 'btn_default'), "#"
+        .test= link_to t(".test"), "#"
 
 :javascript 
 
@@ -73,58 +73,58 @@
 
     // área de informação (information)
 
-    $('#bibliography').click(function(){
+    $('.bibliography').click(function(){
       // update_content_url('url_de_bibliography_aqui)');
       alert('#{t(".in_development")}');
     });
 
-    $('#schedule').click(function(){
+    $('.schedule').click(function(){
       // update_content_url('url_de_schedules_aqui');
       alert('#{t(".in_development")}');
     });
 
-    $('#allocation').click(function(){
+    $('.allocation').click(function(){
       update_content_url('#{designates_allocations_path}');
     });
 
-    $('#warning').click(function(){
+    $('.warning').click(function(){
       //update_content_url('url_de_warning_aqui');
       alert('#{t(".in_development")}');
     });
 
     // área de comunicação (comunication)
 
-    $('#discussion').click(function(){
+    $('.discussion').click(function(){
       update_content_url('#{list_discussions_path}');
     });
 
-    $('#chat').click(function(){
+    $('.chat').click(function(){
       //update_content_url('url_de_chat_aqui');
       alert('#{t(".in_development")}');
     });
 
-    $('#videoconference').click(function(){
+    $('.videoconference').click(function(){
       //update_content_url('url_de_videoconference_aqui');
       alert('#{t(".in_development")}');
     });
 
     // área de educação (education)
     
-    $('#lesson').click(function(){
+    $('.lesson').click(function(){
       update_content_url('#{list_lessons_path}');
     });
 
-    $('#support_material').click(function(){
+    $('.support_material').click(function(){
       //update_content_url('url_de_support_material_aqui');
       alert('#{t(".in_development")}');
     });
 
-    $('#assignment').click(function(){
+    $('.assignment').click(function(){
       // update_content_url('url_de_assignments_aqui');
       alert('#{t(".in_development")}');
     });
 
-    $('#test').click(function(){
+    $('.test').click(function(){
       alert('#{t(".in_development")}');
     });
 
