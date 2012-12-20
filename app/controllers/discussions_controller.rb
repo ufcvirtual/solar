@@ -72,7 +72,7 @@ class DiscussionsController < ApplicationController
 
       respond_to do |format|
         format.html { render :new, :status => 200 } # envia com status de sucesso, mas no ajax há verificação para erros no formulário
-      end    
+      end
 
     end # begin/rescue
   end
@@ -84,12 +84,11 @@ class DiscussionsController < ApplicationController
   end
 
   def edit
-    @allocation_tags_ids  = params[:allocation_tags_ids]
+    @allocation_tags_ids = params[:allocation_tags_ids]
   end
 
   def update
     @discussion          = Discussion.find(params[:id])
-
     @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
 
     unless @discussion.closed?
@@ -141,7 +140,6 @@ class DiscussionsController < ApplicationController
 
   end
 
-
   def destroy
     discussion = Discussion.find(params[:id])
     
@@ -153,13 +151,12 @@ class DiscussionsController < ApplicationController
       respond_to do |format|
         format.html { render :list, :status => 200 }
       end
-    rescue Exception => error
+    rescue
       respond_to do |format|
         format.html { render :list, :status => 500 }
       end
     end
     
   end
-
 
 end

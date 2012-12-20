@@ -13,11 +13,14 @@
       - error_class = "field_with_errors" unless @schedule_error.blank?
       .string.required{:class => error_class}
         = f.label :schedule, :required => true
-        - start_date = @discussion.schedule.nil? ? two_months_ago : (@discussion.schedule.start_date || two_months_ago)
-        = text_field_tag "start_date", "", :id => "from-date", :title => "#{t(:from_date)}", :value => "#{l(start_date.to_date, :format => :datepicker)}", :class => "date_text_field", :size => 10
+        - start_date = nil
+        - end_date = nil
+        - unless @discussion.schedule.nil?
+          - start_date = l(@discussion.schedule.start_date.to_date, :format => :datepicker)
+          - end_date = l(@discussion.schedule.end_date.to_date, :format => :datepicker)
+        = text_field_tag "start_date", "", :id => "from-date", :title => "#{t(:from_date)}", :value => "#{start_date}", :class => "date_text_field", :size => 10
         = t(:to, :scope => [:discussion])
-        - end_date = @discussion.schedule.nil? ? Date.today : (@discussion.schedule.end_date || Date.today)
-        = text_field_tag "end_date", "", :id => "until-date", :title => "#{t(:until_date)}", :value => "#{l(end_date.to_date, :format => :datepicker)}", :class => "date_text_field", :size => 10
+        = text_field_tag "end_date", "", :id => "until-date", :title => "#{t(:until_date)}", :value => "#{end_date}", :class => "date_text_field", :size => 10
         %span{:style => "display: inline-block;"}= @schedule_error
 
     .block_content.form-actions
@@ -34,13 +37,10 @@
 
 :javascript
 
-  $(document).ready(function(){
-
-    $(function(){
-      var options = $.extend($.datepicker.regional['#{I18n.locale}']);
-      options.dateFormat = global_config.locale.dateFormat;
-      $('#from-date, #until-date').datepicker(options);
-    });
+  $(function(){
+    var options = $.extend($.datepicker.regional['#{I18n.locale}']);
+    options.dateFormat = global_config.locale.dateFormat;
+    $('#from-date, #until-date').datepicker(options);
 
     $('#save').click(function(){
       submit_form('discussion_form', 'discussion_form', '#{list_discussions_path(:allocation_tags_ids => @allocation_tags_ids.compact!)}');
@@ -49,5 +49,4 @@
     $('#cancel').click(function(){
       removeLightBox();
     });
-
   });
