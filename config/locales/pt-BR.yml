@@ -261,6 +261,8 @@
         end_date: Fim
         status: Status
         address: URL
+      lesson_module:
+        name: Nome
 
     errors:
       template:
@@ -576,6 +578,7 @@
       none: Nenhuma aula cadastrada
       new: Nova aula
       new_lesson: Nova aula
+      new_module: Novo módulo
     new:
       type_lesson: Tipo
       status: Status
@@ -586,10 +589,15 @@
     files:
       new_folder: "Nova Pasta"
 
-  module:
+  lesson_modules:
     none: "Nenhum módulo cadastrado"
     buttons:
       new: "Novo módulo"
+    form:
+      save: Salvar
+      cancel: Cancelar
+    errors:
+      existing_name: já existe
 
   #Listagem de Fóruns
   title: "Título"

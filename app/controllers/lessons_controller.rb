@@ -40,7 +40,7 @@ class LessonsController < ApplicationController
     flash[:alert]  = t(:not_allocated, :scope => [:allocations, :error]) if params[:alert_allocated].present?
 
     respond_to do |format|
-      format.html #{render :layout => false}
+      format.html {render :layout => false}
       format.json { render json: @allocations }
     end
   end

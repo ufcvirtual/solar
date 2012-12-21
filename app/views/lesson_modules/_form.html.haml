@@ -1,0 +1,26 @@
+= javascript_include_tag "edition.js"
+
+%span.form_requirement= t(:required_fields)
+.module_form{:style => "text-align: left;"}
+  = simple_form_for(@module, :html => {:id => "module_form"}) do |f| 
+    
+    .form-inputs.block_content
+      = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+
+      = f.input :name, :required => true
+
+    .block_content.form-actions
+      = button_tag t(".save"), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :type => "button", :id => "save"
+      = button_tag t(".cancel"), :class => "btn btn_default", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons]), :id => "cancel"
+
+:javascript
+
+  $(function(){
+    $('#save').click(function(){
+      submit_form('module_form', 'module_form', '#{list_lessons_path(:allocation_tags_ids => @allocation_tags_ids.uniq!)}');
+    });
+
+    $('#cancel').click(function(){
+      removeLightBox();
+    });
+  });

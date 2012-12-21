@@ -123,6 +123,8 @@
         end_date: End
         status: Status
         address: URL
+      lesson_module:
+        name: Name
 
     errors:
       messages:
@@ -418,6 +420,7 @@
       none: No lesson registered
       new: New
       new_lesson: New lesson
+      new_module: New module
     new:
       type_lesson: Type
       status: Status
@@ -428,10 +431,15 @@
     files:
       new_folder: "New Folder"
 
-  module:
+  lesson_modules:
     none: "No module registered"
     buttons:
       new: "New"
+    form:
+      save: Save
+      cancel: Cancel
+    errors:
+      existing_name: already exists
 
   #Foruns
   title: "Title"

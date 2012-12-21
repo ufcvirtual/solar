@@ -2,6 +2,9 @@
 
 = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids]) 
 
+.right_buttons
+  = button_tag t(:new, :scope => [:lesson_modules, :buttons]), :class => 'btn btn_main', :id => "new_module"
+
 - unless @lesson_modules.nil? or @lesson_modules.empty?
   
   - @lesson_modules.each_with_index do |m, idxm|
@@ -18,7 +21,7 @@
               .lesson_arrow_down
                 = link_to (image_tag "/assets/lesson/down_arrow.png", :alt => ''), "#", :onclick => "javascript: alert('desce');", :id => 'down' 
           = m.name
-          = link_to (image_tag "/assets/lesson/edit.png", :alt => ''), "#", :onclick => "javascript: alert('abrir edicao de modulo');", :id => 'edit_module', :class => 'block_title_button'
+          = link_to (image_tag "/assets/lesson/edit.png", :alt => 'editar modulo'), "#", :class => 'block_title_button edit_module', :value => edit_lesson_module_path(m, :allocation_tags_ids => params[:allocation_tags_ids])
           = link_to (image_tag "/assets/lesson/delete.png", :alt => ''), "#", :onclick => "javascript: alert('excluir modulo');", :id => 'delete_module', :class => 'block_title_button'
 
       .block_content_toolbar
@@ -88,13 +91,10 @@
 
 - else
   .block_content.block_content_text 
-    =t(:none, :scope => [:module])
-
-.block_wrapper.list_lessons
-  = button_to t(:new, :scope => [:module, :buttons]), list_lessons_path(:allocation_tags_ids => params[:allocation_tags_ids]), :class => 'btn btn_main'
+    =t(:none, :scope => [:lesson_modules])
 
 :javascript
-  $(function() {
+  $(document).ready(function() {
 
     $(".lesson_check_all").click(function() {
       var check  = this.checked;
@@ -102,6 +102,15 @@
       $("."+module).each(function(i) {
           $(this).attr("checked",check);
       });
+    });
+
+    $("#new_module").click(function(){
+      open_lightbox4('#{new_lesson_module_path(:allocation_tags_ids => params[:allocation_tags_ids])}', '#{t(".new_module")}');
+    });
+
+    $(".edit_module").click(function(){
+      console.log($(this));
+      open_lightbox4($(this).attr('value'), $(this).attr('alt'));
     });
 
   });
@@ -150,3 +159,4 @@
     else
       alert("selecione apenas uma aula :P");
   }
+

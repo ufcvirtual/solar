@@ -140,6 +140,8 @@ Solar::Application.routes.draw do
     get :team, on: :collection
   end
 
+  resources :lesson_modules, :except => [:index, :show]
+
   # resources :tabs, only: [:show, :create, :destroy]
   get "activate_tab" => "tabs#show", as: :activate_tab
   get "add_tab"      => "tabs#create", as: :add_tab
