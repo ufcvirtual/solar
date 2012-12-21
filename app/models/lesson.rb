@@ -5,6 +5,12 @@ class Lesson < ActiveRecord::Base
 
   has_one :allocation_tag, :through => :lesson_module
 
+  before_destroy :can_destroy?
+
+  def can_destroy?
+    return (status == 0 ? true : false) # verifica se se a aula está em teste ou aprovada
+  end
+
   FILES_PATH = File.join(Rails.root, 'media', 'lessons') # nao existe paperclip para lessons
 
   def self.to_open(allocation_tags_ids = nil, lesson_id = nil)

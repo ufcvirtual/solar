@@ -421,6 +421,7 @@
       new: New
       new_lesson: New lesson
       new_module: New module
+      edit_lesson_module: Edit module
     new:
       type_lesson: Type
       status: Status

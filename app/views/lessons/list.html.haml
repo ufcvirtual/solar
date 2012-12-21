@@ -21,9 +21,8 @@
               .lesson_arrow_down
                 = link_to (image_tag "/assets/lesson/down_arrow.png", :alt => ''), "#", :onclick => "javascript: alert('desce');", :id => 'down' 
           = m.name
-          = link_to (image_tag "/assets/lesson/edit.png", :alt => 'editar modulo'), "#", :class => 'block_title_button edit_module', :value => edit_lesson_module_path(m, :allocation_tags_ids => params[:allocation_tags_ids])
-          = link_to (image_tag "/assets/lesson/delete.png", :alt => ''), "#", :onclick => "javascript: alert('excluir modulo');", :id => 'delete_module', :class => 'block_title_button'
-
+          = link_to (image_tag "/assets/lesson/edit.png", :alt => t(".edit_lesson_module")), "#", :class => 'block_title_button edit_module', :value => edit_lesson_module_path(m, :allocation_tags_ids => params[:allocation_tags_ids])
+          = link_to (image_tag "/assets/lesson/delete.png", :alt => 'deletar módulo'), "#", :class => 'block_title_button delete_module', :value => lesson_module_path(m, :allocation_tags_ids => params[:allocation_tags_ids])
       .block_content_toolbar
         .block_toolbar_left
           =link_to (image_tag "/assets/lesson/add_lesson.png", :alt => ''), "#", :onclick => "javascript:open_lightbox('#{new_lesson_path(:allocation_tags_ids => params[:allocation_tags_ids])}','#{t(:new_lesson, :scope => [:lessons, :list])}',550,270);", :class => 'btn btn_main'
@@ -109,8 +108,11 @@
     });
 
     $(".edit_module").click(function(){
-      console.log($(this));
-      open_lightbox4($(this).attr('value'), $(this).attr('alt'));
+      open_lightbox4($(this).attr('value'), $($(this).children()[0]).attr('alt'));
+    });
+
+    $(".delete_module").click(function(){
+      delete_object($(this).attr('value'), '#{list_lessons_path(:allocation_tags_ids => @allocation_tags_ids)}');
     });
 
   });
