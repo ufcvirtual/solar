@@ -4,22 +4,23 @@ class LessonModulesController < ApplicationController
 
   def new
     @allocation_tags_ids = params[:allocation_tags_ids]
-    # authorize
-    @module = LessonModule.new
+    authorize! :new, LessonModule, :on => @allocation_tags_ids
+    @module              = LessonModule.new
   end
 
   def create
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
     # teste para allocation_tag qualquer apenas para verificar validade dos dados
     @module = LessonModule.new(:name => params[:lesson_module][:name], :allocation_tag_id => @allocation_tags_ids.first.to_i) 
 
     begin
-      # authorize
+      authorize! :create, LessonModule, :on => @allocation_tags_ids
       raise "error" unless @module.valid?
 
       @allocation_tags_ids.each do |id|
         LessonModule.create!(:name => params[:lesson_module][:name], :allocation_tag_id => id.to_i)
       end
+
       respond_to do |format|
         format.html{ render :nothing => true, :status => 200 }
       end
@@ -38,17 +39,17 @@ class LessonModulesController < ApplicationController
 
   def edit
     @allocation_tags_ids = params[:allocation_tags_ids]
-    # authorize
-    @module = LessonModule.find(params[:id])
+    @module              = LessonModule.find(params[:id])
+    authorize! :edit, @module
   end
 
   def update
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
     @module = LessonModule.find(params[:id])
 
     begin
-      # authorize
+      authorize! :update, @module
       @module.update_attributes!(:name => params[:lesson_module][:name])
+
       respond_to do |format|
         format.html{ render :nothing => true, :status => 200 }
       end
@@ -56,7 +57,7 @@ class LessonModulesController < ApplicationController
       respond_to do |format|
         format.html{ render :nothing => true, :status => 500 }
       end
-    rescue
+    rescue Exception => error
       respond_to do |format|
         format.html{ render :new, :status => 200 }
       end
@@ -66,10 +67,9 @@ class LessonModulesController < ApplicationController
 
   def destroy
     @module = LessonModule.find(params[:id])
-    @allocation_tags_ids = params[:allocation_tags_ids]
 
     begin
-      # authorize
+      authorize! :destroy, @module
       raise "error" unless @module.destroy # exclui as aulas dependentes e verifica se todas realmente podem ser excluídas (apenas se estiverem em teste)
       respond_to do |format|
         format.html{ render :nothing => true, :status => 200 }

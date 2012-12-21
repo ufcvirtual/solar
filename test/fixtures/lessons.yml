@@ -59,7 +59,7 @@ pag_goo:
   address: 'http://www.google.com'
   type_lesson: 1
   order: 6
-  status: 1
+  status: 0
   schedule_id: 15
   lesson_module_id: 3
 
@@ -69,6 +69,6 @@ pag_index:
   address: 'index.html'
   type_lesson: 0
   order: 7
-  status: 1
+  status: 0
   schedule_id: 15
   lesson_module_id: 3

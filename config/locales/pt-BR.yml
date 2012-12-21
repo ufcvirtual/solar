@@ -580,6 +580,7 @@
       new_lesson: Nova aula
       new_module: Novo módulo
       edit_lesson_module: Editar módulo
+      delete_lesson_module: Deletar módulo
     new:
       type_lesson: Tipo
       status: Status

@@ -589,3 +589,33 @@ res103:
   controller: 'lessons'
   action: 'extract_files'
   description: 'Extrair arquivos de aula'
+
+res104:
+  id: 104
+  controller: 'lesson_modules'
+  action: 'new'
+  description: 'Pagina de novos modulos'
+
+res105:
+  id: 105
+  controller: 'lesson_modules'
+  action: 'create'
+  description: 'Criacao de modulos'
+
+res106:
+  id: 106
+  controller: 'lesson_modules'
+  action: 'edit'
+  description: 'Pagina de edicao de modulo'
+
+res107:
+  id: 107
+  controller: 'lesson_modules'
+  action: 'update'
+  description: 'Edicao de modulo'
+
+res108:
+  id: 108
+  controller: 'lesson_modules'
+  action: 'destroy'
+  description: 'Delecao de modulo'

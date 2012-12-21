@@ -976,6 +976,32 @@ lessonedit3:
   resource_id: 103
   per_id: false
 
+# Lessons Modules - Módulos
+
+lmodedit1:
+  profile_id: 5
+  resource_id: 104
+  per_id: false
+
+lmodedit2:
+  profile_id: 5
+  resource_id: 105
+  per_id: false
+
+lmodedit3:
+  profile_id: 5
+  resource_id: 106
+  per_id: false
+
+lmodedit4:
+  profile_id: 5
+  resource_id: 107
+  per_id: false
+
+lmodedit5:
+  profile_id: 5
+  resource_id: 108
+  per_id: false
 
 ##############################
 # BASICO #
