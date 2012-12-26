@@ -29,11 +29,11 @@ class OffersController < ApplicationController
     # end
 
     # ordenando os resultados
-    @offers.sort! { |a,b| a.semester <=> b.semester } if params[:search_semester].present?
-    @offers.sort! { |a,b| a.curriculum_unit.name <=> b.curriculum_unit.name } if params[:search_curriculum_unit].present?
+    @offers.sort! { |a,b| a.semester <=> b.semester } if params.include?(:search_semester)
+    @offers.sort! { |a,b| a.curriculum_unit.name <=> b.curriculum_unit.name } if params.include?(:search_curriculum_unit)
 
     # Filtrando por período para o componente de edição
-    if params[:search_semester].present?
+    if params.include?(:search_semester)
       params[:search_semester].strip!
       @offers = @offers.select { |offer| offer.semester.downcase.include?(params[:search_semester].downcase) }
       
