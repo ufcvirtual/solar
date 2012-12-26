@@ -121,8 +121,7 @@ class AllocationsControllerTest < ActionController::TestCase
 
     get :designates, { :allocation_tags_ids => [allocation_tags(:al5).id] }
     assert_nil assigns(:allocations)
-    assert_redirected_to({:controller => :home})
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_response :error
   end
 
   test "ativar perfil inativo de usuario" do

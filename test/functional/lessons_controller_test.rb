@@ -75,8 +75,7 @@ class LessonsControllerTest < ActionController::TestCase
 
     get :list, { :allocation_tags_ids => [allocation_tags(:al5).id] }
     assert_nil assigns(:lesson_modules)
-    assert_redirected_to(home_path)
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_response :error
   end
 
   test "rota para extrair arquivos de aula" do

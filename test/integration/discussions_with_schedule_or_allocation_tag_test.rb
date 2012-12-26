@@ -65,9 +65,7 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
       get @items
       get( list_discussions_path, {:allocation_tags_ids => assigns(:allocation_tags_ids)} )
       assert_nil assigns(:discussions)
-      
-      assert_redirected_to({:controller => :home})
-      assert_equal flash[:alert], I18n.t(:no_permission)
+      assert_response :error
     end
 
   ##
