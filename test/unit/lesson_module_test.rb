@@ -30,17 +30,5 @@ class LessonModuleTest < ActiveSupport::TestCase
     assert (not LessonModule.exists?(lesson_module))
     assert Lesson.find_all_by_lesson_module_id(lesson_modules(:module3)).empty?
   end
-
-  # test 'nao deve ser excluido se uma de suas aulas estiver aceita' do 
-  # 	lesson_module = lesson_modules(:module2)
-
-  # 	assert_no_difference("LessonModule.count") do
-  #     lesson_module.destroy
-  #   end
-
-  #   assert LessonModule.exists?(lesson_module)
-
-  #   assert (not Lesson.find_all_by_lesson_module_id(lesson_modules(:module3)).empty?)
-  # end
-
+  
 end

@@ -57,7 +57,7 @@ class LessonModulesController < ApplicationController
       respond_to do |format|
         format.html{ render :nothing => true, :status => 500 }
       end
-    rescue Exception => error
+    rescue
       respond_to do |format|
         format.html{ render :new, :status => 200 }
       end

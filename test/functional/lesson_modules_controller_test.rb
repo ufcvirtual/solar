@@ -47,7 +47,7 @@ class LessonModulesControllerTest < ActionController::TestCase
     put(:update, {:id => assigns(:module).id, :lesson_module => {:name => "Modulo 01"}, :allocation_tags_ids => assigns(:allocation_tags_ids)})
 
     assert_response :success
-    # assert_equal "Modulo 01", lesson_modules(:module3).name
+    assert_equal "Modulo 01", assigns(:module).name
   end
 
   test 'nao edita modulo - sem permissao' do 
@@ -59,7 +59,7 @@ class LessonModulesControllerTest < ActionController::TestCase
     put(:update, {:id => assigns(:module).id, :lesson_module => {:name => "Modulo 01"}, :allocation_tags_ids => assigns(:allocation_tags_ids)})
 
     assert_response :error
-    assert_not_equal "Modulo 01", lesson_modules(:module3).name
+    assert_not_equal "Modulo 01", assigns(:module).name
   end
 
   # Destroy
