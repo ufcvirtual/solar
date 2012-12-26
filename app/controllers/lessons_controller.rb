@@ -1,5 +1,7 @@
 class LessonsController < ApplicationController
 
+  layout false
+
   include EditionHelper
   include FilesHelper
 
@@ -30,29 +32,24 @@ class LessonsController < ApplicationController
   # listagem do cadastro de aulas  
   def list
     allocation_tags = params[:allocation_tags_ids]
-    authorize! :list, Lesson, :on => [allocation_tags]
 
-    # comentei até ver chamada ajax
-    #allocation_tags = allocation_tags.first unless allocation_tags.count > 1 # agiliza na consulta caso seja apenas um id
-    @lesson_modules  = LessonModule.find_all_by_allocation_tag_id(allocation_tags, order: "lesson_modules.order")
-
-    flash[:notice] = t(:allocated, :scope => [:allocations, :success]) if params[:notice_allocated].present?
-    flash[:alert]  = t(:not_allocated, :scope => [:allocations, :error]) if params[:alert_allocated].present?
-
-    respond_to do |format|
-      format.html {render :layout => false}
-      format.json { render json: @allocations }
+    begin
+      authorize! :list, Lesson, :on => [allocation_tags]
+      # comentei até ver chamada ajax
+      #allocation_tags = allocation_tags.first unless allocation_tags.count > 1 # agiliza na consulta caso seja apenas um id
+      @lesson_modules  = LessonModule.find_all_by_allocation_tag_id(allocation_tags, order: "lesson_modules.order")
+    rescue 
+      respond_to do |format|
+        format.html { render :nothing => true, :status => 500  }
+      end
     end
+
   end
 
   # GET /lessons/new
   # GET /lessons/new.json
   def new
     @lesson = Lesson.new
-
-    respond_to do |format|
-      format.html { render :layout => false }
-    end
   end
 
   # POST /lessons
@@ -71,9 +68,6 @@ class LessonsController < ApplicationController
   # GET /lessons/1/edit
   def edit
     @lesson = Lesson.find(params[:id])
-    respond_to do |format|
-      format.html { render :layout => false }
-    end
   end
 
   # PUT /lessons/1

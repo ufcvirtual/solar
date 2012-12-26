@@ -79,8 +79,15 @@ class DiscussionsController < ApplicationController
 
   def list
     @allocation_tags_ids = params[:allocation_tags_ids].uniq
-    authorize! :list, Discussion, :on => @allocation_tags_ids
-    @discussions         = Discussion.where(allocation_tag_id: @allocation_tags_ids)
+
+    begin
+      authorize! :list, Discussion, :on => @allocation_tags_ids
+      @discussions = Discussion.where(allocation_tag_id: @allocation_tags_ids)
+    rescue
+      respond_to do |format|
+        format.html { render :nothing => true, :status => 500  }
+      end
+    end
   end
 
   def edit

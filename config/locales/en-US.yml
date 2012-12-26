@@ -1006,6 +1006,7 @@
     cant_save: It wasn't possible to save
     are_you_sure_of_deletion: Are you sure that you want to delete?
     cant_delete: It wasn't possible to delete
+    not_possible_to_access_page_with_data: It's not possible to access this page with the given data
 
   curriculum_units:
     index:

@@ -1165,6 +1165,7 @@
     cant_save: Não foi possível salvar
     are_you_sure_of_deletion: Você tem certeza de que deseja excluir?
     cant_delete: Não foi possível excluir
+    not_possible_to_access_page_with_data: Não é possível acessar esta página com os dados fornecidos
 
   curriculum_units:
     index:

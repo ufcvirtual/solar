@@ -35,8 +35,10 @@
   });
 
   /* atualiza conteúdo da div de edição. pode exibir a página do ícone chamado ou a lista de itens */
-  function update_edition_content(){
-    erase_flash_messages();
+  function update_edition_content(maintain_message){
+    if(maintain_message == false){
+      erase_flash_messages();
+    }
     // se nenhum item foi selecionado no filtro
     if(navPanelSelectedItems().length == 0){
       // remove conteúdo
