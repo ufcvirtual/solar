@@ -164,28 +164,8 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 #navPanelMenu li a:hover{
 	background-color: #f9ea9c;
-	/*
-	background: -webkit-linear-gradient(top, #016EE5 0%,#005CC0 100%);
-	background: -o-linear-gradient(top, #016EE5 0%,#005CC0 100%);
-	background: -ms-linear-gradient(top, #016EE5 0%,#005CC0 100%);
-	background: linear-gradient(to bottom, #016EE5 0%,#005CC0 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#016ee5', endColorstr='#005cc0',GradientType=0 );
-	*/
 }
 .placesNavPanel .btShowMenu{
-	/*
-	line-height:28px;
-	vertical-align:top;
-	height:22px;
-	width:22px;
-	line-height:22px;
-	background-image:url('/assets/gear.png');
-	background-repeat:no-repeat;
-	background-position:center;
-	background-color: #dedede;
-	border: 1px solid #D0D0D0;
-	margin-top:3px;*/
-
 	display:inline-block;
 	vertical-align: top;
 	margin-top: 3px;

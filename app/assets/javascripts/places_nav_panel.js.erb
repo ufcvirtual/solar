@@ -1,27 +1,28 @@
 /*
 Precisamos:
-  - Tratar acentos;
-  - Manter valores selecionados em caso de refresh
+	- Tratar acentos;
+	- Manter valores selecionados em caso de refresh
+	- Remover código antigo de menu
 */
 
 
 $(document).ready(function(){
 
-  var preselectedCourses = null;
-  var preselectedCourseVal = $('#places_nav_panel_selectedCourseValue').val();
-  var preselectedCourseName = $('#places_nav_panel_selectedCourseName').val();
-  if ((preselectedCourseVal != '') && (preselectedCourseName != ''))
-    preselectedCourses = [{allocation_tag: preselectedCourseVal, name: preselectedCourseName}];
-  
-  $( "#places_nav_panel_txtCourse").tokenInput(search_urls["course"], {
-    hintText: hints["course"],
-    searchingText: messages["searching"],
-    queryParam : 'search',
-    tokenLimit: 1,
-    propertyToSearch: 'name',
-    noResultsText: messages["noResults"],
-    prePopulate: preselectedCourses,
-    onAdd: function (item) {
+	var preselectedCourses = null;
+	var preselectedCourseVal = $('#places_nav_panel_selectedCourseValue').val();
+	var preselectedCourseName = $('#places_nav_panel_selectedCourseName').val();
+	if ((preselectedCourseVal != '') && (preselectedCourseName != ''))
+		preselectedCourses = [{allocation_tag: preselectedCourseVal, name: preselectedCourseName}];
+	
+	$( "#places_nav_panel_txtCourse").tokenInput(search_urls["course"], {
+		hintText: hints["course"],
+		searchingText: messages["searching"],
+		queryParam : 'search',
+		tokenLimit: 1,
+		propertyToSearch: 'name',
+		noResultsText: messages["noResults"],
+		prePopulate: preselectedCourses,
+		onAdd: function (item) {
             $('#places_nav_panel_txtSemester').tokenInput('clear');
             $('#places_nav_panel_txtCurriculumUnit').tokenInput('clear');
             $('#places_nav_panel_txtGroup').tokenInput('clear');
@@ -39,27 +40,27 @@ $(document).ready(function(){
             $('#places_nav_panel_selectedCourseName').val('');
             navPanelChangeEvent('course','');
         }
-  });
+	});
 
-  var preselectedSemesters = null;
-  var selectedSemesterVal = $('#places_nav_panel_selectedSemesterValue').val();
-  var selectedSemesterName = $('#places_nav_panel_selectedSemesterName').val();
-  if ((selectedSemesterVal != '') && (selectedSemesterName != ''))
-    preselectedSemesters = [{allocation_tag: selectedSemesterVal, semester: selectedSemesterName}];
+	var preselectedSemesters = null;
+	var selectedSemesterVal = $('#places_nav_panel_selectedSemesterValue').val();
+	var selectedSemesterName = $('#places_nav_panel_selectedSemesterName').val();
+	if ((selectedSemesterVal != '') && (selectedSemesterName != ''))
+		preselectedSemesters = [{allocation_tag: selectedSemesterVal, semester: selectedSemesterName}];
 
-  $( "#places_nav_panel_txtSemester").tokenInput(function() {
-      if ($("#places_nav_panel_txtCourse").tokenInput("get").length > 0) 
-        return search_urls["semester"]+"?chained_filter="+ $('#places_nav_panel_selectedCourseValue').val() + "&";
-      return search_urls["semester"];
-    }, {
-    hintText: hints["semester"],
-    searchingText: messages["searching"],
-    noResultsText: messages["noResults"],
-    queryParam : 'search_semester',
-    tokenLimit: 1,
-    propertyToSearch: 'semester',
-    prePopulate: preselectedSemesters,
-    onAdd: function (item) {
+	$( "#places_nav_panel_txtSemester").tokenInput(function() {
+			if ($("#places_nav_panel_txtCourse").tokenInput("get").length > 0) 
+				return search_urls["semester"]+"?chained_filter="+ $('#places_nav_panel_selectedCourseValue').val() + "&";
+			return search_urls["semester"];
+		}, {
+		hintText: hints["semester"],
+		searchingText: messages["searching"],
+		noResultsText: messages["noResults"],
+		queryParam : 'search_semester',
+		tokenLimit: 1,
+		propertyToSearch: 'semester',
+		prePopulate: preselectedSemesters,
+		onAdd: function (item) {
             $('#places_nav_panel_txtCurriculumUnit').tokenInput('clear');
             $('#places_nav_panel_txtGroup').tokenInput('clear');
             $('#token-input-places_nav_panel_txtCurriculumUnit').focus();
@@ -75,119 +76,81 @@ $(document).ready(function(){
             $('#places_nav_panel_selectedSemesterName').val('');            
             navPanelChangeEvent('semester','');
         }
-  });
+	});
 
-  var preselectedCurriculumUnits = null;
-  var selectedCurriculumUnitVal = $('#places_nav_panel_selectedCurriculumUnitValue').val();
-  var selectedCurriculumUnitName = $('#places_nav_panel_selectedCurriculumUnitName').val();
-  if ((selectedCurriculumUnitVal != '') && (selectedCurriculumUnitName != ''))
-    preselectedCurriculumUnits = [{allocation_tag: selectedCurriculumUnitVal, name: selectedCurriculumUnitName}];
-  
-  $( "#places_nav_panel_txtCurriculumUnit").tokenInput(function() {
-      if ($("#places_nav_panel_txtSemester").tokenInput("get").length > 0) 
-        return search_urls["curriculumUnit"]+"?chained_filter="+  $('#places_nav_panel_selectedSemesterValue').val() + "&";
-      if ($("#places_nav_panel_txtCourse").tokenInput("get").length > 0) 
-        return search_urls["curriculumUnit"]+"?chained_filter="+  $('#places_nav_panel_selectedCourseValue').val() + "&";
-      return search_urls["curriculumUnit"];
-    }
-    , {
-    hintText: hints["curriculumUnit"],
-    searchingText: messages["searching"],
-    noResultsText: messages["noResults"],
-    queryParam : 'search_curriculum_unit',
-    tokenLimit: 1,
-    propertyToSearch: 'name',
-    prePopulate: preselectedCurriculumUnits,
-    onAdd: function (item) {
-        $('#places_nav_panel_txtGroup').tokenInput('clear');
+	var preselectedCurriculumUnits = null;
+	var selectedCurriculumUnitVal = $('#places_nav_panel_selectedCurriculumUnitValue').val();
+	var selectedCurriculumUnitName = $('#places_nav_panel_selectedCurriculumUnitName').val();
+	if ((selectedCurriculumUnitVal != '') && (selectedCurriculumUnitName != ''))
+		preselectedCurriculumUnits = [{allocation_tag: selectedCurriculumUnitVal, name: selectedCurriculumUnitName}];
+	
+	$( "#places_nav_panel_txtCurriculumUnit").tokenInput(function() {
+			if ($("#places_nav_panel_txtSemester").tokenInput("get").length > 0) 
+				return search_urls["curriculumUnit"]+"?chained_filter="+  $('#places_nav_panel_selectedSemesterValue').val() + "&";
+			if ($("#places_nav_panel_txtCourse").tokenInput("get").length > 0) 
+				return search_urls["curriculumUnit"]+"?chained_filter="+  $('#places_nav_panel_selectedCourseValue').val() + "&";
+			return search_urls["curriculumUnit"];
+		}
+		, {
+		hintText: hints["curriculumUnit"],
+		searchingText: messages["searching"],
+		noResultsText: messages["noResults"],
+		queryParam : 'search_curriculum_unit',
+		tokenLimit: 1,
+		propertyToSearch: 'name',
+		prePopulate: preselectedCurriculumUnits,
+		onAdd: function (item) {
+		    $('#places_nav_panel_txtGroup').tokenInput('clear');
             $('#token-input-places_nav_panel_txtGroup').focus();
             $('#places_nav_panel_selectedCurriculumUnitValue').val(item.allocation_tag_id);
             $('#places_nav_panel_selectedCurriculumUnitName').val(item.name);
             navPanelChangeEvent('curriculumUnit',item.allocation_tag_id);
-    },
-    onDelete: function(item) {
+		},
+		onDelete: function(item) {
             $('#places_nav_panel_txtGroup').tokenInput('clear');
-      $('#token-input-places_nav_panel_txtCurriculumUnit').focus();
-          $('#places_nav_panel_selectedCurriculumUnitValue').val('');
+			$('#token-input-places_nav_panel_txtCurriculumUnit').focus();
+	        $('#places_nav_panel_selectedCurriculumUnitValue').val('');
             $('#places_nav_panel_selectedCurriculumUnitName').val('');
             navPanelChangeEvent('curriculumUnit','');
-    }
-    
-  });
+		}
+		
+	});
 
 
-  var preselectedGroups = null;
-  var selectedGroupVal = $('#places_nav_panel_selectedGroupValue').val();
-  var selectedGroupName = $('#places_nav_panel_selectedGroupName').val();
-  if ((selectedGroupVal != '') && (selectedGroupName != ''))
-    preselectedGroups = [{allocation_tag: selectedGroupValue, code: selectedGroupName}];
+	var preselectedGroups = null;
+	var selectedGroupVal = $('#places_nav_panel_selectedGroupValue').val();
+	var selectedGroupName = $('#places_nav_panel_selectedGroupName').val();
+	if ((selectedGroupVal != '') && (selectedGroupName != ''))
+		preselectedGroups = [{allocation_tag: selectedGroupValue, code: selectedGroupName}];
 
-  $( "#places_nav_panel_txtGroup").tokenInput(function() {
-      if ($("#places_nav_panel_txtCurriculumUnit").tokenInput("get").length > 0) 
-        return search_urls["group"]+"?chained_filter="+ $('#places_nav_panel_selectedCurriculumUnitValue').val(); + "&";
-      if ($("#places_nav_panel_txtSemester").tokenInput("get").length > 0) 
-        return search_urls["group"]+"?chained_filter="+ $('#places_nav_panel_selectedSemesterValue').val() + "&";
-      if ($("#places_nav_panel_txtCourse").tokenInput("get").length > 0) 
-        return search_urls["group"]+"?chained_filter="+ $('#places_nav_panel_selectedCourseValue').val() + "&";
-      return search_urls["group"]
-    }, {
-    hintText: hints["group"],
-    searchingText: messages["searching"],
-    noResultsText: messages["noResults"],
-    queryParam : 'search',
-    tokenLimit: 1,
-    propertyToSearch: 'code',
-    prePopulate: preselectedGroups,
-    onAdd: function (item) {
+	$( "#places_nav_panel_txtGroup").tokenInput(function() {
+			if ($("#places_nav_panel_txtCurriculumUnit").tokenInput("get").length > 0) 
+				return search_urls["group"]+"?chained_filter="+ $('#places_nav_panel_selectedCurriculumUnitValue').val(); + "&";
+			if ($("#places_nav_panel_txtSemester").tokenInput("get").length > 0) 
+				return search_urls["group"]+"?chained_filter="+ $('#places_nav_panel_selectedSemesterValue').val() + "&";
+			if ($("#places_nav_panel_txtCourse").tokenInput("get").length > 0) 
+				return search_urls["group"]+"?chained_filter="+ $('#places_nav_panel_selectedCourseValue').val() + "&";
+			return search_urls["group"]
+		}, {
+		hintText: hints["group"],
+		searchingText: messages["searching"],
+		noResultsText: messages["noResults"],
+		queryParam : 'search',
+		tokenLimit: 1,
+		propertyToSearch: 'code',
+		prePopulate: preselectedGroups,
+		onAdd: function (item) {
             $('#token-input-places_nav_panel_txtGroup').focus();
             $('#places_nav_panel_selectedGroupValue').val(item.allocation_tag_id);
             $('#places_nav_panel_selectedGroupName').val(item.code);
 
             navPanelChangeEvent('group',item.allocation_tag_id);
-    },
-    onDelete: function(item) {
-      $('#token-input-places_nav_panel_txtGroup').focus();
+		},
+		onDelete: function(item) {
+			$('#token-input-places_nav_panel_txtGroup').focus();
             $('#places_nav_panel_selectedGroupValue').val('');
             $('#places_nav_panel_selectedGroupName').val('');
             navPanelChangeEvent('group','');
-<<<<<<< HEAD
-    }
-  });
-
-  $('.placesNavPanel input[type="button"]').click(function(){
-    showNavPanelMenu(this);
-  });
-
-  $(window).click(function(e){
-    if ($(e.target).parents('#navPanelMenu').length == 0 && $(e.target).filter('.placesNavPanel input[type="button"]').length == 0)
-      $('#navPanelMenu').remove();  
-  });
-
-
-  //Chamando a lista completa de elementos quando se aperta a seta para baixo no teclado.
-  //$('#token-input-txtCourse').keydown(function(e){
-  
-  $('[id^="token-input-"]').keyup(function(e){
-      if (e.keyCode == 40) { 
-        if (isSearchPanelClosed(this)){
-        $(this).val(' ');
-        $(this).trigger('keydown');
-      }
-      }
-
-      if (e.keyCode == 9) { 
-        if (isSearchPanelClosed(this)){
-          var $parent = null;
-          if (e.shiftKey)
-            $parent = $(this).parent().parent().parent().prev();
-          else
-            $parent = $(this).parent().parent().parent().next();
-        if ($parent != undefined)
-          $parent.find('[id^="token-input-"]').focus();
-      }
-      }
-  });
-=======
 		}
 	});
 
@@ -220,86 +183,57 @@ $(document).ready(function(){
 			}
     	}
 	});
->>>>>>> [#29588949] Botoes de atalho do filtro tiveram a implementacao iniciada e corrigidobug na manutencao do estado
 
 });
 
 function isSearchPanelClosed(element){
-  return ($(element).siblings('tester').html() == '');
+	return ($(element).siblings('tester').html() == '');
 }
 
 
 function showNavPanelMenu(element){
-  if ($('#navPanelMenu').length)
-    $('#navPanelMenu').remove();
+	if ($('#navPanelMenu').length)
+		$('#navPanelMenu').remove();
 
-  var pnl = '<ul id="navPanelMenu" style="display:none;opacity:0.9">';
-  pnl += '<li><a href="#" onclick="return false;">[Novo]</a></li>';
-  pnl += '<li><a href="#" onclick="return false;">[Alterar]</a></li>';
-  pnl += '<li><a href="#" onclick="return false;">[Excluir]</a></li>';
-  pnl += '<li><a href="#" onclick="return false;">[Ofertar]</a></li>';
-  pnl += '</ul>';
+	var pnl = '<ul id="navPanelMenu" style="display:none;opacity:0.9">';
+	pnl += '<li><a href="#" onclick="return false;">[Novo]</a></li>';
+	pnl += '<li><a href="#" onclick="return false;">[Alterar]</a></li>';
+	pnl += '<li><a href="#" onclick="return false;">[Excluir]</a></li>';
+	pnl += '<li><a href="#" onclick="return false;">[Ofertar]</a></li>';
+	pnl += '</ul>';
 
-  //var left = $(element).position().left + $(element).outerWidth();
-  $('body').append(pnl);
-  
-  //$('#navPanelMenu').css('left', ''+ left + 'px')
-  $('#navPanelMenu').position({
-    my: 'left top',
-    at: 'right top',
-    of: $(element)
-  });
+	//var left = $(element).position().left + $(element).outerWidth();
+	$('body').append(pnl);
+	
+	//$('#navPanelMenu').css('left', ''+ left + 'px')
+	$('#navPanelMenu').position({
+		my: 'left top',
+		at: 'right top',
+		of: $(element)
+	});
 
-  $('#navPanelMenu').slideDown('fast');
+	$('#navPanelMenu').slideDown('fast');
 }
 
-/* Retorna as allocationTagIds selecionadas */
+/* Retorna as allocationTagIds selecionadas*/
 function navPanelSelectedItems(){
-  var $selectedItem = $("#places_nav_panel_txtGroup").tokenInput("get")[0];
-  if ($selectedItem == undefined) 
-    $selectedItem = $( "#places_nav_panel_txtCurriculumUnit").tokenInput("get")[0];
-  if ($selectedItem == undefined) 
-    $selectedItem = $( "#places_nav_panel_txtSemester").tokenInput("get")[0];
-  if ($selectedItem == undefined) 
-    $selectedItem = $( "#places_nav_panel_txtCourse").tokenInput("get")[0];
+	var $selectedItem = $("#places_nav_panel_txtGroup").tokenInput("get")[0];
+	if ($selectedItem == undefined) 
+		$selectedItem = $( "#places_nav_panel_txtCurriculumUnit").tokenInput("get")[0];
+	if ($selectedItem == undefined) 
+		$selectedItem = $( "#places_nav_panel_txtSemester").tokenInput("get")[0];
+	if ($selectedItem == undefined) 
+		$selectedItem = $( "#places_nav_panel_txtCourse").tokenInput("get")[0];
 
-  if ($selectedItem == undefined) 
-    return [];
-  
-  return $selectedItem.allocation_tag_id
-}
-
-/* Retorna a informação de quais campos têm um valor específico selecionado 
-   [curso, semestre, uc, turma]  
-   Se foi selecionado: true
-   Caso contrário: undefined                                                */
-function whatWasSelected(){
-  var course         = $("#places_nav_panel_selectedCourseName").val();
-  var semester       = $("#places_nav_panel_selectedSemesterName").val();
-  var curriculumUnit = $("#places_nav_panel_selectedCurriculumUnitName").val();
-  var group          = $("#places_nav_panel_selectedGroupName").val();
-
-  var courseSelected         = false;
-  var semesterSelected       = false;
-  var curriculumUnitSelected = false;
-  var groupSelected          = false;
-
-  // verifica se algo foi selecionado e se o valor é diferente de 'todos'
-  if(course && course.indexOf("...") < 0) 
-    courseSelected = true;
-  if(semester && semester.indexOf("...") < 0)
-    semesterSelected = true;
-  if(curriculumUnit && curriculumUnit.indexOf("...") < 0)
-    curriculumUnitSelected = true;
-  if(group && group.indexOf("...") < 0)
-    groupSelected = true;
-
-  return [courseSelected, semesterSelected, curriculumUnitSelected, groupSelected];
+	if ($selectedItem == undefined) 
+		return [];
+	
+	return $selectedItem.allocation_tag_id
 }
 
 function navPanelChangeEvent(type, data){
-  var param = new Array(type,data);
-  $('.placesNavPanel').trigger('navPanelChange',param);
+	var param = new Array(type,data);
+	$('.placesNavPanel').trigger('navPanelChange',param);
 }
 
 function navPanelDisableButton($button){
@@ -335,19 +269,12 @@ function navPanelUpdateGroupsButtonState(){
 }
 
 $(document).ready(function(){
-<<<<<<< HEAD
-  $('.placesNavPanel').bind('navPanelChange', function (e,type, data ) {
-    console.log('type:' + type);
-    console.log('data:' + data);
-  });
-=======
 	//Ajustando os estados dos botões do filtro
 	navPanelUpdateGroupsButtonState();
 
 	$('.placesNavPanel').bind('navPanelChange', function (e,type, data ) {
 		navPanelUpdateGroupsButtonState();
 	});
->>>>>>> [#29588949] Botoes de atalho do filtro tiveram a implementacao iniciada e corrigidobug na manutencao do estado
 });
 
 

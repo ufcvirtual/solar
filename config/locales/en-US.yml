@@ -774,6 +774,9 @@
   menu_group_assignment: Groups
   menu_edition: Edition
   
+  # Filtro de edição (Places_nav_panel)
+
+  
   # Componente de filtro/busca de allocationTags (places_nav_panel)
   #Type the courses name or part of it
   places_nav_panel_course_hint: "Type the course's name or part of it"
@@ -782,6 +785,8 @@
   places_nav_panel_group_hint: "Type the group's code or part of it"
   places_nav_panel_searching_text: "Searching..."
   places_nav_panel_empty_text: "No results"
+  places_nav_panel_to_offer: Offer
+  places_nav_panel_to_manage: Manage
 
   #Course
   new_course_title: New Course
