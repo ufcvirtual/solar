@@ -36,10 +36,11 @@ class LessonsController < ApplicationController
 
     begin
       authorize! :list, Lesson, :on => [allocation_tags]
+      @allocation_tags = allocation_tags.collect{ |id| AllocationTag.find(id) }
       # comentei até ver chamada ajax
       #allocation_tags = allocation_tags.first unless allocation_tags.count > 1 # agiliza na consulta caso seja apenas um id
-      @lesson_modules = LessonModule.find_all_by_allocation_tag_id(allocation_tags, order: "allocation_tag_id")
-    rescue 
+      # @lesson_modules = LessonModule.find_all_by_allocation_tag_id(allocation_tags, order: "allocation_tag_id")
+    rescue
       respond_to do |format|
         format.html { render :nothing => true, :status => 500  }
       end

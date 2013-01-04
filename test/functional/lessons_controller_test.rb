@@ -67,14 +67,14 @@ class LessonsControllerTest < ActionController::TestCase
     sign_in @coordenador
     get :list, { :allocation_tags_ids => [allocation_tags(:al5).id] }
     assert_response :success
-    assert_not_nil assigns(:lesson_modules)
+    assert_not_nil assigns(:allocation_tags)
   end
 
   test "nao exibir cadastro de modulos e aulas para um usuario sem permissao" do
     sign_in users(:user2)
 
     get :list, { :allocation_tags_ids => [allocation_tags(:al5).id] }
-    assert_nil assigns(:lesson_modules)
+    assert_nil assigns(:allocation_tags)
     assert_response :error
   end
 

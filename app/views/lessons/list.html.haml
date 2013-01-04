@@ -1,103 +1,101 @@
 = javascript_include_tag "edition.js"
 = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids]) 
 = button_tag t(:new, :scope => [:lesson_modules, :buttons]), :class => 'btn btn_default', :id => "new_module"
-
-- previous_allocation_tag = 0
-- unless @lesson_modules.nil? or @lesson_modules.empty?
   
-  - @lesson_modules.each_with_index do |m, idxm|
+- previous_allocation_tag = nil
 
-    - allocation_tag_path = allocation_tag_path(m.allocation_tag, @what_was_selected)
+- @allocation_tags.each_with_index do |allocation_tag, idxat|
+  - unless allocation_tag.lesson_modules.empty?
+    - allocation_tag.lesson_modules.each_with_index do |lesson_module, idxm|
 
-    .block_wrapper.list_lessons
+      - allocation_tag_path = allocation_tag_path(allocation_tag, @what_was_selected)
 
-      - lessons = lessons_by_module(m.id)
-      - unless previous_allocation_tag == m.allocation_tag_id
-        - previous_allocation_tag = m.allocation_tag_id
-        .edition_allocation_tag_path
-          = allocation_tag_path
+      .block_wrapper.list_lessons
+        - lessons = lessons_by_module(lesson_module.id)
+        - unless previous_allocation_tag == idxat
+          - previous_allocation_tag = idxat
+          .edition_allocation_tag_path= allocation_tag_path
 
-      .block_title
-        %h2
-          .lesson_arrows
-            - unless idxm == 0
-              .lesson_arrow_up
-                = link_to (image_tag "/assets/lesson/up_arrow.png", :alt => ''), "#", :onclick => "javascript: alert('sobe');", :id => 'up' 
-            - unless idxm == @lesson_modules.count-1
-              .lesson_arrow_down
-                = link_to (image_tag "/assets/lesson/down_arrow.png", :alt => ''), "#", :onclick => "javascript: alert('desce');", :id => 'down' 
-          = m.name
-          = link_to (image_tag "/assets/lesson/edit.png", :alt => t(".edit_lesson_module")), "#", :class => 'block_title_button edit_module', :value => edit_lesson_module_path(m, :allocation_tags_ids => params[:allocation_tags_ids])
-          = link_to (image_tag "/assets/lesson/delete.png", :alt => t(".delete_lesson_module")), "#", :class => 'block_title_button delete_module', :value => lesson_module_path(m, :allocation_tags_ids => params[:allocation_tags_ids])
-      .block_content_toolbar
-        .block_toolbar_left
-          =link_to (image_tag "/assets/lesson/add_lesson.png", :alt => ''), "#", :onclick => "javascript:open_lightbox('#{new_lesson_path(:allocation_tags_ids => params[:allocation_tags_ids])}','#{t(:new_lesson, :scope => [:lessons, :list])}',550,270);", :class => 'btn btn_main'
+        .block_title
+          %h2
+            .lesson_arrows
+              - unless idxm == 0
+                .lesson_arrow_up
+                  = link_to (image_tag "/assets/lesson/up_arrow.png", :alt => ''), "#", :onclick => "javascript: alert('sobe');", :id => 'up' 
+              - unless idxm == allocation_tag.lesson_modules.count-1
+                .lesson_arrow_down
+                  = link_to (image_tag "/assets/lesson/down_arrow.png", :alt => ''), "#", :onclick => "javascript: alert('desce');", :id => 'down' 
+            = lesson_module.name
+            = link_to (image_tag "/assets/lesson/edit.png", :alt => t(".edit_lesson_module")), "#", :class => 'block_title_button edit_module', :value => edit_lesson_module_path(lesson_module, :allocation_tags_ids => params[:allocation_tags_ids])
+            = link_to (image_tag "/assets/lesson/delete.png", :alt => t(".delete_lesson_module")), "#", :class => 'block_title_button delete_module', :value => lesson_module_path(lesson_module, :allocation_tags_ids => params[:allocation_tags_ids])
 
-          = link_to (image_tag "/assets/lesson/import_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('importar aula');", :id => 'import_lesson', :class => 'btn btn_main'
+        .block_content_toolbar
+          .block_toolbar_left
+            = link_to (image_tag "/assets/lesson/add_lesson.png", :alt => ''), "#", :onclick => "javascript:open_lightbox('#{new_lesson_path(:allocation_tags_ids => params[:allocation_tags_ids])}','#{t(:new_lesson, :scope => [:lessons, :list])}',550,270);", :class => 'btn btn_main'
+            = link_to (image_tag "/assets/lesson/import_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('importar aula');", :id => 'import_lesson', :class => 'btn btn_main'
 
-        .block_toolbar_right
-          = link_to (image_tag "/assets/lesson/edit.png", :alt => ''), "#", :onclick => "javascript: edit_lesson('#{m.id}');", :id => 'edit_lesson', :class => 'btn btn_default'
-          = link_to (image_tag "/assets/lesson/delete.png", :alt => ''), "#", :onclick => "javascript: alert('excluir aula');", :id => 'delete_lesson', :class => 'btn btn_default'
-          = link_to (image_tag "/assets/lesson/download.png", :alt => ''), "#", :onclick => "javascript: download_lesson_zip('#{m.id}');", :id => 'download_lesson', :class => 'btn btn_default'
-          = link_to (image_tag "/assets/lesson/release_lessons.png", :alt => ''), "#", :onclick => "javascript: alert('libera aulas');", :id => 'release_lessons', :class => 'btn btn_default btn_spacing_left'
+          .block_toolbar_right
+            = link_to (image_tag "/assets/lesson/edit.png", :alt => ''), "#", :onclick => "javascript: edit_lesson('#{lesson_module.id}');", :id => 'edit_lesson', :class => 'btn btn_default'
+            = link_to (image_tag "/assets/lesson/delete.png", :alt => ''), "#", :onclick => "javascript: alert('excluir aula');", :id => 'delete_lesson', :class => 'btn btn_default'
+            = link_to (image_tag "/assets/lesson/download.png", :alt => ''), "#", :onclick => "javascript: download_lesson_zip('#{lesson_module.id}');", :id => 'download_lesson', :class => 'btn btn_default'
+            = link_to (image_tag "/assets/lesson/release_lessons.png", :alt => ''), "#", :onclick => "javascript: alert('libera aulas');", :id => 'release_lessons', :class => 'btn btn_default btn_spacing_left'
 
-      %table.tb_list
-        %thead
-          %tr.lines
-            - unless lessons.nil? or lessons.empty?
-              %th{:style => 'text-align:center;'}
-                = check_box_tag( 'all', 'all', false, {:id => "all_m_#{m.id}", :class => 'lesson_check_all'} )
-              %th{:style => 'text-align:center;'}= t(".order")
-              %th= t(".name")
-              %th{:style => 'text-align:center;'}= t(".availability")
-              %th{:style => 'text-align:center;'}= t(".acceptance")
-        %tbody
-          
-          - unless lessons.nil? or lessons.empty?
-
-            - lessons.each_with_index do |lesson, idxl|
-              - css_class = (!lesson.description.nil? and !lesson.description.empty?) ? "lines remove_bottom_line" : "lines"
-
-              %tr{:class => css_class}
-                %td{:style => "width: 25px;", :align => 'center' }
-                  = check_box_tag( "m_#{m.id}", lesson.id, false, {:class => "m_#{m.id}"} )
-                %td{:style => "width: 50px;", :align => 'center'}
-                  .lesson_arrows
-                    - unless idxl == 0
-                      .lesson_arrow_up
-                        = link_to (image_tag "/assets/lesson/up_arrow.png", :alt => ''), "#", :onclick => "javascript: alert('sobe');", :id => 'up'
-                    - unless idxl == lessons.count-1
-                      .lesson_arrow_down
-                        = link_to (image_tag "/assets/lesson/down_arrow.png", :alt => ''), "#", :onclick => "javascript: alert('desce');", :id => 'down' 
-                %td 
-                  = link_to lesson.name, "#", { :onclick => "javascript: alert('abre aula');", :id => "lesson#{lesson.id}", :class => 'link_content' }
-
-                %td{:style => "width: 160px", :align => 'center'}
-                  =t(".since") unless !lesson.schedule.end_date.nil?
-                  =l lesson.schedule.start_date, :format => :normal
-                  - unless lesson.schedule.end_date.nil?
-                    =' - '
-                    =l lesson.schedule.end_date, :format => :normal
-
-                %td{:style => "width: 70px", :align => 'center'}
-                  - if lesson.status == Lesson_Test
-                    =link_to (image_tag "/assets/lesson/rejected_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('libera aula');", :id => 'reject_lesson'
-                  - else
-                    =link_to (image_tag "/assets/lesson/released_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('bloqueia aula');", :id => 'release_lesson'
-
-                  - if (!lesson.description.nil? and !lesson.description.empty?)
-                    %tr.lines
-                      %td{:style => "width: 25px;", :align => 'center' }
-                      %td{:style => "width: 50px;", :align => 'center' }
-                      %td{:colspan => 3, :class => 'lesson_description' }=lesson.description
-          - else
+        %table.tb_list
+          %thead
             %tr.lines
-              %td{:colspan => 5, :class => 'lesson_description' }
-                =t(:none, :scope => [:lessons, :list])
+              - unless lessons.nil? or lessons.empty?
+                %th{:style => 'text-align:center;'}
+                  = check_box_tag( 'all', 'all', false, {:id => "all_m_#{lesson_module.id}", :class => 'lesson_check_all'} )
+                %th{:style => 'text-align:center;'}= t(".order")
+                %th= t(".name")
+                %th{:style => 'text-align:center;'}= t(".availability")
+                %th{:style => 'text-align:center;'}= t(".acceptance")
 
-- else
-  .block_content.block_content_text 
-    =t(:none, :scope => [:lesson_modules])
+          %tbody
+            - unless lessons.nil? or lessons.empty?
+              - lessons.each_with_index do |lesson, idxl|
+                - css_class = (!lesson.description.nil? and !lesson.description.empty?) ? "lines remove_bottom_line" : "lines"
+
+                %tr{:class => css_class}
+                  %td{:style => "width: 25px;", :align => 'center' }
+                    = check_box_tag( "m_#{lesson_module.id}", lesson.id, false, {:class => "m_#{lesson_module.id}"} )
+                  %td{:style => "width: 50px;", :align => 'center'}
+                    .lesson_arrows
+                      - unless idxl == 0
+                        .lesson_arrow_up
+                          = link_to (image_tag "/assets/lesson/up_arrow.png", :alt => ''), "#", :onclick => "javascript: alert('sobe');", :id => 'up'
+                      - unless idxl == lessons.count-1
+                        .lesson_arrow_down
+                          = link_to (image_tag "/assets/lesson/down_arrow.png", :alt => ''), "#", :onclick => "javascript: alert('desce');", :id => 'down' 
+                  %td 
+                    = link_to lesson.name, "#", { :onclick => "javascript: alert('abre aula');", :id => "lesson#{lesson.id}", :class => 'link_content' }
+
+                  %td{:style => "width: 160px", :align => 'center'}
+                    =t(".since") unless !lesson.schedule.end_date.nil?
+                    =l lesson.schedule.start_date, :format => :normal
+                    - unless lesson.schedule.end_date.nil?
+                      =' - '
+                      =l lesson.schedule.end_date, :format => :normal
+
+                  %td{:style => "width: 70px", :align => 'center'}
+                    - if lesson.status == Lesson_Test
+                      =link_to (image_tag "/assets/lesson/rejected_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('libera aula');", :id => 'reject_lesson'
+                    - else
+                      =link_to (image_tag "/assets/lesson/released_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('bloqueia aula');", :id => 'release_lesson'
+
+                    - if (!lesson.description.nil? and !lesson.description.empty?)
+                      %tr.lines
+                        %td{:style => "width: 25px;", :align => 'center' }
+                        %td{:style => "width: 50px;", :align => 'center' }
+                        %td{:colspan => 3, :class => 'lesson_description' }=lesson.description
+            - else
+              %tr.lines
+                %td{:colspan => 5, :class => 'lesson_description' }
+                  =t(:none, :scope => [:lessons, :list])
+
+  - else
+    .block_content.block_content_text 
+      =t(:none, :scope => [:lesson_modules])
 
 :javascript
   $(document).ready(function() {
