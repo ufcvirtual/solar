@@ -1,15 +1,21 @@
 = javascript_include_tag "edition.js"
-
 = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids]) 
+= button_tag t(:new, :scope => [:lesson_modules, :buttons]), :class => 'btn btn_default', :id => "new_module"
 
-.right_buttons
-  = button_tag t(:new, :scope => [:lesson_modules, :buttons]), :class => 'btn btn_main', :id => "new_module"
-
+- previous_allocation_tag = 0
 - unless @lesson_modules.nil? or @lesson_modules.empty?
   
   - @lesson_modules.each_with_index do |m, idxm|
+
+    - allocation_tag_path = allocation_tag_path(m.allocation_tag, @what_was_selected)
+
     .block_wrapper.list_lessons
+
       - lessons = lessons_by_module(m.id)
+      - unless previous_allocation_tag == m.allocation_tag_id
+        - previous_allocation_tag = m.allocation_tag_id
+        .edition_allocation_tag_path
+          = allocation_tag_path
 
       .block_title
         %h2
@@ -38,12 +44,13 @@
       %table.tb_list
         %thead
           %tr.lines
-            %th{:style => 'text-align:center;'}
-              = check_box_tag( 'all', 'all', false, {:id => "all_m_#{m.id}", :class => 'lesson_check_all'} )
-            %th{:style => 'text-align:center;'}= t(".order")
-            %th= t(".name")
-            %th{:style => 'text-align:center;'}= t(".availability")
-            %th{:style => 'text-align:center;'}= t(".acceptance")
+            - unless lessons.nil? or lessons.empty?
+              %th{:style => 'text-align:center;'}
+                = check_box_tag( 'all', 'all', false, {:id => "all_m_#{m.id}", :class => 'lesson_check_all'} )
+              %th{:style => 'text-align:center;'}= t(".order")
+              %th= t(".name")
+              %th{:style => 'text-align:center;'}= t(".availability")
+              %th{:style => 'text-align:center;'}= t(".acceptance")
         %tbody
           
           - unless lessons.nil? or lessons.empty?

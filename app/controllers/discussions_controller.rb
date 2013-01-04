@@ -1,7 +1,5 @@
 class DiscussionsController < ApplicationController
 
-  include EditionHelper
-
   layout false, :except => :index # define todos os layouts do controller como falso
 
   authorize_resource :only => [:index]

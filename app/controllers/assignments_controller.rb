@@ -2,7 +2,6 @@ class AssignmentsController < ApplicationController
 
   include AssignmentsHelper
   include FilesHelper
-  include EditionHelper
 
   before_filter :prepare_for_group_selection, :only => [:list, :list_to_student]
   load_and_authorize_resource :only => [:information, :show, :import_groups_page, :import_groups, :manage_groups, :evaluate, :send_comment, :remove_comment]

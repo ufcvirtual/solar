@@ -3660,7 +3660,17 @@ fieldset legend {
     margin-bottom: 15px;
 }
 
-.filter_notice{
+.edition_allocation_tag_path {
+    color: #696969;
+    padding-top: 5px;
+    border-bottom: 1px solid #8d8d8d;
+}
+
+#new_module {
+    margin-bottom: 10px;
+}
+
+.filter_notice {
     text-align: center;
     font-size: 11px;
     color: gray;

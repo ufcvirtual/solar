@@ -31,13 +31,14 @@ class LessonsController < ApplicationController
 
   # listagem do cadastro de aulas  
   def list
-    allocation_tags = params[:allocation_tags_ids]
+    allocation_tags    = params[:allocation_tags_ids]
+    @what_was_selected = params[:what_was_selected]
 
     begin
       authorize! :list, Lesson, :on => [allocation_tags]
       # comentei até ver chamada ajax
       #allocation_tags = allocation_tags.first unless allocation_tags.count > 1 # agiliza na consulta caso seja apenas um id
-      @lesson_modules  = LessonModule.find_all_by_allocation_tag_id(allocation_tags, order: "lesson_modules.order")
+      @lesson_modules = LessonModule.find_all_by_allocation_tag_id(allocation_tags, order: "allocation_tag_id")
     rescue 
       respond_to do |format|
         format.html { render :nothing => true, :status => 500  }

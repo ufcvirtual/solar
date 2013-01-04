@@ -1,15 +1,15 @@
 /* chama página informada passando as allocation_tags do filtro */
 function call_page(url){ 
+  var what_was_selected   = whatWasSelected(); // recupera quais dados do filtro foram selecionados
   var allocation_tags_ids = navPanelSelectedItems(); // recupera as allocations_tags dos itens escolhidos
 
-  if($.type(allocation_tags_ids) == "number"){ // se o retorno for apenas um allocation_tag_id, será um número. nos demais casos, será um array de strings
+  if($.type(allocation_tags_ids) == "number") // se o retorno for apenas um allocation_tag_id, será um número. nos demais casos, será um array de strings
     allocation_tags_ids = $.makeArray(allocation_tags_ids); // transforma número em array para não ter necessidade de tratamentos diferenciados no destino
-  }
 
   $.ajax({
     type: 'GET',
     url: url,
-    data: {"allocation_tags_ids": allocation_tags_ids},
+    data: {"allocation_tags_ids": allocation_tags_ids, "what_was_selected": what_was_selected},
     success: function(data) {
       $('#edition_content').html(data); // atualiza conteúdo da página com o retorno da url informada
     },
