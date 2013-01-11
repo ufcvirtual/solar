@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.3'
+gem 'rails', '3.2.11'
 gem 'rack', '1.4.1'
 gem 'rake', '0.9.2.2'
 gem 'pg', '0.13.2'
@@ -15,7 +15,7 @@ gem 'brazilian-rails', '3.1.0'
 gem 'simple_form'
 
 gem 'paperclip', '3.0.3'
-gem 'will_paginate', "~> 3.0.3"
+gem 'will_paginate', "~> 3.0.4"
 gem 'jquery-rails', '2.0.2'
 
 gem 'passenger', '3.0.12', :group => [:production]
