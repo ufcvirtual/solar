@@ -30,4 +30,4 @@
 
 </div>
 
-<div class="fb-like" data-href="http://apolo11teste.virtual.ufc.br/solar" data-send="false" data-width="450" data-show-faces="true"></div>
+<div class="fb-like" data-href="<%= YAML::load(File.open('config/facebook.yml'))['data-href'] %>" data-send="false" data-width="450" data-show-faces="true"></div>

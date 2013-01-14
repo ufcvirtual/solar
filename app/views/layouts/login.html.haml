@@ -10,6 +10,8 @@
     = javascript_include_tag "user_form"
     = csrf_meta_tags
     = yield(:head)
+    / facebook metatags
+    = raw YAML::load(File.open('config/facebook.yml'))['tags'].join
   %body
     / facebook
     #fb-root
@@ -18,7 +20,7 @@
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
         js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=259587414168382";
+        js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=#{YAML::load(File.open('config/facebook.yml'))['appid']}";
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));
     #login_wrapper

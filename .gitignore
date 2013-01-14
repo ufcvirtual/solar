@@ -1,6 +1,4 @@
-InstalledFiles
-nbproject/
-coverage/
+*~
 tmp/*
 *.pid
 *.log
@@ -14,12 +12,14 @@ rerun.txt
 .dotest/
 .config
 .settings/
+InstalledFiles
+nbproject/
+coverage/
 media/
+public/assets
 Gemfile.lock
 db/schema.rb
 config/database.yml
 config/mailer.yml
 config/deploy.rb
-public/assets
-*~
-
+config/facebook.rb
