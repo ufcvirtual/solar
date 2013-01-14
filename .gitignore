@@ -22,4 +22,4 @@ db/schema.rb
 config/database.yml
 config/mailer.yml
 config/deploy.rb
-config/facebook.rb
+config/facebook.yml
