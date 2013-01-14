@@ -4,6 +4,7 @@ appid: "APP_ID HERE"
 data-href: "http://localhost:3000"
 tags:
   - <meta property="og:title" content="SOLAR 2.0" />
+  - <meta property="og:description" content="SOLAR 2.0 é o Ambiente Virtual de Aprendizagem da Universidade Federal do Ceará." />
   - <meta property="og:type" content="university" />
   - <meta property="og:url" content="http://localhost:3000" />
   - <meta property="og:image" content="http://localhost:3000/assets/logintopo.png" />
