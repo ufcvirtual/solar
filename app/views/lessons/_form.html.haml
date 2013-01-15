@@ -4,6 +4,9 @@
 
 .lesson_form
   =simple_form_for(@lesson, :html => {:id => "lesson_form"}) do |f| 
+    = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids]) 
+    = hidden_field_tag(:lesson_module_id, params[:lesson_module_id]) 
+
     -start_date = @lesson.schedule.nil? ? Date.today : (@lesson.schedule.start_date || Date.today)
     -end_date = @lesson.schedule.nil? ? Date.today : (@lesson.schedule.end_date || Date.today)
 
@@ -33,7 +36,7 @@
           =t(:example, :scope => [:lessons, :new])
 
     .block_content.form-actions
-      =button_tag t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :onclick => "javascript:submit_form('curriculum_unit_form', 'curriculum_unit_form', '#{list_lessons_path}', '');", :type => "button"
+      =button_tag t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :onclick => "javascript:submit_form('lesson_form', 'lesson_form', '#{list_lessons_path}', '');", :type => "button"
       =button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default", :onclick => "removeLightBox();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
 
 :css
