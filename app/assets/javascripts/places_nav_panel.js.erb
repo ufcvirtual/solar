@@ -1,11 +1,3 @@
-/*
-Precisamos:
-	- Tratar acentos;
-	- Manter valores selecionados em caso de refresh
-	- Remover código antigo de menu
-*/
-
-
 $(document).ready(function(){
 
 	var preselectedCourses = null;
@@ -190,30 +182,6 @@ function isSearchPanelClosed(element){
 	return ($(element).siblings('tester').html() == '');
 }
 
-
-function showNavPanelMenu(element){
-	if ($('#navPanelMenu').length)
-		$('#navPanelMenu').remove();
-
-	var pnl = '<ul id="navPanelMenu" style="display:none;opacity:0.9">';
-	pnl += '<li><a href="#" onclick="return false;">[Novo]</a></li>';
-	pnl += '<li><a href="#" onclick="return false;">[Alterar]</a></li>';
-	pnl += '<li><a href="#" onclick="return false;">[Excluir]</a></li>';
-	pnl += '<li><a href="#" onclick="return false;">[Ofertar]</a></li>';
-	pnl += '</ul>';
-
-	//var left = $(element).position().left + $(element).outerWidth();
-	$('body').append(pnl);
-	
-	//$('#navPanelMenu').css('left', ''+ left + 'px')
-	$('#navPanelMenu').position({
-		my: 'left top',
-		at: 'right top',
-		of: $(element)
-	});
-
-	$('#navPanelMenu').slideDown('fast');
-}
 
 /* Retorna as allocationTagIds selecionadas*/
 function navPanelSelectedItems(){
