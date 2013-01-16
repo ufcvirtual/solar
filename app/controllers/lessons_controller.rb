@@ -57,14 +57,40 @@ class LessonsController < ApplicationController
   # POST /lessons
   # POST /lessons.json
   def create
-    @lesson = Lesson.new(params[:lesson])
-    respond_to do |format|
-      if @lesson.save
-        format.html { render :list }
-      else
-        format.html { render :new }
+    module_id = params[:lesson_module_id]
+    allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+
+    begin
+      authorize! :create, Lesson, :on => allocation_tags_ids
+
+      order = LessonModule.maximum(:order, :conditions => ['id > ?', module_id]).to_i + 1
+      lesson = Lesson.new(params[:lesson])
+
+      Lesson.transaction do
+        schedule = Schedule.create!(:start_date => params["start_date"], :end_date => params["end_date"])
+        Lesson.create!(:name => lesson.name, 
+                     :description => lesson.description, 
+                     :address => lesson.address,
+                     :lesson_module_id => module_id.to_i,
+                     :order => order,
+                     :status => lesson.status,
+                     :type_lesson => lesson.type_lesson,
+                     :user_id => current_user.id,
+                     :schedule_id => schedule.id)
       end
+
+      respond_to do |format|
+        format.html { render :list, :status => 200 }        
+      end
+
+    rescue
+
+      respond_to do |format|
+        format.html { render :new } #, :status => 500 }
+      end
+
     end
+
   end
 
   # GET /lessons/1/edit

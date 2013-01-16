@@ -976,6 +976,11 @@ lessonedit3:
   resource_id: 103
   per_id: false
 
+lessonedit4:
+  profile_id: 5
+  resource_id: 109
+  per_id: false
+
 # Lessons Modules - Módulos
 
 lmodedit1:
