@@ -1,6 +1,6 @@
 class LessonsController < ApplicationController
 
-  layout false
+  layout false, :except => [:index]
 
   include EditionHelper
   include FilesHelper
