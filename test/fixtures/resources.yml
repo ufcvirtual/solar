@@ -619,3 +619,9 @@ res108:
   controller: 'lesson_modules'
   action: 'destroy'
   description: 'Delecao de modulo'
+
+res109:
+  id: 109
+  controller: 'lessons'
+  action: 'new'
+  description: 'Cadastrar nova aula'

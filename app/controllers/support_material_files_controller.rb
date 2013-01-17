@@ -4,7 +4,7 @@ class SupportMaterialFilesController < ApplicationController
 
   before_filter :prepare_for_group_selection, :only => [:list]
 
-  load_and_authorize_resource
+  # load_and_authorize_resource except: :list
 
   def list
     authorize! :list, SupportMaterialFile
