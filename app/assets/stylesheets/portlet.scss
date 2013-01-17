@@ -1,0 +1,81 @@
+$facebook_main_color: #3b5c9a;
+$color_disabled: #777777;
+
+$portlet_width: 255px;
+$portlet_height: 166px;
+$portlet_main_padding: 5px;
+
+/* Portlet: efeito slider */
+.block_slider {
+    overflow: hidden;
+    position:relative;
+    width: $portlet_width;
+    height: $portlet_height;
+}
+.slide-main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    padding: $portlet_main_padding;
+    width: $portlet_width - $portlet_main_padding*2;
+    height: $portlet_height - $portlet_main_padding*2;
+    overflow-y:auto;
+    background-color: #F5F8FB;
+}
+
+.block_facebook input.new_post {
+    width: 97%;
+    margin: 0 auto;
+    font-size: 12pt;
+    padding: 2px;
+}
+
+::-webkit-input-placeholder { color:$color_disabled; }
+::-moz-placeholder { color:$color_disabled; } /* firefox 19+ */
+input:-moz-placeholder { color:$color_disabled; }
+
+.block_facebook .user_avatar {
+    width: 24px;
+    float: left;
+}
+
+.block_facebook .post_content {
+    margin-top: 6px;
+    margin-left: 28px;
+}
+
+.block_facebook .username {
+    color: $facebook_main_color;
+    font-weight: bold;
+}
+
+.block_facebook .post_actions {
+    background-color: white;
+    margin-top: 2px;
+    padding: 5px 4px 2px 4px;
+}
+.block_facebook .post_actions a {
+    color: $facebook_main_color;
+    margin-left: 3px;
+}
+
+.block_facebook .date {
+    float: right;
+    color: $color_disabled;
+}
+
+.slide-settings {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 9;
+    width: 220px;
+    height: 166px;
+    background-color: white;
+    overflow-y:auto;
+}
+
+.block_wrapper > .block_small:nth-child(3) {
+    margin-right: 0;
+}

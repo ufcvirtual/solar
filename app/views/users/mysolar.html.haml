@@ -1,6 +1,35 @@
+:javascript
+  $(document).ready(function(){
+    var sliderSettings = $(".slider-settings");
+    $(sliderSettings).click(function(){
+      var slideMain = $(this).parents(".block_facebook").find(".slide-main"),
+        settingsSlide = $(this).parents(".block_facebook").find(".slide-settings"),
+        settingsWidth = $(settingsSlide).width(),
+        settingsStatus = $(settingsSlide).data("status");
+      if ( settingsStatus === "closed" ) {
+        unit = "-=";
+        $(settingsSlide).data("status","opened");
+      } else {
+        unit = "+=";
+        $(settingsSlide).data("status","closed");
+      }
+      slideMain.animate({
+        'left':unit+settingsWidth
+      })
+    })
+  })
+
 .block_wrapper
   = render '/portlets/curricular_unit'
   = render '/portlets/calendar'
+
+.block_wrapper
+  = render '/portlets/facebook'
+  = render '/portlets/facebook'
+  = render '/portlets/facebook'
+
+.block_wrapper
+  = render '/portlets/facebook'  
 
 #block_locale
   %ul

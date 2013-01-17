@@ -1,0 +1,45 @@
+.block_facebook.block_small
+  .block_title
+    %h2
+      = image_tag "icon_facebook.png", :alt=>t(:icon_agenda), :class=>(:block_title_icon)
+      Facebook
+    %span.slider-settings{:style=>'float: right; margin-top: 8px'}
+      = image_tag "gear.png"
+
+  .block_content.block_slider
+    .slide.slide-main
+      %input.new_post{:type => "text", :placeholder => "Teste"}
+      .post
+        .user_avatar
+          = image_tag "facebook_user_avatar.png", :alt => "User Image"
+        .post_content
+          %span.username Fulano
+          Etiam porta sem malesuada magna mollis euismod. Nullam quis risus eget urna mollis ornare vel eu leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          .post_actions
+            %a.like{:href => "Teste"} Curtir
+            %a.comment{:href => "Teste"} Comentar
+            %span.date 16 de Janeiro
+      .post
+        .user_avatar
+          = image_tag "facebook_user_avatar.png", :alt => "User Image"
+        .post_content
+          %span.username Fulano
+          Etiam porta sem malesuada magna mollis euismod. Nullam quis risus eget urna mollis ornare vel eu leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          .post_actions
+            %a.like{:href => "Teste"} Curtir
+            %a.comment{:href => "Teste"} Comentar
+            %span.date 16 de Janeiro
+    .slide.slide-settings{:'data-status'=>'closed'}
+      %ul
+        %li Adipiscing Aenean Justo
+        %li Adipiscing Aenean Justo
+        %li Adipiscing Aenean Justo
+        %li Adipiscing Aenean Justo
+        %li Adipiscing Aenean Justo
+        %li Adipiscing Aenean Justo
+        %li Adipiscing Aenean Justo
+        %li Adipiscing Aenean Justo
+        %li Adipiscing Aenean Justo
+        %li Adipiscing Aenean Justo
+        %li Adipiscing Aenean Justo
+        %li Adipiscing Aenean Justo
