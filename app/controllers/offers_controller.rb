@@ -78,7 +78,7 @@ class OffersController < ApplicationController
       @offers = @offers.compact
       all_allocation_tag_ids = all_allocation_tag_ids.compact.flatten
 
-      all = {:semester => "..."+params[:search_semester]+"... (#{@offers.count})", :allocation_tag_id => all_allocation_tag_ids}
+      all = {:semester => "..."+params[:search_semester]+"... (#{@offers.count})", :allocation_tag_id => all_allocation_tag_ids, :code => "*"}
       @offers.push(all)
     end # if search_semester
     
@@ -129,7 +129,7 @@ class OffersController < ApplicationController
       @offers = @offers.compact
       all_allocation_tag_ids = all_allocation_tag_ids.compact.flatten
 
-      all = {:name => '...' << params[:search_curriculum_unit] << "... (#{@offers.count})", :allocation_tag_id => all_allocation_tag_ids}
+      all = {:name => '...' << params[:search_curriculum_unit] << "... (#{@offers.count})", :allocation_tag_id => all_allocation_tag_ids, :code => "*"}
       @offers.push(all)
 
     end # if search_curriculum_unit

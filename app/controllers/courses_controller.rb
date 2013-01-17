@@ -20,7 +20,7 @@ class CoursesController < ApplicationController
 			course[:allocation_tag_id] = course.allocation_tag.id
 		end
       
-      optionAll = {:code => '...' << params[:search] << '...', :allocation_tag_id => @courses.map(&:allocation_tag).map(&:id), :name =>'...' << params[:search] << "... (#{@courses.count})"}
+      optionAll = {:code => '*', :allocation_tag_id => @courses.map(&:allocation_tag).map(&:id), :name =>'...' << params[:search] << "... (#{@courses.count})"}
       @courses << optionAll
     end
 

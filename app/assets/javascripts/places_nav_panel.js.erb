@@ -199,6 +199,22 @@ function navPanelSelectedItems(){
 	return $selectedItem.allocation_tag_id
 }
 
+/*Retorna as alocationTagIds selecionadas em *TODOS* os níveis */
+function navPanelAllItems(){
+	var course = $( "#places_nav_panel_txtCourse").tokenInput("get")[0];
+	var semester = $( "#places_nav_panel_txtSemester").tokenInput("get")[0];
+	var curriculumUnit = $( "#places_nav_panel_txtCurriculumUnit").tokenInput("get")[0];
+	var group = $("#places_nav_panel_txtGroup").tokenInput("get")[0];
+
+	return {
+		'course': course, 
+		'semester' : semester, 
+		'curriculumUnit': curriculumUnit, 
+		'group': group
+		};
+}
+
+
 function navPanelChangeEvent(type, data){
 	var param = new Array(type,data);
 	$('.placesNavPanel').trigger('navPanelChange',param);

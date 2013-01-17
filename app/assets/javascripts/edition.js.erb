@@ -100,3 +100,27 @@ function open_lightbox3(url, title){
 function open_lightbox4(url, title){
   showLightBoxURL(url, 540, 90, true, title);
 }
+
+/* Retorna a informação de quais campos têm um valor específico selecionado 
+   [curso, semestre, uc, turma]  
+   Se foi selecionado: true
+   Caso contrário: undefined                                                */
+function whatWasSelected(){
+	var isCourseSelected         = false;
+	var isSemesterSelected       = false;
+	var isCurriculumUnitSelected = false;
+	var isGroupSelected          = false;
+	
+	var allItems = navPanelAllItems();
+
+	if (allItems.course != undefined && allItems.course.code != '*') 
+		isCourseSelected = true;
+	if (allItems.semester != undefined && allItems.semester.code != '*') 
+		isSemesterSelected = true;
+	if (allItems.curriculumUnit != undefined && allItems.curriculumUnit.code != '*') 
+		isCurriculumUnitSelected = true;
+	if (allItems.group != undefined && allItems.group.name != "*") 
+		isGroupSelected = true;
+
+	return [isCourseSelected, isSemesterSelected, isCurriculumUnitSelected, isGroupSelected];
+}
