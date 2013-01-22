@@ -67,7 +67,7 @@ function goto_lesson() {
 function reload_frame(path,name,mov_atual) {
     $("#lesson_name").html(decodeURI(name));
     window.parent.frame_lesson_content.location.href = path;
-
+    
     $("#mov_atual").html(mov_atual);
     move(0);
 }
@@ -119,7 +119,7 @@ function show_lesson(path) {
     //Esmaecendo a tela
     dimmed_div = '<div onclick="javascript:minimize();" id="dimmed_div" name="dimmed_div">&nbsp;</div>';
     $("#lesson_external_div", parent.document.body).append(dimmed_div);
-    $("#dimmed_div", parent.document.body).fadeTo('fast', 0.8);
+    $("#dimmed_div", parent.document.body).fadeTo('fast', 0.4);
 
     $("#lesson_content", parent.document.body).remove();
     lessonh = "<div id=lesson_content></div>";
@@ -131,7 +131,7 @@ function show_lesson(path) {
     $("#lessonf", parent.document.body).remove();
     $("#lesson_content", parent.document.body).append(lesson);
     
-    setTimeout('$("#lesson_content",parent.document.body).slideDown("fast");', 500);
+    setTimeout('$("#lesson_content",parent.document.body).slideDown("fast");', 5);
 
     //Exibindo botoes de minimizar e fechar
     minButton = '<div onclick="javascript:minimize();" id="min_button">&nbsp;</div>';

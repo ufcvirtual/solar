@@ -19,7 +19,7 @@
                 = lesson.name
                 = "(#{t(:lesson_closed_short)})" if lesson.closed == 't'
               - else
-                = link_to lesson.name, :onclick => "javascript:show_lesson('<%= lesson_path(lesson.lesson_id) %>')", :class => "link_content"
+                = link_to lesson.name, {}, :class => "link_content", :onclick => "javascript:show_lesson('#{lesson_path(lesson.lesson_id)}')"
             %td
               - if lesson.schedule.end_date.nil? 
                 = l lesson.schedule.start_date, :format => :normal 

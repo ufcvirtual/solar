@@ -38,10 +38,10 @@
 
 <% atual_lesson = Lesson.find(lessons_opened_id) %>
 <% path_lesson = atual_lesson.type_lesson==1 ? atual_lesson.address : "/media/lessons/#{atual_lesson.lesson_module.allocation_tag_id}/#{atual_lesson.address}" %>
-<%=path_lesson%>
+
 <script type="text/javascript">
   window.parent.frame_lesson_content.location.href = "<%= path_lesson %>";
-  $("#lesson_name").html("<%= [t(:lesson, :scope => :lesson), ' ', order_lesson.to_s, ' - ', total_lesson.to_s].join('') %>");
+  $("#lesson_name").html("<%= [t(:lesson, :scope => [:lessons, :list]), ' ', order_lesson.to_s, ' - ', total_lesson.to_s].join('') %>");
   $("#mov_atual").html("<%=order_lesson%>");
   move(0);
 </script>
