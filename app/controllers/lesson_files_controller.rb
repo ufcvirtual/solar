@@ -1,12 +1,15 @@
 class LessonFilesController < ApplicationController
 
-  def index
-    lesson = Lesson.where(id: params[:lesson_id]).first
+   require 'fileutils' # utilizado na remoção de diretórios, pois o "Dir.rmdir" não remove diretórios que não estejam vazis
 
-    if lesson and lesson.type_lesson == Lesson_Type_File
+  def index
+    # raise "#{params[:lesson_id]}"
+    @lesson = Lesson.where(id: params[:lesson_id]).first
+
+    if @lesson and @lesson.type_lesson == Lesson_Type_File
       # file_default = lesson.address
       file    = File.join(Lesson::FILES_PATH, params[:lesson_id])
-      @files  = directory_hash(file, 'Raiz').to_json if File.exist?(file)
+      @files  = directory_hash(file, @lesson.name).to_json if File.exist?(file)
     end
   end
 
@@ -16,13 +19,28 @@ class LessonFilesController < ApplicationController
   def new
   end
 
-  def create
+  def new_folder
+    begin
+      params[:path] = "" if params[:path].split("/")[1] == Lesson.find(params[:lesson_id]).name
+      path = File.join("#{Rails.root}", "media", "lessons", params[:lesson_id], params[:path], params[:folder_name])
+      Dir.mkdir(path)
+      respond_to do |format|
+        format.html{ render :nothing => true, :status => 500 }
+      end
+    rescue 
+      respond_to do |format|
+        format.html{ render :nothing => true, :status => 200 }
+      end
+    end
   end
 
-  def update
+  def rename_node
+    print "#{params[:current_name]} - #{params[:new_name]} - #{params[:path]}"
   end
 
-  def destroy
+  def remove_node
+    path = File.join("#{Rails.root}", "media", "lessons", params[:lesson_id], params[:path])
+    FileUtils.rm_rf path
   end
 
   private

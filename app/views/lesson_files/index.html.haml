@@ -1,15 +1,24 @@
 :javascript
   var treeData = #{@files};
 
+= hidden_field_tag :remove_path, remove_node_lesson_files_path(:lesson_id => @lesson.id)
+
 = stylesheet_link_tag "ui.dynatree"
 = javascript_include_tag "jquery.dynatree"
 = javascript_include_tag "lesson_files"
+= javascript_include_tag "jquery.fileupload"
 
 %p
-  %a#btn-select-all{href: "#"} Selecionar todos
-  %a#btn-deselect-all{href: "#"} Deselecionar todos
-  %a#btn-new-folder{href: "#"} Nova pasta
+  = button_tag "Selecionar todos", :type => :button, :class => 'btn btn_default', :id => "btn-select-all"
+  = button_tag "Deselecionar todos", :type => :button, :class => 'btn btn_default', :id => "btn-deselect-all"
+  = button_tag "Novo arquivo", :type => :button, :class => 'btn btn_default', :id => "btn-new_file"
+  = button_tag "Nova pasta", :type => :button, :class => 'btn btn_default', :id => "btn-new-folder", :value => new_folder_lesson_files_path(:lesson_id => @lesson.id)
+  = button_tag "Limpar aula", :type => :button, :class => 'btn btn_default', :id => "btn-clean-lesson"
+  = button_tag "Remover", :type => :button, :class => 'btn btn_default', :id => "btn-remove-node"
+  = button_tag "Extrair", :type => :button, :class => 'btn btn_default', :id => "btn-"
 #tree
-%div
-  Chaves selecionadas:
-  %span#echoSelection2 -
+
+/ %input#fileupload{:type => "file", :name => "files[]", :'data-url' => "server/php/", :multiple => true }
+
+/ #progress
+/   .bar{:style => "width: 0%;"}

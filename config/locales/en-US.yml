@@ -443,6 +443,9 @@
     errors:
       existing_name: already exists
 
+    lesson_files:
+      root: Root
+
   #Foruns
   title: "Title"
   forum_title: "Discussions"

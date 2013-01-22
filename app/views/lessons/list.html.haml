@@ -34,6 +34,7 @@
           .block_toolbar_left
             = link_to (image_tag "/assets/lesson/add_lesson.png", :alt => ''), "#", :onclick => "javascript:open_lightbox('#{new_lesson_path(:lesson_module_id => lesson_module.id,:allocation_tags_ids => params[:allocation_tags_ids])}','#{t(:new_lesson, :scope => [:lessons, :list])}',550,270);", :class => 'btn btn_main'
             = link_to (image_tag "/assets/lesson/import_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('importar aula');", :id => 'import_lesson', :class => 'btn btn_main'
+            = link_to (image_tag "/assets/lesson/manage_files.png", :alt => ''), "#", :onclick => "", :id => 'manage_files', :class => 'btn btn_main'#, :module => lesson_module.id#, :value => lesson_files_path
 
           .block_toolbar_right
             = link_to (image_tag "/assets/lesson/edit.png", :alt => ''), "#", :onclick => "javascript: edit_lesson('#{lesson_module.id}');", :id => 'edit_lesson', :class => 'btn btn_default'
@@ -120,6 +121,15 @@
     $(".delete_module").click(function(){
       delete_object($(this).attr('value'), '#{list_lessons_path(:allocation_tags_ids => @allocation_tags_ids)}');
     });
+
+    //$(".manage_files").click(function(){
+    //selected_lessons = get_selected_lessons($(this).attr('id'));
+    //if(selected_lessons.length == 1){
+    //console.log($(this).attr('value'));
+    // open_lightbox4($(this).attr('value') + "?lesson_id=selected_lessons", "oi"); 
+    //}else
+    //alert("número inválido de aulas selecionadas para a ação");
+    //});
 
   });
 

@@ -96,7 +96,13 @@ Solar::Application.routes.draw do
   end
 
   resources :lessons do
-    resources :files, controller: :lesson_files
+    resources :files, controller: :lesson_files do
+      collection do
+        post :new_folder
+        put :rename_node
+        get :remove_node
+      end
+    end
     collection do
       get :list, action: :list
       get :show_header
