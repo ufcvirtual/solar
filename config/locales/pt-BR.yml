@@ -603,6 +603,13 @@
 
   lesson_files:
     root: Raiz
+    delete_confirm: Você tem certeza que deseja excluir os itens selecionados?
+    clean_lesson_confirm: Você tem certeza que deseja limpar os arquivos da aula?
+    delete_error: Não foi possível excluir itens
+    new_folder_error: Não foi possível criar pasta
+    name_error: Precisa ser preenchido e único
+    rename_error: Não foi possível renomear
+
 
   #Listagem de Fóruns
   title: "Título"

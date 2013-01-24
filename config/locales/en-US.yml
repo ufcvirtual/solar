@@ -445,6 +445,12 @@
 
     lesson_files:
       root: Root
+      delete_confirm: Are you sure you want to delete the selected items?
+      clean_lesson_confirm: Are you sure you want to clean lesson files?
+      delete_error: It wasn't possible delete items
+      new_folder_error: It wasn't possible create folder
+      name_error: Must be filled and unique
+      rename_error: It wasn't possible rename item
 
   #Foruns
   title: "Title"

@@ -86,21 +86,23 @@ $(function(){
 
   // criar novo folder com texto padrao e foco para editar
   $("#btn-new-folder").click(function() {
-    var node = $("#tree").dynatree("getActiveNode");
-    var number = 0; // MUDAR NOME
-    var new_folder_name = '<%= I18n.t(:new_folder, scope: [:lessons, :files]) %>';
+    var node              = $("#tree").dynatree("getActiveNode");
+    var new_folder_number = 0; // utilizado para cada nova pasta ter um nome diferente
+    var new_folder_name   = '<%= I18n.t(:new_folder, scope: [:lessons, :files]) %>';
 
     if (node != null && node.data.isFolder) {
 
-      while(validName(node, new_folder_name) == false){
-        number = number+1;
-        new_folder_name = '<%= I18n.t(:new_folder, scope: [:lessons, :files]) %>'+number;
+      while(validName(node, new_folder_name) == false){ // verifica se o nome já existe
+        new_folder_number = new_folder_number+1;
+        new_folder_name   = '<%= I18n.t(:new_folder, scope: [:lessons, :files]) %>'+new_folder_number; // Nova Pasta1, Nova Pasta2, ...
       }
 
-      node.addChild({ title: new_folder_name, isFolder: true, focus: true });
-      node_path = getPath(node);
+      node.addChild({ title: new_folder_name, isFolder: true, focus: true }); // cria nó
 
-      newFolder(new_folder_name, node_path);
+      node_path = getPath(node);
+      new_node  = node.getChildren()[node.countChildren()-1]; // recupera último nó criado na pasta "pai"
+
+      newFolder(new_node, node_path); // cria pasta no sistema
 
     }
 
@@ -125,80 +127,100 @@ $(function(){
     deleteNodes(selNodes); // deleta os nós que foram selecionados
   });
 
-  // $("#btn-clean-lesson").click(function(){
-  //   deleteNodes($("#tree").dynatree("getRoot").childList); // deleta todos os nós, exceto o raiz
-  // });
+  $("#btn-clean-lesson").click(function(){
+    deleteNodes([$("#tree").dynatree("getTree").getNodeByKey("_2")]); // deleta todos os nós
+  });
 
 });
 
 function editNode(node) {
+  
   if (node.data.key == '_2') // raiz visivel
     return false;
 
   var prevTitle = node.data.title,
   tree = node.tree;
-  // Disable dynatree mouse- and key handling
-  tree.$widget.unbind();
-  // Replace node with <input>
-  $(".dynatree-title", node.span).html("<input id='editNode' value='" + prevTitle + "'>");
+  tree.$widget.unbind(); // Disable dynatree mouse- and key handling
+  $(".dynatree-title", node.span).html("<input id='editNode' value='" + prevTitle + "'>"); // Replace node with <input>
 
-  // Focus <input> and bind keyboard handler
-  $("input#editNode")
+  $("input#editNode") // Focus <input> and bind keyboard handler
     .focus()
     .keydown(function(event) {
       switch( event.which ) {
         case 27: // [esc]
-          // discard changes on [esc]
-          $("input#editNode").val(prevTitle);
+          $("input#editNode").val(prevTitle); // discard changes on [esc]
           $(this).blur();
           break;
         case 13: // [enter]
-          // simulate blur to accept new value
-          $(this).blur();
 
+          var new_title = $("input#editNode").val(); // Accept new value, when user leaves <input>
+          node_path     = getPath(node); // recupera caminho do nó antes de mudar o título
+
+          if(node.data.title != new_title){
+            if(validName(node.parent, new_title) && new_title.length != 0){
+              renameNode(node, new_title, node_path); // renomeia nó
+              node.setTitle(new_title);
+            }else{
+              $("input#editNode").val(node.data.title); // retorna ao antigo título
+              flash_message("<%=I18n.t(:name_error, :scope => [:lesson_files])%>", "alert");
+            }             
+          }else
+            erase_flash_messages();
+
+          $(this).blur(); // simulate blur to accept new value
           break;
       }
     }).blur(function(event){
       // Accept new value, when user leaves <input>
       var title = $("input#editNode").val();
-      node.setTitle(title);
+      node.setTitle(title); 
       // Re-enable mouse and keyboard handlling
       tree.$widget.bind();
       node.focus();
     });
+
 }
 
 // Função para excluir nós selecionados ou todos
 function deleteNodes(nodes){
-  if (confirm("certeza?")){
-    var i = 0;
-    if(nodes[0].data.key != "_2"){ // remover selecionados
+  var i = 0;
+  if(nodes[0].data.key != "_2"){ // remover selecionados
+    if (confirm("<%=I18n.t(:delete_confirm, :scope => [:lesson_files])%>")){
       for (i; i < nodes.length; i++){
-        if (nodes[i].li != null && nodes[i].data.key != '_2'){
-          nodes[i].remove();
-          saveDeletion(nodes[i]);
-        }
+        if (nodes[i].li != null && nodes[i].data.key != '_2')
+          saveDeletion(nodes[i], false);
       }
-    }else{ // remover todos exceto raiz
-      
-    }
-    
-  }else
-    return false;
+    }else
+      return false;
+  }else{ // remover todos
+    if (confirm("<%=I18n.t(:clean_lesson_confirm, :scope => [:lesson_files])%>"))
+      saveDeletion(nodes[0], true);
+    else
+      return false;
+  }
 }
 
-function saveDeletion(node){
-  url       = $("#remove_path").attr("value");
-  node_path = getPath(node);
+// Salva a deleção de um nó
+function saveDeletion(node, root_node){
+  url       = $("#remove_path").attr("value"); // url para deleção
+  node_path = getPath(node); // caminho do nó
 
   $.ajax({
     type: 'GET',
     url: url,
     data: {
-      "path": node_path
+      "path": node_path,
+      "root_node": root_node // informa se é a deleção do nó raiz, ou seja, de todos os arquivos da aula
+    },
+    success: function(data) {
+      node.removeChildren(); // remove filhos do nó
+      if(root_node == false){ // se não for a raiz, remove o nó
+        node.remove();
+      }
+      erase_flash_messages();
     },
     error: function(data) {
-      // erro
+      flash_message("<%=I18n.t(:delete_error, :scope => [:lesson_files])%>", "alert");
     }
   });
 }
@@ -206,27 +228,27 @@ function saveDeletion(node){
 // Retorna o caminho em que o nó se encontra
 function getPath(node){
   var path = []; 
-  path.unshift(node.data.title);
+  path.unshift(node.data.title); 
   node.visitParents(function(node){ 
-    if(node.parent && node.data.key != "_2"){ 
-      path.unshift(node.data.title); 
-    } 
+    if(node.parent && node.data.key != "_2")  // se não for raiz
+      path.unshift(node.data.title); // cada novo título do nó é adicionado ao começo 
   }); 
   return "/" + path.join("/"); 
 }
 
 // Verifica se o nome do nó é um nome válido
-function validName(node, name){
+function validName(parent_node, name){
   var unique_name = true;
-  node.visit(function(childNode){ // varre todos os filhos do nó pai
-    if(childNode.data.title == name) // verifica se nome escolhido já existe
+  parent_node.visit(function(childNode){ // varre todos os filhos do nó pai
+    if(childNode.data.title == name){ // verifica se nome escolhido já existe
       unique_name = false;
+    }
   });
   return unique_name;
 }
 
 // Cria pasta
-function newFolder(name, path){
+function newFolder(node, path){
   url = $("#btn-new-folder").attr("value");
 
   $.ajax({
@@ -234,10 +256,36 @@ function newFolder(name, path){
     url: url,
     data: {
       "path": path,
-      "folder_name": name
+      "folder_name": node.data.title
     },
-    error: function(data) {
-      // erro
+    success: function(){
+      erase_flash_messages();
+    },
+    error: function() {
+      node.remove(); // remove pasta criada
+      flash_message("<%=I18n.t(:new_folder_error, :scope => [:lesson_files])%>", "alert");
     }
   });
+}
+
+// Renomeia nó
+function renameNode(node, new_title, path){
+  url = $("#rename_path").attr("value");
+
+  $.ajax({
+    type: 'PUT',
+    url: url,
+    data: {
+      "path": node_path,
+      "node_name": new_title,
+      "previous_name": node.data.title
+    },
+    success: function(){
+      erase_flash_messages();
+    },
+    error: function() {
+      node.setTitle(node.data.title); // retorna ao antigo título
+      flash_message("<%=I18n.t(:rename_error, :scope => [:lesson_files])%>", "alert");
+    }
+  }); 
 }

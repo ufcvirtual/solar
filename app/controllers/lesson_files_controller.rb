@@ -3,7 +3,6 @@ class LessonFilesController < ApplicationController
    require 'fileutils' # utilizado na remoção de diretórios, pois o "Dir.rmdir" não remove diretórios que não estejam vazis
 
   def index
-    # raise "#{params[:lesson_id]}"
     @lesson = Lesson.where(id: params[:lesson_id]).first
 
     if @lesson and @lesson.type_lesson == Lesson_Type_File
@@ -13,34 +12,59 @@ class LessonFilesController < ApplicationController
     end
   end
 
-  def show
-  end
-
   def new
-  end
 
-  def new_folder
-    begin
-      params[:path] = "" if params[:path].split("/")[1] == Lesson.find(params[:lesson_id]).name
-      path = File.join("#{Rails.root}", "media", "lessons", params[:lesson_id], params[:path], params[:folder_name])
-      Dir.mkdir(path)
-      respond_to do |format|
-        format.html{ render :nothing => true, :status => 500 }
+    if params[:type] == "folder"
+      begin
+        params[:path] = "" if params[:path].split("/")[1] == Lesson.find(params[:lesson_id]).name
+        path          = File.join("#{Rails.root}", "media", "lessons", params[:lesson_id], params[:path], params[:folder_name])
+        Dir.mkdir(path)
+      rescue 
+        error = true
       end
-    rescue 
+
       respond_to do |format|
-        format.html{ render :nothing => true, :status => 200 }
+        format.html{ render :nothing => true, :status => (error ? 500 : 200) }
       end
+
     end
+
   end
 
-  def rename_node
-    print "#{params[:current_name]} - #{params[:new_name]} - #{params[:path]}"
+  def edit
+
+    begin
+      path       = File.join("#{Rails.root}", "media", "lessons", params[:lesson_id], params[:path])
+      path_split = path.split(File::SEPARATOR)               #[media, lessons, lesson_id, path_parte1, path_parte2]
+      path_split.delete(path_split.last)                     #[media, lessons, lesson_id, path_parte1]
+      new_path   = File.join(path_split, params[:node_name]) #/media/lessons/lesson_id/path_parte1/node_name]
+
+      FileUtils.mv path, new_path # renomeia
+    rescue Exception => error
+      error = true
+    end
+
+    respond_to do |format|
+      format.html{ render :nothing => true, :status => (error ? 500 : 200) }
+    end
+
   end
 
-  def remove_node
-    path = File.join("#{Rails.root}", "media", "lessons", params[:lesson_id], params[:path])
-    FileUtils.rm_rf path
+  def destroy
+    
+    begin
+      params[:path] = "" if params[:root_node] == true # ignora a pasta raiz caso delete todos os arquivos da aula
+      path          = File.join("#{Rails.root}", "media", "lessons", params[:lesson_id])
+      FileUtils.rm_rf File.join(path, params[:path]) # remove diretório com todo o seu conteúdo
+      Dir.mkdir(path) if params[:root_node] == true # cria uma nova pasta para a aula
+    rescue 
+      error = true
+    end
+
+    respond_to do |format|
+      format.html{ render :nothing => true, :status => (error ? 500 : 200) }
+    end
+
   end
 
   private

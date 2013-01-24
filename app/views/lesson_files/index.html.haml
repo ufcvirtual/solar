@@ -2,11 +2,12 @@
   var treeData = #{@files};
 
 = hidden_field_tag :remove_path, remove_node_lesson_files_path(:lesson_id => @lesson.id)
+= hidden_field_tag :rename_path, rename_node_lesson_files_path(:lesson_id => @lesson.id)
 
 = stylesheet_link_tag "ui.dynatree"
 = javascript_include_tag "jquery.dynatree"
 = javascript_include_tag "lesson_files"
-= javascript_include_tag "jquery.fileupload"
+/ = javascript_include_tag "jquery.fileupload"
 
 %p
   = button_tag "Selecionar todos", :type => :button, :class => 'btn btn_default', :id => "btn-select-all"

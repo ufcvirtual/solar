@@ -96,11 +96,12 @@ Solar::Application.routes.draw do
   end
 
   resources :lessons do
-    resources :files, controller: :lesson_files do
+    resources :files, controller: :lesson_files, except: [:show, :update, :create] do
       collection do
-        post :new_folder
-        put :rename_node
-        get :remove_node
+        post :folder, to: :new, defaults: {type: 'folder'}, as: :new_folder
+        post :file, to: :new, defaults: {type: 'file'}, as: :new_file
+        put :rename_node, to: :edit
+        get :remove_node, to: :destroy
       end
     end
     collection do
