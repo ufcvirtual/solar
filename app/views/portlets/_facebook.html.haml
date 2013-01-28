@@ -8,7 +8,14 @@
 
   .block_content.block_slider
     .slide.slide-main
-      %input.new_post{:type => "text", :placeholder => "Teste"}
+      .new_post
+        %textarea{:type => "text", :placeholder => "Teste"}
+        .new_post_bar
+          %select
+            %option{:value => "public"} Público
+            %option{:value => "friends"} Amigos
+            %option{:value => "private"} Somente eu
+          %button Publicar
       .post
         .user_avatar
           = image_tag "facebook_user_avatar.png", :alt => "User Image"
@@ -31,15 +38,23 @@
             %span.date 16 de Janeiro
     .slide.slide-settings{:'data-status'=>'closed'}
       %ul
-        %li Adipiscing Aenean Justo
-        %li Adipiscing Aenean Justo
-        %li Adipiscing Aenean Justo
-        %li Adipiscing Aenean Justo
-        %li Adipiscing Aenean Justo
-        %li Adipiscing Aenean Justo
-        %li Adipiscing Aenean Justo
-        %li Adipiscing Aenean Justo
-        %li Adipiscing Aenean Justo
-        %li Adipiscing Aenean Justo
-        %li Adipiscing Aenean Justo
-        %li Adipiscing Aenean Justo
+        %li.settings
+          %a{:href => "#"} Configurações
+        %li.newsfeed.active
+          %a{:href => "#"} Feed de Notícias
+        %li.events
+          %a{:href => "#"}
+            Eventos
+            %span.counter 1
+      %h3 Grupos
+      %ul
+        %li.group01
+          %a{:href => "#"}
+            UFC
+            %span.counter 3
+        %li.group02
+          %a{:href => "#"}
+            CP2
+            %span.counter 17
+        %li.group03
+          %a{:href => "#"} Grupo sobre tal e tal

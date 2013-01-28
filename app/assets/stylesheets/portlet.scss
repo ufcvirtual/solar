@@ -1,9 +1,21 @@
+/* Variáveis */
 $facebook_main_color: #3b5c9a;
 $color_disabled: #777777;
 
 $portlet_width: 255px;
 $portlet_height: 166px;
 $portlet_main_padding: 5px;
+
+$portlet_settings_width: 200px;
+$portlet_settings_height: $portlet_height;
+$portlet_settings_padding: $portlet_main_padding;
+
+/* Mix-ins */
+@mixin rounded-corners($radius) {  
+  border-radius: $radius;  
+  -moz-border-radius: $radius;  
+  -webkit-border-radius: $radius;  
+}  
 
 /* Portlet: efeito slider */
 .block_slider {
@@ -24,16 +36,79 @@ $portlet_main_padding: 5px;
     background-color: #F5F8FB;
 }
 
-.block_facebook input.new_post {
+.block_facebook textarea {
+    transition: all 0.5s ease;
+    -moz-transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+}
+
+.block_facebook .new_post, .block_facebook .new_comment {
+    border: 1px solid #d0d0d0;
+}
+
+.block_facebook .new_post textarea {
     width: 97%;
+    height: 20px;
     margin: 0 auto;
     font-size: 12pt;
     padding: 2px;
+    border: none;
+    overflow: hidden;
 }
 
-::-webkit-input-placeholder { color:$color_disabled; }
+.block_facebook .new_post textarea.active {
+    height: 70px;
+    overflow: auto;
+}
+
+.block_facebook .new_post_bar {
+    display: none;
+    text-align: right;
+    padding: 1px;
+    background-color: #f2f2f2;
+}
+
+.block_facebook .new_post_bar button {
+    vertical-align: middle;
+    padding: 0 16px;
+    background-color: #5b74a8;
+    color: white;
+    font-size: 11px;
+    line-height: 20px;
+    border: 1px solid;
+    border-color: #29447e #29447e #1a356e;
+}
+
+.block_facebook .new_post_bar button:focus, .block_facebook .new_post_bar button:active {
+    border: 1px solid #29447e;
+    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
+    padding-top: 3px;
+    line-height: 17px;
+    background-color: #4f6aa3;   
+}
+
+.block_facebook .new_post_bar button.cancel {
+    background-color: #e8e8e8;
+    color: #000;
+    border-color: #c8c8c8;
+    margin-right: 2px;
+}
+
+.block_facebook .new_post_bar button.cancel:focus, .block_facebook .new_post_bar button.cancel:active {
+    padding-top: 3px;
+    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
+    background-color: #dedede;
+}
+
+/* teste p/ exibir imagem na lista de privacidade do post */
+// .block_facebook .new_post_bar select option[value="public"] {
+//     padding-right: 30px;
+//     background-image: url("facebook_user_avatar.png")
+// }
+
+::-webkit-textarea-placeholder { color:$color_disabled; }
 ::-moz-placeholder { color:$color_disabled; } /* firefox 19+ */
-input:-moz-placeholder { color:$color_disabled; }
+textarea:-moz-placeholder { color:$color_disabled; }
 
 .block_facebook .user_avatar {
     width: 24px;
@@ -70,10 +145,74 @@ input:-moz-placeholder { color:$color_disabled; }
     top: 0;
     right: 0;
     z-index: 9;
-    width: 220px;
-    height: 166px;
+    padding: 0;
+    width: $portlet_settings_width;
+    height: $portlet_settings_height;
     background-color: white;
     overflow-y:auto;
+}
+
+.slide-settings h3 {
+    margin-top: 6px;
+    margin-left: 6px;
+    font-family: 'PT Sans', sans-serif;
+    text-transform: uppercase;
+    color: #666666;
+    font-size: 12px;
+}
+
+.slide-settings ul, h3 {
+    padding: 0;
+}
+
+.slide-settings li {
+    padding: 5px 6px 2px 25px;
+    position: relative;
+}
+
+.slide-settings li.settings {
+    background: url("portlet-facebook-icon_settings.png") no-repeat 5px center;
+}
+
+.slide-settings li.newsfeed {
+    background: url("portlet-facebook-icon_newsfeed.png") no-repeat 5px center;
+}
+
+.slide-settings li.events {
+    background: url("portlet-facebook-icon_events.png") no-repeat 5px center;
+}
+
+.slide-settings li.group01 {
+    background: url("portlet-facebook-icon_group_01.png") no-repeat 5px center;
+}
+
+.slide-settings li.group02 {
+    background: url("portlet-facebook-icon_group_02.png") no-repeat 5px center;
+}
+
+.slide-settings li.group03 {
+    background: url("portlet-facebook-icon_group_03.png") no-repeat 5px center;
+}
+
+.slide-settings li:hover {
+    background-color: #eef3f9;
+}
+
+.slide-settings li.active {
+    background-color: #d8dfe9;
+    color: #000;
+    font-weight: bold;
+}
+
+.slide-settings li .counter {
+    position: absolute;
+    top: 3px;
+    right: 5px;
+    background-color: #d7dfea;
+    color: #3b5e9a;
+    padding: 2px 5px 1px 5px;
+    @include rounded-corners(3px);
+    font-size: 11px;
 }
 
 .block_wrapper > .block_small:nth-child(3) {
