@@ -1,22 +1,32 @@
+= javascript_include_tag "application"
+= javascript_include_tag "jquery"
+= javascript_include_tag "jquery-ui-1.8.6"
+= javascript_include_tag "jquery.qtip.min"
+= javascript_include_tag "jquery.dynatree"
+= javascript_include_tag "lesson_files"
+
+= stylesheet_link_tag "ui.dynatree"
+= stylesheet_link_tag "ui.dynatree.custom"
+
 :javascript
   var treeData = #{@files};
 
 = hidden_field_tag :remove_path, remove_node_lesson_files_path(:lesson_id => @lesson.id)
 = hidden_field_tag :rename_path, rename_node_lesson_files_path(:lesson_id => @lesson.id)
 
-= stylesheet_link_tag "ui.dynatree"
-= javascript_include_tag "jquery.dynatree"
-= javascript_include_tag "lesson_files"
 / = javascript_include_tag "jquery.fileupload"
 
-%p
-  = button_tag "Selecionar todos", :type => :button, :class => 'btn btn_default', :id => "btn-select-all"
-  = button_tag "Deselecionar todos", :type => :button, :class => 'btn btn_default', :id => "btn-deselect-all"
-  = button_tag "Novo arquivo", :type => :button, :class => 'btn btn_default', :id => "btn-new_file"
-  = button_tag "Nova pasta", :type => :button, :class => 'btn btn_default', :id => "btn-new-folder", :value => new_folder_lesson_files_path(:lesson_id => @lesson.id)
+%p#files_menu_bar
+  = check_box_tag :all_items_selector
+  %span#lesson_files_select_all= "Todos"
+  = button_tag image_tag("/assets/lesson/new_folder.png"), :type => :button, :class => 'btn btn_default', :id => "btn-new-folder", :value => new_folder_lesson_files_path(:lesson_id => @lesson.id)
+  = button_tag image_tag("/assets/lesson/unzip.png"), :type => :button, :class => 'btn btn_default', :id => "btn-unzip"
   = button_tag "Limpar aula", :type => :button, :class => 'btn btn_default', :id => "btn-clean-lesson"
-  = button_tag "Remover", :type => :button, :class => 'btn btn_default', :id => "btn-remove-node"
-  = button_tag "Extrair", :type => :button, :class => 'btn btn_default', :id => "btn-"
+  = button_tag image_tag("/assets/lesson/delete.png"), :type => :button, :class => 'btn btn_default', :id => "btn-remove-node"
+  = button_tag image_tag("/assets/lesson/move.png"), :type => :button, :class => 'btn btn_default', :id => "btn-move-node"
+  %span.right_buttons
+    / = button_tag image_tag("/assets/lesson/upload.png"), :type => :button, :id => "btn-new_file"
+    = image_tag("/assets/lesson/upload.png", :id => "btn-new_file")
 #tree
 
 / %input#fileupload{:type => "file", :name => "files[]", :'data-url' => "server/php/", :multiple => true }

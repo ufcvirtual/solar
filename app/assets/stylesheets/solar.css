@@ -3708,3 +3708,16 @@ select[disabled] {
     height: 23px;
 }
 */
+
+/* Arquivos de aulas */
+
+#files_menu_bar{
+    height: 16px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#lesson_files_select_all{
+    font-size: 10pt;
+    color: #8D8D8D;
+}

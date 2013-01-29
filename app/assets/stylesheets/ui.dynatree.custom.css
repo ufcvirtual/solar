@@ -1,0 +1,22 @@
+ul.dynatree-container, #tree{
+    padding-top: 0px;
+    background-color: #F5F8FB; 
+    border: none;
+    padding-top: 0px;
+    margin-top: 0px;
+    min-height: 340px;
+}
+
+.dynatree-folder .dynatree-ico-cf span.dynatree-icon, .dynatree-folder .dynatree-ico-ef span.dynatree-icon, .dynatree-folder span.dynatree-icon, span.dynatree-icon{
+	background-position: 0px;
+}
+
+/* substitui ícone padrão dos itens da lista pelo do sistema */
+span.dynatree-icon{
+	background-image: url("/assets/lesson/file.png");
+}
+
+/* se tiver a classe de pasta, o ícone a ser exibido é um correspondente */
+.dynatree-folder span.dynatree-icon{
+	background-image: url("/assets/lesson/folder.png");
+}

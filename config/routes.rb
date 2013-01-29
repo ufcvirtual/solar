@@ -96,7 +96,7 @@ Solar::Application.routes.draw do
   end
 
   resources :lessons do
-    resources :files, controller: :lesson_files, except: [:show, :update, :create] do
+    resources :files, controller: :lesson_files, except: [:index, :show, :update, :create] do
       collection do
         post :folder, to: :new, defaults: {type: 'folder'}, as: :new_folder
         post :file, to: :new, defaults: {type: 'file'}, as: :new_file
@@ -112,6 +112,10 @@ Solar::Application.routes.draw do
     end
     get "extract_files/:file.:extension", action: :extract_files, on: :member, as: :extract_file
   end
+
+  # match "/lessons/files/:lesson_id" => "lesson_files#index", :as => :lesson_files, :via => [:get]
+  match "/lesson_files/" => "lesson_files#index", action: :index, :as => :lesson_files, :via => [:get]
+  # assert_generates "/lesson_files", { :controller => "lesson_file", :action => "index" }
 
   mount Ckeditor::Engine => "/ckeditor"
 

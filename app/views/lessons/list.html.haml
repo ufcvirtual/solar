@@ -34,10 +34,10 @@
           .block_toolbar_left
             = link_to (image_tag "/assets/lesson/add_lesson.png", :alt => ''), "#", :onclick => "javascript:open_lightbox('#{new_lesson_path(:lesson_module_id => lesson_module.id,:allocation_tags_ids => params[:allocation_tags_ids])}','#{t(:new_lesson, :scope => [:lessons, :list])}',550,270);", :class => 'btn btn_main'
             = link_to (image_tag "/assets/lesson/import_lesson.png", :alt => ''), "#", :onclick => "javascript: alert('importar aula');", :id => 'import_lesson', :class => 'btn btn_main'
-            = link_to (image_tag "/assets/lesson/manage_files.png", :alt => ''), "#", :onclick => "", :id => 'manage_files', :class => 'btn btn_main'#, :module => lesson_module.id#, :value => lesson_files_path
 
           .block_toolbar_right
             = link_to (image_tag "/assets/lesson/edit.png", :alt => ''), "#", :onclick => "javascript: edit_lesson('#{lesson_module.id}');", :id => 'edit_lesson', :class => 'btn btn_default'
+            = link_to (image_tag "/assets/gear.png", :alt => ''), "#", :onclick => "", :class => 'btn btn_default manage_files_lesson', :value => lesson_module.id
             = link_to (image_tag "/assets/lesson/delete.png", :alt => ''), "#", :onclick => "javascript: alert('excluir aula');", :id => 'delete_lesson', :class => 'btn btn_default'
             = link_to (image_tag "/assets/lesson/download.png", :alt => ''), "#", :onclick => "javascript: download_lesson_zip('#{lesson_module.id}');", :id => 'download_lesson', :class => 'btn btn_default'
             = link_to (image_tag "/assets/lesson/release_lessons.png", :alt => ''), "#", :onclick => "javascript: alert('libera aulas');", :id => 'release_lessons', :class => 'btn btn_default btn_spacing_left'
@@ -60,7 +60,7 @@
 
                 %tr{:class => css_class}
                   %td{:style => "width: 25px;", :align => 'center' }
-                    = check_box_tag( "m_#{lesson_module.id}", lesson.id, false, {:class => "m_#{lesson_module.id}"} )
+                    = check_box_tag( "m_#{lesson_module.id}", lesson.id, false, {:class => "m_#{lesson_module.id}", :file_type => (lesson.type_lesson == Lesson_Type_File)} )
                   %td{:style => "width: 50px;", :align => 'center'}
                     .lesson_arrows
                       - unless idxl == 0
@@ -122,14 +122,18 @@
       delete_object($(this).attr('value'), '#{list_lessons_path(:allocation_tags_ids => @allocation_tags_ids)}');
     });
 
-    //$(".manage_files").click(function(){
-    //selected_lessons = get_selected_lessons($(this).attr('id'));
-    //if(selected_lessons.length == 1){
-    //console.log($(this).attr('value'));
-    // open_lightbox4($(this).attr('value') + "?lesson_id=selected_lessons", "oi"); 
-    //}else
-    //alert("número inválido de aulas selecionadas para a ação");
-    //});
+    $(".manage_files_lesson").click(function(){
+      var selected_lessons = get_selected_lessons($(this).attr('value'));
+      if(selected_lessons.length == 1){
+        lesson_has_file_type = $( "input:checked" ).attr("file_type");
+        if(lesson_has_file_type == "true"){
+          url = "#{lesson_files_path}" + "#{File::SEPARATOR}?lesson_id=" + selected_lessons[0];
+          showLightBoxURL(url, 600, 400, true, "#{I18n.t(:files_management, :scope => [:lesson_files])}");
+        }else
+          alert("#{I18n.t(:lesson_must_have_file_type, :scope => [:lesson_files])}");
+      }else
+        alert("#{I18n.t(:one_lesson_must_be_selected, :scope => [:lesson_files])}");
+    });
 
   });
 

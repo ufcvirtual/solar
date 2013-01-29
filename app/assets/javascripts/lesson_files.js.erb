@@ -6,6 +6,7 @@ $(function(){
     checkbox: true,
     selectMode: 3,
     children: treeData,
+    imagePath: "/assets/lesson/",
     onSelect: function(select, node) {
       selNodes = node.tree.getSelectedNodes();
     },
@@ -100,7 +101,7 @@ $(function(){
       node.addChild({ title: new_folder_name, isFolder: true, focus: true }); // cria nó
 
       node_path = getPath(node);
-      new_node  = node.getChildren()[node.countChildren()-1]; // recupera último nó criado na pasta "pai"
+      new_node  = node.getChildren()[node.getChildren().length-1]; // recupera último nó criado na pasta "pai"
 
       newFolder(new_node, node_path); // cria pasta no sistema
 
@@ -109,18 +110,11 @@ $(function(){
     return false;
   });
 
-  $("#btn-deselect-all").click(function(){
+  $("#all_items_selector").click(function(){
+    var value = $("#all_items_selector").attr("checked") == "checked";
     $("#tree").dynatree("getRoot").visit(function(node) {
-      node.select(false);
+      node.select(value);
     });
-    return false;
-  });
-
-  $("#btn-select-all").click(function(){
-    $("#tree").dynatree("getRoot").visit(function(node) {
-      node.select(true);
-    });
-    return false;
   });
 
   $("#btn-remove-node").click(function(){
@@ -183,10 +177,9 @@ function editNode(node) {
 
 // Função para excluir nós selecionados ou todos
 function deleteNodes(nodes){
-  var i = 0;
   if(nodes[0].data.key != "_2"){ // remover selecionados
     if (confirm("<%=I18n.t(:delete_confirm, :scope => [:lesson_files])%>")){
-      for (i; i < nodes.length; i++){
+      for (var i = 0; i < nodes.length; i++){
         if (nodes[i].li != null && nodes[i].data.key != '_2')
           saveDeletion(nodes[i], false);
       }
@@ -239,11 +232,13 @@ function getPath(node){
 // Verifica se o nome do nó é um nome válido
 function validName(parent_node, name){
   var unique_name = true;
-  parent_node.visit(function(childNode){ // varre todos os filhos do nó pai
-    if(childNode.data.title == name){ // verifica se nome escolhido já existe
-      unique_name = false;
+  if(parent_node.childList != null){
+    for(var i = 0; i <= parent_node.childList.length-1; i++){
+      if(parent_node.getChildren()[i].data.title == name) // verifica se nome escolhido já existe
+        unique_name = false;
     }
-  });
+
+  }
   return unique_name;
 }
 
