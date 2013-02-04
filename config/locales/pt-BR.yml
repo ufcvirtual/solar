@@ -624,6 +624,9 @@
     at_least_one: "Selecione, ao menos, um item para %{to}"
     move: mover
     remove: remover
+    existing_folder_error: Já existe uma pasta de mesmo nome no destino selecionado
+    same_folder_error: Não é possível mover uma pasta para ela mesma
+
 
 
   #Listagem de Fóruns

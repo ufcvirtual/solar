@@ -346,65 +346,60 @@ function renameNode(node, new_title, path){
 
 /* Salvar a movimentação de pastas/arquivos */
 /* Trechos comentados serão utilizados quando a movimentação for possível para drag'n'drop */
-function saveMove(nodesToMove, moveToNode){
-  var paths       = new Array;
-  var problematic = new Array;
+function saveMove(nodesToMove){
+  var paths = new Array;
 
-  // if(typeof moveToNode == "undefined"){ // se parâmetro não foi passado, é via botão de mover
-  var nodesSelected = $("#folders_tree").dynatree("getTree").getSelectedNodes(true);
+  var nodesSelected = $("#folders_tree").dynatree("getTree").getSelectedNodes();
   if (nodesSelected.length == 0)
     var error = true; // erro: nenhuma pasta destino selecionada
   else{
     var moveTo = getPath(nodesSelected[0]);  
-  // }else
-    // moveTo = getPath(moveToNode);
-  // if(typeof moveToNode == "object") // se parâmetro foi passado, é via drag'n'drop
-    // paths.push(getPath(nodesToMove));
-  // else{
 
+    for(var i=0; i < nodesToMove.length; i++){ 
+      
+      if(validName(nodesSelected[0], nodesToMove[i].data.title)){ // verifica nome da pasta a ser movida
+        if( nodesToMove[i].data.key == nodesSelected[0].data.key ) 
+          var same_folder = true; // erro: está movendo para ela mesma
+        else{
+          paths.push(getPath(nodesToMove[i])); // caminho do nó
+          if(nodesToMove[i].countChildren() > 0) // verifica se é um nó pai selecionado
+            i = i + nodesToMove[i].countChildren(); // pula filhos
+        }
+      }else{
+        var invalid_name = true; // erro: já existe pasta de mesmo nome no destino
+        i = nodesToMove.length; // concluir laço
+      }
 
-    // exibir alerta "as pastas de mesmo nome serão modificadas (ex:. Pasta -> Pasta1)"    
-    // ou exibir erro dos que não foram movidos
-
-    
-
-
-    for(var i=0; i < nodesToMove.length; i++){ // pega todos, verifica se existe arquivo naquele path. se sim, move.
-      // if(validName(nodesSelected[0], nodesToMove[i].data.title))
-        paths.push(getPath(nodesToMove[i])); // caminho do nó
-      // else
-        // console.log("erro");
-      // problematic.push(nodesToMove[i].data.title);
     }
 
-    // console.log(paths.length);
-  // }
   }
 
   if(error == true)
     flash_message("<%= I18n.t(:destination_folder_error, :scope => [:lesson_files]) %>", "alert", "error_messages");
   else{
-    $.ajax({
-      type: 'PUT',
-      url: $("#move_path").attr("value"),
-      data: {
-        "paths_to_move": paths,
-        "path_to_move_to": moveTo
-      },
-      success: function(data) {
-        $("#lesson_file_management").html(data);
-        // flash_message("não foi possível mover os itens: ", "alert", "error_messages");
-        // console.log(problematic);
-        // problematic.each(function(i){
-        //   flash_message(problematic[i] +", ", "alert", "error_messages");
-        // });
-
-      },
-      error: function() {
-        // flash_message("<%=I18n.t(:delete_error, :scope => [:lesson_files])%>", "alert", "error_messages");
-        flash_message("<%= I18n.t(:move_error, :scope => [:lesson_files]) %>", "alert", "error_messages");
+    if(invalid_name == true) 
+      flash_message("<%= I18n.t(:existing_folder_error, :scope => [:lesson_files]) %>", "alert", "error_messages");
+    else{
+      if(same_folder == true) 
+        flash_message("<%= I18n.t(:same_folder_error, :scope => [:lesson_files]) %>", "alert", "error_messages");
+      else{
+        $.ajax({
+          type: 'PUT',
+          url: $("#move_path").attr("value"),
+          data: {
+            "paths_to_move": paths,
+            "path_to_move_to": moveTo
+          },
+          success: function(data) {
+            $("#lesson_file_management").html(data);
+          },
+          error: function() {
+            // flash_message("<%=I18n.t(:delete_error, :scope => [:lesson_files])%>", "alert", "error_messages");
+            flash_message("<%= I18n.t(:move_error, :scope => [:lesson_files]) %>", "alert", "error_messages");
+          }
+        });
       }
-    });
+    }
   }
 
 }

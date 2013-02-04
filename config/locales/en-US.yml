@@ -466,6 +466,8 @@
     at_least_one: "Select, at least, one item to %{to}"
     move: move
     remove: remove
+    existing_folder_error: Already exists a folder with same name on selected destination
+    same_folder_error: It's not possible to move a folder to itself
 
   #Foruns
   title: "Title"
