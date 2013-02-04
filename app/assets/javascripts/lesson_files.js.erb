@@ -1,5 +1,5 @@
-// Inicialização da árvore de arquivos 
 $(function(){
+  /* Inicialização da árvore de arquivos */
   var selNodes;
   $("#tree").dynatree({
     minExpandLevel: 2,
@@ -33,60 +33,86 @@ $(function(){
         case 46: // [delete]
           deleteNodes([node]);
       }
-    },
+    }//,
 
-    dnd: {
-      onDragStart: function(node) {
-        /** This function MUST be defined to enable dragging for the tree.
-         *  Return false to cancel dragging of node. */
-        return true;
-      },
-      onDragStop: function(node) {
-        // This function is optional.
-        // SALVAR ALTERAÇÃO
-    },
+  //   dnd: {
+  //     onDragStart: function(node) {
+  //       /** This function MUST be defined to enable dragging for the tree.
+  //        *  Return false to cancel dragging of node. */
+  //       return true;
+  //     },
 
-    autoExpandMS: 1000,
-    preventVoidMoves: true, // Prevent dropping nodes 'before self', etc.
+  //   autoExpandMS: 1000,
+  //   preventVoidMoves: true, // Prevent dropping nodes 'before self', etc.
 
-    onDragEnter: function(node, sourceNode) {
-      /** sourceNode may be null for non-dynatree droppables.
-       *  Return false to disallow dropping on node. In this case
-       *  onDragOver and onDragLeave are not called.
-       *  Return 'over', 'before, or 'after' to force a hitMode.
-       *  Return ['before', 'after'] to restrict available hitModes.
-       *  Any other return value will calc the hitMode from the cursor position.
-       */
-      return true;
-    },
-    onDragOver: function(node, sourceNode, hitMode) {
-      /** Return false to disallow dropping this node. **/
-      if(node.isDescendantOf(sourceNode)){ // Impede que o "pai" seja arrastado para o próprio filho
-        return false;
-      }
-      // Prohibit creating childs in non-folders (only sorting allowed)
-      if( !node.data.isFolder && hitMode === "over" ){
-        return "after";
-      }
-    },
-    onDrop: function(node, sourceNode, hitMode, ui, draggable) {
-      /** This function MUST be defined to enable dropping of items on the tree. */
-      if(node.data.isFolder) // se for pasta
-        sourceNode.move(node, hitMode); // move para o nó
-      else // se tiver
-        sourceNode.move(node.parent, hitMode); // move para o pai do nó (a pasta a qual pertence)
-      // expand the drop target
-      // sourceNode.expand(true);
-    },
-    onDragLeave: function(node, sourceNode) {
-      /** Always called if onDragEnter was called. */
-    }
-  }
-
+  //   onDragEnter: function(node, sourceNode) {
+  //     /** sourceNode may be null for non-dynatree droppables.
+  //      *  Return false to disallow dropping on node. In this case
+  //      *  onDragOver and onDragLeave are not called.
+  //      *  Return 'over', 'before, or 'after' to force a hitMode.
+  //      *  Return ['before', 'after'] to restrict available hitModes.
+  //      *  Any other return value will calc the hitMode from the cursor position.
+  //      */
+  //     return true;
+  //   },
+  //   onDragOver: function(node, sourceNode, hitMode) {
+  //     /** Return false to disallow dropping this node. **/
+  //     if(node.isDescendantOf(sourceNode)){ // Impede que o "pai" seja arrastado para o próprio filho
+  //       return false;
+  //     }
+  //     // Prohibit creating childs in non-folders (only sorting allowed)
+  //     if( !node.data.isFolder && hitMode === "over" ){
+  //       return "after";
+  //     }
+  //   },
+  //   onDrop: function(node, sourceNode, hitMode, ui, draggable) {
+  //     console.log(ui.node);
+  //     console.log(draggable);
+  //     /** This function MUST be defined to enable dropping of items on the tree. */
+  //     if(node.data.isFolder) // se for pasta
+  //       sourceNode.move(node, hitMode); // move para o nó
+  //     else // se tiver
+  //       sourceNode.move(node.parent, hitMode); // move para o pai do nó (a pasta a qual pertence)
+  //     // expand the drop target
+  //     // sourceNode.expand(true);
+  //     saveMove(sourceNode, node);
+  //   },
+  //   onDragLeave: function(node, sourceNode) {
+  //     /** Always called if onDragEnter was called. */
+  //   }
+  // }
   });
 
-  // criar novo folder com texto padrao e foco para editar
-  $("#btn-new-folder").click(function() {
+  
+  /* Inicialização da árvore de pastas para movimentação de arquivos e pastas */
+  $("#folders_tree").dynatree({
+    minExpandLevel: 2,
+    selectMode: 1,
+    children: folderTreeData,
+    imagePath: "/assets/lesson/",
+    checkbox: true,
+    classNames: {checkbox: "dynatree-radio"}, // Override class name for checkbox icon:
+    onKeydown: function(node, event) {
+      switch( event.which ) {
+        case 27: // [F2]
+          $("#folder_window").hide();
+        case 13: // enter
+          node.select();
+      }
+    },
+    onSelect: function(node, event) {
+      node.activate();
+    },
+    onDblClick: function(node, event) {
+      node.deactivate();
+    }
+  });
+
+
+  /* Eventos de botões */
+  
+  /* Criar novo folder com texto padrao e foco para editar */
+  $("#btn-new-folder").click(function() { 
     var node              = $("#tree").dynatree("getActiveNode");
     var new_folder_number = 0; // utilizado para cada nova pasta ter um nome diferente
     var new_folder_name   = '<%= I18n.t(:new_folder, scope: [:lessons, :files]) %>';
@@ -105,11 +131,13 @@ $(function(){
 
       newFolder(new_node, node_path); // cria pasta no sistema
 
-    }
+    }else
+      flash_message("<%=I18n.t(:one_folder_must_be_selected, :scope => [:lesson_files])%>", "alert", "error_messages");
 
     return false;
   });
 
+  /* Selecionar ou deselecionar todos os itens */
   $("#all_items_selector").click(function(){
     var value = $("#all_items_selector").attr("checked") == "checked";
     $("#tree").dynatree("getRoot").visit(function(node) {
@@ -118,15 +146,90 @@ $(function(){
   });
 
   $("#btn-remove-node").click(function(){
-    deleteNodes(selNodes); // deleta os nós que foram selecionados
+    if(typeof selNodes == "undefined")
+      flash_message("<%= I18n.t(:at_least_one, :to => I18n.t(:remove, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "error_messages");
+    else
+      deleteNodes(selNodes); // deleta os nós que foram selecionados
   });
 
   $("#btn-clean-lesson").click(function(){
     deleteNodes([$("#tree").dynatree("getTree").getNodeByKey("_2")]); // deleta todos os nós
   });
 
+  $("#btn-rename").click(function(){
+    var active_node = $("#tree").dynatree("getActiveNode")
+    if( active_node != null){
+      if (selNodes.length == 1)
+        editNode(selNodes[0]);
+      else
+        editNode(active_node);
+    }else
+      flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "error_messages");
+  });
+
+  $("#btn-move-node").click(function(){
+    if(typeof selNodes == "undefined")
+      flash_message("<%= I18n.t(:at_least_one, :to => I18n.t(:move, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "error_messages");
+    else
+      $("#folder_window").toggle();
+  });
+
+  $("#btn-cancel-move").click(function(){
+    $("#folder_window").hide();
+  });  
+
+  $("#btn-save-move").click(function(){
+    saveMove(selNodes);
+  });    
+
 });
 
+/* Retorna o caminho em que o nó se encontra */
+function getPath(node){
+  var path = []; 
+  path.unshift(node.data.title); 
+  node.visitParents(function(node){ 
+    if(node.parent && node.data.key != "_2")  // se não for raiz
+      path.unshift(node.data.title); // cada novo título do nó é adicionado ao começo 
+  }); 
+  return "/" + path.join("/"); 
+}
+
+/* Verifica se o nome do nó é um nome válido */
+function validName(parent_node, name){
+  var unique_name = true;
+  if(parent_node.childList != null){
+    for(var i = 0; i <= parent_node.childList.length-1; i++){
+      if(parent_node.getChildren()[i].data.title == name) // verifica se nome escolhido já existe
+        unique_name = false;
+    }
+
+  }
+  return unique_name;
+}
+
+/* Função para excluir nós selecionados ou todos */
+function deleteNodes(nodes){
+  if( typeof nodes != "undefined" ){
+    if(nodes[0].data.key != "_2"){ // remover selecionados
+      if (confirm("<%=I18n.t(:delete_confirm, :scope => [:lesson_files])%>")){
+        for (var i = 0; i < nodes.length; i++){
+          if (nodes[i].li != null && nodes[i].data.key != '_2')
+            saveDeletion(nodes[i], false);
+        }
+      }else
+        return false;
+    }else{ // remover todos
+      if (confirm("<%=I18n.t(:clean_lesson_confirm, :scope => [:lesson_files])%>"))
+        saveDeletion(nodes[0], true);
+      else
+        return false;
+    }
+  }else
+    flash_message("<%=I18n.t(:items_must_be_selected, :scope => [:lesson_files])%>", "alert", "error_messages");
+}
+
+/* Renomear nó */
 function editNode(node) {
   
   if (node.data.key == '_2') // raiz visivel
@@ -156,7 +259,7 @@ function editNode(node) {
               node.setTitle(new_title);
             }else{
               $("input#editNode").val(node.data.title); // retorna ao antigo título
-              flash_message("<%=I18n.t(:name_error, :scope => [:lesson_files])%>", "alert");
+              flash_message("<%=I18n.t(:name_error, :scope => [:lesson_files])%>", "alert", "error_messages");
             }             
           }else
             erase_flash_messages();
@@ -175,25 +278,9 @@ function editNode(node) {
 
 }
 
-// Função para excluir nós selecionados ou todos
-function deleteNodes(nodes){
-  if(nodes[0].data.key != "_2"){ // remover selecionados
-    if (confirm("<%=I18n.t(:delete_confirm, :scope => [:lesson_files])%>")){
-      for (var i = 0; i < nodes.length; i++){
-        if (nodes[i].li != null && nodes[i].data.key != '_2')
-          saveDeletion(nodes[i], false);
-      }
-    }else
-      return false;
-  }else{ // remover todos
-    if (confirm("<%=I18n.t(:clean_lesson_confirm, :scope => [:lesson_files])%>"))
-      saveDeletion(nodes[0], true);
-    else
-      return false;
-  }
-}
+/**** Métodos AJAX ****/
 
-// Salva a deleção de um nó
+/* Salva a deleção de um nó */
 function saveDeletion(node, root_node){
   url       = $("#remove_path").attr("value"); // url para deleção
   node_path = getPath(node); // caminho do nó
@@ -206,43 +293,15 @@ function saveDeletion(node, root_node){
       "root_node": root_node // informa se é a deleção do nó raiz, ou seja, de todos os arquivos da aula
     },
     success: function(data) {
-      node.removeChildren(); // remove filhos do nó
-      if(root_node == false){ // se não for a raiz, remove o nó
-        node.remove();
-      }
-      erase_flash_messages();
+      $("#lesson_file_management").html(data);
     },
     error: function(data) {
-      flash_message("<%=I18n.t(:delete_error, :scope => [:lesson_files])%>", "alert");
+      flash_message("<%=I18n.t(:delete_error, :scope => [:lesson_files])%>", "alert", "error_messages");
     }
   });
 }
 
-// Retorna o caminho em que o nó se encontra
-function getPath(node){
-  var path = []; 
-  path.unshift(node.data.title); 
-  node.visitParents(function(node){ 
-    if(node.parent && node.data.key != "_2")  // se não for raiz
-      path.unshift(node.data.title); // cada novo título do nó é adicionado ao começo 
-  }); 
-  return "/" + path.join("/"); 
-}
-
-// Verifica se o nome do nó é um nome válido
-function validName(parent_node, name){
-  var unique_name = true;
-  if(parent_node.childList != null){
-    for(var i = 0; i <= parent_node.childList.length-1; i++){
-      if(parent_node.getChildren()[i].data.title == name) // verifica se nome escolhido já existe
-        unique_name = false;
-    }
-
-  }
-  return unique_name;
-}
-
-// Cria pasta
+/* Cria pasta */
 function newFolder(node, path){
   url = $("#btn-new-folder").attr("value");
 
@@ -253,17 +312,17 @@ function newFolder(node, path){
       "path": path,
       "folder_name": node.data.title
     },
-    success: function(){
-      erase_flash_messages();
+    success: function(data){
+      $("#lesson_file_management").html(data);
     },
     error: function() {
       node.remove(); // remove pasta criada
-      flash_message("<%=I18n.t(:new_folder_error, :scope => [:lesson_files])%>", "alert");
+      flash_message("<%=I18n.t(:new_folder_error, :scope => [:lesson_files])%>", "alert", "error_messages");
     }
   });
 }
 
-// Renomeia nó
+/* Renomeia nó */
 function renameNode(node, new_title, path){
   url = $("#rename_path").attr("value");
 
@@ -275,12 +334,77 @@ function renameNode(node, new_title, path){
       "node_name": new_title,
       "previous_name": node.data.title
     },
-    success: function(){
-      erase_flash_messages();
+    success: function(data){
+      $("#lesson_file_management").html(data);
     },
     error: function() {
       node.setTitle(node.data.title); // retorna ao antigo título
-      flash_message("<%=I18n.t(:rename_error, :scope => [:lesson_files])%>", "alert");
+      flash_message("<%=I18n.t(:rename_error, :scope => [:lesson_files])%>", "alert", "error_messages");
     }
   }); 
+}
+
+/* Salvar a movimentação de pastas/arquivos */
+/* Trechos comentados serão utilizados quando a movimentação for possível para drag'n'drop */
+function saveMove(nodesToMove, moveToNode){
+  var paths       = new Array;
+  var problematic = new Array;
+
+  // if(typeof moveToNode == "undefined"){ // se parâmetro não foi passado, é via botão de mover
+  var nodesSelected = $("#folders_tree").dynatree("getTree").getSelectedNodes(true);
+  if (nodesSelected.length == 0)
+    var error = true; // erro: nenhuma pasta destino selecionada
+  else{
+    var moveTo = getPath(nodesSelected[0]);  
+  // }else
+    // moveTo = getPath(moveToNode);
+  // if(typeof moveToNode == "object") // se parâmetro foi passado, é via drag'n'drop
+    // paths.push(getPath(nodesToMove));
+  // else{
+
+
+    // exibir alerta "as pastas de mesmo nome serão modificadas (ex:. Pasta -> Pasta1)"    
+    // ou exibir erro dos que não foram movidos
+
+    
+
+
+    for(var i=0; i < nodesToMove.length; i++){ // pega todos, verifica se existe arquivo naquele path. se sim, move.
+      // if(validName(nodesSelected[0], nodesToMove[i].data.title))
+        paths.push(getPath(nodesToMove[i])); // caminho do nó
+      // else
+        // console.log("erro");
+      // problematic.push(nodesToMove[i].data.title);
+    }
+
+    // console.log(paths.length);
+  // }
+  }
+
+  if(error == true)
+    flash_message("<%= I18n.t(:destination_folder_error, :scope => [:lesson_files]) %>", "alert", "error_messages");
+  else{
+    $.ajax({
+      type: 'PUT',
+      url: $("#move_path").attr("value"),
+      data: {
+        "paths_to_move": paths,
+        "path_to_move_to": moveTo
+      },
+      success: function(data) {
+        $("#lesson_file_management").html(data);
+        // flash_message("não foi possível mover os itens: ", "alert", "error_messages");
+        // console.log(problematic);
+        // problematic.each(function(i){
+        //   flash_message(problematic[i] +", ", "alert", "error_messages");
+        // });
+
+      },
+      error: function() {
+        // flash_message("<%=I18n.t(:delete_error, :scope => [:lesson_files])%>", "alert", "error_messages");
+        flash_message("<%= I18n.t(:move_error, :scope => [:lesson_files]) %>", "alert", "error_messages");
+      }
+    });
+  }
+
 }

@@ -3709,7 +3709,7 @@ select[disabled] {
 }
 */
 
-/* Arquivos de aulas */
+/* Arquivos de aulas - lesson_files */
 
 #files_menu_bar{
     height: 16px;
@@ -3720,4 +3720,42 @@ select[disabled] {
 #lesson_files_select_all{
     font-size: 10pt;
     color: #8D8D8D;
+}
+
+p#files_menu_bar .btn.btn_default{
+    min-width: 31px;
+    padding-left: 0px;
+}
+
+#folder_window{
+    border: 1px solid #D0D0D0;
+    background-color: #f9f9f9;
+    min-height: 50px;
+    min-width: 200px;
+    position: absolute;
+    margin-top: 25px;
+    margin-left: -33px;
+    display: none;
+    font-size: 10pt;
+    font-weight: bold;
+    padding-top: 5px;
+    padding-left: 5px;
+}
+
+#folder_window #window_title{
+    color: #a6a6a6;
+}
+
+#folder_window #folder_title{
+    padding-left: 5px;
+}
+
+#folder_window_buttons{
+    float: right;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+#btn-cancel-move{
+    width: 65px;
 }

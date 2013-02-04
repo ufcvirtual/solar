@@ -7,6 +7,18 @@ ul.dynatree-container, #tree{
     min-height: 340px;
 }
 
+#folder_window ul.dynatree-container {
+    background-color: #f9f9f9;
+    min-height: 150px;
+}
+
+#folders_tree {
+    padding-top: 0px;
+    border: none;
+    padding-top: 0px;
+    margin-top: 0px;
+}
+
 .dynatree-folder .dynatree-ico-cf span.dynatree-icon, .dynatree-folder .dynatree-ico-ef span.dynatree-icon, .dynatree-folder span.dynatree-icon, span.dynatree-icon{
 	background-position: 0px;
 }

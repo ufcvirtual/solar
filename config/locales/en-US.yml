@@ -443,17 +443,29 @@
     errors:
       existing_name: already exists
 
-    lesson_files:
-      root: Root
-      delete_confirm: Are you sure you want to delete the selected items?
-      clean_lesson_confirm: Are you sure you want to clean lesson files?
-      delete_error: It wasn't possible delete items
-      new_folder_error: It wasn't possible create folder
-      name_error: Must be filled and unique
-      rename_error: It wasn't possible rename item
-      files_management: Gerenciamento de arquivos
-      lesson_must_have_file_type: A aula deve ser do tipo de arquivo
-      one_lesson_must_be_selected: Apenas uma aula deve ser selecionada
+  lesson_files:
+    root: Root
+    delete_confirm: Are you sure you want to delete the selected items?
+    clean_lesson_confirm: Are you sure you want to clean lesson files?
+    delete_error: It wasn't possible delete items
+    new_folder_error: It wasn't possible create folder
+    name_error: Must be filled and unique
+    rename_error: It wasn't possible rename item
+    files_management: File managment
+    lesson_must_have_file_type: Lesson must have file type
+    one_lesson_must_be_selected: One lesson must be selected
+    item_must_be_selected: One item must be selected
+    one_folder_must_be_selected: One folder must be selected
+    items_must_be_selected: One or more items must be selected
+    index:
+      cancel: Cancel
+      move_to: "Move to:"
+      move: Move
+    destination_folder_error: A destination folder must be selected
+    move_error: It wasn't possible to move
+    at_least_one: "Select, at least, one item to %{to}"
+    move: move
+    remove: remove
 
   #Foruns
   title: "Title"

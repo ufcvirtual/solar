@@ -611,8 +611,19 @@
     rename_error: Não foi possível renomear
     files_management: Gerenciamento de arquivos
     lesson_must_have_file_type: A aula deve ser do tipo de arquivo
-    one_lesson_must_be_selected: Apenas uma aula deve ser selecionada
-
+    one_lesson_must_be_selected: Uma aula deve ser selecionada
+    item_must_be_selected: Um item deve ser selecionado
+    one_folder_must_be_selected: Uma pasta deve ser selecionada
+    items_must_be_selected: Um ou mais itens devem ser selecionados
+    index:
+      cancel: Cancelar
+      move_to: "Mover para:"
+      move: Mover
+    destination_folder_error: Uma pasta de destino deve ser selecionada
+    move_error: Não foi possível mover
+    at_least_one: "Selecione, ao menos, um item para %{to}"
+    move: mover
+    remove: remover
 
 
   #Listagem de Fóruns

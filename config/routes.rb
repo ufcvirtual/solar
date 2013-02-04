@@ -100,7 +100,8 @@ Solar::Application.routes.draw do
       collection do
         post :folder, to: :new, defaults: {type: 'folder'}, as: :new_folder
         post :file, to: :new, defaults: {type: 'file'}, as: :new_file
-        put :rename_node, to: :edit
+        put :rename_node, to: :edit, defaults: {type: 'rename'}
+        put :move_nodes, to: :edit, defaults: {type: 'move'}
         get :remove_node, to: :destroy
       end
     end
@@ -113,10 +114,8 @@ Solar::Application.routes.draw do
     get "extract_files/:file.:extension", action: :extract_files, on: :member, as: :extract_file
   end
 
-  # match "/lessons/files/:lesson_id" => "lesson_files#index", :as => :lesson_files, :via => [:get]
-  match "/lesson_files/" => "lesson_files#index", action: :index, :as => :lesson_files, :via => [:get]
-  # assert_generates "/lesson_files", { :controller => "lesson_file", :action => "index" }
-
+  match "/lesson_files/" => "lesson_files#index", action: :index, :as => :lesson_files, :via => [:get] # usado para não necessitar do lesson_id ao usar lesson_files_path
+ 
   mount Ckeditor::Engine => "/ckeditor"
 
   resources :assignments, only: [:show] do

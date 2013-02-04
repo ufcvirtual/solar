@@ -179,13 +179,16 @@ jQuery.extend({
 });
 
 /* Exibindo mensagens (flash_message) via javascript */
-function flash_message(msg, css_class) {
+function flash_message(msg, css_class, div_to_show) {
+  if(typeof div_to_show == "undefined")
+    div_to_show = "flash_message_wrapper"
   erase_flash_messages();
   var html = '<div id="flash_message" class="' + css_class + '"><span>' + msg + '</span></div>';
-  $('.flash_message_wrapper').append(html);
+  $("."+div_to_show).append(html);
 }
 
 /* Limpando mensagens existentes */
 function erase_flash_messages() {
-  if ($('#flash_message')) {  $('#flash_message').remove(); }
+  if ($('#flash_message'))  
+    $('#flash_message').remove();
 }
