@@ -84,11 +84,9 @@ class LessonsController < ApplicationController
       end
 
     rescue
-
       respond_to do |format|
         format.html { render :new } #, :status => 500 }
       end
-
     end
 
   end
@@ -96,6 +94,8 @@ class LessonsController < ApplicationController
   # GET /lessons/1/edit
   def edit
     @lesson = Lesson.find(params[:id])
+
+    puts "\n\n\n*** params: #{@lesson}\n\n"
   end
 
   # PUT /lessons/1
@@ -106,6 +106,22 @@ class LessonsController < ApplicationController
         format.html { render :list }
       else
         format.html { render :edit }
+      end
+    end
+  end
+
+  def destroy
+    @lesson = Lesson.find(params[:id])
+
+    begin
+      #authorize! :destroy, @lesson
+      raise "error" unless @lesson.destroy # exclui aula (apenas se em teste)
+      respond_to do |format|
+        format.html{ render :nothing => true, :status => 200 }
+      end
+    rescue
+      respond_to do |format|
+        format.html{ render :nothing => true, :status => 500 }
       end
     end
   end

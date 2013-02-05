@@ -578,6 +578,7 @@
       none: Nenhuma aula cadastrada
       new: Nova aula
       new_lesson: Nova aula
+      edit_lesson: Editar aula
       new_module: Novo módulo
       edit_lesson_module: Editar módulo
       delete_lesson_module: Deletar módulo
@@ -588,6 +589,8 @@
       example: "(exemplo: http://www.seusite.com.br)"
     notifications:
       must_select_lessons: Uma ou mais aulas devem ser selecionadas
+      must_select_a_lesson: Uma aula deve ser selecionada
+      select_only_a_lesson: Selecione apenas uma aula
     files:
       new_folder: "Nova Pasta"
 

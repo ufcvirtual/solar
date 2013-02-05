@@ -420,6 +420,7 @@
       none: No lesson registered
       new: New
       new_lesson: New lesson
+      edit_lesson: Edit lesson
       new_module: New module
       edit_lesson_module: Edit module
       delete_lesson_module: Delete module
@@ -430,6 +431,8 @@
       example: "(example: http://www.yourwebsite.com.br)"
     notifications:
       must_select_lessons: One or more lessons must be selected
+      must_select_a_lesson: One lesson must be selected
+      select_only_a_lesson: Select only a lesson
     files:
       new_folder: "New Folder"
 
