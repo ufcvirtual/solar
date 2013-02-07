@@ -1,7 +1,3 @@
-= javascript_include_tag "application"
-= javascript_include_tag "jquery"
-= javascript_include_tag "jquery-ui-1.8.6"
-= javascript_include_tag "jquery.qtip.min"
 = javascript_include_tag "jquery.dynatree"
 = javascript_include_tag "lesson_files"
 
@@ -17,10 +13,11 @@
   = hidden_field_tag :remove_path, remove_node_lesson_files_path(:lesson_id => @lesson.id)
   = hidden_field_tag :rename_path, rename_node_lesson_files_path(:lesson_id => @lesson.id)
   = hidden_field_tag :move_path, move_nodes_lesson_files_path(:lesson_id => @lesson.id)
+  = hidden_field_tag :lesson_path, list_lessons_path
 
   / = javascript_include_tag "jquery.fileupload"
 
-  .error_messages
+  .flash_messages
 
   %p#files_menu_bar
     = check_box_tag :all_items_selector
@@ -42,6 +39,9 @@
     %span.right_buttons
       = image_tag("/assets/lesson/upload.png", :id => "btn-new_file")
   #tree
+
+  #blue_background
+    = button_tag "Finalizar", :type => :button, :class => 'btn btn_main', :id => "btn-conclude"  
 
   / %input#fileupload{:type => "file", :name => "files[]", :'data-url' => "server/php/", :multiple => true }
 

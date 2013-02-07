@@ -3714,7 +3714,7 @@ select[disabled] {
 #files_menu_bar{
     height: 16px;
     padding-top: 5px;
-    padding-bottom: 5px;
+    padding-bottom: 7px;
 }
 
 #lesson_files_select_all{
@@ -3758,4 +3758,9 @@ p#files_menu_bar .btn.btn_default{
 
 #btn-cancel-move{
     width: 65px;
+}
+
+#blue_background{
+    width: 100%;
+    background-color: #F5F8FB; 
 }

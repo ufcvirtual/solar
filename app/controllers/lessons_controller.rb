@@ -4,6 +4,7 @@ class LessonsController < ApplicationController
 
   include EditionHelper
   include FilesHelper
+  include LessonFileHelper
 
   before_filter :prepare_for_group_selection, :only => [:index, :download_files]
   before_filter :curriculum_data, :except => [:list, :download_files, :extract_files, :new, :create, :edit, :update]
@@ -40,9 +41,9 @@ class LessonsController < ApplicationController
       # comentei até ver chamada ajax
       #allocation_tags = allocation_tags.first unless allocation_tags.count > 1 # agiliza na consulta caso seja apenas um id
       # @lesson_modules = LessonModule.find_all_by_allocation_tag_id(allocation_tags, order: "allocation_tag_id")
-    rescue
+    rescue Exception => error
       respond_to do |format|
-        format.html { render :nothing => true, :status => 500  }
+        format.html { render :nothing => true, :status => 500 }
       end
     end
 
@@ -57,35 +58,45 @@ class LessonsController < ApplicationController
   # POST /lessons
   # POST /lessons.json
   def create
-    module_id = params[:lesson_module_id]
+    module_id           = params[:lesson_module_id]
     allocation_tags_ids = params[:allocation_tags_ids].split(" ")
 
     begin
-      authorize! :create, Lesson, :on => allocation_tags_ids
+      # authorize! :create, Lesson, :on => allocation_tags_ids
 
-      order = LessonModule.maximum(:order, :conditions => ['id > ?', module_id]).to_i + 1
+      order  = LessonModule.maximum(:order, :conditions => ['id > ?', module_id]).to_i + 1
       lesson = Lesson.new(params[:lesson])
+      manage_file = false
 
       Lesson.transaction do
         schedule = Schedule.create!(:start_date => params["start_date"], :end_date => params["end_date"])
-        Lesson.create!(:name => lesson.name, 
-                     :description => lesson.description, 
-                     :address => lesson.address,
-                     :lesson_module_id => module_id.to_i,
-                     :order => order,
-                     :status => lesson.status,
-                     :type_lesson => lesson.type_lesson,
-                     :user_id => current_user.id,
-                     :schedule_id => schedule.id)
+        @lesson  = Lesson.create!(:name => lesson.name, 
+                                  :description => lesson.description, 
+                                  :address => lesson.address,
+                                  :lesson_module_id => module_id.to_i,
+                                  :order => order,
+                                  :status => lesson.status,
+                                  :type_lesson => lesson.type_lesson,
+                                  :user_id => current_user.id,
+                                  :schedule_id => schedule.id)
+      end
+
+      if @lesson.type_lesson == Lesson_Type_File
+        manage_file = true 
+        file        = File.join(Lesson::FILES_PATH, @lesson.id.to_s)
+        Dir.mkdir(file) unless File.exist?(file)
+        @files      = directory_hash(file, @lesson.name).to_json
+        @folders    = directory_hash(file, @lesson.name, false).to_json
+        redirect_to_files = {:template => "/lesson_files/index", :layout => "define_token"}
       end
 
       respond_to do |format|
-        format.html { render :list, :status => 200 }        
+        format.html { render (manage_file ? redirect_to_files : {:nothing => true}), :status => 200 }
       end
 
-    rescue
+    rescue Exception => error
       respond_to do |format|
-        format.html { render :new } #, :status => 500 }
+        format.html { render :nothing => true , :status => 500 }
       end
     end
 

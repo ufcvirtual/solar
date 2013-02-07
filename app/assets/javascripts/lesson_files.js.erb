@@ -132,7 +132,7 @@ $(function(){
       newFolder(new_node, node_path); // cria pasta no sistema
 
     }else
-      flash_message("<%=I18n.t(:one_folder_must_be_selected, :scope => [:lesson_files])%>", "alert", "error_messages");
+      flash_message("<%=I18n.t(:one_folder_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
 
     return false;
   });
@@ -147,7 +147,7 @@ $(function(){
 
   $("#btn-remove-node").click(function(){
     if(typeof selNodes == "undefined")
-      flash_message("<%= I18n.t(:at_least_one, :to => I18n.t(:remove, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "error_messages");
+      flash_message("<%= I18n.t(:at_least_one, :to => I18n.t(:remove, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "flash_messages");
     else
       deleteNodes(selNodes); // deleta os nós que foram selecionados
   });
@@ -164,12 +164,12 @@ $(function(){
       else
         editNode(active_node);
     }else
-      flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "error_messages");
+      flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
   });
 
   $("#btn-move-node").click(function(){
     if(typeof selNodes == "undefined")
-      flash_message("<%= I18n.t(:at_least_one, :to => I18n.t(:move, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "error_messages");
+      flash_message("<%= I18n.t(:at_least_one, :to => I18n.t(:move, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "flash_messages");
     else
       $("#folder_window").toggle();
   });
@@ -181,6 +181,10 @@ $(function(){
   $("#btn-save-move").click(function(){
     saveMove(selNodes);
   });    
+
+  $("#btn-conclude").click(function(){
+    removeLightBox();//true, $("#lesson_path").val());
+  });
 
 });
 
@@ -226,7 +230,7 @@ function deleteNodes(nodes){
         return false;
     }
   }else
-    flash_message("<%=I18n.t(:items_must_be_selected, :scope => [:lesson_files])%>", "alert", "error_messages");
+    flash_message("<%=I18n.t(:items_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
 }
 
 /* Renomear nó */
@@ -259,7 +263,7 @@ function editNode(node) {
               node.setTitle(new_title);
             }else{
               $("input#editNode").val(node.data.title); // retorna ao antigo título
-              flash_message("<%=I18n.t(:name_error, :scope => [:lesson_files])%>", "alert", "error_messages");
+              flash_message("<%=I18n.t(:name_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
             }             
           }else
             erase_flash_messages();
@@ -296,7 +300,7 @@ function saveDeletion(node, root_node){
       $("#lesson_file_management").html(data);
     },
     error: function(data) {
-      flash_message("<%=I18n.t(:delete_error, :scope => [:lesson_files])%>", "alert", "error_messages");
+      flash_message("<%=I18n.t(:delete_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
     }
   });
 }
@@ -317,7 +321,7 @@ function newFolder(node, path){
     },
     error: function() {
       node.remove(); // remove pasta criada
-      flash_message("<%=I18n.t(:new_folder_error, :scope => [:lesson_files])%>", "alert", "error_messages");
+      flash_message("<%=I18n.t(:new_folder_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
     }
   });
 }
@@ -339,7 +343,7 @@ function renameNode(node, new_title, path){
     },
     error: function() {
       node.setTitle(node.data.title); // retorna ao antigo título
-      flash_message("<%=I18n.t(:rename_error, :scope => [:lesson_files])%>", "alert", "error_messages");
+      flash_message("<%=I18n.t(:rename_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
     }
   }); 
 }
@@ -375,13 +379,13 @@ function saveMove(nodesToMove){
   }
 
   if(error == true)
-    flash_message("<%= I18n.t(:destination_folder_error, :scope => [:lesson_files]) %>", "alert", "error_messages");
+    flash_message("<%= I18n.t(:destination_folder_error, :scope => [:lesson_files]) %>", "alert", "flash_messages");
   else{
     if(invalid_name == true) 
-      flash_message("<%= I18n.t(:existing_folder_error, :scope => [:lesson_files]) %>", "alert", "error_messages");
+      flash_message("<%= I18n.t(:existing_folder_error, :scope => [:lesson_files]) %>", "alert", "flash_messages");
     else{
       if(same_folder == true) 
-        flash_message("<%= I18n.t(:same_folder_error, :scope => [:lesson_files]) %>", "alert", "error_messages");
+        flash_message("<%= I18n.t(:same_folder_error, :scope => [:lesson_files]) %>", "alert", "flash_messages");
       else{
         $.ajax({
           type: 'PUT',
@@ -394,8 +398,8 @@ function saveMove(nodesToMove){
             $("#lesson_file_management").html(data);
           },
           error: function() {
-            // flash_message("<%=I18n.t(:delete_error, :scope => [:lesson_files])%>", "alert", "error_messages");
-            flash_message("<%= I18n.t(:move_error, :scope => [:lesson_files]) %>", "alert", "error_messages");
+            // flash_message("<%=I18n.t(:delete_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
+            flash_message("<%= I18n.t(:move_error, :scope => [:lesson_files]) %>", "alert", "flash_messages");
           }
         });
       }

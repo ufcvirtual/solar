@@ -188,6 +188,12 @@ function isSearchPanelClosed(element){
 
 /* Retorna as allocationTagIds selecionadas*/
 function navPanelSelectedItems(){
+	// console.log("----------------------------------------------------------------");
+	// console.log($("#places_nav_panel_txtGroup"));
+	// console.log($("#places_nav_panel_txtGroup")[0]);
+	// console.log($("#places_nav_panel_txtGroup").tokenInput("get"));
+	// console.log($("#places_nav_panel_txtGroup").tokenInput("get")[0]);
+	// console.log("----------------------------------------------------------------");
 	var $selectedItem = $("#places_nav_panel_txtGroup").tokenInput("get")[0];
 	if ($selectedItem == undefined) 
 		$selectedItem = $( "#places_nav_panel_txtCurriculumUnit").tokenInput("get")[0];

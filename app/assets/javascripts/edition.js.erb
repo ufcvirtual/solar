@@ -1,7 +1,11 @@
 /* chama página informada passando as allocation_tags do filtro */
-function call_page(url){ 
+function call_page(url, allocation_tags_ids){ 
   var what_was_selected   = whatWasSelected(); // recupera quais dados do filtro foram selecionados
-  var allocation_tags_ids = navPanelSelectedItems(); // recupera as allocations_tags dos itens escolhidos
+
+  if(allocation_tags_ids == null){
+    console.log("como assim?");
+    allocation_tags_ids = navPanelSelectedItems(); // recupera as allocations_tags dos itens escolhidos
+  }
 
   if($.type(allocation_tags_ids) == "number") // se o retorno for apenas um allocation_tag_id, será um número. nos demais casos, será um array de strings
     allocation_tags_ids = $.makeArray(allocation_tags_ids); // transforma número em array para não ter necessidade de tratamentos diferenciados no destino
@@ -10,6 +14,7 @@ function call_page(url){
     type: 'GET',
     url: url,
     data: {"allocation_tags_ids": allocation_tags_ids, "what_was_selected": what_was_selected},
+    // beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
     success: function(data) {
       $('#edition_content').html(data); // atualiza conteúdo da página com o retorno da url informada
     },
@@ -19,13 +24,12 @@ function call_page(url){
       update_edition_content(true);
     }
   });
-
 }
 
 /* atualiza informação do conteúdo atual */
-function update_content_url(url){
+function update_content_url(url, allocation_tags_ids){
   $('#choosed_content_url').val(url); // atualizar valor do campo que indica a página escolhida
-  update_edition_content(false); // substitui conteúdo
+  update_edition_content(false, allocation_tags_ids); // substitui conteúdo
 }
 
 /* submete formulário (form_id = atributo html do formulário, class_to_update_fail = nome da classe que terá seu conteúdo atualizado caso 
@@ -38,21 +42,28 @@ function submit_form(form_id, class_to_update_fail, redirect_url, div_to_update)
     url: $("#"+form_id).attr("action"),
     data: $("#"+form_id).serialize(),
     success: function(data) {
-      if(data.search(".error") != -1){ // se existir algum erro nas validações, o simple_form acrescenta a classe "error" aos campos
+      if(data.search(".error") != -1) // se existir algum erro nas validações, o simple_form acrescenta a classe "error" aos campos
         $("."+class_to_update_fail).html(data); // atualiza conteúdo com o formulário com os erros
-      }else{ // se não existir erros de validação
-        removeLightBox();  
-        if(div_to_update){ // página fora da tela de edição
-          $("#"+div_to_update).html(data); // atualiza conteúdo da página
-        }else{
-          update_content_url(redirect_url); // atualiza div da página de edição com conteúdo de listagem
+      else{
+        // O PROBLEMA ESTÁ AQUI: INDEPENDENTE DA ORDEM, HÁ UM PROBLEMA OU OUTRO
+        if(data.length > 1){ // se tiver conteúdo retornado sem erro
+          // html antes: em nenhum momento o update funciona
+          // html depois: segunda vez em diante nenhum funciona
+          update_content_url(redirect_url, [2]); // atualiza div da página de edição com conteúdo de listagem 
+          $("."+div_to_update).html(data); // atualiza conteúdo do lightbox
+        }else{ // se não existir erros de validação
+          if(div_to_update && data.length > 1) // QUAL UTILIDADE?
+            $("#"+div_to_update).html(data); // atualiza conteúdo da página
+          else
+            update_content_url(redirect_url); // atualiza div da página de edição com conteúdo de listagem
+          removeLightBox();  
+          flash_message('<%= I18n.t(:saved, :scope => [:editions, :success]) %>', 'notice'); // mensagem de sucesso
         }
-        flash_message('<%= I18n.t(:saved, :scope => [:editions, :success]) %>', 'notice'); // mensagem de sucesso
       }
     },
-    error: function() {
+    error: function(data) {
       removeLightBox();  
-      flash_message('<%= I18n.t(:cant_save, :scope => [:editions]) %>', 'alert'); // mensagem de erro
+      flash_message('<%= I18n.t(:cant_save, :scope => [:editions]) %>', 'alert'); // mensagem de erro  
     }
   });
 }
@@ -65,11 +76,10 @@ function delete_object(url, redirect_url, div_to_update){
       type: "DELETE",
       url: url,
       success: function(data) {
-        if(typeof div_to_update != "undefined"){ // página fora da tela de edição
+        if(typeof div_to_update != "undefined") // página fora da tela de edição
           $("#"+div_to_update).html(data); // atualiza conteúdo da página
-        }else{
+        else
           update_content_url(redirect_url); // atualiza div da página de edição com conteúdo de listagem
-        }
         flash_message('<%= I18n.t(:deleted, :scope => [:editions, :success]) %>', 'notice'); // aviso de sucesso
       },
       error: function(){

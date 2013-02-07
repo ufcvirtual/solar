@@ -1,43 +1,45 @@
 = javascript_include_tag "edition.js"
 
-%span.form_requirement= t(:required_fields)
+.first_step
 
-.lesson_form
-  =simple_form_for(@lesson, :html => {:id => "lesson_form"}) do |f| 
-    = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids]) 
-    = hidden_field_tag(:lesson_module_id, params[:lesson_module_id]) 
+  %span.form_requirement= t(:required_fields)
 
-    -start_date = @lesson.schedule.nil? ? Date.today : (@lesson.schedule.start_date || Date.today)
-    -end_date = @lesson.schedule.nil? ? Date.today : (@lesson.schedule.end_date || Date.today)
+  .lesson_form.block_content
+    =simple_form_for(@lesson, :html => {:id => "lesson_form"}) do |f| 
+      = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids]) 
+      = hidden_field_tag(:lesson_module_id, params[:lesson_module_id]) 
 
-    .form-inputs.block_content
-      =f.input :name, :required => true
-      =f.input :description  
-      .lesson_date
-        =f.label :start_date, :required => true
-        =text_field_tag "start_date", "", :id => "from_date", :title => "#{t(:from_date)}", :value => "#{l(start_date.to_date, :format => :default)}", :class => "date_text_field", :size => 10, :required => true
-        .end_date.invisible
-          =f.label :end_date
-          =text_field_tag "end_date", "", :id => "until_date", :title => "#{t(:until_date)}", :value => "#{l(end_date.to_date, :format => :default)}", :class => "date_text_field", :size => 10, :required => true
-        .select_end_date
-          =f.label " "
-          =check_box("check","end_date", :id => 'check_end_date')
-          =t(:enable_end_date, :scope => [:lessons, :new])
-      .lesson_status 
-        =f.label t(:status, :scope => [:lessons, :new])
-        =f.select :status, ([ ['rascunho', Lesson_Test.to_i], ['liberada', Lesson_Approved.to_i] ]), :include_blank => false
-      .lesson_type 
-        =f.label t(:type_lesson, :scope => [:lessons, :new])
-        =f.select :type_lesson, ([ ['link', Lesson_Type_Link.to_i], ['arquivo',Lesson_Type_File.to_i] ]), :include_blank => false
-      .url_lesson
-        =f.input :address
-        .disabled
-          =f.label " "
-          =t(:example, :scope => [:lessons, :new])
+      -start_date = @lesson.schedule.nil? ? Date.today : (@lesson.schedule.start_date || Date.today)
+      -end_date   = @lesson.schedule.nil? ? Date.today : (@lesson.schedule.end_date || Date.today)
 
-    .block_content.form-actions
-      =button_tag t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :onclick => "javascript:submit_form('lesson_form', 'lesson_form', '#{list_lessons_path}', '');", :type => "button"
-      =button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default", :onclick => "removeLightBox();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
+      .form-inputs.block_content
+        =f.input :name, :required => true
+        =f.input :description  
+        .lesson_date
+          =f.label :start_date, :required => true
+          =text_field_tag "start_date", "", :id => "from_date", :title => "#{t(:from_date)}", :value => "#{l(start_date.to_date, :format => :default)}", :class => "date_text_field", :size => 10, :required => true
+          .end_date.invisible
+            =f.label :end_date
+            =text_field_tag "end_date", "", :id => "until_date", :title => "#{t(:until_date)}", :value => "#{l(end_date.to_date, :format => :default)}", :class => "date_text_field", :size => 10, :required => true
+          .select_end_date
+            =f.label " "
+            =check_box("check","end_date", :id => 'check_end_date')
+            =t(:enable_end_date, :scope => [:lessons, :new])
+        .lesson_status 
+          =f.label t(:status, :scope => [:lessons, :new])
+          =f.select :status, ([ ['rascunho', Lesson_Test.to_i], ['liberada', Lesson_Approved.to_i] ]), :include_blank => false
+        .lesson_type 
+          =f.label t(:type_lesson, :scope => [:lessons, :new])
+          =f.select :type_lesson, ([ ['link', Lesson_Type_Link.to_i], ['arquivo',Lesson_Type_File.to_i] ]), :include_blank => false
+        .url_lesson
+          =f.input :address
+          .disabled
+            =f.label " "
+            =t(:example, :scope => [:lessons, :new])
+
+      .right_buttons
+        = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default", :onclick => "removeLightBox();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
+        = button_tag t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :onclick => "javascript:  ", :type => "button", :id => "save_button"
 
 :css
   .date_text_field {
@@ -66,23 +68,35 @@
     var options = $.extend($.datepicker.regional['#{I18n.locale}']);
     options.dateFormat = global_config.locale.dateFormat;
     $('#from_date, #until_date').datepicker(options);
+
+    $("#save_button").click(function(){
+      submit_form('lesson_form', 'lesson_form', '#{list_lessons_path}', 'first_step'); 
+      if("#{params[:action] == "new"}" == "true" && $(this).html == "Prosseguir")
+        $('#lightBoxDialogTitle').html('Nova aula > Gerência de arquivos');
+    });
+
   });
 
   $("input:checkbox").change(function() {
     if (!this.checked){
-        $("#until_date").val('');
-        $(".end_date").removeClass("visible").addClass("invisible");
-      }
-    else {
-        $("#until_date").val('#{I18n.l(Date.today, :format => :default).to_s}');
-        $(".end_date").removeClass("invisible").addClass("visible");
-      }
-    });
+      $("#until_date").val('');
+      $(".end_date").removeClass("visible").addClass("invisible");
+    }else{
+      $("#until_date").val('#{I18n.l(Date.today, :format => :default).to_s}');
+      $(".end_date").removeClass("invisible").addClass("visible");
+    }
+  });
 
   $("#lesson_type_lesson").change(function(){
     t = $('#lesson_type_lesson').val(); 
-    if (t == "#{Lesson_Type_Link}")
+    if (t == "#{Lesson_Type_Link}"){
       $(".url_lesson").show();
-    else
+      $("#save_button").html('Salvar');
+    }else{
       $(".url_lesson").hide();
+      if("#{params[:action] == "new"}" == "true")
+        $("#save_button").html('Prosseguir');
+    }
   });
+
+ 

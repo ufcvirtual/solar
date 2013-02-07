@@ -157,6 +157,11 @@ var methods = {
         return this;
     },
     get: function() {
+        // console.log("----------------------------------------------------------------");
+        // console.log(this);
+        // console.log(this.data);
+        // console.log(this.data("tokenInputObject"));
+        // console.log("----------------------------------------------------------------");
         return this.data("tokenInputObject").getTokens();
     },
     toggleDisabled: function(disable) {

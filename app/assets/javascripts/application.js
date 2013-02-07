@@ -112,9 +112,11 @@ $(document).ready(function() {
     }
   });
 
-  $('.mysolar_menu_title_single > a').prepend('<div class="menu_icon_circle">&bull;</div>');
+  if($('.mysolar_menu_title_single > a').children("div.menu_icon_circle").length == 0)
+    $('.mysolar_menu_title_single > a').prepend('<div class="menu_icon_circle">&bull;</div>');
   
-  $('.mysolar_menu_title_multiple > a').prepend('<div class="menu_icon_arrow">&#8227;</div>');
+  if($('.mysolar_menu_title_multiple > a').children("div.menu_icon_arrow").length == 0)
+    $('.mysolar_menu_title_multiple > a').prepend('<div class="menu_icon_arrow">&#8227;</div>');
 
   // abre menu corrente
   $('.open_menu').click();

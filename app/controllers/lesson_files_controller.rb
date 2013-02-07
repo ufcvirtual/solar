@@ -1,5 +1,7 @@
 class LessonFilesController < ApplicationController
 
+  include LessonFileHelper
+
   layout "define_token"
   require 'fileutils' # utilizado na remoção de diretórios, pois o "Dir.rmdir" não remove diretórios que não estejam vazis
 
@@ -15,7 +17,6 @@ class LessonFilesController < ApplicationController
       @folders = directory_hash(file, @lesson.name, false).to_json
     end
 
-    # render :layout => "define_token"
   end
 
   def new
@@ -28,13 +29,13 @@ class LessonFilesController < ApplicationController
         error = true
       end
 
-      @lesson = Lesson.where(id: params[:lesson_id]).first
+      @lesson  = Lesson.where(id: params[:lesson_id]).first
       file     = File.join(Lesson::FILES_PATH, params[:lesson_id])
       @files   = directory_hash(file, @lesson.name).to_json
       @folders = directory_hash(file, @lesson.name, false).to_json
 
       respond_to do |format|
-        format.html{ render (error ? {:nothing => true} : :index), :status => (error ? 500 : 200) }
+        format.html{ render (error ? {:nothing => true} : :index), :status => (error ? 500 : 200), :bla => params[:allocation_tags_ids] }
       end
     end
   end
@@ -92,23 +93,5 @@ class LessonFilesController < ApplicationController
       format.html{ render (error ? {:nothing => true} : :index), :status => (error ? 500 : 200) }
     end
   end
-
-  private
-
-    def directory_hash(path, name=nil, get_children=true)
-      data = {title: (name || path)}
-      data[:children] = children = []
-      data[:isFolder] = true
-      Dir.foreach(path) do |entry|
-        next if ['.', '..'].include?(entry)
-        full_path = File.join(path, entry)
-        if File.directory?(full_path)
-          children << directory_hash(full_path, entry, get_children)
-        elsif get_children
-          children << entry
-        end
-      end
-      return data
-    end
 
 end

@@ -128,7 +128,7 @@
         lesson_has_file_type = $( "input:checked" ).attr("file_type");
         if(lesson_has_file_type == "true"){
           url = "#{lesson_files_path}" + "#{File::SEPARATOR}?lesson_id=" + selected_lessons[0];
-          showLightBoxURL(url, 600, 400, true, "#{I18n.t(:files_management, :scope => [:lesson_files])}");
+          showLightBoxURL(url, 550, 270, true, "#{I18n.t(:files_management, :scope => [:lesson_files])}");
         }else
           alert("#{I18n.t(:lesson_must_have_file_type, :scope => [:lesson_files])}");
       }else
