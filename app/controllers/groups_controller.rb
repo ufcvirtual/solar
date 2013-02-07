@@ -1,7 +1,5 @@
 class GroupsController < ApplicationController
-
-  # load_and_authorize_resource
-
+ 	# load_and_authorize_resource
 
 	#Webservice utilizado pelo Mobilis
 	def index
@@ -45,7 +43,7 @@ class GroupsController < ApplicationController
 
 				group[:allocation_tag_id] = [group.allocation_tag.id]
 
-		        params[:chained_filter] = [] unless params.include?(:chained_filter)
+				params[:chained_filter] = [] unless params.include?(:chained_filter)
 
 				# se group.offer.allocation_tag.id estiver nos parametros, ok
 				respects_chained_filter = true if params[:chained_filter].include?(group.offer.allocation_tag.id.to_s)    
@@ -64,8 +62,8 @@ class GroupsController < ApplicationController
 			@groups = @groups.compact
 			
 			reference_code = nil
-      		reference_index = -1
-			@groups.each_with_index do |group,i|
+			reference_index = -1
+			@groups.each_with_index do |group, i|
 				if reference_code == group.code
 					@groups[reference_index][:allocation_tag_id] += group[:allocation_tag_id]
 					@groups[reference_index].status = nil
@@ -88,14 +86,12 @@ class GroupsController < ApplicationController
 
 			optionAll = {:code => '...' << params[:search] << "... (#{all_allocation_tag_ids.count})", :allocation_tag_id => all_allocation_tag_ids, :name =>"*"}
 			@groups << optionAll
-			
 		end
 
 		respond_to do |format|
 		  format.html
 		  format.xml  { render xml: @groups}
 		  format.json  { render json: @groups }
-		  
 		end
 	end
 

@@ -1,10 +1,3 @@
-=begin
-
-  = REMOVER códigos javascript de comportamento dos botões (redirecionamentos) 
-  = daqui e colocar no arquivo .js
-  
-=end
-
 module PlacesNavPanelHelper
 
   def places_nav_panel_helper
@@ -62,66 +55,62 @@ module PlacesNavPanelHelper
 			"noResults": "#{I18n.t(:places_nav_panel_empty_text)}"
 		};
 		
-		
 		//Acao dos Botoes 
-		function placesNavPanel_redirect(url){
+		function places_nav_panel_redirect(url){
 			var strForm = '<form id="places_nav_panel_redirectionForm" style="display:none;" method="get">&nbsp;</form>';
-				$('body').append(strForm);
-				var $redirectionForm = $('#places_nav_panel_redirectionForm');
-				$redirectionForm.attr('action',url);
-				$redirectionForm.attr('method','get');
-				$redirectionForm.append($('.placesNavPanel'));
-				$redirectionForm.submit();
+			$('body').append(strForm);
+			$('#places_nav_panel_redirectionForm')
+				.attr('action',url)
+				.append($('.placesNavPanel'))
+				.submit();
 		}
 		
 		$(document).ready(function() { 
 			$('#places_nav_panel_btManageCourses').click(function(){
-				placesNavPanel_redirect(controller_urls["course"]);
+				places_nav_panel_redirect(controller_urls["course"]);
 			});
 			$('#places_nav_panel_btManageOfferBySemester').click(function(){
-				placesNavPanel_redirect(controller_urls["offer"]);
+				places_nav_panel_redirect(controller_urls["offer"]);
 			});
 			$('#places_nav_panel_btManageCurriculumUnit').click(function(){
 				//showLightBoxURL(controller_urls["curriculumUnit"], 540, 605, true, 'Nova Unidade Curricular');
-				placesNavPanel_redirect(controller_urls["curriculumUnit"]);
+				places_nav_panel_redirect(controller_urls["curriculumUnit"]);
 			});
 			$('#places_nav_panel_btManageOfferByCurriculumUnit').click(function(){
-				placesNavPanel_redirect(controller_urls["offer"]);
+				places_nav_panel_redirect(controller_urls["offer"]);
 			});
 			$('#places_nav_panel_btManageGroups').click(function(){
-				placesNavPanel_redirect(controller_urls["group"]);
+				places_nav_panel_redirect(controller_urls["group"]);
 			});
 		});
-		
 		
 	</script>
 	
 	<div class="placesNavPanel">
-		<div><span 
-			class="label">#{t(:course)}:</span><input 
-			type="text" id="places_nav_panel_txtCourse"/>
+		<div>
+			<span class="label">#{t(:course)}:</span>
+			<input type="text" id="places_nav_panel_txtCourse"/>
 			<input id="places_nav_panel_btManageCourses" type="button" value="#{t(:places_nav_panel_to_manage)}" class ="btn btn_main btShowMenu"/>
 			<input type="hidden" id="places_nav_panel_selectedCourseName" name="places_nav_panel_selectedCourseName" value="#{selectedCourseName}"/>
 			<input type="hidden" id="places_nav_panel_selectedCourseValue" name="places_nav_panel_selectedCourseValue" value="#{selectedCourseValue}"/>
 		</div>
-		<div><span 
-			class="label">#{t(:semester_date)}:</span><input 
-			type="text" id="places_nav_panel_txtSemester"/>
+		<div>
+			<span class="label">#{t(:semester_date)}:</span>
+			<input type="text" id="places_nav_panel_txtSemester"/>
 			<input id="places_nav_panel_btManageOfferBySemester" type="button" value="#{t(:places_nav_panel_to_offer)}" class ="btn btn_main btShowMenu"/>
 			<input type="hidden" id="places_nav_panel_selectedSemesterName" name="places_nav_panel_selectedSemesterName" value="#{selectedSemesterName}"/>
 			<input type="hidden" id="places_nav_panel_selectedSemesterValue" name="places_nav_panel_selectedSemesterValue" value="#{selectedSemesterValue}"/>
 		</div>
-		<div><span 
-			class="label" style=";">#{t(:curriculum_unit)}:</span><input 
-			type="text" id="places_nav_panel_txtCurriculumUnit"/>
+		<div><span class="label" style=";">#{t(:curriculum_unit)}:</span>
+			<input type="text" id="places_nav_panel_txtCurriculumUnit"/>
 			<input id="places_nav_panel_btManageCurriculumUnit" type="button" value="#{t(:places_nav_panel_to_manage)}" class ="btn btn_main btShowMenu"/>
 			<input id="places_nav_panel_btManageOfferByCurriculumUnit" type="button" value="#{t(:places_nav_panel_to_offer)}" class ="btn btn_main btShowMenu"/>
 			<input type="hidden" id="places_nav_panel_selectedCurriculumUnitName" name="places_nav_panel_selectedCurriculumUnitName" value="#{selectedCurriculumUnitName}"/>
 			<input type="hidden" id="places_nav_panel_selectedCurriculumUnitValue" name="places_nav_panel_selectedCurriculumUnitValue" value="#{selectedCurriculumUnitValue}"/>
 		</div>
-		<div><span 
-			class="label">#{t(:group)}:</span><input 
-			type="text" id="places_nav_panel_txtGroup"/>
+		<div>
+			<span class="label">#{t(:group)}:</span>
+			<input type="text" id="places_nav_panel_txtGroup"/>
 			<input id="places_nav_panel_btManageGroups" type="button" value="#{t(:places_nav_panel_to_manage)}" class ="btn btn_main btShowMenu"/>
 			<input type="hidden" id="places_nav_panel_selectedGroupName" name="places_nav_panel_selectedGroupName" value="#{selectedGroupName}"/>
 			<input type="hidden" id="places_nav_panel_selectedGroupValue" name="places_nav_panel_selectedGroupValue"value="#{selectedGroupValue}"/>

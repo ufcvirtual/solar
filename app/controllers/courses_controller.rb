@@ -13,12 +13,12 @@ class CoursesController < ApplicationController
     @courses.sort! { |a,b| a.name <=> b.name }
 
     # name or code
-	if params.include?(:search)
-		params[:search].strip!
-		@courses  = @courses.select { |course| course.name.downcase.include?(params[:search].downcase) or course.code.downcase.include?(params[:search].downcase) }
-		@courses.each do |course|
-			course[:allocation_tag_id] = course.allocation_tag.id
-		end
+    if params.include?(:search)
+      params[:search].strip!
+      @courses  = @courses.select { |course| course.name.downcase.include?(params[:search].downcase) or course.code.downcase.include?(params[:search].downcase) }
+      @courses.each do |course|
+        course[:allocation_tag_id] = course.allocation_tag.id
+      end
       
       optionAll = {:code => '*', :allocation_tag_id => @courses.map(&:allocation_tag).map(&:id), :name =>'...' << params[:search] << "... (#{@courses.count})"}
       @courses << optionAll

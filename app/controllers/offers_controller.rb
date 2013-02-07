@@ -14,19 +14,7 @@ class OffersController < ApplicationController
   end
 
   def list
-    # @course_id, @curriculum_unit_id = (params[:course_id] || "all"), (params[:curriculum_unit_id] || "all") # a fim de testes: editor, atualmente, tem permissão para uc: 3 e curso: 2
-    # authorize! :index, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e cursos selecionados
-    # get_offers(@curriculum_unit_id, @course_id)
-  
     @offers = get_all_offers
-
-    # if params.include?(:course)
-    #   @offers = @offers.select { |offer| offer.course_id == params[:course].to_i }
-    # end
-
-    # if params.include?(:period)
-    #   @offers = @offers.select { |offer| offer.semester.downcase.include?(params[:period].downcase) }
-    # end
 
     # ordenando os resultados
     @offers.sort! { |a,b| a.semester <=> b.semester } if params.include?(:search_semester)
@@ -38,7 +26,7 @@ class OffersController < ApplicationController
       @offers = @offers.select { |offer| offer.semester.downcase.include?(params[:search_semester].downcase) }
       
       all_allocation_tag_ids = Array.new(@offers.count)
-      @offers.each_with_index do |offer,i|
+      @offers.each_with_index do |offer, i|
         respects_chained_filter = false
         offer[:allocation_tag_id] = [offer.allocation_tag.id]
         offer[:name] = offer.curriculum_unit.name

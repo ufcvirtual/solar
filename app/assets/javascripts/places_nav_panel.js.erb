@@ -15,23 +15,23 @@ $(document).ready(function(){
 		noResultsText: messages["noResults"],
 		prePopulate: preselectedCourses,
 		onAdd: function (item) {
-            $('#places_nav_panel_txtSemester').tokenInput('clear');
-            $('#places_nav_panel_txtCurriculumUnit').tokenInput('clear');
-            $('#places_nav_panel_txtGroup').tokenInput('clear');
-            $('#token-input-places_nav_panel_txtSemester').focus();
-            $('#places_nav_panel_selectedCourseValue').val(item.allocation_tag_id);
-            $('#places_nav_panel_selectedCourseName').val(item.name);
-            navPanelChangeEvent('course',item.allocation_tag_id);
-        },
-        onDelete: function (item) {
-            $('#places_nav_panel_txtSemester').tokenInput('clear');
-            $('#places_nav_panel_txtCurriculumUnit').tokenInput('clear');
-            $('#places_nav_panel_txtGroup').tokenInput('clear');
-            $('#token-input-places_nav_panel_txtCourse').focus();
-            $('#places_nav_panel_selectedCourseValue').val('');
-            $('#places_nav_panel_selectedCourseName').val('');
-            navPanelChangeEvent('course','');
-        }
+			$('#places_nav_panel_txtSemester').tokenInput('clear');
+			$('#places_nav_panel_txtCurriculumUnit').tokenInput('clear');
+			$('#places_nav_panel_txtGroup').tokenInput('clear');
+			$('#token-input-places_nav_panel_txtSemester').focus();
+			$('#places_nav_panel_selectedCourseValue').val(item.allocation_tag_id);
+			$('#places_nav_panel_selectedCourseName').val(item.name);
+			navPanelChangeEvent('course',item.allocation_tag_id);
+		},
+		onDelete: function (item) {
+			$('#places_nav_panel_txtSemester').tokenInput('clear');
+			$('#places_nav_panel_txtCurriculumUnit').tokenInput('clear');
+			$('#places_nav_panel_txtGroup').tokenInput('clear');
+			$('#token-input-places_nav_panel_txtCourse').focus();
+			$('#places_nav_panel_selectedCourseValue').val('');
+			$('#places_nav_panel_selectedCourseName').val('');
+			navPanelChangeEvent('course','');
+		}
 	});
 
 	var preselectedSemesters = null;
@@ -53,21 +53,21 @@ $(document).ready(function(){
 		propertyToSearch: 'semester',
 		prePopulate: preselectedSemesters,
 		onAdd: function (item) {
-            $('#places_nav_panel_txtCurriculumUnit').tokenInput('clear');
-            $('#places_nav_panel_txtGroup').tokenInput('clear');
-            $('#token-input-places_nav_panel_txtCurriculumUnit').focus();
-            $('#places_nav_panel_selectedSemesterValue').val(item.allocation_tag_id);
-            $('#places_nav_panel_selectedSemesterName').val(item.semester);
-            navPanelChangeEvent('semester',item.allocation_tag_id);
-        },
-        onDelete: function (item) {
-            $('#places_nav_panel_txtCurriculumUnit').tokenInput('clear');
-            $('#places_nav_panel_txtGroup').tokenInput('clear');
-            $('#token-input-places_nav_panel_txtSemester').focus();
-            $('#places_nav_panel_selectedSemesterValue').val('');
-            $('#places_nav_panel_selectedSemesterName').val('');            
-            navPanelChangeEvent('semester','');
-        }
+			$('#places_nav_panel_txtCurriculumUnit').tokenInput('clear');
+			$('#places_nav_panel_txtGroup').tokenInput('clear');
+			$('#token-input-places_nav_panel_txtCurriculumUnit').focus();
+			$('#places_nav_panel_selectedSemesterValue').val(item.allocation_tag_id);
+			$('#places_nav_panel_selectedSemesterName').val(item.semester);
+			navPanelChangeEvent('semester',item.allocation_tag_id);
+		},
+		onDelete: function (item) {
+			$('#places_nav_panel_txtCurriculumUnit').tokenInput('clear');
+			$('#places_nav_panel_txtGroup').tokenInput('clear');
+			$('#token-input-places_nav_panel_txtSemester').focus();
+			$('#places_nav_panel_selectedSemesterValue').val('');
+			$('#places_nav_panel_selectedSemesterName').val('');            
+			navPanelChangeEvent('semester','');
+		}
 	});
 
 	var preselectedCurriculumUnits = null;
@@ -92,18 +92,18 @@ $(document).ready(function(){
 		propertyToSearch: 'name',
 		prePopulate: preselectedCurriculumUnits,
 		onAdd: function (item) {
-		    $('#places_nav_panel_txtGroup').tokenInput('clear');
-            $('#token-input-places_nav_panel_txtGroup').focus();
-            $('#places_nav_panel_selectedCurriculumUnitValue').val(item.allocation_tag_id);
-            $('#places_nav_panel_selectedCurriculumUnitName').val(item.name);
-            navPanelChangeEvent('curriculumUnit',item.allocation_tag_id);
+			$('#places_nav_panel_txtGroup').tokenInput('clear');
+			$('#token-input-places_nav_panel_txtGroup').focus();
+			$('#places_nav_panel_selectedCurriculumUnitValue').val(item.allocation_tag_id);
+			$('#places_nav_panel_selectedCurriculumUnitName').val(item.name);
+			navPanelChangeEvent('curriculumUnit',item.allocation_tag_id);
 		},
 		onDelete: function(item) {
-            $('#places_nav_panel_txtGroup').tokenInput('clear');
+			$('#places_nav_panel_txtGroup').tokenInput('clear');
 			$('#token-input-places_nav_panel_txtCurriculumUnit').focus();
-	        $('#places_nav_panel_selectedCurriculumUnitValue').val('');
-            $('#places_nav_panel_selectedCurriculumUnitName').val('');
-            navPanelChangeEvent('curriculumUnit','');
+			$('#places_nav_panel_selectedCurriculumUnitValue').val('');
+			$('#places_nav_panel_selectedCurriculumUnitName').val('');
+			navPanelChangeEvent('curriculumUnit','');
 		}
 		
 	});
@@ -116,13 +116,13 @@ $(document).ready(function(){
 		preselectedGroups = [{allocation_tag: selectedGroupValue, code: selectedGroupName}];
 
 	$( "#places_nav_panel_txtGroup").tokenInput(function() {
-			if ($("#places_nav_panel_txtCurriculumUnit").tokenInput("get").length > 0) 
-				return search_urls["group"]+"?chained_filter="+ $('#places_nav_panel_selectedCurriculumUnitValue').val(); + "&";
-			if ($("#places_nav_panel_txtSemester").tokenInput("get").length > 0) 
-				return search_urls["group"]+"?chained_filter="+ $('#places_nav_panel_selectedSemesterValue').val() + "&";
-			if ($("#places_nav_panel_txtCourse").tokenInput("get").length > 0) 
-				return search_urls["group"]+"?chained_filter="+ $('#places_nav_panel_selectedCourseValue').val() + "&";
-			return search_urls["group"]
+		if ($("#places_nav_panel_txtCurriculumUnit").tokenInput("get").length > 0) 
+			return search_urls["group"]+"?chained_filter="+ $('#places_nav_panel_selectedCurriculumUnitValue').val(); + "&";
+		if ($("#places_nav_panel_txtSemester").tokenInput("get").length > 0) 
+			return search_urls["group"]+"?chained_filter="+ $('#places_nav_panel_selectedSemesterValue').val() + "&";
+		if ($("#places_nav_panel_txtCourse").tokenInput("get").length > 0) 
+			return search_urls["group"]+"?chained_filter="+ $('#places_nav_panel_selectedCourseValue').val() + "&";
+		return search_urls["group"]
 		}, {
 		hintText: hints["group"],
 		searchingText: messages["searching"],
@@ -132,17 +132,17 @@ $(document).ready(function(){
 		propertyToSearch: 'code',
 		prePopulate: preselectedGroups,
 		onAdd: function (item) {
-            $('#token-input-places_nav_panel_txtGroup').focus();
-            $('#places_nav_panel_selectedGroupValue').val(item.allocation_tag_id);
-            $('#places_nav_panel_selectedGroupName').val(item.code);
+			$('#token-input-places_nav_panel_txtGroup').focus();
+			$('#places_nav_panel_selectedGroupValue').val(item.allocation_tag_id);
+			$('#places_nav_panel_selectedGroupName').val(item.code);
 
-            navPanelChangeEvent('group',item.allocation_tag_id);
+			navPanelChangeEvent('group',item.allocation_tag_id);
 		},
 		onDelete: function(item) {
 			$('#token-input-places_nav_panel_txtGroup').focus();
-            $('#places_nav_panel_selectedGroupValue').val('');
-            $('#places_nav_panel_selectedGroupName').val('');
-            navPanelChangeEvent('group','');
+			$('#places_nav_panel_selectedGroupValue').val('');
+			$('#places_nav_panel_selectedGroupName').val('');
+			navPanelChangeEvent('group','');
 		}
 	});
 
@@ -151,29 +151,33 @@ $(document).ready(function(){
 			$('#navPanelMenu').remove();
 	});
 
-
 	//Chamando a lista completa de elementos quando se aperta a seta para baixo no teclado.
-	//$('#token-input-txtCourse').keydown(function(e){
-	
 	$('[id^="token-input-"]').keyup(function(e){
-    	if (e.keyCode == 40) { 
-	    	if (isSearchPanelClosed(this)){
+		if (e.keyCode == 40) { //Seta pra baixo
+			if (isSearchPanelClosed(this)){
 				$(this).val(' ');
 				$(this).trigger('keydown');
 			}
-    	}
+		}
 
-    	if (e.keyCode == 9) { 
-	    	if (isSearchPanelClosed(this)){
-		    	var $parent = null;
-		    	if (e.shiftKey)
-			    	$parent = $(this).parent().parent().parent().prev();
-		    	else
-		    		$parent = $(this).parent().parent().parent().next();
+		if (e.keyCode == 9) { //Tab
+			if (isSearchPanelClosed(this)){
+				var $parent = null;
+				if (e.shiftKey)
+					$parent = $(this).parent().parent().parent().prev();
+				else
+					$parent = $(this).parent().parent().parent().next();
 				if ($parent != undefined)
 					$parent.find('[id^="token-input-"]').focus();
 			}
-    	}
+		}
+	});
+
+	//Ajustando os estados dos botões do filtro
+	navPanelUpdateGroupsButtonState();
+
+	$('.placesNavPanel').bind('navPanelChange', function (e,type, data ) {
+		navPanelUpdateGroupsButtonState();
 	});
 
 });
@@ -181,7 +185,6 @@ $(document).ready(function(){
 function isSearchPanelClosed(element){
 	return ($(element).siblings('tester').html() == '');
 }
-
 
 /* Retorna as allocationTagIds selecionadas*/
 function navPanelSelectedItems(){
@@ -192,11 +195,10 @@ function navPanelSelectedItems(){
 		$selectedItem = $( "#places_nav_panel_txtSemester").tokenInput("get")[0];
 	if ($selectedItem == undefined) 
 		$selectedItem = $( "#places_nav_panel_txtCourse").tokenInput("get")[0];
-
 	if ($selectedItem == undefined) 
 		return [];
 	
-	return $selectedItem.allocation_tag_id
+	return $selectedItem.allocation_tag_id;
 }
 
 /*Retorna as alocationTagIds selecionadas em *TODOS* os níveis */
@@ -211,7 +213,7 @@ function navPanelAllItems(){
 		'semester' : semester, 
 		'curriculumUnit': curriculumUnit, 
 		'group': group
-		};
+	};
 }
 
 
@@ -224,6 +226,7 @@ function navPanelDisableButton($button){
 	$button.addClass('btn_disabled');
 	$button.attr("disabled", "disabled");
 }
+
 function navPanelEnableButton($button){
 	$button.removeClass('btn_disabled');
 	$button.removeAttr("disabled");
@@ -251,14 +254,3 @@ function navPanelUpdateGroupsButtonState(){
 	else
 		navPanelDisableButton($('#places_nav_panel_btManageGroups'));
 }
-
-$(document).ready(function(){
-	//Ajustando os estados dos botões do filtro
-	navPanelUpdateGroupsButtonState();
-
-	$('.placesNavPanel').bind('navPanelChange', function (e,type, data ) {
-		navPanelUpdateGroupsButtonState();
-	});
-});
-
-
