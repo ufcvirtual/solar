@@ -5,13 +5,14 @@ tmp/*
 *.swp
 *-min.js
 .DS_Store
-converage.data
-rerun.txt
 .project
 .idea/
 .dotest/
 .config
 .settings/
+.sass-cache/
+converage.data
+rerun.txt
 InstalledFiles
 nbproject/
 coverage/
