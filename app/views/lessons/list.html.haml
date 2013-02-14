@@ -165,7 +165,7 @@
 
     if(can_do_action(lessons_ids)){
       window.location.href='#{download_files_lessons_path}?lessons_ids='+lessons_ids+'&allocation_tags_ids='+allocation_tags_ids;
-    }alo
+    }
   }
 
   function edit_lesson(module_id){
@@ -173,12 +173,12 @@
     allocation_tags_ids = $("#allocation_tags_ids").val();
     there_tab = lessons.length > 1 ? true : false;
 
-    if (!there_tab) 
+    if (!there_tab){
       if (lessons.length == 1)
         open_lightbox("/lessons/"+lessons+"/edit?allocation_tags_ids="+allocation_tags_ids+" ", "#{t(:edit_lesson, :scope => [:lessons, :list])}",550,270);
       else
         alert('#{I18n.t(:must_select_a_lesson, :scope => [:lessons, :notifications])}');
-    else
+    }else
       alert('#{I18n.t(:select_only_a_lesson, :scope => [:lessons, :notifications])}');
   }
 
@@ -186,10 +186,10 @@
     lessons = get_selected_lessons(module_id);
     allocation_tags_ids = $("#allocation_tags_ids").val();
 
-    if (lessons.length >= 1)
+    if (lessons.length >= 1){
       alert("aqui vai deletar");
-      //open_lightbox("/lessons/"+lessons+"/edit?allocation_tags_ids="+allocation_tags_ids+" ", "#{t(:edit_lesson, :scope => [:lessons, :list])}",550,270);
-    else
+      //open_lightbox("/lessons/"+lessons+"/edit?allocation_tags_ids="+allocation_tags_ids+" ", "t(:edit_lesson, :scope => [:lessons, :list])}",550,270);
+    }else
       alert('#{I18n.t(:must_select_a_lesson, :scope => [:lessons, :notifications])}');
   }
 

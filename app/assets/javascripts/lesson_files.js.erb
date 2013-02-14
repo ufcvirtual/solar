@@ -183,7 +183,7 @@ $(function(){
   });    
 
   $("#btn-conclude").click(function(){
-    removeLightBox();//true, $("#lesson_path").val());
+    removeLightBox();
   });
 
 });
@@ -191,7 +191,8 @@ $(function(){
 /* Retorna o caminho em que o nó se encontra */
 function getPath(node){
   var path = []; 
-  path.unshift(node.data.title); 
+  if(node.data.key != "_2") // se não for raiz
+    path.unshift(node.data.title); 
   node.visitParents(function(node){ 
     if(node.parent && node.data.key != "_2")  // se não for raiz
       path.unshift(node.data.title); // cada novo título do nó é adicionado ao começo 
@@ -361,7 +362,8 @@ function saveMove(nodesToMove){
 
     for(var i=0; i < nodesToMove.length; i++){ 
       
-      if(validName(nodesSelected[0], nodesToMove[i].data.title)){ // verifica nome da pasta a ser movida
+      // verifica se está movendo para a pasta atual e o nome da pasta a ser movida (se não estiver mudando de pasta, não verifica nome)
+      if(nodesToMove[i].parent.data.key == nodesSelected[0].data.key || validName(nodesSelected[0], nodesToMove[i].data.title)){ 
         if( nodesToMove[i].data.key == nodesSelected[0].data.key ) 
           var same_folder = true; // erro: está movendo para ela mesma
         else{
@@ -398,7 +400,6 @@ function saveMove(nodesToMove){
             $("#lesson_file_management").html(data);
           },
           error: function() {
-            // flash_message("<%=I18n.t(:delete_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
             flash_message("<%= I18n.t(:move_error, :scope => [:lesson_files]) %>", "alert", "flash_messages");
           }
         });

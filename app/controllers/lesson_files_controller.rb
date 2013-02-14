@@ -35,7 +35,7 @@ class LessonFilesController < ApplicationController
       @folders = directory_hash(file, @lesson.name, false).to_json
 
       respond_to do |format|
-        format.html{ render (error ? {:nothing => true} : :index), :status => (error ? 500 : 200), :bla => params[:allocation_tags_ids] }
+        format.html{ render (error ? {:nothing => true} : :index), :status => (error ? 500 : 200) }
       end
     end
   end
@@ -46,16 +46,17 @@ class LessonFilesController < ApplicationController
       if params[:type] == "rename" # renomear
 
         path       = File.join("#{Rails.root}", "media", "lessons", params[:lesson_id], params[:path])
-        path_split = path.split(File::SEPARATOR)               #[media, lessons, lesson_id, path_parte1, path_parte2]
-        path_split.delete(path_split.last)                     #[media, lessons, lesson_id, path_parte1]
-        new_path   = File.join(path_split, params[:node_name]) #/media/lessons/lesson_id/path_parte1/node_name]
+        path_split = get_path_without_last_dir(path)
+        new_path   = File.join(path_split, params[:node_name]) # /media/lessons/lesson_id/path_parte1/node_name
         FileUtils.mv path, new_path # renomeia
 
       elsif params[:type] == "move" # mover
+
         params[:paths_to_move].each do |node_path|
-          path     = File.join("#{Rails.root}", "media", "lessons", params[:lesson_id], node_path)
-          new_path = File.join("#{Rails.root}", "media", "lessons", params[:lesson_id], params[:path_to_move_to])
-          FileUtils.mv path, new_path if File.exist?(path) # move
+          path       = File.join("#{Rails.root}", "media", "lessons", params[:lesson_id], node_path)
+          new_path   = File.join("#{Rails.root}", "media", "lessons", params[:lesson_id], params[:path_to_move_to])
+          path_split = get_path_without_last_dir(path)
+          FileUtils.mv path, new_path if File.exist?(path) and (new_path != path_split) # tenta mover a não ser que não exista ou que seja para a mesma pasta
         end
 
       end
@@ -84,7 +85,7 @@ class LessonFilesController < ApplicationController
       error = true
     end
 
-    @lesson = Lesson.where(id: params[:lesson_id]).first
+    @lesson  = Lesson.where(id: params[:lesson_id]).first
     file     = File.join(Lesson::FILES_PATH, params[:lesson_id])
     @files   = directory_hash(file, @lesson.name).to_json
     @folders = directory_hash(file, @lesson.name, false).to_json
@@ -92,6 +93,14 @@ class LessonFilesController < ApplicationController
     respond_to do |format|
       format.html{ render (error ? {:nothing => true} : :index), :status => (error ? 500 : 200) }
     end
+  end
+
+  private
+
+  def get_path_without_last_dir(path)
+    path_split = path.split(File::SEPARATOR)       # [media, lessons, lesson_id, path_parte1, path_parte2]
+    path_split.delete(path_split.last)             # [media, lessons, lesson_id, path_parte1]
+    return File.join(path_split) + File::SEPARATOR # /media/lessons/lesson_id/path_parte1/
   end
 
 end

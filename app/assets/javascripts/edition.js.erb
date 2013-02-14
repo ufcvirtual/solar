@@ -1,11 +1,8 @@
 /* chama página informada passando as allocation_tags do filtro */
-function call_page(url, allocation_tags_ids){ 
-  var what_was_selected   = whatWasSelected(); // recupera quais dados do filtro foram selecionados
+function call_page(url){ 
 
-  if(allocation_tags_ids == null){
-    console.log("como assim?");
-    allocation_tags_ids = navPanelSelectedItems(); // recupera as allocations_tags dos itens escolhidos
-  }
+  var what_was_selected   = whatWasSelected(); // recupera quais dados do filtro foram selecionados
+  allocation_tags_ids     = navPanelSelectedItems(); // recupera as allocations_tags dos itens escolhidos
 
   if($.type(allocation_tags_ids) == "number") // se o retorno for apenas um allocation_tag_id, será um número. nos demais casos, será um array de strings
     allocation_tags_ids = $.makeArray(allocation_tags_ids); // transforma número em array para não ter necessidade de tratamentos diferenciados no destino
@@ -14,7 +11,6 @@ function call_page(url, allocation_tags_ids){
     type: 'GET',
     url: url,
     data: {"allocation_tags_ids": allocation_tags_ids, "what_was_selected": what_was_selected},
-    // beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
     success: function(data) {
       $('#edition_content').html(data); // atualiza conteúdo da página com o retorno da url informada
     },
@@ -45,14 +41,11 @@ function submit_form(form_id, class_to_update_fail, redirect_url, div_to_update)
       if(data.search(".error") != -1) // se existir algum erro nas validações, o simple_form acrescenta a classe "error" aos campos
         $("."+class_to_update_fail).html(data); // atualiza conteúdo com o formulário com os erros
       else{
-        // O PROBLEMA ESTÁ AQUI: INDEPENDENTE DA ORDEM, HÁ UM PROBLEMA OU OUTRO
-        if(data.length > 1){ // se tiver conteúdo retornado sem erro
-          // html antes: em nenhum momento o update funciona
-          // html depois: segunda vez em diante nenhum funciona
-          update_content_url(redirect_url, [2]); // atualiza div da página de edição com conteúdo de listagem 
+        if(div_to_update == "first_step" && data.length > 1){ // se tiver conteúdo retornado sem erro
+          update_content_url(redirect_url); // atualiza div da página de edição com conteúdo de listagem 
           $("."+div_to_update).html(data); // atualiza conteúdo do lightbox
         }else{ // se não existir erros de validação
-          if(div_to_update && data.length > 1) // QUAL UTILIDADE?
+          if(div_to_update && data.length > 1) // VER NECESSIDADE
             $("#"+div_to_update).html(data); // atualiza conteúdo da página
           else
             update_content_url(redirect_url); // atualiza div da página de edição com conteúdo de listagem

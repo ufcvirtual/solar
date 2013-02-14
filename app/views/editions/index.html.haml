@@ -35,12 +35,12 @@
   });
 
   /* atualiza conteúdo da div de edição. pode exibir a página do ícone chamado ou a lista de itens */
-  function update_edition_content(maintain_message, allocation_tags_ids){
+  function update_edition_content(maintain_message){
     if(maintain_message == false){
       erase_flash_messages();
     }
     // se nenhum item foi selecionado no filtro
-    if(allocation_tags_ids == null && (navPanelSelectedItems() == undefined || navPanelSelectedItems().length == 0)){
+    if(navPanelSelectedItems() == undefined || navPanelSelectedItems().length == 0){
       // remove conteúdo
       $('#edition_content').children().remove();
       $('#back_button').hide();
@@ -51,11 +51,11 @@
       // se a div "curriculum_unit_items" tiver seu conteúdo vazio ou for a lista, então ainda não foi exibido nada na página e é para exibir a lista de itens
       if($('#choosed_content_url').val() == 0){
         // adiciona conteúdo com itens
-        call_page('#{items_editions_path}', allocation_tags_ids);
+        call_page('#{items_editions_path}');
         $('#back_button').hide();
       }else{
         // chama página escolhida para substituir o conteúdo
-        call_page($('#choosed_content_url').val(), allocation_tags_ids);
+        call_page($('#choosed_content_url').val());
         $('#back_button').show();
       }
     }
