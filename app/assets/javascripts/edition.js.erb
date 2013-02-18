@@ -23,9 +23,9 @@ function call_page(url){
 }
 
 /* atualiza informação do conteúdo atual */
-function update_content_url(url, allocation_tags_ids){
+function update_content_url(url){
   $('#choosed_content_url').val(url); // atualizar valor do campo que indica a página escolhida
-  update_edition_content(false, allocation_tags_ids); // substitui conteúdo
+  update_edition_content(false); // substitui conteúdo
 }
 
 /* submete formulário (form_id = atributo html do formulário, class_to_update_fail = nome da classe que terá seu conteúdo atualizado caso 
@@ -45,7 +45,7 @@ function submit_form(form_id, class_to_update_fail, redirect_url, div_to_update)
           update_content_url(redirect_url); // atualiza div da página de edição com conteúdo de listagem 
           $("."+div_to_update).html(data); // atualiza conteúdo do lightbox
         }else{ // se não existir erros de validação
-          if(div_to_update && data.length > 1) // VER NECESSIDADE
+          if(div_to_update && data.length > 1)
             $("#"+div_to_update).html(data); // atualiza conteúdo da página
           else
             update_content_url(redirect_url); // atualiza div da página de edição com conteúdo de listagem
