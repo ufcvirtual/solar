@@ -144,30 +144,6 @@ var methods = {
             $(this).data("tokenInputObject", new $.TokenList(this, url_or_data_or_function, settings));
         });
     },
-    // init: function (url_or_data_or_function, options) {
-    //     var settings = $.extend({}, DEFAULT_SETTINGS, options || {});
-    //     return this.each(function () {
-    //         // console.log("------------------");
-    //         // console.log($(this));
-    //         // console.log($(this).data);
-    //         // console.log($(this).data("settings"));
-    //        // $(this).data("settings", settings);
-    //         // console.log($(this).data("settings"));
-    //         // console.log($(this).data("tokenInputObject"));
-    //         $(this).data("tokenInputObject", new $.TokenList(this, url_or_data_or_function, settings));
-    //         // ready to call the onReady
-    //         if ($.isFunction(settings.onReady)) {
-    //            settings.onReady.call();
-    //         }
-    //     });
-    // },
-    // init : function(url_or_data_or_function, options) {
-    //     var settings = $.extend({}, DEFAULT_SETTINGS, options || {});
-
-    //     return this.each(function() {
-    //             $(this).data("tokenInputObject", new $.TokenList(this, url_or_data_or_function, settings));
-    //     });
-    // },
     clear: function() {
         this.data("tokenInputObject").clear();
         return this;
@@ -181,13 +157,17 @@ var methods = {
         return this;
     },
     get: function() {
-        // console.log("a");
+        console.log("----------------------------------------------------------------");
+        console.log(this);
+        console.log(this.data);
+        console.log(this.data("tokenInputObject"));
+        console.log("----------------------------------------------------------------");
+        // console.log($("<input type=\"text\"  autocomplete=\"off\">"));
         // console.log("----------------------------------------------------------------");
-        // console.log(this);
-        // console.log(this.data);
-        // console.log(this.data("tokenInputObject"));
-        // console.log("----------------------------------------------------------------");
+        // if(this.data("tokenInputObject"))
         return this.data("tokenInputObject").getTokens();
+        // else
+            // console.log($("#places_nav_panel_txtGroup").val());
     },
     toggleDisabled: function(disable) {
         this.data("tokenInputObject").toggleDisabled(disable);
@@ -480,12 +460,8 @@ $.TokenList = function (input, url_or_data, settings) {
 
     // Initialization is done
     if($.isFunction($(input).data("settings").onReady)) {
-        // QUANDO CHAMA ISSO?
-        console.log($(input));
-        console.log($(input).data);
-        console.log($(input).data("settings"));
-        // QUANDO CHAMA ISSO?
-        $(input).data("settings").onReady.call();
+        settings.onReady.call();
+        // $(input).data("settings").onReady.call();
     }
 
     //
@@ -523,7 +499,6 @@ $.TokenList = function (input, url_or_data, settings) {
     }
 
     this.getTokens = function() {
-        console.log(saved_tokens);
         return saved_tokens;
     }
 

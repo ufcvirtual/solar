@@ -11,6 +11,9 @@ class LessonsController < ApplicationController
 
   load_and_authorize_resource :except => [:index, :list, :download_files, :new, :create, :edit, :update, :show]
 
+  # protect_from_forgery :except => [:list, :new, :create]
+  # skip_before_filter :verify_authenticity_token, :only => [:list, :new, :create]
+
   def show
     render :layout => 'lesson_frame'
   end
@@ -87,7 +90,7 @@ class LessonsController < ApplicationController
         Dir.mkdir(file) unless File.exist?(file)
         @files      = directory_hash(file, @lesson.name).to_json
         @folders    = directory_hash(file, @lesson.name, false).to_json
-        redirect_to_files = {:template => "/lesson_files/index", :layout => "define_token"}
+        redirect_to_files = {:template => "/lesson_files/index", :layout => false}
       end
 
       respond_to do |format|
@@ -95,6 +98,7 @@ class LessonsController < ApplicationController
       end
 
     rescue Exception => error
+      raise "#{error}"
       respond_to do |format|
         format.html { render :nothing => true , :status => 500 }
       end

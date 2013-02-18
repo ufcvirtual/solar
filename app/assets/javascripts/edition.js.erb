@@ -2,7 +2,7 @@
 function call_page(url){ 
 
   var what_was_selected   = whatWasSelected(); // recupera quais dados do filtro foram selecionados
-  allocation_tags_ids     = navPanelSelectedItems(); // recupera as allocations_tags dos itens escolhidos
+  var allocation_tags_ids = navPanelSelectedItems(); // recupera as allocations_tags dos itens escolhidos
 
   if($.type(allocation_tags_ids) == "number") // se o retorno for apenas um allocation_tag_id, será um número. nos demais casos, será um array de strings
     allocation_tags_ids = $.makeArray(allocation_tags_ids); // transforma número em array para não ter necessidade de tratamentos diferenciados no destino
@@ -60,6 +60,11 @@ function submit_form(form_id, class_to_update_fail, redirect_url, div_to_update)
     }
   });
 }
+
+// $(document).ajaxSend(function(e, xhr, options) {
+//   var token =$("meta[name='csrf-token']").attr("content");
+//   xhr.setRequestHeader("X-CSRF-Token", token);  
+// });
 
 /* deleção de algum objeto (url = url do método de deleção, redirect_url = url para a qual o conteúdo será atualizado em caso de sucesso, 
   div_to_update = informação de qual div é para atualizar caso não esteja "incluso" na página de edição) */
