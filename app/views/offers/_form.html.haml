@@ -1,4 +1,5 @@
-= javascript_include_tag "edition.js"
+= javascript_include_tag "offers"
+= javascript_include_tag "edition"
 
 %span.form_requirement= t(:required_fields)
 .offer_form{:style => "text-align: left;"}
@@ -53,28 +54,3 @@
     display: none;
     background-color: white;
   }
-
-:javascript
-
-  $(document).ready(function(){
-
-    $(function(){
-      $( "#start_date" ).datepicker();
-      $( "#end_date" ).datepicker();
-    });
-
-    jQuery(function($){
-      $("#offer_semester").mask("9999.9");
-    });
-
-    $("#save").click(function(){
-      submit_form('offer_form', 'offer_form', '#{offers_path}', 'list_offers');
-    });
-
-    $("#cancel").click(function(){
-      removeLightBox();
-    });
-
-  });
-
-  

@@ -1,6 +1,9 @@
-= javascript_include_tag "edition.js"
+= javascript_include_tag "offers"
+= javascript_include_tag "edition"
 
 .block_wrapper#list_offers
+
+  = t(:all_groups_deactivated, :scope => [:offers, :index])
 
   .block_title
     %h2
@@ -38,28 +41,4 @@
               = button_tag t(".deactivate_groups"), :class => deactivate_class[1] + " deactivate_groups", :alt => t(".deactivate_groups"), :type => :button, :disabled => (not allow_deactivate), :title => deactivate_class[0], :id => "deactivate_groups_#{offer.id}"
           %td    
             = button_tag t(".delete"), :onclick => "javascript: delete_object('#{offer_path(offer, :curriculum_unit_id => @curriculum_unit_id, :course_id => @course_id)}', '#{offers_path}', 'list_offers')", :class => "btn btn_caution", :alt => t(".delete")
-
-:javascript
-
-  $(document).ready(function(){
-
-    $('.edit').click(function(){
-      open_lightbox3($(this).parent().attr('action'), '#{t(".edit_offer")}');
-    });
-
-    $('.deactivate_groups').click(function(){
-      $.ajax({
-        type: 'POST',
-        url: $(this).parent().attr('action'),
-        success: function(data){
-          $("#list_offers").html(data);
-          flash_message("#{t('.all_groups_deactivated')}", 'notice');
-        },
-        error: function(){
-          flash_message("#{t('.cant_deactivate')}", 'alert');
-        }
-      });
-    });
-
-  });
 

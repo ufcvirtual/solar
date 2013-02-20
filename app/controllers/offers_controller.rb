@@ -143,7 +143,7 @@ class OffersController < ApplicationController
 
   # Método que, a partir das ucs e cursos selecionados, cria ofertas para todas as combinações possíveis entre aqueles
   def create
-    params[:offer][:curriculum_unit_id], params[:offer][:course_id] = CurriculumUnit.first, Course.first # valores aleatórios utilizados apenas para testar a validade da oferta
+    params[:offer][:curriculum_unit_id], params[:offer][:course_id] = CurriculumUnit.first.id, Course.first.id # valores aleatórios utilizados apenas para testar a validade da oferta
     params[:offer][:user_id] = current_user.id # para a alocação
     @offer = Offer.new(params[:offer])
 
@@ -171,9 +171,11 @@ class OffersController < ApplicationController
         get_offers(@curriculum_unit_id, @course_id)
         format.html { render :index, :status => 500 }
       end
-    rescue
+    rescue Exception => error
       respond_to do |format|
         @date_range_error = @offer.errors.full_messages.last unless @offer.errors[:start_date].blank? and @offer.errors[:end_date].blank?
+        @offer.errors.add(:semester, I18n.t(:existing_semester, :scope => [:offers])) if error.message == t(:semester, :scope => [:offers, :index]) + " " + t(:existing_semester, :scope => [:offers])
+        @offer.course_id, @offer.curriculum_unit_id = nil, nil # para exibir na tela os mesmos valores anteriores ao erro
         format.html { render :new, :status => 200 }
       end
     end

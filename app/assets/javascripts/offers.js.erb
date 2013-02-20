@@ -1,0 +1,39 @@
+$(function(){
+
+  /* Usado no formulário */
+  $( "#start_date" ).datepicker();
+  $( "#end_date" ).datepicker();
+
+  jQuery(function($){
+    $("#offer_semester").mask("9999.9");
+  });
+
+  $("#save").click(function(){
+    submit_form('offer_form', 'offer_form', '#{offers_path}', 'list_offers');
+  });
+
+  $("#cancel").click(function(){
+    removeLightBox();
+  });
+
+  /* Usado na listagem */
+  $('.edit').click(function(){
+    open_lightbox3($(this).parent().attr('action'), "<%= I18n.t(:edit_offer, :scope => [:offers, :index]) %>");
+  });
+
+
+  $('.deactivate_groups').click(function(){
+    $.ajax({
+      type: 'POST',
+      url: $(this).parent().attr('action'),
+      success: function(data){
+        $("#list_offers").html(data);
+        flash_message("<%= I18n.t(:all_groups_deactivated, :scope => [:offers, :index]) %>", 'notice');
+      },
+      error: function(){
+        flash_message("<%= I18n.t(:cant_deactivate, :scope => [:offers, :index]) %>", 'alert');
+      }
+    });
+  });
+
+});
