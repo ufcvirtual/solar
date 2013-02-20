@@ -157,17 +157,7 @@ var methods = {
         return this;
     },
     get: function() {
-        console.log("----------------------------------------------------------------");
-        console.log(this);
-        console.log(this.data);
-        console.log(this.data("tokenInputObject"));
-        console.log("----------------------------------------------------------------");
-        // console.log($("<input type=\"text\"  autocomplete=\"off\">"));
-        // console.log("----------------------------------------------------------------");
-        // if(this.data("tokenInputObject"))
         return this.data("tokenInputObject").getTokens();
-        // else
-            // console.log($("#places_nav_panel_txtGroup").val());
     },
     toggleDisabled: function(disable) {
         this.data("tokenInputObject").toggleDisabled(disable);
