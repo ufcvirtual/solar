@@ -44,4 +44,5 @@ end
 
 group :assets do
   gem 'uglifier', '>= 1.2.7'
+  gem 'sass-rails'
 end
