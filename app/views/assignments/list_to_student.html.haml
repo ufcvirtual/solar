@@ -29,8 +29,8 @@
                     .more_or_less
                       %a.enunciation_more.link_content{:href => "#"}= t(:more, :scope => [:assignment, :information])
                       %a.enunciation_less.link_content{:href => "#"}= t(:less, :scope => [:assignment, :information])
-                  - else
-                    = assignment.enunciation
+                - else
+                  = assignment.enunciation
               %td{:align => "center"}
                 =l assignment.schedule.start_date.to_time, :format => :files
                 %br
