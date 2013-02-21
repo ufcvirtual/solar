@@ -98,7 +98,6 @@ class LessonsController < ApplicationController
       end
 
     rescue Exception => error
-      raise "#{error}"
       respond_to do |format|
         format.html { render :nothing => true , :status => 500 }
       end
