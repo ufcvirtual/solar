@@ -15,6 +15,7 @@ Solar::Application.routes.draw do
   resources :users do
     get :photo, on: :member
     get :edit_photo, on: :collection
+    put :update_photo, on: :member
   end
 
   ## curriculum_units/:id/participants
@@ -73,6 +74,7 @@ Solar::Application.routes.draw do
     member do
       delete :cancel, action: :destroy
       delete :cancel_request, action: :destroy, defaults: {type: 'request'}
+      post :reactivate
       post :deactivate
       post :activate
     end
@@ -83,9 +85,11 @@ Solar::Application.routes.draw do
     get :list, on: :collection
   end
 
-  resources :scores, only: [:index] do
+  resources :scores, only: [:index, :show] do
     get ":student_id", action: :show, on: :collection, as: :student
     get :history_access, on: :member
+    get "amount_history_access/:id", action: :amount_history_access, on: :collection, as: :amount_history_access
+    get "history_access/:id", action: :history_access, on: :collection
   end
 
   resources :enrollments, only: :index
@@ -143,7 +147,13 @@ Solar::Application.routes.draw do
   end
 
   resources :messages do
-    get :restore, on: :collection
+    collection do
+      get :restore
+      get :change_indicator_reading
+      post :ajax_get_contacts
+      post :send_message
+      delete :destroy
+    end
   end
 
   resources :pages, only: [:index] do
@@ -159,7 +169,18 @@ Solar::Application.routes.draw do
 
   get 'home' => "users#mysolar", as: :home
   get 'user_root' => 'users#mysolar'
-  
+
+  get "support_material_files/list_edition", to: "support_material_files#list_edition"
+  get "support_material_files/list", to: "support_material_files#list"
+  get "support_material_files/download", to: "support_material_files#download"
+  get "support_material_files/download_all_file_ziped", to: "support_material_files#download_all_file_ziped"
+  get "support_material_files/download_folder_file_ziped", to: "support_material_files#download_folder_file_ziped"
+  get "support_material_files/select_action_link", to: "support_material_files#select_action_link"
+  get "support_material_files/select_action_file", to: "support_material_files#select_action_file"
+  get "support_material_files/folder_verify", to: "support_material_files#folder_verify"
+  get "support_material_files/delete_folder", to: "support_material_files#delete_folder"
+  get "bibliography/list", to: "bibliography#list"
+
   get "access_control/index"
   get "/media/users/:id/photos/:style.:extension", to: "users#photo"
   get "/media/lessons/:id/:file.:extension", to: "access_control#lesson"
@@ -169,8 +190,6 @@ Solar::Application.routes.draw do
   get "/media/assignment/public_area/:file.:extension", to: "access_control#assignment"
   get "/media/assignment/enunciation/:file.:extension", to: "access_control#assignment"
 
-  match ':controller(/:action(/:id(.:format)))'
-
+  # match ':controller(/:action(/:id(.:format)))'
   root to: 'devise/sessions#new'
-
 end

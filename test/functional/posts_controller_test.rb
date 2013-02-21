@@ -66,7 +66,7 @@ class PostsControllerTest < ActionController::TestCase
   test "criar novo post no forum da turma FOR de introducao a linguistica" do
     discussion_id = 1
     assert_difference('Post.count') do
-      post :create, :discussion_post => { :discussion_id => discussion_id, :content => "postagem de teste"}
+      post :create, discussion_id: discussion_id, discussion_post: {content: "postagem de teste"}
     end
 
     assert_redirected_to discussion_posts_path(discussion_id)
@@ -76,11 +76,11 @@ class PostsControllerTest < ActionController::TestCase
   test "deletar post do forum da turma FOR de introducao a linguistica" do
     discussion_id = 1
 
-    post(:create, :discussion_post => { :discussion_id => discussion_id, :content => "postagem de teste"})
+    post(:create, discussion_id: discussion_id, discussion_post: {content: "postagem de teste"})
     @post = assigns(:post)
 
     assert_difference('Post.count', -1) do
-      delete :destroy, :id => @post
+      delete :destroy, :id => @post, :discussion_id => discussion_id
     end
 
     assert_response :success

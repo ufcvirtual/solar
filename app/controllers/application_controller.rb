@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale, :start_user_session, :application_context, :current_menu, :another_level_breadcrumb
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to({:controller => :home}, :alert => t(:no_permission))
+    redirect_to home_path, alert: t(:no_permission)
   end
 
   def start_user_session

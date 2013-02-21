@@ -41,7 +41,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     get @quimica_tab
     get list_to_student_assignments_path
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
     assert_nil assigns(:individual_assignments_info)
     assert_nil assigns(:group_assignments_info)
@@ -87,7 +87,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
       post upload_file_assignments_path, {:file => fixture_file_upload('/files/assignments/public_files/teste3.txt', 'text/plain'), :type => "public"}, { :html => {:multipart => true}, :referer => '/' }
     end
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
@@ -141,7 +141,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno1).id, allocation_tags(:al3).id, "teste3.txt")
     get download_files_assignments_path(:file_id => public_file.id, :type => 'public')
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
@@ -157,7 +157,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   #   public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno3).id, allocation_tags(:al8).id, "teste1.txt")
   #   get download_files_assignments_path(:file_id => public_file.id, :type => 'public')
   #   assert_response :redirect
-  #   assert_redirected_to({:controller => :home})
+  #   assert_redirected_to(home_path)
   #   assert_equal I18n.t(:no_permission), flash[:alert]
   # end
 
@@ -176,7 +176,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     public_file = PublicFile.find_by_user_id_and_allocation_tag_id_and_attachment_file_name(users(:aluno1).id, allocation_tags(:al3).id, "teste3.txt")
     get download_files_assignments_path(:file_id => public_file.id, :type => 'public')
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
 

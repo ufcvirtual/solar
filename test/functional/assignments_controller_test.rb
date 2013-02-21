@@ -23,7 +23,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in users(:aluno1)
     get :list
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
   end
 
@@ -67,7 +67,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in users(:aluno1)
     get(:information, {:id => assignments(:a9).id})   
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
@@ -76,7 +76,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in users(:aluno1)
     get(:information, {:id => assignments(:a6).id})   
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
@@ -85,7 +85,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in users(:professor)
     get(:information, {:id => assignments(:a10).id})    
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
@@ -94,7 +94,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in users(:professor)
     get(:information, {:id => assignments(:a11).id})    
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
@@ -126,7 +126,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in users(:professor)
     groups_hash = {"0"=>{"group_id"=>group_assignments(:ga7).id, "group_name"=>"grupo 1", "student_ids"=>"7 8"}, "1"=>{"group_id"=>"0", "group_name"=>"grupo 2", "student_ids"=>"9"}}
     post(:manage_groups, {:id => assignments(:a11).id, :groups => groups_hash})
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
     sign_out users(:professor)
 
@@ -148,7 +148,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in users(:aluno3)
     groups_hash = {"0"=>{"group_id"=>group_assignments(:ga7).id, "group_name"=>"grupo 1", "student_ids"=>"7 8"}, "1"=>{"group_id"=>"0", "group_name"=>"grupo 2", "student_ids"=>"9"}}
     post(:manage_groups, {:id => assignments(:a11).id, :groups => groups_hash})
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
     sign_out users(:professor)
 
@@ -206,7 +206,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_response :redirect
     # assert_equal I18n.t(:no_permission), flash[:alert]
     # Expected response to be a redirect to <http://test.host/home> but was a redirect to <http://test.host/>
-    # assert_redirected_to({:controller => :home})
+    # assert_redirected_to(home_path)
     #<"Você precisa logar antes de continuar."> expected but was
     # <"Você não tem permissão para acessar esta página">.
   end
@@ -216,7 +216,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in users(:aluno3)
     get(:show, {:id => assignments(:a6).id, :student_id => users(:aluno2).id, :group_id => group_assignments(:ga6).id})   
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
@@ -244,7 +244,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in users(:professor)
     post(:evaluate, {:id => assignments(:a10).id, :student_id => users(:aluno1).id, :grade => 7})
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
   end
 
@@ -253,7 +253,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in users(:aluno1)
     post(:evaluate, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :grade => 10})
     assert_response :redirect
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
   end
 
@@ -289,7 +289,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_no_difference("AssignmentComment.count") do
       post(:send_comment, {:id => assignments(:a10).id, :student_id => users(:aluno1).id, :comment => "comentario9"})
     end
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
@@ -299,7 +299,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_no_difference("AssignmentComment.count") do
       post(:send_comment, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :comment => "comentario10"})
     end
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
@@ -324,7 +324,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   test "nao permitir editar comentario para usuario com permissao e sem acesso" do
     sign_in users(:professor2)
     post(:send_comment, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :comment_id => assignment_comments(:ac2).id, :comment => "trabalho mediano."})
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
@@ -332,7 +332,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   test "nao permitir editar comentario para usuario sem permissao e com acesso" do
     sign_in users(:aluno1)
     post(:send_comment, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :comment_id => assignment_comments(:ac2).id, :comment => "trabalho otimo."})
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
@@ -366,7 +366,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_no_difference("AssignmentComment.count") do
       delete(:remove_comment, {:id => assignments(:a9).id, :comment_id => assignment_comments(:ac2).id})
     end
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
     sign_out users(:professor2)
 
@@ -382,7 +382,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_no_difference("AssignmentComment.count") do
       delete(:remove_comment, {:id => assignments(:a9).id, :comment_id => assignment_comments(:ac2).id})
     end
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
     sign_out users(:aluno1)
 
@@ -413,7 +413,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   test 'nao permitir a importacao de grupos entre atividades para usuario com permissao e sem acesso' do
     sign_in users(:professor)
     post(:import_groups, {:id => assignments(:a11).id, :assignment_id_import_from => assignments(:a12).id})   
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
   end
 
@@ -421,7 +421,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   test 'nao permitir a importacao de grupos entre atividades para usuario sem permissao' do
     sign_in users(:aluno3)
     post(:import_groups, {:id => assignments(:a11).id, :assignment_id_import_from => assignments(:a12).id})   
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
   end
 

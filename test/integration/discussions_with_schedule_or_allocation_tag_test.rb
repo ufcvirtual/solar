@@ -38,7 +38,7 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
       get @quimica_tab
       get discussions_path
       assert_nil assigns(:discussions)
-      assert_redirected_to({:controller => :home})
+      assert_redirected_to(home_path)
       assert_equal flash[:alert], I18n.t(:no_permission)
     end
 
@@ -112,7 +112,7 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
       get( new_discussion_path, {:allocation_tags_ids => assigns(:allocation_tags_ids)} )
       assert_nil assigns(:discussion)
 
-      assert_redirected_to({:controller => :home})
+      assert_redirected_to(home_path)
       assert_equal I18n.t(:no_permission), flash[:alert]
 
       assert_no_difference(["Discussion.count", "Schedule.count"]) do

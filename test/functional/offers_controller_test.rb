@@ -31,7 +31,7 @@ class OffersControllerTest < ActionController::TestCase
     assert_response :redirect
     assert_not_nil assigns(:course_id)
     assert_not_nil assigns(:curriculum_unit_id)
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
   end
 
@@ -43,7 +43,7 @@ class OffersControllerTest < ActionController::TestCase
     assert_response :redirect
     assert_not_nil assigns(:course_id)
     assert_not_nil assigns(:curriculum_unit_id)
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
   end
 
@@ -86,7 +86,7 @@ class OffersControllerTest < ActionController::TestCase
   #   sign_out @editor
   #   sign_in users(:professor)
   #   get :new, {:course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r3).id}
-  #   assert_redirected_to({:controller => :home})
+  #   assert_redirected_to(home_path)
   #   assert_equal( flash[:alert], I18n.t(:no_permission) )
 
   #   assert_no_difference("Offer.count") do 
@@ -144,7 +144,7 @@ class OffersControllerTest < ActionController::TestCase
     sign_in users(:professor)
 
     get :edit, {:id => offers(:of3).id, :course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r3).id}
-    assert_redirected_to({:controller => :home})
+    assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
 
     post :update, {:id => offers(:of3).id, :offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :course_id => courses(:c1).id, :curriculum_unit_id => curriculum_units(:r5).id }

@@ -26,7 +26,7 @@ class EditionsControllerTest < ActionController::TestCase
 	test "nao exibir pagina de edicao - sem permissao" do
 		sign_in users(:professor)
   	get :index
-  	assert_redirected_to({:controller => :home})
+  	assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
 	end
 

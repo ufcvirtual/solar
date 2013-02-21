@@ -29,28 +29,31 @@ class UsersController < ApplicationController
   end
 
   def update_photo
-    breadcrumb = active_tab[:breadcrumb].last
-    redirect = breadcrumb.nil? ? {:controller => :home} : breadcrumb[:url]
+    # breadcrumb = active_tab[:breadcrumb].last
+    # redirect = breadcrumb.nil? ? home_path : breadcrumb[:url]
 
     respond_to do |format|
       begin
         raise t(:user_error_no_file_sent) unless params.include?(:user) && params[:user].include?(:photo)
         @user.update_attributes!(params[:user])
-        flash[:notice] = t(:successful_update_photo)
-        format.html { redirect_to(redirect) }
+        format.html { redirect_to :back, notice: t(:successful_update_photo) }
 
       rescue Exception => error
+        # raise "#{error.message}"
+
         error_msg = ''
         if error.message.index("not recognized by the 'identify'") # erro que nao teve tratamento
-          # se aparecer outro erro nao exibe o erro de arquivo nao identificado
-          error_msg << t(:activerecord)[:attributes][:user][:photo_content_type] + " "
-          error_msg << t(:activerecord)[:errors][:models][:user][:attributes][:photo_content_type][:invalid_type] + "<br />"
+
+          error_msg = error.message
+
+          # error_msg = [t(:photo_content_type, scope: [:activerecord, :attributes, :user]),
+          #              t(:invalid_type, scope: [:activerecord, :errors, :models, :user, :attributes, :photo_content_type])].compact.join(' ')
+
         else # exibicao de erros conhecidos
           error_msg << error.message
         end
 
-        flash[:alert] = error_msg
-        format.html { redirect_to(redirect) }
+        format.html { redirect_to :back, alert: error_msg }
       end
     end
   end

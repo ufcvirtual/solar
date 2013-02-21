@@ -124,7 +124,7 @@ class CurriculumUnitsController < ApplicationController
   # PUT /curriculum_units/1.json
   def update
     @curriculum_unit = CurriculumUnit.find(params[:id])
-    params[:curriculum_unit].delete :code if params[:code].blank? # o parâmetro deve não existir para que possa ser aceito como vazio
+    params[:curriculum_unit].delete(:code) unless params[:curriculum_unit][:code].present?
 
     begin
       authorize! :update, @curriculum_unit
