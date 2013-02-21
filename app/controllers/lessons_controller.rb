@@ -108,6 +108,8 @@ class LessonsController < ApplicationController
   # GET /lessons/1/edit
   def edit
     @lesson = Lesson.find(params[:id])
+    @allocation_tags_ids = params[:allocation_tags_ids]
+    puts @lesson.to_json
 
     puts "\n\n\n*** params: #{@lesson}\n\n"
   end
@@ -115,11 +117,13 @@ class LessonsController < ApplicationController
   # PUT /lessons/1
   # PUT /lessons/1.json
   def update
+    @lesson = Lesson.find(params[:id])
+    @allocation_tags = AllocationTag.find(params[:allocation_tags_ids].split(' '))
     respond_to do |format|
       if @lesson.update_attributes(params[:lesson])
-        format.html { render :list }
+        format.html { render :nothing => true, :status => 200 }
       else
-        format.html { render :edit }
+        format.html { render :edit, :status => 500  }
       end
     end
   end

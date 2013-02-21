@@ -9,7 +9,7 @@
       = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids]) 
       = hidden_field_tag(:lesson_module_id, params[:lesson_module_id]) 
 
-      -start_date = @lesson.schedule.nil? ? Date.today : (@lesson.schedule.start_date || Date.today)
+      -start_date = @lesson.try(:schedule).try(:start_date) || Date.today
       -end_date   = @lesson.schedule.nil? ? Date.today : (@lesson.schedule.end_date || Date.today)
 
       .form-inputs.block_content
@@ -39,7 +39,7 @@
 
       .right_buttons
         = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default", :onclick => "removeLightBox();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
-        = button_tag t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :onclick => "javascript:  ", :type => "button", :id => "save_button"
+        = button_tag t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :type => "button", :id => "save_button"
 
 :css
   .date_text_field {
@@ -68,10 +68,13 @@
     var options = $.extend($.datepicker.regional['#{I18n.locale}']);
     options.dateFormat = global_config.locale.dateFormat;
     $('#from_date, #until_date').datepicker(options);
+    
 
     $("#save_button").click(function(){
       submit_form('lesson_form', 'lesson_form', '#{list_lessons_path}', 'first_step'); 
       if("#{params[:action] == "new"}" == "true" && $(this).html == "Prosseguir")
+        $('#lightBoxDialogTitle').html('Nova aula > Gerência de arquivos');
+      if("#{params[:action] == "edit"}" == "true" && $(this).html == "Prosseguir")
         $('#lightBoxDialogTitle').html('Nova aula > Gerência de arquivos');
     });
 

@@ -1,7 +1,7 @@
 = javascript_include_tag "edition.js"
 = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids]) 
 = button_tag t(:new, :scope => [:lesson_modules, :buttons]), :class => 'btn btn_default', :id => "new_module"
-  
+
 - previous_allocation_tag = nil
 
 - @allocation_tags.each_with_index do |allocation_tag, idxat|
@@ -171,13 +171,15 @@
   }
 
   function edit_lesson(module_id){
-    lessons = get_selected_lessons(module_id);
+    lessons_ids = get_selected_lessons(module_id);
     allocation_tags_ids = $("#allocation_tags_ids").val();
-    there_tab = lessons.length > 1 ? true : false;
+    alert(allocation_tags_ids);
+    there_tab = lessons_ids.length > 1 ? true : false;
+    
 
     if (!there_tab){
-      if (lessons.length == 1)
-        open_lightbox("/lessons/"+lessons+"/edit?allocation_tags_ids="+allocation_tags_ids+" ", "#{t(:edit_lesson, :scope => [:lessons, :list])}",550,270);
+      if (lessons_ids.length == 1)
+        open_lightbox("/lessons/"+lessons_ids+"/edit?allocation_tags_ids="+allocation_tags_ids, "#{t(:edit_lesson, :scope => [:lessons, :list])}", 550, 270);
       else
         alert('#{I18n.t(:must_select_a_lesson, :scope => [:lessons, :notifications])}');
     }else
@@ -190,7 +192,7 @@
 
     if (lessons.length >= 1){
       alert("aqui vai deletar");
-      //open_lightbox("/lessons/"+lessons+"/edit?allocation_tags_ids="+allocation_tags_ids+" ", "t(:edit_lesson, :scope => [:lessons, :list])}",550,270);
+      //open_lightbox("/lessons/"+lessons+"/edit?allocation_tags_ids="+allocation_tags_ids, "t(:edit_lesson, :scope => [:lessons, :list])}",550,270);
     }else
       alert('#{I18n.t(:must_select_a_lesson, :scope => [:lessons, :notifications])}');
   }

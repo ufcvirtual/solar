@@ -38,7 +38,7 @@ function submit_form(form_id, class_to_update_fail, redirect_url, div_to_update)
     url: $("#"+form_id).attr("action"),
     data: $("#"+form_id).serialize(),
     success: function(data) {
-      if(data.search(".field_with_errors") != -1) // se existir algum erro nas validações, o simple_form acrescenta a classe "field_with_errors" aos campos
+      if(data.search(".error") != -1) // se existir algum erro nas validações, o simple_form acrescenta a classe "error" aos campos
         $("."+class_to_update_fail).html(data); // atualiza conteúdo com o formulário com os erros
       else{
         if(div_to_update == "first_step" && data.length > 1){ // se tiver conteúdo retornado sem erro
@@ -60,6 +60,11 @@ function submit_form(form_id, class_to_update_fail, redirect_url, div_to_update)
     }
   });
 }
+
+// $(document).ajaxSend(function(e, xhr, options) {
+//   var token =$("meta[name='csrf-token']").attr("content");
+//   xhr.setRequestHeader("X-CSRF-Token", token);  
+// });
 
 /* deleção de algum objeto (url = url do método de deleção, redirect_url = url para a qual o conteúdo será atualizado em caso de sucesso, 
   div_to_update = informação de qual div é para atualizar caso não esteja "incluso" na página de edição) */
