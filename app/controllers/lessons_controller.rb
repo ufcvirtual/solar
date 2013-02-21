@@ -119,13 +119,23 @@ class LessonsController < ApplicationController
   def update
     @lesson = Lesson.find(params[:id])
     @allocation_tags = AllocationTag.find(params[:allocation_tags_ids].split(' '))
+    error = false
+    begin
+      Lesson.transaction do
+         @lesson.update_attributes(params[:lesson])
+         @lesson.schedule.update_attributes!(start_date: params[:start_date], end_date: params[:end_date])
+      end
+    rescue
+      error = true
+    end
+
     respond_to do |format|
-      if @lesson.update_attributes(params[:lesson])
+      unless error
         format.html { render :nothing => true, :status => 200 }
       else
         format.html { render :edit, :status => 500  }
-      end
-    end
+      end # else
+    end # end respond
   end
 
   def destroy

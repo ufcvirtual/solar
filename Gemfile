@@ -27,6 +27,7 @@ gem "haml-rails", ">= 0.3.4", :group => :development
 gem "ckeditor", "3.7.1"
 
 group :development do
+  gem 'rb-readline'
   gem 'net-ssh',  '2.4.0' # dependencia capistrano
   gem 'capistrano', '2.12.0'
   gem 'spork', '~> 1.0rc'

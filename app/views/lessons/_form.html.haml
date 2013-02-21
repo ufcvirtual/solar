@@ -10,7 +10,7 @@
       = hidden_field_tag(:lesson_module_id, params[:lesson_module_id]) 
 
       -start_date = @lesson.try(:schedule).try(:start_date) || Date.today
-      -end_date   = @lesson.schedule.nil? ? Date.today : (@lesson.schedule.end_date || Date.today)
+      -end_date   = @lesson.try(:schedule).try(:end_date) || Date.today
 
       .form-inputs.block_content
         =f.input :name, :required => true
@@ -66,7 +66,7 @@
 
   $(function(){
     var options = $.extend($.datepicker.regional['#{I18n.locale}']);
-    options.dateFormat = global_config.locale.dateFormat;
+    options.dateFormat = global_config.locale.dateFormat.default;
     $('#from_date, #until_date').datepicker(options);
     
 
@@ -85,7 +85,9 @@
       $("#until_date").val('');
       $(".end_date").removeClass("visible").addClass("invisible");
     }else{
-      $("#until_date").val('#{I18n.l(Date.today, :format => :default).to_s}');
+      $("#until_date").val(
+          '#{I18n.l(( @lesson.try(:schedule).try(:end_date) || Date.today).to_date, :format => :default).to_s}'
+        );
       $(".end_date").removeClass("invisible").addClass("visible");
     }
   });
