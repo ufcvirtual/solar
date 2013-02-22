@@ -7,11 +7,13 @@ class Lesson < ActiveRecord::Base
 
   before_destroy :can_destroy?
 
+  validates :name, presence: true
+
+  FILES_PATH = Rails.root.join('media', 'lessons') # path dos arquivos de aula
+
   def can_destroy?
     return (status == 0 ? true : false) # verifica se se a aula está em teste ou aprovada
   end
-
-  FILES_PATH = File.join(Rails.root, 'media', 'lessons') # nao existe paperclip para lessons
 
   def self.to_open(allocation_tags_ids = nil, lesson_id = nil)
     # uma aula é ligada a um modulo que eh ligado a uma turma ou a uma oferta
