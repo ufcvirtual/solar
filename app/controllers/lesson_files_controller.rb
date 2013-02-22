@@ -4,7 +4,6 @@ class LessonFilesController < ApplicationController
   require 'fileutils' # utilizado na remoção de diretórios, pois o "Dir.rmdir" não remove diretórios que não estejam vazis
 
   layout false
-  skip_filter :verify_authenticity_token
 
   def index
     @lesson = Lesson.where(id: params[:lesson_id]).first

@@ -1,4 +1,7 @@
-$(function(){
+jQuery(function($){
+
+  $.noConflict(); // Resolver conflitos entre os .js chamados. Sem isso, o objeto "tokenInputObject" do filtro é perdido.
+
   /* Inicialização da árvore de arquivos */
   var selNodes;
   $("#tree").dynatree({
