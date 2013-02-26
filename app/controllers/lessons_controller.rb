@@ -36,7 +36,9 @@ class LessonsController < ApplicationController
   def create
     begin
       # authorize! :create, Lesson, on: parapms[:allocation_tags_ids].split(" ")
+      @lesson_modules = []
 
+      
       params[:lesson][:lesson_module_id] = params[:lesson_module_id]
       params[:lesson][:user_id] = current_user.id
       params[:lesson][:order] = Lesson.where(lesson_module_id: params[:lesson_module_id]).maximum(:order).to_i + 1
@@ -76,6 +78,7 @@ class LessonsController < ApplicationController
   # PUT /lessons/1
   # PUT /lessons/1.json
   def update
+    @lesson_modules = LessonModule.where(allocation_tag_id: params[:allocation_tags_ids].split(' '))
     @lesson = Lesson.find(params[:id])
     error = false
     begin
