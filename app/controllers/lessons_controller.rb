@@ -7,9 +7,9 @@ class LessonsController < ApplicationController
   include LessonFileHelper
 
   before_filter :prepare_for_group_selection, :only => [:index, :download_files]
-  before_filter :curriculum_data, :except => [:list, :download_files, :extract_files, :new, :create, :edit, :update]
+  before_filter :curriculum_data, :except => [:list, :download_files, :extract_files, :new, :create, :edit, :update, :order]
 
-  load_and_authorize_resource :except => [:index, :list, :download_files, :new, :create, :edit, :update, :show]
+  load_and_authorize_resource :except => [:index, :list, :download_files, :new, :create, :edit, :update, :show, :order]
 
   # protect_from_forgery :except => [:list, :new, :create]
   # skip_before_filter :verify_authenticity_token, :only => [:list, :new, :create]
@@ -39,7 +39,7 @@ class LessonsController < ApplicationController
 
       params[:lesson][:lesson_module_id] = params[:lesson_module_id]
       params[:lesson][:user_id] = current_user.id
-      params[:lesson][:order] = Lesson.where(lesson_module_id: params[:lesson_module_id]).maximum(:order) + 1
+      params[:lesson][:order] = Lesson.where(lesson_module_id: params[:lesson_module_id]).maximum(:order).to_i + 1
 
       @lesson = Lesson.new(params[:lesson])
       Lesson.transaction do
@@ -164,6 +164,34 @@ class LessonsController < ApplicationController
 
     respond_to do |format|
       format.json { render json: {success: extract(path_zip_file, destination)} }
+    end
+  end
+
+  ## PUT lessons/:id/order/:change_id
+  def order
+    begin
+      authorize! :order, Lesson
+      success = false
+
+      l1, l2 = Lesson.find(params[:id], params[:change_id])
+      Lesson.transaction do
+        l1.order, l2.order = l2.order, l1.order
+        l1.save!
+        l2.save!
+      end
+      success = true
+    rescue CanCan::AccessDenied
+      status = :unauthorized
+    rescue
+      status = 500
+    end
+
+    respond_to do |format|
+      if success
+        format.json { render json: {success: true} }
+      else
+        format.json { render nothing: true, status: status }
+      end
     end
   end
 

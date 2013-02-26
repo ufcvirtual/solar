@@ -115,7 +115,10 @@ Solar::Application.routes.draw do
       get :show_content
       get :download_files
     end
-    get "extract_files/:file.:extension", action: :extract_files, on: :member, as: :extract_file
+    member do
+      get "extract_files/:file.:extension", action: :extract_files, as: :extract_file
+      put "order/:change_id", action: :order, as: :change_order
+    end
   end
 
   match "/lesson_files/" => "lesson_files#index", action: :index, :as => :lesson_files, :via => [:get] # usado para não necessitar do lesson_id ao usar lesson_files_path

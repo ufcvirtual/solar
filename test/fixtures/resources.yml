@@ -625,3 +625,9 @@ res109:
   controller: 'lessons'
   action: 'new'
   description: 'Cadastrar nova aula'
+
+res110:
+  id: 110
+  controller: 'lessons'
+  action: 'order'
+  description: 'Ordenar aulas'
