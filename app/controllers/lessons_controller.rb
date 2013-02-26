@@ -37,8 +37,6 @@ class LessonsController < ApplicationController
     begin
       # authorize! :create, Lesson, on: parapms[:allocation_tags_ids].split(" ")
       @lesson_modules = []
-
-      
       params[:lesson][:lesson_module_id] = params[:lesson_module_id]
       params[:lesson][:user_id] = current_user.id
       params[:lesson][:order] = Lesson.where(lesson_module_id: params[:lesson_module_id]).maximum(:order).to_i + 1
