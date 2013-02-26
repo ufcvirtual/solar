@@ -27,6 +27,7 @@ class LessonsController < ApplicationController
   # GET /lessons/new
   # GET /lessons/new.json
   def new
+    @lesson_modules = []
     @lesson = Lesson.new
   end
 
@@ -40,9 +41,10 @@ class LessonsController < ApplicationController
       params[:lesson][:user_id] = current_user.id
       params[:lesson][:order] = Lesson.where(lesson_module_id: params[:lesson_module_id]).maximum(:order) + 1
 
+      @lesson = Lesson.new(params[:lesson])
       Lesson.transaction do
-        params[:lesson][:schedule_id] = Schedule.create!(start_date: params[:start_date], end_date: params[:end_date]).id
-        @lesson = Lesson.create!(params[:lesson])
+        @lesson.schedule = Schedule.create!(start_date: params[:start_date], end_date: params[:end_date])
+        @lesson.save!
       end
 
       manage_file = false
@@ -60,40 +62,36 @@ class LessonsController < ApplicationController
 
     rescue
       respond_to do |format|
-        format.html { render nothing: true, status: 500 }
+        format.html { render :new }
       end
     end # rescue
   end
 
   # GET /lessons/1/edit
   def edit
+    @lesson_modules = LessonModule.where(allocation_tag_id: params[:allocation_tags_ids].split(' '))
     @lesson = Lesson.find(params[:id])
-    @allocation_tags_ids = params[:allocation_tags_ids]
-    puts @lesson.to_json
-
-    puts "\n\n\n*** params: #{@lesson}\n\n"
   end
 
   # PUT /lessons/1
   # PUT /lessons/1.json
   def update
     @lesson = Lesson.find(params[:id])
-    @allocation_tags = AllocationTag.find(params[:allocation_tags_ids].split(' '))
     error = false
     begin
       Lesson.transaction do
-         @lesson.update_attributes(params[:lesson])
-         @lesson.schedule.update_attributes!(start_date: params[:start_date], end_date: params[:end_date])
+        @lesson.update_attributes!(params[:lesson])
+        @lesson.schedule.update_attributes!(start_date: params[:start_date], end_date: params[:end_date])
       end
     rescue
       error = true
     end
 
     respond_to do |format|
-      unless error
-        format.html { render :nothing => true, :status => 200 }
+      if error
+        format.html { render :edit }
       else
-        format.html { render :edit, :status => 500  }
+        format.html { render nothing: true }
       end # else
     end # end respond
   end

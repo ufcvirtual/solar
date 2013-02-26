@@ -3,16 +3,27 @@ class Lesson < ActiveRecord::Base
   belongs_to :user
   belongs_to :schedule
 
-  has_one :allocation_tag, :through => :lesson_module
+  has_one :allocation_tag, through: :lesson_module
 
   before_destroy :can_destroy?
+  after_destroy  :delete_schedule
 
   validates :name, presence: true
+
+  # validates_format_of :email,
+  #  :with => /\A[\w\._%-]+@[\w\.-]+\.[a-zA-Z]{2,4}\z/,
+  #  :if => Proc.new { |u| !u.email.nil? && !u.email.blank? },
+  #  :message => "Formato de email incorreto"
+  # end
 
   FILES_PATH = Rails.root.join('media', 'lessons') # path dos arquivos de aula
 
   def can_destroy?
     return (status == 0 ? true : false) # verifica se se a aula está em teste ou aprovada
+  end
+
+  def delete_schedule
+    self.schedule.destroy
   end
 
   def self.to_open(allocation_tags_ids = nil, lesson_id = nil)

@@ -1028,6 +1028,7 @@
       discussion: Discussion
       chat: Chat
       videoconference: Videoconference
+      lesson_module: Module
       lesson: Lesson
       support_material: Support material
       assignment: Assignment
