@@ -26,6 +26,10 @@ class Lesson < ActiveRecord::Base
     self.schedule.destroy
   end
 
+  def has_end_date?
+    (try(:schedule).try(:end_date) != try(:schedule).try(:start_date))
+  end
+
   def self.to_open(allocation_tags_ids = nil, lesson_id = nil)
     # uma aula é ligada a um modulo que eh ligado a uma turma ou a uma oferta
     query_lessons = <<SQL

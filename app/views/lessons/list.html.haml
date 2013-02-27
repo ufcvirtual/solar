@@ -73,8 +73,8 @@
                     %td{style: "width: 160px", align: 'center'}
                       = t(".since") unless !lesson.schedule.end_date.nil?
                       = l lesson.schedule.start_date, format: :normal
-                      - unless lesson.schedule.end_date.nil?
-                        =' - '
+                      =' - '
+                      - if lesson.has_end_date?
                         =l lesson.schedule.end_date, format: :normal
 
                     %td{style: "width: 70px", align: 'center'}
