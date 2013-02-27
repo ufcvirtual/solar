@@ -41,6 +41,9 @@ class LessonFilesController < ApplicationController
 
   def edit
 
+    file = File.join(Lesson::FILES_PATH, params[:lesson_id])
+    Dir.mkdir(file) unless File.exist?(file)
+
     begin
       if params[:type] == "rename" # renomear
 
@@ -58,9 +61,18 @@ class LessonFilesController < ApplicationController
           FileUtils.mv path, new_path if File.exist?(path) and (new_path != path_split) # tenta mover a não ser que não exista ou que seja para a mesma pasta
         end
 
+      elsif params[:type] == "upload" # upload de arquivos
+
+        params[:lesson_files][:files].each do |file|
+          tmp  = file.tempfile # arquivo temporário
+          print "#{params[:lesson_files][:path]}"
+          file = File.join("#{Rails.root}", "media", "lessons", params[:lesson_id], params[:lesson_files][:path], file.original_filename) #adicionar parametro: path_to_add_to # cria arquivo vazio
+          FileUtils.cp tmp.path, file # copia conteúdo para o arquivo criado
+        end
+
       end
 
-    rescue
+    rescue Exception => error
       error = true
     end
 
@@ -92,6 +104,10 @@ class LessonFilesController < ApplicationController
     respond_to do |format|
       format.html{ render (error ? {:nothing => true} : :index), :status => (error ? 500 : 200) }
     end
+  end
+
+  def upload_file
+    raise "#{params[:files]}"
   end
 
   private

@@ -17,8 +17,12 @@
   = hidden_field_tag :rename_path, rename_node_lesson_files_path(:lesson_id => @lesson.id)
   = hidden_field_tag :move_path, move_nodes_lesson_files_path(:lesson_id => @lesson.id)
   = hidden_field_tag :lesson_path, list_lessons_path
+  = hidden_field_tag :upload_files_path, upload_lesson_files_path(:lesson_id => @lesson.id)
 
-  / = javascript_include_tag "jquery.fileupload"
+  = form_for(:lesson_files, :url => upload_lesson_files_path(:lesson_id => @lesson.id), :html => {:id => "file_form", :method => :put }) do |f|
+    = f.file_field :files, :id => "fileupload", :multiple => true
+    = f.hidden_field :path, :id => "path"
+  / %progress
 
   .flash_messages
 
@@ -45,8 +49,3 @@
 
   #blue_background
     = button_tag "Finalizar", :type => :button, :class => 'btn btn_main', :id => "btn-conclude"  
-
-  / %input#fileupload{:type => "file", :name => "files[]", :'data-url' => "server/php/", :multiple => true }
-
-  / #progress
-  /   .bar{:style => "width: 0%;"}

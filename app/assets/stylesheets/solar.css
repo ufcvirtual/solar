@@ -3764,3 +3764,7 @@ p#files_menu_bar .btn.btn_default{
     width: 100%;
     background-color: #F5F8FB; 
 }
+
+#fileupload{
+    display: none;
+}

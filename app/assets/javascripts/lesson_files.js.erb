@@ -189,7 +189,55 @@ jQuery(function($){
     removeLightBox();
   });
 
+  $("#btn-new_file").click(function(){
+    $("#fileupload").click();
+  })
+
+  $(':file').change(function(){
+
+
+    var file = this.files[0];
+    name = file.name;
+    size = file.size;
+    type = file.type;
+    //your validation
+
+    var path = getPath(selNodes[0]);
+    $("#path").attr("value", path);
+    var formData = new FormData($('#file_form')[0]);
+
+    $.ajax({
+        url: $("#file_form").attr("action"),  //server script to process data
+        type: 'PUT',
+        data: formData,
+        //Options to tell JQuery not to process data or worry about content-type
+        cache: false,
+        contentType: false,
+        processData: false,
+        // xhr: function() {  // custom xhr
+        //     myXhr = $.ajaxSettings.xhr();
+        //     if(myXhr.upload){ // check if upload property exists
+        //         myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // for handling the progress of the upload
+        //     }
+        //     return myXhr;
+        // },
+        success: function(data){
+          $("#lesson_file_management").html(data);
+        },
+        error: function() {
+          flash_message("<%=I18n.t(:delete_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
+        }
+    });
+
+  });
+
 });
+
+// function progressHandlingFunction(e){
+//   if(e.lengthComputable){
+//       $('progress').attr({value:e.loaded,max:e.total});
+//   }
+// }
 
 /* Retorna o caminho em que o nó se encontra */
 function getPath(node){

@@ -11,9 +11,6 @@ class LessonsController < ApplicationController
 
   load_and_authorize_resource :except => [:index, :list, :download_files, :new, :create, :edit, :update, :show, :order]
 
-  # protect_from_forgery :except => [:list, :new, :create]
-  # skip_before_filter :verify_authenticity_token, :only => [:list, :new, :create]
-
   def index
     authorize! :index, Lesson
     @lessons = lessons_to_open(params[:allocation_tags_ids])
