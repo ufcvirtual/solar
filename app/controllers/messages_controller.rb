@@ -10,12 +10,10 @@ class MessagesController < ApplicationController
   before_filter :prepare_for_pagination, :only => [:index]
 
   # nao precisa usar load_and_authorize_resource pq todos tem acesso
-
-  Path_Message_Files = "#{::Rails.root.to_s}/media/messages/"
+  Path_Message_Files = Rails.root.join('media', 'messages') #{}"#{::Rails.root.to_s}/media/messages/"
 
   # listagem de mensagens (entrada, enviados, lixeira)
   def index
-    # recebe tipo de msg a ser consultada
     @type = params[:type]
 
     @search_text = params[:search].nil? ? "" : params[:search]
@@ -37,7 +35,7 @@ class MessagesController < ApplicationController
     @target, @subject, @original_message, @target_html  = '', '', '', ''
 
     if not(params[:id].nil?)
-      @original_message_id = params[:id]
+      @original_message_id = params.delete(:id)
 
       get_message_data(@original_message_id)
 
@@ -86,7 +84,130 @@ class MessagesController < ApplicationController
         end
       end
     end
+  end
 
+  def send_message
+    if params[:to].present?
+      to = params[:to]
+      subject = params[:subject]
+      message = params[:content]
+
+      # apenas usuarios que sao cadastrados no ambiente; se algum destinarario nao eh, nao envia...
+      real_receivers = []
+
+      # anexos de mensagem original quando encaminhando ou respondendo mensagem
+      all_files_destiny = ""
+
+      # troca ";" por "," para split e envio para destinatarios
+      to.gsub(";", ",")
+
+      # divide destinatarios
+      individual_to = to.split(",").map{|r|r.strip}
+
+      update_tab_values
+
+      # retorna label de acordo com disciplina atual
+      allocation_tag_id = active_tab[:url]['allocation_tag_id']
+
+      label_name = ''
+      unless allocation_tag_id.nil?
+        ats = AllocationTag.find_related_ids(allocation_tag_id).join(', ');
+        group = AllocationTag.find(allocation_tag_id).group
+        offer = AllocationTag.where("id IN (#{ats}) AND offer_id IS NOT NULL").first.try(:offer)
+        curriculum_unit = AllocationTag.where("id IN (#{ats}) AND curriculum_unit_id IS NOT NULL").first.try(:curriculum_unit) || CurriculumUnit.find(active_tab[:url]['id'])
+
+        label_name = get_label_name(group, offer, curriculum_unit)
+      end
+
+      # informacoes do usuario atual para identificacao na msg
+      message_header = ["<b>", t(:message_header), current_user.name, " [", current_user.email, "]</b><br/>"].join
+      message_header << ["[", label_name, "]<br/>"].join if label_name != ""
+      message_header << "________________________________________________________________________<br/><br/>"
+
+      Message.transaction do
+        begin
+          new_message = Message.create(subject: subject, content: message, send_date: DateTime.now)
+
+          # recupera arquivos da mensagem original, caso esteja encaminhando ou respondendo
+          if params[:id].present?
+            original_message_id = params[:id]
+
+            # verifica permissao na mensagem original
+            if has_permission(original_message_id)
+              files = get_files(original_message_id)
+              unless files.nil?
+                files.each do |f|
+                  message_file = MessageFile.create({
+                    message_file_name: f.message_file_name,
+                    message_content_type: f.message_content_type,
+                    message_file_size: f.message_file_size,
+                    message_id: new_message.id
+                  })
+                  origin = [f.id.to_s, f.message_file_name].join('_')
+                  destiny = [message_file.id.to_s, f.message_file_name].join('_')
+
+                  all_files_destiny = copy_file(origin, destiny, all_files_destiny, true)
+                end # each
+              end # unless
+            end # if permission
+          end # if id
+
+          # recupera os arquivos anexados
+          params[:attachment].each do |file|
+            message_file = MessageFile.create!({message: file[1], message_id: new_message.id})
+            destiny = [message_file.id.to_s, message_file.message_file_name].join('_') # adiciona arquivos de anexo para encaminhar com o email
+            all_files_destiny = copy_file("", destiny, all_files_destiny, false)
+          end if params[:attachment].present?
+
+          sender_message = UserMessage.create!(message_id: new_message.id, user_id: current_user.id, status: 3)
+          if label_name != ""
+            message_label = MessageLabel.find_by_title_and_user_id(label_name,current_user.id)
+            message_label = MessageLabel.create!(user_id: current_user.id, title: label_name, label_system: true) if message_label.nil?
+
+            UserMessageLabel.create!(user_message_id: sender_message.id, message_label_id: message_label.id)
+          end
+
+          ## enviando emails para a caixa de entradas dos receptores
+
+          emails = individual_to.reject!{|e| e.empty?}.collect {|r| r.slice(r.index('[')+1..r.index(']')-1)}
+          users = User.where(email: emails)
+          real_receivers = users.map(&:email)
+
+          ## criando msgs na caixa de entrada de cada usuario
+          user_messages = UserMessage.create!(users.map {|user| {message_id: new_message.id, user_id: user.id, status: 0}})
+
+          ## cria-se uma msg label para cada usuario
+          if label_name != ''
+            user_messages.each do |um|
+              message_label = MessageLabel.find_or_create_by_title_and_user_id(label_name, um.user_id)
+              UserMessageLabel.create!(user_message_id: um.id, message_label_id: message_label.id)
+            end # each
+          end # if label name
+
+        rescue Exception => error
+          flash[:alert] = error.message.empty? ? t(:message_send_error) : error.message
+
+          # apaga arquivos copiados fisicamente de mensagem original quando ha rollback
+          all_files_destiny.split(";").each{ |f| File.delete(f) } unless all_files_destiny.empty?
+
+          raise ActiveRecord::Rollback
+        else
+
+          if real_receivers.empty?
+            flash[:alert] = t(:message_send_error_no_receiver)
+            raise ActiveRecord::Rollback
+          else
+            flash[:notice] = t(:message_send_ok)
+            # envia email apenas uma vez, em caso de sucesso da gravacao no banco
+            Notifier.send_mail(real_receivers.join(','), subject, message_header + message, Path_Message_Files.to_s, all_files_destiny.to_s).deliver unless real_receivers.empty? #, from = nil
+          end
+        end
+      end
+
+      redirect_to action: 'index', type: 'outbox'
+    else
+      redirect_to action: 'new'
+    end
   end
 
   ##
@@ -170,184 +291,6 @@ class MessagesController < ApplicationController
       redirect_to :action => 'show', :id => id, :search => search_text
     else
       redirect_to :action => 'index', :type => type, :search => search_text
-    end
-  end
-
-  def send_message
-    if !params[:to].nil? && !params[:to].empty?
-      to = params[:to]
-      subject = params[:subject]
-      message = params[:newMessageTextBox]
-
-      # apenas usuarios que sao cadastrados no ambiente; se algum destinarario nao eh, nao envia...
-      real_receivers = ""
-
-      # anexos de mensagem original quando encaminhando ou respondendo mensagem
-      all_files_destiny = ""
-
-      # troca ";" por "," para split e envio para destinatarios
-      to.gsub(";", ",")
-
-      # divide destinatarios
-      individual_to = to.split(",").map{|r|r.strip}
-
-      update_tab_values
-
-      # retorna label de acordo com disciplina atual
-      allocation_tag_id = active_tab[:url]['allocation_tag_id']
-
-      label_name = ''
-      if !allocation_tag_id.nil?
-        allocations = AllocationTag.find_related_ids(allocation_tag_id).join(', ');
-        # relacionado diretamente com a allocation_tag
-        group = AllocationTag.find(allocation_tag_id).group
-        al_offer = AllocationTag.where("id IN (#{allocations}) AND offer_id IS NOT NULL").first
-        offer = al_offer.nil? ? nil : al_offer.offer
-        al_c_unit = AllocationTag.where("id IN (#{allocations}) AND curriculum_unit_id IS NOT NULL").first
-        curriculum_unit = al_c_unit.nil? ? CurriculumUnit.find(active_tab[:url]['id']) : al_c_unit.curriculum_unit
-
-        label_name = get_label_name(group, offer, curriculum_unit)
-      end
-
-      # informacoes do usuario atual para identificacao na msg
-      atual_user = User.find(current_user.id)
-      message_header = "<b>" + t(:message_header) + atual_user.name + " [" + atual_user.email + "]</b><br/>"
-      if label_name != ""
-        message_header << "[" + label_name + "]<br/>"
-      end
-      message_header << "________________________________________________________________________<br/><br/>"
-
-      # ":requires_new => true" permite rollback
-      Message.transaction do
-        begin
-          # salva nova mensagem
-          new_message = Message.new :subject => subject, :content => message, :send_date => DateTime.now
-          new_message.save!
-
-          # recupera arquivos da mensagem original, caso esteja encaminhando ou respondendo
-          original_message_id = params[:id]
-          unless original_message_id.nil?
-            # verifica permissao na mensagem original
-            if has_permission(original_message_id)
-              files = get_files(original_message_id)
-              unless files.nil?
-                files.each do |f|
-                  message_file = MessageFile.new
-                  message_file[:message_file_name] = f.message_file_name
-                  message_file[:message_content_type] = f.message_content_type
-                  message_file[:message_file_size] = f.message_file_size
-                  message_file[:message_id] = new_message.id
-                  message_file.save!
-
-                  origin  = f.id.to_s + "_" + f.message_file_name
-                  destiny = message_file.id.to_s + "_" + f.message_file_name
-                  # copia fisicamente arquivo do anexo original
-                  all_files_destiny = copy_file(origin, destiny, all_files_destiny, true)
-                end
-              end
-            end
-          end
-
-          # recupera os arquivos anexados
-          unless params[:attachment].nil?
-            params[:attachment].each do |file|
-              message_file = MessageFile.new Hash["message", file[1]]
-              message_file[:message_id] = new_message.id
-              message_file.save!
-
-              #adiciona arquivos de anexo para encaminhar com o email
-              destiny = message_file.id.to_s + "_" + message_file.message_file_name
-              all_files_destiny = copy_file("", destiny, all_files_destiny, false)
-
-            end
-          end
-
-          # salva dados de remetente
-          UserMessage.transaction(:requires_new => true) do
-            # status=3 => 00000011 {origem, lida, nao_excluida}
-            sender_message = UserMessage.new :message_id => new_message.id, :user_id => current_user.id, :status => 3
-            sender_message.save!
-
-            if label_name != ""
-              message_label = MessageLabel.find_all_by_title_and_user_id(label_name,current_user.id).first
-              # se precisa mas nao existe no banco, cria
-              if message_label.nil?
-                MessageLabel.transaction(:requires_new => true) do
-                  message_label = MessageLabel.new :user_id => current_user.id, :title => label_name, :label_system => true
-                  message_label.save!
-                end
-              end
-
-              # associa label do remetente
-              UserMessageLabel.transaction(:requires_new => true) do
-                UserMessageLabel.create! :user_message_id => sender_message.id, :message_label_id => message_label.id
-              end
-            end
-          end
-
-          #raise ActiveRecord::Rollback
-
-          #para salvar destinatarios individualmente - pegar o id
-          UserMessage.transaction(:requires_new => true) do
-            individual_to.each {|r|
-              #pega apenas o email
-              individual_email = r.slice(r.index('[')+1..r.index(']')-1) if (!r.index('[').nil? && !r.index(']').nil?)
-              r_user = User.find_by_email(individual_email)
-
-              if !r_user.nil?
-                real_receivers << ", " unless real_receivers.empty?
-                real_receivers << r_user.email
-
-                #status=0 {nao_origem, nao_lida, nao_excluida}
-                receiver_message = UserMessage.new :message_id => new_message.id, :user_id => r_user.id, :status => 0
-                receiver_message.save!
-
-                # se for de unidade curricular, grava user_message_labels e message_labels do usuario (se nao existir)...
-                if label_name != ""
-                  message_label = MessageLabel.find_all_by_title_and_user_id(label_name,r_user.id).first
-                  #se precisa mas nao existe no banco, cria
-                  if message_label.nil?
-                    MessageLabel.transaction(:requires_new => true) do
-                      message_label = MessageLabel.new :user_id => r_user.id, :title => label_name
-                      message_label.save!
-                    end
-                  end
-
-                  #associa label do destinatario
-                  UserMessageLabel.transaction(:requires_new => true) do
-                    UserMessageLabel.create! :user_message_id => receiver_message.id, :message_label_id => message_label.id
-                  end
-                end
-              end
-            }
-          end
-
-        rescue Exception => error
-          flash[:alert] = error.message.empty? ? t(:message_send_error) : error.message
-
-          # apaga arquivos copiados fisicamente de mensagem original quando ha rollback
-          unless all_files_destiny.empty?
-            all_files_destiny.split(";").each{ |f|
-              File.delete(f)
-            }
-          end
-          # efetua rollback
-          raise ActiveRecord::Rollback
-        else
-          if real_receivers.empty?
-            flash[:alert] = t(:message_send_error_no_receiver)
-            raise ActiveRecord::Rollback
-          else
-            flash[:notice] = t(:message_send_ok)
-            # envia email apenas uma vez, em caso de sucesso da gravacao no banco
-            Notifier.send_mail(real_receivers, subject, message_header + message, Path_Message_Files, all_files_destiny).deliver unless real_receivers.empty? #, from = nil
-          end
-        end
-      end
-
-      redirect_to :action => 'index', :type => 'outbox'
-    else
-      redirect_to :action => 'new'
     end
   end
 
@@ -508,17 +451,13 @@ class MessagesController < ApplicationController
   end
 
   def copy_file(origin, destiny, all_files_destiny, flag_copy = true)
-    origin  = Path_Message_Files + origin
-    destiny = Path_Message_Files + destiny
+    origin  = Path_Message_Files.join(origin)
+    destiny = Path_Message_Files.join(destiny)
 
-    #copia fisicamente arquivo do anexo original
-    FileUtils.cp origin, destiny unless !flag_copy
+    # copia fisicamente arquivo do anexo original
+    FileUtils.cp origin, destiny if flag_copy
 
-    #guardar arquivos de destino para apagar no caso de rollback
-    all_files_destiny << ";" unless all_files_destiny.empty?
-    all_files_destiny << destiny
-
-    return all_files_destiny
+    [all_files_destiny, destiny].delete_if {|x| x == '' }.compact.join(';')
   end
 
 end

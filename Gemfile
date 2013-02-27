@@ -12,19 +12,19 @@ gem 'cancan', '1.6.7'
 
 gem 'chronic', '0.6.1'
 gem 'brazilian-rails', '3.1.0'
-gem 'simple_form'
+gem 'simple_form', '~> 2.1.0'
 
 gem 'paperclip', '3.0.3'
 gem 'will_paginate', "~> 3.0.4"
 gem 'jquery-rails', '2.0.2'
 
-gem 'passenger', '3.0.12', :group => [:production]
+# gem 'passenger', '3.0.12', :group => [:production]
 gem 'factory_girl_rails', '3.3.0', :group => [:development, :test]
 gem 'rspec-rails', '2.10.1', :group => [:development, :test]
 
 gem "haml", ">= 3.1.6"
 gem "haml-rails", ">= 0.3.4", :group => :development
-gem "ckeditor", "3.7.1"
+gem "ckeditor", "~> 4.0.2"
 
 group :development do
   gem 'rb-readline'

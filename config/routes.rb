@@ -37,10 +37,6 @@ Solar::Application.routes.draw do
   ## curriculum_units/:id/groups
   # get 'curriculum_units/:curriculum_unit_id/groups' => "groups#list", as: :groups_curriculum_unit
 
-  resources :discussions do
-    get :list, on: :collection
-  end
-
   ## groups/:id/discussions
   resources :groups, except: [:show] do
     resources :discussions, only: [:index]
@@ -48,11 +44,13 @@ Solar::Application.routes.draw do
   end
 
   ## discussions/:id/posts
-  resources :discussions, only: [] do
-    resources :posts, except: [:show, :new, :edit]
-    controller :posts do
-      get "posts/user/:user_id", to: :show, as: :posts_of_the_user
-      get "posts/:type/:date(/order/:order(/limit/:limit))", to: :index, defaults: {display_mode: 'list'} # :types => [:news, :history]; :order => [:asc, :desc]
+  resources :discussions do
+    get :list, on: :collection
+    resources :posts, except: [:show, :new, :edit] do
+      collection do
+        get "user/:user_id", to: :show, as: :posts_of_the_user
+        get ":type/:date(/order/:order(/limit/:limit))", to: :index, defaults: {display_mode: 'list'} # :types => [:news, :history]; :order => [:asc, :desc]
+      end
     end
   end
 
@@ -120,8 +118,7 @@ Solar::Application.routes.draw do
       put "order/:change_id", action: :order, as: :change_order
     end
   end
-
-  match "/lesson_files/" => "lesson_files#index", action: :index, :as => :lesson_files, :via => [:get] # usado para não necessitar do lesson_id ao usar lesson_files_path
+  get :lesson_files, to: "lesson_files#index", as: :lesson_files
  
   mount Ckeditor::Engine => "/ckeditor"
 
@@ -151,6 +148,7 @@ Solar::Application.routes.draw do
 
   resources :messages do
     collection do
+      get :download_message_file
       get :restore
       get :change_indicator_reading
       post :ajax_get_contacts
