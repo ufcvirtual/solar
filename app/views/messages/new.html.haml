@@ -1,3 +1,6 @@
+:javascript
+  CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
+
 = javascript_include_tag "ckeditor/init"
 
 .message_external_div
@@ -8,15 +11,9 @@
     = render 'message_header_to'
 
     #div_new_message
-      / %textarea#newMessageTextBox{name: "newMessageTextBox"}= @original_message
-      = f.input :content, label: false, as: :ckeditor, input_html: { ckeditor: {toolbar: 'mini'}, value: @original_message, name: 'content' }
+      = f.input :content, label: false, as: :ckeditor, input_html: { value: @original_message, name: 'content' }
 
     .message_new_action
       = f.submit [t(:message_send), ' '].join, id: 'send_message', class: 'btn btn_main', alt: t(:message_send)
       = hidden_field_tag :id, @original_message_id
-      = link_to [t(:message_discard), ' '].join, {action: 'index', type: 'index'}, {:class=>'btn btn_caution'}
-
-:javascript
-  // CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
-  // $(function(){ CKEDITOR.replace('message_newMessageTextBox'); });
-
+      = link_to [t(:message_discard), ' '].join, {action: 'index', type: 'index'}, {class: 'btn btn_caution'}
