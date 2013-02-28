@@ -48,7 +48,7 @@ Solar::Application.routes.draw do
     get :list, on: :collection
     resources :posts, except: [:show, :new, :edit] do
       collection do
-        get "user/:user_id", to: :show, as: :posts_of_the_user
+        get "user/:user_id", to: :show, as: :user
         get ":type/:date(/order/:order(/limit/:limit))", to: :index, defaults: {display_mode: 'list'} # :types => [:news, :history]; :order => [:asc, :desc]
       end
     end
@@ -147,13 +147,12 @@ Solar::Application.routes.draw do
   end
 
   resources :messages do
+    put :restore, on: :member
     collection do
       get :download_message_file
-      get :restore
       get :change_indicator_reading
       post :ajax_get_contacts
       post :send_message
-      delete :destroy
     end
   end
 

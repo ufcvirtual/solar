@@ -63,7 +63,7 @@
         %tbody
           - @discussions.each_with_index do |discussion, idx|
             %tr.lines
-              - link = discussion_posts_of_the_user_path(discussion['discussion_id'].to_i, @student.id)
+              - link = user_discussion_posts_path(discussion['discussion_id'].to_i, @student.id)
               %td.show_posts
                 - if discussion['qtd'].to_i > 0 
                   = link_to(discussion['name'], link, {:class => 'link_content'})

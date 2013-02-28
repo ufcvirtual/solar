@@ -29,40 +29,32 @@
     <span id="link_mark_as_unread" class="message_link"><%=t(:message_mark_as_unread)%></span>
   <% end %>
 
-  <% if @type != "trashbox" %>
-    <span id="link_remove_message" class="message_link"><%=t(:message_delete)%></span>
-  <% end %>
+  <%- if @type != "trashbox" %>
+    <%= link_to(t(:message_delete), message_path(@message.try(:id) || ':id'), {id: :link_remove_message, class: 'message_link', method: :delete, confirm: t(:message_confirm)}) %>
+  <%- end %>
 
   <% if @type == "trashbox" %>
-    <span id="link_restore_message" class="message_link"><%=t(:message_restore)%></span>
+    <%= link_to(t(:message_restore), restore_message_path(@message.try(:id) || ':id'), {id: :link_restore_message, class: 'message_link', method: :put}) %>
   <% end %>
 
 <% end %>
 
 <script type="text/javascript">
   $(function($) {
-
-     // Restaurar mensagens
      $("#link_restore_message").click(function() {
-        // recuperar msgs selecionadas
         var values_id = '';
         $("input:checked").each(function(key, v) {
           values_id += ((key == 0) ? "" : "$") + $(this).val();
         });
 
         if (values_id != '') {
-          var url_for = '<%= url_for :controller => :messages, :action => :restore %>' + '?id=' + values_id;
-          $("#message_list").attr("action", url_for);
-          $("#message_list").submit();
+          $(this).attr('href', $(this).attr('href').replace(':id', values_id));
+        } else {
+          return false;
         }
      });
 
-     // Remover mensagens
      $("#link_remove_message").click(function() {
-        var answer = confirm("<%=t(:message_confirm)%>");
-        if (!answer) return;
-
-        var value = "";
         var type = "<%=@type%>";
         var search = "<%=@search_text%>";
         var checked_messages = "<%=@message.nil?%>".toLowerCase();
@@ -74,16 +66,12 @@
           });
 
           if (values_id != "") {
-            var url_for = '<%= url_for :controller => :messages, :action => :destroy %>' + "?id=" + values_id + "&type=" + type + "&search=" + search;
-            $("#message_list").attr("action", url_for);
-            $("#message_list").submit();
+            $(this).attr('href', $(this).attr('href').replace(':id', values_id) + '?type=' + type + '&search=' + search);
+          } else {
+            return false; // nao faz nada
           }
-        } else {
-          var url_for = '<%= url_for :controller => :messages, :action => :destroy, :id => (@message.id unless @message.nil?) %>' + "?type=index&search=" + search;
-          $("#message_list").attr("action", url_for);
-          $("#message_list").submit();
         }
-     })
+     });
 
      $("#check_read").click(function() {
         $(".selected_messages").each(function(i){
@@ -126,7 +114,6 @@
      });
 
     $(".selected_messages:input").click(function(){
-      console.info('OK');
       $(this).parents('.message_line').toggleClass('message_line_highlight');
     })
 

@@ -10,7 +10,7 @@ class MessagesController < ApplicationController
   before_filter :prepare_for_pagination, :only => [:index]
 
   # nao precisa usar load_and_authorize_resource pq todos tem acesso
-  Path_Message_Files = Rails.root.join('media', 'messages') #{}"#{::Rails.root.to_s}/media/messages/"
+  Path_Message_Files = Rails.root.join('media', 'messages')
 
   # listagem de mensagens (entrada, enviados, lixeira)
   def index
@@ -26,8 +26,7 @@ class MessagesController < ApplicationController
 
   # edicao de mensagem (nova, responder, encaminhar)
   def new
-    # recebe nil quando esta em pagina de leitura/edicao de msg
-    @type = nil
+    @type = nil # recebe nil quando esta em pagina de leitura/edicao de msg
     @search_text = params[:search] || ''
     @show_message = 'new'
     get_contacts
@@ -233,7 +232,7 @@ class MessagesController < ApplicationController
   ##
   # Muda status para apagado
   ##
-  def destroy    
+  def destroy
     restore_or_destroy('trash', 'index')
   end
   
@@ -248,7 +247,7 @@ class MessagesController < ApplicationController
     search_text = params.include?('search') ? params[:search] : ''
     type = params.include?('type') ? params[:type] : type
 
-    redirect_to :action => :index, :type => type, :search => search_text
+    redirect_to action: :index, type: type, search: search_text
   end
 
   ##
