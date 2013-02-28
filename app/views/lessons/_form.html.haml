@@ -10,25 +10,29 @@
       = hidden_field_tag(:lesson_module_id, params[:lesson_module_id]) 
 
       - start_date = @lesson.try(:schedule).try(:start_date) || Date.today
-      - end_date   = @lesson.try(:schedule).try(:end_date) || start_date
+      - end_date = @lesson.try(:schedule).try(:end_date) || start_date
 
       .form-inputs.block_content
+        .lesson_module
+          = f.label t(:lesson_module, :scope => [:editions, :items])
+          - if @lesson_modules
+            = f.collection_select(:lesson_module_id, @lesson_modules, :id, :name)
+          - elsif @lesson_module
+            = f.hint @lesson_module.name
         =f.input :name
         =f.input :description  
-        .lesson_date
+        - error_class = "field_with_errors" unless @schedule_error.blank?
+        .lesson_date{:class => error_class}
           =f.label :start_date, :required => true
           =text_field_tag "start_date", "", :id => "from_date", :title => "#{t(:from_date)}", :value => "#{l(start_date.to_date, :format => :default)}", :class => "date_text_field", :size => 10, :required => true
           %div.end_date{class: ('invisible' if (!@lesson.has_end_date?) )}
             =f.label :end_date
             =text_field_tag "end_date", "", :id => "until_date", :title => "#{t(:until_date)}", :value => "#{l(end_date.to_date, :format => :default)}", :class => "date_text_field", :size => 10, :required => true
+            %span{:style => "display: inline-block;"}= @schedule_error  
           .select_end_date
             =f.label " "
             =check_box("check","end_date", {id: 'check_end_date', checked: @lesson.has_end_date? })
-            =t(:enable_end_date, :scope => [:lessons, :new])
-        .lesson_module    
-          %div.end_date{class: ('invisible' if @lesson.try(:lesson_module).nil? )}
-            =f.label t(:lesson_module, :scope => [:editions, :items])
-            =f.collection_select(:lesson_module_id, @lesson_modules, :id, :name)
+            =t(:enable_end_date, :scope => [:lessons, :new])      
         .lesson_status 
           =f.label t(:status, :scope => [:lessons, :new])
           =f.select :status, ([ ['rascunho', Lesson_Test.to_i], ['liberada', Lesson_Approved.to_i] ]), :include_blank => false

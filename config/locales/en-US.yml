@@ -424,6 +424,7 @@
       new_module: New module
       edit_lesson_module: Edit module
       delete_lesson_module: Delete module
+      no_end_date: On
     new:
       type_lesson: Type
       status: Status

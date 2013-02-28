@@ -76,6 +76,8 @@
                       =' - '
                       - if lesson.has_end_date?
                         =l lesson.schedule.end_date, format: :normal
+                      - else
+                        = t(:no_end_date, :scope => [:lessons, :list])  
 
                     %td{style: "width: 70px", align: 'center'}
                       - if lesson.status == Lesson_Test

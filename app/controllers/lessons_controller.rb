@@ -27,7 +27,7 @@ class LessonsController < ApplicationController
   # GET /lessons/new
   # GET /lessons/new.json
   def new
-    @lesson_modules = []
+    @lesson_module = LessonModule.find(params[:lesson_module_id]) if params[:lesson_module_id].present?
     @lesson = Lesson.new
   end
 
@@ -36,7 +36,6 @@ class LessonsController < ApplicationController
   def create
     begin
       # authorize! :create, Lesson, on: parapms[:allocation_tags_ids].split(" ")
-      @lesson_modules = []
       params[:lesson][:lesson_module_id] = params[:lesson_module_id]
       params[:lesson][:user_id] = current_user.id
       params[:lesson][:order] = Lesson.where(lesson_module_id: params[:lesson_module_id]).maximum(:order).to_i + 1
@@ -84,8 +83,10 @@ class LessonsController < ApplicationController
         @lesson.update_attributes!(params[:lesson])
         @lesson.schedule.update_attributes!(start_date: params[:start_date], end_date: params[:end_date])
       end
+ 
     rescue
       error = true
+      @schedule_error = @lesson.schedule.errors.full_messages[0] unless @lesson.schedule.valid?
     end
 
     respond_to do |format|
