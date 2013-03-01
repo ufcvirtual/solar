@@ -139,6 +139,7 @@ class OffersController < ApplicationController
   def edit
     @offer = Offer.find(params[:id])
     authorize! :edit, Offer, :on => [@offer.allocation_tag.id]
+    @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
   end
 
   # Método que, a partir das ucs e cursos selecionados, cria ofertas para todas as combinações possíveis entre aqueles
@@ -189,7 +190,6 @@ class OffersController < ApplicationController
 
     begin
       authorize! :update, Offer, :on => [@offer.allocation_tag.id] # verifica se tem acesso à oferta a ser editada
-
       @offer.update_attributes!(params[:offer])
       respond_to do |format|
         get_offers(params[:curriculum_unit_id], params[:course_id])
@@ -200,7 +200,7 @@ class OffersController < ApplicationController
         get_offers(@curriculum_unit_id, @course_id)
         format.html { render :index, :status => 500 }
       end
-    rescue
+    rescue Exception => error
       respond_to do |format|
         @date_range_error = @offer.errors.full_messages.last unless @offer.errors[:start_date].blank? and @offer.errors[:end_date].blank?
         format.html { render :edit, :status => 200 }
