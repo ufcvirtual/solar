@@ -1,16 +1,17 @@
-jQuery(function($){
-
-  $.noConflict(); // Resolver conflitos entre os .js chamados. Sem isso, o objeto "tokenInputObject" do filtro é perdido.
+jQuery(function(){
 
   /* Inicialização da árvore de arquivos */
   var selNodes;
-  $("#tree").dynatree({
+  jQuery("#tree").dynatree({
     minExpandLevel: 2,
     checkbox: true,
-    selectMode: 3,
+    selectMode: 2, // alterado para o 2 para melhorar/facilitar a deleção de nós
     children: treeData,
     imagePath: "/assets/lesson/",
     onSelect: function(select, node) {
+      node.visit(function(child){
+        child.select(node.isSelected()); // seleciona ou de-seleciona nós filhos
+      });
       selNodes = node.tree.getSelectedNodes();
     },
     onClick: function(node, event) {
@@ -88,7 +89,7 @@ jQuery(function($){
 
   
   /* Inicialização da árvore de pastas para movimentação de arquivos e pastas */
-  $("#folders_tree").dynatree({
+  jQuery("#folders_tree").dynatree({
     minExpandLevel: 2,
     selectMode: 1,
     children: folderTreeData,
@@ -98,7 +99,7 @@ jQuery(function($){
     onKeydown: function(node, event) {
       switch( event.which ) {
         case 27: // [F2]
-          $("#folder_window").hide();
+          jQuery("#folder_window").hide();
         case 13: // enter
           node.select();
       }
@@ -111,12 +112,11 @@ jQuery(function($){
     }
   });
 
-
   /* Eventos de botões */
   
   /* Criar novo folder com texto padrao e foco para editar */
-  $("#btn-new-folder").click(function() { 
-    var node              = $("#tree").dynatree("getActiveNode");
+  jQuery("#btn-new-folder").click(function() { 
+    var node              = jQuery("#tree").dynatree("getActiveNode");
     var new_folder_number = 0; // utilizado para cada nova pasta ter um nome diferente
     var new_folder_name   = '<%= I18n.t(:new_folder, scope: [:lessons, :files]) %>';
 
@@ -141,26 +141,29 @@ jQuery(function($){
   });
 
   /* Selecionar ou deselecionar todos os itens */
-  $("#all_items_selector").click(function(){
-    var value = $("#all_items_selector").attr("checked") == "checked";
-    $("#tree").dynatree("getRoot").visit(function(node) {
+  jQuery("#all_items_selector").click(function(){
+    var value = jQuery("#all_items_selector").attr("checked") == "checked";
+    jQuery("#tree").dynatree("getRoot").visit(function(node) {
       node.select(value);
     });
   });
 
-  $("#btn-remove-node").click(function(){
-    if(typeof selNodes == "undefined")
-      flash_message("<%= I18n.t(:at_least_one, :to => I18n.t(:remove, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "flash_messages");
-    else
+  jQuery("#btn-remove-node").click(function(){
+    activeNode = jQuery("#tree").dynatree("getActiveNode");
+    if(typeof selNodes != "undefined")
       deleteNodes(selNodes); // deleta os nós que foram selecionados
+    else if(activeNode != null)
+        deleteNodes([activeNode]); // deleta o nó ativo
+      else
+        flash_message("<%= I18n.t(:at_least_one, :to => I18n.t(:remove, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "flash_messages");
   });
 
-  $("#btn-clean-lesson").click(function(){
-    deleteNodes([$("#tree").dynatree("getTree").getNodeByKey("_2")]); // deleta todos os nós
+  jQuery("#btn-clean-lesson").click(function(){
+    deleteNodes([jQuery("#tree").dynatree("getTree").getNodeByKey("_2")]); // deleta todos os nós
   });
 
-  $("#btn-rename").click(function(){
-    var active_node = $("#tree").dynatree("getActiveNode")
+  jQuery("#btn-rename").click(function(){
+    var active_node = jQuery("#tree").dynatree("getActiveNode")
     if( active_node != null){
       if (selNodes.length == 1)
         editNode(selNodes[0]);
@@ -170,42 +173,42 @@ jQuery(function($){
       flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
   });
 
-  $("#btn-move-node").click(function(){
+  jQuery("#btn-move-node").click(function(){
     if(typeof selNodes == "undefined")
       flash_message("<%= I18n.t(:at_least_one, :to => I18n.t(:move, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "flash_messages");
     else
-      $("#folder_window").toggle();
+      jQuery("#folder_window").toggle();
   });
 
-  $("#btn-cancel-move").click(function(){
-    $("#folder_window").hide();
+  jQuery("#btn-cancel-move").click(function(){
+    jQuery("#folder_window").hide();
   });  
 
-  $("#btn-save-move").click(function(){
+  jQuery("#btn-save-move").click(function(){
     saveMove(selNodes);
   });    
 
-  $("#btn-conclude").click(function(){
+  jQuery("#btn-conclude").click(function(){
     removeLightBox();
   });
 
-  $("#btn-new-file").click(function(){
-    var activeNode = $("#tree").dynatree("getActiveNode");
+  jQuery("#btn-new-file").click(function(){
+    var activeNode = jQuery("#tree").dynatree("getActiveNode");
     if (activeNode != null && activeNode.data.isFolder == true)
-      $("#fileupload").click();
+      jQuery("#fileupload").click();
     else
       flash_message("<%=I18n.t(:one_folder_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
   })
 
-  $(':file').change(function(){
+  jQuery(':file').change(function(){
 
-    var activeNode = $("#tree").dynatree("getActiveNode");
+    var activeNode = jQuery("#tree").dynatree("getActiveNode");
 
     for(var i=0; i < this.files.length; i++){ 
       file = this.files[i];
       extension = file.name.split(".");
       extension = extension[extension.length-1];
-      if($.inArray(extension, extensions) != -1)
+      if(jQuery.inArray(extension, extensions) != -1)
         var extension_error = true;
       else if(file.size > "<%=200.megabytes%>")
           var size_error = true
@@ -219,11 +222,11 @@ jQuery(function($){
         if(name_error != true){
 
           var path     = getPath(activeNode);
-          $("#path").attr("value", path);
-          var formData = new FormData($('#file_form')[0]);
+          jQuery("#path").attr("value", path);
+          var formData = new FormData(jQuery('#file_form')[0]);
 
-          $.ajax({
-              url: $("#file_form").attr("action"),  //server script to process data
+          jQuery.ajax({
+              url: jQuery("#file_form").attr("action"),  //server script to process data
               type: 'PUT',
               data: formData,
               //Options to tell JQuery not to process data or worry about content-type
@@ -231,14 +234,14 @@ jQuery(function($){
               contentType: false,
               processData: false,
               // xhr: function() {  // custom xhr
-              //     myXhr = $.ajaxSettings.xhr();
+              //     myXhr = jQuery.ajaxSettings.xhr();
               //     if(myXhr.upload){ // check if upload property exists
               //         myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // for handling the progress of the upload
               //     }
               //     return myXhr;
               // },
               success: function(data){
-                $("#lesson_file_management").html(data);
+                jQuery("#lesson_file_management").html(data);
               },
               error: function() {
                 flash_message("<%=I18n.t(:upload_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
@@ -257,7 +260,7 @@ jQuery(function($){
 
 // function progressHandlingFunction(e){
 //   if(e.lengthComputable){
-//       $('progress').attr({value:e.loaded,max:e.total});
+//       jQuery('progress').attr({value:e.loaded,max:e.total});
 //   }
 // }
 
@@ -315,20 +318,20 @@ function editNode(node) {
 
   var prevTitle = node.data.title,
   tree = node.tree;
-  tree.$widget.unbind(); // Disable dynatree mouse- and key handling
-  $(".dynatree-title", node.span).html("<input id='editNode' value='" + prevTitle + "'>"); // Replace node with <input>
+  tree.jQuerywidget.unbind(); // Disable dynatree mouse- and key handling
+  jQuery(".dynatree-title", node.span).html("<input id='editNode' value='" + prevTitle + "'>"); // Replace node with <input>
 
-  $("input#editNode") // Focus <input> and bind keyboard handler
+  jQuery("input#editNode") // Focus <input> and bind keyboard handler
     .focus()
     .keydown(function(event) {
       switch( event.which ) {
         case 27: // [esc]
-          $("input#editNode").val(prevTitle); // discard changes on [esc]
-          $(this).blur();
+          jQuery("input#editNode").val(prevTitle); // discard changes on [esc]
+          jQuery(this).blur();
           break;
         case 13: // [enter]
 
-          var new_title = $("input#editNode").val(); // Accept new value, when user leaves <input>
+          var new_title = jQuery("input#editNode").val(); // Accept new value, when user leaves <input>
           node_path     = getPath(node); // recupera caminho do nó antes de mudar o título
 
           if(node.data.title != new_title){
@@ -336,21 +339,21 @@ function editNode(node) {
               renameNode(node, new_title, node_path); // renomeia nó
               node.setTitle(new_title);
             }else{
-              $("input#editNode").val(node.data.title); // retorna ao antigo título
+              jQuery("input#editNode").val(node.data.title); // retorna ao antigo título
               flash_message("<%=I18n.t(:name_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
             }             
           }else
             erase_flash_messages();
 
-          $(this).blur(); // simulate blur to accept new value
+          jQuery(this).blur(); // simulate blur to accept new value
           break;
       }
     }).blur(function(event){
       // Accept new value, when user leaves <input>
-      var title = $("input#editNode").val();
+      var title = jQuery("input#editNode").val();
       node.setTitle(title); 
       // Re-enable mouse and keyboard handlling
-      tree.$widget.bind();
+      tree.jQuerywidget.bind();
       node.focus();
     });
 
@@ -360,10 +363,10 @@ function editNode(node) {
 
 /* Salva a deleção de um nó */
 function saveDeletion(node, root_node){
-  url       = $("#remove_path").attr("value"); // url para deleção
+  url       = jQuery("#remove_path").attr("value"); // url para deleção
   node_path = getPath(node); // caminho do nó
 
-  $.ajax({
+  jQuery.ajax({
     type: 'GET',
     url: url,
     data: {
@@ -371,7 +374,7 @@ function saveDeletion(node, root_node){
       "root_node": root_node // informa se é a deleção do nó raiz, ou seja, de todos os arquivos da aula
     },
     success: function(data) {
-      $("#lesson_file_management").html(data);
+      jQuery("#lesson_file_management").html(data);
     },
     error: function(data) {
       flash_message("<%=I18n.t(:delete_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
@@ -381,9 +384,9 @@ function saveDeletion(node, root_node){
 
 /* Cria pasta */
 function newFolder(node, path){
-  url = $("#btn-new-folder").attr("value");
+  url = jQuery("#btn-new-folder").attr("value");
 
-  $.ajax({
+  jQuery.ajax({
     type: 'POST',
     url: url,
     data: {
@@ -391,7 +394,7 @@ function newFolder(node, path){
       "folder_name": node.data.title
     },
     success: function(data){
-      $("#lesson_file_management").html(data);
+      jQuery("#lesson_file_management").html(data);
     },
     error: function() {
       node.remove(); // remove pasta criada
@@ -402,9 +405,9 @@ function newFolder(node, path){
 
 /* Renomeia nó */
 function renameNode(node, new_title, path){
-  url = $("#rename_path").attr("value");
+  url = jQuery("#rename_path").attr("value");
 
-  $.ajax({
+  jQuery.ajax({
     type: 'PUT',
     url: url,
     data: {
@@ -413,7 +416,7 @@ function renameNode(node, new_title, path){
       "previous_name": node.data.title
     },
     success: function(data){
-      $("#lesson_file_management").html(data);
+      jQuery("#lesson_file_management").html(data);
     },
     error: function() {
       node.setTitle(node.data.title); // retorna ao antigo título
@@ -425,9 +428,10 @@ function renameNode(node, new_title, path){
 /* Salvar a movimentação de pastas/arquivos */
 /* Trechos comentados serão utilizados quando a movimentação for possível para drag'n'drop */
 function saveMove(nodesToMove){
-  var paths = new Array;
 
-  var nodesSelected = $("#folders_tree").dynatree("getTree").getSelectedNodes();
+  var paths         = new Array;
+  var nodesSelected = jQuery("#folders_tree").dynatree("getTree").getSelectedNodes();
+
   if (nodesSelected.length == 0)
     var error = true; // erro: nenhuma pasta destino selecionada
   else{
@@ -462,15 +466,15 @@ function saveMove(nodesToMove){
       if(same_folder == true) 
         flash_message("<%= I18n.t(:same_folder_error, :scope => [:lesson_files]) %>", "alert", "flash_messages");
       else{
-        $.ajax({
+        jQuery.ajax({
           type: 'PUT',
-          url: $("#move_path").attr("value"),
+          url: jQuery("#move_path").attr("value"),
           data: {
             "paths_to_move": paths,
             "path_to_move_to": moveTo
           },
           success: function(data) {
-            $("#lesson_file_management").html(data);
+            jQuery("#lesson_file_management").html(data);
           },
           error: function() {
             flash_message("<%= I18n.t(:move_error, :scope => [:lesson_files]) %>", "alert", "flash_messages");
