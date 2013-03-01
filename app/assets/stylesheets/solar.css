@@ -3768,3 +3768,7 @@ p#files_menu_bar .btn.btn_default{
 #fileupload{
     display: none;
 }
+
+#btn-new-file{
+    cursor: pointer;
+}

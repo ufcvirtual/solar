@@ -189,46 +189,68 @@ jQuery(function($){
     removeLightBox();
   });
 
-  $("#btn-new_file").click(function(){
-    $("#fileupload").click();
+  $("#btn-new-file").click(function(){
+    var activeNode = $("#tree").dynatree("getActiveNode");
+    if (activeNode != null && activeNode.data.isFolder == true)
+      $("#fileupload").click();
+    else
+      flash_message("<%=I18n.t(:one_folder_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
   })
 
   $(':file').change(function(){
 
+    var activeNode = $("#tree").dynatree("getActiveNode");
 
-    var file = this.files[0];
-    name = file.name;
-    size = file.size;
-    type = file.type;
-    //your validation
+    for(var i=0; i < this.files.length; i++){ 
+      file = this.files[i];
+      extension = file.name.split(".");
+      extension = extension[extension.length-1];
+      if($.inArray(extension, extensions) != -1)
+        var extension_error = true;
+      else if(file.size > "<%=200.megabytes%>")
+          var size_error = true
+        else if(!validName(activeNode, file.name))
+            var name_error = true
 
-    var path = getPath(selNodes[0]);
-    $("#path").attr("value", path);
-    var formData = new FormData($('#file_form')[0]);
+    }
 
-    $.ajax({
-        url: $("#file_form").attr("action"),  //server script to process data
-        type: 'PUT',
-        data: formData,
-        //Options to tell JQuery not to process data or worry about content-type
-        cache: false,
-        contentType: false,
-        processData: false,
-        // xhr: function() {  // custom xhr
-        //     myXhr = $.ajaxSettings.xhr();
-        //     if(myXhr.upload){ // check if upload property exists
-        //         myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // for handling the progress of the upload
-        //     }
-        //     return myXhr;
-        // },
-        success: function(data){
-          $("#lesson_file_management").html(data);
-        },
-        error: function() {
-          flash_message("<%=I18n.t(:delete_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
-        }
-    });
+    if(extension_error != true){
+      if(size_error != true){
+        if(name_error != true){
 
+          var path     = getPath(activeNode);
+          $("#path").attr("value", path);
+          var formData = new FormData($('#file_form')[0]);
+
+          $.ajax({
+              url: $("#file_form").attr("action"),  //server script to process data
+              type: 'PUT',
+              data: formData,
+              //Options to tell JQuery not to process data or worry about content-type
+              cache: false,
+              contentType: false,
+              processData: false,
+              // xhr: function() {  // custom xhr
+              //     myXhr = $.ajaxSettings.xhr();
+              //     if(myXhr.upload){ // check if upload property exists
+              //         myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // for handling the progress of the upload
+              //     }
+              //     return myXhr;
+              // },
+              success: function(data){
+                $("#lesson_file_management").html(data);
+              },
+              error: function() {
+                flash_message("<%=I18n.t(:upload_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
+              }
+          });
+
+        }else
+          flash_message("<%=I18n.t(:existing_file_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
+      }else
+        flash_message("<%=I18n.t(:file_too_big_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
+    }else
+      flash_message("<%=I18n.t(:bad_extension_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
   });
 
 });

@@ -12,6 +12,7 @@
   :javascript
     var treeData       = #{@files};
     var folderTreeData = #{@folders};
+    var extensions     = #{Solar::Application.config.black_list[:extensions]};
 
   = hidden_field_tag :remove_path, remove_node_lesson_files_path(:lesson_id => @lesson.id)
   = hidden_field_tag :rename_path, rename_node_lesson_files_path(:lesson_id => @lesson.id)
@@ -44,7 +45,7 @@
           = button_tag t(".move"), :type => :button, :class => 'btn btn_main', :id => "btn-save-move"
 
     %span.right_buttons
-      = image_tag("/assets/lesson/upload.png", :id => "btn-new_file")
+      = image_tag("/assets/lesson/upload.png", :id => "btn-new-file")
   #tree
 
   #blue_background

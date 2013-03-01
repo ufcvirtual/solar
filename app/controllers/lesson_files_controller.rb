@@ -3,6 +3,8 @@ class LessonFilesController < ApplicationController
   include LessonFileHelper
   require 'fileutils' # utilizado na remoção de diretórios, pois o "Dir.rmdir" não remove diretórios que não estejam vazis
 
+  skip_before_filter :verify_authenticity_token
+
   layout false
 
   def index
@@ -63,11 +65,15 @@ class LessonFilesController < ApplicationController
 
       elsif params[:type] == "upload" # upload de arquivos
 
-        params[:lesson_files][:files].each do |file|
-          tmp  = file.tempfile # arquivo temporário
-          print "#{params[:lesson_files][:path]}"
-          file = File.join("#{Rails.root}", "media", "lessons", params[:lesson_id], params[:lesson_files][:path], file.original_filename) #adicionar parametro: path_to_add_to # cria arquivo vazio
-          FileUtils.cp tmp.path, file # copia conteúdo para o arquivo criado
+        ActiveRecord::Base.transaction do # só executa se estiverem todos ok
+          params[:lesson_files][:files].each do |file|
+            # verificações caso "passe" pelas que existem no javascript
+            raise "error" if file.tempfile.size > 200.megabytes # de tamanho
+            raise "error" if Solar::Application.config.black_list[:extensions].include?(file.original_filename.split(".").last) # de extensão
+            tmp  = file.tempfile # arquivo temporário com informações do arquivo enviado
+            file = File.join("#{Rails.root}", "media", "lessons", params[:lesson_id], params[:lesson_files][:path], file.original_filename) #adicionar parametro: path_to_add_to # cria arquivo vazio
+            FileUtils.cp tmp.path, file # copia conteúdo para o arquivo criado
+          end
         end
 
       end
@@ -104,10 +110,6 @@ class LessonFilesController < ApplicationController
     respond_to do |format|
       format.html{ render (error ? {:nothing => true} : :index), :status => (error ? 500 : 200) }
     end
-  end
-
-  def upload_file
-    raise "#{params[:files]}"
   end
 
   private

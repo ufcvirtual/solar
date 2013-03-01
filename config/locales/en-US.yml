@@ -472,6 +472,10 @@
     remove: remove
     existing_folder_error: Already exists a folder with same name on selected destination
     same_folder_error: It's not possible to move a folder to itself
+    existing_file_error: "Not sent, already exists a file with same name on selected destination"
+    upload_error: It wasn't possible to upload
+    bad_extension_error: "Not sent, invalid file type"
+    file_too_big_error: "Not sent, file too large. The maximum size should be up to 200MB."
 
   #Foruns
   title: "Title"
