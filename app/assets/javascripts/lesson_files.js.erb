@@ -37,54 +37,7 @@ jQuery(function(){
         case 46: // [delete]
           deleteNodes([node]);
       }
-    }//,
-
-  //   dnd: {
-  //     onDragStart: function(node) {
-  //       /** This function MUST be defined to enable dragging for the tree.
-  //        *  Return false to cancel dragging of node. */
-  //       return true;
-  //     },
-
-  //   autoExpandMS: 1000,
-  //   preventVoidMoves: true, // Prevent dropping nodes 'before self', etc.
-
-  //   onDragEnter: function(node, sourceNode) {
-  //     /** sourceNode may be null for non-dynatree droppables.
-  //      *  Return false to disallow dropping on node. In this case
-  //      *  onDragOver and onDragLeave are not called.
-  //      *  Return 'over', 'before, or 'after' to force a hitMode.
-  //      *  Return ['before', 'after'] to restrict available hitModes.
-  //      *  Any other return value will calc the hitMode from the cursor position.
-  //      */
-  //     return true;
-  //   },
-  //   onDragOver: function(node, sourceNode, hitMode) {
-  //     /** Return false to disallow dropping this node. **/
-  //     if(node.isDescendantOf(sourceNode)){ // Impede que o "pai" seja arrastado para o próprio filho
-  //       return false;
-  //     }
-  //     // Prohibit creating childs in non-folders (only sorting allowed)
-  //     if( !node.data.isFolder && hitMode === "over" ){
-  //       return "after";
-  //     }
-  //   },
-  //   onDrop: function(node, sourceNode, hitMode, ui, draggable) {
-  //     console.log(ui.node);
-  //     console.log(draggable);
-  //     /** This function MUST be defined to enable dropping of items on the tree. */
-  //     if(node.data.isFolder) // se for pasta
-  //       sourceNode.move(node, hitMode); // move para o nó
-  //     else // se tiver
-  //       sourceNode.move(node.parent, hitMode); // move para o pai do nó (a pasta a qual pertence)
-  //     // expand the drop target
-  //     // sourceNode.expand(true);
-  //     saveMove(sourceNode, node);
-  //   },
-  //   onDragLeave: function(node, sourceNode) {
-  //     /** Always called if onDragEnter was called. */
-  //   }
-  // }
+    }
   });
 
   
@@ -214,7 +167,6 @@ jQuery(function(){
           var size_error = true
         else if(!validName(activeNode, file.name))
             var name_error = true
-
     }
 
     if(extension_error != true){

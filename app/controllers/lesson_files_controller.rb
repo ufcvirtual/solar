@@ -3,7 +3,7 @@ class LessonFilesController < ApplicationController
   include LessonFileHelper
   require 'fileutils' # utilizado na remoção de diretórios, pois o "Dir.rmdir" não remove diretórios que não estejam vazis
 
-  skip_before_filter :verify_authenticity_token
+  skip_before_filter :verify_authenticity_token # necessário para, ao excluir um arquivo ou pasta, não perder a token do formulário 
 
   layout false
 

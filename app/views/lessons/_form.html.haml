@@ -47,7 +47,7 @@
 
       .right_buttons
         = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default", :onclick => "removeLightBox();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
-        = button_tag t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :type => "button", :id => "save_button"
+        = button_tag t(:save, :scope => [:lessons, :new]), :class => "btn btn_main", :alt => t(:save, :scope => [:lessons, :new]), :type => "button", :id => "save_button"
 
 :css
   .date_text_field {
@@ -72,18 +72,26 @@
 
 :javascript
 
+  if ("#{params[:action] == "new"}" == "true" || "#{params[:action] == "create"}" == "true")
+      var new_action = true;
+
   $(function(){
     var options = $.extend($.datepicker.regional['#{I18n.locale}']);
     options.dateFormat = global_config.locale.dateFormat.default;
     $('#from_date, #until_date').datepicker(options);
+    if($("#lesson_type_lesson").val() == '#{Lesson_Type_File}'){
+      $(".url_lesson").hide();
+      console.log($("#save_button").html());
+      console.log($("#save_button"));
+      if(new_action)
+        $("#save_button").html("#{I18n.t(:continue, :scope => [:lessons, :new])}");
+    }
     
-
     $("#save_button").click(function(){
+      console.log($(this).html == "#{I18n.t(:continue, :scope => [:lessons, :new])}");
       submit_form('lesson_form', 'lesson_form', '#{list_lessons_path}', 'first_step'); 
-      if("#{params[:action] == "new"}" == "true" && $(this).html == "Prosseguir")
-        $('#lightBoxDialogTitle').html('Nova aula > Gerência de arquivos');
-      if("#{params[:action] == "edit"}" == "true" && $(this).html == "Prosseguir")
-        $('#lightBoxDialogTitle').html('Nova aula > Gerência de arquivos');
+      if(new_action && $(this).html == "#{I18n.t(:continue, :scope => [:lessons, :new])}")
+        $('#lightBoxDialogTitle').html('#{I18n.t(:new, :scope => [:lessons, :list])} > #{I18n.t(:files_management, :scope => [:lesson_files])}');
     });
 
   });
@@ -106,11 +114,11 @@
     t = $('#lesson_type_lesson').val(); 
     if (t == "#{Lesson_Type_Link}"){
       $(".url_lesson").show();
-      $("#save_button").html('Salvar');
+      $("#save_button").html('#{I18n.t(:save, :scope => [:lessons, :new])}');
     }else{
       $(".url_lesson").hide();
-      if("#{params[:action] == "new"}" == "true")
-        $("#save_button").html('Prosseguir');
+      if(new_action)
+        $("#save_button").html("#{I18n.t(:continue, :scope => [:lessons, :new])}");
     }
   });
 
