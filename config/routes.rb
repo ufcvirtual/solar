@@ -179,10 +179,9 @@ Solar::Application.routes.draw do
   get "support_material_files/delete_folder", to: "support_material_files#delete_folder"
   get "bibliography/list", to: "bibliography#list"
 
-  # get "access_control/index"
-  # get "/media/users/:id/photos/:style.:extension", to: "users#photo"
-
-  get "/media/lessons/:id/:file.:extension", to: "access_control#lesson"
+  ## aulas mapeando arquivos estaticos em aula
+  get "/media/lessons/:id/:file.:extension", to: "access_control#lesson", index: true
+  get "/media/lessons/:id/:folder/*path", to: "access_control#lesson", index: false
 
   get "/media/messages/:file.:extension", to: "access_control#message"
   get "/media/assignment/sent_assignment_files/:file.:extension", to: "access_control#assignment"

@@ -10,8 +10,7 @@ class Lesson < ActiveRecord::Base
 
   validates :name, presence: true
 
-  FILES_PATH_URL = Pathname.new(File.join('media', 'lessons'))
-  FILES_PATH = Rails.root.join(FILES_PATH_URL.to_s) # path dos arquivos de aula
+  FILES_PATH = Rails.root.join('media', 'lessons') # path dos arquivos de aula
 
   def path(full = false)
     if type_lesson.to_i == Lesson_Type_File
