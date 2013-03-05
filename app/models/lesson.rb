@@ -10,13 +10,17 @@ class Lesson < ActiveRecord::Base
 
   validates :name, presence: true
 
-  # validates_format_of :email,
-  #  :with => /\A[\w\._%-]+@[\w\.-]+\.[a-zA-Z]{2,4}\z/,
-  #  :if => Proc.new { |u| !u.email.nil? && !u.email.blank? },
-  #  :message => "Formato de email incorreto"
-  # end
+  FILES_PATH_URL = Pathname.new(File.join('media', 'lessons'))
+  FILES_PATH = Rails.root.join(FILES_PATH_URL.to_s) # path dos arquivos de aula
 
-  FILES_PATH = Rails.root.join('media', 'lessons') # path dos arquivos de aula
+  def path(full = false)
+    if type_lesson.to_i == Lesson_Type_File
+      return unless File.exist? FILES_PATH.join(id.to_s)
+      full ? FILES_PATH.join(id.to_s, address) : File.join('', 'media', 'lessons', id.to_s, address)
+    else
+      address
+    end
+  end
 
   def can_destroy?
     return (status == 0 ? true : false) # verifica se se a aula está em teste ou aprovada

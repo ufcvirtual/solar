@@ -6,24 +6,29 @@ class LessonsController < ApplicationController
   include FilesHelper
   include LessonFileHelper
 
-  before_filter :prepare_for_group_selection, :only => [:index, :download_files]
-  before_filter :curriculum_data, :except => [:list, :download_files, :extract_files, :new, :create, :edit, :update, :order]
-
-  load_and_authorize_resource :except => [:index, :list, :download_files, :new, :create, :edit, :update, :show, :order]
+  before_filter :prepare_for_group_selection, only: [:index, :download_files]
+  before_filter :curriculum_data, except: [:new, :create, :edit, :update, :list, :download_files, :extract_files, :order]
 
   def index
     authorize! :index, Lesson
+
     @lessons = lessons_to_open(params[:allocation_tags_ids])
     render layout: false if params[:allocation_tags_ids]
   end
 
+  # GET /lessons/:id
   def show
+    authorize! :show, Lesson, {on: [@curriculum_unit.allocation_tag.id], read: true} # apenas para quem faz parte da turma
+
+    @lesson = Lesson.find(params[:id])
     render layout: 'lesson_frame'
   end
 
   # GET /lessons/new
   # GET /lessons/new.json
   def new
+    authorize! :new, Lesson
+
     @lesson_module = LessonModule.find(params[:lesson_module_id]) if params[:lesson_module_id].present?
     @lesson = Lesson.new
   end
@@ -31,8 +36,9 @@ class LessonsController < ApplicationController
   # POST /lessons
   # POST /lessons.json
   def create
+    authorize! :create, Lesson, on: params[:allocation_tags_ids].split(" ")
+
     begin
-      # authorize! :create, Lesson, on: parapms[:allocation_tags_ids].split(" ")
       params[:lesson][:lesson_module_id] = params[:lesson_module_id]
       params[:lesson][:user_id] = current_user.id
       params[:lesson][:order] = Lesson.where(lesson_module_id: params[:lesson_module_id]).maximum(:order).to_i + 1
@@ -65,6 +71,8 @@ class LessonsController < ApplicationController
 
   # GET /lessons/1/edit
   def edit
+    authorize! :update, Lesson, on: params[:allocation_tags_ids].split(" ") # para pode editar percisa ter permissao para salvar
+
     @lesson_modules = LessonModule.where(allocation_tag_id: params[:allocation_tags_ids].split(' '))
     @lesson = Lesson.find(params[:id])
   end
@@ -72,6 +80,8 @@ class LessonsController < ApplicationController
   # PUT /lessons/1
   # PUT /lessons/1.json
   def update
+    authorize! :update, Lesson, on: params[:allocation_tags_ids].split(" ")
+
     @lesson_modules = LessonModule.where(allocation_tag_id: params[:allocation_tags_ids].split(' '))
     @lesson = Lesson.find(params[:id])
     error = false
@@ -97,6 +107,7 @@ class LessonsController < ApplicationController
 
   def destroy
     @lesson = Lesson.find(params[:id])
+    authorize! :destroy, Lesson, on: params[:allocation_tags_ids].split(" ")
 
     begin
       #authorize! :destroy, @lesson
@@ -132,7 +143,6 @@ class LessonsController < ApplicationController
   end
 
   def show_content
-    render layout: 'lesson'
   end
 
   def download_files

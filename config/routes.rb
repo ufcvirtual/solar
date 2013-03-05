@@ -34,9 +34,6 @@ Solar::Application.routes.draw do
     resources :groups, only: [:index]
   end
 
-  ## curriculum_units/:id/groups
-  # get 'curriculum_units/:curriculum_unit_id/groups' => "groups#list", as: :groups_curriculum_unit
-
   ## groups/:id/discussions
   resources :groups, except: [:show] do
     resources :discussions, only: [:index]
@@ -94,10 +91,20 @@ Solar::Application.routes.draw do
   resources :courses
 
   resources :editions, only: [:index] do
-    get :items, :on => :collection
+    get :items, on: :collection
   end
 
   resources :lessons do
+    member do
+      get :header, to: :show_header
+      get :content, to: :show_content
+      get "extract_files/:file.:extension", action: :extract_files, as: :extract_file
+      put "order/:change_id", action: :order, as: :change_order
+    end
+    collection do
+      get :list, action: :list
+      get :download_files
+    end
     resources :files, controller: :lesson_files, except: [:index, :show, :update, :create] do
       collection do
         post :folder, to: :new, defaults: {type: 'folder'}, as: :new_folder
@@ -107,16 +114,6 @@ Solar::Application.routes.draw do
         put :upload_files, to: :edit, defaults: {type: 'upload'}, as: :upload
         get :remove_node, to: :destroy
       end
-    end
-    collection do
-      get :list, action: :list
-      get :show_header
-      get :show_content
-      get :download_files
-    end
-    member do
-      get "extract_files/:file.:extension", action: :extract_files, as: :extract_file
-      put "order/:change_id", action: :order, as: :change_order
     end
   end
   get :lesson_files, to: "lesson_files#index", as: :lesson_files
@@ -161,15 +158,15 @@ Solar::Application.routes.draw do
     get :team, on: :collection
   end
 
-  resources :lesson_modules, :except => [:index, :show]
+  resources :lesson_modules, except: [:index, :show]
 
   # resources :tabs, only: [:show, :create, :destroy]
-  get "activate_tab" => "tabs#show", as: :activate_tab
-  get "add_tab"      => "tabs#create", as: :add_tab
-  get "close_tab"    => "tabs#destroy", as: :close_tab
+  get :activate_tab, to: "tabs#show", as: :activate_tab
+  get :add_tab, to: "tabs#create", as: :add_tab
+  get :close_tab, to: "tabs#destroy", as: :close_tab
 
-  get 'home' => "users#mysolar", as: :home
-  get 'user_root' => 'users#mysolar'
+  get :home, to: "users#mysolar", as: :home
+  get :user_root, to: 'users#mysolar'
 
   get "support_material_files/list_edition", to: "support_material_files#list_edition"
   get "support_material_files/list", to: "support_material_files#list"
@@ -182,15 +179,18 @@ Solar::Application.routes.draw do
   get "support_material_files/delete_folder", to: "support_material_files#delete_folder"
   get "bibliography/list", to: "bibliography#list"
 
-  get "access_control/index"
-  get "/media/users/:id/photos/:style.:extension", to: "users#photo"
+  # get "access_control/index"
+  # get "/media/users/:id/photos/:style.:extension", to: "users#photo"
+
   get "/media/lessons/:id/:file.:extension", to: "access_control#lesson"
+
   get "/media/messages/:file.:extension", to: "access_control#message"
   get "/media/assignment/sent_assignment_files/:file.:extension", to: "access_control#assignment"
   get "/media/assignment/comments/:file.:extension", to: "access_control#assignment"
   get "/media/assignment/public_area/:file.:extension", to: "access_control#assignment"
   get "/media/assignment/enunciation/:file.:extension", to: "access_control#assignment"
 
-  # match ':controller(/:action(/:id(.:format)))'
   root to: 'devise/sessions#new'
+
+  # match ':controller(/:action(/:id(.:format)))'
 end

@@ -32,11 +32,13 @@ class AccessControlController < ApplicationController
     else
       raise CanCan::AccessDenied
     end
-
   end
 
   def lesson
-    send_file("#{Rails.root}/media/lessons/#{params[:id]}/#{params[:file]}.#{params[:extension]}", { disposition: 'inline', type: return_type(params[:extension])} )
+    @lesson = Lesson.find(params[:id])
+    authorize! :show, Lesson, {on: [@lesson.allocation_tag.id], read: true}
+
+    send_file(@lesson.path(true), {disposition: 'inline', type: return_type(params[:extension])})
   end
 
 end

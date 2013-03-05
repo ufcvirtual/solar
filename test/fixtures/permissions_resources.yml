@@ -981,9 +981,16 @@ lessonedit4:
   resource_id: 109
   per_id: false
 
+# ordenar
 lessonedit5:
   profile_id: 5
   resource_id: 110
+  per_id: false
+
+# deletar
+lessonedit6:
+  profile_id: 5
+  resource_id: 111
   per_id: false
 
 # Lessons Modules - Módulos

@@ -631,3 +631,9 @@ res110:
   controller: 'lessons'
   action: 'order'
   description: 'Ordenar aulas'
+
+res111:
+  id: 111
+  controller: 'lessons'
+  action: 'destroy'
+  description: 'Deletar aulas'
