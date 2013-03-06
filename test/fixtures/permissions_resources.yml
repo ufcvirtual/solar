@@ -993,6 +993,12 @@ lessonedit6:
   resource_id: 111
   per_id: false
 
+# editar
+lessonedit7:
+  profile_id: 5
+  resource_id: 112
+  per_id: false
+
 # Lessons Modules - Módulos
 
 lmodedit1:

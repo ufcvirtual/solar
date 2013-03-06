@@ -637,3 +637,9 @@ res111:
   controller: 'lessons'
   action: 'destroy'
   description: 'Deletar aulas'
+
+res112:
+  id: 112
+  controller: 'lessons'
+  action: 'update'
+  description: 'Editar aulas'
