@@ -6,8 +6,9 @@ class LessonsController < ApplicationController
   include FilesHelper
   include LessonFileHelper
 
+
   before_filter :prepare_for_group_selection, only: [:index, :download_files]
-  before_filter :curriculum_data, except: [:new, :create, :edit, :update, :list, :download_files, :extract_files, :order]
+  before_filter :curriculum_data, except: [:new, :create, :edit, :update, :list, :download_files, :extract_files, :order, :destroy]
 
   def index
     authorize! :index, Lesson
