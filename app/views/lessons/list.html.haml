@@ -212,7 +212,7 @@
     allocation_tags_ids = $("#allocation_tags_ids").val();
 
     if (lessons.length >= 1){
-      delete_object( "#{lesson_path(':id')}".replace(':id', lessons), '#{list_lessons_path(:allocation_tags_ids => @allocation_tags_ids)}');
+      delete_object( "#{lesson_path(':id', :allocation_tags_ids => params[:allocation_tags_ids])}".replace(':id', lessons), '#{list_lessons_path(:allocation_tags_ids => @allocation_tags_ids)}');
     }else
       alert('#{I18n.t(:must_select_a_lesson, scope: [:lessons, :notifications])}');
   }
