@@ -565,6 +565,7 @@
   lesson_closed_short: "encerrada"
 
   lessons:
+    curriculum_unit_not_selected: Unidade Curricular não selecionada
     index:
       lesson_table_date: Data de acesso
       lesson_table_title: "Aulas disponíveis"

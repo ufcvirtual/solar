@@ -18,10 +18,14 @@ class LessonsController < ApplicationController
 
   # GET /lessons/:id
   def show
-    authorize! :show, Lesson, {on: [@curriculum_unit.allocation_tag.id], read: true} # apenas para quem faz parte da turma
+    unless @curriculum_unit
+      render text: t(:curriculum_unit_not_selected, scope: :lessons), status: :not_found
+    else
+      authorize! :show, Lesson, {on: [@curriculum_unit.allocation_tag.id], read: true} # apenas para quem faz parte da turma
 
-    @lesson = Lesson.find(params[:id])
-    render layout: 'lesson_frame'
+      @lesson = Lesson.find(params[:id])
+      render layout: 'lesson_frame'
+    end
   end
 
   # GET /lessons/new
@@ -207,7 +211,7 @@ class LessonsController < ApplicationController
   private
 
     def curriculum_data
-      @curriculum_unit = CurriculumUnit.find(params[:curriculum_unit_id] || active_tab[:url]['id'])
+      @curriculum_unit = CurriculumUnit.where(id: (params[:curriculum_unit_id] || active_tab[:url]['id'])).first
     end
 
     def lessons_to_open(allocation_tags_ids = nil)

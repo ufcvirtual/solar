@@ -407,6 +407,7 @@
   lesson_closed_short: "closed"
 
   lessons:
+    curriculum_unit_not_selected: Curriculum Unit not selected
     index:
       lesson_table_date: "Access date"
       lesson_table_title: "Available Lessons"
