@@ -6,15 +6,9 @@ class LessonsController < ApplicationController
   include FilesHelper
   include LessonFileHelper
 
-<<<<<<< HEAD
-  before_filter :prepare_for_group_selection, only: [:index, :download_files]
-  before_filter :curriculum_data, except: [:new, :create, :edit, :update, :list, :download_files, :extract_files, :order]
-=======
-  before_filter :prepare_for_group_selection, :only => [:index, :download_files]
-  before_filter :curriculum_data, :except => [:list, :download_files, :extract_files, :new, :create, :edit, :update, :order, :destroy]
 
-  load_and_authorize_resource :except => [:index, :list, :download_files, :new, :create, :edit, :update, :show, :order, :destroy]
->>>>>>> 43346075
+  before_filter :prepare_for_group_selection, only: [:index, :download_files]
+  before_filter :curriculum_data, except: [:new, :create, :edit, :update, :list, :download_files, :extract_files, :order, :destroy]
 
   def index
     authorize! :index, Lesson
