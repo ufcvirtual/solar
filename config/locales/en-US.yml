@@ -440,6 +440,8 @@
     files:
       new_folder: "New Folder"
       manage_new_lesson_files: New lesson > File managment
+    errors:
+      cant_delete: "Lesson became draft, because it was available to use by students!"     
 
   lesson_modules:
     none: "No module registered"

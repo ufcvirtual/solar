@@ -598,6 +598,8 @@
     files:
       new_folder: Nova Pasta
       manage_new_lesson_files: Nova aula > Gerenciamento de arquivos
+    errors:
+      cant_delete: "Aula tornou-se rascunho, pois estava disponível para uso dos alunos!"  
 
   lesson_modules:
     none: "Nenhum módulo cadastrado"

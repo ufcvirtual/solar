@@ -111,19 +111,17 @@ class LessonsController < ApplicationController
   end
 
   def destroy
-    @lesson = Lesson.find(params[:id])
     authorize! :destroy, Lesson, on: params[:allocation_tags_ids].split(" ")
 
-    begin
-      #authorize! :destroy, @lesson
-      raise "error" unless @lesson.destroy # exclui aula (apenas se em teste)
-      respond_to do |format|
-        format.html{ render :nothing => true, :status => 200 }
-      end
-    rescue
-      respond_to do |format|
-        format.html{ render :nothing => true, :status => 500 }
-      end
+    @lesson = Lesson.find(params[:id])
+    unless @lesson.destroy
+      @lesson.status = Lesson_Test # a aula nao foi deletada, mas vai ser transformada em rascunho
+      @lesson.save
+    end
+
+    respond_to do |format|
+      # format.html{ render json: {success: success}, status: (success ? 200 : 500) }
+      format.html{ render nothing: true }
     end
   end
 

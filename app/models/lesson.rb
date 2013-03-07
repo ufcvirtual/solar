@@ -22,7 +22,12 @@ class Lesson < ActiveRecord::Base
   end
 
   def can_destroy?
-    return (status == 0 ? true : false) # verifica se se a aula está em teste ou aprovada
+    draft = (status == Lesson_Test) # aula em rascunho 
+
+    unless draft
+      errors.add(:lesson, I18n.t(:cant_delete, :scope => [:lesson, :errors]))
+    end
+    return draft
   end
 
   def delete_schedule
