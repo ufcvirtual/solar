@@ -34,7 +34,7 @@
               = link_to (image_tag "gear.png"), "#", onclick: "", class: 'btn btn_default manage_files_lesson', :value => lesson_module.id
               = link_to (image_tag "lesson/delete.png"), "#", onclick:  "javascript: delete_lesson('#{lesson_module.id}');", id: 'delete_lesson', class: 'btn btn_default'
               = link_to (image_tag "lesson/download.png"), "#", onclick: "javascript: download_lesson_zip('#{lesson_module.id}');", id: 'download_lesson', class: 'btn btn_default'
-              = link_to (image_tag "lesson/release_lessons.png"), "#", onclick: "javascript: alert('libera aulas');", id: 'release_lessons', class: 'btn btn_default btn_spacing_left'
+              = link_to (image_tag "lesson/release_lessons.png"), "#", id: 'release_lessons', class: 'btn btn_default btn_spacing_left', "data-module_id" => lesson_module.id
 
           / Lessons list
 
@@ -80,10 +80,7 @@
                         = t(:no_end_date, :scope => [:lessons, :list])  
 
                     %td{style: "width: 70px", align: 'center'}
-                      - if lesson.status == Lesson_Test
-                        =link_to (image_tag "lesson/rejected_lesson.png"), "#", onclick: "javascript: alert('libera aula');", id: 'reject_lesson'
-                      - else
-                        =link_to (image_tag "lesson/released_lesson.png"), "#", onclick: "javascript: alert('bloqueia aula');", id: 'release_lesson'
+                      = link_to (image_tag "lesson/#{(lesson.status == Lesson_Test) ? 'rejected' : 'released'}_lesson.png"), "#", class: 'change_lesson_status', "data-lesson_id" => lesson.id, "data-status_to" => [Lesson_Test, Lesson_Approved].delete_if {|v| v == lesson.status}
               - else
                 %tr.lines
                   %td.lesson_description{colspan:  5}
@@ -96,6 +93,29 @@
 :javascript
 
   $(document).ready(function() {
+
+    $('#release_lessons').click(function(){
+      var lesson_ids = get_selected_lessons($(this).attr('data-module_id'));
+      console.log(lesson_ids);
+      if (lesson_ids == "")
+        return false;
+
+      var url = "#{change_status_lesson_path(':id', Lesson_Approved, allocation_tags_ids: params[:allocation_tags_ids])}".replace(':id', lesson_ids);
+      update_object(url, '#{list_lessons_path(allocation_tags_ids: @allocation_tags_ids)}');
+
+      return false;
+    });
+
+    $('.change_lesson_status').click(function() {
+      var lesson_id = $(this).attr('data-lesson_id');
+      var status_to = $(this).attr('data-status_to');
+      var url = "#{change_status_lesson_path(':id', ':status', allocation_tags_ids: params[:allocation_tags_ids])}".replace(':id', lesson_id).replace(':status', status_to);
+
+      update_object(url, '#{list_lessons_path(allocation_tags_ids: @allocation_tags_ids)}');
+
+      return false;
+    });
+
     $(".up, .down").click(function() {
       var row = $(this).parents("tr:first");
       var id1 = row.attr('lesson_id');

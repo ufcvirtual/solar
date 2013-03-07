@@ -110,6 +110,16 @@ class LessonsController < ApplicationController
     end # end respond
   end
 
+  # PUT /lessons/1/change_status/1
+  def change_status
+    authorize! :update, Lesson, on: params[:allocation_tags_ids].split(" ")
+
+    ids = params[:id].split(',').map(&:to_i)
+    Lesson.update(ids, ids.map {|x| {status: params[:status]}}) # update(keys, values)
+
+    render nothing: true
+  end
+
   def destroy
     authorize! :destroy, Lesson, on: params[:allocation_tags_ids].split(" ")
 

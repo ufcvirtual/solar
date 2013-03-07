@@ -96,6 +96,7 @@ Solar::Application.routes.draw do
 
   resources :lessons do
     member do
+      put "change_status/:status", to: :change_status, as: :change_status
       get :header, to: :show_header
       get :content, to: :show_content
       get "extract_files/:file.:extension", action: :extract_files, as: :extract_file

@@ -61,25 +61,41 @@ function submit_form(form_id, class_to_update_fail, redirect_url, div_to_update)
   });
 }
 
-/* deleção de algum objeto (url = url do método de deleção, redirect_url = url para a qual o conteúdo será atualizado em caso de sucesso, 
-  div_to_update = informação de qual div é para atualizar caso não esteja "incluso" na página de edição) */
-function delete_object(url, redirect_url, div_to_update){
-  if(confirm('<%= I18n.t(:are_you_sure_of_deletion, :scope => [:editions]) %>')){
-    $.ajax({
-      type: "DELETE",
-      url: url,
-      success: function(data) {
-        if(typeof div_to_update != "undefined") // página fora da tela de edição
-          $("#"+div_to_update).html(data); // atualiza conteúdo da página
-        else
-          update_content_url(redirect_url); // atualiza div da página de edição com conteúdo de listagem
-        flash_message('<%= I18n.t(:deleted, :scope => [:editions, :success]) %>', 'notice'); // aviso de sucesso
-      },
-      error: function(){
-        flash_message('<%= I18n.t(:cant_delete, :scope => [:editions])  %>', 'alert'); // aviso de erro
-      }
-    });
+function update_object(url, redirect_url, div_to_update) {
+  change_object('PUT', url, redirect_url, div_to_update);
+}
+
+/**
+ * Deleção de algum objeto (url = url do método de deleção, redirect_url = url para a qual o conteúdo será atualizado em caso de sucesso, 
+ * div_to_update = informação de qual div é para atualizar caso não esteja "incluso" na página de edição)
+*/
+function delete_object(url, redirect_url, div_to_update) {
+  if (confirm('<%= I18n.t(:are_you_sure_of_deletion, :scope => [:editions]) %>')) {
+    msg_success = '<%= I18n.t(:deleted, scope: [:editions, :success]) %>';
+    msg_error = '<%= I18n.t(:cant_delete, scope: [:editions]) %>';
+
+    change_object('DELETE', url, redirect_url, div_to_update, msg_success, msg_error);
   }
+}
+
+function change_object(method, url, redirect_url, div_to_update, message_success, message_error) {
+  $.ajax({
+    type: method,
+    url: url,
+    success: function(data) {
+      if (typeof div_to_update != "undefined") // página fora da tela de edição
+        $("#"+div_to_update).html(data); // atualiza conteúdo da página
+      else
+        update_content_url(redirect_url); // atualiza div da página de edição com conteúdo de listagem
+
+      if (message_success != undefined)
+        flash_message(message_success, 'notice');
+    },
+    error: function() {
+      if (message_error != undefined)
+        flash_message(message_error, 'alert');
+    }
+  });
 }
 
 /* funções para abrir lightbox de diferentes tamanhos */

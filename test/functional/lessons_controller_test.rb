@@ -108,12 +108,27 @@ class LessonsControllerTest < ActionController::TestCase
   ##
 
   test "mudar ordem das aulas 1 e 2" do
-    # checando a rota
     assert_routing({method: :put, path: change_order_lesson_path(1, 2)}, { controller: "lessons", action: "order", id: "1", change_id: "2" })
 
     assert_equal Lesson.find(1,2).map(&:order), [1,2] # verificacao da ordem antes da mudanca
     put :order, {id: 1, change_id: 2}
     assert_equal Lesson.find(1,2).map(&:order), [2,1] # verificacao da ordem depois da mudanca
+  end
+
+  ##
+  # Status
+  ##
+
+  test "setar aula como rascunho" do
+    assert_routing({method: :put, path: change_status_lesson_path(1, 1)}, { controller: "lessons", action: "change_status", id: "1", status: "1" })
+
+    lesson = Lesson.find(lessons(:pag_virtual).id)
+    assert_equal Lesson_Approved, lesson.status
+
+    put :change_status, {id: lesson.id, status: Lesson_Test, allocation_tags_ids: [allocation_tags(:al6).id]}
+    assert_response :success
+
+    assert_equal Lesson_Test, Lesson.find(lessons(:pag_virtual).id).status
   end
 
 end
