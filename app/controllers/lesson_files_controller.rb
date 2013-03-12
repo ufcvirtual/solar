@@ -15,7 +15,7 @@ class LessonFilesController < ApplicationController
       raise "error" unless @lesson and @lesson.type_lesson == Lesson_Type_File
       # file_default = lesson.address
       file     = File.join(Lesson::FILES_PATH, params[:lesson_id])
-      Dir.mkdir(file) unless File.exist?(file)
+      FileUtils.mkdir_p(file) unless File.exist?(file)
       @files   = directory_hash(file, @lesson.name).to_json
       @folders = directory_hash(file, @lesson.name, false).to_json
     rescue CanCan::AccessDenied

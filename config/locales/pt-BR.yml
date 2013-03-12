@@ -586,6 +586,8 @@
       no_end_date: Em diante
     new:
       type_lesson: Tipo
+      archive: Arquivo
+      link: Link
       status: Status
       enable_end_date: Habilitar data final
       example: "(exemplo: http://www.seusite.com.br)"

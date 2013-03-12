@@ -2,6 +2,8 @@ class LessonsController < ApplicationController
 
   layout false, :except => [:index]
 
+  require 'fileutils'
+
   include EditionHelper
   include FilesHelper
   include LessonFileHelper
@@ -58,7 +60,7 @@ class LessonsController < ApplicationController
       if @lesson.type_lesson == Lesson_Type_File
         manage_file = true 
         file = Lesson::FILES_PATH.join(@lesson.id.to_s).to_s
-        Dir.mkdir(file) unless File.exist?(file)
+        FileUtils.mkdir_p(file) unless File.exist?(file)
         @files = directory_hash(file, @lesson.name).to_json
         @folders = directory_hash(file, @lesson.name, false).to_json
       end

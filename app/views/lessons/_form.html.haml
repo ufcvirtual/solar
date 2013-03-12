@@ -40,12 +40,19 @@
           =f.select :status, ([ ['rascunho', Lesson_Test.to_i], ['liberada', Lesson_Approved.to_i] ]), :include_blank => false
         .lesson_type 
           =f.label t(:type_lesson, :scope => [:lessons, :new])
-          =f.select :type_lesson, ([ ['link', Lesson_Type_Link.to_i], ['arquivo',Lesson_Type_File.to_i] ]), :include_blank => false
-        .url_lesson
-          =f.input :address
-          .disabled
-            =f.label " "
-            =t(:example, :scope => [:lessons, :new])
+          - if @lesson_modules  
+            - if @lesson.type_lesson == Lesson_Type_File   
+              =f.hint t(:archive, :scope => [:lessons, :new])
+            -elsif @lesson.type_lesson == Lesson_Type_Link
+              =f.hint t(:link, :scope => [:lessons, :new])  
+          - else
+            =f.select :type_lesson, ([ [t(:link, :scope => [:lessons, :new]), Lesson_Type_Link], [t(:archive, :scope => [:lessons, :new]),Lesson_Type_File] ]), :include_blank => false
+        - if (@lesson_modules.nil? or @lesson.type_lesson == Lesson_Type_Link) 
+          .url_lesson
+            =f.input :address
+            .disabled 
+              =f.label " "
+              =t(:example, :scope => [:lessons, :new])
 
       .right_buttons
         = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default", :onclick => "removeLightBox();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])

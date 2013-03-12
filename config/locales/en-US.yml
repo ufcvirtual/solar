@@ -428,6 +428,8 @@
       no_end_date: On
     new:
       type_lesson: Type
+      archive: Archive
+      link: Link
       status: Status
       enable_end_date: Enable end date
       example: "(example: http://www.yourwebsite.com.br)"
