@@ -47,7 +47,7 @@ pag_bbc:
   user_id: 1
   name: aula 5
   address: 'http://www.bbc.com'
-  type_lesson: 1
+  type_lesson: 0
   order: 5
   status: 1
   schedule_id: 15

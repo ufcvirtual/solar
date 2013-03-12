@@ -14,15 +14,15 @@
     var folderTreeData = #{@folders};
     var extensions     = #{Solar::Application.config.black_list[:extensions]};
 
-  = hidden_field_tag :remove_path, remove_node_lesson_files_path(:lesson_id => @lesson.id)
-  = hidden_field_tag :rename_path, rename_node_lesson_files_path(:lesson_id => @lesson.id)
-  = hidden_field_tag :move_path, move_nodes_lesson_files_path(:lesson_id => @lesson.id)
+  = hidden_field_tag :remove_path, remove_node_lesson_files_path(lesson_id: @lesson.id)
+  = hidden_field_tag :rename_path, rename_node_lesson_files_path(lesson_id: @lesson.id)
+  = hidden_field_tag :move_path, move_nodes_lesson_files_path(lesson_id: @lesson.id)
   = hidden_field_tag :lesson_path, list_lessons_path
-  = hidden_field_tag :upload_files_path, upload_lesson_files_path(:lesson_id => @lesson.id)
+  = hidden_field_tag :upload_files_path, upload_lesson_files_path(lesson_id: @lesson.id)
 
-  = form_for(:lesson_files, :url => upload_lesson_files_path(:lesson_id => @lesson.id), :html => {:id => "file_form", :method => :put }) do |f|
-    = f.file_field :files, :id => "fileupload", :multiple => true
-    = f.hidden_field :path, :id => "path"
+  = form_for(:lesson_files, :url => upload_lesson_files_path(lesson_id: @lesson.id), :html => {id: "file_form", :method => :put }) do |f|
+    = f.file_field :files, id: "fileupload", multiple: true
+    = f.hidden_field :path, id: "path"
   / %progress
 
   .flash_messages
@@ -30,23 +30,23 @@
   %p#files_menu_bar
     = check_box_tag :all_items_selector
     %span#lesson_files_select_all= "Todos"
-    = button_tag image_tag("/assets/lesson/new_folder.png"), :type => :button, :class => 'btn btn_default', :id => "btn-new-folder", :value => new_folder_lesson_files_path(:lesson_id => @lesson.id)
-    = button_tag image_tag("/assets/lesson/unzip.png"), :type => :button, :class => 'btn btn_default', :id => "btn-unzip"
-    = button_tag image_tag("/assets/lesson/edit.png"), :type => :button, :class => 'btn btn_default', :id => "btn-rename"
+    = button_tag image_tag("/assets/lesson/new_folder.png"), type: :button, :class => 'btn btn_default', id: "btn-new-folder", value: new_folder_lesson_files_path(:lesson_id => @lesson.id)
+    = button_tag image_tag("/assets/lesson/unzip.png"), type: :button, :class => 'btn btn_default', id: "btn-unzip"
+    = button_tag image_tag("/assets/lesson/edit.png"), type: :button, :class => 'btn btn_default', id: "btn-rename"
     /= button_tag "Limpar aula", :type => :button, :class => 'btn btn_default', :id => "btn-clean-lesson"
-    = button_tag image_tag("/assets/lesson/delete.png"), :type => :button, :class => 'btn btn_default', :id => "btn-remove-node"
+    = button_tag image_tag("/assets/lesson/delete.png"), type: :button, :class => 'btn btn_default', id: "btn-remove-node"
     %span#window
-      = button_tag image_tag("/assets/lesson/move.png"), :type => :button, :class => 'btn btn_default', :id => "btn-move-node"
+      = button_tag image_tag("/assets/lesson/move.png"), type: :button, :class => 'btn btn_default', id: "btn-move-node"
       %span#folder_window
         %span#window_title= t(".move_to")
         %span#folders_tree
         %span#folder_window_buttons
-          = button_tag t(".cancel"), :type => :button, :class => 'btn btn_default', :id => "btn-cancel-move"
-          = button_tag t(".move"), :type => :button, :class => 'btn btn_main', :id => "btn-save-move"
+          = button_tag t(".cancel"), type: :button, :class => 'btn btn_default', id: "btn-cancel-move"
+          = button_tag t(".move"), type: :button, :class => 'btn btn_main', id: "btn-save-move"
 
     %span.right_buttons
       = image_tag("/assets/lesson/upload.png", :id => "btn-new-file")
   #tree
 
   #blue_background
-    = button_tag t(".conclude"), :type => :button, :class => 'btn btn_main', :id => "btn-conclude"  
+    = button_tag t(".conclude"), type: :button, :class => 'btn btn_main', id: "btn-conclude"  

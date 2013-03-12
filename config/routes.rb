@@ -112,8 +112,8 @@ Solar::Application.routes.draw do
         post :file, to: :new, defaults: {type: 'file'}, as: :new_file
         put :rename_node, to: :edit, defaults: {type: 'rename'}
         put :move_nodes, to: :edit, defaults: {type: 'move'}
-        put :upload_files, to: :edit, defaults: {type: 'upload'}, as: :upload
-        get :remove_node, to: :destroy
+        put :upload_files, to: :new, defaults: {type: 'upload'}, as: :upload
+        delete :remove_node, to: :destroy
       end
     end
   end

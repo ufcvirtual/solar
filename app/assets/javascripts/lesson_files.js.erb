@@ -70,23 +70,10 @@ jQuery(function(){
   /* Criar novo folder com texto padrao e foco para editar */
   jQuery("#btn-new-folder").click(function() { 
     var node              = jQuery("#tree").dynatree("getActiveNode");
-    var new_folder_number = 0; // utilizado para cada nova pasta ter um nome diferente
-    var new_folder_name   = '<%= I18n.t(:new_folder, scope: [:lessons, :files]) %>';
 
     if (node != null && node.data.isFolder) {
-
-      while(validName(node, new_folder_name) == false){ // verifica se o nome já existe
-        new_folder_number = new_folder_number+1;
-        new_folder_name   = '<%= I18n.t(:new_folder, scope: [:lessons, :files]) %>'+new_folder_number; // Nova Pasta1, Nova Pasta2, ...
-      }
-
-      node.addChild({ title: new_folder_name, isFolder: true, focus: true }); // cria nó
-
       node_path = getPath(node);
-      new_node  = node.getChildren()[node.getChildren().length-1]; // recupera último nó criado na pasta "pai"
-
-      newFolder(new_node, node_path); // cria pasta no sistema
-
+      newFolder(node_path); // cria pasta no sistema
     }else
       flash_message("<%=I18n.t(:one_folder_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
 
@@ -118,12 +105,11 @@ jQuery(function(){
   jQuery("#btn-rename").click(function(){
     var active_node = jQuery("#tree").dynatree("getActiveNode")
     if( active_node != null){
-      if (selNodes.length == 1)
+      editNode(active_node);
+    }else if (typeof selNodes != "undefined" && selNodes.length == 1){
         editNode(selNodes[0]);
-      else
-        editNode(active_node);
-    }else
-      flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
+      }else
+        flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
   });
 
   jQuery("#btn-move-node").click(function(){
@@ -319,7 +305,7 @@ function saveDeletion(node, root_node){
   node_path = getPath(node); // caminho do nó
 
   jQuery.ajax({
-    type: 'GET',
+    type: 'DELETE',
     url: url,
     data: {
       "path": node_path,
@@ -335,21 +321,18 @@ function saveDeletion(node, root_node){
 }
 
 /* Cria pasta */
-function newFolder(node, path){
+function newFolder(path){
   url = jQuery("#btn-new-folder").attr("value");
 
   jQuery.ajax({
     type: 'POST',
     url: url,
-    data: {
-      "path": path,
-      "folder_name": node.data.title
-    },
+    data: {"path": path},
     success: function(data){
       jQuery("#lesson_file_management").html(data);
     },
     error: function() {
-      node.remove(); // remove pasta criada
+      // node.remove(); // remove pasta criada
       flash_message("<%=I18n.t(:new_folder_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
     }
   });
