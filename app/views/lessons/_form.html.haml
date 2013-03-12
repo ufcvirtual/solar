@@ -19,6 +19,8 @@
             = f.collection_select(:lesson_module_id, @lesson_modules, :id, :name)
           - elsif @lesson_module
             = f.hint @lesson_module.name
+          - elsif @lesson.lesson_module
+            = f.hint @lesson.lesson_module.name
         =f.input :name
         =f.input :description  
         - error_class = "field_with_errors" unless @schedule_error.blank?
@@ -81,17 +83,15 @@
     $('#from_date, #until_date').datepicker(options);
     if($("#lesson_type_lesson").val() == '#{Lesson_Type_File}'){
       $(".url_lesson").hide();
-      console.log($("#save_button").html());
-      console.log($("#save_button"));
       if(new_action)
         $("#save_button").html("#{I18n.t(:continue, :scope => [:lessons, :new])}");
     }
     
     $("#save_button").click(function(){
-      console.log($(this).html == "#{I18n.t(:continue, :scope => [:lessons, :new])}");
       submit_form('lesson_form', 'lesson_form', '#{list_lessons_path}', 'first_step'); 
-      if(new_action && $(this).html == "#{I18n.t(:continue, :scope => [:lessons, :new])}")
+      if(new_action && $(this).html() == "#{I18n.t(:continue, :scope => [:lessons, :new])}"){
         $('#lightBoxDialogTitle').html('#{I18n.t(:new, :scope => [:lessons, :list])} > #{I18n.t(:files_management, :scope => [:lesson_files])}');
+      }
     });
 
   });
