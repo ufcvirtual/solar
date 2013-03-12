@@ -270,7 +270,7 @@ function editNode(node) {
 
   var prevTitle = node.data.title,
   tree = node.tree;
-  tree.jQuerywidget.unbind(); // Disable dynatree mouse- and key handling
+  tree.$widget.unbind(); // Disable dynatree mouse- and key handling
   jQuery(".dynatree-title", node.span).html("<input id='editNode' value='" + prevTitle + "'>"); // Replace node with <input>
 
   jQuery("input#editNode") // Focus <input> and bind keyboard handler
@@ -305,7 +305,7 @@ function editNode(node) {
       var title = jQuery("input#editNode").val();
       node.setTitle(title); 
       // Re-enable mouse and keyboard handlling
-      tree.jQuerywidget.bind();
+      tree.$widget.bind();
       node.focus();
     });
 
@@ -363,7 +363,7 @@ function renameNode(node, new_title, path){
     type: 'PUT',
     url: url,
     data: {
-      "path": node_path,
+      "path": path,
       "node_name": new_title,
       "previous_name": node.data.title
     },
