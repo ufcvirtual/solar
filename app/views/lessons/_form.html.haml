@@ -6,8 +6,8 @@
 
   .lesson_form.block_content
     = simple_form_for(@lesson, :html => {:id => "lesson_form"}) do |f| 
-      = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids]) 
-      = hidden_field_tag(:lesson_module_id, params[:lesson_module_id]) 
+      = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
+      = hidden_field_tag(:lesson_module_id, params[:lesson_module_id])
 
       - start_date = @lesson.try(:schedule).try(:start_date) || Date.today
       - end_date = @lesson.try(:schedule).try(:end_date) || start_date
@@ -128,5 +128,3 @@
         $("#save_button").html("#{I18n.t(:continue, :scope => [:lessons, :new])}");
     }
   });
-
- 

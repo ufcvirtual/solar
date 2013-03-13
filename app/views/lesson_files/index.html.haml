@@ -8,6 +8,7 @@
 = stylesheet_link_tag "ui.dynatree.custom"
 
 #lesson_file_management
+  - files_and_folders(@lesson)
 
   :javascript
     var treeData       = #{@files};
@@ -23,20 +24,18 @@
   = form_for(:lesson_files, :url => upload_lesson_files_path(lesson_id: @lesson.id), :html => {id: "file_form", :method => :put }) do |f|
     = f.file_field :files, id: "fileupload", multiple: true
     = f.hidden_field :path, id: "path"
-  / %progress
 
   .flash_messages
 
   %p#files_menu_bar
     = check_box_tag :all_items_selector
     %span#lesson_files_select_all= "Todos"
-    = button_tag image_tag("/assets/lesson/new_folder.png"), type: :button, :class => 'btn btn_default', id: "btn-new-folder", value: new_folder_lesson_files_path(:lesson_id => @lesson.id)
-    = button_tag image_tag("/assets/lesson/unzip.png"), type: :button, :class => 'btn btn_default', id: "btn-unzip"
-    = button_tag image_tag("/assets/lesson/edit.png"), type: :button, :class => 'btn btn_default', id: "btn-rename"
-    /= button_tag "Limpar aula", :type => :button, :class => 'btn btn_default', :id => "btn-clean-lesson"
-    = button_tag image_tag("/assets/lesson/delete.png"), type: :button, :class => 'btn btn_default', id: "btn-remove-node"
+    = button_tag image_tag("lesson/new_folder.png"), type: :button, :class => 'btn btn_default', id: "btn-new-folder", value: new_folder_lesson_files_path(:lesson_id => @lesson.id)
+    = button_tag image_tag("lesson/unzip.png"), type: :button, :class => 'btn btn_default', id: "btn-unzip"
+    = button_tag image_tag("lesson/edit.png"), type: :button, :class => 'btn btn_default', id: "btn-rename"
+    = button_tag image_tag("lesson/delete.png"), type: :button, :class => 'btn btn_default', id: "btn-remove-node"
     %span#window
-      = button_tag image_tag("/assets/lesson/move.png"), type: :button, :class => 'btn btn_default', id: "btn-move-node"
+      = button_tag image_tag("lesson/move.png"), type: :button, :class => 'btn btn_default', id: "btn-move-node"
       %span#folder_window
         %span#window_title= t(".move_to")
         %span#folders_tree
@@ -45,7 +44,7 @@
           = button_tag t(".move"), type: :button, :class => 'btn btn_main', id: "btn-save-move"
 
     %span.right_buttons
-      = image_tag("/assets/lesson/upload.png", :id => "btn-new-file")
+      = image_tag("lesson/upload.png", :id => "btn-new-file")
   #tree
 
   #blue_background

@@ -16,11 +16,18 @@ module LessonsHelper
       unless (l.schedule.end_date.to_date < Date.today || l.schedule.start_date.to_date > Date.today)
         text << "<span class='lesson_link' id='lesson_link#{count.to_s}' onclick=javascript:reload_frame('#{path_lesson}','#{URI.escape(text_lesson)}','#{count.to_s}')>"+count.to_s+"</span>"
       end
-       
+
       count = count + 1
     end
 
     return text, order_lesson, total_lesson
+  end
+
+  def files_and_folders(lesson)
+    file = lesson.path(true, false).to_s
+
+    @files = directory_hash(file, lesson.name).to_json
+    @folders = directory_hash(file, lesson.name, false).to_json
   end
 
 end

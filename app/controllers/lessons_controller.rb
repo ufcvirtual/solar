@@ -8,7 +8,6 @@ class LessonsController < ApplicationController
   include FilesHelper
   include LessonFileHelper
 
-
   before_filter :prepare_for_group_selection, only: [:index, :download_files]
   before_filter :curriculum_data, except: [:new, :create, :edit, :update, :list, :download_files, :extract_files, :order, :destroy]
 
@@ -58,21 +57,16 @@ class LessonsController < ApplicationController
 
       manage_file = false
       if @lesson.type_lesson == Lesson_Type_File
-        manage_file = true 
-        file = Lesson::FILES_PATH.join(@lesson.id.to_s).to_s
+        manage_file = true
+        file = @lesson.path(full = true, address = false).to_s
         FileUtils.mkdir_p(file) unless File.exist?(file)
         @files = directory_hash(file, @lesson.name).to_json
         @folders = directory_hash(file, @lesson.name, false).to_json
       end
 
-      respond_to do |format|
-        format.html { render (manage_file ? {template: "/lesson_files/index", layout: false} : {nothing: true}), status: 200 }
-      end
-
+      render (manage_file ? {template: "lesson_files/index", layout: false} : {nothing: true})
     rescue
-      respond_to do |format|
-        format.html { render :new }
-      end
+      render :new
     end # rescue
   end
 
