@@ -26,8 +26,6 @@ class LessonFilesControllerTest < ActionController::TestCase
   test 'exibir lista de arquivos da aula' do
     get :index, lesson_id: @pag_index.id
     assert_response :success
-    assert_not_nil assigns(:files)
-    assert_not_nil assigns(:folders)
     assert_template :index
     assert_select '#tree' # verifica se existe a div que receberá a árvore de arquivos
 
@@ -41,8 +39,6 @@ class LessonFilesControllerTest < ActionController::TestCase
   test 'nao exibir lista de arquivos da aula - aula de links' do
     get :index, lesson_id: @pag_goo.id
     assert_response :error
-    assert_nil assigns(:files)
-    assert_nil assigns(:folders)
     assert_template nothing: true
     assert_no_tag '#tree' # div onde a árvore de arquivos será montada não deve existir
   end
@@ -52,8 +48,6 @@ class LessonFilesControllerTest < ActionController::TestCase
     sign_in users(:aluno1)
     get :index, lesson_id: @pag_index.id
     assert_response :error
-    assert_nil assigns(:files)
-    assert_nil assigns(:folders)
     assert_template nothing: true
     assert_no_tag '#tree' # div onde a árvore de arquivos será montada não deve existir
   end

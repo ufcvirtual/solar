@@ -23,8 +23,8 @@ class LessonFilesController < ApplicationController
     
     begin
       @lesson  = Lesson.where(id: params[:lesson_id]).first
-      lesson_path = @lesson.path(true, false)
       authorize! :new, Lesson, on: [@lesson.lesson_module.allocation_tag_id]
+      lesson_path = @lesson.path(true, false)
 
       if params[:type] == 'folder'
         folder_number, folder_name = '', t(:new_folder, scope: [:lessons, :files])
@@ -66,8 +66,8 @@ class LessonFilesController < ApplicationController
 
     begin
       @lesson  = Lesson.where(id: params[:lesson_id]).first
-      lesson_path = @lesson.path(true, false)
       authorize! :new, Lesson, on: [@lesson.lesson_module.allocation_tag_id]
+      lesson_path = @lesson.path(true, false)
 
       if params[:type] == 'rename' # renomear
         path = File.join(lesson_path, params[:path])

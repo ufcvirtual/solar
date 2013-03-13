@@ -15,7 +15,7 @@ class Lesson < ActiveRecord::Base
   def path(full = false, with_address = true)
     if type_lesson.to_i == Lesson_Type_File
       Dir.mkdir(FILES_PATH.join(id.to_s)) unless File.exist? FILES_PATH.join(id.to_s)
-      full ? FILES_PATH.join(id.to_s, address) : File.join('', 'media', 'lessons', id.to_s, (with_address ? address : ''))
+      full ? FILES_PATH.join(id.to_s, (with_address ? address : '')) : File.join('', 'media', 'lessons', id.to_s, (with_address ? address : ''))
     else
       address
     end
