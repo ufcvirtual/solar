@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+if [ -f .solar_env ]; then
+  source .solar_env
+fi
+
 environment_id="1.9.3@solar"
 
 if [[ -d "${rvm_path:-$HOME/.rvm}/environments"
