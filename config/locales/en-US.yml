@@ -539,10 +539,11 @@
     delete_discussion: Delete %{discussion_name}
     new_discussion: New discussion
     discussion_table_title: Available discussions
+    curriculum_unit: Curriculum Unit
+    offer: Offer
     group: Group
     back: Back
     to: to
-    offer: Offer
 
   message_title: "Messages"
   message_inbox: "Inbox"
@@ -816,10 +817,8 @@
   menu_history: History
   menu_group_assignment: Groups
   menu_edition: Edition
-  
   # Filtro de edição (Places_nav_panel)
 
-  
   # Componente de filtro/busca de allocationTags (places_nav_panel)
   #Type the courses name or part of it
   places_nav_panel_course_hint: "Type the course's name or part of it"

@@ -695,10 +695,11 @@
     delete_discussion: Excluir %{discussion_name}
     new_discussion: Novo fórum
     discussion_table_title: Fóruns disponíveis
+    curriculum_unit: Unidade Curricular
+    offer: Oferta
     group: Turma
     back: Voltar
     to: à
-    offer: Oferta
 
   # messages
   message_title: "Mensagens"
@@ -984,7 +985,7 @@
   places_nav_panel_empty_text: "Nenhum resultado"
   places_nav_panel_to_offer: Ofertar
   places_nav_panel_to_manage: Gerenciar
-  
+
   #Course 
   new_course_title: Cadastro de Curso
   update_course_title: Atualização de Curso

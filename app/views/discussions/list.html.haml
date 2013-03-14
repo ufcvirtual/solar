@@ -13,9 +13,10 @@
       %thead
         %tr.lines
           %th{:align => "left"}=t :title
-          %th{:align => "center", :style => "width: 22%;"}=t :forum_table_date
-          %th{:align => "right", :style => "width: 13%;"}=t :offer, :scope => [:discussion]
-          %th{:align => "right", :style => "width: 13%;"}=t :group, :scope => [:discussion]
+          %th{:align => "center", :style => "width: 16%;"}=t :forum_table_date
+          %th{:align => "right", :style => "width: 14%;"}=t :curriculum_unit, :scope => [:discussion]
+          %th{:align => "right", :style => "width: 10%;"}=t :offer, :scope => [:discussion]
+          %th{:align => "right", :style => "width: 10%;"}=t :group, :scope => [:discussion]
           - if @discussions.collect{ |discussion| (can? :edit, discussion) }.include?(true)
             %th{:align => "center", :style => "width: 10%;"}
           - if @discussions.collect{ |discussion| (can? :destroy, discussion) }.include?(true)
@@ -35,6 +36,8 @@
               = l(schedule.start_date.to_date)
               = "-"
               =l schedule.end_date.to_date
+            %td
+              = discussion.allocation_tag.offer ? discussion.allocation_tag.offer.curriculum_unit.name : discussion.allocation_tag.group.offer.curriculum_unit.name
             %td{:align => "left", :style => "width: 50px;"}= discussion.allocation_tag.offer ?  discussion.allocation_tag.offer.semester : discussion.allocation_tag.group.offer.semester 
             %td{:align => "left", :style => "width: 50px;"}= discussion.allocation_tag.group ?  discussion.allocation_tag.group.code : "-" 
             - if can? :edit, discussion or can? :destroy, discussion
@@ -47,7 +50,7 @@
                 - if can? :destroy, discussion
                   - btn_class = discussion.can_destroy? ? "btn btn_caution" : "btn btn_disabled"
                   = button_tag t(:delete, :scope => [:discussion, :buttons]), :onclick => "javascript:delete_object('#{discussion_path(discussion, :allocation_tags_ids => @allocation_tags_ids)}', '#{list_discussions_path(:allocation_tags_ids => @allocation_tags_ids)}');", :type => "button", :class => btn_class, :disabled => (not discussion.can_destroy?), :alt => t(:delete_discussion, :scope => [:discussion], :discussion_name => discussion.name)
-                  
+
   - else
     .block_content.block_content_text= t(:forum_message)
 
