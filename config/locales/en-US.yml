@@ -473,6 +473,7 @@
       move_to: "Move to:"
       move: Move
       conclude: Conclude
+      all: All
     destination_folder_error: A destination folder must be selected
     move_error: It wasn't possible to move
     at_least_one: "Select, at least, one item to %{to}"

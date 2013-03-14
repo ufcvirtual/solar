@@ -31,7 +31,7 @@
 
             .block_toolbar_right
               = link_to (image_tag "lesson/edit.png"), "#", onclick: "javascript: edit_lesson('#{lesson_module.id}');", id: 'edit_lesson', class: 'btn btn_default'
-              = link_to (image_tag "gear.png"), "#", onclick: "", class: 'btn btn_default manage_files_lesson', :value => lesson_module.id
+              = link_to (image_tag "lesson/manage_files.png"), "#", onclick: "", class: 'btn btn_default manage_files_lesson', :value => lesson_module.id
               = link_to (image_tag "lesson/delete.png"), "#", onclick:  "javascript: delete_lesson('#{lesson_module.id}');", id: 'delete_lesson', class: 'btn btn_default'
               = link_to (image_tag "lesson/download.png"), "#", onclick: "javascript: download_lesson_zip('#{lesson_module.id}');", id: 'download_lesson', class: 'btn btn_default'
               = link_to (image_tag "lesson/release_lessons.png"), "#", id: 'release_lessons', class: 'btn btn_default btn_spacing_left', "data-module_id" => lesson_module.id

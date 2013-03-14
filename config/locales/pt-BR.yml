@@ -631,6 +631,7 @@
       move_to: "Mover para:"
       move: Mover
       conclude: Finalizar
+      all: Todos
     destination_folder_error: Uma pasta de destino deve ser selecionada
     move_error: Não foi possível mover
     at_least_one: "Selecione, ao menos, um item para %{to}"

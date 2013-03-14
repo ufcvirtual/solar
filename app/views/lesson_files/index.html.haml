@@ -29,7 +29,7 @@
 
   %p#files_menu_bar
     = check_box_tag :all_items_selector
-    %span#lesson_files_select_all= "Todos"
+    %span#lesson_files_select_all= t(".all")
     = button_tag image_tag("lesson/new_folder.png"), type: :button, :class => 'btn btn_default', id: "btn-new-folder", value: new_folder_lesson_files_path(:lesson_id => @lesson.id)
     = button_tag image_tag("lesson/unzip.png"), type: :button, :class => 'btn btn_default', id: "btn-unzip"
     = button_tag image_tag("lesson/edit.png"), type: :button, :class => 'btn btn_default', id: "btn-rename"
