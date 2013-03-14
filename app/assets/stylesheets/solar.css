@@ -3729,6 +3729,10 @@ p#files_menu_bar .btn.btn_default{
     vertical-align: text-top;
 }
 
+#folder_window_buttons .btn{
+    vertical-align: text-top;   
+}
+
 #folder_window{
     border: 1px solid #D0D0D0;
     background-color: #f9f9f9;

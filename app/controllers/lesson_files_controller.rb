@@ -83,7 +83,8 @@ class LessonFilesController < ApplicationController
           new_path = File.join(lesson_path, params[:path_to_move_to])
 
           path_split = get_path_without_last_dir(path)
-          FileUtils.mv path, new_path if File.exist?(path) and (new_path != path_split) # tenta mover a não ser que não exista ou que seja para a mesma pasta
+          raise "error" if File.exist?(path) and (new_path != path_split) # erro se pasta já existir ou se for para ela mesma
+          FileUtils.mv path, new_path  
         end
       end
     rescue CanCan::AccessDenied
