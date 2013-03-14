@@ -3774,3 +3774,7 @@ p#files_menu_bar .btn.btn_default{
 #btn-new-file{
     cursor: pointer;
 }
+
+#btn-conclude{
+    float: right;
+}
