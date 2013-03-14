@@ -83,7 +83,7 @@ class LessonFilesController < ApplicationController
           new_path = File.join(lesson_path, params[:path_to_move_to])
 
           path_split = get_path_without_last_dir(path)
-          raise "error" if File.exist?(path) and (new_path != path_split) # erro se pasta já existir ou se for para ela mesma
+          raise "error" if (not File.exist?(path)) and (new_path == path_split) # erro se pasta não existir ou se for para ela mesma
           FileUtils.mv path, new_path  
         end
       end
