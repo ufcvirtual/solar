@@ -3725,6 +3725,8 @@ select[disabled] {
 p#files_menu_bar .btn.btn_default{
     min-width: 31px;
     padding-left: 0px;
+    margin-right: -5.8px;
+    vertical-align: text-top;
 }
 
 #folder_window{
