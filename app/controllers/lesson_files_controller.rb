@@ -74,6 +74,7 @@ class LessonFilesController < ApplicationController
 
         path_split = get_path_without_last_dir(path) # recupera caminho sem o nome atual do arquivo/pasta
         new_path   = File.join(path_split, params[:node_name]) # /media/lessons/lesson_id/path_parte1/node_name
+        raise "error" if File.exists?(new_path)
         FileUtils.mv path, new_path # renomeia
 
       elsif params[:type] == 'move' # mover
