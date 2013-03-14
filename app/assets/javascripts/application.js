@@ -5,6 +5,7 @@
 //= require jquery.maskedinput
 //= require jquery-ui-1.8.6
 //= require jquery.ui.datepicker-en-GB
+//= require jquery.ui.datepicker-pt-BR
 //= require mysolar
 //= require lightbox
 //= require message

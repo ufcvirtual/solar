@@ -1,8 +1,10 @@
-$(function(){
+$(function() {
 
   /* Usado no formulário */
-  $( "#start_date" ).datepicker();
-  $( "#end_date" ).datepicker();
+  $("#dt_start_date, #dt_end_date").datepicker({
+    option: $.datepicker.regional[global_config.locale.I18n],
+    dateFormat: global_config.locale.dateFormat
+  });
 
   jQuery(function($){
     $("#offer_semester").mask("9999.9");
@@ -20,7 +22,6 @@ $(function(){
   $('.edit').click(function(){
     open_lightbox3($(this).parent().attr('action'), "<%= I18n.t(:edit_offer, :scope => [:offers, :index]) %>");
   });
-
 
   $('.deactivate_groups').click(function(){
     $.ajax({

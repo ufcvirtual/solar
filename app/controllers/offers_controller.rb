@@ -132,13 +132,15 @@ class OffersController < ApplicationController
 
   def new
     @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
+
     authorize! :new, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e curso selecionados
     @offer = Offer.new
   end
 
   def edit
     @offer = Offer.find(params[:id])
-    authorize! :edit, Offer, :on => [@offer.allocation_tag.id]
+    authorize! :edit, Offer, on: [@offer.allocation_tag.id]
+
     @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
   end
 
