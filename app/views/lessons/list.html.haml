@@ -53,7 +53,7 @@
               - unless lessons.nil? or lessons.empty?
                 - lessons.each_with_index do |lesson, idxl|
 
-                  %tr.lines{lesson_name: lesson.name, lesson_id: lesson.id, lesson_order: lesson.order}
+                  %tr.lines{lesson_name: lesson.name, lesson_id: lesson.id, lesson_order: lesson.order, lesson_status: lesson.status}
                     %td{style: "width: 25px;", align: 'center' }
                       = check_box_tag( "m_#{lesson_module.id}", lesson.id, false, {class: "m_#{lesson_module.id}", file_type: (lesson.type_lesson == Lesson_Type_File)} )
                     %td{style: "width: 50px;", align: 'center'}
@@ -229,11 +229,17 @@
   }
 
   function delete_lesson(module_id){
+
+    
+
     lessons = get_selected_lessons(module_id);
     allocation_tags_ids = $("#allocation_tags_ids").val();
 
     if (lessons.length == 1){
-      delete_object( "#{lesson_path(':id', :allocation_tags_ids => params[:allocation_tags_ids])}".replace(':id', lessons), '#{list_lessons_path(:allocation_tags_ids => @allocation_tags_ids)}');   
+      delete_object( "#{lesson_path(':id', :allocation_tags_ids => params[:allocation_tags_ids])}".replace(':id', lessons), '#{list_lessons_path(:allocation_tags_ids => @allocation_tags_ids)}'); 
+      if ($('[name="m_'+module_id+'"]:checked').parents('tr').attr('lesson_status') == "1") {
+        alert('#{I18n.t(:cant_delete, scope: [:lessons, :errors])}');
+      }  
     } else {
        if(lessons.length <1){
           alert('#{I18n.t(:must_select_a_lesson, scope: [:lessons, :notifications])}');
