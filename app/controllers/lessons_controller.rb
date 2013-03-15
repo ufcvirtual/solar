@@ -118,8 +118,8 @@ class LessonsController < ApplicationController
 
   def destroy
     authorize! :destroy, Lesson, on: params[:allocation_tags_ids].split(" ")
-
     @lesson = Lesson.find(params[:id])
+  
     unless @lesson.destroy
       @lesson.status = Lesson_Test # a aula nao foi deletada, mas vai ser transformada em rascunho
       @lesson.save

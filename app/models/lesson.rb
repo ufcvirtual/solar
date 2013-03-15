@@ -6,7 +6,7 @@ class Lesson < ActiveRecord::Base
   has_one :allocation_tag, through: :lesson_module
 
   before_destroy :can_destroy?
-  after_destroy  :delete_schedule
+  after_destroy  :delete_schedule, :delete_files
 
   validates :name, presence: true
 
@@ -32,6 +32,13 @@ class Lesson < ActiveRecord::Base
 
   def delete_schedule
     self.schedule.destroy
+  end
+
+  def delete_files
+    if (type_lesson == Lesson_Type_File) and (status == Lesson_Test)
+        file = path(full = true, address = false).to_s
+        FileUtils.remove_dir(file) if File.exist?(file)
+    end
   end
 
   def has_end_date?
