@@ -5,16 +5,19 @@ class Lesson < ActiveRecord::Base
 
   has_one :allocation_tag, through: :lesson_module
 
+  
+  after_create :create_or_update_folder
+  after_update :create_or_update_folder
+
   before_destroy :can_destroy?
   after_destroy  :delete_schedule, :delete_files
 
-  validates :name, presence: true
-
+  validates :name, :type_lesson, presence: true #:address
+  
   FILES_PATH = Rails.root.join('media', 'lessons') # path dos arquivos de aula
 
   def path(full = false, with_address = true)
-    if type_lesson.to_i == Lesson_Type_File
-      Dir.mkdir(FILES_PATH.join(id.to_s)) unless File.exist? FILES_PATH.join(id.to_s)
+    if type_lesson.to_i == Lesson_Type_File      
       full ? FILES_PATH.join(id.to_s, (with_address ? address : '')) : File.join('', 'media', 'lessons', id.to_s, (with_address ? address : ''))
     else
       address
@@ -32,13 +35,6 @@ class Lesson < ActiveRecord::Base
 
   def delete_schedule
     self.schedule.destroy
-  end
-
-  def delete_files
-    if (type_lesson == Lesson_Type_File) and (status == Lesson_Test)
-        file = path(full = true, address = false).to_s
-        FileUtils.remove_dir(file) if File.exist?(file)
-    end
   end
 
   def has_end_date?
@@ -71,5 +67,22 @@ SQL
 
     Lesson.find_by_sql(query_lessons)
   end
+
+  private
+
+    def delete_files
+      if (type_lesson == Lesson_Type_File) and (status == Lesson_Test)
+        file = path(full = true, address = false).to_s
+        FileUtils.remove_dir(file) if File.exist?(file)
+      end
+    end
+
+    def create_or_update_folder
+      if type_lesson == Lesson_Type_Link and File.exist?(path(true))
+        FileUtils.remove_dir(path(true)) 
+      else
+        FileUtils.mkdir_p(FILES_PATH.join(id.to_s))
+      end
+    end
 
 end

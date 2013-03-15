@@ -59,7 +59,6 @@ class LessonsController < ApplicationController
       if @lesson.type_lesson == Lesson_Type_File
         manage_file = true
         file = @lesson.path(full = true, address = false).to_s
-        FileUtils.mkdir_p(file) unless File.exist?(file)
         @files = directory_hash(file, @lesson.name).to_json
         @folders = directory_hash(file, @lesson.name, false).to_json
       end

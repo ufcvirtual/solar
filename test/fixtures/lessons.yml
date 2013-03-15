@@ -72,3 +72,13 @@ pag_index:
   status: 0
   schedule_id: 15
   lesson_module_id: 3
+
+lesson_files_to_delete:
+  id: 8
+  name: aula to delete
+  address: 'index.html'
+  type_lesson: 0
+  order: 8
+  status: 0
+  schedule_id: 15
+  lesson_module_id: 3
