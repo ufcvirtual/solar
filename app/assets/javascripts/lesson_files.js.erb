@@ -15,10 +15,6 @@ jQuery(function(){
       selNodes = node.tree.getSelectedNodes();
     },
     onClick: function(node, event) {
-      if ( event.shiftKey ) {
-        editNode(node);
-        return false;
-      }
       if ( node.getEventTargetType(event) == "title" )
         node.toggleSelect();
     },
