@@ -66,6 +66,7 @@ class LessonFilesControllerTest < ActionController::TestCase
 
   # Usuário com acesso e permissão
   test 'cria nova pasta na arvore de arquivos' do
+    Dir.mkdir(Lesson::FILES_PATH.join("#{@pag_index.id}")) unless File.exist? Lesson::FILES_PATH.join("#{@pag_index.id}") # cria se já não existir
     assert_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size', +1) do
       post :new, {lesson_id: @pag_index.id, type: 'folder', path: '/'+@pag_index.name} # nova pasta na pasta raiz
     end
@@ -76,7 +77,6 @@ class LessonFilesControllerTest < ActionController::TestCase
 
   # Usuário sem permissão
   test 'nao cria nova pasta na arvore de arquivos - sem permissao' do
-
     sign_in users(:aluno1)
     assert_no_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size', +1) do
       post :new, {lesson_id: @pag_index.id, type: 'folder', path: '/'+@pag_index.name} # nova pasta na pasta raiz
