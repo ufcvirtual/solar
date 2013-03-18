@@ -427,6 +427,8 @@
       delete_lesson_module: Delete module
       no_end_date: On
     new:
+      draft: draft
+      approved: approved
       type_lesson: Type
       archive: Archive
       link: Link

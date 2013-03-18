@@ -585,6 +585,8 @@
       delete_lesson_module: Deletar módulo
       no_end_date: Em diante
     new:
+      draft: rascunho
+      approved: liberada
       type_lesson: Tipo
       archive: Arquivo
       link: Link

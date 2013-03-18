@@ -37,7 +37,7 @@
             =t(:enable_end_date, :scope => [:lessons, :new])      
         .lesson_status 
           =f.label t(:status, :scope => [:lessons, :new])
-          =f.select :status, ([ ['rascunho', Lesson_Test.to_i], ['liberada', Lesson_Approved.to_i] ]), :include_blank => false
+          =f.select :status, ([ [t(:draft, scope: [:lessons, :new]), Lesson_Test.to_i], [t(:approved, scope: [:lessons, :new]), Lesson_Approved.to_i] ]), :include_blank => false
         .lesson_type 
           =f.label t(:type_lesson, :scope => [:lessons, :new])
           - if @lesson_modules  
