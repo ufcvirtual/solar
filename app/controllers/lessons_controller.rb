@@ -1,6 +1,6 @@
 class LessonsController < ApplicationController
 
-  layout false, :except => [:index]
+  layout 'define_token', :except => [:index]
 
   require 'fileutils'
 
