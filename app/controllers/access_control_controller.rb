@@ -51,4 +51,11 @@ class AccessControlController < ApplicationController
     end
   end
 
+  def users
+    user = User.find(params[:user_id])
+
+    params[:style].gsub!(/\.\./, '')
+    send_file user.photo.path(params[:style].intern), type: user.photo_content_type, disposition: 'inline'
+  end
+
 end

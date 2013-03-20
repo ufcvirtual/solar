@@ -11,7 +11,7 @@ tmp/*
 .config
 .settings/
 .sass-cache/
-.solar_env
+init.conf
 converage.data
 rerun.txt
 InstalledFiles

@@ -184,6 +184,8 @@ Solar::Application.routes.draw do
   get "/media/lessons/:id/:file.:extension", to: "access_control#lesson", index: true
   get "/media/lessons/:id/:folder/*path", to: "access_control#lesson", index: false
 
+  get "/media/users/:user_id/photos/:style.:extension", to: "access_control#users"
+
   get "/media/messages/:file.:extension", to: "access_control#message"
   get "/media/assignment/sent_assignment_files/:file.:extension", to: "access_control#assignment"
   get "/media/assignment/comments/:file.:extension", to: "access_control#assignment"

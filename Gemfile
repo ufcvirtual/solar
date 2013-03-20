@@ -29,7 +29,8 @@ gem "ckeditor", "~> 4.0.2"
 group :development do
   gem 'rb-readline'
   gem 'net-ssh',  '2.4.0' # dependencia capistrano
-  gem 'capistrano', '2.12.0'
+  gem 'rvm-capistrano', '~> 1.2.7'
+  gem 'capistrano', '~> 2.14.2'
   gem 'spork', '~> 1.0rc'
 end
 
