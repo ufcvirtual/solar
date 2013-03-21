@@ -5,6 +5,7 @@ gem 'rack', '1.4.4'
 gem 'rake', '10.0.3'
 gem 'pg', '0.13.2'
 gem 'foreigner', '1.1.6'
+gem 'koala', '1.6.0'
 
 gem 'devise', '2.1.0'
 gem 'devise-encryptable', '0.1.1'

@@ -77,5 +77,8 @@ module Solar
       Devise::UnlocksController.layout "login"
       Devise::PasswordsController.layout "login"
     end
+
+    #config.action_controller.allow_forgery_protection = false
+    #config.gem "koala"
   end
 end

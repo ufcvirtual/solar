@@ -1,3 +1,5 @@
+.fb-root
+
 .block_facebook.block_small
   .block_title
     %h2
@@ -20,7 +22,9 @@
         .user_avatar
           = image_tag "facebook_user_avatar.png", :alt => "User Image"
         .post_content
-          %span.username Fulano
+          %span.username
+            = link_to 'Login', @oauth_redirect_url, target: '_top'
+
           Etiam porta sem malesuada magna mollis euismod. Nullam quis risus eget urna mollis ornare vel eu leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           .post_actions
             %a.like{:href => "Teste"} Curtir
@@ -30,7 +34,8 @@
         .user_avatar
           = image_tag "facebook_user_avatar.png", :alt => "User Image"
         .post_content
-          %span.username Fulano
+          %span.username 
+            = @graph.get_object("me")['name'] unless @graph.nil?
           Etiam porta sem malesuada magna mollis euismod. Nullam quis risus eget urna mollis ornare vel eu leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           .post_actions
             %a.like{:href => "Teste"} Curtir
@@ -58,3 +63,30 @@
             %span.counter 17
         %li.group03
           %a{:href => "#"} Grupo sobre tal e tal
+
+:javascript
+  $('body').prepend('<div id="fb-root"></div>')
+
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=#{YAML::load(File.open('config/facebook.yml'))['appid']}";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  FB.init({
+    appId  : '#{@FB_CONFIG['app_id']}',
+    status : true, // checa status do login
+    cookie : true, // habilita cookies
+    xfbml  : true  // parse XFBML
+  });
+
+  FB.login(function(response) {
+    if (response.session) {
+      location.href = '/home'
+    } else {
+      // user cancelled login
+    }
+  });
+

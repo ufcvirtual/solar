@@ -13,6 +13,7 @@ Solar::Application.routes.draw do
   ## users/:id/photo
   ## users/edit_photo
   resources :users do
+    get :fb_authentication, on: :collection
     get :photo, on: :member
     get :edit_photo, on: :collection
     put :update_photo, on: :member
