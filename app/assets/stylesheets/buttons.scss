@@ -83,6 +83,12 @@ input::-moz-focus-inner {
     background-color: #e6e6e6;
 }
 
+.btn:hover i,
+.btn:focus i,
+.btn:active i {
+    color: #333333;
+}
+
 .btn:hover,
 .btn:focus {
     color: #333333;
@@ -124,6 +130,10 @@ input::-moz-focus-inner {
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
 
+.btn_main i {
+    color: #ffffff;
+}
+
 .btn_main:hover,
 .btn_main:focus,
 .btn_main:active,
@@ -132,6 +142,13 @@ input::-moz-focus-inner {
 .btn_main[disabled] {
   color: #ffffff;
   background-color: #004898;
+}
+
+.btn_main:hover i,
+.btn_main:focus i,
+.btn_main:active i,
+.btn_main.active i {
+  color: #ffffff;
 }
 
 .btn_main:active {
@@ -150,6 +167,13 @@ input::-moz-focus-inner {
     background-repeat: repeat-x;
     border-color: #bd362f #bd362f #802420;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+
+.btn_warning i,
+.btn_caution:hover i,
+.btn_caution:focus i,
+.btn_caution:active i {
+    color: #ffffff;
 }
 
 .btn_caution.disabled,

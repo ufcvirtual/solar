@@ -9,7 +9,7 @@
 .block_wrapper.assingment_info
   .block_title
     %h2
-      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon' 
+      %i.icon-suitcase
       = @assignment.name
     - if can? :evaluate, @assignment
       - if @send_assignment.nil? or @send_assignment.grade.nil? or @send_assignment.grade.blank?
@@ -47,7 +47,7 @@
 .block_wrapper
   .block_title
     %h2
-      = image_tag("icon_suitcase_portfolio.png", :alt => " ", :class => 'block_title_icon')
+      %i.icon-suitcase
       = t(:activity_files, :scope => [:assignment, :files])
     %span.download_all_icon
       - unless @assignment_enunciation_files.empty?
@@ -78,7 +78,7 @@
     .block_wrapper
       .block_title
         %h2
-          = image_tag "icon_participants.png", :alt => " ", :class => 'block_title_icon'
+          %i.icon-people
           = @group.group_name
       .block_content
         - gp = GroupParticipant.all_by_group_assignment(@group_id)
@@ -98,7 +98,7 @@
 .block_wrapper
   .block_title
     %h2
-      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
+      %i.icon-suitcase
       = t(:sent_files, :scope => [:assignment, :files])
     %span.download_all_icon
       - unless @send_assignment_files.nil? or @send_assignment_files.empty?
@@ -135,7 +135,7 @@
     - if can? :upload_file, @assignment and @assignment.user_can_access_assignment(@user.id, @student_id, @group_id)
       .assignment_inner_content.upload_files
         - if @assignment.assignment_in_time?(current_user.id)
-          = link_to image_tag("more.png", :size => "12x12"), '#', :class => "image_upload_file", :onclick => "javascript:toggle_upload_div();"
+          = link_to content_tag(:i, nil, :class=>'icon-plus'), '#', :class => "image_upload_file", :onclick => "javascript:toggle_upload_div();"
           = link_to t(:click_to_add_file, :scope => [:assignment, :files]), '#', :class => "link_content link_upload_file", :onclick => "javascript:toggle_upload_div();"
         - else
           .disabled.link_upload_file= t(:click_to_add_file, :scope => [:assignment, :files])
@@ -157,7 +157,7 @@
 .block_wrapper
   .block_title
     %h2
-      = image_tag "icon_comments.png", :alt => " ", :class=>'block_title_icon'
+      %i.icon-comment
       = t(:comments, :scope => [:assignment, :comments])
     %span.portfolio_title_button
       - if can? :send_comment, AssignmentComment and can? :send_comment, @assignment

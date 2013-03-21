@@ -17,20 +17,20 @@
 
       <div class="<%=css_class_inbox%>" id="menu_inbox">
         <h2>
-          <%= link_to (image_tag "message_inbox.png", :alt=>t(:message_inbox)),{:action => 'index', :type => 'index'} %>
+          <%= link_to (content_tag(:i, nil, :class=>'icon-inbox')),{:action => 'index', :type => 'index'} %>
           <%= link_to t(:message_inbox), {:action => 'index',:type => 'index', :bread => :menu_messages},{:class=>'message_link_menu'} %>
           <%= label_tag 'lb_number', "(#{@unread})", :class => "text_alert_message" unless @unread==0 %>
         </h2>
       </div>
       <div class="<%=css_class_outbox%>" id="menu_outbox">
         <h2>
-          <%= link_to (image_tag "message_outbox.png", :alt=>t(:message_outbox)),{:action => 'index', :type => 'outbox'} %>
+          <%= link_to (content_tag(:i, nil, :class=>'icon-outbox')),{:action => 'index', :type => 'outbox'} %>
           <%= link_to t(:message_outbox), {:action => 'index', :type => 'outbox', :bread => :menu_messages},{:class=>'message_link_menu'} %>
         </h2>
       </div>
       <div class="<%=css_class_trash%>" id="menu_trash">
         <h2>
-          <%= link_to (image_tag "message_trash.png", :alt=>t(:message_trash)),{:action => 'index', :type => 'trashbox'} %>
+          <%= link_to (content_tag(:i, nil, :class=>'icon-trash')),{:action => 'index', :type => 'trashbox'} %>
           <%= link_to t(:message_trash),  {:action => 'index', :type => 'trashbox', :bread => :menu_messages},{:class=>'message_link_menu'} %>
         </h2>
       </div>

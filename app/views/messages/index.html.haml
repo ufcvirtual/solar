@@ -34,7 +34,8 @@
 
                 = link_to message.subject,  {:action => 'show', :id => message.id, :search => @search_text},{:class => css_class}
 
-              %td{:style => "width:30px"}= image_tag("message_file.png",:alt=>t(:message_attach)) unless (message.has_attachment=="0")
+
+                %td{:style => "width:30px"}= content_tag(:i, nil, :class=>'icon-paperclip') unless (message.has_attachment=="0")
               %td{:style => "width:100px"}= link_to l(message.send_date, :format => :short),  {:action => 'show', :id => message.id, :search => @search_text},{:class => css_class}
       - else
         .text_none= t(:message_none)

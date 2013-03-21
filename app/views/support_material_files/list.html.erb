@@ -1,6 +1,6 @@
 <div style="margin-bottom:5px">
-  <button type="button" class="btn btn_default" id="button_new_post" value="<%= t("support_download_all")%>" onclick="javascript:window.location.href='<%= url_for( {:controller => :support_material_files, :action => :download_all_file_ziped} ) %>'">
-    <%= t("support_download_all")%><%= image_tag "icon_folder_compressed.png", :alt => '' %>
+  <button type="button" class="btn btn_default" id="button_new_post" value="<%= t("support_download_all")%>" onclick="javascript:window.location.href='<%= url_for( {:controller => :support_material_files, :action => :download_all_file_ziped} ) %>'" data-tooltip='<%= t("support_download_all") %>'>
+    <i class="icon-archive"></i>
   </button>
 </div>
 <% @folders_list.each do |folder_name, folder_content| %>
@@ -9,8 +9,8 @@
       <% unless folder_name == 'LINKS' %>
         <h2 class="support_material_title"><%= folder_name %></h2>
         <span class="block_actions">
-          <button type="button" class="btn btn_default" id="button_new_post" value="<%= t("support_download_folder")%>" onclick="javascript:window.location.href='<%= url_for( {:controler => :support_material_files, :action => :download_folder_file_ziped, :folder=> folder_name} ) %>'">
-            <%= t("support_download_folder")%><%= image_tag "icon_folder_compressed.png", :alt => '' %>
+          <button type="button" class="btn" id="button_new_post" value="<%= t("support_download_folder")%>" onclick="javascript:window.location.href='<%= url_for( {:controler => :support_material_files, :action => :download_folder_file_ziped, :folder=> folder_name} ) %>'" data-tooltip='<%=t("support_download_folder")%>'>
+            <i class="icon-install"></i>
           </button>
         </span>
       <% else %>

@@ -2,7 +2,7 @@
 .block_wrapper
   .block_title
     %h2
-      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class => "block_title_icon"
+      %i.icon-suitcase
       =t :individual_assignments, :scope => [:assignment, :information]
   .block_content
     - unless @individual_assignments_info["assignments"].empty?
@@ -46,7 +46,7 @@
 .block_wrapper
   .block_title
     %h2
-      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class => 'block_title_icon'
+      %i.icon-suitcase
       =t :group_assignments, :scope => [:assignment, :information]
   .block_content
     - unless @group_assignments_info["assignments"].empty?
@@ -106,7 +106,7 @@
 .block_wrapper
   .block_title
     %h2
-      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
+      %i.icon-suitcase
       = t(:public_area, :scope => [:assignment, :information])
   .block_content
     - unless @public_area.nil? or @public_area.empty?

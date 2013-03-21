@@ -8,7 +8,8 @@
         = f.text_field :search, :size=>"30", :class=>'enrollment_search', :value => @search_text
         = f.label t(:enrollm_search_in), :class => "enrollment_label"
         = f.collection_select(:category, @types, :id, :description, {:include_blank => true, :class => "select_category", :selected => @search_category} )
-        = image_submit_tag("search.png", :class => 'enrollment_search_icon')
+        / = button_tag 'Pesquisar', :class=>'btn'
+        = button_tag content_tag(:i, nil, :class=>'icon-search'), :class=>'btn'
       .enrollment_right
         = f.label t(:enrollm_view), :class => "enrollment_label"
         = f.label ': ', :class => "enrollment_label"

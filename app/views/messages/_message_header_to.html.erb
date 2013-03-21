@@ -21,9 +21,8 @@
           <% end %>
           <div id="newPostUploadPanel">
             <!-- <input type="button" id="link_upload" onclick="appendFileField(); return false;" class="btn btn_default" value="<%=t("message_attach_file")%>"> -->
-            <button id="link_upload" class="btn btn_default" onclick="appendFileField(); return false">
-              <%=image_tag 'icon_attachment.png', :alt => t(:message_attach_file) %>
-              <%=t(:message_attach_file) %>
+            <button id="link_upload" class="btn btn_default" onclick="appendFileField(); return false" data-tooltip="<%=t(:message_attach_file)%>">
+              <i class='icon-paperclip'></i>
             </button>
           </div>
         </td>
