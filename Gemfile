@@ -50,4 +50,5 @@ end
 group :assets do
   gem "uglifier", "~> 1.3.0"
   gem "sass-rails", "~> 3.2.6"
+  gem 'compass-rails'
 end

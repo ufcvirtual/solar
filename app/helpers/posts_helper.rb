@@ -52,7 +52,7 @@ HTML
     html, html_files =  '', ''
     files.each do |file|
       link_to_down   = (link_to file.attachment_file_name, download_post_post_file_path(post, file))
-      link_to_remove = (editable and can_interact) ? (link_to (image_tag "icon_delete_small.png", :alt => t(".remove_file")), 
+      link_to_remove = (editable and can_interact) ? (link_to (content_tag(:i, nil, :class=>'icon-cross-3 warning')), 
         post_post_file_path(post, file), :confirm => t(".remove_file_confirm"), :method => :delete, :title => t(".remove_file"), 'data-tooltip' => t(".remove_file")) : ''
       html_files << '<li>'
       html_files <<     "#{link_to_down}&nbsp;&nbsp;#{link_to_remove}"
@@ -75,21 +75,29 @@ HTML
     post_string = '<div class="forum_post_buttons">'
 
     if can_interact
+      post_string << "<div class='btn-group'>"
       if editable
-        post_string << "<button type='button' class='btn btn_default forum_button_attachment' onclick='showUploadForm(\"#{new_post_post_file_path(post)}\");'>"
-        post_string <<    t(".attach_file") << (image_tag "icon_attachment.png", :alt => t(".attach_file"))
+        post_string << "<button type='button' class='btn forum_button_attachment' onclick='showUploadForm(\"#{new_post_post_file_path(post)}\");' data-tooltip=#{t(".attach_file")}>"
+        post_string << (content_tag(:i, nil, :class=>'icon-paperclip'))
         post_string << "</button>"
-        post_string << "<input type='button' onclick='delete_post(#{post.id}, \"#{discussion_post_path(post.discussion, post)}\")' class='btn btn_caution' value='#{t(".remove")}'/>"
-        post_string << "<input type='button' onclick='javascript:update_post(this, #{post.id}, #{post.parent_id || 0})' class='btn btn_default update_post' value='#{t(".edit")}' />"
+        post_string << "<button type='button' class='btn btn_caution' onclick='delete_post(#{post.id}, \"#{discussion_post_path(post.discussion, post)}\")' data-tooltip=#{t(".remove")}>"
+        post_string << (content_tag(:i, nil, :class=>'icon-trash'))
+        post_string << "</button>"
+        post_string << "<button type='button' class='btn update_post' onclick='javascript:update_post(this, #{post.id}, #{post.parent_id || 0})' data-tooltip=#{t(".edit")}>"
+        post_string << (content_tag(:i, nil, :class=>'icon-pencil'))
+        post_string << "</button>"
       end
 
       if post.can_be_answered?
-        post_string << "<input type='button' level='#{post.level}' class='btn btn_default response_post' value='#{t(".answer")}' onclick='javascript:new_post(this, #{post.id})' />"
+        post_string << "<button type='button' level='#{post.level}' class='btn response_post' onclick='javascript:new_post(this, #{post.id})' data-tooltip=#{t(".answer")}>"
+        post_string << (content_tag(:i, nil, :class=>'icon-reply'))
+        post_string << "</button>"
       end
+      post_string << "</div>"
     else
-      post_string << "<input type='button' class='btn btn_default btn_disabled' value='#{t(".remove")}' disabled='disabled' />"
-      post_string << "<input type='button' class='btn btn_default btn_disabled' value='#{t(".edit")}' disabled='disabled' />"
-      post_string << "<input type='button' class='btn btn_default btn_disabled' value='#{t(".answer")}' disabled='disabled' />"
+      post_string << "<input type='button' class='btn btn_disabled' value='#{t(".remove")}' disabled='disabled' />"
+      post_string << "<input type='button' class='btn btn_disabled' value='#{t(".edit")}' disabled='disabled' />"
+      post_string << "<input type='button' class='btn btn_disabled' value='#{t(".answer")}' disabled='disabled' />"
     end
 
     post_string << '</div>'

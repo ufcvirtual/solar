@@ -3,7 +3,7 @@
 .block_wrapper.list_discussions
   .block_title
     %h2
-      = image_tag "icon_forum.png", :alt => " ", :class=>:block_title_icon
+      %i.icon-forum
       = t(:discussion_table_title, :scope => [:discussion])
     .right_buttons
       - if can? :new, Discussion
