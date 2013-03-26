@@ -1,12 +1,13 @@
 class LessonsController < ApplicationController
 
-  layout 'define_token', :except => [:index]
+  layout false, :except => [:index]
 
   require 'fileutils'
 
   include EditionHelper
   include FilesHelper
   include LessonFileHelper
+  include LessonsHelper
 
   before_filter :prepare_for_group_selection, only: [:index, :download_files]
   before_filter :curriculum_data, except: [:new, :create, :edit, :update, :list, :download_files, :extract_files, :order, :destroy]
@@ -55,15 +56,9 @@ class LessonsController < ApplicationController
         @lesson.save!
       end
 
-      manage_file = false
-      if @lesson.type_lesson == Lesson_Type_File
-        manage_file = true
-        file = @lesson.path(full = true, address = false).to_s
-        @files = directory_hash(file, @lesson.name).to_json
-        @folders = directory_hash(file, @lesson.name, false).to_json
-      end
+      @lesson.type_lesson == Lesson_Type_File ? files_and_folders(@lesson) : manage_file = false
 
-      render (manage_file ? {template: "lesson_files/index", layout: false} : {nothing: true})
+      render ((manage_file != false) ? {template: "lesson_files/index", layout: false} : {nothing: true})
     rescue
       render :new
     end # rescue

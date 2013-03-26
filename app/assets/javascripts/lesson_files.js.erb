@@ -1,5 +1,11 @@
 jQuery(function(){
 
+  /* Para não efetuar logout após ações */
+  jQuery(document).ajaxSend(function(e, xhr, options) {
+    var token =$("meta[name='csrf-token']").attr("content");
+    xhr.setRequestHeader("X-CSRF-Token", token);  
+  });
+
   /* Inicialização da árvore de arquivos */
   var selNodes;
   jQuery("#tree").dynatree({
