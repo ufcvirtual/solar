@@ -4,6 +4,8 @@ Solar::Application.initialize!
 
 mailer_config = YAML::load(File.open('config/mailer.yml'))
 
+Fb_Config = YAML::load_file(File.open('config/facebook.yml'))
+
 # configuracoes do action mailer para o gmail - porta: 465 ou 587
 ActionMailer::Base.perform_deliveries   = true
 ActionMailer::Base.delivery_method      = :smtp
