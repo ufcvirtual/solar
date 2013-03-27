@@ -11,7 +11,6 @@ Dado que tenho "allocations"
 |    7    |         2         |     5      |    1   |
 |    7    |         3         |     5      |    1   |
 
-@wip
 @javascript
 Cenário: Visualizar participantes da turma
   Dado que estou logado com o usuario "user" e com a senha "123456"

@@ -1,16 +1,17 @@
-//= require jquery
-//= require jquery_ujs
-//= require jquery.qtip.min
-//= require tooltip
-//= require jquery.maskedinput
-//= require jquery-ui-1.8.6
-//= require jquery.ui.datepicker-en-GB
-//= require jquery.ui.datepicker-pt-BR
-//= require mysolar
-//= require lightbox
-//= require message
-//= require lesson
-//= require allocation
+// = require jquery
+// = require jquery_ujs
+// = require jquery.qtip.min
+
+// = require jquery-ui
+// = require jquery.ui.datepicker-en-GB
+// = require jquery.ui.datepicker-pt-BR
+
+// = require tooltip
+// = require mysolar
+// = require lightbox
+// = require message
+// = require lesson
+// = require allocation
 
 /*************************************************************************************
  * Atualiza o conteudo da tela por ajax.

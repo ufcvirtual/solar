@@ -1011,6 +1011,8 @@
       invalid_token: 'Invalid authentication token.'
       timeout: 'Sua sessão expirou, por favor faça login novamente para continuar.'
       inactive: 'Sua conta ainda não foi ativada.'
+      user:
+        not_found_in_database: 'Usuário ou senha inválidos.'
     sessions:
       signed_in: 'Login efetuado com sucesso.'
       signed_out: 'Logout efetuado com sucesso.'
