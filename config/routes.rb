@@ -147,10 +147,12 @@ Solar::Application.routes.draw do
   end
 
   resources :messages do
-    put :restore, on: :member
+    member do
+      put :restore
+      put :change_indicator_reading
+    end
     collection do
       get :download_message_file
-      get :change_indicator_reading
       post :ajax_get_contacts
       post :send_message
     end

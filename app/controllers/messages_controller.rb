@@ -259,7 +259,7 @@ class MessagesController < ApplicationController
 
     if id != ""
       # eh apenas um id
-      if id.index("$").nil?
+      if id.index(",").nil?
         if has_permission(id)
           if new_status == "read"
             change_message_status(id,'read')
@@ -269,7 +269,7 @@ class MessagesController < ApplicationController
         end
       else
         # mais de um id
-        deleted_id = id.split("$")
+        deleted_id = id.split(",")
         deleted_id.each { |i|
           if has_permission(i)
             if new_status == "read"

@@ -1,4 +1,4 @@
-<%= form_for :message, :url => {:action => 'index'}, :html => {:id => 'message_list', :class => 'message_div_options'} do |f| %>
+<%= form_for :message, :url => {:action => 'index'}, :html => {:id => 'message_list', :class => 'message_div_options', method: :put} do |f| %>
   <%= link_to t(:message_new)+' ', {:action => 'new', :search => @search_text}, {:class=>'message_link'} %>
   <% if (@type!="trashbox" && !@type.nil?) %>
     <ul class="message_menu_listbox">
@@ -128,18 +128,16 @@
       if (checked_messages == "true") {
         values_id = "";
         $("input:checked").each(function(key, v) {
-          values_id += ((key == 0) ? "" : "$") + $(this).val();
+          values_id += ((key == 0) ? "" : ",") + $(this).val();
         });
 
         if (values_id != "") {
-          var url_for = '<%= url_for :controller => :messages, :action => :change_indicator_reading %>' + "?id=" + values_id + "&new_status=" + new_status + "&type=" + type + "&search=" + search;
-          $("#message_list").attr("action", url_for);
-          $("#message_list").submit();
+          var url_for = "<%= change_indicator_reading_message_path(':id') %>".replace(':id', values_id) + "?new_status=" + new_status + "&type=" + type + "&search=" + search;
+          $("#message_list").attr("action", url_for).submit();
         }
-      } else {
-        var url_for = '<%= url_for :controller => :messages, :action => :change_indicator_reading, :id => (@message.id unless @message.nil?) %>' + "?new_status=" + new_status + "&type=index";
-        $("#message_list").attr("action", url_for);
-        $("#message_list").submit();
+      } else { // marcar como nao lida
+        var url_for = "<%= change_indicator_reading_message_path(@message.try(:id)) unless @message.nil? %>" + "?new_status=" + new_status + "&type=index";
+        $("#message_list").attr("action", url_for).submit();
       }
   }
 </script>
