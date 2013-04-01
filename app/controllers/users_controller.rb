@@ -1,8 +1,10 @@
+require 'ostruct'
+
 class UsersController < ApplicationController
 
   load_and_authorize_resource :except => [:photo, :edit_photo, :fb_authentication]
   before_filter :parse_facebook_cookies # para autenticacao no facebook
-
+  FBPost = Struct.new(:name, :message, :created_time,:type)
   def parse_facebook_cookies
     @facebook_cookies ||= Koala::Facebook::OAuth.new(Fb_Config['app_id'], Fb_Config['secret_key']).get_user_info_from_cookie(cookies)
   end
@@ -25,10 +27,38 @@ class UsersController < ApplicationController
     #Acessa o arquivo de configuração facebook.yml
     @FB_CONFIG = Fb_Config;
     oauth = Koala::Facebook::OAuth.new(Fb_Config['app_id'], Fb_Config['secret_key'], Fb_Config['data-href'])
-    # Gera a URL de autenticação
-    @oauth_redirect_url= oauth.url_for_oauth_code
-    #Pega um objeto da ferramenta GraphAPI, através da qual podemos acessar as informações do usuário no facebook
-    @graph = Koala::Facebook::GraphAPI.new(user_session[:fb_token]) if user_session[:fb_token].present?
+    # Gera a URL de autenticação com as permissões necessárias
+    @oauth_redirect_url= oauth.url_for_oauth_code(:permissions => "read_stream") 
+    #Pega um objeto da ferramenta API, através da qual podemos acessar as informações do usuário no facebook
+    @graph = Koala::Facebook::API.new(user_session[:fb_token]) if user_session[:fb_token].present?
+
+    fql_query = "SELECT post_id,actor_id,message,created_time,attachment FROM stream WHERE filter_key in (SELECT filter_key FROM stream_filter WHERE uid=me() AND type='newsfeed') AND is_hidden = 0 LIMIT 10"  
+    feed = @graph.fql_query(fql_query) unless @graph.nil?
+
+    @fb_posts  = []
+      unless feed.nil?
+        feed.each do |feed_item|
+          q =  "SELECT name FROM user WHERE uid =" + feed_item['actor_id'].to_s
+          test_name = @graph.fql_query(q)
+          if test_name.empty?
+            q =  "SELECT name FROM page WHERE page_id =" + feed_item['actor_id'].to_s
+            test_name = @graph.fql_query(q)
+         end
+          n = test_name[0]['name']
+          m = feed_item['message']
+          d = I18n.l(Time.at(feed_item['created_time']).to_date, :format => :default).to_s
+
+          if feed_item['attachment']['media'].nil?
+            t = 'nothing'
+          else
+            t = feed_item['attachment']['media'][0]['type']
+          end
+          pi = feed_item['post_id']
+
+          fb_post = FBPost.new(n, m, d, t)
+          @fb_posts.push(fb_post)
+        end
+      end
   end
 
   def fb_authentication

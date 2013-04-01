@@ -10,6 +10,7 @@
 
   .block_content.block_slider
     .slide.slide-main
+      = link_to 'Login', @oauth_redirect_url, target: '_top'
       .new_post
         %textarea{:type => "text", :placeholder => "Teste"}
         .new_post_bar
@@ -18,25 +19,29 @@
             %option{:value => "friends"} Amigos
             %option{:value => "private"} Somente eu
           %button Publicar
-      .post
-        .user_avatar
-          = image_tag "facebook_user_avatar.png", :alt => "User Image"
-        .post_content
-          %span.username
-            = link_to 'Login', @oauth_redirect_url, target: '_top'
 
-          Etiam porta sem malesuada magna mollis euismod. Nullam quis risus eget urna mollis ornare vel eu leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          .post_actions
-            %a.like{:href => "Teste"} Curtir
-            %a.comment{:href => "Teste"} Comentar
-            %span.date 16 de Janeiro
+      - if @fb_posts.present?
+        - @fb_posts.each do |fb_post|
+          .post
+            .user_avatar
+              = image_tag "facebook_user_avatar.png", :alt => "User Image"
+            .post_content
+              %span.username
+                = fb_post.name
+              = fb_post.message
+              =fb_post.type
+              .post_actions
+                %a.like{:href => "Teste"} Curtir
+                %a.comment{:href => "Teste"} Comentar
+                %span.date
+                  = fb_post.created_time
       .post
         .user_avatar
           = image_tag "facebook_user_avatar.png", :alt => "User Image"
         .post_content
           %span.username 
             = @graph.get_object("me")['name'] unless @graph.nil?
-          Etiam porta sem malesuada magna mollis euismod. Nullam quis risus eget urna mollis ornare vel eu leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
           .post_actions
             %a.like{:href => "Teste"} Curtir
             %a.comment{:href => "Teste"} Comentar
