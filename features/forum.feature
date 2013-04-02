@@ -45,7 +45,7 @@ Cenario: Exibir primeiro forum
     E eu deverei ver o botao "Excluir"
     E eu deverei ver o botao "Editar"
     E eu deverei ver o botao "Responder"
-    E eu deverei ver "Anexar arquivo"
+    E eu deverei ver o botao "Anexar"
 
 Cenario: Exibir forum encerrado para aluno
   Dado que estou logado com o usuario "user" e com a senha "123456"

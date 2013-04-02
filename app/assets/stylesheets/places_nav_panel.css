@@ -168,7 +168,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .placesNavPanel .btShowMenu{
 	display:inline-block;
 	vertical-align: top;
-	margin-top: 3px;
+	margin-top: 1px;
 }
 .placesNavPanel{
 	background-color: transparent;

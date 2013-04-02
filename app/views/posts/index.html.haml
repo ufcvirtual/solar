@@ -37,9 +37,9 @@
           = hidden_field_tag(:current_page, @current_page)
           = form.text_area :content
           .new_post_dialog_buttons.btn-group
-            = form.submit( t(:send), :class => 'btn btn_main' )
             = button_tag(:type => 'button', :onclick => "javascript:cancel_posting(this);", :class => "btn btn_caution", :id => "btn_cancel_post") do
               = content_tag(:span, t(:cancel))
+            = form.submit( t(:send), :class => 'btn btn_main' )
 
   .forum_posts_wrapper
     - @posts.each do |post|

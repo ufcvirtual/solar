@@ -7,7 +7,7 @@
 
   .block_title
     %h2
-      = image_tag "icon_curriculum_unit.png", :alt => " ", :class => (:block_title_icon) # qual o ícone de oferta?
+      %i.icon-docs
       = t(".offers")
     %span.right_buttons
       = button_tag t(".new"), :class => "btn btn_main", :type => :button, :onclick => "javascript:open_lightbox3('#{new_offer_path(:course_id => @course_id, :curriculum_unit_id => @curriculum_unit_id)}', '#{t(".new_offer")}');"

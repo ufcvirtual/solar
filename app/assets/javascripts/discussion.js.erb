@@ -37,7 +37,7 @@ function new_post(obj, parent) {
   $('form#new_post_form input[name=_method]').val('post');
   if (parent > 0) { $('form#new_post_form #discussion_post_parent_id').val(parent); } // resposta
 
-  append_rich_text($(obj).closest("div"));
+  append_rich_text($(obj).parent().parent().siblings(".forum_post_reply"));
   return false;
 };
 

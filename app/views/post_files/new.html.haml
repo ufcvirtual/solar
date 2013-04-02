@@ -7,7 +7,7 @@
 
 = form_for([@post, PostFile.new], :html => { :multipart => true, :id => 'form_post_new_file' }) do |f|
   = f.file_field :attachment1, {:link_id => '1'} 
-  %a.forum_button_attachment{:href => "#", :onclick => "add_another_file(this);", :style => "float:none"}= t(".attach_another_file")
+  %a.btn.forum_button_attachment{:href => "#", :onclick => "add_another_file(this);", :style => "float:none"}= t(".attach_another_file")
   %br
   #post_attachment_form_submit
-    %a.UploadFileSubmit.forum_button{:href => "#", :onclick => "$('#form_post_new_file').submit(); return false;"}= t(".attach_save")
+    %a.UploadFileSubmit.btn.btn_main.forum_button{:href => "#", :onclick => "$('#form_post_new_file').submit(); return false;"}= t(".attach_save")

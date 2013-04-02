@@ -30,12 +30,14 @@ module PostsHelper
         </tr>
         <tr>
           <td class="forum_post_content" colspan="2">
-            <div class="forum_post_inner_content">
+            <div class="forum_post_wrapper">
+              <div class="forum_post_inner_content">
               #{sanitize(post.content)}
+              </div>
+              #{attachments(post, editable, can_interact)}
+              #{buttons(post, editable, can_interact)}
+              <div class="forum_post_reply"></div>
             </div>
-
-            #{attachments(post, editable, can_interact)}
-            #{buttons(post, editable, can_interact)}
             #{child_html}
 
           </td>
@@ -73,33 +75,31 @@ HTML
 
   def buttons(post, editable = false, can_interact = false)
     post_string = '<div class="forum_post_buttons">'
-
+    post_string << "<div class='btn-group'>"
     if can_interact
-      post_string << "<div class='btn-group'>"
       if editable
-        post_string << "<button type='button' class='btn forum_button_attachment' onclick='showUploadForm(\"#{new_post_post_file_path(post)}\");' data-tooltip=#{t(".attach_file")}>"
+        post_string << "<button type='button' class='btn forum_button_attachment' onclick='showUploadForm(\"#{new_post_post_file_path(post)}\");' data-tooltip='#{t(".attach_file")}' value='#{t(".attach_file")}'>"
         post_string << (content_tag(:i, nil, :class=>'icon-paperclip'))
         post_string << "</button>"
-        post_string << "<button type='button' class='btn btn_caution' onclick='delete_post(#{post.id}, \"#{discussion_post_path(post.discussion, post)}\")' data-tooltip=#{t(".remove")}>"
+        post_string << "<button type='button' class='btn btn_caution' onclick='delete_post(#{post.id}, \"#{discussion_post_path(post.discussion, post)}\")' data-tooltip='#{t(".remove")}' value='#{t(".remove")}'>"
         post_string << (content_tag(:i, nil, :class=>'icon-trash'))
         post_string << "</button>"
-        post_string << "<button type='button' class='btn update_post' onclick='javascript:update_post(this, #{post.id}, #{post.parent_id || 0})' data-tooltip=#{t(".edit")}>"
+        post_string << "<button type='button' class='btn update_post' onclick='javascript:update_post(this, #{post.id}, #{post.parent_id || 0})' data-tooltip='#{t(".edit")}' value='#{t(".edit")}'>"
         post_string << (content_tag(:i, nil, :class=>'icon-pencil'))
         post_string << "</button>"
       end
 
       if post.can_be_answered?
-        post_string << "<button type='button' level='#{post.level}' class='btn response_post' onclick='javascript:new_post(this, #{post.id})' data-tooltip=#{t(".answer")}>"
+        post_string << "<button type='button' level='#{post.level}' class='btn response_post' onclick='javascript:new_post(this, #{post.id})' data-tooltip='#{t(".answer")}' value='#{t(".answer")}'>"
         post_string << (content_tag(:i, nil, :class=>'icon-reply'))
         post_string << "</button>"
       end
-      post_string << "</div>"
     else
-      post_string << "<input type='button' class='btn btn_disabled' value='#{t(".remove")}' disabled='disabled' />"
-      post_string << "<input type='button' class='btn btn_disabled' value='#{t(".edit")}' disabled='disabled' />"
-      post_string << "<input type='button' class='btn btn_disabled' value='#{t(".answer")}' disabled='disabled' />"
+      post_string << "<button type='button' class='btn btn_disabled' data-tooltip='#{t(".remove")}' value='#{t(".remove")}' disabled='disabled'><i class='icon-trash'></i></button>"
+      post_string << "<button type='button' class='btn btn_disabled' data-tooltip='#{t(".edit")}' value='#{t(".edit")}' disabled='disabled'><i class='icon-pencil'></i></button>"
+      post_string << "<button type='button' class='btn btn_disabled' data-tooltip='#{t(".answer")}' value='#{t(".answer")}' disabled='disabled'><i class='icon-reply'></i></button>"
     end
-
+    post_string << "</div>"
     post_string << '</div>'
   end
 

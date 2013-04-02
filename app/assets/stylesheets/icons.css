@@ -2,13 +2,19 @@
 	text-decoration: none !important;
 }
 
-[class^="icon-"], [class*=" icon-"] {
-    width: 18px;
-    height: 18px;
+.empty {
+	opacity: 0.3;
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+    /*width: 18px;
+    height: 18px;*/
     color: #828282;
 }
 
-[class^="icon-"].warning, [class*=" icon-"].warning {
+[class^="icon-"].warning,
+[class*=" icon-"].warning {
 	color: red;
 }
 
@@ -24,6 +30,10 @@
 	font-size: 18px;
 	line-height: 20px;
 	vertical-align: bottom;
+}
+.big:before {
+	font-size: 32px;
+	line-height: 34px;
 }
 .icon-warning:before {
 	content: "\e000";

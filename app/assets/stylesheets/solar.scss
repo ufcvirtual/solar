@@ -1742,6 +1742,8 @@ table tr.block_title th {
 }
 
 /*Tela de fórum*/
+$forum_post_width: 728px;
+
 .date_text_field{
     margin-top: -20px;
     margin-left: -2px;
@@ -1773,11 +1775,6 @@ div.forum_navigation {
 }
 
 /* TESTE !!! 
-.forum_btn_new_message {
-    background:url('../images/icon_write.png') center right no-repeat transparent;
-}
-*/
-
 /*.forum_closed_title {
     background-color:#fff6f6;
 }*/
@@ -1846,16 +1843,17 @@ deveria ser generico p/ ser reaproveitado em outras telas */
     padding-top: 7px;
 }
 
-.forum_post_wrapper {
-    max-width: 785px;
-}
-
 .forum_post{
     min-height: 40px;
     white-space: normal;
     max-width: 785px;
     width:100%;
     margin-top: 5px;
+}
+
+.forum_post_wrapper {
+    background-color: #F5F8FB;
+    padding: 7px 5px 2px 5px;
 }
 
 .forum_post .forum_post {
@@ -1926,10 +1924,16 @@ deveria ser generico p/ ser reaproveitado em outras telas */
     vertical-align: top;
 }
 
+.forum_post_reply {
+    width: auto;
+    overflow: hidden;
+    padding-top: 5px;
+    position: relative;
+}
+
 .forum_post_inner_content {
-    padding: 5px 5px 0 5px;
-    background-color: #F5F8FB;
     word-wrap: break-word;
+    min-height: 30px;
 }
 
 .forum_post_inner_content p {
@@ -1937,28 +1941,16 @@ deveria ser generico p/ ser reaproveitado em outras telas */
     padding-bottom: 7px;
 }
 
-.forum_post .forum_post_inner_content {
-    max-width: 730px;
+.forum_post .forum_post_wrapper {
+    max-width: $forum_post_width;
 }
 
-.forum_post .forum_post_buttons {
-    max-width: 732px;
+.forum_post .forum_post .forum_post_wrapper {
+    max-width: $forum_post_width - 54px;
 }
 
-.forum_post .forum_post .forum_post_inner_content {
-    max-width: 676px;
-}
-
-.forum_post .forum_post .forum_post_buttons {
-    max-width: 680px;
-}
-
-.forum_post .forum_post .forum_post .forum_post_inner_content {
-    max-width: 624px;
-}
-
-.forum_post .forum_post .forum_post .forum_post_buttons {
-    max-width: 630px;
+.forum_post .forum_post .forum_post .forum_post_wrapper {
+    max-width: $forum_post_width - 106px;
 }
 
 .forum_participant_nick {
@@ -2000,13 +1992,10 @@ deveria ser generico p/ ser reaproveitado em outras telas */
 .forum_post_buttons{
     text-align: right;
     background-color: #F5F8FB;
-    padding-bottom: 5px;
-    padding-right: 3px;
-    padding-left: 3px;
 }
 
 .forum_post_attachment{
-    padding: 0 0 5px 7px;
+    padding: 0 0 5px 5px;
     background-color: #F5F8FB;
 }
 
@@ -2045,7 +2034,8 @@ deveria ser generico p/ ser reaproveitado em outras telas */
 
 .new_post_dialog_buttons {
     margin-top: 5px;
-    text-align: right;
+    padding-bottom: 3px;
+    float: right;
 }
 
 /* === TELA DE MENSAGENS  === */
@@ -3412,34 +3402,23 @@ fieldset legend {
     text-align: center;
     outline: none;
     text-decoration: none;
-    width: 110px;
     font-size: 9pt;
+    width: 100px;
 }
 
 .uc_item a{
     color: #003E7A;
+    width: auto;
 }
 
-.uc_item img:hover {
-    text-decoration: none;
-    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.1);
-    box-shadow: 0px 0px 1px rgba(0,0,0,.2);
-    border: solid 1px #d9d9d9;
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#d0d0d0');
-}
-
-.uc_item img:active {
-    background-image: -moz-linear-gradient(center top , rgba(232,232,232,.50), rgba(255,255,255,.85));
-    background-image: -webkit-linear-gradient(top,rgba(232,232,232,.50),rgba(255,255,255,.85));
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
-}
-
-.uc_item img {
+.uc_item .btn {
     text-align: center;
     padding: 12px;
-    border: 1px solid #DEDEDE;
+    // border: 1px solid #DEDEDE;
     border-radius: 10px;
-    margin-bottom: 5px;
+    margin: 0 auto 5px auto;
+    display: block;
+    width: 50px;
 }
 
 .block_title.edition {
@@ -3451,6 +3430,10 @@ fieldset legend {
     color: #696969;
     padding-top: 5px;
     border-bottom: 1px solid #8d8d8d;
+}
+
+#back_button {
+    margin-bottom: 10px;
 }
 
 #new_module {

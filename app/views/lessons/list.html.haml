@@ -22,20 +22,21 @@
           .block_title
             %h2
               = lesson_module.name
-              = link_to (image_tag "lesson/edit.png", :alt => t(".edit_lesson_module")), "#", class: 'block_title_button edit_module', :value => edit_lesson_module_path(lesson_module, :allocation_tags_ids => params[:allocation_tags_ids])
-              = link_to (image_tag "lesson/delete.png", :alt => t(".delete_lesson_module")), "#", class: 'block_title_button delete_module', :value => lesson_module_path(lesson_module, :allocation_tags_ids => params[:allocation_tags_ids])
+              = link_to (content_tag(:i, nil, :class=>'icon-plus-3')), "#", class: 'block_title_button edit_module', :value => edit_lesson_module_path(lesson_module, :allocation_tags_ids => params[:allocation_tags_ids])
+              = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'block_title_button delete_module', :value => lesson_module_path(lesson_module, :allocation_tags_ids => params[:allocation_tags_ids])
 
           .block_content_toolbar
-            .block_toolbar_left
-              = link_to (image_tag "lesson/add_lesson.png"), "#", onclick: "javascript:open_lightbox('#{new_lesson_path(:lesson_module_id => lesson_module.id,:allocation_tags_ids => params[:allocation_tags_ids])}','#{t(:new_lesson, scope: [:lessons, :list])}',550,270);", class: 'btn btn_main'
-              = link_to (image_tag "lesson/import_lesson.png"), "#", onclick: "javascript: alert('importar aula');", id: 'import_lesson', class: 'btn btn_main'
+            .block_toolbar_left.btn-group
+              = link_to (content_tag(:i, nil, :class=>'icon-plus-3')), "#", onclick: "javascript:open_lightbox('#{new_lesson_path(:lesson_module_id => lesson_module.id,:allocation_tags_ids => params[:allocation_tags_ids])}','#{t(:new_lesson, scope: [:lessons, :list])}',550,270);", class: 'btn btn_main'
+              = link_to (content_tag(:i, nil, :class=>'icon-publish')), "#", onclick: "javascript: alert('importar aula');", id: 'import_lesson', class: 'btn btn_main'
 
             .block_toolbar_right
-              = link_to (image_tag "lesson/edit.png"), "#", onclick: "javascript: edit_lesson('#{lesson_module.id}');", id: 'edit_lesson', class: 'btn btn_default'
-              = link_to (image_tag "lesson/manage_files.png"), "#", onclick: "", class: 'btn btn_default manage_files_lesson', :value => lesson_module.id
-              = link_to (image_tag "lesson/delete.png"), "#", onclick:  "javascript: delete_lesson('#{lesson_module.id}');", id: 'delete_lesson', class: 'btn btn_default'
-              = link_to (image_tag "lesson/download.png"), "#", onclick: "javascript: download_lesson_zip('#{lesson_module.id}');", id: 'download_lesson', class: 'btn btn_default'
-              = link_to (image_tag "lesson/release_lessons.png"), "#", id: 'release_lessons', class: 'btn btn_default btn_spacing_left', "data-module_id" => lesson_module.id
+              .btn-group
+                = link_to (content_tag(:i, nil, :class=>'icon-pencil')), "#", onclick: "javascript: edit_lesson('#{lesson_module.id}');", id: 'edit_lesson', class: 'btn'
+                = link_to (content_tag(:i, nil, :class=>'icon-settings')), "#", onclick: "", class: 'btn btn_default manage_files_lesson', :value => lesson_module.id
+                = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", onclick:  "javascript: delete_lesson('#{lesson_module.id}');", id: 'delete_lesson', class: 'btn'
+                = link_to (content_tag(:i, nil, :class=>'icon-install')), "#", onclick: "javascript: download_lesson_zip('#{lesson_module.id}');", id: 'download_lesson', class: 'btn'
+                = link_to (content_tag(:i, nil, :class=>'icon-checkmark')), "#", id: 'release_lessons', class: 'btn', "data-module_id" => lesson_module.id
 
           / Lessons list
 

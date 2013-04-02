@@ -38,7 +38,13 @@
               %td=link_to t(@individual_assignments_info["situation"][idx].to_sym), assignment_path(assignment.id, :student_id => @student_id), :class => "assignment_#{@individual_assignments_info["situation"][idx]}"
               %td{:align => "center"}
                 %span.activity_grade= (@individual_assignments_info["assignments_grades"][idx].nil?) ? "-" : @individual_assignments_info["assignments_grades"][idx].to_f
-              %td{:align => "center"}= image_tag((@individual_assignments_info["has_comments"][idx]) ? "icon_comments.png" : "icon_no_comments.png" )
+              %td{:align => "center"}
+                - if @individual_assignments_info["has_comments"][idx]
+                  %i.icon-comment.big
+                - else
+                  %i.icon-comment.big.empty
+
+              / %td{:align => "center"}= image_tag(() ? "icon_comments.png" : "icon_no_comments.png" )
     - else
       .block_content.block_content_text= t(:itens_not_found)
 
@@ -98,7 +104,12 @@
                   =link_to t(@group_assignments_info["situation"][idx].to_sym), assignment_path(assignment.id, :group_id => group.id), :class => "assignment_#{@group_assignments_info["situation"][idx]}"
               %td{:align => "center"}
                 %span.activity_grade= (@group_assignments_info["assignments_grades"][idx].nil?) ? '-' : @group_assignments_info["assignments_grades"][idx].to_f
-              %td{:align => "center"}= image_tag( (@group_assignments_info["has_comments"][idx]) ? "icon_comments.png" : "icon_no_comments.png" )
+              %td{:align => "center"}
+                - if @group_assignments_info["has_comments"][idx]
+                  %i.icon-comment.big
+                - else
+                  %i.icon-comment.big.empty
+              / %td{:align => "center"}= image_tag( (@group_assignments_info["has_comments"][idx]) ? "icon_comments.png" : "icon_no_comments.png" )
     - else
       .block_content.block_content_text= t(:itens_not_found)
 
