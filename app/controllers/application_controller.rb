@@ -111,7 +111,7 @@ class ApplicationController < ActionController::Base
   def set_locale
     if user_signed_in?
       personal_options = PersonalConfiguration.find_or_create_by_user_id(current_user.id, default_locale: (params[:locale] || I18n.default_locale))
-      personal_options.update_attributes(default_locale: params[:locale]) if params[:locale].to_s != personal_options.default_locale.to_s
+      personal_options.update_attributes(default_locale: params[:locale]) if (params[:locale].present? and params[:locale].to_s != personal_options.default_locale.to_s)
       params[:locale]  = personal_options.default_locale
     end
 
