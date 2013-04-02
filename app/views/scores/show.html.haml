@@ -2,7 +2,7 @@
 .block_wrapper#assignments
   .block_title
     %h2
-      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
+      %i.icon-suitcase
       = @student.name
 
   / Tabelas de atividades 
@@ -51,7 +51,7 @@
 .block_wrapper
   .block_title
     %h2
-      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
+      %i.icon-suitcase
       = t(:amount_participation_discussions)
   .block_content
     - unless @discussions.empty?
@@ -81,7 +81,7 @@
 .block_wrapper
   .block_title
     %h2
-      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon'
+      %i.icon-suitcase
       = t(:history_access)
   .block_content.block_content_text
     #history_search_content

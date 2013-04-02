@@ -4,7 +4,7 @@
 .block_wrapper
   .block_title
     %h2
-      = image_tag("icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon')
+      %i.icon-suitcase
       = @assignment.name
   .block_content
     %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
@@ -12,10 +12,10 @@
         %tr.lines
           %th=t :description, :scope => [:assignment, :information]
           %th.clock_icon
-            = image_tag("clock.png", :alt => " ", :class=>"block_title_icon")
+            %i.icon-clock
             =t :begin, :scope => [:assignment, :information]
           %th.clock_icon
-            = image_tag("clock.png", :alt => " ", :class=>"block_title_icon")
+            %i.icon-clock
             =t :end, :scope => [:assignment, :information]
       %tbody
         %tr.lines
@@ -27,7 +27,7 @@
 .block_wrapper
   .block_title
     %h2
-      = image_tag("icon_suitcase_portfolio.png", :alt=> " ", :class=>'block_title_icon')
+      %i.icon-suitcase
       =t :activity_files, :scope => [:assignment, :files]
     %span.download_all_icon
       - unless @assignment_enunciation_files.empty?
@@ -60,7 +60,7 @@
   .block_wrapper.manage_groups
     .block_title
       %h2
-        = image_tag("icon_participants.png", :alt => " ", :class=>'block_title_icon')
+        %i.icon-people
         =t :groups, :scope => [:assignment, :group_assignments]
       %span.group_elements_float
         - if can? :manage_groups, @assignment
@@ -116,7 +116,7 @@
   .block_wrapper
     .block_title
       %h2
-        = image_tag "icon_participants.png", :alt => " ", :class=>'block_title_icon'
+        %i.icon-people
         =t :participants, :scope => [:assignment, :group_assignments]
     .block_content
       %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}

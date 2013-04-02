@@ -6,7 +6,7 @@
 .block_wrapper.assingment_info
   .block_title
     %h2
-      = image_tag "icon_suitcase_portfolio.png", :alt => " ", :class=>'block_title_icon' 
+      %i.icon-suitcase
       = @assignment.name
     - if can? :evaluate, @assignment
       - if @send_assignment.nil? or @send_assignment.grade.nil? or @send_assignment.grade.blank?

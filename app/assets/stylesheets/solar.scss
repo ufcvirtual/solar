@@ -3284,9 +3284,9 @@ div.support_material_select {
     background-color: #f7f7f7;
 }
 
-.evaluate_group{
-    margin-top: -20px;
+.btn.evaluate_group{
     height: 16px;
+    line-height: 8px;
 }
 
 .group_assignments_manage_buttons ul{
@@ -3352,6 +3352,10 @@ div.support_material_select {
 
 .remove_group{
     cursor: pointer;
+}
+
+.group_elements_float {
+    margin-top: -2px;
 }
 
 .group_elements_float, .remove_group, .download_all_icon{
