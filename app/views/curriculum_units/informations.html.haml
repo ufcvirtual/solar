@@ -35,5 +35,5 @@
           - if @responsible
             - @responsible.each do |resp|
               =resp.name + ' (' + resp.profile_name + ') '
-              %span= link_to(content_tag(:i, nil, :class=>'icon-mail'))
+              %span= link_to(content_tag(:i, nil, :class=>'icon-mail'), nil, :class=>"nodecoration")
               %br

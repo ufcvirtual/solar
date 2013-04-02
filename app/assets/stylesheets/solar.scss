@@ -1853,7 +1853,7 @@ deveria ser generico p/ ser reaproveitado em outras telas */
 
 .forum_post_wrapper {
     background-color: #F5F8FB;
-    padding: 7px 5px 2px 5px;
+    padding: 7px 5px 4px 5px;
 }
 
 .forum_post .forum_post {
@@ -1924,10 +1924,17 @@ deveria ser generico p/ ser reaproveitado em outras telas */
     vertical-align: top;
 }
 
+.forum_post_new {
+    width: auto;
+    display: block !important;
+    // margin: 10px auto 8px auto;
+    padding: 0;
+}
+
 .forum_post_reply {
     width: auto;
     overflow: hidden;
-    padding-top: 5px;
+    // padding-top: 5px;
     position: relative;
 }
 
@@ -1941,16 +1948,21 @@ deveria ser generico p/ ser reaproveitado em outras telas */
     padding-bottom: 7px;
 }
 
+$forum_indentation: 52px;
 .forum_post .forum_post_wrapper {
     max-width: $forum_post_width;
 }
 
 .forum_post .forum_post .forum_post_wrapper {
-    max-width: $forum_post_width - 54px;
+    max-width: $forum_post_width - $forum_indentation;
 }
 
 .forum_post .forum_post .forum_post .forum_post_wrapper {
-    max-width: $forum_post_width - 106px;
+    max-width: $forum_post_width - $forum_indentation*2;
+}
+
+.forum_post .forum_post .forum_post .forum_post .forum_post_wrapper {
+    max-width: $forum_post_width - $forum_indentation*3;
 }
 
 .forum_participant_nick {
@@ -2000,7 +2012,7 @@ deveria ser generico p/ ser reaproveitado em outras telas */
 }
 
 .forum_post_attachment h3 {
-    padding-bottom: 4px;
+    padding-bottom: 0px;
 }
 
 .forum_post_attachment_list, .comments_files_div {
@@ -2030,6 +2042,7 @@ deveria ser generico p/ ser reaproveitado em outras telas */
 
 #new_post {
     display: none;
+    padding-top: 5px;
 }
 
 .new_post_dialog_buttons {

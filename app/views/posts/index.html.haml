@@ -40,6 +40,7 @@
             = button_tag(:type => 'button', :onclick => "javascript:cancel_posting(this);", :class => "btn btn_caution", :id => "btn_cancel_post") do
               = content_tag(:span, t(:cancel))
             = form.submit( t(:send), :class => 'btn btn_main' )
+    .forum_post_new
 
   .forum_posts_wrapper
     - @posts.each do |post|

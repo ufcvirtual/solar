@@ -37,7 +37,11 @@ function new_post(obj, parent) {
   $('form#new_post_form input[name=_method]').val('post');
   if (parent > 0) { $('form#new_post_form #discussion_post_parent_id').val(parent); } // resposta
 
-  append_rich_text($(obj).parent().parent().siblings(".forum_post_reply"));
+  if ( $(obj).parent().attr('id') == 'forum_new_message' ) {
+    append_rich_text($(obj).closest('.forum_navigation').children(".forum_post_new")); // seletor para novo post
+  } else {
+    append_rich_text($(obj).closest('.forum_post_wrapper').children(".forum_post_reply")); // seletor para reply
+  }
   return false;
 };
 
@@ -48,8 +52,8 @@ function update_post(obj, post, parent) {
   var action = $('form#new_post_form').attr('action-default');
   $('form#new_post_form').attr('action', [action, post].join('/')); // discussion/1/posts/1
 
-  append_rich_text($(obj).closest('div'));
-  CKEDITOR.instances['discussion_post_content'].setData($(obj).parent().parent().children('.forum_post_inner_content').html());
+  append_rich_text($(obj).closest('.forum_post_wrapper').children(".forum_post_reply"));
+  CKEDITOR.instances['discussion_post_content'].setData($(obj).closest('.forum_post_wrapper').children('.forum_post_inner_content').html());
   return false;
 }
 
