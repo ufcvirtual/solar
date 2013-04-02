@@ -22,7 +22,7 @@
           .block_title
             %h2
               = lesson_module.name
-              = link_to (content_tag(:i, nil, :class=>'icon-plus-3')), "#", class: 'block_title_button edit_module', :value => edit_lesson_module_path(lesson_module, :allocation_tags_ids => params[:allocation_tags_ids])
+              = link_to (content_tag(:i, nil, :class=>'icon-pencil')), "#", class: 'block_title_button edit_module', :value => edit_lesson_module_path(lesson_module, :allocation_tags_ids => params[:allocation_tags_ids])
               = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'block_title_button delete_module', :value => lesson_module_path(lesson_module, :allocation_tags_ids => params[:allocation_tags_ids])
 
           .block_content_toolbar
