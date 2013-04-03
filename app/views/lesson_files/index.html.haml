@@ -36,9 +36,10 @@
       %a.btn.btn_main#btn-new-file
         = content_tag(:i, nil, :class=>'icon-plus-3')
     .btn-group
+      = button_tag content_tag(:i, nil, :class=>'icon-folder'), type: :button, :class => 'btn', id: "btn-new-folder", value: new_folder_lesson_files_path(:lesson_id => @lesson.id)
+    .btn-group
       = button_tag content_tag(:i, nil, :class=>'icon-star'), type: :button, :class => 'btn', id: "btn-initial-file"
     .btn-group
-      = button_tag content_tag(:i, nil, :class=>'icon-folder'), type: :button, :class => 'btn', id: "btn-new-folder", value: new_folder_lesson_files_path(:lesson_id => @lesson.id)
       = button_tag content_tag(:i, nil, :class=>'icon-archive'), type: :button, :class => 'btn', id: "btn-unzip"
       = button_tag content_tag(:i, nil, :class=>'icon-edit'), type: :button, :class => 'btn', id: "btn-rename"
       = button_tag content_tag(:i, nil, :class=>'icon-trash'), type: :button, :class => 'btn btn_caution', id: "btn-remove-node"

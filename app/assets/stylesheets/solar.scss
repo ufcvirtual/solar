@@ -221,20 +221,15 @@ h1.page_title{
 #lightBoxDialogCloseBt
 {
     position : absolute;
-    top : 3px;
-    right : 3px;
-    width : 11px;
-    height : 11px;
-    border : 0px;
+    top : 7px;
+    right : 10px;
     cursor : pointer;
-    background-image: url('/assets/closeLightBox.png');
-    background-position:0px 0px;
-    font-size : 3px;
+    opacity: 0.5;
 }
 #lightBoxDialogCloseBt:Hover
 {
     cursor : pointer;
-    background-position: 11px 0px;
+    opacity: 1.0;
 }
 
 /****tela de matricula****/
@@ -3499,13 +3494,13 @@ select[disabled] {
 /* Arquivos de aulas - lesson_files */
 
 #files_menu_bar{
-    // height: 16px;
     padding-top: 5px;
     padding-bottom: 5px;
 }
 
 #files_select {
     display:inline-block;
+    margin-right: 5px;
 }
 
 #lesson_files_select_all{
@@ -3570,20 +3565,4 @@ select[disabled] {
 
 #btn-finish{
     float: right;
-}
-
-#btn-unzip{
-    margin-left: 10px;
-}
-
-#btn-initial-file{
-    margin-left: 10px;
-    background: #f9db43; /* Old browsers */
-    background: -moz-linear-gradient(top,  #f9db43 0%, #f9c143 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f9db43), color-stop(100%,#f9c143)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top,  #f9db43 0%,#f9c143 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top,  #f9db43 0%,#f9c143 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top,  #f9db43 0%,#f9c143 100%); /* IE10+ */
-    background: linear-gradient(to bottom,  #f9db43 0%,#f9c143 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9db43', endColorstr='#f9c143',GradientType=0 ); /* IE6-9 */
 }

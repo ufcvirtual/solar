@@ -2,7 +2,7 @@
   <%= link_to t(:message_new)+' ', {:action => 'new', :search => @search_text}, {:class=>'message_link'} %>
   <% if (@type!="trashbox" && !@type.nil?) %>
     <ul class="message_menu_listbox">
-      <li><a href="#"><%=t(:message_select)%> <%=image_tag "icon_arrow_down.png", :alt=>t(:message_select)%></a>
+      <li><a href="#"><%=t(:message_select)%><%=content_tag(:i, nil, :class=>'icon-arrow-down-3') %></a>
         <ul>
           <li><span id="check_all" class="message_link"><%=t(:message_select_all)%></span></li>
           <li><span id="check_none" class="message_link"><%=t(:message_select_none)%></span></li>

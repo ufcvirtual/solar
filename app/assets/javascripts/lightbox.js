@@ -29,7 +29,7 @@ function showLightBox(content, width, height, canClose, title){
 
   if (canClose){
     modalClose = 'onclick="removeLightBox();" ';
-    closeBt = '<div ' + modalClose + ' id="lightBoxDialogCloseBt">&nbsp;</div>';
+    closeBt = '<div ' + modalClose + ' id="lightBoxDialogCloseBt"><i class="icon-cross-3 warning"></i></div>';
   }
   title = '<div id="lightBoxDialogTitle"><h1>'+title+'</h1></div>'
   

@@ -98,7 +98,6 @@ input::-moz-focus-inner {
 .btn:focus i,
 .btn:active i {
     opacity: 0.8;
-    // color: darken($btn-color,1%);
 }
 
 .btn_disabled i,
@@ -142,7 +141,6 @@ input::-moz-focus-inner {
     @include background-image(linear-gradient($btn_main-color, darken($btn_main-color, 15%))); /* CSS3 */
     background-repeat: repeat-x;
     border-color: #0044cc #0044cc #002a80;
-    // border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
 
 .btn_main i {
@@ -156,22 +154,13 @@ input::-moz-focus-inner {
     opacity: 1.0;
 }
 
-$teste: #016ee5;
-
-.btn_main:active {
-    background-color: #003399;
-    @include background-image(linear-gradient($teste, darken($teste,15%))); /* CSS3 */
-}
-
-
 .btn_main:hover,
 .btn_main:focus,
 .btn_main.active,
 .btn_main.disabled,
 .btn_main[disabled] {
-    // background-color: darken($btn_main-color, 15%);
-    background-color: desaturate(#016ee5, 30%);
-    @include background-image(linear-gradient($teste, darken($teste,15%))); /* CSS3 */
+    background-color: desaturate($btn_main-color, 30%);
+    @include background-image(linear-gradient(lighten($btn_main-color, 10%), darken($btn_main-color,10%))); /* CSS3 */
 }
 
 .btn_main:hover i,
@@ -255,4 +244,19 @@ $teste: #016ee5;
 .block_content_toolbar .btn.btn_spacing_left {
     margin-left: 5px;
     border-left-width: 1px;
+}
+
+/* botão específico do lightbox de upload de arquivos de aula */
+$btn-initial-file-color: #f9db43;
+$btn-initial-file-color-final: #f9c143;
+#btn-initial-file {
+    background: $btn-initial-file-color; /* Old browsers */
+    @include filter-gradient($btn-initial-file-color, $btn-initial-file-color-final); /* IE */
+    @include background-image(linear-gradient($btn-initial-file-color, $btn-initial-file-color-final)); /* CSS3 */
+    background-repeat: repeat-x;
+    opacity: 0.9;
+}
+
+#btn-initial-file:hover {
+    opacity: 1.0;
 }
