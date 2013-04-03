@@ -32,3 +32,17 @@ span.dynatree-icon{
 .dynatree-folder span.dynatree-icon{
 	background-image: url("/assets/lesson/folder.png");
 }
+
+
+#initial_file > a.dynatree-title{
+    color: #e7aa3f;
+    font-weight: bold;
+}
+
+#initial_file > span.dynatree-icon{
+    background-image: url("/assets/lesson/initial_file-TEMP.png");
+}
+
+#initial_file_parent > span.dynatree-icon{
+    background-image: url("/assets/lesson/initial_file-TEMP.png");
+}

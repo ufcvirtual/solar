@@ -10,6 +10,7 @@ class LessonFilesController < ApplicationController
     begin 
       @lesson = Lesson.where(id: params[:lesson_id]).first
       authorize! :new, Lesson, on: [@lesson.lesson_module.allocation_tag_id]
+      @address = @lesson.address unless @lesson.address == "index.html"
 
       raise 'error' unless @lesson and @lesson.type_lesson == Lesson_Type_File
     rescue

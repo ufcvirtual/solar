@@ -14,6 +14,7 @@ jQuery(function(){
     selectMode: 2, // alterado para o 2 para melhorar/facilitar a deleção de nós
     children: treeData,
     imagePath: "/assets/lesson/",
+    generateIds: true,
     onSelect: function(select, node) {
       node.visit(function(child){
         child.select(node.isSelected()); // seleciona ou de-seleciona nós filhos
@@ -39,10 +40,20 @@ jQuery(function(){
         case 46: // [delete]
           deleteNodes([node]);
       }
+    },
+    onPostInit: function() { // ao carregar a árvore
+      if(initial_file_address != ''){
+        jQuery("#tree").dynatree("getRoot").visit(function(node) {
+          set_initial_file_visual_path(node); // definir caminho visual para o arquivo inicial
+        });
+      }
+    },
+    onExpand: function(flag, node){ 
+      if(flag && initial_file_address != '') // ao expandir um nó
+        set_initial_file_visual_path(node); // é necessário "re-definir" caminho visual aqui, pois os nós mais internos são ficam realmente visiveis após expansão do nó pai
     }
   });
 
-  
   /* Inicialização da árvore de pastas para movimentação de arquivos e pastas */
   jQuery("#folders_tree").dynatree({
     minExpandLevel: 2,
@@ -299,6 +310,35 @@ function editNode(node) {
 
 }
 
+/* Define caminho visual para o arquivo inicial */
+function set_initial_file_visual_path(node){
+  if(node.childList != null){ // se for uma pasta com filhos
+    for(var i = 0; i <= node.childList.length-1; i++){ // varre lista de filhos
+      child_node = node.childList[i];
+      if(child_node.childList != null) // se filho for outra pasta com filhos
+        set_initial_file_visual_path(child_node); // recursão
+      else 
+        set_initial_file(child_node); // define arquivo inicial caso necessário
+    }
+  }else // se for só um arquivo ou pasta sem filhos
+    set_initial_file(node); // define arquivo inicial caso necessário
+}
+
+/* Define arquivo inicial caso necessário */
+function set_initial_file(node){
+  // se o caminho do nó for equivalente ao arquivo inicial e ele já não tiver sido definido
+  // if (getPath(node) == "/Nova Pasta1/Nova Pasta/ihc-3.pdf" && jQuery(node.span).attr("id") != "initial_file"){
+  if (getPath(node) == initial_file_address && jQuery(node.span).attr("id") != "initial_file"){
+    jQuery(node.span).attr("id", "initial_file"); // define como arquivo inicial visualmente
+
+    parent = node.getParent();
+    while(getPath(parent) != "/" && parent.span != "initial_file_parent"){ // varre os nós pais que já não foram definidos e que não são a raiz
+      jQuery(parent.span).attr("id", "initial_file_parent"); // como parte do caminho do arquivo inicial
+      parent = parent.getParent();
+    }
+  }
+}
+
 /**** Métodos AJAX ****/
 
 /* Salva a deleção de um nó */
@@ -334,7 +374,6 @@ function newFolder(path){
       jQuery("#lesson_file_management").html(data);
     },
     error: function() {
-      // node.remove(); // remove pasta criada
       flash_message("<%=I18n.t(:new_folder_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
     }
   });
@@ -363,7 +402,6 @@ function renameNode(node, new_title, path){
 }
 
 /* Salvar a movimentação de pastas/arquivos */
-/* Trechos comentados serão utilizados quando a movimentação for possível para drag'n'drop */
 function saveMove(nodesToMove){
 
   var paths         = new Array;
