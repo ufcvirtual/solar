@@ -24,28 +24,23 @@
         - @fb_posts.each do |fb_post|
           .post
             .user_avatar
-              = image_tag "facebook_user_avatar.png", :alt => "User Image"
+              = image_tag "http://graph.facebook.com/"+fb_post.actor.to_s+"/picture",:size => "26x26", :alt => "User Image"
             .post_content
               %span.username
                 = fb_post.name
               = fb_post.message
-              =fb_post.type
-              .post_actions
-                %a.like{:href => "Teste"} Curtir
-                %a.comment{:href => "Teste"} Comentar
-                %span.date
-                  = fb_post.created_time
-      .post
-        .user_avatar
-          = image_tag "facebook_user_avatar.png", :alt => "User Image"
-        .post_content
-          %span.username 
-            = @graph.get_object("me")['name'] unless @graph.nil?
+              = image_tag fb_post.adress, :class => "img" if fb_post.media_type.eql? 'photo'
+              - if fb_post.media_type.eql? 'link'
+                = image_tag fb_post.adress
+                %a.link{href: "#{fb_post.link}"}= fb_post.link
 
-          .post_actions
-            %a.like{:href => "Teste"} Curtir
-            %a.comment{:href => "Teste"} Comentar
-            %span.date 16 de Janeiro
+              - if fb_post.parent.present?
+                .post_actions
+                  %a.like{:href => "Teste"} Curtir
+                  %a.comment{:href => "Teste"} Comentar
+                  %span.date
+                    = fb_post.created_time
+
     .slide.slide-settings{:'data-status'=>'closed'}
       %ul
         %li.settings
