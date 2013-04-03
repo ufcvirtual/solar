@@ -3,7 +3,7 @@
 .block_wrapper.manage_groups
   .block_title
     %h2
-      = image_tag("icon_participants.png", :alt => " ", :class=>'block_title_icon')
+      %i.icon-people
       =t :groups, :scope => [:assignment, :group_assignments]
     %span.group_elements_float
       - if can? :manage_groups, @assignment

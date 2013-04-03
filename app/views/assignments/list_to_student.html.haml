@@ -44,7 +44,6 @@
                 - else
                   %i.icon-comment.big.empty
 
-              / %td{:align => "center"}= image_tag(() ? "icon_comments.png" : "icon_no_comments.png" )
     - else
       .block_content.block_content_text= t(:itens_not_found)
 
@@ -109,7 +108,7 @@
                   %i.icon-comment.big
                 - else
                   %i.icon-comment.big.empty
-              / %td{:align => "center"}= image_tag( (@group_assignments_info["has_comments"][idx]) ? "icon_comments.png" : "icon_no_comments.png" )
+                  
     - else
       .block_content.block_content_text= t(:itens_not_found)
 

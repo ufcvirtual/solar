@@ -3499,21 +3499,18 @@ select[disabled] {
 /* Arquivos de aulas - lesson_files */
 
 #files_menu_bar{
-    height: 16px;
+    // height: 16px;
     padding-top: 5px;
-    padding-bottom: 7px;
+    padding-bottom: 5px;
+}
+
+#files_select {
+    display:inline-block;
 }
 
 #lesson_files_select_all{
     font-size: 10pt;
     color: #8D8D8D;
-}
-
-p#files_menu_bar .btn.btn_default{
-    min-width: 31px;
-    padding-left: 0px;
-    margin-right: -5.8px;
-    vertical-align: text-top;
 }
 
 #folder_window_buttons .btn{
@@ -3566,7 +3563,12 @@ p#files_menu_bar .btn.btn_default{
     cursor: pointer;
 }
 
-#btn-conclude{
+#files_bottom_bar {
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+#btn-finish{
     float: right;
 }
 

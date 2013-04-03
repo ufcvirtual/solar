@@ -53,7 +53,7 @@
       - unless @assignment_enunciation_files.empty?
         = button_tag(:type => :button, :onclick => "javascript:window.location.href='#{download_files_assignments_path(:assignment_id => @assignment.id, :type => "enunciation", :zip => true)}'", :class => "btn btn_default") do
           = content_tag(:span, t(:download_all_files_zip, :scope => [:assignment, :files]))
-          = content_tag(:span, image_tag("icon_folder_compressed.png"))
+          %i.icon-install
   .block_content
     - unless @assignment_enunciation_files.empty?
       %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
@@ -104,7 +104,7 @@
       - unless @send_assignment_files.nil? or @send_assignment_files.empty?
         = button_tag(:type => :button, :onclick => "javascript:window.location.href='#{download_files_assignments_path(:assignment_id => @assignment.id, :student_id => @student_id, :group_id => @group_id, :type => "assignment", :zip => true)}'", :class => "btn btn_default") do
           = content_tag(:span, t(:download_all_files_zip, :scope => [:assignment, :files]))
-          = content_tag(:span, image_tag("icon_folder_compressed.png"))
+          %i.icon-install
   .block_content
     - unless @send_assignment_files.nil? or @send_assignment_files.empty?
       %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
@@ -233,10 +233,10 @@
                             = link_to image_tag(icon_attachment(comment_file.attachment_file_name)), download_files_assignments_path(:assignment_id => @assignment.id, :file_id => comment_file.id, :student_id => @student_id, :group_id => @group_id, :type => "comment"), {:class => "file_icon", :alt => t(:download_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files])}
                             = link_to comment_file.attachment_file_name, download_files_assignments_path(:assignment_id => @assignment.id, :file_id => comment_file.id, :student_id => @student_id, :group_id => @group_id, :type => "comment"), {:class => "link_content link_comment_#{comment_file.id}", :id => "#{comment_file.id}", :alt => t(:download_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files])}
                             .assignment_comment_date= l(comment_file.attachment_updated_at, :format => :at_date)
-                            = button_tag(:type => :button, :onclick => "javascript:remove_file(#{comment_file.id}, #{comment.id}, this);", :id => "remove_file_#{comment_file.id}", :class => "btn btn_default", :title => t(:remove_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files]), :alt => t(:remove_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files])) do
-                              = content_tag(:span, image_tag("remove_file.png"))
-                            = button_tag(:type => :button, :onclick => "javascript:recover_file(#{comment_file.id}, #{comment.id}, this);", :id => "recover_file_#{comment_file.id}", :class => "btn btn_default recover_file", :title => t(:recover_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files]), :alt => t(:recover_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files])) do
-                              = content_tag(:span, image_tag("recover_file.png"))
+                            / = button_tag(:type => :button, :onclick => "javascript:remove_file(#{comment_file.id}, #{comment.id}, this);", :id => "remove_file_#{comment_file.id}", :class => "btn btn_default", :title => t(:remove_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files]), :alt => t(:remove_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files])) do
+                            /   %i.icon-trash
+                            = link_to (content_tag(:i, nil, :class=>'icon-cross-3 warning')), '#', :onclick => "javascript:remove_file(#{comment_file.id}, #{comment.id}, this);", :id => "remove_file_#{comment_file.id}", :title => t(:remove_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files])
+                            = link_to (content_tag(:i, nil, :class=>'icon-restore')), '#', :onclick => "javascript:recover_file(#{comment_file.id}, #{comment.id}, this);", :id => "recover_file_#{comment_file.id}", :title => t(:recover_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files])
                       = hidden_field_tag 'deleted_files[]', "", {:id => "delete_file_#{comment.id}"}
                       = file_field_tag 'comment_files[]', :class => "comments_files"
                       %a.more_comment_files_link{:href => "#", :onclick => "javascript:more_files(this);"}= t(:attach_another, :scope => [:assignment, :files])

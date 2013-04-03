@@ -33,7 +33,7 @@
       - unless @assignment_enunciation_files.empty?
         = button_tag(:type => :button, :onclick => "javascript:window.location.href='#{download_files_assignments_path(:assignment_id => @assignment.id, :type => "enunciation", :zip => true)}'", :class => "btn btn_default") do
           = content_tag(:span, t(:download_all_files_zip, :scope => [:assignment, :files]))
-          = content_tag(:span, image_tag("icon_folder_compressed.png"))
+          %i.icon-install
 
   .block_content
     - unless @assignment_enunciation_files.empty?
@@ -43,7 +43,7 @@
             %th=t :name, :scope => [:assignment, :files]
             %th{:align => "right", :style => "width: 30px;"}= t(:size, :scope => [:assignment, :files])
             %th.clock_icon
-              = image_tag "clock.png", :alt => " ", :class=>"block_title_icon"
+              %i.icon-clock
               =t :sent_on, :scope => [:assignment, :files]
           - @assignment_enunciation_files.each do |file|
             %tr.lines
@@ -138,7 +138,11 @@
               %td{:class => "assignment_#{student_info["situation"]}"}
                 = t(student_info["situation"].to_sym)
               %td{:align => "center"}= student_info["grade"]
-              %td{:align => "center"}= image_tag( (student_info["have_comments"] == false) ? "icon_no_comments.png" : "icon_comments.png" , :alt => " ")
+              %td{:align => "center"}
+                - if student_info["have_comments"] == false
+                  %i.icon-comment.big.empty
+                - else
+                  %i.icon-comment.big
 
 
 :javascript

@@ -28,26 +28,29 @@
 
   .flash_messages
 
-  %p#files_menu_bar
-    = check_box_tag :all_items_selector
-    %span#lesson_files_select_all= t(".all")
-    = button_tag image_tag("lesson/new_folder.png"), type: :button, :class => 'btn btn_default', id: "btn-new-folder", value: new_folder_lesson_files_path(:lesson_id => @lesson.id)
-    = button_tag image_tag("lesson/initial_file_button-TEMP.png"), type: :button, :class => 'btn btn_default', id: "btn-initial-file"
-    = button_tag image_tag("lesson/unzip.png"), type: :button, :class => 'btn btn_default', id: "btn-unzip"
-    = button_tag image_tag("lesson/edit.png"), type: :button, :class => 'btn btn_default', id: "btn-rename"
-    = button_tag image_tag("lesson/delete.png"), type: :button, :class => 'btn btn_default', id: "btn-remove-node"
-    %span#window
-      = button_tag image_tag("lesson/move.png"), type: :button, :class => 'btn btn_default', id: "btn-move-node"
+  %div#files_menu_bar
+    #files_select
+      = check_box_tag :all_items_selector
+      %span#lesson_files_select_all= t(".all")
+    .btn-group
+      %a.btn.btn_main#btn-new-file
+        = content_tag(:i, nil, :class=>'icon-plus-3')
+    .btn-group
+      = button_tag content_tag(:i, nil, :class=>'icon-star'), type: :button, :class => 'btn', id: "btn-initial-file"
+    .btn-group
+      = button_tag content_tag(:i, nil, :class=>'icon-folder'), type: :button, :class => 'btn', id: "btn-new-folder", value: new_folder_lesson_files_path(:lesson_id => @lesson.id)
+      = button_tag content_tag(:i, nil, :class=>'icon-archive'), type: :button, :class => 'btn', id: "btn-unzip"
+      = button_tag content_tag(:i, nil, :class=>'icon-edit'), type: :button, :class => 'btn', id: "btn-rename"
+      = button_tag content_tag(:i, nil, :class=>'icon-trash'), type: :button, :class => 'btn btn_caution', id: "btn-remove-node"
+      = button_tag content_tag(:i, nil, :class=>'icon-move'), type: :button, :class => 'btn', id: "btn-move-node"
       %span#folder_window
         %span#window_title= t(".move_to")
         %span#folders_tree
         %span#folder_window_buttons
-          = button_tag t(".cancel"), type: :button, :class => 'btn btn_default', id: "btn-cancel-move"
+          = button_tag t(".cancel"), type: :button, :class => 'btn', id: "btn-cancel-move"
           = button_tag t(".move"), type: :button, :class => 'btn btn_main', id: "btn-save-move"
-
-    %span.right_buttons
-      = image_tag("lesson/upload.png", :id => "btn-new-file")
+      
   #tree
 
-  #blue_background
-    = button_tag t(".conclude"), type: :button, :class => 'btn btn_main', id: "btn-conclude"  
+  #files_bottom_bar
+    = button_tag t(".conclude"), type: :button, :class => 'btn btn_main', id: "btn-finish"  

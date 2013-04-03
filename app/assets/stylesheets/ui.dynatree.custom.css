@@ -28,6 +28,10 @@ span.dynatree-icon{
 	background-image: url("/assets/lesson/file.png");
 }
 
+span.dynatree-folder a {
+    font-weight: normal;
+}
+
 /* se tiver a classe de pasta, o ícone a ser exibido é um correspondente */
 .dynatree-folder span.dynatree-icon{
 	background-image: url("/assets/lesson/folder.png");
