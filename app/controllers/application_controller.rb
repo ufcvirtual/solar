@@ -27,6 +27,14 @@ class ApplicationController < ActionController::Base
     redirect_to home_path, alert: t(:no_permission)
   end
 
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    # logar: exception.message
+    respond_to do |format|
+      format.html { redirect_to home_path, alert: t(:object_not_found), status: :not_found }
+      format.json { render json: {msg: t(:object_not_found)}, status: :not_found }
+    end
+  end
+
   def start_user_session
     return unless user_signed_in?
 

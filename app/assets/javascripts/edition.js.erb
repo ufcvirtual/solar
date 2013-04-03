@@ -81,6 +81,7 @@ function delete_object(url, redirect_url, div_to_update) {
 function change_object(method, url, redirect_url, div_to_update, message_success, message_error) {
   $.ajax({
     type: method,
+    dataType: 'json',
     url: url,
     success: function(data) {
       if (typeof div_to_update != "undefined") // página fora da tela de edição
@@ -91,9 +92,13 @@ function change_object(method, url, redirect_url, div_to_update, message_success
       if (message_success != undefined)
         flash_message(message_success, 'notice');
     },
-    error: function() {
-      if (message_error != undefined)
-        flash_message(message_error, 'alert');
+    error: function(data) {
+      try {
+        flash_message(JSON.parse(data.responseText).msg, 'alert');
+      } catch (e) {
+        if (message_error != undefined)
+          flash_message(message_error, 'alert');
+      }
     }
   });
 }

@@ -327,6 +327,7 @@
   home: "Home"
   of: "de"
   required_fields: "* campos obrigatórios"
+  object_not_found: "Objeto não encontrado"
 
   #Página de Login
   login_description1: "O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,
