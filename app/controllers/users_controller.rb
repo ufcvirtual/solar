@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
   load_and_authorize_resource :except => [:photo, :edit_photo, :fb_authentication]
   before_filter :parse_facebook_cookies # para autenticacao no facebook
-  FBPost = Struct.new(:name, :message, :created_time,:type)
+  FBPost = Struct.new(:name, :message, :created_time,:media_type,:actor,:adress,:link,:parent,:type)
   def parse_facebook_cookies
     @facebook_cookies ||= Koala::Facebook::OAuth.new(Fb_Config['app_id'], Fb_Config['secret_key']).get_user_info_from_cookie(cookies)
   end
@@ -32,31 +32,44 @@ class UsersController < ApplicationController
     #Pega um objeto da ferramenta API, através da qual podemos acessar as informações do usuário no facebook
     @graph = Koala::Facebook::API.new(user_session[:fb_token]) if user_session[:fb_token].present?
 
-    fql_query = "SELECT post_id,actor_id,message,created_time,attachment FROM stream WHERE filter_key in (SELECT filter_key FROM stream_filter WHERE uid=me() AND type='newsfeed') AND is_hidden = 0 LIMIT 10"  
+    fql_query = "SELECT parent_post_id,actor_id,message,created_time,attachment,type FROM stream WHERE filter_key in (SELECT filter_key FROM stream_filter WHERE uid=me() AND type='newsfeed') AND is_hidden = 0"  
     feed = @graph.fql_query(fql_query) unless @graph.nil?
 
     @fb_posts  = []
-      unless feed.nil?
+      if feed.present?
         feed.each do |feed_item|
-          q =  "SELECT name FROM user WHERE uid =" + feed_item['actor_id'].to_s
-          test_name = @graph.fql_query(q)
-          if test_name.empty?
-            q =  "SELECT name FROM page WHERE page_id =" + feed_item['actor_id'].to_s
+          unless feed_item['type'] == 347
+            q =  "SELECT name FROM user WHERE uid =" + feed_item['actor_id'].to_s
             test_name = @graph.fql_query(q)
-         end
-          n = test_name[0]['name']
-          m = feed_item['message']
-          d = I18n.l(Time.at(feed_item['created_time']).to_date, :format => :default).to_s
+            if test_name.empty?
+              q =  "SELECT name FROM page WHERE page_id =" + feed_item['actor_id'].to_s
+              test_name = @graph.fql_query(q)
+            end
+            name = test_name[0]['name']
+            message = feed_item['message']
+            date = I18n.l(Time.at(feed_item['created_time']).to_date, :format => :default).to_s
 
-          if feed_item['attachment']['media'].nil?
-            t = 'nothing'
-          else
-            t = feed_item['attachment']['media'][0]['type']
+            unless feed_item['attachment']['media'].present?
+              mediaType = 'nothing'
+            else
+              mediaType = feed_item['attachment']['media'][0]['type']
+            end
+              actor = feed_item['actor_id']
+
+            if mediaType.eql? 'photo'
+              content = feed_item['attachment']['media'][0]['src'].gsub('_s','_n')
+              link = feed_item['attachment']['media'][0]['href']
+            elsif mediaType.eql? 'link'
+              content = feed_item ['attachment']['media'][0]['src']
+              link = feed_item['attachment']['media'][0]['href']
+            end
+
+              parentPost= feed_item ['parent_post_id']
+              type= feed_item['type']
+
+            fb_post = FBPost.new(name, message, date, mediaType, actor, content, link, parentPost,type)
+            @fb_posts.push(fb_post)
           end
-          pi = feed_item['post_id']
-
-          fb_post = FBPost.new(n, m, d, t)
-          @fb_posts.push(fb_post)
         end
       end
   end

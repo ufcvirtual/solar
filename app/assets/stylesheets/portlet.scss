@@ -140,6 +140,15 @@ textarea:-moz-placeholder { color:$color_disabled; }
     color: $color_disabled;
 }
 
+.block_facebook .img {
+    width:  200px;
+    height: auto;
+}
+
+.block_facebook .link {
+    color: #20E;
+}
+
 .slide-settings {
     position: absolute;
     top: 0;
