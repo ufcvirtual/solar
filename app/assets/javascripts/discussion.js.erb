@@ -49,8 +49,8 @@ function update_post(obj, post, parent) {
   form_post_reset_parameters();
 
   if (parent > 0) { $('form#new_post_form #discussion_post_parent_id').val(parent); } // post com parent
-  var action = $('form#new_post_form').attr('action-default');
-  $('form#new_post_form').attr('action', [action, post].join('/')); // discussion/1/posts/1
+  var action = $('form#new_post_form').attr('action-to-edit').replace(':id', post);
+  $('form#new_post_form').attr('action', action);
 
   append_rich_text($(obj).closest('.forum_post_wrapper').children(".forum_post_reply"));
   CKEDITOR.instances['discussion_post_content'].setData($(obj).closest('.forum_post_wrapper').children('.forum_post_inner_content').html());

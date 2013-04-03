@@ -31,7 +31,7 @@
     #forum_pagination
       = raw render_pagination_bar(@discussion.discussion_posts_count(@display_mode == "list").to_s, "display_mode=#{@display_mode}")
       #new_post
-        = form_for(:discussion_post, :method => :put, :html => { :id => "new_post_form", :"action-default" => discussion_posts_path(@discussion.id) }) do |form|
+        = form_for(:discussion_post, :method => :put, :html => { :id => "new_post_form", :"action-to-edit" => discussion_post_path(@discussion.id, ':id'), :"action-default" => discussion_posts_path(@discussion.id) }) do |form|
           = hidden_field(:discussion_post, :parent_id, {:value => ""})
           = hidden_field_tag(:display_mode, @display_mode)
           = hidden_field_tag(:current_page, @current_page)

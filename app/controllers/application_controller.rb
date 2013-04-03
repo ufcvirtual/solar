@@ -120,10 +120,11 @@ class ApplicationController < ActionController::Base
     if user_signed_in?
       personal_options = PersonalConfiguration.find_or_create_by_user_id(current_user.id, default_locale: (params[:locale] || I18n.default_locale))
       personal_options.update_attributes(default_locale: params[:locale]) if (params[:locale].present? and params[:locale].to_s != personal_options.default_locale.to_s)
-      params[:locale]  = personal_options.default_locale
+      I18n.locale = personal_options.default_locale
+    else
+      I18n.locale = params[:locale] || I18n.default_locale
     end
 
-    I18n.locale = params[:locale] || I18n.default_locale
   end
 
   ## Parametros de locale para paginas externas
