@@ -85,7 +85,7 @@ HTML
         post_string << (content_tag(:i, nil, :class=>'icon-trash'))
         post_string << "</button>"
         post_string << "<button type='button' class='btn update_post' onclick='javascript:update_post(this, #{post.id}, #{post.parent_id || 0})' data-tooltip='#{t(".edit")}' value='#{t(".edit")}'>"
-        post_string << (content_tag(:i, nil, :class=>'icon-pencil'))
+        post_string << (content_tag(:i, nil, :class=>'icon-edit'))
         post_string << "</button>"
       end
 
@@ -96,7 +96,7 @@ HTML
       end
     else
       post_string << "<button type='button' class='btn btn_disabled' data-tooltip='#{t(".remove")}' value='#{t(".remove")}' disabled='disabled'><i class='icon-trash'></i></button>"
-      post_string << "<button type='button' class='btn btn_disabled' data-tooltip='#{t(".edit")}' value='#{t(".edit")}' disabled='disabled'><i class='icon-pencil'></i></button>"
+      post_string << "<button type='button' class='btn btn_disabled' data-tooltip='#{t(".edit")}' value='#{t(".edit")}' disabled='disabled'><i class='icon-edit'></i></button>"
       post_string << "<button type='button' class='btn btn_disabled' data-tooltip='#{t(".answer")}' value='#{t(".answer")}' disabled='disabled'><i class='icon-reply'></i></button>"
     end
     post_string << "</div>"

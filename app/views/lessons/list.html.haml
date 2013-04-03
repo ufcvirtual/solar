@@ -22,7 +22,7 @@
           .block_title
             %h2
               = lesson_module.name
-              = link_to (content_tag(:i, nil, :class=>'icon-pencil')), "#", class: 'block_title_button edit_module', :value => edit_lesson_module_path(lesson_module, :allocation_tags_ids => params[:allocation_tags_ids])
+              = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'block_title_button edit_module', :value => edit_lesson_module_path(lesson_module, :allocation_tags_ids => params[:allocation_tags_ids])
               = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'block_title_button delete_module', :value => lesson_module_path(lesson_module, :allocation_tags_ids => params[:allocation_tags_ids])
 
           .block_content_toolbar
@@ -32,7 +32,7 @@
 
             .block_toolbar_right
               .btn-group
-                = link_to (content_tag(:i, nil, :class=>'icon-pencil')), "#", onclick: "javascript: edit_lesson('#{lesson_module.id}');", id: 'edit_lesson', class: 'btn'
+                = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", onclick: "javascript: edit_lesson('#{lesson_module.id}');", id: 'edit_lesson', class: 'btn'
                 = link_to (content_tag(:i, nil, :class=>'icon-settings')), "#", onclick: "", class: 'btn btn_default manage_files_lesson', :value => lesson_module.id
                 = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", onclick:  "javascript: delete_lesson('#{lesson_module.id}');", id: 'delete_lesson', class: 'btn'
                 = link_to (content_tag(:i, nil, :class=>'icon-install')), "#", onclick: "javascript: download_lesson_zip('#{lesson_module.id}');", id: 'download_lesson', class: 'btn'
