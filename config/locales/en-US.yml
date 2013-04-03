@@ -178,6 +178,7 @@
   home: "Home"
   of: "Of"
   required_fields: "* required fields"
+  object_not_found: "Object not found"
 
   #Página de Login
 
