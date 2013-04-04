@@ -477,6 +477,13 @@
       move: Move
       conclude: Conclude
       all: All
+      upload: Upload files
+      new_folder: Add new folder
+      initial_file: Define as initial file
+      unzip: Unzip
+      rename: Rename
+      remove: Remove
+      move: Move
     destination_folder_error: A destination folder must be selected
     move_error: It wasn't possible to move
     at_least_one: "Select, at least, one item to %{to}"
@@ -488,6 +495,9 @@
     upload_error: It wasn't possible to upload
     bad_extension_error: "Not sent, invalid file type"
     file_too_big_error: "Not sent, file too large. The maximum size should be up to 200MB."
+    must_be_a_file: Must be a file
+    initial_file_error: It wasn't possibile to define initial file
+    cant_remove_initial_file: "It's not possible to remove the initial file, please first redefine it"
 
   #Foruns
   title: "Title"

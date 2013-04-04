@@ -6,8 +6,10 @@ jQuery(function(){
     xhr.setRequestHeader("X-CSRF-Token", token);  
   });
 
-  /* Inicialização da árvore de arquivos */
+  /* Inicialização de variáveis utilizadas neste arquivo */
   var selNodes;
+
+  /* Inicialização da árvore de arquivos */
   jQuery("#tree").dynatree({
     minExpandLevel: 2,
     checkbox: true,
@@ -41,16 +43,15 @@ jQuery(function(){
           deleteNodes([node]);
       }
     },
-    onPostInit: function() { // ao carregar a árvore
-      if(initial_file_address != ''){
-        jQuery("#tree").dynatree("getRoot").visit(function(node) {
-          set_initial_file_visual_path(node); // definir caminho visual para o arquivo inicial
-        });
+    onPostInit: function(){ // ao carregar a árvore
+      var initial_file_node = get_initial_file();
+      if(initial_file_node != null){
+        set_initial_file_visual_path(initial_file_node);
       }
     },
     onExpand: function(flag, node){ 
-      if(flag && initial_file_address != '') // ao expandir um nó
-        set_initial_file_visual_path(node); // é necessário "re-definir" caminho visual aqui, pois os nós mais internos são ficam realmente visiveis após expansão do nó pai
+      if(flag && initial_file_node != null) // ao expandir um nó
+        set_initial_file_visual_path(); // é necessário "re-definir" caminho visual aqui, pois os nós mais internos são ficam realmente visiveis após expansão do nó pai
     }
   });
 
@@ -82,7 +83,7 @@ jQuery(function(){
   
   /* Criar novo folder com texto padrao e foco para editar */
   jQuery("#btn-new-folder").click(function() { 
-    var node              = jQuery("#tree").dynatree("getActiveNode");
+    var node = jQuery("#tree").dynatree("getActiveNode");
 
     if (node != null && node.data.isFolder) {
       node_path = getPath(node);
@@ -95,20 +96,17 @@ jQuery(function(){
 
   /* Selecionar ou deselecionar todos os itens */
   jQuery("#all_items_selector").click(function(){
-    var value = jQuery("#all_items_selector").attr("checked") == "checked";
-    jQuery("#tree").dynatree("getRoot").visit(function(node) {
-      node.select(value);
-    });
+    jQuery("#tree").dynatree("getRoot").toggleSelect();
   });
 
   jQuery("#btn-remove-node").click(function(){
-    activeNode = jQuery("#tree").dynatree("getActiveNode");
-    if(typeof selNodes != "undefined")
-      deleteNodes(selNodes); // deleta os nós que foram selecionados
-    else if(activeNode != null)
-        deleteNodes([activeNode]); // deleta o nó ativo
-      else
-        flash_message("<%= I18n.t(:at_least_one, :to => I18n.t(:remove, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "flash_messages");
+    var nodes = selNodes;
+    if(nodes == "undefined")
+      nodes = [jQuery("#tree").dynatree("getActiveNode")];
+    if(nodes == null)
+      flash_message("<%= I18n.t(:at_least_one, :to => I18n.t(:remove, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "flash_messages");
+    else 
+      deleteNodes(nodes);
   });
 
   jQuery("#btn-clean-lesson").click(function(){
@@ -207,6 +205,19 @@ jQuery(function(){
       flash_message("<%=I18n.t(:bad_extension_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
   });
 
+  jQuery("#btn-initial-file").click(function(){
+    var node = jQuery("#tree").dynatree("getActiveNode");
+    if(node == null && typeof selNodes != "undefined" && selNodes.length == 1)
+        node = selNodes[0];
+    else if(node == null)
+      flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
+
+    if(node.data.isFolder == true)
+      flash_message("<%=I18n.t(:must_be_a_file, :scope => [:lesson_files])%>", "alert", "flash_messages");
+    else    
+      defineInitialFile(node);
+  });
+
 });
 
 // function progressHandlingFunction(e){
@@ -227,6 +238,21 @@ function getPath(node){
   return "/" + path.join("/"); 
 }
 
+/* Retorna o caminho (path) selecionado da hierarquia do arquivo inicial */
+function getPartialPathInitialFile(){
+  if(initial_file_node.isSelected() == true){
+    var path = [];
+    path.unshift(initial_file_node.data.title);
+    parent = initial_file_node.getParent();
+    while(parent.isSelected() == true){
+      path.unshift(parent.data.title);
+      parent = parent.getParent();
+    }
+    return "/" + path.join("/"); 
+  }else
+    return false; // se nenhum elemento foi selecionado
+}
+
 /* Verifica se o nome do nó é um nome válido */
 function validName(parent_node, name){
   var unique_name = true;
@@ -244,7 +270,9 @@ function validName(parent_node, name){
 function deleteNodes(nodes){
   if( typeof nodes != "undefined" ){
     if(nodes[0].data.key != "_2"){ // remover selecionados
-      if (confirm("<%=I18n.t(:delete_confirm, :scope => [:lesson_files])%>")){
+      if ( jQuery.inArray(initial_file_node, nodes) != -1 ) // se o arquivo inicial estiver na lista para remoção, não permite
+        flash_message("<%= I18n.t(:cant_remove_initial_file, :to => I18n.t(:remove, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "flash_messages");
+      else if (confirm("<%=I18n.t(:delete_confirm, :scope => [:lesson_files])%>")){
         for (var i = 0; i < nodes.length; i++){
           if (nodes[i].li != null && nodes[i].data.key != '_2')
             saveDeletion(nodes[i], false);
@@ -310,33 +338,53 @@ function editNode(node) {
 
 }
 
-/* Define caminho visual para o arquivo inicial */
-function set_initial_file_visual_path(node){
-  if(node.childList != null){ // se for uma pasta com filhos
-    for(var i = 0; i <= node.childList.length-1; i++){ // varre lista de filhos
-      child_node = node.childList[i];
-      if(child_node.childList != null) // se filho for outra pasta com filhos
-        set_initial_file_visual_path(child_node); // recursão
-      else 
-        set_initial_file(child_node); // define arquivo inicial caso necessário
-    }
-  }else // se for só um arquivo ou pasta sem filhos
-    set_initial_file(node); // define arquivo inicial caso necessário
-}
+/* Seta  caminho visual para o arquivo inicial */
+function set_initial_file_visual_path(){
+  if(jQuery(initial_file_node.span).attr("id") != "initial_file"){
+    jQuery(initial_file_node.span).attr("id", "initial_file"); // define como arquivo inicial visualmente
 
-/* Define arquivo inicial caso necessário */
-function set_initial_file(node){
-  // se o caminho do nó for equivalente ao arquivo inicial e ele já não tiver sido definido
-  // if (getPath(node) == "/Nova Pasta1/Nova Pasta/ihc-3.pdf" && jQuery(node.span).attr("id") != "initial_file"){
-  if (getPath(node) == initial_file_address && jQuery(node.span).attr("id") != "initial_file"){
-    jQuery(node.span).attr("id", "initial_file"); // define como arquivo inicial visualmente
-
-    parent = node.getParent();
+    parent = initial_file_node.getParent();
     while(getPath(parent) != "/" && parent.span != "initial_file_parent"){ // varre os nós pais que já não foram definidos e que não são a raiz
       jQuery(parent.span).attr("id", "initial_file_parent"); // como parte do caminho do arquivo inicial
       parent = parent.getParent();
     }
   }
+}
+
+/* Inicia busca do arquivo inicial por toda a árvore */
+function get_initial_file(){
+  if(initial_file_address != ''){
+    jQuery("#tree").dynatree("getRoot").visit(function(node) {
+      initial_file = search_initial_file(node);
+      if (initial_file != null) // caso encontre arquivo inicial
+        return false; // encerra pesquisa
+    });
+  }else
+    initial_file = null;
+  return initial_file;
+}
+
+/* Procura arquivo inicial a partir de um nó */
+function search_initial_file(node){
+  if(node.childList != null){ // se for uma pasta com filhos
+    for(var i = 0; i <= node.childList.length-1; i++){ // varre lista de filhos
+      child_node = node.childList[i];
+      if(child_node.childList != null) // se filho for outra pasta com filhos
+        search_initial_file(child_node); // recursão
+      else 
+        return verify_initial_file(child_node); // define arquivo inicial caso necessário
+    }
+  }else // se for só um arquivo ou pasta sem filhos
+    return verify_initial_file(node); // define arquivo inicial caso necessário
+}
+
+/* Verifica se é arquivo inicial. Se for, seta na variável. */
+function verify_initial_file(node){
+  if (getPath(node) == initial_file_address){ // se o caminho do nó for equivalente ao arquivo inicial
+    initial_file_node = node;
+    return initial_file_node;
+  }else
+    return null;
 }
 
 /**** Métodos AJAX ****/
@@ -446,7 +494,8 @@ function saveMove(nodesToMove){
           url: jQuery("#move_path").attr("value"),
           data: {
             "paths_to_move": paths,
-            "path_to_move_to": moveTo
+            "path_to_move_to": moveTo,
+            "initial_file_path": getPartialPathInitialFile()
           },
           success: function(data) {
             jQuery("#lesson_file_management").html(data);
@@ -459,4 +508,18 @@ function saveMove(nodesToMove){
     }
   }
 
+}
+
+function defineInitialFile(node){
+  jQuery.ajax({
+    type: 'PUT',
+    url: jQuery("#initial_file_path").attr("value"),
+    data: { "path": getPath(node) },
+    success: function(data){
+      jQuery("#lesson_file_management").html(data);
+    },
+    error: function(){
+      flash_message("<%= I18n.t(:initial_file_error, :scope => [:lesson_files]) %>", "alert", "flash_messages");
+    }
+  });
 }

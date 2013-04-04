@@ -10,7 +10,7 @@ class LessonFilesController < ApplicationController
     begin 
       @lesson = Lesson.where(id: params[:lesson_id]).first
       authorize! :new, Lesson, on: [@lesson.lesson_module.allocation_tag_id]
-      @address = @lesson.address unless @lesson.address == "index.html"
+      @address = @lesson.address
 
       raise 'error' unless @lesson and @lesson.type_lesson == Lesson_Type_File
     rescue
@@ -52,8 +52,10 @@ class LessonFilesController < ApplicationController
             FileUtils.cp tmp.path, file # copia conteúdo para o arquivo criado
           end
         end
-
       end
+
+      @address = @lesson.address
+
     rescue CanCan::AccessDenied
       error = true
     rescue
@@ -78,21 +80,39 @@ class LessonFilesController < ApplicationController
         raise "error" if File.exists?(new_path)
         FileUtils.mv path, new_path # renomeia
 
+        if @lesson.address.include?(params[:path]) 
+          renamed_path   = File.join(get_path_without_last_dir(params[:path]), params[:node_name]).split(File::SEPARATOR) # recupera caminho do arquivo renomeado
+          lesson_address = @lesson.address.split(File::SEPARATOR) # quebra o caminho do arquivo inicial da aula
+          lesson_address[renamed_path.size-1] = params[:node_name] # altera o elemento renomeado no caminho da aula
+          @lesson.update_attribute(:address, File.join(lesson_address))
+        end
+
       elsif params[:type] == 'move' # mover
         params[:paths_to_move].each do |node_path|
-          path = File.join(lesson_path, node_path)
+          path     = File.join(lesson_path, node_path)
           new_path = File.join(lesson_path, params[:path_to_move_to])
 
           path_split = get_path_without_last_dir(path)
+
           raise "error" if (not File.exist?(path)) and (new_path == path_split) # erro se pasta não existir ou se for para ela mesma
           FileUtils.mv path, new_path  
         end
+
+        @lesson.update_attribute(:address, File.join(params[:path_to_move_to], params[:initial_file_path])) unless params[:initial_file_path] == "false"
+
+      elsif params[:type] == "initial_file" # arquivo inicial
+        raise "error"  unless File.file?(File.join(lesson_path, params[:path])) # verifica se existe e se é arquivo
+        @lesson.update_attribute(:address, params[:path])
       end
+
+    @address = @lesson.address
+
     rescue CanCan::AccessDenied
       error = true
     rescue
       error = true
     end
+
 
     render error ? {nothing: true, status: 500} : {action: :index, satus: 200}
   end
@@ -104,10 +124,13 @@ class LessonFilesController < ApplicationController
       authorize! :new, Lesson, on: [@lesson.lesson_module.allocation_tag_id]
 
       params[:path] = '' if params[:root_node] == 'true' # ignora a pasta raiz caso delete todos os arquivos da aula
-      path = @lesson.path(true, false).to_s
+      # erro se estiver tentando remover o arquivo inicial ou alguma pasta "superior" à ele e não for a pasta raiz
+      raise "error" if params[:root_node] != 'true' and @lesson.address.include?(params[:path]) 
+      path     = @lesson.path(true, false).to_s
+      @address = @lesson.address
 
       FileUtils.rm_rf File.join(path, params[:path]) # remove diretório com todo o seu conteúdo
-      FileUtils.mkdir_p(path) # cria uma nova pasta para a aula
+      FileUtils.mkdir_p(path) # cria uma nova pasta para a aula se não existir
     rescue CanCan::AccessDenied
       error = true
     rescue

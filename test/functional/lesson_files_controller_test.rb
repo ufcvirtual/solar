@@ -246,7 +246,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     folder1 = create_root_folder(@pag_index.id) # Cria pasta dentro do diretório da aula e recupera caminho completo
     folder2 = create_root_folder(@pag_index.id).split(File::SEPARATOR).last # Cria uma segunda pasta dentro do diretório da aula e recupera o nome da pasta
 
-    put :edit, {type: 'move', lesson_id: @pag_index.id, paths_to_move: [folder2], path_to_move_to: folder1.split(File::SEPARATOR).last}
+    put :edit, {type: 'move', lesson_id: @pag_index.id, paths_to_move: [folder2], path_to_move_to: folder1.split(File::SEPARATOR).last, initial_file_path: "false"}
 
     assert_response :success
     assert_template :index
@@ -262,7 +262,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     folder2 = create_root_folder(@pag_index.id).split(File::SEPARATOR).last # Cria uma segunda pasta dentro do diretório da aula e recupera o nome da pasta
 
     sign_in users(:aluno1)
-    put :edit, {type: 'move', lesson_id: @pag_index.id, paths_to_move: [folder2], path_to_move_to: folder1.split(File::SEPARATOR).last}
+    put :edit, {type: 'move', lesson_id: @pag_index.id, paths_to_move: [folder2], path_to_move_to: folder1.split(File::SEPARATOR).last, initial_file_path: "false"}
 
     assert_response :error
     assert_template nothing: true
@@ -278,7 +278,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     folder2 = create_root_folder(@pag_bbc.id).split(File::SEPARATOR).last # Cria uma segunda pasta dentro do diretório da aula e recupera o nome da pasta
 
     sign_in users(:coorddisc)
-    put :edit, {type: 'move', lesson_id: @pag_bbc.id, paths_to_move: [folder2], path_to_move_to: folder1.split(File::SEPARATOR).last}
+    put :edit, {type: 'move', lesson_id: @pag_bbc.id, paths_to_move: [folder2], path_to_move_to: folder1.split(File::SEPARATOR).last, initial_file_path: "false"}
 
     assert_response :error
     assert_template nothing: true
