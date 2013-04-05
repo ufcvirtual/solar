@@ -1,14 +1,3 @@
-= javascript_include_tag "jquery"
-= javascript_include_tag "jquery-ui-1.8.6"
-= javascript_include_tag "jquery.tokeninput"
-= javascript_include_tag "jquery.dynatree"
-= javascript_include_tag "lesson_files"
-= javascript_include_tag "jquery.qtip.min"
-= javascript_include_tag "tooltip"
-
-= stylesheet_link_tag "ui.dynatree"
-= stylesheet_link_tag "ui.dynatree.custom"
-
 #lesson_file_management
   - files_and_folders(@lesson)
 
@@ -58,3 +47,11 @@
 
   #files_bottom_bar
     = button_tag t(".conclude"), type: :button, :class => 'btn btn_main', id: 'btn-finish'  
+
+= javascript_include_tag "jquery.dynatree"
+= javascript_include_tag "lesson_files"
+= javascript_include_tag "jquery.qtip.min"
+= javascript_include_tag "tooltip"
+
+= stylesheet_link_tag "ui.dynatree"
+= stylesheet_link_tag "ui.dynatree.custom"
