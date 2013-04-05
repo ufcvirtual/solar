@@ -140,7 +140,11 @@ jQuery(function(){
   });    
 
   jQuery("#btn-finish").click(function(){
-    removeLightBox();
+    if(initial_file_node == null){
+      flash_message("<%=I18n.t(:define_initial_file_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
+    }else{
+      removeLightBox();
+    }
   });
 
   jQuery("#btn-new-file").click(function(){

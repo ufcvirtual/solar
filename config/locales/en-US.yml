@@ -484,6 +484,8 @@
       rename: Rename
       remove: Remove
       move: Move
+      attention_message: 'Attention:' 
+      save_automatically_message: ' all changes are save automatically.'
     destination_folder_error: A destination folder must be selected
     move_error: It wasn't possible to move
     at_least_one: "Select, at least, one item to %{to}"
@@ -498,6 +500,7 @@
     must_be_a_file: Must be a file
     initial_file_error: It wasn't possibile to define initial file
     cant_remove_initial_file: "It's not possible to remove the initial file, please first redefine it"
+    define_initial_file_error: A initial file must be define to this lesson.
 
   #Foruns
   title: "Title"

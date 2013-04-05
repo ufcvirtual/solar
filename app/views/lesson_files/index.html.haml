@@ -56,5 +56,8 @@
       
   #tree
 
-  #files_bottom_bar
-    = button_tag t(".conclude"), type: :button, :class => 'btn btn_main', id: 'btn-finish'  
+  #save_automatically_message
+    %span#attention_message
+      = t(".attention_message")
+    %span= t(".save_automatically_message")
+  #files_bottom_bar= button_tag t(".conclude"), type: :button, :class => 'btn btn_main', id: 'btn-finish'  
