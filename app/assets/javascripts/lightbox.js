@@ -34,7 +34,7 @@ function showLightBox(content, width, height, canClose, title){
   title = '<div id="lightBoxDialogTitle"><h1>'+title+'</h1></div>'
   
   removeLightBox(true);
-  dialog = '<div id="lightBoxDialog" style="width:'+width+'px;height:'+height+'px;margin-top:-'+halfHeight+'px;margin-left:-'+halfWidth+'px;">'
+  dialog = '<div id="lightBoxDialog" style="width:'+width+'px;min-height:'+height+'px;max-height:'+(height+50)+'px;margin-top:-'+halfHeight+'px;margin-left:-'+halfWidth+'px;">'
   + closeBt
   + title
   + '<div id="lightBoxDialogContent">'
