@@ -8,6 +8,7 @@ jQuery(function(){
 
   /* Inicialização de variáveis utilizadas neste arquivo */
   var selNodes;
+  var initial_file_node = null;
 
   /* Inicialização da árvore de arquivos */
   jQuery("#tree").dynatree({
@@ -44,7 +45,7 @@ jQuery(function(){
       }
     },
     onPostInit: function(){ // ao carregar a árvore
-      var initial_file_node = get_initial_file();
+      initial_file_node = get_initial_file();
       if(initial_file_node != null){
         set_initial_file_visual_path(initial_file_node);
       }
@@ -148,7 +149,7 @@ jQuery(function(){
       jQuery("#fileupload").click();
     else
       flash_message("<%=I18n.t(:one_folder_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
-  })
+  });
 
   jQuery(':file').change(function(){
 
@@ -240,17 +241,20 @@ function getPath(node){
 
 /* Retorna o caminho (path) selecionado da hierarquia do arquivo inicial */
 function getPartialPathInitialFile(){
-  if(initial_file_node.isSelected() == true){
-    var path = [];
-    path.unshift(initial_file_node.data.title);
-    parent = initial_file_node.getParent();
-    while(parent.isSelected() == true){
-      path.unshift(parent.data.title);
-      parent = parent.getParent();
-    }
-    return "/" + path.join("/"); 
+  if(typeof initial_file_node != "undefined" && initial_file_node != null){
+    if(initial_file_node.isSelected() == true){
+      var path = [];
+      path.unshift(initial_file_node.data.title);
+      parent = initial_file_node.getParent();
+      while(parent.isSelected() == true){
+        path.unshift(parent.data.title);
+        parent = parent.getParent();
+      }
+      return "/" + path.join("/"); 
+    }else
+      return false; // se nenhum elemento foi selecionado
   }else
-    return false; // se nenhum elemento foi selecionado
+    return false;
 }
 
 /* Verifica se o nome do nó é um nome válido */
@@ -270,9 +274,10 @@ function validName(parent_node, name){
 function deleteNodes(nodes){
   if( typeof nodes != "undefined" ){
     if(nodes[0].data.key != "_2"){ // remover selecionados
-      if ( jQuery.inArray(initial_file_node, nodes) != -1 ) // se o arquivo inicial estiver na lista para remoção, não permite
-        flash_message("<%= I18n.t(:cant_remove_initial_file, :to => I18n.t(:remove, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "flash_messages");
-      else if (confirm("<%=I18n.t(:delete_confirm, :scope => [:lesson_files])%>")){
+      if( typeof initial_file_node != "undefined" ){
+        if(jQuery.inArray(initial_file_node, nodes) != -1 ) // se o arquivo inicial estiver na lista para remoção, não permite
+          flash_message("<%= I18n.t(:cant_remove_initial_file, :to => I18n.t(:remove, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "flash_messages");
+      }else if (confirm("<%=I18n.t(:delete_confirm, :scope => [:lesson_files])%>")){
         for (var i = 0; i < nodes.length; i++){
           if (nodes[i].li != null && nodes[i].data.key != '_2')
             saveDeletion(nodes[i], false);
@@ -451,7 +456,6 @@ function renameNode(node, new_title, path){
 
 /* Salvar a movimentação de pastas/arquivos */
 function saveMove(nodesToMove){
-
   var paths         = new Array;
   var nodesSelected = jQuery("#folders_tree").dynatree("getTree").getSelectedNodes();
 
