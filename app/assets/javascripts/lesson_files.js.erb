@@ -45,10 +45,9 @@ jQuery(function(){
       }
     },
     onPostInit: function(){ // ao carregar a árvore
-      initial_file_node = get_initial_file();
-      if(initial_file_node != null){
-        set_initial_file_visual_path(initial_file_node);
-      }
+      initial_file_node = get_initial_file(); // verifica se há arquivo inicial e o associa à variável
+      if(initial_file_node != null)
+        set_initial_file_visual_path(initial_file_node); // define caminho visual
     },
     onExpand: function(flag, node){ 
       if(flag && initial_file_node != null) // ao expandir um nó
@@ -243,7 +242,8 @@ function getPath(node){
   return "/" + path.join("/"); 
 }
 
-/* Retorna o caminho (path) selecionado da hierarquia do arquivo inicial */
+/* Retorna o caminho (path) selecionado (os elementos que foram selecionados) da hierarquia do arquivo inicial 
+   Utilizado para quando for mover e deve ser verificado todo o caminho a ser movido pertencente ao arquivo inicial para alteração */
 function getPartialPathInitialFile(){
   if(typeof initial_file_node != "undefined" && initial_file_node != null){
     if(initial_file_node.isSelected() == true){
@@ -258,7 +258,7 @@ function getPartialPathInitialFile(){
     }else
       return false; // se nenhum elemento foi selecionado
   }else
-    return false;
+    return false; // se não há arquivo inicial
 }
 
 /* Verifica se o nome do nó é um nome válido */
@@ -347,7 +347,7 @@ function editNode(node) {
 
 }
 
-/* Seta  caminho visual para o arquivo inicial */
+/* Seta caminho visual para o arquivo inicial */
 function set_initial_file_visual_path(){
   if(jQuery(initial_file_node.span).attr("id") != "initial_file"){
     jQuery(initial_file_node.span).attr("id", "initial_file"); // define como arquivo inicial visualmente
