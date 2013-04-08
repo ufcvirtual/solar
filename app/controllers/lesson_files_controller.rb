@@ -73,7 +73,7 @@ class LessonFilesController < ApplicationController
       lesson_path = @lesson.path(true, false)
 
       if params[:type] == 'rename' # renomear
-        path = File.join(lesson_path, params[:path])
+        path       = File.join(lesson_path, params[:path])
 
         path_split = get_path_without_last_dir(path) # recupera caminho sem o nome atual do arquivo/pasta
         new_path   = File.join(path_split, params[:node_name]) # /media/lessons/lesson_id/path_parte1/node_name
@@ -89,9 +89,8 @@ class LessonFilesController < ApplicationController
 
       elsif params[:type] == 'move' # mover
         params[:paths_to_move].each do |node_path|
-          path     = File.join(lesson_path, node_path)
-          new_path = File.join(lesson_path, params[:path_to_move_to])
-
+          path       = File.join(lesson_path, node_path)
+          new_path   = File.join(lesson_path, params[:path_to_move_to])
           path_split = get_path_without_last_dir(path)
 
           raise "error" if (not File.exist?(path)) and (new_path == path_split) # erro se pasta não existir ou se for para ela mesma
@@ -104,7 +103,6 @@ class LessonFilesController < ApplicationController
         raise "error"  unless File.file?(File.join(lesson_path, params[:path])) # verifica se existe e se é arquivo
         @lesson.update_attribute(:address, params[:path])
       end
-
     @address = @lesson.address
 
     rescue CanCan::AccessDenied
@@ -127,6 +125,7 @@ class LessonFilesController < ApplicationController
       # erro se estiver tentando remover o arquivo inicial ou alguma pasta "superior" à ele e não for a pasta raiz
       raise "error" if params[:root_node] != 'true' and @lesson.address.include?(params[:path]) 
       path     = @lesson.path(true, false).to_s
+      @lesson.update_attribute(:address, '') if params[:root_node] == 'true'
       @address = @lesson.address
 
       FileUtils.rm_rf File.join(path, params[:path]) # remove diretório com todo o seu conteúdo

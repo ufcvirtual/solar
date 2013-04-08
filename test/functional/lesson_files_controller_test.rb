@@ -27,6 +27,10 @@ class LessonFilesControllerTest < ActionController::TestCase
   # Usuário com permissão e acesso
   test 'exibir lista de arquivos da aula' do
     get :index, lesson_id: @pag_index.id
+
+    assert_not_nil assigns(:lesson)
+    assert_not_nil assigns(:address)
+
     assert_response :success
     assert_template :index
     assert_select '#tree' # verifica se existe a div que receberá a árvore de arquivos
@@ -35,6 +39,10 @@ class LessonFilesControllerTest < ActionController::TestCase
   # Aula do tipo errado
   test 'nao exibir lista de arquivos da aula - aula de links' do
     get :index, lesson_id: @pag_goo.id
+
+    assert_not_nil assigns(:lesson)
+    assert_not_nil assigns(:address)
+
     assert_response :error
     assert_template nothing: true
     assert_no_tag '#tree' # div onde a árvore de arquivos será montada não deve existir
@@ -44,6 +52,10 @@ class LessonFilesControllerTest < ActionController::TestCase
   test 'nao exibir lista de arquivos da aula - sem permissao' do
     sign_in users(:aluno1)
     get :index, lesson_id: @pag_index.id
+
+    assert_not_nil assigns(:lesson)
+    assert_nil assigns(:address)
+
     assert_response :error
     assert_template nothing: true
     assert_no_tag '#tree' # div onde a árvore de arquivos será montada não deve existir
@@ -53,9 +65,11 @@ class LessonFilesControllerTest < ActionController::TestCase
   test 'nao exibir lista de arquivos da aula - sem acesso' do
     sign_in users(:coorddisc)
     get :index, lesson_id: @pag_bbc.id # uc 3 / course 2 => só editor tem permissão nas al_tag destes
+
+    assert_not_nil assigns(:lesson)
+    assert_nil assigns(:address)
+
     assert_response :error
-    assert_nil assigns(:files)
-    assert_nil assigns(:folders)
     assert_template nothing: true
     assert_no_tag '#tree' # div onde a árvore de arquivos será montada não deve existir
   end
@@ -236,6 +250,26 @@ class LessonFilesControllerTest < ActionController::TestCase
     assert File.exists?(File.join(Lesson::FILES_PATH, "#{@pag_bbc.id}", 'Nova Pasta'))
   end
 
+  # Usuário com acesso e permissão renomeando arquivo inicial
+  test 'renomeia arquivo inicial e corrige endereco' do
+    # cria arquivo
+    define_files_to_upload    
+    assert_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size', +1) do
+      post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '/', files: [@valid_file]}}
+    end
+    # define como inicial
+    put :edit, {lesson_id: @pag_index.id, type: 'initial_file', path: "/#{@valid_file.original_filename}"}
+
+    # move arquivo inicial
+    put :edit, {lesson_id: @pag_index.id, type: 'rename', path: "/#{@valid_file.original_filename}", node_name: 'arquivo_inicial_renomeado.pdf'}
+
+    assert_response :success
+    assert_template :index
+
+    # verifica se houve mudança
+    assert_equal "/arquivo_inicial_renomeado.pdf", Lesson.find(@pag_index.id).address 
+  end
+
   ##
   # Mover arquivo/pasta
   ##
@@ -288,6 +322,28 @@ class LessonFilesControllerTest < ActionController::TestCase
     assert Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_bbc.id}")).include?(folder2)
   end  
 
+  # Usuário com acesso e permissão movendo arquivo inicial
+  test 'move arquivo inicial e corrige endereco' do
+    # cria arquivo
+    define_files_to_upload    
+    assert_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size', +1) do
+      post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '/', files: [@valid_file]}}
+    end
+    # define como inicial
+    put :edit, {lesson_id: @pag_index.id, type: 'initial_file', path: "/#{@valid_file.original_filename}"}
+    # cria pasta
+    folder_name = create_root_folder(@pag_bbc.id).split(File::SEPARATOR).last
+
+    # move arquivo inicial
+    put :edit, {type: 'move', lesson_id: @pag_index.id, paths_to_move: ["/#{@valid_file.original_filename}"], path_to_move_to: "/#{folder_name}", initial_file_path: "/#{@valid_file.original_filename}"}
+
+    assert_response :success
+    assert_template :index
+
+    # verifica se houve mudança
+    assert_equal "/#{folder_name}/#{@valid_file.original_filename}", Lesson.find(@pag_index.id).address 
+  end
+
   ##
   # Remover arquivo/pasta
   ##
@@ -329,6 +385,105 @@ class LessonFilesControllerTest < ActionController::TestCase
     assert_template nothing: true
     assert_no_tag '#tree'
   end
+
+  # Usuário com acesso e permissão não podendo remover arquivo inicial
+  test 'nao remove arquivo inicial' do
+    # cria arquivo
+    define_files_to_upload    
+    assert_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size', +1) do
+      post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '/', files: [@valid_file]}}
+    end
+    # define como inicial
+    put :edit, {lesson_id: @pag_index.id, type: 'initial_file', path: "/#{@valid_file.original_filename}"}
+
+    # tenta excluir
+    assert_no_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size') do
+      delete :destroy, {lesson_id: @pag_index.id, path: "/#{@valid_file.original_filename}"}
+    end
+
+    assert_response :error
+    assert_template nothing: true
+
+    # verifica se houve mudança
+    assert_equal "/#{@valid_file.original_filename}", Lesson.find(@pag_index.id).address 
+  end
+
+  ##
+  # Definir arquivo inicial
+  ##
+
+  # Usuário com acesso e permissão
+  test 'define arquivo inicial' do
+    # cria arquivo
+    define_files_to_upload    
+    assert_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size', +1) do
+      post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '/', files: [@valid_file]}}
+    end
+
+    # tenta definir como inicial
+    put :edit, {lesson_id: @pag_index.id, type: 'initial_file', path: "/#{@valid_file.original_filename}"}
+
+    assert_response :success
+    assert_template :index
+
+    # verifica mudança
+    assert_equal "/#{@valid_file.original_filename}", Lesson.find(@pag_index.id).address 
+  end
+
+  # Usuário sem permissão 
+  # Obs: O ideal aqui seria fazer o editor realizar o upload do arquivo primeiro, mas os testes 
+  # estavam falhando (sem aparente motivo) quando o fazíamos. Portanto, optamos por uma solução
+  # "menos detalhada".
+  test 'nao define arquivo inicial - sem permissao' do
+    # define arquivo
+    define_files_to_upload
+
+    sign_in users(:aluno1)
+
+    # tenta definir como inicial
+    put :edit, {lesson_id: @pag_index.id, type: 'initial_file', path: "/#{@valid_file.original_filename}"}
+
+    assert_response :error
+    assert_template nothing: true
+
+    # verifica mudança
+    assert_not_equal "/#{@valid_file.original_filename}", Lesson.find(@pag_index.id).address 
+  end
+
+  # Usuário sem acesso
+  # Obs: O ideal aqui seria fazer o editor realizar o upload do arquivo primeiro, mas os testes 
+  # estavam falhando (sem aparente motivo) quando o fazíamos. Portanto, optamos por uma solução
+  # "menos detalhada".
+  test 'nao define arquivo inicial - sem acesso' do
+    # cria arquivo
+    define_files_to_upload    
+
+    sign_in users(:coorddisc)
+
+    # tenta definir como inicial
+    put :edit, {lesson_id: @pag_bbc.id, type: 'initial_file', path: "/#{@valid_file.original_filename}"}
+
+    assert_response :error
+    assert_template nothing: true
+
+    # verifica mudança
+    assert_not_equal "/#{@valid_file.original_filename}", Lesson.find(@pag_bbc.id).address 
+  end
+
+  # Não define pasta como arquivo inicial
+  test 'nao define arquivo inicial - nao pode ser pasta' do
+    folder_name = create_root_folder(@pag_index.id).split(File::SEPARATOR).last # Cria pasta dentro do diretório da aula.
+
+    # tenta definir como inicial
+    put :edit, {lesson_id: @pag_index.id, type: 'initial_file', path: "/#{folder_name}"}
+
+    assert_response :error
+    assert_template nothing:true
+
+    # verifica mudança
+    assert_not_equal "/#{folder_name}", Lesson.find(@pag_index.id).address 
+  end
+
 
 private
 
