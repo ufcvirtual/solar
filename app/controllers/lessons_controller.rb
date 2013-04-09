@@ -107,7 +107,7 @@ class LessonsController < ApplicationController
     ids = params[:id].split(',').map(&:to_i)
     Lesson.update(ids, ids.map {|x| {status: params[:status]}}) # update(keys, values)
 
-    render nothing: true
+    render json: {success: true}
   end
 
   def destroy

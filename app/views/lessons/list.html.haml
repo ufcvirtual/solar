@@ -75,11 +75,11 @@
                     %td{style: "width: 160px", align: 'center'}
                       = t(".since") unless !lesson.schedule.end_date.nil?
                       = l lesson.schedule.start_date, format: :normal
-                      =' - '
+                      = ' - '
                       - if lesson.has_end_date?
-                        =l lesson.schedule.end_date, format: :normal
+                        = l(lesson.schedule.end_date, format: :normal)
                       - else
-                        = t(:no_end_date, :scope => [:lessons, :list])  
+                        = t(:no_end_date, scope: [:lessons, :list])
 
                     %td{style: "width: 70px", align: 'center'}
                       = link_to (image_tag "lesson/#{(lesson.status == Lesson_Test) ? 'rejected' : 'released'}_lesson.png"), "#", class: 'change_lesson_status', "data-lesson_id" => lesson.id, "data-status_to" => [Lesson_Test, Lesson_Approved].delete_if {|v| v == lesson.status}
@@ -98,7 +98,6 @@
 
     $('#release_lessons').click(function(){
       var lesson_ids = get_selected_lessons($(this).attr('data-module_id'));
-      console.log(lesson_ids);
       if (lesson_ids == "")
         return false;
 
