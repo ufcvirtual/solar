@@ -472,23 +472,21 @@ function saveMove(nodesToMove){
     var moveTo = getPath(nodesSelected[0]);  
 
     for(var i=0; i < nodesToMove.length; i++){ 
-      
-      // verifica se está movendo para a pasta atual e o nome da pasta a ser movida (se não estiver mudando de pasta, não verifica nome)
-      if(nodesToMove[i].parent.data.key == nodesSelected[0].data.key || validName(nodesSelected[0], nodesToMove[i].data.title)){ 
-        if( nodesToMove[i].data.key == nodesSelected[0].data.key ) 
+        
+      // verifica se está movendo para o local atual e o nome da pasta a ser movida 
+      if(getPath(nodesToMove[i].parent) == moveTo || !validName(nodesSelected[0], nodesToMove[i].data.title)){
+        var invalid_name = true; // erro: já existe pasta de mesmo nome no destino
+        i = nodesToMove.length; // concluir laço
+      }else{
+        if( getPath(nodesToMove[i]) == moveTo ) 
           var same_folder = true; // erro: está movendo para ela mesma
         else{
           paths.push(getPath(nodesToMove[i])); // caminho do nó
           if(nodesToMove[i].countChildren() > 0) // verifica se é um nó pai selecionado
             i = i + nodesToMove[i].countChildren(); // pula filhos
         }
-      }else{
-        var invalid_name = true; // erro: já existe pasta de mesmo nome no destino
-        i = nodesToMove.length; // concluir laço
       }
-
     }
-
   }
 
   if(error == true)
