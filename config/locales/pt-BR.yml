@@ -1272,3 +1272,12 @@
     not_possible_to_delete: Não é possível deletar oferta com dependências
     existing_semester: já existe
     range_date_error: deve ser menor que a final
+
+  #Facebook
+
+  facebook:
+    login: Entrar
+    logout: Sair
+    update_feed: Atualizar feed de notícias
+    original_content: Ver contéudo original
+    logged_in_as: Logado como

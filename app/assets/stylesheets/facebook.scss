@@ -1,0 +1,134 @@
+$facebook_main_color: #3b5c9a;
+$color_disabled: #777777;
+
+.slide-settings li.settings {
+  background: url("portlet-facebook-icon_settings.png") no-repeat 5px center;
+}
+
+.slide-settings li.newsfeed {
+  background: url("portlet-facebook-icon_newsfeed.png") no-repeat 5px center;
+}
+
+.slide-settings li.events {
+  background: url("portlet-facebook-icon_events.png") no-repeat 5px center;
+}
+
+.slide-settings li.group01 {
+  background: url("portlet-facebook-icon_group_01.png") no-repeat 5px center;
+}
+
+.slide-settings li.group02 {
+  background: url("portlet-facebook-icon_group_02.png") no-repeat 5px center;
+}
+
+.slide-settings li.group03 {
+  background: url("portlet-facebook-icon_group_03.png") no-repeat 5px center;
+}
+
+.post {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 10pt;
+}
+
+.post textarea {
+  transition: all 0.5s ease;
+  -moz-transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+
+.post .new_post, .post .new_comment {
+  border: 1px solid #d0d0d0;
+}
+
+.post .new_post textarea {
+  width: 97%;
+  height: 20px;
+  margin: 0 auto;
+  font-size: 12pt;
+  padding: 2px;
+  border: none;
+  overflow: hidden;
+}
+
+.post .new_post textarea.active {
+  height: 70px;
+  overflow: auto;
+}
+
+.post .new_post_bar {
+  display: none;
+  text-align: right;
+  padding: 1px;
+  background-color: #f2f2f2;
+}
+
+.post .new_post_bar button {
+  vertical-align: middle;
+  padding: 0 16px;
+  background-color: #5b74a8;
+  color: white;
+  font-size: 11px;
+  line-height: 20px;
+  border: 1px solid;
+  border-color: #29447e #29447e #1a356e;
+}
+
+.post .new_post_bar button:focus, .post .new_post_bar button:active {
+  border: 1px solid #29447e;
+  -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
+  padding-top: 3px;
+  line-height: 17px;
+  background-color: #4f6aa3;   
+}
+
+.post .new_post_bar button.cancel {
+  background-color: #e8e8e8;
+  color: #000;
+  border-color: #c8c8c8;
+  margin-right: 2px;
+}
+
+.post .new_post_bar button.cancel:focus, .post .new_post_bar button.cancel:active {
+  padding-top: 3px;
+  -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
+  background-color: #dedede;
+}
+
+.post .user_avatar {
+  width: 24px;
+  float: left;
+}
+
+.post .post_content {
+  margin-top: 6px;
+  margin-left: 28px;
+}
+
+.post .username {
+  color: $facebook_main_color;
+  font-weight: bold;
+}
+
+.post .post_actions {
+  background-color: white;
+  margin-top: 2px;
+  padding: 5px 4px 2px 4px;
+}
+.post .post_actions a {
+  color: $facebook_main_color;
+  margin-left: 3px;
+}
+
+.post .date {
+  float: right;
+  color: $color_disabled;
+}
+
+.post .img {
+  width:  200px;
+  height: auto;
+}
+
+.post .link {
+  color: #20E;
+}

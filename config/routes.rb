@@ -13,10 +13,17 @@ Solar::Application.routes.draw do
   ## users/:id/photo
   ## users/edit_photo
   resources :users do
-    get :fb_authentication, on: :collection
     get :photo, on: :member
     get :edit_photo, on: :collection
     put :update_photo, on: :member
+  end
+
+  resources :social_networks, only: [] do
+    collection do
+      get :fb_authenticate
+      get :fb_feed
+      get :fb_logout
+    end
   end
 
   ## curriculum_units/:id/participants

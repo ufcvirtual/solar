@@ -10,36 +10,19 @@
 
   .block_content.block_slider
     .slide.slide-main
-      = link_to 'Login', @oauth_redirect_url, target: '_top'
-      .new_post
-        %textarea{:type => "text", :placeholder => "Teste"}
-        .new_post_bar
-          %select
-            %option{:value => "public"} Público
-            %option{:value => "friends"} Amigos
-            %option{:value => "private"} Somente eu
-          %button Publicar
-
-      - if @fb_posts.present?
-        - @fb_posts.each do |fb_post|
-          .post
-            .user_avatar
-              = image_tag "http://graph.facebook.com/"+fb_post.actor.to_s+"/picture",:size => "26x26", :alt => "User Image"
-            .post_content
-              %span.username
-                = fb_post.name
-              = fb_post.message
-              = image_tag fb_post.adress, :class => "img" if fb_post.media_type.eql? 'photo'
-              - if fb_post.media_type.eql? 'link'
-                = image_tag fb_post.adress
-                %a.link{href: "#{fb_post.link}"}= fb_post.link
-
-              - if fb_post.parent.present?
-                .post_actions
-                  %a.like{:href => "Teste"} Curtir
-                  %a.comment{:href => "Teste"} Comentar
-                  %span.date
-                    = fb_post.created_time
+      - if user_session[:fb_token].present?
+        %iframe{id: 'iframe', src: fb_feed_social_networks_path, width: 245, height: 150, frameborder: 0}
+      - else
+        - oauth = Koala::Facebook::OAuth.new(Fb_Config['app_id'], Fb_Config['secret_key'], Fb_Config['data-href'])
+        = link_to t(:login, :scope => [:facebook]), oauth.url_for_oauth_code(:permissions => "read_stream"), target: '_top'
+        / .new_post
+        /   %textarea{:type => "text", :placeholder => "Teste"}
+        /   .new_post_bar
+        /     %select
+        /       %option{:value => "public"} Público
+        /       %option{:value => "friends"} Amigos
+        /       %option{:value => "private"} Somente eu
+        /     %button Publicar
 
     .slide.slide-settings{:'data-status'=>'closed'}
       %ul
@@ -47,6 +30,8 @@
           %a{:href => "#"} Configurações
         %li.newsfeed.active
           %a{:href => "#"} Feed de Notícias
+        %li.logout
+          = link_to t(:logout, :scope => [:facebook]), fb_logout_social_networks_path
         %li.events
           %a{:href => "#"}
             Eventos
@@ -63,30 +48,4 @@
             %span.counter 17
         %li.group03
           %a{:href => "#"} Grupo sobre tal e tal
-
-:javascript
-  $('body').prepend('<div id="fb-root"></div>')
-
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=#{YAML::load(File.open('config/facebook.yml'))['appid']}";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-
-  FB.init({
-    appId  : '#{@FB_CONFIG['app_id']}',
-    status : true, // checa status do login
-    cookie : true, // habilita cookies
-    xfbml  : true  // parse XFBML
-  });
-
-  FB.login(function(response) {
-    if (response.session) {
-      location.href = '/home'
-    } else {
-      // user cancelled login
-    }
-  });
 

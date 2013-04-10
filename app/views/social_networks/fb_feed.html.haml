@@ -1,0 +1,27 @@
+= stylesheet_link_tag "fonts"
+= stylesheet_link_tag "facebook"
+
+%input{:onclick => 'location.reload(true);', :type => "button", :value => t(:update_feed, :scope => [:facebook])}
+
+= t(:logged_in_as, :scope => [:facebook]) + " " + @graph.get_object("me")['name']
+
+- if @fb_posts.present?
+  - @fb_posts.each do |fb_post|
+    .post
+      .user_avatar
+        = image_tag "http://graph.facebook.com/#{fb_post.actor.to_s}/picture", :size => "26x26", :alt => "User Image"
+      .post_content
+        %span.username
+          = fb_post.name
+        = fb_post.message
+        = image_tag fb_post.adress, :class => "img" if fb_post.media_type.eql? 'photo' or fb_post.media_type.eql? 'video'
+        - if fb_post.media_type.eql? 'link' or fb_post.media_type.eql? 'swf'
+          = image_tag fb_post.adress
+        %a.link{href: "#{fb_post.link}"}= t(:original_content, :scope => [:facebook]) if fb_post.link
+
+        - if fb_post.parent.present?
+          .post_actions
+            %a.like{:href => "Teste"} Curtir
+            %a.comment{:href => "Teste"} Comentar
+            %span.date
+              = fb_post.created_time

@@ -1110,3 +1110,12 @@
     not_possible_to_delete: It's not possible to delete offer with dependencies
     existing_semester: already exists
     range_date_error: must be smaller than end
+
+#Facebook
+
+  facebook:
+    login: Login
+    logout: Logout
+    update_feed: Update news feed
+    original_content: View the original content
+    logged_in_as: Logged in as
