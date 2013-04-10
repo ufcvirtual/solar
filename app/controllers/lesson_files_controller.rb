@@ -74,9 +74,9 @@ class LessonFilesController < ApplicationController
 
       if params[:type] == 'rename' # renomear
         path       = File.join(lesson_path, params[:path])
-
         path_split = get_path_without_last_dir(path) # recupera caminho sem o nome atual do arquivo/pasta
         new_path   = File.join(path_split, params[:node_name]) # /media/lessons/lesson_id/path_parte1/node_name
+
         raise "error" if File.exists?(new_path)
         FileUtils.mv path, new_path # renomeia
 
@@ -143,7 +143,7 @@ class LessonFilesController < ApplicationController
 
     def get_path_without_last_dir(path)
       path_split = path.split(File::SEPARATOR)       # [media, lessons, lesson_id, path_parte1, path_parte2]
-      path_split.delete(path_split.last)             # [media, lessons, lesson_id, path_parte1]
+      path_split.delete_at(path_split.size-1)        # [media, lessons, lesson_id, path_parte1]
       return File.join(path_split) + File::SEPARATOR # /media/lessons/lesson_id/path_parte1/
     end
 

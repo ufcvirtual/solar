@@ -101,11 +101,14 @@ jQuery(function(){
 
   jQuery("#btn-remove-node").click(function(){
     var nodes = selNodes;
-    if(nodes == "undefined")
-      nodes = [jQuery("#tree").dynatree("getActiveNode")];
-    if(nodes == null)
-      flash_message("<%= I18n.t(:at_least_one, :to => I18n.t(:remove, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "flash_messages");
-    else 
+    if(typeof nodes == "undefined" || nodes.length == 0){
+      active_node = jQuery("#tree").dynatree("getActiveNode");
+      if(active_node == null)
+        flash_message("<%= I18n.t(:at_least_one, :to => I18n.t(:remove, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "flash_messages");
+      else
+        nodes = [active_node];
+    }
+    if(typeof nodes != "undefined")
       deleteNodes(nodes);
   });
 
@@ -337,9 +340,9 @@ function editNode(node) {
           break;
       }
     }).blur(function(event){
-      // Accept new value, when user leaves <input>
-      var title = jQuery("input#editNode").val();
-      node.setTitle(title); 
+      // Se tela não for atualizada, foi porque não foi concluída a alteração. 
+      // Logo, precisa, ao sair do foco, redefinir o valor exibido para o anterior.
+      node.setTitle(node.data.title); 
       // Re-enable mouse and keyboard handlling
       tree.$widget.bind();
       node.focus();
