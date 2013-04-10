@@ -25,8 +25,6 @@ Cenário: Exibir Portfolio
             E eu deverei ver "Sem itens para exibir"
         E eu deverei ver "Arquivos enviados"
             E eu deverei ver "Sem itens para exibir"
-        E eu deverei ver "Avaliação"
-            E eu deverei ver "Sem itens para exibir"
         E eu deverei ver "Comentários"
             E eu deverei ver "Sem itens para exibir"
 

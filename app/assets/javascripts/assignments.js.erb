@@ -152,5 +152,40 @@ function btn_upload_file(){
 	}else{
 		return true;
 	}
+}
 
+function btn_cancel_evaluation(){
+  if (confirm('<%= I18n.t(:cancel_evaluation, :scope => [:assignment, :evaluation]) %>')) {
+    undo_btn_evaluate_changes();
+    flash_message('<%= I18n.t(:evaluation_canceled, :scope => [:assignment, :evaluation]) %>', 'notice');
+  }
+}
+
+function update_evaluation(){
+  if(!confirm('<%= I18n.t(:confirm_evaluation, :scope => [:assignment, :evaluation]) %>')) return false;
+
+  var evaluation_grade = $("#evaluation_grade").val();
+  var url = "<%= Rails.application.routes.url_helpers.evaluate_assignment_path(':assignment_id') %>".replace(':assignment_id', $("#btn_save_evaluation").attr('data-assignment-id'));
+
+  $.ajax({
+    url: url,
+    type: 'POST',
+    data:  {'grade': evaluation_grade, 'student_id': $("#btn_save_evaluation").attr('data-student-id'), 'group_id': $("#btn_save_evaluation").attr('data-group-id')},
+    success: function(data) {
+      if (data.success == false) {
+        flash_message(data.flash_msg, data.flash_class);
+        if (data.cancel == true) {
+          undo_btn_evaluate_changes();
+        }
+      } else {
+        if ($(".mysolar_portlets_content", data).length != 0) {
+          $("#body_wrapper").html(data);
+        } else {
+          $(".assingment_info").html(data);
+          undo_btn_evaluate_changes();
+          flash_message('<%= I18n.t(:evaluated_success, :scope => [:assignment, :evaluation]) %>', 'notice');
+        }
+      }
+    }
+  }); // ajax
 }

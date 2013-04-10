@@ -16,7 +16,8 @@
         = button_tag t(:evaluate, :scope => [:assignment, :evaluation]), :class => btn_class, :id => "btn_evaluate", :onclick => "javascript:btn_evaluate(this, ' ');", :disabled => (not @assignment.on_evaluation_period?(current_user.id))
       - else
         = button_tag t(:change_grade, :scope => [:assignment, :evaluation]), :class => btn_edit_class, :id => "btn_evaluate", :onclick => "javascript:btn_evaluate(this, '#{@send_assignment.grade}');", :disabled => (not @assignment.on_evaluation_period?(current_user.id))
-      = button_tag t(:save, :scope => [:assignment, :evaluation]), :class => "btn btn_main", :id => "btn_save_evaluation", :disabled => (not @assignment.on_evaluation_period?(current_user.id))
+      = button_tag t(:save, :scope => [:assignment, :evaluation]), :class => "btn btn_main", :id => "btn_save_evaluation", :disabled => (not @assignment.on_evaluation_period?(current_user.id)), :"data-user-id" => @student_id, :"data-group-id" => @group_id, :"data-assignment-id" => @assignment.id, onclick: "javascript:update_evaluation();"
+
       = button_tag t(:cancel, :scope => [:assignment, :evaluation]), :class => "btn btn_caution", :id => "btn_cancel_evaluation", :onclick => "javascript:btn_cancel_evaluation();", :disabled => (not @assignment.on_evaluation_period?(current_user.id))
   .block_content
     %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
@@ -245,10 +246,6 @@
         = t(:itens_not_found)
 
 :javascript
-  var student_id    = '#{@student_id}';
-  var group_id      = '#{@group_id}';
-  var assignment_id = '#{@assignment.id}';
-
   function submit_edit_comment_form(comment_id){
     if(!confirm("#{t(:confirm_comment, :scope => [:assignment, :comments])}")) return;
 
@@ -300,44 +297,3 @@
   $(document).ajaxError(function() {
     flash_message("#{t(:no_permission)}", "alert");
   }); 
-
-  $("#btn_save_evaluation").click(function(){
-
-    if(confirm('#{t(:confirm_evaluation, :scope => [:assignment, :evaluation])}')){
-
-      var evaluation_grade = ''+$("#evaluation_grade").attr('value')+'';
-      var url              = '#{evaluate_assignment_path(@assignment.id)}';
-
-      $.ajax({
-        url: url,
-        type: 'POST',
-        data:  {'grade': evaluation_grade, 'student_id': student_id, 'group_id': group_id},
-        success: function(data) {
-          if (data.success == false) {
-            flash_message(data.flash_msg, data.flash_class);
-            if (data.cancel == true) {
-              undo_btn_evaluate_changes();
-            }
-          }else{
-            if($(".mysolar_portlets_content", data).length != 0){
-              $("#body_wrapper").html(data);
-            }else{
-              $(".assingment_info").html(data);
-              undo_btn_evaluate_changes();
-              flash_message('#{t(:evaluated_success, :scope => [:assignment, :evaluation])}', 'notice');
-            }
-          }
-          
-        }
-      });
-    }
-  });
-
-  function btn_cancel_evaluation(){
-    if (confirm('#{t(:cancel_evaluation, :scope => [:assignment, :evaluation])}')){
-      undo_btn_evaluate_changes();  
-      flash_message('#{t(:evaluation_canceled, :scope => [:assignment, :evaluation])}', 'notice');
-    }
-  }
-
-  
