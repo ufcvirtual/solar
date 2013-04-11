@@ -152,7 +152,7 @@ class LessonsController < ApplicationController
   def download_files
       authorize! :download_files, Lesson, :on => [params[:allocation_tags_ids]].flatten.collect{|id| id.to_i}
 
-      if verify_lessons_to_download(params[:lessons_ids], true)
+      if verify_lessons_to_download(params[:lessons_ids].split(',').flatten, true)
         zip_file_path = compress(:under_path => @all_files_paths, :folders_names => @lessons_names)
         zip_file_name = zip_file_path.split("/").last
 
@@ -227,19 +227,23 @@ class LessonsController < ApplicationController
 
     # define as variáveis e retorna se as aulas são válidas ou não para download
     def verify_lessons_to_download(lessons_ids, download_method = false)
-      return false if params[:lessons_ids].empty? # não selecionou nenhuma aula
-
-      lessons_ids = params[:lessons_ids].split(",").flatten
-      @lessons_ids, @lessons_names, @all_files_paths = [], [], []
+      return false if lessons_ids.empty? # não selecionou nenhuma aula
+      @lessons, @all_files_paths, @lessons_names = [], [], []
 
       lessons_ids.each do |lesson_id|
-        lesson_empty = Dir.entries(File.join(Lesson::FILES_PATH, lesson_id.to_s)).size == 2
-        @lessons_ids     << lesson_id.to_i if Lesson.find(lesson_id).type_lesson == Lesson_Type_File # recupera apenas as aulas de arquivo
-        @lessons_names   << Lesson.find(lesson_id).name unless lesson_empty # recupera apenas as que não estiverem vazias
-        @all_files_paths << File.join(Lesson::FILES_PATH, lesson_id.to_s) unless (not download_method) or lesson_empty # recupera apenas as que não estiverem vazias apenas se for no método de download
+        lesson_dir   = File.join(Lesson::FILES_PATH, lesson_id)
+        lesson_empty = ((not File.exist?(lesson_dir)) or (Dir.entries(lesson_dir).size <= 2))
+        file_type    = Lesson.find(lesson_id.to_i).type_lesson == Lesson_Type_File
+
+        if file_type and (not lesson_empty) # recupera apenas as aulas de arquivo que não estiverem vazias
+          @lessons         << lesson_id.to_i # usado para verificação de erro
+          @lessons_names   << Lesson.find(lesson_id.to_i).name  # usado para construção do zip
+          @all_files_paths << File.join(Lesson::FILES_PATH, lesson_id) if download_method # recupera apenas se for no método de download / usado na recuperação dos arquivos
+        end
+
       end
 
-      return false if @lessons_ids.empty? or @lessons_names.empty?  # se nenhuma aula for do tipo arquivo ou se nenhuma aula possuir arquivos
+      return false if @lessons.empty?  # se nenhuma aula for do tipo arquivo ou se nenhuma aula possuir arquivos
       return true # se nenhum dos erros acontecer, está tudo ok
     end
 
