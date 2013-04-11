@@ -33,7 +33,7 @@
     .btn-group
       = button_tag content_tag(:i, nil, :class=>'icon-folder'), type: :button, :class => 'btn', id: 'btn-new-folder', value: new_folder_lesson_files_path(lesson_id: @lesson.id), :'data-tooltip' => t('.new_folder')
     .btn-group
-      = button_tag content_tag(:i, nil, :class=>'icon-star'), type: :button, :class => 'btn', id: 'btn-initial-file', :'data-tooltip' => t('.initial_file')
+      = button_tag content_tag(:i, nil, :class=>'icon-house'), type: :button, :class => 'btn', id: 'btn-initial-file', :'data-tooltip' => t('.initial_file')
     .btn-group
       = button_tag content_tag(:i, nil, :class=>'icon-archive'), type: :button, :class => 'btn', id: 'btn-unzip', :'data-tooltip' => t('.unzip')
       = button_tag content_tag(:i, nil, :class=>'icon-edit'), type: :button, :class => 'btn', id: 'btn-rename', :'data-tooltip' => t('.rename')
