@@ -4,7 +4,6 @@
 = javascript_include_tag "ckeditor/init"
 
 .message_external_div
-  %span.page_title= t(:message_title)
 
   = render 'message_header'
   = simple_form_for :message, url: {action: :send_message}, html: {id: 'form_message_text', multipart: true} do |f|

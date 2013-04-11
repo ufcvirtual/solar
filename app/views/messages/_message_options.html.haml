@@ -1,45 +1,39 @@
-<%= form_for :message, :url => {:action => 'index'}, :html => {:id => 'message_list', :class => 'message_div_options', method: :put} do |f| %>
-  <%= link_to t(:message_new)+' ', {:action => 'new', :search => @search_text}, {:class=>'message_link'} %>
-  <% if (@type!="trashbox" && !@type.nil?) %>
-    <ul class="message_menu_listbox">
-      <li><a href="#"><%=t(:message_select)%><%=content_tag(:i, nil, :class=>'icon-arrow-down-3') %></a>
-        <ul>
-          <li><span id="check_all" class="message_link"><%=t(:message_select_all)%></span></li>
-          <li><span id="check_none" class="message_link"><%=t(:message_select_none)%></span></li>
-          <li><span id="check_read" class="message_link"><%=t(:message_select_read)%></span></li>
-          <li><span id="check_unread" class="message_link"><%=t(:message_select_unread)%></span></li>
-        </ul>
-      </li>
-    </ul>
-  <% end %>
+= form_for :message, :url => {:action => 'index'}, :html => {:id => 'message_list', :class => 'message_div_options', method: :put} do |f|
+  = link_to t(:message_new)+' ', {:action => 'new', :search => @search_text}, {:class=>'message_link'}
+  - if (@type!="trashbox" and not(@type.nil?))
+    %ul.message_menu_listbox
+      %li
+        %a{:href => "#"}
+          = t(:message_select)
+          = content_tag(:i, nil, :class=>'icon-arrow-down-3')
+        %ul
+          %li
+            %span#check_all.message_link= t(:message_select_all)
+          %li
+            %span#check_none.message_link= t(:message_select_none)
+          %li
+            %span#check_read.message_link= t(:message_select_read)
+          %li
+            %span#check_unread.message_link= t(:message_select_unread)
+  - if @show_message == 'show'
+    - selected_id = @message.id
+  - else
+    - if @type == 'inbox' || @type == 'outbox' || @type == 'trashbox'
+      - selected_id = nil
 
-  <% if @show_message == 'show' %>
-    <% selected_id = @message.id %>
-  <% else %>
-    <% if @type == 'inbox' || @type == 'outbox' || @type == 'trashbox' %>
-      <% selected_id = nil %>
-    <% end %>
-  <% end %>
+  - if (@type != "trashbox" and !@type.nil?)
+    %span#link_mark_as_read.message_link= t(:message_mark_as_read)
 
-  <% if (@type != "trashbox" && !@type.nil?) %>
-    <span id="link_mark_as_read" class="message_link"><%=t(:message_mark_as_read)%></span>
-  <% end %>
+  - if @type != "trashbox"
+    %span#link_mark_as_unread.message_link= t(:message_mark_as_unread)
 
-  <% if @type != "trashbox" %>
-    <span id="link_mark_as_unread" class="message_link"><%=t(:message_mark_as_unread)%></span>
-  <% end %>
+  - if @type != "trashbox"
+    = link_to(t(:message_delete), message_path(@message.try(:id) || ':id'), {id: :link_remove_message, class: 'message_link', method: :delete, confirm: t(:message_confirm)})
 
-  <%- if @type != "trashbox" %>
-    <%= link_to(t(:message_delete), message_path(@message.try(:id) || ':id'), {id: :link_remove_message, class: 'message_link', method: :delete, confirm: t(:message_confirm)}) %>
-  <%- end %>
+  - if @type == "trashbox"
+    = link_to(t(:message_restore), restore_message_path(@message.try(:id) || ':id'), {id: :link_restore_message, class: 'message_link', method: :put})
 
-  <% if @type == "trashbox" %>
-    <%= link_to(t(:message_restore), restore_message_path(@message.try(:id) || ':id'), {id: :link_restore_message, class: 'message_link', method: :put}) %>
-  <% end %>
-
-<% end %>
-
-<script type="text/javascript">
+:javascript
   $(function($) {
      $("#link_restore_message").click(function() {
         var values_id = '';
@@ -55,9 +49,9 @@
      });
 
      $("#link_remove_message").click(function() {
-        var type = "<%=@type%>";
-        var search = "<%=@search_text%>";
-        var checked_messages = "<%=@message.nil?%>".toLowerCase();
+        var type = "#{@type}";
+        var search = "#{@search_text}";
+        var checked_messages = "#{@message.nil?}".toLowerCase();
 
         if (checked_messages == "true") {
           values_id = "";
@@ -121,9 +115,9 @@
 
   function change_reading_status(new_status) {
       var value = "";
-      var type = "<%=@type%>";
-      var search = "<%=@search_text%>";
-      var checked_messages = "<%=@message.nil?%>".toLowerCase();
+      var type = "#{@type}";
+      var search = "#{@search_text}";
+      var checked_messages = "#{@message.nil?}".toLowerCase();
 
       if (checked_messages == "true") {
         values_id = "";
@@ -132,12 +126,11 @@
         });
 
         if (values_id != "") {
-          var url_for = "<%= change_indicator_reading_message_path(':id') %>".replace(':id', values_id) + "?new_status=" + new_status + "&type=" + type + "&search=" + search;
+          var url_for = "#{change_indicator_reading_message_path(':id')}".replace(':id', values_id) + "?new_status=" + new_status + "&type=" + type + "&search=" + search;
           $("#message_list").attr("action", url_for).submit();
         }
       } else { // marcar como nao lida
-        var url_for = "<%= change_indicator_reading_message_path(@message.try(:id)) unless @message.nil? %>" + "?new_status=" + new_status + "&type=index";
+        var url_for = "#{change_indicator_reading_message_path(@message.try(:id)) unless @message.nil?}" + "?new_status=" + new_status + "&type=index";
         $("#message_list").attr("action", url_for).submit();
       }
   }
-</script>

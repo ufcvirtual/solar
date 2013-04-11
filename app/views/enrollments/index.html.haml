@@ -1,6 +1,4 @@
 .block_wrapper
-  #page_title
-    %h1= t(:enrollm_title)
   .block_content.enrollment_bar
     = form_for :offer, :url => enrollments_path, method: :get do |f|
       .enrollment_left
@@ -8,7 +6,6 @@
         = f.text_field :search, :size=>"30", :class=>'enrollment_search', :value => @search_text
         = f.label t(:enrollm_search_in), :class => "enrollment_label"
         = f.collection_select(:category, @types, :id, :description, {:include_blank => true, :class => "select_category", :selected => @search_category} )
-        / = button_tag 'Pesquisar', :class=>'btn'
         = button_tag content_tag(:i, nil, :class=>'icon-search'), :class=>'btn'
       .enrollment_right
         = f.label t(:enrollm_view), :class => "enrollment_label"
@@ -18,7 +15,7 @@
 
 .block_wrapper
   .block_title
-    %h2= 'Unidades Curriculares'
+    %h2= t(:enrollm_curriculum_unit)
   .block_content
     %table.tb_list.enrollment_list
       %thead

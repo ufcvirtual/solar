@@ -15,7 +15,8 @@ module MenuHelper
     divs_group, div_group_opened, previous_parent_id = [], false, 0
 
     menus.each do |menu|
-      access_controller = {:controller => "/#{menu["controller"]}", :action => menu["action"], :mid => menu['parent_id'], :bread => nil}
+      # raise "#{menu}"
+      access_controller = {:controller => "/#{menu["controller"]}", :action => menu["action"], :mid => menu['parent_id'], :bread => menu['parent']}
       div_group_opened = false if (previous_parent_id != menu['parent_id'].to_i) # quando o pai muda, outra div deve ser criada
 
       unless div_group_opened # menu pai

@@ -97,7 +97,11 @@ module ApplicationHelper
   def is_curriculum_unit_selected?
     not(user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['id'].nil?)
   end
-  
+
+  def in_mysolar?
+    !!(params[:action] == "mysolar")
+  end
+
   def slice_content(content, slice_size)        
     caracter_count = 0
     position = 0
