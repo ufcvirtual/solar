@@ -446,6 +446,7 @@
       new_folder: "New Folder"
     errors:
       cant_delete: "Lesson became draft, because it was available to use by students!"     
+      invalid_lesson_to_download: Only not empty and file lessons can be downloaded
 
   lesson_modules:
     none: "No module registered"

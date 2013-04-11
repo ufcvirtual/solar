@@ -150,25 +150,31 @@ class LessonsController < ApplicationController
   end
 
   def download_files
-    authorize! :download_files, Lesson, :on => [params[:allocation_tags_ids]].flatten.collect{|id| id.to_i}
+      authorize! :download_files, Lesson, :on => [params[:allocation_tags_ids]].flatten.collect{|id| id.to_i}
 
-    unless params[:lessons_ids].empty?
+      if verify_lessons_to_download(params[:lessons_ids], true)
+        zip_file_path = compress(:under_path => @all_files_paths, :folders_names => @lessons_names)
+        zip_file_name = zip_file_path.split("/").last
 
-      lessons_ids     = params[:lessons_ids].split(",").flatten
-      all_files_paths = lessons_ids.collect{ |lesson_id| File.join(Rails.root.to_s, 'media', 'lessons', lesson_id) }
-      lessons_names   = lessons_ids.collect{ |lesson_id| Lesson.find(lesson_id).name }
+        redirect      = request.referer.nil? ? root_url(:only_path => false) : request.referer
+        download_file(redirect, zip_file_path, zip_file_name)
+      else
+         render nothing: true
+      end
+  end
 
-      zip_file_path   = compress(:under_path => all_files_paths, :folders_names => lessons_names)
-      zip_file_name   = zip_file_path.split("/").last
-
-      redirect        = request.referer.nil? ? root_url(:only_path => false) : request.referer
-      download_file(redirect, zip_file_path, zip_file_name)
-
-    else
-      flash[:alert] = t(:must_select_lessons, :scope => [:lessons, :notifications])
-      redirect_to list_lessons_url(:allocation_tag_id => params[:allocation_tags_ids])
+  # este método serve apenas para retornar um erro ou prosseguir com o download através da chamada ajax da página
+  def verify_download
+    begin
+      authorize! :download_files, Lesson, :on => [params[:allocation_tags_ids]].flatten.collect{|id| id.to_i}
+      raise "error" unless verify_lessons_to_download(params[:lessons_ids])
+      status = 200
+    rescue CanCan::AccessDenied
+      status = :unauthorized
+    rescue
+      status = 500
     end
-
+    render nothing: true, status: status 
   end
 
   def extract_files
@@ -217,6 +223,24 @@ class LessonsController < ApplicationController
     def lessons_to_open(allocation_tags_ids = nil)
       allocation_tags_ids = allocation_tags_ids || AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
       Lesson.to_open(allocation_tags_ids.join(", "))
+    end
+
+    # define as variáveis e retorna se as aulas são válidas ou não para download
+    def verify_lessons_to_download(lessons_ids, download_method = false)
+      return false if params[:lessons_ids].empty? # não selecionou nenhuma aula
+
+      lessons_ids = params[:lessons_ids].split(",").flatten
+      @lessons_ids, @lessons_names, @all_files_paths = [], [], []
+
+      lessons_ids.each do |lesson_id|
+        lesson_empty = Dir.entries(File.join(Lesson::FILES_PATH, lesson_id.to_s)).size == 2
+        @lessons_ids     << lesson_id.to_i if Lesson.find(lesson_id).type_lesson == Lesson_Type_File # recupera apenas as aulas de arquivo
+        @lessons_names   << Lesson.find(lesson_id).name unless lesson_empty # recupera apenas as que não estiverem vazias
+        @all_files_paths << File.join(Lesson::FILES_PATH, lesson_id.to_s) unless (not download_method) or lesson_empty # recupera apenas as que não estiverem vazias apenas se for no método de download
+      end
+
+      return false if @lessons_ids.empty? or @lessons_names.empty?  # se nenhuma aula for do tipo arquivo ou se nenhuma aula possuir arquivos
+      return true # se nenhum dos erros acontecer, está tudo ok
     end
 
 end

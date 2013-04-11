@@ -198,20 +198,35 @@
     if(selected_lessons.length == 0){
       alert('#{I18n.t(:must_select_lessons, scope: [:lessons, :notifications])}');
       return false;
-    }else{
+    }else
       return true;
-    }
   }
 
   // download dos arquivos das aulas selecionadas em um módulo
   function download_lesson_zip(module_id){
-    allocation_tags_ids = $("#allocation_tags_ids").val();
-    lessons_ids         = get_selected_lessons(module_id);
+    var allocation_tags_ids = $("#allocation_tags_ids").val();
+    var lessons_ids         = get_selected_lessons(module_id);
 
     if(can_do_action(lessons_ids)){
-      window.location.href='#{download_files_lessons_path}?lessons_ids='+lessons_ids+'&allocation_tags_ids='+allocation_tags_ids;
+      jQuery.ajax({
+        url: "#{verify_download_lessons_path}",
+        type: "GET",
+        data: {
+          "lessons_ids": lessons_ids,
+          "allocation_tags_ids": allocation_tags_ids
+        },
+        success: function(){
+          url = "#{download_files_lessons_path(lessons_ids: 'l_ids', allocation_tags_ids: params[:allocation_tags_ids])}".replace('l_ids', lessons_ids);
+          window.location.href = url;
+        },
+        error: function() {
+          alert("#{I18n.t(:invalid_lesson_to_download, :scope => [:lessons, :errors])}");
+        }
+      });
     }
   }
+
+  
 
   function edit_lesson(module_id){
     lessons_ids = get_selected_lessons(module_id);

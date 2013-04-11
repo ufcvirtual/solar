@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'zip/zip'
+require 'fileutils'
 
 class LessonsControllerTest < ActionController::TestCase
 
@@ -22,22 +23,21 @@ class LessonsControllerTest < ActionController::TestCase
 
   # Usuário com permissão
   test "permitir zipar e realizar download de arquivos de aulas" do
-    lessons_ids = [lessons(:pag_ufc).id.to_s, lessons(:pag_uol).id.to_s]
+    define_lesson_dir(lessons(:pag_index).id)
 
+    lessons_ids = [lessons(:pag_index).id.to_s]
     get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => [allocation_tags(:al6)]})
-    assert_response :success
 
     zip_name = create_zip_name(lessons_ids)
     assert File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name))
   end
 
-  # Usuário com permissão, mas não selecionou nenhuma aula # CONCLUIR
+  # Usuário com permissão, mas não selecionou nenhuma aula
   test "nao permitir zipar e realizar download de arquivos de aulas se nenhuma for selecionada" do
     lessons_ids = []
 
     get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => [allocation_tags(:al6)]})
-    assert_response :redirect
-    assert_equal flash[:alert], I18n.t(:must_select_lessons, :scope => [:lessons, :notifications])
+    assert_template nothing:true
 
     zip_name = create_zip_name(lessons_ids)
     assert not(File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name)))
@@ -55,6 +55,27 @@ class LessonsControllerTest < ActionController::TestCase
     assert_redirected_to home_path
     assert_equal I18n.t(:no_permission), flash[:alert]
 
+    assert not(File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name)))
+  end
+
+  test "nao permitir zipar e realizar download de arquivos de aulas se todas forem do tipo link" do
+    lessons_ids = [lessons(:pag_ufc).id.to_s]
+
+    get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => [allocation_tags(:al6)]})
+    assert_template nothing:true
+
+    zip_name = create_zip_name(lessons_ids)
+    assert not(File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name)))
+  end
+
+  test "nao permitir zipar e realizar download de arquivos de aulas se todas forem vazias" do
+    define_lesson_dir(lessons(:pag_bbc).id, false)
+    lessons_ids = [lessons(:pag_bbc).id.to_s]
+
+    get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => [allocation_tags(:al6)]})
+    assert_template nothing:true
+
+    zip_name = create_zip_name(lessons_ids)
     assert not(File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name)))
   end
 
@@ -129,6 +150,22 @@ class LessonsControllerTest < ActionController::TestCase
     assert_response :success
 
     assert_equal Lesson_Test, Lesson.find(lessons(:pag_virtual).id).status
+  end
+
+
+private
+  # Verifica se o diretório da aula escolhida está adequada aos testes
+  def define_lesson_dir(lesson_id, with_files = true)
+    lesson_file_path = File.join(Rails.root, "media", "lessons", lesson_id.to_s)
+    Dir.mkdir(lesson_file_path) unless File.exist? lesson_file_path # verifica se diretório existe ou não; se não, cria.
+    lesson_content_length = Dir.entries(lesson_file_path).length
+    if with_files 
+       Dir.mkdir(File.join(lesson_file_path, "Nova Pasta")) if lesson_content_length <= 2 # se estiver vazia, cria uma pasta dentro
+    else
+      FileUtils.rm_rf(lesson_file_path) # remove diretório com todo o seu conteúdo
+      FileUtils.mkdir_p(lesson_file_path) # cria uma nova pasta para a aula
+    end
+
   end
 
 end
