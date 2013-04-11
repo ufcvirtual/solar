@@ -1,0 +1,37 @@
+.message_external_div
+
+  = render 'message_header'
+  = render 'message_options'
+
+  .message_header_new
+    %table{:border => "0", :cellpadding => "5", :cellspacing => "0", :width => "100%"}
+      %tbody
+        %tr
+          %td.message_text_to{:align => "right", :style => "width:75px"}= label_tag 'lb_from', t(:message_from), :class => 'label_text'
+          %td.message_text_to= label_tag 'lb_from', @sender.name + " <" + @sender.email + ">", :class => "label_text"
+        %tr
+          %td.message_text_to{:align => "right", :style => "width:75px"}= label_tag 'lb_to', t(:message_to), :class => 'label_text'
+          %td.message_text_to
+            - text = ""
+            - @recipients.each do |r|
+              - text += r.nick + " <" + r.email + ">, "
+            = label_tag 'lb_data_from', text, :class => "label_text"
+        %tr
+          %td.message_text_to{:align => "right", :style => "width:75px"}= label_tag 'lb_subject', t(:message_subject), :class => 'label_text'
+          %td.message_text_to= label_tag 'lb_subject', @message.subject, :class => "label_text"
+  .message_div_show
+    = sanitize @message.content
+    %br/
+    .text_bottom
+      - if @files.length > 0
+        %br/
+        %hr{:style => "border: none; background-color: #b4b3b7; height: 1px; margin-left:0px; margin-bottom: 0px"}/
+        %br/
+        - @files.each do |f|
+          = link_to content_tag(:i, nil, :class=>'icon-paperclip')+f.message_file_name, {:controller => "messages", :action => "download_message_file", :idFile => f.id, :id => @message.id}, {:class => 'message_link'}
+          %br/
+  .message_div_options_new
+    \ 
+    \#{link_to t(:message_reply)+' ', {:action => 'new', :id => @message.id, :target => 'sender'}, {:class=>'message_link'}}
+    \#{link_to t(:message_reply_all)+' ', {:action => 'new', :id => @message.id, :target => 'all'}, {:class=>'message_link'}}
+    \#{link_to t(:message_route)+' ', {:action => 'new', :id => @message.id, :target => ''}, {:class=>'message_link'}}

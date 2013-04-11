@@ -149,10 +149,12 @@
               <h1><%=t active_tab[:breadcrumb].last[:name] unless active_tab[:breadcrumb].last.nil? %></h1>
               <span class="block_content_text"><%= raw(render_group_selection) %></span>
             </div>
+          <% elsif not(in_mysolar?) %>
+            <div id="page_title">
+              <h1><%=t active_tab[:breadcrumb].last[:name] unless active_tab[:breadcrumb].last.nil? %></h1>
+            </div>
           <% end %>
         </div>
-
-        
 
         <%= yield %>
 

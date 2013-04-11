@@ -1,0 +1,107 @@
+.block_content.message_new
+  %table.message_header_new
+    %tbody
+      %tr
+        %td.message_text_to_label
+          %a#link_to_contacts.link_content{:href => "javascript:show_div('link_to_contacts','div_contacts')"}= t(:message_to)
+        %td.message_text_to= text_field_tag  'to', @target, :class=> "message_new_textbox", :readonly => true, :onclick => "javascript:show_div('link_to_contacts','div_contacts')"
+      %tr
+        %td.message_text_to_label= t(:message_subject)
+        %td.message_text_to= text_field_tag  'subject', @subject, :class=> "message_new_textbox"
+      %tr.message_new_upload
+        %td.message_text_to_label
+        %td.message_text_to
+          - unless @files.nil?
+            - @files.each do |f|
+              = image_tag("message_file.png",:alt=>t(:message_attach))+f.message_file_name
+              %br/
+          #newPostUploadPanel
+            %button#link_upload.btn.btn_default{"data-tooltip" => t(:message_attach_file), :onclick => "appendFileField(); return false"}
+              %i.icon-paperclip
+#div_contacts{:style => "display:none"}
+  - if !@curriculum_units_user.nil?
+    %select#curriculum_unit_select{:style => "width:440px"}
+      <option value="" #{" selected=true " unless !@curriculum_units_name.nil?} >#{t(:message_personal_contacts)}
+      - @curriculum_units_user.each_with_index do |curriculum_unit, idx|
+        <option value="#{curriculum_unit.id}" + ";" + "#{curriculum_unit.offers}" + ";" + "#{curriculum_unit.groups}" #{" selected=true " unless @curriculum_units_name!=curriculum_unit.name} >#{curriculum_unit.name}
+  %br/
+  %br/
+  = label_tag "", t(:message_select)+': '
+  %br/
+  #div_contacts_list
+    = raw @contacts
+  %br/
+  = label_tag "", t(:message_to)+': '
+  %br/
+  #recipients_selected= raw @target_html unless @target.empty?
+  %span#older_recipients.invisible= raw @target_html unless @target.empty?
+  .div_contacts_buttons
+    %input#link_confirm_contacts.btn.btn_main{:type => "button", :value => t("message_complete")}/
+    %input#link_cancel_contacts.btn.btn_default{:type => "button", :value => t("message_cancel")}/
+
+:javascript
+
+  $(function($) {
+
+    $("#curriculum_unit_select").change(function() {
+      var url_for = "#{url_for(:controller => :messages, :action => :ajax_get_contacts)}";
+      $("#div_contacts_list").load(url_for, {data: this.value})
+    })
+
+    $("#link_cancel_contacts").click(function() {
+      $("#div_contacts").hide();
+      //volta destinatarios
+      $("#recipients_selected").html($("#older_recipients").html());
+      $("#div_contacts_list > span").show();
+    })
+
+    $("#link_confirm_contacts").click(function() {
+      $("#div_contacts").hide();
+      //older_recipients guarda os destinatarios atuais
+      $("#older_recipients").html($("#recipients_selected").html());
+      $("#to").val($("#recipients_selected").text());
+    })
+
+  });
+
+  function show_div(origin,elementId) {
+    var posx =$('#'+origin).offset().left + 38;
+    var posy =$('#'+origin).offset().top - 2;
+
+    $('#'+ elementId).css({"left":posx});
+    $('#'+ elementId).css({"top":posy});
+    $('#'+ elementId).show();
+  }
+
+  function add_receiver(u,name,email){
+    new_to = name + " [" + email + "], ";
+    var new_recipient = "<span onclick="+"$('#"+u+"').show();$(this).remove()" + " class='message_recipient_box' >"+new_to+"</span>";
+
+    var atual_recipients = $("#recipients_selected").text();
+    var found = atual_recipients.search(email);
+    if (found == -1) {
+      $("#recipients_selected").append(new_recipient);
+      $("#"+u).hide();
+    }
+  }
+
+  //// Manipulação de arquivos anexos ///////////////////////////////
+  var numFileFields = 0;
+  function appendFileField(){
+    var cancel_text = "#{t(:message_cancel)}"
+    newElementId = 'attachment_' + numFileFields;
+    newElementName = 'attachment[' + numFileFields + ']';
+    newElement = '<div id="'+ newElementId +'_container" class="message_attach_item">';
+    newElement += '<input id="' + newElementId + '" type="file" name="' + newElementName + '" style="display:none;"/>';
+    newElement += ' <input type="button" class="btn btn_default" value="'+cancel_text+'" onclick="removeFileField(\''+newElementId+'\');return false;" /> '
+    newElement += '</div>';
+    $("#link_upload").after(newElement);
+    $("#"+newElementId).slideDown('fast');//exibindo campo de upload
+    numFileFields++;
+  }
+
+  function removeFileField(fieldId){
+    $("#"+fieldId+"_container").hide('fast', function(){
+      $("#"+fieldId+"_container").remove();
+    });
+  }
