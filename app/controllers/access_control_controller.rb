@@ -51,7 +51,8 @@ class AccessControlController < ApplicationController
         render nothing: true
       end
     else
-      send_file(@lesson.path(true), {disposition: 'inline', type: return_type(params[:format])})
+      # send_file(@lesson.path(true), {disposition: 'inline', type: return_type(params[:format])})
+      send_file(file_path, {disposition: 'inline', type: return_type(params[:format])})
     end
 
   end
