@@ -1116,6 +1116,6 @@
   facebook:
     login: Login
     logout: Logout
-    update_feed: Update news feed
+    update_feed: Update feed
     original_content: View the original content
     logged_in_as: Logged in as

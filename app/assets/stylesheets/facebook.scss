@@ -1,6 +1,15 @@
 $facebook_main_color: #3b5c9a;
 $color_disabled: #777777;
 
+body {
+  margin: 36px 0 0 0;
+  padding: 0;
+}
+
+body, a {
+  font-family: 'PT Sans', sans-serif;
+}
+
 .slide-settings li.settings {
   background: url("portlet-facebook-icon_settings.png") no-repeat 5px center;
 }
@@ -26,8 +35,53 @@ $color_disabled: #777777;
 }
 
 .post {
-  font-family: 'PT Sans', sans-serif;
   font-size: 10pt;
+  background-color: white;
+  margin: 6px;
+}
+
+.head {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  width: 255px;
+  padding: 4px;
+  margin: 0px;
+  background-color: #EEE9E9;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: #CFCFCF;
+}
+
+.head a {
+  text-decoration: none;
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.head a:hover i {
+  color: #000000;
+}
+
+// FIX: temporariamente ocultando identificacao do usuario
+.head .info {
+  display: none;
+}
+
+.head .feed{
+  position: relative;
+  top: 2px;
+  left: 5px;
+  font-size: 10pt;
+  color:#1E90FF
+}
+
+.head .common{
+  color:#999
+}
+
+.head .commondark{
+  color:#666
 }
 
 .post textarea {
@@ -94,19 +148,52 @@ $color_disabled: #777777;
   background-color: #dedede;
 }
 
-.post .user_avatar {
+.user_avatar {
   width: 24px;
   float: left;
 }
 
-.post .post_content {
-  margin-top: 6px;
-  margin-left: 28px;
+.post_content {
+  margin-top: 4px;
+  margin-left: 4px;
+  padding-bottom: 4px;
+}
+
+.post_image {
+  display: block;
+}
+
+.post_image img {
+  width: 200px;
+  height: auto;
+  margin-top: 3px;
+}
+
+.post_url {
+  display: block;
+  margin-top: 4px;
+}
+
+.post_url a {
+  color: #204783;
+}
+
+.post_header {
+  padding-left: 4px;
+  padding-top: 5px;
+  overflow: hidden;
+}
+
+.post .user_info {
+  float: left;
+  margin-left: 7px;
+  margin-top: -2px;
 }
 
 .post .username {
   color: $facebook_main_color;
   font-weight: bold;
+  display: block;
 }
 
 .post .post_actions {
@@ -120,8 +207,9 @@ $color_disabled: #777777;
 }
 
 .post .date {
-  float: right;
   color: $color_disabled;
+  position: relative;
+  font-size: 11px;
 }
 
 .post .img {
@@ -129,6 +217,3 @@ $color_disabled: #777777;
   height: auto;
 }
 
-.post .link {
-  color: #20E;
-}
