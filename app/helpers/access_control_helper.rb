@@ -3,27 +3,29 @@ module AccessControlHelper
   def return_type(extension)
     case extension
       when "jpg", "jpeg"
-        'image/jpeg'
+        "image/jpeg"
       when "gif"
-        'image/gif'
+        "image/gif"
       when "png"
-        'image/png'
+        "image/png"
       when "swf"
-        'application/x-shockwave-flash'
+        "application/x-shockwave-flash"
       when "pdf"
-        'application/pdf'
+        "application/pdf"
       when "htm", "html"
-        'text/html; charset=utf-8'
+        "text/html; charset=utf-8"
       when "doc"
-        'application/msword'
+        "application/msword"
       when "docx"
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
       when "ppt"
-        'application/vnd.ms-powerpoint'
+        "application/vnd.ms-powerpoint"
       when "pptx"
-        'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation"
       when "txt"
-        'text/plain'
+        "text/plain"
+      when "flv"
+        "video/x-flv"
       else
         "application/octet-stream"
     end

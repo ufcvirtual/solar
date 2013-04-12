@@ -38,17 +38,22 @@ class AccessControlController < ApplicationController
     @lesson = Lesson.find(params[:id])
     authorize! :show, Lesson, {on: [@lesson.allocation_tag.id], read: true}
 
-    if params[:index]
-      file_path = Lesson::FILES_PATH.join(params[:id], [params[:file], '.', params[:extension]].join)
+    if @lesson.path(false).index('.html')
+      if params[:index]
+        file_path = Lesson::FILES_PATH.join(params[:id], [params[:file], '.', params[:extension]].join)
+      else
+        file_path = Lesson::FILES_PATH.join(params[:id], params[:folder], [params[:path], '.', params[:format]].join)
+      end
+
+      if File.exist? file_path
+        render file: file_path
+      else
+        render nothing: true
+      end
     else
-      file_path = Lesson::FILES_PATH.join(params[:id], params[:folder], [params[:path], '.', params[:format]].join)
+      send_file(@lesson.path(true), {disposition: 'inline', type: return_type(params[:format])})
     end
 
-    if File.exist? file_path
-      render file: file_path, layout: false
-    else
-      render nothing: true
-    end
   end
 
   def users

@@ -17,8 +17,7 @@ class Lesson < ActiveRecord::Base
   FILES_PATH = Rails.root.join('media', 'lessons') # path dos arquivos de aula
 
   def path(full = false, with_address = true)
-
-    if type_lesson.to_i == Lesson_Type_File      
+    if type_lesson.to_i == Lesson_Type_File
       Dir.mkdir(FILES_PATH.join(id.to_s)) unless File.exist? FILES_PATH.join(id.to_s) # verifica se diretório existe ou não; se não, cria.
       full ? FILES_PATH.join(id.to_s, (with_address ? address : '')) : File.join('', 'media', 'lessons', id.to_s, (with_address ? address : ''))
     else
