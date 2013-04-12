@@ -46,7 +46,7 @@ class AccessControlController < ApplicationController
       end
 
       if File.exist? file_path
-        render file: file_path
+        render file: file_path, layout: false
       else
         render nothing: true
       end
