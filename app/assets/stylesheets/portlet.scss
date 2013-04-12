@@ -27,11 +27,19 @@ $portlet_settings_padding: $portlet_main_padding;
     top: 0;
     left: 0;
     z-index: 10;
-    padding: $portlet_main_padding;
+    padding: $portlet_main_padding; 
     width: $portlet_width - $portlet_main_padding*2;
     height: $portlet_height - $portlet_main_padding*2;
     overflow-y:auto;
     background-color: #F5F8FB;
+}
+
+// excecao para portlet do facebook
+.block_facebook .slide-main {
+  padding: 0;
+  height: $portlet_height;
+  width: $portlet_width;
+  overflow: hidden;
 }
 
 .slide-settings {

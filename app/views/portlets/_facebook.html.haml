@@ -11,7 +11,7 @@
   .block_content.block_slider
     .slide.slide-main
       - if user_session[:fb_token].present?
-        %iframe{id: 'iframe', src: fb_feed_social_networks_path, width: 245, height: 150, frameborder: 0}
+        %iframe{id: 'iframe', src: fb_feed_social_networks_path, width: 255, height: 166, frameborder: 0}
       - else
         - oauth = Koala::Facebook::OAuth.new(Fb_Config['app_id'], Fb_Config['secret_key'], Fb_Config['data-href'])
         = link_to t(:login, :scope => [:facebook]), oauth.url_for_oauth_code(:permissions => "read_stream"), target: '_top'

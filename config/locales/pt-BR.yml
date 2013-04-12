@@ -1279,6 +1279,6 @@
   facebook:
     login: Entrar
     logout: Sair
-    update_feed: Atualizar feed de notícias
+    update_feed: Atualizar feed
     original_content: Ver contéudo original
     logged_in_as: Logado como
