@@ -99,7 +99,7 @@ module ApplicationHelper
   end
 
   def in_mysolar?
-    !!(params[:action] == "mysolar")
+    return (params[:action] == "mysolar")
   end
 
   def slice_content(content, slice_size)        
