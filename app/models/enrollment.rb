@@ -28,9 +28,18 @@ class Enrollment < ActiveRecord::Base
 
     query_offer = "
       WITH cte_enrollments_of_user AS (
-          SELECT DISTINCT of.id, cr.name as name, t.id AS categoryid, t.description AS categorydesc,
-                 t.allows_enrollment, al.status AS status, al.id AS allocationid,
-                 g.code, e.start, e.end, atg.id AS allocationtagid,
+          SELECT DISTINCT of.id,
+                 of.semester,
+                 cr.name as name,
+                 t.id AS categoryid,
+                 t.description AS categorydesc,
+                 t.allows_enrollment,
+                 al.status AS status,
+                 al.id AS allocationid,
+                 g.code,
+                 e.start,
+                 e.end,
+                 atg.id AS allocationtagid,
                  g.id AS groupsid, t.icon_name
             FROM allocations al
             JOIN allocation_tags atg      ON atg.id = al.allocation_tag_id
@@ -46,10 +55,20 @@ class Enrollment < ActiveRecord::Base
         )
         --
         (
-            SELECT DISTINCT of.id, cr.name as name, t.id as categoryid, t.description as categorydesc,
-                 t.allows_enrollment, null::integer as status, null::integer as allocationid,
-                 g.code, e.start, e.end, atg.id as allocationtagid,
-                 g.id AS groupsid, t.icon_name
+          SELECT DISTINCT of.id,
+                 of.semester,
+                 cr.name as name,
+                 t.id as categoryid,
+                 t.description as categorydesc,
+                 t.allows_enrollment,
+                 null::integer as status,
+                 null::integer as allocationid,
+                 g.code,
+                 e.start,
+                 e.end,
+                 atg.id as allocationtagid,
+                 g.id AS groupsid,
+                 t.icon_name
             FROM offers of
        LEFT JOIN enrollments e           ON of.id = e.offer_id
       INNER JOIN curriculum_units cr     ON of.curriculum_unit_id = cr.id
