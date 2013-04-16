@@ -1,23 +1,10 @@
 #block_schedule.block_small
   .block_title
     %h2
-      %i.icon-calendar
-      = t(:curriculum_access_agenda)
-  .calendar#agenda{:url_for => (url_for :schedules)}
+      %i.icon-calendar= t(:curriculum_access_agenda)
+  .calendar#agenda{:url_for => schedules_path}
   .calendar_events
 
 :javascript
-
-  //--------------------------------------------
-  // Todas as datas que possuem eventos
-  //--------------------------------------------
   var dates_with_events = eval(#{@scheduled_events});
-
-  $(function() {
-
-    //--------------------------------------------
-    // Exibe a agenda ao terminar o load da pagina
-    //--------------------------------------------
-
-    showAgenda(dates_with_events);
-  });
+  $(function() { showAgenda(dates_with_events); });

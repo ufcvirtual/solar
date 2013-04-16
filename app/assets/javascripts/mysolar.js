@@ -25,8 +25,8 @@ var highlightDay = function(date, dates_with_events) {
 // para o novo dia devem ser exibidas
 var changeDate = function(dateText, url_for_schedules) {
   $.get(url_for_schedules, {
-      date: dateText,
-      list_all_schedule: true
+    date: dateText,
+    list_all_schedule: true
   },
   function(response) {
     $('.calendar_events').html(response);
@@ -49,10 +49,10 @@ function showAgenda(dates_with_events) {
     option: locale,
     dateFormat: global_config.locale.dateFormat,
     onSelect: function(dateText, inst) {
-        changeDate(dateText, url_for_schedules);
+      changeDate(dateText, url_for_schedules);
     },
     beforeShowDay: function(date){
-        return highlightDay(date, dates_with_events);
+      return highlightDay(date, dates_with_events);
     }
   });
 }
