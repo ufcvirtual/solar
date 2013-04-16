@@ -5,7 +5,7 @@ class CurriculumUnitsController < ApplicationController
   layout false, :only => [:new, :edit, :show, :create, :update]
 
   before_filter :prepare_for_group_selection, :only => [:home, :participants, :informations]
-  before_filter :curriculum_data, :only => [:home, :informations, :curriculum_data]
+  before_filter :curriculum_data, :only => [:home, :informations, :curriculum_data, :participants]
 
   authorize_resource :only => [:index, :show, :new]
   load_and_authorize_resource :only => [:destroy, :edit]
