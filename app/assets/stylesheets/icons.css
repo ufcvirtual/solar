@@ -18,7 +18,7 @@
 	color: red;
 }
 
-.icon-warning:before, .icon-checkmark:before, .icon-info:before, .icon-help:before, .icon-question:before, .icon-info-2:before, .icon-mail:before, .icon-paperplane:before, .icon-pencil:before, .icon-edit:before, .icon-paperclip:before, .icon-reply:before, .icon-reply-all:before, .icon-forward:before, .icon-user:before, .icon-people:before, .icon-forum:before, .icon-user-add:before, .icon-vcard:before, .icon-export:before, .icon-map:before, .icon-location:before, .icon-share:before, .icon-heart:before, .icon-heart-2:before, .icon-star:before, .icon-star-2:before, .icon-thumbs-up:before, .icon-thumbs-down:before, .icon-chat:before, .icon-comment:before, .icon-quote:before, .icon-house:before, .icon-popup:before, .icon-search:before, .icon-printer:before, .icon-bell:before, .icon-link:before, .icon-flag:before, .icon-settings:before, .icon-tools:before, .icon-tag:before, .icon-camera:before, .icon-music:before, .icon-music-2:before, .icon-graduation:before, .icon-book:before, .icon-lesson:before, .icon-lifebuoy:before, .icon-eye:before, .icon-clock:before, .icon-microphone:before, .icon-calendar:before, .icon-briefcase:before, .icon-air:before, .icon-hourglass:before, .icon-language:before, .icon-network:before, .icon-key:before, .icon-suitcase:before, .icon-earth:before, .icon-keyboard:before, .icon-browser:before, .icon-publish:before, .icon-adjust:before, .icon-sun:before, .icon-code:before, .icon-screen:before, .icon-infinity:before, .icon-credit-card:before, .icon-database:before, .icon-rss:before, .icon-signal:before, .icon-statistics:before, .icon-pie:before, .icon-bars:before, .icon-graph:before, .icon-lock:before, .icon-lock-open:before, .icon-logout:before, .icon-login:before, .icon-cross:before, .icon-plus:before, .icon-minus:before, .icon-cross-2:before, .icon-minus-2:before, .icon-plus-2:before, .icon-cross-3:before, .icon-minus-3:before, .icon-plus-3:before, .icon-erase:before, .icon-blocked:before, .icon-cycle:before, .icon-shuffle:before, .icon-ccw:before, .icon-restore:before, .icon-cw:before, .icon-arrow:before, .icon-arrow-2:before, .icon-retweet:before, .icon-loop:before, .icon-history:before, .icon-back:before, .icon-switch:before, .icon-list:before, .icon-add-to-list:before, .icon-layout:before, .icon-list-2:before, .icon-text:before, .icon-text-2:before, .icon-document:before, .icon-docs:before, .icon-landscape:before, .icon-folder:before, .icon-pictures:before, .icon-archive:before, .icon-trash:before, .icon-outbox:before, .icon-inbox:before, .icon-disk:before, .icon-install:before, .icon-cloud:before, .icon-upload-2:before, .icon-bookmark:before, .icon-book-2:before, .icon-bookmarks:before, .icon-play:before, .icon-pause:before, .icon-record:before, .icon-stop:before, .icon-next:before, .icon-previous:before, .icon-first:before, .icon-last:before, .icon-resize-enlarge:before, .icon-resize-shrink:before, .icon-sound:before, .icon-mute:before, .icon-flow-cascade:before, .icon-flow-branch:before, .icon-flow-tree:before, .icon-flow-line:before, .icon-flow-parallel:before, .icon-arrow-left:before, .icon-arrow-down:before, .icon-arrow-up--upload:before, .icon-arrow-right:before, .icon-arrow-left-2:before, .icon-arrow-down-2:before, .icon-arrow-up:before, .icon-arrow-right-2:before, .icon-arrow-left-3:before, .icon-arrow-down-3:before, .icon-arrow-up-2:before, .icon-arrow-right-3:before, .icon-arrow-left-4:before, .icon-arrow-down-4:before, .icon-arrow-up-3:before, .icon-arrow-right-4:before, .icon-arrow-left-5:before, .icon-arrow-down-5:before, .icon-arrow-up-4:before, .icon-untitled:before, .icon-arrow-right-5:before, .icon-arrow-up-5:before, .icon-arrow-down-6:before, .icon-arrow-left-6:before, .icon-ellipsis:before, .icon-dots:before, .icon-dot:before, .icon-github:before, .icon-github-2:before, .icon-vimeo:before, .icon-vimeo-2:before, .icon-twitter:before, .icon-twitter-2:before, .icon-facebook:before, .icon-facebook-2:before, .icon-googleplus:before, .icon-facebook-3:before, .icon-googleplus-2:before, .icon-tumblr:before, .icon-tumblr-2:before, .icon-instagram:before, .icon-dropbox:before, .icon-evernote:before, .icon-skype:before, .icon-phone:before, .icon-mobile:before, .icon-menu:before, .icon-move:before, .icon-clipboard:before, .icon-box:before, .icon-new:before {
+.icon-warning, .icon-checkmark, .icon-info, .icon-help, .icon-question, .icon-info-2, .icon-mail, .icon-paperplane, .icon-pencil, .icon-paperclip, .icon-reply, .icon-reply-all, .icon-forward, .icon-user, .icon-users, .icon-user-add, .icon-vcard, .icon-export, .icon-map, .icon-location, .icon-share, .icon-heart, .icon-heart-2, .icon-star, .icon-star-2, .icon-thumbs-up, .icon-thumbs-down, .icon-chat, .icon-comment, .icon-quote, .icon-house, .icon-popup, .icon-search, .icon-printer, .icon-bell, .icon-link, .icon-flag, .icon-cog, .icon-tools, .icon-tag, .icon-camera, .icon-music, .icon-music-2, .icon-graduation, .icon-book, .icon-newspaper, .icon-lifebuoy, .icon-eye, .icon-clock, .icon-microphone, .icon-calendar, .icon-briefcase, .icon-air, .icon-hourglass, .icon-language, .icon-network, .icon-key, .icon-suitcase, .icon-earth, .icon-keyboard, .icon-browser, .icon-publish, .icon-adjust, .icon-sun, .icon-code, .icon-screen, .icon-infinity, .icon-credit-card, .icon-database, .icon-rss, .icon-signal, .icon-statistics, .icon-pie, .icon-bars, .icon-graph, .icon-lock, .icon-lock-open, .icon-logout, .icon-login, .icon-cross, .icon-plus, .icon-minus, .icon-cross-2, .icon-minus-2, .icon-plus-2, .icon-cross-3, .icon-minus-3, .icon-plus-3, .icon-erase, .icon-blocked, .icon-cycle, .icon-shuffle, .icon-ccw, .icon-cw, .icon-arrow, .icon-arrow-2, .icon-retweet, .icon-loop, .icon-history, .icon-back, .icon-switch, .icon-list, .icon-add-to-list, .icon-layout, .icon-list-2, .icon-text, .icon-text-2, .icon-document, .icon-docs, .icon-landscape, .icon-folder, .icon-pictures, .icon-archive, .icon-trash, .icon-upload, .icon-download, .icon-disk, .icon-install, .icon-cloud, .icon-upload-2, .icon-bookmark, .icon-book-2, .icon-bookmarks, .icon-play, .icon-pause, .icon-record, .icon-stop, .icon-next, .icon-previous, .icon-first, .icon-last, .icon-resize-enlarge, .icon-resize-shrink, .icon-sound, .icon-mute, .icon-flow-cascade, .icon-flow-branch, .icon-flow-tree, .icon-flow-line, .icon-flow-parallel, .icon-arrow-left, .icon-arrow-down, .icon-arrow-up--upload, .icon-arrow-right, .icon-arrow-left-2, .icon-arrow-down-2, .icon-arrow-up, .icon-arrow-right-2, .icon-arrow-left-3, .icon-arrow-down-3, .icon-arrow-up-2, .icon-arrow-right-3, .icon-arrow-left-4, .icon-arrow-down-4, .icon-arrow-up-3, .icon-arrow-right-4, .icon-arrow-left-5, .icon-arrow-down-5, .icon-arrow-up-4, .icon-untitled, .icon-arrow-right-5, .icon-arrow-up-5, .icon-arrow-down-6, .icon-arrow-left-6, .icon-ellipsis, .icon-dots, .icon-dot, .icon-github, .icon-github-2, .icon-vimeo, .icon-vimeo-2, .icon-twitter, .icon-twitter-2, .icon-facebook, .icon-facebook-2, .icon-googleplus, .icon-facebook-3, .icon-googleplus-2, .icon-tumblr, .icon-tumblr-2, .icon-instagram, .icon-dropbox, .icon-evernote, .icon-skype, .icon-phone, .icon-mobile, .icon-menu, .icon-clipboard, .icon-box, .icon-new, .icon-unzip-file, .icon-unzip, .icon-edit, .icon-forum, .icon-restore, .icon-move, .icon-settings, .icon-lesson {
 	font-family: 'Solar';
 	speak: none;
 	font-style: normal;
@@ -28,8 +28,7 @@
 	line-height: 1;
 	-webkit-font-smoothing: antialiased;
 	font-size: 18px;
-	line-height: 20px;
-	vertical-align: bottom;
+	vertical-align: middle;
 }
 .big:before {
 	font-size: 32px;
@@ -146,7 +145,7 @@
 .icon-flag:before {
 	content: "\e024";
 }
-.icon-settings:before {
+.icon-cog:before, .icon-settings:before {
 	content: "\e025";
 }
 .icon-tools:before {
@@ -170,7 +169,7 @@
 .icon-book:before {
 	content: "\e02c";
 }
-.icon-lesson:before {
+.icon-newspaper:before, .icon-lesson:before {
 	content: "\e02d";
 }
 .icon-lifebuoy:before {
@@ -604,4 +603,7 @@
 }
 .icon-new:before {
 	content: "\e0bd";
+}
+.icon-unzip-file:before {
+	content: "\e0bf";
 }

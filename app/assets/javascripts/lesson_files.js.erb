@@ -66,7 +66,7 @@ jQuery(function(){
     onKeydown: function(node, event) {
       switch( event.which ) {
         case 27: // [F2]
-          jQuery("#folder_window").hide();
+          jQuery("#folder_dropdown").hide();
         case 13: // enter
           node.select();
       }
@@ -82,7 +82,7 @@ jQuery(function(){
   /* Eventos de botões */
   
   /* Criar novo folder com texto padrao e foco para editar */
-  jQuery("#btn-new-folder").click(function() { 
+  jQuery("#lesson_new_folder").click(function() { 
     var node = jQuery("#tree").dynatree("getActiveNode");
 
     if (node != null && node.data.isFolder) {
@@ -126,15 +126,20 @@ jQuery(function(){
         flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
   });
 
-  jQuery("#btn-move-node").click(function(){
-    if(typeof selNodes == "undefined")
-      flash_message("<%= I18n.t(:at_least_one, :to => I18n.t(:move, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "flash_messages");
-    else
-      jQuery("#folder_window").toggle();
+  /* caso nenhum arquivo/pasta tenha sido selecionado, exibe uma mensagem de erro dentro
+  do proprio dropdown */
+  jQuery("#folder_dropdown").on('show', function(event, dropdownData) {
+    if(typeof selNodes == "undefined") {
+      jQuery("#folder_dropdown_alert").show();
+      jQuery("#folder_dropdown_content").hide();
+    } else {
+      jQuery("#folder_dropdown_alert").hide();
+      jQuery("#folder_dropdown_content").show();
+    }
   });
 
   jQuery("#btn-cancel-move").click(function(){
-    jQuery("#folder_window").hide();
+    jQuery("#folder_dropdown").dropdown("hide",true);
   });  
 
   jQuery("#btn-save-move").click(function(){
@@ -149,7 +154,7 @@ jQuery(function(){
     }
   });
 
-  jQuery("#btn-new-file").click(function(){
+  jQuery("#lesson_new_file").click(function(){
     var activeNode = jQuery("#tree").dynatree("getActiveNode");
     if (activeNode != null && activeNode.data.isFolder == true)
       jQuery("#fileupload").click();
@@ -424,7 +429,7 @@ function saveDeletion(node, root_node){
 
 /* Cria pasta */
 function newFolder(path){
-  url = jQuery("#btn-new-folder").attr("value");
+  url = jQuery("#lesson_new_folder").attr("data-path");
 
   jQuery.ajax({
     type: 'POST',

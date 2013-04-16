@@ -3162,7 +3162,7 @@ div.support_material_select {
     height: 30px;
 }
 .label_usuario{
-    white-space         : pre-wrap;
+    white-space: pre-wrap;
 }
 
 #user_gender {
@@ -3479,7 +3479,7 @@ select[disabled] {
     background-color: #F2F2F2;
 }
 
-/* Para o Wizzard */
+/* Para o Wizard */
 
 /*
 .uc_item_ok {
@@ -3491,6 +3491,12 @@ select[disabled] {
     height: 23px;
 }
 */
+
+/* Menu dropdown */
+.dropdown-menu a {
+    font-size: 10pt;
+    font-family: 'PT Sans', sans-serif;
+}
 
 /* Arquivos de aulas - lesson_files */
 
@@ -3509,54 +3515,34 @@ select[disabled] {
     color: #8D8D8D;
 }
 
-#folder_window_buttons .btn{
-    vertical-align: text-top;   
+.btn_dropdown a {
+    cursor: pointer;
 }
 
-#folder_window{
-    border: 1px solid #D0D0D0;
-    background-color: #f9f9f9;
-    min-height: 50px;
-    min-width: 200px;
-    position: absolute;
-    margin-top: 25px;
-    margin-left: -33px;
-    display: none;
+#folder_dropdown .dropdown-panel {
+    padding: 7px;
+}
+
+#folder_dropdown_alert span {
+    display: block;
     font-size: 10pt;
-    font-weight: bold;
-    padding-top: 5px;
-    padding-left: 5px;
-}
-
-#folder_window #window_title{
-    color: #a6a6a6;
-}
-
-#folder_window #folder_title{
-    padding-left: 5px;
-}
-
-#folder_window_buttons{
-    float: right;
-    padding-bottom: 5px;
-    padding-top: 5px;
-}
-
-#btn-cancel-move{
-    width: 65px;
-}
-
-#blue_background{
     width: 100%;
-    background-color: #F5F8FB; 
+    white-space: normal;
+    text-align: center;
+}
+
+#folder_dropdown_content {
+    width: 200px;
+    overflow: hidden;
+}
+
+#folder_dropdown_content .control_buttons{
+    float: right;
+    padding-top: 7px;
 }
 
 #fileupload{
     display: none;
-}
-
-#btn-new-file{
-    cursor: pointer;
 }
 
 #files_bottom_bar {
@@ -3566,6 +3552,11 @@ select[disabled] {
 
 #btn-finish{
     float: right;
+}
+
+#tree {
+    max-height: 235px;
+    overflow-y: auto;
 }
 
 #save_automatically_message{

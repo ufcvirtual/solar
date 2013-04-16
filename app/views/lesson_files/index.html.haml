@@ -28,24 +28,35 @@
       = check_box_tag :all_items_selector
       %span#lesson_files_select_all= t(".all")
     .btn-group
-      %a.btn.btn_main#btn-new-file{:'data-tooltip' => t('.upload')}
+      %a.btn.btn_main#btn-new{:href => nil, 'data-dropdown' => "#lesson_item_dropdown"}
         = content_tag(:i, nil, :class=>'icon-plus-3')
-    .btn-group
-      = button_tag content_tag(:i, nil, :class=>'icon-folder'), type: :button, :class => 'btn', id: 'btn-new-folder', value: new_folder_lesson_files_path(lesson_id: @lesson.id), :'data-tooltip' => t('.new_folder')
+        %i.icon-arrow-down-3
+      #lesson_item_dropdown.dropdown.dropdown-tip
+        %ul.dropdown-menu
+          %li
+            %a#lesson_new_file{:href => "#"}Enviar arquivo
+          %li
+            %a#lesson_new_folder{:href => nil, 'data-path' => new_folder_lesson_files_path(lesson_id: @lesson.id)}= t(".new_folder")
     .btn-group
       = button_tag content_tag(:i, nil, :class=>'icon-house'), type: :button, :class => 'btn', id: 'btn-initial-file', :'data-tooltip' => t('.initial_file')
     .btn-group
-      = button_tag content_tag(:i, nil, :class=>'icon-archive'), type: :button, :class => 'btn', id: 'btn-unzip', :'data-tooltip' => t('.unzip')
+      = button_tag content_tag(:i, nil, :class=>'icon-unzip-file'), type: :button, :class => 'btn', id: 'btn-unzip', :'data-tooltip' => t('.unzip')
       = button_tag content_tag(:i, nil, :class=>'icon-edit'), type: :button, :class => 'btn', id: 'btn-rename', :'data-tooltip' => t('.rename')
       = button_tag content_tag(:i, nil, :class=>'icon-trash'), type: :button, :class => 'btn btn_caution', id: 'btn-remove-node', :'data-tooltip' => t('.remove')
-      = button_tag content_tag(:i, nil, :class=>'icon-move'), type: :button, :class => 'btn', id: 'btn-move-node', :'data-tooltip' => t('.move')
-      %span#folder_window
-        %span#window_title= t(".move_to")
-        %span#folders_tree
-        %span#folder_window_buttons
-          = button_tag t(".cancel"), type: :button, :class => 'btn', id: 'btn-cancel-move'
-          = button_tag t(".move"), type: :button, :class => 'btn btn_main', id: 'btn-save-move'
-      
+      = button_tag content_tag(:i, nil, :class=>'icon-move'), type: :button, :class => 'btn', id: 'btn-move-node', :'data-tooltip' => t('.move'), "data-dropdown" => "#folder_dropdown"
+      %button.btn
+        Teste
+      #folder_dropdown.dropdown.dropdown-tip
+        .dropdown-panel
+          #folder_dropdown_alert
+            %span
+              = I18n.t(:at_least_one, :to => I18n.t(:move, :scope => [:lesson_files]), :scope => [:lesson_files])
+          #folder_dropdown_content
+            %h3= t(".move_to")
+            #folders_tree
+            .control_buttons
+              = button_tag t(".cancel"), type: :button, :class => 'btn', id: 'btn-cancel-move'
+              = button_tag t(".move"), type: :button, :class => 'btn btn_main', id: 'btn-save-move'
   #tree
 
   #save_automatically_message

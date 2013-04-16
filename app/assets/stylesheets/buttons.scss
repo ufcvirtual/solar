@@ -88,7 +88,8 @@ input::-moz-focus-inner {
 .btn:focus,
 .btn:active,
 .btn.disabled,
-.btn[disabled] {
+.btn[disabled]
+.btn.dropdown-open {
     background-color: darken($btn-color,7%);
 }
 
@@ -99,7 +100,8 @@ input::-moz-focus-inner {
 
 .btn:hover i,
 .btn:focus i,
-.btn:active i {
+.btn:active i,
+.btn.dropdown-open i {
     opacity: 0.8;
 }
 
@@ -123,7 +125,8 @@ input::-moz-focus-inner {
 }
 
 .btn.active,
-.btn:active {
+.btn:active,
+.btn.dropdown-open {
     background-image: none;
     outline: 0;
     @include box-shadow(rgba(0, 0, 0, 0.15) 0 2px 4px inset, rgba(0, 0, 0, 0.05) 0 1px 2px inset);
@@ -153,7 +156,8 @@ input::-moz-focus-inner {
 
 .btn_main:hover i,
 .btn_main:focus i,
-.btn_main:active i {
+.btn_main:active i,
+.btn_main.dropdown-open i {
     opacity: 1.0;
 }
 
@@ -161,7 +165,8 @@ input::-moz-focus-inner {
 .btn_main:focus,
 .btn_main.active,
 .btn_main.disabled,
-.btn_main[disabled] {
+.btn_main[disabled],
+.btn_main.dropdown-open {
     background-color: desaturate($btn_main-color, 30%);
     @include background-image(linear-gradient(lighten($btn_main-color, 10%), darken($btn_main-color,10%))); /* CSS3 */
 }
@@ -262,4 +267,10 @@ $btn-initial-file-color-final: #f9c143;
 
 #btn-initial-file:hover {
     opacity: 1.0;
+}
+
+/* icone para botões com dropdown */
+.btn-group .icon-arrow-down-3:before {
+    margin-left: -5px;
+    font-size: 14px;
 }

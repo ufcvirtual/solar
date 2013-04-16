@@ -1,15 +1,21 @@
-ul.dynatree-container, #tree{
-    padding-top: 0px;
-    background-color: #F5F8FB; 
-    border: none;
-    padding-top: 0px;
-    margin-top: 0px;
-    min-height: 180px;
+#tree {
+    height: 218px;
+    overflow-y: auto;
+    padding: 5px 3px;
 }
 
-#folder_window ul.dynatree-container {
-    background-color: #f9f9f9;
-    min-height: 150px;
+ul.dynatree-container{
+    border: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+#tree, ul.dynatree-container {
+    background-color: #F5F8FB;
+}
+
+#folder_dropdown ul.dynatree-container {
+    background-color: white;
 }
 
 #folders_tree {
@@ -17,6 +23,9 @@ ul.dynatree-container, #tree{
     border: none;
     padding-top: 0px;
     margin-top: 0px;
+    min-height: 80px;
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 .dynatree-folder .dynatree-ico-cf span.dynatree-icon, .dynatree-folder .dynatree-ico-ef span.dynatree-icon, .dynatree-folder span.dynatree-icon, span.dynatree-icon{

@@ -97,7 +97,7 @@
     $("#save_button").click(function(){
       submit_form('lesson_form', 'lesson_form', '#{list_lessons_path}', 'first_step'); 
       if(new_action && $(this).html() == "#{I18n.t(:continue, :scope => [:lessons, :new])}"){
-        $('#lightBoxDialogTitle').html('#{I18n.t(:new, :scope => [:lessons, :list])} > #{I18n.t(:files_management, :scope => [:lesson_files])}');
+        $('#lightBoxDialogTitle').html('<h1>#{I18n.t(:new, :scope => [:lessons, :list])} > #{I18n.t(:files_management, :scope => [:lesson_files])}</h1>');
       }
     });
 
