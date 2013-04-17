@@ -10,7 +10,7 @@ module LessonsHelper
 
     lessons.each do |l|
       order_lesson = (atual_id_open == l.lesson_id) ? count.to_s : order_lesson.to_s
-      path_lesson = l.type_lesson == 1 ? l.address : "/media/lessons/#{l.allocation_tag_id}/#{l.address}"
+      path_lesson = l.type_lesson == 1 ? l.address : "/media/lessons/#{l.lesson_id}/#{l.address}"
       text_lesson = [t(:lesson, :scope => [:lessons, :list]), ' ', count.to_s, ' - ', total_lesson.to_s].join('')
 
       unless (l.schedule.end_date.to_date < Date.today || l.schedule.start_date.to_date > Date.today)
