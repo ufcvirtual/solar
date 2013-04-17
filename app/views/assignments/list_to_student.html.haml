@@ -132,7 +132,7 @@
                   = " "
                 - else
                   =l pa.attachment_updated_at.to_time, :format => :files
-              %td{:style => "width: 60px", :align => "center"}= button_to t(:delete, :scope => [:assignment, :files]), delete_file_assignments_path(:file_id => pa.id, :type => 'public'), :confirm => t(:delete_msg, :scope => [:assignment, :files]), :class => "btn btn_caution"
+              %td{:style => "width: 60px", :align => "center"}= button_to t(:delete, :scope => [:assignment, :files]), delete_file_assignments_path(:file_id => pa.id, :type => 'public'), :confirm => t(:delete_msg, :scope => [:assignment, :files]), :class => "btn btn_caution", method: :delete
     - else
       .block_content.block_content_text= t(:itens_not_found)
     %div{:style => "background-color: white; padding-top:6px"}
