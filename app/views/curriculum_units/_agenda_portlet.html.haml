@@ -1,7 +1,8 @@
 #block_schedule.block_small
   .block_title
     %h2
-      %i.icon-calendar= t(:curriculum_access_agenda)
+      %i.icon-calendar
+      = t(:curriculum_access_agenda)
   .calendar#agenda{:url_for => schedules_path}
   .calendar_events
 
