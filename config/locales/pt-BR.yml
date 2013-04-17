@@ -605,6 +605,7 @@
     errors:
       cant_delete: "Aula tornou-se rascunho, pois estava disponível para uso dos alunos!"  
       invalid_lesson_to_download: Apenas aulas do tipo de arquivo e não vazias podem ser baixadas
+      invalid_link: "O endereço deve ser iniciado por http:// ou https://"
 
   lesson_modules:
     none: "Nenhum módulo cadastrado"

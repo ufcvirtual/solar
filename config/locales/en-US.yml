@@ -447,6 +447,7 @@
     errors:
       cant_delete: "Lesson became draft, because it was available to use by students!"     
       invalid_lesson_to_download: Only not empty and file lessons can be downloaded
+      invalid_link: "Address must be started by http:// or https://"
 
   lesson_modules:
     none: "No module registered"
