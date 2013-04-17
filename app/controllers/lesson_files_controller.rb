@@ -21,7 +21,6 @@ class LessonFilesController < ApplicationController
   end
 
   def new
-    
     begin
       @lesson  = Lesson.where(id: params[:lesson_id]).first
       authorize! :new, Lesson, on: [@lesson.lesson_module.allocation_tag_id]
@@ -66,7 +65,6 @@ class LessonFilesController < ApplicationController
   end
 
   def edit
-
     begin
       @lesson  = Lesson.where(id: params[:lesson_id]).first
       authorize! :new, Lesson, on: [@lesson.lesson_module.allocation_tag_id]
@@ -101,18 +99,17 @@ class LessonFilesController < ApplicationController
 
       elsif params[:type] == "initial_file" # arquivo inicial
         raise "error"  unless File.file?(File.join(lesson_path, params[:path])) # verifica se existe e se é arquivo
-        @lesson.update_attribute(:address, params[:path])
+        path = params[:path].split(File::SEPARATOR).delete_if {|f|f == '' or f.nil?}.join(File::SEPARATOR)
+        @lesson.update_attribute(:address, path)
+        # @lesson.update_attribute(:address, params[:path])
       end
-    @address = @lesson.address
+      @address = @lesson.address
 
-    rescue CanCan::AccessDenied
-      error = true
     rescue
       error = true
     end
 
-
-    render error ? {nothing: true, status: 500} : {action: :index, satus: 200}
+    render error ? {nothing: true, status: 500} : {action: :index, satus: :ok}
   end
 
   def destroy

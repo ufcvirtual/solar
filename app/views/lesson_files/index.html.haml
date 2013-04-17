@@ -7,7 +7,7 @@
   :javascript
     var treeData             = #{@files};
     var folderTreeData       = #{@folders};
-    var initial_file_address = "#{@address}";
+    var initial_file_address = "/#{@address}";
     var extensions           = #{Solar::Application.config.black_list[:extensions]};
 
   = hidden_field_tag :remove_path, remove_node_lesson_files_path(lesson_id: @lesson.id)
