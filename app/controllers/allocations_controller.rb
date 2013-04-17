@@ -31,7 +31,7 @@ class AllocationsController < ApplicationController
 
   # Método, chamado por ajax, para buscar usuários para alocação
   def search_users
-    text                 = URI.unescape(params[:data])
+    text                 = URI.unescape(params[:user])
     @text_search         = text
     @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
     @users               = User.where("lower(name) ~ '#{text.downcase}'")

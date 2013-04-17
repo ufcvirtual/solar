@@ -45,20 +45,21 @@
     #search_user
    
 :javascript
+
   $(document).ready(function() {
-    
+
     $("#search").click(function() {
       var url_for = "#{search_users_allocations_path}";
-      $("#search_user").load(url_for, { data: encodeURIComponent($("#text_search").val()), allocation_tags_ids: $("#allocation_tags_ids").val() });
-    })
+      var data = { user: encodeURIComponent($("#text_search").val()), allocation_tags_ids: $("#allocation_tags_ids").val() };
+      $.get(url_for, data, function(data) { $('#search_user').html(data); });
+    });
 
     $(".deactivate").click(function(){
       submit_form($(this).parent().attr("id"), null, '#{designates_allocations_path}');
-    })
+    });
 
     $(".activate").click(function(){
       submit_form($(this).parent().attr("id"), null, '#{designates_allocations_path}');
-    })
+    });
 
   });
-    
