@@ -1919,11 +1919,12 @@ deveria ser generico p/ ser reaproveitado em outras telas */
     vertical-align: top;
 }
 
-.forum_post_new {
+.block_title > .forum_post_new {
     width: auto;
-    display: block !important;
     // margin: 10px auto 8px auto;
     padding: 0;
+    display: none;
+    margin-top: 1px;
 }
 
 .forum_post_reply {
@@ -1931,6 +1932,7 @@ deveria ser generico p/ ser reaproveitado em outras telas */
     overflow: hidden;
     // padding-top: 5px;
     position: relative;
+    display: none;
 }
 
 .forum_post_inner_content {
