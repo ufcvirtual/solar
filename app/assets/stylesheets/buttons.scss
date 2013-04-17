@@ -89,6 +89,7 @@ input::-moz-focus-inner {
 .btn:focus,
 .btn:active,
 .btn.disabled,
+.btn_disabled,
 .btn[disabled]
 .btn.dropdown-open {
     background-color: darken($btn-color,7%);
@@ -108,13 +109,14 @@ input::-moz-focus-inner {
     filter:alpha(opacity=80);
 }
 
+.btn.disabled i,
 .btn_disabled i,
 .btn[disabled] i,
 .btn[disabled]:focus i,
 .btn[disabled]:active i,
 .btn[disabled]:hover i {
-    @include opacity(0.6);
-    filter:alpha(opacity=60);
+    @include opacity(0.5);
+    filter:alpha(opacity=50);
 }
 
 .btn:hover,
@@ -171,10 +173,21 @@ input::-moz-focus-inner {
 .btn_main:focus,
 .btn_main.active,
 .btn_main.disabled,
+.btn_main.btn_disabled,
 .btn_main[disabled],
 .btn_main.dropdown-open {
     background-color: desaturate($btn_main-color, 30%);
     @include background-image(linear-gradient(lighten($btn_main-color, 10%), darken($btn_main-color,10%))); /* CSS3 */
+}
+
+.btn_main.disabled i,
+.btn_main.btn_disabled i,
+.btn_main[disabled] i,
+.btn_main[disabled]:focus i,
+.btn_main[disabled]:active i,
+.btn_main[disabled]:hover i {
+    @include opacity(0.5);
+    filter:alpha(opacity=50);
 }
 
 .btn_main:hover i,
@@ -228,15 +241,42 @@ input::-moz-focus-inner {
 }
 
 .btn_caution.disabled,
+.btn_caution.btn_disabled
 .btn_caution[disabled] {
-    background-color: #bd362f;
-    *background-color: #a9302a;
+    border-color: #bd362f #bd362f #802420;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+
+.btn_caution.disabled i,
+.btn_caution.btn_disabled i,
+.btn_caution[disabled] i,
+.btn_caution[disabled]:focus i,
+.btn_caution[disabled]:active i,
+.btn_caution[disabled]:hover i,
+.btn_warning.disabled i,
+.btn_warning.btn_disabled i,
+.btn_warning[disabled] i,
+.btn_warning[disabled]:focus i,
+.btn_warning[disabled]:active i,
+.btn_warning[disabled]:hover i {
+    color: #fff;
+    @include opacity(0.5);
+    filter:alpha(opacity=50);
+    text-shadow: none;
+}
+
+.btn_caution.disabled,
+.btn_caution.btn_disabled,
+.btn_caution[disabled] {
+    background-color: #CE1A15;
+    *background-color: #CE1A15;
 }
 
 .btn_warning:hover,
 .btn_warning:focus,
 .btn_warning:active,
 .btn_warning.disabled,
+.btn_warning.btn_disabled,
 .btn_warning[disabled] {
     color: #ffffff;
     background-color: darken($btn_caution-color, 20%);
@@ -248,6 +288,7 @@ input::-moz-focus-inner {
 }
 
 .btn.disabled,
+.btn_disabled,
 .btn[disabled] {
     cursor: default;
     background-image: none;
