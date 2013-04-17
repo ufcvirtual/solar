@@ -75,13 +75,13 @@ class AllocationsController < ApplicationController
   # Usado na matrícula
   def create
     profile = Profile.student_profile
-    status  = Allocation_Pending
+    status = Allocation_Pending
 
-    ok      = allocate(params[:allocation_tag_id], params[:user_id], profile, status, params[:id])
+    ok = allocate(params[:allocation_tag_id], params[:user_id], profile, status, params[:id])
     message = ok ? ['notice', 'success'] : ['alert', 'error']
 
     respond_to do |format|
-      format.html { redirect_to(enrollments_url, message[0].to_sym => t(:enrollm_request, :scope => [:allocations, message[1].to_sym])) }
+      format.html { redirect_to(enrollments_url, message.first.to_sym => t(:enrollm_request, :scope => [:allocations, message.last.to_sym])) }
     end
   end
 
@@ -107,7 +107,6 @@ class AllocationsController < ApplicationController
         format.html { render :designates, :status => 500 } 
       end      
     end
-
 
   end
 
@@ -215,7 +214,6 @@ class AllocationsController < ApplicationController
         format.html{ render :designates, :status => 500 }
       end
     end
-
   end
 
   def activate
@@ -250,6 +248,7 @@ class AllocationsController < ApplicationController
   end  
 
   private
+
     def status_hash_of_allocation(allocation_status)
       case allocation_status
         when Allocation_Pending, Allocation_Pending_Reactivate
@@ -262,26 +261,27 @@ class AllocationsController < ApplicationController
     end
 
     def allocate(allocation_tags_ids, user_id, profile, status, id = nil)
+      return false unless ((params.include?(:allocation_tags_ids) or params.include?(:allocation_tag_id)) and params.include?(:user_id) and (profile != ''))
+
       total, corrects = 0, 0
-      if (params.include?(:allocation_tags_ids) or params.include?(:allocation_tag_id)) and params.include?(:user_id) and (profile != '')
-        unless params[:id].nil? # se alocação já existe (id não será nulo), então está desativada e deve ser reativada
-          allocation        = Allocation.find(params[:id])
-          allocation.status = Allocation_Pending_Reactivate
-          total    = 1
-          corrects = 1 if allocation.save
-        else # se alocação está sendo realizada agora, deve ser criada
-          total = allocation_tags_ids.size
-          [allocation_tags_ids].flatten.each do |id|
-            allocation = Allocation.new({
-              :user_id => params[:user_id],
-              :allocation_tag_id => id,
-              :profile_id => profile,
-              :status => status
-            })
-            corrects = corrects + 1 if allocation.save
-          end # allocation_tags_ids.each
-        end # unless params[:id].nil?
-      end
+      unless params[:id].nil? # se alocação já existe (id não será nulo), então está desativada e deve ser reativada
+        allocation        = Allocation.find(params[:id])
+        allocation.status = Allocation_Pending_Reactivate
+        total    = 1
+        corrects = 1 if allocation.save
+      else # se alocação está sendo realizada agora, deve ser criada
+        total = [allocation_tags_ids].compact.size
+        [allocation_tags_ids].flatten.each do |id|
+          allocation = Allocation.new({
+            :user_id => params[:user_id],
+            :allocation_tag_id => id,
+            :profile_id => profile,
+            :status => status
+          })
+          corrects = corrects + 1 if allocation.save
+        end # allocation_tags_ids.each
+      end # unless params[:id].nil?
+
       return (corrects == total)
     end
 
