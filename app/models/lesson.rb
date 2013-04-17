@@ -13,9 +13,13 @@ class Lesson < ActiveRecord::Base
 
   validates :name, :type_lesson, presence: true #:address
 
-  validates_format_of :address, :with => /^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/ix, :message =>I18n.t("lessons.errors.invalid_link")
+  validates_format_of :address, :with => /^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/ix, :message =>I18n.t("lessons.errors.invalid_link"), :if => :isLink?
   
   FILES_PATH = Rails.root.join('media', 'lessons') # path dos arquivos de aula
+
+  def isLink?
+    return (type_lesson == Lesson_Type_Link)
+  end 
 
   def path(full = false, with_address = true)
     if type_lesson.to_i == Lesson_Type_File
