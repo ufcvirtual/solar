@@ -47,7 +47,7 @@ class PostsController < ApplicationController
     @post = Post.new(params[:discussion_post])
 
     @post.user_id    = current_user.id
-    @post.profile_id = current_user.profiles_with_access_on('create', 'posts', @post.discussion.allocation_tag_id, true).first
+    @post.profile_id = current_user.profiles_with_access_on('create', 'posts', @post.discussion.allocation_tag.related.join(','), true).first
     @post.level      = @post.parent.level.to_i + 1 unless @post.parent_id.nil?
 
     respond_to do |format|
