@@ -270,8 +270,8 @@ class AllocationsController < ApplicationController
         total    = 1
         corrects = 1 if allocation.save
       else # se alocação está sendo realizada agora, deve ser criada
-        total = [allocation_tags_ids].compact.size
-        [allocation_tags_ids].flatten.each do |id|
+        total = [allocation_tags_ids].compact.flatten.size
+        [allocation_tags_ids].compact.flatten.each do |id|
           allocation = Allocation.new({
             :user_id => params[:user_id],
             :allocation_tag_id => id,
