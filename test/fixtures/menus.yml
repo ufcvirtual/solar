@@ -199,23 +199,11 @@ relat_aval:
   order: 3
 
 # MENU PAI - 90
-unidades_curriculares:
-  id: 90
-  name: menu_curriculum_unit
-  order: 9
-
 matricula_uc:
-  id: 901
-  parent_id: 90
+  id: 90
   name: menu_manage_registration
-  order: 1
+  order: 11
   resource_id: 70
-
-hist_uc:
-  id: 902
-  parent_id: 90
-  name: menu_history
-  order: 2
 
 # MENU PAI - 100
 registration:
@@ -228,7 +216,7 @@ registration:
 menu_support_material_record:
   id: 120
   name: menu_support_material_record
-  order: 11
+  order: 12
   resource_id: 63
 
 # MENU PAI - 130
