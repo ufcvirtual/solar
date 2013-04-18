@@ -213,7 +213,7 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
         delete(discussion_path(discussions(:forum_1), :allocation_tags_ids => allocation_tags_ids))
       end
 
-      assert_response :error
+      assert_response :unprocessable_entity
     end
 
     test "nao excluir forum - sem permissao" do
@@ -228,7 +228,7 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
         delete(discussion_path(discussions(:forum_1), :allocation_tags_ids => allocation_tags_ids))
       end
 
-      assert_response :error
+      assert_response :unprocessable_entity
     end
     
 end
