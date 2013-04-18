@@ -146,22 +146,22 @@ class DiscussionsController < ApplicationController
   end
 
   def destroy
-    discussion = Discussion.find(params[:id])
-    
     begin
-      authorize! :destroy, discussion
-      schedule = discussion.schedule
-      raise "error" unless discussion.destroy
-      schedule.destroy if schedule.can_destroy?
-      respond_to do |format|
-        format.html { render :list, :status => 200 }
+      @discussion = Discussion.find(params[:id])
+      authorize! :destroy, @discussion, on: params[:allocation_tags_ids].split(" ")
+
+      success = false
+      if @discussion.destroy
+        success = true
+      else
+        raise @discussion.errors.full_messages.join(' ')
       end
-    rescue
-      respond_to do |format|
-        format.html { render :list, :status => 500 }
-      end
+    rescue Exception => e
+      msg = e.message
+      success = false
     end
-    
+
+    render json: {success: success, msg: msg}, status: success ? :ok : :unprocessable_entity
   end
 
 end

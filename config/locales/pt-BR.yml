@@ -703,6 +703,7 @@
       existing_name: já existe
       range_date_error: deve ser menor que a data final
       offer_period: deve estar dentro do período da oferta (%{start} - %{end})
+      discussion_with_posts: "Fórum com postagens"
     buttons:
       save: Salvar
       cancel: Cancelar
