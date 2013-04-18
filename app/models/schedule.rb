@@ -20,7 +20,7 @@ class Schedule < ActiveRecord::Base
 
   ## Verifica se pode deletar o schedule: permite apenas se não tiver dependências
   def can_destroy?
-    return false if not(discussions.empty? and lessons.empty? and assignments.empty? and schedule_events.empty?)
+    (discussions.empty? and lessons.empty? and assignments.empty? and schedule_events.empty?)
   end
 
   def self.events(allocation_tags, period = false, date_search = nil)

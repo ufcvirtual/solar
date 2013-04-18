@@ -13,7 +13,9 @@ class Discussion < ActiveRecord::Base
   after_destroy :delete_schedule
 
   def can_destroy?
-    discussion_posts.empty?
+    is_empty = discussion_posts.empty?
+    errors.add(:base, I18n.t(:discussion_with_posts, :scope => [:discussion, :errors])) unless is_empty
+    return is_empty
   end
 
   def delete_schedule
