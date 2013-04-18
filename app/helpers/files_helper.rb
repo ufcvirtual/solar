@@ -1,7 +1,7 @@
 module FilesHelper
 
   def download_file(redirect_error, pathfile, filename = nil)
-    if File.exist?(pathfile)
+    if (not pathfile.nil?) and (File.exist?(pathfile))
       send_file pathfile, filename: filename
     else
       redirect_to redirect_error, alert: t(:file_error_nonexistent_file)
