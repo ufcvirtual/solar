@@ -17,7 +17,9 @@ class Group < ActiveRecord::Base
   end
 
   def self.find_all_by_curriculum_unit_id_and_user_id(curriculum_unit_id, user_id)
-    Group.joins(:offer).where(offers: {curriculum_unit_id: curriculum_unit_id}, groups: {id: User.find(user_id).groups})
+    Group.joins(:offer).where(
+      offers: {curriculum_unit_id: curriculum_unit_id}, 
+      groups: {id: User.find(user_id).groups}).order('offers.semester DESC, groups.code ASC')
   end
 
   def has_any_lower_association?
