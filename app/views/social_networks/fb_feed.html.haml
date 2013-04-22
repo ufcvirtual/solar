@@ -6,15 +6,18 @@
 = javascript_include_tag "jquery"
 = javascript_include_tag "jquery.qtip.min"
 = javascript_include_tag "tooltip"
+= javascript_include_tag "new_post_facebook"
 
 .head
+  = link_to(content_tag(:i, nil, :class=>'icon-write new_post_button'), '#', 'data-tooltip' => t(:publish, :scope => [:facebook]))
   = link_to(content_tag(:i, nil, :class=>'icon-cycle'), '#', :onclick => 'location.reload(true);', :class => 'feed', 'data-tooltip' => t(:update_feed, :scope => [:facebook]))
-  = link_to(content_tag(:i, nil, :class=>'icon-pencil'), '#')
-  .info
-    %span.common
-      = t(:logged_in_as, :scope => [:facebook])
-    %span.commondark
-      = " " + @graph.get_object("me")['name']
+
+  .new_post
+    %form{:action => fb_post_wall_social_networks_path}
+      %textarea{:name => 'post', :placeholder => t(:placeholder, :scope => [:facebook])}
+      .bar_input
+        %input{:type => 'submit',:value => t(:publish, :scope => [:facebook])}
+ 
 
 - if @fb_posts.present?
   - @fb_posts.each do |fb_post|
@@ -30,13 +33,8 @@
       .post_content
         = fb_post.message
         .post_image
-          = image_tag fb_post.adress, :class => 'img' if fb_post.media_type.eql? 'photo' or fb_post.media_type.eql? 'video'
+          = image_tag fb_post.adress if fb_post.media_type.eql? 'photo' or fb_post.media_type.eql? 'video'
           - if fb_post.media_type.eql? 'link' or fb_post.media_type.eql? 'swf'
             = image_tag fb_post.adress
         .post_url
           %a.link{href: "#{fb_post.link}", :target => "_blank"}= t(:original_content, :scope => [:facebook]) if fb_post.link
-
-        / - if fb_post.parent.present?
-        /   .post_actions
-        /     %a.like{:href => "Teste"} Curtir
-        /     %a.comment{:href => "Teste"} Comentar

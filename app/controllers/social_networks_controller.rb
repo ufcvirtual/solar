@@ -23,7 +23,7 @@ class SocialNetworksController < ApplicationController
     # Pega um objeto da ferramenta API, através da qual podemos acessar as informações do usuário no facebook
     @graph = Koala::Facebook::API.new(user_session[:fb_token]) if user_session[:fb_token].present?
 
-    fql_query = "SELECT parent_post_id,actor_id,message,created_time,attachment,type FROM stream WHERE filter_key in (SELECT filter_key FROM stream_filter WHERE uid=me() AND type='newsfeed') AND is_hidden = 0 LIMIT 2"
+    fql_query = "SELECT parent_post_id,actor_id,message,created_time,attachment,type FROM stream WHERE filter_key in (SELECT filter_key FROM stream_filter WHERE uid=me() AND type='newsfeed') AND is_hidden = 0 LIMIT 3"
     feed = @graph.fql_query(fql_query) #unless @graph.nil?
 
     @fb_posts = []
@@ -67,5 +67,11 @@ class SocialNetworksController < ApplicationController
     user_session.delete(:fb_token)
     redirect_to :pages
   end
-  
+
+  def fb_post_wall
+      @graph = Koala::Facebook::API.new(user_session[:fb_token]) if user_session[:fb_token].present?
+      my_post = params[:post]
+      @graph.put_wall_post(my_post) unless my_post.empty? or @graph.nil? 
+      redirect_to fb_feed_social_networks_path
+  end
 end

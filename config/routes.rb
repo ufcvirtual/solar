@@ -23,6 +23,7 @@ Solar::Application.routes.draw do
       get :fb_authenticate
       get :fb_feed
       get :fb_logout
+      get :fb_post_wall
     end
   end
 

@@ -14,7 +14,7 @@
         %iframe{id: 'iframe', src: fb_feed_social_networks_path, width: 255, height: 166, frameborder: 0}
       - else
         - oauth = Koala::Facebook::OAuth.new(Fb_Config['app_id'], Fb_Config['secret_key'], Fb_Config['data-href'])
-        = link_to t(:login, :scope => [:facebook]), oauth.url_for_oauth_code(:permissions => "read_stream"), target: '_top'
+        = link_to t(:login, :scope => [:facebook]), oauth.url_for_oauth_code(:permissions => ["read_stream", "publish_stream"]), target: '_top'
         / .new_post
         /   %textarea{:type => "text", :placeholder => "Teste"}
         /   .new_post_bar
@@ -26,26 +26,34 @@
 
     .slide.slide-settings{:'data-status'=>'closed'}
       %ul
+        - @graph = Koala::Facebook::API.new(user_session[:fb_token]) if user_session[:fb_token].present?
         %li.settings
           %a{:href => "#"} Configurações
+        - if @graph  
+          %li.info
+            %span.common
+              = t(:logged_in_as, :scope => [:facebook])
+            %span.commondark
+              = " " + @graph.get_object("me")['name']
         %li.newsfeed.active
-          %a{:href => "#"} Feed de Notícias
-        %li.logout
-          = link_to t(:logout, :scope => [:facebook]), fb_logout_social_networks_path
-        %li.events
-          %a{:href => "#"}
-            Eventos
-            %span.counter 1
-      %h3 Grupos
-      %ul
-        %li.group01
-          %a{:href => "#"}
-            UFC
-            %span.counter 3
-        %li.group02
-          %a{:href => "#"}
-            CP2
-            %span.counter 17
-        %li.group03
-          %a{:href => "#"} Grupo sobre tal e tal
+          %a{:href => fb_feed_social_networks_path} Feed de Notícias
+        -if @graph  
+          %li.logout
+            = link_to t(:logout, :scope => [:facebook]), fb_logout_social_networks_path
+      /   %li.events
+      /     %a{:href => "#"}
+      /       Eventos
+      /       %span.counter 1
+      / %h3 Grupos
+      / %ul
+      /   %li.group01
+      /     %a{:href => "#"}
+      /       UFC
+      /       %span.counter 3
+      /   %li.group02
+      /     %a{:href => "#"}
+      /       CP2
+      /       %span.counter 17
+      /   %li.group03
+      /     %a{:href => "#"} Grupo sobre tal e tal
 

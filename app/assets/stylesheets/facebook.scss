@@ -47,7 +47,7 @@ body, a {
   width: 255px;
   padding: 4px;
   margin: 0px;
-  background-color: #EEE9E9;
+  background-color: #f6f7f8; 
   border-bottom-width: 2px;
   border-bottom-style: solid;
   border-bottom-color: #CFCFCF;
@@ -63,15 +63,8 @@ body, a {
   color: #000000;
 }
 
-// FIX: temporariamente ocultando identificacao do usuario
-.head .info {
-  display: none;
-}
-
 .head .feed{
   position: relative;
-  top: 2px;
-  left: 5px;
   font-size: 10pt;
   color:#1E90FF
 }
@@ -84,68 +77,58 @@ body, a {
   color:#666
 }
 
-.post textarea {
-  transition: all 0.5s ease;
-  -moz-transition: all 0.5s;
-  -webkit-transition: all 0.5s;
+form{
+  border: 1px solid #bdc7d8;
 }
 
-.post .new_post, .post .new_comment {
-  border: 1px solid #d0d0d0;
+.bar_input{
+  height: 28px;
+  background-color: #f2f2f2;
+  border-top: 1px solid #e6e6e6;
 }
 
-.post .new_post textarea {
-  width: 97%;
-  height: 20px;
+.new_post input{
+  height: 22px;
+  width: 61px;
+  border:1px solid #29447e;
+  background-color: #5b74a8;
+  color:  #fff;
+  font-family: Ubuntu;
+  padding-top: 1px;
+  font-size: 9pt;
+  font-weight: bold;
+  float:right;
+  margin-top:3px;
+  margin-right: 2px;
+}
+
+.new_post input:hover{
+  cursor: pointer;
+}
+
+.new_post{
+  display:none;
+  overflow: hidden;
+  padding-left: 4px;
+  padding-top: 10px;
+  padding-right: 25px;
+}
+
+.new_post textarea {
+  height: 50px;
+  max-width: 100%;
+  min-width: 100%;
   margin: 0 auto;
-  font-size: 12pt;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 10pt;
   padding: 2px;
   border: none;
   overflow: hidden;
 }
 
-.post .new_post textarea.active {
+.new_post textarea.active {
   height: 70px;
   overflow: auto;
-}
-
-.post .new_post_bar {
-  display: none;
-  text-align: right;
-  padding: 1px;
-  background-color: #f2f2f2;
-}
-
-.post .new_post_bar button {
-  vertical-align: middle;
-  padding: 0 16px;
-  background-color: #5b74a8;
-  color: white;
-  font-size: 11px;
-  line-height: 20px;
-  border: 1px solid;
-  border-color: #29447e #29447e #1a356e;
-}
-
-.post .new_post_bar button:focus, .post .new_post_bar button:active {
-  border: 1px solid #29447e;
-  -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
-  padding-top: 3px;
-  line-height: 17px;
-  background-color: #4f6aa3;   
-}
-
-.post .new_post_bar button.cancel {
-  background-color: #e8e8e8;
-  color: #000;
-  border-color: #c8c8c8;
-  margin-right: 2px;
-}
-
-.post .new_post_bar button.cancel:focus, .post .new_post_bar button.cancel:active {
-  padding-top: 3px;
-  -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
-  background-color: #dedede;
 }
 
 .user_avatar {
