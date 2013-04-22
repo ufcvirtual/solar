@@ -44,8 +44,6 @@
       = button_tag content_tag(:i, nil, :class=>'icon-edit'), type: :button, :class => 'btn', id: 'btn-rename', :'data-tooltip' => t('.rename')
       = button_tag content_tag(:i, nil, :class=>'icon-trash'), type: :button, :class => 'btn btn_caution', id: 'btn-remove-node', :'data-tooltip' => t('.remove')
       = button_tag content_tag(:i, nil, :class=>'icon-move'), type: :button, :class => 'btn', id: 'btn-move-node', :'data-tooltip' => t('.move'), "data-dropdown" => "#folder_dropdown"
-      %button.btn
-        Teste
       #folder_dropdown.dropdown.dropdown-tip
         .dropdown-panel
           #folder_dropdown_alert
