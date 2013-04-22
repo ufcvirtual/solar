@@ -454,7 +454,7 @@ $mysolar_topbar_height: 38px;
     top:$mysolar_topbar_height;
     width:170px;
     background-color: #fff;
-    margin-left: -50px;
+    margin-left: -40px;
     z-index: 100;
     display:none;
     border-bottom: 2px solid #f9db43;
@@ -465,6 +465,10 @@ $mysolar_topbar_height: 38px;
     text-align: left;
     overflow: hidden;
     box-shadow: 3px 3px 15px 0px #bbb;
+}
+
+#mysolar_top_submenu a:hover {
+    text-decoration: underline;
 }
 
 #mysolar_top_submenu ul{
