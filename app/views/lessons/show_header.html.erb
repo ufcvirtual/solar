@@ -44,4 +44,12 @@
   $("#lesson_name").html("<%= [t(:lesson, :scope => [:lessons, :list]), ' ', order_lesson.to_s, ' - ', total_lesson.to_s].join('') %>");
   $("#mov_atual").html("<%=order_lesson%>");
   move(0);
+
+  $('[id^="lesson_link"]').click(function(){
+    path        = $(this).attr("data-path");
+    text_lesson = $(this).attr("data-text_lesson");
+    count       = $(this).attr("data-count");
+    reload_frame(path, text_lesson, count);    
+  });
+
 </script>
