@@ -1,5 +1,3 @@
-= javascript_include_tag "edition.js"
-
 .first_step
 
   %span.form_requirement= t(:required_fields)
@@ -85,9 +83,11 @@
       var new_action = true;
 
   $(function(){
-    var options = $.extend($.datepicker.regional['#{I18n.locale}']);
-    options.dateFormat = global_config.locale.dateFormat.default;
-    $('#from_date, #until_date').datepicker(options);
+    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}'], {dateFormat: global_config.locale.dateFormat.default});
+
+    $('#from_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#until_date').datepicker("option", "minDate", selected); } }) );
+    $('#until_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#from_date').datepicker("option", "maxDate", selected); } }) );
+
     if($("#lesson_type_lesson").val() == '#{Lesson_Type_File}'){
       $(".url_lesson").hide();
       if(new_action)
@@ -116,11 +116,6 @@
       $(".end_date").removeClass("invisible").addClass("visible");
     }
   });
-
-  $("#from_date").change(function(){
-    if (!$("#check_end_date").checked)
-      $("#until_date").val($("#from_date").val());
-  })
 
   $("#lesson_type_lesson").change(function(){
     t = $('#lesson_type_lesson').val(); 

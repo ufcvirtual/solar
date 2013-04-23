@@ -5,13 +5,13 @@
 #   :current_page,
 #   :menu,
 #   :tabs => {
+#     :active => 'name',
 #     :opened => {
 #       'name' => {
 #         :breadcrumb => [],
 #         :url => {}
 #       }
-#     },
-#     :active => 'name'
+#     }
 #   }
 # }
 ##########
@@ -24,7 +24,10 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale, :start_user_session, :application_context, :current_menu, :another_level_breadcrumb
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to home_path, alert: t(:no_permission)
+    respond_to do |format|
+      format.html { redirect_to home_path, alert: t(:no_permission) }
+      format.json { render json: {msg: t(:no_permission)}, status: :unauthorized }
+    end
   end
 
   rescue_from ActiveRecord::RecordNotFound do |exception|
