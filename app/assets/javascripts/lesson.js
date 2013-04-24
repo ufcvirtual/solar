@@ -65,6 +65,8 @@ function goto_lesson() {
 }
 
 function reload_frame(path,name,mov_atual) {
+    path = change_path_to_embeded(path);
+
     $("#lesson_name").html(decodeURI(name));
     window.parent.frame_lesson_content.location.href = path;
     
@@ -166,4 +168,14 @@ function clear_lesson() {
     $("#dimmed_div", parent.document.body).remove();
     $("#min_button", parent.document.body).remove();
     $("#close_button", parent.document.body).remove();
+}
+
+function change_path_to_embeded(path){
+    // recupera o texto que "equivale" ao informado, ou seja, match recuperará o caminho de um link para o youtube caso o path o seja
+    var matches = path.match(/(?:http:\/\/)?(?:www\.)?(?:youtube\.com|youtube)\/(?:watch\?v=)?(.+)/g); 
+
+    if (matches)
+      path = 'http://www.youtube.com/embed/' + matches[0].split("v=")[1]; // e transformará o link padrão em um "embeded" para ser adicionado ao iframe
+
+  return path;
 }
