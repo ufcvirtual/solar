@@ -35,8 +35,6 @@
               = t(:logged_in_as, :scope => [:facebook])
             %span.commondark
               = " " + @graph.get_object("me")['name']
-        %li.newsfeed.active
-          %a{:href => fb_feed_social_networks_path} Feed de Notícias
         -if @graph  
           %li.logout
             = link_to t(:logout, :scope => [:facebook]), fb_logout_social_networks_path
