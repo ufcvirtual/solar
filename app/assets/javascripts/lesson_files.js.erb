@@ -286,10 +286,11 @@ function validName(parent_node, name){
 function deleteNodes(nodes){
   if( typeof nodes != "undefined" ){
     if(nodes[0].data.key != "_2"){ // remover selecionados
-      if( typeof initial_file_node != "undefined" ){
-        if(jQuery.inArray(initial_file_node, nodes) != -1 ) // se o arquivo inicial estiver na lista para remoção, não permite
-          flash_message("<%= I18n.t(:cant_remove_initial_file, :to => I18n.t(:remove, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "flash_messages");
-      }else if (confirm("<%=I18n.t(:delete_confirm, :scope => [:lesson_files])%>")){
+      if( typeof initial_file_node == "undefined" ) // não existe arquivo inicial
+        initial_file_node = null;
+      if(jQuery.inArray(initial_file_node, nodes) != -1) // se o arquivo inicial estiver na lista para remoção, não permite
+        flash_message("<%= I18n.t(:cant_remove_initial_file, :to => I18n.t(:remove, :scope => [:lesson_files]), :scope => [:lesson_files]) %>", "alert", "flash_messages");
+      else if(confirm("<%=I18n.t(:delete_confirm, :scope => [:lesson_files])%>")){
         for (var i = 0; i < nodes.length; i++){
           if (nodes[i].li != null && nodes[i].data.key != '_2')
             saveDeletion(nodes[i], false);
