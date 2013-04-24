@@ -667,6 +667,7 @@
   forum_table_title: "Fóruns disponíveis"
   forum_table_date: "Data de acesso"
   forum_message: "Nenhum fórum disponível"
+  forum_no_messages: Nenhuma postagem em fórum disponível
   forum: "Fórum"
   forum_new_message: "Nova Postagem"
   forum_closed: "Fórum encerrado"

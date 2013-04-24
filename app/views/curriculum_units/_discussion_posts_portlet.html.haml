@@ -1,0 +1,23 @@
+/ Portlet da Unidade Curricular que exibe as postagens dos fóruns ligados a ela mais recentes.
+.block_small#forum_portlet
+  .block_title
+    %h2
+      %i.icon-forum
+      = t(:curriculum_access_forum)
+
+  .block_content#block_forum
+    - if !(@discussion_posts.nil? || @discussion_posts.empty?)
+      - @discussion_posts.each do |discussion_post|
+        .block_content_line
+          %span.block_content_gray
+            - if posted_today?(discussion_post.updated_at.to_datetime)
+              = l(discussion_post.updated_at, :format => :today)
+            - else 
+              = l(discussion_post.updated_at, :format => :not_today)
+          = link_to discussion_post.user.nick, discussion_posts_path(discussion_post.discussion_id), {:class => "link_content"}
+          - clear_content = strip_tags discussion_post.content
+          - clear_content = clear_content.rpartition("&")[0] if clear_content.rpartition("&")[2].length < 8 
+          - clear_content = slice_content(clear_content, 107) << ' (...)' if clear_content.length > 110
+          = raw clear_content
+    - else
+      .block_content_text= t(:forum_no_messages)

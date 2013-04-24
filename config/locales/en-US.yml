@@ -510,6 +510,7 @@
   forum_table_title: "Available Discussions"
   forum_table_date: "Access date"
   forum_message: "No discussion available"
+  forum_no_messages: No discussion post available
   forum: "Discussion"
   forum_new_message: "New Post"
 
