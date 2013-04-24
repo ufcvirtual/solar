@@ -75,7 +75,7 @@ Dado que estou logado com o usuario "editor" e com a senha "123456"
         E que eu preenchi "Objetivos" com "Objetivos da Unidade Curricular IV"
         E que eu preenchi "Pré-requisitos" com "Pré-requisitos da Unidade Curricular IV"
         Quando eu clicar em "Salvar"
-        Entao eu deverei ver "deve ser preenchido(a)"
+        Entao eu deverei ver "obrigatório"
 
 @javascript
 Cenário: Editar uma unidade curricular como usuário com permissão para isso

@@ -1,130 +1,131 @@
-.first_step
+.new_lesson_form
+  :css
+    .date_text_field {
+      margin-left: -4px;
+      margin-top: 0;
+      margin-bottom: 4px;
+      padding: 2px;
+    }
+    .ui-datepicker{
+      width: 15em;
+      padding: .2em .2em 0;
+      display: none;
+      background-color: white;
+    }
+    .visible {
+      display: inline-block;
+    }
+    select {
+      margin-bottom: 4px;
+      margin-left: -4px;
+    }
 
-  %span.form_requirement= t(:required_fields)
+  .first_step
+    %span.form_requirement= t(:required_fields)
 
-  .lesson_form.block_content
-    = simple_form_for(@lesson, :html => {:id => "lesson_form"}) do |f| 
-      = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
-      = hidden_field_tag(:lesson_module_id, params[:lesson_module_id])
+    .lesson_form.block_content
+      = simple_form_for(@lesson, :html => {:id => "lesson_form"}) do |f|
+        = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
+        = hidden_field_tag(:lesson_module_id, params[:lesson_module_id])
 
-      - start_date = @lesson.try(:schedule).try(:start_date) || Date.today
-      - end_date = @lesson.try(:schedule).try(:end_date) || start_date
+        - start_date = @lesson.try(:schedule).try(:start_date) || Date.today
+        - end_date = @lesson.try(:schedule).try(:end_date) || start_date
 
-      .form-inputs.block_content
-        .lesson_module
-          = f.label t(:lesson_module, :scope => [:editions, :items])
-          - if @lesson_modules
-            = f.collection_select(:lesson_module_id, @lesson_modules, :id, :name)
-          - elsif @lesson_module
-            = f.hint @lesson_module.name
-          - elsif @lesson.lesson_module
-            = f.hint @lesson.lesson_module.name
-        =f.input :name
-        =f.input :description  
-        - error_class = "field_with_errors" unless @schedule_error.blank?
-        .lesson_date{:class => error_class}
-          =f.label :start_date, :required => true
-          =text_field_tag "start_date", "", :id => "from_date", :title => "#{t(:from_date)}", :value => "#{l(start_date.to_date, :format => :default)}", :class => "date_text_field", :size => 10, :required => true
-          %div.end_date{class: ('invisible' if (!@lesson.has_end_date?) )}
-            =f.label :end_date
-            =text_field_tag "end_date", "", :id => "until_date", :title => "#{t(:until_date)}", :value => "#{l(end_date.to_date, :format => :default)}", :class => "date_text_field", :size => 10, :required => true
-            %span{:style => "display: inline-block;"}= @schedule_error  
-          .select_end_date
-            =f.label " "
-            =check_box("check","end_date", {id: 'check_end_date', checked: @lesson.has_end_date? })
-            =t(:enable_end_date, :scope => [:lessons, :new])      
-        .lesson_status 
-          =f.label t(:status, :scope => [:lessons, :new])
-          =f.select :status, ([ [t(:draft, scope: [:lessons, :new]), Lesson_Test.to_i], [t(:approved, scope: [:lessons, :new]), Lesson_Approved.to_i] ]), :include_blank => false
-        .lesson_type 
-          =f.label t(:type_lesson, :scope => [:lessons, :new])
-          - if @lesson_modules  
-            - if @lesson.type_lesson == Lesson_Type_File   
-              =f.hint t(:archive, :scope => [:lessons, :new])
-            -elsif @lesson.type_lesson == Lesson_Type_Link
-              =f.hint t(:link, :scope => [:lessons, :new])  
-          - else
-            =f.select :type_lesson, ([ [t(:link, :scope => [:lessons, :new]), Lesson_Type_Link], [t(:archive, :scope => [:lessons, :new]),Lesson_Type_File] ]), :include_blank => false
-        - if (@lesson_modules.nil? or @lesson.type_lesson == Lesson_Type_Link) 
-          .url_lesson
-            =f.input :address
-            .disabled 
+        .form-inputs.block_content
+          .lesson_module
+            = f.label t(:lesson_module, :scope => [:editions, :items])
+            - if @lesson_modules
+              = f.collection_select(:lesson_module_id, @lesson_modules, :id, :name)
+            - elsif @lesson_module
+              = f.hint @lesson_module.name
+            - elsif @lesson.lesson_module
+              = f.hint @lesson.lesson_module.name
+          =f.input :name
+          =f.input :description
+          - error_class = "field_with_errors" unless @schedule_error.blank?
+          .lesson_date{:class => error_class}
+            =f.label :start_date, :required => true
+            =text_field_tag "start_date", "", :id => "from_date", :title => "#{t(:from_date)}", :value => "#{l(start_date.to_date, :format => :default)}", :class => "date_text_field", :size => 10, :required => true
+            %div.end_date{class: ('invisible' if (!@lesson.has_end_date?) )}
+              =f.label :end_date
+              =text_field_tag "end_date", "", :id => "until_date", :title => "#{t(:until_date)}", :value => "#{l(end_date.to_date, :format => :default)}", :class => "date_text_field", :size => 10, :required => true
+              %span{:style => "display: inline-block;"}= @schedule_error
+            .select_end_date
               =f.label " "
-              =t(:example, :scope => [:lessons, :new])
+              =check_box("check","end_date", {id: 'check_end_date', checked: @lesson.has_end_date? })
+              =t(:enable_end_date, :scope => [:lessons, :new])
+          .lesson_status
+            =f.label t(:status, :scope => [:lessons, :new])
+            =f.select :status, ([ [t(:draft, scope: [:lessons, :new]), Lesson_Test.to_i], [t(:approved, scope: [:lessons, :new]), Lesson_Approved.to_i] ]), :include_blank => false
+          .lesson_type
+            =f.label t(:type_lesson, :scope => [:lessons, :new])
+            - if @lesson_modules
+              - if @lesson.type_lesson == Lesson_Type_File
+                =f.hint t(:archive, :scope => [:lessons, :new])
+              -elsif @lesson.type_lesson == Lesson_Type_Link
+                =f.hint t(:link, :scope => [:lessons, :new])
+            - else
+              =f.select :type_lesson, ([ [t(:link, :scope => [:lessons, :new]), Lesson_Type_Link], [t(:archive, :scope => [:lessons, :new]),Lesson_Type_File] ]), :include_blank => false
+          - if (@lesson_modules.nil? or @lesson.type_lesson == Lesson_Type_Link)
+            .url_lesson
+              =f.input :address
+              .disabled
+                =f.label " "
+                =t(:example, :scope => [:lessons, :new])
 
-      .right_buttons
-        = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default", :onclick => "removeLightBox();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
-        = button_tag t(:save, :scope => [:lessons, :new]), :class => "btn btn_main", :alt => t(:save, :scope => [:lessons, :new]), :type => "button", :id => "save_button"
+        .right_buttons
+          = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default", :onclick => "removeLightBox();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
+          = button_tag t(:save, :scope => [:lessons, :new]), :class => "btn btn_main", :alt => t(:save, :scope => [:lessons, :new]), :type => "button", :id => "save_button"
 
-:css
-  .date_text_field {
-    margin-left: -4px;
-    margin-top: 0;
-    margin-bottom: 4px;
-    padding: 2px;
-  }
-  .ui-datepicker{ 
-    width: 15em; 
-    padding: .2em .2em 0; 
-    display: none;
-    background-color: white;
-  }
-  .visible {
-    display: inline-block;
-  }
-  select {
-    margin-bottom: 4px;
-    margin-left: -4px;
-  }
+  :javascript
 
-:javascript
-
-  if ("#{params[:action] == "new"}" == "true" || "#{params[:action] == "create"}" == "true")
+    if ("#{params[:action] == "new"}" == "true" || "#{params[:action] == "create"}" == "true") {
       var new_action = true;
-
-  $(function(){
-    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}'], {dateFormat: global_config.locale.dateFormat.default});
-
-    $('#from_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#until_date').datepicker("option", "minDate", selected); } }) );
-    $('#until_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#from_date').datepicker("option", "maxDate", selected); } }) );
-
-    if($("#lesson_type_lesson").val() == '#{Lesson_Type_File}'){
-      $(".url_lesson").hide();
-      if(new_action)
-        $("#save_button").html("#{I18n.t(:continue, :scope => [:lessons, :new])}");
     }
-    
-    $("#save_button").click(function(){
-      submit_form('lesson_form', 'lesson_form', '#{list_lessons_path}', 'first_step'); 
-      if(new_action && $(this).html() == "#{I18n.t(:continue, :scope => [:lessons, :new])}"){
-        $('#lightBoxDialogTitle').html('<h1>#{I18n.t(:new, :scope => [:lessons, :list])} > #{I18n.t(:files_management, :scope => [:lesson_files])}</h1>');
+
+    $(function(){
+      var options = $.extend({}, $.datepicker.regional['#{I18n.locale}'], {dateFormat: global_config.locale.dateFormat.default});
+
+      $('#from_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#until_date').datepicker("option", "minDate", selected); } }) );
+      $('#until_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#from_date').datepicker("option", "maxDate", selected); } }) );
+
+      if($("#lesson_type_lesson").val() == '#{Lesson_Type_File}'){
+        $(".url_lesson").hide();
+        if(new_action)
+          $("#save_button").html("#{I18n.t(:continue, :scope => [:lessons, :new])}");
       }
+
+      $("#save_button").click(function(){
+        submit_form('lesson_form', 'new_lesson_form', '#{list_lessons_path}', 'first_step');
+        if(new_action && $(this).html() == "#{I18n.t(:continue, :scope => [:lessons, :new])}"){
+          $('#lightBoxDialogTitle').html('<h1>#{I18n.t(:new, :scope => [:lessons, :list])} > #{I18n.t(:files_management, :scope => [:lesson_files])}</h1>');
+        }
+      });
+
+      $("input:checkbox").change(function() {
+        if (!this.checked){
+          $("#until_date").val(
+            '#{I18n.l((  @lesson.try(:schedule).try(:start_date) || Date.today).to_date, :format => :default).to_s}'
+          );
+          $(".end_date").removeClass("visible").addClass("invisible");
+        }else{
+          $("#until_date").val(
+              '#{I18n.l(( @lesson.try(:schedule).try(:end_date) || @lesson.try(:schedule).try(:start_date) || Date.today).to_date, :format => :default).to_s}'
+            );
+          $(".end_date").removeClass("invisible").addClass("visible");
+        }
+      });
+
+      $("#lesson_type_lesson").change(function(){
+        t = $('#lesson_type_lesson').val();
+        if (t == "#{Lesson_Type_Link}"){
+          $(".url_lesson").show();
+          $("#save_button").html('#{I18n.t(:save, :scope => [:lessons, :new])}');
+        }else{
+          $(".url_lesson").hide();
+          if(new_action)
+            $("#save_button").html("#{I18n.t(:continue, :scope => [:lessons, :new])}");
+        }
+      });
+
     });
-
-  });
-
-  $("input:checkbox").change(function() {
-    if (!this.checked){
-      $("#until_date").val(
-        '#{I18n.l((  @lesson.try(:schedule).try(:start_date) || Date.today).to_date, :format => :default).to_s}'
-      );
-      $(".end_date").removeClass("visible").addClass("invisible");
-    }else{
-      $("#until_date").val(
-          '#{I18n.l(( @lesson.try(:schedule).try(:end_date) || @lesson.try(:schedule).try(:start_date) || Date.today).to_date, :format => :default).to_s}'
-        );
-      $(".end_date").removeClass("invisible").addClass("visible");
-    }
-  });
-
-  $("#lesson_type_lesson").change(function(){
-    t = $('#lesson_type_lesson').val(); 
-    if (t == "#{Lesson_Type_Link}"){
-      $(".url_lesson").show();
-      $("#save_button").html('#{I18n.t(:save, :scope => [:lessons, :new])}');
-    }else{
-      $(".url_lesson").hide();
-      if(new_action)
-        $("#save_button").html("#{I18n.t(:continue, :scope => [:lessons, :new])}");
-    }
-  });

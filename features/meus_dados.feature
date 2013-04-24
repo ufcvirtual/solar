@@ -100,14 +100,14 @@ Exemplos:
   | xyz                  |                   |                       | Senha não é válido(a)                         |
   | xyz                  |  user456          |  user456              | Senha não é válido(a)                         |
   | 123456               |  user456          |  user789              | Senha não está de acordo com a confirmação    |
-  |                      |  user456          |  user456              | Senha deve ser preenchido(a)                  |
-  |                      |  user456          |  user789              | Senha deve ser preenchido(a)                  |
+  |                      |  user456          |  user456              | Senha obrigatório                  |
+  |                      |  user456          |  user789              | Senha obrigatório                  |
   | 123456               |                   |  user789              | Senha não está de acordo com a confirmação    |
   | 123456               |  user789          |                       | Senha não está de acordo com a confirmação    |
   | xyz                  |                   |  user789              | Senha não é válido(a)                         |
   | xyz                  |  user789          |                       | Senha não é válido(a)                         |
-  |                      |                   |  user789              | Senha deve ser preenchido(a)                  |
-  |                      |  user789          |                       | Senha deve ser preenchido(a)                  |
+  |                      |                   |  user789              | Senha obrigatório                  |
+  |                      |  user789          |                       | Senha obrigatório                  |
   | 123456               |  user789          |  user789              | Dados atualizados com sucesso.                |
 
 @javascript

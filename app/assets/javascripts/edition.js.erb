@@ -38,9 +38,9 @@ function submit_form(form_id, class_to_update_fail, redirect_url, div_to_update)
     url: $("#"+form_id).attr("action"),
     data: $("#"+form_id).serialize(),
     success: function(data) {
-      if(data.search(".field_with_errors") != -1) // se existir algum erro nas validações, o simple_form acrescenta a classe "field_with_errors" aos campos
-        $("."+class_to_update_fail).html(data); // atualiza conteúdo com o formulário com os erros
-      else{
+      if(data.search(".field_with_errors") != -1) { // se existir algum erro nas validações, o simple_form acrescenta a classe "field_with_errors" aos campos
+        $("."+class_to_update_fail+":first").html(data); // atualiza conteúdo com o formulário com os erros
+      } else {
         if(div_to_update == "first_step" && data.length > 1){ // se tiver conteúdo retornado sem erro
           update_content_url(redirect_url); // atualiza div da página de edição com conteúdo de listagem 
           $("."+div_to_update).html(data); // atualiza conteúdo do lightbox

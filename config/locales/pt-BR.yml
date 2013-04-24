@@ -276,8 +276,8 @@
         invalid: "não é válido(a)"
         confirmation: "não está de acordo com a confirmação"
         accepted: "deve ser aceito(a)"
-        empty: "deve ser preenchido(a)"
-        blank: "deve ser preenchido(a)"
+        empty: "obrigatório"
+        blank: "obrigatório"
         too_long: " é muito longo(a) (máximo: %{count} caracteres)"
         too_short: "é muito curto(a) (mínimo: %{count} caracteres)"
         wrong_length: "não possui o tamanho esperado (%{count} caracteres)"
@@ -605,7 +605,7 @@
     errors:
       cant_delete: "Aula tornou-se rascunho, pois estava disponível para uso dos alunos!"  
       invalid_lesson_to_download: Apenas aulas do tipo de arquivo e não vazias podem ser baixadas
-      invalid_link: "O endereço deve ser iniciado por http:// ou https://"
+      invalid_link: "URL inválida"
 
   lesson_modules:
     none: "Nenhum módulo cadastrado"
@@ -1086,7 +1086,7 @@
   support_edit: Editar
   support_rename: Renomear
   support_error_no_item_selected: Erro ao excluir. Nenhum item foi selecionado
-  support_error_missing_link: Link deve ser preenchido
+  support_error_missing_link: Link obrigatório
   support_sent_link: Link enviado com sucesso
   support_error_existing_folder: Pasta já existente
   support_error_missing_folder: Pasta deve ser preenchida
