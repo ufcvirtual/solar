@@ -105,9 +105,14 @@ class LessonsController < ApplicationController
     authorize! :update, Lesson, on: params[:allocation_tags_ids].split(" ")
 
     ids = params[:id].split(',').map(&:to_i)
-    Lesson.update(ids, ids.map {|x| {status: params[:status]}}) # update(keys, values)
 
-    render json: {success: true}
+    msg = nil
+    Lesson.where(id: [ids].flatten).find_each do |lesson|
+      lesson.status = params[:status].to_i
+      msg = lesson.errors.full_messages unless lesson.save
+    end
+
+    render json: {success: msg.nil?, msg: msg}, status: (msg.nil? ? :ok : :unprocessable_entity)
   end
 
   def destroy

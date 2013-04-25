@@ -117,13 +117,15 @@ jQuery(function(){
   });
 
   jQuery("#btn-rename").click(function(){
-    var active_node = jQuery("#tree").dynatree("getActiveNode")
-    if( active_node != null){
+    var active_node = jQuery("#tree").dynatree("getActiveNode");
+
+    if (active_node != null) {
       editNode(active_node);
-    }else if (typeof selNodes != "undefined" && selNodes.length == 1){
-        editNode(selNodes[0]);
-      }else
-        flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
+    } else if (typeof selNodes != "undefined" && selNodes.length == 1) {
+      editNode(selNodes[0]);
+    } else {
+      flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
+    }
   });
 
   /* caso nenhum arquivo/pasta tenha sido selecionado, exibe uma mensagem de erro dentro
@@ -147,11 +149,7 @@ jQuery(function(){
   });    
 
   jQuery("#btn-finish").click(function(){
-    if(initial_file_node == null){
-      flash_message("<%=I18n.t(:define_initial_file_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
-    }else{
-      removeLightBox();
-    }
+    removeLightBox();
   });
 
   jQuery("#lesson_new_file").click(function(){
@@ -219,15 +217,17 @@ jQuery(function(){
 
   jQuery("#btn-initial-file").click(function(){
     var node = jQuery("#tree").dynatree("getActiveNode");
-    if(node == null && typeof selNodes != "undefined" && selNodes.length == 1)
+    if(node == null && typeof selNodes != "undefined" && selNodes.length == 1) {
         node = selNodes[0];
-    else if(node == null)
+    } else if(node == null) {
       flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
+    }
 
-    if(node.data.isFolder == true)
+    if(node.data.isFolder == true) {
       flash_message("<%=I18n.t(:must_be_a_file, :scope => [:lesson_files])%>", "alert", "flash_messages");
-    else    
+    } else {
       defineInitialFile(node);
+    }
   });
 
 });
@@ -327,7 +327,6 @@ function editNode(node) {
           jQuery(this).blur();
           break;
         case 13: // [enter]
-
           var new_title = jQuery("input#editNode").val(); // Accept new value, when user leaves <input>
           node_path     = getPath(node); // recupera caminho do nó antes de mudar o título
 
@@ -339,8 +338,9 @@ function editNode(node) {
               jQuery("input#editNode").val(node.data.title); // retorna ao antigo título
               flash_message("<%=I18n.t(:name_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
             }             
-          }else
+          } else {
             erase_flash_messages();
+          }
 
           jQuery(this).blur(); // simulate blur to accept new value
           break;
@@ -353,7 +353,6 @@ function editNode(node) {
       tree.$widget.bind();
       node.focus();
     });
-
 }
 
 /* Seta caminho visual para o arquivo inicial */
@@ -458,7 +457,11 @@ function renameNode(node, new_title, path){
       "previous_name": node.data.title
     },
     success: function(data){
-      jQuery("#lesson_file_management").html(data);
+      if (initial_file_node == node) {
+        defineInitialFile(node);
+      } else {
+        jQuery("#lesson_file_management").html(data);
+      }
     },
     error: function() {
       node.setTitle(node.data.title); // retorna ao antigo título

@@ -12,17 +12,32 @@ class Lesson < ActiveRecord::Base
   after_destroy :delete_schedule, :delete_files
 
   validates :name, :type_lesson, presence: true #:address
+  validate :initial_file_setted
 
   validates_format_of :address, :with => /^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/ix, :message => I18n.t("lessons.errors.invalid_link"), :if => :is_link?
   
   FILES_PATH = Rails.root.join('media', 'lessons') # path dos arquivos de aula
+
+  def initial_file_setted
+    unless is_draft? or is_link?
+      errors.add(:base, I18n.t(:define_initial_file_error, scope: [:lesson_files])) unless is_file? and address.present? and File.exist?(path(true).to_s)
+    end
+  end
+
+  def is_draft?
+    status == Lesson_Test
+  end
+
+  def is_file?
+    type_lesson == Lesson_Type_File
+  end
 
   def is_link?
     type_lesson == Lesson_Type_Link
   end
 
   def path(full = false, with_address = true)
-    if type_lesson.to_i == Lesson_Type_File
+    if type_lesson == Lesson_Type_File
       Dir.mkdir(FILES_PATH.join(id.to_s)) unless File.exist? FILES_PATH.join(id.to_s) # verifica se diretório existe ou não; se não, cria.
       full ? FILES_PATH.join(id.to_s, (with_address ? address : '')) : File.join('', 'media', 'lessons', id.to_s, (with_address ? address : ''))
     else
@@ -32,12 +47,10 @@ class Lesson < ActiveRecord::Base
   end
 
   def can_destroy?
-    draft = (status == Lesson_Test) # aula em rascunho 
-
-    unless draft
+    unless is_draft? # aula em rascunho
       errors.add(:lesson, I18n.t(:cant_delete, :scope => [:lesson, :errors]))
+      return false
     end
-    return draft
   end
 
   def delete_schedule
