@@ -2,6 +2,7 @@
   .block_content.enrollment_bar
     = form_for :offer, :url => enrollments_path, method: :get do |f|
       .enrollment_left
+        = hidden_field_tag :category_query, @category_query
         = f.label t(:enrollm_search), :class => "enrollment_label"
         = f.text_field :search, :size=>"30", :class=>'enrollment_search', :value => @search_text
         = f.label t(:enrollm_search_in), :class => "enrollment_label"

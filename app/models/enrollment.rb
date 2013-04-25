@@ -1,12 +1,16 @@
 class Enrollment < ActiveRecord::Base
   belongs_to :offer
 
-  def self.enrollments_of_user(user, profile)
+  def self.enrollments_of_user(user, profile, offer_category = nil, curriculum_unit_name = nil)
+    query_category, query_text = ''
+    query_category = " and t.id = #{offer_category}" unless offer_category.nil? or offer_category.empty?
+    query_text     = " and lower(cr.name) ~ lower('#{curriculum_unit_name}')" unless curriculum_unit_name.nil? or curriculum_unit_name.empty?
+
     query_enroll =
       " SELECT DISTINCT of.id, cr.name as name, t.id AS categoryid, t.description AS categorydesc,
                t.allows_enrollment, al.status AS status, al.id AS allocationid,
                g.code, e.start, e.end, atg.id AS allocationtagid,
-               g.id AS groupsid, t.icon_name
+               g.id AS groupsid, t.icon_name, of.semester
           FROM allocations al
           JOIN allocation_tags atg      ON atg.id = al.allocation_tag_id
           JOIN groups g                 ON g.id = atg.group_id
@@ -16,7 +20,10 @@ class Enrollment < ActiveRecord::Base
      LEFT JOIN enrollments e            ON of.id = e.offer_id
          WHERE al.user_id = #{user.id}
            AND al.profile_id = #{profile}
-           AND al.status = #{Allocation_Activated} ORDER BY name"
+           AND al.status = #{Allocation_Activated} 
+           #{query_category}
+           #{query_text}
+           ORDER BY name"
 
     Offer.find_by_sql(query_enroll)
   end
