@@ -26,7 +26,8 @@ class Lesson < ActiveRecord::Base
       Dir.mkdir(FILES_PATH.join(id.to_s)) unless File.exist? FILES_PATH.join(id.to_s) # verifica se diretório existe ou não; se não, cria.
       full ? FILES_PATH.join(id.to_s, (with_address ? address : '')) : File.join('', 'media', 'lessons', id.to_s, (with_address ? address : ''))
     else
-      address
+      #se for vídeo do youtube que não esteja como embeded, altera link
+      return (address.include?("youtube") and !address.include?("embed"))  ? 'http://www.youtube.com/embed/'+address.split("v=")[1] : address 
     end
   end
 
