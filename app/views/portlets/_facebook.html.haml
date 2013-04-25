@@ -28,7 +28,7 @@
       %ul
         - @graph = Koala::Facebook::API.new(user_session[:fb_token]) if user_session[:fb_token].present?
         %li.settings
-          %a{:href => "#"} Configurações
+          %a{:href => "#"}= t(:settings, :scope => [:facebook])
         - if @graph  
           %li.info
             %span.common
