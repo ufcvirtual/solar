@@ -140,6 +140,32 @@ class LessonsControllerTest < ActionController::TestCase
   # Status
   ##
 
+  test "liberar aula" do
+    lesson = Lesson.find(lessons(:pag_index).id)
+    FileUtils.touch(lesson.path(true).to_s)
+
+    assert lesson.is_draft?
+
+    put :change_status, {id: lesson.id, status: Lesson_Approved, allocation_tags_ids: [allocation_tags(:al6).id]}
+    assert_response :success
+
+    assert_equal Lesson_Approved, Lesson.find(lessons(:pag_index).id).status
+    FileUtils.rm_rf(lesson.path(true).to_s)
+  end
+
+  test "nao liberar aula sem arquivo inicial" do
+    lesson = Lesson.find(lessons(:pag_index).id)
+    assert lesson.is_draft?
+
+    FileUtils.rm_rf(lesson.path(true).to_s)
+
+    put :change_status, {id: lesson.id, status: Lesson_Approved, allocation_tags_ids: [allocation_tags(:al6).id]}
+    assert_response :unprocessable_entity
+
+    assert_equal Lesson_Test, Lesson.find(lessons(:pag_index).id).status
+  end
+
+
   test "setar aula como rascunho" do
     assert_routing({method: :put, path: change_status_lesson_path(1, 1)}, { controller: "lessons", action: "change_status", id: "1", status: "1" })
 
@@ -153,19 +179,20 @@ class LessonsControllerTest < ActionController::TestCase
   end
 
 
-private
-  # Verifica se o diretório da aula escolhida está adequada aos testes
-  def define_lesson_dir(lesson_id, with_files = true)
-    lesson_file_path = File.join(Rails.root, "media", "lessons", lesson_id.to_s)
-    Dir.mkdir(lesson_file_path) unless File.exist? lesson_file_path # verifica se diretório existe ou não; se não, cria.
-    lesson_content_length = Dir.entries(lesson_file_path).length
-    if with_files 
-       Dir.mkdir(File.join(lesson_file_path, "Nova Pasta")) if lesson_content_length <= 2 # se estiver vazia, cria uma pasta dentro
-    else
-      FileUtils.rm_rf(lesson_file_path) # remove diretório com todo o seu conteúdo
-      FileUtils.mkdir_p(lesson_file_path) # cria uma nova pasta para a aula
-    end
+  private
 
-  end
+    # Verifica se o diretório da aula escolhida está adequada aos testes
+    def define_lesson_dir(lesson_id, with_files = true)
+      lesson_file_path = File.join(Rails.root, "media", "lessons", lesson_id.to_s)
+      Dir.mkdir(lesson_file_path) unless File.exist? lesson_file_path # verifica se diretório existe ou não; se não, cria.
+      lesson_content_length = Dir.entries(lesson_file_path).length
+      if with_files 
+         Dir.mkdir(File.join(lesson_file_path, "Nova Pasta")) if lesson_content_length <= 2 # se estiver vazia, cria uma pasta dentro
+      else
+        FileUtils.rm_rf(lesson_file_path) # remove diretório com todo o seu conteúdo
+        FileUtils.mkdir_p(lesson_file_path) # cria uma nova pasta para a aula
+      end
+
+    end
 
 end

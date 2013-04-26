@@ -33,4 +33,16 @@ class LessonTest < ActiveSupport::TestCase
     assert not(File.exist?(path))
   end
 
+  test "nao liberar aula sem arquivo inicial" do
+    lesson = lessons(:pag_index)
+
+    assert lesson.is_file?
+    assert lesson.is_draft?
+
+    lesson.status = Lesson_Approved
+    lesson.save
+
+    assert_equal lesson.errors.full_messages.first, "Um arquivo inicial deve ser definido."
+  end
+
 end
