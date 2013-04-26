@@ -136,3 +136,8 @@ schedule27:
   id: 27
   start_date: <%= Date.today - 2.days %> 
   end_date: <%= Date.today + 1.days %> 
+
+# sem data final
+schedule28:
+  id: 28
+  start_date: <%= Date.today - 2.days %> 

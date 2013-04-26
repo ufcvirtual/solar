@@ -4,6 +4,13 @@ class  DiscussionTest < ActiveSupport::TestCase
 
   fixtures :discussions, :schedules, :allocation_tags
 
+  #test "novo schedule deve ter data final" do
+  #  schedule = Schedule.create(:start_date => schedules(:schedule24).start_date)
+
+  #  assert (not schedule.valid?)
+  #  assert_equal schedule.errors[:end_date].first, I18n.t(:blank, :scope => [:activerecord, :errors, :messages])
+  #end
+  
   test "novo forum deve ter titulo" do
     discussion = Discussion.create(:description => "discussion description", :schedule_id => schedules(:schedule24).id, :allocation_tag_id => allocation_tags(:al3).id)
 

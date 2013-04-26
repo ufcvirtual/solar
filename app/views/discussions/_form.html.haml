@@ -17,7 +17,7 @@
         - end_date = nil
         - unless @discussion.schedule.nil?
           - start_date = l(@discussion.schedule.start_date.to_date, :format => :datepicker)
-          - end_date = l(@discussion.schedule.end_date.to_date, :format => :datepicker)
+          - end_date = @discussion.schedule.end_date.nil? ? "" : l(@discussion.schedule.end_date.to_date, :format => :datepicker) 
         = text_field_tag "start_date", "", :id => "from-date", :title => "#{t(:from_date)}", :value => "#{start_date}", :class => "date_text_field", :size => 10
         = t(:to, :scope => [:discussion])
         = text_field_tag "end_date", "", :id => "until-date", :title => "#{t(:until_date)}", :value => "#{end_date}", :class => "date_text_field", :size => 10

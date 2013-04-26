@@ -9,14 +9,14 @@
           <% schedule= Schedule.find(lesson.schedule_id) %>
           <% if lesson.schedule.end_date.nil? %>
             <span class="block_content_gray">
-              <%= l schedule.start_date, :format => :normal %>
+              <%= l schedule.start_date, :format => :normal %> - <%= t(:no_end_date, scope: [:lessons, :list]) %>
             </span>
           <% elsif lesson.schedule.end_date >= Date.today or lesson.schedule.end_date < Date.today %>
             <span class="block_content_gray">
               <%= l schedule.start_date, :format => :normal  %> - <%= l schedule.end_date, :format => :normal %>
             </span>
           <% end %>
-          <% unless lesson.schedule.end_date < Date.today %>
+          <% if (lesson.schedule.end_date.nil?) or (lesson.schedule.end_date >= Date.today) %>
             <a class="link_content" href="javascript:show_lesson('<%= url_for :controller => :lessons, :action => :show, :id => lesson.lesson_id %>')">
               <%= lesson.name %>
             </a>

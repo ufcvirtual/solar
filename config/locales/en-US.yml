@@ -549,6 +549,7 @@
       range_date_error: must be smaller than the final date
       offer_period: must be on the date range of offer (%{start} - %{end})
       discussion_with_posts: "Discussion with posts"
+      mandatory_final_date: "Mandatory final date"
     buttons:
       save: Save
       cancel: Cancel

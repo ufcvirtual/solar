@@ -58,7 +58,8 @@ class CurriculumUnitsController < ApplicationController
 
     schedules_events  = Schedule.events(allocation_tags)
     @scheduled_events = schedules_events.collect { |schedule_event|
-      [schedule_event['start_date'].to_date.to_s(:db), schedule_event['end_date'].to_date.to_s(:db)]
+      schedule_end_date = schedule_event['end_date'].nil? ? "" : schedule_event['end_date'].to_date.to_s(:db)
+      [schedule_event['start_date'].to_date.to_s(:db), schedule_end_date]
     }.flatten.uniq
   end
 

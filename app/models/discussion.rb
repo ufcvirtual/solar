@@ -12,6 +12,13 @@ class Discussion < ActiveRecord::Base
   before_destroy :can_destroy?
   after_destroy :delete_schedule
 
+  #before_create :has_final_date
+
+  def has_final_date
+    schedule = self.schedule
+    errors.add(:base, I18n.t(:mandatory_final_date, :scope => [:discussion, :errors])) if (schedule.end_date.nil?)
+  end
+
   def can_destroy?
     is_empty = discussion_posts.empty?
     errors.add(:base, I18n.t(:discussion_with_posts, :scope => [:discussion, :errors])) unless is_empty
@@ -34,7 +41,7 @@ class Discussion < ActiveRecord::Base
   end
 
   def closed?
-    self.schedule.end_date < Date.today
+    !self.schedule.end_date.nil? ? self.schedule.end_date < Date.today : false
   end
 
   def extra_time?(user_id)
