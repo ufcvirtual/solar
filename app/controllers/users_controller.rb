@@ -14,7 +14,8 @@ class UsersController < ApplicationController
     unless allocation_tags.empty?
       schedules_events = Schedule.events(allocation_tags)
       schedules_events_dates = schedules_events.collect do |schedule_event|
-        [schedule_event['start_date'].to_date.to_s(), schedule_event['end_date'].to_date.to_s()]
+        schedule_end_date = schedule_event['end_date'].nil? ? "" : schedule_event['end_date'].to_date.to_s()
+        [schedule_event['start_date'].to_date.to_s(), schedule_end_date]
       end
       @scheduled_events = schedules_events_dates.flatten.uniq
     end

@@ -11,13 +11,6 @@ class  ScheduleTest < ActiveSupport::TestCase
     assert_equal schedule.errors[:start_date].first, I18n.t(:blank, :scope => [:activerecord, :errors, :messages])
   end
 
-  test "novo schedule deve ter data final" do
-    schedule = Schedule.create(:start_date => schedules(:schedule24).start_date)
-
-    assert (not schedule.valid?)
-    assert_equal schedule.errors[:end_date].first, I18n.t(:blank, :scope => [:activerecord, :errors, :messages])
-  end
-
   test "data inicial deve ser menor que a data final" do
     schedule = Schedule.create(:start_date => schedules(:schedule18).start_date, :end_date => schedules(:schedule25).start_date)    
 

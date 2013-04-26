@@ -101,9 +101,6 @@
 
       $("input:checkbox").change(function() {
         if (!this.checked){
-          $("#until_date").val(
-            '#{I18n.l((  @lesson.try(:schedule).try(:start_date) || Date.today).to_date, :format => :default).to_s}'
-          );
           $(".end_date").removeClass("visible").addClass("invisible");
         }else{
           $("#until_date").val(

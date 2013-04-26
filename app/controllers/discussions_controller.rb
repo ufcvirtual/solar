@@ -39,7 +39,7 @@ class DiscussionsController < ApplicationController
       @allocation_tags_ids.each do |allocation_tag_id|
         allocation_tag  = AllocationTag.find(allocation_tag_id.to_i)
         @offer          = allocation_tag.offer || allocation_tag.group.offer
-        raise "date_range_error" if @schedule.start_date < @offer.start_date or @schedule.end_date > @offer.end_date # período escolhido deve estar dentro do período da oferta
+        raise "date_range_error" if (@schedule.start_date < @offer.start_date or (!@schedule.end_date.nil? && @schedule.end_date > @offer.end_date)) # período escolhido deve estar dentro do período da oferta
       end
 
       ActiveRecord::Base.transaction do
@@ -108,7 +108,7 @@ class DiscussionsController < ApplicationController
         @allocation_tags_ids.each do |allocation_tag_id| # como pode haver mais de uma allocation_tag_id, é necessário verificar cada uma
           allocation_tag  = AllocationTag.find(allocation_tag_id.to_i)
           offer           = allocation_tag.offer || allocation_tag.group.offer
-          raise "date_range_error" if @schedule.start_date < offer.start_date or @schedule.end_date > offer.end_date # período escolhido deve estar dentro do período da oferta
+          raise "date_range_error" if (@schedule.start_date < @offer.start_date or (!@schedule.end_date.nil? && @schedule.end_date > @offer.end_date)) # período escolhido deve estar dentro do período da oferta
         end
 
         @discussion.update_attributes!(params[:discussion])

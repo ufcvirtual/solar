@@ -705,6 +705,7 @@
       range_date_error: deve ser menor que a data final
       offer_period: deve estar dentro do período da oferta (%{start} - %{end})
       discussion_with_posts: "Fórum com postagens"
+      mandatory_final_date: "Data final obrigatória"
     buttons:
       save: Salvar
       cancel: Cancelar

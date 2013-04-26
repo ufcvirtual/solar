@@ -6,7 +6,7 @@ class Schedule < ActiveRecord::Base
   has_many :portfolios
   has_many :assignments
 
-  validates :start_date, :end_date, :presence => true
+  validates :start_date, :presence => true
   validate :start_date_before_end_date 
 
   before_destroy :can_destroy?
@@ -40,7 +40,7 @@ class Schedule < ActiveRecord::Base
     assignments_events = Assignment.joins(:schedule, :allocation_tag).where(where).select("'assignments' AS schedule_type, assignments.name AS name, assignments.enunciation AS description, schedules.start_date, schedules.end_date")
     discussions_events = Discussion.joins(:schedule, :allocation_tag).where(where).select("'discussions' AS schedule_type, discussions.name AS name, discussions.description, schedules.start_date, schedules.end_date")
     lessons_events     = Lesson.joins(:schedule, :allocation_tag).where(where).select("'lesson' AS schedule_type, lessons.name AS name, lessons.description, schedules.start_date, schedules.end_date")
-    events             = [schedules_events + assignments_events + discussions_events + lessons_events].flatten.compact.map(&:attributes).sort_by {|e| e['end_date'] }
+    events             = [schedules_events + assignments_events + discussions_events + lessons_events].flatten.compact.map(&:attributes).sort_by {|e| e['end_date'] || e['start_date'] }
 
     return events.slice(0,2) if period # apenas os dois primeiros
     return events
