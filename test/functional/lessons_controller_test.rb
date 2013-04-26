@@ -167,7 +167,7 @@ class LessonsControllerTest < ActionController::TestCase
 
 
   test "setar aula como rascunho" do
-    assert_routing({method: :put, path: change_status_lesson_path(1, 1)}, { controller: "lessons", action: "change_status", id: "1", status: "1" })
+    assert_routing({method: :put, path: change_status_lesson_path(lessons(:pag_virtual).id, Lesson_Approved)}, { controller: "lessons", action: "change_status", id: "#{lessons(:pag_virtual).id}", status: "#{Lesson_Approved}" })
 
     lesson = Lesson.find(lessons(:pag_virtual).id)
     assert_equal Lesson_Approved, lesson.status
