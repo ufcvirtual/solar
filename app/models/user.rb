@@ -187,8 +187,10 @@ SQL
     return (only_id) ? profiles.map { |p| p.id.to_i } : profiles
   end
   
-  def allocation_tag_activated_ids
-    allocation_tags.where('allocations.status = ?', Allocation_Activated).map(&:id)
+  # Retorna os ids das allocations_tags ativadas de um usuário
+  def activated_allocation_tag_ids(related = true)
+    map = related ? "related" : "id"
+    allocation_tags.where(allocations: {status: Allocation_Activated.to_i}).map(&map.to_sym).flatten.uniq
   end
 
   #Retorna unidades curriculares que o usuário acessa (incluindo ofertas e turmas)

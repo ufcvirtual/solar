@@ -31,7 +31,7 @@ class Schedule < ActiveRecord::Base
     end
     unless date_search.nil?
       where_hash[:date_search] = date_search.to_s(:db)
-      where << "schedules.start_date = :date_search OR schedules.end_date = :date_search"
+      where << "(schedules.start_date = :date_search OR schedules.end_date = :date_search)"
     end
 
     where = [where.join(' AND '), where_hash]
