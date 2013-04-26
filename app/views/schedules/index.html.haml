@@ -1,10 +1,10 @@
 %div
   - @schedule.each do |schedule|
     - if @link
-      %div= link_to schedule["name"], list_schedules_path(id: params[:id], bread: 'menu_agenda'), {class: 'agenda_ajax'}
+      %div= link_to schedule["name"], list_schedules_path(allocation_tags_ids: @allocation_tags, bread: 'menu_agenda'), {class: 'agenda_ajax'}
     - else
       %span.agenda_ajax= schedule["name"]
   - if @schedule.first.nil?
     %span.agenda_ajax= t(:no_events)
   - else
-    = link_to t(:curriculum_access_more), list_schedules_path(id: params[:id], bread: 'menu_agenda'), {class: 'schedule_link_more'}
+    = link_to t(:curriculum_access_more), list_schedules_path(allocation_tags_ids: @allocation_tags, bread: 'menu_agenda'), {class: 'schedule_link_more'}
