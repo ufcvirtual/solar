@@ -1,34 +1,36 @@
-$(function() {
+// = require maskedinput
+
+jQuery(document).ready(function() {
+  jQuery("#offer_semester").mask("9999.9");
+});
+
+jQuery(function() {
 
   /* Usado no formulário */
-  $("#dt_start_date, #dt_end_date").datepicker({
-    option: $.datepicker.regional[global_config.locale.I18n],
+  jQuery("#dt_start_date, #dt_end_date").datepicker({
+    option: jQuery.datepicker.regional[global_config.locale.I18n],
     dateFormat: global_config.locale.dateFormat
   });
 
-  jQuery(function($){
-    $("#offer_semester").mask("9999.9");
-  });
-
-  $("#save").click(function(){
+  jQuery("#save").click(function(){
     submit_form('offer_form', 'offer_form', '#{offers_path}', 'list_offers');
   });
 
-  $("#cancel").click(function(){
+  jQuery("#cancel").click(function(){
     removeLightBox();
   });
 
   /* Usado na listagem */
-  $('.edit').click(function(){
-    open_lightbox3($(this).parent().attr('action'), "<%= I18n.t(:edit_offer, :scope => [:offers, :index]) %>");
+  jQuery('.edit').click(function(){
+    open_lightbox3(jQuery(this).parent().attr('action'), "<%= I18n.t(:edit_offer, :scope => [:offers, :index]) %>");
   });
 
-  $('.deactivate_groups').click(function(){
-    $.ajax({
+  jQuery('.deactivate_groups').click(function(){
+    jQuery.ajax({
       type: 'POST',
-      url: $(this).parent().attr('action'),
+      url: jQuery(this).parent().attr('action'),
       success: function(data){
-        $("#list_offers").html(data);
+        jQuery("#list_offers").html(data);
         flash_message("<%= I18n.t(:all_groups_deactivated, :scope => [:offers, :index]) %>", 'notice');
       },
       error: function(){
