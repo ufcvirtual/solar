@@ -58,7 +58,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def has_end_date?
-    (try(:schedule).try(:end_date) != try(:schedule).try(:start_date))
+    !!(try(:schedule).try(:end_date))
   end
 
   def self.to_open(allocation_tags_ids = nil, lesson_id = nil)

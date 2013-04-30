@@ -29,7 +29,7 @@
         = hidden_field_tag(:lesson_module_id, params[:lesson_module_id])
 
         - start_date = @lesson.try(:schedule).try(:start_date) || Date.today
-        - end_date = @lesson.try(:schedule).try(:end_date) || start_date
+        - end_date = @lesson.try(:schedule).try(:end_date) || ''
 
         .form-inputs.block_content
           .lesson_module
@@ -48,11 +48,11 @@
             =text_field_tag "start_date", "", :id => "from_date", :title => "#{t(:from_date)}", :value => "#{l(start_date.to_date, :format => :default)}", :class => "date_text_field", :size => 10, :required => true
             %div.end_date{class: ('invisible' if (!@lesson.has_end_date?) )}
               =f.label :end_date
-              =text_field_tag "end_date", "", :id => "until_date", :title => "#{t(:until_date)}", :value => "#{l(end_date.to_date, :format => :default)}", :class => "date_text_field", :size => 10, :required => true
+              =text_field_tag "end_date", "", :id => "until_date", :title => "#{t(:until_date)}", :value => ("#{l(end_date.to_date, :format => :default)}" if Date.valid?(end_date)), :class => "date_text_field", :size => 10, :required => true
               %span{:style => "display: inline-block;"}= @schedule_error
             .select_end_date
               =f.label " "
-              =check_box("check","end_date", {id: 'check_end_date', checked: @lesson.has_end_date? })
+              =check_box "check", "end_date", {id: 'check_end_date', checked: @lesson.has_end_date? }
               =t(:enable_end_date, :scope => [:lessons, :new])
           .lesson_type
             =f.label t(:type_lesson, :scope => [:lessons, :new])
@@ -100,14 +100,8 @@
       });
 
       $("input:checkbox").change(function() {
-        if (!this.checked){
-          $(".end_date").removeClass("visible").addClass("invisible");
-        }else{
-          $("#until_date").val(
-              '#{I18n.l(( @lesson.try(:schedule).try(:end_date) || @lesson.try(:schedule).try(:start_date) || Date.today).to_date, :format => :default).to_s}'
-            );
-          $(".end_date").removeClass("invisible").addClass("visible");
-        }
+        $(".end_date").toggle('invisible');
+        $("#until_date").val(null);
       });
 
       $("#lesson_type_lesson").change(function(){
