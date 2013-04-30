@@ -1259,6 +1259,7 @@
       course: Curso
       curriculum_unit: Unidade Curricular
       date_range: Período
+      enrollment_period: Período de Matrícula 
       semester: Semestre
       options: Opções
       no_groups: Não há turmas
@@ -1274,6 +1275,7 @@
       curriculum_unit: Unidade Curricular
       to:  à 
       all: Todos(as)
+      enroll_period: Período de matrícula
     not_possible_to_delete: Não é possível deletar oferta com dependências
     existing_semester: já existe
     range_date_error: deve ser menor que a final

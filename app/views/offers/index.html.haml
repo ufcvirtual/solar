@@ -16,19 +16,21 @@
     %thead
       %tr.lines
         %th{:width => "18%"}= t(".course") 
-        %th{:width => "34%"}= t(".curriculum_unit")
+        %th{:width => "24%"}= t(".curriculum_unit")
         %th{:width => "12%"}= t(".semester")
-        %th{:width => "29%"}= t(".date_range")
-        %th{:width => "14%"}
-        %th{:width => "14%"}
-        %th{:width => "14%"}
+        %th{:width => "15%"}= t(".date_range")
+        / %th{:width => "15%"}= t(".enrollment_period")
+        %th{:width => "8%"}
+        %th{:width => "10.5%"}
+        %th{:width => "9%"}
     %tbody
       - @offers.each do |offer|
         %tr.lines{:id => "#{offer.id}"}
           %td= offer.course.name
           %td= offer.curriculum_unit.name
           %td= offer.semester
-          %td= [l(offer.start_date), l(offer.end_date)].join(" - ")
+          %td{:style => "text-align: center"}= [l(offer.start_date), l(offer.end_date)].join(" - ")
+          /%td{:style => "text-align: center"}= (offer.schedule ? [l(offer.schedule.start_date), l(offer.schedule.end_date)].join(" - ") : "Livre")
           %td
             = form_for(:offer, :url => edit_offer_path(offer, :course_id => @course_id, :curriculum_unit_id => @curriculum_unit_id)) do |f|
               = button_tag t(".edit"), :class => "btn btn_default edit", :type => :button, :alt => t(".edit")

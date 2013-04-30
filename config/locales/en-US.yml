@@ -1099,6 +1099,7 @@
       course: Course
       curriculum_unit: Curriculum Unit
       date_range: Date range
+      enrollment_period: Enrollment Period
       semester: Semester
       options: Options
       no_groups: There are no groups
