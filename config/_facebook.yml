@@ -1,6 +1,8 @@
 ## facebook settings
 
-appid: "APP_ID HERE"
+app_id: "APP_ID HERE"
+secret_key: "a8bf7e087213170d0462ef9f24b924c0"
+data-fanpage: "https://www.facebook.com/solar2ufc"
 data-href: "http://localhost:3000"
 tags:
   - <meta property="og:title" content="SOLAR 2.0" />

@@ -35,7 +35,7 @@ class Ability
 
       ## se é ou está relacionado diretamente com usuario
       return true if object_class == User and (object.id == user.id or profiles.select("permissions_resources.per_id").map(&:per_id).include?('f')) # qndo o usuario tem permissoes de ver apenas seus dados
-      return true if object.respond_to?(:user) and not(object.user.nil?) and object.user.id == user.id
+      return true if object.respond_to?(:user) and not(object.user.nil?) and (object.user.id == user.id or alias_action(:read))
       # return true if object.respond_to?(:user_id) and object.user_id == user.id
 
       ## diferenciar tipo das actions (ler/modificar)

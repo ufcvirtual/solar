@@ -12,8 +12,8 @@ function form_post_reset_parameters() {
 
 function destroy_editor() {
   if (CKEDITOR.instances['discussion_post_content']) {
-    CKEDITOR.instances['discussion_post_content'].setData(null);
     CKEDITOR.instances['discussion_post_content'].destroy();
+    $("#discussion_post_content").val(null);
   }
 }
 
@@ -23,13 +23,13 @@ function append_rich_text(container) {
 
   $("#new_post").detach().appendTo(container);
   $('#new_post').show(300);
-  CKEDITOR.instances['discussion_post_content'].setData(null); // retira erro do chrome, edicao desabilitada ao abrir o editor mais de uma vez sem reload da pagina
 }
 
 function cancel_posting() {
   $('#new_post').hide(300);
-  $('#new_post').parent().hide(300);
-  destroy_editor();
+  $('#new_post').parent().hide(300, function() {
+    destroy_editor();
+  });
 }
 
 function new_post(obj, parent) {
