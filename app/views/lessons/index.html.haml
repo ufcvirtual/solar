@@ -15,7 +15,7 @@
           - lesson_closed_class = "period_ended" if lesson.closed == 't'
           %tr.lines{:class => lesson_closed_class }
             %td
-              - if lesson.schedule.end_date < Date.today
+              - if (lesson.schedule.end_date) and (lesson.schedule.end_date < Date.today)
                 = lesson.name
                 = "(#{t(:lesson_closed_short)})" if lesson.closed == 't'
               - else
