@@ -141,3 +141,29 @@ schedule27:
 schedule28:
   id: 28
   start_date: <%= Date.today - 2.days %> 
+
+# para as ofertas (período de matrícula)
+schedule29:
+  id: 29
+  start_date: '2011-01-01'
+  end_date: '2021-03-02'
+
+schedule30:
+  id: 30
+  start_date: '2011-01-01'
+  end_date: '2021-03-02'
+
+schedule31:
+  id: 31
+  start_date: '2011-01-01'
+  end_date: '2021-03-02'  
+
+schedule32:
+  id: 32
+  start_date: '2011-01-01'
+  end_date: '2021-03-02'
+
+schedule33:
+  id: 33
+  start_date: '2011-01-01'
+  end_date: '2021-03-02'

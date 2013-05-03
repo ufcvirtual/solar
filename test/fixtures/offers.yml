@@ -6,6 +6,7 @@ of1:
   semester: '2011.1'
   start_date: '2011-03-10'
   end_date: '2021-12-01'
+  schedule_id: 29
 
 of2:
   id: 2
@@ -14,6 +15,7 @@ of2:
   semester: '2011.1'
   start_date: '2011-03-10'
   end_date: '2021-12-01'
+  schedule_id: 30
 
 of3:
   id: 3
@@ -22,6 +24,7 @@ of3:
   semester: '2011.1'
   start_date: '2011-03-10'
   end_date: '2021-12-01'
+  schedule_id: 31
 
 of4:
   id: 4
@@ -30,6 +33,7 @@ of4:
   semester: '2011.1'
   start_date: '2011-03-10'
   end_date: '2021-12-01'
+  schedule_id: 32
 
 of5:
   id: 5
@@ -38,6 +42,7 @@ of5:
   semester: '2011.1'
   start_date: '2011-03-10'
   end_date: '2021-12-01'
+  schedule_id: 33
 
 of6:
   id: 6
@@ -46,6 +51,7 @@ of6:
   semester: '2012.1'
   start_date: '2011-03-10'
   end_date: '2011-12-01'
+  schedule_id: 26 # período de matrícula ainda não chegou
 
 of7:
   id: 7
@@ -54,3 +60,4 @@ of7:
   semester: '2012.1'
   start_date: '2011-03-10'
   end_date: '2021-12-01'
+  schedule_id: 25 # período de matrícula já passou

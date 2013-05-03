@@ -10,12 +10,6 @@ Contexto:
     | name                    | code   |
     | Letras Português        | LLPT   |
     | Licenciatura em Química | LQUIM  |
-  Dado que tenho "enrollments"
-    | offer_id  | start      | end        |
-    | 1         | 2011-03-01 | 2011-05-30 |
-    | 2         | 2011-03-01 | 2011-05-30 |
-    | 3         | 2011-03-01 | 2011-05-30 |
-    | 4         | 2011-03-01 | 2011-05-30 |
   Dado que tenho "allocations"
     | user_id  | allocation_tag_id  | profile_id  | status |
     | 1        | 2                  | 1           | 1      |
