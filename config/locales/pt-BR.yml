@@ -489,7 +489,7 @@
       \n\n\nAmbiente Virtual SOLAR: http://www.solar2.virtual.ufc.br
       \n\n\n[Esta é uma mensagem automática. Por favor, não a responda.]"
 
-# Página de alterar foto
+# Página de alterar foto"
   choose_file: "Escolher arquivo"
   photo_text: "Você pode fazer upload de um arquivo JPG, GIF ou PNG (Não faça upload
       \n\n de imagens contendo celebridades, nudez, trabalhos artísticos e imagens
@@ -503,25 +503,30 @@
   url: "Digite aqui a URL da imagem no campo de texto acima."
   send: "Enviar"
 
-  # página de matrícula
-  enrollm_search: "Buscar"
-  enrollm_search_in: " em "
-  enrollm_view: "Ver"
-  enrollm_view_all: "Todos"
-  enrollm_view_enrolled: "Matriculados"
-  enrollm_cancel: "Cancelar"
-  enrollm_enroll: "Matricular"
-  enrollm_curriculum_unit: "Unidade Curricular"
-  enrollm_category: "Categoria"
-  enrollm_group: "Turma"
-  enrollm_title: "Matrícula"
-  enrollm_enrolled: "Matriculado"
-  enrollm_cancel_request: "Cancelar pedido"
+  # página de matrícula"
+  enrollments:
+    index:
+      search: "Buscar"
+      search_in: " em "
+      view: "Ver"
+      view_all: "Todos"
+      view_enrolled: "Matriculados"
+      cancel: "Cancelar"
+      enroll: "Matricular"
+      curriculum_unit: "Unidade Curricular"
+      category: "Categoria"
+      group: "Turma"
+      title: "Matrícula"
+      enrolled: "Matriculado"
+      confirm: "Tem certeza de que deseja cancelar?"
+      cancel_request: "Cancelar pedido"
+      period: Período de matrícula
+    not_defined: Não definido
+
+  enrollm_request_cancel_message: "Pedido de matrícula cancelado"  
   enrollm_cancelled_message: "Matrícula cancelada"
   enrollm_not_cancelled_message: "Matrícula não cancelada"
   enrollm_reactivated_message: "Matrícula reativada"
-  enrollm_request_cancel_message: "Pedido de matrícula cancelado"
-  enrollm_confirm: "Tem certeza de que deseja cancelar?"
   enrollm_acepted_message: "Matrícula efetivada."
   enrollm_rejected_message: "Matrícula rejeitada."
 
@@ -1267,6 +1272,7 @@
       all_groups_deactivated: Todas as turmas desativadas
       deactivate_groups: Desativar turmas
       cant_deactivate: Não foi possível desativar as turmas
+      not_defined: Não definido
     form:
       save: Salvar
       cancel: Cancelar

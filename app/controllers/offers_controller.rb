@@ -157,9 +157,13 @@ class OffersController < ApplicationController
       authorize! :create, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e curso selecionados
       raise "erro" unless @offer.valid? # utilizado para validar os campos preenchidos e exibir erros quando necessário
 
+      params[:enroll_end] = nil unless params[:define_enroll_end]
+      schedule    = Schedule.create!(start_date: params[:enroll_start], end_date: params[:enroll_end])
+      schedule_id = schedule.nil? ? nil : schedule.id
+
       @courses.each do |course| # lista de cursos dependendo do que foi selecionado previamente 
         @curriculum_units.each do |curriculum_unit| # lista de ucs dependendo do que foi selecionado previamente 
-          params[:offer][:curriculum_unit_id], params[:offer][:course_id] = curriculum_unit.id, course.id
+          params[:offer][:curriculum_unit_id], params[:offer][:course_id], params[:offer][:schedule_id] = curriculum_unit.id, course.id, schedule_id
           offer = Offer.create!(params[:offer]) # cria uma oferta para cada combinação de uc e curso
         end
       end
@@ -192,7 +196,13 @@ class OffersController < ApplicationController
 
     begin
       authorize! :update, Offer, :on => [@offer.allocation_tag.id] # verifica se tem acesso à oferta a ser editada
+
+      params[:enroll_end] = nil unless params[:define_enroll_end]
+      schedule = Schedule.create!(start_date: params[:enroll_start], end_date: params[:enroll_end])
+
       @offer.update_attributes!(params[:offer])
+      schedule.nil? ? @offer.update_attribute(:schedule_id, nil) : @offer.update_attribute(:schedule_id, schedule.id)
+
       respond_to do |format|
         get_offers(params[:curriculum_unit_id], params[:course_id])
         format.html { render :index, :status => 200 }

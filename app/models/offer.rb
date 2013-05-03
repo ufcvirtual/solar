@@ -6,8 +6,6 @@ class Offer < ActiveRecord::Base
   belongs_to :curriculum_unit
   belongs_to :schedule
 
-  has_one :enrollment
-
   has_many :groups
   has_many :assignments, :through => :allocation_tag
 
@@ -43,6 +41,24 @@ class Offer < ActiveRecord::Base
     unless start_date.nil? or end_date.nil?
       errors.add(:start_date, I18n.t(:range_date_error, :scope => [:offers])) if (start_date > end_date)
     end
+  end
+
+  ##
+  # Verifica schedule
+  ##
+  def schedule_info  
+    unless self.schedule.nil?
+      schedule_dates = []
+      schedule_dates << I18n.l(self.schedule.start_date, format: :normal)
+      schedule_dates << (self.schedule.end_date.nil? ? "Em diante" : I18n.l(self.schedule.end_date, format: :normal))
+      schedule_dates = schedule_dates.join(" - ") 
+      is_active      = (self.schedule.start_date <= Time.now and (self.schedule.end_date.nil? or self.schedule.end_date >= Time.now))
+    else
+      is_active      = true
+      schedule_dates = I18n.t(:not_defined, scope: :enrollments)
+    end
+
+    return {"schedule_dates" => schedule_dates, "is_active" => is_active}
   end
 
 end

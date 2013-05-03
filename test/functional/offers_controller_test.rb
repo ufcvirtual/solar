@@ -60,7 +60,7 @@ class OffersControllerTest < ActionController::TestCase
   #   get :new, {:course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r3).id}
   #   assert_template :new
   #   assert_difference("Offer.count", +offers_to_create) do 
-  #     post :create, {:offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r3).id }
+  #     post :create, {:offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :enroll_start => "2012-12-01", :course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r3).id }
   #     assert_not_nil assigns(:courses)
   #     assert_not_nil assigns(:curriculum_units)
   #   end
@@ -73,7 +73,7 @@ class OffersControllerTest < ActionController::TestCase
   #   get :new, {:course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r3).id}
   #   assert_template :new
   #   assert_no_difference("Offer.count") do 
-  #     post :create, {:offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :course_id => courses(:c1).id, :curriculum_unit_id => curriculum_units(:r5).id }
+  #     post :create, {:offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :enroll_start => "2012-12-01", :course_id => courses(:c1).id, :curriculum_unit_id => curriculum_units(:r5).id }
   #     assert_not_nil assigns(:courses)
   #     assert_not_nil assigns(:curriculum_units)
   #   end
@@ -90,7 +90,7 @@ class OffersControllerTest < ActionController::TestCase
   #   assert_equal( flash[:alert], I18n.t(:no_permission) )
 
   #   assert_no_difference("Offer.count") do 
-  #     post :create, {:offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r5).id }
+  #     post :create, {:offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :enroll_start => "2012-12-01", :course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r5).id }
   #     assert_not_nil assigns(:courses)
   #     assert_not_nil assigns(:curriculum_units)
   #   end
@@ -107,7 +107,7 @@ class OffersControllerTest < ActionController::TestCase
   test "editar ofertas" do
     get :edit, {:id => offers(:of3).id, :course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r3).id}
     assert_template :edit
-    put :update, {:id => offers(:of3).id, :offer => {:semester => "1999.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r3).id }
+    put :update, {:id => offers(:of3).id, :offer => {:semester => "1999.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :enroll_start => "2012-12-01", :course_id => courses(:c2).id, :curriculum_unit_id => curriculum_units(:r3).id }
     assert_not_nil assigns(:courses)
     assert_not_nil assigns(:curriculum_units)
     assert_template :index
@@ -125,7 +125,7 @@ class OffersControllerTest < ActionController::TestCase
     sign_out @editor
     sign_in users(:coorddisc)
 
-    post :update, {:id => offers(:of3).id, :offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :course_id => courses(:c1).id, :curriculum_unit_id => curriculum_units(:r5).id }
+    post :update, {:id => offers(:of3).id, :offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :enroll_start => "2012-12-01", :course_id => courses(:c1).id, :curriculum_unit_id => curriculum_units(:r5).id }
     assert_response :error
 
     sign_in @editor
@@ -147,7 +147,7 @@ class OffersControllerTest < ActionController::TestCase
     assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
 
-    post :update, {:id => offers(:of3).id, :offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :course_id => courses(:c1).id, :curriculum_unit_id => curriculum_units(:r5).id }
+    post :update, {:id => offers(:of3).id, :offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :enroll_start => "2012-12-01", :course_id => courses(:c1).id, :curriculum_unit_id => curriculum_units(:r5).id }
     assert_response :error
   end
 

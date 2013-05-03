@@ -69,15 +69,21 @@ class AllocationsController < ApplicationController
     @change_group = (not [Allocation_Cancelled, Allocation_Rejected].include?(@allocation.status))
 
     # transicao entre grupos apenas da mesma oferta
-    @groups = @change_group ? Group.where(:offer_id => @allocation.group.offer_id) : @allocation.group
+    @groups       = @change_group ? Group.where(:offer_id => @allocation.group.offer_id) : @allocation.group
   end
   
   # Usado na matrícula
   def create
     profile = Profile.student_profile
-    status = Allocation_Pending
+    status  = Allocation_Pending
 
-    ok = allocate(params[:allocation_tag_id], params[:user_id], profile, status, params[:id])
+    allocation_tag = AllocationTag.find(params[:allocation_tag_id])
+    offer = allocation_tag.offer || allocation_tag.group.offer
+    ok    = offer.schedule.nil? ? true : (offer.schedule.start_date <= Time.now and offer.schedule.end_date >= Time.now)
+
+    # (self.schedule.start_date <= Time.now and self.schedule.end_date >= Time.now)
+
+    ok      = allocate(params[:allocation_tag_id], params[:user_id], profile, status, params[:id]) if ok
     message = ok ? ['notice', 'success'] : ['alert', 'error']
 
     respond_to do |format|
@@ -236,8 +242,11 @@ class AllocationsController < ApplicationController
 
   def reactivate
     @allocation = Allocation.find(params[:id])
+    offer = @allocation.offer || @allocation.group.offer
+    ok    = offer.schedule.nil? ? true : (offer.schedule.start_date <= Time.now and offer.schedule.end_date >= Time.now)
+
     respond_to do |format|
-      if @allocation.update_attribute(:status, Allocation_Pending_Reactivate)       
+      if (ok and @allocation.update_attribute(:status, Allocation_Pending_Reactivate))
         format.html { redirect_to(enrollments_url, notice: t(:enrollm_request, :scope => [:allocations, :success])) }        
         format.json { head :ok }
       else

@@ -346,24 +346,29 @@
   send: "Send"
 
   # página de matrícula"
-  enrollm_search: "Search"
-  enrollm_search_in: " in "
-  enrollm_view: "View"
-  enrollm_view_all: "All"
-  enrollm_view_enrolled: "Enrolled"
-  enrollm_cancel: "Cancel"
-  enrollm_enroll: "Enroll"
-  enrollm_curriculum_unit: "Curriculum Unit"
-  enrollm_category: "Category"
-  enrollm_group: "Class"
-  enrollm_title: "Enrollment"
-  enrollm_enrolled: "Enrolled"
-  enrollm_cancel_request: "Cancel Request"
+  enrollments:
+    index:
+      search: Search
+      search_in: " in "
+      view: View
+      view_all: All
+      view_enrolled: Enrolled
+      cancel: Cancel
+      enroll: Enroll
+      curriculum_unit: Curriculum Unit
+      category: Category
+      group: Class
+      title: Enrollment
+      enrolled: Enrolled
+      confirm: Are you sure you want to cancel?
+      cancel_request: Cancel Request
+      period: Enrollment period
+      not_defined: Not defined
+
   enrollm_cancelled_message: "Enrollment cancelled"
   enrollm_not_cancelled_message: "Enrollment not cancelled"
   enrollm_reactivated_message: "Enrollment reactivated"
   enrollm_request_cancel_message: "Request for enrollment cancelled"
-  enrollm_confirm: "Are you sure you want to cancel?"
   enrollm_acepted_message: "Enrollment effected."
   enrollm_rejected_message: "Enrollment rejected."
 
@@ -1107,6 +1112,7 @@
       all_groups_deactivated: All groups deactivated
       deactivate_groups: Deactivate groups
       cant_deactivate: It wasn't possible to deactivate groups
+      not_defined: Not defined
     form:
       save: Save
       cancel: Cancel

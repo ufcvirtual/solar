@@ -1,33 +1,39 @@
+= javascript_include_tag "jquery"
+= javascript_include_tag "jquery.qtip.min"
+= javascript_include_tag "tooltip"
+
 .block_wrapper
   .block_content.enrollment_bar
     = form_for :offer, :url => enrollments_path, method: :get do |f|
       .enrollment_left
         = hidden_field_tag :category_query, @category_query
-        = f.label t(:enrollm_search), :class => "enrollment_label"
+        = f.label t(".search"), :class => "enrollment_label"
         = f.text_field :search, :size=>"30", :class=>'enrollment_search', :value => @search_text
-        = f.label t(:enrollm_search_in), :class => "enrollment_label"
+        = f.label t(".search_in"), :class => "enrollment_label"
         = f.collection_select(:category, @types, :id, :description, {:include_blank => true, :class => "select_category", :selected => @search_category} )
         = button_tag content_tag(:i, nil, :class=>'icon-search'), :class=>'btn'
       .enrollment_right
-        = f.label t(:enrollm_view), :class => "enrollment_label"
+        = f.label t(".view"), :class => "enrollment_label"
         = f.label ': ', :class => "enrollment_label"
-        = link_to t(:enrollm_view_all), enrollments_path(:category_query => 'all'), :class => 'link_gray'
-        = link_to t(:enrollm_view_enrolled), enrollments_path(:category_query => 'enroll'), :class => 'link_gray'
+        = link_to t(".view_all"), enrollments_path(:category_query => 'all'), :class => 'link_gray'
+        = link_to t(".view_enrolled"), enrollments_path(:category_query => 'enroll'), :class => 'link_gray'
 
 .block_wrapper
   .block_title
-    %h2= t(:enrollm_curriculum_unit)
+    %h2= t(".curriculum_unit")
   .block_content
     %table.tb_list.enrollment_list
       %thead
         %tr.lines
-          %th= t(:enrollm_curriculum_unit)
-          %th{:align => "center"}= t(:enrollm_category)
+          %th= t(".curriculum_unit")
+          %th{:align => "center"}= t(".category")
           %th{:align => "center"}= t(:semester)
-          %th{:align => "center"}= t(:enrollm_group)
+          %th{:align => "center"}= t(".group")
+          %th{:align => "center"}= t(".period")
           %th{:align => "center"}= t(:mysolar_mn_enrollment)
       %tbody
         - @offers.each do |offer|
+          - schedule_info = offer.schedule_info
           %tr.lines
             %td= offer.name
             %td
@@ -35,16 +41,17 @@
               = offer.categorydesc
             %td{:align => "center"}= offer.semester
             %td{:align => "center"}= offer.code
+            %td{:align => "center"}= schedule_info["schedule_dates"]
             %td{:align => "center"}
               - case offer.status
                 - when Allocation_Pending.to_s, Allocation_Pending_Reactivate.to_s
-                  = button_to t(:enrollm_cancel_request), cancel_request_allocation_path(offer.allocationid), :method => :delete, :confirm => t(:enrollm_confirm), :class => 'btn btn_caution'
+                  = button_to t(".cancel_request"), cancel_request_allocation_path(offer.allocationid), :method => :delete, :confirm => t(".confirm"), :class => 'btn btn_caution'
                 - when Allocation_Activated.to_s
                   - if offer.allows_enrollment == 't' # nao aceita mais matricula
-                    = button_to t(:enrollm_cancel), cancel_allocation_path(offer.allocationid), :method => :delete, :confirm => t(:enrollm_confirm), :class => 'btn btn_caution'
-                  - else
-                    = label_tag "lb_enrollm", t(:enrollm_enrolled), :class => 'enrollment_label'
+                    = button_to t(".cancel"), cancel_allocation_path(offer.allocationid), :method => :delete, :confirm => t(".confirm"), :class => 'btn btn_caution'
+                  - else 
+                    = label_tag "lb_enrollm", t(".enrolled"), :class => 'enrollment_label'
                 - when Allocation_Cancelled.to_s
-                  = button_to t(:enrollm_enroll), {:controller => "allocations", :action => "reactivate", :id => offer.allocationid }, :class=>'btn btn_default'
+                  = button_to t(".enroll"), {:controller => "allocations", :action => "reactivate", :id => offer.allocationid }, :class=>'btn btn_default', :disabled => (not schedule_info["is_active"]), title: ((schedule_info["is_active"] == true) ? "" : "Seu pedido foi cancelado")
                 - else
-                  = button_to t(:enrollm_enroll), {:controller => "allocations", :action => "create", :id => offer.allocationid, :allocation_tag_id => offer.allocationtagid, :user_id => current_user.id}, :class=>'btn btn_default'
+                  = button_to t(".enroll"), {:controller => "allocations", :action => "create", :id => offer.allocationid, :allocation_tag_id => offer.allocationtagid, :user_id => current_user.id}, :class=>'btn btn_default', :disabled => (not schedule_info["is_active"])

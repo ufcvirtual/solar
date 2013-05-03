@@ -24,11 +24,13 @@ class Allocation < ActiveRecord::Base
     query = <<SQL
       SELECT t1.*,
              t3.code          AS group_code,
-             t4.name          AS user_name
+             t4.name          AS user_name,
+             t5.schedule_id   AS schedule_id
         FROM allocations      AS t1
         JOIN allocation_tags  AS t2 ON t2.id = t1.allocation_tag_id
         JOIN groups           AS t3 ON t3.id = t2.group_id
         JOIN users            AS t4 ON t4.id = t1.user_id
+        JOIN offers           AS t5 ON t3.offer_id = t5.id
        WHERE #{where.join(' AND ')}
        ORDER BY t4.name, t1.status
 SQL

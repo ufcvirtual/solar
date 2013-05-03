@@ -1,3 +1,5 @@
+$margin-top: 5px;
+
 /* layout geral */
 img{
     border: none;
@@ -3572,4 +3574,8 @@ select[disabled] {
 
 #attention_message{
     font-weight: bold;
+}
+
+#final_enroll_date{
+    margin-top: 5px;
 }

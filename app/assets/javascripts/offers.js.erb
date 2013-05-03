@@ -1,36 +1,45 @@
 // = require maskedinput
 
 jQuery(document).ready(function() {
-  jQuery("#offer_semester").mask("9999.9");
+  jQuery("#offer_semester").mask("9999.9");  
 });
 
-jQuery(function() {
+jQuery(function($) {
+
+  if($("input:checkbox").attr("checked") == "checked")
+    $(".enroll_end").show();
+  else
+    $(".enroll_end").hide();
 
   /* Usado no formulário */
-  jQuery("#dt_start_date, #dt_end_date").datepicker({
-    option: jQuery.datepicker.regional[global_config.locale.I18n],
-    dateFormat: global_config.locale.dateFormat
-  });
 
-  jQuery("#save").click(function(){
+  var options = $.extend({}, $.datepicker.regional['#{I18n.locale}'], {dateFormat: global_config.locale.dateFormat.default});
+
+  $('#dt_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#dt_end_date').datepicker("option", "minDate", selected); } }) );
+  $('#dt_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#dt_start_date').datepicker("option", "maxDate", selected); } }) );
+
+  $('#dt_enroll_start').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#dt_enroll_end').datepicker("option", "minDate", selected); } }) );
+  $('#dt_enroll_end').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#dt_enroll_start').datepicker("option", "maxDate", selected); } }) );
+
+  $("#save").click(function(){
     submit_form('offer_form', 'offer_form', '#{offers_path}', 'list_offers');
   });
 
-  jQuery("#cancel").click(function(){
+  $("#cancel").click(function(){
     removeLightBox();
   });
 
   /* Usado na listagem */
-  jQuery('.edit').click(function(){
-    open_lightbox3(jQuery(this).parent().attr('action'), "<%= I18n.t(:edit_offer, :scope => [:offers, :index]) %>");
+  $('.edit').click(function(){
+    open_lightbox3($(this).parent().attr('action'), "<%= I18n.t(:edit_offer, :scope => [:offers, :index]) %>");
   });
 
-  jQuery('.deactivate_groups').click(function(){
-    jQuery.ajax({
+  $('.deactivate_groups').click(function(){
+    $.ajax({
       type: 'POST',
-      url: jQuery(this).parent().attr('action'),
+      url: $(this).parent().attr('action'),
       success: function(data){
-        jQuery("#list_offers").html(data);
+        $("#list_offers").html(data);
         flash_message("<%= I18n.t(:all_groups_deactivated, :scope => [:offers, :index]) %>", 'notice');
       },
       error: function(){
@@ -38,5 +47,25 @@ jQuery(function() {
       }
     });
   });
+
+  $("input:checkbox").change(function() {
+    if (this.checked){
+      set_dates_like_offer();
+      $(".enroll_end").slideDown();
+    }else
+      $(".enroll_end").slideUp();
+  });
+
+  $("input[id^='dt_enroll']").change(function() {
+    if($("#dt_enroll_start").datepicker("getDate") == null || $("#dt_enroll_end").datepicker("getDate") == null)
+      set_dates_like_offer();
+  });
+
+  function set_dates_like_offer(){
+    if($("#dt_enroll_start").datepicker("getDate") == null)
+      $("#dt_enroll_start").datepicker("setDate", $("#dt_start_date").datepicker("getDate"));
+    if($("#dt_enroll_end").datepicker("getDate") == null)
+      $("#dt_enroll_end").datepicker("setDate", $("#dt_end_date").datepicker("getDate"));
+  }
 
 });

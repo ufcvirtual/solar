@@ -1,5 +1,4 @@
 class Enrollment < ActiveRecord::Base
-  belongs_to :offer
 
   def self.enrollments_of_user(user, profile, offer_category = nil, curriculum_unit_name = nil)
     query_category, query_text = ''
@@ -9,7 +8,7 @@ class Enrollment < ActiveRecord::Base
     query_enroll =
       " SELECT DISTINCT of.id, cr.name as name, t.id AS categoryid, t.description AS categorydesc,
                t.allows_enrollment, al.status AS status, al.id AS allocationid,
-               g.code, e.start, e.end, atg.id AS allocationtagid,
+               g.code, s.start_date, s.end_date, atg.id AS allocationtagid,
                g.id AS groupsid, t.icon_name, of.semester
           FROM allocations al
           JOIN allocation_tags atg      ON atg.id = al.allocation_tag_id
@@ -17,7 +16,7 @@ class Enrollment < ActiveRecord::Base
           JOIN offers of                ON of.id = g.offer_id
           JOIN curriculum_units cr      ON cr.id = of.curriculum_unit_id
           JOIN curriculum_unit_types t  ON t.id = cr.curriculum_unit_type_id
-     LEFT JOIN enrollments e            ON of.id = e.offer_id
+     LEFT JOIN schedules s              ON of.schedule_id = s.id
          WHERE al.user_id = #{user.id}
            AND al.profile_id = #{profile}
            AND al.status = #{Allocation_Activated} 
@@ -36,25 +35,27 @@ class Enrollment < ActiveRecord::Base
     query_offer = "
       WITH cte_enrollments_of_user AS (
           SELECT DISTINCT of.id,
-                 of.semester,
-                 cr.name as name,
-                 t.id AS categoryid,
+                 of.semester, 
+                 of.schedule_id,
+                 cr.name       AS name,
+                 t.id          AS categoryid,
                  t.description AS categorydesc,
                  t.allows_enrollment,
-                 al.status AS status,
-                 al.id AS allocationid,
+                 al.status     AS status,
+                 al.id         AS allocationid,
                  g.code,
-                 e.start,
-                 e.end,
-                 atg.id AS allocationtagid,
-                 g.id AS groupsid, t.icon_name
+                 s.start_date,
+                 s.end_date,
+                 atg.id        AS allocationtagid,
+                 g.id          AS groupsid, 
+                 t.icon_name
             FROM allocations al
             JOIN allocation_tags atg      ON atg.id = al.allocation_tag_id
             JOIN groups g                 ON g.id = atg.group_id
             JOIN offers of                ON of.id = g.offer_id
             JOIN curriculum_units cr      ON cr.id = of.curriculum_unit_id
             JOIN curriculum_unit_types t  ON t.id = cr.curriculum_unit_type_id
-        LEFT JOIN enrollments e           ON of.id = e.offer_id
+        LEFT JOIN schedules s             ON of.schedule_id = s.id
            WHERE al.user_id = #{user.id}
              AND al.profile_id = #{profile}
              #{query_category}
@@ -63,28 +64,29 @@ class Enrollment < ActiveRecord::Base
         --
         (
           SELECT DISTINCT of.id,
-                 of.semester,
-                 cr.name as name,
-                 t.id as categoryid,
-                 t.description as categorydesc,
+                 of.semester, 
+                 of.schedule_id,
+                 cr.name       AS name,
+                 t.id          AS categoryid,
+                 t.description AS categorydesc,
                  t.allows_enrollment,
-                 null::integer as status,
-                 null::integer as allocationid,
+                 null::integer AS status,
+                 null::integer AS allocationid,
                  g.code,
-                 e.start,
-                 e.end,
-                 atg.id as allocationtagid,
-                 g.id AS groupsid,
+                 s.start_date,
+                 s.end_date,
+                 atg.id        AS allocationtagid,
+                 g.id          AS groupsid,
                  t.icon_name
             FROM offers of
-       LEFT JOIN enrollments e           ON of.id = e.offer_id
+       LEFT JOIN schedules s             ON of.schedule_id = s.id
       INNER JOIN curriculum_units cr     ON of.curriculum_unit_id = cr.id
       INNER JOIN curriculum_unit_types t ON t.id = cr.curriculum_unit_type_id
  LEFT OUTER JOIN courses c               ON of.course_id = c.id
       INNER JOIN groups g                ON g.offer_id = of.id
       INNER JOIN allocation_tags atg     ON atg.group_id = g.id
-            WHERE (select enrollments.start from enrollments where of.id = enrollments.offer_id) <= current_date
-              AND (select enrollments.end from enrollments where of.id = enrollments.offer_id) >= current_date
+            WHERE s.start_date <= current_date
+              AND ( s.end_date IS NULL OR s.end_date >= current_date )
               AND t.allows_enrollment = TRUE
               AND NOT EXISTS
                 (

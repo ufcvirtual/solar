@@ -5,6 +5,7 @@ class Schedule < ActiveRecord::Base
   has_many :schedule_events
   has_many :portfolios
   has_many :assignments
+  has_many :offers
 
   validates :start_date, :presence => true
   validate :start_date_before_end_date 
