@@ -1120,6 +1120,7 @@
       to:  to  
       all: All
       enable_end_date: Enable end date
+      start_date: Start date
     no_end_date: "On"
     not_possible_to_delete: It's not possible to delete offer with dependencies
     existing_semester: already exists

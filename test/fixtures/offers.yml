@@ -1,4 +1,4 @@
-
+# ofertas de 1 à 4 dentro do período de matrícula até 2021
 of1:
   id: 1
   curriculum_unit_id: 1
@@ -42,7 +42,7 @@ of5:
   semester: '2011.1'
   start_date: '2011-03-10'
   end_date: '2021-12-01'
-  schedule_id: 33
+  schedule_id: 25 # período de matrícula já passou
 
 of6:
   id: 6

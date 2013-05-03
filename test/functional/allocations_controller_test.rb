@@ -171,6 +171,29 @@ class AllocationsControllerTest < ActionController::TestCase
     assert (not allocation_tags(:al5).is_user_class_responsible?(users(:user2).id))
   end
 
+  ##
+  # Usuário solicitando matrícula
+  ##
+
+  # Usuário solicita matrícula dentro do período
+  test "realizar pedido de matricula para aluno - dentro do periodo" do
+    sign_in users(:editor)
+    assert_difference("Allocation.count", +1) do
+      post :create, {allocation_tag_id: allocation_tags(:al5).id, user_id: users(:editor).id}
+    end
+    assert_response :redirect
+    assert_equal flash[:notice], I18n.t(:enrollm_request, :scope => [:allocations, :success])
+  end
+
+  # Usuário solicita matrícula fora do período
+  test "nao realizar pedido de matricula para aluno - fora do periodo" do
+    sign_in users(:editor)
+    assert_no_difference("Allocation.count") do
+      post :create, {allocation_tag_id: allocation_tags(:al8).id, user_id: users(:editor).id}
+    end
+    assert_response :redirect
+    assert_equal flash[:alert], I18n.t(:enrollm_request, :scope => [:allocations, :error])
+  end
 
   # test "mudar aluno de turma" do
 

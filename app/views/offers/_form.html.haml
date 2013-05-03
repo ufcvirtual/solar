@@ -46,7 +46,7 @@
       .string
         = f.label t(".enroll_period")
       .string.required
-        = f.label "Início"+"*"
+        = f.label t(".start_date")+"*"
 
         - enroll_start = @offer.schedule.nil? ? Date.today : @offer.schedule.start_date.to_date
         = text_field_tag :enroll_start, "", :value => (l(enroll_start, :format => :default)), :id => "dt_enroll_start", :size => 10

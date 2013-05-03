@@ -1283,6 +1283,7 @@
       all: Todos(as)
       enroll_period: Período de matrícula
       enable_end_date: Habilitar data final
+      start_date: Início
     no_end_date: Em diante
     not_possible_to_delete: Não é possível deletar oferta com dependências
     existing_semester: já existe

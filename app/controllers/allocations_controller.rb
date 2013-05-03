@@ -76,13 +76,11 @@ class AllocationsController < ApplicationController
   def create
     profile = Profile.student_profile
     status  = Allocation_Pending
-
     allocation_tag = AllocationTag.find(params[:allocation_tag_id])
     offer   = allocation_tag.offer || allocation_tag.group.offer
     ok      = (offer.schedule.start_date <= Time.now and (offer.schedule.end_date.nil? or offer.schedule.end_date >= Time.now)) # verifica se está no período de matrícula
     ok      = allocate(params[:allocation_tag_id], params[:user_id], profile, status, params[:id]) if ok
     message = ok ? ['notice', 'success'] : ['alert', 'error']
-
     respond_to do |format|
       format.html { redirect_to(enrollments_url, message.first.to_sym => t(:enrollm_request, :scope => [:allocations, message.last.to_sym])) }
     end

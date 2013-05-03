@@ -15,6 +15,7 @@ jQuery(function($) {
 
   var options = $.extend({}, $.datepicker.regional['#{I18n.locale}'], {dateFormat: global_config.locale.dateFormat.default});
 
+  // Impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final
   $('#dt_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#dt_end_date').datepicker("option", "minDate", selected); } }) );
   $('#dt_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#dt_start_date').datepicker("option", "maxDate", selected); } }) );
 
@@ -61,6 +62,7 @@ jQuery(function($) {
       set_dates_like_offer();
   });
 
+  /* Seta as datas de período de matrícula com valores pré-definidos quando estas são definidas como vazias */
   function set_dates_like_offer(){
     if($("#dt_enroll_start").datepicker("getDate") == null)
       $("#dt_enroll_start").datepicker("setDate", $("#dt_start_date").datepicker("getDate"));

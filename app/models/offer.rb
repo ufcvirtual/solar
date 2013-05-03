@@ -44,7 +44,7 @@ class Offer < ActiveRecord::Base
   end
 
   ##
-  # Verifica schedule
+  # Retorna as informações da schedule da oferta (período de matrícula)
   ##
   def schedule_info  
     schedule_dates = []
