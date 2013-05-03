@@ -3,6 +3,7 @@
 
 = javascript_include_tag "ckeditor/init"
 = javascript_include_tag "discussion"
+= javascript_include_tag "jwplayer/jwplayer.js"
 
 .block_wrapper
   .block_title
@@ -45,3 +46,25 @@
   .forum_posts_wrapper
     - @posts.each do |post|
       = raw post_html(post, @display_mode, @can_interact)
+
+:javascript
+  $(document).ready(function() {
+    $(".audio").each(function(){
+      var audioId = $(this).attr('id');
+      var audioSrc = $(this).data('source');
+
+      var type = $(this).data('type');
+      console.log(type);
+
+      jwplayer(audioId).setup({
+        playlist: [{
+          sources: [{
+            file: audioSrc,
+            type: type
+          }]
+        }],
+        width: 240,
+        height: 30,
+      })
+    })
+  });

@@ -58,6 +58,7 @@ HTML
         post_post_file_path(post, file), :confirm => t(".remove_file_confirm"), :method => :delete, :title => t(".remove_file"), 'data-tooltip' => t(".remove_file"), :class=>'nodecoration') : ''
       html_files << '<li>'
       html_files <<     "#{link_to_down}&nbsp;&nbsp;#{link_to_remove}"
+      html_files <<     "<div class='audio' id='audio-#{file.id}' data-type='#{file.attachment_file_name.split(".").last}' data-source='#{download_post_post_file_url(post, file)}'></div>" if file.attachment_content_type.index('audio') or file.attachment_content_type.index('video')
       html_files << '</li>'
     end
 

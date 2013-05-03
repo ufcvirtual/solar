@@ -70,7 +70,7 @@ class PostFilesController < ApplicationController
   end
 
   def download
-    download_file(discussion_posts_path(@post_file.post.discussion), @post_file.attachment.path, @post_file.attachment_file_name)
+    send_file(@post_file.attachment.path, type: @post_file.attachment_content_type, filename: @post_file.attachment_file_name)
   end
 
 end
