@@ -23,7 +23,7 @@ class PostsController < ApplicationController
       format.html
       format.json  {
         period = (@posts.empty?) ? ["#{p['date'].to_time}", "#{p['date'].to_time}"] : ["#{@posts.first.updated_at}", "#{@posts.last.updated_at}"].sort
-        render :json => @discussion.count_posts_after_and_before_period(period) + @posts
+        render :json => @discussion.count_posts_after_and_before_period(period) + @posts.map(&:to_mobilis)
       }
     end
   end

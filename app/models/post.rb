@@ -21,4 +21,22 @@ class Post < ActiveRecord::Base
     (self.level < Discussion_Post_Max_Indent_Level)
   end
 
+  def to_mobilis
+    a_ids = attachments.split(',')
+    attachments = []
+    PostFile.find(a_ids).map { |file| attachments << {type: file.attachment_content_type, name: file.attachment_file_name, link: Rails.application.routes.url_helpers.download_post_post_file_path(post_id: id, id: file.id)} }
+
+    {
+      id: id,
+      profile_id: profile_id,
+      discussion_id: discussion_id,
+      user_id: user_id,
+      user_nick: user_nick,
+      level: level,
+      content: content,
+      updated_at: updated_at,
+      attachments: attachments
+    }
+  end
+
 end

@@ -82,8 +82,11 @@ class Discussion < ActiveRecord::Base
          LIMIT #{opts['limit']} OFFSET #{(opts['page'].to_i * opts['limit'].to_i) - opts['limit'].to_i}
       )
       --
-      SELECT *
-        FROM cte_posts
+      SELECT t1.*,
+             translate(array_agg(t2.id)::text, '{NULL}', '') AS attachments
+        FROM cte_posts AS t1
+   LEFT JOIN discussion_post_files AS t2 ON t2.discussion_post_id = t1.id
+       GROUP BY t1.id, parent_id, profile_id, discussion_id, user_id, user_nick, level, content, updated_at
        ORDER BY updated_at #{opts['order']}, id #{opts['order']}
 SQL
 
