@@ -78,11 +78,8 @@ class AllocationsController < ApplicationController
     status  = Allocation_Pending
 
     allocation_tag = AllocationTag.find(params[:allocation_tag_id])
-    offer = allocation_tag.offer || allocation_tag.group.offer
-    ok    = offer.schedule.nil? ? true : (offer.schedule.start_date <= Time.now and offer.schedule.end_date >= Time.now)
-
-    # (self.schedule.start_date <= Time.now and self.schedule.end_date >= Time.now)
-
+    offer   = allocation_tag.offer || allocation_tag.group.offer
+    ok      = (offer.schedule.start_date <= Time.now and (offer.schedule.end_date.nil? or offer.schedule.end_date >= Time.now)) # verifica se está no período de matrícula
     ok      = allocate(params[:allocation_tag_id], params[:user_id], profile, status, params[:id]) if ok
     message = ok ? ['notice', 'success'] : ['alert', 'error']
 
@@ -243,7 +240,7 @@ class AllocationsController < ApplicationController
   def reactivate
     @allocation = Allocation.find(params[:id])
     offer = @allocation.offer || @allocation.group.offer
-    ok    = offer.schedule.nil? ? true : (offer.schedule.start_date <= Time.now and offer.schedule.end_date >= Time.now)
+    ok    = (offer.schedule.start_date <= Time.now and (offer.schedule.end_date.nil? or offer.schedule.end_date >= Time.now)) # verifica se está no período de matrícula
 
     respond_to do |format|
       if (ok and @allocation.update_attribute(:status, Allocation_Pending_Reactivate))

@@ -52,6 +52,6 @@
                   - else 
                     = label_tag "lb_enrollm", t(".enrolled"), :class => 'enrollment_label'
                 - when Allocation_Cancelled.to_s
-                  = button_to t(".enroll"), {:controller => "allocations", :action => "reactivate", :id => offer.allocationid }, :class=>'btn btn_default', :disabled => (not schedule_info["is_active"]), title: ((schedule_info["is_active"] == true) ? "" : "Seu pedido foi cancelado")
+                  = button_to t(".enroll"), {:controller => "allocations", :action => "reactivate", :id => offer.allocationid }, :class=>'btn btn_default', :disabled => (not schedule_info["is_active"])
                 - else
                   = button_to t(".enroll"), {:controller => "allocations", :action => "create", :id => offer.allocationid, :allocation_tag_id => offer.allocationtagid, :user_id => current_user.id}, :class=>'btn btn_default', :disabled => (not schedule_info["is_active"])

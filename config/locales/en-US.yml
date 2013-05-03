@@ -363,7 +363,7 @@
       confirm: Are you sure you want to cancel?
       cancel_request: Cancel Request
       period: Enrollment period
-      not_defined: Not defined
+    not_defined: Not defined
 
   enrollm_cancelled_message: "Enrollment cancelled"
   enrollm_not_cancelled_message: "Enrollment not cancelled"
@@ -1119,6 +1119,8 @@
       date_range: Date range
       to:  to  
       all: All
+      enable_end_date: Enable end date
+    no_end_date: "On"
     not_possible_to_delete: It's not possible to delete offer with dependencies
     existing_semester: already exists
     range_date_error: must be smaller than end

@@ -59,7 +59,7 @@
       .select_end_date.string
         = f.label " "
         = check_box_tag :define_enroll_end, true, !(@offer.schedule.nil? or @offer.schedule.end_date.nil?), :id => "final_enroll_date"
-        = "Habilitar data final"
+        = t(".enable_end_date")
 
 
   .block_content.form-actions{:style => "padding-top: 10px;"}

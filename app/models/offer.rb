@@ -47,16 +47,11 @@ class Offer < ActiveRecord::Base
   # Verifica schedule
   ##
   def schedule_info  
-    unless self.schedule.nil?
-      schedule_dates = []
-      schedule_dates << I18n.l(self.schedule.start_date, format: :normal)
-      schedule_dates << (self.schedule.end_date.nil? ? "Em diante" : I18n.l(self.schedule.end_date, format: :normal))
-      schedule_dates = schedule_dates.join(" - ") 
-      is_active      = (self.schedule.start_date <= Time.now and (self.schedule.end_date.nil? or self.schedule.end_date >= Time.now))
-    else
-      is_active      = true
-      schedule_dates = I18n.t(:not_defined, scope: :enrollments)
-    end
+    schedule_dates = []
+    schedule_dates << I18n.l(self.schedule.start_date, format: :normal)
+    schedule_dates << (self.schedule.end_date.nil? ? I18n.t(:no_end_date, scope: :offers) : I18n.l(self.schedule.end_date, format: :normal))
+    schedule_dates = schedule_dates.join(" - ") 
+    is_active      = (self.schedule.start_date <= Time.now and (self.schedule.end_date.nil? or self.schedule.end_date >= Time.now))
 
     return {"schedule_dates" => schedule_dates, "is_active" => is_active}
   end
