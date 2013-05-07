@@ -38,26 +38,17 @@ class GroupsController < ApplicationController
 			@groups = @groups.select { |group| group.code.downcase.include?(params[:search].downcase) }
 
 			all_allocation_tag_ids = Array.new(@groups.count)
+			params[:chained_filter] = params.include?(:chained_filter) ? params[:chained_filter].split(',').compact : []
+
 			@groups.each_with_index do |group,i|
 				respects_chained_filter = false
 
 				group[:allocation_tag_id] = [group.allocation_tag.id]
 
-				params[:chained_filter] = [] unless params.include?(:chained_filter)
-
-				# se group.offer.allocation_tag.id estiver nos parametros, ok
-				respects_chained_filter = true if params[:chained_filter].include?(group.offer.allocation_tag.id.to_s)    
-				
-				# se group.course.allocation_tag.id estiver nos parametros, ok
-				respects_chained_filter = true if params[:chained_filter].include?(group.course.allocation_tag.id.to_s)    
-
-				#senão, se parametro estiver vazio, ok
-				respects_chained_filter = true if params[:chained_filter].empty?
-				
+				respects_chained_filter = true if (params[:chained_filter].empty? or params[:chained_filter].include?(group.allocation_tag.id.to_s) or params[:chained_filter].include?(group.offer.allocation_tag.id.to_s) or params[:chained_filter].include?(group.course.allocation_tag.id.to_s))
 				all_allocation_tag_ids[i] = group[:allocation_tag_id] if respects_chained_filter
 
 				@groups[i] = nil unless respects_chained_filter
-		
 			end
 			@groups = @groups.compact
 			
