@@ -54,9 +54,16 @@ module PlacesNavPanelHelper
 			"searching": "#{I18n.t(:places_nav_panel_searching_text)}", 
 			"noResults": "#{I18n.t(:places_nav_panel_empty_text)}"
 		};
-		
+
 		//Acao dos Botoes 
 		function places_nav_panel_redirect(url){
+
+			var allocation_tags_ids = navPanelSelectedItems();
+			console.log(allocation_tags_ids);
+
+			$('<input type="hidden" id="allocation_tags_ids" name="allocation_tags_ids" value="'+allocation_tags_ids+'"/>').appendTo($('.placesNavPanel'));
+
+
 			var strForm = '<form id="places_nav_panel_redirectionForm" style="display:none;" method="get">&nbsp;</form>';
 			$('body').append(strForm);
 			$('#places_nav_panel_redirectionForm')

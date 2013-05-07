@@ -10,7 +10,7 @@
       %i.icon-docs
       = t(".offers")
     %span.right_buttons
-      = button_tag t(".new"), :class => "btn btn_main", :type => :button, :onclick => "javascript:open_lightbox3('#{new_offer_path(:course_id => @course_id, :curriculum_unit_id => @curriculum_unit_id)}', '#{t(".new_offer")}');"
+      = button_tag t(".new"), :class => "btn btn_main", :type => :button, :onclick => "javascript:open_lightbox3('#{new_offer_path(allocation_tags_ids: @allocation_tags_ids)}', '#{t(".new_offer")}');"
 
   %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :style => "table-layout: fixed"}
     %thead
@@ -33,15 +33,15 @@
           %td{:style => "text-align: center"}= [l(offer.start_date), l(offer.end_date)].join(" - ")
           %td{:style => "text-align: center"}= schedule_info["schedule_dates"]
           %td
-            = form_for(:offer, :url => edit_offer_path(offer, :course_id => @course_id, :curriculum_unit_id => @curriculum_unit_id)) do |f|
+            = form_for(:offer, :url => edit_offer_path(offer, :allocation_tags_ids => @allocation_tags_ids)) do |f|
               = button_tag t(".edit"), :class => "btn btn_default edit", :type => :button, :alt => t(".edit")
           %td    
             - groups           = offer.groups
             - allow_deactivate = (not (groups.empty? or (groups.size == groups.where("status = #{false}").size)))
             / deactivate_class[mensagem_no_title, classe_do_botão]
             - deactivate_class = allow_deactivate ? [nil, "btn btn_caution"] : [(groups.empty? ? t(".no_groups") : t(".groups_already_deactivated")), "btn btn_disabled"]
-            = form_for(:offer, :url => deactivate_groups_offer_path(offer, :curriculum_unit_id => @curriculum_unit_id, :course_id => @course_id)) do |f|
+            = form_for(:offer, :url => deactivate_groups_offer_path(offer, :allocation_tags_ids => @allocation_tags_ids)) do |f|
               = button_tag t(".deactivate_groups"), :class => deactivate_class[1] + " deactivate_groups", :alt => t(".deactivate_groups"), :type => :button, :disabled => (not allow_deactivate), :title => deactivate_class[0], :id => "deactivate_groups_#{offer.id}"
           %td    
-            = button_tag t(".delete"), :onclick => "javascript: delete_object('#{offer_path(offer, :curriculum_unit_id => @curriculum_unit_id, :course_id => @course_id)}', '#{offers_path}', 'list_offers')", :class => "btn btn_caution", :alt => t(".delete")
+            = button_to t(".delete"), offer_path(offer, :allocation_tags_ids => @allocation_tags_ids), :method => :delete, :confirm => t(".are_you_sure"),:class => "btn btn_caution", :alt => t(".delete")
 

@@ -7,10 +7,11 @@ class OffersController < ApplicationController
 
   # Versão da Bianca
   def index
-    # não poderão vir com o valor 0 (indicando que "nenhum" foi selecionado, pois as ofertas dependem de ambos)
-    @course_id, @curriculum_unit_id = (params[:course_id] || "all"), (params[:curriculum_unit_id] || "all") # a fim de testes: editor, atualmente, tem permissão para uc: 3 e curso: 2
-    authorize! :index, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e cursos selecionados
-    get_offers(@curriculum_unit_id, @course_id)
+    @allocation_tags_ids = (params[:allocation_tags_ids].kind_of?(Array) ? params[:allocation_tags_ids] : params[:allocation_tags_ids].split(',').uniq.collect{|al| al.to_i})
+    authorize! :index, Offer, :on => @allocation_tags_ids
+    @offers = @allocation_tags_ids.collect{|al| AllocationTag.find(al).offer}
+    # render layout: false if params[:allocation_tags_ids].kind_of?(Array)
+    # @offers = @allocation_tags_ids.collect{|al| AllocationTag.find(al).curriculum_unit.offers || AllocationTag.find(al).course.offers}.flatten
   end
 
   def list
@@ -131,51 +132,51 @@ class OffersController < ApplicationController
   end
 
   def new
-    @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
-
-    authorize! :new, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e curso selecionados
+    @allocation_tags_ids = params[:allocation_tags_ids]
+    authorize! :new, Offer, :on => @allocation_tags_ids
     @offer = Offer.new
   end
 
   def edit
     @offer = Offer.find(params[:id])
     authorize! :edit, Offer, on: [@offer.allocation_tag.id]
-
-    @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
+    @allocation_tags_ids = params[:allocation_tags_ids]
   end
 
   # Método que, a partir das ucs e cursos selecionados, cria ofertas para todas as combinações possíveis entre aqueles
   def create
-    params[:offer][:curriculum_unit_id], params[:offer][:course_id] = CurriculumUnit.first.id, Course.first.id # valores aleatórios utilizados apenas para testar a validade da oferta
+    @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    # apenas para testar validação
+    al_tag_test          = AllocationTag.find(@allocation_tags_ids.first.to_i)
+    params[:offer][:course_id],params[:offer][:curriculum_unit_id] = (al_tag_test.course_id || al_tag_test.offer.course_id), (al_tag_test.curriculum_unit_id || al_tag_test.offer.curriculum_unit_id)
     params[:offer][:user_id] = current_user.id # para a alocação
     @offer = Offer.new(params[:offer])
 
-    @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
-    get_curriculum_units_and_courses(@curriculum_unit_id, @course_id)
-
     begin
-      authorize! :create, Offer, :on => get_allocations_tags(nil, @curriculum_unit_id, @course_id) # verifica se tem acesso aos uc e curso selecionados
+      authorize! :create, Offer, :on => @allocation_tags_ids
       raise "erro" unless @offer.valid? # utilizado para validar os campos preenchidos e exibir erros quando necessário
 
       params[:enroll_end] = nil unless params[:define_enroll_end]
       schedule    = Schedule.create!(start_date: params[:enroll_start], end_date: params[:enroll_end])
       schedule_id = schedule.nil? ? nil : schedule.id
 
-      @courses.each do |course| # lista de cursos dependendo do que foi selecionado previamente 
-        @curriculum_units.each do |curriculum_unit| # lista de ucs dependendo do que foi selecionado previamente 
-          params[:offer][:curriculum_unit_id], params[:offer][:course_id], params[:offer][:schedule_id] = curriculum_unit.id, course.id, schedule_id
-          offer = Offer.create!(params[:offer]) # cria uma oferta para cada combinação de uc e curso
-        end
+      # Como os valores que vêm das alocations são de ofertas, é necessário pegar apenas aquelas com uc e curso diferentes
+      allocation_tags_ids = @allocation_tags_ids.uniq {|a| 
+        (AllocationTag.find(a).course_id || AllocationTag.find(a).offer.course_id) and (AllocationTag.find(a).curriculum_unit_id || AllocationTag.find(a).offer.curriculum_unit_id) 
+      } || []
+
+      allocation_tags_ids.each do |al_tag_id|
+        allocation_tag = AllocationTag.find(al_tag_id)
+        params[:offer][:course_id], params[:offer][:curriculum_unit_id] = (allocation_tag.course_id || allocation_tag.offer.course_id), (allocation_tag.curriculum_unit_id || allocation_tag.offer.curriculum_unit_id)
+        params[:offer][:schedule_id] = schedule_id
+        offer = Offer.create!(params[:offer])
+        @allocation_tags_ids << offer.allocation_tag.id
       end
 
-      respond_to do |format|
-        get_offers(@curriculum_unit_id, @course_id)
-        format.html { render :index, :status => 200 }
-      end
+      redirect_to :action => :index, :allocation_tags_ids => @allocation_tags_ids
 
     rescue CanCan::AccessDenied
       respond_to do |format|
-        get_offers(@curriculum_unit_id, @course_id)
         format.html { render :index, :status => 500 }
       end
     rescue Exception => error
@@ -190,9 +191,8 @@ class OffersController < ApplicationController
   end
 
   def update
+    @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
     @offer = Offer.find(params[:id])
-    params[:offer][:curriculum_unit_id], params[:offer][:course_id] = @offer.curriculum_unit_id, @offer.course_id
-    @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
 
     begin
       authorize! :update, Offer, :on => [@offer.allocation_tag.id] # verifica se tem acesso à oferta a ser editada
@@ -203,13 +203,10 @@ class OffersController < ApplicationController
       @offer.update_attributes!(params[:offer])
       schedule.nil? ? @offer.update_attribute(:schedule_id, nil) : @offer.update_attribute(:schedule_id, schedule.id)
 
-      respond_to do |format|
-        get_offers(params[:curriculum_unit_id], params[:course_id])
-        format.html { render :index, :status => 200 }
-      end
+      redirect_to :action => :index, :allocation_tags_ids => @allocation_tags_ids
+
     rescue CanCan::AccessDenied
       respond_to do |format|
-        get_offers(@curriculum_unit_id, @course_id)
         format.html { render :index, :status => 500 }
       end
     rescue Exception => error
@@ -223,41 +220,36 @@ class OffersController < ApplicationController
 
   def destroy
     offer = Offer.find(params[:id])
-    @course_id, @curriculum_unit_id = params[:course_id], params[:curriculum_unit_id]
+    @allocation_tags_ids = params[:allocation_tags_ids]
 
     begin
       authorize! :destroy, Offer, :on => [offer.allocation_tag.id] # verifica se tem acesso à oferta a ser excluída
       raise "error" unless offer.destroy
-
-      respond_to do |format|
-        get_offers(@curriculum_unit_id, @course_id)
-        format.html { render :index, :status => 200 }
-      end
+      @allocation_tags_ids.delete(offer.allocation_tag.id.to_s)
+      flash[:notice] = t(:deleted_success, scope: :offers)
+    rescue CanCan::AccessDenied
+      flash[:alert] = t(:no_permission)
     rescue 
-      get_offers(@curriculum_unit_id, @course_id)
-      respond_to do |format|
-        format.html { render :index, :status => 500 }
-      end
+      flash[:alert] = t(:not_possible_to_delete, scope: :offers)
     end
-
+    redirect_to :action => :index, :allocation_tags_ids => @allocation_tags_ids
   end
 
   # Método que desabilita todos os grupos da oferta
   def deactivate_groups
     offer = Offer.find(params[:id])
     @curriculum_unit_id, @course_id = params[:curriculum_unit_id], params[:course_id]
-    get_offers(@curriculum_unit_id, @course_id)
+    @allocation_tags_ids = params[:allocation_tags_ids]
 
     begin 
       authorize! :deactivate_groups, Offer, :on => [offer.allocation_tag.id] # verifica se tem acesso à oferta a ter suas turmas desativadas
       offer.groups.each { |group| group.update_attributes!(:status => false) }
-      respond_to do |format|
-        format.html{ render :index, :status => 200 }
-      end
+
+      flash[:notice] = t(:all_groups_deactivated, :scope => [:offers, :index])
+      redirect_to :action => :index, :allocation_tags_ids => @allocation_tags_ids
     rescue
-      respond_to do |format|
-        format.html{ render :index, :status => 500 }
-      end
+      flash[:alert] = t(:cant_deactivate, :scope => [:offers, :index])
+      redirect_to :action => :index, :allocation_tags_ids => @allocation_tags_ids
     end
   end
 

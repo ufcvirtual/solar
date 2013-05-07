@@ -1113,6 +1113,7 @@
       deactivate_groups: Deactivate groups
       cant_deactivate: It wasn't possible to deactivate groups
       not_defined: Not defined
+      are_you_sure: Are you sure?
     form:
       save: Save
       cancel: Cancel
@@ -1125,6 +1126,7 @@
     not_possible_to_delete: It's not possible to delete offer with dependencies
     existing_semester: already exists
     range_date_error: must be smaller than end
+    deleted_success: Offer deleted successfully
 
 #Facebook
 

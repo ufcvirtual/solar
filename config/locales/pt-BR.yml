@@ -1273,6 +1273,7 @@
       deactivate_groups: Desativar turmas
       cant_deactivate: Não foi possível desativar as turmas
       not_defined: Não definido
+      are_you_sure: Você tem certeza?
     form:
       save: Salvar
       cancel: Cancelar
@@ -1288,6 +1289,8 @@
     not_possible_to_delete: Não é possível deletar oferta com dependências
     existing_semester: já existe
     range_date_error: deve ser menor que a final
+    deleted_success: Oferta removida com sucesso
+
 
   #Facebook
 

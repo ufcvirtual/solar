@@ -23,7 +23,7 @@ jQuery(function($) {
   $('#dt_enroll_end').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#dt_enroll_start').datepicker("option", "maxDate", selected); } }) );
 
   $("#save").click(function(){
-    submit_form('offer_form', 'offer_form', '#{offers_path}', 'list_offers');
+    submit_form('offer_form', 'offer_form', '#{offers_path}', 'body_wrapper');
   });
 
   $("#cancel").click(function(){
@@ -40,11 +40,7 @@ jQuery(function($) {
       type: 'POST',
       url: $(this).parent().attr('action'),
       success: function(data){
-        $("#list_offers").html(data);
-        flash_message("<%= I18n.t(:all_groups_deactivated, :scope => [:offers, :index]) %>", 'notice');
-      },
-      error: function(){
-        flash_message("<%= I18n.t(:cant_deactivate, :scope => [:offers, :index]) %>", 'alert');
+        $("#body_wrapper").html(data);
       }
     });
   });

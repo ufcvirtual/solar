@@ -1,6 +1,5 @@
 = javascript_include_tag "offers"
 = javascript_include_tag "edition"
-/ = javascript_include_tag "jquery.maskedinput.js"
 
 %span.form_requirement= t(:required_fields)
 .offer_form{:style => "text-align: left;"}
@@ -8,26 +7,7 @@
 
     .form-inputs.block_content
 
-      = hidden_field_tag :course_id, @course_id
-      = hidden_field_tag :curriculum_unit_id, @curriculum_unit_id
-
-      %div
-        = f.label t(".course")+"*"
-        - if @offer.curriculum_unit_id
-          = @offer.course.name
-        - elsif @course_id == "all"
-          = t(".all")
-        - elsif @course_id != 0
-          = Course.find(@course_id).name
-
-      %div
-        = f.label t(".curriculum_unit")+"*"
-        - if @offer.curriculum_unit_id
-          = @offer.curriculum_unit.name
-        - elsif @curriculum_unit_id == "all"
-          = t(".all")
-        - elsif @curriculum_unit_id != 0
-          = CurriculumUnit.find(@curriculum_unit_id).name
+      = hidden_field_tag(:allocation_tags_ids, @allocation_tags_ids) 
 
       = f.input :semester, :presence => true, :input_html => {:style => 'width: 40px'}
       - error_class = "field_with_errors" unless @date_range_error.blank?
@@ -61,6 +41,9 @@
         = check_box_tag :define_enroll_end, true, !(@offer.schedule.nil? or @offer.schedule.end_date.nil?), :id => "final_enroll_date"
         = t(".enable_end_date")
 
+      /.block_content.form-actions{:style => "padding-top: 10px;"}
+      /  = f.submit t(".save"), :class => "btn btn_main", :alt => t(".save")#, :type => "button", :id => "save"
+      /  = button_tag t(".cancel"), :class => "btn btn_default", :type => "button", :alt => t(".cancel"), :id => "cancel"
 
   .block_content.form-actions{:style => "padding-top: 10px;"}
     = button_tag t(".save"), :class => "btn btn_main", :alt => t(".save"), :type => "button", :id => "save"

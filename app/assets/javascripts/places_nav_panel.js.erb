@@ -190,11 +190,11 @@ function isSearchPanelClosed(element){
 function navPanelSelectedItems(){
 	var $selectedItem = $("#places_nav_panel_txtGroup").tokenInput("get")[0];
 	if ($selectedItem == undefined) 
-		$selectedItem = $( "#places_nav_panel_txtCurriculumUnit").tokenInput("get")[0];
+		$selectedItem = $("#places_nav_panel_txtCurriculumUnit").tokenInput("get")[0];
 	if ($selectedItem == undefined) 
-		$selectedItem = $( "#places_nav_panel_txtSemester").tokenInput("get")[0];
+		$selectedItem = $("#places_nav_panel_txtSemester").tokenInput("get")[0];
 	if ($selectedItem == undefined) 
-		$selectedItem = $( "#places_nav_panel_txtCourse").tokenInput("get")[0];
+		$selectedItem = $("#places_nav_panel_txtCourse").tokenInput("get")[0];
 	if ($selectedItem == undefined) 
 		return [];
 	
