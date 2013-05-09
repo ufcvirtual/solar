@@ -8,20 +8,30 @@
     .form-inputs.block_content
 
       = hidden_field_tag(:allocation_tags_ids, @allocation_tags_ids) 
+      - uc_and_course_names = get_uc_and_course_names(@allocation_tags_ids)
 
-      = f.input :semester, :presence => true, :input_html => {:style => 'width: 40px'}
-      - error_class = "field_with_errors" unless @date_range_error.blank?
-      .string.required{:class => error_class}
-        = f.label t(".date_range"), :required => true
-        
-        - start_date = @offer.start_date.nil? ? Date.today : @offer.start_date.to_date
-        = text_field_tag :start_date, "", :value => (l(start_date, :format => :default)), :id => "dt_start_date", :name => "offer[start_date]", :size => 10
+      .string
+        = f.label t(".curriculum_unit")+"*"
+        %span#text_as_label= uc_and_course_names["uc"]
 
-        = t(".to")
+      .string
+        = f.label t(".course")+"*"
+        %span#text_as_label= uc_and_course_names["course"]
 
-        - end_date = @offer.end_date.nil? ? Date.today + 3.month : @offer.end_date.to_date
-        = text_field_tag :end_date, "", :value => (l(end_date, :format => :default)), :id => "dt_end_date", :name => "offer[end_date]", :size => 10
-        %span{:style => "display: inline-block;"}= @date_range_error
+      .string    
+        = f.input :semester, :presence => true, :input_html => {:style => 'width: 40px'}
+        - error_class = "field_with_errors" unless @date_range_error.blank?
+        .string.required{:class => error_class}
+          = f.label t(".date_range"), :required => true
+          
+          - start_date = @offer.start_date.nil? ? Date.today : @offer.start_date.to_date
+          = text_field_tag :start_date, "", :value => (l(start_date, :format => :default)), :id => "dt_start_date", :name => "offer[start_date]", :size => 10
+
+          = t(".to")
+
+          - end_date = @offer.end_date.nil? ? Date.today + 3.month : @offer.end_date.to_date
+          = text_field_tag :end_date, "", :value => (l(end_date, :format => :default)), :id => "dt_end_date", :name => "offer[end_date]", :size => 10
+          %span{:style => "display: inline-block;"}= @date_range_error
 
       .string
         = f.label t(".enroll_period")
@@ -40,10 +50,6 @@
         = f.label " "
         = check_box_tag :define_enroll_end, true, !(@offer.schedule.nil? or @offer.schedule.end_date.nil?), :id => "final_enroll_date"
         = t(".enable_end_date")
-
-      /.block_content.form-actions{:style => "padding-top: 10px;"}
-      /  = f.submit t(".save"), :class => "btn btn_main", :alt => t(".save")#, :type => "button", :id => "save"
-      /  = button_tag t(".cancel"), :class => "btn btn_default", :type => "button", :alt => t(".cancel"), :id => "cancel"
 
   .block_content.form-actions{:style => "padding-top: 10px;"}
     = button_tag t(".save"), :class => "btn btn_main", :alt => t(".save"), :type => "button", :id => "save"
