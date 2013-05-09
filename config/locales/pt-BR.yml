@@ -613,6 +613,8 @@
       invalid_link: "URL inválida"
 
   lesson_modules:
+    general_of_offer: "Geral"
+    general_of_group: "Geral da Turma"
     none: "Nenhum módulo cadastrado"
     buttons:
       new: "Novo módulo"

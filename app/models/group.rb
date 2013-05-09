@@ -12,6 +12,9 @@ class Group < ActiveRecord::Base
   validates :offer_id, :presence => true
   validates :code, :presence => true
 
+  # modulo default da turma
+  after_create :set_default_lesson_module
+
   def code_semester
     "#{code} - #{offer.semester}"
   end
@@ -24,6 +27,10 @@ class Group < ActiveRecord::Base
 
   def has_any_lower_association?
     false
+  end
+
+  def set_default_lesson_module
+    create_default_lesson_module(I18n.t(:general_of_group, scope: :lesson_modules))
   end
 
 end

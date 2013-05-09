@@ -8,6 +8,7 @@ module Taggable
     base.has_one :allocation_tag, :dependent => :destroy
     base.has_many :allocations, :through => :allocation_tag
     base.has_many :users, :through => :allocation_tag
+    base.has_many :lesson_modules, :through => :allocation_tag
 
     attr_accessor :user_id
   end
@@ -52,6 +53,11 @@ module Taggable
 
   def can_destroy?
     ((is_up_to_one_user?) and (not has_any_lower_association?))
+  end
+
+  ## criacao de lesson module default :: devera ser chamada apenas por groups e offers
+  def create_default_lesson_module(name)
+    LessonModule.create(allocation_tag: allocation_tag, name: name, is_default: true)
   end
 
   ##

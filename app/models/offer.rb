@@ -18,8 +18,11 @@ class Offer < ActiveRecord::Base
   validate :semester_must_be_unique
   validate :start_must_be_previous_than_end
 
+  # modulo default da oferta
+  after_create :set_default_lesson_module
+
   def has_any_lower_association?
-      self.groups.count > 0
+    self.groups.count > 0
   end
 
   def lower_associated_objects
@@ -54,6 +57,10 @@ class Offer < ActiveRecord::Base
     is_active      = (self.schedule.start_date <= Time.now and (self.schedule.end_date.nil? or self.schedule.end_date >= Time.now))
 
     return {"schedule_dates" => schedule_dates, "is_active" => is_active}
+  end
+
+  def set_default_lesson_module
+    create_default_lesson_module(I18n.t(:general_of_offer, scope: :lesson_modules))
   end
 
 end
