@@ -10,8 +10,6 @@ class OffersController < ApplicationController
     @allocation_tags_ids = (params[:allocation_tags_ids].kind_of?(Array) ? params[:allocation_tags_ids] : params[:allocation_tags_ids].split(',').uniq.collect{|al| al.to_i})
     authorize! :index, Offer, :on => @allocation_tags_ids
     @offers = @allocation_tags_ids.collect{|al| AllocationTag.find(al).offer}
-    # render layout: false if params[:allocation_tags_ids].kind_of?(Array)
-    # @offers = @allocation_tags_ids.collect{|al| AllocationTag.find(al).curriculum_unit.offers || AllocationTag.find(al).course.offers}.flatten
   end
 
   def list
@@ -145,7 +143,7 @@ class OffersController < ApplicationController
 
   # Método que, a partir das ucs e cursos selecionados, cria ofertas para todas as combinações possíveis entre aqueles
   def create
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    @allocation_tags_ids = (params[:allocation_tags_ids].kind_of?(Array) ? params[:allocation_tags_ids] : params[:allocation_tags_ids].split(',').uniq.collect{|al| al.to_i})
     # apenas para testar validação
     al_tag_test          = AllocationTag.find(@allocation_tags_ids.first.to_i)
     params[:offer][:course_id],params[:offer][:curriculum_unit_id] = (al_tag_test.course_id || al_tag_test.offer.course_id), (al_tag_test.curriculum_unit_id || al_tag_test.offer.curriculum_unit_id)
@@ -176,10 +174,12 @@ class OffersController < ApplicationController
       redirect_to :action => :index, :allocation_tags_ids => @allocation_tags_ids
 
     rescue CanCan::AccessDenied
+      @offers = @allocation_tags_ids.collect{|al| AllocationTag.find(al).offer}
       respond_to do |format|
         format.html { render :index, :status => 500 }
       end
     rescue Exception => error
+      @offers = @allocation_tags_ids.collect{|al| AllocationTag.find(al).offer}
       respond_to do |format|
         @date_range_error = @offer.errors.full_messages.last unless @offer.errors[:start_date].blank? and @offer.errors[:end_date].blank?
         @offer.errors.add(:semester, I18n.t(:existing_semester, :scope => [:offers])) if error.message == t(:semester, :scope => [:offers, :index]) + " " + t(:existing_semester, :scope => [:offers])
@@ -202,14 +202,15 @@ class OffersController < ApplicationController
 
       @offer.update_attributes!(params[:offer])
       schedule.nil? ? @offer.update_attribute(:schedule_id, nil) : @offer.update_attribute(:schedule_id, schedule.id)
-
       redirect_to :action => :index, :allocation_tags_ids => @allocation_tags_ids
 
     rescue CanCan::AccessDenied
+      @offers = @allocation_tags_ids.collect{|al| AllocationTag.find(al).offer}
       respond_to do |format|
         format.html { render :index, :status => 500 }
       end
     rescue Exception => error
+      @offers = @allocation_tags_ids.collect{|al| AllocationTag.find(al).offer}
       respond_to do |format|
         @date_range_error = @offer.errors.full_messages.last unless @offer.errors[:start_date].blank? and @offer.errors[:end_date].blank?
         format.html { render :edit, :status => 200 }
@@ -246,11 +247,12 @@ class OffersController < ApplicationController
       offer.groups.each { |group| group.update_attributes!(:status => false) }
 
       flash[:notice] = t(:all_groups_deactivated, :scope => [:offers, :index])
-      redirect_to :action => :index, :allocation_tags_ids => @allocation_tags_ids
+    rescue CanCan::AccessDenied
+      flash[:alert] = t(:no_permission)
     rescue
       flash[:alert] = t(:cant_deactivate, :scope => [:offers, :index])
-      redirect_to :action => :index, :allocation_tags_ids => @allocation_tags_ids
     end
+    redirect_to :action => :index, :allocation_tags_ids => @allocation_tags_ids
   end
 
   private

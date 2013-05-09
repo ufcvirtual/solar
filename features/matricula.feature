@@ -60,6 +60,7 @@ Cenário: Cancelar pedido de matricula
   Então eu deverei ver a linha de opcao de matricula
     | UnidadeCurricular             | Categoria                           | Turma   | Matricula       |
     | Introducao a Linguistica      | Curso Livre                         | IL-FOR  | Cancelar        |
-    | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | LB-CAR  | Matricular      |
     | Quimica I                     | Curso de Graduacao a Distancia      | QM-CAU  | Matriculado     |
     | Teoria da Literatura I        | Curso de Graduacao Presencial       | TL-CAU  | Matricular      |
+    # Após a última ação, usuário não vê mais Literatura Brasileira I pois o período de matrícula expirou. 
+    # Ela só era exibida antes, pois o usuário tinha "vínculo" com ela. Como ele "quebrou" o vínculo (cancelou pedido), não há motivo para ela ficar visível.
