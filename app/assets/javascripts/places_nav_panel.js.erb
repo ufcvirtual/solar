@@ -1,5 +1,6 @@
 $(document).ready(function(){
 
+	// var permited_allocations = 
 	var preselectedCourses = null;
 	var preselectedCourseVal = $('#places_nav_panel_selectedCourseValue').val();
 	var preselectedCourseName = $('#places_nav_panel_selectedCourseName').val();
@@ -203,10 +204,10 @@ function navPanelSelectedItems(){
 
 /*Retorna as alocationTagIds selecionadas em *TODOS* os níveis */
 function navPanelAllItems(){
-	var course = $( "#places_nav_panel_txtCourse").tokenInput("get")[0];
-	var semester = $( "#places_nav_panel_txtSemester").tokenInput("get")[0];
+	var course 		   = $( "#places_nav_panel_txtCourse").tokenInput("get")[0];
+	var semester 	   = $( "#places_nav_panel_txtSemester").tokenInput("get")[0];
 	var curriculumUnit = $( "#places_nav_panel_txtCurriculumUnit").tokenInput("get")[0];
-	var group = $("#places_nav_panel_txtGroup").tokenInput("get")[0];
+	var group 		   = $("#places_nav_panel_txtGroup").tokenInput("get")[0];
 
 	return {
 		'course': course, 
@@ -234,18 +235,21 @@ function navPanelEnableButton($button){
 
 function navPanelUpdateGroupsButtonState(){
 	$selectedCurriculumUnit = $( "#places_nav_panel_txtCurriculumUnit").tokenInput("get")[0];
-	$selectedSemester = $( "#places_nav_panel_txtSemester").tokenInput("get")[0];
+	$selectedSemester 		  = $( "#places_nav_panel_txtSemester").tokenInput("get")[0];
+  var permission_to_offer = has_permission();
 	
 	//Botão de oferta partindo de semestre
-	if ($selectedSemester != undefined)
-		navPanelEnableButton($('#places_nav_panel_btManageOfferBySemester'));
-	else
+	if ($selectedSemester != undefined){
+    if(permission_to_offer == true)
+		  navPanelEnableButton($('#places_nav_panel_btManageOfferBySemester'));
+	}else
 		navPanelDisableButton($('#places_nav_panel_btManageOfferBySemester'));
 
 	//Botão de oferta partindo de UC
-	if ($selectedCurriculumUnit != undefined)
-		navPanelEnableButton($('#places_nav_panel_btManageOfferByCurriculumUnit'));
-	else
+	if ($selectedCurriculumUnit != undefined){
+		if(permission_to_offer == true)
+			navPanelEnableButton($('#places_nav_panel_btManageOfferByCurriculumUnit'));
+	}else
 		navPanelDisableButton($('#places_nav_panel_btManageOfferByCurriculumUnit'));
 	
 	//Botão de turmas
@@ -253,4 +257,17 @@ function navPanelUpdateGroupsButtonState(){
 		navPanelEnableButton($('#places_nav_panel_btManageGroups'));
 	else
 		navPanelDisableButton($('#places_nav_panel_btManageGroups'));
+}
+
+function has_permission(){
+	var permission = false;
+	var selected_allocation_tags = navPanelSelectedItems();
+	if(selected_allocation_tags.length != 0){
+		$(selected_allocation_tags).each(function() {
+			permission = (jQuery.inArray(parseInt(this), allocations_tags_permitted) != -1);
+			if(permission == false)
+				return false;
+		});
+	}
+	return permission;
 }

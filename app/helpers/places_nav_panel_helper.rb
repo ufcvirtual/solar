@@ -1,15 +1,20 @@
 module PlacesNavPanelHelper
 
   def places_nav_panel_helper
-  
-	selectedCourseName = ''
-	selectedCourseValue = ''
-	selectedSemesterName = ''
-	selectedSemesterValue = ''
-	selectedCurriculumUnitName = ''
-	selectedCurriculumUnitValue = ''
-	selectedGroupName = ''
-	selectedGroupValue = ''
+
+  	## Permissões para ofertar
+
+  	# perfis que permitem acesso às ofertas
+	profiles_permitted_to_offer 		= PermissionsResource.where(:resource_id => Resource.find_by_controller_and_action("offers", "index").id).map(&:profile_id)
+	# allocation_tags do usuário com os perfis permitidos e as relacionadas "para baixo"
+	allocations_tags_permitted_to_offer = current_user.allocations.where(:profile_id => profiles_permitted_to_offer).map(&:allocation_tag_id).compact.collect{|al| AllocationTag.find(al).related({lower: true})}.flatten.uniq
+
+	## Filtro
+
+	selectedCourseName, selectedCourseValue = '', ''
+	selectedSemesterName, selectedSemesterValue = '', ''
+	selectedCurriculumUnitName, selectedCurriculumUnitValue = '', ''
+	selectedGroupName, selectedGroupValue = '', ''
 	
 	selectedCourseName = params[:places_nav_panel_selectedCourseName] if params.include?(:places_nav_panel_selectedCourseName)
 	selectedCourseValue = params[:places_nav_panel_selectedCourseValue] if params.include?(:places_nav_panel_selectedCourseValue)
@@ -26,6 +31,8 @@ module PlacesNavPanelHelper
     #{ stylesheet_link_tag "places_nav_panel" }
 
 	<script type="text/javascript">
+
+		var allocations_tags_permitted = #{allocations_tags_permitted_to_offer};
 
 		//Declarando caminhos para a busca do componente. Nao conseguimos colocar isso no javascript		
 		var search_urls = {
