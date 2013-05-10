@@ -37,16 +37,16 @@ class Discussion < ActiveRecord::Base
 
   def opened?
     schedule = self.schedule
-    schedule.start_date <= Date.today and schedule.end_date >= Date.today
+    schedule.start_date.to_date <= Date.today and schedule.end_date.to_date >= Date.today
   end
 
   def closed?
-    !self.schedule.end_date.nil? ? self.schedule.end_date < Date.today : false
+    !self.schedule.end_date.nil? ? self.schedule.end_date.to_date < Date.today : false
   end
 
   def extra_time?(user_id)
     (self.allocation_tag.is_user_class_responsible?(user_id) and self.closed?) ?
-      ((self.schedule.end_date.to_datetime + Discussion_Responsible_Extra_Time) >= Date.today) : false
+      ((self.schedule.end_date.to_date + Discussion_Responsible_Extra_Time) >= Date.today) : false
   end
 
   def user_can_interact?(user_id)
