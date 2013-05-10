@@ -79,9 +79,12 @@
 
     var atual_recipients = $("#recipients_selected").text();
     var found = atual_recipients.search(email);
+    $("#receiver_already_added").remove();
     if (found == -1) {
       $("#recipients_selected").append(new_recipient);
       $("#"+u).hide();
+    }else{
+      $("<span id='receiver_already_added'>#{t(:message_receiver_already_added)}</span>").hide().appendTo($("#"+u).children()[0]).fadeIn();
     }
   }
 

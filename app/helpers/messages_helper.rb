@@ -153,21 +153,17 @@ module MessagesHelper
   #chamada depois de get_contacts para montar os contatos atualizados
   def show_contacts_updated
     text = ""
-    if !@all_contacts.nil?
-      @all_contacts.each do |c|
-        text << "<span id='u#{c.id}'><a class='message_link' href=javascript:add_receiver('u#{c.id}','#{URI.escape(c.name)}','#{c.email}')>" << c.name << " [" << c.email << "]</a><br/></span>"
-      end
-    end
-    if !@responsibles.nil?
-      @responsibles.each do |r|
-        text << "<span id='u#{r.id}'><a class='message_link' href=javascript:add_receiver('u#{r.id}','#{URI.escape(r.username)}','#{r.email}')>" << r.username << " [" << r.email << "]</a><br/></span>"
-      end
-    end
-    if !@participants.nil?
-      @participants.each do |p|
+    
+    contacts = @all_contacts.nil? ? [] : @all_contacts
+    contacts << @responsibles unless @responsibles.nil?
+    contacts << @participants unless @participants.nil?
+
+    if !contacts.nil?
+      contacts.flatten.uniq.each do |p|
         text << "<span id='u#{p.id}'><a class='message_link' href=javascript:add_receiver('u#{p.id}','#{URI.escape(p.username)}','#{p.email}')>" << p.username << " [" << p.email << "]</a><br/></span>"
       end
     end
+
     return text
   end
 
