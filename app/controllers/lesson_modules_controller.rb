@@ -66,18 +66,12 @@ class LessonModulesController < ApplicationController
   end
 
   def destroy
-    @module = LessonModule.find(params[:id])
+    authorize! :destroy, @module = LessonModule.find(params[:id])
 
-    begin
-      authorize! :destroy, @module
-      raise "error" unless @module.destroy # exclui as aulas dependentes e verifica se todas realmente podem ser excluídas (apenas se estiverem em teste)
-      respond_to do |format|
-        format.html{ render :nothing => true, :status => 200 }
-      end
-    rescue
-      respond_to do |format|
-        format.html{ render :nothing => true, :status => 500 }
-      end
+    if @module.destroy
+      render json: {success: true}, status: :ok
+    else
+      render json: {success: false, msg: @module.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
