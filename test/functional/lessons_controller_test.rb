@@ -13,8 +13,44 @@ class LessonsControllerTest < ActionController::TestCase
     sign_in @editor
   end
 
-  def create_zip_name(lessons_ids)
-    return Digest::SHA1.hexdigest(lessons_ids.collect{ |lesson_id| File.join(Rails.root.to_s, 'media', 'lessons', lesson_id) }.join) << '.zip'
+  # criacao / edicao
+
+  test "criar e editar uma aula do tipo link" do
+    lesson = {name: 'lorem ipsum', address: 'http://aulatipolink1.com', type_lesson: Lesson_Type_Link, lesson_module_id: 1}
+    params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: allocation_tags(:al6), start_date: Time.now, end_date: (Time.now + 1.month)}
+
+    assert_difference("Lesson.count", 1) do
+      post(:create, params)
+    end
+    assert_response :ok
+    assert_equal Lesson.last.address, 'http://aulatipolink1.com'
+
+    update = {id: Lesson.last.id, allocation_tags_ids: allocation_tags(:al6), lesson: {address: 'http://aulatipolink2.com'}, start_date: Time.now, end_date: (Time.now + 1.month)}
+
+    assert_no_difference("Lesson.count") do
+      put(:update, update)
+    end
+    assert_response :ok
+    assert_equal Lesson.last.address, 'http://aulatipolink2.com'
+  end
+
+  test "criar e editar uma aula do tipo arquivo" do
+    lesson = {name: 'lorem ipsum', address: 'index.html', type_lesson: Lesson_Type_File, lesson_module_id: 1}
+    params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: allocation_tags(:al6), start_date: Time.now, end_date: (Time.now + 1.month)}
+
+    assert_difference("Lesson.count", 1) do
+      post(:create, params)
+    end
+    assert_response :ok
+    assert_equal Lesson.last.address, 'index.html'
+
+    update = {id: Lesson.last.id, allocation_tags_ids: allocation_tags(:al6), lesson: {address: 'index2.html'}, start_date: Time.now, end_date: (Time.now + 1.month)}
+
+    assert_no_difference("Lesson.count") do
+      put(:update, update)
+    end
+    assert_response :ok
+    assert_equal Lesson.last.address, 'index2.html'
   end
 
   ##
@@ -193,6 +229,10 @@ class LessonsControllerTest < ActionController::TestCase
         FileUtils.mkdir_p(lesson_file_path) # cria uma nova pasta para a aula
       end
 
+    end
+
+    def create_zip_name(lessons_ids)
+      return Digest::SHA1.hexdigest(lessons_ids.collect{ |lesson_id| File.join(Rails.root.to_s, 'media', 'lessons', lesson_id) }.join) << '.zip'
     end
 
 end
