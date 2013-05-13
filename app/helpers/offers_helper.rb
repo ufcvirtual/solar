@@ -56,18 +56,12 @@ module OffersHelper
   def get_uc_and_course_names(allocation_tags_ids)
     # Como os valores que vêm das alocations são de ofertas, é necessário pegar apenas aquelas com uc e curso diferentes
     allocation_tags_ids = allocation_tags_ids.uniq {|a| 
-      (AllocationTag.find(a).offer.course_id and AllocationTag.find(a).offer.curriculum_unit_id) 
+      (AllocationTag.find(a).offer.course_id and AllocationTag.find(a).offer.curriculum_unit_id)
     }
-    
-    # Recupera os nomes de todas as ucs
-    ucs = allocation_tags_ids.collect {|a| 
-      CurriculumUnit.find(AllocationTag.find(a).offer.curriculum_unit_id).name
-    }.uniq
 
-    # Recupera os nomes de todas os cursos
-    courses = allocation_tags_ids.collect {|a| 
-      Course.find(AllocationTag.find(a).offer.course_id).name
-    }.uniq
+    offers = Offer.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags_ids})
+    courses = offers.map(&:course).map(&:name).uniq
+    ucs = offers.map(&:curriculum_unit).map(&:name).uniq
 
     return {"uc" => ucs.join(", "), "course" => courses.join(", ")}
   end

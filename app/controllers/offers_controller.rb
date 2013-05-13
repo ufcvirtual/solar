@@ -9,7 +9,8 @@ class OffersController < ApplicationController
   def index
     @allocation_tags_ids = (params[:allocation_tags_ids].kind_of?(Array) ? params[:allocation_tags_ids] : params[:allocation_tags_ids].split(',').uniq.collect{|al| al.to_i})
     authorize! :index, Offer, :on => @allocation_tags_ids
-    @offers = @allocation_tags_ids.collect{|al| AllocationTag.find(al).offer}
+
+    @offers = Offer.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids})
   end
 
   def list
