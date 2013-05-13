@@ -1,6 +1,6 @@
 class LessonModule < ActiveRecord::Base
   belongs_to :allocation_tag
-  has_many :lessons, dependent: :destroy
+  has_many :lessons
 
   before_destroy :move_lessons_to_default
 

@@ -66,7 +66,7 @@ class LessonModulesControllerTest < ActionController::TestCase
 
   test 'deleta modulo - com aulas' do 
     assert_difference("LessonModule.count", -1) do
-      assert_difference("Lesson.count", -lesson_modules(:module3).lessons.size) do
+      assert_no_difference("Lesson.count") do
         get :destroy, {:id => lesson_modules(:module3).id, :allocation_tags_ids => [allocation_tags(:al2).id]} 
       end
     end
@@ -74,22 +74,14 @@ class LessonModulesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'nao deleta modulo - aula ativada' do 
-    assert_no_difference(["LessonModule.count", "Lesson.count"]) do
-      get :destroy, {:id => lesson_modules(:module2).id, :allocation_tags_ids => [allocation_tags(:al2).id]} 
-    end
-
-    assert_response :error
-  end
-
   test 'nao deleta modulo - sem permissao' do 
     sign_in @professor
 
     assert_no_difference(["LessonModule.count", "Lesson.count"]) do
-      get :destroy, {:id => lesson_modules(:module2).id, :allocation_tags_ids => [allocation_tags(:al2).id]} 
+      get :destroy, {:id => lesson_modules(:module2).id, :allocation_tags_ids => [allocation_tags(:al2).id], format: 'json'}
     end
 
-    assert_response :error
+    assert_response :unauthorized
   end
 
 end
