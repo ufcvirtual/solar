@@ -47,6 +47,7 @@
     - @posts.each do |post|
       = raw post_html(post, @display_mode, @can_interact)
 
+
 :javascript
   $(document).ready(function() {
     $(".audio").each(function(){
@@ -68,3 +69,10 @@
       })
     })
   });
+
+
+  CKEDITOR.addStylesSet('default',[
+    {name:'Marker: Yellow',element:'span',styles:{'background-color':'Yellow'}},
+    {name:'Big',element:'big'},
+    {name :'Roman',element:'ol',attributes:{type:'I'}}
+  ]);

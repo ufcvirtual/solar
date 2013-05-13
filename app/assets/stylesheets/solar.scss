@@ -1925,7 +1925,7 @@ deveria ser generico p/ ser reaproveitado em outras telas */
 
 .block_title > .forum_post_new {
     width: auto;
-    // margin: 10px auto 8px auto;
+     /*margin: 10px auto 8px auto;*/
     padding: 0;
     display: none;
     margin-top: 1px;
@@ -1934,19 +1934,9 @@ deveria ser generico p/ ser reaproveitado em outras telas */
 .forum_post_reply {
     width: auto;
     overflow: hidden;
-    // padding-top: 5px;
+    /* padding-top: 5px;*/
     position: relative;
     display: none;
-}
-
-.forum_post_inner_content {
-    word-wrap: break-word;
-    min-height: 30px;
-}
-
-.forum_post_inner_content p {
-    margin-bottom: 0px;
-    padding-bottom: 7px;
 }
 
 $forum_indentation: 52px;
@@ -3591,3 +3581,34 @@ select[disabled] {
     color: #FF9900;
     font-size: 11px;
 }
+
+@mixin ckeditor_content{
+    word-wrap: break-word;
+    min-height: 30px;
+    p{
+        margin-bottom: 0px;
+        padding-bottom: 7px;
+    }
+    ul{
+        list-style-type: disc;  
+    }
+    a{
+        text-decoration: underline;
+        color: #204783;
+    }
+    ol{ list-style-type: decimal; }
+    li{ margin-left: 20px; }
+    h1, h2, h3, h4, h5, h6{ font-family: arial, sans serif; }
+    h1{ font-size: 25px; }
+    h2{ font-size: 20px; }
+    h3{ font-size: 15px; }
+    h4{ font-size: 13px; }
+    h5{ font-size: 11px; }
+    h6{ font-size: 8px; }
+    address{ font-style: italic; }
+}
+
+.forum_post_inner_content{
+    @include ckeditor_content;
+}
+

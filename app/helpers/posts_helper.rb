@@ -32,7 +32,7 @@ module PostsHelper
           <td class="forum_post_content" colspan="2">
             <div class="forum_post_wrapper">
               <div class="forum_post_inner_content">
-              #{sanitize(post.content)}
+              #{raw(post.content)}
               </div>
               #{attachments(post, editable, can_interact)}
               #{buttons(post, editable, can_interact)}
