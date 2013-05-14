@@ -90,7 +90,7 @@ input::-moz-focus-inner {
 .btn:active,
 .btn.disabled,
 .btn_disabled,
-.btn[disabled]
+.btn[disabled],
 .btn.dropdown-open {
     background-color: darken($btn-color,7%);
 }

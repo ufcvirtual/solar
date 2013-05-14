@@ -41,7 +41,7 @@
       jQuery(function($) {
         // altura da linha divisória entre o menu e o conteúdo
         // 10px do margin-top de mysolar_sidebar, 10 do margin-top do block_locale e 5 de espaco mesmo... :)
-        $("#mysolar_sidebar").height($('#body_wrapper').height() - $('#mysolar_topbar').height() - $('#block_locale').height() - 25);
+        // $("#mysolar_sidebar").height($('#body_wrapper').height() - $('#mysolar_topbar').height() - $('#block_locale').height() - 25);
 
         /**
          * Relogio do sistema
@@ -122,8 +122,17 @@
             <%= raw render_tabs %>
           </ul>
           <ul id="mysolar_extras">
-            <button class="btn btn_main" style="margin-top: 4px;" onclick="javascript:window.open('https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ')">Sugestões para o Solar 2.0</button>
+            <li>
+              <button type="button" class="btn" data-tooltip="Idiomas" data-dropdown="#language-dropdown" name="Idiomas"><i class="icon-earth"></i><i class="icon-arrow-down-3"></i></button>
+            </li>
+            <li><button class="btn btn_main" onclick="javascript:window.open('https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ')">Sugestões para o Solar 2.0</button></li>
           </ul>
+          <div id="language-dropdown" class="dropdown dropdown-tip">
+            <ul class="dropdown-menu">
+              <li><%= link_to "English", url_for(:locale => 'en-US') %></li>
+              <li><%= link_to "Português(BR)", url_for(:locale => 'pt-BR') %></li>
+            </ul>
+          </div>
         </div>
       </div>
 
