@@ -70,7 +70,8 @@ class PostFilesController < ApplicationController
   end
 
   def download
-    send_file(@post_file.attachment.path, type: @post_file.attachment_content_type, filename: @post_file.attachment_file_name)
+    redirect_error = posts_path(discussion_id: @post_file.post.discussion_id)
+    download_file(redirect_error, @post_file.attachment.path, @post_file.attachment_file_name)
   end
 
 end
