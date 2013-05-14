@@ -1,26 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>The page you were looking for doesn't exist (404)</title>
-  <style type="text/css">
-    body { background-color: #fff; color: #666; text-align: center; font-family: arial, sans-serif; }
-    div.dialog {
-      width: 25em;
-      padding: 0 4em;
-      margin: 4em auto 0 auto;
-      border: 1px solid #ccc;
-      border-right-color: #999;
-      border-bottom-color: #999;
-    }
-    h1 { font-size: 100%; color: #f00; line-height: 1.5em; }
-  </style>
-</head>
+<!DOCTYPE html lang="pt-br">
+  <head> 
+    <meta charset="utf-8" />
+    <title> Erro 404 </title>
+    <link rel="stylesheet" type="text/css" href="css/error.css" />
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  </head>
 
-<body>
-  <!-- This file lives in public/404.html -->
-  <div class="dialog">
-    <h1>The page you were looking for doesn't exist.</h1>
-    <p>You may have mistyped the address or the page may have moved.</p>
-  </div>
-</body>
+  <body>
+
+    <div id="bar-brazil">
+      <div class="bar">
+        <ul>
+            <li><a href="http://www.acessoainformacao.gov.br" class="ai" title="Acesso à informação"></a></li>
+            <li><a href="http://www.brasil.gov.br" class="brazil-gov" title="Portal de Estado do Brasil"></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="all">
+      <header></header>
+
+      <div id="error">
+        <div id="fail">
+          <h1>Página não encontrada</h1>
+          <h2>A página que você procura não existe ou foi movida</h2>
+          <p>(erro 404)</p>
+          <a href="/"><input type="submit" value="Início" id="beginning"/></a>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

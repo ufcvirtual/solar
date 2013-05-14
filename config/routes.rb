@@ -14,8 +14,9 @@ Solar::Application.routes.draw do
   ## users/edit_photo
   resources :users do
     get :photo, on: :member
-    get :edit_photo, on: :collection
     put :update_photo, on: :member
+    get :edit_photo, on: :collection
+    get :verify_cpf, on: :collection
   end
 
   resources :social_networks, only: [] do
@@ -169,7 +170,7 @@ Solar::Application.routes.draw do
   end
 
   resources :pages, only: [:index] do
-    get :team, on: :collection
+    # get :team, on: :collection
   end
 
   resources :lesson_modules, except: [:index, :show]

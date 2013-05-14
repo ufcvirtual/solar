@@ -341,7 +341,7 @@
         numa filosofia de interação e não de controle."
   login_title: "Sistema Online de Aprendizagem da Universidade Federal do Ceará"
   login_footer: "Instituto UFC Virtual 2011 - Universidade Federal do Ceará | Equipe de Desenvolvimento"
-  login_footer1: "Instituto UFC Virtual 2011"
+  login_footer1: "Instituto UFC Virtual"
   login_footer2: "Universidade Federal do Ceará"
   login_footer3: "Equipe de Desenvolvimento"
   license_terms: "Termos de licença"
@@ -352,7 +352,7 @@
   team: "Equipe"
   signin: "Entrar"
   signup: "Cadastrar"
-  sign_in: "Entrar"
+  sign_in: "Login"
   sign_up: "Cadastrar"
   user: "Usuário"
   user_name: "Usuário"
@@ -384,6 +384,7 @@
   form_email: "E-mail"
 
   # pagina de cadastro de usuario
+  new_user_cpf_in_use: "CPF já cadastrado no sistema"
   new_user_title: "Novo Cadastro"
   new_user_msg_ok: "Usuário criado com sucesso!"
   new_user_personal_data: "Dados Pessoais"
@@ -394,12 +395,13 @@
   special_needs_no: "Não"
   which: "Qual"
   confirm: "Confirmar"
+  verify: "Verificar"
   back: "Voltar"
   save: "Salvar"
   edit: "Editar"
   show: "Visualizar"
   destroy: "Excluir"
-  new_user_msg_cpf_error: " inválido"
+  new_user_msg_cpf_error: "Inválido"
   itens_not_found: "Sem itens para exibir"
 
   # User

@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  before_filter :authenticate_user! # devise
+  before_filter :authenticate_user!, except: :verify_cpf # devise
   before_filter :set_locale, :start_user_session, :application_context, :current_menu, :another_level_breadcrumb
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -123,11 +123,10 @@ class ApplicationController < ActionController::Base
     if user_signed_in?
       personal_options = PersonalConfiguration.find_or_create_by_user_id(current_user.id, default_locale: (params[:locale] || I18n.default_locale))
       personal_options.update_attributes(default_locale: params[:locale]) if (params[:locale].present? and params[:locale].to_s != personal_options.default_locale.to_s)
-      I18n.locale = personal_options.default_locale
-    else
-      I18n.locale = params[:locale] || I18n.default_locale
+      params[:locale] = personal_options.default_locale
     end
 
+    I18n.locale = ['pt-BR', 'en-US'].include?(params[:locale]) ? params[:locale] : I18n.default_locale
   end
 
   ## Parametros de locale para paginas externas

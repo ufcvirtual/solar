@@ -1,0 +1,26 @@
+#screen-login
+  #login-header
+    %span#login-bt
+      = t(:sign_in)
+    %span#register-bt.inactive
+      = t(:sign_up)  
+  #login-form
+    = form_for(resource_name) do |f|
+      .form-field
+        = f.text_field :login, :id => "login", :placeholder=> "Login", :tabindex => "1"
+      .form-field
+        = f.password_field :password, :id => "password", :placeholder=> "Senha", :tabindex => "2"
+      = f.submit t(:sign_in), :id => "submit-login", :tabindex => "3"
+  #login-register
+    = form_tag(verify_cpf_users_path, method: :get) do
+      .form-field
+        %input#cpf-regiter{:name => "cpf", :placeholder => "CPF", :type => "text"}/
+      = submit_tag(t(:verify), id: "submit-cpf")
+
+  .flash_message_wrapper
+    - flash.each do |name, msg|
+      #flash_message{class: name}
+        = content_tag :span, msg
+
+  #link
+    %a#link-password{:href => new_user_password_path}= t(:pwd_recovery_subtitle)

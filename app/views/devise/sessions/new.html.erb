@@ -15,33 +15,13 @@
 </script>
 
 <%= render '/user_sessions/header' %>
+<%= render 'form_login' %>
 
-<div id="login_content">
-  <!--Parte cinza-->
-  <div id="login_left_col">
-
-    <%= render 'menu' %>
-
-    <% flash.each do |name, msg| %>
-      <div id="flash_message" class="<%= name %>">
-        <%= content_tag :span, msg %>
-      </div>
-    <% end %>
-
-    <p>
-      <%= t(:login_description1) %>
-    </p>
-    <p>
-      <%= t(:login_description2) %>
-    </p>
-  </div>
-
-  <%= render 'form_login' %>
-
-</div>
 <script type="text/javascript">
-  $(document).ready(function() {
-    $("#login_form_name").focus();
+  eval("var cpf = <%= params.include?(:cpf) %>");
+
+  $(function(){
+    cpf ? $('#register-bt').click() : $("#login_form_name").focus();
   });
 
 </script>

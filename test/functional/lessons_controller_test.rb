@@ -13,13 +13,13 @@ class LessonsControllerTest < ActionController::TestCase
     sign_in @editor
   end
 
-  # Criacao / Edicao
+  # criacao / edicao
 
   test "criar e editar uma aula do tipo link" do
     lesson = {name: 'lorem ipsum', address: 'http://aulatipolink1.com', type_lesson: Lesson_Type_Link, lesson_module_id: 1}
     params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: allocation_tags(:al6), start_date: Time.now, end_date: (Time.now + 1.month)}
 
-    assert_difference("Lesson.count", +1) do
+    assert_difference("Lesson.count", 1) do
       post(:create, params)
     end
     assert_response :ok
@@ -38,7 +38,7 @@ class LessonsControllerTest < ActionController::TestCase
     lesson = {name: 'lorem ipsum', address: 'index.html', type_lesson: Lesson_Type_File, lesson_module_id: 1}
     params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: allocation_tags(:al6), start_date: Time.now, end_date: (Time.now + 1.month)}
 
-    assert_difference("Lesson.count") do
+    assert_difference("Lesson.count", 1) do
       post(:create, params)
     end
     assert_response :ok
@@ -51,45 +51,6 @@ class LessonsControllerTest < ActionController::TestCase
     end
     assert_response :ok
     assert_equal Lesson.last.address, 'index2.html'
-  end
-
-  test "nao criar e editar uma aula - sem acesso" do
-    lesson = {name: 'lorem ipsum', address: 'http://aulatipolink1.com', type_lesson: Lesson_Type_Link, lesson_module_id: lesson_modules(:module6).id}
-    params = {lesson: lesson, lesson_module_id: lesson_modules(:module6).id, allocation_tags_ids: [allocation_tags(:al5).id], start_date: Time.now, end_date: (Time.now + 1.month), format: 'json'}
-
-    assert_no_difference("Lesson.count") do
-      post(:create, params)
-    end
-    assert_response :unauthorized
-    assert_not_equal Lesson.last.address, 'http://aulatipolink1.com'
-
-    update = {id: Lesson.last.id, allocation_tags_ids: [allocation_tags(:al5).id], lesson: {address: 'http://aulatipolink2.com'}, start_date: Time.now, end_date: (Time.now + 1.month), format: 'json'}
-
-    assert_no_difference("Lesson.count") do
-      put(:update, update)
-    end
-    assert_response :unauthorized
-    assert_not_equal Lesson.last.address, 'http://aulatipolink2.com'
-  end
-
-  test "nao criar e editar uma aula - sem permissao" do
-    sign_in @professor
-    lesson = {name: 'lorem ipsum', address: 'http://aulatipolink1.com', type_lesson: Lesson_Type_Link, lesson_module_id: lesson_modules(:module1).id}
-    params = {lesson: lesson, lesson_module_id: lesson_modules(:module1).id, allocation_tags_ids: [allocation_tags(:al6).id], start_date: Time.now, end_date: (Time.now + 1.month), format: 'json'}
-
-    assert_no_difference("Lesson.count") do
-      post(:create, params)
-    end
-    assert_response :unauthorized
-    assert_not_equal Lesson.last.address, 'http://aulatipolink1.com'
-
-    update = {id: Lesson.last.id, allocation_tags_ids: [allocation_tags(:al6).id], lesson: {address: 'http://aulatipolink2.com'}, start_date: Time.now, end_date: (Time.now + 1.month), format: 'json'}
-
-    assert_no_difference("Lesson.count") do
-      put(:update, update)
-    end
-    assert_response :unauthorized
-    assert_not_equal Lesson.last.address, 'http://aulatipolink2.com'
   end
 
   ##

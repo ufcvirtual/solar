@@ -6,14 +6,15 @@
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1"}
     %title= content_for?(:title) ? yield(:title) : "Solar"
     = stylesheet_link_tag "login", :media => "all"
+    = stylesheet_link_tag "fonts", :media => "all"
     = javascript_include_tag "application"
     = javascript_include_tag "user_form"
+    /[if lt IE 9]
+    = javascript_include_tag "respond.min"
     = csrf_meta_tags
     = yield(:head)
-    / facebook metatags
     = raw YAML::load(File.open('config/facebook.yml'))['tags'].join
   %body
-    / facebook
     #fb-root
     :javascript
       (function(d, s, id) {

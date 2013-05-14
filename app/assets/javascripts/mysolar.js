@@ -1,3 +1,122 @@
+
+$(function(){
+  /* script da area de cadastro e login */
+  $("#register-bt").click(function(){
+    $(this).removeClass('inactive');
+    $('#login-bt').addClass('inactive');
+    $("#login-form").hide();
+    $("#login-register").show();
+  });
+
+  $("#login-bt").click(function(){
+    $("#login-form").show();
+    $("#login-register").hide();
+    $(this).removeClass('inactive');
+    $('#register-bt').addClass('inactive');
+  });
+
+  /* script dos paineis de informacao */
+  $(".panel .arrow").click(function(){
+    $("#menu_footer a").removeClass("current_menu");
+    $(".panel").fadeOut();
+  });
+
+  $("#menu_footer a").click(function(event){
+    event.preventDefault();
+    var painelId = $(this).attr("href");
+    $("#menu_footer a").removeClass("current_menu");
+    $("a[href="+painelId+"]").addClass("current_menu");
+    $(painelId).fadeToggle(800,function(){
+      $(".panel").each(function(){
+        var painelOcultar = $(this).attr("id");
+        var painelOcultarId = "#"+painelOcultar;
+        if ( painelOcultarId != painelId ) {
+          $(this).fadeOut(800);
+        }
+      })
+    });
+    $(".content", painelId).jScrollPane();
+  });
+
+  /*Passo-a-passo da página de cadastro*/
+  $(".next").click(function (event) {
+    event.preventDefault();
+
+    btnParent = $(this).parents('.form-panel');
+    btnParentId = $(btnParent).attr('id');
+    btnParentNext = $(btnParent).next('div');
+    btnParentNextId = $(btnParentNext).attr('id');
+
+    $("#menu-register .dot").removeClass('active');
+    $("#dot-"+btnParentId).addClass('done');
+    $("#dot-"+btnParentNextId).addClass('active');
+
+    $("#menu-register a").removeClass('active');
+    $("#dot-"+btnParentNextId).prev('a').addClass('active');
+
+    $(btnParent).hide();
+    $(btnParentNext).show();
+  });
+
+  $(".back").click(function(event) {
+    event.preventDefault();
+
+    btnParent = $(this).parents('.form-panel');
+    btnParentId = $(btnParent).attr('id');
+    btnParentPrevious = $(btnParent).prev('div');
+    btnParentPreviousId = $(btnParentPrevious).attr('id');
+
+    $("#menu-register .dot").removeClass('active');
+    $("#dot-"+btnParentPreviousId).removeClass('done').addClass('active');
+
+    $("#menu-register a").removeClass('active');
+    $("#dot-"+btnParentPreviousId).prev('a').addClass('active');
+
+    $(btnParent).hide();
+    $(btnParentPrevious).show();
+  })
+
+
+  /* Implementando método alternativo ao placeholder no IE < 9 */
+  $.support.placeholder = ( 'placeholder' in document.createElement('input') );
+
+  if( !$.support.placeholder ) {
+    /* criação de um campo falso de senha, do tipo texto, para exibir o valor 'Senha' */
+    var fakePassword = "<input type='text' name='fake_pass' id='fake_pass' value='Senha' style='display:none'/>"
+    
+    /* adicionar o input fake, ocultar o real e exibir o fake */
+    $('#password').before(fakePassword);
+    $("#password").hide();
+    $("#fake_pass").show();
+
+    $('#fake_pass').focus(function(){
+      $(this).hide();
+      $('#password').show().focus();
+    });
+
+    $('#password').blur(function(){
+      if($(this).val() == ""){
+          $(this).hide();
+          $('#fake_pass').show();
+      }
+    });
+
+    /* nos outros campos, pegar o valor do atributo placeholder e colocar como value */
+    $('input[placeholder]').each(function(){
+      var ph = $(this).attr('placeholder')
+      $(this).val(ph).focus(function(){
+        if($(this).val() == ph) $(this).val('')
+      }).blur(function(){
+        if(!$(this).val()) $(this).val(ph)
+      })
+    });
+  }
+});
+
+  
+
+
+
 /****************************************************
  * Agenda
  ****************************************************/

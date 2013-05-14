@@ -1,0 +1,49 @@
+#virtual.panel
+  .content
+    %h1 Instituto Universidade Virtual
+    %p Rhoncus augue ac rhoncus, adipiscing odio, ac aenean in a, in ridiculus augue natoque integer, natoque dolor hac pulvinar risus tincidunt phasellus arcu cras, montes ut! Tortor! Porttitor risus? Magna, dictumst tristique urna ac non ac! Adipiscing, scelerisque!
+    %p Mauris ac! Velit a ac augue nunc turpis magna amet scelerisque diam dolor etiam ac purus, mus sagittis aliquam etiam enim pulvinar? Scelerisque, ridiculus est sed, dolor?
+    %p Adipiscing lacus turpis? Ac porta velit tempor cum parturient, magna auctor lectus augue, lorem mattis, cum amet in.
+    =image_tag("photo-virtual.png")
+  = image_tag("arrow.png", :class => "arrow")
+
+#university.panel
+  .content
+    %h1 Universidade Federal do Ceará
+    %p Rhoncus augue ac rhoncus, adipiscing odio, ac aenean in a, in ridiculus augue natoque integer, natoque dolor hac pulvinar risus tincidunt phasellus arcu cras, montes ut! Tortor! Porttitor risus? Magna, dictumst tristique urna ac non ac! Adipiscing, scelerisque!
+    %p Mauris ac! Velit a ac augue nunc turpis magna amet scelerisque diam dolor etiam ac purus, mus sagittis aliquam etiam enim pulvinar? Scelerisque, ridiculus est sed, dolor?
+    %p Adipiscing lacus turpis? Ac porta velit tempor cum parturient, magna auctor lectus augue, lorem mattis, cum amet in.
+    =image_tag("photo-ufc.png", :class => "photo-ufc")
+    %p Rhoncus augue ac rhoncus, adipiscing odio, ac aenean in a, in ridiculus augue natoque integer, natoque dolor hac pulvinar risus tincidunt phasellus arcu cras, montes ut! Tortor! Porttitor risus? Magna, dictumst tristique urna ac non ac! Rhoncus augue ac rhoncus, adipiscing odio, ac aenean in a, in ridiculus augue natoque integer, natoque dolor hac pulvinar risus tincidunt phasellus arcu cras, montes ut! Tortor! Porttitor risus? Magna, dictumst tristique urna ac non ac!Rhoncus augue ac rhoncus, adipiscing odio, ac aenean in a, in ridiculus augue natoque integer, natoque dolor hac pulvinar risus tincidunt phasellus arcu cras, montes ut! Tortor! Porttitor risus? Magna, dictumst tristique urna ac non ac!
+  = image_tag("arrow.png", :class => "arrow")
+
+#team.panel
+  .content
+    - @sectors = YAML::load(File.open('public/members.yml'))
+    = render template: "/pages/team"
+  = image_tag("arrow.png", :class => "arrow")
+
+#license-terms.panel
+  .content
+    %h1 Termos de Licença
+    %p
+      A elit duis augue ac habitasse vel eros turpis aliquet dapibus in turpis porttitor scelerisque, ac magna placerat. Integer natoque magna! Massa! Pulvinar dis arcu placerat platea porttitor, eu velit, nisi? Cursus mauris, integer et dictumst! Placerat ut platea augue eros etiam velit penatibus massa nec in non nunc pulvinar, a est elit ac amet tortor pulvinar pellentesque aliquam scelerisque, cursus sagittis quis mattis, dictumst, mid amet eros ultrices elementum dignissim sed, porttitor nisi elementum lacus! Augue. Cum mauris, purus integer massa mauris et! Scelerisque odio aenean? Auctor integer aenean ac nunc arcu, sagittis duis mattis facilisis, nisi in adipiscing? Mus? Mid! A et, sagittis mattis augue magnis, tincidunt turpis montes, nec. Eros. Non sociis porta lectus ut et tempor.
+    %p
+      Ultricies? Parturient phasellus magna lundium ut. Sit vel cursus! Pellentesque sociis non egestas tincidunt ut, platea sed augue egestas? Nisi tincidunt? Est ut! Ut arcu amet, velit, rhoncus dapibus a platea porta, sagittis rhoncus dis, vel integer adipiscing nisi penatibus, elit pid lorem nascetur! Nunc sed sit? Lectus sit, duis phasellus sit natoque turpis dapibus placerat rhoncus. Tempor quis? Dignissim nascetur scelerisque, et augue penatibus. Massa, augue aenean! Nisi, turpis mauris porta tincidunt nisi elit eu nec, non habitasse, tristique aenean cum eros placerat sit odio mauris arcu platea in! Lectus nec et! Turpis adipiscing? Facilisis et lacus dignissim proin turpis a porttitor quis risus egestas pid urna cras egestas placerat sed turpis, amet lacus augue mid in lectus.
+  = image_tag("arrow.png", :class => "arrow")
+
+%footer
+  .fb-like
+    %script{:src => "http://connect.facebook.net/en_US/all.js#xfbml=1"}
+    %fb:like{"data-href" => YAML::load(File.open('config/facebook.yml'))['data-href'], :layout => "button_count", "data-show_faces" => "false", "data-width" => "450"}
+
+  #menu_footer
+    %ul
+      %li= link_to t(:login_footer1, :class => "ufc-virtual"), "#virtual"
+      %li= link_to t(:login_footer2, :class => "ufc"), "#university"
+      %li= link_to t(:login_footer3, :class => "development-team"), "#team"
+      %li= link_to t(:license_terms, :class => "license"), "#license-terms"
+
+:javascript
+  var div = '<footer><div id="menu_footer">'+ $('#menu_footer').html() +'</div></footer>';
+  $('.panel').append(div);

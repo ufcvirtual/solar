@@ -5,9 +5,4 @@ class PagesController < ApplicationController
     render :layout => 'external_page'
   end
 
-  def team
-    @setores = YAML::load(File.open('public/members.yml'))
-    render :layout => 'login'
-  end
-
 end

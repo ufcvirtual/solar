@@ -1,0 +1,1033 @@
+@import "compass";
+@import "compass/css3/pie";
+
+html {
+  height: 100%;
+}
+
+body {
+  background: #204882;
+  background: -moz-radial-gradient(center, circle cover,  #56729c 0%, #204882 100%); /* FF3.6+ */
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#56729c), color-stop(100%,#204882)); /* Chrome,Safari4+ */
+  background: -webkit-radial-gradient(center, circle cover,  #56729c 0%,#204882 100%); /* Chrome10+,Safari5.1+ */
+  background: -ms-radial-gradient(center, circle cover,  #56729c 0%,#204882 100%); /* IE10+ */
+  background: radial-gradient(circle at center,  #56729c 0%,#204882 100%); /* W3C */
+  margin: 0 auto;
+  padding: 0;
+  height: auto;
+  text-align: center;
+  cursor: default;
+  font-family: 'PT Sans', sans-serif;
+  height: 100%;
+}
+
+.fb-like{
+  margin-bottom: 10px;
+  z-index: 1;
+}
+
+input{
+  color: #666666;
+}
+
+#all{
+  position: relative;
+  margin:0 auto;
+  width: 100%;
+}
+
+a img {
+  border: none;
+}
+
+#login_wrapper {
+  min-height:100%;
+  position:relative;
+}
+
+/*caixa principal que engloba login e cadastro*/
+$login_width: 287px;
+
+/*#screen-login{
+  @include pie;
+	width: $login_width;
+  overflow:hidden; 
+  position: relative;
+  margin: 0 auto;
+  box-shadow:0px 2px 8px #222427;
+  @include border-bottom-right-radius(10px);
+  @include border-bottom-left-radius(10px);
+}*/
+
+#screen-login{
+  width: $login_width;
+  overflow:hidden; 
+  position: relative;
+  margin: 0 auto;
+  top: 3%;
+}
+
+#login-form, #login-register {
+  @include pie;
+  width: $login_width;
+  box-shadow:0px 2px 8px #222427;
+  @include filter-gradient(#F5F5F5, #E6E8EC); /* IE */
+  @include background-image(linear-gradient(#F5F5F5, #E6E8EC));
+  @include border-bottom-right-radius(10px);
+  @include border-bottom-left-radius(10px);
+  text-align: center;
+}
+
+
+/*caixa de cadastro*/
+#login-register{
+  display: none;
+}
+
+/* text input*/
+.form-field input{
+  margin-top: 25px;
+  width: 196px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border:1px solid #B6B6B6;
+  background-color: #F8F8F8;
+  @include border-radius(5px);
+  behavior: url(PIE.htc);
+  font-family: Ubuntu;
+  font-size: 16px;
+  padding-left: 10px;
+}
+
+/*Botões de submissão da tela de login*/
+#submit-login, #submit-cpf {
+  @include filter-gradient(#EBE2C0, #F0CF65); /* IE */
+  @include background-image(linear-gradient(#EBE2C0, #F0CF65));
+  width: 205px;
+  height: 40px;
+  font-family: Ubuntu Condensed;
+  font-size: 25px;
+  color:#a38322;
+  border:1px solid #AE8711;
+  @include border-radius(5px);
+  behavior: url(PIE.htc);
+  margin-top: 28px;
+  margin-bottom: 20px;
+  padding-top: 2px;
+}
+
+#submit-cpf {
+  margin-top: 98px;
+}
+
+#submit-login:hover, #submit-cpf:hover{
+  @include filter-gradient(#EBE2C0, #FFD242); /* IE */
+  @include background-image(linear-gradient(#EBE2C0, #FFD242));
+  cursor: pointer;
+  border:1px solid #AE8711;
+}
+
+
+#submit-login:active, #submit-cpf:active{
+  background-color: #f1cf65;
+  cursor: pointer;
+  border:1px solid #AE8711;
+  -webkit-box-shadow:  inset 0px 1px 2px 0px rgba(0, 0, 0, .4), inset 0px -2px 2px 0px rgba(0, 0, 0, .1);
+  box-shadow:  inset 0px 1px 2px 0px rgba(0, 0, 0, .4), inset 0px -2px 2px 0px rgba(0, 0, 0, .1);
+}
+
+#login-bt, #register-bt{
+  height: 100%;
+  width: 50%;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 20px;
+  color: #a9b7cc;
+  padding-top: 5px;
+  text-shadow: 0 0 0.1em rgba(255, 255, 190, 0.60)#ffffbe;
+  border:1px solid #F4F4F5;
+  @include border-top-right-radius(5px);
+  @include border-top-left-radius(5px);
+  background-color: #F5F5F5;
+  behavior: url(PIE.htc);
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+#register-bt a{
+  text-decoration: none;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 20px;
+  color: #a9b7cc;
+}
+
+#login-bt{
+  float: left;
+  padding-top: 8px;
+}
+
+#register-bt{
+  float: right;
+  padding-top: 8px;
+}
+
+
+#login-header{
+  height: 36px;
+  position: relative;
+  z-index: 30;
+}
+
+#login-header .inactive {
+  background-color: #D5D6D6; 
+  color: #959595;
+  border:1px solid #D5D6D6;
+}
+
+#login-header .inactive:hover {
+  background-color: #e3e3e3; 
+  cursor: pointer;
+  border:1px solid #e3e3e3;
+}
+
+/*Logo*/
+header {
+  margin-bottom: 40px;
+  margin-top: 5%;
+  text-align: center;
+  transition: all 1s;
+  -moz-transition: all 1s; /* Firefox 4 */
+  -webkit-transition: all 1s; /* Safari and Chrome */
+  -o-transition: all 1s; /* Opera */
+}
+
+
+
+@media only screen and (max-width: 480px) {
+  header {
+    background: url('../imagem/logo_small.png') no-repeat center;
+    height: 128px;
+  }
+}
+
+@media only screen and (min-width: 481px ) {
+  header{
+    background: url('../imagem/logo.png') no-repeat center;
+    height: 115px;
+  }
+}
+
+/*esqueceu a senha?*/
+#link{
+  text-align: center;
+}
+
+#link-password{
+  text-decoration: none;
+  font-family: Ubuntu;
+  font-size: 12px;
+  color:#91A9CC;
+}
+
+#link-password:hover{
+  color:#CAD8E8;
+}
+
+
+#login_content{
+  text-align: center;
+  margin:0 auto;
+  margin-top: 5%;
+}
+
+#login_content:after {
+  content:" ";
+  display:block;
+  clear:both;
+}
+
+#password_recovery{
+  margin:0 auto;
+  width: 400px;
+  overflow: hidden;
+  border:1px solid #D5D5D5;
+  @include border-radius(10px);
+  behavior: url(PIE.htc);
+  background: #f5f5f5; /* Old browsers */
+  @include filter-gradient(#ffffff, #e6e8ec); /* IE */
+  @include background-image(linear-gradient(#ffffff, #e6e8ec));
+  -webkit-box-shadow:0px 3px 6px rgba(50, 50, 50, 0.64);
+  -moz-box-shadow:0px 3px 6px rgba(50, 50, 50, 0.64);
+  box-shadow:0px 3px 6px rgba(50, 50, 50, 0.64);
+}
+
+#password_recovery h1{
+  padding-top: 10px;
+  font-family: Ubuntu, sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: #8c8c8c;
+  text-align: justify;
+  margin-left: 27px;
+}
+
+#password_recovery p{
+  font-family: 'PT Sans', sans-serif;
+  font-size: 11pt;
+  color: #8B8B8B;
+  text-align: justify;
+  padding-left: 28px;
+  padding-right: 28px;
+  padding-top: 5px;}
+
+/* Botão de voltar para o início do esqueceu senha*/
+#buttons_password_recovery{
+  float: right;
+  padding-right: 23px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.btn_password_recovery {
+  font-family: Ubuntu Condensed;
+  font-size: 20px;
+  @include border-radius(5px);
+  behavior: url(PIE.htc);
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  padding: 2px 4px;
+  margin: 0 2px;
+  width: 100px;
+  height: 36px;  
+ }
+
+#send {
+  background-color: #f1cf65;
+  @include filter-gradient(#EBE2C0, #F0CF65); /* IE */
+  @include background-image(linear-gradient(#EBE2C0, #F0CF65));
+  color:#a38322;
+  border: 1px solid #AE8711;
+}
+
+#send:hover{
+  @include filter-gradient(#EBE2C0, #FFD242); /* IE */
+  @include background-image(linear-gradient(#EBE2C0, #FFD242));
+  cursor: pointer;
+}
+
+.btn_default {
+  @include filter-gradient(#EEEEEE, #BFBFBF); /* IE */
+  @include background-image(linear-gradient(#EEEEEE, #BFBFBF));
+  color:#7A7A7A;
+  border:1px solid #7A7A7A;
+}
+
+#give-up:hover {
+  @include filter-gradient(#EEEEEE, #B5B5B5); /* IE */
+  @include background-image(linear-gradient(#EEEEEE, #B5B5B5));
+  cursor: pointer;
+}
+
+#email_password_recovery, #cpf{
+  border: 1px solid #B6B6B6;
+  font-family: 'PT Sans', sans-serif;
+  width: 344px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 10pt;
+  @include border-radius(5px);
+  behavior: url(PIE.htc);
+  margin-top: 10px;
+  padding-left: 5px;
+}
+
+/*mensagem de erro*/
+#error_explanation ul li{
+  list-style: none;
+  color: #D5031C;
+  margin: 0 auto;
+  width: 400px;
+  @include filter-gradient(#f5f5f5, #e6e8ec); /* IE */
+  @include background-image(linear-gradient(#f5f5f5, #e6e8ec)); /* CSS3 */
+  @include border-radius(6px);
+  behavior: url(PIE.htc);
+  box-shadow:0px 2px 8px #222427;
+}
+
+#error_explanation ul{
+  padding-right: 40px;
+}
+
+/*menu do rodapé*/
+@media only screen and (max-width: 480px) {
+  footer{
+    /*margin-top: 30px;*/
+  }
+}
+
+@media only screen and (min-width: 481px) {
+  footer{
+    /*margin-top: 8%;*/
+  }
+}
+
+#login_footer_push {
+  height: 80px;
+}
+
+footer{
+  text-decoration: none;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  padding-bottom: 10px;
+}
+
+
+#menu_footer ul{
+  padding: 0;
+  list-style: none;
+  margin: 0 auto;
+  text-align: center;
+}
+
+@media only screen and (max-width: 480px) {
+  #menu_footer ul li {
+    display: auto;
+  }
+}
+
+@media only screen and (min-width: 481px) {
+  #menu_footer ul li { 
+    display: inline;
+  }
+}
+
+#menu_footer ul li{
+  margin: 8px;
+}
+
+#menu_footer ul li a{
+  text-decoration: none;
+  font-family: Ubuntu;
+  font-size: 14px;
+  color:#fff;
+}
+
+.panel #menu_footer ul li a{
+  text-decoration: none;
+  font-family: Ubuntu;
+  font-size: 14px;
+  color:#2b5088;
+}
+
+
+#menu_footer ul li a:hover{
+  color:#91A9CC;
+}    
+
+/*Páginas dos paineis do rodapé*/
+.panel{
+  display: none;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%; 
+  background-color: rgb(236,238,240);
+  -webkit-box-shadow:0px -5px 19px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow:0px -5px 19px rgba(50, 50, 50, 0.75);
+  box-shadow:0px -5px 19px rgba(50, 50, 50, 0.75);
+  z-index: 50;
+}
+
+#virtual {
+  background: #ffffff url('ufc-virtual.png') 10% 16% no-repeat;
+}
+
+#university {
+ background: #ffffff url('new-arms-ufc.png') 10% 16% no-repeat; 
+}
+
+#team {
+  background: #ffffff url('ufc-virtual.png') 10% 16% no-repeat;
+}
+
+#license-terms {
+  background: #ffffff url('ufc-virtual.png') 10% 16% no-repeat;
+}
+
+.panel .content {
+  width: 535px;
+  height: 85%;
+  overflow: auto;
+  margin: 30px auto;
+  text-align: left;
+  background-color: rgba(255,255,255,0.8);
+  padding: 5px 10px;
+}
+
+.panel .arrow {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  width: 85px;
+  height: 85px;
+  cursor: pointer;
+}
+
+h1{
+  font-family: Ubuntu Condensed;
+  font-size: 25px;
+  color:#135696;
+}
+
+h4, p{
+  font-family:PT Sans;
+  font-size: 16px;
+  color:#616162;
+  text-align: justify;
+}
+
+
+.photo-ufc{
+  float: left;
+  margin-right: 2%;
+}
+
+/*Menu de language*/
+#language{
+  z-index:1;
+  position: absolute;
+  right: 20px;
+  top: 40px;
+  text-align: center;
+ }
+
+#language #menu-language li:hover{
+  background-color: #f1f2f3;
+}
+
+#language p{
+  color: #748CAE;
+  margin-left: 3px;
+  margin-right: 3px;
+  font-family: Ubuntu;
+  font-size: 12px;
+}
+
+#language p:hover{
+  color: #264c85;
+}
+
+#language ul li
+{
+ position: relative;
+}
+
+#menu-language{
+  margin:0;
+  padding:0;
+  margin-top:-12px;
+  margin-left: 3px;
+  list-style: none;
+}
+
+#choice-language {
+  
+  background: url("language-arrow.png") right no-repeat;
+  padding-right: 8px;
+}
+
+#choice-language ul {
+  position: absolute;
+  right:0;
+  top:13px;
+  display: none;
+  width: 130px;
+}
+
+#choice-language a {
+  text-decoration: none;
+  font-family: Ubuntu;
+  font-size: 12px;
+}
+
+#choice-language ul li a {
+  display: block;
+  text-decoration: none;
+  color: #234a84;
+  padding: 3px 3px 3px 18px;
+  border: 1px solid #ccc;
+  border-bottom: 0;
+  background-color: #ffffff;
+}
+
+.selected {
+  background: url("check-language.png") no-repeat 3px 5px;
+}
+
+
+#choice-language ul li a:hover {
+  background-color: #e7e9eb;
+}
+
+#choice-language ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#menu-language li:hover ul { 
+  display: block; 
+}
+
+.arrow-language{
+  margin: 2px 0 2px 5px;
+}
+
+.imgIng{
+  display: none;
+}
+
+.imgPt, .imgIng{
+  margin-right: 2px;
+}
+
+.current_menu{
+  font-weight: bold;
+  border-bottom: 1px solid #FFC50D;
+}
+
+/*Página de cadastro*/
+/*página de dados pessoais*/
+#register{
+  width: 590px;
+  margin:0 auto;
+}
+
+.form_label{
+  font-family: Ubuntu;
+  font-size: 13px;
+  color: #004B81;
+  padding-right: 10px;
+  width: 112px;
+  display:inline-block;
+  text-align: right;
+  vertical-align: middle;
+}
+
+#personal{
+  width: 590px;
+  padding-top: 20px;
+  background-color: #F5F5F5;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F5F5F5', endColorstr='#E6E8EC',GradientType=0 ); 
+  @include border-bottom-right-radius(8px);
+  @include border-bottom-left-radius(8px);
+  @include border-top-right-radius(8px);
+  behavior: url(PIE.htc);
+}
+
+#submit-register, #submit-register2, #complete{
+  font-family: 'Ubuntu Condensed';
+  font-size: 20px;
+  @include border-radius(5px);
+  behavior: url(PIE.htc);
+  margin-top: 25px;
+  text-decoration: none;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: inline-block;
+  text-align: center;
+  margin-left: 5px;
+}
+
+#submit-register, #submit-register2{
+  width: 100px;
+}
+
+#complete{
+  width: 100px;
+  height: 44px;
+  padding-bottom: 11px;
+  font-size: 21px;
+}
+
+#buttons{
+  float: right;
+}
+
+#submit-register, #complete{
+  @include filter-gradient(#EBE2C0, #F0CF65); /* IE */
+  @include background-image(linear-gradient(#EBE2C0, #F0CF65)); /* CSS3 */
+  color:#a38322;
+  border: 1px solid #AE8711;
+  margin-bottom: 10px;
+}
+
+#submit-register2{
+  @include filter-gradient(#EEEEEE, #BFBFBF); /* IE */
+  @include background-image(linear-gradient(#EEEEEE, #BFBFBF)); /* CSS3 */
+  color:#7A7A7A;
+  border:1px solid #7A7A7A;
+}
+
+#submit-register:hover, #complete:hover{
+  @include filter-gradient(#EBE2C0, #FFD242); /* IE */
+  @include background-image(linear-gradient(#EBE2C0, #FFD242)); /* CSS3 */
+  cursor: pointer;
+}
+
+#submit-register2:hover{
+  @include filter-gradient(#EEEEEE, #B5B5B5); /* IE */
+  @include background-image(linear-gradient(#EEEEEE, #B5B5B5)); /* CSS3 */
+  cursor: pointer;
+}
+
+#submit-register:active, #complete:active{
+  background-color: #f1cf65;
+  cursor: pointer;
+  border:1px solid #AE8711;
+  -webkit-box-shadow:  inset 0px 1px 2px 0px rgba(0, 0, 0, .4), inset 0px -2px 2px 0px rgba(0, 0, 0, .1);
+  box-shadow:  inset 0px 1px 2px 0px rgba(0, 0, 0, .4), inset 0px -2px 2px 0px rgba(0, 0, 0, .1);
+}
+
+#personal-data, #access, #contact, #other{
+  width: 530px;
+  padding: 20px 0 15px 25px;
+  overflow: hidden;
+}
+
+#access, #contact, #other {
+  display: none;
+}
+
+#personal-data p{
+  font-size: 12px;
+  color: #D5031C;
+  margin-left:122px;
+  float: left;
+}
+
+.label-register{
+  font-family: 'Ubuntu', sans-serif;
+  margin: 0 auto;
+  font-size: 20px;
+  color: #a9b7cc;
+  text-shadow: 0 0 0.1em rgba(255, 255, 190, 0.60)#ffffbe;
+  text-align: center;
+  padding-top: 7px;
+}
+
+#register-bar{
+  margin-top: 10px;
+  margin-left: 23px;
+  width: 390px;
+  height: 5px;
+}
+
+#header-register{
+  width: 143px;
+  height: 36px;
+  border:1px solid #F4F4F5;
+  @include border-top-left-radius(5px);
+  @include border-top-right-radius(5px);
+  behavior: url(PIE.htc);
+  background-color: #F5F5F5;
+}
+
+.field input, select {
+  font-family: 'Ubuntu';
+  border:1px solid #B6B6B6;
+  background-color: #F8F8F8;
+  @include border-radius(5px);
+  behavior: url(PIE.htc);
+  font-size: 16px;
+}
+
+
+.field input{
+  width: 390px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 10px;
+  padding-right: 5px;
+}
+
+.field{
+  margin-top: 18px;
+}
+
+#select{
+  float: left;
+  margin-top: 18px;
+}
+
+#special_needs{
+  float: left;
+  margin-top: 18px;
+}
+
+#birthdate{
+  float: left;
+  margin-top: 18px;
+}
+
+#button1{
+  margin-top: 100px;
+}
+
+#inputCpf{
+  margin-top: 18px;
+}
+
+select{
+  color: #666666;
+  padding: 11px 10px;
+}
+
+select option{
+  color: #666666;
+  height: 20px;
+/*  vertical-align: middle;
+  padding: 3px 4px;
+  line-height: 20px;*/
+}
+
+/*Logo*/
+@media only screen and (max-width: 480px) {
+  .logo_one{
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 481px ) {
+  .logo_two{
+    display: none;
+  }
+}
+
+/*menu de cadastro*/
+#menu-register ul{
+  padding: 0;
+  list-style: none;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#menu-register ul li{
+  display: inline;
+  margin: 8px;
+  padding-left: 30px;
+}
+
+#menu-register ul li a{
+  text-decoration: none;
+  font-family: Ubuntu;
+  font-size: 12px;
+  color:#919191;
+  cursor: default;
+}
+
+#menu-register ul li .active{
+  text-decoration: none;
+  font-family: Ubuntu;
+  font-size: 12px;
+  color:#004B81;
+}
+
+/* bolinhas da barra de progresso */
+.dot {
+  width: 22px;
+  height: 18px;
+  display: inline-block;
+  background: url('inactive.png') no-repeat;
+}
+
+.dot.active {
+  background: url('active.png') no-repeat;
+}
+
+.dot.done {
+  background: url('done.png') no-repeat; 
+}
+
+#dot-personal-data {
+  position: relative;
+  top: 25px;
+  right: 60px;
+}
+
+#dot-access {
+  position: relative;
+  top: 25px;
+  right: 32px;
+}
+
+#dot-contact {
+  position: relative;
+  top: 25px;
+  right: 35px;
+}
+
+#dot-other {
+  position: relative;
+  top: 25px;
+  right: 33px;
+}
+
+.error, .alert, .notice {
+  font-family: Ubuntu;
+  font-style: italic;
+  font-size: 10pt;
+  color:#D5031C;
+}
+
+.notice {
+  color: #00782D;
+}
+
+.flash_message_wrapper {
+  margin: 20px auto 0 auto;
+  width: $login_width;
+  @include filter-gradient(#f5f5f5, #e6e8ec); /* IE */
+  @include background-image(linear-gradient(#f5f5f5, #e6e8ec)); /* CSS3 */
+  @include border-radius(6px);
+  behavior: url(PIE.htc);
+  box-shadow:0px 2px 8px #222427;
+}
+
+#flash_message{
+  padding: 5px;
+}
+
+/*página de acesso*/
+#access p{
+  font-size: 12px;
+  color: #D5031C;
+  margin-left:125px;
+}
+
+.next-access{
+  float: right;
+}
+
+.nextCont{
+  float: right;
+}
+
+/*página de contato*/
+
+.contact {
+width: 530px;
+float: left;
+}
+.contact input{
+  width: 391px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 10px;
+  border:1px solid #B6B6B6;
+  background-color: #F8F8F8;
+  @include border-radius(5px);
+  behavior: url(PIE.htc);
+  font-family: Ubuntu;
+  font-size: 16px;
+}
+
+.contact2{
+  width: 264px;
+  margin-top: 18px;
+  float: left;
+}
+
+.contact2 input{
+  width: 125px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 10px;
+  border:1px solid #B6B6B6;
+  background-color: #F8F8F8;
+  @include border-radius(5px);
+  behavior: url(PIE.htc);
+  font-family: Ubuntu;
+  font-size: 16px;
+  padding-left: 10px;
+}
+
+
+.contact2 select{
+  width: 137px; 
+  padding-left: 10px;
+}
+
+.user_city{
+  margin-top: 18px;
+}
+
+/*link cancelar*/
+#cancel{
+  padding-top: 10px;
+  text-align: center;
+}
+
+#cancel a{
+  text-decoration: none;
+  font-family: Ubuntu;
+  font-size: 12px;
+  color:#91A9CC;
+}
+
+#cancel a:hover{
+  color:#CAD8E8;
+}
+
+/*barra do governo federal*/
+#bar-brazil { 
+  position:relative;
+  overflow:hidden;
+  max-width:100%;
+  height:33px;
+  background: #004b82 url('../images/bar-brazil-v3-bgx.png') center bottom no-repeat;
+}
+
+#bar-brazil .bar {
+  display: block;
+  max-width:92%;
+  height:33px;
+  margin: 0 auto;
+  background: url('../images/bar-brazil-v3-bgx.gif') 0 bottom repeat-x;
+}
+
+#bar-brazil .bar ul {
+  float:right;
+  width: 319px;
+}
+
+#bar-brazil .bar ul .li {
+  float: left;
+  padding-left: 25px;
+  position: relative;
+  bottom: 2px;
+}
+
+#bar-brazil .ai {
+  display: block;
+  width: 161px;
+  height: 28px;
+  text-indent: -1000px;
+  background: #004b82;
+  position: relative;
+  bottom: 9px;
+}
+
+#bar-brazil .brazil-gov {
+    display: block;
+    width: 108px;
+    height: 28px;
+    text-indent: -1000px;
+    background: #004b82;
+    position: relative;
+    bottom: 9px;
+}

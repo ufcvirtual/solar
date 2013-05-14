@@ -2,11 +2,10 @@
   <% if @allocation.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@allocation.errors.count, "error") %> prohibited this allocation from being saved:</h2>
-
       <ul>
-      <% @allocation.errors.full_messages.each do |msg| %>
+        <% @allocation.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
-      <% end %>
+        <% end %>
       </ul>
     </div>
   <% end %>

@@ -18,7 +18,6 @@ gem "simple_form", "~> 2.1.0"
 gem "paperclip", "~> 3.4.1"
 gem "will_paginate", "~> 3.0.4"
 gem "jquery-rails", "~> 2.2.1"
-gem "maskedinput-rails", "~> 1.3.1.0"
 
 gem "factory_girl_rails", "~> 4.2.1", :group => [:development, :test]
 gem "rspec-rails", "~> 2.13.0", :group => [:development, :test]

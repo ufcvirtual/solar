@@ -34,15 +34,15 @@ class User < ActiveRecord::Base
 
   email_format = %r{^((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?$}i # regex para validacao de email
 
-  validates :username, :length => { :within => 3..20 }, :uniqueness => true
-  validates :email, :confirmation => true, :unless => :already_email_error_or_email_not_changed?
+  validates :cpf, presence: true, uniqueness: true
+  validates :name, presence: true, length: { :within => 6..90 }
+  validates :nick, presence: true, length: { :within => 3..34 }
+  validates :birthdate, presence: true
+  validates :username, presence: true, :length => { :within => 3..20 }, :uniqueness => true
+  validates :email, presence: true, confirmation: true#, :unless => :already_email_error_or_email_not_changed?
   validates :alternate_email, :format => { :with => email_format }
-
-  validates :nick, :length => { :within => 3..34 }
-  validates :name, :length => { :within => 6..90 }
-  validates :birthdate, :presence => true
-  validates :special_needs, :presence => true, :if => :has_special_needs?
-  validates :cpf, :presence => true, :uniqueness => true
+  validates :password, presence: true, confirmation: true
+  validates :special_needs, presence: true, :if => :has_special_needs?
 
   validates_length_of :address, :maximum => 99
   validates_length_of :address_neighborhood, :maximum => 49

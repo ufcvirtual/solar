@@ -1,0 +1,5 @@
+%h1= t(:team)
+- @sectors.values.each do |sector|
+  %h4.sector= sector['title']
+  - sector['members'].sort.each do |member|
+    %p.member= member

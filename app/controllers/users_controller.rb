@@ -2,7 +2,20 @@ require 'ostruct'
 
 class UsersController < ApplicationController
 
-  load_and_authorize_resource :except => [:photo, :edit_photo, :fb_authentication]
+  load_and_authorize_resource only: [:mysolar, :update_photo]
+
+  def verify_cpf
+    if (not(params[:cpf].present?) or not(Cpf.new(params[:cpf]).valido?))
+      redirect_to login_path(cpf: params[:cpf]), alert: t(:new_user_msg_cpf_error)
+    else
+      user = User.where("translate(cpf,'.-','') = '#{params[:cpf].gsub(/\D/, '')}'").first
+      if user
+        redirect_to login_path, alert: t(:new_user_cpf_in_use)
+      else
+        redirect_to new_user_registration_path(cpf: params[:cpf])
+      end
+    end
+  end
 
   def mysolar
     set_active_tab_to_home
@@ -53,4 +66,3 @@ class UsersController < ApplicationController
     end
   end
 end
-
