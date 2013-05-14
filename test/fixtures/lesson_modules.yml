@@ -27,3 +27,9 @@ module5:
   allocation_tag_id: 6
   name: Modulo Geral
   is_default: true  
+
+module6:
+  id: 6
+  allocation_tag_id: 5
+  name: Modulo Geral
+  is_default: true  
