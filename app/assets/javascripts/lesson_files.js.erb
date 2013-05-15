@@ -53,7 +53,7 @@ jQuery(function(){
     onExpand: function(flag, node){ 
       if(flag && initial_file_node != null) // ao expandir um nó
         set_initial_file_visual_path(); // é necessário "re-definir" caminho visual aqui, pois os nós mais internos são ficam realmente visiveis após expansão do nó pai
-      hide_checkboxes(flag, node);
+      expand_folder(flag, node);
     }
   });
 
