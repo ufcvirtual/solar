@@ -25,12 +25,12 @@ class  DiscussionTest < ActiveSupport::TestCase
     assert_equal discussion.errors[:description].first, I18n.t(:blank, :scope => [:activerecord, :errors, :messages])
   end
 
-  # test "novo forum deve ter data final" do
-  #   discussion = Discussion.create(:name => "Forum sem data final", :schedule_id => schedules(:schedule33).id, :allocation_tag_id => allocation_tags(:al3).id)
+  test "novo forum deve ter data final" do
+    discussion = Discussion.create(:name => "Forum sem data final", :schedule_id => schedules(:schedule33).id, :allocation_tag_id => allocation_tags(:al3).id)
 
-  #   assert (discussion.valid?)
-  #   assert_equal discussion.errors[:base].first, I18n.t(:blank, :scope => [:activerecord, :errors, :messages])
-  # end
+    assert not(discussion.valid?)
+    assert_equal discussion.errors[:base].first, I18n.t(:blank, :scope => [:activerecord, :errors, :messages])
+  end
 
   test "novo forum deve ter titulo unico para a mesma allocation_tag" do
     discussion1 = Discussion.create(:name => "discussion name", :description => "discussion description", :schedule_id => schedules(:schedule24).id, :allocation_tag_id => allocation_tags(:al3).id)
