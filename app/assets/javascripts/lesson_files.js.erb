@@ -21,9 +21,20 @@ jQuery(function(){
     autoCollapse: true,
     activeVisible: false,
     onSelect: function(select, node) {
-      node.visit(function(child){
-        child.select(node.isSelected()); // seleciona ou de-seleciona nós filhos
-      });
+      if(!jQuery(node.span).hasClass("dont_visit_children") && node.childList != null){ // se for uma pasta
+        node.visit(function(child){
+          child.select(select); // seleciona ou desseleciona nós filhos
+        });
+      }
+
+      if(!select){ // se nó foi desselecionado, desseleciona o pai caso todos os filhos estivessem selecionados
+        if(node.parent.isSelected){
+          // adiciona classe apenas para informar quando reexecutar no "onSelect" que ele não deve repassar ação para os filhos
+          jQuery(node.parent.span).addClass("dont_visit_children"); 
+          node.parent.select(false);
+        }
+      }
+
       selNodes = node.tree.getSelectedNodes();
     },
     onActivate: function(node){
@@ -34,16 +45,21 @@ jQuery(function(){
       return false;
     },
     onKeydown: function(node, event) {
-      switch( event.which ) {
-        case 113: // [F2]
-          editNode(node);
-          return false;
-        case 32: // barra
-          node.toggleSelect();
-          return false;
-        case 46: // [delete]
-          deleteNodes([node]);
-      }
+      if(folder_or_file_selected()){
+        erase_flash_messages();
+        node = selNodes[0];
+        switch( event.which ) {
+          case 113: // [F2]
+            editNode(node);
+            return false;
+          case 32: // barra
+            node.toggleSelect();
+            return false;
+          case 46: // [delete]
+            deleteNodes([node]);
+        }
+      }else
+        flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
     },
     onPostInit: function(){ // ao carregar a árvore
       initial_file_node = get_initial_file(); // verifica se há arquivo inicial e o associa à variável
@@ -52,7 +68,7 @@ jQuery(function(){
     },
     onExpand: function(flag, node){ 
       if(flag && initial_file_node != null) // ao expandir um nó
-        set_initial_file_visual_path(); // é necessário "re-definir" caminho visual aqui, pois os nós mais internos são ficam realmente visiveis após expansão do nó pai
+        set_initial_file_visual_path(); // é necessário "redefinir" caminho visual aqui, pois os nós mais internos são ficam realmente visiveis após expansão do nó pai
       expand_folder(flag, node);
     }
   });
@@ -389,6 +405,7 @@ function verify_initial_file(node){
     return null;
 }
 
+/* Verifica nível dos checkboxes */
 function expand_folder(flag, node){
   parent = node.parent;
 
@@ -404,10 +421,12 @@ function expand_folder(flag, node){
   }
 }
 
+/* Retorna o elemento de checkbox de um nó */
 function checkbox_node(node){
   return jQuery(node.li.children[0].children[1]); // elemento de checkbox do nó
 }
 
+/* Exibe ou não o checkbox de um nó */
 function display_checkboxes(flag, node){
   checkbox = checkbox_node(node);
   if(flag) // se nó foi expandido, esconde checkboxes do seu nível

@@ -98,7 +98,6 @@ class LessonFilesController < ApplicationController
         end
         # se moveu para a raiz, "path_to_move_to" virá "", adicionando, assim, uma "/" indevida no momento que realizar o File.join
         new_address = (params[:path_to_move_to] == "" ? params[:initial_file_path] : File.join(params[:path_to_move_to], params[:initial_file_path]))
-        # raise "#{params[:path_to_move_to]} - #{new_address} - #{params[:initial_file_path]}"
         @lesson.update_attribute(:address, new_address) unless params[:initial_file_path] == "false"
 
       elsif params[:type] == "initial_file" # arquivo inicial
@@ -108,8 +107,7 @@ class LessonFilesController < ApplicationController
       end
       @address = @lesson.address
 
-    rescue Exception => error
-      # raise "#{error}"
+    rescue
       error = true
     end
 
