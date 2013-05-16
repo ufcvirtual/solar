@@ -230,7 +230,7 @@ function getPath(node){
     if(node.parent && node.data.key != "_2")  // se não for raiz
       path.unshift(node.data.title); // cada novo título do nó é adicionado ao começo 
   }); 
-  return "/" + path.join("/"); 
+  return path.join("/"); 
 }
 
 /* Retorna o caminho (path) selecionado (os elementos que foram selecionados) da hierarquia do arquivo inicial 
@@ -245,7 +245,7 @@ function getPartialPathInitialFile(){
         path.unshift(parent.data.title);
         parent = parent.getParent();
       }
-      return "/" + path.join("/"); 
+      return path.join("/"); 
     }else
       return false; // se nenhum elemento foi selecionado
   }else
@@ -321,9 +321,8 @@ function editNode(node) {
               jQuery("input#editNode").val(node.data.title); // retorna ao antigo título
               flash_message("<%=I18n.t(:name_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
             }             
-          } else {
+          } else
             erase_flash_messages();
-          }
 
           jQuery(this).blur(); // simulate blur to accept new value
           break;
@@ -336,6 +335,9 @@ function editNode(node) {
       tree.$widget.bind();
       node.focus();
     });
+
+  if(node.isFolder && node.isExpanded)
+    checkbox_node(node).hide();
 }
 
 /* Seta caminho visual para o arquivo inicial */
@@ -344,7 +346,7 @@ function set_initial_file_visual_path(){
     jQuery(initial_file_node.span).attr("id", "initial_file"); // define como arquivo inicial visualmente
 
     parent = initial_file_node.getParent();
-    while(getPath(parent) != "/" && parent.span != "initial_file_parent"){ // varre os nós pais que já não foram definidos e que não são a raiz
+    while(getPath(parent) != "" && parent.span != "initial_file_parent"){ // varre os nós pais que já não foram definidos e que não são a raiz
       jQuery(parent.span).attr("id", "initial_file_parent"); // como parte do caminho do arquivo inicial
       parent = parent.getParent();
     }
@@ -380,7 +382,7 @@ function search_initial_file(node){
 
 /* Verifica se é arquivo inicial. Se for, seta na variável. */
 function verify_initial_file(node){
-  if (getPath(node) == initial_file_address){ // se o caminho do nó for equivalente ao arquivo inicial
+  if (getPath(node) == initial_file_address && initial_file_address != ""){ // se o caminho do nó for equivalente ao arquivo inicial e não for a raiz
     initial_file_node = node;
     return initial_file_node;
   }else
@@ -467,11 +469,10 @@ function renameNode(node, new_title, path){
       "previous_name": node.data.title
     },
     success: function(data){
-      if (initial_file_node == node) {
+      if (initial_file_node == node)
         defineInitialFile(node);
-      } else {
+      else
         jQuery("#lesson_file_management").html(data);
-      }
     },
     error: function() {
       node.setTitle(node.data.title); // retorna ao antigo título
@@ -497,7 +498,7 @@ function saveMove(nodesToMove){
         var invalid_name = true; // erro: já existe pasta de mesmo nome no destino
         i = nodesToMove.length; // concluir laço
       }else{
-        if( getPath(nodesToMove[i]) == moveTo ) 
+        if(getPath(nodesToMove[i]) == moveTo) 
           var same_folder = true; // erro: está movendo para ela mesma
         else{
           paths.push(getPath(nodesToMove[i])); // caminho do nó

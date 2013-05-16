@@ -82,7 +82,7 @@ class LessonFilesControllerTest < ActionController::TestCase
   test 'cria nova pasta na arvore de arquivos' do
     Dir.mkdir(Lesson::FILES_PATH.join("#{@pag_index.id}")) unless File.exist? Lesson::FILES_PATH.join("#{@pag_index.id}") # cria se já não existir
     assert_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size', +1) do
-      post :new, {lesson_id: @pag_index.id, type: 'folder', path: '/'+@pag_index.name} # nova pasta na pasta raiz
+      post :new, {lesson_id: @pag_index.id, type: 'folder', path: @pag_index.name} # nova pasta na pasta raiz
     end
     assert_response :success
     assert_template :index
@@ -93,7 +93,7 @@ class LessonFilesControllerTest < ActionController::TestCase
   test 'nao cria nova pasta na arvore de arquivos - sem permissao' do
     sign_in users(:aluno1)
     assert_no_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size', +1) do
-      post :new, {lesson_id: @pag_index.id, type: 'folder', path: '/'+@pag_index.name} # nova pasta na pasta raiz
+      post :new, {lesson_id: @pag_index.id, type: 'folder', path: @pag_index.name} # nova pasta na pasta raiz
     end
     assert_response :error
     assert_template nothing: true
@@ -105,7 +105,7 @@ class LessonFilesControllerTest < ActionController::TestCase
 
     sign_in users(:coorddisc)
     assert_no_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_bbc.id}")).size') do
-      post :new, {lesson_id: @pag_bbc.id, type: 'folder', path: '/'+@pag_bbc.name} # nova pasta na pasta raiz
+      post :new, {lesson_id: @pag_bbc.id, type: 'folder', path: @pag_bbc.name} # nova pasta na pasta raiz
     end
     assert_response :error
     assert_template nothing: true
@@ -137,7 +137,7 @@ class LessonFilesControllerTest < ActionController::TestCase
 
     # problema com a extensao
     assert_no_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size') do
-      post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '/', files: [@invalid_file]}}
+      post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '', files: [@invalid_file]}}
     end
 
     assert_response :error
@@ -146,9 +146,9 @@ class LessonFilesControllerTest < ActionController::TestCase
     assert (not File.exists?(File.join(Lesson::FILES_PATH, "#{@pag_index.id}", 'invalid_file_test.exe')))
 
     # problema com o nome
-    post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '/', files: [@valid_file]}}
+    post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '', files: [@valid_file]}}
     assert_no_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size') do
-      post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '/', files: [@invalid_file]}}
+      post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '', files: [@invalid_file]}}
     end
 
     assert_response :error
@@ -162,7 +162,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     sign_in users(:aluno1)
 
     assert_no_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size') do
-      post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '/', files: [@valid_file]}}
+      post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '', files: [@valid_file]}}
     end
 
     assert_response :error
@@ -178,7 +178,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     sign_in users(:coorddisc)
 
     assert_no_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_bbc.id}")).size') do
-      post :new, {lesson_id: @pag_bbc.id, type: 'upload', lesson_files: {path: '/', files: [@valid_file]}}
+      post :new, {lesson_id: @pag_bbc.id, type: 'upload', lesson_files: {path: '', files: [@valid_file]}}
     end
 
     assert_response :error
@@ -327,21 +327,21 @@ class LessonFilesControllerTest < ActionController::TestCase
     # cria arquivo
     define_files_to_upload    
     assert_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size', +1) do
-      post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '/', files: [@valid_file]}}
+      post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '', files: [@valid_file]}}
     end
     # define como inicial
-    put :edit, {lesson_id: @pag_index.id, type: 'initial_file', path: "/#{@valid_file.original_filename}"}
+    put :edit, {lesson_id: @pag_index.id, type: 'initial_file', path: "#{@valid_file.original_filename}"}
     # cria pasta
     folder_name = create_root_folder(@pag_bbc.id).split(File::SEPARATOR).last
 
     # move arquivo inicial
-    put :edit, {type: 'move', lesson_id: @pag_index.id, paths_to_move: ["/#{@valid_file.original_filename}"], path_to_move_to: "/#{folder_name}", initial_file_path: "/#{@valid_file.original_filename}"}
+    put :edit, {type: 'move', lesson_id: @pag_index.id, paths_to_move: ["#{@valid_file.original_filename}"], path_to_move_to: "#{folder_name}", initial_file_path: "#{@valid_file.original_filename}"}
 
     assert_response :success
     assert_template :index
 
     # verifica se houve mudança
-    assert_equal "/#{folder_name}/#{@valid_file.original_filename}", Lesson.find(@pag_index.id).address
+    assert_equal "#{folder_name}/#{@valid_file.original_filename}", Lesson.find(@pag_index.id).address
   end
 
   ##
@@ -353,7 +353,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     create_root_folder(@pag_index.id) # Cria pasta dentro do diretório da aula.
 
     assert_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size', -1) do
-      delete :destroy, {lesson_id: @pag_index.id, path: '/Nova Pasta'}
+      delete :destroy, {lesson_id: @pag_index.id, path: 'Nova Pasta'}
     end
     assert_response :success
     assert_template :index
@@ -366,7 +366,7 @@ class LessonFilesControllerTest < ActionController::TestCase
 
     sign_in users(:aluno1)
     assert_no_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size') do
-      delete :destroy, {lesson_id: @pag_index.id, path: '/Nova Pasta11'}
+      delete :destroy, {lesson_id: @pag_index.id, path: 'Nova Pasta11'}
     end
     assert_response :error
     assert_template nothing: true
@@ -379,7 +379,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     
     sign_in users(:coorddisc)
     assert_no_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_bbc.id}")).size') do
-      delete :destroy, {lesson_id: @pag_bbc.id, path: '/Nova Pasta1'}
+      delete :destroy, {lesson_id: @pag_bbc.id, path: 'Nova Pasta1'}
     end
     assert_response :error
     assert_template nothing: true
@@ -391,7 +391,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     # cria arquivo
     define_files_to_upload    
     assert_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size', +1) do
-      post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '/', files: [@valid_file]}}
+      post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '', files: [@valid_file]}}
     end
     # define como inicial
     put :edit, {lesson_id: @pag_index.id, type: 'initial_file', path: "#{@valid_file.original_filename}"}
@@ -417,11 +417,11 @@ class LessonFilesControllerTest < ActionController::TestCase
     # cria arquivo
     define_files_to_upload    
     assert_difference('Dir.entries(File.join(Lesson::FILES_PATH, "#{@pag_index.id}")).size', +1) do
-      post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '/', files: [@valid_file]}}
+      post :new, {lesson_id: @pag_index.id, type: 'upload', lesson_files: {path: '', files: [@valid_file]}}
     end
 
     # tenta definir como inicial
-    put :edit, {lesson_id: @pag_index.id, type: 'initial_file', path: "/#{@valid_file.original_filename}"}
+    put :edit, {lesson_id: @pag_index.id, type: 'initial_file', path: "#{@valid_file.original_filename}"}
 
     assert_response :success
     assert_template :index
@@ -441,7 +441,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     sign_in users(:aluno1)
 
     # tenta definir como inicial
-    put :edit, {lesson_id: @pag_index.id, type: 'initial_file', path: "/#{@valid_file.original_filename}"}
+    put :edit, {lesson_id: @pag_index.id, type: 'initial_file', path: "#{@valid_file.original_filename}"}
 
     assert_response :error
     assert_template nothing: true
@@ -461,7 +461,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     sign_in users(:coorddisc)
 
     # tenta definir como inicial
-    put :edit, {lesson_id: @pag_bbc.id, type: 'initial_file', path: "/#{@valid_file.original_filename}"}
+    put :edit, {lesson_id: @pag_bbc.id, type: 'initial_file', path: "#{@valid_file.original_filename}"}
 
     assert_response :error
     assert_template nothing: true
@@ -475,7 +475,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     folder_name = create_root_folder(@pag_index.id).split(File::SEPARATOR).last # Cria pasta dentro do diretório da aula.
 
     # tenta definir como inicial
-    put :edit, {lesson_id: @pag_index.id, type: 'initial_file', path: "/#{folder_name}"}
+    put :edit, {lesson_id: @pag_index.id, type: 'initial_file', path: "#{folder_name}"}
 
     assert_response :error
     assert_template nothing:true

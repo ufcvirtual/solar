@@ -28,7 +28,7 @@ class LessonFilesController < ApplicationController
 
       if params[:type] == 'folder'
         folder_number, folder_name = '', t(:new_folder, scope: [:lessons, :files])
-        params[:path] = '' if (params[:path] == File::SEPARATOR or params[:path].split(File::SEPARATOR)[1] == Lesson.find(params[:lesson_id]).name) # se for pasta raiz, altera o path recebido
+        params[:path] = '' if (params[:path] == File::SEPARATOR or params[:path] == Lesson.find(params[:lesson_id]).name) # se for pasta raiz, altera o path recebido
         path = File.join(lesson_path, params[:path]) # monta o endereço da nova pasta
 
         # Se a pasta já existir, incrementa um número à ela (Nova Pasta -> Nova Pasta1 -> Nova Pasta2)
@@ -78,8 +78,10 @@ class LessonFilesController < ApplicationController
         raise "error" if File.exists?(new_path)
         FileUtils.mv path, new_path # renomeia
 
-        if @lesson.address.include?(params[:path]) 
-          renamed_path   = File.join(get_path_without_last_dir(params[:path]), params[:node_name]).split(File::SEPARATOR) # recupera caminho do arquivo renomeado
+        if @lesson.address.include?(params[:path])
+          path           = get_path_without_last_dir(params[:path])
+          # se for elemento localizado na raiz, o resultado de "get_path_without_last_dir" será "" ou "/", portanto, nestes casos, não deve ser adicionado ao path a ser renomeado
+          renamed_path   = ((path == "/" or path == "") ? [params[:node_name]] : File.join(path, params[:node_name]).split(File::SEPARATOR)) 
           lesson_address = @lesson.address.split(File::SEPARATOR) # quebra o caminho do arquivo inicial da aula
           lesson_address[renamed_path.size-1] = params[:node_name] # altera o elemento renomeado no caminho da aula
           @lesson.update_attribute(:address, File.join(lesson_address))
@@ -94,18 +96,20 @@ class LessonFilesController < ApplicationController
           raise "error" if (not File.exist?(path)) and (new_path == path_split) # erro se pasta não existir ou se for para ela mesma
           FileUtils.mv path, new_path  
         end
-
-        @lesson.update_attribute(:address, File.join(params[:path_to_move_to], params[:initial_file_path])) unless params[:initial_file_path] == "false"
+        # se moveu para a raiz, "path_to_move_to" virá "", adicionando, assim, uma "/" indevida no momento que realizar o File.join
+        new_address = (params[:path_to_move_to] == "" ? params[:initial_file_path] : File.join(params[:path_to_move_to], params[:initial_file_path]))
+        # raise "#{params[:path_to_move_to]} - #{new_address} - #{params[:initial_file_path]}"
+        @lesson.update_attribute(:address, new_address) unless params[:initial_file_path] == "false"
 
       elsif params[:type] == "initial_file" # arquivo inicial
         raise "error"  unless File.file?(File.join(lesson_path, params[:path])) # verifica se existe e se é arquivo
         path = params[:path].split(File::SEPARATOR).delete_if {|f|f == '' or f.nil?}.join(File::SEPARATOR)
         @lesson.update_attribute(:address, path)
-        # @lesson.update_attribute(:address, params[:path])
       end
       @address = @lesson.address
 
-    rescue
+    rescue Exception => error
+      # raise "#{error}"
       error = true
     end
 
