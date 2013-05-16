@@ -29,7 +29,7 @@ class  DiscussionTest < ActiveSupport::TestCase
     discussion = Discussion.create(:name => "Forum sem data final", :schedule_id => schedules(:schedule33).id, :allocation_tag_id => allocation_tags(:al3).id)
 
     assert not(discussion.valid?)
-    assert_equal discussion.errors[:base].first, I18n.t(:blank, :scope => [:activerecord, :errors, :messages])
+    assert_equal discussion.errors[:final_date_presence].first, I18n.t(:mandatory_final_date, :scope => [:discussion, :errors])
   end
 
   test "novo forum deve ter titulo unico para a mesma allocation_tag" do
