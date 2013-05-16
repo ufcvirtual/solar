@@ -7,21 +7,19 @@
     .form-inputs.block_content
       = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
-      = f.input :name, :required => true
-      = f.input :description, :required => true 
-      / classes ".string.required.field_with_errors" adicionadas a fim de deixar o layout semelhante ao do simple_form utilizado nos "f.input"
+      = f.input :name
+      = f.input :description
       - error_class = "field_with_errors" unless @schedule_error.blank?
       .string.required{:class => error_class}
         = f.label :schedule, :required => true
-        - start_date = nil
-        - end_date = nil
+        - start_date, end_date = '', ''
         - unless @discussion.schedule.nil?
-          - start_date = l(@discussion.schedule.start_date.to_date, :format => :datepicker)
+          - start_date = @discussion.schedule.start_date.nil? ? '' : l(@discussion.schedule.start_date.to_date, :format => :datepicker)
           - end_date = @discussion.schedule.end_date.nil? ? "" : l(@discussion.schedule.end_date.to_date, :format => :datepicker) 
         = text_field_tag "start_date", "", :id => "from-date", :title => "#{t(:from_date)}", :value => "#{start_date}", :class => "date_text_field", :size => 10
         = t(:to, :scope => [:discussion])
         = text_field_tag "end_date", "", :id => "until-date", :title => "#{t(:until_date)}", :value => "#{end_date}", :class => "date_text_field", :size => 10
-        %span{:style => "display: inline-block;"}= @schedule_error
+        %span.field_with_errors{:style => "display: inline-block;"}= @error
 
     .block_content.form-actions
       = button_tag t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :type => "button", :id => "save"
@@ -43,7 +41,7 @@
     $('#from-date, #until-date').datepicker(options);
 
     $('#save').click(function(){
-      submit_form('discussion_form', 'discussion_form', '#{list_discussions_path(:allocation_tags_ids => @allocation_tags_ids.compact!)}');
+      submit_form('discussion_form', 'discussion_form', '#{list_discussions_path(:allocation_tags_ids => @allocation_tags_ids.compact)}');
     });
 
     $('#cancel').click(function(){

@@ -7,16 +7,20 @@ class Discussion < ActiveRecord::Base
   has_many :allocations, :through => :allocation_tag
 
   validates :name, :description, :presence => true
-  validate :unique_name
+  validate :unique_name, :final_date_presence
 
   before_destroy :can_destroy?
   after_destroy :delete_schedule
 
-  #before_create :has_final_date
+  def has_final_date?
+    schedule = self.schedule    
+    return not(schedule.end_date.nil?)
+  end
 
-  def has_final_date
-    schedule = self.schedule
-    errors.add(:base, I18n.t(:mandatory_final_date, :scope => [:discussion, :errors])) if (schedule.end_date.nil?)
+  def final_date_presence
+    has_final_date = self.has_final_date?
+    errors.add(:final_date_presence, I18n.t(:mandatory_final_date, :scope => [:discussion, :errors])) unless has_final_date
+    return has_final_date
   end
 
   def can_destroy?

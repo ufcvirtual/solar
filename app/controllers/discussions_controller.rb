@@ -29,50 +29,34 @@ class DiscussionsController < ApplicationController
   end
 
   def create
-    @allocation_tags_ids   = params[:allocation_tags_ids].split(" ").flatten
-    @discussion, @schedule = Discussion.new(params[:discussion]), Schedule.new(:start_date => params["start_date"], :end_date => params["end_date"]) # utilizados para validação
+    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    authorize! :create, Discussion, :on => @allocation_tags_ids
 
+    @discussion = Discussion.new
+    @schedule = Schedule.new
     begin
-
-      authorize! :create, Discussion, :on => @allocation_tags_ids
-      raise "validation_error" unless (not @discussion.nil?) and @discussion.valid? 
-      @allocation_tags_ids.each do |allocation_tag_id|
-        allocation_tag  = AllocationTag.find(allocation_tag_id.to_i)
-        @offer          = allocation_tag.offer || allocation_tag.group.offer
-        raise "date_range_error" if (@schedule.start_date < @offer.start_date or (!@schedule.end_date.nil? && @schedule.end_date > @offer.end_date)) # período escolhido deve estar dentro do período da oferta
-      end
-
-      ActiveRecord::Base.transaction do
+      Discussion.transaction do
         @allocation_tags_ids.each do |allocation_tag_id|
-          schedule = Schedule.create!(:start_date => params["start_date"], :end_date => params["end_date"])
-          Discussion.create!(:name => @discussion.name, :description => @discussion.description, :schedule_id => schedule.id, :allocation_tag_id => allocation_tag_id.to_i)
+          @schedule = Schedule.new(start_date: params[:start_date], end_date: params[:end_date])
+          @schedule.save!
+
+          @discussion = Discussion.new(params[:discussion])
+
+          @discussion.allocation_tag_id = allocation_tag_id
+          @discussion.schedule = @schedule
+          @discussion.save!
         end
       end
 
-      respond_to do |format|
-        format.html { render :list, :status => 200 }
-      end
+      render :list
+    rescue Exception => err
+      error = []
+      error << @schedule.errors.full_messages.join(', ') unless @schedule.errors.empty?
+      error << @discussion.errors.messages[:final_date_presence] unless @discussion.errors.empty?
+      @error = error.compact.join(', ')
 
-    rescue CanCan::AccessDenied
-
-      respond_to do |format|
-        format.html { render :list, :status => 500 }
-      end  
-
-    rescue Exception => error
-
-      @discussion.errors.add(:name, t(:existing_name, :scope => [:discussion, :errors])) if error.message == t(:existing_name, :scope => [:discussion, :errors])
-
-      if error.message == "date_range_error"
-        @schedule_error = t(:offer_period, :scope => [:discussion, :errors], :start => l(@offer.start_date, :formats => :default), :end => l(@offer.end_date, :formats => :default))
-      end
-      @schedule_error = @schedule.errors.full_messages[0] unless @schedule.valid?
-
-      respond_to do |format|
-        format.html { render :new, :status => 200 } # envia com status de sucesso, mas no ajax há verificação para erros no formulário
-      end
-
-    end # begin/rescue
+      render :new
+    end # rescue
   end
 
   def list
@@ -89,59 +73,30 @@ class DiscussionsController < ApplicationController
   end
 
   def edit
-    @allocation_tags_ids = params[:allocation_tags_ids]
+    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
   end
 
   def update
-    @discussion          = Discussion.find(params[:id])
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    authorize! :update, Discussion, :on => @allocation_tags_ids
 
-    unless @discussion.closed?
-      
-      offer, @schedule = @discussion.allocation_tag.offer, Schedule.new(:start_date => params[:start_date], :end_date => params[:end_date]) # utilizados para validação
-      schedule         = @discussion.schedule
-      
-      begin
-
-        authorize! :update, @discussion
-        raise  "validation_error" unless @schedule.valid?
-        @allocation_tags_ids.each do |allocation_tag_id| # como pode haver mais de uma allocation_tag_id, é necessário verificar cada uma
-          allocation_tag  = AllocationTag.find(allocation_tag_id.to_i)
-          offer           = allocation_tag.offer || allocation_tag.group.offer
-          raise "date_range_error" if (@schedule.start_date < offer.start_date or (!@schedule.end_date.nil? && @schedule.end_date > offer.end_date)) # período escolhido deve estar dentro do período da oferta
-        end
-
+    @discussion = Discussion.find(params[:id])
+    @schedule = Schedule.find(@discussion.schedule_id)
+    begin
+      Discussion.transaction do
+        @schedule.update_attributes!(start_date: params[:start_date], end_date: params[:end_date])
         @discussion.update_attributes!(params[:discussion])
-        schedule.update_attributes!(:start_date => params["start_date"], :end_date => params["end_date"])
-        respond_to do |format|
-          format.html { render :list, :status => 200 }
-        end
-
-      rescue CanCan::AccessDenied
-
-        respond_to do |format|
-          format.html { render :list, :status => 500 } 
-        end
-
-      rescue Exception => error
-        @discussion.errors.add(:name, t(:existing_name, :scope => [:discussion, :errors])) if error.message == t(:existing_name, :scope => [:discussion, :errors])
-
-        if error.message == "date_range_error"
-          @schedule_error = t(:offer_period, :scope => [:discussion, :errors], :start => l(offer.start_date, :formats => :default), :end => l(offer.end_date, :formats => :default))
-        else 
-          @schedule_error = @schedule.errors.full_messages[0] unless @schedule.valid?
-        end
-
-        respond_to do |format|
-          format.html { render :edit, :status => 200 } # envia com status de sucesso, mas no ajax há verificação para erros no formulário
-        end
       end
+   
+      render :list
+    rescue Exception => err
+      error = []
+      error << @schedule.errors.full_messages.join(', ') unless @schedule.errors.empty?
+      error << @discussion.errors.messages[:final_date_presence] unless @discussion.errors.empty?
+      @error = error.compact.join(', ')
 
-    else  
-      respond_to do |format|
-        format.html { render :list, :status => 500 }
-      end
-    end
+      render :edit
+    end 
 
   end
 
