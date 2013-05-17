@@ -35,7 +35,9 @@ jQuery(function(){
         }
       }
 
-      has_child_selected(node.parent); // define estilo do nó pai de acordo com os filhos selecionados
+      if(jQuery(node.parent.span).hasClass("dont_visit_children"))
+        has_child_selected(node.parent); // define estilo do nó pai de acordo com os filhos selecionados
+      
       selNodes = node.tree.getSelectedNodes();
     },
     onActivate: function(node){
