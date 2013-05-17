@@ -82,6 +82,7 @@ jQuery(function(){
     children: folderTreeData,
     imagePath: "/assets/lesson/",
     checkbox: true,
+    activeVisible: false,
     classNames: {checkbox: "dynatree-radio"}, // Override class name for checkbox icon:
     onKeydown: function(node, event) {
       switch( event.which ) {
@@ -90,6 +91,9 @@ jQuery(function(){
         case 13: // enter
           node.select();
       }
+    },
+    onActivate: function(node){
+      node.deactivate();
     },
     onDblClick: function(node, event) {
       node.deactivate();
