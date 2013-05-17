@@ -35,6 +35,7 @@ jQuery(function(){
         }
       }
 
+      has_child_selected(node.parent); // define estilo do nó pai de acordo com os filhos selecionados
       selNodes = node.tree.getSelectedNodes();
     },
     onActivate: function(node){
@@ -68,8 +69,9 @@ jQuery(function(){
     },
     onExpand: function(flag, node){ 
       if(flag && initial_file_node != null) // ao expandir um nó
-        set_initial_file_visual_path(); // é necessário "redefinir" caminho visual aqui, pois os nós mais internos são ficam realmente visiveis após expansão do nó pai
-      expand_folder(flag, node);
+        set_initial_file_visual_path(); // é necessário redefinir caminho visual do arquivo inicial, pois os nós mais internos são ficam realmente acessíveis antes da expansão do pai
+      expand_folder(flag, node); // define nível a ser exibido
+      has_child_selected(node); // define estilo do nó pai de acordo com os filhos selecionados
     }
   });
 
@@ -223,6 +225,15 @@ jQuery(function(){
     }else
       flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
   });
+
+  /* Define estilo do nó para caso algum dos filhos esteja selecionado ou nenhum */
+  function has_child_selected(node){
+    childrenSelected = jQuery.map(node.getChildren(), function (child) { return (jQuery.inArray(child, node.tree.getSelectedNodes()) != -1); });
+    if((!node.isSelected()) && (jQuery.inArray(true, childrenSelected) == -1)) // se não tem nenhum filho selecionado
+      jQuery(node.span.children[3]).attr("id", "no_child_selected");
+    else // tem algum
+      jQuery(node.span.children[3]).attr("id", "some_child_selected");
+  }
 
   function folder_or_file_selected(){
     // verifica se algum nó foi selecionado E (se apenas um nó foi selecionado OU (se o item for uma pasta E a quantidade de filhos da pasta + a pasta é igual ao número de itens selecionados E a pasta não está expandida))

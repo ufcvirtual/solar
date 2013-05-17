@@ -59,3 +59,14 @@ span.dynatree-folder a {
 #initial_file_parent > span.dynatree-icon{
     background-image: url("/assets/lesson/initial_file-TEMP.png");
 }
+
+#some_child_selected{
+    color: green;
+    font-style: italic;
+}
+
+#no_child_selected{
+    color: black;
+    font-style: normal;
+}
+
