@@ -322,8 +322,8 @@ res53:
 res54:
   id: 54
   controller: 'support_material_files'
-  action: 'list'
-  description: 'Visualizar material de apoio'
+  action: 'index'
+  description: 'Listar material de apoio'
 
 res55:
   id: 55
@@ -378,38 +378,38 @@ res62:
 res63:
   id: 63
   controller: 'support_material_files'
-  action: 'list_edition'
+  action: 'list'
   description: 'Visulalizar arquivos do material de apoio do editor'
 
-res64:
-  id: 64
-  controller: 'support_material_files'
-  action: 'select_action_link'
-  description: 'Envia para o metodo de adicionar ou excluir links do material de apoio do editor'
+# res64:
+#   id: 64
+#   controller: 'support_material_files'
+#   action: 'select_action_link'
+#   description: 'Envia para o metodo de adicionar ou excluir links do material de apoio do editor'
 
-res65:
-  id: 65
-  controller: 'support_material_files'
-  action: 'select_action_file'
-  description: 'Envia para o metodo de adicionar ou excluir arquivos ou renomeia uma pasta do material de apoio do editor'
+# res65:
+#   id: 65
+#   controller: 'support_material_files'
+#   action: 'select_action_file'
+#   description: 'Envia para o metodo de adicionar ou excluir arquivos ou renomeia uma pasta do material de apoio do editor'
 
-res66:
-  id: 66
-  controller: 'support_material_files'
-  action: 'folder_verify'
-  description: 'Metodo que cria uma pasta temporaria e envia para a pagina do material de apoio do editor para aguardar o upload de um arquivo'
+# res66:
+#   id: 66
+#   controller: 'support_material_files'
+#   action: 'folder_verify'
+#   description: 'Metodo que cria uma pasta temporaria e envia para a pagina do material de apoio do editor para aguardar o upload de um arquivo'
 
-res67:
-  id: 67
-  controller: 'support_material_files'
-  action: 'delete_folder'
-  description: 'Exclui uma pasta da pagina de material de apoio do editor'
+# res67:
+#   id: 67
+#   controller: 'support_material_files'
+#   action: 'delete_folder'
+#   description: 'Exclui uma pasta da pagina de material de apoio do editor'
 
-res68:
-  id: 68
-  controller: 'support_material_files'
-  action: 'edit_link'
-  description: 'Edita um ou mais links da pagina de material de apoio do editor'
+# res68:
+#   id: 68
+#   controller: 'support_material_files'
+#   action: 'edit_link'
+#   description: 'Edita um ou mais links da pagina de material de apoio do editor'
 
 # acompanhamento do responsável - parte 2
 res69:

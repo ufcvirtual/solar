@@ -213,11 +213,11 @@ registration:
   resource_id: 8
 
 # MENU PAI - 120
-menu_support_material_record:
-  id: 120
-  name: menu_support_material_record
-  order: 12
-  resource_id: 63
+# menu_support_material_record:
+#   id: 120
+#   name: menu_support_material_record
+#   order: 12
+#   resource_id: 63
 
 # MENU PAI - 130
 edition:

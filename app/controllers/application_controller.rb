@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
-      format.html { redirect_to home_path, alert: t(:no_permission) }
+      format.html { redirect_to home_path, alert: t(:no_permission), status: :unauthorized }
       format.json { render json: {msg: t(:no_permission)}, status: :unauthorized }
     end
   end

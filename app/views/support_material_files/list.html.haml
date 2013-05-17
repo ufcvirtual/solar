@@ -1,0 +1,78 @@
+= javascript_include_tag "edition.js"
+= hidden_field_tag :allocation_tags_ids, @allocation_tags.map(&:id)
+
+.block_wrapper
+  .block_title
+    %h2= t(:support_material, scope: [:editions, :items])
+
+- previous_allocation_tag = nil
+- @allocation_tags.each_with_index do |allocation_tag, idxat|
+  - allocation_tag_path = allocation_tag_path(allocation_tag, @what_was_selected)
+
+  .block_wrapper.list_support_materials
+    - unless previous_allocation_tag == idxat
+      - previous_allocation_tag = idxat
+      .edition_allocation_tag_path= allocation_tag_path
+
+      .block_content_toolbar
+        .block_toolbar_left.btn-group
+          %a.btn.btn_main{:href => "#", 'data-dropdown' => "#dropdown_1"}
+            = content_tag(:i, nil, :class=>'icon-plus-3')
+            %i.icon-arrow-down-3
+          %div{:id=>"dropdown_1", :class=>"dropdown dropdown-tip"}
+            %ul.dropdown-menu
+              %li= link_to "Novo Arquivo", '#', id: 'new_material_file', :"data-link" => "#{new_support_material_file_path(allocation_tags_ids: params[:allocation_tags_ids])}", :"data-box-title" => "Novo Arquivo"
+              %li= link_to "Novo Link", '#', id: 'new_material_link', :"data-link" => "#{new_support_material_file_path(type: 'url', allocation_tags_ids: params[:allocation_tags_ids])}", :"data-box-title" => "Novo Link"
+
+        .block_toolbar_right
+          .btn-group
+            / = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", onclick: "javascript: alert('em desenvolvimento');", class: 'btn'
+            / = link_to (content_tag(:i, nil, :class=>'icon-install')), "#", onclick: "javascript: alert('em desenvolvimento');", id: 'download_meterial', class: 'btn'
+            = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", id: 'delete_material', class: 'btn', :"data-link-to-delete" => support_material_file_path(':id', allocation_tags_ids: @allocation_tags.map(&:id)), :"data-link-to-list" => list_support_material_files_path(allocation_tags_ids: @allocation_tags.map(&:id))
+
+      .block_wrapper.support_material
+        - unless @materials.empty?
+
+          %table.tb_list
+            %thead
+              %tr.lines
+                %th{style: 'text-align:center;'}
+                %th{style: 'text-align:left;'}= t(".name")
+                %th{style: 'text-align:center;'}= t(".date")
+                %th{style: 'text-align:center;'}= t(".type")
+
+            %tbody
+              - @materials.each do |material|
+                %tr.lines{id: "tr_#{material.id}"}
+                  %td{style: 'text-align:center;'}
+                    = check_box_tag("c_#{material.id}", material.id, false, {class: "ckb_material"})
+                  %td
+                    %div
+                      - if material.is_link?
+                        %span= image_tag('icon_file_link.png')
+                        %span= link_to material.name, material.name, target: '_blank'
+                      - else
+                        %span= image_tag(icon_attachment(material.name))
+                        %span= link_to material.name, download_support_material_file_path(id: material.id, file_allocation_tag_id: material.allocation_tag_id), target: '_blank'
+                  %td{style: 'text-align:center;'}
+                    %div= l(material.attachment_updated_at, format: :normal)
+                  %td{style: 'text-align:center;'}
+                    %div= t(".#{material.type}")
+
+:javascript
+
+  $('#new_material_link, #new_material_file').click(function(){
+    console.log($(this).data('link'));
+
+
+
+    open_lightbox4($(this).data('link'), $(this).data('box-title'));
+  });
+
+  $('#delete_material').click(function(){
+    var material_ids = $('.ckb_material:checked').map(function() { return this.value; }).get();
+    var url_delete = $(this).data('link-to-delete').replace(':id', material_ids);
+    var url_list = $(this).data('link-to-list');
+
+    delete_object(url_delete, url_list);
+  });

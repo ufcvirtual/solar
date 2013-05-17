@@ -231,9 +231,9 @@ pm57:
   profile_id: 5
   menu_id: 102
 
-pm58:
-  profile_id: 5
-  menu_id: 120
+# pm58:
+#   profile_id: 5
+#   menu_id: 120
 
 pm59:
   profile_id: 5

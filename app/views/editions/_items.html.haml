@@ -62,11 +62,11 @@
             = link_to(content_tag(:i, nil, :class=>'icon-lesson big'), "#", :class=>'btn')
             = link_to t(".lesson"), "#"
 
-      / - if (can? lista_de_suport_material, SupportMaterial, :on => @allocation_tags_ids) and (@selected_offer or @selected_group)
-      .uc_item 
-        .support_material
-          = link_to(content_tag(:i, nil, :class=>'icon-archive big'), "#", :class=>'btn')
-          = link_to t(".support_material"), "#"
+      - if (can? :list, SupportMaterialFile, :on => @allocation_tags_ids) and (@selected_offer or @selected_group)
+        .uc_item 
+          .support_material
+            = link_to(content_tag(:i, nil, :class=>'icon-archive big'), "#", :class=>'btn')
+            = link_to t(".support_material"), "#"
 
       / - if (can? lista_de_assignments, Assignment, :on => @allocation_tags_ids) and (@selected_offer or @selected_group)
       .uc_item
@@ -128,8 +128,8 @@
     });
 
     $('.support_material').click(function(){
-      //update_content_url('url_de_support_material_aqui');
-      alert('#{t(".in_development")}');
+      update_content_url('#{list_support_material_files_path}');
+      // alert('#{t(".in_development")}');
     });
 
     $('.assignment').click(function(){

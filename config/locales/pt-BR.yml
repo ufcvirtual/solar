@@ -672,6 +672,15 @@
     cant_remove_initial_file: 'Não é possível remover arquivo inicial, favor primeiro redefini-lo'
     define_initial_file_error: Um arquivo inicial deve ser definido.
 
+  support_material_files:
+    list:
+      name: "Nome"
+      date: "Data"
+      type: "Tipo"
+      link: "Link"
+      file: "Arquivo"
+
+
   #Listagem de Fóruns
   title: "Título"
   forum_table_title: "Fóruns disponíveis"
