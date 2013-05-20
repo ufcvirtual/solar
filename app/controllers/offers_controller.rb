@@ -226,12 +226,13 @@ class OffersController < ApplicationController
 
     begin
       authorize! :destroy, Offer, :on => [offer.allocation_tag.id] # verifica se tem acesso à oferta a ser excluída
+      allocation_tag_id = offer.allocation_tag.id.to_s
       raise "error" unless offer.destroy
-      @allocation_tags_ids.delete(offer.allocation_tag.id.to_s)
+      @allocation_tags_ids.delete(allocation_tag_id)
       flash[:notice] = t(:deleted_success, scope: :offers)
     rescue CanCan::AccessDenied
       flash[:alert] = t(:no_permission)
-    rescue 
+    rescue
       flash[:alert] = t(:not_possible_to_delete, scope: :offers)
     end
     redirect_to :action => :index, :allocation_tags_ids => @allocation_tags_ids
