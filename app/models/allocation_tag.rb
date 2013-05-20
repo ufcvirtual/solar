@@ -26,6 +26,8 @@ class AllocationTag < ActiveRecord::Base
     end
   }
 
+  before_destroy :verify_lesson_module
+
   def self.find_all_groups(allocations)
     query = <<SQL
          SELECT t2.id, t2.code, t3.semester
@@ -170,5 +172,10 @@ SQL
       end
     end
   end
+
+  def verify_lesson_module
+    self.lesson_modules.first.delete if((not self.lesson_modules.empty?) and self.lesson_modules.size == 1 and self.lesson_modules.first.lessons.empty?)
+  end
+
 
 end
