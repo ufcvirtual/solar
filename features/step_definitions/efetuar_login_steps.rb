@@ -69,7 +69,7 @@ Dado /^que estou logado no sistema com usuario user$/ do
   visit path_to("Login")
   fill_in("username", :with => "user")
   fill_in("password", :with => "123456")
-  click_button "user_submit"
+  click_button "submit-login"
   if page.respond_to? :should
     page.should have_content("Novidades")
   else
@@ -85,7 +85,7 @@ Dado /^que estou logado com o usuario "([^\"]*)" e com a senha "([^\"]*)"$/ do |
   visit path_to("Login")
   fill_in "login", :with => username
   fill_in "password", :with => password
-  click_button "user_submit"
+  click_button "submit-login"
 end
 
 
