@@ -3,16 +3,13 @@ class SupportMaterialFilesController < ApplicationController
   include FilesHelper
 
   layout false, :except => [:index]
-
   before_filter :prepare_for_group_selection, :only => [:index]
-
-  # load_and_authorize_resource except: :list
 
   def index
     authorize! :index, SupportMaterialFile
 
-    allocation_tag_ids = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
-    @list_files = SupportMaterialFile.find_files(allocation_tag_ids)
+    @allocation_tag_ids = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
+    @list_files = SupportMaterialFile.find_files(@allocation_tag_ids)
 
     @folders_list = {}
     @list_files.collect { |file|
@@ -23,25 +20,26 @@ class SupportMaterialFilesController < ApplicationController
 
   def new
     @allocation_tags_ids = params[:allocation_tags_ids].uniq
-    @support_material = SupportMaterialFile.new
-    @type = params[:type]
+    authorize! :create, SupportMaterialFile, on: @allocation_tags_ids
+
+    @support_material = SupportMaterialFile.new material_type: params[:material_type]
   end
 
-  # sempre mandar somente um allocation_tag
-  ## na listagem das allocations, cada grupo vai mandar apenas uma allocation_tag
   def create
-    allocation_tags_ids = params[:allocation_tags_ids].split(" ")
-    # authorize! :create, SupportMaterialFile, on: allocation_tags_ids
+    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    authorize! :create, SupportMaterialFile, on: @allocation_tags_ids
 
     begin
-      raise "mais de uma allocation_tag" if allocation_tags_ids.count > 1
+      raise "mais de uma allocation_tag" if @allocation_tags_ids.count > 1 # trabalha apenas para uma allocation tag
 
       @support_material = SupportMaterialFile.new(params[:support_material_file])
-      @support_material.allocation_tag_id = allocation_tags_ids.first.to_i
+      @support_material.material_type = params[:material_type]
+      @support_material.folder = (params[:material_type] == 'url') ? 'LINKS' : 'GERAL'
+      @support_material.allocation_tag_id = @allocation_tags_ids.first.to_i
       @support_material.attachment_updated_at = Time.now
       @support_material.save!
 
-      render :list
+      render nothing: true
     rescue
       render :new
     end
@@ -49,7 +47,7 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def destroy
-    # authorize! :destroy, SupportMaterialFile, on: params[:allocation_tags_ids].split(" ")
+    authorize! :destroy, SupportMaterialFile, on: params[:allocation_tags_ids].split(" ")
 
     begin
       SupportMaterialFile.transaction do
@@ -64,38 +62,24 @@ class SupportMaterialFilesController < ApplicationController
   def download
     authorize! :download, SupportMaterialFile
 
-    curriculum_unit_id = active_tab[:url]['id']
-    file = SupportMaterialFile.find(params[:id])
-    download_file({:action => :index, :id => curriculum_unit_id}, file.attachment.path, file.attachment_file_name)
-  end
+    if params.include?(:type)
+      allocation_tag_ids = params[:allocation_tag_id].split(',').map(&:to_i)
+      redirect_error = support_material_files_path
 
-  def download_all_file_ziped
-    authorize! :download_all_file_ziped, SupportMaterialFile
+      all_files = case params[:type]
+      when 'all'
+        SupportMaterialFile.find_files(allocation_tag_ids)
+      when 'url'
+        SupportMaterialFile.find_files(allocation_tag_ids, params[:folder])
+      end
 
-    allocation_tag_ids = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
-    curriculum_unit_id = active_tab[:url]["id"]
-    redirect_error = {:action => :list, :id => curriculum_unit_id}
+      path_zip = compress({ files: all_files, table_column_name: 'attachment_file_name', name_zip_file: t(:support_folder_name) })
+      download_file(redirect_error, path_zip)
+    else
+      file = SupportMaterialFile.find(params[:id])
+      download_file(support_material_files_path, file.attachment.path, file.attachment_file_name)
+    end
 
-    # Recupearndo todos os arquivos e separando por folder
-    all_files = SupportMaterialFile.find_files(allocation_tag_ids)
-    path_zip = compress({ files: all_files, table_column_name: 'attachment_file_name', name_zip_file: t(:support_folder_name) })
-
-    # download do zip
-    download_file(redirect_error, path_zip)
-  end
-
-  def download_folder_file_ziped
-    authorize! :download_folder_file_ziped, SupportMaterialFile
-
-    allocation_tag_ids = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
-    curriculum_unit_id = active_tab[:url]["id"]
-    redirect_error = {:action => :list, :id => curriculum_unit_id}
-    
-    all_files = SupportMaterialFile.find_files(allocation_tag_ids, params[:folder])
-    path_zip = compress({ files: all_files, table_column_name: 'attachment_file_name', name_zip_file: t(:support_folder_name) })
-
-    # download do zip
-    download_file(redirect_error, path_zip)
   end
 
   def list

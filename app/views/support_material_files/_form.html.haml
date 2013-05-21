@@ -1,21 +1,26 @@
-= simple_form_for @support_material, html: {id: 'support_material_form', multipart: true} do |f|
+.new_support_material_form
+  = simple_form_for @support_material, html: {id: 'support_material_form', multipart: true} do |f|
 
-  .form-inputs.block_content
-    = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+    .form-inputs.block_content
+      = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+      = hidden_field_tag :material_type, @support_material.material_type
 
-    - if @type == 'url'
-      = f.input :url, as: :string, required: true
-    - else
-      = f.input :attachment, as: :file, required: true
+      - if @support_material.material_type == Material_Type_Link
+        = f.input :url, as: :string, required: true
+      - else
+        = f.file_field :attachment, as: :file, required: true
 
-  .right_buttons
-    = button_tag t(:save), :class => "btn btn_main", :type => "button", :id => "save"
-    = button_tag t(:cancel), :class => "btn btn_default", :type => "button", onclick: "removeLightBox();"
-  
+    .right_buttons
+      = button_tag t(:save), :class => "btn btn_main", :type => "button", :id => "save"
+      = button_tag t(:cancel), :class => "btn btn_default", :type => "button", onclick: "javascript:removeLightBox();"
+    
 :javascript
 
   $(function(){
     $('#save').click(function(){
-      submit_form('support_material_form', 'support_material_form', '#{list_support_material_files_path(allocation_tags_ids: @allocation_tags_ids)}');
+      $('#support_material_form:last').serialize_and_submit_form({
+        div_error: 'new_support_material_form',
+        redirect_url: '#{list_support_material_files_path(allocation_tags_ids: @allocation_tags_ids)}',
+      });
     });
   });

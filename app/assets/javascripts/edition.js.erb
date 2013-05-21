@@ -1,3 +1,35 @@
+/**
+ * Post de forms com envio de arquivos
+ */
+$.fn.serialize_and_submit_form = function(options) {
+  var f_success = {};
+  if (typeof(options.success) == "undefined") {
+    f_success = function(data) {
+      if (data.search(".field_with_errors") != -1) {
+        $("." + options.div_error).html(data);
+      } else {
+        update_content_url(options.redirect_url);
+        removeLightBox();
+        flash_message('<%= I18n.t(:saved, :scope => [:editions, :success]) %>', 'notice');
+      }
+    };
+  } else {
+    f_success = options.success
+  }
+
+  jQuery.ajax({
+    type: 'POST',
+    url: $(this).attr('action'),
+    data: (new FormData($(this)[0])),
+    cache: false,
+    contentType: false,
+    processData: false,
+    success: f_success
+  });
+
+  return this;
+}
+
 /* chama página informada passando as allocation_tags do filtro */
 function call_page(url){ 
 
@@ -32,10 +64,9 @@ function update_content_url(url){
   haja falha - utilizado para formulários de lightboxes, esta classe é da div que engloba o formulário, redirect_url = url para a qual o 
   conteúdo será atualizado em caso de sucesso, div_to_update = informação de qual div é para atualizar caso não esteja "incluso" na página
   de edição) */
-function submit_form(form_id, class_to_update_fail, redirect_url, div_to_update, dataType){
+function submit_form(form_id, class_to_update_fail, redirect_url, div_to_update){
   $.ajax({
     type: "POST",
-    dataType: dataType,
     url: $("#"+form_id).attr("action"),
     data: $("#"+form_id).serialize(),
     success: function(data) {

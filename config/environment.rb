@@ -23,6 +23,10 @@ Allocation_Rejected           = 4 # quando pedido de matricula eh rejeitado
 Lesson_Test      = 0 # aula em teste
 Lesson_Approved  = 1 # aula aprovada
 
+# constantes para tipo de arquivo
+Material_Type_File = 0
+Material_Type_Link = 1
+
 # constantes de tipo de aula
 Lesson_Type_File = 0 # aula com envio de arquivo
 Lesson_Type_Link = 1 # aula por link

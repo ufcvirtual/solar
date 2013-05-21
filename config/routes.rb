@@ -187,28 +187,15 @@ Solar::Application.routes.draw do
     get :download, on: :member
     collection do
       get :list
-      get :download_all_file_ziped
-      get :download_folder_file_ziped
-      # get :select_action_link
-      # get :select_action_file
-      # get :folder_verify
-      # get :delete_folder
+      get "at/:allocation_tag_id/download", to: :download, type: :all, as: :download_all
+      get "at/:allocation_tag_id/folder/:folder/download", to: :download, type: :folder, as: :download_folder
+      # get :download_all_file_ziped
+      # get :download_folder_file_ziped
     end
   end
 
-  # get "support_material_files/list_edition", to: "support_material_files#list_edition"
-  # get "support_material_files/list", to: "support_material_files#list"
-  # get "support_material_files/download", to: "support_material_files#download"
-  # get "support_material_files/download_all_file_ziped", to: "support_material_files#download_all_file_ziped"
-  # get "support_material_files/download_folder_file_ziped", to: "support_material_files#download_folder_file_ziped"
-  # get "support_material_files/select_action_link", to: "support_material_files#select_action_link"
-  # get "support_material_files/select_action_file", to: "support_material_files#select_action_file"
-  # get "support_material_files/folder_verify", to: "support_material_files#folder_verify"
-  # get "support_material_files/delete_folder", to: "support_material_files#delete_folder"
-
   get "bibliography/list", to: "bibliography#list"
 
-  ## aulas mapeando arquivos estaticos em aula
   get "/media/lessons/:id/:file.:extension", to: "access_control#lesson", index: true
   get "/media/lessons/:id/:folder/*path", to: "access_control#lesson", index: false
 

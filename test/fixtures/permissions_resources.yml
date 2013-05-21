@@ -185,15 +185,15 @@ ma8:
   resource_id: 66
   per_id: false
 
-ma9:
-  profile_id: 1
-  resource_id: 67
-  per_id: false
+# ma9:
+#   profile_id: 1
+#   resource_id: 67
+#   per_id: false
 
-ma10:
-  profile_id: 1
-  resource_id: 68
-  per_id: false
+# ma10:
+#   profile_id: 1
+#   resource_id: 68
+#   per_id: false
 
 ma11:
   profile_id: 1
@@ -436,15 +436,15 @@ maed4:
   resource_id: 66
   per_id: false
 
-maed5:
-  profile_id: 2
-  resource_id: 67
-  per_id: false
+# maed5:
+#   profile_id: 2
+#   resource_id: 67
+#   per_id: false
 
-maed6:
-  profile_id: 2
-  resource_id: 68
-  per_id: false
+# maed6:
+#   profile_id: 2
+#   resource_id: 68
+#   per_id: false
 
 # # trabalho de grupo
 
@@ -709,15 +709,15 @@ mapedi4:
   resource_id: 66
   per_id: false
 
-mapedi5:
-  profile_id: 3
-  resource_id: 67
-  per_id: false
+# mapedi5:
+#   profile_id: 3
+#   resource_id: 67
+#   per_id: false
 
-mapedi6:
-  profile_id: 3
-  resource_id: 68
-  per_id: false
+# mapedi6:
+#   profile_id: 3
+#   resource_id: 68
+#   per_id: false
 
 ##############################
 # TUTOR PRESENCIAL           #
@@ -798,15 +798,15 @@ mapedit8:
   resource_id: 66
   per_id: true
 
-mapedit9:
-  profile_id: 5
-  resource_id: 67
-  per_id: true
+# mapedit9:
+#   profile_id: 5
+#   resource_id: 67
+#   per_id: true
 
-mapedit10:
-  profile_id: 5
-  resource_id: 68
-  per_id: true
+# mapedit10:
+#   profile_id: 5
+#   resource_id: 68
+#   per_id: true
 
 # edicao de matricula
 
@@ -1113,15 +1113,15 @@ pbsc16:
   resource_id: 66
   per_id: false
 
-pbsc17:
-  profile_id: 12
-  resource_id: 67
-  per_id: false
+# pbsc17:
+#   profile_id: 12
+#   resource_id: 67
+#   per_id: false
 
-pbsc18:
-  profile_id: 12
-  resource_id: 68
-  per_id: false
+# pbsc18:
+#   profile_id: 12
+#   resource_id: 68
+#   per_id: false
 
 ########################
 #### Aluno  Monitor ####

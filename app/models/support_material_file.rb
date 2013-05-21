@@ -7,6 +7,9 @@ class SupportMaterialFile < ActiveRecord::Base
   validates_attachment_size :attachment, :less_than => 5.megabyte, :message => " "
   validates_attachment_content_type_in_black_list :attachment
 
+  validates :url, format: URI::regexp(%w(http https)), if: "material_type == #{Material_Type_Link}"
+  validates :attachment, presence: true, if: "material_type == #{Material_Type_File}"
+
   has_attached_file :attachment,
     :path => ":rails_root/media/support_material_files/:id_:basename.:extension",
     :url => "/media/support_material_files/:id_:basename.:extension"
@@ -17,14 +20,14 @@ class SupportMaterialFile < ActiveRecord::Base
     return attachment_file_name
   end
 
-  def type
-    return "" if url.nil? and attachment_file_name.nil?
-    return "link" unless url.nil?
-    return "file"
-  end
+  # def type
+  #   return "" if url.nil? and attachment_file_name.nil?
+  #   return "link" unless url.nil?
+  #   return "file"
+  # end
 
   def is_link?
-    return not(url.nil?)
+    (material_type == Material_Type_Link)
   end
 
   ##
