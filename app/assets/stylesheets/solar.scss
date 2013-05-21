@@ -3589,16 +3589,17 @@ select[disabled] {
         margin-bottom: 0px;
         padding-bottom: 7px;
     }
-    ul{
-        list-style-type: disc;  
-    }
+    ul{ list-style-type: disc; }
     a{
         text-decoration: underline;
         color: #204783;
     }
     ol{ list-style-type: decimal; }
     li{ margin-left: 20px; }
-    h1, h2, h3, h4, h5, h6{ font-family: arial, sans serif; }
+    h1, h2, h3, h4, h5, h6{ 
+        font-family: arial, sans serif; 
+        font-weight: lighter;
+    }
     h1{ font-size: 25px; }
     h2{ font-size: 20px; }
     h3{ font-size: 15px; }
@@ -3606,6 +3607,7 @@ select[disabled] {
     h5{ font-size: 11px; }
     h6{ font-size: 8px; }
     address{ font-style: italic; }
+    .marker{ background-color: yellow; }
 }
 
 .forum_post_inner_content{
