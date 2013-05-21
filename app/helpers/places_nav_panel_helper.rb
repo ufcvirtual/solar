@@ -66,7 +66,6 @@ module PlacesNavPanelHelper
 		function places_nav_panel_redirect(url){
 
 			var allocation_tags_ids = navPanelSelectedItems();
-			console.log(allocation_tags_ids);
 
 			$('<input type="hidden" id="allocation_tags_ids" name="allocation_tags_ids" value="'+allocation_tags_ids+'"/>').appendTo($('.placesNavPanel'));
 

@@ -154,6 +154,7 @@ class OffersController < ApplicationController
     begin
       authorize! :create, Offer, :on => @allocation_tags_ids
       raise "erro" unless @offer.valid? # utilizado para validar os campos preenchidos e exibir erros quando necessário
+      raise "schedule" unless (params[:enroll_end].nil? or @offer.end_date >= params[:enroll_end].to_date)
 
       params[:enroll_end] = nil unless params[:define_enroll_end]
       schedule    = Schedule.create!(start_date: params[:enroll_start], end_date: params[:enroll_end])
@@ -183,8 +184,8 @@ class OffersController < ApplicationController
       @offers = @allocation_tags_ids.collect{|al| AllocationTag.find(al).offer}
       respond_to do |format|
         @date_range_error = @offer.errors.full_messages.last unless @offer.errors[:start_date].blank? and @offer.errors[:end_date].blank?
+        @schedule_error   = t(:schedule_error, :scope => [:offers]) if error.message == "schedule"
         @offer.errors.add(:semester, I18n.t(:existing_semester, :scope => [:offers])) if error.message == t(:semester, :scope => [:offers, :index]) + " " + t(:existing_semester, :scope => [:offers])
-        @offer.course_id, @offer.curriculum_unit_id = nil, nil # para exibir na tela os mesmos valores anteriores ao erro
         format.html { render :new, :status => 200 }
       end
     end
@@ -199,6 +200,8 @@ class OffersController < ApplicationController
       authorize! :update, Offer, :on => [@offer.allocation_tag.id] # verifica se tem acesso à oferta a ser editada
 
       params[:enroll_end] = nil unless params[:define_enroll_end]
+      raise "schedule" unless (params[:enroll_end].nil? or @offer.end_date >= params[:enroll_end].to_date)
+
       schedule = Schedule.create!(start_date: params[:enroll_start], end_date: params[:enroll_end])
 
       @offer.update_attributes!(params[:offer])
@@ -214,6 +217,7 @@ class OffersController < ApplicationController
       @offers = @allocation_tags_ids.collect{|al| AllocationTag.find(al).offer}
       respond_to do |format|
         @date_range_error = @offer.errors.full_messages.last unless @offer.errors[:start_date].blank? and @offer.errors[:end_date].blank?
+        @schedule_error   = t(:schedule_error, :scope => [:offers]) if error.message == "schedule"
         format.html { render :edit, :status => 200 }
       end
 

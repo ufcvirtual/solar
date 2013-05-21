@@ -35,20 +35,22 @@
 
       .string
         = f.label t(".enroll_period")
+      - error_class_schedule = "field_with_errors" unless @schedule_error.blank?
       .string.required
         = f.label t(".start_date")+"*"
 
         - enroll_start = @offer.schedule.nil? ? Date.today : @offer.schedule.start_date.to_date
         = text_field_tag :enroll_start, "", :value => (l(enroll_start, :format => :default)), :id => "dt_enroll_start", :size => 10
 
-        %span.enroll_end{:style=>"margin-right: 30px;"}
+        %span.enroll_end{:class => error_class_schedule}
           = t(".to")
           - enroll_end = l((@offer.schedule.nil? or @offer.schedule.end_date.nil?) ? Date.today + 3.month : @offer.schedule.end_date.to_date, :format => :default)
           = text_field_tag :enroll_end, "", :value => (enroll_end), :id => "dt_enroll_end", :size => 10
+          %span{:class => "error"}= @schedule_error
 
       .select_end_date.string
         = f.label " "
-        = check_box_tag :define_enroll_end, true, !(@offer.schedule.nil? or @offer.schedule.end_date.nil?), :id => "final_enroll_date"
+        = check_box_tag :define_enroll_end, true, (!(@offer.schedule.nil? or @offer.schedule.end_date.nil?) or !@schedule_error.blank?), :id => "final_enroll_date"
         = t(".enable_end_date")
 
   .block_content.form-actions{:style => "padding-top: 10px;"}

@@ -43,6 +43,7 @@ class Offer < ActiveRecord::Base
   def start_must_be_previous_than_end
     unless start_date.nil? or end_date.nil?
       errors.add(:start_date, I18n.t(:range_date_error, :scope => [:offers])) if (start_date > end_date)
+      # errors.add(:schedule_id, "oioi") if (schedule.end_date > end_date)
     end
   end
 

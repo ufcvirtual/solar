@@ -1110,7 +1110,7 @@
       course: Course
       curriculum_unit: Curriculum Unit
       date_range: Date range
-      enrollment_period: Enrollment Period
+      enrollment_period: Enrollment date range
       semester: Semester
       options: Options
       no_groups: There are no groups
@@ -1133,6 +1133,7 @@
     existing_semester: already exists
     range_date_error: must be smaller than end
     deleted_success: Offer deleted successfully
+    schedule_error: must be smaller than end of date range
 
 #Facebook
 

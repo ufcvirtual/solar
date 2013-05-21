@@ -6,10 +6,12 @@ jQuery(document).ready(function() {
 
 jQuery(function($) {
 
-  if($("input:checkbox").attr("checked") == "checked")
+  if($("input:checkbox").attr("checked") == "checked" )
     $(".enroll_end").show();
-  else
+  else{
     $(".enroll_end").hide();
+    $(".error").hide();
+  }
 
   /* Usado no formulário */
 
