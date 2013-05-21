@@ -6,9 +6,9 @@ class Enrollment < ActiveRecord::Base
     query_text     = " and lower(cr.name) ~ lower('#{curriculum_unit_name}')" unless curriculum_unit_name.nil? or curriculum_unit_name.empty?
 
     query_enroll =
-      " SELECT DISTINCT of.id, cr.name as name, t.id AS categoryid, t.description AS categorydesc,
+      " SELECT DISTINCT of.id, of.schedule_id, cr.name as name, t.id AS categoryid, t.description AS categorydesc,
                t.allows_enrollment, al.status AS status, al.id AS allocationid,
-               g.code, s.start_date, s.end_date, atg.id AS allocationtagid,
+               g.code, atg.id AS allocationtagid,
                g.id AS groupsid, t.icon_name, of.semester
           FROM allocations al
           JOIN allocation_tags atg      ON atg.id = al.allocation_tag_id
@@ -44,8 +44,6 @@ class Enrollment < ActiveRecord::Base
                  al.status     AS status,
                  al.id         AS allocationid,
                  g.code,
-                 s.start_date,
-                 s.end_date,
                  atg.id        AS allocationtagid,
                  g.id          AS groupsid, 
                  t.icon_name
@@ -73,8 +71,6 @@ class Enrollment < ActiveRecord::Base
                  null::integer AS status,
                  null::integer AS allocationid,
                  g.code,
-                 s.start_date,
-                 s.end_date,
                  atg.id        AS allocationtagid,
                  g.id          AS groupsid,
                  t.icon_name
