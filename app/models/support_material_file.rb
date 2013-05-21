@@ -1,18 +1,21 @@
 class SupportMaterialFile < ActiveRecord::Base
-
   has_one :allocation_tag
 
-  # validates :attachment_file_name, :presence => true
   validates :allocation_tag_id, presence: true
-  validates_attachment_size :attachment, :less_than => 5.megabyte, :message => " "
-  validates_attachment_content_type_in_black_list :attachment
-
-  validates :url, format: URI::regexp(%w(http https)), if: "material_type == #{Material_Type_Link}"
-  validates :attachment, presence: true, if: "material_type == #{Material_Type_File}"
+  validates :attachment, presence: true, unless: :is_link?
+  before_save :set_and_validate_url, if: :is_link?
 
   has_attached_file :attachment,
     :path => ":rails_root/media/support_material_files/:id_:basename.:extension",
     :url => "/media/support_material_files/:id_:basename.:extension"
+
+  validates_attachment_size :attachment, :less_than => 5.megabyte, :message => " "
+  validates_attachment_content_type_in_black_list :attachment
+
+  def set_and_validate_url
+    is_valid = URI.parse(url).kind_of?(URI::HTTP) rescue false # valida http e https
+    self.url = "http://#{url}" unless is_valid
+  end
 
   def name
     return "" if url.nil? and attachment_file_name.nil?
@@ -20,19 +23,10 @@ class SupportMaterialFile < ActiveRecord::Base
     return attachment_file_name
   end
 
-  # def type
-  #   return "" if url.nil? and attachment_file_name.nil?
-  #   return "link" unless url.nil?
-  #   return "file"
-  # end
-
   def is_link?
     (material_type == Material_Type_Link)
   end
 
-  ##
-  # Recupera arquivos
-  ##
   def self.find_files(allocation_tag_ids, folder_name = nil)
     in_folder = " AND sm.folder = '#{folder_name}' " unless folder_name.nil?
 
@@ -44,6 +38,5 @@ class SupportMaterialFile < ActiveRecord::Base
 SQL
 
     SupportMaterialFile.find_by_sql(query);
-
   end
 end

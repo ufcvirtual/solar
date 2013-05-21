@@ -6,7 +6,7 @@ class AllocationTag < ActiveRecord::Base
   belongs_to :group
 
   has_many :offers, :through => :curriculum_unit
-
+  has_many :support_material_files
   has_many :allocations
   has_many :lesson_modules
   has_many :lessons, :through => :lesson_modules

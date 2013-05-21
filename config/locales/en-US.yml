@@ -514,6 +514,17 @@
     cant_remove_initial_file: "It's not possible to remove the initial file, please first redefine it"
     define_initial_file_error: A initial file must be define.
 
+  support_material_files:
+    list:
+      name: "Name"
+      date: "Date"
+      type: "Type"
+      link: "Link"
+      file: "File"
+      new_link: "New Link"
+      new_link: "Edit Link"
+      new_file: "New File"
+
   #Foruns
   title: "Title"
   forum_title: "Discussions"

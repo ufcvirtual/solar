@@ -679,7 +679,9 @@
       type: "Tipo"
       link: "Link"
       file: "Arquivo"
-
+      new_link: "Novo Link"
+      edit_link: "Editar Link"
+      new_file: "Novo Arquivo"
 
   #Listagem de Fóruns
   title: "Título"
