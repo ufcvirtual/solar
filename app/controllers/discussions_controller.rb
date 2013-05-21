@@ -38,9 +38,8 @@ class DiscussionsController < ApplicationController
       Discussion.transaction do
         @allocation_tags_ids.each do |allocation_tag_id|
           @schedule = Schedule.new(start_date: params[:start_date], end_date: params[:end_date])
+          @discussion = Discussion.new(params[:discussion]) #Setar a discussion antes de salvar schedule, caso aconteça erro, não perder as informações.
           @schedule.save!
-
-          @discussion = Discussion.new(params[:discussion])
 
           @discussion.allocation_tag_id = allocation_tag_id
           @discussion.schedule = @schedule
@@ -78,12 +77,19 @@ class DiscussionsController < ApplicationController
 
   def update
     @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
-    authorize! :update, Discussion, :on => @allocation_tags_ids
-
+    authorize! :update, Discussion, :on => @allocation_tags_ids  
+      
     @discussion = Discussion.find(params[:id])
     @schedule = Schedule.find(@discussion.schedule_id)
+    
     begin
       Discussion.transaction do
+        # Setando valores digitados de discussion e schedule pelo usuário para que não sejam perdidos, caso haja alguma exceção
+        @discussion.name = params[:discussion][:name]
+        @discussion.description = params[:discussion][:description]
+        @schedule.start_date = params[:start_date]
+        @schedule.end_date = params[:end_date] 
+
         @schedule.update_attributes!(start_date: params[:start_date], end_date: params[:end_date])
         @discussion.update_attributes!(params[:discussion])
       end
