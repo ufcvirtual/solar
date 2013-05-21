@@ -3610,6 +3610,6 @@ select[disabled] {
     .marker{ background-color: yellow; }
 }
 
-.forum_post_inner_content{
+.forum_post_inner_content, .message_div_show{
     @include ckeditor_content;
 }
