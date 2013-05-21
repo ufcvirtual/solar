@@ -45,3 +45,9 @@ g8:
   offer_id: 6
   code: 'IL-CAU'
   status: TRUE
+
+g9:
+  id: 9
+  offer_id: 3
+  code: 'TL-FOR'
+  status: TRUE

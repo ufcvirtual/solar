@@ -18,7 +18,7 @@ of2:
   schedule_id: 30
 
 of3:
-  id: 3
+  id: 3 # possui módulo default e depêndencias
   curriculum_unit_id: 3
   course_id: 2
   semester: '2011.1'
@@ -45,7 +45,7 @@ of5:
   schedule_id: 25 # período de matrícula já passou
 
 of6:
-  id: 6
+  id: 6 
   curriculum_unit_id: 1
   course_id: 1
   semester: '2012.1'
@@ -53,7 +53,7 @@ of6:
   end_date: '2011-12-01'
   schedule_id: 26 # período de matrícula ainda não chegou
 
-of7:
+of7: # não possui dependências, apenas módulo default
   id: 7
   curriculum_unit_id: 3
   course_id: 2

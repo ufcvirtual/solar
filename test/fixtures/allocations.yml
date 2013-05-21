@@ -397,3 +397,9 @@ editor_al19:
   profile_id: 5
   status: 1
 
+editor_al22:
+  id: 55
+  user_id: 14
+  allocation_tag_id: 22
+  profile_id: 5
+  status: 1
