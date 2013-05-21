@@ -22,8 +22,20 @@ module4:
   name: Modulo Geral da Turma
   is_default: true
 
-module5:
+module5: # contém aulas
   id: 5
   allocation_tag_id: 6
   name: Modulo Geral
   is_default: true  
+
+module6: # não contém aulas
+  id: 6
+  allocation_tag_id: 21
+  name: Modulo Geral
+  is_default: true    
+
+module7: # não contém aulas
+  id: 7
+  allocation_tag_id: 22
+  name: Modulo Geral da Turma
+  is_default: true    

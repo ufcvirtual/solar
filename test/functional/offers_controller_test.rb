@@ -123,9 +123,9 @@ class OffersControllerTest < ActionController::TestCase
   # Destroy
   ##
 
-  # Usuário com permissão e acesso
+  # Usuário com permissão e acesso (remove seu respectivo módulo default, pois não possui aulas)
   test "remover oferta" do 
-    assert_difference("Offer.count", -1) do 
+    assert_difference(["Offer.count", "LessonModule.count"], -1) do 
       get(:destroy, {:id => offers(:of7).id, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]})
     end
 
@@ -133,7 +133,7 @@ class OffersControllerTest < ActionController::TestCase
     assert_equal flash[:notice], I18n.t(:deleted_success, scope: :offers)
   end
 
-  # Usuário com permissão e acesso, mas a oferta não permite
+  # Usuário com permissão e acesso, mas a oferta não permite (possui níveis inferiores)
   test "nao remove oferta - niveis inferiores" do
     assert_no_difference("Offer.count") do 
       get :destroy, {:id => offers(:of3).id, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]}

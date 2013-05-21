@@ -101,3 +101,7 @@ al20:
 al21:
   id: 21
   offer_id: 7
+
+al22:
+  id: 22
+  group_id: 9
