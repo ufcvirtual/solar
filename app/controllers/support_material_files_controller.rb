@@ -30,7 +30,7 @@ class SupportMaterialFilesController < ApplicationController
     begin
       @support_material = SupportMaterialFile.new(params[:support_material_file])
       @support_material.material_type = params[:material_type]
-      @support_material.folder = (params[:material_type] == 'url') ? 'LINKS' : 'GERAL'
+      @support_material.folder = (params[:material_type].to_i == Material_Type_Link) ? 'LINKS' : 'GERAL'
       @support_material.allocation_tag_id = @allocation_tags_ids.first.to_i  # o material é cadastrado apenas para uma allocation_tag
       @support_material.attachment_updated_at = Time.now
       @support_material.save!
@@ -74,16 +74,16 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def download
-    authorize! :download, SupportMaterialFile
+    authorize! :download, SupportMaterialFile, on: params[:allocation_tag_id].split(",").uniq
 
     if params.include?(:type)
       allocation_tag_ids = params[:allocation_tag_id].split(',').map(&:to_i)
       redirect_error = support_material_files_path
 
       all_files = case params[:type]
-      when 'all'
+      when :all
         SupportMaterialFile.find_files(allocation_tag_ids)
-      when 'url'
+      when :folder
         SupportMaterialFile.find_files(allocation_tag_ids, params[:folder])
       end
 

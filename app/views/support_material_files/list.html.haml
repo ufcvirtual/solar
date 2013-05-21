@@ -54,7 +54,10 @@
                         %span= link_to material.name, material.name, target: '_blank'
                       - else
                         %span= image_tag(icon_attachment(material.name))
-                        %span= link_to material.name, download_support_material_file_path(id: material.id, file_allocation_tag_id: material.allocation_tag_id), target: '_blank'
+                        - if can? :download, SupportMaterialFile, on: [material.allocation_tag_id]
+                          %span= link_to material.name, download_support_material_file_path(id: material.id, allocation_tag_id: material.allocation_tag_id)
+                        - else
+                          %span= material.name
                   %td{style: 'text-align:center;'}
                     %div= l(material.attachment_updated_at, format: :normal)
                   %td{style: 'text-align:center;'}

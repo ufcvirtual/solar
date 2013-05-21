@@ -74,6 +74,7 @@ url1:
   attachment_updated_at: 2011-10-27 09:40:03.524322
   folder: LINKS
   url: "http://www.google.com"
+  material_type: 1
 
 url2:
   id: 9
@@ -84,6 +85,7 @@ url2:
   attachment_updated_at: 2011-10-27 09:45:03.524322
   folder: LINKS
   url: "http://www.globo.com"
+  material_type: 1
 
 url3:
   id: 10
@@ -94,6 +96,7 @@ url3:
   attachment_updated_at: 2011-10-27 09:50:03.524322
   folder: LINKS
   url: "http://www.baixaki.com.br"
+  material_type: 1
 
 url4:
   id: 11
@@ -104,3 +107,4 @@ url4:
   attachment_updated_at: 2011-10-27 09:55:03.524322
   folder: LINKS
   url: "http://www.prograd.ufc.br"
+  material_type: 1
