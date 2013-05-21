@@ -5,7 +5,7 @@ class Lesson < ActiveRecord::Base
 
   has_one :allocation_tag, through: :lesson_module
 
-  before_save :url_protocol
+  before_save :url_protocol, :if => :is_link?
 
   after_create :create_or_update_folder
   after_update :create_or_update_folder
