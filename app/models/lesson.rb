@@ -5,16 +5,18 @@ class Lesson < ActiveRecord::Base
 
   has_one :allocation_tag, through: :lesson_module
 
+  before_save :url_protocol
+
   after_create :create_or_update_folder
   after_update :create_or_update_folder
 
   before_destroy :can_destroy?
   after_destroy :delete_schedule, :delete_files
 
-  validates :name, :type_lesson, presence: true #:address
+  validates :name, :type_lesson, presence: true
+  validates :address, presence: true, :if => :is_link?
   validate :initial_file_setted
 
-  validates_format_of :address, :with => /^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/ix, :message => I18n.t("lessons.errors.invalid_link"), :if => :is_link?
   
   FILES_PATH = Rails.root.join('media', 'lessons') # path dos arquivos de aula
 
@@ -35,6 +37,10 @@ class Lesson < ActiveRecord::Base
   def is_link?
     type_lesson == Lesson_Type_Link
   end
+
+  def url_protocol
+      self.address = 'http://' + self.address if (self.address =~ URI::regexp(["ftp", "http", "https"])).nil? 
+  end  
 
   def path(full = false, with_address = true)
     if type_lesson == Lesson_Type_File
