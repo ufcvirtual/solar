@@ -82,7 +82,7 @@ class Enrollment < ActiveRecord::Base
       INNER JOIN groups g                ON g.offer_id = of.id
       INNER JOIN allocation_tags atg     ON atg.group_id = g.id
             WHERE s.start_date <= current_date
-              AND ( s.end_date IS NULL OR s.end_date >= current_date )
+              AND ( (s.end_date IS NULL AND of.end_date >= current_date) OR (s.end_date IS NOT NULL AND s.end_date >= current_date) )
               AND t.allows_enrollment = TRUE
               AND NOT EXISTS
                 (
