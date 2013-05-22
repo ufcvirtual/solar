@@ -105,3 +105,11 @@ al21:
 al22:
   id: 22
   group_id: 9
+
+al23:
+  id: 23
+  offer_id: 8
+
+al24:
+  id: 24
+  group_id: 10

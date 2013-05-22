@@ -20,6 +20,8 @@ class Offer < ActiveRecord::Base
 
   # modulo default da oferta
   after_create :set_default_lesson_module
+  before_destroy :find_schedule
+  after_destroy :destroy_schedule
 
   def has_any_lower_association?
     self.groups.count > 0
@@ -61,6 +63,16 @@ class Offer < ActiveRecord::Base
 
   def set_default_lesson_module
     create_default_lesson_module(I18n.t(:general_of_offer, scope: :lesson_modules))
+  end
+
+  def find_schedule
+    @schedule = self.schedule
+  end
+
+  def destroy_schedule
+    if (@schedule.discussions.empty? and @schedule.lessons.empty? and @schedule.schedule_events.empty? and @schedule.assignments.empty? and @schedule.offers.empty?)
+      @schedule.destroy
+    end
   end
 
 end

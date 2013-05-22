@@ -30,6 +30,8 @@ Cenário: Listar cursos matriculados ou disponíveis
   E eu nao deverei visualizar a linha de opcao de matricula
     | UnidadeCurricular             | Categoria                           | Turma   | Matricula   |
     | Semipresencial sm nvista      | Curso de Pos-Graduacao a Distancia  | SP-FOR  | Matricular  |
+    | Teoria da Literatura I        | Curso de Graduacao Presencial       | SP-CAU  | Matricular  |
+    # A última linha a não ser apresentada faz referência à uma oferta cujo período de matrícula tem fim indefinido e data final da oferta anterior ao dia atual
 
 Cenário: Pedir cancelamento de matricula
   Dado que estou logado com o usuario "user" e com a senha "123456"
@@ -62,5 +64,7 @@ Cenário: Cancelar pedido de matricula
     | Introducao a Linguistica      | Curso Livre                         | IL-FOR  | Cancelar        |
     | Quimica I                     | Curso de Graduacao a Distancia      | QM-CAU  | Matriculado     |
     | Teoria da Literatura I        | Curso de Graduacao Presencial       | TL-CAU  | Matricular      |
+  E eu nao deverei ver a linha de opcao de matricula
+    | Literatura Brasileira I       | Curso de Pos-Graduacao Presencial   | LB-CAR  | Matricular      |
     # Após a última ação, usuário não vê mais Literatura Brasileira I pois o período de matrícula expirou. 
     # Ela só era exibida antes, pois o usuário tinha "vínculo" com ela. Como ele "quebrou" o vínculo (cancelou pedido), não há motivo para ela ficar visível.

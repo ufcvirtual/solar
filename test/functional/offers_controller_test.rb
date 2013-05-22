@@ -50,10 +50,18 @@ class OffersControllerTest < ActionController::TestCase
     get :index, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]
     get :new, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]
     assert_template :new
-    assert_difference("Offer.count", +1) do 
+    assert_difference(["Offer.count", "Schedule.count"], +1) do 
       post :create, {:offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :enroll_start => "2012-12-01", allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id] }
     end
     assert_response :redirect
+  end
+
+  # Data final do período de matrícula é maior que o final da oferta
+  test "nao criar ofertas - periodo de matricula invalido" do
+    assert_no_difference(["Offer.count", "Schedule.count"]) do 
+      post :create, {:offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :enroll_end => "2013-12-01", allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id] }
+    end
+    assert_template :new
   end
 
   # Usuário com permissão e sem acesso
@@ -61,7 +69,7 @@ class OffersControllerTest < ActionController::TestCase
     get :new, allocation_tags_ids: [allocation_tags(:al5).id]
     assert_response :redirect
 
-    assert_no_difference("Offer.count") do 
+    assert_no_difference(["Offer.count", "Schedule.count"]) do 
       post :create, {:offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :enroll_start => "2012-12-01", allocation_tags_ids: [allocation_tags(:al5).id] }
     end
     assert_response :error
@@ -75,7 +83,7 @@ class OffersControllerTest < ActionController::TestCase
     get :new, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]
     assert_response :redirect
     
-    assert_no_difference("Offer.count") do 
+    assert_no_difference(["Offer.count", "Schedule.count"]) do 
       post :create, {:offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :enroll_start => "2012-12-01", allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id] }
     end
     assert_response :error
@@ -125,7 +133,8 @@ class OffersControllerTest < ActionController::TestCase
 
   # Usuário com permissão e acesso (remove seu respectivo módulo default, pois não possui aulas)
   test "remover oferta" do 
-    assert_difference(["Offer.count", "LessonModule.count"], -1) do 
+    # neste caso, o schedule (33) da oferta é utilizado apenas nela. Se ele fosse usado em outros itens de teste, ele não deveria ser excluído, falhando o teste.
+    assert_difference(["Offer.count", "LessonModule.count", "Schedule.count"], -1) do 
       get(:destroy, {:id => offers(:of7).id, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]})
     end
 
@@ -135,7 +144,7 @@ class OffersControllerTest < ActionController::TestCase
 
   # Usuário com permissão e acesso, mas a oferta não permite (possui níveis inferiores)
   test "nao remove oferta - niveis inferiores" do
-    assert_no_difference("Offer.count") do 
+    assert_no_difference(["Offer.count", "Schedule.count"]) do 
       get :destroy, {:id => offers(:of3).id, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]}
     end
 
@@ -145,7 +154,7 @@ class OffersControllerTest < ActionController::TestCase
 
   # Usuário com permissão e sem acesso
   test "nao remove oferta - sem acesso" do
-    assert_no_difference("Offer.count") do 
+    assert_no_difference(["Offer.count", "Schedule.count"]) do 
       get :destroy, {:id => offers(:of2).id, allocation_tags_ids: [allocation_tags(:al5).id]}
     end
 
@@ -157,7 +166,7 @@ class OffersControllerTest < ActionController::TestCase
   test "nao remove oferta - sem permissao" do
     sign_out @editor
     sign_in users(:professor)
-    assert_no_difference("Offer.count") do 
+    assert_no_difference(["Offer.count", "Schedule.count"]) do 
       get :destroy, {:id => offers(:of3).id, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]}
     end
 

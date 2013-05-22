@@ -60,4 +60,13 @@ of7: # não possui dependências, apenas módulo default
   semester: '2012.1'
   start_date: '2011-03-10'
   end_date: '2021-12-01'
-  schedule_id: 25 # período de matrícula já passou
+  schedule_id: 33
+
+of8: # oferta que não deve aparecer para matrícula
+  id: 8
+  curriculum_unit_id: 2
+  course_id: 1
+  semester: '2010.1'
+  start_date: '2011-03-10'
+  end_date: '2011-12-01'
+  schedule_id: 34

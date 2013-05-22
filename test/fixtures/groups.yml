@@ -51,3 +51,9 @@ g9:
   offer_id: 3
   code: 'TL-FOR'
   status: TRUE
+
+g10: # turma que não está disponível para matrícula
+  id: 10
+  offer_id: 8
+  code: 'SP-CAU'
+  status: TRUE  
