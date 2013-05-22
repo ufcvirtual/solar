@@ -263,6 +263,8 @@
         address: URL
       lesson_module:
         name: Nome
+      support_material_file:
+        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
 
     errors:
       template:

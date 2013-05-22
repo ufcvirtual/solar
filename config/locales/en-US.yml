@@ -125,6 +125,8 @@
         address: URL
       lesson_module:
         name: Name
+      support_material_file:
+        attachment_file_size: "File too large. The maximum size should be up to 5MB."
 
     errors:
       messages:

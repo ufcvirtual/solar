@@ -36,8 +36,12 @@ class SupportMaterialFilesController < ApplicationController
       @support_material.save!
 
       render nothing: true
-    rescue
-      render :new
+    rescue Exception => e
+      if @support_material.is_link?
+        render :new
+      else
+        render json: {success: false, msg: @support_material.errors.full_messages.join(' ')}, status: :unprocessable_entity
+      end
     end
   end
 
@@ -74,12 +78,11 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def download
-    authorize! :download, SupportMaterialFile, on: params[:allocation_tag_id].split(",").uniq
+    allocation_tag_ids = params.include?(:allocation_tag_id) ? params[:allocation_tag_id].split(",").map(&:to_i).uniq : [(file = SupportMaterialFile.find(params[:id])).allocation_tag_id]
+    authorize! :download, SupportMaterialFile, on: allocation_tag_ids
 
     if params.include?(:type)
-      allocation_tag_ids = params[:allocation_tag_id].split(',').map(&:to_i)
       redirect_error = support_material_files_path
-
       all_files = case params[:type]
       when :all
         SupportMaterialFile.find_files(allocation_tag_ids)
@@ -90,10 +93,9 @@ class SupportMaterialFilesController < ApplicationController
       path_zip = compress({ files: all_files, table_column_name: 'attachment_file_name', name_zip_file: t(:support_folder_name) })
       download_file(redirect_error, path_zip)
     else
-      file = SupportMaterialFile.find(params[:id])
+      file ||= SupportMaterialFile.find(params[:id])
       download_file(support_material_files_path, file.attachment.path, file.attachment_file_name)
     end
-
   end
 
   def list

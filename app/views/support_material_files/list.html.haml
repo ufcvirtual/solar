@@ -54,7 +54,7 @@
                         %span= link_to material.name, material.name, target: '_blank'
                       - else
                         %span= image_tag(icon_attachment(material.name))
-                        - if can? :download, SupportMaterialFile, on: [material.allocation_tag_id]
+                        - if can?(:download, SupportMaterialFile, on: [material.allocation_tag_id]) and File.exists?(material.attachment.path)
                           %span= link_to material.name, download_support_material_file_path(id: material.id, allocation_tag_id: material.allocation_tag_id)
                         - else
                           %span= material.name

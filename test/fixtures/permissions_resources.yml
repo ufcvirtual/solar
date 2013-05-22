@@ -164,37 +164,6 @@ ma4:
   resource_id: 57
   per_id: true
 
-# Material de apoio - Editor
-ma5:
-  profile_id: 1
-  resource_id: 63
-  per_id: false
-
-ma6:
-  profile_id: 1
-  resource_id: 64
-  per_id: false
-
-ma7:
-  profile_id: 1
-  resource_id: 65
-  per_id: false
-
-ma8:
-  profile_id: 1
-  resource_id: 66
-  per_id: false
-
-# ma9:
-#   profile_id: 1
-#   resource_id: 67
-#   per_id: false
-
-# ma10:
-#   profile_id: 1
-#   resource_id: 68
-#   per_id: false
-
 ma11:
   profile_id: 1
   resource_id: 69
@@ -415,64 +384,6 @@ mapt4:
   resource_id: 57
   per_id: false
 
-# Material de apoio - Editor
-maed1:
-  profile_id: 2
-  resource_id: 63
-  per_id: false
-
-maed2:
-  profile_id: 2
-  resource_id: 64
-  per_id: false
-
-maed3:
-  profile_id: 2
-  resource_id: 65
-  per_id: false
-
-maed4:
-  profile_id: 2
-  resource_id: 66
-  per_id: false
-
-# maed5:
-#   profile_id: 2
-#   resource_id: 67
-#   per_id: false
-
-# maed6:
-#   profile_id: 2
-#   resource_id: 68
-#   per_id: false
-
-# # trabalho de grupo
-
-# tgpt2:
-#   profile_id: 2
-#   resource_id: 73
-#   per_id: false
-
-# tgpt3:
-#   profile_id: 2
-#   resource_id: 74
-#   per_id: false
-
-# tgpt4:
-#   profile_id: 2
-#   resource_id: 75
-#   per_id: false
-
-# tgpt5:
-#   profile_id: 4
-#   resource_id: 76
-#   per_id: false
-
-# tgpt6:
-#   profile_id: 4
-#   resource_id: 77
-#   per_id: false
-
 ##############################
 # TUTOR A DISTANCIA #
 ##############################
@@ -688,36 +599,6 @@ mata4:
   resource_id: 57
   per_id: false
 
-# Material de apoio - Editor
-mapedi1:
-  profile_id: 3
-  resource_id: 63
-  per_id: false
-
-mapedi2:
-  profile_id: 3
-  resource_id: 64
-  per_id: false
-
-mapedi3:
-  profile_id: 3
-  resource_id: 65
-  per_id: false
-
-mapedi4:
-  profile_id: 3
-  resource_id: 66
-  per_id: false
-
-# mapedi5:
-#   profile_id: 3
-#   resource_id: 67
-#   per_id: false
-
-# mapedi6:
-#   profile_id: 3
-#   resource_id: 68
-#   per_id: false
 
 ##############################
 # TUTOR PRESENCIAL           #
@@ -797,16 +678,6 @@ mapedit8:
   profile_id: 5
   resource_id: 66
   per_id: true
-
-# mapedit9:
-#   profile_id: 5
-#   resource_id: 67
-#   per_id: true
-
-# mapedit10:
-#   profile_id: 5
-#   resource_id: 68
-#   per_id: true
 
 # edicao de matricula
 
@@ -1090,38 +961,6 @@ pbsc12:
   profile_id: 12
   resource_id: 57
   per_id: false
-
-
-# Material de apoio - Basico
-pbsc13:
-  profile_id: 12
-  resource_id: 63
-  per_id: false
-
-pbsc14:
-  profile_id: 12
-  resource_id: 64
-  per_id: false
-
-pbsc15:
-  profile_id: 12
-  resource_id: 65
-  per_id: false
-
-pbsc16:
-  profile_id: 12
-  resource_id: 66
-  per_id: false
-
-# pbsc17:
-#   profile_id: 12
-#   resource_id: 67
-#   per_id: false
-
-# pbsc18:
-#   profile_id: 12
-#   resource_id: 68
-#   per_id: false
 
 ########################
 #### Aluno  Monitor ####

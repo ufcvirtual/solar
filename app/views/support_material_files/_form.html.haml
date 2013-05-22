@@ -16,7 +16,7 @@
 :javascript
 
   $(function(){
-    $('#save').click(function(){
+    $('#save').click(function() {
       $('#support_material_form:last').serialize_and_submit_form({
         div_error: 'new_support_material_form',
         redirect_url: '#{list_support_material_files_path(allocation_tags_ids: @allocation_tags_ids)}',

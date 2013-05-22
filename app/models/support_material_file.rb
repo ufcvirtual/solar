@@ -9,7 +9,7 @@ class SupportMaterialFile < ActiveRecord::Base
     :path => ":rails_root/media/support_material_files/:id_:basename.:extension",
     :url => "/media/support_material_files/:id_:basename.:extension"
 
-  validates_attachment_size :attachment, :less_than => 5.megabyte, :message => " "
+  validates_attachment_size :attachment, :less_than => 5.megabyte, :message => ""
   validates_attachment_content_type_in_black_list :attachment
 
   def set_and_validate_url

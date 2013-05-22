@@ -24,7 +24,15 @@ $.fn.serialize_and_submit_form = function(options) {
     cache: false,
     contentType: false,
     processData: false,
-    success: f_success
+    success: f_success,
+    error: function(data) {
+      removeLightBox();
+      if (data.responseText != '') {
+        flash_message(JSON.parse(data.responseText).msg, 'alert');
+      } else {
+        flash_message('<%= I18n.t(:cant_save, :scope => [:editions]) %>', 'alert');
+      }
+    }
   });
 
   return this;

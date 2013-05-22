@@ -317,7 +317,6 @@ res53:
   action: 'new'
   description: 'Exibir janela para upload de arquivos em uma postagem'
 
-
 # Material de apoio
 res54:
   id: 54
@@ -330,19 +329,6 @@ res55:
   controller: 'support_material_files'
   action: 'download'
   description: 'Baixar arquivos de material de apoio'
-
-# res56:
-#   id: 56
-#   controller: 'support_material_files'
-#   action: 'download_all_file_ziped'
-#   description: 'Baixar todos os arquivos de material de apoio ZIPADO'
-
-# res57:
-#   id: 57
-#   controller: 'support_material_files'
-#   action: 'download_folder_file_ziped'
-#   description: 'Baixar arquivos de uma pasta do material de apoio ZIPADO'
-
 
 # Curso
 res58:
@@ -375,10 +361,6 @@ res62:
   action: 'destroy'
   description: 'Apaga um curso'
 
-
-
-
-
 # Material de apoio - editor
 res63:
   id: 63
@@ -386,15 +368,11 @@ res63:
   action: 'list'
   description: 'Visulalizar arquivos do material de apoio do editor'
 
-
-
-
 res64:
   id: 64
   controller: 'support_material_files'
   action: 'create'
   description: 'Cadastrar material de apoio'
-
 
 res65:
   id: 65
@@ -407,36 +385,6 @@ res66:
   controller: 'support_material_files'
   action: 'destroy'
   description: 'Deletar material de apoio'
-
-
-# res67:
-#   id: 67
-#   controller: 'support_material_files'
-#   action: ''
-#   description: ''
-
-# res68:
-#   id: 68
-#   controller: 'support_material_files'
-#   action: ''
-#   description: ''
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # acompanhamento do responsável - parte 2
 res69:
