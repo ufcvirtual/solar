@@ -15,7 +15,11 @@ class Lesson < ActiveRecord::Base
 
   validates :name, :type_lesson, presence: true
   validates :address, presence: true, :if => :is_link?
-  validate :initial_file_setted
+  validate  :initial_file_setted
+
+  # Na expressão regular os protocolos http, https e ftp podem aparecer somente uma vez ou não aparecer.
+  validates_format_of :address, :with => /^((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$/ix,
+  :allow_nil => true, :allow_blank => true, :message => I18n.t('lessons.errors.invalid_link'), :if => :is_link?
 
   
   FILES_PATH = Rails.root.join('media', 'lessons') # path dos arquivos de aula
@@ -39,8 +43,12 @@ class Lesson < ActiveRecord::Base
   end
 
   def url_protocol
-      self.address = 'http://' + self.address if (self.address =~ URI::regexp(["ftp", "http", "https"])).nil? 
-  end  
+     self.address = 'http://' + self.address if (self.address =~ URI::regexp(["ftp", "http", "https"])).nil? 
+   end
+
+  # def valid_url?
+  #    self.address.present? and (self.address.include? ".") and (self.address.index('.') !=0) and (self.address.index('.') != (self.address.size) - 1) 
+  # end  
 
   def path(full = false, with_address = true)
     if type_lesson == Lesson_Type_File
