@@ -526,6 +526,7 @@
       new_link: "New Link"
       new_link: "Edit Link"
       new_file: "New File"
+      none: "No material registered"
 
   #Foruns
   title: "Title"

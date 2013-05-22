@@ -62,6 +62,9 @@
                     %div= l(material.attachment_updated_at, format: :normal)
                   %td{style: 'text-align:center;'}
                     %div= (material.is_link?) ? t(".link") : t(".file")
+        - else
+          .block_content.block_content_text
+            = t(".none")
 
 :javascript
 

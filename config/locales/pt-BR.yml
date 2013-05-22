@@ -684,6 +684,7 @@
       new_link: "Novo Link"
       edit_link: "Editar Link"
       new_file: "Novo Arquivo"
+      none: "Nenhum material cadastrado"
 
   #Listagem de Fóruns
   title: "Título"
