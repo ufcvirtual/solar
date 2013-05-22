@@ -468,6 +468,10 @@ function saveDeletion(node, root_node){
     },
     success: function(data) {
       jQuery("#lesson_file_management").html(data);
+
+      if (root_node) { // atualiza listagem
+        call_page("<%= Rails.application.routes.url_helpers.list_lessons_path %>");
+      }
     },
     error: function(data) {
       flash_message("<%=I18n.t(:delete_error, :scope => [:lesson_files])%>", "alert", "flash_messages");

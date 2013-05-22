@@ -115,7 +115,6 @@ class LessonFilesController < ApplicationController
   end
 
   def destroy
-
     begin
       @lesson  = Lesson.where(id: params[:lesson_id]).first
       authorize! :new, Lesson, on: [@lesson.lesson_module.allocation_tag_id]
@@ -123,8 +122,8 @@ class LessonFilesController < ApplicationController
       params[:path] = '' if params[:root_node] == 'true' # ignora a pasta raiz caso delete todos os arquivos da aula
       # erro se estiver tentando remover o arquivo inicial ou alguma pasta "superior" à ele e não for a pasta raiz
       raise "error" if params[:root_node] != 'true' and @lesson.address.include?(params[:path]) 
-      path     = @lesson.path(true, false).to_s
-      @lesson.update_attribute(:address, '') if params[:root_node] == 'true'
+      path = @lesson.path(true, false).to_s
+      @lesson.update_attributes({address: '', status: 0}) if params[:root_node] == 'true'
       @address = @lesson.address
 
       FileUtils.rm_rf File.join(path, params[:path]) # remove diretório com todo o seu conteúdo
