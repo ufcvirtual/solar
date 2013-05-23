@@ -6,9 +6,7 @@ class Lesson < ActiveRecord::Base
   has_one :allocation_tag, through: :lesson_module
 
   before_save :url_protocol, :if => :is_link?
-
-  after_create :create_or_update_folder
-  after_update :create_or_update_folder
+  after_save :create_or_update_folder
 
   before_destroy :can_destroy?
   after_destroy :delete_schedule, :delete_files
@@ -111,9 +109,9 @@ SQL
     end
 
     def create_or_update_folder
-      if type_lesson == Lesson_Type_Link and File.exist?(path(true))
+      if is_link? and File.exist?(path(true))
         FileUtils.remove_dir(path(true)) 
-      else
+      elsif is_file?
         FileUtils.mkdir_p(FILES_PATH.join(id.to_s))
       end
     end
