@@ -2,7 +2,8 @@ module PostsHelper
 
   def post_html(post, display_mode = 'list', can_interact = false)
     user     = post.user
-    children = Post.reorder_by_latest_posts(post.discussion_id, post.children) # reordenando os pots a partir dos seus "filhos/netos"
+    children = post.children
+    children = Post.reorder_by_latest_posts(post.discussion_id, children) unless (display_mode == 'list') # obtendo e reordenando os posts a partir dos seus "filhos/netos"
     editable = ((post.user_id == current_user.id) && (children.count == 0))
 
     child_html = ''
