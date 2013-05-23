@@ -18,6 +18,7 @@ class PostsController < ApplicationController
 
     @display_mode = p['display_mode'] ||= 'tree'
     @posts = @discussion.posts(p)
+    @posts = Post.reorder_by_latest_posts(params[:discussion_id], @posts) # reordenando os pots a partir dos seus "filhos/netos"
 
     respond_to do |format|
       format.html
