@@ -173,6 +173,10 @@
           attributes:
             message_content_type:
               invalid_type: "Invalid file type."
+        lesson:
+          attributes:
+            address:
+              invalid: invalid
 
 ########### GERAL ###############
 
@@ -456,7 +460,6 @@
     errors:
       cant_delete: "Lesson became draft, because it was available to use by students!"     
       invalid_lesson_to_download: Only not empty and file lessons can be downloaded
-      invalid_link: "Address must be started by http:// or https://"
 
   lesson_modules:
     general_of_offer: "General"

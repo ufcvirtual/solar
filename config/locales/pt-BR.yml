@@ -325,6 +325,10 @@
           attributes:
             message_content_type:
               invalid_type: "Tipo de arquivo inválido."
+        lesson:
+          attributes:
+            address:
+              invalid: inválida
   all: "Todos"
   home: "Home"
   of: "de"
@@ -614,7 +618,6 @@
     errors:
       cant_delete: "Aula tornou-se rascunho, pois estava disponível para uso dos alunos!"  
       invalid_lesson_to_download: Apenas aulas do tipo de arquivo e não vazias podem ser baixadas
-      invalid_link: "URL inválida"
 
   lesson_modules:
     general_of_offer: "Geral"
