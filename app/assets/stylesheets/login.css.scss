@@ -593,7 +593,7 @@ h4, p{
 }
 
 #register{
-  width: 590px;
+  width: 580px;
   margin:0 auto;
 }
 
@@ -609,8 +609,7 @@ h4, p{
 }
 
 #register-content{
-  width: 590px;
-  padding-top: 25px;
+  padding: 20px 25px;
   background-color: #F5F5F5;
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F5F5F5', endColorstr='#E6E8EC',GradientType=0 ); 
   @include border-bottom-right-radius(8px);
@@ -650,7 +649,6 @@ h4, p{
   @include background-image(linear-gradient(#EBE2C0, #F0CF65)); /* CSS3 */
   color:#a38322;
   border: 1px solid #AE8711;
-  margin-bottom: 10px;
 }
 
 .buttons .back{
@@ -680,9 +678,9 @@ h4, p{
   box-shadow:  inset 0px 1px 2px 0px rgba(0, 0, 0, .4), inset 0px -2px 2px 0px rgba(0, 0, 0, .1);
 }
 
-#personal-data, #access, #contact, #other{
-  width: 530px;
-  padding: 0 0 15px 25px;
+.form-panel{
+  //width: 530px;
+  padding: 0;
   overflow: hidden;
 }
 
@@ -748,10 +746,6 @@ h4, p{
   text-align: left;
 }
 
-#birthdate, #gender, #special_needs{
-
-}
-
 #button1{
   margin-top: 100px;
 }
@@ -773,7 +767,7 @@ select option{
 #register-steps {
   //background: url('register-bar.png') no-repeat center;
   background-color: darken(#F5F5F5, 5%);
-  width: 520px;
+  width: 525px;
   margin: 0 auto;
   padding: 0;
   border-radius: 5px;
@@ -788,24 +782,14 @@ select option{
 
 #register-steps ul li{
   display: inline-block;
-  width: 116px;
+  width: 117px;
   margin: 0px;
   padding: 5px;
   text-align: center;
   font-family: Ubuntu;
   font-size: 12px;
   color:#919191;
-  //padding-left: 30px;
 }
-
-//#register-steps ul li:after {
-//  content: 'teste';
-//  width: 0;
-//  height: 0;
-//  border-style: solid;
-//  border-width: 50px 0 50px 20px;
-//  border-color: transparent transparent transparent #007bff;
-//}
 
 #register-steps ul li.active{
   color:#004B81;
@@ -830,30 +814,6 @@ select option{
 .dot.done {
   background: url('done.png') no-repeat; 
 }
-
-//#dot-personal-data {
-//  position: relative;
-//  top: 25px;
-//  right: 60px;
-//}
-//
-//#dot-access {
-//  position: relative;
-//  top: 25px;
-//  right: 32px;
-//}
-//
-//#dot-contact {
-//  position: relative;
-//  top: 25px;
-//  right: 35px;
-//}
-//
-//#dot-other {
-//  position: relative;
-//  top: 25px;
-//  right: 33px;
-//}
 
 .error, .alert, .notice {
   font-family: Ubuntu;
