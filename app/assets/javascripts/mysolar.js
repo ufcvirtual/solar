@@ -2,6 +2,7 @@
 $(function(){
   /* script da area de cadastro e login */
   $("#register-bt").click(function(){
+
     $(this).removeClass('inactive');
     $('#login-bt').addClass('inactive');
     $("#login-form").hide();
@@ -21,10 +22,10 @@ $(function(){
     $(".panel").fadeOut();
   });
 
-  $("#menu_footer a").click(function(event){
+  $("#menu_footer a.panel-link").click(function(event){
     event.preventDefault();
     var painelId = $(this).attr("href");
-    $("#menu_footer a").removeClass("current_menu");
+    $("#menu_footer a.panel-link").removeClass("current_menu");
     $("a[href="+painelId+"]").addClass("current_menu");
     $(painelId).fadeToggle(800,function(){
       $(".panel").each(function(){
@@ -38,7 +39,7 @@ $(function(){
     $(".content", painelId).jScrollPane();
   });
 
-  /*Passo-a-passo da página de cadastro*/
+  /* Passo-a-passo da página de cadastro*/
   $(".next").click(function (event) {
     event.preventDefault();
 
@@ -47,12 +48,12 @@ $(function(){
     btnParentNext = $(btnParent).next('div');
     btnParentNextId = $(btnParentNext).attr('id');
 
-    $("#menu-register .dot").removeClass('active');
+    $("#register-steps .dot").removeClass('active');
     $("#dot-"+btnParentId).addClass('done');
     $("#dot-"+btnParentNextId).addClass('active');
 
-    $("#menu-register a").removeClass('active');
-    $("#dot-"+btnParentNextId).prev('a').addClass('active');
+    $("#register-steps li").removeClass('active');
+    $("#dot-"+btnParentNextId).parent('li').addClass('active');
 
     $(btnParent).hide();
     $(btnParentNext).show();
@@ -66,11 +67,11 @@ $(function(){
     btnParentPrevious = $(btnParent).prev('div');
     btnParentPreviousId = $(btnParentPrevious).attr('id');
 
-    $("#menu-register .dot").removeClass('active');
+    $("#register-steps .dot").removeClass('active');
     $("#dot-"+btnParentPreviousId).removeClass('done').addClass('active');
 
-    $("#menu-register a").removeClass('active');
-    $("#dot-"+btnParentPreviousId).prev('a').addClass('active');
+    $("#register-steps li").removeClass('active');
+    $("#dot-"+btnParentPreviousId).parent('li').addClass('active');
 
     $(btnParent).hide();
     $(btnParentPrevious).show();

@@ -5,8 +5,8 @@
 #bar-brazil
   .bar
     %ul
-      .li= link_to image_tag("ai.png", :class => "ai", :title => "Acesso à informação"), "http://www.acessoainformacao.gov.br"
-      .li= link_to image_tag("brazil.png", :class => "brazil-gov", :title => "Portal de Estado do Brasil"), "http://www.brasil.gov.br"
+      .li= link_to image_tag("ai.png", :class => "ai", :title => "Acesso à informação"), "http://www.acessoainformacao.gov.br", :target => '_blank'
+      .li= link_to image_tag("brazil.png", :class => "brazil-gov", :title => "Portal de Estado do Brasil"), "http://www.brasil.gov.br", :target => '_blank'
 
 #language
   .img-language= image_tag("world.png")
@@ -20,5 +20,5 @@
           #en= link_to "English (USA)", url_for(locale: locales.last), class: ((selected == locales.last) ? "selected" : "")
 
 %header
-  %h1= link_to image_tag("logo.png", :class => "logo_one"), "/"
-  %h1= link_to image_tag("logo_small.png", :class => "logo_two"), "/"
+  %h1
+    = image_tag("logo.png", :alt => t(:mysolar_alt_img_solar))

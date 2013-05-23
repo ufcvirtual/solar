@@ -251,6 +251,11 @@
   destroy: "Delete"
   new_user_msg_cpf_error: " invalid"
   itens_not_found: "No itens to display"
+  registration_next: "Next"
+  registration_previous: "Previous"
+  registration_done: "Finish"
+  registration_cancel: "Cancel"
+  state_other: "Other"
 
   # User
   user_error_no_file_sent: No file sent

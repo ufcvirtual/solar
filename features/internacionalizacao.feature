@@ -7,7 +7,7 @@ Funcionalidade: Internacionalizacao
 
 Cenário: Login EN
   Dado que estou em "Login"
-    E eu deverei ver "Senha"
+    E eu deverei ver "Cadastrar"
   Quando eu clicar no link "English"
     Então eu deverei ver "Password"
 

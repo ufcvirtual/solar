@@ -14,15 +14,15 @@ Cenário: Usuário já logado com step
 Cenário: Usuário não logado tenta acessar "Meu Solar"
   Dado que eu nao estou logado no sistema com usuario user
   E tento acessar "Meu Solar"
-    Então eu deverei ver "Usuário"
-    E eu deverei ver "Senha"
+    Então eu deverei ver "Login"
+    E eu deverei ver "Cadastrar"
 
 Esquema do Cenário: Login com usuários inválidos
   Dado que eu nao estou logado no sistema com usuario user
     E que estou em "Login"
     E preencho o campo "login" com "<login>"
     E preencho o campo "password" com "<password>"
-  Quando eu clicar em "Entrar"
+  Quando eu clicar em "Acessar"
     Então eu deverei ver "<action>"
   Exemplos:
     | login         |  password       | action                      |
@@ -35,12 +35,12 @@ Cenário:Login com usuário válido
     E que estou em "Login"
     E preencho o campo "login" com "user"
     E preencho o campo "password" com "123456"
-  Quando eu clicar em "Entrar"
+  Quando eu clicar em "Acessar"
     Então eu deverei visualizar "Unidade Curricular"
 
 Cenário: Efetuar logout
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"
   Quando eu clicar no link "Sair"
-    Então eu deverei ver "Usuário"
-    E eu deverei ver "Senha"
+    Então eu deverei ver "Login"
+    E eu deverei ver "Cadastrar"

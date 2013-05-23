@@ -170,7 +170,7 @@
         password: "Senha"
         current_password: "Senha"
         new_password: "Nova Senha"
-        username: "Login"
+        username: "Usuário"
         name: "Nome"
         nick: "Apelido"
         birthdate: "Data de Nascimento"
@@ -356,7 +356,7 @@
   #tutorial: "Tutorial"
   home: "Início"
   team: "Equipe"
-  signin: "Entrar"
+  signin: "Acessar"
   signup: "Cadastrar"
   sign_in: "Login"
   sign_up: "Cadastrar"
@@ -368,6 +368,7 @@
   expired: "Prazo encerrado"
   name: "Nome"
   size: "Tamanho"
+
 
   # application controller
   app_controller_require: "Por favor, efetue login!"
@@ -409,6 +410,11 @@
   destroy: "Excluir"
   new_user_msg_cpf_error: "Inválido"
   itens_not_found: "Sem itens para exibir"
+  registration_next: "Próximo"
+  registration_previous: "Anterior"
+  registration_done: "Concluir"
+  registration_cancel: "Cancelar"
+  state_other: "Outro"
 
   # User
   user_error_no_file_sent: Nenhum arquivo enviado

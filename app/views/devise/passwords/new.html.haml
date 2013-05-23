@@ -7,11 +7,12 @@
       = form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| 
         %p= t(:pwd_recovery_text)
         %p= t(:pwd_recovery_text2)
-        %input#email_password_recovery{:name => "user[email]", :placeholder => "Digite seu e-mail", :size => "30", :tabindex => "1", :type => "email"}
+        .form-field
+          %input#email_password_recovery{:name => "user[email]", :placeholder => "Digite seu e-mail", :size => "30", :tabindex => "1", :type => "email"}
           %input#cpf{:name => "user[cpf]", :placeholder => "Digite seu CPF", :size => "30", :tabindex => "2", :type => "text"}
-            #buttons_password_recovery
-              %input#give-up.btn_password_recovery.btn_default{:onclick => "document.location.href='#{login_path}'", :type => "button", :value => t(:pwd_recovery_back)}
-                = f.submit t(:pwd_recovery_send), :class=>'btn_password_recovery solar_button', :tabindex=>"3", :id => "send"
+        #buttons_password_recovery
+          %input#give-up.btn_password_recovery.btn_default{:onclick => "document.location.href='#{login_path}'", :type => "button", :value => t(:pwd_recovery_back)}
+          = f.submit t(:pwd_recovery_send), :class=>'btn_password_recovery solar_button', :tabindex=>"3", :id => "send"
   = devise_error_messages! 
 
 
