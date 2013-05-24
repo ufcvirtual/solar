@@ -21,20 +21,20 @@
     %script{:src => "http://connect.facebook.net/en_US/all.js#xfbml=1"}
     %fb:like{"data-href" => YAML::load(File.open('config/facebook.yml'))['data-href'], :layout => "button_count", "data-show_faces" => "false", "data-width" => "450"}
 
-  #menu_footer
+  .menu_footer
     %ul
       %li= link_to t(:login_footer1), 'http://www.virtual.ufc.br', :target => '_blank'
       %li= link_to t(:login_footer2), 'http://www.ufc.br', :target => '_blank'
       %li= link_to t(:login_footer3), "#team", :class => 'panel-link'
       %li= link_to t(:license_terms), "#license-terms", :class => 'panel-link'
-      %li#choice-language
+      %li.choice-language
         = link_to t(:login_language), '#'
-        %ul#choice-language-menu
+        %ul.choice-language-menu
           %li.language.pt_BR
             = link_to 'Português (BR)', url_for(locale: locales.first), class: ((selected == locales.first) ? "selected" : "")
           %li.language.en_US
             = link_to 'English (USA)', url_for(locale: locales.last), class: ((selected == locales.last) ? "selected" : "")
 
 :javascript
-  var div = '<footer><div id="menu_footer">'+ $('#menu_footer').html() +'</div></footer>';
+  var div = '<footer><div class="menu_footer">'+ $('.menu_footer').html() +'</div></footer>';
   $('.panel').append(div);

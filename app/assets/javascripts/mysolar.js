@@ -18,14 +18,14 @@ $(function(){
 
   /* script dos paineis de informacao */
   $(".panel .arrow").click(function(){
-    $("#menu_footer a").removeClass("current_menu");
+    $(".menu_footer a").removeClass("current_menu");
     $(".panel").fadeOut();
   });
 
-  $("#menu_footer a.panel-link").click(function(event){
+  $(".menu_footer a.panel-link").click(function(event){
     event.preventDefault();
     var painelId = $(this).attr("href");
-    $("#menu_footer a.panel-link").removeClass("current_menu");
+    $(".menu_footer a.panel-link").removeClass("current_menu");
     $("a[href="+painelId+"]").addClass("current_menu");
     $(painelId).fadeToggle(800,function(){
       $(".panel").each(function(){
@@ -115,37 +115,23 @@ $(function(){
 
   /* Menu de idiomas */
   $(document).on('click', function() {
-    $("#choice-language-menu").hide();
-    console.info('ok');
+    $(".choice-language-menu").hide(); /* oculta o menu caso clique fora dele */
   });
 
-  $("#choice-language-menu").on('click', function(event){
-    event.stopPropagation();
+  $(".choice-language-menu").on('click', function(event){
+    event.stopPropagation(); /* impede que o menuu seja ocultado ao clicar sobre ele */
   });
 
-  $("#choice-language > a").on('click', function(event) {
+  $(".choice-language > a").on('click', function(event) {
     event.preventDefault();
-    event.stopPropagation();
+    event.stopPropagation(); /* impede que o menuu seja ocultado ao clicar sobre ele */
     languageParent = $(this).parent('li');
-    $('#choice-language-menu', languageParent).toggle().position({
+    $('.choice-language-menu', languageParent).toggle().position({
       my: 'bottom',
       at: 'top-5',
       of: languageParent
     });
-  })
-
-
-
-//  $("#choice-language a").on({
-//    click: function(event) {
-//      event.preventDefault();
-//      $('#choice-language ul').toggle().position({
-//        my: 'center',
-//        at: 'center',
-//        of:'#choice-language'
-//      });
-//    }
-//  })
+  });
 });
 
 

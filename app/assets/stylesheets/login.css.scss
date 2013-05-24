@@ -380,7 +380,7 @@ footer{
 }
 
 
-#menu_footer ul{
+.menu_footer ul{
   padding: 0;
   list-style: none;
   margin: 0 auto;
@@ -388,29 +388,29 @@ footer{
 }
 
 @media only screen and (max-width: 480px) {
-  #menu_footer ul li {
+  .menu_footer ul li {
     display: auto;
   }
 }
 
 @media only screen and (min-width: 481px) {
-  #menu_footer ul li {
+  .menu_footer ul li {
     display: inline;
   }
 }
 
-#menu_footer > ul > li{
+.menu_footer > ul > li{
   margin: 8px;
 }
 
-#menu_footer ul li a{
+.menu_footer ul li a{
   text-decoration: none;
   font-family: Ubuntu;
   font-size: 14px;
   color:#fff;
 }
 
-.panel #menu_footer ul li a{
+.panel .menu_footer ul li a{
   text-decoration: none;
   font-family: Ubuntu;
   font-size: 14px;
@@ -418,7 +418,7 @@ footer{
 }
 
 
-#menu_footer ul li a:hover{
+.menu_footer ul li a:hover{
   color:#91A9CC;
 }    
 
@@ -476,56 +476,13 @@ h4, p{
   text-align: justify;
 }
 
-
-.photo-ufc{
-  float: left;
-  margin-right: 2%;
-}
-
-/*Menu de language*/
-//#language{
-//  z-index:1;
-//  position: absolute;
-//  right: 20px;
-//  top: 40px;
-//  text-align: center;
-// }
-//
-//#language #menu-language li:hover{
-//  background-color: #f1f2f3;
-//}
-//
-//#language p{
-//  color: #748CAE;
-//  margin-left: 3px;
-//  margin-right: 3px;
-//  font-family: Ubuntu;
-//  font-size: 12px;
-//}
-
-//#language p:hover{
-//  color: #264c85;
-//}
-
-//#language ul li
-//{
-// position: relative;
-//}
-
-//#menu-language{
-//  margin:0;
-//  padding:0;
-//  margin-top:-12px;
-//  margin-left: 3px;
-//  list-style: none;
-//}
-
-#choice-language {
+/* Menu de idiomas */
+.choice-language {
   background: url("language-arrow.png") right no-repeat;
   padding-right: 15px;
 }
 
-#choice-language ul {
+.choice-language ul {
   position: absolute;
   display: none;
   width: 130px;
@@ -534,23 +491,18 @@ h4, p{
   padding: 0;
 }
 
-#choice-language a {
-  text-decoration: none;
-  font-family: Ubuntu;
-  font-size: 12px;
-}
-
-#choice-language ul li a {
+.choice-language ul li a {
   display: block;
   text-decoration: none;
   color: #234a84;
+  font-size: 12px;
   padding: 4px 3px 4px 18px;
   border: 1px solid #ccc;
   border-bottom: 0;
   background-color: #ffffff;
 }
 
-#choice-language ul li+li a {
+.choice-language ul li+li a {
   border-bottom: 1px solid #ccc;
 }
 
@@ -558,8 +510,7 @@ h4, p{
   background: url("check-language.png") no-repeat 3px 5px;
 }
 
-
-#choice-language ul li a:hover {
+.choice-language ul li a:hover {
   background-color: #e7e9eb;
   color: #234a84;
 }
@@ -570,14 +521,6 @@ h4, p{
 
 .arrow-language{
   margin: 2px 0 2px 5px;
-}
-
-.imgIng{
-  display: none;
-}
-
-.imgPt, .imgIng{
-  margin-right: 2px;
 }
 
 .current_menu{
