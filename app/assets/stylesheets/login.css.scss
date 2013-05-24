@@ -117,7 +117,7 @@ $login_width: 287px;
 }
 
 #submit-cpf {
-  margin-top: 98px;
+  margin-top: 97px;
 }
 
 #submit-login:hover, #submit-cpf:hover{
@@ -207,7 +207,7 @@ $login_width: 287px;
 }
 
 /*Logo*/
-header {
+#login_wrapper h1 {
   margin-bottom: 40px;
   margin-top: 5%;
   text-align: center;
@@ -630,10 +630,12 @@ h4, p{
   display: none;
 }
 
-.required_info{
-  font-size: 12px;
-  color: #D5031C;
+.required_info, .error {
   margin-left:122px;
+}
+
+.required_info{
+  font-size: 9pt;
   float: left;
   margin-top: 30px;
 }
@@ -757,11 +759,15 @@ select option{
   background: url('done.png') no-repeat; 
 }
 
-.error, .alert, .notice {
+.error, .alert, .notice, .required_info {
   font-family: Ubuntu;
   font-style: italic;
   font-size: 10pt;
   color:#D5031C;
+}
+
+.alert-error {
+  margin-top: 15px;
 }
 
 .notice {

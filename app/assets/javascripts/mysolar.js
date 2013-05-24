@@ -1,19 +1,62 @@
+/* Implementando método alternativo ao placeholder no IE < 9 */
+function placeholder() {
+  $.support.placeholder = ( 'placeholder' in document.createElement('input') );
 
+  if( !$.support.placeholder ) {
+    /* criação de um campo falso de senha, do tipo texto, para exibir o valor 'Senha' */
+    var fakePassword = "<input type='text' name='fake_pass' id='fake_pass' value='Senha' style='display:none'/>";
+
+    /* adicionar o input fake, ocultar o real e exibir o fake */
+    var loginDiv = $("#login-form");
+    $('#password', loginDiv).before(fakePassword);
+    $("#password", loginDiv).hide();
+    $("#fake_pass", loginDiv).show();
+
+    $('#fake_pass', loginDiv).focus(function(){
+      $(this).hide();
+      $('#password', loginDiv).show().focus();
+    });
+
+    $('#password', loginDiv).blur(function(){
+      if($(this).val() == ""){
+        $(this).hide();
+        $('#fake_pass').show();
+      }
+    });
+
+    /* nos outros campos, pegar o valor do atributo placeholder e colocar como value */
+    $('input[placeholder]').each(function(){
+      var ph = $(this).attr('placeholder')
+      $(this).val(ph).focus(function(){
+        if($(this).val() == ph) $(this).val('')
+      }).blur(function(){
+          if(!$(this).val()) $(this).val(ph)
+        })
+    });
+  }
+}
+
+/****************************************************
+ * scripts das áreas de cadastro e login
+ ****************************************************/
 $(function(){
-  /* script da area de cadastro e login */
-  $("#register-bt").click(function(){
+  placeholder();
 
-    $(this).removeClass('inactive');
-    $('#login-bt').addClass('inactive');
-    $("#login-form").hide();
-    $("#login-register").show();
-  });
-
-  $("#login-bt").click(function(){
+  $("#login-bt").click(function(event){
+    event.preventDefault();
     $("#login-form").show();
     $("#login-register").hide();
     $(this).removeClass('inactive');
     $('#register-bt').addClass('inactive');
+  });
+
+  $("#register-bt").click(function(event){
+    event.preventDefault();
+    $(this).removeClass('inactive');
+    $('#login-bt').addClass('inactive');
+    $("#login-form").hide();
+    $("#login-register").show();
+    placeholder();
   });
 
   /* script dos paineis de informacao */
@@ -36,7 +79,7 @@ $(function(){
         }
       })
     });
-    $(".content", painelId).jScrollPane();
+//    $(".content", painelId).jScrollPane();
   });
 
   /* Passo-a-passo da página de cadastro*/
@@ -75,43 +118,7 @@ $(function(){
 
     $(btnParent).hide();
     $(btnParentPrevious).show();
-  })
-
-
-  /* Implementando método alternativo ao placeholder no IE < 9 */
-  $.support.placeholder = ( 'placeholder' in document.createElement('input') );
-
-  if( !$.support.placeholder ) {
-    /* criação de um campo falso de senha, do tipo texto, para exibir o valor 'Senha' */
-    var fakePassword = "<input type='text' name='fake_pass' id='fake_pass' value='Senha' style='display:none'/>"
-    
-    /* adicionar o input fake, ocultar o real e exibir o fake */
-    $('#password').before(fakePassword);
-    $("#password").hide();
-    $("#fake_pass").show();
-
-    $('#fake_pass').focus(function(){
-      $(this).hide();
-      $('#password').show().focus();
-    });
-
-    $('#password').blur(function(){
-      if($(this).val() == ""){
-          $(this).hide();
-          $('#fake_pass').show();
-      }
-    });
-
-    /* nos outros campos, pegar o valor do atributo placeholder e colocar como value */
-    $('input[placeholder]').each(function(){
-      var ph = $(this).attr('placeholder')
-      $(this).val(ph).focus(function(){
-        if($(this).val() == ph) $(this).val('')
-      }).blur(function(){
-        if(!$(this).val()) $(this).val(ph)
-      })
-    });
-  }
+  });
 
   /* Menu de idiomas */
   $(document).on('click', function() {
@@ -133,9 +140,6 @@ $(function(){
     });
   });
 });
-
-
-
 
 
 /****************************************************
