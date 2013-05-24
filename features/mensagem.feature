@@ -38,7 +38,7 @@ Cenário: Acessar página de mensagens a partir de "Unidade curricular"
     E eu clicar no link "Mensagens"
     E eu deverei ver "Professor 2"
     E eu deverei ver "assunto da msg 1"
-    E eu deverei ver "11/05 10:42 h"
+    E eu deverei ver "11/05 07:42 h"
     E eu nao deverei ver "assunto da msg 27/5 (ii)"
     E eu nao deverei ver "27/05 16:42 h"
 

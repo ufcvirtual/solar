@@ -24,5 +24,5 @@ Cenário: Listar aulas do curso
   Então eu deverei ver "Aulas disponíveis"
   E eu deverei ver a linha de aulas disponiveis
     | AulasDisponiveis  | DataAcesso | DataAcesso | DataAcesso |
-    | aula 4            | 16/03/2011 |      -     | 01/08/2312 |
-    | aula 5            | 25/03/2011 |      -     | 06/05/2315 |
+    | aula 4            | 15/03/2011 |      -     | 31/07/2312 |
+    | aula 5            | 24/03/2011 |      -     | 05/05/2315 |
