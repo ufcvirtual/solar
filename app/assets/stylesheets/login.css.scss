@@ -119,30 +119,31 @@ $login_width: 287px;
   box-shadow:  inset 0px 1px 2px 0px rgba(0, 0, 0, .4), inset 0px -2px 2px 0px rgba(0, 0, 0, .1);
 }
 
+#login-bt, #register-bt, .label-register, #login-bt a, #register-bt a {
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 20px;
+  color: #a9b7cc;
+  padding-top: 5px;
+  text-shadow: 0 0 0.1em rgba(255, 255, 190, 0.60)#ffffbe;
+}
+
 #login-bt, #register-bt{
   height: 100%;
   width: 50%;
-  font-family: 'Ubuntu', sans-serif;
-  font-size: 20px;
-  padding-top: 5px;
-  text-shadow: 0 0 0.1em rgba(255, 255, 190, 0.60)#ffffbe;
-  border:1px solid #F4F4F5;
-  @include border-top-right-radius(5px);
-  @include border-top-left-radius(5px);
-  background-color: #F5F5F5;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
 }
 
-#login-bt a, #register-bt a {
-  color: #a9b7cc;
+#login-bt, #register-bt, #register-header {
+  @include border-top-right-radius(5px);
+  @include border-top-left-radius(5px);
+  border:1px solid #F4F4F5;
+  background-color: #F5F5F5
 }
 
-#register-bt a{
-  text-decoration: none;
-  font-family: 'Ubuntu', sans-serif;
-  font-size: 20px;
-  color: #a9b7cc;
+.label-register{
+  margin: 0 auto;
+  text-align: center;
 }
 
 #login-bt{
@@ -155,9 +156,10 @@ $login_width: 287px;
   padding-top: 8px;
 }
 
+$header-tab-height: 36px;
 #login-header{
-  height: 36px;
   position: relative;
+  height: $header-tab-height;
   z-index: 30;
   margin: 0;
   padding: 0;
@@ -331,19 +333,6 @@ $login_width: 287px;
   padding-right: 40px;
 }
 
-/*menu do rodapé*/
-@media only screen and (max-width: 480px) {
-  footer{
-    /*margin-top: 30px;*/
-  }
-}
-
-@media only screen and (min-width: 481px) {
-  footer{
-    /*margin-top: 8%;*/
-  }
-}
-
 #login_footer_push {
   height: 80px;
 }
@@ -355,7 +344,6 @@ footer{
   bottom: 0;
   padding-bottom: 10px;
 }
-
 
 .menu_footer ul{
   padding: 0;
@@ -413,11 +401,7 @@ footer{
   z-index: 50;
 }
 
-#team {
-  background: #ffffff url('ufc-virtual.png') 10% 16% no-repeat;
-}
-
-#license-terms {
+#team, #license-terms {
   background: #ffffff url('ufc-virtual.png') 10% 16% no-repeat;
 }
 
@@ -440,13 +424,13 @@ footer{
   cursor: pointer;
 }
 
-h1{
+.panel h1{
   font-family: Ubuntu Condensed;
   font-size: 25px;
   color:#135696;
 }
 
-h4, p{
+.panel h4, p{
   font-family:PT Sans;
   font-size: 16px;
   color:#616162;
@@ -516,6 +500,15 @@ h4, p{
   margin:0 auto;
 }
 
+#register-header{
+  width: 143px;
+  height: $header-tab-height;
+}
+
+#register-header .label-register {
+  padding-top: 8px;
+}
+
 .form_label{
   font-family: Ubuntu;
   font-size: 13px;
@@ -536,6 +529,11 @@ h4, p{
   @include border-top-right-radius(8px);
 }
 
+.buttons{
+  float: right;
+  margin-top: 20px;
+}
+
 .buttons .next, .buttons .back, #complete{
   font-family: 'Ubuntu Condensed';
   font-size: 20px;
@@ -546,9 +544,6 @@ h4, p{
   display: inline-block;
   text-align: center;
   margin-left: 5px;
-}
-
-.buttons .back, .buttons .next, #complete{
   min-width: 100px;
 }
 
@@ -558,11 +553,6 @@ h4, p{
   font-size: 21px;
 }
 
-.buttons{
-  float: right;
-  margin-top: 20px;
-}
-
 .buttons .next, #complete{
   @include filter-gradient(#EBE2C0, #F0CF65); /* IE */
   @include background-image(linear-gradient(#EBE2C0, #F0CF65)); /* CSS3 */
@@ -570,22 +560,9 @@ h4, p{
   border: 1px solid #AE8711;
 }
 
-.buttons .back{
-  @include filter-gradient(#EEEEEE, #BFBFBF); /* IE */
-  @include background-image(linear-gradient(#EEEEEE, #BFBFBF)); /* CSS3 */
-  color:#7A7A7A;
-  border:1px solid #7A7A7A;
-}
-
 .buttons .next:hover, #complete:hover{
   @include filter-gradient(#EBE2C0, #FFD242); /* IE */
   @include background-image(linear-gradient(#EBE2C0, #FFD242)); /* CSS3 */
-  cursor: pointer;
-}
-
-.buttons .back:hover{
-  @include filter-gradient(#EEEEEE, #B5B5B5); /* IE */
-  @include background-image(linear-gradient(#EEEEEE, #B5B5B5)); /* CSS3 */
   cursor: pointer;
 }
 
@@ -597,8 +574,20 @@ h4, p{
   box-shadow:  inset 0px 1px 2px 0px rgba(0, 0, 0, .4), inset 0px -2px 2px 0px rgba(0, 0, 0, .1);
 }
 
+.buttons .back{
+  @include filter-gradient(#EEEEEE, #BFBFBF); /* IE */
+  @include background-image(linear-gradient(#EEEEEE, #BFBFBF)); /* CSS3 */
+  color:#7A7A7A;
+  border:1px solid #7A7A7A;
+}
+
+.buttons .back:hover{
+  @include filter-gradient(#EEEEEE, #B5B5B5); /* IE */
+  @include background-image(linear-gradient(#EEEEEE, #B5B5B5)); /* CSS3 */
+  cursor: pointer;
+}
+
 .form-panel{
-  //width: 530px;
   padding: 0;
   overflow: hidden;
 }
@@ -617,32 +606,6 @@ h4, p{
   margin-top: 30px;
 }
 
-.label-register{
-  font-family: 'Ubuntu', sans-serif;
-  margin: 0 auto;
-  font-size: 20px;
-  color: #a9b7cc;
-  text-shadow: 0 0 0.1em rgba(255, 255, 190, 0.60)#ffffbe;
-  text-align: center;
-  padding-top: 7px;
-}
-
-#register-bar{
-  margin-top: 10px;
-  margin-left: 23px;
-  width: 390px;
-  height: 5px;
-}
-
-#register-header{
-  width: 143px;
-  height: 36px;
-  border:1px solid #F4F4F5;
-  @include border-top-left-radius(5px);
-  @include border-top-right-radius(5px);
-  background-color: #F5F5F5;
-}
-
 .field input, select {
   font-family: 'Ubuntu';
   border:1px solid #B6B6B6;
@@ -650,7 +613,6 @@ h4, p{
   @include border-radius(5px);
   font-size: 16px;
 }
-
 
 .field input{
   width: 390px;
@@ -665,10 +627,6 @@ h4, p{
   text-align: left;
 }
 
-#button1{
-  margin-top: 100px;
-}
-
 select{
   color: #666666;
   padding: 11px 10px;
@@ -677,14 +635,10 @@ select{
 select option{
   color: #666666;
   height: 20px;
-/*  vertical-align: middle;
-  padding: 3px 4px;
-  line-height: 20px;*/
 }
 
 /*menu de cadastro*/
 #register-steps {
-  //background: url('register-bar.png') no-repeat center;
   background-color: darken(#F5F5F5, 5%);
   width: 525px;
   margin: 0 auto;
@@ -760,16 +714,6 @@ select option{
 
 #flash_message{
   padding: 5px;
-}
-
-/*página de acesso*/
-
-.next-access{
-  float: right;
-}
-
-.nextCont{
-  float: right;
 }
 
 /*página de contato*/
@@ -857,11 +801,11 @@ select option{
 }
 
 #bar-brazil .brazil-gov {
-    display: block;
-    width: 108px;
-    height: 28px;
-    text-indent: -1000px;
-    background: #004b82;
-    position: relative;
-    bottom: 9px;
+  display: block;
+  width: 108px;
+  height: 28px;
+  text-indent: -1000px;
+  background: #004b82;
+  position: relative;
+  bottom: 9px;
 }
