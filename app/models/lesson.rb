@@ -6,9 +6,7 @@ class Lesson < ActiveRecord::Base
   has_one :allocation_tag, through: :lesson_module
 
   before_save :url_protocol, :if => :is_link?
-
-  after_create :create_or_update_folder
-  after_update :create_or_update_folder
+  after_save :create_or_update_folder
 
   before_destroy :can_destroy?
   after_destroy :delete_schedule, :delete_files
@@ -19,8 +17,7 @@ class Lesson < ActiveRecord::Base
 
   # Na expressão regular os protocolos http, https e ftp podem aparecer somente uma vez ou não aparecer.
   validates_format_of :address, :with => /^((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$/ix,
-  :allow_nil => true, :allow_blank => true, :message => I18n.t('lessons.errors.invalid_link'), :if => :is_link?
-
+  :allow_nil => true, :allow_blank => true, :if => :is_link?
   
   FILES_PATH = Rails.root.join('media', 'lessons') # path dos arquivos de aula
 
@@ -112,9 +109,9 @@ SQL
     end
 
     def create_or_update_folder
-      if type_lesson == Lesson_Type_Link and File.exist?(path(true))
+      if is_link? and File.exist?(path(true))
         FileUtils.remove_dir(path(true)) 
-      else
+      elsif is_file?
         FileUtils.mkdir_p(FILES_PATH.join(id.to_s))
       end
     end

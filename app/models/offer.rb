@@ -18,10 +18,8 @@ class Offer < ActiveRecord::Base
   validate :semester_must_be_unique
   validate :start_must_be_previous_than_end
 
-  # modulo default da oferta
-  after_create :set_default_lesson_module
-  before_destroy :find_schedule
-  after_destroy :destroy_schedule
+  after_create :set_default_lesson_module # modulo default da oferta
+  after_destroy { |record| record.schedule.destroy if record.schedule.can_destroy? }
 
   def has_any_lower_association?
     self.groups.count > 0
@@ -31,26 +29,18 @@ class Offer < ActiveRecord::Base
     groups
   end
 
-  ##
-  # Para um mesmo curso e uma mesma unidade curricular, o semestre deve ser único
-  ##
   def semester_must_be_unique
     offers_with_same_semester = Offer.find_all_by_curriculum_unit_id_and_course_id_and_semester(curriculum_unit_id, course_id, semester)
     errors.add(:semester, I18n.t(:existing_semester, :scope => [:offers])) if (@new_record == true or semester_changed?) and offers_with_same_semester.size > 0
   end
 
-  ##
-  # Data inicial deve ser anterior à data final
-  ##
   def start_must_be_previous_than_end
     unless start_date.nil? or end_date.nil?
       errors.add(:start_date, I18n.t(:range_date_error, :scope => [:offers])) if (start_date > end_date)
     end
   end
 
-  ##
-  # Retorna as informações da schedule da oferta (período de matrícula)
-  ##
+  ## Retorna as informações da schedule da oferta (período de matrícula)
   def schedule_info  
     schedule_dates = []
     schedule_dates << I18n.l(self.schedule.start_date, format: :normal)
@@ -63,16 +53,6 @@ class Offer < ActiveRecord::Base
 
   def set_default_lesson_module
     create_default_lesson_module(I18n.t(:general_of_offer, scope: :lesson_modules))
-  end
-
-  def find_schedule
-    @schedule = self.schedule
-  end
-
-  def destroy_schedule
-    if (@schedule.discussions.empty? and @schedule.lessons.empty? and @schedule.schedule_events.empty? and @schedule.assignments.empty? and @schedule.offers.empty?)
-      @schedule.destroy
-    end
   end
 
 end
