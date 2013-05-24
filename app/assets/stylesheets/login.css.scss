@@ -1,5 +1,4 @@
 @import "compass";
-@import "compass/css3/pie";
 
 html {
   height: 100%;
@@ -48,17 +47,6 @@ a img {
 /*caixa principal que engloba login e cadastro*/
 $login_width: 287px;
 
-/*#screen-login{
-  @include pie;
-	width: $login_width;
-  overflow:hidden; 
-  position: relative;
-  margin: 0 auto;
-  box-shadow:0px 2px 8px #222427;
-  @include border-bottom-right-radius(10px);
-  @include border-bottom-left-radius(10px);
-}*/
-
 #screen-login{
   width: $login_width;
   overflow:hidden; 
@@ -68,7 +56,6 @@ $login_width: 287px;
 }
 
 #login-form, #login-register {
-  @include pie;
   width: $login_width;
   box-shadow:0px 2px 8px #222427;
   @include filter-gradient(#F5F5F5, #E6E8EC); /* IE */
@@ -77,7 +64,6 @@ $login_width: 287px;
   @include border-bottom-left-radius(10px);
   text-align: center;
 }
-
 
 /*caixa de cadastro*/
 #login-register{
@@ -93,7 +79,6 @@ $login_width: 287px;
   border:1px solid #B6B6B6;
   background-color: #F8F8F8;
   @include border-radius(5px);
-  behavior: url(PIE.htc);
   font-family: Ubuntu;
   font-size: 16px;
   padding-left: 10px;
@@ -110,7 +95,6 @@ $login_width: 287px;
   color:#a38322;
   border:1px solid #AE8711;
   @include border-radius(5px);
-  behavior: url(PIE.htc);
   margin-top: 28px;
   margin-bottom: 20px;
   padding-top: 2px;
@@ -126,7 +110,6 @@ $login_width: 287px;
   cursor: pointer;
   border:1px solid #AE8711;
 }
-
 
 #submit-login:active, #submit-cpf:active{
   background-color: #f1cf65;
@@ -147,7 +130,6 @@ $login_width: 287px;
   @include border-top-right-radius(5px);
   @include border-top-left-radius(5px);
   background-color: #F5F5F5;
-  behavior: url(PIE.htc);
   box-sizing: border-box;
   -moz-box-sizing: border-box;
 }
@@ -172,7 +154,6 @@ $login_width: 287px;
   float: right;
   padding-top: 8px;
 }
-
 
 #login-header{
   height: 36px;
@@ -231,7 +212,6 @@ $login_width: 287px;
   color:#CAD8E8;
 }
 
-
 #login_content{
   text-align: center;
   margin:0 auto;
@@ -250,7 +230,6 @@ $login_width: 287px;
   overflow: hidden;
   border:1px solid #D5D5D5;
   @include border-radius(10px);
-  behavior: url(PIE.htc);
   background: #f5f5f5; /* Old browsers */
   @include filter-gradient(#ffffff, #e6e8ec); /* IE */
   @include background-image(linear-gradient(#ffffff, #e6e8ec));
@@ -292,7 +271,6 @@ $login_width: 287px;
   font-family: Ubuntu Condensed;
   font-size: 20px;
   @include border-radius(5px);
-  behavior: url(PIE.htc);
   display: inline-block;
   outline: none;
   cursor: pointer;
@@ -346,7 +324,6 @@ $login_width: 287px;
   @include filter-gradient(#f5f5f5, #e6e8ec); /* IE */
   @include background-image(linear-gradient(#f5f5f5, #e6e8ec)); /* CSS3 */
   @include border-radius(6px);
-  behavior: url(PIE.htc);
   box-shadow:0px 2px 8px #222427;
 }
 
@@ -663,7 +640,6 @@ h4, p{
   border:1px solid #F4F4F5;
   @include border-top-left-radius(5px);
   @include border-top-right-radius(5px);
-  behavior: url(PIE.htc);
   background-color: #F5F5F5;
 }
 
@@ -672,7 +648,6 @@ h4, p{
   border:1px solid #B6B6B6;
   background-color: #F8F8F8;
   @include border-radius(5px);
-  behavior: url(PIE.htc);
   font-size: 16px;
 }
 
@@ -780,7 +755,6 @@ select option{
   @include filter-gradient(#f5f5f5, #e6e8ec); /* IE */
   @include background-image(linear-gradient(#f5f5f5, #e6e8ec)); /* CSS3 */
   @include border-radius(6px);
-  behavior: url(PIE.htc);
   box-shadow:0px 2px 8px #222427;
 }
 
