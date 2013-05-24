@@ -350,6 +350,7 @@
   login_footer1: "Instituto UFC Virtual"
   login_footer2: "Universidade Federal do Ceará"
   login_footer3: "Equipe de Desenvolvimento"
+  login_language: "Idioma"
   license_terms: "Termos de licença"
   UFC_virtual: "Universidade Virtual"
   #news: "Notícias"
@@ -486,8 +487,8 @@
   pwd_recovery_text: "Para recuperar seu acesso, digite o CPF e o endereço de e-mail que você usa para acessar a conta do Solar."
   pwd_recovery_text2: "Nós enviaremos a nova senha para o seu e-mail em instantes."
 
-  pwd_recovery_email: "E-mail:"
-  pwd_recovery_cpf: "CPF:"
+  pwd_recovery_email: "Digite seu e-mail"
+  pwd_recovery_cpf: "Digite seu CPF"
   pwd_recovery_send: "Enviar"
   pwd_recovery_back: "Voltar"
 

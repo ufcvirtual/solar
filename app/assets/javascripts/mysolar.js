@@ -112,9 +112,43 @@ $(function(){
       })
     });
   }
+
+  /* Menu de idiomas */
+  $(document).on('click', function() {
+    $("#choice-language-menu").hide();
+    console.info('ok');
+  });
+
+  $("#choice-language-menu").on('click', function(event){
+    event.stopPropagation();
+  });
+
+  $("#choice-language > a").on('click', function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    languageParent = $(this).parent('li');
+    $('#choice-language-menu', languageParent).toggle().position({
+      my: 'bottom',
+      at: 'top-5',
+      of: languageParent
+    });
+  })
+
+
+
+//  $("#choice-language a").on({
+//    click: function(event) {
+//      event.preventDefault();
+//      $('#choice-language ul').toggle().position({
+//        my: 'center',
+//        at: 'center',
+//        of:'#choice-language'
+//      });
+//    }
+//  })
 });
 
-  
+
 
 
 

@@ -394,12 +394,12 @@ footer{
 }
 
 @media only screen and (min-width: 481px) {
-  #menu_footer ul li { 
+  #menu_footer ul li {
     display: inline;
   }
 }
 
-#menu_footer ul li{
+#menu_footer > ul > li{
   margin: 8px;
 }
 
@@ -483,55 +483,55 @@ h4, p{
 }
 
 /*Menu de language*/
-#language{
-  z-index:1;
-  position: absolute;
-  right: 20px;
-  top: 40px;
-  text-align: center;
- }
+//#language{
+//  z-index:1;
+//  position: absolute;
+//  right: 20px;
+//  top: 40px;
+//  text-align: center;
+// }
+//
+//#language #menu-language li:hover{
+//  background-color: #f1f2f3;
+//}
+//
+//#language p{
+//  color: #748CAE;
+//  margin-left: 3px;
+//  margin-right: 3px;
+//  font-family: Ubuntu;
+//  font-size: 12px;
+//}
 
-#language #menu-language li:hover{
-  background-color: #f1f2f3;
-}
+//#language p:hover{
+//  color: #264c85;
+//}
 
-#language p{
-  color: #748CAE;
-  margin-left: 3px;
-  margin-right: 3px;
-  font-family: Ubuntu;
-  font-size: 12px;
-}
+//#language ul li
+//{
+// position: relative;
+//}
 
-#language p:hover{
-  color: #264c85;
-}
-
-#language ul li
-{
- position: relative;
-}
-
-#menu-language{
-  margin:0;
-  padding:0;
-  margin-top:-12px;
-  margin-left: 3px;
-  list-style: none;
-}
+//#menu-language{
+//  margin:0;
+//  padding:0;
+//  margin-top:-12px;
+//  margin-left: 3px;
+//  list-style: none;
+//}
 
 #choice-language {
-  
   background: url("language-arrow.png") right no-repeat;
-  padding-right: 8px;
+  padding-right: 15px;
 }
 
 #choice-language ul {
   position: absolute;
-  right:0;
-  top:13px;
   display: none;
   width: 130px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 #choice-language a {
@@ -544,10 +544,14 @@ h4, p{
   display: block;
   text-decoration: none;
   color: #234a84;
-  padding: 3px 3px 3px 18px;
+  padding: 4px 3px 4px 18px;
   border: 1px solid #ccc;
   border-bottom: 0;
   background-color: #ffffff;
+}
+
+#choice-language ul li+li a {
+  border-bottom: 1px solid #ccc;
 }
 
 .selected {
@@ -557,16 +561,11 @@ h4, p{
 
 #choice-language ul li a:hover {
   background-color: #e7e9eb;
+  color: #234a84;
 }
 
-#choice-language ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-#menu-language li:hover ul { 
-  display: block; 
+#menu-language li:hover ul {
+  display: block;
 }
 
 .arrow-language{
@@ -899,7 +898,6 @@ select option{
 /*barra do governo federal*/
 #bar-brazil { 
   position:relative;
-  overflow:hidden;
   max-width:100%;
   height:33px;
   background: #004b82 url('../images/bar-brazil-v3-bgx.png') center bottom no-repeat;

@@ -1,5 +1,4 @@
-- locales = ['pt-BR', 'en-US']
-- selected = (params[:locale].present? and locales.include?(params[:locale])) ? params[:locale] : locales.first
+
 
 / barra do governo
 #bar-brazil
@@ -7,17 +6,6 @@
     %ul
       .li= link_to image_tag("ai.png", :class => "ai", :title => "Acesso à informação"), "http://www.acessoainformacao.gov.br", :target => '_blank'
       .li= link_to image_tag("brazil.png", :class => "brazil-gov", :title => "Portal de Estado do Brasil"), "http://www.brasil.gov.br", :target => '_blank'
-
-#language
-  .img-language= image_tag("world.png")
-  %ul#menu-language
-    %li#choice-language
-      %p= selected
-      %ul
-        %li.language.pt_BR
-          #pt= link_to "Português (BR)", url_for(locale: locales.first), class: ((selected == locales.first) ? "selected" : "")
-        %li.language.en_US
-          #en= link_to "English (USA)", url_for(locale: locales.last), class: ((selected == locales.last) ? "selected" : "")
 
 %header
   %h1

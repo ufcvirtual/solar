@@ -1,3 +1,6 @@
+- locales = ['pt-BR', 'en-US']
+- selected = (params[:locale].present? and locales.include?(params[:locale])) ? params[:locale] : locales.first
+
 #team.panel
   .content
     - @sectors = YAML::load(File.open('public/members.yml'))
@@ -24,6 +27,13 @@
       %li= link_to t(:login_footer2), 'http://www.ufc.br', :target => '_blank'
       %li= link_to t(:login_footer3), "#team", :class => 'panel-link'
       %li= link_to t(:license_terms), "#license-terms", :class => 'panel-link'
+      %li#choice-language
+        = link_to t(:login_language), '#'
+        %ul#choice-language-menu
+          %li.language.pt_BR
+            = link_to 'Português (BR)', url_for(locale: locales.first), class: ((selected == locales.first) ? "selected" : "")
+          %li.language.en_US
+            = link_to 'English (USA)', url_for(locale: locales.last), class: ((selected == locales.last) ? "selected" : "")
 
 :javascript
   var div = '<footer><div id="menu_footer">'+ $('#menu_footer').html() +'</div></footer>';

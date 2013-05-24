@@ -8,15 +8,15 @@ Funcionalidade: Internacionalizacao
 Cenário: Login EN
   Dado que estou em "Login"
     E eu deverei ver "Cadastrar"
-  Quando eu clicar no link "English"
-    Então eu deverei ver "Password"
+  Quando eu clicar no link "English (USA)"
+    Então eu deverei ver "Sign Up"
 
 Cenário: Login ptBR
   Dado que estou em "Login"
-    Então eu deverei ver "Senha"
-  Quando eu clicar no link "English"
-  E eu clicar no link "Português(BR)"
-    Então eu deverei ver "Senha"
+    Então eu deverei ver "Cadastrar"
+  Quando eu clicar no link "English (USA)"
+  E eu clicar no link "Português (BR)"
+    Então eu deverei ver "Cadastrar"
 
 Cenário: Acessar página de Edição de Dados Pessoais em Ingles
   Dado que estou logado com o usuario "user" e com a senha "123456"

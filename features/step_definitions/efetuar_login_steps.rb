@@ -42,6 +42,10 @@ Entao /^eu deverei ver "([^"]*)"$/ do |text|
   	end
 end
 
+Entao /^eu deverei ver o campo "([^"]*)"/ do |selector|
+  find_field(selector)
+end
+
 # Teste
 
 Quando /^eu clicar no link de conteudo "([^"]*)"$/ do |link|
