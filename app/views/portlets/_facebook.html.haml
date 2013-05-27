@@ -14,7 +14,11 @@
         %iframe{id: 'iframe', src: fb_feed_social_networks_path, width: 255, height: 166, frameborder: 0}
       - else
         - oauth = Koala::Facebook::OAuth.new(Fb_Config['app_id'], Fb_Config['secret_key'], Fb_Config['data-href'])
-        = link_to t(:login, :scope => [:facebook]), oauth.url_for_oauth_code(:permissions => ["read_stream", "publish_stream"]), target: '_top'
+        .fb-login
+          = link_to oauth.url_for_oauth_code(:permissions => ["read_stream", "publish_stream"]), target: '_top', :class => 'btn btn_main' do
+            = t(:login, :scope => [:facebook]) 
+            %i.icon-facebook
+        -#= link_to t(:login, :scope => [:facebook]), oauth.url_for_oauth_code(:permissions => ["read_stream", "publish_stream"]), target: '_top'
         / .new_post
         /   %textarea{:type => "text", :placeholder => "Teste"}
         /   .new_post_bar

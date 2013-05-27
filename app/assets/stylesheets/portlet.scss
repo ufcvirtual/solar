@@ -35,6 +35,11 @@ $portlet_settings_padding: $portlet_main_padding;
 }
 
 // excecao para portlet do facebook
+.fb-login {
+  text-align: center;
+  margin-top: 60px;
+}
+
 .block_facebook .slide-main {
   padding: 0;
   height: $portlet_height;
