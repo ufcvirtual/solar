@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound do |exception|
     # logar: exception.message
     respond_to do |format|
-      format.html { redirect_to home_path, alert: t(:object_not_found), status: :not_found }
+      format.html { redirect_to home_path, alert: t(:object_not_found) }
       format.json { render json: {msg: t(:object_not_found)}, status: :not_found }
     end
   end
@@ -127,6 +127,7 @@ class ApplicationController < ActionController::Base
     end
 
     I18n.locale = ['pt-BR', 'en-US'].include?(params[:locale]) ? params[:locale] : I18n.default_locale
+    params.delete(:locale)
   end
 
   ## Parametros de locale para paginas externas
