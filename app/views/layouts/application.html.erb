@@ -5,6 +5,9 @@
     <title>Solar</title>
     <%= stylesheet_link_tag "application" %>
     <%= javascript_include_tag "application" %>
+    <!--[if lte IE 9]>
+      <%= stylesheet_link_tag "fonts-ie" %>
+    <![endif]-->
     <!--[if lte IE 7]>
       <%= javascript_include_tag 'lte-ie7' %>
       <%= stylesheet_link_tag "ie7" %>
