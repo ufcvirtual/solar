@@ -68,20 +68,16 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
       assert_response :error
     end
 
-  ##
-  # Novo fórum (new/create)
-  ##
-  
     test "criar novo forum" do
       login users(:editor)
       get @edition_page
       get @items
-      get( new_discussion_path, {:allocation_tags_ids => assigns(:allocation_tags_ids)} )
+      get( new_discussion_path, {:allocation_tags_ids => assigns(:allocation_tags_ids).flatten} )
       assert_not_nil assigns(:discussion)
       assert_template :new
 
-      assert_difference(["Discussion.count", "Schedule.count"], +(assigns(:allocation_tags_ids).size)) do
-        post("/discussions/", {:discussion => {:name => "discussion 1", :description => "discussion 1"}, :start_date => "30-01-2013", :end_date => "30-03-2013", :allocation_tags_ids => assigns(:allocation_tags_ids)})
+      assert_difference(["Discussion.count", "Schedule.count"], (assigns(:allocation_tags_ids).flatten.size)) do
+        post("/discussions/", {:discussion => {:name => "discussion 1", :description => "discussion 1"}, :start_date => "30-01-2013", :end_date => "30-03-2013", :allocation_tags_ids => assigns(:allocation_tags_ids).flatten})
       end
 
       assert_response :success
@@ -116,16 +112,12 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
       assert_equal I18n.t(:no_permission), flash[:alert]
 
       assert_no_difference(["Discussion.count", "Schedule.count"]) do
-        post("/discussions/", {:discussion => {:name => "discussion 1", :description => "discussion 1"}, :start_date => "30-01-2013", :end_date => "30-03-2013", :allocation_tags_ids => assigns(:allocation_tags_ids)})
+        post("/discussions/", {:discussion => {:name => "discussion 1", :description => "discussion 1"}, :start_date => "30-01-2013", :end_date => "30-03-2013", :allocation_tags_ids => assigns(:allocation_tags_ids).flatten})
       end
 
       assert_response :error
     end
 
-  ##
-  # Editar fórum (edit/update)
-  ##
-  
      test "editar forum" do
       login(users(:editor))
       get @edition_page
@@ -135,7 +127,7 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
       assert_not_nil assigns(:allocation_tags_ids)
       assert_template :edit
 
-      put( discussion_path(discussions(:forum_9), {:discussion => {:name => "discussion 2", :description => "discussion 1"}, :start_date => "30-01-2013", :end_date => "27-03-2013", :allocation_tags_ids => assigns(:allocation_tags_ids)}) )
+      put( discussion_path(discussions(:forum_9), {:discussion => {:name => "discussion 2", :description => "discussion 1"}, :start_date => "30-01-2013", :end_date => "27-03-2013", :allocation_tags_ids => assigns(:allocation_tags_ids).flatten}) )
       assert_equal "27-03-2013", discussions(:forum_9).schedule.end_date.strftime("%d-%m-%Y")
 
       assert_response :success
@@ -150,7 +142,7 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
       assert_not_nil assigns(:allocation_tags_ids)
       assert_template :edit
 
-      put( discussion_path(discussions(:forum_9), {:discussion => {:name => "", :description => "discussion 1"}, :start_date => "30-01-2013", :end_date => "31-03-2013", :allocation_tags_ids => assigns(:allocation_tags_ids)}) )
+      put( discussion_path(discussions(:forum_9), {:discussion => {:name => "", :description => "discussion 1"}, :start_date => "30-01-2013", :end_date => "31-03-2013", :allocation_tags_ids => assigns(:allocation_tags_ids).flatten}) )
       assert_not_equal "31-03-2013", discussions(:forum_9).schedule.end_date.strftime("%d-%m-%Y")
 
       assert_response :success

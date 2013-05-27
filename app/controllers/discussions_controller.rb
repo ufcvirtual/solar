@@ -29,7 +29,7 @@ class DiscussionsController < ApplicationController
   end
 
   def create
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
     authorize! :create, Discussion, :on => @allocation_tags_ids
 
     @discussion = Discussion.new
