@@ -1,45 +1,47 @@
 #register
-  #header-register
-    %p.label-register Cadastrar
-  #personal
-    #menu-register
+  #register-header
+    %p.label-register
+      = t(:signup)
+  #register-content
+    #register-steps
       %ul
-        %li
-          %a.active{:href => "#"} Dados Pessoais
+        %li.active
+          = t(:new_user_personal_data)
           .dot.active#dot-personal-data
-        %li
-          %a#inactive-access{:href => "#"} Acesso
+        %li#inactive-access
+          = t(:new_user_access_data)
           .dot#dot-access
-        %li
-          %a#inactive-contact{:href => "#"} Contato
+        %li#inactive-contact
+          = t(:new_user_contact_data)
           .dot#dot-contact
-        %li
-          %a#inactive-other{:href => "#"} Outros
+        %li#inactive-other
+          = t(:new_user_other_info)
           .dot#dot-other
-    = image_tag("register-bar.png", :id => 'register-bar')
 
     #form
       = simple_form_for @user do |f|
         = f.error_notification
         #personal-data.form-panel
           .field
-            = f.input :name, :placeholder => "digite seu nome"
+            = f.input :name
           #inputCpf.field
             - if params[:cpf].present?
               = f.input :cpf, readonly: true, input_html: {value: params[:cpf]}
             - else
               = f.input :cpf
-          #birthdate
+          #birthdate.field
             = f.input :birthdate do
               = f.date_select :birthdate, start_year: Time.now.year - 10, end_year: 1900
-          #select
+          #gender.field
             = f.input :gender do
               = f.select :gender, ([[t(:m), true], [t(:f), false]])
           #special_needs.field
             = f.input :special_needs
-          %p * campos obrigatórios
-          #buttons
-            %a#submit-register.next{href: '#'} próximo
+          %p.required_info
+            = t(:required_fields)
+          .buttons
+            %a.next{href: '#'}
+              = t(:registration_next)
 
         #access.form-panel
           .field
@@ -56,47 +58,54 @@
             = f.input :email_confirmation, required: true
           #alternate-email.field  
             = f.input :alternate_email
-          %p * campos obrigatórios
-          #buttons
-            %a#submit-register2.btn.back{href: "#"} anterior
-            %a#submit-register.btn.next{href: "#"} próximo
+          %p.required_info
+            = t(:required_fields)
+          .buttons
+            %a.btn.back{href: "#"}
+              = t(:registration_previous)
+            %a.btn.next{href: "#"}
+              = t(:registration_next)
 
         #contact.form-panel
-          #address.contact
+          #address.contact.field
             = f.input :address
-          #elements-column 
-            #number.contact2 
-              = f.input :address_number
-          #complemento.contact2
+          #number.contact2.field
+            = f.input :address_number
+          #complement.contact2.field
             = f.input :address_complement
-          #neighborhood.contact2
+          #neighborhood.contact2.field
             = f.input :address_neighborhood
-          #zipcode.contact2
+          #zipcode.contact2.field
             = f.input :zipcode
-          #country.contact2
+          #country.contact2.field
             = f.input :country, as: :string, input_html: {size: 10}
-          #state.contact2
+          #state.contact2.field
             = f.input :state do
-              = f.select :state, ([["AC", "AC"], ["AL", "AL"], ["AP", "AP"], ["AM", "AM"], ["BA", "BA"], ["CE", "CE"], ["DF", "DF"], ["ES", "ES"], ["GO", "GO"], ["MA", "MA"], ["MT", "MT"], ["MS", "MS"], ["MG", "MG"], ["PA", "PA"], ["PB", "PB"], ["PR", "PR"], ["PE", "PE"], ["PI", "PI"], ["RJ", "RJ"], ["RN", "RN"], ["RS", "RS"], ["RO", "RO"], ["RR", "RR"], ["SC", "SC"], ["SP", "SP"], ["SE", "SE"], ["TO", "TO"]]), :include_blank => true
-          #city.contact    
+              = f.select :state, ([["AC", "AC"], ["AL", "AL"], ["AP", "AP"], ["AM", "AM"], ["BA", "BA"], ["CE", "CE"], ["DF", "DF"], ["ES", "ES"], ["GO", "GO"], ["MA", "MA"], ["MT", "MT"], ["MS", "MS"], ["MG", "MG"], ["PA", "PA"], ["PB", "PB"], ["PR", "PR"], ["PE", "PE"], ["PI", "PI"], ["RJ", "RJ"], ["RN", "RN"], ["RS", "RS"], ["RO", "RO"], ["RR", "RR"], ["SC", "SC"], ["SP", "SP"], ["SE", "SE"], ["TO", "TO"], [t(:state_other),t(:state_other)]]), :include_blank => true
+          #city.contact.field
             = f.input :city
-          #cell.contact2
+          #cell.contact2.field
             = f.input :telephone
-          #cell.contact2
+          #cell.contact2.field
             = f.input :cell_phone
-          #buttons
-            %a#submit-register2.btn.back{href: "#"} anterior
-            %a#submit-register.btn.next{href: "#"} próximo
+          .buttons
+            %a.btn.back{href: "#"}
+              = t(:registration_previous)
+            %a.btn.next{href: "#"}
+              = t(:registration_next)
 
         #other.form-panel
-          #institution.contact
+          #institution.contact.field
             = f.input :institution
-          #buttons
-            %a#submit-register2.btn.back{href: "#"} anterior
-            %button#complete{type: :submit} concluir
+          .buttons
+            %a.btn.back{href: "#"}
+              = t(:registration_previous)
+            %button#complete{type: :submit, :value => t(:registration_done)}
+              = t(:registration_done)
 
 #cancel
-  %a{href: "/"} Cancelar
+  %a{href: "/"}
+    = t(:registration_cancel)
 
 / :javascript
 /   $(footer).remove();

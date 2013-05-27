@@ -15,9 +15,11 @@ class PostsController < ApplicationController
     @can_interact = @discussion.user_can_interact?(current_user.id)
     p = params.select { |k, v| ['date', 'type', 'order', 'limit', 'display_mode', 'page'].include?(k) }
     p['page'] ||= @current_page
+    p['type'] ||= "discussion" # qualquer type diferente de "news" e vazio
 
     @display_mode = p['display_mode'] ||= 'tree'
     @posts = @discussion.posts(p)
+    @posts = Post.reorder_by_latest_posts(params[:discussion_id], @posts) unless (p['display_mode'] == 'list')# reordenando os posts a partir dos seus "filhos/netos"
 
     respond_to do |format|
       format.html

@@ -3094,7 +3094,7 @@ div.support_material_select {
     width: auto;
 }
 
-.form_error {
+.form_error, .error, span.field_with_errors {
     color: #E03838;
     padding-left: 10px;
     vertical-align: top;

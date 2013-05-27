@@ -1,5 +1,4 @@
 @import "compass";
-@import "compass/css3/pie";
 
 html {
   height: 100%;
@@ -48,17 +47,6 @@ a img {
 /*caixa principal que engloba login e cadastro*/
 $login_width: 287px;
 
-/*#screen-login{
-  @include pie;
-	width: $login_width;
-  overflow:hidden; 
-  position: relative;
-  margin: 0 auto;
-  box-shadow:0px 2px 8px #222427;
-  @include border-bottom-right-radius(10px);
-  @include border-bottom-left-radius(10px);
-}*/
-
 #screen-login{
   width: $login_width;
   overflow:hidden; 
@@ -68,7 +56,6 @@ $login_width: 287px;
 }
 
 #login-form, #login-register {
-  @include pie;
   width: $login_width;
   box-shadow:0px 2px 8px #222427;
   @include filter-gradient(#F5F5F5, #E6E8EC); /* IE */
@@ -77,7 +64,6 @@ $login_width: 287px;
   @include border-bottom-left-radius(10px);
   text-align: center;
 }
-
 
 /*caixa de cadastro*/
 #login-register{
@@ -93,7 +79,6 @@ $login_width: 287px;
   border:1px solid #B6B6B6;
   background-color: #F8F8F8;
   @include border-radius(5px);
-  behavior: url(PIE.htc);
   font-family: Ubuntu;
   font-size: 16px;
   padding-left: 10px;
@@ -110,14 +95,13 @@ $login_width: 287px;
   color:#a38322;
   border:1px solid #AE8711;
   @include border-radius(5px);
-  behavior: url(PIE.htc);
   margin-top: 28px;
   margin-bottom: 20px;
   padding-top: 2px;
 }
 
 #submit-cpf {
-  margin-top: 98px;
+  margin-top: 97px;
 }
 
 #submit-login:hover, #submit-cpf:hover{
@@ -127,7 +111,6 @@ $login_width: 287px;
   border:1px solid #AE8711;
 }
 
-
 #submit-login:active, #submit-cpf:active{
   background-color: #f1cf65;
   cursor: pointer;
@@ -136,28 +119,31 @@ $login_width: 287px;
   box-shadow:  inset 0px 1px 2px 0px rgba(0, 0, 0, .4), inset 0px -2px 2px 0px rgba(0, 0, 0, .1);
 }
 
-#login-bt, #register-bt{
-  height: 100%;
-  width: 50%;
+#login-bt, #register-bt, .label-register, #login-bt a, #register-bt a {
   font-family: 'Ubuntu', sans-serif;
   font-size: 20px;
   color: #a9b7cc;
   padding-top: 5px;
   text-shadow: 0 0 0.1em rgba(255, 255, 190, 0.60)#ffffbe;
-  border:1px solid #F4F4F5;
-  @include border-top-right-radius(5px);
-  @include border-top-left-radius(5px);
-  background-color: #F5F5F5;
-  behavior: url(PIE.htc);
+}
+
+#login-bt, #register-bt{
+  height: 100%;
+  width: 50%;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
 }
 
-#register-bt a{
-  text-decoration: none;
-  font-family: 'Ubuntu', sans-serif;
-  font-size: 20px;
-  color: #a9b7cc;
+#login-bt, #register-bt, #register-header {
+  @include border-top-right-radius(5px);
+  @include border-top-left-radius(5px);
+  border:1px solid #F4F4F5;
+  background-color: #F5F5F5
+}
+
+.label-register{
+  margin: 0 auto;
+  text-align: center;
 }
 
 #login-bt{
@@ -170,17 +156,31 @@ $login_width: 287px;
   padding-top: 8px;
 }
 
-
+$header-tab-height: 36px;
 #login-header{
-  height: 36px;
   position: relative;
+  height: $header-tab-height;
   z-index: 30;
+  margin: 0;
+  padding: 0;
+}
+
+#login-header li {
+  list-style: none;
+}
+
+#login-header li a {
+  text-decoration: none;
+  border-bottom: none;
 }
 
 #login-header .inactive {
-  background-color: #D5D6D6; 
-  color: #959595;
+  background-color: #D5D6D6;
   border:1px solid #D5D6D6;
+}
+
+#login-header .inactive a {
+  color: #959595;
 }
 
 #login-header .inactive:hover {
@@ -190,34 +190,16 @@ $login_width: 287px;
 }
 
 /*Logo*/
-header {
+#login_wrapper h1 {
   margin-bottom: 40px;
   margin-top: 5%;
   text-align: center;
-  transition: all 1s;
-  -moz-transition: all 1s; /* Firefox 4 */
-  -webkit-transition: all 1s; /* Safari and Chrome */
-  -o-transition: all 1s; /* Opera */
-}
-
-
-
-@media only screen and (max-width: 480px) {
-  header {
-    background: url('../imagem/logo_small.png') no-repeat center;
-    height: 128px;
-  }
-}
-
-@media only screen and (min-width: 481px ) {
-  header{
-    background: url('../imagem/logo.png') no-repeat center;
-    height: 115px;
-  }
+  height: 115px;
 }
 
 /*esqueceu a senha?*/
 #link{
+  margin-top: 12px;
   text-align: center;
 }
 
@@ -231,7 +213,6 @@ header {
 #link-password:hover{
   color:#CAD8E8;
 }
-
 
 #login_content{
   text-align: center;
@@ -251,7 +232,6 @@ header {
   overflow: hidden;
   border:1px solid #D5D5D5;
   @include border-radius(10px);
-  behavior: url(PIE.htc);
   background: #f5f5f5; /* Old browsers */
   @include filter-gradient(#ffffff, #e6e8ec); /* IE */
   @include background-image(linear-gradient(#ffffff, #e6e8ec));
@@ -277,21 +257,22 @@ header {
   text-align: justify;
   padding-left: 28px;
   padding-right: 28px;
-  padding-top: 5px;}
+  padding-top: 5px;
+  margin-bottom: 0;
+}
 
 /* Botão de voltar para o início do esqueceu senha*/
 #buttons_password_recovery{
-  float: right;
+  text-align: right;
   padding-right: 23px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .btn_password_recovery {
   font-family: Ubuntu Condensed;
   font-size: 20px;
   @include border-radius(5px);
-  behavior: url(PIE.htc);
   display: inline-block;
   outline: none;
   cursor: pointer;
@@ -331,14 +312,7 @@ header {
 }
 
 #email_password_recovery, #cpf{
-  border: 1px solid #B6B6B6;
-  font-family: 'PT Sans', sans-serif;
   width: 344px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  font-size: 10pt;
-  @include border-radius(5px);
-  behavior: url(PIE.htc);
   margin-top: 10px;
   padding-left: 5px;
 }
@@ -352,25 +326,11 @@ header {
   @include filter-gradient(#f5f5f5, #e6e8ec); /* IE */
   @include background-image(linear-gradient(#f5f5f5, #e6e8ec)); /* CSS3 */
   @include border-radius(6px);
-  behavior: url(PIE.htc);
   box-shadow:0px 2px 8px #222427;
 }
 
 #error_explanation ul{
   padding-right: 40px;
-}
-
-/*menu do rodapé*/
-@media only screen and (max-width: 480px) {
-  footer{
-    /*margin-top: 30px;*/
-  }
-}
-
-@media only screen and (min-width: 481px) {
-  footer{
-    /*margin-top: 8%;*/
-  }
 }
 
 #login_footer_push {
@@ -385,8 +345,7 @@ footer{
   padding-bottom: 10px;
 }
 
-
-#menu_footer ul{
+.menu_footer ul{
   padding: 0;
   list-style: none;
   margin: 0 auto;
@@ -394,29 +353,29 @@ footer{
 }
 
 @media only screen and (max-width: 480px) {
-  #menu_footer ul li {
+  .menu_footer ul li {
     display: auto;
   }
 }
 
 @media only screen and (min-width: 481px) {
-  #menu_footer ul li { 
+  .menu_footer ul li {
     display: inline;
   }
 }
 
-#menu_footer ul li{
+.menu_footer > ul > li{
   margin: 8px;
 }
 
-#menu_footer ul li a{
+.menu_footer ul li a{
   text-decoration: none;
   font-family: Ubuntu;
   font-size: 14px;
   color:#fff;
 }
 
-.panel #menu_footer ul li a{
+.panel .menu_footer ul li a{
   text-decoration: none;
   font-family: Ubuntu;
   font-size: 14px;
@@ -424,7 +383,7 @@ footer{
 }
 
 
-#menu_footer ul li a:hover{
+.menu_footer ul li a:hover{
   color:#91A9CC;
 }    
 
@@ -442,19 +401,7 @@ footer{
   z-index: 50;
 }
 
-#virtual {
-  background: #ffffff url('ufc-virtual.png') 10% 16% no-repeat;
-}
-
-#university {
- background: #ffffff url('new-arms-ufc.png') 10% 16% no-repeat; 
-}
-
-#team {
-  background: #ffffff url('ufc-virtual.png') 10% 16% no-repeat;
-}
-
-#license-terms {
+#team, #license-terms {
   background: #ffffff url('ufc-virtual.png') 10% 16% no-repeat;
 }
 
@@ -477,122 +424,64 @@ footer{
   cursor: pointer;
 }
 
-h1{
+.panel h1{
   font-family: Ubuntu Condensed;
   font-size: 25px;
   color:#135696;
 }
 
-h4, p{
+.panel h4, p{
   font-family:PT Sans;
   font-size: 16px;
   color:#616162;
   text-align: justify;
 }
 
-
-.photo-ufc{
-  float: left;
-  margin-right: 2%;
-}
-
-/*Menu de language*/
-#language{
-  z-index:1;
-  position: absolute;
-  right: 20px;
-  top: 40px;
-  text-align: center;
- }
-
-#language #menu-language li:hover{
-  background-color: #f1f2f3;
-}
-
-#language p{
-  color: #748CAE;
-  margin-left: 3px;
-  margin-right: 3px;
-  font-family: Ubuntu;
-  font-size: 12px;
-}
-
-#language p:hover{
-  color: #264c85;
-}
-
-#language ul li
-{
- position: relative;
-}
-
-#menu-language{
-  margin:0;
-  padding:0;
-  margin-top:-12px;
-  margin-left: 3px;
-  list-style: none;
-}
-
-#choice-language {
-  
+/* Menu de idiomas */
+.choice-language {
   background: url("language-arrow.png") right no-repeat;
-  padding-right: 8px;
+  padding-right: 15px;
 }
 
-#choice-language ul {
+.choice-language ul {
   position: absolute;
-  right:0;
-  top:13px;
   display: none;
   width: 130px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-#choice-language a {
-  text-decoration: none;
-  font-family: Ubuntu;
-  font-size: 12px;
-}
-
-#choice-language ul li a {
+.choice-language ul li a {
   display: block;
   text-decoration: none;
   color: #234a84;
-  padding: 3px 3px 3px 18px;
+  font-size: 12px;
+  padding: 4px 3px 4px 18px;
   border: 1px solid #ccc;
   border-bottom: 0;
   background-color: #ffffff;
+}
+
+.choice-language ul li+li a {
+  border-bottom: 1px solid #ccc;
 }
 
 .selected {
   background: url("check-language.png") no-repeat 3px 5px;
 }
 
-
-#choice-language ul li a:hover {
+.choice-language ul li a:hover {
   background-color: #e7e9eb;
+  color: #234a84;
 }
 
-#choice-language ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-#menu-language li:hover ul { 
-  display: block; 
+#menu-language li:hover ul {
+  display: block;
 }
 
 .arrow-language{
   margin: 2px 0 2px 5px;
-}
-
-.imgIng{
-  display: none;
-}
-
-.imgPt, .imgIng{
-  margin-right: 2px;
 }
 
 .current_menu{
@@ -602,9 +491,22 @@ h4, p{
 
 /*Página de cadastro*/
 /*página de dados pessoais*/
+.field_with_errors input {
+  border: 1px solid #D5031C !important;
+}
+
 #register{
-  width: 590px;
+  width: 580px;
   margin:0 auto;
+}
+
+#register-header{
+  width: 143px;
+  height: $header-tab-height;
+}
+
+#register-header .label-register {
+  padding-top: 8px;
 }
 
 .form_label{
@@ -618,74 +520,53 @@ h4, p{
   vertical-align: middle;
 }
 
-#personal{
-  width: 590px;
-  padding-top: 20px;
+#register-content{
+  padding: 20px 25px;
   background-color: #F5F5F5;
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F5F5F5', endColorstr='#E6E8EC',GradientType=0 ); 
   @include border-bottom-right-radius(8px);
   @include border-bottom-left-radius(8px);
   @include border-top-right-radius(8px);
-  behavior: url(PIE.htc);
 }
 
-#submit-register, #submit-register2, #complete{
+.buttons{
+  float: right;
+  margin-top: 20px;
+}
+
+.buttons .next, .buttons .back, #complete{
   font-family: 'Ubuntu Condensed';
   font-size: 20px;
   @include border-radius(5px);
-  behavior: url(PIE.htc);
-  margin-top: 25px;
   text-decoration: none;
   padding-top: 10px;
   padding-bottom: 10px;
   display: inline-block;
   text-align: center;
   margin-left: 5px;
-}
-
-#submit-register, #submit-register2{
-  width: 100px;
+  min-width: 100px;
 }
 
 #complete{
-  width: 100px;
   height: 44px;
   padding-bottom: 11px;
   font-size: 21px;
 }
 
-#buttons{
-  float: right;
-}
-
-#submit-register, #complete{
+.buttons .next, #complete{
   @include filter-gradient(#EBE2C0, #F0CF65); /* IE */
   @include background-image(linear-gradient(#EBE2C0, #F0CF65)); /* CSS3 */
   color:#a38322;
   border: 1px solid #AE8711;
-  margin-bottom: 10px;
 }
 
-#submit-register2{
-  @include filter-gradient(#EEEEEE, #BFBFBF); /* IE */
-  @include background-image(linear-gradient(#EEEEEE, #BFBFBF)); /* CSS3 */
-  color:#7A7A7A;
-  border:1px solid #7A7A7A;
-}
-
-#submit-register:hover, #complete:hover{
+.buttons .next:hover, #complete:hover{
   @include filter-gradient(#EBE2C0, #FFD242); /* IE */
   @include background-image(linear-gradient(#EBE2C0, #FFD242)); /* CSS3 */
   cursor: pointer;
 }
 
-#submit-register2:hover{
-  @include filter-gradient(#EEEEEE, #B5B5B5); /* IE */
-  @include background-image(linear-gradient(#EEEEEE, #B5B5B5)); /* CSS3 */
-  cursor: pointer;
-}
-
-#submit-register:active, #complete:active{
+.buttons .next:active, #complete:active{
   background-color: #f1cf65;
   cursor: pointer;
   border:1px solid #AE8711;
@@ -693,9 +574,21 @@ h4, p{
   box-shadow:  inset 0px 1px 2px 0px rgba(0, 0, 0, .4), inset 0px -2px 2px 0px rgba(0, 0, 0, .1);
 }
 
-#personal-data, #access, #contact, #other{
-  width: 530px;
-  padding: 20px 0 15px 25px;
+.buttons .back{
+  @include filter-gradient(#EEEEEE, #BFBFBF); /* IE */
+  @include background-image(linear-gradient(#EEEEEE, #BFBFBF)); /* CSS3 */
+  color:#7A7A7A;
+  border:1px solid #7A7A7A;
+}
+
+.buttons .back:hover{
+  @include filter-gradient(#EEEEEE, #B5B5B5); /* IE */
+  @include background-image(linear-gradient(#EEEEEE, #B5B5B5)); /* CSS3 */
+  cursor: pointer;
+}
+
+.form-panel{
+  padding: 0;
   overflow: hidden;
 }
 
@@ -703,38 +596,14 @@ h4, p{
   display: none;
 }
 
-#personal-data p{
-  font-size: 12px;
-  color: #D5031C;
+.required_info, .error {
   margin-left:122px;
+}
+
+.required_info{
+  font-size: 9pt;
   float: left;
-}
-
-.label-register{
-  font-family: 'Ubuntu', sans-serif;
-  margin: 0 auto;
-  font-size: 20px;
-  color: #a9b7cc;
-  text-shadow: 0 0 0.1em rgba(255, 255, 190, 0.60)#ffffbe;
-  text-align: center;
-  padding-top: 7px;
-}
-
-#register-bar{
-  margin-top: 10px;
-  margin-left: 23px;
-  width: 390px;
-  height: 5px;
-}
-
-#header-register{
-  width: 143px;
-  height: 36px;
-  border:1px solid #F4F4F5;
-  @include border-top-left-radius(5px);
-  @include border-top-right-radius(5px);
-  behavior: url(PIE.htc);
-  background-color: #F5F5F5;
+  margin-top: 30px;
 }
 
 .field input, select {
@@ -742,10 +611,8 @@ h4, p{
   border:1px solid #B6B6B6;
   background-color: #F8F8F8;
   @include border-radius(5px);
-  behavior: url(PIE.htc);
   font-size: 16px;
 }
-
 
 .field input{
   width: 390px;
@@ -757,29 +624,7 @@ h4, p{
 
 .field{
   margin-top: 18px;
-}
-
-#select{
-  float: left;
-  margin-top: 18px;
-}
-
-#special_needs{
-  float: left;
-  margin-top: 18px;
-}
-
-#birthdate{
-  float: left;
-  margin-top: 18px;
-}
-
-#button1{
-  margin-top: 100px;
-}
-
-#inputCpf{
-  margin-top: 18px;
+  text-align: left;
 }
 
 select{
@@ -790,58 +635,48 @@ select{
 select option{
   color: #666666;
   height: 20px;
-/*  vertical-align: middle;
-  padding: 3px 4px;
-  line-height: 20px;*/
-}
-
-/*Logo*/
-@media only screen and (max-width: 480px) {
-  .logo_one{
-    display: none;
-  }
-}
-
-@media only screen and (min-width: 481px ) {
-  .logo_two{
-    display: none;
-  }
 }
 
 /*menu de cadastro*/
-#menu-register ul{
+#register-steps {
+  background-color: darken(#F5F5F5, 5%);
+  width: 525px;
+  margin: 0 auto;
+  padding: 0;
+  border-radius: 5px;
+}
+
+#register-steps ul{
   padding: 0;
   list-style: none;
   margin: 0 auto;
   text-align: center;
 }
 
-#menu-register ul li{
-  display: inline;
-  margin: 8px;
-  padding-left: 30px;
-}
-
-#menu-register ul li a{
-  text-decoration: none;
+#register-steps ul li{
+  display: inline-block;
+  width: 117px;
+  margin: 0px;
+  padding: 5px;
+  text-align: center;
   font-family: Ubuntu;
   font-size: 12px;
   color:#919191;
-  cursor: default;
 }
 
-#menu-register ul li .active{
-  text-decoration: none;
-  font-family: Ubuntu;
-  font-size: 12px;
+#register-steps ul li.active{
   color:#004B81;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 0px 4px rgba(240, 207, 101, 1);
 }
 
 /* bolinhas da barra de progresso */
 .dot {
   width: 22px;
   height: 18px;
-  display: inline-block;
+  display: block;
+  margin: 0 auto;
   background: url('inactive.png') no-repeat;
 }
 
@@ -853,35 +688,15 @@ select option{
   background: url('done.png') no-repeat; 
 }
 
-#dot-personal-data {
-  position: relative;
-  top: 25px;
-  right: 60px;
-}
-
-#dot-access {
-  position: relative;
-  top: 25px;
-  right: 32px;
-}
-
-#dot-contact {
-  position: relative;
-  top: 25px;
-  right: 35px;
-}
-
-#dot-other {
-  position: relative;
-  top: 25px;
-  right: 33px;
-}
-
-.error, .alert, .notice {
+.error, .alert, .notice, .required_info {
   font-family: Ubuntu;
   font-style: italic;
   font-size: 10pt;
   color:#D5031C;
+}
+
+.alert-error {
+  margin-top: 15px;
 }
 
 .notice {
@@ -894,7 +709,6 @@ select option{
   @include filter-gradient(#f5f5f5, #e6e8ec); /* IE */
   @include background-image(linear-gradient(#f5f5f5, #e6e8ec)); /* CSS3 */
   @include border-radius(6px);
-  behavior: url(PIE.htc);
   box-shadow:0px 2px 8px #222427;
 }
 
@@ -902,68 +716,33 @@ select option{
   padding: 5px;
 }
 
-/*página de acesso*/
-#access p{
-  font-size: 12px;
-  color: #D5031C;
-  margin-left:125px;
-}
-
-.next-access{
-  float: right;
-}
-
-.nextCont{
-  float: right;
-}
-
 /*página de contato*/
 
 .contact {
-width: 530px;
-float: left;
+  width: 530px;
+  float: left;
 }
 .contact input{
   width: 391px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 10px;
-  border:1px solid #B6B6B6;
-  background-color: #F8F8F8;
-  @include border-radius(5px);
-  behavior: url(PIE.htc);
-  font-family: Ubuntu;
-  font-size: 16px;
 }
 
 .contact2{
   width: 264px;
-  margin-top: 18px;
   float: left;
 }
 
 .contact2 input{
   width: 125px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 10px;
-  border:1px solid #B6B6B6;
-  background-color: #F8F8F8;
-  @include border-radius(5px);
-  behavior: url(PIE.htc);
-  font-family: Ubuntu;
-  font-size: 16px;
   padding-left: 10px;
 }
-
 
 .contact2 select{
   width: 137px; 
   padding-left: 10px;
 }
 
-.user_city{
-  margin-top: 18px;
+#state select, #birthdate select, #gender select {
+  height: 42px;
 }
 
 /*link cancelar*/
@@ -986,7 +765,6 @@ float: left;
 /*barra do governo federal*/
 #bar-brazil { 
   position:relative;
-  overflow:hidden;
   max-width:100%;
   height:33px;
   background: #004b82 url('../images/bar-brazil-v3-bgx.png') center bottom no-repeat;
@@ -1023,11 +801,11 @@ float: left;
 }
 
 #bar-brazil .brazil-gov {
-    display: block;
-    width: 108px;
-    height: 28px;
-    text-indent: -1000px;
-    background: #004b82;
-    position: relative;
-    bottom: 9px;
+  display: block;
+  width: 108px;
+  height: 28px;
+  text-indent: -1000px;
+  background: #004b82;
+  position: relative;
+  bottom: 9px;
 }

@@ -194,6 +194,7 @@
   login_footer1: "UFC Virtual Institute"
   login_footer2: "Federal University of Ceará"
   login_footer3: "Development Team"
+  login_language: "Language"
   license_terms: "License Terms"
   login_title: "Sistema Online de Aprendizagem da Universidade Federal do Ceará"
   UFC_virtual: "Universidade Virtual"
@@ -251,6 +252,11 @@
   destroy: "Delete"
   new_user_msg_cpf_error: " invalid"
   itens_not_found: "No itens to display"
+  registration_next: "Next"
+  registration_previous: "Previous"
+  registration_done: "Finish"
+  registration_cancel: "Cancel"
+  state_other: "Other"
 
   # User
   user_error_no_file_sent: No file sent
@@ -322,8 +328,8 @@
   pwd_recovery_text: "To regain access, type your CPF and the e-mail address that you use to access your Solar account."
   pwd_recovery_text2: "We will send you a new password for your e-mail shortly."
 
-  pwd_recovery_email: "E-mail"
-  pwd_recovery_cpf: "CPF"
+  pwd_recovery_email: "Enter your E-mail"
+  pwd_recovery_cpf: "Enter your CPF"
   pwd_recovery_send: "Send"
   pwd_recovery_back: "Back"
 

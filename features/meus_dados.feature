@@ -1,6 +1,6 @@
 #language: pt
 
-Funcionalidade: Internacionalizacao
+Funcionalidade: Acessar e alterar dados pessoais
   Como um usuário do solar
   Eu quero editar meus dados
   Para atualizar as minhas informações no sistema
