@@ -46,7 +46,7 @@
   .forum_posts_wrapper
     - @posts = get_page_posts(@posts, @current_page) unless (@display_mode == "list")
     - @posts.each do |post|
-      = raw post_html(post, @display_mode, @can_interact)
+      = raw post_html(post, @latest_posts, @display_mode, @can_interact)
 
 :javascript
   $(document).ready(function() {

@@ -98,8 +98,7 @@ SQL
   end
 
   def discussion_posts_count(plain_list = true)
-    return self.discussion_posts.count if plain_list
-    return self.discussion_posts.where(:parent_id => nil).count
+    (plain_list ? self.discussion_posts.count : self.discussion_posts.where(:parent_id => nil).count)
   end
 
   def count_posts_after_and_before_period(period)
@@ -162,5 +161,11 @@ SQL
 
     Discussion.find_by_sql(query)
   end
+
+  # devolve a lista com todos os posts de uma discussion em ordem decrescente de updated_at, apenas o filho mais recente de cada post será adiconado à lista
+  def latest_posts
+    discussion_posts.select("DISTINCT ON (updated_at, parent_id) updated_at, parent_id, level")
+  end
+
 
 end
