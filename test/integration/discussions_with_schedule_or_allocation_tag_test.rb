@@ -42,7 +42,6 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
       assert_equal flash[:alert], I18n.t(:no_permission)
     end
 
-
   ## 
   # Listar fóruns de uma oferta, de todas as turmas da oferta ou de uma turma (list)
   ##
@@ -128,7 +127,7 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
       assert_template :edit
 
       put( discussion_path(discussions(:forum_9), {:discussion => {:name => "discussion 2", :description => "discussion 1"}, :start_date => "30-01-2013", :end_date => "27-03-2013", :allocation_tags_ids => assigns(:allocation_tags_ids).flatten}) )
-      assert_equal Date.new(2013, 03, 27), discussions(:forum_9).schedule.end_date.to_time.to_date
+      assert_equal "27-03-2013", discussions(:forum_9).schedule.end_date.utc.strftime("%d-%m-%Y")
 
       assert_response :success
      end
