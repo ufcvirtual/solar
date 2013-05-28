@@ -115,7 +115,7 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
         post("/discussions/", {:discussion => {:name => "discussion 1", :description => "discussion 1"}, :start_date => "30-01-2013", :end_date => "30-03-2013", :allocation_tags_ids => assigns(:allocation_tags_ids).flatten})
       end
 
-      assert_response :error
+      assert_response :redirect
     end
 
      test "editar forum" do
@@ -128,7 +128,7 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
       assert_template :edit
 
       put( discussion_path(discussions(:forum_9), {:discussion => {:name => "discussion 2", :description => "discussion 1"}, :start_date => "30-01-2013", :end_date => "27-03-2013", :allocation_tags_ids => assigns(:allocation_tags_ids).flatten}) )
-      assert_equal "27-03-2013", discussions(:forum_9).schedule.end_date.strftime("%d-%m-%Y")
+      assert_equal Date.new(2013, 03, 27), discussions(:forum_9).schedule.end_date.to_time.to_date
 
       assert_response :success
      end
@@ -162,7 +162,7 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
       put( discussion_path(discussions(:forum_9), {:discussion => {:name => "", :description => "discussion 1"}, :start_date => "30-01-2013", :end_date => "31-03-2013", :allocation_tags_ids => allocation_tags_ids}) )
       assert_not_equal discussions(:forum_9).schedule.end_date.strftime("%d-%m-%Y"), "31-03-2013"
 
-      assert_response :error
+      assert_response :redirect
     end
 
   ##
