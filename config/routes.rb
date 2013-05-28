@@ -135,9 +135,12 @@ Solar::Application.routes.draw do
 
   resources :assignments, only: [:show] do
     collection do
-      get :list
+      get :student
+      get :professor
+
+      # get :list
+
       get :download_files
-      get :list_to_student
       get :send_public_files_page
       post :upload_file
       delete :delete_file
@@ -189,8 +192,6 @@ Solar::Application.routes.draw do
       get :list
       get "at/:allocation_tag_id/download", to: :download, type: :all, as: :download_all
       get "at/:allocation_tag_id/folder/:folder/download", to: :download, type: :folder, as: :download_folder
-      # get :download_all_file_ziped
-      # get :download_folder_file_ziped
     end
   end
 

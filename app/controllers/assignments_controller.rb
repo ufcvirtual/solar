@@ -3,14 +3,14 @@ class AssignmentsController < ApplicationController
   include AssignmentsHelper
   include FilesHelper
 
-  before_filter :prepare_for_group_selection, :only => [:list, :list_to_student]
+  before_filter :prepare_for_group_selection, :only => [:professor, :student]
   load_and_authorize_resource :only => [:information, :show, :import_groups_page, :import_groups, :manage_groups, :evaluate, :send_comment, :remove_comment]
-  authorize_resource :only => [:list, :list_to_student, :download_files, :upload_file, :send_public_files_page, :delete_file]
 
-  ##
-  # Lista as atividades - visão geral
-  ##  
-  def list
+  authorize_resource :only => [:download_files, :upload_file, :send_public_files_page, :delete_file]
+
+  def professor
+    authorize! :professor, Assignment
+
     allocation_tags_ids    = params[:allocation_tags_ids] || [active_tab[:url]['allocation_tag_id']]
     @individual_activities = allocation_tags_ids.collect{|at| Assignment.find_all_by_allocation_tag_id_and_type_assignment(at, Individual_Activity)}.flatten.uniq
     @group_activities      = allocation_tags_ids.collect{|at| Assignment.find_all_by_allocation_tag_id_and_type_assignment(at, Group_Activity)}.flatten.uniq
@@ -18,15 +18,37 @@ class AssignmentsController < ApplicationController
     render :layout => false if params[:allocation_tags_ids]
   end
 
-  ##
-  # Lista as atividades - visão aluno
-  ##
-  def list_to_student
-    group_id                     = params['selected_group']
+  def student
+    authorize! :student, Assignment
+
+    group_id                     = params['selected_group'] # turma
     @student_id                  = current_user.id
     @individual_assignments_info = Assignment.student_assignments_info(group_id, @student_id, Individual_Activity) # atividades individuais pelo grupo_id em que o usuario esta inserido
     @group_assignments_info      = Assignment.student_assignments_info(group_id, @student_id, Group_Activity) # atividades em grupo pelo grupo_id em que o usuario esta inserido
     @public_area                 = PublicFile.all_by_class_id_and_user_id(group_id, @student_id)
+  end
+
+  ##
+  # Informações do andamento da atividade para um aluno/grupo escolhido
+  # Nesta página, há as opções de comentários para o trabalho do aluno/grupo, avaliação e afins
+  # => responsáveis: podem comentar/avaliar
+  # => alunos: podem enviar/excluir arquivos
+  ##
+  def show
+    @user            = current_user
+    @student_id      = params[:group_id].nil? ? params[:student_id] : nil
+    @group_id        = params[:group_id].nil? ? nil : params[:group_id] 
+    @group           = GroupAssignment.find(params[:group_id]) unless @group_id.nil? # grupo
+    @send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(@assignment.id, @student_id, @group_id)
+    @situation       = Assignment.assignment_situation_of_student(@assignment.id, @student_id, @group_id)
+    @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  # arquivos que fazem parte da descrição da atividade
+
+    raise CanCan::AccessDenied unless @assignment.user_can_access_assignment(current_user.id, @student_id, @group_id)
+   
+    unless @send_assignment.nil?
+      @send_assignment_files = @send_assignment.assignment_files
+      @comments              = @send_assignment.assignment_comments
+    end
   end
 
   ##
@@ -93,29 +115,6 @@ class AssignmentsController < ApplicationController
       respond_to do |format|
         format.html { render 'group_assignment_content_div', :layout => false }
       end
-    end
-  end
-
-  ##
-  # Informações do andamento da atividade para um aluno/grupo escolhido
-  # Nesta página, há as opções de comentários para o trabalho do aluno/grupo, avaliação e afins
-  # => responsáveis: podem comentar/avaliar
-  # => alunos: podem enviar/excluir arquivos
-  ##
-  def show
-    @user            = current_user
-    @student_id      = params[:group_id].nil? ? params[:student_id] : nil
-    @group_id        = params[:group_id].nil? ? nil : params[:group_id] 
-    @group           = GroupAssignment.find(params[:group_id]) unless @group_id.nil? # grupo
-    @send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(@assignment.id, @student_id, @group_id)
-    @situation       = Assignment.assignment_situation_of_student(@assignment.id, @student_id, @group_id)
-    @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  # arquivos que fazem parte da descrição da atividade
-
-    raise CanCan::AccessDenied unless @assignment.user_can_access_assignment(current_user.id, @student_id, @group_id)
-   
-    unless @send_assignment.nil?
-      @send_assignment_files = @send_assignment.assignment_files
-      @comments              = @send_assignment.assignment_comments
     end
   end
 

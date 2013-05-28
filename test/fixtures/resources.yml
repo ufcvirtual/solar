@@ -142,8 +142,8 @@ res23:
 res24:
   id: 24
   controller: 'assignments'
-  action: 'list'
-  description: 'Lista das atividades - visao geral'
+  action: 'professor'
+  description: 'Lista dos trabalhos - visão professor'
 
 res25:
   id: 25
@@ -161,8 +161,8 @@ res26:
 res27:
   id: 27
   controller: 'assignments'
-  action: 'list_to_student'
-  description: 'Lista das atividades - visao do aluno'
+  action: 'student'
+  description: 'Lista dos trabalhos - visão aluno'
 
 res28:
   id: 28
