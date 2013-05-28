@@ -150,8 +150,27 @@ jQuery(function(){
     }
   });
 
+  $("#btn-move-node").click(function() {
+    trigger = jQuery(this);
+    target = jQuery(this).data('dropdown-alt');
+    if(typeof selNodes == "undefined") {
+      jQuery("#folder_dropdown_alert").show();
+      jQuery("#folder_dropdown_content").hide();
+    } else {
+      jQuery("#folder_dropdown_alert").hide();
+      jQuery("#folder_dropdown_content").show();
+    }
+    jQuery(target)
+      .toggle()
+      .position({
+        my: 'left top+8',
+        at: 'left bottom',
+        of: $(trigger)
+      });
+  });
+
   jQuery("#btn-cancel-move").click(function(){
-    jQuery("#folder_dropdown").dropdown("hide",true);
+    jQuery("#folder_dropdown").hide();
   });  
 
   jQuery("#btn-save-move").click(function(){

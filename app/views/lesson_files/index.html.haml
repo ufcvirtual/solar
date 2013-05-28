@@ -43,8 +43,8 @@
       = button_tag content_tag(:i, nil, :class=>'icon-unzip-file'), type: :button, :class => 'btn', id: 'btn-unzip', :'data-tooltip' => t('.unzip')
       = button_tag content_tag(:i, nil, :class=>'icon-edit'), type: :button, :class => 'btn', id: 'btn-rename', :'data-tooltip' => t('.rename')
       = button_tag content_tag(:i, nil, :class=>'icon-trash'), type: :button, :class => 'btn btn_caution', id: 'btn-remove-node', :'data-tooltip' => t('.remove')
-      = button_tag content_tag(:i, nil, :class=>'icon-move'), type: :button, :class => 'btn', id: 'btn-move-node', :'data-tooltip' => t('.move'), "data-dropdown" => "#folder_dropdown"
-      #folder_dropdown.dropdown.dropdown-tip
+      = button_tag content_tag(:i, nil, :class=>'icon-move'), type: :button, :class => 'btn', id: 'btn-move-node', :'data-tooltip' => t('.move'), "data-dropdown-alt" => "#folder_dropdown"
+      #folder_dropdown.dropdown-alt.dropdown-tip
         .dropdown-panel
           #folder_dropdown_alert
             %span

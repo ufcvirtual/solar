@@ -1,11 +1,13 @@
-.dropdown {
+.dropdown, .dropdown-alt {
 	position: absolute;
 	z-index: 9999999;
 	display: none;
 }
 
 .dropdown .dropdown-menu,
-.dropdown .dropdown-panel {
+.dropdown .dropdown-panel,
+.dropdown-alt .dropdown-menu,
+.dropdown-alt .dropdown-panel {
 	min-width: 160px;
 	max-width: 360px;
 	list-style: none;
@@ -23,11 +25,13 @@
 	padding: 10px;
 }
 
-.dropdown.dropdown-tip {
+.dropdown.dropdown-tip,
+.dropdown-alt.dropdown-tip{
 	margin-top: 8px;
 }
 
-.dropdown.dropdown-tip:before {
+.dropdown.dropdown-tip:before,
+.dropdown-alt.dropdown-tip:before{
   position: absolute;
   top: -6px;
   left: 9px;
@@ -39,12 +43,14 @@
   display: inline-block;
 }
 
-.dropdown.dropdown-tip.dropdown-anchor-right:before {
+.dropdown.dropdown-tip.dropdown-anchor-right:before,
+.dropdown-alt.dropdown-tip.dropdown-anchor-right:before{
 	left: auto;
 	right: 9px;
 }
 
-.dropdown.dropdown-tip:after {
+.dropdown.dropdown-tip:after,
+.dropdown-alt.dropdown-tip:after{
   position: absolute;
   top: -5px;
   left: 10px;
@@ -55,7 +61,8 @@
   display: inline-block;
 }
 
-.dropdown.dropdown-tip.dropdown-anchor-right:after {
+.dropdown.dropdown-tip.dropdown-anchor-right:after,
+.dropdown-alt.dropdown-tip.dropdown-anchor-right:after{
 	left: auto;
 	right: 10px;
 }
