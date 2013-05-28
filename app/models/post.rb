@@ -19,6 +19,13 @@ class Post < ActiveRecord::Base
     record.errors.add(attr) if not parent.nil? and parent.discussion_id != value
   end
 
+
+  # attr_accessor :attachments
+ 
+  # def initialize
+  #  @attachments = files.map(&:id).join(",")
+  # end
+
   def can_be_answered?
     (self.level < Discussion_Post_Max_Indent_Level)
   end
@@ -59,7 +66,7 @@ class Post < ActiveRecord::Base
   def self.reorder_by_latest_posts(discussion_id, posts) 
     unless posts.empty? 
       # pega o primeiro post de cada "pai" de todos os posts, em ordem decrescente de updated_at, dos níveis inferiores ao atual, ou seja, pega os filhos/netos mais recentes
-      latest_posts = Post.where("discussion_id = #{discussion_id} AND level > #{posts.first.level}").select("updated_at, parent_id, level").uniq_by{|a| a.parent_id}
+      latest_posts = Post.where("discussion_id = #{discussion_id} AND level > #{posts.first.level}").select("DISTINCT ON (updated_at, parent_id) updated_at, parent_id, level")
       lp_info      = latest_posts.collect{|lp| lp.grandparent(posts.first.level)} # recuperar apenas a data e o id do "avô" dos posts mais recentes de cada nível
       # recuperar o mais recente dos agrupados, ou seja, se, para um mesmo "post pai", há vários níveis, em cada nível vai ter seu respectivo post mais atual. 
       # ao definir quais posts são "netos" do mesmo post do level inicial, pode-se saber qual, realmente, é o mais recente de todos e guardar sua data

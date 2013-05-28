@@ -18,8 +18,9 @@ class PostsController < ApplicationController
     p['type'] ||= "discussion" # qualquer type diferente de "news" e vazio
 
     @display_mode = p['display_mode'] ||= 'tree'
-    @posts = @discussion.posts(p)
-    @posts = Post.reorder_by_latest_posts(params[:discussion_id], @posts) unless (p['display_mode'] == 'list')# reordenando os posts a partir dos seus "filhos/netos"
+
+    # se for em forma de lista ou para o mobilis, pesquisa pelo método posts; caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
+    @posts = ((p['display_mode'] == 'list' or request.params["format"] == "json") ? @discussion.posts(p) : Post.reorder_by_latest_posts(params[:discussion_id], @discussion.discussion_posts.where(parent_id: nil)))
 
     respond_to do |format|
       format.html
