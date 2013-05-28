@@ -140,20 +140,11 @@ jQuery(function(){
 
   /* caso nenhum arquivo/pasta tenha sido selecionado, exibe uma mensagem de erro dentro
   do proprio dropdown */
-  jQuery("#folder_dropdown").on('show', function(event, dropdownData) {
-    if(typeof selNodes == "undefined") {
-      jQuery("#folder_dropdown_alert").show();
-      jQuery("#folder_dropdown_content").hide();
-    } else {
-      jQuery("#folder_dropdown_alert").hide();
-      jQuery("#folder_dropdown_content").show();
-    }
-  });
 
   $("#btn-move-node").click(function() {
     trigger = jQuery(this);
     target = jQuery(this).data('dropdown-alt');
-    if(typeof selNodes == "undefined") {
+    if(typeof selNodes == "undefined" || selNodes.length == 0) {
       jQuery("#folder_dropdown_alert").show();
       jQuery("#folder_dropdown_content").hide();
     } else {
