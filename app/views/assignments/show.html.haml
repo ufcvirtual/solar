@@ -74,7 +74,7 @@
       .portfolio_div_padding= t(:itens_not_found)
 
 / Participantes do grupo
-- if @assignment.type_assignment == Group_Activity
+- if @assignment.type_assignment == Assignment_Type_Group
   - unless @group.nil?
     .block_wrapper
       .block_title
@@ -113,7 +113,7 @@
           %tr.lines
             %th= t(:name, :scope => [:assignment, :files])
             %th{:align => "right", :style => "width: 80px"}= t(:size, :scope => [:assignment, :files])
-            - if @assignment.type_assignment == Group_Activity 
+            - if @assignment.type_assignment == Assignment_Type_Group 
               %th{:align => "center", :style => "width: 70px"}= t(:sent_by, :scope => [:assignment, :files])
             %th.date_column= t(:sent_on, :scope => [:assignment, :files])
             - if can? :delete_file, @assignment and @assignment.user_can_access_assignment(@user.id, @student_id, @group_id)
@@ -125,7 +125,7 @@
                 = link_to image_tag(icon_attachment(file.attachment_file_name)), download_files_assignments_path(:assignment_id => @assignment.id, :file_id => file.id, :student_id => @student_id, :group_id => @group_id, :type => "assignment"), {:class => "file_icon", :alt => " "}
                 = link_to file.attachment_file_name, download_files_assignments_path(:assignment_id => @assignment.id, :file_id => file.id, :student_id => @student_id, :group_id => @group_id, :type => "assignment"), {:class => "link_content"}
               %td.right= format('%.2f KB', file.attachment_file_size/1024.0)
-              - if @assignment.type_assignment == Group_Activity
+              - if @assignment.type_assignment == Assignment_Type_Group
                 %td.center= file.user.nick
               %td.center= l(file.attachment_updated_at, :format => :at_date)
               - if can? :delete_file, @assignment and file.user_id == @user.id

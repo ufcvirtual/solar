@@ -618,3 +618,9 @@ res112:
   controller: 'lessons'
   action: 'update'
   description: 'Editar aulas'
+
+res113:
+  id: 113
+  controller: 'assignments'
+  action: 'list'
+  description: 'Edição - Lista de trabalhos'

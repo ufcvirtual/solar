@@ -64,7 +64,7 @@ class  GroupAssignmentTest < ActiveSupport::TestCase
 
   test "recupera todas as atividades de grupo de uma turma" do 
     all_group_assignments_method = GroupAssignment.all_by_group_id(groups(:g3).id)
-    all_group_assignments = Assignment.all(:conditions => ["type_assignment = #{Group_Activity} AND allocation_tags.group_id = #{groups(:g3).id}"], :include => [:allocation_tag, :schedule, :group_assignments], :order => "schedules.start_date", :select => ["id, name, enunciation, schedule_id"])
+    all_group_assignments = Assignment.all(:conditions => ["type_assignment = #{Assignment_Type_Group} AND allocation_tags.group_id = #{groups(:g3).id}"], :include => [:allocation_tag, :schedule, :group_assignments], :order => "schedules.start_date", :select => ["id, name, enunciation, schedule_id"])
     assert_equal(all_group_assignments, all_group_assignments_method)
   end
 

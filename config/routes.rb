@@ -137,8 +137,7 @@ Solar::Application.routes.draw do
     collection do
       get :student
       get :professor
-
-      # get :list
+      get :list
 
       get :download_files
       get :send_public_files_page

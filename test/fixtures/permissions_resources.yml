@@ -636,6 +636,11 @@ pedit4:
   resource_id: 66
   per_id: false
 
+pedit5:
+  profile_id: 5
+  resource_id: 113
+  per_id: false
+
 
 # Material de apoio
 mapedit1:

@@ -3,6 +3,8 @@ class AssignmentsController < ApplicationController
   include AssignmentsHelper
   include FilesHelper
 
+  layout false, only: [:list]
+
   before_filter :prepare_for_group_selection, :only => [:professor, :student]
   load_and_authorize_resource :only => [:information, :show, :import_groups_page, :import_groups, :manage_groups, :evaluate, :send_comment, :remove_comment]
 
@@ -12,8 +14,8 @@ class AssignmentsController < ApplicationController
     authorize! :professor, Assignment
 
     allocation_tags_ids    = params[:allocation_tags_ids] || [active_tab[:url]['allocation_tag_id']]
-    @individual_activities = allocation_tags_ids.collect{|at| Assignment.find_all_by_allocation_tag_id_and_type_assignment(at, Individual_Activity)}.flatten.uniq
-    @group_activities      = allocation_tags_ids.collect{|at| Assignment.find_all_by_allocation_tag_id_and_type_assignment(at, Group_Activity)}.flatten.uniq
+    @individual_activities = allocation_tags_ids.collect{|at| Assignment.find_all_by_allocation_tag_id_and_type_assignment(at, Assignment_Type_Individual)}.flatten.uniq
+    @group_activities      = allocation_tags_ids.collect{|at| Assignment.find_all_by_allocation_tag_id_and_type_assignment(at, Assignment_Type_Group)}.flatten.uniq
 
     render :layout => false if params[:allocation_tags_ids]
   end
@@ -23,10 +25,32 @@ class AssignmentsController < ApplicationController
 
     group_id                     = params['selected_group'] # turma
     @student_id                  = current_user.id
-    @individual_assignments_info = Assignment.student_assignments_info(group_id, @student_id, Individual_Activity) # atividades individuais pelo grupo_id em que o usuario esta inserido
-    @group_assignments_info      = Assignment.student_assignments_info(group_id, @student_id, Group_Activity) # atividades em grupo pelo grupo_id em que o usuario esta inserido
+    @individual_assignments_info = Assignment.student_assignments_info(group_id, @student_id, Assignment_Type_Individual) # atividades individuais pelo grupo_id em que o usuario esta inserido
+    @group_assignments_info      = Assignment.student_assignments_info(group_id, @student_id, Assignment_Type_Group) # atividades em grupo pelo grupo_id em que o usuario esta inserido
     @public_area                 = PublicFile.all_by_class_id_and_user_id(group_id, @student_id)
   end
+
+
+
+
+
+  def list
+    @what_was_selected = params[:what_was_selected]
+    @allocation_tags_ids = params[:allocation_tags_ids].uniq
+    authorize! :list, Assignment, on: @allocation_tags_ids
+
+    begin
+      # @allocation_tags = AllocationTag.find(@allocation_tags_ids)
+      @assignments = Assignment.where(allocation_tag_id: @allocation_tags_ids)
+    rescue
+      render nothing: true, status: :unprocessable_entity
+    end
+  end
+
+
+
+
+
 
   ##
   # Informações do andamento da atividade para um aluno/grupo escolhido
@@ -57,7 +81,7 @@ class AssignmentsController < ApplicationController
   ##
   def information
     @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  #arquivos que fazem parte da descrição da atividade
-    if @assignment.type_assignment == Group_Activity 
+    if @assignment.type_assignment == Assignment_Type_Group 
       @groups                 = GroupAssignment.find_all_by_assignment_id(@assignment.id)
       @students_without_group = @assignment.students_without_groups
     else

@@ -1,0 +1,52 @@
+= javascript_include_tag "edition.js"
+= hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+
+.block_wrapper
+  .block_title
+    %h2= t(:assignment, scope: [:editions, :items])
+
+.block_wrapper.list_assignments
+  .edition_allocation_tag_path= allocation_tag_path(AllocationTag.find(@allocation_tags_ids.flatten.uniq.compact.first), @what_was_selected)
+
+  .block_content_toolbar
+    .block_toolbar_left.btn-group
+      %a.btn.btn_main{:href => "#", 'data-dropdown' => "#dropdown"}
+        = content_tag(:i, nil, :class=>'icon-plus-3')
+        %i.icon-arrow-down-3
+      %div{:id=>"dropdown", :class=>"dropdown dropdown-tip"}
+        %ul.dropdown-menu
+          / %li= link_to t(".new"), '#', id: 'new_assignment', :"data-link" => "", :"data-box-title" => t(".new_assignment")
+          %li= link_to t(".new"), '#', id: 'new_assignment', onclick: "javascript:alert('em desenvolvimento');"
+
+    .block_toolbar_right
+      .btn-group
+        = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit', disabled: true
+        = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del', disabled: true
+
+  .block_wrapper.assignments
+    - unless @assignments.empty? or @assignments.nil?
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th{style: 'text-align:center;'}
+            %th{style: 'text-align:left;'}= t(".name")
+            %th{style: 'text-align:center;'}= t(".availability")
+            %th{style: 'text-align:center;'}= t(".type")
+
+        %tbody
+          - @assignments.each do |assignment|
+            %tr.lines{id: "tr_#{assignment.id}"}
+              %td{style: 'text-align:center;'}
+                = check_box_tag("c_#{assignment.id}", assignment.id, false, {class: "ckb_assignment"})
+              %td
+                %div= assignment.name
+              %td{style: 'text-align:center;'}
+                %div
+                  %span= l(assignment.schedule.start_date, format: :normal)
+                  %span= ' - '
+                  %span= l(assignment.schedule.end_date, format: :normal)
+              %td{style: 'text-align:center;'}
+                %div= (assignment.type_assignment.to_i == Assignment_Type_Individual) ? t(".individual") : t(".group")
+
+    - else
+      .block_content.block_content_text= t(".none")

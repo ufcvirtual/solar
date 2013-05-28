@@ -37,8 +37,8 @@ class ScoresController < ApplicationController
 
     authorize! :find, @student # verifica se o usuario logado tem permissao para consultar o usuario informado
 
-    @individual_activities = Assignment.student_assignments_info(group_id, @student.id, Individual_Activity)
-    @group_activities = Assignment.student_assignments_info(group_id, @student.id, Group_Activity)
+    @individual_activities = Assignment.student_assignments_info(group_id, @student.id, Assignment_Type_Individual)
+    @group_activities = Assignment.student_assignments_info(group_id, @student.id, Assignment_Type_Group)
     @discussions = Discussion.all_by_allocations_and_student_id(related_allocations, @student.id)
 
     from_date = (Date.today << 2).to_s(:db) # dois meses atras

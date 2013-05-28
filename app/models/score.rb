@@ -46,13 +46,13 @@ SQL
       assignments_grades, groups_ids = [], [] # informações do aluno na atividade
 
       assignments.each do |assignment|
-        student_group = (assignment.type_assignment == Group_Activity) ? (GroupAssignment.first(:joins => [:group_participants], :conditions => ["group_participants.user_id = #{student.id} 
+        student_group = (assignment.type_assignment == Assignment_Type_Group) ? (GroupAssignment.first(:joins => [:group_participants], :conditions => ["group_participants.user_id = #{student.id} 
           AND group_assignments.assignment_id = #{assignment.id}"])) : nil
-        student_id = (assignment.type_assignment == Group_Activity) ? nil : student.id # se for atividade de groupo, id do aluno é nulo
+        student_id = (assignment.type_assignment == Assignment_Type_Group) ? nil : student.id # se for atividade de groupo, id do aluno é nulo
         groups_ids << (student_group.nil? ? nil : student_group.id) # se aluno estiver em grupo, recupera id
         send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignment.id, student_id, groups_ids)
         grade = ((send_assignment.nil? or send_assignment.assignment_files.empty?) ? "an" : "as") # nota ou situação do aluno (an: trabalho não enviado, as: trabalho não corrigido)
-        if (assignment.type_assignment == Group_Activity and student_group.nil?)
+        if (assignment.type_assignment == Assignment_Type_Group and student_group.nil?)
           assignments_grades << "without_group"
         else 
           assignments_grades << ((send_assignment and not send_assignment.grade.nil?) ? send_assignment.grade : grade)

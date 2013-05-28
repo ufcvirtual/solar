@@ -685,6 +685,16 @@
   not_sent: Not Sent
   without_group: Without Group
 
+  assignments:
+    list:
+      none: No assignment registered
+      new: New Assignment
+      name: Name
+      availability: Availability
+      type: Type
+      individual: Individual
+      group: Group
+
   assignment:
     information:
       begin: Begin

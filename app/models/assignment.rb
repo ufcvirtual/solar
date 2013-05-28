@@ -53,9 +53,9 @@ class Assignment < ActiveRecord::Base
   ##
   def self.assignment_situation_of_student(assignment_id, student_id, group_id = nil)
     assignment = Assignment.find(assignment_id)
-    student_group = (assignment.type_assignment == Group_Activity) ? (GroupAssignment.first(:include => [:group_participants], :conditions => ["group_participants.user_id = #{student_id} 
+    student_group = (assignment.type_assignment == Assignment_Type_Group) ? (GroupAssignment.first(:include => [:group_participants], :conditions => ["group_participants.user_id = #{student_id} 
       AND group_assignments.assignment_id = #{assignment.id}"])) : nil unless student_id.nil?
-    user_id = (assignment.type_assignment == Group_Activity) ? nil : student_id
+    user_id = (assignment.type_assignment == Assignment_Type_Group) ? nil : student_id
     group_id = (student_group.nil? ? group_id : student_group.id) # se aluno estiver em grupo, recupera id
     send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignment_id, user_id, group_id)
 
@@ -63,7 +63,7 @@ class Assignment < ActiveRecord::Base
       situation = "not_started"  
     elsif (not send_assignment.nil? and  not send_assignment.grade.nil?)
       situation = "corrected"
-    elsif assignment.type_assignment == Group_Activity and group_id.nil?
+    elsif assignment.type_assignment == Assignment_Type_Group and group_id.nil?
       situation = "without_group"
     elsif (not send_assignment.nil? and send_assignment.assignment_files.size > 0)
       situation = "sent"
@@ -130,9 +130,9 @@ class Assignment < ActiveRecord::Base
     assignments_grades, groups_ids, has_comments, situation = [], [], [], [] # informações da situação do aluno
 
     assignments.each_with_index do |assignment, idx|
-      student_group = (assignment.type_assignment == Group_Activity) ? (GroupAssignment.first(:include => [:group_participants], :conditions => ["group_participants.user_id = #{student_id} 
+      student_group = (assignment.type_assignment == Assignment_Type_Group) ? (GroupAssignment.first(:include => [:group_participants], :conditions => ["group_participants.user_id = #{student_id} 
         AND group_assignments.assignment_id = #{assignment.id}"])) : nil
-      user_id = (assignment.type_assignment == Group_Activity) ? nil : student_id
+      user_id = (assignment.type_assignment == Assignment_Type_Group) ? nil : student_id
       groups_ids[idx] = (student_group.nil? ? nil : student_group.id) # se aluno estiver em grupo, recupera id deste
       send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignment.id, user_id, groups_ids[idx])
       assignments_grades[idx] = send_assignment.nil? ? nil : send_assignment.grade #se tiver send_assignment, tenta pegar nota
@@ -149,7 +149,7 @@ class Assignment < ActiveRecord::Base
     class_responsible = allocation_tag.is_user_class_responsible?(current_user_id)
     can_access = (user_id.to_i == current_user_id)
 
-    if type_assignment == Group_Activity
+    if type_assignment == Assignment_Type_Group
       group      = GroupAssignment.find_by_id_and_assignment_id(group_id, id)
       can_access = group.group_participants.map(&:user_id).include?(current_user_id) unless group.nil?
     end

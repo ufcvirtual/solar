@@ -31,6 +31,10 @@ Material_Type_Link = 1
 Lesson_Type_File = 0 # aula com envio de arquivo
 Lesson_Type_Link = 1 # aula por link
 
+# constantes de tipo de trabalhos
+Assignment_Type_Individual = 0
+Assignment_Type_Group      = 1
+
 # constante que indica numero maximo de abas abertas
 Max_Tabs_Open = 4
 
@@ -59,7 +63,3 @@ Context_Curriculum_Unit = 2 #Context.find_by_name('curriculum_unit').id
 Discussion_Responsible_Extra_Time   = 3
 Discussion_Post_Max_Indent_Level    = 4
 Assignment_Responsible_Extra_Time   = 3 
-
-# Constantes que indicam se a atividade é individual ou em grupo
-Individual_Activity = 1
-Group_Activity      = 2

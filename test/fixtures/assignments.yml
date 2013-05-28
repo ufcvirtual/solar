@@ -29,7 +29,7 @@ a4:
   name: Atividade em grupo I
   enunciation: enunciado de trabalho em grupo
   schedule_id: 20
-  type_assignment: 2
+  type_assignment: 1
 
 # quimica I - trabalho em grupo2
 a5:
@@ -38,7 +38,7 @@ a5:
   name: Atividade em grupo II
   enunciation: enunciado de trabalho em grupo
   schedule_id: 21
-  type_assignment: 2
+  type_assignment: 1
 
 # quimica I - trabalho em grupo3
 a6:
@@ -47,7 +47,7 @@ a6:
   name: Atividade em grupo III
   enunciation: esta é uma atividade sem grupo algum.
   schedule_id: 21
-  type_assignment: 2
+  type_assignment: 1
 
 a7:
   id: 7
@@ -55,7 +55,7 @@ a7:
   name: Atividade individual VII
   enunciation: esta é uma atividade individual
   schedule_id: 22 #prazo concluído
-  type_assignment: 1 #individual
+  type_assignment: 0 #individual
 
 a8:
   id: 8
@@ -63,7 +63,7 @@ a8:
   name: Atividade individual IV
   enunciation: esta é uma atividade individual
   schedule_id: 18 #prazo não iniciado
-  type_assignment: 1 #individual
+  type_assignment: 0 #individual
 
 a9:
   id: 9
@@ -71,7 +71,7 @@ a9:
   name: Atividade individual V
   enunciation: esta é uma atividade individual
   schedule_id: 19 #prazo em aberto
-  type_assignment: 1 #individual
+  type_assignment: 0 #individual
 
 a10:
   id: 10
@@ -79,7 +79,7 @@ a10:
   name: Atividade I
   enunciation: esta é uma atividade individual
   schedule_id: 19 #prazo em aberto
-  type_assignment: 1 #individual
+  type_assignment: 0 #individual
 
 a11:
   id: 11
@@ -87,7 +87,7 @@ a11:
   name: Atividade em grupo I
   enunciation: esta é uma atividade em grupo
   schedule_id: 19 #prazo em aberto
-  type_assignment: 2 #grupo
+  type_assignment: 1 #grupo
 
 a12:
   id: 12
@@ -95,7 +95,7 @@ a12:
   name: Atividade em grupo II
   enunciation: esta é uma atividade em grupo
   schedule_id: 19 #prazo em aberto
-  type_assignment: 2 #grupo
+  type_assignment: 1 #grupo
 
 a13:
   id: 13
@@ -103,7 +103,7 @@ a13:
   name: Atividade individual VI
   enunciation: esta é uma atividade individual
   schedule_id: 22 #prazo concluído
-  type_assignment: 1 #individual
+  type_assignment: 0 #individual
 
 a14:
   id: 14
@@ -111,5 +111,5 @@ a14:
   name: Atividade individual VII
   enunciation: esta é uma atividade individual
   schedule_id: 27 #prazo em aberto
-  type_assignment: 1 #individual
+  type_assignment: 0 #individual
 

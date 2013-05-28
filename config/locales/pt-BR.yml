@@ -843,6 +843,16 @@
   not_sent: Não Enviado
   without_group: Sem Grupo
 
+  assignments:
+    list:
+      new: Novo Trabalho
+      name: Nome
+      availability: Disponibilidade
+      type: Tipo
+      individual: Individual
+      group: Grupo
+      none: Nenhum trabalho cadastrado
+
   assignment:
     information:
       begin: Início
@@ -1260,7 +1270,7 @@
       lesson_module: Módulo
       lesson: Aula
       support_material: Material de apoio
-      assignment: Atividade
+      assignment: Trabalho
       test: Prova
       edition_of: Edição de %{of}
       in_development: Em desenvolvimento
