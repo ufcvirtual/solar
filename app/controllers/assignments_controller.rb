@@ -36,11 +36,9 @@ class AssignmentsController < ApplicationController
 
   def list
     @what_was_selected = params[:what_was_selected]
-    @allocation_tags_ids = params[:allocation_tags_ids].uniq
-    authorize! :list, Assignment, on: @allocation_tags_ids
+    authorize! :list, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
 
     begin
-      # @allocation_tags = AllocationTag.find(@allocation_tags_ids)
       @assignments = Assignment.where(allocation_tag_id: @allocation_tags_ids)
     rescue
       render nothing: true, status: :unprocessable_entity

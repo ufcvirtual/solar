@@ -73,7 +73,7 @@
   });
 
   $(':checkbox.ckb_material').click(function() {
-    var box = $(this).parents("div.list_support_materials")
+    var box = $(this).parents("div.list_support_materials");
     var count = $('.ckb_material:checked', box).length;
     $('.btn_edit, .btn_del', box).attr('disabled', !count);
 

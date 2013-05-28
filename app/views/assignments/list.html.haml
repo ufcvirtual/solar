@@ -50,3 +50,15 @@
 
     - else
       .block_content.block_content_text= t(".none")
+
+:javascript
+
+  $(':checkbox.ckb_assignment').click(function() {
+    var box = $(this).parents("div.list_assignments");
+    var count = $('.ckb_assignment:checked', box).length;
+    $('.btn_edit, .btn_del', box).attr('disabled', !count);
+
+    if (count > 1) { // só é possível editar um trabalho por vez
+      $('.btn_edit', box).attr('disabled', true);
+    }
+  });

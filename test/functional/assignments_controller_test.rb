@@ -6,31 +6,22 @@ class AssignmentsControllerTest < ActionController::TestCase
 
   fixtures :allocation_tags, :assignments, :group_assignments, :users, :send_assignments
 
-  ##
-  # List
-  ##
-
   test "listar as atividiades de uma turma para usuario com permissao" do 
     sign_in users(:professor)
-    get :list
+    get :professor
     assert_response :success
     assert_not_nil assigns(:individual_activities)
     assert_not_nil assigns(:group_activities)
-    assert_template :list
+    assert_template :professor
   end
 
   test "nao listar as atividiades de uma turma para usuario sem permissao" do 
     sign_in users(:aluno1)
-    get :list
+    get :professor
     assert_response :redirect
     assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
   end
-
-  ##
-  # List_to_student
-  # => assignments_with_allocation_tag_test.rb
-  ##
   
   ##
   # Information
@@ -423,6 +414,19 @@ class AssignmentsControllerTest < ActionController::TestCase
     post(:import_groups, {:id => assignments(:a11).id, :assignment_id_import_from => assignments(:a12).id})   
     assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
+  end
+
+
+  ##
+  # Edicao
+  ##
+
+  test "listar trabalhos para edicao" do
+    sign_in users(:editor)
+    get :list, {what_was_selected: %(false false false true), allocation_tags_ids: [allocation_tags(:al3).id]}
+    assert_response :success
+    assert_not_nil assigns(:allocation_tags_ids)
+    assert_not_nil assigns(:assignments)
   end
 
 end

@@ -17,9 +17,8 @@ class SupportMaterialFilesControllerTest < ActionController::TestCase
 
   test "listar material para edicao" do
     get :list, {what_was_selected: %(false false false true), allocation_tags_ids: [allocation_tags(:al3).id]}
-
-    assert_not_nil assigns(:allocation_tags)
     assert_response :success
+    assert_not_nil assigns(:allocation_tags)
   end
 
   test "criar material do tipo link com protocolo default" do
