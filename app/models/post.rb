@@ -19,13 +19,6 @@ class Post < ActiveRecord::Base
     record.errors.add(attr) if not parent.nil? and parent.discussion_id != value
   end
 
-
-  # attr_accessor :attachments
- 
-  # def initialize
-  #  @attachments = files.map(&:id).join(",")
-  # end
-
   def can_be_answered?
     (self.level < Discussion_Post_Max_Indent_Level)
   end
