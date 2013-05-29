@@ -624,3 +624,21 @@ res113:
   controller: 'assignments'
   action: 'list'
   description: 'Edição - Lista de trabalhos'
+
+res114:
+  id: 114
+  controller: 'assignments'
+  action: 'create'
+  description: 'Criar trabalho'
+
+res115:
+  id: 115
+  controller: 'assignments'
+  action: 'update'
+  description: 'Atualizar trabalho'
+
+res116:
+  id: 116
+  controller: 'assignments'
+  action: 'destroy'
+  description: 'Deletar trabalho'

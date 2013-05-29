@@ -8,7 +8,7 @@ class Assignment < ActiveRecord::Base
   has_many :allocations, :through => :allocation_tag
   has_many :assignment_enunciation_files
   has_many :send_assignments
-  has_many :group_assignments
+  has_many :group_assignments, :dependent => :destroy
   has_many :group_participants, :through => :group_assignments
 
   before_save :define_end_evaluation_date
@@ -43,8 +43,8 @@ class Assignment < ActiveRecord::Base
     schedule = Schedule.find(schedule_id)
     if schedule.end_date > offer.end_date
       errors.add(:base, I18n.t(:final_date_smaller_than_offer, :scope => [:assignment, :notifications], :end_date_offer => offer.end_date.to_date))
-    elsif schedule.start_date > offer.start_date
-      errors.add(:base, I18n.t(:start_date_greater_than_offer, :scope => [:assignment, :notifications], :end_date_offer => offer.start_date.to_date))
+    # elsif schedule.start_date > offer.start_date
+    #   errors.add(:base, I18n.t(:start_date_greater_than_offer, :scope => [:assignment, :notifications], :end_date_offer => offer.start_date.to_date))
     end
   end
 

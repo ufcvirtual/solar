@@ -636,11 +636,26 @@ pedit4:
   resource_id: 66
   per_id: false
 
+# assignments
 pedit5:
   profile_id: 5
   resource_id: 113
   per_id: false
 
+pedit6:
+  profile_id: 5
+  resource_id: 114
+  per_id: false
+
+pedit7:
+  profile_id: 5
+  resource_id: 115
+  per_id: false
+
+pedit8:
+  profile_id: 5
+  resource_id: 116
+  per_id: false
 
 # Material de apoio
 mapedit1:

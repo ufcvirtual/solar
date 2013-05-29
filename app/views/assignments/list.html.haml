@@ -32,12 +32,14 @@
             %th{style: 'text-align:left;'}= t(".name")
             %th{style: 'text-align:center;'}= t(".availability")
             %th{style: 'text-align:center;'}= t(".type")
+            %th{style: 'text-align:center;'}= t(".feedback")
 
         %tbody
           - @assignments.each do |assignment|
+            - can_delete = assignment.send_assignments.count.zero?
             %tr.lines{id: "tr_#{assignment.id}"}
               %td{style: 'text-align:center;'}
-                = check_box_tag("c_#{assignment.id}", assignment.id, false, {class: "ckb_assignment"})
+                = check_box_tag("c_#{assignment.id}", assignment.id, false, {class: "ckb_assignment", :"data-can-delete" => can_delete})
               %td
                 %div= assignment.name
               %td{style: 'text-align:center;'}
@@ -47,6 +49,8 @@
                   %span= l(assignment.schedule.end_date, format: :normal)
               %td{style: 'text-align:center;'}
                 %div= (assignment.type_assignment.to_i == Assignment_Type_Individual) ? t(".individual") : t(".group")
+              %td{style: 'text-align:center;'}
+                %div= can_delete ? 'nao' : 'sim'
 
     - else
       .block_content.block_content_text= t(".none")
@@ -60,5 +64,11 @@
 
     if (count > 1) { // só é possível editar um trabalho por vez
       $('.btn_edit', box).attr('disabled', true);
+    }
+
+    // se o array for vazio quer dizer que posso deletar todos os selecionados
+    var can_delete_selecteds = !($(':checkbox.ckb_assignment:checked').map(function() { if (!$(this).data('can-delete')){return false} }).get().length);
+    if (!can_delete_selecteds) {
+      $('.btn_del', box).attr('disabled', true);
     }
   });

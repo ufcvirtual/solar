@@ -46,8 +46,69 @@ class AssignmentsController < ApplicationController
   end
 
 
+  def new
+    authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
 
+    @assignments = Assignment.new
+  end
 
+  def create
+    authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
+
+    begin
+      Assignment.transaction do
+        @schedule = Schedule.new(start_date: params[:start_date], end_date: params[:end_date])
+        @schedule.save
+
+        params[:assignment][:schedule_id] = @schedule.id
+        allocation_tags = AllocationTag.where("id IN (?) AND group_id IS NOT NULL", @allocation_tags_ids)
+        allocation_tags.each do |at|
+          @assignment = at.assignments.build(params[:assignment])
+          @assignment.save
+        end
+      end
+
+      render nothing: true
+    rescue Exception => error
+      render :new
+      # render json: {success: false, msg: @support_material.errors.full_messages.join(' ')}, status: :unprocessable_entity
+    end
+
+  end
+
+  def edit
+    authorize! :update, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
+
+    @assignment = Assignment.find(params[:id])
+  end
+
+  def update
+    @assignment = Assignment.find(params[:id])
+    authorize! :update, Assignment, on: [params[:allocation_tags_ids]].flatten.uniq
+
+    begin
+      @assignment.update_attributes!(params[:assignment])
+
+      render nothing: true
+    rescue Exception => e
+      render json: {success: false, msg: e.messages}, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    authorize! :destroy, Assignment, on: params[:allocation_tags_ids].uniq
+
+    begin
+      Assignment.transaction do
+        Assignment.includes(:send_assignments).
+          where(assignments: {id: params[:id].split(",")}, send_assignments: {id: nil}). # retirando trabalhos com resposta de alunos
+          map(&:destroy)
+      end
+      render json: {success: true}
+    rescue Exception => e
+      render json: {success: false, msg: e}, status: :unprocessable_entity
+    end
+  end
 
 
   ##
