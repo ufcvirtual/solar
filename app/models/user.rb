@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
   validates :username, presence: true, :length => { :within => 3..20 }, :uniqueness => true
   validates :email, presence: true, confirmation: true#, :unless => :already_email_error_or_email_not_changed?
   validates :alternate_email, :format => { :with => email_format }
-  validates :password, presence: true, confirmation: true
+  validates :password, presence: true, confirmation: true, if: "not(password.nil?)"
   validates :special_needs, presence: true, :if => :has_special_needs?
 
   validates_length_of :address, :maximum => 99
