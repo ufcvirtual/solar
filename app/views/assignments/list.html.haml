@@ -15,13 +15,13 @@
         %i.icon-arrow-down-3
       %div{:id=>"dropdown", :class=>"dropdown dropdown-tip"}
         %ul.dropdown-menu
-          / %li= link_to t(".new"), '#', id: 'new_assignment', :"data-link" => "", :"data-box-title" => t(".new_assignment")
-          %li= link_to t(".new"), '#', id: 'new_assignment', onclick: "javascript:alert('em desenvolvimento');"
+          - na = t(:new, scope: "assignment.list")
+          %li= link_to na, '#', id: 'new_assignment', :"data-link" => new_assignment_path(allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-box-title" => na
 
     .block_toolbar_right
       .btn-group
-        = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit', disabled: true
-        = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del', disabled: true
+        = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit edit_assignment', disabled: true
+        = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del delete_assignment', :"data-link-to-delete" => assignment_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-link-to-list" => list_assignments_path(allocation_tags_ids: [@allocation_tags_ids]), disabled: true
 
   .block_wrapper.assignments
     - unless @assignments.empty? or @assignments.nil?
@@ -29,10 +29,10 @@
         %thead
           %tr.lines
             %th{style: 'text-align:center;'}
-            %th{style: 'text-align:left;'}= t(".name")
-            %th{style: 'text-align:center;'}= t(".availability")
-            %th{style: 'text-align:center;'}= t(".type")
-            %th{style: 'text-align:center;'}= t(".feedback")
+            %th{style: 'text-align:left;'}= t(:name, scope: "assignment.list")
+            %th{style: 'text-align:center;'}= t(:availability, scope: "assignment.list")
+            %th{style: 'text-align:center;'}= t(:type, scope: "assignment.list")
+            %th{style: 'text-align:center;'}= t(:answers, scope: "assignment.list")
 
         %tbody
           - @assignments.each do |assignment|
@@ -48,27 +48,67 @@
                   %span= ' - '
                   %span= l(assignment.schedule.end_date, format: :normal)
               %td{style: 'text-align:center;'}
-                %div= (assignment.type_assignment.to_i == Assignment_Type_Individual) ? t(".individual") : t(".group")
+                %div= t(((assignment.type_assignment.to_i == Assignment_Type_Individual) ? :individual : :group), scope: "assignment.list")
+
               %td{style: 'text-align:center;'}
-                %div= can_delete ? 'nao' : 'sim'
+                %div= can_delete ? t(:no, scope: "assignment.list") : t(:yes, scope: "assignment.list")
 
     - else
-      .block_content.block_content_text= t(".none")
+      .block_content.block_content_text= t(:none, scope: "assignment.list")
 
 :javascript
 
-  $(':checkbox.ckb_assignment').click(function() {
-    var box = $(this).parents("div.list_assignments");
-    var count = $('.ckb_assignment:checked', box).length;
-    $('.btn_edit, .btn_del', box).attr('disabled', !count);
+  $(function(){
 
-    if (count > 1) { // só é possível editar um trabalho por vez
-      $('.btn_edit', box).attr('disabled', true);
-    }
+    $('#new_assignment').click(function() {
+      open_lightbox4($(this).data('link'), $(this).data('box-title'));
+    });
 
-    // se o array for vazio quer dizer que posso deletar todos os selecionados
-    var can_delete_selecteds = !($(':checkbox.ckb_assignment:checked').map(function() { if (!$(this).data('can-delete')){return false} }).get().length);
-    if (!can_delete_selecteds) {
-      $('.btn_del', box).attr('disabled', true);
-    }
+    $(':checkbox.ckb_assignment').click(function() {
+      var box = $(this).parents("div.list_assignments");
+      var count = $('.ckb_assignment:checked', box).length;
+      $('.btn_edit, .btn_del', box).attr('disabled', !count);
+
+      if (count > 1) { // só é possível editar um trabalho por vez
+        $('.btn_edit', box).attr('disabled', true);
+      }
+
+      // se o array for vazio quer dizer que posso deletar todos os selecionados
+      var can_delete_selecteds = !($(':checkbox.ckb_assignment:checked').map(function() { if (!$(this).data('can-delete')){return false} }).get().length);
+      if (!can_delete_selecteds) {
+        $('.btn_del', box).attr('disabled', true);
+      }
+    });
+
+
+    $('.edit_assignment').click(function() {
+      if ($(this).attr('disabled') == 'disabled') {
+        return false;
+      }
+
+      var assignments_ids = $('.ckb_assignment:checked', $(this).parents("div.list_assignments")).map(function() { return this.value; }).get();
+      console.log(assignments_ids);
+
+      // if (!(!material_ids.length || material_ids.length > 1 || !$('.ckb_material:checked:first').data('is-link'))) {
+      //   var url_edit = $(this).data('link-to-edit').replace(':id', material_ids);
+      //   open_lightbox4(url_edit, $(this).data('edit-title'));
+      // }
+      // return false;
+    });
+
+
+
+    $('.delete_assignment').click(function() {
+      if ($(this).attr('disabled') == 'disabled') {
+        return false;
+      }
+
+      var assignments_ids = $('.ckb_assignment:checked', $(this).parents("div.list_assignments")).map(function() { return this.value; }).get();
+      if (assignments_ids.length) {
+        var url_delete = $(this).data('link-to-delete').replace(':id', assignments_ids);
+        delete_object(url_delete, $(this).data('link-to-list'));
+      }
+      return false;
+    });
+
   });

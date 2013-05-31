@@ -329,6 +329,9 @@
           attributes:
             address:
               invalid: inválida
+
+  ########### GERAL ###############
+
   all: "Todos"
   home: "Home"
   of: "de"
@@ -844,8 +847,10 @@
   not_sent: Não Enviado
   without_group: Sem Grupo
 
-  assignments:
+  assignment:
     list:
+      "yes": Sim
+      "no": Não
       new: Novo Trabalho
       name: Nome
       availability: Disponibilidade
@@ -853,8 +858,7 @@
       individual: Individual
       group: Grupo
       none: Nenhum trabalho cadastrado
-
-  assignment:
+      answers: Respostas
     information:
       begin: Início
       end: Fim

@@ -178,7 +178,7 @@
             address:
               invalid: invalid
 
-########### GERAL ###############
+  ########### GERAL ###############
 
   all: "All"
   home: "Home"
@@ -686,8 +686,10 @@
   not_sent: Not Sent
   without_group: Without Group
 
-  assignments:
+  assignment:
     list:
+      "yes": Yes
+      "no": No
       none: No assignment registered
       new: New Assignment
       name: Name
@@ -695,8 +697,6 @@
       type: Type
       individual: Individual
       group: Group
-
-  assignment:
     information:
       begin: Begin
       end: End

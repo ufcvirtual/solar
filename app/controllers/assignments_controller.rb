@@ -98,6 +98,8 @@ class AssignmentsController < ApplicationController
   def destroy
     authorize! :destroy, Assignment, on: params[:allocation_tags_ids].uniq
 
+    # raise "#{params}"
+
     begin
       Assignment.transaction do
         Assignment.includes(:send_assignments).
