@@ -70,16 +70,25 @@ $(function(){
     var painelId = $(this).attr("href");
     $(".menu_footer a.panel-link").removeClass("current_menu");
     $("a[href="+painelId+"]").addClass("current_menu");
-    $(painelId).fadeToggle(800,function(){
-      $(".panel").each(function(){
-        var painelOcultar = $(this).attr("id");
-        var painelOcultarId = "#"+painelOcultar;
-        if ( painelOcultarId != painelId ) {
-          $(this).fadeOut(800);
-        }
+    if ( $(painelId).css('display') == 'block' ) {
+      $(painelId).fadeOut(800);
+      $("a[href="+painelId+"]").removeClass("current_menu");
+    } else {
+      $(painelId).fadeToggle(800,function(){
+        $(".panel").each(function(){
+          var painelOcultar = $(this).attr("id");
+          var painelOcultarId = "#"+painelOcultar;
+          if ( painelOcultarId != painelId ) {
+            $(this).fadeOut(800);
+          }
+        })
       })
-    });
+    };
+      
 //    $(".content", painelId).jScrollPane();
+ /*   $(painelId).fadeOut(function(){
+      $(".menu_footer a.panel-link").removeClass("current_menu");
+    });*/
   });
 
   /* Passo-a-passo da página de cadastro*/

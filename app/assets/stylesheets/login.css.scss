@@ -191,10 +191,8 @@ $header-tab-height: 36px;
 
 /*Logo*/
 #login_wrapper h1 {
-  margin-bottom: 40px;
   margin-top: 5%;
   text-align: center;
-  height: 115px;
 }
 
 /*esqueceu a senha?*/
@@ -438,7 +436,7 @@ footer{
 }
 
 /* Menu de idiomas */
-.choice-language {
+.link-arrow{
   background: url("language-arrow.png") right no-repeat;
   padding-right: 15px;
 }

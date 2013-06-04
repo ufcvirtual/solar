@@ -13,6 +13,7 @@
       = f.submit t(:signin), :id => "submit-login", :tabindex => "3"
   #login-register
     = form_tag(verify_cpf_users_path, method: :get) do
+      = hidden_field_tag :locale, params[:locale]
       .form-field
         %input#cpf-register{:name => "cpf", :placeholder => "CPF", :type => "text"}/
       = submit_tag(t(:verify), id: "submit-cpf")

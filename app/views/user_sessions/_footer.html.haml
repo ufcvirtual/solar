@@ -1,5 +1,5 @@
 - locales = ['pt-BR', 'en-US']
-- selected = (params[:locale].present? and locales.include?(params[:locale])) ? params[:locale] : locales.first
+- selected = "#{I18n.locale}"
 
 #team.panel
   .content
@@ -28,7 +28,7 @@
       %li= link_to t(:login_footer3), "#team", :class => 'panel-link'
       %li= link_to t(:license_terms), "#license-terms", :class => 'panel-link'
       %li.choice-language
-        = link_to t(:login_language), '#'
+        = link_to t(:login_language), '#', :class => "link-arrow"
         %ul.choice-language-menu
           %li.language.pt_BR
             = link_to 'Português (BR)', url_for(locale: locales.first), class: ((selected == locales.first) ? "selected" : "")
