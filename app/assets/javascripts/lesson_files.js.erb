@@ -2,6 +2,7 @@
 
 jQuery(function(){
 
+  /* Para não efetuar logout após ações */
   jQuery(document).ajaxSend(function(e, xhr, options) {
     var token =$("meta[name='csrf-token']").attr("content");
     xhr.setRequestHeader("X-CSRF-Token", token);  
@@ -75,7 +76,7 @@ jQuery(function(){
       }else
         flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
     },
-    onPostInit: function(isReloading, isError){ // ao carregar a árvore
+    onPostInit: function(){ // ao carregar a árvore
 
       // recupera os nós selecionados (os cookies armazenam apenas os data.key)
       selNodes = jQuery.map(nodes_selected, function(selected){
@@ -281,7 +282,7 @@ jQuery(function(){
     Esta função não serve apenas para filhos diretos. Se há uma pasta com algum arquivo selecionado, a pasta deve estar sinalizada. 
     Entretanto, o "pai" desta pasta também deve ser sinalizado e assim consecutivamente. */
   function has_child_selected(node, look_down){
-    descendantOfNode = jQuery.map(selNodes, function(node_selected){
+    descendantOfNode = jQuery.map(selNodes, function(node_selected){ 
         return (node_selected.isDescendantOf(node));
     });
 
@@ -293,6 +294,7 @@ jQuery(function(){
     if(node.parent != null)
       has_child_selected(node.parent);
 
+    // no caso de um nó ser expandido, deve verificar seus filhos para "marcação" de filho selecionado
     if(look_down){
       for(var i = 0; i < node.childList.length; i++){
         has_child_selected(node.getChildren()[i]);
@@ -554,9 +556,7 @@ function newFolder(path){
   jQuery.ajax({
     type: 'POST',
     url: url,
-    data: {
-      "path": path
-    },
+    data: { "path": path },
     success: function(data){
       jQuery("#lesson_file_management").html(data);
       deselect_all();
