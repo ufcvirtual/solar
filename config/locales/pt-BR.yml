@@ -245,9 +245,14 @@
         start_date: Data inicial
         end_date: Data final
       assignment:
-        name: Nome
+        allocation_tag_id: Turma
+        name: Título
+        type_assignment: Tipo
         enunciation: Enunciado
         end_evaluation_period: Data final do período de avaliação
+        schedule: Período
+        start_date: Data de início
+        end_date: Data de término
       offer:
         course: Curso
         curriculum_unit: Unidade Curricular
@@ -848,10 +853,13 @@
   without_group: Sem Grupo
 
   assignment:
+    new:
+      groups: Turmas
     list:
       "yes": Sim
       "no": Não
       new: Novo Trabalho
+      edit: Edição de Trabalho
       name: Nome
       availability: Disponibilidade
       type: Tipo

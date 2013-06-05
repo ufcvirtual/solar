@@ -134,6 +134,7 @@ Solar::Application.routes.draw do
   mount Ckeditor::Engine => "/ckeditor"
 
   resources :assignments, except: :index do
+    # resources :schedules
     collection do
       get :student
       get :professor

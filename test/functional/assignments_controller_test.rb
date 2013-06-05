@@ -433,10 +433,13 @@ class AssignmentsControllerTest < ActionController::TestCase
 
     assert_difference("Assignment.count", 1) do
       assignment = {
-        start_date: Time.now.to_date.to_s,
-        end_date: (Time.now + 2.months).to_date.to_s,
-        allocation_tags_ids: [allocation_tags(:al3).id],
+        allocation_tags_ids: "#{allocation_tags(:al3).id}",
         assignment: {
+          schedule_attributes: {
+            start_date: Time.now.to_date.to_s,
+            end_date: (Time.now + 2.months).to_date.to_s,
+          },
+          allocation_tag_id: [allocation_tags(:al3).group.id],
           name: 'trabalho 1',
           enunciation: 'enunciado do trabalho 1',
           type_assignment: Assignment_Type_Individual,
@@ -451,17 +454,19 @@ class AssignmentsControllerTest < ActionController::TestCase
   test "criar trabalho em grupo para duas turmas" do
     sign_in users(:editor)
 
-    allocation_tags_ids = [allocation_tags(:al3).id, allocation_tags(:al11).id] # turmas de quimica
-
+    allocation_tags_ids = [allocation_tags(:al3).id, allocation_tags(:al11).id]
     get :new, {allocation_tags_ids: allocation_tags_ids}
     assert_template :new
 
     assert_difference("Assignment.count", 2) do
       assignment = {
-        start_date: Time.now.to_date.to_s,
-        end_date: (Time.now + 2.months).to_date.to_s,
-        allocation_tags_ids: allocation_tags_ids,
+        allocation_tags_ids: allocation_tags_ids.join(" "),
         assignment: {
+          schedule_attributes: {
+            start_date: Time.now.to_date.to_s,
+            end_date: (Time.now + 2.months).to_date.to_s,
+          },
+          allocation_tag_id: [allocation_tags(:al3).group.id, allocation_tags(:al11).group.id], # turmas de quimica
           name: 'trabalho 1',
           enunciation: 'enunciado do trabalho 1',
           type_assignment: Assignment_Type_Group,

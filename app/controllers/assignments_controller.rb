@@ -3,7 +3,7 @@ class AssignmentsController < ApplicationController
   include AssignmentsHelper
   include FilesHelper
 
-  layout false, only: [:list]
+  layout false, only: [:list, :new, :edit, :create, :update, :destroy]
 
   before_filter :prepare_for_group_selection, :only => [:professor, :student]
   load_and_authorize_resource :only => [:information, :show, :import_groups_page, :import_groups, :manage_groups, :evaluate, :send_comment, :remove_comment]
@@ -30,10 +30,6 @@ class AssignmentsController < ApplicationController
     @public_area                 = PublicFile.all_by_class_id_and_user_id(group_id, @student_id)
   end
 
-
-
-
-
   def list
     @what_was_selected = params[:what_was_selected]
     authorize! :list, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
@@ -45,41 +41,48 @@ class AssignmentsController < ApplicationController
     end
   end
 
-
   def new
     authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
 
-    @assignments = Assignment.new
+    @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
+    @assignment = Assignment.new
+    @assignment.build_schedule(start_date: Date.today, end_date: Date.today)
   end
 
   def create
-    authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
+    authorize! :create, Assignment
+
+    groups = AllocationTag.where(group_id: params[:assignment].delete(:allocation_tag_id))
+    @assignment = Assignment.new params[:assignment]
 
     begin
       Assignment.transaction do
-        @schedule = Schedule.new(start_date: params[:start_date], end_date: params[:end_date])
-        @schedule.save
-
-        params[:assignment][:schedule_id] = @schedule.id
-        allocation_tags = AllocationTag.where("id IN (?) AND group_id IS NOT NULL", @allocation_tags_ids)
-        allocation_tags.each do |at|
-          @assignment = at.assignments.build(params[:assignment])
-          @assignment.save
-        end
-      end
+        if groups.empty? # se as turmas nao foram passadas, lançar erro de validação
+          raise @assignment.valid? # apenas para recuperar os dados
+        else
+          groups.each do |at|
+            params[:assignment][:allocation_tag_id] = at.id
+            @assignment = Assignment.new params[:assignment]
+            @assignment.save!
+          end # each
+        end # else
+      end # transaction
 
       render nothing: true
     rescue Exception => error
+      # raise "#{error}"
+      @allocation_tags_ids = params[:allocation_tags_ids].split(' ')
+      @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
       render :new
-      # render json: {success: false, msg: @support_material.errors.full_messages.join(' ')}, status: :unprocessable_entity
     end
-
   end
 
   def edit
     authorize! :update, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
 
+    @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
     @assignment = Assignment.find(params[:id])
+    @schedule = @assignment.schedule
   end
 
   def update
@@ -98,8 +101,6 @@ class AssignmentsController < ApplicationController
   def destroy
     authorize! :destroy, Assignment, on: params[:allocation_tags_ids].uniq
 
-    # raise "#{params}"
-
     begin
       Assignment.transaction do
         Assignment.includes(:send_assignments).
@@ -111,7 +112,6 @@ class AssignmentsController < ApplicationController
       render json: {success: false, msg: e}, status: :unprocessable_entity
     end
   end
-
 
   ##
   # Informações do andamento da atividade para um aluno/grupo escolhido

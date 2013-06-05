@@ -98,12 +98,12 @@ class AssignmentTest < ActiveSupport::TestCase
     assert assignments(:a9).user_can_access_assignment(users(:professor).id, users(:aluno1).id)
   end
 
-  test "data final de avaliacao deve ser igual ou maior do que a data final da atividade" do 
-    assignment = Assignment.create(:end_evaluation_date => schedules(:schedule27).end_date - 3.month, :allocation_tag_id => allocation_tags(:al3).id, :schedule_id => schedules(:schedule27).id, :name => "assignment 1", :enunciation => "assignment 1", :type_assignment => Assignment_Type_Individual)
+  # test "data final de avaliacao deve ser igual ou maior do que a data final da atividade" do 
+  #   assignment = Assignment.create(:end_evaluation_date => schedules(:schedule27).end_date - 3.month, :allocation_tag_id => allocation_tags(:al3).id, :schedule_id => schedules(:schedule27).id, :name => "assignment 1", :enunciation => "assignment 1", :type_assignment => Assignment_Type_Individual)
 
-    assert (not assignment.valid?)
-    assert_equal assignment.errors[:end_evaluation_date].first, I18n.t(:greater_than_or_equal_to, :scope => [:activerecord, :errors, :messages], :count => schedules(:schedule27).end_date.to_date)
-  end
+  #   assert not(assignment.valid?)
+  #   assert_equal assignment.errors[:end_evaluation_date].first, I18n.t(:greater_than_or_equal_to, :scope => [:activerecord, :errors, :messages], :count => schedules(:schedule27).end_date.to_date)
+  # end
 
   test "periodo da atividade deve fazer parte do periodo da oferta" do 
     assignment = Assignment.create(:schedule_id => schedules(:schedule15).id, :allocation_tag_id => allocation_tags(:al3).id, :enunciation => "assignment 1", :type_assignment => Assignment_Type_Individual)

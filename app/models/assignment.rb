@@ -1,7 +1,7 @@
 class Assignment < ActiveRecord::Base
 
   belongs_to :allocation_tag
-  belongs_to :schedule
+  belongs_to :schedule#, :inverse_of => :assignments
 
   has_one :group, :through => :allocation_tag
 
@@ -11,46 +11,24 @@ class Assignment < ActiveRecord::Base
   has_many :group_assignments, :dependent => :destroy
   has_many :group_participants, :through => :group_assignments
 
+  accepts_nested_attributes_for :schedule
+
   before_save :define_end_evaluation_date
 
-  validate :min_end_evaluation_date
+  validates :name, :enunciation, :type_assignment, :allocation_tag_id, presence: true
   validate :verify_offer_date_range
 
-  ##
-  # Define o valor "default"
-  ##
+  ## define uma data final de avaliacao caso nao esteja definida
   def define_end_evaluation_date
-    offer = AllocationTag.find(allocation_tag_id).group.offer
-    self.end_evaluation_date = offer.end_date if (end_evaluation_date.blank? or end_evaluation_date.nil?)
+    self.end_evaluation_date = group.offer.end_date if (end_evaluation_date.nil? or end_evaluation_date.blank? or (end_evaluation_date.to_date < schedule.end_date.to_date))
   end
 
-  ##
-  # Verifica o valor mínimo permitido para o campo 
-  ##
-  def min_end_evaluation_date
-    define_end_evaluation_date
-    schedule = Schedule.find(schedule_id)
-    if end_evaluation_date < schedule.end_date.to_date
-      errors.add(:end_evaluation_date, I18n.t(:greater_than_or_equal_to, :scope => [:activerecord, :errors, :messages], :count => schedule.end_date.to_date))
-    end
-  end
-
-  ##
-  # Datas da atividade devem estar no intervalo de datas da oferta
-  ##
+  ## Datas da atividade devem estar no intervalo de datas da oferta
   def verify_offer_date_range
-    offer    = AllocationTag.find(allocation_tag_id).group.offer
-    schedule = Schedule.find(schedule_id)
-    if schedule.end_date > offer.end_date
-      errors.add(:base, I18n.t(:final_date_smaller_than_offer, :scope => [:assignment, :notifications], :end_date_offer => offer.end_date.to_date))
-    # elsif schedule.start_date > offer.start_date
-    #   errors.add(:base, I18n.t(:start_date_greater_than_offer, :scope => [:assignment, :notifications], :end_date_offer => offer.start_date.to_date))
-    end
+    errors.add(:base, I18n.t(:final_date_smaller_than_offer, :scope => [:assignment, :notifications], :end_date_offer => group.offer.end_date.to_date)) if schedule.end_date > group.offer.end_date
   end
 
-  ##
-  # Recupera situação do aluno na atividade
-  ##
+  ## Recupera situação do aluno na atividade
   def self.assignment_situation_of_student(assignment_id, student_id, group_id = nil)
     assignment = Assignment.find(assignment_id)
     student_group = (assignment.type_assignment == Assignment_Type_Group) ? (GroupAssignment.first(:include => [:group_participants], :conditions => ["group_participants.user_id = #{student_id} 
@@ -79,35 +57,27 @@ class Assignment < ActiveRecord::Base
   end
 
   def closed?
-    self.schedule.end_date < Date.today
+    schedule.end_date < Date.today
   end
 
-  ##
-  # Verifica se o usuário tem permissão a "tempo extra" na atividade em que está acessando
-  ##
   def extra_time?(user_id)
-    return (self.allocation_tag.is_user_class_responsible?(user_id) and self.closed?)
+    (allocation_tag.is_user_class_responsible?(user_id) and closed?)
   end
 
-  ##
-  # Verifica se está no prazo de avaliação
-  ##
   def on_evaluation_period?(user_id)
-    define_end_evaluation_date if self.end_evaluation_date.nil?
-    return ((Date.today <= self.end_evaluation_date) and self.assignment_in_time?(user_id))
+    define_end_evaluation_date if end_evaluation_date.nil? or end_evaluation_date.blank?
+    ((Date.today <= end_evaluation_date.to_date) and assignment_in_time?(user_id))
   end
 
   ## Verifica período que o responsável pode alterar algo na atividade
   def assignment_in_time?(user_id)
-    if self.allocation_tag.is_user_class_responsible?(user_id) # se responsável
-      can_access_assignment = (self.closed? and self.extra_time?(user_id)) # verifica se possui tempo extra
-    end
-    return (verify_date_range(self.schedule.start_date, self.schedule.end_date, Time.now) or can_access_assignment)
+    can_access_assignment = allocation_tag.is_user_class_responsible?(user_id) and (closed? and extra_time?(user_id)) # verifica se possui tempo extra
+    (verify_date_range(schedule.start_date, schedule.end_date, Time.now) or can_access_assignment)
   end
 
   ## Verifica se uma data esta em um intervalo de outras
   def verify_date_range(start_date, end_date, date)
-    return date > start_date && date < end_date
+    (date > start_date and date < end_date)
   end
 
   ##

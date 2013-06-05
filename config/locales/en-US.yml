@@ -107,9 +107,12 @@
         start_date: Initial date
         end_date: Final date
       assignment:
-        name: Name
+        name: Title
+        type_assignment: Type
         enunciation: Enunciation
         end_evaluation_period: Final date to evaluation period
+        start_date: Data de início
+        end_date: Data de término
       offer:
         course: Course
         curriculum_unit: Curriculum Unit
@@ -687,11 +690,14 @@
   without_group: Without Group
 
   assignment:
+    new:
+      groups: Groups
     list:
       "yes": Yes
       "no": No
       none: No assignment registered
       new: New Assignment
+      edit: Edit Assignment
       name: Name
       availability: Availability
       type: Type

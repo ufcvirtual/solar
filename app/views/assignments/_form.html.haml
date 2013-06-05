@@ -1,0 +1,49 @@
+.new_assignment
+  - types = {:"#{t(:individual, scope: [:assignment, :list])}" => Assignment_Type_Individual, :"#{t(:group, scope: [:assignment, :list])}" => Assignment_Type_Group}
+
+  = simple_form_for @assignment, html: {id: 'assignment_form', multipart: true} do |f|
+    = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+
+    .form-inputs.block_content
+      = f.input :name, required: true
+      = f.input :enunciation, required: true
+
+      = f.fields_for :schedule do |s|
+        .schedule_dates
+          .left= s.input :start_date, as: :string, input_html: {id: 'assignment_start_date'}
+          .right= s.input :end_date, as: :string, input_html: {id: 'assignment_end_date'}
+
+      = f.input :type_assignment, collection: types, include_blank: false, required: true
+      .groups
+        = f.error :allocation_tag_id
+        = f.label t(:groups, scope: [:assignment, :new])
+        = f.collection_check_boxes :allocation_tag_id, @groups, :id, :code
+
+    .right_buttons
+      = button_tag t(:save), :class => "btn btn_main", :type => "button", :id => "save"
+      = button_tag t(:cancel), :class => "btn btn_default", :type => "button", onclick: "javascript:removeLightBox();"
+    
+
+:css
+  .schedule_dates .input input, #assignment_type_assignment {
+    width: 85px;
+  }
+
+  .schedule_dates .left, .right {
+    float: left;
+  }
+
+:javascript
+
+  jQuery(function($){
+
+    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}'], {dateFormat: global_config.locale.dateFormat.default});
+    $('#assignment_start_date, #assignment_end_date').datepicker(options);
+
+    $('#save').click(function() {
+      $('#assignment_form:last').serialize_and_submit_form({
+        div_error: 'new_assignment',
+        redirect_url: '#{list_assignments_path(allocation_tags_ids: @allocation_tags_ids)}',
+      });
+    });
+  });
