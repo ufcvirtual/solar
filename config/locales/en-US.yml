@@ -492,7 +492,7 @@
     lesson_must_have_file_type: Lesson must have file type
     one_lesson_must_be_selected: One lesson must be selected
     item_must_be_selected: One item must be selected
-    one_folder_must_be_selected: One folder must be selected
+    one_folder_must_be_selected: Only one folder must be selected
     items_must_be_selected: One or more items must be selected
     index:
       cancel: Cancel
@@ -509,6 +509,7 @@
       move: Move
       attention_message: 'Attention:' 
       save_automatically_message: ' all changes are save automatically.'
+      send_file: Send file
     destination_folder_error: A destination folder must be selected
     move_error: It wasn't possible to move
     at_least_one: "Select, at least, one item to %{to}"
@@ -523,7 +524,7 @@
     must_be_a_file: Must be a file
     initial_file_error: It wasn't possibile to define initial file
     cant_remove_initial_file: "It's not possible to remove the initial file, please first redefine it"
-    define_initial_file_error: A initial file must be define.
+    define_initial_file_error: A initial file must be defined.
 
   support_material_files:
     list:

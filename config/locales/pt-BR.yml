@@ -651,7 +651,7 @@
     lesson_must_have_file_type: A aula deve ser do tipo de arquivo
     one_lesson_must_be_selected: Uma aula deve ser selecionada
     item_must_be_selected: Um item deve ser selecionado
-    one_folder_must_be_selected: Uma pasta deve ser selecionada
+    one_folder_must_be_selected: Apenas uma pasta deve ser selecionada
     items_must_be_selected: Um ou mais itens devem ser selecionados
     index:
       cancel: Cancelar
@@ -668,6 +668,7 @@
       move: Mover
       attention_message: 'Atenção:'
       save_automatically_message: ' todas as alterações são salvas automaticamente.'
+      send_file: Enviar arquivo
     destination_folder_error: Uma pasta de destino deve ser selecionada
     move_error: Não foi possível mover
     at_least_one: "Selecione, ao menos, um item para %{to}"

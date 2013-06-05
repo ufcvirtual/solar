@@ -34,7 +34,7 @@
       #lesson_item_dropdown.dropdown.dropdown-tip
         %ul.dropdown-menu
           %li
-            %a#lesson_new_file{:href => "#"}Enviar arquivo
+            %a#lesson_new_file{:href => "#"}=t(".send_file")
           %li
             %a#lesson_new_folder{:href => nil, 'data-path' => new_folder_lesson_files_path(lesson_id: @lesson.id)}= t(".new_folder")
     .btn-group

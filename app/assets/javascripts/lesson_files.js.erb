@@ -1,6 +1,7 @@
+// = require jquery.cookie
+
 jQuery(function(){
 
-  /* Para não efetuar logout após ações */
   jQuery(document).ajaxSend(function(e, xhr, options) {
     var token =$("meta[name='csrf-token']").attr("content");
     xhr.setRequestHeader("X-CSRF-Token", token);  
@@ -10,8 +11,14 @@ jQuery(function(){
   var selNodes;
   var initial_file_node = null;
 
+  // recupera os nós já expandidos existentes nos cookies
+  var nodes_expanded = ((getCookie("dynatree-expand")) ? getCookie("dynatree-expand").split(",") : new Array());
+  // recupera os nós selecionados existentes nos cookies
+  var nodes_selected = ((getCookie("dynatree-select")) ? getCookie("dynatree-select").split(",") : new Array());
+
   /* Inicialização da árvore de arquivos */
   jQuery("#tree").dynatree({
+    persist: true,
     minExpandLevel: 1,
     checkbox: true,
     selectMode: 2, // alterado para o 2 para melhorar/facilitar a deleção de nós
@@ -21,6 +28,9 @@ jQuery(function(){
     autoCollapse: true,
     activeVisible: false,
     onSelect: function(select, node) {
+      if(select && jQuery(node.span).hasClass("dont_visit_children"))
+        jQuery(node.span).removeClass("dont_visit_children");
+
       if(!jQuery(node.span).hasClass("dont_visit_children") && node.childList != null){ // se for uma pasta
         node.visit(function(child){
           child.select(select); // seleciona ou desseleciona nós filhos
@@ -28,17 +38,18 @@ jQuery(function(){
       }
 
       if(!select){ // se nó foi desselecionado, desseleciona o pai caso todos os filhos estivessem selecionados
-        if(node.parent.isSelected){
+        jQuery(jQuery(node.span).find("a").css("class", "dynatree-title")).attr("id", "no_child_selected");
+        if(node.parent!= null && node.parent.isSelected){
           // adiciona classe apenas para informar quando reexecutar no "onSelect" que ele não deve repassar ação para os filhos
           jQuery(node.parent.span).addClass("dont_visit_children"); 
           node.parent.select(false);
         }
-      }
+      }else
+          jQuery(jQuery(node.span).find("a").css("class", "dynatree-title")).removeAttr("id");
 
-      if(jQuery(node.parent.span).hasClass("dont_visit_children"))
-        has_child_selected(node.parent); // define estilo do nó pai de acordo com os filhos selecionados
-      
       selNodes = node.tree.getSelectedNodes();
+      if(node.parent!= null)
+        has_child_selected(node.parent); // define estilo do nó pai de acordo com os filhos selecionados
     },
     onActivate: function(node){
       node.deactivate();
@@ -64,16 +75,39 @@ jQuery(function(){
       }else
         flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
     },
-    onPostInit: function(){ // ao carregar a árvore
+    onPostInit: function(isReloading, isError){ // ao carregar a árvore
+
+      // recupera os nós selecionados (os cookies armazenam apenas os data.key)
+      selNodes = jQuery.map(nodes_selected, function(selected){
+        if(selected != "") 
+          return (jQuery("#tree").dynatree("getTree").getNodeByKey(selected));
+      });
+
+      $(selNodes).each(function() { if(this.parent != null){has_child_selected(this.parent);} }); // exibe indicação de que pasta possui algum arquivo interno selecionado
+
+      if(nodes_expanded.length > 0){ // se houver nós expandidos
+        intern_level = jQuery("#tree").dynatree("getTree").getNodeByKey(nodes_expanded[nodes_expanded.length-1]).getLevel(); // recupera o nível mais interno
+
+        jQuery("#tree").dynatree("getTree").visit(function(node) {
+          if(node.getLevel() <= intern_level)
+            hide_checkboxes(true, node);   
+        });
+
+      }
+
       initial_file_node = get_initial_file(); // verifica se há arquivo inicial e o associa à variável
       if(initial_file_node != null)
         set_initial_file_visual_path(initial_file_node); // define caminho visual
     },
+    onQueryExpand:  function(flag, node){ 
+      var some_child_selected = jQuery(jQuery(node.span).find("a").css("class", "dynatree-title")).attr("id") == "some_child_selected";
+    }, // Callback(flag, dtnode) before a node is expanded/collpsed.
     onExpand: function(flag, node){ 
       if(flag && initial_file_node != null) // ao expandir um nó
         set_initial_file_visual_path(); // é necessário redefinir caminho visual do arquivo inicial, pois os nós mais internos são ficam realmente acessíveis antes da expansão do pai
       expand_folder(flag, node); // define nível a ser exibido
-      has_child_selected(node); // define estilo do nó pai de acordo com os filhos selecionados
+
+      has_child_selected(node, true); // define estilo do nó pai de acordo com os filhos selecionados
     }
   });
 
@@ -218,6 +252,7 @@ jQuery(function(){
               // },
               success: function(data){
                 jQuery("#lesson_file_management").html(data);
+                deselect_all();
               },
               error: function() {
                 flash_message("<%=I18n.t(:upload_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
@@ -242,13 +277,28 @@ jQuery(function(){
       flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
   });
 
-  /* Define estilo do nó para caso algum dos filhos esteja selecionado ou nenhum */
-  function has_child_selected(node){
-    childrenSelected = jQuery.map(node.getChildren(), function (child) { return (jQuery.inArray(child, node.tree.getSelectedNodes()) != -1); });
-    if((!node.isSelected()) && (jQuery.inArray(true, childrenSelected) == -1)) // se não tem nenhum filho selecionado
-      jQuery(node.span.children[3]).attr("id", "no_child_selected");
-    else // tem algum
-      jQuery(node.span.children[3]).attr("id", "some_child_selected");
+  /* Define estilo do nó para caso algum dos filhos esteja selecionado ou nenhum 
+    Esta função não serve apenas para filhos diretos. Se há uma pasta com algum arquivo selecionado, a pasta deve estar sinalizada. 
+    Entretanto, o "pai" desta pasta também deve ser sinalizado e assim consecutivamente. */
+  function has_child_selected(node, look_down){
+    descendantOfNode = jQuery.map(selNodes, function(node_selected){
+        return (node_selected.isDescendantOf(node));
+    });
+
+    if((node.isSelected()) || (jQuery.inArray(true, descendantOfNode) != -1)) // tem filhos selecionados
+      jQuery(jQuery(node.span).find("a").css("class", "dynatree-title")).attr("id", "some_child_selected");
+    else // não tem filhos selecionados 
+      jQuery(jQuery(node.span).find("a").css("class", "dynatree-title")).attr("id", "no_child_selected");
+
+    if(node.parent != null)
+      has_child_selected(node.parent);
+
+    if(look_down){
+      for(var i = 0; i < node.childList.length; i++){
+        has_child_selected(node.getChildren()[i]);
+      }
+    }
+
   }
 
   function folder_or_file_selected(){
@@ -437,7 +487,7 @@ function expand_folder(flag, node){
   parent = node.parent;
 
   for(var i = 0; i <= parent.childList.length-1; i++){ // varre a subárvore do pai
-    display_checkboxes(flag, parent.childList[i]); // oculta ou exibe checkboxes para o nível do nó expandido/comprimido
+    hide_checkboxes(flag, parent.childList[i]); // oculta ou exibe checkboxes para o nível do nó expandido/comprimido
   }
 
   if(!flag){ // se um nó for comprimido
@@ -454,12 +504,21 @@ function checkbox_node(node){
 }
 
 /* Exibe ou não o checkbox de um nó */
-function display_checkboxes(flag, node){
-  checkbox = checkbox_node(node);
-  if(flag) // se nó foi expandido, esconde checkboxes do seu nível
-    checkbox.hide();
-  else // se comprimido, exibe
-    checkbox.show();
+function hide_checkboxes(flag, node){
+  if(node.li){
+    checkbox = checkbox_node(node);
+    if(flag) // se nó foi expandido, esconde checkboxes do seu nível
+      checkbox.hide();
+    else // se comprimido, exibe
+      checkbox.show().css('display', ''); // deve ter esta definição de css, porque só o show deixa "display: in-block" e assim, em alguns níveis, o checkbox não é exibido
+  }
+}
+
+function deselect_all(){
+  root = jQuery("#tree").dynatree("getRoot");
+  if(!root.isSelected())
+    root.select(true); // seleciona toda a árvore
+  root.select(false); // para deselecionar (se for só este direto, ele não executa pois a raiz pode não estar previamente selecionada)
 }
 
 /**** Métodos AJAX ****/
@@ -478,10 +537,9 @@ function saveDeletion(node, root_node){
     },
     success: function(data) {
       jQuery("#lesson_file_management").html(data);
-
-      if (root_node) { // atualiza listagem
+      deselect_all();
+      if(root_node) // atualiza listagem para que esta aula vire, se necessário, rascunho
         call_page("<%= Rails.application.routes.url_helpers.list_lessons_path %>");
-      }
     },
     error: function(data) {
       flash_message("<%=I18n.t(:delete_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
@@ -496,9 +554,12 @@ function newFolder(path){
   jQuery.ajax({
     type: 'POST',
     url: url,
-    data: {"path": path},
+    data: {
+      "path": path
+    },
     success: function(data){
       jQuery("#lesson_file_management").html(data);
+      deselect_all();
     },
     error: function() {
       flash_message("<%=I18n.t(:new_folder_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
@@ -519,10 +580,11 @@ function renameNode(node, new_title, path){
       "previous_name": node.data.title
     },
     success: function(data){
-      if (initial_file_node == node)
+      if(initial_file_node != null && initial_file_node == node)
         defineInitialFile(node);
       else
         jQuery("#lesson_file_management").html(data);
+      deselect_all();
     },
     error: function() {
       node.setTitle(node.data.title); // retorna ao antigo título
@@ -578,6 +640,7 @@ function saveMove(nodesToMove){
           },
           success: function(data) {
             jQuery("#lesson_file_management").html(data);
+            deselect_all();
           },
           error: function() {
             flash_message("<%= I18n.t(:move_error, :scope => [:lesson_files]) %>", "alert", "flash_messages");
@@ -596,6 +659,7 @@ function defineInitialFile(node){
     data: { "path": getPath(node) },
     success: function(data){
       jQuery("#lesson_file_management").html(data);
+      deselect_all();
     },
     error: function(){
       flash_message("<%= I18n.t(:initial_file_error, :scope => [:lesson_files]) %>", "alert", "flash_messages");
