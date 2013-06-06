@@ -3023,6 +3023,7 @@ div.support_material_select {
 
 
 /******** Atualização de dados de usuário **********/
+$form_label_width: 160px;
 
 .user_data_form_buttons{ 
     text-align: center;
@@ -3055,7 +3056,7 @@ div.support_material_select {
 }
 
 .form_label:first-child {
-    width: 160px;
+    width: $form_label_width;
 }
 
 .form_label label, .form-inputs .control-label {
@@ -3094,10 +3095,19 @@ div.support_material_select {
     width: auto;
 }
 
+.form_field div.field_with_errors {
+  display: inline-block;
+}
+
+.form_field + .form_error {
+  display: block;
+  margin-left: $form_label_width - 20px;
+}
+
 .form_error, .error, span.field_with_errors {
-    color: #E03838;
-    padding-left: 10px;
-    vertical-align: top;
+  color: #E03838;
+  padding-left: 10px;
+  vertical-align: top;
 }
 
 .field_with_errors input, .field_with_errors textarea {
