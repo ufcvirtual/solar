@@ -85,10 +85,11 @@
             <li id="server_clock_wrapper">
               <span name="server_clock" id="server_clock"></span>
             </li>
-            <li>
-              <a href="#" class="mysolar_top_link"><%= t(:help) %></a>
+            <li id="mysolar_top_help">
+              <!--<a href="#" class="mysolar_top_link"><%= t(:help) %></a>-->
+              <span data-tooltip='Ainda não implementada'><%= t(:help) %></span>
             </li>
-            <li>
+            <li id="mysolar_top_logout">
               <%= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, :class => "mysolar_top_link") %>
             </li>
           </ul>
