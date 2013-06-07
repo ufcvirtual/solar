@@ -1744,9 +1744,21 @@ table tr.block_title th {
 $forum_post_width: 728px;
 
 .date_text_field{
-    margin-top: -20px;
+    margin-top: 0px;
     margin-left: -2px;
     margin-bottom: 10px;
+}
+
+.date_text_field + .field_with_errors {
+  line-height: 26px;
+}
+
+#from-date {
+  margin-right: 4px;
+}
+
+#until-date {
+  margin-left: 5px;
 }
 
 #forum_description{
@@ -3047,7 +3059,7 @@ $form_label_width: 160px;
 }
 
 .form_user_content textarea, .form-inputs > .input > textarea {
-    margin-bottom: 5px;
+    margin-bottom: 0px;
     padding: 2px;
 }
 
@@ -3061,7 +3073,7 @@ $form_label_width: 160px;
 
 .form_label label, .form-inputs .control-label {
     padding-right: 5px; 
-    padding-top: 2px;
+    padding-top: 5px;
     vertical-align: top;
 }
 .form_label_multiline {
@@ -3076,6 +3088,10 @@ $form_label_width: 160px;
     padding: 2px;
     margin-bottom: 4px;
     font-size: 10pt;
+}
+
+.form-inputs div.input {
+  margin-bottom: 5px;
 }
 
 .form-inputs .input input, .form-inputs > .input > textarea {
@@ -3097,6 +3113,12 @@ $form_label_width: 160px;
 
 .form_field div.field_with_errors {
   display: inline-block;
+}
+
+.required + .error, .optional + .error {
+  display: block;
+  margin-left: 125px;
+  margin-bottom: 5px;
 }
 
 .form_field + .form_error {
@@ -3519,6 +3541,15 @@ select[disabled] {
 #lesson_files_select_all{
     font-size: 10pt;
     color: #8D8D8D;
+}
+
+.lesson_module, .lesson_date, .lesson_type, .url_lesson {
+  margin-bottom: 5px;
+}
+
+.lesson_module .hint {
+  display: inline-block;
+  padding-top: 5px;
 }
 
 .btn_dropdown a {
