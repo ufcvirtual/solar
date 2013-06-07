@@ -554,7 +554,7 @@ a.mysolar_top_link{
     float:left;
     line-height: 28px;
     list-style-type: none;
-    padding: 0 5px;
+    padding: 0;
     margin: 0;
     font-family: 'Ubuntu Condensed', sans-serif;
     font-size: 14pt;
@@ -566,6 +566,10 @@ a.mysolar_top_link{
     margin: 6px 0px 0px 0px;
     padding:0 7px;
     height:26px;
+    /*border-top:2px solid;
+    border-right:2px solid;
+    border-left:2px solid;
+    border-bottom:2px solid;*/
     font-variant: small-caps;
     /* codigo necessario para exibir corretamente no IE 7 */
     zoom: 1;
@@ -585,28 +589,20 @@ a.mysolar_top_link{
 }
 
 .mysolar_unit_tab a {
-    color: #a8a8a8;
-}
-
-.mysolar_unit_tab a:hover {
-    color: #666;
+    color: #4d6d9c;
 }
 
 .mysolar_unit_active_tab{
-    // border-bottom: 2px solid #003E7A;
-    border-top:1px solid;
-    border-right:1px solid;
-    border-left:1px solid;
-    border-bottom:2px solid;
-    border-top-color: #d0d0d0;
-    border-right-color: #d0d0d0;
-    border-left-color: #d0d0d0;
+    border-bottom: 2px solid #003E7A;
+    /*background-color: #fff;
+    border-top-color: #003e7a;
+    border-right-color: #003e7a;
+    border-left-color: #003e7a;
     border-bottom-color: #fff;
-    // background-color: #fff;
-    // border-top-left-radius: 5px;
-    // border-top-right-radius: 5px;
-    // -moz-border-top-left-radius: 5px;
-    // -moz-border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    -moz-border-top-left-radius: 5px;
+    -moz-border-top-right-radius: 5px;*/
 }
 
 .mysolar_unit_active_tab a {
