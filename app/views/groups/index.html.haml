@@ -1,9 +1,5 @@
-.block_filter
-/  = filter
+.block_title= t(:group)
 .block_wrapper
-  .block_title
-    %span.right_buttons
-      = button_to_function t(".new"), "javascript:showLightBoxURL('#{new_group_path}', 500, 200, true, '#{t('.new_group')}');", :class => "btn btn_main"
   %table.tb_list
     %thead
       %tr.lines
@@ -11,7 +7,6 @@
         %th= t(:curriculum_unit)
         %th= t(:course)
         %th= t(:offer)
-        %th= t(:options)
     %tbody
       - unless @groups.nil? or @groups.empty?
         - @groups.each do |group|
@@ -20,8 +15,3 @@
             %td= group.curriculum_unit.name
             %td= group.course.name
             %td= group.offer.semester
-            %td
-              - status, c = (group.status) ? [t(".disable"), 'btn_caution'] : [t(".enable"), 'btn_main']
-              = button_to_function t(:edit), "javascript:showLightBoxURL('#{edit_group_path(group)}', 500, 200, true, '#{t('.edit_group')}');", :class => "btn btn_default"
-              = button_to status, {:action => :update, :id => group, :group => {:status => (not group.status)}}, {:method => :put, :confirm => t(:message_confirm_status, :status => status.downcase), :class => ['btn', c].join(' ')}
-              = button_to t(:destroy), group, {:method => :delete, :confirm => t(:message_confirm), :class => "btn btn_caution"}

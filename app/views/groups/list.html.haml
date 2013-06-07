@@ -1,0 +1,38 @@
+.groups_content
+  .filter
+    %table.tb_list
+      %tr.lines
+        %td= t(:course)
+        %td= @offer.course.name
+      %tr.lines
+        %td= t(:curriculum_unit)
+        %td= @offer.curriculum_unit.name
+      %tr.lines
+        %td= t(:offer)
+        %td= @offer.semester
+
+  .block_wrapper.list_groups
+    .block_title
+      - if can? :create, Group
+        %span.right_buttons
+          = button_to_function t(".new"), "javascript:showLightBoxURL('#{new_group_path(allocation_tags_ids: @allocation_tags_ids.join(" "))}', 500, 200, true, '#{t('.new_group')}');", :class => "btn btn_main"
+
+    - unless @groups.nil? or @groups.empty?
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th{width: "75%"}= t(:group)
+            %th{style: 'text-align:center;'}= t(:options)
+          %tbody
+            - @groups.each do |group|
+              %tr.lines
+                %td= group.code
+                %td{style: 'text-align:right;'}
+                  - status, c = (group.status) ? [t(".disable"), 'btn_caution'] : [t(".enable"), 'btn_main']
+                  - if can? :update, group
+                    = button_to_function t(:edit), "javascript:showLightBoxURL('#{edit_group_path(allocation_tags_ids: @allocation_tags_ids, id: group.id)}', 500, 200, true, '#{t('.edit_group')}');", :class => "btn btn_default"
+                    = button_to status, {action: :update, id: group, redirect: true, allocation_tags_ids: @allocation_tags_ids, group: {status: not(group.status)}}, {method: :put, confirm: t(:message_confirm_status, :status => status.downcase), :class => ['btn', c].join(' ')}
+                  - if can? :destroy, group
+                    = button_to t(:destroy), group, {method: :delete, confirm: t(:message_confirm), class: "btn btn_caution"}
+    - else
+      .block_content.block_content_text= t(:none, scope: "groups.index")

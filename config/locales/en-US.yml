@@ -1084,7 +1084,7 @@
       subject: "[SOLAR] Enrollment accepted"
 
   groups:
-    index:
+    list:
       new: "New"
       enable: "Enable"
       disable: "Disable"

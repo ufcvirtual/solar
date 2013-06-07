@@ -1251,7 +1251,7 @@
       subject: "[SOLAR] Matrícula aceita"
 
   groups:
-    index:
+    list:
       new: "Novo"
       enable: "Ativar"
       disable: "Desativar"

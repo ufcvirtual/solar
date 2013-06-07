@@ -48,6 +48,7 @@ Solar::Application.routes.draw do
   resources :groups, except: [:show] do
     resources :discussions, only: [:index]
     get :list, on: :collection
+    get :list_to_edit, to: :list, on: :collection, edition: true
   end
 
   ## discussions/:id/posts

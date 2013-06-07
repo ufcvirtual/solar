@@ -47,7 +47,7 @@ module PlacesNavPanelHelper
 			//"curriculumUnit": "#{url_for :controller => :curriculum_units, :action => "new"}",
 			"curriculumUnit": "#{url_for :controller => :curriculum_units}",
 			"offer": "#{url_for :controller => :offers}",
-			"group": "#{url_for :controller => :groups}"
+			"group": "#{list_to_edit_groups_path}"
 		}
 		
 		var hints = {

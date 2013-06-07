@@ -50,8 +50,8 @@ res8:
 res9:
   id: 9
   controller: 'groups'
-  action: 'show'
-  description: 'Visualizar turmas'
+  action: 'list'
+  description: 'Listar turmas para edição'
 
 res10:
   id: 10
@@ -642,3 +642,15 @@ res116:
   controller: 'assignments'
   action: 'destroy'
   description: 'Deletar trabalho'
+
+res117:
+  id: 117
+  controller: 'groups'
+  action: 'create'
+  description: 'Criar turmas'
+
+res118:
+  id: 118
+  controller: 'groups'
+  action: 'destroy'
+  description: 'Deletar turmas'

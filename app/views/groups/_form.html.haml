@@ -1,15 +1,48 @@
-%span.form_requirement= t(:required_fields)
+.new_group
+  = simple_form_for @group, html: {id: 'group_form'} do |f|
+    = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+    = f.input :offer_id, as: :hidden, input_html: {value: @offer.id}
 
-= simple_form_for(@group) do |f|
-  = f.error_notification
+    %div
+      = f.label t(:course)
+      = @offer.course.name
+    %div
+      = f.label t(:curriculum_unit)
+      = @offer.curriculum_unit.name
+    %div
+      = f.label t(:offer)
+      = @offer.semester
 
-  %div
-    %label.form_label= t(:course)
-    = select_tag(:course_id, options_from_collection_for_select(@courses, :id, :name))
-  %div
-    %label.form_label= t(:curriculum_unit)
-    = select_tag(:curriculum_unit_id, options_from_collection_for_select(@curriculum_units, :id, :name))
-  
-  = f.association :offer, :include_blank => false, :label_method => :semester
-  = f.input :code
-  = f.submit t(:confirm), :class => "btn btn_default", :alt => t(:confirm), :remote => true
+    = f.input :code
+
+    .right_buttons
+      = button_tag t(:save), :class => "btn btn_main", :type => "button", :id => "save"
+      = button_tag t(:cancel), :class => "btn btn_default", :type => "button", onclick: "javascript:removeLightBox();"
+
+:javascript
+
+  jQuery(function($){
+
+    $("#save").click(function(){
+      $.post($("#group_form").attr('action'), $("#group_form").serialize())
+      .done(function(data){
+        if (data.search(".field_with_errors") != -1) {
+          $(".new_group:first").html(data);
+        } else {
+          removeLightBox();
+          $('.groups_content').load('#{list_to_edit_groups_path(layout: false, allocation_tags_ids: [@allocation_tags_ids].flatten.join(" "))}');
+          flash_message("#{I18n.t(:saved, :scope => [:editions, :success])}", "notice");
+        }
+      })
+      .fail(function(data){
+        removeLightBox();
+        if (data.responseText != '') {
+          flash_message(JSON.parse(data.responseText).msg, 'alert');
+        } else {
+          flash_message("#{I18n.t(:cant_save, :scope => [:editions])}", 'alert');
+        }
+      });
+
+    });
+
+  });
