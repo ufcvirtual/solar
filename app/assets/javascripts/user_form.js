@@ -9,6 +9,10 @@ function hide_special_needs(element){
 }
 
 jQuery(function ($) {
+
+  if($("#user_has_special_needs_true").attr("checked") == "checked")
+      $("#special_needs_line").removeClass("invisible");
+
   /* mascaras para campos de CPF, telefone, celular (9 digitos no caso de São Paulo) e CEP */
   $("#cpf, #cpf-register").mask("999.999.999-99");
   $('#user_cell_phone, #cell_phone').mask('(00) 0000-0000',
@@ -22,7 +26,7 @@ jQuery(function ($) {
 
     /* necessidades especiais no cadastro */
   $("#special_needs input:radio").click(function(){
-    if ( $(this).val() == "true" ) {
+    if ( $(this).val() =="true" ) {
       $("#special_needs_line").slideDown();
     } else {
       $("#special_needs_line").slideUp();
