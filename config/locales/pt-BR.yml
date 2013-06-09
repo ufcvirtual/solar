@@ -185,7 +185,7 @@
         state: "Estado"
         city: "Cidade"
         institution: "Instituição"
-        special_needs: "Necessidades especiais"
+        special_needs: "Qual"
         password_confirmation: "Confirmação da senha"
         interests: "Interesses"
         music: "Música"

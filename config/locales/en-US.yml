@@ -55,7 +55,7 @@
         state: "State"
         city: "City"
         institution: "Institution"
-        special_needs: "Special needs"
+        special_needs: "Which"
         password_confirmation: "Password confirmation"
         interests: "Interests"
         music: "Music"

@@ -44,7 +44,12 @@ a img {
   position:relative;
 }
 
-/*caixa principal que engloba login e cadastro*/
+/* estilo para item invisivel */
+.invisible {
+  display: none;
+}
+
+	/*caixa principal que engloba login e cadastro*/
 $login_width: 287px;
 
 #screen-login{
@@ -602,6 +607,15 @@ footer{
   font-size: 9pt;
   float: left;
   margin-top: 30px;
+}
+
+#special_needs input {
+  width: 20px;
+  color: #004B81;
+}
+
+#special_needs label {
+  color: #004B81;
 }
 
 .field input, select {

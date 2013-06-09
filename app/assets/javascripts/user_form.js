@@ -20,6 +20,15 @@ jQuery(function ($) {
   $("#user_telephone").mask("(99)9999-9999");
   $("#user_zipcode").mask("99999-999");
 
+    /* necessidades especiais no cadastro */
+  $("#special_needs input:radio").click(function(){
+    if ( $(this).val() == "true" ) {
+      $("#special_needs_line").slideDown();
+    } else {
+      $("#special_needs_line").slideUp();
+    }
+  });
+
   /* permitir apenas números inteiros no campo de Número (Endereço de Cadastro) */
   $("#user_address_number").keydown(function(event) {
     // Allow: backspace, delete, tab, escape, and enter

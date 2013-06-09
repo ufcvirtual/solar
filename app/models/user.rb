@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
     :telephone, :cell_phone, :institution, :gender, :cpf, :bio, :interests, :music, :movies, :books, :phrase, :site, :photo,
     :special_needs
 
-  attr_accessor :login # permitir acesso por login
+  attr_accessor :login, :has_special_needs
 
   email_format = %r{^((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?$}i # regex para validacao de email
 

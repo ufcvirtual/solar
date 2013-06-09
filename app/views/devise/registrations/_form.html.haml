@@ -36,7 +36,13 @@
             = f.input :gender do
               = f.select :gender, ([[t(:m), true], [t(:f), false]])
           #special_needs.field
+            %div
+              %label.string.optional.form_label
+                = t(:form_special_needs)
+              = f.collection_radio_buttons :has_special_needs, [[true, t('special_needs_yes')] ,[false, t('special_needs_no')]], :first, :last, default: false
+          #special_needs_line.field.invisible
             = f.input :special_needs
+
           %p.required_info
             = t(:required_fields)
           .buttons
