@@ -497,6 +497,9 @@
     item_must_be_selected: One item must be selected
     one_folder_must_be_selected: Only one folder must be selected
     items_must_be_selected: One or more items must be selected
+    unzip_error: Error on extracting file
+    zip_has_invalid_files: Zip file has invalid files
+    file_doesnt_exist: "File doesn't exist"
     index:
       cancel: Cancel
       move_to: "Move to:"

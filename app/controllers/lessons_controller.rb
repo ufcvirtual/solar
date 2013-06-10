@@ -10,7 +10,7 @@ class LessonsController < ApplicationController
   include LessonsHelper
 
   before_filter :prepare_for_group_selection, only: [:index, :download_files]
-  before_filter :curriculum_data, except: [:new, :create, :edit, :update, :list, :download_files, :extract_files, :order, :destroy]
+  before_filter :curriculum_data, except: [:new, :create, :edit, :update, :list, :download_files, :order, :destroy]
 
   def index
     authorize! :index, Lesson
@@ -182,14 +182,6 @@ class LessonsController < ApplicationController
     render nothing: true, status: status 
   end
 
-  def extract_files
-    path_zip_file = File.join(Lesson::FILES_PATH, params[:id], [params[:file], params[:extension]].join('.'))
-    destination   = File.join(Lesson::FILES_PATH, params[:id])
-
-    respond_to do |format|
-      format.json { render json: {success: extract(path_zip_file, destination)} }
-    end
-  end
 
   ## PUT lessons/:id/order/:change_id
   def order

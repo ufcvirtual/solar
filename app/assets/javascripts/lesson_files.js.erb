@@ -1,6 +1,6 @@
 // = require jquery.cookie
 
-jQuery(function(){
+jQuery(function($){
 
   /* Para não efetuar logout após ações */
   jQuery(document).ajaxSend(function(e, xhr, options) {
@@ -307,6 +307,30 @@ jQuery(function(){
     // verifica se algum nó foi selecionado E (se apenas um nó foi selecionado OU (se o item for uma pasta E a quantidade de filhos da pasta + a pasta é igual ao número de itens selecionados E a pasta não está expandida))
     return (typeof selNodes != "undefined" && (selNodes.length == 1 || (selNodes[0].childList != null && selNodes[0].countChildren()+1 == selNodes.length && !selNodes[0].isExpanded())))
   }
+
+  $('#btn-unzip').click(function(){
+    // verificar se tem algum arquivo selecionado
+    if (folder_or_file_selected()) {
+      if(selNodes[0].data.isFolder) {
+        flash_message("<%=I18n.t(:must_be_a_file, :scope => [:lesson_files])%>", "alert", "flash_messages");
+      } else {
+        $.ajax({
+          type: 'GET',
+          url: $(this).data('unzip-path').replace(':file', getPath(selNodes[0])),
+          success: function(data){
+            jQuery("#lesson_file_management").html(data);
+            deselect_all();
+          },
+          error: function(data){
+            eval('var msg = ' + data.responseText);
+            flash_message(msg.msg, "alert", "flash_messages");
+          }
+        });
+      }
+    } else {
+      flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
+    }
+  });
 
 });
 
@@ -666,3 +690,4 @@ function defineInitialFile(node){
     }
   });
 }
+

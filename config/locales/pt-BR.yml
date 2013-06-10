@@ -661,6 +661,9 @@
     item_must_be_selected: Um item deve ser selecionado
     one_folder_must_be_selected: Apenas uma pasta deve ser selecionada
     items_must_be_selected: Um ou mais itens devem ser selecionados
+    unzip_error: Erro ao descompactar arquivo
+    zip_has_invalid_files: O zip contém arquivos inválidos
+    file_doesnt_exist: Arquivo inexistente
     index:
       cancel: Cancelar
       move_to: "Mover para:"
