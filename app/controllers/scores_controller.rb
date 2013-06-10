@@ -41,28 +41,29 @@ class ScoresController < ApplicationController
     @group_activities = Assignment.student_assignments_info(group_id, @student.id, Assignment_Type_Group)
     @discussions = Discussion.all_by_allocations_and_student_id(related_allocations, @student.id)
 
-    from_date = (Date.today << 2).to_s(:db) # dois meses atras
-    until_date = Date.today.to_s(:db)
-    @amount = Score.find_amount_access_by_student_id_and_interval(active_tab[:url]['id'], @student.id, from_date, until_date)
+    from_date  = (Date.today << 2) # dois meses atras
+    until_date = Date.today
+    @amount    = Score.find_amount_access_by_student_id_and_interval(active_tab[:url]['id'], @student.id, from_date, until_date)
   end
 
   ##
   # Quantidade de acessos do aluno a unidade curricular
   ##
   def amount_history_access
+    # raise "#{params}"
     authorize! :show, Score
 
-    @student_id = params[:id]
+    @student_id        = params[:id]
     curriculum_unit_id = active_tab[:url]['id']
     # group_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
 
     authorize! :find, User.find(@student_id) # verifica autorizacao para consultar dados do usuario
     # authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(group_id, current_user.id) # verifica se pode acessar turma
+    
+    from_date  = date_valid?(params['from-date']) ? params['from-date'] : (Date.today << 2)
+    until_date = date_valid?(params['until-date']) ? params['until-date'] : Date.today
 
-    from_date = date_valid?(params['from-date']) ? Date.parse(params['from-date']) : (Date.today << 2).to_s(:db)
-    until_date = date_valid?(params['until-date']) ? Date.parse(params['until-date']) : Date.today.to_s(:db)
-
-    @amount = Score.find_amount_access_by_student_id_and_interval(curriculum_unit_id, @student_id, from_date, until_date)
+    @amount    = Score.find_amount_access_by_student_id_and_interval(curriculum_unit_id, @student_id, from_date, until_date)
 
     render :layout => false
   end
@@ -73,17 +74,17 @@ class ScoresController < ApplicationController
   def history_access
     authorize! :show, Score
 
-    student_id = params['id']
+    student_id         = params['id']
     curriculum_unit_id = active_tab[:url]["id"]
     # class_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
     
     authorize! :find, User.find(student_id) # verifica autorizacao para consultar dados do usuario
     # authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(class_id, current_user.id) # verifica se pode acessar turma
     
-    from_date = (Date.today << 2).to_s(:db) unless date_valid?(@from_date)
-    until_date = Date.today.to_s(:db) unless date_valid?(@until_date)
+    from_date  = (date_valid?(params['from-date']) ? params['from-date'] : (Date.today << 2))
+    until_date = (date_valid?(params['until-date']) ? params['until-date'] : Date.today)
 
-    @history = Score.history_student_id_and_interval(curriculum_unit_id, student_id, from_date, until_date)
+    @history   = Score.history_student_id_and_interval(curriculum_unit_id, student_id, from_date, until_date)
 
     render :layout => false
   end

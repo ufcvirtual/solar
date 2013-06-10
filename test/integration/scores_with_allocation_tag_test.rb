@@ -110,7 +110,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "exibir quantidade de acessos do aluno a unidade curricular para usuario com permissao e acesso - aluno" do 
     login(users(:aluno1))
     get @quimica_tab
-    get "/scores/amount_history_access/#{users(:aluno1).id}?#{@from_date.to_param}&#{@until_date.to_param}"
+    get "/scores/amount_history_access", id: users(:aluno1).id, from_date: @from_date, until_date: @until_date.to_param
     assert_response :success
     assert_not_nil assigns(:student_id)
     assert_not_nil assigns(:amount)
@@ -119,7 +119,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "exibir quantidade de acessos do aluno a unidade curricular para usuario com permissao e acesso - professor" do 
     login(users(:professor))
     get @quimica_tab
-    get "/scores/amount_history_access/#{users(:aluno1).id}?#{@from_date.to_param}&#{@until_date.to_param}"
+    get "/scores/amount_history_access", id: users(:aluno1).id, from_date: @from_date, until_date: @until_date.to_param
     assert_response :success
     assert_not_nil assigns(:student_id)
     assert_not_nil assigns(:amount)
@@ -129,7 +129,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao exibir quantidade de acessos do aluno a unidade curricular para usuario com permissao e sem acesso - aluno" do 
     login(users(:aluno1))
     get @quimica_tab
-    get "/scores/amount_history_access/#{users(:aluno3).id}?#{@from_date.to_param}&#{@until_date.to_param}"
+    get "/scores/amount_history_access", id: users(:aluno3).id, from_date: @from_date, until_date: @until_date.to_param
     assert_response :redirect
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
@@ -155,7 +155,7 @@ class ScoresWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao exibir quantidade de acessos do aluno a unidade curricular para usuario sem permissao" do 
     login(users(:coorddisc))
     get @quimica_tab
-    get "/scores/amount_history_access/#{users(:aluno3).id}?#{@from_date.to_param}&#{@until_date.to_param}"
+    get "/scores/amount_history_access?#{users(:aluno3).id.to_param}?#{@from_date.to_param}&#{@until_date.to_param}"
     assert_response :redirect
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]

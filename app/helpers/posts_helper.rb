@@ -25,7 +25,7 @@ module PostsHelper
               </div>
             </div>
             <div class="forum_post_date">
-              #{l(post.updated_at.to_time, :format => :discussion_post_date)}<br />#{l(post.updated_at.to_time, :format => :discussion_post_hour)}
+              #{l(post.updated_at, :format => :discussion_post_date)}<br />#{l(post.updated_at, :format => :discussion_post_hour)}
             </div>
           </td>
         </tr>

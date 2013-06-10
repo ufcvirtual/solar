@@ -54,7 +54,7 @@ class MessagesController < ApplicationController
 
       # identificacao da mensagem original para juntar ao texto
       message_header =  [t(:message_from), ": ", sender.name, " [", sender.email, "]<br/>"].join
-      message_header << [t(:message_date), ": ", @message.send_date.to_s(:db), "<br/>"].join
+      message_header << [t(:message_date), ": ",  "#{l(@message.send_date, :format => :clock)}", "<br/>"].join
       message_header << [t(:message_subject), ": ", @subject, "<br/>"].join
       message_header << [t(:message_to), ": ", all_recipients_name, "<br/>"].join
 

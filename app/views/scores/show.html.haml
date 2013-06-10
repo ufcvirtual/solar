@@ -24,9 +24,9 @@
                 - else
                   = activity.name
               %td{:align => "left"}
-                =l activity.schedule.start_date.to_time, :format => :normal
+                =l activity.schedule.start_date, :format => :normal
                 = "-" 
-                =l activity.schedule.end_date.to_time, :format => :normal
+                =l activity.schedule.end_date, :format => :normal
               %td{:class => "assignment_#{@individual_activities["situation"][idx]}", :align => "center"}= t(@individual_activities["situation"][idx].to_sym)
               %td{:align => "center"}= (@individual_activities["assignments_grades"][idx].nil?) ? '-' : @individual_activities["assignments_grades"][idx].to_f
           - @group_activities["assignments"].each_with_index do |activity, idx|
@@ -39,9 +39,9 @@
                 - else
                   =link_to activity.name, assignment_path(activity.id, :student_id => @student.id, :group_id => @group_activities["groups_ids"][idx]), {:class => 'link_content'}
               %td{:align => "left"}
-                =l activity.schedule.start_date.to_time, :format => :normal 
+                =l activity.schedule.start_date, :format => :normal 
                 = "-" 
-                =l activity.schedule.end_date.to_time, :format => :normal
+                =l activity.schedule.end_date, :format => :normal
               %td{:class => "assignment_#{@group_activities["situation"][idx]}", :align => "center"}= t(@group_activities["situation"][idx].to_sym)
               %td{:align => "center"}= (@group_activities["assignments_grades"][idx].nil?) ? '-' : @group_activities["assignments_grades"][idx].to_f
     - else
@@ -116,7 +116,7 @@
     $('#bt-amount-history-access').click(function(){
 
       // verificar se as datas foram preenchidas - as duas sao obrigatorias
-      $.post("/scores/amount_history_access", {
+      $.get("/scores/amount_history_access", {
         'from-date': $('#from-date').val(),
         'until-date': $('#until-date').val(),
         'id': #{@student.id}

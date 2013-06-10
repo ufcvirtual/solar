@@ -32,9 +32,9 @@
                 - else
                   = assignment.enunciation
               %td{:align => "center"}
-                =l assignment.schedule.start_date.to_time, :format => :files
+                =l assignment.schedule.start_date, :format => :files
                 %br
-                =l assignment.schedule.end_date.to_time, :format => :files
+                =l assignment.schedule.end_date, :format => :files
               %td=link_to t(@individual_assignments_info["situation"][idx].to_sym), assignment_path(assignment.id, :student_id => @student_id), :class => "assignment_#{@individual_assignments_info["situation"][idx]}"
               %td{:align => "center"}
                 %span.activity_grade= (@individual_assignments_info["assignments_grades"][idx].nil?) ? "-" : @individual_assignments_info["assignments_grades"][idx].to_f
@@ -93,9 +93,9 @@
                       %a.enunciation_more.link_content{:href => "#"}= t(:more, :scope => [:assignment, :information])
                       %a.enunciation_less.link_content{:href => "#"}= t(:less, :scope => [:assignment, :information])
               %td{:align => "center"}
-                =l assignment.schedule.start_date.to_time, :format => :files
+                =l assignment.schedule.start_date, :format => :files
                 %br
-                =l assignment.schedule.end_date.to_time, :format => :files
+                =l assignment.schedule.end_date, :format => :files
               %td
                 - if group.nil?
                   %span.assignment_without_group=t :without_group, :scope => [:assignment, :group_assignments]
@@ -131,7 +131,7 @@
                 - if pa.attachment_updated_at.nil?
                   = " "
                 - else
-                  =l pa.attachment_updated_at.to_time, :format => :files
+                  =l pa.attachment_updated_at, :format => :files
               %td{:style => "width: 60px", :align => "center"}= button_to t(:delete, :scope => [:assignment, :files]), delete_file_assignments_path(:file_id => pa.id, :type => 'public'), :confirm => t(:delete_msg, :scope => [:assignment, :files]), :class => "btn btn_caution", method: :delete
     - else
       .block_content.block_content_text= t(:itens_not_found)

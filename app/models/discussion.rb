@@ -64,7 +64,7 @@ class Discussion < ActiveRecord::Base
     innder_order = (opts["type"] == 'news') ? 'asc' : 'desc'
 
     where = ["t2.id = #{self.id}"]
-    where << "t1.updated_at::timestamp(0) #{type} '#{opts["date"].to_time}'::timestamp(0)" if opts.include?('date')
+    where << "t1.updated_at::timestamp(0) #{type} '#{opts["date"]}'::timestamp(0)" if opts.include?('date')
     where << "parent_id IS NULL" unless opts["display_mode"] == 'list'
 
     query = <<SQL
