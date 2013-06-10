@@ -3153,6 +3153,11 @@ $form_label_width: 160px;
   margin-left: $form_label_width - 20px;
 }
 
+.group_code.field_with_errors .error {
+  display: block;
+  margin-left: $form_label_width - 10px;
+}
+
 .form_error, .error, span.field_with_errors {
   color: #E03838;
   padding-left: 10px;
