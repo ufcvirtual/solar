@@ -10,7 +10,7 @@ Contexto:
     | user_id  | allocation_tag_id  | profile_id  | status |
     | 14       |                    | 5           | 1      |
 
-@wip @javascript
+@javascript
 Cenário: Exibir página e atualizar conteudo em div
   Dado que estou logado com o usuario "editor" e com a senha "123456"
     E que estou em "Meu Solar"

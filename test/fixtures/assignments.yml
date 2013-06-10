@@ -102,7 +102,7 @@ a13:
   allocation_tag_id: 3 # quimica I
   name: Atividade individual VI
   enunciation: esta é uma atividade individual
-  schedule_id: 22 #prazo concluído
+  schedule_id: 17 #prazo concluído
   type_assignment: 0 #individual
 
 a14:
