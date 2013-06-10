@@ -519,7 +519,7 @@ class LessonFilesControllerTest < ActionController::TestCase
     get :extract_files, {lesson_id: lesson_id, file: "lesson_test_invalid.zip"}
 
     assert_response :unprocessable_entity
-    assert response.body, {success: false, msg: I18n.t(:zip_has_invalid_files, scope: :lesson_files)}.to_json
+    assert response.body, {success: false, msg: I18n.t(:zip_contains_invalid_files, scope: :lesson_files)}.to_json
   end
 
 private
