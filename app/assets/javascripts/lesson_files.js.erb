@@ -316,14 +316,17 @@ jQuery(function($){
 
   function folder_or_file_selected(){
     // verifica se algum nó foi selecionado E (se apenas um nó foi selecionado OU (se o item for uma pasta E a quantidade de filhos da pasta + a pasta é igual ao número de itens selecionados E a pasta não está expandida))
-    return (typeof selNodes != "undefined" && (selNodes.length == 1 || (selNodes[0].childList != null && selNodes[0].countChildren()+1 == selNodes.length && !selNodes[0].isExpanded())))
+    return (typeof selNodes != "undefined" && selNodes.length > 0 && (selNodes.length == 1 || (selNodes[0].childList != null && selNodes[0].countChildren()+1 == selNodes.length && !selNodes[0].isExpanded())))
   }
 
   $('#btn-unzip').click(function(){
     // verificar se tem algum arquivo selecionado
     if (folder_or_file_selected()) {
-      if(selNodes[0].data.isFolder) {
-        flash_message("<%=I18n.t(:must_be_a_file, :scope => [:lesson_files])%>", "alert", "flash_messages");
+      extension = selNodes[0].data.title.split(".");
+      extension = extension[extension.length-1];
+
+      if(selNodes[0].data.isFolder || extension != "zip") {
+        flash_message("<%=I18n.t(:must_be_a_zip_file, :scope => [:lesson_files])%>", "alert", "flash_messages");
       } else {
         $.ajax({
           type: 'GET',

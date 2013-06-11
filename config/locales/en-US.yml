@@ -534,6 +534,7 @@
     bad_extension_error: "Not sent, invalid file type"
     file_too_big_error: "Not sent, file too large. The maximum size should be up to 200MB."
     must_be_a_file: Must be a file
+    must_be_a_zip_file: Must be a zip file
     initial_file_error: It wasn't possibile to define initial file
     cant_remove_initial_file: "It's not possible to remove the initial file, please first redefine it"
     define_initial_file_error: A initial file must be defined.
