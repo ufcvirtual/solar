@@ -36,7 +36,7 @@ class SupportMaterialFilesController < ApplicationController
       @support_material.save!
 
       render nothing: true
-    rescue Exception => e
+    rescue
       if @support_material.is_link?
         render :new
       else
@@ -57,10 +57,9 @@ class SupportMaterialFilesController < ApplicationController
 
     begin
       @support_material.update_attributes!(params[:support_material_file])
-
       render nothing: true
-    rescue Exception => e
-      render json: {success: false, msg: e.messages}, status: :unprocessable_entity
+    rescue
+      render :new
     end
   end
 

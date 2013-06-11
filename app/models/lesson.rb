@@ -40,8 +40,8 @@ class Lesson < ActiveRecord::Base
   end
 
   def url_protocol
-     self.address = 'http://' + self.address if (self.address =~ URI::regexp(["ftp", "http", "https"])).nil? 
-   end
+    self.address = 'http://' + self.address if (self.address =~ URI::regexp(["ftp", "http", "https"])).nil? 
+  end
 
   # def valid_url?
   #    self.address.present? and (self.address.include? ".") and (self.address.index('.') !=0) and (self.address.index('.') != (self.address.size) - 1) 
