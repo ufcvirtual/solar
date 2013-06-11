@@ -269,6 +269,8 @@
       lesson_module:
         name: Nome
       support_material_file:
+        attachment: Arquivo
+        attachment_content_type: Tipo do arquivo
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
 
     errors:
@@ -334,6 +336,10 @@
           attributes:
             address:
               invalid: inválida
+        support_material_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: inválido
 
   ########### GERAL ###############
 

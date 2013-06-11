@@ -24,6 +24,15 @@ class SupportMaterialFileTest < ActiveSupport::TestCase
     end
   end
 
+  test "nao criar material com tipo invalido" do
+    material = SupportMaterialFile.new attachment: fixture_file_upload('files/file_10k.exe'), allocation_tag_id: @at_quimica1
+    assert_no_difference("SupportMaterialFile.count") do 
+      material.save
+    end
+    
+    assert material.errors.full_messages.join.strip.include?(I18n.t("activerecord.attributes.support_material_file.attachment_content_type").strip)
+  end
+
   test "nao criar material do tipo arquivo por tamanho de arquivo" do
     material = SupportMaterialFile.new attachment: fixture_file_upload('files/file_10m.dat'), allocation_tag_id: @at_quimica1
     assert_no_difference("SupportMaterialFile.count") do 

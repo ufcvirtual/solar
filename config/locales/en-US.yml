@@ -129,6 +129,8 @@
       lesson_module:
         name: Name
       support_material_file:
+        attachment: Attachment
+        attachment_content_type: File type
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
 
     errors:
@@ -180,6 +182,10 @@
           attributes:
             address:
               invalid: invalid
+        support_material_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: invalid
 
   ########### GERAL ###############
 
@@ -540,7 +546,7 @@
       link: "Link"
       file: "File"
       new_link: "New Link"
-      new_link: "Edit Link"
+      edit_link: "Edit Link"
       new_file: "New File"
       none: "No material registered"
 
