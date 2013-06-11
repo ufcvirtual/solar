@@ -8,9 +8,21 @@ jQuery(function($){
     xhr.setRequestHeader("X-CSRF-Token", token);  
   });
 
-  /* Inicialização de variáveis utilizadas neste arquivo */
+  /* Inicialização de variáveis utilizadas neste arquivo e configuração dos cookies */
   var selNodes;
   var initial_file_node = null;
+
+  // recupera o id da aula em questão
+  var lesson_id = $("#move_path").attr("value").split("/")[2];
+
+  // se os cookies armazenados forem de uma aula diferente, são "zerados"
+  if(lesson_id != getCookie("lesson_id")){
+    deleteCookie("dynatree-select");
+    deleteCookie("dynatree-expand");
+  }
+
+  // seta o valor da aula atual
+  setCookie("lesson_id",lesson_id);
 
   // recupera os nós já expandidos existentes nos cookies
   var nodes_expanded = ((getCookie("dynatree-expand")) ? getCookie("dynatree-expand").split(",") : new Array());
@@ -85,7 +97,6 @@ jQuery(function($){
       });
 
       $(selNodes).each(function() { if(this.parent != null){has_child_selected(this.parent);} }); // exibe indicação de que pasta possui algum arquivo interno selecionado
-
       if(nodes_expanded.length > 0){ // se houver nós expandidos
         intern_level = jQuery("#tree").dynatree("getTree").getNodeByKey(nodes_expanded[nodes_expanded.length-1]).getLevel(); // recupera o nível mais interno
 
