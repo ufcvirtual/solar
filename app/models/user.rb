@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 
   has_many :allocations
   has_many :allocation_tags, :through => :allocations, :uniq => true
-  has_many :profiles, :through => :allocations, :uniq => true
+  has_many :profiles, :through => :allocations, :uniq => true, conditions: ["profiles.status = true", "allocations.status = 1"] # allocation.status = Allocation_Activated
   has_many :logs
   has_many :lessons
   has_many :discussion_posts
@@ -148,7 +148,7 @@ class User < ActiveRecord::Base
 
   def profiles_activated(only_id = false)
     profiles = self.profiles.where("allocations.status = ?", Allocation_Activated).uniq
-    return (only_id) ? profiles.map { |p| p.id.to_i } : profiles
+    return (only_id) ? profiles.map(&:id) : profiles
   end
 
   def profiles_on_allocation_tag(allocation_tag_id, only_id = false)

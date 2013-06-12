@@ -144,23 +144,23 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def informations
-    allocation_tags   = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
+    allocation_tags   = AllocationTag.find_related_ids(active_tab[:url][:allocation_tag_id])
     allocation_offer  = AllocationTag.where("id IN (#{allocation_tags.join(', ')}) AND offer_id IS NOT NULL").first
     @offer            = allocation_offer.offer unless allocation_offer.nil?
   end
 
   def participants
     @student_profile = Profile.student_profile # retorna perfil em que se pede matricula (~aluno)
-    allocation_tags  = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
+    allocation_tags  = AllocationTag.find_related_ids(active_tab[:url][:allocation_tag_id])
     @participants    = CurriculumUnit.class_participants_by_allocations_tags_and_is_not_profile_type(allocation_tags.join(','), Profile_Type_Class_Responsible)
   end
 
   private
 
     def curriculum_data
-      authorize! :show, @curriculum_unit = CurriculumUnit.find(active_tab[:url]['id'])
+      authorize! :show, @curriculum_unit = CurriculumUnit.find(active_tab[:url][:id])
 
-      @allocation_tag_id = active_tab[:url]['allocation_tag_id']
+      @allocation_tag_id = active_tab[:url][:allocation_tag_id]
       @responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(AllocationTag.find_related_ids(@allocation_tag_id).join(','),
         Profile_Type_Class_Responsible)
     end

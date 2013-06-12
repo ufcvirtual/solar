@@ -106,14 +106,14 @@ class MessagesController < ApplicationController
       update_tab_values
 
       # retorna label de acordo com disciplina atual
-      allocation_tag_id = active_tab[:url]['allocation_tag_id']
+      allocation_tag_id = active_tab[:url][:allocation_tag_id]
 
       label_name = ''
       unless allocation_tag_id.nil?
         ats = AllocationTag.find_related_ids(allocation_tag_id).join(', ');
         group = AllocationTag.find(allocation_tag_id).group
         offer = AllocationTag.where("id IN (#{ats}) AND offer_id IS NOT NULL").first.try(:offer)
-        curriculum_unit = AllocationTag.where("id IN (#{ats}) AND curriculum_unit_id IS NOT NULL").first.try(:curriculum_unit) || CurriculumUnit.find(active_tab[:url]['id'])
+        curriculum_unit = AllocationTag.where("id IN (#{ats}) AND curriculum_unit_id IS NOT NULL").first.try(:curriculum_unit) || CurriculumUnit.find(active_tab[:url][:id])
 
         label_name = get_label_name(group, offer, curriculum_unit)
       end
@@ -328,9 +328,9 @@ class MessagesController < ApplicationController
   # verifica aba aberta, se Home ou se aba de unidade curricular
   # se Home, traz todas; senao, traz com filtro da unidade curricular
   def message_data
-    unless active_tab[:url]['context'] == Context_General
+    unless active_tab[:url][:context] == Context_General
 
-      allocation_tag_id = active_tab[:url]['allocation_tag_id']
+      allocation_tag_id = active_tab[:url][:allocation_tag_id]
       allocations       = AllocationTag.find_related_ids(allocation_tag_id).join(', ');
 
       # relacionado diretamente com a allocation_tag
@@ -338,7 +338,7 @@ class MessagesController < ApplicationController
       al_offer  = AllocationTag.where("id IN (#{allocations}) AND offer_id IS NOT NULL").first
       offer     = al_offer.nil? ? nil : al_offer.offer
       al_c_unit = AllocationTag.where("id IN (#{allocations}) AND curriculum_unit_id IS NOT NULL").first
-      curriculum_unit = al_c_unit.nil? ? CurriculumUnit.find(active_tab[:url]['id']) : al_c_unit.curriculum_unit
+      curriculum_unit = al_c_unit.nil? ? CurriculumUnit.find(active_tab[:url][:id]) : al_c_unit.curriculum_unit
       @message_tag    = get_label_name(group, offer, curriculum_unit)
     else
       @message_tag    = nil
@@ -350,7 +350,7 @@ class MessagesController < ApplicationController
 
   def update_tab_values
     # pegando id da sessao - unidade curricular aberta
-    id = active_tab[:url]["id"]
+    id = active_tab[:url][:id]
 
     @curriculum_unit_id = nil
     @offer_id = nil
@@ -363,8 +363,8 @@ class MessagesController < ApplicationController
       @offer_id = data[1]
       @group_id = data[2]
     else
-      unless active_tab[:url]["context"] == Context_General
-        allocation_tag = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
+      unless active_tab[:url][:context] == Context_General
+        allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
         @curriculum_unit_id = id
         @offer_id = allocation_tag.offer_id
         @group_id = allocation_tag.group_id
@@ -375,12 +375,12 @@ class MessagesController < ApplicationController
   # contatos para montagem da tela
   def get_contacts
     # pegando id da sessao - unidade curricular aberta
-    id = active_tab[:url]["id"]
+    id = active_tab[:url][:id]
     update_tab_values
 
     # unidade curricular ativa ou home ("")
     if @curriculum_unit_id == id
-      @curriculum_units_name = (active_tab[:url]["context"] == Context_General) ? "" : user_session[:tabs][:active]
+      @curriculum_units_name = (active_tab[:url][:context] == Context_General) ? "" : user_session[:tabs][:active]
     else
       @curriculum_units_name = CurriculumUnit.find(@curriculum_unit_id).name unless @curriculum_unit_id.nil?
     end

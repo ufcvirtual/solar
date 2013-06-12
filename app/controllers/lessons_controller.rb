@@ -214,11 +214,11 @@ class LessonsController < ApplicationController
   private
 
     def curriculum_data
-      @curriculum_unit = CurriculumUnit.where(id: (params[:curriculum_unit_id] || active_tab[:url]['id'])).first
+      @curriculum_unit = CurriculumUnit.where(id: (params[:curriculum_unit_id] || active_tab[:url][:id])).first
     end
 
     def lessons_to_open(allocation_tags_ids = nil)
-      allocation_tags_ids = allocation_tags_ids || AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
+      allocation_tags_ids = allocation_tags_ids || AllocationTag.find_related_ids(active_tab[:url][:allocation_tag_id])
       Lesson.to_open(allocation_tags_ids.join(", "))
     end
 
