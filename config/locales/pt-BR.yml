@@ -305,7 +305,7 @@
         user:
           attributes:
             email:
-              not_found: "E-mail não encontrado"
+              not_found: "não encontrado"
             photo_content_type:
               invalid_type: "Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG."
         assignment_file:
@@ -1104,6 +1104,9 @@
       signed_in: 'Login efetuado com sucesso.'
       signed_out: 'Logout efetuado com sucesso.'
     passwords:
+      new_password: Nova senha
+      confirm_new_password: Confirmar nova senha
+      change_my_password: Mudar minha senha
       send_instructions: 'Você receberá um email com instruções sobre como resetar sua senha em alguns minutos.'
       updated: 'Sua senha foi modificada com sucesso. Você agora está logado.'
       updated_not_active: 'Sua senha foi modificada com sucesso. Você agora está logado.'
@@ -1130,6 +1133,11 @@
         subject: 'Instruções de reset de senha'
       unlock_instructions:
         subject: 'Instruções de desbloqueio'
+      msg:
+        hello: "Olá %{email}!"
+        request: "Alguém solicou um link para alterar sua senha, e você pode fazer isso através do link abaixo."
+        ignore: "Se não foi você quem solicitou este link, por favor ignore este email."
+        change: "Sua senha não vai ser modificada enquanto você não acessar o link e criar uma nova."
 
  # suport material file
   support_folder_name: Material de Apoio

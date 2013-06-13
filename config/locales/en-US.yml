@@ -940,6 +940,9 @@
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
     passwords:
+      new_password: New password
+      confirm_new_password: Confirm new password
+      change_my_password: Change my password
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       updated: 'Your password was changed successfully. You are now signed in.'
       updated_not_active: 'Your password was changed successfully.'
@@ -969,6 +972,11 @@
         subject: 'Reset password instructions'
       unlock_instructions:
         subject: 'Unlock Instructions'
+      msg:
+        hello: "Hello %{email}!"
+        request: "Someone has requested a link to change your password, and you can do this through the link below."
+        ignore: "If you didn't request this, please ignore this email."
+        change: "Your password won't change until you access the link above and create a new one."
 
   # suport material file
   support_folder_name: Support Material
