@@ -6,7 +6,7 @@
       default: "%d/%m/%Y"
       short: "%d de %B"
       long: "%d de %B de %Y"
-      datepicker: "%d-%m-%Y"
+      datepicker: "%d/%m/%Y"
       month_and_year: "%b %Y"
       day_and_month: "%d/%b"
     day_names: [Domingo, Segunda, Terça, Quarta, Quinta, Sexta, Sábado]

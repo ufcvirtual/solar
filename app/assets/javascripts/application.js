@@ -3,7 +3,7 @@
 // = require jquery.qtip.min
 
 // = require jquery-ui
-// = require jquery.ui.datepicker-en-GB
+// = require jquery.ui.datepicker-en-US
 // = require jquery.ui.datepicker-pt-BR
 
 // = require jquery.dropdown

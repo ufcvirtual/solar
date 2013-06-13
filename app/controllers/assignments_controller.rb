@@ -44,15 +44,15 @@ class AssignmentsController < ApplicationController
   def new
     authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
 
-    @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
+    @groups     = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
     @assignment = Assignment.new
-    @assignment.build_schedule(start_date: Date.today, end_date: Date.today)
+    @assignment.build_schedule(start_date: Date.current, end_date: Date.current)
   end
 
   def create
     authorize! :create, Assignment
 
-    groups = AllocationTag.where(group_id: params[:assignment].delete(:allocation_tag_id))
+    groups      = AllocationTag.where(group_id: params[:assignment].delete(:allocation_tag_id))
     @assignment = Assignment.new params[:assignment]
 
     begin
@@ -80,9 +80,9 @@ class AssignmentsController < ApplicationController
   def edit
     authorize! :update, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
 
-    @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
+    @groups     = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
     @assignment = Assignment.find(params[:id])
-    @schedule = @assignment.schedule
+    @schedule   = @assignment.schedule
   end
 
   def update

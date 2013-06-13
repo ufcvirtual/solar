@@ -3,8 +3,8 @@
   # Formatos de data e hora
   date:
     formats:
-      default: "%m/%d/%Y"
-      datepicker: "%Y-%m-%d"
+      default: "%d/%m/%Y"
+      datepicker: "%d/%m/%Y"
       month_and_year: "%b %Y"
       day_and_month: "%d/%b"
     month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
@@ -15,18 +15,18 @@
         - :year
   time:
     formats:
-      clock: "%m/%d/%Y %H:%M:%S"
-      default: "%b/%d/%Y, %H:%M:%S"
-      short: "%b/%d %H:%M"
+      clock: "%d/%m/%Y %H:%M:%S"
+      default: "%d/%b/%Y, %H:%M:%S"
+      short: "%d/%b %H:%M"
       today: "%H:%M"
-      not_today: "%m/%d"
+      not_today: "%d/%m"
       long: "%B %d, %Y %H:%M"
-      normal: "%m/%d/%Y"
-      files: "%m/%d/%Y, %H:%M"
-      discussion_post_date: "%m/%d/%Y"
+      normal: "%d/%m/%Y"
+      files: "%d/%m/%Y, %H:%M"
+      discussion_post_date: "%d/%m/%Y"
       discussion_post_hour: "%H:%M h"
       simple_day_and_month: "%d/%b"
-      at_date: "%m/%d/%Y at %H:%M"
+      at_date: "%d/%m/%Y at %H:%M"
     am: "am"
     pm: "pm"
 
