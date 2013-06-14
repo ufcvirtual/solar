@@ -11,9 +11,8 @@ jQuery(function($) {
   else
     $(".enroll_end").hide();
 
-  /* Usado no formulário */
-
-  var options = $.extend({}, $.datepicker.regional['#{I18n.locale}'], {dateFormat: global_config.locale.dateFormat.default});
+  // Usado no formulário
+  var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
 
   // Impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final
   $('#dt_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#dt_end_date').datepicker("option", "minDate", selected); } }) );
@@ -46,24 +45,18 @@ jQuery(function($) {
   });
 
   $("input:checkbox").change(function() {
-    if (this.checked){
-      set_dates_like_offer();
+    if (this.checked)
       $(".enroll_end").slideDown();
-    }else
+    else
       $(".enroll_end").slideUp();
   });
 
-  $("input[id^='dt_enroll']").change(function() {
-    if($("#dt_enroll_start").datepicker("getDate") == null || $("#dt_enroll_end").datepicker("getDate") == null)
-      set_dates_like_offer();
+  $('#dt_start_date, #dt_end_date, #dt_enroll_start, #dt_enroll_end').blur(function(){
+    if($(this).datepicker("getDate") == null){
+      redefining_value = new Date($(this).attr("data-default"));
+      /* o "new Date" irá considerar o offset do time_zone (-3h) e irá exibir o dia incorreto, por isso precisa adicionar um dia à data obtida */
+      $(this).datepicker("setDate", new Date(redefining_value.getFullYear(), redefining_value.getMonth(), redefining_value.getDate()+1));
+    }
   });
-
-  /* Seta as datas de período de matrícula com valores pré-definidos quando estas são definidas como vazias */
-  function set_dates_like_offer(){
-    if($("#dt_enroll_start").datepicker("getDate") == null)
-      $("#dt_enroll_start").datepicker("setDate", $("#dt_start_date").datepicker("getDate"));
-    if($("#dt_enroll_end").datepicker("getDate") == null)
-      $("#dt_enroll_end").datepicker("setDate", $("#dt_end_date").datepicker("getDate"));
-  }
 
 });

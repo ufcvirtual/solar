@@ -25,27 +25,27 @@
           = f.label t(".date_range"), :required => true
           
           - start_date = @offer.start_date.nil? ? Date.today : @offer.start_date.to_date
-          = text_field_tag :start_date, "", :value => (l(start_date, :format => :default)), :id => "dt_start_date", :name => "offer[start_date]", :size => 10
+          = text_field_tag :start_date, "", :value => (l(start_date, :format => :datepicker)), :id => "dt_start_date", :name => "offer[start_date]", :size => 10, :'data-default' => start_date
 
           = t(".to")
 
           - end_date = @offer.end_date.nil? ? Date.today + 3.month : @offer.end_date.to_date
-          = text_field_tag :end_date, "", :value => (l(end_date, :format => :default)), :id => "dt_end_date", :name => "offer[end_date]", :size => 10
+          = text_field_tag :end_date, "", :value => (l(end_date, :format => :datepicker)), :id => "dt_end_date", :name => "offer[end_date]", :size => 10, :'data-default' => end_date
           %span{:style => "display: inline-block;"}= @date_range_error
 
       .string
         = f.label t(".enroll_period")
       - error_class_schedule = "field_with_errors" unless @schedule_error.blank?
-      .string.required
+      .string.required{:class => error_class_schedule}
         = f.label t(".start_date")+"*"
 
         - enroll_start = @offer.schedule.nil? ? Date.today : @offer.schedule.start_date.to_date
-        = text_field_tag :enroll_start, "", :value => (l(enroll_start, :format => :default)), :id => "dt_enroll_start", :size => 10
+        = text_field_tag :enroll_start, "", :value => (l(enroll_start, :format => :datepicker)), :id => "dt_enroll_start", :size => 10, :'data-default' => enroll_start
 
         %span.enroll_end{:class => error_class_schedule}
           = t(".to")
-          - enroll_end = l((@offer.schedule.nil? or @offer.schedule.end_date.nil?) ? Date.today + 3.month : @offer.schedule.end_date.to_date, :format => :default)
-          = text_field_tag :enroll_end, "", :value => (enroll_end), :id => "dt_enroll_end", :size => 10
+          - enroll_end = ((@offer.schedule.nil? or @offer.schedule.end_date.nil?) ? Date.today + 3.month : @offer.schedule.end_date.to_date)
+          = text_field_tag :enroll_end, "", :value => l(enroll_end, :format => :datepicker), :id => "dt_enroll_end", :size => 10, :'data-default' => enroll_end
           %span{:class => "error"}= @schedule_error
 
       .select_end_date.string
