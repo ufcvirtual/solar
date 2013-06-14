@@ -62,6 +62,20 @@
         }
 
         function formatNumber(num) { return (num < 10) ? "0" + num : num; }
+
+        /**
+         * Intro
+         */
+        $("#mysolar_top_help").click(function(){
+          introJs().setOptions({
+            showStepNumbers: false,
+            nextLabel: 'Próximo',
+            prevLabel: 'Anterior',
+            skipLabel: 'Pular',
+            doneLabel: 'Fechar'
+          }).start();
+        });
+
       });
 
     </script>
@@ -71,12 +85,12 @@
     <div id="body_wrapper">
       <!-- Barra Topo #########################-->
       <div id="mysolar_topbar">
-        <div id="mysolar_identity">
+        <div id="mysolar_identity" data-intro="Barra superior: Nesta barra você visualiza informações sobre o seu usuário, hora do sistema, esta ajuda e pode sair do Solar" data-step="1">
           <div id="mysolar_logo">
             <%= image_tag 'solar_logo_small.png', :alt => t(:mysolar_alt_img_solar), :id => "solar_logo" %>
           </div>
           <ul id="mysolar_top_options">
-            <li id="mysolar_top_submenu_label" class="mysolar_top_submenu_label_regular">
+            <li id="mysolar_top_submenu_label" class="mysolar_top_submenu_label_regular" data-intro="Seu usuário atual. Clique para visualizar mais informações, editar seu perfil ou alterar sua foto" data-step="2">
               <%= image_tag current_user.photo.url(:small), :alt => "#{t(:mysolar_alt_img_user)} #{current_user.nick}", :id => "image_user", :onclick => "mysolarTopSubmenuToggle();return false;"%>
               <% if can? :update, current_user %>
                 <a id="mysolar_top_user_nick" href="" onclick="mysolarTopSubmenuToggle();return false;" class="mysolar_top_link"><%=current_user.nick%></a>
@@ -118,15 +132,15 @@
         </div>
 
         <!-- Abas #########################-->
-        <div id="mysolar_tabs">
+        <div id="mysolar_tabs" data-intro="Abas onde você pode navegar entre o MeuSolar e os Cursos que tiver acessado na sessão" data-step="3">
           <ul id="mysolar_tabs_wrapper">
             <%= raw render_tabs %>
           </ul>
           <ul id="mysolar_extras">
-            <li>
+            <li id="mysolar_languages" data-intro="Aqui você pode escolher o idioma do sistema" data-step="4">
               <button type="button" class="btn" data-tooltip="Idiomas" data-dropdown="#language-dropdown" name="Idiomas"><i class="icon-earth"></i><i class="icon-arrow-down-3"></i></button>
             </li>
-            <li><button class="btn btn_main" onclick="javascript:window.open('https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ')">Sugestões para o Solar 2.0</button></li>
+            <li id="mysolar_suggestions" data-intro="Aqui você pode enviar suas críticas, sugestões e comentários para que possamos melhorar o Solar 2.0" data-step="5" data-position="left"><button class="btn btn_main" onclick="javascript:window.open('https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ')">Sugestões para o Solar 2.0</button></li>
           </ul>
           <div id="language-dropdown" class="dropdown dropdown-tip">
             <ul class="dropdown-menu">
@@ -138,14 +152,14 @@
       </div>
 
       <!-- Barra Lateral #########################-->
-      <div id="mysolar_sidebar">
+      <div id="mysolar_sidebar" data-intro="Menu de navegação" data-step="6">
         <div id="mysolar_menu_accordion" style="z-index:10">
           <%=raw menu(@profiles, @context_id, @context_uc, user_session[:menu][:current]) if user_signed_in? %>
         </div>
       </div>
 
       <!-- CONTEUDO -->
-      <div id="mysolar_content">
+      <div id="mysolar_content" data-intro="Área de conteúdo" data-step="7">
 
         <!-- titulo das paginas -->
         <div class="block_wrapper">
@@ -178,7 +192,7 @@
       </div>
 
       <div id="footer_push" style="height:35px"></div>
-      <div id="footer">
+      <div id="footer" data-intro="Blablablala doasdoia jdoais djoiasj doias jdioasd" data-step="8" data-position="top">
         <ul>
           <li><%= link_to t(:login_footer1), 'http://www.virtual.ufc.br', :target => '_blank' %></li>
           <li><%= link_to t(:login_footer2), 'http://www.ufc.br', :target => '_blank' %></li>

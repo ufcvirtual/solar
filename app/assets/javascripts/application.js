@@ -15,6 +15,8 @@
 // = require lesson
 // = require allocation
 
+// = require intro.min
+
 /*************************************************************************************
  * Atualiza o conteudo da tela por ajax.
  * Utilizado por funções genéricas de seleção como a paginação ou a seleção de turmas.
