@@ -55,11 +55,11 @@
           #login.field
             = f.input :username
           #password.field
-            = f.input :password
+            = f.input :password, required: true
           #confirm-password.field
             = f.input :password_confirmation, required: true
           #email.field
-            = f.input :email
+            = f.input :email, required: true
           #confirmEmail.field
             = f.input :email_confirmation, required: true
           #alternate-email.field  

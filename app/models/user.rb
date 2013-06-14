@@ -41,10 +41,7 @@ class User < ActiveRecord::Base
   validates :username, presence: true, :length => { :within => 3..20 }, :uniqueness => true
   validates :password, presence: true, confirmation: true, unless: Proc.new { |a| a.password.blank? }
   validates :alternate_email, :format => { :with => email_format }
-
-  validates :email, presence: true, :format => { :with => email_format }
-  validates_confirmation_of :email, if: Proc.new {|a| a.email_changed? }
-
+  validates :email, presence: true, confirmation: true, :format => { :with => email_format }, if: Proc.new {|a| a.email_changed? }
   validates :special_needs, presence: true, :if => :has_special_needs?
 
   validates_length_of :address, :maximum => 99
