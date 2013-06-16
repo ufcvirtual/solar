@@ -6,7 +6,7 @@
       default: "%d/%m/%Y"
       short: "%d de %B"
       long: "%d de %B de %Y"
-      datepicker: "%d-%m-%Y"
+      datepicker: "%d/%m/%Y"
       month_and_year: "%b %Y"
       day_and_month: "%d/%b"
     day_names: [Domingo, Segunda, Terça, Quarta, Quinta, Sexta, Sábado]
@@ -269,6 +269,8 @@
       lesson_module:
         name: Nome
       support_material_file:
+        attachment: Arquivo
+        attachment_content_type: Tipo do arquivo
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
 
     errors:
@@ -303,7 +305,7 @@
         user:
           attributes:
             email:
-              not_found: "E-mail não encontrado"
+              not_found: "não encontrado"
             photo_content_type:
               invalid_type: "Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG."
         assignment_file:
@@ -334,6 +336,10 @@
           attributes:
             address:
               invalid: inválida
+        support_material_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: inválido
 
   ########### GERAL ###############
 
@@ -661,6 +667,9 @@
     item_must_be_selected: Um item deve ser selecionado
     one_folder_must_be_selected: Apenas uma pasta deve ser selecionada
     items_must_be_selected: Um ou mais itens devem ser selecionados
+    unzip_error: Erro ao descompactar arquivo
+    zip_contains_invalid_files: O zip contém arquivos inválidos
+    file_doesnt_exist: Arquivo inexistente
     index:
       cancel: Cancelar
       move_to: "Mover para:"
@@ -689,6 +698,7 @@
     bad_extension_error: "Não enviado(s), tipo de arquivo inválido"
     file_too_big_error: "Não enviado(s), arquivo muito grande. O tamanho máximo deve ser de até 200MB."
     must_be_a_file: Deve ser um arquivo
+    must_be_a_zip_file: Deve ser um arquivo zip
     initial_file_error: Não foi possível definir o arquivo inicial
     cant_remove_initial_file: 'Não é possível remover arquivo inicial, favor primeiro redefini-lo'
     define_initial_file_error: Um arquivo inicial deve ser definido.
@@ -1095,6 +1105,9 @@
       signed_in: 'Login efetuado com sucesso.'
       signed_out: 'Logout efetuado com sucesso.'
     passwords:
+      new_password: Nova senha
+      confirm_new_password: Confirmar nova senha
+      change_my_password: Mudar minha senha
       send_instructions: 'Você receberá um email com instruções sobre como resetar sua senha em alguns minutos.'
       updated: 'Sua senha foi modificada com sucesso. Você agora está logado.'
       updated_not_active: 'Sua senha foi modificada com sucesso. Você agora está logado.'
@@ -1121,6 +1134,11 @@
         subject: 'Instruções de reset de senha'
       unlock_instructions:
         subject: 'Instruções de desbloqueio'
+      msg:
+        hello: "Olá %{email}!"
+        request: "Alguém solicou um link para alterar sua senha, e você pode fazer isso através do link abaixo."
+        ignore: "Se não foi você quem solicitou este link, por favor ignore este email."
+        change: "Sua senha não vai ser modificada enquanto você não acessar o link e criar uma nova."
 
  # suport material file
   support_folder_name: Material de Apoio

@@ -3,8 +3,8 @@
   # Formatos de data e hora
   date:
     formats:
-      default: "%m/%d/%Y"
-      datepicker: "%Y-%m-%d"
+      default: "%d/%m/%Y"
+      datepicker: "%d/%m/%Y"
       month_and_year: "%b %Y"
       day_and_month: "%d/%b"
     month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
@@ -16,17 +16,17 @@
   time:
     formats:
       clock: "%m/%d/%Y %H:%M:%S"
-      default: "%b/%d/%Y, %H:%M:%S"
-      short: "%b/%d %H:%M"
+      default: "%d/%b/%Y, %H:%M:%S"
+      short: "%d/%b %H:%M"
       today: "%H:%M"
-      not_today: "%m/%d"
+      not_today: "%d/%m"
       long: "%B %d, %Y %H:%M"
-      normal: "%m/%d/%Y"
-      files: "%m/%d/%Y, %H:%M"
-      discussion_post_date: "%m/%d/%Y"
+      normal: "%d/%m/%Y"
+      files: "%d/%m/%Y, %H:%M"
+      discussion_post_date: "%d/%m/%Y"
       discussion_post_hour: "%H:%M h"
       simple_day_and_month: "%d/%b"
-      at_date: "%m/%d/%Y at %H:%M"
+      at_date: "%d/%m/%Y at %H:%M"
     am: "am"
     pm: "pm"
 
@@ -129,6 +129,8 @@
       lesson_module:
         name: Name
       support_material_file:
+        attachment: Attachment
+        attachment_content_type: File type
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
 
     errors:
@@ -180,6 +182,10 @@
           attributes:
             address:
               invalid: invalid
+        support_material_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: invalid
 
   ########### GERAL ###############
 
@@ -497,6 +503,9 @@
     item_must_be_selected: One item must be selected
     one_folder_must_be_selected: Only one folder must be selected
     items_must_be_selected: One or more items must be selected
+    unzip_error: Error on extracting file
+    zip_contains_invalid_files: Zip file conatins invalid files
+    file_doesnt_exist: "File doesn't exist"
     index:
       cancel: Cancel
       move_to: "Move to:"
@@ -525,6 +534,7 @@
     bad_extension_error: "Not sent, invalid file type"
     file_too_big_error: "Not sent, file too large. The maximum size should be up to 200MB."
     must_be_a_file: Must be a file
+    must_be_a_zip_file: Must be a zip file
     initial_file_error: It wasn't possibile to define initial file
     cant_remove_initial_file: "It's not possible to remove the initial file, please first redefine it"
     define_initial_file_error: A initial file must be defined.
@@ -537,7 +547,7 @@
       link: "Link"
       file: "File"
       new_link: "New Link"
-      new_link: "Edit Link"
+      edit_link: "Edit Link"
       new_file: "New File"
       none: "No material registered"
 
@@ -931,6 +941,9 @@
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
     passwords:
+      new_password: New password
+      confirm_new_password: Confirm new password
+      change_my_password: Change my password
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       updated: 'Your password was changed successfully. You are now signed in.'
       updated_not_active: 'Your password was changed successfully.'
@@ -960,6 +973,11 @@
         subject: 'Reset password instructions'
       unlock_instructions:
         subject: 'Unlock Instructions'
+      msg:
+        hello: "Hello %{email}!"
+        request: "Someone has requested a link to change your password, and you can do this through the link below."
+        ignore: "If you didn't request this, please ignore this email."
+        change: "Your password won't change until you access the link above and create a new one."
 
   # suport material file
   support_folder_name: Support Material
@@ -1170,6 +1188,9 @@
       all: All
       enable_end_date: Enable end date
       start_date: Start date
+      course: Course
+      curriculum_unit: Curriculum Unit
+      enroll_period: Enrollment date range
     no_end_date: "On"
     not_possible_to_delete: It's not possible to delete offer with dependencies
     existing_semester: already exists

@@ -40,7 +40,7 @@
     .btn-group
       = button_tag content_tag(:i, nil, :class=>'icon-house'), type: :button, :class => 'btn', id: 'btn-initial-file', :'data-tooltip' => t('.initial_file')
     .btn-group
-      = button_tag content_tag(:i, nil, :class=>'icon-unzip-file'), type: :button, :class => 'btn', id: 'btn-unzip', :'data-tooltip' => t('.unzip')
+      = button_tag content_tag(:i, nil, :class=>'icon-unzip-file'), type: :button, :class => 'btn', id: 'btn-unzip', :'data-tooltip' => t('.unzip'), :"data-unzip-path" => extract_lesson_files_path(@lesson.id, ':file')
       = button_tag content_tag(:i, nil, :class=>'icon-edit'), type: :button, :class => 'btn', id: 'btn-rename', :'data-tooltip' => t('.rename')
       = button_tag content_tag(:i, nil, :class=>'icon-trash'), type: :button, :class => 'btn btn_caution', id: 'btn-remove-node', :'data-tooltip' => t('.remove')
       = button_tag content_tag(:i, nil, :class=>'icon-move'), type: :button, :class => 'btn', id: 'btn-move-node', :'data-tooltip' => t('.move'), "data-dropdown-alt" => "#folder_dropdown"

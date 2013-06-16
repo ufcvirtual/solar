@@ -43,6 +43,7 @@ group :test do
   gem "cucumber-rails", "~> 1.3.1", :require => false
   gem "launchy", "2.1.0"
   gem "nokogiri", "1.5.5"
+  gem 'spreewald'
   # gem "simplecov", ">= 0.5.3", :require => false
 end
 

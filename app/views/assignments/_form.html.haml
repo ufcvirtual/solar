@@ -10,8 +10,8 @@
 
       = f.fields_for :schedule do |s|
         .schedule_dates
-          .left= s.input :start_date, as: :string, input_html: {id: 'assignment_start_date'}
-          .right= s.input :end_date, as: :string, input_html: {id: 'assignment_end_date'}
+          .left= s.input :start_date, as: :string, input_html: {id: 'assignment_start_date', value: l(@assignment.schedule.start_date.to_date, format: :datepicker)}
+          .right= s.input :end_date, as: :string, input_html: {id: 'assignment_end_date', value: l(@assignment.schedule.end_date.to_date, format: :datepicker)}
 
       = f.input :type_assignment, collection: types, include_blank: false, required: true
       .groups
@@ -37,13 +37,30 @@
 
   jQuery(function($){
 
-    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}'], {dateFormat: global_config.locale.dateFormat.default});
-    $('#assignment_start_date, #assignment_end_date').datepicker(options);
+    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']); 
+    
+    /* impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final */
+    $('#assignment_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#assignment_end_date').datepicker("option", "minDate", selected); } }) );
+    $('#assignment_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#assignment_start_date').datepicker("option", "maxDate", selected); } }) );
 
     $('#save').click(function() {
       $('#assignment_form:last').serialize_and_submit_form({
-        div_error: 'new_assignment',
+        div_error: 'new_assignment:first',
         redirect_url: '#{list_assignments_path(allocation_tags_ids: @allocation_tags_ids)}',
       });
     });
+
+    /* se a data ficar vazia, recebe a data que veio ao carregar o formulário ou uma data permitida de acordo com a relação data final - data inicial */
+    $('#assignment_end_date').blur(function(){
+      if($(this).datepicker("getDate") == null)
+        $(this).datepicker("setDate", new Date("#{@assignment.schedule.end_date}"));
+    });
+
+    $('#assignment_start_date').blur(function(){
+      if($(this).datepicker("getDate") == null)
+        $(this).datepicker("setDate", new Date("#{@assignment.schedule.start_date}"));
+    });
+
   });
+
+

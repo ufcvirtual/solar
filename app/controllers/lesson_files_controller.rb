@@ -5,6 +5,7 @@ class LessonFilesController < ApplicationController
   require 'fileutils' # utilizado na remoção de diretórios, pois o "Dir.rmdir" não remove diretórios que não estejam vazis
   
   include LessonFileHelper
+  include FilesHelper
 
   def index
     begin 
@@ -135,6 +136,21 @@ class LessonFilesController < ApplicationController
     end
 
     render error ? {nothing: true, status: 500} : {action: :index, satus: 200}
+  end
+
+  def extract_files
+    @lesson = Lesson.find(params[:lesson_id])
+    authorize! :update, Lesson, on: [@lesson.allocation_tag.id] # com permissao para editar aula
+
+    file = Lesson::FILES_PATH.join(params[:lesson_id], params[:file])
+    to = File.dirname(file)
+
+    result = extract(file, to)
+    if result === true
+      render :index
+    else
+      render json: {success: false, msg: result}, status: :unprocessable_entity
+    end
   end
 
   private

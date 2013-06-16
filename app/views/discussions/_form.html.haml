@@ -1,5 +1,7 @@
 = javascript_include_tag "edition.js"
 
+- start_date, end_date = (@discussion.try(:schedule).try(:start_date) || Date.today), (@discussion.try(:schedule).try(:end_date) || Date.today + 3.months)
+
 %span.form_requirement= t(:required_fields)
 .discussion_form{:style => "text-align: left;"}
   = simple_form_for(@discussion, :html => {:id => "discussion_form"}) do |f| 
@@ -12,13 +14,9 @@
       - error_class = "field_with_errors" unless @schedule_error.blank?
       .string.required.label_color{:class => error_class}
         = f.label :schedule, :required => true
-        - start_date, end_date = '', ''
-        - unless @discussion.schedule.nil?
-          - start_date = @discussion.schedule.start_date.nil? ? '' : l(@discussion.schedule.start_date.to_date, :format => :datepicker)
-          - end_date = @discussion.schedule.end_date.nil? ? "" : l(@discussion.schedule.end_date.to_date, :format => :datepicker) 
-        = text_field_tag "start_date", "", :id => "from-date", :title => "#{t(:from_date)}", :value => "#{start_date}", :class => "date_text_field", :size => 10
+        = text_field_tag "start_date", "", :id => "from-date", :title => "#{t(:from_date)}", :value => "#{l(start_date.to_date, format: :datepicker)}", :class => "date_text_field", :size => 10
         = t(:to, :scope => [:discussion])
-        = text_field_tag "end_date", "", :id => "until-date", :title => "#{t(:until_date)}", :value => "#{end_date}", :class => "date_text_field", :size => 10
+        = text_field_tag "end_date", "", :id => "until-date", :title => "#{t(:until_date)}", :value => "#{l(end_date.to_date, format: :datepicker)}", :class => "date_text_field", :size => 10
         %span.field_with_errors{:style => "display: inline-block;"}= @error
 
       .form-actions.right_buttons
@@ -35,13 +33,32 @@
 
 :javascript
 
+  /* se é o cadastro de um novo fórum, o "new Date" irá considerar o offset do time_zone (-3h) e irá exibir o dia incorreto */
+  var new_action = (("#{params[:action]}" == "new" || "#{params[:action]}" == "create")  ? 1 : 0);
+
   $(function(){
     var options = $.extend($.datepicker.regional['#{I18n.locale}']);
-    options.dateFormat = global_config.locale.dateFormat;
-    $('#from-date, #until-date').datepicker(options);
+
+    /* impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final */
+    $('#from-date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#until-date').datepicker("option", "minDate", selected); } }) );
+    $('#until-date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#from-date').datepicker("option", "maxDate", selected); } }) );
 
     $('#save').click(function(){
       submit_form('discussion_form', 'discussion_form', '#{list_discussions_path(:allocation_tags_ids => @allocation_tags_ids.compact)}');
+    });
+
+    $('#until-date').blur(function(){
+      if($(this).datepicker("getDate") == null){
+        new_end_date = new Date("#{end_date}");
+        $(this).datepicker("setDate", new Date(new_end_date.getFullYear(), new_end_date.getMonth(), new_end_date.getDate()+new_action));
+      }
+    });
+
+    $('#from-date').blur(function(){
+      if($(this).datepicker("getDate") == null){
+        new_start_date = new Date("#{start_date}");
+        $(this).datepicker("setDate", new Date(new_start_date.getFullYear(), new_start_date.getMonth(), new_start_date.getDate()+new_action));
+      }
     });
 
     $('#cancel').click(function(){

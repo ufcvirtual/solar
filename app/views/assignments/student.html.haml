@@ -10,7 +10,7 @@
         %thead
           %tr.lines
             %th= t(:description, :scope => [:assignment, :information])
-            %th{:align => "center", :style => "width:70px"}= t(:date, :scope => [:assignment, :information])
+            %th{:align => "center", :style => "width:70px"}= t(:date_range, :scope => [:assignment, :information])
             %th{:align => "right", :style => "width:80px"}= t(:situation, :scope => [:assignment, :information])
             %th{:align => "center", :style => "width:40px"}= t(:grade, :scope => [:assignment, :information])
             %th{:align => "center", :style => "width:80px"}= t(:comments, :scope => [:assignment, :comments])
@@ -32,9 +32,9 @@
                 - else
                   = assignment.enunciation
               %td{:align => "center"}
-                =l assignment.schedule.start_date, :format => :files
+                =l assignment.schedule.start_date, :format => :normal
                 %br
-                =l assignment.schedule.end_date, :format => :files
+                =l assignment.schedule.end_date, :format => :normal
               %td=link_to t(@individual_assignments_info["situation"][idx].to_sym), assignment_path(assignment.id, :student_id => @student_id), :class => "assignment_#{@individual_assignments_info["situation"][idx]}"
               %td{:align => "center"}
                 %span.activity_grade= (@individual_assignments_info["assignments_grades"][idx].nil?) ? "-" : @individual_assignments_info["assignments_grades"][idx].to_f
@@ -93,9 +93,9 @@
                       %a.enunciation_more.link_content{:href => "#"}= t(:more, :scope => [:assignment, :information])
                       %a.enunciation_less.link_content{:href => "#"}= t(:less, :scope => [:assignment, :information])
               %td{:align => "center"}
-                =l assignment.schedule.start_date, :format => :files
+                =l assignment.schedule.start_date, :format => :normal
                 %br
-                =l assignment.schedule.end_date, :format => :files
+                =l assignment.schedule.end_date, :format => :normal
               %td
                 - if group.nil?
                   %span.assignment_without_group=t :without_group, :scope => [:assignment, :group_assignments]

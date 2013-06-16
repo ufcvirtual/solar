@@ -44,8 +44,8 @@ class ApplicationController < ActionController::Base
     user_session[:tabs] = {
       opened: {
         'Home' => {
-          breadcrumb: [{ name: 'Home', url: activate_tab_path(name: 'Home', context: Context_General)}],
-          url: {'context' => Context_General}
+          breadcrumb: [{ name: 'Home', url: activate_tab_path(name: 'Home', context: Context_General) }],
+          url: {context: Context_General}
         }
       }, active: 'Home'
     } unless user_session.include?(:tabs)
@@ -58,15 +58,16 @@ class ApplicationController < ActionController::Base
     user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb][same_level_for_all] = { name: params[:bread], url: params } if params[:bread].present?
   end
 
+  ## contexto para definir os links do menu
   def application_context
-    return nil unless user_signed_in?
+    return unless user_signed_in?
 
     set_tab_by_context
 
-    is_mysolar  = (params.include?('action') and params['action'] == 'mysolar')
-    @context_id = is_mysolar ? Context_General : active_tab[:url]['context']
-    @context_uc = is_mysolar ? nil : active_tab[:url]['id']
-    @profiles   = (active_tab[:url]['context'].to_i == Context_Curriculum_Unit) ? current_user.profiles.map(&:id).join(',') : current_user.profiles_activated(true).join(',')
+    is_mysolar  = (params[:action] == 'mysolar')
+    @profiles   = current_user.profiles.map(&:id).join(',')
+    @context_id = is_mysolar ? Context_General : active_tab[:url][:context]
+    @context_uc = is_mysolar ? nil : active_tab[:url][:id]
   end
 
   def current_menu
@@ -79,11 +80,16 @@ class ApplicationController < ActionController::Base
   end
 
   def set_active_tab_to_home
+    clear_breadcrumb_home
     set_active_tab('Home')
   end
 
   def active_tab
     user_session[:tabs][:opened][user_session[:tabs][:active]] if user_signed_in?
+  end
+
+  def clear_breadcrumb_home
+    user_session[:tabs][:opened]['Home'][:breadcrumb] = [user_session[:tabs][:opened]['Home'][:breadcrumb].first]
   end
 
   def prepare_for_pagination
@@ -99,16 +105,16 @@ class ApplicationController < ActionController::Base
   end
 
   def prepare_for_group_selection
-    return unless active_tab[:url]['context'] == Context_Curriculum_Unit.to_i
+    return unless active_tab[:url][:context] == Context_Curriculum_Unit.to_i
 
     # verifica se o grupo foi passado e se é um grupo válido
     unless params[:selected_group].present? and !!(allocation_tag_id_group = AllocationTag.find_by_group_id(params[:selected_group]).try(:id))
-      allocation_tag = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
+      allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
       params[:selected_group] = allocation_tag.group_id
-      allocation_tag_id_group = (allocation_tag.group_id.nil?) ? Group.find_all_by_curriculum_unit_id_and_user_id(active_tab[:url]['id'], current_user.id).first.allocation_tag.id : allocation_tag.id
+      allocation_tag_id_group = (allocation_tag.group_id.nil?) ? Group.find_all_by_curriculum_unit_id_and_user_id(active_tab[:url][:id], current_user.id).first.allocation_tag.id : allocation_tag.id
     end
 
-    user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['allocation_tag_id'] = allocation_tag_id_group
+    user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group
   end
 
   def after_sign_in_path_for(resource_or_scope)
@@ -139,11 +145,10 @@ class ApplicationController < ActionController::Base
 
     def set_tab_by_context
       if user_signed_in? 
-        set_active_tab_to_home if controller_path == "devise/registrations" # Aba Home para edição de dados do usuário (devise)
-        
-        # Seleciona aba de acordo com o contexto do menu
-        if params.include?('mid')
-          tab_context_id = active_tab[:url]['context']
+        if controller_path == "devise/registrations" # Aba Home para edição de dados do usuário (devise)
+          set_active_tab_to_home
+        elsif params.include?('mid') # Seleciona aba de acordo com o contexto do menu
+          tab_context_id = active_tab[:url][:context]
           current_menu_id = params[:mid]
           
           if MenusContexts.find_all_by_menu_id_and_context_id(current_menu_id, tab_context_id).empty?
@@ -165,7 +170,7 @@ class ApplicationController < ActionController::Base
     end
 
     def find_tab_by_context(context_id)
-      user_session[:tabs][:opened].each { |tab| return tab[0] if (tab[1][:url]['context'].to_i == context_id.to_i) }
+      user_session[:tabs][:opened].each { |tab| return tab[0] if (tab[1][:url][:context].to_i == context_id.to_i) }
     end
 
 end

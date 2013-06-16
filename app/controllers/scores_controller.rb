@@ -9,7 +9,7 @@ class ScoresController < ApplicationController
   def index
     authorize! :index, Score # verifica se pode acessar método
 
-    curriculum_unit_id, allocation_tag_id = active_tab[:url]['id'], active_tab[:url]['allocation_tag_id']
+    curriculum_unit_id, allocation_tag_id = active_tab[:url][:id], active_tab[:url][:allocation_tag_id]
     @group = AllocationTag.find(allocation_tag_id).groups.first
 
     raise CanCan::AccessDenied if @group.nil? # turma nao existe
@@ -31,7 +31,7 @@ class ScoresController < ApplicationController
 
     @student = params.include?(:student_id) ? User.find(params[:student_id]) : current_user
 
-    allocation_tag = AllocationTag.find(active_tab[:url]['allocation_tag_id'])
+    allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
     group_id = allocation_tag.group_id
     related_allocations = allocation_tag.related
 
@@ -43,19 +43,17 @@ class ScoresController < ApplicationController
 
     from_date  = (Date.today << 2) # dois meses atras
     until_date = Date.today
-    @amount    = Score.find_amount_access_by_student_id_and_interval(active_tab[:url]['id'], @student.id, from_date, until_date)
+    @amount    = Score.find_amount_access_by_student_id_and_interval(active_tab[:url][:id], @student.id, from_date, until_date)
   end
 
   ##
   # Quantidade de acessos do aluno a unidade curricular
   ##
   def amount_history_access
-    # raise "#{params}"
     authorize! :show, Score
 
     @student_id        = params[:id]
-    curriculum_unit_id = active_tab[:url]['id']
-    # group_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
+    curriculum_unit_id = active_tab[:url][:id]
 
     authorize! :find, User.find(@student_id) # verifica autorizacao para consultar dados do usuario
     # authorize! :related_with_allocation_tag,  AllocationTag.user_allocation_tag_related_with_class(group_id, current_user.id) # verifica se pode acessar turma
@@ -74,8 +72,8 @@ class ScoresController < ApplicationController
   def history_access
     authorize! :show, Score
 
-    student_id         = params['id']
-    curriculum_unit_id = active_tab[:url]["id"]
+    student_id         = params[:id]
+    curriculum_unit_id = active_tab[:url][:id]
     # class_id = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
     
     authorize! :find, User.find(student_id) # verifica autorizacao para consultar dados do usuario

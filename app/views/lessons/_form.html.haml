@@ -1,3 +1,5 @@
+- start_date, end_date = (@lesson.try(:schedule).try(:start_date) || Date.today), (@lesson.try(:schedule).try(:end_date) || '')
+
 .new_lesson_form
   :css
     .date_text_field {
@@ -28,10 +30,7 @@
         = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
         = hidden_field_tag(:lesson_module_id, params[:lesson_module_id])
 
-        - start_date = @lesson.try(:schedule).try(:start_date) || Date.today
-        - end_date = @lesson.try(:schedule).try(:end_date) || ''
-
-        .form-inputs
+        .form-inputs.block_content
           .lesson_module
             = f.label t(:lesson_module, :scope => [:editions, :items])
             - if @lesson_modules
@@ -45,10 +44,10 @@
           - error_class = "field_with_errors" unless @schedule_error.blank?
           .lesson_date{:class => error_class}
             =f.label :start_date, :required => true
-            =text_field_tag "start_date", "", :id => "from_date", :title => "#{t(:from_date)}", :value => "#{l(start_date.to_date, :format => :default)}", :class => "date_text_field", :size => 10, :required => true
+            =text_field_tag "start_date", "", :id => "from_date", :title => "#{t(:from_date)}", :value => "#{l(start_date.to_date, :format => :datepicker)}", :class => "date_text_field", :size => 10, :required => true
             %div.end_date{class: ('invisible' if (!@lesson.has_end_date?) )}
               =f.label :end_date
-              =text_field_tag "end_date", "", :id => "until_date", :title => "#{t(:until_date)}", :value => ("#{l(end_date.to_date, :format => :default)}" if Date.valid?(end_date)), :class => "date_text_field", :size => 10, :required => true
+              =text_field_tag "end_date", "", :id => "until_date", :title => "#{t(:until_date)}", :value => ("#{l(end_date.to_date, :format => :datepicker)}" if Date.valid?(end_date)), :class => "date_text_field", :size => 10, :required => true
               %span{:style => "display: inline-block;"}= @schedule_error
             .select_end_date
               =f.label " "
@@ -65,7 +64,7 @@
               =f.select :type_lesson, ([ [t(:link, :scope => [:lessons, :new]), Lesson_Type_Link], [t(:archive, :scope => [:lessons, :new]),Lesson_Type_File] ]), :include_blank => false
           - if (@lesson_modules.nil? or @lesson.type_lesson == Lesson_Type_Link)
             .url_lesson
-              =f.input :address
+              =f.input :address, :required => true
               .disabled
                 =f.label " "
                 =t(:example, :scope => [:lessons, :new])
@@ -75,25 +74,25 @@
 
   :javascript
 
-    if ("#{params[:action] == "new"}" == "true" || "#{params[:action] == "create"}" == "true") {
-      var new_action = true;
-    }
+    /* se é o cadastro de uma nova aula, o "new Date" irá considerar o offset do time_zone (-3h) e irá exibir o dia incorreto */
+    var new_action = (("#{params[:action]}" == "new" || "#{params[:action]}" == "create")  ? 1 : 0);
 
     $(function(){
-      var options = $.extend({}, $.datepicker.regional['#{I18n.locale}'], {dateFormat: global_config.locale.dateFormat.default});
+      var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
 
+      /* impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final */
       $('#from_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#until_date').datepicker("option", "minDate", selected); } }) );
       $('#until_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#from_date').datepicker("option", "maxDate", selected); } }) );
 
       if($("#lesson_type_lesson").val() == '#{Lesson_Type_File}'){
         $(".url_lesson").hide();
-        if(new_action)
+        if(new_action == 1)
           $("#save_button").html("#{I18n.t(:continue, :scope => [:lessons, :new])}");
       }
 
       $("#save_button").click(function(){
         submit_form('lesson_form', 'new_lesson_form', '#{list_lessons_path}', 'first_step');
-        if(new_action && $(this).html() == "#{I18n.t(:continue, :scope => [:lessons, :new])}"){
+        if(new_action == 1 && $(this).html() == "#{I18n.t(:continue, :scope => [:lessons, :new])}"){
           $('#lightBoxDialogTitle').html('<h1>#{I18n.t(:new, :scope => [:lessons, :list])} > #{I18n.t(:files_management, :scope => [:lesson_files])}</h1>');
         }
       });
@@ -110,8 +109,22 @@
           $("#save_button").html('#{I18n.t(:save, :scope => [:lessons, :new])}');
         }else{
           $(".url_lesson").hide();
-          if(new_action)
+          if(new_action == 1)
             $("#save_button").html("#{I18n.t(:continue, :scope => [:lessons, :new])}");
+        }
+      });
+
+      $('#from_date').blur(function(){
+        if($(this).datepicker("getDate") == null){
+          new_start_date = new Date("#{start_date}");
+          $(this).datepicker("setDate", new Date(new_start_date.getFullYear(), new_start_date.getMonth(), new_start_date.getDate()+new_action));
+        }
+      });
+
+      $('#until_date').blur(function(){
+        if($(this).datepicker("getDate") == null){
+          new_end_date = new Date("#{end_date}");
+          $(this).datepicker("setDate", new Date(new_end_date.getFullYear(), new_end_date.getMonth(), new_end_date.getDate()+new_action));
         }
       });
 

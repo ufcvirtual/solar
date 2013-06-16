@@ -154,10 +154,10 @@ class OffersController < ApplicationController
     begin
       authorize! :create, Offer, :on => @allocation_tags_ids
       raise "erro" unless @offer.valid? # utilizado para validar os campos preenchidos e exibir erros quando necessário
-      raise "schedule" unless (params[:enroll_end].nil? or @offer.end_date >= params[:enroll_end].to_date)
+      raise "schedule" unless (params[:enroll_end].nil? or @offer.end_date >= params[:enroll_end].to_date or params[:define_enroll_end] != true) and (@offer.end_date >= params[:enroll_start].to_date)
 
       params[:enroll_end] = nil unless params[:define_enroll_end]
-      schedule    = Schedule.create!(start_date: params[:enroll_start], end_date: params[:enroll_end])
+      schedule    = Schedule.create!(start_date: params[:enroll_start], end_date: (params[:define_enroll_end] ? params[:enroll_end] : nil))
       schedule_id = schedule.nil? ? nil : schedule.id
 
       # Como os valores que vêm das alocations são de ofertas, é necessário pegar apenas aquelas com uc e curso diferentes
@@ -200,7 +200,7 @@ class OffersController < ApplicationController
       authorize! :update, Offer, :on => [@offer.allocation_tag.id] # verifica se tem acesso à oferta a ser editada
 
       params[:enroll_end] = nil unless params[:define_enroll_end]
-      raise "schedule" unless (params[:enroll_end].nil? or @offer.end_date >= params[:enroll_end].to_date)
+      raise "schedule" unless (params[:enroll_end].nil? or @offer.end_date >= params[:enroll_end].to_date or params[:define_enroll_end] != true) and (@offer.end_date >= params[:enroll_start].to_date)
 
       schedule = Schedule.create!(start_date: params[:enroll_start], end_date: params[:enroll_end])
 

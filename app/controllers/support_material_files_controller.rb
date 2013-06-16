@@ -8,7 +8,7 @@ class SupportMaterialFilesController < ApplicationController
   def index
     authorize! :index, SupportMaterialFile
 
-    @allocation_tag_ids = AllocationTag.find_related_ids(active_tab[:url]['allocation_tag_id'])
+    @allocation_tag_ids = AllocationTag.find_related_ids(active_tab[:url][:allocation_tag_id])
     @list_files = SupportMaterialFile.find_files(@allocation_tag_ids)
 
     @folders_list = {}
@@ -36,7 +36,7 @@ class SupportMaterialFilesController < ApplicationController
       @support_material.save!
 
       render nothing: true
-    rescue Exception => e
+    rescue
       if @support_material.is_link?
         render :new
       else
@@ -57,10 +57,9 @@ class SupportMaterialFilesController < ApplicationController
 
     begin
       @support_material.update_attributes!(params[:support_material_file])
-
       render nothing: true
-    rescue Exception => e
-      render json: {success: false, msg: e.messages}, status: :unprocessable_entity
+    rescue
+      render :new
     end
   end
 

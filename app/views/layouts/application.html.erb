@@ -104,7 +104,7 @@
           </div>
           <ul>
             <li>
-              <%= link_to t(:mysolar_edit_profile), {:action=>"edit", :controller=>"devise/registrations"}, :id => 'my_data' %>
+              <%= link_to t(:mysolar_edit_profile), edit_user_registration_path, id: 'my_data' %>
             </li>
             <li>
               <a id="mysolar_change_picture" href="#" onclick="showUserPictureUploadForm('<%= url_for :edit_photo_users %>', '<%= t(:mysolar_change_picture)%>'); return false;">

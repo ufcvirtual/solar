@@ -9,7 +9,7 @@
       %table.tb_list
         %thead
           %tr.lines
-            %th= t(:name, :scope => [:assignment, :information])
+            %th= t(:description, :scope => [:assignment, :information])
             %th{:align => "right", :style => "width:170px"}= t(:date_range, :scope => [:assignment, :information])
         %tbody
           - @individual_activities.each_with_index do |individual_activity, idx|
@@ -17,9 +17,9 @@
               %td
                 %h4= link_to individual_activity["name"], information_assignment_path(individual_activity["id"]), {:class => 'link_content'}
               %td.right 
-                = l(individual_activity.schedule.start_date, :format => :short) 
+                = l(individual_activity.schedule.start_date, :format => :normal) 
                 = '-'
-                = l(individual_activity.schedule.end_date, :format => :short)
+                = l(individual_activity.schedule.end_date, :format => :normal)
     - else
       .block_content.block_content_text= t(:itens_not_found)
 
@@ -34,7 +34,7 @@
       %table.tb_list
         %thead
           %tr.lines
-            %th= t(:name, :scope => [:assignment, :information])
+            %th= t(:description, :scope => [:assignment, :information])
             %th{:align => "right", :style => "width:170px"}= t(:date_range, :scope => [:assignment, :information])
         %tbody
           - @group_activities.each_with_index do |group_activity, idx|
@@ -42,8 +42,8 @@
               %td
                 %h4= link_to group_activity["name"], information_assignment_path(group_activity["id"]), {:class => 'link_content'}
               %td.right
-                = l(group_activity.schedule.start_date, :format => :short) 
+                = l(group_activity.schedule.start_date, :format => :normal) 
                 = '-'
-                = l(group_activity.schedule.end_date, :format => :short)
+                = l(group_activity.schedule.end_date, :format => :normal)
     - else
       .block_content.block_content_text= t(:itens_not_found)

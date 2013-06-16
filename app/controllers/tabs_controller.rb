@@ -11,7 +11,7 @@ class TabsController < ApplicationController
     else
       set_active_tab(params[:name])
       # dentro da aba, podem existir links abertos
-      redirect = active_tab[:breadcrumb].last[:url] if active_tab[:url]['context'].to_i == Context_Curriculum_Unit.to_i
+      redirect = active_tab[:breadcrumb].last[:url] if active_tab[:url][:context].to_i == Context_Curriculum_Unit.to_i
     end
 
     redirect_to redirect, :flash => flash
@@ -25,7 +25,7 @@ class TabsController < ApplicationController
 
     # abre abas ate um numero limitado; atualiza como ativa se aba ja existe
     if opened_or_new_tab?(tab_name)
-      set_session_opened_tabs(tab_name, {"id" => id, "context" => context_id, "allocation_tag_id" => params[:allocation_tag_id]}, params)
+      set_session_opened_tabs(tab_name, {id: id, context: context_id, allocation_tag_id: params[:allocation_tag_id]}, params)
       redirect = home_curriculum_unit_path(id) if context_id == Context_Curriculum_Unit
     end
 
@@ -37,14 +37,10 @@ class TabsController < ApplicationController
     set_active_tab_to_home if user_session[:tabs][:active] == tab_name
     user_session[:tabs][:opened].delete(tab_name)
 
-    redirect_to((active_tab[:url]['context'] == Context_Curriculum_Unit) ? home_curriculum_unit_path(active_tab[:url]['id']) : home_path, :flash => flash)
+    redirect_to((active_tab[:url][:context] == Context_Curriculum_Unit) ? home_curriculum_unit_path(active_tab[:url][:id]) : home_path, :flash => flash)
   end
 
   private
-
-    def clear_breadcrumb_home
-      user_session[:tabs][:opened]['Home'][:breadcrumb] = [user_session[:tabs][:opened]['Home'][:breadcrumb].first]
-    end
 
     def log_access
       Log.create(log_type: Log::TYPE[:course_access], user_id: current_user.id, curriculum_unit_id: params[:id]) if (params[:context].to_i == Context_Curriculum_Unit)

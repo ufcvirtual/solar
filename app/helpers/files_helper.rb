@@ -70,7 +70,8 @@ module FilesHelper
   def extract(path_zip_file, destination)
     require 'zip/zip'
 
-    return false unless File.exist?(path_zip_file)
+    return t(:file_doesnt_exist, scope: :lesson_files) unless File.exist?(path_zip_file)
+    return t(:zip_contains_invalid_files, scope: :lesson_files) unless (Zip::ZipFile.open(path_zip_file).map {|f|f.to_s.split('.').last}.uniq.compact & Solar::Application.config.black_list[:extensions]).empty?
 
     Zip::ZipFile.open(path_zip_file) do |zipfile|
       zipfile.each do |f|

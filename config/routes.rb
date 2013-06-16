@@ -112,7 +112,6 @@ Solar::Application.routes.draw do
       put "change_status/:status", to: :change_status, as: :change_status
       get :header, to: :show_header
       get :content, to: :show_content
-      get "extract_files/:file.:extension", action: :extract_files, as: :extract_file
       put "order/:change_id", action: :order, as: :change_order
     end
     collection do
@@ -122,6 +121,7 @@ Solar::Application.routes.draw do
     end
     resources :files, controller: :lesson_files, except: [:index, :show, :update, :create] do
       collection do
+        get "extract/:file", to: :extract_files, as: :extract, constraints: { file: /.*/ }
         post :folder, to: :new, defaults: {type: 'folder'}, as: :new_folder
         post :file, to: :new, defaults: {type: 'file'}, as: :new_file
         put :rename_node, to: :edit, defaults: {type: 'rename'}

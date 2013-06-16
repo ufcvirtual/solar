@@ -13,7 +13,7 @@ module ApplicationHelper
       %{
         <li class="#{'mysolar_unit%s_tab' % [('_active' if (user_session[:tabs][:active] == name))]}">
           #{link_to(name, activate_tab_path(name: name))}
-          #{link_to_if(tabs_opened[name][:url]['context'] != Context_General, '', close_tab_path(name: name), {:class => 'tabs_close'})}
+          #{link_to_if(tabs_opened[name][:url][:context] != Context_General, '', close_tab_path(name: name), {:class => 'tabs_close'})}
         </li>
       }
     }.join
@@ -59,10 +59,10 @@ module ApplicationHelper
   ## Renderiza a seleção de turmas
   def render_group_selection(hash_params = nil)
     active_tab         = user_session[:tabs][:opened][user_session[:tabs][:active]]
-    curriculum_unit_id = active_tab[:url]['id']
+    curriculum_unit_id = active_tab[:url][:id]
     groups             = Group.find_all_by_curriculum_unit_id_and_user_id(curriculum_unit_id, current_user.id)
     # O grupo (turma) a ter seus fóruns exibidos será o grupo selecionado na aba de seleção ('selected_group')
-    group_selected     = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
+    group_selected     = AllocationTag.find(active_tab[:url][:allocation_tag_id]).group_id
     # Se o group_select estiver vazio, ou seja, nenhum grupo foi selecionado pelo usuário,
     # o grupo a ter seus fóruns exibidos será o primeiro grupo encontrado para o usuário em questão
     group_selected     = groups.first.id if group_selected.blank?
@@ -95,7 +95,7 @@ module ApplicationHelper
   end
 
   def is_curriculum_unit_selected?
-    not(user_session[:tabs][:opened][user_session[:tabs][:active]][:url]['id'].nil?)
+    not(user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:id].nil?)
   end
 
   def in_mysolar?

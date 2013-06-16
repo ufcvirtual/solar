@@ -1,9 +1,13 @@
 class SupportMaterialFile < ActiveRecord::Base
   has_one :allocation_tag
 
+  before_save :url_protocol, if: :is_link?
+
   validates :allocation_tag_id, presence: true
   validates :attachment, presence: true, unless: :is_link?
-  before_save :set_and_validate_url, if: :is_link?
+
+  validates :url, presence: true, if: :is_link?
+  validates_format_of :url, with: /^((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$/ix, if: :is_link?
 
   has_attached_file :attachment,
     :path => ":rails_root/media/support_material_files/:id_:basename.:extension",
@@ -12,9 +16,8 @@ class SupportMaterialFile < ActiveRecord::Base
   validates_attachment_size :attachment, :less_than => 5.megabyte, :message => ""
   validates_attachment_content_type_in_black_list :attachment
 
-  def set_and_validate_url
-    is_valid = URI.parse(url).kind_of?(URI::HTTP) rescue false # valida http e https
-    self.url = "http://#{url}" unless is_valid
+  def url_protocol
+    self.url = ['http://', self.url].join if (self.url =~ URI::regexp(["ftp", "http", "https"])).nil? 
   end
 
   def name

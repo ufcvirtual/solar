@@ -2,7 +2,7 @@
 /* Written by Stuart. */
 // http://jquery-ui.googlecode.com/svn/trunk/ui/i18n/jquery.ui.datepicker-en-GB.js
 jQuery(function($){
-	$.datepicker.regional['en-GB'] = {
+	$.datepicker.regional['en-US'] = {
 		closeText: 'Done',
 		//prevText: 'Prev',
                 //nextText: 'Next',
@@ -18,10 +18,10 @@ jQuery(function($){
 		dayNamesMin: ['Su','Mo','Tu','We','Th','Fr','Sa'],
 		weekHeader: 'Wk',
 		//dateFormat: 'mm/dd/yy',
-                dateFormat: 'dd/mm/yy',
+        dateFormat: 'dd/mm/yy',
 		firstDay: 1,
 		isRTL: false,
 		showMonthAfterYear: false,
 		yearSuffix: ''};
-	$.datepicker.setDefaults($.datepicker.regional['en-GB']);
+	$.datepicker.setDefaults($.datepicker.regional['en-US']);
 });

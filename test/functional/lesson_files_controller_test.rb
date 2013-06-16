@@ -484,6 +484,43 @@ class LessonFilesControllerTest < ActionController::TestCase
     assert_not_equal "#{folder_name}", Lesson.find(@pag_index.id).address
   end
 
+  ##
+  # Extract files
+  ##
+
+  test "rota para extrair arquivos de aula" do
+    assert_routing extract_lesson_files_path("1", "file.zip"), {
+      controller: "lesson_files", action: "extract_files", lesson_id: "1", file: "file.zip"
+    }
+  end
+
+  test "extrair arquivo de aula" do
+    lesson_id = lessons(:pag_index).id.to_s
+    file_name = 'lesson_test.zip'
+
+    # copiando arquivo de aula de teste para o local adequado
+    FileUtils.mkdir_p(File.join(Lesson::FILES_PATH, lesson_id)) # criando diretorio da aula
+    FileUtils.cp(File.join(Rails.root, 'test', 'fixtures', 'files', 'lessons', file_name), File.join(Lesson::FILES_PATH, lesson_id, file_name))
+
+    get :extract_files, {lesson_id: lesson_id, file: "lesson_test.zip"}
+
+    assert_response :success
+    assert_template :index
+  end
+
+  test "nao extrair zip de aula com arquivos invalidos" do
+    lesson_id = lessons(:pag_index).id.to_s
+    file_name = 'lesson_test_invalid.zip'
+
+    # copiando arquivo de aula de teste para o local adequado
+    FileUtils.mkdir_p(File.join(Lesson::FILES_PATH, lesson_id)) # criando diretorio da aula
+    FileUtils.cp(File.join(Rails.root, 'test', 'fixtures', 'files', 'lessons', file_name), File.join(Lesson::FILES_PATH, lesson_id, file_name))
+
+    get :extract_files, {lesson_id: lesson_id, file: "lesson_test_invalid.zip"}
+
+    assert_response :unprocessable_entity
+    assert response.body, {success: false, msg: I18n.t(:zip_contains_invalid_files, scope: :lesson_files)}.to_json
+  end
 
 private
 

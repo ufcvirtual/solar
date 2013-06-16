@@ -13,7 +13,7 @@ class AssignmentsController < ApplicationController
   def professor
     authorize! :professor, Assignment
 
-    allocation_tags_ids    = params[:allocation_tags_ids] || [active_tab[:url]['allocation_tag_id']]
+    allocation_tags_ids    = params[:allocation_tags_ids] || [active_tab[:url][:allocation_tag_id]]
     @individual_activities = allocation_tags_ids.collect{|at| Assignment.find_all_by_allocation_tag_id_and_type_assignment(at, Assignment_Type_Individual)}.flatten.uniq
     @group_activities      = allocation_tags_ids.collect{|at| Assignment.find_all_by_allocation_tag_id_and_type_assignment(at, Assignment_Type_Group)}.flatten.uniq
 
@@ -44,15 +44,15 @@ class AssignmentsController < ApplicationController
   def new
     authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
 
-    @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
+    @groups     = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
     @assignment = Assignment.new
-    @assignment.build_schedule(start_date: Date.today, end_date: Date.today)
+    @assignment.build_schedule(start_date: Date.current, end_date: Date.current)
   end
 
   def create
     authorize! :create, Assignment
 
-    groups = AllocationTag.where(group_id: params[:assignment].delete(:allocation_tag_id))
+    groups      = AllocationTag.where(group_id: params[:assignment].delete(:allocation_tag_id))
     @assignment = Assignment.new params[:assignment]
 
     begin
@@ -80,9 +80,9 @@ class AssignmentsController < ApplicationController
   def edit
     authorize! :update, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
 
-    @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
+    @groups     = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
     @assignment = Assignment.find(params[:id])
-    @schedule = @assignment.schedule
+    @schedule   = @assignment.schedule
   end
 
   def update
@@ -343,7 +343,7 @@ class AssignmentsController < ApplicationController
     begin 
       file = case params[:type]
         when "public"
-          allocation_tag_id = active_tab[:url]['allocation_tag_id']
+          allocation_tag_id = active_tab[:url][:allocation_tag_id]
           raise CanCan::AccessDenied unless Profile.student_from_class?(current_user.id, allocation_tag_id)
           PublicFile.create!({ :attachment => params[:file], :user_id => current_user.id, :allocation_tag_id => allocation_tag_id })
         when "assignment"
@@ -405,7 +405,7 @@ class AssignmentsController < ApplicationController
   # => @assignment_id: a atividade que irá importar os grupos
   ##
   def import_groups_page
-    group_id       = AllocationTag.find(active_tab[:url]['allocation_tag_id']).group_id
+    group_id       = AllocationTag.find(active_tab[:url][:allocation_tag_id]).group_id
     @assignments   = GroupAssignment.all_by_group_id(group_id)
     @assignments.delete(@assignment)
     render :layout => false
