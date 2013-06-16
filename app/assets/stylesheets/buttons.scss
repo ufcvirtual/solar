@@ -5,6 +5,8 @@
 $btn-color: #ffffff;
 $btn_main-color: #005cc0;
 $btn_caution-color: #ee5f5b;
+$btn-width: 54px; 
+$btn-height: 28px;
 
 /* codigo para remover padding extra que o firefox adiciona automaticamente */
 button::-moz-focus-inner {
@@ -40,6 +42,15 @@ input::-moz-focus-inner {
     border-bottom-color: #b3b3b3;
     *zoom: 1;
     @include box-shadow(rgba(255, 255, 255, 0.2) 0 1px 0 inset, rgba(0, 0, 0, 0.05) 0 1px 2px inset);
+}
+
+.btn_lightbox,.btn_form{
+    min-height: $btn-height;
+    min-width: $btn-width;
+}
+
+.btn_lightbox{
+    margin-bottom: 8px;
 }
 
 /* grupos de botões */

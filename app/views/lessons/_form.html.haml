@@ -20,7 +20,7 @@
       margin-left: -4px;
     }
 
-  .first_step
+  .first_step 
     %span.form_requirement= t(:required_fields)
 
     .lesson_form.block_content
@@ -31,7 +31,7 @@
         - start_date = @lesson.try(:schedule).try(:start_date) || Date.today
         - end_date = @lesson.try(:schedule).try(:end_date) || ''
 
-        .form-inputs.block_content
+        .form-inputs
           .lesson_module
             = f.label t(:lesson_module, :scope => [:editions, :items])
             - if @lesson_modules
@@ -69,10 +69,9 @@
               .disabled
                 =f.label " "
                 =t(:example, :scope => [:lessons, :new])
-
-        .right_buttons
-          = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default", :onclick => "removeLightBox();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
-          = button_tag t(:save, :scope => [:lessons, :new]), :class => "btn btn_main", :alt => t(:save, :scope => [:lessons, :new]), :type => "button", :id => "save_button"
+      .right_buttons
+        = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default btn_lightbox", :onclick => "removeLightBox();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
+        = button_tag t(:save, :scope => [:lessons, :new]), :class => "btn btn_main btn_lightbox", :alt => t(:save, :scope => [:lessons, :new]), :type => "button", :id => "save_button"
 
   :javascript
 

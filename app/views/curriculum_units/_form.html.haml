@@ -13,9 +13,9 @@
       = f.input :syllabus
       = f.input :objectives, :class => "btn btn_default"
       = f.input :prerequisites 
-    .block_content.form-actions
-      = button_tag t(".save"), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :type => "button", :id => "save"
-      = button_tag t(".cancel"), :class => "btn btn_default", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons]), :id => "cancel"
+      .form-actions.button-align
+        = button_tag t(".cancel"), :class => "btn btn_default btn_lightbox", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons]), :id => "cancel"
+        = button_tag t(".save"), :class => "btn btn_main btn_lightbox", :alt => t(:save, :scope => [:discussion, :buttons]), :type => "button", :id => "save"
 
 :javascript
 

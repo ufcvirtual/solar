@@ -9,7 +9,7 @@
     %h2
       %i.icon-docs
       = t(".offers")
-    %span.right_buttons
+    %span.right_buttons_form
       = button_tag t(".new"), :class => "btn btn_main", :type => :button, :onclick => "javascript:open_lightbox3('#{new_offer_path(allocation_tags_ids: @allocation_tags_ids)}', '#{t(".new_offer")}');"
 
   %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :style => "table-layout: fixed"}

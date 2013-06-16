@@ -19,9 +19,9 @@
         = f.label t(:groups, scope: [:assignment, :new])
         = f.collection_check_boxes :allocation_tag_id, @groups, :id, :code
 
-    .right_buttons
-      = button_tag t(:save), :class => "btn btn_main", :type => "button", :id => "save"
-      = button_tag t(:cancel), :class => "btn btn_default", :type => "button", onclick: "javascript:removeLightBox();"
+      .right_buttons_assignment
+        = button_tag t(:cancel), :class => "btn btn_default btn_lightbox", :type => "button", onclick: "javascript:removeLightBox();"
+        = button_tag t(:save), :class => "btn btn_main btn_lightbox", :type => "button", :id => "save"
     
 
 :css

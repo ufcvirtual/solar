@@ -4,14 +4,14 @@
 .module_form{:style => "text-align: left;"}
   = simple_form_for(@module, :html => {:id => "module_form"}) do |f| 
     
-    .form-inputs.block_content
+    .form-inputs.block_content.retreat
       = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
       = f.input :name, :required => true
 
-    .block_content.form-actions
-      = button_tag t(".save"), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :type => "button", :id => "save"
-      = button_tag t(".cancel"), :class => "btn btn_default", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons]), :id => "cancel"
+      .form-actions.right_buttons
+        = button_tag t(".cancel"), :class => "btn btn_default btn_lightbox", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons]), :id => "cancel"
+        = button_tag t(".save"), :class => "btn btn_main btn_lightbox", :alt => t(:save, :scope => [:discussion, :buttons]), :type => "button", :id => "save"
 
 :javascript
 

@@ -242,8 +242,8 @@
         description: Descrição
         schedule: Período
       schedule:
-        start_date: Data inicial
-        end_date: Data final
+        start_date: Início
+        end_date: Fim
       assignment:
         allocation_tag_id: Turma
         name: Título
@@ -763,7 +763,8 @@
     offer: Oferta
     group: Turma
     back: Voltar
-    to: à
+    to: a
+    end_discussion: Fim
 
   # messages
   message_title: "Mensagens"
@@ -1333,7 +1334,8 @@
       date_range: Período
       course: Curso
       curriculum_unit: Unidade Curricular
-      to:  à 
+      to:  a 
+      end_offer: Fim
       all: Todos(as)
       enroll_period: Período de matrícula
       enable_end_date: Habilitar data final

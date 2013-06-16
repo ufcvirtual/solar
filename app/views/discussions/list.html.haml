@@ -5,9 +5,9 @@
     %h2
       %i.icon-forum
       = t(:discussion_table_title, :scope => [:discussion])
-    .right_buttons
+    .right_buttons_form
       - if can? :new, Discussion, on: @allocation_tags_ids
-        = button_tag t(:new, :scope => [:discussion, :buttons]), :class => "btn btn_main", :type => "button", :alt => t(:new, :scope => [:discussion, :buttons]), :id => "new"
+        = button_tag t(:new, :scope => [:discussion, :buttons]), :class => "btn btn_main btn_form", :type => "button", :alt => t(:new, :scope => [:discussion, :buttons]), :id => "new"
   - unless @discussions.nil? or @discussions.empty?
     %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :style => "table-layout: fixed"}
       %thead

@@ -10,7 +10,7 @@
       = f.input :name
       = f.input :description
       - error_class = "field_with_errors" unless @schedule_error.blank?
-      .string.required{:class => error_class}
+      .string.required.label_color{:class => error_class}
         = f.label :schedule, :required => true
         - start_date, end_date = '', ''
         - unless @discussion.schedule.nil?
@@ -21,9 +21,9 @@
         = text_field_tag "end_date", "", :id => "until-date", :title => "#{t(:until_date)}", :value => "#{end_date}", :class => "date_text_field", :size => 10
         %span.field_with_errors{:style => "display: inline-block;"}= @error
 
-    .block_content.form-actions
-      = button_tag t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main", :alt => t(:save, :scope => [:discussion, :buttons]), :type => "button", :id => "save"
-      = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons]), :id => "cancel"
+      .form-actions.right_buttons
+        = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default btn_lightbox", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons]), :id => "cancel"
+        = button_tag t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main btn_lightbox", :alt => t(:save, :scope => [:discussion, :buttons]), :type => "button", :id => "save"
 
 :css
   .ui-datepicker{ 

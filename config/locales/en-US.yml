@@ -602,6 +602,7 @@
     group: Group
     back: Back
     to: to
+    end_discussion: End
 
   message_title: "Messages"
   message_inbox: "Inbox"
@@ -1164,7 +1165,8 @@
       save: Save
       cancel: Cancel
       date_range: Date range
-      to:  to  
+      to:  to 
+      end_offer: End 
       all: All
       enable_end_date: Enable end date
       start_date: Start date

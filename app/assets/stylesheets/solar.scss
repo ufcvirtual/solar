@@ -1,4 +1,6 @@
+
 $margin-top: 5px;
+$label_color: #204783;
 
 /* layout geral */
 img{
@@ -1289,6 +1291,7 @@ div.alter_photo_text {
 #page_title, #lightBoxDialogTitle {
     border-bottom: 1px solid #d0d0d0;
     overflow: hidden;
+    padding-bottom: 5px;
 }
 
 #page_title h1, #lightBoxDialogTitle h1 {
@@ -1300,6 +1303,10 @@ div.alter_photo_text {
     *display: inline;
     float: left;
     /*    border-bottom: 1px solid #fff;*/
+}
+
+#lightBoxDialogTitle h1{
+    color: #4c4c4c;
 }
 
 #page_title > .block_content_text {
@@ -1393,8 +1400,23 @@ div.block_title {
 
 /* posicionando objetos alinhados a direita (normalment botoes) */
 .right_buttons {
+    text-align: right;
+    margin-right: 68px;
+}
+
+.right_buttons_assignment{
+    text-align: right;
+    margin-right: 59px;
+}
+
+.right_buttons_form{
     float: right;
 }
+
+.retreat, .support_material_file_url{
+    margin-left: -7px;
+}
+
 
 /* largura dos blocos internos */
 .block_left, .block_right {
@@ -3092,6 +3114,16 @@ $form_label_width: 160px;
 
 .form_label {
     text-align: right;
+    color: $label_color;
+}
+
+.label_color{
+    color: $label_color;   
+}
+
+.select_end_date{
+    color: #204783;
+    text-align: left;
 }
 
 .form_label:first-child {
@@ -3122,7 +3154,8 @@ $form_label_width: 160px;
 }
 
 .form-inputs .input input, .form-inputs > .input > textarea {
-    width: 340px;
+    max-width: 340px;
+    min-width: 340px;
 }
 
 .form-inputs > .input > select {
@@ -3205,7 +3238,7 @@ $form_label_width: 160px;
     display: block;
     float: right;
     margin-top: 10px;
-    margin-right: 20px;
+    margin-right: 18px;
 }
 .form_usuario_table{
     color: #fff;
@@ -3448,6 +3481,12 @@ $form_label_width: 160px;
     padding-bottom: 5px;
 }
 
+.button-align{
+    text-align: right;
+    padding-right: 46px;
+
+}
+
 /* Tela de edição */
 
 fieldset {
@@ -3680,4 +3719,20 @@ select[disabled] {
 
 .forum_post_inner_content, .message_div_show{
     @include ckeditor_content;
+}
+
+#support_material_file_attachment{
+    margin-left: 70px;
+    margin-top: 3px;
+    margin-bottom: 5px;
+}
+
+#assignment_allocation_tag_id_9{
+    margin-top: 6px;
+}
+
+#group_code{
+    width: 255px;
+    margin-left: 5px;
+    margin-bottom: 10px;
 }
