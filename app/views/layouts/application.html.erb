@@ -69,49 +69,56 @@
         $("#mysolar_top_help").click(function(){
           introJs().setOptions({
             showStepNumbers: false,
-            nextLabel: 'Próximo',
-            prevLabel: 'Anterior',
-            skipLabel: 'Pular',
-            doneLabel: 'Fechar',
+            nextLabel: '<%= t(:tutorial_next) %>',
+            prevLabel: '<%= t(:tutorial_previous) %>',
+            skipLabel: '<%= t(:tutorial_skip) %>',
+            doneLabel: '<%= t(:tutorial_done) %>',
             steps: [
               {
-                element: "#mysolar_identity",
-                intro: "Barra superior: Nesta barra você visualiza informações sobre o seu usuário, hora do sistema, esta ajuda e pode sair do Solar"
+                element: '#solar_logo',
+                intro: 'Bem-vindo ao Solar 2.0. Esta versão foi criada do zero para blablabla duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec ullamcorper nulla non metus auctor fringilla.'
               },
               {
-                element: "#mysolar_top_submenu_label_regular",
-                intro: "Seu usuário atual. Clique para visualizar mais informações, editar seu perfil ou alterar sua foto"
+                element: '#mysolar_identity',
+                intro: 'Barra superior: Nesta barra você visualiza informações sobre o seu usuário, hora do sistema, esta ajuda e pode sair do Solar'
               },
               {
-                element: "#mysolar_tabs",
-                intro: "Abas onde você pode navegar entre o MeuSolar e os Cursos que tiver acessado na sessão"
+                element: '#mysolar_top_submenu_label_regular',
+                intro: 'Seu usuário atual. Clique para visualizar mais informações, editar seu perfil ou alterar sua foto'
               },
               {
-                element: "#mysolar_languages",
-                intro: "Aqui você pode escolher o idioma do sistema"
+                element: '#mysolar_tabs',
+                intro: 'Abas onde você pode navegar entre o MeuSolar e os Cursos que tiver acessado na sessão'
               },
               {
-                element: "#mysolar_suggestions",
-                position: "left",
-                intro: "Aqui você pode enviar suas críticas, sugestões e comentários para que possamos melhorar o Solar 2.0"
+                element: '#mysolar_languages',
+                intro: 'Aqui você pode escolher o idioma do sistema'
               },
               {
-                element: "#mysolar_sidebar",
-                intro: "Menu de navegação"
+                element: '#mysolar_suggestions',
+                position: 'left',
+                intro: 'Aqui você pode enviar suas críticas, sugestões e comentários para que possamos melhorar o Solar 2.0'
               },
               {
-                element: "#mysolar_content",
-                intro: "Área de conteúdo"
+                element: '#mysolar_sidebar',
+                intro: 'Menu de navegação'
               },
               {
-                element: "#footer",
-                position: "top",
-                intro: "Blablablala doasdoia jdoais djoiasj doias jdioasd"
+                element: '#mysolar_content',
+                intro: 'Área de conteúdo'
+              },
+              {
+                element: '#footer',
+                position: 'top',
+                intro: 'Blablablala doasdoia jdoais djoiasj doias jdioasd'
+              },
+              {
+                element: '#mysolar_top_help',
+                intro: 'Caso deseje ver este tutorial novamente, basta clicar em Ajuda.<br><br>Aproveite o novo <b>Solar 2.0!</b>'
               }
             ]
           }).start();
         });
-
       });
 
     </script>
@@ -136,8 +143,8 @@
               <span name="server_clock" id="server_clock"></span>
             </li>
             <li id="mysolar_top_help">
-              <!--<a href="#" class="mysolar_top_link"><%= t(:help) %></a>-->
-              <span data-tooltip='Ainda não implementada'><%= t(:help) %></span>
+              <a href="#" class="mysolar_top_link"><%= t(:help) %></a>
+              <!--<span data-tooltip='Ainda não implementada'><%= t(:help) %></span>-->
             </li>
             <li id="mysolar_top_logout">
               <%= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, :class => "mysolar_top_link") %>

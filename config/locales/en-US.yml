@@ -1198,7 +1198,7 @@
     deleted_success: Offer deleted successfully
     schedule_error: must be smaller than end of date range
 
-#Facebook
+  #Facebook
 
   facebook:
     login: Login
@@ -1209,3 +1209,9 @@
     placeholder: What's on your mind?
     publish: Post
     settings: Settings 
+
+  #Tutoriais
+  tutorial_next: Next
+  tutorial_previous: Previous
+  tutorial_skip: Skip
+  tutorial_done: Done

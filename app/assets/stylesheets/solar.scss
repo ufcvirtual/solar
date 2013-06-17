@@ -437,7 +437,8 @@ $mysolar_topbar_height: 38px;
 }
 
 #mysolar_top_options #mysolar_top_submenu_label:hover,
-#mysolar_top_options #mysolar_top_logout:hover {
+#mysolar_top_options #mysolar_top_logout:hover,
+#mysolar_top_options #mysolar_top_help:hover{
     height: $mysolar_topbar_height - 3px;
     border-bottom: 2px solid #003E7A;
     background-color: white !important;
