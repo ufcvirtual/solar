@@ -405,14 +405,15 @@ $mysolar_topbar_height: 38px;
 }
 
 #mysolar_logo {
-    width: 185px;
-    height: $mysolar_topbar_height;
-    float: left;
+  //width: 185px;
+  height: $mysolar_topbar_height;
+  float: left;
+  background-color: #003E7A;
 }
 
 #solar_logo {
-    margin-top: 2px;
-    margin-left: 5px;
+  margin-top: 2px;
+  margin-left: 5px;
 }
 
 #mysolar_top_options {
@@ -426,7 +427,7 @@ $mysolar_topbar_height: 38px;
 }
 
 #mysolar_top_options li {
-    line-height: $mysolar_topbar_height;
+    line-height: $mysolar_topbar_height - 3px;
     display: inline-block;
     padding: 3px 6px 0 6px;
     vertical-align: middle;
@@ -434,6 +435,10 @@ $mysolar_topbar_height: 38px;
     /* necessario para funcionar ok no IE7 */
     /*    zoom: 1;
     *display: inline;*/
+}
+
+#mysolar_top_help {
+  background-color: #003E7A;
 }
 
 #mysolar_top_options #mysolar_top_submenu_label:hover,
