@@ -211,6 +211,30 @@ class LessonsController < ApplicationController
     end
   end
 
+  ##
+  def change_module
+
+    begin
+      authorize! :change_module, Lesson, :on => [params[:allocation_tags_ids]].flatten.collect{|id| id.to_i}
+      
+      lessons = (params["lessons_to_move_#{params[:id]}"].split(",").flatten.collect{|id| id.to_i} || [])
+
+      raise "#{t(:one_lesson_must_be_selected, :scope => [:lessons, :errors])}" if lessons.empty?
+      raise "#{t(:one_module_must_be_selected, :scope => [:lessons, :errors])}" if (params[:move_to_module].nil? || LessonModule.find(params[:move_to_module]).nil?)
+
+      Lesson.transaction do
+        lessons.each do |lesson|
+          Lesson.find(lesson).update_attribute(:lesson_module_id, params[:move_to_module].to_i)
+        end
+      end
+
+      render nothing: true
+    rescue Exception => error
+      render json: {success: false, msg: error.message}, status: :unprocessable_entity
+    end
+
+  end
+
   private
 
     def curriculum_data

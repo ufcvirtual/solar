@@ -70,9 +70,9 @@ function update_content_url(url){
   haja falha - utilizado para formulários de lightboxes, esta classe é da div que engloba o formulário, redirect_url = url para a qual o 
   conteúdo será atualizado em caso de sucesso, div_to_update = informação de qual div é para atualizar caso não esteja "incluso" na página
   de edição) */
-function submit_form(form_id, class_to_update_fail, redirect_url, div_to_update){
+function submit_form(form_id, class_to_update_fail, redirect_url, div_to_update, method){
   $.ajax({
-    type: "POST",
+    type: (method || "POST"),
     url: $("#"+form_id).attr("action"),
     data: $("#"+form_id).serialize(),
     success: function(data) {

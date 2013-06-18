@@ -654,3 +654,9 @@ res118:
   controller: 'groups'
   action: 'destroy'
   description: 'Deletar turmas'
+
+res119:
+  id: 119
+  controller: 'lessons'
+  action: 'change_module'
+  description: 'Mover aulas de modulos'

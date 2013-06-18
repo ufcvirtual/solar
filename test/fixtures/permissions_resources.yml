@@ -857,6 +857,12 @@ lessonedit7:
   resource_id: 112
   per_id: false
 
+# mover entre módulos
+lessonedit8:
+  profile_id: 5
+  resource_id: 119
+  per_id: false
+
 # Lessons Modules - Módulos
 
 lmodedit1:

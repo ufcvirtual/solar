@@ -38,4 +38,10 @@ module7: # não contém aulas
   id: 7
   allocation_tag_id: 22
   name: Modulo Geral da Turma
-  is_default: true    
+  is_default: true
+
+module8:
+  id: 8
+  allocation_tag_id: 5
+  name: Modulo Geral
+  is_default: true

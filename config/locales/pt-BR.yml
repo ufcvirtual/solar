@@ -612,13 +612,20 @@
       acceptance: Aprovação
       since: A partir de 
       none: Nenhuma aula cadastrada
-      new: Nova aula
+      new: Novo
       new_lesson: Nova aula
       edit_lesson: Editar aula
       new_module: Novo módulo
       edit_lesson_module: Editar módulo
       delete_lesson_module: Deletar módulo
       no_end_date: Em diante
+      move_lesson: Mover aula
+      move: Mover
+      cancel: Cancelar
+      release: Liberar aula
+      manage_files: Gerenciar arquivos
+      delete_lesson: Deletar aula
+      download_zip: Baixar zip
     new:
       draft: rascunho
       approved: liberada
@@ -639,6 +646,8 @@
     errors:
       cant_delete: "Aula tornou-se rascunho, pois estava disponível para uso dos alunos!"  
       invalid_lesson_to_download: Apenas aulas do tipo de arquivo e não vazias podem ser baixadas
+      one_lesson_must_be_selected: Ao menos uma aula deve ser selecionada
+      one_module_must_be_selected: Ao menos um módulo deve ser selecionado
 
   lesson_modules:
     general_of_offer: "Geral"
@@ -1136,7 +1145,7 @@
         subject: 'Instruções de desbloqueio'
       msg:
         hello: "Olá %{email}!"
-        request: "Alguém solicou um link para alterar sua senha, e você pode fazer isso através do link abaixo."
+        request: "Alguém solicitou um link para alterar sua senha, e você pode fazer isso através do link abaixo."
         ignore: "Se não foi você quem solicitou este link, por favor ignore este email."
         change: "Sua senha não vai ser modificada enquanto você não acessar o link e criar uma nova."
 

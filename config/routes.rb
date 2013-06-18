@@ -113,6 +113,7 @@ Solar::Application.routes.draw do
       get :header, to: :show_header
       get :content, to: :show_content
       put "order/:change_id", action: :order, as: :change_order
+      put :change_module
     end
     collection do
       get :list, action: :list

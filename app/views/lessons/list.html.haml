@@ -1,7 +1,8 @@
 = javascript_include_tag "edition"
+= javascript_include_tag "tooltip"
 
 = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids]) 
-= button_tag t(:new, scope: [:lesson_modules, :buttons]), class: 'btn btn_default', id: "new_module"
+= button_tag t(".new_module"), class: 'btn btn_default', id: "new_module"
 
 - previous_allocation_tag = nil
 
@@ -22,8 +23,8 @@
           .block_title
             %h2
               = lesson_module.name
-              = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'block_title_button edit_module', :value => edit_lesson_module_path(lesson_module, :allocation_tags_ids => params[:allocation_tags_ids])
-              = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'block_title_button delete_module', :value => lesson_module_path(lesson_module, :allocation_tags_ids => params[:allocation_tags_ids])
+              = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'block_title_button edit_module', :value => edit_lesson_module_path(lesson_module, :allocation_tags_ids => params[:allocation_tags_ids]), :'data-tooltip' => t(".edit_lesson_module")
+              = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'block_title_button delete_module', :value => lesson_module_path(lesson_module, :allocation_tags_ids => params[:allocation_tags_ids]), :'data-tooltip' => t(".delete_lesson_module")
           .block_content_toolbar
             .block_toolbar_left.btn-group
               %a.btn.btn_main{:href => "#", 'data-dropdown' => "#dropdown_#{lesson_module.id}"}
@@ -37,11 +38,30 @@
                     = link_to "Importar aula", "#", onclick: "javascript: alert('importar aula');", id: 'import_lesson'
             .block_toolbar_right
               .btn-group
-                = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", onclick: "javascript: edit_lesson('#{lesson_module.id}');", id: 'edit_lesson', class: 'btn'
-                = link_to (content_tag(:i, nil, :class=>'icon-archive')), "#", onclick: "", class: 'btn btn_default manage_files_lesson', :value => lesson_module.id
-                = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", onclick:  "javascript: delete_lesson('#{lesson_module.id}');", id: 'delete_lesson', class: 'btn'
-                = link_to (content_tag(:i, nil, :class=>'icon-install')), "#", onclick: "javascript: download_lesson_zip('#{lesson_module.id}');", id: 'download_lesson', class: 'btn'
-                = link_to (content_tag(:i, nil, :class=>'icon-checkmark')), "#", id: 'release_lessons', class: 'btn', "data-module_id" => lesson_module.id
+
+                = link_to (content_tag(:i, nil, :class=>'icon-move')), "#", :class => 'btn', id: "move_lesson_from_#{lesson_module.id}", :'data-tooltip' => t(".move_lesson"), "data-dropdown-alt" => "#move_lesson_dropdown_#{lesson_module.id}", disabled: true
+                #folder_dropdown.dropdown-alt.dropdown-tip
+                  .dropdown-panel
+                    #folder_dropdown_alert{:style => "display: block"}
+                      = form_for(:lesson, :url => change_module_lesson_path(lesson_module.id), :html => {:id => "form_change_module_#{lesson_module.id}" }) do |f|
+                        = hidden_field_tag "lessons_to_move_#{lesson_module.id}"
+                        = hidden_field_tag "allocation_tags_ids", params[:allocation_tags_ids]
+                        %ul
+                        - allocation_tag.lesson_modules.each_with_index do |lmodule, idx|
+                          - unless idx == idxm
+                            %li
+                              %span{style: "display: inline"}
+                                = radio_button_tag(:move_to_module, lmodule.id)
+                                = lmodule.name
+                      .control_buttons
+                        = button_tag t(".cancel"), type: :button, :class => 'btn', id: "btn-cancel-move-#{lesson_module.id}"
+                        = button_tag t(".move"), type: :button, :class => 'btn btn_main', id: "btn-save-move-#{lesson_module.id}"
+
+                = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", onclick: "javascript: edit_lesson('#{lesson_module.id}');", id: 'edit_lesson', class: 'btn', :'data-tooltip' => t(".edit_lesson")
+                = link_to (content_tag(:i, nil, :class=>'icon-archive')), "#", onclick: "", class: 'btn btn_default manage_files_lesson', :value => lesson_module.id, :'data-tooltip' => t(".manage_files")
+                = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", onclick:  "javascript: delete_lesson('#{lesson_module.id}');", id: 'delete_lesson', class: 'btn', :'data-tooltip' => t(".delete_lesson")
+                = link_to (content_tag(:i, nil, :class=>'icon-install')), "#", onclick: "javascript: download_lesson_zip('#{lesson_module.id}');", id: 'download_lesson', class: 'btn', :'data-tooltip' => t(".download_zip")
+                = link_to (content_tag(:i, nil, :class=>'icon-checkmark')), "#", id: 'release_lessons', class: 'btn', "data-module_id" => lesson_module.id, :'data-tooltip' => t(".release")
 
           / Lessons list
 
@@ -100,6 +120,52 @@
 :javascript
 
   $(document).ready(function() {
+
+    $(':checkbox[name^="m_"]').click(function(){
+      var count_ckb_selected = $(':checkbox[name^="'+$(this).attr("name")+'"]:checked').length;
+      var count_modules      = $('.tb_list').length;
+      var module_id          = $(this).attr("name").split("_")[1];
+      var move_button        = $('#move_lesson_from_'+module_id);
+      if(count_ckb_selected > 0 && count_modules > 1)
+        move_button.attr('disabled', false);
+      else{
+        move_button.attr('disabled', true);      
+        $($(move_button.parent()).children('#folder_dropdown')).hide(); // oculta dropdown
+      }
+    });
+
+    $('[id^="move_lesson_from_"]').click(function(){
+      var dropdown_div  = $($(this).parent()).children('#folder_dropdown');
+      var module_id     = $(this).attr("id").split('_')[3];
+      var checked_boxes = $(':checkbox[name^="m_'+module_id+'"]:checked');
+
+      if($(this).attr("disabled") == "disabled" || checked_boxes.length < 1){
+        $(dropdown_div).hide();
+        flash_message("#{I18n.t(:one_lesson_must_be_selected, :scope => [:lessons, :errors])}", 'alert'); // mensagem de erro  
+      }else
+        $(dropdown_div).toggle();
+    });
+
+    $('[id^="btn-cancel-move"]').click(function(){
+      $($(this).get(0).parentNode.parentNode.parentNode.parentNode).hide();
+    });
+
+    $('[id^="btn-save-move"]').click(function(){
+      
+      var module_id     = $(this).attr("id").split('-')[3];
+      var checked_boxes = $(':checkbox[name^="m_'+module_id+'"]:checked');
+      checked_boxes     = jQuery.map(checked_boxes, function(n){ return ($(n).attr("value")); });
+
+      if(checked_boxes.length < 1){ // se nenhuma aula foi selecionada
+        flash_message("#{I18n.t(:one_lesson_must_be_selected, :scope => [:lessons, :errors])}", 'alert');
+      } else if($("#form_change_module_"+module_id+" input[type='radio']:checked").length < 1) // se nenhum módulo foi selecionado
+        flash_message("#{I18n.t(:one_module_must_be_selected, :scope => [:lessons, :errors])}", 'alert');
+      else{
+        $("#lessons_to_move_"+module_id).val(checked_boxes);
+        submit_form('form_change_module_'+$(this).attr("id").split('-')[3], 'list_lessons', "#{list_lessons_path(:allocation_tags_ids => @allocation_tags_ids)}", 'list_lessons', 'PUT');
+      }
+
+    });
 
     $('#release_lessons').click(function(){
       var lesson_ids = get_selected_lessons($(this).attr('data-module_id'));
