@@ -40,9 +40,9 @@
               .btn-group
 
                 = link_to (content_tag(:i, nil, :class=>'icon-move')), "#", :class => 'btn', id: "move_lesson_from_#{lesson_module.id}", :'data-tooltip' => t(".move_lesson"), "data-dropdown-alt" => "#move_lesson_dropdown_#{lesson_module.id}", disabled: true
-                #folder_dropdown.dropdown-alt.dropdown-tip
+                #lesson_dropdown.dropdown-alt.dropdown-tip
                   .dropdown-panel
-                    #folder_dropdown_alert{:style => "display: block"}
+                    #dropdown_alert{:style => "display: block"}
                       = form_for(:lesson, :url => change_module_lesson_path(lesson_module.id), :html => {:id => "form_change_module_#{lesson_module.id}" }) do |f|
                         = hidden_field_tag "lessons_to_move_#{lesson_module.id}"
                         = hidden_field_tag "allocation_tags_ids", params[:allocation_tags_ids]
@@ -130,12 +130,12 @@
         move_button.attr('disabled', false);
       else{
         move_button.attr('disabled', true);      
-        $($(move_button.parent()).children('#folder_dropdown')).hide(); // oculta dropdown
+        $($(move_button.parent()).children('#lesson_dropdown')).hide(); // oculta dropdown
       }
     });
 
     $('[id^="move_lesson_from_"]').click(function(){
-      var dropdown_div  = $($(this).parent()).children('#folder_dropdown');
+      var dropdown_div  = $($(this).parent()).children('#lesson_dropdown');
       var module_id     = $(this).attr("id").split('_')[3];
       var checked_boxes = $(':checkbox[name^="m_'+module_id+'"]:checked');
 
@@ -146,11 +146,11 @@
         $(dropdown_div).toggle();
     });
 
-    $('[id^="btn-cancel-move"]').click(function(){
+    $('[id^="btn-cancel-move-"]').click(function(){
       $($(this).get(0).parentNode.parentNode.parentNode.parentNode).hide();
     });
 
-    $('[id^="btn-save-move"]').click(function(){
+    $('[id^="btn-save-move-"]').click(function(){
       
       var module_id     = $(this).attr("id").split('-')[3];
       var checked_boxes = $(':checkbox[name^="m_'+module_id+'"]:checked');
