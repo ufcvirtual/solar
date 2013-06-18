@@ -7,15 +7,6 @@
     = render template: "/pages/team"
   = image_tag("arrow.png", :class => "arrow")
 
-#license-terms.panel
-  .content
-    %h1 Termos de Licença
-    %p
-      A elit duis augue ac habitasse vel eros turpis aliquet dapibus in turpis porttitor scelerisque, ac magna placerat. Integer natoque magna! Massa! Pulvinar dis arcu placerat platea porttitor, eu velit, nisi? Cursus mauris, integer et dictumst! Placerat ut platea augue eros etiam velit penatibus massa nec in non nunc pulvinar, a est elit ac amet tortor pulvinar pellentesque aliquam scelerisque, cursus sagittis quis mattis, dictumst, mid amet eros ultrices elementum dignissim sed, porttitor nisi elementum lacus! Augue. Cum mauris, purus integer massa mauris et! Scelerisque odio aenean? Auctor integer aenean ac nunc arcu, sagittis duis mattis facilisis, nisi in adipiscing? Mus? Mid! A et, sagittis mattis augue magnis, tincidunt turpis montes, nec. Eros. Non sociis porta lectus ut et tempor.
-    %p
-      Ultricies? Parturient phasellus magna lundium ut. Sit vel cursus! Pellentesque sociis non egestas tincidunt ut, platea sed augue egestas? Nisi tincidunt? Est ut! Ut arcu amet, velit, rhoncus dapibus a platea porta, sagittis rhoncus dis, vel integer adipiscing nisi penatibus, elit pid lorem nascetur! Nunc sed sit? Lectus sit, duis phasellus sit natoque turpis dapibus placerat rhoncus. Tempor quis? Dignissim nascetur scelerisque, et augue penatibus. Massa, augue aenean! Nisi, turpis mauris porta tincidunt nisi elit eu nec, non habitasse, tristique aenean cum eros placerat sit odio mauris arcu platea in! Lectus nec et! Turpis adipiscing? Facilisis et lacus dignissim proin turpis a porttitor quis risus egestas pid urna cras egestas placerat sed turpis, amet lacus augue mid in lectus.
-  = image_tag("arrow.png", :class => "arrow")
-
 %footer
   .fb-like
     %script{:src => "http://connect.facebook.net/en_US/all.js#xfbml=1"}
@@ -26,7 +17,7 @@
       %li= link_to t(:login_footer1), 'http://www.virtual.ufc.br', :target => '_blank'
       %li= link_to t(:login_footer2), 'http://www.ufc.br', :target => '_blank'
       %li= link_to t(:login_footer3), "#team", :class => 'panel-link'
-      %li= link_to t(:license_terms), "#license-terms", :class => 'panel-link'
+      %li= link_to t(:license_terms), 'http://github.com/wwagner33/solar/blob/master/GPLv3', :target => '_blank'
       %li.choice-language
         = link_to t(:login_language), '#', :class => "link-arrow"
         %ul.choice-language-menu
