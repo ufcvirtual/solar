@@ -333,6 +333,7 @@
 
   pwd_recovery_security: "Security"
   pwd_recovery_subtitle: "Forgot your password?"
+  change_your_password: "Change your password"
 
   pwd_recovery_text: "To regain access, type your CPF and the e-mail address that you use to access your Solar account."
   pwd_recovery_text2: "We will send you a new password for your e-mail shortly."
@@ -454,14 +455,7 @@
       new_module: New module
       edit_lesson_module: Edit module
       delete_lesson_module: Delete module
-      no_end_date: On
-      move_lesson: Move lesson
-      move: Move
-      cancel: Cancel
-      release: Release lesson
-      manage_files: Manage files
-      delete_lesson: Delete lesson
-      download_zip: Download zip
+      no_end_date: "On"
     new:
       draft: draft
       approved: approved
@@ -482,8 +476,6 @@
     errors:
       cant_delete: "Lesson became draft, because it was available to use by students!"     
       invalid_lesson_to_download: Only not empty and file lessons can be downloaded
-      one_lesson_must_be_selected: At least one lesson must be selected
-      one_module_must_be_selected: At least one module must be selected
 
   lesson_modules:
     general_of_offer: "General"
@@ -952,7 +944,7 @@
     passwords:
       new_password: New password
       confirm_new_password: Confirm new password
-      change_my_password: Change my password
+      change_my_password: Change password
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       updated: 'Your password was changed successfully. You are now signed in.'
       updated_not_active: 'Your password was changed successfully.'
@@ -1207,7 +1199,7 @@
     deleted_success: Offer deleted successfully
     schedule_error: must be smaller than end of date range
 
-  #Facebook
+#Facebook
 
   facebook:
     login: Login
@@ -1218,9 +1210,3 @@
     placeholder: What's on your mind?
     publish: Post
     settings: Settings 
-
-  #Tutoriais
-  tutorial_next: Next
-  tutorial_previous: Previous
-  tutorial_skip: Skip
-  tutorial_done: Done

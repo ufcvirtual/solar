@@ -49,7 +49,7 @@ a img {
   display: none;
 }
 
-	/*caixa principal que engloba login e cadastro*/
+  /*caixa principal que engloba login e cadastro*/
 $login_width: 287px;
 
 #screen-login{
@@ -217,19 +217,19 @@ $header-tab-height: 36px;
   color:#CAD8E8;
 }
 
-#login_content{
+#login_content, #login_content_password_recovery{
   text-align: center;
   margin:0 auto;
   margin-top: 5%;
 }
 
-#login_content:after {
+#login_content:after, #login_content_password_recovery {
   content:" ";
   display:block;
   clear:both;
 }
 
-#password_recovery{
+#password_recovery, #block_wrapper{
   margin:0 auto;
   width: 400px;
   overflow: hidden;
@@ -243,7 +243,7 @@ $header-tab-height: 36px;
   box-shadow:0px 3px 6px rgba(50, 50, 50, 0.64);
 }
 
-#password_recovery h1{
+#password_recovery h1, #block_wrapper h1{
   padding-top: 10px;
   font-family: Ubuntu, sans-serif;
   font-weight: 400;
@@ -252,6 +252,7 @@ $header-tab-height: 36px;
   text-align: justify;
   margin-left: 27px;
 }
+
 
 #password_recovery p{
   font-family: 'PT Sans', sans-serif;
@@ -283,7 +284,7 @@ $header-tab-height: 36px;
   text-decoration: none;
   padding: 2px 4px;
   margin: 0 2px;
-  width: 100px;
+  min-width: 100px;
   height: 36px;  
  }
 
@@ -314,7 +315,7 @@ $header-tab-height: 36px;
   cursor: pointer;
 }
 
-#email_password_recovery, #cpf{
+#email_password_recovery, #cpf, #user_password, #user_password_confirmation{
   width: 344px;
   margin-top: 10px;
   padding-left: 5px;
