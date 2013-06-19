@@ -230,7 +230,6 @@
     });
 
     $("#new_module").click(function(){
-      console.log($('#lesson_dropdown'));
       $('#lesson_dropdown').hide();
       open_lightbox4('#{new_lesson_module_path(:allocation_tags_ids => params[:allocation_tags_ids])}', '#{t(".new_module")}');
     });
