@@ -33,7 +33,7 @@
               %div{:id=>"dropdown_#{lesson_module.id}", :class=>"dropdown dropdown-tip"}
                 %ul.dropdown-menu
                   %li
-                    = link_to (t(:new_lesson, scope: [:lessons, :list])), "#", onclick: "javascript:open_lightbox('#{new_lesson_path(:lesson_module_id => lesson_module.id,:allocation_tags_ids => params[:allocation_tags_ids])}','#{t(:new_lesson, scope: [:lessons, :list])}',550,270);"
+                    = link_to (t(:new_lesson, scope: [:lessons, :list])), "#", onclick: "javascript:$('#lesson_dropdown').hide(); open_lightbox('#{new_lesson_path(:lesson_module_id => lesson_module.id,:allocation_tags_ids => params[:allocation_tags_ids])}','#{t(:new_lesson, scope: [:lessons, :list])}',550,270);"
                   %li
                     = link_to "Importar aula", "#", onclick: "javascript: alert('importar aula');", id: 'import_lesson'
             .block_toolbar_right
@@ -53,7 +53,7 @@
                               %span{style: "display: inline"}
                                 = radio_button_tag(:move_to_module, lmodule.id)
                                 = lmodule.name
-                      .control_buttons
+                      .control_buttons{align: "right"}
                         = button_tag t(".cancel"), type: :button, :class => 'btn', id: "btn-cancel-move-#{lesson_module.id}"
                         = button_tag t(".move"), type: :button, :class => 'btn btn_main', id: "btn-save-move-#{lesson_module.id}"
 
@@ -168,6 +168,7 @@
     });
 
     $('#release_lessons').click(function(){
+      $('#lesson_dropdown').hide();
       var lesson_ids = get_selected_lessons($(this).attr('data-module_id'));
       if (lesson_ids == "")
         return false;
@@ -179,6 +180,7 @@
     });
 
     $('.change_lesson_status').click(function() {
+      $('#lesson_dropdown').hide();
       var lesson_id = $(this).attr('data-lesson_id');
       var status_to = $(this).attr('data-status_to');
       var url = "#{change_status_lesson_path(':id', ':status', allocation_tags_ids: params[:allocation_tags_ids])}".replace(':id', lesson_id).replace(':status', status_to);
@@ -189,6 +191,7 @@
     });
 
     $(".up, .down").click(function() {
+      $('#lesson_dropdown').hide();
       var row = $(this).parents("tr:first");
       var id1 = row.attr('lesson_id');
 
@@ -227,18 +230,23 @@
     });
 
     $("#new_module").click(function(){
+      console.log($('#lesson_dropdown'));
+      $('#lesson_dropdown').hide();
       open_lightbox4('#{new_lesson_module_path(:allocation_tags_ids => params[:allocation_tags_ids])}', '#{t(".new_module")}');
     });
 
     $(".edit_module").click(function(){
-      open_lightbox4($(this).attr('value'), $($(this).children()[0]).attr('alt'));
+      $('#lesson_dropdown').hide();
+      open_lightbox4($(this).attr('value'), $(this).attr('data-tooltip'));
     });
 
     $(".delete_module").click(function(){
+      $('#lesson_dropdown').hide();
       delete_object($(this).attr('value'), '#{list_lessons_path(:allocation_tags_ids => @allocation_tags_ids)}');
     });
 
     $(".manage_files_lesson").click(function(){
+      $('#lesson_dropdown').hide();
       var selected_lessons = get_selected_lessons($(this).attr('value'));
       if(selected_lessons.length == 1){
         lesson_has_file_type = $( "input:checked" ).attr("file_type");
@@ -298,6 +306,7 @@
   }
 
   function edit_lesson(module_id){
+    $('#lesson_dropdown').hide();
     lessons_ids = get_selected_lessons(module_id);
     allocation_tags_ids = $("#allocation_tags_ids").val();
     there_tab = lessons_ids.length > 1 ? true : false;
