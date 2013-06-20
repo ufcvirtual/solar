@@ -46,6 +46,12 @@ span.dynatree-folder a {
 	background-image: url("/assets/lesson/folder.png");
 }
 
+/* raiz não deve possuir a imagem de pasta */
+li#dynatree-id-_2 > .dynatree-node > span:nth-child(3){ 
+    background-image: none;
+    display: none;
+}
+
 
 #initial_file > a.dynatree-title{
     color: #e7aa3f;
