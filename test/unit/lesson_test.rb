@@ -4,10 +4,42 @@ require 'fileutils'
 class LessonTest < ActiveSupport::TestCase
   fixtures :lessons
 
+  test "aula deve ter nome" do
+    lesson = Lesson.create(order: 99, type_lesson: Lesson_Type_Link, address: "www.google.com")
+
+    assert not(lesson.valid?)
+    assert_equal lesson.errors[:name].first, I18n.t(:blank, :scope => [:activerecord, :errors, :messages])
+  end
+
+  test "aula deve ter url valida se for de link" do
+    lesson = Lesson.create(name: "Lorem ipsum", order: 99, type_lesson: Lesson_Type_Link)
+
+    assert not(lesson.valid?)
+    assert_equal lesson.errors[:address].first, I18n.t(:blank, :scope => [:activerecord, :errors, :messages])
+
+    lesson = Lesson.create(name: "Lorem ipsum", order: 99, type_lesson: Lesson_Type_Link, address: "google")
+
+    assert not(lesson.valid?)
+    assert_equal lesson.errors[:address].first, I18n.t(:invalid, :scope => [:activerecord, :errors, :models, :lesson, :attributes, :address])
+  end
+
+
   test "criando aula e verificando arquivos" do
     lesson = Lesson.create(name: "Lorem ipsum", order: 99, type_lesson: Lesson_Type_File, address: "")
     
     assert File.exist?(lesson.path(true))
+  end
+
+  test "criando aula completando a url com http quando necessario" do
+    lesson = Lesson.create(name: "Lorem ipsum", order: 99, type_lesson: Lesson_Type_Link, address: "www.google.com")
+    
+    assert lesson.valid?
+    assert_equal "http://www.google.com", lesson.address
+
+    lesson = Lesson.create(name: "Lorem ipsum", order: 99, type_lesson: Lesson_Type_Link, address: "https://www.google.com")
+    
+    assert lesson.valid?
+    assert_equal "https://www.google.com", lesson.address
   end
 
   test "alterando tipo e verificando existencia de arquivos" do

@@ -17,9 +17,9 @@ class LessonsControllerTest < ActionController::TestCase
 
   test "criar e editar uma aula do tipo link" do
     lesson = {name: 'lorem ipsum', address: 'http://aulatipolink1.com', type_lesson: Lesson_Type_Link, lesson_module_id: 1}
-    params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: allocation_tags(:al6), start_date: Time.now, end_date: (Time.now + 1.month)}
+    params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: allocation_tags(:al6), start_date: Time.now} # cria aula sem data final
 
-    assert_difference("Lesson.count", 1) do
+    assert_difference(["Lesson.count", "Schedule.count"], 1) do
       post(:create, params)
     end
     assert_response :ok
@@ -27,7 +27,7 @@ class LessonsControllerTest < ActionController::TestCase
 
     update = {id: Lesson.last.id, allocation_tags_ids: allocation_tags(:al6), lesson: {address: 'http://aulatipolink2.com'}, start_date: Time.now, end_date: (Time.now + 1.month)}
 
-    assert_no_difference("Lesson.count") do
+    assert_no_difference(["Lesson.count", "Schedule.count"]) do
       put(:update, update)
     end
     assert_response :ok
@@ -38,7 +38,7 @@ class LessonsControllerTest < ActionController::TestCase
     lesson = {name: 'lorem ipsum', address: 'index.html', type_lesson: Lesson_Type_File, lesson_module_id: 1}
     params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: allocation_tags(:al6), start_date: Time.now, end_date: (Time.now + 1.month)}
 
-    assert_difference("Lesson.count", 1) do
+    assert_difference(["Lesson.count", "Schedule.count"], 1) do
       post(:create, params)
     end
     assert_response :ok
@@ -46,11 +46,28 @@ class LessonsControllerTest < ActionController::TestCase
 
     update = {id: Lesson.last.id, allocation_tags_ids: allocation_tags(:al6), lesson: {address: 'index2.html'}, start_date: Time.now, end_date: (Time.now + 1.month)}
 
-    assert_no_difference("Lesson.count") do
+    assert_no_difference(["Lesson.count", "Schedule.count"]) do
       put(:update, update)
     end
     assert_response :ok
     assert_equal Lesson.last.address, 'index2.html'
+  end
+
+  test "nao criar aula com datas invalidas" do
+    lesson = {name: 'lorem ipsum', address: 'index.html', type_lesson: Lesson_Type_File, lesson_module_id: 1}
+    params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: allocation_tags(:al6)} # sem data inicial
+
+    assert_no_difference(["Lesson.count", "Schedule.count"], 1) do
+      post(:create, params)
+    end
+    assert_template :new
+
+    params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: allocation_tags(:al6), start_date: (Time.now + 1.month), end_date: Time.now} 
+
+    assert_no_difference(["Lesson.count", "Schedule.count"], 1) do
+      post(:create, params)
+    end
+    assert_template :new    
   end
 
   ##
