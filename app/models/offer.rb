@@ -10,19 +10,20 @@ class Offer < ActiveRecord::Base
   belongs_to :enrollment_schedule, class_name: "Schedule", foreign_key: "enrollment_schedule_id"
 
   has_many :groups
-  has_many :assignments, :through => :allocation_tag
+  has_many :assignments, through: :allocation_tag
 
-  validates :course, :presence => true
-  validates :curriculum_unit, :presence => true
-  # validates :semester, :presence => true, :format => {:with => %r{^(\d{4}).(\d{1}*[1-2])} } # formato: 9999.1/.2
-  validates :start_date, :presence => true
-  validates :end_date, :presence => true
-  
+  validates :course, presence: true, if: "curriculum_unit.nil?"
+  validates :curriculum_unit, presence: true, if: "course.nil?"
+  validates :semester, presence: true
+
   # validate :semester_must_be_unique
-  validate :start_must_be_previous_than_end
 
   after_create :set_default_lesson_module # modulo default da oferta
-  after_destroy { |record| record.schedule.destroy if record.schedule.can_destroy? }
+
+  after_destroy { |record|
+    record.offer_schedule.destroy if record.offer_schedule.try(:can_destroy?)
+    record.enrollment_schedule.destroy if record.enrollment_schedule.try(:can_destroy?)
+  }
 
   def has_any_lower_association?
     self.groups.count > 0
@@ -37,14 +38,12 @@ class Offer < ActiveRecord::Base
   #   errors.add(:semester, I18n.t(:existing_semester, :scope => [:offers])) if (@new_record == true or semester_changed?) and offers_with_same_semester.size > 0
   # end
 
-  def start_must_be_previous_than_end
-    unless start_date.nil? or end_date.nil?
-      errors.add(:start_date, I18n.t(:range_date_error, :scope => [:offers])) if (start_date > end_date)
-    end
-  end
+  #
+  # tirar dos locales: I18n.t(:range_date_error, :scope => [:offers])
+  #
 
   ## Retorna as informações da schedule da oferta (período de matrícula)
-  def schedule_info  
+  def schedule_info
     schedule_dates = []
     schedule_dates << I18n.l(self.schedule.start_date, format: :normal)
     schedule_dates << (self.schedule.end_date.nil? ? I18n.t(:no_end_date, scope: :offers) : I18n.l(self.schedule.end_date, format: :normal))

@@ -4,9 +4,14 @@ class Schedule < ActiveRecord::Base
   has_many :lessons
   has_many :schedule_events
   has_many :assignments
-  has_many :offers
 
-  validates :start_date, :presence => true
+  has_many :offer_periods, class_name: "Offer", foreign_key: "offer_schedule_id"
+  has_many :offer_enrollments, class_name: "Offer", foreign_key: "enrollment_schedule_id"
+
+  has_many :semester_periods, class_name: "Semester", foreign_key: "offer_schedule_id"
+  has_many :semester_enrollments, class_name: "Semester", foreign_key: "enrollment_schedule_id"
+
+  validates :start_date, presence: true
   validate :start_date_before_end_date 
 
   before_destroy :can_destroy?
@@ -19,7 +24,7 @@ class Schedule < ActiveRecord::Base
   end
 
   def can_destroy?
-    (discussions.empty? and lessons.empty? and assignments.empty? and schedule_events.empty? and assignments.empty? and offers.empty?)
+    (discussions.empty? and lessons.empty? and assignments.empty? and schedule_events.empty? and offer_periods.empty? and offer_enrollments.empty? and semester_periods.empty? and semester_enrollments.empty?)
   end
 
   def self.events(allocation_tags, period = false, date_search = nil)
