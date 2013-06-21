@@ -172,3 +172,25 @@ schedule34:
   id: 34
   start_date: '2013-05-01'
   end_date: 
+
+## para ofertas
+
+sc_for_offers1:
+  id: 35
+  start_date: '2011-03-10'
+  end_date: '2021-12-01'
+
+sc_for_offers2:
+  id: 36
+  start_date: '2011-03-10'
+  end_date: '2011-12-01'
+
+sc_for_offers3:
+  id: 37
+  start_date: '2011-03-10'
+  end_date: '2021-12-01'
+
+sc_for_offers4:
+  id: 38
+  start_date: '2011-03-10'
+  end_date: '2011-12-01'

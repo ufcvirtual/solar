@@ -4,18 +4,21 @@ class Offer < ActiveRecord::Base
 
   belongs_to :course
   belongs_to :curriculum_unit
-  belongs_to :schedule
+
+  belongs_to :semester
+  belongs_to :offer_schedule, class_name: "Schedule", foreign_key: "offer_schedule_id"
+  belongs_to :enrollment_schedule, class_name: "Schedule", foreign_key: "enrollment_schedule_id"
 
   has_many :groups
   has_many :assignments, :through => :allocation_tag
 
   validates :course, :presence => true
   validates :curriculum_unit, :presence => true
-  validates :semester, :presence => true, :format => {:with => %r{^(\d{4}).(\d{1}*[1-2])} } # formato: 9999.1/.2
+  # validates :semester, :presence => true, :format => {:with => %r{^(\d{4}).(\d{1}*[1-2])} } # formato: 9999.1/.2
   validates :start_date, :presence => true
   validates :end_date, :presence => true
   
-  validate :semester_must_be_unique
+  # validate :semester_must_be_unique
   validate :start_must_be_previous_than_end
 
   after_create :set_default_lesson_module # modulo default da oferta
@@ -29,10 +32,10 @@ class Offer < ActiveRecord::Base
     groups
   end
 
-  def semester_must_be_unique
-    offers_with_same_semester = Offer.find_all_by_curriculum_unit_id_and_course_id_and_semester(curriculum_unit_id, course_id, semester)
-    errors.add(:semester, I18n.t(:existing_semester, :scope => [:offers])) if (@new_record == true or semester_changed?) and offers_with_same_semester.size > 0
-  end
+  # def semester_must_be_unique
+  #   offers_with_same_semester = Offer.find_all_by_curriculum_unit_id_and_course_id_and_semester(curriculum_unit_id, course_id, semester)
+  #   errors.add(:semester, I18n.t(:existing_semester, :scope => [:offers])) if (@new_record == true or semester_changed?) and offers_with_same_semester.size > 0
+  # end
 
   def start_must_be_previous_than_end
     unless start_date.nil? or end_date.nil?
