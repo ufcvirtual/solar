@@ -1407,12 +1407,17 @@ div.block_title {
 /* posicionando objetos alinhados a direita (normalment botoes) */
 .right_buttons {
     text-align: right;
-    margin-right: 68px;
+    margin-right: 70px;
 }
 
 .right_buttons_assignment{
     text-align: right;
     margin-right: 59px;
+}
+
+.right_buttons_offers{
+    text-align: right;
+    margin-right: 63px;    
 }
 
 .right_buttons_form{
@@ -3133,7 +3138,7 @@ $form_label_width: 160px;
 }
 
 .form_label:first-child {
-    width: $form_label_width;
+    width: $form_label_width - 1px;
 }
 
 .form_label label, .form-inputs .control-label {
@@ -3478,7 +3483,7 @@ $form_label_width: 160px;
 }
 
 .form-inputs .form_label:first-child {
-    width: 130px;
+    width: 127px;
 }
 
 /* ajustando aviso de campos obrigatorios dentro do lightbox de criacao de unidade curricular */

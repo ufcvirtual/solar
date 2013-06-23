@@ -52,7 +52,7 @@
         = check_box_tag :define_enroll_end, true, (!(@offer.schedule.nil? or @offer.schedule.end_date.nil?) or !@schedule_error.blank?), :id => "final_enroll_date"
         = t(".enable_end_date")
 
-      .form-actions.right_buttons{:style => "padding-top: 10px;"}
+      .form-actions.right_buttons_offers{:style => "padding-top: 10px;"}
         = button_tag t(".cancel"), :class => "btn btn_default btn_lightbox", :type => "button", :alt => t(".cancel"), :id => "cancel"
         = button_tag t(".save"), :class => "btn btn_main btn_lightbox", :alt => t(".save"), :type => "button", :id => "save"
 
