@@ -16,13 +16,13 @@ class Group < ActiveRecord::Base
   after_create :set_default_lesson_module
 
   def code_semester
-    "#{code} - #{offer.semester}"
+    "#{code} - #{offer.semester.name}"
   end
 
   def self.find_all_by_curriculum_unit_id_and_user_id(curriculum_unit_id, user_id)
-    Group.joins(:offer).where(
+    Group.joins(offer: [:semester]).where(
       offers: {curriculum_unit_id: curriculum_unit_id}, 
-      groups: {id: User.find(user_id).groups}).order('offers.semester DESC, groups.code ASC')
+      groups: {id: User.find(user_id).groups}).order('semesters.name DESC, groups.code ASC')
   end
 
   def has_any_lower_association?

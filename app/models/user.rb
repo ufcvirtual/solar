@@ -143,8 +143,12 @@ class User < ActiveRecord::Base
     where(conditions).where(["translate(cpf,'.-','') = :value OR lower(username) = :value", { :value => login.strip.downcase }]).first
   end
 
-  def groups
-    allocations.where(status: Allocation_Activated).map(&:allocation_tag).compact.map(&:groups).flatten.compact.uniq
+  def groups(profile_id = nil)
+    query = {}
+    query[:status] = Allocation_Activated
+    query[:profile_id] = profile_id unless profile_id.nil?
+
+    allocations.joins(:allocation_tag).where(query).map(&:groups).flatten.compact.uniq
   end
 
   def profiles_activated(only_id = false)

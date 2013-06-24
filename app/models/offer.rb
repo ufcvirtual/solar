@@ -57,4 +57,33 @@ class Offer < ActiveRecord::Base
     create_default_lesson_module(I18n.t(:general_of_offer, scope: :lesson_modules))
   end
 
+  ## datas da oferta
+
+  def start_date
+    offer_schedule.try(:start_date) || semester.offer_schedule.start_date
+  end
+
+  def end_date
+    offer_schedule.try(:end_date) || semester.offer_schedule.end_date
+  end
+
+  ## datas para matricula
+
+  def enrollment_start_date
+    enrollment_schedule.try(:start_date) || semester.enrollment_schedule.start_date
+  end
+
+  def enrollment_end_date
+    # a oferta pode ou nao ter uma data final para periodo de matricula
+    if enrollment_schedule_id.nil? # se o periodo de matricula na oferta for nulo
+      semester.enrollment_schedule.end_date # o periodo no semestre será utilizado
+    else
+      enrollment_schedule.end_date
+    end
+  end
+
+  def enrollment_period
+    [enrollment_start_date, enrollment_end_date]
+  end
+
 end

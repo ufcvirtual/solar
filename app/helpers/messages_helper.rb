@@ -143,7 +143,7 @@ module MessagesHelper
 
   def get_label_name(group, offer, c_unit)
     label_name = []
-    label_name << offer.semester.slice(0..5)  if offer.respond_to?(:semester)
+    label_name << offer.semester.name.slice(0..5)  if offer.respond_to?(:semester)
     label_name << group.code.slice(0..9)      if group.respond_to?(:code)
     label_name << c_unit.name.slice(0..15)    if c_unit.respond_to?(:name)
 

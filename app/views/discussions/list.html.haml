@@ -36,9 +36,8 @@
               = l(schedule.start_date.to_date)
               = "-" if !schedule.end_date.nil?
               = schedule.end_date.nil? ? "" : l(schedule.end_date.to_date)
-            %td
-              = discussion.allocation_tag.offer ? discussion.allocation_tag.offer.curriculum_unit.name : discussion.allocation_tag.group.offer.curriculum_unit.name
-            %td{:align => "left", :style => "width: 50px;"}= discussion.allocation_tag.offer ?  discussion.allocation_tag.offer.semester : discussion.allocation_tag.group.offer.semester 
+            %td= discussion.allocation_tag.offer ? discussion.allocation_tag.offer.curriculum_unit.name : discussion.allocation_tag.group.offer.curriculum_unit.name
+            %td{:align => "left", :style => "width: 50px;"}= discussion.allocation_tag.offer ?  discussion.allocation_tag.offer.semester.name : discussion.allocation_tag.group.offer.semester.name
             %td{:align => "left", :style => "width: 50px;"}= discussion.allocation_tag.group ?  discussion.allocation_tag.group.code : "-" 
             - if can? :edit, discussion or can? :destroy, discussion
               %td{:style => "width: 40px;"}

@@ -1,6 +1,5 @@
-include AllocationsHelper
-
 class AllocationsController < ApplicationController
+  include AllocationsHelper
 
   layout false, :except => [:index]
 
@@ -41,10 +40,10 @@ class AllocationsController < ApplicationController
   # GET /allocations/enrollments.json
   def index
     groups = current_user.groups.map(&:id)
-    p      = params.select { |k, v| ['offer_id', 'group_id', 'status'].include?(k) }
+    p = params.select { |k, v| ['offer_id', 'group_id', 'status'].include?(k) }
     p['group_id'] = (params.include?('group_id') and groups.include?(params['group_id'].to_i)) ? [params['group_id']] : groups.flatten.compact.uniq
 
-    @allocations  = Allocation.enrollments(p)
+    @allocations = Allocation.enrollments(p)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -78,7 +77,7 @@ class AllocationsController < ApplicationController
     status  = Allocation_Pending
     allocation_tag = AllocationTag.find(params[:allocation_tag_id])
     offer   = allocation_tag.offer || allocation_tag.group.offer
-    ok      = (offer.schedule.start_date <= Time.now and (offer.schedule.end_date.nil? or offer.schedule.end_date >= Time.now)) # verifica se está no período de matrícula
+    ok      = (offer.enrollment_start_date.to_date..(offer.enrollment_end_date.try(:to_date) || offer.end_date.to_date)).include?(Date.today)
     ok      = allocate(params[:allocation_tag_id], params[:user_id], profile, status, params[:id]) if ok
     message = ok ? ['notice', 'success'] : ['alert', 'error']
     respond_to do |format|
@@ -238,7 +237,7 @@ class AllocationsController < ApplicationController
   def reactivate
     @allocation = Allocation.find(params[:id])
     offer = @allocation.offer || @allocation.group.offer
-    ok    = (offer.schedule.start_date <= Time.now and (offer.schedule.end_date.nil? or offer.schedule.end_date >= Time.now)) # verifica se está no período de matrícula
+    ok = (offer.enrollment_start_date.to_date..(offer.enrollment_end_date.try(:to_date) || offer.end_date.to_date)).include?(Date.today)
 
     respond_to do |format|
       if (ok and @allocation.update_attribute(:status, Allocation_Pending_Reactivate))

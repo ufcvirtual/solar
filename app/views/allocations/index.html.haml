@@ -25,7 +25,7 @@
       - @allocations.each do |allocation|
         %tr.lines
           %td= check_box_tag(allocation.id, allocation.id, false, {:"status-value" => allocation.status, :class => "cbx_value"})
-          %td= allocation.user_name
+          %td= allocation.user.name
           %td= allocation.group.code_semester
           %td= name_of allocation.status
           %td

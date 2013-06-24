@@ -18,6 +18,7 @@
         = link_to t(".view_all"), enrollments_path(:category_query => 'all'), :class => 'link_gray'
         = link_to t(".view_enrolled"), enrollments_path(:category_query => 'enroll'), :class => 'link_gray'
 
+
 .block_wrapper
   .block_title
     %h2= t(".curriculum_unit")
@@ -32,26 +33,28 @@
           %th{:align => "center"}= t(".period")
           %th{:align => "center"}= t(:mysolar_mn_enrollment)
       %tbody
-        - @offers.each do |offer|
-          - schedule_info = offer.schedule_info
+        - @groups.each do |group|
+          - period_info = enrollment_info(group.offer)
+          - uc = group.curriculum_unit
           %tr.lines
-            %td= offer.name
+            %td= group.curriculum_unit.name
             %td
-              = image_tag(offer.icon_name) if not offer.icon_name.nil?
-              = offer.categorydesc
-            %td{:align => "center"}= offer.semester
-            %td{:align => "center"}= offer.code
-            %td{:align => "center"}= schedule_info["schedule_dates"]
+              = image_tag(uc.curriculum_unit_type.icon_name)
+              = uc.curriculum_unit_type.description
+            %td{:align => "center"}= group.offer.semester.name
+            %td{:align => "center"}= group.code
+            %td{:align => "center"}= period_info[:period]
             %td{:align => "center"}
-              - case offer.status
-                - when Allocation_Pending.to_s, Allocation_Pending_Reactivate.to_s
-                  = button_to t(".cancel_request"), cancel_request_allocation_path(offer.allocationid), :method => :delete, :confirm => t(".confirm"), :class => 'btn btn_caution'
-                - when Allocation_Activated.to_s
-                  - if offer.allows_enrollment == 't' # nao aceita mais matricula
-                    = button_to t(".cancel"), cancel_allocation_path(offer.allocationid), :method => :delete, :confirm => t(".confirm"), :class => 'btn btn_caution'
+              - allocation = group.allocations.where(user_id: current_user.id, profile_id: 1).first
+              - case allocation.try(:status)
+                - when Allocation_Pending.to_i, Allocation_Pending_Reactivate.to_i
+                  = button_to t(".cancel_request"), cancel_request_allocation_path(allocation), :method => :delete, :confirm => t(".confirm"), :class => 'btn btn_caution'
+                - when Allocation_Activated.to_i
+                  - if uc.curriculum_unit_type.allows_enrollment # nao aceita mais matricula
+                    = button_to t(".cancel"), cancel_allocation_path(allocation), :method => :delete, :confirm => t(".confirm"), :class => 'btn btn_caution'
                   - else 
                     = label_tag "lb_enrollm", t(".enrolled"), :class => 'enrollment_label'
-                - when Allocation_Cancelled.to_s
-                  = button_to t(".enroll"), {:controller => "allocations", :action => "reactivate", :id => offer.allocationid }, :class=>'btn btn_default', :disabled => (not schedule_info["is_active"])
+                - when Allocation_Cancelled.to_i
+                  = button_to t(".enroll"), reactivate_allocation_path(allocation), :class=>'btn btn_default', :disabled => not(period_info[:is_active])
                 - else
-                  = button_to t(".enroll"), {:controller => "allocations", :action => "create", :id => offer.allocationid, :allocation_tag_id => offer.allocationtagid, :user_id => current_user.id}, :class=>'btn btn_default', :disabled => (not schedule_info["is_active"])
+                  = button_to t(".enroll"), {:controller => "allocations", :action => "create", :allocation_tag_id => group.allocation_tag.id, :user_id => current_user.id}, :class=>'btn btn_default', :disabled => not(period_info[:is_active])

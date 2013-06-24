@@ -23,7 +23,8 @@
               %td{style: 'width:80px'}= allocation.user.cpf
               %td{style: 'width:200px'}= allocation.user.email
               %td{style: 'width:120px'}= allocation.profile.name
-              %td{style: 'width: 50px'}= allocation.group ? allocation.group.code : (allocation.offer ? allocation.offer.semester : allocation.course.name)
+              %td{style: 'width: 50px'}= allocation.group ? allocation.group.code : (allocation.offer ? allocation.offer.semester.name : allocation.course.name)
+
               %td{style: 'width:100px'}
                 -if allocation.status == Allocation_Activated 
                   = form_for(:allocation, :url => deactivate_allocation_path(allocation, :text_search => @text_search), :html => { :id => "form_deactivate_#{allocation.id}" }) do |f|
