@@ -11,7 +11,7 @@
  */
 
 .highlight-date-mark a {
-    background-color: #C2D0E2;
+    background-color: $cor_principal_medio;
     color: #fff;
 }
 .ui-helper-hidden-accessible { display: none; }
@@ -54,8 +54,8 @@
     text-align: center; }
 /* celula ativa */
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
-    border: 1px solid #F9DB43;
-    background: #FFFBE4;
+    border: 1px solid $cor_contraste_principal;
+    background: $cor_contraste_light;
     font-weight: normal;
     color: #000;
 }
@@ -63,8 +63,8 @@
 /* ... Interaction Cues ... */
 /* data atual */
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {
-    background: #F9DB43;
-    color: #363636;
+    //background: $cor_contraste_principal;
+    color: $cor_contraste_principal;
     font-weight: bold;
 }
 
@@ -124,7 +124,7 @@
     border: 0; padding: 0em; width: 14.25%; min-height: 1.2em; }
 .ui-datepicker td span, .ui-datepicker td a {
     display: block; padding: 0px; text-align: right; text-decoration: none; }
-.ui-datepicker-week-end {color: #D7B507;}
+.ui-datepicker-week-end {color: $cor_contraste_principal;}
 
 
 /* IE6 IFRAME FIX (taken from datepicker 1.5.3 */

@@ -1,0 +1,11 @@
+$cor_principal: #FC9808;
+$cor_principal_light: adjust_color($cor_principal, $lightness: 47%);
+$cor_principal_light_highlight: adjust_color($cor_principal, $lightness: 45%);
+
+$cor_principal_medio: lighten(desaturate($cor_principal, 20%),20%);
+
+$cor_principal_texto: #dd8b14;
+
+$cor_contraste_principal: #0F0272;
+$cor_contraste_light: adjust_color($cor_contraste_principal, $lightness: 75%);
+$cor_contraste_texto: adjust_color($cor_contraste_principal, $lightness: -10%);
