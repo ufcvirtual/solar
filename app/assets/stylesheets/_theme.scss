@@ -1,0 +1,10 @@
+$color_main: #003E7A;
+$color_main_light: desaturate(lighten($color_main, 74.5%),20%);
+$color_main_light_highlight: adjust_color($color_main, $lightness: 73%);
+$color_main_medium: lighten(desaturate($color_main, 70%),30%);
+$color_main_text: $color_main;
+
+
+$color_contrast: #F9DB43;
+$color_contrast_light: adjust_color($color_contrast, $lightness: 33%);
+$color_contrast_text: #dca727;

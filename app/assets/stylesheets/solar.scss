@@ -2,7 +2,7 @@
 
 
 $margin-top: 5px;
-$label_color: $cor_principal_texto;
+$label_color: $color_main_text;
 
 /* layout geral */
 img{
@@ -110,12 +110,12 @@ a.link_content_del {
 }
 
 a.link_content, .forum_post_attachment_list a {
-    color: $cor_contraste_principal;
+    color: $color_contrast_text;
     text-decoration: underline;
 }
 
 a.link_content:visited, .forum_post_attachment_list a:visited {
-  color: $cor_principal_texto;
+  color: $color_main_text;
 }
 
 a.link_content_gray {
@@ -173,7 +173,7 @@ h1.page_title{
     color      : #000;
     /*    font-weight: bold;*/
     /*    font-variant: small-caps;*/
-    border-bottom: 3px solid $cor_principal;
+    border-bottom: 3px solid $color_main;
     padding-bottom: 2px !important;
     /*text-transform: capitalize;*/
 }
@@ -188,7 +188,7 @@ h1.page_title{
 }
 .text_none {
     font-size: 10pt;
-    color: $cor_principal;
+    color: $color_main;
     padding: 5px;
 }
 
@@ -378,7 +378,7 @@ h1.page_title{
 #mysolar_topbar_wide_background {
     height:38px;
     width:100%;
-    background-color:$cor_principal;
+    background-color:$color_main;
     position:absolute;
     top:0;
     left:0;
@@ -396,7 +396,7 @@ h1.page_title{
     */
     font-family: 'Ubuntu', sans-serif;
     font-weight: 400;
-    /*background-color: $cor_principal;*/
+    /*background-color: $color_main;*/
     color: #fff;
     overflow: hidden;
 }
@@ -406,15 +406,15 @@ $mysolar_topbar_height: 38px;
 #mysolar_identity {
     width: 100%;
     height: $mysolar_topbar_height;
-    //border-bottom: 2px solid $cor_contraste_principal;
-    background-color: $cor_principal;
+    //border-bottom: 2px solid $color_contrast;
+    background-color: $color_main;
 }
 
 #mysolar_logo {
   //width: 185px;
   height: $mysolar_topbar_height;
   float: left;
-  background-color: $cor_principal;
+  background-color: $color_main;
 }
 
 #solar_logo {
@@ -444,20 +444,20 @@ $mysolar_topbar_height: 38px;
 }
 
 #mysolar_top_help {
-  background-color: $cor_principal;
+  background-color: $color_main;
 }
 
 #mysolar_top_options #mysolar_top_submenu_label:hover,
 #mysolar_top_options #mysolar_top_logout:hover,
 #mysolar_top_options #mysolar_top_help:hover{
     height: $mysolar_topbar_height - 3px;
-    border-bottom: 2px solid $cor_principal;
+    border-bottom: 2px solid $color_main;
     background-color: white !important;
-    color: $cor_principal;
+    color: $color_main;
 }
 
 #mysolar_top_options li:hover a {
-    color: $cor_principal;
+    color: $color_main;
 }
 
 #mysolar_top_img_user {
@@ -467,7 +467,7 @@ $mysolar_topbar_height: 38px;
 
 /* foto do usuário */
 #mysolar_top_submenu{
-    color: $cor_principal;;
+    color: $color_main;;
     font-size: 10pt;
     position: absolute;
     top:$mysolar_topbar_height;
@@ -476,9 +476,9 @@ $mysolar_topbar_height: 38px;
     margin-left: -40px;
     z-index: 100;
     display:none;
-    border-bottom: 2px solid $cor_contraste_principal;
-    border-left: 2px solid $cor_contraste_principal;
-    border-right: 2px solid $cor_contraste_principal;
+    border-bottom: 2px solid $color_contrast;
+    border-left: 2px solid $color_contrast;
+    border-right: 2px solid $color_contrast;
     border-top: none;
     padding: 10px;
     text-align: left;
@@ -513,8 +513,8 @@ $mysolar_topbar_height: 38px;
 .mysolar_top_submenu_label_selected{
     background-color: #fff;
     border-top: none;
-    border-left: 2px solid $cor_contraste_principal;
-    border-right: 2px solid $cor_contraste_principal;
+    border-left: 2px solid $color_contrast;
+    border-right: 2px solid $color_contrast;
     border-bottom: none;
     vertical-align: top;
 }
@@ -593,10 +593,10 @@ a.mysolar_top_link{
 
 .mysolar_unit_tab {
     /*background-color: #e3eaf4;
-    border-top-color: $cor_principal_medio;
-    border-right-color: $cor_principal_medio;
-    border-left-color: $cor_principal_medio;
-    border-bottom-color: $cor_principal;
+    border-top-color: $color_main_medium;
+    border-right-color: $color_main_medium;
+    border-left-color: $color_main_medium;
+    border-bottom-color: $color_main;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     -moz-border-top-left-radius: 5px;
@@ -604,15 +604,15 @@ a.mysolar_top_link{
 }
 
 .mysolar_unit_tab a {
-    color: $cor_principal_medio;
+    color: $color_main_medium;
 }
 
 .mysolar_unit_active_tab{
-    border-bottom: 2px solid $cor_contraste_principal;
+    border-bottom: 2px solid $color_contrast;
     /*background-color: #fff;
-    border-top-color: $cor_principal;
-    border-right-color: $cor_principal;
-    border-left-color: $cor_principal;
+    border-top-color: $color_main;
+    border-right-color: $color_main;
+    border-left-color: $color_main;
     border-bottom-color: #fff;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -621,7 +621,7 @@ a.mysolar_top_link{
 }
 
 .mysolar_unit_active_tab a {
-    color: $cor_contraste_texto;
+    color: $color_contrast_text;
 }
 
 /* fechar das abas */
@@ -736,12 +736,12 @@ a.mysolar_top_link{
 }*/
 
 .mysolar_menu_title_single_active {
-    border-bottom: 2px solid $cor_contraste_principal;
+    border-bottom: 2px solid $color_contrast;
     /*    background: url('../images/icon_circle.png') no-repeat left 10px !important;*/
 }
 
 .mysolar_menu_title_single_active a {
-    color: $cor_contraste_texto;
+    color: $color_contrast_text;
 }
 
 /*.mysolar_menu_title_active {
@@ -749,7 +749,7 @@ a.mysolar_top_link{
 }*/
 
 .mysolar_menu_title_active > a {
-    color: $cor_contraste_texto;
+    color: $color_contrast_text;
 }
 
 .menu_icon_arrow, .menu_icon_circle {
@@ -783,7 +783,7 @@ a.mysolar_top_link{
     font-weight: normal;
     height: 30px;
     line-height: 30px;
-    color: $cor_principal_texto;
+    color: $color_main_text;
     font-variant: small-caps;
     font-size: 12pt;
     font-family: 'Ubuntu Condensed', sans-serif;
@@ -794,8 +794,8 @@ a.mysolar_top_link{
     display: none;
     padding: 5px 0 5px 10px;
     margin: 0;
-    border-top: 2px solid $cor_contraste_principal;
-    background-color: $cor_contraste_light; /* alternativa: f5f8fb */
+    border-top: 2px solid $color_contrast;
+    background-color: $color_contrast_light; /* alternativa: f5f8fb */
     font-size: 10pt;
 }
 
@@ -923,7 +923,7 @@ a.mysolar_top_link{
 #mydata_tab{
     height: 30px;
     background-color: transparent;
-    color: $cor_principal;
+    color: $color_main;
 }
 
 #mysolar_panel_data{
@@ -1073,7 +1073,7 @@ a.mysolar_top_link{
 .mysolar_header {
     font-variant: small-caps;
     height: 26px;
-    border-bottom: 2px solid $cor_principal_texto;
+    border-bottom: 2px solid $color_main_text;
 }
 
 .mysolar_header img {
@@ -1090,7 +1090,7 @@ a.mysolar_top_link{
 */
 
 .mysolar_portlets_content {
-    background-color: $cor_principal_light;
+    background-color: $color_main_light;
     position: relative;
     overflow: auto;
     width: 100%;
@@ -1143,7 +1143,7 @@ div.legend h1 {
 
 hr.curriculum_unit_division, hr.curriculum_unit_division_mysolar {
     border: none;
-    background-color: $cor_principal_texto;
+    background-color: $color_main_text;
     height: 4px;
     left: 0px;
     position: relative;
@@ -1346,7 +1346,7 @@ div.alter_photo_text {
 /* titulo do bloco */
 
 div.block_title {
-    border-bottom: 2px solid $cor_principal_texto;
+    border-bottom: 2px solid $color_main_text;
     padding-bottom: 1px !important;
     position: relative;
     overflow: hidden;
@@ -1449,7 +1449,7 @@ div.block_title {
 /* definindo cor de background do conteudo e tamanho da fonte */
 .block_content {
     font-size: 10pt;
-    background-color: $cor_principal_light;
+    background-color: $color_main_light;
 }
 
 .block_content_overflow {
@@ -1551,7 +1551,7 @@ table tr.block_title th {
     text-align: center;
     padding-top: 6px;
     padding-bottom: 6px;
-    background-color: $cor_principal_light;
+    background-color: $color_main_light;
 }
 
 #block_forum {
@@ -1563,13 +1563,13 @@ table tr.block_title th {
 
 /* calendario da tela de acesso a curso */
 .calendar {
-    background-color: $cor_principal_light;
+    background-color: $color_main_light;
     font-size: 9pt;
     width: 100%;
     padding-bottom: 2px;
 }
 .calendar_events {
-    background: $cor_principal_light;
+    background: $color_main_light;
     height: 100%;
     padding: 3px 8px 2px 8px;
     overflow: auto;
@@ -1929,7 +1929,7 @@ deveria ser generico p/ ser reaproveitado em outras telas */
 }
 
 .forum_post_wrapper {
-    background-color: $cor_principal_light;
+    background-color: $color_main_light;
     padding: 7px 5px 4px 5px;
 }
 
@@ -1959,7 +1959,7 @@ deveria ser generico p/ ser reaproveitado em outras telas */
 }
 
 .forum_post_icon {
-    border-right:2px solid $cor_principal;
+    border-right:2px solid $color_main;
     vertical-align: top;
     padding-right: 5px;
     width: 40px;
@@ -1976,7 +1976,7 @@ deveria ser generico p/ ser reaproveitado em outras telas */
 }
 
 .forum_post_head {
-    /*background-color:$cor_principal_light;*/
+    /*background-color:$color_main_light;*/
     height: 35px;
     font-size: 13px;
     white-space: normal;
@@ -1985,7 +1985,7 @@ deveria ser generico p/ ser reaproveitado em outras telas */
     width:100%;
     display: block;
     text-align:left;
-    border-bottom: 1px solid $cor_principal;
+    border-bottom: 1px solid $color_main;
 }
 
 .forum_post_author {
@@ -1995,7 +1995,7 @@ deveria ser generico p/ ser reaproveitado em outras telas */
 
 .forum_post_content{
     width: 100%;
-    /*    background-color: $cor_principal_light;*/
+    /*    background-color: $color_main_light;*/
     font-family:'PT Sans', sans-serif;
     font-size: 10pt;
     vertical-align: top;
@@ -2035,7 +2035,7 @@ $forum_indentation: 52px;
 }
 
 .forum_participant_nick {
-    /*border-bottom: 1px solid $cor_principal;*/
+    /*border-bottom: 1px solid $color_main;*/
 }
 
 .forum_participant_profile {
@@ -2072,12 +2072,12 @@ $forum_indentation: 52px;
 }
 .forum_post_buttons{
     text-align: right;
-    background-color: $cor_principal_light;
+    background-color: $color_main_light;
 }
 
 .forum_post_attachment{
     padding: 0 0 5px 5px;
-    background-color: $cor_principal_light;
+    background-color: $color_main_light;
 }
 
 .forum_post_attachment h3 {
@@ -2232,10 +2232,10 @@ $forum_indentation: 52px;
     height: 28px;
 }
 .message_line_highlight {
-    background-color: $cor_contraste_light;
+    background-color: $color_contrast_light;
 }
 /*.message_line:hover {
-    background-color: $cor_principal_light_highlight;
+    background-color: $color_main_light_highlight;
 }*/
 .message_line_check {
     width: 30px;
@@ -2477,7 +2477,7 @@ table.tb_list h4 {
 }
 
 table.tb_list tbody {
-    background-color: $cor_principal_light;
+    background-color: $color_main_light;
 }
 
 table.tb_list td {
@@ -2564,12 +2564,12 @@ th {
 
 tbody tr.lines {
     border-bottom: solid #B4B2B1 1px;
-    background-color: $cor_principal_light;
+    background-color: $color_main_light;
 }
 
 tbody tr.lines.active {
     border-bottom: solid #B4B2B1 1px;
-    background-color: $cor_contraste_light;
+    background-color: $color_contrast_light;
 }
 
 tbody tr.lines.active:hover {
@@ -2584,7 +2584,7 @@ tr.lines td img {
 
 /*
 tbody tr.lines:nth-child(odd) {
-    background-color: $cor_principal_light_highlight;
+    background-color: $color_main_light_highlight;
 }
 */
 
@@ -2597,11 +2597,11 @@ th, tr.lines td {
 }
 
 tr.post_content {
-    background-color: $cor_principal_light;
+    background-color: $color_main_light;
 }
 
 tbody tr.lines:hover, table.tb_list_files td:hover {
-    background-color: $cor_principal_light_highlight; /* #FFF5ED*/
+    background-color: $color_main_light_highlight; /* #FFF5ED*/
 }
 
 tbody tr.lines.period_ended:hover {
@@ -2613,7 +2613,7 @@ tbody tr.lines:hover a, table.tb_list_files td:hover a {
 }
 
 td.td_student a {
-    color: $cor_principal_texto;
+    color: $color_main_text;
     text-decoration: underline;
 }
 
@@ -2679,7 +2679,7 @@ td.td_student a {color: #2a538d;}
 }
 
 .assignment_inner_content{
-    background-color: $cor_principal_light;
+    background-color: $color_main_light;
     word-wrap: break-word;
     width: 100%;
     padding: 5px 5px 0px 5px;
@@ -2793,7 +2793,7 @@ td.td_student a {color: #2a538d;}
     width:100%;
     display: block;
     text-align:left;
-    border-bottom: 1px solid $cor_principal;
+    border-bottom: 1px solid $color_main;
 }
 
 .comments_files_div .btn{
@@ -2826,7 +2826,7 @@ td.td_student a {color: #2a538d;}
 
 .agenda_left {
     float: left;
-    background-color: $cor_principal_light;
+    background-color: $color_main_light;
     min-height: 65px;
     width: 160px;
     font-size: 11pt;
@@ -2924,7 +2924,7 @@ td.td_student a {color: #2a538d;}
 
 .assignment_send, .assignment_pending, td.assignment_an a {
     white-space: nowrap;
-    color: $cor_principal_texto;
+    color: $color_main_text;
 }
 
 .assignment_without_group, td.assignment_without_group a {
@@ -2988,7 +2988,7 @@ td.td_student a {color: #2a538d;}
     width: 260px;
     display: block;
     float: left;
-    background-color: $cor_principal_light;
+    background-color: $color_main_light;
 }
 
 .select_editor_title {
@@ -3009,7 +3009,7 @@ td.td_student a {color: #2a538d;}
 .select_editor_content li:hover {
     cursor: pointer;
     background-color: #fff;
-    border-left: 2px solid $cor_principal;
+    border-left: 2px solid $color_main;
     padding-left: 8px;
     color: #000;
 }
@@ -3025,7 +3025,7 @@ td.td_student a {color: #2a538d;}
 .support_material_message_no_files {
     border-top: solid #B4B2B1 1px;
     border-bottom: solid #B4B2B1 1px;
-    background-color: $cor_principal_light;
+    background-color: $color_main_light;
     height: 20px;
     font-family: 'PT Sans', sans-serif;
     font-style: italic;
@@ -3035,7 +3035,7 @@ td.td_student a {color: #2a538d;}
 }
 
 .support_material_message_no_files:hover {
-    background-color: $cor_principal_light_highlight; 
+    background-color: $color_main_light_highlight;
 }
 
 /* material de apoio - editor - tabela */
@@ -3139,7 +3139,7 @@ $form_label_width: 160px;
 }
 
 .select_end_date{
-    color: $cor_principal_texto;
+    color: $color_main_text;
     text-align: left;
 }
 
@@ -3303,7 +3303,7 @@ $form_label_width: 160px;
 }
 
 #group_assignments tr.lines:hover {
-    background-color: $cor_principal_light;
+    background-color: $color_main_light;
 }
 
 .group_assignment_title {
@@ -3316,7 +3316,7 @@ $form_label_width: 160px;
 }
 
 .group_assignment_title:hover {
-    background-color: $cor_principal_light_highlight;
+    background-color: $color_main_light_highlight;
 }
 
 .group_participants, .group_participants_manage, .group_assignments_manage_buttons{
@@ -3405,7 +3405,7 @@ $form_label_width: 160px;
 }
 
 .page_title{
-    color: $cor_principal;
+    color: $color_main;
     font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
 }
@@ -3519,7 +3519,7 @@ fieldset {
 }
 
 fieldset legend {
-    color: $cor_principal;
+    color: $color_main;
     font-family: 'Ubuntu Condensed';
 }
 
@@ -3536,7 +3536,7 @@ fieldset legend {
 }
 
 .uc_item a{
-    color: $cor_principal;
+    color: $color_main;
     width: auto;
 }
 
@@ -3727,7 +3727,7 @@ select[disabled] {
     ul{ list-style-type: disc; }
     a{
         text-decoration: underline;
-        color: $cor_principal_texto;
+        color: $color_main_text;
     }
     ol{ list-style-type: decimal; }
     li{ margin-left: 20px; }
