@@ -455,7 +455,14 @@
       new_module: New module
       edit_lesson_module: Edit module
       delete_lesson_module: Delete module
-      no_end_date: "On"
+      no_end_date: On
+      move_lesson: Move lesson
+      move: Move
+      cancel: Cancel
+      release: Release lesson
+      manage_files: Manage files
+      delete_lesson: Delete lesson
+      download_zip: Download zip
     new:
       draft: draft
       approved: approved

@@ -620,6 +620,13 @@
       edit_lesson_module: Editar módulo
       delete_lesson_module: Deletar módulo
       no_end_date: Em diante
+      move_lesson: Mover aula
+      move: Mover
+      cancel: Cancelar
+      release: Liberar aula
+      manage_files: Gerenciar arquivos
+      delete_lesson: Deletar aula
+      download_zip: Baixar zip
     new:
       draft: rascunho
       approved: liberada
