@@ -1385,3 +1385,9 @@
     placeholder: No que você está pensando?
     publish: Publicar
     settings: Configurações
+
+  #Tutoriais
+  tutorial_next: Próximo
+  tutorial_previous: Anterior
+  tutorial_skip: Pular
+  tutorial_done: Fechar

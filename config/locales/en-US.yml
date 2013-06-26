@@ -1217,3 +1217,9 @@
     placeholder: What's on your mind?
     publish: Post
     settings: Settings 
+
+  #Tutoriais
+  tutorial_next: Next
+  tutorial_previous: Previous
+  tutorial_skip: Skip
+  tutorial_done: Done
