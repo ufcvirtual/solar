@@ -10,121 +10,107 @@ class OffersControllerTest < ActionController::TestCase
   end
 
   ##
-  # Index
-  ##
-
-  # Usuário com permissão e acesso
-  test "lista ofertas" do 
-    get :index, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]
-    assert_response :success
-    assert_not_nil assigns(:allocation_tags_ids)
-    assert_not_nil assigns(:offers)
-  end
-
-  # Usuário com permissão e sem acesso
-  test "nao lista ofertas - sem acesso" do 
-    get :index, allocation_tags_ids: [allocation_tags(:al5).id]
-    assert_response :redirect
-    assert_not_nil assigns(:allocation_tags_ids)
-    assert_redirected_to(home_path)
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
-  end
-
-  # Usuário sem permissão 
-  test "nao lista ofertas - sem permissao" do 
-    sign_out @editor
-    sign_in users(:professor)
-    get :index, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]
-    assert_response :redirect
-    assert_not_nil assigns(:allocation_tags_ids)
-    assert_redirected_to(home_path)
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
-  end
-
-  ##
   # New/Create
   ##
 
-  # Usuário com permissão e acesso
-  test "criar ofertas" do
-    get :index, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]
-    get :new, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]
+  test "criar oferta no semestre 2013.1" do
+    s = semesters(:s2013_1)
+
+    get :new, semester_id: s.id
     assert_template :new
-    assert_difference(["Offer.count", "Schedule.count"], +1) do 
-      post :create, {:offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :enroll_start => "2012-12-01", allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id] }
+
+    c_quimica = courses(:c2)
+    uc_quimica = curriculum_units(:r3)
+
+    assert_difference("Offer.count", 1) do
+      post :create, {offer: {course_id: c_quimica.id, curriculum_unit_id: uc_quimica.id, semester_id: s.id}}
     end
-    assert_response :redirect
   end
 
-  # Data final do período de matrícula é maior que o final da oferta
-  test "nao criar ofertas - periodo de matricula invalido" do
-    assert_no_difference(["Offer.count", "Schedule.count"]) do 
-      post :create, {:offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :enroll_end => "2013-12-01", allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id] }
+  test "criar oferta no semestre 2013.1 com periodo de matricula diferente" do
+    s = semesters(:s2013_1)
+
+    get :new, semester_id: s.id
+    assert_template :new
+
+    c_quimica = courses(:c2)
+    uc_quimica = curriculum_units(:r3)
+
+    assert_difference(["Offer.count", "Schedule.count"], 1) do
+      post :create, {offer: {course_id: c_quimica.id, curriculum_unit_id: uc_quimica.id, semester_id: s.id}, enrollment_schedule: {start_date: Date.today}}
     end
+  end
+
+  test "erro ao tentar criar oferta sem semestre" do
+    c_quimica = courses(:c2)
+    uc_quimica = curriculum_units(:r3)
+
+    assert_no_difference("Offer.count") do
+      post :create, {offer: {course_id: c_quimica.id, curriculum_unit_id: uc_quimica.id}}
+    end
+
     assert_template :new
   end
 
-  # Usuário com permissão e sem acesso
   test "nao criar ofertas - sem acesso" do
-    get :new, allocation_tags_ids: [allocation_tags(:al5).id]
-    assert_response :redirect
+    s = semesters(:s2013_1)
+    literatura = curriculum_units(:r2)
 
-    assert_no_difference(["Offer.count", "Schedule.count"]) do 
-      post :create, {:offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :enroll_start => "2012-12-01", allocation_tags_ids: [allocation_tags(:al5).id] }
-    end
-    assert_response :error
-    assert_template :index
+    get :new, semester_id: s.id, curriculum_unit_id: literatura.id, format: :json
+    assert_response :unauthorized
   end
 
-  # Usuário sem permissão 
   test "nao criar ofertas - sem permissao" do
     sign_out @editor
     sign_in users(:professor)
-    get :new, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]
-    assert_response :redirect
-    
-    assert_no_difference(["Offer.count", "Schedule.count"]) do 
-      post :create, {:offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :enroll_start => "2012-12-01", allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id] }
-    end
-    assert_response :error
-    assert_template :index
+
+    s = semesters(:s2013_1)
+
+    get :new, semester_id: s.id, format: :json
+    assert_response :unauthorized
   end
+
+  # test "nao criar ofertas - periodo de matricula invalido" do
+  #   s = semesters(:s2013_1)
+  #   c_quimica = courses(:c2)
+  #   uc_quimica = curriculum_units(:r3)
+
+  #   assert_no_difference(["Offer.count", "Schedule.count"]) do
+  #     post :create, {offer: {course_id: c_quimica.id, curriculum_unit_id: uc_quimica.id, semester_id: s.id}, enrollment_schedule: {start_date: s.offer_schedule.end_date + 1.month}}
+  #   end
+  # end
 
   ##
   # Edit/Update
   ##
 
-  # Usuário com permissão e acesso
-  test "editar ofertas" do
-    get :edit, {:id => offers(:of3).id, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]}
+  test "editar oferta - modificar periodo de matricula" do
+    offer_2011_1 = offers(:of3)
+
+    get :edit, id: offer_2011_1.id
     assert_template :edit
-    put :update, {:id => offers(:of3).id, :offer => {:semester => "1999.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :enroll_start => "2012-12-01", allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]}
-    assert_not_nil assigns(:allocation_tags_ids)
-    assert_response :redirect
-    assert_equal Offer.find(offers(:of3).id).semester, "1999.2"
+
+    assert_no_difference("Schedule.count") do # schedule apenas modificada
+      put :update, {id: offer_2011_1.id, offer: {}, enrollment_schedule: {start_date: Date.today, end_date: Date.today + 1.month}}
+    end
+
+    assert_response :ok
   end
 
-  # Usuário com permissão e sem acesso
-  test "nao editar ofertas - sem acesso" do
-    post :update, {:id => offers(:of2).id, :offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :enroll_start => "2012-12-01", allocation_tags_ids: [allocation_tags(:al5).id]}
-    assert_response :error
-    assert_template :index
-    assert_not_equal Offer.find(offers(:of2).id).semester, "1900.2"
-  end
+  test "editar oferta - modificar periodo da oferta" do
+    offer_2011_1 = offers(:of3)
 
-  # Usuário sem permissão 
-  test "nao editar ofertas - sem permissao" do
-    sign_out @editor
-    sign_in users(:professor)
+    get :edit, id: offer_2011_1.id
+    assert_template :edit
 
-    get :edit, {:id => offers(:of3).id, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]}
-    assert_redirected_to(home_path)
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
+    assert_nil offer_2011_1.offer_schedule_id
 
-    post :update, {:id => offers(:of3).id, :offer => {:semester => "1900.2", :start_date => "2012-12-01", :end_date => "2012-12-31"}, :enroll_start => "2012-12-01", allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]}
-    assert_response :error
+    assert_difference("Schedule.count", 1) do # schedule criada
+      put :update, {id: offer_2011_1.id, offer: {}, offer_schedule: {start_date: Date.today, end_date: Date.today + 1.month}}
+    end
 
-    assert_not_equal Offer.find(offers(:of2).id).semester, "1900.2"
+    assert_response :ok
+    assert_not_nil Offer.find(offer_2011_1.id).offer_schedule_id
   end
 
   ##
@@ -132,86 +118,94 @@ class OffersControllerTest < ActionController::TestCase
   ##
 
   # Usuário com permissão e acesso (remove seu respectivo módulo default, pois não possui aulas)
-  test "remover oferta" do 
-    # neste caso, o schedule (33) da oferta é utilizado apenas nela. Se ele fosse usado em outros itens de teste, ele não deveria ser excluído, falhando o teste.
-    assert_difference(["Offer.count", "LessonModule.count", "Schedule.count"], -1) do 
-      get(:destroy, {:id => offers(:of7).id, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]})
+  test "remover oferta" do
+    offer_2012_1 = offers(:of7)
+
+    assert_difference(["Offer.count", "LessonModule.count"], -1) do # schedule compartilhada com semestre
+      assert_difference("Schedule.count", -2) do
+        delete :destroy, id: offer_2012_1.id
+      end
     end
 
-    assert_response :redirect
+    assert_response :ok
     assert_equal flash[:notice], I18n.t(:deleted_success, scope: :offers)
   end
 
-  # Usuário com permissão e acesso, mas a oferta não permite (possui níveis inferiores)
-  test "nao remove oferta - niveis inferiores" do
-    assert_no_difference(["Offer.count", "Schedule.count"]) do 
-      get :destroy, {:id => offers(:of3).id, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]}
+  test "remover oferta sem remover schedule" do
+    offer_2010_1 = offers(:of9)
+
+    assert_difference("Offer.count", -1) do # schedule compartilhada com semestre
+      assert_no_difference("Schedule.count") do
+        delete :destroy, id: offer_2010_1.id
+      end
     end
 
-    assert_response :redirect
+    assert_response :ok
+    assert_equal flash[:notice], I18n.t(:deleted_success, scope: :offers)
+  end
+
+  test "nao remove oferta - niveis inferiores" do
+    offer_2011_1 = offers(:of3) # com dependencias
+
+    assert_no_difference(["Offer.count", "Schedule.count"]) do
+      delete :destroy, id: offer_2011_1.id
+    end
+
+    assert_response :unprocessable_entity
     assert_equal flash[:alert], I18n.t(:not_possible_to_delete, scope: :offers)
   end
 
-  # Usuário com permissão e sem acesso
   test "nao remove oferta - sem acesso" do
-    assert_no_difference(["Offer.count", "Schedule.count"]) do 
-      get :destroy, {:id => offers(:of2).id, allocation_tags_ids: [allocation_tags(:al5).id]}
+    offer_2011_1 = offers(:of2) # sem permissao nesta oferta
+
+    assert_no_difference(["Offer.count", "Schedule.count"]) do
+      delete :destroy, id: offer_2011_1.id, format: :json
     end
 
-    assert_response :redirect
-    assert_equal flash[:alert], I18n.t(:no_permission)
+    assert_response :unauthorized
   end
 
-  # Usuário sem permissão 
   test "nao remove oferta - sem permissao" do
     sign_out @editor
     sign_in users(:professor)
-    assert_no_difference(["Offer.count", "Schedule.count"]) do 
-      get :destroy, {:id => offers(:of3).id, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]}
+
+    offer_2011_1 = offers(:of3) # com dependencias
+
+    assert_no_difference(["Offer.count", "Schedule.count"]) do
+      delete :destroy, id: offer_2011_1.id, format: :json
     end
 
-    assert_response :redirect
-    assert_equal flash[:alert], I18n.t(:no_permission)
+    assert_response :unauthorized
   end
 
   ##
   # Deactivate_groups
   ##
 
-  # Usuário com permissão e acesso
   test "desativar todas as turmas" do
-    get :index, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]
-    assert_template :index
-    assert_tag :button, 
-      :attributes => {
-        :id => "deactivate_groups_"+offers(:of3).id.to_s, 
-        :class => "btn btn_caution deactivate_groups"
-      }
-    post :deactivate_groups, {:id => offers(:of3).id, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]}
-    assert_equal offers(:of3).groups, offers(:of3).groups.where(:status => false)
+    offer_2011_1 = offers(:of3) # com dependencias
 
-    assert_response :redirect
+    post :deactivate_groups, id: offer_2011_1.id
+
+    assert_equal offer_2011_1.groups.count, offer_2011_1.groups.where(status: false).count
     assert_equal flash[:notice], I18n.t(:all_groups_deactivated, :scope => [:offers, :index])
   end
 
-  # Usuário com permissão e sem acesso
   test "nao desativar todas as turmas - sem acesso" do
-    post :deactivate_groups, {:id => offers(:of4).id, allocation_tags_ids: [allocation_tags(:al15).id]}
-    assert_not_equal offers(:of4).groups, offers(:of4).groups.where(:status => false)
+    post :deactivate_groups, id: offers(:of4).id, format: :json
 
-    assert_response :redirect
-    assert_equal flash[:alert], I18n.t(:no_permission)
+    assert_response :unauthorized
+    assert_not_equal offers(:of4).groups.count, offers(:of4).groups.where(status: false).count
   end
 
-  # Usuário sem permissão 
   test "nao desativar todas as turmas - sem permissao" do
     sign_out @editor
     sign_in users(:professor)
-    post :deactivate_groups, {:id => offers(:of3).id, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al21).id]}
-    assert_not_equal offers(:of3).groups, offers(:of3).groups.where(:status => false)
 
-    assert_response :redirect
-    assert_equal flash[:alert], I18n.t(:no_permission)
+    post :deactivate_groups, id: offers(:of3).id, format: :json
+
+    assert_response :unauthorized
+    assert_not_equal offers(:of3).groups.count, offers(:of3).groups.where(status: false).count
   end
 
 end

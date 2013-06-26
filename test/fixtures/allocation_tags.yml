@@ -113,3 +113,7 @@ al23:
 al24:
   id: 24
   group_id: 10
+
+al25:
+  id: 25
+  offer_id: 9

@@ -52,3 +52,9 @@ of8: # oferta que não deve aparecer para matrícula
   curriculum_unit_id: 2
   course_id: 1
   semester_id: 1
+
+of9: # oferta que não deve aparecer para matrícula
+  id: 9
+  curriculum_unit_id: 3
+  course_id: 2
+  semester_id: 1
