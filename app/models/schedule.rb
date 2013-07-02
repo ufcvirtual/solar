@@ -1,5 +1,4 @@
 class Schedule < ActiveRecord::Base
-
   has_many :discussions
   has_many :lessons
   has_many :schedule_events
@@ -12,11 +11,14 @@ class Schedule < ActiveRecord::Base
   has_many :semester_enrollments, class_name: "Semester", foreign_key: "enrollment_schedule_id"
 
   validates :start_date, presence: true
-  validate :start_date_before_end_date 
+  validates :end_date, presence: true, if: "check_end_date"
+
+  validate :start_date_before_end_date
 
   before_destroy :can_destroy?
-  
-  ## Validação que verifica se a data inicial é anterior à data final
+
+  attr_accessor :check_end_date # caso esteja setado, a data final será obrigatória
+
   def start_date_before_end_date
     unless start_date.nil? or end_date.nil?
       errors.add(:start_date, I18n.t(:range_date_error, :scope => [:discussion, :errors])) if (start_date > end_date)

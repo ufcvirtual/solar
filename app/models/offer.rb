@@ -4,26 +4,34 @@ class Offer < ActiveRecord::Base
 
   belongs_to :course
   belongs_to :curriculum_unit
-
   belongs_to :semester
-  belongs_to :offer_schedule, class_name: "Schedule", foreign_key: "offer_schedule_id"
+
+  belongs_to :period_schedule, class_name: "Schedule", foreign_key: "offer_schedule_id"
   belongs_to :enrollment_schedule, class_name: "Schedule", foreign_key: "enrollment_schedule_id"
 
   has_many :groups
   has_many :assignments, through: :allocation_tag
 
+  after_create :set_default_lesson_module # modulo default da oferta
+  after_destroy { |record|
+    record.period_schedule.destroy if record.period_schedule.try(:can_destroy?)
+    record.enrollment_schedule.destroy if record.enrollment_schedule.try(:can_destroy?)
+  }
+
   validates :course, presence: true, if: "curriculum_unit.nil?"
   validates :curriculum_unit, presence: true, if: "course.nil?"
   validates :semester, presence: true
 
-  # validate :semester_must_be_unique
+  validate :check_period_end_date
 
-  after_create :set_default_lesson_module # modulo default da oferta
+  accepts_nested_attributes_for :period_schedule
+  accepts_nested_attributes_for :enrollment_schedule
 
-  after_destroy { |record|
-    record.offer_schedule.destroy if record.offer_schedule.try(:can_destroy?)
-    record.enrollment_schedule.destroy if record.enrollment_schedule.try(:can_destroy?)
-  }
+  attr_accessible :period_schedule_attributes, :enrollment_schedule_attributes, :curriculum_unit_id, :course_id, :semester_id
+
+  def check_period_end_date
+    self.period_schedule.check_end_date = true if period_schedule and period_schedule.start_date
+  end
 
   def has_any_lower_association?
     self.groups.count > 0
@@ -33,25 +41,9 @@ class Offer < ActiveRecord::Base
     groups
   end
 
-  # def semester_must_be_unique
-  #   offers_with_same_semester = Offer.find_all_by_curriculum_unit_id_and_course_id_and_semester(curriculum_unit_id, course_id, semester)
-  #   errors.add(:semester, I18n.t(:existing_semester, :scope => [:offers])) if (@new_record == true or semester_changed?) and offers_with_same_semester.size > 0
-  # end
-
   #
   # tirar dos locales: I18n.t(:range_date_error, :scope => [:offers])
   #
-
-  ## Retorna as informações da schedule da oferta (período de matrícula)
-  def schedule_info
-    schedule_dates = []
-    schedule_dates << I18n.l(self.schedule.start_date, format: :normal)
-    schedule_dates << (self.schedule.end_date.nil? ? I18n.t(:no_end_date, scope: :offers) : I18n.l(self.schedule.end_date, format: :normal))
-    schedule_dates = schedule_dates.join(" - ") 
-    is_active      = (self.schedule.start_date <= Time.now and (self.schedule.end_date.nil? or self.schedule.end_date >= Time.now))
-
-    return {"schedule_dates" => schedule_dates, "is_active" => is_active}
-  end
 
   def set_default_lesson_module
     create_default_lesson_module(I18n.t(:general_of_offer, scope: :lesson_modules))
@@ -60,11 +52,11 @@ class Offer < ActiveRecord::Base
   ## datas da oferta
 
   def start_date
-    offer_schedule.try(:start_date) || semester.offer_schedule.start_date
+    period_schedule.try(:start_date) || semester.offer_schedule.start_date
   end
 
   def end_date
-    offer_schedule.try(:end_date) || semester.offer_schedule.end_date
+    period_schedule.try(:end_date) || semester.offer_schedule.end_date
   end
 
   ## datas para matricula

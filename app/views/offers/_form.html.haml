@@ -1,0 +1,20 @@
+= simple_form_for @offer do |f|
+  .form-inputs
+    = f.association :semester, as: :hidden, input_html: {value: @offer.semester_id}
+    = f.association :course
+    = f.association :curriculum_unit
+
+    = f.label :offer
+    = f.simple_fields_for :period_schedule do |s|
+      .offer_schedule_dates
+        .left= s.input :start_date, as: :string, required: false
+        .right= s.input :end_date, as: :string
+
+    = f.label :enrollment
+    = f.simple_fields_for :enrollment_schedule do |s|
+      .enrollment_schedule_dates
+        .left= s.input :start_date, as: :string, required: false
+        .right= s.input :end_date, as: :string
+
+  .form-actions
+    = f.submit 'Save'

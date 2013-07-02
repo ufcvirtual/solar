@@ -1,0 +1,21 @@
+
+= ["nome: ", @semester.name].join
+
+%br
+
+- offer = @semester.enrollment_schedule
+= "oferta: "
+= [offer.start_date, offer.end_date].compact.map { |d| l(d, format: :normal) }.join(" - ")
+
+%br
+
+- enroll = @semester.enrollment_schedule
+\ matricula:
+= [enroll.start_date, enroll.end_date].compact.map { |d| l(d, format: :normal) }.join(" - ")
+
+%br
+%br
+
+= link_to 'Edit', edit_semester_path(@semester)
+\|
+= link_to 'Back', semesters_path

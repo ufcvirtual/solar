@@ -7,6 +7,9 @@ class ChangeOfferRemoveSemester < ActiveRecord::Migration
       t.rename :schedule_id, :enrollment_schedule_id
       t.rename :semester, :semester_name
 
+      t.rename :start_date, :old_start_date
+      t.rename :end_date, :old_end_date
+
       t.remove_foreign_key :schedules
       t.foreign_key :schedules, column: "enrollment_schedule_id"
       t.foreign_key :schedules, column: "offer_schedule_id"
@@ -16,8 +19,8 @@ class ChangeOfferRemoveSemester < ActiveRecord::Migration
     offers = Offer.order("semester_name")
 
     offers.each do |offer|
-      offer.build_offer_schedule(start_date: offer.start_date, end_date: offer.end_date)
-      offer.save
+      offer_schedule = Schedule.create(start_date: offer.old_start_date, end_date: offer.old_end_date)
+      offer.offer_schedule_id = offer_schedule.id
 
       s = Semester.find_or_create_by_name(name: offer.semester_name, offer_schedule_id: offer.offer_schedule_id, enrollment_schedule_id: offer.enrollment_schedule_id)
       offer.semester_id = s.id
@@ -25,8 +28,8 @@ class ChangeOfferRemoveSemester < ActiveRecord::Migration
       offer.save
     end
 
-    remove_column :offers, :start_date
-    remove_column :offers, :end_date
+    remove_column :offers, :old_start_date
+    remove_column :offers, :old_end_date
     remove_column :offers, :semester_name
 
     change_column :offers, :semester_id, :integer, null: false

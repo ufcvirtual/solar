@@ -85,8 +85,12 @@ Solar::Application.routes.draw do
       post :activate
     end
   end
-  
-  resources :offers do
+
+  resources :semesters do
+    resources :offers, only: [:new]
+  end
+
+  resources :offers, except: [:new] do
     post :deactivate_groups, on: :member
     get :list, on: :collection
   end

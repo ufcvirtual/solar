@@ -19,28 +19,31 @@ class OffersController < ApplicationController
     end
 
     params[:format] = :html
-    @offer = Offer.new
+    @offer = Semester.find(params[:semester_id]).offers.build course_id: @course, curriculum_unit_id: @uc
+
+    @offer.build_period_schedule
+    @offer.build_enrollment_schedule
   end
 
   def edit
     @offer = Offer.find(params[:id])
     authorize! :edit, @offer, on: [@offer.allocation_tag.id]
+
+    @offer.build_period_schedule if @offer.period_schedule.nil?
+    @offer.build_enrollment_schedule if @offer.enrollment_schedule.nil?
   end
 
   def create
     @offer = Offer.new params[:offer]
     authorize! :create, Offer, on: [@offer.curriculum_unit.try(:allocation_tag).try(:id), @offer.course.try(:allocation_tag).try(:id)].compact
 
-    begin
-      Offer.transaction do
-        @offer.offer_schedule = Schedule.create!(params[:offer_schedule]) if params.include?(:offer_schedule)
-        @offer.enrollment_schedule = Schedule.create!(params[:enrollment_schedule]) if params.include?(:enrollment_schedule)
+    # periodo de oferta e matricula ficam no semestre \ esses dados ficam na tabela de oferta apenas se diferirem dos dados do semestre
+    @offer.period_schedule.try(:destroy) if @offer.period_schedule.try(:start_date).nil?
+    @offer.enrollment_schedule.try(:destroy) if @offer.enrollment_schedule.try(:start_date).nil?
 
-        @offer.save!
-      end
-
+    if @offer.save
       render json: {success: true}
-    rescue
+    else
       render :new
     end
   end
@@ -51,29 +54,31 @@ class OffersController < ApplicationController
 
     begin
       Offer.transaction do
-        @offer.update_attributes(params[:offer]) if params.include?(:offer)
+        if params[:offer].include?(:period_schedule_attributes) and params[:offer][:period_schedule_attributes][:start_date].blank? and params[:offer][:period_schedule_attributes][:end_date].blank?
+          params[:offer].delete(:period_schedule_attributes)
 
-        if params.include?(:offer_schedule)
-          if @offer.offer_schedule.nil?
-            @offer.offer_schedule = Schedule.create!(params[:offer_schedule])
-          else
-            @offer.offer_schedule.update_attributes!(params[:offer_schedule])
-          end
+          schedule = @offer.period_schedule
+          @offer.period_schedule = nil
+          schedule.destroy unless schedule.nil?
         end
 
-        if params.include?(:enrollment_schedule)
-          if @offer.enrollment_schedule.nil?
-            @offer.enrollment_schedule = Schedule.create!(params[:enrollment_schedule])
-          else
-            @offer.enrollment_schedule.update_attributes!(params[:enrollment_schedule])
-          end
+        if params[:offer].include?(:enrollment_schedule_attributes) and params[:offer][:enrollment_schedule_attributes][:start_date].blank? and params[:offer][:enrollment_schedule_attributes][:end_date].blank?
+          params[:offer].delete(:enrollment_schedule_attributes)
+
+          schedule = @offer.enrollment_schedule
+          @offer.enrollment_schedule = nil
+          schedule.destroy unless schedule.nil?
         end
 
-        @offer.save!
+        @offer.update_attributes!(params[:offer])
       end
 
-      render json: {success: true}
-    rescue
+      redirect_to semesters_path, notice: 'Offer was successfully updated.'
+      # render json: {success: true}
+    rescue Exception => e
+      @offer.build_period_schedule if @offer.period_schedule.nil?
+      @offer.build_enrollment_schedule if @offer.enrollment_schedule.nil?
+
       render :edit
     end
   end

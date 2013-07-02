@@ -1,0 +1,27 @@
+- @semesters.each do |semester|
+  %h1
+    - period = [l(semester.offer_schedule.start_date, format: :normal), l(semester.offer_schedule.end_date, format: :normal)].join(' - ')
+    = [semester.name, "(#{period})"].join(" :: ")
+    = link_to :new_offer, new_semester_offer_path(semester)
+  %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :border => "0"}
+    %thead
+      %tr.lines
+        %th= "uc"
+        %th= "curso"
+        %th= "oferta"
+        %th= "matrícula"
+        %th= "editar"
+    %tbody
+      - semester.offers.each do |offer|
+        %tr.lines
+          %td= offer.course.try(:name)
+          %td= offer.curriculum_unit.try(:name)
+          %td= l(offer.period_schedule.start_date, format: :normal) unless offer.period_schedule.nil?
+          %td= l(offer.enrollment_schedule.start_date, format: :normal) unless offer.enrollment_schedule.nil?
+          / %td= offer.enrollment_period.compact.map {|d| l(d, format: :normal) }.join(" - ")
+          - if can? :edit, offer, on: [offer.allocation_tag.id]
+            %td= link_to :edit, edit_offer_path(offer)
+  %br
+
+- if can? :create, Semester
+  = link_to 'New Semester', new_semester_path

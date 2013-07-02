@@ -37,7 +37,7 @@ class OffersControllerTest < ActionController::TestCase
     uc_quimica = curriculum_units(:r3)
 
     assert_difference(["Offer.count", "Schedule.count"], 1) do
-      post :create, {offer: {course_id: c_quimica.id, curriculum_unit_id: uc_quimica.id, semester_id: s.id}, enrollment_schedule: {start_date: Date.today}}
+      post :create, {offer: {course_id: c_quimica.id, curriculum_unit_id: uc_quimica.id, semester_id: s.id, enrollment_schedule_attributes: {start_date: Date.today}}}
     end
   end
 
@@ -76,7 +76,7 @@ class OffersControllerTest < ActionController::TestCase
   #   uc_quimica = curriculum_units(:r3)
 
   #   assert_no_difference(["Offer.count", "Schedule.count"]) do
-  #     post :create, {offer: {course_id: c_quimica.id, curriculum_unit_id: uc_quimica.id, semester_id: s.id}, enrollment_schedule: {start_date: s.offer_schedule.end_date + 1.month}}
+  #     post :create, {offer: {course_id: c_quimica.id, curriculum_unit_id: uc_quimica.id, semester_id: s.id}, enrollment_schedule: {start_date: s.period_schedule.end_date + 1.month}}
   #   end
   # end
 
@@ -90,11 +90,9 @@ class OffersControllerTest < ActionController::TestCase
     get :edit, id: offer_2011_1.id
     assert_template :edit
 
-    assert_no_difference("Schedule.count") do # schedule apenas modificada
-      put :update, {id: offer_2011_1.id, offer: {}, enrollment_schedule: {start_date: Date.today, end_date: Date.today + 1.month}}
+    assert_no_difference("Schedule.count") do # schedule eh apenas modificada
+      put :update, {id: offer_2011_1.id, offer: {enrollment_schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month, id: 31}}}
     end
-
-    assert_response :ok
   end
 
   test "editar oferta - modificar periodo da oferta" do
@@ -103,14 +101,13 @@ class OffersControllerTest < ActionController::TestCase
     get :edit, id: offer_2011_1.id
     assert_template :edit
 
-    assert_nil offer_2011_1.offer_schedule_id
+    assert_nil offer_2011_1.period_schedule
 
     assert_difference("Schedule.count", 1) do # schedule criada
-      put :update, {id: offer_2011_1.id, offer: {}, offer_schedule: {start_date: Date.today, end_date: Date.today + 1.month}}
+      put :update, {id: offer_2011_1.id, offer: {period_schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
     end
 
-    assert_response :ok
-    assert_not_nil Offer.find(offer_2011_1.id).offer_schedule_id
+    assert_not_nil Offer.find(offer_2011_1.id).period_schedule
   end
 
   ##
