@@ -12,10 +12,10 @@
       %i.icon-suitcase
       = @assignment.name
     - if can? :evaluate, @assignment
-      - if @send_assignment.nil? or @send_assignment.grade.nil? or @send_assignment.grade.blank?
+      - if @sent_assignment.nil? or @sent_assignment.grade.nil? or @sent_assignment.grade.blank?
         = button_tag t(:evaluate, :scope => [:assignment, :evaluation]), :class => btn_class, :id => "btn_evaluate", :onclick => "javascript:btn_evaluate(this, ' ');", :disabled => (not @assignment.on_evaluation_period?(current_user.id))
       - else
-        = button_tag t(:change_grade, :scope => [:assignment, :evaluation]), :class => btn_edit_class, :id => "btn_evaluate", :onclick => "javascript:btn_evaluate(this, '#{@send_assignment.grade}');", :disabled => (not @assignment.on_evaluation_period?(current_user.id))
+        = button_tag t(:change_grade, :scope => [:assignment, :evaluation]), :class => btn_edit_class, :id => "btn_evaluate", :onclick => "javascript:btn_evaluate(this, '#{@sent_assignment.grade}');", :disabled => (not @assignment.on_evaluation_period?(current_user.id))
       = button_tag t(:save, :scope => [:assignment, :evaluation]), :class => "btn btn_main", :id => "btn_save_evaluation", :disabled => (not @assignment.on_evaluation_period?(current_user.id)), :"data-student-id" => @student_id, :"data-group-id" => @group_id, :"data-assignment-id" => @assignment.id, onclick: "javascript:update_evaluation();"
 
       = button_tag t(:cancel, :scope => [:assignment, :evaluation]), :class => "btn btn_caution", :id => "btn_cancel_evaluation", :onclick => "javascript:btn_cancel_evaluation();", :disabled => (not @assignment.on_evaluation_period?(current_user.id))
@@ -37,12 +37,12 @@
           / Área de avaliação
           %td#evaluate_assignment_student
             .student_assignment_evaluate
-              - if @send_assignment.nil? or @send_assignment.grade.nil? or @send_assignment.grade.blank?
+              - if @sent_assignment.nil? or @sent_assignment.grade.nil? or @sent_assignment.grade.blank?
                 = "-"
               - else
-                = @send_assignment.grade
+                = @sent_assignment.grade
             .student_assignment_evaluation
-              = text_field_tag :evaluation_grade, @send_assignment.nil? ? "" : @send_assignment.grade, :size => 3
+              = text_field_tag :evaluation_grade, @sent_assignment.nil? ? "" : @sent_assignment.grade, :size => 3
 
 / Arquivos enviados pelo professor
 .block_wrapper
@@ -102,12 +102,12 @@
       %i.icon-suitcase
       = t(:sent_files, :scope => [:assignment, :files])
     %span.download_all_icon
-      - unless @send_assignment_files.nil? or @send_assignment_files.empty?
+      - unless @sent_assignment_files.nil? or @sent_assignment_files.empty?
         = button_tag(:type => :button, :onclick => "javascript:window.location.href='#{download_files_assignments_path(:assignment_id => @assignment.id, :student_id => @student_id, :group_id => @group_id, :type => "assignment", :zip => true)}'", :class => "btn btn_default") do
           = content_tag(:span, t(:download_all_files_zip, :scope => [:assignment, :files]))
           %i.icon-install
   .block_content
-    - unless @send_assignment_files.nil? or @send_assignment_files.empty?
+    - unless @sent_assignment_files.nil? or @sent_assignment_files.empty?
       %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
         %thead
           %tr.lines
@@ -119,7 +119,7 @@
             - if can? :delete_file, @assignment and @assignment.user_can_access_assignment(@user.id, @student_id, @group_id)
               %th{:style => "width: 30px"}
         %tbody
-          - @send_assignment_files.each do |file|
+          - @sent_assignment_files.each do |file|
             %tr.lines
               %td
                 = link_to image_tag(icon_attachment(file.attachment_file_name)), download_files_assignments_path(:assignment_id => @assignment.id, :file_id => file.id, :student_id => @student_id, :group_id => @group_id, :type => "assignment"), {:class => "file_icon", :alt => " "}

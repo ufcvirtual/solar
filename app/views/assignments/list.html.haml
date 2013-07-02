@@ -36,7 +36,7 @@
 
         %tbody
           - @assignments.each do |assignment|
-            - can_delete = assignment.send_assignments.count.zero?
+            - can_delete = assignment.sent_assignments.count.zero?
             %tr.lines{id: "tr_#{assignment.id}"}
               %td{style: 'text-align:center;'}
                 = check_box_tag("c_#{assignment.id}", assignment.id, false, {class: "ckb_assignment", :"data-can-delete" => can_delete})

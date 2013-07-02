@@ -13,12 +13,12 @@ class ScoreTest < ActiveSupport::TestCase
     scores = Score.students_information(students, assignments, curriculum_units(:r3).id, allocation_tags(:al3).id) #dados dos alunos nas atividades
 
   	# a3: quimica I - atividade III
-  	aluno1_a3_grade = send_assignments(:sa1).grade 
+  	aluno1_a3_grade = sent_assignments(:sa1).grade 
   	assert_equal aluno1_a3_grade, scores["students_grades"][0][1]
   	assert_nil scores["students_groups"][0][1] #atividade individual retorna nil
 
   	# a5: quimica I - trabalho em grupo2
-  	aluno1_a5_group = send_assignments(:sa2).group_assignment_id
+  	aluno1_a5_group = sent_assignments(:sa2).group_assignment_id
   	assert_equal aluno1_a5_group, scores["students_groups"][0][3]
 
   	# uc3: quimica I

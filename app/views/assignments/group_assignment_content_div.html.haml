@@ -31,7 +31,7 @@
           =t :files, :scope => [:assignment, :files]
           %span.group_elements_float
             =t :grade, :scope => [:assignment, :information]
-            = (group.send_assignment.nil? or group.send_assignment.grade.nil?) ? "-" : group.send_assignment.grade
+            = (group.sent_assignment.nil? or group.sent_assignment.grade.nil?) ? "-" : group.sent_assignment.grade
         - group_participants = GroupParticipant.all_by_group_assignment(group.id)
         %ul{:id => "#{!group_info["evaluated"]}", :value => "#{group.id}"}
           - unless group_participants.empty?

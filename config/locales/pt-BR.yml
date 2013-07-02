@@ -234,7 +234,7 @@
         group_name: "Nome do grupo"
       assignment_comment:
         comment: Comentário
-      send_assignment:
+      sent_assignment:
         grade: Nota
         comment: Comentário
       discussion:

@@ -11,12 +11,12 @@ class AccessControlController < ApplicationController
     case current_path_split[current_path_split.size-2] #ex: ["", "media", "assignment", "public_area", "20_crimescene.png"] => public_area
       when 'comments' #arquivo de um comentário
         file = CommentFile.find(file_id)
-        send_assignment = file.assignment_comment.send_assignment
-        authorize! :download_files, send_assignment.assignment
+        sent_assignment = file.assignment_comment.sent_assignment
+        authorize! :download_files, sent_assignment.assignment
       when 'sent_assignment_files' #arquivo enviado pelo aluno/grupo
         file = AssignmentFile.find(file_id)
-        send_assignment = file.send_assignment
-        authorize! :download_files, send_assignment.assignment
+        sent_assignment = file.sent_assignment
+        authorize! :download_files, sent_assignment.assignment
       when 'enunciation' #arquivo que faz parte da descrição da atividade
         file = AssignmentEnunciationFile.find(file_id)
         authorize! :download_files, file.assignment
@@ -27,7 +27,7 @@ class AccessControlController < ApplicationController
     end
 
     # verifica se tem acesso a arquivo ou se é da mesma turma (definido apenas para arquivos públicos)
-    if (not(send_assignment.nil?) and send_assignment.assignment.user_can_access_assignment(current_user.id, send_assignment.user_id, send_assignment.group_assignment_id)) or (same_class)
+    if (not(sent_assignment.nil?) and sent_assignment.assignment.user_can_access_assignment(current_user.id, sent_assignment.user_id, sent_assignment.group_assignment_id)) or (same_class)
       send_file(file.attachment.path, { disposition: 'inline', type: return_type(params[:extension])} )
     else
       raise CanCan::AccessDenied

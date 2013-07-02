@@ -51,12 +51,12 @@ class AssignmentTest < ActiveSupport::TestCase
     group_id      = (student_group.nil? ? nil : student_group.id) # se aluno estiver em grupo, recupera id
     assert_nil group_id
 
-    send_assignment  = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignments(:a3), user_id, group_id) # atividade que tem send_assignment
+    sent_assignment  = SentAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignments(:a3), user_id, group_id) # atividade que tem sent_assignment
 
-    assignment_grade = send_assignment.nil? ? nil : send_assignment.grade # se tiver send_assignment, tenta pegar nota
+    assignment_grade = sent_assignment.nil? ? nil : sent_assignment.grade # se tiver sent_assignment, tenta pegar nota
     assert_equal(assignment_grade, 6.3)
 
-    has_comments  = send_assignment.nil? ? nil :  (not send_assignment.assignment_comments.empty?) # verifica se há comentários para o aluno
+    has_comments  = sent_assignment.nil? ? nil :  (not sent_assignment.assignment_comments.empty?) # verifica se há comentários para o aluno
     assert has_comments
 
     situation     = Assignment.assignment_situation_of_student(assignments(:a3), users(:aluno1).id)
@@ -81,12 +81,12 @@ class AssignmentTest < ActiveSupport::TestCase
     group_id      = (student_group.nil? ? nil : student_group.id) # se aluno estiver em grupo, recupera id
     assert_equal(group_id, group_assignments(:ga6).id)
 
-    send_assignment  = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignments(:a6), user_id, group_id) # atividade que tem send_assignment
+    sent_assignment  = SentAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignments(:a6), user_id, group_id) # atividade que tem sent_assignment
 
-    assignment_grade = send_assignment.nil? ? nil : send_assignment.grade # se tiver send_assignment, tenta pegar nota
+    assignment_grade = sent_assignment.nil? ? nil : sent_assignment.grade # se tiver sent_assignment, tenta pegar nota
     assert_nil assignment_grade
 
-    has_comments = send_assignment.nil? ? nil :  (not send_assignment.assignment_comments.empty?) # verifica se há comentários para o aluno
+    has_comments = sent_assignment.nil? ? nil :  (not sent_assignment.assignment_comments.empty?) # verifica se há comentários para o aluno
     assert_nil has_comments
 
     situation    = Assignment.assignment_situation_of_student(assignments(:a6), users(:aluno1).id)

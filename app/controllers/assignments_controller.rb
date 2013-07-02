@@ -103,8 +103,8 @@ class AssignmentsController < ApplicationController
 
     begin
       Assignment.transaction do
-        Assignment.includes(:send_assignments).
-          where(assignments: {id: params[:id].split(",")}, send_assignments: {id: nil}). # retirando trabalhos com resposta de alunos
+        Assignment.includes(:sent_assignments).
+          where(assignments: {id: params[:id].split(",")}, sent_assignments: {id: nil}). # retirando trabalhos com resposta de alunos
           map(&:destroy)
       end
       render json: {success: true}
@@ -124,15 +124,15 @@ class AssignmentsController < ApplicationController
     @student_id      = params[:group_id].nil? ? params[:student_id] : nil
     @group_id        = params[:group_id].nil? ? nil : params[:group_id] 
     @group           = GroupAssignment.find(params[:group_id]) unless @group_id.nil? # grupo
-    @send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(@assignment.id, @student_id, @group_id)
+    @sent_assignment = SentAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(@assignment.id, @student_id, @group_id)
     @situation       = Assignment.assignment_situation_of_student(@assignment.id, @student_id, @group_id)
     @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  # arquivos que fazem parte da descrição da atividade
 
     raise CanCan::AccessDenied unless @assignment.user_can_access_assignment(current_user.id, @student_id, @group_id)
    
-    unless @send_assignment.nil?
-      @send_assignment_files = @send_assignment.assignment_files
-      @comments              = @send_assignment.assignment_comments
+    unless @sent_assignment.nil?
+      @sent_assignment_files = @sent_assignment.assignment_files
+      @comments              = @sent_assignment.assignment_comments
     end
   end
 
@@ -212,8 +212,8 @@ class AssignmentsController < ApplicationController
     grade       = params['grade'].blank? ? params['grade'] : params['grade'].tr(',', '.') 
     begin
       raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.on_evaluation_period?(current_user.id) # verifica se está no prazo
-      @send_assignment = SendAssignment.find_or_create_by_assignment_id_and_group_assignment_id_and_user_id(@assignment.id, @group_id, @student_id)
-      @send_assignment.update_attributes!(:grade => grade)
+      @sent_assignment = SentAssignment.find_or_create_by_assignment_id_and_group_assignment_id_and_user_id(@assignment.id, @group_id, @student_id)
+      @sent_assignment.update_attributes!(:grade => grade)
       @situation       = Assignment.assignment_situation_of_student(@assignment.id, @student_id, @group_id)
       respond_to do |format|
         format.html { render 'evaluate_assignment_div', :layout => false }
@@ -234,14 +234,14 @@ class AssignmentsController < ApplicationController
     comment_text      = params['comment']
     comment_files     = params['comment_files'].nil? ? [] : params['comment_files']
     deleted_files_ids = params['deleted_files'].nil? ? [] : params['deleted_files'][0].split(",") # ["id_arquivo_del1,id_arquivo_del2"] => ["id_arquivo_del1", "id_arquivo_del2"]
-    send_assignment   = SendAssignment.find_or_create_by_group_assignment_id_and_assignment_id_and_user_id(group_id, @assignment.id, student_id) # busca ou cria send_assignment ao aluno/grupo
+    sent_assignment   = SentAssignment.find_or_create_by_group_assignment_id_and_assignment_id_and_user_id(group_id, @assignment.id, student_id) # busca ou cria sent_assignment ao aluno/grupo
 
     begin
       raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.on_evaluation_period?(current_user.id) # verifica se está no prazo
       ActiveRecord::Base.transaction do
 
         if comment.nil?
-          comment = AssignmentComment.create!(:user_id => current_user.id, :comment => comment_text, :send_assignment_id => send_assignment.id, :updated_at => Time.now)
+          comment = AssignmentComment.create!(:user_id => current_user.id, :comment => comment_text, :sent_assignment_id => sent_assignment.id, :updated_at => Time.now)
         else
           comment.update_attributes!(:comment => comment_text, :updated_at => Time.now)
         end
@@ -294,9 +294,9 @@ class AssignmentsController < ApplicationController
       folder_name = ''
       case params[:type]
         when 'assignment' # arquivos enviados pelo aluno/grupo
-          send_assignment = assignment.send_assignments.where(:user_id => params[:student_id], :group_assignment_id => params[:group_id]).first
-          folder_name     = [assignment.name, (params[:group_id].nil? ? send_assignment.user.nick : send_assignment.group_assignment.group_name)].join(' - ')# pasta: "atv1 - aluno1"
-          all_files       = send_assignment.assignment_files
+          sent_assignment = assignment.sent_assignments.where(:user_id => params[:student_id], :group_assignment_id => params[:group_id]).first
+          folder_name     = [assignment.name, (params[:group_id].nil? ? sent_assignment.user.nick : sent_assignment.group_assignment.group_name)].join(' - ')# pasta: "atv1 - aluno1"
+          all_files       = sent_assignment.assignment_files
           raise CanCan::AccessDenied unless assignment.user_can_access_assignment(current_user.id, params[:student_id], params[:group_id])
         when 'enunciation' # arquivos que fazem parte da descrição da atividade
           folder_name = assignment.name # pasta: "atv1"
@@ -307,10 +307,10 @@ class AssignmentsController < ApplicationController
       case params[:type]
         when 'comment' # arquivo de um comentário
           file = CommentFile.find(params[:file_id])
-          send_assignment = file.assignment_comment.send_assignment
+          sent_assignment = file.assignment_comment.sent_assignment
         when 'assignment' # arquivo enviado pelo aluno/grupo
           file = AssignmentFile.find(params[:file_id])
-          send_assignment = file.send_assignment
+          sent_assignment = file.sent_assignment
         when 'enunciation' # arquivo que faz parte da descrição da atividade
           file = AssignmentEnunciationFile.find(params[:file_id])
         when 'public'
@@ -324,7 +324,7 @@ class AssignmentsController < ApplicationController
     end
 
     # verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
-    raise CanCan::AccessDenied unless (assignment.nil? or send_assignment.nil? or assignment.user_can_access_assignment(current_user.id, send_assignment.user_id, send_assignment.group_assignment_id))
+    raise CanCan::AccessDenied unless (assignment.nil? or sent_assignment.nil? or assignment.user_can_access_assignment(current_user.id, sent_assignment.user_id, sent_assignment.group_assignment_id))
     redirect = request.referer.nil? ? root_url(:only_path => false) : request.referer
     download_file(redirect, file_path, file_name)
   end
@@ -358,8 +358,8 @@ class AssignmentsController < ApplicationController
           raise CanCan::AccessDenied unless assignment.user_can_access_assignment(current_user.id, current_user.id, group_id)
           raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment.assignment_in_time?(current_user.id) # verifica período para envio do arquivo
 
-          send_assignment = SendAssignment.find_or_create_by_assignment_id_and_user_id_and_group_assignment_id!(assignment.id, user_id, group_id)
-          AssignmentFile.create!({ :attachment => params[:file], :send_assignment_id => send_assignment.id, :user_id => current_user.id })
+          sent_assignment = SentAssignment.find_or_create_by_assignment_id_and_user_id_and_group_assignment_id!(assignment.id, user_id, group_id)
+          AssignmentFile.create!({ :attachment => params[:file], :sent_assignment_id => sent_assignment.id, :user_id => current_user.id })
       end
 
       flash[:notice] = t(:uploaded_success, :scope => [:assignment, :files])
@@ -451,18 +451,18 @@ class AssignmentsController < ApplicationController
           # groupo atual do aluno nesta atividade
           current_group_participant     = Assignment.find(assignment_id).group_participants.where(user_id: student_id).first # aluno esta em apenas um grupo por atividade
 
-          # send_assignment do grupo atual
-          current_group_send_assignment = current_group_participant.group_assignment.send_assignment unless current_group_participant.nil?
-          student_files_current_group   = current_group_send_assignment.assignment_files.where(user_id: student_id) unless current_group_send_assignment.nil?
+          # sent_assignment do grupo atual
+          current_group_sent_assignment = current_group_participant.group_assignment.sent_assignment unless current_group_participant.nil?
+          student_files_current_group   = current_group_sent_assignment.assignment_files.where(user_id: student_id) unless current_group_sent_assignment.nil?
 
-          # send_assignment do grupo ao qual aluno tentará ser movido
-          choosen_group_send_assignment = group_assignment.send_assignment unless group_assignment.nil?
+          # sent_assignment do grupo ao qual aluno tentará ser movido
+          choosen_group_sent_assignment = group_assignment.sent_assignment unless group_assignment.nil?
 
-          student_can_be_removed_from_current_group = (student_files_current_group.nil? and (current_group_send_assignment.nil? or current_group_send_assignment.grade.nil?))
-          student_can_be_moved_to_choosen_group     = (choosen_group_send_assignment.nil? or choosen_group_send_assignment.grade.nil?)
+          student_can_be_removed_from_current_group = (student_files_current_group.nil? and (current_group_sent_assignment.nil? or current_group_sent_assignment.grade.nil?))
+          student_can_be_moved_to_choosen_group     = (choosen_group_sent_assignment.nil? or choosen_group_sent_assignment.grade.nil?)
           # se:
-            # => aluno não enviou arquivos ao grupo atual E send_assignment do grupo não existe ou não foi avaliado
-            # => novo grupo não tenha send_assignment ou não tenha sido avaliado
+            # => aluno não enviou arquivos ao grupo atual E sent_assignment do grupo não existe ou não foi avaliado
+            # => novo grupo não tenha sent_assignment ou não tenha sido avaliado
           if (student_can_be_removed_from_current_group and student_can_be_moved_to_choosen_group)
             unless group_assignment.nil?
               if current_group_participant.nil?

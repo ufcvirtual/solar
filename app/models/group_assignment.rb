@@ -2,7 +2,7 @@ class GroupAssignment < ActiveRecord::Base
 
   belongs_to :assignment
 
-  has_one :send_assignment, :dependent => :destroy
+  has_one :sent_assignment, :dependent => :destroy
 
   has_many :group_participants, :dependent => :destroy
 
@@ -23,11 +23,11 @@ class GroupAssignment < ActiveRecord::Base
   end
 
   ##
-  # Caso grupo não tenha sido avaliado ou comentado ou enviado arquivos, pode ser excluído (para tudo isso, um "send_assignment" deve existir)
+  # Caso grupo não tenha sido avaliado ou comentado ou enviado arquivos, pode ser excluído (para tudo isso, um "sent_assignment" deve existir)
   ##
   def self.can_remove_group?(group_id)
-    send_assignment = SendAssignment.find_by_group_assignment_id(group_id)
-    return (send_assignment.nil? or (send_assignment.assignment_files.empty? and send_assignment.grade.nil?))
+    sent_assignment = SentAssignment.find_by_group_assignment_id(group_id)
+    return (sent_assignment.nil? or (sent_assignment.assignment_files.empty? and sent_assignment.grade.nil?))
   end
 
 end

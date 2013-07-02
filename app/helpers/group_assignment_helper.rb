@@ -4,8 +4,8 @@ module GroupAssignmentHelper
   # Retorna informações do grupo
   ##
   def info_assignment_group(group_assignment)
-    evaluated           = (group_assignment.send_assignment.nil? or group_assignment.send_assignment.grade.nil?) ? false : true
-    quantity_files_sent = (group_assignment.send_assignment.nil? ? 0 : AssignmentFile.find_all_by_send_assignment_id(group_assignment.send_assignment.id).size) 
+    evaluated           = (group_assignment.sent_assignment.nil? or group_assignment.sent_assignment.grade.nil?) ? false : true
+    quantity_files_sent = (group_assignment.sent_assignment.nil? ? 0 : AssignmentFile.find_all_by_sent_assignment_id(group_assignment.sent_assignment.id).size) 
     can_remove          = (!evaluated and quantity_files_sent == 0 )
     error_message       = evaluated ? t(:already_evaluated, :scope => [:assignment, :group_assignments]) : nil
     error_message       = (quantity_files_sent == 0) ? error_message : t(:already_sent_files, :scope => [:assignment, :group_assignments]) 

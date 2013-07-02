@@ -7,7 +7,7 @@ class Assignment < ActiveRecord::Base
 
   has_many :allocations, :through => :allocation_tag
   has_many :assignment_enunciation_files
-  has_many :send_assignments
+  has_many :sent_assignments
   has_many :group_assignments, :dependent => :destroy
   has_many :group_participants, :through => :group_assignments
 
@@ -35,19 +35,19 @@ class Assignment < ActiveRecord::Base
       AND group_assignments.assignment_id = #{assignment.id}"])) : nil unless student_id.nil?
     user_id = (assignment.type_assignment == Assignment_Type_Group) ? nil : student_id
     group_id = (student_group.nil? ? group_id : student_group.id) # se aluno estiver em grupo, recupera id
-    send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignment_id, user_id, group_id)
+    sent_assignment = SentAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignment_id, user_id, group_id)
 
     if assignment.schedule.start_date > Date.current()
       situation = "not_started"  
-    elsif (not send_assignment.nil? and  not send_assignment.grade.nil?)
+    elsif (not sent_assignment.nil? and  not sent_assignment.grade.nil?)
       situation = "corrected"
     elsif assignment.type_assignment == Assignment_Type_Group and group_id.nil?
       situation = "without_group"
-    elsif (not send_assignment.nil? and send_assignment.assignment_files.size > 0)
+    elsif (not sent_assignment.nil? and sent_assignment.assignment_files.size > 0)
       situation = "sent"
-    elsif (send_assignment.nil? or send_assignment.assignment_files.size == 0) and assignment.schedule.end_date > Date.current
+    elsif (sent_assignment.nil? or sent_assignment.assignment_files.size == 0) and assignment.schedule.end_date > Date.current
       situation = "send"
-    elsif (send_assignment.nil? or send_assignment.assignment_files.size == 0) and assignment.schedule.end_date < Date.current
+    elsif (sent_assignment.nil? or sent_assignment.assignment_files.size == 0) and assignment.schedule.end_date < Date.current
       situation = "not_sent"
     else
       situation = "-"
@@ -104,9 +104,9 @@ class Assignment < ActiveRecord::Base
         AND group_assignments.assignment_id = #{assignment.id}"])) : nil
       user_id = (assignment.type_assignment == Assignment_Type_Group) ? nil : student_id
       groups_ids[idx] = (student_group.nil? ? nil : student_group.id) # se aluno estiver em grupo, recupera id deste
-      send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignment.id, user_id, groups_ids[idx])
-      assignments_grades[idx] = send_assignment.nil? ? nil : send_assignment.grade #se tiver send_assignment, tenta pegar nota
-      has_comments[idx] = send_assignment.nil? ? nil :  (not send_assignment.assignment_comments.empty?) # verifica se há comentários para o aluno
+      sent_assignment = SentAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignment.id, user_id, groups_ids[idx])
+      assignments_grades[idx] = sent_assignment.nil? ? nil : sent_assignment.grade #se tiver sent_assignment, tenta pegar nota
+      has_comments[idx] = sent_assignment.nil? ? nil :  (not sent_assignment.assignment_comments.empty?) # verifica se há comentários para o aluno
       situation[idx] = Assignment.assignment_situation_of_student(assignment.id, student_id)
     end
 

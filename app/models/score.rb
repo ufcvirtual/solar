@@ -50,12 +50,12 @@ SQL
           AND group_assignments.assignment_id = #{assignment.id}"])) : nil
         student_id = (assignment.type_assignment == Assignment_Type_Group) ? nil : student.id # se for atividade de groupo, id do aluno é nulo
         groups_ids << (student_group.nil? ? nil : student_group.id) # se aluno estiver em grupo, recupera id
-        send_assignment = SendAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignment.id, student_id, groups_ids)
-        grade = ((send_assignment.nil? or send_assignment.assignment_files.empty?) ? "an" : "as") # nota ou situação do aluno (an: trabalho não enviado, as: trabalho não corrigido)
+        sent_assignment = SentAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignment.id, student_id, groups_ids)
+        grade = ((sent_assignment.nil? or sent_assignment.assignment_files.empty?) ? "an" : "as") # nota ou situação do aluno (an: trabalho não enviado, as: trabalho não corrigido)
         if (assignment.type_assignment == Assignment_Type_Group and student_group.nil?)
           assignments_grades << "without_group"
         else 
-          assignments_grades << ((send_assignment and not send_assignment.grade.nil?) ? send_assignment.grade : grade)
+          assignments_grades << ((sent_assignment and not sent_assignment.grade.nil?) ? sent_assignment.grade : grade)
         end
       end  
 

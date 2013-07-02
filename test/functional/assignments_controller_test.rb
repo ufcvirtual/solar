@@ -4,7 +4,7 @@ class AssignmentsControllerTest < ActionController::TestCase
 
   include Devise::TestHelpers
 
-  fixtures :allocation_tags, :assignments, :group_assignments, :users, :send_assignments
+  fixtures :allocation_tags, :assignments, :group_assignments, :users, :sent_assignments
 
   test "listar as atividiades de uma turma para usuario com permissao" do 
     sign_in users(:professor)
@@ -168,9 +168,9 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:student_id)
     assert_nil assigns(:group_id)
     assert_nil assigns(:group)
-    assert_not_nil assigns(:send_assignment)
+    assert_not_nil assigns(:sent_assignment)
     assert_not_nil assigns(:assignment_enunciation_files)
-    assert_not_nil assigns(:send_assignment_files)
+    assert_not_nil assigns(:sent_assignment_files)
     assert_not_nil assigns(:comments)
     assert_template :show
   end
@@ -183,9 +183,9 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_nil assigns(:student_id)
     assert_not_nil assigns(:group_id)
     assert_not_nil assigns(:group)
-    assert_nil assigns(:send_assignment)
+    assert_nil assigns(:sent_assignment)
     assert_not_nil assigns(:assignment_enunciation_files)
-    assert_nil assigns(:send_assignment_files)
+    assert_nil assigns(:sent_assignment_files)
     assert_nil assigns(:comments)
     assert_template :show
   end
@@ -227,7 +227,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   test "nao permitir avaliar atividade individual para usuario com permissao e atividade fora do periodo" do
     sign_in users(:professor)
     post(:evaluate, {:id => assignments(:a14).id, :student_id => users(:aluno1).id, :grade => 7})
-    assert (SendAssignment.find_by_assignment_id_and_user_id(assignments(:a9).id, users(:aluno1).id).grade != 7) # não realizou mudança
+    assert (SentAssignment.find_by_assignment_id_and_user_id(assignments(:a9).id, users(:aluno1).id).grade != 7) # não realizou mudança
   end
 
   # Perfil com permissao e usuario sem acesso
@@ -508,7 +508,7 @@ class AssignmentsControllerTest < ActionController::TestCase
 
   test "deletar varios trabalhos" do
     sign_in users(:editor)
-    assignments = allocation_tags(:al3).group.assignments.includes(:send_assignments).where(send_assignments: {id: nil})
+    assignments = allocation_tags(:al3).group.assignments.includes(:sent_assignments).where(sent_assignments: {id: nil})
     assert_difference("Assignment.count", -assignments.count) do
       delete(:destroy, {id: assignments.map(&:id), allocation_tags_ids: [allocation_tags(:al3).id]})
     end

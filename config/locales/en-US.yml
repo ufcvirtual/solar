@@ -96,7 +96,7 @@
         group_name: "Group name"
       assignment_comment:
         comment: Comment
-      send_assignment:
+      sent_assignment:
         grade: Grade
         comment: Comment
       discussion:
