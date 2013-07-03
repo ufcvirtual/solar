@@ -2,6 +2,8 @@ class SemestersController < ApplicationController
   # GET /semesters
   # GET /semesters.json
   def index
+    authorize! :index, Semester
+
     query = []
     query << "offers.course_id = #{params[:course_id]}" if params.include?(:course_id)
     query << "offers.curriculum_unit_id = #{params[:curriculum_unit_id]}" if params.include?(:curriculum_unit_id)
@@ -17,20 +19,11 @@ class SemestersController < ApplicationController
     end
   end
 
-  # GET /semesters/1
-  # GET /semesters/1.json
-  def show
-    @semester = Semester.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @semester }
-    end
-  end
-
   # GET /semesters/new
   # GET /semesters/new.json
   def new
+    authorize! :create, Semester
+
     @semester = Semester.new
     @semester.build_offer_schedule
     @semester.build_enrollment_schedule
@@ -43,12 +36,14 @@ class SemestersController < ApplicationController
 
   # GET /semesters/1/edit
   def edit
+    authorize! :update, Semester
     @semester = Semester.find(params[:id])
   end
 
   # POST /semesters
   # POST /semesters.json
   def create
+    authorize! :create, Semester
     @semester = Semester.new(params[:semester])
 
     respond_to do |format|
@@ -65,6 +60,7 @@ class SemestersController < ApplicationController
   # PUT /semesters/1
   # PUT /semesters/1.json
   def update
+    authorize! :update, Semester
     @semester = Semester.find(params[:id])
 
     respond_to do |format|
@@ -82,11 +78,16 @@ class SemestersController < ApplicationController
   # DELETE /semesters/1.json
   def destroy
     @semester = Semester.find(params[:id])
-    @semester.destroy
+    authorize! :destroy, Semester
 
     respond_to do |format|
-      format.html { redirect_to semesters_url }
+      if ((@semester.offers.empty? or @semester.offers.map(&:groups).empty?) and @semester.destroy)
+        format.html { redirect_to semesters_url, notice: 'Semester was successfully deleted.' }
+      else
+        format.html { redirect_to semesters_url, alert: "Semester can't be deleted." }
+      end
       format.json { head :no_content }
     end
   end
+
 end

@@ -52,13 +52,46 @@ class OffersControllerTest < ActionController::TestCase
     assert_template :new
   end
 
-  test "nao criar ofertas - sem acesso" do
-    s = semesters(:s2013_1)
-    literatura = curriculum_units(:r2)
 
-    get :new, semester_id: s.id, curriculum_unit_id: literatura.id, format: :json
+
+
+
+  ####
+  #### já que ele pode acessar a página de nova oferta com qualquer uc e curso... vale a pena "bloquear" ele antes de chegar em 'new' caso ele tenha buscado por algo que não tem permissão?
+  ####
+  # test "nao criar ofertas - sem acesso" do
+  #   s = semesters(:s2013_1)
+  #   literatura = curriculum_units(:r2)
+
+  #   get :new, semester_id: s.id, curriculum_unit_id: literatura.id, format: :json
+  #   assert_response :unauthorized
+  # end
+
+  # neste caso, o usuário terá permissão à uc, mas não ao curso escolhidos
+  test "criar oferta - acesso parcial" do
+    s = semesters(:s2013_1)
+
+    c_letras   = courses(:c1)
+    uc_quimica = curriculum_units(:r3)
+
+    assert_difference("Offer.count") do
+      post :create, {offer: {course_id: c_letras.id, curriculum_unit_id: uc_quimica.id, semester_id: s.id}}
+    end   
+  end
+
+  # neste caso, o usuário não terá permissão nem à uc, nem ao curso escolhidos
+  test "nao criar oferta - sem acesso" do
+    s = semesters(:s2013_1)
+
+    c_letras    = courses(:c1)
+    uc_int_ling = curriculum_units(:r1)
+
+    assert_no_difference("Offer.count") do
+      post :create, {offer: {course_id: c_letras.id, curriculum_unit_id: uc_int_ling.id, semester_id: s.id}, format: :json}
+    end   
     assert_response :unauthorized
   end
+
 
   test "nao criar ofertas - sem permissao" do
     sign_out @editor

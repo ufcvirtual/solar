@@ -6,20 +6,10 @@ class OffersController < ApplicationController
   layout false
 
   def new
-    @course, @uc = params[:course_id], params[:curriculum_unit_id]
-
-    query = []
-    query << "course_id = #{@course}" unless @course.nil?
-    query << "curriculum_unit_id = #{@uc}" unless @uc.nil?
-
-    if query.empty?
-      authorize! :new, Offer
-    else
-      authorize! :new, Offer, on: AllocationTag.where(query).map(&:id)
-    end
+    authorize! :new, Offer
 
     params[:format] = :html
-    @offer = Semester.find(params[:semester_id]).offers.build course_id: @course, curriculum_unit_id: @uc
+    @offer = Semester.find(params[:semester_id]).offers.build course_id: params[:course_id], curriculum_unit_id: params[:curriculum_unit_id]
 
     @offer.build_period_schedule
     @offer.build_enrollment_schedule
@@ -35,7 +25,7 @@ class OffersController < ApplicationController
 
   def create
     @offer = Offer.new params[:offer]
-    authorize! :create, Offer, on: [@offer.curriculum_unit.try(:allocation_tag).try(:id), @offer.course.try(:allocation_tag).try(:id)].compact
+    optional_authorize(:create)
 
     # periodo de oferta e matricula ficam no semestre \ esses dados ficam na tabela de oferta apenas se diferirem dos dados do semestre
     @offer.period_schedule.try(:destroy) if @offer.period_schedule.try(:start_date).nil?
@@ -50,7 +40,9 @@ class OffersController < ApplicationController
 
   def update
     @offer = Offer.find(params[:id])
+
     authorize! :update, @offer, on: [@offer.allocation_tag.id]
+    optional_authorize(:update)
 
     begin
       Offer.transaction do
@@ -85,7 +77,7 @@ class OffersController < ApplicationController
 
   def destroy
     offer = Offer.find(params[:id])
-    authorize! :destroy, offer, on: [offer.allocation_tag.id]
+    authorize! :destroy, offer
 
     if offer.destroy
       flash[:notice] = t(:deleted_success, scope: :offers)
@@ -94,7 +86,6 @@ class OffersController < ApplicationController
       flash[:alert] = t(:not_possible_to_delete, scope: :offers)
       render json: {success: false}, status: :unprocessable_entity
     end
-
   end
 
   def deactivate_groups
@@ -111,5 +102,20 @@ class OffersController < ApplicationController
       render json: {success: false}, status: :unprocessable_entity
     end
   end
+
+  private
+
+    def optional_authorize(method)
+      at_c = params[:offer][:course_id].blank? ? nil : AllocationTag.find_by_course_id(params[:offer][:course_id]).id
+      at_uc = params[:offer][:curriculum_unit_id].blank? ? nil : AllocationTag.find_by_curriculum_unit_id(params[:offer][:curriculum_unit_id]).id
+
+      # os dados de uc e curso podem ser modificados
+      begin
+        raise if at_c.nil? # a oferta obriga uc OU c, mas nao ambos
+        authorize! method, Offer, on: [at_c].compact
+      rescue
+        authorize! method, Offer, on: [at_uc].compact
+      end
+    end
 
 end

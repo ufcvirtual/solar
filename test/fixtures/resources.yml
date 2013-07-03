@@ -510,12 +510,11 @@ res94:
   action: 'create_designation'
   description: 'Alocar perfil para usuario'
 
-# Offers - Parte 2
 res95:
   id: 95
-  controller: 'offers'
+  controller: 'semesters'
   action: 'index'
-  description: 'Listagem de ofertas a partir da uc e curso selecionados e permissoes do usuario'
+  description: 'Listagem de semestres e ofertas a partir da uc e curso selecionados'
 
 res96:
   id: 96
@@ -660,3 +659,21 @@ res119:
   controller: 'lessons'
   action: 'change_module'
   description: 'Mover aulas de modulos'
+
+res120:
+  id: 120
+  controller: 'semesters'
+  action: 'create'
+  description: 'Novo semestre'
+
+res121:
+  id: 121
+  controller: 'semesters'
+  action: 'update'
+  description: 'Atualizar semestre'
+
+res122:
+  id: 122
+  controller: 'semesters'
+  action: 'destroy'
+  description: 'Remover semestre'

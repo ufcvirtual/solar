@@ -815,7 +815,22 @@ offedit7:
 offedit8:
   profile_id: 5
   resource_id: 100
-  per_id:  false
+  per_id: false
+
+offedit9:
+  profile_id: 5
+  resource_id: 120
+  per_id: false
+
+offedit10:
+  profile_id: 5
+  resource_id: 121
+  per_id: false
+
+offedit11:
+  profile_id: 5
+  resource_id: 122
+  per_id: false
 
 # Lessons - Aulas
 
