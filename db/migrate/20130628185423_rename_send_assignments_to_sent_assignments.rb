@@ -3,7 +3,8 @@ class RenameSendAssignmentsToSentAssignments < ActiveRecord::Migration
     remove_foreign_key :send_assignments, :assignments
     remove_foreign_key :send_assignments, :users
 
-    execute "ALTER TABLE send_assignments DROP CONSTRAINT unq_send_assignment;"
+    execute "ALTER TABLE send_assignments DROP CONSTRAINT IF EXISTS unq_send_assignment;"
+    execute "DROP INDEX IF EXISTS unq_send_assignment;"
     
     rename_table :send_assignments, :sent_assignments
 
