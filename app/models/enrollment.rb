@@ -23,7 +23,7 @@ class Enrollment < ActiveRecord::Base
       (group.offer.enrollment_start_date.to_date..(group.offer.enrollment_end_date.try(:to_date) || group.offer.end_date.to_date)).include?(Date.today)
     }
 
-    (can_enroll + user.groups(profile)).uniq
+    (can_enroll + user.groups(profile, true)).uniq
   end
 
 end

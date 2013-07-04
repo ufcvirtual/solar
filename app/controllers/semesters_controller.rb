@@ -8,10 +8,10 @@ class SemestersController < ApplicationController
     query << "offers.course_id = #{params[:course_id]}" if params.include?(:course_id)
     query << "offers.curriculum_unit_id = #{params[:curriculum_unit_id]}" if params.include?(:curriculum_unit_id)
 
-    a = Semester.joins(offers: :period_schedule).where(query.join(" AND ")).where("schedules.end_date >= current_date") # olhando pras ofertas
-    b = Semester.joins(:offer_schedule).where(query.join(" AND ")).where("schedules.end_date >= current_date") # olhando pros semestres
+    offer_semesters = Semester.joins(offers: :period_schedule).where(query.join(" AND ")).where("schedules.end_date >= current_date") # olhando pras ofertas
+    semesters       = Semester.joins(:offers, :offer_schedule).uniq.where(query.join(" AND ")).where("schedules.end_date >= current_date") # olhando pros semestres
 
-    @semesters = (a + b).uniq
+    @semesters = (offer_semesters + semesters).uniq
 
     respond_to do |format|
       format.html # index.html.erb

@@ -52,11 +52,11 @@ class Offer < ActiveRecord::Base
   ## datas da oferta
 
   def start_date
-    period_schedule.try(:start_date) || semester.offer_schedule.start_date
+    (period_schedule.try(:start_date) || semester.offer_schedule.start_date).to_date
   end
 
   def end_date
-    period_schedule.try(:end_date) || semester.offer_schedule.end_date
+    (period_schedule.try(:end_date) || semester.offer_schedule.end_date).to_date
   end
 
   ## datas para matricula

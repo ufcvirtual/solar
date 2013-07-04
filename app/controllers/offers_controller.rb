@@ -77,7 +77,7 @@ class OffersController < ApplicationController
 
   def destroy
     offer = Offer.find(params[:id])
-    authorize! :destroy, offer
+    authorize! :destroy, offer, on: [offer.allocation_tag.id]
 
     if offer.destroy
       flash[:notice] = t(:deleted_success, scope: :offers)

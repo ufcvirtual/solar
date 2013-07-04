@@ -52,21 +52,6 @@ class OffersControllerTest < ActionController::TestCase
     assert_template :new
   end
 
-
-
-
-
-  ####
-  #### já que ele pode acessar a página de nova oferta com qualquer uc e curso... vale a pena "bloquear" ele antes de chegar em 'new' caso ele tenha buscado por algo que não tem permissão?
-  ####
-  # test "nao criar ofertas - sem acesso" do
-  #   s = semesters(:s2013_1)
-  #   literatura = curriculum_units(:r2)
-
-  #   get :new, semester_id: s.id, curriculum_unit_id: literatura.id, format: :json
-  #   assert_response :unauthorized
-  # end
-
   # neste caso, o usuário terá permissão à uc, mas não ao curso escolhidos
   test "criar oferta - acesso parcial" do
     s = semesters(:s2013_1)

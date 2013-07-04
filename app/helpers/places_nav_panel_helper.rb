@@ -5,7 +5,7 @@ module PlacesNavPanelHelper
   	## Permissões para ofertar
 
   	# perfis que permitem acesso às ofertas
-	profiles_permitted_to_offer 		= PermissionsResource.where(:resource_id => Resource.find_by_controller_and_action("offers", "index").id).map(&:profile_id)
+	profiles_permitted_to_offer 		= PermissionsResource.where(:resource_id => Resource.find_by_controller_and_action("semesters", "index").id).map(&:profile_id)
 	# allocation_tags do usuário com os perfis permitidos e as relacionadas "para baixo"
 	allocations_tags_permitted_to_offer = current_user.allocations.where(:profile_id => profiles_permitted_to_offer).map(&:allocation_tag_id).compact.collect{|al| AllocationTag.find(al).related({lower: true})}.flatten.uniq
 
