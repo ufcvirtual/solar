@@ -1,6 +1,3 @@
-
-
-
 $margin-top: 5px;
 $label_color: $color_main_text;
 
@@ -3781,3 +3778,14 @@ select[disabled] {
     margin-left: 5px;
 }
 
+.semester_same_dates, #semester_period{
+    color: #56585E;   
+}
+
+#semester_period{
+    float: right; 
+    position: relative; 
+    top: 10px;
+    vertical-align: bottom;
+    font-size: 9pt;
+}
