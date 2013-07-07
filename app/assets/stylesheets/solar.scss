@@ -3789,3 +3789,7 @@ select[disabled] {
     vertical-align: bottom;
     font-size: 9pt;
 }
+
+.offer_schedule_dates, .enrollment_schedule_dates{
+    display: inline-block;
+}

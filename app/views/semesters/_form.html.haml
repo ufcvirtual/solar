@@ -1,19 +1,21 @@
-= simple_form_for @semester do |f|
-  .form-inputs
-    - start_year = Date.today.year - 1
-    = f.input :name
+= javascript_include_tag "tooltip", "semesters"
 
-    = f.label :offer
-    = f.simple_fields_for :offer_schedule do |s|
-      .offer_schedule_dates
-        .left= s.input :start_date, as: :date, start_year: start_year
-        .right= s.input :end_date, as: :date, start_year: start_year
+.semester_form
+  = simple_form_for @semester, defaults: {label: false, as: :string} do |f|
+    .form-inputs.block_content
+      - start_date, end_date = Date.today - 1.month, Date.today + 1.month
+      = f.input :name, label: "Name"
 
-    = f.label :enrollment
-    = f.simple_fields_for :enrollment_schedule do |s|
-      .enrollment_schedule_dates
-        .left= s.input :start_date, as: :date, start_year: start_year
-        .right= s.input :end_date, as: :date, start_year: start_year
+      .input= f.label :offer, required: true
+      = f.simple_fields_for :offer_schedule do |s|
+        .left= s.input :start_date, input_html: { id: 'offer_start_date', value: "#{l((@semester.offer_schedule.try(:start_date) || start_date).to_date, format: :datepicker)}" }
+        .right= s.input :end_date, input_html: { id: 'offer_end_date', value: "#{l((@semester.offer_schedule.try(:end_date) || end_date).to_date, format: :datepicker)}" }
 
-  .form-actions
-    = f.submit 'Save'
+      .input= f.label :enrollment, required: true
+      = f.simple_fields_for :enrollment_schedule do |s|
+        .left= s.input :start_date, input_html: { id: 'enrollment_start_date', value: "#{l((@semester.enrollment_schedule.try(:start_date) || start_date).to_date, format: :datepicker)}" }
+        .right= s.input :end_date, input_html: { id: 'enrollment_end_date', value: "#{l((@semester.enrollment_schedule.try(:end_date) || end_date).to_date, format: :datepicker)}" }
+
+    .form-actions.right_buttons
+      = button_tag "Cancelar", :class => "btn btn_default btn_lightbox", :type => "button", :alt => "Cancelar", :id => "cancel"
+      = button_tag "Salvar", :class => "btn btn_main btn_lightbox", :alt => "Salvar", :type => "button", :id => "save"

@@ -1,4 +1,6 @@
 class SemestersController < ApplicationController
+  layout false, except: :index 
+
   # GET /semesters
   # GET /semesters.json
   def index
@@ -46,14 +48,10 @@ class SemestersController < ApplicationController
     authorize! :create, Semester
     @semester = Semester.new(params[:semester])
 
-    respond_to do |format|
-      if @semester.save
-        format.html { redirect_to @semester, notice: 'Semester was successfully created.' }
-        format.json { render json: @semester, status: :created, location: @semester }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @semester.errors, status: :unprocessable_entity }
-      end
+    if @semester.save
+      render nothing: true
+    else
+      render :new
     end
   end
 
@@ -63,14 +61,10 @@ class SemestersController < ApplicationController
     authorize! :update, Semester
     @semester = Semester.find(params[:id])
 
-    respond_to do |format|
-      if @semester.update_attributes(params[:semester])
-        format.html { redirect_to @semester, notice: 'Semester was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @semester.errors, status: :unprocessable_entity }
-      end
+    if @semester.update_attributes(params[:semester])
+      render nothing: true
+    else
+      render :edit
     end
   end
 

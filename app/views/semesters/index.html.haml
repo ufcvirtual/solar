@@ -1,47 +1,48 @@
 = javascript_include_tag "tooltip", "semesters"
 
-= button_tag "Novo semestre", class: 'btn btn_default', id: "new_semester", value: new_semester_path, disabled: (can? :create, Semester)
+.semester_list
+  = button_tag "Novo semestre", class: 'btn btn_default', id: "new_semester", value: new_semester_path, disabled: not(can? :create, Semester)
 
-.block_wrapper
-  - @semesters.each do |semester|
-    .block_title
-      %h2
-        = semester.name
-        = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'block_title_button', value: edit_semester_path(semester), :'data-tooltip' => "Editar semestre"
-        = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'block_title_button', value: semester_path(semester), :'data-tooltip' => "Deletar semestre"
-      #semester_period
-        - period = [l(semester.offer_schedule.start_date, format: :normal), l(semester.offer_schedule.end_date, format: :normal)].join(' - ')
-        = "Período: #{period}"
-    .block_content_toolbar
-      .block_toolbar_left.btn-group
-        %a.btn.btn_main
-          = content_tag(:i, nil, class: 'icon-plus-3', :'data-tooltip' => "Nova oferta", id: "new_offer_#{semester.id}")
+  .block_wrapper
+    - @semesters.each do |semester|
+      .block_title
+        %h2
+          = semester.name
+          = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'block_title_button', value: edit_semester_path(semester), :'data-tooltip' => "Editar semestre", id: "edit_semester_#{semester.id}"
+          = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'block_title_button', value: semester_path(semester), :'data-tooltip' => "Deletar semestre"
+        #semester_period
+          - period = [l(semester.offer_schedule.start_date, format: :normal), l(semester.offer_schedule.end_date, format: :normal)].join(' - ')
+          = "Período: #{period}"
+      .block_content_toolbar
+        .block_toolbar_left.btn-group
+          %a.btn.btn_main
+            = content_tag(:i, nil, class: 'icon-plus-3', :'data-tooltip' => "Nova oferta", id: "new_offer_#{semester.id}")
 
-    %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :border => "0"}
-      %thead
-        %tr.lines
-          %th= "Tipo"
-          %th= "Curso"
-          %th= "Unidade Curricular"
-          %th= "Oferta"
-          /%th= "Matrícula" - ver se realmente não vai ter
-          %th
-      %tbody
-        - semester.offers.each do |offer|
+      %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :border => "0"}
+        %thead
           %tr.lines
-            %td= offer.curriculum_unit.try(:curriculum_unit_type).try(:description)
-            %td= offer.course.try(:name)
-            %td= offer.curriculum_unit.try(:name)
-            - if offer.period_schedule.nil?
-              %td.semester_same_dates= "Mesmas datas do semestre"
-            - else
-              %td= [l(offer.period_schedule.start_date, format: :normal), l(offer.period_schedule.end_date, format: :normal)].join(" - ")
-            /- if offer.enrollment_schedule.nil?
-            /  %td.semester_same_dates= "Mesmas datas do semestre"
-            /- else
-            /  %td= [l(offer.enrollment_schedule.start_date, format: :normal), (offer.enrollment_schedule.end_date.nil? ? "Em diante" : l(offer.enrollment_schedule.end_date, format: :normal))].join(" - ")
-            %td
-              = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", id: 'edit_offer', class: 'btn', :'data-tooltip' => "Editar oferta", disabled: (can? :edit, offer, on: [offer.allocation_tag.id]), value: edit_offer_path(offer)
-              = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", id: 'delete_offer', class: 'btn', :'data-tooltip' => "Deletar oferta", disabled: (can? :destroy, offer, on: [offer.allocation_tag.id]), value: offer_path(offer)
+            %th= "Tipo"
+            %th= "Curso"
+            %th= "Unidade Curricular"
+            %th= "Oferta"
+            /%th= "Matrícula" - ver se realmente não vai ter
+            %th
+        %tbody
+          - semester.offers.each do |offer|
+            %tr.lines
+              %td= offer.curriculum_unit.try(:curriculum_unit_type).try(:description)
+              %td= offer.course.try(:name)
+              %td= offer.curriculum_unit.try(:name)
+              - if offer.period_schedule.nil?
+                %td.semester_same_dates= "Mesmas datas do semestre"
+              - else
+                %td= [l(offer.period_schedule.start_date, format: :normal), l(offer.period_schedule.end_date, format: :normal)].join(" - ")
+              /- if offer.enrollment_schedule.nil?
+              /  %td.semester_same_dates= "Mesmas datas do semestre"
+              /- else
+              /  %td= [l(offer.enrollment_schedule.start_date, format: :normal), (offer.enrollment_schedule.end_date.nil? ? "Em diante" : l(offer.enrollment_schedule.end_date, format: :normal))].join(" - ")
+              %td
+                = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", id: 'edit_offer', class: 'btn', :'data-tooltip' => "Editar oferta", disabled: not(can? :edit, offer, on: [offer.allocation_tag.id]), value: edit_offer_path(offer)
+                = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", id: 'delete_offer', class: 'btn', :'data-tooltip' => "Deletar oferta", disabled: not(can? :destroy, offer, on: [offer.allocation_tag.id]), value: offer_path(offer)
 
-= button_tag "Voltar", class: 'btn btn_default'
+  = button_tag "Voltar", class: 'btn btn_default', id: 'back', value: semesters_path
