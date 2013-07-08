@@ -78,4 +78,13 @@ class Offer < ActiveRecord::Base
     [enrollment_start_date, enrollment_end_date]
   end
 
+  def self.currents(year = nil)
+    unless year # se o ano passado for nil, pega os semestres do ano corrente em endiante
+      self.joins(:period_schedule).where("schedules.end_date >= ?", Date.parse("#{Date.today.year}-01-01"))
+    else # se foi definido, pega apenas daquele ano
+      first_day_of_year, last_day_of_year = Date.parse("#{year}-01-01"), Date.parse("#{year}-12-31")
+      self.joins(:period_schedule).where("(schedules.end_date BETWEEN ? AND ?) OR (schedules.start_date BETWEEN ? AND ?)", first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year)
+    end
+  end
+
 end

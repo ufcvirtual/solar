@@ -9,7 +9,7 @@
         %h2
           = semester.name
           = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'block_title_button', value: edit_semester_path(semester), :'data-tooltip' => "Editar semestre", id: "edit_semester_#{semester.id}"
-          = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'block_title_button', value: semester_path(semester), :'data-tooltip' => "Deletar semestre"
+          = link_to (content_tag(:i, nil, :class=>'icon-trash')), semester_path(semester), method: :delete, confirm: t(:message_confirm)
         #semester_period
           - period = [l(semester.offer_schedule.start_date, format: :normal), l(semester.offer_schedule.end_date, format: :normal)].join(' - ')
           = "Período: #{period}"
