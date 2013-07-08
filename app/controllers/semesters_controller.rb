@@ -6,14 +6,35 @@ class SemestersController < ApplicationController
   def index
     authorize! :index, Semester
 
-    query = []
-    query << "offers.course_id = #{params[:course_id]}" if params.include?(:course_id)
-    query << "offers.curriculum_unit_id = #{params[:curriculum_unit_id]}" if params.include?(:curriculum_unit_id)
+    # como ficará a ordenação?
 
-    offer_semesters = Semester.joins(offers: :period_schedule).where(query.join(" AND ")).where("schedules.end_date >= current_date") # olhando pras ofertas
-    semesters       = Semester.joins(:offers, :offer_schedule).uniq.where(query.join(" AND ")).where("schedules.end_date >= current_date") # olhando pros semestres
+    if [params[:period], params[:course_id], params[:curriculum_unit_id]].delete_if(&:blank?).empty?
+      @semesters = []
+    else
+      query = []
+      query << "offers.course_id = #{params[:course_id]}" unless params[:course_id].blank?
+      query << "offers.curriculum_unit_id = #{params[:curriculum_unit_id]}" unless params[:curriculum_unit_id].blank?
 
-    @semesters = (offer_semesters + semesters).uniq
+      # [active, all, year]
+      if params[:period] == "all"
+        if query.empty?
+          @semesters = Semester.all # o que fazer neste caso?
+        else
+          @semesters = Semester.joins(:offers).where(query.join(" AND ")).uniq
+        end
+      else
+        begin
+          year = Date.parse("#{params[:period]}-01-01").year
+        rescue
+          year = Date.today.year
+        end
+
+        current_semesters = Semester.joins("LEFT JOIN offers ON offers.semester_id = semesters.id").currents(year).where(query.join(" AND "))
+        query << "semester_id NOT IN (#{current_semesters.map(&:id).join(',')})" unless current_semesters.empty? # retirando semestres ja listados
+        semesters_of_current_offers = Offer.currents(year).where(query.join(" AND ")).map(&:semester)
+        @semesters = (current_semesters + semesters_of_current_offers).uniq
+      end
+    end
 
     respond_to do |format|
       format.html # index.html.erb
