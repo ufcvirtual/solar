@@ -1,15 +1,23 @@
 class Assignment < ActiveRecord::Base
 
-  belongs_to :allocation_tag
+  #Relações extras
+  has_many :allocation_tags, through: :academic_allocations
+  #EXTRAS
+
   belongs_to :schedule#, :inverse_of => :assignments
 
   has_one :group, :through => :allocation_tag
 
   has_many :allocations, :through => :allocation_tag
   has_many :assignment_enunciation_files
-  has_many :sent_assignments
+
+  #Associação polimórfica
+  has_many :academic_allocations, as: :academic_tool
+  has_many :sent_assignments, through: :academic_allocations
+  #Associação polimórfica
+
   has_many :group_assignments, :dependent => :destroy
-  has_many :group_participants, :through => :group_assignments
+  has_many :group_participants, :through => :group_assignments # VERIFICAR
 
   accepts_nested_attributes_for :schedule
 

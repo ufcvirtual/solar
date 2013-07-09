@@ -1,7 +1,11 @@
 class SentAssignment < ActiveRecord::Base
 
   belongs_to :user
-  belongs_to :assignment
+
+  #Associação polimórfica
+  belongs_to :academic_allocation, conditions: {academic_tool_type: 'Assignment'}
+  #Associação polimórfica
+
   belongs_to :group_assignment
 
   has_many :assignment_comments, :dependent => :destroy
@@ -20,4 +24,7 @@ class SentAssignment < ActiveRecord::Base
   	end
   end
 
+  def assignment
+    Assignment.find(academic_allocation.academic_tool_id)
+  end
 end

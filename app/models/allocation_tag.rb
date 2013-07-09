@@ -12,7 +12,11 @@ class AllocationTag < ActiveRecord::Base
   has_many :lessons, :through => :lesson_modules
   has_many :discussions
   has_many :schedule_events
-  has_many :assignments
+  
+  #Relação Extra
+  has_many :academic_allocations
+  #Relação Extra
+
   has_many :users, :through => :allocations, :uniq => true
   has_many :groups, :finder_sql => Proc.new {
     if not group_id.nil?
