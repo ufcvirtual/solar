@@ -1166,6 +1166,21 @@
       save: Save
       cancel: Cancel
 
+  semesters:
+    index:
+      new: "New Semester"
+      edit: "Edit Semester"
+      delete: "Delete Semester"
+      new_offer: "New Offer"
+      type: "Type"
+      course: "Course"
+      curriculum_unit: "Curriculum Unit"
+      offer: "Offer"
+      offer_edit: "Edit Offer"
+      offer_delete: "Delete Offer"
+      period: "Period"
+      same_dates_from_offer: "Same dates from offer"
+
   offers:
     index:
       offers: Offers

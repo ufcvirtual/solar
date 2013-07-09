@@ -5,6 +5,14 @@ class OffersController < ApplicationController
 
   layout false
 
+  # GET /semester/:id/offers
+  def index
+    authorize! :index, Semester # as ofertas aparecem na listagem de semestre
+
+    @offers = Semester.find(params[:semester_id]).offers
+    # render :list
+  end
+
   def new
     authorize! :new, Offer
 
@@ -32,7 +40,7 @@ class OffersController < ApplicationController
     @offer.enrollment_schedule.try(:destroy) if @offer.enrollment_schedule.try(:start_date).nil?
 
     if @offer.save
-      render json: {success: true}
+      render json: {success: true, notice: "Oferta criada com sucesso"}
     else
       render :new
     end
@@ -80,11 +88,9 @@ class OffersController < ApplicationController
     authorize! :destroy, offer, on: [offer.allocation_tag.id]
 
     if offer.destroy
-      flash[:notice] = t(:deleted_success, scope: :offers)
-      render json: {success: true}
+      render json: {success: true, notice: t(:deleted_success, scope: :offers)}
     else
-      flash[:alert] = t(:not_possible_to_delete, scope: :offers)
-      render json: {success: false}, status: :unprocessable_entity
+      render json: {success: false, alert: t(:not_possible_to_delete, scope: :offers)}, status: :unprocessable_entity
     end
   end
 

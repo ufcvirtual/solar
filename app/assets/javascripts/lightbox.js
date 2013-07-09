@@ -2,9 +2,9 @@
  * LightBox genérico do sistema
  * *****************************************************************************/
 function showLightBoxURL(url, width, height, canClose, title){
-  showLightBox('', width, height, canClose,title);
+  showLightBox('', width, height, canClose, title);
 
-  $("#lightBoxDialogContent").load(url , function(response, status, xhr) {
+  $("#lightBoxDialogContent").load(url, function(response, status, xhr) {
     if (status == "error") {
       var msg = "Erro na aplicação.\n Por favor, aguarde alguns instantes.";//internacionalizar
       alert(msg);

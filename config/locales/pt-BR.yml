@@ -1333,7 +1333,38 @@
       save: Salvar
       cancel: Cancelar
 
+  semesters:
+    index:
+      new: "Novo semestre"
+      edit: "Editar Semestre"
+      delete: "Deletar Semestre"
+      new_offer: "Nova oferta"
+      type: "Tipo"
+      course: "Curso"
+      curriculum_unit: "Unidade Curricular"
+      offer: "Oferta"
+      offer_edit: "Editar Oferta"
+      offer_delete: "Deletar Oferta"
+      period: "Período"
+      same_dates_from_offer: "Mesmas datas do semestre"
+
   offers:
+    list:
+      new: "Novo semestre"
+      edit: "Editar Semestre"
+      delete: "Deletar Semestre"
+      new_offer: "Nova oferta"
+      type: "Tipo"
+      course: "Curso"
+      curriculum_unit: "Unidade Curricular"
+      offer: "Oferta"
+      offer_edit: "Editar Oferta"
+      offer_delete: "Deletar Oferta"
+      period: "Período"
+      same_dates_from_offer: "Mesmas datas do semestre"
+
+
+
     index:
       offers: Ofertas
       new: Nova

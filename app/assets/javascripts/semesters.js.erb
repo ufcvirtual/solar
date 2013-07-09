@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
-	// datepicker
-	var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']); 
+  // datepicker
+  var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']); 
     
   /* impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final */
   $('#offer_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#offer_end_date').datepicker("option", "minDate", selected); } }) );
@@ -11,9 +11,9 @@ $(document).ready(function(){
   $('#enrollment_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#enrollment_start_date').datepicker("option", "maxDate", selected); } }) );
 
 
-	$("#new_semester").click(function(){
-		showLightBoxURL($(this).val(), 500, 400, true, $(this).html());
-	});
+  $("#new_semester").click(function(){
+    showLightBoxURL($(this).val(), 500, 400, true, $(this).html());
+  });
 
   $('[id^="edit_semester_"]').click(function(){
     showLightBoxURL($(this).attr('value'), 500, 400, true, $(this).attr("data-tooltip"));
@@ -23,13 +23,13 @@ $(document).ready(function(){
     removeLightBox();
   });
 
-	$("#save").click(function(){
-		form = $("form");
-		$.ajax({
-			url: form.attr('action'),
-			type: form.attr('method'),
-			data: form.serialize(),
-			success: function(data){
+  $("#save").click(function(){
+    var form = $("form");
+    $.ajax({
+      url: form.attr('action'),
+      type: form.attr('method'),
+      data: form.serialize(),
+      success: function(data){
 
         if(data.search(".field_with_errors") != -1) // se existir algum erro nas validações, o simple_form acrescenta a classe "field_with_errors" aos campos
           $(".semester_form:first").html(data); // atualiza conteúdo com o formulário com os erros
@@ -41,8 +41,8 @@ $(document).ready(function(){
           });
         }
 
-			}
-		});
-	});
+      }
+    });
+  });
 
 });

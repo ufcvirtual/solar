@@ -200,3 +200,36 @@ function erase_flash_messages() {
   if ($('#flash_message'))  
     $('#flash_message').remove();
 }
+
+/**
+ * Deleta um objeto retirando sua tr da tabela
+ * Apresenta msg (notice, alert) como flash messages
+ */
+$.fn.nice_delete = function(options) {
+  var tr = $(this).parents('tr');
+  if (typeof(options) == "undefined")
+    options = {}
+
+  if (typeof(options.success) == "undefined")
+    options.success = function(data) {
+      if (typeof(data.notice) != "undefined")
+        flash_message(data.notice, 'notice');
+      tr.fadeOut().remove();
+    }
+
+  if (typeof(options.error) == "undefined")
+    options.error = function(data) {
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
+    }
+
+  $.ajax({
+    method: "DELETE",
+    url: $(this).data("link-delete"),
+    success: options.success,
+    error: options.error
+  });
+
+  return this;
+}

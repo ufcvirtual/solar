@@ -87,7 +87,7 @@ Solar::Application.routes.draw do
   end
 
   resources :semesters do
-    resources :offers, only: [:new]
+    resources :offers, only: [:index, :new]
   end
 
   resources :offers, except: [:new] do

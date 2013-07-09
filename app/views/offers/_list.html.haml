@@ -1,0 +1,42 @@
+- semester_id = @offers.first.try(:semester).try(:id)
+%table.tb_list{cellpadding: "10", cellspacing: "0", width: "100%", border: "0"}
+  %thead
+    %tr.lines
+      %th= t(".type")
+      %th= t(".course")
+      %th= t(".curriculum_unit")
+      %th= t(".offer")
+      %th
+  %tbody
+    - @offers.each do |offer|
+      %tr.lines
+        %td= offer.curriculum_unit.try(:curriculum_unit_type).try(:description)
+        %td= offer.course.try(:name)
+        %td= offer.curriculum_unit.try(:name)
+        - if offer.period_schedule.nil?
+          %td.semester_same_dates= t(".same_dates_from_offer")
+        - else
+          %td= [l(offer.period_schedule.start_date, format: :normal), l(offer.period_schedule.end_date, format: :normal)].join(" - ")
+        %td
+          = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit_offer', :'data-tooltip' => t(".offer_edit"), disabled: not(can? :edit, offer, on: [offer.allocation_tag.id]), :"data-link-edit-offer" => edit_offer_path(offer), :"data-semester-name" => offer.semester.name
+          = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn delete_offer', :'data-tooltip' => t(".offer_delete"), disabled: not(can? :destroy, offer, on: [offer.allocation_tag.id]), :"data-link-delete" => offer_path(offer)
+
+:javascript
+
+  $(function(){
+    if ("#{semester_id}") { // quando semestre nao tem ofertas
+      var semester = $(".table-offers#table-#{semester_id}");
+
+      // edit offer
+      $('.edit_offer:not([disabled])', semester).click(function(){
+        showLightBoxURL($(this).data("link-edit-offer"), 500, 400, true, [$(this).data("tooltip"), $(this).data("semester-name")].join(" - "));
+      });
+
+      // delete offer
+      $('.delete_offer:not([disabled])', semester).click(function(){
+        if (confirm("#{t(:message_confirm)}"))
+          $(this).nice_delete();
+        return false;
+      });
+    }
+  });
