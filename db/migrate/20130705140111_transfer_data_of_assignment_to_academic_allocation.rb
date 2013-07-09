@@ -1,11 +1,12 @@
 class TransferDataOfAssignmentToAcademicAllocation < ActiveRecord::Migration
   def up
     
-    rename_table :educational_tools, :academic_allocations
+    drop_table :educational_tools
 
-    change_table :academic_allocations do |t|
-      t.rename :educational_tool_id, :academic_tool_id
-      t.rename :educational_tool_type, :academic_tool_type
+    create_table :academic_allocations do |t|
+      t.references :allocation_tag
+      t.foreign_key :allocation_tags
+      t.references :academic_tool, :polymorphic => true
     end
 
     change_table :sent_assignments do |t|
@@ -19,8 +20,8 @@ class TransferDataOfAssignmentToAcademicAllocation < ActiveRecord::Migration
       # O Model EducationalTool ainda nao existe, tem q criar antes de chamar a linha seguinte
       academic_allocation = AcademicAllocation.create(allocation_tag_id: assignment.allocation_tag_id, academic_tool_id: assignment.id, academic_tool_type: 'Assignment')
 
-      SentAssignment.where(assignment_id: assignment.id).each do |sent_assigment|
-        sent_assigment.update_attributes(academic_allocation_id: academic_allocation.id)
+      SentAssignment.where(assignment_id: assignment.id).each do |sent_assignment|
+        sent_assignment.update_attributes(academic_allocation_id: academic_allocation.id)
       end
     end
 
@@ -38,6 +39,8 @@ class TransferDataOfAssignmentToAcademicAllocation < ActiveRecord::Migration
   end
 
   def down   
+
+    #Para funcionar a reversão é necessário alterar os relacionamentos do model adequadamente.
     change_table :assignments do |t|
       t.references :allocation_tag
       t.foreign_key :allocation_tags
@@ -53,10 +56,10 @@ class TransferDataOfAssignmentToAcademicAllocation < ActiveRecord::Migration
     sent_assignments = SentAssignment.all
 
     sent_assignments.each do |sent_assignment|
-      sent_assigment.update_attributes(assignment_id: sent_assigment.academic_allocation.academic_tool_id)
+      sent_assignment.update_attributes(assignment_id: sent_assignment.academic_allocation.academic_tool_id)
     end  
 
-    academic_allocations = AcademicTool.where(academic_tool_type: 'Assignment')
+    academic_allocations = AcademicAllocation.where(academic_tool_type: 'Assignment')
 
     academic_allocations.each do |academic_allocation|
       assignment = Assignment.find(academic_allocation.academic_tool_id)
@@ -64,16 +67,17 @@ class TransferDataOfAssignmentToAcademicAllocation < ActiveRecord::Migration
     end 
 
     change_table :sent_assignments do |t|
-      t.remove_column :academic_allocation_id
+      t.remove :academic_allocation_id
     end
 
-    change_table :academic_allocations do |t|
-      t.rename :academic_tool_id, :educational_tool_id 
-      t.rename :academic_tool_type, :educational_tool_type 
-    end
+    drop_table :academic_allocations
 
-    rename_table :academic_allocations, :educational_tools
-
+    create_table :educational_tools do |t|
+      t.references :allocation_tag
+      t.foreign_key :allocation_tags
+      t.references :educational_tool, :polymorphic => true
+    end    
+    
   end
 
 end
