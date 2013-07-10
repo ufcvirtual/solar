@@ -6,4 +6,5 @@ class AcademicAllocation < ActiveRecord::Base
 
   #Relacionamentos extras#
   has_many :sent_assignments
+  has_many :group_assignments
 end

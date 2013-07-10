@@ -14,9 +14,9 @@ class Assignment < ActiveRecord::Base
   #Associação polimórfica
   has_many :academic_allocations, as: :academic_tool
   has_many :sent_assignments, through: :academic_allocations
+  has_many :group_assignments, through: :academic_allocations, :dependent => :destroy
   #Associação polimórfica
 
-  has_many :group_assignments, :dependent => :destroy
   has_many :group_participants, :through => :group_assignments # VERIFICAR
 
   accepts_nested_attributes_for :schedule

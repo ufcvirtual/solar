@@ -1,6 +1,6 @@
 class GroupAssignment < ActiveRecord::Base
 
-  belongs_to :assignment
+  belongs_to :academic_allocation, conditions: {academic_tool_type: 'Assignment'}
 
   has_one :sent_assignment, :dependent => :destroy
 
