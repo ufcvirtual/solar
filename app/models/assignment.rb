@@ -102,8 +102,11 @@ class Assignment < ActiveRecord::Base
   # Recupera as atividades de determinado tipo de uma turma e informações da situação de determinado aluno nela
   ##
   def self.student_assignments_info(group_id, student_id, type_assignment)
-    assignments = Assignment.all(:joins => [:allocation_tag, :schedule], :conditions => ["allocation_tags.group_id = #{group_id} AND assignments.type_assignment = #{type_assignment}"],
-     :select => ["assignments.id", "schedule_id", "schedules.end_date", "name", "enunciation", "type_assignment"]) # atividades da turma do tipo escolhido
+    assignments = Assignment.all(
+      joins: [{academic_allocations: :allocation_tag}, :schedule], 
+      conditions: ["allocation_tags.group_id = #{group_id} AND assignments.type_assignment = #{type_assignment}"], 
+      select: ["assignments.id", "schedule_id", "schedules.end_date", "name", "enunciation", "type_assignment"])
+      # atividades da turma do tipo escolhido
   
     assignments_grades, groups_ids, has_comments, situation = [], [], [], [] # informações da situação do aluno
 
