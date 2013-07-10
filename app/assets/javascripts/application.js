@@ -204,7 +204,7 @@ function erase_flash_messages() {
 /**
  * Deleta um objeto retirando sua tr da tabela
  * Apresenta msg (notice, alert) como flash messages
- */
+ **/
 $.fn.nice_delete = function(options) {
   var tr = $(this).parents('tr');
   if (typeof(options) == "undefined")
@@ -232,4 +232,45 @@ $.fn.nice_delete = function(options) {
   });
 
   return this;
+}
+
+/**
+ * Define uma funcao pra fazer submit de um form serializando os dados.
+ *  - Em caso de erro:
+ *     -- O form é exibido novamente, depois do submit, mostrando os erros
+ *  - Em caso de sucesso
+ *    -- O lightbox fecha
+ *    -- Exibe msg de notice (caso exista)
+ **/
+$.fn.serialize_and_submit = function(options) {
+  if (typeof(options) == "undefined")
+    options = {}
+  if (typeof(options) != "undefined" && typeof(options.success) == "undefined") { // definir success
+    var form_id = ["form#", $(this).attr('id'), ":first"].join('');
+    options.success = function(data) {
+      if (typeof(data) == "string" && data.search(".field_with_errors") != -1)
+        $('' + form_id).replaceWith(data);
+      else {
+        removeLightBox();
+        if (typeof(data) != "undefined" && typeof(data.notice) != "undefined")
+          flash_message(data.notice, 'notice');
+        if (typeof(options.complement_success) == "function")
+          options.complement_success(data);
+      }
+    }
+  }
+
+  $.ajax({
+    type: $(this).attr('method'),
+    url: $(this).attr('action'),
+    data: $(this).serialize(),
+    dataType: 'json',
+    success: options.success,
+    error: function(data) {
+      removeLightBox();
+      var response = JSON.parse(data.responseText);
+      if (typeof(response.msg) != "undefined")
+        flash_message(response.msg, 'alert');
+    }
+  });
 }

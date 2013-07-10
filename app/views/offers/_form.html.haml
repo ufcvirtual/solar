@@ -7,27 +7,24 @@
     = f.label :offer
     = f.simple_fields_for :period_schedule do |s|
       .offer_schedule_dates
-        .left= s.input :start_date, as: :string, required: false
-        .right= s.input :end_date, as: :string
+        .left= s.input :start_date, as: :string, required: false, input_html: { size: 10 }
+        .right= s.input :end_date, as: :string, input_html: { size: 10 }
 
     = f.label :enrollment
     = f.simple_fields_for :enrollment_schedule do |s|
       .enrollment_schedule_dates
-        .left= s.input :start_date, as: :string, required: false
-        .right= s.input :end_date, as: :string
+        .left= s.input :start_date, as: :string, required: false, input_html: { size: 10 }
+        .right= s.input :end_date, as: :string, input_html: { size: 10 }
 
   .form-actions.right_buttons
-    = button_tag t(:cancel), class: "btn btn_default btn_lightbox", type: "button", alt: "Cancelar", id: "cancel", onclick: "javascript:removeLightBox();"
-    = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", alt: "Salvar", id: "save"
+    = button_tag t(:cancel), class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel), id: "cancel", onclick: "javascript:removeLightBox();"
+    = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", alt: t(:save), id: "save"
 
 :javascript
 
-
-  //// REVISAR == melhorar codigo
-
   $(function(){
     // datepicker
-    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']); 
+    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
 
     /* impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final */
     $('#offer_period_schedule_attributes_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#offer_period_schedule_attributes_end_date').datepicker("option", "minDate", selected); } }) );
@@ -36,27 +33,12 @@
     $('#offer_enrollment_schedule_attributes_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#offer_enrollment_schedule_attributes_end_date').datepicker("option", "minDate", selected); } }) );
     $('#offer_enrollment_schedule_attributes_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#offer_enrollment_schedule_attributes_start_date').datepicker("option", "maxDate", selected); } }) );
 
-
     $("#save").click(function(){
-      var form = $("form");
-      $.ajax({
-        url: form.attr('action'),
-        type: form.attr('method'),
-        data: form.serialize(),
-        success: function(data){
-
-          if (typeof(data) == "string" && data.search(".field_with_errors") != -1)
-            $("#new_offer:first").html(data);
-          else {
-            removeLightBox();
-
-            if (typeof(data.notice) != "undefined")
-              flash_message(data.notice, 'notice');
-
-            var table = $(".table-offers#table-#{@offer.semester_id}");
-            var url = table.data('link-offers');
-            table.load(url);
-          }
+      $('form').serialize_and_submit({
+        complement_success: function(data) {
+          var table = $(".table-offers#table-#{@offer.semester_id}");
+          var url = table.data('link-offers');
+          table.load(url);
         }
       });
     });

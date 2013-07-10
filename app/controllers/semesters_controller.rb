@@ -70,7 +70,7 @@ class SemestersController < ApplicationController
     @semester = Semester.new(params[:semester])
 
     if @semester.save
-      render nothing: true
+      render json: {success: true, notice: 'Semester was successfully created.'}
     else
       render :new
     end
