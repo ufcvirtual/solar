@@ -6,9 +6,9 @@ class Assignment < ActiveRecord::Base
 
   belongs_to :schedule#, :inverse_of => :assignments
 
-  has_one :group, :through => :allocation_tag
+  has_many :groups, through: :allocation_tags
 
-  has_many :allocations, :through => :allocation_tag
+  has_many :allocations, through: :allocation_tags
   has_many :assignment_enunciation_files
 
   #Associação polimórfica
@@ -36,20 +36,33 @@ class Assignment < ActiveRecord::Base
     errors.add(:base, I18n.t(:final_date_smaller_than_offer, :scope => [:assignment, :notifications], :end_date_offer => group.offer.end_date.to_date)) if schedule.end_date > group.offer.end_date
   end
 
-  ## Recupera situação do aluno na atividade
-  def self.assignment_situation_of_student(assignment_id, student_id, group_id = nil)
-    assignment = Assignment.find(assignment_id)
-    student_group = (assignment.type_assignment == Assignment_Type_Group) ? (GroupAssignment.first(:include => [:group_participants], :conditions => ["group_participants.user_id = #{student_id} 
-      AND group_assignments.assignment_id = #{assignment.id}"])) : nil unless student_id.nil?
-    user_id = (assignment.type_assignment == Assignment_Type_Group) ? nil : student_id
-    group_id = (student_group.nil? ? group_id : student_group.id) # se aluno estiver em grupo, recupera id
-    sent_assignment = SentAssignment.joins(:academic_allocation).where(user_id: user_id, group_assignment_id: group_id, academic_allocations: {academic_tool_id: assignment_id}).first
+  def student_group_by_student(student_id)
+    #Operador ternário (if) anything ? (então) somenthing :(se não) other thing
+    (self.type_assignment == Assignment_Type_Group) ? 
+    (GroupAssignment.first(
+    joins: :academic_allocation,
+    include: :group_participants,
+    conditions: ["group_participants.user_id = #{student_id} 
+    AND academic_allocations.academic_tool_id = #{self.id}"])) : nil
+  end
 
-    if assignment.schedule.start_date.to_date > Date.current
+  def sent_assignment_by_academic_allocation(user_id, group_assignment_id)
+    SentAssignment.joins(:academic_allocation).where(user_id: user_id, group_assignment_id: group_assignment_id, academic_allocations: {academic_tool_id: self.id}).first
+  end            
+
+  ## Recupera situação do aluno na atividade
+  def assignment_situation_of_student(student_id, group_assignment_id = nil)
+    student_group = student_group_by_student(student_id) unless student_id.nil?
+    user_id = (type_assignment == Assignment_Type_Group) ? nil : student_id
+    group_id = (student_group.nil? ? group_id : student_group.id) # se aluno estiver em grupo, recupera id
+    sent_assignment = sent_assignment_by_academic_allocation(user_id,group_assignment_id) 
+
+
+    if schedule.start_date.to_date > Date.current()
       situation = "not_started"  
     elsif (not sent_assignment.nil? and  not sent_assignment.grade.nil?)
       situation = "corrected"
-    elsif assignment.type_assignment == Assignment_Type_Group and group_id.nil?
+    elsif type_assignment == Assignment_Type_Group and group_id.nil?
       situation = "without_group"
     elsif (not sent_assignment.nil? and sent_assignment.assignment_files.size > 0)
       situation = "sent"
@@ -111,16 +124,16 @@ class Assignment < ActiveRecord::Base
     assignments_grades, groups_ids, has_comments, situation = [], [], [], [] # informações da situação do aluno
 
     assignments.each_with_index do |assignment, idx|
-      student_group = (assignment.type_assignment == Assignment_Type_Group) ? (GroupAssignment.first(:include => [:group_participants], :conditions => ["group_participants.user_id = #{student_id} 
-        AND group_assignments.assignment_id = #{assignment.id}"])) : nil
+      student_group = assignment.student_group_by_student(student_id)
+
       user_id = (assignment.type_assignment == Assignment_Type_Group) ? nil : student_id
       groups_ids[idx] = (student_group.nil? ? nil : student_group.id) # se aluno estiver em grupo, recupera id deste
      
-      sent_assignment = SentAssignment.joins(:academic_allocation).where(user_id: user_id, group_assignment_id: groups_ids[idx], academic_allocations: {academic_tool_id: assignment.id}).first
+      sent_assignment = assignment.sent_assignment_by_academic_allocation(user_id,groups_ids[idx])
 
       assignments_grades[idx] = sent_assignment.nil? ? nil : sent_assignment.grade #se tiver sent_assignment, tenta pegar nota
       has_comments[idx] = sent_assignment.nil? ? nil :  (not sent_assignment.assignment_comments.empty?) # verifica se há comentários para o aluno
-      situation[idx] = Assignment.assignment_situation_of_student(assignment.id, student_id)
+      situation[idx] = assignment.assignment_situation_of_student(student_id)
     end
 
     return {"assignments" => assignments, "groups_ids" => groups_ids, "assignments_grades" => assignments_grades, "has_comments" => has_comments, "situation" => situation}
