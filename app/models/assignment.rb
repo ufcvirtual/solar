@@ -43,7 +43,7 @@ class Assignment < ActiveRecord::Base
       AND group_assignments.assignment_id = #{assignment.id}"])) : nil unless student_id.nil?
     user_id = (assignment.type_assignment == Assignment_Type_Group) ? nil : student_id
     group_id = (student_group.nil? ? group_id : student_group.id) # se aluno estiver em grupo, recupera id
-    sent_assignment = SentAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignment_id, user_id, group_id)
+    sent_assignment = SentAssignment.joins(:academic_allocation).where(user_id: user_id, group_assignment_id: group_id, academic_allocations: {academic_tool_id: assignment_id}).first
 
     if assignment.schedule.start_date.to_date > Date.current
       situation = "not_started"  
@@ -115,7 +115,9 @@ class Assignment < ActiveRecord::Base
         AND group_assignments.assignment_id = #{assignment.id}"])) : nil
       user_id = (assignment.type_assignment == Assignment_Type_Group) ? nil : student_id
       groups_ids[idx] = (student_group.nil? ? nil : student_group.id) # se aluno estiver em grupo, recupera id deste
-      sent_assignment = SentAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignment.id, user_id, groups_ids[idx])
+     
+      sent_assignment = SentAssignment.joins(:academic_allocation).where(user_id: user_id, group_assignment_id: groups_ids[idx], academic_allocations: {academic_tool_id: assignment.id}).first
+
       assignments_grades[idx] = sent_assignment.nil? ? nil : sent_assignment.grade #se tiver sent_assignment, tenta pegar nota
       has_comments[idx] = sent_assignment.nil? ? nil :  (not sent_assignment.assignment_comments.empty?) # verifica se há comentários para o aluno
       situation[idx] = Assignment.assignment_situation_of_student(assignment.id, student_id)
