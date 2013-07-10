@@ -253,7 +253,13 @@
         schedule: Período
         start_date: Data de início
         end_date: Data de término
+      semester:
+        offer: Oferta
+        enrollment: Matrícula
+        name: Nome
       offer:
+        offer: Oferta
+        enrollment: Matrícula
         course: Curso
         curriculum_unit: Unidade Curricular
         start_date: Data inicial
@@ -1334,37 +1340,38 @@
       cancel: Cancelar
 
   semesters:
+    success:
+      created: "Semestre criado com sucesso."
+      updated: "Semestre atualizado com sucesso."
+      deleted: "Semestre deletado com sucesso."
+    error:
+      created: "Não foi possível criar semestre."
+      updated: "Não foi possível atualizar semestre."
+      deleted: "Não foi possível deletar semestre."
     index:
       new: "Novo semestre"
       edit: "Editar Semestre"
       delete: "Deletar Semestre"
       new_offer: "Nova oferta"
-      type: "Tipo"
-      course: "Curso"
-      curriculum_unit: "Unidade Curricular"
-      offer: "Oferta"
-      offer_edit: "Editar Oferta"
-      offer_delete: "Deletar Oferta"
       period: "Período"
-      same_dates_from_offer: "Mesmas datas do semestre"
 
   offers:
+    success:
+      created: "Oferta criada com sucesso."
+      updated: "Oferta atualizada com sucesso."
+      deleted: "Oferta deletada com sucesso."
+    error:
+      created: "Não foi possível criar oferta."
+      updated: "Não foi possível atualizar oferta."
+      deleted: "Não foi possível deletar oferta."
     list:
-      new: "Novo semestre"
-      edit: "Editar Semestre"
-      delete: "Deletar Semestre"
-      new_offer: "Nova oferta"
       type: "Tipo"
       course: "Curso"
       curriculum_unit: "Unidade Curricular"
       offer: "Oferta"
       offer_edit: "Editar Oferta"
       offer_delete: "Deletar Oferta"
-      period: "Período"
       same_dates_from_offer: "Mesmas datas do semestre"
-
-
-
     index:
       offers: Ofertas
       new: Nova
@@ -1398,10 +1405,8 @@
       enable_end_date: Habilitar data final
       start_date: Início
     no_end_date: Em diante
-    not_possible_to_delete: Não é possível deletar oferta com dependências
     existing_semester: já existe
     range_date_error: deve ser menor que a final
-    deleted_success: Oferta removida com sucesso
     schedule_error: deve ser menor que final do período
 
 

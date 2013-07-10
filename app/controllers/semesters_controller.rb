@@ -42,6 +42,14 @@ class SemestersController < ApplicationController
     end
   end
 
+  # GET /semesters/1
+  ## verificar necessidade desse metodo
+  def show
+    authorize! :index, Semester
+
+    @semester = Semester.find(params[:id])
+  end
+
   # GET /semesters/new
   # GET /semesters/new.json
   def new
@@ -70,7 +78,7 @@ class SemestersController < ApplicationController
     @semester = Semester.new(params[:semester])
 
     if @semester.save
-      render json: {success: true, notice: 'Semester was successfully created.'}
+      render json: {success: true, notice: t(:created, scope: [:semesters, :success])}
     else
       render :new
     end
@@ -83,7 +91,7 @@ class SemestersController < ApplicationController
     @semester = Semester.find(params[:id])
 
     if @semester.update_attributes(params[:semester])
-      render nothing: true
+      render json: {success: true, notice: t(:updated, scope: [:semesters, :success])}
     else
       render :edit
     end
@@ -95,13 +103,10 @@ class SemestersController < ApplicationController
     @semester = Semester.find(params[:id])
     authorize! :destroy, Semester
 
-    respond_to do |format|
-      if ((@semester.offers.empty? or @semester.offers.map(&:groups).empty?) and @semester.destroy)
-        format.html { redirect_to semesters_url, notice: 'Semester was successfully deleted.' }
-      else
-        format.html { redirect_to semesters_url, alert: "Semester can't be deleted." }
-      end
-      format.json { head :no_content }
+    if ((@semester.offers.empty? or @semester.offers.map(&:groups).empty?) and @semester.destroy)
+      render json: {success: true, notice: t(:deleted, scope: [:semesters, :success])}
+    else
+      render json: {success: false, alert: t(:deleted, scope: [:semesters, :error])}, status: :unprocessable_entity
     end
   end
 

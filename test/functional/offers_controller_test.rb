@@ -143,7 +143,7 @@ class OffersControllerTest < ActionController::TestCase
     end
 
     assert_response :ok
-    assert_equal flash[:notice], I18n.t(:deleted_success, scope: :offers)
+    assert_equal response.body, {success: true, notice: I18n.t(:deleted, scope: [:offers, :success])}.to_json
   end
 
   test "remover oferta sem remover schedule" do
@@ -156,7 +156,7 @@ class OffersControllerTest < ActionController::TestCase
     end
 
     assert_response :ok
-    assert_equal flash[:notice], I18n.t(:deleted_success, scope: :offers)
+    assert_equal response.body, {success: true, notice: I18n.t(:deleted, scope: [:offers, :success])}.to_json
   end
 
   test "nao remove oferta - niveis inferiores" do
@@ -167,7 +167,7 @@ class OffersControllerTest < ActionController::TestCase
     end
 
     assert_response :unprocessable_entity
-    assert_equal flash[:alert], I18n.t(:not_possible_to_delete, scope: :offers)
+    assert_equal response.body, {success: false, alert: I18n.t(:deleted, scope: [:offers, :error])}.to_json
   end
 
   test "nao remove oferta - sem acesso" do

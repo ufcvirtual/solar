@@ -113,7 +113,13 @@
         end_evaluation_period: Final date to evaluation period
         start_date: Data de início
         end_date: Data de término
+      semester:
+        offer: Offer
+        enrollment: Enrollment
+        name: Name
       offer:
+        offer: Offer
+        enrollment: Enrollment
         course: Course
         curriculum_unit: Curriculum Unit
         start_date: Start date
@@ -1167,21 +1173,38 @@
       cancel: Cancel
 
   semesters:
+    success:
+      created: "Semester was successfully created."
+      updated: "Semester was successfully updated."
+      deleted: "Semester was successfully deleted."
+    error:
+      created: "Semester wasn't created."
+      updated: "Semester wasn't updated."
+      deleted: "Semester wasn't deleted."
     index:
       new: "New Semester"
       edit: "Edit Semester"
       delete: "Delete Semester"
       new_offer: "New Offer"
+      period: "Period"
+
+  offers:
+    success:
+      created: "Offer was successfully created."
+      updated: "Offer was successfully created."
+      deleted: "Offer was successfully created."
+    error:
+      created: "Offer wasn't created."
+      updated: "Offer wasn't updated."
+      deleted: "Offer wasn't deleted."
+    list:
       type: "Type"
       course: "Course"
       curriculum_unit: "Curriculum Unit"
       offer: "Offer"
       offer_edit: "Edit Offer"
       offer_delete: "Delete Offer"
-      period: "Period"
       same_dates_from_offer: "Same dates from offer"
-
-  offers:
     index:
       offers: Offers
       new: New
@@ -1215,10 +1238,8 @@
       curriculum_unit: Curriculum Unit
       enroll_period: Enrollment date range
     no_end_date: "On"
-    not_possible_to_delete: It's not possible to delete offer with dependencies
     existing_semester: already exists
     range_date_error: must be smaller than end
-    deleted_success: Offer deleted successfully
     schedule_error: must be smaller than end of date range
 
 #Facebook

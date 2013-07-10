@@ -10,7 +10,6 @@ class OffersController < ApplicationController
     authorize! :index, Semester # as ofertas aparecem na listagem de semestre
 
     @offers = Semester.find(params[:semester_id]).offers
-    # render :list
   end
 
   def new
@@ -40,7 +39,7 @@ class OffersController < ApplicationController
     @offer.enrollment_schedule.try(:destroy) if @offer.enrollment_schedule.try(:start_date).nil?
 
     if @offer.save
-      render json: {success: true, notice: "Oferta criada com sucesso"}
+      render json: {success: true, notice: t(:created, scope: [:offers, :success])}
     else
       render :new
     end
@@ -73,9 +72,8 @@ class OffersController < ApplicationController
         @offer.update_attributes!(params[:offer])
       end
 
-      redirect_to semesters_path, notice: 'Offer was successfully updated.'
-      # render json: {success: true}
-    rescue Exception => e
+      render json: {success: true, notice: t(:updated, scope: [:offers, :success])}
+    rescue
       @offer.build_period_schedule if @offer.period_schedule.nil?
       @offer.build_enrollment_schedule if @offer.enrollment_schedule.nil?
 
@@ -88,9 +86,9 @@ class OffersController < ApplicationController
     authorize! :destroy, offer, on: [offer.allocation_tag.id]
 
     if offer.destroy
-      render json: {success: true, notice: t(:deleted_success, scope: :offers)}
+      render json: {success: true, notice: t(:deleted, scope: [:offers, :success])}
     else
-      render json: {success: false, alert: t(:not_possible_to_delete, scope: :offers)}, status: :unprocessable_entity
+      render json: {success: false, alert: t(:deleted, scope: [:offers, :error])}, status: :unprocessable_entity
     end
   end
 

@@ -34,9 +34,7 @@
 
       // delete offer
       $('.delete_offer:not([disabled])', semester).click(function(){
-        if (confirm("#{t(:message_confirm)}"))
-          $(this).nice_delete();
-        return false;
+        $(this).nice_delete();
       });
     }
   });
