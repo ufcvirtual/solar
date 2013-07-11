@@ -1,0 +1,86 @@
+acaal1:
+  id: 1
+  allocation_tag_id: 2
+  academic_tool_id: 14
+  academic_tool_type: "Assignment"
+
+
+acaal2:
+  id: 2
+  allocation_tag_id: 8
+  academic_tool_id: 12
+  academic_tool_type:  "Assignment"
+
+
+acaal3:
+  id: 3
+  allocation_tag_id: 3
+  academic_tool_id: 13
+  academic_tool_type: "Assignment"
+
+
+acaal4:
+  id: 4
+  allocation_tag_id: 2
+  academic_tool_id: 1
+  academic_tool_type: "Assignment"
+
+acaal5:
+  id: 5
+  allocation_tag_id: 3
+  academic_tool_id: 2
+  academic_tool_type: "Assignment"
+
+acaal6:
+  id: 6
+  allocation_tag_id: 3
+  academic_tool_id: 3
+  academic_tool_type: "Assignment"
+
+acaal7:
+  id: 7
+  allocation_tag_id: 3
+  academic_tool_id: 4
+  academic_tool_type: "Assignment"
+
+acaal8:
+  id: 8
+  allocation_tag_id: 3
+  academic_tool_id: 5
+  academic_tool_type: "Assignment"
+
+acaal9:
+  id: 9
+  allocation_tag_id: 3
+  academic_tool_id: 6
+  academic_tool_type: "Assignment"
+
+acaal10:
+  id: 10
+  allocation_tag_id: 3
+  academic_tool_id: 7
+  academic_tool_type: "Assignment"
+
+acaal11:
+  id: 11
+  allocation_tag_id: 3
+  academic_tool_id: 8
+  academic_tool_type: "Assignment"
+
+acaal12:
+  id: 12
+  allocation_tag_id: 3
+  academic_tool_id: 9
+  academic_tool_type: "Assignment"
+
+acaal13:
+  id: 13
+  allocation_tag_id: 8
+  academic_tool_id: 10
+  academic_tool_type: "Assignment"
+
+acaal14:
+  id: 14
+  allocation_tag_id: 8
+  academic_tool_id: 11
+  academic_tool_type: "Assignment"

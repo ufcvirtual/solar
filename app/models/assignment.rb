@@ -55,7 +55,7 @@ class Assignment < ActiveRecord::Base
     student_group = student_group_by_student(student_id) unless student_id.nil?
     user_id = (type_assignment == Assignment_Type_Group) ? nil : student_id
     group_id = (student_group.nil? ? group_id : student_group.id) # se aluno estiver em grupo, recupera id
-    sent_assignment = sent_assignment_by_academic_allocation(user_id,group_assignment_id) 
+    sent_assignment = sent_assignment_by_user_id_or_group_assignment_id(user_id,group_assignment_id) 
 
 
     if schedule.start_date.to_date > Date.current()
@@ -129,7 +129,7 @@ class Assignment < ActiveRecord::Base
       user_id = (assignment.type_assignment == Assignment_Type_Group) ? nil : student_id
       groups_ids[idx] = (student_group.nil? ? nil : student_group.id) # se aluno estiver em grupo, recupera id deste
      
-      sent_assignment = assignment.sent_assignment_by_academic_allocation(user_id,groups_ids[idx])
+      sent_assignment = assignment.sent_assignment_by_user_id_or_group_assignment_id(user_id,groups_ids[idx])
 
       assignments_grades[idx] = sent_assignment.nil? ? nil : sent_assignment.grade #se tiver sent_assignment, tenta pegar nota
       has_comments[idx] = sent_assignment.nil? ? nil :  (not sent_assignment.assignment_comments.empty?) # verifica se há comentários para o aluno

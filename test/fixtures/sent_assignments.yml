@@ -1,31 +1,31 @@
 sa1:
   id: 1
-  assignment_id: 3 # quimica I - atividade III
+  academic_allocation_id: 6 # quimica I - atividade III
   user_id: 7
   grade: 6.3
 
 sa2:
   id: 2
-  assignment_id: 5
+  academic_allocation_id: 8
   group_assignment_id: 5 # quimica I - trabalho em grupo2
   grade: 3
 
 sa3:
   id: 3
-  assignment_id: 9 # quimica I - Atividade em campo III
+  academic_allocation_id: 12 # quimica I - Atividade em campo III
   user_id: 7 
 
 sa4:
   id: 4
-  assignment_id: 11 # literatura brasileria I - group id 5 - al8
+  academic_allocation_id: 14 # literatura brasileria I - group id 5 - al8
   group_assignment_id: 7 # ## literatura brasileria I - group id 5 - al8 - grupo 1 (ga7)
 
 sa5:
   id: 5
-  assignment_id: 10 # literatura brasileria I - group id 5 - al8
+  academic_allocation_id: 13 # literatura brasileria I - group id 5 - al8
   user_id: 9 #aluno3
 
 sa6:
   id: 6
-  assignment_id: 7 #quimica I - Atividade individual VII - al7: atividade concluída
+  academic_allocation_id: 10 #quimica I - Atividade individual VII - al7: atividade concluída
   user_id: 7

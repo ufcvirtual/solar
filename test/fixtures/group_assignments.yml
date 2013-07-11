@@ -1,39 +1,39 @@
 # grupo do trabalho I
 a1:
   id: 1
-  assignment_id: 4
+  academic_allocation_id: 7
   group_name: grupo1 tI
 
 # grupo do trabalho I
 a2:
   id: 2
-  assignment_id: 4
+  academic_allocation_id: 7
   group_name: grupo2 tI
 
 # grupo do trabalho I
 a3:
   id: 3
-  assignment_id: 4
+  academic_allocation_id: 7
   group_name: grupo3 tI
 
 # grupo do trabalho II
 a4:
   id: 4
-  assignment_id: 5
+  academic_allocation_id: 8
   group_name: grupo1 - tII
 
 # grupo do trabalho II
 a5:
   id: 5
-  assignment_id: 5
+  academic_allocation_id: 8
   group_name: grupo2 - tII
 
 ga6:
   id: 6
-  assignment_id: 6 #quimica I - atividade em grupo III
+  academic_allocation_id: 9 #quimica I - atividade em grupo III
   group_name: grupo 1
 
 ga7:
   id: 7
-  assignment_id: 11 # ## literatura brasileria I - group id 5 - al8
+  academic_allocation_id: 14 # ## literatura brasileria I - group id 5 - al8
   group_name: grupo 1
