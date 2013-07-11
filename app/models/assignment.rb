@@ -27,13 +27,13 @@ class Assignment < ActiveRecord::Base
   validate :verify_offer_date_range
 
   ## define uma data final de avaliacao caso nao esteja definida
-  def define_end_evaluation_date
-    self.end_evaluation_date = group.offer.end_date if (end_evaluation_date.nil? or end_evaluation_date.blank? or (end_evaluation_date.to_date < schedule.end_date.to_date))
+  def define_end_evaluation_date(allocation_tag)
+    self.end_evaluation_date = allocation_tag.group.offer.end_date if (end_evaluation_date.nil? or end_evaluation_date.blank? or (end_evaluation_date.to_date < schedule.end_date.to_date)) 
   end
 
   ## Datas da atividade devem estar no intervalo de datas da oferta
-  def verify_offer_date_range
-    errors.add(:base, I18n.t(:final_date_smaller_than_offer, :scope => [:assignment, :notifications], :end_date_offer => group.offer.end_date.to_date)) if schedule.end_date > group.offer.end_date
+  def verify_offer_date_range(allocation_tag)
+    errors.add(:base, I18n.t(:final_date_smaller_than_offer, :scope => [:assignment, :notifications], :end_date_offer => allocation_tag.group.offer.end_date.to_date)) if schedule.end_date > allocation_tag.group.offer.end_date
   end
 
   def student_group_by_student(student_id)
@@ -46,7 +46,7 @@ class Assignment < ActiveRecord::Base
     AND academic_allocations.academic_tool_id = #{self.id}"])) : nil
   end
 
-  def sent_assignment_by_academic_allocation(user_id, group_assignment_id)
+  def sent_assignment_by_user_id_or_group_assignment_id(user_id, group_assignment_id)
     SentAssignment.joins(:academic_allocation).where(user_id: user_id, group_assignment_id: group_assignment_id, academic_allocations: {academic_tool_id: self.id}).first
   end            
 
@@ -85,13 +85,13 @@ class Assignment < ActiveRecord::Base
     (allocation_tag.is_user_class_responsible?(user_id) and closed?)
   end
 
-  def on_evaluation_period?(user_id)
-    define_end_evaluation_date if end_evaluation_date.nil? or end_evaluation_date.blank?
-    ((Date.today <= end_evaluation_date.to_date) and assignment_in_time?(user_id))
+  def on_evaluation_period?(allocation_tag, user_id)
+    define_end_evaluation_date(allocation_tag) if end_evaluation_date.nil? or end_evaluation_date.blank?
+    ((Date.today <= end_evaluation_date.to_date) and assignment_in_time?(allocation_tag, user_id))
   end
 
   ## Verifica período que o responsável pode alterar algo na atividade
-  def assignment_in_time?(user_id)
+  def assignment_in_time?(allocation_tag, user_id)
     can_access_assignment = allocation_tag.is_user_class_responsible?(user_id) and (closed? and extra_time?(user_id)) # verifica se possui tempo extra
     (verify_date_range(schedule.start_date, schedule.end_date, Date.current) or can_access_assignment)
   end
@@ -139,14 +139,14 @@ class Assignment < ActiveRecord::Base
     return {"assignments" => assignments, "groups_ids" => groups_ids, "assignments_grades" => assignments_grades, "has_comments" => has_comments, "situation" => situation}
   end
 
-  def user_can_access_assignment(current_user_id, user_id, group_id = nil)
-    profile_student   = Profile.select(:id).where("cast(types & '#{Profile_Type_Student}' as boolean)").first
-    student_of_class  = !allocations.where(:profile_id => profile_student.id).where(:user_id => current_user_id).empty?
+  def user_can_access_assignment(allocation_tag,current_user_id, user_id, group_id = nil)
+    student_of_class  = !allocations.where(:profile_id => Profile.student_profile).where(:user_id => current_user_id).empty?
     class_responsible = allocation_tag.is_user_class_responsible?(current_user_id)
     can_access = (user_id.to_i == current_user_id)
 
     if type_assignment == Assignment_Type_Group
-      group      = GroupAssignment.find_by_id_and_assignment_id(group_id, id)
+      academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id(allocation_tag.id,id)
+      group      = GroupAssignment.find_by_id_and_academic_allocation_id(group_id, academic_allocation.id)
       can_access = group.group_participants.map(&:user_id).include?(current_user_id) unless group.nil?
     end
     return (class_responsible or (student_of_class and can_access))

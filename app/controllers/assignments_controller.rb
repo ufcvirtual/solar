@@ -123,11 +123,14 @@ class AssignmentsController < ApplicationController
     @student_id      = params[:group_id].nil? ? params[:student_id] : nil
     @group_id        = params[:group_id].nil? ? nil : params[:group_id] 
     @group           = GroupAssignment.find(params[:group_id]) unless @group_id.nil? # grupo
-    @sent_assignment = SentAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(@assignment.id, @student_id, @group_id)
-    @situation       = Assignment.assignment_situation_of_student(@assignment.id, @student_id, @group_id)
+    @sent_assignment = @assignment.sent_assignment_by_user_id_or_group_assignment_id( @student_id, @group_id)
+    @situation       = @assignment.assignment_situation_of_student(@student_id, @group_id)
     @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  # arquivos que fazem parte da descrição da atividade
 
-    raise CanCan::AccessDenied unless @assignment.user_can_access_assignment(current_user.id, @student_id, @group_id)
+    #Pegando allocation da sessão
+    @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+    raise CanCan::AccessDenied unless @assignment.user_can_access_assignment(@allocation_tag,
+      current_user.id, @student_id, @group_id)
    
     unless @sent_assignment.nil?
       @sent_assignment_files = @sent_assignment.assignment_files
