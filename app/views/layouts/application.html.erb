@@ -5,6 +5,7 @@
     <title>Solar</title>
     <%= stylesheet_link_tag "application" %>
     <%= javascript_include_tag "application" %>
+    <%= javascript_tag '$.fx.off = true;' if Rails.env.test? %>
     <!--[if lte IE 9]>
       <%= stylesheet_link_tag "fonts-ie" %>
     <![endif]-->
