@@ -6,8 +6,6 @@ class SemestersController < ApplicationController
   def index
     authorize! :index, Semester
 
-    # como ficará a ordenação?
-
     if [params[:period], params[:course_id], params[:curriculum_unit_id]].delete_if(&:blank?).empty?
       @semesters = []
     else
@@ -18,7 +16,7 @@ class SemestersController < ApplicationController
       # [active, all, year]
       if params[:period] == "all"
         if query.empty?
-          @semesters = Semester.all # o que fazer neste caso?
+          @semesters = Semester.all
         else
           @semesters = Semester.joins(:offers).where(query.join(" AND ")).uniq
         end
