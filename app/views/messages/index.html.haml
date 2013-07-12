@@ -11,14 +11,14 @@
     .align-right
       = link_to ({:action => 'new', :search => @search_text}), :class =>'message_link btn btn_main', 'data-tooltip' => t(:message_new) do
         %i.icon-plus-3
-      %button.btn{'data-tooltip' => t(:message_mark_as_read), id: 'mark_as_read'}
+      #link_mark_as_unread.btn{'data-tooltip' => t(:message_mark_as_unread), id: 'mark_as_unread'}
         %i.icon-checkmark
       - if @type != "trashbox"
         = link_to(message_path(@message.try(:id) || ':id'), {id: :link_remove_message, class: 'btn', 'data-tooltip' => t(:message_delete), method: :delete, confirm: t(:message_confirm)}) do
           %i.icon-trash
       - if @type == "trashbox"
-        = link_to(restore_message_path(@message.try(:id) || ':id'), {id: :link_restore_message, class: 'btn', method: :put}) do
-          = t(:message_restore)
+        = link_to(restore_message_path(@message.try(:id) || ':id'), {id: :link_restore_message, class: 'btn', 'data-tooltip' => t(:message_restore), method: :put}) do
+          %i.icon-trash
     .clearfix
 
   .block_content
@@ -84,5 +84,24 @@
       console.log(message_ids);
     });
 
+    $("#check_read").click(function() {
+      $(".selected_messages").each(function(i){
+        style_message = $(this).next("#message_style").val();
+        if (style_message == "message_read")
+          $(this).attr("checked","checked");
+        else
+           $(this).removeAttr("checked");
+      });
+   });
+
+   $("#check_unread").click(function() {
+     $(".selected_messages").each(function(i){
+        style_message = $(this).next("#message_style").val();
+        if (style_message == "message_read")
+          $(this).removeAttr("checked");
+        else
+          $(this).attr("checked","checked");
+      });
+   });
 
   });

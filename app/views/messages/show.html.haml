@@ -15,14 +15,14 @@
     .align-right
       = link_to ({:action => 'new', :search => @search_text}), :class =>'btn', 'data-tooltip' => t(:message_new) do
         %i.icon-plus-3
-      %button.btn{'data-tooltip' => t(:message_mark_as_unread)}
+      %button#link_mark_as_unread.btn{'data-tooltip' => t(:message_mark_as_unread)}
         %i.icon-checkmark
       - if @type != "trashbox"
         = link_to(message_path(@message.try(:id) || ':id'), {id: :link_remove_message, class: 'btn', 'data-tooltip' => t(:message_delete), method: :delete, confirm: t(:message_confirm)}) do
           %i.icon-trash
       - if @type == "trashbox"
-        = link_to(restore_message_path(@message.try(:id) || ':id'), {id: :link_restore_message, class: 'btn', method: :put}) do
-          = t(:message_restore)
+        = link_to(restore_message_path(@message.try(:id) || ':id'), {id: :link_restore_message, class: 'btn', 'data-tooltip' => t(:message_restore), method: :put}) do
+          %i.icon-trash
     .clearfix
 
   .message_header_new
