@@ -291,6 +291,7 @@ class AssignmentsController < ApplicationController
   def download_files
     assignment = Assignment.find(params[:assignment_id]) unless params[:assignment_id].nil?
     authorize! :download_files, assignment unless assignment.nil?
+    allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
 
     if params.include?('zip') # se for baixar todos como zip
       folder_name = ''
@@ -299,7 +300,8 @@ class AssignmentsController < ApplicationController
           sent_assignment = assignment.sent_assignments.where(:user_id => params[:student_id], :group_assignment_id => params[:group_id]).first
           folder_name     = [assignment.name, (params[:group_id].nil? ? sent_assignment.user.nick : sent_assignment.group_assignment.group_name)].join(' - ')# pasta: "atv1 - aluno1"
           all_files       = sent_assignment.assignment_files
-          raise CanCan::AccessDenied unless assignment.user_can_access_assignment(current_user.id, params[:student_id], params[:group_id])
+
+          raise CanCan::AccessDenied unless assignment.user_can_access_assignment(allocation_tag, current_user.id, params[:student_id], params[:group_id])
         when 'enunciation' # arquivos que fazem parte da descrição da atividade
           folder_name = assignment.name # pasta: "atv1"
           all_files = assignment.assignment_enunciation_files
@@ -326,7 +328,7 @@ class AssignmentsController < ApplicationController
     end
 
     # verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
-    raise CanCan::AccessDenied unless (assignment.nil? or sent_assignment.nil? or assignment.user_can_access_assignment(current_user.id, sent_assignment.user_id, sent_assignment.group_assignment_id))
+    raise CanCan::AccessDenied unless (assignment.nil? or sent_assignment.nil? or assignment.user_can_access_assignment(allocation_tag, current_user.id, sent_assignment.user_id, sent_assignment.group_assignment_id))
     redirect = request.referer.nil? ? root_url(:only_path => false) : request.referer
 
     if(file_path)
@@ -347,25 +349,33 @@ class AssignmentsController < ApplicationController
   # Upload de arquivos públicos ou de uma atividade
   ##
   def upload_file
-    begin 
+    begin
+      allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])  
       file = case params[:type]
+      
         when "public"
-          allocation_tag_id = active_tab[:url][:allocation_tag_id]
           raise CanCan::AccessDenied unless Profile.student_from_class?(current_user.id, allocation_tag_id)
-          PublicFile.create!({ :attachment => params[:file], :user_id => current_user.id, :allocation_tag_id => allocation_tag_id })
+          PublicFile.create!({ :attachment => params[:file],
+          :user_id => current_user.id,
+          :allocation_tag_id => allocation_tag.id })
         when "assignment"
           assignment = Assignment.find(params[:assignment_id])
           authorize! :upload_file, assignment
 
-          group = GroupAssignment.first(:include => [:group_participants], :conditions => ["assignment_id = #{assignment.id} AND group_participants.user_id = #{current_user.id}"])
+          group = GroupAssignment.first(
+                  joins: :academic_allocation,
+                  include: :group_participants,
+                  conditions: ["group_participants.user_id = #{current_user.id} 
+                  AND academic_allocations.academic_tool_id = #{assignment.id}"])
           group_id = group.nil? ? nil : group.id
           user_id  = group.nil? ? current_user.id : nil
 
           # verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
-          raise CanCan::AccessDenied unless assignment.user_can_access_assignment(current_user.id, current_user.id, group_id)
-          raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment.assignment_in_time?(current_user.id) # verifica período para envio do arquivo
+          #raise CanCan::AccessDenied unless assignment.user_can_access_assignment(current_user.id, current_user.id, group_id)
+          #raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment.assignment_in_time?(current_user.id) # verifica período para envio do arquivo
 
-          sent_assignment = SentAssignment.find_or_create_by_assignment_id_and_user_id_and_group_assignment_id!(assignment.id, user_id, group_id)
+          academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id,assignment.id, 'Assignment')          
+          sent_assignment = SentAssignment.find_or_create_by_academic_allocation_id_and_user_id_and_group_assignment_id!(academic_allocation.id, user_id, group_id)
           AssignmentFile.create!({ :attachment => params[:file], :sent_assignment_id => sent_assignment.id, :user_id => current_user.id })
       end
 
@@ -393,9 +403,11 @@ class AssignmentsController < ApplicationController
           assignment = Assignment.find(params[:assignment_id])
           authorize! :delete_file, assignment
 
-          raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment.assignment_in_time?(current_user.id) # verifica prazo
+          allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+
+          raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment.assignment_in_time?(allocation_tag, current_user.id) # verifica prazo
           # verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
-          raise CanCan::AccessDenied unless assignment.user_can_access_assignment(current_user.id, AssignmentFile.find(params[:file_id]).user_id)
+          raise CanCan::AccessDenied unless assignment.user_can_access_assignment(allocation_tag, current_user.id, AssignmentFile.find(params[:file_id]).user_id)
 
           AssignmentFile.find(params[:file_id]).delete_assignment_file
       end

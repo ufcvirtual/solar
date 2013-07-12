@@ -145,7 +145,7 @@ class Assignment < ActiveRecord::Base
     can_access = (user_id.to_i == current_user_id)
 
     if type_assignment == Assignment_Type_Group
-      academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id(allocation_tag.id,id)
+      academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id,id, 'Assignment')
       group      = GroupAssignment.find_by_id_and_academic_allocation_id(group_id, academic_allocation.id)
       can_access = group.group_participants.map(&:user_id).include?(current_user_id) unless group.nil?
     end
