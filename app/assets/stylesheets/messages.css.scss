@@ -44,7 +44,7 @@
 }
 
 #message_list > .message_link:hover {
-  border-bottom: 2px solid #214684;
+  border-bottom: 2px solid #214684; /* FIXME: localizar onde isso está sendo utilizado */
 }
 
 /* mensagem: listagem das mensagens */
@@ -94,8 +94,8 @@
   padding: 0px;
   padding-left: 2px;
   padding-right: 2px;
-  background-color: #F9C153;
-  border: 1px solid #F9C153;
+  background-color: $color_contrast;
+  border: 1px solid $color_contrast;
   -moz-border-radius: 4px;
 }
 .message_read:hover, .message_unread:hover {
@@ -108,7 +108,7 @@
 .message_recipient_box {
   border: 1px solid #eee;
   font-size: 12px;
-  color: #214684;
+  color: #214684; /* FIXME: localizar onde isso está sendo utilizado */
   cursor: pointer;
 }
 .message_new {
