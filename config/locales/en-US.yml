@@ -1239,8 +1239,12 @@
       enroll_period: Enrollment date range
     no_end_date: "On"
     existing_semester: already exists
-    range_date_error: must be smaller than end
     schedule_error: must be smaller than end of date range
+
+  schedules:
+    errors:
+      current_year: can't have year previous to current year
+      current_date: can't be earlier than today
 
 #Facebook
 

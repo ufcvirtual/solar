@@ -4,17 +4,19 @@
     = f.association :course
     = f.association :curriculum_unit
 
-    = f.label :offer
-    = f.simple_fields_for :period_schedule do |s|
-      .offer_schedule_dates
-        .left= s.input :start_date, as: :string, required: false, input_html: { size: 10 }
-        .right= s.input :end_date, as: :string, input_html: { size: 10 }
+    %div
+      = f.label :offer
+      = f.simple_fields_for :period_schedule, defaults: {label: false, as: :string, input_html: {size: 10}} do |s|
+        .offer_schedule_dates
+          .left= s.input :start_date, required: false
+          .right= s.input :end_date
 
-    = f.label :enrollment
-    = f.simple_fields_for :enrollment_schedule do |s|
-      .enrollment_schedule_dates
-        .left= s.input :start_date, as: :string, required: false, input_html: { size: 10 }
-        .right= s.input :end_date, as: :string, input_html: { size: 10 }
+    %div
+      = f.label :enrollment
+      = f.simple_fields_for :enrollment_schedule, defaults: {label: false, as: :string, input_html: {size: 10}} do |s|
+        .enrollment_schedule_dates
+          .left= s.input :start_date, required: false
+          .right= s.input :end_date
 
   .form-actions.right_buttons
     = button_tag t(:cancel), class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel), id: "cancel", onclick: "javascript:removeLightBox();"

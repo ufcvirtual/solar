@@ -14,15 +14,22 @@ class Schedule < ActiveRecord::Base
   validates :end_date, presence: true, if: "check_end_date"
 
   validate :start_date_before_end_date
+  validate :verify_by_current_date, if: "verify_current_date" # mudar nome
 
   before_destroy :can_destroy?
 
-  attr_accessor :check_end_date # caso esteja setado, a data final será obrigatória
+  # check_end_date: caso esteja setado, a data final será obrigatória / verify_current_date: verifica se o período é válido dada a data/ano atual
+  attr_accessor :check_end_date, :verify_current_date
 
   def start_date_before_end_date
     unless start_date.nil? or end_date.nil?
       errors.add(:start_date, I18n.t(:range_date_error, :scope => [:discussion, :errors])) if (start_date > end_date)
     end
+  end
+
+  def verify_by_current_date
+    errors.add(:start_date, I18n.t(:current_year, :scope => [:schedules, :errors])) if not(start_date.nil?) and start_date_changed? and (start_date.year < Date.current.year)
+    errors.add(:end_date, I18n.t(:current_date, :scope => [:schedules, :errors])) if not(end_date.nil?) and end_date_changed? and (end_date < Date.current)
   end
 
   def can_destroy?

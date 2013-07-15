@@ -5,11 +5,11 @@ class Semester < ActiveRecord::Base
   belongs_to :enrollment_schedule, class_name: "Schedule", foreign_key: "enrollment_schedule_id"
 
   validates :name, presence: true, uniqueness: true
-
   validates :enrollment_schedule, :offer_schedule, presence: true
 
-  accepts_nested_attributes_for :offer_schedule
-  accepts_nested_attributes_for :enrollment_schedule
+  validate :check_period
+
+  accepts_nested_attributes_for :offer_schedule, :enrollment_schedule
 
   attr_accessible :name, :offer_schedule_attributes, :enrollment_schedule_attributes
 
@@ -17,6 +17,11 @@ class Semester < ActiveRecord::Base
     record.offer_schedule.destroy if record.offer_schedule.try(:can_destroy?)
     record.enrollment_schedule.destroy if record.enrollment_schedule.try(:can_destroy?)
   }
+
+  def check_period
+    self.offer_schedule.check_end_date, self.offer_schedule.verify_current_date = true, true if offer_schedule
+    self.enrollment_schedule.verify_current_date = true if enrollment_schedule
+  end
 
   def self.currents(year = nil)
     unless year # se o ano passado for nil, pega os semestres do ano corrente em endiante

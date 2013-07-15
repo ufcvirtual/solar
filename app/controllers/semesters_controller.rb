@@ -73,7 +73,7 @@ class SemestersController < ApplicationController
   # POST /semesters.json
   def create
     authorize! :create, Semester
-    @semester = Semester.new(params[:semester])
+    @semester = Semester.new params[:semester]
 
     if @semester.save
       render json: {success: true, notice: t(:created, scope: [:semesters, :success])}

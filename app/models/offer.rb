@@ -22,15 +22,16 @@ class Offer < ActiveRecord::Base
   validates :curriculum_unit, presence: true, if: "course.nil?"
   validates :semester, presence: true
 
-  validate :check_period_end_date
+  validate :check_period
 
-  accepts_nested_attributes_for :period_schedule
-  accepts_nested_attributes_for :enrollment_schedule
+  accepts_nested_attributes_for :period_schedule, :enrollment_schedule
 
   attr_accessible :period_schedule_attributes, :enrollment_schedule_attributes, :curriculum_unit_id, :course_id, :semester_id
 
-  def check_period_end_date
+  def check_period
     self.period_schedule.check_end_date = true if period_schedule and period_schedule.start_date
+    self.period_schedule.verify_current_date = true if period_schedule
+    self.enrollment_schedule.verify_current_date = true if enrollment_schedule
   end
 
   def has_any_lower_association?
@@ -40,10 +41,6 @@ class Offer < ActiveRecord::Base
   def lower_associated_objects
     groups
   end
-
-  #
-  # tirar dos locales: I18n.t(:range_date_error, :scope => [:offers])
-  #
 
   def set_default_lesson_module
     create_default_lesson_module(I18n.t(:general_of_offer, scope: :lesson_modules))
