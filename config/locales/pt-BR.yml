@@ -1406,9 +1406,12 @@
       start_date: Início
     no_end_date: Em diante
     existing_semester: já existe
-    range_date_error: deve ser menor que a final
     schedule_error: deve ser menor que final do período
 
+  schedules:
+    errors:
+      current_year: não pode ter ano anterior ao ano corrente
+      current_date: não pode ser anterior à data de hoje
 
   #Facebook
 

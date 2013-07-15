@@ -4,7 +4,7 @@ $(function(){
   });
 
   $('[id^="edit_semester_"]').click(function(){
-    showLightBoxURL($(this).attr('value'), 500, 400, true, $(this).attr("data-tooltip"));
+    showLightBoxURL($(this).attr('value'), 500, 400, true, $(this).data('tooltip'));
   });
 
   $('.new_offer').click(function(){

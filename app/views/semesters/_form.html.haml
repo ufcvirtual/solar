@@ -3,17 +3,19 @@
     - start_date, end_date = Date.today - 1.month, Date.today + 1.month
     = f.input :name
 
-    = f.label :offer, required: true
-    = f.simple_fields_for :offer_schedule do |s|
-      .offer_schedule_dates
-        .left= s.input :start_date, as: :string, input_html: { size: 10, id: 'offer_start_date', value: "#{l((@semester.offer_schedule.try(:start_date) || start_date).to_date, format: :datepicker)}" }
-        .right= s.input :end_date, as: :string, input_html: { size: 10, id: 'offer_end_date', value: "#{l((@semester.offer_schedule.try(:end_date) || end_date).to_date, format: :datepicker)}" }, required: true
+    %div
+      = f.label :offer, required: true
+      = f.simple_fields_for :offer_schedule, defaults: {label: false, as: :string, input_html: {size: 10}} do |s|
+        .offer_schedule_dates
+          .left= s.input :start_date, input_html: { id: 'offer_start_date', value: "#{l((@semester.offer_schedule.try(:start_date) || start_date).to_date, format: :datepicker)}" }
+          .right= s.input :end_date, input_html: { id: 'offer_end_date', value: "#{l((@semester.offer_schedule.try(:end_date) || end_date).to_date, format: :datepicker)}" }
 
-    = f.label :enrollment, required: true
-    = f.simple_fields_for :enrollment_schedule do |s|
-      .enrollment_schedule_dates
-        .left= s.input :start_date, as: :string, input_html: { size: 10, id: 'enrollment_start_date', value: "#{l((@semester.enrollment_schedule.try(:start_date) || start_date).to_date, format: :datepicker)}" }
-        .right= s.input :end_date, as: :string, input_html: { size: 10, id: 'enrollment_end_date', value: "#{l((@semester.enrollment_schedule.try(:end_date) || end_date).to_date, format: :datepicker)}" }, required: true
+    %div
+      = f.label :enrollment, required: true
+      = f.simple_fields_for :enrollment_schedule, defaults: {label: false, as: :string, input_html: {size: 10}} do |s|
+        .enrollment_schedule_dates
+          = s.input :start_date, input_html: { id: 'enrollment_start_date', value: "#{l((@semester.enrollment_schedule.try(:start_date) || start_date).to_date, format: :datepicker)}" }
+          .right_buttons_form= s.input :end_date, input_html: { id: 'enrollment_end_date', value: "#{l((@semester.enrollment_schedule.try(:end_date) || end_date).to_date, format: :datepicker)}" }
 
   .form-actions.right_buttons
     = button_tag t(:cancel), class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel), id: "cancel", onclick: "javascript:removeLightBox();"
@@ -30,7 +32,6 @@
 
   $('#enrollment_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#enrollment_end_date').datepicker("option", "minDate", selected); } }) );
   $('#enrollment_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#enrollment_start_date').datepicker("option", "maxDate", selected); } }) );
-
 
   $("#save").click(function(){
     $('form').serialize_and_submit({
