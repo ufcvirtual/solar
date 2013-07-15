@@ -3792,4 +3792,11 @@ select[disabled] {
 
 .offer_schedule_dates, .enrollment_schedule_dates{
     display: inline-block;
+    color: $label_color;
+}
+
+.end_date_check_box{
+    margin-left: 135px;
+    text-align: left;
+    color: $label_color;
 }

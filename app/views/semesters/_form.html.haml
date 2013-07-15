@@ -1,21 +1,26 @@
+- start_date, end_date = Date.today - 1.month, Date.today + 1.month
 = simple_form_for @semester do |f|
   .form-inputs
-    - start_date, end_date = Date.today - 1.month, Date.today + 1.month
-    = f.input :name
+    %div{style: "margin-top: 5px"}= f.input :name
 
     %div
       = f.label :offer, required: true
       = f.simple_fields_for :offer_schedule, defaults: {label: false, as: :string, input_html: {size: 10}} do |s|
-        .offer_schedule_dates
-          .left= s.input :start_date, input_html: { id: 'offer_start_date', value: "#{l((@semester.offer_schedule.try(:start_date) || start_date).to_date, format: :datepicker)}" }
-          .right= s.input :end_date, input_html: { id: 'offer_end_date', value: "#{l((@semester.offer_schedule.try(:end_date) || end_date).to_date, format: :datepicker)}" }
+        .offer_schedule_dates= s.input :start_date, input_html: { id: 'offer_start_date', value: "#{l((@semester.offer_schedule.try(:start_date) || start_date).to_date, format: :datepicker)}" }
+        .offer_schedule_dates.label= t(:to, scope: [:schedules])
+        .offer_schedule_dates= s.input :end_date, input_html: { id: 'offer_end_date', value: "#{l((@semester.offer_schedule.try(:end_date) || end_date).to_date, format: :datepicker)}" }
 
     %div
+      - dont_have_enroll_end_date = @semester.enrollment_schedule.try(:end_date).nil?
       = f.label :enrollment, required: true
       = f.simple_fields_for :enrollment_schedule, defaults: {label: false, as: :string, input_html: {size: 10}} do |s|
-        .enrollment_schedule_dates
-          = s.input :start_date, input_html: { id: 'enrollment_start_date', value: "#{l((@semester.enrollment_schedule.try(:start_date) || start_date).to_date, format: :datepicker)}" }
-          .right_buttons_form= s.input :end_date, input_html: { id: 'enrollment_end_date', value: "#{l((@semester.enrollment_schedule.try(:end_date) || end_date).to_date, format: :datepicker)}" }
+        .enrollment_schedule_dates= s.input :start_date, input_html: { id: 'enrollment_start_date', value: "#{l((@semester.enrollment_schedule.try(:start_date) || start_date).to_date, format: :datepicker)}" }
+        %span#enrollment_schedule_end_date{class: (dont_have_enroll_end_date ? 'invisible' : '')}
+          .enrollment_schedule_dates.label= t(:to, scope: [:schedules])
+          .enrollment_schedule_dates= s.input :end_date, input_html: { id: 'enrollment_end_date' }
+      .end_date_check_box
+        = check_box_tag :have_end_date, true, not(dont_have_enroll_end_date)
+        = t('.enable_end_date')
 
   .form-actions.right_buttons
     = button_tag t(:cancel), class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel), id: "cancel", onclick: "javascript:removeLightBox();"
@@ -33,10 +38,20 @@
   $('#enrollment_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#enrollment_end_date').datepicker("option", "minDate", selected); } }) );
   $('#enrollment_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#enrollment_start_date').datepicker("option", "maxDate", selected); } }) );
 
-  $("#save").click(function(){
+  $('#save').click(function(){
     $('form').serialize_and_submit({
       complement_success: function(data) {
         console.error('Recuperar dados do filtro para atualizar a pagina');
       }
     });
+  });
+
+  $('input#have_end_date').click(function(){
+    if($("input#have_end_date:checked").val() == 'true'){
+      $('#enrollment_schedule_end_date').show();
+      $('#enrollment_end_date').datepicker('setDate', "#{l((@semester.enrollment_schedule.try(:end_date) || end_date).to_date, format: :datepicker)}");
+    }else{
+      $('#enrollment_schedule_end_date').hide();
+      $('#enrollment_end_date').datepicker('setDate', "");
+    }
   });

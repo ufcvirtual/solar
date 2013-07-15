@@ -1174,19 +1174,21 @@
 
   semesters:
     success:
-      created: "Semester was successfully created."
-      updated: "Semester was successfully updated."
-      deleted: "Semester was successfully deleted."
+      created: Semester was successfully created.
+      updated: Semester was successfully updated.
+      deleted: Semester was successfully deleted.
     error:
-      created: "Semester wasn't created."
-      updated: "Semester wasn't updated."
-      deleted: "Semester wasn't deleted."
+      created: Semester wasn't created.
+      updated: Semester wasn't updated.
+      deleted: Semester wasn't deleted.
     index:
-      new: "New Semester"
-      edit: "Edit Semester"
-      delete: "Delete Semester"
-      new_offer: "New Offer"
-      period: "Period"
+      new: New Semester
+      edit: Edit Semester
+      delete: Delete Semester
+      new_offer: New Offer
+      period: Period
+    form:
+      enable_end_date: Enable end date
 
   offers:
     success:
@@ -1243,8 +1245,9 @@
 
   schedules:
     errors:
-      current_year: can't have year previous to current year
+      current_year: can't have year previous to current
       current_date: can't be earlier than today
+    to: to
 
 #Facebook
 

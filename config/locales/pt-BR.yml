@@ -1341,19 +1341,21 @@
 
   semesters:
     success:
-      created: "Semestre criado com sucesso."
-      updated: "Semestre atualizado com sucesso."
-      deleted: "Semestre deletado com sucesso."
+      created: Semestre criado com sucesso.
+      updated: Semestre atualizado com sucesso.
+      deleted: Semestre deletado com sucesso.
     error:
-      created: "Não foi possível criar semestre."
-      updated: "Não foi possível atualizar semestre."
-      deleted: "Não foi possível deletar semestre."
+      created: Não foi possível criar semestre.
+      updated: Não foi possível atualizar semestre.
+      deleted: Não foi possível deletar semestre.
     index:
-      new: "Novo semestre"
-      edit: "Editar Semestre"
-      delete: "Deletar Semestre"
-      new_offer: "Nova oferta"
-      period: "Período"
+      new: Novo semestre
+      edit: Editar Semestre
+      delete: Deletar Semestre
+      new_offer: Nova oferta
+      period: Período
+    form:
+      enable_end_date: Habilitar data final
 
   offers:
     success:
@@ -1410,8 +1412,9 @@
 
   schedules:
     errors:
-      current_year: não pode ter ano anterior ao ano corrente
+      current_year: não pode ter ano anterior ao corrente
       current_date: não pode ser anterior à data de hoje
+    to: à
 
   #Facebook
 
