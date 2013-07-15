@@ -1,0 +1,167 @@
+/* Index - Caixa de Entrada */
+.padding-checkbox{
+  padding-top: 5px;
+
+  input{
+    margin-right: 5px;
+  }
+}
+.td_subject, .td_sender, .td_time{
+  color: $text_grey;
+
+  a{
+    color: $text_grey;
+  }
+}
+.td_time{
+  text-align: right;
+  width: 100px;
+}
+.td_sender{
+  width: 150px;
+  text-align: left;
+}
+.td_attachment{
+   width: 30px;
+}
+.td_subject{
+  padding-left: 0.5*$gutter;
+}
+/* mensagem: links do menu */
+.message_link, .message_link_menu {
+  text-decoration: none;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+
+.message_link {
+  font-size: 10pt;
+}
+
+.message_link, .message_menu_listbox {
+  padding: 6px 10px 4px 10px;
+}
+
+#message_list > .message_link:hover {
+  border-bottom: 2px solid #214684; /* FIXME: localizar onde isso está sendo utilizado */
+}
+
+/* mensagem: listagem das mensagens */
+.message_div_list{
+  width: 100%;
+}
+
+.message_line{
+  /*background-color: #f9f9f9;*/
+  height: 28px;
+}
+.message_line_highlight {
+  background-color: #FFFBE4;
+}
+/*.message_line:hover {
+    background-color: #EEF3FB;
+}*/
+.message_line_check {
+  width: 12px;
+}
+.message_nav_text {
+  font-size: 10pt;
+  text-decoration: none;
+  color: #000;
+  width: auto;
+}
+.message_search_textbox{
+  height: 18px;
+  width: 500px;
+  padding: 0px;
+  font-size: 11px;
+}
+.message_read, .message_unread{
+  color: #666;
+  font-weight: normal;
+  white-space: normal;
+}
+.message_unread{
+  color: #000;
+  font-weight: bold;
+}
+.message_label {
+  font-size: 8pt;
+  color: #000;
+  font-weight: normal;
+  margin: 0px;
+  padding: 0px;
+  padding-left: 2px;
+  padding-right: 2px;
+  background-color: $color_contrast;
+  border: 1px solid $color_contrast;
+  -moz-border-radius: 4px;
+}
+.message_read:hover, .message_unread:hover {
+  text-decoration: underline;
+}
+.message_div_text_read {
+  background-color: #F7F7F7;
+  width: 100%;
+}
+.message_recipient_box {
+  border: 1px solid #eee;
+  font-size: 12px;
+  color: #214684; /* FIXME: localizar onde isso está sendo utilizado */
+  cursor: pointer;
+}
+.message_new {
+  padding-top: 4px;
+}
+.message_new_textbox {
+  width: 95%;
+  font-size: 10pt;
+}
+.message_attach_item {
+  padding: 5px 0 0 0;
+}
+/* mensagem */
+.block_content{
+  padding: 5px;
+  padding-right: 10px;
+  border-bottom: solid 1px $border;
+
+  &.block_white{
+    background: white;
+  }
+
+  .btn{
+    margin-right: -5px;
+  }
+}
+.message_header_new, .message_div_show{
+  color: $text_grey;
+  padding: 0.5*$gutter 0.25*$gutter;
+  font-size: 11px;
+
+  .message_text_body {
+    padding: 20px;
+    padding-right: 100px;
+  }
+
+  .icon-paperclip{
+    font-size: 12px;
+  }
+}
+.message_div_navigation{
+  text-align: center;
+  padding: 0.25*$gutter;
+
+  .message_page{
+    margin-top: 5px;
+  }
+
+  .active{
+    color: $text_blue;
+  }
+}
+.message_div_show{
+  min-height: 100px;
+  font-size: 10pt;
+}

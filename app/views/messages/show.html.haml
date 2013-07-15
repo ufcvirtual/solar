@@ -1,37 +1,60 @@
 .message_external_div
+  -#= render 'message_header'
+  -#= render 'message_options'
 
-  = render 'message_header'
-  = render 'message_options'
+  .block_title
+    %h2= @message.subject
+  .block_content
+    .align-left
+      = link_to ({:action => 'new', :id => @message.id, :target => 'sender'}), :class=>'btn btn_main', 'data-tooltip'=>t(:message_reply) do
+        %i.icon-reply
+      = link_to ({:action => 'new', :id => @message.id, :target => 'all'}), :class=>'btn', 'data-tooltip'=>t(:message_reply_all) do
+        %i.icon-reply-all
+      = link_to ({:action => 'new', :id => @message.id, :target => ''}), :class=>'btn', 'data-tooltip'=>t(:message_route) do
+        %i.icon-forward
+    .align-right
+      = link_to ({:action => 'new', :search => @search_text}), :class =>'btn', 'data-tooltip' => t(:message_new) do
+        %i.icon-plus-3
+      %button#link_mark_as_unread.btn{'data-tooltip' => t(:message_mark_as_unread)}
+        %i.icon-checkmark
+      - if @type != "trashbox"
+        = link_to(message_path(@message.try(:id) || ':id'), {id: :link_remove_message, class: 'btn', 'data-tooltip' => t(:message_delete), method: :delete, confirm: t(:message_confirm)}) do
+          %i.icon-trash
+      - if @type == "trashbox"
+        = link_to(restore_message_path(@message.try(:id) || ':id'), {id: :link_restore_message, class: 'btn', 'data-tooltip' => t(:message_restore), method: :put}) do
+          %i.icon-trash
+    .clearfix
 
   .message_header_new
-    %table{:border => "0", :cellpadding => "5", :cellspacing => "0", :width => "100%"}
-      %tbody
-        %tr
-          %td.message_text_to{:align => "right", :style => "width:75px"}= label_tag 'lb_from', t(:message_from), :class => 'label_text'
-          %td.message_text_to= label_tag 'lb_from', @sender.name + " <" + @sender.email + ">", :class => "label_text"
-        %tr
-          %td.message_text_to{:align => "right", :style => "width:75px"}= label_tag 'lb_to', t(:message_to), :class => 'label_text'
-          %td.message_text_to
-            - text = ""
-            - @recipients.each do |r|
-              - text += r.nick + " <" + r.email + ">, "
-            = label_tag 'lb_data_from', text, :class => "label_text"
-        %tr
-          %td.message_text_to{:align => "right", :style => "width:75px"}= label_tag 'lb_subject', t(:message_subject), :class => 'label_text'
-          %td.message_text_to= label_tag 'lb_subject', @message.subject, :class => "label_text"
+    .message_text_to
+      %p
+        %strong
+          De:
+          =@sender.name + " <" + @sender.email + ">"
+    .message_text_to
+      %p
+        Para:
+        - text = ""
+        - @recipients.each do |r|
+          - text += r.nick + " <" + r.email + ">, "
+        = text
+    .message_text_to
+      %p
+        %i.icon-paperclip
+        Anexos:
+        anexo1.jpg
+
+  %hr
   .message_div_show
     = sanitize @message.content
-    %br/
-    .text_bottom
-      - if @files.length > 0
-        %br/
-        %hr{:style => "border: none; background-color: #b4b3b7; height: 1px; margin-left:0px; margin-bottom: 0px"}/
-        %br/
-        - @files.each do |f|
-          = link_to content_tag(:i, nil, :class=>'icon-paperclip')+f.message_file_name, {:controller => "messages", :action => "download_message_file", :idFile => f.id, :id => @message.id}, {:class => 'message_link'}
-          %br/
-  .message_div_options_new
-    \ 
-    \#{link_to t(:message_reply)+' ', {:action => 'new', :id => @message.id, :target => 'sender'}, {:class=>'message_link'}}
-    \#{link_to t(:message_reply_all)+' ', {:action => 'new', :id => @message.id, :target => 'all'}, {:class=>'message_link'}}
-    \#{link_to t(:message_route)+' ', {:action => 'new', :id => @message.id, :target => ''}, {:class=>'message_link'}}
+
+  %hr
+
+  .message_div_navigation
+    %a.btn.align-left{:href => "#{messages_path}"}
+      %i.icon-arrow-left
+      = t(:back)
+    .message_page
+      %i.icon-arrow-left-3
+      1 de 4
+      %i.icon-arrow-right-3.active

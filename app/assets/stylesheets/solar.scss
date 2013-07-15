@@ -1,3 +1,4 @@
+@import "variables";
 $margin-top: 5px;
 $label_color: $color_main_text;
 
@@ -2184,35 +2185,6 @@ $forum_indentation: 52px;
     margin-left: 3px;
 }
 
-/* mensagem: rodape, navegação */
-.message_div_navigation{
-    /* background-color: #f9f9f9;*/
-    /*border-top: 1px solid #d0d0d0;*/
-    height: 20px;
-    text-align: center;
-    padding: 3px;
-}
-
-/* mensagem: links do menu */
-.message_link, .message_link_menu {
-    text-decoration: none;
-    cursor: pointer;
-    background-color: transparent;
-    border: none;
-}
-
-.message_link {
-    font-size: 10pt;
-}
-
-.message_link, .message_menu_listbox {
-    padding: 6px 10px 4px 10px;
-}
-
-#message_list > .message_link:hover {
-    border-bottom: 2px solid #214684;
-}
-
 /* mensagem: listagem das mensagens */
 .message_div_list{
     width: 100%;
@@ -3580,7 +3552,6 @@ fieldset .block_content_alt {
     background-color: #ffffff;
     margin-bottom: 20px;
 }
-
 
 fieldset .block_content_alt li {
     margin-bottom: 10px;
