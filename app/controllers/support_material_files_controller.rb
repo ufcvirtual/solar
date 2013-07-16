@@ -79,14 +79,12 @@ class SupportMaterialFilesController < ApplicationController
   def download
     allocation_tag_ids = params.include?(:allocation_tag_id) ? params[:allocation_tag_id].split(",").map(&:to_i).uniq : [(file = SupportMaterialFile.find(params[:id])).allocation_tag_id]
     
-    begin 
-      authorize! :download, SupportMaterialFile, on: allocation_tag_ids
-    rescue
+    if params.include?(:type) # baixando alguma pasta ou todas
+
+      # se quiser baixar os arquivos em um curso, basta ter permissão na turma
       groups = AllocationTag.where(id: allocation_tag_ids).map(&:group)
       authorize! :download, SupportMaterialFile, on: groups.compact.map(&:allocation_tag).map(&:id)
-    end
 
-    if params.include?(:type)
       redirect_error = support_material_files_path
       all_files = case params[:type]
       when :folder
@@ -97,7 +95,11 @@ class SupportMaterialFilesController < ApplicationController
 
       path_zip = compress({ files: all_files, table_column_name: 'attachment_file_name' })
       download_file(redirect_error, path_zip)
-    else
+    else # baixando um arquivo individualmente
+
+      # se for no cadastro de material de apoio ou um único arquivo, deve ter permissão em todas as allocation_tags (mesmo que seja apenas a do arquivo)
+      authorize! :download, SupportMaterialFile, on: allocation_tag_ids
+
       file ||= SupportMaterialFile.find(params[:id])
       download_file(support_material_files_path, file.attachment.path, file.attachment_file_name)
     end

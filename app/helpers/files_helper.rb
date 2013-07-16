@@ -28,18 +28,19 @@ module FilesHelper
     return if not(opts[:files].present?) and not(opts[:under_path].present?)
 
     archive = File.join(Rails.root.to_s, 'tmp', '%s') << '.zip'
+    ## arquivos armazenados sem uso de banco de dados
     if not(opts[:files].present?) # under_path present
       name_zip_file = opts[:name_zip_file].present? ? opts[:name_zip_file] : Digest::SHA1.hexdigest(opts[:under_path].join)
       archive       = archive % name_zip_file
-      paths         = [opts[:under_path]].flatten.compact.uniq
+      paths         = [opts[:under_path]].flatten.compact.uniq # caminhos de todos os arquivos
 
       FileUtils.rm archive, force: true
-      Zip::ZipFile.open(archive, Zip::ZipFile::CREATE) do |zipfile|
+      Zip::ZipFile.open(archive, Zip::ZipFile::CREATE) do |zipfile| # criação do zip
         paths.each_with_index do |path, idx|
           dir = (opts[:folders_names].present?) ? opts[:folders_names][idx] : path.split('/').last
           zipfile.mkdir(dir)
-          Dir["#{path}/**/**"].each do |file|
-            zipfile.add(File.join(dir, file.sub(path + '/', '')), file) # nome do arquivo, path do arquivo
+          Dir["#{path}/**/**"].each do |file| # varre cada diretório/arquivo (file) dentro do diretório atual (path) e adiciona no zip
+            zipfile.add(File.join(dir, file.sub(path + '/', '')), file) # nome do arquivo, path do arquivo 
           end # dir
         end # each
       end # zip
@@ -51,10 +52,11 @@ module FilesHelper
 
         return archive if File.exists?(archive)
 
-        Zip::ZipFile.open(archive, Zip::ZipFile::CREATE) do |zipfile|
+        Zip::ZipFile.open(archive, Zip::ZipFile::CREATE) do |zipfile| # criação do zip
           make_tree(opts[:files], opts[:name_zip_file]).each do |dir, files|
             zipfile.mkdir(dir.to_s)
-            files.map { |file| zipfile.add(File.join(dir.to_s, file.attachment_file_name), file.attachment.path.to_s) if File.exists?(file.attachment.path.to_s) }
+            # adiciona todos os arquivos do nível em questão no zip
+            files.map { |file| zipfile.add(File.join(dir.to_s, file.attachment_file_name), file.attachment.path.to_s) if File.exists?(file.attachment.path.to_s) } 
           end # each
         end # zip
       end # if
@@ -89,9 +91,11 @@ module FilesHelper
     ## files with folder
     def make_tree(files, name_folder = nil)
       tree = {}
+      # apenas um nível de arquivos/pastas
       if name_folder
         tree[name_folder] = files
       else
+        # monta uma estrutura indicando os arquivos de cada pasta para quando há mais de um nível
         files.each do |file|
           tree[file.folder.to_sym] = [] unless tree[file.folder.to_sym].present?
           tree[file.folder.to_sym] << file if file.respond_to?(:folder) and not(file.attachment_file_name.nil?)
