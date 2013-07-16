@@ -52,7 +52,7 @@ module FilesHelper
         return archive if File.exists?(archive)
 
         Zip::ZipFile.open(archive, Zip::ZipFile::CREATE) do |zipfile|
-          make_tree(opts[:files]).each do |dir, files|
+          make_tree(opts[:files], opts[:name_zip_file]).each do |dir, files|
             zipfile.mkdir(dir.to_s)
             files.map { |file| zipfile.add(File.join(dir.to_s, file.attachment_file_name), file.attachment.path.to_s) if File.exists?(file.attachment.path.to_s) }
           end # each
@@ -87,12 +87,16 @@ module FilesHelper
   private
 
     ## files with folder
-    def make_tree(files)
+    def make_tree(files, name_folder = nil)
       tree = {}
-      files.each do |file|
-        tree[file.folder.to_sym] = [] unless tree[file.folder.to_sym].present?
-        tree[file.folder.to_sym] << file if file.respond_to?(:folder) and not(file.attachment_file_name.nil?)
-      end # each
+      if name_folder
+        tree[name_folder] = files
+      else
+        files.each do |file|
+          tree[file.folder.to_sym] = [] unless tree[file.folder.to_sym].present?
+          tree[file.folder.to_sym] << file if file.respond_to?(:folder) and not(file.attachment_file_name.nil?)
+        end # each
+      end
       tree.delete_if { |k,v| v.empty? }
     end
 

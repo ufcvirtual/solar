@@ -200,6 +200,8 @@ Solar::Application.routes.draw do
       get :list
       get "at/:allocation_tag_id/download", to: :download, type: :all, as: :download_all
       get "at/:allocation_tag_id/folder/:folder/download", to: :download, type: :folder, as: :download_folder
+      get "at/download", to: :download, type: :all, as: :download_all
+      get "at/folder/:folder/download", to: :download, type: :folder, as: :download_folder
     end
   end
 

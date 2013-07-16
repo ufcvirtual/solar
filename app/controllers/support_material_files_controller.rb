@@ -78,18 +78,24 @@ class SupportMaterialFilesController < ApplicationController
 
   def download
     allocation_tag_ids = params.include?(:allocation_tag_id) ? params[:allocation_tag_id].split(",").map(&:to_i).uniq : [(file = SupportMaterialFile.find(params[:id])).allocation_tag_id]
-    authorize! :download, SupportMaterialFile, on: allocation_tag_ids
+    
+    begin 
+      authorize! :download, SupportMaterialFile, on: allocation_tag_ids
+    rescue
+      groups = AllocationTag.where(id: allocation_tag_ids).map(&:group)
+      authorize! :download, SupportMaterialFile, on: groups.compact.map(&:allocation_tag).map(&:id)
+    end
 
     if params.include?(:type)
       redirect_error = support_material_files_path
       all_files = case params[:type]
-      when :all
-        SupportMaterialFile.find_files(allocation_tag_ids)
       when :folder
         SupportMaterialFile.find_files(allocation_tag_ids, params[:folder])
+      else
+        SupportMaterialFile.find_files(allocation_tag_ids)
       end
 
-      path_zip = compress({ files: all_files, table_column_name: 'attachment_file_name', name_zip_file: t(:support_folder_name) })
+      path_zip = compress({ files: all_files, table_column_name: 'attachment_file_name' })
       download_file(redirect_error, path_zip)
     else
       file ||= SupportMaterialFile.find(params[:id])
