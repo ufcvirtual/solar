@@ -94,6 +94,15 @@
                   %td= participant.user.name
         - else
           .portfolio_div_padding= t(:itens_not_found)
+  / Se for trabalho individual e não for o aluno que estiver na página, exibir de qual aluno é o trabalho
+- elsif @student_id.to_i != @user.id
+  .block_wrapper
+    .block_title
+      %h2
+        %i.icon-people
+        = t(:student)
+    .block_content
+      = User.find(@student_id).name
 
 / Arquivos enviados pelo aluno
 .block_wrapper
