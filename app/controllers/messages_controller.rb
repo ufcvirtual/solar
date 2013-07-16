@@ -20,7 +20,6 @@ class MessagesController < ApplicationController
     @type = 'search' unless @search_text.empty?
     @type = 'index' if @type.nil?
 
-    # retorna mensagens
     @messages = return_messages(current_user.id, @type, @message_tag, @search_text.split(" "))
   end
 
@@ -222,74 +221,13 @@ class MessagesController < ApplicationController
     @search_text = params.include?('search') ? params[:search] : ''
   end
 
-  ##
-  # Restaura uma msg da lixeira
-  ##
-  def restore
-    restore_or_destroy('restore', 'trashbox')
-  end
-
-  ##
-  # Muda status para apagado
-  ##
-  def destroy
-    restore_or_destroy('trash', 'index')
-  end
-  
-  ##
-  # Apaga ou restaura da lixeira
-  ##
-  def restore_or_destroy(status, type)
-    id = params[:id]
-    message_ids = id.split('$')
-    message_ids.each { |message_id| change_message_status(message_id, status) if has_permission(message_id) }
-
-    search_text = params.include?('search') ? params[:search] : ''
-    type = params.include?('type') ? params[:type] : type
-
-    redirect_to action: :index, type: type, search: search_text
-  end
-
-  ##
-  # Muda status para lido/nao lido - pode receber um id ou varios separados por $
-  ##
-  def change_indicator_reading
-    id = params[:id]
-    new_status = params[:new_status]
-
-    if id != ""
-      # eh apenas um id
-      if id.index(",").nil?
-        if has_permission(id)
-          if new_status == "read"
-            change_message_status(id,'read')
-          else
-            change_message_status(id,'unread')
-          end
-        end
-      else
-        # mais de um id
-        deleted_id = id.split(",")
-        deleted_id.each { |i|
-          if has_permission(i)
-            if new_status == "read"
-              change_message_status(i,'read')
-            else
-              change_message_status(i,'unread')
-            end
-          end
-        }
-      end
-    end
-
-    type = params[:type]
-
-    search_text = params[:search].nil? ? "" : params[:search]
-
-    if type.nil?
-      redirect_to :action => 'show', :id => id, :search => search_text
-    else
-      redirect_to :action => 'index', :type => type, :search => search_text
+  ## [read, unread, trash, restore]
+  def change_status
+    begin
+      params[:id].split(',').map(&:to_i).each { |i| change_message_status(i, params[:new_status]) }
+      render json: {success: true}
+    rescue
+      render json: {success: false}, status: :unprocessable_entity
     end
   end
 
@@ -402,35 +340,28 @@ class MessagesController < ApplicationController
     return @contacts
   end
 
-  # marca mensagem(ns) como lida (read), nao lida (unread), excluida (trash)
   def change_message_status(message_id, new_status = 'read')
-    # busca mensagem para esse usuario
-
+    # pra marcar como nao lida (zerar 2o bit) realiza E logico:   & 0b11111101
+    # pra marcar como lida (1 no 2o bit)      realiza  OU logico: | 0b00000010
+    # pra marcar como excluida (1 no 3o bit) realiza  OU logico: | 0b00000100
+    # pra marcar como nao exc (zerar 3o bit) realiza E logico:   & 0b11111011   ***** A FAZER: mover para inbox *****
     UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).all? { |m|
-      # pra marcar como nao lida (zerar 2o bit) realiza E logico:   & 0b11111101
-      # pra marcar como lida (1 no 2o bit)      realiza  OU logico: | 0b00000010
-      # pra marcar como excluida (1 no 3o bit) realiza  OU logico: | 0b00000100
-      # pra marcar como nao exc (zerar 3o bit) realiza E logico:   & 0b11111011   ***** A FAZER: mover para inbox *****
-
       status = m.status.to_i
-
-      case new_status
+      m.status = case new_status
       when 'read'
-        m.status = status | Message_Filter_Read
+        status | Message_Filter_Read
       when 'unread'
-        m.status = status & Message_Filter_Unread
+        status & Message_Filter_Unread
       when 'trash'
-        m.status = status | Message_Filter_Trash
+        status | Message_Filter_Trash
       when 'restore'
-        m.status = status & Message_Filter_Restore
+        status & Message_Filter_Restore
       end
 
       m.save
 
-      # atualiza qtde de msgs nao lidas
       @unread = unread_inbox(current_user.id, @message_tag)
     }
-
   end
 
   # retorna dados da mensagem passada (mensagem, remetente, destinatarios, arquivos) e marca como lida

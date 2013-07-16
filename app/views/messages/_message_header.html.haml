@@ -2,16 +2,22 @@
   - css_class_inbox  = (@type == "index")    ? "message_general_div_option_active" : "message_general_div_option"
   - css_class_outbox = (@type == "outbox")   ? "message_general_div_option_active" : "message_general_div_option"
   - css_class_trash  = (@type == "trashbox") ? "message_general_div_option_active" : "message_general_div_option"
+
   #menu_inbox{:class => css_class_inbox}
     %h2
-      = link_to (content_tag(:i, nil, :class=>'icon-inbox')),{:action => 'index', :type => 'index'}
-      = link_to t(:message_inbox), {:action => 'index',:type => 'index', :bread => :menu_messages},{:class=>'message_link_menu'}
-      = label_tag 'lb_number', "(#{@unread})", :class => "text_alert_message" unless @unread==0
+      = link_to({action: 'index', type: 'index', bread: :menu_messages}) do
+        = content_tag(:i, nil, class: 'icon-inbox')
+        %span.text_alert_message= t(:message_inbox)
+        %span#count_msgs_unread.text_alert_message="(#{@unread})"
+
   #menu_outbox{:class => css_class_outbox}
     %h2
-      = link_to (content_tag(:i, nil, :class=>'icon-outbox')),{:action => 'index', :type => 'outbox'}
-      = link_to t(:message_outbox), {:action => 'index', :type => 'outbox', :bread => :menu_messages},{:class=>'message_link_menu'}
+      = link_to({action: 'index', type: 'outbox', bread: :menu_messages}) do
+        = content_tag(:i, nil, :class=>'icon-outbox')
+        %span.message_link_menu= t(:message_outbox)
+
   #menu_trash{:class => css_class_trash}
     %h2
-      = link_to (content_tag(:i, nil, :class=>'icon-trash')),{:action => 'index', :type => 'trashbox'}
-      = link_to t(:message_trash),  {:action => 'index', :type => 'trashbox', :bread => :menu_messages},{:class=>'message_link_menu'}
+      = link_to({action: 'index', type: 'trashbox', bread: :menu_messages}) do
+        = content_tag(:i, nil, :class=>'icon-trash')
+        %span.message_link_menu= t(:message_trash)

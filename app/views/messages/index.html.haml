@@ -1,23 +1,24 @@
 .block_wrapper
 
-  = render 'message_header'
-  -#= render 'message_options'
+  = render "message_header"
 
   .block_content.block_white.color_text_grey
     .align-left.padding-checkbox
-      %input{:type => 'checkbox', :id => 'ckb_all'}
+      %input{:type => "checkbox", :id => "ckb_all"}
       Visualizar: Todos
       %i.icon-arrow-down-3
     .align-right
-      = link_to ({:action => 'new', :search => @search_text}), :class =>'message_link btn btn_main', 'data-tooltip' => t(:message_new) do
+      = link_to ({:action => "new", :search => @search_text}), :class =>"message_link btn btn_main", "data-tooltip" => t(:message_new) do
         %i.icon-plus-3
-      #link_mark_as_unread.btn{'data-tooltip' => t(:message_mark_as_unread), id: 'mark_as_unread'}
+      #mark_as_unread.btn{"data-tooltip" => t(:message_mark_as_unread), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "unread")}
+        %i.icon-checkmark
+      #mark_as_read.btn{"data-tooltip" => t(:message_mark_as_read), :"data-new-status" => "read", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "read")}
         %i.icon-checkmark
       - if @type != "trashbox"
-        = link_to(message_path(@message.try(:id) || ':id'), {id: :link_remove_message, class: 'btn', 'data-tooltip' => t(:message_delete), method: :delete, confirm: t(:message_confirm)}) do
+        #remove_message.btn{:"data-tooltip" => t(:message_delete), :"data-new-status" => "trash", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "trash")}
           %i.icon-trash
       - if @type == "trashbox"
-        = link_to(restore_message_path(@message.try(:id) || ':id'), {id: :link_restore_message, class: 'btn', 'data-tooltip' => t(:message_restore), method: :put}) do
+        #restore_message.btn{:"data-tooltip" => t(:message_restore), :"data-new-status" => "restore", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "restore")}
           %i.icon-trash
     .clearfix
 
@@ -64,10 +65,38 @@
     =raw render_pagination_bar(@messages_count, p)
 
 :javascript
-  $(document).ready(function(){
-    dropdown_menu();
 
-    // selecionar todos
+
+
+  function show_reads() {
+    $('.message_read').parents('tr').fadeIn(1);
+  }
+
+  function hide_reads() {
+    $('.message_read').parents('tr').fadeOut(1);
+  }
+
+  function show_unreads() {
+    $('.message_unread').parents('tr').fadeIn(1);
+  }
+
+  function hide_unreads() {
+    $('.message_unread').parents('tr').fadeOut(1);
+  }
+
+  function show_all() {
+    show_reads();
+    show_unreads();
+  }
+
+  function selected_messages() {
+    return $('[type=checkbox]:checked.selected_messages').map(function(){ return $(this).data('message-id') }).get();
+  }
+
+
+  $(function(){
+    // dropdown_menu();
+
     $('#ckb_all').click(function(){
       var c = this.checked;
       $('[type=checkbox]').each(function(){
@@ -75,33 +104,35 @@
       });
     });
 
-    $('#mark_as_read').click(function(){
-      // todos os ids selecionados
-      var message_ids = $('[type=checkbox]:checked').not(':first').map(function(){ return $(this).data('message-id') }).get();
-      if (!message_ids.length) {
+    $('div#mark_as_read, div#mark_as_unread, div#remove_message, div#restore_message').click(function(){
+      var message_ids = selected_messages();
+      if (!message_ids.length)
         return false;
-      }
-      console.log(message_ids);
+
+      var url = $(this).data('link-udpate-status').replace(':id', message_ids);
+      var new_status = $(this).data('new-status');
+      var msgs = $('[type=checkbox]:checked.selected_messages');
+
+      $.ajax({
+        type: 'PUT',
+        url: url,
+        success: function(response) {
+          if ($.inArray(new_status, ['trash', 'restore']) != -1) // comportamento diferente
+            msgs.parents('tr').fadeOut(500, function(){ $(this).remove() });
+          else {
+            var links = $('.td_subject a', msgs.parents('tr'));
+            if (new_status == "read")
+              links.addClass('message_read').removeClass('message_unread');
+            else
+              links.addClass('message_unread').removeClass('message_read');
+          }
+
+          // contar entrada corretamente
+          $('span#count_msgs_unread').html(['(', $('.message_unread').length, ')'].join(''));
+        }
+      });
+
     });
 
-    $("#check_read").click(function() {
-      $(".selected_messages").each(function(i){
-        style_message = $(this).next("#message_style").val();
-        if (style_message == "message_read")
-          $(this).attr("checked","checked");
-        else
-           $(this).removeAttr("checked");
-      });
-   });
-
-   $("#check_unread").click(function() {
-     $(".selected_messages").each(function(i){
-        style_message = $(this).next("#message_style").val();
-        if (style_message == "message_read")
-          $(this).removeAttr("checked");
-        else
-          $(this).attr("checked","checked");
-      });
-   });
 
   });

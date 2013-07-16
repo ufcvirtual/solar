@@ -168,10 +168,9 @@ Solar::Application.routes.draw do
     get :list, on: :collection
   end
 
-  resources :messages do
+  resources :messages, except: [:destroy, :update] do
     member do
-      put :restore
-      put :change_indicator_reading
+      put "new_status/:new_status", to: "messages#change_status", as: :change_status
     end
     collection do
       get :download_message_file
