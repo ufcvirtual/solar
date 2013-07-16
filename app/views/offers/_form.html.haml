@@ -1,7 +1,8 @@
-- dont_have_enroll_end_date, dont_have_enroll_start_date = @offer.enrollment_schedule.try(:end_date).nil?, @offer.enrollment_schedule.try(:start_date).nil?
-- enroll_end_date = (dont_have_enroll_end_date ? '' : "#{l(@offer.enrollment_schedule.try(:end_date).to_date, format: :datepicker)}")
+- doesnt_have_enroll_end_date, doesnt_have_enroll_start_date = @offer.enrollment_schedule.try(:end_date).nil?, @offer.enrollment_schedule.try(:start_date).nil?
+- doesnt_have_period_end_date, doesnt_have_period_start_date = @offer.period_schedule.try(:end_date).nil?, @offer.period_schedule.try(:start_date).nil?
+- enroll_end_date = (doesnt_have_enroll_end_date ? '' : "#{l(@offer.enrollment_schedule.try(:end_date).to_date, format: :datepicker)}")
 = simple_form_for @offer do |f|
-  .form-inputs
+  .form-inputs.block_content
     = f.association :semester, as: :hidden, input_html: {value: @offer.semester_id}
     = f.association :course
     = f.association :curriculum_unit
@@ -9,25 +10,27 @@
     %div
       = f.label :offer
       = f.simple_fields_for :period_schedule, defaults: {label: false, as: :string, input_html: {size: 10}} do |s|
-        .offer_schedule_dates= s.input :start_date, required: false
+        .offer_schedule_dates= s.input :start_date, required: false, input_html: {value: (doesnt_have_period_start_date ? '' : "#{l(@offer.period_schedule.try(:start_date).to_date, format: :datepicker)}")}
         .offer_schedule_dates.label= t(:to, scope: [:schedules])
-        .offer_schedule_dates= s.input :end_date
+        .offer_schedule_dates= s.input :end_date, input_html: {value: (doesnt_have_period_end_date ? '' : "#{l(@offer.period_schedule.try(:end_date).to_date, format: :datepicker)}")}
+      .offer_schedule_dates.error= @offer.period_schedule.errors[:start_date].first || @offer.period_schedule.errors[:end_date].first unless @offer.period_schedule.nil? or @offer.period_schedule.errors.full_messages.empty? 
 
     %div
       = f.label :enrollment
       = f.simple_fields_for :enrollment_schedule, defaults: {label: false, as: :string, input_html: {size: 10}} do |s|
-        .enrollment_schedule_dates= s.input :start_date, required: false, input_html: {value: (dont_have_enroll_start_date ? '' : "#{l(@offer.enrollment_schedule.try(:start_date).to_date, format: :datepicker)}")}
+        .enrollment_schedule_dates= s.input :start_date, required: false, input_html: {value: (doesnt_have_enroll_start_date ? '' : "#{l(@offer.enrollment_schedule.try(:start_date).to_date, format: :datepicker)}")}
 
-        %span#enrollment_schedule_end_date{class: (dont_have_enroll_end_date ? 'invisible' : '')}
+        %span#enrollment_schedule_end_date{class: (doesnt_have_enroll_end_date ? 'invisible' : '')}
           .enrollment_schedule_dates.label= t(:to, scope: [:schedules])
           .enrollment_schedule_dates= s.input :end_date, input_html: {value: enroll_end_date }
+        .enrollment_schedule_dates.error= @offer.enrollment_schedule.errors[:start_date].first || @offer.enrollment_schedule.errors[:end_date].first unless @offer.enrollment_schedule.nil? or @offer.enrollment_schedule.errors.full_messages.empty?
       .end_date_check_box
-        = check_box_tag :have_end_date, true, not(dont_have_enroll_end_date)
+        = check_box_tag :have_end_date, true, not(doesnt_have_enroll_end_date)
         = t('.enable_end_date')
 
-  .form-actions.right_buttons
-    = button_tag t(:cancel), class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel), id: "cancel", onclick: "javascript:removeLightBox();"
-    = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", alt: t(:save), id: "save"
+    .form-actions.right_buttons
+      = button_tag t(:cancel), class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel), id: "cancel", onclick: "javascript:removeLightBox();"
+      = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", alt: t(:save), id: "save"
 
 :javascript
 

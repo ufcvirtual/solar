@@ -1,6 +1,6 @@
 - start_date, end_date = Date.today - 1.month, Date.today + 1.month
 = simple_form_for @semester do |f|
-  .form-inputs
+  .form-inputs.block_content
     %div{style: "margin-top: 5px"}= f.input :name
 
     %div
@@ -9,6 +9,7 @@
         .offer_schedule_dates= s.input :start_date, input_html: { id: 'offer_start_date', value: "#{l((@semester.offer_schedule.try(:start_date) || start_date).to_date, format: :datepicker)}" }
         .offer_schedule_dates.label= t(:to, scope: [:schedules])
         .offer_schedule_dates= s.input :end_date, input_html: { id: 'offer_end_date', value: "#{l((@semester.offer_schedule.try(:end_date) || end_date).to_date, format: :datepicker)}" }
+      .offer_schedule_dates.error= @semester.offer_schedule.errors[:start_date].first || @semester.offer_schedule.errors[:end_date].first unless @semester.offer_schedule.errors.full_messages.empty?
 
     %div
       - dont_have_enroll_end_date = @semester.enrollment_schedule.try(:end_date).nil?
@@ -18,13 +19,14 @@
         %span#enrollment_schedule_end_date{class: (dont_have_enroll_end_date ? 'invisible' : '')}
           .enrollment_schedule_dates.label= t(:to, scope: [:schedules])
           .enrollment_schedule_dates= s.input :end_date, input_html: { id: 'enrollment_end_date' }
+      .enrollment_schedule_dates.error= @semester.enrollment_schedule.errors[:start_date].first || @semester.enrollment_schedule.errors[:end_date].first unless @semester.enrollment_schedule.errors.full_messages.empty?
       .end_date_check_box
         = check_box_tag :have_end_date, true, not(dont_have_enroll_end_date)
         = t('.enable_end_date')
 
-  .form-actions.right_buttons
-    = button_tag t(:cancel), class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel), id: "cancel", onclick: "javascript:removeLightBox();"
-    = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", alt: t(:save), id: "save"
+    .form-actions.right_buttons
+      = button_tag t(:cancel), class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel), id: "cancel", onclick: "javascript:removeLightBox();"
+      = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", alt: t(:save), id: "save"
 
 :javascript
 

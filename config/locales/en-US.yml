@@ -1199,14 +1199,15 @@
       created: "Offer wasn't created."
       updated: "Offer wasn't updated."
       deleted: "Offer wasn't deleted."
+      already_exist: already exists an offer with informed data
     list:
-      type: "Type"
-      course: "Course"
-      curriculum_unit: "Curriculum Unit"
-      offer: "Offer"
-      offer_edit: "Edit Offer"
-      offer_delete: "Delete Offer"
-      same_dates_from_offer: "Same dates from offer"
+      type: Type
+      course: Course
+      curriculum_unit: Curriculum Unit
+      offer: Offer
+      offer_edit: Edit Offer
+      offer_delete: Delete Offer
+      same_dates_from_offer: Same dates from offer
     index:
       offers: Offers
       new: New
@@ -1245,7 +1246,7 @@
 
   schedules:
     errors:
-      current_year: can't have year previous to current
+      current_year: can't precede current year
       current_date: can't be earlier than today
     to: to
 

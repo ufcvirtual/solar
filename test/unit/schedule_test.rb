@@ -34,4 +34,23 @@ class  ScheduleTest < ActiveSupport::TestCase
     assert (Schedule.exists?(schedule2))
   end
 
+  test "nao pode ser de datas passadas" do
+    schedule = Schedule.create(start_date: Date.today - 1.year, end_date: Date.today, verify_current_date: true)
+
+    assert schedule.invalid?
+    assert_equal schedule.errors[:start_date].first, I18n.t(:current_year, scope: [:schedules, :errors])
+
+    schedule = Schedule.create(start_date: Date.today - 1.month, end_date: Date.today - 1.day, verify_current_date: true)
+
+    assert schedule.invalid?
+    assert_equal schedule.errors[:end_date].first, I18n.t(:current_date, scope: [:schedules, :errors])
+  end
+
+  test "data final obrigatoria quando passado parametro" do
+    schedule = Schedule.create(start_date: Date.today - 1.month, end_date: nil, check_end_date: true)
+
+    assert schedule.invalid?
+    assert_equal schedule.errors[:end_date].first, I18n.t(:blank, :scope => [:activerecord, :errors, :messages])
+  end
+
 end

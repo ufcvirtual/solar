@@ -3771,3 +3771,12 @@ select[disabled] {
     text-align: left;
     color: $label_color;
 }
+
+.offer_schedule_dates .error, .enrollment_schedule_dates .error{
+    display: none;
+}
+
+.offer_schedule_dates.error, .enrollment_schedule_dates.error{
+    color: #E03838;
+    vertical-align: inherit;
+}

@@ -1359,21 +1359,22 @@
 
   offers:
     success:
-      created: "Oferta criada com sucesso."
-      updated: "Oferta atualizada com sucesso."
-      deleted: "Oferta deletada com sucesso."
+      created: Oferta criada com sucesso.
+      updated: Oferta atualizada com sucesso.
+      deleted: Oferta deletada com sucesso.
     error:
-      created: "Não foi possível criar oferta."
-      updated: "Não foi possível atualizar oferta."
-      deleted: "Não foi possível deletar oferta."
+      created: Não foi possível criar oferta.
+      updated: Não foi possível atualizar oferta.
+      deleted: Não foi possível deletar oferta.
+      already_exist: já existe uma oferta com os dados informados
     list:
-      type: "Tipo"
-      course: "Curso"
-      curriculum_unit: "Unidade Curricular"
-      offer: "Oferta"
-      offer_edit: "Editar Oferta"
-      offer_delete: "Deletar Oferta"
-      same_dates_from_offer: "Mesmas datas do semestre"
+      type: Tipo
+      course: Curso
+      curriculum_unit: Unidade Curricular
+      offer: Oferta
+      offer_edit: Editar Oferta
+      offer_delete: Deletar Oferta
+      same_dates_from_offer: Mesmas datas do semestre
     index:
       offers: Ofertas
       new: Nova
@@ -1412,8 +1413,8 @@
 
   schedules:
     errors:
-      current_year: não pode ter ano anterior ao corrente
-      current_date: não pode ser anterior à data de hoje
+      current_year: não deve preceder o ano atual
+      current_date: não deve preceder o dia de hoje
     to: à
 
   #Facebook

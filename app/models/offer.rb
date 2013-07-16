@@ -13,6 +13,9 @@ class Offer < ActiveRecord::Base
   has_many :assignments, through: :allocation_tag
 
   after_create :set_default_lesson_module # modulo default da oferta
+
+  before_destroy :can_destroy?
+
   after_destroy { |record|
     record.period_schedule.destroy if record.period_schedule.try(:can_destroy?)
     record.enrollment_schedule.destroy if record.enrollment_schedule.try(:can_destroy?)
@@ -22,11 +25,20 @@ class Offer < ActiveRecord::Base
   validates :curriculum_unit, presence: true, if: "course.nil?"
   validates :semester, presence: true
 
-  validate :check_period
+  validate :check_period, :must_be_unique
 
   accepts_nested_attributes_for :period_schedule, :enrollment_schedule
 
   attr_accessible :period_schedule_attributes, :enrollment_schedule_attributes, :curriculum_unit_id, :course_id, :semester_id
+
+  def must_be_unique
+    equal_offers = Offer.find_all_by_course_id_and_curriculum_unit_id_and_semester_id(course_id, curriculum_unit_id, semester_id)
+    errors.add(:curriculum_unit_id, I18n.t(:already_exist, scope: [:offers, :error])) if (@new_record and equal_offers.size > 0) or equal_offers.first.try(:id) != self.id
+  end
+
+  def can_destroy?
+    not(has_any_lower_association?)
+  end
 
   def check_period
     self.period_schedule.check_end_date = true if period_schedule and period_schedule.start_date

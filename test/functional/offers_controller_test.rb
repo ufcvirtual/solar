@@ -19,8 +19,7 @@ class OffersControllerTest < ActionController::TestCase
     get :new, semester_id: s.id
     assert_template :new
 
-    c_quimica = courses(:c2)
-    uc_quimica = curriculum_units(:r3)
+    c_quimica, uc_quimica = courses(:c2), curriculum_units(:r3)
 
     assert_difference("Offer.count", 1) do
       post :create, {offer: {course_id: c_quimica.id, curriculum_unit_id: uc_quimica.id, semester_id: s.id}}
@@ -33,8 +32,7 @@ class OffersControllerTest < ActionController::TestCase
     get :new, semester_id: s.id
     assert_template :new
 
-    c_quimica = courses(:c2)
-    uc_quimica = curriculum_units(:r3)
+    c_quimica, uc_quimica = courses(:c2), curriculum_units(:r3)
 
     assert_difference(["Offer.count", "Schedule.count"], 1) do
       post :create, {offer: {course_id: c_quimica.id, curriculum_unit_id: uc_quimica.id, semester_id: s.id, enrollment_schedule_attributes: {start_date: Date.today}}}
@@ -42,8 +40,7 @@ class OffersControllerTest < ActionController::TestCase
   end
 
   test "erro ao tentar criar oferta sem semestre" do
-    c_quimica = courses(:c2)
-    uc_quimica = curriculum_units(:r3)
+    c_quimica, uc_quimica = courses(:c2), curriculum_units(:r3)
 
     assert_no_difference("Offer.count") do
       post :create, {offer: {course_id: c_quimica.id, curriculum_unit_id: uc_quimica.id}}
@@ -56,8 +53,7 @@ class OffersControllerTest < ActionController::TestCase
   test "criar oferta - acesso parcial" do
     s = semesters(:s2013_1)
 
-    c_letras   = courses(:c1)
-    uc_quimica = curriculum_units(:r3)
+    c_letras, uc_quimica = courses(:c1), curriculum_units(:r3)
 
     assert_difference("Offer.count") do
       post :create, {offer: {course_id: c_letras.id, curriculum_unit_id: uc_quimica.id, semester_id: s.id}}
@@ -68,8 +64,7 @@ class OffersControllerTest < ActionController::TestCase
   test "nao criar oferta - sem acesso" do
     s = semesters(:s2013_1)
 
-    c_letras    = courses(:c1)
-    uc_int_ling = curriculum_units(:r1)
+    c_letras, uc_int_ling = courses(:c1), curriculum_units(:r1)
 
     assert_no_difference("Offer.count") do
       post :create, {offer: {course_id: c_letras.id, curriculum_unit_id: uc_int_ling.id, semester_id: s.id}, format: :json}
@@ -87,16 +82,6 @@ class OffersControllerTest < ActionController::TestCase
     get :new, semester_id: s.id, format: :json
     assert_response :unauthorized
   end
-
-  # test "nao criar ofertas - periodo de matricula invalido" do
-  #   s = semesters(:s2013_1)
-  #   c_quimica = courses(:c2)
-  #   uc_quimica = curriculum_units(:r3)
-
-  #   assert_no_difference(["Offer.count", "Schedule.count"]) do
-  #     post :create, {offer: {course_id: c_quimica.id, curriculum_unit_id: uc_quimica.id, semester_id: s.id}, enrollment_schedule: {start_date: s.period_schedule.end_date + 1.month}}
-  #   end
-  # end
 
   ##
   # Edit/Update
