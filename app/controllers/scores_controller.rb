@@ -11,13 +11,17 @@ class ScoresController < ApplicationController
 
     curriculum_unit_id, allocation_tag_id = active_tab[:url][:id], active_tab[:url][:allocation_tag_id]
     @group = AllocationTag.find(allocation_tag_id).groups.first
+    @allocation_tag = AllocationTag.find(allocation_tag_id)
 
     raise CanCan::AccessDenied if @group.nil? # turma nao existe
     # authorize! :related_with_allocation_tag, AllocationTag.user_allocation_tag_related_with_class(@group.id, current_user.id) # verifica se pode acessar turma
 
     @curriculum_unit = CurriculumUnit.find(curriculum_unit_id)
-    @assignments = Assignment.all(:joins => [:allocation_tag, :schedule],
-      :conditions => ["allocation_tags.group_id = #{@group.id}"], :select => ["assignments.id", "schedule_id", "type_assignment", "name"]) # atividades da turma
+    @assignments = Assignment.all(:joins => [{academic_allocations: :allocation_tag}, :schedule],
+      :conditions => ["allocation_tags.group_id = #{@group.id}"], 
+      :select => ["assignments.id", "schedule_id", "type_assignment", "name"])
+
+       # atividades da turma
     allocation_tags = AllocationTag.find_related_ids(allocation_tag_id).join(',')
     @students = Assignment.list_students_by_allocations(allocation_tags)
     @scores = Score.students_information(@students, @assignments, curriculum_unit_id, @group.allocation_tag.id) # dados dos alunos nas atividades

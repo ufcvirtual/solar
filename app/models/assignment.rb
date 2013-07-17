@@ -81,9 +81,11 @@ class Assignment < ActiveRecord::Base
     schedule.end_date.to_date < Date.today
   end
 
-  def extra_time?(user_id)
+
+  def extra_time?(allocation_tag,user_id)
     (allocation_tag.is_user_class_responsible?(user_id) and closed?)
   end
+
 
   def on_evaluation_period?(allocation_tag, user_id)
     define_end_evaluation_date(allocation_tag) if end_evaluation_date.nil? or end_evaluation_date.blank?
@@ -92,7 +94,7 @@ class Assignment < ActiveRecord::Base
 
   ## Verifica período que o responsável pode alterar algo na atividade
   def assignment_in_time?(allocation_tag, user_id)
-    can_access_assignment = allocation_tag.is_user_class_responsible?(user_id) and (closed? and extra_time?(user_id)) # verifica se possui tempo extra
+    can_access_assignment = allocation_tag.is_user_class_responsible?(user_id) and (closed? and extra_time?(allocation_tag, user_id)) # verifica se possui tempo extra
     (verify_date_range(schedule.start_date, schedule.end_date, Date.current) or can_access_assignment)
   end
 
@@ -152,9 +154,10 @@ class Assignment < ActiveRecord::Base
     return (class_responsible or (student_of_class and can_access))
   end
 
-  def students_without_groups
-    students_in_class   = Assignment.list_students_by_allocations(self.allocation_tag_id).map(&:id)
-    students_with_group = self.group_assignments.map(&:group_participants).flatten.map(&:user_id)
+  def students_without_groups(allocation_tag)
+    academic_allocation  = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id,self.id, 'Assignment') 
+    students_in_class   = Assignment.list_students_by_allocations(allocation_tag.id).map(&:id)
+    students_with_group = academic_allocation.group_assignments.map(&:group_participants).flatten.map(&:user_id)
     students            = [students_in_class - students_with_group].flatten.compact.uniq
     return students.empty? ? [] : User.select('id, name').find(students)
   end
