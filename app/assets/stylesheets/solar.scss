@@ -3766,10 +3766,17 @@ select[disabled] {
     color: $label_color;
 }
 
-.end_date_check_box{
+[class*="_check_box"]{
     margin-left: 135px;
     text-align: left;
     color: $label_color;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.end_date_check_box {
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 .offer_schedule_dates .error, .enrollment_schedule_dates .error{
@@ -3779,4 +3786,9 @@ select[disabled] {
 .offer_schedule_dates.error, .enrollment_schedule_dates.error{
     color: #E03838;
     vertical-align: inherit;
+}
+
+.offer_schedule_dates.info , .enrollment_schedule_dates.info{
+    vertical-align: bottom;
+    color: black;
 }

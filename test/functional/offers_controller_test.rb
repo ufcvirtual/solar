@@ -39,16 +39,6 @@ class OffersControllerTest < ActionController::TestCase
     end
   end
 
-  test "erro ao tentar criar oferta sem semestre" do
-    c_quimica, uc_quimica = courses(:c2), curriculum_units(:r3)
-
-    assert_no_difference("Offer.count") do
-      post :create, {offer: {course_id: c_quimica.id, curriculum_unit_id: uc_quimica.id}}
-    end
-
-    assert_template :new
-  end
-
   # neste caso, o usuário terá permissão à uc, mas não ao curso escolhidos
   test "criar oferta - acesso parcial" do
     s = semesters(:s2013_1)
