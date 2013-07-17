@@ -14,8 +14,8 @@ class AssignmentsController < ApplicationController
     authorize! :professor, Assignment
 
     allocation_tags_ids    = params[:allocation_tags_ids] || [active_tab[:url][:allocation_tag_id]]
-    @individual_activities = allocation_tags_ids.collect{|at| Assignment.find_all_by_allocation_tag_id_and_type_assignment(at, Assignment_Type_Individual)}.flatten.uniq
-    @group_activities      = allocation_tags_ids.collect{|at| Assignment.find_all_by_allocation_tag_id_and_type_assignment(at, Assignment_Type_Group)}.flatten.uniq
+    @individual_activities = Assignment.joins(:academic_allocations).where(type_assignment: Assignment_Type_Individual,  academic_allocations: {allocation_tag_id:  allocation_tags_ids})
+    @group_activities      = Assignment.joins(:academic_allocations).where(type_assignment: Assignment_Type_Group,       academic_allocations: {allocation_tag_id:  allocation_tags_ids})
 
     render :layout => false if params[:allocation_tags_ids]
   end
