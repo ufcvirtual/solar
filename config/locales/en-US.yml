@@ -1251,7 +1251,7 @@
     errors:
       current_year: can't precede current year
       current_date: can't be earlier than today
-    to: to
+    to: "to "
 
 #Facebook
 

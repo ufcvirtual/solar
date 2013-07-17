@@ -1418,7 +1418,7 @@
     errors:
       current_year: não deve preceder o ano atual
       current_date: não deve preceder o dia de hoje
-    to: à
+    to: "à "
 
   #Facebook
 
