@@ -326,7 +326,12 @@ class AssignmentsController < ApplicationController
     # verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
     raise CanCan::AccessDenied unless (assignment.nil? or sent_assignment.nil? or assignment.user_can_access_assignment(current_user.id, sent_assignment.user_id, sent_assignment.group_assignment_id))
     redirect = request.referer.nil? ? root_url(:only_path => false) : request.referer
-    download_file(redirect, file_path, file_name)
+
+    if(file_path)
+      download_file(redirect, file_path, file_name)
+    else
+      redirect_to redirect, alert: t(:file_error_nonexistent_file)
+    end
   end
 
   ##

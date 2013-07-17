@@ -24,6 +24,8 @@ module FilesHelper
   def compress(opts = {})
     require 'zip/zip'
 
+    some_file_doesnt_exist = false
+
     ## arquivos e o caminho principal nao foram indicados
     return if not(opts[:files].present?) and not(opts[:under_path].present?)
 
@@ -56,13 +58,24 @@ module FilesHelper
           make_tree(opts[:files], opts[:name_zip_file]).each do |dir, files|
             zipfile.mkdir(dir.to_s)
             # adiciona todos os arquivos do nível em questão no zip
-            files.map { |file| zipfile.add(File.join(dir.to_s, file.attachment_file_name), file.attachment.path.to_s) if File.exists?(file.attachment.path.to_s) } 
+            files.map do |file| 
+              if File.exists?(file.attachment.path.to_s)
+                zipfile.add(File.join(dir.to_s, file.attachment_file_name), file.attachment.path.to_s) 
+              else
+                some_file_doesnt_exist = true
+              end
+            end
           end # each
         end # zip
       end # if
     end # if
 
-    return archive
+    if some_file_doesnt_exist
+      FileUtils.rm archive, force: true # remove o zip criado
+      return false
+    else
+      return archive
+    end
   end # compress
 
   ##

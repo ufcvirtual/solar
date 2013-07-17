@@ -159,10 +159,15 @@ class LessonsController < ApplicationController
 
       if verify_lessons_to_download(params[:lessons_ids].split(',').flatten, true)
         zip_file_path = compress(:under_path => @all_files_paths, :folders_names => @lessons_names)
-        zip_file_name = zip_file_path.split("/").last
-
         redirect      = request.referer.nil? ? root_url(:only_path => false) : request.referer
-        download_file(redirect, zip_file_path, zip_file_name)
+
+        if(zip_file_path)
+          zip_file_name = zip_file_path.split("/").last
+          download_file(redirect, zip_file_path, zip_file_name)
+        else
+          redirect_to redirect, alert: t(:file_error_nonexistent_file)
+        end
+        
       else
          render nothing: true
       end

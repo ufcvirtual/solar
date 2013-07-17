@@ -94,7 +94,11 @@ class SupportMaterialFilesController < ApplicationController
       end
 
       path_zip = compress({ files: all_files, table_column_name: 'attachment_file_name' })
-      download_file(redirect_error, path_zip)
+      if(path_zip)
+        download_file(redirect_error, path_zip)
+      else
+        redirect_to redirect_error, alert: t(:file_error_nonexistent_file)
+      end
     else # baixando um arquivo individualmente
 
       # se for no cadastro de material de apoio ou um único arquivo, deve ter permissão em todas as allocation_tags (mesmo que seja apenas a do arquivo)
