@@ -1,6 +1,6 @@
 .message_external_div
-  -#= render 'message_header'
-  -#= render 'message_options'
+  / = render 'message_header'
+  / = render 'message_options'
 
   .block_title
     %h2= @message.subject
@@ -12,6 +12,7 @@
         %i.icon-reply-all
       = link_to ({:action => 'new', :id => @message.id, :target => ''}), :class=>'btn', 'data-tooltip'=>t(:message_route) do
         %i.icon-forward
+
     .align-right
       = link_to ({:action => 'new', :search => @search_text}), :class =>'btn', 'data-tooltip' => t(:message_new) do
         %i.icon-plus-3

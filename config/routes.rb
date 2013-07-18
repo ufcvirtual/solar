@@ -172,7 +172,13 @@ Solar::Application.routes.draw do
     member do
       put "new_status/:new_status", to: "messages#change_status", as: :change_status
     end
+
     collection do
+      get :index, type: "inbox"
+      get :inbox, action: :index, type: "inbox", as: :inbox
+      get :outbox, action: :index, type: "outbox", as: :outbox
+      get :trashbox, action: :index, type: "trashbox", as: :trashbox
+
       get :download_message_file
       post :ajax_get_contacts
       post :send_message

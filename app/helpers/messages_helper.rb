@@ -1,6 +1,6 @@
 module MessagesHelper
 
-  def return_messages(userid, type='index', tag=nil, search_text='')
+  def return_messages(userid, type='inbox', tag=nil, search_text='')
 
     query_fields = "
     SELECT DISTINCT ON (m.id, m.send_date)
@@ -45,7 +45,7 @@ module MessagesHelper
     case type
     when 'trashbox'
       query_messages += " AND cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' AS boolean) "     #filtra se eh excluida
-    when 'index'
+    when 'inbox'
       query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' AS boolean) " #filtra se nao eh origem (eh destino)
       query_messages += " AND NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' AS boolean) " #nao esta na lixeira
     when 'outbox'

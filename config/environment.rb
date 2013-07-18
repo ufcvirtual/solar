@@ -39,11 +39,12 @@ Assignment_Type_Group      = 1
 Max_Tabs_Open = 4
 
 # filtros para mensagem
-Message_Filter_Sender  = 0b00000001   # 00000001 = eh origem            (1o bit = 1)
-Message_Filter_Read    = 0b00000010   # filtro com 00000010 -> lida     (2o bit = 1)
-Message_Filter_Unread  = 0b11111101   # filtro com 11111101 -> nao lida (2o bit = 0)
-Message_Filter_Trash   = 0b00000100   # filtro com 00000100 -> estah na lixeira   (3o bit = 1)
-Message_Filter_Restore = 0b11111011   # filtro com 11111011 -> retirar da lixeira (3o bit = 0)
+Message_Filter_Receiver = 0b00000000   # 00000000 -> destino   (1o bit = 0)
+Message_Filter_Sender   = 0b00000001   # 00000001 -> origem    (1o bit = 1)
+Message_Filter_Unread   = 0b11111101   # 11111101 -> nao lida  (2o bit = 0)
+Message_Filter_Read     = 0b00000010   # 00000010 -> lida      (2o bit = 1)
+Message_Filter_Restore  = 0b11111011   # 11111011 -> ñ lixeira (3o bit = 0)
+Message_Filter_Trash    = 0b00000100   # 00000100 -> lixeira   (3o bit = 1)
 
 # Tipos de perfil
 Profile_Type_No_Type            = 0

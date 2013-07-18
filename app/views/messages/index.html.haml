@@ -4,69 +4,61 @@
 
   .block_content.block_white.color_text_grey
     .align-left.padding-checkbox
-      %input{:type => "checkbox", :id => "ckb_all"}
+      %input#ckb_all{type: "checkbox"}
       Visualizar: Todos
       %i.icon-arrow-down-3
     .align-right
       = link_to ({:action => "new", :search => @search_text}), :class =>"message_link btn btn_main", "data-tooltip" => t(:message_new) do
         %i.icon-plus-3
-      #mark_as_unread.btn{"data-tooltip" => t(:message_mark_as_unread), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "unread")}
-        %i.icon-checkmark
-      #mark_as_read.btn{"data-tooltip" => t(:message_mark_as_read), :"data-new-status" => "read", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "read")}
-        %i.icon-checkmark
+      - if not ["trashbox", "outbox"].include?(@type)
+        #mark_as_unread.btn{"data-tooltip" => t(:message_mark_as_unread), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "unread")}
+          %i.icon-checkmark
+        #mark_as_read.btn{"data-tooltip" => t(:message_mark_as_read), :"data-new-status" => "read", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "read")}
+          %i.icon-checkmark
       - if @type != "trashbox"
         #remove_message.btn{:"data-tooltip" => t(:message_delete), :"data-new-status" => "trash", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "trash")}
           %i.icon-trash
-      - if @type == "trashbox"
+      - else
         #restore_message.btn{:"data-tooltip" => t(:message_restore), :"data-new-status" => "restore", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "restore")}
-          %i.icon-trash
+          %i.icon-plus-2
     .clearfix
 
   .block_content
 
-    - if !@messages.nil?
-      - if @messages.length > 0 
-        %table.message_div_list
-          - @messages.each do |message|
-            %tr.message_line
+    - if @messages.count > 0
+      %table.message_div_list
+        - @messages.each do |message|
+          %tr.message_line
+            %td.message_line_check
+              = check_box_tag 'checkbox_message', message.id, checked = false, {class: 'selected_messages', :"data-message-id" => message.id}
+              - css_class = message.was_read?(current_user.id, @type) ? "message_read" : "message_unread"
+              = hidden_field_tag 'message_style', css_class
 
-              %td.message_line_check
-                = check_box_tag 'checkbox_message', message.id, checked = false, {:class => 'selected_messages', :"data-message-id" => message.id}
-                - if message.was_read == 't' 
-                  - css_class = "message_read" 
-                - else 
-                  - css_class = "message_unread" 
-                = hidden_field_tag 'message_style',css_class
+            %td.td_subject
+              / - if !@search_text.empty?
+              /   - if message.was_sent == 't'
+              /     = image_tag("icon_message_sent_small.png", :alt => " ")
+              /   - else
+              /     = image_tag("icon_message_inbox_small.png", :alt => " ")
 
-              %td.td_subject
-                - if !@search_text.empty?
-                  - if message.was_sent == 't' 
-                    = image_tag("icon_message_sent_small.png", :alt => " ")
-                  - else 
-                    = image_tag("icon_message_inbox_small.png", :alt => " ")
+              - if @message_tag.nil?
+                - if label = message.label(current_user.id)
+                  %span.message_label= label
 
-                - if @message_tag.nil?
-                  - if !message.label.nil?
-                    %span.message_label=message.label
-
-                = link_to message.subject,  {:action => 'show', :id => message.id, :search => @search_text},{:class => css_class}
-              %td.td_attachment= content_tag(:i, nil, :class=>'icon-paperclip') unless (message.has_attachment=="0")
-              %td.td_sender= link_to message.sender,  {:action => 'show', :id => message.id, :search => @search_text}
-              %td.td_time= link_to l(message.send_date, :format => :short),  {:action => 'show', :id => message.id, :search => @search_text}
-      - else
-        .text_none= t(:message_none)
+              = link_to message.subject,  {:action => 'show', :id => message.id, :search => @search_text},{:class => css_class}
+            %td.td_attachment= content_tag(:i, nil, :class=>'icon-paperclip') if message.has_attachment?
+            %td.td_sender= link_to message.sent_by.name,  {:action => 'show', :id => message.id, :search => @search_text}
+            %td.td_time= link_to l(message.send_date, :format => :short),  {:action => 'show', :id => message.id, :search => @search_text}
     - else
       .text_none= t(:message_none)
 
-  .message_div_navigation
-    - t = @type.nil? ? "" : @type
-    - s = @search_text.nil? ? "" : @search_text
-    - p = 'type=' << t << '&search=' << s
-    =raw render_pagination_bar(@messages_count, p)
+  / .message_div_navigation
+  /   - t = @type.nil? ? "" : @type
+  /   - s = @search_text.nil? ? "" : @search_text
+  /   - p = "type=#{t}&search=#{s}"
+  /   =raw render_pagination_bar(@messages_count, p)
 
 :javascript
-
-
 
   function show_reads() {
     $('.message_read').parents('tr').fadeIn(1);
@@ -131,8 +123,5 @@
           $('span#count_msgs_unread').html(['(', $('.message_unread').length, ')'].join(''));
         }
       });
-
     });
-
-
   });

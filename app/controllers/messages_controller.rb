@@ -1,26 +1,21 @@
-include FilesHelper
-include MessagesHelper
-include CurriculumUnitsHelper
-include MysolarHelper
-
 class MessagesController < ApplicationController
-  before_filter :prepare_for_group_selection, :only => [:index]
-  before_filter :message_data
-  before_filter :get_curriculum_units
-  before_filter :prepare_for_pagination, :only => [:index]
+  include FilesHelper
+  include MessagesHelper
+  include CurriculumUnitsHelper
+  include MysolarHelper
 
-  # nao precisa usar load_and_authorize_resource pq todos tem acesso
   Path_Message_Files = Rails.root.join('media', 'messages')
 
-  # listagem de mensagens (entrada, enviados, lixeira)
+  # before_filter :message_data, only: [:index]
+  # before_filter :get_curriculum_units, only: [:index]
+  before_filter :prepare_for_group_selection, only: [:index]
+  before_filter :prepare_for_pagination, only: [:index]
+
+  # nao precisa usar load_and_authorize_resource pq todos tem acesso
+
   def index
-    @type = params[:type]
-
-    @search_text = params[:search].nil? ? "" : params[:search]
-    @type = 'search' unless @search_text.empty?
-    @type = 'index' if @type.nil?
-
-    @messages = return_messages(current_user.id, @type, @message_tag, @search_text.split(" "))
+    @type = params[:type] || "inbox"
+    @messages = Message.send("user_#{@type}", current_user.id)
   end
 
   # edicao de mensagem (nova, responder, encaminhar)
@@ -39,7 +34,7 @@ class MessagesController < ApplicationController
 
       @subject = @message.subject
       sender = get_sender(@original_message_id)
-      @files = get_files(@original_message_id)
+      @files = Message.find(@original_message_id).files
 
       # destinatarios
       all_recipients,all_recipients_name, all_recipients_html = '', '', ''
@@ -132,7 +127,7 @@ class MessagesController < ApplicationController
 
             # verifica permissao na mensagem original
             if has_permission(original_message_id)
-              files = get_files(original_message_id)
+              files = Message.find(@original_message_id).files
               unless files.nil?
                 files.each do |f|
                   message_file = MessageFile.create({
@@ -213,9 +208,8 @@ class MessagesController < ApplicationController
   ##
   def show
     if params.include?('id') and not params[:id].nil?
-      message_id    = params[:id]
       @show_message = 'show'
-      get_message_data(message_id)
+      get_message_data(params[:id])
     end
 
     @search_text = params.include?('search') ? params[:search] : ''
@@ -244,9 +238,9 @@ class MessagesController < ApplicationController
   end
 
   # unidades curriculares do usuario logado
-  def get_curriculum_units
-    @curriculum_units_user = load_curriculum_unit_data()
-  end
+  # def get_curriculum_units
+  #   @curriculum_units_user = load_curriculum_unit_data()
+  # end
 
   # retorna (1 a varios) destinatarios
   def get_recipients(message_id)
@@ -256,35 +250,30 @@ class MessagesController < ApplicationController
       :conditions => "user_messages.message_id = #{message_id} AND NOT cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)")
   end
 
-  # retorna (0 a varios) arquivos de anexo
-  def get_files(message_id)
-    return MessageFile.find :all, :conditions => ["message_id = ?", message_id]
-  end
-
   private
 
   # verifica aba aberta, se Home ou se aba de unidade curricular
   # se Home, traz todas; senao, traz com filtro da unidade curricular
-  def message_data
-    unless active_tab[:url][:context] == Context_General
+  # def message_data
+  #   unless active_tab[:url][:context] == Context_General
 
-      allocation_tag_id = active_tab[:url][:allocation_tag_id]
-      allocations       = AllocationTag.find_related_ids(allocation_tag_id).join(', ');
+  #     allocation_tag_id = active_tab[:url][:allocation_tag_id]
+  #     allocations       = AllocationTag.find_related_ids(allocation_tag_id).join(', ');
 
-      # relacionado diretamente com a allocation_tag
-      group     = AllocationTag.find(allocation_tag_id).group
-      al_offer  = AllocationTag.where("id IN (#{allocations}) AND offer_id IS NOT NULL").first
-      offer     = al_offer.nil? ? nil : al_offer.offer
-      al_c_unit = AllocationTag.where("id IN (#{allocations}) AND curriculum_unit_id IS NOT NULL").first
-      curriculum_unit = al_c_unit.nil? ? CurriculumUnit.find(active_tab[:url][:id]) : al_c_unit.curriculum_unit
-      @message_tag    = get_label_name(group, offer, curriculum_unit)
-    else
-      @message_tag    = nil
-    end
+  #     # relacionado diretamente com a allocation_tag
+  #     group     = AllocationTag.find(allocation_tag_id).group
+  #     al_offer  = AllocationTag.where("id IN (#{allocations}) AND offer_id IS NOT NULL").first
+  #     offer     = al_offer.nil? ? nil : al_offer.offer
+  #     al_c_unit = AllocationTag.where("id IN (#{allocations}) AND curriculum_unit_id IS NOT NULL").first
+  #     curriculum_unit = al_c_unit.nil? ? CurriculumUnit.find(active_tab[:url][:id]) : al_c_unit.curriculum_unit
+  #     @message_tag    = get_label_name(group, offer, curriculum_unit)
+  #   else
+  #     @message_tag    = nil
+  #   end
 
-    # qtde de msgs nao lidas
-    @unread = unread_inbox(current_user.id, @message_tag)
-  end
+  #   # qtde de msgs nao lidas
+  #   @unread = unread_inbox(current_user.id, @message_tag)
+  # end
 
   def update_tab_values
     # pegando id da sessao - unidade curricular aberta
@@ -360,7 +349,7 @@ class MessagesController < ApplicationController
 
       m.save
 
-      @unread = unread_inbox(current_user.id, @message_tag)
+      # @unread = Message.user_inbox(current_user.id, only_unread = true)
     }
   end
 
@@ -371,7 +360,7 @@ class MessagesController < ApplicationController
       @message = Message.find(message_id)
       @sender  = get_sender(message_id)
       @recipients  = get_recipients(message_id)
-      @files = get_files(message_id)
+      @files = Message.find(message_id).files
 
       change_message_status(message_id,'read')
     else
