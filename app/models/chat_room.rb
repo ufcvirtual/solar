@@ -4,6 +4,6 @@ class ChatRoom < ActiveRecord::Base
   has_many :chat_messages
   has_many :chat_participants
 
-  # belongs_to :academic_allocation
+  has_many :academic_allocations, as: :academic_tool
 
 end
