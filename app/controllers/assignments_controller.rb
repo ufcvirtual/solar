@@ -14,8 +14,8 @@ class AssignmentsController < ApplicationController
     authorize! :professor, Assignment
 
     allocation_tags_ids    = params[:allocation_tags_ids] || [active_tab[:url][:allocation_tag_id]]
-    @individual_activities = Assignment.joins(:academic_allocations).where(type_assignment: Assignment_Type_Individual,  academic_allocations: {allocation_tag_id:  allocation_tags_ids})
-    @group_activities      = Assignment.joins(:academic_allocations).where(type_assignment: Assignment_Type_Group,       academic_allocations: {allocation_tag_id:  allocation_tags_ids})
+    @individual_activities = Assignment.joins(:academic_allocations, :schedule).where(type_assignment: Assignment_Type_Individual,  academic_allocations: {allocation_tag_id:  allocation_tags_ids}).order(:start_date)
+    @group_activities      = Assignment.joins(:academic_allocations, :schedule).where(type_assignment: Assignment_Type_Group,       academic_allocations: {allocation_tag_id:  allocation_tags_ids}).order(:start_date)
 
     render :layout => false if params[:allocation_tags_ids]
   end
@@ -144,13 +144,13 @@ class AssignmentsController < ApplicationController
   ##
   def information
     @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  #arquivos que fazem parte da descrição da atividade
+    @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
     if @assignment.type_assignment == Assignment_Type_Group
       academic_allocations    = AcademicAllocation.find_all_by_academic_tool_id(@assignment.id)  
       @groups                 = GroupAssignment.find_all_by_academic_allocation_id(academic_allocations)
-      @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
       @students_without_group = @assignment.students_without_groups(@allocation_tag)
     else
-      allocation_tags = AllocationTag.find_related_ids(@assignment.allocation_tag_id).join(',')
+      allocation_tags = @allocation_tag.related.join(',')
       @students       = Assignment.list_students_by_allocations(allocation_tags) #alunos participantes da atividade
     end
   end

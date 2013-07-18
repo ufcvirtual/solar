@@ -42,8 +42,9 @@ module AssignmentsHelper
 
   ## Informações do andamento da atividade de um aluno
   def assignment_participant_info(student_id, assignment_id)
-    situation               = Assignment.assignment_situation_of_student(assignment_id, student_id)
-    sent_assignment         = SentAssignment.find_by_assignment_id_and_user_id(assignment_id, student_id)
+    assignment              = Assignment.find(assignment_id)
+    situation               = assignment.assignment_situation_of_student(student_id)
+    sent_assignment         = assignment.sent_assignment_by_user_id_or_group_assignment_id(student_id, nil)
     have_comments           = ((not sent_assignment.nil?) and (not sent_assignment.assignment_comments.empty?))
     grade                   = (sent_assignment.nil? or sent_assignment.grade.nil?) ? '-' : sent_assignment.grade
     sent_assignment_files   = sent_assignment.nil? ? [] : sent_assignment.assignment_files
