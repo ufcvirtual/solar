@@ -1298,6 +1298,12 @@
         code: "Código"
 
   editions:
+    academic:
+      courses: "Cursos"
+      curriculum_units: "Unidades Curriculares"
+      semesters: "Semestres"
+      groups: "Turmas"
+      modules: "Módulos"
     index:
       edition: Edição
       filter: Filtro

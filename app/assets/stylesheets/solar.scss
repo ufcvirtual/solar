@@ -3492,8 +3492,7 @@ fieldset legend {
     font-family: 'Ubuntu Condensed';
 }
 
-
-.uc_item {
+@mixin item_buttom{
     position: relative;
     float: left;
     margin: 10px 5px 20px 5px;
@@ -3502,21 +3501,22 @@ fieldset legend {
     text-decoration: none;
     font-size: 9pt;
     width: 100px;
+    a{
+        color: $color_main;
+        width: auto;
+    }
+    .btn{
+        text-align: center;
+        padding: 12px;
+        border-radius: 10px;
+        margin: 0 auto 5px auto;
+        display: block;
+        width: 50px;
+    }
 }
 
-.uc_item a{
-    color: $color_main;
-    width: auto;
-}
-
-.uc_item .btn {
-    text-align: center;
-    padding: 12px;
-    // border: 1px solid #DEDEDE;
-    border-radius: 10px;
-    margin: 0 auto 5px auto;
-    display: block;
-    width: 50px;
+.uc_item, .academic_item {
+    @include item_buttom;
 }
 
 .block_title.edition {

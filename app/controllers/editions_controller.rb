@@ -13,4 +13,35 @@ class EditionsController < ApplicationController
   	render :partial => "items"
   end
 
+  # GET /editions/academic
+  def academic
+    @types = CurriculumUnitType.all
+  end
+
+  def courses
+    @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
+    @courses = Course.all
+  end
+
+  def curriculum_units
+    @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
+    @uc = @type.curriculum_units
+  end
+
+  def semesters
+    @periods = [["Ativo", "active"], ["Todos", "all"]]
+    @periods += Schedule.joins(:semester_periods).map {|p| [p.start_date.year, p.end_date.year] }.flatten.uniq.sort! {|x,y| y <=> x} # desc
+
+    @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
+    @ucs = @type.curriculum_units
+    @courses = Course.all
+  end
+
+  def groups
+    @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
+    @ucs = @type.curriculum_units
+    @courses = Course.all
+    @semesters = Semester.all
+  end
+
 end

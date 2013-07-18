@@ -108,7 +108,14 @@ Solar::Application.routes.draw do
   resources :courses
 
   resources :editions, only: [:index] do
-    get :items, on: :collection
+    collection do
+      get :items
+      get :academic
+      get "academic/:curriculum_unit_type_id/courses", to: "editions#courses", as: :academic_courses
+      get "academic/:curriculum_unit_type_id/curriculum_units", to: "editions#curriculum_units", as: :academic_uc
+      get "academic/:curriculum_unit_type_id/semesters", to: "editions#semesters", as: :academic_semesters
+      get "academic/:curriculum_unit_type_id/groups", to: "editions#groups", as: :academic_groups
+    end
   end
 
   resources :lessons do

@@ -1,0 +1,67 @@
+= javascript_include_tag "autocomplete"
+= stylesheet_link_tag "autocomplete"
+= stylesheet_link_tag "http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"
+
+.edition
+  %fieldset#allocation_tag_selection
+    %legend= t(".filter")
+    .filter_notice= t(".select_something")
+    .filter_type
+      = select_tag :type, options_from_collection_for_select(@types, 'id', 'description'), include_blank: true
+
+  %fieldset.academic.invisible
+    .items
+      .courses
+        / - if can? :index, Course
+        .academic_item{:"data-link-to" => academic_courses_editions_path(curriculum_unit_type_id: ':uc_type_id')}
+          = link_to(content_tag(:i, nil, class: 'icon-book big'), "#", class: 'btn')
+          = link_to t(".courses"), "#"
+
+      .curriculum_units
+        - if can? :index, CurriculumUnit
+          .academic_item{:"data-link-to" => academic_uc_editions_path(curriculum_unit_type_id: ':uc_type_id')}
+            = link_to(content_tag(:i, nil, class: 'icon-book big'), "#", class: 'btn')
+            = link_to "uc/module", "#", id: "uc_name"
+
+      .semesters
+        - if can? :index, Semester
+          .academic_item{:"data-link-to" => academic_semesters_editions_path(curriculum_unit_type_id: ':uc_type_id')}
+            = link_to(content_tag(:i, nil, class: 'icon-book big'), "#", class: 'btn')
+            = link_to t(".semesters"), "#"
+
+      .groups
+        - if can? :list, Group
+          .academic_item{:"data-link-to" => academic_groups_editions_path(curriculum_unit_type_id: ':uc_type_id')}
+            = link_to(content_tag(:i, nil, class: 'icon-book big'), "#", class: 'btn')
+            = link_to t(".groups"), "#"
+
+
+/ 1 | Curso de Graduacao Presencial      
+/ 2 | Curso de Graduacao a Distancia     
+/ 3 | Curso Livre                        
+/ 4 | Curso de Extensao                  
+/ 5 | Curso de Pos-Graduacao Presencial  
+/ 6 | Curso de Pos-Graduacao a Distancia 
+
+:javascript
+
+  $(function(){
+    $("#type")
+      .combobox()
+      .change(function() {
+        $('.academic').show();
+        $('.curriculum_units a#uc_name').html("#{t('.curriculum_units')}");
+        $('.curriculum_units').show();
+
+        var id = parseInt($(this).val());
+        if (id == 3)
+          $('.curriculum_units').hide();
+        else if (id == 4)
+          $('.curriculum_units a#uc_name').html("#{t('.modules')}");
+    });
+
+    $('.academic_item').click(function(){
+      window.location.href = $(this).data('link-to').replace(':uc_type_id', $('#type').val());
+    });
+
+  });
