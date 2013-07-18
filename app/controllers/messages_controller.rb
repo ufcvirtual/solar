@@ -6,8 +6,8 @@ class MessagesController < ApplicationController
 
   Path_Message_Files = Rails.root.join('media', 'messages')
 
-  # before_filter :message_data, only: [:index]
-  # before_filter :get_curriculum_units, only: [:index]
+  before_filter :message_data, only: [:new]
+  before_filter :get_curriculum_units, only: [:new]
   before_filter :prepare_for_group_selection, only: [:index]
   before_filter :prepare_for_pagination, only: [:index]
 
@@ -15,7 +15,7 @@ class MessagesController < ApplicationController
 
   def index
     @type = params[:type] || "inbox"
-    @messages = Message.send("user_#{@type}", current_user.id)
+    @messages = Message.send("user_#{@type}", current_user.id) # box do usuario pelo tipo
   end
 
   # edicao de mensagem (nova, responder, encaminhar)
@@ -237,10 +237,9 @@ class MessagesController < ApplicationController
     render :layout => false
   end
 
-  # unidades curriculares do usuario logado
-  # def get_curriculum_units
-  #   @curriculum_units_user = load_curriculum_unit_data()
-  # end
+  def get_curriculum_units
+    @curriculum_units_user = load_curriculum_unit_data()
+  end
 
   # retorna (1 a varios) destinatarios
   def get_recipients(message_id)
@@ -254,26 +253,24 @@ class MessagesController < ApplicationController
 
   # verifica aba aberta, se Home ou se aba de unidade curricular
   # se Home, traz todas; senao, traz com filtro da unidade curricular
-  # def message_data
-  #   unless active_tab[:url][:context] == Context_General
+  def message_data
+    unless active_tab[:url][:context] == Context_General
+      allocation_tag_id = active_tab[:url][:allocation_tag_id]
+      allocations       = AllocationTag.find_related_ids(allocation_tag_id).join(', ');
+      # relacionado diretamente com a allocation_tag
+      group     = AllocationTag.find(allocation_tag_id).group
+      al_offer  = AllocationTag.where("id IN (#{allocations}) AND offer_id IS NOT NULL").first
+      offer     = al_offer.nil? ? nil : al_offer.offer
+      al_c_unit = AllocationTag.where("id IN (#{allocations}) AND curriculum_unit_id IS NOT NULL").first
+      curriculum_unit = al_c_unit.nil? ? CurriculumUnit.find(active_tab[:url][:id]) : al_c_unit.curriculum_unit
+      @message_tag    = get_label_name(group, offer, curriculum_unit)
+    else
+      @message_tag    = nil
+    end
+    # qtde de msgs nao lidas
+    @unread = unread_inbox(current_user.id, @message_tag)
+  end
 
-  #     allocation_tag_id = active_tab[:url][:allocation_tag_id]
-  #     allocations       = AllocationTag.find_related_ids(allocation_tag_id).join(', ');
-
-  #     # relacionado diretamente com a allocation_tag
-  #     group     = AllocationTag.find(allocation_tag_id).group
-  #     al_offer  = AllocationTag.where("id IN (#{allocations}) AND offer_id IS NOT NULL").first
-  #     offer     = al_offer.nil? ? nil : al_offer.offer
-  #     al_c_unit = AllocationTag.where("id IN (#{allocations}) AND curriculum_unit_id IS NOT NULL").first
-  #     curriculum_unit = al_c_unit.nil? ? CurriculumUnit.find(active_tab[:url][:id]) : al_c_unit.curriculum_unit
-  #     @message_tag    = get_label_name(group, offer, curriculum_unit)
-  #   else
-  #     @message_tag    = nil
-  #   end
-
-  #   # qtde de msgs nao lidas
-  #   @unread = unread_inbox(current_user.id, @message_tag)
-  # end
 
   def update_tab_values
     # pegando id da sessao - unidade curricular aberta
@@ -348,8 +345,6 @@ class MessagesController < ApplicationController
       end
 
       m.save
-
-      # @unread = Message.user_inbox(current_user.id, only_unread = true)
     }
   end
 
