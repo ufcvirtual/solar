@@ -4,7 +4,6 @@ Funcionalidade: Exibir Portfolio
   Como um usuario do solar
   Eu quero visualizar o portfolio
   Para poder acessá-los
-
 Cenário: Exibir Portfolio e atividade como aluno
     Dado que estou logado com o usuario "aluno1" e com a senha "123456"
         E que estou em "Meu Solar"
@@ -18,9 +17,9 @@ Cenário: Exibir Portfolio e atividade como aluno
         E eu deverei ver "Descrição"
         E eu deverei ver o link "Atividade III"
         E I should see a table with the following rows
-            | Descrição                 | Período                 | Situação     | Nota           | Comentários |
-            | Atividade III*            | *                       | Corrigido    | 6.3            | *           |
-            | Atividade individual VI * | 13/08/2011 * 17/09/2011 | Não Enviado  | -              | *           | 
+            | Descrição                 | Período                 | Situação     | Nota           | Comentários |            
+            | Atividade individual VI * | 13/08/2011 * 17/09/2011 | Não Enviado  | -              | *           |
+            | Atividade III*            | *                       | Corrigido    | 6.3            | *           | 
     Quando eu clicar no link "Atividade III"
         Então eu deverei ver "Atividade III"
             E eu deverei ver "Descrição"
@@ -47,8 +46,8 @@ Dado que estou logado com o usuario "prof" e com a senha "123456"
         E eu deverei ver o link "Atividade III"
         E I should see a table with the following rows
             | Descrição                 | Período                 |
-            | Atividade III             | *                       |
             | Atividade individual VI   | 13/08/2011 - 17/09/2011 |
+            | Atividade III             | *                       |            
     Quando eu clicar no link "Atividade III"
         Então eu deverei ver "Atividade III"
             E eu deverei ver "Descrição"
