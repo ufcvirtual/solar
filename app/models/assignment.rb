@@ -37,7 +37,7 @@ class Assignment < ActiveRecord::Base
     group_id = (student_group.nil? ? group_id : student_group.id) # se aluno estiver em grupo, recupera id
     sent_assignment = SentAssignment.find_by_assignment_id_and_user_id_and_group_assignment_id(assignment_id, user_id, group_id)
 
-    if assignment.schedule.start_date > Date.current()
+    if assignment.schedule.start_date.to_date > Date.current
       situation = "not_started"  
     elsif (not sent_assignment.nil? and  not sent_assignment.grade.nil?)
       situation = "corrected"
@@ -45,9 +45,9 @@ class Assignment < ActiveRecord::Base
       situation = "without_group"
     elsif (not sent_assignment.nil? and sent_assignment.assignment_files.size > 0)
       situation = "sent"
-    elsif (sent_assignment.nil? or sent_assignment.assignment_files.size == 0) and assignment.schedule.end_date > Date.current
+    elsif (sent_assignment.nil? or sent_assignment.assignment_files.size == 0) and assignment.schedule.end_date.to_date >= Date.current
       situation = "send"
-    elsif (sent_assignment.nil? or sent_assignment.assignment_files.size == 0) and assignment.schedule.end_date < Date.current
+    elsif (sent_assignment.nil? or sent_assignment.assignment_files.size == 0) and assignment.schedule.end_date.to_date < Date.current
       situation = "not_sent"
     else
       situation = "-"
@@ -57,7 +57,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def closed?
-    schedule.end_date < Date.today
+    schedule.end_date.to_date < Date.today
   end
 
   def extra_time?(user_id)
@@ -72,12 +72,12 @@ class Assignment < ActiveRecord::Base
   ## Verifica período que o responsável pode alterar algo na atividade
   def assignment_in_time?(user_id)
     can_access_assignment = allocation_tag.is_user_class_responsible?(user_id) and (closed? and extra_time?(user_id)) # verifica se possui tempo extra
-    (verify_date_range(schedule.start_date, schedule.end_date, Time.now) or can_access_assignment)
+    (verify_date_range(schedule.start_date, schedule.end_date, Date.current) or can_access_assignment)
   end
 
   ## Verifica se uma data esta em um intervalo de outras
   def verify_date_range(start_date, end_date, date)
-    (date > start_date and date < end_date)
+    (date >= start_date.to_date and date <= end_date.to_date)
   end
 
   ##
