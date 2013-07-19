@@ -3,11 +3,11 @@
     %h2= @message.subject
   .block_content
     .align-left
-      = link_to ({:action => 'new', :id => @message.id, :target => 'sender'}), :class=>'btn btn_main', 'data-tooltip'=>t(:message_reply) do
+      = link_to ({action: 'new', id: @message.id, target: 'sender'}), class: 'btn btn_main', :'data-tooltip' => t(:message_reply) do
         %i.icon-reply
-      = link_to ({:action => 'new', :id => @message.id, :target => 'all'}), :class=>'btn', 'data-tooltip'=>t(:message_reply_all) do
+      = link_to ({action: 'new', id: @message.id, target: 'all'}), class: 'btn', :'data-tooltip' => t(:message_reply_all) do
         %i.icon-reply-all
-      = link_to ({:action => 'new', :id => @message.id, :target => ''}), :class=>'btn', 'data-tooltip'=>t(:message_route) do
+      = link_to ({action: 'new', id: @message.id, target: ''}), class: 'btn', :'data-tooltip' => t(:message_route) do
         %i.icon-forward
 
     .align-right
@@ -28,23 +28,24 @@
     .clearfix
 
   .message_header_new
-    .message_text_to
+    .message_text_from
       %p
         %strong
-          De:
-          =@sender.name + " <" + @sender.email + ">"
+          = t(".from")
+          = [@sender.name, " <", @sender.email, ">"].join
     .message_text_to
       %p
-        Para:
-        - text = ""
-        - @recipients.each do |r|
-          - text += r.nick + " <" + r.email + ">, "
-        = text
-    .message_text_to
-      %p
-        %i.icon-paperclip
-        Anexos:
-        anexo1.jpg
+        = t(".to")
+        = @recipients.map{ |r| [r.nick, " <", r.email, ">"].join }.join(', ')
+
+    - unless (attachments = @message.files).empty?
+      .message_attachments
+        %p
+          %i.icon-paperclip
+          Anexos:
+          - attachments.each do |file|
+            %br/
+            = link_to ['-', file.message_file_name].join, download_file_messages_path(file_id: file.id)
 
   %hr
   .message_div_show
@@ -53,7 +54,7 @@
   %hr
 
   .message_div_navigation
-    %a.btn.align-left{:href => "#{messages_path}"}
+    %a.btn.align-left{href: messages_path}
       %i.icon-arrow-left
       = t(:back)
     .message_page

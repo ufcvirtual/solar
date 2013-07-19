@@ -186,9 +186,10 @@ Solar::Application.routes.draw do
       get :outbox, action: :index, type: "outbox", as: :outbox
       get :trashbox, action: :index, type: "trashbox", as: :trashbox
 
-      get :download_message_file
       post :ajax_get_contacts
       post :send_message
+
+      get "download/file/:file_id", to: "messages#download_files", as: :download_file
     end
   end
 

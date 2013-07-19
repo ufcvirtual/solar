@@ -152,7 +152,7 @@ class MessagesController < ApplicationController
             all_files_destiny = copy_file("", destiny, all_files_destiny, false)
           end if params[:attachment].present?
 
-          sender_message = UserMessage.create!(message_id: new_message.id, user_id: current_user.id, status: 3)
+          sender_message = UserMessage.create!(message_id: new_message.id, user_id: current_user.id, status: Message_Filter_Sender)
           if label_name != ""
             message_label = MessageLabel.find_by_title_and_user_id(label_name,current_user.id)
             message_label = MessageLabel.create!(user_id: current_user.id, title: label_name, label_system: true) if message_label.nil?
@@ -167,7 +167,7 @@ class MessagesController < ApplicationController
           real_receivers = users.map(&:email)
 
           ## criando msgs na caixa de entrada de cada usuario
-          user_messages = UserMessage.create!(users.map {|user| {message_id: new_message.id, user_id: user.id, status: 0}})
+          user_messages = UserMessage.create!(users.map {|user| {message_id: new_message.id, user_id: user.id, status: Message_Filter_Receiver}})
 
           ## cria-se uma msg label para cada usuario
           if label_name != ''
@@ -197,9 +197,9 @@ class MessagesController < ApplicationController
         end
       end
 
-      redirect_to action: 'index', type: 'outbox'
+      redirect_to outbox_messages_path
     else
-      redirect_to action: 'new'
+      redirect_to new_message_path
     end
   end
 
@@ -226,10 +226,8 @@ class MessagesController < ApplicationController
     end
   end
 
-  #download de arquivo anexo
-  def download_message_file
-    file_id = params[:idFile]
-    download_file({:action => 'show', :id => params[:id], :idFile => file_id}, MessageFile.find(file_id).message.path)
+  def download_files
+    download_file(inbox_messages_path, MessageFile.find(params[:file_id]).message.path)
   end
 
   # metodo chamado por ajax para atualizar contatos
