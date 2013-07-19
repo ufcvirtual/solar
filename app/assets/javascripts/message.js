@@ -1,40 +1,41 @@
-function dropdown_menu(){
-  $("#message_menu a, li a").removeAttr('title');
-  $("#message_menu ul").css({display: "none"}); // Opera Fix
-  $("#message_menu li").each(
-    function(){
-      var $sublist = $(this).find('ul');
-      $(this).hover(function(){
-      $sublist.stop().css({overflow:"hidden", height:"auto", display:"none"}).slideDown(400, function(){
-        $(this).css({overflow:"visible", height:"auto", display:"block"});
-      });
-    },
-    function(){
-      $sublist.stop().slideUp(400, function(){
-        $(this).css({overflow:"hidden", display:"none"});
-      });
-    });
-  });
+function show_reads() {
+  $('.message_read').parents('tr').fadeIn(1).removeClass('fade');
 }
 
-function inbox(){
-  //ativa
-  $("#menu_inbox").removeClass("message_general_div_option").addClass("message_general_div_option_active");
-  //desativa
-  $("#menu_outbox").removeClass("message_general_div_option_active").addClass("message_general_div_option");
-  $("#menu_trash").removeClass("message_general_div_option_active").addClass("message_general_div_option");
+function hide_reads() {
+  $('.message_read').parents('tr').fadeOut(1).addClass('fade');
 }
-function outbox(){
-  //ativa
-  $("#menu_outbox").removeClass("message_general_div_option").addClass("message_general_div_option_active");
-  //desativa
-  $("#menu_inbox").removeClass("message_general_div_option_active").addClass("message_general_div_option");
-  $("#menu_trash").removeClass("message_general_div_option_active").addClass("message_general_div_option");
+
+function show_unreads() {
+  $('.message_unread').parents('tr').fadeIn(1).removeClass('fade');
 }
-function trash(){
-  //ativa
-  $("#menu_trash").removeClass("message_general_div_option").addClass("message_general_div_option_active");
-  //desativa
-  $("#menu_inbox").removeClass("message_general_div_option_active").addClass("message_general_div_option");
-  $("#menu_outbox").removeClass("message_general_div_option_active").addClass("message_general_div_option");
+
+function hide_unreads() {
+  $('.message_unread').parents('tr').fadeOut(1).addClass('fade');
+}
+
+function show_all() {
+  $('[type=checkbox]').removeAttr('checked');
+  show_reads();
+  show_unreads();
+}
+
+function selected_messages() {
+  return $('[type=checkbox]:checked.selected_messages').map(function(){ return $(this).data('message-id') }).get();
+}
+
+function message_menu_dropdown() {
+  $('#check_all').click(function(){
+    show_all();
+  });
+
+  $('#check_read').click(function(){
+    hide_unreads();
+    show_reads();
+  });
+
+  $('#check_unread').click(function(){
+    show_unreads();
+    hide_reads();
+  });
 }

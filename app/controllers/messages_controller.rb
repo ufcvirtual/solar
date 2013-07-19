@@ -207,6 +207,7 @@ class MessagesController < ApplicationController
   # Exibe mensagem para leitura apenas
   ##
   def show
+    @box = params[:box]
     if params.include?('id') and not params[:id].nil?
       @show_message = 'show'
       get_message_data(params[:id])

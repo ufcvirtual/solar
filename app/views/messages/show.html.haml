@@ -1,7 +1,4 @@
 .message_external_div
-  / = render 'message_header'
-  / = render 'message_options'
-
   .block_title
     %h2= @message.subject
   .block_content
@@ -16,14 +13,18 @@
     .align-right
       = link_to ({:action => 'new', :search => @search_text}), :class =>'btn', 'data-tooltip' => t(:message_new) do
         %i.icon-plus-3
-      %button#link_mark_as_unread.btn{'data-tooltip' => t(:message_mark_as_unread)}
-        %i.icon-checkmark
-      - if @type != "trashbox"
-        = link_to(message_path(@message.try(:id) || ':id'), {id: :link_remove_message, class: 'btn', 'data-tooltip' => t(:message_delete), method: :delete, confirm: t(:message_confirm)}) do
+
+      - if @box != "trashbox"
+        #mark_as_unread.btn{:"data-tooltip" => t(:message_mark_as_unread), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "unread")}
+          %i.icon-checkmark
+
+        #remove_message.btn{:"data-tooltip" => t(:message_delete), :"data-new-status" => "trash", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "trash")}
           %i.icon-trash
-      - if @type == "trashbox"
-        = link_to(restore_message_path(@message.try(:id) || ':id'), {id: :link_restore_message, class: 'btn', 'data-tooltip' => t(:message_restore), method: :put}) do
-          %i.icon-trash
+
+      - if @box == "trashbox"
+        #restore_message.btn{:"data-tooltip" => t(:message_restore), :"data-new-status" => "restore", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "restore")}
+          %i.icon-plus-2
+
     .clearfix
 
   .message_header_new
@@ -59,3 +60,18 @@
       %i.icon-arrow-left-3
       1 de 4
       %i.icon-arrow-right-3.active
+
+
+:javascript
+
+  $(function(){
+    $('#remove_message, #restore_message, #mark_as_unread').click(function(){
+      $.ajax({
+        type: 'PUT',
+        url: $(this).data('link-udpate-status'),
+        success: function(response) {
+          window.location.href = "#{inbox_messages_path}";
+        }
+      });
+    });
+  });

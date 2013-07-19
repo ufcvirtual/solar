@@ -5,8 +5,19 @@
   .block_content.block_white.color_text_grey
     .align-left.padding-checkbox
       %input#ckb_all{type: "checkbox"}
-      Visualizar: Todos
-      %i.icon-arrow-down-3
+      %ul.message_menu_listbox
+        %li
+          %a{href: "#"}
+            = t(:message_select)
+            = content_tag(:i, nil, class: "icon-arrow-down-3")
+          %ul
+            %li
+              %span#check_all.message_link= t(:message_select_all)
+            %li
+              %span#check_read.message_link= t(:message_select_read)
+            %li
+              %span#check_unread.message_link= t(:message_select_unread)
+
     .align-right
       = link_to ({:action => "new", :search => @search_text}), :class =>"message_link btn btn_main", "data-tooltip" => t(:message_new) do
         %i.icon-plus-3
@@ -45,7 +56,10 @@
                 - if label = message.label(current_user.id)
                   %span.message_label= label
 
-              = link_to message.subject,  {:action => 'show', :id => message.id, :search => @search_text},{:class => css_class}
+              / = link_to message.subject,  {:action => 'show', :id => message.id, :search => @search_text},{:class => css_class}
+
+              = link_to message.subject, message_path(id: message.id, box: @type), class: css_class
+
             %td.td_attachment= content_tag(:i, nil, :class=>'icon-paperclip') if message.has_attachment?
             %td.td_sender= link_to message.sent_by.name,  {:action => 'show', :id => message.id, :search => @search_text}
             %td.td_time= link_to l(message.send_date, :format => :short),  {:action => 'show', :id => message.id, :search => @search_text}
@@ -60,38 +74,13 @@
 
 :javascript
 
-  function show_reads() {
-    $('.message_read').parents('tr').fadeIn(1);
-  }
-
-  function hide_reads() {
-    $('.message_read').parents('tr').fadeOut(1);
-  }
-
-  function show_unreads() {
-    $('.message_unread').parents('tr').fadeIn(1);
-  }
-
-  function hide_unreads() {
-    $('.message_unread').parents('tr').fadeOut(1);
-  }
-
-  function show_all() {
-    show_reads();
-    show_unreads();
-  }
-
-  function selected_messages() {
-    return $('[type=checkbox]:checked.selected_messages').map(function(){ return $(this).data('message-id') }).get();
-  }
-
-
   $(function(){
-    // dropdown_menu();
+    message_menu_dropdown();
 
     $('#ckb_all').click(function(){
       var c = this.checked;
-      $('[type=checkbox]').each(function(){
+      var parents_not_fade = $('[type=checkbox].selected_messages').parents('tr').not('.fade');
+      $('[type=checkbox].selected_messages', parents_not_fade).each(function(){
         this.checked = c;
       });
     });

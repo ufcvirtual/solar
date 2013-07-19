@@ -13,11 +13,11 @@
   #menu_outbox{:class => css_class_outbox}
     %h2
       = link_to(outbox_messages_path(bread: :menu_messages)) do
-        = content_tag(:i, nil, :class=>'icon-outbox')
+        = content_tag(:i, nil, class: 'icon-outbox')
         %span.message_link_menu= t(:message_outbox)
 
   #menu_trash{:class => css_class_trash}
     %h2
       = link_to(trashbox_messages_path(bread: :menu_messages)) do
-        = content_tag(:i, nil, :class=>'icon-trash')
+        = content_tag(:i, nil, class: 'icon-trash')
         %span.message_link_menu= t(:message_trash)
