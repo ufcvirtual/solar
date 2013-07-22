@@ -216,7 +216,9 @@ class AssignmentsController < ApplicationController
     grade       = params['grade'].blank? ? params['grade'] : params['grade'].tr(',', '.') 
     begin
       raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.on_evaluation_period?(current_user.id) # verifica se está no prazo
-      @sent_assignment = SentAssignment.find_or_create_by_assignment_id_and_group_assignment_id_and_user_id(@assignment.id, @group_id, @student_id)
+      @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+    academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(@allocation_tag.id,@assignment.id, 'Assignment')      
+    sent_assignment = SentAssignment.find_or_create_by_academic_allocation_id_and_user_id_and_group_assignment_id(academic_allocation.id, student_id, group_id)
       @sent_assignment.update_attributes!(:grade => grade)
       @situation       = Assignment.assignment_situation_of_student(@assignment.id, @student_id, @group_id)
       respond_to do |format|
@@ -238,10 +240,13 @@ class AssignmentsController < ApplicationController
     comment_text      = params['comment']
     comment_files     = params['comment_files'].nil? ? [] : params['comment_files']
     deleted_files_ids = params['deleted_files'].nil? ? [] : params['deleted_files'][0].split(",") # ["id_arquivo_del1,id_arquivo_del2"] => ["id_arquivo_del1", "id_arquivo_del2"]
-    sent_assignment   = SentAssignment.find_or_create_by_group_assignment_id_and_assignment_id_and_user_id(group_id, @assignment.id, student_id) # busca ou cria sent_assignment ao aluno/grupo
+    @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+    academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(@allocation_tag.id,@assignment.id, 'Assignment')      
+    sent_assignment = SentAssignment.find_or_create_by_academic_allocation_id_and_user_id_and_group_assignment_id(academic_allocation.id, student_id, group_id)
+    #sent_assignment   = SentAssignment.find_or_create_by_group_assignment_id_and_assignment_id_and_user_id(group_id, @assignment.id, student_id) # busca ou cria sent_assignment ao aluno/grupo
 
     begin
-      raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.on_evaluation_period?(current_user.id) # verifica se está no prazo
+      raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.on_evaluation_period?(@allocation_tag,current_user.id) # verifica se está no prazo
       ActiveRecord::Base.transaction do
 
         if comment.nil?
@@ -272,9 +277,10 @@ class AssignmentsController < ApplicationController
   ##
   def remove_comment
     comment = AssignmentComment.find(params[:comment_id])
+    @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
     authorize! :remove_comment, comment
     begin
-      raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.on_evaluation_period?(current_user.id) # verifica se está no prazo
+      raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.on_evaluation_period?(@allocation_tag,current_user.id) # verifica se está no prazo
       ActiveRecord::Base.transaction do
         comment.comment_files.each do |file|
           file.delete_comment_file
