@@ -1438,6 +1438,14 @@
     publish: Publicar
     settings: Configurações
 
+  messages:
+    show:
+      to: "Para: "
+      from: "De: "
+      attachments: "Anexos: "
+    index:
+      filter_selected: "Selecionado: "
+
   #Tutoriais
   tutorial_next: Próximo
   tutorial_previous: Anterior

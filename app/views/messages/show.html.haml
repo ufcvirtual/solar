@@ -42,7 +42,7 @@
       .message_attachments
         %p
           %i.icon-paperclip
-          Anexos:
+          = t(".attachments")
           - attachments.each do |file|
             %br/
             = link_to ['-', file.message_file_name].join, download_file_messages_path(file_id: file.id)
@@ -57,11 +57,6 @@
     %a.btn.align-left{href: messages_path}
       %i.icon-arrow-left
       = t(:back)
-    .message_page
-      %i.icon-arrow-left-3
-      1 de 4
-      %i.icon-arrow-right-3.active
-
 
 :javascript
 

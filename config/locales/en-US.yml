@@ -1265,6 +1265,14 @@
     publish: Post
     settings: Settings 
 
+  messages:
+    show:
+      to: "To: "
+      from: "From: "
+      attachments: "Attachments: "
+    index:
+      filter_selected: "Selected: "
+
   #Tutoriais
   tutorial_next: Next
   tutorial_previous: Previous

@@ -15,7 +15,7 @@ class MessagesController < ApplicationController
 
   def index
     @type = params[:type] || "inbox"
-    @messages = Message.send("user_#{@type}", current_user.id) # box do usuario pelo tipo
+    @messages = Message.send("user_#{@type}", current_user.id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page).order("send_date DESC") # box do usuario pelo tipo
   end
 
   # edicao de mensagem (nova, responder, encaminhar)
