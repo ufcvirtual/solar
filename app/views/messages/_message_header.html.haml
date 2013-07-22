@@ -1,7 +1,7 @@
 #message_general_title.block_title
-  - css_class_inbox  = (@type == "inbox")    ? "message_general_div_option_active" : "message_general_div_option"
-  - css_class_outbox = (@type == "outbox")   ? "message_general_div_option_active" : "message_general_div_option"
-  - css_class_trash  = (@type == "trashbox") ? "message_general_div_option_active" : "message_general_div_option"
+  - css_class_inbox  = (@box == "inbox")    ? "message_general_div_option_active" : "message_general_div_option"
+  - css_class_outbox = (@box == "outbox")   ? "message_general_div_option_active" : "message_general_div_option"
+  - css_class_trash  = (@box == "trashbox") ? "message_general_div_option_active" : "message_general_div_option"
 
   #menu_inbox{:class => css_class_inbox}
     %h2

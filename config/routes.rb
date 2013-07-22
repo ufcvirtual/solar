@@ -177,14 +177,14 @@ Solar::Application.routes.draw do
 
   resources :messages, except: [:destroy, :update] do
     member do
-      put "new_status/:new_status", to: "messages#change_status", as: :change_status
+      put ":box/:new_status", to: "messages#update", as: :change_status, constraints: {box: /(inbox)|(outbox)|(trashbox)/, new_status: /(read)|(unread)|(trash)|(restore)/}
     end
 
     collection do
-      get :index, type: "inbox"
-      get :inbox, action: :index, type: "inbox", as: :inbox
-      get :outbox, action: :index, type: "outbox", as: :outbox
-      get :trashbox, action: :index, type: "trashbox", as: :trashbox
+      get :index, box: "inbox"
+      get :inbox, action: :index, box: "inbox", as: :inbox
+      get :outbox, action: :index, box: "outbox", as: :outbox
+      get :trashbox, action: :index, box: "trashbox", as: :trashbox
 
       post :ajax_get_contacts
       post :send_message

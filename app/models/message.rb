@@ -9,7 +9,17 @@ class Message < ActiveRecord::Base
   # box = [inbox, outbox, trashbox]
   def was_read?(user_id, box)
     return true if box == "outbox"
-    user_messages.where(user_id: user_id).where("cast(user_messages.status & #{Message_Filter_Read} as boolean)").uniq.count > 0
+
+    query = ["cast(user_messages.status & #{Message_Filter_Read} as boolean)"]
+    query << case box
+    when "inbox"
+      # NOT (trashbox, outbox)
+      "NOT cast(user_messages.status & #{Message_Filter_Sender} as boolean) AND NOT cast(user_messages.status & #{Message_Filter_Trash} as boolean)"
+    when "trashbox"
+      "cast(user_messages.status & #{Message_Filter_Trash} as boolean)"
+    end
+
+    user_messages.where(user_id: user_id).where(query.join(" AND ")).uniq.count > 0
   end
 
   def label(user_id)
@@ -24,6 +34,10 @@ class Message < ActiveRecord::Base
     user_messages.where("cast(user_messages.status & #{Message_Filter_Sender} as boolean)").first.user
   end
 
+  def recipients
+    users.where("NOT cast(user_messages.status & #{Message_Filter_Sender} as boolean)")
+  end
+
   def self.user_inbox(user_id, only_unread = false)
     query = ["NOT cast(user_messages.status & #{Message_Filter_Sender + Message_Filter_Trash} as boolean)"] # NOT (sender, trash)
     query << "NOT cast(user_messages.status & #{Message_Filter_Read} as boolean)" if only_unread
@@ -33,7 +47,8 @@ class Message < ActiveRecord::Base
 
   def self.user_outbox(user_id)
     joins(:user_messages).where(user_messages: {user_id: user_id})
-      .where("cast(user_messages.status & #{Message_Filter_Sender} as boolean)").uniq  # IN (sender)
+      .where("cast(user_messages.status & #{Message_Filter_Sender} as boolean)
+        AND NOT cast(user_messages.status & #{Message_Filter_Trash} as boolean)").uniq # sender AND NOT trash
   end
 
   def self.user_trashbox(user_id)

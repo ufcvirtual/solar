@@ -21,16 +21,16 @@
     .align-right
       = link_to new_message_path, class: "message_link btn btn_main", :"data-tooltip" => t(:message_new) do
         %i.icon-plus-3
-      - if not ["trashbox", "outbox"].include?(@type)
-        #mark_as_unread.btn{"data-tooltip" => t(:message_mark_as_unread), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "unread")}
+      - if not ["trashbox", "outbox"].include?(@box)
+        #mark_as_unread.btn{"data-tooltip" => t(:message_mark_as_unread), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "unread", box: @box)}
           %i.icon-checkmark
-        #mark_as_read.btn{"data-tooltip" => t(:message_mark_as_read), :"data-new-status" => "read", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "read")}
+        #mark_as_read.btn{"data-tooltip" => t(:message_mark_as_read), :"data-new-status" => "read", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "read", box: @box)}
           %i.icon-checkmark
-      - if @type != "trashbox"
-        #remove_message.btn{:"data-tooltip" => t(:message_delete), :"data-new-status" => "trash", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "trash")}
+      - if @box != "trashbox"
+        #remove_message.btn{:"data-tooltip" => t(:message_delete), :"data-new-status" => "trash", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "trash", box: @box)}
           %i.icon-trash
       - else
-        #restore_message.btn{:"data-tooltip" => t(:message_restore), :"data-new-status" => "restore", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "restore")}
+        #restore_message.btn{:"data-tooltip" => t(:message_restore), :"data-new-status" => "restore", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "restore", box: @box)}
           %i.icon-plus-2
     .clearfix
 
@@ -39,11 +39,11 @@
     - if @messages.count > 0
       %table.message_div_list
         - @messages.each do |message|
-          - msg_path = message_path(id: message.id, box: @type)
+          - msg_path = message_path(id: message.id, box: @box)
           %tr.message_line
             %td.message_line_check
               = check_box_tag 'checkbox_message', message.id, checked = false, {class: 'selected_messages', :"data-message-id" => message.id}
-              - css_class = message.was_read?(current_user.id, @type) ? "message_read" : "message_unread"
+              - css_class = message.was_read?(current_user.id, @box) ? "message_read" : "message_unread"
               = hidden_field_tag 'message_style', css_class
             %td.td_subject
               / - if !@search_text.empty?

@@ -103,43 +103,6 @@ module MessagesHelper
     return nil unless (@messages_count.to_i > 0)
     return Message.paginate_by_sql(query_all, {:per_page => Rails.application.config.items_per_page, :page => @current_page})
   end
-  
-  def unread_inbox(userid, tag=nil)
-    query_messages = "select count(m.id)n
-
-      from messages m
-        inner join user_messages usm on m.id = usm.message_id
-        inner join users u on usm.user_id=u.id
-        left join user_message_labels uml on usm.id = uml.user_message_id
-        left join message_labels ml on uml.message_label_id = ml.id
-        
-      where
-        usm.user_id = #{userid}
-        and NOT cast( usm.status & '#{Message_Filter_Sender.to_s(2)}' as boolean) 
-        and NOT cast( usm.status & '#{Message_Filter_Read.to_s(2)}' as boolean)
-        and NOT cast( usm.status & '#{Message_Filter_Trash.to_s(2)}' as boolean)"
-
-    #formato: 2011.1|FOR|Física I
-    #monta label para pesquisa que inclua mensagens enviadas por turma/oferta
-    if !tag.nil?
-      tag_slice = tag.split("|")
-      case tag_slice.count()
-      when 3
-        #se label foi criada por aluno ou outro perfil vinculado a turma, possui 3 partes
-        query_label1 = tag_slice[0] << "|" << tag_slice[2]
-        query_messages += " and ( ml.title = '#{query_label1}' or ml.title = '#{tag}' )"
-      when 2
-        #se label foi criada por prof ou outro perfil vinculado a oferta, possui 2 partes
-        query_label1 = tag_slice[0] << "|%|" << tag_slice[1]
-        query_messages += " and ( ml.title ilike '#{query_label1}' or ml.title = '#{tag}' )"
-      else
-        query_messages += " and ( ml.title = '#{tag}' )"
-      end
-    end
-
-    total = Message.find_by_sql(query_messages)
-    return total[0].n.to_i 
-  end
 
   def get_label_name(group, offer, c_unit)
     label_name = []
@@ -167,16 +130,113 @@ module MessagesHelper
     return text
   end
 
-  def get_sender(message_id)
-    User.joins(:user_messages).where(["message_id = ? AND cast(user_messages.status & ? AS boolean)", message_id, Message_Filter_Sender.to_s(2)]).first
-  end
-
   def has_permission(message_id)
     not(UserMessage.where(user_id: current_user.id, message_id: message_id).nil?)
   end
   
   def sent_today?(message_datetime)
     message_datetime === Date.today
+  end
+
+  def change_message_status(message_id, new_status = 'read', box = 'inbox')
+    # pra marcar como nao lida (zerar 2o bit) realiza E logico:   & 0b11111101
+    # pra marcar como lida (1 no 2o bit)      realiza  OU logico: | 0b00000010
+    # pra marcar como excluida (1 no 3o bit) realiza  OU logico: | 0b00000100
+    # pra marcar como nao exc (zerar 3o bit) realiza E logico:   & 0b11111011   ***** A FAZER: mover para inbox *****
+
+    query = ["message_id = #{message_id} AND user_id = #{current_user.id}"]
+    query << case box
+    when "inbox"
+      # NOT (trashbox, outbox)
+      "NOT cast(user_messages.status & #{Message_Filter_Sender} as boolean) AND NOT cast(user_messages.status & #{Message_Filter_Trash} as boolean)"
+    when "outbox"
+      "cast(user_messages.status & #{Message_Filter_Sender} as boolean)"
+    when "trashbox"
+      "cast(user_messages.status & #{Message_Filter_Trash} as boolean)"
+    end
+
+    # Msgs da box
+    message = UserMessage.where(query.join(" AND "))
+    message.each { |m|
+      status = m.status.to_i
+      m.status = case new_status
+      when 'read'
+        status | Message_Filter_Read
+      when 'unread'
+        status & Message_Filter_Unread
+      when 'trash'
+        status | Message_Filter_Trash
+      when 'restore'
+        status & Message_Filter_Restore
+      end
+
+      m.save
+    }
+  end
+
+  def update_tab_values
+    # pegando id da sessao - unidade curricular aberta
+    id = active_tab[:url][:id]
+
+    @curriculum_unit_id = nil
+    @offer_id = nil
+    @group_id = nil
+
+    if !params[:data].nil?
+      data = params[:data].split(";").map{|r|r.strip}
+
+      @curriculum_unit_id = data[0]
+      @offer_id = data[1]
+      @group_id = data[2]
+    else
+      unless active_tab[:url][:context] == Context_General
+        allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+        @curriculum_unit_id = id
+        @offer_id = allocation_tag.offer_id
+        @group_id = allocation_tag.group_id
+      end
+    end
+  end
+
+  # contatos para montagem da tela
+  def get_contacts
+    # pegando id da sessao - unidade curricular aberta
+    id = active_tab[:url][:id]
+    update_tab_values
+
+    # unidade curricular ativa ou home ("")
+    if @curriculum_unit_id == id
+      @curriculum_units_name = (active_tab[:url][:context] == Context_General) ? "" : user_session[:tabs][:active]
+    else
+      @curriculum_units_name = CurriculumUnit.find(@curriculum_unit_id).name unless @curriculum_unit_id.nil?
+    end
+
+    @all_contacts = nil
+    @participants = nil
+    @responsibles = nil
+
+    # se esta com unidade curricular aberta
+    if !@curriculum_unit_id.nil? || !@group_id.nil? || !@offer_id.nil?
+      @participants = message_class_participants current_user.id, @curriculum_unit_id, Profile_Type_Class_Responsible, false,  @offer_id, @group_id
+      @responsibles = message_class_participants current_user.id, @curriculum_unit_id, Profile_Type_Class_Responsible, true,   @offer_id, @group_id
+    else
+      @all_contacts = User.order("name").find(:all, :joins => :user_contacts,
+        :conditions => {:user_contacts => {:user_id => current_user.id}} )
+    end
+
+    @contacts = show_contacts_updated
+    return @contacts
+  end
+
+
+  def copy_file(origin, destiny, all_files_destiny, flag_copy = true)
+    origin  = MessagesController::Path_Message_Files.join(origin)
+    destiny = MessagesController::Path_Message_Files.join(destiny)
+
+    # copia fisicamente arquivo do anexo original
+    FileUtils.cp origin, destiny if flag_copy
+
+    [all_files_destiny, destiny].delete_if {|x| x == '' }.compact.join(';')
   end
 
 end

@@ -6,20 +6,18 @@ class MessagesController < ApplicationController
 
   Path_Message_Files = Rails.root.join('media', 'messages')
 
-  before_filter :message_data, only: [:new]
-  before_filter :get_curriculum_units, only: [:new]
   before_filter :prepare_for_group_selection, only: [:index]
-  before_filter :prepare_for_pagination, only: [:index]
-
-  # nao precisa usar load_and_authorize_resource pq todos tem acesso
 
   def index
-    @type = params[:type] || "inbox"
-    @messages = Message.send("user_#{@type}", current_user.id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page).order("send_date DESC") # box do usuario pelo tipo
+    @box = params[:box] || "inbox"
+    @messages = Message.send("user_#{@box}", current_user.id)
+                        .paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
+                        .order("send_date DESC")
   end
 
   # edicao de mensagem (nova, responder, encaminhar)
   def new
+    @curriculum_units_user = load_curriculum_unit_data
     @type = nil # recebe nil quando esta em pagina de leitura/edicao de msg
     @search_text = params[:search] || ''
     @show_message = 'new'
@@ -29,16 +27,15 @@ class MessagesController < ApplicationController
 
     if not(params[:id].nil?)
       @original_message_id = params.delete(:id)
-
-      get_message_data(@original_message_id)
-
+      @message = Message.find(@original_message_id)
       @subject = @message.subject
-      sender = get_sender(@original_message_id)
-      @files = Message.find(@original_message_id).files
+      sender = @message.sent_by #get_sender(@original_message_id)
+      @files = @message.files
 
       # destinatarios
-      all_recipients,all_recipients_name, all_recipients_html = '', '', ''
-      get_recipients(@original_message_id).each { |r|
+      all_recipients, all_recipients_name, all_recipients_html = '', '', ''
+      recipients = Message.find(@original_message_id).recipients
+      recipients.each { |r|
         all_recipients = [all_recipients, r.name, ' [', r.email, '], '].join unless r.email == current_user.email
         all_jquery = "'#u#{r.id}'"
         all_recipients_html = all_recipients_html << "<span onclick=""$(#{all_jquery}).show();$(this).remove()"" class='message_recipient_box' >#{r.name} [#{r.email}], </span>" unless r.email == current_user.email
@@ -127,7 +124,7 @@ class MessagesController < ApplicationController
 
             # verifica permissao na mensagem original
             if has_permission(original_message_id)
-              files = Message.find(@original_message_id).files
+              files = Message.find(original_message_id).files
               unless files.nil?
                 files.each do |f|
                   message_file = MessageFile.create({
@@ -203,23 +200,15 @@ class MessagesController < ApplicationController
     end
   end
 
-  ##
-  # Exibe mensagem para leitura apenas
-  ##
   def show
-    @box = params[:box]
-    if params.include?('id') and not params[:id].nil?
-      @show_message = 'show'
-      get_message_data(params[:id])
-    end
-
-    @search_text = params.include?('search') ? params[:search] : ''
+    @message = Message.find(params[:id])
+    change_message_status(@message.id, "read", @box = params[:box])
   end
 
   ## [read, unread, trash, restore]
-  def change_status
+  def update
     begin
-      params[:id].split(',').map(&:to_i).each { |i| change_message_status(i, params[:new_status]) }
+      params[:id].split(',').map(&:to_i).each { |i| change_message_status(i, params[:new_status], params[:box]) }
       render json: {success: true}
     rescue
       render json: {success: false}, status: :unprocessable_entity
@@ -233,144 +222,6 @@ class MessagesController < ApplicationController
   # metodo chamado por ajax para atualizar contatos
   def ajax_get_contacts
     get_contacts
-    render :layout => false
+    render layout: false
   end
-
-  def get_curriculum_units
-    @curriculum_units_user = load_curriculum_unit_data()
-  end
-
-  # retorna (1 a varios) destinatarios
-  def get_recipients(message_id)
-    return User.find(:all,
-      :joins => "INNER JOIN user_messages ON users.id = user_messages.user_id",
-      :select => "users.*",
-      :conditions => "user_messages.message_id = #{message_id} AND NOT cast( user_messages.status & '#{Message_Filter_Sender.to_s(2)}' as boolean)")
-  end
-
-  private
-
-  # verifica aba aberta, se Home ou se aba de unidade curricular
-  # se Home, traz todas; senao, traz com filtro da unidade curricular
-  def message_data
-    unless active_tab[:url][:context] == Context_General
-      allocation_tag_id = active_tab[:url][:allocation_tag_id]
-      allocations       = AllocationTag.find_related_ids(allocation_tag_id).join(', ');
-      # relacionado diretamente com a allocation_tag
-      group     = AllocationTag.find(allocation_tag_id).group
-      al_offer  = AllocationTag.where("id IN (#{allocations}) AND offer_id IS NOT NULL").first
-      offer     = al_offer.nil? ? nil : al_offer.offer
-      al_c_unit = AllocationTag.where("id IN (#{allocations}) AND curriculum_unit_id IS NOT NULL").first
-      curriculum_unit = al_c_unit.nil? ? CurriculumUnit.find(active_tab[:url][:id]) : al_c_unit.curriculum_unit
-      @message_tag    = get_label_name(group, offer, curriculum_unit)
-    else
-      @message_tag    = nil
-    end
-    # qtde de msgs nao lidas
-    @unread = unread_inbox(current_user.id, @message_tag)
-  end
-
-
-  def update_tab_values
-    # pegando id da sessao - unidade curricular aberta
-    id = active_tab[:url][:id]
-
-    @curriculum_unit_id = nil
-    @offer_id = nil
-    @group_id = nil
-
-    if !params[:data].nil?
-      data = params[:data].split(";").map{|r|r.strip}
-
-      @curriculum_unit_id = data[0]
-      @offer_id = data[1]
-      @group_id = data[2]
-    else
-      unless active_tab[:url][:context] == Context_General
-        allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
-        @curriculum_unit_id = id
-        @offer_id = allocation_tag.offer_id
-        @group_id = allocation_tag.group_id
-      end
-    end
-  end
-
-  # contatos para montagem da tela
-  def get_contacts
-    # pegando id da sessao - unidade curricular aberta
-    id = active_tab[:url][:id]
-    update_tab_values
-
-    # unidade curricular ativa ou home ("")
-    if @curriculum_unit_id == id
-      @curriculum_units_name = (active_tab[:url][:context] == Context_General) ? "" : user_session[:tabs][:active]
-    else
-      @curriculum_units_name = CurriculumUnit.find(@curriculum_unit_id).name unless @curriculum_unit_id.nil?
-    end
-
-    @all_contacts = nil
-    @participants = nil
-    @responsibles = nil
-
-    # se esta com unidade curricular aberta
-    if !@curriculum_unit_id.nil? || !@group_id.nil? || !@offer_id.nil?
-      @participants = message_class_participants current_user.id, @curriculum_unit_id, Profile_Type_Class_Responsible, false,  @offer_id, @group_id
-      @responsibles = message_class_participants current_user.id, @curriculum_unit_id, Profile_Type_Class_Responsible, true,   @offer_id, @group_id
-    else
-      @all_contacts = User.order("name").find(:all, :joins => :user_contacts,
-        :conditions => {:user_contacts => {:user_id => current_user.id}} )
-    end
-
-    @contacts = show_contacts_updated
-    return @contacts
-  end
-
-  def change_message_status(message_id, new_status = 'read')
-    # pra marcar como nao lida (zerar 2o bit) realiza E logico:   & 0b11111101
-    # pra marcar como lida (1 no 2o bit)      realiza  OU logico: | 0b00000010
-    # pra marcar como excluida (1 no 3o bit) realiza  OU logico: | 0b00000100
-    # pra marcar como nao exc (zerar 3o bit) realiza E logico:   & 0b11111011   ***** A FAZER: mover para inbox *****
-    UserMessage.find_all_by_message_id_and_user_id(message_id,current_user.id).all? { |m|
-      status = m.status.to_i
-      m.status = case new_status
-      when 'read'
-        status | Message_Filter_Read
-      when 'unread'
-        status & Message_Filter_Unread
-      when 'trash'
-        status | Message_Filter_Trash
-      when 'restore'
-        status & Message_Filter_Restore
-      end
-
-      m.save
-    }
-  end
-
-  # retorna dados da mensagem passada (mensagem, remetente, destinatarios, arquivos) e marca como lida
-  # se não tem permissao, redireciona
-  def get_message_data(message_id)
-    if has_permission(message_id)
-      @message = Message.find(message_id)
-      @sender  = get_sender(message_id)
-      @recipients  = get_recipients(message_id)
-      @files = Message.find(message_id).files
-
-      change_message_status(message_id,'read')
-    else
-      @show_message = ''
-      redirect_to({:action => "index"}, :alert => t(:no_permission))
-    end
-  end
-
-  def copy_file(origin, destiny, all_files_destiny, flag_copy = true)
-    origin  = Path_Message_Files.join(origin)
-    destiny = Path_Message_Files.join(destiny)
-
-    # copia fisicamente arquivo do anexo original
-    FileUtils.cp origin, destiny if flag_copy
-
-    [all_files_destiny, destiny].delete_if {|x| x == '' }.compact.join(';')
-  end
-
 end
