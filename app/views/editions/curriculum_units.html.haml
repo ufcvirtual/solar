@@ -11,16 +11,35 @@
     %span.label
       = ["Tipo", @type.description].join(": ")
     .filter_courses
-      = select_tag :curriculum_unit, options_from_collection_for_select(@uc, 'id', 'name'), include_blank: true
+      = select_tag :code_name, options_from_collection_for_select(@curriculum_units, 'id', 'code_name'), include_blank: true
       %br/
-      = select_tag :code, options_from_collection_for_select(@uc, 'id', 'code'), include_blank: true
-      %br/
-      = link_to 'algo', "#", {class: 'btn', :"data-url-search" => curriculum_units_path(search: ":search")}
+      = link_to 'algo', "#", {class: 'btn', :"data-url-search" => curriculum_units_path, id: 'search'}
 
-= render "back"
+.ucs_list
+  = render "curriculum_units/index"
+
+= link_to 'Voltar', academic_editions_path(type_id: @type.id), {class: 'btn'}
 
 :javascript
 
   $(function(){
-    $("#curriculum_unit, #code").combobox();
+    $("#code_name").combobox();
+  });
+
+
+  $('#search').click(function(){
+
+
+  
+    $.ajax({
+      type: 'GET',
+      url: $(this).data("url-search"),
+      data: {
+        "curriculum_unit_id": $("#code_name").val(),
+        "type": "#{@type.id}"
+      },
+      success: function(data){
+        $(".ucs_list").replaceWith(data);
+      }
+    });
   });

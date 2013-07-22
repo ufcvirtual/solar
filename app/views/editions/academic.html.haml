@@ -7,7 +7,7 @@
     %legend= t(".filter")
     .filter_notice= t(".select_something")
     .filter_type
-      = select_tag :type, options_from_collection_for_select(@types, 'id', 'description'), include_blank: true
+      = select_tag :type, options_from_collection_for_select(@types, 'id', 'description', @type), include_blank: true
 
   %fieldset.academic.invisible
     .items
@@ -46,22 +46,29 @@
 :javascript
 
   $(function(){
+
+    if($("#type").val() != "")
+      show_items();
+
     $("#type")
       .combobox()
-      .change(function() {
-        $('.academic').show();
-        $('.curriculum_units a#uc_name').html("#{t('.curriculum_units')}");
-        $('.curriculum_units').show();
-
-        var id = parseInt($(this).val());
-        if (id == 3)
-          $('.curriculum_units').hide();
-        else if (id == 4)
-          $('.curriculum_units a#uc_name').html("#{t('.modules')}");
-    });
+      .change(function() { show_items(); });
 
     $('.academic_item').click(function(){
       window.location.href = $(this).data('link-to').replace(':uc_type_id', $('#type').val());
     });
 
   });
+
+
+  function show_items(){
+    $('.academic').show();
+    $('.curriculum_units a#uc_name').html("#{t('.curriculum_units')}");
+    $('.curriculum_units').show();
+
+    var id = parseInt($("#type").val());
+    if (id == 3)
+      $('.curriculum_units').hide();
+    else if (id == 4)
+      $('.curriculum_units a#uc_name').html("#{t('.modules')}");
+  }

@@ -31,6 +31,18 @@ class CoursesController < ApplicationController
     end
   end
 
+  # Acadêmico
+  def index 
+    if (not params[:course_id].blank?) # recebe o id do curso pelo nome
+      @courses = [Course.find(params[:course_id])]
+    else
+      @courses = Course.all
+    end
+
+    render partial: 'courses/index'
+  end
+
+
   # no método create, deve ser passado: params[:course][:user_id] = current_user.id
 
 end

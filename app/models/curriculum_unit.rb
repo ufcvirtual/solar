@@ -100,4 +100,8 @@ SQL
     offers
   end
 
+  def code_name
+    code.blank? ? name : [code, name].join(' - ')
+  end
+
 end

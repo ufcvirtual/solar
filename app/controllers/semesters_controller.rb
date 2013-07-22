@@ -2,7 +2,6 @@ class SemestersController < ApplicationController
   layout false, except: :index 
 
   # GET /semesters
-  # GET /semesters.json
   def index
     authorize! :index, Semester
 
@@ -34,10 +33,7 @@ class SemestersController < ApplicationController
       end
     end
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @semesters }
-    end
+    render partial: 'semesters/index'
   end
 
   # GET /semesters/1

@@ -12,14 +12,26 @@ class CurriculumUnitsController < ApplicationController
 
   # GET /curriculum_units
   # GET /curriculum_units.json
-  def index
-    @curriculum_units = CurriculumUnit.joins(:allocations).where(:allocations => { :profile_id => Curriculum_Unit_Initial_Profile, :user_id => current_user.id } )
+  # def index
+  #   @curriculum_units = CurriculumUnit.joins(:allocations).where(:allocations => { :profile_id => Curriculum_Unit_Initial_Profile, :user_id => current_user.id } )
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @curriculum_units }
+  #   respond_to do |format|
+  #     format.html # index.html.erb
+  #     format.json { render json: @curriculum_units }
+  #   end
+  # end
+
+  # Acadêmico
+  def index
+    @type = params[:type]
+    if (not params[:curriculum_unit_id].blank?) # recebe o id do curso pelo nome
+      @curriculum_units = [CurriculumUnit.find(params[:curriculum_unit_id])]
+    else
+      @curriculum_units = CurriculumUnit.find_all_by_curriculum_unit_type_id(params[:type])
     end
+    render partial: 'curriculum_units/index'
   end
+
 
   # GET /curriculum_units/list.json
   def list
@@ -63,24 +75,21 @@ class CurriculumUnitsController < ApplicationController
     }.flatten.uniq
   end
 
-  # DELETE /curriculum_units/1
-  # DELETE /curriculum_units/1.json
   def destroy
-    respond_to do |format|
-      if @curriculum_unit.destroy
-        format.html { redirect_to curriculum_units_url, notice: t(:successfully_deleted, :register => @curriculum_unit.name) }
-        format.json { head :ok }
-      else
-        format.html { redirect_to curriculum_units_url, alert: t(:cant_delete, :register => @curriculum_unit.name) }
-        format.json { render json: @curriculum_unit.errors }
-      end
+    @curriculum_unit = CurriculumUnit.find(params[:id])
+    #authorize! :destroy, CurriculumUnit
+
+    if @curriculum_unit.destroy
+      render json: {success: true, notice: t(:deleted, scope: [:semesters, :success])}
+    else
+      render json: {success: false, alert: t(:deleted, scope: [:semesters, :error])}, status: :unprocessable_entity
     end
   end
 
   # GET /curriculum_units/new
   # GET /curriculum_units/new.json
   def new
-    @curriculum_unit = CurriculumUnit.new
+    @curriculum_unit = CurriculumUnit.new(curriculum_unit_type_id: params[:type])
 
     respond_to do |format|
       format.html # new.html.erb
@@ -105,20 +114,13 @@ class CurriculumUnitsController < ApplicationController
 
     @curriculum_unit = CurriculumUnit.new(params[:curriculum_unit])
 
-    begin
-      authorize! :create, CurriculumUnit
-      raise "error" unless @curriculum_unit.save
+    authorize! :create, CurriculumUnit
 
-      @curriculum_units = CurriculumUnit.joins(:allocations).where(:allocations => { :profile_id => Curriculum_Unit_Initial_Profile, :user_id => current_user.id } )
-      respond_to do |format|
-        format.html { render :index, :status => 200 }
-      end
-    rescue Exception => error
-      respond_to do |format|
-        format.html { render :new, :status => ((error.message == "error") ? 200 : 500 ) }
-      end
+    if @curriculum_unit.save
+      render json: {success: true, notice: t(:created, scope: [:semesters, :success])}
+    else
+      render :new
     end
-
   end
 
   # PUT /curriculum_units/1
@@ -127,18 +129,10 @@ class CurriculumUnitsController < ApplicationController
     @curriculum_unit = CurriculumUnit.find(params[:id])
     params[:curriculum_unit].delete(:code) unless params[:curriculum_unit][:code].present?
 
-    begin
-      authorize! :update, @curriculum_unit
-      raise "error" unless @curriculum_unit.update_attributes(params[:curriculum_unit])
-
-      @curriculum_units = CurriculumUnit.joins(:allocations).where(:allocations => { :profile_id => Curriculum_Unit_Initial_Profile, :user_id => current_user.id } )
-      respond_to do |format|
-        format.html{ render :index, :status => 200 }
-      end
-    rescue Exception => error
-      respond_to do |format|
-        format.html { render :edit, :status => ((error.message == "error") ? 200 : 500 ) }
-      end
+    if @curriculum_unit.update_attributes(params[:curriculum_unit])
+      render json: {success: true, notice: t(:updated, scope: [:semesters, :success])}
+    else
+      render :edit
     end
 
   end

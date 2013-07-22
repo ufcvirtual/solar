@@ -4,6 +4,8 @@
 
 = "Turmas"
 
+/ USAR O FILTRO DE CONTEÚDO
+
 .edition
   %fieldset#allocation_tag_selection
     %legend= t(".filter")
@@ -13,12 +15,15 @@
     .filter_courses
       = select_tag :course, options_from_collection_for_select(@courses, 'id', 'name'), include_blank: true
       %br/
-      = select_tag :curriculum_unit, options_from_collection_for_select(@ucs, 'id', 'name'), include_blank: true
+      = select_tag :curriculum_unit, options_from_collection_for_select(@curriculum_units, 'id', 'name'), include_blank: true
       %br/
       = select_tag :semester, options_from_collection_for_select(@semesters, 'id', 'name'), include_blank: true
 
       %br/
-      = link_to 'algo', "#", {class: 'btn', :"data-url-search" => groups_path(search: ":search")}
+      = link_to 'algo', "#", {class: 'btn', :"data-url-search" => groups_path, id: 'search'}
+
+.groups_list
+  = render "groups/index"
 
 = render "back"
 

@@ -16,6 +16,7 @@ class EditionsController < ApplicationController
   # GET /editions/academic
   def academic
     @types = CurriculumUnitType.all
+    @type  = params[:type_id]
   end
 
   def courses
@@ -25,7 +26,7 @@ class EditionsController < ApplicationController
 
   def curriculum_units
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
-    @uc = @type.curriculum_units
+    @curriculum_units = @type.curriculum_units
   end
 
   def semesters
@@ -33,15 +34,18 @@ class EditionsController < ApplicationController
     @periods += Schedule.joins(:semester_periods).map {|p| [p.start_date.year, p.end_date.year] }.flatten.uniq.sort! {|x,y| y <=> x} # desc
 
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
-    @ucs = @type.curriculum_units
+    @curriculum_units = @type.curriculum_units
     @courses = Course.all
+
+    @semesters = Semester.all # deve pegar só os ativos
   end
 
   def groups
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
-    @ucs = @type.curriculum_units
+    @curriculum_units = @type.curriculum_units
     @courses = Course.all
     @semesters = Semester.all
+    # @groups = []
   end
 
 end

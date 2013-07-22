@@ -1337,8 +1337,8 @@
   curriculum_units:
     index:
       new: Nova
-      edit: Editar
-      delete: Excluir
+      edit: Editar Unidade Curricular
+      delete: Excluir #Unidade Curricular
       edit_curriculum_unit: Editar %{curriculum_unit}
       delete_curriculum_unit: Excluir %{curriculum_unit}
     form:

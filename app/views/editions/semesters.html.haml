@@ -1,3 +1,4 @@
+= javascript_include_tag "tooltip"
 = javascript_include_tag "autocomplete"
 = stylesheet_link_tag "autocomplete"
 = stylesheet_link_tag "http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"
@@ -13,17 +14,35 @@
     .filter_courses
       = select_tag :course, options_from_collection_for_select(@courses, 'id', 'name'), include_blank: true
       %br/
-      = select_tag :curriculum_unit, options_from_collection_for_select(@ucs, 'id', 'name'), include_blank: true
+      = select_tag :curriculum_unit, options_from_collection_for_select(@curriculum_units, 'id', 'name'), include_blank: true
       %br/
       = select_tag :period, options_for_select(@periods, @periods.first)
 
       %br/
-      = link_to 'algo', "#", {class: 'btn', :"data-url-search" => semesters_path(search: ":search")}
+      = link_to 'algo', "#", {class: 'btn', :"data-url-search" => semesters_path, id: 'search'}
 
-= render "back"
+.semesters_list
+  = render "semesters/index"
+
+= link_to 'Voltar', academic_editions_path(type_id: @type.id), {class: 'btn'}
 
 :javascript
 
   $(function(){
     $("#curriculum_unit, #course, #period").combobox();
+  });
+
+  $('#search').click(function(){
+    $.ajax({
+      type: 'GET',
+      url: $(this).data("url-search"),
+      data: {
+        "curriculum_unit_id": $("#curriculum_unit").val(),
+        "course_id": $("#course").val(),
+        "period": $("#period").val()
+      },
+      success: function(data){
+        $(".semesters_list").html(data);
+      }
+    });
   });

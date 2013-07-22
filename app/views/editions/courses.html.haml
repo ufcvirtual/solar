@@ -1,6 +1,7 @@
 = javascript_include_tag "autocomplete"
 = stylesheet_link_tag "autocomplete"
 = stylesheet_link_tag "http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"
+= javascript_include_tag "tooltip", "edition"
 
 = "Cursos"
 
@@ -11,16 +12,30 @@
     %span.label
       = ["Tipo", @type.description].join(": ")
     .filter_courses
-      = select_tag :course, options_from_collection_for_select(@courses, 'id', 'name'), include_blank: true
+      = select_tag :code_name, options_from_collection_for_select(@courses, 'id', 'code_name'), include_blank: true
       %br/
-      = select_tag :code, options_from_collection_for_select(@courses, 'id', 'code'), include_blank: true
-      %br/
-      = link_to 'algo', "#", {class: 'btn', :"data-url-search" => courses_path(search: ":search")}
+      = link_to 'algo', "#", {class: 'btn', :"data-url-search" => courses_path, id: 'search'}
 
-= render "back"
+.courses_list
+  = render "courses/index"
+
+= link_to 'Voltar', academic_editions_path(type_id: @type.id), {class: 'btn'}
 
 :javascript
 
   $(function(){
-    $("#course, #code").combobox();
+    $("#code_name").combobox();
+  });
+
+  $('#search').click(function(){
+    $.ajax({
+      type: 'GET',
+      url: $(this).data("url-search"),
+      data: {
+        "course_id": $("#code_name").val()
+      },
+      success: function(data){
+        $(".courses_list").replaceWith(data);
+      }
+    });
   });

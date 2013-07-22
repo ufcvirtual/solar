@@ -43,7 +43,10 @@
   $('#save').click(function(){
     $('form').serialize_and_submit({
       complement_success: function(data) {
-        console.error('Recuperar dados do filtro para atualizar a pagina');
+        var url = "#{semesters_path(period: 'period_param', curriculum_unit_id: 'curriculum_unit_param', course_id: 'course_param')}";
+        $.get(url.replace('period_param', $("#period").val()).replace('curriculum_unit_param', $("#curriculum_unit").val()).replace('course_param', $("#course").val()), function(data) {
+          $('.semesters_list').html(data);
+        });
       }
     });
   });

@@ -19,7 +19,7 @@
           %td= [l(offer.period_schedule.start_date, format: :normal), l(offer.period_schedule.end_date, format: :normal)].join(" - ")
         %td
           = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit_offer', :'data-tooltip' => t(".offer_edit"), disabled: not(can? :edit, offer, on: [offer.allocation_tag.id]), :"data-link-edit-offer" => edit_offer_path(offer), :"data-semester-name" => offer.semester.name
-          = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn delete_offer', :'data-tooltip' => t(".offer_delete"), disabled: (not(can? :destroy, offer, on: [offer.allocation_tag.id]) or (offer.has_any_lower_association?)), :"data-link-delete" => offer_path(offer)
+          = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_offer', :'data-tooltip' => t(".offer_delete"), disabled: (not(can? :destroy, offer, on: [offer.allocation_tag.id]) or (offer.has_any_lower_association?)), :"data-link-delete" => offer_path(offer)
 
 :javascript
 

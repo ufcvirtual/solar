@@ -14,4 +14,8 @@ class Course < ActiveRecord::Base
     offers
   end
 
+  def code_name
+    [code, name].join(' - ')
+  end
+
 end
