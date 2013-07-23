@@ -59,12 +59,8 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def home
-    allocation_tags   = AllocationTag.find(@allocation_tag_id).related({all: true, objects: true})
-    group             = allocation_tags.select { |at| not(at.group_id.nil?) }
-    offer             = allocation_tags.select { |at| not(at.offer_id.nil?) }.first.offer
-    @messages         = return_messages(current_user.id, 'portlet', get_label_name(group, offer, @curriculum_unit))
-
-    allocation_tags   = allocation_tags.map(&:id)
+    allocation_tags   = AllocationTag.find(@allocation_tag_id).related({all: true, objects: true}).map(&:id)
+    @messages         = Message.user_inbox(current_user.id, only_unread = true)
     @lessons          = Lesson.to_open(allocation_tags.join(', '))
     @discussion_posts = list_portlet_discussion_posts(allocation_tags.join(', '))
 

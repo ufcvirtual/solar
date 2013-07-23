@@ -5,14 +5,14 @@
 
 .message_external_div
 
-  = render 'message_header'
-  = simple_form_for :message, url: {action: :send_message}, html: {id: 'form_message_text', multipart: true} do |f|
-    = render 'message_header_to'
+  = render "message_header"
+  = simple_form_for :message, url: send_message_messages_path, html: {id: "form_message_text", multipart: true} do |f|
+    = render "message_header_to"
 
     #div_new_message
-      = f.input :content, label: false, as: :ckeditor, input_html: { value: @original_message, name: 'content' }
+      = f.input :content, label: false, as: :ckeditor, input_html: {value: @original_message, name: "content"}
 
     .message_new_action
-      = f.submit [t(:message_send), ' '].join, id: 'send_message', class: 'btn btn_main', alt: t(:message_send)
+      = f.submit t(:message_send), id: "send_message", class: "btn btn_main", alt: t(:message_send)
       = hidden_field_tag :id, @original_message_id
-      = link_to [t(:message_discard), ' '].join, {action: 'index', type: 'index'}, {class: 'btn btn_caution'}
+      = link_to t(:message_discard), inbox_messages_path, {class: "btn btn_caution"}

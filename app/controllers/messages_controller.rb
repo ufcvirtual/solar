@@ -29,7 +29,7 @@ class MessagesController < ApplicationController
       @original_message_id = params.delete(:id)
       @message = Message.find(@original_message_id)
       @subject = @message.subject
-      sender = @message.sent_by #get_sender(@original_message_id)
+      sender = @message.sent_by
       @files = @message.files
 
       # destinatarios
@@ -94,7 +94,7 @@ class MessagesController < ApplicationController
       # divide destinatarios
       individual_to = to.split(",").map{|r|r.strip}
 
-      update_tab_values
+      # update_tab_values
 
       # retorna label de acordo com disciplina atual
       allocation_tag_id = active_tab[:url][:allocation_tag_id]
@@ -208,7 +208,9 @@ class MessagesController < ApplicationController
   ## [read, unread, trash, restore]
   def update
     begin
-      params[:id].split(',').map(&:to_i).each { |i| change_message_status(i, params[:new_status], params[:box]) }
+      Message.transaction do
+        params[:id].split(',').map(&:to_i).each { |i| change_message_status(i, params[:new_status], params[:box]) }
+      end
       render json: {success: true}
     rescue
       render json: {success: false}, status: :unprocessable_entity
@@ -216,7 +218,10 @@ class MessagesController < ApplicationController
   end
 
   def download_files
-    download_file(inbox_messages_path, MessageFile.find(params[:file_id]).message.path)
+    file = MessageFile.find(params[:file_id])
+    raise CanCan::AccessDenied unless file.original_message.user_has_permission?(current_user.id)
+
+    download_file(inbox_messages_path, file.message.path)
   end
 
   # metodo chamado por ajax para atualizar contatos

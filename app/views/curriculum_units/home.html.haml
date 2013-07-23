@@ -11,13 +11,13 @@
       .block_right
         - if @responsible
           - @responsible.each do |resp|
-            = [resp.name, ' (', resp.profile_name, ') '].join
+            = [resp.name, " (", resp.profile_name, ") "].join
             / %span= link_to (image_tag "icon_message.png", alt: t(:icon_send_email))
             %br
 
-  = render 'lesson_portlet'
+  = render "lesson_portlet"
 
   .block_wrapper.block_wrapper_small
-    = render 'message_portlet'
-    = render 'discussion_posts_portlet'
-    = render 'agenda_portlet'
+    = render "message_portlet"
+    = render "discussion_posts_portlet"
+    = render "agenda_portlet"
