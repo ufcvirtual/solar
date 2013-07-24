@@ -28,9 +28,7 @@
 
 
   $('#search').click(function(){
-
-
-  
+ 
     $.ajax({
       type: 'GET',
       url: $(this).data("url-search"),
@@ -39,7 +37,7 @@
         "type": "#{@type.id}"
       },
       success: function(data){
-        $(".ucs_list").replaceWith(data);
+        $(".ucs_list").html(data);
       }
     });
   });

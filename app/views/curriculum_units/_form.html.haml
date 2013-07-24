@@ -23,13 +23,43 @@
 
   $(document).ready(function(){
 
+
     $('#save').click(function(){
       $('#curriculum_unit_form').serialize_and_submit({
         complement_success: function(data) {
-          url = "#{curriculum_units_path(type: @curriculum_unit.curriculum_unit_type.id)}";
-          $.get(url, function(data) {
+          var post_code_name = data.code_name;
+          var id = data.id;
+
+          var url = "#{curriculum_units_path(type: @curriculum_unit.curriculum_unit_type.id, curriculum_unit_id: 'curriculum_unit_param')}";
+
+
+          // criar método pra poder chamar em todas as listagens
+
+
+          $.get(url.replace('curriculum_unit_param', $("#code_name").val()), function(data) {
             $('.ucs_list').html(data);
+
+            var autocomplete_option = $('option[value='+id+']');
+
+            if (!autocomplete_option.length){
+              // cria nova uc na lista
+              $("<option value="+id+">"+post_code_name+"</option>").appendTo("#code_name");
+            }else{
+              // atualiza a uc alterada na lista do autocomplete
+              autocomplete_option.text(post_code_name);
+              // se a uc alterada foi a selecionada no autocomplete, alterar o valor do input
+              if($("#code_name").val() == id)
+                $("#autocomplete-input").val(post_code_name);
+            }
+
+
           });
+
+
+
+
+
+
         }
       });
     });

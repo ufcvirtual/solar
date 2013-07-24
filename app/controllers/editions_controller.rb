@@ -36,8 +36,7 @@ class EditionsController < ApplicationController
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     @curriculum_units = @type.curriculum_units
     @courses = Course.all
-
-    @semesters = Semester.all # deve pegar só os ativos
+    @semesters = Semester.all_by_period({period: params[:period]}) # semestres do período informado ou ativos
   end
 
   def groups

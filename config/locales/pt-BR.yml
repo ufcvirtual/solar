@@ -1354,7 +1354,7 @@
       created: Não foi possível criar semestre.
       updated: Não foi possível atualizar semestre.
       deleted: Não foi possível deletar semestre.
-    index:
+    list:
       new: Novo semestre
       edit: Editar Semestre
       delete: Deletar Semestre

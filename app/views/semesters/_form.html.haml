@@ -43,10 +43,28 @@
   $('#save').click(function(){
     $('form').serialize_and_submit({
       complement_success: function(data) {
-        var url = "#{semesters_path(period: 'period_param', curriculum_unit_id: 'curriculum_unit_param', course_id: 'course_param')}";
-        $.get(url.replace('period_param', $("#period").val()).replace('curriculum_unit_param', $("#curriculum_unit").val()).replace('course_param', $("#course").val()), function(data) {
+
+        var semester_start = data.semester.start;
+        var semester_end = data.semester.end;
+        var url = "#{semesters_path(period: 'period_param', curriculum_unit_id: 'curriculum_unit_param', course_id: 'course_param')}"
+                  .replace('period_param', $("#period").val())
+                  .replace('curriculum_unit_param', $("#curriculum_unit").val())
+                  .replace('course_param', $("#course").val());
+
+        $.get(url, function(data) {
           $('.semesters_list').html(data);
+
+            // cria nova uc na lista
+            if (!$('option[value='+semester_start+']').length)
+              $("<option value="+semester_start+">"+semester_start+"</option>").appendTo("#period");
+
+            // cria nova uc na lista
+            if (!$('option[value='+semester_end+']').length)
+              $("<option value="+semester_end+">"+semester_end+"</option>").appendTo("#period");
+
         });
+
+
       }
     });
   });

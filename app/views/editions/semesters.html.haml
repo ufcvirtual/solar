@@ -22,7 +22,7 @@
       = link_to 'algo', "#", {class: 'btn', :"data-url-search" => semesters_path, id: 'search'}
 
 .semesters_list
-  = render "semesters/index"
+  = render "semesters/list"
 
 = link_to 'Voltar', academic_editions_path(type_id: @type.id), {class: 'btn'}
 
@@ -30,19 +30,32 @@
 
   $(function(){
     $("#curriculum_unit, #course, #period").combobox();
-  });
 
-  $('#search').click(function(){
-    $.ajax({
-      type: 'GET',
-      url: $(this).data("url-search"),
-      data: {
-        "curriculum_unit_id": $("#curriculum_unit").val(),
-        "course_id": $("#course").val(),
-        "period": $("#period").val()
-      },
-      success: function(data){
-        $(".semesters_list").html(data);
+    $("#period").change(function(){
+
+      if($(this).val() == "all" && $('#curriculum_unit').val() == "" && $('#course').val() == ""){
+
+        flash_message("é preciso selecionar, ao menos, uma UC ou um curso para pesquisar por todos", 'alert');
+        //$("option[value='active']").select(true);
+        //$(this).val("active");
+        //$("#autocomplete-input").text("Ativo");
       }
+    });
+
+    $('#search').click(function(){
+        erase_flash_messages();
+        $.ajax({
+          type: 'GET',
+          url: $(this).data("url-search"),
+          data: {
+            "curriculum_unit_id": $("#curriculum_unit").val(),
+            "course_id": $("#course").val(),
+            "period": $("#period").val()
+          },
+          success: function(data){
+            $(".semesters_list").html(data);
+          }
+        });
+      
     });
   });

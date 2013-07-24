@@ -32,4 +32,30 @@ class Semester < ActiveRecord::Base
     end
   end
 
+  def self.all_by_uc_or_course(params = {})
+    query = []
+    query << "offers.course_id = #{params[:course_id]}" unless params[:course_id].blank?
+    query << "offers.curriculum_unit_id = #{params[:uc_id]}" unless params[:uc_id].blank?
+
+    joins(:offers).where(query.join(" AND "))
+  end
+
+  def self.all_by_period(params = {})
+    query = []
+    query << "offers.course_id = #{params[:course_id]}" unless params[:course_id].blank?
+    query << "offers.curriculum_unit_id = #{params[:uc_id]}" unless params[:uc_id].blank?
+
+    begin
+      year = Date.parse("#{params[:period]}-01-01").year
+    rescue
+      year = Date.today.year
+    end
+
+    current_semesters = Semester.joins("LEFT JOIN offers ON offers.semester_id = semesters.id").currents(year).where(query.join(" AND "))
+    query << "semester_id NOT IN (#{current_semesters.map(&:id).join(',')})" unless current_semesters.empty? # retirando semestres ja listados
+    semesters_of_current_offers = Offer.currents(year).where(query.join(" AND ")).map(&:semester)
+
+    return (current_semesters + semesters_of_current_offers).uniq
+  end
+
 end

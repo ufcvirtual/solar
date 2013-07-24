@@ -10,17 +10,6 @@ class CurriculumUnitsController < ApplicationController
   authorize_resource :only => [:index, :show, :new]
   load_and_authorize_resource :only => [:destroy, :edit]
 
-  # GET /curriculum_units
-  # GET /curriculum_units.json
-  # def index
-  #   @curriculum_units = CurriculumUnit.joins(:allocations).where(:allocations => { :profile_id => Curriculum_Unit_Initial_Profile, :user_id => current_user.id } )
-
-  #   respond_to do |format|
-  #     format.html # index.html.erb
-  #     format.json { render json: @curriculum_units }
-  #   end
-  # end
-
   # Acadêmico
   def index
     @type = params[:type]
@@ -113,7 +102,7 @@ class CurriculumUnitsController < ApplicationController
     authorize! :create, CurriculumUnit
 
     if @curriculum_unit.save
-      render json: {success: true, notice: t(:created, scope: [:semesters, :success])}
+      render json: {success: true, notice: t(:created, scope: [:semesters, :success]), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
     else
       render :new
     end
@@ -126,7 +115,7 @@ class CurriculumUnitsController < ApplicationController
     params[:curriculum_unit].delete(:code) unless params[:curriculum_unit][:code].present?
 
     if @curriculum_unit.update_attributes(params[:curriculum_unit])
-      render json: {success: true, notice: t(:updated, scope: [:semesters, :success])}
+      render json: {success: true, notice: t(:updated, scope: [:semesters, :success]), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
     else
       render :edit
     end

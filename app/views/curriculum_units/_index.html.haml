@@ -27,7 +27,7 @@
             = form_for(:curriculum_unit, :url => edit_curriculum_unit_path(curriculum_unit)) do |f|
               = button_tag (content_tag(:i, nil, class: 'icon-edit')), :class => "btn btn_default edit", :type => :button, :alt => t(".edit_curriculum_unit", :curriculum_unit => curriculum_unit.name), :id => t(".edit_curriculum_unit", :curriculum_unit => curriculum_unit.name), disabled: (not can? :update, curriculum_unit), :'data-tooltip' => t(".edit")
           %td
-            = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_caution delete_curriculum_unit', :"data-link-delete" => curriculum_unit_path(curriculum_unit), :'data-tooltip' => t(".delete"), id: "curriculum_unit-del-#{curriculum_unit.id}"
+            = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_caution delete_curriculum_unit', :"data-link-delete" => curriculum_unit_path(curriculum_unit), :'data-tooltip' => t(".delete"), id: curriculum_unit.id
 
             /= link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete', :'data-tooltip' => t(".delete_curriculum_unit"), :"data-link-delete" => curriculum_unit_path(curriculum_unit)#, disabled: (not(can? :destroy, offer, on: [offer.allocation_tag.id]) or (offer.has_any_lower_association?))
 
@@ -43,7 +43,25 @@
     });
 
     $('.delete_curriculum_unit').click(function(){
-      $(this).nice_delete({parent: 'tr.lines'});
+      var curriculum_unit_id = $(this).attr("id");
+      $(this).nice_delete({
+        parent: 'tr.lines',
+        complement_success: function(data) {
+
+          // se eu tiver selecionado no autocomplete a uc que quero deletar
+          if(curriculum_unit_id == $("#code_name").val()){
+            // atualiza o conteúdo da lista e do autocomplete selecionado
+            $.get("#{curriculum_units_path(type: @type)}", function(data) {
+              $('.ucs_list').html(data);
+              $("#autocomplete-input").val("");
+            });
+          }
+
+          $('option[value="'+curriculum_unit_id+'"]').remove();
+        }
+      });
+
+
     });
   });
   

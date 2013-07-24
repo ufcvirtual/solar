@@ -8,32 +8,25 @@ class SemestersController < ApplicationController
     if [params[:period], params[:course_id], params[:curriculum_unit_id]].delete_if(&:blank?).empty?
       @semesters = []
     else
-      query = []
-      query << "offers.course_id = #{params[:course_id]}" unless params[:course_id].blank?
-      query << "offers.curriculum_unit_id = #{params[:curriculum_unit_id]}" unless params[:curriculum_unit_id].blank?
+      p = {}
+      p[:course_id] = params[:course_id] if params[:course_id].present?
+      p[:uc_id] = params[:curriculum_unit_id] if params[:curriculum_unit_id].present?
+      p[:period] = params[:period] if params[:period].present?
 
       # [active, all, year]
       if params[:period] == "all"
-        if query.empty?
-          @semesters = Semester.all
+        if p.has_key?(:course_id) or p.has_key?(:uc_id)
+          @semesters = Semester.all_by_uc_or_course(p)
         else
-          @semesters = Semester.joins(:offers).where(query.join(" AND ")).uniq
+          @semesters = [] # aviso
+          # @semesters = Semester.all_by_period(p) # se não tiver selecionado nem uc nem curso, pega apenas os ativos
         end
       else
-        begin
-          year = Date.parse("#{params[:period]}-01-01").year
-        rescue
-          year = Date.today.year
-        end
-
-        current_semesters = Semester.joins("LEFT JOIN offers ON offers.semester_id = semesters.id").currents(year).where(query.join(" AND "))
-        query << "semester_id NOT IN (#{current_semesters.map(&:id).join(',')})" unless current_semesters.empty? # retirando semestres ja listados
-        semesters_of_current_offers = Offer.currents(year).where(query.join(" AND ")).map(&:semester)
-        @semesters = (current_semesters + semesters_of_current_offers).uniq
+        @semesters = Semester.all_by_period(p) # semestres do período informado ou ativos
       end
     end
 
-    render partial: 'semesters/index'
+    render layout: false
   end
 
   # GET /semesters/1
@@ -72,7 +65,7 @@ class SemestersController < ApplicationController
     @semester = Semester.new params[:semester]
 
     if @semester.save
-      render json: {success: true, notice: t(:created, scope: [:semesters, :success])}
+      render json: {success: true, notice: t(:created, scope: [:semesters, :success]), semester: {start: @semester.offer_schedule.start_date.year, end: @semester.offer_schedule.end_date.year}}
     else
       render :new
     end
@@ -85,7 +78,7 @@ class SemestersController < ApplicationController
     @semester = Semester.find(params[:id])
 
     if @semester.update_attributes(params[:semester])
-      render json: {success: true, notice: t(:updated, scope: [:semesters, :success])}
+      render json: {success: true, notice: t(:updated, scope: [:semesters, :success]), semester: {start: @semester.offer_schedule.start_date.year, end: @semester.offer_schedule.end_date.year}}
     else
       render :edit
     end

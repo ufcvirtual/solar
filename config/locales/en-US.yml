@@ -1181,7 +1181,7 @@
       created: Semester wasn't created.
       updated: Semester wasn't updated.
       deleted: Semester wasn't deleted.
-    index:
+    list:
       new: New Semester
       edit: Edit Semester
       delete: Delete Semester

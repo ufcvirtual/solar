@@ -18,6 +18,7 @@
 				.appendTo( this.wrapper )
 				.val( value )
 				.attr( "title", "" )
+				.attr( "id", "autocomplete-input" )
 				.addClass( "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
 				.autocomplete({
 					delay: 0,
@@ -28,6 +29,7 @@
 				tooltipClass: "ui-state-highlight"
 			});
 
+			// seleciona o item escolhido, de modo que seu valor é armazenado
 			this._on( this.input, {
 				autocompleteselect: function( event, ui ) {
 					ui.item.option.selected = true;
@@ -73,6 +75,7 @@
 			});
 		},
 
+		// lista de opções do select
 		_source: function( request, response ) {
 			var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
 			response( this.element.children( "option" ).map(function() {

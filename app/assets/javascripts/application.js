@@ -240,3 +240,18 @@ $.fn.serialize_and_submit = function(options) {
     }
   });
 }
+
+/**
+* Define uma função para atualizar os valores do filtro acadêmico e, se necessário, o conteúdo da listagem
+**/
+$.fn.update_list_and_filter = function(list_url, list_div, action, new_name){
+
+
+
+
+
+
+
+
+
+}
