@@ -66,9 +66,9 @@ class Assignment < ActiveRecord::Base
       situation = "without_group"
     elsif (not sent_assignment.nil? and sent_assignment.assignment_files.size > 0)
       situation = "sent"
-    elsif (sent_assignment.nil? or sent_assignment.assignment_files.size == 0) and assignment.schedule.end_date.to_date >= Date.current
+    elsif (sent_assignment.nil? or sent_assignment.assignment_files.size == 0) and schedule.end_date.to_date >= Date.current
       situation = "send"
-    elsif (sent_assignment.nil? or sent_assignment.assignment_files.size == 0) and assignment.schedule.end_date.to_date < Date.current
+    elsif (sent_assignment.nil? or sent_assignment.assignment_files.size == 0) and schedule.end_date.to_date < Date.current
       situation = "not_sent"
     else
       situation = "-"
