@@ -360,9 +360,9 @@ class AssignmentsController < ApplicationController
     begin
       allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])  
       file = case params[:type]
-      
+
         when "public"
-          raise CanCan::AccessDenied unless Profile.student_from_class?(current_user.id, allocation_tag_id)
+          raise CanCan::AccessDenied unless Profile.student_from_class?(current_user.id, allocation_tag.id)
           PublicFile.create!({ :attachment => params[:file],
           :user_id => current_user.id,
           :allocation_tag_id => allocation_tag.id })

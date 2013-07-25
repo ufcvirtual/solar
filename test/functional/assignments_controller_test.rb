@@ -419,7 +419,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   ##
   # Edicao
   ##
-
+=begin # Testes ou funcionalidades serão refeitos
   test "listar trabalhos para edicao" do
     sign_in users(:editor)
     get :list, {what_was_selected: %(false false false true), allocation_tags_ids: [allocation_tags(:al3).id]}
@@ -513,5 +513,5 @@ class AssignmentsControllerTest < ActionController::TestCase
       delete(:destroy, {id: assignments.map(&:id), allocation_tags_ids: [allocation_tags(:al3).id]})
     end
   end
-
+=end
 end
