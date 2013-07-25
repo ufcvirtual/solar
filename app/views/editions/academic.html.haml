@@ -46,7 +46,6 @@
 :javascript
 
   $(function(){
-
     if($("#type").val() != "")
       show_items();
 
@@ -57,7 +56,6 @@
     $('.academic_item').click(function(){
       window.location.href = $(this).data('link-to').replace(':uc_type_id', $('#type').val());
     });
-
   });
 
 

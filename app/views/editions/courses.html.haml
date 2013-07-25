@@ -14,28 +14,28 @@
     .filter_courses
       = select_tag :code_name, options_from_collection_for_select(@courses, 'id', 'code_name'), include_blank: true
       %br/
-      = link_to 'algo', "#", {class: 'btn', :"data-url-search" => courses_path, id: 'search'}
+      = link_to t(:search), "#", {class: 'btn', :"data-url-search" => courses_path, id: 'search'}
 
 .courses_list
   = render "courses/index"
 
-= link_to 'Voltar', academic_editions_path(type_id: @type.id), {class: 'btn'}
+= render "back"
 
 :javascript
 
   $(function(){
     $("#code_name").combobox();
-  });
 
-  $('#search').click(function(){
-    $.ajax({
-      type: 'GET',
-      url: $(this).data("url-search"),
-      data: {
-        "course_id": $("#code_name").val()
-      },
-      success: function(data){
-        $(".courses_list").html(data);
-      }
+    $('#search').click(function(){
+      $.ajax({
+        type: 'GET',
+        url: $(this).data("url-search"),
+        data: {
+          "course_id": $("#code_name").val()
+        },
+        success: function(data){
+          $(".courses_list").html(data);
+        }
+      });
     });
   });

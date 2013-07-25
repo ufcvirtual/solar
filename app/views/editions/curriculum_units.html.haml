@@ -13,31 +13,29 @@
     .filter_courses
       = select_tag :code_name, options_from_collection_for_select(@curriculum_units, 'id', 'code_name'), include_blank: true
       %br/
-      = link_to 'algo', "#", {class: 'btn', :"data-url-search" => curriculum_units_path, id: 'search'}
+      = link_to t(:search), "#", {class: 'btn', :"data-url-search" => curriculum_units_path, id: 'search'}
 
 .ucs_list
   = render "curriculum_units/index"
 
-= link_to 'Voltar', academic_editions_path(type_id: @type.id), {class: 'btn'}
+= render "back"
 
 :javascript
 
   $(function(){
     $("#code_name").combobox();
-  });
 
-
-  $('#search').click(function(){
- 
-    $.ajax({
-      type: 'GET',
-      url: $(this).data("url-search"),
-      data: {
-        "curriculum_unit_id": $("#code_name").val(),
-        "type": "#{@type.id}"
-      },
-      success: function(data){
-        $(".ucs_list").html(data);
-      }
+    $("#search").click(function(){
+      $.ajax({
+        type: 'GET',
+        url: $(this).data("url-search"),
+        data: {
+          "curriculum_unit_id": $("#code_name").val(),
+          "type": "#{@type.id}"
+        },
+        success: function(data){
+          $(".ucs_list").html(data);
+        }
+      });
     });
   });

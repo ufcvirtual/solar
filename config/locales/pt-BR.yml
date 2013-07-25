@@ -354,6 +354,7 @@
   of: "de"
   required_fields: "* campos obrigatórios"
   object_not_found: "Objeto não encontrado"
+  search: "Filtrar"
 
   #Página de Login
   login_description1: "O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,
@@ -1329,12 +1330,24 @@
     success:
       saved: Salvo com sucesso
       deleted: Excluido com sucesso
+    semesters:
+      all: "Todos"
+      actives: "Ativos"
+      warning: "Selecione uma Unidade Curricular ou um Curso para pesquisar por todos."
     cant_save: Não foi possível salvar
     are_you_sure_of_deletion: Você tem certeza de que deseja excluir?
     cant_delete: Não foi possível excluir
     not_possible_to_access_page_with_data: Não é possível acessar esta página com os dados fornecidos
 
   curriculum_units:
+    success:
+      created: Unidade Curricular criada com sucesso.
+      updated: Unidade Curricular atualizada com sucesso.
+      deleted: Unidade Curricular deletada com sucesso.
+    error:
+      created: Não foi possível criar Unidade Curricular.
+      updated: Não foi possível atualizar Unidade Curricular.
+      deleted: Não foi possível deletar Unidade Curricular.
     index:
       new: Nova
       edit: Editar Unidade Curricular

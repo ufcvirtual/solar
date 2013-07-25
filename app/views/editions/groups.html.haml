@@ -20,7 +20,7 @@
       = select_tag :semester, options_from_collection_for_select(@semesters, 'id', 'name'), include_blank: true
 
       %br/
-      = link_to 'algo', "#", {class: 'btn', :"data-url-search" => groups_path, id: 'search'}
+      = link_to t(:search), "#", {class: 'btn', :"data-url-search" => groups_path, id: 'search'}
 
 .groups_list
   = render "groups/index"

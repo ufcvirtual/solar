@@ -65,9 +65,9 @@ class CurriculumUnitsController < ApplicationController
     #authorize! :destroy, CurriculumUnit
 
     if @curriculum_unit.destroy
-      render json: {success: true, notice: t(:deleted, scope: [:semesters, :success])}
+      render json: {success: true, notice: t(:deleted, scope: [:curriculum_units, :success])}
     else
-      render json: {success: false, alert: t(:deleted, scope: [:semesters, :error])}, status: :unprocessable_entity
+      render json: {success: false, alert: t(:deleted, scope: [:curriculum_units, :error])}, status: :unprocessable_entity
     end
   end
 
@@ -102,7 +102,7 @@ class CurriculumUnitsController < ApplicationController
     authorize! :create, CurriculumUnit
 
     if @curriculum_unit.save
-      render json: {success: true, notice: t(:created, scope: [:semesters, :success]), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
+      render json: {success: true, notice: t(:created, scope: [:curriculum_units, :success]), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
     else
       render :new
     end
@@ -115,11 +115,10 @@ class CurriculumUnitsController < ApplicationController
     params[:curriculum_unit].delete(:code) unless params[:curriculum_unit][:code].present?
 
     if @curriculum_unit.update_attributes(params[:curriculum_unit])
-      render json: {success: true, notice: t(:updated, scope: [:semesters, :success]), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
+      render json: {success: true, notice: t(:updated, scope: [:curriculum_units, :success]), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
     else
       render :edit
     end
-
   end
 
   def informations

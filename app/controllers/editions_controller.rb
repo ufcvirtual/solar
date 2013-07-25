@@ -30,7 +30,7 @@ class EditionsController < ApplicationController
   end
 
   def semesters
-    @periods = [["Ativo", "active"], ["Todos", "all"]]
+    @periods = [[t(:actives, scope: [:editions, :semesters]), "active"], [t(:all, scope: [:editions, :semesters]), "all"]]
     @periods += Schedule.joins(:semester_periods).map {|p| [p.start_date.year, p.end_date.year] }.flatten.uniq.sort! {|x,y| y <=> x} # desc
 
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
@@ -43,7 +43,7 @@ class EditionsController < ApplicationController
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     @curriculum_units = @type.curriculum_units
     @courses = Course.all
-    @semesters = Semester.all
+    @semesters = Semester.order("name DESC")
     # @groups = []
   end
 

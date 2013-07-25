@@ -12,37 +12,35 @@
     %span.label
       = ["Tipo", @type.description].join(": ")
     .filter_courses
-      = select_tag :course, options_from_collection_for_select(@courses, 'id', 'name'), include_blank: true
+      .course
+        = select_tag :course, options_from_collection_for_select(@courses, 'id', 'name'), include_blank: true
       %br/
-      = select_tag :curriculum_unit, options_from_collection_for_select(@curriculum_units, 'id', 'name'), include_blank: true
+      .curriculum_unit
+        = select_tag :curriculum_unit, options_from_collection_for_select(@curriculum_units, 'id', 'name'), include_blank: true
       %br/
-      = select_tag :period, options_for_select(@periods, @periods.first)
+      .period
+        = select_tag :period, options_for_select(@periods, @periods.first)
 
       %br/
-      = link_to 'algo', "#", {class: 'btn', :"data-url-search" => semesters_path, id: 'search'}
+      = link_to t(:search), "#", {class: 'btn', :"data-url-search" => semesters_path, id: 'search'}
 
 .semesters_list
   = render "semesters/list"
 
-= link_to 'Voltar', academic_editions_path(type_id: @type.id), {class: 'btn'}
+= render "back"
 
 :javascript
 
   $(function(){
     $("#curriculum_unit, #course, #period").combobox();
 
-    $("#period").change(function(){
-
-      if($(this).val() == "all" && $('#curriculum_unit').val() == "" && $('#course').val() == ""){
-
-        flash_message("é preciso selecionar, ao menos, uma UC ou um curso para pesquisar por todos", 'alert');
-        //$("option[value='active']").select(true);
-        //$(this).val("active");
-        //$("#autocomplete-input").text("Ativo");
-      }
-    });
-
     $('#search').click(function(){
+      if ($('#period').val() == "all" && $('#curriculum_unit').val() == "" && $('#course').val() == "") {
+        flash_message("#{t('.warning')}", 'alert');
+
+        $('#period').val("active");
+        $('.period #autocomplete-input').val($('#period option[value="active"]').text());
+      } else {
         erase_flash_messages();
         $.ajax({
           type: 'GET',
@@ -56,6 +54,6 @@
             $(".semesters_list").html(data);
           }
         });
-      
+      }
     });
   });

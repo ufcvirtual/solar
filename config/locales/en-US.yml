@@ -200,6 +200,7 @@
   of: "Of"
   required_fields: "* required fields"
   object_not_found: "Object not found"
+  search: "Search"
 
   #Página de Login
 
@@ -1131,6 +1132,12 @@
         code: "Code"
 
   editions:
+    academic:
+      courses: "Courses"
+      curriculum_units: "Curriculum Units"
+      semesters: "Semesters"
+      groups: "Groups"
+      modules: "Modules"
     index:
       edition: Edition
       filter: Filter
@@ -1156,12 +1163,24 @@
     success:
       saved: Saved successfully
       deleted: Deleted successfully
+    semesters:
+      all: "All"
+      actives: "Actives"
+      warning: "Select a Curriculum Unit or a Course to search for all."
     cant_save: It wasn't possible to save
     are_you_sure_of_deletion: Are you sure that you want to delete?
     cant_delete: It wasn't possible to delete
     not_possible_to_access_page_with_data: It's not possible to access this page with the given data
 
   curriculum_units:
+    success:
+      created: Curriculum Unit was successfully created.
+      updated: Curriculum Unit was successfully updated.
+      deleted: Curriculum Unit was successfully deleted.
+    error:
+      created: Curriculum Unit wasn't created.
+      updated: Curriculum Unit wasn't updated.
+      deleted: Curriculum Unit wasn't deleted.
     index:
       new: New
       edit: Edit
