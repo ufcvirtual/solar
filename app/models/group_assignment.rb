@@ -13,7 +13,7 @@ class GroupAssignment < ActiveRecord::Base
   # Validação que verifica se o nome do grupo já existe naquela atividade
   ##
   def unique_group_name
-    groups_with_same_name = GroupAssignment.find_all_by_assignment_id_and_group_name(assignment_id, group_name)
+    groups_with_same_name = GroupAssignment.find_all_by_academic_allocation_id_and_group_name(academic_allocation_id, group_name)
     errors.add(:group_name, I18n.t(:existing_name_error, :scope => [:assignment, :group_assignments])) if (@new_record == true or group_name_changed?) and groups_with_same_name.size > 0
   end
  
