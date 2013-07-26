@@ -271,4 +271,76 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   #   assert_equal I18n.t(:no_permission), flash[:alert]
   # end
 
+    ##
+  # Information
+  ##
+
+  # Perfil com permissao e usuario com acesso a atividade
+  test "exibir informacoes da atividade individual para usuario com permissao" do
+    login users(:professor)
+    get @quimica_tab
+    get information_assignment_path :id => assignments(:a9).id
+    assert_response :success
+    assert_not_nil assigns(:assignment)
+    assert_not_nil assigns(:assignment_enunciation_files)
+    assert_not_nil assigns(:students)
+    assert_nil assigns(:groups)
+    assert_nil assigns(:students_without_group)
+    assert_template :information
+  end
+
+  # Perfil com permissao e usuario com acesso a atividade
+  test "exibir informacoes da atividade em grupo para usuario com permissao" do
+    login users(:professor)
+    get @quimica_tab
+    get information_assignment_path :id => assignments(:a6).id
+    assert_response :success
+    assert_not_nil assigns(:assignment)
+    assert_not_nil assigns(:assignment_enunciation_files)
+    assert_nil assigns(:students)
+    assert_not_nil assigns(:groups)
+    assert_not_nil assigns(:students_without_group)
+    assert_template :information
+  end
+
+  # Perfil sem permissao e usuario com acesso a atividade
+  test "nao exibir informacoes da atividade individual para usuario sem permissao" do
+    login users(:aluno1)
+    get @quimica_tab
+    get information_assignment_path :id => assignments(:a9).id
+    assert_response :redirect
+    assert_redirected_to(home_path)
+    assert_equal I18n.t(:no_permission), flash[:alert]
+  end
+
+  # Perfil sem permissao e usuario com acesso a atividade
+  test "nao exibir informacoes da atividade em grupo para usuario sem permissao" do
+    login users(:aluno1)
+    get @quimica_tab
+    get information_assignment_path :id => assignments(:a6).id
+    assert_response :redirect
+    assert_redirected_to(home_path)
+    assert_equal I18n.t(:no_permission), flash[:alert]
+  end
+
+  # Perfil com permissao e usuario sem acesso a atividade
+  test "nao exibir informacoes da atividade individual para usuario com permissao e sem acesso" do
+    login users(:professor)
+    get @quimica_tab
+    get information_assignment_path :id => assignments(:a10).id
+    assert_response :redirect
+    assert_redirected_to(home_path)
+    assert_equal I18n.t(:no_permission), flash[:alert]
+  end
+
+  # Perfil com permissao e usuario sem acesso a atividade
+  test "nao exibir informacoes da atividade em grupo para usuario com permissao e sem acesso" do
+    login users(:professor)
+    get @quimica_tab
+    get information_assignment_path :id => assignments(:a11).id
+    assert_response :redirect
+    assert_redirected_to(home_path)
+    assert_equal I18n.t(:no_permission), flash[:alert]
+  end
+
 end
