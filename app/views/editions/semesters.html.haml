@@ -33,27 +33,27 @@
 
   $(function(){
     $("#curriculum_unit, #course, #period").combobox();
+    $("#period").combobox('value', "#{@periods.first.last}");
 
     $('#search').click(function(){
-      if ($('#period').val() == "all" && $('#curriculum_unit').val() == "" && $('#course').val() == "") {
-        flash_message("#{t('.warning')}", 'alert');
 
-        $('#period').val("active");
-        $('.period #autocomplete-input').val($('#period option[value="active"]').text());
-      } else {
+      if (($('#period').combobox('value') == "all" && $('#curriculum_unit').combobox('value') == null && $('#course').combobox('value') == null))
+        flash_message("#{t('.warning')}", 'alert');
+      else
         erase_flash_messages();
-        $.ajax({
+
+      $.ajax({
           type: 'GET',
           url: $(this).data("url-search"),
           data: {
-            "curriculum_unit_id": $("#curriculum_unit").val(),
-            "course_id": $("#course").val(),
-            "period": $("#period").val()
+            curriculum_unit_id: $("#curriculum_unit").combobox('value'),
+            course_id: $("#course").combobox('value'),
+            period: $("#period").combobox('value')
           },
           success: function(data){
             $(".semesters_list").html(data);
           }
         });
-      }
+
     });
   });

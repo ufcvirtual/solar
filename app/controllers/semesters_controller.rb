@@ -19,14 +19,17 @@ class SemestersController < ApplicationController
           @semesters = Semester.all_by_uc_or_course(p)
         else
           @semesters = [] # aviso
-          # @semesters = Semester.all_by_period(p) # se não tiver selecionado nem uc nem curso, pega apenas os ativos
         end
       else
         @semesters = Semester.all_by_period(p) # semestres do período informado ou ativos
       end
     end
 
-    render layout: false
+    if params[:combobox]
+      render json: { 'html' => render_to_string(partial: 'select_semester.html', locals: { semesters: @semesters }) }
+    else
+      render layout: false
+    end
   end
 
   # GET /semesters/1

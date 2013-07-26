@@ -2,9 +2,8 @@
 = stylesheet_link_tag "autocomplete"
 = stylesheet_link_tag "http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"
 
+= @type.id
 = "Turmas"
-
-/ USAR O FILTRO DE CONTEÚDO
 
 .edition
   %fieldset#allocation_tag_selection
@@ -13,22 +12,100 @@
     %span.label
       = ["Tipo", @type.description].join(": ")
     .filter_courses
-      = select_tag :course, options_from_collection_for_select(@courses, 'id', 'name'), include_blank: true
+      = select_tag :course, options_from_collection_for_select(@courses, 'id', 'code_name'), include_blank: true
+      - if @type.id != 3
+        %br/
+        = select_tag :curriculum_unit, nil
       %br/
-      = select_tag :curriculum_unit, options_from_collection_for_select(@curriculum_units, 'id', 'name'), include_blank: true
-      %br/
-      = select_tag :semester, options_from_collection_for_select(@semesters, 'id', 'name'), include_blank: true
+      = select_tag :semester, nil
 
       %br/
-      = link_to t(:search), "#", {class: 'btn', :"data-url-search" => groups_path, id: 'search'}
+      = link_to t(:search), "#", {class: 'btn', :"data-url-search" => list_groups_path, id: "search"}
 
 .groups_list
-  = render "groups/index"
 
 = render "back"
 
 :javascript
 
+  function clear_combo_uc() {
+    $('#curriculum_unit').combobox('value', null).html('');
+  }
+
+  function clear_combo_semester() {
+    $('#semester').combobox('value', null).html('');
+  }
+
+  function clear_combo_uc_and_semester() {
+    clear_combo_uc();
+    clear_combo_semester();
+  }
+
   $(function(){
-    $("#curriculum_unit, #course, #semester").combobox();
+    $("#course, #curriculum_unit, #semester").combobox();
+    $("#semester, #curriculum_unit").combobox( "option", { disabled: true } );
+
+    $( "#course" ).combobox({
+      change: function( event, ui ) {
+
+        clear_combo_uc_and_semester();
+
+        if($('#course').combobox('value') == null){
+
+          console.log('fazer algo aqui?');
+
+        }else{
+          // se for livre, busca direto pelo semestre
+          if ("#{@type.id}" == '3') {
+            $("#semester").combobox( "option", { disabled: false } );
+            var url = "#{list_combobox_semesters_path(period: 'all', course_id: 'course_param')}".replace('course_param', $('#course').combobox('value'));
+            $.get(url, function(data){
+             $("#semester").html(data.html);
+            });
+          } else {
+            $("#curriculum_unit").combobox( "option", { disabled: false } );
+            $.get("#{list_combobox_curriculum_units_path(type: @type.id, course_id: 'course_param')}".replace('course_param', $('#course').combobox('value')), function(data){
+              $("#curriculum_unit").html(data.html);
+            });
+          }
+        }
+      }
+    });
+
+    $( "#curriculum_unit" ).combobox({
+      change: function( event, ui ) {
+        clear_combo_semester();
+
+        $("#semester").combobox( "option", { disabled: false } );
+        var url = "#{list_combobox_semesters_path(period: 'all', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')}".replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
+        $.get(url, function(data){
+         $("#semester").html(data.html);
+        });
+      }
+    });
+
+     $("#search").click(function(){
+      if (($('#semester').combobox('value') == null || $('#curriculum_unit').combobox('value') == null || $('#course').combobox('value') == null))
+        flash_message("ops", 'alert');
+      else{
+        erase_flash_messages();
+
+        var data = {
+          course_id: $("#course").combobox('value'),
+          semester_id: $("#semester").combobox('value')
+        };
+
+        if ($("#curriculum_unit").combobox('value').length)
+          data.curriculum_unit_id = $("#curriculum_unit").combobox('value');
+
+        $.ajax({
+          type: 'GET',
+          url: $(this).data("url-search"),
+          data: data,
+          success: function(data){
+            $(".groups_list").html(data);
+          }
+        });
+      }
+    });
   });

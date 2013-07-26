@@ -37,7 +37,7 @@ class Semester < ActiveRecord::Base
     query << "offers.course_id = #{params[:course_id]}" unless params[:course_id].blank?
     query << "offers.curriculum_unit_id = #{params[:uc_id]}" unless params[:uc_id].blank?
 
-    joins(:offers).where(query.join(" AND "))
+    joins(:offers).where(query.join(" AND ")).uniq.order("name DESC")
   end
 
   def self.all_by_period(params = {})

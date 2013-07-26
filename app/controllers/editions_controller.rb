@@ -41,10 +41,7 @@ class EditionsController < ApplicationController
 
   def groups
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
-    @curriculum_units = @type.curriculum_units
-    @courses = Course.all
-    @semesters = Semester.order("name DESC")
-    # @groups = []
+    @courses = Course.joins(offers: [:groups, :curriculum_unit]).where(curriculum_units: {curriculum_unit_type_id: @type.id}).uniq
   end
 
 end

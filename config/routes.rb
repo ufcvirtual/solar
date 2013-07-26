@@ -35,6 +35,7 @@ Solar::Application.routes.draw do
       get :list
       get :list_informations
       get :list_participants
+      get :list_combobox, to: :index, combobox: true, as: :list_combobox
     end
     member do
       get :participants
@@ -49,6 +50,7 @@ Solar::Application.routes.draw do
     resources :discussions, only: [:index]
     get :list, on: :collection
     get :list_to_edit, to: :list, on: :collection, edition: true
+    get :academic_index, on: :collection
   end
 
   ## discussions/:id/posts
@@ -87,6 +89,7 @@ Solar::Application.routes.draw do
   end
 
   resources :semesters do
+    get :list_combobox, to: :index, combobox: true, as: :list_combobox, on: :collection
     resources :offers, only: [:index, :new]
   end
 

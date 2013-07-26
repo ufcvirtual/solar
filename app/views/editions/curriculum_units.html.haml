@@ -30,8 +30,8 @@
         type: 'GET',
         url: $(this).data("url-search"),
         data: {
-          "curriculum_unit_id": $("#code_name").val(),
-          "type": "#{@type.id}"
+          curriculum_unit_id: $("#code_name").combobox('value'),
+          type: "#{@type.id}"
         },
         success: function(data){
           $(".ucs_list").html(data);

@@ -8,6 +8,8 @@
     .filter_notice= t(".select_something")
     .filter_type
       = select_tag :type, options_from_collection_for_select(@types, 'id', 'description', @type), include_blank: true
+      %br
+      = link_to t(:search), "#", {class: 'btn', :"data-url-search" => groups_path, id: 'search'}
 
   %fieldset.academic.invisible
     .items
@@ -35,7 +37,6 @@
             = link_to(content_tag(:i, nil, class: 'icon-book big'), "#", class: 'btn')
             = link_to t(".groups"), "#"
 
-
 / 1 | Curso de Graduacao Presencial      
 / 2 | Curso de Graduacao a Distancia     
 / 3 | Curso Livre                        
@@ -46,15 +47,17 @@
 :javascript
 
   $(function(){
-    if($("#type").val() != "")
+
+    $("#type").combobox();
+    $("#type").combobox('value', "#{@type}");
+
+    if ($("#type").combobox('value') != "")
       show_items();
 
-    $("#type")
-      .combobox()
-      .change(function() { show_items(); });
+    $("#search").click(function() { show_items(); });
 
     $('.academic_item').click(function(){
-      window.location.href = $(this).data('link-to').replace(':uc_type_id', $('#type').val());
+      window.location.href = $(this).data('link-to').replace(':uc_type_id', $('#type').combobox('value'));
     });
   });
 
@@ -64,7 +67,7 @@
     $('.curriculum_units a#uc_name').html("#{t('.curriculum_units')}");
     $('.curriculum_units').show();
 
-    var id = parseInt($("#type").val());
+    var id = parseInt($("#type").combobox('value'));
     if (id == 3)
       $('.curriculum_units').hide();
     else if (id == 4)

@@ -2,25 +2,33 @@ include MessagesHelper
 
 class CurriculumUnitsController < ApplicationController
 
-  layout false, :only => [:new, :edit, :show, :create, :update]
+  layout false, only: [:new, :edit, :show, :create, :update]
 
-  before_filter :prepare_for_group_selection, :only => [:home, :participants, :informations]
-  before_filter :curriculum_data, :only => [:home, :informations, :curriculum_data, :participants]
+  before_filter :prepare_for_group_selection, only: [:home, :participants, :informations]
+  before_filter :curriculum_data, only: [:home, :informations, :curriculum_data, :participants]
 
-  authorize_resource :only => [:index, :show, :new]
-  load_and_authorize_resource :only => [:destroy, :edit]
+  authorize_resource only: [:index, :show, :new]
+  load_and_authorize_resource only: [:destroy, :edit]
 
   # Acadêmico
   def index
     @type = params[:type]
-    if (not params[:curriculum_unit_id].blank?) # recebe o id do curso pelo nome
-      @curriculum_units = [CurriculumUnit.find(params[:curriculum_unit_id])]
-    else
-      @curriculum_units = CurriculumUnit.find_all_by_curriculum_unit_type_id(params[:type])
-    end
-    render partial: 'curriculum_units/index'
-  end
+    @curriculum_units = []
 
+    if params[:combobox]
+      @curriculum_units = CurriculumUnit.joins(offers: :groups).where(curriculum_unit_type_id: params[:type]).where(offers: {course_id: params[:course_id]}) if not(params[:course_id].blank?)
+
+      render json: { html: render_to_string(partial: 'select_curriculum_unit.html', locals: { curriculum_units: @curriculum_units.uniq! }) }
+    else # list
+      if not(params[:curriculum_unit_id].blank?)
+        @curriculum_units = CurriculumUnit.where(id: params[:curriculum_unit_id])
+      else
+        @curriculum_units = CurriculumUnit.find_all_by_curriculum_unit_type_id(params[:type])
+      end
+
+      render partial: 'curriculum_units/index'
+    end
+  end
 
   # GET /curriculum_units/list.json
   def list

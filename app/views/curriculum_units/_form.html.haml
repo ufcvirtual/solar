@@ -32,11 +32,13 @@
 
           var url = "#{curriculum_units_path(type: @curriculum_unit.curriculum_unit_type.id, curriculum_unit_id: 'curriculum_unit_param')}";
 
-
           // criar método pra poder chamar em todas as listagens
+          if($("#code_name").combobox('value') == null)
+            var curriculum_unit_id = '';
+          else
+            var curriculum_unit_id = $("#code_name").combobox('value');
 
-
-          $.get(url.replace('curriculum_unit_param', $("#code_name").val()), function(data) {
+          $.get(url.replace('curriculum_unit_param', curriculum_unit_id), function(data) {
             $('.ucs_list').html(data);
 
             var autocomplete_option = $('option[value='+id+']');
@@ -48,18 +50,10 @@
               // atualiza a uc alterada na lista do autocomplete
               autocomplete_option.text(post_code_name);
               // se a uc alterada foi a selecionada no autocomplete, alterar o valor do input
-              if($("#code_name").val() == id)
+              if($("#code_name").combobox('value') == id)
                 $("#autocomplete-input").val(post_code_name);
             }
-
-
           });
-
-
-
-
-
-
         }
       });
     });
@@ -69,4 +63,3 @@
     });
     
   });
-
