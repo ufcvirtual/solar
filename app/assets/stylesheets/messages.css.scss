@@ -122,17 +122,19 @@
   padding: 5px 0 0 0;
 }
 /* mensagem */
-.block_content{
-  padding: 5px;
-  padding-right: 10px;
-  border-bottom: solid 1px $border;
+.block_wrapper.messages {
+  .block_content{
+    padding: 5px;
+    padding-right: 10px;
+    border-bottom: solid 1px $border;
 
-  &.block_white{
-    background: white;
-  }
+    &.block_white{
+      background: white;
+    }
 
-  .btn{
-    margin-right: -5px;
+    .btn{
+      margin-right: -5px;
+    }
   }
 }
 .message_header_new, .message_div_show{
