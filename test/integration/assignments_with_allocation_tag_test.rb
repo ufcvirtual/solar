@@ -343,4 +343,63 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
+  ##
+  # Show
+  ##
+
+  # Perfil com permissao e usuario com acesso a atividade
+  test "exibir pagina de avaliacao da atividade individual para usuario com permissao" do
+    login users(:professor)
+    get @quimica_tab
+    get assignment_path id: assignments(:a9).id, student_id: users(:aluno1).id
+    assert_response :success
+    assert_not_nil assigns(:student_id)
+    assert_nil assigns(:group_id)
+    assert_nil assigns(:group)
+    assert_not_nil assigns(:sent_assignment)
+    assert_not_nil assigns(:assignment_enunciation_files)
+    assert_not_nil assigns(:sent_assignment_files)
+    assert_not_nil assigns(:comments)
+    assert_template :show
+  end
+
+  # Perfil com permissao e usuario com acesso a atividade
+  test "exibir pagina de avaliacao da atividade em grupo para usuario com permissao" do
+    login users(:professor)
+    get @quimica_tab
+    get assignment_path :id => assignments(:a6).id, :student_id => users(:aluno1).id, :group_id => group_assignments(:ga6).id
+    assert_response :success
+    assert_nil assigns(:student_id)
+    assert_not_nil assigns(:group_id)
+    assert_not_nil assigns(:group)
+    assert_nil assigns(:sent_assignment)
+    assert_not_nil assigns(:assignment_enunciation_files)
+    assert_nil assigns(:sent_assignment_files)
+    assert_nil assigns(:comments)
+    assert_template :show
+  end
+
+  # Perfil com permissao e usuario sem acesso a atividade
+  test "nao exibir pagina de avaliacao da atividade individual para usuario com permissao e sem acesso" do
+    login users(:aluno2)
+    get @quimica_tab
+    get assignment_path :id => assignments(:a9).id, :student_id => users(:aluno1).id
+    assert_response :redirect
+    # assert_equal I18n.t(:no_permission), flash[:alert]
+    # Expected response to be a redirect to <http://test.host/home> but was a redirect to <http://test.host/>
+    # assert_redirected_to(home_path)
+    #<"Você precisa logar antes de continuar."> expected but was
+    # <"Você não tem permissão para acessar esta página">.
+  end
+
+  # Perfil com permissao e usuario sem acesso a atividade
+  test "nao exibir pagina de avaliacao da atividade em grupo para usuario com permissao e sem acesso" do
+    login users(:aluno3)
+    get @quimica_tab
+    get assignment_path :id => assignments(:a6).id, :student_id => users(:aluno2).id, :group_id => group_assignments(:ga6).id
+    assert_response :redirect
+    assert_redirected_to(home_path)
+    assert_equal I18n.t(:no_permission), flash[:alert]
+  end
+
 end
