@@ -28,63 +28,74 @@
 
 :javascript
 
-  function clear_combo_uc() {
+  function clear_combo_uc(disable) {
     $('#curriculum_unit').combobox('value', null).html('');
+    if(disable)
+      $('#curriculum_unit').combobox("option", { disabled: true });
   }
 
-  function clear_combo_semester() {
+  function clear_combo_semester(disable) {
     $('#semester').combobox('value', null).html('');
+    if(disable)
+      $('#semester').combobox("option", { disabled: true });
   }
 
-  function clear_combo_uc_and_semester() {
-    clear_combo_uc();
-    clear_combo_semester();
+  function clear_combo_uc_and_semester(disable) {
+    clear_combo_uc(disable);
+    clear_combo_semester(disable);
   }
+
+  function update_combobox(url, combobox){
+    $.get(url, function(data){
+      $("#"+combobox).html(data.html);
+    });
+  }
+
 
   $(function(){
     $("#course, #curriculum_unit, #semester").combobox();
     $("#semester, #curriculum_unit").combobox( "option", { disabled: true } );
 
     $( "#course" ).combobox({
-      change: function( event, ui ) {
+      change: function(event, ui) {
+      // change é chamado apenas ao perder o foco
+        if(ui.item == null)
+          clear_combo_uc_and_semester(true);
+      },
+      select: function( event, ui ) { 
+        // semester é chamado no momento da seleção, não precisa perder o foco
 
         clear_combo_uc_and_semester();
 
-        if($('#course').combobox('value') == null){
-
-          console.log('fazer algo aqui?');
-
-        }else{
-          // se for livre, busca direto pelo semestre
-          if ("#{@type.id}" == '3') {
-            $("#semester").combobox( "option", { disabled: false } );
-            var url = "#{list_combobox_semesters_path(period: 'all', course_id: 'course_param')}".replace('course_param', $('#course').combobox('value'));
-            $.get(url, function(data){
-             $("#semester").html(data.html);
-            });
-          } else {
-            $("#curriculum_unit").combobox( "option", { disabled: false } );
-            $.get("#{list_combobox_curriculum_units_path(type: @type.id, course_id: 'course_param')}".replace('course_param', $('#course').combobox('value')), function(data){
-              $("#curriculum_unit").html(data.html);
-            });
-          }
+        // se for livre, busca direto pelo semestre
+        if ("#{@type.id}" == '3') {
+          $("#semester").combobox( "option", { disabled: false } );
+          var url = "#{list_combobox_semesters_path(period: 'all', course_id: 'course_param')}".replace('course_param', $('#course').combobox('value'));
+          update_combobox(url, 'semester');
+        } else {
+          $("#curriculum_unit").combobox( "option", { disabled: false } );
+          var url = "#{list_combobox_curriculum_units_path(type: @type.id, course_id: 'course_param')}".replace('course_param', $('#course').combobox('value'));
+          update_combobox(url, 'curriculum_unit');
         }
       }
     });
 
     $( "#curriculum_unit" ).combobox({
-      change: function( event, ui ) {
+      change: function(event, ui) {
+        if(ui.item == null)
+          clear_combo_semester(true);
+      },
+      select: function( event, ui ) {
         clear_combo_semester();
 
         $("#semester").combobox( "option", { disabled: false } );
         var url = "#{list_combobox_semesters_path(period: 'all', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')}".replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
-        $.get(url, function(data){
-         $("#semester").html(data.html);
-        });
+        update_combobox(url, 'semester');
       }
     });
 
      $("#search").click(function(){
+      // mesmo sem passar semestre, está buscando
       if (($('#semester').combobox('value') == null || $('#curriculum_unit').combobox('value') == null || $('#course').combobox('value') == null))
         flash_message("ops", 'alert');
       else{
@@ -98,14 +109,10 @@
         if ($("#curriculum_unit").combobox('value').length)
           data.curriculum_unit_id = $("#curriculum_unit").combobox('value');
 
-        $.ajax({
-          type: 'GET',
-          url: $(this).data("url-search"),
-          data: data,
-          success: function(data){
-            $(".groups_list").html(data);
-          }
+        $.get($(this).data("url-search"), data, function(data){
+          $(".groups_list").html(data);
         });
+
       }
     });
   });

@@ -145,18 +145,15 @@
                   });
 
                 if ( !valid ) {
-
                    // remove invalid value, as it didn't match anything
                    $el.val( "" );
                    this.element.prop('selectedIndex', -1);
-                   return false;
-
                 }
             }
 
             this._trigger( "change", event, {
-                  item: ui.item ? ui.item.option : null
-                });
+              item: ui.item ? ui.item.option : null
+            });
 
          },
 
@@ -164,7 +161,7 @@
 
             ui.item.option.selected = true;
             this._trigger( "select", event, {
-                  item: ui.item.option
+                  item: ui.item ? ui.item.option : null
                });
 
          },

@@ -18,7 +18,7 @@ class SemestersController < ApplicationController
         if p.has_key?(:course_id) or p.has_key?(:uc_id)
           @semesters = Semester.all_by_uc_or_course(p)
         else
-          @semesters = [] # aviso
+          @semesters = []
         end
       else
         @semesters = Semester.all_by_period(p) # semestres do período informado ou ativos
