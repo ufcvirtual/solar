@@ -241,17 +241,66 @@ $.fn.serialize_and_submit = function(options) {
   });
 }
 
+$.fn.is_empty = function(){
+  return ($(this).val() == "" || $(this).val() == null);
+}
+
+$.fn.nice_checkbox = function(options){
+  $(this).click(function(){
+    var check = this.checked;
+    var children_names = $(this).data("children-names");
+
+    $('input[name="' + children_names + '"]').each(function(i){
+      $(this).prop("checked", check);
+    });
+  });
+
+  if (typeof(options) != "undefined" && typeof(options.objects_to_change_status) != "undefined")
+    $(this).change(function(){
+      options.objects_to_change_status.toggleClass("disabled");
+    });
+
+  return this;
+}
+
 /**
-* Define uma função para atualizar os valores do filtro acadêmico e, se necessário, o conteúdo da listagem
-**/
-$.fn.update_list_and_filter = function(list_url, list_div, action, new_name){
+ * Deleta um objeto retirando sua tr da tabela
+ * Apresenta msg (notice, alert) como flash messages
+ **/
+$.fn.nice_delete = function(options) {
+  if (!confirm("<%= I18n.t(:message_confirm) %>"))
+    return this;
+  if (typeof(options) == "undefined")
+    options = {};
 
+  options = $.extend({ parent: 'tr' }, options);
+  var parent = $(this).parents(options.parent);
 
+  if (typeof(options) != "undefined" && typeof(options.success) == "undefined") { // definir success
+    options.success = function(data) {
+      if (typeof(data.notice) != "undefined")
+        flash_message(data.notice, 'notice');
 
+      parent.fadeOut(500, function(){ $(this).remove() });
 
+      if (typeof(options.complement_success) == "function")
+        options.complement_success(data);
+    }
+  }
 
+  if (typeof(options.error) == "undefined")
+    options.error = function(data) {
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
+    }
 
+  $.ajax({
+    method: "DELETE",
+    url: $(this).data("link-delete"),
+    success: options.success,
+    error: options.error
+  });
 
-
-
+  return this;
 }

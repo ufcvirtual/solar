@@ -1,1 +1,120 @@
-= render "academic_index"
+.block_wrapper
+
+  .block_title
+    %h2= "Turmas"
+  .block_content_toolbar
+    .block_toolbar_left.btn-group
+      %a.btn.btn_main.new_offer{:'data-tooltip' => t(".new"), id: "btn_new_group", :type => :button, :"data-link-new-group" => new_group_path(semester_id: 'semester_param', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param'), :'data-tooltip' => 'Nova turma'}
+        = content_tag(:i, nil, class: 'icon-plus-3')
+    .block_toolbar_right
+      = check_box_tag :all_groups, false, false, class: 'btn', :'data-tooltip' => t(".disable"), :"data-children-names" => "ckb_group"
+      = link_to (content_tag(:i, nil, :class=>'icon-checkmark')), "#", class: 'btn disable_group', :'data-tooltip' => t(".disable"), :"data-link-status" => group_path(id: ':id', status: false, multiple: true)
+      = link_to (content_tag(:i, nil, :class=>'icon-checkmark')), "#", class: 'btn enable_group', :'data-tooltip' => t(".enable"), :"data-link-status" => group_path(id: ':id', status: true, multiple: true)
+      = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn delete_group', :'data-tooltip' => t(".delete"), :"data-link-delete" => group_path(id: ':id')
+
+  - part1, part2 = @groups.in_groups(2, false)
+
+  - if @groups.count
+    .block_content.groups
+      .block_left
+        = render "partial_group_list", groups: part1
+      .block_right
+        = render "partial_group_list", groups: part2
+  - else
+    \ nada pra apresentar
+
+:javascript
+
+  $(function(){
+
+    $('.disable_group, .enable_group, .delete_group').addClass("disabled");
+
+    $('#btn_new_group').click(function(){
+      var url = $(this).data("link-new-group").replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
+      showLightBoxURL(url, 500, 400, true, $(this).data("tooltip"));
+    });
+
+    $('.edit_group').not('.disabled').click(function(){
+      showLightBoxURL($(this).data("link-edit-group"), 500, 400, true, $(this).data("tooltip"));
+    });
+
+    $('.delete_group').not('.disabled').click(function(){
+
+      var groups_ids = jQuery.map($("#ckb_group:checked"), function(n){
+        return ($(n).val());
+      });
+
+      if($(groups_ids).length == 0)
+        flash_message("#{t(".choose_at_least_one")}", 'alert');
+      else{
+        $.ajax({
+          type: 'DELETE',
+          url: $(this).data('link-delete').replace(':id', groups_ids),
+          success: function(data){
+            flash_message(data.notice, 'notice');
+            
+            var url = "#{list_groups_path(semester_id: 'semester_param', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')}".replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
+
+            $.get(url, function(data){
+              $(".groups_list").html(data);
+            });
+          },
+          error: function(){
+            flash_message(data.alert, 'alert');
+          }
+        });
+      }
+
+    });
+
+    $('#all_groups').nice_checkbox({
+      objects_to_change_status: $('.disable_group, .enable_group, .delete_group')
+    });
+
+    $('input[name="ckb_group"]').change(function(){
+      var checked_ckb = $('[name="ckb_group"]:checked');
+      var disabled = checked_ckb.is_empty();
+
+      // habilita ou desabilita os botões da barra de ferramentas
+      $('.disable_group, .enable_group, .delete_group').toggleClass("disabled", disabled);
+
+      // seleciona ou não o checkbox de "todos"
+      $("#all_groups").prop('checked', (checked_ckb.length == $('[name="ckb_group"]').length));
+    });
+
+    $('.disable_group, .enable_group').not('.disabled').click(function(){
+      var groups_ids = jQuery.map($("#ckb_group:checked"), function(n){
+        return ($(n).val());
+      });
+
+      $.ajax({
+        type: "PUT",
+        url: $(this).data('link-status').replace(':id', groups_ids),
+        success: function(data){
+          var url = "#{list_groups_path(semester_id: 'semester_param', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')}".replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
+
+          $.get(url, function(data){
+            $(".groups_list").html(data);
+          });
+        },
+        error: function(){
+          console.log('erro');
+        }
+      });
+    });
+
+    $(".change_status_group").click(function(){
+      var group_status = $(this);
+      $.ajax({
+        type: "PUT",
+        url: $(this).data('link-status'),
+        success: function(data){
+          group_status.children('i').toggleClass('icon-checkmark').toggleClass('icon-edit');
+        },
+        error: function(){
+
+        }
+      });
+    });
+
+  });

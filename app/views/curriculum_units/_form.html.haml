@@ -33,7 +33,7 @@
           var url = "#{curriculum_units_path(type: @curriculum_unit.curriculum_unit_type.id, curriculum_unit_id: 'curriculum_unit_param')}";
 
           // criar método pra poder chamar em todas as listagens
-          if($("#code_name").combobox('value') == null)
+          if($("#code_name").is_empty())
             var curriculum_unit_id = '';
           else
             var curriculum_unit_id = $("#code_name").combobox('value');

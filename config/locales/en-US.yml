@@ -1119,17 +1119,28 @@
 
   groups:
     list:
-      new: "New"
-      enable: "Enable"
-      disable: "Disable"
-      new_group: "New Group"
-      edit_group: "Group Edit"
+      new: New group
+      enable: Enable
+      disable: Disable
+      delete: Delete group
+      choose_at_least_one: "Choose at least one group"
+    partial_group_list:
+      code: Code
+      edit: Edit group
+    success:
+      created: Group was successfully created.
+      updated: Group was successfully updated.
+      deleted: Group was successfully deleted.
+    error:
+      created: Group wasn't created.
+      updated: Group wasn't updated.
+      deleted: Group wasn't deleted.
 
   simple_form:
     labels:
       group:
-        offer: "Offer"
-        code: "Code"
+        semester: Semester
+        code: Code
 
   editions:
     academic:
@@ -1138,6 +1149,7 @@
       semesters: "Semesters"
       groups: "Groups"
       modules: "Modules"
+      type: Type
     index:
       edition: Edition
       filter: Filter
@@ -1167,6 +1179,8 @@
       all: "All"
       actives: "Actives"
       warning: "Select a Curriculum Unit or a Course to search for all."
+    groups:
+      warning: All items must be selected to search.
     cant_save: It wasn't possible to save
     are_you_sure_of_deletion: Are you sure that you want to delete?
     cant_delete: It wasn't possible to delete

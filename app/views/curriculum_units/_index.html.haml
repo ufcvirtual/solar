@@ -29,8 +29,6 @@
           %td
             = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_caution delete_curriculum_unit', :"data-link-delete" => curriculum_unit_path(curriculum_unit), :'data-tooltip' => t(".delete"), id: curriculum_unit.id
 
-            /= link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete', :'data-tooltip' => t(".delete_curriculum_unit"), :"data-link-delete" => curriculum_unit_path(curriculum_unit)#, disabled: (not(can? :destroy, offer, on: [offer.allocation_tag.id]) or (offer.has_any_lower_association?))
-
 :javascript
 
   $(function(){
@@ -49,7 +47,7 @@
         complement_success: function(data) {
 
           // se eu tiver selecionado no autocomplete a uc que quero deletar
-          if(curriculum_unit_id == $("#code_name").val()){
+          if(curriculum_unit_id == $("#code_name").combobox('value')){
             // atualiza o conteúdo da lista e do autocomplete selecionado
             $.get("#{curriculum_units_path(type: @type)}", function(data) {
               $('.ucs_list').html(data);
@@ -60,7 +58,6 @@
           $('option[value="'+curriculum_unit_id+'"]').remove();
         }
       });
-
 
     });
   });

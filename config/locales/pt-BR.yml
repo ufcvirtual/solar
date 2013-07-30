@@ -1286,17 +1286,28 @@
 
   groups:
     list:
-      new: "Novo"
-      enable: "Ativar"
-      disable: "Desativar"
-      new_group: "Nova Turma"
-      edit_group: "Edição de Turma"
+      new: Nova turma
+      enable: Ativar
+      disable: Desativar
+      delete: Deletar turma
+      choose_at_least_one: "Selecione, ao menos, uma turma"
+    partial_group_list:
+      code: Código
+      edit: Editar turma
+    success:
+      created: Turma criada com sucesso.
+      updated: Turma atualizada com sucesso.
+      deleted: Turma deletada com sucesso.
+    error:
+      created: Não foi possível criar turma.
+      updated: Não foi possível atualizar turma.
+      deleted: Não foi possível deletar turma.
 
   simple_form:
     labels:
       group:
-        offer: "Oferta"
-        code: "Código"
+        semester: Semestre
+        code: Código
 
   editions:
     academic:
@@ -1305,6 +1316,7 @@
       semesters: "Semestres"
       groups: "Turmas"
       modules: "Módulos"
+      type: Tipo
     index:
       edition: Edição
       filter: Filtro
@@ -1334,6 +1346,8 @@
       all: "Todos"
       actives: "Ativos"
       warning: "Selecione uma Unidade Curricular ou um Curso para pesquisar por todos."
+    groups:
+      warning: Todos os itens devem ser selecionados para realizar a pesquisa.
     cant_save: Não foi possível salvar
     are_you_sure_of_deletion: Você tem certeza de que deseja excluir?
     cant_delete: Não foi possível excluir

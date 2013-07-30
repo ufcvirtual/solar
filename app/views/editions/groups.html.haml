@@ -2,15 +2,13 @@
 = stylesheet_link_tag "autocomplete"
 = stylesheet_link_tag "http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"
 
-= @type.id
 = "Turmas"
-
 .edition
   %fieldset#allocation_tag_selection
     %legend= t(".filter")
     .filter_notice= t(".select_something")
     %span.label
-      = ["Tipo", @type.description].join(": ")
+      = [t(:type, scope: [:editions, :academic]), @type.description].join(": ")
     .filter_courses
       = select_tag :course, options_from_collection_for_select(@courses, 'id', 'code_name'), include_blank: true
       - if @type.id != 3
@@ -29,15 +27,13 @@
 :javascript
 
   function clear_combo_uc(disable) {
-    $('#curriculum_unit').combobox('value', null).html('');
-    if(disable)
-      $('#curriculum_unit').combobox("option", { disabled: true });
+    $('#curriculum_unit').combobox('value', null);
+    $('#curriculum_unit').combobox("option", { disabled: disable });
   }
 
   function clear_combo_semester(disable) {
-    $('#semester').combobox('value', null).html('');
-    if(disable)
-      $('#semester').combobox("option", { disabled: true });
+    $('#semester').combobox('value', null);
+    $('#semester').combobox("option", { disabled: disable });
   }
 
   function clear_combo_uc_and_semester(disable) {
@@ -58,14 +54,11 @@
 
     $( "#course" ).combobox({
       change: function(event, ui) {
-      // change é chamado apenas ao perder o foco
         if(ui.item == null)
           clear_combo_uc_and_semester(true);
       },
       select: function( event, ui ) { 
-        // semester é chamado no momento da seleção, não precisa perder o foco
-
-        clear_combo_uc_and_semester();
+        clear_combo_uc_and_semester(true);
 
         // se for livre, busca direto pelo semestre
         if ("#{@type.id}" == '3') {
@@ -86,18 +79,15 @@
           clear_combo_semester(true);
       },
       select: function( event, ui ) {
-        clear_combo_semester();
-
-        $("#semester").combobox( "option", { disabled: false } );
+        clear_combo_semester(false);
         var url = "#{list_combobox_semesters_path(period: 'all', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')}".replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
         update_combobox(url, 'semester');
       }
     });
 
      $("#search").click(function(){
-      // mesmo sem passar semestre, está buscando
-      if (($('#semester').combobox('value') == null || $('#curriculum_unit').combobox('value') == null || $('#course').combobox('value') == null))
-        flash_message("ops", 'alert');
+      if (($('#semester').is_empty() || $('#curriculum_unit').is_empty() || $('#course').is_empty()))
+        flash_message("#{t('.warning')}", 'alert');
       else{
         erase_flash_messages();
 

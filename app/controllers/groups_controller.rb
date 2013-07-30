@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController
 
-  layout false, only: [:list, :new, :create, :edit, :update]
+  layout false, except: [:index]
 
   # Mobilis
   def index
@@ -22,7 +22,7 @@ class GroupsController < ApplicationController
   def list
     authorize! :list, Group
 
-    # curriculum_unit_id, course_id, semester_id
+    # os três dados são obrigatórios
     query = []
     query << "offers.curriculum_unit_id = #{params[:curriculum_unit_id]}" unless params[:curriculum_unit_id].blank?
     query << "offers.course_id = #{params[:course_id]}" unless params[:course_id].blank?
@@ -40,31 +40,22 @@ class GroupsController < ApplicationController
 
   def new
     authorize! :create, Group
-
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
-    @group = Group.new
-    @offer = AllocationTag.find(@allocation_tags_ids).first.offer
+    offer  = Offer.find_by_curriculum_unit_id_and_semester_id_and_course_id(params[:curriculum_unit_id], params[:semester_id], params[:course_id])
+    @group = Group.new offer_id: offer.try(:id)
   end
 
   def edit
     authorize! :update, Group
-
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
     @group = Group.find(params[:id])
-    @offer = @group.offer
   end
 
   def create
     authorize! :create, Group
-
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
     @group = Group.new(params[:group])
 
-    begin
-      @group.save!
-      render nothing: true
-    rescue
-      @offer = Offer.find(params[:group][:offer_id])
+    if @group.save
+      render json: {success: true, notice: t(:created, scope: [:groups, :success])}
+    else
       render :new
     end
   end
@@ -72,32 +63,32 @@ class GroupsController < ApplicationController
   def update
     authorize! :update, Group
 
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
-    @group = Group.find(params[:id])
+    if(params[:multiple])
+      Group.where(id: params[:id].split(",")).update_all(status: params[:status])
+      render json: {success: true, notice: t(:updated, scope: [:groups, :success])}
+    else
+      @group = Group.find(params[:id])
 
-    begin
-      @group.update_attributes(params[:group])
-      if params.include?(:redirect) and params[:redirect]
-        redirect_to list_to_edit_groups_path(allocation_tags_ids: @group.offer.allocation_tag.id), :notice => t(:successfully_updated, :register => @group.code)
+      if @group.update_attributes(params[:group])
+        render json: {success: true, notice: t(:updated, scope: [:groups, :success])}
       else
-        raise unless @group.valid?
-        render nothing: true
+        render :edit
       end
-    rescue
-      @offer = @group.offer
-      render :new
     end
   end
 
   def destroy
     authorize! :destroy, Group
 
-    @group = Group.find(params[:id])
-
-    if @group.destroy
-      redirect_to list_to_edit_groups_path(allocation_tags_ids: @group.offer.allocation_tag.id), :notice => t(:successfully_deleted, :register => @group.code_semester)
-    else
-      redirect_to list_to_edit_groups_path(allocation_tags_ids: @group.offer.allocation_tag.id), :alert => t(:cant_delete, :register => @group.code_semester)
+    Group.transaction do 
+      begin
+        Group.where(id: params[:id].split(",")).each do |group|
+          raise "erro" unless group.destroy
+        end
+        render json: {success: true, notice: t(:deleted, scope: [:groups, :success])}
+      rescue
+        render json: {success: false, alert: t(:deleted, scope: [:groups, :error])}, status: :unprocessable_entity
+      end
     end
   end
 
