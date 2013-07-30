@@ -7,8 +7,13 @@
 /*@import "div_layout";*/
 @import "reset";
 @import "fonts";
+
+// _layout.scss substituiu o antigo solar.scss: ee contem a estrutura da interface
+// esse arquivo NÃO deve conter propriedades de cor (color, background, border-color, ...)
+// qualquer propriedade de cor deve ser definida no _colors.scss
 @import "layout";
-@import "themes/theme_blue";
+
+@import "themes/theme_blue"; // tema padrão
 @import "buttons";
 @import "icons";
 @import "messages";
