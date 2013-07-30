@@ -1,418 +1,396 @@
 @import "variables";
+
 $margin-top: 5px;
-$label_color: $color_main_text;
 
 /* layout geral */
-img{
-    border: none;
+img {
+  border: none;
 }
 
 html, body {
-    height: 100%;
+  height: 100%;
 }
 
-body{
-    margin: 0;
-    padding: 0;
-    background-color: #fff;
-    cursor: default;
-    font-family: 'PT Sans', sans-serif;
-    height: 100%;
-    background-color: #f9f9f9;
+body {
+  margin: 0;
+  padding: 0;
+  cursor: default;
+  font-family: 'PT Sans', sans-serif;
+  height: 100%;
 }
 
 p {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .center {
-    text-align: center;
+  text-align: center;
 }
 
 h1, h2, h3, h4, h5 {
-    font-family: 'Ubuntu Light', sans-serif;
+  font-family: 'Ubuntu Light', sans-serif;
 }
 
 h1 {
-    font-weight: 300;
+  font-weight: 300;
 }
 
 h2 {
-    font-family: 'Ubuntu Condensed', sans-serif;
-    font-weight: 500;
+  font-family: 'Ubuntu Condensed', sans-serif;
+  font-weight: 500;
 }
 
 h3 {
-    font-family: 'Ubuntu', sans-serif;
-    font-weight: bold;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: bold;
 }
+
 #body_wrapper {
-    width: 980px;
-    margin: 0 auto;
-    background-color: #ffffff;
-    min-height: 99.5%;
-    position: relative;
+  width: 980px;
+  margin: 0 auto;
+  min-height: 99.5%;
+  position: relative;
 }
 
 /*Classes de mensagens flash*/
 .alert {
-    font-weight: bold;
-    color: #660000;
+  font-weight: bold;
 }
 
 .notice {
-    font-weight: bold;
-    color: #2F4F2F;
+  font-weight: bold;
 }
 
 #flash_message {
-    border: 1px solid #d0d0d0;
-    padding: 5px 10px 4px 25px;
-    margin: 10px 0;
-    font-size: 10pt;
+  border-width: 1px;
+  border-style: solid;
 }
 
 #flash_message.notice {
-    background: url('notice.gif') no-repeat 5px center #f5ffec;
+  background: url('notice.gif') no-repeat 5px center;
 }
 
 #flash_message.alert {
-    background: url('alert.gif') no-repeat 5px center #fff6f6;
-}
-
-label {
-    color: black;
-    display: inline-block;
-    width: 140px;
-}
-
-label.menor {
-    display: inline-block;
-    white-space: nowrap;
-    width: auto;
-    font-size: 8pt;
-    font-weight: normal;
+  background: url('alert.gif') no-repeat 5px center;
 }
 
 /**
 * Tratando links
 */
 a, a.menor, a.link_content {
-    color: #222;
-    text-decoration: none;
+  text-decoration: none;
 }
 
 a.link_content_del {
-    color: #EA4F52;
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 a.link_content, .forum_post_attachment_list a {
-    color: $color_contrast_text;
-    text-decoration: underline;
-}
-
-a.link_content:visited, .forum_post_attachment_list a:visited {
-  color: $color_main_text;
+  text-decoration: underline;
 }
 
 a.link_content_gray {
-    font-size: 9pt;
-    color: #999;
-    text-decoration: underline;
+  font-size: 9pt;
+  text-decoration: underline;
 }
 
 a.menor {
-    font-size       : 8pt;
-    text-decoration : underline;
+  font-size: 8pt;
+  text-decoration: underline;
 }
 
 .more_or_less {
-    text-align: right;
-    display: block;
+  text-align: right;
+  display: block;
 }
 
-select{
-    font-family:'PT Sans', sans-serif;
-    color: #222;
-    background-color: #fff;
-    border: 1px solid #dedede;
-    padding-top: 2px;
-    /*    min-width: 180px;*/
+select {
+  font-family: 'PT Sans', sans-serif;
+  border-width: 1px;
+  border-style: solid;
+  padding-top: 2px;
+  /*    min-width: 180px;*/
 }
 
-input{
-    color: #222;
-    border: 1px solid #dedede;
-    padding: 5px;
-    font-family:'PT Sans', sans-serif;
-    /*    font-size: 13px;*/
+input {
+  border-width: 1px;
+  border-style: solid;
+  padding: 5px;
+  font-family: 'PT Sans', sans-serif;
+  /*    font-size: 13px;*/
 }
+
 button {
-    font-family:'PT Sans', sans-serif;
+  font-family: 'PT Sans', sans-serif;
 }
 
 input[type="file"] {
-    border          : 0px;
-    padding         : 0px;
+  border: 0px;
+  padding: 0px;
 }
 
-textarea{
-    color           : #222;
-    background-color: #fff;
-    border          : 1px solid #dedede;
-    padding         : 5px;
-    font-family: 'PT Sans', sans-serif;
-    font-size: 10pt;
+textarea {
+  border-width: 1px;
+  border-style: solid;
+  padding: 5px;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 10pt;
 }
 
-h1.page_title{
-    font-size  : 12pt;
-    color      : #000;
-    /*    font-weight: bold;*/
-    /*    font-variant: small-caps;*/
-    border-bottom: 3px solid $color_main;
-    padding-bottom: 2px !important;
-    /*text-transform: capitalize;*/
+h1.page_title {
+  font-size: 12pt;
+  /*    font-weight: bold;*/
+  /*    font-variant: small-caps;*/
+  border-bottom-width: 3px;
+  border-bottom-style: solid;
+  padding-bottom: 2px !important;
+  /*text-transform: capitalize;*/
 }
 
 .text_alert, .text_alert_message {
-    font-size: 10pt;
-    color: #e64d4d;
-    width: auto;
+  font-size: 10pt;
+  width: auto;
 }
+
 .text_alert_message {
-    vertical-align: top;
+  vertical-align: top;
 }
+
 .text_none {
-    font-size: 10pt;
-    color: $color_main;
-    padding: 5px;
+  font-size: 10pt;
+  padding: 5px;
 }
 
 .link_button {
-    background-color: #eeeeed;
-    color           : #222;
-    float: right;
-    font-weight:bold;
-    padding: 4px;
-    margin:  2px;
-    cursor: pointer;
-    font-size: 12px;
-    -moz-border-radius: 4px;
-}
-/****LightBox genérico****/
-#lightBoxDialog{
-    border:1px solid #000;
-    display:none;
-    background-color:#FFF;
-    position:absolute;
-    z-index:1001;
-    top:50%;
-    left:50%;
-    padding:10px;
-    overflow: auto;
-}
-#lightBoxBackground{
-    display:none;
-    width:100%;
-    height:100%;
-    position:fixed;
-    top:0px;
-    left:0px;
-    background-color:#000;
-    z-index:1000;
+  float: right;
+  font-weight: bold;
+  padding: 4px;
+  margin: 2px;
+  cursor: pointer;
+  font-size: 12px;
+  -moz-border-radius: 4px;
 }
 
-#lightBoxDialogCloseBt
-{
-    position : absolute;
-    top : 7px;
-    right : 10px;
-    cursor : pointer;
-    opacity: 0.5;
+/****LightBox genérico****/
+#lightBoxDialog {
+  border-width: 1px;
+  border-style: solid;
+  display: none;
+  position: absolute;
+  z-index: 1001;
+  top: 50%;
+  left: 50%;
+  padding: 10px;
+  overflow: auto;
 }
-#lightBoxDialogCloseBt:Hover
-{
-    cursor : pointer;
-    opacity: 1.0;
+
+#lightBoxBackground {
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 1000;
+}
+
+#lightBoxDialogCloseBt {
+  position: absolute;
+  top: 7px;
+  right: 10px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+#lightBoxDialogCloseBt:Hover {
+  cursor: pointer;
+  opacity: 1.0;
 }
 
 /****tela de matricula****/
 
-.headtable_blue{
-    font-size: 14px;
-    color: #000;
-    background-color: #E7EDEE;
-    line-height: 25px;
-    border: 0px;
+.headtable_blue {
+  font-size: 14px;
+  line-height: 25px;
+  border: 0px;
 }
-.table_blue{
-    border: 0px;
-    width: 745px;
+
+.table_blue {
+  border: 0px;
+  width: 745px;
 }
-.td_head_blue{
-    padding-left: 8px;
+
+.td_head_blue {
+  padding-left: 8px;
 }
-.td_blue_first{
-    padding-left: 8px;
+
+.td_blue_first {
+  padding-left: 8px;
 }
+
 .td_blue, .td_blue_center {
-    border-left: solid #dbe5e8 1px;
-    padding-left: 8px;
-    white-space: normal;
-    width: auto;
+  border-left-style: solid;
+  border-left-width: 1px;
+  padding-left: 8px;
+  white-space: normal;
+  width: auto;
 }
+
 .td_blue_center {
-    border-left: none;
-    text-align: center;
-    font-weight: bold;
-    font-size: 12px;
+  border-left: none;
+  text-align: center;
+  font-weight: bold;
+  font-size: 12px;
 }
-.rowtable_odd, .rowtable_even{
-    font-size: 12px;
-    text-align: justify;
-    color: #000;
-    background-color: #f1f0f2;
+
+.rowtable_odd, .rowtable_even {
+  font-size: 12px;
+  text-align: justify;
 }
-.rowtable_even{
-    color: #000;
-    background-color: #eaeaea;
-}
+
 .enrollment_list label {
-    margin: 5px 0 3px 0;
+  margin: 5px 0 3px 0;
 }
+
 .enrollment_list tr.lines td {
-    vertical-align: middle;
+  vertical-align: middle;
 }
-.enrollment_search{
-    height:12px;
-    font-size: 12px;
+
+.enrollment_search {
+  height: 12px;
+  font-size: 12px;
 }
-.enrollment_search_icon{
-    vertical-align: middle;
-    border: 0px;
-    cursor: pointer;
+
+.enrollment_search_icon {
+  vertical-align: middle;
+  border: 0px;
+  cursor: pointer;
 }
+
 .select_category {
-    height:19px;
-    font-size: 10px;
+  height: 19px;
+  font-size: 10px;
 }
+
 .enrollment_label {
-    color: #000;
-    font-size: 10pt;
-    width: auto;
+  font-size: 10pt;
+  width: auto;
 }
+
 #offer_category {
-    height: 24px;
-    padding: 3px;
+  height: 24px;
+  padding: 3px;
 }
+
 .enrollment_link {
-    color: #214684;
-    font-size: 12px;
-    text-decoration: underline;
-    cursor: pointer;
-    border: 0;
-    background-color: transparent;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+  border: 0;
 }
+
 .enrollment_bar {
-    padding: 2px 4px;
-    overflow: hidden;
+  padding: 2px 4px;
+  overflow: hidden;
 }
-.enrollment_left{
-    float: left;
-    width: 545px;
-    left: 0px;
-    position: relative;
+
+.enrollment_left {
+  float: left;
+  width: 545px;
+  left: 0px;
+  position: relative;
 }
-.enrollment_right{
-    float: right;
-    position: relative;
-    margin-right: 0px;
-    right: 0;
-    top: 5px;
+
+.enrollment_right {
+  float: right;
+  position: relative;
+  margin-right: 0px;
+  right: 0;
+  top: 5px;
 }
+
 #allocations_manage_selected .block_content {
-    min-height: 215px;
-    position: relative;
+  min-height: 215px;
+  position: relative;
 }
+
 #allocations_manage_selected .block_content ul {
-    margin-left: 20px;
+  margin-left: 20px;
 }
+
 #allocations_manage_selected .block_content ul li {
-    list-style-type: disc;
+  list-style-type: disc;
 }
+
 #allocations_manage_selected .block_content select {
-    min-width: 120px;
+  min-width: 120px;
 }
+
 #manage_enrollment_lightbox_list, #manage_enrollment_lightbox_group {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
 }
+
 #manage_enrollment_lightbox_status {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
+
 #manage_enrollment_lightbox_buttons {
-    position: absolute;
-    bottom: 5px;
+  position: absolute;
+  bottom: 5px;
 }
+
 .link_gray {
-    font-weight:bold;
-    padding:6px 4px 6px 4px;
-    cursor: pointer;
-    font-size: 12px;
-    text-decoration: underline;
+  font-weight: bold;
+  padding: 6px 4px 6px 4px;
+  cursor: pointer;
+  font-size: 12px;
+  text-decoration: underline;
 }
 
 .allocations_list {
-    max-height: 260px;
-    overflow: auto;
+  max-height: 260px;
+  overflow: auto;
 }
-
 
 /**
 * Meu Solar
 */
 /* barra superior geral */
 #mysolar_topbar_wide_background {
-    height:38px;
-    width:100%;
-    background-color:$color_main;
-    position:absolute;
-    top:0;
-    left:0;
-    z-index:-10
+  height: 38px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -10
 }
 
 #mysolar_topbar {
-    width: 100%;
-    height: 74px;
-    z-index: 2;
-    /*
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    */
-    font-family: 'Ubuntu', sans-serif;
-    font-weight: 400;
-    /*background-color: $color_main;*/
-    color: #fff;
-    overflow: hidden;
+  width: 100%;
+  height: 74px;
+  z-index: 2;
+  /*
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  */
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 400;
+  /*background-color: $color_main;*/
+  overflow: hidden;
 }
 
 /* barra identity */
 $mysolar_topbar_height: 38px;
 #mysolar_identity {
-    width: 100%;
-    height: $mysolar_topbar_height;
-    //border-bottom: 2px solid $color_contrast;
-    background-color: $color_main;
+  width: 100%;
+  height: $mysolar_topbar_height;
 }
 
 #mysolar_logo {
   //width: 185px;
   height: $mysolar_topbar_height;
   float: left;
-  background-color: $color_main;
 }
 
 #solar_logo {
@@ -421,666 +399,515 @@ $mysolar_topbar_height: 38px;
 }
 
 #mysolar_top_options {
-    height: $mysolar_topbar_height;
-    line-height: $mysolar_topbar_height;
-    float: right;
-    font-size: 10pt;
-    list-style-type: none;
-    padding: 0 10px 0 0;
-    margin: 0;
+  height: $mysolar_topbar_height;
+  line-height: $mysolar_topbar_height;
+  float: right;
+  font-size: 10pt;
+  list-style-type: none;
+  padding: 0 10px 0 0;
+  margin: 0;
 }
 
 #mysolar_top_options li {
-    line-height: $mysolar_topbar_height - 3px;
-    display: inline-block;
-    padding: 3px 6px 0 6px;
-    vertical-align: middle;
-    float: left;
-    /* necessario para funcionar ok no IE7 */
-    /*    zoom: 1;
-    *display: inline;*/
-}
-
-#mysolar_top_help {
-  background-color: $color_main;
+  line-height: $mysolar_topbar_height - 3px;
+  display: inline-block;
+  padding: 3px 6px 0 6px;
+  vertical-align: middle;
+  float: left;
+  /* necessario para funcionar ok no IE7 */
+  /*    zoom: 1;
+  *display: inline;*/
 }
 
 #mysolar_top_options #mysolar_top_submenu_label:hover,
 #mysolar_top_options #mysolar_top_logout:hover,
-#mysolar_top_options #mysolar_top_help:hover{
-    height: $mysolar_topbar_height - 3px;
-    border-bottom: 2px solid $color_main;
-    background-color: white !important;
-    color: $color_main;
-}
-
-#mysolar_top_options li:hover a {
-    color: $color_main;
+#mysolar_top_options #mysolar_top_help:hover {
+  height: $mysolar_topbar_height - 3px;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
 }
 
 #mysolar_top_img_user {
-    float:right;
-    padding-left:4px;
+  float: right;
+  padding-left: 4px;
 }
 
 /* foto do usuário */
-#mysolar_top_submenu{
-    color: $color_main;;
-    font-size: 10pt;
-    position: absolute;
-    top:$mysolar_topbar_height;
-    width:170px;
-    background-color: #fff;
-    margin-left: -40px;
-    z-index: 100;
-    display:none;
-    border-bottom: 2px solid $color_contrast;
-    border-left: 2px solid $color_contrast;
-    border-right: 2px solid $color_contrast;
-    border-top: none;
-    padding: 10px;
-    text-align: left;
-    overflow: hidden;
-    box-shadow: 3px 3px 15px 0px #bbb;
+#mysolar_top_submenu {
+  font-size: 10pt;
+  position: absolute;
+  top: $mysolar_topbar_height;
+  width: 170px;
+  margin-left: -40px;
+  z-index: 100;
+  display: none;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+  border-right: 2px solid;
+  border-top: none;
+  padding: 10px;
+  text-align: left;
+  overflow: hidden;
+  box-shadow: 3px 3px 15px 0px #bbb; /* TODO: dividir */
 }
 
 #mysolar_top_submenu a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
-#mysolar_top_submenu ul{
-    width: 100%;
-    display:block;
-    border-top: 3px solid #EBEBEB;
-    margin-top: 5px;
-}
-#mysolar_top_submenu ul li{
-    padding:7px;
+#mysolar_top_submenu ul {
+  width: 100%;
+  display: block;
+  border-top-width: 3px;
+  border-top-style: solid;
+  margin-top: 5px;
 }
 
-
-#mysolar_top_submenu_username{
-    font-size:9pt;
+#mysolar_top_submenu ul li {
+  padding: 7px;
 }
 
-#mysolar_top_submenu_useremail{
-    font-size:8pt;
-    margin-top: 4px;
+#mysolar_top_submenu_username {
+  font-size: 9pt;
 }
 
-.mysolar_top_submenu_label_selected{
-    background-color: #fff;
-    border-top: none;
-    border-left: 2px solid $color_contrast;
-    border-right: 2px solid $color_contrast;
-    border-bottom: none;
-    vertical-align: top;
+#mysolar_top_submenu_useremail {
+  font-size: 8pt;
+  margin-top: 4px;
 }
-.mysolar_top_submenu_label_regular{
-    background-color: transparent;
-    border-top: none;
-    border-left: 2px solid transparent;
-    border-right: 2px solid transparent;
-    border-bottom: none;
-    vertical-align: top;
+
+.mysolar_top_submenu_label_selected {
+  border-top: none;
+  border-left: 2px solid;
+  border-right: 2px solid;
+  border-bottom: none;
+  vertical-align: top;
 }
+
+.mysolar_top_submenu_label_regular {
+  border-top: none;
+  border-left: 2px solid;
+  border-right: 2px solid;
+  border-bottom: none;
+  vertical-align: top;
+}
+
 .mysolar_top_submenu_label_selected a.mysolar_top_link {
-    color: #000;
-    vertical-align: top;
+  vertical-align: top;
 }
 
 .mysolar_top_submenu_label_regular a {
-    vertical-align: top;
+  vertical-align: top;
 }
 
 #image_user {
-    /*    vertical-align: text-bottom;*/
-    height: 30px;
-    cursor: pointer;
-    float: left;
-    margin-right: 7px;
+  /*    vertical-align: text-bottom;*/
+  height: 30px;
+  cursor: pointer;
+  float: left;
+  margin-right: 7px;
 }
 
 /* relogio */
 #server_clock_wrapper:hover {
-    border-bottom: 2px solid transparent !important;
-}
-
-a.mysolar_top_link{
-    color: #FFF;
+  border-bottom: 2px solid !important;
 }
 
 #mysolar_top_user_nick {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 /* barra tabs */
 #mysolar_tabs {
-    width: 100%;
-    height: 33px;
-    /*background-color: #FFFEF7;*/
-    /*background:url('../images/topbar_gradient.png') repeat-x left center #4170b6;*/
-    border-bottom: 1px solid #D0D0D0;
+  width: 100%;
+  height: 33px;
+  border-bottom: 1px solid;
 }
 
 #mysolar_tabs_wrapper {
-    float:left;
-    line-height: 28px;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    font-family: 'Ubuntu Condensed', sans-serif;
-    font-size: 14pt;
+  float: left;
+  line-height: 28px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  font-family: 'Ubuntu Condensed', sans-serif;
+  font-size: 14pt;
 }
 
-.mysolar_unit_tab, .mysolar_unit_active_tab{
-    list-style-type: none;
-    display: inline-block;
-    margin: 6px 0px 0px 0px;
-    padding:0 7px;
-    height:26px;
-    /*border-top:2px solid;
-    border-right:2px solid;
-    border-left:2px solid;
-    border-bottom:2px solid;*/
-    font-variant: small-caps;
-    /* codigo necessario para exibir corretamente no IE 7 */
-    zoom: 1;
-    *display: inline;
+.mysolar_unit_tab, .mysolar_unit_active_tab {
+  list-style-type: none;
+  display: inline-block;
+  margin: 6px 0px 0px 0px;
+  padding: 0 7px;
+  height: 26px;
+  font-variant: small-caps;
+  /* codigo necessario para exibir corretamente no IE 7 */
+  zoom: 1;
+  *display: inline;
 }
 
-.mysolar_unit_tab {
-    /*background-color: #e3eaf4;
-    border-top-color: $color_main_medium;
-    border-right-color: $color_main_medium;
-    border-left-color: $color_main_medium;
-    border-bottom-color: $color_main;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    -moz-border-top-left-radius: 5px;
-    -moz-border-top-right-radius: 5px;*/
-}
-
-.mysolar_unit_tab a {
-    color: $color_main_medium;
-}
-
-.mysolar_unit_active_tab{
-    border-bottom: 2px solid $color_contrast;
-    /*background-color: #fff;
-    border-top-color: $color_main;
-    border-right-color: $color_main;
-    border-left-color: $color_main;
-    border-bottom-color: #fff;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    -moz-border-top-left-radius: 5px;
-    -moz-border-top-right-radius: 5px;*/
-}
-
-.mysolar_unit_active_tab a {
-    color: $color_contrast_text;
+.mysolar_unit_active_tab {
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
 }
 
 /* fechar das abas */
 .tabs_close {
-    background: url('tabs_close.png') no-repeat right bottom;
-    display: inline-block;
-    width: 11px;
-    height: 11px;
-    position: relative;
-    left: 5px;
-    /*    top: -2px;*/
-    margin-right: 5px;
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  position: relative;
+  left: 5px;
+  /*    top: -2px;*/
+  margin-right: 5px;
 }
 
 /* itens adicionais: busca e acessibilidade */
 /* busca */
 #mysolar_extras {
-    line-height: 28px;
-    height: 36px;
-    float: right;
-    font-size: 11pt;
-    list-style-type: none;
-    padding: 0 10px 0 0;
-    margin: 0;
+  line-height: 28px;
+  height: 36px;
+  float: right;
+  font-size: 11pt;
+  list-style-type: none;
+  padding: 0 10px 0 0;
+  margin: 0;
 }
 
 #mysolar_extras li {
-    display: inline-block;
-    /* codigo necessario para exibir corretamente no IE 7 */
-    zoom: 1;
-    *display: inline;
-    text-align: center;
-    margin-top: 2px;
+  display: inline-block;
+  /* codigo necessario para exibir corretamente no IE 7 */
+  zoom: 1;
+  *display: inline;
+  text-align: center;
+  margin-top: 2px;
 }
 
 #mysolar_extras li span {
-    padding: 0 5px;
+  padding: 0 5px;
 }
 
-
-// #mysolar_extras [class^="icon-"],
-// #mysolar_extras [class*=" icon-"] {
-//     color: #b4b4b4;
-//     cursor: pointer;
-// }
-
-// #mysolar_extras span:hover [class^="icon-"],
-// #mysolar_extras span:hover [class*=" icon-"] {
-//     color: black;
-// }
-
-.search_keyword{
-    border: 1px solid #d0d0d0;
-    height: 20px;
-    width: 130px;
-    padding: 0 20px 0 2px;
-    background: url('../images/search.png') no-repeat right bottom #fff;
-    margin-right: 4px;
+.search_keyword {
+  border-width: 1px;
+  border-style: solid;
+  height: 20px;
+  width: 130px;
+  padding: 0 20px 0 2px;
+  margin-right: 4px;
 }
 
 .search_keyword_inactive {
-    font-style: italic;
-    color: #b0b0b0;
+  font-style: italic;
 }
 
 /* acessibilidade */
 .acessibility_icons {
-    vertical-align: middle;
-    margin: 0 2px;
+  vertical-align: middle;
+  margin: 0 2px;
 }
 
 /* sidebar */
-#mysolar_sidebar{
-    width: 175px;
-    height: 100%;
-    min-height: 100%;
-    max-height: 100%;
-    z-index: 1;
-    /*    float: left;*/
-    /*    position: absolute;*/
-    vertical-align: top;
-    display: inline-block;
-    zoom: 1;
-    *display: inline;
-    margin-top: 10px;
-    padding-top: 0;
+#mysolar_sidebar {
+  width: 175px;
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  z-index: 1;
+  /*    float: left;*/
+  /*    position: absolute;*/
+  vertical-align: top;
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+  margin-top: 10px;
+  padding-top: 0;
 }
 
-#mysolar_menu_accordion{
-    display: inline-block;
-    padding-top: 0;
-    margin-top: 0;
-    width: 100%;
+#mysolar_menu_accordion {
+  display: inline-block;
+  padding-top: 0;
+  margin-top: 0;
+  width: 100%;
 }
 
 .mysolar_menu_group > ul {
-    padding: 0 10px 0 10px;
-    margin: 5px 0;
+  padding: 0 10px 0 10px;
+  margin: 5px 0;
 }
 
 .mysolar_menu_group > ul:first-child {
-    padding-top: 0;
-    margin-top: 0;
+  padding-top: 0;
+  margin-top: 0;
 }
-
-/*.mysolar_menu_group > ul > li {
-    background: url('../images/icon_arrow_right.png') no-repeat left 10px;
-}*/
-
-/*.mysolar_menu_title_single {
-    background: url('../images/icon_circle.png') no-repeat left 10px !important;
-}*/
 
 .mysolar_menu_title_single_active {
-    border-bottom: 2px solid $color_contrast;
-    /*    background: url('../images/icon_circle.png') no-repeat left 10px !important;*/
-}
-
-.mysolar_menu_title_single_active a {
-    color: $color_contrast_text;
-}
-
-/*.mysolar_menu_title_active {
-    background: url('../images/icon_arrow_down.png') no-repeat left 10px !important;
-}*/
-
-.mysolar_menu_title_active > a {
-    color: $color_contrast_text;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
 }
 
 .menu_icon_arrow, .menu_icon_circle {
-    -webkit-transition: all 0.3s ease-out;
-    -moz-transition: all 0.3s ease-out;
-    -o-transition: all 0.3s ease-out;
-    transition: all 0.3s ease-out;
-    margin-right: 5px;
-    font-size: 14pt;
-    display: inline-block;
-    /* codigo necessario para exibir corretamente no IE 7 */
-    zoom: 1;
-    *display: inline;
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  margin-right: 5px;
+  font-size: 14pt;
+  display: inline-block;
+  /* codigo necessario para exibir corretamente no IE 7 */
+  zoom: 1;
+  *display: inline;
 }
 
 /* BUG: icone rotacionado está com problemas no IE 7-8, não testado no 9 */
 .menu_icon_animate {
-    -moz-transform: rotate(90deg);
-    -webkit-transform: rotate(90deg);
-    -o-transform: rotate(90deg);
-    /*    filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.00000000, M12=-1.00000000, M21=1.00000000, M22=0.00000000,sizingMethod='auto expand');*/
-    /*    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);*/
-    transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  /*    filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.00000000, M12=-1.00000000, M21=1.00000000, M22=0.00000000,sizingMethod='auto expand');*/
+  /*    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);*/
+  transform: rotate(90deg);
 }
 
 .mysolar_menu_title {
-    width: 100%;
-    margin: 2px;
-    /*    padding-left: 12px;*/
-    cursor: pointer;
-    font-weight: normal;
-    height: 30px;
-    line-height: 30px;
-    color: $color_main_text;
-    font-variant: small-caps;
-    font-size: 12pt;
-    font-family: 'Ubuntu Condensed', sans-serif;
-    /*    padding-left: 15px;*/
+  width: 100%;
+  margin: 2px;
+  /*    padding-left: 12px;*/
+  cursor: pointer;
+  font-weight: normal;
+  height: 30px;
+  line-height: 30px;
+  font-variant: small-caps;
+  font-size: 12pt;
+  font-family: 'Ubuntu Condensed', sans-serif;
+  /*    padding-left: 15px;*/
 }
 
 .submenu {
-    display: none;
-    padding: 5px 0 5px 10px;
-    margin: 0;
-    border-top: 2px solid $color_contrast;
-    background-color: $color_contrast_light; /* alternativa: f5f8fb */
-    font-size: 10pt;
+  display: none;
+  padding: 5px 0 5px 10px;
+  margin: 0;
+  border-top: 2px solid;
+  font-size: 10pt;
 }
 
 .submenu > li {
-    padding: 5px 0;
-}
-
-.submenu > li:hover {
-
-}
-
-.mysolar_menu_list{
-    /*    padding-left: 25px;*/
+  padding: 5px 0;
 }
 
 #footer {
-    background-color:#f9f9f9;
-    overflow: hidden;
-    margin: 0 auto;
-    text-align: center;
-    padding: 10px 0;
-    width: 980px;
-    bottom: 0;
-    position: absolute;
+  overflow: hidden;
+  margin: 0 auto;
+  text-align: center;
+  padding: 10px 0;
+  width: 980px;
+  bottom: 0;
+  position: absolute;
 }
 
 #footer, #footer a {
-    color: #666;
-    font-size: 9pt;
+  font-size: 9pt;
 }
 
 #footer a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 #footer ul li {
-    margin:0 5px;
-    display: inline-block;
-    zoom: 1;
-    *display: inline;
+  margin: 0 5px;
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /******************************************************************************/
 /* conteudo em si */
 /******************************************************************************/
 
-
-#mysolar_content{
-    /*z-index: 0;*/
-    /*
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    margin-top: 80px;
-    */
-    /*    padding-left: 185px;*/
-    /*    padding-bottom: 50px;*/
-    padding-left: 5px;
-    /*    float: left;*/
-    /*    position: absolute;*/
-    background-color: #fff;
-    width: 785px;
-    padding-right: 10px;
-    display: inline-block;
-    zoom: 1;
-    *display: inline;
+#mysolar_content {
+  /*z-index: 0;*/
+  /*
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  margin-top: 80px;
+  */
+  /*    padding-left: 185px;*/
+  /*    padding-bottom: 50px;*/
+  padding-left: 5px;
+  /*    float: left;*/
+  /*    position: absolute;*/
+  width: 785px;
+  padding-right: 10px;
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
 }
 
 /* rodapé - escolha de idioma */
-#block_locale{
-    margin-top: 10px;
-    text-align: center;
-    font-size: 9pt;
-    clear: both;
+#block_locale {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 9pt;
+  clear: both;
 
-    /*
-    width: 20%;
-    position: absolute;
-    bottom: 0;
-    margin-bottom: 20px;
-    margin-left: 357px;
-    */
+  /*
+  width: 20%;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 20px;
+  margin-left: 357px;
+  */
 }
 
-#block_locale a {
-    color: #666;
-}
 
 #block_locale > ul {
-    list-style-type: none;
-    padding: 0;
+  list-style-type: none;
+  padding: 0;
 }
 
 #block_locale > ul > li {
-    display: inline-block;
-    zoom: 1;
-    *display: inline;
-    margin-right: 5px;
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+  margin-right: 5px;
 }
-
 
 /*********Abas dos Meus Dados**************/
 
-#mydata_tab{
-    height: 30px;
-    background-color: transparent;
-    color: $color_main;
+#mydata_tab {
+  height: 30px;
 }
 
-#mysolar_panel_data{
-    margin-left: 30px;
+#mysolar_panel_data {
+  margin-left: 30px;
 }
 
-.my_data_tab_generic{
-    border-right    : 1px solid #DEDEDE;
-    border-left     : 1px solid #DEDEDE;
-    border-top      : 1px solid #DEDEDE;
-    border-bottom   : none;
-    background-color:  #F7F7F7;
+.my_data_tab_generic {
+  border-right: 1px solid;
+  border-left: 1px solid;
+  border-top: 1px solid;
+  border-bottom: none;
 
-    z-index         : 2;
+  z-index: 2;
 
-    float           : left;
-    width           : 110px;
-    height          : 30px;
-    margin-left     : 5px;
+  float: left;
+  width: 110px;
+  height: 30px;
+  margin-left: 5px;
 
-    cursor          : pointer;
-    font-weight     : bold;
-    line-height     : 28px;
-    text-align      : center;
-    vertical-align  : middle;
+  cursor: pointer;
+  font-weight: bold;
+  line-height: 28px;
+  text-align: center;
+  vertical-align: middle;
 
 }
-.background_data{
 
-    height: 400px;
-    width: 600px;
-}
-
-.my_form_data
-{
-    background-color: #F7F7F7;
-    width: 755px;
-    border: 1px solid #DEDEDE;
-    z-index: 1;
+.background_data {
+  height: 400px;
+  width: 600px;
 }
 
-#my_cadastral_data_button{
-    margin-top: 40px;
-    width: 220px;
-    float: right;
+.my_form_data {
+  width: 755px;
+  border: 1px solid;
+  z-index: 1;
 }
 
-#my_personal_data_button{
-    margin-top: 40px;
-    width: 220px;
-    float: right;
+#my_cadastral_data_button {
+  margin-top: 40px;
+  width: 220px;
+  float: right;
 }
-.my_cadastral_data_label{
-    font-size       :larger;
-    font-weight     : bold;
-    text-align      : left;
-    padding-top     : 10px;
-    border-bottom   : 1px solid #dedede;
-    padding-bottom  : 0px;
-    width           :540px;
+
+#my_personal_data_button {
+  margin-top: 40px;
+  width: 220px;
+  float: right;
 }
-.my_cadastral_data_label_short{
-    font-size: 12px;
-    font-weight: normal;
-    text-align: right;
-    width:67px;
-    white-space: normal;
+
+.my_cadastral_data_label {
+  font-size: larger;
+  font-weight: bold;
+  text-align: left;
+  padding-top: 10px;
+  border-bottom: 1px solid;
+  padding-bottom: 0px;
+  width: 540px;
 }
-.my_personal_data_label{
-    font-size       :larger;
-    font-weight     : bold;
-    text-align      : left;
-    padding-top     : 10px;
-    width           :540px;
+
+.my_cadastral_data_label_short {
+  font-size: 12px;
+  font-weight: normal;
+  text-align: right;
+  width: 67px;
+  white-space: normal;
+}
+
+.my_personal_data_label {
+  font-size: larger;
+  font-weight: bold;
+  text-align: left;
+  padding-top: 10px;
+  width: 540px;
 
 }
 
 /********Chat do meuSolar*****************/
-#mysolar_chat_area{
-    font-size   : 11pt;
-    position    :fixed;
-    bottom      : 0px;
-    right       : 15px;
+#mysolar_chat_area {
+  font-size: 11pt;
+  position: fixed;
+  bottom: 0px;
+  right: 15px;
 }
 
-#mysolar_chat_barra{
-    font-size           : 11pt;
-    background-color    : #fbb03b;
-    padding-left        :5px;
-    padding-right       :5px;
-    cursor: pointer;
+#mysolar_chat_barra {
+  font-size: 11pt;
+  padding-left: 5px;
+  padding-right: 5px;
+  cursor: pointer;
 }
 
-#mysolar_chat_contatos{
-    width       :150px;
+#mysolar_chat_contatos {
+  width: 150px;
 }
 
-#mysolar_chat_list{
-    border: 1px solid #bbb;
-    background-color: #fff;
-    display:none;
+#mysolar_chat_list {
+  border: 1px solid;
+  display: none;
 }
 
-#mysolar_chat_list_internal{
-    padding-left: 5px;
-    overflow: auto;
-    height:145px;
+#mysolar_chat_list_internal {
+  padding-left: 5px;
+  overflow: auto;
+  height: 145px;
 }
 
-.mysolar_chat_hr{
-    width:87%;
-    border:none;
-    background-color: #bbb;
-    height:1px;
+.mysolar_chat_hr {
+  width: 87%;
+  border: none;
+  height: 1px;
 }
 
 /********Portlets do meuSolar*****************/
-
-/* REMOVER */
-/*
-.mysolar_portlets_limit{
-    margin-right: 38px;
-    max-width: 1700px;
-}
-.mysolar_portlets_wrapper {
-    padding-right: 250px;
-}
-.mysolar_portlets_side {
-    margin-right: -100%;
-}
-.mysolar_portlets_main {
-    float: left;
-    width: 100%;
-}
-.mysolar_portlets_portlet {
-    background-color: #fff;
-    width: 255px;
-    white-space: normal;
-    float: left;
-}
-*/
 
 /**
  * Tratando dos titulos dos conteudos
 */
 
 .mysolar_header {
-    font-variant: small-caps;
-    height: 26px;
-    border-bottom: 2px solid $color_main_text;
+  font-variant: small-caps;
+  height: 26px;
+  border-bottom: 2px solid;
 }
 
 .mysolar_header img {
-    float: left;
-    margin-right: 4px;
+  float: left;
+  margin-right: 4px;
 }
 
 .mysolar_header h1 {
-    padding-top: 8px;
+  padding-top: 8px;
 }
 
 /**
@@ -1088,26 +915,24 @@ a.mysolar_top_link{
 */
 
 .mysolar_portlets_content {
-    background-color: $color_main_light;
-    position: relative;
-    overflow: auto;
-    width: 100%;
-    height: 166px;
-    font-size: 10pt;
+  position: relative;
+  overflow: auto;
+  width: 100%;
+  height: 166px;
+  font-size: 10pt;
 }
 
 #mysolar_curriculum_unit_wrapper {
-    margin: 0;
-    padding: 5px 10px;
+  margin: 0;
+  padding: 5px 10px;
 }
 
 #mysolar_curriculum_unit_wrapper li {
-    padding-bottom: 5px;
+  padding-bottom: 5px;
 }
 
-
-#mysolar_curriculum_unit_wrapper li > .disabled{
-    padding-left: 0;
+#mysolar_curriculum_unit_wrapper li > .disabled {
+  padding-left: 0;
 }
 
 /**
@@ -1115,99 +940,94 @@ a.mysolar_top_link{
 */
 
 div.legend {
-    font-size: 12px;
-    padding-top: 10px;
-    position: relative;
+  font-size: 12px;
+  padding-top: 10px;
+  position: relative;
 }
 
 div.legend_score_footer {
-    font-family: Arial;
-    font-style: italic;
-    font-size: 9pt;
+  font-family: Arial;
+  font-style: italic;
+  font-size: 9pt;
 }
 
 div.legend ul {
-    padding: 5px 0px;
+  padding: 5px 0px;
 }
 
 div.legend li {
-    text-align: left;
+  text-align: left;
 }
 
 div.legend h1 {
-    font-size: 14px;
-    font-weight: bold;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 hr.curriculum_unit_division, hr.curriculum_unit_division_mysolar {
-    border: none;
-    background-color: $color_main_text;
-    height: 4px;
-    left: 0px;
-    position: relative;
-    top:-18px;
-    margin-left: 0px;
-    margin-bottom: 0px;
-    width: 700px;
+  border: none;
+  height: 4px;
+  left: 0px;
+  position: relative;
+  top: -18px;
+  margin-left: 0px;
+  margin-bottom: 0px;
+  width: 700px;
 }
 
 hr.curriculum_unit_division_mysolar {
-    width: 464px;
+  width: 464px;
 }
 
-.mysolar_title{
-    color: #000;
-    vertical-align: middle;
-    font-variant: small-caps;
-    padding: 2px 0 0 0;
-    margin: 0;
-    font-size: 12pt;
-    font-weight: normal;
+.mysolar_title {
+  vertical-align: middle;
+  font-variant: small-caps;
+  padding: 2px 0 0 0;
+  margin: 0;
+  font-size: 12pt;
+  font-weight: normal;
 }
 
 .ui-sortable-placeholder {
-    border: 1px dotted black;
-    visibility: visible !important;
-    height: 183px !important;
+  border: 1px dotted black;
+  visibility: visible !important;
+  height: 183px !important;
 }
+
 .ui-sortable-placeholder * {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 /***** Portlet de Unidades curriculares *********/
 
 .curriculum_unit_display {
-    /*display:inline-block;*/
-    width: 100%;
-    /*    color: #8AF;*/
-    font-size: 13pt;
-    line-height: 20px;
-}
-
-.curriculum_unit_display:hover{
-    background-color: #F6F6FF;
+  /*display:inline-block;*/
+  width: 100%;
+  font-size: 13pt;
+  line-height: 20px;
 }
 
 /******botões de confirmação de cadastro ********/
 
-.confirmacao{
-    height: 20px;
-    width: 100px;
-    margin-left: 647px;
-    margin-top: -6px;
-}
-.cancelar{
-    height: 7px;
-    width: 100px;
-    margin-left: 557px;
-    margin-top: 8px;
+.confirmacao {
+  height: 20px;
+  width: 100px;
+  margin-left: 647px;
+  margin-top: -6px;
 }
 
-.limpar{
-    height: 20px;
-    width: 100px;
-    margin-left: 455px;
-    margin-top: -20px;
+.cancelar {
+  height: 7px;
+  width: 100px;
+  margin-left: 557px;
+  margin-top: 8px;
+}
+
+.limpar {
+  height: 20px;
+  width: 100px;
+  margin-left: 455px;
+  margin-top: -20px;
 
 }
 
@@ -1227,70 +1047,64 @@ div.alter_photo_text {
  * manipulacao da window/modal
 */
 #mask {
-    position: fixed;
-    left: 0px;
-    top: 0px;
-    z-index: 9000;
-    background-color: #000;
-    display: none;
-    width: 100%;
-    height: 100%;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  z-index: 9000;
+  display: none;
+  width: 100%;
+  height: 100%;
 }
 
 .boxes .window {
-    position:absolute;
-    left:0;
-    top:0;
-    display:none;
-    z-index:9999;
-    padding:20px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: none;
+  z-index: 9999;
+  padding: 20px;
 }
 
 .boxes #dialog {
-    border-color: #ffd;
-    width:434px;
-    height:230px;
-    left:50%;
-    top: 50%;
-    padding:10px;
-    background-color: #DBD5D5;
+  width: 434px;
+  height: 230px;
+  left: 50%;
+  top: 50%;
+  padding: 10px;
 }
 
 /**
  * manipulacao do link na foto
 */
 .div_link_decoration {
-    display: none;
+  display: none;
 }
 
 .div_link {
-    /*border: 1px solid #0658B5;*/
-    cursor: pointer;
-    margin: 0;
+  /*border: 1px solid #0658B5;*/
+  cursor: pointer;
+  margin: 0;
 }
 
 .div_link .div_link_decoration {
-    background-color: #FFFFFF;
-    display: block;
-    color: #0658B5;
-    position: absolute;
-    left: 5px;
-    top: 5px;
-    padding: 1px 0;
-    text-align: center;
-    text-decoration: underline;
-    width: 72px;
-    z-index: 99;
+  display: block;
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  padding: 1px 0;
+  text-align: center;
+  text-decoration: underline;
+  width: 72px;
+  z-index: 99;
 }
-
 
 /** Unidade Curricular - tela inicial de acesso **/
 
 /* div que engloba tudo */
 .block_wrapper {
-    width: 785px;
-    margin-bottom: 15px;
-    // overflow: hidden;
+  width: 785px;
+  margin-bottom: 15px;
+  // overflow: hidden;
 }
 
 /*.block_wrapper_small {
@@ -1299,518 +1113,503 @@ div.alter_photo_text {
 
 /* id do titulo geral da página */
 #page_title, #lightBoxDialogTitle {
-    border-bottom: 1px solid #d0d0d0;
-    overflow: hidden;
-    padding-bottom: 5px;
+  border-bottom: 1px solid;
+  overflow: hidden;
+  padding-bottom: 5px;
 }
 
 #page_title h1, #lightBoxDialogTitle h1 {
-    font-size: 14pt;
-    /*    font-weight: bold;*/
-    /*    font-variant: small-caps;*/
-    zoom: 1;
-    display: inline-block;
-    *display: inline;
-    float: left;
-    /*    border-bottom: 1px solid #fff;*/
-}
-
-#lightBoxDialogTitle h1{
-    color: #4c4c4c;
+  font-size: 14pt;
+  /*    font-weight: bold;*/
+  /*    font-variant: small-caps;*/
+  zoom: 1;
+  display: inline-block;
+  *display: inline;
+  float: left;
+  /*    border-bottom: 1px solid #fff;*/
 }
 
 #page_title > .block_content_text {
-    border: none;
-    color: #666666;
-    font-size: 9pt;
-    padding: 4px 0 0 4px;
-    float: right;
+  border: none;
+  font-size: 9pt;
+  padding: 4px 0 0 4px;
+  float: right;
 }
 
 /*#page_title > .block_content_text:hover {
     border: 1px solid #666666;
 }*/
 
-#page_title > .block_content_text:hover, #page_title > .block_content_text:hover select {
-    color: #000000;
-}
-
 #page_title select {
-    color: #666666;
-    font-size: 9pt;
-    border: none;
+  font-size: 9pt;
+  border: none;
 }
 
 /* titulo do bloco */
 
 div.block_title {
-    border-bottom: 2px solid $color_main_text;
-    padding-bottom: 1px !important;
-    position: relative;
-    overflow: hidden;
-    height: 26px;
+  border-bottom: 2px solid;
+  padding-bottom: 1px !important;
+  position: relative;
+  overflow: hidden;
+  height: 26px;
 }
 
 .block_title h1 {
-    font-variant: small-caps;
-    font-size: 12pt;
-    font-weight: normal;
+  font-variant: small-caps;
+  font-size: 12pt;
+  font-weight: normal;
 }
 
 .block_title h2 {
-    display: inline;
-    vertical-align: bottom;
-    position: absolute;
-    bottom: 2px;
+  display: inline;
+  vertical-align: bottom;
+  position: absolute;
+  bottom: 2px;
 }
-
 
 /* icone que fica ao lado do titulo do bloco */
 .block_title_icon {
-    margin-right: 5px;
-    margin-bottom: 2px;
-    width: 18px;
-    height: 18px;
-    vertical-align: text-bottom;
+  margin-right: 5px;
+  margin-bottom: 2px;
+  width: 18px;
+  height: 18px;
+  vertical-align: text-bottom;
 }
 
 #page_title_icon {
-    vertical-align: top;
+  vertical-align: top;
 }
 
 /* zerando o espaçamento do titulo do bloco */
 .block_title, .block_title > .block_left, .block_title > .block_right {
-    padding-top: 0;
-    padding-bottom: 0;
-    margin: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 0;
 }
 
 /* definindo as divs de conteudo como inline-table */
 .block_title > div, .block_content > .block_left, .block_content > .block_right {
-    display: inline-block;
-    zoom: 1;
-    *display: inline;
-    border-spacing: 0;
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+  border-spacing: 0;
 }
 
 .block_content > .block_left img, .block_content > .block_right img {
-    vertical-align: text-bottom;
+  vertical-align: text-bottom;
 }
 
 /* garantindo que o titulo do bloco fique proximo a linha inferior */
 .block_title {
-    vertical-align: bottom;
-    overflow: auto;
-    /*line-height: 20px;*/
+  vertical-align: bottom;
+  overflow: auto;
+  /*line-height: 20px;*/
 }
 
 .block_title > .block_right {
-    padding-left: 6px;
+  padding-left: 6px;
 }
 
 /* posicionando objetos alinhados a direita (normalment botoes) */
 .right_buttons {
-    text-align: right;
-    margin-right: 70px;
+  text-align: right;
+  margin-right: 70px;
 }
 
-.right_buttons_assignment{
-    text-align: right;
-    margin-right: 59px;
+.right_buttons_assignment {
+  text-align: right;
+  margin-right: 59px;
 }
 
-.right_buttons_offers{
-    text-align: right;
-    margin-right: 63px;    
+.right_buttons_offers {
+  text-align: right;
+  margin-right: 63px;
 }
 
-.right_buttons_form{
-    float: right;
+.right_buttons_form {
+  float: right;
 }
 
-.retreat, .support_material_file_url{
-    margin-left: -7px;
+.retreat, .support_material_file_url {
+  margin-left: -7px;
 }
-
 
 /* largura dos blocos internos */
 .block_left, .block_right {
-    width: 370px;
-    padding: 6px 10px;
+  width: 370px;
+  padding: 6px 10px;
 }
 
 /* garantindo que o conteudo do bloco fique proximo a linha superior */
 .block_content > .block_left, .block_content > .block_right {
-    vertical-align: top;
+  vertical-align: top;
 }
 
 /* definindo cor de background do conteudo e tamanho da fonte */
 .block_content {
-    font-size: 10pt;
-    background-color: $color_main_light;
+  font-size: 10pt;
 }
 
 .block_content_overflow {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 /* ajustando a largura do bloco esquerdo e adicionando a borda divisoria*/
 .block_content > .block_left {
-    width: 369px;
-    border-right: 1px solid #d0d0d0;
+  width: 369px;
+  border-right: 1px solid;
 }
 
 /* ajustando o espaçamento do bloco direito */
 .block_content > .block_right {
-    padding: 6px 10px 6px 8px;
+  padding: 6px 10px 6px 8px;
 }
 
 .block_content_spacing {
-    padding: 6px 10px;
+  padding: 6px 10px;
 }
 
 .block_content_line {
-    border-bottom: 1px solid #CCCCCC;
-    /*    font-size: 10pt;*/
-    padding: 6px 10px;
+  border-bottom: 1px solid;
+  /*    font-size: 10pt;*/
+  padding: 6px 10px;
 }
 
 .block_content_line:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .block_content_gray {
-    font-size: 8pt;
-    color: #999;
-    padding-right: 5px;
+  font-size: 8pt;
+  padding-right: 5px;
 }
 
 .block_content_text, .block_content_toolbar.block_content_text {
-    color: #000;
-    /*    font-size: 10pt;*/
-    padding: 6px 10px;
+  /*    font-size: 10pt;*/
+  padding: 6px 10px;
 }
 
 .block_content_toolbar {
-    background-color: rgb(232,239,246);
-    border-bottom: 1px solid rgba(0,62,122,0.3);
+  border-bottom: 1px solid;
 }
 
 table tr.block_title th {
-    width: 100%;
-    height: 161px; 
-    overflow: auto;
-    word-wrap: break-word;
+  width: 100%;
+  height: 161px;
+  overflow: auto;
+  word-wrap: break-word;
 }
 
 .block_small {
-    height: 195px;
-    width: 255px;
-    float: left;
-    margin-right: 10px;
-    overflow: hidden;
+  height: 195px;
+  width: 255px;
+  float: left;
+  margin-right: 10px;
+  overflow: hidden;
 }
 
 .block_large {
-    float: left;
-    overflow: hidden;
-    position: relative;
-    display: inline-block;
-    height: 195px;
-    width: 520px;
-    margin-right: 10px;
-}
-
-#block_group_selection {
-    background-color: transparent;
+  float: left;
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  height: 195px;
+  width: 520px;
+  margin-right: 10px;
 }
 
 #block_lessons {
-    min-height: 135px;
-    max-height: 160px;
-    overflow: auto;
+  min-height: 135px;
+  max-height: 160px;
+  overflow: auto;
 }
 
 #block_schedule {
-    margin-right: 0 !important;
+  margin-right: 0 !important;
 }
 
 #block_messages_content {
-    width: 100%;
-    height: 146px;
-    overflow: auto;
+  width: 100%;
+  height: 146px;
+  overflow: auto;
 }
 
 .block_messages_opt {
-    font-size: 8pt;
-    color: #d0d0d0;
-    width: 100%;
-    vertical-align: bottom;
-    text-align: center;
-    padding-top: 6px;
-    padding-bottom: 6px;
-    background-color: $color_main_light;
+  font-size: 8pt;
+  width: 100%;
+  vertical-align: bottom;
+  text-align: center;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 #block_forum {
-    width: 100%;
-    height: 173px;
-    overflow: auto;
-    word-wrap: break-word;
+  width: 100%;
+  height: 173px;
+  overflow: auto;
+  word-wrap: break-word;
 }
 
 /* calendario da tela de acesso a curso */
 .calendar {
-    background-color: $color_main_light;
-    font-size: 9pt;
-    width: 100%;
-    padding-bottom: 2px;
+  font-size: 9pt;
+  width: 100%;
+  padding-bottom: 2px;
 }
+
 .calendar_events {
-    background: $color_main_light;
-    height: 100%;
-    padding: 3px 8px 2px 8px;
-    overflow: auto;
+  height: 100%;
+  padding: 3px 8px 2px 8px;
+  overflow: auto;
 }
 
 /* tela de participantes */
 .participants_list_item {
-    border:0;
-    float:left;
-    margin:7px 0px 7px 0px;
-    position:relative;
-    width:155px;
-    text-align:center;
-    white-space: nowrap;
+  border: 0;
+  float: left;
+  margin: 7px 0px 7px 0px;
+  position: relative;
+  width: 155px;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .participants_list_item > img {
-    padding-bottom: 5px;
+  padding-bottom: 5px;
 }
 
 .participant_name {
-    line-height: 11pt;
-    font-variant: small-caps;
-    font-size: 11pt;
+  line-height: 11pt;
+  font-variant: small-caps;
+  font-size: 11pt;
 }
 
 .participant_role {
-    font-size: 9pt;
-    line-height: 8pt;
+  font-size: 9pt;
+  line-height: 8pt;
 }
 
 .participants_list_none {
-    border:0;
-    -moz-background-inline-policy:continuous;
-    -moz-background-origin:padding;
-    float:left;
-    margin:5px 5px 0px 0px;
-    padding-top:2px;
-    padding-bottom: 2px;
-    padding-left: 4px;
-    position:relative;
-    width:301px;
-    background-color: #f2f6f6;
-    font-size: 11px;
+  border: 0;
+  -moz-background-inline-policy: continuous;
+  -moz-background-origin: padding;
+  float: left;
+  margin: 5px 5px 0px 0px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 4px;
+  position: relative;
+  width: 301px;
+  font-size: 11px;
 }
+
 .participants_icons {
-    position: absolute;
-    bottom: 1px;
-    left: 23%;
+  position: absolute;
+  bottom: 1px;
+  left: 23%;
 }
+
 .portlet_participants {
-    margin: 0px;
-    padding: 0px;
-    border:0px;
-    background-color: #fff;
-    white-space: normal;
-    margin-bottom: 12px;
-    display: table;
-    max-width: 775px;
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  white-space: normal;
+  margin-bottom: 12px;
+  display: table;
+  max-width: 775px;
 }
 
 /* div e navegacao de aulas */
 #lesson_area {
-    background-color: #eee;
-    border: none;
-    padding: 0;
-    margin:  0;
-    width:  100%;
-    height: 100%;
-    top:  0;
-    left: 0;
-    position: absolute;
-    overflow-x: hidden;
-    overflow-Y: hidden;
+  border: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  overflow-x: hidden;
+  overflow-Y: hidden;
 }
+
 #lesson_content_header {
-    background-color: #dee8ec;
-    font-size: 11px;
-    color: #000;
-    width:  100%;
-    height: 25px;
-    margin:  0px;
-    padding: 0px 3px 0px 8px;
+  font-size: 11px;
+  width: 100%;
+  height: 25px;
+  margin: 0px;
+  padding: 0px 3px 0px 8px;
 }
+
 #lesson_header {
-    background-color: #1d4786;
-    font-size: 12px;
-    color: #fff;
-    width:  100%;
-    height: 22px;
-    margin:  0px;
-    padding: 6px 0px 0px 8px;
+  font-size: 12px;
+  width: 100%;
+  height: 22px;
+  margin: 0px;
+  padding: 6px 0px 0px 8px;
 }
+
 #lesson_frame_address {
-    position: relative;
-    width:  100%;
-    border:   0px;
-    margin:   0px;
-    padding:  0px;
-    top: 0px;
+  position: relative;
+  width: 100%;
+  border: 0px;
+  margin: 0px;
+  padding: 0px;
+  top: 0px;
 }
+
 #lesson_goto {
-    display: inline;
-    float: right;
-    height: 20px;
-    margin-right: 50px;
-    margin-top: 4px;
-    text-align: center;
-    vertical-align: top;
-    width: auto;
+  display: inline;
+  float: right;
+  height: 20px;
+  margin-right: 50px;
+  margin-top: 4px;
+  text-align: center;
+  vertical-align: top;
+  width: auto;
 }
+
 #lesson_click_area {
-    display: inline-block;
-    width: 50%;
-    height: 22px;
+  display: inline-block;
+  width: 50%;
+  height: 22px;
 }
+
 .lesson_back, .lesson_next {
-    width: 9px;
-    display: inline-block;
-    cursor: pointer;
-    height: 20px;
-    vertical-align: bottom;
+  width: 9px;
+  display: inline-block;
+  cursor: pointer;
+  height: 20px;
+  vertical-align: bottom;
 }
+
 .lesson_link {
-    background-color: #b8cbcf;
-    width:17px;
-    display: inline-block;
-    height: 20px;
-    text-align: center;
-    vertical-align: middle;
-    margin-right: 1px;
-    margin-bottom: 3px;
-    color: #000;
-    font-size: 12px;
-    text-decoration: none;
-    font-weight: bold;
-    cursor: pointer;
-    border: 0;
-    line-height: 19px;
+  width: 17px;
+  display: inline-block;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  margin-right: 1px;
+  margin-bottom: 3px;
+  font-size: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+  border: 0;
+  line-height: 19px;
 }
+
 .lesson_img_nav {
-    cursor: pointer;
-    vertical-align: middle;
+  cursor: pointer;
+  vertical-align: middle;
 }
+
 #lesson_text_goto {
-    height: 16px;
-    width:  22px;
-    font-size: 11px;
-    padding: 0px;
+  height: 16px;
+  width: 22px;
+  font-size: 11px;
+  padding: 0px;
 }
+
 /* rolagem da lista de aulas */
 #content-scroll {
-    width: 270px;
-    height: 22px;
-    overflow: hidden;
-    padding-top: 2px;
-    display: inline-block;
+  width: 270px;
+  height: 22px;
+  overflow: hidden;
+  padding-top: 2px;
+  display: inline-block;
 }
+
 #content-holder {
-    width: 360px;
-    height: 25px;
+  width: 360px;
+  height: 25px;
 }
 
 /* estilo para item invisivel */
 .invisible {
-    display: none;
+  display: none;
 }
 
 /* Tela de cadastro de aula */
 .lesson_description {
-    text-transform: capitalize;
+  text-transform: capitalize;
 }
+
 .remove_bottom_line {
-    border-bottom: 0 !important;
+  border-bottom: 0 !important;
 }
+
 .block_title_button img {
-    vertical-align: bottom;
+  vertical-align: bottom;
 }
+
 .block_content_toolbar {
-    padding:2px;
+  padding: 2px;
 }
+
 .block_content_toolbar img {
-    vertical-align: middle;
-    padding: 2px 0;
+  vertical-align: middle;
+  padding: 2px 0;
 }
+
 .block_content_toolbar a.btn {
-    padding: 3px 5px;
-    min-width: 20px;
+  padding: 3px 5px;
+  min-width: 20px;
 }
+
 .block_content_toolbar .btn + .btn {
-    margin-left: -5px;
-    border-left-width: 0px;
+  margin-left: -5px;
+  border-left-width: 0px;
 }
+
 .block_content_toolbar .btn  img {
-    padding: 0;
+  padding: 0;
 }
+
 .block_toolbar_left, .block_toolbar_right {
-    display: inline-block;
-    position: relative;
-    padding: 0;
-    margin: 0;
+  display: inline-block;
+  position: relative;
+  padding: 0;
+  margin: 0;
 }
+
 .block_toolbar_right {
-    float: right;
+  float: right;
 }
+
 .block_toolbar_button {
-    display: inline-block;
-    width: 32px;
-    height: 26px;
-    background-color: #f9f9f9;
-    text-align: center;
-    border: 1px solid #ccc;
+  display: inline-block;
+  width: 32px;
+  height: 26px;
+  text-align: center;
+  border: 1px solid;
 }
+
 .block_toolbar_button_release {
-    margin-left: 20px !important;
+  margin-left: 20px !important;
 }
+
 .lesson_arrows {
-    display: inline-block;
-    position: relative;
-    min-height: 15px;
+  display: inline-block;
+  position: relative;
+  min-height: 15px;
 }
+
 .lesson_arrow_up, .lesson_arrow_down {
-    display: block;
-    margin: 0;
-    padding: 0;
-    height: 10px;
-}
-
-.lesson_arrow_up {
-    
-}
-
-.tb_list .lesson_arrow_up {
-
+  display: block;
+  margin: 0;
+  padding: 0;
+  height: 10px;
 }
 
 /*Tela de fórum*/
 $forum_post_width: 728px;
 
-.date_text_field{
-    margin-top: 0px;
-    margin-left: -2px;
-    margin-bottom: 10px;
+.date_text_field {
+  margin-top: 0px;
+  margin-left: -2px;
+  margin-bottom: 10px;
 }
 
 .date_text_field + .field_with_errors {
@@ -1825,687 +1624,630 @@ $forum_post_width: 728px;
   margin-left: 5px;
 }
 
-#forum_description{
-    white-space: normal;
-    margin-bottom: 10px;
+#forum_description {
+  white-space: normal;
+  margin-bottom: 10px;
 }
 
 div.forum_navigation {
-    text-align: center;
-    min-height: 28px;
-    padding-bottom: 0;
-    height: auto;
-}
-
-.forum_button_remove{
-    color: #922;
+  text-align: center;
+  min-height: 28px;
+  padding-bottom: 0;
+  height: auto;
 }
 
 #forum_new_message {
-    float: left;
+  float: left;
 }
 
 #forum_new_message button {
-    text-align: center;
-}
-
-/* TESTE !!! 
-/*.forum_closed_title {
-    background-color:#fff6f6;
-}*/
-
-.lines.period_ended, .period_ended {
-    background-color:#f6f6f6;
-    color:#989898;
-}
-
-.lines.period_ended a, .period_ended a {
-    color:#989898;
+  text-align: center;
 }
 
 #forum_closed {
-    color: red;
-    /*font-weight: bold;*/
-    padding-top: 7px;
-    font-family: 'Ubuntu Condensed', sans-serif;
-    /*background: url('../images/error.gif') no-repeat left center;*/
+  /*font-weight: bold;*/
+  padding-top: 7px;
+  font-family: 'Ubuntu Condensed', sans-serif;
+  /*background: url('../images/error.gif') no-repeat left center;*/
 }
 
 #forum_view_mode {
-    float: right;
+  float: right;
 }
 
-/* TODO - andrei - remover depois: codigo especifico para botoes de layout do forum, esse codigo
-deveria ser generico p/ ser reaproveitado em outras telas */
-// #forum_view_mode a {
-//     margin: 0;
-//     padding-left: 5px;
-//     padding-right: 5px;
-//     padding-top: 5px;
-// }
-
-// #forum_view_mode a:nth-child(2) {
-//     border-left: none;
-// }
-
-// a#forum_view_mode-thread {
-//     margin-left: -5px;
-// }
-
-// #forum_view_mode .btn {
-//     min-width: 20px;
-//     *width: 20px;
-// }
-
-// #forum_view_mode .btn img {
-//     padding-left: 0px;
-// }
-
 .forum_navigation_bar {
-    border-bottom: 2px solid #1d4786;
-    font-size: 10pt;
-    width: 100%;
-    max-width: 785px;
+  border-bottom: 2px solid;
+  font-size: 10pt;
+  width: 100%;
+  max-width: 785px;
 }
 
 #forum_pagination {
-    font-size: 11pt;
-    min-height: 28px;
-    display: block;
+  font-size: 11pt;
+  min-height: 28px;
+  display: block;
 }
 
 #forum_pagination form {
-    padding-top: 7px;
+  padding-top: 7px;
 }
 
-.forum_post{
-    min-height: 40px;
-    white-space: normal;
-    max-width: 785px;
-    width:100%;
-    margin-top: 5px;
+.forum_post {
+  min-height: 40px;
+  white-space: normal;
+  max-width: 785px;
+  width: 100%;
+  margin-top: 5px;
 }
 
 .forum_post_wrapper {
-    background-color: $color_main_light;
-    padding: 7px 5px 4px 5px;
+  padding: 7px 5px 4px 5px;
 }
 
 .forum_post .forum_post {
-    margin-top: 5px;
+  margin-top: 5px;
 }
 
-.forum_post_attachment_line{
-    display:block;
-    height:13px;
-    width:96%;
-    margin:0px;
-    border-bottom:1px solid #CCC;
-    border-top:0px;
-    border-left:0px;
-    border-right:0px;
+.forum_post_attachment_line {
+  display: block;
+  height: 13px;
+  width: 96%;
+  margin: 0px;
+  border-bottom: 1px solid;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
 }
 
-.forum_post_attachment_empty{
-    color: #666;
-    font-size: 11px;
-    padding-left: 7px;
+.forum_post_attachment_empty {
+  font-size: 11px;
+  padding-left: 7px;
 }
 
-.forum_post_child_ident{
-    padding-left: 70px;
+.forum_post_child_ident {
+  padding-left: 70px;
 }
 
 .forum_post_icon {
-    border-right:2px solid $color_main;
-    vertical-align: top;
-    padding-right: 5px;
-    width: 40px;
-    background-color: #ffffff;
+  border-right: 2px solid;
+  vertical-align: top;
+  padding-right: 5px;
+  width: 40px;
 }
 
 .forum_post_content .forum_post_icon {
-    padding-left: 5px;
+  padding-left: 5px;
 }
 
 .forum_post_icon img {
-    width: 40px;
-    height: 40px;
+  width: 40px;
+  height: 40px;
 }
 
 .forum_post_head {
-    /*background-color:$color_main_light;*/
-    height: 35px;
-    font-size: 13px;
-    white-space: normal;
-    font-family: 'Ubuntu';
-    font-weight: bold;
-    width:100%;
-    display: block;
-    text-align:left;
-    border-bottom: 1px solid $color_main;
+  height: 35px;
+  font-size: 13px;
+  white-space: normal;
+  font-family: 'Ubuntu';
+  font-weight: bold;
+  width: 100%;
+  display: block;
+  text-align: left;
+  border-bottom: 1px solid;
 }
 
 .forum_post_author {
-    float:left;
-    padding-left:5px;
+  float: left;
+  padding-left: 5px;
 }
 
-.forum_post_content{
-    width: 100%;
-    /*    background-color: $color_main_light;*/
-    font-family:'PT Sans', sans-serif;
-    font-size: 10pt;
-    vertical-align: top;
+.forum_post_content {
+  width: 100%;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 10pt;
+  vertical-align: top;
 }
 
 .block_title > .forum_post_new {
-    width: auto;
-     /*margin: 10px auto 8px auto;*/
-    padding: 0;
-    display: none;
-    margin-top: 1px;
+  width: auto;
+  /*margin: 10px auto 8px auto;*/
+  padding: 0;
+  display: none;
+  margin-top: 1px;
 }
 
 .forum_post_reply {
-    width: auto;
-    overflow: hidden;
-    /* padding-top: 5px;*/
-    position: relative;
-    display: none;
+  width: auto;
+  overflow: hidden;
+  /* padding-top: 5px;*/
+  position: relative;
+  display: none;
 }
 
 $forum_indentation: 52px;
 .forum_post .forum_post_wrapper {
-    max-width: $forum_post_width;
+  max-width: $forum_post_width;
 }
 
 .forum_post .forum_post .forum_post_wrapper {
-    max-width: $forum_post_width - $forum_indentation;
+  max-width: $forum_post_width - $forum_indentation;
 }
 
 .forum_post .forum_post .forum_post .forum_post_wrapper {
-    max-width: $forum_post_width - $forum_indentation*2;
+  max-width: $forum_post_width - $forum_indentation*2;
 }
 
 .forum_post .forum_post .forum_post .forum_post .forum_post_wrapper {
-    max-width: $forum_post_width - $forum_indentation*3;
+  max-width: $forum_post_width - $forum_indentation*3;
 }
 
-.forum_participant_nick {
-    /*border-bottom: 1px solid $color_main;*/
-}
+//.forum_participant_nick {
+//  border-bottom: 1px solid $color_main;
+//}
 
 .forum_participant_profile {
-    font-size: 12px;
-    font-weight: normal;
+  font-size: 12px;
+  font-weight: normal;
 }
 
 .forum_participants {
-    border:0;
-    float:left;
-    margin:5px 5px 0px 0px;
-    padding-top:2px;
-    padding-bottom: 2px;
-    width:106px;
-    min-height:90px;
-    text-align:center;
-    font-size: 11px;
-}
-.forum_participants_icons {
-    bottom: 1px;
-    left: 23%;
-    padding-top:5px;
-}
-.forum_post_date{
-    font-family: 'PT Sans', sans-serif;
-    font-weight: normal;
-    font-size: 8pt;
-    text-align: right;
-    font-style: italic;
-    color: #888;
-    margin-right: 8px;
-    margin-top: 5px;
-    float: right;
-}
-.forum_post_buttons{
-    text-align: right;
-    background-color: $color_main_light;
+  border: 0;
+  float: left;
+  margin: 5px 5px 0px 0px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  width: 106px;
+  min-height: 90px;
+  text-align: center;
+  font-size: 11px;
 }
 
-.forum_post_attachment{
-    padding: 0 0 5px 5px;
-    background-color: $color_main_light;
+.forum_participants_icons {
+  bottom: 1px;
+  left: 23%;
+  padding-top: 5px;
+}
+
+.forum_post_date {
+  font-family: 'PT Sans', sans-serif;
+  font-weight: normal;
+  font-size: 8pt;
+  text-align: right;
+  font-style: italic;
+  margin-right: 8px;
+  margin-top: 5px;
+  float: right;
+}
+
+.forum_post_buttons {
+  text-align: right;
+}
+
+.forum_post_attachment {
+  padding: 0 0 5px 5px;
 }
 
 .forum_post_attachment h3 {
-    padding-bottom: 0px;
+  padding-bottom: 0px;
 }
 
 .forum_post_attachment_list, .comments_files_div {
-    padding-left: 15px;
+  padding-left: 15px;
 }
 
 .forum_post_attachment_list {
-    list-style: circle;
+  list-style: circle;
 }
 
 .forum_post_attachment_list li, .comments_files_div li {
-    padding-bottom: 4px;
+  padding-bottom: 4px;
 }
 
 .forum_post_attachment_list li img, .comments_files_div li img {
-    width: 12px;
-    vertical-align: middle;
+  width: 12px;
+  vertical-align: middle;
 }
 
 #post_attachment_wrapper div {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 #post_attachment_form_submit {
-    text-align: right;
+  text-align: right;
 }
 
 #new_post {
-    display: none;
-    padding-top: 5px;
+  display: none;
+  padding-top: 5px;
 }
 
 .new_post_dialog_buttons {
-    margin-top: 5px;
-    padding-bottom: 3px;
-    float: right;
+  margin-top: 5px;
+  padding-bottom: 3px;
+  float: right;
 }
 
 /* === TELA DE MENSAGENS  === */
 .label_text {
-    font-size: 10pt;
-    padding: 6px;
-    color: #000;
+  font-size: 10pt;
+  padding: 6px;
 }
 
 /* mensagem: busca */
-.message_search_div,.message_div{
-    color: #000;
-    font-size: 10pt;
-    text-decoration: none;
+.message_search_div, .message_div {
+  font-size: 10pt;
+  text-decoration: none;
 }
 
 /* mensagem: cabecalho, area de titulo */
 #message_general_title {
-    border-bottom: 1px solid #d0d0d0;
-    padding-bottom: 0px !important;
-    height: 25px;
+  border-bottom: 1px solid;
+  padding-bottom: 0px !important;
+  height: 25px;
 }
 
 #message_general_title h2 {
-    position: relative;
-    bottom: 0px;
+  position: relative;
+  bottom: 0px;
 }
 
 #message_general_title > div {
-    /*float: left;*/
-    height: 23px;
-}
-.message_general_div_option, .message_general_div_option_active {
-    display: inline-block;
-    padding: 0 8px;
-    z-index: 20;
-}
-.message_general_div_option_active {
-    border-bottom: 2px solid #214684;
-}
-.message_general_div_option img, .message_general_div_option_active img {
-    vertical-align: bottom;
-}
-.message_div_options, .message_div_options_new, .message_div_show, .message_header_new {
-    width: auto;
-}
-.message_div_options, .message_div_options_new {
-    background-color: #ffffff;
-    height: 26px;
-    margin-top: 6px;
-    vertical-align: middle;
-    border-bottom: 1px solid #d0d0d0;
-}
-.message_div_options_new {
-    margin: 0;
-}
-.message_new_action {
-    margin-top: 10px;
-}
-#menu_inbox .text_alert_message {
-    margin-left: 3px;
+  height: 23px;
 }
 
-.message_link_menu{
-    text-decoration: none;
-    font-size: 11pt;
-    margin-left: 3px;
+.message_general_div_option, .message_general_div_option_active {
+  display: inline-block;
+  padding: 0 8px;
+  z-index: 20;
+}
+
+.message_general_div_option_active {
+  border-bottom: 2px solid;
+}
+
+.message_general_div_option img, .message_general_div_option_active img {
+  vertical-align: bottom;
+}
+
+.message_div_options, .message_div_options_new, .message_div_show, .message_header_new {
+  width: auto;
+}
+
+.message_div_options, .message_div_options_new {
+  height: 26px;
+  margin-top: 6px;
+  vertical-align: middle;
+  border-bottom: 1px solid;
+}
+
+.message_div_options_new {
+  margin: 0;
+}
+
+.message_new_action {
+  margin-top: 10px;
+}
+
+#menu_inbox .text_alert_message {
+  margin-left: 3px;
+}
+
+.message_link_menu {
+  text-decoration: none;
+  font-size: 11pt;
+  margin-left: 3px;
 }
 
 /* mensagem: listagem das mensagens */
-.message_div_list{
-    width: 100%;
+.message_div_list {
+  width: 100%;
 }
+
 .message_div_show {
-    padding-right: 100px;
-    min-height: 100px;
-    white-space: normal;
-    font-size: 10pt;
-    padding: 20px;
+  padding-right: 100px;
+  min-height: 100px;
+  white-space: normal;
+  font-size: 10pt;
+  padding: 20px;
 }
-.message_line{
-    /*background-color: #f9f9f9;*/
-    height: 28px;
+
+.message_line {
+  /*background-color: #f9f9f9;*/
+  height: 28px;
 }
-.message_line_highlight {
-    background-color: $color_contrast_light;
-}
-/*.message_line:hover {
-    background-color: $color_main_light_highlight;
-}*/
+
 .message_line_check {
-    width: 30px;
-    text-align: center;
+  width: 30px;
+  text-align: center;
 }
+
 .message_nav_text {
-    font-size: 10pt;
-    text-decoration: none;
-    color: #000;
-    width: auto;
+  font-size: 10pt;
+  text-decoration: none;
+  width: auto;
 }
-.message_search_textbox{
-    height: 18px;
-    width: 500px;
-    padding: 0px;
-    font-size: 11px;
+
+.message_search_textbox {
+  height: 18px;
+  width: 500px;
+  padding: 0px;
+  font-size: 11px;
 }
-.message_read, .message_unread{
-    color: #666;
-    font-weight: normal;
-    white-space: normal;
+
+.message_read, .message_unread {
+  font-weight: normal;
+  white-space: normal;
 }
-.message_unread{
-    color: #000;
-    font-weight: bold;
+
+.message_unread {
+  font-weight: bold;
 }
+
 .message_label {
-    font-size: 8pt;
-    color: #000;
-    font-weight: normal;
-    margin: 0px;
-    padding: 0px;
-    padding-left: 2px;
-    padding-right: 2px;
-    background-color: #F9C153;
-    border: 1px solid #F9C153;
-    -moz-border-radius: 4px;
+  font-size: 8pt;
+  font-weight: normal;
+  margin: 0px;
+  padding: 0px;
+  padding-left: 2px;
+  padding-right: 2px;
+  border: 1px solid;
+  -moz-border-radius: 4px;
 }
+
 .message_read:hover, .message_unread:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
+
 .message_header_new {
-    width: 100%;
+  width: 100%;
 }
+
 .message_div_text_read {
-    background-color: #F7F7F7;
-    width: 100%;
+  width: 100%;
 }
 
 .message_text_to, .message_text_body {
-    font-size: 10pt;
-    color: #000;
-    padding: 2px 5px;
+  font-size: 10pt;
+  padding: 2px 5px;
 }
+
 .message_text_to, .message_text_to_label {
-    padding-top: 5px;
+  padding-top: 5px;
 }
+
 .message_text_to_label {
-    width: 60px;
-    text-align: right;
+  width: 60px;
+  text-align: right;
 }
+
 .message_text_body {
-    padding: 20px;
-    padding-right: 100px;
+  padding: 20px;
+  padding-right: 100px;
 }
+
 .message_recipient_box {
-    border: 1px solid #eee;
-    font-size: 12px;
-    color: #214684;
-    cursor: pointer;
+  border: 1px solid;
+  font-size: 12px;
+  cursor: pointer;
 }
+
 .message_new {
-    padding-top: 4px;
+  padding-top: 4px;
 }
+
 .message_new_textbox {
-    width: 95%;
-    font-size: 10pt;
+  width: 95%;
+  font-size: 10pt;
 }
+
 .message_attach_item {
-    padding: 5px 0 0 0;
+  padding: 5px 0 0 0;
 }
+
 #newPostUploadPanel {
-    padding-bottom: 5px;
+  padding-bottom: 5px;
 }
+
 #recipients_selected {
-    border: 1px solid #ccc;
-    width: 435px;
-    height: 50px;
-    background-color: #fff;
-    white-space: normal;
-    overflow: auto;
+  border: 1px solid;
+  width: 435px;
+  height: 50px;
+  white-space: normal;
+  overflow: auto;
 }
-#div_contacts{
-    font-size: 11pt;
-    text-decoration: none;
-    padding: 5px;
-    color: #214684;
-    position: absolute;
-    border: 2px solid #F2F2F2;
-    background-color: #fafafa;
-    line-height: 15px;
-    z-index: 100;
+
+#div_contacts {
+  font-size: 11pt;
+  text-decoration: none;
+  padding: 5px;
+  position: absolute;
+  border: 2px solid;
+  line-height: 15px;
+  z-index: 100;
 }
-.div_contacts_buttons{
-    width:440px;
-    padding-top:4px;
+
+.div_contacts_buttons {
+  width: 440px;
+  padding-top: 4px;
 }
+
 #div_contacts_list {
-    overflow: auto;
-    background-color: #fff;
-    padding: 5px;
-    margin-right: 3px;
-    margin-top: 1px;
-    border: 1px solid #ddd;
-    height: 150px;
+  overflow: auto;
+  padding: 5px;
+  margin-right: 3px;
+  margin-top: 1px;
+  border: 1px solid;
+  height: 150px;
 }
 
 /* dropdown de mensagens (selecionar, mover para) */
-ul{
-    list-style-type:none;
+ul {
+  list-style-type: none;
 }
+
 ul.message_menu_listbox {
-    // width: 80px;
-    margin: 0px 0px 0px 8px;
-    padding: 0px;
-    display: inline-block;
+  // width: 80px;
+  margin: 0px 0px 0px 8px;
+  padding: 0px;
+  display: inline-block;
 }
-ul.message_menu_listbox li{
-    position: relative;
+
+ul.message_menu_listbox li {
+  position: relative;
 }
-ul.message_menu_listbox li:hover{
-    position: relative;
+
+ul.message_menu_listbox li:hover {
+  position: relative;
 }
-ul.message_menu_listbox li a{  /* menu nivel 1 */
-    font-size: 10pt;
-    text-decoration: none;
-    cursor: pointer;
-    display:block;
+
+ul.message_menu_listbox li a {
+  /* menu nivel 1 */
+  font-size: 10pt;
+  text-decoration: none;
+  cursor: pointer;
+  display: block;
 }
-ul.message_menu_listbox li ul{
-    display:none;
-    border: 1px solid #ccc;
-    position: absolute;
-    line-height: 18px;
-    margin: 0px;
-    padding: 0px;
-    top:20px;
-    left:0;
-    margin-right: 0px;
-    background:#fff;
+
+ul.message_menu_listbox li ul {
+  display: none;
+  border: 1px solid;
+  position: absolute;
+  line-height: 18px;
+  margin: 0px;
+  padding: 0px;
+  top: 20px;
+  left: 0;
+  margin-right: 0px;
 }
-ul.message_menu_listbox li:hover ul{
-    display:block;
+
+ul.message_menu_listbox li:hover ul {
+  display: block;
 }
-ul.message_menu_listbox li ul a{  /* menu nivel 2 - opcoes */
-    width: 80px;
-    display: block;
-    background: #fff;
-    padding: 0px;
-    margin:  2px;
-    font-size: 10pt;
-    text-decoration: none;
-}
-ul.message_menu_listbox li ul a:hover{
-    background:#eee;
+
+ul.message_menu_listbox li ul a {
+  /* menu nivel 2 - opcoes */
+  width: 80px;
+  display: block;
+  padding: 0px;
+  margin: 2px;
+  font-size: 10pt;
+  text-decoration: none;
 }
 
 /* paginacao */
 .next_page, .prev_page, .current, .link_navigation {
-    font-size: 12px;
-    text-decoration: underline;
-    color: #214684;
-    cursor: pointer;
-    padding-left: 5px;
-    padding-right: 5px;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding-left: 5px;
+  padding-right: 5px;
 }
+
 .link_navigation {
-    text-decoration: none;
+  text-decoration: none;
 }
+
 .disabled, .message_div_navigation {
-    font-size: 10pt;
-    text-decoration: none;
-    color: #B4B3B7;
-    padding-left: 5px;
-    padding-right: 5px;
+  font-size: 10pt;
+  text-decoration: none;
+  padding-left: 5px;
+  padding-right: 5px;
 }
+
 .current {
-    background-color: #E7EDED;
-    text-decoration: none;
-    font-weight: bold;
-    padding-left: 5px;
-    padding-right: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  padding-left: 5px;
+  padding-right: 5px;
 }
+
 .pagination {
-    padding-left: 5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    display: inline-block;
+  padding-left: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: inline-block;
 }
+
 .pagination a {
-    padding-left: 5px;
-    padding-right: 5px;
-    color: #214684;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 /**
  * Tabelas - geral e files
 */
 table.tb_list, table.tb_list_files {
-    width: 100%;
-    font-size: 10pt;
+  width: 100%;
+  font-size: 10pt;
 }
 
 table.tb_list tr.block_title th {
-    padding-bottom: 2px;
+  padding-bottom: 2px;
 }
 
-/*table.tb_list, table.tb_list_files {
-
-    background-color: #F7F7F8;
-    border-right: solid #B4B2B1 1px;
-}*/
-
 table.tb_list th {
-    white-space: nowrap;
-    background-color: white;
-    /*    font-weight: bold;*/
+  white-space: nowrap;
+  /*    font-weight: bold;*/
 }
 
 table.tb_list a {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 table.tb_list h4 {
-    margin-bottom: 4px;
-    overflow: hidden;
-    word-wrap:break-word;
-    max-width:410px;
-}
-
-table.tb_list tbody {
-    background-color: $color_main_light;
+  margin-bottom: 4px;
+  overflow: hidden;
+  word-wrap: break-word;
+  max-width: 410px;
 }
 
 table.tb_list td {
-    white-space: normal;
-    word-wrap: break-word;
-    /*    border-right: 1px solid #d0d0d0;*/
+  white-space: normal;
+  word-wrap: break-word;
+  /*    border-right: 1px solid #d0d0d0;*/
 }
 
 table.tb_list td:last-child {
-    border-right: none;
+  border-right: none;
 }
 
 table.tb_list tbody tr:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
+
 .file_icon {
-    margin-right: 3px;
-    vertical-align: bottom;
-    width: 18px;
-    height: 18px;
+  margin-right: 3px;
+  vertical-align: bottom;
+  width: 18px;
+  height: 18px;
 }
 
 .tb_allocation tr.lines {
-    height: 39px;
-}
-
-.tb_allocation .unavailable {
-    color: #888;
+  height: 39px;
 }
 
 table.tb_list_files {
-    border-right: 0px;
+  border-right: 0px;
 }
 
 table.tb_list_files th {
-    height: 30px;
-    border: 0;
+  height: 30px;
+  border: 0;
 }
 
 table.tb_list_files td {
-    border-top: 1px solid #B4B2B1;
+  border-top: 1px solid;
 }
 
 .enunciation_complete, .enunciation_less {
-    display:none;
+  display: none;
 }
+
 /**
 * Icones de arquivos em tabelas
 */
 table .file_data_icon {
-    text-align: center;
-}
-
-/**
-* Datas de arquivos em tabelas
-*/
-
-table.tb_list_files td.file_data_info, table.tb_list td.file_data_info {
-    color: #787878;
+  text-align: center;
 }
 
 /**
@@ -2513,42 +2255,35 @@ table.tb_list_files td.file_data_info, table.tb_list td.file_data_info {
 */
 
 .date_info, table.tb_list_files th.date_info {
-    font-size: 10pt;
-    font-style: italic;
-    color: #787878;
+  font-size: 10pt;
+  font-style: italic;
 }
 
 table.tb_list_files th.date_info {
-    font-size: 12pt;
-    float: right;
-    padding-right: 2px;
+  font-size: 12pt;
+  float: right;
+  padding-right: 2px;
 }
 
 /**
 * Tratando linhas das tabelas
 */
 th {
-    border-bottom: solid #B4B2B1 1px;
+  border-bottom: 1px solid;
 }
 
 tbody tr.lines {
-    border-bottom: solid #B4B2B1 1px;
-    background-color: $color_main_light;
+  border-bottom: 1px solid;
 }
 
 tbody tr.lines.active {
-    border-bottom: solid #B4B2B1 1px;
-    background-color: $color_contrast_light;
-}
-
-tbody tr.lines.active:hover {
-    background-color: #fffbd1;
+  border-bottom: 1px solid;
 }
 
 tr.lines td img {
-    margin: 0;
-    padding: 0;
-    vertical-align: text-top;
+  margin: 0;
+  padding: 0;
+  vertical-align: text-top;
 }
 
 /*
@@ -2558,37 +2293,20 @@ tbody tr.lines:nth-child(odd) {
 */
 
 th, tr.lines td {
-    /*    border-bottom: solid #B4B2B1 1px;*/
-    /*    border-left: solid #B4B2B1 1px;*/
-    /*    padding: 7px 5px 6px 5px;*/
-    padding: 6px 10px;
-    vertical-align: middle;
-}
-
-tr.post_content {
-    background-color: $color_main_light;
-}
-
-tbody tr.lines:hover, table.tb_list_files td:hover {
-    background-color: $color_main_light_highlight; /* #FFF5ED*/
-}
-
-tbody tr.lines.period_ended:hover {
-    background-color:#f1f1f1;
-}
-
-tbody tr.lines:hover a, table.tb_list_files td:hover a {
-
+  /*    border-bottom: solid #B4B2B1 1px;*/
+  /*    border-left: solid #B4B2B1 1px;*/
+  /*    padding: 7px 5px 6px 5px;*/
+  padding: 6px 10px;
+  vertical-align: middle;
 }
 
 td.td_student a {
-    color: $color_main_text;
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* tratando form dentro de tabela */
 .tb_list .button_to {
-    display: inline-block;
+  display: inline-block;
 }
 
 /**
@@ -2596,230 +2314,218 @@ td.td_student a {
 */
 
 div.send_files {
-    font-size: 10pt;
-    background-color: #F7F7F8;
+  font-size: 10pt;
 }
 
 .red_notice {
-    font-size: 10pt;
-    background-color: white;
-    white-space: nowrap;
-    color: #e12227;
-    padding-top:6px
+  font-size: 10pt;
+  white-space: nowrap;
+  padding-top: 6px
 }
 
 .portfolio_activity {
-    width: 500px;
+  width: 500px;
 }
 
 .portfolio_activity_mright {
-    margin-right: 20px;
+  margin-right: 20px;
 }
 
 .presentation_area {
-    width: 700px;
+  width: 700px;
 }
 
 #history_search_content {
-    padding-bottom: 6px;
-    border-bottom:1px solid #d0d0d0;
+  padding-bottom: 6px;
+  border-bottom: 1px solid;
 }
 
 #history-body {
-    padding:7px 0 5px 0;
+  padding: 7px 0 5px 0;
 }
 
 div.label_score {
-    font-size: 11px;
-    padding-top: 10px;
+  font-size: 11px;
+  padding-top: 10px;
 }
 
-td.td_student a {color: #2a538d;}
-
-.portfolio_div_padding{
-    padding: 5px;
+.portfolio_div_padding {
+  padding: 5px;
 }
 
-.assignment_comment_form{
-    width: 100%;
-    font-family:'PT Sans', sans-serif;
-    font-size: 10pt;
-    vertical-align: top;
+.assignment_comment_form {
+  width: 100%;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 10pt;
+  vertical-align: top;
 }
 
-.assignment_inner_content{
-    background-color: $color_main_light;
-    word-wrap: break-word;
-    width: 100%;
-    padding: 5px 5px 0px 5px;
-    min-height: 27px;
+.assignment_inner_content {
+  word-wrap: break-word;
+  width: 100%;
+  padding: 5px 5px 0px 5px;
+  min-height: 27px;
 }
 
-.portfolio_title_button, .portfolio_comment_button, #btn_cancel_evaluation, #btn_save_evaluation, #btn_evaluate{
-    float: right;
+.portfolio_title_button, .portfolio_comment_button, #btn_cancel_evaluation, #btn_save_evaluation, #btn_evaluate {
+  float: right;
 }
 
-.portfolio_comment_button{
-    margin-right: 10px;
+.portfolio_comment_button {
+  margin-right: 10px;
 }
 
-.comments_files{
-    margin: 0px 10px 10px 0px;
+.comments_files {
+  margin: 0px 10px 10px 0px;
 }
 
-.removed_comment_file{
-    color: red;
-    text-decoration: line-through;
+.removed_comment_file {
+  text-decoration: line-through;
 }
 
-.more_comment_files_link{
-    float: center;
-    font-size: 9pt;
-    text-decoration: underline;
-    cursor: pointer;
-    color: #1c4785;
+.more_comment_files_link {
+  float: center;
+  font-size: 9pt;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
-.upload_comment_files_buttons{
-    padding-top: 15px;
-    padding-bottom: 10px;
-    text-align: center;
+.upload_comment_files_buttons {
+  padding-top: 15px;
+  padding-bottom: 10px;
+  text-align: center;
 }
 
-#btn_cancel_evaluation, #btn_save_evaluation, #btn_cancel_management, #btn_save_management, [class^="students_import_"], [class^="edit_group_"], 
-.upload_assignment_files, .student_assignment_evaluation, .comments_files_div .btn.btn_default.recover_file, #btn_cancel_comment, #btn_save_comment_new{
-    display:none;
+#btn_cancel_evaluation, #btn_save_evaluation, #btn_cancel_management, #btn_save_management, [class^="students_import_"], [class^="edit_group_"],
+.upload_assignment_files, .student_assignment_evaluation, .comments_files_div .btn.btn_default.recover_file, #btn_cancel_comment, #btn_save_comment_new {
+  display: none;
 }
 
-.link_upload_file{
-    margin-left: 1%;
+.link_upload_file {
+  margin-left: 1%;
 }
 
-.image_upload_file{
-    margin-left: 34%;   
+.image_upload_file {
+  margin-left: 34%;
 }
 
-.assignment_inner_content.upload_files{
-    border-top: solid #B4B2B1 1px;
-    padding-top: 10px;
+.assignment_inner_content.upload_files {
+  border-top: 1px solid;
+  padding-top: 10px;
 }
 
-.disabled.link_upload_file{
-    text-decoration: line-through;
+.disabled.link_upload_file {
+  text-decoration: line-through;
 }
 
-.upload_assignment_files{
-    padding: 5px 15px 5px 15px;
+.upload_assignment_files {
+  padding: 5px 15px 5px 15px;
 }
 
-.date_column, .student_assignment_evaluate{
-    text-align: center;
+.date_column, .student_assignment_evaluate {
+  text-align: center;
 }
 
-.date_column{
-    width:70px;
-}
-    
-.assignment_files_info, .assignment_comment_date{
-    font-family: 'PT Sans', sans-serif;
-    font-weight: normal;
-    font-size: 8pt;
-    text-align: right;
-    font-style: italic;
-    color: #888;
-    margin-right: 8px;
-    margin-left: 10px;
-    float: right;
+.date_column {
+  width: 70px;
 }
 
-.assignment_comment_date{
-    float: right;
+.assignment_files_info, .assignment_comment_date {
+  font-family: 'PT Sans', sans-serif;
+  font-weight: normal;
+  font-size: 8pt;
+  text-align: right;
+  font-style: italic;
+  margin-right: 8px;
+  margin-left: 10px;
+  float: right;
 }
 
-.assignment_files_info{
-    margin-left: 10px;
-    margin-top: 5px;
+.assignment_comment_date {
+  float: right;
 }
 
-.assignment_user_comment{
-    float:left;
-    padding-left:10px;
+.assignment_files_info {
+  margin-left: 10px;
+  margin-top: 5px;
 }
 
-.assignment_comment{
-    min-height: 40px;
-    white-space: normal;
-    max-width: 785px;
-    width:100%;
-    margin-top: 5px;
+.assignment_user_comment {
+  float: left;
+  padding-left: 10px;
 }
 
-.assignment_comment_head{
-    height: 17px;
-    font-size: 12px;
-    white-space: normal;
-    font-family: 'Ubuntu';
-    width:100%;
-    display: block;
-    text-align:left;
-    border-bottom: 1px solid $color_main;
+.assignment_comment {
+  min-height: 40px;
+  white-space: normal;
+  max-width: 785px;
+  width: 100%;
+  margin-top: 5px;
 }
 
-.comments_files_div .btn{
-    min-width: 10px;
-    height: 22px;
-    padding: 0 2px;
-    vertical-align: bottom;
+.assignment_comment_head {
+  height: 17px;
+  font-size: 12px;
+  white-space: normal;
+  font-family: 'Ubuntu';
+  width: 100%;
+  display: block;
+  text-align: left;
+  border-bottom: 1px solid;
 }
 
-.comments_files_div .btn img{
-    width: 20px;
-    padding: 0;
-    margin: 0;
+.comments_files_div .btn {
+  min-width: 10px;
+  height: 22px;
+  padding: 0 2px;
+  vertical-align: bottom;
+}
+
+.comments_files_div .btn img {
+  width: 20px;
+  padding: 0;
+  margin: 0;
 }
 
 /**
 * AGENDA
 */
 .schedule_link_more {
-    font-size: 11px;
-    color: #4b6380;
-    margin-right: 2px;
-    float: right;
+  font-size: 11px;
+  margin-right: 2px;
+  float: right;
 }
 
 .agenda_block {
-    overflow: auto;
-    padding-bottom: 20px;
+  overflow: auto;
+  padding-bottom: 20px;
 }
 
 .agenda_left {
-    float: left;
-    background-color: $color_main_light;
-    min-height: 65px;
-    width: 160px;
-    font-size: 11pt;
+  float: left;
+  min-height: 65px;
+  width: 160px;
+  font-size: 11pt;
 }
 
 .agenda_right {
-    white-space: normal;
-    min-height: 60px;
-    overflow: hidden;
-    font-weight: normal;
-    /*    background-color: #fbfbfb;*/
-    font-size: 10pt;
-    padding-top: 10px;
-    text-align: justify;
+  white-space: normal;
+  min-height: 60px;
+  overflow: hidden;
+  font-weight: normal;
+  font-size: 10pt;
+  padding-top: 10px;
+  text-align: justify;
 }
 
 .agenda_right p {
-    padding: 5px 5px 5px 10px;
+  padding: 5px 5px 5px 10px;
 }
 
 .agenda_right .title {
-    padding-left: 10px;
-    font-weight: bold;
-    font-size: 10pt;
+  padding-left: 10px;
+  font-weight: bold;
+  font-size: 10pt;
 }
 
 /*.agenda_left {
@@ -2827,44 +2533,39 @@ td.td_student a {color: #2a538d;}
 }*/
 
 .agenda_left_date {
-    margin-top: 7px;
-    text-align: center;
+  margin-top: 7px;
+  text-align: center;
 }
 
 .agenda_left_interval, .agenda_left_day, .agenda_left_day_and_month {
-    font-size: 12pt;
-    font-weight: bold;
-    margin-bottom: 5px;
+  font-size: 12pt;
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .block_title_icon.discussions {
-    background: url('../images/schedule/meeting_attendance_16x16.png') no-repeat;
-    display: inline-block;
+  display: inline-block;
 }
 
 .block_title_icon.lesson, .block_title_icon.assignments, .block_title_icon.schedule_events {
-    background: url('../images/schedule/assignments_16x16.png') no-repeat;
-    display: inline-block;
+  display: inline-block;
 }
 
 .block_title_icon.chat {
-    background: url('../images/schedule/chat_16x16.png') no-repeat;
-    display: inline-block;
+  display: inline-block;
 }
 
 /* encontro presencial */
 .block_title_icon.meeting_attendance {
-    background: url('../images/schedule/meeting_attendance_16x16.png') no-repeat;
-    display: inline-block;
+  display: inline-block;
 }
 
 .agenda_ajax {
-    color: #4B6380;
-    font-size: 9pt;
+  font-size: 9pt;
 }
 
 .agenda_left_month_year .year_left {
-    margin-right: 30px;
+  margin-right: 30px;
 }
 
 /**
@@ -2872,267 +2573,231 @@ td.td_student a {color: #2a538d;}
 */
 
 .assignment_corrected {
-    white-space: nowrap;
-    color: #378941;
+  white-space: nowrap;
 }
 
-.assignment_sent, td.assignment_as a  {
-    white-space: nowrap;
-    color: #1CA093;
+.assignment_sent, td.assignment_as a {
+  white-space: nowrap;
 }
 
 .assignment_not_sent, .expired {
-    white-space: nowrap;
-    color: #e12227;
+  white-space: nowrap;
 }
 
 .assignment_not_started {
-    white-space: nowrap;
-    color: #787878;
+  white-space: nowrap;
 }
 
 .assignment_send, .assignment_pending, td.assignment_an a {
-    white-space: nowrap;
-    color: $color_main_text;
+  white-space: nowrap;
 }
 
 .assignment_without_group, td.assignment_without_group a {
-    white-space: nowrap;
-    color: #e37073;
+  white-space: nowrap;
 }
 
 .activity_grade {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 #breadcrumb {
-    white-space: nowrap;
-    font-size: 10pt;
-    margin-bottom: 10px;
-    margin-top: 10px;
-}
-
-#breadcrumb a {
-    color: #666;
+  white-space: nowrap;
+  font-size: 10pt;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 /* MATERIAL DE APOIO */
 
-.support_material_folder_top{
-    font-variant: normal;
-    text-transform: capitalize;
+.support_material_folder_top {
+  font-variant: normal;
+  text-transform: capitalize;
 }
 
-.support_material_folder_top_line{
-    color: #1C4785;
-    border: solid 2px;
-    font-weight: lighter;
-    margin-top: 0px;
-}
-.support_material_content{
-
+.support_material_folder_top_line {
+  border: solid 2px;
+  font-weight: lighter;
+  margin-top: 0px;
 }
 
-.support_material_content_links{
-    background-color: #f7f7f8;
-    font-size: 12px;
-    color: #4B6380;
-    padding-left: 10px;
+.support_material_content_links {
+  font-size: 12px;
+  padding-left: 10px;
 }
-.support_material_files_informations{
-    float: right;
-    margin-right: 10px;
-    font-size: 12px;
-    font-style: italic;
-    color: #787878;
+
+.support_material_files_informations {
+  float: right;
+  margin-right: 10px;
+  font-size: 12px;
+  font-style: italic;
 }
 
 /* material de apoio do editor (inicio) */
 
 #column_wrapper {
-    display: none;
+  display: none;
 }
 
 .select_editor {
-    width: 260px;
-    display: block;
-    float: left;
-    background-color: $color_main_light;
+  width: 260px;
+  display: block;
+  float: left;
 }
 
 .select_editor_title {
-    padding: 6px 10px 5px 10px;
-    border-bottom: 1px solid #B4B2B1;
-    background-color: #fff;
+  padding: 6px 10px 5px 10px;
+  border-bottom: 1px solid;
 }
 
 .select_editor_content {
-    overflow: auto;
-    height: 95px;
+  overflow: auto;
+  height: 95px;
 }
 
 .select_editor_content li {
-    padding: 3px 10px;
+  padding: 3px 10px;
 }
 
 .select_editor_content li:hover {
-    cursor: pointer;
-    background-color: #fff;
-    border-left: 2px solid $color_main;
-    padding-left: 8px;
-    color: #000;
+  cursor: pointer;
+  border-left: 2px solid;
+  padding-left: 8px;
 }
 
-.delete_support_material_file_editor, .support_material_add, .support_material_add_link{
-    background-color: white;
-    border-color:white;
-    border:0;
-    padding:0;
-    cursor: pointer;
+.delete_support_material_file_editor, .support_material_add, .support_material_add_link {
+  border: 0;
+  padding: 0;
+  cursor: pointer;
 }
 
 .support_material_message_no_files {
-    border-top: solid #B4B2B1 1px;
-    border-bottom: solid #B4B2B1 1px;
-    background-color: $color_main_light;
-    height: 20px;
-    font-family: 'PT Sans', sans-serif;
-    font-style: italic;
-    font-size: 13px;
-    color: #666;
-    padding: 2px 0px 0px 10px;
-}
-
-.support_material_message_no_files:hover {
-    background-color: $color_main_light_highlight;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  height: 20px;
+  font-family: 'PT Sans', sans-serif;
+  font-style: italic;
+  font-size: 13px;
+  padding: 2px 0px 0px 10px;
 }
 
 /* material de apoio - editor - tabela */
 .support_material_buttons {
-    overflow: hidden;
-    padding: 4px 2px;
+  overflow: hidden;
+  padding: 4px 2px;
 }
 
 .support_material_folder_buttons {
-    overflow: hidden;
-    padding: 4px 2px;
-    cursor: pointer;
+  overflow: hidden;
+  padding: 4px 2px;
+  cursor: pointer;
 }
 
 .support_material_buttons > div {
-    width: 80px;
-    border-right: 1px solid #d0d0d0;
-    float: left;
-    text-align: center;
+  width: 80px;
+  border-right: 1px solid;
+  float: left;
+  text-align: center;
 }
 
 .support_material_check_box {
-    margin-right:5px;
+  margin-right: 5px;
 }
 
 h2.support_material_title {
-    position: absolute;
-    bottom: 1px;
+  position: absolute;
+  bottom: 1px;
 }
 
 div.support_material_select {
-    width: 30px;
-    margin-left: 2px;
+  width: 30px;
+  margin-left: 2px;
 }
 
 .block_actions {
-    /*position: absolute;
-    right: 0;*/
-    float: right;
-    font-size: 11px;
+  /*position: absolute;
+  right: 0;*/
+  float: right;
+  font-size: 11px;
 }
 
 #support_material_new_folder {
-    border-bottom-style: dashed;
-    border-bottom-color: #d0d0d0;
+  border-bottom-style: dashed;
 }
 
 #support_material_new_folder img {
-    vertical-align: text-bottom;
-    margin-right: 0;
+  vertical-align: text-bottom;
+  margin-right: 0;
 }
 
 .new_file td {
-    font-size: 9pt;
-    color: #666;
+  font-size: 9pt;
 }
 
 .new_link input {
-    width: 560px;
+  width: 560px;
 }
 
 /* material de apoio do editor (fim) */
 
-
 /******** Atualização de dados de usuário **********/
 $form_label_width: 160px;
 
-.user_data_form_buttons{ 
-    text-align: center;
-    font-size: 9pt;
+.user_data_form_buttons {
+  text-align: center;
+  font-size: 9pt;
 }
 
 .form_user_table {
-    margin-top: 5px;
+  margin-top: 5px;
 }
 
 .form_user_table td {
-    padding:2px 0;
+  padding: 2px 0;
 }
 
 .form_user_content textarea {
-    width: 413px; /*425px;*/
+  width: 413px; /*425px;*/
 }
 
 .form-inputs > .input > textarea {
-    height: 120px;
+  height: 120px;
 }
 
 .form_user_content textarea, .form-inputs > .input > textarea {
-    margin-bottom: 0px;
-    padding: 2px;
+  margin-bottom: 0px;
+  padding: 2px;
 }
 
 .form_label {
-    text-align: right;
-    color: $label_color;
+  text-align: right;
 }
 
-.label_color{
-    color: $label_color;   
-}
-
-.select_end_date{
-    color: $color_main_text;
-    text-align: left;
+.select_end_date {
+  text-align: left;
 }
 
 .form_label:first-child {
-    width: $form_label_width - 1px;
+  width: $form_label_width - 1px;
 }
 
 .form_label label, .form-inputs .control-label {
-    padding-right: 5px; 
-    padding-top: 5px;
-    vertical-align: top;
+  padding-right: 5px;
+  padding-top: 5px;
+  vertical-align: top;
 }
+
 .form_label_multiline {
-    vertical-align: top;
+  vertical-align: top;
 }
 
 .form_field input[type="text"] {
-    width: 413px;
+  width: 413px;
 }
 
 .form_field input, .form_field select, .form-inputs .input input, .form-inputs > .input > select {
-    padding: 2px;
-    margin-bottom: 4px;
-    font-size: 10pt;
+  padding: 2px;
+  margin-bottom: 4px;
+  font-size: 10pt;
 }
 
 .form-inputs div.input {
@@ -3140,21 +2805,21 @@ $form_label_width: 160px;
 }
 
 .form-inputs .input input, .form-inputs > .input > textarea {
-    max-width: 340px;
-    min-width: 50px;
+  max-width: 340px;
+  min-width: 50px;
 }
 
 .form-inputs > .input > select {
-    width: 346px;
+  width: 346px;
 }
 
 #curriculum_unit_code, #curriculum_unit_passing_grade {
-    width: 65px;
+  width: 65px;
 }
 
 .form_inner_label {
-    padding: 0 10px 0 0;
-    width: auto;
+  padding: 0 10px 0 0;
+  width: auto;
 }
 
 .form_field div.field_with_errors {
@@ -3178,389 +2843,334 @@ $form_label_width: 160px;
 }
 
 .form_error, .error, span.field_with_errors {
-  color: #E03838;
   padding-left: 10px;
   vertical-align: top;
 }
 
 .field_with_errors input, .field_with_errors textarea {
-    border: 1px solid red;
+  border: 1px solid;
 }
 
 #special_needs_line {
-    display: none;
+  display: none;
 }
-.label_gender{
-    text-align: right;
+
+.label_gender {
+  text-align: right;
 }
 
 .form_usuario_label {
-    text-align: right;
-    width: 15px;
-    padding-right: 10px;
-    padding-left: 10px;
-    margin-top: 2px;
-    font-size: 14px;
-    white-space: pre-wrap;
-    vertical-align: middle;
+  text-align: right;
+  width: 15px;
+  padding-right: 10px;
+  padding-left: 10px;
+  margin-top: 2px;
+  font-size: 14px;
+  white-space: pre-wrap;
+  vertical-align: middle;
 }
 
-.login_form_link_return{
-    position        : relative;
-    top         : 10px;
-    background-color    : #fff;
-    color               : #222;
-    text-align          : center;
-    line-height         : 25px;
+.login_form_link_return {
+  position: relative;
+  top: 10px;
+  text-align: center;
+  line-height: 25px;
 }
-.login_form_link_return:hover{
-    color               : #222;
-    text-decoration     : none;
+
+.login_form_link_return:hover {
+  text-decoration: none;
 }
 
 .form_requirement, .filter_counter {
-    font-style: italic;
-    font-size: 9pt;
-    color: #E03838;
-    margin-right: 2px;
-    margin-top: 2px;
+  font-style: italic;
+  font-size: 9pt;
+  margin-right: 2px;
+  margin-top: 2px;
 }
+
 .form_requirement {
-    display: block;
-    float: right;
-    margin-top: 10px;
-    margin-right: 18px;
+  display: block;
+  float: right;
+  margin-top: 10px;
+  margin-right: 18px;
 }
-.form_usuario_table{
-    color: #fff;
-    line-height: 15px;
-    margin-bottom: 25px;
+
+.form_usuario_table {
+  line-height: 15px;
+  margin-bottom: 25px;
 
 }
-.form_usuario_tr{
-    height: 30px;
+
+.form_usuario_tr {
+  height: 30px;
 }
-.label_usuario{
-    white-space: pre-wrap;
+
+.label_usuario {
+  white-space: pre-wrap;
 }
 
 #user_gender {
-    width: 45px;
+  width: 45px;
 }
 
 #address_number, #address_neighborhood, #country, #telephone {
-    width: 128px;
+  width: 128px;
 }
 
 #address_complement, #zipcode, #cell_phone {
-    width: 128px;
+  width: 128px;
 }
 
 #user_state {
-    width: 134px;
+  width: 134px;
 }
 
 /* gerenciamento de grupos */
 
 .group_assignment_content {
-    margin-bottom: 10px;
-    font-size: 13px;
+  margin-bottom: 10px;
+  font-size: 13px;
 }
 
 #group_assignments tr.lines > td {
-    padding: 0;
-}
-
-#group_assignments tr.lines:hover {
-    background-color: $color_main_light;
+  padding: 0;
 }
 
 .group_assignment_title {
-    padding: 6px 10px;
-    cursor: pointer;
+  padding: 6px 10px;
+  cursor: pointer;
 }
 
-.group_assignment_title_contract {
-    background: url('../images/group_assignment_contract.png') no-repeat right center;
+.group_participants, .group_participants_manage, .group_assignments_manage_buttons {
+  min-height: 140px;
+  margin-right: 11px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid;
+  float: left;
+  width: 250px;
+  padding-bottom: 7px;
 }
 
-.group_assignment_title:hover {
-    background-color: $color_main_light_highlight;
-}
-
-.group_participants, .group_participants_manage, .group_assignments_manage_buttons{
-    min-height: 140px;
-    margin-right: 11px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #c0c1c2;
-    float: left;
-    width: 250px;
-    background-color: #ffffff;
-    padding-bottom: 7px;
-}
-
-.btn_new, .btn_import{
-    margin-top: 30px;
-}
-
-.group_assignments_manage_buttons{
-    background-color: #f7f7f7;
+.btn_new, .btn_import {
+  margin-top: 30px;
 }
 
 .group_participants ul, .group_participants_manage ul {
-    padding: 7px;
+  padding: 7px;
 }
 
-.group_participants_manage ul, .group_participants ul{
-    height: 100px;
-    overflow: auto;
+.group_participants_manage ul, .group_participants ul {
+  height: 100px;
+  overflow: auto;
 }
 
-[class^="group_name"], .group_name_manage, .group_assignments_manage_buttons_title, .edit_group_true, .disabled_groups_assignments_name{
-    font-weight: normal;
-    height: 20px;
-    padding: 6px 7px 2px 7px;
+[class^="group_name"], .group_name_manage, .group_assignments_manage_buttons_title, .edit_group_true, .disabled_groups_assignments_name {
+  font-weight: normal;
+  height: 20px;
+  padding: 6px 7px 2px 7px;
 }
 
-.group_box_without_info{
-    height: 166px;
+.group_box_without_info {
+  height: 166px;
 }
 
-.group_name_manage, .edit_group_true{
-    background-color: #fcd927;
-    color: #000000;
+[class^="group_information"], .group_information_manage, .disabled_groups_assignments_information {
+  height: 16px;
+  padding: 6px 10px 2px 7px;
+  font-size: 12px;
 }
 
-[class^="group_name"], .group_assignments_manage_buttons_title, .disabled_groups_assignments_name{
-    background-color: #9ea2a3;
-    color: #ffffff;
+.btn.evaluate_group {
+  height: 16px;
+  line-height: 8px;
 }
 
-[class^="group_name"]{
-    background-color: #0d487d;
+.group_assignments_manage_buttons ul {
+  margin-left: 32%;
+  margin-top: 10px;
 }
 
-[class^="group_information"], .group_information_manage, .disabled_groups_assignments_information{
-    height: 16px;
-    padding: 6px 10px 2px 7px;
-    font-size: 12px;
-    color: #000000;
+.group_assignments_manage_buttons li {
+  margin-bottom: 7px;
 }
 
-[class^="group_information"]{
-    background-color: #f2f6fa;
+.page_title {
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: bold;
 }
 
-.group_information_manage{
-    background-color: #fdfce1;
+.all_students label {
+  margin-left: 5px;
+  text-align: left;
+  width: 320px;
 }
 
-.disabled_groups_assignments_information{
-    background-color: #f7f7f7;
+.group_assignments_import {
+  padding: 10px 6px 5px 8px;
 }
 
-.btn.evaluate_group{
-    height: 16px;
-    line-height: 8px;
+.all_students_to_import {
+  border: 1px solid;
+  width: 390px;
+  min-height: 100px;
+  margin: 10px 20px 20px 20px;
+  display: inline-block;
+  padding: 6px 6px 5px 8px;
 }
 
-.group_assignments_manage_buttons ul{
-    margin-left: 32%;
-    margin-top: 10px;
+.all_students_to_import li {
+  list-style-type: none;
 }
 
-.group_assignments_manage_buttons li{
-    margin-bottom: 7px;
+.import_buttons {
+  margin-left: 20px;
+  margin-bottom: 20px;
 }
 
-.page_title{
-    color: $color_main;
-    font-family: 'Ubuntu', sans-serif;
-    font-weight: bold;
+.group_assignment_buttons {
+  margin-bottom: 20px;
+  clear: both;
 }
 
-.all_students label{
-    margin-left: 5px;
-    color: #000000;
-    text-align: left;
-    width: 320px;
+.rename_group {
+  width: 180px;
+  height: 8px;
+  border: 0;
+  margin-top: -5px;
 }
 
-.group_assignments_import{
-    padding: 10px 6px 5px 8px;
+.download_all_icon {
+  font-size: 13px;
 }
 
-.all_students_to_import{
-    border: 1px solid #dedede;
-    background-color: #ffffff;
-    width: 390px;
-    min-height: 100px;
-    margin: 10px 20px 20px 20px;
-    display: inline-block;
-    padding: 6px 6px 5px 8px;
-}
-
-.all_students_to_import li{
-    list-style-type: none;
-}
-
-.import_buttons{
-    margin-left: 20px;
-    margin-bottom: 20px;
-}
-
-.group_assignment_buttons{
-    margin-bottom: 20px;
-    clear: both;
-}
-
-.rename_group{
-    width: 180px;
-    height: 8px;
-    border: 0;
-    margin-top: -5px;
-}
-
-.download_all_icon{
-    font-size: 13px;
-}
-
-.remove_group{
-    cursor: pointer;
+.remove_group {
+  cursor: pointer;
 }
 
 .group_elements_float {
-    margin-top: -2px;
+  margin-top: -2px;
 }
 
-.group_elements_float, .remove_group, .download_all_icon{
-    float: right;
+.group_elements_float, .remove_group, .download_all_icon {
+  float: right;
 }
 
-.group_assignment_files a{
-    color: #134076;
-    text-decoration: underline;
+.group_assignment_files a {
+  text-decoration: underline;
 }
 
-.no_permission_message{
-    font-size: 10px;
-    text-decoration: italic;
+.no_permission_message {
+  font-size: 10px;
+  text-decoration: italic;
 }
 
-.draggable_student{
-    border-bottom: 2px dashed #fdec9c;
-    cursor: crosshair;
+.draggable_student {
+  border-bottom: 2px dashed;
+  cursor: crosshair;
 }
 
 /* FORM: criação de unidade curricular */
 .form-inputs.block_content {
-    padding-top: 5px;
+  padding-top: 5px;
 }
 
 .form-inputs .form_label:first-child {
-    width: 127px;
+  width: 127px;
 }
 
 /* ajustando aviso de campos obrigatorios dentro do lightbox de criacao de unidade curricular */
 #lightBoxDialogContent .form_requirement {
-    margin-top: -16px;
+  margin-top: -16px;
 }
 
 /* posicionando botões do form */
 .block_content.form-actions {
-    padding-left: 143px;
-    padding-bottom: 5px;
+  padding-left: 143px;
+  padding-bottom: 5px;
 }
 
-.button-align{
-    text-align: right;
-    padding-right: 46px;
+.button-align {
+  text-align: right;
+  padding-right: 46px;
 
 }
 
 /* Tela de edição */
 
 fieldset {
-    border: 1px solid #D0D0D0;
-    padding: 15px 20px 5px 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
+  border: 1px solid;
+  padding: 15px 20px 5px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 
 fieldset legend {
-    color: $color_main;
-    font-family: 'Ubuntu Condensed';
+  font-family: 'Ubuntu Condensed';
 }
 
-@mixin item_buttom{
-    position: relative;
-    float: left;
-    margin: 10px 5px 20px 5px;
+@mixin item_button {
+  position: relative;
+  float: left;
+  margin: 10px 5px 20px 5px;
+  text-align: center;
+  outline: none;
+  text-decoration: none;
+  font-size: 9pt;
+  width: 100px;
+  a {
+    width: auto;
+  }
+  .btn {
     text-align: center;
-    outline: none;
-    text-decoration: none;
-    font-size: 9pt;
-    width: 100px;
-    a{
-        color: $color_main;
-        width: auto;
-    }
-    .btn{
-        text-align: center;
-        padding: 12px;
-        border-radius: 10px;
-        margin: 0 auto 5px auto;
-        display: block;
-        width: 50px;
-    }
+    padding: 12px;
+    border-radius: 10px;
+    margin: 0 auto 5px auto;
+    display: block;
+    width: 50px;
+  }
 }
 
 .uc_item, .academic_item {
-    @include item_buttom;
+  @include item_button;
 }
 
 .block_title.edition {
-    border-bottom: solid 1px #D0D0D0;
-    margin-bottom: 15px;
+  border-bottom: solid 1px;
+  margin-bottom: 15px;
 }
 
 .edition_allocation_tag_path {
-    color: #696969;
-    padding-top: 5px;
-    border-bottom: 1px solid #8d8d8d;
+  padding-top: 5px;
+  border-bottom: 1px solid;
 }
 
 #back_button {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 #new_module {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .filter_notice {
-    text-align: center;
-    font-size: 11px;
-    color: gray;
-    margin-bottom: 15px;
-    margin-top: -20px;
+  text-align: center;
+  font-size: 11px;
+  margin-bottom: 15px;
+  margin-top: -20px;
 }
 
 /* Para o filtro */
 
 fieldset .block_content_alt {
-    background-color: #ffffff;
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 fieldset .block_content_alt li {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 select[disabled] {
-    color: red;
-    border: 1px solid #D0D0D0;
-    background-color: #F2F2F2;
+  border: 1px solid;
 }
 
 /* Para o Wizard */
@@ -3578,25 +3188,24 @@ select[disabled] {
 
 /* Menu dropdown */
 .dropdown-menu a {
-    font-size: 10pt;
-    font-family: 'PT Sans', sans-serif;
+  font-size: 10pt;
+  font-family: 'PT Sans', sans-serif;
 }
 
 /* Arquivos de aulas - lesson_files */
 
-#files_menu_bar{
-    padding-top: 5px;
-    padding-bottom: 5px;
+#files_menu_bar {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 #files_select {
-    display:inline-block;
-    margin-right: 5px;
+  display: inline-block;
+  margin-right: 5px;
 }
 
-#lesson_files_select_all{
-    font-size: 10pt;
-    color: #8D8D8D;
+#lesson_files_select_all {
+  font-size: 10pt;
 }
 
 .lesson_module, .lesson_date, .lesson_type, .url_lesson {
@@ -3609,186 +3218,194 @@ select[disabled] {
 }
 
 .btn_dropdown a {
-    cursor: pointer;
+  cursor: pointer;
 }
 
-@mixin dropdown_with_form_alert{
-    span{
-        display: block;
-        font-size: 10pt;
-        width: 100%;
-        white-space: normal;
-        text-align: center;
-    }
+@mixin dropdown_with_form_alert {
+  span {
+    display: block;
+    font-size: 10pt;
+    width: 100%;
+    white-space: normal;
+    text-align: center;
+  }
 }
 
 #folder_dropdown .dropdown-panel {
-    padding: 7px;
+  padding: 7px;
 }
 
 #folder_dropdown_alert, #dropdown_alert {
-    @include dropdown_with_form_alert;
+  @include dropdown_with_form_alert;
 }
 
 #folder_dropdown_content {
-    width: 200px;
-    overflow: hidden;
+  width: 200px;
+  overflow: hidden;
 }
 
-#folder_dropdown_content .control_buttons{
-    float: right;
-    padding-top: 7px;
+#folder_dropdown_content .control_buttons {
+  float: right;
+  padding-top: 7px;
 }
 
-#fileupload{
-    display: none;
+#fileupload {
+  display: none;
 }
 
 #files_bottom_bar {
-    margin-top: 5px;
-    overflow: hidden;
+  margin-top: 5px;
+  overflow: hidden;
 }
 
-#btn-finish{
-    float: right;
+#btn-finish {
+  float: right;
 }
 
 #tree {
-    max-height: 235px;
-    overflow-y: auto;
+  max-height: 235px;
+  overflow-y: auto;
 }
 
-#save_automatically_message{
-    float: left;
-    color: #da1124;
-    font-size: 10pt;
-    margin-top: 13px;
+#save_automatically_message {
+  float: left;
+  font-size: 10pt;
+  margin-top: 13px;
 }
 
-#attention_message{
-    font-weight: bold;
+#attention_message {
+  font-weight: bold;
 }
 
-#final_enroll_date{
-    margin-top: 5px;
+#final_enroll_date {
+  margin-top: 5px;
 }
 
-#text_as_label{
-    vertical-align: bottom;
-    text-align: left;
+#text_as_label {
+  vertical-align: bottom;
+  text-align: left;
 }
 
-#receiver_already_added{
-    display: inline-block;
-    margin-left: 5px;
-    color: #FF9900;
+#receiver_already_added {
+  display: inline-block;
+  margin-left: 5px;
+  font-size: 11px;
+}
+
+@mixin ckeditor_content {
+  word-wrap: break-word;
+  min-height: 30px;
+  p {
+    margin-bottom: 0px;
+    padding-bottom: 7px;
+  }
+  ul {
+    list-style-type: disc;
+  }
+  a {
+    text-decoration: underline;
+  }
+  ol {
+    list-style-type: decimal;
+  }
+  li {
+    margin-left: 20px;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: arial, sans serif;
+    font-weight: lighter;
+  }
+  h1 {
+    font-size: 25px;
+  }
+  h2 {
+    font-size: 20px;
+  }
+  h3 {
+    font-size: 15px;
+  }
+  h4 {
+    font-size: 13px;
+  }
+  h5 {
     font-size: 11px;
+  }
+  h6 {
+    font-size: 8px;
+  }
+  address {
+    font-style: italic;
+  }
 }
 
-@mixin ckeditor_content{
-    word-wrap: break-word;
-    min-height: 30px;
-    p{
-        margin-bottom: 0px;
-        padding-bottom: 7px;
-    }
-    ul{ list-style-type: disc; }
-    a{
-        text-decoration: underline;
-        color: $color_main_text;
-    }
-    ol{ list-style-type: decimal; }
-    li{ margin-left: 20px; }
-    h1, h2, h3, h4, h5, h6{ 
-        font-family: arial, sans serif; 
-        font-weight: lighter;
-    }
-    h1{ font-size: 25px; }
-    h2{ font-size: 20px; }
-    h3{ font-size: 15px; }
-    h4{ font-size: 13px; }
-    h5{ font-size: 11px; }
-    h6{ font-size: 8px; }
-    address{ font-style: italic; }
-    .marker{ background-color: yellow; }
+.forum_post_inner_content, .message_div_show {
+  @include ckeditor_content;
 }
 
-.forum_post_inner_content, .message_div_show{
-    @include ckeditor_content;
+#support_material_file_attachment {
+  margin-left: 70px;
+  margin-top: 3px;
+  margin-bottom: 5px;
 }
 
-#support_material_file_attachment{
-    margin-left: 70px;
-    margin-top: 3px;
-    margin-bottom: 5px;
+#assignment_allocation_tag_id_9 {
+  margin-top: 6px;
 }
 
-#assignment_allocation_tag_id_9{
-    margin-top: 6px;
+#group_code {
+  width: 255px;
+  margin-left: 5px;
+  margin-bottom: 10px;
 }
 
-#group_code{
-    width: 255px;
-    margin-left: 5px;
-    margin-bottom: 10px;
+#dropdown_alert {
+  padding: 7px;
 }
 
-#dropdown_alert{
-    padding: 7px;
+#lesson_dropdown .control_buttons {
+  padding-top: 5px;
 }
 
-#lesson_dropdown .control_buttons{
-    padding-top: 5px;
+#dropdown_alert li {
+  padding: 2px;
 }
 
-#dropdown_alert li{
-    padding: 2px;
+#lesson_dropdown .control_buttons .btn.btn_main {
+  margin-left: 5px;
 }
 
-#lesson_dropdown .control_buttons .btn.btn_main{
-    margin-left: 5px;
+#semester_period {
+  float: right;
+  position: relative;
+  top: 10px;
+  vertical-align: bottom;
+  font-size: 9pt;
 }
 
-.semester_same_dates, #semester_period{
-    color: #56585E;   
+.offer_schedule_dates, .enrollment_schedule_dates {
+  display: inline-block;
 }
 
-#semester_period{
-    float: right; 
-    position: relative; 
-    top: 10px;
-    vertical-align: bottom;
-    font-size: 9pt;
-}
-
-.offer_schedule_dates, .enrollment_schedule_dates{
-    display: inline-block;
-    color: $label_color;
-}
-
-[class*="_check_box"]{
-    margin-left: 135px;
-    text-align: left;
-    color: $label_color;
-    margin-top: 5px;
-    margin-bottom: 5px;
+[class*="_check_box"] {
+  margin-left: 135px;
+  text-align: left;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .end_date_check_box {
-    margin-top: 0px;
-    margin-bottom: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
-.offer_schedule_dates .error, .enrollment_schedule_dates .error{
-    display: none;
+.offer_schedule_dates .error, .enrollment_schedule_dates .error {
+  display: none;
 }
 
-.offer_schedule_dates.error, .enrollment_schedule_dates.error{
-    color: #E03838;
-    vertical-align: inherit;
+.offer_schedule_dates.error, .enrollment_schedule_dates.error {
+  vertical-align: inherit;
 }
 
-.offer_schedule_dates.info , .enrollment_schedule_dates.info{
-    vertical-align: bottom;
-    color: black;
+.offer_schedule_dates.info, .enrollment_schedule_dates.info {
+  vertical-align: bottom;
 }

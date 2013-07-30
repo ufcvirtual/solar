@@ -2,15 +2,16 @@
 /*@import "compass/reset";*/
 @import "compass/css3";
 
+@import "variables";
+
 /*@import "div_layout";*/
 @import "reset";
 @import "fonts";
-@import "theme";
 @import "solar";
+@import "theme_red";
 @import "buttons";
 @import "icons";
 @import "messages";
-@import "variables";
 @import "calendar";
 @import "jquery.qtip.min";
 @import "portlet";
