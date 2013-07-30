@@ -1,0 +1,1197 @@
+$label_color: $color_main_text;
+
+/* layout geral */
+body {
+  background-color: #fff;
+  background-color: #f9f9f9;
+}
+
+#body_wrapper {
+  background-color: #ffffff;
+}
+
+/*Classes de mensagens flash*/
+.alert {
+  color: #660000;
+}
+
+.notice {
+  color: #2F4F2F;
+}
+
+#flash_message {
+  border-color: #d0d0d0;
+}
+
+#flash_message.notice {
+  background-color: #f5ffec;
+}
+
+#flash_message.alert {
+  background-color: #fff6f6;
+}
+
+/**
+* Tratando links
+*/
+a, a.menor, a.link_content {
+  color: #222;
+}
+
+a.link_content_del {
+  color: #EA4F52;
+}
+
+a.link_content, .forum_post_attachment_list a {
+  color: $color_contrast_text;
+}
+
+a.link_content:visited, .forum_post_attachment_list a:visited {
+  color: $color_main_text;
+}
+
+a.link_content_gray {
+  color: #999;
+}
+
+select {
+  color: #222;
+  background-color: #fff;
+  border-color: #dedede;
+}
+
+input {
+  color: #222;
+  border-color: #dedede;
+}
+
+textarea {
+  color: #222;
+  background-color: #fff;
+  border-color: #dedede;
+}
+
+h1.page_title {
+  color: #000;
+  border-bottom-color: $color_main;
+}
+
+.text_alert, .text_alert_message {
+  color: #e64d4d;
+}
+
+.text_none {
+  color: $color_main;
+}
+
+.link_button {
+  background-color: #eeeeed;
+  color: #222;
+}
+
+/****LightBox genérico****/
+#lightBoxDialog {
+  border-color: #000;
+  background-color: #FFF;
+}
+
+#lightBoxBackground {
+  background-color: #000;
+}
+
+/****tela de matricula****/
+
+.headtable_blue {
+  color: #000;
+  background-color: #E7EDEE;
+}
+
+.td_blue, .td_blue_center {
+  border-left-color: #dbe5e8;
+}
+
+.rowtable_odd, .rowtable_even {
+  color: #000;
+  background-color: #f1f0f2;
+}
+
+.rowtable_even {
+  color: #000;
+  background-color: #eaeaea;
+}
+
+.enrollment_label {
+  color: #000;
+}
+
+.enrollment_link {
+  color: #214684;
+  background-color: transparent;
+}
+
+/**
+* Meu Solar
+*/
+/* barra superior geral */
+#mysolar_topbar_wide_background {
+  background-color: $color_main;
+}
+
+#mysolar_topbar {
+  /*background-color: $color_main;*/
+  color: #fff;
+}
+
+/* barra identity */
+#mysolar_identity {
+  background-color: $color_main;
+}
+
+#mysolar_logo {
+  background-color: $color_main;
+}
+
+#mysolar_top_help {
+  background-color: $color_main;
+}
+
+#mysolar_top_options #mysolar_top_submenu_label:hover,
+#mysolar_top_options #mysolar_top_logout:hover,
+#mysolar_top_options #mysolar_top_help:hover {
+  border-bottom-color: $color_main;
+  background-color: white !important;
+  color: $color_main;
+}
+
+#mysolar_top_options li:hover a {
+  color: $color_main;
+}
+
+/* foto do usuário */
+#mysolar_top_submenu {
+  color: $color_main;;
+  background-color: #fff;
+  border-bottom-color: $color_contrast;
+  border-left-color: $color_contrast;
+  border-right-color: $color_contrast;
+}
+
+#mysolar_top_submenu ul {
+  border-top-color: #EBEBEB;
+}
+
+.mysolar_top_submenu_label_selected {
+  background-color: #fff;
+  border-left-color: $color_contrast;
+  border-right-color: $color_contrast;
+}
+
+.mysolar_top_submenu_label_regular {
+  background-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+
+.mysolar_top_submenu_label_selected a.mysolar_top_link {
+  color: #000;
+}
+
+/* relogio */
+#server_clock_wrapper:hover {
+  border-bottom-color: transparent !important;
+}
+
+a.mysolar_top_link {
+  color: #FFF;
+}
+
+/* barra tabs */
+#mysolar_tabs {
+  border-bottom-color: #D0D0D0;
+}
+
+.mysolar_unit_tab a {
+  color: $color_main_medium;
+}
+
+.mysolar_unit_active_tab {
+  border-bottom-color: $color_contrast;
+  /*background-color: #fff;
+  border-top-color: $color_main;
+  border-right-color: $color_main;
+  border-left-color: $color_main;
+  border-bottom-color: #fff;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  -moz-border-top-left-radius: 5px;
+  -moz-border-top-right-radius: 5px;*/
+}
+
+.mysolar_unit_active_tab a {
+  color: $color_contrast_text;
+}
+
+/* fechar das abas */
+.tabs_close {
+  background: url('tabs_close.png') no-repeat right bottom;
+}
+
+/* itens adicionais: busca e acessibilidade */
+
+.search_keyword {
+  border-color: #d0d0d0;
+  background: url('../images/search.png') no-repeat right bottom #fff;
+}
+
+.search_keyword_inactive {
+  color: #b0b0b0;
+}
+
+/*.mysolar_menu_group > ul > li {
+    background: url('../images/icon_arrow_right.png') no-repeat left 10px;
+}*/
+
+/*.mysolar_menu_title_single {
+    background: url('../images/icon_circle.png') no-repeat left 10px !important;
+}*/
+
+.mysolar_menu_title_single_active {
+  border-bottom-color: $color_contrast;
+  /*    background: url('../images/icon_circle.png') no-repeat left 10px !important;*/
+}
+
+.mysolar_menu_title_single_active a {
+  color: $color_contrast_text;
+}
+
+/*.mysolar_menu_title_active {
+    background: url('../images/icon_arrow_down.png') no-repeat left 10px !important;
+}*/
+
+.mysolar_menu_title_active > a {
+  color: $color_contrast_text;
+}
+
+.mysolar_menu_title {
+  color: $color_main_text;
+}
+
+.submenu {
+  border-top-color: $color_contrast;
+  background-color: $color_contrast_light; /* alternativa: f5f8fb */
+}
+
+#footer {
+  background-color: #f9f9f9;
+}
+
+#footer, #footer a {
+  color: #666;
+}
+
+/******************************************************************************/
+/* conteudo em si */
+/******************************************************************************/
+
+#mysolar_content {
+  background-color: #fff;
+}
+
+#block_locale a {
+  color: #666;
+}
+
+/*********Abas dos Meus Dados**************/
+
+#mydata_tab {
+  background-color: transparent;
+  color: $color_main;
+}
+
+.my_data_tab_generic {
+  border-right-color: #DEDEDE;
+  border-left-color: #DEDEDE;
+  border-top-color: #DEDEDE;
+  background-color: #F7F7F7;
+}
+
+.my_form_data {
+  background-color: #F7F7F7;
+  border-color: #DEDEDE;
+}
+
+.my_cadastral_data_label {
+  border-bottom-color: #dedede;
+}
+
+/* TODO: continuar */
+
+/********Chat do meuSolar*****************/
+#mysolar_chat_area {
+  font-size: 11pt;
+  position: fixed;
+  bottom: 0px;
+  right: 15px;
+}
+
+#mysolar_chat_barra {
+  font-size: 11pt;
+  background-color: #fbb03b;
+  padding-left: 5px;
+  padding-right: 5px;
+  cursor: pointer;
+}
+
+#mysolar_chat_contatos {
+  width: 150px;
+}
+
+#mysolar_chat_list {
+  border: 1px solid #bbb;
+  background-color: #fff;
+  display: none;
+}
+
+#mysolar_chat_list_internal {
+  padding-left: 5px;
+  overflow: auto;
+  height: 145px;
+}
+
+.mysolar_chat_hr {
+  width: 87%;
+  border: none;
+  background-color: #bbb;
+  height: 1px;
+}
+
+/********Portlets do meuSolar*****************/
+
+/**
+ * Tratando dos titulos dos conteudos
+*/
+
+.mysolar_header {
+  border-bottom-color: $color_main_text;
+}
+
+/**
+ * Portlets
+*/
+
+.mysolar_portlets_content {
+  background-color: $color_main_light;
+}
+
+/**
+* Legendas
+*/
+
+hr.curriculum_unit_division, hr.curriculum_unit_division_mysolar {
+  background-color: $color_main_text;
+}
+
+.mysolar_title {
+  color: #000;
+}
+
+/***** Portlet de Unidades curriculares *********/
+
+.curriculum_unit_display:hover {
+  background-color: #F6F6FF;
+}
+
+/**
+ * manipulacao da window/modal
+*/
+#mask {
+  background-color: #000;
+}
+
+.boxes #dialog {
+  border-color: #ffd;
+  background-color: #DBD5D5;
+}
+
+.div_link .div_link_decoration {
+  background-color: #FFFFFF;
+  color: #0658B5;
+}
+
+/** Unidade Curricular - tela inicial de acesso **/
+
+/* id do titulo geral da página */
+#page_title, #lightBoxDialogTitle {
+  border-bottom-color: #d0d0d0;
+}
+
+#lightBoxDialogTitle h1 {
+  color: #4c4c4c;
+}
+
+#page_title > .block_content_text {
+  color: #666666;
+}
+
+/*#page_title > .block_content_text:hover {
+    border: 1px solid #666666;
+}*/
+
+#page_title > .block_content_text:hover, #page_title > .block_content_text:hover select {
+  color: #000000;
+}
+
+#page_title select {
+  color: #666666;
+}
+
+/* titulo do bloco */
+
+div.block_title {
+  border-bottom-color: $color_main_text;
+}
+
+/* TODO: continuar */
+
+/* icone que fica ao lado do titulo do bloco */
+
+/* definindo cor de background do conteudo e tamanho da fonte */
+.block_content {
+  background-color: $color_main_light;
+}
+
+/* ajustando a largura do bloco esquerdo e adicionando a borda divisoria*/
+.block_content > .block_left {
+  border-right-color: #d0d0d0;
+}
+
+.block_content_line {
+  border-bottom-color: #CCCCCC;
+}
+
+.block_content_gray {
+  color: #999;
+}
+
+.block_content_text, .block_content_toolbar.block_content_text {
+  color: #000;
+}
+
+.block_content_toolbar {
+  background-color: rgb(232, 239, 246);
+  border-bottom-color: rgba(0, 62, 122, 0.3);
+}
+
+#block_group_selection {
+  background-color: transparent;
+}
+
+.block_messages_opt {
+  color: #d0d0d0;
+  background-color: $color_main_light;
+}
+
+/* calendario da tela de acesso a curso */
+.calendar {
+  background-color: $color_main_light;
+}
+
+.calendar_events {
+  background: $color_main_light;
+}
+
+/* tela de participantes */
+.participants_list_none {
+  background-color: #f2f6f6;
+}
+
+.portlet_participants {
+  background-color: #fff;
+}
+
+/* div e navegacao de aulas */
+#lesson_area {
+  background-color: #eee;
+}
+
+#lesson_content_header {
+  background-color: #dee8ec;
+  color: #000;
+}
+
+#lesson_header {
+  background-color: #1d4786;
+  color: #fff;
+}
+
+.lesson_link {
+  background-color: #b8cbcf;
+  color: #000;
+}
+
+/* Tela de cadastro de aula */
+
+.block_toolbar_button {
+  background-color: #f9f9f9;
+  border-color: #ccc;
+}
+
+/*Tela de fórum*/
+
+.forum_button_remove {
+  color: #922;
+}
+
+/* TESTE !!! 
+/*.forum_closed_title {
+    background-color:#fff6f6;
+}*/
+
+.lines.period_ended, .period_ended {
+  background-color: #f6f6f6;
+  color: #989898;
+}
+
+.lines.period_ended a, .period_ended a {
+  color: #989898;
+}
+
+#forum_closed {
+  color: red;
+  /*background: url('../images/error.gif') no-repeat left center;*/
+}
+
+.forum_navigation_bar {
+  border-bottom-color: #1d4786;
+}
+
+.forum_post_wrapper {
+  background-color: $color_main_light;
+}
+
+.forum_post_attachment_line {
+  border-bottom-color: #CCC;
+}
+
+.forum_post_attachment_empty {
+  color: #666;
+}
+
+.forum_post_icon {
+  border-right-color: $color_main;
+  background-color: #ffffff;
+}
+
+.forum_post_head {
+  /*background-color:$color_main_light;*/
+  border-bottom-color: $color_main;
+}
+
+//.forum_post_content {
+//  background-color: $color_main_light;
+//}
+
+//.forum_participant_nick {
+//  border-bottom: 1px solid $color_main;
+//}
+
+.forum_post_date {
+  color: #888;
+}
+
+.forum_post_buttons {
+  background-color: $color_main_light;
+}
+
+.forum_post_attachment {
+  background-color: $color_main_light;
+}
+
+/* TODO: continuar */
+
+/* === TELA DE MENSAGENS  === */
+.label_text {
+  color: #000;
+}
+
+/* mensagem: busca */
+.message_search_div, .message_div {
+  color: #000;
+}
+
+/* mensagem: cabecalho, area de titulo */
+#message_general_title {
+  border-bottom-color: #d0d0d0;
+}
+
+.message_general_div_option_active {
+  border-bottom-color: #214684;
+}
+
+.message_div_options, .message_div_options_new {
+  background-color: #ffffff;
+  border-bottom-color: #d0d0d0;
+}
+
+.message_line_highlight {
+  background-color: $color_contrast_light;
+}
+
+/*.message_line:hover {
+    background-color: $color_main_light_highlight;
+}*/
+
+.message_nav_text {
+  color: #000;
+}
+
+.message_read, .message_unread {
+  color: #666;
+}
+
+.message_unread {
+  color: #000;
+}
+
+.message_label {
+  color: #000;
+  background-color: #F9C153;
+  border: 1px solid #F9C153;
+}
+
+.message_div_text_read {
+  background-color: #F7F7F7;
+}
+
+.message_text_to, .message_text_body {
+  color: #000;
+}
+
+.message_recipient_box {
+  border-color: #eee;
+  color: #214684;
+}
+
+#recipients_selected {
+  border-color: #ccc;
+  background-color: #fff;
+}
+
+#div_contacts {
+  color: #214684;
+  border-color: #F2F2F2;
+  background-color: #fafafa;
+}
+
+#div_contacts_list {
+  background-color: #fff;
+  border-color: #ddd;
+}
+
+/* dropdown de mensagens (selecionar, mover para) */
+ul.message_menu_listbox li ul {
+  border-color: #ccc;
+  background: #fff;
+}
+
+ul.message_menu_listbox li ul a {
+  /* menu nivel 2 - opcoes */
+  background: #fff;
+}
+
+ul.message_menu_listbox li ul a:hover {
+  background: #eee;
+}
+
+/* paginacao */
+.next_page, .prev_page, .current, .link_navigation {
+  color: #214684;
+}
+
+.disabled, .message_div_navigation {
+  color: #B4B3B7;
+}
+
+.current {
+  background-color: #E7EDED;
+}
+
+.pagination a {
+  color: #214684;
+}
+
+/* TODO: continuar */
+
+/**
+ * Tabelas - geral e files
+*/
+table.tb_list th {
+  background-color: white;
+  /*    font-weight: bold;*/
+}
+
+table.tb_list tbody {
+  background-color: $color_main_light;
+}
+
+.tb_allocation .unavailable {
+  color: #888;
+}
+
+table.tb_list_files td {
+  border-top-color: #B4B2B1;
+}
+
+/**
+* Datas de arquivos em tabelas
+*/
+
+table.tb_list_files td.file_data_info, table.tb_list td.file_data_info {
+  color: #787878;
+}
+
+/**
+* Tratando datas de arquivos up/down
+*/
+
+.date_info, table.tb_list_files th.date_info {
+  color: #787878;
+}
+
+/**
+* Tratando linhas das tabelas
+*/
+
+th {
+  border-bottom-color: #B4B2B1;
+}
+
+tbody tr.lines {
+  border-bottom-color: #B4B2B1;
+  background-color: $color_main_light;
+}
+
+tbody tr.lines.active {
+  border-bottom-color: #B4B2B1;
+  background-color: $color_contrast_light;
+}
+
+tbody tr.lines.active:hover {
+  background-color: #fffbd1;
+}
+
+/*
+tbody tr.lines:nth-child(odd) {
+    background-color: $color_main_light_highlight;
+}
+*/
+
+tr.post_content {
+  background-color: $color_main_light;
+}
+
+tbody tr.lines:hover, table.tb_list_files td:hover {
+  background-color: $color_main_light_highlight; /* #FFF5ED*/
+}
+
+tbody tr.lines.period_ended:hover {
+  background-color: #f1f1f1;
+}
+
+td.td_student a {
+  color: $color_main_text;
+}
+
+/**
+* Portfolio
+*/
+
+div.send_files {
+  background-color: #F7F7F8;
+}
+
+.red_notice {
+  background-color: white;
+  color: #e12227;
+}
+
+#history_search_content {
+  border-bottom-color: #d0d0d0;
+}
+
+td.td_student a {
+  color: #2a538d;
+}
+
+.assignment_inner_content {
+  background-color: $color_main_light;
+}
+
+.removed_comment_file {
+  color: red;
+}
+
+.more_comment_files_link {
+  color: #1c4785;
+}
+
+.assignment_inner_content.upload_files {
+  border-top-color: #B4B2B1;
+}
+
+.assignment_files_info, .assignment_comment_date {
+  color: #888;
+}
+
+.assignment_comment_head {
+  border-bottom-color: $color_main;
+}
+
+/* TODO: continuar */
+
+/**
+* AGENDA
+*/
+.schedule_link_more {
+  color: #4b6380;
+}
+
+.agenda_left {
+  background-color: $color_main_light;
+}
+
+.block_title_icon.discussions {
+  background: url('../images/schedule/meeting_attendance_16x16.png') no-repeat;
+}
+
+.block_title_icon.lesson, .block_title_icon.assignments, .block_title_icon.schedule_events {
+  background: url('../images/schedule/assignments_16x16.png') no-repeat;
+}
+
+.block_title_icon.chat {
+  background: url('../images/schedule/chat_16x16.png') no-repeat;
+}
+
+/* encontro presencial */
+.block_title_icon.meeting_attendance {
+  background: url('../images/schedule/meeting_attendance_16x16.png') no-repeat;
+}
+
+.agenda_ajax {
+  color: #4B6380;
+}
+
+/**
+* Situacao das tarefas
+*/
+
+.assignment_corrected {
+  color: #378941;
+}
+
+.assignment_sent, td.assignment_as a {
+  color: #1CA093;
+}
+
+.assignment_not_sent, .expired {
+  color: #e12227;
+}
+
+.assignment_not_started {
+  color: #787878;
+}
+
+.assignment_send, .assignment_pending, td.assignment_an a {
+  color: $color_main_text;
+}
+
+.assignment_without_group, td.assignment_without_group a {
+  color: #e37073;
+}
+
+#breadcrumb a {
+  color: #666;
+}
+
+/* MATERIAL DE APOIO */
+
+.support_material_folder_top_line {
+  color: #1C4785;
+}
+
+.support_material_content_links {
+  background-color: #f7f7f8;
+  color: #4B6380;
+}
+
+.support_material_files_informations {
+  color: #787878;
+}
+
+/* material de apoio do editor (inicio) */
+
+.select_editor {
+  background-color: $color_main_light;
+}
+
+.select_editor_title {
+  border-bottom-color: #B4B2B1;
+  background-color: #fff;
+}
+
+.select_editor_content li:hover {
+  background-color: #fff;
+  border-left-color: $color_main;
+  color: #000;
+}
+
+.delete_support_material_file_editor, .support_material_add, .support_material_add_link {
+  background-color: white;
+  border-color: white;
+}
+
+.support_material_message_no_files {
+  border-top-color: #B4B2B1;
+  border-bottom: #B4B2B1;
+  background-color: $color_main_light;
+  color: #666;
+}
+
+.support_material_message_no_files:hover {
+  background-color: $color_main_light_highlight;
+}
+
+/* material de apoio - editor - tabela */
+
+.support_material_buttons > div {
+  border-right-color: #d0d0d0;
+}
+
+#support_material_new_folder {
+  border-bottom-color: #d0d0d0;
+}
+
+.new_file td {
+  color: #666;
+}
+
+/* material de apoio do editor (fim) */
+
+/******** Atualização de dados de usuário **********/
+
+
+.form_label {
+  color: $label_color;
+}
+
+.label_color {
+  color: $label_color;
+}
+
+.select_end_date {
+  color: $color_main_text;
+}
+
+.form_error, .error, span.field_with_errors {
+  color: #E03838;
+}
+
+.field_with_errors input, .field_with_errors textarea {
+  border-color: red;
+}
+
+.login_form_link_return {
+  background-color: #fff;
+  color: #222;
+}
+
+.login_form_link_return:hover {
+  color: #222;
+}
+
+.form_requirement, .filter_counter {
+  color: #E03838;
+}
+
+.form_usuario_table {
+  color: #fff;
+}
+
+/* gerenciamento de grupos */
+
+#group_assignments tr.lines:hover {
+  background-color: $color_main_light;
+}
+
+.group_assignment_title_contract {
+  background: url('../images/group_assignment_contract.png') no-repeat right center;
+}
+
+.group_assignment_title:hover {
+  background-color: $color_main_light_highlight;
+}
+
+.group_participants, .group_participants_manage, .group_assignments_manage_buttons {
+  border-bottom-color: #c0c1c2;
+  background-color: #ffffff;
+}
+
+.group_assignments_manage_buttons {
+  background-color: #f7f7f7;
+}
+
+.group_name_manage, .edit_group_true {
+  background-color: #fcd927;
+  color: #000000;
+}
+
+[class^="group_name"], .group_assignments_manage_buttons_title, .disabled_groups_assignments_name {
+  background-color: #9ea2a3;
+  color: #ffffff;
+}
+
+[class^="group_name"] {
+  background-color: #0d487d;
+}
+
+[class^="group_information"], .group_information_manage, .disabled_groups_assignments_information {
+  color: #000000;
+}
+
+[class^="group_information"] {
+  background-color: #f2f6fa;
+}
+
+.group_information_manage {
+  background-color: #fdfce1;
+}
+
+.disabled_groups_assignments_information {
+  background-color: #f7f7f7;
+}
+
+.page_title {
+  color: $color_main;
+}
+
+.all_students label {
+  color: #000000;
+}
+
+.all_students_to_import {
+  border-color: #dedede;
+  background-color: #ffffff;
+}
+
+.group_assignment_files a {
+  color: #134076;
+}
+
+.draggable_student {
+  border-bottom-color: #fdec9c;
+}
+
+/* Tela de edição */
+
+fieldset {
+  border-color: #D0D0D0;
+}
+
+fieldset legend {
+  color: $color_main;
+}
+
+@mixin item_buttom {
+  a {
+    color: $color_main;
+  }
+}
+
+.uc_item, .academic_item {
+  @include item_buttom;
+}
+
+.block_title.edition {
+  border-bottom-color: #D0D0D0;
+}
+
+.edition_allocation_tag_path {
+  color: #696969;
+  border-bottom-color: #8d8d8d;
+}
+
+.filter_notice {
+  color: gray;
+}
+
+/* Para o filtro */
+
+fieldset .block_content_alt {
+  background-color: #ffffff;
+}
+
+select[disabled] {
+  color: red;
+  border: 1px solid #D0D0D0;
+  background-color: #F2F2F2;
+}
+
+/* Para o Wizard */
+
+/*
+.uc_item_ok {
+    position: absolute;
+    top: -5px;
+    right: 20px;
+    background: url("index_files/icones/item_ok.png") no-repeat scroll 0 0 transparent;
+    width: 23px;
+    height: 23px;
+}
+*/
+
+/* Arquivos de aulas - lesson_files */
+
+#lesson_files_select_all {
+  color: #8D8D8D;
+}
+
+#save_automatically_message {
+  color: #da1124;
+}
+
+#receiver_already_added {
+  color: #FF9900;
+}
+
+@mixin ckeditor_content {
+  a {
+    color: $color_main_text;
+  }
+  .marker {
+    background-color: yellow;
+  }
+}
+
+.forum_post_inner_content, .message_div_show {
+  @include ckeditor_content;
+}
+
+.semester_same_dates, #semester_period {
+  color: #56585E;
+}
+
+.offer_schedule_dates, .enrollment_schedule_dates {
+  color: $label_color;
+}
+
+[class*="_check_box"] {
+  color: $label_color;
+}
+
+.offer_schedule_dates.error, .enrollment_schedule_dates.error {
+  color: #E03838;
+}
+
+.offer_schedule_dates.info, .enrollment_schedule_dates.info {
+  color: black;
+}
