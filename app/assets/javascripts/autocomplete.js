@@ -54,7 +54,7 @@
          input = this.uiInput =
                   $( "<input />" )
                       .insertAfter(select)
-                      .addClass("ui-widget ui-widget-content ui-corner-left ui-combobox-input")
+                      .addClass("ui-widget-content ui-combobox-input")
                       .attr("id", "autocomplete-input");
 
          wrapper = this.uiCombo =
@@ -80,12 +80,12 @@
             .insertAfter( input )
             .button({
                icons: {
-                  primary: "ui-icon-triangle-1-s"
+                  primary: ""
                },
                text: false
             })
-            .removeClass( "ui-corner-all" )
-            .addClass( "ui-corner-right ui-button-icon ui-combobox-button" );
+            .addClass( "ui-combobox-button arrow_icon" )
+            .removeClass("ui-widget");
 
 
          // Our items have HTML tags.  The default rendering uses text()

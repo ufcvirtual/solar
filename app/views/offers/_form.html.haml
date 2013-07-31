@@ -1,3 +1,5 @@
+= javascript_include_tag 'autocomplete'
+
 // Para saber se possui datas
 - doesnt_have_enroll_end_date, doesnt_have_enroll_start_date = @offer.enrollment_schedule.try(:end_date).nil?, @offer.enrollment_schedule.try(:start_date).nil?
 - doesnt_have_period_end_date, doesnt_have_period_start_date = @offer.period_schedule.try(:end_date).nil?, @offer.period_schedule.try(:start_date).nil?
@@ -65,6 +67,8 @@
 :javascript
 
   $(function(){
+
+    $("#offer_course_id, #offer_curriculum_unit_id").combobox();
 
     // datepicker
     var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);

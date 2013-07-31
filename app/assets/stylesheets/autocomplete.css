@@ -19,3 +19,35 @@
 	padding: 2px;
 	border: 1px solid #ccc;
 }
+
+#autocomplete-input{
+	width: 300px;
+	margin: 3px;
+	font-size: 10pt;
+}
+
+.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr{
+	border: 1 solid black;
+}
+
+.ui-menu-item a{
+	font-weight: normal;
+	font-size: 10pt;
+}
+
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus {
+  border: 1px solid #999999;
+  background: #e8eff6;
+}
+
+.arrow_icon{
+	display: inline-block;
+	background: url('icon_arrow_down.png') no-repeat 5px center;
+	left: -30px;
+	border: 0;
+}
