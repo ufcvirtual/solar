@@ -23,7 +23,7 @@
         %i.icon-plus-3
       - if not ["trashbox", "outbox"].include?(@box)
         #mark_as_unread.btn{"data-tooltip" => t(:message_mark_as_unread), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "unread", box: @box)}
-          %i.icon-checkmark
+          %i.icon-mail
         #mark_as_read.btn{"data-tooltip" => t(:message_mark_as_read), :"data-new-status" => "read", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "read", box: @box)}
           %i.icon-checkmark
       - if @box != "trashbox"
