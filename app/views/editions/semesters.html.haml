@@ -7,19 +7,20 @@
     %legend= t(".filter")
     .filter_notice= t(".select_something")
     %span.label
-      = [t(:type, scope: [:editions, :academic]), @type.description].join(": ")
-    .filter_courses
-      .course
-        = select_tag :course, options_from_collection_for_select(@courses, 'id', 'name'), include_blank: true
+      = label_tag :type, t(".type")
+      = @type.description
+    .filter
+      = label_tag :course, t(".course")
+      = select_tag :course, options_from_collection_for_select(@courses, "id", "name"), include_blank: true, :"data-optional" => true
       %br/
-      .curriculum_unit
-        = select_tag :curriculum_unit, options_from_collection_for_select(@curriculum_units, 'id', 'name'), include_blank: true
+      = label_tag :curriculum_unit, t(".curriculum_unit")
+      = select_tag :curriculum_unit, options_from_collection_for_select(@curriculum_units, "id", "name"), include_blank: true, :"data-optional" => true
       %br/
-      .period
-        = select_tag :period, options_for_select(@periods, @periods.first)
+      = label_tag :period, t(".period")
+      = select_tag :period, options_for_select(@periods, @periods.first)
 
       %br/
-      = link_to t(:search), "#", {class: 'btn', :"data-url-search" => semesters_path, id: 'search'}
+      = link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => semesters_path, id: "search", :"data-load-to" => "semesters_list"}
 
 .semesters_list
   = render "semesters/list"
@@ -27,11 +28,9 @@
 = render "back"
 
 :javascript
-
   $(function(){
     $("#curriculum_unit, #course, #period").combobox();
     $("#period").combobox('value', "#{@periods.first.last}");
-
 
     $('#period').combobox({
       change: function(event, ui) {
@@ -40,26 +39,24 @@
       }
     });
 
-
-    $('#search').click(function(){
-
+    $('#search').click(function() {
       if(($('#period').combobox('value') == "all" && $('#curriculum_unit').is_empty() && $('#course').is_empty()))
         flash_message("#{t('.warning')}", 'alert');
       else
         erase_flash_messages();
 
       $.ajax({
-          type: 'GET',
-          url: $(this).data("url-search"),
-          data: {
-            curriculum_unit_id: $("#curriculum_unit").combobox('value'),
-            course_id: $("#course").combobox('value'),
-            period: $("#period").combobox('value')
-          },
-          success: function(data){
-            $(".semesters_list").html(data);
-          }
-        });
-
+        type: 'GET',
+        url: $(this).data("url-search"),
+        data: {
+          curriculum_unit_id: $("#curriculum_unit").combobox('value'),
+          course_id: $("#course").combobox('value'),
+          period: $("#period").combobox('value')
+        },
+        success: function(data){
+          $(".semesters_list").html(data);
+        }
+      });
+      return false;
     });
   });

@@ -1310,6 +1310,7 @@
         code: Código
 
   editions:
+    alert: "Preencha os campos obrigatórios"
     academic:
       courses: "Cursos"
       curriculum_units: "Unidades Curriculares"
@@ -1345,8 +1346,22 @@
     semesters:
       all: "Todos"
       actives: "Ativos"
+      type: Tipo
+      course: Curso
+      curriculum_unit: Unidade Curricular
+      period: Período
       warning: "Selecione uma Unidade Curricular ou um Curso para pesquisar por todos."
+    courses:
+      type: Tipo
+      course: Curso
+    curriculum_units:
+      type: Tipo
+      curriculum_unit: Unidade Curricular
     groups:
+      type: Tipo
+      course: Curso
+      curriculum_unit: Unidade Curricular
+      semester: Semestre
       warning: Todos os itens devem ser selecionados para realizar a pesquisa.
     cant_save: Não foi possível salvar
     are_you_sure_of_deletion: Você tem certeza de que deseja excluir?

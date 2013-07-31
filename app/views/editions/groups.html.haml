@@ -7,17 +7,21 @@
     %legend= t(".filter")
     .filter_notice= t(".select_something")
     %span.label
-      = [t(:type, scope: [:editions, :academic]), @type.description].join(": ")
-    .filter_courses
-      = select_tag :course, options_from_collection_for_select(@courses, 'id', 'code_name'), include_blank: true
-      - if @type.id != 3
+      = label_tag :type, t(".type")
+      = @type.description
+    .filter
+      = label_tag :course, t(".course")
+      = select_tag :course, options_from_collection_for_select(@courses, "id", "code_name"), include_blank: true
+      - if @type.id != 3 # criar uma CONSTANTE
         %br/
+        = label_tag :curriculum_unit, t(".curriculum_unit")
         = select_tag :curriculum_unit, nil
       %br/
+      = label_tag :semester, t(".semester")
       = select_tag :semester, nil
 
       %br/
-      = link_to t(:search), "#", {class: 'btn', :"data-url-search" => list_groups_path, id: "search"}
+      = link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => list_groups_path, id: "search", :"data-load-to" => "groups_list"}
 
 .groups_list
 
@@ -46,7 +50,6 @@
     });
   }
 
-
   $(function(){
     $("#course, #curriculum_unit, #semester").combobox();
     $("#semester, #curriculum_unit").combobox( "option", { disabled: true } );
@@ -66,7 +69,7 @@
           update_combobox(url, 'semester');
         } else {
           $("#curriculum_unit").combobox( "option", { disabled: false } );
-          var url = "#{list_combobox_curriculum_units_path(type: @type.id, course_id: 'course_param')}".replace('course_param', $('#course').combobox('value'));
+          var url = "#{list_combobox_curriculum_units_path(type_id: @type.id, course_id: 'course_param')}".replace('course_param', $('#course').combobox('value'));
           update_combobox(url, 'curriculum_unit');
         }
       }
@@ -84,24 +87,5 @@
       }
     });
 
-     $("#search").click(function(){
-      if (($('#semester').is_empty() || $('#curriculum_unit').is_empty() || $('#course').is_empty()))
-        flash_message("#{t('.warning')}", 'alert');
-      else{
-        erase_flash_messages();
-
-        var data = {
-          course_id: $("#course").combobox('value'),
-          semester_id: $("#semester").combobox('value')
-        };
-
-        if ($("#curriculum_unit").combobox('value').length)
-          data.curriculum_unit_id = $("#curriculum_unit").combobox('value');
-
-        $.get($(this).data("url-search"), data, function(data){
-          $(".groups_list").html(data);
-        });
-
-      }
-    });
+    $(".edition").nice_filter();
   });

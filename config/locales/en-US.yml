@@ -1143,6 +1143,7 @@
         code: Code
 
   editions:
+    alert: "Fill the required fields"
     academic:
       courses: "Courses"
       curriculum_units: "Curriculum Units"
@@ -1176,10 +1177,24 @@
       saved: Saved successfully
       deleted: Deleted successfully
     semesters:
-      all: "All"
-      actives: "Actives"
+      all: All
+      actives: Actives
+      type: Type
+      course: Course
+      curriculum_unit: Curriculum Unit
+      period: Period
       warning: "Select a Curriculum Unit or a Course to search for all."
+    courses:
+      type: Type
+      course: Course
+    curriculum_units:
+      type: Type
+      curriculum_unit: Curriculum Unit
     groups:
+      type: Type
+      course: Course
+      curriculum_unit: Curriculum Unit
+      semester: Semester
       warning: All items must be selected to search.
     cant_save: It wasn't possible to save
     are_you_sure_of_deletion: Are you sure that you want to delete?

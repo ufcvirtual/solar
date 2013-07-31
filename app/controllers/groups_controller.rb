@@ -29,7 +29,7 @@ class GroupsController < ApplicationController
     query << "offers.semester_id = #{params[:semester_id]}" unless params[:semester_id].blank?
 
     @groups = []
-    @groups = Group.joins(offer: :semester).where(query.join(" AND ")) unless query.empty?
+    @groups = Group.joins(offer: :semester).where(query.join(" AND ")).order("groups.status DESC, groups.code") unless query.empty?
 
     respond_to do |format|
       format.html

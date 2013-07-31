@@ -7,10 +7,12 @@
     %legend= t(".filter")
     .filter_notice= t(".select_something")
     %span.label
-      = [t(:type, scope: [:editions, :academic]), @type.description].join(": ")
-    .filter_courses
-      = select_tag :code_name, options_from_collection_for_select(@courses, 'id', 'code_name'), include_blank: true
-    = link_to t(:search), "#", {class: 'btn btn_main search_button', :"data-url-search" => courses_path, id: 'search'}
+      = label_tag :type, t(".type")
+      = @type.description
+    .filter
+      = label_tag :course, t(".course")
+      = select_tag :course, options_from_collection_for_select(@courses, "id", "code_name"), include_blank: true, :"data-optional" => true
+    = link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => courses_path, id: "search", :"data-load-to" => "courses_list"}
 
 .courses_list
   = render "courses/index"
@@ -20,18 +22,7 @@
 :javascript
 
   $(function(){
-    $("#code_name").combobox();
+    $("#course").combobox();
 
-    $('#search').click(function(){
-      $.ajax({
-        type: 'GET',
-        url: $(this).data("url-search"),
-        data: {
-          "course_id": $("#code_name").val()
-        },
-        success: function(data){
-          $(".courses_list").html(data);
-        }
-      });
-    });
+    $(".edition").nice_filter();
   });
