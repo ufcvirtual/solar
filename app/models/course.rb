@@ -6,6 +6,8 @@ class Course < ActiveRecord::Base
   has_many :groups, :through => :offers, :uniq => true
   has_many :curriculum_units, :through => :offers, :uniq => true
 
+  validates :name, :code, presence: true, uniqueness: true
+
   def has_any_lower_association?
       self.offers.count > 0
   end

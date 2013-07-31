@@ -1,39 +1,9 @@
 class CoursesController < ApplicationController
 
-  # def index
-  #   # authorize! :index, Course
+  layout false
 
-  #   al = current_user.allocations.where(status: Allocation_Activated)
-
-  #   my_direct_courses = al.map(&:course).compact.uniq
-  #   courses_by_period  = al.map(&:offer).compact.map(&:course).uniq
-  #   courses_by_ucs     = al.map(&:curriculum_unit).compact.map(&:courses).flatten.uniq # apenas cursos ligados a disciplina pela oferta
-  #   courses_by_groups  = al.map(&:group).compact.map(&:course).uniq
-  #   @courses          = [my_direct_courses + courses_by_period + courses_by_ucs + courses_by_groups].flatten.compact.uniq
-  #   @courses.sort! { |a,b| a.name <=> b.name }
-
-  #   # name or code
-  #   if params.include?(:search)
-  #     params[:search].strip!
-  #     @courses  = @courses.select { |course| course.name.downcase.include?(params[:search].downcase) or course.code.downcase.include?(params[:search].downcase) }
-  #     @courses.each do |course|
-  #       course[:allocation_tag_id] = course.allocation_tag.id
-  #     end
-
-  #     optionAll = {:code => '*', :allocation_tag_id => @courses.map(&:allocation_tag).map(&:id), :name =>'...' << params[:search] << "... (#{@courses.count})"}
-  #     @courses << optionAll
-  #   end
-
-  #   respond_to do |format| 
-  #     format.html
-  #     format.json { render json: @courses }
-  #     format.xml { render xml: @courses }
-  #   end
-  # end
-
-  # Acadêmico
   def index
-    if (not params[:course_id].blank?) # recebe o id do curso pelo nome
+    if (not params[:course_id].blank?)
       @courses = Course.where(id: params[:course_id])
     else
       @courses = Course.all
@@ -42,7 +12,55 @@ class CoursesController < ApplicationController
     render partial: 'courses/index'
   end
 
+  def new
+    @course = Course.new
 
-  # no método create, deve ser passado: params[:course][:user_id] = current_user.id
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @course }
+    end
+  end
+
+  def edit
+    @course = Course.find(params[:id])
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @course }
+    end
+  end
+
+  def create
+    @course = Course.new(params[:course])
+    # authorize! :create, Course
+
+    if @course.save
+      render json: {success: true, notice: t(:created, scope: [:courses, :success]), code_name: @course.code_name, id: @course.id}
+    else
+      render :new
+    end
+  end
+
+  def update
+    @course = Course.find(params[:id])
+
+    if @course.update_attributes(params[:course])
+      render json: {success: true, notice: t(:updated, scope: [:courses, :success]), code_name: @course.code_name, id: @course.id}
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    @course = Course.find(params[:id])
+    #authorize! :destroy, Course
+
+    if @course.destroy
+      render json: {success: true, notice: t(:deleted, scope: [:courses, :success])}
+    else
+      render json: {success: false, alert: t(:deleted, scope: [:courses, :error])}, status: :unprocessable_entity
+    end
+  end
+
 
 end

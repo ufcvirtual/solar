@@ -1196,11 +1196,13 @@
       updated: Curriculum Unit wasn't updated.
       deleted: Curriculum Unit wasn't deleted.
     index:
-      new: New
-      edit: Edit
-      delete: Delete
-      edit_curriculum_unit: Edit %{curriculum_unit}
-      delete_curriculum_unit: Delete %{curriculum_unit}
+      index:
+      new_module: New Module
+      new_curriculum_unit: New Curriculum Unit
+      edit: Edit %{uc_or_module}
+      delete: Delete %{uc_or_module}
+      curriculum_unit: Curriculum Unit
+      module: Module
     form:
       save: Save
       cancel: Cancel
@@ -1285,6 +1287,25 @@
       current_year: can't precede current year
       current_date: can't be earlier than today
     to: "to "
+
+  courses:
+    index:
+      new: New course
+      edit: Edit course
+      delete: Delete course
+    form:
+      name: Name
+      code: Code
+      save: Save
+      cancel: Cancel
+    success:
+      created: Course was successfully created.
+      updated: Course was successfully created.
+      deleted: Course was successfully created.
+    error:
+      created: Course wasn't created.
+      updated: Course wasn't updated.
+      deleted: Course wasn't deleted.
 
 #Facebook
 

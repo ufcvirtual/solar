@@ -1,10 +1,59 @@
-%table.tb_list
-  %head
-    %tr.lines
-      %th= t(:code)
-      %th= t(:name)
-  %body
-    - @courses.each do |course|
+.block_wrapper
+
+  .block_title
+    %h2= t(:courses, scope: [:editions, :academic])
+  .block_content_toolbar
+    .block_toolbar_left.btn-group
+      %a.btn.btn_main.new_offer{:'data-tooltip' => t(".new"), id: "new_course", :type => :button, :"data-link-new-course" => new_course_path, :'data-tooltip' => t(".new")}
+        = content_tag(:i, nil, class: 'icon-plus-3')
+
+  %table.tb_list
+    %head
       %tr.lines
-        %td= course.code
-        %td= course.name
+        %th= t(:code)
+        %th= t(:name)
+        %th{:width => "12%"}
+    %body
+      - @courses.each do |course|
+        %tr.lines
+          %td= course.code
+          %td= course.name
+          %td
+            = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit_course', :'data-tooltip' => t(".edit"), :"data-link-edit" => edit_course_path(course)
+            = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_caution delete_course', :"data-link-delete" => course_path(course), :'data-tooltip' => t(".delete"), id: course.id
+
+:javascript
+
+  $(function(){
+
+    $('.edit_course').click(function(){
+      showLightBoxURL($(this).data('link-edit'), 500, 400, true, $(this).data('tooltip'));
+    });
+
+    $("#new_course").click(function(){
+      showLightBoxURL($(this).data('link-new-course'), 500, 400, true, $(this).data('tooltip'));
+    });
+
+    $('.delete_course').click(function(){
+      var curriculum_unit_id = $(this).attr("id");
+      $(this).nice_delete({
+        parent: 'tr.lines',
+        complement_success: function(data) {
+
+          // se eu tiver selecionado no autocomplete o curso que quero deletar
+          if(curriculum_unit_id == $("#code_name").combobox('value')){
+            // atualiza o conteúdo da lista e do autocomplete selecionado
+            $.get("#{courses_path(type: @type)}", function(data) {
+              $('.courses_list').html(data);
+              $("#autocomplete-input").val("");
+            });
+          }
+
+          $('option[value="'+curriculum_unit_id+'"]').remove();
+        }
+      });
+
+    });
+
+
+  });

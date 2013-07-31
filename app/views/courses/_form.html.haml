@@ -1,0 +1,53 @@
+%span.form_requirement= t(:required_fields)
+.course_form
+  = simple_form_for(@course, html: {id: "course_form"}) do |f| 
+
+    .form-inputs.block_content
+      = f.input :code
+      = f.input :name
+      .form-actions.button-align
+        = button_tag t(".cancel"), class: "btn btn_default btn_lightbox", type: "button", alt: t(".cancel"), id: "cancel"
+        = button_tag t(".save"), class: "btn btn_main btn_lightbox", alt: t(".save"), type: "button", id: "save"
+
+:javascript
+
+  $(function(){
+
+
+    $('#save').click(function(){
+      $('#course_form').serialize_and_submit({
+        complement_success: function(data) {
+          var post_code_name = data.code_name;
+          var id  = data.id;
+          var url = "#{courses_path(course_id: 'course_param')}";
+
+          if($("#code_name").is_empty())
+            var course_id = '';
+          else
+            var course_id = $("#code_name").combobox('value');
+
+          $.get(url.replace('course_param', course_id), function(data) {
+            $('.courses_list').html(data);
+
+            var autocomplete_option = $('option[value='+id+']');
+
+            if (!autocomplete_option.length){
+              // cria nova curso na lista
+              $("<option value="+id+">"+post_code_name+"</option>").appendTo("#code_name");
+            }else{
+              // atualiza a curso alterada na lista do autocomplete
+              autocomplete_option.text(post_code_name);
+              // se a curso alterada foi a selecionada no autocomplete, alterar o valor do input
+              if($("#code_name").combobox('value') == id)
+                $("#autocomplete-input").val(post_code_name);
+            }
+          });
+        }
+      });
+    });
+
+    $("#cancel").click(function(){
+      removeLightBox();
+    });
+    
+  });

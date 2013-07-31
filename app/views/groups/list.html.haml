@@ -1,10 +1,10 @@
 .block_wrapper
 
   .block_title
-    %h2= "Turmas"
+    %h2= t(:groups, scope: [:editions, :academic])
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      %a.btn.btn_main.new_offer{:'data-tooltip' => t(".new"), id: "btn_new_group", :type => :button, :"data-link-new-group" => new_group_path(semester_id: 'semester_param', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param'), :'data-tooltip' => 'Nova turma'}
+      %a.btn.btn_main{:'data-tooltip' => t(".new"), id: "btn_new_group", :type => :button, :"data-link-new-group" => new_group_path(semester_id: 'semester_param', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param'), :'data-tooltip' => 'Nova turma'}
         = content_tag(:i, nil, class: 'icon-plus-3')
     .block_toolbar_right
       = check_box_tag :all_groups, false, false, class: 'btn', :'data-tooltip' => t(".disable"), :"data-children-names" => "ckb_group"

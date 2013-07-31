@@ -1363,11 +1363,12 @@
       updated: Não foi possível atualizar Unidade Curricular.
       deleted: Não foi possível deletar Unidade Curricular.
     index:
-      new: Nova
-      edit: Editar Unidade Curricular
-      delete: Excluir #Unidade Curricular
-      edit_curriculum_unit: Editar %{curriculum_unit}
-      delete_curriculum_unit: Excluir %{curriculum_unit}
+      new_module: Novo Módulo
+      new_curriculum_unit: Nova Unidade Curricular
+      edit: Editar %{uc_or_module}
+      delete: Excluir %{uc_or_module}
+      curriculum_unit: Unidade Curricular
+      module: Módulo
     form:
       save: Salvar
       cancel: Cancelar
@@ -1452,6 +1453,25 @@
       current_year: não deve preceder o ano atual
       current_date: não deve preceder o dia de hoje
     to: "à "
+
+  courses:
+    index:
+      new: Novo curso
+      edit: Editar curso
+      delete: Deletar curso
+    form:
+      name: Nome
+      code: Código
+      save: Salvar
+      cancel: Cancelar
+    success:
+      created: Curso criada com sucesso.
+      updated: Curso atualizada com sucesso.
+      deleted: Curso deletada com sucesso.
+    error:
+      created: Não foi possível criar curso.
+      updated: Não foi possível atualizar curso.
+      deleted: Não foi possível deletar curso.
 
   #Facebook
 

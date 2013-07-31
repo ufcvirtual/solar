@@ -1,13 +1,13 @@
-= javascript_include_tag "tooltip", "edition"
+- uc_or_module = (@type.id == 4 ? t(".module") : t(".curriculum_unit"))
 
-.block_wrapper#list_curriculum_units
+.block_wrapper
 
   .block_title
-    %h2
-      %i.icon-docs
-      = t(:my_solar_curriculum_units)
-    %span.right_buttons_form
-      = button_tag t(".new"), :class => "btn btn_main btn_form", id: "btn_new_curriculum_unit", :type => :button
+    %h2=uc_or_module
+  .block_content_toolbar
+    .block_toolbar_left.btn-group
+      %a.btn.btn_main{:'data-tooltip' => (@type.id == 4 ? t(".new_module") : t(".new_curriculum_unit")), id: "btn_new_curriculum_unit", :type => :button, :"data-link-new" => new_curriculum_unit_path(type: @type)}
+        = content_tag(:i, nil, class: 'icon-plus-3')
 
   %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :style => "table-layout: fixed"}
     %thead
@@ -15,8 +15,7 @@
         %th{:width => "12%"}= CurriculumUnit.human_attribute_name(:code) 
         %th{:width => "38%"}= CurriculumUnit.human_attribute_name(:name)
         %th{:width => "28%"}= CurriculumUnit.human_attribute_name(:category)
-        %th{:width => "10%"}
-        %th{:width => "10%"}
+        %th{:width => "12%"}
     %tbody
       - @curriculum_units.each do |curriculum_unit|
         %tr.lines
@@ -24,20 +23,18 @@
           %td= curriculum_unit.name
           %td{:align => "left"}= curriculum_unit.curriculum_unit_type.description
           %td
-            = form_for(:curriculum_unit, :url => edit_curriculum_unit_path(curriculum_unit)) do |f|
-              = button_tag (content_tag(:i, nil, class: 'icon-edit')), :class => "btn btn_default edit", :type => :button, :alt => t(".edit_curriculum_unit", :curriculum_unit => curriculum_unit.name), :id => t(".edit_curriculum_unit", :curriculum_unit => curriculum_unit.name), disabled: (not can? :update, curriculum_unit), :'data-tooltip' => t(".edit")
-          %td
-            = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_caution delete_curriculum_unit', :"data-link-delete" => curriculum_unit_path(curriculum_unit), :'data-tooltip' => t(".delete"), id: curriculum_unit.id
+            = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit', :'data-tooltip' => t(".edit", uc_or_module: uc_or_module), :"data-link-edit" => edit_curriculum_unit_path(curriculum_unit)
+            = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_caution delete_curriculum_unit', :"data-link-delete" => curriculum_unit_path(curriculum_unit), :'data-tooltip' => t(".delete", uc_or_module: uc_or_module), id: curriculum_unit.id
 
 :javascript
 
   $(function(){
-    $('#btn_new_curriculum_unit').click(function(){
-      open_lightbox2('#{new_curriculum_unit_path(type: @type) }', '#{t(:curriculum_unit_new_title)}');
+    $("#btn_new_curriculum_unit").click(function(){
+      showLightBoxURL($(this).data('link-new'), 540, 605, true, $(this).data('tooltip'));
     });
 
     $('.edit').click(function(){
-      open_lightbox2($(this).parent().attr('action'), $(this).attr('alt'));
+      showLightBoxURL($(this).data('link-edit'), 540, 605, true, $(this).data('tooltip'));
     });
 
     $('.delete_curriculum_unit').click(function(){
