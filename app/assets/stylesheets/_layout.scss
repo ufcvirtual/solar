@@ -3410,6 +3410,7 @@ select[disabled] {
   vertical-align: bottom;
 }
 
-#search{
-    margin: 5px;
+.block_content>.block_left, .block_content>.block_right{
+  padding: 0;
+  width: 49.7%;
 }

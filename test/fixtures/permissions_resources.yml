@@ -832,6 +832,28 @@ offedit11:
   resource_id: 122
   per_id: false
 
+# Courses
+
+c1:
+  profile_id: 5
+  resource_id: 58
+  per_id: false
+
+c2:
+  profile_id: 5
+  resource_id: 59
+  per_id: false
+
+c3:
+  profile_id: 5
+  resource_id: 61
+  per_id: false
+
+c4:
+  profile_id: 5
+  resource_id: 62
+  per_id: false
+
 # Lessons - Aulas
 
 lessonedit1:

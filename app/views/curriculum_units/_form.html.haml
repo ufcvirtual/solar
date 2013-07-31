@@ -29,13 +29,13 @@
           var post_code_name = data.code_name;
           var id = data.id;
 
-          var url = "#{curriculum_units_path(type: @curriculum_unit.curriculum_unit_type.id, curriculum_unit_id: 'curriculum_unit_param')}";
+          var url = "#{curriculum_units_path(type_id: @curriculum_unit.curriculum_unit_type.id, curriculum_unit_id: 'curriculum_unit_param')}";
 
           // criar método pra poder chamar em todas as listagens
-          if($("#code_name").is_empty())
+          if($("#curriculum_unit").is_empty())
             var curriculum_unit_id = '';
           else
-            var curriculum_unit_id = $("#code_name").combobox('value');
+            var curriculum_unit_id = $("#curriculum_unit").combobox('value');
 
           $.get(url.replace('curriculum_unit_param', curriculum_unit_id), function(data) {
             $('.ucs_list').html(data);
@@ -44,12 +44,12 @@
 
             if (!autocomplete_option.length){
               // cria nova uc na lista
-              $("<option value="+id+">"+post_code_name+"</option>").appendTo("#code_name");
+              $("<option value="+id+">"+post_code_name+"</option>").appendTo("#curriculum_unit");
             }else{
               // atualiza a uc alterada na lista do autocomplete
               autocomplete_option.text(post_code_name);
               // se a uc alterada foi a selecionada no autocomplete, alterar o valor do input
-              if($("#code_name").combobox('value') == id)
+              if($("#curriculum_unit").combobox('value') == id)
                 $("#autocomplete-input").val(post_code_name);
             }
           });

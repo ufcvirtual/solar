@@ -1,5 +1,5 @@
 - start_date, end_date = Date.today - 1.month, Date.today + 1.month
-= simple_form_for @semester do |f|
+= simple_form_for @semester, html: {id: "semester_form"} do |f|
   .form-inputs.block_content
     %div{style: "margin-top: 5px"}= f.input :name
 
@@ -41,19 +41,14 @@
   $('#enrollment_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#enrollment_start_date').datepicker("option", "maxDate", selected); } }) );
 
   $('#save').click(function(){
-    $('form').serialize_and_submit({
+    $('form#semester_form').serialize_and_submit({
       complement_success: function(data) {
 
-        var semester_start = data.semester.start;
-        var semester_end = data.semester.end;
-        var url = "#{semesters_path(period: 'period_param', curriculum_unit_id: 'curriculum_unit_param', course_id: 'course_param')}"
-                  .replace('period_param', $("#period").val())
-                  .replace('curriculum_unit_param', $("#curriculum_unit").val())
-                  .replace('course_param', $("#course").val());
+        var semester_end = data.semester.end, semester_start = data.semester.start;
+        var url = "#{semesters_path(period: 'period_param', curriculum_unit_id: 'curriculum_unit_param', course_id: 'course_param')}".replace('period_param', $("#period").combobox('value')).replace('curriculum_unit_param', $("#curriculum_unit").combobox('value')).replace('course_param', $("#course").combobox('value')).replace(/null/g, "");
 
         $.get(url, function(data) {
           $('.semesters_list').html(data);
-
             // cria nova uc na lista
             if (!$('option[value='+semester_start+']').length)
               $("<option value="+semester_start+">"+semester_start+"</option>").appendTo("#period");
@@ -61,10 +56,7 @@
             // cria nova uc na lista
             if (!$('option[value='+semester_end+']').length)
               $("<option value="+semester_end+">"+semester_end+"</option>").appendTo("#period");
-
         });
-
-
       }
     });
   });

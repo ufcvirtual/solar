@@ -1119,6 +1119,7 @@
 
   groups:
     list:
+      all: All
       new: New group
       enable: Enable
       disable: Disable
@@ -1127,6 +1128,8 @@
     partial_group_list:
       code: Code
       edit: Edit group
+      enable: Enable
+      disable: Disable
     success:
       created: Group was successfully created.
       updated: Group was successfully updated.

@@ -2,13 +2,26 @@ include MessagesHelper
 
 class CurriculumUnitsController < ApplicationController
 
-  layout false, only: [:new, :edit, :show, :create, :update]
+  layout false, only: [:new, :edit, :create]
 
   before_filter :prepare_for_group_selection, only: [:home, :participants, :informations]
   before_filter :curriculum_data, only: [:home, :informations, :curriculum_data, :participants]
 
-  authorize_resource only: [:index, :show, :new]
-  load_and_authorize_resource only: [:destroy, :edit]
+  authorize_resource only: [:index, :new]
+  load_and_authorize_resource only: [:destroy, :edit, :update]
+
+  def home
+    allocation_tags   = AllocationTag.find(@allocation_tag_id).related({all: true, objects: true}).map(&:id)
+    @messages         = Message.user_inbox(current_user.id, only_unread = true)
+    @lessons          = Lesson.to_open(allocation_tags.join(', '))
+    @discussion_posts = list_portlet_discussion_posts(allocation_tags.join(', '))
+
+    schedules_events  = Schedule.events(allocation_tags)
+    @scheduled_events = schedules_events.collect { |schedule_event|
+      schedule_end_date = schedule_event['end_date'].nil? ? "" : schedule_event['end_date'].to_date
+      [schedule_event['start_date'].to_date, schedule_end_date]
+    }.flatten.uniq
+  end
 
   # Acadêmico
   def index
@@ -30,6 +43,7 @@ class CurriculumUnitsController < ApplicationController
     end
   end
 
+  # Mobilis
   # GET /curriculum_units/list.json
   def list
     @curriculum_units = CurriculumUnit.all_by_user(current_user).collect {|uc| {id: uc.id, code: uc.code, name: uc.name}}
@@ -44,54 +58,11 @@ class CurriculumUnitsController < ApplicationController
     end
   end
 
-  # GET /curriculum_units/1
-  # GET /curriculum_units/1.json
-  def show
-    @curriculum_unit = CurriculumUnit.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @curriculum_unit }
-    end
-  end
-
-  def home
-    allocation_tags   = AllocationTag.find(@allocation_tag_id).related({all: true, objects: true}).map(&:id)
-    @messages         = Message.user_inbox(current_user.id, only_unread = true)
-    @lessons          = Lesson.to_open(allocation_tags.join(', '))
-    @discussion_posts = list_portlet_discussion_posts(allocation_tags.join(', '))
-
-    schedules_events  = Schedule.events(allocation_tags)
-    @scheduled_events = schedules_events.collect { |schedule_event|
-      schedule_end_date = schedule_event['end_date'].nil? ? "" : schedule_event['end_date'].to_date
-      [schedule_event['start_date'].to_date, schedule_end_date]
-    }.flatten.uniq
-  end
-
-  def destroy
-    @curriculum_unit = CurriculumUnit.find(params[:id])
-    #authorize! :destroy, CurriculumUnit
-
-    if @curriculum_unit.destroy
-      render json: {success: true, notice: t(:deleted, scope: [:curriculum_units, :success])}
-    else
-      render json: {success: false, alert: t(:deleted, scope: [:curriculum_units, :error])}, status: :unprocessable_entity
-    end
-  end
-
   # GET /curriculum_units/new
   # GET /curriculum_units/new.json
   def new
-    @curriculum_unit = CurriculumUnit.new(curriculum_unit_type_id: params[:type])
+    @curriculum_unit = CurriculumUnit.new(curriculum_unit_type_id: params[:type_id])
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @curriculum_unit }
-    end
-  end
-
-  # GET /curriculum_units/1/edit
-  def edit
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @curriculum_unit }
@@ -106,7 +77,6 @@ class CurriculumUnitsController < ApplicationController
     params[:curriculum_unit][:user_id] = current_user.id
 
     @curriculum_unit = CurriculumUnit.new(params[:curriculum_unit])
-
     authorize! :create, CurriculumUnit
 
     if @curriculum_unit.save
@@ -116,16 +86,31 @@ class CurriculumUnitsController < ApplicationController
     end
   end
 
+  # GET /curriculum_units/1/edit
+  def edit
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @curriculum_unit }
+    end
+  end
+
   # PUT /curriculum_units/1
   # PUT /curriculum_units/1.json
   def update
-    @curriculum_unit = CurriculumUnit.find(params[:id])
     params[:curriculum_unit].delete(:code) unless params[:curriculum_unit][:code].present?
 
     if @curriculum_unit.update_attributes(params[:curriculum_unit])
       render json: {success: true, notice: t(:updated, scope: [:curriculum_units, :success]), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
     else
       render :edit
+    end
+  end
+
+  def destroy
+    if @curriculum_unit.destroy
+      render json: {success: true, notice: t(:deleted, scope: [:curriculum_units, :success])}
+    else
+      render json: {success: false, alert: t(:deleted, scope: [:curriculum_units, :error])}, status: :unprocessable_entity
     end
   end
 

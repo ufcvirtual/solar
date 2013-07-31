@@ -8,7 +8,7 @@
 - period_end_date   = (doesnt_have_period_end_date ? '' : "#{l(@offer.period_schedule.try(:end_date).to_date, format: :datepicker)}")
 - period_start_date = (doesnt_have_period_start_date ? '' : "#{l(@offer.period_schedule.try(:start_date).to_date, format: :datepicker)}")
 
-= simple_form_for @offer do |f|
+= simple_form_for @offer, html: {id: "offer_form"} do |f|
   .form-inputs.block_content
     = f.association :semester, as: :hidden, input_html: {value: @offer.semester_id}
     = f.association :course
@@ -77,7 +77,7 @@
     $('#offer_enrollment_schedule_attributes_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#offer_enrollment_schedule_attributes_start_date').datepicker("option", "maxDate", selected); } }) );
 
     $("#save").click(function(){
-      $('form').serialize_and_submit({
+      $('form#offer_form').serialize_and_submit({
         complement_success: function(data) {
           var table = $(".table-offers#table-#{@offer.semester_id}");
           var url = table.data('link-offers');

@@ -3,6 +3,8 @@ class CoursesController < ApplicationController
   layout false
 
   def index
+    authorize! :index, Course
+
     if (not params[:course_id].blank?)
       @courses = Course.where(id: params[:course_id])
     else
@@ -13,6 +15,7 @@ class CoursesController < ApplicationController
   end
 
   def new
+    authorize! :create, Course
     @course = Course.new
 
     respond_to do |format|
@@ -22,6 +25,7 @@ class CoursesController < ApplicationController
   end
 
   def edit
+    authorize! :update, Course
     @course = Course.find(params[:id])
 
     respond_to do |format|
@@ -31,8 +35,8 @@ class CoursesController < ApplicationController
   end
 
   def create
+    authorize! :create, Course
     @course = Course.new(params[:course])
-    # authorize! :create, Course
 
     if @course.save
       render json: {success: true, notice: t(:created, scope: [:courses, :success]), code_name: @course.code_name, id: @course.id}
@@ -42,6 +46,7 @@ class CoursesController < ApplicationController
   end
 
   def update
+    authorize! :update, Course
     @course = Course.find(params[:id])
 
     if @course.update_attributes(params[:course])
@@ -52,8 +57,8 @@ class CoursesController < ApplicationController
   end
 
   def destroy
+    authorize! :destroy, Course
     @course = Course.find(params[:id])
-    #authorize! :destroy, Course
 
     if @course.destroy
       render json: {success: true, notice: t(:deleted, scope: [:courses, :success])}
@@ -61,6 +66,4 @@ class CoursesController < ApplicationController
       render json: {success: false, alert: t(:deleted, scope: [:courses, :error])}, status: :unprocessable_entity
     end
   end
-
-
 end

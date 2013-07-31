@@ -1286,6 +1286,7 @@
 
   groups:
     list:
+      all: Todos
       new: Nova turma
       enable: Ativar
       disable: Desativar
@@ -1294,6 +1295,8 @@
     partial_group_list:
       code: Código
       edit: Editar turma
+      enable: Ativar
+      disable: Desativar
     success:
       created: Turma criada com sucesso.
       updated: Turma atualizada com sucesso.
