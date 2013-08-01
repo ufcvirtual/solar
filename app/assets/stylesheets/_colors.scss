@@ -172,10 +172,9 @@ h1.page_title {
   border-bottom-color: $color_contrast;
   border-left-color: $color_contrast;
   border-right-color: $color_contrast;
-}
-
-#mysolar_top_submenu ul {
-  border-top-color: #EBEBEB;
+  ul {
+    border-top-color: #EBEBEB;
+  }
 }
 
 .mysolar_top_submenu_label_selected {
@@ -223,10 +222,9 @@ a.mysolar_top_link {
   border-top-right-radius: 5px;
   -moz-border-top-left-radius: 5px;
   -moz-border-top-right-radius: 5px;*/
-}
-
-.mysolar_unit_active_tab a {
-  color: $color_contrast_text;
+  a {
+    color: $color_contrast_text;
+  }
 }
 
 /* fechar das abas */
@@ -256,10 +254,9 @@ a.mysolar_top_link {
 .mysolar_menu_title_single_active {
   border-bottom-color: $color_contrast;
   /*    background: url('../images/icon_circle.png') no-repeat left 10px !important;*/
-}
-
-.mysolar_menu_title_single_active a {
-  color: $color_contrast_text;
+  a {
+    color: $color_contrast_text;
+  }
 }
 
 /*.mysolar_menu_title_active {
@@ -281,10 +278,10 @@ a.mysolar_top_link {
 
 #footer {
   background-color: #f9f9f9;
-}
-
-#footer, #footer a {
   color: #666;
+  a {
+    color: #666;
+  }
 }
 
 /******************************************************************************/
@@ -321,8 +318,6 @@ a.mysolar_top_link {
 .my_cadastral_data_label {
   border-bottom-color: #dedede;
 }
-
-/* TODO: continuar */
 
 /********Chat do meuSolar*****************/
 #mysolar_chat_area {
@@ -423,25 +418,25 @@ hr.curriculum_unit_division, hr.curriculum_unit_division_mysolar {
   border-bottom-color: #d0d0d0;
 }
 
-#lightBoxDialogTitle h1 {
-  color: #4c4c4c;
+#page_title {
+  > .block_content_text {
+    color: #666666;
+  }
+  > .block_content_text:hover], > .block_content_text:hover select {
+    color: #000000;
+  }
+  select {
+    color: #666666;
+  }
 }
 
-#page_title > .block_content_text {
-  color: #666666;
+#lightBoxDialogTitle h1 {
+  color: #4c4c4c;
 }
 
 /*#page_title > .block_content_text:hover {
     border: 1px solid #666666;
 }*/
-
-#page_title > .block_content_text:hover, #page_title > .block_content_text:hover select {
-  color: #000000;
-}
-
-#page_title select {
-  color: #666666;
-}
 
 /* titulo do bloco */
 
@@ -449,18 +444,14 @@ div.block_title {
   border-bottom-color: $color_main_text;
 }
 
-/* TODO: continuar */
-
 /* icone que fica ao lado do titulo do bloco */
 
 /* definindo cor de background do conteudo e tamanho da fonte */
 .block_content {
   background-color: $color_main_light;
-}
-
-/* ajustando a largura do bloco esquerdo e adicionando a borda divisoria*/
-.block_content > .block_left {
-  border-right-color: #d0d0d0;
+  .block_left {
+    border-right-color: #d0d0d0; /* adicionando a borda divisoria*/
+  }
 }
 
 .block_content_line {
@@ -548,10 +539,9 @@ div.block_title {
 .lines.period_ended, .period_ended {
   background-color: #f6f6f6;
   color: #989898;
-}
-
-.lines.period_ended a, .period_ended a {
-  color: #989898;
+  a {
+    color: #989898;
+  }
 }
 
 #forum_closed {
@@ -605,8 +595,6 @@ div.block_title {
   background-color: $color_main_light;
 }
 
-/* TODO: continuar */
-
 /* === TELA DE MENSAGENS  === */
 .label_text {
   color: #000;
@@ -643,7 +631,7 @@ div.block_title {
   color: #000;
 }
 
-.message_read, .message_unread {
+.message_read {
   color: #666;
 }
 
@@ -690,15 +678,12 @@ div.block_title {
 ul.message_menu_listbox li ul {
   border-color: #ccc;
   background: #fff;
-}
-
-ul.message_menu_listbox li ul a {
-  /* menu nivel 2 - opcoes */
-  background: #fff;
-}
-
-ul.message_menu_listbox li ul a:hover {
-  background: #eee;
+  a { /* menu nivel 2 - opcoes */
+    background: #fff;
+  }
+  a:hover {
+    background: #eee;
+  }
 }
 
 /* paginacao */
@@ -717,8 +702,6 @@ ul.message_menu_listbox li ul a:hover {
 .pagination a {
   color: #214684;
 }
-
-/* TODO: continuar */
 
 /**
  * Tabelas - geral e files
@@ -845,8 +828,6 @@ td.td_student a {
   border-bottom-color: $color_main;
 }
 
-/* TODO: continuar */
-
 /**
 * AGENDA
 */
@@ -953,10 +934,9 @@ td.td_student a {
   border-bottom: #B4B2B1;
   background-color: $color_main_light;
   color: #666;
-}
-
-.support_material_message_no_files:hover {
-  background-color: $color_main_light_highlight;
+  &:hover {
+    background-color: $color_main_light_highlight;
+  }
 }
 
 /* material de apoio - editor - tabela */
@@ -1093,10 +1073,9 @@ td.td_student a {
 
 fieldset {
   border-color: #D0D0D0;
-}
-
-fieldset legend {
-  color: $color_main;
+  legend {
+    color: $color_main;
+  }
 }
 
 @mixin item_buttom {
