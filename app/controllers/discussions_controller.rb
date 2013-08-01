@@ -23,15 +23,13 @@ class DiscussionsController < ApplicationController
   end
 
   def new
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
     authorize! :new, Discussion, :on => @allocation_tags_ids
     @discussion          = Discussion.new
   end
 
   def create
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
-    authorize! :create, Discussion, :on => @allocation_tags_ids
-
+    @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
     @discussion = Discussion.new
     @schedule = Schedule.new
     begin
@@ -47,7 +45,7 @@ class DiscussionsController < ApplicationController
         end
       end
 
-      render :list
+      render json: {success: true, notice: t(:created, scope: [:offers, :success])}
     rescue Exception => err
       error = []
       error << @schedule.errors.full_messages.join(', ') unless @schedule.errors.empty?
@@ -59,24 +57,22 @@ class DiscussionsController < ApplicationController
   end
 
   def list
-    @allocation_tags_ids = params[:allocation_tags_ids].uniq
+    @allocation_tags_ids = params[:allocation_tags_ids]
 
     begin
       authorize! :list, Discussion, :on => @allocation_tags_ids
       @discussions = Discussion.where(allocation_tag_id: @allocation_tags_ids)
     rescue
-      respond_to do |format|
-        format.html { render :nothing => true, :status => 500  }
-      end
+      render :nothing => true, :status => 500
     end
   end
 
   def edit
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
   end
 
   def update
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
     authorize! :update, Discussion, :on => @allocation_tags_ids  
       
     @discussion = Discussion.find(params[:id])
@@ -94,7 +90,7 @@ class DiscussionsController < ApplicationController
         @discussion.update_attributes!(params[:discussion])
       end
    
-      render :list
+      render json: {success: true, notice: t(:updated, scope: [:offers, :success])}
     rescue Exception => err
       error = []
       error << @schedule.errors.full_messages.join(', ') unless @schedule.errors.empty?

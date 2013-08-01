@@ -1,5 +1,3 @@
-= javascript_include_tag "edition.js"
-
 %span.form_requirement= t(:required_fields)
 .module_form{:style => "text-align: left;"}
   = simple_form_for(@module, :html => {:id => "module_form"}) do |f| 
@@ -17,7 +15,14 @@
 
   $(function(){
     $('#save').click(function(){
-      submit_form('module_form', 'module_form', '#{list_lessons_path(:allocation_tags_ids => @allocation_tags_ids.uniq!)}');
+      $('form#module_form').serialize_and_submit({
+        complement_success: function(data) {
+          var url = "#{list_lessons_path(allocation_tags_ids: @allocation_tags_ids)}";
+          $.get(url, function(data) {
+            $('.list_lessons').html(data);
+          });
+        }
+      });
     });
 
     $('#cancel').click(function(){

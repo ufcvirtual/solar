@@ -31,8 +31,7 @@ class AssignmentsController < ApplicationController
   end
 
   def list
-    @what_was_selected = params[:what_was_selected]
-    authorize! :list, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
+    authorize! :list, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     begin
       @assignments = Assignment.where(allocation_tag_id: @allocation_tags_ids)

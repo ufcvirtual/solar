@@ -306,7 +306,7 @@ $.fn.nice_delete = function(options) {
 }
 
 // recupera dados do filtro, consulta, atualiza dados
-$.fn.nice_filter = function() {
+$.fn.nice_filter = function(options) {
   var filter = $(this);
   $('#search', filter).click(function(){
     erase_flash_messages();
@@ -318,11 +318,14 @@ $.fn.nice_filter = function() {
       var filled = required.map(function(){ if (!$(this).is_empty()) return $(this).combobox("value"); });
 
       if (required.length == filled.length) {
-        var options = combos.map(function(){ if (!$(this).is_empty()) return $(this).prop('name')+'_id: ' + $(this).combobox("value"); }).toArray().join(', ');
-        var data = eval("({" + options + "})"); // transformando os valores dos filtros em json
+        var combos = combos.map(function(){ if (!$(this).is_empty()) return $(this).prop('name')+'_id: ' + $(this).combobox("value"); }).toArray().join(', ');
+        var data = eval("({" + combos + "})"); // transformando os valores dos filtros em json
         var url = $(this).data("url-search"), load_to = $(this).data("load-to");
 
-        $.get(url, data, function(data){ $('.' + load_to).html(data); });
+        if (typeof(options.data_function) == "function") 
+          data = $.extend(data, options.data_function());
+
+        $.get(url, data, function(result){ $('.' + load_to).html(result); });
       } else
         flash_message("<%= I18n.t(:alert, scope: [:editions]) %>", "alert");
 

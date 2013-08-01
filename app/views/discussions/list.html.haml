@@ -1,5 +1,3 @@
-= javascript_include_tag "edition.js"
-
 .block_wrapper.list_discussions
   .block_title
     %h2
@@ -7,7 +5,7 @@
       = t(:discussion_table_title, :scope => [:discussion])
     .right_buttons_form
       - if can? :new, Discussion, on: @allocation_tags_ids
-        = button_tag t(:new, :scope => [:discussion, :buttons]), :class => "btn btn_main btn_form", :type => "button", :alt => t(:new, :scope => [:discussion, :buttons]), :id => "new"
+        = button_tag t(:new, :scope => [:discussion, :buttons]), :class => "btn btn_main btn_form", :type => "button", :'data-tooltip' => t(:new_discussion, :scope => [:discussion]), :id => "new-discussion", :'data-link-new-discussion' => new_discussion_path(allocation_tags_ids: @allocation_tags_ids)
   - unless @discussions.nil? or @discussions.empty?
     %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :style => "table-layout: fixed"}
       %thead
@@ -43,12 +41,11 @@
               %td{:style => "width: 40px;"}
                 - if can? :edit, discussion
                   - btn_class = "btn btn_default"
-                  = form_for(:discussion, :url => edit_discussion_path(discussion.id, :allocation_tags_ids => @allocation_tags_ids)) do |f|
-                    = button_tag t(:edit, :scope => [:discussion, :buttons]), :class => btn_class + " edit", :type => "button", :alt => t(:edit_discussion, :scope => [:discussion], :discussion_name => discussion.name)
+                  = button_tag t(:edit, scope: [:discussion, :buttons]), class: btn_class + " edit", type: "button", :'data-tooltip' => t(:edit_discussion, :scope => [:discussion], :discussion_name => discussion.name), :'data-link-edit-discussion' => edit_discussion_path(discussion.id, allocation_tags_ids: @allocation_tags_ids)
               %td{:style => "width: 40px;"}
                 - if can? :destroy, discussion
                   - btn_class = discussion.can_destroy? ? "btn btn_caution" : "btn btn_disabled"
-                  = button_tag t(:delete, :scope => [:discussion, :buttons]), :onclick => "javascript:delete_object('#{discussion_path(discussion, :allocation_tags_ids => @allocation_tags_ids)}', '#{list_discussions_path(:allocation_tags_ids => @allocation_tags_ids)}');", :type => "button", :class => btn_class, :disabled => (not discussion.can_destroy?), :alt => t(:delete_discussion, :scope => [:discussion], :discussion_name => discussion.name)
+                  = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_discussion', :'data-tooltip' => t(:delete_discussion, :scope => [:discussion], :discussion_name => discussion.name), :"data-link-delete" => discussion_path(discussion, :allocation_tags_ids => @allocation_tags_ids), disabled: not(discussion.can_destroy?)
 
   - else
     .block_content.block_content_text= t(:forum_message)
@@ -58,11 +55,15 @@
   $(document).ready(function(){
 
     $('.edit').click(function(){
-      open_lightbox1($(this).parent().attr('action'), $(this).attr('alt'));
+      showLightBoxURL($(this).data('link-edit-discussion'), 550, 225, true, $(this).data('tooltip'));
     });
 
-    $('#new').click(function(){
-      open_lightbox1('#{new_discussion_path(:allocation_tags_ids => @allocation_tags_ids)}', '#{t(:new_discussion, :scope => [:discussion])}');
+    $('#new-discussion').click(function(){
+      showLightBoxURL($(this).data('link-new-discussion'), 550, 225, true, $(this).data('tooltip'));
+    });
+
+    $('.delete_discussion').click(function(){
+      $(this).nice_delete();
     });
 
   });

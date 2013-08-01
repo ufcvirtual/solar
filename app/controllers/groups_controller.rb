@@ -31,11 +31,7 @@ class GroupsController < ApplicationController
     @groups = []
     @groups = Group.joins(offer: :semester).where(query.join(" AND ")).order("groups.status DESC, groups.code") unless query.empty?
 
-    respond_to do |format|
-      format.html
-      format.xml { render xml: @groups }
-      format.json  { render json: @groups }
-    end
+    render partial: 'groups_checkboxes', locals: { groups: @groups } if params[:checkbox]
   end
 
   def new

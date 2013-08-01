@@ -110,7 +110,6 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def list
-    @what_was_selected = params[:what_was_selected]
     @allocation_tags_ids = params[:allocation_tags_ids].uniq
     authorize! :list, SupportMaterialFile, on: @allocation_tags_ids
 

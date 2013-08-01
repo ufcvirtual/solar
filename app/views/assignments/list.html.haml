@@ -6,7 +6,7 @@
     %h2= t(:assignment, scope: [:editions, :items])
 
 .block_wrapper.list_assignments
-  .edition_allocation_tag_path= allocation_tag_path(AllocationTag.find(@allocation_tags_ids.flatten.uniq.compact.first), @what_was_selected)
+  /.edition_allocation_tag_path= allocation_tag_path(AllocationTag.find(@allocation_tags_ids.flatten.uniq.compact.first), @what_was_selected)
 
   .block_content_toolbar
     .block_toolbar_left.btn-group

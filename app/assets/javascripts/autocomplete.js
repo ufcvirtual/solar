@@ -191,6 +191,13 @@
 
       },
 
+      update: function(options) {
+        var combo = this.element;
+        $.get(options.url, function(data) {
+          combo.html(data.html);
+        });
+      },
+
       value: function ( newVal ) {
          var select = this.element,
              valid = false,

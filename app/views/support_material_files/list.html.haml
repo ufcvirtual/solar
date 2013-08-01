@@ -8,12 +8,12 @@
 
 - previous_allocation_tag = nil
 - @allocation_tags.each_with_index do |allocation_tag, idxat|
-  - allocation_tag_path = allocation_tag_path(allocation_tag, @what_was_selected)
+  /- allocation_tag_path = allocation_tag_path(allocation_tag, @what_was_selected)
 
   .block_wrapper.list_support_materials{id: "list_#{allocation_tag.id}"}
     - unless previous_allocation_tag == idxat
       - previous_allocation_tag = idxat
-      .edition_allocation_tag_path= allocation_tag_path
+      /.edition_allocation_tag_path= allocation_tag_path
 
       .block_content_toolbar
         .block_toolbar_left.btn-group

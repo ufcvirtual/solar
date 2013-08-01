@@ -19,6 +19,18 @@ class LessonsController < ApplicationController
     render layout: false if params[:allocation_tags_ids]
   end
 
+  def list
+    allocation_tags    = params[:allocation_tags_ids]
+
+    begin
+      authorize! :list, Lesson, on: [allocation_tags].flatten
+      @allocation_tags = AllocationTag.where(id: allocation_tags)
+    rescue Exception => error
+      render nothing: true, status: 500
+    end
+
+  end
+
   # GET /lessons/:id
   def show
     unless @curriculum_unit
@@ -58,7 +70,7 @@ class LessonsController < ApplicationController
 
       @lesson.type_lesson == Lesson_Type_File ? files_and_folders(@lesson) : manage_file = false
 
-      render ((manage_file != false) ? {template: "lesson_files/index", layout: false} : {nothing: true})
+      render ((manage_file != false) ? {template: "lesson_files/index"} : {nothing: true})
     rescue
       render :new
     end # rescue
@@ -128,21 +140,6 @@ class LessonsController < ApplicationController
     respond_to do |format|
       format.html{ render nothing: true }
       format.json{ render json: {success: success}, status: success ? :ok : :unprocessable_entity }
-    end
-  end
-
-  # cadastro de aulas
-  def list
-    allocation_tags    = params[:allocation_tags_ids]
-    @what_was_selected = params[:what_was_selected]
-
-    begin
-      authorize! :list, Lesson, on: [allocation_tags].flatten
-      @allocation_tags = AllocationTag.where(id: allocation_tags)
-    rescue Exception => error
-      respond_to do |format|
-        format.html { render nothing: true, status: 500 }
-      end
     end
   end
 

@@ -1,0 +1,12 @@
+= form_for :group do |f|
+  = check_box_tag :all, :all, false, {:"data-children-names" => "group[group_id][]"}
+  = label_tag :all, t(:all)
+  = f.collection_check_boxes :group_id, @groups, :id, :code
+
+  / ajeitar css, diminuir margem: [class*="_check_box"]
+
+:javascript
+
+  $(function(){
+    $("#all").nice_checkbox();
+  });

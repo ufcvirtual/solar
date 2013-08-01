@@ -5,13 +5,18 @@ class CoursesController < ApplicationController
   def index
     authorize! :index, Course
 
-    if (not params[:course_id].blank?)
-      @courses = Course.where(id: params[:course_id])
-    else
+    if params[:combobox]
       @courses = Course.all
+      render json: { html: render_to_string(partial: 'select_course.html', locals: { curriculum_units: @courses.uniq! }) }
+    else # list
+      if (not params[:course_id].blank?)
+        @courses = Course.where(id: params[:course_id])
+      else
+        @courses = Course.all
+      end
+      render partial: 'courses/index'
     end
 
-    render partial: 'courses/index'
   end
 
   def new
