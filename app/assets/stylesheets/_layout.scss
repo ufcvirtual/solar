@@ -69,6 +69,19 @@ h3 {
   font-size: 10pt;
 }
 
+label {
+  color: black;
+  display: inline-block;
+  width: 140px;
+  .menor {
+    display: inline-block;
+    white-space: nowrap;
+    width: auto;
+    font-size: 8pt;
+    font-weight: normal;
+  }
+}
+
 /**
 * Tratando links
 */
