@@ -3410,7 +3410,9 @@ select[disabled] {
   vertical-align: bottom;
 }
 
-.block_content>.block_left, .block_content>.block_right{
-  padding: 0;
-  width: 49.7%;
+.groups_list {
+  .block_left, .block_right {
+    padding: 0;
+    width: 49.7%;
+  }
 }
