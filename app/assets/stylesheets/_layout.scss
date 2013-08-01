@@ -64,14 +64,9 @@ h3 {
 #flash_message {
   border-width: 1px;
   border-style: solid;
-}
-
-#flash_message.notice {
-  background: url('notice.gif') no-repeat 5px center;
-}
-
-#flash_message.alert {
-  background: url('alert.gif') no-repeat 5px center;
+  padding: 5px 10px 4px 25px;
+  margin: 10px 0;
+  font-size: 10pt;
 }
 
 /**

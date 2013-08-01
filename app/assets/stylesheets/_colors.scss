@@ -21,14 +21,12 @@ body {
 
 #flash_message {
   border-color: #d0d0d0;
-}
-
-#flash_message.notice {
-  background-color: #f5ffec;
-}
-
-#flash_message.alert {
-  background-color: #fff6f6;
+  &.notice {
+    background: url('notice.gif') no-repeat 5px center #f5ffec;
+  }
+  &.alert {
+    background: url('alert.gif') no-repeat 5px center #fff6f6;
+  }
 }
 
 /**
