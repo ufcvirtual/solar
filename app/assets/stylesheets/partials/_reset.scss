@@ -34,3 +34,29 @@ q:before,q:after {
 }
 abbr,acronym { border:0;
 }
+
+.align-left{
+  float: left;
+}
+.align-right{
+  float: right;
+}
+.clearfix {
+  *zoom: 1;
+
+  &:before,
+  &:after {
+    display: table;
+    line-height: 0;
+    content: "";
+  }
+  &:after {
+    clear: both;
+  }
+}
+hr {
+  margin: 0px;
+  border: 0;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+}

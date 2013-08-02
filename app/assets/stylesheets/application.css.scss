@@ -2,24 +2,19 @@
 /*@import "compass/reset";*/
 @import "compass/css3";
 
-@import "variables";
-
 /*@import "div_layout";*/
-@import "reset";
-@import "fonts";
+@import "partials/reset";
+@import "fonts.css";
 
 // _layout.scss substituiu o antigo solar.scss: ee contem a estrutura da interface
 // esse arquivo NÃO deve conter propriedades de cor (color, background, border-color, ...)
 // qualquer propriedade de cor deve ser definida no _colors.scss
-@import "layout";
-
+@import "partials/layout";
 @import "themes/theme_blue"; // tema padrão
-@import "buttons";
 @import "icons";
-@import "messages";
+
+/* Vendor css */
 @import "calendar";
 @import "jquery.qtip.min";
-@import "portlet";
-@import "jquery.dropdown";
-
-@import "introjs.min";
+@import "vendor/jquery.dropdown.css";
+@import "vendor/introjs.min.css";
