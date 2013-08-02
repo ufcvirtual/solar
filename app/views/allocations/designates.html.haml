@@ -1,66 +1,65 @@
-= javascript_include_tag "edition.js"
-= hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+.list_designates
+  = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
-.block_wrapper  
-  .block_title
-    %h2= t(".designate_users")
+  .block_wrapper.users
+    .block_title
+      %h2= t(".designate_users")
 
-  .block_content.allocations_list
-    %table.tb_list
-      %thead
-        %tr.lines          
-          %th= t(".name")
-          %th{style: 'width:80px'}= t(".cpf")
-          %th{style: 'width:200px'}= t(".email")
-          %th{style: 'width:120px'}= t(".profile")
-          %th{style: 'width: 50px'}= t(".designated_on")
-          %th{style: 'width:100px'}= ""
-      %tbody
-        - unless @allocations.nil? or @allocations.empty?
-          - @allocations.each do |allocation|
-            %tr.lines            
-              %td= allocation.user.name
-              %td{style: 'width:80px'}= allocation.user.cpf
-              %td{style: 'width:200px'}= allocation.user.email
-              %td{style: 'width:120px'}= allocation.profile.name
-              %td{style: 'width: 50px'}= allocation.group ? allocation.group.code : (allocation.offer ? allocation.offer.semester.name : allocation.course.name)
+    .block_content.allocations_list
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th= t(".name")
+            %th{style: 'width:80px'}= t(".cpf")
+            %th{style: 'width:200px'}= t(".email")
+            %th{style: 'width:120px'}= t(".profile")
+            %th{style: 'width: 50px'}= t(".designated_on")
+            %th{style: 'width:100px'}= ""
+        %tbody
+          - unless @allocations.nil? or @allocations.empty?
+            - @allocations.each do |allocation|
+              %tr.lines
+                %td= allocation.user.name
+                %td{style: 'width:80px'}= allocation.user.cpf
+                %td{style: 'width:200px'}= allocation.user.email
+                %td{style: 'width:120px'}= allocation.profile.name
+                %td{style: 'width: 50px'}= allocation.group ? allocation.group.code : (allocation.offer ? allocation.offer.semester.name : allocation.course.name)
 
-              %td{style: 'width:100px'}
-                -if allocation.status == Allocation_Activated 
-                  = form_for(:allocation, :url => deactivate_allocation_path(allocation, :text_search => @text_search), :html => { :id => "form_deactivate_#{allocation.id}" }) do |f|
-                    = button_tag t(".deactivate"), :type => :button, :class => 'btn btn_caution deactivate', :alt => t(".deactivate_user", :user_name => allocation.user.name)
-                -else
-                  = form_for(:allocation, :url => activate_allocation_path(allocation, :text_search => @text_search), :html => { :id => "form_activate_#{allocation.id}" }) do |f|
-                    = button_tag t(".activate"), :type => :button, :class => 'btn btn_default activate', :alt => t(".activate_user", :user_name => allocation.user.name)
+                %td{style: 'width:100px'}
+                  - status, link = (allocation.status == Allocation_Activated) ? ["deactivate", deactivate_allocation_path(id: allocation, text_search: @text_search)] : ["activate", activate_allocation_path(id: allocation, text_search: @text_search)]
 
-.block_wrapper
-  .block_title
-    %h2= t(".new_designate")
+                  = button_tag t(".#{status}"), type: :button, class: "btn btn_caution #{status}", alt: t(".#{status}_user", user_name: allocation.user.name), :'data-link' => link, :"data-link-list" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids.flatten)
 
-  .block_content.block_content_toolbar.block_content_text
-    = t(".user")
-    = text_field_tag "text_search", @text_search
-    = button_tag t(".search"), :type => :button, :class => "btn btn_default", :id => "search", :alt => t(".search_users")
 
-  .block_content.allocations_list
-    #search_user
+  .block_wrapper.search
+    .block_title
+      %h2= t(".new_designate")
+
+    .block_content.block_content_toolbar.block_content_text
+      = t(".user")
+      = text_field_tag "text_search", @text_search
+      = button_tag t(".search"), type: :button, class: "btn btn_default", id: "search_user", alt: t(".search_users")
+
+    .block_content.allocations_list
+      #list_users
    
 :javascript
 
   $(document).ready(function() {
 
-    $("#search").click(function() {
+    $("#search_user").click(function() {
       var url_for = "#{search_users_allocations_path}";
       var data = { user: encodeURIComponent($("#text_search").val()), allocation_tags_ids: $("#allocation_tags_ids").val() };
-      $.get(url_for, data, function(data) { $('#search_user').html(data); });
+      $.get(url_for, data, function(data) { $('#list_users').html(data); });
     });
 
-    $(".deactivate").click(function(){
-      submit_form($(this).parent().attr("id"), null, '#{designates_allocations_path}');
-    });
-
-    $(".activate").click(function(){
-      submit_form($(this).parent().attr("id"), null, '#{designates_allocations_path}');
+    $(".activate, .deactivate").click(function(){
+      var url = $(this).data("link-list");
+      $.post($(this).data("link"), function(data){
+        $.get(url, function(data){
+          $(".list_designates:last").replaceWith(data);
+        });
+      });
     });
 
   });

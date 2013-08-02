@@ -7,7 +7,7 @@
       / - if (can? :lista_de_bibliography, Bibliography, :on => @allocation_tags_ids) and (@selected_offer)
       .uc_item
         .bibliography
-          = link_to(content_tag(:i, nil, :class=>'icon-book big'), "#", :class=>'btn', :onclick => "javascript:alert('#{t(".in_development")}');")
+          = link_to(content_tag(:i, nil, :class=>'icon-book big'), "#", :class=>'btn disabled', :onclick => "javascript:alert('#{t(".in_development")}');")
           = link_to t(".bibliography"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
         / .bibliography= link_to (image_tag "/assets/edition/bibliography.png", :alt => t(".edition_of", :of => t(".bibliography")), :class => 'btn'), "#"
         / .bibliography
@@ -15,7 +15,7 @@
       / - if (can? :lista_de_schedules, Schedule, :on => @allocation_tags_ids) and (@selected_offer)
       .uc_item
         .schedule
-          = link_to(content_tag(:i, nil, :class=>'icon-calendar big'), "#", :class=>'btn', :onclick => "javascript:alert('#{t(".in_development")}');")
+          = link_to(content_tag(:i, nil, :class=>'icon-calendar big'), "#", :class=>'btn disabled', :onclick => "javascript:alert('#{t(".in_development")}');")
           = link_to t(".schedule"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
 
       - if (can? :designates, Allocation, :on => @allocation_tags_ids) #and #(@selected_offer or @selected_group or @selected_course)
@@ -27,7 +27,7 @@
       / - if (can? :lista_de_warnings, Warning, :on => @allocation_tags_ids) and (@selected_offer or @selected_group or @selected_course) 
       .uc_item
         .warning
-          = link_to(content_tag(:i, nil, :class=>'icon-warning big'), "#", :class=>'btn', :onclick => "javascript:alert('#{t(".in_development")}');")
+          = link_to(content_tag(:i, nil, :class=>'icon-warning big'), "#", :class=>'btn disabled', :onclick => "javascript:alert('#{t(".in_development")}');")
           = link_to t(".warning"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
 
   %fieldset#uc_comunication
@@ -43,13 +43,13 @@
       / - if (can? :lista_de_chat, Chat, :on => @allocation_tags_ids) and (@selected_...)
       .uc_item
         .chat
-          = link_to(content_tag(:i, nil, :class=>'icon-chat big'), "#", :class=>'btn', :onclick => "javascript:alert('#{t(".in_development")}');")
+          = link_to(content_tag(:i, nil, :class=>'icon-chat big'), "#", :class=>'btn disabled', :onclick => "javascript:alert('#{t(".in_development")}');")
           = link_to t(".chat"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
 
       / - if (can? :lista_de_videoconference, Videoconference, :on => @allocation_tags_ids) and (@selected_...)
       .uc_item
         .videoconference
-          = link_to(content_tag(:i, nil, :class=>'icon-screen big'), "#", :class=>'btn', :onclick => "javascript:alert('#{t(".in_development")}');")
+          = link_to(content_tag(:i, nil, :class=>'icon-screen big'), "#", :class=>'btn disabled', :onclick => "javascript:alert('#{t(".in_development")}');")
           = link_to t(".videoconference"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
 
   %fieldset#uc_education
@@ -77,14 +77,14 @@
       / - if (can? lista_de_tests, Test, :on => @allocation_tags_ids) and (@selected_offer or @selected_group)
       .uc_item
         .test
-          = link_to(content_tag(:i, nil, :class=>'icon-checkmark big'), "#", :class=>'btn', :onclick => "javascript:alert('#{t(".in_development")}');")
+          = link_to(content_tag(:i, nil, :class=>'icon-checkmark big'), "#", :class=>'btn disabled', :onclick => "javascript:alert('#{t(".in_development")}');")
           = link_to t(".test"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
 
 :javascript 
 
   $(document).ready(function(){
 
-    $(".edition_items a").click(function(){
+    $(".edition_items a").not(".disabled").click(function(){
       $.get($($(this).parent()).data("link"), function(data){
         $(".edition_items").html(data);
       });

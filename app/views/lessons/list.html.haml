@@ -63,7 +63,6 @@
                   = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", onclick:  "javascript: delete_lesson('#{lesson_module.id}');", id: 'delete_lesson', class: 'btn', :'data-tooltip' => t(".delete_lesson")
                   = link_to (content_tag(:i, nil, :class=>'icon-install')), "#", onclick: "javascript: download_lesson_zip('#{lesson_module.id}');", id: 'download_lesson', class: 'btn', :'data-tooltip' => t(".download_zip")
                   = link_to (content_tag(:i, nil, :class=>'icon-checkmark')), "#", id: 'release_lessons', class: 'btn', "data-module_id" => lesson_module.id, :'data-tooltip' => t(".release")
-
             / Lessons list
             %table.tb_list
               %thead

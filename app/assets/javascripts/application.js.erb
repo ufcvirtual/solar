@@ -227,10 +227,16 @@ $.fn.serialize_and_submit = function(options) {
     }
   }
 
-  $.ajax({
+  if(typeof(options) != "undefined" && typeof(options.files) != "undefined"){
+    var data = (new FormData($(this)[0]));
+  }else{
+    var data = $(this).serialize();
+  }
+
+  var ajax_options = {
     type: $(this).attr('method'),
     url: $(this).attr('action'),
-    data: $(this).serialize(),
+    data: data,
     success: options.success,
     error: function(data) {
       removeLightBox();
@@ -238,7 +244,18 @@ $.fn.serialize_and_submit = function(options) {
       if (typeof(response.alert) != "undefined")
         flash_message(response.alert, 'alert');
     }
-  });
+  };
+
+
+  if (typeof(options.files) != "undefined") {
+    $.extend(ajax_options, {
+      cache: false,
+      contentType: false,
+      processData: false
+    });
+  }
+
+  $.ajax(ajax_options);
 }
 
 $.fn.is_empty = function(){

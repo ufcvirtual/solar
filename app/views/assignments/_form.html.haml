@@ -14,10 +14,6 @@
           .right= s.input :end_date, as: :string, input_html: {id: 'assignment_end_date', value: l(@assignment.schedule.end_date.to_date, format: :datepicker)}
 
       = f.input :type_assignment, collection: types, include_blank: false, required: true
-      .groups
-        = f.error :allocation_tag_id
-        = f.label t(:groups, scope: [:assignment, :new])
-        = f.collection_check_boxes :allocation_tag_id, @groups, :id, :code
 
       .right_buttons_assignment
         = button_tag t(:cancel), :class => "btn btn_default btn_lightbox", :type => "button", onclick: "javascript:removeLightBox();"

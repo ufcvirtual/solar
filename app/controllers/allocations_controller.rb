@@ -8,6 +8,7 @@ class AllocationsController < ApplicationController
   # GET /allocations/designates
   # GET /allocations/designates.json
   def designates
+    # raise "#{params}"
     @allocation_tags_ids  = params[:allocation_tags_ids].split(" ")
 
     begin    

@@ -35,7 +35,7 @@ class SupportMaterialFilesController < ApplicationController
       @support_material.attachment_updated_at = Time.now
       @support_material.save!
 
-      render nothing: true
+      render json: {success: true, notice: t(:created, scope: [:offers, :success])}
     rescue
       if @support_material.is_link?
         render :new
@@ -70,7 +70,7 @@ class SupportMaterialFilesController < ApplicationController
       SupportMaterialFile.transaction do
         SupportMaterialFile.where(id: params[:id].split(",")).map(&:destroy)
       end
-      render json: {success: true}
+      render json: {success: true, notice: t(:deleted, scope: [:groups, :success])}
     rescue Exception => e
       render json: {success: false, msg: e.messages}, status: :unprocessable_entity
     end
@@ -110,6 +110,7 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def list
+    # raise "#{params}"
     @allocation_tags_ids = params[:allocation_tags_ids].uniq
     authorize! :list, SupportMaterialFile, on: @allocation_tags_ids
 

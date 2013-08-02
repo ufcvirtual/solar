@@ -1,4 +1,3 @@
-= javascript_include_tag "edition"
 = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
 .block_wrapper
@@ -61,7 +60,7 @@
   $(function(){
 
     $('#new_assignment').click(function() {
-      open_lightbox1($(this).data('link'), $(this).data('box-title'));
+      showLightBoxURL($(this).data('link'), 550, 255, true, $(this).data('box-title'));
     });
 
     $(':checkbox.ckb_assignment').click(function() {
@@ -88,7 +87,7 @@
       var assignments_ids = $('.ckb_assignment:checked', $(this).parents("div.list_assignments")).map(function() { return this.value; }).get();
       if (!(!assignments_ids.length || assignments_ids.length > 1)) {
         var url_edit = $(this).data('link-to-edit').replace(':id', assignments_ids);
-        open_lightbox1(url_edit, $(this).data('edit-title'));
+        showLightBoxURL(url_edit, 550, 255, true, $(this).data('edit-title'));
       }
       return false;
     });

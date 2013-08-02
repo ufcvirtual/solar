@@ -82,8 +82,13 @@ Solar::Application.routes.draw do
     member do
       delete :cancel, action: :destroy
       delete :cancel_request, action: :destroy, defaults: {type: 'request'}
+
+
+      # post :change_status
+
       post :reactivate
       post :deactivate
+
       post :activate
     end
   end
