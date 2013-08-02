@@ -1,0 +1,55 @@
+.td_subject, .td_sender, .td_time{
+  color: $text_grey;
+
+  a{
+    color: $text_grey;
+  }
+}
+.message_link, .message_link_menu {
+  background-color: transparent;
+}
+#message_list > .message_link:hover {
+  border-bottom-color: #214684;
+}
+.message_line_highlight {
+  background-color: #FFFBE4;
+}
+.message_nav_text {
+  color: #000;
+}
+.message_read, .message_unread{
+  color: #666;
+}
+.message_unread{
+  color: #000;
+}
+.message_label {
+  color: #000;
+  background-color: $color_contrast;
+  border-color: $color_contrast;
+}
+.message_div_text_read {
+  background-color: #F7F7F7;
+}
+.message_recipient_box {
+  border-color: #eee;
+  color: #214684; /* FIXME: localizar onde isso está sendo utilizado */
+}
+
+/* mensagem */
+.block_wrapper.messages {
+  .block_content{
+    border-bottom-color: $border;
+  }
+  &.block_white{
+    background: white;
+  }
+}
+.message_header_new, .message_div_show{
+  color: $text_grey;
+}
+.message_div_navigation{
+  .active{
+    color: $text_blue;
+  }
+}

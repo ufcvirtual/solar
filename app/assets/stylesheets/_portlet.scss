@@ -31,7 +31,6 @@ $portlet_settings_padding: $portlet_main_padding;
     width: $portlet_width - $portlet_main_padding*2;
     height: $portlet_height - $portlet_main_padding*2;
     overflow-y:auto;
-    background-color: $color_main_light;
 }
 
 // excecao para portlet do facebook
@@ -48,54 +47,39 @@ $portlet_settings_padding: $portlet_main_padding;
 }
 
 .slide-settings {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 9;
-    padding: 0;
-    width: $portlet_settings_width;
-    height: $portlet_settings_height;
-    background-color: white;
-    overflow-y:auto;
-}
-
-.slide-settings h3 {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  padding: 0;
+  width: $portlet_settings_width;
+  height: $portlet_settings_height;
+  overflow-y:auto;
+  h3 {
     margin-top: 6px;
     margin-left: 6px;
     font-family: 'PT Sans', sans-serif;
     text-transform: uppercase;
-    color: #666666;
     font-size: 12px;
-}
-
-.slide-settings ul, h3 {
+  }
+  ul, h3 {
     padding: 0;
-}
-
-.slide-settings li {
+  }
+  li {
     padding: 5px 6px 2px 25px;
     position: relative;
-}
-
-.slide-settings li:hover {
-    background-color: #eef3f9;
-}
-
-.slide-settings li.active {
-    background-color: #d8dfe9;
-    color: #000;
+  }
+  li.active {
     font-weight: bold;
-}
-
-.slide-settings li .counter {
+  }
+  li .counter {
     position: absolute;
     top: 3px;
     right: 5px;
-    background-color: #d7dfea;
-    color: #3b5e9a;
     padding: 2px 5px 1px 5px;
     @include rounded-corners(3px);
     font-size: 11px;
+  }
 }
 
 .block_wrapper > .block_small:nth-child(3) {

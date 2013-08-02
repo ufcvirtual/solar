@@ -1,0 +1,21 @@
+.slide-main {
+  background-color: $color_main_light;
+}
+
+.slide-settings {
+  background-color: white;
+  h3 {
+    color: #666666;
+  }
+  li:hover {
+    background-color: #eef3f9;
+  }
+  li.active {
+    background-color: #d8dfe9;
+    color: #000;
+  }
+  li .counter {
+    background-color: #d7dfea;
+    color: #3b5e9a;
+  }
+}
