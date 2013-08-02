@@ -24,7 +24,6 @@ class Assignment < ActiveRecord::Base
   before_save :define_end_evaluation_date
 
   validates :name, :enunciation, :type_assignment, presence: true
-  #validate :verify_offer_date_range
 
   ## define uma data final de avaliacao caso nao esteja definida
   def define_end_evaluation_date(allocation_tag)
