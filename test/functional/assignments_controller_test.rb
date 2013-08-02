@@ -92,45 +92,6 @@ class AssignmentsControllerTest < ActionController::TestCase
      } #logo, verifica se ele realmente não foi adicionado ao grupo (validação da permissão)
   end 
 
-
-
-  ##
-  # Evaluate
-  #
-
-  # Perfil com permissao e usuario com acesso
-  test "permitir avaliar atividade individual para usuario com permissao" do
-    sign_in users(:professor)
-    post(:evaluate, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :grade => 7})
-    assert_response :success
-    assert_template :evaluate_assignment_div
-  end
-
-  # Perfil com permissao e usuario com acesso, mas fora do período permitido
-  test "nao permitir avaliar atividade individual para usuario com permissao e atividade fora do periodo" do
-    sign_in users(:professor)
-    post(:evaluate, {:id => assignments(:a14).id, :student_id => users(:aluno1).id, :grade => 7})
-    assert (SentAssignment.find_by_assignment_id_and_user_id(assignments(:a9).id, users(:aluno1).id).grade != 7) # não realizou mudança
-  end
-
-  # Perfil com permissao e usuario sem acesso
-  test "nao permitir avaliar atividade individual para usuario com permissao e sem acesso" do
-    sign_in users(:professor)
-    post(:evaluate, {:id => assignments(:a10).id, :student_id => users(:aluno1).id, :grade => 7})
-    assert_response :redirect
-    assert_redirected_to(home_path)
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
-  end
-
-  # Perfil sem permissao e usuario com acesso
-  test "nao permitir avaliar atividade individual para usuario sem permissao e com acesso" do
-    sign_in users(:aluno1)
-    post(:evaluate, {:id => assignments(:a9).id, :student_id => users(:aluno1).id, :grade => 10})
-    assert_response :redirect
-    assert_redirected_to(home_path)
-    assert_equal( flash[:alert], I18n.t(:no_permission) )
-  end
-
   ##
   # Send_comment
   ##

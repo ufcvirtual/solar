@@ -124,7 +124,7 @@ class AssignmentsController < ApplicationController
     @group_id        = params[:group_id].nil? ? nil : params[:group_id] 
     @group           = GroupAssignment.find(params[:group_id]) unless @group_id.nil? # grupo
     @sent_assignment = @assignment.sent_assignment_by_user_id_or_group_assignment_id( @student_id, @group_id)
-    @situation       = @assignment.assignment_situation_of_student(@student_id, @group_id)
+    @situation       = @assignment.situation_of_student(@student_id, @group_id)
     @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  # arquivos que fazem parte da descrição da atividade
 
     #Pegando allocation da sessão
@@ -164,7 +164,8 @@ class AssignmentsController < ApplicationController
     unless params['btn_cancel'] # clicou em "salvar"
       begin
         # verifica se ainda está no prazo
-        raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.assignment_in_time?(current_user.id)
+        allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+        raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.assignment_in_time?(allocation_tag, current_user.id)
 
         GroupAssignment.transaction do
           deleted_groups_ids.each do |deleted_group_id| # deleção de grupos
@@ -215,12 +216,12 @@ class AssignmentsController < ApplicationController
     @group_id   = (params[:group_id].nil? or params[:group_id].blank?) ? nil : params[:group_id]
     grade       = params['grade'].blank? ? params['grade'] : params['grade'].tr(',', '.') 
     begin
-      raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.on_evaluation_period?(current_user.id) # verifica se está no prazo
       @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
-    academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(@allocation_tag.id,@assignment.id, 'Assignment')      
-    sent_assignment = SentAssignment.find_or_create_by_academic_allocation_id_and_user_id_and_group_assignment_id(academic_allocation.id, student_id, group_id)
+      raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.on_evaluation_period?(@allocation_tag, current_user.id) # verifica se está no prazo
+      academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(@allocation_tag.id, @assignment.id, 'Assignment')
+      @sent_assignment = SentAssignment.find_or_create_by_academic_allocation_id_and_user_id_and_group_assignment_id(academic_allocation.id, @student_id, @group_id)
       @sent_assignment.update_attributes!(:grade => grade)
-      @situation       = Assignment.assignment_situation_of_student(@assignment.id, @student_id, @group_id)
+      @situation       = @assignment.situation_of_student(@student_id, @group_id)
       respond_to do |format|
         format.html { render 'evaluate_assignment_div', :layout => false }
       end
@@ -380,7 +381,7 @@ class AssignmentsController < ApplicationController
 
           # verifica, se é responsável da classe ou aluno que esteja acessando informações dele mesmo
           #raise CanCan::AccessDenied unless assignment.user_can_access_assignment(current_user.id, current_user.id, group_id)
-          #raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment.assignment_in_time?(current_user.id) # verifica período para envio do arquivo
+          #raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless assignment.assignment_in_time?(allocation_tag, current_user.id) # verifica período para envio do arquivo
 
           academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id,assignment.id, 'Assignment')          
           sent_assignment = SentAssignment.find_or_create_by_academic_allocation_id_and_user_id_and_group_assignment_id!(academic_allocation.id, user_id, group_id)
@@ -448,7 +449,8 @@ class AssignmentsController < ApplicationController
 
     begin 
       # verifica período para envio do arquivo
-      raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.assignment_in_time?(current_user.id) 
+      allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+      raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.assignment_in_time?(allocation_tag, current_user.id) 
 
       unless groups_to_import.empty?
         groups_to_import.each do |group_to_import|

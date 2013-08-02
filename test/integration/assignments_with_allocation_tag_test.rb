@@ -402,4 +402,45 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
+  ##
+  # Evaluate
+  #
+
+  # Perfil com permissao e usuario com acesso
+  test "permitir avaliar atividade individual para usuario com permissao" do
+    login users(:professor)
+    get @quimica_tab
+    post evaluate_assignment_path :id => assignments(:a9).id, :student_id => users(:aluno1).id, :grade => 7
+    assert_response :success
+    assert_template :evaluate_assignment_div
+  end
+
+  # Perfil com permissao e usuario com acesso, mas fora do período permitido
+  test "nao permitir avaliar atividade individual para usuario com permissao e atividade fora do periodo" do
+    login users(:professor)
+    get @quimica_tab
+    post evaluate_assignment_path :id => assignments(:a14).id, :student_id => users(:aluno1).id, :grade => 7
+    assert (SentAssignment.find_by_academic_allocation_id_and_user_id(academic_allocations(:acaal12).id, users(:aluno1).id).grade != 7) # não realizou mudança
+  end
+
+  # Perfil com permissao e usuario sem acesso
+  test "nao permitir avaliar atividade individual para usuario com permissao e sem acesso" do
+    login users(:professor)
+    get @quimica_tab
+    post evaluate_assignment_path :id => assignments(:a10).id, :student_id => users(:aluno1).id, :grade => 7
+    assert_response :redirect
+    assert_redirected_to(home_path)
+    assert_equal( flash[:alert], I18n.t(:no_permission) )
+  end
+
+  # Perfil sem permissao e usuario com acesso
+  test "nao permitir avaliar atividade individual para usuario sem permissao e com acesso" do
+    login users(:aluno1)
+    get @quimica_tab
+    post evaluate_assignment_path :id => assignments(:a9).id, :student_id => users(:aluno1).id, :grade => 10
+    assert_response :redirect
+    assert_redirected_to(home_path)
+    assert_equal( flash[:alert], I18n.t(:no_permission) )
+  end
+
 end

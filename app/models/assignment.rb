@@ -23,17 +23,12 @@ class Assignment < ActiveRecord::Base
 
   before_save :define_end_evaluation_date
 
-  validates :name, :enunciation, :type_assignment, :allocation_tag_id, presence: true
-  validate :verify_offer_date_range
+  validates :name, :enunciation, :type_assignment, presence: true
+  #validate :verify_offer_date_range
 
   ## define uma data final de avaliacao caso nao esteja definida
   def define_end_evaluation_date(allocation_tag)
     self.end_evaluation_date = allocation_tag.group.offer.end_date if (end_evaluation_date.nil? or end_evaluation_date.blank? or (end_evaluation_date.to_date < schedule.end_date.to_date)) 
-  end
-
-  ## Datas da atividade devem estar no intervalo de datas da oferta
-  def verify_offer_date_range(allocation_tag)
-    errors.add(:base, I18n.t(:final_date_smaller_than_offer, :scope => [:assignment, :notifications], :end_date_offer => allocation_tag.group.offer.end_date.to_date)) if schedule.end_date > allocation_tag.group.offer.end_date
   end
 
   def student_group_by_student(student_id)
@@ -48,14 +43,14 @@ class Assignment < ActiveRecord::Base
 
   def sent_assignment_by_user_id_or_group_assignment_id(user_id, group_assignment_id)
     SentAssignment.joins(:academic_allocation).where(user_id: user_id, group_assignment_id: group_assignment_id, academic_allocations: {academic_tool_id: self.id}).first
-  end            
+  end   
 
   ## Recupera situação do aluno na atividade
-  def assignment_situation_of_student(student_id, group_assignment_id = nil)
+  def situation_of_student(student_id, group_assignment_id = nil)
     student_group = student_group_by_student(student_id) unless student_id.nil?
     user_id = (type_assignment == Assignment_Type_Group) ? nil : student_id
     group_id = (student_group.nil? ? group_id : student_group.id) # se aluno estiver em grupo, recupera id
-    sent_assignment = sent_assignment_by_user_id_or_group_assignment_id(user_id,group_assignment_id) 
+    sent_assignment = sent_assignment_by_user_id_or_group_assignment_id(user_id, group_assignment_id) 
 
 
     if schedule.start_date.to_date > Date.current()
@@ -82,7 +77,7 @@ class Assignment < ActiveRecord::Base
   end
 
 
-  def extra_time?(allocation_tag,user_id)
+  def extra_time?(allocation_tag, user_id)
     (allocation_tag.is_user_class_responsible?(user_id) and closed?)
   end
 
@@ -135,13 +130,13 @@ class Assignment < ActiveRecord::Base
 
       assignments_grades[idx] = sent_assignment.nil? ? nil : sent_assignment.grade #se tiver sent_assignment, tenta pegar nota
       has_comments[idx] = sent_assignment.nil? ? nil :  (not sent_assignment.assignment_comments.empty?) # verifica se há comentários para o aluno
-      situation[idx] = assignment.assignment_situation_of_student(student_id)
+      situation[idx] = assignment.situation_of_student(student_id)
     end
 
     return {"assignments" => assignments, "groups_ids" => groups_ids, "assignments_grades" => assignments_grades, "has_comments" => has_comments, "situation" => situation}
   end
 
-  def user_can_access_assignment(allocation_tag,current_user_id, user_id, group_id = nil)
+  def user_can_access_assignment(allocation_tag, current_user_id, user_id, group_id = nil)
     student_of_class  = !allocations.where(:profile_id => Profile.student_profile).where(:user_id => current_user_id).empty?
     class_responsible = allocation_tag.is_user_class_responsible?(current_user_id)
     can_access = (user_id.to_i == current_user_id)

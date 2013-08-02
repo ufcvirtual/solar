@@ -7,8 +7,8 @@
       =t :groups, :scope => [:assignment, :group_assignments]
     %span.group_elements_float
       - if can? :manage_groups, @assignment
-        - btn_class = @assignment.assignment_in_time?(current_user.id) ? "btn btn_main" : "btn btn_disabled"
-        = button_tag t(:manage_groups, :scope => [:assignment, :group_assignments]), :class => btn_class, :id => "manage_group_assignment", :alt => t(:manage_groups, :scope => [:assignment, :group_assignments]), :onclick => "javascript:btn_manage_groups('#{@assignment.id}', '#{verify_group_of_assignments(@assignment.id)}');", :disabled => !@assignment.assignment_in_time?(current_user.id)
+        - btn_class = @assignment.assignment_in_time?(@allocation_tag, current_user.id) ? "btn btn_main" : "btn btn_disabled"
+        = button_tag t(:manage_groups, :scope => [:assignment, :group_assignments]), :class => btn_class, :id => "manage_group_assignment", :alt => t(:manage_groups, :scope => [:assignment, :group_assignments]), :onclick => "javascript:btn_manage_groups('#{@assignment.id}', '#{verify_group_of_assignments(@assignment.id)}');", :disabled => !@assignment.assignment_in_time?(@allocation_tag, current_user.id)
         = button_tag(:type => 'button', :class => "btn btn_caution", :id => "btn_cancel_management", :onclick => "javascript:cancel_management('#{manage_groups_assignment_path(@assignment.id)}');", :alt => t(:cancel, :scope => [:assignment, :group_assignments])) do
           = content_tag(:span, t(:cancel, :scope => [:assignment, :group_assignments]))
         = button_tag t(:save, :scope => [:assignment, :group_assignments]), :class => "btn btn_main", :id => "btn_save_management", :onclick => "javascript:save_management('#{manage_groups_assignment_path(@assignment.id)}');", :alt => t(:save, :scope => [:assignment, :group_assignments])

@@ -6,6 +6,8 @@ class GroupAssignment < ActiveRecord::Base
 
   has_many :group_participants, :dependent => :destroy
 
+  has_many :users, through: :group_participants
+
   validates :group_name, :presence => true, :length => { :maximum => 20 }
   validate :unique_group_name
 
