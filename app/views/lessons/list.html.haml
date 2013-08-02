@@ -1,6 +1,6 @@
 = javascript_include_tag "tooltip"
 
-.list_lessons
+.list_lessons{:"data-link-list" => list_lessons_path(allocation_tags_ids: @allocation_tags_ids)}
   = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids]) 
   = button_tag t(".new_module"), class: 'btn btn_default', id: "new_module", :'data-link-new-module' => new_lesson_module_path(:allocation_tags_ids => params[:allocation_tags_ids]), :'data-tooltip' => t(".new_module")
 
@@ -60,9 +60,9 @@
 
                   = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", onclick: "javascript: edit_lesson('#{lesson_module.id}');", id: 'edit_lesson', class: 'btn', :'data-tooltip' => t(".edit_lesson")
                   = link_to (content_tag(:i, nil, :class=>'icon-archive')), "#", onclick: "", class: 'btn btn_default manage_files_lesson', :value => lesson_module.id, :'data-tooltip' => t(".manage_files")
-                  = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", onclick:  "javascript: delete_lesson('#{lesson_module.id}');", id: 'delete_lesson', class: 'btn', :'data-tooltip' => t(".delete_lesson")
+                  = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn delete_lesson', :'data-tooltip' => t(".delete_lesson"), :'data-link-delete' => lesson_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), :'data-module_id' => lesson_module.id
                   = link_to (content_tag(:i, nil, :class=>'icon-install')), "#", onclick: "javascript: download_lesson_zip('#{lesson_module.id}');", id: 'download_lesson', class: 'btn', :'data-tooltip' => t(".download_zip")
-                  = link_to (content_tag(:i, nil, :class=>'icon-checkmark')), "#", id: 'release_lessons', class: 'btn', "data-module_id" => lesson_module.id, :'data-tooltip' => t(".release")
+                  = link_to (content_tag(:i, nil, :class=>'icon-checkmark')), "#", id: 'release_lessons', class: 'btn', :"data-module_id" => lesson_module.id, :'data-tooltip' => t(".release"), :"data-link-update" => change_status_lesson_path(id: ':id', status: Lesson_Approved, allocation_tags_ids: @allocation_tags_ids)
             / Lessons list
             %table.tb_list
               %thead
@@ -97,7 +97,7 @@
                             = lesson.description
 
                       %td{style: "width: 160px", align: 'center'}
-                        = t(".since") unless !lesson.schedule.end_date.nil?
+                        = t(".since") unless not(lesson.schedule.end_date.nil?)
                         = l(lesson.schedule.start_date, format: :normal)
                         = ' - '
                         - if lesson.has_end_date?
@@ -106,7 +106,8 @@
                           = t(:no_end_date, scope: [:lessons, :list])
 
                       %td{style: "width: 70px", align: 'center'}
-                        = link_to (image_tag "lesson/#{(lesson.status == Lesson_Test) ? 'rejected' : 'released'}_lesson.png"), "#", class: 'change_lesson_status', "data-lesson_id" => lesson.id, "data-status_to" => [Lesson_Test, Lesson_Approved].delete_if {|v| v == lesson.status}
+                        - status = [Lesson_Test, Lesson_Approved].delete_if {|v| v == lesson.status}
+                        = link_to (image_tag "lesson/#{(lesson.status == Lesson_Test) ? 'rejected' : 'released'}_lesson.png"), "#", id: 'change_lesson_status', :"data-link-update" => change_status_lesson_path(id: lesson.id, status: status, allocation_tags_ids: @allocation_tags_ids)
                 - else
                   %tr.lines
                     %td.lesson_description{colspan:  5}
@@ -166,28 +167,50 @@
 
     });
 
-    $('#release_lessons').click(function(){
-      $('#lesson_dropdown').hide();
-      var lesson_ids = get_selected_lessons($(this).attr('data-module_id'));
-      if (lesson_ids == "")
-        return false;
 
-      var url = "#{change_status_lesson_path(':id', Lesson_Approved, allocation_tags_ids: params[:allocation_tags_ids])}".replace(':id', lesson_ids);
-      update_object(url, '#{list_lessons_path(allocation_tags_ids: @allocation_tags_ids)}');
+
+
+
+    $('#change_lesson_status, #release_lessons').click(function() {
+      erase_flash_messages();
+      $('#lesson_dropdown').hide();
+
+      var module_id = $(this).data("module_id");
+      var url = $(this).data("link-update");
+
+      if(typeof(module_id) != "undefined"){
+        var lesson_ids = get_selected_lessons($(this).data('module_id'));
+        if (lesson_ids == "")
+          return false;
+        url = url.replace(':id', lesson_ids);
+      }
+
+      $.ajax({
+        url: url,
+        type: "PUT",
+        success: function(data) {
+          $.get($('.list_lessons').data('link-list'), function(data){
+            $('.list_lessons:first').replaceWith(data);
+          });
+        },
+        error: function(data) {
+          if (typeof(data.responseText) != "undefined")
+            flash_message(JSON.parse(data.responseText).msg, 'alert');
+
+          if(typeof(module_id) != "undefined"){
+            $.get($('.list_lessons').data('link-list'), function(data){
+              $('.list_lessons:first').replaceWith(data);
+            });
+          }
+        }
+      });
 
       return false;
     });
 
-    $('.change_lesson_status').click(function() {
-      $('#lesson_dropdown').hide();
-      var lesson_id = $(this).attr('data-lesson_id');
-      var status_to = $(this).attr('data-status_to');
-      var url = "#{change_status_lesson_path(':id', ':status', allocation_tags_ids: params[:allocation_tags_ids])}".replace(':id', lesson_id).replace(':status', status_to);
 
-      update_object(url, '#{list_lessons_path(allocation_tags_ids: @allocation_tags_ids)}');
 
-      return false;
-    });
+
 
     $(".up, .down").click(function() {
       $('#lesson_dropdown').hide();
@@ -261,6 +284,35 @@
         alert("#{I18n.t(:one_lesson_must_be_selected, scope: [:lesson_files])}");
     });
 
+
+
+
+
+
+
+
+
+
+
+    $(".delete_lesson").click(function(){
+      var lessons = get_selected_lessons($(this).data("module_id"));
+
+      if (lessons.length){
+        $(this).nice_delete({
+          url: $(this).data("link-delete").replace(':id', lessons),
+          complement_success: function() {
+            $.get($('.list_lessons').data('link-list'), function(data){
+              $('.list_lessons:first').replaceWith(data);
+            });
+          }
+        });
+      } else
+        alert('#{I18n.t(:must_select_a_lesson, scope: [:lessons, :notifications])}');
+    });
+
+
+
+
   });
 
   // função que retorna uma lista de ids das aulas selecionadas em determinado módulo
@@ -324,20 +376,10 @@
       alert('#{I18n.t(:select_only_a_lesson, scope: [:lessons, :notifications])}');
   }
 
-  function delete_lesson(module_id){
-    lessons = get_selected_lessons(module_id);
-    allocation_tags_ids = $("#allocation_tags_ids").val();
 
-    if (lessons.length == 1){
-      delete_object( "#{lesson_path(':id', :allocation_tags_ids => params[:allocation_tags_ids])}".replace(':id', lessons), '#{list_lessons_path(:allocation_tags_ids => @allocation_tags_ids)}'); 
-      if ($('[name="m_'+module_id+'"]:checked').parents('tr').attr('lesson_status') == "1") {
-        alert('#{I18n.t(:cant_delete, scope: [:lessons, :errors])}');
-      }  
-    } else {
-       if(lessons.length <1){
-          alert('#{I18n.t(:must_select_a_lesson, scope: [:lessons, :notifications])}');
-        } else{
-          alert('#{I18n.t(:select_only_a_lesson, scope: [:lessons, :notifications])}');
-        }  
-    }
-  }
+
+
+
+
+
+    

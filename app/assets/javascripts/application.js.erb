@@ -290,7 +290,7 @@ $.fn.nice_delete = function(options) {
   if (typeof(options) == "undefined")
     options = {};
 
-  options = $.extend({ parent: 'tr' }, options);
+  options = $.extend({ parent: 'tr', url: $(this).data("link-delete") }, options);
   var parent = $(this).parents(options.parent);
 
   if (typeof(options) != "undefined" && typeof(options.success) == "undefined") { // definir success
@@ -305,16 +305,17 @@ $.fn.nice_delete = function(options) {
     }
   }
 
-  if (typeof(options.error) == "undefined")
+  if (typeof(options.error) == "undefined") {
     options.error = function(data) {
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
         flash_message(data.alert, 'alert');
     }
+  }
 
   $.ajax({
     method: "DELETE",
-    url: $(this).data("link-delete"),
+    url: options.url,
     success: options.success,
     error: options.error
   });

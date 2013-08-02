@@ -490,6 +490,10 @@
     errors:
       cant_delete: "Lesson became draft, because it was available to use by students!"     
       invalid_lesson_to_download: Only not empty and file lessons can be downloaded
+      deleted: Lessons weren't deleted
+    success:
+      saved_as_draft: Lessons were sucessfully created or saved as draft
+      deleted: Lessons were successfully created
 
   lesson_modules:
     general_of_offer: "General"

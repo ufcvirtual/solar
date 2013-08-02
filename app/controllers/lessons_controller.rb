@@ -25,6 +25,7 @@ class LessonsController < ApplicationController
     begin
       authorize! :list, Lesson, on: [allocation_tags].flatten
       @allocation_tags = AllocationTag.where(id: allocation_tags)
+      @allocation_tags_ids = @allocation_tags.map(&:id)
     rescue Exception => error
       render nothing: true, status: 500
     end
@@ -129,17 +130,21 @@ class LessonsController < ApplicationController
 
   def destroy
     authorize! :destroy, Lesson, on: params[:allocation_tags_ids].split(" ")
-    @lesson = Lesson.find(params[:id])
 
-    success = true
-    unless @lesson.destroy
-      @lesson.status = Lesson_Test # a aula nao foi deletada, mas vai ser transformada em rascunho
-      success = false unless @lesson.save
-    end
-
-    respond_to do |format|
-      format.html{ render nothing: true }
-      format.json{ render json: {success: success}, status: success ? :ok : :unprocessable_entity }
+    test_lesson = false
+    Lesson.transaction do
+      begin
+        Lesson.where(id: params[:id].split(",")).each do |lesson|
+          unless lesson.destroy
+            lesson.status = Lesson_Test # a aula nao foi deletada, mas vai ser transformada em rascunho
+            test_lesson = true
+            raise "error" unless lesson.save
+          end
+        end
+        render json: {success: true, notice: (test_lesson ? t(:saved_as_draft, scope: [:lessons, :success]) : t(:deleted, scope: [:lessons, :success]))}
+      rescue
+        render json: {success: false, alert: t(:deleted, scope: [:lessons, :errors])}, status: :unprocessable_entity
+      end
     end
   end
 
