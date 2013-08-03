@@ -579,7 +579,9 @@ function saveDeletion(node, root_node){
       jQuery("#lesson_file_management").html(data);
       deselect_all();
       if(root_node) // atualiza listagem para que esta aula vire, se necessário, rascunho
-        call_page("<%= Rails.application.routes.url_helpers.list_lessons_path %>");
+        $.get($('.list_lessons').data('link-list'), function(data){
+          $('.list_lessons:first').replaceWith(data);
+        });
     },
     error: function(data) {
       flash_message("<%=I18n.t(:delete_error, :scope => [:lesson_files])%>", "alert", "flash_messages");

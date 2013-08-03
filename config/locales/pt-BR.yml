@@ -634,6 +634,9 @@
       manage_files: Gerenciar arquivos
       delete_lesson: Deletar aula
       download_zip: Baixar zip
+      type: Tipo
+      link_type: Link
+      file_type: Arquivo
     new:
       draft: rascunho
       approved: liberada
@@ -655,9 +658,11 @@
       cant_delete: "Aula tornou-se rascunho, pois estava disponível para uso dos alunos!"  
       invalid_lesson_to_download: Apenas aulas do tipo de arquivo e não vazias podem ser baixadas
       deleted: Não foi possível deletar as aulas
+      must_select_module: Um módulo destino deve ser selecionado
     success:
       saved_as_draft: Aulas deletadas ou salvas como rascunho com sucesso
       deleted: Aulas deletadas com sucesso
+      moved: Aulas movidas com sucesso
 
   lesson_modules:
     general_of_offer: "Geral"

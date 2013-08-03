@@ -470,6 +470,9 @@
       manage_files: Manage files
       delete_lesson: Delete lesson
       download_zip: Download zip
+      type: Type
+      link_type: Link
+      file_type: File
     new:
       draft: draft
       approved: approved
@@ -491,9 +494,11 @@
       cant_delete: "Lesson became draft, because it was available to use by students!"     
       invalid_lesson_to_download: Only not empty and file lessons can be downloaded
       deleted: Lessons weren't deleted
+      must_select_module: A destination module must be selected
     success:
       saved_as_draft: Lessons were sucessfully created or saved as draft
       deleted: Lessons were successfully created
+      moved: Lessons were sucessfully moved
 
   lesson_modules:
     general_of_offer: "General"

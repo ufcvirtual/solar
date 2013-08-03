@@ -157,7 +157,7 @@ class LessonsController < ApplicationController
   end
 
   def download_files
-      authorize! :download_files, Lesson, :on => [params[:allocation_tags_ids]].flatten.collect{|id| id.to_i}
+      authorize! :download_files, Lesson, :on => params[:allocation_tags_ids]
 
       if verify_lessons_to_download(params[:lessons_ids].split(',').flatten, true)
         zip_file_path = compress(:under_path => @all_files_paths, :folders_names => @lessons_names)
@@ -178,7 +178,7 @@ class LessonsController < ApplicationController
   # este método serve apenas para retornar um erro ou prosseguir com o download através da chamada ajax da página
   def verify_download
     begin
-      authorize! :download_files, Lesson, :on => [params[:allocation_tags_ids]].flatten.collect{|id| id.to_i}
+      authorize! :download_files, Lesson, :on => params[:allocation_tags_ids]
       raise "error" unless verify_lessons_to_download(params[:lessons_ids])
       status = 200
     rescue CanCan::AccessDenied
@@ -220,26 +220,20 @@ class LessonsController < ApplicationController
 
   ##
   def change_module
-
     begin
-      authorize! :change_module, Lesson, :on => [params[:allocation_tags_ids]].flatten.collect{|id| id.to_i}
+      authorize! :change_module, Lesson, :on => params[:allocation_tags_ids]
       
-      lessons = (params["lessons_to_move_#{params[:id]}"].split(",").flatten.collect{|id| id.to_i} || [])
-
-      raise "#{t(:one_lesson_must_be_selected, :scope => [:lessons, :errors])}" if lessons.empty?
-      raise "#{t(:one_module_must_be_selected, :scope => [:lessons, :errors])}" if (params[:move_to_module].nil? || LessonModule.find(params[:move_to_module]).nil?)
+      raise "#{t(:must_select_lessons, scope: [:lessons, :notifications])}" if params[:lessons_ids].empty?
+      raise "#{t(:must_select_module, scope: [:lessons, :errors])}" if (params[:move_to_module].nil? || LessonModule.find(params[:move_to_module]).nil?)
 
       Lesson.transaction do
-        lessons.each do |lesson|
-          Lesson.find(lesson).update_attribute(:lesson_module_id, params[:move_to_module].to_i)
-        end
+        Lesson.where(id: params[:lessons_ids].split(",")).update_all(lesson_module_id: params[:move_to_module])
       end
 
-      render nothing: true
+      render json: {success: true, msg: t(:moved, scope: [:lessons, :success])}
     rescue Exception => error
       render json: {success: false, msg: error.message}, status: :unprocessable_entity
     end
-
   end
 
   private
@@ -258,7 +252,7 @@ class LessonsController < ApplicationController
       return false if lessons_ids.empty? # não selecionou nenhuma aula
       @lessons, @all_files_paths, @lessons_names = [], [], []
 
-      lessons_ids.each do |lesson_id|
+      lessons_ids.split(",").flatten.each do |lesson_id|
         lesson_dir   = File.join(Lesson::FILES_PATH, lesson_id)
         lesson_empty = ((not File.exist?(lesson_dir)) or (Dir.entries(lesson_dir).size <= 2))
         file_type    = Lesson.find(lesson_id.to_i).type_lesson == Lesson_Type_File
