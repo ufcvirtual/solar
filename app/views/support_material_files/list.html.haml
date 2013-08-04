@@ -1,6 +1,6 @@
 = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
-.list_support_material
+.list_support_material{:"data-link-list" => list_support_material_files_path(allocation_tags_ids: @allocation_tags_ids)}
   .block_wrapper
     .block_title
       %h2= t(:support_material, scope: [:editions, :items])
@@ -26,9 +26,9 @@
 
             .block_toolbar_right
               .btn-group
-                = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit edit_material', "data-link-to-edit" => edit_support_material_file_path(':id', allocation_tags_ids: [allocation_tag.id]), "data-edit-title" => t(".edit_link"), disabled: true
+                = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit edit_material', :"data-link-edit" => edit_support_material_file_path(':id', allocation_tags_ids: [allocation_tag.id]), "data-edit-title" => t(".edit_link"), disabled: true
                 / = link_to (content_tag(:i, nil, :class=>'icon-install')), "#", onclick: "javascript: alert('em desenvolvimento');", id: 'download_meterial', class: 'btn'
-                = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del delete_material', :"data-link-to-delete" => support_material_file_path(':id', allocation_tags_ids: [allocation_tag.id]), :"data-link-to-list" => list_support_material_files_path(allocation_tags_ids: @allocation_tags_ids), disabled: true
+                = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del delete_material', :"data-link-delete" => support_material_file_path(':id', allocation_tags_ids: [allocation_tag.id]), disabled: true
 
           .block_wrapper.support_material
             - materials = allocation_tag.support_material_files
@@ -88,36 +88,38 @@
 
       var material_ids = $('.ckb_material:checked', $(this).parents("div.list_support_materials")).map(function() { return this.value; }).get();
       if (!(!material_ids.length || material_ids.length > 1 || !$('.ckb_material:checked:first').data('is-link'))) {
-        var url_edit = $(this).data('link-to-edit').replace(':id', material_ids);
+        var url_edit = $(this).data('link-edit').replace(':id', material_ids);
         showLightBoxURL(url_edit, 540, 90, true, $(this).data('edit-title'));
       }
       return false;
     });
 
     $('.delete_material').click(function(){
-      if(!$(this).hasClass('disabled')){
-        var material_ids = jQuery.map($(".ckb_material:checked"), function(n){
-          return ($(n).val());
-        });
-
-        var url = $(this).data('link-to-list');
-
-        if ($(material_ids).length != 0){
-          $.ajax({
-            type: 'DELETE',
-            url: $(this).data('link-to-delete').replace(':id', material_ids),
-            success: function(data){
-              flash_message(data.notice, 'notice');
-              $.get(url, function(data) {
-                $('.list_support_material:last').replaceWith(data);
-              });
-            },
-            error: function(){
-              flash_message(data.alert, 'alert');
-            }
+      if (!confirm("#{t(:message_confirm)}"))
+        return false;
+      else{
+        if(!$(this).hasClass('disabled')){
+          var material_ids = jQuery.map($(".ckb_material:checked"), function(n){
+            return ($(n).val());
           });
-        }else
-          return false;
+
+          if ($(material_ids).length != 0){
+            $.ajax({
+              type: 'DELETE',
+              url: $(this).data('link-delete').replace(':id', material_ids),
+              success: function(data){
+                flash_message(data.notice, 'notice');
+                $.get($('.list_support_material').data("link-list"), function(data) {
+                  $('.list_support_material:last').replaceWith(data);
+                });
+              },
+              error: function(){
+                flash_message(data.alert, 'alert');
+              }
+            });
+          }else
+            return false;
+        }
       }
     });
 

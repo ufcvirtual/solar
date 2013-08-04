@@ -1,4 +1,4 @@
-.block_wrapper.list_discussions
+.block_wrapper.list_discussions{:"data-link-list" => list_discussions_path(allocation_tags_ids: @allocation_tags_ids)}
 
   .block_title
     %h2= t(:discussion_table_title, :scope => [:discussion])

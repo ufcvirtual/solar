@@ -19,7 +19,6 @@
         complement_success: function(data) {
           var post_code_name = data.code_name;
           var id  = data.id;
-          var url = "#{courses_path(course_id: 'course_param')}";
           var course = $("#course");
 
           if(course.is_empty())
@@ -27,16 +26,18 @@
           else
             var course_id = course.combobox('value');
 
-          $.get(url.replace('course_param', course_id), function(data) {
+          var url = "#{courses_path(course_id: 'course_param')}".replace('course_param', course_id);
+
+          $.get(url, function(data) {
             $('.courses_list').html(data);
 
             var autocomplete_option = $('option[value='+id+']');
 
             if (!autocomplete_option.length){
-              // cria nova curso na lista
+              // cria novo curso na lista
               $("<option value="+id+">"+post_code_name+"</option>").appendTo("#course");
             }else{
-              // atualiza a curso alterada na lista do autocomplete
+              // atualiza o curso alterada na lista do autocomplete
               autocomplete_option.text(post_code_name);
               // se a curso alterada foi a selecionada no autocomplete, alterar o valor do input
               if(course_id == id)

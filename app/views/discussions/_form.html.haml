@@ -43,12 +43,7 @@
 
     $('#save').click(function(){
       $('form#discussion_form').serialize_and_submit({
-        complement_success: function(data) {
-          var url = "#{list_discussions_path(allocation_tags_ids: @allocation_tags_ids)}";
-          $.get(url, function(data) {
-            $('.list_discussions:last').replaceWith(data);
-          });
-        }
+        replace_list: $('.list_discussions')
       });
     });
 

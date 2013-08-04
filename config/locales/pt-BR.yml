@@ -663,6 +663,8 @@
       saved_as_draft: Aulas deletadas ou salvas como rascunho com sucesso
       deleted: Aulas deletadas com sucesso
       moved: Aulas movidas com sucesso
+      created: Aula criada com sucesso.
+      updated: Aula atualizada com sucesso.
 
   lesson_modules:
     general_of_offer: "Geral"
@@ -1492,13 +1494,21 @@
       save: Salvar
       cancel: Cancelar
     success:
-      created: Curso criada com sucesso.
-      updated: Curso atualizada com sucesso.
-      deleted: Curso deletada com sucesso.
+      created: Curso criado com sucesso.
+      updated: Curso atualizado com sucesso.
+      deleted: Curso deletado com sucesso.
     error:
       created: Não foi possível criar curso.
       updated: Não foi possível atualizar curso.
       deleted: Não foi possível deletar curso.
+
+  support_materials:
+    success:
+      created: Material de apoio criado com sucesso.
+      updated: Material de apoio atualizado com sucesso.
+      deleted: Material de apoio deletado com sucesso.
+    error:
+      must_select_something: Um ou mais itens devem ser selecionados
 
   #Facebook
 

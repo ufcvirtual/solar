@@ -71,7 +71,7 @@ class LessonsController < ApplicationController
 
       @lesson.type_lesson == Lesson_Type_File ? files_and_folders(@lesson) : manage_file = false
 
-      render ((manage_file != false) ? {template: "lesson_files/index"} : {nothing: true})
+      render ((manage_file != false) ? {template: "lesson_files/index"} : {json: {success: true, notice: t(:created, scope: [:lessons, :success])}})
     rescue
       render :new
     end # rescue
@@ -104,13 +104,7 @@ class LessonsController < ApplicationController
       @schedule_error = @lesson.schedule.errors.full_messages[0] unless @lesson.schedule.valid?
     end
 
-    respond_to do |format|
-      if error
-        format.html { render :edit }
-      else
-        format.html { render nothing: true }
-      end # else
-    end # end respond
+    render (error ? {action: :edit} : {json: {success: true, notice: t(:updated, scope: [:lessons, :success])}})
   end
 
   # PUT /lessons/1/change_status/1

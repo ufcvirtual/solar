@@ -206,7 +206,7 @@ function erase_flash_messages() {
  *  - Em caso de erro:
  *     -- O form é exibido novamente, depois do submit, mostrando os erros
  *  - Em caso de sucesso
- *    -- O lightbox fecha
+ *    -- O lightbox fecha (caso não haja opção dizendo o contrário)
  *    -- Exibe msg de notice (caso exista)
  **/
 $.fn.serialize_and_submit = function(options) {
@@ -218,20 +218,26 @@ $.fn.serialize_and_submit = function(options) {
       if (typeof(data) == "string" && data.search(".field_with_errors") != -1)
         $('' + form_id).replaceWith(data);
       else {
-        removeLightBox();
+        // se não houver opção indicando que o lightbox deve se manter aberto, o default é fechá-lo
+        if(typeof(options.dont_remove_lightbox) == "undefined" || !options.dont_remove_lightbox) 
+          removeLightBox();
+
         if (typeof(data) != "undefined" && typeof(data.notice) != "undefined")
           flash_message(data.notice, 'notice');
         if (typeof(options.complement_success) == "function")
           options.complement_success(data);
+        if (typeof(options.replace_list) != "undefined")
+          $.get(options.replace_list.data("link-list"), function(data){
+            options.replace_list.replaceWith(data);
+          });
       }
     }
   }
 
-  if(typeof(options) != "undefined" && typeof(options.files) != "undefined"){
+  if (typeof(options) != "undefined" && typeof(options.files) != "undefined")
     var data = (new FormData($(this)[0]));
-  }else{
+  else
     var data = $(this).serialize();
-  }
 
   var ajax_options = {
     type: $(this).attr('method'),
@@ -245,7 +251,6 @@ $.fn.serialize_and_submit = function(options) {
         flash_message(response.alert, 'alert');
     }
   };
-
 
   if (typeof(options.files) != "undefined") {
     $.extend(ajax_options, {

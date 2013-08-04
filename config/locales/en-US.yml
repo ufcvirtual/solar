@@ -499,6 +499,8 @@
       saved_as_draft: Lessons were sucessfully created or saved as draft
       deleted: Lessons were successfully created
       moved: Lessons were sucessfully moved
+      created: Lesson was sucessfully created
+      updated: Lesson was sucessfully updated
 
   lesson_modules:
     general_of_offer: "General"
@@ -1327,12 +1329,20 @@
       cancel: Cancel
     success:
       created: Course was successfully created.
-      updated: Course was successfully created.
-      deleted: Course was successfully created.
+      updated: Course was successfully updated.
+      deleted: Course was successfully deleted.
     error:
       created: Course wasn't created.
       updated: Course wasn't updated.
       deleted: Course wasn't deleted.
+
+  support_materials:
+    success:
+      created: Support Material was successfully created.
+      updated: Support Material was successfully updated.
+      deleted: Support Material was successfully deleted.
+    error:
+      must_select_something: One or more items must be selected
 
 #Facebook
 

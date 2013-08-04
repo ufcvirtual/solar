@@ -19,13 +19,13 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def new
-    authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
+    authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
 
     @support_material = SupportMaterialFile.new material_type: params[:material_type]
   end
 
   def create
-    authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
 
     begin
       @support_material = SupportMaterialFile.new(params[:support_material_file])
@@ -35,29 +35,29 @@ class SupportMaterialFilesController < ApplicationController
       @support_material.attachment_updated_at = Time.now
       @support_material.save!
 
-      render json: {success: true, notice: t(:created, scope: [:offers, :success])}
+      render json: {success: true, notice: t(:created, scope: [:support_materials, :success])}
     rescue
       if @support_material.is_link?
         render :new
       else
-        render json: {success: false, msg: @support_material.errors.full_messages.join(' ')}, status: :unprocessable_entity
+        render json: {success: false, alert: @support_material.errors.full_messages.join(' ')}, status: :unprocessable_entity
       end
     end
   end
 
   def edit
-    authorize! :update, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
+    authorize! :update, SupportMaterialFile, on: @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
 
     @support_material = SupportMaterialFile.find(params[:id])
   end
 
   def update
     @support_material = SupportMaterialFile.find(params[:id])
-    authorize! :update, SupportMaterialFile, on: [params[:allocation_tags_ids]].flatten.uniq
+    authorize! :update, SupportMaterialFile, on: @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
 
     begin
       @support_material.update_attributes!(params[:support_material_file])
-      render nothing: true
+      render json: {success: true, notice: t(:updated, scope: [:support_materials, :success])}
     rescue
       render :new
     end
@@ -70,7 +70,7 @@ class SupportMaterialFilesController < ApplicationController
       SupportMaterialFile.transaction do
         SupportMaterialFile.where(id: params[:id].split(",")).map(&:destroy)
       end
-      render json: {success: true, notice: t(:deleted, scope: [:groups, :success])}
+      render json: {success: true, notice: t(:deleted, scope: [:support_materials, :success])}
     rescue Exception => e
       render json: {success: false, msg: e.messages}, status: :unprocessable_entity
     end
@@ -110,7 +110,6 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def list
-    # raise "#{params}"
     @allocation_tags_ids = params[:allocation_tags_ids].uniq
     authorize! :list, SupportMaterialFile, on: @allocation_tags_ids
 
