@@ -137,6 +137,12 @@
     }
   }
 }
+.block_content.messages{
+  padding-right: 5px;
+  .btn{
+    margin-right: -5px;
+  }
+}
 .message_header_new, .message_div_show{
   color: $text_grey;
   padding: 0.5*$gutter 0.25*$gutter;

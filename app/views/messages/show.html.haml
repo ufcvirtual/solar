@@ -1,7 +1,7 @@
 .message_external_div
   .block_title
     %h2= @message.subject
-  .block_content
+  .block_content.messages
     .align-left
       = link_to ({action: 'new', id: @message.id, target: 'sender'}), class: 'btn btn_main', :'data-tooltip' => t(:message_reply) do
         %i.icon-reply
