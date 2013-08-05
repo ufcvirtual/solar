@@ -4,11 +4,11 @@
 .edition
   %fieldset#allocation_tag_selection
     %legend= t(".filter")
-    .filter_notice= t(".select_something")
     .filter_type
+      = label_tag :type, t(".type")
       = select_tag :type, options_from_collection_for_select(@types, 'id', 'description', @type), include_blank: true
-      %br
-      = link_to t(:search), "#", {class: 'btn', :"data-url-search" => groups_path, id: 'search'}
+      
+      = link_to t(:search), "#", {class: 'btn btn_main', :"data-url-search" => groups_path, id: 'search'}
 
   %fieldset.academic.invisible
     .items

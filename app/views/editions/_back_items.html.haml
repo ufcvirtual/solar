@@ -1,0 +1,22 @@
+= link_to t(:back), items_editions_path, {class: "btn", id: "back"}
+
+:javascript
+
+  $(".back").addClass("invisible");
+
+  $("#back").click(function(){
+    var data = {
+      course_id: $("#course").combobox("value"),
+      curriculum_unit_id: $("#curriculum_unit").combobox("value"),
+      semester_id: $("#semester").combobox("value"),
+      groups_id: $('[name="group[group_id][]"]:checked').map(function(){ return $(this).val() }).toArray()
+    };
+
+    $.get($(this).attr("href"), data, function(data){
+      $(".edition_items").replaceWith(data);
+    });
+
+    $(".back").addClass("invisible");
+
+    return false;
+  });

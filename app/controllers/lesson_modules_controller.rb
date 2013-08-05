@@ -71,7 +71,7 @@ class LessonModulesController < ApplicationController
     if @module.destroy
       render json: {success: true}, status: :ok
     else
-      render json: {success: false, msg: @module.errors.full_messages}, status: :unprocessable_entity
+      render json: {success: false, alert: @module.errors.full_messages}, status: :unprocessable_entity
     end
   end
 

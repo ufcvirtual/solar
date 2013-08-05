@@ -1149,6 +1149,8 @@
       created: Group wasn't created.
       updated: Group wasn't updated.
       deleted: Group wasn't deleted.
+    groups_checkboxes:
+      select_all: Select all
 
   simple_form:
     labels:
@@ -1164,7 +1166,7 @@
       semesters: "Semesters"
       groups: "Groups"
       modules: "Modules"
-      type: Type
+      type: "Type*"
     index:
       edition: Edition
       filter: Filter
@@ -1193,27 +1195,34 @@
     semesters:
       all: All
       actives: Actives
-      type: Type
+      type: "Type*"
       course: Course
       curriculum_unit: Curriculum Unit
       period: Period
       warning: "Select a Curriculum Unit or a Course to search for all."
     courses:
-      type: Type
+      type: "Type*"
       course: Course
     curriculum_units:
-      type: Type
+      type: "Type*"
       curriculum_unit: Curriculum Unit
     groups:
-      type: Type
-      course: Course
-      curriculum_unit: Curriculum Unit
-      semester: Semester
+      type: "Type*"
+      course: "Course*"
+      curriculum_unit: "Curriculum Unit*"
+      semester: "Semester*"
       warning: All items must be selected to search.
     cant_save: It wasn't possible to save
     are_you_sure_of_deletion: Are you sure that you want to delete?
     cant_delete: It wasn't possible to delete
     not_possible_to_access_page_with_data: It's not possible to access this page with the given data
+    content:
+      type: "Type*"
+      course: "Course*"
+      curriculum_unit: "Curriculum Unit*"
+      semester: "Semester*"
+      offer: Offer
+      group: Group
 
   curriculum_units:
     success:

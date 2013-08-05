@@ -160,14 +160,18 @@ $(document).ready(function() {
 });
 
 
-/*******************************************************************************
- * Extendendo o JQuery para Trabalhar bem com o REST. (Incluindo suporte aos métodos "PUT"  e "DELETE"
- * */
+/******************************************************************************************************
+ * Extendendo o JQuery para Trabalhar bem com o REST. (Incluindo suporte aos métodos "PUT"  e "DELETE")
+ ******************************************************************************************************/
 function _ajax_request(url, data, callback, type, method) {
   if (jQuery.isFunction(data)) {
     callback = data;
     data = {};
   }
+
+  if (typeof(type) == "undefined")
+    type = "json";
+
   return jQuery.ajax({
     type: method,
     url: url,
@@ -181,7 +185,7 @@ jQuery.extend({
   put: function(url, data, callback, type) {
     return _ajax_request(url, data, callback, type, 'PUT');
   },
-  delete_: function(url, data, callback, type) {
+  delete: function(url, data, callback, type) {
     return _ajax_request(url, data, callback, type, 'DELETE');
   }
 });
@@ -224,8 +228,10 @@ $.fn.serialize_and_submit = function(options) {
 
         if (typeof(data) != "undefined" && typeof(data.notice) != "undefined")
           flash_message(data.notice, 'notice');
+
         if (typeof(options.complement_success) == "function")
           options.complement_success(data);
+
         if (typeof(options.replace_list) != "undefined")
           $.get(options.replace_list.data("link-list"), function(data){
             options.replace_list.replaceWith(data);
@@ -261,6 +267,7 @@ $.fn.serialize_and_submit = function(options) {
   }
 
   $.ajax(ajax_options);
+  return this;
 }
 
 $.fn.is_empty = function(){
@@ -334,7 +341,9 @@ $.fn.nice_filter = function(options) {
   $('#search', filter).click(function(){
     erase_flash_messages();
 
+    var load_to = $(this).data("load-to");
     var combos = $('.filter select', filter);
+
     if (combos.length) {
       // pegar todas as obrigatorias e checar se tem alguma vazia
       var required = $('.filter select:not([data-optional])', filter);
@@ -343,14 +352,32 @@ $.fn.nice_filter = function(options) {
       if (required.length == filled.length) {
         var combos = combos.map(function(){ if (!$(this).is_empty()) return $(this).prop('name')+'_id: ' + $(this).combobox("value"); }).toArray().join(', ');
         var data = eval("({" + combos + "})"); // transformando os valores dos filtros em json
-        var url = $(this).data("url-search"), load_to = $(this).data("load-to");
+        var url = $(this).data("url-search");
 
-        if (typeof(options.data_function) == "function") 
+        if (typeof(options.data_function) == "function"){
+          // se selecionou groups, mas não selecionou nenhuma turma, impede de prosseguir
+          if(options.data_function().radio_option == "group" && !options.data_function().groups_id.length){
+            flash_message("<%= I18n.t(:alert, scope: [:editions]) %>", "alert");
+            $('.' + load_to).html('');
+            return false;    
+          }
+          // adiciona os dados das turmas selecionadas, caso haja alguma
           data = $.extend(data, options.data_function());
+        }
 
-        $.get(url, data, function(result){ $('.' + load_to).html(result); });
-      } else
+        $.get(url, data, function(result){
+          $('.' + load_to).html(result);
+        }).error(function(data){
+          $('.' + load_to).html('');
+
+          var data = $.parseJSON(data.responseText);
+          if (typeof(data.alert) != "undefined")
+            flash_message(data.alert, 'alert');
+        });
+      } else {
         flash_message("<%= I18n.t(:alert, scope: [:editions]) %>", "alert");
+        $('.' + load_to).html('');
+      }
 
     } else
       console.error("Classes não encontradas");

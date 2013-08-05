@@ -21,12 +21,7 @@
     $('#save').click(function(){
       $('#support_material_form:first').serialize_and_submit({
         files: true,
-        complement_success: function(data) {
-          var url = "#{list_support_material_files_path(allocation_tags_ids: @allocation_tags_ids)}";
-          $.get(url, function(data) {
-            $('.list_support_material:last').replaceWith(data);
-          });
-        }
+        replace_list: $('.list_support_material:last')
       });
     });
   });

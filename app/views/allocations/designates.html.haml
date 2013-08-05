@@ -55,7 +55,7 @@
 
     $(".activate, .deactivate").click(function(){
       var url = $(this).data("link-list");
-      $.post($(this).data("link"), function(data){
+      $.put($(this).data("link"), function(data){
         $.get(url, function(data){
           $(".list_designates:last").replaceWith(data);
         });

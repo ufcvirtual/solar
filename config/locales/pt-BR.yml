@@ -1316,6 +1316,8 @@
       created: Não foi possível criar turma.
       updated: Não foi possível atualizar turma.
       deleted: Não foi possível deletar turma.
+    groups_checkboxes:
+      select_all: Selecionar todas
 
   simple_form:
     labels:
@@ -1331,7 +1333,7 @@
       semesters: "Semestres"
       groups: "Turmas"
       modules: "Módulos"
-      type: Tipo
+      type: "Tipo*"
     index:
       edition: Edição
       filter: Filtro
@@ -1360,27 +1362,34 @@
     semesters:
       all: "Todos"
       actives: "Ativos"
-      type: Tipo
+      type: "Tipo*"
       course: Curso
       curriculum_unit: Unidade Curricular
       period: Período
       warning: "Selecione uma Unidade Curricular ou um Curso para pesquisar por todos."
     courses:
-      type: Tipo
+      type: "Tipo*"
       course: Curso
     curriculum_units:
-      type: Tipo
+      type: "Tipo*"
       curriculum_unit: Unidade Curricular
     groups:
-      type: Tipo
-      course: Curso
-      curriculum_unit: Unidade Curricular
-      semester: Semestre
+      type: "Tipo*"
+      course: "Curso*"
+      curriculum_unit: "Unidade Curricular*"
+      semester: "Semestre*"
       warning: Todos os itens devem ser selecionados para realizar a pesquisa.
     cant_save: Não foi possível salvar
     are_you_sure_of_deletion: Você tem certeza de que deseja excluir?
     cant_delete: Não foi possível excluir
     not_possible_to_access_page_with_data: Não é possível acessar esta página com os dados fornecidos
+    content:
+      type: "Tipo*"
+      course: "Curso*"
+      curriculum_unit: "Unidade Curricular*"
+      semester: "Semestre*"
+      offer: "Oferta"
+      group: "Turma"
 
   curriculum_units:
     success:

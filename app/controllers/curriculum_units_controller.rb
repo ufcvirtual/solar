@@ -1,6 +1,5 @@
-include MessagesHelper
-
 class CurriculumUnitsController < ApplicationController
+  include MessagesHelper
 
   layout false, only: [:new, :edit, :create]
 

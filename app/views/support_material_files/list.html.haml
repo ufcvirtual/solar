@@ -104,19 +104,14 @@
           });
 
           if ($(material_ids).length != 0){
-            $.ajax({
-              type: 'DELETE',
-              url: $(this).data('link-delete').replace(':id', material_ids),
-              success: function(data){
-                flash_message(data.notice, 'notice');
-                $.get($('.list_support_material').data("link-list"), function(data) {
-                  $('.list_support_material:last').replaceWith(data);
-                });
-              },
-              error: function(){
-                flash_message(data.alert, 'alert');
-              }
-            });
+            $.delete($(this).data('link-delete').replace(':id', material_ids), function(data){
+              flash_message(data.notice, 'notice');
+              $.get($('.list_support_material').data("link-list"), function(data) {
+                $('.list_support_material:last').replaceWith(data);
+              });
+            }).error(function(){
+              flash_message(data.alert, 'alert');
+            })
           }else
             return false;
         }

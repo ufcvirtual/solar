@@ -4,39 +4,40 @@
 .edition
   %fieldset#allocation_tag_selection
     %legend= t(".filter")
-    .filter_notice= t(".select_something")
     .filter
-      = label_tag :curriculum_unit_type, t(".type")
-      = select_tag :curriculum_unit_type, options_from_collection_for_select(@types, "id", "description"), include_blank: true
+      %div
+        = label_tag :curriculum_unit_type, t(".type")
+        = select_tag :curriculum_unit_type, options_from_collection_for_select(@types, "id", "description"), include_blank: true
 
-      %br/
-      = label_tag :course, t(".course")
-      / = select_tag :course, options_from_collection_for_select(@courses, "id", "code_name"), include_blank: true
-      = select_tag :course, nil
-      //- if @type.id != 3 # criar uma CONSTANTE
+      %div
+        = label_tag :course, t(".course")
+        = select_tag :course, nil
 
-      %br/
-      = label_tag :curriculum_unit, t(".curriculum_unit")
-      = select_tag :curriculum_unit, nil
+      %div
+        //- if @type.id != 3 # criar uma CONSTANTE
+        = label_tag :curriculum_unit, t(".curriculum_unit")
+        = select_tag :curriculum_unit, nil
 
-      %br/
-      = label_tag :semester, t(".semester")
-      = select_tag :semester, nil
+      %div
+        = label_tag :semester, t(".semester")
+        = select_tag :semester, nil
 
-      %br/
-      = radio_button :radio, :option, "offer", disabled: true
-      = label_tag :radio_option_offer, t(".offer")
+      .offer_groups_options
+        .radio_options
+          = radio_button :radio, :option, "offer", disabled: true
+          = label_tag :radio_option_offer, t(".offer")
 
-      = radio_button :radio, :option, "group", disabled: true
-      = label_tag :radio_option_group, t(".group")
+          = radio_button :radio, :option, "group", disabled: true
+          = label_tag :radio_option_group, t(".group")
 
-      %br/
-      .groups
+        .groups
 
-      %br/
       = link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => items_editions_path, id: "search", :"data-load-to" => "items_list"}
 
 .items_list
+
+.back.invisible
+  = render "editions/back_items"
 
 :javascript
 
@@ -143,7 +144,10 @@
 
     $(".edition").nice_filter({
       data_function: function() {
-        return {groups_id: $('[name="group[group_id][]"]:checked').map(function(){ return $(this).val() }).toArray()};
+        return {
+          radio_option: $("[name='radio[option]']:checked").val(),
+          groups_id: $('[name="group[group_id][]"]:checked').map(function(){ return $(this).val() }).toArray()
+        };
       }
     });
 
