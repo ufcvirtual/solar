@@ -223,4 +223,18 @@ registration:
 edition:
   id: 130
   name: menu_edition
+  order: 13
+
+edition_academic:
+  id: 131
+  name: menu_academic_edition
+  resource_id: 123
+  parent_id: 130
+  order: 1
+
+edition_content:
+  id: 132
+  name: menu_content_edition
   resource_id: 89
+  parent_id: 130
+  order: 2

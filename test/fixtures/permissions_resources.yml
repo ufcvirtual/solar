@@ -775,6 +775,31 @@ edition1:
   resource_id: 89
   per_id: false
 
+edition2:
+  profile_id: 5
+  resource_id: 123
+  per_id: false
+
+edition3:
+  profile_id: 5
+  resource_id: 124
+  per_id: false
+
+edition4:
+  profile_id: 5
+  resource_id: 125
+  per_id: false
+
+edition5:
+  profile_id: 5
+  resource_id: 126
+  per_id: false
+
+edition6:
+  profile_id: 5
+  resource_id: 127
+  per_id: false
+
 # Offers 
 
 offedit1:

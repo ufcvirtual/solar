@@ -1,12 +1,12 @@
 = javascript_include_tag "autocomplete"
 = stylesheet_link_tag "jquery-ui-autocomplete", "autocomplete"
 
-.edition
+.edition.block_content
   %fieldset#allocation_tag_selection
     %legend= t(".filter")
     .label
       = label_tag :type, t(".type")
-      = @type.description
+      %span.type_description= @type.description
     .filter
       = label_tag :curriculum_unit, t(".curriculum_unit")
       = select_tag :curriculum_unit, options_from_collection_for_select(@curriculum_units, "id", "code_name"), include_blank: true, :"data-optional" => true

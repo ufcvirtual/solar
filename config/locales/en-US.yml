@@ -926,6 +926,9 @@
   menu_history: History
   menu_group_assignment: Groups
   menu_edition: Edition
+  menu_academic_edition: Academic
+  menu_content_edition: Content
+
   # Filtro de edição (Places_nav_panel)
 
   # Componente de filtro/busca de allocationTags (places_nav_panel)
@@ -1220,6 +1223,7 @@
       type: "Type*"
       course: "Course*"
       curriculum_unit: "Curriculum Unit*"
+      module: "Module*"
       semester: "Semester*"
       offer: Offer
       group: Group

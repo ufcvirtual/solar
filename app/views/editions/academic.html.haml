@@ -1,7 +1,7 @@
 = javascript_include_tag "autocomplete"
 = stylesheet_link_tag "jquery-ui-autocomplete", "autocomplete"
 
-.edition
+.edition.block_content
   %fieldset#allocation_tag_selection
     %legend= t(".filter")
     .filter_type
@@ -35,13 +35,6 @@
           .academic_item{:"data-link-to" => academic_groups_editions_path(curriculum_unit_type_id: ':uc_type_id')}
             = link_to(content_tag(:i, nil, class: 'icon-book big'), "#", class: 'btn')
             = link_to t(".groups"), "#"
-
-/ 1 | Curso de Graduacao Presencial      
-/ 2 | Curso de Graduacao a Distancia     
-/ 3 | Curso Livre                        
-/ 4 | Curso de Extensao                  
-/ 5 | Curso de Pos-Graduacao Presencial  
-/ 6 | Curso de Pos-Graduacao a Distancia 
 
 :javascript
 

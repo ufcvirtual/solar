@@ -113,7 +113,7 @@ Solar::Application.routes.draw do
     get :list_combobox, to: :index, combobox: true, as: :list_combobox, on: :collection
   end
 
-  resources :editions, only: [:index] do
+  resources :editions, only: [] do
     collection do
       get :items
       get :academic
