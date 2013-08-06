@@ -5,12 +5,12 @@ class AssignmentTest < ActiveSupport::TestCase
   fixtures :assignments, :users, :groups, :group_assignments, :schedules, :allocation_tags
 
   test "retorna o status da atividade de um aluno" do
-    assert_equal("not_sent", assignments(:a13).situation_of_student(users(:aluno1).id))
-    assert_equal("sent", assignments(:a9).situation_of_student(users(:aluno1).id))
-    assert_equal("corrected", assignments(:a3).situation_of_student(users(:aluno1).id))
-    assert_equal("without_group", assignments(:a12).situation_of_student(users(:aluno3).id))
-    assert_equal("send", assignments(:a9).situation_of_student(users(:aluno2).id))
-    assert_equal("not_started", assignments(:a8).situation_of_student(users(:aluno1).id))
+    assert_equal("not_sent", assignments(:a13).situation_of_student(allocation_tags(:al3).id, users(:aluno1).id))
+    assert_equal("sent", assignments(:a9).situation_of_student(allocation_tags(:al3).id, users(:aluno1).id))
+    assert_equal("corrected", assignments(:a3).situation_of_student(allocation_tags(:al3).id, users(:aluno1).id))
+    assert_equal("without_group", assignments(:a12).situation_of_student(allocation_tags(:al8).id, users(:aluno3).id))
+    assert_equal("send", assignments(:a9).situation_of_student(allocation_tags(:al3).id, users(:aluno2).id))
+    assert_equal("not_started", assignments(:a8).situation_of_student(allocation_tags(:al3).id, users(:aluno1).id))
   end
 
   test "retorna se a atividade ja terminou seu prazo" do    
@@ -61,7 +61,7 @@ class AssignmentTest < ActiveSupport::TestCase
     has_comments  = sent_assignment.nil? ? nil :  (not sent_assignment.assignment_comments.empty?) # verifica se há comentários para o aluno
     assert has_comments
 
-    situation     = assignment3.situation_of_student(aluno1.id)
+    situation     = assignment3.situation_of_student(group3.allocation_tag.id, aluno1.id)
     assert_equal(situation, "corrected")
   end
 
@@ -94,7 +94,7 @@ class AssignmentTest < ActiveSupport::TestCase
     has_comments = sent_assignment.nil? ? nil : (not sent_assignment.assignment_comments.empty?) # verifica se há comentários para o aluno
     assert_nil has_comments
 
-    situation    = assignment6.situation_of_student(aluno1.id)
+    situation    = assignment6.situation_of_student(group3.allocation_tag.id, aluno1.id)
     assert_equal(situation, "send")
   end
 

@@ -49,7 +49,7 @@ SQL
         student_group = assignment.student_group_by_student(student.id)
         student_id = (assignment.type_assignment == Assignment_Type_Group) ? nil : student.id # se for atividade de groupo, id do aluno é nulo
         groups_ids << (student_group.nil? ? nil : student_group.id) # se aluno estiver em grupo, recupera id
-        sent_assignment = assignment.sent_assignment_by_user_id_or_group_assignment_id( student_id, groups_ids)
+        sent_assignment = assignment.sent_assignment_by_user_id_or_group_assignment_id(allocation_tag_id, student_id, groups_ids)
         grade = ((sent_assignment.nil? or sent_assignment.assignment_files.empty?) ? "an" : "as") # nota ou situação do aluno (an: trabalho não enviado, as: trabalho não corrigido)
         if (assignment.type_assignment == Assignment_Type_Group and student_group.nil?)
           assignments_grades << "without_group"

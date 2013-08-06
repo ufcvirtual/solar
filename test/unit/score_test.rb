@@ -6,7 +6,7 @@ class ScoreTest < ActiveSupport::TestCase
   fixtures :all
 
   test "informacoes de todos os alunos para todas as atividades de uma turma" do
-   	assignments = Assignment.all(:joins => [:allocation_tag, :schedule], :conditions => ["allocation_tags.group_id = 
+   	assignments = Assignment.all(:joins => [{academic_allocations: :allocation_tag}, :schedule], :conditions => ["allocation_tags.group_id = 
         #{groups(:g3).id}"], :select => ["assignments.id", "schedule_id", "type_assignment", "name"]) #assignments da turma
     allocation_tags = AllocationTag.find_related_ids(allocation_tags(:al3).id).join(',')
     students = Assignment.list_students_by_allocations(allocation_tags)
@@ -14,12 +14,12 @@ class ScoreTest < ActiveSupport::TestCase
 
   	# a3: quimica I - atividade III
   	aluno1_a3_grade = sent_assignments(:sa1).grade 
-  	assert_equal aluno1_a3_grade, scores["students_grades"][0][1]
-  	assert_nil scores["students_groups"][0][1] #atividade individual retorna nil
+  	assert_equal aluno1_a3_grade, scores["students_grades"][0][2]
+  	assert_nil scores["students_groups"][0][2] #atividade individual retorna nil
 
   	# a5: quimica I - trabalho em grupo2
   	aluno1_a5_group = sent_assignments(:sa2).group_assignment_id
-  	assert_equal aluno1_a5_group, scores["students_groups"][0][3]
+  	assert_equal aluno1_a5_group, scores["students_groups"][0][4]
 
   	# uc3: quimica I
   	aluno1_uc3_access = Log.find_all_by_user_id_and_log_type_and_curriculum_unit_id(users(:aluno1).id, 3, curriculum_units(:r3).id).size #quantidade de acessos do aluno na unidade curricular
