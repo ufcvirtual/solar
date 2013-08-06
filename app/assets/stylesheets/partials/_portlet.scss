@@ -7,20 +7,21 @@
 
 /* Portlet: efeito slider */
 .block_slider {
-    overflow: hidden;
-    position:relative;
-    width: $portlet_width;
-    height: $portlet_height;
+  overflow: hidden;
+  position:relative;
+  width: $portlet_width;
+  height: $portlet_height;
 }
 .slide-main {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    padding: $portlet_main_padding; 
-    width: $portlet_width - $portlet_main_padding*2;
-    height: $portlet_height - $portlet_main_padding*2;
-    overflow-y:auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  padding: $portlet_main_padding;
+  width: $portlet_width - $portlet_main_padding*2;
+  height: $portlet_height - $portlet_main_padding*2;
+  overflow-y:auto;
+  background-color: $color_main_light;
 }
 
 // excecao para portlet do facebook
@@ -45,12 +46,15 @@
   width: $portlet_settings_width;
   height: $portlet_settings_height;
   overflow-y:auto;
+  background-color: white;
+
   h3 {
     margin-top: 6px;
     margin-left: 6px;
     font-family: 'PT Sans', sans-serif;
     text-transform: uppercase;
     font-size: 12px;
+    color: #666666;
   }
   ul, h3 {
     padding: 0;
@@ -58,17 +62,25 @@
   li {
     padding: 5px 6px 2px 25px;
     position: relative;
-  }
-  li.active {
-    font-weight: bold;
-  }
-  li .counter {
-    position: absolute;
-    top: 3px;
-    right: 5px;
-    padding: 2px 5px 1px 5px;
-    @include rounded-corners(3px);
-    font-size: 11px;
+
+    &:hover {
+      background-color: #eef3f9;
+    }
+    &.active {
+      font-weight: bold;
+      background-color: #d8dfe9;
+      color: #000;
+    }
+    .counter {
+      position: absolute;
+      top: 3px;
+      right: 5px;
+      padding: 2px 5px 1px 5px;
+      @include rounded-corners(3px);
+      font-size: 11px;
+      background-color: #d7dfea;
+      color: #3b5e9a;
+    }
   }
 }
 

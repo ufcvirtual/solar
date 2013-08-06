@@ -24,11 +24,19 @@
 .td_subject{
   padding-left: 0.5*$gutter;
 }
+.td_subject, .td_sender, .td_time{
+  color: $text_grey;
+
+  a{
+    color: $text_grey;
+  }
+}
 /* mensagem: links do menu */
 .message_link, .message_link_menu {
   text-decoration: none;
   cursor: pointer;
   border: none;
+  background-color: transparent;
 }
 
 .message_link {
@@ -41,6 +49,7 @@
 
 #message_list > .message_link:hover {
   border-bottom: 2px solid; /* FIXME: localizar onde isso está sendo utilizado */
+  border-bottom-color: #214684;
 }
 
 /* mensagem: listagem das mensagens */
@@ -55,6 +64,9 @@
 /*.message_line:hover {
     background-color: #EEF3FB;
 }*/
+.message_line_highlight {
+  background-color: #FFFBE4;
+}
 .message_line_check {
   width: 12px;
 }
@@ -62,6 +74,7 @@
   font-size: 10pt;
   text-decoration: none;
   width: auto;
+  color: #000;
 }
 .message_search_textbox{
   height: 18px;
@@ -72,9 +85,11 @@
 .message_read, .message_unread{
   font-weight: normal;
   white-space: normal;
+  color: #666;
 }
 .message_unread{
   font-weight: bold;
+  color: #000;
 }
 .message_label {
   font-size: 8pt;
@@ -85,17 +100,23 @@
   padding-right: 2px;
   border: 1px solid;
   -moz-border-radius: 4px;
+  color: #000;
+  background-color: $color_contrast;
+  border-color: $color_contrast;
 }
 .message_read:hover, .message_unread:hover {
   text-decoration: underline;
 }
 .message_div_text_read {
   width: 100%;
+  background-color: #F7F7F7;
 }
 .message_recipient_box {
   border: 1px solid;
   font-size: 12px;
   cursor: pointer;
+  border-color: #eee;
+  color: #214684; /* FIXME: localizar onde isso está sendo utilizado */
 }
 .message_new {
   padding-top: 4px;
@@ -113,6 +134,7 @@
     padding: 5px;
     padding-right: 10px;
     border-bottom: solid 1px;
+    border-bottom-color: $border;
 
     .btn{
       margin-right: -5px;
@@ -132,6 +154,9 @@
       }
     }
   }
+  &.block_white{
+    background: white;
+  }
 }
 .block_content.messages{
   padding: 5px 5px 5px 0px;
@@ -140,6 +165,7 @@
     margin-right: -5px;
   }
 }
+
 .message_header_new, .message_div_show {
   color: $text_grey;
   padding: 0.5*$gutter 0.5*$gutter;
@@ -201,6 +227,9 @@
 
   .message_page{
     margin-top: 5px;
+  }
+  .active{
+    color: $text_blue;
   }
 }
 .message_div_show{
