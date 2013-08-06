@@ -23,6 +23,10 @@
 }
 .td_attachment{
    width: 30px;
+
+  i{
+    font-size: 14px;
+  }
 }
 .td_subject{
   padding-left: 0.5*$gutter;
@@ -135,10 +139,25 @@
     .btn{
       margin-right: -5px;
     }
+
+    ul.message_menu_listbox li ul {
+      width: 100px;
+      padding: 5px 0px;
+
+      li{
+        padding: 2px 0px;
+
+        &:hover{
+          background: rgb(0, 116, 243);
+          color: white;
+        }
+      }
+    }
   }
 }
 .block_content.messages{
-  padding-right: 5px;
+  padding: 5px 5px 5px 0px;
+  border-bottom: solid 1px $border;
   .btn{
     margin-right: -5px;
   }
@@ -147,6 +166,20 @@
   color: $text_grey;
   padding: 0.5*$gutter 0.25*$gutter;
   font-size: 11px;
+
+  span{
+    color: $text_blue;
+    text-decoration: underline;
+  }
+
+  .message_text_from{
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  .message_text_to{
+    margin-bottom: 5px;
+  }
 
   .message_text_body {
     padding: 20px;
