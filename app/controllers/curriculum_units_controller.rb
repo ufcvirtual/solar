@@ -22,13 +22,17 @@ class CurriculumUnitsController < ApplicationController
     }.flatten.uniq
   end
 
-  # Acadêmico
   def index
     @type = CurriculumUnitType.find(params[:type_id])
     @curriculum_units = []
 
     if params[:combobox]
-      @curriculum_units = CurriculumUnit.joins(offers: :groups).where(curriculum_unit_type_id: @type.id).where(offers: {course_id: params[:course_id]}) if not(params[:course_id].blank?)
+      if @type.id == 3
+        course_name = Course.find(params[:course_id]).name
+        @curriculum_units = CurriculumUnit.where(name: course_name)
+      else
+        @curriculum_units = CurriculumUnit.joins(offers: :groups).where(curriculum_unit_type_id: @type.id).where(offers: {course_id: params[:course_id]}) if not(params[:course_id].blank?)
+      end
 
       render json: { html: render_to_string(partial: 'select_curriculum_unit.html', locals: { curriculum_units: @curriculum_units.uniq! }) }
     else # list

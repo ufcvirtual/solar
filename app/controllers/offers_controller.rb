@@ -32,6 +32,7 @@ class OffersController < ApplicationController
 
   def create
     @offer = Offer.new params[:offer]
+    @offer.user_id = current_user.id
     optional_authorize(:create)
 
     # periodo de oferta e matricula ficam no semestre \ esses dados ficam na tabela de oferta apenas se diferirem dos dados do semestre
@@ -110,16 +111,14 @@ class OffersController < ApplicationController
   private
 
     def optional_authorize(method)
-      at_c = params[:offer][:course_id].blank? ? nil : AllocationTag.find_by_course_id(params[:offer][:course_id]).id
-      at_uc = params[:offer][:curriculum_unit_id].blank? ? nil : AllocationTag.find_by_curriculum_unit_id(params[:offer][:curriculum_unit_id]).id
+      ats = []
+      ats << AllocationTag.find_by_course_id(params[:offer][:course_id]).id unless params[:offer][:course_id].blank?
+      ats << AllocationTag.find_by_curriculum_unit_id(params[:offer][:curriculum_unit_id]).id unless params[:offer][:curriculum_unit_id].blank?
 
-      # os dados de uc e curso podem ser modificados
-      begin
-        raise if at_c.nil? # a oferta obriga uc OU c, mas nao ambos
-        authorize! method, Offer, on: [at_c].compact
-      rescue
-        authorize! method, Offer, on: [at_uc].compact
-      end
+      ats.compact!
+
+      raise CanCan::AccessDenied if ats.empty?
+      authorize! method, Offer, on: ats
     end
 
 end

@@ -23,5 +23,11 @@
   $(function(){
     $("#course").combobox();
 
-    $(".edition").nice_filter({});
+    $(".edition").nice_filter({
+      data_function: function() {
+        return {
+          type_id: "#{@type.id}"
+        };
+      }
+    });
   });

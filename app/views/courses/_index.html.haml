@@ -4,7 +4,7 @@
     %h2= t(:courses, scope: [:editions, :academic])
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      %a.btn.btn_main.new_offer{:'data-tooltip' => t(".new"), id: "new_course", :type => :button, :"data-link-new-course" => new_course_path, :'data-tooltip' => t(".new")}
+      %a.btn.btn_main.new_offer{:'data-tooltip' => t(".new"), id: "new_course", :type => :button, :"data-link-new-course" => new_course_path(type_id: (@type_id || @type.try(:id))), :'data-tooltip' => t(".new")}
         = content_tag(:i, nil, class: 'icon-plus-3')
 
   %table.tb_list
@@ -19,8 +19,8 @@
           %td= course.code
           %td= course.name
           %td
-            = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit_course', :'data-tooltip' => t(".edit"), :"data-link-edit" => edit_course_path(course)
-            = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_caution delete_course', :"data-link-delete" => course_path(course), :'data-tooltip' => t(".delete"), id: course.id
+            = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit_course', :'data-tooltip' => t(".edit"), :"data-link-edit" => edit_course_path(course, type_id: (@type_id || @type.try(:id)))
+            = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_caution delete_course', :"data-link-delete" => course_path(course, type_id: (@type_id || @type.try(:id))), :'data-tooltip' => t(".delete"), id: course.id
 
 :javascript
 

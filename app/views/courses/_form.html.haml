@@ -2,6 +2,7 @@
 .course_form
   = simple_form_for(@course, html: {id: "course_form"}) do |f| 
 
+    = hidden_field_tag :type_id, @type_id
     .form-inputs.block_content
       = f.input :code
       = f.input :name
@@ -12,7 +13,6 @@
 :javascript
 
   $(function(){
-
 
     $('#save').click(function(){
       $('#course_form').serialize_and_submit({
@@ -26,7 +26,7 @@
           else
             var course_id = course.combobox('value');
 
-          var url = "#{courses_path(course_id: 'course_param')}".replace('course_param', course_id);
+          var url = "#{courses_path(type_id: @type_id, course_id: 'course_param')}".replace('course_param', course_id);
 
           $.get(url, function(data) {
             $('.courses_list').html(data);

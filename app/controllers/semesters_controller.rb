@@ -3,7 +3,6 @@ class SemestersController < ApplicationController
 
   # GET /semesters
   def index
-    # raise "#{params}"
     authorize! :index, Semester
 
     if [params[:period], params[:course_id], params[:curriculum_unit_id]].delete_if(&:blank?).empty?

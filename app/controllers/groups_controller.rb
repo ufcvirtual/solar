@@ -20,11 +20,7 @@ class GroupsController < ApplicationController
 
   # Edicao
   def list
-    if params[:type].to_i == 3
-      @offer = Offer.find_by_semester_id_and_course_id(params[:semester_id], params[:course_id])
-    else
-      @offer = Offer.find_by_curriculum_unit_id_and_semester_id_and_course_id(params[:curriculum_unit_id], params[:semester_id], params[:course_id])
-    end
+    @offer = Offer.find_by_curriculum_unit_id_and_semester_id_and_course_id(params[:curriculum_unit_id], params[:semester_id], params[:course_id])
 
     begin
       authorize! :list, Group, on: [@offer.allocation_tag.id]
@@ -48,6 +44,7 @@ class GroupsController < ApplicationController
   end
 
   def create
+    params[:group][:user_id] = current_user.id
     @group = Group.new(params[:group])
     authorize! :create, Group, on: [@group.offer.allocation_tag.id]
 

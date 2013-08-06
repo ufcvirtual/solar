@@ -3,7 +3,7 @@ module Taggable
   def self.included(base)   
     base.before_destroy :unallocate_if_possible
     base.after_create :allocation_tag_association
-    base.after_create :allocate_profiles 
+    base.after_create :allocate_profiles
 
     base.has_one :allocation_tag, :dependent => :destroy
     base.has_many :allocations, :through => :allocation_tag
