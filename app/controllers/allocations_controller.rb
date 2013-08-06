@@ -207,13 +207,9 @@ class AllocationsController < ApplicationController
       authorize! :deactivate, @allocation
       raise "error" unless @allocation.update_attribute(:status, Allocation_Cancelled)
 
-      respond_to do |format|
-        format.html{ render :designates, :status => 200 }
-      end
+      render json: {success: true}
     rescue
-      respond_to do |format|
-        format.html{ render :designates, :status => 500 }
-      end
+      render json: {success: false, alert: t(:not_deactivated, scope: [:allocations, :error])}, status: :unprocessable_entity
     end
   end
 
@@ -224,14 +220,10 @@ class AllocationsController < ApplicationController
     begin
       authorize! :activate, @allocation
       raise "error" unless @allocation.update_attribute(:status, Allocation_Activated)
-      respond_to do |format|
-        format.html{ render :designates, :status => 200 }
-      end
-    rescue
-      respond_to do |format|
-        format.html{ render :designates, :status => 500 }
-      end
 
+      render json: {success: true}
+    rescue
+      render json: {success: false, alert: t(:not_activated, scope: [:allocations, :error])}, status: :unprocessable_entity
     end
   end  
 

@@ -3424,3 +3424,51 @@ select[disabled] {
     width: 49.7%;
   }
 }
+
+.collection_check_boxes {
+  margin-left: 0;
+  width: auto;
+  margin: 5px;
+  background-color: #2B79BA; 
+  padding: 4px;
+  padding-bottom: 0;
+  border-radius: 10px;
+}
+
+label[for^="group_group_id_"]{
+  color: white;
+  font-size: 10pt;
+}
+
+.radio_options label{
+  width: auto;
+  margin: 5px;
+}
+
+.edition .groups{
+  display: inline-block;
+  width: 300px;
+  margin: 5px;
+  margin-left:20px;
+}
+
+label[for="all"], .type_description{
+  color: $text_grey;
+  font-size: 10pt;
+}
+
+.offer_groups_options {
+  overflow: hidden;
+}
+
+.radio_options {
+  float: left;
+}
+
+.edition #search{
+  margin-left: 415px;
+}
+
+.edition.block_content{
+  background-color: white;
+}

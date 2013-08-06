@@ -257,3 +257,12 @@ pm62:
 pm63:
   profile_id: 13
   menu_id: 130
+
+# editor
+pm64:
+  profile_id: 5
+  menu_id: 131
+
+pm65:
+  profile_id: 5
+  menu_id: 132

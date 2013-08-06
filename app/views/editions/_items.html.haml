@@ -87,6 +87,7 @@
     $(".edition_items a").not(".disabled").click(function(){
       $.get($($(this).parent()).data("link"), function(data){
         $(".edition_items").html(data);
+        $(".back").removeClass("invisible");
       });
     });
 

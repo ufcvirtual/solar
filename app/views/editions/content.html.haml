@@ -1,42 +1,43 @@
 = javascript_include_tag "autocomplete"
 = stylesheet_link_tag "jquery-ui-autocomplete", "autocomplete"
 
-.edition
+.edition.block_content
   %fieldset#allocation_tag_selection
     %legend= t(".filter")
-    .filter_notice= t(".select_something")
     .filter
-      = label_tag :curriculum_unit_type, t(".type")
-      = select_tag :curriculum_unit_type, options_from_collection_for_select(@types, "id", "description"), include_blank: true
+      .curriculum_unit_type
+        = label_tag :curriculum_unit_type, t(".type")
+        = select_tag :curriculum_unit_type, options_from_collection_for_select(@types, "id", "description"), include_blank: true
 
-      %br/
-      = label_tag :course, t(".course")
-      / = select_tag :course, options_from_collection_for_select(@courses, "id", "code_name"), include_blank: true
-      = select_tag :course, nil
-      //- if @type.id != 3 # criar uma CONSTANTE
+      .course
+        = label_tag :course, t(".course")
+        = select_tag :course, nil
 
-      %br/
-      = label_tag :curriculum_unit, t(".curriculum_unit")
-      = select_tag :curriculum_unit, nil
+      .curriculum_unit
+        //- if @type.id != 3 # criar uma CONSTANTE
+        = label_tag :curriculum_unit, t(".curriculum_unit")
+        = select_tag :curriculum_unit, nil
 
-      %br/
-      = label_tag :semester, t(".semester")
-      = select_tag :semester, nil
+      %div
+        = label_tag :semester, t(".semester")
+        = select_tag :semester, nil
 
-      %br/
-      = radio_button :radio, :option, "offer", disabled: true
-      = label_tag :radio_option_offer, t(".offer")
+      .offer_groups_options
+        .radio_options
+          = radio_button :radio, :option, "offer", disabled: true
+          = label_tag :radio_option_offer, t(".offer")
 
-      = radio_button :radio, :option, "group", disabled: true
-      = label_tag :radio_option_group, t(".group")
+          = radio_button :radio, :option, "group", disabled: true
+          = label_tag :radio_option_group, t(".group")
 
-      %br/
-      .groups
+        .groups
 
-      %br/
       = link_to t(:search), "#", {class: "btn btn_main", :"data-url-search" => items_editions_path, id: "search", :"data-load-to" => "items_list"}
 
 .items_list
+
+.back.invisible
+  = render "editions/back_items"
 
 :javascript
 
@@ -68,6 +69,15 @@
           clear_all_combos(true);
       },
       select: function( event, ui ) {
+        $(".curriculum_unit").show();
+        if(ui.item.value == 4)
+          $('label[for="curriculum_unit"]').html("#{t(".module")}");
+        else if(ui.item.value == 3){
+          $(".curriculum_unit").hide();
+          $("#curriculum_unit").attr("data-optional", true);
+        }else
+          $('label[for="curriculum_unit"]').html("#{t(".curriculum_unit")}");
+
         clear_all_combos(true);
         $('#course').combobox("option", { disabled: false });
         $(".groups").html('');
@@ -85,11 +95,21 @@
         }
       },
       select: function( event, ui ) { 
-        clear_combo('curriculum_unit', false);
-        clear_combo('semester', true);
+
+        var curriculum_unit_type = ($("#curriculum_unit_type").combobox("value") == "3");
+
+        clear_combo('curriculum_unit', curriculum_unit_type);
+        clear_combo('semester', !curriculum_unit_type);
         $(".groups").html('');
-        var url = "#{list_combobox_curriculum_units_path(type_id: 'type_param', course_id: 'course_param')}".replace('type_param', $('#curriculum_unit_type').combobox('value')).replace('course_param', $('#course').combobox('value'));
-        $('#curriculum_unit').combobox("update", {url: url});
+        
+        if(curriculum_unit_type){
+          var url = "#{list_combobox_semesters_path(period: "all", course_id: "course_param")}".replace("course_param", $("#course").combobox("value"));
+          $('#semester').combobox("update", {url: url});
+        }else{
+          var url = "#{list_combobox_curriculum_units_path(type_id: 'type_param', course_id: 'course_param')}".replace('type_param', $('#curriculum_unit_type').combobox('value')).replace('course_param', $('#course').combobox('value'));
+          $('#curriculum_unit').combobox("update", {url: url});
+        }
+        
       }
     });
 
@@ -126,7 +146,8 @@
 
 
     $("#radio_option_group").click(function(){
-      var url = "#{list_groups_path(checkbox: true , semester_id: "semester_param", course_id: "course_param", curriculum_unit_id: "curriculum_unit_param")}"
+      var url = "#{list_groups_path(checkbox: true , type: "type_param", semester_id: "semester_param", course_id: "course_param", curriculum_unit_id: "curriculum_unit_param")}"
+        .replace("type_param", $("#curriculum_unit_type").combobox("value"))
         .replace("semester_param", $("#semester").combobox("value"))
         .replace("course_param", $("#course").combobox("value"))
         .replace("curriculum_unit_param", $("#curriculum_unit").combobox("value"));
@@ -143,7 +164,10 @@
 
     $(".edition").nice_filter({
       data_function: function() {
-        return {groups_id: $('[name="group[group_id][]"]:checked').map(function(){ return $(this).val() }).toArray()};
+        return {
+          radio_option: $("[name='radio[option]']:checked").val(),
+          groups_id: $('[name="group[group_id][]"]:checked').map(function(){ return $(this).val() }).toArray()
+        };
       }
     });
 

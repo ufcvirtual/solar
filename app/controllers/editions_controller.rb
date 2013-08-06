@@ -1,10 +1,5 @@
 class EditionsController < ApplicationController
 
-  # authorize_resource :only => [:index]
-
-  def index
-  end
-
   def items
     if params[:groups_id].blank?
       @allocation_tags_ids = [Offer.where(semester_id: params[:semester_id], curriculum_unit_id: params[:curriculum_unit_id], course_id: params[:course_id]).first.allocation_tag.id]
@@ -14,32 +9,30 @@ class EditionsController < ApplicationController
       @group = true
     end
 
-    # raise "list discussion ==> #{(can? :list, Discussion, :on => @allocation_tags_ids)}"
-
-    # @allocation_tags_ids = params[:allocation_tags_ids] || []
-    # @selected_course     = @allocation_tags_ids.collect{|id| true if AllocationTag.find(id).course}.include?(true)
-    # @selected_offer      = @allocation_tags_ids.collect{|id| true if AllocationTag.find(id).offer}.include?(true)
-    # @selected_group      = @allocation_tags_ids.collect{|id| true if AllocationTag.find(id).group}.include?(true)
     render :partial => "items"
   end
 
   # GET /editions/academic
   def academic
+    authorize! :academic, Edition
     @types = CurriculumUnitType.all
     @type  = params[:type_id]
   end
 
   def courses
+    authorize! :courses, Edition
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     @courses = Course.all
   end
 
   def curriculum_units
+    authorize! :curriculum_units, Edition
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     @curriculum_units = @type.curriculum_units
   end
 
   def semesters
+    authorize! :semesters, Edition
     @periods = [[t(:actives, scope: [:editions, :semesters]), "active"], [t(:all, scope: [:editions, :semesters]), "all"]]
     @periods += Schedule.joins(:semester_periods).map {|p| [p.start_date.year, p.end_date.year] }.flatten.uniq.sort! {|x,y| y <=> x} # desc
 
@@ -50,11 +43,13 @@ class EditionsController < ApplicationController
   end
 
   def groups
+    authorize! :groups, Edition
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     @courses = Course.joins(offers: [:groups, :curriculum_unit]).where(curriculum_units: {curriculum_unit_type_id: @type.id}).uniq
   end
 
   def content
+    authorize! :content, Edition
     @types = CurriculumUnitType.all
   end
 

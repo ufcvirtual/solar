@@ -477,8 +477,8 @@ res88:
 res89:
   id: 89
   controller: 'editions'
-  action: 'index'
-  description: 'Página que permite acesso aos cadastros do sistema'
+  action: 'content'
+  description: 'Edição de conteúdo'
 
 res90:
   id: 90
@@ -677,3 +677,33 @@ res122:
   controller: 'semesters'
   action: 'destroy'
   description: 'Remover semestre'
+
+res123:
+  id: 123
+  controller: 'editions'
+  action: 'academic'
+  description: 'Edição acadêmica'
+
+res124:
+  id: 124
+  controller: 'editions'
+  action: 'courses'
+  description: 'Filtro de cursos da edição acadêmica'
+
+res125:
+  id: 125
+  controller: 'editions'
+  action: 'curriculum_units'
+  description: 'Filtro de UCs da edição acadêmica'
+
+res126:
+  id: 126
+  controller: 'editions'
+  action: 'semesters'
+  description: 'Filtro de semestres da edição acadêmica'
+
+res127:
+  id: 127
+  controller: 'editions'
+  action: 'groups'
+  description: 'Filtro de turmas da edição acadêmica'

@@ -2,7 +2,7 @@
 
 .list_lessons{:"data-link-list" => list_lessons_path(allocation_tags_ids: @allocation_tags_ids)}
   = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids]) 
-  = button_tag t(".new_module"), class: 'btn btn_default', id: "new_module", :'data-link-new-module' => new_lesson_module_path(:allocation_tags_ids => params[:allocation_tags_ids]), :'data-tooltip' => t(".new_module")
+  = button_tag t(".new_module"), class: 'btn btn_default new_module', :'data-link-new-module' => new_lesson_module_path(:allocation_tags_ids => params[:allocation_tags_ids]), :'data-tooltip' => t(".new_module")
 
   - previous_allocation_tag = nil
 
@@ -25,7 +25,7 @@
               %h2
                 = lesson_module.name
                 = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'block_title_button edit_module', :'data-link-edit-module' => edit_lesson_module_path(lesson_module, allocation_tags_ids: params[:allocation_tags_ids]), :'data-tooltip' => t(".edit_lesson_module")
-                = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'block_title_button delete_module', :'data-link-delete' => lesson_module_path(lesson_module, allocation_tags_ids: params[:allocation_tags_ids]), :'data-tooltip' => t(".delete_lesson_module")
+                = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'block_title_button delete_module', :'data-link-delete' => lesson_module_path(lesson_module, allocation_tags_ids: params[:allocation_tags_ids]), :'data-tooltip' => t(".delete_lesson_module"), :"data-module-id" => lesson_module.id
             .block_content_toolbar
               .block_toolbar_left.btn-group
                 %a.btn.btn_main{:href => "#", 'data-dropdown' => "#dropdown_#{lesson_module.id}"}
@@ -33,7 +33,7 @@
                   %i.icon-arrow-down-3
                 %div{:id=>"dropdown_#{lesson_module.id}", :class=>"dropdown dropdown-tip"}
                   %ul.dropdown-menu
-                    %li= link_to (t(:new_lesson, scope: [:lessons, :list])), "#", id: "new_lesson", :'data-link-new-lesson' => new_lesson_path(lesson_module_id: lesson_module.id, allocation_tags_ids: params[:allocation_tags_ids]), :'data-tooltip' => t(:new_lesson, scope: [:lessons, :list])
+                    %li= link_to (t(:new_lesson, scope: [:lessons, :list])), "#", class: "new_lesson", :'data-link-new-lesson' => new_lesson_path(lesson_module_id: lesson_module.id, allocation_tags_ids: params[:allocation_tags_ids]), :'data-tooltip' => t(:new_lesson, scope: [:lessons, :list])
                     %li= link_to "Importar aula", "#", onclick: "javascript: alert('importar aula');", id: 'import_lesson'
               .block_toolbar_right
                 .btn-group{class: "module-#{lesson_module.id}"}
@@ -57,7 +57,7 @@
                   = link_to (content_tag(:i, nil, :class=>'icon-install')), "#", class: 'btn download_lesson_zip', :'data-tooltip' => t(".download_zip"), :"data-link-verify" => verify_download_lessons_path(lessons_ids: "lessons_param", allocation_tags_ids: @allocation_tags_ids), :"data-link-download" => download_files_lessons_path(lessons_ids: 'lessons_param', allocation_tags_ids: @allocation_tags_ids), :"data-module-id" => lesson_module.id
                   = link_to (content_tag(:i, nil, :class=>'icon-checkmark')), "#", id: 'release_lessons', class: 'btn', :"data-module-id" => lesson_module.id, :'data-tooltip' => t(".release"), :"data-link-update" => change_status_lesson_path(id: ':id', status: Lesson_Approved, allocation_tags_ids: @allocation_tags_ids)
             / Lessons list
-            %table.tb_list
+            %table.tb_list{:"data-default-module" => lesson_module.is_default, class: "table-module-#{lesson_module.id}"}
               %thead
                 %tr.lines
                   - unless lessons.nil? or lessons.empty?
@@ -143,28 +143,25 @@
       erase_flash_messages();
       var module_id = $(this).data("module-id");
       var lesson_ids = get_selected_lessons(module_id);
+      var destination_module = $("input[name='move_to_module']:checked", ".module-"+module_id);
 
-      if(!lessons_ids.length){
+      if(!lessons_ids.length)
         flash_message("#{I18n.t(:must_select_lessons, scope: [:lessons, :notifications])}", 'alert');
-      }else if($("input[name='move_to_module']:checked", ".module-"+module_id).length < 1){ 
-        // se nenhum módulo destino foi selecionado
-        flash_message("#{I18n.t(:must_select_module, scope: [:lessons, :errors])}", 'alert');
-      }else{
+      else if(destination_module.length < 1) // se nenhum módulo destino foi selecionado
+        flash_message("#{I18n.t(:must_select_module, scope: [:lessons, :errors])}", 'alert'); 
+      else{
+        var url = $(this).data('link-move').replace('lessons_param', lesson_ids).replace('module_param', destination_module.val()).replace("undefined", "");
 
-        $.ajax({
-          url: $(this).data('link-move').replace('lessons_param', lesson_ids).replace('module_param', $("input[name='move_to_module']:checked", ".module-"+module_id).val()),
-          type: "PUT",
-          success: function(data){
-            flash_message(data.msg, 'notice');
+        $.put(url, function(data){
+          flash_message(data.msg, 'notice');
 
-            $.get($('.list_lessons').data('link-list'), function(data){
-              $('.list_lessons:first').replaceWith(data);
-            });
-          },
-          error: function(data){
-            flash_message(data.msg, 'alert')
-          }
-        })
+          $.get($('.list_lessons').data('link-list'), function(data){
+            $('.list_lessons:first').replaceWith(data);
+          });
+        }).error(function(data){
+          flash_message(data.msg, 'alert');
+        });
+
       }
 
     });
@@ -183,23 +180,18 @@
         url = url.replace(':id', lesson_ids);
       }
 
-      $.ajax({
-        url: url,
-        type: "PUT",
-        success: function(data) {
+      $.put(url, function(data){
+        $.get($('.list_lessons').data('link-list'), function(data){
+          $('.list_lessons:first').replaceWith(data);
+        });
+      }).error(function(data) {
+        if (typeof(data.responseText) != "undefined")
+          flash_message(JSON.parse(data.responseText).msg, 'alert');
+
+        if(typeof(module_id) != "undefined"){
           $.get($('.list_lessons').data('link-list'), function(data){
             $('.list_lessons:first').replaceWith(data);
           });
-        },
-        error: function(data) {
-          if (typeof(data.responseText) != "undefined")
-            flash_message(JSON.parse(data.responseText).msg, 'alert');
-
-          if(typeof(module_id) != "undefined"){
-            $.get($('.list_lessons').data('link-list'), function(data){
-              $('.list_lessons:first').replaceWith(data);
-            });
-          }
         }
       });
 
@@ -217,27 +209,20 @@
         var id2 = row.prev().attr('lesson_id');
         var url = "#{change_order_lesson_path(':id1', ':id2')}".replace(':id1', id1).replace(':id2', id2);
 
-        $.ajax({
-          type: 'PUT',
-          url: url,
-          success: function() { row.insertBefore(row.prev()); }
-        });
+        $.put(url, function(){ row.insertBefore(row.prev()); });
+
       } else { // down
         if (row.next().attr('lesson_order') == undefined) return false;
 
         var id2 = row.next().attr('lesson_id');
         var url = "#{change_order_lesson_path(':id1', ':id2')}".replace(':id1', id1).replace(':id2', id2);
 
-        $.ajax({
-          type: 'PUT',
-          url: url,
-          success: function(data, t, x) { row.insertAfter(row.next()); }
-        });
+        $.put(url, function(data, t, x){ row.insertAfter(row.next()); });
       }
       return false;
     });
 
-    $("#new_module").click(function(){
+    $(".new_module").click(function(){
       $('#lesson_dropdown').hide();
       showLightBoxURL($(this).data('link-new-module'), 500, 400, true, $(this).data('tooltip'));
     });
@@ -249,10 +234,18 @@
 
     $(".delete_module").click(function(){
       $('#lesson_dropdown').hide();
-      $(this).nice_delete({parent: 'div.module'});
+
+      $(this).nice_delete({
+        parent: 'div.module',
+        complement_success: function(data){
+          $.get($('.list_lessons').data('link-list'), function(data){
+            $('.list_lessons:first').replaceWith(data);
+          });
+        }
+      });
     });
 
-    $("#new_lesson").click(function(){
+    $(".new_lesson").click(function(){
       showLightBoxURL($(this).data('link-new-lesson'), 550, 270, true, $(this).data('tooltip'));
     });
 
@@ -312,8 +305,8 @@
       var selected_lessons = get_selected_lessons($(this).data('module-id'));
 
       if(selected_lessons.length == 1){
-          url = $(this).data("link-edit").replace(':id', selected_lessons[0])
-          showLightBoxURL(url, 550, 270, true, $(this).data("tooltip"));
+        url = $(this).data("link-edit").replace(':id', selected_lessons[0])
+        showLightBoxURL(url, 550, 270, true, $(this).data("tooltip"));
       }else
         alert("#{I18n.t(:one_lesson_must_be_selected, scope: [:lesson_files])}");
     });

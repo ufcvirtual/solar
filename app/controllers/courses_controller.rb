@@ -16,7 +16,6 @@ class CoursesController < ApplicationController
       end
       render partial: 'courses/index'
     end
-
   end
 
   def new

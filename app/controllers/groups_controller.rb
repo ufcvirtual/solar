@@ -20,18 +20,20 @@ class GroupsController < ApplicationController
 
   # Edicao
   def list
-    authorize! :list, Group
+    if params[:type].to_i == 3
+      @offer = Offer.find_by_semester_id_and_course_id(params[:semester_id], params[:course_id])
+    else
+      @offer = Offer.find_by_curriculum_unit_id_and_semester_id_and_course_id(params[:curriculum_unit_id], params[:semester_id], params[:course_id])
+    end
 
-    # os três dados são obrigatórios
-    query = []
-    query << "offers.curriculum_unit_id = #{params[:curriculum_unit_id]}" unless params[:curriculum_unit_id].blank?
-    query << "offers.course_id = #{params[:course_id]}" unless params[:course_id].blank?
-    query << "offers.semester_id = #{params[:semester_id]}" unless params[:semester_id].blank?
+    begin
+      authorize! :list, Group, on: [@offer.allocation_tag.id]
 
-    @groups = []
-    @groups = Group.joins(offer: :semester).where(query.join(" AND ")).order("groups.status DESC, groups.code") unless query.empty?
-
-    render partial: 'groups_checkboxes', locals: { groups: @groups } if params[:checkbox]
+      @groups = @offer.groups.order("status DESC, code")
+      render partial: 'groups_checkboxes', locals: { groups: @groups } if params[:checkbox]
+    rescue CanCan::AccessDenied
+      render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+    end
   end
 
   def new
@@ -46,8 +48,8 @@ class GroupsController < ApplicationController
   end
 
   def create
-    authorize! :create, Group
     @group = Group.new(params[:group])
+    authorize! :create, Group, on: [@group.offer.allocation_tag.id]
 
     if @group.save
       render json: {success: true, notice: t(:created, scope: [:groups, :success])}
@@ -57,14 +59,15 @@ class GroupsController < ApplicationController
   end
 
   def update
-    authorize! :update, Group
+    @group = Group.where(id: params[:id].split(","))
+    authorize! :update, Group, on: [@group.first.offer.allocation_tag.id]
 
     if(params[:multiple])
-      Group.where(id: params[:id].split(",")).update_all(status: params[:status])
+      # Group.where(id: params[:id].split(",")).update_all(status: params[:status])
+      @group.update_all(status: params[:status])
       render json: {success: true, notice: t(:updated, scope: [:groups, :success])}
     else
-      @group = Group.find(params[:id])
-
+      @group = @group.first
       if @group.update_attributes(params[:group])
         render json: {success: true, notice: t(:updated, scope: [:groups, :success])}
       else
@@ -74,11 +77,12 @@ class GroupsController < ApplicationController
   end
 
   def destroy
-    authorize! :destroy, Group
+    @group = Group.where(id: params[:id].split(","))
+    authorize! :destroy, Group, on: [@group.first.offer.allocation_tag.id]
 
     Group.transaction do 
       begin
-        Group.where(id: params[:id].split(",")).each do |group|
+        @group.each do |group|
           raise "erro" unless group.destroy
         end
         render json: {success: true, notice: t(:deleted, scope: [:groups, :success])}

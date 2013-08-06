@@ -83,13 +83,9 @@ Solar::Application.routes.draw do
       delete :cancel, action: :destroy
       delete :cancel_request, action: :destroy, defaults: {type: 'request'}
 
-
-      # post :change_status
-
       post :reactivate
-      post :deactivate
-
-      post :activate
+      put :deactivate
+      put :activate
     end
   end
 
@@ -117,7 +113,7 @@ Solar::Application.routes.draw do
     get :list_combobox, to: :index, combobox: true, as: :list_combobox, on: :collection
   end
 
-  resources :editions, only: [:index] do
+  resources :editions, only: [] do
     collection do
       get :items
       get :academic
