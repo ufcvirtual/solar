@@ -4,14 +4,14 @@
 
 /*@import "div_layout";*/
 @import "partials/reset";
-@import "fonts.css";
+@import "fonts/fonts.css";
 
 // _layout.scss substituiu o antigo solar.scss: ee contem a estrutura da interface
 // esse arquivo NÃO deve conter propriedades de cor (color, background, border-color, ...)
 // qualquer propriedade de cor deve ser definida no _colors.scss
 @import "partials/layout";
 @import "themes/theme_blue"; // tema padrão
-@import "icons";
+@import "fonts/icons.css";
 
 /* Vendor css */
 @import "calendar";

@@ -5,8 +5,8 @@
     %meta{"http-equiv" => "X-UA-Compatible", :content => "IE=edge,chrome=1"}
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1"}
     %title= content_for?(:title) ? yield(:title) : "Solar"
-    = stylesheet_link_tag "div_layout", :media => "all"
-    = stylesheet_link_tag "fonts", :media => "all"
+    = stylesheet_link_tag "misc/div_layout", :media => "all"
+    = stylesheet_link_tag "fonts/fonts", :media => "all"
     = javascript_include_tag "jquery"
     = javascript_include_tag "lesson"
     = csrf_meta_tags

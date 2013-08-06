@@ -8,11 +8,11 @@
     <%= javascript_include_tag "application" %>
     <%= javascript_tag '$.fx.off = true;' if Rails.env.test? %>
     <!--[if lte IE 9]>
-      <%= stylesheet_link_tag "fonts-ie" %>
+      <%= stylesheet_link_tag "fonts/fonts-ie" %>
     <![endif]-->
     <!--[if lte IE 7]>
       <%= javascript_include_tag 'lte-ie7' %>
-      <%= stylesheet_link_tag "ie7" %>
+      <%= stylesheet_link_tag "misc/ie7" %>
     <![endif]-->
     <%= csrf_meta_tag %>
 

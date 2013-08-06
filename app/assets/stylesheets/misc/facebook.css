@@ -171,7 +171,8 @@ form{
 }
 
 .post .username {
-  color: $facebook_main_color;
+  //color: $facebook_main_color;
+  color: #3b5c9a;
   font-weight: bold;
   display: block;
 }
@@ -182,12 +183,14 @@ form{
   padding: 5px 4px 2px 4px;
 }
 .post .post_actions a {
-  color: $facebook_main_color;
+  //color: $facebook_main_color;
+  color: #3b5c9a;
   margin-left: 3px;
 }
 
 .post .date {
-  color: $color_disabled;
+  //color: $color_disabled;
+  color: #777777;
   position: relative;
   font-size: 11px;
 }

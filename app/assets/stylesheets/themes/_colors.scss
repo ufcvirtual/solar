@@ -1170,3 +1170,11 @@ select[disabled] {
 .offer_schedule_dates.info, .enrollment_schedule_dates.info {
   color: black;
 }
+
+.collection_check_boxes {
+  background-color: #2B79BA;
+}
+
+label[for="all"], .type_description{
+  color: $text_grey;
+}
