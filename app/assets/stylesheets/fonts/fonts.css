@@ -3,11 +3,11 @@
 
 @font-face {
     font-family: 'PT Sans';
-    src: url('pt_sans-web-bold-webfont.eot');
-    src: url('pt_sans-web-bold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('pt_sans-web-bold-webfont.woff') format('woff'),
-         url('pt_sans-web-bold-webfont.ttf') format('truetype'),
-         url('pt_sans-web-bold-webfont.svg#PTSansBold') format('svg');
+    src: url('/assets/fonts/pt_sans-web-bold-webfont.eot');
+    src: url('/assets/fonts/pt_sans-web-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/assets/fonts/pt_sans-web-bold-webfont.woff') format('woff'),
+         url('/assets/fonts/pt_sans-web-bold-webfont.ttf') format('truetype'),
+         url('/assets/fonts/pt_sans-web-bold-webfont.svg#PTSansBold') format('svg');
     font-weight: bold;
     font-style: normal;
 
@@ -15,11 +15,11 @@
 
 @font-face {
     font-family: 'PT Sans';
-    src: url('pt_sans-web-bolditalic-webfont.eot');
-    src: url('pt_sans-web-bolditalic-webfont.eot?#iefix') format('embedded-opentype'),
-         url('pt_sans-web-bolditalic-webfont.woff') format('woff'),
-         url('pt_sans-web-bolditalic-webfont.ttf') format('truetype'),
-         url('pt_sans-web-bolditalic-webfont.svg#PTSansBoldItalic') format('svg');
+    src: url('/assets/fonts/pt_sans-web-bolditalic-webfont.eot');
+    src: url('/assets/fonts/pt_sans-web-bolditalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/assets/fonts/pt_sans-web-bolditalic-webfont.woff') format('woff'),
+         url('/assets/fonts/pt_sans-web-bolditalic-webfont.ttf') format('truetype'),
+         url('/assets/fonts/pt_sans-web-bolditalic-webfont.svg#PTSansBoldItalic') format('svg');
     font-weight: bold;
     font-style: italic;
 
@@ -27,22 +27,22 @@
 
 @font-face {
     font-family: 'PT Sans';
-    src: url('pt_sans-web-italic-webfont.eot');
-    src: url('pt_sans-web-italic-webfont.eot?#iefix') format('embedded-opentype'),
-         url('pt_sans-web-italic-webfont.woff') format('woff'),
-         url('pt_sans-web-italic-webfont.ttf') format('truetype'),
-         url('pt_sans-web-italic-webfont.svg#PTSansItalic') format('svg');
+    src: url('/assets/fonts/pt_sans-web-italic-webfont.eot');
+    src: url('/assets/fonts/pt_sans-web-italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/assets/fonts/pt_sans-web-italic-webfont.woff') format('woff'),
+         url('/assets/fonts/pt_sans-web-italic-webfont.ttf') format('truetype'),
+         url('/assets/fonts/pt_sans-web-italic-webfont.svg#PTSansItalic') format('svg');
     font-weight: normal;
     font-style: italic;
 }
 
 @font-face {
     font-family: 'PT Sans';
-    src: url('pt_sans-web-regular-webfont.eot');
-    src: url('pt_sans-web-regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('pt_sans-web-regular-webfont.woff') format('woff'),
-         url('pt_sans-web-regular-webfont.ttf') format('truetype'),
-         url('pt_sans-web-regular-webfont.svg#PTSansRegular') format('svg');
+    src: url('/assets/fonts/pt_sans-web-regular-webfont.eot');
+    src: url('/assets/fonts/pt_sans-web-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/assets/fonts/pt_sans-web-regular-webfont.woff') format('woff'),
+         url('/assets/fonts/pt_sans-web-regular-webfont.ttf') format('truetype'),
+         url('/assets/fonts/pt_sans-web-regular-webfont.svg#PTSansRegular') format('svg');
     font-weight: normal;
     font-style: normal;
 
@@ -50,11 +50,11 @@
 
 @font-face {
     font-family: 'Ubuntu Condensed';
-    src: url('ubuntucondensed-regular-webfont.eot');
-    src: url('ubuntucondensed-regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('ubuntucondensed-regular-webfont.woff') format('woff'),
-         url('ubuntucondensed-regular-webfont.ttf') format('truetype'),
-         url('ubuntucondensed-regular-webfont.svg#UbuntuCondensedRegular') format('svg');
+    src: url('/assets/fonts/ubuntucondensed-regular-webfont.eot');
+    src: url('/assets/fonts/ubuntucondensed-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/assets/fonts/ubuntucondensed-regular-webfont.woff') format('woff'),
+         url('/assets/fonts/ubuntucondensed-regular-webfont.ttf') format('truetype'),
+         url('/assets/fonts/ubuntucondensed-regular-webfont.svg#UbuntuCondensedRegular') format('svg');
     font-weight: normal;
     font-style: normal;
 
@@ -62,11 +62,11 @@
 
 @font-face {
     font-family: 'Ubuntu';
-    src: url('ubuntu-bold-webfont.eot');
-    src: url('ubuntu-bold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('ubuntu-bold-webfont.woff') format('woff'),
-         url('ubuntu-bold-webfont.ttf') format('truetype'),
-         url('ubuntu-bold-webfont.svg#UbuntuBold') format('svg');
+    src: url('/assets/fonts/ubuntu-bold-webfont.eot');
+    src: url('/assets/fonts/ubuntu-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/assets/fonts/ubuntu-bold-webfont.woff') format('woff'),
+         url('/assets/fonts/ubuntu-bold-webfont.ttf') format('truetype'),
+         url('/assets/fonts/ubuntu-bold-webfont.svg#UbuntuBold') format('svg');
     font-weight: bold;
     font-style: normal;
 
@@ -74,22 +74,22 @@
 
 @font-face {
     font-family: 'Ubuntu Light';
-    src: url('ubuntu-light-webfont.eot');
-    src: url('ubuntu-light-webfont.eot?#iefix') format('embedded-opentype'),
-         url('ubuntu-light-webfont.woff') format('woff'),
-         url('ubuntu-light-webfont.ttf') format('truetype'),
-         url('ubuntu-light-webfont.svg#UbuntuLight') format('svg');
+    src: url('/assets/fonts/ubuntu-light-webfont.eot');
+    src: url('/assets/fonts/ubuntu-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/assets/fonts/ubuntu-light-webfont.woff') format('woff'),
+         url('/assets/fonts/ubuntu-light-webfont.ttf') format('truetype'),
+         url('/assets/fonts/ubuntu-light-webfont.svg#UbuntuLight') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Ubuntu';
-    src: url('ubuntu-regular-webfont.eot');
-    src: url('ubuntu-regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('ubuntu-regular-webfont.woff') format('woff'),
-         url('ubuntu-regular-webfont.ttf') format('truetype'),
-         url('ubuntu-regular-webfont.svg#UbuntuRegular') format('svg');
+    src: url('/assets/fonts/ubuntu-regular-webfont.eot');
+    src: url('/assets/fonts/ubuntu-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/assets/fonts/ubuntu-regular-webfont.woff') format('woff'),
+         url('/assets/fonts/ubuntu-regular-webfont.ttf') format('truetype'),
+         url('/assets/fonts/ubuntu-regular-webfont.svg#UbuntuRegular') format('svg');
     font-weight: normal;
     font-style: normal;
 
@@ -97,11 +97,11 @@
 
 @font-face {
     font-family: 'Solar';
-    src:url('Solar.eot');
-    src:url('Solar.eot?#iefix') format('embedded-opentype'),
-        url('Solar.woff') format('woff'),
-        url('Solar.ttf') format('truetype'),
-        url('Solar.svg#Solar') format('svg');
+    src:url('/assets/fonts/Solar.eot');
+    src:url('/assets/fonts/Solar.eot?#iefix') format('embedded-opentype'),
+        url('/assets/fonts/Solar.woff') format('woff'),
+        url('/assets/fonts/Solar.ttf') format('truetype'),
+        url('/assets/fonts/Solar.svg#Solar') format('svg');
     font-weight: normal;
     font-style: normal;
 }

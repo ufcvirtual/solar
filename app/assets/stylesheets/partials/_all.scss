@@ -2,7 +2,18 @@
 @import "compass/css3";
 
 @import "modules/variables";
+@import "modules/placeholders";
+
 @import "reset";
+
+@import "base";
+@import "mysolar";
+@import "alerts";
+@import "enrollment";
+@import "lightbox";
+@import "content";
+//@import "chat";
+
 @import 'layout';
 @import 'buttons';
 @import 'messages';

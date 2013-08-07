@@ -1,0 +1,171 @@
+// Layout Básico
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  cursor: default;
+  font-family: 'PT Sans', sans-serif;
+  height: 100%;
+  background-color: #f9f9f9;
+}
+
+p {
+  margin-bottom: 10px;
+}
+
+img {
+  border: none;
+}
+
+.center {
+  text-align: center;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Ubuntu Light', sans-serif;
+}
+
+h1 {
+  font-weight: 300;
+  &.page_title {
+    font-size: 12pt;
+    /*    font-weight: bold;*/
+    /*    font-variant: small-caps;*/
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+    padding-bottom: 2px !important;
+    /*text-transform: capitalize;*/
+    color: #000;
+    border-bottom-color: $color_main;
+  }
+}
+
+h2 {
+  font-family: 'Ubuntu Condensed', sans-serif;
+  font-weight: 500;
+}
+
+h3 {
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: bold;
+}
+
+/**
+* Div que envolve tudo
+*/
+
+#body_wrapper {
+  width: 980px;
+  margin: 0 auto;
+  min-height: 99.5%;
+  position: relative;
+  background-color: #ffffff;
+}
+
+/**
+* Tratando links
+*/
+a, a.menor, a.link_content {
+  text-decoration: none;
+  color: #222;
+}
+
+a.link_content, .forum_post_attachment_list a {
+  text-decoration: underline;
+  color: $color_contrast_text;
+}
+
+a.link_content:visited, .forum_post_attachment_list a:visited {
+  color: $color_main_text;
+}
+
+a.link_content_gray {
+  font-size: 9pt;
+  text-decoration: underline;
+  color: #999;
+}
+
+a.menor {
+  font-size: 8pt;
+  text-decoration: underline;
+}
+
+.more_or_less {
+  text-align: right;
+  display: block;
+}
+
+/**
+* Formulários (inputs, botões, etc)
+*/
+
+select {
+  font-family: 'PT Sans', sans-serif;
+  border-width: 1px;
+  border-style: solid;
+  padding-top: 2px;
+  /*    min-width: 180px;*/
+  color: #222;
+  background-color: #fff;
+  border-color: #dedede;
+}
+
+input {
+  border-width: 1px;
+  border-style: solid;
+  padding: 5px;
+  font-family: 'PT Sans', sans-serif;
+  /*    font-size: 13px;*/
+  color: #222;
+  border-color: #dedede;
+}
+
+button {
+  font-family: 'PT Sans', sans-serif;
+}
+
+input[type="file"] {
+  border: 0px;
+  padding: 0px;
+}
+
+textarea {
+  border-width: 1px;
+  border-style: solid;
+  padding: 5px;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 10pt;
+  color: #222;
+  background-color: #fff;
+  border-color: #dedede;
+}
+
+#footer {
+  overflow: hidden;
+  margin: 0 auto;
+  text-align: center;
+  padding: 10px 0;
+  width: 980px;
+  bottom: 0;
+  position: absolute;
+  background-color: #f9f9f9;
+  color: #666;
+
+  &, & a {
+    color: #666;
+    font-size: 9pt;
+  }
+  a:hover{
+    text-decoration: underline;
+  }
+  ul li {
+    margin: 0 5px;
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
+  }
+}

@@ -1,0 +1,281 @@
+// CONTEUDO GERAL
+
+#mysolar_content {
+  padding-left: 5px;
+  width: 785px;
+  padding-right: 10px;
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+  background-color: #fff;
+}
+
+#block_locale {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 9pt;
+  clear: both;
+
+  a {
+    color: #666;
+  }
+}
+
+#block_locale > ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#block_locale > ul > li {
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+  margin-right: 5px;
+}
+
+#my_personal_data_button { // FIXME: parece que não está mais sendo utilizado, verificar
+  margin-top: 40px;
+  width: 220px;
+  float: right;
+}
+
+/**
+* Tratando dos titulos dos conteudos
+*/
+
+.mysolar_header {
+  font-variant: small-caps;
+  height: 26px;
+  border-bottom: 2px solid;
+  border-bottom-color: $color_main_text;
+}
+
+.mysolar_header img {
+  float: left;
+  margin-right: 4px;
+}
+
+.mysolar_header h1 {
+  padding-top: 8px;
+}
+
+.mysolar_title { // FIXME: parece ser utilizado em uma única página, verificar se é mesmo necessário
+  vertical-align: middle;
+  font-variant: small-caps;
+  padding: 2px 0 0 0;
+  margin: 0;
+  font-size: 12pt;
+  font-weight: normal;
+  color: #000;
+}
+
+/**
+* Legendas
+*/
+
+div.legend {
+  font-size: 12px;
+  padding-top: 10px;
+  position: relative;
+}
+
+div.legend_score_footer {
+  font-family: Arial;
+  font-style: italic;
+  font-size: 9pt;
+}
+
+div.legend ul {
+  padding: 5px 0px;
+}
+
+div.legend li {
+  text-align: left;
+}
+
+div.legend h1 {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/**
+* Div que engloba tudo
+*/
+.block_wrapper {
+  width: 785px;
+  margin-bottom: 15px;
+  // overflow: hidden;
+}
+
+/*.block_wrapper_small {
+    height: 195px;
+}*/
+
+/**
+* Titulo geral da página
+*/
+#page_title  {
+  @extend %page-title;
+}
+
+#page_title {
+  > .block_content_text {
+    border: none;
+    font-size: 9pt;
+    padding: 4px 0 0 4px;
+    float: right;
+    color: #666666;
+  }
+  > .block_content_text:hover, > .block_content_text:hover select {
+    color: #000000;
+  }
+  select {
+    font-size: 9pt;
+    border: none;
+    color: #666666;
+  }
+}
+
+/*#page_title > .block_content_text:hover {
+    border: 1px solid #666666;
+}*/
+
+/**
+* Titulo do bloco
+*/
+
+div.block_title {
+  border-bottom: 2px solid;
+  border-bottom-color: $color_main_text;
+  padding-bottom: 1px !important;
+  position: relative;
+  overflow: hidden; // FIXME: em outro local estava definido como auto, verificar se está ok assim
+  height: 26px;
+  vertical-align: bottom;
+
+  h1 {
+    font-variant: small-caps;
+    font-size: 12pt;
+    font-weight: normal;
+  }
+  h2 {
+    display: inline;
+    vertical-align: bottom;
+    position: absolute;
+    bottom: 2px;
+  }
+  > .block_right {
+    padding-left: 6px;
+  }
+}
+
+/* zerando o espaçamento do titulo do bloco */
+.block_title, .block_title > .block_left, .block_title > .block_right {
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 0;
+}
+
+/* definindo as divs de conteudo como inline-table */
+.block_title > div, .block_content > .block_left, .block_content > .block_right {
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+  border-spacing: 0;
+}
+
+.block_content > .block_left img, .block_content > .block_right img {
+  vertical-align: text-bottom;
+}
+
+/* icone que fica ao lado do titulo do bloco */
+.block_title_icon { // FIXME: parece ser utilizado em uma única página, verificar se é mesmo necessário
+  margin-right: 5px;
+  margin-bottom: 2px;
+  width: 18px;
+  height: 18px;
+  vertical-align: text-bottom;
+}
+
+/**
+* Bloco de conteúdo
+*/
+.block_content {
+  background-color: $color_main_light;
+  font-size: 10pt;
+
+  > block_left {
+    width: 369px;
+    border-right: 1px solid;
+    border-right-color: #d0d0d0; /* adicionando a borda divisoria */
+  }
+  > block_right {
+    padding: 6px 10px 6px 8px; /* ajustando o espaçamento do bloco direito */
+  }
+  > block_left, > block_right {
+    vertical-align: top; /* garantindo que o conteudo do bloco fique proximo a linha superior */
+  }
+}
+
+/* largura dos blocos internos */
+.block_left, .block_right {
+  width: 370px;
+  padding: 6px 10px;
+}
+
+.block_content_overflow {
+  overflow: hidden;
+}
+
+.block_content_spacing {
+  padding: 6px 10px;
+}
+
+.block_content_line {
+  /*    font-size: 10pt;*/
+  border-bottom: 1px solid;
+  border-bottom-color: #CCCCCC;
+  padding: 6px 10px;
+}
+
+.block_content_line:last-child {
+  border-bottom: none;
+}
+
+.block_content_gray {
+  font-size: 8pt;
+  padding-right: 5px;
+  color: #999;
+}
+
+.block_content_text, .block_content_toolbar.block_content_text {
+  /*    font-size: 10pt;*/
+  padding: 6px 10px;
+  color: #000;
+}
+
+.block_content_toolbar {
+  background-color: rgb(232, 239, 246);
+  border-bottom: 1px solid;
+  border-bottom-color: rgba(0, 62, 122, 0.3);
+}
+
+.block_messages_opt {
+  color: #d0d0d0;
+  background-color: $color_main_light;
+}
+
+/* posicionando objetos alinhados a direita (normalment botoes) */
+.right_buttons {
+  text-align: right;
+  margin-right: 70px;
+}
+
+.right_buttons_assignment {
+  text-align: right;
+  margin-right: 59px;
+}
+
+.retreat {
+  margin-left: -7px;
+}

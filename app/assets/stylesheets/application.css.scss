@@ -2,8 +2,11 @@
 //@import 'themes/theme_blue';
 
 /* Fontes e ícones */
-@import 'fonts/fonts';
-@import 'fonts/icons';
+@import "fonts/fonts";
+@import "fonts/icons";
+
+/* CSS */
+@import "misc/scripts";
 
 /* Vendor css */
 @import "jquery.qtip.min";

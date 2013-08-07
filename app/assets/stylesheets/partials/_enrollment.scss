@@ -1,0 +1,64 @@
+// MATRICULA
+
+.enrollment_list label {
+  margin: 5px 0 3px 0;
+}
+
+.enrollment_list tr.lines td {
+  vertical-align: middle;
+}
+
+.enrollment_search {
+  height: 12px;
+  font-size: 12px;
+}
+
+.enrollment_search_icon {
+  vertical-align: middle;
+  border: 0px;
+  cursor: pointer;
+}
+
+.select_category {
+  height: 19px;
+  font-size: 10px;
+}
+
+.enrollment_label {
+  font-size: 10pt;
+  width: auto;
+  color: #000;
+}
+
+.enrollment_bar {
+  padding: 2px 4px;
+  overflow: hidden;
+}
+
+.enrollment_left {
+  float: left;
+  width: 545px;
+  left: 0px;
+  position: relative;
+}
+
+.enrollment_right {
+  float: right;
+  position: relative;
+  margin-right: 0px;
+  right: 0;
+  top: 5px;
+}
+
+.link_gray {
+  font-weight: bold;
+  padding: 6px 4px 6px 4px;
+  cursor: pointer;
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+.allocations_list {
+  max-height: 260px;
+  overflow: auto;
+}

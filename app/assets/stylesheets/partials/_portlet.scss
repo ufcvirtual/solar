@@ -1,11 +1,113 @@
-/* Mix-ins */
+// PORTLETS
+
+/**
+* Mix-ins
+*/
 @mixin rounded-corners($radius) {  
   border-radius: $radius;  
   -moz-border-radius: $radius;  
   -webkit-border-radius: $radius;  
-}  
+}
+/**
+* Portlets do Meu Solar
+*/
+.mysolar_portlets_content {
+  position: relative;
+  overflow: auto;
+  width: 100%;
+  height: 166px;
+  font-size: 10pt;
+  background-color: $color_main_light;
+}
 
-/* Portlet: efeito slider */
+#mysolar_curriculum_unit_wrapper {
+  margin: 0;
+  padding: 5px 10px;
+}
+
+#mysolar_curriculum_unit_wrapper li {
+  padding-bottom: 5px;
+}
+
+#mysolar_curriculum_unit_wrapper li > .disabled {
+  padding-left: 0;
+}
+
+/**
+* Definição geral dos blocos dos portlets
+*/
+table tr.block_title th {
+  width: 100%;
+  height: 161px;
+  overflow: auto;
+  word-wrap: break-word;
+}
+
+.block_small {
+  height: 195px;
+  width: 255px;
+  float: left;
+  margin-right: 10px;
+  overflow: hidden;
+}
+
+.block_large {
+  float: left;
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  height: 195px;
+  width: 520px;
+  margin-right: 10px;
+}
+
+/**
+* Aulas
+*/
+#block_lessons {
+  min-height: 135px;
+  max-height: 160px;
+  overflow: auto;
+}
+
+/**
+* Agenda
+*/
+#block_schedule {
+  margin-right: 0 !important;
+}
+
+/**
+* Mensagens
+*/
+#block_messages_content {
+  width: 100%;
+  height: 146px;
+  overflow: auto;
+}
+
+.block_messages_opt {
+  font-size: 8pt;
+  width: 100%;
+  vertical-align: bottom;
+  text-align: center;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+/**
+* Forum
+*/
+#block_forum {
+  width: 100%;
+  height: 173px;
+  overflow: auto;
+  word-wrap: break-word;
+}
+
+/**
+* Portlet: efeito slider
+*/
 .block_slider {
   overflow: hidden;
   position:relative;
@@ -84,6 +186,7 @@
   }
 }
 
+// removendo margem do ultimo portlet (terceiro) da linha
 .block_wrapper > .block_small:nth-child(3) {
     margin-right: 0;
 }
