@@ -12,9 +12,13 @@
 
 = simple_form_for @offer, html: {id: "offer_form"} do |f|
   .form-inputs.block_content
+    = f.input :type_id, as: :hidden, input_html: {value: @type_id}
     = f.association :semester, as: :hidden, input_html: {value: @offer.semester_id}
-    = f.association :course
-    = f.association :curriculum_unit
+    - if @type_id != 3
+      = f.association :course
+      = f.association :curriculum_unit
+    - else
+      = f.association :course, collection: Course.all_associated_with_curriculum_unit_by_name
 
     // Datas da oferta
     %div
@@ -69,6 +73,9 @@
   $(function(){
 
     $("#offer_course_id, #offer_curriculum_unit_id").combobox();
+
+    $("#offer_course_id").combobox("value", "#{@offer.course_id}");
+    $("#offer_curriculum_unit_id").combobox("value", "#{@offer.curriculum_unit_id}");
 
     // datepicker
     var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);

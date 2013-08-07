@@ -8,12 +8,14 @@ class OffersController < ApplicationController
   # GET /semester/:id/offers
   def index
     authorize! :index, Semester # as ofertas aparecem na listagem de semestre
+    @type_id = params[:type_id].to_i
 
     @offers = Semester.find(params[:semester_id]).offers
   end
 
   def new
     authorize! :new, Offer
+    @type_id = params[:type_id].to_i
 
     params[:format] = :html
     @offer = Semester.find(params[:semester_id]).offers.build course_id: params[:course_id], curriculum_unit_id: params[:curriculum_unit_id]
@@ -24,7 +26,8 @@ class OffersController < ApplicationController
 
   def edit
     @offer = Offer.find(params[:id])
-    authorize! :edit, @offer, on: [@offer.allocation_tag.id]
+    authorize! :edit, Offer, on: [@offer.allocation_tag.id]
+    @type_id = params[:type_id].to_i
 
     @offer.build_period_schedule if @offer.period_schedule.nil?
     @offer.build_enrollment_schedule if @offer.enrollment_schedule.nil?
@@ -34,6 +37,8 @@ class OffersController < ApplicationController
     @offer = Offer.new params[:offer]
     @offer.user_id = current_user.id
     optional_authorize(:create)
+    @type_id = params[:offer][:type_id].to_i
+    @offer.type_id = @type_id
 
     # periodo de oferta e matricula ficam no semestre \ esses dados ficam na tabela de oferta apenas se diferirem dos dados do semestre
     @offer.period_schedule.try(:destroy) if @offer.period_schedule.try(:start_date).nil?
@@ -49,8 +54,9 @@ class OffersController < ApplicationController
   def update
     @offer = Offer.find(params[:id])
 
-    authorize! :update, @offer, on: [@offer.allocation_tag.id]
     optional_authorize(:update)
+    @type_id = params[:offer][:type_id].to_i
+    @offer.type_id = @type_id
 
     begin
       Offer.transaction do
@@ -84,7 +90,7 @@ class OffersController < ApplicationController
 
   def destroy
     offer = Offer.find(params[:id])
-    authorize! :destroy, offer, on: [offer.allocation_tag.id]
+    authorize! :destroy, Offer, on: [offer.allocation_tag.id]
 
     if offer.destroy
       render json: {success: true, notice: t(:deleted, scope: [:offers, :success])}
@@ -112,13 +118,10 @@ class OffersController < ApplicationController
 
     def optional_authorize(method)
       ats = []
-      ats << AllocationTag.find_by_course_id(params[:offer][:course_id]).id unless params[:offer][:course_id].blank?
-      ats << AllocationTag.find_by_curriculum_unit_id(params[:offer][:curriculum_unit_id]).id unless params[:offer][:curriculum_unit_id].blank?
+      ats << AllocationTag.find_by_course_id(params[:offer][:course_id]).try(:id) unless params[:offer][:course_id].blank?
+      ats << AllocationTag.find_by_curriculum_unit_id(params[:offer][:curriculum_unit_id]).try(:id) unless params[:offer][:curriculum_unit_id].blank?
 
-      ats.compact!
-
-      raise CanCan::AccessDenied if ats.empty?
-      authorize! method, Offer, on: ats
+      authorize! method, Offer, on: ats.compact
     end
 
 end

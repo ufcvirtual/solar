@@ -47,6 +47,7 @@
         type: 'GET',
         url: $(this).data("url-search"),
         data: {
+          type_id: "#{@type.id}",
           curriculum_unit_id: $("#curriculum_unit").combobox('value'),
           course_id: $("#course").combobox('value'),
           period: $("#period").combobox('value')

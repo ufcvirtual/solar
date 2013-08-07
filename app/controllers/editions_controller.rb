@@ -38,7 +38,7 @@ class EditionsController < ApplicationController
 
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     @curriculum_units = @type.curriculum_units
-    @courses = Course.all
+    @courses = (@type.id == 3 ? Course.all_associated_with_curriculum_unit_by_name : Course.all)
     @semesters = Semester.all_by_period({period: params[:period]}) # semestres do período informado ou ativos
   end
 

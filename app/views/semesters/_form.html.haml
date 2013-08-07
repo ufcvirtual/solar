@@ -1,6 +1,8 @@
 - start_date, end_date = Date.today - 1.month, Date.today + 1.month
 = simple_form_for @semester, html: {id: "semester_form"} do |f|
   .form-inputs.block_content
+    = f.input :type_id, as: :hidden, input_html: {value: @type_id}
+
     %div{style: "margin-top: 5px"}= f.input :name
 
     %div

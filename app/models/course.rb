@@ -20,4 +20,8 @@ class Course < ActiveRecord::Base
     [code, name].join(' - ')
   end
 
+  def self.all_associated_with_curriculum_unit_by_name(type = 3)
+    Course.where(name: CurriculumUnit.find_all_by_curriculum_unit_type_id(type).map(&:name))
+  end
+
 end

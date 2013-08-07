@@ -89,7 +89,7 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :semesters do
+  resources :semesters, except: [:show] do
     get :list_combobox, to: :index, combobox: true, as: :list_combobox, on: :collection
     resources :offers, only: [:index, :new]
   end

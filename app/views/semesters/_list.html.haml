@@ -1,5 +1,6 @@
 = button_tag t(".new"), class: 'btn btn_default', :"data-tooltip" => t(".new"), id: "new_semester", :"data-link-new-semester" => new_semester_path, disabled: not(can? :create, Semester)
 
+- type_id = (@type_id || @type.try(:id))
 .block_wrapper
   - unless @semesters.empty?
     - @semesters.each do |semester|
@@ -14,11 +15,11 @@
             = [t(".period"), ": #{period}"].join
         .block_content_toolbar
           .block_toolbar_left.btn-group
-            %a.btn.btn_main.new_offer{:'data-tooltip' => t(".new_offer"), :"data-link-new-offer" => new_semester_offer_path(semester, course_id: params[:course_id], curriculum_unit_id: params[:curriculum_unit_id]), :"data-semester-name" => semester.name}
+            %a.btn.btn_main.new_offer{:'data-tooltip' => t(".new_offer"), :"data-link-new-offer" => new_semester_offer_path(semester, type_id: type_id, course_id: (params[:course_id] || ""), curriculum_unit_id: (params[:curriculum_unit_id] || "")), :"data-semester-name" => semester.name}
               = content_tag(:i, nil, class: 'icon-plus-3')
 
-        .table-offers{id: "table-#{semester.id}", :"data-link-offers" => semester_offers_path(semester)}
-          = render partial: "offers/list", object: @offers = semester.offers
+        .table-offers{id: "table-#{semester.id}", :"data-link-offers" => semester_offers_path(semester, type_id: type_id)}
+          = render partial: "offers/list", object: @offers = semester.offers, object: @type_id = type_id
   - else
     = "Nenhum semestre"
 

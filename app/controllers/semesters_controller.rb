@@ -4,6 +4,7 @@ class SemestersController < ApplicationController
   # GET /semesters
   def index
     authorize! :index, Semester
+    @type_id = params[:type_id].to_i
 
     if [params[:period], params[:course_id], params[:curriculum_unit_id]].delete_if(&:blank?).empty?
       @semesters = []
@@ -32,18 +33,11 @@ class SemestersController < ApplicationController
     end
   end
 
-  # GET /semesters/1
-  ## verificar necessidade desse metodo
-  def show
-    authorize! :index, Semester
-
-    @semester = Semester.find(params[:id])
-  end
-
   # GET /semesters/new
   # GET /semesters/new.json
   def new
     authorize! :create, Semester
+    @type_id = params[:type_id].to_i
 
     @semester = Semester.new
     @semester.build_offer_schedule
@@ -58,6 +52,7 @@ class SemestersController < ApplicationController
   # GET /semesters/1/edit
   def edit
     authorize! :update, Semester
+    @type_id = params[:type_id].to_i
     @semester = Semester.find(params[:id])
   end
 
@@ -65,6 +60,7 @@ class SemestersController < ApplicationController
   # POST /semesters.json
   def create
     authorize! :create, Semester
+    @type_id = params[:semester][:type_id].to_i
     @semester = Semester.new params[:semester]
 
     if @semester.save
@@ -78,6 +74,7 @@ class SemestersController < ApplicationController
   # PUT /semesters/1.json
   def update
     authorize! :update, Semester
+    @type_id = params[:semester][:type_id].to_i
     @semester = Semester.find(params[:id])
 
     if @semester.update_attributes(params[:semester])
@@ -91,6 +88,7 @@ class SemestersController < ApplicationController
   # DELETE /semesters/1.json
   def destroy
     @semester = Semester.find(params[:id])
+    @type_id = params[:type_id].to_i
     authorize! :destroy, Semester
 
     if ((@semester.offers.empty? or @semester.offers.map(&:groups).empty?) and @semester.destroy)
