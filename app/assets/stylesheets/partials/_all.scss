@@ -7,15 +7,21 @@
 @import "reset";
 
 @import "base";
+
+@import "layout"; // TODO: terminar de dividr e remover depois
+
 @import "mysolar";
+@import "portlet";
+@import "content";
 @import "alerts";
+@import "buttons";
+
 @import "enrollment";
 @import "lightbox";
-@import "content";
-//@import "chat";
+@import "participants";
+@import "lesson";
+@import "messages";
+@import "calendar";
+@import "forum";
 
-@import 'layout';
-@import 'buttons';
-@import 'messages';
-@import 'portlet';
-@import 'calendar';
+//@import "chat";

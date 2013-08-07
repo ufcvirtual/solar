@@ -391,6 +391,10 @@ a.mysolar_top_link {
   color: $color_main_text;
 }
 
+.mysolar_menu_title_active > a {
+  color: $color_contrast_text;
+}
+
 .submenu {
   display: none;
   padding: 5px 0 5px 10px;

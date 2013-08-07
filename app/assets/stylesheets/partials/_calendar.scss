@@ -16,6 +16,21 @@
 }
 .ui-helper-hidden-accessible { display: none; }
 
+/* portlet de calendario da tela de acesso a curso */
+.calendar {
+  font-size: 9pt;
+  width: 100%;
+  padding-bottom: 2px;
+  background-color: $color_main_light;
+}
+
+.calendar_events {
+  height: 100%;
+  padding: 3px 8px 2px 8px;
+  overflow: auto;
+  background: $color_main_light;
+}
+
 /* ... Component containers ... */
 
 /* corpo do calendario */

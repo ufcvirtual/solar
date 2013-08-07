@@ -217,8 +217,7 @@ div.block_title {
   }
 }
 
-/* largura dos blocos internos */
-.block_left, .block_right {
+.block_left, .block_right { /* largura dos blocos internos */
   width: 370px;
   padding: 6px 10px;
 }
@@ -254,15 +253,50 @@ div.block_title {
   color: #000;
 }
 
-.block_content_toolbar {
-  background-color: rgb(232, 239, 246);
-  border-bottom: 1px solid;
-  border-bottom-color: rgba(0, 62, 122, 0.3);
+.block_title_button img {
+  vertical-align: bottom;
 }
 
 .block_messages_opt {
   color: #d0d0d0;
   background-color: $color_main_light;
+}
+
+/**
+* Barra de ferramentas
+*/
+.block_content_toolbar {
+  background-color: rgb(232, 239, 246);
+  border-bottom: 1px solid;
+  border-bottom-color: rgba(0, 62, 122, 0.3);
+  padding: 2px;
+
+  img {
+    vertical-align: middle;
+    padding: 2px 0;
+  }
+  a.btn {
+    padding: 3px 5px;
+    min-width: 20px;
+  }
+  .btn + .btn {
+    margin-left: -5px;
+    border-left-width: 0px;
+  }
+  .btn img {
+    padding: 0;
+  }
+}
+
+.block_toolbar_left, .block_toolbar_right {
+  display: inline-block;
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+.block_toolbar_right {
+  float: right;
 }
 
 /* posicionando objetos alinhados a direita (normalment botoes) */

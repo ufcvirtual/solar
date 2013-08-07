@@ -32,13 +32,13 @@ h1, h2, h3, h4, h5 {
 h1 {
   font-weight: 300;
   &.page_title {
+    /*font-weight: bold;*/
+    /*font-variant: small-caps;*/
+    /*text-transform: capitalize;*/
     font-size: 12pt;
-    /*    font-weight: bold;*/
-    /*    font-variant: small-caps;*/
     border-bottom-width: 3px;
     border-bottom-style: solid;
     padding-bottom: 2px !important;
-    /*text-transform: capitalize;*/
     color: #000;
     border-bottom-color: $color_main;
   }
@@ -168,4 +168,38 @@ textarea {
     zoom: 1;
     *display: inline;
   }
+}
+
+/**
+* Campos de data, hora e períodos
+*/
+.date_text_field {
+  margin-top: 0px;
+  margin-left: -2px;
+  margin-bottom: 10px;
+}
+
+.date_text_field + .field_with_errors {
+  line-height: 26px;
+}
+
+#from-date {
+  margin-right: 4px;
+}
+
+#until-date {
+  margin-left: 5px;
+}
+
+.lines.period_ended, .period_ended {
+  background-color: #f6f6f6;
+  color: #989898;
+  a {
+    color: #989898;
+  }
+}
+
+/* estilo para item invisivel */
+.invisible {
+  display: none;
 }
