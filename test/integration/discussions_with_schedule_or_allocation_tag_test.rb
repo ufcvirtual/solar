@@ -14,10 +14,6 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
     @quimica_tab  = add_tab_path(id: 3, context:2, allocation_tag_id: 3)
     @items = [allocation_tags(:al2).id]
     @items2 = [allocation_tags(:al13).id]
-
-    # @edition_page = editions_path
-    # @items        = items_editions_path(:allocation_tags_ids => [allocation_tags(:al2)])
-    # @items2       = items_editions_path(:allocation_tags_ids => [allocation_tags(:al13)])
   end
 
   def login(user)
@@ -53,9 +49,6 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
 
     test "listar foruns de acordo com dados de oferta e turma passados" do
       login users(:editor)
-      # get @edition_page
-      # get @items
-      # assert_not_nil assigns(:allocation_tags_ids)
       get( list_discussions_path, {:allocation_tags_ids => @items} )
       assert_not_nil assigns(:discussions)
       assert_template :list
@@ -63,8 +56,6 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
 
     test "nao listar foruns de acordo com dados de oferta e turma passados - sem permissao" do
       login users(:professor)
-      # get @edition_page
-      # get @items
       get( list_discussions_path, {:allocation_tags_ids => @items} )
       assert_nil assigns(:discussions)
       assert_response :error
@@ -72,8 +63,6 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
 
     test "criar novo forum" do
       login users(:editor)
-      # get @edition_page
-      # get @items
       get( new_discussion_path, {:allocation_tags_ids => @items} )
       assert_not_nil assigns(:discussion)
       assert_template :new
@@ -87,8 +76,6 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
 
     test "nao criar novo forum - erro de validacao" do
       login(users(:editor))
-      # get @edition_page
-      # get @items
       get( new_discussion_path, {:allocation_tags_ids => @items} )
       assert_not_nil assigns(:discussion)
       assert_template :new
@@ -102,10 +89,6 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
     end
 
     test "nao criar novo forum - sem permissao" do
-      login(users(:editor))
-      # get @edition_page
-      # get @items
-
       login(users(:professor))
       get( new_discussion_path, {:allocation_tags_ids => @items} )
       assert_nil assigns(:discussion)
@@ -122,8 +105,6 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
 
      test "editar forum" do
       login(users(:editor))
-      # get @edition_page
-      # get @items
       get(edit_discussion_path(discussions(:forum_9), :allocation_tags_ids => @items))
       assert_not_nil assigns(:discussion)
       assert_not_nil assigns(:allocation_tags_ids)
@@ -137,8 +118,6 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
 
     test "nao editar forum - erro de validacao" do
       login(users(:editor))
-      # get @edition_page
-      # get @items
       get(edit_discussion_path(discussions(:forum_9), :allocation_tags_ids => @items))
       assert_not_nil assigns(:discussion)
       assert_not_nil assigns(:allocation_tags_ids)
@@ -152,11 +131,6 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
     end
 
     test "nao editar forum - sem permissao" do
-      login(users(:editor))
-      # get @edition_page
-      # get @items
-      # allocation_tags_ids = assigns(:allocation_tags_ids)
-
       login(users(:professor))
       get(edit_discussion_path(discussions(:forum_9), :allocation_tags_ids => @items))
       assert_nil assigns(:allocation_tags_ids)
@@ -173,9 +147,6 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
 
     test "excluir forum" do
       login(users(:editor))
-      # get @edition_page
-      # get @items
-      # allocation_tags_ids = assigns(:allocation_tags_ids)
       get(list_discussions_path, {:allocation_tags_ids => @items})
       assert_not_nil assigns(:discussions)
       assert_not_nil assigns(:allocation_tags_ids)
@@ -194,9 +165,6 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
 
     test "nao excluir forum - forum ja possui postagens" do
       login(users(:editor))
-      # get @edition_page
-      # get @items2
-      # allocation_tags_ids = assigns(:allocation_tags_ids)
       get(list_discussions_path, {:allocation_tags_ids => @items2})
       assert_not_nil assigns(:discussions)
       assert_not_nil assigns(:allocation_tags_ids)
@@ -211,11 +179,6 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
     end
 
     test "nao excluir forum - sem permissao" do
-      login(users(:editor))
-      # get @edition_page
-      # get @items
-      # allocation_tags_ids = assigns(:allocation_tags_ids)
-
       login(users(:professor))
 
       assert_no_difference(["Discussion.count", "Schedule.count"]) do

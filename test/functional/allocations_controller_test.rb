@@ -27,7 +27,7 @@ class AllocationsControllerTest < ActionController::TestCase
     get :index
     assert_response :success
 
-    assert_tag :select, :attributes => {:id => "status_id"}, :content => /Todos/
+    assert_tag :select, attributes: {id:  "status_id"}, content:  /Todos/
     assert_select '.filter_counter', "(Total: 4 alunos)"
   end
 
@@ -37,7 +37,7 @@ class AllocationsControllerTest < ActionController::TestCase
     assert_response :success
 
     assert_select "table tbody tr" do
-      assert_select 'td:nth-child(3)', {:count => 0, :html => "CAU-A - 2011.1"}
+      assert_select 'td:nth-child(3)', {count:  0, html:  "CAU-A - 2011.1"}
     end
   end
 
@@ -48,16 +48,16 @@ class AllocationsControllerTest < ActionController::TestCase
     al_pending = assigns(:allocations).select {|al| al.user_id == users(:user).id and al.status == Allocation_Pending}.first
 
     assert_select "table tbody tr" do
-      assert_select 'td:nth-child(4)', {:count => 1, :html => "Pendente"}
+      assert_select 'td:nth-child(4)', {count: 1, html:  "Pendente"}
     end
 
-    get :edit, :id => al_pending.id
+    get :edit, id: al_pending.id
     assert_response :success
 
-    put :update, {:id => al_pending.id, :allocation => {:status => Allocation_Activated}}
+    put :update, {id: al_pending.id, allocation: {status: Allocation_Activated}}
     assert_response :success
 
-    assert_select 'td', {:html => "Matriculado"}
+    assert_select 'td', {html:  "Matriculado"}
   end
 
   test "rejeitar matricula pendente do aluno user" do
@@ -67,16 +67,16 @@ class AllocationsControllerTest < ActionController::TestCase
     al_pending = assigns(:allocations).select {|al| al.user_id == users(:user).id and al.status == Allocation_Pending}.first
 
     assert_select "table tbody tr" do
-      assert_select 'td:nth-child(4)', {:count => 1, :html => "Pendente"}
+      assert_select 'td:nth-child(4)', {count: 1, html: "Pendente"}
     end
 
-    get :edit, :id => al_pending.id
+    get :edit, id:  al_pending.id
     assert_response :success
 
-    put :update, {:id => al_pending.id, :allocation => {:status => Allocation_Rejected}}
+    put :update, {id: al_pending.id, allocation: {status:  Allocation_Rejected}}
     assert_response :success
 
-    assert_select 'td', {:html => "Rejeitado"}
+    assert_select 'td', {html:  "Rejeitado"}
   end
 
   test "cancelar matricula do aluno user na turma FOR - 2011.1" do
@@ -88,30 +88,30 @@ class AllocationsControllerTest < ActionController::TestCase
     # o aluno User, esta matriculado na turma?
     assert not(al_matriculado.nil?)
 
-    get :edit, :id => al_matriculado.id
+    get :edit, id: al_matriculado.id
     assert_response :success
 
-    put :update, {:id => al_matriculado.id, :allocation => {:status => Allocation_Cancelled}}
+    put :update, {id:  al_matriculado.id, allocation:  {status:  Allocation_Cancelled}}
     assert_response :success
 
-    assert_select 'td', {:html => "Cancelado"}
+    assert_select 'td', {html:  "Cancelado"}
   end
 
   test "exibir usuarios alocados para um usuario com permissao" do
-    get :designates, { :allocation_tags_ids => [allocation_tags(:al5).id] }
+    get :designates, { allocation_tags_ids: [allocation_tags(:al5).id] }
     assert_response :success
     assert_not_nil assigns(:allocations)
 
     assert_select "table tbody tr:nth-child(1)" do
-      assert_select 'td:nth-child(1)', {:html => "Aluno 3"}
-      assert_select 'td:nth-child(4)', {:html => "Prof. Titular"}
-      assert_select 'form input', {:value => "Ativar"}
+      assert_select 'td:nth-child(1)', {html: "Aluno 3"}
+      assert_select 'td:nth-child(4)', {html: "Prof. Titular"}
+      assert_select 'button', {value: "Ativar"}
     end
 
     assert_select "table tbody tr:nth-child(2)" do
-      assert_select 'td:nth-child(1)', {:html => "Professor"}
-      assert_select 'td:nth-child(4)', {:html => "Prof. Titular"}
-      assert_select 'form input', {:value => "Desativar"}
+      assert_select 'td:nth-child(1)', {html: "Professor"}
+      assert_select 'td:nth-child(4)', {html: "Prof. Titular"}
+      assert_select 'button', {value: "Desativar"}
     end
   end
 
@@ -119,13 +119,13 @@ class AllocationsControllerTest < ActionController::TestCase
     sign_out @coordenador
     sign_in users(:user2)
 
-    get :designates, { :allocation_tags_ids => [allocation_tags(:al5).id] }
+    get :designates, { allocation_tags_ids:  [allocation_tags(:al5).id] }
     assert_nil assigns(:allocations)
     assert_response :error
   end
 
   test "ativar perfil inativo de usuario" do
-    get :activate, { :id => allocations(:ad).id }
+    get :activate, { id:  allocations(:ad).id }
     assert_response :success
   end
 
@@ -133,12 +133,12 @@ class AllocationsControllerTest < ActionController::TestCase
     sign_out @coordenador
     sign_in users(:professor)
 
-    get :activate, { :id => allocations(:ad).id }
-    assert_response :error
+    get :activate, { id:  allocations(:ad).id }
+    assert_response :unprocessable_entity
   end
 
   test "desativar perfil de usuario" do
-    get :deactivate, { :id => allocations(:g).id }
+    get :deactivate, { id:  allocations(:g).id }
     assert_response :success
   end
 
@@ -146,13 +146,13 @@ class AllocationsControllerTest < ActionController::TestCase
     sign_out @coordenador
     sign_in users(:professor)
 
-    get :deactivate, { :id => allocations(:g).id }
-    assert_response :error
+    get :deactivate, { id:  allocations(:g).id }
+    assert_response :unprocessable_entity
   end
 
   test "alocar usuario com perfil tutor a distancia" do
     assert_difference("Allocation.count", +1) do
-      post :create_designation, { :allocation_tags_ids => [allocation_tags(:al5).id], :user_id => users(:user2).id, :profile => profiles(:tutor_distancia).id, :status => Allocation_Activated }
+      post :create_designation, { allocation_tags_ids:  [allocation_tags(:al5).id], user_id: users(:user2).id, profile:  profiles(:tutor_distancia).id, status:  Allocation_Activated }
     end
 
     assert_response :success
@@ -164,7 +164,7 @@ class AllocationsControllerTest < ActionController::TestCase
     sign_in users(:professor)
     
     assert_no_difference("Allocation.count") do
-      post :create_designation, { :allocation_tags_ids => [allocation_tags(:al5).id], :user_id => users(:user2).id, :profile => profiles(:tutor_distancia).id, :status => Allocation_Activated }
+      post :create_designation, { allocation_tags_ids: [allocation_tags(:al5).id], user_id:  users(:user2).id, profile:  profiles(:tutor_distancia).id, status:  Allocation_Activated }
     end
     
     assert_response :error
@@ -182,7 +182,7 @@ class AllocationsControllerTest < ActionController::TestCase
       post :create, {allocation_tag_id: allocation_tags(:al5).id, user_id: users(:editor).id}
     end
     assert_response :redirect
-    assert_equal flash[:notice], I18n.t(:enrollm_request, :scope => [:allocations, :success])
+    assert_equal flash[:notice], I18n.t(:enrollm_request, scope:  [:allocations, :success])
   end
 
   # Usuário solicita matrícula fora do período
@@ -192,7 +192,7 @@ class AllocationsControllerTest < ActionController::TestCase
       post :create, {allocation_tag_id: allocation_tags(:al8).id, user_id: users(:editor).id}
     end
     assert_response :redirect
-    assert_equal flash[:alert], I18n.t(:enrollm_request, :scope => [:allocations, :error])
+    assert_equal flash[:alert], I18n.t(:enrollm_request, scope:  [:allocations, :error])
   end
 
   # test "mudar aluno de turma" do

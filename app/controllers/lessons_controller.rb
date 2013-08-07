@@ -26,7 +26,7 @@ class LessonsController < ApplicationController
       authorize! :list, Lesson, on: [allocation_tags].flatten
       @allocation_tags = AllocationTag.where(id: allocation_tags)
       @allocation_tags_ids = @allocation_tags.map(&:id)
-    rescue Exception => error
+    rescue
       render nothing: true, status: 500
     end
 
@@ -99,7 +99,7 @@ class LessonsController < ApplicationController
         @lesson.schedule.update_attributes!(start_date: params[:start_date], end_date: params[:end_date])
       end
  
-    rescue
+    rescue 
       error = true
       @schedule_error = @lesson.schedule.errors.full_messages[0] unless @lesson.schedule.valid?
     end
@@ -165,7 +165,7 @@ class LessonsController < ApplicationController
         end
         
       else
-         render nothing: true
+        render nothing: true
       end
   end
 
@@ -215,7 +215,7 @@ class LessonsController < ApplicationController
   ##
   def change_module
     begin
-      authorize! :change_module, Lesson, :on => params[:allocation_tags_ids]
+      authorize! :change_module, Lesson, on: [params[:allocation_tags_ids]].flatten
       
       raise "#{t(:must_select_lessons, scope: [:lessons, :notifications])}" if params[:lessons_ids].empty?
       raise "#{t(:must_select_module, scope: [:lessons, :errors])}" if (params[:move_to_module].nil? || LessonModule.find(params[:move_to_module]).nil?)

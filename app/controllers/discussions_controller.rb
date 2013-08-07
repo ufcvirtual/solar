@@ -24,7 +24,7 @@ class DiscussionsController < ApplicationController
 
   def new
     @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
-    authorize! :new, Discussion, :on => @allocation_tags_ids
+    authorize! :new, Discussion, on: @allocation_tags_ids
     @discussion          = Discussion.new
   end
 
@@ -32,7 +32,10 @@ class DiscussionsController < ApplicationController
     @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
     @discussion = Discussion.new
     @schedule = Schedule.new
+
+    authorize! :create, Discussion, on: @allocation_tags_ids  
     begin
+
       Discussion.transaction do
         @allocation_tags_ids.each do |allocation_tag_id|
           @schedule = Schedule.new(start_date: params[:start_date], end_date: params[:end_date])
@@ -60,7 +63,7 @@ class DiscussionsController < ApplicationController
     @allocation_tags_ids = params[:allocation_tags_ids]
 
     begin
-      authorize! :list, Discussion, :on => @allocation_tags_ids
+      authorize! :list, Discussion, on: @allocation_tags_ids
       @discussions = Discussion.where(allocation_tag_id: @allocation_tags_ids)
     rescue
       render :nothing => true, :status => 500
@@ -69,11 +72,12 @@ class DiscussionsController < ApplicationController
 
   def edit
     @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
+    authorize! :edit, Discussion, on: @allocation_tags_ids  
   end
 
   def update
     @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
-    authorize! :update, Discussion, :on => @allocation_tags_ids  
+    authorize! :update, Discussion, on: @allocation_tags_ids  
       
     @discussion = Discussion.find(params[:id])
     @schedule = Schedule.find(@discussion.schedule_id)

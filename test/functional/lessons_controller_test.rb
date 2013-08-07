@@ -212,7 +212,7 @@ class LessonsControllerTest < ActionController::TestCase
   test "alterar modulo da aula" do
     assert_difference("LessonModule.find(#{lesson_modules(:module5).id}).lessons.count", +2) do
       assert_difference("LessonModule.find(#{lesson_modules(:module1).id}).lessons.count", -2) do
-        put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: allocation_tags(:al6).id, move_to_module: lesson_modules(:module5).id, "lessons_to_move_#{lesson_modules(:module1).id}" => [lessons(:pag_ufc).id, lessons(:pag_uol).id], format: "json"}
+        put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: allocation_tags(:al6).id, move_to_module: lesson_modules(:module5).id, lessons_ids: [lessons(:pag_ufc).id, lessons(:pag_uol).id], format: "json"}
       end
     end
 
@@ -222,7 +222,7 @@ class LessonsControllerTest < ActionController::TestCase
   test "nao alterar modulo da aula - sem acesso" do
     assert_no_difference("LessonModule.find(#{lesson_modules(:module5).id}).lessons.count", +2) do
       assert_no_difference("LessonModule.find(#{lesson_modules(:module1).id}).lessons.count", -2) do
-        put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al5).id], move_to_module: lesson_modules(:module8).id, "lessons_to_move_#{lesson_modules(:module1).id}" => [lessons(:pag_ufc).id, lessons(:pag_uol).id], format: "json"}
+        put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: [allocation_tags(:al6).id, allocation_tags(:al5).id], move_to_module: lesson_modules(:module8).id, lessons_ids: [lessons(:pag_ufc).id, lessons(:pag_uol).id], format: "json"}
       end
     end
 
@@ -233,7 +233,7 @@ class LessonsControllerTest < ActionController::TestCase
     sign_in @professor
     assert_no_difference("LessonModule.find(#{lesson_modules(:module5).id}).lessons.count", +2) do
       assert_no_difference("LessonModule.find(#{lesson_modules(:module1).id}).lessons.count", -2) do
-        put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: allocation_tags(:al6).id, move_to_module: lesson_modules(:module5).id, "lessons_to_move_#{lesson_modules(:module1).id}" => [lessons(:pag_ufc).id, lessons(:pag_uol).id], format: "json"}
+        put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: allocation_tags(:al6).id, move_to_module: lesson_modules(:module5).id, lessons_ids: [lessons(:pag_ufc).id, lessons(:pag_uol).id], format: "json"}
       end
     end
 
@@ -243,7 +243,7 @@ class LessonsControllerTest < ActionController::TestCase
   test "nao alterar modulo da aula - dados invalidos" do
     assert_no_difference("LessonModule.find(#{lesson_modules(:module5).id}).lessons.count", +2) do
       assert_no_difference("LessonModule.find(#{lesson_modules(:module1).id}).lessons.count", -2) do
-        put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: allocation_tags(:al6).id, "lessons_to_move_#{lesson_modules(:module1).id}" => [lessons(:pag_ufc).id, lessons(:pag_uol).id], format: "json"}
+        put :change_module, {id: lesson_modules(:module1).id, allocation_tags_ids: allocation_tags(:al6).id, lessons_ids: [lessons(:pag_ufc).id, lessons(:pag_uol).id], format: "json"}
       end
     end
 
