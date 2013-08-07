@@ -1373,6 +1373,7 @@
       type: "Tipo*"
       course: Curso
     curriculum_units:
+      course: Curso
       type: "Tipo*"
       curriculum_unit: Unidade Curricular
     groups:
@@ -1404,12 +1405,14 @@
       updated: Não foi possível atualizar Unidade Curricular.
       deleted: Não foi possível deletar Unidade Curricular.
     index:
+      new_course: Novo Curso
       new_module: Novo Módulo
       new_curriculum_unit: Nova Unidade Curricular
       edit: Editar %{uc_or_module}
       delete: Excluir %{uc_or_module}
       curriculum_unit: Unidade Curricular
       module: Módulo
+      course: Curso
     form:
       save: Salvar
       cancel: Cancelar

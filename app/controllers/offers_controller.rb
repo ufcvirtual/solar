@@ -36,6 +36,7 @@ class OffersController < ApplicationController
   def create
     @offer = Offer.new params[:offer]
     @offer.user_id = current_user.id
+
     optional_authorize(:create)
     @type_id = params[:offer][:type_id].to_i
     @offer.type_id = @type_id
@@ -46,7 +47,7 @@ class OffersController < ApplicationController
 
     if @offer.save
       render json: {success: true, notice: t(:created, scope: [:offers, :success])}
-    else
+    else 
       render :new
     end
   end
@@ -117,11 +118,18 @@ class OffersController < ApplicationController
   private
 
     def optional_authorize(method)
-      ats = []
-      ats << AllocationTag.find_by_course_id(params[:offer][:course_id]).try(:id) unless params[:offer][:course_id].blank?
-      ats << AllocationTag.find_by_curriculum_unit_id(params[:offer][:curriculum_unit_id]).try(:id) unless params[:offer][:curriculum_unit_id].blank?
+      at_c, at_uc = nil
+      at_c = AllocationTag.find_by_course_id(params[:offer][:course_id]).try(:id) unless params[:offer][:course_id].blank?
+      at_uc = AllocationTag.find_by_curriculum_unit_id(params[:offer][:curriculum_unit_id]).try(:id) unless params[:offer][:curriculum_unit_id].blank?
 
-      authorize! method, Offer, on: ats.compact
+      if at_c.nil? and at_uc.nil?
+        authorize! method, Offer
+      else
+        begin
+          authorize! method, Offer, on: [at_c]
+        rescue
+          authorize! method, Offer, on: [at_uc]
+        end
+      end
     end
-
 end

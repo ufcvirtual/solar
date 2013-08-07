@@ -27,6 +27,8 @@ class CurriculumUnitsController < ApplicationController
     @curriculum_units = []
 
     if params[:combobox]
+
+      # rever
       if @type.id == 3
         course_name = Course.find(params[:course_id]).name
         @curriculum_units = CurriculumUnit.where(name: course_name)
@@ -83,6 +85,11 @@ class CurriculumUnitsController < ApplicationController
     authorize! :create, CurriculumUnit
 
     if @curriculum_unit.save
+      if @curriculum_unit.curriculum_unit_type_id == 3
+        course = Course.new name: @curriculum_unit.name, code: @curriculum_unit.code
+        course.user_id = @curriculum_unit.user_id
+        course.save
+      end
       render json: {success: true, notice: t(:created, scope: [:curriculum_units, :success]), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
     else
       render :new
@@ -101,8 +108,10 @@ class CurriculumUnitsController < ApplicationController
   # PUT /curriculum_units/1.json
   def update
     params[:curriculum_unit].delete(:code) unless params[:curriculum_unit][:code].present?
+    course = Course.find_by_name(@curriculum_unit.name)
 
     if @curriculum_unit.update_attributes(params[:curriculum_unit])
+      course.update_attributes name: @curriculum_unit.name, code: @curriculum_unit.code if @curriculum_unit.curriculum_unit_type_id == 3 and (not course.nil?)
       render json: {success: true, notice: t(:updated, scope: [:curriculum_units, :success]), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
     else
       render :edit

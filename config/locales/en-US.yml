@@ -1207,6 +1207,7 @@
       type: "Type*"
       course: Course
     curriculum_units:
+      course: Course
       type: "Type*"
       curriculum_unit: Curriculum Unit
     groups:
@@ -1238,13 +1239,14 @@
       updated: Curriculum Unit wasn't updated.
       deleted: Curriculum Unit wasn't deleted.
     index:
-      index:
+      new_course: New Course
       new_module: New Module
       new_curriculum_unit: New Curriculum Unit
       edit: Edit %{uc_or_module}
       delete: Delete %{uc_or_module}
       curriculum_unit: Curriculum Unit
       module: Module
+      course: Course
     form:
       save: Save
       cancel: Cancel

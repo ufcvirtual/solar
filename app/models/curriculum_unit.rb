@@ -18,6 +18,12 @@ class CurriculumUnit < ActiveRecord::Base
 
   default_scope :order => 'name ASC'
 
+  after_destroy :delete_course, if: "curriculum_unit_type_id == 3"
+
+  def delete_course
+    Course.find_by_name(name).try(:destroy)
+  end
+
   ##  
   # Participantes que não são TAL TIPO DE PERFIL
   ##
