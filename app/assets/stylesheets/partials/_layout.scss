@@ -1,153 +1,14 @@
-
-#post_attachment_wrapper div {
+#post_attachment_wrapper div { // FIXME: pensar onde colocar esse seletor
   margin-top: 10px;
 }
 
-#post_attachment_form_submit {
+#post_attachment_form_submit { // FIXME: pensar onde colocar esse seletor
   text-align: right;
-}
-
-#new_post {
-  display: none;
-  padding-top: 5px;
-}
-
-.new_post_dialog_buttons {
-  margin-top: 5px;
-  padding-bottom: 3px;
-  float: right;
-}
-
-/* === TELA DE MENSAGENS  === */
-.label_text {
-  font-size: 10pt;
-  padding: 6px;
-}
-
-/* mensagem: busca */
-.message_search_div, .message_div {
-  font-size: 10pt;
-  text-decoration: none;
-}
-
-/* mensagem: cabecalho, area de titulo */
-#message_general_title {
-  border-bottom: 1px solid;
-  padding-bottom: 0px !important;
-  height: 25px;
-}
-
-#message_general_title h2 {
-  position: relative;
-  bottom: 0px;
-}
-
-#message_general_title > div {
-  height: 23px;
-}
-
-.message_general_div_option, .message_general_div_option_active {
-  display: inline-block;
-  padding: 0 8px;
-  z-index: 20;
-}
-
-.message_general_div_option_active {
-  border-bottom: 2px solid;
-}
-
-.message_general_div_option img, .message_general_div_option_active img {
-  vertical-align: bottom;
-}
-
-.message_div_options, .message_div_options_new, .message_div_show, .message_header_new {
-  width: auto;
-}
-
-.message_div_options, .message_div_options_new {
-  height: 26px;
-  margin-top: 6px;
-  vertical-align: middle;
-  border-bottom: 1px solid;
-}
-
-.message_div_options_new {
-  margin: 0;
 }
 
 .message_new_action {
   margin-top: 10px;
   text-align: right;
-}
-
-#menu_inbox .text_alert_message {
-  margin-left: 3px;
-}
-
-.message_link_menu {
-  text-decoration: none;
-  font-size: 11pt;
-  margin-left: 3px;
-}
-
-/* mensagem: listagem das mensagens */
-.message_div_list {
-  width: 100%;
-}
-
-.message_div_show {
-  padding-right: 100px;
-  min-height: 100px;
-  white-space: normal;
-  font-size: 10pt;
-  padding: 20px;
-}
-
-.message_line {
-  /*background-color: #f9f9f9;*/
-  height: 28px;
-}
-
-.message_line_check {
-  width: 30px;
-  text-align: center;
-}
-
-.message_nav_text {
-  font-size: 10pt;
-  text-decoration: none;
-  width: auto;
-}
-
-.message_search_textbox {
-  height: 18px;
-  width: 500px;
-  padding: 0px;
-  font-size: 11px;
-}
-
-.message_read, .message_unread {
-  font-weight: normal;
-  white-space: normal;
-}
-
-.message_unread {
-  font-weight: bold;
-}
-
-.message_label {
-  font-size: 8pt;
-  font-weight: normal;
-  margin: 0px;
-  padding: 0px;
-  padding-left: 2px;
-  padding-right: 2px;
-  border: 1px solid;
-  -moz-border-radius: 4px;
-}
-
-.message_read:hover, .message_unread:hover {
-  text-decoration: underline;
 }
 
 .message_header_new {
@@ -252,242 +113,24 @@ ul.message_menu_listbox li:hover {
   position: relative;
 }
 
-ul.message_menu_listbox li a {
-  /* menu nivel 1 */
-  font-size: 10pt;
-  text-decoration: none;
-  cursor: pointer;
-  display: block;
-}
-
-ul.message_menu_listbox li ul {
-  display: none;
-  border: 1px solid;
-  position: absolute;
-  line-height: 18px;
-  margin: 0px;
-  padding: 0px;
-  top: 20px;
-  left: 0;
-  margin-right: 0px;
-}
-
-ul.message_menu_listbox li:hover ul {
-  display: block;
-}
-
-ul.message_menu_listbox li ul a {
-  /* menu nivel 2 - opcoes */
-  width: 80px;
-  display: block;
-  padding: 0px;
-  margin: 2px;
-  font-size: 10pt;
-  text-decoration: none;
-}
-
-/* paginacao */
-.next_page, .prev_page, .current, .link_navigation {
-  font-size: 12px;
-  text-decoration: underline;
-  cursor: pointer;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.link_navigation {
-  text-decoration: none;
-}
-
-.disabled, .message_div_navigation {
-  font-size: 10pt;
-  text-decoration: none;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.current {
-  text-decoration: none;
-  font-weight: bold;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.pagination {
-  padding-left: 5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  display: inline-block;
-}
-
-.pagination a {
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-/**
- * Tabelas - geral e files
-*/
-table.tb_list, table.tb_list_files {
-  width: 100%;
-  font-size: 10pt;
-}
-
-table.tb_list tr.block_title th {
-  padding-bottom: 2px;
-}
-
-table.tb_list th {
-  white-space: nowrap;
-  /*    font-weight: bold;*/
-}
-
-table.tb_list a {
-  text-decoration: underline;
-}
-
-table.tb_list h4 {
-  margin-bottom: 4px;
-  overflow: hidden;
-  word-wrap: break-word;
-  max-width: 410px;
-}
-
-table.tb_list td {
-  white-space: normal;
-  word-wrap: break-word;
-  /*    border-right: 1px solid #d0d0d0;*/
-}
-
-table.tb_list td:last-child {
-  border-right: none;
-}
-
-table.tb_list tbody tr:last-child {
-  border-bottom: none;
-}
-
-.file_icon {
-  margin-right: 3px;
-  vertical-align: bottom;
-  width: 18px;
-  height: 18px;
-}
-
-.tb_allocation tr.lines {
+.tb_allocation tr.lines { // TODO: usado em assignment
   height: 39px;
 }
 
-table.tb_list_files {
-  border-right: 0px;
-}
 
-table.tb_list_files th {
-  height: 30px;
-  border: 0;
-}
-
-table.tb_list_files td {
-  border-top: 1px solid;
-}
-
-.enunciation_complete, .enunciation_less {
+.enunciation_complete, .enunciation_less { // TODO: usado em assignment
   display: none;
 }
 
-/**
-* Icones de arquivos em tabelas
-*/
-table .file_data_icon {
-  text-align: center;
-}
-
-/**
-* Tratando datas de arquivos up/down
-*/
-
-.date_info, table.tb_list_files th.date_info {
-  font-size: 10pt;
-  font-style: italic;
-}
-
-table.tb_list_files th.date_info {
-  font-size: 12pt;
-  float: right;
-  padding-right: 2px;
-}
-
-/**
-* Tratando linhas das tabelas
-*/
-th {
-  border-bottom: 1px solid;
-}
-
-tbody tr.lines {
-  border-bottom: 1px solid;
-}
-
-tbody tr.lines.active {
-  border-bottom: 1px solid;
-}
-
-tr.lines td img {
-  margin: 0;
-  padding: 0;
-  vertical-align: text-top;
-}
-
-/*
-tbody tr.lines:nth-child(odd) {
-    background-color: $color_main_light_highlight;
-}
-*/
-
-th, tr.lines td {
-  /*    border-bottom: solid #B4B2B1 1px;*/
-  /*    border-left: solid #B4B2B1 1px;*/
-  /*    padding: 7px 5px 6px 5px;*/
-  padding: 6px 10px;
-  vertical-align: middle;
-}
-
-td.td_student a {
+td.td_student a { // TODO: usado em scores
   text-decoration: underline;
-}
-
-/* tratando form dentro de tabela */
-.tb_list .button_to {
-  display: inline-block;
 }
 
 /**
 * Portfolio
 */
 
-div.send_files {
-  font-size: 10pt;
-}
-
-.red_notice {
-  font-size: 10pt;
-  white-space: nowrap;
-  padding-top: 6px
-}
-
-.portfolio_activity {
-  width: 500px;
-}
-
-.portfolio_activity_mright {
-  margin-right: 20px;
-}
-
-.presentation_area {
-  width: 700px;
-}
-
-#history_search_content {
+#history_search_content { // TODO: usado em scores
   padding-bottom: 6px;
   border-bottom: 1px solid;
 }
@@ -496,30 +139,25 @@ div.send_files {
   padding: 7px 0 5px 0;
 }
 
-div.label_score {
-  font-size: 11px;
-  padding-top: 10px;
-}
-
-.portfolio_div_padding {
+.portfolio_div_padding { // TODO: usado em assignment e show
   padding: 5px;
 }
 
-.assignment_comment_form {
+.assignment_comment_form { // TODO: usado em assignment
   width: 100%;
   font-family: 'PT Sans', sans-serif;
   font-size: 10pt;
   vertical-align: top;
 }
 
-.assignment_inner_content {
+.assignment_inner_content { // TODO: usado em assignment
   word-wrap: break-word;
   width: 100%;
   padding: 5px 5px 0px 5px;
   min-height: 27px;
 }
 
-.portfolio_title_button, .portfolio_comment_button, #btn_cancel_evaluation, #btn_save_evaluation, #btn_evaluate {
+.portfolio_title_button, .portfolio_comment_button, #btn_cancel_evaluation, #btn_save_evaluation, #btn_evaluate { // TODO: usado em assignment
   float: right;
 }
 
@@ -531,21 +169,11 @@ div.label_score {
   margin: 0px 10px 10px 0px;
 }
 
-.removed_comment_file {
-  text-decoration: line-through;
-}
-
 .more_comment_files_link {
   float: center;
   font-size: 9pt;
   text-decoration: underline;
   cursor: pointer;
-}
-
-.upload_comment_files_buttons {
-  padding-top: 15px;
-  padding-bottom: 10px;
-  text-align: center;
 }
 
 #btn_cancel_evaluation, #btn_save_evaluation, #btn_cancel_management, #btn_save_management, [class^="students_import_"], [class^="edit_group_"],

@@ -176,3 +176,14 @@ div.forum_navigation {
     vertical-align: middle;
   }
 }
+
+#new_post {
+  display: none;
+  padding-top: 5px;
+}
+
+.new_post_dialog_buttons {
+  margin-top: 5px;
+  padding-bottom: 3px;
+  float: right;
+}

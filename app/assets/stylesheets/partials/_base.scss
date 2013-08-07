@@ -25,6 +25,10 @@ img {
   text-align: center;
 }
 
+ul {
+  list-style-type: none;
+}
+
 h1, h2, h3, h4, h5 {
   font-family: 'Ubuntu Light', sans-serif;
 }
@@ -199,7 +203,45 @@ textarea {
   }
 }
 
-/* estilo para item invisivel */
+/**
+*Paginacao
+*/
+// FIXME: verificar se todo esse código de paginação é realmente utilizado
+.current {
+  text-decoration: none;
+  font-weight: bold;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: #E7EDED;
+  color: #214684;
+}
+
+.disabled {
+  color: #B4B3B7;
+}
+.current, .link_navigation {
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.link_navigation {
+  color: #214684;
+  text-decoration: none;
+}
+
+.disabled, .message_div_navigation {
+  font-size: 10pt;
+  text-decoration: none;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/**
+* Estilo para item invisivel
+*/
 .invisible {
   display: none;
 }

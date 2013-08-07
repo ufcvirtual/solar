@@ -6,14 +6,17 @@
     margin-right: 5px;
   }
 }
+
 .td_time{
   text-align: right;
   width: 100px;
 }
+
 .td_sender{
   width: 150px;
   text-align: left;
 }
+
 .td_attachment{
    width: 30px;
 
@@ -21,9 +24,11 @@
     font-size: 14px;
   }
 }
-.td_subject{
+
+.td_subject {
   padding-left: 0.5*$gutter;
 }
+
 .td_subject, .td_sender, .td_time{
   color: $text_grey;
 
@@ -31,6 +36,7 @@
     color: $text_grey;
   }
 }
+
 /* mensagem: links do menu */
 .message_link, .message_link_menu {
   text-decoration: none;
@@ -52,8 +58,13 @@
   border-bottom-color: #214684;
 }
 
+.message_div {
+  font-size: 10pt;
+  text-decoration: none;
+}
+
 /* mensagem: listagem das mensagens */
-.message_div_list{
+.message_div_list {
   width: 100%;
 }
 
@@ -61,36 +72,46 @@
   /*background-color: #f9f9f9;*/
   height: 28px;
 }
+
 /*.message_line:hover {
     background-color: #EEF3FB;
 }*/
+
 .message_line_highlight {
   background-color: #FFFBE4;
 }
+
 .message_line_check {
-  width: 12px;
+  width: 12px; // FIXME: é 30 ou 12?
+  //width: 30px;
+  text-align: center;
 }
+
 .message_nav_text {
   font-size: 10pt;
   text-decoration: none;
   width: auto;
   color: #000;
 }
-.message_search_textbox{
-  height: 18px;
-  width: 500px;
-  padding: 0px;
-  font-size: 11px;
-}
+
 .message_read, .message_unread{
   font-weight: normal;
   white-space: normal;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.message_read {
   color: #666;
 }
+
 .message_unread{
   font-weight: bold;
   color: #000;
 }
+
 .message_label {
   font-size: 8pt;
   font-weight: normal;
@@ -104,13 +125,7 @@
   background-color: $color_contrast;
   border-color: $color_contrast;
 }
-.message_read:hover, .message_unread:hover {
-  text-decoration: underline;
-}
-.message_div_text_read {
-  width: 100%;
-  background-color: #F7F7F7;
-}
+
 .message_recipient_box {
   border: 1px solid;
   font-size: 12px;
@@ -118,18 +133,23 @@
   border-color: #eee;
   color: #214684; /* FIXME: localizar onde isso está sendo utilizado */
 }
+
 .message_new {
   padding-top: 4px;
 }
+
 .message_new_textbox {
   width: 95%;
   font-size: 10pt;
 }
+
 .message_attach_item {
   padding: 5px 0 0 0;
 }
+
 /* mensagem */
 .block_wrapper.messages {
+
   .block_content{
     padding: 5px;
     padding-right: 10px;
@@ -158,9 +178,11 @@
     background: white;
   }
 }
+
 .block_content.messages{
   padding: 5px 5px 5px 0px;
   border-bottom: solid 1px $border;
+
   .btn{
     margin-right: -5px;
   }
@@ -170,6 +192,8 @@
   color: $text_grey;
   padding: 0.5*$gutter 0.5*$gutter;
   font-size: 12px;
+  width: auto; // FIXME: é auto ou 100% ?
+  //width: 100%;
 
   span{
     color: $text_blue;
@@ -185,15 +209,11 @@
     margin-bottom: 5px;
   }
 
-  .message_text_body {
-    padding: 20px;
-    padding-right: 100px;
-  }
-
   .icon-paperclip{
     font-size: 12px;
   }
 }
+
 .message_new_text_to{
   margin-bottom: 0.5*$gutter;
   height: 30px;
@@ -214,6 +234,7 @@
     font-size: $font_size;
   }
 }
+
 #div_new_message{
   margin-right: 12px;
 
@@ -221,9 +242,17 @@
     width: 100%;
   }
 }
-.message_div_navigation{
+
+.message_link_menu {
+  text-decoration: none;
+  font-size: 11pt;
+  margin-left: 3px;
+}
+
+.message_div_navigation {
   text-align: center;
   padding: 0.25*$gutter;
+  color: #B4B3B7;
 
   .message_page{
     margin-top: 5px;
@@ -232,10 +261,176 @@
     color: $text_blue;
   }
 }
+
 .message_div_show{
+  padding-right: 100px;
   min-height: 100px;
+  white-space: normal;
   font-size: 10pt;
+  padding: 20px;
 }
+
 .message_external_div{
   margin-bottom: $gutter;
+}
+
+.text_none { // FIXME: verificar se é realmente necessário
+  font-size: 10pt;
+  padding: 5px;
+  color: $color_main;
+}
+
+.text_alert_message {
+  vertical-align: top;
+  font-size: 10pt;
+  width: auto;
+}
+
+.text_alert_message, #count_msgs_unread {
+  color: #e64d4d;
+}
+
+/* mensagem: cabecalho, area de titulo */
+#message_general_title {
+  border-bottom: 1px solid;
+  border-bottom-color: #d0d0d0;
+  padding-bottom: 0px !important;
+  height: 25px;
+
+  h2 {
+    position: relative;
+    bottom: 0px;
+  }
+  > div {
+    height: 23px;
+  }
+}
+
+.message_general_div_option, .message_general_div_option_active {
+  display: inline-block;
+  padding: 0 8px;
+  z-index: 20;
+
+  img {
+    vertical-align: bottom;
+  }
+}
+
+.message_general_div_option_active {
+  border-bottom: 2px solid;
+  border-bottom-color: #214684;
+}
+
+.message_label {
+  color: #000;
+  background-color: #F9C153;
+  border: 1px solid #F9C153;
+}
+
+.message_text_to_label {
+  padding-top: 5px;
+  width: 60px;
+  text-align: right;
+}
+
+#recipients_selected {
+  border: 1px solid;
+  border-color: #ccc;
+  width: 435px;
+  height: 50px;
+  white-space: normal;
+  overflow: auto;
+  background-color: #fff;
+}
+
+#div_contacts {
+  font-size: 11pt;
+  text-decoration: none;
+  padding: 5px;
+  position: absolute;
+  border: 2px solid;
+  border-color: #F2F2F2;
+  line-height: 15px;
+  z-index: 100;
+  color: #214684;
+  background-color: #fafafa;
+}
+
+.div_contacts_buttons {
+  width: 440px;
+  padding-top: 4px;
+}
+
+#div_contacts_list {
+  overflow: auto;
+  padding: 5px;
+  margin-right: 3px;
+  margin-top: 1px;
+  border: 1px solid;
+  height: 150px;
+  background-color: #fff;
+  border-color: #ddd;
+}
+
+/**
+* dropdown de mensagens (selecionar, mover para)
+*/
+ul.message_menu_listbox {
+  // width: 80px;
+  margin: 0px 0px 0px 8px;
+  padding: 0px;
+  display: inline-block;
+
+  li {
+    position: relative;
+
+    a {  /* menu nivel 1 */
+      font-size: 10pt;
+      text-decoration: none;
+      cursor: pointer;
+      display: block;
+    }
+    ul {
+      display: none;
+      border: 1px solid;
+      position: absolute;
+      line-height: 18px;
+      margin: 0px;
+      padding: 0px;
+      top: 20px;
+      left: 0;
+      margin-right: 0px;
+
+      a { /* menu nivel 2 - opcoes */
+        width: 80px;
+        display: block;
+        padding: 0px;
+        margin: 2px;
+        font-size: 10pt;
+        text-decoration: none;
+      }
+    }
+  }
+  li:hover {
+    position: relative;
+
+    ul {
+      display: block;
+    }
+  }
+}
+
+ul.message_menu_listbox li ul {
+  border-color: #ccc;
+  background: #fff;
+  a { /* menu nivel 2 - opcoes */
+    background: #fff;
+  }
+  a:hover {
+    background: #eee;
+  }
+}
+
+#newPostUploadPanel { // FIXME: essa classe é utilizada apenas em mensagens mas o nome dela está estranho
+  padding-bottom: 5px;
 }
