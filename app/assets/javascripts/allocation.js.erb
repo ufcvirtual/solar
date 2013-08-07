@@ -1,14 +1,18 @@
 $(function() {
-  $('.enrollments input:checkbox').click(function() {
-    if ( $(this).attr("id") == 'cbx_all' ) {
-      var cbx_all = this;
-      $('.cbx_value').each(function() { $(this).attr('checked', $(cbx_all).attr('checked') == 'checked'); });
-    } else if ( $(this).attr('checked') != 'checked' && $('#cbx_all').attr('checked') == 'checked' ) {
-      $('#cbx_all').attr('checked', false);
-    } else if ( $(this).attr('checked') == 'checked' && $('.cbx_value').length == $('.cbx_value:checked').length ) {
-      $('#cbx_all').attr('checked', true);
-    }
-  });
+$('#cbx_all').click(function () {
+ var checked = $(this).is(':checked');            
+ $('.cbx_value').each(function () {
+  var checkBox = $(this);               
+  if (checked) {
+    checkBox.prop('checked', true);                
+  }
+  else {
+    checkBox.prop('checked', false);                
+  }
+});
+
+});
+
 
   $('.btn_enroll_selected').click(function() {
     var ch = $('.cbx_value:checked');
