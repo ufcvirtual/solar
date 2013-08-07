@@ -22,17 +22,15 @@
 :javascript
 
   $(function(){
-
     $('#save').click(function(){
       $('#curriculum_unit_form').serialize_and_submit({
         complement_success: function(data) {
           var post_code_name = data.code_name;
           var id = data.id;
-
           var url = "#{curriculum_units_path(type_id: @curriculum_unit.curriculum_unit_type.id, curriculum_unit_id: 'curriculum_unit_param')}";
 
           // criar método pra poder chamar em todas as listagens
-          if($("#curriculum_unit").is_empty())
+          if ($("#curriculum_unit").is_empty())
             var curriculum_unit_id = '';
           else
             var curriculum_unit_id = $("#curriculum_unit").combobox('value');
@@ -45,7 +43,7 @@
             if (!autocomplete_option.length){
               // cria nova uc na lista
               $("<option value="+id+">"+post_code_name+"</option>").appendTo("#curriculum_unit");
-            }else{
+            } else {
               // atualiza a uc alterada na lista do autocomplete
               autocomplete_option.text(post_code_name);
               // se a uc alterada foi a selecionada no autocomplete, alterar o valor do input
@@ -60,5 +58,4 @@
     $("#cancel").click(function(){
       removeLightBox();
     });
-    
   });

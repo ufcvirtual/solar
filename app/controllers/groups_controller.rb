@@ -59,7 +59,7 @@ class GroupsController < ApplicationController
     @group = Group.where(id: params[:id].split(","))
     authorize! :update, Group, on: [@group.first.offer.allocation_tag.id]
 
-    if(params[:multiple])
+    if params[:multiple]
       @group.update_all(status: params[:status])
       render json: {success: true, notice: t(:updated, scope: [:groups, :success])}
     else

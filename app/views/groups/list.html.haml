@@ -25,7 +25,14 @@
 
 :javascript
 
-  $(function(){
+
+  function result_error(data) {
+    var response = JSON.parse(data.responseText);
+    if (typeof(response.alert) != "undefined")
+      flash_message(response.alert, 'alert');
+  }
+
+  jQuery(function($){
 
     $('.disable_group, .enable_group, .delete_group').addClass("disabled");
 
@@ -39,30 +46,25 @@
     });
 
     $('.delete_group').click(function(){
-      if(!$(this).hasClass('disabled')){
-        var groups_ids = jQuery.map($("#ckb_group:checked"), function(n){
+      if (!$(this).hasClass('disabled')) {
+
+        if (!confirm("#{I18n.t(:message_confirm)}"))
+          return false;
+
+        var groups_ids = $.map($("#ckb_group:checked"), function(n){
           return ($(n).val());
         });
 
         if($(groups_ids).length == 0)
           flash_message("#{t(".choose_at_least_one")}", 'alert');
-        else{
-          $.ajax({
-            type: 'DELETE',
-            url: $(this).data('link-delete').replace(':id', groups_ids),
-            success: function(data){
-              flash_message(data.notice, 'notice');
-              
-              var url = "#{list_groups_path(semester_id: 'semester_param', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')}".replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
+        else {
+          $.delete($(this).data('link-delete').replace(':id', groups_ids), function(data) {
+            flash_message(data.notice, 'notice');
 
-              $.get(url, function(data){
-                $(".groups_list").html(data);
-              });
-            },
-            error: function(){
-              flash_message(data.alert, 'alert');
-            }
-          });
+            var url = "#{list_groups_path(semester_id: 'semester_param', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')}".replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
+
+            $.get(url, function(data) { $(".groups_list").html(data); });
+          }).error(result_error);
         }
       }
     });
@@ -83,44 +85,29 @@
     });
 
     $('.disable_group, .enable_group').click(function(){
-      if(!$(this).hasClass('disabled')){
-        var groups_ids = jQuery.map($("#ckb_group:checked"), function(n){
+      if (!$(this).hasClass('disabled')) {
+        var groups_ids = jQuery.map($("#ckb_group:checked"), function(n) {
           return ($(n).val());
         });
 
-        if($(groups_ids).length == 0)
+        if (!$(groups_ids).length)
           flash_message("#{t(".choose_at_least_one")}", 'alert');
-        else{
-          $.ajax({
-            type: "PUT",
-            url: $(this).data('link-status').replace(':id', groups_ids),
-            success: function(data){
-              var url = "#{list_groups_path(semester_id: 'semester_param', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')}".replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
+        else {
+          $.put($(this).data('link-status').replace(':id', groups_ids), function(data){
+            var url = "#{list_groups_path(semester_id: 'semester_param', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')}".replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
 
-              $.get(url, function(data){
-                $(".groups_list").html(data);
-              });
-            },
-            error: function(){
-              console.log('erro');
-            }
-          });
+            $.get(url, function(data){ $(".groups_list").html(data); });
+          }).error(result_error);
         }
       }
     });
 
     $(".change_status_group").click(function(){
       var group_status = $(this);
-      $.ajax({
-        type: "PUT",
-        url: $(this).data('link-status'),
-        success: function(data){
-          group_status.children('i').toggleClass('icon-checkmark').toggleClass('icon-edit');
-        },
-        error: function(){
 
-        }
-      });
+      $.put($(this).data('link-status'), function(data) {
+        group_status.children('i').toggleClass('icon-checkmark').toggleClass('icon-edit');
+      }).error(result_error);
     });
 
   });

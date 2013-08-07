@@ -39,7 +39,6 @@
 :javascript
 
   $(function(){
-
     $("#type").combobox();
     $("#type").combobox('value', "#{@type}");
 
@@ -60,9 +59,9 @@
     $('.curriculum_units').show();
 
     var id = parseInt($("#type").combobox('value'));
-    if (id == 3){
+    if (id == 3) {
       $('.courses').hide();
       $('.curriculum_units a#uc_name').html("#{t('.courses')}");
-    }else if (id == 4)
+    } else if (id == 4)
       $('.curriculum_units a#uc_name').html("#{t('.modules')}");
   }

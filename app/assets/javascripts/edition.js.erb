@@ -1,192 +1,131 @@
-/* Post de forms com envio de arquivos */
-$.fn.serialize_and_submit_form = function(options) {
-  var f_success = {};
-  if (typeof(options.success) == "undefined") {
-    f_success = function(data) {
-      if (data.search(".field_with_errors") != -1) {
-        $("." + options.div_error).html(data);
-      } else {
-        update_content_url(options.redirect_url);
-        removeLightBox();
-        flash_message('<%= I18n.t(:saved, :scope => [:editions, :success]) %>', 'notice');
-      }
-    };
-  } else {
-    f_success = options.success
-  }
+// --- begin content --------------------------------------------------------------------------------------------------------- //
 
-  jQuery.ajax({
-    type: 'POST',
-    url: $(this).attr('action'),
-    data: (new FormData($(this)[0])),
-    cache: false,
-    contentType: false,
-    processData: false,
-    success: f_success,
-    error: function(data) {
-      removeLightBox();
-      if (data.responseText != '') {
-        flash_message(JSON.parse(data.responseText).msg, 'alert');
-      } else {
-        flash_message('<%= I18n.t(:cant_save, :scope => [:editions]) %>', 'alert');
-      }
-    }
-  });
-
-  return this;
+function clear_combo(combo_name, disable) {
+  $('#' + combo_name).combobox('value', null);
+  $('#' + combo_name).combobox("option", { disabled: disable });
 }
 
-/* chama página informada passando as allocation_tags do filtro */
-function call_page(url){ 
+function clear_all_combos(disable) {
+  $(".groups").html('');
+  clear_combo("course", disable);
+  clear_combo("curriculum_unit", disable);
+  clear_combo("semester", disable);
+}
 
-  var what_was_selected   = whatWasSelected(); // recupera quais dados do filtro foram selecionados
-  var allocation_tags_ids = navPanelSelectedItems(); // recupera as allocations_tags dos itens escolhidos
+function update_combobox(url, combobox){
+  $.get(url, function(data){
+    $("#"+combobox).html(data.html);
+  });
+}
 
-  if($.type(allocation_tags_ids) == "number") // se o retorno for apenas um allocation_tag_id, será um número. nos demais casos, será um array de strings
-    allocation_tags_ids = $.makeArray(allocation_tags_ids); // transforma número em array para não ter necessidade de tratamentos diferenciados no destino
+$(function(){
+  $("#curriculum_unit_type, #course, #curriculum_unit, #semester").combobox();
+  $("#course, #curriculum_unit, #semester").combobox( "option", { disabled: true } );
 
-  $.ajax({
-    type: 'GET',
-    url: url,
-    data: {"allocation_tags_ids": allocation_tags_ids, "what_was_selected": what_was_selected},
-    success: function(data) {
-      $('#edition_content').html(data); // atualiza conteúdo da página com o retorno da url informada
+  $( "#curriculum_unit_type" ).combobox({
+    change: function(event, ui) {
+      if(ui.item == null)
+        clear_all_combos(true);
     },
-    error: function(){
-      flash_message('<%= I18n.t(:not_possible_to_access_page_with_data, :scope => [:editions]) %>', 'alert');
-      $('#choosed_content_url').val(0);
-      update_edition_content(true);
-    }
-  });
-}
-
-/* atualiza informação do conteúdo atual */
-function update_content_url(url){
-  $('#choosed_content_url').val(url); // atualizar valor do campo que indica a página escolhida
-  update_edition_content(false); // substitui conteúdo
-}
-
-/* submete formulário (form_id = atributo html do formulário, class_to_update_fail = nome da classe que terá seu conteúdo atualizado caso 
-  haja falha - utilizado para formulários de lightboxes, esta classe é da div que engloba o formulário, redirect_url = url para a qual o 
-  conteúdo será atualizado em caso de sucesso, div_to_update = informação de qual div é para atualizar caso não esteja "incluso" na página
-  de edição) */
-function submit_form(form_id, class_to_update_fail, redirect_url, div_to_update, method){
-  $.ajax({
-    type: (method || "POST"),
-    url: $("#"+form_id).attr("action"),
-    data: $("#"+form_id).serialize(),
-    success: function(data) {
-      if(data.search(".field_with_errors") != -1) { // se existir algum erro nas validações, o simple_form acrescenta a classe "field_with_errors" aos campos
-        $("."+class_to_update_fail+":first").html(data); // atualiza conteúdo com o formulário com os erros
-      } else {
-        if(div_to_update == "first_step" && data.length > 1){ // se tiver conteúdo retornado sem erro
-          update_content_url(redirect_url); // atualiza div da página de edição com conteúdo de listagem 
-          $("."+div_to_update).html(data); // atualiza conteúdo do lightbox
-        }else{ // se não existir erros de validação
-          if(div_to_update && data.length > 1)
-            $("#"+div_to_update).html(data); // atualiza conteúdo da página
-          else
-            update_content_url(redirect_url); // atualiza div da página de edição com conteúdo de listagem
-          removeLightBox();  
-          flash_message('<%= I18n.t(:saved, :scope => [:editions, :success]) %>', 'notice'); // mensagem de sucesso
-        }
-      }
-    },
-    error: function(data) {
-      removeLightBox();
-      if (data.responseText != '') {
-        flash_message(JSON.parse(data.responseText).msg, 'alert');
-      } else {
-        flash_message('<%= I18n.t(:cant_save, :scope => [:editions]) %>', 'alert'); // mensagem de erro  
-      }
-    }
-  });
-}
-
-function update_object(url, redirect_url, div_to_update) {
-  change_object('PUT', url, redirect_url, div_to_update);
-}
-
-/**
- * Deleção de algum objeto (url = url do método de deleção, redirect_url = url para a qual o conteúdo será atualizado em caso de sucesso, 
- * div_to_update = informação de qual div é para atualizar caso não esteja "incluso" na página de edição)
-*/
-function delete_object(url, redirect_url, div_to_update) {
-  if (confirm('<%= I18n.t(:are_you_sure_of_deletion, :scope => [:editions]) %>')) {
-    msg_success = '<%= I18n.t(:deleted, scope: [:editions, :success]) %>';
-    msg_error = '<%= I18n.t(:cant_delete, scope: [:editions]) %>';
-
-    change_object('DELETE', url, redirect_url, div_to_update, msg_success, msg_error);
-  }
-}
-
-function change_object(method, url, redirect_url, div_to_update, message_success, message_error) {
-  $.ajax({
-    type: method,
-    dataType: 'json',
-    url: url,
-    success: function(data) {
-      if (typeof div_to_update != "undefined") // página fora da tela de edição
-        $("#"+div_to_update).html(data); // atualiza conteúdo da página
+    select: function( event, ui ) {
+      $(".curriculum_unit").show();
+      if(ui.item.value == 4)
+        $('label[for="curriculum_unit"]').html("<%=I18n.t(".module")%>");
+      else if(ui.item.value == 3)
+        $(".curriculum_unit").hide();
       else
-        update_content_url(redirect_url); // atualiza div da página de edição com conteúdo de listagem
+        $('label[for="curriculum_unit"]').html("<%=I18n.t(".curriculum_unit")%>");
 
-      if (message_success != undefined)
-        flash_message(message_success, 'notice');
+      clear_all_combos(true);
+      $('#course').combobox("option", { disabled: false });
+      $(".groups").html('');
+      var url = "<%=Rails.application.routes.url_helpers.list_combobox_courses_path(type_id: 'type_param')%>".replace('type_param', $('#curriculum_unit_type').combobox('value'));
+      $('#course').combobox("update", {url: url});
+    }
+  });
+
+  $( "#course" ).combobox({
+    change: function(event, ui) {
+      if(ui.item == null){
+        clear_combo('curriculum_unit', true);
+        clear_combo('semester', true);
+        $(".groups").html('');
+      }
     },
-    error: function(data) {
-      try {
-        flash_message(JSON.parse(data.responseText).msg, 'alert');
-      } catch (e) {
-        if (message_error != undefined)
-          flash_message(message_error, 'alert');
+    select: function( event, ui ) {
+      var curriculum_unit_type = ($("#curriculum_unit_type").combobox("value") == "3");
+
+      clear_combo('curriculum_unit', curriculum_unit_type);
+      clear_combo('semester', !curriculum_unit_type);
+      $(".groups").html('');
+
+      var url = "<%=Rails.application.routes.url_helpers.list_combobox_curriculum_units_path(type_id: 'type_param', course_id: 'course_param')%>".replace('type_param', $('#curriculum_unit_type').combobox('value')).replace('course_param', $('#course').combobox('value'));
+      $('#curriculum_unit').combobox("update", {url: url});
+      $('#curriculum_unit').combobox('value', $("#curriculum_unit").find("option").val());
+
+      if(curriculum_unit_type){
+        var url = "<%=Rails.application.routes.url_helpers.list_combobox_semesters_path(period: "all", course_id: "course_param", curriculum_unit_id: "curriculum_unit_param")%>".replace("course_param", $("#course").combobox("value")).replace("curriculum_unit_param", $("#curriculum_unit").combobox("value"));
+        $('#semester').combobox("update", {url: url});
       }
     }
   });
-}
 
-/* funções para abrir lightbox de diferentes tamanhos */
+  $( "#curriculum_unit" ).combobox({
+    change: function(event, ui) {
+      if(ui.item == null){
+        clear_combo('semester', true);
+        $(".groups").html('');
+      }
+    },
+    select: function( event, ui ) { 
+      clear_combo("semester", false);
+      $(".groups").html('');
+      var url = "<%=Rails.application.routes.url_helpers.list_combobox_semesters_path(period: "all", course_id: "course_param", curriculum_unit_id: "curriculum_unit_param")%>".replace("course_param", $("#course").combobox("value")).replace("curriculum_unit_param", $("#curriculum_unit").combobox("value"));
+      $('#semester').combobox("update", {url: url});
+    }
+  });
 
-function open_lightbox(url, title, w, h){
-  showLightBoxURL(url, w, h, true, title);
-}
+  $( "#semester" ).combobox({
+    change: function( event, ui ) {
+      if(ui.item == null){
+        $("input[id^=radio_option]").prop("disabled", true);
+        $("#radio_option_offer").click();
+      }
+    },
+    select: function( event, ui ) { 
+      $("#radio_option_offer").click();
+      $("input[id^=radio_option]").prop("disabled", false);
+    }
+  });
 
-function open_lightbox1(url, title){
-  showLightBoxURL(url, 550, 255, true, title);
-}
+  // ----------------------------------------------------------------------------------------------------
 
-function open_lightbox2(url, title){
-  showLightBoxURL(url, 540, 605, true, title);
-}
+  $("#radio_option_group").click(function(){
+    var url = "<%=Rails.application.routes.url_helpers.list_groups_path(checkbox: true , type: "type_param", semester_id: "semester_param", course_id: "course_param", curriculum_unit_id: "curriculum_unit_param")%>"
+      .replace("type_param", $("#curriculum_unit_type").combobox("value"))
+      .replace("semester_param", $("#semester").combobox("value"))
+      .replace("course_param", $("#course").combobox("value"))
+      .replace("curriculum_unit_param", $("#curriculum_unit").combobox("value"));
 
-function open_lightbox3(url, title){
-  showLightBoxURL(url, 540, 200, true, title);
-}
+    $.get(url, function(data){
+      $(".groups").html(data);
+    });
+  });
 
-function open_lightbox4(url, title){
-  showLightBoxURL(url, 540, 90, true, title);
-}
+  $("#radio_option_offer").click(function() {
+    $(".groups").html('');
+    $("#radio_option_offer").prop("checked", true);
+  });
 
-/* Retorna a informação de quais campos têm um valor específico selecionado 
-   [curso, semestre, uc, turma]  
-   Se foi selecionado: true
-   Caso contrário: undefined                                                */
-function whatWasSelected(){
-	var isCourseSelected         = false;
-	var isSemesterSelected       = false;
-	var isCurriculumUnitSelected = false;
-	var isGroupSelected          = false;
-	
-	var allItems = navPanelAllItems();
+  $(".edition").nice_filter({
+    data_function: function() {
+      return {
+        radio_option: $("[name='radio[option]']:checked").val(),
+        groups_id: $('[name="group[group_id][]"]:checked').map(function(){ return $(this).val() }).toArray()
+      };
+    }
+  });
 
-	if (allItems.course != undefined && allItems.course.code != '*') 
-		isCourseSelected = true;
-	if (allItems.semester != undefined && allItems.semester.code != '*') 
-		isSemesterSelected = true;
-	if (allItems.curriculumUnit != undefined && allItems.curriculumUnit.code != '*') 
-		isCurriculumUnitSelected = true;
-	if (allItems.group != undefined && allItems.group.name != "*") 
-		isGroupSelected = true;
+});
 
-	return [isCourseSelected, isSemesterSelected, isCurriculumUnitSelected, isGroupSelected];
-}
+// --- end content --------------------------------------------------------------------------------------------------------- //

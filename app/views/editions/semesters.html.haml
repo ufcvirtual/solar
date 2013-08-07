@@ -38,24 +38,20 @@
     });
 
     $('#search').click(function() {
-      if(($('#period').combobox('value') == "all" && $('#curriculum_unit').is_empty() && $('#course').is_empty()))
+      if (($('#period').combobox('value') == "all" && $('#curriculum_unit').is_empty() && $('#course').is_empty()))
         flash_message("#{t('.warning')}", 'alert');
       else
         erase_flash_messages();
 
-      $.ajax({
-        type: 'GET',
-        url: $(this).data("url-search"),
-        data: {
-          type_id: "#{@type.id}",
-          curriculum_unit_id: $("#curriculum_unit").combobox('value'),
-          course_id: $("#course").combobox('value'),
-          period: $("#period").combobox('value')
-        },
-        success: function(data){
-          $(".semesters_list").html(data);
-        }
-      });
+      var data = {
+        type_id: "#{@type.id}",
+        curriculum_unit_id: $("#curriculum_unit").combobox('value'),
+        course_id: $("#course").combobox('value'),
+        period: $("#period").combobox('value')
+      };
+
+      $.get($(this).data("url-search"), data, function(data) { $(".semesters_list").html(data); });
+
       return false;
     });
   });
