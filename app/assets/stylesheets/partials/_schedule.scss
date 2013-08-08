@@ -1,0 +1,76 @@
+// AGENDA
+.schedule_link_more {
+  font-size: 11px;
+  margin-right: 2px;
+  float: right;
+  color: #4b6380;
+}
+
+.agenda_left {
+  float: left;
+  min-height: 65px;
+  width: 160px;
+  font-size: 11pt;
+  background-color: $color_main_light;
+}
+
+.agenda_right {
+  white-space: normal;
+  min-height: 60px;
+  overflow: hidden;
+  font-weight: normal;
+  font-size: 10pt;
+  padding-top: 10px;
+  text-align: justify;
+}
+
+.agenda_right p {
+  padding: 5px 5px 5px 10px;
+}
+
+.agenda_right .title {
+  padding-left: 10px;
+  font-weight: bold;
+  font-size: 10pt;
+}
+
+.agenda_left_date {
+  margin-top: 7px;
+  text-align: center;
+}
+
+.agenda_left_interval, .agenda_left_day, .agenda_left_day_and_month {
+  font-size: 12pt;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.block_title_icon.discussions {  // FIXME: parece estar sendo usado apenas em schedule, tentar melhorar o seletor
+  display: inline-block;
+  background: url('../../images/schedule/meeting_attendance_16x16.png') no-repeat;
+}
+
+.block_title_icon.lesson, .block_title_icon.assignments, .block_title_icon.schedule_events {  // FIXME: parece estar sendo usado apenas em schedule, tentar melhorar o seletor
+  display: inline-block;
+  background: url('../../images/schedule/assignments_16x16.png') no-repeat;
+}
+
+.block_title_icon.chat { // FIXME: parece estar sendo usado apenas em schedule, tentar melhorar o seletor
+  display: inline-block;
+  background: url('../../images/schedule/chat_16x16.png') no-repeat;
+}
+
+.block_title_icon.meeting_attendance { // FIXME: parece estar sendo usado apenas em schedule, tentar melhorar o seletor
+  display: inline-block;
+  background: url('../../images/schedule/meeting_attendance_16x16.png') no-repeat;
+}
+
+.agenda_ajax {
+  font-size: 9pt;
+  color: #4B6380;
+}
+
+.agenda_left_month_year .year_left {
+  margin-right: 30px;
+}
+
