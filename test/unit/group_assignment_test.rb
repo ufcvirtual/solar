@@ -2,27 +2,27 @@ require 'test_helper'
 
 class  GroupAssignmentTest < ActiveSupport::TestCase
 
-  fixtures :group_assignments, :assignments
+  fixtures :group_assignments, :assignments, :academic_allocations,:allocation_tags,:groups
 
   # Validações
 
   test "nome do grupo deve ser preenchido" do
-    group_assignment = GroupAssignment.create(:assignment_id => assignments(:a4).id)
+    group_assignment = GroupAssignment.create(:academic_allocation_id => academic_allocations(:acaal7).id)
 
     assert (not group_assignment.valid?)
     assert_equal group_assignment.errors[:group_name].first, I18n.t(:blank, :scope => [:activerecord, :errors, :messages])
   end   
 
   test "nome do grupo nao pode exceder 20 caracteres" do
-    group_assignment = GroupAssignment.create(:assignment_id => assignments(:a4).id, :group_name => "abcdefghijklmnopqrstuvwxyz")
+    group_assignment = GroupAssignment.create(:academic_allocation_id => academic_allocations(:acaal7).id, :group_name => "abcdefghijklmnopqrstuvwxyz")
 
     assert (not group_assignment.valid?)
     assert_equal group_assignment.errors[:group_name].first, I18n.t(:too_long, :scope => [:activerecord, :errors, :messages], :count => 20)
   end
 
   test "nome do grupo deve ser unico para uma atividade" do
-    group_assignment1 = GroupAssignment.create(:assignment_id => assignments(:a4).id, :group_name => "Grupo 1")
-    group_assignment2 = GroupAssignment.create(:assignment_id => assignments(:a4).id, :group_name => "Grupo 1")
+    group_assignment1 = GroupAssignment.create(:academic_allocation_id => academic_allocations(:acaal7).id, :group_name => "Grupo 1")
+    group_assignment2 = GroupAssignment.create(:academic_allocation_id => academic_allocations(:acaal7).id, :group_name => "Grupo 1")
 
     assert (group_assignment1.valid?)
     assert (not group_assignment2.valid?)
@@ -30,15 +30,15 @@ class  GroupAssignmentTest < ActiveSupport::TestCase
   end  
 
   test "nome do grupo nao precisa ser unico para atividades diferentes" do
-    group_assignment1 = GroupAssignment.create(:assignment_id => assignments(:a4).id, :group_name => "Grupo 1")
-    group_assignment2 = GroupAssignment.create(:assignment_id => assignments(:a5).id, :group_name => "Grupo 1")
+    group_assignment1 = GroupAssignment.create(:academic_allocation_id => academic_allocations(:acaal7).id, :group_name => "Grupo 1")
+    group_assignment2 = GroupAssignment.create(:academic_allocation_id => academic_allocations(:acaal8).id, :group_name => "Grupo 1")
 
     assert (group_assignment1.valid?)
     assert (group_assignment2.valid?)
   end
 
   test "novo grupo valido" do
-    group_assignment = GroupAssignment.create(:assignment_id => assignments(:a4).id, :group_name => "grupo 1")
+    group_assignment = GroupAssignment.create(:academic_allocation_id => academic_allocations(:acaal7).id, :group_name => "grupo 1")
     assert group_assignment.valid?
   end
 
@@ -55,8 +55,10 @@ class  GroupAssignmentTest < ActiveSupport::TestCase
   end
 
   test "recupera alunos sem grupo" do
-    students_without_groups = assignments(:a5).students_without_groups
-    students_with_groups    = GroupParticipant.all(:include => [:group_assignment], :conditions => ["group_assignments.assignment_id = #{assignments(:a5).id}"]).map(&:user_id)
+    allocation_tag = groups(:g3).allocation_tag
+    students_without_groups = assignments(:a5).students_without_groups(allocation_tag)
+    academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id,assignments(:a5).id, 'Assignment')
+    students_with_groups    = GroupParticipant.all(conditions: {:group_assignment_id => academic_allocation.group_assignment_ids}).map(&:user_id)
     students_without_groups.each do |student|
       assert (not students_with_groups.include?(student.id))
     end
@@ -64,7 +66,12 @@ class  GroupAssignmentTest < ActiveSupport::TestCase
 
   test "recupera todas as atividades de grupo de uma turma" do 
     all_group_assignments_method = GroupAssignment.all_by_group_id(groups(:g3).id)
-    all_group_assignments = Assignment.all(:conditions => ["type_assignment = #{Assignment_Type_Group} AND allocation_tags.group_id = #{groups(:g3).id}"], :include => [:allocation_tag, :schedule, :group_assignments], :order => "schedules.start_date", :select => ["id, name, enunciation, schedule_id"])
+    all_group_assignments = Assignment.all(
+      select: [:id, :name, :enunciation, :schedule_id],
+      include: [:schedule, :group_assignments, :academic_allocations], 
+      conditions: {type_assignment: Assignment_Type_Group, academic_allocations: {allocation_tag_id: groups(:g3).allocation_tag.id}}, 
+      order: ["schedules.start_date"])
+
     assert_equal(all_group_assignments, all_group_assignments_method)
   end
 

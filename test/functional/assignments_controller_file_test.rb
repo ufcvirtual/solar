@@ -405,7 +405,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   test 'nao permitir delecao de arquivo enviado pelo aluno por usuario com permissao e sem acesso' do
     sign_in(users(:aluno3))
     assert_difference('AssignmentFile.count', +1) do
-      post :upload_file, {:assignment_id => assignments(:a11), :file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'), :type => "assignment"}
+      post :upload_file, {:assignment_id => assignments(:a11),:file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'),:type => "assignment"}
     end
     sign_out(users(:aluno3))
 

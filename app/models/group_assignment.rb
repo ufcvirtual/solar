@@ -21,11 +21,11 @@ class GroupAssignment < ActiveRecord::Base
  
   #retorna atividades de grupo de acordo com a turma
   def self.all_by_group_id(group_id)
-    Assignment.all(:conditions => ["type_assignment = #{Assignment_Type_Group}  
-      AND allocation_tags.group_id = #{group_id}"], 
-      include:  [:academic_allocations, :allocation_tags, :schedule, :group_assignments],
-      order:"schedules.start_date",
-      select: ["id, name, enunciation, schedule_id"])
+    Assignment.all(
+      select: [:id, :name, :enunciation, :schedule_id],
+      include:  [:academic_allocations, :allocation_tags, :schedule, :group_assignments],      
+      conditions: ["type_assignment = #{Assignment_Type_Group} AND allocation_tags.group_id = #{group_id}"], 
+      order:"schedules.start_date")
   end
 
   ##
