@@ -46,9 +46,9 @@ class EditionsController < ApplicationController
     authorize! :groups, Edition
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     @courses = (@type.id == 3 ? Course.all_associated_with_curriculum_unit_by_name : Course.all)
-    # @courses = Course.joins(offers: [:groups, :curriculum_unit]).where(curriculum_units: {curriculum_unit_type_id: @type.id}).uniq
   end
 
+  # GET /editions/content
   def content
     authorize! :content, Edition
     @types = CurriculumUnitType.all

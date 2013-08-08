@@ -1162,6 +1162,7 @@
         code: Code
 
   editions:
+    filter: Filter
     alert: "Fill the required fields"
     academic:
       courses: "Courses"

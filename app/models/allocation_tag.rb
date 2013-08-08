@@ -110,15 +110,6 @@ SQL
     Allocation.destroy_all(user_id: user_id, allocation_tag_id: self.related)
   end
 
-  def is_user_allocated_in_related?(user_id)
-    not Allocation.
-      select(:allocation_tag_id).
-      where(
-        :user_id => user_id,
-        :allocation_tag_id => self.related
-    ).uniq.empty?
-  end
-
   def is_only_user_allocated_in_related?(user_id)
     Allocation.
       select(:allocation_tag_id).

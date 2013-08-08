@@ -6,10 +6,6 @@ Funcionalidade: Portlet de unidades curriculares
   Para ter acesso rápido a suas páginas e atividades.
 
 Contexto:
-  Dado que tenho "courses"
-    | name                    | code   |
-    | Letras Português        | LLPT   |
-    | Licenciatura em Química | LQUIM  |
   Dado que tenho "allocations"
     | user_id  | allocation_tag_id  | profile_id  | status |
     | 1        | 2                  | 1           | 1      |

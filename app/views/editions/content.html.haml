@@ -15,11 +15,10 @@
         = select_tag :course, nil
 
       .curriculum_unit
-        //- if @type.id != 3 # criar uma CONSTANTE
         = label_tag :curriculum_unit, t(".curriculum_unit")
         = select_tag :curriculum_unit, nil
 
-      %div
+      .semester
         = label_tag :semester, t(".semester")
         = select_tag :semester, nil
 

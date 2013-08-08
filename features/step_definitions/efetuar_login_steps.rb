@@ -92,4 +92,6 @@ Dado /^que estou logado com o usuario "([^\"]*)" e com a senha "([^\"]*)"$/ do |
   click_button "submit-login"
 end
 
-
+Dado /^que eu selecionei "([^"]*)" de "([^"]*)"$/ do |value, field|
+  page.select(value, :from => field)
+end

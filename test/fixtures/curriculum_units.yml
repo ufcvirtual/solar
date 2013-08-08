@@ -55,3 +55,13 @@ r5:
   syllabus: Como Deleuze eloquentemente mostrou, o inicio da atividade geral de formacao de conceitos obstaculiza a apreciacao da importancia dos paradigmas filosoficos.
   passing_grade: 7.0
 
+r6: # unidade curricular vazia
+  id: 6
+  curriculum_unit_type_id: 2
+  name: Quimica Organica
+  code: RM302
+  resume: Pensando mais a longo prazo, a percepo das dificuldades nao causa impacto indireto na reavaliacao da formula da ressonancia racionalista.
+  objectives: Do mesmo modo, a indeterminao contnua de distintas formas de fenmeno...
+  prerequisites: Todavia, a consolidacao das estruturas psico-lgicas assume...
+  syllabus: Como Deleuze eloquentemente mostrou, o inicio da atividade geral de formacao de conceitos obstaculiza a apreciacao da importancia dos paradigmas filosoficos.
+  passing_grade: 7.0

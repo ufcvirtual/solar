@@ -1336,10 +1336,7 @@
       groups: "Turmas"
       modules: "Módulos"
       type: "Tipo*"
-    index:
-      edition: Edição
       filter: Filtro
-      select_something: É necessário preencher ao menos um campo do filtro
     items:
       information: Informação
       education: Educação
@@ -1362,6 +1359,7 @@
       saved: Salvo com sucesso
       deleted: Excluido com sucesso
     semesters:
+      filter: Filtro
       all: "Todos"
       actives: "Ativos"
       type: "Tipo*"
@@ -1370,13 +1368,16 @@
       period: Período
       warning: "Selecione uma Unidade Curricular ou um Curso para pesquisar por todos."
     courses:
+      filter: Filtro
       type: "Tipo*"
       course: Curso
     curriculum_units:
+      filter: Filtro
       course: Curso
       type: "Tipo*"
       curriculum_unit: Unidade Curricular
     groups:
+      filter: Filtro
       type: "Tipo*"
       course: "Curso*"
       curriculum_unit: "Unidade Curricular*"
@@ -1387,6 +1388,7 @@
     cant_delete: Não foi possível excluir
     not_possible_to_access_page_with_data: Não é possível acessar esta página com os dados fornecidos
     content:
+      filter: Filtro
       type: "Tipo*"
       course: "Curso*"
       curriculum_unit: "Unidade Curricular*"

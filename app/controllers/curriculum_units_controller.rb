@@ -28,7 +28,6 @@ class CurriculumUnitsController < ApplicationController
 
     if params[:combobox]
 
-      # rever
       if @type.id == 3
         course_name = Course.find(params[:course_id]).name
         @curriculum_units = CurriculumUnit.where(name: course_name)
@@ -109,7 +108,6 @@ class CurriculumUnitsController < ApplicationController
   def update
     params[:curriculum_unit].delete(:code) unless params[:curriculum_unit][:code].present?
     course = Course.find_by_name(@curriculum_unit.name)
-
     if @curriculum_unit.update_attributes(params[:curriculum_unit])
       course.update_attributes name: @curriculum_unit.name, code: @curriculum_unit.code if @curriculum_unit.curriculum_unit_type_id == 3 and (not course.nil?)
       render json: {success: true, notice: t(:updated, scope: [:curriculum_units, :success]), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}

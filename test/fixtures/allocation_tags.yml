@@ -117,3 +117,7 @@ al24:
 al25:
   id: 25
   offer_id: 9
+
+al26:
+  id: 26
+  curriculum_unit_id: 6

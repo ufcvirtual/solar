@@ -7,8 +7,6 @@ class CoursesController < ApplicationController
     @type_id = params[:type_id].to_i
 
     if params[:combobox]
-      # ver de qual jeito vai ficar
-      # @courses = Course.joins(offers: :curriculum_unit).where("curriculum_units.name = courses.name")
       @courses = (@type_id == 3 ? Course.all_associated_with_curriculum_unit_by_name : Course.all)
       render json: { html: render_to_string(partial: 'select_course', locals: { curriculum_units: @courses.uniq! }) }
     else # list

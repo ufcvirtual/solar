@@ -37,8 +37,8 @@ module NavigationHelpers
       when /Criacao de grupo/
         '/group_assignments/new'
 
-      when /Cadastro de Unidade Curricular/
-        '/curriculum_units'
+      when /Cadastro de Unidade Curricular - Graduacao a Distancia/
+        '/editions/academic/2/curriculum_units'
 
     else
       begin

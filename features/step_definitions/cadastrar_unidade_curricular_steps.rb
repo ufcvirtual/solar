@@ -12,16 +12,28 @@ Entao /^eu nao deverei ver a linha de Unidade Curricular$/ do |tabela|
 	end
 end
 
-#Quando /^eu clicar no botão "([^"]*)" da linha que contem o item "([^"]*)"$/ da tabela do |link, texto|
-Quando /^eu clicar no botao "(.*?)" da linha que contem o item "(.*?)" da tabela$/ do |id, texto|
+Quando /^eu clicar no botao "(.*?)" da linha que contem o item "(.*?)" da tabela$/ do |element, texto|
   xpath = "//table/tbody/tr[ child::td[contains(.,'#{texto}')] ]"
   within(:xpath, xpath) do
-  	page.execute_script("document.getElementById('#{id}').click()")
-  	sleep 5
+  	page.execute_script("$('#{element}').click(); ")
   end
 end
 
-
 Entao "a pagina deve aceitar a proxima confirmacao" do
-  page.evaluate_script('window.confirm = function() { return true; }')
+  sleep 4
+  confirm_dialog
+  # page.evaluate_script('window.confirm = function() { return true; }')
+end
+
+
+module ConfirmDialog
+  def confirm_dialog(message = nil)
+    alert = page.driver.browser.switch_to.alert
+
+    if message.nil? || alert.text == message
+      alert.accept
+    else
+      alert.dismiss
+    end
+  end
 end
