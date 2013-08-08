@@ -117,8 +117,17 @@ ul.message_menu_listbox li:hover {
   height: 39px;
 }
 
+.tb_allocation .unavailable { // FIXME: pensar onde colocar esse seletor
+  color: #888;
+}
+
 td.td_student a { // TODO: usado em scores
   text-decoration: underline;
+  border-bottom-color: #d0d0d0;
+}
+
+.semester_same_dates, #semester_period { // TODO: usado em offers
+  color: #56585E;
 }
 
 #history_search_content { // TODO: usado em scores
@@ -130,324 +139,12 @@ td.td_student a { // TODO: usado em scores
   padding: 7px 0 5px 0;
 }
 
-/* MATERIAL DE APOIO */
-
-/* material de apoio - editor - tabela */
-h2.support_material_title {
-  position: absolute;
-  bottom: 1px;
-}
-
-.new_link input {
-  width: 560px;
-}
-
-/* FORM: criação de unidade curricular */
-.form-inputs.block_content {
-  padding-top: 5px;
-}
-
-.form-inputs .form_label:first-child {
-  width: 127px;
-}
-
-/* ajustando aviso de campos obrigatorios dentro do lightbox de criacao de unidade curricular */
-#lightBoxDialogContent .form_requirement {
-  margin-top: -16px;
-}
-
-/* posicionando botões do form */
-.block_content.form-actions {
-  padding-left: 143px;
-  padding-bottom: 5px;
-}
-
-.button-align {
-  text-align: right;
-  padding-right: 46px;
-
-}
-
-/* Tela de edição */
-
-fieldset {
-  border: 1px solid;
-  padding: 15px 20px 5px 20px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-
-fieldset legend {
-  font-family: 'Ubuntu Condensed';
-}
-
-@mixin item_button {
-  position: relative;
-  float: left;
-  margin: 10px 5px 20px 5px;
-  text-align: center;
-  outline: none;
-  text-decoration: none;
-  font-size: 9pt;
-  width: 100px;
-  a {
-    width: auto;
-  }
-  .btn {
-    text-align: center;
-    padding: 12px;
-    border-radius: 10px;
-    margin: 0 auto 5px auto;
-    display: block;
-    width: 50px;
-  }
-}
-
-.uc_item, .academic_item {
-  @include item_button;
-}
-
-.block_title.edition {
-  border-bottom: solid 1px;
-  margin-bottom: 15px;
-}
-
-.edition_allocation_tag_path {
-  padding-top: 5px;
-  border-bottom: 1px solid;
-}
-
-#back_button {
-  margin-bottom: 10px;
-}
-
-#new_module {
-  margin-bottom: 10px;
-}
-
-.filter_notice {
-  text-align: center;
-  font-size: 11px;
-  margin-bottom: 15px;
-  margin-top: -20px;
-}
-
-/* Para o filtro */
-
-fieldset .block_content_alt {
-  margin-bottom: 20px;
-}
-
-fieldset .block_content_alt li {
-  margin-bottom: 10px;
-}
-
-select[disabled] {
-  border: 1px solid;
-}
-
-/* Para o Wizard */
-
-/*
-.uc_item_ok {
-    position: absolute;
-    top: -5px;
-    right: 20px;
-    background: url("index_files/icones/item_ok.png") no-repeat scroll 0 0 transparent;
-    width: 23px;
-    height: 23px;
-}
-*/
-
-/* Menu dropdown */
-.dropdown-menu a {
-  font-size: 10pt;
-  font-family: 'PT Sans', sans-serif;
-}
-
-/* Arquivos de aulas - lesson_files */
-
-#files_menu_bar {
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-
-#files_select {
-  display: inline-block;
-  margin-right: 5px;
-}
-
-#lesson_files_select_all {
-  font-size: 10pt;
-}
-
-.lesson_module, .lesson_date, .lesson_type, .url_lesson {
-  margin-bottom: 5px;
-}
-
-.lesson_module .hint {
-  display: inline-block;
-  padding-top: 5px;
-}
-
-.btn_dropdown a {
-  cursor: pointer;
-}
-
-@mixin dropdown_with_form_alert {
-  span {
-    display: block;
-    font-size: 10pt;
-    width: 100%;
-    white-space: normal;
-    text-align: center;
-  }
-}
-
-#folder_dropdown .dropdown-panel {
-  padding: 7px;
-}
-
-#folder_dropdown_alert, #dropdown_alert {
-  @include dropdown_with_form_alert;
-}
-
-#folder_dropdown_content {
-  width: 200px;
-  overflow: hidden;
-}
-
-#folder_dropdown_content .control_buttons {
-  float: right;
-  padding-top: 7px;
-}
-
-#fileupload {
-  display: none;
-}
-
-#files_bottom_bar {
-  margin-top: 5px;
-  overflow: hidden;
-}
-
-#btn-finish {
-  float: right;
-}
-
-#tree {
-  max-height: 235px;
-  overflow-y: auto;
-}
-
-#save_automatically_message {
-  float: left;
-  font-size: 10pt;
-  margin-top: 13px;
-}
-
-#attention_message {
-  font-weight: bold;
-}
-
-#final_enroll_date {
-  margin-top: 5px;
-}
-
-#text_as_label {
+#text_as_label { // FIXME usado em curriculum_units
   vertical-align: bottom;
   text-align: left;
 }
 
-#receiver_already_added {
-  display: inline-block;
-  margin-left: 5px;
-  font-size: 11px;
-}
-
-@mixin ckeditor_content {
-  word-wrap: break-word;
-  min-height: 30px;
-  p {
-    margin-bottom: 0px;
-    padding-bottom: 7px;
-  }
-  ul {
-    list-style-type: disc;
-  }
-  a {
-    text-decoration: underline;
-  }
-  ol {
-    list-style-type: decimal;
-  }
-  li {
-    margin-left: 20px;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    font-family: arial, sans serif;
-    font-weight: lighter;
-  }
-  h1 {
-    font-size: 25px;
-  }
-  h2 {
-    font-size: 20px;
-  }
-  h3 {
-    font-size: 15px;
-  }
-  h4 {
-    font-size: 13px;
-  }
-  h5 {
-    font-size: 11px;
-  }
-  h6 {
-    font-size: 8px;
-  }
-  address {
-    font-style: italic;
-  }
-}
-
-.forum_post_inner_content, .message_div_show {
-  @include ckeditor_content;
-}
-
-#support_material_file_attachment {
-  margin-left: 70px;
-  margin-top: 3px;
-  margin-bottom: 5px;
-}
-
-#assignment_allocation_tag_id_9 {
-  margin-top: 6px;
-}
-
-#group_code {
-  width: 255px;
-  margin-left: 5px;
-  margin-bottom: 10px;
-}
-
-#dropdown_alert {
-  padding: 7px;
-}
-
-#lesson_dropdown .control_buttons {
-  padding-top: 5px;
-}
-
-#dropdown_alert li {
-  padding: 2px;
-}
-
-#lesson_dropdown .control_buttons .btn.btn_main {
-  margin-left: 5px;
-}
-
-#semester_period {
+#semester_period { // TODO usado em semesters
   float: right;
   position: relative;
   top: 10px;
@@ -455,8 +152,9 @@ select[disabled] {
   font-size: 9pt;
 }
 
-.offer_schedule_dates, .enrollment_schedule_dates {
+.offer_schedule_dates, .enrollment_schedule_dates { // TODO: usado em offers e semesters
   display: inline-block;
+  color: $label_color;
 }
 
 [class*="_check_box"] {
@@ -464,6 +162,7 @@ select[disabled] {
   text-align: left;
   margin-top: 5px;
   margin-bottom: 5px;
+  color: $label_color;
 }
 
 .end_date_check_box {
@@ -475,36 +174,28 @@ select[disabled] {
   display: none;
 }
 
-.offer_schedule_dates.error, .enrollment_schedule_dates.error {
+.offer_schedule_dates.error, .enrollment_schedule_dates.error { // TODO: usado em offers e semesters
   vertical-align: inherit;
+  color: #E03838;
 }
 
-.offer_schedule_dates.info, .enrollment_schedule_dates.info {
+.offer_schedule_dates.info, .enrollment_schedule_dates.info {  // TODO: usado em offers e semesters
   vertical-align: bottom;
+  color: black;
 }
 
-.groups_list {
-  .block_left, .block_right {
-    padding: 0;
-    width: 49.7%;
-  }
-}
-
-.collection_check_boxes {
-  margin-left: 0;
-  width: auto;
-  margin: 5px;
-  padding: 4px;
-  padding-bottom: 0;
-  border-radius: 10px;
-}
 
 label[for^="group_group_id_"]{
   color: white;
   font-size: 10pt;
 }
 
-.radio_options label{
+label[for="all"], .type_description{
+  color: $text_grey;
+}
+
+
+.radio_options label{ // TODO: usado em editions
   width: auto;
   margin: 5px;
 }

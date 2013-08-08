@@ -1,4 +1,4 @@
-// LightBox genérico (usado para exibir as aulas)
+// LIGHTBOX
 
 #lightBoxDialog {
   border-width: 1px;
@@ -44,4 +44,9 @@
 #lightBoxDialogCloseBt:Hover {
   cursor: pointer;
   opacity: 1.0;
+}
+
+/* ajustando aviso de campos obrigatorios dentro do lightbox de criacao de unidade curricular */
+#lightBoxDialogContent .form_requirement {
+  margin-top: -16px;
 }

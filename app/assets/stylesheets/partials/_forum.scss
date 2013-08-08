@@ -164,16 +164,17 @@ div.forum_navigation {
   list-style: circle;
 }
 
-.forum_post_attachment_list, .comments_files_div {
+.forum_post_attachment_list,
+.comments_files_div {
   padding-left: 15px;
-}
 
-.forum_post_attachment_list li, .comments_files_div li {
-  padding-bottom: 4px;
+  li {
+    padding-bottom: 4px;
 
-  img {
-    width: 12px;
-    vertical-align: middle;
+    img {
+      width: 12px;
+      vertical-align: middle;
+    }
   }
 }
 
@@ -186,4 +187,8 @@ div.forum_navigation {
   margin-top: 5px;
   padding-bottom: 3px;
   float: right;
+}
+
+.forum_post_inner_content, .message_div_show {
+  @include ckeditor_content;
 }

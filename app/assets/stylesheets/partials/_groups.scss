@@ -5,13 +5,27 @@
   font-size: 13px;
 }
 
-#group_assignments tr.lines > td {
-  padding: 0;
+#group_assignments {
+  tr.lines > td {
+    padding: 0;
+  }
+  tr.lines:hover {
+    background-color: $color_main_light;
+  }
 }
 
 .group_assignment_title {
   padding: 6px 10px;
   cursor: pointer;
+
+  &:hover {
+    background-color: $color_main_light_highlight;
+
+  }
+}
+
+.group_assignment_title_contract {
+  background: url('/assets/images/group_assignment_contract.png') no-repeat right center;
 }
 
 .group_participants,
@@ -21,12 +35,15 @@
   margin-right: 11px;
   margin-bottom: 10px;
   border-bottom: 1px solid;
+  border-bottom-color: #c0c1c2;
+  background-color: #ffffff;
   float: left;
   width: 250px;
   padding-bottom: 7px;
 }
 
 .group_assignments_manage_buttons {
+  background-color: #f7f7f7;
   ul {
     margin-left: 32%;
     margin-top: 10px;
@@ -55,6 +72,42 @@
   font-weight: normal;
   height: 20px;
   padding: 6px 7px 2px 7px;
+}
+
+.group_name_manage,
+.edit_group_true {
+  background-color: #fcd927;
+  color: #000000;
+}
+
+//[class^="group_name"], TODO: qual o background-color correto, este ou o seguinte?
+.group_assignments_manage_buttons_title,
+.disabled_groups_assignments_name {
+  background-color: #9ea2a3;
+  color: #ffffff;
+}
+
+[class^="group_name"] {
+  background-color: #0d487d;
+  color: #ffffff;
+}
+
+[class^="group_information"],
+.group_information_manage,
+.disabled_groups_assignments_information {
+  color: #000000;
+}
+
+.disabled_groups_assignments_information {
+  background-color: #f7f7f7;
+}
+
+.group_information_manage {
+  background-color: #fdfce1;
+}
+
+[class^="group_information"] {
+  background-color: #f2f6fa;
 }
 
 .group_box_without_info {
@@ -125,6 +178,23 @@
   cursor: crosshair;
 }
 
+.collection_check_boxes { // FIXME: classe está com nome muito genérico
+  margin-left: 0;
+  width: auto;
+  margin: 5px;
+  padding: 4px;
+  padding-bottom: 0;
+  border-radius: 10px;
+  background-color: #2B79BA;
+}
+
+.groups_list {
+  .block_left, .block_right {
+    padding: 0;
+    width: 49.7%;
+  }
+}
+
 /**
 * TODO: código aparentemente inutilizado, verificar
 *
@@ -148,5 +218,11 @@
 .no_permission_message {
   font-size: 10px;
   text-decoration: italic;
+}
+
+#group_code {
+  width: 255px;
+  margin-left: 5px;
+  margin-bottom: 10px;
 }
 */

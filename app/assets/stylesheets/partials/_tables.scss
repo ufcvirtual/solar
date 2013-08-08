@@ -113,6 +113,7 @@ tr.post_content {
   background-color: $color_main_light;
 }
 
-td.td_student a {
+td.td_student a { // FIXME: usado apenas em scores
+  //color: #2a538d;
   color: $color_main_text;
 }
