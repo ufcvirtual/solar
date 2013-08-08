@@ -14,46 +14,6 @@ td.td_student a { // TODO: usado em scores
   color: #2a538d;
 }
 
-/******** Atualização de dados de usuário **********/
-
-
-.form_label {
-  color: $label_color;
-}
-
-.label_color {
-  color: $label_color;
-}
-
-.select_end_date {
-  color: $color_main_text;
-}
-
-.form_error, .error, span.field_with_errors {
-  color: #E03838;
-}
-
-.field_with_errors input, .field_with_errors textarea {
-  border-color: red;
-}
-
-.login_form_link_return {
-  background-color: #fff;
-  color: #222;
-}
-
-.login_form_link_return:hover {
-  color: #222;
-}
-
-.form_requirement, .filter_counter {
-  color: #E03838;
-}
-
-.form_usuario_table {
-  color: #fff;
-}
-
 /* gerenciamento de grupos */
 
 #group_assignments tr.lines:hover {
@@ -106,28 +66,6 @@ td.td_student a { // TODO: usado em scores
 .disabled_groups_assignments_information {
   background-color: #f7f7f7;
 }
-
-.page_title {
-  color: $color_main;
-}
-
-.all_students label {
-  color: #000000;
-}
-
-.all_students_to_import {
-  border-color: #dedede;
-  background-color: #ffffff;
-}
-
-.group_assignment_files a {
-  color: #134076;
-}
-
-.draggable_student {
-  border-bottom-color: #fdec9c;
-}
-
 /* Tela de edição */
 
 fieldset {

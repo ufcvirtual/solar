@@ -18,10 +18,10 @@
   margin: 10px 0;
   font-size: 10pt;
   &.notice {
-    background: url('notice.gif') no-repeat 5px center #f5ffec;
+    background: url('/assets/notice.gif') no-repeat 5px center #f5ffec;
   }
   &.alert {
-    background: url('alert.gif') no-repeat 5px center #fff6f6;
+    background: url('/assets/alert.gif') no-repeat 5px center #fff6f6;
   }
 }
 

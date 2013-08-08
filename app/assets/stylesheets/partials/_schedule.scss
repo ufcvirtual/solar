@@ -45,24 +45,26 @@
   margin-bottom: 5px;
 }
 
-.block_title_icon.discussions {  // FIXME: parece estar sendo usado apenas em schedule, tentar melhorar o seletor
+.block_title_icon.discussions {
   display: inline-block;
-  background: url('../../images/schedule/meeting_attendance_16x16.png') no-repeat;
+  background: url('/assets/images/schedule/meeting_attendance_16x16.png') no-repeat;
 }
 
-.block_title_icon.lesson, .block_title_icon.assignments, .block_title_icon.schedule_events {  // FIXME: parece estar sendo usado apenas em schedule, tentar melhorar o seletor
+.block_title_icon.lesson,
+.block_title_icon.assignments,
+.block_title_icon.schedule_events {
   display: inline-block;
-  background: url('../../images/schedule/assignments_16x16.png') no-repeat;
+  background: url('/assets/images/schedule/assignments_16x16.png') no-repeat;
 }
 
-.block_title_icon.chat { // FIXME: parece estar sendo usado apenas em schedule, tentar melhorar o seletor
+.block_title_icon.chat {
   display: inline-block;
-  background: url('../../images/schedule/chat_16x16.png') no-repeat;
+  background: url('/assets/images/schedule/chat_16x16.png') no-repeat;
 }
 
-.block_title_icon.meeting_attendance { // FIXME: parece estar sendo usado apenas em schedule, tentar melhorar o seletor
+.block_title_icon.meeting_attendance {
   display: inline-block;
-  background: url('../../images/schedule/meeting_attendance_16x16.png') no-repeat;
+  background: url('/assets/images/schedule/meeting_attendance_16x16.png') no-repeat;
 }
 
 .agenda_ajax {
