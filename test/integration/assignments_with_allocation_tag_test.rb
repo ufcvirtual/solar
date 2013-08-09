@@ -443,4 +443,149 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_equal( flash[:alert], I18n.t(:no_permission) )
   end
 
+  ##
+  # Send_comment
+  ##
+
+  # Novo comentário
+
+  # Perfil com permissao e usuario com acesso
+  test "permitir comentar em atividade individual para usuario com permissao e com acesso" do
+    login users(:professor)
+    get @quimica_tab
+    assert_difference("CommentFile.count", +1) do
+      comment_files = [fixture_file_upload('files/assignments/comment_files/teste1.txt', 'text/plain')]
+      post send_comment_assignment_path(assignments(:a9).id), {:student_id => users(:aluno1).id, :comment => "comentario8", :comment_files => comment_files}
+    end
+    assert_response :redirect
+    assert_equal I18n.t(:comment_sent_success, :scope => [:assignment, :comments]), flash[:notice]
+  end
+
+  # Perfil com permissao e usuario com acesso, mas fora do período permitido
+  test "nao permitir comentar em atividade individual para usuario com permissao e com acesso e atividade fora do periodo" do
+    login users(:professor)
+    get @quimica_tab
+    assert_no_difference("CommentFile.count") do
+      comment_files = [fixture_file_upload('files/assignments/comment_files/teste1.txt', 'text/plain')]
+      post send_comment_assignment_path(assignments(:a14).id), {:student_id => users(:aluno1).id, :comment => "comentario8", :comment_files => comment_files}
+    end
+  end
+
+  # Perfil com permissao e usuario sem acesso
+  test "nao permitir comentar em atividade individual para usuario com permissao e sem acesso" do
+    login users(:professor)
+    get @quimica_tab
+    assert_no_difference("AssignmentComment.count") do
+      post send_comment_assignment_path(assignments(:a10).id), {:student_id => users(:aluno1).id, :comment => "comentario9"}
+    end
+    assert_redirected_to(home_path)
+    assert_equal I18n.t(:no_permission), flash[:alert]
+  end
+
+  # Perfil sem permissao e usuario com acesso
+  test "nao permitir comentar em atividade individual para usuario sem permissao e com acesso" do
+    login users(:aluno1)
+    get @quimica_tab
+    assert_no_difference("AssignmentComment.count") do
+      post send_comment_assignment_path(assignments(:a9).id), {:student_id => users(:aluno1).id, :comment => "comentario10"}
+    end
+    assert_redirected_to(home_path)
+    assert_equal I18n.t(:no_permission), flash[:alert]
+  end
+
+  # Editar comentário
+  
+  # Perfil com permissao e usuario com acesso
+  test "permitir editar comentario para usuario com permissao e com acesso" do
+    login users(:professor)
+    get @quimica_tab
+    post send_comment_assignment_path(assignments(:a9).id), {:student_id => users(:aluno1).id, :comment_id => assignment_comments(:ac2).id, :comment => "trabalho mediano."}
+    assert_response :redirect
+    assert_equal I18n.t(:comment_sent_success, :scope => [:assignment, :comments]), flash[:notice]
+  end
+
+  # Perfil com permissao e usuario com acesso, mas fora do período permitido
+  test "nao permitir editar comentario para usuario com permissao e com acesso e atividade fora do periodo" do
+    login users(:professor)
+    get @quimica_tab
+    post send_comment_assignment_path(assignments(:a14).id), {:student_id => users(:aluno1).id, :comment_id => assignment_comments(:ac2).id, :comment => "trabalho mediano."}
+    assert_not_equal assignment_comments(:ac2).comment, "trabalho mediano."    
+  end
+
+  # Perfil com permissao e usuario sem acesso
+  test "nao permitir editar comentario para usuario com permissao e sem acesso" do
+    login users(:professor2)
+    get @quimica_tab
+    post send_comment_assignment_path(:id => assignments(:a9).id), {:student_id => users(:aluno1).id, :comment_id => assignment_comments(:ac2).id, :comment => "trabalho mediano."}
+    assert_redirected_to(home_path)
+    assert_equal I18n.t(:no_permission), flash[:alert]
+  end
+
+  # Perfil sem permissao e usuario com acesso
+  test "nao permitir editar comentario para usuario sem permissao e com acesso" do
+    login users(:aluno1)
+    get @quimica_tab
+    post send_comment_assignment_path(assignments(:a9).id), {:student_id => users(:aluno1).id, :comment_id => assignment_comments(:ac2).id, :comment => "trabalho otimo."}
+    assert_redirected_to(home_path)
+    assert_equal I18n.t(:no_permission), flash[:alert]
+  end
+
+  ##
+  # Remove_comment
+  ##
+
+  # Perfil com permissao e usuario com acesso
+  test "permitir remover comentario para usuario com permissao e com acesso" do
+    login users(:professor)
+    get @quimica_tab
+    assert_difference("AssignmentComment.count", -1) do
+      delete remove_comment_assignment_path(assignments(:a9).id), {:comment_id => assignment_comments(:ac2).id}
+    end
+    assert_response :success
+    get assignment_path(assignments(:a9).id), {:student_id => users(:aluno1).id}
+    assert_no_tag :tag => "table", :attributes => { :class => "assignment_comment tb_comments tb_comment_#{assignment_comments(:ac2).id}" }
+    assert_template :show
+  end
+
+  # Perfil com permissao e usuario com acesso, mas fora do período permitido
+  test "nao permitir remover comentario para usuario com permissao e com acesso e atividade fora do periodo" do
+    login users(:professor)
+    get @quimica_tab
+    assert_no_difference("AssignmentComment.count") do
+       delete remove_comment_assignment_path(assignments(:a14).id), {:comment_id => assignment_comments(:ac2).id}
+    end
+  end
+
+  # Perfil com permissao e usuario sem acesso
+  test "nao permitir remover comentario para usuario com permissao e sem acesso" do
+    login users(:professor2)
+    get @quimica_tab
+    assert_no_difference("AssignmentComment.count") do
+       delete remove_comment_assignment_path(assignments(:a9).id), {:comment_id => assignment_comments(:ac2).id}
+    end
+    assert_redirected_to(home_path)
+    assert_equal I18n.t(:no_permission), flash[:alert]
+
+    # sign_in users(:professor)
+    # get(:show, {:id => assignments(:a9).id, :student_id => users(:aluno1).id})    
+    # assert_response :success
+    # assert_tag :tag => "table", :attributes => { :class => "assignment_comment tb_comments tb_comment_#{assignment_comments(:ac2).id}" }
+  end
+
+  # Perfil sem permissao e usuario com acesso
+  test "nao permitir remover comentario para usuario sem permissao e com acesso" do
+    login users(:aluno1)
+    get @quimica_tab
+    assert_no_difference("AssignmentComment.count") do
+      delete remove_comment_assignment_path(assignments(:a9).id), {:comment_id => assignment_comments(:ac2).id}
+    end
+    assert_redirected_to(home_path)
+    assert_equal I18n.t(:no_permission), flash[:alert]
+
+    login users(:professor)
+    get assignment_path(assignments(:a9).id), {:student_id => users(:aluno1).id}
+    assert_template :show
+    assert_tag :tag => "table", :attributes => { :class => "assignment_comment tb_comment_#{assignment_comments(:ac2).id} tb_comments" }
+  end
+
 end
