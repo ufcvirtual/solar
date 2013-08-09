@@ -253,16 +253,24 @@ pm62:
   profile_id: 5
   menu_id: 130
 
-# aluno monitor
-pm63:
-  profile_id: 13
-  menu_id: 130
-
 # editor
-pm64:
+pm63:
   profile_id: 5
   menu_id: 131
 
-pm65:
+pm64:
   profile_id: 5
+  menu_id: 132
+
+# aluno monitor
+pm65:
+  profile_id: 13
+  menu_id: 130
+
+pm66:
+  profile_id: 13
+  menu_id: 131
+
+pm67:
+  profile_id: 13
   menu_id: 132
