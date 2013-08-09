@@ -43,4 +43,8 @@ class GroupAssignment < ActiveRecord::Base
     joins(:academic_allocation).where(academic_allocations: {academic_tool_id: assignment_id})
   end
 
+  def assignment_id
+    academic_allocation.academic_tool_id
+  end
+
 end

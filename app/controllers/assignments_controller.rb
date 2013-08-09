@@ -158,13 +158,15 @@ class AssignmentsController < ApplicationController
   # Gerenciamento de grupos da atividade
   ##
   def manage_groups
-    deleted_groups_ids      = params['deleted_groups_divs_ids'].blank? ? [] : params['deleted_groups_divs_ids'].collect{ |group| group.tr('_', ' ').split[1] } #"group_2" => 2
+    deleted_groups_ids = params['deleted_groups_divs_ids'].blank? ? [] : params['deleted_groups_divs_ids'].collect{ |group| group.tr('_', ' ').split[1] } #"group_2" => 2
+    @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
    
     unless params['btn_cancel'] # clicou em "salvar"
       begin
+        academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(@allocation_tag.id, @assignment.id, 'Assignment')
+
         # verifica se ainda está no prazo
-        allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
-        raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.assignment_in_time?(allocation_tag, current_user.id)
+        raise t(:date_range_expired, scope: [:assignment, :notifications]) unless @assignment.assignment_in_time?(@allocation_tag, current_user.id)
 
         GroupAssignment.transaction do
           deleted_groups_ids.each do |deleted_group_id| # deleção de grupos
@@ -178,32 +180,25 @@ class AssignmentsController < ApplicationController
             unless group_id.nil? # se não forem alunos sem grupo
               group_name = group[1]['group_name']
               if group_id == '0' # novo grupo
-                group_assignment = GroupAssignment.create!(:assignment_id => @assignment.id, :group_name => group_name)
+                group_assignment = GroupAssignment.create!(academic_allocation_id: academic_allocation.id, group_name: group_name)
               else # grupo já existente
                 group_assignment = GroupAssignment.find(group_id)
-                group_assignment.update_attributes!(:group_name => group_name)
+                group_assignment.update_attributes!(group_name: group_name)
               end
             end
 
             # altera os alunos de grupo a não ser que o grupo não possa ser alterado/excluido e que este esteja na lista de grupos que foram excluídos
-            change_students_group(group_assignment, group_participants_ids, @assignment.id) unless ((not GroupAssignment.can_remove_group?(group_id)) and deleted_groups_ids.include?("#{group_id}"))
+            change_students_group(group_assignment, group_participants_ids, academic_allocation.id) unless ((not GroupAssignment.can_remove_group?(group_id)) and deleted_groups_ids.include?("#{group_id}"))
           end
-
-          @students_without_group = @assignment.students_without_groups
-
-          respond_to do |format|
-            format.html { render 'group_assignment_content_div', :layout => false }
-          end
-
+          @students_without_group = @assignment.students_without_groups(@allocation_tag)
+          render 'group_assignment_content_div', layout: false
         end
       rescue Exception => error
-        render :json => { :success => false, :flash_msg => error.message, :flash_class => 'alert' }
+        render :json => { success: false, flash_msg: error.message, flash_class: 'alert'}
       end
     else # clicou em "cancelar"
-      @students_without_group = @assignment.students_without_groups
-      respond_to do |format|
-        format.html { render 'group_assignment_content_div', :layout => false }
-      end
+      @students_without_group = @assignment.students_without_groups(@allocation_tag)
+      render 'group_assignment_content_div', layout: false
     end
   end
 
@@ -449,18 +444,20 @@ class AssignmentsController < ApplicationController
     begin 
       # verifica período para envio do arquivo
       allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
-      raise t(:date_range_expired, :scope => [:assignment, :notifications]) unless @assignment.assignment_in_time?(allocation_tag, current_user.id) 
+      raise t(:date_range_expired, scope: [:assignment, :notifications]) unless @assignment.assignment_in_time?(allocation_tag, current_user.id) 
+
+      academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id, import_to_assignment_id, 'Assignment')
 
       unless groups_to_import.empty?
         groups_to_import.each do |group_to_import|
-          group_imported = GroupAssignment.create(:group_name => group_to_import.group_name, :assignment_id => import_to_assignment_id) # grupo importado
+          group_imported = GroupAssignment.create(group_name: group_to_import.group_name, academic_allocation_id: academic_allocation.id)  # grupo importado
           group_to_import.group_participants.each do |participant_to_import|
-            GroupParticipant.create(:group_assignment_id => group_imported.id, :user_id => participant_to_import.user_id)
+            GroupParticipant.create(group_assignment_id: group_imported.id, user_id: participant_to_import.user_id)
           end
         end
       end
 
-      flash[:notice] = t(:import_success, :scope => [:assignment, :import_groups])
+      flash[:notice] = t(:import_success, scope: [:assignment, :import_groups])
 
     rescue Exception => error
       flash[:alert] = error.message
@@ -473,11 +470,11 @@ class AssignmentsController < ApplicationController
     ##
     # Método que realiza as mudanças de um grupo e realiza as trocas de alunos
     ##
-    def change_students_group(group_assignment, students_ids, assignment_id)
+    def change_students_group(group_assignment, students_ids, academic_allocation_id)
       unless students_ids.nil?
         students_ids.each do |student_id|
           # groupo atual do aluno nesta atividade
-          current_group_participant     = Assignment.find(assignment_id).group_participants.where(user_id: student_id).first # aluno esta em apenas um grupo por atividade
+          current_group_participant = GroupParticipant.includes(:group_assignment).where(group_assignments: {academic_allocation_id: academic_allocation_id}, group_participants: {user_id: student_id}).first
 
           # sent_assignment do grupo atual
           current_group_sent_assignment = current_group_participant.group_assignment.sent_assignment unless current_group_participant.nil?
@@ -486,17 +483,18 @@ class AssignmentsController < ApplicationController
           # sent_assignment do grupo ao qual aluno tentará ser movido
           choosen_group_sent_assignment = group_assignment.sent_assignment unless group_assignment.nil?
 
-          student_can_be_removed_from_current_group = (student_files_current_group.nil? and (current_group_sent_assignment.nil? or current_group_sent_assignment.grade.nil?))
+          student_can_be_removed_from_current_group = (student_files_current_group.blank? and (current_group_sent_assignment.nil? or current_group_sent_assignment.grade.blank?))
           student_can_be_moved_to_choosen_group     = (choosen_group_sent_assignment.nil? or choosen_group_sent_assignment.grade.nil?)
+          
           # se:
             # => aluno não enviou arquivos ao grupo atual E sent_assignment do grupo não existe ou não foi avaliado
             # => novo grupo não tenha sent_assignment ou não tenha sido avaliado
           if (student_can_be_removed_from_current_group and student_can_be_moved_to_choosen_group)
             unless group_assignment.nil?
               if current_group_participant.nil?
-                GroupParticipant.create!(:group_assignment_id => group_assignment["id"], :user_id => student_id)
+                GroupParticipant.create!(group_assignment_id: group_assignment["id"], user_id: student_id)
               elsif current_group_participant.group_assignment_id != group_assignment.id
-                current_group_participant.update_attributes!(:group_assignment_id => group_assignment.id)
+                current_group_participant.update_attribute(:group_assignment_id, group_assignment.id)
               end
             else
               current_group_participant.delete unless current_group_participant.nil? 

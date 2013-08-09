@@ -33,11 +33,11 @@ class Assignment < ActiveRecord::Base
   def student_group_by_student(student_id)
     #Operador ternário (if) anything ? (então) somenthing :(se não) other thing
     (self.type_assignment == Assignment_Type_Group) ? 
-    (GroupAssignment.first(
-    joins: :academic_allocation,
-    include: :group_participants,
-    conditions: ["group_participants.user_id = #{student_id} 
-    AND academic_allocations.academic_tool_id = #{self.id}"])) : nil
+      (GroupAssignment.first(
+      joins: :academic_allocation,
+      include: :group_participants,
+      conditions: ["group_participants.user_id = #{student_id} 
+      AND academic_allocations.academic_tool_id = #{self.id}"])) : nil
   end
 
   def sent_assignment_by_user_id_or_group_assignment_id(allocation_tag_id, user_id, group_assignment_id)
@@ -48,7 +48,7 @@ class Assignment < ActiveRecord::Base
   def situation_of_student(allocation_tag_id, student_id, group_assignment_id = nil)
     student_group = student_group_by_student(student_id) unless student_id.nil?
     user_id = (type_assignment == Assignment_Type_Group) ? nil : student_id
-    group_id = (student_group.nil? ? group_id : student_group.id) # se aluno estiver em grupo, recupera id
+    group_id = (student_group.nil? ? group_assignment_id : student_group.id) # se aluno estiver em grupo, recupera id
     sent_assignment = sent_assignment_by_user_id_or_group_assignment_id(allocation_tag_id, user_id, group_assignment_id) 
 
 
