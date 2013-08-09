@@ -1,23 +1,19 @@
-= javascript_include_tag "jquery"
-= javascript_include_tag "jquery.qtip.min"
 = javascript_include_tag "tooltip"
+= javascript_include_tag "autocomplete"
+= stylesheet_link_tag "jquery-ui-autocomplete", "autocomplete"
 
 .block_wrapper
   .block_content.enrollment_bar
-    = form_for :offer, :url => enrollments_path, method: :get do |f|
+    = form_for :curriculum_unit, :url => enrollments_path, method: :get do |f|
       .enrollment_left
-        = hidden_field_tag :category_query, @category_query
-        = f.label t(".search"), :class => "enrollment_label"
-        = f.text_field :search, :size=>"30", :class=>'enrollment_search', :value => @search_text
-        = f.label t(".search_in"), :class => "enrollment_label"
-        = f.collection_select(:category, @types, :id, :description, {:include_blank => true, :class => "select_category", :selected => @search_category} )
-        = button_tag content_tag(:i, nil, :class=>'icon-search'), :class=>'btn'
-      .enrollment_right
-        = f.label t(".view"), :class => "enrollment_label"
-        = f.label ': ', :class => "enrollment_label"
-        = link_to t(".view_all"), enrollments_path(:category_query => 'all'), :class => 'link_gray'
-        = link_to t(".view_enrolled"), enrollments_path(:category_query => 'enroll'), :class => 'link_gray'
-
+        .filter_enrollment
+          = f.label t(".search"), :class => "enrollment_label_search"
+          = select_tag(:curriculum_unit, options_from_collection_for_select(@curriculum_units, :id, :code_name), {include_blank: false, :class => "select_category", :selected => @search_curriculum_unit})
+          = f.label t(".search_in"), :class => "enrollment_label"
+          = select_tag(:type, options_from_collection_for_select(CurriculumUnitType.all, :id, :description), {include_blank: true, :class => "select_category", :selected => @search_category})
+          =f.label t(".of"), :class => "enrollment_label"
+          = select_tag(:status, options_for_select(@status, @status.first), :class => "select_category")
+          = button_tag content_tag(:i, nil, :class=>'icon-search'), :class=>'btn'
 
 .block_wrapper
   .block_title
@@ -58,3 +54,23 @@
                   = button_to t(".enroll"), reactivate_allocation_path(allocation), :class=>'btn btn_default', :disabled => not(period_info[:is_active])
                 - else
                   = button_to t(".enroll"), {:controller => "allocations", :action => "create", :allocation_tag_id => group.allocation_tag.id, :user_id => current_user.id}, :class=>'btn btn_default', :disabled => not(period_info[:is_active])
+
+:javascript
+ 
+
+   $(function(){
+
+      $("#curriculum_unit, #type, #status").combobox();
+      $("#curriculum_unit").combobox('value', "#{@search_curriculum_unit}");
+      $("#type").combobox('value', "#{@search_category}");
+      $("#status").combobox('value', "#{@search_status}");
+
+      $('#status').combobox({
+        change: function(event, ui) {
+          if(ui.item == null)
+            $(this).combobox('value', 'all');
+        }
+      });
+
+    });
+

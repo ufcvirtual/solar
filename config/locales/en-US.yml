@@ -394,6 +394,7 @@
       confirm: Are you sure you want to cancel?
       cancel_request: Cancel Request
       period: Enrollment period
+      of: "of"
     not_defined: Not defined
 
   enrollm_cancelled_message: "Enrollment cancelled"

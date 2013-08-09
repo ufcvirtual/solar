@@ -558,6 +558,7 @@
       confirm: "Tem certeza de que deseja cancelar?"
       cancel_request: "Cancelar pedido"
       period: Período de matrícula
+      of: "por"
     not_defined: Não definido
 
   enrollm_request_cancel_message: "Pedido de matrícula cancelado"  
