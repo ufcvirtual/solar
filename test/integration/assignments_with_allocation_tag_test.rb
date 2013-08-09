@@ -586,6 +586,58 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     get assignment_path(assignments(:a9).id), {:student_id => users(:aluno1).id}
     assert_template :show
     assert_tag :tag => "table", :attributes => { :class => "assignment_comment tb_comment_#{assignment_comments(:ac2).id} tb_comments" }
+
+  # Público
+
+  # Perfil com permissao e usuario sem acesso
+
+  # Aluno
+
+  test 'nao permitir delecao de arquivo enviado pelo aluno por usuario com permissao e sem acesso' do
+    login (users(:aluno3))
+    get @quimica_tab
+    assert_difference('AssignmentFile.count', +1) do
+      post upload_file_assignments_path, {:assignment_id => assignments(:a11).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'),:type => "assignment"}
+    end
+
+    login(users(:aluno1))
+    get @quimica_tab
+    assignment_file = AssignmentFile.find_by_sent_assignment_id_and_attachment_file_name(sent_assignments(:sa4).id, "teste3.txt")
+    delete( delete_file_assignments_path, {:assignment_id => assignments(:a10).id, :file_id => assignment_file.id, :type => 'assignment'})
+    assert_response :redirect
+    # assert_equal( flash[:alert], I18n.t(:no_permission) ) #tá recebendo em inglês e tá esperando em português
+  end
+
+  # Aluno
+  test 'nao permitir delecao de arquivo enviado pelo aluno por usuario sem permissao' do
+    login(users(:aluno3))
+    get @quimica_tab
+    assert_difference('AssignmentFile.count', +1) do
+      post upload_file_assignments_path, {:assignment_id => assignments(:a11).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'), :type => "assignment"}
+    end
+    
+    login(users(:coorddisc))
+    get @quimica_tab
+    assignment_file = AssignmentFile.find_by_sent_assignment_id_and_attachment_file_name(sent_assignments(:sa4).id, "teste3.txt")
+    delete(delete_file_assignments_path, {:assignment_id => assignments(:a10).id, :file_id => assignment_file.id, :type => 'assignment'})
+    assert_response :redirect
+    # assert_equal( flash[:alert], I18n.t(:no_permission) ) #tá recebendo em inglês e tá esperando em português
+  end
+
+  # Grupo
+  test 'nao permitir delecao de arquivo enviado pelo grupo por usuario sem permissao' do
+    login(users(:aluno3))
+    get @quimica_tab
+    assert_difference('AssignmentFile.count', +1) do
+      post upload_file_assignments_path, {:assignment_id => assignments(:a10).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste4.txt', 'text/plain'), :type => "assignment"}
+    end
+
+    login(users(:coorddisc))
+    get @quimica_tab
+    assignment_file = AssignmentFile.find_by_sent_assignment_id_and_attachment_file_name(sent_assignments(:sa5).id, "teste4.txt")
+    delete(delete_file_assignments_path, {:assignment_id => assignments(:a10).id, :file_id => assignment_file.id, :type => 'assignment'})
+    assert_response :redirect
+    # assert_equal( flash[:alert], I18n.t(:no_permission) ) #tá recebendo em inglês e tá esperando em português
   end
 
 end

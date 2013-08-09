@@ -84,3 +84,15 @@ acaal14:
   allocation_tag_id: 8
   academic_tool_id: 11
   academic_tool_type: "Assignment"
+
+acaal15:
+  id: 15
+  allocation_tag_id: 3
+  academic_tool_id: 11
+  academic_tool_type: "Assignment"
+
+acaal16:
+  id: 16
+  allocation_tag_id: 3
+  academic_tool_id: 10
+  academic_tool_type: "Assignment"

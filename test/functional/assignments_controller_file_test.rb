@@ -401,20 +401,8 @@ class AssignmentsControllerTest < ActionController::TestCase
 
   # Perfil com permissao e usuario sem acesso
 
-  # Aluno
-  test 'nao permitir delecao de arquivo enviado pelo aluno por usuario com permissao e sem acesso' do
-    sign_in(users(:aluno3))
-    assert_difference('AssignmentFile.count', +1) do
-      post :upload_file, {:assignment_id => assignments(:a11),:file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'),:type => "assignment"}
-    end
-    sign_out(users(:aluno3))
-
-    sign_in(users(:aluno1))
-    assignment_file = AssignmentFile.find_by_sent_assignment_id_and_attachment_file_name(sent_assignments(:sa4).id, "teste3.txt")
-    delete(:delete_file, {:assignment_id => assignments(:a10).id, :file_id => assignment_file.id, :type => 'assignment'})
-    assert_response :redirect
-    # assert_equal( flash[:alert], I18n.t(:no_permission) ) #tá recebendo em inglês e tá esperando em português
-  end
+  
+  
 
   # Grupo
   test 'nao permitir delecao de arquivo enviado pelo grupo por usuario com permissao e sem acesso' do
@@ -427,41 +415,6 @@ class AssignmentsControllerTest < ActionController::TestCase
     sign_in users(:aluno2)
     assignment_file = AssignmentFile.find_by_sent_assignment_id_and_attachment_file_name(sent_assignments(:sa5).id, "teste4.txt")
     delete(:delete_file, {:assignment_id => assignments(:a5).id, :file_id => assignment_file.id, :type => 'assignment'})
-    assert_response :redirect
-    # assert_equal( flash[:alert], I18n.t(:no_permission) ) #tá recebendo em inglês e tá esperando em português
-  end
-
-  # Público
-  # => assignments_with_allocation_tag_test.rb
-
-  # Perfil sem permissao
-
-  # Aluno
-  test 'nao permitir delecao de arquivo enviado pelo aluno por usuario sem permissao' do
-    sign_in(users(:aluno3))
-    assert_difference('AssignmentFile.count', +1) do
-      post :upload_file, {:assignment_id => assignments(:a11), :file => fixture_file_upload('files/assignments/sent_assignment_files/teste3.txt', 'text/plain'), :type => "assignment"}
-    end
-    sign_out(users(:aluno3))
-
-    sign_in(users(:coorddisc))
-    assignment_file = AssignmentFile.find_by_sent_assignment_id_and_attachment_file_name(sent_assignments(:sa4).id, "teste3.txt")
-    delete(:delete_file, {:assignment_id => assignments(:a10).id, :file_id => assignment_file.id, :type => 'assignment'})
-    assert_response :redirect
-    # assert_equal( flash[:alert], I18n.t(:no_permission) ) #tá recebendo em inglês e tá esperando em português
-  end
-
-  # Grupo
-  test 'nao permitir delecao de arquivo enviado pelo grupo por usuario sem permissao' do
-    sign_in(users(:aluno3))
-    assert_difference('AssignmentFile.count', +1) do
-      post :upload_file, {:assignment_id => assignments(:a10), :file => fixture_file_upload('files/assignments/sent_assignment_files/teste4.txt', 'text/plain'), :type => "assignment"}
-    end
-    sign_out(users(:aluno3))
-
-    sign_in(users(:coorddisc))
-    assignment_file = AssignmentFile.find_by_sent_assignment_id_and_attachment_file_name(sent_assignments(:sa5).id, "teste4.txt")
-    delete(:delete_file, {:assignment_id => assignments(:a10).id, :file_id => assignment_file.id, :type => 'assignment'})
     assert_response :redirect
     # assert_equal( flash[:alert], I18n.t(:no_permission) ) #tá recebendo em inglês e tá esperando em português
   end
