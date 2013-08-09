@@ -13,7 +13,7 @@
               %td
                 .group_assignment_title{:onclick => "javascript:toggle_div('div_group_import_#{a["id"]}');"}
                   %a.link_content{:id => "name_#{a["id"]}"}=a["name"]
-                - gps = GroupAssignment.find_all_by_assignment_id(a["id"])
+                - gps = GroupAssignment.all_by_assignment_id(a["id"])
                 %div{:id => "div_group_import_#{a["id"]}"}
                   - unless gps.nil? or gps.empty?
                     .all_students_to_import

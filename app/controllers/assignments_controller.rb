@@ -444,7 +444,7 @@ class AssignmentsController < ApplicationController
   def import_groups
     import_to_assignment_id   = params[:id] # para qual atividade os grupos serão importados
     import_from_assignment_id = params[:assignment_id_import_from] # de qual atividade os grupos serão importados
-    groups_to_import          = GroupAssignment.find_all_by_assignment_id(import_from_assignment_id) # grupos a serem importados
+    groups_to_import          = GroupAssignment.all_by_assignment_id(import_from_assignment_id) # grupos a serem importados
 
     begin 
       # verifica período para envio do arquivo

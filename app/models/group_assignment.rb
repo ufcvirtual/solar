@@ -36,4 +36,11 @@ class GroupAssignment < ActiveRecord::Base
     return (sent_assignment.nil? or (sent_assignment.assignment_files.empty? and sent_assignment.grade.nil?))
   end
 
+  ##
+  # Recupera pelo assignment
+  ##
+  def self.all_by_assignment_id(assignment_id)
+    joins(:academic_allocation).where(academic_allocations: {academic_tool_id: assignment_id})
+  end
+
 end
