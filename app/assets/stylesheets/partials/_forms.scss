@@ -131,6 +131,11 @@ select[disabled] {
   background-color: #F2F2F2;
 }
 
+.radio_options label{ // TODO: usado apenas em editions
+  width: auto;
+  margin: 5px;
+}
+
 /**
 * Posicionando botões do form
 */

@@ -75,7 +75,8 @@ h3 {
 */
 a, a.menor, a.link_content {
   text-decoration: none;
-  color: #222;
+  //color: #222;
+  color: $color_main_text;
 }
 
 a.link_content, .forum_post_attachment_list a {

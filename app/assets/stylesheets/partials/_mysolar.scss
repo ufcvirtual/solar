@@ -403,8 +403,11 @@ a.mysolar_top_link {
   font-size: 10pt;
   border-top-color: $color_contrast;
   background-color: $color_contrast_light; /* alternativa: f5f8fb */
-}
 
-.submenu > li {
-  padding: 5px 0;
+  > li {
+    padding: 5px 0;
+  }
+  a {
+    color: #222;
+  }
 }

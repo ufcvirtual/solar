@@ -6,10 +6,7 @@
 @import "modules/mixins";
 
 @import "reset";
-
 @import "base";
-
-@import "layout"; // TODO: terminar de dividr e remover depois
 
 @import "mysolar";
 @import "portlet";
@@ -18,16 +15,22 @@
 @import "buttons";
 @import "tables";
 @import "forms";
+@import "lightbox";
 
 @import "enrollment";
-@import "lightbox";
 @import "participants";
 @import "lesson";
+@import "lesson_files";
 @import "messages";
 @import "calendar";
 @import "forum";
 @import "portfolio";
 @import "schedule";
 @import "groups";
+@import "editions";
+@import "scores";
+@import "semesters";
+@import "allocations";
+@import "support_material";
 
 //@import "chat";

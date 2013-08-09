@@ -40,6 +40,37 @@ fieldset {
   color: gray;
 }
 
+.edition .filter .groups{
+  display: inline-block;
+  width: 300px;
+  margin: 5px;
+  margin-left:20px;
+}
+
+.edition #search{
+  margin-left: 415px;
+}
+
+.edition.block_content{
+  background-color: white;
+}
+
+.offer_groups_options {
+  overflow: hidden;
+}
+
+label[for="all"], .type_description {
+  color: $text_grey;
+}
+
+label[for="all"]{
+  font-size: 10pt;
+}
+
+.radio_options { // FIXME: nome genérico demais
+  float: left;
+}
+
 /**
 * Menu dropdown
 */
@@ -77,6 +108,11 @@ fieldset {
 
 #new_module {
   margin-bottom: 10px;
+}
+
+label[for^="group_group_id_"]{
+  color: white;
+  font-size: 10pt;
 }
 */
 
