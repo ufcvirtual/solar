@@ -150,7 +150,7 @@
 /* mensagem */
 .block_wrapper.messages {
 
-  .block_content{
+  .block_content, .block_white{
     padding: 5px;
     padding-right: 10px;
     border-bottom: solid 1px;
@@ -174,7 +174,7 @@
       }
     }
   }
-  &.block_white{
+  .block_white{
     background: white;
   }
 }
@@ -224,7 +224,7 @@
     font-size: $font_size;
   }
   .input{
-    width: 725px;
+    width: 705px;
   }
 }
 #newPostUploadPanel{
@@ -236,11 +236,16 @@
 }
 
 #div_new_message{
-  margin-right: 12px;
+  //margin-right: 12px;
 
   textarea{
     width: 100%;
   }
+}
+
+.message_new_action {
+  margin-top: 10px;
+  text-align: right;
 }
 
 .message_link_menu {
