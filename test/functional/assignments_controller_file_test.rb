@@ -26,14 +26,6 @@ class AssignmentsControllerTest < ActionController::TestCase
   # Público
   # => assignments_with_allocation_tag_test.rb
 
-  # Data
-  test "nao permitir upload de arquivo fora do prazo da atividade" do
-    sign_in(users(:aluno1))
-    post :upload_file, {:assignment_id => assignments(:a7), :file => fixture_file_upload('files/assignments/sent_assignment_files/teste5.txt', 'text/plain'), :type => "assignment"}
-    assert_response :redirect
-    assert_equal I18n.t(:date_range_expired, :scope => [:assignment, :notifications]), flash[:alert]
-  end
-
   # Perfil sem permissao
 
   # Aluno

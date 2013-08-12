@@ -591,6 +591,16 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   # Público
 
   #TESTES MIGRADOS  
+
+  # Data
+  test "nao permitir upload de arquivo fora do prazo da atividade" do
+    login(users(:aluno1))
+    get @quimica_tab
+    post upload_file_assignments_path, {:assignment_id => assignments(:a7).id, :file => fixture_file_upload('files/assignments/sent_assignment_files/teste5.txt', 'text/plain'), :type => "assignment"}
+    assert_response :redirect
+    assert_equal I18n.t(:date_range_expired, :scope => [:assignment, :notifications]), flash[:alert]
+  end
+
   # Perfil com permissao e usuario sem acesso
 
   # Comentario
