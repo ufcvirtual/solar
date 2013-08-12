@@ -138,7 +138,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def user_can_access_assignment(allocation_tag, current_user_id, user_id, group_id = nil)
-    student_of_class  = !allocations.where(:profile_id => Profile.student_profile).where(:user_id => current_user_id).empty?
+    student_of_class  = !allocations.where(profile_id: Profile.student_profile).where(:user_id => current_user_id).empty?
     class_responsible = allocation_tag.is_user_class_responsible?(current_user_id)
     can_access = (user_id.to_i == current_user_id)
 
