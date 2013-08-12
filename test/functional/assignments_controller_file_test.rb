@@ -58,22 +58,6 @@ class AssignmentsControllerTest < ActionController::TestCase
     # assert_response :success
   # end
 
-    
-  test "nao permitir fazer download de arquivos de comentario para usuario com permissao e sem acesso - atividade em grupo" do
-    sign_in(users(:tutor_distancia))
-    assert_difference('CommentFile.count', +1) do
-      comment_files = [fixture_file_upload('files/assignments/comment_files/teste2.txt', 'text/plain')]
-      post :send_comment, {:comment_id => assignment_comments(:ac4), :id => assignments(:a11).id, :comment_files => comment_files, :student_id => users(:aluno3).id, :comment => "comentario"}
-    end
-    comment_file = CommentFile.find_by_assignment_comment_id_and_attachment_file_name(assignment_comments(:ac4).id, "teste2.txt")
-    sign_out(users(:tutor_distancia))
-
-    sign_in(users(:aluno1))
-    get(:download_files, {:assignment_id => assignments(:a11).id, :file_id => comment_file.id, :type => 'comment'})
-    assert_redirected_to(home_path)
-    assert_equal I18n.t(:no_permission), flash[:alert]
-  end
-
   # Publico
   # => assignments_with_allocation_tag_test.rb
 

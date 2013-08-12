@@ -591,6 +591,23 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t(:date_range_expired, :scope => [:assignment, :notifications]), flash[:alert]
   end
 
+    test "nao permitir fazer download de arquivos de comentario para usuario com permissao e sem acesso - atividade em grupo" do
+    login(users(:tutor_distancia))
+    get @quimica_tab
+    assert_difference('CommentFile.count', +1) do
+      comment_files = [fixture_file_upload('files/assignments/comment_files/teste2.txt', content_type: 'text/plain')]
+      post send_comment_assignment_path(assignments(:a11).id), {:comment_files => comment_files, :group_id => 1, :comment => "comentario"}
+    end
+
+    comment_file = CommentFile.first
+    
+    login(users(:aluno1))
+    get @quimica_tab
+    get(download_files_assignments_path, {:assignment_id => assignments(:a11).id, :file_id => comment_file.id, :type => 'comment'})
+    assert_redirected_to(home_path)
+    assert_equal I18n.t(:no_permission), flash[:alert]
+  end
+
   # Perfil com permissao e usuario sem acesso
 
   # Comentario
