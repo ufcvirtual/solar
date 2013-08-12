@@ -98,3 +98,10 @@ a14:
   enunciation: esta é uma atividade individual
   schedule_id: 27 #prazo em aberto
   type_assignment: 0 #individual
+
+a15:
+  id: 15
+  name: Atividade individual VIII
+  enunciation: esta é uma atividade individual
+  schedule_id: 17 #prazo concluido
+  type_assignment: 0 #individual

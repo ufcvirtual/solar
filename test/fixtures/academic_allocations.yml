@@ -96,3 +96,9 @@ acaal16:
   allocation_tag_id: 3
   academic_tool_id: 10
   academic_tool_type: "Assignment"
+
+acaal17:
+  id: 17
+  allocation_tag_id: 8
+  academic_tool_id: 15
+  academic_tool_type: "Assignment"
