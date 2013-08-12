@@ -307,7 +307,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao exibir informacoes da atividade individual para usuario sem permissao" do
     login users(:aluno1)
     get @quimica_tab
-    get information_assignment_path :id => assignments(:a9).id
+    get information_assignment_path(assignments(:a9))
     assert_response :redirect
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
@@ -317,27 +317,17 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao exibir informacoes da atividade em grupo para usuario sem permissao" do
     login users(:aluno1)
     get @quimica_tab
-    get information_assignment_path :id => assignments(:a6).id
+    get information_assignment_path(assignments(:a6))
     assert_response :redirect
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
   end
 
   # Perfil com permissao e usuario sem acesso a atividade
-  test "nao exibir informacoes da atividade individual para usuario com permissao e sem acesso" do
+  test "nao exibir informacoes da atividade para usuario com permissao e sem acesso" do
     login users(:professor)
     get @quimica_tab
-    get information_assignment_path :id => assignments(:a10).id
-    assert_response :redirect
-    assert_redirected_to(home_path)
-    assert_equal I18n.t(:no_permission), flash[:alert]
-  end
-
-  # Perfil com permissao e usuario sem acesso a atividade
-  test "nao exibir informacoes da atividade em grupo para usuario com permissao e sem acesso" do
-    login users(:professor)
-    get @quimica_tab
-    get information_assignment_path :id => assignments(:a11).id
+    get information_assignment_path(assignments(:a12))
     assert_response :redirect
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
@@ -396,7 +386,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao exibir pagina de avaliacao da atividade em grupo para usuario com permissao e sem acesso" do
     login users(:aluno3)
     get @quimica_tab
-    get assignment_path :id => assignments(:a6).id, :student_id => users(:aluno2).id, :group_id => group_assignments(:ga6).id
+    get assignment_path id: assignments(:a6).id, student_id: users(:aluno2).id, group_id: group_assignments(:ga6).id
     assert_response :redirect
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
@@ -410,7 +400,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "permitir avaliar atividade individual para usuario com permissao" do
     login users(:professor)
     get @quimica_tab
-    post evaluate_assignment_path :id => assignments(:a9).id, :student_id => users(:aluno1).id, :grade => 7
+    post evaluate_assignment_path id: assignments(:a9).id, student_id: users(:aluno1).id, grade: 7
     assert_response :success
     assert_template :evaluate_assignment_div
   end
@@ -419,15 +409,15 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao permitir avaliar atividade individual para usuario com permissao e atividade fora do periodo" do
     login users(:professor)
     get @quimica_tab
-    post evaluate_assignment_path :id => assignments(:a14).id, :student_id => users(:aluno1).id, :grade => 7
-    assert (SentAssignment.find_by_academic_allocation_id_and_user_id(academic_allocations(:acaal12).id, users(:aluno1).id).grade != 7) # não realizou mudança
+    post evaluate_assignment_path id: assignments(:a14).id, student_id: users(:aluno1).id, grade: 7
+    assert (SentAssignment.find_by_academic_allocation_id_and_user_id(academic_allocations(:acaal1).id, users(:aluno1).id).grade != 7) # não realizou mudança
   end
 
   # Perfil com permissao e usuario sem acesso
   test "nao permitir avaliar atividade individual para usuario com permissao e sem acesso" do
     login users(:professor)
-    get @quimica_tab
-    post evaluate_assignment_path :id => assignments(:a10).id, :student_id => users(:aluno1).id, :grade => 7
+    get @literatura_brasileira_tab
+    post evaluate_assignment_path id: assignments(:a14).id, student_id: users(:aluno1).id, grade: 7
     assert_response :redirect
     assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
@@ -437,7 +427,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao permitir avaliar atividade individual para usuario sem permissao e com acesso" do
     login users(:aluno1)
     get @quimica_tab
-    post evaluate_assignment_path :id => assignments(:a9).id, :student_id => users(:aluno1).id, :grade => 10
+    post evaluate_assignment_path id: assignments(:a9).id, student_id: users(:aluno1).id, grade: 10
     assert_response :redirect
     assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
@@ -467,16 +457,16 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     get @quimica_tab
     assert_no_difference("CommentFile.count") do
       comment_files = [fixture_file_upload('files/assignments/comment_files/teste1.txt', 'text/plain')]
-      post send_comment_assignment_path(assignments(:a14).id), {:student_id => users(:aluno1).id, :comment => "comentario8", :comment_files => comment_files}
+      post send_comment_assignment_path(assignments(:a15).id), {:student_id => users(:aluno1).id, :comment => "comentario8", :comment_files => comment_files}
     end
   end
 
   # Perfil com permissao e usuario sem acesso
   test "nao permitir comentar em atividade individual para usuario com permissao e sem acesso" do
     login users(:professor)
-    get @quimica_tab
+    get @literatura_brasileira_tab
     assert_no_difference("AssignmentComment.count") do
-      post send_comment_assignment_path(assignments(:a10).id), {:student_id => users(:aluno1).id, :comment => "comentario9"}
+      post send_comment_assignment_path(assignments(:a14).id), {:student_id => users(:aluno1).id, :comment => "comentario9"}
     end
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
@@ -932,7 +922,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   # Perfil com permissao e usuario sem acesso a atividade
   test 'nao permitir o gerenciamento de grupos para usuario com permissao e sem acesso' do
     login users(:professor)
-    get @quimica_tab
+    get @literatura_brasileira_tab
     groups_hash = {"0"=>{"group_id"=>group_assignments(:ga7).id, "group_name"=>"grupo 1", "student_ids"=>"7 8"}, "1"=>{"group_id"=>"0", "group_name"=>"grupo 2", "student_ids"=>"9"}}
     post(manage_groups_assignment_path(assignments(:a12)), {groups: groups_hash})
     assert_redirected_to(home_path)
@@ -954,6 +944,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   # Perfil sem permissao e usuario com acesso a atividade
   test 'nao permitir o gerenciamento de grupos para usuario sem permissao e com acesso' do
     login users(:aluno3)
+    get @quimica_tab
     groups_hash = {"0"=>{"group_id"=>group_assignments(:ga7).id, "group_name"=>"grupo 1", "student_ids"=>"7 8"}, "1"=>{"group_id"=>"0", "group_name"=>"grupo 2", "student_ids"=>"9"}}
     post(manage_groups_assignment_path(assignments(:a11)), {groups: groups_hash})
     assert_redirected_to(home_path)
@@ -972,13 +963,6 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
      } #logo, verifica se ele realmente não foi adicionado ao grupo (validação da permissão)
   end 
 
-
-
-
-
-
-
-
   ##
   # Import_groups_page
   # => assignments_with_allocation_tag_test.rb
@@ -986,31 +970,34 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
 
   ##
   # Import_groups
-  # ##
+  ##
 
-  # # Perfil com permissao e usuario com acesso a atividade
-  # test 'permitir a importacao de grupos entre atividades para usuario com permissao' do
-  #   login users(:professor)
-  #   post(import_groups_assignment_path(assignments(:a6)), {assignment_id_import_from: assignments(:a5).id})   
-  #   assert_redirected_to(information_assignment_path(assignments(:a6)))
-  #   assert_equal(flash[:notice], I18n.t(:import_success, :scope => [:assignment, :import_groups]))
-  # end
+  # Perfil com permissao e usuario com acesso a atividade
+  test 'permitir a importacao de grupos entre atividades para usuario com permissao' do
+    login users(:professor)
+    get @quimica_tab
+    post(import_groups_assignment_path(assignments(:a6)), {assignment_id_import_from: assignments(:a5).id})   
+    assert_redirected_to(information_assignment_path(assignments(:a6)))
+    assert_equal(flash[:notice], I18n.t(:import_success, :scope => [:assignment, :import_groups]))
+  end
 
-  # # Perfil com permissao e usuario sem acesso a atividade
-  # test 'nao permitir a importacao de grupos entre atividades para usuario com permissao e sem acesso' do
-  #   login users(:professor)
-  #   post(import_groups_assignment_path(assignments(:a12)), {assignment_id_import_from: assignments(:a12).id})   
-  #   assert_redirected_to(home_path)
-  #   assert_equal( flash[:alert], I18n.t(:no_permission) )
-  # end
+  # Perfil com permissao e usuario sem acesso a atividade
+  test 'nao permitir a importacao de grupos entre atividades para usuario com permissao e sem acesso' do
+    login users(:professor)
+    get @literatura_brasileira_tab
+    post(import_groups_assignment_path(assignments(:a12)), {assignment_id_import_from: assignments(:a12).id})   
+    assert_redirected_to(home_path)
+    assert_equal( flash[:alert], I18n.t(:no_permission) )
+  end
 
-  # # Perfil sem permissao e usuario com acesso a atividade
-  # test 'nao permitir a importacao de grupos entre atividades para usuario sem permissao' do
-  #   login users(:aluno3)
-  #   post(import_groups_assignment_path(assignments(:a11)), {assignment_id_import_from: assignments(:a12).id})   
-  #   assert_redirected_to(home_path)
-  #   assert_equal( flash[:alert], I18n.t(:no_permission) )
-  # end
+  # Perfil sem permissao e usuario com acesso a atividade
+  test 'nao permitir a importacao de grupos entre atividades para usuario sem permissao' do
+    login users(:aluno3)
+    get @literatura_brasileira_tab
+    post(import_groups_assignment_path(assignments(:a11)), {assignment_id_import_from: assignments(:a12).id})   
+    assert_redirected_to(home_path)
+    assert_equal( flash[:alert], I18n.t(:no_permission) )
+  end
 
 
 

@@ -29,3 +29,8 @@ sa6:
   id: 6
   academic_allocation_id: 10 #quimica I - Atividade individual VII - al7: atividade concluída
   user_id: 7
+
+sa7:
+  id: 7
+  academic_allocation_id: 1 # Letras Portugues - Teoria da Literatura I - TL-CAU - Atividade individual VII - al:2
+  user_id: 7
