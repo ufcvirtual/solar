@@ -271,7 +271,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   #   assert_equal I18n.t(:no_permission), flash[:alert]
   # end
 
-    ##
+  ##
   # Information
   ##
 
@@ -586,6 +586,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     get assignment_path(assignments(:a9).id), {:student_id => users(:aluno1).id}
     assert_template :show
     assert_tag :tag => "table", :attributes => { :class => "assignment_comment tb_comment_#{assignment_comments(:ac2).id} tb_comments" }
+  end
 
   # Público
 
@@ -903,6 +904,121 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     # assert_equal( flash[:alert], I18n.t(:no_permission) ) #tá recebendo em inglês e tá esperando em português
   end
+
+  ##
+  # Manage_groups
+  ##
+
+  # Perfil com permissao e usuario com acesso a atividade
+  test 'permitir a gerenciamento de grupos para usuario com permissao' do
+    login users(:professor)
+    get @quimica_tab
+    groups_hash = {"0"=>{"group_id"=>group_assignments(:ga6).id, "group_name"=>"grupo 1", "student_ids"=>"7 8"}, "1"=>{"group_id"=>"0", "group_name"=>"grupo 2", "student_ids"=>"9"}}
+    post(manage_groups_assignment_path(assignments(:a6)), {groups: groups_hash})
+    assert_response :success
+    assert_template :group_assignment_content_div
+    assert_tag :tag => "div", 
+      :attributes => { :id => "group_#{group_assignments(:ga6).id}" },
+      :child => { 
+        :tag => "ul",
+        :child => {
+          :tag => "li", :attributes => {:class => "student_#{users(:aluno2).id}"} 
+        } #o aluno1 já existia no grupo, foi adicionado o aluno 2.
+     } #logo, verifica se ele foi adicionado ao grupo (validação do método)
+    #após ajax
+    # assert_equal(flash[:notice], I18n.t(:management_success, :scope => [:assignment, :group_assignments]))
+  end
+
+  # Perfil com permissao e usuario sem acesso a atividade
+  test 'nao permitir o gerenciamento de grupos para usuario com permissao e sem acesso' do
+    login users(:professor)
+    get @quimica_tab
+    groups_hash = {"0"=>{"group_id"=>group_assignments(:ga7).id, "group_name"=>"grupo 1", "student_ids"=>"7 8"}, "1"=>{"group_id"=>"0", "group_name"=>"grupo 2", "student_ids"=>"9"}}
+    post(manage_groups_assignment_path(assignments(:a12)), {groups: groups_hash})
+    assert_redirected_to(home_path)
+    assert_equal( flash[:alert], I18n.t(:no_permission) )
+
+    # não está dando sign out
+    login users(:tutor_presencial)
+    get(information_assignment_path(assignments(:a6)))  
+    assert_no_tag :tag => "div", 
+      :attributes => { :id => "group_#{group_assignments(:ga6).id}" },
+      :child => { 
+        :tag => "ul",
+        :child => {
+          :tag => "li", :attributes => {:class => "student_#{users(:aluno2).id}"} 
+        } #o aluno1 já existia no grupo, foi tentado adicionar o aluno 2.
+     } #logo, verifica se ele realmente não foi adicionado ao grupo (validação da permissão)
+  end
+
+  # Perfil sem permissao e usuario com acesso a atividade
+  test 'nao permitir o gerenciamento de grupos para usuario sem permissao e com acesso' do
+    login users(:aluno3)
+    groups_hash = {"0"=>{"group_id"=>group_assignments(:ga7).id, "group_name"=>"grupo 1", "student_ids"=>"7 8"}, "1"=>{"group_id"=>"0", "group_name"=>"grupo 2", "student_ids"=>"9"}}
+    post(manage_groups_assignment_path(assignments(:a11)), {groups: groups_hash})
+    assert_redirected_to(home_path)
+    assert_equal( flash[:alert], I18n.t(:no_permission) )
+
+    # não está dando sign out
+    login users(:professor)
+    get information_assignment_path(assignments(:a11))
+    assert_no_tag :tag => "div", 
+      :attributes => { :id => "group_#{group_assignments(:ga6).id}" },
+      :child => { 
+        :tag => "ul",
+        :child => {
+          :tag => "li", :attributes => {:class => "student_#{users(:aluno2).id}"} 
+        } #o aluno1 já existia no grupo, foi tentado adicionar o aluno 2.
+     } #logo, verifica se ele realmente não foi adicionado ao grupo (validação da permissão)
+  end 
+
+
+
+
+
+
+
+
+  ##
+  # Import_groups_page
+  # => assignments_with_allocation_tag_test.rb
+  ##
+
+  ##
+  # Import_groups
+  # ##
+
+  # # Perfil com permissao e usuario com acesso a atividade
+  # test 'permitir a importacao de grupos entre atividades para usuario com permissao' do
+  #   login users(:professor)
+  #   post(import_groups_assignment_path(assignments(:a6)), {assignment_id_import_from: assignments(:a5).id})   
+  #   assert_redirected_to(information_assignment_path(assignments(:a6)))
+  #   assert_equal(flash[:notice], I18n.t(:import_success, :scope => [:assignment, :import_groups]))
+  # end
+
+  # # Perfil com permissao e usuario sem acesso a atividade
+  # test 'nao permitir a importacao de grupos entre atividades para usuario com permissao e sem acesso' do
+  #   login users(:professor)
+  #   post(import_groups_assignment_path(assignments(:a12)), {assignment_id_import_from: assignments(:a12).id})   
+  #   assert_redirected_to(home_path)
+  #   assert_equal( flash[:alert], I18n.t(:no_permission) )
+  # end
+
+  # # Perfil sem permissao e usuario com acesso a atividade
+  # test 'nao permitir a importacao de grupos entre atividades para usuario sem permissao' do
+  #   login users(:aluno3)
+  #   post(import_groups_assignment_path(assignments(:a11)), {assignment_id_import_from: assignments(:a12).id})   
+  #   assert_redirected_to(home_path)
+  #   assert_equal( flash[:alert], I18n.t(:no_permission) )
+  # end
+
+
+
+
+
+
+
+
 
 
 end
