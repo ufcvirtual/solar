@@ -1,3 +1,5 @@
+= javascript_include_tag "tooltip"
+
 .block_wrapper
 
   .block_title
@@ -8,9 +10,9 @@
         = content_tag(:i, nil, class: 'icon-plus-3')
     .block_toolbar_right
       = check_box_tag :all_groups, false, false, class: 'btn', :'data-tooltip' => t(".all"), :"data-children-names" => "ckb_group", disabled: (@groups.empty?)
-      = link_to (content_tag(:i, nil, :class=>'icon-checkmark')), "#", class: 'btn disable_group', :'data-tooltip' => t(".disable"), :"data-link-status" => group_path(id: ':id', status: false, multiple: true)
-      = link_to (content_tag(:i, nil, :class=>'icon-checkmark')), "#", class: 'btn enable_group', :'data-tooltip' => t(".enable"), :"data-link-status" => group_path(id: ':id', status: true, multiple: true)
-      = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn delete_group', :'data-tooltip' => t(".delete"), :"data-link-delete" => group_path(id: ':id')
+      = link_to (content_tag(:i, nil, class: 'icon-checkmark-outline')), "#", class: 'btn disable_group', :'data-tooltip' => t(".disable"), :"data-link-status" => group_path(id: ':id', status: false, multiple: true)
+      = link_to (content_tag(:i, nil, class: 'icon-checkmark-2')), "#", class: 'btn enable_group', :'data-tooltip' => t(".enable"), :"data-link-status" => group_path(id: ':id', status: true, multiple: true)
+      = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn delete_group', :'data-tooltip' => t(".delete"), :"data-link-delete" => group_path(id: ':id')
 
   - part1, part2 = @groups.in_groups(2, false)
 
@@ -106,7 +108,14 @@
       var group_status = $(this);
 
       $.put($(this).data('link-status'), function(data) {
-        group_status.children('i').toggleClass('icon-checkmark').toggleClass('icon-edit');
+        var status_icon = group_status.children('i');
+        status_icon.toggleClass('icon-checkmark-2').toggleClass('icon-checkmark-outline');
+        if(status_icon.hasClass("icon-checkmark-2"))
+          group_status.attr("data-tooltip", "#{t(".disable")}");
+        else
+          group_status.attr("data-tooltip", "#{t(".enable")}");
+
+        console.log(group_status.attr("data-tooltip"));
       }).error(result_error);
     });
 
