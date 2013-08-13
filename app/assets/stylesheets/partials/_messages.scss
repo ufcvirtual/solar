@@ -152,13 +152,9 @@
 
   .block_content, .block_white{
     padding: 5px;
-    padding-right: 10px;
+    padding-right: 5px;
     border-bottom: solid 1px;
     border-bottom-color: $border;
-
-    .btn{
-      margin-right: -5px;
-    }
 
     ul.message_menu_listbox li ul {
       width: 100px;
@@ -180,7 +176,7 @@
 }
 
 .block_content.messages{
-  padding: 5px 5px 5px 0px;
+  padding: 5px 10px 5px 5px;
   border-bottom: solid 1px $border;
 
   .btn{
