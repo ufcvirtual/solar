@@ -33,6 +33,7 @@ Solar::Application.routes.draw do
   resources :curriculum_units do
     collection do 
       get :list
+      get :mobilis_list
       get :list_informations
       get :list_participants
       get :list_combobox, to: :index, combobox: true, as: :list_combobox
