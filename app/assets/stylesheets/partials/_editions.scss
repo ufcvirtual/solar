@@ -57,6 +57,10 @@ fieldset {
 
 .offer_groups_options {
   overflow: hidden;
+
+  .collection_check_boxes {
+    color: white;
+  }
 }
 
 label[for="all"], .type_description {

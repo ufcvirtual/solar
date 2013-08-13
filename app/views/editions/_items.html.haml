@@ -37,7 +37,7 @@
       - if (can? :list, Discussion, :on => @allocation_tags_ids)  #and (@selected_offer or @selected_group)
         .uc_item
           .discussion{:"data-link" => list_discussions_path(allocation_tags_ids: @allocation_tags_ids)}
-            = link_to(content_tag(:i, nil, :class=>'icon-forum big'), "#", :class=>'btn')
+            = link_to(content_tag(:i, nil, :class=>'icon-people big'), "#", :class=>'btn')
             = link_to t(".discussion"), "#"
 
       / - if (can? :lista_de_chat, Chat, :on => @allocation_tags_ids) and (@selected_...)
@@ -49,7 +49,7 @@
       / - if (can? :lista_de_videoconference, Videoconference, :on => @allocation_tags_ids) and (@selected_...)
       .uc_item
         .videoconference
-          = link_to(content_tag(:i, nil, :class=>'icon-screen big'), "#", :class=>'btn disabled', :onclick => "javascript:alert('#{t(".in_development")}');")
+          = link_to(content_tag(:i, nil, :class=>'icon-video-conference big'), "#", :class=>'btn disabled', :onclick => "javascript:alert('#{t(".in_development")}');")
           = link_to t(".videoconference"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
 
   %fieldset#uc_education

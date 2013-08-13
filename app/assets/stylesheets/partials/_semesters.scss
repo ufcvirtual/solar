@@ -17,17 +17,20 @@
   color: $label_color;
 }
 
-[class*="_check_box"] { // TODO: usado em offers e semesters
-  margin-left: 135px;
-  text-align: left;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  color: $label_color;
-}
+.new_semester, .new_offer {
 
-.end_date_check_box { // TODO: usado em offers e semesters
-  margin-top: 0px;
-  margin-bottom: 0px;
+  [class*="_check_box"] {
+    margin-left: 135px;
+    text-align: left;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: $label_color;
+  }
+
+  .end_date_check_box { // TODO: usado em offers e semesters
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
 }
 
 .offer_schedule_dates .error, .enrollment_schedule_dates .error { // TODO: usado em offers e semesters
