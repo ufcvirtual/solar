@@ -28,4 +28,14 @@ Solar::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
+
+  # Desabilitando compressão de assets
+  config.assets.enabled = true
+  config.assets.compress = false
+
+  # Habilitando debug_info do SASS, permitindo uma análise mais fácil através do FireSASS
+  config.sass.line_comments = false
+  config.sass.cache = false
+  config.sass.debug_info = true
+
 end
