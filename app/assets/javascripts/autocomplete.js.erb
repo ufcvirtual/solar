@@ -85,17 +85,18 @@
                text: false
             })
             .addClass( "ui-combobox-button arrow_icon" )
-            .removeClass("ui-widget");
+            .removeClass("ui-widget")
+            .attr("title", "<%= I18n.t(:all_options, scope: [:autocomplete]) %>" );
 
 
          // Our items have HTML tags.  The default rendering uses text()
          // to set the content of the <a> tag.  We need html().
+
+
          input.data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-
-               return $( "<li>" )
-                           .append( $( "<a>" ).html( item.label ) )
-                           .appendTo( ul );
-
+            return $( "<li>" )
+             .append( $( "<a>" ).html( item.label ) )
+             .appendTo( ul );
             };
 
          this._on( this._events );
@@ -106,6 +107,7 @@
 
          var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), 'i' );
          response( this.element.children('option').map(function() {
+
 
                   var text = $( this ).text();
 
@@ -124,6 +126,7 @@
                   }
               })
            );
+
       },
 
       _events: {
@@ -170,13 +173,22 @@
 
             this.uiCombo.children('.ui-autocomplete')
                .outerWidth(this.uiCombo.outerWidth(true));
+
          },
 
          "mousedown .ui-combobox-button" : function ( event ) {
+
             this._wasOpen = this.uiInput.autocomplete("widget").is(":visible");
+
          },
 
          "click .ui-combobox-button" : function( event ) {
+
+            // se não houver opções, exibe mensagem
+            if (this.element[0].length <= 1)
+              flash_message("<%= I18n.t(:no_options, scope: [:autocomplete]) %>", 'alert');
+            else
+              erase_flash_messages();
 
             this.uiInput.focus();
 

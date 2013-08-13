@@ -1381,6 +1381,11 @@
     index:
       filter_selected: "Selected: "
 
+  #Autocomplete
+  autocomplete:
+    no_options: There's no option to the selected values
+    all_options: All options
+
   #Tutoriais
   tutorial_next: Next
   tutorial_previous: Previous

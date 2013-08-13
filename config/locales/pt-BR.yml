@@ -1548,6 +1548,12 @@
     index:
       filter_selected: "Selecionado: "
 
+  #Autocomplete
+
+  autocomplete:
+    no_options: Não há opções para os valores selecionados
+    all_options: Todas as opções
+
   #Tutoriais
   tutorial_next: Próximo
   tutorial_previous: Anterior
