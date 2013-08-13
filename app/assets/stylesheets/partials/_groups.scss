@@ -189,9 +189,15 @@
 }
 
 .groups_list {
+
+  .block_content.groups {
+    overflow: hidden;
+  }
+
   .block_left, .block_right {
     padding: 0;
     width: 49.7%;
+    float: left;
   }
 }
 
