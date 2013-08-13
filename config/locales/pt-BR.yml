@@ -542,6 +542,8 @@
 
   # página de matrícula"
   enrollments:
+    all: Todos
+    enrolled: Matriculados
     index:
       search: "Buscar"
       search_in: " em "

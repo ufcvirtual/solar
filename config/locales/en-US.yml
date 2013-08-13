@@ -378,6 +378,8 @@
 
   # página de matrícula"
   enrollments:
+    all: All
+    enrolled: Enrolled
     index:
       search: Search
       search_in: " in "
