@@ -9,15 +9,20 @@
       .input.align-right= text_field_tag  'subject', @subject, :class=> "message_new_textbox"
     .clearfix
     .message_new_upload
-      - unless @files.nil?
-        - @files.each do |f|
-          = image_tag("message_file.png",:alt=>t(:message_attach))+f.message_file_name
-          %br/
+
       #newPostUploadPanel
         .label.align-left
           Anexar
-        %button#link_upload.btn.btn_default{"data-tooltip" => t(:message_attach_file), :onclick => "appendFileField(); return false"}
+        %button#link_upload.btn.btn_default{"data-tooltip" => t(:message_attach_file), :onclick => "appendFileField(); return false;"}
           %i.icon-paperclip
+
+      - unless @files.nil?
+        - @files.each do |file|
+          .file_attached{:"data-file-id" => file.id}
+            %input{name: "files[]", value: file.id, type: "hidden"}
+            = image_tag("message_file.png",:alt=>t(:message_attach)) + file.message_file_name
+            %i.icon-paperclip.remove_file
+
 #div_contacts{:style => "display:none"}
   - if !@curriculum_units_user.nil?
     %select#curriculum_unit_select{:style => "width:440px"}
@@ -42,6 +47,10 @@
 :javascript
 
   $(function($) {
+
+    $(".remove_file").click(function(){
+      $(this).parents(".file_attached").fadeOut("slow", function(){ $(this).remove(); });
+    });
 
     $("#curriculum_unit_select").change(function() {
       var url_for = "#{url_for(:controller => :messages, :action => :ajax_get_contacts)}";

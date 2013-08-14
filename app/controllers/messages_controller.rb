@@ -60,9 +60,9 @@ class MessagesController < ApplicationController
         else
           # respondendo
           @subject = t(:message_subject_reply) << @subject
-
           # so adiciona usuarios diferentes do logado (nao manda msg pra si, a menos q escolhar abertamente depois)
-          @target = sender.name << ' [' << sender.email << '], ' unless sender.id == current_user.id
+          @target = "#{sender.name} [#{sender.email}], " unless sender.id == current_user.id
+
           target_jquery = "'#u#{sender.id}'"
           @target_html = "<span onclick=""$(#{target_jquery}).show();$(this).remove()"" class='message_recipient_box' >#{@target}</span>" unless sender.id == current_user.id
 
@@ -124,7 +124,9 @@ class MessagesController < ApplicationController
 
             # verifica permissao na mensagem original
             if has_permission(original_message_id)
-              files = Message.find(original_message_id).files
+
+              files = (params[:files].nil? or params[:files].empty?) ? [] : Message.find(original_message_id).files.where(id: params[:files])
+
               unless files.nil?
                 files.each do |f|
                   message_file = MessageFile.create({

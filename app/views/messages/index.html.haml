@@ -4,7 +4,7 @@
 
   .block_white
     .align-left.padding-checkbox
-      %input#ckb_all{type: "checkbox"}
+      %input#ckb_all{type: "checkbox", :"data-children-names" => "checkbox_message"}
       %ul.message_menu_listbox
         %li
           %a{href: "#"}
@@ -63,13 +63,7 @@
   $(function(){
     message_menu_dropdown();
 
-    $('#ckb_all').click(function(){
-      var c = this.checked;
-      var parents_not_fade = $('[type=checkbox].selected_messages').parents('tr').not('.fade');
-      $('[type=checkbox].selected_messages', parents_not_fade).each(function(){
-        this.checked = c;
-      });
-    });
+    $('#ckb_all').nice_checkbox();
 
     $('div#mark_as_read, div#mark_as_unread, div#remove_message, div#restore_message').click(function(){
       var message_ids = selected_messages();

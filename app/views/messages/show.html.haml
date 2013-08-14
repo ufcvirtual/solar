@@ -3,11 +3,11 @@
     %h2= @message.subject
   .block_content.messages
     .align-left
-      = link_to ({action: 'new', id: @message.id, target: 'sender'}), class: 'btn btn_main', :'data-tooltip' => t(:message_reply) do
+      = link_to new_message_path(id: @message.id, target: "sender"), class: 'btn btn_main', :'data-tooltip' => t(:message_reply) do
         %i.icon-reply
-      = link_to ({action: 'new', id: @message.id, target: 'all'}), class: 'btn', :'data-tooltip' => t(:message_reply_all) do
+      = link_to new_message_path(id: @message.id, target: "all"), class: 'btn', :'data-tooltip' => t(:message_reply_all) do
         %i.icon-reply-all
-      = link_to ({action: 'new', id: @message.id, target: ''}), class: 'btn', :'data-tooltip' => t(:message_route) do
+      = link_to new_message_path(id: @message.id), class: 'btn', :'data-tooltip' => t(:message_route) do
         %i.icon-forward
 
     .align-right
