@@ -111,11 +111,9 @@
         var status_icon = group_status.children('i');
         status_icon.toggleClass('icon-checkmark-2').toggleClass('icon-checkmark-outline');
         if(status_icon.hasClass("icon-checkmark-2"))
-          group_status.attr("data-tooltip", "#{t(".disable")}");
+          $(group_status).attr("data-tooltip", "#{t(".disable")}");
         else
-          group_status.attr("data-tooltip", "#{t(".enable")}");
-
-        console.log(group_status.attr("data-tooltip"));
+          $(group_status).attr("data-tooltip", "#{t(".enable")}");
       }).error(result_error);
     });
 
