@@ -276,12 +276,22 @@ $.fn.is_empty = function(){
 
 $.fn.nice_checkbox = function(options){
   $(this).click(function(){
-    var check = this.checked;
+    var icon = $('i', this);
+    $(icon).toggleClass('icon-checkbox-unchecked').toggleClass('icon-checkbox-checked');
+    if ( icon.prop('class') == 'icon-checkbox-unchecked' ) {
+      var check = false;
+    } else {
+      var check = true;
+    }
+//    var check = this.checked;
     var children_names = $(this).data("children-names");
 
     $('input[name="' + children_names + '"]').each(function(i){
       $(this).prop("checked", check);
     });
+
+    // habilita ou desabilita os botões da barra de ferramentas
+    $('.disable_group, .enable_group, .delete_group').toggleClass("disabled", !check);
   });
 
   if (typeof(options) != "undefined" && typeof(options.objects_to_change_status) != "undefined")
