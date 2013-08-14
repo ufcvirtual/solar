@@ -15,23 +15,30 @@
     .block_toolbar_left.btn-group
       %a.btn.btn_main{:'data-tooltip' => t(".new_#{tool_name}"), id: "btn_new_curriculum_unit", :type => :button, :"data-link-new" => new_curriculum_unit_path(type_id: @type.id)}
         = content_tag(:i, nil, class: 'icon-plus-3')
+    .block_toolbar_right
+      / = check_box_tag :all_groups, false, false, class: 'btn', :'data-tooltip' => t(".all"), :"data-children-names" => "ckb_group", disabled: (@groups.empty?)
+      = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_curriculum_unit', :'data-tooltip' => t(".delete", uc_or_module: t_tool_name), :"data-link-delete" => curriculum_unit_path(id: ':id')
 
   %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :style => "table-layout: fixed"}
     %thead
       %tr.lines
-        %th{:width => "12%"}= CurriculumUnit.human_attribute_name(:code) 
+        %th{:width => "12%"}
+          = check_box_tag :all_curriculum_unit, false, false, class: 'btn', :"data-children-names" => "ckb_curriculum_unit"
+          = CurriculumUnit.human_attribute_name(:code) 
         %th{:width => "38%"}= CurriculumUnit.human_attribute_name(:name)
         %th{:width => "28%"}= CurriculumUnit.human_attribute_name(:category)
         %th{:width => "12%"}
     %tbody
       - @curriculum_units.each do |curriculum_unit|
         %tr.lines
-          %td= curriculum_unit.code
+          %td
+            = check_box_tag :ckb_curriculum_unit, curriculum_unit.id
+            = curriculum_unit.code
           %td= curriculum_unit.name
           %td{:align => "left"}= curriculum_unit.curriculum_unit_type.description
-          %td
+          %td{:align => "right"}
+            / = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_caution delete_curriculum_unit', :"data-link-delete" => curriculum_unit_path(curriculum_unit), :'data-tooltip' => t(".delete", uc_or_module: t_tool_name), id: curriculum_unit.id, disabled: not(can? :destroy, curriculum_unit)
             = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit', :'data-tooltip' => t(".edit", uc_or_module: t_tool_name), :"data-link-edit" => edit_curriculum_unit_path(curriculum_unit), disabled: not(can? :update, curriculum_unit)
-            = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_caution delete_curriculum_unit', :"data-link-delete" => curriculum_unit_path(curriculum_unit), :'data-tooltip' => t(".delete", uc_or_module: t_tool_name), id: curriculum_unit.id, disabled: not(can? :destroy, curriculum_unit)
 
 :javascript
 
@@ -64,5 +71,24 @@
       });
 
     });
+
+
+    $('#all_groups').nice_checkbox({
+      objects_to_change_status: $('.disable_group, .enable_group, .delete_group')
+    });
+
+    $('input[name="ckb_group"]').change(function(){
+      var checked_ckb = $('[name="ckb_group"]:checked');
+      var disabled = checked_ckb.is_empty();
+
+      // habilita ou desabilita os botões da barra de ferramentas
+      $('.disable_group, .enable_group, .delete_group').toggleClass("disabled", disabled);
+
+      // seleciona ou não o checkbox de "todos"
+      $("#all_groups").prop('checked', (checked_ckb.length == $('[name="ckb_group"]').length));
+    });
+
+
+
   });
   

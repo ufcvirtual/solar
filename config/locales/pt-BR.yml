@@ -352,7 +352,7 @@
   all: "Todos"
   home: "Home"
   of: "de"
-  required_fields: "* campos obrigatórios"
+  required_fields: "* campo(s) obrigatório(s)"
   object_not_found: "Objeto não encontrado"
   search: "Filtrar"
 

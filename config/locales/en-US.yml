@@ -198,7 +198,7 @@
   all: "All"
   home: "Home"
   of: "Of"
-  required_fields: "* required fields"
+  required_fields: "* required field(s)"
   object_not_found: "Object not found"
   search: "Search"
 

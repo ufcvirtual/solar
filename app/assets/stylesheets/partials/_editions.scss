@@ -21,6 +21,18 @@ fieldset {
   }
 }
 
+.block_toolbar_left{
+  margin-left: 6px;
+}
+
+#semester-4{
+  margin-top: 10px;
+}
+
+.filter_type .ui-autocomplete, .filter .ui-autocomplete{
+  width: 306px !important;
+  }
+
 .uc_item,
 .academic_item {
   @include item_button;
@@ -45,6 +57,12 @@ fieldset {
   width: 300px;
   margin: 5px;
   margin-left:20px;
+}
+
+.edition p{
+  text-align: right;
+  color: #D5031C;
+  margin-bottom: 0;
 }
 
 .edition #search{
