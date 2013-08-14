@@ -8,12 +8,11 @@ class AllocationsController < ApplicationController
   # GET /allocations/designates
   # GET /allocations/designates.json
   def designates
-    # raise "#{params}"
     @allocation_tags_ids  = params[:allocation_tags_ids].split(" ")
 
     begin    
       # verifica permissao de acessar alocacao das allocation tags passadas
-      authorize! :designates, Allocation, :on => @allocation_tags_ids
+      authorize! :designates, Allocation, on: @allocation_tags_ids
       
       level        = (params[:permissions] != "all") ? "responsible" : nil
       level_search = level.nil? ? ("not(profiles.types & #{Profile_Type_Student})::boolean and not(profiles.types & #{Profile_Type_Basic})::boolean") : ("(profiles.types & #{Profile_Type_Class_Responsible})::boolean")
@@ -22,6 +21,8 @@ class AllocationsController < ApplicationController
         :joins => [:profile, :user], 
         :conditions => ["#{level_search} and allocation_tag_id IN (#{@allocation_tags_ids.join(",")}) "],
         :order => ["users.name", "profiles.name"]) 
+    rescue CanCan::AccessDenied
+      render json: {success: true, alert: t(:no_permission)}, status: :unprocessable_entity
     rescue
       respond_to do |format|
         format.html { render :nothing => true, :status => 500 }

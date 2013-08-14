@@ -1,4 +1,8 @@
 class Lesson < ActiveRecord::Base
+
+  include RelatedToGroup
+  include RelatedToOffer
+
   belongs_to :lesson_module
   belongs_to :user
   belongs_to :schedule
@@ -41,11 +45,7 @@ class Lesson < ActiveRecord::Base
 
   def url_protocol
     self.address = 'http://' + self.address if (self.address =~ URI::regexp(["ftp", "http", "https"])).nil? 
-  end
-
-  # def valid_url?
-  #    self.address.present? and (self.address.include? ".") and (self.address.index('.') !=0) and (self.address.index('.') != (self.address.size) - 1) 
-  # end  
+  end 
 
   def path(full = false, with_address = true)
     if type_lesson == Lesson_Type_File

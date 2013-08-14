@@ -36,6 +36,8 @@ class SupportMaterialFilesController < ApplicationController
       @support_material.save!
 
       render json: {success: true, notice: t(:created, scope: [:support_materials, :success])}
+    rescue CanCan::AccessDenied
+      render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
     rescue
       if @support_material.is_link?
         render :new

@@ -1,5 +1,8 @@
 class Allocation < ActiveRecord::Base
 
+  include RelatedToGroup
+  include RelatedToOffer
+
   belongs_to :allocation_tag
   belongs_to :user
   belongs_to :profile

@@ -1,5 +1,7 @@
 class Assignment < ActiveRecord::Base
 
+  include RelatedToGroup
+
   #Relações extras
   has_many :allocation_tags, through: :academic_allocations
   #EXTRAS

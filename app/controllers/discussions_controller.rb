@@ -1,9 +1,9 @@
 class DiscussionsController < ApplicationController
 
-  layout false, :except => :index # define todos os layouts do controller como falso
+  layout false, except: :index # define todos os layouts do controller como falso
 
-  authorize_resource :only => [:index]
-  load_and_authorize_resource :only => [:edit]
+  authorize_resource only: :index
+  load_and_authorize_resource only: :edit
 
   before_filter :prepare_for_group_selection, only: :index
 
@@ -49,6 +49,8 @@ class DiscussionsController < ApplicationController
       end
 
       render json: {success: true, notice: t(:created, scope: [:offers, :success])}
+    rescue CanCan::AccessDenied
+      render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
     rescue Exception => err
       error = []
       error << @schedule.errors.full_messages.join(', ') unless @schedule.errors.empty?

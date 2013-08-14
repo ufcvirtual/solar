@@ -6,6 +6,10 @@ class AssignmentsControllerTest < ActionController::TestCase
 
   fixtures :allocation_tags, :assignments, :group_assignments, :users, :sent_assignments
 
+  def setup
+    sign_in users(:editor)
+  end
+
   test "listar as atividiades de uma turma para usuario com permissao" do 
     sign_in users(:professor)
     get :professor
@@ -23,6 +27,18 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_equal( flash[:alert], I18n.t(:no_permission) )
   end
   
+
+  # #### TESTE PARA VALIDAR O MÓDULO: ASSIGNMENT SÓ PODE EM TURMA, NÃO PODE EM OFERTA ####
+  # ## quando o cadastro de assignment for concluído, favor descomentar o teste abaixo  ##
+  # test "nao cria trabalho para oferta" do
+  #   assert_no_difference(["Assignment.count", "Schedule.count"]) do
+  #     post :create, assignment: {name: "Testa módulo", enunciation: "Assignment para testar módulo", type_assignment: 0, schedule: {start_date: Date.today, end_date: Date.today + 1.month}}
+  #   end
+
+    
+  # end
+
+
 
   ##
   # Edicao

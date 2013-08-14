@@ -68,8 +68,9 @@ class AssignmentsController < ApplicationController
       end # transaction
 
       render nothing: true
+    rescue CanCan::AccessDenied
+      render json: {success: true, alert: t(:no_permission)}, status: :unprocessable_entity
     rescue Exception => error
-      # raise "#{error}"
       @allocation_tags_ids = params[:allocation_tags_ids].split(' ')
       @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
       render :new

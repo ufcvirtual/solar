@@ -1,4 +1,8 @@
 class SupportMaterialFile < ActiveRecord::Base
+
+  include RelatedToGroup
+  include RelatedToOffer
+
   has_one :allocation_tag
 
   before_save :url_protocol, if: :is_link?

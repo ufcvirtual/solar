@@ -4,81 +4,81 @@
     %legend= t(".information")
     .block_content.block_content_alt
 
-      / - if (can? :lista_de_bibliography, Bibliography, :on => @allocation_tags_ids) and (@selected_offer)
-      .uc_item
-        .bibliography
-          = link_to(content_tag(:i, nil, :class=>'icon-book big'), "#", :class=>'btn disabled', :onclick => "javascript:alert('#{t(".in_development")}');")
-          = link_to t(".bibliography"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
-        / .bibliography= link_to (image_tag "/assets/edition/bibliography.png", :alt => t(".edition_of", :of => t(".bibliography")), :class => 'btn'), "#"
-        / .bibliography
+      / - if (can? :lista_de_bibliography, Bibliography, :on => @allocation_tags_ids) and (@group ? Bibliography.constants.include?(:GROUP_PERMISSION) : Bibliography.constants.include?(:OFFER_PERMISSION))
+      - if (@group ? Bibliography.constants.include?(:GROUP_PERMISSION) : Bibliography.constants.include?(:OFFER_PERMISSION))
+        .uc_item
+          .bibliography
+            = link_to(content_tag(:i, nil, :class=>'icon-book big'), "#", :class=>'btn disabled', :onclick => "javascript:alert('#{t(".in_development")}');")
+            = link_to t(".bibliography"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
 
-      / - if (can? :lista_de_schedules, Schedule, :on => @allocation_tags_ids) and (@selected_offer)
+      / - if (can? :lista_de_schedules, Schedule, :on => @allocation_tags_ids) and (@group ? Schedule.constants.include?(:GROUP_PERMISSION) : Schedule.constants.include?(:OFFER_PERMISSION))
       .uc_item
         .schedule
-          = link_to(content_tag(:i, nil, :class=>'icon-calendar big'), "#", :class=>'btn disabled', :onclick => "javascript:alert('#{t(".in_development")}');")
-          = link_to t(".schedule"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
+          = link_to(content_tag(:i, nil, class: 'icon-calendar big'), "#", class: 'btn disabled', onclick: "javascript:alert('#{t(".in_development")}');")
+          = link_to t(".schedule"), "#", onclick: "javascript:alert('#{t(".in_development")}');"
 
-      - if (can? :designates, Allocation, :on => @allocation_tags_ids) #and #(@selected_offer or @selected_group or @selected_course)
+      - if (can? :designates, Allocation, on: @allocation_tags_ids) and (@group ? Allocation.constants.include?(:GROUP_PERMISSION) : Allocation.constants.include?(:OFFER_PERMISSION))
         .uc_item
           .allocation{:"data-link" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids)}
-            = link_to(content_tag(:i, nil, :class=>'icon-user-add big'), "#", :class=>'btn')
+            = link_to(content_tag(:i, nil, class: 'icon-user-add big'), "#", class: 'btn')
             = link_to t(".allocation"), "#"
 
-      / - if (can? :lista_de_warnings, Warning, :on => @allocation_tags_ids) and (@selected_offer or @selected_group or @selected_course) 
+      / - if (can? :lista_de_warnings, Warning, :on => @allocation_tags_ids) and (@group ? Warning.constants.include?(:GROUP_PERMISSION) : Warning.constants.include?(:OFFER_PERMISSION))
       .uc_item
         .warning
-          = link_to(content_tag(:i, nil, :class=>'icon-warning big'), "#", :class=>'btn disabled', :onclick => "javascript:alert('#{t(".in_development")}');")
-          = link_to t(".warning"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
+          = link_to(content_tag(:i, nil, class: 'icon-warning big'), "#", class: 'btn disabled', onclick: "javascript:alert('#{t(".in_development")}');")
+          = link_to t(".warning"), "#", onclick: "javascript:alert('#{t(".in_development")}');"
 
   %fieldset#uc_comunication
     %legend=t(".comunication")
     .block_content.block_content_alt
 
-      - if (can? :list, Discussion, :on => @allocation_tags_ids)  #and (@selected_offer or @selected_group)
+      - if (can? :list, Discussion, on: @allocation_tags_ids)  and (@group ? Discussion.constants.include?(:GROUP_PERMISSION) : Discussion.constants.include?(:OFFER_PERMISSION))
         .uc_item
           .discussion{:"data-link" => list_discussions_path(allocation_tags_ids: @allocation_tags_ids)}
-            = link_to(content_tag(:i, nil, :class=>'icon-people big'), "#", :class=>'btn')
+            = link_to(content_tag(:i, nil, class: 'icon-people big'), "#", class: 'btn')
             = link_to t(".discussion"), "#"
 
-      / - if (can? :lista_de_chat, Chat, :on => @allocation_tags_ids) and (@selected_...)
-      .uc_item
-        .chat
-          = link_to(content_tag(:i, nil, :class=>'icon-chat big'), "#", :class=>'btn disabled', :onclick => "javascript:alert('#{t(".in_development")}');")
-          = link_to t(".chat"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
+      / - if (can? :lista_de_chat, ChatRoom, :on => @allocation_tags_ids) and (@group ? ChatRoom.constants.include?(:GROUP_PERMISSION) : ChatRoom.constants.include?(:OFFER_PERMISSION))
+      - if (@group ? ChatRoom.constants.include?(:GROUP_PERMISSION) : ChatRoom.constants.include?(:OFFER_PERMISSION))
+        .uc_item
+          .chat
+            = link_to(content_tag(:i, nil, :class=>'icon-chat big'), "#", :class=>'btn disabled', :onclick => "javascript:alert('#{t(".in_development")}');")
+            = link_to t(".chat"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
 
-      / - if (can? :lista_de_videoconference, Videoconference, :on => @allocation_tags_ids) and (@selected_...)
+      / - if (can? :lista_de_videoconference, Videoconference, :on => @allocation_tags_ids) and (@group ? Videoconference.constants.include?(:GROUP_PERMISSION) : Videoconference.constants.include?(:OFFER_PERMISSION))
       .uc_item
         .videoconference
-          = link_to(content_tag(:i, nil, :class=>'icon-video-conference big'), "#", :class=>'btn disabled', :onclick => "javascript:alert('#{t(".in_development")}');")
-          = link_to t(".videoconference"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
+          = link_to(content_tag(:i, nil, class: 'icon-video-conference big'), "#", class: 'btn disabled', onclick: "javascript:alert('#{t(".in_development")}');")
+          = link_to t(".videoconference"), "#", onclick: "javascript:alert('#{t(".in_development")}');"
 
   %fieldset#uc_education
     %legend=t(".education")
     .block_content.block_content_alt
 
-      - if (can? :list, Lesson, :on => @allocation_tags_ids) #and (@selected_offer or @selected_group)
+      - if (can? :list, Lesson, on: @allocation_tags_ids) and (@group ? Lesson.constants.include?(:GROUP_PERMISSION) : Lesson.constants.include?(:OFFER_PERMISSION))
         .uc_item
           .lesson{:"data-link" => list_lessons_path(allocation_tags_ids: @allocation_tags_ids)}
-            = link_to(content_tag(:i, nil, :class=>'icon-lesson big'), "#", :class=>'btn')
+            = link_to(content_tag(:i, nil, class: 'icon-lesson big'), "#", class: 'btn')
             = link_to t(".lesson"), "#"
 
-      - if (can? :list, SupportMaterialFile, :on => @allocation_tags_ids) #and (@selected_offer or @selected_group)
+      - if (can? :list, SupportMaterialFile, on: @allocation_tags_ids) and (@group ? SupportMaterialFile.constants.include?(:GROUP_PERMISSION) : SupportMaterialFile.constants.include?(:OFFER_PERMISSION))
         .uc_item 
           .support_material{:"data-link" => list_support_material_files_path(allocation_tags_ids: @allocation_tags_ids)}
-            = link_to(content_tag(:i, nil, :class=>'icon-archive big'), "#", :class=>'btn')
+            = link_to(content_tag(:i, nil, class: 'icon-archive big'), "#", class: 'btn')
             = link_to t(".support_material"), "#"
 
-      - if (can? :list, Assignment, :on => @allocation_tags_ids) #and (@selected_group)
+      - if (can? :list, Assignment, on: @allocation_tags_ids) and (@group ? Assignment.constants.include?(:GROUP_PERMISSION) : Assignment.constants.include?(:OFFER_PERMISSION))
         .uc_item
           .assignment{:"data-link" => list_assignments_path(allocation_tags_ids: @allocation_tags_ids)}
-            = link_to(content_tag(:i, nil, :class=>'icon-suitcase big'), "#", :class=>'btn')
+            = link_to(content_tag(:i, nil, class: 'icon-suitcase big'), "#", class: 'btn')
             = link_to t(".assignment"), "#"
 
-      / - if (can? lista_de_tests, Test, :on => @allocation_tags_ids) and (@selected_offer or @selected_group)
+      / - if (can? lista_de_tests, Test, :on => @allocation_tags_ids) and (@group ? Test.constants.include?(:GROUP_PERMISSION) : Test.constants.include?(:OFFER_PERMISSION))
       .uc_item
         .test
-          = link_to(content_tag(:i, nil, :class=>'icon-checkmark big'), "#", :class=>'btn disabled', :onclick => "javascript:alert('#{t(".in_development")}');")
-          = link_to t(".test"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
+          = link_to(content_tag(:i, nil, class: 'icon-checkmark big'), "#", class: 'btn disabled', onclick: "javascript:alert('#{t(".in_development")}');")
+          = link_to t(".test"), "#", onclick: "javascript:alert('#{t(".in_development")}');"
 
 :javascript 
 

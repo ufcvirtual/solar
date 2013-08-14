@@ -1,4 +1,8 @@
 class LessonModule < ActiveRecord::Base
+
+  include RelatedToGroup
+  include RelatedToOffer
+
   belongs_to :allocation_tag
   has_many :lessons
 
