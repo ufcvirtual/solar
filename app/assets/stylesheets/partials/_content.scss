@@ -283,8 +283,13 @@ div.block_title {
     margin-left: -5px;
     border-left-width: 0px;
   }
-  .btn img {
-    padding: 0;
+  .btn {
+    img {
+      padding: 0;
+    }
+    .icon-checkbox-checked, .icon-checkbox-unchecked {
+      font-size: 14px;
+    }
   }
 }
 

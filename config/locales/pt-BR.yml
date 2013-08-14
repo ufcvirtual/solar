@@ -1302,7 +1302,7 @@
 
   groups:
     list:
-      all: Todos
+      all: Selecionar Todos
       new: Nova turma
       enable: Ativar
       disable: Desativar
