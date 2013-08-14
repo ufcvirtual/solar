@@ -39,8 +39,8 @@ class GroupAssignment < ActiveRecord::Base
   ##
   # Recupera pelo assignment
   ##
-  def self.all_by_assignment_id(assignment_id)
-    joins(:academic_allocation).where(academic_allocations: {academic_tool_id: assignment_id})
+  def self.all_by_assignment_id(assignment_id, allocation_tag_id)
+    joins(:academic_allocation).where(academic_allocations: {academic_tool_id: assignment_id, allocation_tag_id: allocation_tag_id})
   end
 
   def assignment_id

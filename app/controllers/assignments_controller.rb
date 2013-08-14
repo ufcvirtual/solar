@@ -429,6 +429,7 @@ class AssignmentsController < ApplicationController
   def import_groups_page
     group_id       = AllocationTag.find(active_tab[:url][:allocation_tag_id]).group_id
     @assignments   = GroupAssignment.all_by_group_id(group_id)
+    @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
     @assignments.delete(@assignment)
     render :layout => false
   end
@@ -439,11 +440,11 @@ class AssignmentsController < ApplicationController
   def import_groups
     import_to_assignment_id   = params[:id] # para qual atividade os grupos serão importados
     import_from_assignment_id = params[:assignment_id_import_from] # de qual atividade os grupos serão importados
-    groups_to_import          = GroupAssignment.all_by_assignment_id(import_from_assignment_id) # grupos a serem importados
+    allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+    groups_to_import          = GroupAssignment.all_by_assignment_id(import_from_assignment_id, allocation_tag.id) # grupos a serem importados
 
     begin 
       # verifica período para envio do arquivo
-      allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
       raise t(:date_range_expired, scope: [:assignment, :notifications]) unless @assignment.assignment_in_time?(allocation_tag, current_user.id) 
 
       academic_allocation = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id, import_to_assignment_id, 'Assignment')
