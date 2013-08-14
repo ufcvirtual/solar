@@ -1548,7 +1548,7 @@
       from: "De: "
       attachments: "Anexos: "
     index:
-      filter_selected: "Selecionado: "
+      filter_selected: "Visualizar: "
 
   #Autocomplete
 

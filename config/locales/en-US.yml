@@ -1381,7 +1381,7 @@
       from: "From: "
       attachments: "Attachments: "
     index:
-      filter_selected: "Selected: "
+      filter_selected: "View: "
 
   #Autocomplete
   autocomplete:
