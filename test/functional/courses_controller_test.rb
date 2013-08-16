@@ -33,7 +33,7 @@ class CoursesControllerTest < ActionController::TestCase
   end
 
   test "criar" do
-    assert_difference("Course.count", 1) do
+    assert_difference("Course.count") do
       post :create, {course: {code: "T1", name: "Teste 1"}}
     end
 

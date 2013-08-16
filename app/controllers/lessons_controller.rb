@@ -74,7 +74,7 @@ class LessonsController < ApplicationController
       render ((manage_file != false) ? {template: "lesson_files/index"} : {json: {success: true, notice: t(:created, scope: [:lessons, :success])}})
     rescue CanCan::AccessDenied
       render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
-    rescue
+    rescue 
       render :new
     end # rescue
   end

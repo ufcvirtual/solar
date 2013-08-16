@@ -2,6 +2,8 @@ class Allocation < ActiveRecord::Base
 
   include RelatedToGroup
   include RelatedToOffer
+  include RelatedToCurriculumUnit
+  include RelatedToCourse
 
   belongs_to :allocation_tag
   belongs_to :user

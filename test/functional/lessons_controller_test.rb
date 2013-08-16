@@ -17,10 +17,12 @@ class LessonsControllerTest < ActionController::TestCase
 
   test "criar e editar uma aula do tipo link" do
     lesson = {name: 'lorem ipsum', address: 'http://aulatipolink1.com', type_lesson: Lesson_Type_Link, lesson_module_id: 1}
-    params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: allocation_tags(:al6), start_date: Time.now} # cria aula sem data final
+    params_group = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: allocation_tags(:al6), start_date: Time.now} # cria aula sem data final - turma
+    params_offer = {lesson: lesson, lesson_module_id: 5, allocation_tags_ids: allocation_tags(:al6), start_date: Time.now} # cria aula sem data final - turma
 
-    assert_difference(["Lesson.count", "Schedule.count"], 1) do
-      post(:create, params)
+    assert_difference(["Lesson.count", "Schedule.count"], 2) do
+      post(:create, params_group)
+      post(:create, params_offer)
     end
     assert_response :ok
     assert_equal Lesson.last.address, 'http://aulatipolink1.com'
@@ -68,6 +70,20 @@ class LessonsControllerTest < ActionController::TestCase
       post(:create, params)
     end
     assert_template :new    
+  end
+
+  test "nao criar aula para uc ou curso" do
+    lesson = {name: 'lorem ipsum', address: 'index.html', type_lesson: Lesson_Type_File, lesson_module_id: 1}
+    params_uc = {lesson: lesson, lesson_module_id: 9, allocation_tags_ids: allocation_tags(:al13), start_date: Time.now, end_date: (Time.now + 1.month)}
+    params_c  = {lesson: lesson, lesson_module_id: 10, allocation_tags_ids: allocation_tags(:al19), start_date: Time.now, end_date: (Time.now + 1.month)}
+
+    # tentando alocar para a UC de quimica 3 e o curso de licenciatura em quimica
+    assert_no_difference(["Lesson.count", "Schedule.count"]) do
+      post(:create, params_uc)
+      post(:create, params_c)
+    end
+
+    assert_response :unprocessable_entity
   end
 
   ##

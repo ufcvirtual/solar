@@ -22,8 +22,9 @@ class SupportMaterialFilesControllerTest < ActionController::TestCase
   end
 
   test "criar material do tipo link com protocolo default" do
-    assert_difference("SupportMaterialFile.count", 1) do
-      post(:create, {support_material_file: {url: "google.com"}, allocation_tags_ids: allocation_tags(:al3).id, material_type: Material_Type_Link})
+    assert_difference("SupportMaterialFile.count", 2) do
+      post(:create, {support_material_file: {url: "google.com"}, allocation_tags_ids: allocation_tags(:al3).id, material_type: Material_Type_Link}) #turma
+      post(:create, {support_material_file: {url: "google.com"}, allocation_tags_ids: allocation_tags(:al6).id, material_type: Material_Type_Link}) #oferta
     end
     assert_response :success
     assert_equal SupportMaterialFile.last.url, "http://google.com"
@@ -34,6 +35,16 @@ class SupportMaterialFilesControllerTest < ActionController::TestCase
       post(:create, {support_material_file: {attachment: fixture_file_upload('files/file_10k.dat')}, allocation_tags_ids: allocation_tags(:al3).id, material_type: Material_Type_File})
     end
     assert_response :success
+  end
+
+  test "nao criar novo material para uc ou curso" do
+    # tentando criar para a UC de quimica 3 e o curso de licenciatura em quimica
+    assert_no_difference(["SupportMaterialFile.count"]) do
+      post(:create, {support_material_file: {url: "google.com"}, allocation_tags_ids: allocation_tags(:al13).id, material_type: Material_Type_Link})
+      post(:create, {support_material_file: {url: "google.com"}, allocation_tags_ids: allocation_tags(:al19).id, material_type: Material_Type_Link})
+    end
+
+    assert_response :unprocessable_entity
   end
 
   test "download" do

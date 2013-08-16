@@ -28,17 +28,24 @@ class AssignmentsControllerTest < ActionController::TestCase
   end
   
 
-  # #### TESTE PARA VALIDAR O MÓDULO: ASSIGNMENT SÓ PODE EM TURMA, NÃO PODE EM OFERTA ####
-  # ## quando o cadastro de assignment for concluído, favor descomentar o teste abaixo  ##
-  # test "nao cria trabalho para oferta" do
+  # ######## TESTE PARA VALIDAR O MÓDULO: ASSIGNMENT SÓ PODE EM TURMA, NÃO PODE EM OFERTA, NEM UC, NEM CURSO #########
+  # ##            quando o cadastro de assignment for concluído, favor descomentar o teste abaixo                   ##
+  # ##  tem que conferir se o cadastro realmente está sendo feito assim ou é de modo diferente se o modo como as    ##
+  # ##  allocation_tags são passadas for diferente, o importante é criar a turma nos dados colocados                ##
+  #
+  # test "nao cria trabalho para oferta ou curso ou uc - modulo permite apenas turma" do
+  #   params_offer  = allocation_tags_ids: [allocation_tags(:al6).id], assignment: {name: "Testa módulo1", enunciation: "Assignment para testar módulo", type_assignment: 0, schedule: {start_date: Date.today, end_date: Date.today + 1.month}}
+  #   params_uc     = allocation_tags_ids: [allocation_tags(:al13).id], assignment: {name: "Testa módulo2", enunciation: "Assignment para testar módulo", type_assignment: 0, schedule: {start_date: Date.today, end_date: Date.today + 1.month}}
+  #   params_course = allocation_tags_ids: [allocation_tags(:al19).id], assignment: {name: "Testa módulo3", enunciation: "Assignment para testar módulo", type_assignment: 0, schedule: {start_date: Date.today, end_date: Date.today + 1.month}}
+
   #   assert_no_difference(["Assignment.count", "Schedule.count"]) do
-  #     post :create, assignment: {name: "Testa módulo", enunciation: "Assignment para testar módulo", type_assignment: 0, schedule: {start_date: Date.today, end_date: Date.today + 1.month}}
+  #     post :create, params_offer
+  #     post :create, params_uc
+  #     post :create, params_course
   #   end
-
-    
+  #
+  #   assert_response :unprocessable_entity
   # end
-
-
 
   ##
   # Edicao

@@ -10,14 +10,16 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
   # para poder realizar o "login_as" sabendo que o sign_in do devise não funciona no teste de integração
   include Warden::Test::Helpers 
   
-  def setup
-    @quimica_tab  = add_tab_path(id: 3, context:2, allocation_tag_id: 3)
-    @items = [allocation_tags(:al2).id]
-    @items2 = [allocation_tags(:al13).id]
-  end
-
   def login(user)
     login_as user, :scope => :user
+  end
+
+  def setup
+    @quimica_tab  = add_tab_path(id: 3, context:2, allocation_tag_id: 3)
+    @items = [allocation_tags(:al2).id] # teoria da literatura I
+    @items2 = [allocation_tags(:al13).id] # quimica 3
+
+    login users(:editor)
   end
 
   ##
@@ -48,7 +50,6 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
   # Acessar pela página de edição
 
     test "listar foruns de acordo com dados de oferta e turma passados" do
-      login users(:editor)
       get( list_discussions_path, {:allocation_tags_ids => @items} )
       assert_not_nil assigns(:discussions)
       assert_template :list
@@ -62,20 +63,24 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
     end
 
     test "criar novo forum" do
-      login users(:editor)
       get( new_discussion_path, {:allocation_tags_ids => @items} )
       assert_not_nil assigns(:discussion)
       assert_template :new
 
+      # para turma
       assert_difference(["Discussion.count", "Schedule.count"], @items.size) do
         post("/discussions/", {:discussion => {:name => "discussion 1", :description => "discussion 1"}, :start_date => "30-01-2013", :end_date => "30-03-2013", :allocation_tags_ids => assigns(:allocation_tags_ids).flatten})
+      end
+
+      # para oferta
+      assert_difference(["Discussion.count", "Schedule.count"]) do
+        post("/discussions/", {:discussion => {:name => "discussion 1", :description => "discussion 1"}, :start_date => "30-01-2013", :end_date => "30-03-2013", :allocation_tags_ids => [allocation_tags(:al6).id]})
       end
 
       assert_response :success
     end
 
     test "nao criar novo forum - erro de validacao" do
-      login(users(:editor))
       get( new_discussion_path, {:allocation_tags_ids => @items} )
       assert_not_nil assigns(:discussion)
       assert_template :new
@@ -103,8 +108,17 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
       assert_response :redirect
     end
 
+    test "nao criar novo forum para uc ou curso" do
+      # tentando criar para a UC de quimica 3 e o curso de licenciatura em quimica
+      assert_no_difference(["Discussion.count", "Schedule.count"]) do
+        post(discussions_path, {discussion: {name: "discussion 1", description: "discussion 1"}, start_date: "30-01-2013", end_date:"30-03-2013", allocation_tags_ids: [allocation_tags(:al13).id]})
+        post(discussions_path, {discussion: {name: "discussion 1", description: "discussion 1"}, start_date: "30-01-2013", end_date:"30-03-2013", allocation_tags_ids: [allocation_tags(:al19).id]})
+      end
+
+      assert_response :unprocessable_entity
+    end
+
      test "editar forum" do
-      login(users(:editor))
       get(edit_discussion_path(discussions(:forum_9), :allocation_tags_ids => @items))
       assert_not_nil assigns(:discussion)
       assert_not_nil assigns(:allocation_tags_ids)
@@ -117,7 +131,6 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
      end
 
     test "nao editar forum - erro de validacao" do
-      login(users(:editor))
       get(edit_discussion_path(discussions(:forum_9), :allocation_tags_ids => @items))
       assert_not_nil assigns(:discussion)
       assert_not_nil assigns(:allocation_tags_ids)
@@ -146,7 +159,6 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
   ##
 
     test "excluir forum" do
-      login(users(:editor))
       get(list_discussions_path, {:allocation_tags_ids => @items})
       assert_not_nil assigns(:discussions)
       assert_not_nil assigns(:allocation_tags_ids)
@@ -164,7 +176,6 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
     end
 
     test "nao excluir forum - forum ja possui postagens" do
-      login(users(:editor))
       get(list_discussions_path, {:allocation_tags_ids => @items2})
       assert_not_nil assigns(:discussions)
       assert_not_nil assigns(:allocation_tags_ids)

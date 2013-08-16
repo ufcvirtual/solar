@@ -23,7 +23,7 @@ class AllocationsController < ApplicationController
         :order => ["users.name", "profiles.name"]) 
     rescue CanCan::AccessDenied
       render json: {success: true, alert: t(:no_permission)}, status: :unprocessable_entity
-    rescue
+    rescue 
       respond_to do |format|
         format.html { render :nothing => true, :status => 500 }
       end
@@ -94,19 +94,18 @@ class AllocationsController < ApplicationController
     begin 
 
       # verifica permissao de alocacao nas allocation tags passadas
-      authorize! :create_designation, Allocation, :on => allocation_tags_ids.flatten
+      authorize! :create_designation, Allocation, on: allocation_tags_ids.flatten
 
       profile = (params.include?(:profile)) ? params[:profile] : Profile.student_profile
       status  = (params.include?(:status)) ? params[:status] : Allocation_Pending
       ok      = allocate(allocation_tags_ids, params[:user_id], profile, status)
 
       respond_to do |format|
-        format.html { render :designates, :status => (ok ? 200 : 500) } 
+        format.html { render :designates, status: (ok ? 200 : :unprocessable_entity) } 
       end
-
-    rescue Exception => error
+    rescue
       respond_to do |format|
-        format.html { render :designates, :status => 500 } 
+        format.html { render :designates, status: :unprocessable_entity } 
       end      
     end
 

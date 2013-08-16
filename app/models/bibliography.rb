@@ -2,6 +2,7 @@ class Bibliography < ActiveRecord::Base
 
   include RelatedToGroup
   include RelatedToOffer
+  include RelatedToCurriculumUnit
 
   def self.bibliography_filter(allocation_tags_ids)
     ActiveRecord::Base.connection.select_all  <<SQL
