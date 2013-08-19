@@ -36,8 +36,8 @@ class SupportMaterialFilesController < ApplicationController
       @support_material.save!
 
       render json: {success: true, notice: t(:created, scope: [:support_materials, :success])}
-    rescue CanCan::AccessDenied
-      render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+    rescue ActiveRecord::AssociationTypeMismatch
+      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue Exception => error
       if @support_material.is_link?
         render :new
@@ -60,7 +60,11 @@ class SupportMaterialFilesController < ApplicationController
     begin
       @support_material.update_attributes!(params[:support_material_file])
       render json: {success: true, notice: t(:updated, scope: [:support_materials, :success])}
-    rescue
+    rescue ActiveRecord::AssociationTypeMismatch
+      raise "a"
+      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
+    rescue Exception => error
+      raise "#{error}"
       render :new
     end
   end

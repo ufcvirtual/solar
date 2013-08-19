@@ -38,6 +38,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  rescue_from ActiveRecord::AssociationTypeMismatch do |exception|
+    respond_to do |format|
+      format.html { redirect_to home_path, alert: t(:not_associated) }
+      format.json { render json: {msg: t(:not_associated)}, status: :unauthorized }
+    end
+  end
+
   def start_user_session
     return unless user_signed_in?
 

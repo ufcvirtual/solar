@@ -68,7 +68,7 @@ class SupportMaterialFilesControllerTest < ActionController::TestCase
       put(:update, {id: last_material.id, support_material_file: {url: "youtube.com"}, allocation_tags_ids: allocation_tags(:al3).id})
     end
 
-    assert_equal SupportMaterialFile.last.url, "http://youtube.com"
+    assert_equal "http://youtube.com", SupportMaterialFile.last.url
   end
 
   test "deletar" do

@@ -1,8 +1,7 @@
 class Bibliography < ActiveRecord::Base
 
-  include RelatedToGroup
-  include RelatedToOffer
-  include RelatedToCurriculumUnit
+  GROUP_PERMISSION, OFFER_PERMISSION, CURRICULUM_UNIT_PERMISSION = true, true, true
+  include ToolsAssociation
 
   def self.bibliography_filter(allocation_tags_ids)
     ActiveRecord::Base.connection.select_all  <<SQL

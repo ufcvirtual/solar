@@ -1,7 +1,7 @@
 class Lesson < ActiveRecord::Base
 
-  include RelatedToGroup
-  include RelatedToOffer
+  GROUP_PERMISSION, OFFER_PERMISSION = true, true
+  include ToolsAssociation
 
   belongs_to :lesson_module
   belongs_to :user

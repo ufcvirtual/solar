@@ -68,8 +68,8 @@ class AssignmentsController < ApplicationController
       end # transaction
 
       render nothing: true
-    rescue CanCan::AccessDenied
-      render json: {success: true, alert: t(:no_permission)}, status: :unprocessable_entity
+    rescue ActiveRecord::AssociationTypeMismatch
+      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue Exception => error
       @allocation_tags_ids = params[:allocation_tags_ids].split(' ')
       @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
@@ -93,6 +93,8 @@ class AssignmentsController < ApplicationController
       @assignment.update_attributes!(params[:assignment])
 
       render nothing: true
+    rescue ActiveRecord::AssociationTypeMismatch
+      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue Exception => e
       render json: {success: false, msg: e.messages}, status: :unprocessable_entity
     end

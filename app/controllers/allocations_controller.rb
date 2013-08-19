@@ -23,6 +23,8 @@ class AllocationsController < ApplicationController
         :order => ["users.name", "profiles.name"]) 
     rescue CanCan::AccessDenied
       render json: {success: true, alert: t(:no_permission)}, status: :unprocessable_entity
+    rescue ActiveRecord::AssociationTypeMismatch
+      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue 
       respond_to do |format|
         format.html { render :nothing => true, :status => 500 }

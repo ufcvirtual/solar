@@ -1,5 +1,7 @@
 class ChatRoom < ActiveRecord::Base
-  include RelatedToGroup
+  
+  GROUP_PERMISSION = true
+  include ToolsAssociation
 
   # attr_accessible :title, :body
 

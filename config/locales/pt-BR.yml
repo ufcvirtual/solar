@@ -1057,6 +1057,8 @@
 
   # Mensagem de erro para permissão
   no_permission: "Você não tem permissão para acessar esta página"
+  # Mensagem de erro associação entre ferramentas e turma/oferta/uc/curso
+  not_associated: Esta ferramenta não está associada aos dados informados
 
   # Menu
   menu_content: Conteúdo

@@ -57,6 +57,8 @@ class LessonModulesController < ApplicationController
       respond_to do |format|
         format.html{ render :nothing => true, :status => 500 }
       end
+    rescue ActiveRecord::AssociationTypeMismatch
+      render nothing: true, status: :unprocessable_entity
     rescue
       respond_to do |format|
         format.html{ render :new, :status => 200 }

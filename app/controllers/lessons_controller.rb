@@ -1,6 +1,6 @@
 class LessonsController < ApplicationController
 
-  layout false, :except => [:index]
+  layout false, except: :index
 
   require 'fileutils'
 
@@ -72,8 +72,8 @@ class LessonsController < ApplicationController
       @lesson.type_lesson == Lesson_Type_File ? files_and_folders(@lesson) : manage_file = false
 
       render ((manage_file != false) ? {template: "lesson_files/index"} : {json: {success: true, notice: t(:created, scope: [:lessons, :success])}})
-    rescue CanCan::AccessDenied
-      render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+    rescue ActiveRecord::AssociationTypeMismatch
+      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue 
       render :new
     end # rescue
@@ -100,7 +100,8 @@ class LessonsController < ApplicationController
         @lesson.update_attributes!(params[:lesson])
         @lesson.schedule.update_attributes!(start_date: params[:start_date], end_date: params[:end_date])
       end
- 
+    rescue ActiveRecord::AssociationTypeMismatch
+      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue 
       error = true
       @schedule_error = @lesson.schedule.errors.full_messages[0] unless @lesson.schedule.valid?

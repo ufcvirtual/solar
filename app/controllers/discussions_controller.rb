@@ -49,8 +49,8 @@ class DiscussionsController < ApplicationController
       end
 
       render json: {success: true, notice: t(:created, scope: [:offers, :success])}
-    rescue CanCan::AccessDenied
-      render json: {success: false, alert: t(:no_permission)}, status: :unprocessable_entity
+    rescue ActiveRecord::AssociationTypeMismatch
+      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue Exception => err
       error = []
       error << @schedule.errors.full_messages.join(', ') unless @schedule.errors.empty?
@@ -97,6 +97,8 @@ class DiscussionsController < ApplicationController
       end
    
       render json: {success: true, notice: t(:updated, scope: [:offers, :success])}
+    rescue ActiveRecord::AssociationTypeMismatch
+      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue Exception => err
       error = []
       error << @schedule.errors.full_messages.join(', ') unless @schedule.errors.empty?

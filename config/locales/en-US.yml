@@ -892,7 +892,9 @@
   error_find_ajax: "Error trying to query. Try again later."
 
   # Mensagem de erro para permissão
-  no_permission: "you haven't permission to access this page"
+  no_permission: "You haven't permission to access this page"
+  # Mensagem de erro associação entre ferramentas e turma/oferta/uc/curso
+  not_associated: This tool isn't associated to the informed data
 
 # Menu
   menu_content: Content

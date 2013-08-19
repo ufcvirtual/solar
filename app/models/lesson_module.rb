@@ -1,7 +1,7 @@
 class LessonModule < ActiveRecord::Base
 
-  include RelatedToGroup
-  include RelatedToOffer
+  GROUP_PERMISSION, OFFER_PERMISSION = true, true
+  include ToolsAssociation
 
   belongs_to :allocation_tag
   has_many :lessons
