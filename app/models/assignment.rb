@@ -1,7 +1,6 @@
 class Assignment < ActiveRecord::Base
 
   GROUP_PERMISSION = true
-  include ToolsAssociation
 
   #Relações extras
   has_many :allocation_tags, through: :academic_allocations
