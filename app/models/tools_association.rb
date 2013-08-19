@@ -15,20 +15,17 @@ module ToolsAssociation
       (self.respond_to?(:allocation_tag_id) ? AllocationTag.find(self.allocation_tag_id) : self.allocation_tag )
     ]).compact
 
-
-
-
     unless allocations_tags.empty?
 
       case
         when (not allocations_tags.map(&:group).include?(nil))
-          permission = self.class.constants.include?(:GROUP_PERMISSION)
+          permission = self.class.const_defined?(:GROUP_PERMISSION)
         when (not allocations_tags.map(&:offer).include?(nil))
-          permission = self.class.constants.include?(:OFFER_PERMISSION)
+          permission = self.class.const_defined?(:OFFER_PERMISSION)
         when (not allocations_tags.map(&:curriculum_unit).include?(nil))
-          permission = self.class.constants.include?(:CURRICULUM_UNIT_PERMISSION)
+          permission = self.class.const_defined?(:CURRICULUM_UNIT_PERMISSION)
         when (not allocations_tags.map(&:course).include?(nil))
-          permission = self.class.constants.include?(:COURSE_PERMISSION)
+          permission = self.class.const_defined?(:COURSE_PERMISSION)
         else
           permission = false
       end

@@ -78,7 +78,11 @@ class LessonTest < ActiveSupport::TestCase
     assert_equal lesson.errors.full_messages.first, "Um arquivo inicial deve ser definido."
   end
 
-  # test "aula deve ter um modulo" do
-  # end
+  test "aula deve ter um modulo" do
+    lesson = Lesson.create(order: 99, name: "Lesson sem modulo", type_lesson: Lesson_Type_Link, address: "www.google.com")
+
+    assert not(lesson.valid?)
+    assert_equal lesson.errors[:lesson_module].first, I18n.t(:blank, :scope => [:activerecord, :errors, :messages])
+  end
 
 end

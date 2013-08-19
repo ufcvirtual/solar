@@ -18,6 +18,7 @@ class Lesson < ActiveRecord::Base
   validates :name, :type_lesson, presence: true
   validates :address, presence: true, :if => :is_link?
   validate  :initial_file_setted
+  validates :lesson_module, presence: true
 
   # Na expressão regular os protocolos http, https e ftp podem aparecer somente uma vez ou não aparecer.
   validates_format_of :address, :with => /^((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$/ix,
