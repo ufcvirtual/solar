@@ -94,6 +94,8 @@ class AllocationsController < ApplicationController
     allocation_tags_ids = params[:allocation_tags_ids].split(" ")
 
     begin 
+      allocation_tags = AllocationTag.where(id: allocation_tags_ids)
+      raise ActiveRecord::AssociationTypeMismatch if allocation_tags.map(&:group).empty? and allocation_tags.map(&:offer).empty?
 
       # verifica permissao de alocacao nas allocation tags passadas
       authorize! :create_designation, Allocation, on: allocation_tags_ids.flatten

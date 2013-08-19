@@ -1,7 +1,7 @@
 class Allocation < ActiveRecord::Base
 
-  GROUP_PERMISSION, OFFER_PERMISSION, CURRICULUM_UNIT_PERMISSION, COURSE_PERMISSION = true, true, true, true
-  include ToolsAssociation
+  GROUP_PERMISSION, OFFER_PERMISSION = true, true
+  # include ToolsAssociation
 
   belongs_to :allocation_tag
   belongs_to :user
