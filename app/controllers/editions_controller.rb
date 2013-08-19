@@ -1,15 +1,24 @@
 class EditionsController < ApplicationController
 
   def items
+
     if params[:groups_id].blank?
-      @allocation_tags_ids = [Offer.where(semester_id: params[:semester_id], curriculum_unit_id: params[:curriculum_unit_id], course_id: params[:course_id]).first.allocation_tag.id]
-      @offer = true
+      if params.include?(:semester_id) and (not params[:semester_id] == "")
+        @allocation_tags_ids = [Offer.where(semester_id: params[:semester_id], curriculum_unit_id: params[:curriculum_unit_id], course_id: params[:course_id]).first.allocation_tag.id]
+        @selected = "OFFER"
+      elsif params.include?(:curriculum_unit_id) and (not params[:curriculum_unit_id] == "")
+        @allocation_tags_ids = [CurriculumUnit.find(params[:curriculum_unit_id]).allocation_tag.id]
+        @selected = "CURRICULUM_UNIT"
+      elsif params.include?(:course_id) and (not params[:course_id] == "")
+        @allocation_tags_ids = [Course.find(params[:course_id]).allocation_tag.id]
+        @selected = "COURSE"
+      end
     else
       @allocation_tags_ids = AllocationTag.where(group_id: params[:groups_id]).map(&:id)
-      @group = true
+      @selected = "GROUP"
     end
 
-    render :partial => "items"
+    render partial: "items"
   end
 
   # GET /editions/academic
