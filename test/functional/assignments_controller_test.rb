@@ -26,26 +26,30 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
   end
+
+  test "cria trabalho" do
+    assert_difference(["Assignment.count", "Schedule.count"], 1) do
+      assert_difference(["AcademicAllocation.count"], 3) do
+        post :create, {allocation_tags_ids: "#{allocation_tags(:al3).id} #{allocation_tags(:al11).id} #{allocation_tags(:al22).id}", assignment: {name: "Testa modulo3", enunciation: "Assignment para testar modulo", type_assignment: 0, schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
+      end
+    end
   
+    assert_response :success
+  end
 
-  # ######## TESTE PARA VALIDAR O MÓDULO: ASSIGNMENT SÓ PODE EM TURMA, NÃO PODE EM OFERTA, NEM UC, NEM CURSO #########
-  # ##            quando o cadastro de assignment for concluído, favor descomentar o teste abaixo                   ##
-  # ##  tem que conferir se o cadastro realmente está sendo feito assim ou é de modo diferente se o modo como as    ##
-  # ##  allocation_tags são passadas for diferente, o importante é criar a turma nos dados colocados                ##
-  #
-  # test "nao cria trabalho para oferta ou curso ou uc - modulo permite apenas turma" do
-  #   params_offer  = allocation_tags_ids: [allocation_tags(:al6).id], assignment: {name: "Testa módulo1", enunciation: "Assignment para testar módulo", type_assignment: 0, schedule: {start_date: Date.today, end_date: Date.today + 1.month}}
-  #   params_uc     = allocation_tags_ids: [allocation_tags(:al13).id], assignment: {name: "Testa módulo2", enunciation: "Assignment para testar módulo", type_assignment: 0, schedule: {start_date: Date.today, end_date: Date.today + 1.month}}
-  #   params_course = allocation_tags_ids: [allocation_tags(:al19).id], assignment: {name: "Testa módulo3", enunciation: "Assignment para testar módulo", type_assignment: 0, schedule: {start_date: Date.today, end_date: Date.today + 1.month}}
+  test "nao cria trabalho para oferta ou curso ou uc - modulo permite apenas turma" do
+    params_offer  = {allocation_tags_ids: "#{allocation_tags(:al6).id}", assignment: {name: "Testa modulo1", enunciation: "Assignment para testar modulo", type_assignment: 0, schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
+    params_uc     = {allocation_tags_ids: "#{allocation_tags(:al13).id}", assignment: {name: "Testa modulo2", enunciation: "Assignment para testar modulo", type_assignment: 0, schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
+    params_course = {allocation_tags_ids: "#{allocation_tags(:al19).id}", assignment: {name: "Testa modulo3", enunciation: "Assignment para testar modulo", type_assignment: 0, schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
 
-  #   assert_no_difference(["Assignment.count", "Schedule.count"]) do
-  #     post :create, params_offer
-  #     post :create, params_uc
-  #     post :create, params_course
-  #   end
-  #
-  #   assert_response :unprocessable_entity
-  # end
+    assert_no_difference(["Assignment.count", "Schedule.count", "AcademicAllocation.count"]) do
+      post :create, params_offer
+      post :create, params_uc
+      post :create, params_course
+    end
+  
+    assert_response :unprocessable_entity
+  end
 
   ##
   # Edicao
