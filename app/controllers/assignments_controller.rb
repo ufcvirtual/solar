@@ -10,6 +10,106 @@ class AssignmentsController < ApplicationController
 
   authorize_resource :only => [:download_files, :upload_file, :send_public_files_page, :delete_file]
 
+  def new
+    authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
+
+    @groups     = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
+    @assignment = Assignment.new
+    @assignment.build_schedule(start_date: Date.current, end_date: Date.current)
+  end
+
+  ##
+  # Informações do andamento da atividade para um aluno/grupo escolhido
+  # Nesta página, há as opções de comentários para o trabalho do aluno/grupo, avaliação e afins
+  # => responsáveis: podem comentar/avaliar
+  # => alunos: podem enviar/excluir arquivos
+  ##
+  def show
+    @user            = current_user
+    @student_id      = params[:group_id].nil? ? params[:student_id] : nil
+    @group_id        = params[:group_id].nil? ? nil : params[:group_id] 
+    @group           = GroupAssignment.find(params[:group_id]) unless @group_id.nil? # grupo
+    @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+    @sent_assignment = @assignment.sent_assignment_by_user_id_or_group_assignment_id(@allocation_tag.id, @student_id, @group_id)
+    @situation       = @assignment.situation_of_student(@allocation_tag.id, @student_id, @group_id)
+    @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  # arquivos que fazem parte da descrição da atividade
+
+    raise CanCan::AccessDenied unless @assignment.user_can_access_assignment(@allocation_tag, current_user.id, @student_id, @group_id)
+
+    unless @sent_assignment.nil?
+      @sent_assignment_files = @sent_assignment.assignment_files
+      @comments              = @sent_assignment.assignment_comments
+    end
+  end
+
+  def edit
+    authorize! :update, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
+
+    @groups     = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
+    @assignment = Assignment.find(params[:id])
+    @schedule   = @assignment.schedule
+  end
+
+  def create
+    @allocation_tags_ids = params[:allocation_tags_ids].split(" ").map(&:to_i)
+    authorize! :create, Assignment, on: @allocation_tags_ids
+
+    @assignment = Assignment.new params[:assignment]
+    begin
+      Assignment.transaction do
+        @assignment.save!
+        @allocation_tags_ids.each do |at|
+          AcademicAllocation.create! allocation_tag_id: at, academic_tool_id: @assignment.id, academic_tool_type: "Assignment"
+        end
+      end
+
+      render json: {success: true, notice: t(:created, scope: [:assignments, :success])}
+    rescue ActiveRecord::AssociationTypeMismatch
+      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
+    rescue
+      @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
+      render :new
+    end
+  end
+
+  def update
+    @assignment = Assignment.find(params[:id])
+    authorize! :update, Assignment, on: [params[:allocation_tags_ids]].flatten.uniq
+
+    begin
+      @assignment.update_attributes!(params[:assignment])
+
+      render json: {success: true, notice: t(:updated, scope: [:assignments, :success])}
+    rescue ActiveRecord::AssociationTypeMismatch
+      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
+    rescue
+      render json: {success: false, alert: t(:updated, scope: [:assignments, :error])}, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    authorize! :destroy, Assignment, on: params[:allocation_tags_ids].uniq
+
+    begin
+      Assignment.transaction do
+        Assignment.includes(:sent_assignments).
+          where(assignments: {id: params[:id].split(",")}, sent_assignments: {id: nil}). # retirando trabalhos com resposta de alunos
+          map(&:destroy)
+      end
+      render json: {success: true, notice: t(:deleted, scope: [:assignments, :success])}
+    rescue
+      render json: {success: false, alert: t(:deleted, scope: [:assignments, :error])}, status: :unprocessable_entity
+    end
+  end
+
+  # Não REST
+
+  def list
+    authorize! :list, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids]
+
+    @assignments = Assignment.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids})
+  end
+
   def professor
     authorize! :professor, Assignment
 
@@ -30,116 +130,6 @@ class AssignmentsController < ApplicationController
     @public_area                 = PublicFile.all_by_class_id_and_user_id(group_id, @student_id)
   end
 
-  def list
-    authorize! :list, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids]
-
-    begin
-      @assignments = Assignment.where(allocation_tag_id: @allocation_tags_ids)
-    rescue
-      render nothing: true, status: :unprocessable_entity
-    end
-  end
-
-  def new
-    authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
-
-    @groups     = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
-    @assignment = Assignment.new
-    @assignment.build_schedule(start_date: Date.current, end_date: Date.current)
-  end
-
-  def create
-    authorize! :create, Assignment
-
-    groups      = AllocationTag.where(group_id: params[:assignment].delete(:allocation_tag_id))
-    @assignment = Assignment.new params[:assignment]
-
-    begin
-      Assignment.transaction do
-        if groups.empty? # se as turmas nao foram passadas, lançar erro de validação
-          raise @assignment.valid? # apenas para recuperar os dados
-        else
-          groups.each do |at|
-            params[:assignment][:allocation_tag_id] = at.id
-            @assignment = Assignment.new params[:assignment]
-            @assignment.save!
-          end # each
-        end # else
-      end # transaction
-
-      render nothing: true
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue Exception => error
-      @allocation_tags_ids = params[:allocation_tags_ids].split(' ')
-      @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
-      render :new
-    end
-  end
-
-  def edit
-    authorize! :update, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
-
-    @groups     = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
-    @assignment = Assignment.find(params[:id])
-    @schedule   = @assignment.schedule
-  end
-
-  def update
-    @assignment = Assignment.find(params[:id])
-    authorize! :update, Assignment, on: [params[:allocation_tags_ids]].flatten.uniq
-
-    begin
-      @assignment.update_attributes!(params[:assignment])
-
-      render nothing: true
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue Exception => e
-      render json: {success: false, msg: e.messages}, status: :unprocessable_entity
-    end
-  end
-
-  def destroy
-    authorize! :destroy, Assignment, on: params[:allocation_tags_ids].uniq
-
-    begin
-      Assignment.transaction do
-        Assignment.includes(:sent_assignments).
-          where(assignments: {id: params[:id].split(",")}, sent_assignments: {id: nil}). # retirando trabalhos com resposta de alunos
-          map(&:destroy)
-      end
-      render json: {success: true}
-    rescue Exception => e
-      render json: {success: false, msg: e}, status: :unprocessable_entity
-    end
-  end
-
-  ##
-  # Informações do andamento da atividade para um aluno/grupo escolhido
-  # Nesta página, há as opções de comentários para o trabalho do aluno/grupo, avaliação e afins
-  # => responsáveis: podem comentar/avaliar
-  # => alunos: podem enviar/excluir arquivos
-  ##
-  def show
-    @user            = current_user
-    @student_id      = params[:group_id].nil? ? params[:student_id] : nil
-    @group_id        = params[:group_id].nil? ? nil : params[:group_id] 
-    @group           = GroupAssignment.find(params[:group_id]) unless @group_id.nil? # grupo
-    @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
-    @sent_assignment = @assignment.sent_assignment_by_user_id_or_group_assignment_id(@allocation_tag.id, @student_id, @group_id)
-    @situation       = @assignment.situation_of_student(@allocation_tag.id, @student_id, @group_id)
-    @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  # arquivos que fazem parte da descrição da atividade
-    
-    raise CanCan::AccessDenied unless @assignment.user_can_access_assignment(@allocation_tag,
-      current_user.id, @student_id, @group_id)
-   
-    unless @sent_assignment.nil?
-      @sent_assignment_files = @sent_assignment.assignment_files
-      @comments              = @sent_assignment.assignment_comments
-    end
-  end
-
   ##
   # Informações da atividade individual escolhida na listagem com a lista de alunos daquela turma
   # Informações da atividade em grupo escolhida na listagem com a lista dos grupos daquela turma, permitindo seu gerenciamento
@@ -157,9 +147,6 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  ##
-  # Gerenciamento de grupos da atividade
-  ##
   def manage_groups
     deleted_groups_ids = params['deleted_groups_divs_ids'].blank? ? [] : params['deleted_groups_divs_ids'].collect{ |group| group.tr('_', ' ').split[1] } #"group_2" => 2
     @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
@@ -205,9 +192,6 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  ##
-  # Avalia trabalho do aluno / grupo
-  ##
   def evaluate
     @student_id = (params[:student_id].nil? or params[:student_id].blank?) ? nil : params[:student_id]
     @group_id   = (params[:group_id].nil? or params[:group_id].blank?) ? nil : params[:group_id]
@@ -227,9 +211,6 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  ##
-  # Envia comentarios do professor (cria e edita)
-  ##
   def send_comment
     comment           = params[:comment_id].nil? ? nil : AssignmentComment.find(params[:comment_id]) # verifica se comentário já existe. se sim, é edição; se não, é criação.
     authorize! :send_comment, comment unless comment.nil?
@@ -270,9 +251,6 @@ class AssignmentsController < ApplicationController
     redirect_to request.referer.nil? ? root_url(:only_path => false) : request.referer
   end
 
-  ##
-  # Remover comentário
-  ##
   def remove_comment
     comment = AssignmentComment.find(params[:comment_id])
     @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
@@ -291,9 +269,7 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  ##
-  # Download dos arquivos do portfolio (seja enviado pelo aluno/grupo, enviado no comentário do professor, que faça parte da descrição da atividade ou arquivo público)
-  ##
+  ## Download dos arquivos do portfolio (seja enviado pelo aluno/grupo, enviado no comentário do professor, que faça parte da descrição da atividade ou arquivo público)
   def download_files
     assignment = Assignment.find(params[:assignment_id]) unless params[:assignment_id].nil?
     authorize! :download_files, assignment unless assignment.nil?
@@ -344,16 +320,10 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  ##
-  # Página de envio dos arquivos públicos
-  ##
   def send_public_files_page
-    render :layout => false
+    render layout: false
   end
 
-  ##
-  # Upload de arquivos públicos ou de uma atividade
-  ##
   def upload_file
     begin
       allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])  
@@ -437,9 +407,6 @@ class AssignmentsController < ApplicationController
     render :layout => false
   end
 
-  ##
-  # Importação de grupos
-  ##
   def import_groups
     import_to_assignment_id   = params[:id] # para qual atividade os grupos serão importados
     import_from_assignment_id = params[:assignment_id_import_from] # de qual atividade os grupos serão importados

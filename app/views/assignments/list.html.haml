@@ -1,6 +1,6 @@
 = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
-.block_wrapper.list_assignments
+.block_wrapper.list_assignments{:"data-link-list" => list_assignments_path(allocation_tags_ids: @allocation_tags_ids)}
   .block_title
     %h2= t(:assignment, scope: [:editions, :items])
 
@@ -17,7 +17,7 @@
     .block_toolbar_right
       .btn-group
         = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit edit_assignment', "data-link-to-edit" => edit_assignment_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), "data-edit-title" => t(:edit, scope: "assignment.list"), disabled: true
-        = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del delete_assignment', :"data-link-to-delete" => assignment_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-link-to-list" => list_assignments_path(allocation_tags_ids: [@allocation_tags_ids]), disabled: true
+        = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del delete_assignment', :"data-link-delete" => assignment_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-link-to-list" => list_assignments_path(allocation_tags_ids: [@allocation_tags_ids]), disabled: true
 
   .block_wrapper.assignments
     - unless @assignments.empty? or @assignments.nil?
@@ -90,15 +90,24 @@
     });
 
     $('.delete_assignment').click(function() {
-      if ($(this).attr('disabled') == 'disabled') {
+      if ($(this).attr('disabled') == 'disabled' || !confirm("#{t(:message_confirm)}"))
         return false;
+
+      // tentar melhorar o nice_delete para incluir a delecao de muitas linhas
+
+      var assignments = $('.ckb_assignment:checked', $(this).parents("div.list_assignments"));
+      var assignments_ids = assignments.map(function() { return this.value; }).get();
+      if (assignments_ids.length) {
+        $.delete($(this).data('link-delete').replace(':id', assignments_ids), function(data){
+          flash_message(data.notice, 'notice');
+          assignments.parents('tr').fadeOut().remove();
+        }).error(function(data){
+          var data = $.parseJSON(data.responseText);
+          if (typeof(data.alert) != "undefined")
+            flash_message(data.alert, 'alert');
+        });
       }
 
-      var assignments_ids = $('.ckb_assignment:checked', $(this).parents("div.list_assignments")).map(function() { return this.value; }).get();
-      if (assignments_ids.length) {
-        var url_delete = $(this).data('link-to-delete').replace(':id', assignments_ids);
-        delete_object(url_delete, $(this).data('link-to-list'));
-      }
       return false;
     });
 

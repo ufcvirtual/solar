@@ -24,7 +24,8 @@ class Assignment < ActiveRecord::Base
 
   accepts_nested_attributes_for :schedule
 
-  before_save :define_end_evaluation_date
+  ## CONVERSAR COM A PATTY SOBRE ISSO E SOBRE O extra_time
+  # before_save :define_end_evaluation_date
 
   validates :name, :enunciation, :type_assignment, presence: true
 

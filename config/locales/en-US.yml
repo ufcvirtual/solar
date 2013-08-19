@@ -1136,6 +1136,16 @@
     enrollment_accepted:
       subject: "[SOLAR] Enrollment accepted"
 
+  assignments:
+    success:
+      created: Assignment was successfully created.
+      updated: Assignment was successfully updated.
+      deleted: Assignment was successfully deleted.
+    error:
+      created: Assignment wasn't created.
+      updated: Assignment wasn't updated.
+      deleted: Assignment wasn't deleted.
+
   groups:
     list:
       all: All

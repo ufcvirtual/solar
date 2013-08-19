@@ -15,6 +15,10 @@
 
       = f.input :type_assignment, collection: types, include_blank: false, required: true
 
+      .groups
+        - @groups.each do |group|
+          %span.collection_check_boxes= group.code
+
       .right_buttons_assignment
         = button_tag t(:cancel), :class => "btn btn_default btn_lightbox", :type => "button", onclick: "javascript:removeLightBox();"
         = button_tag t(:save), :class => "btn btn_main btn_lightbox", :type => "button", :id => "save"
@@ -39,16 +43,15 @@
     $('#assignment_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#assignment_end_date').datepicker("option", "minDate", selected); } }) );
     $('#assignment_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#assignment_start_date').datepicker("option", "maxDate", selected); } }) );
 
-    $('#save').click(function() {
-      $('#assignment_form:last').serialize_and_submit_form({
-        div_error: 'new_assignment:first',
-        redirect_url: '#{list_assignments_path(allocation_tags_ids: @allocation_tags_ids)}',
+    $('#save').click(function(){
+      $('#assignment_form:last').serialize_and_submit({
+        replace_list: $(".list_assignments")
       });
     });
 
     /* se a data ficar vazia, recebe a data que veio ao carregar o formulário ou uma data permitida de acordo com a relação data final - data inicial */
     $('#assignment_end_date').blur(function(){
-      if($(this).datepicker("getDate") == null)
+      if ($(this).datepicker("getDate") == null)
         $(this).datepicker("setDate", new Date("#{@assignment.schedule.end_date}"));
     });
 
@@ -58,5 +61,3 @@
     });
 
   });
-
-

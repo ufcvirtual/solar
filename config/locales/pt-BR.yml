@@ -1302,6 +1302,16 @@
     enrollment_accepted:
       subject: "[SOLAR] Matrícula aceita"
 
+  assignments:
+    success:
+      created: Trabalho criado com sucesso.
+      updated: Trabalho atualizado com sucesso.
+      deleted: Trabalho deletado com sucesso.
+    error:
+      created: Não foi possível criar trabalho.
+      updated: Não foi possível atualizar trabalho.
+      deleted: Não foi possível deletar trabalho.
+
   groups:
     list:
       all: Selecionar Todos
