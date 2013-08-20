@@ -20,3 +20,39 @@ Dado 'que eu preenchi "$element" de "$parent_div" com "$texto"' do |element, par
   end
 end
 
+Dado 'que eu cliquei no link "$element" de "$parent_div"' do |element, parent_div|
+  xpath = "//div[@class='#{parent_div}']"
+  within(:xpath, xpath) do
+    find(element).click
+  end
+end
+
+Entao /^eu deverei ver a linha de Cursos$/ do |tabela| 
+  tabela.hashes.each do |linha|
+    xpath = "//table/tbody/tr[ child::td[contains(., '#{linha[:Codigo]}')] and child::td[contains(., '#{linha[:Nome]}')] ]"
+    page.should have_xpath(xpath)
+  end
+end
+
+Entao /^eu nao deverei ver a linha de Cursos$/ do |tabela| 
+  tabela.hashes.each do |linha|
+    xpath = "//table/tbody/tr[ child::td[contains(., '#{linha[:Codigo]}')] and child::td[contains(., '#{linha[:Nome]}')] ]"
+    page.should have_no_xpath(xpath)
+  end
+end
+
+Entao /^eu deverei ver a linha de Ofertas$/ do |tabela| 
+  tabela.hashes.each do |linha|
+    xpath = "//table/tbody/tr[ child::td[contains(., '#{linha[:Tipo]}')] and child::td[contains(., '#{linha[:Curso]}')] and child::td[contains(., '#{linha[:Oferta]}')] ]"
+    page.should have_xpath(xpath)
+  end
+end
+
+Entao /^eu deverei ver a linha de Turmas$/ do |tabela| 
+  tabela.hashes.each do |linha|
+    xpath = "//table/tbody/tr[ child::td[contains(., '#{linha[:Codigo]}')] ]"
+    page.should have_xpath(xpath)
+  end
+end
+
+
