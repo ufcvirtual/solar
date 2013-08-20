@@ -70,7 +70,7 @@
 
       - if (can? :list, Assignment, on: @allocation_tags_ids) and (@group ? Assignment.constants.include?(:GROUP_PERMISSION) : Assignment.constants.include?(:OFFER_PERMISSION))
         .uc_item
-          .assignment{:"data-link" => list_assignments_path(allocation_tags_ids: @allocation_tags_ids)}
+          .assignment{:"data-link" => assignments_path(allocation_tags_ids: @allocation_tags_ids)}
             = link_to(content_tag(:i, nil, class: 'icon-suitcase big'), "#", class: 'btn')
             = link_to t(".assignment"), "#"
 

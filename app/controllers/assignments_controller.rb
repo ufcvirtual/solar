@@ -3,12 +3,18 @@ class AssignmentsController < ApplicationController
   include AssignmentsHelper
   include FilesHelper
 
-  layout false, only: [:list, :new, :edit, :create, :update, :destroy]
+  layout false, only: [:index, :new, :edit, :create, :update, :destroy]
 
   before_filter :prepare_for_group_selection, :only => [:professor, :student]
   load_and_authorize_resource :only => [:information, :show, :import_groups_page, :import_groups, :manage_groups, :evaluate, :send_comment, :remove_comment]
 
   authorize_resource :only => [:download_files, :upload_file, :send_public_files_page, :delete_file]
+
+  def index
+    authorize! :list, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids]
+
+    @assignments = Assignment.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).order("name").uniq
+  end
 
   def new
     authorize! :create, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
@@ -45,8 +51,8 @@ class AssignmentsController < ApplicationController
   def edit
     authorize! :update, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
 
-    @groups     = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
     @assignment = Assignment.find(params[:id])
+    @groups = @assignment.groups
     @schedule   = @assignment.schedule
   end
 
@@ -103,12 +109,6 @@ class AssignmentsController < ApplicationController
   end
 
   # Não REST
-
-  def list
-    authorize! :list, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids]
-
-    @assignments = Assignment.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids})
-  end
 
   def professor
     authorize! :professor, Assignment

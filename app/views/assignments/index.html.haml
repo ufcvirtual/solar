@@ -1,6 +1,6 @@
 = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
-.block_wrapper.list_assignments{:"data-link-list" => list_assignments_path(allocation_tags_ids: @allocation_tags_ids)}
+.block_wrapper.list_assignments{:"data-link-list" => assignments_path(allocation_tags_ids: @allocation_tags_ids)}
   .block_title
     %h2= t(:assignment, scope: [:editions, :items])
 
@@ -17,7 +17,7 @@
     .block_toolbar_right
       .btn-group
         = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit edit_assignment', "data-link-to-edit" => edit_assignment_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), "data-edit-title" => t(:edit, scope: "assignment.list"), disabled: true
-        = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del delete_assignment', :"data-link-delete" => assignment_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-link-to-list" => list_assignments_path(allocation_tags_ids: [@allocation_tags_ids]), disabled: true
+        = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del delete_assignment', :"data-link-delete" => assignment_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-link-to-list" => assignments_path(allocation_tags_ids: [@allocation_tags_ids]), disabled: true
 
   .block_wrapper.assignments
     - unless @assignments.empty? or @assignments.nil?
@@ -37,7 +37,19 @@
               %td{style: 'text-align:center;'}
                 = check_box_tag("c_#{assignment.id}", assignment.id, false, {class: "ckb_assignment", :"data-can-delete" => can_delete})
               %td
-                %div= assignment.name
+                %div
+                  .title
+                    = assignment.name
+                    - unless assignment.assignment_enunciation_files.empty?
+                      %i.icon-paperclip
+                  .enunciation= assignment.enunciation.truncate(250)
+                  %br/
+                  .groups
+                    = "Turmas: "
+                    - assignment.groups.each do |group|
+                      %span.collection_check_boxes= group.code
+
+
               %td{style: 'text-align:center;'}
                 %div
                   %span= l(assignment.schedule.start_date, format: :normal)
@@ -51,6 +63,15 @@
 
     - else
       .block_content.block_content_text= t(:none, scope: "assignment.list")
+
+:css
+  .title i {
+    font-size: 12px;
+  }
+
+  .enunciation, .groups {
+    font-size: 11px;
+  }
 
 :javascript
 
