@@ -56,7 +56,7 @@
                   %span= ' - '
                   %span= l(assignment.schedule.end_date, format: :normal)
               %td{style: 'text-align:center;'}
-                %div= t(((assignment.type_assignment.to_i == Assignment_Type_Individual) ? :individual : :group), scope: "assignment.list")
+                %div.title= t(((assignment.type_assignment.to_i == Assignment_Type_Individual) ? :individual : :group), scope: "assignment.list")
 
               %td{style: 'text-align:center;'}
                 %div= can_delete ? t(:no, scope: "assignment.list") : t(:yes, scope: "assignment.list")
@@ -64,14 +64,7 @@
     - else
       .block_content.block_content_text= t(:none, scope: "assignment.list")
 
-:css
-  .title i {
-    font-size: 12px;
-  }
 
-  .enunciation, .groups {
-    font-size: 11px;
-  }
 
 :javascript
 
