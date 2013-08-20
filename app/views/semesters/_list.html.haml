@@ -17,6 +17,8 @@
           .block_toolbar_left.btn-group
             %a.btn.btn_main.new_offer{:'data-tooltip' => t(".new_offer"), :"data-link-new-offer" => new_semester_offer_path(semester, type_id: type_id, course_id: (params[:course_id] || ""), curriculum_unit_id: (params[:curriculum_unit_id] || "")), :"data-semester-name" => semester.name}
               = content_tag(:i, nil, class: 'icon-plus-3')
+          .block_toolbar_right
+            = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'delete_offer btn', :'data-tooltip' => t(".delete"), :"data-link-delete" => offer_path(id: ':id')
 
         .table-offers{id: "table-#{semester.id}", :"data-link-offers" => semester_offers_path(semester, type_id: type_id)}
           = render partial: "offers/list", object: @offers = semester.offers, object: @type_id = type_id
@@ -39,5 +41,28 @@
 
     $('.new_offer').click(function(){
       showLightBoxURL($(this).data("link-new-offer"), 500, 400, true, [$(this).data("tooltip"), $(this).data("semester-name")].join(" - "));
+    });
+
+    $('.delete_offer').click(function() {
+      if ($(this).attr('disabled') == 'disabled' || !confirm("#{t(:message_confirm)}"))
+        return false;
+
+      // tentar melhorar o nice_delete para incluir a delecao de muitas linhas
+
+      var offers = $('.ckb_offers:checked', $(this).parents(".semester"));
+      var offers_ids = offers.map(function() { return this.value; }).get();
+
+      if (offers_ids.length) {
+        $.delete($(this).data('link-delete').replace(':id', offers_ids), function(data){
+          flash_message(data.notice, 'notice');
+          offers.parents('tr').fadeOut().remove();
+        }).error(function(data){
+          var data = $.parseJSON(data.responseText);
+          if (typeof(data.alert) != "undefined")
+            flash_message(data.alert, 'alert');
+        });
+      }
+
+      return false;
     });
   });

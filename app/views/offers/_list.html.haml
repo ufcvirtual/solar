@@ -2,7 +2,9 @@
 %table.tb_list{cellpadding: "10", cellspacing: "0", width: "100%", border: "0"}
   %thead
     %tr.lines
-      %th= t(".type")
+      %th
+        %input{id: "all_offers_#{semester_id}", :"data-children-names" => "ckb_offers_#{semester_id}", type: "checkbox"}
+        = t(".type")
       %th= t(".course")
       - if @type_id != 3
         %th= t(".curriculum_unit")
@@ -11,7 +13,9 @@
   %tbody
     - @offers.each do |offer|
       %tr.lines
-        %td= offer.curriculum_unit.try(:curriculum_unit_type).try(:description)
+        %td
+          = check_box_tag "ckb_offers_#{semester_id}", offer.id, checked = false, {class: 'ckb_offers', :"data-offers-id" => offer.id}
+          = offer.curriculum_unit.try(:curriculum_unit_type).try(:description)
         %td= offer.course.try(:name)
         - if @type_id != 3
           %td= offer.curriculum_unit.try(:name)
@@ -21,7 +25,8 @@
           %td= [l(offer.period_schedule.start_date, format: :normal), l(offer.period_schedule.end_date, format: :normal)].join(" - ")
         %td
           = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit_offer', :'data-tooltip' => t(".offer_edit"), disabled: not(can? :edit, Offer, on: [offer.allocation_tag.id]), :"data-link-edit-offer" => edit_offer_path(offer, type_id: @type_id), :"data-semester-name" => offer.semester.name
-          = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_offer', :'data-tooltip' => t(".offer_delete"), disabled: (not(can? :destroy, Offer, on: [offer.allocation_tag.id]) or (offer.has_any_lower_association?)), :"data-link-delete" => offer_path(offer, type_id: @type_id)
+
+          / = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_offer', :'data-tooltip' => t(".offer_delete"), :"data-link-delete" => offer_path(offer, type_id: @type_id)
 
 :javascript
 
@@ -34,9 +39,6 @@
         showLightBoxURL($(this).data("link-edit-offer"), 500, 400, true, [$(this).data("tooltip"), $(this).data("semester-name")].join(" - "));
       });
 
-      // delete offer
-      $('.delete_offer:not([disabled])', semester).click(function(){
-        $(this).nice_delete();
-      });
+      $("#all_offers_#{semester_id}").nice_checkbox();
     }
   });

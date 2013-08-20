@@ -7,7 +7,7 @@ class CurriculumUnitsController < ApplicationController
   before_filter :curriculum_data, only: [:home, :informations, :curriculum_data, :participants]
 
   authorize_resource only: [:index, :new]
-  load_and_authorize_resource only: [:destroy, :edit, :update]
+  load_and_authorize_resource only: [:edit, :update]
 
   def home
     allocation_tags   = AllocationTag.find(@allocation_tag_id).related({all: true, objects: true}).map(&:id)
@@ -132,10 +132,18 @@ class CurriculumUnitsController < ApplicationController
   end
 
   def destroy
-    if @curriculum_unit.destroy
-      render json: {success: true, notice: t(:deleted, scope: [:curriculum_units, :success])}
-    else
-      render json: {success: false, alert: t(:deleted, scope: [:curriculum_units, :error])}, status: :unprocessable_entity
+    @curriculum_unit = CurriculumUnit.where(id: params[:id].split(","))
+    authorize! :destroy, CurriculumUnit, on: [@curriculum_unit.map(&:allocation_tag).map(&:id).compact.uniq]
+
+    CurriculumUnit.transaction do
+      begin
+        @curriculum_unit.each do |curriculum_unit|
+          raise "erro" unless curriculum_unit.destroy
+        end
+        render json: {success: true, notice: t(:deleted, scope: [:curriculum_units, :success])}
+      rescue
+        render json: {success: false, alert: t(:deleted, scope: [:curriculum_units, :error])}, status: :unprocessable_entity
+      end
     end
   end
 

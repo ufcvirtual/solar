@@ -305,7 +305,7 @@ $.fn.nice_checkbox = function(options){
     // REVER
     // habilita ou desabilita os botões da barra de ferramentas
     $('.disable_group, .enable_group, .delete_group').toggleClass("disabled", !check);
-  });
+  }); // end click
 
   if (typeof(options) != "undefined" && typeof(options.objects_to_change_status) != "undefined")
     $(this).change(function(){
