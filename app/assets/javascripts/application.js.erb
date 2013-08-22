@@ -275,18 +275,51 @@ $.fn.is_empty = function(){
 }
 
 $.fn.nice_checkbox = function(options){
-  var parent = this;
-  // atualiza o pai verificando o status dos filhos
+  var parent = this, children_names = $(this).data("children-names");
+
+  /**
+   * Funcoes para habiltar/desabilitar edicao/delecao
+   */
+  var enable_edition = function() { $(".btn_edit").attr("disabled", false); }
+  var disable_edition = function() { $(".btn_edit").attr("disabled", true); }
+  var enable_deletion = function() { $(".btn_del").attr("disabled", false); }
+  var disable_deletion = function() { $(".btn_del").attr("disabled", true); }
+
+  /**
+   * Capturando evento de click nos filhos
+   */
   var f_kids = function(children) {
     children.click(function(){
-      $(parent).prop("checked", (this.checked && children.length == $('input[name="' + $(parent).data("children-names") + '"]:checked').length));
-    });
+      var kid = this;
+      var children_checked = $('input[name="' + children_names + '"]:checked');
+      if (kid.checked) { // filho selecionado
+        enable_deletion();
+        enable_edition();
+        if (children_checked.length == 0 || children_checked.length > 1)
+          disable_edition();
+      } else { // o evento de click tirou selecao do filho
+        if (children_checked.length == 0) { // nenhum filho selecionado
+          disable_deletion();
+          disable_edition();
+        } else if (children_checked.length == 1) { // apenas um filho selecionado
+          enable_deletion();
+          enable_edition();
+        } else if (children_checked.length > 1) { // mais de um filho selecionado
+          disable_edition();
+          enable_deletion();
+        }
+      }
+      $(parent).prop("checked", (kid.checked && children.length == $('input[name="' + children_names + '"]:checked').length)); // atualiza o pai verificando o status dos filhos
+    }); // event de click no filho
   }
 
-  var children = $('input[name="' + $(parent).data("children-names") + '"]');
-  f_kids(children);
+  var children = $('input[name="' + children_names + '"]');
+  f_kids(children); // eventos nos filhos
 
-  $(this).click(function(){
+  /***
+   * Capturando evento de click no parent
+   */
+  $(this).click(function() {
     var parent = this;
     var icon = $('i', parent);
     if (icon.length){ // checkbox normal
@@ -296,21 +329,18 @@ $.fn.nice_checkbox = function(options){
       var check = parent.checked;
     }
 
-    children.each(function(i){
-      $(this).prop("checked", check);
-    });
+    children.each(function(i){ $(this).prop("checked", check); });
+    f_kids(children); // aplicando funcoes nos filhos
 
-    f_kids(children);
+    // o botao de edicao devera ser habilitado apenas para um unico objeto
+    var children_checked = $('input[name="' + children_names + '"]:checked');
+    $(".btn_edit").attr("disabled", !(children_checked.length == 1));
+    $(".btn_del").attr("disabled", !check);
 
-    // REVER
-    // habilita ou desabilita os botões da barra de ferramentas
-    $('.disable_group, .enable_group, .delete_group').toggleClass("disabled", !check);
+    if (typeof(options) != "undefined" && typeof(options.objects_to_change_status) != "undefined")
+      options.objects_to_change_status.attr("disabled", !check);
+
   }); // end click
-
-  if (typeof(options) != "undefined" && typeof(options.objects_to_change_status) != "undefined")
-    $(this).change(function(){
-      options.objects_to_change_status.toggleClass("disabled");
-    });
 
   return this;
 }

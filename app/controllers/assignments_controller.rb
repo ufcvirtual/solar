@@ -64,9 +64,7 @@ class AssignmentsController < ApplicationController
     begin
       Assignment.transaction do
         @assignment.save!
-        @allocation_tags_ids.each do |at|
-          AcademicAllocation.create! allocation_tag_id: at, academic_tool_id: @assignment.id, academic_tool_type: "Assignment"
-        end
+        @assignment.academic_allocations.create @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
       end
 
       render json: {success: true, notice: t(:created, scope: [:assignments, :success])}

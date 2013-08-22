@@ -39,38 +39,35 @@
 
   jQuery(function($){
 
-    $('.disable_group, .enable_group, .delete_group').addClass("disabled");
+    $('.disable_group, .enable_group, .delete_group').attr("disabled", true);
 
     $('#btn_new_group').click(function(){
       var url = $(this).data("link-new-group").replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
       showLightBoxURL(url, 500, 400, true, $(this).data("tooltip"));
     });
 
-    $('.edit_group').not('.disabled').click(function(){
+    $('.edit_group').click(function(){
       showLightBoxURL($(this).data("link-edit-group"), 500, 400, true, $(this).data("tooltip"));
     });
 
     $('.delete_group').click(function(){
-      if (!$(this).hasClass('disabled')) {
+      if (!confirm("#{I18n.t(:message_confirm)}"))
+        return false;
 
-        if (!confirm("#{I18n.t(:message_confirm)}"))
-          return false;
+      var groups_ids = $.map($("#ckb_group:checked"), function(n){
+        return ($(n).val());
+      });
 
-        var groups_ids = $.map($("#ckb_group:checked"), function(n){
-          return ($(n).val());
-        });
+      if($(groups_ids).length == 0)
+        flash_message("#{t(".choose_at_least_one")}", 'alert');
+      else {
+        $.delete($(this).data('link-delete').replace(':id', groups_ids), function(data) {
+          flash_message(data.notice, 'notice');
 
-        if($(groups_ids).length == 0)
-          flash_message("#{t(".choose_at_least_one")}", 'alert');
-        else {
-          $.delete($(this).data('link-delete').replace(':id', groups_ids), function(data) {
-            flash_message(data.notice, 'notice');
+          var url = "#{list_groups_path(semester_id: 'semester_param', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')}".replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
 
-            var url = "#{list_groups_path(semester_id: 'semester_param', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')}".replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
-
-            $.get(url, function(data) { $(".groups_list").html(data); });
-          }).error(result_error);
-        }
+          $.get(url, function(data) { $(".groups_list").html(data); });
+        }).error(result_error);
       }
     });
 
@@ -89,14 +86,11 @@
       var disabled = checked_ckb.is_empty();
 
       // habilita ou desabilita os botões da barra de ferramentas
-      $('.disable_group, .enable_group, .delete_group').toggleClass("disabled", disabled);
-
-      // seleciona ou não o checkbox de "todos"
-      //$("#all_groups").prop('checked', (checked_ckb.length == $('[name="ckb_group"]').length));
+      $('.disable_group, .enable_group, .delete_group').attr("disabled", disabled);
     });
 
     $('.disable_group, .enable_group').click(function(){
-      if (!$(this).hasClass('disabled')) {
+      // if (!$(this).hasClass('disabled')) {
         var groups_ids = jQuery.map($("#ckb_group:checked"), function(n) {
           return ($(n).val());
         });
@@ -110,7 +104,7 @@
             $.get(url, function(data){ $(".groups_list").html(data); });
           }).error(result_error);
         }
-      }
+      // }
     });
 
     $(".change_status_group").click(function(){

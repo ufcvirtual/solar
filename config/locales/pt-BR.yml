@@ -898,6 +898,7 @@
     list:
       "yes": Sim
       "no": Não
+      groups: "Turmas:"
       new: Novo Trabalho
       edit: Edição de Trabalho
       name: Nome do Trabalho
