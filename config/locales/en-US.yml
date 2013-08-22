@@ -113,6 +113,8 @@
         end_evaluation_period: Final date to evaluation period
         start_date: Data de início
         end_date: Data de término
+      assignment_enunciation_file:
+        attachment: "Files"
       semester:
         offer: Offer
         enrollment: Enrollment

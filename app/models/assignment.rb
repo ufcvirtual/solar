@@ -6,27 +6,25 @@ class Assignment < ActiveRecord::Base
   has_many :allocation_tags, through: :academic_allocations
   #EXTRAS
 
-  belongs_to :schedule#, :inverse_of => :assignments
+  belongs_to :schedule #, :inverse_of => :assignments
 
-  has_many :groups, through: :allocation_tags
-
+  has_many :assignment_enunciation_files, dependent: :destroy
   has_many :allocations, through: :allocation_tags
-  has_many :assignment_enunciation_files
+  has_many :groups, through: :allocation_tags
+  has_many :group_participants, through: :group_assignments # VERIFICAR
 
   #Associação polimórfica
   has_many :academic_allocations, as: :academic_tool
   has_many :sent_assignments, through: :academic_allocations
-  has_many :group_assignments, through: :academic_allocations, :dependent => :destroy
+  has_many :group_assignments, through: :academic_allocations, dependent: :destroy
   #Associação polimórfica
 
-  has_many :group_participants, :through => :group_assignments # VERIFICAR
-
   accepts_nested_attributes_for :schedule
-
-  ## CONVERSAR COM A PATTY SOBRE ISSO E SOBRE O extra_time
-  # before_save :define_end_evaluation_date
+  accepts_nested_attributes_for :assignment_enunciation_files, allow_destroy: true
 
   validates :name, :enunciation, :type_assignment, presence: true
+
+  attr_accessible :schedule_attributes, :assignment_enunciation_files_attributes, :name, :enunciation, :type_assignment
 
   ## define uma data final de avaliacao caso nao esteja definida
   def define_end_evaluation_date(allocation_tag)

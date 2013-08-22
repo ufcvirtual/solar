@@ -22,6 +22,7 @@ class AssignmentsController < ApplicationController
     @groups     = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
     @assignment = Assignment.new
     @assignment.build_schedule(start_date: Date.current, end_date: Date.current)
+    @assignment.assignment_enunciation_files.build
   end
 
   ##
@@ -52,8 +53,9 @@ class AssignmentsController < ApplicationController
     authorize! :update, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
 
     @assignment = Assignment.find(params[:id])
+    @assignment.assignment_enunciation_files.build
     @groups = @assignment.groups
-    @schedule   = @assignment.schedule
+    @schedule = @assignment.schedule
   end
 
   def create
@@ -61,6 +63,7 @@ class AssignmentsController < ApplicationController
     authorize! :create, Assignment, on: @allocation_tags_ids
 
     @assignment = Assignment.new params[:assignment]
+
     begin
       Assignment.transaction do
         @assignment.save!
@@ -72,6 +75,7 @@ class AssignmentsController < ApplicationController
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
       @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
+      @assignment.assignment_enunciation_files.build
       render :new
     end
   end
