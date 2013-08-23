@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 
   has_many :allocations
   has_many :allocation_tags, :through => :allocations, :uniq => true
-  has_many :profiles, :through => :allocations, :uniq => true, conditions: ["profiles.status = true", "allocations.status = 1"] # allocation.status = Allocation_Activated
+  has_many :profiles, :through => :allocations, :uniq => true, conditions: { profiles: {status: true}, allocations: {status: 1} } # allocation.status = Allocation_Activated
   has_many :logs
   has_many :lessons
   has_many :discussion_posts
@@ -157,215 +157,30 @@ class User < ActiveRecord::Base
     return (only_id) ? profiles.map(&:id) : profiles
   end
 
-  def profiles_on_allocation_tag(allocation_tag_id, only_id = false)
-    query = <<SQL
-      SELECT DISTINCT t1.profile_id AS id
-        FROM allocations  AS t1
-        JOIN profiles     AS t2 ON t2.id = t1.profile_id
-       WHERE t1.user_id = ?
-         AND t1.status = ?
-         AND (t1.allocation_tag_id IN (#{allocation_tag_id}) OR t2.types = ?)
-SQL
-
-    profiles = Profile.find_by_sql([query, self.id, Allocation_Activated, Profile_Type_Basic])
-    return (only_id) ? profiles.map { |p| p.id.to_i } : profiles
-  end
-
   def profiles_with_access_on(action, controller, allocation_tag_id = nil, only_id = false)
     if allocation_tag_id.nil?
-      user_profiles = self.profiles_activated(true)
+      profiles = self.profiles.
+        joins(permissions_resources: :resource).
+        where(
+          resources: {action: action, controller: controller}).
+        order("profiles.id DESC")
     else
-      user_profiles = self.profiles_on_allocation_tag(allocation_tag_id, true)
+      profiles = self.profiles.
+        joins(permissions_resources: :resource).
+        where(
+          allocations: { allocation_tag_id: allocation_tag_id }, 
+          resources: {action: action, controller: controller}).
+        order("profiles.id DESC")
     end
 
-    query = <<SQL
-      SELECT DISTINCT t1.id
-        FROM profiles               AS t1
-        JOIN permissions_resources  AS t2 ON t2.profile_id = t1.id
-        JOIN resources              AS t3 ON t3.id = t2.resource_id
-       WHERE t3.action = ?
-         AND t3.controller = ?
-         AND t1.id IN (#{user_profiles.join(',')})
-       ORDER BY 1 DESC
-SQL
-
-    profiles = Profile.find_by_sql([query, action, controller])
     return (only_id) ? profiles.map { |p| p.id.to_i } : profiles
   end
-  
+
   # Retorna os ids das allocations_tags ativadas de um usuário
   def activated_allocation_tag_ids(related = true)
     map = related ? "related" : "id"
     allocation_tags.where(allocations: {status: Allocation_Activated.to_i}).map(&map.to_sym).flatten.uniq
   end
 
-  #Retorna unidades curriculares que o usuário acessa (incluindo ofertas e turmas)
-  #com determinados perfis
-  def curriculumUnits_by_profile(profile_list)
-
-    profile_id_array = []
-    for profile in profile_list
-      profile_id_array.insert(profile_id_array.length, profile.id)
-    end
-
-    query = <<SQL
-      select distinct c.*, ct.id as allocation_tag_id
-      from 
-        curriculum_units c
-        left join allocation_tags ct on c.id = ct.curriculum_unit_id
-      where
-        exists (
-            select a.id  
-              from allocations a 
-            where  
-              a.allocation_tag_id = ct.id
-              and a.status = 1
-              and a.user_id = #{self.id}
-              and a.profile_id in (#{profile_id_array.join(',')})
-        ) or
-        exists (
-          select a.id 
-          from 
-            offers f
-            inner join allocation_tags ot on f.id = ot.offer_id
-            inner join allocations a on a.allocation_tag_id = ot.id
-          where 
-            f.curriculum_unit_id = c.id
-            and a.status = 1
-            and a.user_id = #{self.id}
-            and a.profile_id in (#{profile_id_array.join(',')})
-        ) or
-
-        exists (
-          select a.id
-          from 
-            offers f
-            inner join groups g on g.offer_id = f.id
-            inner join allocation_tags gt on g.id = gt.group_id
-            inner join allocations a on a.allocation_tag_id = gt.id
-          where 
-            f.curriculum_unit_id = c.id
-            and a.status = 1
-            and a.user_id = #{self.id}
-            and a.profile_id in (#{profile_id_array.join(',')})
-        )
-SQL
-    return CurriculumUnit.find_by_sql(query)
-  end
-
-  #Retorna ofertas que o usuário acessa (incluindo turmas)
-  #com determinados perfis
-  def offers_by_profile_and_curriculum_unit(profile_list, curriculum_unit_id)
-
-    profile_id_array = []
-    for profile in profile_list
-      profile_id_array.insert(profile_id_array.length, profile.id)
-    end
-
-    query = <<SQL
-      select distinct o.*, ot.id as allocation_tag_id
-      from 
-        offers o
-        left join allocation_tags ot on o.id = ot.offer_id
-      where
-        o.curriculum_unit_id = #{curriculum_unit_id} and
-        (
-          exists (
-              select a.id  
-                from allocations a 
-              where  
-                a.allocation_tag_id = ot.id
-                and a.status = 1
-                and a.user_id = #{self.id}
-                and a.profile_id in (#{profile_id_array.join(',')})
-          ) or
-          exists (
-            select a.id
-            from 
-              groups g
-              inner join allocation_tags gt on g.id = gt.group_id
-              inner join allocations a on a.allocation_tag_id = gt.id
-            where 
-              g.offer_id = o.id
-              and a.status = 1
-              and a.user_id = #{self.id}
-              and a.profile_id in (#{profile_id_array.join(',')})
-          )
-          or
-          exists (
-            select a.id
-            from 
-              curriculum_units c
-              inner join allocation_tags ct on c.id = ct.curriculum_unit_id
-              inner join allocations a on a.allocation_tag_id = ct.id
-            where 
-              o.curriculum_unit_id = c.id
-              and a.status = 1
-              and a.user_id = #{self.id}
-              and a.profile_id in (#{profile_id_array.join(',')})
-          )
-        )
-SQL
-    return Offer.find_by_sql(query)
-
-  end
-
-  #Retorna turmas que o usuário acessa com determinados perfis, incluindo 
-  #por alocações de oferta e unidades curriculares
-  def groups_by_profile_and_offer(profile_list, offer_id)
-
-    profile_id_array = []
-    for profile in profile_list
-      profile_id_array.insert(profile_id_array.length, profile.id)
-    end
-
-    query = <<SQL
-      select distinct g.*, gt.id as allocation_tag_id
-      from 
-        groups g
-        left join allocation_tags gt on g.id = gt.group_id
-      where
-        g.offer_id = #{offer_id} and (
-          exists (
-              select a.id  
-                from allocations a 
-              where  
-                a.allocation_tag_id = gt.id
-                and a.status = 1
-                and a.user_id = #{self.id}
-                and a.profile_id in (#{profile_id_array.join(',')})
-          ) or
-          exists (
-            select a.id
-            from 
-              offers o
-              inner join allocation_tags ot on o.id = ot.offer_id
-              inner join allocations a on a.allocation_tag_id = ot.id
-            where 
-              g.offer_id = o.id
-              and a.status = 1
-              and a.user_id = #{self.id}
-              and a.profile_id in (#{profile_id_array.join(',')})
-          )
-          or
-          exists (
-            select a.id
-            from 
-              curriculum_units c
-              inner join allocation_tags ct on c.id = ct.curriculum_unit_id
-              inner join allocations a on a.allocation_tag_id = ct.id
-              inner join offers o on g.offer_id = o.id
-            where 
-              o.curriculum_unit_id = c.id
-              and a.status = 1
-              and a.user_id = #{self.id}
-              and a.profile_id in (#{profile_id_array.join(',')})
-          )
-        )
-        
-SQL
-
-    return Group.find_by_sql(query)
-  end
-
+ 
 end
