@@ -29,7 +29,7 @@
 
   #autocomplete-input {
     height: 17px;
-    width: 200px;
+    width: 193px;
     font-size: 11px;
   }
 
@@ -45,6 +45,16 @@
   .ui-autocomplete {
     width: 207px !important;
   }
+
+  width:800px;
+}
+
+.any_found{
+  padding: 5px;
+  padding-right: 5px;
+  border-bottom: solid 1px;
+  border-bottom-color: #d0d0d0;
+  height: 22px;
 }
 
 #offer_category {

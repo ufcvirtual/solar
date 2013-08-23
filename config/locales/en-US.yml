@@ -397,6 +397,7 @@
       cancel_request: Cancel Request
       period: Enrollment period
       of: "of"
+      no_curriculum_unit_found: "No curriculum unit found"
     not_defined: Not defined
 
   enrollm_cancelled_message: "Enrollment cancelled"

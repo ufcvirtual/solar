@@ -561,6 +561,7 @@
       cancel_request: "Cancelar pedido"
       period: Período de matrícula
       of: "por"
+      no_curriculum_unit_found: "Nenhuma unidade curricular encontrada"
     not_defined: Não definido
 
   enrollm_request_cancel_message: "Pedido de matrícula cancelado"  

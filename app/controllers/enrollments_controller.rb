@@ -4,7 +4,7 @@ class EnrollmentsController < ApplicationController
     authorize! :index, Enrollment
     student_profile = Profile.student_profile
 
-    @groups = []
+    @groups = ["fdf"]
     @types  = CurriculumUnitType.order(:name)
     @status = [[t(:all, scope: [:enrollments]), "all"], [t(:enrolled, scope: [:enrollments]), "enroll"]]
     @search_status  = params[:status] || @status.first[1]
