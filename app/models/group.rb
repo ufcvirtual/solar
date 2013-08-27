@@ -7,7 +7,7 @@ class Group < ActiveRecord::Base
   has_one :curriculum_unit, :through => :offer
   has_one :course, :through => :offer
 
-  has_many :assignments, :through => :allocation_tag
+  has_many :assignments, through: :allocation_tag
 
   validates :offer_id, :presence => true
   validates :code, :presence => true
@@ -31,6 +31,16 @@ class Group < ActiveRecord::Base
 
   def set_default_lesson_module
     create_default_lesson_module(I18n.t(:general_of_group, scope: :lesson_modules))
+  end
+
+  # Recupera os participantes com perfil de estudante
+  def students_participants
+    allocations.joins(:profile).where("cast( profiles.types & '#{Profile_Type_Student}' as boolean)").where(status: Allocation_Activated)
+    # allocations.joins(:profile).where("cast( profiles.types & '#{Profile_Type_Student}' as boolean)").where(status: Allocation_Activated).map { |allocation|
+    #   { id: allocation.id, user_name: allocation.user.name, user_id: allocation.user_id }
+    # }
+    # allocations = self.allocations.joins(:profile).where("cast( profiles.types & '#{Profile_Type_Student}' as boolean)").where(status: Allocation_Activated)
+    # allocations.collect{ |allocation| {allocation_id: allocation.id, user_id: allocation.user_id, user_name: allocation.user.name} }
   end
 
 end

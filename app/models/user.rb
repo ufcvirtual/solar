@@ -144,12 +144,14 @@ class User < ActiveRecord::Base
     where(conditions).where(["translate(cpf,'.-','') = :value OR lower(username) = :value", { :value => login.strip.downcase }]).first
   end
 
-  def groups(profile_id = nil, status = nil)
-    query = {}
-    query[:status] = Allocation_Activated if status.nil? # se o status vier diferente de nulo, deve procurar por todos os 'status' de alocações do usuário
-    query[:profile_id] = profile_id unless profile_id.nil?
+  def groups(profile_id = nil, status = nil, curriculum_unit_id = nil, curriculum_unit_type_id = nil)
+    query = []
+    query << "allocations.status = #{status}" unless status.nil?
+    query << "allocations.profile_id = #{profile_id}" unless profile_id.nil?
+    query << "curriculum_units.id = #{curriculum_unit_id}" unless curriculum_unit_id.nil?
+    query << "curriculum_unit_types.id = #{curriculum_unit_type_id}" unless curriculum_unit_type_id.nil?
 
-    allocations.joins(:allocation_tag).where(query).map(&:groups).flatten.compact.uniq
+    allocations.includes(allocation_tag: [offer: [curriculum_unit: :curriculum_unit_type]]).where(query.join(" AND ")).delete_if {|allocation| allocation.allocation_tag.nil? }.map(&:groups).flatten.compact.uniq
   end
 
   def profiles_activated(only_id = false)
