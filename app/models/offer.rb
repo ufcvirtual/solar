@@ -36,7 +36,7 @@ class Offer < ActiveRecord::Base
   def must_be_unique
     equal_offers = Offer.find_all_by_course_id_and_curriculum_unit_id_and_semester_id(course_id, curriculum_unit_id, semester_id)
     errors_to = (type_id == 3 ? :course : :curriculum_unit_id)
-    errors.add(errors_to, I18n.t(:already_exist, scope: [:offers, :error])) if (@new_record and equal_offers.size > 0) or equal_offers.first.try(:id) != self.id
+    errors.add(errors_to, I18n.t(:already_exist, scope: [:offers, :error])) if (@new_record and equal_offers.size > 0) or ((not equal_offers.empty?) and equal_offers.first.try(:id) != self.id)
   end
 
   def define_curriculum_unit

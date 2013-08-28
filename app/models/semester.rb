@@ -11,7 +11,7 @@ class Semester < ActiveRecord::Base
 
   accepts_nested_attributes_for :offer_schedule, :enrollment_schedule
 
-  attr_accessible :name, :offer_schedule_attributes, :enrollment_schedule_attributes
+  attr_accessible :name, :offer_schedule_attributes, :enrollment_schedule_attributes, :offer_schedule_id, :enrollment_schedule_id
 
   after_destroy { |record|
     record.offer_schedule.destroy if record.offer_schedule.try(:can_destroy?)
