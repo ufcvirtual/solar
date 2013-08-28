@@ -184,9 +184,7 @@ window.onload = function() {
 			'icon-people' : '&#xe00e;',
 			'icon-rotate' : '&#xe05c;',
 			'icon-restore' : '&#xe048;',
-			'icon-video-conference' : '&#xe049;',
-			'icon-checkbox-checked' : '&#xe04a;',
-			'icon-checkbox-unchecked' : '&#xe07b;'
+			'icon-video-conference' : '&#xe049;'
 		},
 		els = document.getElementsByTagName('*'),
 		i, attr, html, c, el;
