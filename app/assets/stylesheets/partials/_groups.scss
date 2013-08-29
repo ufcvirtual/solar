@@ -209,6 +209,10 @@
   font-size: 11px;
 }
 
+.groups{
+  padding-left: 11px;
+}
+
 .groups_list {
 
   .block_content.groups {
@@ -220,6 +224,12 @@
     width: 49.7%;
     float: left;
   }
+}
+
+.no_groups{
+  display: none;
+  color: #003e7a;
+  font-size: 10pt;
 }
 
 /**

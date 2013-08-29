@@ -1173,6 +1173,7 @@
       deleted: Group wasn't deleted.
     groups_checkboxes:
       select_all: Select all
+      no_groups: "There are no groups"
 
   simple_form:
     labels:
