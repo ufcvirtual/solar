@@ -13,5 +13,5 @@
             = check_box_tag :ckb_group, group.id
             = group.code
           %td
-            = link_to (content_tag(:i, nil, class: (group.status ? 'icon-checkmark-2' : 'icon-checkmark-outline'))), "#", class: "btn change_status_group", :'data-tooltip' => (group.status ?  t(".disable") :  t(".enable")), :"data-link-status" => group_path(id: group.id, status: (not group.status), multiple: true), disabled: not(can? :update, Group)
+            = link_to (content_tag(:i, nil, class: (group.status ? 'icon-checkmark-outline' : 'icon-checkmark-2'))), "#", class: "btn change_status_group", :'data-tooltip' => (group.status ?  t(".disable") :  t(".enable")), :"data-link-status" => group_path(id: group.id, status: (not group.status), multiple: true), disabled: not(can? :update, Group)
             = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit_group', :'data-tooltip' => t(".edit"), :"data-link-edit-group" => edit_group_path(group), disabled: not(can? :update, Group)
