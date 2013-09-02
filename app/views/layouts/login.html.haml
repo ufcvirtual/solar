@@ -6,23 +6,30 @@
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1"}
     %title= content_for?(:title) ? yield(:title) : "Solar"
     = stylesheet_link_tag "login", :media => "all"
-    = javascript_include_tag "application"
+    /[if lte IE 7]
+      = javascript_include_tag 'lte-ie7'
+      = stylesheet_link_tag "misc/ie7"
+
+    = javascript_include_tag "jquery"
+    = javascript_include_tag "mysolar"
+    = javascript_include_tag "lesson"
     = javascript_include_tag "user_form"
+
     /[if lt IE 9]
-    = javascript_include_tag "respond.min"
+      = javascript_include_tag "respond.min"
     = csrf_meta_tags
     = yield(:head)
-    = raw YAML::load(File.open('config/facebook.yml'))['tags'].join
+    -#= raw YAML::load(File.open('config/facebook.yml'))['tags'].join
   %body
-    #fb-root
-    :javascript
-      (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=#{YAML::load(File.open('config/facebook.yml'))['appid']}";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
+    -##fb-root
+    -#:javascript
+    -#  (function(d, s, id) {
+    -#    var js, fjs = d.getElementsByTagName(s)[0];
+    -#    if (d.getElementById(id)) return;
+    -#    js = d.createElement(s); js.id = id;
+    -#    js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=#{YAML::load(File.open('config/facebook.yml'))['appid']}";
+    -#    fjs.parentNode.insertBefore(js, fjs);
+    -#  }(document, 'script', 'facebook-jssdk'));
     #login_wrapper
       = yield
       #login_footer_push

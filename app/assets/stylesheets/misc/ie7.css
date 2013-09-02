@@ -4,3 +4,24 @@ button.btn {
 .empty {
 	color:#d9d9d9 !important;
 }
+
+/* TELA DE LOGIN */
+#login-bt, #register-bt {
+    height: 26px;
+}
+
+#register-bt {
+    width: 139px;
+}
+
+#submit-cpf {
+    margin-top: 98px;
+}
+
+.flash_message_wrapper {
+    line-height: 0;
+}
+
+#flash_message {
+    line-height: 12pt;
+}
