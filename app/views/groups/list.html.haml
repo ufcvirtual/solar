@@ -108,15 +108,11 @@
     });
 
     $(".change_status_group").click(function(){
-      var group_status = $(this);
-
       $.put($(this).data('link-status'), function(data) {
-        var status_icon = group_status.children('i');
-        status_icon.toggleClass('icon-checkmark-2').toggleClass('icon-checkmark-outline');
-        if(status_icon.hasClass("icon-checkmark-2"))
-          $(group_status).attr("data-tooltip", "#{t(".disable")}");
-        else
-          $(group_status).attr("data-tooltip", "#{t(".enable")}");
+        var url = "#{list_groups_path(semester_id: 'semester_param', course_id: 'course_param', curriculum_unit_id: 'curriculum_unit_param')}".replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
+
+        $.get(url, function(data){ $(".groups_list").html(data); });
+        return false;
       }).error(result_error);
     });
 

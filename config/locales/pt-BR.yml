@@ -1337,8 +1337,9 @@
       created: Não foi possível criar turma.
       updated: Não foi possível atualizar turma.
       deleted: Não foi possível deletar turma.
-    groups_checkboxes:
+    groups_checkboxes:  
       select_all: Selecionar todas
+      no_groups: "Não há turmas"
 
   simple_form:
     labels:
