@@ -51,5 +51,9 @@ button.btn {
 }
 
 #login_footer_push {
-    height: 40px;
+    height: 15px;
+}
+
+.fb-like {
+    margin-bottom: 15px;
 }

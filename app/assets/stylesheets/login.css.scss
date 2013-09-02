@@ -22,7 +22,9 @@ body {
 }
 
 .fb-like{
-  margin-bottom: 10px;
+  width: 75px;
+  height: 25px;
+  margin: 0 auto 10px auto;
   z-index: 1;
 }
 
@@ -339,7 +341,7 @@ $header-tab-height: 36px;
 }
 
 #login_footer_push {
-  height: 40px;
+  height: 15px;
 }
 
 footer{
