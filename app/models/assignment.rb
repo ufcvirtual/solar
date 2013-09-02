@@ -8,7 +8,10 @@ class Assignment < ActiveRecord::Base
 
   belongs_to :schedule #, :inverse_of => :assignments
 
-  has_many :assignment_enunciation_files, dependent: :destroy
+
+  has_many :enunciation_files, class_name: "AssignmentEnunciationFile", dependent: :destroy
+  has_many :assignment_enunciation_files, dependent: :destroy # deletar se nao existir mais chamadas para este
+
   has_many :allocations, through: :allocation_tags
   has_many :groups, through: :allocation_tags
   has_many :group_participants, through: :group_assignments # VERIFICAR
@@ -20,11 +23,11 @@ class Assignment < ActiveRecord::Base
   #Associação polimórfica
 
   accepts_nested_attributes_for :schedule
-  accepts_nested_attributes_for :assignment_enunciation_files, allow_destroy: true
+  accepts_nested_attributes_for :enunciation_files, allow_destroy: true, reject_if: proc {|attributes| not attributes.include?(:attachment)}
 
   validates :name, :enunciation, :type_assignment, presence: true
 
-  attr_accessible :schedule_attributes, :assignment_enunciation_files_attributes, :name, :enunciation, :type_assignment
+  attr_accessible :schedule_attributes, :enunciation_files_attributes, :name, :enunciation, :type_assignment
 
   ## define uma data final de avaliacao caso nao esteja definida
   def define_end_evaluation_date(allocation_tag)

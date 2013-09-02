@@ -71,7 +71,7 @@
     $('#all_assignments').nice_checkbox();
 
     $('#new_assignment').click(function() {
-      showLightBoxURL($(this).data('link'), 550, 255, true, $(this).data('box-title'));
+      showLightBoxURL($(this).data('link'), 550, 400, true, $(this).data('box-title'));
     });
 
     $('.edit_assignment').click(function() {
@@ -81,7 +81,7 @@
       var assignments_ids = $('.ckb_assignment:checked', $(this).parents("div.list_assignments")).map(function() { return this.value; }).get();
       if (!(!assignments_ids.length || assignments_ids.length > 1)) {
         var url_edit = $(this).data('link-to-edit').replace(':id', assignments_ids);
-        showLightBoxURL(url_edit, 550, 255, true, $(this).data('edit-title'));
+        showLightBoxURL(url_edit, 550, 400, true, $(this).data('edit-title'));
       }
       return false;
     });

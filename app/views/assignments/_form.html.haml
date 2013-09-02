@@ -15,10 +15,24 @@
 
       = f.input :type_assignment, collection: types, include_blank: false, required: true
 
-      = f.simple_fields_for :assignment_enunciation_files do |files|
-        = files.input :attachment
+      .input.files
+        = f.label :files
+        %i.icon-paperclip.new_file
 
-      .groups
+      = f.simple_fields_for :enunciation_files do |files|
+        .file_input
+          / = files.input :_destroy, as: :hidden, input_html: {class: "destroy_input_file", value: 0, :"data-haha" => files.object.attachment_file_name}
+          = files.input :attachment, label: false, input_html: {id: "fileupload"}
+
+
+      .input.list_files_to_send
+        / - @assignment.enunciation_files.each_with_index do |ef, idx|
+        /   .file{id: idx}
+        /     %i.icon-cross-3.warning.remove_file
+
+
+      .input
+        = f.label :groups
         - @groups.each do |group|
           %span.collection_check_boxes= group.code
 
@@ -39,6 +53,45 @@
 :javascript
 
   jQuery(function($){
+
+
+    // clona um arquivo existente e atualiza o nome
+    function add_new_file() {
+      var new_form = nested_form.clone();
+      var forms_on_page = $(".file_input").length;
+      var input_name = $("input", new_form).attr("name");
+      input_name = input_name.replace(new RegExp(/\[[0-9]+\]/), "[" + forms_on_page + "]")
+      $("input", new_form).attr("name", input_name);
+
+      $(new_form).insertAfter( nested_form.last() );
+      $("input", new_form).click();
+
+      $("input", new_form).change(function(){
+        var new_file_name = "<div class='input files'> <label></label> <span id='file' data-name-file=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-3 warning remove_file'></i> </span> </div>";
+
+        if ($(".list_files_to_send .files:last").lenght)
+          $(".list_files_to_send .files:last").after(new_file_name);
+        else
+          $(".list_files_to_send").after(new_file_name);
+
+        $(".remove_file").click(function(){
+          var div_file = $(this).parents('span#file');
+
+          $("[name='" + div_file.data("name-file") + "']").parents("div.file_input").remove();
+          div_file.remove();
+        });
+      });
+    }
+
+    // add novo file na listagem, copiando conteudo
+    if ($(".file_input:last").length)
+      var nested_form = $(".file_input:first");
+
+    $(".new_file").click(function(e){
+      e.preventDefault();
+
+      add_new_file();
+    });
 
     var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']); 
     
