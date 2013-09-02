@@ -25,3 +25,7 @@
 
   #link
     %a#link-password{:href => new_user_password_path}= t(:pwd_recovery_subtitle)
+
+  .fb-like
+    %script{:src => "http://connect.facebook.net/en_US/all.js#xfbml=1"}
+    %fb:like{"data-href" => YAML::load(File.open('config/facebook.yml'))['data-fanpage'], :layout => "button_count", "data-show_faces" => "false", "data-width" => "450"}

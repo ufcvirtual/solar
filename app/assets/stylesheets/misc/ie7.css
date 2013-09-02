@@ -57,3 +57,21 @@ button.btn {
 .fb-like {
     margin-bottom: 15px;
 }
+
+/* TELA DE CADASTRO */
+#register-steps ul li {
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
+}
+
+.form_label{
+    vertical-align: top;
+    padding-top: 15px;
+}
+
+#special_needs .form_label,
+#gender .form_label,
+#birthdate .form_label{
+    padding-top: 0;
+}

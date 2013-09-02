@@ -223,7 +223,8 @@ $header-tab-height: 36px;
 #login_content, #login_content_password_recovery{
   text-align: center;
   margin:0 auto;
-  margin-top: 5%;
+  margin-top: 2%;
+  margin-bottom: 40px;
 }
 
 #login_content:after, #login_content_password_recovery {
@@ -318,7 +319,7 @@ $header-tab-height: 36px;
   cursor: pointer;
 }
 
-#email_password_recovery, #cpf, #user_password, #user_password_confirmation{
+#email_password_recovery, #cpf {
   width: 344px;
   margin-top: 10px;
   padding-left: 5px;

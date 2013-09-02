@@ -8,10 +8,6 @@
   = image_tag("arrow.png", :class => "arrow")
 
 %footer
-  .fb-like
-    %script{:src => "http://connect.facebook.net/en_US/all.js#xfbml=1"}
-    %fb:like{"data-href" => YAML::load(File.open('config/facebook.yml'))['data-fanpage'], :layout => "button_count", "data-show_faces" => "false", "data-width" => "450"}
-
   .menu_footer
     %ul
       %li= link_to t(:login_footer1), 'http://www.virtual.ufc.br', :target => '_blank'
