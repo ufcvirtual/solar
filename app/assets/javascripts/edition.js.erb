@@ -109,6 +109,11 @@ $(function(){
 
     $.get(url, function(data){
       $(".groups").html(data);
+    }).error(function(data){
+      $("#radio_option_offer").click();
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
     });
   });
 
