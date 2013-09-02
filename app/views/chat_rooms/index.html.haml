@@ -1,0 +1,124 @@
+.block_wrapper.list_chat_rooms{:"data-link-list" => chat_rooms_path(allocation_tags_ids: @allocation_tags_ids)}
+  .block_title
+    %h2= "Chats"
+
+  .block_content_toolbar
+    .block_toolbar_left.btn-group
+      %a.btn.btn_main{:href => "#", 'data-dropdown' => "#dropdown"}
+        = content_tag(:i, nil, class: 'icon-plus-3')
+        %i.icon-arrow-down-3
+      %div{:id=>"dropdown", class: "dropdown dropdown-tip"}
+        %ul.dropdown-menu
+          %li= link_to "Novo Chat", '#', id: 'new_chat', :"data-link" => new_chat_room_path(allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-box-title" => "Novo Chat"
+
+    .block_toolbar_right
+      .btn-group
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit edit_chat', "data-link-to-edit" => edit_chat_room_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-edit-title" => "Editar Chat", disabled: true
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_chat', :"data-link-delete" => chat_room_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), disabled: true
+
+  .block_wrapper.chat_rooms
+    - unless @chat_rooms.empty? or @chat_rooms.nil?
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th{style: 'text-align:center;'}
+            /= check_box_tag :all, :"data-children-names" => "ckb_chat"
+            %th{style: 'text-align:left;'}= "Nome do chat"
+            %th{style: 'text-align:center; width: 21%;'}= "Disponibilidade"
+
+        %tbody
+          - @chat_rooms.each do |chat|
+            %tr.lines{id: "tr_#{chat.id}"}
+              %td{style: 'text-align:center;'}
+                = check_box_tag("c_#{chat.id}", chat.id, false, {class: "ckb_chat"})
+              %td
+                %div
+                  .title
+                    = chat.title
+                  .description
+                    .minimun
+                      = chat.description.truncate(250, omission: "...")
+                      - unless chat.description.blank?
+                        .expand= content_tag(:i, nil, class: " icon-arrow-down-5")
+                    .complete.invisible
+                      = chat.description
+                      .hide= content_tag(:i, nil, class: " icon-arrow-up-4")
+                  %br/
+                  .groups
+                    = "Turmas: "
+                    - chat.groups.each do |group|
+                      %span.collection_check_boxes= group.code
+
+
+              %td{style: 'text-align:center;'}
+                %div
+                  %span= l(chat.schedule.start_date, format: :normal)
+                  %span= ' - '
+                  %span= l(chat.schedule.end_date, format: :normal)
+                %div
+                  %span= chat.start_hour
+                  ="h - "
+                  %span= chat.end_hour
+                  ="h"
+
+    - else
+      .block_content.block_content_text= "Nenhum chat"
+
+:javascript
+
+  $(function(){
+
+    $(".expand, .hide").click(function(){
+      $(this).parent().hide();
+      $($(this).parent().siblings()[0]).show();
+    });
+
+    $('#new_chat').click(function() {
+      showLightBoxURL($(this).data('link'), 550, 400, true, $(this).data('box-title'));
+    });
+
+    $(':checkbox.ckb_chat').click(function() {
+      var box = $(this).parents("div.list_chat_rooms");
+      var count = $('.ckb_chat:checked', box).length;
+      $('.btn_edit, .btn_del', box).attr('disabled', !count);
+
+      if (count > 1) { // só é possível editar um chat por vez
+        $('.btn_edit', box).attr('disabled', true);
+        $('.btn_del', box).attr('disabled', true);
+      }
+    });
+
+    $('.edit_chat').click(function() {
+      if ($(this).attr('disabled') == 'disabled') {
+        return false;
+      }
+
+      var chats_ids = $('.ckb_chat:checked', $(this).parents("div.list_chat_rooms")).map(function() { return this.value; }).get();
+      if (!(!chats_ids.length || chats_ids.length > 1)) {
+        var url_edit = $(this).data('link-to-edit').replace(':id', chats_ids);
+        showLightBoxURL(url_edit, 550, 400, true, $(this).data('edit-title'));
+      }
+      return false;
+    });
+
+    $('.delete_chat').click(function() {
+      if ($(this).attr('disabled') == 'disabled' || !confirm("#{t(:message_confirm)}"))
+        return false;
+
+      var chats = $('.ckb_chat:checked', $(this).parents("div.list_chat_rooms"));
+      var chats_ids = chats.map(function() { return this.value; }).get();
+      if (chats_ids.length) {
+        $.delete($(this).data('link-delete').replace(':id', chats_ids), function(data){
+          flash_message(data.notice, 'notice');
+          chats.parents('tr').fadeOut().remove();
+        }).error(function(data){
+          var data = $.parseJSON(data.responseText);
+          if (typeof(data.alert) != "undefined")
+            flash_message(data.alert, 'alert');
+        });
+      }
+
+      return false;
+    });
+
+  });

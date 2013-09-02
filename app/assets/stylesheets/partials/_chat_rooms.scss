@@ -1,0 +1,74 @@
+.description{
+  font-size: 11px;
+  color: #7c7c7c;
+}
+
+.complete{
+  border-left: 2px solid #C0C0C0;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.description .hide, .description  .expand{
+  float:right;
+}
+
+.new_chat .schedule_dates .input input {
+  width: 85px;
+}
+
+.input textarea{
+  width: 310px;
+}
+
+.new_chat .schedule_dates .left, .right {
+  float: left;
+}
+
+.box, #tab label{
+  border: 1px solid grey;
+  background-color: white;
+}
+
+#tab label{
+  padding-top: 2px;
+  color: $label_color;
+  border-bottom: none;
+  height: auto;
+  padding-right: 5px;
+  padding-left: 5px;
+  max-width: 115px;
+  z-index: 2;
+}
+
+.box{
+  padding: 5px;
+  padding-top: -5px;
+  margin-bottom: 5px;
+  margin-top: -1px;
+  max-height: 100px;
+  overflow: auto;
+  margin-left: 164px;
+  width: 300px;
+  z-index: 1;
+}
+
+.new_chat .collection_check_boxes{
+  @include collection_check_boxes_layout;
+  margin: 0;
+  padding-bottom: 0;
+  border-radius: 0;
+}
+
+#define_participants {
+  margin-top: -20px;
+}
+
+#define_participants label{
+  color: grey;
+}
+
+#chat_room_type{
+  margin-top: 7px;
+}

@@ -35,12 +35,7 @@ class Group < ActiveRecord::Base
 
   # Recupera os participantes com perfil de estudante
   def students_participants
-    allocations.joins(:profile).where("cast( profiles.types & '#{Profile_Type_Student}' as boolean)").where(status: Allocation_Activated)
-    # allocations.joins(:profile).where("cast( profiles.types & '#{Profile_Type_Student}' as boolean)").where(status: Allocation_Activated).map { |allocation|
-    #   { id: allocation.id, user_name: allocation.user.name, user_id: allocation.user_id }
-    # }
-    # allocations = self.allocations.joins(:profile).where("cast( profiles.types & '#{Profile_Type_Student}' as boolean)").where(status: Allocation_Activated)
-    # allocations.collect{ |allocation| {allocation_id: allocation.id, user_id: allocation.user_id, user_name: allocation.user.name} }
+    allocations.joins(:profile).where("cast( profiles.types & '#{Profile_Type_Student}' as boolean)").where(status: Allocation_Activated).uniq
   end
 
 end

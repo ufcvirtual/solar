@@ -5,7 +5,7 @@ class AcademicAllocationTest < ActiveSupport::TestCase
   fixtures :assignments, :users, :groups, :group_assignments, :schedules, :allocation_tags
 
   test "periodo da atividade deve fazer parte do periodo da oferta" do 
-    assignment = Assignment.new(:schedule_id => schedules(:schedule15).id, :enunciation => "assignment 1", :type_assignment => Assignment_Type_Individual)
+    assignment = Assignment.new(:enunciation => "assignment 1", :type_assignment => Assignment_Type_Individual, schedule_attributes: {start_date: schedules(:schedule15).start_date, end_date: schedules(:schedule15).end_date})
 
     allocation_tag = allocation_tags(:al3)
     academic_allocation = AcademicAllocation.new(allocation_tag: allocation_tag, academic_tool: assignment)

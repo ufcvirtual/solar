@@ -182,6 +182,8 @@ Solar::Application.routes.draw do
     end
   end
 
+  resources :chat_rooms
+
   resources :schedules, only: [:index] do
     get :list, on: :collection
   end

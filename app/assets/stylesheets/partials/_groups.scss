@@ -187,15 +187,8 @@
   cursor: crosshair;
 }
 
-.collection_check_boxes { // FIXME: classe está com nome muito genérico
-  margin-left: 0;
-  width: auto;
-  margin: 5px;
-  padding-bottom: 1px;
-  padding-top: 3px;
-  padding-left: 4px;
-  padding-right: 4px;
-  border-radius: 10px;
+.groups .collection_check_boxes {
+  @include collection_check_boxes_layout;
   background-color: #0e7dd8;
   color: #fff;
 }

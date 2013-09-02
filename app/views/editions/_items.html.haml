@@ -42,9 +42,9 @@
       / - if (can? :lista_de_chat, ChatRoom, :on => @allocation_tags_ids) and (ChatRoom.constants.include?("#{@selected}_PERMISSION".to_sym))
       - if (ChatRoom.constants.include?("#{@selected}_PERMISSION".to_sym))
         .uc_item
-          .chat
-            = link_to(content_tag(:i, nil, class: "icon-chat big"), "#", class: "btn disabled", onclick: "javascript:alert('#{t(".in_development")}');")
-            = link_to t(".chat"), "#", onclick: "javascript:alert('#{t(".in_development")}');"
+          .chat{:"data-link" => chat_rooms_path(allocation_tags_ids: @allocation_tags_ids)}
+            = link_to(content_tag(:i, nil, class: "icon-chat big"), "#", class: "btn")
+            = link_to t(".chat"), "#"
 
       / - if (can? :lista_de_videoconference, Videoconference, :on => @allocation_tags_ids) and (Videoconference.constants.include?("#{@selected}_PERMISSION".to_sym))
       .uc_item

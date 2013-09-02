@@ -140,6 +140,11 @@
         attachment: Attachment
         attachment_content_type: File type
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
+      chat_room:
+        title: Title
+        description: Description
+        start_hour: Start hour
+        end_hour: End hour
 
     errors:
       messages:
@@ -1379,6 +1384,16 @@
       deleted: Support Material was successfully deleted.
     error:
       must_select_something: One or more items must be selected
+
+  chat_rooms:
+    success:
+      created: Chat was successfully created.
+      updated: Chat was successfully updated.
+      deleted: Chat was successfully deleted.
+    error:
+      created: Chat wasn't created.
+      updated: Chat wasn't updated.
+      deleted: Chat wasn't deleted.
 
 #Facebook
 

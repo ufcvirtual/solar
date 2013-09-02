@@ -81,6 +81,18 @@
   }
 }
 
+@mixin collection_check_boxes_layout{
+  margin-left: 0;
+  width: auto;
+  margin: 5px;
+  padding-bottom: 1px;
+  padding-top: 3px;
+  padding-left: 4px;
+  padding-right: 4px;
+  border-radius: 10px;
+}
+
+
 /**
 * TODO: código aparentemente inutilizado, verificar
 *

@@ -34,4 +34,8 @@ class Allocation < ActiveRecord::Base
     not(Allocation.find_by_user_id_and_allocation_tag_id(user_id, allocation_tag_id).nil?)
   end
 
+  def user_name
+    user.name
+  end
+
 end
