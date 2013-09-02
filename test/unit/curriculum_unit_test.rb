@@ -69,15 +69,6 @@ class  CurriculumUnitTest < ActiveSupport::TestCase
   	assert_equal curriculum_unit.errors[:objectives].first, I18n.t(:empty, :scope => [:activerecord, :errors, :messages])  	
 	end	
 
-	test "objetivo deve ter, no maximo, 255 caracteres" do
-  	curriculum_unit = CurriculumUnit.create(:code => "C010", :name => "Curso 10", :curriculum_unit_type => curriculum_unit_types(:extensao), :resume => "Curso 10", 
-  		:syllabus => "Curso 10", :objectives => "Curso 10  Curso 10  Curso 10  Curso 10  Curso 10  Curso 10  Curso 10  Curso 10  Curso 10  Curso 10  Curso 10  
-  		Curso 10  Curso 10  Curso 10  Curso 10  Curso 10  Curso 10  Curso 10  Curso 10  Curso 10  Curso 10  Curso 10  Curso 10  Curso 10  Curso 10  Curso 10  ")
-
-  	assert (not curriculum_unit.valid?)
-  	assert_equal curriculum_unit.errors[:objectives].first, I18n.t(:too_long, :scope => [:activerecord, :errors, :messages], :count => 255)	
-	end	
-
 	test "media deve ser maior ou igual a 0 e menor ou igual a 10" do
   	curriculum_unit1 = CurriculumUnit.create(:code => "C010", :name => "Curso 10", :curriculum_unit_type => curriculum_unit_types(:extensao), :resume => "Curso 10", 
   		:syllabus => "Curso 10", :objectives => "Curso 10", :passing_grade => -3)

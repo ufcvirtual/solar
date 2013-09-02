@@ -5,16 +5,16 @@ class CurriculumUnit < ActiveRecord::Base
   belongs_to :curriculum_unit_type
 
   has_many :offers
-  has_many :groups, :through => :offers, :uniq => true
-  has_many :courses, :through => :offers, :uniq => true
+  has_many :groups, through: :offers, uniq: true
+  has_many :courses, through: :offers, uniq:  true
 
-  validates :code, :uniqueness => true, :length => { :maximum   => 10 }, :allow_blank => true
-  validates :name, :presence => true, :length => { :maximum   => 120 }
-  validates :curriculum_unit_type, :presence => true  
-  validates :resume, :presence => true
-  validates :syllabus, :presence => true
-  validates :objectives, :presence => true, :length => { :maximum   => 255 }
-  validates :passing_grade, :numericality => { :greater_than_or_equal_to => 0, :less_than_or_equal_to => 10, :allow_blank => true}
+  validates :code, uniqueness: true, length:  { maximum: 10 }, allow_blank: true
+  validates :name, presence: true, length: { maximum: 120 }
+  validates :curriculum_unit_type, presence:  true  
+  validates :resume, presence: true
+  validates :syllabus, presence: true
+  validates :objectives, presence: true
+  validates :passing_grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true}
 
   default_scope :order => 'name ASC'
 

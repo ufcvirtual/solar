@@ -1393,6 +1393,8 @@
     settings: Settings 
 
   messages:
+    message_header_to:
+      attach: "Attach "
     show:
       to: "To: "
       from: "From: "

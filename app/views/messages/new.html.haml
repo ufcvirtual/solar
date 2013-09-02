@@ -7,7 +7,7 @@
 
   = render "message_header"
   = simple_form_for :message, url: send_message_messages_path, html: {id: "form_message_text", multipart: true} do |f|
-    = render "message_header_to"
+    = render "message_header_to", form: f
 
     #div_new_message
       = f.input :content, label: false, as: :ckeditor, input_html: {value: @original_message, name: "content"}

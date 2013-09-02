@@ -1560,6 +1560,8 @@
     settings: Configurações
 
   messages:
+    message_header_to:
+      attach: "Anexar: "
     show:
       to: "Para: "
       from: "De: "

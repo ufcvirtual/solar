@@ -25,6 +25,14 @@ class MessagesController < ApplicationController
 
     @target, @subject, @original_message, @target_html  = '', '', '', ''
 
+    if not(params[:to].nil?)
+      user = User.find_by_email(params[:to])
+      @target = [user.name, ' [', user.email, '], '].join
+
+      target_jquery = "'#u#{user.id}'"
+      @target_html = "<span onclick=""$(#{target_jquery}).show();$(this).remove()"" class='message_recipient_box' >#{@target}</span>"
+    end
+
     if not(params[:id].nil?)
       @original_message_id = params.delete(:id)
       @message = Message.find(@original_message_id)
@@ -74,6 +82,7 @@ class MessagesController < ApplicationController
         end
       end
     end
+
   end
 
   def send_message
@@ -145,11 +154,11 @@ class MessagesController < ApplicationController
           end # if id
 
           # recupera os arquivos anexados
-          params[:attachment].each do |file|
-            message_file = MessageFile.create!({message: file[1], message_id: new_message.id})
+          params[:message][:files].each do |file|
+            message_file = MessageFile.create!({message: file, message_id: new_message.id})
             destiny = [message_file.id.to_s, message_file.message_file_name].join('_') # adiciona arquivos de anexo para encaminhar com o email
             all_files_destiny = copy_file("", destiny, all_files_destiny, false)
-          end if params[:attachment].present?
+          end if params[:message].present? and params[:message][:files].present?
 
           sender_message = UserMessage.create!(message_id: new_message.id, user_id: current_user.id, status: Message_Filter_Sender)
           if label_name != ""
