@@ -16,12 +16,15 @@
         %button#link_upload.btn.btn_default{"data-tooltip" => t(:message_attach_file), :onclick => "appendFileField(); return false;"}
           %i.icon-paperclip
 
-      - unless @files.nil?
-        - @files.each do |file|
-          .file_attached{:"data-file-id" => file.id}
-            %input{name: "files[]", value: file.id, type: "hidden"}
-            = image_tag("message_file.png",:alt=>t(:message_attach)) + file.message_file_name
-            %i.icon-paperclip.remove_file
+        = form.file_field :files, id: 'fileupload', multiple: true
+
+      .files
+        - unless @files.nil?
+          - @files.each do |file|
+            .file_attached{:"data-file-id" => file.id}
+              %input{name: "files[]", value: file.id, type: "hidden"}
+              = raw [image_tag("message_file.png", alt: t(:message_attach)), file.message_file_name].join
+              %i.icon-paperclip.remove_file
 
 #div_contacts{:style => "display:none"}
   - if !@curriculum_units_user.nil?
@@ -97,20 +100,21 @@
     }
   }
 
-  //// Manipulação de arquivos anexos ///////////////////////////////
-  var numFileFields = 0;
   function appendFileField(){
-    var cancel_text = "#{t(:message_cancel)}"
-    newElementId = 'attachment_' + numFileFields;
-    newElementName = 'attachment[' + numFileFields + ']';
-    newElement = '<div id="'+ newElementId +'_container" class="message_attach_item">';
-    newElement += '<input id="' + newElementId + '" type="file" name="' + newElementName + '" style="display:none;"/>';
-    newElement += ' <input type="button" class="btn btn_default" value="'+cancel_text+'" onclick="removeFileField(\''+newElementId+'\');return false;" /> '
-    newElement += '</div>';
-    $("#link_upload").after(newElement);
-    $("#"+newElementId).slideDown('fast');//exibindo campo de upload
-    numFileFields++;
+    $("#fileupload").click();
   }
+
+  //// Manipulação de arquivos anexos ///////////////////////////////
+  $(":file").change(function(){
+    var file = '<div class="file_attached">#{image_tag("message_file.png", alt: t(:message_attach))}' + this.files[0].name + "<i class='icon-paperclip remove_file'></i></div>";
+
+    $(".files").append(file);
+
+    $(".remove_file:last").click(function(){
+      $(this).parents(".file_attached").fadeOut("slow", function(){ $(this).remove(); });
+    });
+
+  });
 
   function removeFileField(fieldId){
     $("#"+fieldId+"_container").hide('fast', function(){
