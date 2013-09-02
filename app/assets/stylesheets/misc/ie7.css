@@ -12,6 +12,19 @@ button.btn {
     margin-top: 16px;
 }
 
+#screen-login {
+    top: 0;
+}
+
+#login-form, #login-register {
+    height: 235px;
+}
+
+#link{
+    margin-top: 6px;
+    text-align: center;
+}
+
 #login-bt, #register-bt {
     height: 26px;
 }
@@ -25,6 +38,7 @@ button.btn {
 }
 
 .flash_message_wrapper {
+    margin-top: 10px;
     line-height: 0;
 }
 
@@ -34,4 +48,8 @@ button.btn {
 
 .menu_footer ul li {
     display: inline;
+}
+
+#login_footer_push {
+    height: 40px;
 }
