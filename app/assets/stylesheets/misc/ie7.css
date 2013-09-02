@@ -6,6 +6,12 @@ button.btn {
 }
 
 /* TELA DE LOGIN */
+#bar-brazil .bar ul {
+    float:right;
+    width: 319px;
+    margin-top: 16px;
+}
+
 #login-bt, #register-bt {
     height: 26px;
 }
@@ -24,4 +30,8 @@ button.btn {
 
 #flash_message {
     line-height: 12pt;
+}
+
+.menu_footer ul li {
+    display: inline;
 }
