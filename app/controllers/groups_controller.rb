@@ -18,6 +18,20 @@ class GroupsController < ApplicationController
     end
   end
 
+  # SolarMobilis
+  # GET /groups/listando.json
+  def mobilis_list
+     @groups = current_user.groups
+    
+    if params.include?(:curriculum_unit_id)      
+      @groups = CurriculumUnit.find(params[:curriculum_unit_id]).groups.where(id: @groups)
+    end
+
+    respond_to do |format|
+      format.json { render json: { groups: @groups.map {|g| {id: g.id, code: g.code, semester: g.offer.semester.name} } } }
+    end
+  end
+
   # Edicao
   def list
     @offer = Offer.find_by_curriculum_unit_id_and_semester_id_and_course_id(params[:curriculum_unit_id], params[:semester_id], params[:course_id])

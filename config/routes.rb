@@ -43,7 +43,11 @@ Solar::Application.routes.draw do
       get :informations
       get :home
     end
-    resources :groups, only: [:index]
+    resources :groups, only: [:index] do
+      collection do 
+        get :mobilis_list
+      end
+    end
   end
 
   ## groups/:id/discussions

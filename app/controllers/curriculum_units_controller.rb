@@ -62,8 +62,8 @@ class CurriculumUnitsController < ApplicationController
     end
   end
 
-  # SolarMobilis
-  # GET /curriculum_units/listando.json
+  # Mobilis
+  # GET /curriculum_units/:curriculum_unit_id/groups/mobilis_list.json
   def mobilis_list
     @curriculum_units = CurriculumUnit.all_by_user(current_user).collect {|uc| {id: uc.id, code: uc.code, name: uc.name}}
     
