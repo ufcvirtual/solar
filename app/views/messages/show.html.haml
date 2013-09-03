@@ -29,23 +29,25 @@
 
   .message_header_new
     .message_text_from
-      = t(".from")
+      .label-show.align-left
+        = t(".from")
       - user = @message.sent_by
       = "#{user.name}"
       %span
         = raw "<#{link_to(user.email, new_message_path(to: user.email))}>"
     .message_text_to
-      = t(".to")
-
+      .label-show.align-left
+        = t(".to")
       = raw @message.recipients.map { |r| "#{r.nick} <span>&lt;#{link_to(r.email, new_message_path(to: r.email))}&gt;</span>" }.join(', ')
 
     - unless (attachments = @message.files).empty?
       .message_attachments
-        %i.icon-paperclip
-        = t(".attachments")
+        .label-show.align-left
+          %i.icon-paperclip
+          = t(".attachments")
         - attachments.each do |file|
           %br/
-          %span
+          .new-attach
             = link_to ['-', file.message_file_name].join, download_file_messages_path(file_id: file.id)
 
   %hr

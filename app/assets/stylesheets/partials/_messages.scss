@@ -191,9 +191,13 @@
 .message_header_new, .message_div_show {
   color: $text_grey;
   padding: 0.5*$gutter 0.5*$gutter;
-  font-size: 12px;
+  font-size: 13px;
   width: auto; // FIXME: é auto ou 100% ?
   //width: 100%;
+
+  .label-show{
+    margin-right: 5px;
+  }
 
   span{
     color: $text_blue;
@@ -202,15 +206,21 @@
 
   .message_text_from{
     font-weight: 700;
-    margin-bottom: 5px;
+    margin-bottom: 0.5*$gutter;
   }
 
   .message_text_to{
-    margin-bottom: 5px;
+    margin-bottom: 0.5*$gutter;
   }
 
-  .icon-paperclip{
-    font-size: 12px;
+  .message_attachments{
+    .icon-paperclip{
+      font-size: 12px;
+    }
+    .new-attach{
+      margin-top: 5px;
+      margin-left: 20px;
+    }
   }
 }
 
