@@ -38,6 +38,10 @@
 }
 
 /* mensagem: links do menu */
+#link_to_contacts {
+  cursor: pointer;
+}
+
 .message_link, .message_link_menu {
   text-decoration: none;
   cursor: pointer;

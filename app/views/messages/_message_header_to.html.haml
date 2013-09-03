@@ -2,8 +2,8 @@
   .message_header_new
     .message_new_text_to
       .label.align-left
-        %a#link_to_contacts.link_content{:href => "javascript:show_div('link_to_contacts','div_contacts')"}= t(:message_to)
-      .input.align-right= text_field_tag  'to', @target, :class=> "message_new_textbox", :readonly => true, :onclick => "javascript:show_div('link_to_contacts','div_contacts')"
+        %a#link_to_contacts.link_content= t(:message_to)
+      .input.align-right= text_field_tag  'to', @target, :class=> "message_new_textbox", :readonly => true
     .message_new_text_to
       .label.align-left= t(:message_subject)
       .input.align-right= text_field_tag  'subject', @subject, :class=> "message_new_textbox"
@@ -51,6 +51,13 @@
 
   $(function($) {
 
+    $("#link_to_contacts, #to").click(function(){
+      $('#div_contacts').fadeIn().position({
+        my: 'left top',
+        at: 'right+45 top-5',
+        of: '#link_to_contacts' })
+    });
+
     $(".remove_file").click(function(){
       $(this).parents(".file_attached").fadeOut("slow", function(){ $(this).remove(); });
     });
@@ -61,29 +68,20 @@
     })
 
     $("#link_cancel_contacts").click(function() {
-      $("#div_contacts").hide();
+      $("#div_contacts").fadeOut();
       //volta destinatarios
       $("#recipients_selected").html($("#older_recipients").html());
       $("#div_contacts_list > span").show();
     })
 
     $("#link_confirm_contacts").click(function() {
-      $("#div_contacts").hide();
+      $("#div_contacts").fadeOut();
       //older_recipients guarda os destinatarios atuais
       $("#older_recipients").html($("#recipients_selected").html());
       $("#to").val($("#recipients_selected").text());
     })
 
   });
-
-  function show_div(origin,elementId) {
-    var posx =$('#'+origin).offset().left + 38;
-    var posy =$('#'+origin).offset().top - 2;
-
-    $('#'+ elementId).css({"left":posx});
-    $('#'+ elementId).css({"top":posy});
-    $('#'+ elementId).show();
-  }
 
   function add_receiver(u,name,email){
     new_to = name + " [" + email + "], ";
