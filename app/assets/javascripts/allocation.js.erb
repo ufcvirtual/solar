@@ -1,17 +1,11 @@
 $(function() {
-$('#cbx_all').click(function () {
- var checked = $(this).is(':checked');            
- $('.cbx_value').each(function () {
-  var checkBox = $(this);               
-  if (checked) {
-    checkBox.prop('checked', true);                
-  }
-  else {
-    checkBox.prop('checked', false);                
-  }
-});
-
-});
+  
+  $('#cbx_all').click(function () {
+    var checked = $(this).is(':checked');            
+    $('.cbx_value').each(function () {
+      $(this).prop('checked', checked);                
+    });
+  });
 
 
   $('.btn_enroll_selected').click(function() {
