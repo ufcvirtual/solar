@@ -23,8 +23,8 @@
           - @files.each do |file|
             .file_attached{:"data-file-id" => file.id}
               %input{name: "files[]", value: file.id, type: "hidden"}
-              = raw [image_tag("message_file.png", alt: t(:message_attach)), file.message_file_name].join
-              %i.icon-paperclip.remove_file
+              = raw [file.message_file_name].join
+              %i.icon-cross.remove_file
 
 #div_contacts{:style => "display:none"}
   - if !@curriculum_units_user.nil?
@@ -104,7 +104,7 @@
 
   //// Manipulação de arquivos anexos ///////////////////////////////
   $(":file").change(function(){
-    var file = '<div class="file_attached">#{image_tag("message_file.png", alt: t(:message_attach))}' + this.files[0].name + "<i class='icon-paperclip remove_file'></i></div>";
+    var file = '<div class="file_attached">' + this.files[0].name + "<i class='icon-cross remove_file'></i></div>";
 
     $(".files").append(file);
 

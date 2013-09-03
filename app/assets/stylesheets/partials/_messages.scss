@@ -446,3 +446,17 @@ ul.message_menu_listbox li ul {
   font-size: 11px;
   color: #FF9900;
 }
+.message_new_upload{
+  .files{
+    margin-left: 20px;
+
+    .file_attached{
+      padding-top: 5px;
+
+      i{
+        margin-left: 5px;
+        cursor: pointer;
+      }
+    }
+  }
+}
