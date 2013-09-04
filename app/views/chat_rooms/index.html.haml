@@ -21,8 +21,7 @@
       %table.tb_list
         %thead
           %tr.lines
-            %th{style: 'text-align:center;'}
-            /= check_box_tag :all, :"data-children-names" => "ckb_chat"
+            %th{style: 'text-align:center;'}= check_box_tag :all_chats, false, false, :"data-children-names" => "c_"
             %th{style: 'text-align:left;'}= "Nome do chat"
             %th{style: 'text-align:center; width: 21%;'}= "Disponibilidade"
 
@@ -77,16 +76,7 @@
       showLightBoxURL($(this).data('link'), 550, 400, true, $(this).data('box-title'));
     });
 
-    $(':checkbox.ckb_chat').click(function() {
-      var box = $(this).parents("div.list_chat_rooms");
-      var count = $('.ckb_chat:checked', box).length;
-      $('.btn_edit, .btn_del', box).attr('disabled', !count);
-
-      if (count > 1) { // só é possível editar um chat por vez
-        $('.btn_edit', box).attr('disabled', true);
-        $('.btn_del', box).attr('disabled', true);
-      }
-    });
+    $("#all_chats").nice_checkbox();
 
     $('.edit_chat').click(function() {
       if ($(this).attr('disabled') == 'disabled') {

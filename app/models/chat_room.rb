@@ -21,6 +21,6 @@ class ChatRoom < ActiveRecord::Base
 
   accepts_nested_attributes_for :participants, allow_destroy: true, reject_if: proc { |attributes| attributes['allocation_id'] == "0" }
 
-  attr_accessible :participants_attributes, :title, :start_hour, :end_hour, :description, :schedule_attributes
+  attr_accessible :participants_attributes, :title, :start_hour, :end_hour, :description, :schedule_attributes, :chat_type
 
 end

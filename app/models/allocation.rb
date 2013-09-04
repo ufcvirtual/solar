@@ -13,6 +13,7 @@ class Allocation < ActiveRecord::Base
 
   has_many :chat_messages
   has_many :chat_participants
+  has_many :chat_rooms
 
   def groups
     allocation_tag.groups

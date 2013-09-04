@@ -18,65 +18,29 @@
 
       = f.label "Participantes"
       %span.participants
-        = f.check_box :type, {checked: @chat_room.chat_type, id: :chat_room_type}, @chat_room.chat_type
+        = f.check_box :chat_type, {checked: (@chat_room.chat_type == 1), id: :chat_room_type}
 
-        %span{id: (@chat_room.chat_type ? "tab" : "define_participants")}
+        %span{id: (@chat_room.chat_type == 1 ? "tab" : "define_participants")}
           = f.label :type, "Definir participantes"
-        .box{class: (@chat_room.chat_type ? "" : "invisible")}
+        .box{class: (@chat_room.chat_type == 1 ? "" : "invisible")}
           %div
-            /%input#all{type: "checkbox", :"data-children-names" => "chat_room[participants_attributes]"}
-            /%br
-            /= check_box_tag :all, {:"data-children-names" => "chat_room[participants_attributes]"}, false
-            - @allocations.each do |allocation|
-              / = "ble: #{allocation.id}"
-              = f.simple_fields_for :participants do |p|
-                / ="bla: #{allocation.id}"
-                = p.check_box :allocation_id, {}, allocation.id#, checked: (@participants and @participants.include?(allocation))
-                = p.label :allocation_id, allocation.user_name
-                %br
+            = check_box_tag :all_participants, false, false, {:"data-children-names" => "chat_room[participants_attributes]"}
+            = label_tag :all_participants, "Todos"
+            %br
+            - cr_ids = @chat_room.participants.map(&:allocation_id)
+            = f.simple_fields_for(:participants, setup_chat_room(@chat_room, @allocations)) do |p|
+              = p.check_box :_destroy, {checked: (p.object.persisted? or cr_ids.include?(p.object.allocation_id))}, '0', '1'
+              = p.label :_destroy, p.object.allocation.user_name
+              = p.hidden_field :allocation_id
+              %br
 
       .right_buttons_assignment
-        = button_tag t(:cancel), class: "btn btn_default btn_lightbox", type: "button", onclick: "javascript:removeLightBox();"
+        = button_to_function t(:cancel), "removeLightBox()", class: "btn btn_default btn_lightbox"
         = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", id: "save"
+
+= javascript_include_tag "chat_rooms"
     
 :javascript
 
-  jQuery(function($){
-
-    $("#all").nice_checkbox();
-
-    $("#chat_room_type").click(function(){
-      if($("#chat_room_type").prop("checked")){
-        $("#define_participants").attr("id", "tab");
-        $(".box").show();
-      }else{
-        $("#tab").attr("id", "define_participants");
-        $(".box").hide();
-      }
-
-    });
-
-    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']); 
-    
-    /* impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final */
-    $('#chat_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#chat_end_date').datepicker("option", "minDate", selected); } }) );
-    $('#chat_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#chat_start_date').datepicker("option", "maxDate", selected); } }) );
-
-    $('#save').click(function(){
-      $('#chat_form:last').serialize_and_submit({
-        replace_list: $(".list_chat_rooms")
-      });
-    });
-
-    /* se a data ficar vazia, recebe a data que veio ao carregar o formulário ou uma data permitida de acordo com a relação data final - data inicial */
-    $('#chat_end_date').blur(function(){
-      if ($(this).datepicker("getDate") == null)
-        $(this).datepicker("setDate", new Date("#{@chat_room.schedule.end_date}"));
-    });
-
-    $('#chat_start_date').blur(function(){
-      if($(this).datepicker("getDate") == null)
-        $(this).datepicker("setDate", new Date("#{@chat_room.schedule.start_date}"));
-    });
-
-  });
+  var start_date = "#{@chat_room.schedule.start_date}";
+  var end_date = "#{@chat_room.schedule.end_date}";
