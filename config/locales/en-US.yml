@@ -1412,6 +1412,7 @@
       created: Chat wasn't created.
       updated: Chat wasn't updated.
       deleted: Chat wasn't deleted.
+      chat_has_messages: Chat wasn't deleted. Already has messages.
 
 #Facebook
 

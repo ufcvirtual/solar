@@ -2,7 +2,7 @@ class ChatRoom < ActiveRecord::Base
   
   GROUP_PERMISSION = true
 
-  has_many :messages, class_name: "ChatMessage", dependent: :destroy
+  has_many :messages, class_name: "ChatMessage"
   has_many :participants, class_name: "ChatParticipant", dependent: :destroy
   has_many :academic_allocations, as: :academic_tool
   has_many :allocation_tags, through: :academic_allocations
@@ -25,6 +25,7 @@ class ChatRoom < ActiveRecord::Base
 
   attr_accessible :participants_attributes, :title, :start_hour, :end_hour, :description, :schedule_attributes, :chat_type
 
+  before_destroy :can_destroy?
   after_destroy :delete_schedule
 
   def verify_hours
@@ -33,6 +34,10 @@ class ChatRoom < ActiveRecord::Base
 
   def delete_schedule
     self.schedule.destroy
+  end
+
+  def can_destroy?
+    self.messages.empty?
   end
 
 end

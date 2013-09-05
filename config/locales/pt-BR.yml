@@ -1578,6 +1578,7 @@
       created: Não foi possível criar chat.
       updated: Não foi possível atualizar chat.
       deleted: Não foi possível deletar chat.
+      chat_has_messages: Não foi possível deletar chat. Já possui mensagens.
 
   #Facebook
 

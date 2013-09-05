@@ -68,11 +68,14 @@ class ChatRoomsController < ApplicationController
 
     begin
       ChatRoom.transaction do
-        @chat_rooms = ChatRoom.where(id: params[:id].split(",")).map(&:destroy)
+        @chat_rooms = ChatRoom.where(id: params[:id].split(","))
+        raise "has_messages" if @chat_rooms.map(&:can_destroy?).include?(false)
+        @chat_rooms.map(&:destroy)
       end
       render json: {success: true, notice: t(:deleted, scope: [:chat_rooms, :success])}
-    rescue
-      render json: {success: false, alert: t(:deleted, scope: [:chat_rooms, :error])}, status: :unprocessable_entity
+    rescue Exception => error
+      alert_message = (error.to_s == "has_messages" ? t(:chat_has_messages, scope: [:chat_rooms, :error]) : t(:deleted, scope: [:chat_rooms, :error]))
+      render json: {success: false, alert: alert_message}, status: :unprocessable_entity
     end
 
   end

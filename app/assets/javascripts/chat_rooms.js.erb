@@ -67,7 +67,7 @@ jQuery(function($){
   });
 
   $('.delete_chat').click(function() {
-    if ($(this).attr('disabled') == 'disabled' || !confirm("#{t(:message_confirm)}"))
+    if ($(this).attr('disabled') == 'disabled' || !confirm("<%=I18n.t(:message_confirm)%>"))
       return false;
 
     var chats = $('.ckb_chat:checked', $(this).parents("div.list_chat_rooms"));
