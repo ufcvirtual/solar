@@ -38,10 +38,10 @@
                     .minimun
                       = chat.description.truncate(250, omission: "...")
                       - unless chat.description.blank?
-                        .expand= content_tag(:i, nil, class: " icon-arrow-down-3", :"data-tooltip" => t(".expand_description"))
+                        .expand= content_tag(:i, nil, class: "icon-ellipsis", :"data-tooltip" => t(".expand_description"))
                     .complete.invisible
                       = chat.description
-                      .hide= content_tag(:i, nil, class: " icon-arrow-up-2", :"data-tooltip" => t(".compress_description"))
+                      .compress= content_tag(:i, nil, class: "icon-arrow-up-2", :"data-tooltip" => t(".compress_description"))
                   .groups
                     %span.title= label_tag t(".groups")
                     - chat.groups.each do |group|
