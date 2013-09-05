@@ -151,7 +151,7 @@ class User < ActiveRecord::Base
     query << "curriculum_units.id = #{curriculum_unit_id}" unless curriculum_unit_id.nil?
     query << "curriculum_unit_types.id = #{curriculum_unit_type_id}" unless curriculum_unit_type_id.nil?
 
-    allocations.includes(allocation_tag: [offer: [curriculum_unit: :curriculum_unit_type]]).where(query.join(" AND ")).delete_if {|allocation| allocation.allocation_tag.nil? }.map(&:groups).flatten.compact.uniq
+    allocations.includes(allocation_tag: [group: [offer: [curriculum_unit: :curriculum_unit_type]]]).where(query.join(" AND ")).delete_if {|allocation| allocation.allocation_tag.nil? }.map(&:groups).flatten.compact.uniq
   end
 
   def profiles_activated(only_id = false)
@@ -184,5 +184,4 @@ class User < ActiveRecord::Base
     allocation_tags.where(allocations: {status: Allocation_Activated.to_i}).map(&map.to_sym).flatten.uniq
   end
 
- 
 end

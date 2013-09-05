@@ -29,6 +29,9 @@ class Enrollment < ActiveRecord::Base
       # user_groups: lista de turmas que o usuário já está associado e atendem aos filtros de busca
       user_groups = user.groups(profile, nil, curriculum_unit_id, offer_category)
 
+      # raise "#{can_enroll.as_json}
+      # #{user_groups.as_json}"
+
       (can_enroll + user_groups).compact.uniq
     end
 
