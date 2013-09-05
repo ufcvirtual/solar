@@ -53,7 +53,7 @@ class AssignmentsController < ApplicationController
     authorize! :update, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
 
     @assignment = Assignment.find(params[:id])
-    # @assignment.enunciation_files.build
+    @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
 
     @enunciation_files = @assignment.enunciation_files.compact
 
@@ -78,7 +78,7 @@ class AssignmentsController < ApplicationController
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
       @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
-      @assignment.enunciation_files.build unless @assignment.enunciation_files
+      @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
 
       render :new
     end
@@ -94,15 +94,12 @@ class AssignmentsController < ApplicationController
       render json: {success: true, notice: t(:updated, scope: [:assignments, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue Exception => error
-
-      # raise "#{error}"
-
-      # render json: {success: false, alert: t(:updated, scope: [:assignments, :error])}, status: :unprocessable_entity
+    rescue
+      @allocation_tags_ids = params[:allocation_tags_ids].split(" ").map(&:to_i)
       @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
-      @assignment.enunciation_files.build
+      @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
 
-      render :new
+      render :edit
     end
   end
 

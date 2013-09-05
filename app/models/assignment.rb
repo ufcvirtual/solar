@@ -2,12 +2,11 @@ class Assignment < ActiveRecord::Base
 
   GROUP_PERMISSION = true
 
+  belongs_to :schedule #, :inverse_of => :assignments
+
   #Relações extras
   has_many :allocation_tags, through: :academic_allocations
   #EXTRAS
-
-  belongs_to :schedule #, :inverse_of => :assignments
-
 
   has_many :enunciation_files, class_name: "AssignmentEnunciationFile", dependent: :destroy
   has_many :assignment_enunciation_files, dependent: :destroy # deletar se nao existir mais chamadas para este
@@ -26,13 +25,9 @@ class Assignment < ActiveRecord::Base
   accepts_nested_attributes_for :enunciation_files, allow_destroy: true, reject_if: proc {|attributes| not attributes.include?(:attachment)}
 
   validates :name, :enunciation, :type_assignment, presence: true
+  validates :name, length: {maximum: 1024}
 
   attr_accessible :schedule_attributes, :enunciation_files_attributes, :name, :enunciation, :type_assignment
-
-  ## define uma data final de avaliacao caso nao esteja definida
-  def define_end_evaluation_date(allocation_tag)
-    self.end_evaluation_date = allocation_tag.group.offer.end_date if (end_evaluation_date.nil? or end_evaluation_date.blank? or (end_evaluation_date.to_date < schedule.end_date.to_date)) 
-  end
 
   def student_group_by_student(student_id)
     #Operador ternário (if) anything ? (então) somenthing :(se não) other thing
@@ -79,15 +74,13 @@ class Assignment < ActiveRecord::Base
     schedule.end_date.to_date < Date.today
   end
 
-
   def extra_time?(allocation_tag, user_id)
     (allocation_tag.is_user_class_responsible?(user_id) and closed?)
   end
 
-
   def on_evaluation_period?(allocation_tag, user_id)
-    define_end_evaluation_date(allocation_tag) if end_evaluation_date.nil? or end_evaluation_date.blank?
-    ((Date.today <= end_evaluation_date.to_date) and assignment_in_time?(allocation_tag, user_id))
+    #### falta alguma nova verificacao?
+    assignment_in_time?(allocation_tag, user_id)
   end
 
   ## Verifica período que o responsável pode alterar algo na atividade
@@ -101,9 +94,7 @@ class Assignment < ActiveRecord::Base
     (date >= start_date.to_date and date <= end_date.to_date)
   end
 
-  ##
-  # Lista de alunos presentes nas turmas
-  ##
+  ## Lista de alunos presentes nas turmas
   def self.list_students_by_allocations(allocations_ids)
     students_of_class_ids = Allocation.all(:include => [:allocation_tag, :user, :profile], :conditions => ["cast( profiles.types & '#{Profile_Type_Student}' as boolean) 
       AND allocations.status = #{Allocation_Activated} AND allocation_tags.group_id IS NOT NULL AND allocation_tags.id IN (#{allocations_ids})"]).map(&:user_id)
@@ -111,9 +102,7 @@ class Assignment < ActiveRecord::Base
     return students_of_class
   end
 
-  ##
-  # Recupera as atividades de determinado tipo de uma turma e informações da situação de determinado aluno nela
-  ##
+  ## Recupera as atividades de determinado tipo de uma turma e informações da situação de determinado aluno nela
   def self.student_assignments_info(group_id, student_id, type_assignment)
     assignments = Assignment.all(
       joins: [{academic_allocations: :allocation_tag}, :schedule], 

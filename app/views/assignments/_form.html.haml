@@ -1,5 +1,4 @@
 .new_assignment
-  - types = {:"#{t(:individual, scope: [:assignment, :list])}" => Assignment_Type_Individual, :"#{t(:group, scope: [:assignment, :list])}" => Assignment_Type_Group}
 
   = simple_form_for @assignment, html: {id: 'assignment_form'} do |f|
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
@@ -13,6 +12,7 @@
           .left= s.input :start_date, as: :string, input_html: {id: 'assignment_start_date', value: l(@assignment.schedule.start_date.to_date, format: :datepicker)}
           .right= s.input :end_date, as: :string, input_html: {id: 'assignment_end_date', value: l(@assignment.schedule.end_date.to_date, format: :datepicker)}
 
+      - types = {:"#{t(:individual, scope: [:assignment, :list])}" => Assignment_Type_Individual, :"#{t(:group, scope: [:assignment, :list])}" => Assignment_Type_Group}
       = f.input :type_assignment, collection: types, include_blank: false, required: true
 
       .input.files
@@ -21,15 +21,17 @@
 
       = f.simple_fields_for :enunciation_files do |files|
         .file_input
-          / = files.input :_destroy, as: :hidden, input_html: {class: "destroy_input_file", value: 0, :"data-haha" => files.object.attachment_file_name}
+          = files.input :_destroy, as: :hidden, input_html: {value: 0, class: "destroy_input_file", :"data-file-id" => files.object.id}
           = files.input :attachment, label: false, input_html: {id: "fileupload"}
 
-
       .input.list_files_to_send
-        / - @assignment.enunciation_files.each_with_index do |ef, idx|
-        /   .file{id: idx}
-        /     %i.icon-cross-3.warning.remove_file
-
+        - @assignment.enunciation_files.each do |ef|
+          - if ef.persisted?
+            .input.files
+              %label
+              %span#file{:"data-file-id" => ef.id}
+                = ef.attachment_file_name
+                %i.icon-cross-3.warning.remove_file
 
       .input
         = f.label :groups
@@ -39,7 +41,6 @@
       .right_buttons_assignment
         = button_tag t(:cancel), :class => "btn btn_default btn_lightbox", :type => "button", onclick: "javascript:removeLightBox();"
         = button_tag t(:save), :class => "btn btn_main btn_lightbox", :type => "button", :id => "save"
-    
 
 :css
   .schedule_dates .input input, #assignment_type_assignment {
@@ -54,50 +55,52 @@
 
   jQuery(function($){
 
+    if ($(".file_input:last").length)
+      var nested_form = $(".file_input:first");
 
     // clona um arquivo existente e atualiza o nome
     function add_new_file() {
       var new_form = nested_form.clone();
       var forms_on_page = $(".file_input").length;
-      var input_name = $("input", new_form).attr("name");
+      var input_name = $("input[type='file']", new_form).attr("name");
       input_name = input_name.replace(new RegExp(/\[[0-9]+\]/), "[" + forms_on_page + "]")
       $("input", new_form).attr("name", input_name);
 
       $(new_form).insertAfter( nested_form.last() );
-      $("input", new_form).click();
+      $("input[type='file']", new_form).click();
 
-      $("input", new_form).change(function(){
-        var new_file_name = "<div class='input files'> <label></label> <span id='file' data-name-file=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-3 warning remove_file'></i> </span> </div>";
+      $("input[type='file']", new_form).change(function(){
+        var new_file_name = "<div class='input files'> <label></label> <span id='file' data-input-file-name=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-3 warning remove_file'></i> </span> </div>";
 
         if ($(".list_files_to_send .files:last").lenght)
           $(".list_files_to_send .files:last").after(new_file_name);
         else
-          $(".list_files_to_send").after(new_file_name);
+          $(".list_files_to_send").append(new_file_name);
 
         $(".remove_file").click(function(){
-          var div_file = $(this).parents('span#file');
+          var span_file = $(this).parents('span#file');
 
-          $("[name='" + div_file.data("name-file") + "']").parents("div.file_input").remove();
-          div_file.remove();
+          $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove();
+          $(span_file).parents('div.input.files').remove();
         });
       });
     }
 
-    // add novo file na listagem, copiando conteudo
-    if ($(".file_input:last").length)
-      var nested_form = $(".file_input:first");
+    //// edicao
+
+    $(".remove_file").click(function(){
+      var span_file = $(this).parents('span#file');
+
+      $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove(); // pra edicao nao serve
+      $("input[data-file-id=" + span_file.data("file-id") + "]").val(1); // edicao: colocar o _destroy com valor 1
+      $(span_file).parents('div.input.files').remove();
+    });
+
 
     $(".new_file").click(function(e){
       e.preventDefault();
-
       add_new_file();
     });
-
-    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']); 
-    
-    /* impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final */
-    $('#assignment_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#assignment_end_date').datepicker("option", "minDate", selected); } }) );
-    $('#assignment_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#assignment_start_date').datepicker("option", "maxDate", selected); } }) );
 
     $('#save').click(function(){
       $('#assignment_form:last').serialize_and_submit({
@@ -105,6 +108,8 @@
         replace_list: $(".list_assignments")
       });
     });
+
+    // datepicker //
 
     /* se a data ficar vazia, recebe a data que veio ao carregar o formulário ou uma data permitida de acordo com a relação data final - data inicial */
     $('#assignment_end_date').blur(function(){
@@ -116,5 +121,9 @@
       if($(this).datepicker("getDate") == null)
         $(this).datepicker("setDate", new Date("#{@assignment.schedule.start_date}"));
     });
+
+    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
+    $('#assignment_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#assignment_end_date').datepicker("option", "minDate", selected); } }) );
+    $('#assignment_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#assignment_start_date').datepicker("option", "maxDate", selected); } }) );
 
   });
