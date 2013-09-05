@@ -1554,11 +1554,23 @@
       must_select_something: Um ou mais itens devem ser selecionados
 
   chat_rooms:
+    index:
+      chats: Chats
+      new_chat: Novo Chat
+      edit_chat: Editar Chat
+      chat_name: Nome do chat
+      availability: Disponibilidade
+      groups: Turmas
+      no_chats: Não há chats
+      delete_chats: Deletar Chats
+      expand_description: Expandir descrição
+      compress_description: Comprimir descrição
     success:
       created: Chat criado com sucesso.
       updated: Chat atualizado com sucesso.
       deleted: Chat deletado com sucesso.
     error:
+      range_hour_error: deve ser posterior à inicial
       created: Não foi possível criar chat.
       updated: Não foi possível atualizar chat.
       deleted: Não foi possível deletar chat.

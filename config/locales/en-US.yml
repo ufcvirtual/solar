@@ -1387,11 +1387,23 @@
       must_select_something: One or more items must be selected
 
   chat_rooms:
+    index:
+      chats: Chats
+      new_chat: New Chat
+      edit_chat: Edit Chat
+      chat_name: Chat's name
+      availability: Availability
+      groups: Groups
+      no_chats: There are no chats
+      delete_chats: Delete Chats
+      expand_description: Expand description
+      compress_description: Compress description
     success:
       created: Chat was successfully created.
       updated: Chat was successfully updated.
       deleted: Chat was successfully deleted.
     error:
+      range_hour_error: must be posterior to final hour
       created: Chat wasn't created.
       updated: Chat wasn't updated.
       deleted: Chat wasn't deleted.

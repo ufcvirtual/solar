@@ -974,6 +974,29 @@ groupedit4:
   resource_id: 118
   per_id: false
 
+# chat_rooms
+
+chatedit1:
+  profile_id: 5
+  resource_id: 128
+  per_id: false
+
+chatedit2:
+  profile_id: 5
+  resource_id: 129
+  per_id: false
+
+chatedit3:
+  profile_id: 5
+  resource_id: 130
+  per_id: false
+
+chatedit4:
+  profile_id: 5
+  resource_id: 131
+  per_id: false
+
+
 ##############################
 # BASICO #
 ##############################

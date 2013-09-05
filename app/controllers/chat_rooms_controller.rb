@@ -3,19 +3,19 @@ class ChatRoomsController < ApplicationController
   layout false
 
   def index
-    @allocation_tags_ids = params[:allocation_tags_ids]
+    authorize! :index, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @chat_rooms = ChatRoom.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).order("title").uniq
   end
 
   def new
-    @allocation_tags_ids = params[:allocation_tags_ids]
+    authorize! :create, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @chat_room = ChatRoom.new
     @chat_room.build_schedule(start_date: Date.current, end_date: Date.current)
     @allocations = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:students_participants).flatten.uniq
   end
 
   def create
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    authorize! :create, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
     @chat_room = ChatRoom.new params[:chat_room]
 
     begin
@@ -33,12 +33,14 @@ class ChatRoomsController < ApplicationController
   end
 
   def edit
+    authorize! :update, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
     @chat_room = ChatRoom.find(params[:id])
     @schedule = @chat_room.schedule
-    @allocations = Group.joins(:allocation_tag).where(allocation_tags: {id: params[:allocation_tags_ids].flatten}).map(&:students_participants).flatten.uniq
+    @allocations = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:students_participants).flatten.uniq
   end
 
   def update
+    authorize! :update, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
     @chat_room = ChatRoom.find(params[:id])
     
     begin
@@ -47,14 +49,15 @@ class ChatRoomsController < ApplicationController
       render json: {success: true, notice: t(:updated, scope: [:chat_rooms, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue 
-      @allocations = Group.joins(:allocation_tag).where(allocation_tags: {id: params[:allocation_tags_ids].flatten}).map(&:students_participants).flatten.uniq
+    rescue
+      @allocations = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:students_participants).flatten.uniq
       render :edit
     end
 
   end
 
   def destroy
+    authorize! :destroy, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     begin
       ChatRoom.transaction do

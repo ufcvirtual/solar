@@ -19,8 +19,20 @@ class ChatRoom < ActiveRecord::Base
 
   validates_format_of :start_hour, :end_hour, with: /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/
 
+  validate :verify_hours, unless: Proc.new { |a| a.start_hour.blank? or a.end_hour.blank?}
+
   accepts_nested_attributes_for :participants, allow_destroy: true, reject_if: proc { |attributes| attributes['allocation_id'] == "0" }
 
   attr_accessible :participants_attributes, :title, :start_hour, :end_hour, :description, :schedule_attributes, :chat_type
+
+  after_destroy :delete_schedule
+
+  def verify_hours
+    errors.add(:end_hour, I18n.t(:range_hour_error, scope: [:chat_rooms, :error])) if end_hour.rjust(5, '0') < start_hour.rjust(5, '0')
+  end
+
+  def delete_schedule
+    self.schedule.destroy
+  end
 
 end

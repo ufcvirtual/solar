@@ -707,3 +707,27 @@ res127:
   controller: 'editions'
   action: 'groups'
   description: 'Filtro de turmas da edição acadêmica'
+
+res128:
+  id: 128
+  controller: 'chat_rooms'
+  action: 'index'
+  description: 'Listagem de chats'
+
+res129:
+  id: 129
+  controller: 'chat_rooms'
+  action: 'create'
+  description: 'Novo chat'
+
+res130:
+  id: 130
+  controller: 'chat_rooms'
+  action: 'update'
+  description: 'Atualizar chat'
+
+res131:
+  id: 131
+  controller: 'chat_rooms'
+  action: 'destroy'
+  description: 'Remover chat'

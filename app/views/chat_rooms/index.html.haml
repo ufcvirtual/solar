@@ -1,6 +1,6 @@
 .block_wrapper.list_chat_rooms{:"data-link-list" => chat_rooms_path(allocation_tags_ids: @allocation_tags_ids)}
   .block_title
-    %h2= "Chats"
+    %h2= t(".chats")
 
   .block_content_toolbar
     .block_toolbar_left.btn-group
@@ -9,12 +9,12 @@
         %i.icon-arrow-down-3
       %div{:id=>"dropdown", class: "dropdown dropdown-tip"}
         %ul.dropdown-menu
-          %li= link_to "Novo Chat", '#', id: 'new_chat', :"data-link" => new_chat_room_path(allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-box-title" => "Novo Chat"
+          %li= link_to t(".new_chat"), '#', id: 'new_chat', :"data-link" => new_chat_room_path(allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-box-title" => t(".new_chat")
 
     .block_toolbar_right
       .btn-group
-        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit edit_chat', "data-link-to-edit" => edit_chat_room_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-edit-title" => "Editar Chat", disabled: true
-        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_chat', :"data-link-delete" => chat_room_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), disabled: true
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit edit_chat', "data-link-to-edit" => edit_chat_room_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-edit-title" => t(".edit_chat"), disabled: true, :"data-tooltip" => t(".edit_chat")
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_chat', :"data-link-delete" => chat_room_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), disabled: true, :"data-tooltip" => t(".delete_chats")
 
   .block_wrapper.chat_rooms
     - unless @chat_rooms.empty? or @chat_rooms.nil?
@@ -22,8 +22,8 @@
         %thead
           %tr.lines
             %th{style: 'text-align:center;'}= check_box_tag :all_chats, false, false, :"data-children-names" => "c_"
-            %th{style: 'text-align:left;'}= "Nome do chat"
-            %th{style: 'text-align:center; width: 21%;'}= "Disponibilidade"
+            %th{style: 'text-align:left;'}= t(".chat_name")
+            %th{style: 'text-align:center; width: 21%;'}= t(".availability")
 
         %tbody
           - @chat_rooms.each do |chat|
@@ -38,13 +38,13 @@
                     .minimun
                       = chat.description.truncate(250, omission: "...")
                       - unless chat.description.blank?
-                        .expand= content_tag(:i, nil, class: " icon-arrow-down-5")
+                        .expand= content_tag(:i, nil, class: " icon-arrow-down-5", :"data-tooltip" => t(".expand_description"))
                     .complete.invisible
                       = chat.description
-                      .hide= content_tag(:i, nil, class: " icon-arrow-up-4")
+                      .hide= content_tag(:i, nil, class: " icon-arrow-up-4", :"data-tooltip" => t(".compress_description"))
                   %br/
                   .groups
-                    = "Turmas: "
+                    = t(".groups")
                     - chat.groups.each do |group|
                       %span.collection_check_boxes= group.code
 
@@ -61,7 +61,9 @@
                   ="h"
 
     - else
-      .block_content.block_content_text= "Nenhum chat"
+      .block_content.block_content_text= t(".no_chats")
+
+= javascript_include_tag "tooltip"
 
 :javascript
 
