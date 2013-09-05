@@ -738,6 +738,7 @@
   without_group: Without Group
 
   assignment:
+    assignments: Assignments
     new:
       groups: Groups
     list:

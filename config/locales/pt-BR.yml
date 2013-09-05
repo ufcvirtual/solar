@@ -901,6 +901,7 @@
   without_group: Sem Grupo
 
   assignment:
+    assignments: Trabalhos
     new:
       groups: Turmas
     list:
@@ -1037,7 +1038,6 @@
   tests: "Provas"
   private_area: "Trabalhos"
   participation: "Participação"
-  assignments: "Trabalhos"
   access_to_the_course: "Acessos ao Curso"
   group: "Turma"
   legends: "Legendas"
