@@ -48,7 +48,7 @@ class AllocationsControllerTest < ActionController::TestCase
     al_pending = assigns(:allocations).select {|al| al.user_id == users(:user).id and al.status == Allocation_Pending}.first
 
     assert_select "table tbody tr" do
-      assert_select 'td:nth-child(4)', {count: 1, html:  "Pendente"}
+      assert_select 'td:nth-child(5)', {count: 1, html:  "Pendente"}
     end
 
     get :edit, id: al_pending.id
@@ -67,7 +67,7 @@ class AllocationsControllerTest < ActionController::TestCase
     al_pending = assigns(:allocations).select {|al| al.user_id == users(:user).id and al.status == Allocation_Pending}.first
 
     assert_select "table tbody tr" do
-      assert_select 'td:nth-child(4)', {count: 1, html: "Pendente"}
+      assert_select 'td:nth-child(5)', {count: 1, html: "Pendente"}
     end
 
     get :edit, id:  al_pending.id
