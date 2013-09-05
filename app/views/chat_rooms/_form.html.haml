@@ -13,7 +13,7 @@
             = s.input :end_date, as: :string, input_html: {id: 'chat_end_date', value: l(@chat_room.schedule.end_date.to_date, format: :datepicker)}
 
         .right
-          = f.input :start_hour#, as: :time
+          = f.input :start_hour
           = f.input :end_hour
 
       .input
