@@ -35,8 +35,9 @@
 
       .input
         = f.label :groups
-        - @groups.each do |group|
-          %span.collection_check_boxes= group.code
+        %span.groups
+          - @groups.each do |group|
+            %span.collection_check_boxes= group.code
 
       .right_buttons_assignment
         = button_tag t(:cancel), :class => "btn btn_default btn_lightbox", :type => "button", onclick: "javascript:removeLightBox();"

@@ -38,79 +38,20 @@
                     .minimun
                       = chat.description.truncate(250, omission: "...")
                       - unless chat.description.blank?
-                        .expand= content_tag(:i, nil, class: " icon-arrow-down-5", :"data-tooltip" => t(".expand_description"))
+                        .expand= content_tag(:i, nil, class: " icon-arrow-down-3", :"data-tooltip" => t(".expand_description"))
                     .complete.invisible
                       = chat.description
-                      .hide= content_tag(:i, nil, class: " icon-arrow-up-4", :"data-tooltip" => t(".compress_description"))
-                  %br/
+                      .hide= content_tag(:i, nil, class: " icon-arrow-up-2", :"data-tooltip" => t(".compress_description"))
                   .groups
-                    = t(".groups")
+                    %span.title= label_tag t(".groups")
                     - chat.groups.each do |group|
                       %span.collection_check_boxes= group.code
 
-
               %td{style: 'text-align:center;'}
-                %div
-                  %span= l(chat.schedule.start_date, format: :normal)
-                  %span= ' - '
-                  %span= l(chat.schedule.end_date, format: :normal)
-                %div
-                  %span= chat.start_hour
-                  ="h - "
-                  %span= chat.end_hour
-                  ="h"
+                %div= [l(chat.schedule.start_date, format: :normal), l(chat.schedule.end_date, format: :normal)].join(" - ")
+                %div= t(".hour_period", start_hour: chat.start_hour, end_hour: chat.end_hour)
 
     - else
       .block_content.block_content_text= t(".no_chats")
 
-= javascript_include_tag "tooltip"
-
-:javascript
-
-  $(function(){
-
-    $(".expand, .hide").click(function(){
-      $(this).parent().hide();
-      $($(this).parent().siblings()[0]).show();
-    });
-
-    $('#new_chat').click(function() {
-      showLightBoxURL($(this).data('link'), 550, 400, true, $(this).data('box-title'));
-    });
-
-    $("#all_chats").nice_checkbox();
-
-    $('.edit_chat').click(function() {
-      if ($(this).attr('disabled') == 'disabled') {
-        return false;
-      }
-
-      var chats_ids = $('.ckb_chat:checked', $(this).parents("div.list_chat_rooms")).map(function() { return this.value; }).get();
-      if (!(!chats_ids.length || chats_ids.length > 1)) {
-        var url_edit = $(this).data('link-to-edit').replace(':id', chats_ids);
-        showLightBoxURL(url_edit, 550, 400, true, $(this).data('edit-title'));
-      }
-      return false;
-    });
-
-    $('.delete_chat').click(function() {
-      if ($(this).attr('disabled') == 'disabled' || !confirm("#{t(:message_confirm)}"))
-        return false;
-
-      var chats = $('.ckb_chat:checked', $(this).parents("div.list_chat_rooms"));
-      var chats_ids = chats.map(function() { return this.value; }).get();
-      if (chats_ids.length) {
-        $.delete($(this).data('link-delete').replace(':id', chats_ids), function(data){
-          flash_message(data.notice, 'notice');
-          chats.parents('tr').fadeOut().remove();
-        }).error(function(data){
-          var data = $.parseJSON(data.responseText);
-          if (typeof(data.alert) != "undefined")
-            flash_message(data.alert, 'alert');
-        });
-      }
-
-      return false;
-    });
-
-  });
+= javascript_include_tag "chat_rooms", "tooltip"

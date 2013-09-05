@@ -11,7 +11,10 @@ class ChatRoomsController < ApplicationController
     authorize! :create, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @chat_room = ChatRoom.new
     @chat_room.build_schedule(start_date: Date.current, end_date: Date.current)
-    @allocations = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:students_participants).flatten.uniq
+
+    groups = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten})
+    @allocations = groups.map(&:students_participants).flatten.uniq
+    @groups_codes = groups.map(&:code).uniq
   end
 
   def create
@@ -27,7 +30,9 @@ class ChatRoomsController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
-      @allocations = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:students_participants).flatten.uniq
+      groups = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten})
+      @allocations = groups.map(&:students_participants).flatten.uniq
+      @groups_codes = groups.map(&:code).uniq
       render :new
     end
   end
@@ -37,6 +42,7 @@ class ChatRoomsController < ApplicationController
     @chat_room = ChatRoom.find(params[:id])
     @schedule = @chat_room.schedule
     @allocations = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:students_participants).flatten.uniq
+    @groups_codes = @chat_room.groups.map(&:code)
   end
 
   def update
@@ -51,6 +57,7 @@ class ChatRoomsController < ApplicationController
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
       @allocations = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:students_participants).flatten.uniq
+      @groups_codes = @chat_room.groups.map(&:code)
       render :edit
     end
 

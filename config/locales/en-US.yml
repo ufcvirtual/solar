@@ -1394,11 +1394,15 @@
       edit_chat: Edit Chat
       chat_name: Chat's name
       availability: Availability
-      groups: Groups
+      groups: "Groups: "
       no_chats: There are no chats
       delete_chats: Delete Chats
       expand_description: Expand description
       compress_description: Compress description
+      hour_period: "%{start_hour}h - %{end_hour}h"
+    form: 
+      participants: Participants
+      groups: Groups
     success:
       created: Chat was successfully created.
       updated: Chat was successfully updated.

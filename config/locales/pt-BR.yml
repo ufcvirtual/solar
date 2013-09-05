@@ -1560,11 +1560,15 @@
       edit_chat: Editar Chat
       chat_name: Nome do chat
       availability: Disponibilidade
-      groups: Turmas
+      groups: "Turmas: "
       no_chats: Não há chats
       delete_chats: Deletar Chats
       expand_description: Expandir descrição
       compress_description: Comprimir descrição
+      hour_period: "%{start_hour}h - %{end_hour}h"
+    form: 
+      participants: Participantes
+      groups: Turmas
     success:
       created: Chat criado com sucesso.
       updated: Chat atualizado com sucesso.

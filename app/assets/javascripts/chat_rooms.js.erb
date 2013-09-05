@@ -1,5 +1,7 @@
 jQuery(function($){
 
+  /* Formulário */
+
   $("#all_participants").nice_checkbox();
 
   $("#chat_room_type").click(function(){
@@ -9,6 +11,7 @@ jQuery(function($){
     }else{
       $("#tab").attr("id", "define_participants");
       $(".box").hide();
+      $("[name*='chat_room[participants_attributes]']").each(function(i){ $(this).prop("checked", false); });
     }
 
   });
@@ -35,5 +38,53 @@ jQuery(function($){
     if($(this).datepicker("getDate") == null)
       $(this).datepicker("setDate", new Date(start_date));
   });
+
+
+  /* Listagem */
+
+  $(".expand, .hide").click(function(){
+    $(this).parent().hide();
+    $($(this).parent().siblings()[0]).show();
+  });
+
+  $('#new_chat').click(function() {
+    showLightBoxURL($(this).data('link'), 550, 400, true, $(this).data('box-title'));
+  });
+
+  $("#all_chats").nice_checkbox();
+
+  $('.edit_chat').click(function() {
+    if ($(this).attr('disabled') == 'disabled') {
+      return false;
+    }
+
+    var chats_ids = $('.ckb_chat:checked', $(this).parents("div.list_chat_rooms")).map(function() { return this.value; }).get();
+    if (!(!chats_ids.length || chats_ids.length > 1)) {
+      var url_edit = $(this).data('link-to-edit').replace(':id', chats_ids);
+      showLightBoxURL(url_edit, 550, 400, true, $(this).data('edit-title'));
+    }
+    return false;
+  });
+
+  $('.delete_chat').click(function() {
+    if ($(this).attr('disabled') == 'disabled' || !confirm("#{t(:message_confirm)}"))
+      return false;
+
+    var chats = $('.ckb_chat:checked', $(this).parents("div.list_chat_rooms"));
+    var chats_ids = chats.map(function() { return this.value; }).get();
+    if (chats_ids.length) {
+      $.delete($(this).data('link-delete').replace(':id', chats_ids), function(data){
+        flash_message(data.notice, 'notice');
+        chats.parents('tr').fadeOut().remove();
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+      });
+    }
+
+    return false;
+  });
+
 
 });

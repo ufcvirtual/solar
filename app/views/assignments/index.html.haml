@@ -45,9 +45,8 @@
                     - unless assignment.assignment_enunciation_files.empty?
                       %i.icon-paperclip
                   .enunciation= assignment.enunciation.truncate(250)
-                  %br/
                   .groups
-                    = t(:groups, scope: "assignment.list")
+                    %span.title= label_tag t(:groups, scope: "assignment.list")
                     - assignment.groups.each do |group|
                       %span.collection_check_boxes= group.code
 

@@ -53,9 +53,7 @@ fieldset {
 }
 
 .edition .filter .groups{
-  display: inline-block;
-  width: 300px;
-  margin: 5px;
+  @include tags_div;
   margin-left:20px;
 }
 

@@ -191,6 +191,22 @@
   @include collection_check_boxes_layout;
   background-color: #0e7dd8;
   color: #fff;
+  white-space: nowrap;
+  display:inline-block;
+}
+
+tbody .groups, .input .groups{
+  @include tags_div;
+  margin: 0;
+}
+
+tbody .groups{
+  width: auto;
+}
+
+.groups .title label{
+  display: inline;
+  color: $color_main;
 }
 
 .title i {
@@ -203,7 +219,7 @@
 }
 
 .groups{
-  padding-left: 11px;
+  padding-left: 2px;
 }
 
 .groups_list {
