@@ -1,16 +1,17 @@
-.expand .icon-ellipsis{
+.expand.icon-ellipsis{
   color: white;
   background-color: #7c7c7c;
   border-radius: 3px;
   padding-top: 0;
   padding-bottom: 0;
   padding-left: 3px;
+  margin-left: 3px;
   padding-right: 3px;
   font-size: 8px;
   cursor: pointer;
 }
 
-.compress .icon-arrow-up-2{
+.compress.icon-arrow-up-2{
   color: white;
   background-color: #7c7c7c;
   border-radius: 3px;
