@@ -102,3 +102,15 @@ acaal17:
   allocation_tag_id: 8
   academic_tool_id: 15
   academic_tool_type: "Assignment"
+
+acaal18:
+  id: 18
+  allocation_tag_id: 3
+  academic_tool_id: 1
+  academic_tool_type: "ChatRoom"
+
+acaal19:
+  id: 19
+  allocation_tag_id: 3
+  academic_tool_id: 2
+  academic_tool_type: "ChatRoom"
