@@ -3,7 +3,7 @@
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
     .form-inputs.block_content
-      = f.input :title
+      = f.input :title, :maxlength => 250
       = f.input :description, required: false
 
       .schedule_dates
