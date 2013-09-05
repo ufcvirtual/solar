@@ -10,7 +10,7 @@ class Offer < ActiveRecord::Base
   belongs_to :enrollment_schedule, class_name: "Schedule", foreign_key: "enrollment_schedule_id"
 
   has_many :groups
-  has_many :assignments, through: :allocation_tag
+  has_many :assignments, through: :academic_allocations
 
   after_create :set_default_lesson_module # modulo default da oferta
 

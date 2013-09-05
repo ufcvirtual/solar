@@ -4,16 +4,19 @@ class Group < ActiveRecord::Base
 
   belongs_to :offer
 
-  has_one :curriculum_unit, :through => :offer
-  has_one :course, :through => :offer
+  has_one :curriculum_unit, through: :offer
+  has_one :course, through: :offer
 
-  has_many :assignments, through: :allocation_tag
+  has_many :academic_allocations, through: :allocation_tag
 
-  validates :offer_id, :presence => true
-  validates :code, :presence => true
+  validates :code, :offer_id, presence: true
 
   # modulo default da turma
   after_create :set_default_lesson_module
+
+  def assignments
+    Assignment.joins(:groups).where(groups: {id: id})
+  end
 
   def code_semester
     "#{code} - #{offer.semester.name}"
