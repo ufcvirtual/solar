@@ -1313,6 +1313,11 @@
       subject: "[SOLAR] Matrícula aceita"
 
   assignments:
+    index: 
+      expand_enunciation: Expandir enunciado
+      compress_enunciation: Comprimir enunciado
+      delete_assignment: Deletar trabalhos
+      edit_assignment: Editar trabalho
     success:
       created: Trabalho criado com sucesso.
       updated: Trabalho atualizado com sucesso.

@@ -16,9 +16,9 @@
 
     .block_toolbar_right
       .btn-group
-        = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit edit_assignment', "data-link-to-edit" => edit_assignment_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), "data-edit-title" => t(:edit, scope: "assignment.list"), disabled: true
+        = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit edit_assignment', "data-link-to-edit" => edit_assignment_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), "data-edit-title" => t(:edit, scope: "assignment.list"), disabled: true, :"data-tooltip" => t(".edit_assignment")
 
-        = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del delete_assignment', :"data-link-delete" => assignment_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-link-to-list" => assignments_path(allocation_tags_ids: [@allocation_tags_ids]), disabled: true
+        = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del delete_assignment', :"data-link-delete" => assignment_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-link-to-list" => assignments_path(allocation_tags_ids: [@allocation_tags_ids]), disabled: true, :"data-tooltip" => t(".delete_assignment")
 
   .block_wrapper.assignments
     - unless @assignments.empty? or @assignments.nil?
@@ -44,7 +44,12 @@
                     = assignment.name
                     - unless assignment.assignment_enunciation_files.empty?
                       %i.icon-paperclip
-                  .enunciation= assignment.enunciation.truncate(250)
+                  .description
+                    .minimun
+                      = raw(truncate assignment.enunciation, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_enunciation"))}")
+                    .complete.invisible
+                      = assignment.enunciation
+                      = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_enunciation"))
                   .groups
                     %span.title= label_tag t(:groups, scope: "assignment.list")
                     - assignment.groups.each do |group|
@@ -64,48 +69,4 @@
     - else
       .block_content.block_content_text= t(:none, scope: "assignment.list")
 
-:javascript
-
-  $(function(){
-    $('#all_assignments').nice_checkbox();
-
-    $('#new_assignment').click(function() {
-      showLightBoxURL($(this).data('link'), 550, 400, true, $(this).data('box-title'));
-    });
-
-    $('.edit_assignment').click(function() {
-      if ($(this).attr('disabled') == 'disabled')
-        return false;
-
-      var assignments_ids = $('.ckb_assignment:checked', $(this).parents("div.list_assignments")).map(function() { return this.value; }).get();
-      if (!(!assignments_ids.length || assignments_ids.length > 1)) {
-        var url_edit = $(this).data('link-to-edit').replace(':id', assignments_ids);
-        showLightBoxURL(url_edit, 550, 400, true, $(this).data('edit-title'));
-      }
-      return false;
-    });
-
-    $('.delete_assignment').click(function() {
-      if ($(this).attr('disabled') == 'disabled' || !confirm("#{t(:message_confirm)}"))
-        return false;
-
-      // tentar melhorar o nice_delete para incluir a delecao de muitas linhas
-
-      var assignments = $('.ckb_assignment:checked', $(this).parents("div.list_assignments"));
-      var assignments_ids = assignments.map(function() { return this.value; }).get();
-      if (assignments_ids.length) {
-        $.delete($(this).data('link-delete').replace(':id', assignments_ids), function(data){
-          flash_message(data.notice, 'notice');
-          assignments.parents('tr').fadeOut().remove();
-
-          $(".btn_edit, .btn_del").attr("disabled", true);
-        }).error(function(data){
-          var data = $.parseJSON(data.responseText);
-          if (typeof(data.alert) != "undefined")
-            flash_message(data.alert, 'alert');
-        });
-      }
-
-      return false;
-    });
-  });
+= javascript_include_tag "tooltip", "assignments"
