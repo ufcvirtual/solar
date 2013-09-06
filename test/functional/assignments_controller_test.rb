@@ -87,7 +87,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "edicao - nao criar trabalho para oferta ou curso ou uc - modulo permite apenas turma" do
+  test "edicao - nao criar trabalho para oferta ou curso ou uc - permite apenas turma" do
     params_offer  = {allocation_tags_ids: "#{allocation_tags(:al6).id}", assignment: {name: "Testa modulo1", enunciation: "Assignment para testar modulo", type_assignment: 0, schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
     params_uc     = {allocation_tags_ids: "#{allocation_tags(:al13).id}", assignment: {name: "Testa modulo2", enunciation: "Assignment para testar modulo", type_assignment: 0, schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
     params_course = {allocation_tags_ids: "#{allocation_tags(:al19).id}", assignment: {name: "Testa modulo3", enunciation: "Assignment para testar modulo", type_assignment: 0, schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
@@ -102,14 +102,14 @@ class AssignmentsControllerTest < ActionController::TestCase
   end
 
   test "edicao - deletar um trabalho" do
-    assert_difference("Assignment.count", -1) do
+    assert_difference(["Assignment.count", "AcademicAllocation.count"], -1) do
       delete(:destroy, {id: assignments(:a4).id, allocation_tags_ids: [allocation_tags(:al3).id]})
     end
   end
 
   test "edicao - deletar varios trabalhos" do
     assignments = [2,4,6]
-    assert_difference("Assignment.count", -assignments.count) do
+    assert_difference(["Assignment.count", "AcademicAllocation.count"], -assignments.count) do
       delete(:destroy, {id: assignments, allocation_tags_ids: [allocation_tags(:al3).id]})
     end
   end

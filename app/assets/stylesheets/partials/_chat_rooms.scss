@@ -1,6 +1,6 @@
 .description{
   font-size: 11px;
-  color: #7c7c7c;
+  color: $text_grey;
 }
 
 .complete{
@@ -59,7 +59,7 @@
 }
 
 #define_participants label{
-  color: grey;
+  color: $text_grey;
 }
 
 #chat_room_type{

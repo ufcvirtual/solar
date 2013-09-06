@@ -96,7 +96,7 @@ class AssignmentsController < ApplicationController
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
       @allocation_tags_ids = params[:allocation_tags_ids].split(" ").map(&:to_i)
-      @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
+      @groups = @assignment.groups
       @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
 
       render :edit

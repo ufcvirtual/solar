@@ -1318,6 +1318,10 @@
       compress_enunciation: Comprimir enunciado
       delete_assignment: Deletar trabalhos
       edit_assignment: Editar trabalho
+      attached_files: Arquivos em anexo
+    form:
+      groups: Turmas
+      files: Arquivos
     success:
       created: Trabalho criado com sucesso.
       updated: Trabalho atualizado com sucesso.

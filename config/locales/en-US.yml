@@ -1153,6 +1153,10 @@
       compress_enunciation: Compress enunciation
       delete_assignment: Delete assignments
       edit_assignment: Edit assignment
+      attached_files: Attached files
+    form:
+      groups: Groups
+      files: Files
     success:
       created: Assignment was successfully created.
       updated: Assignment was successfully updated.
