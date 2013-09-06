@@ -159,6 +159,7 @@
     padding-right: 5px;
     border-bottom: solid 1px;
     border-bottom-color: $border;
+    min-height: 28px;
 
     ul.message_menu_listbox li ul {
       width: 100px;
@@ -182,6 +183,7 @@
 .block_content.messages{
   padding: 5px 10px 5px 5px;
   border-bottom: solid 1px $border;
+  overflow: hidden;
 
   .btn{
     margin-right: -5px;
@@ -395,6 +397,8 @@ ul.message_menu_listbox {
   margin: 0px 0px 0px 8px;
   padding: 0px;
   display: inline-block;
+  zoom: 1;
+  *display: inline;
 
   li {
     position: relative;

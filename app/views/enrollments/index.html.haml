@@ -10,7 +10,7 @@
           = select_tag(:curriculum_unit, options_from_collection_for_select(@curriculum_units, :id, :code_name), {include_blank: false, :class => "select_category", :selected => @search_curriculum_unit})
           = f.label t(".search_in"), :class => "enrollment_label"
           = select_tag(:type, options_from_collection_for_select(CurriculumUnitType.all, :id, :description), {include_blank: true, :class => "select_category", :selected => @search_category})
-          =f.label t(".of"), :class => "enrollment_label"
+          = f.label t(".of"), :class => "enrollment_label"
           = select_tag(:status, options_for_select(@status, @status.first), :class => "select_category")
           = button_tag content_tag(:i, nil, :class=>'icon-search', id: "search"), :class=>'btn', :"data-url-search" => enrollments_path
 

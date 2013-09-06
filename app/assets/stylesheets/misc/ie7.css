@@ -5,6 +5,10 @@ button.btn {
 	color:#d9d9d9 !important;
 }
 
+.block_title {
+    z-index: 0;
+}
+
 /* TELA DE LOGIN */
 #bar-brazil .bar ul {
     float:right;
@@ -74,4 +78,24 @@ button.btn {
 #gender .form_label,
 #birthdate .form_label{
     padding-top: 0;
+}
+
+/* TELA DE MENSAGENS */
+ul.message_menu_listbox {
+    margin: -20px 0 0 -12px;
+    padding: 0;
+}
+
+/* TELA DE MATRÍCULA */
+.filter_enrollment .btn {
+    margin-top: -12px;
+}
+
+.enrollment_label, .enrollment_label_search {
+    margin-top: 11px;
+    margin-right: 2px;
+    vertical-align: top;
+}
+.ui-combobox {
+    z-index: 90;
 }

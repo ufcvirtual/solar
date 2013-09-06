@@ -45,9 +45,21 @@
   background: #e8eff6;
 }
 
+.ui-combobox {
+    position: relative;
+}
+
+div.ui-combobox {
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
+}
+
 .arrow_icon{
-	display: inline-block;
 	background: url('icon_arrow_down.png') no-repeat 5px center;
-	left: -30px;
 	border: 0;
+    position: absolute;
+    right: 2px;
+    top: 10px;
+    z-index: 50;
 }
