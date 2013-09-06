@@ -105,8 +105,16 @@ SQL
   end
 
   def count_posts_after_and_before_period(period)
-    [{"before" => self.discussion_posts.where("updated_at::timestamp(0) < '#{period.first}'").count,
-      "after" => self.discussion_posts.where("updated_at::timestamp(0) > '#{period.last}'").count}]
+    [{"before" => count_posts_before_period(period),
+      "after" => count_posts_after_period(period)}]
+  end
+
+  def count_posts_before_period(period)
+    self.discussion_posts.where("updated_at::timestamp(0) < '#{period.first}'").count 
+  end
+
+  def count_posts_after_period(period)
+    self.discussion_posts.where("updated_at::timestamp(0) > '#{period.last}'").count
   end
 
   def self.all_by_allocations_and_student_id(allocation_tags, student_id)
