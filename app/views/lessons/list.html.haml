@@ -93,7 +93,7 @@
 
                       %td{style: "width: 70px", align: 'center'}
                         - status = [Lesson_Test, Lesson_Approved].delete_if {|v| v == lesson.status}
-                        = link_to (image_tag "lesson/#{(lesson.status == Lesson_Test) ? 'rejected' : 'released'}_lesson.png"), "#", id: 'change_lesson_status', :"data-link-update" => change_status_lesson_path(id: lesson.id, status: status, allocation_tags_ids: @allocation_tags_ids)
+                        = link_to (image_tag "#{(lesson.status == Lesson_Test) ? 'rejected' : 'released'}.png"), "#", id: 'change_lesson_status', :"data-link-update" => change_status_lesson_path(id: lesson.id, status: status, allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => (lesson.status == Lesson_Test ?  t(".draft") :  t(".released"))
                 - else
                   %tr.lines
                     %td.lesson_description{colspan:  5}= t(:none, scope: [:lessons, :list])

@@ -39,7 +39,7 @@ class GroupsController < ApplicationController
     begin
       authorize! :list, Group, on: [@offer.allocation_tag.id]
 
-      @groups = @offer.groups.order("status DESC, code")
+      @groups = @offer.groups.order("code")
       render partial: 'groups_checkboxes', locals: { groups: @groups } if params[:checkbox]
     rescue CanCan::AccessDenied
       render json: {success: false, alert: t(:no_permission)}, status: :unauthorized

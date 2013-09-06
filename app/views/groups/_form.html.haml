@@ -1,22 +1,23 @@
 .new_group.block_content
   = simple_form_for @group, html: {id: 'group_form'} do |f|
-    = f.input :offer_id, as: :hidden, input_html: {value: @group.offer.id}
+    .form-inputs.block_content
+      = f.input :offer_id, as: :hidden, input_html: {value: @group.offer.id}
 
-    %div
-      = f.label t(:course)
-      = @group.offer.course.name
-    %div
-      = f.label t(:curriculum_unit)
-      = @group.offer.curriculum_unit.name
-    %div
-      = f.label t(:semester)
-      = @group.offer.semester.name
+      %div
+        = f.label t(:course)
+        = @group.offer.course.name
+      %div
+        = f.label t(:curriculum_unit)
+        = @group.offer.curriculum_unit.name
+      %div
+        = f.label t(:semester)
+        = @group.offer.semester.name
 
-    = f.input :code
+      = f.input :code
 
-    .right_buttons
-      = button_tag t(:cancel), :class => "btn btn_default btn_lightbox", :type => "button", onclick: "javascript:removeLightBox();"
-      = button_tag t(:save), :class => "btn btn_main btn_lightbox", :type => "button", :id => "save"
+      .right_buttons
+        = button_tag t(:cancel), :class => "btn btn_default btn_lightbox", :type => "button", onclick: "javascript:removeLightBox();"
+        = button_tag t(:save), :class => "btn btn_main btn_lightbox", :type => "button", :id => "save"
 
 :javascript
 

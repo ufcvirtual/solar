@@ -648,6 +648,8 @@
       type: Tipo
       link_type: Link
       file_type: Arquivo
+      draft: Rascunho
+      released: Liberada
     new:
       draft: rascunho
       approved: liberada
@@ -1339,11 +1341,12 @@
       disable: Desativar
       delete: Deletar turma
       choose_at_least_one: "Selecione, ao menos, uma turma"
+      edit: Editar turma
     partial_group_list:
       code: Código
-      edit: Editar turma
-      enable: Ativar
-      disable: Desativar
+      enabled: Ativada
+      disabled: Desativada
+      activation: Ativação
     success:
       created: Turma criada com sucesso.
       updated: Turma atualizada com sucesso.

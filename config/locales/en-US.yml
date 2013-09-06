@@ -484,6 +484,8 @@
       type: Type
       link_type: Link
       file_type: File
+      draft: Draft
+      released: Released
     new:
       draft: draft
       approved: approved
@@ -1174,11 +1176,12 @@
       disable: Disable
       delete: Delete group
       choose_at_least_one: "Choose at least one group"
+      edit: Edit group
     partial_group_list:
       code: Code
-      edit: Edit group
-      enable: Enable
-      disable: Disable
+      enabled: Enabled
+      disabled: Disabled
+      activation: Activation
     success:
       created: Group was successfully created.
       updated: Group was successfully updated.
