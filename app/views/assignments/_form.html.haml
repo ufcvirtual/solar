@@ -16,7 +16,7 @@
       = f.input :type_assignment, collection: types, include_blank: false, required: true
 
       .input.files
-        = f.label :files
+        = f.label t(".files")
         %i.icon-paperclip.new_file
 
       = f.simple_fields_for :enunciation_files do |files|
@@ -34,7 +34,7 @@
                 %i.icon-cross-3.warning.remove_file
 
       .input
-        = f.label :groups
+        = f.label t(".groups")
         %span.groups
           - @groups.each do |group|
             %span.collection_check_boxes= group.code

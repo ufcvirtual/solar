@@ -2,11 +2,9 @@ class Assignment < ActiveRecord::Base
 
   GROUP_PERMISSION = true
 
-  belongs_to :schedule #, :inverse_of => :assignments
+  belongs_to :schedule
 
-  #Relações extras
   has_many :allocation_tags, through: :academic_allocations
-  #EXTRAS
 
   has_many :enunciation_files, class_name: "AssignmentEnunciationFile", dependent: :destroy
   has_many :assignment_enunciation_files, dependent: :destroy # deletar se nao existir mais chamadas para este
