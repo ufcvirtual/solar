@@ -25,13 +25,13 @@
         #mark_as_unread.btn{"data-tooltip" => t(:message_mark_as_unread), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "unread", box: @box)}
           %i.icon-mail
         #mark_as_read.btn{"data-tooltip" => t(:message_mark_as_read), :"data-new-status" => "read", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "read", box: @box)}
-          %i.icon-checkmark
+          %i.icon-mail-read
       - if @box != "trashbox"
         #remove_message.btn{:"data-tooltip" => t(:message_delete), :"data-new-status" => "trash", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "trash", box: @box)}
           %i.icon-trash
       - else
         #restore_message.btn{:"data-tooltip" => t(:message_restore), :"data-new-status" => "restore", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "restore", box: @box)}
-          %i.icon-plus-2
+          %i.icon-restore
     .clearfix
 
   .block_content

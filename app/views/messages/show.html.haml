@@ -16,14 +16,14 @@
 
       - if @box != "trashbox"
         #mark_as_unread.btn{:"data-tooltip" => t(:message_mark_as_unread), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "unread", box: @box)}
-          %i.icon-checkmark
+          %i.icon-mail-read
 
         #remove_message.btn{:"data-tooltip" => t(:message_delete), :"data-new-status" => "trash", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "trash", box: @box)}
           %i.icon-trash
 
       - if @box == "trashbox"
         #restore_message.btn{:"data-tooltip" => t(:message_restore), :"data-new-status" => "restore", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "restore", box: @box)}
-          %i.icon-plus-2
+          %i.icon-restore
 
     .clearfix
 
