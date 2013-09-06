@@ -1260,9 +1260,9 @@
     content:
       type: "Type*"
       course: "Course*"
-      curriculum_unit: "Curriculum Unit*"
-      module: "Module*"
-      semester: "Semester*"
+      curriculum_unit: "Curriculum Unit"
+      module: "Module"
+      semester: "Semester"
       offer: Offer
       group: Group
 

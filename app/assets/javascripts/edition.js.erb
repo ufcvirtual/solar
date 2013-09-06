@@ -10,6 +10,13 @@ function clear_all_combos(disable) {
   clear_combo("course", disable);
   clear_combo("curriculum_unit", disable);
   clear_combo("semester", disable);
+  clear_radioboxes(disable);
+}
+
+function clear_radioboxes(disable){
+  var radio_options = $("[name='radio[option]']");
+  radio_options.each(function(i){ $(this).prop("checked", false); });
+  radio_options.each(function(i){ $(this).prop("disabled", disable); });
 }
 
 function update_combobox(url, combobox){
@@ -49,6 +56,7 @@ $(function(){
       if(ui.item == null){
         clear_combo('curriculum_unit', true);
         clear_combo('semester', true);
+        clear_radioboxes(true);
         $(".groups").html('');
       }
     },
@@ -74,6 +82,7 @@ $(function(){
     change: function(event, ui) {
       if(ui.item == null){
         clear_combo('semester', true);
+        clear_radioboxes(true);
         $(".groups").html('');
       }
     },
@@ -87,14 +96,16 @@ $(function(){
 
   $( "#semester" ).combobox({
     change: function( event, ui ) {
-      if(ui.item == null){
-        $("input[id^=radio_option]").prop("disabled", true);
-        $("#radio_option_offer").click();
-      }
+      if(ui.item == null)
+        clear_radioboxes(true);
     },
     select: function( event, ui ) { 
-      $("#radio_option_offer").click();
-      $("input[id^=radio_option]").prop("disabled", false);
+      if(ui.item == null)
+        clear_radioboxes(true);
+      else{
+        $("#radio_option_offer").click();
+        $("input[id^=radio_option]").prop("disabled", false);
+      }
     }
   });
 
@@ -132,5 +143,4 @@ $(function(){
   });
 
 });
-
 // --- end content --------------------------------------------------------------------------------------------------------- //

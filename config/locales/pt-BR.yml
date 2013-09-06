@@ -1426,9 +1426,9 @@
       filter: Filtro
       type: "Tipo*"
       course: "Curso*"
-      curriculum_unit: "Unidade Curricular*"
-      module: "Módulo*"
-      semester: "Semestre*"
+      curriculum_unit: "Unidade Curricular"
+      module: "Módulo"
+      semester: "Semestre"
       offer: "Oferta"
       group: "Turma"
 
