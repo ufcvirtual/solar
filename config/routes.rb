@@ -52,7 +52,11 @@ Solar::Application.routes.draw do
 
   ## groups/:id/discussions
   resources :groups, except: [:show] do
-    resources :discussions, only: [:index]
+    resources :discussions, only: [:index] do
+      collection do 
+        get :mobilis_list
+      end
+    end  
     get :list, on: :collection
     get :list_to_edit, to: :list, on: :collection, edition: true
     get :academic_index, on: :collection

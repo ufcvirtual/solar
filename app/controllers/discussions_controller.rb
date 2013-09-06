@@ -22,6 +22,23 @@ class DiscussionsController < ApplicationController
     end
   end
 
+  # SolarMobilis
+  # GET /groups/:group_id/discussions/mobilis_list.json
+  def mobilis_list
+    begin
+      allocation_tag_id = (active_tab[:url].include?(:allocation_tag_id)) ? active_tab[:url][:allocation_tag_id] : AllocationTag.find_by_group_id(params[:group_id] || []).id
+      @discussions      = Discussion.all_by_allocation_tags(AllocationTag.find_related_ids(allocation_tag_id))
+    rescue
+      @discussions      = []
+    end
+
+    respond_to do |format|
+      format.html
+      format.xml  { render :xml => @discussions }
+      format.json  { render :json => {discussions: @discussions } }
+    end
+  end
+
   def new
     @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
     authorize! :new, Discussion, on: @allocation_tags_ids
