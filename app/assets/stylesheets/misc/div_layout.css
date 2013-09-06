@@ -45,7 +45,7 @@
     height : 15px;
     border : 0px;
     cursor : pointer;
-    background-image: url('../assets/lesson_close.png');
+    background-image: url('/assets/lesson_close.png');
     background-repeat: no-repeat;
     background-position:0px 0px;
     font-size : 3px;
@@ -66,7 +66,7 @@
     height : 15px;
     border : 0px;
     cursor : pointer;
-    background-image: url('../assets/lesson_minimize.png');
+    background-image: url('/assets/lesson_minimize.png');
     background-repeat: no-repeat;
     font-size : 3px;
     z-index : 25;
@@ -85,7 +85,7 @@
 	height      : 15px;
 	border      : 0px;
 	cursor      : pointer;
-	background-image: url('../assets/lesson_close.png');
+	background-image: url('/assets/lesson_close.png');
   background-repeat: no-repeat;
 	background-position:0px 0px;
 	font-size   : xx-small;
