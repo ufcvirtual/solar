@@ -55,16 +55,9 @@ function result_error(data) {
       });
 
     $('#all_groups').nice_checkbox({
-      objects_to_change_status: $('.disable_group, .enable_group')
+      objects_to_change_status: $('.disable_group, .enable_group'),
+      can_enable_elements: true
     });
-
-    // $('input[name="ckb_group"]').change(function(){
-    //   var checked_ckb = $('[name="ckb_group"]:checked');
-    //   var disabled = checked_ckb.is_empty();
-
-    //   // habilita ou desabilita os botões da barra de ferramentas
-    //   $('.disable_group, .enable_group, .btn_del').attr("disabled", disabled);
-    // });
 
     $('.disable_group, .enable_group').click(function(){
       var groups_ids = jQuery.map($("#ckb_group:checked"), function(n) {

@@ -56,7 +56,9 @@ jQuery(function($){
     showLightBoxURL($(this).data('link'), 550, 400, true, $(this).data('box-title'));
   });
 
-  $("#all_chats").nice_checkbox();
+  $("#all_chats").nice_checkbox({
+    can_enable_elements: true
+  });
 
   $('.edit_chat').click(function() {
     if ($(this).attr('disabled') == 'disabled') {

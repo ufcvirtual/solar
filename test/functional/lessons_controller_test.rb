@@ -142,7 +142,7 @@ class LessonsControllerTest < ActionController::TestCase
     lessons_ids = [lessons(:pag_bbc).id.to_s]
 
     get(:download_files, {:lessons_ids => lessons_ids, :allocation_tags_ids => [allocation_tags(:al6)]})
-    assert_template nothing:true
+    assert_template nothing: true
 
     zip_name = create_zip_name(lessons_ids)
     assert not(File.exists?(File.join(Rails.root.to_s, 'tmp', zip_name)))

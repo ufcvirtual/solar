@@ -1342,6 +1342,7 @@
       delete: Deletar turma
       choose_at_least_one: "Selecione, ao menos, uma turma"
       edit: Editar turma
+      none: Nenhuma turma cadastrada
     partial_group_list:
       code: Código
       enabled: Ativada

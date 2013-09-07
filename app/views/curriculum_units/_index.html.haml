@@ -15,7 +15,7 @@
       %a.btn.btn_main{:'data-tooltip' => t(".new_#{tool_name}"), id: "btn_new_curriculum_unit", :type => :button, :"data-link-new" => new_curriculum_unit_path(type_id: @type.id)}
         = content_tag(:i, nil, class: 'icon-plus-3')
     .block_toolbar_right
-      = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn delete_curriculum_unit', :'data-tooltip' => t(".delete", uc_or_module: t_tool_name), :"data-link-delete" => curriculum_unit_path(id: ':id')
+      = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn delete_curriculum_unit btn_del', :'data-tooltip' => t(".delete", uc_or_module: t_tool_name), :"data-link-delete" => curriculum_unit_path(id: ':id')
 
   %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :style => "table-layout: fixed"}
     %thead
@@ -35,7 +35,6 @@
           %td= curriculum_unit.name
           %td{:align => "left"}= curriculum_unit.curriculum_unit_type.description
           %td{:align => "right"}
-            / = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_caution delete_curriculum_unit', :"data-link-delete" => curriculum_unit_path(curriculum_unit), :'data-tooltip' => t(".delete", uc_or_module: t_tool_name), id: curriculum_unit.id, disabled: not(can? :destroy, curriculum_unit)
             = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit', :'data-tooltip' => t(".edit", uc_or_module: t_tool_name), :"data-link-edit" => edit_curriculum_unit_path(curriculum_unit), disabled: not(can? :update, curriculum_unit)
 
 :javascript
@@ -47,7 +46,7 @@
   }
 
   $(function(){
-    $('.delete_curriculum_unit').addClass("disabled");
+    $('.delete_curriculum_unit').attr("disabled", true);
 
     $("#btn_new_curriculum_unit").click(function(){
       showLightBoxURL($(this).data('link-new'), 540, 605, true, $(this).data('tooltip'));
@@ -87,14 +86,8 @@
       });
 
     $('#all_curriculum_unit').nice_checkbox({
-      objects_to_change_status: $('.delete_curriculum_unit')
+      can_enable_elements: true
     });
 
-    $('input[name="ckb_curriculum_unit"]').change(function(){
-      var checked_ckb = $('[name="ckb_curriculum_unit"]:checked');
-      var disabled = checked_ckb.is_empty();
-
-      // habilita ou desabilita os botões da barra de ferramentas
-      $('.delete_curriculum_unit').toggleClass("disabled", disabled);
-    });
+    
   });
