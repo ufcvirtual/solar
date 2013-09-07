@@ -54,11 +54,12 @@ HTML
 
     html, html_files =  '', ''
     files.each do |file|
+      mimetype_icon  = image_tag( icon_attachment(file.attachment_file_name) )
       link_to_down   = (link_to file.attachment_file_name, download_post_post_file_path(post, file))
       link_to_remove = (editable and can_interact) ? (link_to (content_tag(:i, nil, :class=>'icon-cross-3 warning')), 
         post_post_file_path(post, file), :confirm => t(".remove_file_confirm"), :method => :delete, :title => t(".remove_file"), 'data-tooltip' => t(".remove_file"), :class=>'nodecoration') : ''
       html_files << '<li>'
-      html_files <<     "#{link_to_down}&nbsp;&nbsp;#{link_to_remove}"
+      html_files <<     "#{mimetype_icon}&nbsp;&nbsp;#{link_to_down}&nbsp;&nbsp;#{link_to_remove}"
       html_files <<     "<div class='audio' id='audio-#{file.id}' data-type='#{file.attachment_file_name.split(".").last}' data-source='#{download_post_post_file_url(post, file)}'></div>" if file.attachment_content_type.index('audio') or file.attachment_content_type.index('video')
       html_files << '</li>'
     end
