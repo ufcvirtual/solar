@@ -5,6 +5,7 @@ class ChatRoomsController < ApplicationController
   def index
     authorize! :index, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @chat_rooms = ChatRoom.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).order("title").uniq
+    @allocation_tags_groups = AllocationTag.where(id: @allocation_tags_ids).map(&:group)
   end
 
   def new

@@ -102,4 +102,28 @@ class GroupsController < ApplicationController
     end
   end
 
+  def change_tool
+    #raise "#{params}"
+    if params[:type] == "add"
+      groups = Group.where(params[:id].split(","))
+      AcademicAllocation.create groups.map {|group| {allocation_tag_id: group.allocation_tag.id, academic_tool_id: params[:tool_id], academic_tool_type: params[:tool_type]}}
+    else
+      group = Group.find(params[:id])
+      academic_allocation = AcademicAllocation.where(allocation_tag_id: group.allocation_tag.id, academic_tool_type: params[:tool_type], academic_tool_id: params[:tool_id]).first
+      case params[:type]
+        when "unbind"
+          tool_model = params[:tool_type].constantize
+          new_tool = tool_model.create(tool_model.find(params[:tool_id]).attributes)
+          academic_allocation.update_attribute(:academic_tool_id, new_tool.id)
+        when "remove"
+          academic_allocation.destroy
+        else
+          raise "else"
+      end
+    end
+
+    render json: {success: true}
+
+  end
+
 end

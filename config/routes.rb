@@ -60,6 +60,9 @@ Solar::Application.routes.draw do
     get :list, on: :collection
     get :list_to_edit, to: :list, on: :collection, edition: true
     get :academic_index, on: :collection
+    get :unbind, on: :member, to: :change_tool, type: "unbind"
+    get :remove, on: :member, to: :change_tool, type: "remove"
+    put :add, on: :collection, to: :change_tool, type: "add"
   end
 
   ## discussions/:id/posts

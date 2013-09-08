@@ -187,7 +187,7 @@
   cursor: move;
 }
 
-.groups .collection_check_boxes {
+.groups .collection_check_boxes, .groups_tags .collection_check_boxes {
   @include collection_check_boxes_layout;
   background-color: #0e7dd8;
   color: #fff;
@@ -204,7 +204,7 @@ tbody .groups{
   width: auto;
 }
 
-.groups .title label{
+.groups_tags .title label{
   display: inline;
   color: $color_main;
 }
@@ -214,7 +214,7 @@ tbody .groups{
   color: #6b6b6b
 }
 
-.enunciation, .groups {
+.enunciation, .groups, .groups_tags {
   font-size: 11px;
 }
 
