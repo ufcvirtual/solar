@@ -1,3 +1,15 @@
+/* configuração da barra de ferramentas do ckeditor */
+CKEDITOR.editorConfig = function (config) {
+  config.toolbar =
+    [
+      { name: 'clipboard', items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+      { name: 'styles', items : [ 'Styles', 'Format' ] },
+      { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] },
+      { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] },
+      { name: 'links', items : [ 'Link', 'Unlink' ] }
+    ];
+};
+
 function showUploadForm(url) {
   showLightBoxURL(url, 400, 250, true, '<%= I18n.t(:attach_file_title, :scope => [:posts, :index]) %>');
   return false;
