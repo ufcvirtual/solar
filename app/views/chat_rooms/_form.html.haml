@@ -28,7 +28,7 @@
           = f.check_box :chat_type, {checked: (@chat_room.chat_type == 1), id: :chat_room_type}
 
           %span{id: (@chat_room.chat_type == 1 ? "tab" : "define_participants")}
-            = f.label :type, "Definir participantes"
+            = f.label :type, t(".define_participants")
           .box{class: (@chat_room.chat_type == 1 ? "" : "invisible")}
             %div
               = check_box_tag :all_participants, false, (@allocations.size == @chat_room.participants.size), {:"data-children-names" => "chat_room[participants_attributes]"}

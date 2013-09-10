@@ -3,12 +3,12 @@
   - groups.each do |group|
     %span.collection_check_boxes
       = group.code
-      /- unless groups.size == 1
-      = content_tag(:i, nil, class: "icon icon-cross change_tool_group", :"data-dropdown" => ".change_tool_dropdown_#{group.id}_#{tool_id}")
-      %div{id: "dropdown", class: "dropdown dropdown-tip change_tool_dropdown_#{group.id}_#{tool_id}"}
-        %ul.dropdown-menu
-          %li= link_to t(".unbind"), '#', class: 'unbind', :"data-link" => unbind_group_path(id: group.id, tool_id: tool_id, tool_type: "ChatRoom")
-          %li= link_to t(".remove"), '#', class: 'remove', :"data-link" => remove_group_path(id: group.id, tool_id: tool_id, tool_type: "ChatRoom")
+      - unless groups.size == 1
+        = content_tag(:i, nil, class: "icon icon-cross change_tool_group", :"data-dropdown" => ".change_tool_dropdown_#{group.id}_#{tool_id}")
+        %div{id: "dropdown", class: "dropdown dropdown-tip change_tool_dropdown_#{group.id}_#{tool_id}"}
+          %ul.dropdown-menu
+            %li= link_to t(".unbind"), '#', class: 'unbind', :"data-link" => unbind_group_path(id: group.id, tool_id: tool_id, tool_type: "ChatRoom")
+            %li= link_to t(".remove"), '#', class: 'remove', :"data-link" => remove_group_path(id: group.id, tool_id: tool_id, tool_type: "ChatRoom")
 
   - new_groups = (all_groups - groups).in_groups(2, false)
   - unless new_groups.first.empty?

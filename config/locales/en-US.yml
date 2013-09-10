@@ -1429,6 +1429,7 @@
     form: 
       participants: Participants
       groups: Groups
+      define_participants: Define participants
     success:
       created: Chat was successfully created.
       updated: Chat was successfully updated.
