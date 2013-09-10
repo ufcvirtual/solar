@@ -64,7 +64,7 @@
       var new_form = nested_form.clone();
       var forms_on_page = $(".file_input").length;
       var input_name = $("input[type='file']", new_form).attr("name");
-      input_name = input_name.replace(new RegExp(/\[[0-9]+\]/), "[" + forms_on_page + "]")
+      input_name = input_name.replace(new RegExp(/\[[0-9]+\]/), "[" + forms_on_page + "]");
       $("input", new_form).attr("name", input_name);
 
       $(new_form).insertAfter( nested_form.last() );

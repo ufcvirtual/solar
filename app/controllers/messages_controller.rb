@@ -134,7 +134,7 @@ class MessagesController < ApplicationController
             # verifica permissao na mensagem original
             if has_permission(original_message_id)
 
-              files = (params[:files].nil? or params[:files].empty?) ? [] : Message.find(original_message_id).files.where(id: params[:files])
+              files = (params[:parent_files].nil? or params[:parent_files].empty?) ? [] : Message.find(original_message_id).files.where(id: params[:parent_files])
 
               unless files.nil?
                 files.each do |f|
@@ -154,11 +154,11 @@ class MessagesController < ApplicationController
           end # if id
 
           # recupera os arquivos anexados
-          params[:message][:files].each do |file|
+          params[:files].each do |file|
             message_file = MessageFile.create!({message: file, message_id: new_message.id})
             destiny = [message_file.id.to_s, message_file.message_file_name].join('_') # adiciona arquivos de anexo para encaminhar com o email
             all_files_destiny = copy_file("", destiny, all_files_destiny, false)
-          end if params[:message].present? and params[:message][:files].present?
+          end if params[:files].present?
 
           sender_message = UserMessage.create!(message_id: new_message.id, user_id: current_user.id, status: Message_Filter_Sender)
           if label_name != ""

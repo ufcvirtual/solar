@@ -13,18 +13,17 @@
       #newPostUploadPanel
         .label.align-left
           = t(".attach")
-        %button#link_upload.btn.btn_default{"data-tooltip" => t(:message_attach_file), :onclick => "appendFileField(); return false;"}
+        %button#link_upload.btn.btn_default{"data-tooltip" => t(:message_attach_file), onclick: "add_new_file(); return false;"}
           %i.icon-paperclip
 
-        = form.file_field :files, id: 'fileupload', multiple: true
+        = form.file_field :files, name: 'files[]', id: 'fileupload'
 
-      .files
-        - unless @files.nil?
-          - @files.each do |file|
-            .file_attached{:"data-file-id" => file.id}
-              %input{name: "files[]", value: file.id, type: "hidden"}
-              = raw [file.message_file_name].join
-              %i.icon-cross.remove_file
+      .files.list_files_to_send
+        - [@files].compact.flatten.each do |file|
+          .input.files.file_attached
+            %input{name: "parent_files[]", value: file.id, type: "hidden"}
+            = file.message_file_name
+            %i.icon-cross.remove_file
 
 #div_contacts{:style => "display:none"}
   - if !@curriculum_units_user.nil?
@@ -49,17 +48,13 @@
 
 :javascript
 
-  $(function($) {
+  jQuery(function($) {
 
     $("#link_to_contacts, #to").click(function(){
       $('#div_contacts').fadeIn().position({
         my: 'left top',
         at: 'right+45 top-5',
-        of: '#link_to_contacts' })
-    });
-
-    $(".remove_file").click(function(){
-      $(this).parents(".file_attached").fadeOut("slow", function(){ $(this).remove(); });
+        of: '#link_to_contacts' });
     });
 
     $("#curriculum_unit_select").change(function() {
@@ -98,24 +93,32 @@
     }
   }
 
-  function appendFileField(){
-    $("#fileupload").click();
+  //// Manipulação de arquivos anexos ////
+
+  var nested_form = $("#fileupload");
+
+  function add_new_file() {
+    var new_form = nested_form.clone();
+    var input_name = new_form.attr("name");
+
+    $(new_form).insertAfter( nested_form.last() );
+    $(new_form).click();
+
+    $(new_form).change(function(){
+      var new_file_name = "<div class='input files file_attached'>" + this.files[0].name + "<i class='icon-cross remove_file'></i> </span> </div>";
+
+      if ($(".list_files_to_send .files:last").lenght)
+        $(".list_files_to_send .files:last").after(new_file_name);
+      else
+        $(".list_files_to_send").append(new_file_name);
+
+      $(".remove_file:last").click(function(){
+        $(new_form).remove();
+        $(this).parents('div.input.files').remove();
+      });
+    });
   }
 
-  //// Manipulação de arquivos anexos ///////////////////////////////
-  $(":file").change(function(){
-    var file = '<div class="file_attached">' + this.files[0].name + "<i class='icon-cross remove_file'></i></div>";
-
-    $(".files").append(file);
-
-    $(".remove_file:last").click(function(){
-      $(this).parents(".file_attached").fadeOut("slow", function(){ $(this).remove(); });
-    });
-
+  $(".remove_file").click(function(){
+    $(this).parents('div.input.files').remove();
   });
-
-  function removeFileField(fieldId){
-    $("#"+fieldId+"_container").hide('fast', function(){
-      $("#"+fieldId+"_container").remove();
-    });
-  }
