@@ -9,6 +9,10 @@ button.btn {
     z-index: 0;
 }
 
+.block_title h2 i {
+    margin-right: 4px;
+}
+
 /* TELA DE LOGIN */
 #bar-brazil .bar ul {
     float:right;
@@ -78,6 +82,11 @@ button.btn {
 #gender .form_label,
 #birthdate .form_label{
     padding-top: 0;
+}
+
+/* BARRA MEUSOLAR */
+.tabs_close {
+    top: -5px;
 }
 
 /* TELA DE MENSAGENS */
