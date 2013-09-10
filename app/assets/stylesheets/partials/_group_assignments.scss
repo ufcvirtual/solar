@@ -201,11 +201,15 @@ tbody .groups{
   color: #6b6b6b
 }
 
-.enunciation, .groups, .groups_tags {
-  font-size: 11px;
+
+.enunciation {
+  div {
+    margin-bottom: 2px;
+  }
 }
 
-.groups{
+.groups, .groups_tags{
+  font-size: 11px;
   padding-left: 2px;
 }
 

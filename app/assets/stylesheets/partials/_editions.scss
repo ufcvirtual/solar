@@ -29,6 +29,10 @@ fieldset {
   margin-top: 10px;
 }
 
+.ui-autocomplete {
+  z-index: 60 !important;
+}
+
 .filter_type .ui-autocomplete, .filter .ui-autocomplete{
   width: 306px !important;
   }
