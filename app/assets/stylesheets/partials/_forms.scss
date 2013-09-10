@@ -8,8 +8,10 @@
 }
 
 .form_label {
-  text-align: right;
   color: $label_color;
+  label {
+    text-align: right;
+  }
 }
 
 .form_label:first-child {
