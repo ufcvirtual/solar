@@ -1,4 +1,4 @@
-.block_wrapper.list_chat_rooms{:"data-link-list" => chat_rooms_path(allocation_tags_ids: @allocation_tags_ids)}
+.block_wrapper.list_chat_rooms{:"data-link-list" => chat_rooms_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: params[:all_groups_ids])}
   .block_title
     %h2= t(".chats")
 
@@ -18,6 +18,7 @@
 
   .block_wrapper.chat_rooms
     - unless @chat_rooms.empty? or @chat_rooms.nil?
+      - all_groups = Group.where(id: params[:all_groups_ids])
       %table.tb_list
         %thead
           %tr.lines
@@ -40,7 +41,7 @@
                     .complete.invisible
                       = chat.description
                       = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_description"))
-                  = render "groups/groups_tags", groups: chat.groups, tool_id: chat.id, allocation_tags_groups: @allocation_tags_groups
+                  = render "groups/groups_tags", groups: chat.groups, tool_id: chat.id, all_groups: all_groups
 
               %td{style: 'text-align:center;'}
                 %div= [l(chat.schedule.start_date, format: :normal), l(chat.schedule.end_date, format: :normal)].join(" - ")
@@ -49,51 +50,9 @@
     - else
       .block_content.block_content_text= t(".no_chats")
 
-= javascript_include_tag "chat_rooms", "tooltip"
+= javascript_include_tag "chat_rooms", "tooltip", "groups_tags"
 
 :javascript
 
   var div_list = $(".list_chat_rooms");
-
-  $(function(){
-
-    $(".unbind, .remove").click(function(){
-      $.get($(this).data("link"), function(){
-        console.log("oi?");
-
-        //var div_list = $(this).closest("[class*='list']");
-        $.get(div_list.data("link-list"), function(data){
-          div_list.replaceWith(data);
-        });
-      }).error(function(){
-        console.log("erro");
-      });
-    });
-
-    $(".add_group, .change_tool_group").click(function() {
-      $($(this).data('dropdown-alt'))
-        .toggle()
-        .position({
-          my: 'left top+8',
-          at: 'left bottom',
-          of: $(this)
-        });
-    });
-
-    $(".btn_add_group").click(function(){
-      var groups_ids = $('[name="group[group_id][]"]:checked', $(this).parent()).map(function() { return this.value; }).get();
-      var url = $(this).data("link").replace("param_id", groups_ids);
-      console.log(url);
-
-      $.put(url, function(){
-        console.log("wtf?");
-        $.get(div_list.data("link-list"), function(data){
-          div_list.replaceWith(data);
-        });
-      }).error(function(){
-        console.log("erro");
-      });
-
-    });
-
-  });
+  var all_allocation_tags_ids = "#{AllocationTag.where(group_id: params[:all_groups_ids]).map(&:id).join(",")}";

@@ -1,46 +1,22 @@
 .groups_tags
-  %span.title= label_tag "Turmas"
+  %span.title= label_tag t(".groups")
   - groups.each do |group|
     %span.collection_check_boxes
       = group.code
       /- unless groups.size == 1
-      /  = content_tag(:i, nil, class: 'icon icon-cross change_tool_group', :"data-dropdown-alt" => ".change_tool_dropdown_#{group.id}")
-      .dropdown-alt.dropdown-tip{class: "change_tool_dropdown_#{group.id}"}
-        .dropdown-panel
-          #dropdown_alert{:style => "display: block"}
-            %div= link_to "Desvincular turma", "#", class: "unbind", :"data-link" => unbind_group_path(id: group.id, tool_id: tool_id, tool_type: "ChatRoom")
-            %div= link_to "Remover turma", "#", class: "remove", :"data-link" => remove_group_path(id: group.id, tool_id: tool_id, tool_type: "ChatRoom")
-  - new_groups = (allocation_tags_groups - groups)
-  - unless new_groups.empty?
+      = content_tag(:i, nil, class: "icon icon-cross change_tool_group", :"data-dropdown" => ".change_tool_dropdown_#{group.id}_#{tool_id}")
+      %div{id: "dropdown", class: "dropdown dropdown-tip change_tool_dropdown_#{group.id}_#{tool_id}"}
+        %ul.dropdown-menu
+          %li= link_to t(".unbind"), '#', class: 'unbind', :"data-link" => unbind_group_path(id: group.id, tool_id: tool_id, tool_type: "ChatRoom")
+          %li= link_to t(".remove"), '#', class: 'remove', :"data-link" => remove_group_path(id: group.id, tool_id: tool_id, tool_type: "ChatRoom")
+
+  - new_groups = (all_groups - groups).in_groups(2, false)
+  - unless new_groups.first.empty?
     %span.new_groups
-      /= content_tag(:i, nil, class: 'icon icon-plus-3 add_group', :"data-dropdown-alt" => ".add_group_dropdown_#{tool_id}")
-      .dropdown-alt.dropdown-tip{class: "add_group_dropdown_#{tool_id}"}
-        .dropdown-panel
-          #dropdown_alert{:style => "display: block"}
-            = form_for :group do |f|
-              .no_tags= f.collection_check_boxes :group_id, new_groups, :id, :code
-              = button_tag "Adicionar", class: "btn btn_add_group", :"data-link" => add_groups_path(id: 'param_id', tool_id: tool_id, tool_type: "ChatRoom")
-
-:css 
-  .groups_tags .collection_check_boxes .icon{
-    color: white;
-    padding-right: 0;
-    padding-left: 0;
-  }
-
-  .groups_tags .icon{
-    font-size: 11pt;
-    cursor: pointer;
-  }
-
-  .groups_tags .add_group{
-    border: 1px solid #C0C0C0;
-    color: grey;
-  }
-
-  .no_tags .collection_check_boxes{
-    color: black;
-    background-color: white;
-    border: 0;
-    padding: 0;
-  }
+      = content_tag(:i, nil, class: "icon icon-plus-3 add_group", :"data-dropdown" => ".add_group_dropdown_#{tool_id}")
+      %div{id: "dropdown", class: "dropdown dropdown-tip add_group_dropdown_#{tool_id}"}
+        = form_for :group do |f|
+          - new_groups.each do |new_group|
+            .no_tags= f.collection_check_boxes :new_group_id, new_group, :id, :code
+          = button_tag t(".add"), class: "btn btn_add_group", :"data-link" => add_groups_path(id: 'param_id', tool_id: tool_id, tool_type: "ChatRoom"), type: :button
+          = button_tag t(".cancel"), class: "btn btn_cancel_add_group", type: :button

@@ -1183,14 +1183,27 @@
       enabled: Enabled
       disabled: Disabled
       activation: Activation
+    groups_tags:
+      groups: Groups
+      unbind: Unbind
+      remove: Remove
+      add: Add
+      cancel: Cancel
     success:
       created: Group was successfully created.
       updated: Group was successfully updated.
       deleted: Group was successfully deleted.
+      add: Group(s) successfully added.
+      unbind: Group successfully unbinded.
+      remove: Group successfully removed.
     error:
       created: Group wasn't created.
       updated: Group wasn't updated.
       deleted: Group wasn't deleted.
+      academic_allocation_already_exists: This group already exists for this tool
+      tool_change: Group didn't change for this tool
+      last_group: Can't change group. Tool must have at least one group.
+      option_not_found: Option not found.
     groups_checkboxes:
       select_all: Select all
       no_groups: "There are no groups"

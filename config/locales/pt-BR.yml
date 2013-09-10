@@ -1348,14 +1348,27 @@
       enabled: Ativada
       disabled: Desativada
       activation: Ativação
+    groups_tags:
+      groups: Turmas
+      unbind: Desvincular
+      remove: Excluir
+      add: Adicionar
+      cancel: Cancelar
     success:
       created: Turma criada com sucesso.
       updated: Turma atualizada com sucesso.
       deleted: Turma deletada com sucesso.
+      add: Turma(s) adicionada com sucesso.
+      unbind: Turma desvinculada com sucesso.
+      remove: Turma removida com sucesso.
     error:
       created: Não foi possível criar turma.
       updated: Não foi possível atualizar turma.
       deleted: Não foi possível deletar turma.
+      academic_allocation_already_exists: Esta turma já existe para esta ferramenta
+      tool_change: Não foi possível alterar a turma para esta ferramenta
+      last_group: Não é possível fazer alteração. Ferramenta deve possuir alguma turma.
+      option_not_found: Opção não encontrada.
     groups_checkboxes:  
       select_all: Selecionar todas
       no_groups: "Não há turmas"

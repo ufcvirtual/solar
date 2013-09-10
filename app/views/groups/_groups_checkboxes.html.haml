@@ -1,3 +1,5 @@
+= hidden_field_tag :all_groups_ids, @groups.map(&:id)
+
 = form_for :group do |f|
   %span.select_all_box
     = check_box_tag :all, :all, false, {:"data-children-names" => "group[group_id][]"}

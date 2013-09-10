@@ -102,28 +102,48 @@ class GroupsController < ApplicationController
     end
   end
 
+  # desvincular/remover/adicionar turmas para determinada ferramenta
   def change_tool
-    #raise "#{params}"
-    if params[:type] == "add"
-      groups = Group.where(params[:id].split(","))
-      AcademicAllocation.create groups.map {|group| {allocation_tag_id: group.allocation_tag.id, academic_tool_id: params[:tool_id], academic_tool_type: params[:tool_type]}}
-    else
-      group = Group.find(params[:id])
-      academic_allocation = AcademicAllocation.where(allocation_tag_id: group.allocation_tag.id, academic_tool_type: params[:tool_type], academic_tool_id: params[:tool_id]).first
-      case params[:type]
-        when "unbind"
-          tool_model = params[:tool_type].constantize
-          new_tool = tool_model.create(tool_model.find(params[:tool_id]).attributes)
-          academic_allocation.update_attribute(:academic_tool_id, new_tool.id)
-        when "remove"
-          academic_allocation.destroy
-        else
-          raise "else"
+
+    begin 
+
+      if params[:type] == "add"
+        groups = Group.where(id: params[:id].split(","))
+        AcademicAllocation.transaction do 
+          AcademicAllocation.create! groups.map {|group| {allocation_tag_id: group.allocation_tag.id, academic_tool_id: params[:tool_id], academic_tool_type: params[:tool_type]}}
+        end
+      else
+        group = Group.find(params[:id])
+        academic_allocation = AcademicAllocation.where(allocation_tag_id: group.allocation_tag.id, academic_tool_type: params[:tool_type], academic_tool_id: params[:tool_id]).first
+        
+        tool_model = params[:tool_type].constantize
+        tool = tool_model.find(params[:tool_id])
+
+        unless tool.groups.size == 1 # se não for a única turma
+          case params[:type]
+            when "unbind" # desvincular uma turma
+              new_tool = tool_model.create(tool.attributes)
+              academic_allocation.update_attribute(:academic_tool_id, new_tool.id)
+              # se a ferramenta possuir um schedule, cria um igual para a nova
+              new_tool.update_attribute(:schedule_id, Schedule.create(tool.schedule.attributes).id) if tool.respond_to?(:schedule) 
+            when "remove" # remover uma turma
+              academic_allocation.destroy
+            else
+              raise "option_not_found"
+          end
+        else # se for a única turma
+          raise "last_group"
+        end
       end
+
+      render json: {success: true, notice: t(".#{params[:type]}", scope: [:groups, :success])}
+    rescue ActiveRecord::RecordNotSaved
+      render json: {success: false, alert: t(".academic_allocation_already_exists", scope: [:groups, :error])}, status: :unprocessable_entity
+    rescue Exception => error
+      error_message = t(".#{error.message}", scope: [:groups, :error]) || t(".tool_change", scope: [:groups, :error])
+      render json: {success: false, alert: error_message}, status: :unprocessable_entity
     end
-
-    render json: {success: true}
-
+    
   end
 
 end

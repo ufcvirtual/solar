@@ -9,6 +9,7 @@ class AcademicAllocation < ActiveRecord::Base
   validate :verify_assignment_offer_date_range, if: :is_assignment?
 
   before_save :verify_association_with_allocation_tag
+  before_create :verify_uniqueness
 
   def is_assignment?
   	academic_tool_type.eql? 'Assignment'
@@ -33,6 +34,11 @@ class AcademicAllocation < ActiveRecord::Base
 
     return permission ? true : (raise ActiveRecord::AssociationTypeMismatch)
 
+  end
+
+  # verifica se já existe uma academicAllocation com todos os dados iguais
+  def verify_uniqueness 
+    AcademicAllocation.where(allocation_tag_id: allocation_tag_id, academic_tool_type: academic_tool_type, academic_tool_id: academic_tool_id).empty?
   end
 
   private

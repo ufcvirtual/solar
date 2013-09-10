@@ -137,7 +137,8 @@ $(function(){
     data_function: function() {
       return {
         radio_option: $("[name='radio[option]']:checked").val(),
-        groups_id: $('[name="group[group_id][]"]:checked').map(function(){ return $(this).val() }).toArray()
+        groups_id: $('[name="group[group_id][]"]:checked').map(function(){ return $(this).val() }).toArray(),
+        all_groups_ids: $('input#all_groups_ids').val()
       };
     }
   });

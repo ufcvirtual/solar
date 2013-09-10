@@ -187,14 +187,6 @@
   cursor: move;
 }
 
-.groups .collection_check_boxes, .groups_tags .collection_check_boxes {
-  @include collection_check_boxes_layout;
-  background-color: #0e7dd8;
-  color: #fff;
-  white-space: nowrap;
-  display:inline-block;
-}
-
 tbody .groups, .input .groups{
   @include tags_div;
   margin: 0;
@@ -202,11 +194,6 @@ tbody .groups, .input .groups{
 
 tbody .groups{
   width: auto;
-}
-
-.groups_tags .title label{
-  display: inline;
-  color: $color_main;
 }
 
 .title i {

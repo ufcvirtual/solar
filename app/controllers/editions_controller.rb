@@ -2,6 +2,8 @@ class EditionsController < ApplicationController
 
   def items
 
+    @all_groups_allocation_tags = []
+
     if params[:groups_id].blank?
       if params.include?(:semester_id) and (not params[:semester_id] == "")
         @allocation_tags_ids = [Offer.where(semester_id: params[:semester_id], curriculum_unit_id: params[:curriculum_unit_id], course_id: params[:course_id]).first.allocation_tag.id]
@@ -16,6 +18,7 @@ class EditionsController < ApplicationController
     else
       @allocation_tags_ids = AllocationTag.where(group_id: params[:groups_id]).map(&:id)
       @selected = "GROUP"
+      @all_groups_ids = params[:all_groups_ids].split(" ") unless params[:all_groups_ids].nil? # todas as turmas existentes no filtro
     end
 
     render partial: "items"

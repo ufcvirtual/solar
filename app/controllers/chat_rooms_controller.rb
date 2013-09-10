@@ -3,9 +3,9 @@ class ChatRoomsController < ApplicationController
   layout false
 
   def index
-    authorize! :index, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    @allocation_tags_ids = (params[:allocation_tags_ids].class == String ? params[:allocation_tags_ids].split(",") : params[:allocation_tags_ids])
+    authorize! :index, ChatRoom, on: @allocation_tags_ids
     @chat_rooms = ChatRoom.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).order("title").uniq
-    @allocation_tags_groups = AllocationTag.where(id: @allocation_tags_ids).map(&:group)
   end
 
   def new
@@ -75,7 +75,7 @@ class ChatRoomsController < ApplicationController
       end
       render json: {success: true, notice: t(:deleted, scope: [:chat_rooms, :success])}
     rescue Exception => error
-      alert_message = (error.to_s == "has_messages" ? t(:chat_has_messages, scope: [:chat_rooms, :error]) : t(:deleted, scope: [:chat_rooms, :error]))
+      alert_message = (error.message == "has_messages" ? t(:chat_has_messages, scope: [:chat_rooms, :error]) : t(:deleted, scope: [:chat_rooms, :error]))
       render json: {success: false, alert: alert_message}, status: :unprocessable_entity
     end
 

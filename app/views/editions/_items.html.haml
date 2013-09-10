@@ -19,7 +19,7 @@
 
       - if (can? :designates, Allocation, on: @allocation_tags_ids) and (Allocation.constants.include?("#{@selected}_PERMISSION".to_sym))
         .uc_item
-          .allocation{:"data-link" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids)}
+          .allocation{:"data-link" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
             = link_to(content_tag(:i, nil, class: 'icon-user-add big'), "#", class: 'btn')
             = link_to t(".allocation"), "#"
 
@@ -35,13 +35,13 @@
 
       - if (can? :list, Discussion, on: @allocation_tags_ids)  and (Discussion.constants.include?("#{@selected}_PERMISSION".to_sym))
         .uc_item
-          .discussion{:"data-link" => list_discussions_path(allocation_tags_ids: @allocation_tags_ids)}
+          .discussion{:"data-link" => list_discussions_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
             = link_to(content_tag(:i, nil, class: 'icon-people big'), "#", class: 'btn')
             = link_to t(".discussion"), "#"
 
       - if ((can? :index, ChatRoom, on: @allocation_tags_ids) and ChatRoom.constants.include?("#{@selected}_PERMISSION".to_sym))
         .uc_item
-          .chat{:"data-link" => chat_rooms_path(allocation_tags_ids: @allocation_tags_ids)}
+          .chat{:"data-link" => chat_rooms_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
             = link_to(content_tag(:i, nil, class: "icon-chat big"), "#", class: "btn")
             = link_to t(".chat"), "#"
 
@@ -57,19 +57,19 @@
 
       - if (can? :list, Lesson, on: @allocation_tags_ids) and (Lesson.constants.include?("#{@selected}_PERMISSION".to_sym))
         .uc_item
-          .lesson{:"data-link" => list_lessons_path(allocation_tags_ids: @allocation_tags_ids)}
+          .lesson{:"data-link" => list_lessons_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
             = link_to(content_tag(:i, nil, class: 'icon-lesson big'), "#", class: 'btn')
             = link_to t(".lesson"), "#"
 
       - if (can? :list, SupportMaterialFile, on: @allocation_tags_ids) and (SupportMaterialFile.constants.include?("#{@selected}_PERMISSION".to_sym))
         .uc_item 
-          .support_material{:"data-link" => list_support_material_files_path(allocation_tags_ids: @allocation_tags_ids)}
+          .support_material{:"data-link" => list_support_material_files_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
             = link_to(content_tag(:i, nil, class: 'icon-archive big'), "#", class: 'btn')
             = link_to t(".support_material"), "#"
 
       - if (can? :list, Assignment, on: @allocation_tags_ids) and (Assignment.constants.include?("#{@selected}_PERMISSION".to_sym))
         .uc_item
-          .assignment{:"data-link" => assignments_path(allocation_tags_ids: @allocation_tags_ids)}
+          .assignment{:"data-link" => assignments_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
             = link_to(content_tag(:i, nil, class: 'icon-suitcase big'), "#", class: 'btn')
             = link_to t(".assignment"), "#"
 
