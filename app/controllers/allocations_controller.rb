@@ -1,9 +1,9 @@
 class AllocationsController < ApplicationController
   include AllocationsHelper
 
-  layout false, :except => [:index]
+  layout false, except: [:index]
 
-  authorize_resource :except => [:destroy, :designates, :create_designation, :activate, :deactivate]
+  authorize_resource except: [:destroy, :designates, :create_designation, :activate, :deactivate]
 
   # GET /allocations/designates
   # GET /allocations/designates.json
@@ -43,15 +43,15 @@ class AllocationsController < ApplicationController
   # GET /allocations/enrollments
   # GET /allocations/enrollments.json
   def index
-    groups = current_user.groups.map(&:id)
-    p = params.select { |k, v| ['offer_id', 'group_id', 'status'].include?(k) }
-    p['group_id'] = (params.include?('group_id') and groups.include?(params['group_id'].to_i)) ? [params['group_id']] : groups.flatten.compact.uniq
+    @allocations = []
+    groups = groups_that_user_have_permission.map(&:id)
 
-    @allocations = Allocation.enrollments(p)
+    unless groups.empty?
+      # params['status'] = 0 unless params.include?('status') # para listar somente usuarios pendentes
+      p = params.select { |k, v| ['offer_id', 'group_id', 'status'].include?(k) }
+      p['group_id'] = (params.include?('group_id') and groups.include?(params['group_id'].to_i)) ? [params['group_id']] : groups.flatten.compact.uniq
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @allocations }
+      @allocations = Allocation.enrollments(p)
     end
   end
 
@@ -248,6 +248,11 @@ class AllocationsController < ApplicationController
   end  
 
   private
+
+    def groups_that_user_have_permission
+      profiles = current_user.profiles_with_access_on("index", "allocations").map(&:id)
+      groups = current_user.allocations.where(profile_id: profiles).where("allocation_tag_id IS NOT NULL").map {|a| a.allocation_tag.groups }.flatten.uniq
+    end
 
     def status_hash_of_allocation(allocation_status)
       case allocation_status

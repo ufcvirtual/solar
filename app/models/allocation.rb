@@ -6,10 +6,10 @@ class Allocation < ActiveRecord::Base
   belongs_to :user
   belongs_to :profile
 
-  has_one :course,          :through => :allocation_tag, :conditions => ["course_id is not null"]
-  has_one :curriculum_unit, :through => :allocation_tag, :conditions => ["curriculum_unit_id is not null"]
-  has_one :offer,           :through => :allocation_tag, :conditions => ["offer_id is not null"]
-  has_one :group,           :through => :allocation_tag, :conditions => ["group_id is not null"]
+  has_one :course,          through: :allocation_tag, conditions: ["course_id is not null"]
+  has_one :curriculum_unit, through: :allocation_tag, conditions: ["curriculum_unit_id is not null"]
+  has_one :offer,           through: :allocation_tag, conditions: ["offer_id is not null"]
+  has_one :group,           through: :allocation_tag, conditions: ["group_id is not null"]
 
   has_many :chat_messages
   has_many :chat_participants
