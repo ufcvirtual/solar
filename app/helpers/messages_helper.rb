@@ -19,7 +19,7 @@ module MessagesHelper
 
     if !contacts.nil?
       contacts.flatten.uniq.each do |p|
-        text << "<span id='u#{p.id}'><a class='message_link' href=javascript:add_receiver('u#{p.id}','#{URI.escape(p.username)}','#{p.email}')>" << p.username << " [" << p.email << "]</a><br/></span>"
+        text << "<span id='u#{p.id}'><a class='message_link' href=javascript:message_add_receiver('u#{p.id}','#{URI.escape(p.username)}','#{p.email}')>" << p.username << " [" << p.email << "]</a><br/></span>"
       end
     end
 

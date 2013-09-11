@@ -39,3 +39,41 @@ function message_menu_dropdown() {
     hide_reads();
   });
 }
+
+function message_add_receiver(u,name,email){
+  var new_to = name + " [" + email + "], ";
+  var new_recipient = "<span onclick="+"$('#"+u+"').show();$(this).remove()" + " class='message_recipient_box' >"+new_to+"</span>";
+
+  var atual_recipients = $("#recipients_selected").text();
+  var found = atual_recipients.search(email);
+  $("#receiver_already_added").remove();
+  if (found == -1) {
+    $("#recipients_selected").append(new_recipient);
+    $("#"+u).hide();
+  }else{
+    $("<span id='receiver_already_added'>#{t(:message_receiver_already_added)}</span>").hide().appendTo($("#"+u).children()[0]).fadeIn();
+  }
+}
+
+/**
+ * Manipulação de arquivos anexos
+ */
+function message_add_new_file() {
+  var new_form = $("[name='files[]']:first").clone();
+  $(new_form).insertAfter( $("[name='files[]']:last") );
+  $(new_form).click();
+
+  $(new_form).change(function(){
+    var new_file_name = "<div class='input files file_attached'>" + this.files[0].name + "<i class='icon-cross remove_file'></i> </span> </div>";
+
+    if ($(".list_files_to_send .files:last").lenght)
+      $(".list_files_to_send .files:last").after(new_file_name);
+    else
+      $(".list_files_to_send").append(new_file_name);
+
+    $(".remove_file:last").click(function(){
+      $(new_form).remove();
+      $(this).parents('div.input.files').remove();
+    });
+  });
+}
