@@ -1,6 +1,3 @@
-/ REMOVER
-= hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
-
 .block_wrapper.list_assignments{:"data-link-list" => assignments_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: params[:all_groups_ids])}
   .block_title
     %h2= t(:assignment, scope: [:editions, :items])

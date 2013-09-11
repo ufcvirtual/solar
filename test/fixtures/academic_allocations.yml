@@ -114,3 +114,9 @@ acaal19:
   allocation_tag_id: 3
   academic_tool_id: 2
   academic_tool_type: "ChatRoom"
+
+acaal20:
+  id: 20
+  allocation_tag_id: 8
+  academic_tool_id: 2
+  academic_tool_type: "ChatRoom"

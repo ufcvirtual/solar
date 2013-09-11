@@ -204,3 +204,15 @@ schedule40:
   id: 40
   start_date: <%= Date.today %>
   end_date: <%= Date.today + 1.months %>
+
+## para chats_rooms
+
+sc_for_chat1:
+  id: 41
+  start_date: <%= Date.today %>
+  end_date: <%= Date.today %>
+
+sc_for_chat2:
+  id: 42
+  start_date: <%= Date.today %>
+  end_date: <%= Date.today %>

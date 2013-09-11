@@ -3,7 +3,7 @@ chat1:
   title: "Chat 01"
   description: "Chat 01"
   chat_type: 0 # sem participantes definidos
-  schedule_id: 19
+  schedule_id: 41
   start_hour: "10:00"
   end_hour: "10:40"
 
@@ -12,7 +12,7 @@ chat2:
   title: "Chat 02"
   description: "Chat 02"
   chat_type: 1 # com participantes definidos
-  schedule_id: 19
+  schedule_id: 42
   start_hour: "10:00"
   end_hour: "10:40"
 
