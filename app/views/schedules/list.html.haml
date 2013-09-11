@@ -3,8 +3,8 @@
     .block_wrapper
       .block_title
         %h2
-        %div{:class => "block_title_icon #{schedule['schedule_type']}"}
-        = t schedule['schedule_type'].to_sym
+          -#%div{:class => "block_title_icon #{schedule['schedule_type']}"}
+          = t schedule['schedule_type'].to_sym
       .agenda_left
         .agenda_left_date
           - start_date = schedule['start_date'].nil? ? nil : schedule['start_date'].to_date
