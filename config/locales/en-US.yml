@@ -1430,6 +1430,7 @@
       participants: Participants
       groups: Groups
       define_participants: Define participants
+      all_participants: All
     success:
       created: Chat was successfully created.
       updated: Chat was successfully updated.

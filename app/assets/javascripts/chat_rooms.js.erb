@@ -16,7 +16,9 @@ jQuery(function($){
     }else{
       $("#tab").attr("id", "define_participants");
       $(".box").hide();
+      $("#all_participants").prop("checked", false);
       $("[name*='chat_room[participants_attributes]']").each(function(i){ $(this).prop("checked", false); });
+
     }
 
   });

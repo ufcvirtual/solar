@@ -1596,6 +1596,7 @@
       participants: Participantes
       groups: Turmas
       define_participants: Definir participantes
+      all_participants: Todos
     success:
       created: Chat criado com sucesso.
       updated: Chat atualizado com sucesso.
