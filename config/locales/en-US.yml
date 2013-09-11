@@ -1189,6 +1189,7 @@
       remove: Remove
       add: Add
       cancel: Cancel
+      cant_transfer_dependencies: Has dependencies which can't be lost or copied.
     success:
       created: Group was successfully created.
       updated: Group was successfully updated.

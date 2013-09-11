@@ -1354,6 +1354,7 @@
       remove: Excluir
       add: Adicionar
       cancel: Cancelar
+      cant_transfer_dependencies: Possui dependencias que não podem ser perdidas ou copiadas.
     success:
       created: Turma criada com sucesso.
       updated: Turma atualizada com sucesso.

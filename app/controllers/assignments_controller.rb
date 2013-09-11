@@ -11,7 +11,8 @@ class AssignmentsController < ApplicationController
   authorize_resource :only => [:download_files, :upload_file, :send_public_files_page, :delete_file]
 
   def index
-    authorize! :list, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    @allocation_tags_ids = (params[:allocation_tags_ids].class == String ? params[:allocation_tags_ids].split(",") : params[:allocation_tags_ids])
+    authorize! :list, Assignment, on:@allocation_tags_ids
 
     @assignments = Assignment.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).order("name").uniq
   end

@@ -40,4 +40,12 @@ class ChatRoom < ActiveRecord::Base
     self.messages.empty?
   end
 
+  def copy_dependencies(chat_to_copy)
+    ChatParticipant.create! chat_to_copy.participants.map {|participant| participant.attributes.merge({chat_room_id: self.id})} unless chat_to_copy.participants.empty?
+  end
+
+  def can_remove_or_unbind_group?(group)
+    self.messages.empty? # não pode dar unbind nem remover se chat possuir mensagens
+  end
+  
 end

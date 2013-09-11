@@ -119,13 +119,19 @@ class GroupsController < ApplicationController
         tool_model = params[:tool_type].constantize
         tool = tool_model.find(params[:tool_id])
 
+        raise "cant_transfer_dependencies" unless tool.can_remove_or_unbind_group?(group)
+
         unless tool.groups.size == 1 # se não for a única turma
           case params[:type]
             when "unbind" # desvincular uma turma
               new_tool = tool_model.create(tool.attributes)
               academic_allocation.update_attribute(:academic_tool_id, new_tool.id)
+
               # se a ferramenta possuir um schedule, cria um igual para a nova
               new_tool.update_attribute(:schedule_id, Schedule.create(tool.schedule.attributes).id) if tool.respond_to?(:schedule) 
+              # copia as dependências pro novo objeto caso existam
+              new_tool.copy_dependencies(tool) if new_tool.respond_to?(:copy_dependencies) 
+
             when "remove" # remover uma turma
               academic_allocation.destroy
             else

@@ -25,7 +25,24 @@ class Assignment < ActiveRecord::Base
   validates :name, :enunciation, :type_assignment, presence: true
   validates :name, length: {maximum: 1024}
 
-  attr_accessible :schedule_attributes, :enunciation_files_attributes, :name, :enunciation, :type_assignment
+  attr_accessible :schedule_attributes, :enunciation_files_attributes, :name, :enunciation, :type_assignment, :schedule_id
+
+  def copy_dependencies(assignment_to_copy)
+    AssignmentEnunciationFile.create! assignment_to_copy.enunciation_files.map {|file| file.attributes.merge({assignment_id: self.id})} unless assignment_to_copy.enunciation_files.empty?
+    GroupAssignment.create! assignment_to_copy.group_assignments.map {|group| group.attributes.merge({academic_allocation_id: self.academic_allocations.first.id})} unless assignment_to_copy.group_assignments.empty?
+  end
+
+  def can_remove_or_unbind_group?(group)
+    # não pode dar unbind nem remover se assignment possuir sent_assignment
+    # se for individual, olha academic_allocation pra turma e vê se tem sent_assignment
+    # se for de grupo, olha o group_assignment_id 
+    ((self.type_assignment == Assignment_Type_Group) ? 
+      (SentAssignment.where(group_assignment_id: self.group_assignments.map(&:id)).empty?) : 
+      (SentAssignment.joins(:academic_allocation).where(academic_allocations: {academic_tool_id: self.id, allocation_tag_id: group.allocation_tag.id}).empty?)
+    )
+  end
+
+  # não pode dar unbind nem remover se tiver sent_assignment? (eles pertencem a uma academic_allocation)
 
   def student_group_by_student(student_id)
     #Operador ternário (if) anything ? (então) somenthing :(se não) other thing
