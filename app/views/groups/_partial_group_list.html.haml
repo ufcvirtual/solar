@@ -12,4 +12,6 @@
           %td
             = check_box_tag :ckb_group, group.id, false, {class: "ckb_group"}
             = group.code
-          %td{style: "text-align: center"}= link_to (image_tag "#{(group.status) ? 'released' : 'rejected'}.png"), "#", class: "change_status_group", :'data-tooltip' => (group.status ?  t(".enabled") :  t(".disabled")), :"data-link-status" => group_path(id: group.id, status: (not group.status), multiple: true), disabled: not(can? :update, Group)
+          %td
+            = link_to (content_tag(:i, nil, class: (group.status ? 'icon-checkmark-2' : 'icon-checkmark-outline'))), "#", class: "btn change_status_group", :'data-tooltip' => (group.status ?  t(".disable") :  t(".enable")), :"data-link-status" => group_path(id: group.id, status: (not group.status), multiple: true), disabled: not(can? :update, Group)
+            = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_group_path(group), class: 'btn link_edit_group fancybox.ajax', :'data-tooltip' => t(".edit"), disabled: not(can? :update, Group)

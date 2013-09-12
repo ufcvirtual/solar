@@ -12,8 +12,8 @@
     %h2=t_tool_name
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      %a.btn.btn_main{:'data-tooltip' => t(".new_#{tool_name}"), id: "btn_new_curriculum_unit", :type => :button, :"data-link-new" => new_curriculum_unit_path(type_id: @type.id)}
-        = content_tag(:i, nil, class: 'icon-plus-3')
+      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_curriculum_unit_path(type_id: @type.id), class: " btn btn_main fancybox.ajax", id: "btn_new_curriculum_unit "
+      
     .block_toolbar_right
       = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn delete_curriculum_unit btn_del', :'data-tooltip' => t(".delete", uc_or_module: t_tool_name), :"data-link-delete" => curriculum_unit_path(id: ':id')
 
@@ -35,7 +35,8 @@
           %td= curriculum_unit.name
           %td{:align => "left"}= curriculum_unit.curriculum_unit_type.description
           %td{:align => "right"}
-            = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit', :'data-tooltip' => t(".edit", uc_or_module: t_tool_name), :"data-link-edit" => edit_curriculum_unit_path(curriculum_unit), disabled: not(can? :update, curriculum_unit)
+            / = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_caution delete_curriculum_unit', :"data-link-delete" => curriculum_unit_path(curriculum_unit), :'data-tooltip' => t(".delete", uc_or_module: t_tool_name), id: curriculum_unit.id, disabled: not(can? :destroy, curriculum_unit)
+            = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_curriculum_unit_path(curriculum_unit), class: 'btn edit fancybox.ajax', :'data-tooltip' => t(".edit", uc_or_module: t_tool_name),  disabled: not(can? :update, curriculum_unit)
 
 :javascript
 
@@ -45,16 +46,10 @@
       flash_message(response.alert, 'alert');
   }
 
-  $(function(){
+  jQuery(function($){
     $('.delete_curriculum_unit').attr("disabled", true);
 
-    $("#btn_new_curriculum_unit").click(function(){
-      showLightBoxURL($(this).data('link-new'), 540, 605, true, $(this).data('tooltip'));
-    });
-
-    $('.edit:not([disabled])').click(function(){
-      showLightBoxURL($(this).data('link-edit'), 540, 605, true, $(this).data('tooltip'));
-    });
+    $("#btn_new_curriculum_unit, .edit").fancybox();
 
     $('.delete_curriculum_unit').click(function(){
       if ($(this).attr('disabled') == 'disabled' || !confirm("#{t(:message_confirm)}"))
@@ -88,6 +83,4 @@
     $('#all_curriculum_unit').nice_checkbox({
       can_enable_elements: true
     });
-
-    
   });

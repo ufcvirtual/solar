@@ -24,7 +24,7 @@
         - else
           %td= [l(offer.period_schedule.start_date, format: :normal), l(offer.period_schedule.end_date, format: :normal)].join(" - ")
         %td
-          = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit_offer', :'data-tooltip' => t(".offer_edit"), disabled: not(can? :edit, Offer, on: [offer.allocation_tag.id]), :"data-link-edit-offer" => edit_offer_path(offer, type_id: @type_id), :"data-semester-name" => offer.semester.name
+          = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_offer_path(offer, type_id: @type_id), class: 'btn link_edit_offer fancybox.ajax', :'data-tooltip' => t(".offer_edit"), disabled: not(can? :edit, Offer, on: [offer.allocation_tag.id]), :"data-semester-name" => offer.semester.name
 
 :javascript
 
@@ -32,10 +32,7 @@
     if ("#{semester_id}") { // quando semestre nao tem ofertas
       var semester = $(".table-offers#table-#{semester_id}");
 
-      // edit offer
-      $('.edit_offer:not([disabled])', semester).click(function(){
-        showLightBoxURL($(this).data("link-edit-offer"), 500, 400, true, [$(this).data("tooltip"), $(this).data("semester-name")].join(" - "));
-      });
+      $('.link_edit_offer').fancybox();
 
       $("#all_offers_#{semester_id}").nice_checkbox();
     }

@@ -21,13 +21,12 @@
                 %i.icon-arrow-down-3
               %div{:id=>"dropdown_#{allocation_tag.id}", :class=>"dropdown dropdown-tip"}
                 %ul.dropdown-menu
-                  %li= link_to t(".new_file"), '#', id: 'new_material_file', :"data-link" => "#{new_support_material_file_path(material_type: Material_Type_File, allocation_tags_ids: [allocation_tag.id])}", :"data-box-title" => t(".new_file")
-                  %li= link_to t(".new_link"), '#', id: 'new_material_link', :"data-link" => "#{new_support_material_file_path(material_type: Material_Type_Link, allocation_tags_ids: [allocation_tag.id])}", :"data-box-title" => t(".new_link")
+                  %li= link_to t(".new_file"), new_support_material_file_path(material_type: Material_Type_File, allocation_tags_ids: [allocation_tag.id]), :"data-box-title" => t(".new_file"), class: 'link_new_material_file fancybox.ajax'
+                  %li= link_to t(".new_link"), new_support_material_file_path(material_type: Material_Type_Link, allocation_tags_ids: [allocation_tag.id]), :"data-box-title" => t(".new_link"), class: 'link_new_material_link fancybox.ajax'
 
             .block_toolbar_right
               .btn-group
                 = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit edit_material', :"data-link-edit" => edit_support_material_file_path(':id', allocation_tags_ids: [allocation_tag.id]), "data-edit-title" => t(".edit_link"), disabled: true
-                / = link_to (content_tag(:i, nil, :class=>'icon-install')), "#", onclick: "javascript: alert('em desenvolvimento');", id: 'download_meterial', class: 'btn'
                 = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del delete_material', :"data-link-delete" => support_material_file_path(':id', allocation_tags_ids: [allocation_tag.id]), disabled: true
 
           .block_wrapper.support_material
@@ -68,9 +67,8 @@
 :javascript
 
   $(function(){
-    $('#new_material_link, #new_material_file').click(function() {
-      showLightBoxURL($(this).data('link'), 540, 90, true, $(this).data('box-title'));
-    });
+
+    $(".link_new_material_file, .link_new_material_link").fancybox();
 
     $(':checkbox.ckb_material').click(function() {
       var box = $(this).parents("div.list_support_materials");

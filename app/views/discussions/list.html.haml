@@ -4,8 +4,8 @@
     %h2= t(:discussion_table_title, :scope => [:discussion])
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      %a.btn.btn_main.new_offer{:'data-tooltip' =>  t(:new_discussion, scope: [:discussion]), id: "new-discussion", type: :button, :'data-link-new-discussion' => new_discussion_path(allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t(".new"), disabled: not(can? :new, Discussion, on: @allocation_tags_ids)}
-        = content_tag(:i, nil, class: 'icon-plus-3')
+      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_discussion_path(allocation_tags_ids: @allocation_tags_ids), class: " btn btn_main fancybox.ajax", id: "new-discussion"
+
   - unless @discussions.nil? or @discussions.empty?
     %table.tb_list
       %thead
@@ -31,7 +31,7 @@
             %td{:align => "left", :style => "width: 50px;"}= discussion.allocation_tag.offer ?  discussion.allocation_tag.offer.semester.name : discussion.allocation_tag.group.offer.semester.name
             %td{:align => "left", :style => "width: 50px;"}= discussion.allocation_tag.group ?  discussion.allocation_tag.group.code : "-" 
             %td
-              = button_tag (content_tag(:i, nil, class: 'icon-edit')), class: "btn btn_default edit", type: "button", :'data-tooltip' => t(:edit_discussion, :scope => [:discussion], :discussion_name => discussion.name), :'data-link-edit-discussion' => edit_discussion_path(discussion.id, allocation_tags_ids: @allocation_tags_ids), disabled: not(can? :edit, discussion)
+              = link_to (content_tag(:i, nil, :class=>'icon-edit')), edit_discussion_path(discussion.id, allocation_tags_ids: @allocation_tags_ids), class: 'btn btn_default edit fancybox.ajax', :'data-tooltip' => t(:edit_discussion, :scope => [:discussion], :discussion_name => discussion.name)
               = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_discussion', :'data-tooltip' => t(:delete_discussion, :scope => [:discussion], :discussion_name => discussion.name), :"data-link-delete" => discussion_path(discussion, :allocation_tags_ids => @allocation_tags_ids)
 
   - else
@@ -41,13 +41,7 @@
 
   $(function(){
 
-    $('.edit').click(function(){
-      showLightBoxURL($(this).data('link-edit-discussion'), 550, 225, true, $(this).data('tooltip'));
-    });
-
-    $('#new-discussion').click(function(){
-      showLightBoxURL($(this).data('link-new-discussion'), 550, 225, true, $(this).data('tooltip'));
-    });
+    $("#new-discussion, .edit").fancybox();
 
     $('.delete_discussion').click(function(){
       $(this).nice_delete();

@@ -18,6 +18,7 @@ gem "simple_form", "~> 2.1.0"
 gem "paperclip", "~> 3.4.1"
 gem "will_paginate", "~> 3.0.4"
 gem "jquery-rails", "~> 2.2.1"
+gem "fancybox2-rails", "~> 0.2.4"
 
 gem "factory_girl_rails", "~> 4.2.1", :group => [:development, :test]
 gem "rspec-rails", "~> 2.13.0", :group => [:development, :test]
