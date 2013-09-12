@@ -146,7 +146,7 @@ class GroupsController < ApplicationController
     rescue ActiveRecord::RecordNotSaved
       render json: {success: false, alert: t(:academic_allocation_already_exists, scope: [:groups, :error])}, status: :unprocessable_entity
     rescue Exception => error
-      error_message = t("#{error.message}", scope: [:groups, :error]) || t("tool_change", scope: [:groups, :error])
+      error_message = I18n.translate!("#{error.message}", scope: [:groups, :error], :raise => true) rescue t("tool_change", scope: [:groups, :error])
       render json: {success: false, alert: error_message}, status: :unprocessable_entity
     end
     
