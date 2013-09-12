@@ -1189,7 +1189,6 @@
       remove: Remove
       add: Add
       cancel: Cancel
-      cant_transfer_dependencies: Has dependencies which can't be lost or copied.
     success:
       created: Group was successfully created.
       updated: Group was successfully updated.
@@ -1205,6 +1204,7 @@
       tool_change: Group didn't change for this tool
       last_group: Can't change group. Tool must have at least one group.
       option_not_found: Option not found.
+      cant_transfer_dependencies: Has dependencies which can't be lost or copied.
     groups_checkboxes:
       select_all: Select all
       no_groups: "There are no groups"
