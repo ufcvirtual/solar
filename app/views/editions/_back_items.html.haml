@@ -5,6 +5,8 @@
   $(".back").addClass("invisible");
 
   $("#back").click(function(){
+    erase_flash_messages();
+
     var data = {
       course_id: $("#course").combobox("value"),
       curriculum_unit_id: $("#curriculum_unit").combobox("value"),
