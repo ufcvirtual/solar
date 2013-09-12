@@ -1354,12 +1354,11 @@
       remove: Excluir
       add: Adicionar
       cancel: Cancelar
-      cant_transfer_dependencies: Possui dependencias que não podem ser perdidas ou copiadas.
     success:
       created: Turma criada com sucesso.
       updated: Turma atualizada com sucesso.
       deleted: Turma deletada com sucesso.
-      add: Turma(s) adicionada com sucesso.
+      add: Turma(s) adicionada(s) com sucesso.
       unbind: Turma desvinculada com sucesso.
       remove: Turma removida com sucesso.
     error:
@@ -1370,6 +1369,7 @@
       tool_change: Não foi possível alterar a turma para esta ferramenta
       last_group: Não é possível fazer alteração. Ferramenta deve possuir alguma turma.
       option_not_found: Opção não encontrada.
+      cant_transfer_dependencies: Possui dependencias que não podem ser perdidas ou copiadas.
     groups_checkboxes:  
       select_all: Selecionar todas
       no_groups: "Não há turmas"

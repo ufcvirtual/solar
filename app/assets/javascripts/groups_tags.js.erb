@@ -24,7 +24,10 @@ $(function(){
     var button = $(this);
 
     // adiciona turma à ferramenta
-    $.put(url, function(){
+    $.put(url, function(data){
+
+      if (typeof(data.notice) != "undefined")
+        flash_message(data.notice, 'notice');
 
       var filter_checked_groups = $("[name='group[group_id][]']:checked").map(function() { return this.value; }).get();
       var groups_not_checked_on_filter = $(groups_ids).not(filter_checked_groups).get();
@@ -39,9 +42,6 @@ $(function(){
         data = {'allocation_tags_ids': all_allocation_tags_ids};
       }
       
-      if (typeof(data.notice) != "undefined")
-        flash_message(data.notice, 'notice');
-
       $.get(div_list.data("link-list"), data, function(data){
         div_list.replaceWith(data);
       });
