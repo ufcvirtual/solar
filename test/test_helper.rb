@@ -4,4 +4,8 @@ require 'rails/test_help'
 
 class ActiveSupport::TestCase
   fixtures :all
+
+  def get_json_response(param)
+    return JSON.parse(@response.body)[param]
+  end
 end

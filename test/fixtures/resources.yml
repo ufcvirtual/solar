@@ -731,3 +731,9 @@ res131:
   controller: 'chat_rooms'
   action: 'destroy'
   description: 'Remover chat'
+
+res132:
+  id: 132
+  controller: 'groups'
+  action: 'change_tool'
+  description: 'adicionar, remover ou desvincular uma turma de uma ferramenta'

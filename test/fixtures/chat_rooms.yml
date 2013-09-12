@@ -16,3 +16,12 @@ chat2:
   start_hour: "10:00"
   end_hour: "10:40"
 
+chat3: # este chat possui mensagens
+  id: 3
+  title: "Chat 03"
+  description: "Chat 03"
+  chat_type: 0 # sem participantes definidos
+  schedule_id: 42
+  start_hour: "10:00"
+  end_hour: "10:40"
+

@@ -104,16 +104,17 @@ class GroupsController < ApplicationController
 
   # desvincular/remover/adicionar turmas para determinada ferramenta
   def change_tool
+    groups = Group.where(id: params[:id].split(","))
+    authorize! :change_tool, Group, on: [groups.map(&:allocation_tag).map(&:id)]
 
     begin 
 
       if params[:type] == "add"
-        groups = Group.where(id: params[:id].split(","))
         AcademicAllocation.transaction do 
           AcademicAllocation.create! groups.map {|group| {allocation_tag_id: group.allocation_tag.id, academic_tool_id: params[:tool_id], academic_tool_type: params[:tool_type]}}
         end
       else
-        group = Group.find(params[:id])
+        group = groups.first
         academic_allocation = AcademicAllocation.where(allocation_tag_id: group.allocation_tag.id, academic_tool_type: params[:tool_type], academic_tool_id: params[:tool_id]).first
         
         tool_model = params[:tool_type].constantize
@@ -128,10 +129,9 @@ class GroupsController < ApplicationController
               academic_allocation.update_attribute(:academic_tool_id, new_tool.id)
 
               # se a ferramenta possuir um schedule, cria um igual para a nova
-              new_tool.update_attribute(:schedule_id, Schedule.create(tool.schedule.attributes).id) if tool.respond_to?(:schedule) 
+              new_tool.update_attribute(:schedule_id, Schedule.create(tool.schedule.attributes).id) if tool.respond_to?(:schedule)
               # copia as dependências pro novo objeto caso existam
               new_tool.copy_dependencies(tool) if new_tool.respond_to?(:copy_dependencies) 
-
             when "remove" # remover uma turma
               academic_allocation.destroy
             else
@@ -142,11 +142,11 @@ class GroupsController < ApplicationController
         end
       end
 
-      render json: {success: true, notice: t(".#{params[:type]}", scope: [:groups, :success])}
+      render json: {success: true, notice: t("#{params[:type]}", scope: [:groups, :success])}
     rescue ActiveRecord::RecordNotSaved
-      render json: {success: false, alert: t(".academic_allocation_already_exists", scope: [:groups, :error])}, status: :unprocessable_entity
+      render json: {success: false, alert: t(:academic_allocation_already_exists, scope: [:groups, :error])}, status: :unprocessable_entity
     rescue Exception => error
-      error_message = t(".#{error.message}", scope: [:groups, :error]) || t(".tool_change", scope: [:groups, :error])
+      error_message = t("#{error.message}", scope: [:groups, :error]) || t("tool_change", scope: [:groups, :error])
       render json: {success: false, alert: error_message}, status: :unprocessable_entity
     end
     

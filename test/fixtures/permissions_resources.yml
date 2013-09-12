@@ -974,6 +974,11 @@ groupedit4:
   resource_id: 118
   per_id: false
 
+groupedit5:
+  profile_id: 5
+  resource_id: 132
+  per_id: false
+
 # chat_rooms
 
 chatedit1:
