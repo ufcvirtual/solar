@@ -15,13 +15,14 @@
           - lesson_closed_class = "period_ended" if lesson.closed == 't'
           %tr.lines{:class => lesson_closed_class }
             %td
-              - if (not(lesson.schedule.end_date.nil?)) and (lesson.schedule.end_date < Date.today)
+              - if lesson.closed == 't' 
                 = lesson.name
-                = "(#{t(:lesson_closed_short)})" if lesson.closed == 't'
+                = "(#{t(:lesson_closed_short)})" if (not(lesson.schedule.end_date.nil?)) and (lesson.schedule.end_date < Date.today)
               - else
                 = link_to lesson.name, {}, :class => "link_content", :onclick => "javascript:show_lesson('#{lesson_path(lesson.lesson_id)}')"
             %td
               - if lesson.schedule.end_date.nil? 
+                = t(".since")
                 = l lesson.schedule.start_date, :format => :normal 
               - elsif lesson.schedule.end_date >= Date.today 
                 = l lesson.schedule.start_date, :format => :normal

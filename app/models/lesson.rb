@@ -83,13 +83,14 @@ class Lesson < ActiveRecord::Base
               l.type_lesson,
               m.allocation_tag_id,
               l.schedule_id,
-              CASE WHEN s.end_date < current_date THEN true ELSE false END AS closed
+              CASE WHEN s.end_date < current_date THEN true 
+                   WHEN s.start_date > current_date THEN true 
+                   ELSE false END AS closed
          FROM lessons         AS l
     LEFT JOIN schedules       AS s  ON l.schedule_id = s.id
     INNER JOIN lesson_modules AS m  ON l.lesson_module_id = m.id
     LEFT JOIN allocation_tags AS at ON m.allocation_tag_id = at.id
         WHERE status = #{Lesson_Approved}
-          AND s.start_date <= current_date
           AND at.id IN (#{allocation_tags_ids})
 SQL
 

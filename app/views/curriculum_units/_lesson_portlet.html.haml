@@ -1,0 +1,25 @@
+.block_wrapper
+  .block_title
+    %h2
+      %i.icon-lesson
+      = t(:curriculum_access_lesson)
+  .block_content{:id => 'block_lessons'}
+    - unless @lessons.nil? or @lessons.empty?
+      - @lessons.each do |lesson|
+        - lesson_closed_class = "block_content_line "
+        - lesson_closed_class = lesson_closed_class + "period_ended" if (lesson.closed == "t") #: "block_content_line period_ended" ? "block_content_line"
+        %div(class=lesson_closed_class)
+        
+          %span(class="block_content_gray")
+            = "#{t(:since)}" if (lesson.schedule.end_date.nil?)
+            = l lesson.schedule.start_date, :format => :normal
+            = " - " 
+            = l lesson.schedule.end_date, :format => :normal unless (lesson.schedule.end_date.nil?)
+
+          - if lesson.closed == 't' 
+            = lesson.name
+            = "(#{t(:lesson_closed_short)})" if (not(lesson.schedule.end_date.nil?)) and (lesson.schedule.end_date < Date.today)
+          - else
+            = link_to lesson.name, {}, :class => "link_content", :onclick => "javascript:show_lesson('#{lesson_path(lesson.lesson_id)}')"
+    - else
+      .block_content.block_content_text= t(:lesson_message)
