@@ -163,9 +163,7 @@
               <%= link_to t(:mysolar_edit_profile), edit_user_registration_path, id: 'my_data' %>
             </li>
             <li>
-              <a id="mysolar_change_picture" href="#" onclick="showUserPictureUploadForm('<%= url_for :edit_photo_users %>', '<%= t(:mysolar_change_picture)%>'); return false;">
-                <%= t(:mysolar_change_picture)%>
-              </a>
+              <%= link_to t(:mysolar_change_picture), edit_photo_users_path, class: "fancybox.ajax", id: "change_picture" %>
             </li>
             <li>
               <%= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path) %>

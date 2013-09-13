@@ -1,7 +1,7 @@
-%h1#lightBoxDialogTitle= t((@module.persisted? ? :edit_lesson_module : :new_module), scope: [:lessons, :list])
-%span.form_requirement= t(:required_fields)
 .module_form{:style => "text-align: left;"}
   = simple_form_for(@module, :html => {:id => "module_form"}) do |f| 
+    %h1#lightBoxDialogTitle= t((@module.persisted? ? :edit_lesson_module : :new_module), scope: [:lessons, :list])
+    %span.form_requirement= t(:required_fields)
     
     .form-inputs.block_content.retreat
       = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
@@ -19,7 +19,6 @@
       $('form#module_form').serialize_and_submit({
         replace_list: $('.list_lessons:last')
       });
-      javascript:jQuery.fancybox.close();
     });
 
     $('#cancel').click(function(){

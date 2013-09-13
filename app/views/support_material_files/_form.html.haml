@@ -9,8 +9,8 @@
       - else
         = f.file_field :attachment, as: :file, required: true
 
-      .right_buttons
-        = button_tag t(:cancel), :class => "btn btn_default btn_lightbox", :type => "button", onclick: "javascript:removeLightBox();"
+      .right_buttons.new_support_material_buttons
+        = button_tag t(:cancel), :class => "btn btn_default btn_lightbox", :type => "button", onclick: "javascript:jQuery.fancybox.close();"
         = button_tag t(:save), :class => "btn btn_main btn_lightbox", :type => "button", :id => "save"
     
 :javascript

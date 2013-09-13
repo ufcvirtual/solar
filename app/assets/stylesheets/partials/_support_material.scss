@@ -7,12 +7,14 @@ h2.support_material_title {
   width: 560px;
 }
 
-/**
-* TODO: código aparentemente inutilizado, verificar
-*
 #support_material_file_attachment {
-  margin-left: 70px;
-  margin-top: 3px;
-  margin-bottom: 5px;
+	margin-left: 9px;
 }
-*/
+
+.new_support_material_buttons{
+	margin-top: 35px;
+}
+
+.new_support_material_form .form_label{
+	width: 68px !important;
+}

@@ -220,7 +220,7 @@ $.fn.serialize_and_submit = function(options) {
       else {
         // se não houver opção indicando que o lightbox deve se manter aberto, o default é fechá-lo
         if(typeof(options.dont_remove_lightbox) == "undefined" || !options.dont_remove_lightbox) 
-          removeLightBox();
+          javascript:jQuery.fancybox.close();
 
         if (typeof(data) != "undefined" && typeof(data.notice) != "undefined")
           flash_message(data.notice, 'notice');
