@@ -3,15 +3,14 @@
 /**
 * Geral
 */
+
 .form-inputs > .input > textarea {
   height: 120px;
 }
 
 .form_label {
   color: $label_color;
-  label {
-    text-align: right;
-  }
+  text-align: right;
 }
 
 .form_label:first-child {
@@ -39,7 +38,7 @@
 }
 
 .form-inputs .form_label:first-child {
-  width: 127px;
+  width: 94px;
 }
 
 .form-inputs div.input {
@@ -101,8 +100,8 @@
 .form_requirement {
   display: block;
   float: right;
-  margin-top: 10px;
-  margin-right: 18px;
+  position: relative;
+  bottom: 23px;
 }
 
 .label_usuario {
@@ -138,6 +137,21 @@ select[disabled] {
   margin: 5px;
 }
 
+/**
+* alinhamento do form
+*/
+
+#lesson_form{
+  width: 447px;
+}
+
+#module_form{
+  width: 440px;
+}
+
+.lesson_module_name{
+  float: left;
+}
 /**
 * Posicionando botões do form
 */

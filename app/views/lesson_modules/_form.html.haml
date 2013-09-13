@@ -1,3 +1,4 @@
+%h1#lightBoxDialogTitle= t((@module.persisted? ? :edit_lesson_module : :new_module), scope: [:lessons, :list])
 %span.form_requirement= t(:required_fields)
 .module_form{:style => "text-align: left;"}
   = simple_form_for(@module, :html => {:id => "module_form"}) do |f| 
@@ -7,7 +8,7 @@
 
       = f.input :name, :required => true
 
-      .form-actions.right_buttons
+      .form-actions.right_buttons.right_buttons_align
         = button_tag t(".cancel"), :class => "btn btn_default btn_lightbox", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons]), :id => "cancel"
         = button_tag t(".save"), :class => "btn btn_main btn_lightbox", :alt => t(:save, :scope => [:discussion, :buttons]), :type => "button", :id => "save"
 
@@ -18,9 +19,10 @@
       $('form#module_form').serialize_and_submit({
         replace_list: $('.list_lessons:last')
       });
+      javascript:jQuery.fancybox.close();
     });
 
     $('#cancel').click(function(){
-      removeLightBox();
+      javascript:jQuery.fancybox.close();
     });
   });

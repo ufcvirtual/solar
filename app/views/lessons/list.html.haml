@@ -108,7 +108,9 @@
   jQuery(function($) {
 
     $(".btn_edit, .btn_del, .release_lessons, .download_lesson_zip, .manage_files_lesson").attr("disabled", true);
-    $(".link_new_lesson, .link_new_module, .edit_module, .link_edit_lesson").fancybox();
+    $(".link_new_lesson, .link_new_module, .edit_module, .link_edit_lesson").fancybox({
+      width   : '70%'
+    });
 
     $('.lesson_check_all').nice_checkbox({
       objects_to_change_status: $('.manage_files_lesson, .download_lesson_zip, .release_lessons'),

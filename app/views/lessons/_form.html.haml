@@ -3,7 +3,7 @@
 .first_step 
 
   = simple_form_for(@lesson, :html => {:id => "lesson_form"}) do |f|
-    %h1#lightBoxDialogTitle= t(:new_lesson, scope: [:lessons, :list])
+    %h1#lightBoxDialogTitle= t((@lesson.persisted? ? :edit_lesson : :new_lesson), scope: [:lessons, :list])
     %span.form_requirement= t(:required_fields)
     .lesson_form.block_content
       = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
@@ -47,9 +47,9 @@
             .disabled
               =f.label " "
               =t(:example, :scope => [:lessons, :new])
-    .right_buttons
-      = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default btn_lightbox", :onclick => "removeLightBox();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
-      = button_tag t(:save, :scope => [:lessons, :new]), :class => "btn btn_main btn_lightbox", :alt => t(:save, :scope => [:lessons, :new]), :type => "button", :id => "save_button"
+        .right_buttons.right_buttons_align
+          = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default btn_lightbox", :onclick => "javascript:jQuery.fancybox.close();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
+          = button_tag t(:save, :scope => [:lessons, :new]), :class => "btn btn_main btn_lightbox", :alt => t(:save, :scope => [:lessons, :new]), :type => "button", :id => "save_button"
 
   :css
     .date_text_field {
@@ -103,6 +103,7 @@
               $('#lightBoxDialogTitle').html('<h1>#{I18n.t(:new, :scope => [:lessons, :list])} > #{I18n.t(:files_management, :scope => [:lesson_files])}</h1>');
               $(".first_step").html(data);
             }
+            javascript:jQuery.fancybox.close();
           }
         });
       });

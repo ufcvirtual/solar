@@ -12,7 +12,7 @@
     %h2=t_tool_name
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_curriculum_unit_path(type_id: @type.id), class: " btn btn_main fancybox.ajax", id: "btn_new_curriculum_unit "
+      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_curriculum_unit_path(type_id: @type.id), class: " btn btn_main fancybox.ajax", id: "btn_new_curriculum_unit"
       
     .block_toolbar_right
       = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn delete_curriculum_unit btn_del', :'data-tooltip' => t(".delete", uc_or_module: t_tool_name), :"data-link-delete" => curriculum_unit_path(id: ':id')
