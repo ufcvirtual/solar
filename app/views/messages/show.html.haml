@@ -45,8 +45,8 @@
         .label-show.align-left
           %i.icon-paperclip
           = t(".attachments")
+        %br
         - attachments.each do |file|
-          %br/
           .new-attach
             = link_to ['-', file.message_file_name].join, download_file_messages_path(file_id: file.id)
 

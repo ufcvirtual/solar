@@ -5,7 +5,16 @@
   .block_white
     .align-left.padding-checkbox
       %input#ckb_all{type: "checkbox", :"data-children-names" => "checkbox_message"}
-      %ul.message_menu_listbox
+      = t(".filter_selected")
+      %select
+        %option#check_all
+          = t(:message_select_all)
+        %option#check_read
+          = t(:message_select_read)
+        %option#check_unread
+          = t(:message_select_unread)
+
+      -#%ul.message_menu_listbox
         %li
           %a{href: "#"}
             = t(".filter_selected")

@@ -1,6 +1,11 @@
 /* Index - Caixa de Entrada */
 .padding-checkbox{
   padding-top: 5px;
+  font-size: 10pt;
+
+  select{
+    margin-left: 5px;
+  }
 
   input{
     margin-right: 5px;
@@ -462,7 +467,6 @@ ul.message_menu_listbox li ul {
 }
 .message_new_upload{
   .files{
-    margin-left: 20px;
 
     .file_attached{
       padding-top: 5px;
@@ -473,4 +477,7 @@ ul.message_menu_listbox li ul {
       }
     }
   }
+}
+.list_files_to_send{
+  margin-left: 60px;
 }
