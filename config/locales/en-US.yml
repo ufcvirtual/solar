@@ -517,6 +517,8 @@
       moved: Lessons were sucessfully moved
       created: Lesson was sucessfully created
       updated: Lesson was sucessfully updated
+    form: 
+      cancel: Cancel
 
   lesson_modules:
     general_of_offer: "General"
@@ -1323,9 +1325,16 @@
       course: Course
       choose_at_least_one: Choose at least one curriculum unit
       cant_edit: Can't edit this curriculum unit
+      new: New %{uc_or_module}
     form:
       save: Save
       cancel: Cancel
+      new_course: New Course
+      new_module: New Module
+      new_curriculum_unit: New Curriculum Unit
+      edit_course: Edit Course
+      edit_module: Edit Module
+      edit_curriculum_unit: Edit Curriculum Unit
 
   semesters:
     success:
@@ -1343,6 +1352,7 @@
       delete: Delete Semester
       new_offer: New Offer
       period: Period
+      delete_offer: Delete offer
       choose_one_offer: Choose an offer
     form:
       enable_end_date: Enable end date

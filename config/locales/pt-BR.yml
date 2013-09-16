@@ -681,6 +681,8 @@
       moved: Aulas movidas com sucesso
       created: Aula criada com sucesso.
       updated: Aula atualizada com sucesso.
+    form: 
+      cancel: Cancelar
 
   lesson_modules:
     general_of_offer: "Geral"
@@ -927,7 +929,7 @@
       "no": Não
       groups: "Turmas:"
       new: Novo Trabalho
-      edit: Edição de Trabalho
+      edit: Editar Trabalho
       name: Nome do Trabalho
       availability: Disponibilidade
       type: Tipo
@@ -1487,11 +1489,18 @@
       curriculum_unit: Unidade Curricular
       module: Módulo
       course: Curso
+      new: Novo %{uc_or_module}
       cant_edit: Não é possível editar esta unidade curricular
       choose_at_least_one: "Selecione, ao menos, uma unidade curricular"
     form:
       save: Salvar
       cancel: Cancelar
+      new_course: Novo Curso
+      new_module: Novo Módulo
+      new_curriculum_unit: Nova Unidade Curricular
+      edit_course: Editar Curso
+      edit_module: Editar Módulo
+      edit_curriculum_unit: Editar Unidade Curricular
 
   semesters:
     success:
@@ -1507,6 +1516,7 @@
       edit: Editar Semestre
       delete: Deletar Semestre
       new_offer: Nova oferta
+      delete_offer: Deletar oferta
       period: Período
       none: Nenhum semestre cadastrado
       choose_one_offer: Selecione uma oferta

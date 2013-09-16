@@ -25,14 +25,13 @@ $.fn.nice_checkbox = function(options){
   var enable_other_elements = function (children_checked_length) {
     if (typeof(options) != "undefined" && typeof(options.objects_to_change_status) != "undefined"){
       var elements_to_change = options.objects_to_change_status;
-      for (var i = 0; i < elements_to_change.length; i++) {
+      $.each(elements_to_change, function(i){
         var element = $(elements_to_change[i], parent_block_div);
         // se nenhum ckb filho for selecionado, elemento é desabilitado
         // se mais de um ckb filho for selecionado, mas elemento só aceitar um, este é desabilitado
         // caso contrário, habilita
         element.attr("disabled", ( children_checked_length == 0 || (element.data("single") != undefined && children_checked_length > 1)));
-      }
-
+      });
     }
   };
 
@@ -224,7 +223,7 @@ $.fn.serialize_and_submit = function(options) {
       else {
         // se não houver opção indicando que o lightbox deve se manter aberto, o default é fechá-lo
         if(typeof(options.dont_remove_lightbox) == "undefined" || !options.dont_remove_lightbox) 
-          javascript:jQuery.fancybox.close();
+          $.fancybox.close();
 
         if (typeof(data) != "undefined" && typeof(data.notice) != "undefined")
           flash_message(data.notice, 'notice');

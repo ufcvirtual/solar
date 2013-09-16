@@ -19,7 +19,7 @@
         %span.field_with_errors{:style => "display: inline-block;"}= @error
 
       .form-actions.right_buttons.right_buttons_align
-        = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default btn_lightbox", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons]), :id => "cancel"
+        = button_to_function t(:cancel, :scope => [:discussion, :buttons]), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
         = button_tag t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main btn_lightbox", :alt => t(:save, :scope => [:discussion, :buttons]), :type => "button", :id => "save"
 
 :css
@@ -63,7 +63,4 @@
       }
     });
 
-    $('#cancel').click(function(){
-      javascript:jQuery.fancybox.close();
-    });
   });

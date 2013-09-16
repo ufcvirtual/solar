@@ -1,55 +1,53 @@
 - start_date, end_date = (@lesson.try(:schedule).try(:start_date) || Date.today), (@lesson.try(:schedule).try(:end_date) || '')
 
-.first_step 
+= simple_form_for(@lesson, :html => {:id => "lesson_form"}) do |f|
+  %h1#lightBoxDialogTitle= t((@lesson.persisted? ? :edit_lesson : :new_lesson), scope: [:lessons, :list])
+  %span.form_requirement= t(:required_fields)
+  .lesson_form.block_content
+    = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
+    = hidden_field_tag(:lesson_module_id, params[:lesson_module_id])
 
-  = simple_form_for(@lesson, :html => {:id => "lesson_form"}) do |f|
-    %h1#lightBoxDialogTitle= t((@lesson.persisted? ? :edit_lesson : :new_lesson), scope: [:lessons, :list])
-    %span.form_requirement= t(:required_fields)
-    .lesson_form.block_content
-      = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
-      = hidden_field_tag(:lesson_module_id, params[:lesson_module_id])
-
-      .form-inputs.block_content
-        .lesson_module
-          = f.label t(:lesson_module, :scope => [:editions, :items])
-          - if @lesson_modules
-            = f.collection_select(:lesson_module_id, @lesson_modules, :id, :name)
-          - elsif @lesson_module
-            = f.hint @lesson_module.name
-          - elsif @lesson.lesson_module
-            = f.hint @lesson.lesson_module.name
-        =f.input :name
-        =f.input :description
-        - error_class = "field_with_errors" unless @schedule_error.blank?
-        .lesson_date{:class => error_class}
-          =f.label :start_date, :required => true
-          =text_field_tag "start_date", "", :id => "from_date", :title => "#{t(:from_date)}", :value => "#{l(start_date.to_date, :format => :datepicker)}", :class => "date_text_field", :size => 10, :required => true
-          %div.end_date{class: ('invisible' if (!@lesson.has_end_date?) )}
-            =f.label :end_date
-            =text_field_tag "end_date", "", :id => "until_date", :title => "#{t(:until_date)}", :value => ("#{l(end_date.to_date, :format => :datepicker)}" if Date.valid?(end_date)), :class => "date_text_field", :size => 10, :required => true
-            %span{:style => "display: inline-block;"}= @schedule_error
-          .select_end_date
+    .form-inputs.block_content
+      .lesson_module
+        = f.label t(:lesson_module, :scope => [:editions, :items])
+        - if @lesson_modules
+          = f.collection_select(:lesson_module_id, @lesson_modules, :id, :name)
+        - elsif @lesson_module
+          = f.hint @lesson_module.name
+        - elsif @lesson.lesson_module
+          = f.hint @lesson.lesson_module.name
+      =f.input :name
+      =f.input :description
+      - error_class = "field_with_errors" unless @schedule_error.blank?
+      .lesson_date{:class => error_class}
+        =f.label :start_date, :required => true
+        =text_field_tag "start_date", "", :id => "from_date", :title => "#{t(:from_date)}", :value => "#{l(start_date.to_date, :format => :datepicker)}", :class => "date_text_field", :size => 10, :required => true
+        %div.end_date{class: ('invisible' if (!@lesson.has_end_date?) )}
+          =f.label :end_date
+          =text_field_tag "end_date", "", :id => "until_date", :title => "#{t(:until_date)}", :value => ("#{l(end_date.to_date, :format => :datepicker)}" if Date.valid?(end_date)), :class => "date_text_field", :size => 10, :required => true
+          %span{:style => "display: inline-block;"}= @schedule_error
+        .select_end_date
+          =f.label " "
+          =check_box "check", "end_date", {id: 'check_end_date', checked: @lesson.has_end_date? }
+          =t(:enable_end_date, :scope => [:lessons, :new])
+      .lesson_type
+        =f.label t(:type_lesson, :scope => [:lessons, :new])
+        - if @lesson_modules
+          - if @lesson.type_lesson == Lesson_Type_File
+            =f.hint t(:archive, :scope => [:lessons, :new])
+          -elsif @lesson.type_lesson == Lesson_Type_Link
+            =f.hint t(:link, :scope => [:lessons, :new])
+        - else
+          =f.select :type_lesson, ([ [t(:link, :scope => [:lessons, :new]), Lesson_Type_Link], [t(:archive, :scope => [:lessons, :new]),Lesson_Type_File] ]), :include_blank => false
+      - if (@lesson_modules.nil? or @lesson.type_lesson == Lesson_Type_Link)
+        .url_lesson
+          =f.input :address, :required => true
+          .disabled
             =f.label " "
-            =check_box "check", "end_date", {id: 'check_end_date', checked: @lesson.has_end_date? }
-            =t(:enable_end_date, :scope => [:lessons, :new])
-        .lesson_type
-          =f.label t(:type_lesson, :scope => [:lessons, :new])
-          - if @lesson_modules
-            - if @lesson.type_lesson == Lesson_Type_File
-              =f.hint t(:archive, :scope => [:lessons, :new])
-            -elsif @lesson.type_lesson == Lesson_Type_Link
-              =f.hint t(:link, :scope => [:lessons, :new])
-          - else
-            =f.select :type_lesson, ([ [t(:link, :scope => [:lessons, :new]), Lesson_Type_Link], [t(:archive, :scope => [:lessons, :new]),Lesson_Type_File] ]), :include_blank => false
-        - if (@lesson_modules.nil? or @lesson.type_lesson == Lesson_Type_Link)
-          .url_lesson
-            =f.input :address, :required => true
-            .disabled
-              =f.label " "
-              =t(:example, :scope => [:lessons, :new])
-        .right_buttons.right_buttons_align
-          = button_tag t(:cancel, :scope => [:discussion, :buttons]), :class => "btn btn_default btn_lightbox", :onclick => "javascript:jQuery.fancybox.close();", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
-          = button_tag t(:save, :scope => [:lessons, :new]), :class => "btn btn_main btn_lightbox", :alt => t(:save, :scope => [:lessons, :new]), :type => "button", :id => "save_button"
+            =t(:example, :scope => [:lessons, :new])
+      .right_buttons.right_buttons_align
+        = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+        = button_tag t(:save, :scope => [:lessons, :new]), :class => "btn btn_main btn_lightbox", :alt => t(:save, :scope => [:lessons, :new]), :type => "button", :id => "save_button"
 
   :css
     .date_text_field {
@@ -98,12 +96,8 @@
           dont_remove_lightbox: file_lesson_page,
           replace_list: $('.list_lessons'),
           complement_success: function(data){
-            if(file_lesson_page){
-              // atualiza conteúdo do lightbox para a gerência de arquivos
-              $('#lightBoxDialogTitle').html('<h1>#{I18n.t(:new, :scope => [:lessons, :list])} > #{I18n.t(:files_management, :scope => [:lesson_files])}</h1>');
-              $(".first_step").html(data);
-            }
-            javascript:jQuery.fancybox.close();
+            if(file_lesson_page) // atualiza conteúdo do lightbox para a gerência de arquivos
+              $.fancybox(data);
           }
         });
       });
@@ -138,10 +132,5 @@
           $(this).datepicker("setDate", new Date(new_end_date.getFullYear(), new_end_date.getMonth(), new_end_date.getDate()+new_action));
         }
       });
-
-
-
-    
-  
 
     });

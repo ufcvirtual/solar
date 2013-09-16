@@ -1,5 +1,8 @@
 - start_date, end_date = Date.today - 1.month, Date.today + 1.month
 = simple_form_for @semester, html: {id: "semester_form"} do |f|
+  %h1#lightBoxDialogTitle= t((@semester.persisted? ? :edit : :new), scope: "semesters.list")
+  %span.form_requirement= t(:required_fields)
+
   .form-inputs.block_content
     = f.input :type_id, as: :hidden, input_html: {value: @type_id}
 

@@ -131,15 +131,16 @@ class DiscussionsController < ApplicationController
     discussions = Discussion.where(id: params[:id].split(","))
     authorize! :destroy, Discussion, on: discussions.map(&:allocation_tag_id).uniq.flatten
 
+    has_posts = false
     begin
       Discussion.transaction do
-        raise "has_posts" if discussions.map(&:can_destroy?).include?(false)
-        discussions.map(&:destroy)
+        raise has_posts = true if discussions.map(&:can_destroy?).include?(false)
+        discussions.destroy_all
       end
 
       render json: {success: true, notice: t(:deleted, scope: [:discussion, :success])}
-    rescue Exception => error
-      alert_message = (error.message == "has_posts" ? t(:discussion_with_posts, :scope => [:discussion, :errors]) : t(:deleted, scope: [:discussion, :error]))
+    rescue
+      alert_message = (has_posts ? t(:discussion_with_posts, :scope => [:discussion, :errors]) : t(:deleted, scope: [:discussion, :error]))
       render json: {success: false, alert: alert_message}, status: :unprocessable_entity
     end
     

@@ -9,18 +9,14 @@
 
   - @allocation_tags.each_with_index do |allocation_tag, idxat|
 
-    /- allocation_tag_path = allocation_tag_path(allocation_tag, @what_was_selected)
-    / aqui tinha um .list_lessons
     .block_wrapper
       - unless previous_allocation_tag == idxat
         - previous_allocation_tag = idxat
-        /.edition_allocation_tag_path= allocation_tag_path
 
       - unless allocation_tag.lesson_modules.empty?
         - allocation_tag.lesson_modules.each_with_index do |lesson_module, idxm|
 
           - lessons = lessons_by_module(lesson_module.id)
-          / aqui tinha um .list_lessons
           .block_wrapper.module{id: "module_#{lesson_module.id}"}
             .block_title
               %h2
@@ -34,7 +30,7 @@
                   %i.icon-arrow-down-3
                 %div{:id=>"dropdown_#{lesson_module.id}", :class=>"dropdown dropdown-tip"}
                   %ul.dropdown-menu
-                    %li= link_to (t(:new_lesson, scope: [:lessons, :list])), new_lesson_path(lesson_module_id: lesson_module.id, allocation_tags_ids: params[:allocation_tags_ids]), class: "link_new_lesson fancybox.ajax", :'data-tooltip' => t(:new_lesson, scope: [:lessons, :list])
+                    %li= link_to (t(:new_lesson, scope: [:lessons, :list])), new_lesson_path(lesson_module_id: lesson_module.id, allocation_tags_ids: params[:allocation_tags_ids]), class: "link_new_lesson fancybox.ajax"
                     %li= link_to "Importar aula", "#", onclick: "javascript: alert('importar aula');", id: 'import_lesson'
               .block_toolbar_right
                 .btn-group{class: "module-#{lesson_module.id}"}
@@ -181,10 +177,12 @@
       var url = $(this).data("link-update");
 
       if(typeof(module_id) != "undefined" || $(this)[0].className == "change_lesson_status"){
-        var lesson_ids = get_selected_lessons($(this).data('module-id'));
         
-        if(can_do_action(lesson_ids))
-          url = url.replace(':id', lesson_ids);
+        if ($(this)[0].className != "change_lesson_status"){
+          var lesson_ids = get_selected_lessons($(this).data('module-id'));
+          if(can_do_action(lesson_ids))
+            url = url.replace(':id', lesson_ids);
+        }
 
         $.put(url, function(data){
           $.get($('.list_lessons').data('link-list'), function(data){
