@@ -62,22 +62,28 @@ jQuery(function($){
 
   $('.btn_edit').click(function() {
     if ($(this).attr('disabled') == 'disabled') {
+      flash_message("<%=I18n.t(:choose_one, scope: [:chat_rooms, :index])%>", "alert");
       return false;
     }
 
     var chats_ids = $('.ckb_chat:checked', $(this).parents("div.list_chat_rooms")).map(function() { return this.value; }).get();
     if (!(!chats_ids.length || chats_ids.length > 1)) {
       var url_edit = $(this).data('link-to-edit').replace(':id', chats_ids);
-      $(this).fancybox({
-        href: url_edit
-      });
-      // showLightBoxURL(url_edit, 550, 400, true, $(this).data('edit-title'));
+      $.fancybox.open(
+        $(this),
+        {href : url_edit}
+      );
     }
     return false;
   });
 
   $('.delete_chat').click(function() {
-    if ($(this).attr('disabled') == 'disabled' || !confirm("<%=I18n.t(:message_confirm)%>"))
+    if ($(this).attr('disabled') == 'disabled'){
+      flash_message("<%=I18n.t(:choose_at_least_one, scope: [:chat_rooms, :index])%>", "alert");
+      return false;
+    }
+
+    if (!confirm("<%=I18n.t(:message_confirm)%>"))
       return false;
 
     var chats = $('.ckb_chat:checked', $(this).parents("div.list_chat_rooms"));

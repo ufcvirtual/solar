@@ -16,9 +16,8 @@ $(function(){
   });
 
   $('.btn_edit').click(function(){
-
     if ($(this).attr('disabled') == 'disabled'){
-      flash_message("<%=I18n.t(:choose_at_least_one, scope: [:groups, :list])%>", 'alert');
+      flash_message("<%=I18n.t(:choose_one, scope: [:groups, :list])%>", 'alert');
       return false;
     }
 
@@ -26,10 +25,10 @@ $(function(){
     if (!(!groups_ckb.length || groups_ckb.length > 1)) {
       var url_edit = $(this).data('link-edit').replace(':id', groups_ckb);
 
-      $(this).fancybox(
-        {href: url_edit}
+      $.fancybox.open(
+        $(this),
+        {href : url_edit}
       );
-
     }
     return false;
   });
@@ -54,12 +53,6 @@ $(function(){
       }).error(result_error);
     }
   });
-
-  $(".block_toolbar_right span.btn")
-   .on('click',function(){
-     var check = $(':checkbox', this);
-     check.prop('checked', !check[0].checked);
-   });
 
   $('#all_groups').nice_checkbox({
     objects_to_change_status: ['.disable_group', '.enable_group']

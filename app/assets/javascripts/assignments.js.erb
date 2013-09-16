@@ -197,24 +197,32 @@ $(function(){
 
     $('#all_assignments').nice_checkbox();
 
-    $('#new_assignment').click(function() {
-      showLightBoxURL($(this).data('link'), 550, 400, true, $(this).data('box-title'));
-    });
+    $('#new_assignment').fancybox();
 
     $('.edit_assignment').click(function() {
-      if ($(this).attr('disabled') == 'disabled')
+      if ($(this).attr('disabled') == 'disabled'){
+        flash_message("<%=I18n.t(:choose_one, scope: [:assignment, :list])%>", "alert");
         return false;
+      }
 
       var assignments_ids = $('.ckb_assignment:checked', $(this).parents("div.list_assignments")).map(function() { return this.value; }).get();
       if (!(!assignments_ids.length || assignments_ids.length > 1)) {
         var url_edit = $(this).data('link-to-edit').replace(':id', assignments_ids);
-        showLightBoxURL(url_edit, 550, 400, true, $(this).data('edit-title'));
+        $.fancybox.open(
+          $(this),
+          {href : url_edit}
+        );
       }
       return false;
     });
 
     $('.delete_assignment').click(function() {
-      if ($(this).attr('disabled') == 'disabled' || !confirm("<%=I18n.t(:message_confirm)%>"))
+      if ($(this).attr('disabled') == 'disabled'){
+        flash_message("<%=I18n.t(:choose_at_least_one, scope: [:assignment, :list])%>", "alert");
+        return false;
+      }
+
+      if (!confirm("<%=I18n.t(:message_confirm)%>"))
         return false;
 
       // tentar melhorar o nice_delete para incluir a delecao de muitas linhas

@@ -657,6 +657,16 @@
     back: Back
     to: to
     end_discussion: End
+    list:
+      new: New Discussion
+      edit: Edit Discussion
+      delete: Delete Discussion
+      choose_at_least_one: Choose at least one discussion
+      choose_one: Choose a discussion
+    success:
+      deleted: Discussion was successfully deleted.
+    error:
+      deleted: Discussion wasn't deleted.
 
   message_title: "Messages"
   message_inbox: "Inbox"
@@ -760,6 +770,8 @@
       type: Type
       individual: Individual
       group: Group
+      choose_at_least_one: Choose at least one assignment
+      choose_one: Choose a assignment
     information:
       begin: Begin
       end: End
@@ -1183,6 +1195,7 @@
       choose_at_least_one: "Choose at least one group"
       edit: Edit group
       none: No group registered
+      choose_one: Choose a group
     group_list:
       code: Code
       enabled: Enabled
@@ -1307,6 +1320,8 @@
       curriculum_unit: Curriculum Unit
       module: Module
       course: Course
+      choose_at_least_one: Choose at least one curriculum unit
+      cant_edit: Can't edit this curriculum unit
     form:
       save: Save
       cancel: Cancel
@@ -1327,6 +1342,7 @@
       delete: Delete Semester
       new_offer: New Offer
       period: Period
+      choose_one_offer: Choose an offer
     form:
       enable_end_date: Enable end date
 
@@ -1350,6 +1366,7 @@
       same_dates_from_offer: Same dates from offer
       none: No offer registered
       choose_at_least_one: "Choose at least one offer"
+      cant_edit: Can't edit this offer
     index:
       offers: Offers
       new: New
@@ -1421,6 +1438,10 @@
       deleted: Support Material was successfully deleted.
     error:
       must_select_something: One or more items must be selected
+    index:
+      choose_at_least_one: Choose at least one support material
+      choose_one: Choose a link support material
+      must_be_link: Must be a link
 
   chat_rooms:
     index:
@@ -1435,6 +1456,8 @@
       expand_description: Expand description
       compress_description: Compress description
       hour_period: "%{start_hour}h - %{end_hour}h"
+      choose_at_least_one: Choose at least one chat
+      choose_one: Choose a chat
     form: 
       participants: Participants
       groups: Groups

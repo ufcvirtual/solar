@@ -4,21 +4,27 @@
     %h2= t(:discussion_table_title, :scope => [:discussion])
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_discussion_path(allocation_tags_ids: @allocation_tags_ids), class: " btn btn_main fancybox.ajax", id: "new-discussion"
+      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_discussion_path(allocation_tags_ids: @allocation_tags_ids), class: " btn btn_main fancybox.ajax", id: "new-discussion", :"data-tooltip" => t(:new, scope: "discussion.list")
+
+    .block_toolbar_right
+      .btn-group
+        = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit fancybox.ajax', :"data-link-edit" => edit_discussion_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(:edit, scope: "discussion.list")
+        = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del delete_discussion',  :"data-link-delete" => discussion_path(id: ':id', :allocation_tags_ids => @allocation_tags_ids), disabled: true, :'data-tooltip' => t(:delete, scope: "discussion.list")
 
   - unless @discussions.nil? or @discussions.empty?
     %table.tb_list
       %thead
         %tr.lines
+          %th{style: 'text-align:center; width: 8%;'}= check_box_tag :all_discussions, false, false, :"data-children-names" => "ckb_discussion", class: "all_discussions"
           %th{:align => "left"}=t :title
           %th{:align => "center", :style => "width: 16%;"}=t :forum_table_date
           %th{:align => "right", :style => "width: 14%;"}=t :curriculum_unit, :scope => [:discussion]
           %th{:align => "right", :style => "width: 10%;"}=t :offer, :scope => [:discussion]
           %th{:align => "right", :style => "width: 10%;"}=t :group, :scope => [:discussion]
-          %th{:align => "center", :style => "width: 13%;"}
       %tbody
         - @discussions.each do |discussion|
           %tr{:class => "lines #{'period_ended' if discussion.closed? and (not discussion.extra_time?(current_user.id))}"}
+            %td{style: 'text-align:center;'}= check_box_tag :ckb_discussion, discussion.id, false, {class: "ckb_discussion"}
             %td
               - if (can?(:read, discussion) and (discussion.opened? or discussion.closed?))
                 = link_to discussion.name, discussion_posts_path(discussion), {:class => 'link_content'}
@@ -30,9 +36,6 @@
             %td= discussion.allocation_tag.offer ? discussion.allocation_tag.offer.curriculum_unit.name : discussion.allocation_tag.group.offer.curriculum_unit.name
             %td{:align => "left", :style => "width: 50px;"}= discussion.allocation_tag.offer ?  discussion.allocation_tag.offer.semester.name : discussion.allocation_tag.group.offer.semester.name
             %td{:align => "left", :style => "width: 50px;"}= discussion.allocation_tag.group ?  discussion.allocation_tag.group.code : "-" 
-            %td
-              = link_to (content_tag(:i, nil, :class=>'icon-edit')), edit_discussion_path(discussion.id, allocation_tags_ids: @allocation_tags_ids), class: 'btn btn_default edit fancybox.ajax', :'data-tooltip' => t(:edit_discussion, :scope => [:discussion], :discussion_name => discussion.name)
-              = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_discussion', :'data-tooltip' => t(:delete_discussion, :scope => [:discussion], :discussion_name => discussion.name), :"data-link-delete" => discussion_path(discussion, :allocation_tags_ids => @allocation_tags_ids)
 
   - else
     .block_content.block_content_text= t(:forum_message)
@@ -41,10 +44,52 @@
 
   $(function(){
 
-    $("#new-discussion, .edit").fancybox();
+    $("#new-discussion").fancybox();
 
     $('.delete_discussion').click(function(){
-      $(this).nice_delete();
+      if ($(this).attr('disabled') == 'disabled'){
+        flash_message("#{I18n.t(:choose_at_least_one, scope: [:discussion, :list])}", "alert");
+        return false;
+      }
+
+      if (!confirm("#{I18n.t(:message_confirm)}"))
+        return false;
+
+      var discussions = $('.ckb_discussion:checked', $(this).parents("div.list_discussions"));
+      var discussion_ids = $('.ckb_discussion:checked', $(this).parents("div.list_discussions")).map(function() { return this.value; }).get();
+
+      if (discussion_ids.length) {
+        $.delete($(this).data('link-delete').replace(':id', discussion_ids), function(data){
+          flash_message(data.notice, 'notice');
+          discussions.parents('tr').fadeOut().remove();
+
+          $(".btn_edit, .btn_del").attr("disabled", true);
+        }).error(function(data){
+          var data = $.parseJSON(data.responseText);
+          if (typeof(data.alert) != "undefined")
+            flash_message(data.alert, 'alert');
+        });
+      }
     });
+
+    $(".btn_edit").click(function(){
+      if ($(this).attr('disabled') == 'disabled'){
+        flash_message("#{I18n.t(:choose_one, scope: [:discussion, :list])}", "alert");
+        return false;
+      }
+
+      var discussion_ids = $('.ckb_discussion:checked', $(this).parents("div.list_discussions")).map(function() { return this.value; }).get();
+      var url_edit = $(this).data('link-edit').replace(':id', discussion_ids);
+
+      console.log(url_edit);
+
+      $.fancybox.open(
+        $(this),
+        {href : url_edit}
+      );
+
+    });
+
+    $(".all_discussions").nice_checkbox();
 
   });

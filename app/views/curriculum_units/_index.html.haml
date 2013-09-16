@@ -34,7 +34,7 @@
             = curriculum_unit.code
           %td= curriculum_unit.name
           %td{:align => "left"}= curriculum_unit.curriculum_unit_type.description
-          %td{:align => "right"}= link_to (content_tag(:i, nil, class: 'icon-edit')), edit_curriculum_unit_path(curriculum_unit), class: 'btn edit fancybox.ajax', :'data-tooltip' => t(".edit", uc_or_module: t_tool_name),  disabled: not(can? :update, curriculum_unit)
+          %td{:align => "right"}= link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit fancybox.ajax', :'data-tooltip' => t(".edit", uc_or_module: t_tool_name),  disabled: not(can? :update, curriculum_unit), :"data-link-edit" => edit_curriculum_unit_path(curriculum_unit)
 
 :javascript
 
@@ -47,13 +47,30 @@
   jQuery(function($){
     $('.delete_curriculum_unit').attr("disabled", true);
 
-    $("#btn_new_curriculum_unit, .edit").fancybox();
+    $("#btn_new_curriculum_unit").fancybox();
+
+    $(".edit").click(function(){
+      if ($(this).attr('disabled') == 'disabled'){
+        flash_message("#{t(".cant_edit")}", "alert");
+        return false;
+      }
+
+      $.fancybox.open(
+        $(this),
+        {href : $(this).data("link-edit")}
+      );
+    });
 
     $('.delete_curriculum_unit').click(function(){
-      if ($(this).attr('disabled') == 'disabled' || !confirm("#{t(:message_confirm)}"))
+      if ($(this).attr('disabled') == 'disabled'){
+        flash_message("#{t(".choose_at_least_one")}", "alert");
         return false;
+      }
 
       // tentar melhorar o nice_delete para incluir a delecao de muitas linhas
+
+      if (!confirm("#{t(:message_confirm)}"))
+        return false;
 
       var ucs = $("#ckb_curriculum_unit:checked");
       var uc_ids = $.map(ucs, function(n){ return ($(n).val()); });

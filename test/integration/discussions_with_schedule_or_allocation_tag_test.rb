@@ -196,7 +196,8 @@ class DiscussionsWithScheduleOrAllocationTagTest < ActionDispatch::IntegrationTe
         delete(discussion_path(discussions(:forum_1), :allocation_tags_ids => @items))
       end
 
-      assert_response :unprocessable_entity
+      assert_response :redirect
+      assert_equal flash[:alert], I18n.t(:no_permission)
     end
     
 end

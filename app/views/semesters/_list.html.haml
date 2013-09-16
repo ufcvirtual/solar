@@ -35,11 +35,16 @@
     });
 
     $('.delete_offer').click(function() {
-      if ($(this).attr('disabled') == 'disabled' || !confirm("#{t(:message_confirm)}"))
+      if ($(this).attr('disabled') == 'disabled'){
+        flash_message("#{t(".choose_one_offer")}", "alert");
         return false;
+      }
 
+      if(!confirm("#{t(:message_confirm)}"))
+        return false;
+        
       // tentar melhorar o nice_delete para incluir a delecao de muitas linhas
-
+      
       var offers = $('.ckb_offers:checked', $(this).parents(".semester"));
       var offers_ids = offers.map(function() { return this.value; }).get();
 

@@ -819,6 +819,16 @@
     back: Voltar
     to: a
     end_discussion: Fim
+    list:
+      new: Novo Fórum
+      edit: Editar Fórum
+      delete: Deletar Fórum
+      choose_at_least_one: "Selecione, ao menos, um fórum"
+      choose_one: Selecione um fórum
+    success:
+      deleted: Fórum deletado com sucesso.
+    error:
+      deleted: Não foi possível deletar fórum.
 
   # messages
   message_title: "Mensagens"
@@ -924,6 +934,8 @@
       group: Grupo
       none: Nenhum trabalho cadastrado
       answers: Respostas
+      choose_at_least_one: "Selecione, ao menos, um trabalho"
+      choose_one: Selecione um trabalho
     information:
       begin: Início
       end: Fim
@@ -1346,6 +1358,7 @@
       disable: Desativar
       delete: Deletar turma
       choose_at_least_one: "Selecione, ao menos, uma turma"
+      choose_one: Selecione uma turma
       edit: Editar turma
       none: Nenhuma turma cadastrada
     group_list:
@@ -1473,6 +1486,8 @@
       curriculum_unit: Unidade Curricular
       module: Módulo
       course: Curso
+      cant_edit: Não é possível editar esta unidade curricular
+      choose_at_least_one: "Selecione, ao menos, uma unidade curricular"
     form:
       save: Salvar
       cancel: Cancelar
@@ -1493,6 +1508,7 @@
       new_offer: Nova oferta
       period: Período
       none: Nenhum semestre cadastrado
+      choose_one_offer: Selecione uma oferta
     form:
       enable_end_date: Habilitar data final
 
@@ -1516,6 +1532,7 @@
       same_dates_from_offer: Mesmas datas do semestre
       none: Nenhuma oferta cadastrada
       choose_at_least_one: "Selecione, ao menos, uma oferta"
+      cant_edit: Não é possível editar esta oferta
     index:
       offers: Ofertas
       new: Nova
@@ -1587,6 +1604,10 @@
       deleted: Material de apoio deletado com sucesso.
     error:
       must_select_something: Um ou mais itens devem ser selecionados
+    index:
+      choose_at_least_one: "Selecione, ao menos, um material de apoio"
+      choose_one: "Selecione um material de apoio do tipo: link"
+      must_be_link: Deve ser um link
 
   chat_rooms:
     index:
@@ -1601,6 +1622,8 @@
       expand_description: Expandir descrição
       compress_description: Comprimir descrição
       hour_period: "%{start_hour}h - %{end_hour}h"
+      choose_at_least_one: "Selecione, ao menos, um chat"
+      choose_one: Selecione um chat
     form: 
       participants: Participantes
       groups: Turmas
