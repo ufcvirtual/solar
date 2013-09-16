@@ -147,6 +147,7 @@
         end_hour: End hour
 
     errors:
+      uniqueness: "Record already exists in the system"
       messages:
         invalid: " is not valid"
         confirmation: " is different of the confirmation"

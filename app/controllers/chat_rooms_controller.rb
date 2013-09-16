@@ -65,20 +65,20 @@ class ChatRoomsController < ApplicationController
   end
 
   def destroy
-    authorize! :destroy, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    authorize! :destroy, ChatRoom, on: params[:allocation_tags_ids]
 
     begin
-      ChatRoom.transaction do
-        @chat_rooms = ChatRoom.where(id: params[:id].split(","))
-        raise "has_messages" if @chat_rooms.map(&:can_destroy?).include?(false)
-        @chat_rooms.map(&:destroy)
-      end
-      render json: {success: true, notice: t(:deleted, scope: [:chat_rooms, :success])}
-    rescue Exception => error
-      alert_message = (error.message == "has_messages" ? t(:chat_has_messages, scope: [:chat_rooms, :error]) : t(:deleted, scope: [:chat_rooms, :error]))
-      render json: {success: false, alert: alert_message}, status: :unprocessable_entity
-    end
+      @chat_rooms = ChatRoom.where(id: params[:id].split(","))
+      raise has_messages = true if @chat_rooms.map(&:can_destroy?).include?(false)
 
+      ChatRoom.transaction do
+        @chat_rooms.destroy_all
+      end
+
+      render json: {success: true, notice: t(:deleted, scope: [:chat_rooms, :success])}
+    rescue
+      render json: {success: false, alert: (has_messages ? t(:chat_has_messages, scope: [:chat_rooms, :error]) : t(:deleted, scope: [:chat_rooms, :error]))}, status: :unprocessable_entity
+    end
   end
 
 end
