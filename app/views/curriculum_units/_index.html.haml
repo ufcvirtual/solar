@@ -34,9 +34,7 @@
             = curriculum_unit.code
           %td= curriculum_unit.name
           %td{:align => "left"}= curriculum_unit.curriculum_unit_type.description
-          %td{:align => "right"}
-            / = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_caution delete_curriculum_unit', :"data-link-delete" => curriculum_unit_path(curriculum_unit), :'data-tooltip' => t(".delete", uc_or_module: t_tool_name), id: curriculum_unit.id, disabled: not(can? :destroy, curriculum_unit)
-            = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_curriculum_unit_path(curriculum_unit), class: 'btn edit fancybox.ajax', :'data-tooltip' => t(".edit", uc_or_module: t_tool_name),  disabled: not(can? :update, curriculum_unit)
+          %td{:align => "right"}= link_to (content_tag(:i, nil, class: 'icon-edit')), edit_curriculum_unit_path(curriculum_unit), class: 'btn edit fancybox.ajax', :'data-tooltip' => t(".edit", uc_or_module: t_tool_name),  disabled: not(can? :update, curriculum_unit)
 
 :javascript
 
@@ -83,4 +81,5 @@
     $('#all_curriculum_unit').nice_checkbox({
       can_enable_elements: true
     });
+
   });

@@ -1345,7 +1345,7 @@
       choose_at_least_one: "Selecione, ao menos, uma turma"
       edit: Editar turma
       none: Nenhuma turma cadastrada
-    partial_group_list:
+    group_list:
       code: Código
       enabled: Ativada
       disabled: Desativada
@@ -1489,6 +1489,7 @@
       delete: Deletar Semestre
       new_offer: Nova oferta
       period: Período
+      none: Nenhum semestre cadastrado
     form:
       enable_end_date: Habilitar data final
 
@@ -1510,6 +1511,8 @@
       offer_edit: Editar Oferta
       offer_delete: Deletar Oferta
       same_dates_from_offer: Mesmas datas do semestre
+      none: Nenhuma oferta cadastrada
+      choose_at_least_one: "Selecione, ao menos, uma oferta"
     index:
       offers: Ofertas
       new: Nova

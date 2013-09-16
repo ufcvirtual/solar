@@ -4,42 +4,47 @@ function result_error(data) {
     flash_message(response.alert, 'alert');
 }
 
-jQuery(function($){
+$(function(){
 
   $('.disable_group, .enable_group, .btn_del, .btn_edit').attr("disabled", true);
 
-  $('#btn_new_group, .link_edit_group').fancybox();
+  $('#btn_new_group').click(function(){
+    var url = $(this).data("link-new").replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
+    $(this).fancybox(
+      {href: url}
+    );
+  });
 
-  // $('#btn_new_group').click(function(){
-  //   var url = $(this).data("link-new-group").replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
-  //   showLightBoxURL(url, 500, 400, true, $(this).data("tooltip"));
-  // });
+  $('.btn_edit').click(function(){
 
-  // $('.btn_edit').click(function(){
+    if ($(this).attr('disabled') == 'disabled'){
+      flash_message("<%=I18n.t(:choose_at_least_one, scope: [:groups, :list])%>", 'alert');
+      return false;
+    }
 
-  //   if ($(this).attr('disabled') == 'disabled')
-  //     return false;
+    var groups_ckb = $('.ckb_group:checked', $(this).parents("div.list_groups")).map(function() { return this.value; }).get();
+    if (!(!groups_ckb.length || groups_ckb.length > 1)) {
+      var url_edit = $(this).data('link-edit').replace(':id', groups_ckb);
 
-  //   var groups_ckb = $('.ckb_group:checked', $(this).parents("div.list_groups")).map(function() { return this.value; }).get();
-  //   if (!(!groups_ckb.length || groups_ckb.length > 1)) {
-  //     var url_edit = $(this).data('link-edit-group').replace(':id', groups_ckb);
-  //     showLightBoxURL(url_edit, 500, 400, true, $(this).data('tooltip'));
-  //   }
-  //   return false;
+      $(this).fancybox(
+        {href: url_edit}
+      );
 
-  // });
+    }
+    return false;
+  });
 
   $('.btn_del').click(function(){
-    if (!confirm("<%=I18n.t(:message_confirm)%>"))
-      return false;
-
     var groups_ids = $.map($("#ckb_group:checked"), function(n){
       return ($(n).val());
     });
 
     if($(groups_ids).length == 0)
-      flash_message("<%=I18n.t('.choose_at_least_one')%>", 'alert');
+      flash_message("<%=I18n.t(:choose_at_least_one, scope: [:groups, :list])%>", 'alert');
     else {
+      if (!confirm("<%=I18n.t(:message_confirm)%>"))
+        return false;
+
       $.delete($(this).data('link-delete').replace(':id', groups_ids), function(data) {
         flash_message(data.notice, 'notice');
 
@@ -51,14 +56,13 @@ jQuery(function($){
   });
 
   $(".block_toolbar_right span.btn")
-    .on('click',function(){
-      var check = $(':checkbox', this);
-      check.prop('checked', !check[0].checked);
-    });
+   .on('click',function(){
+     var check = $(':checkbox', this);
+     check.prop('checked', !check[0].checked);
+   });
 
   $('#all_groups').nice_checkbox({
-    objects_to_change_status: $('.disable_group, .enable_group'),
-    can_enable_elements: true
+    objects_to_change_status: ['.disable_group', '.enable_group']
   });
 
   $('.disable_group, .enable_group').click(function(){
@@ -67,7 +71,7 @@ jQuery(function($){
     });
 
     if (!$(groups_ids).length)
-      flash_message("<%=I18n.t('.choose_at_least_one')%>", 'alert');
+      flash_message("<%=I18n.t(:choose_at_least_one, scope: [:groups, :list])%>", 'alert');
     else {
       $.put($(this).data('link-status').replace(':id', groups_ids), function(data){
         var url = $(".list_groups").data("link").replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));

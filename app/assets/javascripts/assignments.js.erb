@@ -195,9 +195,7 @@ function update_evaluation(){
 
 $(function(){
 
-    $('#all_assignments').nice_checkbox({
-      can_enable_elements: true
-    });
+    $('#all_assignments').nice_checkbox();
 
     $('#new_assignment').click(function() {
       showLightBoxURL($(this).data('link'), 550, 400, true, $(this).data('box-title'));

@@ -1180,7 +1180,7 @@
       choose_at_least_one: "Choose at least one group"
       edit: Edit group
       none: No group registered
-    partial_group_list:
+    group_list:
       code: Code
       enabled: Enabled
       disabled: Disabled
@@ -1317,6 +1317,7 @@
       created: Semester wasn't created.
       updated: Semester wasn't updated.
       deleted: Semester wasn't deleted.
+      none: No semester registered
     list:
       new: New Semester
       edit: Edit Semester
@@ -1344,6 +1345,8 @@
       offer_edit: Edit Offer
       offer_delete: Delete Offer
       same_dates_from_offer: Same dates from offer
+      none: No offer registered
+      choose_at_least_one: "Choose at least one offer"
     index:
       offers: Offers
       new: New

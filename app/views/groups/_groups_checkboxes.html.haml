@@ -11,7 +11,9 @@
 :javascript
 
   $(function(){
-    $("#all").nice_checkbox();
+    $("#all").nice_checkbox({
+      cant_enable_elements: true
+    });
 
     if($('[name="group[group_id][]"]').length ==1){
     	$('.select_all_box').remove(); 

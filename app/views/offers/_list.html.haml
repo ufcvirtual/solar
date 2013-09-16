@@ -1,39 +1,45 @@
-- semester_id = @offers.first.try(:semester).try(:id)
-%table.tb_list{cellpadding: "10", cellspacing: "0", width: "100%", border: "0"}
-  %thead
-    %tr.lines
-      %th
-        %input{id: "all_offers_#{semester_id}", :"data-children-names" => "ckb_offers_#{semester_id}", type: "checkbox"}
-        = t(".type")
-      %th= t(".course")
-      - if @type_id != 3
-        %th= t(".curriculum_unit")
-      %th= t(".offer")
-      %th
-  %tbody
-    - @offers.each do |offer|
+- unless @offers.empty?
+  - semester_id = @offers.first.try(:semester).try(:id)
+  %table.tb_list{cellpadding: "10", cellspacing: "0", width: "100%", border: "0", :"data-link-offers" => semester_offers_path(@offers.first.try(:semester), type_id: @type_id), id: "table-offer-#{semester_id}"}
+    %thead
       %tr.lines
-        %td
-          = check_box_tag "ckb_offers_#{semester_id}", offer.id, checked = false, {class: 'ckb_offers', :"data-offers-id" => offer.id}
-          = offer.curriculum_unit.try(:curriculum_unit_type).try(:description)
-        %td= offer.course.try(:name)
+        %th
+          %input{id: "all_offers_#{semester_id}", :"data-children-names" => "ckb_offers_#{semester_id}", type: "checkbox"}
+          = t(".type")
+        %th= t(".course")
         - if @type_id != 3
-          %td= offer.curriculum_unit.try(:name)
-        - if offer.period_schedule.nil?
-          %td.semester_same_dates= t(".same_dates_from_offer")
-        - else
-          %td= [l(offer.period_schedule.start_date, format: :normal), l(offer.period_schedule.end_date, format: :normal)].join(" - ")
-        %td
-          = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_offer_path(offer, type_id: @type_id), class: 'btn link_edit_offer fancybox.ajax', :'data-tooltip' => t(".offer_edit"), disabled: not(can? :edit, Offer, on: [offer.allocation_tag.id]), :"data-semester-name" => offer.semester.name
+          %th= t(".curriculum_unit")
+        %th= t(".offer")
+        %th
+    %tbody
+      - @offers.each do |offer|
+        %tr.lines
+          %td
+            = check_box_tag "ckb_offers_#{semester_id}", offer.id, checked = false, {class: 'ckb_offers', :"data-offers-id" => offer.id}
+            = offer.curriculum_unit.try(:curriculum_unit_type).try(:description)
+          %td= offer.course.try(:name)
+          - if @type_id != 3
+            %td= offer.curriculum_unit.try(:name)
+          - if offer.period_schedule.nil?
+            %td.semester_same_dates= t(".same_dates_from_offer")
+          - else
+            %td= [l(offer.period_schedule.start_date, format: :normal), l(offer.period_schedule.end_date, format: :normal)].join(" - ")
+          %td
+            = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_offer_path(offer, type_id: @type_id), class: 'btn link_edit_offer fancybox.ajax', :'data-tooltip' => t(".offer_edit"), disabled: not(can? :edit, Offer, on: [offer.allocation_tag.id]), :"data-semester-name" => offer.semester.name
+- else
+  .block_content.block_content_text= t(".none")
 
 :javascript
 
   $(function(){
-    if ("#{semester_id}") { // quando semestre nao tem ofertas
+    if ("#{semester_id}") { // quando semestre tem ofertas
       var semester = $(".table-offers#table-#{semester_id}");
+      $('.link_edit_offer').click(function(){
+        if ($(this).attr('disabled') == 'disabled')
+          return false;
 
-      $('.link_edit_offer').fancybox();
-
+        $(this).fancybox();
+      });
       $("#all_offers_#{semester_id}").nice_checkbox();
     }
   });

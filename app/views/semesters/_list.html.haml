@@ -1,36 +1,34 @@
 = link_to t(".new"), new_semester_path, class: " btn btn_default fancybox.ajax", id: "new_semester", :"data-tooltip" => t(".new")
 
-
 - type_id = (@type_id || @type.try(:id))
-.block_wrapper
-  - unless @semesters.empty?
-    - @semesters.each do |semester|
-      .semester{id: "semester-#{semester.id}"}
-        .block_title
-          %h2
-            = semester.name
-            = link_to (content_tag(:i, nil, :class=>'icon-edit')), edit_semester_path(semester), class: 'block_title_button fancybox.ajax', :'data-tooltip' => t(".edit"), id: "edit_semester_#{semester.id}"
-            = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'del_semester', :"data-link-delete" => semester_path(semester), :'data-tooltip' => t(".delete"), id: "semester-del-#{semester.id}"
-          #semester_period
-            - period = [l(semester.offer_schedule.start_date, format: :normal), l(semester.offer_schedule.end_date, format: :normal)].join(' - ')
-            = [t(".period"), ": #{period}"].join
-        .block_content_toolbar
-          .block_toolbar_left.btn-group
-            = link_to (content_tag(:i, nil, class: 'icon-plus-3')), new_semester_offer_path(semester, type_id: type_id, course_id: (params[:course_id] || ""), curriculum_unit_id: (params[:curriculum_unit_id] || "")), :"data-semester-name" => semester.name, class: " btn btn_main link_new_offer fancybox.ajax", :"data-tooltip" => t(".new_offer")
 
-          .block_toolbar_right
-            = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'delete_offer btn', :'data-tooltip' => t(".delete"), :"data-link-delete" => offer_path(id: ':id')
+- unless @semesters.empty?
+  - @semesters.each do |semester|
+    .semester{id: "semester-#{semester.id}"}
+      .block_title
+        %h2
+          = semester.name
+          = link_to (content_tag(:i, nil, :class=>'icon-edit')), edit_semester_path(semester), class: 'block_title_button fancybox.ajax', :'data-tooltip' => t(".edit"), id: "edit_semester_#{semester.id}"
+          = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'del_semester', :"data-link-delete" => semester_path(semester), :'data-tooltip' => t(".delete"), id: "semester-del-#{semester.id}"
+        #semester_period
+          - period = [l(semester.offer_schedule.start_date, format: :normal), l(semester.offer_schedule.end_date, format: :normal)].join(' - ')
+          = [t(".period"), ": #{period}"].join
+      .block_content_toolbar
+        .block_toolbar_left.btn-group
+          = link_to (content_tag(:i, nil, class: 'icon-plus-3')), new_semester_offer_path(semester, type_id: type_id, course_id: (params[:course_id] || ""), curriculum_unit_id: (params[:curriculum_unit_id] || "")), :"data-semester-name" => semester.name, class: " btn btn_main link_new_offer fancybox.ajax", :"data-tooltip" => t(".new_offer")
 
-        .table-offers{id: "table-#{semester.id}", :"data-link-offers" => semester_offers_path(semester, type_id: type_id)}
-          = render partial: "offers/list", object: @offers = semester.offers, object: @type_id = type_id
-  - else
-    = "Nenhum semestre"
+        .block_toolbar_right
+          = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'delete_offer btn btn_del', :'data-tooltip' => t(".delete"), :"data-link-delete" => offer_path(id: ':id')
+
+      = render partial: "offers/list", object: @offers = semester.offers, object: @type_id = type_id
+- else
+  .block_content_text= t(".none")
 
 :javascript
   $(function(){
-
     $('#new_semester, .link_new_offer, [id^="edit_semester_"]').fancybox();
 
+    $('.btn_del').attr("disabled", true);
 
     $('.del_semester').click(function(){
       $(this).nice_delete({parent: 'div.semester'});
