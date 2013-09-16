@@ -806,6 +806,9 @@
       edit: Editar
       delete: Excluir
       new: Novo
+    form:
+      new: Novo Fórum
+      edit: Editar Fórum
     edit_discussion: Editar %{discussion_name}
     delete_discussion: Excluir %{discussion_name}
     new_discussion: Novo fórum

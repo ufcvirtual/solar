@@ -644,6 +644,9 @@
       edit: Edit
       delete: Delete
       new: New
+    form:
+      new: New discussion
+      edit: Edit discussion
     edit_discussion: Edit %{discussion_name}
     delete_discussion: Delete %{discussion_name}
     new_discussion: New discussion

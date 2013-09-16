@@ -38,7 +38,7 @@
 }
 
 .form-inputs .form_label:first-child {
-  width: 94px;
+  width: 67px;
 }
 
 .form-inputs div.input {
@@ -141,16 +141,20 @@ select[disabled] {
 * alinhamento do form
 */
 
-#lesson_form{
-  width: 447px;
-}
-
-#module_form{
-  width: 440px;
+#lesson_form, #module_form, #discussion_form{
+  width: 415px;
 }
 
 .lesson_module_name{
   float: left;
+}
+
+#discussion_name{
+  width: 217px;
+}
+
+.buttons_align_module{
+  margin-right: 35px;
 }
 
 /**

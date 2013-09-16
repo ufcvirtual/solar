@@ -4,7 +4,7 @@ h2.support_material_title {
 }
 
 .new_link input { // FIXME: classe está com nome muito genérico
-  width: 560px;
+  width: 200px;
 }
 
 #support_material_file_attachment {
@@ -12,9 +12,16 @@ h2.support_material_title {
 }
 
 .new_support_material_buttons{
-	margin-top: 35px;
+	margin-top: 15px;
 }
 
 .new_support_material_form .form_label{
-	width: 68px !important;
+	width: 30px !important;
+}
+
+#support_material_file_url{
+  	position: relative;
+	bottom: 19px;
+	left: 35px;
+	width: 206px;
 }

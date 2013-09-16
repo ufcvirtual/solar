@@ -26,7 +26,7 @@
 
             .block_toolbar_right
               .btn-group
-                = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit edit_material', :"data-link-edit" => edit_support_material_file_path(':id', allocation_tags_ids: [allocation_tag.id]), "data-edit-title" => t(".edit_link"), disabled: true
+                = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit edit_material fancybox.ajax', :"data-link-edit" => edit_support_material_file_path(':id', allocation_tags_ids: [allocation_tag.id]), "data-edit-title" => t(".edit_link"), disabled: true
                 = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del delete_material', :"data-link-delete" => support_material_file_path(':id', allocation_tags_ids: [allocation_tag.id]), disabled: true
 
           .block_wrapper.support_material
@@ -68,7 +68,7 @@
 
   $(function(){
 
-    $(".link_new_material_file, .link_new_material_link").fancybox();
+    $(".link_new_material_file, .link_new_material_link, .edit_material").fancybox();
 
     $(':checkbox.ckb_material').click(function() {
       var box = $(this).parents("div.list_support_materials");
