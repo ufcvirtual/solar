@@ -99,9 +99,9 @@
 
 .form_requirement {
   display: block;
-  float: right;
-  position: relative;
-  bottom: 23px;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .label_usuario {

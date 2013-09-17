@@ -73,7 +73,7 @@
 
     $('.edit_material').click(function() {
       if ($(this).attr('disabled') == 'disabled'){
-        flash_message("#{t(:choose_one, scope: [:support_materials, :index])}", "alert");
+        flash_message("#{I18n.t(:choose_one, scope: [:support_materials, :index])}", "alert");
         return false;
       }
 
@@ -81,7 +81,7 @@
       var material_ids = checked_material.map(function() { return this.value; }).get();
       var file_checked = checked_material.map(function() { return $(this).data("is-link"); }).get();
       if ($.inArray(true, file_checked)) {
-        flash_message("#{t(:must_be_link, scope: [:support_materials, :index])}", "alert");
+        flash_message("#{I18n.t(:must_be_link, scope: [:support_materials, :index])}", "alert");
         return false; 
       }
       var url_edit = $(this).data('link-edit').replace(':id', material_ids);
@@ -93,11 +93,11 @@
     $('.delete_material').click(function(){
 
       if ($(this).attr('disabled') == 'disabled'){
-        flash_message("#{t(:choose_at_least_one, scope: [:support_materials, :index])}", "alert");
+        flash_message("#{I18n.t(:choose_at_least_one, scope: [:support_materials, :index])}", "alert");
         return false;
       }
 
-      if (!confirm("#{t(:message_confirm)}"))
+      if (!confirm("#{I18n.t(:message_confirm)}"))
         return false;
 
       if(!$(this).hasClass('disabled')){
