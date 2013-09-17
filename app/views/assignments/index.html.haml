@@ -4,13 +4,7 @@
 
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      %a.btn.btn_main{:href => "#", 'data-dropdown' => "#dropdown"}
-        = content_tag(:i, nil, :class=>'icon-plus-3')
-        %i.icon-arrow-down-3
-      %div{:id=>"dropdown", :class=>"dropdown dropdown-tip"}
-        %ul.dropdown-menu
-          - na = t(:new, scope: "assignment.list")
-          %li= link_to na, new_assignment_path(allocation_tags_ids: [@allocation_tags_ids].flatten), id: 'new_assignment', class: "fancybox.ajax", :"data-box-title" => na
+      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_assignment_path(allocation_tags_ids: [@allocation_tags_ids].flatten), class: " btn btn_main fancybox.ajax", id: "new_assignment", :"data-tooltip" => t(:new, scope: "assignment.list")
 
     .block_toolbar_right
       .btn-group

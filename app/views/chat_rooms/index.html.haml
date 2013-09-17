@@ -4,12 +4,7 @@
 
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      %a.btn.btn_main{:href => "#", 'data-dropdown' => "#dropdown"}
-        = content_tag(:i, nil, class: 'icon-plus-3')
-        %i.icon-arrow-down-3
-      %div{:id=>"dropdown", class: "dropdown dropdown-tip"}
-        %ul.dropdown-menu
-          %li= link_to t(".new_chat"), new_chat_room_path(allocation_tags_ids: [@allocation_tags_ids].flatten), id: 'new_chat', class: "fancybox.ajax", :"data-box-title" => t(".new_chat")
+      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_chat_room_path(allocation_tags_ids: [@allocation_tags_ids].flatten), class: " btn btn_main fancybox.ajax", id: "new_chat", :"data-tooltip" => t(".new_chat")
 
     .block_toolbar_right
       .btn-group

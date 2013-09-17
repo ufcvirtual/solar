@@ -10,7 +10,8 @@ $(function(){
 
   $('#btn_new_group').click(function(){
     var url = $(this).data("link-new").replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
-    $(this).fancybox(
+    $.fancybox.open(
+      $(this),
       {href: url}
     );
   });
