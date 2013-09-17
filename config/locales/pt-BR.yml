@@ -1621,6 +1621,12 @@
       must_be_link: Deve ser um link
 
   chat_rooms:
+    list:
+      title_my_chats: Meus Chats
+      title_other_chats: Outros Chats
+      detail: Detalhes
+      availability: Disponibilidade
+      message_no_chat: Nenhum chat disponível
     index:
       chats: Chats
       new_chat: Novo Chat

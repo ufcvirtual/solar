@@ -1,0 +1,52 @@
+.block_wrapper 
+  -#.list_discussions{:"data-link-list" => list_discussions_path(allocation_tags_ids: @allocation_tags_ids)}
+
+  .block_title
+    %h2= t(:title_my_chats, :scope => [:chat_rooms, :list])
+  - unless @my_chats.nil?
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th{:align => "left"}= t(:detail, :scope => [:chat_rooms, :list])
+          %th{:align => "center", :style => "width: 25%"}= t(:availability, :scope => [:chat_rooms, :list])
+      %tbody
+        - @my_chats.each do |chat|
+          %tr{:class => "lines #{'period_ended' if !chat.opened?}"}
+            %td
+              = chat.title
+              -# if (can?(:read, chat) and (chat.opened?))
+                = #link_to chat.title #, discussion_posts_path(discussion), {:class => 'link_content'}
+                = #{}"(#{t(:forum_closed_short)})" if !chat.opened? # *** MUDAR forum_closed_short
+              -# else
+                = #chat.title
+            %td{:align => "center"}
+              = [l(chat.schedule.start_date.to_date), l(chat.schedule.end_date.to_date)].join(" - ")
+              %br
+              = [(chat.start_hour), (chat.end_hour)].join(" - ")
+  - else
+    .block_content.block_content_text= t(:message_no_chat, :scope => [:chat_rooms, :list])
+
+  .block_title
+    %h2= t(:title_other_chats, :scope => [:chat_rooms, :list])
+  - unless @other_chats.nil?
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th{:align => "left"}= t(:detail, :scope => [:chat_rooms, :list])
+          %th{:align => "center", :style => "width: 25%"}= t(:availability, :scope => [:chat_rooms, :list])
+      %tbody
+        - @other_chats.each do |chat|
+          %tr{:class => "lines #{'period_ended' if !chat.opened?}"}
+            %td
+              = chat.title
+              -# if (can?(:read, chat) and (chat.opened?))
+                =# link_to chat.title #, discussion_posts_path(discussion), {:class => 'link_content'}
+                = #{}"(#{t(:forum_closed_short)})" if !chat.opened? # *** MUDAR forum_closed_short
+              -# else
+                = #chat.title
+            %td{:align => "center"}
+              = [l(chat.schedule.start_date.to_date), l(chat.schedule.end_date.to_date)].join(" - ")
+              %br
+              = [(chat.start_hour), (chat.end_hour)].join(" - ")
+  - else
+    .block_content.block_content_text= t(:message_no_chat, :scope => [:chat_rooms, :list])

@@ -1455,6 +1455,12 @@
       must_be_link: Must be a link
 
   chat_rooms:
+    list:
+      title_my_chats: My Chats
+      title_other_chats: Other Chats
+      detail: Details
+      availability: Availability
+      message_no_chat: No chat available
     index:
       chats: Chats
       new_chat: New Chat

@@ -47,5 +47,21 @@ class ChatRoom < ActiveRecord::Base
   def can_remove_or_unbind_group?(group)
     self.messages.empty? # não pode dar unbind nem remover se chat possuir mensagens
   end
-  
+
+  def opened?
+    self.schedule.start_date.to_date <= Date.today and schedule.end_date.to_date >= Date.today
+  end
+
+  def self.chats_user(allocation_tags_ids, user_id)
+    ChatRoom.joins(:academic_allocations, :allocation_tags, :participants, :users, :schedule)
+      .where(allocation_tags: {id: allocation_tags_ids}).where(users: {id: user_id}).uniq
+      #.order("start_date")
+  end
+
+  def self.chats_other_users(allocation_tags_ids, user_id)
+    # *** MUDAR
+    ChatRoom.joins(:academic_allocations, :allocation_tags, :participants, :users, :schedule)
+      .where(allocation_tags: {id: allocation_tags_ids}).where(users: {id: user_id}).uniq
+  end
+
 end
