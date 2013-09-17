@@ -25,7 +25,7 @@
           - else
             %td= [l(offer.period_schedule.start_date, format: :normal), l(offer.period_schedule.end_date, format: :normal)].join(" - ")
           %td
-            = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn link_edit_offer fancybox.ajax', :'data-tooltip' => t(".offer_edit"), disabled: not(can? :edit, Offer, on: [offer.allocation_tag.id]), :"data-semester-name" => offer.semester.name, :"data-link-edit" => edit_offer_path(offer, type_id: @type_id)
+            = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn link_edit_offer', :'data-tooltip' => t(".offer_edit"), disabled: not(can? :edit, Offer, on: [offer.allocation_tag.id]), :"data-semester-name" => offer.semester.name, :"data-link-edit" => edit_offer_path(offer, type_id: @type_id)
 - else
   .block_content.block_content_text= t(".none")
 
@@ -40,10 +40,7 @@
           return false;
         }
 
-        $.fancybox.open(
-          $(this),
-          {href : $(this).data("link-edit")}
-        );
+        $(this).call_fancybox({href : $(this).data("link-edit"), open: true});
       });
       $("#all_offers_#{semester_id}").nice_checkbox();
     }

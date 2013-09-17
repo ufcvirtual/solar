@@ -4,11 +4,11 @@
 
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_chat_room_path(allocation_tags_ids: [@allocation_tags_ids].flatten), class: " btn btn_main fancybox.ajax", id: "new_chat", :"data-tooltip" => t(".new_chat")
+      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_chat_room_path(allocation_tags_ids: [@allocation_tags_ids].flatten), class: " btn btn_main", id: "new_chat", :"data-tooltip" => t(".new_chat")
 
     .block_toolbar_right
       .btn-group
-        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit fancybox.ajax', "data-link-to-edit" => edit_chat_room_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-edit-title" => t(".edit_chat"), disabled: true, :"data-tooltip" => t(".edit_chat")
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit', "data-link-to-edit" => edit_chat_room_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-edit-title" => t(".edit_chat"), disabled: true, :"data-tooltip" => t(".edit_chat")
         = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_chat', :"data-link-delete" => chat_room_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), disabled: true, :"data-tooltip" => t(".delete_chats")
 
   - unless @chat_rooms.empty? or @chat_rooms.nil?

@@ -4,7 +4,7 @@
     %h2= t(:courses, scope: [:editions, :academic])
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_course_path, class: " btn btn_main fancybox.ajax", id: "new_course", :'data-tooltip' => t(".new") 
+      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_course_path, class: " btn btn_main", id: "new_course", :'data-tooltip' => t(".new") 
 
   %table.tb_list
     %head
@@ -18,14 +18,14 @@
           %td= course.code
           %td= course.name
           %td
-            = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_course_path(course), class: 'btn link_edit_course fancybox.ajax', :'data-tooltip' => t(".edit")
+            = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_course_path(course), class: 'btn link_edit_course', :'data-tooltip' => t(".edit")
             = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_caution delete_course', :"data-link-delete" => course_path(course), :'data-tooltip' => t(".delete"), id: course.id
 
 :javascript
 
   $(function(){
 
-    $("#new_course, .link_edit_course").fancybox();
+    $("#new_course, .link_edit_course").call_fancybox();
 
     $('.delete_course').click(function(){
       var curriculum_unit_id = $(this).attr("id");
