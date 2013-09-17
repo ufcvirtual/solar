@@ -20,12 +20,10 @@ class PostsController < ApplicationController
     @display_mode = p['display_mode'] ||= 'tree'
     @latest_posts = @discussion.latest_posts
 
-    if request.params["format"] == "json"
-      p['date'] = Time.parse(p['date']).to_s
-    end
+    p['date'] = Time.parse(p['date']) if params[:format] == "json" and p.include?('date')
 
     # se for em forma de lista ou para o mobilis, pesquisa pelo método posts; caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
-    @posts = ((p['display_mode'] == 'list' or request.params["format"] == "json") ? @discussion.posts(p) : Post.reorder_by_latest_posts(@latest_posts, @discussion.discussion_posts.where(parent_id: nil)))
+    @posts = ((p['display_mode'] == "list" or params[:format] == "json") ? @discussion.posts(p) : Post.reorder_by_latest_posts(@latest_posts, @discussion.discussion_posts.where(parent_id: nil)))
 
     respond_to do |format|
       format.html
