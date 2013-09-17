@@ -35,7 +35,7 @@
                   .complete.invisible
                     = chat.description
                     = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_description"))
-                = render "groups/groups_tags", groups: chat.groups, tool: chat, all_groups: all_groups
+                = render "groups/groups_tags", groups: chat.groups, tool: chat, all_groups: all_groups, paths: {add: add_group_to_chat_rooms_path(id: "param_id", tool_id: chat.id), remove: remove_group_from_chat_rooms_path(id: "param_id", tool_id: chat.id), unbind: unbind_group_from_chat_rooms_path(id: "param_id", tool_id: chat.id)}
 
             %td{style: 'text-align:center;'}
               %div= [l(chat.schedule.start_date, format: :normal), l(chat.schedule.end_date, format: :normal)].join(" - ")

@@ -40,7 +40,7 @@ class ChatRoom < ActiveRecord::Base
     self.messages.empty?
   end
 
-  def copy_dependencies(chat_to_copy)
+  def copy_dependencies_from(chat_to_copy)
     ChatParticipant.create! chat_to_copy.participants.map {|participant| participant.attributes.merge({chat_room_id: self.id})} unless chat_to_copy.participants.empty?
   end
 

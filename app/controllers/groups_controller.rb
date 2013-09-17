@@ -131,7 +131,7 @@ class GroupsController < ApplicationController
               # se a ferramenta possuir um schedule, cria um igual para a nova
               new_tool.update_attribute(:schedule_id, Schedule.create(tool.schedule.attributes).id) if tool.respond_to?(:schedule)
               # copia as dependências pro novo objeto caso existam
-              new_tool.copy_dependencies(tool) if new_tool.respond_to?(:copy_dependencies) 
+              new_tool.copy_dependencies_from(tool) if new_tool.respond_to?(:copy_dependencies_from)
             when "remove" # remover uma turma
               academic_allocation.destroy
             else
