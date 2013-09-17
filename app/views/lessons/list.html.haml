@@ -248,7 +248,7 @@
       if(selected_lessons.length == 1){
         lessons_with_file_type = $("input.m_"+module_id+":checked[data-file-type='true']");
         if(lessons_with_file_type.length == selected_lessons.length){
-          url = $(this).data("link-manage").replace('lessons_ids', selected_lessons[0])
+          url = $(this).data("link-manage").replace('lessons_ids', selected_lessons[0]);
           $.fancybox.open(
             $(this),
             {href : url}
