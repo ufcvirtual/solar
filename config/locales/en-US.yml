@@ -147,6 +147,7 @@
         end_hour: End hour
 
     errors:
+      uniqueness: "Record already exists in the system"
       messages:
         invalid: " is not valid"
         confirmation: " is different of the confirmation"
@@ -453,12 +454,14 @@
   lesson_goto: "Go to lesson"
   lesson_closed: "Lesson closed"
   lesson_closed_short: "closed"
+  since: Since
 
   lessons:
     curriculum_unit_not_selected: Curriculum Unit not selected
     index:
       lesson_table_date: "Access date"
       lesson_table_title: "Available Lessons"
+      since: Since
     list:
       lesson: Lesson
       order: Order
@@ -514,6 +517,8 @@
       moved: Lessons were sucessfully moved
       created: Lesson was sucessfully created
       updated: Lesson was sucessfully updated
+    form: 
+      cancel: Cancel
 
   lesson_modules:
     general_of_offer: "General"
@@ -642,6 +647,9 @@
       edit: Edit
       delete: Delete
       new: New
+    form:
+      new: New discussion
+      edit: Edit discussion
     edit_discussion: Edit %{discussion_name}
     delete_discussion: Delete %{discussion_name}
     new_discussion: New discussion
@@ -652,6 +660,16 @@
     back: Back
     to: to
     end_discussion: End
+    list:
+      new: New Discussion
+      edit: Edit Discussion
+      delete: Delete Discussion
+      choose_at_least_one: Choose at least one discussion
+      choose_one: Choose a discussion
+    success:
+      deleted: Discussion was successfully deleted.
+    error:
+      deleted: Discussion wasn't deleted.
 
   message_title: "Messages"
   message_inbox: "Inbox"
@@ -755,6 +773,8 @@
       type: Type
       individual: Individual
       group: Group
+      choose_at_least_one: Choose at least one assignment
+      choose_one: Choose a assignment
     information:
       begin: Begin
       end: End
@@ -1178,7 +1198,8 @@
       choose_at_least_one: "Choose at least one group"
       edit: Edit group
       none: No group registered
-    partial_group_list:
+      choose_one: Choose a group
+    group_list:
       code: Code
       enabled: Enabled
       disabled: Disabled
@@ -1302,9 +1323,18 @@
       curriculum_unit: Curriculum Unit
       module: Module
       course: Course
+      choose_at_least_one: Choose at least one curriculum unit
+      cant_edit: Can't edit this curriculum unit
+      new: New %{uc_or_module}
     form:
       save: Save
       cancel: Cancel
+      new_course: New Course
+      new_module: New Module
+      new_curriculum_unit: New Curriculum Unit
+      edit_course: Edit Course
+      edit_module: Edit Module
+      edit_curriculum_unit: Edit Curriculum Unit
 
   semesters:
     success:
@@ -1315,12 +1345,15 @@
       created: Semester wasn't created.
       updated: Semester wasn't updated.
       deleted: Semester wasn't deleted.
+      none: No semester registered
     list:
       new: New Semester
       edit: Edit Semester
       delete: Delete Semester
       new_offer: New Offer
       period: Period
+      delete_offer: Delete offer
+      choose_one_offer: Choose an offer
     form:
       enable_end_date: Enable end date
 
@@ -1342,6 +1375,9 @@
       offer_edit: Edit Offer
       offer_delete: Delete Offer
       same_dates_from_offer: Same dates from offer
+      none: No offer registered
+      choose_at_least_one: "Choose at least one offer"
+      cant_edit: Can't edit this offer
     index:
       offers: Offers
       new: New
@@ -1413,6 +1449,10 @@
       deleted: Support Material was successfully deleted.
     error:
       must_select_something: One or more items must be selected
+    index:
+      choose_at_least_one: Choose at least one support material
+      choose_one: Choose a link support material
+      must_be_link: Must be a link
 
   chat_rooms:
     index:
@@ -1427,6 +1467,8 @@
       expand_description: Expand description
       compress_description: Compress description
       hour_period: "%{start_hour}h - %{end_hour}h"
+      choose_at_least_one: Choose at least one chat
+      choose_one: Choose a chat
     form: 
       participants: Participants
       groups: Groups

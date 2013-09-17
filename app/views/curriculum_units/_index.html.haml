@@ -12,8 +12,8 @@
     %h2=t_tool_name
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      %a.btn.btn_main{:'data-tooltip' => t(".new_#{tool_name}"), id: "btn_new_curriculum_unit", :type => :button, :"data-link-new" => new_curriculum_unit_path(type_id: @type.id)}
-        = content_tag(:i, nil, class: 'icon-plus-3')
+      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_curriculum_unit_path(type_id: @type.id), class: " btn btn_main fancybox.ajax", id: "btn_new_curriculum_unit", :"data-tooltip" => t( ((@type.id != 3 and @type.id != 4) ? ".new_curriculum_unit" : ".new"), uc_or_module: t_tool_name)
+      
     .block_toolbar_right
       = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn delete_curriculum_unit btn_del', :'data-tooltip' => t(".delete", uc_or_module: t_tool_name), :"data-link-delete" => curriculum_unit_path(id: ':id')
 
@@ -34,8 +34,7 @@
             = curriculum_unit.code
           %td= curriculum_unit.name
           %td{:align => "left"}= curriculum_unit.curriculum_unit_type.description
-          %td{:align => "right"}
-            = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit', :'data-tooltip' => t(".edit", uc_or_module: t_tool_name), :"data-link-edit" => edit_curriculum_unit_path(curriculum_unit), disabled: not(can? :update, curriculum_unit)
+          %td{:align => "right"}= link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit fancybox.ajax', :'data-tooltip' => t(".edit", uc_or_module: t_tool_name),  disabled: not(can? :update, curriculum_unit), :"data-link-edit" => edit_curriculum_unit_path(curriculum_unit)
 
 :javascript
 
@@ -45,22 +44,33 @@
       flash_message(response.alert, 'alert');
   }
 
-  $(function(){
+  jQuery(function($){
     $('.delete_curriculum_unit').attr("disabled", true);
 
-    $("#btn_new_curriculum_unit").click(function(){
-      showLightBoxURL($(this).data('link-new'), 540, 605, true, $(this).data('tooltip'));
-    });
+    $("#btn_new_curriculum_unit").fancybox();
 
-    $('.edit:not([disabled])').click(function(){
-      showLightBoxURL($(this).data('link-edit'), 540, 605, true, $(this).data('tooltip'));
+    $(".edit").click(function(){
+      if ($(this).attr('disabled') == 'disabled'){
+        flash_message("#{t(".cant_edit")}", "alert");
+        return false;
+      }
+
+      $.fancybox.open(
+        $(this),
+        {href : $(this).data("link-edit")}
+      );
     });
 
     $('.delete_curriculum_unit').click(function(){
-      if ($(this).attr('disabled') == 'disabled' || !confirm("#{t(:message_confirm)}"))
+      if ($(this).attr('disabled') == 'disabled'){
+        flash_message("#{t(".choose_at_least_one")}", "alert");
         return false;
+      }
 
       // tentar melhorar o nice_delete para incluir a delecao de muitas linhas
+
+      if (!confirm("#{t(:message_confirm)}"))
+        return false;
 
       var ucs = $("#ckb_curriculum_unit:checked");
       var uc_ids = $.map(ucs, function(n){ return ($(n).val()); });
@@ -89,5 +99,4 @@
       can_enable_elements: true
     });
 
-    
   });

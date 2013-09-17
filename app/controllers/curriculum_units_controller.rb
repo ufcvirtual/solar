@@ -127,7 +127,7 @@ class CurriculumUnitsController < ApplicationController
       course.update_attributes name: @curriculum_unit.name, code: @curriculum_unit.code if @curriculum_unit.curriculum_unit_type_id == 3 and (not course.nil?)
       render json: {success: true, notice: t(:updated, scope: [:curriculum_units, :success]), code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
     else
-      render :edit
+      render :edit, layout: false
     end
   end
 

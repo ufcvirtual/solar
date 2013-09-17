@@ -1,5 +1,8 @@
 .new_chat
   = simple_form_for @chat_room, html: {id: 'chat_form', multipart: true}, defaults: {required: true} do |f|
+    %h1#lightBoxDialogTitle= t((@chat_room.persisted? ? :edit_chat : :new_chat), scope: "chat_rooms.index")
+    %span.form_requirement= t(:required_fields)
+
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
     .form-inputs.block_content
@@ -42,7 +45,7 @@
                   %br
 
       .right_buttons_assignment
-        = button_to_function t(:cancel), "removeLightBox()", class: "btn btn_default btn_lightbox"
+        = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
         = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", id: "save"
 
 = javascript_include_tag "chat_rooms"

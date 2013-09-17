@@ -287,6 +287,7 @@
         end_hour: Hora de término
 
     errors:
+      uniqueness: "Registro já existe no sistema"
       template:
         header:
           one: "Não foi possível gravar %{model}: 1 erro"
@@ -617,12 +618,14 @@
   lesson_goto: "Ir para aula"
   lesson_closed: "Aula encerrada"
   lesson_closed_short: "encerrada"
+  since: A partir de
 
   lessons:
     curriculum_unit_not_selected: Unidade Curricular não selecionada
     index:
       lesson_table_date: Data de acesso
       lesson_table_title: "Aulas disponíveis"
+      since: A partir de
     list: 
       lesson: Aula
       order: Ordem
@@ -678,6 +681,8 @@
       moved: Aulas movidas com sucesso
       created: Aula criada com sucesso.
       updated: Aula atualizada com sucesso.
+    form: 
+      cancel: Cancelar
 
   lesson_modules:
     general_of_offer: "Geral"
@@ -804,6 +809,9 @@
       edit: Editar
       delete: Excluir
       new: Novo
+    form:
+      new: Novo Fórum
+      edit: Editar Fórum
     edit_discussion: Editar %{discussion_name}
     delete_discussion: Excluir %{discussion_name}
     new_discussion: Novo fórum
@@ -814,6 +822,16 @@
     back: Voltar
     to: a
     end_discussion: Fim
+    list:
+      new: Novo Fórum
+      edit: Editar Fórum
+      delete: Deletar Fórum
+      choose_at_least_one: "Selecione, ao menos, um fórum"
+      choose_one: Selecione um fórum
+    success:
+      deleted: Fórum deletado com sucesso.
+    error:
+      deleted: Não foi possível deletar fórum.
 
   # messages
   message_title: "Mensagens"
@@ -911,7 +929,7 @@
       "no": Não
       groups: "Turmas:"
       new: Novo Trabalho
-      edit: Edição de Trabalho
+      edit: Editar Trabalho
       name: Nome do Trabalho
       availability: Disponibilidade
       type: Tipo
@@ -919,6 +937,8 @@
       group: Grupo
       none: Nenhum trabalho cadastrado
       answers: Respostas
+      choose_at_least_one: "Selecione, ao menos, um trabalho"
+      choose_one: Selecione um trabalho
     information:
       begin: Início
       end: Fim
@@ -1341,9 +1361,10 @@
       disable: Desativar
       delete: Deletar turma
       choose_at_least_one: "Selecione, ao menos, uma turma"
+      choose_one: Selecione uma turma
       edit: Editar turma
       none: Nenhuma turma cadastrada
-    partial_group_list:
+    group_list:
       code: Código
       enabled: Ativada
       disabled: Desativada
@@ -1468,9 +1489,18 @@
       curriculum_unit: Unidade Curricular
       module: Módulo
       course: Curso
+      new: Novo %{uc_or_module}
+      cant_edit: Não é possível editar esta unidade curricular
+      choose_at_least_one: "Selecione, ao menos, uma unidade curricular"
     form:
       save: Salvar
       cancel: Cancelar
+      new_course: Novo Curso
+      new_module: Novo Módulo
+      new_curriculum_unit: Nova Unidade Curricular
+      edit_course: Editar Curso
+      edit_module: Editar Módulo
+      edit_curriculum_unit: Editar Unidade Curricular
 
   semesters:
     success:
@@ -1486,7 +1516,10 @@
       edit: Editar Semestre
       delete: Deletar Semestre
       new_offer: Nova oferta
+      delete_offer: Deletar oferta
       period: Período
+      none: Nenhum semestre cadastrado
+      choose_one_offer: Selecione uma oferta
     form:
       enable_end_date: Habilitar data final
 
@@ -1508,6 +1541,9 @@
       offer_edit: Editar Oferta
       offer_delete: Deletar Oferta
       same_dates_from_offer: Mesmas datas do semestre
+      none: Nenhuma oferta cadastrada
+      choose_at_least_one: "Selecione, ao menos, uma oferta"
+      cant_edit: Não é possível editar esta oferta
     index:
       offers: Ofertas
       new: Nova
@@ -1579,6 +1615,10 @@
       deleted: Material de apoio deletado com sucesso.
     error:
       must_select_something: Um ou mais itens devem ser selecionados
+    index:
+      choose_at_least_one: "Selecione, ao menos, um material de apoio"
+      choose_one: "Selecione um material de apoio do tipo: link"
+      must_be_link: Deve ser um link
 
   chat_rooms:
     index:
@@ -1593,6 +1633,8 @@
       expand_description: Expandir descrição
       compress_description: Comprimir descrição
       hour_period: "%{start_hour}h - %{end_hour}h"
+      choose_at_least_one: "Selecione, ao menos, um chat"
+      choose_one: Selecione um chat
     form: 
       participants: Participantes
       groups: Turmas

@@ -1,14 +1,15 @@
-%span.form_requirement= t(:required_fields)
 .module_form{:style => "text-align: left;"}
   = simple_form_for(@module, :html => {:id => "module_form"}) do |f| 
+    %h1#lightBoxDialogTitle= t((@module.persisted? ? :edit_lesson_module : :new_module), scope: [:lessons, :list])
+    %span.form_requirement= t(:required_fields)
     
     .form-inputs.block_content.retreat
       = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
       = f.input :name, :required => true
 
-      .form-actions.right_buttons
-        = button_tag t(".cancel"), :class => "btn btn_default btn_lightbox", :type => "button", :alt => t(:cancel, :scope => [:discussion, :buttons]), :id => "cancel"
+      .form-actions.right_buttons.buttons_align_module
+        = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
         = button_tag t(".save"), :class => "btn btn_main btn_lightbox", :alt => t(:save, :scope => [:discussion, :buttons]), :type => "button", :id => "save"
 
 :javascript
@@ -20,7 +21,4 @@
       });
     });
 
-    $('#cancel').click(function(){
-      removeLightBox();
-    });
   });

@@ -1,5 +1,5 @@
 #lesson_file_management
-  = stylesheet_link_tag "ui.dynatree"
+  %h1#lightBoxDialogTitle= t(:files_management, :scope => [:lesson_files])
   = stylesheet_link_tag "ui.dynatree.custom"
 
   - files_and_folders(@lesson)
@@ -61,10 +61,8 @@
     %span#attention_message
       = t(".attention_message")
     %span= t(".save_automatically_message")
-  #files_bottom_bar= button_tag t(".conclude"), type: :button, :class => 'btn btn_main', id: 'btn-finish'
-
+  #files_bottom_bar= button_to_function t(".conclude"), "jQuery.fancybox.close()", type: :button, :class => 'btn btn_main'
+  
 = javascript_include_tag "jquery.tokeninput"
-= javascript_include_tag "jquery.dynatree"
 = javascript_include_tag "lesson_files"
-= javascript_include_tag "jquery.qtip.min"
 = javascript_include_tag "tooltip"

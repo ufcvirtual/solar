@@ -5,30 +5,33 @@
 $.fn.nice_checkbox = function(options){
   var parent = this, children_names = $(this).data("children-names");
 
+    var parent_block_div = $(this).parents("table").parent();
+    if (!parent_block_div.length) // se não encontrar a tabela, é porque o checkbox é um ícone que está na própria barra de ferramentas
+      parent_block_div = $(this).parents(":nth-of-type(1)");
+
   /* para que o checkbox possa habilitar ou desabilitar algum botão, deve receber o parâmetro */
-  var can_enable_or_disable = (typeof(options) != "undefined" && typeof(options.can_enable_elements) != "undefined"); 
+  var can_enable_or_disable = (typeof(options) == "undefined" || typeof(options.cant_enable_elements) == "undefined"); 
 
   /**
    * Funcoes para habilitar/desabilitar edicao/delecao
    */
-  var enable_edition = function() { $(".btn_edit").attr("disabled", false); };
-  var disable_edition = function() { $(".btn_edit").attr("disabled", true); };
-  var enable_deletion = function() { $(".btn_del").attr("disabled", false); };
-  var disable_deletion = function() { $(".btn_del").attr("disabled", true); };
+  var enable_edition = function() { $(".btn_edit", parent_block_div).attr("disabled", false); };
+  var disable_edition = function() { $(".btn_edit", parent_block_div).attr("disabled", true); };
+  var enable_deletion = function() { $(".btn_del", parent_block_div).attr("disabled", false); };
+  var disable_deletion = function() { $(".btn_del", parent_block_div).attr("disabled", true); };
 
   /* habilita ou desabilita os elementos passados verificando se aceita um ou múltimos itens checkados 
      o default é aceitar multiplos. caso o elemento aceite apenas um, deverá conter um "data-single"   */
   var enable_other_elements = function (children_checked_length) {
     if (typeof(options) != "undefined" && typeof(options.objects_to_change_status) != "undefined"){
       var elements_to_change = options.objects_to_change_status;
-      for (var i = 0; i < elements_to_change.length; i++) {
-        var element = $(elements_to_change[i]);
+      $.each(elements_to_change, function(i){
+        var element = $(elements_to_change[i], parent_block_div);
         // se nenhum ckb filho for selecionado, elemento é desabilitado
         // se mais de um ckb filho for selecionado, mas elemento só aceitar um, este é desabilitado
         // caso contrário, habilita
         element.attr("disabled", ( children_checked_length == 0 || (element.data("single") != undefined && children_checked_length > 1)));
-      }
-
+      });
     }
   };
 
@@ -38,7 +41,7 @@ $.fn.nice_checkbox = function(options){
   var f_kids = function(children) {
     children.click(function(){
       var kid = this;
-      var children_checked = $('input:checkbox[name*="' + children_names + '"]:checked');
+      var children_checked = $('input:checkbox[name*="' + children_names + '"]:checked', parent_block_div);
 
       if (can_enable_or_disable){
         enable_other_elements(children_checked.length);
@@ -74,7 +77,7 @@ $.fn.nice_checkbox = function(options){
     }); // event de click no filho
   };
 
-  var children = $('input:checkbox[name*="' + children_names + '"]');
+  var children = $('input:checkbox[name*="' + children_names + '"]', parent_block_div);
   f_kids(children); // eventos nos filhos
 
   /***
@@ -95,8 +98,8 @@ $.fn.nice_checkbox = function(options){
     if (can_enable_or_disable){
       // o botao de edicao devera ser habilitado apenas para um unico objeto
       var children_checked = $('input:checkbox[name*="' + children_names + '"]:checked');
-      $(".btn_edit").attr("disabled", !(children_checked.length == 1));
-      $(".btn_del").attr("disabled", !check);
+      $(".btn_edit", parent_block_div).attr("disabled", !(children_checked.length == 1));
+      $(".btn_del", parent_block_div).attr("disabled", !check);
 
       enable_other_elements(children_checked.length);
     }
@@ -220,7 +223,7 @@ $.fn.serialize_and_submit = function(options) {
       else {
         // se não houver opção indicando que o lightbox deve se manter aberto, o default é fechá-lo
         if(typeof(options.dont_remove_lightbox) == "undefined" || !options.dont_remove_lightbox) 
-          removeLightBox();
+          $.fancybox.close();
 
         if (typeof(data) != "undefined" && typeof(data.notice) != "undefined")
           flash_message(data.notice, 'notice');

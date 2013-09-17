@@ -9,7 +9,6 @@
 // = require jquery.dropdown
 // = require intro.min
 
-// = require tooltip
 // = require mysolar
 // = require lightbox
 
@@ -17,12 +16,22 @@
 // = require lessons
 // = require allocations
 
+// = require fancybox
 // = require helpers
 // = require nice
+
+// = require tooltip
 
 /**
  * Retira o menu de usuário na barra superior ao clicar em outro canto da tela
  */
+
+$(function() {
+  $("#change_picture").fancybox({
+    maxWidth  : 500
+  });
+});
+
 $(function(){
   $("body").click(function(e) {
     if((e.target.id !== 'mysolar_top_submenu') && (e.target.id !== 'mysolar_top_user_nick') && (e.target.id !== 'image_user')){

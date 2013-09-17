@@ -1,6 +1,9 @@
 .new_assignment
 
   = simple_form_for @assignment, html: {id: 'assignment_form'} do |f|
+    %h1#lightBoxDialogTitle= t((@assignment.persisted? ? :edit : :new), scope: "assignment.list")
+    %span.form_requirement= t(:required_fields)
+
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
     .form-inputs.block_content
@@ -40,7 +43,7 @@
             %span.collection_check_boxes= group.code
 
       .right_buttons_assignment
-        = button_tag t(:cancel), :class => "btn btn_default btn_lightbox", :type => "button", onclick: "javascript:removeLightBox();"
+        = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
         = button_tag t(:save), :class => "btn btn_main btn_lightbox", :type => "button", :id => "save"
 
 :css

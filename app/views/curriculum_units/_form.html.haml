@@ -1,8 +1,19 @@
 = javascript_include_tag "edition"
 
+- tool_name = case @curriculum_unit.curriculum_unit_type.id
+  - when 3
+  - "course"
+  - when 4
+  - "module"
+  - else
+  - "curriculum_unit"
+
 %span.form_requirement= t(:required_fields)
 .curriculum_unit_form
   = simple_form_for(@curriculum_unit, html: {id: "curriculum_unit_form"}) do |f| 
+    - title = [(@curriculum_unit.persisted? ? "edit" : "new"), tool_name].join("_")
+    %h1#lightBoxDialogTitle= t(".#{title}")
+    %span.form_requirement= t(:required_fields)
 
     .form-inputs.block_content
       = f.label :curriculum_unit_type
@@ -21,7 +32,7 @@
 
 :javascript
 
-  $(function(){
+  jQuery(function($){
     $('#save').click(function(){
       $('#curriculum_unit_form').serialize_and_submit({
         complement_success: function(data) {

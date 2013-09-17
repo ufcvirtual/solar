@@ -1,5 +1,8 @@
 .new_support_material_form
   = simple_form_for @support_material, html: {id: 'support_material_form', multipart: true} do |f|
+    - title = [(@support_material.persisted? ? "edit" : "new"), (@support_material.material_type == Material_Type_File ? "file" : "link")].join("_")
+    %h1#lightBoxDialogTitle= t(title.to_sym, scope: [:support_material_files, :list])
+    %span.form_requirement= t(:required_fields)  
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
     = hidden_field_tag :material_type, @support_material.material_type
 
@@ -9,9 +12,9 @@
       - else
         = f.file_field :attachment, as: :file, required: true
 
-      .right_buttons
-        = button_tag t(:cancel), :class => "btn btn_default btn_lightbox", :type => "button", onclick: "javascript:removeLightBox();"
-        = button_tag t(:save), :class => "btn btn_main btn_lightbox", :type => "button", :id => "save"
+      .right_buttons.new_support_material_buttons
+        = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+        = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", id: "save"
     
 :javascript
 

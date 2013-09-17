@@ -1,87 +1,87 @@
 function result_error(data) {
-    var response = JSON.parse(data.responseText);
-    if (typeof(response.alert) != "undefined")
-      flash_message(response.alert, 'alert');
-  }
+  var response = JSON.parse(data.responseText);
+  if (typeof(response.alert) != "undefined")
+    flash_message(response.alert, 'alert');
+}
 
-  jQuery(function($){
+$(function(){
 
-    $('.disable_group, .enable_group, .btn_del, .btn_edit').attr("disabled", true);
+  $('.disable_group, .enable_group, .btn_del, .btn_edit').attr("disabled", true);
 
-    $('#btn_new_group').click(function(){
-      var url = $(this).data("link-new-group").replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
-      showLightBoxURL(url, 500, 400, true, $(this).data("tooltip"));
-    });
+  $('#btn_new_group').click(function(){
+    var url = $(this).data("link-new").replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
+    $.fancybox.open(
+      $(this),
+      {href: url}
+    );
+  });
 
-    $('.btn_edit').click(function(){
-
-      if ($(this).attr('disabled') == 'disabled')
-        return false;
-
-      var groups_ckb = $('.ckb_group:checked', $(this).parents("div.list_groups")).map(function() { return this.value; }).get();
-      if (!(!groups_ckb.length || groups_ckb.length > 1)) {
-        var url_edit = $(this).data('link-edit-group').replace(':id', groups_ckb);
-        showLightBoxURL(url_edit, 500, 400, true, $(this).data('tooltip'));
-      }
+  $('.btn_edit').click(function(){
+    if ($(this).attr('disabled') == 'disabled'){
+      flash_message("<%=I18n.t(:choose_one, scope: [:groups, :list])%>", 'alert');
       return false;
+    }
 
+    var groups_ckb = $('.ckb_group:checked', $(this).parents("div.list_groups")).map(function() { return this.value; }).get();
+    if (!(!groups_ckb.length || groups_ckb.length > 1)) {
+      var url_edit = $(this).data('link-edit').replace(':id', groups_ckb);
+
+      $.fancybox.open(
+        $(this),
+        {href : url_edit}
+      );
+    }
+    return false;
+  });
+
+  $('.btn_del').click(function(){
+    var groups_ids = $.map($("#ckb_group:checked"), function(n){
+      return ($(n).val());
     });
 
-    $('.btn_del').click(function(){
+    if($(groups_ids).length == 0)
+      flash_message("<%=I18n.t(:choose_at_least_one, scope: [:groups, :list])%>", 'alert');
+    else {
       if (!confirm("<%=I18n.t(:message_confirm)%>"))
         return false;
 
-      var groups_ids = $.map($("#ckb_group:checked"), function(n){
-        return ($(n).val());
-      });
+      $.delete($(this).data('link-delete').replace(':id', groups_ids), function(data) {
+        flash_message(data.notice, 'notice');
 
-      if($(groups_ids).length == 0)
-        flash_message("<%=I18n.t('.choose_at_least_one')%>", 'alert');
-      else {
-        $.delete($(this).data('link-delete').replace(':id', groups_ids), function(data) {
-          flash_message(data.notice, 'notice');
+        var url = $(".list_groups").data("link").replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
 
-          var url = $(".list_groups").data("link").replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
+        $.get(url, function(data) { $(".groups_list").html(data); });
+      }).error(result_error);
+    }
+  });
 
-          $.get(url, function(data) { $(".groups_list").html(data); });
-        }).error(result_error);
-      }
+  $('#all_groups').nice_checkbox({
+    objects_to_change_status: ['.disable_group', '.enable_group']
+  });
+
+  $('.disable_group, .enable_group').click(function(){
+    var groups_ids = jQuery.map($("#ckb_group:checked"), function(n) {
+      return ($(n).val());
     });
 
-    $(".block_toolbar_right span.btn")
-      .on('click',function(){
-        var check = $(':checkbox', this);
-        check.prop('checked', !check[0].checked);
-      });
-
-    $('#all_groups').nice_checkbox({
-      objects_to_change_status: $('.disable_group, .enable_group'),
-      can_enable_elements: true
-    });
-
-    $('.disable_group, .enable_group').click(function(){
-      var groups_ids = jQuery.map($("#ckb_group:checked"), function(n) {
-        return ($(n).val());
-      });
-
-      if (!$(groups_ids).length)
-        flash_message("<%=I18n.t('.choose_at_least_one')%>", 'alert');
-      else {
-        $.put($(this).data('link-status').replace(':id', groups_ids), function(data){
-          var url = $(".list_groups").data("link").replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
-
-          $.get(url, function(data){ $(".groups_list").html(data); });
-        }).error(result_error);
-      }
-    });
-
-    $(".change_status_group").click(function(){
-      $.put($(this).data('link-status'), function(data) {
+    if (!$(groups_ids).length)
+      flash_message("<%=I18n.t(:choose_at_least_one, scope: [:groups, :list])%>", 'alert');
+    else {
+      $.put($(this).data('link-status').replace(':id', groups_ids), function(data){
         var url = $(".list_groups").data("link").replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
 
         $.get(url, function(data){ $(".groups_list").html(data); });
-        return false;
       }).error(result_error);
-    });
-
+    }
   });
+
+  $(".change_status_group").click(function(){
+    $.put($(this).data('link-status'), function(data) {
+      var url = $(".list_groups").data("link").replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
+
+      $.get(url, function(data){ $(".groups_list").html(data); });
+      return false;
+    }).error(result_error);
+  });
+
+});

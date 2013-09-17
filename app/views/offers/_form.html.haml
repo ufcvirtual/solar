@@ -11,6 +11,9 @@
 - period_start_date = (doesnt_have_period_start_date ? '' : "#{l(@offer.period_schedule.try(:start_date).to_date, format: :datepicker)}")
 
 = simple_form_for @offer, html: {id: "offer_form"} do |f|
+  %h1#lightBoxDialogTitle= t((@offer.persisted? ? :edit_offer : :new_offer), scope: "offers.index")
+  %span.form_requirement= t(:required_fields)
+
   .form-inputs.block_content
     = f.input :type_id, as: :hidden, input_html: {value: @type_id}
     = f.association :semester, as: :hidden, input_html: {value: @offer.semester_id}
@@ -65,7 +68,7 @@
         = t('.enable_end_date')
 
     .form-actions.right_buttons
-      = button_tag t(:cancel), class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel), id: "cancel", onclick: "javascript:removeLightBox();"
+      = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
       = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", alt: t(:save), id: "save"
 
 :javascript
@@ -90,7 +93,7 @@
     $("#save").click(function(){
       $('form#offer_form').serialize_and_submit({
         complement_success: function(data) {
-          var table = $(".table-offers#table-#{@offer.semester_id}");
+          var table = $("#table-offer-#{@offer.semester_id}");
           var url = table.data('link-offers');
           table.load(url);
         }

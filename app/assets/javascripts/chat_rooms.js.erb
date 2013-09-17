@@ -7,7 +7,9 @@ jQuery(function($){
   $("#chat_room_start_hour").mask("99:99");  
   $("#chat_room_end_hour").mask("99:99");  
 
-  $("#all_participants").nice_checkbox();
+  $("#all_participants").nice_checkbox({
+    cant_enable_elements: true
+  });
 
   $("#chat_room_type").click(function(){
     if($("#chat_room_type").prop("checked")){
@@ -54,29 +56,34 @@ jQuery(function($){
     $($(this).parent().siblings()[0]).show();
   });
 
-  $('#new_chat').click(function() {
-    showLightBoxURL($(this).data('link'), 550, 400, true, $(this).data('box-title'));
-  });
+  $('#new_chat').fancybox();
 
-  $("#all_chats").nice_checkbox({
-    can_enable_elements: true
-  });
+  $("#all_chats").nice_checkbox();
 
-  $('.edit_chat').click(function() {
+  $('.btn_edit').click(function() {
     if ($(this).attr('disabled') == 'disabled') {
+      flash_message("<%=I18n.t(:choose_one, scope: [:chat_rooms, :index])%>", "alert");
       return false;
     }
 
     var chats_ids = $('.ckb_chat:checked', $(this).parents("div.list_chat_rooms")).map(function() { return this.value; }).get();
     if (!(!chats_ids.length || chats_ids.length > 1)) {
       var url_edit = $(this).data('link-to-edit').replace(':id', chats_ids);
-      showLightBoxURL(url_edit, 550, 400, true, $(this).data('edit-title'));
+      $.fancybox.open(
+        $(this),
+        {href : url_edit}
+      );
     }
     return false;
   });
 
   $('.delete_chat').click(function() {
-    if ($(this).attr('disabled') == 'disabled' || !confirm("<%=I18n.t(:message_confirm)%>"))
+    if ($(this).attr('disabled') == 'disabled'){
+      flash_message("<%=I18n.t(:choose_at_least_one, scope: [:chat_rooms, :index])%>", "alert");
+      return false;
+    }
+
+    if (!confirm("<%=I18n.t(:message_confirm)%>"))
       return false;
 
     var chats = $('.ckb_chat:checked', $(this).parents("div.list_chat_rooms"));

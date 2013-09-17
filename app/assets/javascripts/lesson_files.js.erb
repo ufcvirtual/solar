@@ -1,4 +1,6 @@
 // = require jquery.cookie
+// = require jquery.dynatree
+// = require jquery.qtip.min
 
 jQuery(function($){
 
@@ -214,10 +216,6 @@ jQuery(function($){
     saveMove(selNodes);
   });    
 
-  jQuery("#btn-finish").click(function(){
-    removeLightBox();
-  });
-
   jQuery("#lesson_new_file").click(function(){
     if(folder_or_file_selected() && selNodes[0].data.isFolder)
       jQuery("#fileupload").click();
@@ -263,7 +261,8 @@ jQuery(function($){
               //     return myXhr;
               // },
               success: function(data){
-                jQuery("#lesson_file_management").html(data);
+                $("#lesson_file_management").html(data);
+                $("#lesson_file_management").html(data);
                 deselect_all();
               },
               error: function() {
@@ -332,7 +331,8 @@ jQuery(function($){
           type: 'GET',
           url: $(this).data('unzip-path').replace(':file', getPath(selNodes[0])),
           success: function(data){
-            jQuery("#lesson_file_management").html(data);
+            $("#lesson_file_management").html(data);
+            $("#lesson_file_management").html(data);
             deselect_all();
           },
           error: function(data){
@@ -576,7 +576,8 @@ function saveDeletion(node, root_node){
       "root_node": root_node // informa se é a deleção do nó raiz, ou seja, de todos os arquivos da aula
     },
     success: function(data) {
-      jQuery("#lesson_file_management").html(data);
+      $("#lesson_file_management").html(data);
+      $("#lesson_file_management").html(data);
       deselect_all();
       if(root_node) // atualiza listagem para que esta aula vire, se necessário, rascunho
         $.get($('.list_lessons').data('link-list'), function(data){
@@ -598,7 +599,8 @@ function newFolder(path){
     url: url,
     data: { "path": path },
     success: function(data){
-      jQuery("#lesson_file_management").html(data);
+      $("#lesson_file_management").html(data);
+      $("#lesson_file_management").html(data);
       deselect_all();
     },
     error: function() {
@@ -622,8 +624,10 @@ function renameNode(node, new_title, path){
     success: function(data){
       if(initial_file_node != null && initial_file_node == node)
         defineInitialFile(node);
-      else
-        jQuery("#lesson_file_management").html(data);
+      else{
+        $("#lesson_file_management").html(data);
+        $("#lesson_file_management").html(data);
+      }
       deselect_all();
     },
     error: function() {
@@ -679,7 +683,8 @@ function saveMove(nodesToMove){
             "initial_file_path": getPartialPathInitialFile()
           },
           success: function(data) {
-            jQuery("#lesson_file_management").html(data);
+            $("#lesson_file_management").html(data);
+            $("#lesson_file_management").html(data);
             deselect_all();
           },
           error: function() {
@@ -698,7 +703,8 @@ function defineInitialFile(node){
     url: jQuery("#initial_file_path").attr("value"),
     data: { "path": getPath(node) },
     success: function(data){
-      jQuery("#lesson_file_management").html(data);
+      $("#lesson_file_management").html(data);
+      $("#lesson_file_management").html(data);
       deselect_all();
     },
     error: function(){
