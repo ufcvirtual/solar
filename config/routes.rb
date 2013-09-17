@@ -198,6 +198,7 @@ Solar::Application.routes.draw do
       put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "ChatRoom", as: :remove_group_from
       put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "ChatRoom", as: :add_group_to
     end
+  end
 
   resources :schedules, only: [:index] do
     get :list, on: :collection
