@@ -35,7 +35,11 @@ fieldset {
 
 .filter_type .ui-autocomplete, .filter .ui-autocomplete{
   width: 306px !important;
-  }
+ }
+
+.offer_course .ui-autocomplete, .offer_curriculum_unit .ui-autocomplete{
+  width: 300px !important;
+}
 
 .uc_item,
 .academic_item {
