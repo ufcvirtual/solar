@@ -70,8 +70,16 @@
         photo_content_type: "Invalid file type"
         photo_file_size: "File too large. The maximum size of your photo should be up to 700KB."
       curriculum_unit:
+        name: Name
+        code: Code
+        category: Category
         curriculum_unit_type_id: Category
         curriculum_unit_type: Category
+        syllabus: Syllabus
+        objectives: Objectives
+        prerequisites: Prerequisites
+        resume: Resume
+        passing_grade: Passing grade
       course: 
         name: Name
         code: Code 
@@ -1428,6 +1436,8 @@
       new: New course
       edit: Edit course
       delete: Delete course
+      code: Code
+      name: Name
     form:
       name: Name
       code: Code

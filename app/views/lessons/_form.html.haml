@@ -22,14 +22,15 @@
       .lesson_date{:class => error_class}
         =f.label :start_date, :required => true
         =text_field_tag "start_date", "", :id => "from_date", :title => "#{t(:from_date)}", :value => "#{l(start_date.to_date, :format => :datepicker)}", :class => "date_text_field", :size => 10, :required => true
-        %div.end_date{class: ('invisible' if (!@lesson.has_end_date?) )}
-          =f.label :end_date
-          =text_field_tag "end_date", "", :id => "until_date", :title => "#{t(:until_date)}", :value => ("#{l(end_date.to_date, :format => :datepicker)}" if Date.valid?(end_date)), :class => "date_text_field", :size => 10, :required => true
+        %span.end_date{class: (@lesson.has_end_date? ? '' : 'invisible')}
+          .lesson_dates.label= t(:to, scope: [:schedules])
+          .lesson_dates= text_field_tag "end_date", "", :id => "until_date", :title => "#{t(:until_date)}", :value => ("#{l(end_date.to_date, :format => :datepicker)}" if Date.valid?(end_date)), :class => "date_text_field", :size => 10, :required => true
           %span{:style => "display: inline-block;"}= @schedule_error
         .select_end_date
           =f.label " "
           =check_box "check", "end_date", {id: 'check_end_date', checked: @lesson.has_end_date? }
-          =t(:enable_end_date, :scope => [:lessons, :new])
+          %span.checkbox_label= label_tag "check[end_date]", t(:enable_end_date, :scope => [:lessons, :new])
+
       .lesson_type
         =f.label t(:type_lesson, :scope => [:lessons, :new])
         - if @lesson_modules
@@ -103,7 +104,7 @@
       });
 
       $("input:checkbox").change(function() {
-        $(".end_date").toggle('invisible');
+        $(".end_date").toggleClass('invisible');
         $("#until_date").val(null);
       });
 

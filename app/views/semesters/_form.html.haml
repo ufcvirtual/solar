@@ -27,7 +27,7 @@
       .enrollment_schedule_dates.error= @semester.enrollment_schedule.errors[:start_date].first || @semester.enrollment_schedule.errors[:end_date].first unless @semester.enrollment_schedule.errors.full_messages.empty?
       .end_date_check_box.period_date
         = check_box_tag :have_end_date, true, not(dont_have_enroll_end_date)
-        = t('.enable_end_date')
+        %span.checkbox_label= label_tag :have_end_date, t('.enable_end_date')
 
     .form-actions.right_buttons
       = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
