@@ -25,7 +25,7 @@
           .enrollment_schedule_dates.label= t(:to, scope: [:schedules])
           .enrollment_schedule_dates= s.input :end_date, input_html: { id: 'enrollment_end_date' }
       .enrollment_schedule_dates.error= @semester.enrollment_schedule.errors[:start_date].first || @semester.enrollment_schedule.errors[:end_date].first unless @semester.enrollment_schedule.errors.full_messages.empty?
-      .end_date_check_box
+      .end_date_check_box.period_date
         = check_box_tag :have_end_date, true, not(dont_have_enroll_end_date)
         = t('.enable_end_date')
 

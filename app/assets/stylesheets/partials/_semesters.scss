@@ -20,7 +20,7 @@
 .new_semester, .new_offer {
 
   [class*="_check_box"] {
-    margin-left: 135px;
+    margin-left: 76px;
     text-align: left;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -31,6 +31,11 @@
     margin-top: 0px;
     margin-bottom: 0px;
   }
+}
+
+.period_date{
+  color: $label_color;
+  margin-left: 76px;
 }
 
 .offer_schedule_dates .error, .enrollment_schedule_dates .error { // TODO: usado em offers e semesters
@@ -45,4 +50,8 @@
 .offer_schedule_dates.info, .enrollment_schedule_dates.info {  // TODO: usado em offers e semesters
   vertical-align: bottom;
   color: black;
+}
+
+.link_edit_offer{
+  float: right;
 }

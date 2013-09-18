@@ -102,6 +102,7 @@ div.legend h1 {
 * Div que engloba tudo
 */
 .block_wrapper {
+  margin-top: 15px;
   width: 785px;
   margin-bottom: 15px;
   // overflow: hidden;
@@ -308,15 +309,10 @@ div.block_title {
 /* posicionando objetos alinhados a direita (normalment botoes) */
 .right_buttons {
   text-align: right;
-  margin-right: 10px;
 }
 
 .right_buttons_align{
   margin-right: 29px;
-}
-
-.right_buttons_assignment {
-  text-align: right;
 }
 
 .retreat {
