@@ -141,8 +141,16 @@ select[disabled] {
 * alinhamento do form
 */
 
-#lesson_form, #module_form, #discussion_form{
+#module_form, #discussion_form{
   width: 415px;
+}
+
+#lesson_form,{
+  width: 419px;
+}
+
+#module_form{
+  height: 121px;
 }
 
 .lesson_module_name{
@@ -151,10 +159,6 @@ select[disabled] {
 
 #discussion_name{
   width: 217px;
-}
-
-.buttons_align_module{
-  margin-right: 35px;
 }
 
 #curriculum_unit_form{

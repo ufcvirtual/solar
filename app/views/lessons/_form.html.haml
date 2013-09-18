@@ -45,7 +45,7 @@
           .disabled
             =f.label " "
             =t(:example, :scope => [:lessons, :new])
-      .right_buttons.right_buttons_align
+      .right_buttons
         = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
         = button_tag t(:save, :scope => [:lessons, :new]), :class => "btn btn_main btn_lightbox", :alt => t(:save, :scope => [:lessons, :new]), :type => "button", :id => "save_button"
 
