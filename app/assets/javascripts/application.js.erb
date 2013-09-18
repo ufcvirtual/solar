@@ -1,6 +1,7 @@
 // = require jquery
 // = require jquery_ujs
 // = require jquery.qtip.min
+// = require jquery.sticky
 
 // = require jquery-ui
 // = require jquery.ui.datepicker-en-US
@@ -81,3 +82,14 @@ $(function() {
   // abre menu corrente
   $('.open_menu').click();
 });
+
+/**
+* Alertas
+*/
+$(window).load(function(){
+  $(".flash_message_wrapper").sticky({
+    topSpacing: 0,
+    center:true,
+    className:"sticky-float"
+  })
+})
