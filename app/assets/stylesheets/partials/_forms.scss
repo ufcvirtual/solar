@@ -157,6 +157,10 @@ select[disabled] {
   margin-right: 35px;
 }
 
+#curriculum_unit_form{
+  width: 420px;
+}
+
 /**
 * Posicionando botões do form
 */
@@ -167,6 +171,7 @@ select[disabled] {
 }
   .button-align {
     text-align: right;
+    margin-top: 10px;
   }
 
 /**
