@@ -619,13 +619,13 @@
   lesson_closed: "Aula encerrada"
   lesson_closed_short: "encerrada"
   since: A partir de
+  no_end_date: Em diante
 
   lessons:
     curriculum_unit_not_selected: Unidade Curricular não selecionada
     index:
       lesson_table_date: Data de acesso
       lesson_table_title: "Aulas disponíveis"
-      since: A partir de
     list: 
       lesson: Aula
       order: Ordem

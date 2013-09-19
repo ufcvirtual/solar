@@ -463,13 +463,13 @@
   lesson_closed: "Lesson closed"
   lesson_closed_short: "closed"
   since: Since
+  no_end_date: "On"
 
   lessons:
     curriculum_unit_not_selected: Curriculum Unit not selected
     index:
       lesson_table_date: "Access date"
       lesson_table_title: "Available Lessons"
-      since: Since
     list:
       lesson: Lesson
       order: Order

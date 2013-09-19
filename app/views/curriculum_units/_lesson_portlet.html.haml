@@ -13,7 +13,9 @@
           %span(class="block_content_gray")
             = "#{t(:since)}" if (lesson.schedule.end_date.nil?)
             = l lesson.schedule.start_date, :format => :normal
-            = " - " + (l lesson.schedule.end_date, :format => :normal) unless (lesson.schedule.end_date.nil?)
+            = " - "
+            = "#{t(:no_end_date)}" if (lesson.schedule.end_date.nil?)
+            = (l lesson.schedule.end_date, :format => :normal) unless (lesson.schedule.end_date.nil?)
 
           - if lesson.closed == 't' 
             = lesson.name
