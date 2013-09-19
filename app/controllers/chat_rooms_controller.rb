@@ -82,15 +82,12 @@ class ChatRoomsController < ApplicationController
   end
 
   def list
-    # *** MUDAR
-    @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
-    begin
-      #authorize! :list, ChatRoom, on: @allocation_tags_ids
-      @my_chats = ChatRoom.chats_user(@allocation_tags_ids,current_user.id)
-      @other_chats = ChatRoom.chats_other_users(@allocation_tags_ids,current_user.id) # *** MUDAR consulta
-    #rescue
-      #render :nothing => true, :status => 500
-    end
+    #authorize! :list, ChatRoom, on: @allocation_tags_ids
+
+    @allocation_tags_ids = params[:allocation_tags_ids]
+    @responsible = ChatRoom.responsible?(@allocation_tags_ids,current_user.id) 
+    @my_chats = ChatRoom.chats_user(@allocation_tags_ids,current_user.id)
+    @other_chats = ChatRoom.chats_other_users(@allocation_tags_ids,current_user.id) unless @responsible
   end
 
 end

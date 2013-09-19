@@ -52,16 +52,45 @@ class ChatRoom < ActiveRecord::Base
     self.schedule.start_date.to_date <= Date.today and schedule.end_date.to_date >= Date.today
   end
 
-  def self.chats_user(allocation_tags_ids, user_id)
-    ChatRoom.joins(:academic_allocations, :allocation_tags, :participants, :users, :schedule)
-      .where(allocation_tags: {id: allocation_tags_ids}).where(users: {id: user_id}).uniq
-      #.order("start_date")
+  def self.responsible?(allocation_tag, user_id)
+    AllocationTag.find(allocation_tag).is_user_class_responsible?(user_id) ? true : false
   end
 
-  def self.chats_other_users(allocation_tags_ids, user_id)
-    # *** MUDAR
-    ChatRoom.joins(:academic_allocations, :allocation_tags, :participants, :users, :schedule)
-      .where(allocation_tags: {id: allocation_tags_ids}).where(users: {id: user_id}).uniq
+  def self.chats_user(allocation_tag_id, user_id)
+    if responsible?(allocation_tag_id,user_id)
+      all = ChatRoom.joins(:academic_allocations, :allocation_tags, :schedule)
+        .select("chat_rooms.*, schedules.*")
+        .where(allocation_tags: {id: allocation_tag_id}).uniq
+
+      # responsavel - devolve todas as salas de chat
+      chats = Array(all)
+
+    else
+      my = ChatRoom.joins(:academic_allocations, :allocation_tags, :participants, :users, :schedule)
+        .select("chat_rooms.*, schedules.*")
+        .where(allocation_tags: {id: allocation_tag_id}).where(users: {id: user_id}).uniq
+
+      open = ChatRoom.joins(:academic_allocations, :allocation_tags, :schedule)
+        .select("chat_rooms.*, schedules.*")
+        .where(allocation_tags: {id: allocation_tag_id}, chat_type: 0).uniq
+
+      # devolve as salas de chat em que o usuario esta mais as salas abertas
+      chats = Array(my)+Array(open)
+
+    end
+
+    return chats.sort_by{|d| d[:start_date]}
+  end
+
+  def self.chats_other_users(allocation_tag_id, user_id)
+    all = ChatRoom.joins(:academic_allocations, :allocation_tags, :schedule)
+      .select("chat_rooms.*, schedules.*")
+      .where(allocation_tags: {id: allocation_tag_id}).uniq
+
+    my = chats_user(allocation_tag_id, user_id)
+
+    # devolve as salas de chat em que o usuario nao esta
+    chats = (Array(all)-Array(my)).sort_by{|d| d[:start_date]}
   end
 
 end
