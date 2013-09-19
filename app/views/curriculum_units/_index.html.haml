@@ -15,7 +15,7 @@
       = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_curriculum_unit_path(type_id: @type.id), class: " btn btn_main", id: "btn_new_curriculum_unit", :"data-tooltip" => t( ((@type.id != 3 and @type.id != 4) ? ".new_curriculum_unit" : ".new"), uc_or_module: t_tool_name)
       
     .block_toolbar_right
-      = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn delete_curriculum_unit btn_del', :'data-tooltip' => t(".delete", uc_or_module: t_tool_name), :"data-link-delete" => curriculum_unit_path(id: ':id')
+      = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn delete_curriculum_unit btn_del', :'data-tooltip' => t(".delete", uc_or_module: t_tool_name), :"data-link-delete" => curriculum_unit_path(id: ':id'), disabled: true
 
   %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :style => "table-layout: fixed"}
     %thead

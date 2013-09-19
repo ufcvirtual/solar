@@ -44,7 +44,7 @@ class Ability
 
       ## usuario relacionado com o objeto atraves das allocation_tags
       if object.respond_to?(:allocation_tag)
-        all_or_lower = (alias_action(action).select { |a| [:create, :update].include?(a) }.empty?) ? {all: true} : {lower: true} # modificar objeto?
+        all_or_lower = (alias_action(action).select { |a| [:create, :update, :destroy].include?(a) }.empty?) ? {all: true} : {lower: true} # modificar objeto?
         at_of_user   = user.allocations.where(profile_id: profiles, status: Allocation_Activated.to_i).map(&:allocation_tag).compact.map {|at| at.related(all_or_lower) }.flatten.compact.uniq ## allocations do usuario com perfil para executar a acao
         match        = not((at_of_user & [object.allocation_tag.id]).empty?) # at em comum entre o usuario e o objeto
 

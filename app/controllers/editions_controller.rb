@@ -27,18 +27,21 @@ class EditionsController < ApplicationController
   # GET /editions/academic
   def academic
     authorize! :academic, Edition
+
     @types = CurriculumUnitType.all
-    @type  = params[:type_id]
+    @type = params[:type_id]
   end
 
   def courses
     authorize! :courses, Edition
+
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     @courses = Course.all
   end
 
   def curriculum_units
     authorize! :curriculum_units, Edition
+
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
     @curriculum_units = @type.curriculum_units
   end
