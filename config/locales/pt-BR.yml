@@ -1596,6 +1596,8 @@
       delete: Deletar curso
       code: Código
       name: Nome
+      cant_edit: Não é possível editar este curso
+      cant_delete: Não é possível remover este curso
     form:
       name: Nome
       code: Código

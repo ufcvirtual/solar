@@ -1438,6 +1438,8 @@
       delete: Delete course
       code: Code
       name: Name
+      cant_edit: Can't edit this course
+      cant_delete: Can't delete this course
     form:
       name: Name
       code: Code

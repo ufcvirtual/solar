@@ -26,16 +26,20 @@
   $(function(){
     $("#new_course, .link_edit_course").click(function(e){
       e.preventDefault();
-      if ($(this).attr("disabled"))
+      if ($(this).attr('disabled')){
+        flash_message("#{t(".cant_edit")}", "alert");
         return false;
+      }
 
       $(this).call_fancybox({open: true});
     });
 
     $('.delete_course').click(function(e){
       e.preventDefault();
-      if ($(this).attr("disabled"))
+      if ($(this).attr('disabled')){
+        flash_message("#{t(".cant_delete")}", "alert");
         return false;
+      }
 
       var curriculum_unit_id = $(this).attr("id");
       $(this).nice_delete({

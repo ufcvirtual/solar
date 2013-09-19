@@ -403,3 +403,11 @@ editor_al22:
   allocation_tag_id: 22
   profile_id: 5
   status: 1
+
+# acesso de editor ao usuário user3 à uc Quimic I
+user3_editor_al13:
+  id: 56
+  user_id: 3
+  allocation_tag_id: 13
+  profile_id: 5
+  status: 1
