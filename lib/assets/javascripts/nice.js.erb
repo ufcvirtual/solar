@@ -2,48 +2,48 @@
  * Funcoes genericas - extensoes do jQuery
  *********************************************/
 
-$.fn.nice_checkbox = function(options){
-  var parent = this, children_names = $(this).data("children-names");
+$.fn.nice_checkbox = function(options) {
+  var parent = this, children_names = $(this).data("children-names"), parent_block_div;
+  var can_enable_or_disable = (typeof(options) == "undefined" || typeof(options.cant_enable_elements) == "undefined" || !options.cant_enable_elements); // para nao habilitar opcoes, passar parametro cant_enable_elements
 
-    var parent_block_div = $(this).parents("table").parent();
-    if (!parent_block_div.length) // se não encontrar a tabela, é porque o checkbox é um ícone que está na própria barra de ferramentas
-      parent_block_div = $(this).parents(":nth-of-type(1)");
-
-  /* para que o checkbox possa habilitar ou desabilitar algum botão, deve receber o parâmetro */
-  var can_enable_or_disable = (typeof(options) == "undefined" || typeof(options.cant_enable_elements) == "undefined"); 
+  if (!((parent_block_div = $(parent).parents("table").parent()).length)) // para englobar apenas os filhos do parent
+    parent_block_div = $(parent).parents(":nth-of-type(1)");
 
   /**
-   * Funcoes para habilitar/desabilitar edicao/delecao
+   * Habilita ou desabilita os elementos passados verificando se aceita um ou múltimos itens checkados
+   * O default é aceitar multiplos. caso o elemento aceite apenas um, deverá conter um "data-single"
    */
-  var enable_edition = function() { $(".btn_edit", parent_block_div).attr("disabled", false); };
-  var disable_edition = function() { $(".btn_edit", parent_block_div).attr("disabled", true); };
-  var enable_deletion = function() { $(".btn_del", parent_block_div).attr("disabled", false); };
-  var disable_deletion = function() { $(".btn_del", parent_block_div).attr("disabled", true); };
+  var enable_other_elements = function(children_checked_length) {
+    if (typeof(options) == "undefined" || typeof(options.objects_to_change_status) == "undefined")
+      return false;
 
-  /* habilita ou desabilita os elementos passados verificando se aceita um ou múltimos itens checkados 
-     o default é aceitar multiplos. caso o elemento aceite apenas um, deverá conter um "data-single"   */
-  var enable_other_elements = function (children_checked_length) {
-    if (typeof(options) != "undefined" && typeof(options.objects_to_change_status) != "undefined"){
-      var elements_to_change = options.objects_to_change_status;
-      $.each(elements_to_change, function(i){
-        var element = $(elements_to_change[i], parent_block_div);
-        // se nenhum ckb filho for selecionado, elemento é desabilitado
-        // se mais de um ckb filho for selecionado, mas elemento só aceitar um, este é desabilitado
-        // caso contrário, habilita
-        element.attr("disabled", ( children_checked_length == 0 || (element.data("single") != undefined && children_checked_length > 1)));
-      });
-    }
+    // se nenhum ckb filho for selecionado, elemento é desabilitado
+    // se mais de um ckb filho for selecionado, mas elemento só aceitar um, este é desabilitado
+    // caso contrário, habilita
+    $.each(options.objects_to_change_status, function(i, el) {
+      var element = $(el, parent_block_div);
+      element.attr("disabled", (children_checked_length == 0 || (children_checked_length > 1 && element.data("single") != undefined)));
+    });
   };
 
   /**
    * Capturando evento de click nos filhos
    */
   var f_kids = function(children) {
+
+    /**
+     * Funcoes para habilitar/desabilitar edicao/delecao
+     */
+    var enable_edition = function() { $(".btn_edit", parent_block_div).attr("disabled", false); };
+    var disable_edition = function() { $(".btn_edit", parent_block_div).attr("disabled", true); };
+    var enable_deletion = function() { $(".btn_del", parent_block_div).attr("disabled", false); };
+    var disable_deletion = function() { $(".btn_del", parent_block_div).attr("disabled", true); };
+
     children.click(function(){
       var kid = this;
       var children_checked = $('input:checkbox[name*="' + children_names + '"]:checked', parent_block_div);
 
-      if (can_enable_or_disable){
+      if (can_enable_or_disable) {
         enable_other_elements(children_checked.length);
 
         if (kid.checked) { // filho selecionado
@@ -63,19 +63,19 @@ $.fn.nice_checkbox = function(options){
             disable_edition();
           }
         }
-      }
+      } // end if
 
-      var icon = $('i', parent);
-      if(icon.length){ // checkbox como botão
-        if(kid.checked && children.length == children_checked.length)
+      var icon = $('i', parent), check_parent = (kid.checked && children.length == children_checked.length);
+      if (icon.length) { // checkbox como botão
+        if (check_parent)
           $(icon).removeClass('icon-checkbox-unchecked').addClass('icon-checkbox-checked');
         else
           $(icon).addClass('icon-checkbox-unchecked').removeClass('icon-checkbox-checked');
-      }else // checkbox normal
-        $(parent).prop("checked", (kid.checked && children.length == children_checked.length)); // atualiza o pai verificando o status dos filhos
+      } else // checkbox normal
+        $(parent).prop("checked", check_parent); // atualiza o pai verificando o status dos filhos
 
-    }); // event de click no filho
-  };
+    }); // end kid click
+  }; // end f_kids
 
   var children = $('input:checkbox[name*="' + children_names + '"]', parent_block_div);
   f_kids(children); // eventos nos filhos
@@ -84,18 +84,16 @@ $.fn.nice_checkbox = function(options){
    * Capturando evento de click no parent
    */
   $(this).click(function() {
-    var parent = this;
-    var icon = $('i', parent);
-    if (icon.length){ // checkbox normal
+    var parent = this, icon, check;
+    if ((icon = $('i', parent)).length) {
       $(icon).toggleClass('icon-checkbox-unchecked').toggleClass('icon-checkbox-checked');
-      var check = !( icon.prop('class') == 'icon-checkbox-unchecked' );
+      check = !( icon.prop('class') == 'icon-checkbox-unchecked' );
     } else 
-      var check = parent.checked;
+      check = parent.checked;
 
     children.each(function(i){ $(this).prop("checked", check); });
-    f_kids(children); // aplicando funcoes nos filhos
 
-    if (can_enable_or_disable){
+    if (can_enable_or_disable) {
       // o botao de edicao devera ser habilitado apenas para um unico objeto
       var children_checked = $('input:checkbox[name*="' + children_names + '"]:checked');
       $(".btn_edit", parent_block_div).attr("disabled", !(children_checked.length == 1));
@@ -103,7 +101,6 @@ $.fn.nice_checkbox = function(options){
 
       enable_other_elements(children_checked.length);
     }
-
   }); // end click
 
   return this;
