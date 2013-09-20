@@ -3,7 +3,7 @@
 .list_lessons{:"data-link-list" => list_lessons_path(allocation_tags_ids: @allocation_tags_ids)}
   = hidden_field_tag(:allocation_tags_ids, params[:allocation_tags_ids])
 
-  = link_to t(".new_module"), new_lesson_module_path(:allocation_tags_ids => params[:allocation_tags_ids]), :'data-tooltip' => t(".new_module"), class: "btn btn_default link_new_module fancybox.ajax", id: "new-discussion" 
+  = link_to t(".new_module"), new_lesson_module_path(:allocation_tags_ids => params[:allocation_tags_ids]), :'data-tooltip' => t(".new_module"), class: "btn btn_default link_new_module", id: "new-discussion" 
 
   - previous_allocation_tag = nil
 
@@ -21,7 +21,7 @@
             .block_title
               %h2
                 = lesson_module.name
-                = link_to (content_tag(:i, nil, :class=>'icon-edit')), edit_lesson_module_path(lesson_module, allocation_tags_ids: params[:allocation_tags_ids]), class: 'block_title_button edit_module fancybox.ajax', :'data-tooltip' => t(".edit_lesson_module")
+                = link_to (content_tag(:i, nil, :class=>'icon-edit')), edit_lesson_module_path(lesson_module, allocation_tags_ids: params[:allocation_tags_ids]), class: 'block_title_button edit_module', :'data-tooltip' => t(".edit_lesson_module")
                 = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'block_title_button delete_module', :'data-link-delete' => lesson_module_path(lesson_module, allocation_tags_ids: params[:allocation_tags_ids]), :'data-tooltip' => t(".delete_lesson_module"), :"data-module-id" => lesson_module.id
             .block_content_toolbar
               .block_toolbar_left.btn-group
@@ -30,15 +30,15 @@
                   %i.icon-arrow-down-3
                 %div{:id=>"dropdown_#{lesson_module.id}", :class=>"dropdown dropdown-tip"}
                   %ul.dropdown-menu
-                    %li= link_to (t(:new_lesson, scope: [:lessons, :list])), new_lesson_path(lesson_module_id: lesson_module.id, allocation_tags_ids: params[:allocation_tags_ids]), class: "link_new_lesson fancybox.ajax"
+                    %li= link_to (t(:new_lesson, scope: [:lessons, :list])), new_lesson_path(lesson_module_id: lesson_module.id, allocation_tags_ids: params[:allocation_tags_ids]), class: "link_new_lesson"
                     %li= link_to "Importar aula", "#", onclick: "javascript: alert('importar aula');", id: 'import_lesson'
               .block_toolbar_right
                 .btn-group{class: "module-#{lesson_module.id}"}
                   = link_to (content_tag(:i, nil, :class=>'icon-move')), "#", :class => 'btn', id: "move_lesson_from_#{lesson_module.id}", :'data-tooltip' => t(".move_lesson"), "data-dropdown-alt" => "#move_lesson_dropdown_#{lesson_module.id}", disabled: true
-                  = link_to (content_tag(:i, nil, :class=>'icon-archive')), "#", class: 'btn btn_default manage_files_lesson fancybox.ajax', :"data-module-id" => lesson_module.id, :'data-tooltip' => t(".manage_files"), :"data-link-manage" => lesson_files_path(lesson_id: 'lessons_ids'), :'data-single' => true
+                  = link_to (content_tag(:i, nil, :class=>'icon-archive')), "#", class: 'btn btn_default manage_files_lesson', :"data-module-id" => lesson_module.id, :'data-tooltip' => t(".manage_files"), :"data-link-manage" => lesson_files_path(lesson_id: 'lessons_ids'), :'data-single' => true
                   = link_to (content_tag(:i, nil, :class=>'icon-install')), "#", class: 'btn download_lesson_zip', :'data-tooltip' => t(".download_zip"), :"data-link-verify" => verify_download_lessons_path(lessons_ids: "lessons_param", allocation_tags_ids: @allocation_tags_ids), :"data-link-download" => download_files_lessons_path(lessons_ids: 'lessons_param', allocation_tags_ids: @allocation_tags_ids), :"data-module-id" => lesson_module.id
                   = link_to (content_tag(:i, nil, :class=>'icon-checkmark')), "#", class: 'btn release_lessons', :"data-module-id" => lesson_module.id, :'data-tooltip' => t(".release"), :"data-link-update" => change_status_lesson_path(id: ':id', status: Lesson_Approved, allocation_tags_ids: @allocation_tags_ids)
-                  = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn link_edit_lesson fancybox.ajax btn_edit', :'data-tooltip' => t(".edit_lesson"), :"data-module-id" => lesson_module.id, :"data-link-edit" => edit_lesson_path(id: ':id', allocation_tags_ids: @allocation_tags_ids)
+                  = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn link_edit_lesson btn_edit', :'data-tooltip' => t(".edit_lesson"), :"data-module-id" => lesson_module.id, :"data-link-edit" => edit_lesson_path(id: ':id', allocation_tags_ids: @allocation_tags_ids)
                   = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn delete_lesson btn_del', :'data-tooltip' => t(".delete_lesson"), :'data-link-delete' => lesson_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), :'data-module_id' => lesson_module.id
                   #lesson_dropdown.dropdown-alt.dropdown-tip
                     .dropdown-panel
@@ -104,7 +104,7 @@
 
     $(".btn_edit, .btn_del, .release_lessons, .download_lesson_zip, .manage_files_lesson").attr("disabled", true);
 
-    $(".link_new_lesson, .link_new_module, .edit_module").fancybox({
+    $(".link_new_lesson, .link_new_module, .edit_module").call_fancybox({
       width: '70%'
     });
 
@@ -119,10 +119,7 @@
 
       if(selected_lessons.length == 1){
         url = $(this).data("link-edit").replace(':id', selected_lessons[0]);
-        $.fancybox.open(
-          $(this),
-          {href : url}
-        );
+        $(this).call_fancybox({href : url, open: true});
         return false;
       }else
         flash_message("#{I18n.t(:one_lesson_must_be_selected, scope: [:lesson_files])}", "alert");
@@ -249,10 +246,7 @@
         lessons_with_file_type = $("input.m_"+module_id+":checked[data-file-type='true']");
         if(lessons_with_file_type.length == selected_lessons.length){
           url = $(this).data("link-manage").replace('lessons_ids', selected_lessons[0]);
-          $.fancybox.open(
-            $(this),
-            {href : url}
-          );
+          $(this).call_fancybox({href : url, open: true});
         }else
           flash_message("#{I18n.t(:lesson_must_have_file_type, scope: [:lesson_files])}", "alert");
       }else

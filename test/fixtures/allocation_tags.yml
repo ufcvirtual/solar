@@ -121,3 +121,7 @@ al25:
 al26:
   id: 26
   curriculum_unit_id: 6
+
+al27:
+  id: 27
+  course_id: 3

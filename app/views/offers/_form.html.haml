@@ -30,9 +30,9 @@
       .offer_schedule_dates.info=l @offer.semester.offer_schedule.start_date.to_date, format: :datepicker
       .offer_schedule_dates.label.info= t(:to, scope: [:schedules])
       .offer_schedule_dates.info=l @offer.semester.offer_schedule.end_date.to_date, format: :datepicker
-    .period_schedule_check_box
+    .period_schedule_check_box.period_date
       = check_box_tag :have_period_schedule, true, not(doesnt_have_period)
-      = t(".define_different_dates")  
+      %span.checkbox_label= label_tag :have_period_schedule, t(".define_different_dates")  
     // da oferta, caso usuário escolha seu preenchimento
     #period_schedule{class: (doesnt_have_period ? 'invisible' : '')}
       = f.label :offer, required: true
@@ -49,9 +49,9 @@
       = f.label t(".semester_enrollment")
       .enrollment_schedule_dates.info=l @offer.semester.enrollment_schedule.start_date.to_date, format: :datepicker
       .enrollment_schedule_dates.info= (@offer.semester.enrollment_schedule.end_date.nil? ? (t(:no_end_date, scope: [:offers]).downcase) : (t(:to, scope: [:schedules]) + l(@offer.semester.enrollment_schedule.end_date.to_date, format: :datepicker)))
-    .enrollment_schedule_check_box
+    .enrollment_schedule_check_box.period_date
       = check_box_tag :have_enrollment_schedule, true, not(doesnt_have_enrollment)
-      = t(".define_different_dates")
+      %span.checkbox_label= label_tag :have_enrollment_schedule, t(".define_different_dates")  
     // da oferta, caso usuário escolha o preenchimento
     #enrollment_schedule{class: (doesnt_have_enrollment ? 'invisible' : '')}
       = f.label :enrollment, required: true
@@ -63,9 +63,9 @@
           .enrollment_schedule_dates= s.input :end_date, input_html: {value: enroll_end_date }
         // exibição de erros na localização padrão (sem isso, erros na primeira data -start_date- quebram o layout, pois há a tentativa de exibir o erro ao lado do campo)
         .enrollment_schedule_dates.error= @offer.enrollment_schedule.errors[:start_date].first || @offer.enrollment_schedule.errors[:end_date].first unless @offer.enrollment_schedule.nil? or @offer.enrollment_schedule.errors.full_messages.empty?
-      .end_date_check_box
+      .end_date_check_box.period_date
         = check_box_tag :have_end_date, true, not(doesnt_have_enroll_end_date)
-        = t('.enable_end_date')
+        %span.checkbox_label= label_tag :have_end_date, t('.enable_end_date')
 
     .form-actions.right_buttons
       = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"

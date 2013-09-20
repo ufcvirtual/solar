@@ -1,0 +1,301 @@
+/* The default text style used on every page */
+#hover { padding:2px; position:absolute; display:none; background-color:#FFFFCC; border:1px solid #999999; }
+
+#EqnEditor { margin:0 auto; }
+
+#EqnEditor select, inpout { border:1px solid #8fb6bd; font-size:11px; }
+#EqnEditor textarea { border:1px solid #8fb6bd; }
+
+#EqnEditor .top {padding:2px 0; }
+#EqnEditor .bottom { border-bottom:1px solid #9a9a9a; }
+#EqnEditor .toolbar_wrapper { margin:0 auto; }
+#EqnEditor .toolbar { position:absolute; padding-top:2px; }
+#EqnEditor .toolbar_space { height:38px; margin:0 auto; }
+#EqnEditor .panel, #EqnEditor .panel label { display:inline-block; padding:0px 3px; overflow:hidden; vertical-align:top; font-size:12px; }
+#toolbar_example { clear:left; }
+
+#intro { position:absolute; left:30px; color:#FF6600; font-size:16px; }
+
+/*Minhas alterações*/
+
+#EqnEditor .panel label[for=inline], #inline, input[value = Favoritos], 
+input[value = Histórico], img[alt = '+'], img[alt = 'help'], input[value = "Favorites"], input[value = "History"]
+{
+  display: none;
+}
+
+
+#panel14{
+  position: absolute;
+  top: -1px;
+  left: 122px;
+}
+
+#panel13{
+  position: absolute;
+  left: 517px;
+  top: 36px;
+}
+
+#panel4{
+  position: absolute;
+  left: 379px;
+  top: 36px;
+
+}
+
+#panel16{
+  position: absolute;
+  left: 448px;
+  top: 36px;
+
+}
+
+#panel6{
+  position: absolute;
+  left: 489px;
+  top: 0px;
+}
+
+#panel15{
+  position: absolute;
+  left: 344px;
+  top: 34px;
+}
+
+#panel1{
+  position: absolute;
+  left: 454px;
+  top: -1px;
+
+}
+
+#panel2{
+  position: absolute;
+  left: 523px;
+  top: 0px;
+}
+
+#panel3{
+  position: absolute;
+  left: 397px;
+  top: -1px;
+}
+
+#panel11{
+  position: absolute;
+  left: 380px;
+  top: 73px;
+}
+
+#panel5{
+  position: absolute;
+  left: 223px;
+  top: 107px;
+}
+
+#panel8{
+  position: absolute;
+  left: 310px;
+  top: 71px;
+}
+
+#panel9{
+  position: absolute;
+  left: 223px;
+  top: 70px;
+}
+
+#panel12{
+  position: absolute;
+  left: 258px;
+  top: 70px;
+}
+
+#panel10{
+  position: absolute;
+  left: 240px;
+  top: 34px;
+}
+#font{
+  position: absolute;
+  left: 110px; 
+  top: 41px;
+  width: 100px;
+}
+
+#fontsize{
+  position: absolute;
+  left: 0px;
+  top: 83px;
+  width: 100px;
+}
+
+#dpi{
+  position: absolute;
+  left: 110px;
+  top: 83px;
+  width: 100px;
+}
+
+#bg{
+  position: absolute;
+  left: 0px;
+  top: 124px;
+  width: 100px;
+}
+
+#compressed{
+  position: absolute;
+  left: 110px;
+  top: 127px;
+}
+
+label[for = compressed]{
+  position: absolute;
+  left: 123px;
+  top: 126px;
+  color: #03355f;
+}
+
+#cke_33_uiElement, #cke_57_uiElement{
+  position: absolute;
+  top: 70px;
+  color: #03355f;
+}
+
+select[title = 'Cores da equação'], select[title = "Equation Color"]{
+  position: absolute;
+  top: 43px;
+  left: 0px;
+  width: 100px;
+}
+
+#cke_34_uiElement, #cke_58_uiElement{
+  position: absolute;
+  left: 120px;
+  color: #03355f;  
+}
+
+#cke_35_uiElement, #cke_59_uiElement{
+  position: absolute;
+  left: 9px;
+  top: 112px; 
+  color: #03355f; 
+}
+
+#cke_36_uiElement, #cke_60_uiElement{
+  position: absolute;
+  left: 120px;
+  top: 112px;
+  color: #03355f;
+}
+
+#cke_37_uiElement, #cke_61_uiElement{
+  position: absolute;
+  left: 10px;
+  top: 154px;
+  color: #03355f;
+}
+
+#cke_38_uiElement, #cke_62_uiElement{
+  position: absolute;
+  top: 207px;
+  color: #03355f;
+}
+
+#cke_40_uiElement, #cke_64_uiElement{
+  position: absolute;
+  top: 351px; 
+  color: #03355f;  
+}
+
+#CClatex{
+  position: absolute;
+  top: 226px;  
+}
+
+#CCequation{
+  margin-top: 233px;
+}
+
+.cke_dialog_ui_button_ok, .cke_dialog_ui_button_cancel{
+  width: 75px;
+}
+
+#cke_65_label, #cke_41_label{
+  background-color: #cccacc;
+  position: absolute;
+  left: 293px;
+  top: 151px;
+  border: 1px solid #7c92a4;
+  font-size: 15pt;
+  padding-bottom: 1px;
+}
+
+select[title = 'Functions']{
+  position: absolute;
+  top: -1px;
+  left: 234px;
+  
+}
+
+#bar2{
+  position: absolute;
+  z-index: 100000000;
+  background-color: #fff;
+  height: 139px;
+  width: 587px;
+  margin-left: -10px;
+}
+
+/*button[value = 'Física'] .greybutton, button[value = 'Física']{
+  width: 42px;
+  /*margin-left: -2px;*/
+
+  img[alt = 'close']{
+    margin-top: -22px;
+    margin-right: -17px;
+  }
+
+  /* ------- Button formating ------ */
+  
+  input.bluebutton, input.lightbluebutton, input.greybutton {
+    border-style: solid;
+    width: 58px;
+    height: 20px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    /*font-family: "lucida grande", tahoma, verdana, arial, sans-serif; */
+    text-align: center; 
+    cursor:pointer;
+    /*cursor:hand;*/
+    padding:1px 4px 2px;
+    margin: -1px;
+  }
+
+  input.bluebutton { background-color:#003794; }
+  input.greybutton { background-color:#888888; }
+
+  input[value = Exemplos], input[value = "Examples"]{
+    background: -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#e7e7e7));
+    background-color: #e7e7e7;
+    color: #636363;
+    height: auto;
+    border: 1px solid #b4b4b4;
+    position: absolute;
+    left:330px; 
+    top:-2px;
+  }
+
+  input[value = Limpar], input[value = "Clear"]{
+    background: -webkit-gradient(linear, left top, left bottom, from(#dde8f2), to(#316697));
+    background-color: #316697;
+    color: #fff;
+    height: auto;
+    border: 1px solid #69859c; 
+    position: absolute;
+    top: -2px;
+    left: 53px;
+  }

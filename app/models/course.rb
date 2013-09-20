@@ -1,4 +1,5 @@
 class Course < ActiveRecord::Base
+  default_scope order: "name"
 
   include Taggable
 

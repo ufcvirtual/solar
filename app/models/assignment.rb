@@ -27,7 +27,7 @@ class Assignment < ActiveRecord::Base
 
   attr_accessible :schedule_attributes, :enunciation_files_attributes, :name, :enunciation, :type_assignment, :schedule_id
 
-  def copy_dependencies(assignment_to_copy)
+  def copy_dependencies_from(assignment_to_copy)
     AssignmentEnunciationFile.create! assignment_to_copy.enunciation_files.map {|file| file.attributes.merge({assignment_id: self.id})} unless assignment_to_copy.enunciation_files.empty?
     GroupAssignment.create! assignment_to_copy.group_assignments.map {|group| group.attributes.merge({academic_allocation_id: self.academic_allocations.first.id})} unless assignment_to_copy.group_assignments.empty?
   end

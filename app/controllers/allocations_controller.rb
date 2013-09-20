@@ -120,12 +120,10 @@ class AllocationsController < ApplicationController
   def update
     # authorize! :update, Allocation #.find(params[:id]) [authorize pelo authorize_resources]
 
-    @allocation       = Allocation.find(params[:id])
+    mutex = Mutex.new # utilizado para organizar/controlar o comportamento das threads
+    allocations = Allocation.where(id: params[:id].split(","))
     allocation_tag_id = (params.include?(:allocation) and params[:allocation].include?(:group_id)) ? Group.find(params[:allocation][:group_id]).allocation_tag.id : nil
-    allocations       = Allocation.find(params[:id].split(','))
-    allocation        = allocations.first
-    new_status        = params.include?(:enroll) ? Allocation_Activated.to_i : ((params.include?(:allocation) and params[:allocation].include?(:status)) ? params[:allocation][:status] : 0)
-
+    
     # verifica se existe mudanca de turma
       # se sim, todas as alocacoes serao canceladas e serao criadas novas com a nova turma
       # se não, somente o status das alocacoes serao modificados
@@ -136,18 +134,31 @@ class AllocationsController < ApplicationController
         # mudanca de turma, nao existe chamada multipla para esta funcionalidade
         if ((not params.include?(:multiple)) and (not allocation_tag_id.nil?) and (allocation_tag_id != allocations.first.allocation_tag_id))
           # criando novas alocacoes e cancelando as antigas
-          @allocation = Allocation.create!({:user_id => allocation.user_id, :allocation_tag_id => allocation_tag_id, :profile_id => allocation.profile_id, :status => params[:allocation][:status]})
-          allocation.update_attributes(:status => Allocation_Cancelled) # cancelando a anterior
+          allocation = allocations.first
+          allocation.update_attribute(:status, Allocation_Cancelled) # cancelando a anterior
+          @allocation = Allocation.create!(allocation.attributes.merge({allocation_tag_id: allocation_tag_id, status: params[:allocation][:status]}))
 
-          Notifier.enrollment_accepted(@allocation.user.email, @allocation.group.code_semester).deliver if params[:allocation][:status].to_i == Allocation_Activated.to_i
+          Thread.new do
+            mutex.synchronize {
+              Notifier.enrollment_accepted(@allocation.user.email, @allocation.group.code_semester).deliver if params[:allocation][:status].to_i == Allocation_Activated.to_i
+            }
+          end
         else # sem mudanca de turma
-          @allocation = allocation
+
+          new_status  = params.include?(:enroll) ? Allocation_Activated.to_i : ((params.include?(:allocation) and params[:allocation].include?(:status)) ? params[:allocation][:status] : 0)
+
           allocations.each do |al|
             changed_status_to_accepted = ((al.status.to_i != Allocation_Activated.to_i) and (new_status.to_i == Allocation_Activated.to_i))
-            al.update_attributes(:status => new_status)
+            al.update_attribute(:status, new_status)
 
-            Notifier.enrollment_accepted(allocation.user.email, allocation.group.code_semester).deliver if changed_status_to_accepted
+            Thread.new do
+              mutex.synchronize {
+                Notifier.enrollment_accepted(al.user.email, al.group.code_semester).deliver if changed_status_to_accepted
+              }
+            end
           end # allocations
+
+          @allocation = allocations.first
         end # if
       end # transaction
 
@@ -155,7 +166,7 @@ class AllocationsController < ApplicationController
     rescue ActiveRecord::RecordNotUnique
       error     = true
       msg_error = t(:student_already_in_group, :scope => [:allocations, :error])
-    rescue Exception
+    rescue 
       error     = true
       msg_error = t(:enrollment_unsuccessful_update, :scope => [:allocations, :manage])
     end
@@ -164,8 +175,8 @@ class AllocationsController < ApplicationController
       render :js => "javascript:flash_message('#{msg_error}', 'alert');"
     else
       respond_to do |format|
-        format.html { render :action => :show }
-        format.json { render :json => {:status => "ok"}  }
+        format.html { render action: :show }
+        format.json { render json: {status: "ok"}  }
       end
     end
   end

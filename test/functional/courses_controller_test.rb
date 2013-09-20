@@ -5,8 +5,8 @@ class CoursesControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
   def setup
-    @aluno1, @editor = users(:aluno1), users(:coorddisc)
-    sign_in @editor
+    @aluno1, @coorddisc, @editor = users(:aluno1), users(:coorddisc), users(:editor)
+    sign_in @coorddisc
   end
 
   test "listar" do
@@ -90,10 +90,11 @@ class CoursesControllerTest < ActionController::TestCase
   end
 
   test "com turmas - nao deletar mesmo com permissao" do
+    sign_in @editor
     quimica = courses(:c2).id
 
     assert_no_difference("Course.count") do
-      delete :destroy, {id: quimica}
+      delete :destroy, {id: quimica, format: "json"}
     end
 
     assert_response :unprocessable_entity

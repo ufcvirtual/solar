@@ -619,13 +619,13 @@
   lesson_closed: "Aula encerrada"
   lesson_closed_short: "encerrada"
   since: A partir de
+  no_end_date: Em diante
 
   lessons:
     curriculum_unit_not_selected: Unidade Curricular não selecionada
     index:
       lesson_table_date: Data de acesso
       lesson_table_title: "Aulas disponíveis"
-      since: A partir de
     list: 
       lesson: Aula
       order: Ordem
@@ -1594,6 +1594,10 @@
       new: Novo curso
       edit: Editar curso
       delete: Deletar curso
+      code: Código
+      name: Nome
+      cant_edit: Não é possível editar este curso
+      cant_delete: Não é possível remover este curso
     form:
       name: Nome
       code: Código
@@ -1621,6 +1625,12 @@
       must_be_link: Deve ser um link
 
   chat_rooms:
+    list:
+      title_my_chats: Meus Chats
+      title_other_chats: Outros Chats
+      detail: Detalhes
+      availability: Disponibilidade
+      message_no_chat: Nenhum chat disponível
     index:
       chats: Chats
       new_chat: Novo Chat

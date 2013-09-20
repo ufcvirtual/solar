@@ -6,7 +6,7 @@
 
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
-    .form-inputs.block_content
+    .form-inputs.block_content.assignments_box
       = f.input :name, required: true
       = f.input :enunciation, required: true
 
@@ -42,7 +42,7 @@
           - @groups.each do |group|
             %span.collection_check_boxes= group.code
 
-      .right_buttons_assignment
+      .right_buttons
         = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
         = button_tag t(:save), :class => "btn btn_main btn_lightbox", :type => "button", :id => "save"
 

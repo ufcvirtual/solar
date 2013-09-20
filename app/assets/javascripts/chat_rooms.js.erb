@@ -20,7 +20,6 @@ jQuery(function($){
       $(".box").hide();
       $("#all_participants").prop("checked", false);
       $("[name*='chat_room[participants_attributes]']").each(function(i){ $(this).prop("checked", false); });
-
     }
 
   });
@@ -48,7 +47,6 @@ jQuery(function($){
       $(this).datepicker("setDate", new Date(start_date));
   });
 
-
   /* Listagem */
 
   $(".expand, .compress").click(function(){
@@ -56,7 +54,7 @@ jQuery(function($){
     $($(this).parent().siblings()[0]).show();
   });
 
-  $('#new_chat').fancybox();
+  $('#new_chat').call_fancybox();
 
   $("#all_chats").nice_checkbox();
 
@@ -69,10 +67,7 @@ jQuery(function($){
     var chats_ids = $('.ckb_chat:checked', $(this).parents("div.list_chat_rooms")).map(function() { return this.value; }).get();
     if (!(!chats_ids.length || chats_ids.length > 1)) {
       var url_edit = $(this).data('link-to-edit').replace(':id', chats_ids);
-      $.fancybox.open(
-        $(this),
-        {href : url_edit}
-      );
+      $(this).call_fancybox({href : url_edit, open: true});
     }
     return false;
   });

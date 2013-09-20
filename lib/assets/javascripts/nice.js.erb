@@ -128,7 +128,7 @@ $.fn.nice_filter = function(options) {
         var data = eval("({" + combos + "})"); // transformando os valores dos filtros em json
         var url = $(this).data("url-search");
 
-        if (typeof(options.data_function) == "function"){
+        if (typeof(options) != "undefined" && typeof(options.data_function) == "function") {
           // se selecionou groups, mas não selecionou nenhuma turma, impede de prosseguir
           if(options.data_function().radio_option == "group" && !options.data_function().groups_id.length){
             flash_message("<%= I18n.t(:alert, scope: [:editions]) %>", "alert");

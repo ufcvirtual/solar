@@ -4,11 +4,11 @@
 
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_chat_room_path(allocation_tags_ids: [@allocation_tags_ids].flatten), class: " btn btn_main fancybox.ajax", id: "new_chat", :"data-tooltip" => t(".new_chat")
+      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_chat_room_path(allocation_tags_ids: [@allocation_tags_ids].flatten), class: " btn btn_main", id: "new_chat", :"data-tooltip" => t(".new_chat")
 
     .block_toolbar_right
       .btn-group
-        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit fancybox.ajax', "data-link-to-edit" => edit_chat_room_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-edit-title" => t(".edit_chat"), disabled: true, :"data-tooltip" => t(".edit_chat")
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit', "data-link-to-edit" => edit_chat_room_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-edit-title" => t(".edit_chat"), disabled: true, :"data-tooltip" => t(".edit_chat")
         = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_chat', :"data-link-delete" => chat_room_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), disabled: true, :"data-tooltip" => t(".delete_chats")
 
   - unless @chat_rooms.empty? or @chat_rooms.nil?
@@ -35,7 +35,7 @@
                   .complete.invisible
                     = chat.description
                     = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_description"))
-                = render "groups/groups_tags", groups: chat.groups, tool: chat, all_groups: all_groups
+                = render "groups/groups_tags", groups: chat.groups, tool: chat, all_groups: all_groups, paths: {add: add_group_to_chat_rooms_path(id: "param_id", tool_id: chat.id), remove: remove_group_from_chat_rooms_path(id: "param_id", tool_id: chat.id), unbind: unbind_group_from_chat_rooms_path(id: "param_id", tool_id: chat.id)}
 
             %td{style: 'text-align:center;'}
               %div= [l(chat.schedule.start_date, format: :normal), l(chat.schedule.end_date, format: :normal)].join(" - ")

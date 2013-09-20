@@ -70,8 +70,16 @@
         photo_content_type: "Invalid file type"
         photo_file_size: "File too large. The maximum size of your photo should be up to 700KB."
       curriculum_unit:
+        name: Name
+        code: Code
+        category: Category
         curriculum_unit_type_id: Category
         curriculum_unit_type: Category
+        syllabus: Syllabus
+        objectives: Objectives
+        prerequisites: Prerequisites
+        resume: Resume
+        passing_grade: Passing grade
       course: 
         name: Name
         code: Code 
@@ -455,13 +463,13 @@
   lesson_closed: "Lesson closed"
   lesson_closed_short: "closed"
   since: Since
+  no_end_date: "On"
 
   lessons:
     curriculum_unit_not_selected: Curriculum Unit not selected
     index:
       lesson_table_date: "Access date"
       lesson_table_title: "Available Lessons"
-      since: Since
     list:
       lesson: Lesson
       order: Order
@@ -1428,6 +1436,10 @@
       new: New course
       edit: Edit course
       delete: Delete course
+      code: Code
+      name: Name
+      cant_edit: Can't edit this course
+      cant_delete: Can't delete this course
     form:
       name: Name
       code: Code
@@ -1455,6 +1467,12 @@
       must_be_link: Must be a link
 
   chat_rooms:
+    list:
+      title_my_chats: My Chats
+      title_other_chats: Other Chats
+      detail: Details
+      availability: Availability
+      message_no_chat: No chat available
     index:
       chats: Chats
       new_chat: New Chat

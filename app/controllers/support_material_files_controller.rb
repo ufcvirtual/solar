@@ -61,10 +61,8 @@ class SupportMaterialFilesController < ApplicationController
       @support_material.update_attributes!(params[:support_material_file])
       render json: {success: true, notice: t(:updated, scope: [:support_materials, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
-      raise "a"
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue Exception => error
-      raise "#{error}"
+    rescue
       render :new
     end
   end

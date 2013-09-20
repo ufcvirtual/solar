@@ -27,7 +27,7 @@
       = f.input :objectives, :class => "btn btn_default"
       = f.input :prerequisites 
       .form-actions.button-align
-        = button_tag t(".cancel"), class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel, scope: [:discussion, :buttons]), id: "cancel"
+        = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
         = button_tag t(".save"), class: "btn btn_main btn_lightbox", alt: t(:save, scope: [:discussion, :buttons]), type: "button", id: "save"
 
 :javascript
@@ -61,12 +61,10 @@
               if($("#curriculum_unit").combobox('value') == id)
                 $("#autocomplete-input").val(post_code_name);
             }
+
           });
         }
       });
     });
 
-    $("#cancel").click(function(){
-      removeLightBox();
-    });
   });

@@ -99,9 +99,9 @@
 
 .form_requirement {
   display: block;
-  float: right;
-  position: relative;
-  bottom: 23px;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .label_usuario {
@@ -141,8 +141,16 @@ select[disabled] {
 * alinhamento do form
 */
 
-#lesson_form, #module_form, #discussion_form{
+#module_form, #discussion_form{
   width: 415px;
+}
+
+#lesson_form,{
+  width: 419px;
+}
+
+#module_form{
+  height: 121px;
 }
 
 .lesson_module_name{
@@ -153,8 +161,8 @@ select[disabled] {
   width: 217px;
 }
 
-.buttons_align_module{
-  margin-right: 35px;
+#curriculum_unit_form{
+  width: 420px;
 }
 
 /**
@@ -164,11 +172,11 @@ select[disabled] {
   padding-left: 143px;
   padding-bottom: 5px;
 
+}
   .button-align {
     text-align: right;
-    padding-right: 46px;
+    margin-top: 10px;
   }
-}
 
 /**
 * Registration
@@ -259,3 +267,9 @@ select[disabled] {
 
 
 */
+
+.checkbox_label label{
+  color: $label_color; 
+  width: auto;
+}
+

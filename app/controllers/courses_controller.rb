@@ -30,8 +30,8 @@ class CoursesController < ApplicationController
   end
 
   def edit
-    authorize! :update, Course
     @course = Course.find(params[:id])
+    authorize! :update, @course
 
     respond_to do |format|
       format.html # new.html.erb
@@ -52,8 +52,8 @@ class CoursesController < ApplicationController
   end
 
   def update
-    authorize! :update, Course
     @course = Course.find(params[:id])
+    authorize! :update, @course
 
     if @course.update_attributes(params[:course])
       render json: {success: true, notice: t(:updated, scope: [:courses, :success]), code_name: @course.code_name, id: @course.id}
@@ -63,8 +63,8 @@ class CoursesController < ApplicationController
   end
 
   def destroy
-    authorize! :destroy, Course
     @course = Course.find(params[:id])
+    authorize! :destroy, @course
 
     if @course.destroy
       render json: {success: true, notice: t(:deleted, scope: [:courses, :success])}

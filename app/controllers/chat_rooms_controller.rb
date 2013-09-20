@@ -1,6 +1,6 @@
 class ChatRoomsController < ApplicationController
 
-  layout false
+  layout false, except: :list 
 
   def index
     @allocation_tags_ids = (params[:allocation_tags_ids].class == String ? params[:allocation_tags_ids].split(",") : params[:allocation_tags_ids])
@@ -79,6 +79,15 @@ class ChatRoomsController < ApplicationController
     rescue
       render json: {success: false, alert: (has_messages ? t(:chat_has_messages, scope: [:chat_rooms, :error]) : t(:deleted, scope: [:chat_rooms, :error]))}, status: :unprocessable_entity
     end
+  end
+
+  def list
+    #authorize! :list, ChatRoom, on: @allocation_tags_ids
+
+    @allocation_tags_ids = params[:allocation_tags_ids]
+    @responsible = ChatRoom.responsible?(@allocation_tags_ids,current_user.id) 
+    @my_chats = ChatRoom.chats_user(@allocation_tags_ids,current_user.id)
+    @other_chats = ChatRoom.chats_other_users(@allocation_tags_ids,current_user.id) unless @responsible
   end
 
 end

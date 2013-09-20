@@ -4,13 +4,13 @@
     %h2= t(:courses, scope: [:editions, :academic])
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_course_path, class: " btn btn_main fancybox.ajax", id: "new_course", :'data-tooltip' => t(".new") 
+      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_course_path, class: " btn btn_main", id: "new_course", :'data-tooltip' => t(".new") 
 
   %table.tb_list
     %head
       %tr.lines
-        %th= t(:code)
-        %th= t(:name)
+        %th= t(".code")
+        %th= t(".name")
         %th{:width => "12%"}
     %body
       - @courses.each do |course|
@@ -18,16 +18,29 @@
           %td= course.code
           %td= course.name
           %td
-            = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_course_path(course), class: 'btn link_edit_course fancybox.ajax', :'data-tooltip' => t(".edit")
-            = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_caution delete_course', :"data-link-delete" => course_path(course), :'data-tooltip' => t(".delete"), id: course.id
+            = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_course_path(course), class: 'btn link_edit_course', :'data-tooltip' => t(".edit"), disabled: not(can?(:update, course))
+            = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_caution delete_course', :"data-link-delete" => course_path(course), :'data-tooltip' => t(".delete"), id: course.id, disabled: not(can?(:destroy, course))
 
 :javascript
 
   $(function(){
+    $("#new_course, .link_edit_course").click(function(e){
+      e.preventDefault();
+      if ($(this).attr('disabled')){
+        flash_message("#{t(".cant_edit")}", "alert");
+        return false;
+      }
 
-    $("#new_course, .link_edit_course").fancybox();
+      $(this).call_fancybox({open: true});
+    });
 
-    $('.delete_course').click(function(){
+    $('.delete_course').click(function(e){
+      e.preventDefault();
+      if ($(this).attr('disabled')){
+        flash_message("#{t(".cant_delete")}", "alert");
+        return false;
+      }
+
       var curriculum_unit_id = $(this).attr("id");
       $(this).nice_delete({
         parent: 'tr.lines',
@@ -45,8 +58,5 @@
           $('option[value="'+curriculum_unit_id+'"]').remove();
         }
       });
-
     });
-
-
   });

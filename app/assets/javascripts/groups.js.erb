@@ -10,10 +10,7 @@ $(function(){
 
   $('#btn_new_group').click(function(){
     var url = $(this).data("link-new").replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
-    $.fancybox.open(
-      $(this),
-      {href: url}
-    );
+    $(this).call_fancybox({href : url, open: true});
   });
 
   $('.btn_edit').click(function(){
@@ -25,11 +22,7 @@ $(function(){
     var groups_ckb = $('.ckb_group:checked', $(this).parents("div.list_groups")).map(function() { return this.value; }).get();
     if (!(!groups_ckb.length || groups_ckb.length > 1)) {
       var url_edit = $(this).data('link-edit').replace(':id', groups_ckb);
-
-      $.fancybox.open(
-        $(this),
-        {href : url_edit}
-      );
+      $(this).call_fancybox({href : url_edit, open: true});
     }
     return false;
   });

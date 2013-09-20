@@ -21,12 +21,12 @@
               %i.icon-arrow-down-3
             %div{:id=>"dropdown_#{allocation_tag.id}", :class=>"dropdown dropdown-tip"}
               %ul.dropdown-menu
-                %li= link_to t(".new_file"), new_support_material_file_path(material_type: Material_Type_File, allocation_tags_ids: [allocation_tag.id]), :"data-box-title" => t(".new_file"), class: 'link_new_material_file fancybox.ajax'
-                %li= link_to t(".new_link"), new_support_material_file_path(material_type: Material_Type_Link, allocation_tags_ids: [allocation_tag.id]), :"data-box-title" => t(".new_link"), class: 'link_new_material_link fancybox.ajax'
+                %li= link_to t(".new_file"), new_support_material_file_path(material_type: Material_Type_File, allocation_tags_ids: [allocation_tag.id]), :"data-box-title" => t(".new_file"), class: 'link_new_material_file'
+                %li= link_to t(".new_link"), new_support_material_file_path(material_type: Material_Type_Link, allocation_tags_ids: [allocation_tag.id]), :"data-box-title" => t(".new_link"), class: 'link_new_material_link'
 
           .block_toolbar_right
             .btn-group
-              = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit edit_material fancybox.ajax', :"data-link-edit" => edit_support_material_file_path(':id', allocation_tags_ids: [allocation_tag.id]), "data-edit-title" => t(".edit_link"), disabled: true
+              = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit edit_material', :"data-link-edit" => edit_support_material_file_path(':id', allocation_tags_ids: [allocation_tag.id]), "data-edit-title" => t(".edit_link"), disabled: true
               = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del delete_material', :"data-link-delete" => support_material_file_path(':id', allocation_tags_ids: [allocation_tag.id]), disabled: true
 
         - materials = allocation_tag.support_material_files
@@ -67,13 +67,13 @@
 
   $(function(){
 
-    $(".link_new_material_file, .link_new_material_link").fancybox();
+    $(".link_new_material_file, .link_new_material_link").call_fancybox();
 
     $(".all_support_material").map(function(){ $(this).nice_checkbox() });
 
     $('.edit_material').click(function() {
       if ($(this).attr('disabled') == 'disabled'){
-        flash_message("#{t(:choose_one, scope: [:support_materials, :index])}", "alert");
+        flash_message("#{I18n.t(:choose_one, scope: [:support_materials, :index])}", "alert");
         return false;
       }
 
@@ -81,25 +81,23 @@
       var material_ids = checked_material.map(function() { return this.value; }).get();
       var file_checked = checked_material.map(function() { return $(this).data("is-link"); }).get();
       if ($.inArray(true, file_checked)) {
-        flash_message("#{t(:must_be_link, scope: [:support_materials, :index])}", "alert");
+        flash_message("#{I18n.t(:must_be_link, scope: [:support_materials, :index])}", "alert");
         return false; 
       }
       var url_edit = $(this).data('link-edit').replace(':id', material_ids);
-      $.fancybox.open(
-        $(this),
-        {href : url_edit}
-      );
+      $(this).call_fancybox({href : url_edit, open: true});
+
       return false;
     });
 
     $('.delete_material').click(function(){
 
       if ($(this).attr('disabled') == 'disabled'){
-        flash_message("#{t(:choose_at_least_one, scope: [:support_materials, :index])}", "alert");
+        flash_message("#{I18n.t(:choose_at_least_one, scope: [:support_materials, :index])}", "alert");
         return false;
       }
 
-      if (!confirm("#{t(:message_confirm)}"))
+      if (!confirm("#{I18n.t(:message_confirm)}"))
         return false;
 
       if(!$(this).hasClass('disabled')){

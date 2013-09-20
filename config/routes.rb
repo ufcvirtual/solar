@@ -60,9 +60,6 @@ Solar::Application.routes.draw do
     get :list, on: :collection
     get :list_to_edit, to: :list, on: :collection, edition: true
     get :academic_index, on: :collection
-    put :unbind, on: :member, to: :change_tool, type: "unbind"
-    put :remove, on: :member, to: :change_tool, type: "remove"
-    put :add, on: :collection, to: :change_tool, type: "add"
   end
 
   ## discussions/:id/posts
@@ -177,6 +174,10 @@ Solar::Application.routes.draw do
 
       post :upload_file
       delete :delete_file
+
+      put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "Assignment", as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "Assignment", as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "Assignment", as: :add_group_to
     end
     member do
       get :information
@@ -189,7 +190,15 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :chat_rooms
+  # chat
+  resources :chat_rooms do
+    collection do
+      get :list
+      put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "ChatRoom", as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "ChatRoom", as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "ChatRoom", as: :add_group_to
+    end
+  end
 
   resources :schedules, only: [:index] do
     get :list, on: :collection
