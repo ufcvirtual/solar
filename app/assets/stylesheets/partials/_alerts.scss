@@ -32,6 +32,9 @@
   &.alert {
     background: url('/assets/alert.gif') no-repeat 5px center #fff6f6;
   }
+  .close {
+    float: right;
+  }
 }
 
 .sticky-float {
