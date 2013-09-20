@@ -210,6 +210,24 @@ select[title = 'Cores da equação'], select[title = "Equation Color"]{
   color: #03355f;  
 }
 
+#cke_42_uiElement, #cke_66_uiElement{
+  border: 0;
+}
+
+#cke_48_uiElement, #cke_72_uiElement{
+  background: #005cc0; /* Old browsers */
+  background: -moz-linear-gradient(top, #005cc0 0%, #003774 98%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#005cc0), color-stop(98%,#003774)); /* Chrome,Safari4+ */
+  border-color: #0044cc #0044cc #002a80;
+}
+
+#cke_48_uiElement:hover, #cke_72_uiElement:hover{
+  background: #1d5da3; /* Old browsers */
+  background: -moz-linear-gradient(top, #0074f3 0%, #00448d 98%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0074f3), color-stop(98%,#00448d)); /* Chrome,Safari4+ */
+  border-color: #0044cc #0044cc #002a80;
+}
+
 #CClatex{
   position: absolute;
   top: 226px;  
@@ -249,53 +267,47 @@ select[title = 'Functions']{
   margin-left: -10px;
 }
 
-/*button[value = 'Física'] .greybutton, button[value = 'Física']{
-  width: 42px;
-  /*margin-left: -2px;*/
+img[alt = 'close']{
+  margin-top: -22px;
+  margin-right: -17px;
+}
 
-  img[alt = 'close']{
-    margin-top: -22px;
-    margin-right: -17px;
-  }
+/* ------- Button formating ------ */
 
-  /* ------- Button formating ------ */
-  
-  input.bluebutton, input.lightbluebutton, input.greybutton {
-    border-style: solid;
-    width: 58px;
-    height: 20px;
-    border-radius: 3px;
-    font-size: 11px;
-    font-weight: bold;
-    /*font-family: "lucida grande", tahoma, verdana, arial, sans-serif; */
-    text-align: center; 
-    cursor:pointer;
-    /*cursor:hand;*/
-    padding:1px 4px 2px;
-    margin: -1px;
-  }
+input.bluebutton, input.lightbluebutton, input.greybutton {
+  border-style: solid;
+  width: 58px;
+  height: 20px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center; 
+  cursor:pointer;
+  padding:1px 4px 2px;
+  margin: -1px;
+}
 
-  input.bluebutton { background-color:#003794; }
-  input.greybutton { background-color:#888888; }
+input.bluebutton { background-color:#003794; }
+input.greybutton { background-color:#888888; }
 
-  input[value = Exemplos], input[value = "Examples"]{
-    background: -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#e7e7e7));
-    background-color: #e7e7e7;
-    color: #636363;
-    height: auto;
-    border: 1px solid #b4b4b4;
-    position: absolute;
-    left:330px; 
-    top:-2px;
-  }
+input[value = Exemplos], input[value = "Examples"]{
+  background: -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#e7e7e7));
+  background-color: #e7e7e7;
+  color: #636363;
+  height: auto;
+  border: 1px solid #b4b4b4;
+  position: absolute;
+  left:330px; 
+  top:-2px;
+}
 
-  input[value = Limpar], input[value = "Clear"]{
-    background: -webkit-gradient(linear, left top, left bottom, from(#dde8f2), to(#316697));
-    background-color: #316697;
-    color: #fff;
-    height: auto;
-    border: 1px solid #69859c; 
-    position: absolute;
-    top: -2px;
-    left: 53px;
-  }
+input[value = Limpar], input[value = "Clear"]{
+  background: -webkit-gradient(linear, left top, left bottom, from(#dde8f2), to(#316697));
+  background-color: #316697;
+  color: #fff;
+  height: auto;
+  border: 1px solid #69859c; 
+  position: absolute;
+  top: -2px;
+  left: 53px;
+}
