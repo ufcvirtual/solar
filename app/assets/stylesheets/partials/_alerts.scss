@@ -14,18 +14,13 @@
   display: block;
 }
 
-.flash_message_placeholder {
-  height: 30px !important;
-  margin-top: 10px;
-}
-
 #flash_message {
   border-color: #d0d0d0;
   border-width: 1px;
   border-style: solid;
   padding: 5px 10px 4px 25px;
   font-size: 12pt;
-  margin: 10px 0;
+  min-height: 20px;
   &.notice {
     background: url('/assets/notice.gif') no-repeat 5px center #f5ffec;
   }
@@ -42,6 +37,9 @@
     background-color: rgba(255,255,255,0.8);
     width: 785px;
     z-index: 1000;
+  }
+  div div {
+    margin: 5px 0;
   }
 }
 
