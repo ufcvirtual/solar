@@ -1,5 +1,4 @@
 .block_wrapper 
-  -#.list_discussions{:"data-link-list" => list_discussions_path(allocation_tags_ids: @allocation_tags_ids)}
 
   .block_title
     %h2= t(:title_my_chats, :scope => [:chat_rooms, :list])
@@ -14,10 +13,20 @@
           %tr{:class => "lines #{'period_ended' if !chat.opened?}"}
             %td
               - if (chat.opened?)
-                = link_to chat.title, Url_Chat, {:target => '_blank', :class => 'link_content'}
+                = link_to chat.title, Url_Chat+"allocationId=#{@alloc};roomId=#{chat.id}", {:target => '_blank', :class => 'link_content'}
                 = #{}"(#{t(:forum_closed_short)})" if !chat.opened? # *** MUDAR forum_closed_short
               - else
                 = chat.title
+
+              .description
+                .minimun
+                  = chat.description.truncate(200)
+                  - if chat.description.size>200
+                    = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))
+                .complete.invisible
+                  = chat.description
+                  = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_enunciation"))
+
             %td{:align => "center"}
               = [l(chat.schedule.start_date.to_date), l(chat.schedule.end_date.to_date)].join(" - ")
               %br
@@ -39,9 +48,20 @@
             %tr{:class => "lines #{'period_ended' if !chat.opened?}"}
               %td
                 = chat.title
+                .description
+                  .minimun
+                    = chat.description.truncate(200)
+                    - if chat.description.size>200
+                      = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))
+                  .complete.invisible
+                    = chat.description
+                    = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_enunciation"))
+
               %td{:align => "center"}
                 = [l(chat.schedule.start_date.to_date), l(chat.schedule.end_date.to_date)].join(" - ")
                 %br
                 = [(chat.start_hour), (chat.end_hour)].join(" - ")
     - else
       .block_content.block_content_text= t(:message_no_chat, :scope => [:chat_rooms, :list])
+
+= javascript_include_tag "chat_rooms"

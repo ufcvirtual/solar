@@ -1473,6 +1473,8 @@
       detail: Details
       availability: Availability
       message_no_chat: No chat available
+      expand_description: Expand description
+      compress_description: Compress description
     index:
       chats: Chats
       new_chat: New Chat
@@ -1482,8 +1484,6 @@
       groups: "Groups: "
       no_chats: There are no chats
       delete_chats: Delete Chats
-      expand_description: Expand description
-      compress_description: Compress description
       hour_period: "%{start_hour}h - %{end_hour}h"
       choose_at_least_one: Choose at least one chat
       choose_one: Choose a chat

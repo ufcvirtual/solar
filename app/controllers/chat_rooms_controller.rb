@@ -85,6 +85,12 @@ class ChatRoomsController < ApplicationController
     #authorize! :list, ChatRoom, on: @allocation_tags_ids
 
     @allocation_tags_ids = params[:allocation_tags_ids]
+    
+    alloc = Allocation.find_by_user_id_and_allocation_tag_id(current_user.id,@allocation_tags_ids)
+    if !alloc.nil?
+      @alloc = alloc.id
+    end
+
     @responsible = ChatRoom.responsible?(@allocation_tags_ids,current_user.id) 
     @my_chats = ChatRoom.chats_user(@allocation_tags_ids,current_user.id)
     @other_chats = ChatRoom.chats_other_users(@allocation_tags_ids,current_user.id) unless @responsible

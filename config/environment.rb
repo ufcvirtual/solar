@@ -65,4 +65,4 @@ Discussion_Responsible_Extra_Time   = 3
 Discussion_Post_Max_Indent_Level    = 4
 Assignment_Responsible_Extra_Time   = 3 
 
-Url_Chat = '//10.0.10.7/chatexemplo/chatwindow'
+Url_Chat = '//10.0.10.7/ChatExemplo/Chat/Loginuser?F='

@@ -1631,6 +1631,8 @@
       detail: Detalhes
       availability: Disponibilidade
       message_no_chat: Nenhum chat disponível
+      expand_description: Expandir descrição
+      compress_description: Comprimir descrição
     index:
       chats: Chats
       new_chat: Novo Chat
@@ -1640,8 +1642,6 @@
       groups: "Turmas: "
       no_chats: Não há chats
       delete_chats: Deletar Chats
-      expand_description: Expandir descrição
-      compress_description: Comprimir descrição
       hour_period: "%{start_hour}h - %{end_hour}h"
       choose_at_least_one: "Selecione, ao menos, um chat"
       choose_one: Selecione um chat
