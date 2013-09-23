@@ -565,6 +565,7 @@
       group: "Turma"
       title: "Matrícula"
       enrolled: "Matriculado"
+      rejected: "Matricula Rejeitada"
       confirm: "Tem certeza de que deseja cancelar?"
       cancel_request: "Cancelar pedido"
       period: Período de matrícula

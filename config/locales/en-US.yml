@@ -409,6 +409,7 @@
       group: Class
       title: Enrollment
       enrolled: Enrolled
+      rejected: "Enrollment Rejected"
       confirm: Are you sure you want to cancel?
       cancel_request: Cancel Request
       period: Enrollment period

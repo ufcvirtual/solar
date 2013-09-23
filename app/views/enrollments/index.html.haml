@@ -52,6 +52,8 @@
                       = label_tag "lb_enrollm", t(".enrolled"), :class => 'enrollment_label'
                   - when Allocation_Cancelled.to_i
                     = button_to t(".enroll"), reactivate_allocation_path(allocation), :class=>'btn btn_default', :disabled => not(period_info[:is_active])
+                  - when Allocation_Rejected.to_i
+                    = label_tag "lb_rejected", t(".rejected"), :class => 'enrollment_label'
                   - else
                     = button_to t(".enroll"), {:controller => "allocations", :action => "create", :allocation_tag_id => group.allocation_tag.id, :user_id => current_user.id}, :class=>'btn btn_default', :disabled => not(period_info[:is_active])
         - else
