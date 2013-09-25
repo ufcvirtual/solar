@@ -10,18 +10,56 @@
  * http://docs.jquery.com/UI/Theming/API
  */
 
-.highlight-date-mark a {
-    background-color: $color_main_medium;
-    color: #fff;
+.highlight-date-mark {
+    a.ui-state-default {
+        background-color: $color_main_medium;
+        color: #fff;
+    }
 }
 .ui-helper-hidden-accessible { display: none; }
 
 /* portlet de calendario da tela de acesso a curso */
 .calendar {
-  font-size: 9pt;
+  font-size: 0.9em;
   width: 100%;
   padding-bottom: 2px;
   background-color: $color_main_light;
+  .ui-datepicker .ui-datepicker-next,
+  .ui-datepicker .ui-datepicker-prev{
+    margin-top: 0;
+  }
+  .ui-datepicker-inline {
+    width: 100%;
+    border: none;
+    background: none;
+  }
+}
+
+/* cabecalho do calendario */
+  .ui-datepicker-header {
+    background: #fff;
+    color: #000;
+    height: 1.2em;
+    padding: .3em;
+    font-weight: bold;
+    border-radius: 0;
+    border: none;
+    .ui-state-hover {
+        background-color: transparent !important;
+        border: none !important;
+    }
+  }
+
+.ui-datepicker-prev.ui-state-hover,
+.ui-datepicker-next.ui-state-hover {
+    background-color: transparent !important;
+    // border: 1px solid transparent !important;
+    // top: 1px !important;
+}
+
+.ui-datepicker-next,
+.ui-datepicker-prev {
+    top: 1px !important;
 }
 
 .calendar_events {
@@ -34,18 +72,10 @@
 /* ... Component containers ... */
 
 /* corpo do calendario */
-.ui-widget-content {
+.ui-datepicker-content {
     left: 0px;
     color: #222222;
     padding-bottom: 3px; }
-/* cabecalho do calendario */
-.ui-widget-header {
-    background: #fff;
-    color: #000;
-    height: 1.2em;
-    padding: .3em;
-    font-weight: bold;
-}
 
 .ui-datepicker-calendar {
     margin-top: 0.2em;
@@ -61,26 +91,32 @@
     padding-right: 10px;
 }
 /* ... Interaction states ... */
-/* celulas */
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-    border: 1px solid transparent;
-    font-weight: normal;
-    min-height: 1.2em;
-    text-align: center; }
-/* celula ativa */
-.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
-    border: 1px solid $color_contrast;
-    background: $color_contrast_light;
-    font-weight: normal;
-    color: #000;
-}
 
-/* ... Interaction Cues ... */
-/* data atual */
-.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {
-    //background: $color_contrast;
-    color: $color_contrast_text;
-    font-weight: bold;
+.ui-datepicker-calendar {
+    /* celulas */
+    .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+        border: 1px solid transparent;
+        font-weight: normal;
+        min-height: 1.1em;
+        text-align: center;
+
+    }
+    /* ... Interaction Cues ... */
+    /* celula ativa */
+    .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+        border: 1px solid $color_contrast;
+        background: $color_contrast_light;
+        font-weight: normal;
+        color: #000;
+    }
+
+    /* data atual */
+    .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {
+        // background: none;
+        color: $color_contrast_text;
+        // border: none;
+        font-weight: bold;
+    }
 }
 
 /*
@@ -108,7 +144,7 @@
     width: 9px;
     height: 11px;
     cursor: pointer;
-    background-image: url(/assets/calendar_arrow_left.png) }
+    background-image: url(/assets/calendar_arrow_left.png) !important }
 .ui-datepicker .ui-datepicker-next { 
     right: 37px;
     margin-top: 2px;
@@ -116,7 +152,7 @@
     width: 9px;
     height: 11px;
     cursor: pointer;
-    background-image: url(/assets/calendar_arrow_right.png) }
+    background-image: url(/assets/calendar_arrow_right.png) !important }
 .ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span {
     display: block; position: absolute; left: 50%; margin-left: -2px; top: 50%; margin-top: -10px;  }
 
