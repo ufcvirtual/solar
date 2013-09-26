@@ -7,4 +7,11 @@ module ChatRoomsHelper
     chat_room.participants
   end
 
+  def participants(chat_room_id)
+    p = ChatParticipant.joins(:user)
+      .select("chat_participants.*, users.name, users.nick")
+      .where(chat_room_id: chat_room_id).uniq
+      .order("users.name")
+  end
+
 end

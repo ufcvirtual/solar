@@ -13,7 +13,10 @@
           %tr{:class => "lines #{'period_ended' if !chat.opened?}"}
             %td
               - if (chat.opened?)
-                = link_to chat.title, Url_Chat+"allocationId=#{@alloc};roomId=#{chat.id}", {:target => '_blank', :class => 'link_content'}
+                = link_to chat.title, Url_Chat+"allocationId=#{@alloc};roomId=#{chat.id}", {:class => 'link_content', :target => '_blank' }
+                - url = Url_Chat+"allocationId=#{@alloc};roomId=#{chat.id}"
+                = #link_to chat.title, "", {:onclick => "javascript:window.open('#{url}','','width=700,height=720,resizable,scrollbars,status=false'); return false", :class => 'link_content' }
+
                 = #{}"(#{t(:forum_closed_short)})" if !chat.opened? # *** MUDAR forum_closed_short
               - else
                 = chat.title
@@ -26,6 +29,15 @@
                 .complete.invisible
                   = chat.description
                   = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_enunciation"))
+
+
+              .chat_participants                
+                - unless chat.chat_type==0 
+                  - students = participants(chat.id)
+                  %img.icon-users
+                  -students.each do |p|
+                    =#p.name
+
 
             %td{:align => "center"}
               = [l(chat.schedule.start_date.to_date), l(chat.schedule.end_date.to_date)].join(" - ")
@@ -64,4 +76,4 @@
     - else
       .block_content.block_content_text= t(:message_no_chat, :scope => [:chat_rooms, :list])
 
-= javascript_include_tag "chat_rooms"
+=javascript_include_tag "chat_rooms"

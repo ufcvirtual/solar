@@ -59,7 +59,7 @@ class ChatRoom < ActiveRecord::Base
   def self.chats_user(allocation_tag_id, user_id)
     if responsible?(allocation_tag_id,user_id)
       all = ChatRoom.joins(:academic_allocations, :allocation_tags, :schedule)
-        .select("chat_rooms.*, schedules.*")
+        .select("chat_rooms.*, schedules.start_date, schedules.end_date")
         .where(allocation_tags: {id: allocation_tag_id}).uniq
 
       # responsavel - devolve todas as salas de chat
@@ -67,11 +67,11 @@ class ChatRoom < ActiveRecord::Base
 
     else
       my = ChatRoom.joins(:academic_allocations, :allocation_tags, :participants, :users, :schedule)
-        .select("chat_rooms.*, schedules.*")
+        .select("chat_rooms.*, schedules.start_date, schedules.end_date")
         .where(allocation_tags: {id: allocation_tag_id}).where(users: {id: user_id}).uniq
 
       open = ChatRoom.joins(:academic_allocations, :allocation_tags, :schedule)
-        .select("chat_rooms.*, schedules.*")
+        .select("chat_rooms.*, schedules.start_date, schedules.end_date")
         .where(allocation_tags: {id: allocation_tag_id}, chat_type: 0).uniq
 
       # devolve as salas de chat em que o usuario esta mais as salas abertas
@@ -84,7 +84,7 @@ class ChatRoom < ActiveRecord::Base
 
   def self.chats_other_users(allocation_tag_id, user_id)
     all = ChatRoom.joins(:academic_allocations, :allocation_tags, :schedule)
-      .select("chat_rooms.*, schedules.*")
+      .select("chat_rooms.*, schedules.start_date, schedules.end_date")
       .where(allocation_tags: {id: allocation_tag_id}).uniq
 
     my = chats_user(allocation_tag_id, user_id)
