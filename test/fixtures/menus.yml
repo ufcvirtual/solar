@@ -57,6 +57,7 @@ chat_ativ:
   parent_id: 20
   name: menu_chat
   order: 5
+  resource_id: 133
 
 webconf_ativ:
   id: 206

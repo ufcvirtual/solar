@@ -1476,6 +1476,7 @@
       message_no_chat: No chat available
       expand_description: Expand description
       compress_description: Compress description
+      students: Students
     index:
       chats: Chats
       new_chat: New Chat

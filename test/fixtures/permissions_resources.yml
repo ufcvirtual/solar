@@ -1001,6 +1001,27 @@ chatedit4:
   resource_id: 131
   per_id: false
 
+# chat_rooms para participantes
+
+chatlist1:
+  profile_id: 1
+  resource_id: 133
+  per_id: false
+
+chatlist2:
+  profile_id: 2
+  resource_id: 133
+  per_id: false
+
+chatlist3:
+  profile_id: 3
+  resource_id: 133
+  per_id: false
+
+chatlist4:
+  profile_id: 4
+  resource_id: 133
+  per_id: false
 
 ##############################
 # BASICO #
@@ -1107,3 +1128,4 @@ editmon1:
   profile_id: 13
   resource_id: 89
   per_id: false
+

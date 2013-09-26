@@ -1634,6 +1634,7 @@
       message_no_chat: Nenhum chat disponível
       expand_description: Expandir descrição
       compress_description: Comprimir descrição
+      students: Alunos
     index:
       chats: Chats
       new_chat: Novo Chat

@@ -30,14 +30,14 @@
                   = chat.description
                   = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_enunciation"))
 
-
-              .chat_participants                
-                - unless chat.chat_type==0 
-                  - students = participants(chat.id)
-                  %img.icon-users
-                  -students.each do |p|
-                    =#p.name
-
+              - unless chat.chat_type==0 
+                - students = participants(chat.id)
+                %img.icon-users
+                %button{:class=> "btn", :"data-dropdown"=>"#students-dropdown" }= students.count.to_s + ' ' + t(:students, :scope => [:chat_rooms, :list])
+                .dropdown.dropdown-tip{ :id => "students-dropdown" }
+                  %ul{ :class => "dropdown-menu" }
+                    -students.each do |p|
+                      %li=p.name
 
             %td{:align => "center"}
               = [l(chat.schedule.start_date.to_date), l(chat.schedule.end_date.to_date)].join(" - ")

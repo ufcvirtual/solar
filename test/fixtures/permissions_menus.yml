@@ -274,3 +274,21 @@ pm66:
 pm67:
   profile_id: 13
   menu_id: 132
+
+# listagem de chat para participante
+
+pm68:
+  profile_id: 1
+  menu_id: 205
+
+pm69:
+  profile_id: 2
+  menu_id: 205
+
+pm70:
+  profile_id: 3
+  menu_id: 205
+
+pm71:
+  profile_id: 4
+  menu_id: 205
