@@ -1,6 +1,6 @@
 = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
-.list_support_material{:"data-link-list" => list_support_material_files_path(allocation_tags_ids: @allocation_tags_ids)}
+.block_wrapper.list_support_material{:"data-link-list" => list_support_material_files_path(allocation_tags_ids: @allocation_tags_ids)}
   
   .block_title
     %h2= t(:support_material, scope: [:editions, :items])
@@ -9,7 +9,7 @@
   - @allocation_tags.each_with_index do |allocation_tag, idxat|
     /- allocation_tag_path = allocation_tag_path(allocation_tag, @what_was_selected)
 
-    .block_wrapper.list_support_materials{id: "list_#{allocation_tag.id}"}
+    .list_support_materials{id: "list_#{allocation_tag.id}"}
       - unless previous_allocation_tag == idxat
         - previous_allocation_tag = idxat
         /.edition_allocation_tag_path= allocation_tag_path

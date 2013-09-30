@@ -830,9 +830,13 @@
       choose_at_least_one: "Selecione, ao menos, um fórum"
       choose_one: Selecione um fórum
     success:
+      created: Fórum criado com sucesso.
+      updated: Fórum atualizado com sucesso.
       deleted: Fórum deletado com sucesso.
     error:
       deleted: Não foi possível deletar fórum.
+      created: Não foi possível criar fórum.
+      updated: Não foi possível atualizar fórum.
 
   # messages
   message_title: "Mensagens"

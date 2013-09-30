@@ -222,15 +222,15 @@ $.fn.serialize_and_submit = function(options) {
         if(typeof(options.dont_remove_lightbox) == "undefined" || !options.dont_remove_lightbox) 
           $.fancybox.close();
 
-        if (typeof(data) != "undefined" && typeof(data.notice) != "undefined")
-          flash_message(data.notice, 'notice');
-
         if (typeof(options.complement_success) == "function")
           options.complement_success(data);
 
         if (typeof(options.replace_list) != "undefined")
-          $.get(options.replace_list.data("link-list"), function(data){
-            options.replace_list.replaceWith(data);
+          $.get(options.replace_list.data("link-list"), function(data2){
+            options.replace_list.replaceWith(data2);
+
+            if (typeof(data) != "undefined" && typeof(data.notice) != "undefined")
+              flash_message(data.notice, 'notice');
           });
       }
     }
@@ -247,7 +247,7 @@ $.fn.serialize_and_submit = function(options) {
     data: data,
     success: options.success,
     error: function(data) {
-      removeLightBox();
+      $.fancybox.close();
       var response = JSON.parse(data.responseText);
       if (typeof(response.alert) != "undefined")
         flash_message(response.alert, 'alert');

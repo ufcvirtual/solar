@@ -65,7 +65,7 @@ class DiscussionsController < ApplicationController
         end
       end
 
-      render json: {success: true, notice: t(:created, scope: [:offers, :success])}
+      render json: {success: true, notice: t(:created, scope: [:discussion, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue Exception => err
@@ -113,7 +113,7 @@ class DiscussionsController < ApplicationController
         @discussion.update_attributes!(params[:discussion])
       end
    
-      render json: {success: true, notice: t(:updated, scope: [:offers, :success])}
+      render json: {success: true, notice: t(:updated, scope: [:discussion, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue Exception => err
