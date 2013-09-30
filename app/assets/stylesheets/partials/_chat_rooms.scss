@@ -71,3 +71,7 @@
   position: relative;
   bottom: 18px;
 }
+
+.new_chat .required + .error, .optional + .error{
+  margin-left: 70px;
+}

@@ -1489,11 +1489,14 @@
       hour_period: "%{start_hour}h - %{end_hour}h"
       choose_at_least_one: Choose at least one chat
       choose_one: Choose a chat
+      expand_description: Expand description
+      compress_description: Compress description
     form: 
       participants: Participants
       groups: Groups
       define_participants: Define participants
       all_participants: All
+      empty_group: Empty group
     success:
       created: Chat was successfully created.
       updated: Chat was successfully updated.

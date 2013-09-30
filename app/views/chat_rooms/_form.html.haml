@@ -33,16 +33,19 @@
             %span{id: (@chat_room.chat_type == 1 ? "tab" : "define_participants")}
               = f.label :type, t(".define_participants")
             .box{class: (@chat_room.chat_type == 1 ? "" : "invisible")}
-              %div
-                = check_box_tag :all_participants, false, (@allocations.size == @chat_room.participants.size), {:"data-children-names" => "chat_room[participants_attributes]"}
-                = label_tag :all_participants, t(".all_participants")
-                %br
-                - cr_ids = @chat_room.participants.map(&:allocation_id)
-                = f.simple_fields_for(:participants, setup_chat_room(@chat_room, @allocations)) do |p|
-                  = p.check_box :_destroy, {checked: (p.object.persisted? or cr_ids.include?(p.object.allocation_id))}, '0', '1'
-                  = p.label :_destroy, p.object.allocation.user_name
-                  = p.hidden_field :allocation_id
+              - unless @allocations.empty?
+                %div
+                  = check_box_tag :all_participants, false, (@allocations.size == @chat_room.participants.size), {:"data-children-names" => "chat_room[participants_attributes]"}
+                  = label_tag :all_participants, t(".all_participants")
                   %br
+                  - cr_ids = @chat_room.participants.map(&:allocation_id)
+                  = f.simple_fields_for(:participants, setup_chat_room(@chat_room, @allocations)) do |p|
+                    = p.check_box :_destroy, {checked: (p.object.persisted? or cr_ids.include?(p.object.allocation_id))}, '0', '1'
+                    = p.label :_destroy, p.object.allocation.user_name
+                    = p.hidden_field :allocation_id
+                    %br
+              - else
+                = t(".empty_group")
 
       .right_buttons
         = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
