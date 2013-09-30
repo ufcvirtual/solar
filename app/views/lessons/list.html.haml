@@ -179,6 +179,8 @@
           var lesson_ids = get_selected_lessons($(this).data('module-id'));
           if(can_do_action(lesson_ids))
             url = url.replace(':id', lesson_ids);
+          else
+            return false;
         }
 
         $.put(url, function(data){
