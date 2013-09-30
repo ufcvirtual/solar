@@ -80,9 +80,10 @@ class AllocationsController < ApplicationController
     profile = Profile.student_profile
     status  = Allocation_Pending
     allocation_tag = AllocationTag.find(params[:allocation_tag_id])
+    allocation = Allocation.where(allocation_tag_id: params[:allocation_tag_id], user_id: params[:user_id], profile_id: profile).first
     offer   = allocation_tag.offer || allocation_tag.group.offer
     ok      = (offer.enrollment_start_date.to_date..(offer.enrollment_end_date.try(:to_date) || offer.end_date.to_date)).include?(Date.today)
-    ok      = allocate(params[:allocation_tag_id], params[:user_id], profile, status, params[:id]) if ok
+    ok      = allocate(params[:allocation_tag_id], params[:user_id], profile, status, allocation.try(:id)) if ok
     message = ok ? ['notice', 'success'] : ['alert', 'error']
     respond_to do |format|
       format.html { redirect_to(enrollments_url, message.first.to_sym => t(:enrollm_request, :scope => [:allocations, message.last.to_sym])) }
@@ -280,8 +281,9 @@ class AllocationsController < ApplicationController
       return false unless ((params.include?(:allocation_tags_ids) or params.include?(:allocation_tag_id)) and params.include?(:user_id) and (profile != ''))
 
       total, corrects = 0, 0
-      unless params[:id].nil? # se alocação já existe (id não será nulo), então está desativada e deve ser reativada
-        allocation        = Allocation.find(params[:id])
+      unless id.nil? and params[:id].nil? # se alocação já existe (id não será nulo), então está desativada e deve ser reativada
+        id = params[:id] if id.nil?
+        allocation        = Allocation.find(id)
         allocation.status = Allocation_Pending_Reactivate
         total    = 1
         corrects = 1 if allocation.save
