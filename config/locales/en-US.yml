@@ -1477,6 +1477,8 @@
       expand_description: Expand description
       compress_description: Compress description
       students: Students
+      message_ended: Ended
+      message_did_not_start: Did not start
     index:
       chats: Chats
       new_chat: New Chat

@@ -49,7 +49,23 @@ class ChatRoom < ActiveRecord::Base
   end
 
   def opened?
-    (schedule.start_date.to_date..schedule.end_date.to_date).include?(Date.today)
+    start_hour = Date.today.to_s + " " + self.start_hour
+    end_hour = Date.today.to_s + " " + self.end_hour
+
+    # para remediar o -3h na comparação com o horário do servidor
+    now = DateTime.now
+    now = DateTime.new(now.year, now.month, now.day, now.hour, now.minute)
+
+    # precisa verificar não só a data mas tb a hora
+    if self.schedule.start_date.to_date <= Date.today and self.schedule.end_date.to_date >= Date.today
+      if start_hour.to_datetime <= now and end_hour.to_datetime >= now
+        return true
+      else
+        return false
+      end
+    else
+      return false
+    end
   end
 
   def self.responsible?(allocation_tag_id, user_id)

@@ -1639,6 +1639,8 @@
       expand_description: Expandir descrição
       compress_description: Comprimir descrição
       students: Alunos
+      message_ended: Encerrado
+      message_did_not_start: Não iniciou
     index:
       chats: Chats
       new_chat: Novo Chat
