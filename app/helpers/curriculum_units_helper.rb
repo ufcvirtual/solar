@@ -2,7 +2,7 @@ module CurriculumUnitsHelper
 
   def message_class_participants (user_id, curriculum_unit, profile_flag, have_profile = true, offer_id = nil, group_id = nil)
     if curriculum_unit
-      allocation_tag_id = AllocationTag.find_by_group_id(curriculum_unit).id
+      allocation_tag_id = AllocationTag.find_by_curriculum_unit_id(curriculum_unit).id
 
       # allocation_tag_id será a de unidade curricular se houver allocation para o usuário
       if Allocation.find_by_user_id_and_allocation_tag_id(user_id, allocation_tag_id).nil?
