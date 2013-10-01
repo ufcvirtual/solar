@@ -4,7 +4,6 @@
 
 arquivo1:
   id: 1
-  allocation_tag_id: 9
   attachment_file_name: "1.pdf"
   attachment_content_type: "application/pdf"
   attachment_file_size: 3165198
@@ -13,7 +12,6 @@ arquivo1:
 
 arquivo2:
   id: 2
-  allocation_tag_id: 3
   attachment_file_name: "2.pdf"
   attachment_content_type: "application/pdf"
   attachment_file_size: 55669
@@ -22,7 +20,6 @@ arquivo2:
 
 arquivo3:
   id: 3
-  allocation_tag_id: 1
   attachment_file_name: "1.jpg"
   attachment_content_type: "image/jpeg "
   attachment_file_size: 53357
@@ -31,7 +28,6 @@ arquivo3:
 
 arquivo4:
   id: 4
-  allocation_tag_id: 3
   attachment_file_name: "1.png"
   attachment_content_type: "image/jpeg "
   attachment_file_size: 343563
@@ -40,7 +36,6 @@ arquivo4:
 
 arquivo5:
   id: 5
-  allocation_tag_id: 3
   attachment_file_name: "1.txt"
   attachment_content_type: "text/plain"
   attachment_file_size: 134
@@ -49,7 +44,6 @@ arquivo5:
 
 arquivo6:
   id: 6
-  allocation_tag_id: 3
   attachment_file_name: "3.pdf"
   attachment_content_type: "application/pdf"
   attachment_file_size: 55669
@@ -58,7 +52,6 @@ arquivo6:
 
 arquivo7:
   id: 7
-  allocation_tag_id: 3
   attachment_file_name: "a.odp"
   attachment_content_type: "application/vnd.ms-powerpoint"
   attachment_file_size: 2234
@@ -67,10 +60,7 @@ arquivo7:
 
 url1:
   id: 8
-  allocation_tag_id: 3
-  attachment_file_name: 
   attachment_content_type: 'link'
-  attachment_file_size: 
   attachment_updated_at: 2011-10-27 09:40:03.524322
   folder: LINKS
   url: "http://www.google.com"
@@ -78,10 +68,7 @@ url1:
 
 url2:
   id: 9
-  allocation_tag_id: 3
-  attachment_file_name: 
   attachment_content_type: 'link'
-  attachment_file_size:
   attachment_updated_at: 2011-10-27 09:45:03.524322
   folder: LINKS
   url: "http://www.globo.com"
@@ -89,10 +76,7 @@ url2:
 
 url3:
   id: 10
-  allocation_tag_id: 3
-  attachment_file_name: 
   attachment_content_type: 'link'
-  attachment_file_size:
   attachment_updated_at: 2011-10-27 09:50:03.524322
   folder: LINKS
   url: "http://www.baixaki.com.br"
@@ -100,10 +84,7 @@ url3:
 
 url4:
   id: 11
-  allocation_tag_id: 3
-  attachment_file_name: 
   attachment_content_type: 'link'
-  attachment_file_size:
   attachment_updated_at: 2011-10-27 09:55:03.524322
   folder: LINKS
   url: "http://www.prograd.ufc.br"

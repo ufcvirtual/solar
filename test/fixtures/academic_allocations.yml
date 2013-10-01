@@ -132,3 +132,69 @@ acaal22:
   allocation_tag_id: 3
   academic_tool_id: 3
   academic_tool_type: "ChatRoom"
+
+acaal23:
+  id: 23
+  allocation_tag_id: 9
+  academic_tool_id: 1
+  academic_tool_type: "SupportMaterialFile"
+
+acaal24:
+  id: 24
+  allocation_tag_id: 3
+  academic_tool_id: 2
+  academic_tool_type: "SupportMaterialFile"
+
+acaal25:
+  id: 25
+  allocation_tag_id: 1
+  academic_tool_id: 3
+  academic_tool_type: "SupportMaterialFile"
+
+acaal26:
+  id: 26
+  allocation_tag_id: 3
+  academic_tool_id: 4
+  academic_tool_type: "SupportMaterialFile"
+
+acaal27:
+  id: 27
+  allocation_tag_id: 3
+  academic_tool_id: 5
+  academic_tool_type: "SupportMaterialFile"
+
+acaal28:
+  id: 28
+  allocation_tag_id: 3
+  academic_tool_id: 6
+  academic_tool_type: "SupportMaterialFile"
+
+acaal29:
+  id: 29
+  allocation_tag_id: 3
+  academic_tool_id: 7
+  academic_tool_type: "SupportMaterialFile"
+
+acaal30:
+  id: 30
+  allocation_tag_id: 3
+  academic_tool_id: 8
+  academic_tool_type: "SupportMaterialFile"
+
+acaal31:
+  id: 31
+  allocation_tag_id: 3
+  academic_tool_id: 9
+  academic_tool_type: "SupportMaterialFile"
+
+acaal32:
+  id: 33
+  allocation_tag_id: 3
+  academic_tool_id: 10
+  academic_tool_type: "SupportMaterialFile"
+
+acaal34:
+  id: 34
+  allocation_tag_id: 3
+  academic_tool_id: 11
+  academic_tool_type: "SupportMaterialFile"
