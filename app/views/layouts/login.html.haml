@@ -6,12 +6,17 @@
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1"}
     %title= content_for?(:title) ? yield(:title) : "Solar"
     = stylesheet_link_tag "login", :media => "all"
+    = stylesheet_link_tag "jquery-ui", :media => "all"
     /[if lte IE 7]
       = javascript_include_tag 'lte-ie7'
       = stylesheet_link_tag "misc/ie7"
 
     = javascript_include_tag "jquery"
     = javascript_include_tag "jquery-ui"
+
+    /[if lt IE 9]
+      = javascript_include_tag 'ie-warning'
+
     = javascript_include_tag "mysolar"
     = javascript_include_tag "lesson"
     = javascript_include_tag "registrations"

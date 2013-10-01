@@ -819,3 +819,17 @@ select option{
   position: relative;
   bottom: 9px;
 }
+
+/**
+* BROWSER WARNING DIALOG
+*/
+#browser-list > div {
+  width: 150px;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+}
+.no-close .ui-dialog-title {
+  width: 100% !important;
+}
