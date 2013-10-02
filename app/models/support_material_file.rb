@@ -1,9 +1,6 @@
 class SupportMaterialFile < ActiveRecord::Base
 
   GROUP_PERMISSION, OFFER_PERMISSION = true, true
-
-  has_many :academic_allocations, as: :academic_tool, dependent: :destroy
-  has_many :allocation_tags, through: :academic_allocations
   
   has_many :academic_allocations, as: :academic_tool, dependent: :destroy
   has_many :allocation_tags, through: :academic_allocations
