@@ -1,15 +1,17 @@
 class Discussion < ActiveRecord::Base
 
   GROUP_PERMISSION, OFFER_PERMISSION = true, true
-  include ToolsAssociation
 
-  belongs_to :allocation_tag
   belongs_to :schedule
 
-  has_many :discussion_posts, :class_name => "Post", :foreign_key => "discussion_id"
-  has_many :allocations, :through => :allocation_tag
+  has_many :academic_allocations, as: :academic_tool, dependent: :destroy
+  has_many :allocation_tags, through: :academic_allocations
+  has_many :groups, through: :allocation_tags
 
-  validates :name, :description, :presence => true
+  has_many :discussion_posts, class_name: "Post", foreign_key: "discussion_id"
+  has_many :allocations, through: :allocation_tag
+
+  validates :name, :description, presence: true
   validate :unique_name, :final_date_presence
 
   before_destroy :can_destroy?
@@ -36,11 +38,11 @@ class Discussion < ActiveRecord::Base
     self.schedule.destroy
   end
 
-  ## para a mesma allocation_tag
-  def unique_name
-    discussions_with_same_name = Discussion.find_all_by_allocation_tag_id_and_name(allocation_tag_id, name)
-    errors.add(:base, I18n.t(:existing_name, :scope => [:discussion, :errors])) if (@new_record == true or name_changed?) and discussions_with_same_name.size > 0
-  end
+  # ## para a mesma allocation_tag
+  # def unique_name
+  #   discussions_with_same_name = Discussion.find_all_by_allocation_tag_id_and_name(allocation_tag_id, name)
+  #   errors.add(:base, I18n.t(:existing_name, :scope => [:discussion, :errors])) if (@new_record == true or name_changed?) and discussions_with_same_name.size > 0
+  # end
 
   def opened?
     schedule = self.schedule
@@ -52,7 +54,7 @@ class Discussion < ActiveRecord::Base
   end
 
   def extra_time?(user_id)
-    (self.allocation_tag.is_user_class_responsible?(user_id) and self.closed?) ?
+    ((self.allocation_tags.map {|at| at.is_user_class_responsible?(user_id)}).include?(true) and self.closed?) ?
       ((self.schedule.end_date.to_date + Discussion_Responsible_Extra_Time) >= Date.today) : false
   end
 
@@ -117,16 +119,17 @@ SQL
     self.discussion_posts.where("updated_at::timestamp(0) > '#{period.last}'").count
   end
 
-  def self.all_by_allocations_and_student_id(allocation_tags, student_id)
+  def self.all_by_allocations_and_student_id(allocation_tags, student_id) # só usa em scores/show
     query = <<SQL
       WITH cte_discussions AS (
           SELECT t2.id            AS allocation_tag_id,
                  t1.id            AS discussion_id,
                  t1.name          AS discussion_name
             FROM discussions      AS t1
-            JOIN allocation_tags  AS t2 ON t2.id = t1.allocation_tag_id
-           WHERE t2.id IN (#{allocation_tags.join(',')})
-             AND t2.group_id IS NOT NULL
+            JOIN academic_allocations AS t2 ON t2.academic_tool_id = t1.id AND t2.academic_tool_type = 'Discussion'
+            JOIN allocation_tags  AS t3 ON t3.id = t2.allocation_tag_id
+           WHERE t3.id IN (#{allocation_tags.join(',')})
+             AND t3.group_id IS NOT NULL
       )
       -- todos os posts de cada forum
       SELECT t2.discussion_id,
@@ -141,42 +144,12 @@ SQL
   end
 
   def self.all_by_allocation_tags(allocation_tags)
-    begin 
-      allocation_tags = allocation_tags.join(", ") # ["1", "2"] => 1, 2
-    rescue
-      allocation_tags = allocation_tags.split(" ").join(", ") # "1 2" => ["1", "2"] => 1, 2
-    end
-
-    query = <<SQL
-      SELECT t1.id,
-             t1.name,
-             t1.description,
-             t1.schedule_id,
-             t1.allocation_tag_id,
-             CASE WHEN t3.start_date >= now() THEN 0 -- nao iniciado
-                  WHEN t3.end_date >= now() THEN 1 -- aberto
-                  WHEN t3.end_date < now() THEN 2 -- fechado
-                  ELSE 0
-             END AS status,
-             max(t4.updated_at::timestamp(0)) AS last_post_date,
-             t3.start_date,
-             t3.end_date
-        FROM discussions      AS t1
-        JOIN allocation_tags  AS t2 ON t2.id = t1.allocation_tag_id
-        JOIN schedules        AS t3 ON t1.schedule_id = t3.id
-   LEFT JOIN discussion_posts AS t4 ON t4.discussion_id = t1.id
-       WHERE t2.id IN (#{allocation_tags})
-       GROUP BY t1.id, t1.name, t1.description, t1.schedule_id, t1.allocation_tag_id, t3.start_date, t3.end_date
-       ORDER BY t3.start_date, t3.end_date, t1.name
-SQL
-
-    Discussion.find_by_sql(query)
+    joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: allocation_tags}).order("schedules.start_date, schedules.end_date, name")
   end
 
   # devolve a lista com todos os posts de uma discussion em ordem decrescente de updated_at, apenas o filho mais recente de cada post será adiconado à lista
   def latest_posts
     discussion_posts.select("DISTINCT ON (updated_at, parent_id) updated_at, parent_id, level")
   end
-
 
 end

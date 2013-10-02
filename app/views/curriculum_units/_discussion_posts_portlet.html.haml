@@ -11,13 +11,10 @@
         .block_content_line
           %span.block_content_gray
             - if posted_today?(discussion_post.updated_at.to_datetime)
-              = l(discussion_post.updated_at, :format => :today)
+              = l(discussion_post.updated_at, format: :today)
             - else 
-              = l(discussion_post.updated_at, :format => :not_today)
-          = link_to discussion_post.user.nick, discussion_posts_path(discussion_post.discussion_id), {:class => "link_content"}
-          - clear_content = strip_tags discussion_post.content
-          - clear_content = clear_content.rpartition("&")[0] if clear_content.rpartition("&")[2].length < 8 
-          - clear_content = slice_content(clear_content, 107) << ' (...)' if clear_content.length > 110
-          = raw clear_content
+              = l(discussion_post.updated_at, format: :not_today)
+          = link_to discussion_post.user.nick, discussion_posts_path(discussion_post.discussion_id), {class: "link_content"}
+          = raw truncate((strip_tags discussion_post.content), length: 110, omission: " (...) ")
     - else
       .block_content_text= t(:forum_no_messages)
