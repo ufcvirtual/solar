@@ -3,7 +3,7 @@
   - groups.each do |group|
     %span.collection_check_boxes
       = group.code
-      - unless groups.size == 1 or (not tool.can_remove_or_unbind_group?(group))
+      - unless groups.size == 1 or (not (not tool.respond_to?(:can_remove_or_unbind_group?) or tool.can_remove_or_unbind_group?(group)))
         = content_tag(:i, nil, class: "icon icon-cross change_tool_group", :"data-dropdown" => ".change_tool_dropdown_#{group.id}_#{tool.id}")
         %div{id: "dropdown", class: "dropdown dropdown-tip change_tool_dropdown_#{group.id}_#{tool.id}"}
           %ul.dropdown-menu

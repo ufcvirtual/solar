@@ -20,26 +20,27 @@ class SupportMaterialFilesController < ApplicationController
 
   def new
     authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
-
+    
     @support_material = SupportMaterialFile.new material_type: params[:material_type]
+    @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:code).uniq
   end
 
   def create
-    authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
+    authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = [params[:allocation_tags_ids].split(" ")].flatten
 
     begin
-      @support_material = SupportMaterialFile.new(params[:support_material_file])
-      @support_material.material_type = params[:material_type]
-      @support_material.folder = (params[:material_type].to_i == Material_Type_Link) ? 'LINKS' : 'GERAL'
-      @support_material.allocation_tag_id = @allocation_tags_ids.first.to_i  # o material é cadastrado apenas para uma allocation_tag
-      @support_material.attachment_updated_at = Time.now
-      @support_material.save!
+      @support_material = SupportMaterialFile.new params[:support_material_file]
+      SupportMaterialFile.transaction do
+        @support_material.save!
+        @support_material.academic_allocations.create @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
+      end
 
       render json: {success: true, notice: t(:created, scope: [:support_materials, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue Exception => error
       if @support_material.is_link?
+        @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).map(&:code).uniq
         render :new
       else
         render json: {success: false, alert: @support_material.errors.full_messages.join(' ')}, status: :unprocessable_entity
@@ -51,11 +52,12 @@ class SupportMaterialFilesController < ApplicationController
     authorize! :update, SupportMaterialFile, on: @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
 
     @support_material = SupportMaterialFile.find(params[:id])
+    @groups_codes = @support_material.groups.map(&:code)
   end
 
   def update
     @support_material = SupportMaterialFile.find(params[:id])
-    authorize! :update, SupportMaterialFile, on: @allocation_tags_ids = [params[:allocation_tags_ids]].flatten
+    authorize! :update, SupportMaterialFile, on: @allocation_tags_ids = [params[:allocation_tags_ids].split(" ")].flatten
 
     begin
       @support_material.update_attributes!(params[:support_material_file])
@@ -63,6 +65,7 @@ class SupportMaterialFilesController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue
+      @groups_codes = @support_material.groups.map(&:code)
       render :new
     end
   end
@@ -81,7 +84,7 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def download
-    allocation_tag_ids = params.include?(:allocation_tag_id) ? params[:allocation_tag_id].split(",").map(&:to_i).uniq : [(file = SupportMaterialFile.find(params[:id])).allocation_tag_id]
+    allocation_tag_ids = params.include?(:allocation_tag_id) ? params[:allocation_tag_id].split(",").map(&:to_i).uniq : [(file = SupportMaterialFile.find(params[:id])).academic_allocations.map(&:allocation_tag_id)]
     
     if params.include?(:type) # baixando alguma pasta ou todas
 
@@ -114,11 +117,11 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def list
-    @allocation_tags_ids = params[:allocation_tags_ids].uniq
+    @allocation_tags_ids = (params[:allocation_tags_ids].class == String ? params[:allocation_tags_ids].split(",") : params[:allocation_tags_ids])
     authorize! :list, SupportMaterialFile, on: @allocation_tags_ids
 
     begin
-      @allocation_tags = AllocationTag.find(@allocation_tags_ids)
+      @support_materials = SupportMaterialFile.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).order("attachment_updated_at DESC").uniq
     rescue
       render nothing: true, status: :unprocessable_entity
     end

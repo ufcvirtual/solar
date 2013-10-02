@@ -244,6 +244,9 @@ Solar::Application.routes.draw do
       get "at/:allocation_tag_id/folder/:folder/download", to: :download, type: :folder, as: :download_folder
       get "at/download", to: :download, type: :all, as: :download_all
       get "at/folder/:folder/download", to: :download, type: :folder, as: :download_folder
+      put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "SupportMaterialFile", as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "SupportMaterialFile", as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "SupportMaterialFile", as: :add_group_to
     end
   end
 

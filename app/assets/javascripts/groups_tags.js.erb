@@ -4,11 +4,11 @@ $(function(){
     var button = $(this);
     // remove/desvincula turma da ferramenta
     $.put($(this).data("link"), function(data){
-      if (typeof(data.notice) != "undefined")
-        flash_message(data.notice, 'notice');
-
-      $.get(div_list.data("link-list"), function(data){
-        div_list.replaceWith(data);
+      $.get(div_list.data("link-list"), function(data2){
+        div_list.replaceWith(data2);
+        
+        if (typeof(data.notice) != "undefined")
+          flash_message(data.notice, 'notice');
       });
     }).error(function(data){
       var response = JSON.parse(data.responseText);
@@ -26,12 +26,9 @@ $(function(){
     // adiciona turma à ferramenta
     $.put(url, function(data){
 
-      if (typeof(data.notice) != "undefined")
-        flash_message(data.notice, 'notice');
-
       var filter_checked_groups = $("[name='group[group_id][]']:checked").map(function() { return this.value; }).get();
       var groups_not_checked_on_filter = $(groups_ids).not(filter_checked_groups).get();
-      var data = {};
+      var params = {};
 
       // seleciona todas as turmas do filtro apenas se houver alguma turma adicionada que não tiver sido marcada naquele
       if(groups_not_checked_on_filter.length > 0){
@@ -39,11 +36,13 @@ $(function(){
         if(!filter_group_checkbox.prop("checked"))
           filter_group_checkbox.click();
 
-        data = {'allocation_tags_ids': all_allocation_tags_ids};
+        params = {'allocation_tags_ids': all_allocation_tags_ids};
       }
       
-      $.get(div_list.data("link-list"), data, function(data){
-        div_list.replaceWith(data);
+      $.get(div_list.data("link-list"), params, function(data2){
+        div_list.replaceWith(data2);
+        if (typeof(data.notice) != "undefined")
+          flash_message(data.notice, 'notice');
       });
 
     }).error(function(data){

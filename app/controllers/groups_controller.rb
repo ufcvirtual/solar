@@ -120,7 +120,7 @@ class GroupsController < ApplicationController
         tool_model = params[:tool_type].constantize
         tool = tool_model.find(params[:tool_id])
 
-        raise "cant_transfer_dependencies" unless tool.can_remove_or_unbind_group?(group)
+        raise "cant_transfer_dependencies" unless (not tool.respond_to?(:can_remove_or_unbind_group?) or tool.can_remove_or_unbind_group?(group))
 
         unless tool.groups.size == 1 # se não for a única turma
           case params[:type]

@@ -603,6 +603,8 @@
       edit_link: "Edit Link"
       new_file: "New File"
       none: "No material registered"
+    form:
+      groups: Groups
 
   #Foruns
   title: "Title"

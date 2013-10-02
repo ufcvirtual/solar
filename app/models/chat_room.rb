@@ -4,7 +4,7 @@ class ChatRoom < ActiveRecord::Base
 
   has_many :messages, class_name: "ChatMessage"
   has_many :participants, class_name: "ChatParticipant", dependent: :destroy
-  has_many :academic_allocations, as: :academic_tool
+  has_many :academic_allocations, as: :academic_tool, dependent: :destroy
   has_many :allocation_tags, through: :academic_allocations
   has_many :groups, through: :allocation_tags
 

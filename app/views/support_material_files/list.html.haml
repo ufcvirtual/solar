@@ -1,71 +1,67 @@
-= hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
-
-.block_wrapper.list_support_material{:"data-link-list" => list_support_material_files_path(allocation_tags_ids: @allocation_tags_ids)}
-  
+.block_wrapper.list_support_material{:"data-link-list" => list_support_material_files_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: params[:all_groups_ids])}
   .block_title
     %h2= t(:support_material, scope: [:editions, :items])
+  .list_support_materials
+    .block_content_toolbar
+      .block_toolbar_left.btn-group
+        %a.btn.btn_main{href: "#", :"data-dropdown" => "#dropdown_support_material"}
+          = content_tag(:i, nil, class: 'icon-plus-3')
+          %i.icon-arrow-down-3
+        .dropdown.dropdown-tip#dropdown_support_material
+          %ul.dropdown-menu
+            %li= link_to t(".new_file"), new_support_material_file_path(material_type: Material_Type_File, allocation_tags_ids: @allocation_tags_ids), :"data-box-title" => t(".new_file"), class: 'link_new_material_file'
+            %li= link_to t(".new_link"), new_support_material_file_path(material_type: Material_Type_Link, allocation_tags_ids: @allocation_tags_ids), :"data-box-title" => t(".new_link"), class: 'link_new_material_link'
 
-  - previous_allocation_tag = nil
-  - @allocation_tags.each_with_index do |allocation_tag, idxat|
-    /- allocation_tag_path = allocation_tag_path(allocation_tag, @what_was_selected)
+      .block_toolbar_right
+        .btn-group
+          = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit edit_material', :"data-link-edit" => edit_support_material_file_path(':id', allocation_tags_ids: @allocation_tags_ids), "data-edit-title" => t(".edit_link"), disabled: true
+          = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_material', :"data-link-delete" => support_material_file_path(':id', allocation_tags_ids: @allocation_tags_ids), disabled: true
 
-    .list_support_materials{id: "list_#{allocation_tag.id}"}
-      - unless previous_allocation_tag == idxat
-        - previous_allocation_tag = idxat
-        /.edition_allocation_tag_path= allocation_tag_path
+    - unless @support_materials.empty?
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th{style: 'text-align:center; width: 8%;'}= check_box_tag :all_support_material, false, false, :"data-children-names" => "c_", class: "all_support_material"
+            %th{style: 'text-align:left;'}= t(".name")
+            %th{style: 'text-align:center;'}= t(".date")
+            %th{style: 'text-align:center;'}= t(".type")
 
-        .block_content_toolbar
-          .block_toolbar_left.btn-group
-            %a.btn.btn_main{:href => "#", 'data-dropdown' => "#dropdown_#{allocation_tag.id}"}
-              = content_tag(:i, nil, :class=>'icon-plus-3')
-              %i.icon-arrow-down-3
-            %div{:id=>"dropdown_#{allocation_tag.id}", :class=>"dropdown dropdown-tip"}
-              %ul.dropdown-menu
-                %li= link_to t(".new_file"), new_support_material_file_path(material_type: Material_Type_File, allocation_tags_ids: [allocation_tag.id]), :"data-box-title" => t(".new_file"), class: 'link_new_material_file'
-                %li= link_to t(".new_link"), new_support_material_file_path(material_type: Material_Type_Link, allocation_tags_ids: [allocation_tag.id]), :"data-box-title" => t(".new_link"), class: 'link_new_material_link'
+        %tbody
+          - @support_materials.each do |material|
+            - all_groups = Group.where(id: params[:all_groups_ids])
+            %tr.lines{id: "tr_#{material.id}"}
+              %td{style: 'text-align:center;'}
+                = check_box_tag("c_#{material.id}", material.id, false, {class: "ckb_material", :"data-is-link" => (material.material_type == Material_Type_Link)})
+              %td
+                %div
+                  - if material.is_link?
+                    %span= image_tag('icon_file_link.png')
+                    %span= link_to material.name, material.name, target: '_blank'
+                  - else
+                    %span= image_tag(icon_attachment(material.name))
+                    - if can?(:download, SupportMaterialFile, on: [material.academic_allocations.map(&:allocation_tag_id)]) and File.exists?(material.attachment.path)
+                      %span= link_to material.name, download_support_material_file_path(id: material.id)
+                    - else
+                      %span.title= material.name
+                  .groups_tags.invisible= render "groups/groups_tags", groups: material.groups, tool: material, all_groups: all_groups, paths: {add: add_group_to_support_material_files_path(id: "param_id", tool_id: material.id), remove: remove_group_from_support_material_files_path(id: "param_id", tool_id: material.id), unbind: unbind_group_from_support_material_files_path(id: "param_id", tool_id: material.id)}
+              %td{style: 'text-align:center;'}
+                %div= l(material.attachment_updated_at, format: :normal)
+              %td{style: 'text-align:center;'}
+                %div= (material.is_link?) ? t(".link") : t(".file")
+    - else
+      .block_content.block_content_text= t(".none")
 
-          .block_toolbar_right
-            .btn-group
-              = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit edit_material', :"data-link-edit" => edit_support_material_file_path(':id', allocation_tags_ids: [allocation_tag.id]), "data-edit-title" => t(".edit_link"), disabled: true
-              = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del delete_material', :"data-link-delete" => support_material_file_path(':id', allocation_tags_ids: [allocation_tag.id]), disabled: true
-
-        - materials = allocation_tag.support_material_files
-        - unless materials.empty?
-          %table.tb_list
-            %thead
-              %tr.lines
-                %th{style: 'text-align:center; width: 8%;'}= check_box_tag :all_support_material, false, false, :"data-children-names" => "c_", class: "all_support_material"
-                %th{style: 'text-align:left;'}= t(".name")
-                %th{style: 'text-align:center;'}= t(".date")
-                %th{style: 'text-align:center;'}= t(".type")
-
-            %tbody
-              - materials.each do |material|
-                %tr.lines{id: "tr_#{material.id}"}
-                  %td{style: 'text-align:center;'}
-                    = check_box_tag("c_#{material.id}", material.id, false, {class: "ckb_material", :"data-is-link" => (material.material_type == Material_Type_Link)})
-                  %td
-                    %div
-                      - if material.is_link?
-                        %span= image_tag('icon_file_link.png')
-                        %span= link_to material.name, material.name, target: '_blank'
-                      - else
-                        %span= image_tag(icon_attachment(material.name))
-                        - if can?(:download, SupportMaterialFile, on: [material.allocation_tag_id]) and File.exists?(material.attachment.path)
-                          %span= link_to material.name, download_support_material_file_path(id: material.id, allocation_tag_id: material.allocation_tag_id)
-                        - else
-                          %span= material.name
-                  %td{style: 'text-align:center;'}
-                    %div= l(material.attachment_updated_at, format: :normal)
-                  %td{style: 'text-align:center;'}
-                    %div= (material.is_link?) ? t(".link") : t(".file")
-        - else
-          .block_content.block_content_text
-            = t(".none")
+= javascript_include_tag "tooltip", "groups_tags"
 
 :javascript
 
+  var div_list = $(".list_support_material");
+  var all_allocation_tags_ids = "#{AllocationTag.where(group_id: params[:all_groups_ids]).map(&:id).join(",")}";
+
   $(function(){
+
+    if ($("#radio_option_group").prop("checked"))
+      $(".groups_tags").show();
 
     $(".link_new_material_file, .link_new_material_link").call_fancybox();
 
@@ -101,16 +97,13 @@
         return false;
 
       if(!$(this).hasClass('disabled')){
-        var material_ids = jQuery.map($(".ckb_material:checked"), function(n){
-          return ($(n).val());
-        });
+        var materials = $('.ckb_material:checked', $(this).parents("div.list_support_material"));
+        var materials_ids = materials.map(function() { return this.value; }).get();
 
-        if ($(material_ids).length != 0){
-          $.delete($(this).data('link-delete').replace(':id', material_ids), function(data){
+        if ($(materials_ids).length != 0){
+          $.delete($(this).data('link-delete').replace(':id', materials_ids), function(data){
             flash_message(data.notice, 'notice');
-            $.get($('.list_support_material').data("link-list"), function(data) {
-              $('.list_support_material:last').replaceWith(data);
-            });
+            materials.parents('tr').fadeOut().remove();
           }).error(function(){
             flash_message(data.alert, 'alert');
           })

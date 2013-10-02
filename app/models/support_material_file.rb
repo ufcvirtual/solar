@@ -4,11 +4,14 @@ class SupportMaterialFile < ActiveRecord::Base
 
   has_many :academic_allocations, as: :academic_tool, dependent: :destroy
   has_many :allocation_tags, through: :academic_allocations
-
+  
+  has_many :academic_allocations, as: :academic_tool, dependent: :destroy
+  has_many :allocation_tags, through: :academic_allocations
+  has_many :groups, through: :allocation_tags
 
   before_save :url_protocol, if: :is_link?
+  before_save :define_fixed_values
 
-  # validates :allocation_tag_id, presence: true
   validates :attachment, presence: true, unless: :is_link?
 
   validates :url, presence: true, if: :is_link?
@@ -36,15 +39,14 @@ class SupportMaterialFile < ActiveRecord::Base
   end
 
   def self.find_files(allocation_tag_ids, folder_name = nil)
-    in_folder = " AND sm.folder = '#{folder_name}' " unless folder_name.nil?
-
-    query = <<SQL
-    SELECT *
-      FROM support_material_files sm
-     WHERE allocation_tag_id in (#{allocation_tag_ids.join(",")}) #{in_folder}
-     ORDER BY sm.folder, sm.attachment_content_type, sm.attachment_file_name
-SQL
-
-    SupportMaterialFile.find_by_sql(query);
+    in_folder = "folder = '#{folder_name}'" unless folder_name.nil?
+    joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: allocation_tag_ids, academic_tool_type: "SupportMaterialFile"})
+      .where(in_folder).order("folder, attachment_content_type, attachment_file_name")
   end
+
+  def define_fixed_values
+    self.folder = ((material_type.to_i == Material_Type_Link) ? 'LINKS' : 'GERAL')
+    self.attachment_updated_at = Time.now
+  end
+
 end

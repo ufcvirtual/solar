@@ -759,6 +759,8 @@
       edit_link: "Editar Link"
       new_file: "Novo Arquivo"
       none: "Nenhum material cadastrado"
+    form:
+      groups: Turmas
 
   #Listagem de Fóruns
   title: "Título"
