@@ -5,7 +5,7 @@ chat1:
   chat_type: 0 # sem participantes definidos
   schedule_id: 41
   start_hour: "10:00"
-  end_hour: "10:40"
+  end_hour: "18:40"
 
 chat2:
   id: 2
@@ -13,7 +13,7 @@ chat2:
   description: "Chat 02"
   chat_type: 1 # com participantes definidos
   schedule_id: 42
-  start_hour: "10:00"
+  start_hour: "9:00"
   end_hour: "10:40"
 
 chat3: # este chat possui mensagens
@@ -23,5 +23,5 @@ chat3: # este chat possui mensagens
   chat_type: 0 # sem participantes definidos
   schedule_id: 42
   start_hour: "10:00"
-  end_hour: "10:40"
+  end_hour: "14:00"
 
