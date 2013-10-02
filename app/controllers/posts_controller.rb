@@ -9,7 +9,7 @@ class PostsController < ApplicationController
   ## GET /discussions/1/posts/20120217/[news, history]/order/asc/limit/10
   def index
     @discussion = Discussion.find(params[:discussion_id])
-    authorize! :index, @discussion
+    authorize! :index, Discussion, {on: @discussion.allocation_tags.map(&:id), read: true}
 
     @posts = []
     @can_interact = @discussion.user_can_interact?(current_user.id)
@@ -57,20 +57,21 @@ class PostsController < ApplicationController
     @post = Post.new(params[:discussion_post])
 
     @post.user_id    = current_user.id
-    @post.profile_id = current_user.profiles_with_access_on(:create, :posts, @post.discussion.allocation_tag.related, true).first
+    @post.profile_id = current_user.profiles_with_access_on(:create, :posts, @post.discussion.academic_allocations.map(&:allocation_tag).map(&:related), true).first
     @post.level      = @post.parent.level.to_i + 1 unless @post.parent_id.nil?
 
     respond_to do |format|
       if @post.save
-        format.html { redirect_to(discussion_posts_path(Discussion.find(params[:discussion_post][:discussion_id])), :notice => t(:created, :scope => [:posts, :create])) }
-        format.xml  { render :xml => @post, :status => :created }
-        format.json { render :json => {:result => 1, :post_id => @post.id}, :status => :created }
+        format.html { redirect_to(discussion_posts_path(Discussion.find(params[:discussion_post][:discussion_id])), notice: t(:created, :scope => [:posts, :create])) }
+        format.xml  { render xml: @post, status: :created }
+        format.json { render json: {result: 1, post_id: @post.id}, status: :created }
       else
-        format.html { redirect_to(discussion_posts_path(@post.discussion), :alert => t(:not_created, :scope => [:posts, :create])) }
-        format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
-        format.json { render :json => {:result => 0}, :status => :unprocessable_entity }
+        format.html { redirect_to(discussion_posts_path(@post.discussion), alert: t(:not_created, scope: [:posts, :create])) }
+        format.xml  { render xml: @post.errors, status: :unprocessable_entity }
+        format.json { render json: {result: 0}, status: :unprocessable_entity }
       end
     end
+
   end
 
   ## PUT /discussions/:id/posts/1
