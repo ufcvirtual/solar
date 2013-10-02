@@ -1,13 +1,14 @@
 class SupportMaterialFile < ActiveRecord::Base
 
   GROUP_PERMISSION, OFFER_PERMISSION = true, true
-  include ToolsAssociation
 
-  has_one :allocation_tag
+  has_many :academic_allocations, as: :academic_tool, dependent: :destroy
+  has_many :allocation_tags, through: :academic_allocations
+
 
   before_save :url_protocol, if: :is_link?
 
-  validates :allocation_tag_id, presence: true
+  # validates :allocation_tag_id, presence: true
   validates :attachment, presence: true, unless: :is_link?
 
   validates :url, presence: true, if: :is_link?
