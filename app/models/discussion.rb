@@ -12,7 +12,12 @@ class Discussion < ActiveRecord::Base
   has_many :allocations, through: :allocation_tag
 
   validates :name, :description, presence: true
-  validate :unique_name, :final_date_presence
+  # validate :unique_name, :final_date_presence
+  validate :final_date_presence
+
+  accepts_nested_attributes_for :schedule
+
+  attr_accessible :name, :description, :schedule_attributes, :schedule_id
 
   before_destroy :can_destroy?
   after_destroy :delete_schedule
@@ -29,9 +34,7 @@ class Discussion < ActiveRecord::Base
   end
 
   def can_destroy?
-    is_empty = discussion_posts.empty?
-    errors.add(:base, I18n.t(:discussion_with_posts, :scope => [:discussion, :errors])) unless is_empty
-    return is_empty
+    discussion_posts.empty?
   end
 
   def delete_schedule
@@ -150,6 +153,10 @@ SQL
   # devolve a lista com todos os posts de uma discussion em ordem decrescente de updated_at, apenas o filho mais recente de cada post será adiconado à lista
   def latest_posts
     discussion_posts.select("DISTINCT ON (updated_at, parent_id) updated_at, parent_id, level")
+  end
+
+  def can_remove_or_unbind_group?(group)
+    self.discussion_posts.empty? # não pode dar unbind nem remover se fórum possuir posts
   end
 
 end

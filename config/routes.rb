@@ -54,7 +54,7 @@ Solar::Application.routes.draw do
   resources :groups, except: [:show] do
     resources :discussions, only: [:index] do
       collection do 
-        get :mobilis_list
+        get :mobilis_list, to: :list
       end
     end  
     get :list, on: :collection
@@ -64,7 +64,12 @@ Solar::Application.routes.draw do
 
   ## discussions/:id/posts
   resources :discussions do
-    get :list, on: :collection
+    collection do
+      get :list
+      put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "Discussion", as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "Discussion", as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "Discussion", as: :add_group_to
+    end
     resources :posts, except: [:show, :new, :edit] do
       collection do
         get "user/:user_id", to: :show, as: :user

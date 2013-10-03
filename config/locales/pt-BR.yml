@@ -815,6 +815,7 @@
     form:
       new: Novo Fórum
       edit: Editar Fórum
+      groups: Turmas
     edit_discussion: Editar %{discussion_name}
     delete_discussion: Excluir %{discussion_name}
     new_discussion: Novo fórum
@@ -831,6 +832,8 @@
       delete: Deletar Fórum
       choose_at_least_one: "Selecione, ao menos, um fórum"
       choose_one: Selecione um fórum
+      expand_description: Expandir descrição
+      compress_description: Comprimir descrição
     success:
       created: Fórum criado com sucesso.
       updated: Fórum atualizado com sucesso.
@@ -839,6 +842,10 @@
       deleted: Não foi possível deletar fórum.
       created: Não foi possível criar fórum.
       updated: Não foi possível atualizar fórum.
+
+  discussions:
+    list:
+      compress_description: Comprimir descrição
 
   # messages
   message_title: "Mensagens"

@@ -661,6 +661,7 @@
     form:
       new: New discussion
       edit: Edit discussion
+      groups: Groups
     edit_discussion: Edit %{discussion_name}
     delete_discussion: Delete %{discussion_name}
     new_discussion: New discussion
@@ -677,6 +678,8 @@
       delete: Delete Discussion
       choose_at_least_one: Choose at least one discussion
       choose_one: Choose a discussion
+      expand_enunciation: Expand description
+      compress_enunciation: Compress description
     success:
       deleted: Discussion was successfully deleted.
     error:
