@@ -75,3 +75,18 @@
 .new_chat .required + .error, .optional + .error{
   margin-left: 70px;
 }
+
+.chat_list .dropdown-menu{
+ overflow-y: scroll;
+ max-height: 100px;
+ padding: 3px;
+ padding-top: 6px;
+}
+
+.chat_list .dropdown-menu li{
+ white-space: nowrap;
+}
+
+.chat_list .dropdown-link a{
+ vertical-align:bottom;
+}

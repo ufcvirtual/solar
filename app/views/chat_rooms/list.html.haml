@@ -30,11 +30,11 @@
               - unless chat.chat_type==0 
                 - students = participants(chat.id)
                 %i.icon-people
-                %a{:style=> "vertical-align:bottom", :"data-dropdown"=>"#students-dropdown#{chat.id}" }= students.count.to_s + ' ' + t(:students, :scope => [:chat_rooms, :list])
-                .dropdown.dropdown-tip{ :id => "students-dropdown#{chat.id}" }
-                  %ul{ :class => "dropdown-menu", :style => "overflow-y: scroll; max-height: 100px; padding: 3px; padding-top: 6px; " }
+                %a{:class=> "chat_list", :"data-dropdown"=>"#students-dropdown#{chat.id}" }= students.count.to_s + ' ' + t(:students, :scope => [:chat_rooms, :list])
+                .dropdown.dropdown-tip{ :class => "chat_list", :id => "students-dropdown#{chat.id}" }
+                  %ul{ :class => "dropdown-menu" }
                     -students.each do |p|
-                      %li{ :style => "white-space: nowrap;" }=p.name
+                      %li=p.name
 
             %td{align: "center"}
               %div= [l(chat.schedule.start_date.to_date), l(chat.schedule.end_date.to_date)].join(" - ")
@@ -66,11 +66,11 @@
                 - unless chat.chat_type==0 
                   - students = participants(chat.id)
                   %i.icon-people
-                  %a{:style=> "vertical-align:bottom", :"data-dropdown"=>"#students-dropdown#{chat.id}" }= students.count.to_s + ' ' + t(:students, :scope => [:chat_rooms, :list])
-                  .dropdown.dropdown-tip{ :id => "students-dropdown#{chat.id}" }
-                    %ul{ :class => "dropdown-menu", :style => "overflow-y: scroll; max-height: 100px; padding: 3px; padding-top: 6px; " }
+                  %a{:class=> "chat_list", :"data-dropdown"=>"#students-dropdown#{chat.id}" }= students.count.to_s + ' ' + t(:students, :scope => [:chat_rooms, :list])
+                  .dropdown.dropdown-tip{ :class => "chat_list", :id => "students-dropdown#{chat.id}" }
+                    %ul{ :class => "dropdown-menu" }
                       -students.each do |p|
-                        %li{ :style => "white-space: nowrap;" }=p.name
+                        %li=p.name
 
               %td{align: "center"}
                 %div= [l(chat.schedule.start_date.to_date), l(chat.schedule.end_date.to_date)].join(" - ")
