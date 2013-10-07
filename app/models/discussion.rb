@@ -13,7 +13,7 @@ class Discussion < ActiveRecord::Base
 
   validates :name, :description, presence: true
   validate :unique_name, unless: "allocation_tags_ids.nil?"
-  validate :final_date_presence
+  # validate :final_date_presence
 
   accepts_nested_attributes_for :schedule
 
@@ -30,7 +30,7 @@ class Discussion < ActiveRecord::Base
 
   def final_date_presence
     has_final_date = self.has_final_date?
-    errors.add(:final_date_presence, I18n.t(:mandatory_final_date, :scope => [:discussion, :errors])) unless has_final_date
+    errors.add(:final_date_presence, I18n.t(:mandatory_final_date, :scope => [:discussions, :error])) unless has_final_date
     return has_final_date
   end
 
@@ -48,7 +48,7 @@ class Discussion < ActiveRecord::Base
   # => Se eu criar um novo fórum em que uma de suas allocation_tags seja a 3 e tenha o mesmo nome que o Fórum 1, é pra dar erro
   def unique_name
     discussions_with_same_name = Discussion.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: allocation_tags_ids}, name: name)
-    errors.add(:name, I18n.t(:existing_name, :scope => [:discussion, :errors])) if (@new_record == true or name_changed?) and discussions_with_same_name.size > 0
+    errors.add(:name, I18n.t(:existing_name, :scope => [:discussions, :error])) if (@new_record == true or name_changed?) and discussions_with_same_name.size > 0
   end
 
   def opened?

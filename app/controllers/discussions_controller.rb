@@ -38,7 +38,7 @@ class DiscussionsController < ApplicationController
         @discussion.save!
         @discussion.academic_allocations.create @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
       end
-      render json: {success: true, notice: t(:created, scope: [:discussion, :success])}
+      render json: {success: true, notice: t(:created, scope: [:discussions, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue 
@@ -66,7 +66,7 @@ class DiscussionsController < ApplicationController
     begin
       @discussion.allocation_tags_ids = @allocation_tags_ids
       @discussion.update_attributes!(params[:discussion])
-      render json: {success: true, notice: t(:updated, scope: [:discussion, :success])}
+      render json: {success: true, notice: t(:updated, scope: [:discussions, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue 
@@ -86,9 +86,9 @@ class DiscussionsController < ApplicationController
         @discussions.destroy_all
       end
 
-      render json: {success: true, notice: t(:deleted, scope: [:discussion, :success])}
+      render json: {success: true, notice: t(:deleted, scope: [:discussions, :success])}
     rescue
-      render json: {success: false, alert: (has_posts ? t(:discussion_with_posts, scope: [:discussion, :errors]) : t(:deleted, scope: [:discussion, :errors]))}, status: :unprocessable_entity
+      render json: {success: false, alert: (has_posts ? t(:discussion_with_posts, scope: [:discussions, :error]) : t(:deleted, scope: [:discussions, :error]))}, status: :unprocessable_entity
     end
   end
 

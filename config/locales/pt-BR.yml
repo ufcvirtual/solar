@@ -799,35 +799,13 @@
       attach_save: "Salvar"
       attach_another_file: "Anexar outro arquivo"
 
-  discussion:
-    errors:
-      existing_name: já existe
-      range_date_error: deve ser menor que a data final
-      offer_period: deve estar dentro do período da oferta (%{start} - %{end})
-      discussion_with_posts: "Fórum com postagens"
-      mandatory_final_date: "Data final obrigatória"
-    buttons:
+  discussions:
+    form:
       save: Salvar
       cancel: Cancelar
-      edit: Editar
-      delete: Excluir
-      new: Novo
-    form:
       new: Novo Fórum
       edit: Editar Fórum
       groups: Turmas
-    edit_discussion: Editar %{discussion_name}
-    delete_discussion: Excluir %{discussion_name}
-    new_discussion: Novo fórum
-    discussion_table_title: Fóruns disponíveis
-    curriculum_unit: Unidade Curricular
-    offer: Oferta
-    group: Turma
-    back: Voltar
-    to: a
-    end_discussion: Fim
-    expand_description: Expandir descrição
-    compress_description: Comprimir descrição
     list:
       new: Novo Fórum
       edit: Editar Fórum
@@ -844,6 +822,11 @@
       deleted: Não foi possível deletar fórum.
       created: Não foi possível criar fórum.
       updated: Não foi possível atualizar fórum.
+      existing_name: já existe
+      range_date_error: deve ser menor que a data final
+      offer_period: deve estar dentro do período da oferta (%{start} - %{end})
+      discussion_with_posts: Fórum com postagens
+      mandatory_final_date: Data final obrigatória
 
   # messages
   message_title: "Mensagens"
@@ -919,7 +902,7 @@
   agenda_title: "Agenda de"
   new_activity: "Nova atividade"
   agenda_null: "Nenhuma atividade marcada para esta agenda"
-  discussions: "Forum"
+  # discussions: "Forum"
   lesson: "Aula"
   schedule_events: "Evento da Agenda"
   schedule_assignment: "Trabalho"

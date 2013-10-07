@@ -22,7 +22,7 @@ $(function(){
 
   $('.delete_discussion').click(function(){
     if ($(this).attr('disabled') == 'disabled'){
-      flash_message("<%=I18n.t(:choose_at_least_one, scope: [:discussion, :list])%>", "alert");
+      flash_message("<%=I18n.t(:choose_at_least_one, scope: 'discussions.list')%>", "alert");
       return false;
     }
 
@@ -48,7 +48,7 @@ $(function(){
 
   $(".btn_edit").click(function(){
     if ($(this).attr('disabled') == 'disabled'){
-      flash_message("<%=I18n.t(:choose_one, scope: [:discussion, :list])%>", "alert");
+      flash_message("<%=I18n.t(:choose_one, scope: 'discussions.list')%>", "alert");
       return false;
     }
 
