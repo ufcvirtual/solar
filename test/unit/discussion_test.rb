@@ -20,7 +20,7 @@ class  DiscussionTest < ActiveSupport::TestCase
     discussion = Discussion.create(name: "Forum sem data final", schedule_id: schedules(:schedule33).id)
 
     assert not(discussion.valid?)
-    assert_equal discussion.errors[:final_date_presence].first, I18n.t(:mandatory_final_date, scope: [:discussion, :errors])
+    assert_equal discussion.errors[:final_date_presence].first, I18n.t(:mandatory_final_date, scope: [:discussions, :error])
   end
 
   test "novo forum deve ter titulo unico para a mesma allocation_tag" do
@@ -29,7 +29,7 @@ class  DiscussionTest < ActiveSupport::TestCase
     discussion.save
     assert (not discussion.valid?)
 
-    assert_equal discussion.errors[:name].first, I18n.t(:existing_name, scope: [:discussion, :errors])
+    assert_equal discussion.errors[:name].first, I18n.t(:existing_name, scope: [:discussions, :error])
   end
 
   test "se o forum esta fechado" do

@@ -13,7 +13,7 @@ class Discussion < ActiveRecord::Base
 
   validates :name, :description, presence: true
   validate :unique_name, unless: "allocation_tags_ids.nil?"
-  # validate :final_date_presence
+  validate :final_date_presence
 
   accepts_nested_attributes_for :schedule
 

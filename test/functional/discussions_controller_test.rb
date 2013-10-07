@@ -49,7 +49,7 @@ class DiscussionsControllerTest < ActionController::TestCase
       end
     end
 
-    assert_equal I18n.t(:created, scope: [:discussion, :success]), get_json_response("notice")
+    assert_equal I18n.t(:created, scope: [:discussions, :success]), get_json_response("notice")
     assert_response :success
 
     # oferta
@@ -57,7 +57,7 @@ class DiscussionsControllerTest < ActionController::TestCase
       post :create, {allocation_tags_ids: "#{allocation_tags(:al6).id}", discussion: {name: "Testa modulo3", description: "Forum para testar modulo", schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.month}}}
     end
 
-    assert_equal I18n.t(:created, scope: [:discussion, :success]), get_json_response("notice")
+    assert_equal I18n.t(:created, scope: [:discussions, :success]), get_json_response("notice")
     assert_response :success
   end
 
@@ -92,7 +92,7 @@ class DiscussionsControllerTest < ActionController::TestCase
     end
 
     assert_equal "Forum alterado", Discussion.find(discussions(:forum_8).id).name
-    assert_equal I18n.t(:updated, scope: [:discussion, :success]), get_json_response("notice")
+    assert_equal I18n.t(:updated, scope: [:discussions, :success]), get_json_response("notice")
     assert_response :success
   end
 
@@ -114,7 +114,7 @@ class DiscussionsControllerTest < ActionController::TestCase
       delete(:destroy, {id: discussions(:forum_8).id, allocation_tags_ids: [allocation_tags(:al3).id]})
     end
 
-    assert_equal I18n.t(:deleted, scope: [:discussion, :success]), get_json_response("notice")
+    assert_equal I18n.t(:deleted, scope: [:discussions, :success]), get_json_response("notice")
     assert_response :success
   end
 
@@ -136,7 +136,7 @@ class DiscussionsControllerTest < ActionController::TestCase
       delete(:destroy, {id: discussions, allocation_tags_ids: [allocation_tags(:al3).id]})
     end
 
-    assert_equal I18n.t(:deleted, scope: [:discussion, :success]), get_json_response("notice")
+    assert_equal I18n.t(:deleted, scope: [:discussions, :success]), get_json_response("notice")
     assert_response :success
   end
 
@@ -145,7 +145,7 @@ class DiscussionsControllerTest < ActionController::TestCase
       delete(:destroy, {id: discussions(:forum_1).id, allocation_tags_ids: [allocation_tags(:al3).id]})
     end
 
-    assert_equal I18n.t(:discussion_with_posts, scope: [:discussion, :errors]), get_json_response("alert")
+    assert_equal I18n.t(:discussion_with_posts, scope: [:discussions, :error]), get_json_response("alert")
     assert_response :unprocessable_entity
   end  
 
