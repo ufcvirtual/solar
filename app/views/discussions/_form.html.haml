@@ -1,8 +1,6 @@
-- start_date, end_date = (@discussion.try(:schedule).try(:start_date) || Date.today), (@discussion.try(:schedule).try(:end_date) || Date.today + 3.months)
-
-.discussion_form{:style => "text-align: left;"}
-  = simple_form_for(@discussion, :html => {:id => "discussion_form"}) do |f|
-    %h1#lightBoxDialogTitle= t((@discussion.persisted? ? :edit : :new), scope: [:discussion, :form])
+.discussion_form
+  = simple_form_for(@discussion, html: {id: "discussion_form"}) do |f|
+    %h1#lightBoxDialogTitle= t(@discussion.persisted? ? ".edit" : ".new")
     %span.form_requirement= t(:required_fields)
       
     .form-inputs.block_content
@@ -10,57 +8,26 @@
 
       = f.input :name
       = f.input :description
-      - error_class = "field_with_errors" unless @schedule_error.blank?
-      .string.required.label_color{:class => error_class}
-        = f.label :schedule, :required => true
-        = text_field_tag "start_date", "", :id => "from-date", :title => "#{t(:from_date)}", :value => "#{l(start_date.to_date, format: :datepicker)}", :class => "date_text_field", :size => 10
-        = t(:to, :scope => [:discussion])
-        = text_field_tag "end_date", "", :id => "until-date", :title => "#{t(:until_date)}", :value => "#{l(end_date.to_date, format: :datepicker)}", :class => "date_text_field", :size => 10
-        %span.field_with_errors{:style => "display: inline-block;"}= @error
+
+      = f.fields_for :schedule, defaults: {required: true} do |s|
+        .schedule_dates
+          .left= s.input :start_date, as: :string, input_html: {id: 'from-date', value: l(@discussion.schedule.start_date.to_date, format: :datepicker)}
+          .right= s.input :end_date, as: :string, input_html: {id: 'until-date', value: l(@discussion.schedule.end_date.to_date, format: :datepicker)}
+
+      .input.group_label.invisible
+        = f.label t(:groups, scope: [:discussion, :form])
+        %span.groups
+          - @groups_codes.each do |group_code|
+            %span.collection_check_boxes= group_code
 
       .form-actions.right_buttons
-        = button_to_function t(:cancel, :scope => [:discussion, :buttons]), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", :alt => t(:cancel, :scope => [:discussion, :buttons])
-        = button_tag t(:save, :scope => [:discussion, :buttons]), :class => "btn btn_main btn_lightbox", :alt => t(:save, :scope => [:discussion, :buttons]), :type => "button", :id => "save"
+        = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(".cancel")
+        = button_to_function t(".save"), "save_discussion()" , class: "btn btn_main btn_lightbox", alt: t(".save"), type: "button"
 
-:css
-  .ui-datepicker{ 
-    width: 15em; 
-    padding: .2em .2em 0; 
-    display: none;
-    background-color: white;
-  }
+= javascript_include_tag "edition_discussions"
 
 :javascript
 
-  /* se é o cadastro de um novo fórum, o "new Date" irá considerar o offset do time_zone (-3h) e irá exibir o dia incorreto */
-  var new_action = (("#{params[:action]}" == "new" || "#{params[:action]}" == "create")  ? 1 : 0);
+  var start_date = "#{@discussion.schedule.start_date}";
+  var end_date = "#{@discussion.schedule.end_date}";
 
-  $(function(){
-    var options = $.extend($.datepicker.regional['#{I18n.locale}']);
-
-    /* impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final */
-    $('#from-date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#until-date').datepicker("option", "minDate", selected); } }) );
-    $('#until-date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#from-date').datepicker("option", "maxDate", selected); } }) );
-
-    $('#save').click(function(){
-      $('form#discussion_form').serialize_and_submit({
-        replace_list: $('.list_discussions')
-      });
-    });
-
-
-    $('#until-date').blur(function(){
-      if($(this).datepicker("getDate") == null){
-        new_end_date = new Date("#{end_date}");
-        $(this).datepicker("setDate", new Date(new_end_date.getFullYear(), new_end_date.getMonth(), new_end_date.getDate()+new_action));
-      }
-    });
-
-    $('#from-date').blur(function(){
-      if($(this).datepicker("getDate") == null){
-        new_start_date = new Date("#{start_date}");
-        $(this).datepicker("setDate", new Date(new_start_date.getFullYear(), new_start_date.getMonth(), new_start_date.getDate()+new_action));
-      }
-    });
-
-  });

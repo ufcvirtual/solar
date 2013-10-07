@@ -645,42 +645,35 @@
       attach_save: "Save"
       attach_another_file: "Attach another file"
 
-  discussion:
-    errors:
-      existing_name_error: already exists
-      range_date_error: must be smaller than the final date
-      offer_period: must be on the date range of offer (%{start} - %{end})
-      discussion_with_posts: "Discussion with posts"
-      mandatory_final_date: "Mandatory final date"
-    buttons:
-      save: Save
-      cancel: Cancel
-      edit: Edit
-      delete: Delete
-      new: New
+  discussions:
     form:
+      ssave: Save
+      cancel: Cancel
       new: New discussion
       edit: Edit discussion
-    edit_discussion: Edit %{discussion_name}
-    delete_discussion: Delete %{discussion_name}
-    new_discussion: New discussion
-    discussion_table_title: Available discussions
-    curriculum_unit: Curriculum Unit
-    offer: Offer
-    group: Group
-    back: Back
-    to: to
-    end_discussion: End
+      groups: Groups
     list:
       new: New Discussion
       edit: Edit Discussion
       delete: Delete Discussion
       choose_at_least_one: Choose at least one discussion
       choose_one: Choose a discussion
+      expand_description: Expand description
+      compress_description: Compress description
+      discussions: Dicussions
     success:
+      created: Discussion was successfully created.
+      updated: Discussion was successfully updated.
       deleted: Discussion was successfully deleted.
     error:
+      created: Discussion wasn't created.
+      updated: Discussion wasn't updated.
       deleted: Discussion wasn't deleted.
+      existing_name_error: already exists
+      range_date_error: must be smaller than the final date
+      offer_period: must be on the date range of offer (%{start} - %{end})
+      discussion_with_posts: "Discussion with posts"
+      mandatory_final_date: "Mandatory final date"
 
   message_title: "Messages"
   message_inbox: "Inbox"
@@ -755,7 +748,7 @@
   agenda_title: "Agenda of"
   new_activity: "New activity"
   agenda_null: "No actives programed for this schedule"
-  discussions: "Forum"
+  # discussions: "Discussion"
   lesson: "Lesson"
   schedule_assignment: "Assignment"
   schedule_events: "Schedule Event"
@@ -1221,6 +1214,7 @@
       remove: Remove
       add: Add
       cancel: Cancel
+      add_group: Add Group
     success:
       created: Group was successfully created.
       updated: Group was successfully updated.

@@ -1,91 +1,46 @@
-.block_wrapper.list_discussions{:"data-link-list" => list_discussions_path(allocation_tags_ids: @allocation_tags_ids)}
+.block_wrapper.list_discussions{:"data-link-list" => list_discussions_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: params[:all_groups_ids])}
 
   .block_title
-    %h2= t(:discussion_table_title, :scope => [:discussion])
+    %h2= t(".discussions")
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_discussion_path(allocation_tags_ids: @allocation_tags_ids), class: " btn btn_main", id: "new-discussion", :"data-tooltip" => t(:new, scope: "discussion.list")
+      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_discussion_path(allocation_tags_ids: @allocation_tags_ids), class: " btn btn_main", id: "new-discussion", :"data-tooltip" => t(".new")
 
     .block_toolbar_right
       .btn-group
-        = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit', :"data-link-edit" => edit_discussion_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(:edit, scope: "discussion.list")
-        = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del delete_discussion',  :"data-link-delete" => discussion_path(id: ':id', :allocation_tags_ids => @allocation_tags_ids), disabled: true, :'data-tooltip' => t(:delete, scope: "discussion.list")
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit', :"data-link-edit" => edit_discussion_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".edit")
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_discussion',  :"data-link-delete" => discussion_path(id: ':id', :allocation_tags_ids => @allocation_tags_ids), disabled: true, :'data-tooltip' => t(".delete")
 
   - unless @discussions.nil? or @discussions.empty?
+    - all_groups = Group.where(id: params[:all_groups_ids])
     %table.tb_list
       %thead
         %tr.lines
           %th{style: 'text-align:center; width: 8%;'}= check_box_tag :all_discussions, false, false, :"data-children-names" => "ckb_discussion", class: "all_discussions"
-          %th{:align => "left"}=t :title
-          %th{:align => "center", :style => "width: 16%;"}=t :forum_table_date
-          %th{:align => "right", :style => "width: 14%;"}=t :curriculum_unit, :scope => [:discussion]
-          %th{:align => "right", :style => "width: 10%;"}=t :offer, :scope => [:discussion]
-          %th{:align => "right", :style => "width: 10%;"}=t :group, :scope => [:discussion]
+          %th{align: "left"}=t :title
+          %th{align: "center", style: "width: 26%;"}=t :forum_table_date
       %tbody
         - @discussions.each do |discussion|
-          %tr{:class => "lines #{'period_ended' if discussion.closed? and (not discussion.extra_time?(current_user.id))}"}
+          %tr.lines{id: "tr_#{discussion.id}"}
             %td{style: 'text-align:center;'}= check_box_tag :ckb_discussion, discussion.id, false, {class: "ckb_discussion"}
             %td
-              - if (can?(:read, discussion) and (discussion.opened? or discussion.closed?))
-                = link_to discussion.name, discussion_posts_path(discussion), {:class => 'link_content'}
-                = "(#{t(:forum_closed_short)})" if discussion.closed? and (not discussion.extra_time?(current_user.id))
-                = "(#{t(:discussion_closed_to_students)})" if discussion.extra_time?(current_user.id)
-              - else
-                = discussion.name
-            %td= [l(discussion.schedule.start_date.to_date), l(discussion.schedule.end_date.to_date)].join(" - ")
-            %td= discussion.allocation_tag.offer ? discussion.allocation_tag.offer.curriculum_unit.name : discussion.allocation_tag.group.offer.curriculum_unit.name
-            %td{:align => "left", :style => "width: 50px;"}= discussion.allocation_tag.offer ?  discussion.allocation_tag.offer.semester.name : discussion.allocation_tag.group.offer.semester.name
-            %td{:align => "left", :style => "width: 50px;"}= discussion.allocation_tag.group ?  discussion.allocation_tag.group.code : "-" 
+              %div
+                .title= discussion.name
+                .description
+                  .minimun= raw(truncate discussion.description, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
+                  .complete.invisible
+                    = discussion.description
+                    = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_description"))
+                .group_label.invisible= render "groups/groups_tags", groups: discussion.groups, tool: discussion, all_groups: all_groups, paths: {add: add_group_to_discussions_path(id: "param_id", tool_id: discussion.id), remove: remove_group_from_discussions_path(id: "param_id", tool_id: discussion.id), unbind: unbind_group_from_discussions_path(id: "param_id", tool_id: discussion.id)}
+            %td{style: 'text-align:center;'}= [l(discussion.schedule.start_date, format: :normal), l(discussion.schedule.end_date, format: :normal)].join(" - ")
+
 
   - else
     .block_content.block_content_text= t(:forum_message)
 
-= javascript_include_tag "tooltip"
+= javascript_include_tag "edition_discussions", "tooltip", "groups_tags"
 
 :javascript
 
-  $(function(){
-
-    $("#new-discussion").call_fancybox();
-
-    $('.delete_discussion').click(function(){
-      if ($(this).attr('disabled') == 'disabled'){
-        flash_message("#{I18n.t(:choose_at_least_one, scope: [:discussion, :list])}", "alert");
-        return false;
-      }
-
-      if (!confirm("#{I18n.t(:message_confirm)}"))
-        return false;
-
-      var discussions = $('.ckb_discussion:checked', $(this).parents("div.list_discussions"));
-      var discussion_ids = $('.ckb_discussion:checked', $(this).parents("div.list_discussions")).map(function() { return this.value; }).get();
-
-      if (discussion_ids.length) {
-        $.delete($(this).data('link-delete').replace(':id', discussion_ids), function(data){
-          flash_message(data.notice, 'notice');
-          discussions.parents('tr').fadeOut().remove();
-
-          $(".btn_edit, .btn_del").attr("disabled", true);
-        }).error(function(data){
-          var data = $.parseJSON(data.responseText);
-          if (typeof(data.alert) != "undefined")
-            flash_message(data.alert, 'alert');
-        });
-      }
-    });
-
-    $(".btn_edit").click(function(){
-      if ($(this).attr('disabled') == 'disabled'){
-        flash_message("#{I18n.t(:choose_one, scope: [:discussion, :list])}", "alert");
-        return false;
-      }
-
-      var discussion_ids = $('.ckb_discussion:checked', $(this).parents("div.list_discussions")).map(function() { return this.value; }).get();
-      var url_edit = $(this).data('link-edit').replace(':id', discussion_ids);
-      $(this).call_fancybox({href : url_edit, open: true});
-
-    });
-
-    $(".all_discussions").nice_checkbox();
-
-  });
+  var div_list = $(".list_discussions");
+  var all_allocation_tags_ids = "#{AllocationTag.where(group_id: params[:all_groups_ids]).map(&:id).join(",")}";

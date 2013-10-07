@@ -12,7 +12,13 @@ class Discussion < ActiveRecord::Base
   has_many :allocations, through: :allocation_tag
 
   validates :name, :description, presence: true
-  validate :unique_name, :final_date_presence
+  validate :unique_name, unless: "allocation_tags_ids.nil?"
+  # validate :final_date_presence
+
+  accepts_nested_attributes_for :schedule
+
+  attr_accessible :name, :description, :schedule_attributes, :schedule_id
+  attr_accessor :allocation_tags_ids
 
   before_destroy :can_destroy?
   after_destroy :delete_schedule
@@ -24,25 +30,26 @@ class Discussion < ActiveRecord::Base
 
   def final_date_presence
     has_final_date = self.has_final_date?
-    errors.add(:final_date_presence, I18n.t(:mandatory_final_date, :scope => [:discussion, :errors])) unless has_final_date
+    errors.add(:final_date_presence, I18n.t(:mandatory_final_date, :scope => [:discussions, :error])) unless has_final_date
     return has_final_date
   end
 
   def can_destroy?
-    is_empty = discussion_posts.empty?
-    errors.add(:base, I18n.t(:discussion_with_posts, :scope => [:discussion, :errors])) unless is_empty
-    return is_empty
+    discussion_posts.empty?
   end
 
   def delete_schedule
     self.schedule.destroy
   end
 
-  # ## para a mesma allocation_tag
-  # def unique_name
-  #   discussions_with_same_name = Discussion.find_all_by_allocation_tag_id_and_name(allocation_tag_id, name)
-  #   errors.add(:base, I18n.t(:existing_name, :scope => [:discussion, :errors])) if (@new_record == true or name_changed?) and discussions_with_same_name.size > 0
-  # end
+  # verifica se existe alguma academic_allocation de um fórum com o mesmo nome cuja allocation_tag coincida com alguma das allocation_tags que o fórum está sendo cadastrado
+  # Ex:
+  # => Existe o fórum Fórum 1 com academic allocation para a allocation_tag 3
+  # => Se eu criar um novo fórum em que uma de suas allocation_tags seja a 3 e tenha o mesmo nome que o Fórum 1, é pra dar erro
+  def unique_name
+    discussions_with_same_name = Discussion.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: allocation_tags_ids}, name: name)
+    errors.add(:name, I18n.t(:existing_name, :scope => [:discussions, :error])) if (@new_record == true or name_changed?) and discussions_with_same_name.size > 0
+  end
 
   def opened?
     schedule = self.schedule
@@ -152,4 +159,7 @@ SQL
     discussion_posts.select("DISTINCT ON (updated_at, parent_id) updated_at, parent_id, level")
   end
 
+  def can_remove_or_unbind_group?(group)
+    self.discussion_posts.empty? # não pode dar unbind nem remover se fórum possuir posts
+  end
 end
