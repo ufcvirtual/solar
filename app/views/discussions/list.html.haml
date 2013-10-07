@@ -8,8 +8,8 @@
 
     .block_toolbar_right
       .btn-group
-        = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit', :"data-link-edit" => edit_discussion_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(:edit, scope: "discussion.list")
-        = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del delete_discussion',  :"data-link-delete" => discussion_path(id: ':id', :allocation_tags_ids => @allocation_tags_ids), disabled: true, :'data-tooltip' => t(:delete, scope: "discussion.list")
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit', :"data-link-edit" => edit_discussion_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(:edit, scope: "discussion.list")
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_discussion',  :"data-link-delete" => discussion_path(id: ':id', :allocation_tags_ids => @allocation_tags_ids), disabled: true, :'data-tooltip' => t(:delete, scope: "discussion.list")
 
   - unless @discussions.nil? or @discussions.empty?
     - all_groups = Group.where(id: params[:all_groups_ids])
@@ -27,11 +27,10 @@
               %div
                 .title= discussion.name
                 .description
-                  .minimun
-                    = raw(truncate discussion.description, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
+                  .minimun= raw(truncate discussion.description, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(:expand_description, scope: [:discussion]))}")
                   .complete.invisible
                     = discussion.description
-                    = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_description"))
+                    = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(:compress_description, scope: [:discussion]))
                 .group_label.invisible= render "groups/groups_tags", groups: discussion.groups, tool: discussion, all_groups: all_groups, paths: {add: add_group_to_discussions_path(id: "param_id", tool_id: discussion.id), remove: remove_group_from_discussions_path(id: "param_id", tool_id: discussion.id), unbind: unbind_group_from_discussions_path(id: "param_id", tool_id: discussion.id)}
             %td{style: 'text-align:center;'}= [l(discussion.schedule.start_date, format: :normal), l(discussion.schedule.end_date, format: :normal)].join(" - ")
 
@@ -45,5 +44,3 @@
 
   var div_list = $(".list_discussions");
   var all_allocation_tags_ids = "#{AllocationTag.where(group_id: params[:all_groups_ids]).map(&:id).join(",")}";
-
-  

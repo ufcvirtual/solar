@@ -826,6 +826,8 @@
     back: Voltar
     to: a
     end_discussion: Fim
+    expand_description: Expandir descrição
+    compress_description: Comprimir descrição
     list:
       new: Novo Fórum
       edit: Editar Fórum
@@ -842,10 +844,6 @@
       deleted: Não foi possível deletar fórum.
       created: Não foi possível criar fórum.
       updated: Não foi possível atualizar fórum.
-
-  discussions:
-    list:
-      compress_description: Comprimir descrição
 
   # messages
   message_title: "Mensagens"

@@ -672,14 +672,14 @@
     back: Back
     to: to
     end_discussion: End
+    expand_enunciation: Expand description
+    compress_enunciation: Compress description
     list:
       new: New Discussion
       edit: Edit Discussion
       delete: Delete Discussion
       choose_at_least_one: Choose at least one discussion
       choose_one: Choose a discussion
-      expand_enunciation: Expand description
-      compress_enunciation: Compress description
     success:
       deleted: Discussion was successfully deleted.
     error:
