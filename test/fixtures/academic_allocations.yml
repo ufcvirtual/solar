@@ -198,3 +198,57 @@ acaal34:
   allocation_tag_id: 3
   academic_tool_id: 11
   academic_tool_type: "SupportMaterialFile"
+
+acaal35:
+  id: 35
+  allocation_tag_id: 6
+  academic_tool_id: 1
+  academic_tool_type: "Discussion"
+
+acaal36:
+  id: 36
+  allocation_tag_id: 3
+  academic_tool_id: 2
+  academic_tool_type: "Discussion"
+
+acaal37:
+  id: 37
+  allocation_tag_id: 1
+  academic_tool_id: 3
+  academic_tool_type: "Discussion"
+
+acaal38:
+  id: 38
+  allocation_tag_id: 9
+  academic_tool_id: 4
+  academic_tool_type: "Discussion"
+
+acaal39:
+  id: 39
+  allocation_tag_id: 3
+  academic_tool_id: 5
+  academic_tool_type: "Discussion"
+
+acaal40:
+  id: 40
+  allocation_tag_id: 3
+  academic_tool_id: 6
+  academic_tool_type: "Discussion"
+
+acaal41:
+  id: 41
+  allocation_tag_id: 3
+  academic_tool_id: 7
+  academic_tool_type: "Discussion"
+
+acaal42:
+  id: 42
+  allocation_tag_id: 3
+  academic_tool_id: 8
+  academic_tool_type: "Discussion"
+
+acaal43:
+  id: 43
+  allocation_tag_id: 2
+  academic_tool_id: 9
+  academic_tool_type: "Discussion"

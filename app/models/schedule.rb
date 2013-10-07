@@ -37,7 +37,7 @@ class Schedule < ActiveRecord::Base
     (discussions.empty? and lessons.empty? and assignments.empty? and schedule_events.empty? and offer_periods.empty? and offer_enrollments.empty? and semester_periods.empty? and semester_enrollments.empty?)
   end
 
-  # Refazer esse metodo, devido a alterações na estrutura de Lessons, Discussions, Assignments(Ver Academic Allocation)
+  # Refazer esse metodo, devido a alterações na estrutura de Lessons, Discussions, Assignments (Ver Academic Allocation)
   def self.events(allocation_tags, period = false, date_search = nil)
     where, where_hash = [], {}
     where_date = []
@@ -57,14 +57,15 @@ class Schedule < ActiveRecord::Base
     where = [where.join(' AND '), where_hash]
 
     schedules_events   = ScheduleEvent.joins(:schedule, :allocation_tag).where(where).select("'schedule_events' AS schedule_type, schedule_events.title AS name, schedule_events.description, schedules.start_date, schedules.end_date")    
-    discussions_events = Discussion.joins(:schedule, :allocation_tag).where(where).select("'discussions' AS schedule_type, discussions.name AS name, discussions.description, schedules.start_date, schedules.end_date")
     lessons_events     = Lesson.joins(:schedule, :allocation_tag).where(where).select("'lesson' AS schedule_type, lessons.name AS name, lessons.description, schedules.start_date, schedules.end_date")
 
     #SOLUÇÃO TEMPORÁRIA, enquanto nem todas as tabelas estão adaptadas a nova estrutura.
     unless allocation_tags.nil? 
       assignments_events = Assignment.joins(:schedule, :academic_allocations).where(academic_allocations: {allocation_tag_id: allocation_tags}).where(where_date).select("'assignments' AS schedule_type, assignments.name AS name, assignments.enunciation AS description, schedules.start_date, schedules.end_date")
+      discussions_events = Discussion.joins(:schedule, :academic_allocations).where(academic_allocations: {allocation_tag_id: allocation_tags}).where(where_date).select("'discussions' AS schedule_type, discussions.name AS name, discussions.description, schedules.start_date, schedules.end_date")
     else
       assignments_events = Assignment.joins(:schedule, :academic_allocation).where(where_date).select("'assignments' AS schedule_type, assignments.name AS name, assignments.enunciation AS description, schedules.start_date, schedules.end_date")      
+      discussions_events = Discussion.joins(:schedule, :allocation_tag).where(where).select("'discussions' AS schedule_type, discussions.name AS name, discussions.description, schedules.start_date, schedules.end_date")
     end
     #SOLUÇÃO TEMPORÁRIA, enquanto nem todas as tabelas estão adaptadas a nova estrutura.
 

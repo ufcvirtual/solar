@@ -83,7 +83,7 @@ class DiscussionsController < ApplicationController
 
     begin
       authorize! :list, Discussion, on: @allocation_tags_ids
-      @discussions = Discussion.where(allocation_tag_id: @allocation_tags_ids)
+      @discussions = Discussion.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids})
     rescue
       render :nothing => true, :status => 500
     end
