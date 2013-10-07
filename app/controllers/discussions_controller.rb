@@ -29,18 +29,19 @@ class DiscussionsController < ApplicationController
   end
 
   def create
-    authorize! :create, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    authorize! :create, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
     @discussion = Discussion.new params[:discussion]
 
     begin
       Discussion.transaction do
+        @discussion.allocation_tags_ids = @allocation_tags_ids
         @discussion.save!
         @discussion.academic_allocations.create @allocation_tags_ids.map {|at| {allocation_tag_id: at}}
       end
       render json: {success: true, notice: t(:created, scope: [:discussion, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue
+    rescue 
       @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
       render :new
     end
@@ -49,12 +50,8 @@ class DiscussionsController < ApplicationController
   def list
     @allocation_tags_ids = (params[:allocation_tags_ids].class == String ? params[:allocation_tags_ids].split(",") : params[:allocation_tags_ids])
 
-    begin
-      authorize! :list, Discussion, on: @allocation_tags_ids
-      @discussions = Discussion.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).uniq
-    rescue
-      render nothing: true, status: 500
-    end
+    authorize! :list, Discussion, on: @allocation_tags_ids
+    @discussions = Discussion.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).uniq
   end
 
   def edit
@@ -66,14 +63,13 @@ class DiscussionsController < ApplicationController
   def update
     authorize! :update, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
     @discussion = Discussion.find(params[:id])
-    
     begin
+      @discussion.allocation_tags_ids = @allocation_tags_ids
       @discussion.update_attributes!(params[:discussion])
-
       render json: {success: true, notice: t(:updated, scope: [:discussion, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue
+    rescue 
       @groups_codes = @discussion.groups.map(&:code)
       render :edit
     end
