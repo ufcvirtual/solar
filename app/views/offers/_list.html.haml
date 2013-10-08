@@ -27,7 +27,7 @@
           %td
             = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn link_edit_offer', :'data-tooltip' => t(".offer_edit"), disabled: not(can? :edit, Offer, on: [offer.allocation_tag.id]), :"data-semester-name" => offer.semester.name, :"data-link-edit" => edit_offer_path(offer, type_id: @type_id)
 - else
-  .block_content.block_content_text= t(".none")
+  .block_content_text_list.text_none= t(".none")
 
 :javascript
 

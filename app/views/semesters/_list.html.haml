@@ -22,7 +22,7 @@
 
       = render partial: "offers/list", object: @offers = semester.offers, object: @type_id = type_id
 - else
-  .block_content_text= t(".none")
+  .block_content_text.text_none= t(".none")
 
 = javascript_include_tag "tooltip"
 
