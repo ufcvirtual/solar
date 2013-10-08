@@ -198,9 +198,13 @@ class MessagesController < ApplicationController
             flash[:alert] = t(:message_send_error_no_receiver)
             raise ActiveRecord::Rollback
           else
-            flash[:notice] = t(:message_send_ok)
-            # envia email apenas uma vez, em caso de sucesso da gravacao no banco
-            Notifier.send_mail(real_receivers.join(','), subject, message_header + message, Path_Message_Files.to_s, all_files_destiny.to_s).deliver unless real_receivers.empty? #, from = nil
+            begin
+              flash[:notice] = t(:message_send_ok)
+              # envia email apenas uma vez, em caso de sucesso da gravacao no banco
+              Notifier.send_mail(real_receivers.join(','), subject, message_header + message, Path_Message_Files.to_s, all_files_destiny.to_s).deliver unless real_receivers.empty? #, from = nil
+            rescue
+              flash[:notice] = t(:message_send_ok)
+            end
           end
         end
       end

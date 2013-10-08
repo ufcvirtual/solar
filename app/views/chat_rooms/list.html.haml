@@ -41,7 +41,7 @@
               %div= [(chat.start_hour), (chat.end_hour)].join(" - ")
 
   - if @my_chats.count < 1
-    .block_content.block_content_text= t(".message_no_chat")
+    .block_content_text_list.text_none= t(".message_no_chat")
 
   - if !@responsible
     .block_title
@@ -76,7 +76,7 @@
                 %div= [l(chat.schedule.start_date.to_date), l(chat.schedule.end_date.to_date)].join(" - ")
                 %div= [(chat.start_hour), (chat.end_hour)].join(" - ")
 
-  - if @other_chats.count < 1
-    .block_content.block_content_text= t(".message_no_chat")
+  - if !@other_chats.nil?
+    .block_content.block_content_text= t(".message_no_chat") if @other_chats.count < 1
 
 =javascript_include_tag "chat_rooms"

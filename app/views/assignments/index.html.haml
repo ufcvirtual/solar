@@ -63,7 +63,7 @@
               %div= can_delete ? t(:no, scope: "assignment.list") : t(:yes, scope: "assignment.list")
 
   - else
-    .block_content.block_content_text= t(:none, scope: "assignment.list")
+    .block_content_text_list.text_none= t(:none, scope: "assignment.list")
 
 = javascript_include_tag "tooltip", "assignments", "groups_tags"
 

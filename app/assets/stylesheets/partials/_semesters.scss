@@ -17,6 +17,16 @@
   color: $label_color;
 }
 
+.block_content_text_list{
+    padding: 5px;
+    padding-right: 5px;
+    border-bottom: solid 1px;
+    border-bottom-color: $border;
+    min-height: 20px;
+    background-color: #f8fbfe;
+    padding-top: 12px;
+}
+
 .new_semester, .new_offer {
 
   [class*="_check_box"] {

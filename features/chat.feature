@@ -15,6 +15,6 @@ Cenário: Acessar listagem de chat
   Quando eu clicar no link "Chat"
     Então eu deverei ver os meus chats
     | Chat            | Data                     | Hora          |
-    | Chat 02         | 02/10/2013 - 02/10/2013  |  9:00 - 10:40 |
-    | Chat 01         | 02/10/2013 - 02/10/2013  | 10:00 - 18:40 |
-    | Chat 03         | 02/10/2013 - 02/10/2013  | 10:00 - 14:00 |
+    | Chat 02         | 01/12/2011 - 01/12/2014  |  9:00 - 10:40 |
+    | Chat 01         | 01/12/2011 - 01/12/2014  | 10:00 - 18:40 |
+    | Chat 03         | 01/12/2011 - 01/12/2014  | 10:00 - 14:00 |
