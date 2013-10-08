@@ -109,7 +109,7 @@ class SupportMaterialFilesController < ApplicationController
     else # baixando um arquivo individualmente
 
       # se for no cadastro de material de apoio ou um único arquivo, deve ter permissão em todas as allocation_tags (mesmo que seja apenas a do arquivo)
-      authorize! :download, SupportMaterialFile, on: allocation_tag_ids
+      authorize! :download, SupportMaterialFile, {on: allocation_tag_ids, read: true}
 
       file ||= SupportMaterialFile.find(params[:id])
       download_file(support_material_files_path, file.attachment.path, file.attachment_file_name)
