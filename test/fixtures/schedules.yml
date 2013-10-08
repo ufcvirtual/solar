@@ -209,10 +209,10 @@ schedule40:
 
 sc_for_chat1:
   id: 41
-  start_date: <%= Date.today %>
-  end_date: <%= Date.today %>
+  start_date: '2011-12-01'
+  end_date: '2014-12-01'
 
 sc_for_chat2:
   id: 42
-  start_date: <%= Date.today %>
-  end_date: <%= Date.today %>
+  start_date: '2011-12-01'
+  end_date: '2014-12-01'
