@@ -30,7 +30,7 @@ class Discussion < ActiveRecord::Base
 
   def final_date_presence
     has_final_date = self.has_final_date?
-    errors.add(:final_date_presence, I18n.t(:mandatory_final_date, :scope => [:discussions, :error])) unless has_final_date
+    errors.add(:final_date_presence, I18n.t(:mandatory_final_date, scope: [:discussions, :error])) unless has_final_date
     return has_final_date
   end
 
@@ -48,7 +48,7 @@ class Discussion < ActiveRecord::Base
   # => Se eu criar um novo fórum em que uma de suas allocation_tags seja a 3 e tenha o mesmo nome que o Fórum 1, é pra dar erro
   def unique_name
     discussions_with_same_name = Discussion.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: allocation_tags_ids}, name: name)
-    errors.add(:name, I18n.t(:existing_name, :scope => [:discussions, :error])) if (@new_record == true or name_changed?) and discussions_with_same_name.size > 0
+    errors.add(:name, I18n.t(:existing_name, scope: [:discussions, :error])) if (@new_record == true or name_changed?) and discussions_with_same_name.size > 0
   end
 
   def opened?
@@ -69,7 +69,7 @@ class Discussion < ActiveRecord::Base
     return (!self.closed? or extra_time?(user_id))
   end
 
-  def posts(opts = {}) # só usa em posts/index
+  def posts(opts = {})
     opts = { "type" => 'news', "order" => 'desc', "limit" => Rails.application.config.items_per_page.to_i,
       "display_mode" => 'list', "page" => 1 }.merge(opts)
     type = (opts["type"] == 'news') ? '>' : '<'
@@ -83,7 +83,7 @@ class Discussion < ActiveRecord::Base
   end
 
   def discussion_posts_count(plain_list = true)
-    (plain_list ? self.discussion_posts.count : self.discussion_posts.where(:parent_id => nil).count)
+    (plain_list ? self.discussion_posts.count : self.discussion_posts.where(parent_id: nil).count)
   end
 
   def count_posts_after_and_before_period(period)
