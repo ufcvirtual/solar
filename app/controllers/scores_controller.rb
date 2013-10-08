@@ -43,7 +43,7 @@ class ScoresController < ApplicationController
 
     @individual_activities = Assignment.student_assignments_info(group_id, @student.id, Assignment_Type_Individual)
     @group_activities = Assignment.student_assignments_info(group_id, @student.id, Assignment_Type_Group)
-    @discussions = Discussion.all_by_allocations_and_student_id(related_allocations, @student.id)
+    @discussions = Discussion.posts_count_by_user(@student.id, related_allocations)
 
     from_date  = (Date.today << 2) # dois meses atras
     until_date = Date.today
