@@ -10,22 +10,23 @@
 }
 
 #lesson_content, #lessonf {
-	display:none;
-	position:absolute;
+	display: none;
+	position: absolute;
 	margin:  0;
-	width:96%;
-	height:94% !important;
-	left:1%;
-	top:3%;
-	border:   1px solid #555;
+	width: 96%;
+	height: 94%;
+	left: 1%;
+	top: 3%;
+	border: 1px solid #555;
 	background-color: #FFF;
-	z-index:20;
+	z-index: 20;
 }
+
 #lessonf {
   position: relative;
   display: block;
   left: 0px;        
-	width: 100%;
+  width: 100%;
   border: none;
   height: 100% !important;
   top: 0px;
@@ -134,4 +135,7 @@
 	left:     0;
 	top:      0;
 	z-index:  10;
+}
+.ui-effects-transfer {
+  	border: 1px dotted black;
 }
