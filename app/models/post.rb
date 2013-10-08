@@ -2,11 +2,11 @@ class Post < ActiveRecord::Base
 
   self.table_name = "discussion_posts"
 
-  has_many :children, :class_name => "Post", :foreign_key => "parent_id"
-  has_many :files, :class_name => "PostFile", :foreign_key => "discussion_post_id"
+  has_many :children, class_name: "Post", foreign_key: "parent_id"
+  has_many :files, class_name: "PostFile", foreign_key: "discussion_post_id"
 
   belongs_to :profile
-  belongs_to :parent, :class_name => "Post"
+  belongs_to :parent, class_name: "Post"
   belongs_to :discussion
   belongs_to :user
 
@@ -24,16 +24,14 @@ class Post < ActiveRecord::Base
   end
 
   def to_mobilis
-    a_ids = attachments.split(',')
-    attachments = []
-    PostFile.find(a_ids).map { |file| attachments << {type: file.attachment_content_type, name: file.attachment_file_name, link: Rails.application.routes.url_helpers.download_post_post_file_path(post_id: id, id: file.id)} }
+    attachments = files.map { |file| attachments << {type: file.attachment_content_type, name: file.attachment_file_name, link: Rails.application.routes.url_helpers.download_post_post_file_path(post_id: id, id: file.id)} }
 
     {
       id: id,
       profile_id: profile_id,
       discussion_id: discussion_id,
       user_id: user_id,
-      user_nick: user_nick,
+      user_nick: user.nick,
       level: level,
       content: content,
       updated_at: updated_at,

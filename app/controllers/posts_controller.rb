@@ -14,25 +14,28 @@ class PostsController < ApplicationController
     @posts = []
     @can_interact = @discussion.user_can_interact?(current_user.id)
     p = params.select { |k, v| ['date', 'type', 'order', 'limit', 'display_mode', 'page'].include?(k) }
-    p['page'] ||= @current_page
-    p['type'] ||= "discussion" # qualquer type diferente de "news" e vazio
 
     @display_mode = p['display_mode'] ||= 'tree'
-    @latest_posts = @discussion.latest_posts
 
-    p['date'] = Time.parse(p['date']) if params[:format] == "json" and p.include?('date')
-
-    # se for em forma de lista ou para o mobilis, pesquisa pelo método posts; caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
-    @posts = ((p['display_mode'] == "list" or params[:format] == "json") ? @discussion.posts(p) : Post.reorder_by_latest_posts(@latest_posts, @discussion.discussion_posts.where(parent_id: nil)))
+    if (p['display_mode'] == "list" or params[:format] == "json")
+      p['page'] ||= @current_page
+      p['type'] ||= "history"
+      p['date'] = Time.parse(p['date']) if params[:format] == "json" and p.include?('date')
+      @posts = @discussion.posts(p)
+    else
+      @latest_posts = @discussion.latest_posts
+      # se for em forma de lista ou para o mobilis, pesquisa pelo método posts; caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
+      @posts = Post.reorder_by_latest_posts(@latest_posts, @discussion.discussion_posts.where(parent_id: nil))
+    end
 
     respond_to do |format|
       format.html
       format.json  {
         period = (@posts.empty?) ? ["#{p['date']}", "#{p['date']}"] : ["#{@posts.first.updated_at}", "#{@posts.last.updated_at}"].sort
         if params[:mobilis].present?
-          render :json => { before: @discussion.count_posts_before_period(period), after: @discussion.count_posts_after_period(period), posts: @posts.map(&:to_mobilis)} 
+          render json: { before: @discussion.count_posts_before_period(period), after: @discussion.count_posts_after_period(period), posts: @posts.map(&:to_mobilis)} 
         else          
-          render :json => @discussion.count_posts_after_and_before_period(period) + @posts.map(&:to_mobilis)
+          render json: @discussion.count_posts_after_and_before_period(period) + @posts.map(&:to_mobilis)
         end
       }
     end
