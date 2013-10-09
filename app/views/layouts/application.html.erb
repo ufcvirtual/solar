@@ -187,13 +187,13 @@
             <%= raw render_tabs %>
           </ul>
           <ul id="mysolar_extras">
-            <li id="mysolar_open_lesson">
-              <button type="button" class="btn disabled" data-tooltip="<%= t(:mysolar_open_lesson) %>" name="<%= t(:mysolar_open_lesson) %>" onclick="javascript:maximize();"><i class="icon-class"></i></button>
-            </li>
+            <li id="mysolar_suggestions"><button class="btn" onclick="javascript:window.open('https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ')">Sugestões para o Solar 2.0</button></li>
             <li id="mysolar_languages">
               <button type="button" class="btn" data-tooltip="<%= t(:mysolar_languages) %>" data-dropdown="#language-dropdown" name="Idiomas"><i class="icon-earth"></i><i class="icon-arrow-down-3"></i></button>
             </li>
-            <li id="mysolar_suggestions"><button class="btn btn_main" onclick="javascript:window.open('https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ')">Sugestões para o Solar 2.0</button></li>
+            <li id="mysolar_open_lesson">
+              <button type="button" class="btn btn_main disabled" data-tooltip="<%= t(:mysolar_open_lesson) %>" name="<%= t(:mysolar_open_lesson) %>" onclick="javascript:maximize();"><i class="icon-class"></i></button>
+            </li>
           </ul>
           <div id="language-dropdown" class="dropdown dropdown-tip">
             <ul class="dropdown-menu">
