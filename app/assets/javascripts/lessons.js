@@ -1,3 +1,15 @@
+function readCookie(name)
+{
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0;i < ca.length;i++) {
+    var c = ca[i];
+    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+  }
+  return null;
+}
+
 function move(direction) {
   var mov_atual = $("#mov_atual").html();
   var total = $("#total_lesson").html();
@@ -91,6 +103,28 @@ function lessonFrameButtons()
   $("#lesson_external_div", parent.document.body).append(minButton);
 }
 
+function lessonFrameDim()
+{
+  // Esmaecendo a tela
+  dimmed_div = '<div onclick="javascript:minimize();" id="dimmed_div" name="dimmed_div" style="">&nbsp;</div>';
+  $("#lesson_external_div", parent.document.body).append(dimmed_div);
+  $("#dimmed_div", parent.document.body).fadeTo('fast', 0.4);
+}
+
+function lessonFrameContent(path)
+{
+  $("#lesson_content", parent.document.body).remove();
+  lessonh = "<div id=lesson_content></div>";
+  $("#lesson_external_div", parent.document.body).append(lessonh);
+
+  lesson = '<iframe id="lessonf" name="lessonf" src="' + path + '"></iframe>';
+
+  //Exibindo a aula
+  $("#lessonf", parent.document.body).remove();
+  $("#lesson_content", parent.document.body).append(lesson);
+}
+
+
 function minimize() {
   
   // Botão de exibir aula minimizada
@@ -130,10 +164,13 @@ function maximize() {
   // Desabilitando o botão
   $("button", lessonsButton).addClass("disabled");
 
-  // Esmaecendo a tela
-  dimmed_div = '<div onclick="javascript:minimize();" id="dimmed_div" name="dimmed_div" style="">&nbsp;</div>';
-  $("#lesson_external_div", parent.document.body).append(dimmed_div);
-  $("#dimmed_div", parent.document.body).fadeTo('fast', 0.4);
+  lessonFrameDim();
+
+  console.info("carregando");
+  path = readCookie("open_lesson");
+  console.info(path);
+  lessonFrameContent(path);
+  console.info("aula carregada");
 
   // Exibindo a aula
   $("#lesson_content", parent.document.body).show();
@@ -153,20 +190,9 @@ function show_lesson(path) {
   document.cookie = "open_lesson="+path+"; path=/"
   alert( document.cookie );
 
-  //Esmaecendo a tela
-  dimmed_div = '<div onclick="javascript:minimize();" id="dimmed_div" name="dimmed_div">&nbsp;</div>';
-  $("#lesson_external_div", parent.document.body).append(dimmed_div);
-  $("#dimmed_div", parent.document.body).fadeTo('fast', 0.4);
+  lessonFrameDim();
 
-  $("#lesson_content", parent.document.body).remove();
-  lessonh = "<div id=lesson_content></div>";
-  $("#lesson_external_div", parent.document.body).append(lessonh);
-
-  lesson = '<iframe id="lessonf" name="lessonf" src="' + path + '"></iframe>';
-
-  //Exibindo a aula
-  $("#lessonf", parent.document.body).remove();
-  $("#lesson_content", parent.document.body).append(lesson);
+  lessonFrameContent(path);
   
   setTimeout('$("#lesson_content",parent.document.body).slideDown("fast");', 5);
 
