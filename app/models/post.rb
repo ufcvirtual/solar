@@ -1,6 +1,7 @@
 class Post < ActiveRecord::Base
-
   self.table_name = "discussion_posts"
+
+  default_scope order: "updated_at DESC" # qualquer busca realizada nos posts de fórum serão ordenadas pela data decrescente
 
   has_many :children, class_name: "Post", foreign_key: "parent_id"
   has_many :files, class_name: "PostFile", foreign_key: "discussion_post_id"
@@ -10,9 +11,7 @@ class Post < ActiveRecord::Base
   belongs_to :discussion
   belongs_to :user
 
-  validates :content, :presence => true
-
-  default_scope :order => "updated_at DESC" # qualquer busca realizada nos posts de fórum serão ordenadas pela data decrescente
+  validates :content, presence: true
 
   validates_each :discussion_id do |record, attr, value|
     parent = record.parent
@@ -39,9 +38,7 @@ class Post < ActiveRecord::Base
     }
   end
 
-  ##
-  # Retorna o post "avô", ou seja, o post do nível mais alto informado em "post_level"
-  ##
+  ## Retorna o post "avô", ou seja, o post do nível mais alto informado em "post_level"
   def grandparent(post_level, post = nil)
     if level == post_level
       return ["date" => post.updated_at, "grandparent_id" => id]
@@ -50,10 +47,8 @@ class Post < ActiveRecord::Base
     end
   end
 
-  ##
-  # Pega todos os posts mais recentes dos leveis inferiores aos posts analisados e, então, 
-  # reordena analisando ou as datas dos posts em questão ou a data do "filho/neto" mais recente
-  ##
+  ## Recupera os posts mais recentes dos niveis inferiores aos posts analisados e, então, 
+  ## reordena analisando ou as datas dos posts em questão ou a data do "filho/neto" mais recente
   def self.reorder_by_latest_posts(latest_posts, posts) 
     unless posts.empty? 
       # dos posts mais recentes de uma discussion, recupera sua data e o valor do "avô" de todos os posts que têm level maior que o que estou ordenando
@@ -78,6 +73,5 @@ class Post < ActiveRecord::Base
 
     return posts
   end
-
 
 end

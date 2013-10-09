@@ -12,8 +12,10 @@ class Discussion < ActiveRecord::Base
   has_many :allocations, through: :allocation_tag
 
   validates :name, :description, presence: true
+  validates :name, length: {maximum: 120}
+
   validate :unique_name, unless: "allocation_tags_ids.nil?"
-  validate :final_date_presence
+  validate :check_final_date_presence
 
   accepts_nested_attributes_for :schedule
 
@@ -23,23 +25,19 @@ class Discussion < ActiveRecord::Base
   before_destroy :can_destroy?
   after_destroy :delete_schedule
 
-  def has_final_date?
-    schedule = self.schedule    
-    return not(schedule.end_date.nil?)
-  end
-
-  def final_date_presence
-    has_final_date = self.has_final_date?
-    errors.add(:final_date_presence, I18n.t(:mandatory_final_date, scope: [:discussions, :error])) unless has_final_date
-    return has_final_date
-  end
-
   def can_destroy?
     discussion_posts.empty?
   end
 
   def delete_schedule
     self.schedule.destroy
+  end
+
+  def check_final_date_presence
+    if schedule.end_date.nil?
+      errors.add(:final_date_presence, I18n.t(:mandatory_final_date, scope: [:discussions, :error]))
+      return false
+    end
   end
 
   # verifica se existe alguma academic_allocation de um fórum com o mesmo nome cuja allocation_tag coincida com alguma das allocation_tags que o fórum está sendo cadastrado
@@ -52,12 +50,11 @@ class Discussion < ActiveRecord::Base
   end
 
   def opened?
-    schedule = self.schedule
-    schedule.start_date.to_date <= Date.today and schedule.end_date.to_date >= Date.today
+    schedule.end_date.nil? ? (schedule.start_date.to_date <= Date.today) : Date.today.between?(schedule.start_date.to_date, schedule.end_date.to_date)
   end
 
   def closed?
-    !self.schedule.end_date.nil? ? self.schedule.end_date.to_date < Date.today : false
+    schedule.end_date.nil? ? false : (schedule.end_date.to_date < Date.today)
   end
 
   def extra_time?(user_id)
@@ -66,7 +63,7 @@ class Discussion < ActiveRecord::Base
   end
 
   def user_can_interact?(user_id)
-    return (!self.closed? or extra_time?(user_id))
+    ((opened? and not(closed?)) or extra_time?(user_id)) # considerando os nao iniciados
   end
 
   def posts(opts = {})
@@ -92,11 +89,11 @@ class Discussion < ActiveRecord::Base
   end
 
   def count_posts_before_period(period)
-    self.discussion_posts.where("updated_at::timestamp(0) < '#{period.first}'").count 
+    discussion_posts.where("updated_at::timestamp(0) < '#{period.first}'").count 
   end
 
   def count_posts_after_period(period)
-    self.discussion_posts.where("updated_at::timestamp(0) > '#{period.last}'").count
+    discussion_posts.where("updated_at::timestamp(0) > '#{period.last}'").count
   end
 
   def self.posts_count_by_user(student_id, allocation_tags)
@@ -115,6 +112,7 @@ class Discussion < ActiveRecord::Base
   end
 
   def can_remove_or_unbind_group?(group)
-    self.discussion_posts.empty? # não pode dar unbind nem remover se fórum possuir posts
+    discussion_posts.empty? # não pode dar unbind nem remover se fórum possuir posts
   end
+
 end
