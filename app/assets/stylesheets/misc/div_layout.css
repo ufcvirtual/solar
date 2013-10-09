@@ -78,24 +78,6 @@
 	/*background-position: 1px 1px;*/
 }
 
-#min_tab {
-	display:none;
-	position:absolute;
-	bottom:0px;
-	right: 190px;
-        /*33px;*/
-	height:19px;
-	width:200px;
-	z-index:25;
-	background-color:#1D4786;
-	color: #fff;
-	font-family: 'Myriad Pro','Trebuchet',Arial;
-        font-weight: lighter;
-        font-size: 11pt;
-	padding-top: 1px;
-	cursor:pointer;
-}
-
 #frame_content {
 	position: absolute;
 	margin:   0;
@@ -116,7 +98,4 @@
 	left:     0;
 	top:      0;
 	z-index:  10;
-}
-.ui-effects-transfer {
-  	border: 1px dotted black;
 }

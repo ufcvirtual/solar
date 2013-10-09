@@ -106,7 +106,7 @@ function lessonFrameContent(path)
 function minimize() {
   
   // Botão de exibir aula minimizada
-  var lessonsButton = $('#frame_content').contents().find('#mysolar_lessons button');
+  var lessonsButton = $('#frame_content').contents().find('#mysolar_open_lesson button');
 
   // Removendo esmaecimento
   $("#dimmed_div").fadeOut('fast', function() { $("#dimmed_div").remove(); });
@@ -150,9 +150,6 @@ function maximize() {
 }
 
 function show_lesson(path) {
-  document.cookie = "open_lesson="+path+"; path=/"
-  alert( document.cookie );
-
   lessonFrameDim();
 
   lessonFrameContent(path);
@@ -163,13 +160,13 @@ function show_lesson(path) {
   lessonFrameButtons();
 
   // Ativar botão de exibir aula minimizada
-  var lessonsButton = $('#frame_content').contents().find('#mysolar_lessons button');
+  var lessonsButton = $('#frame_content').contents().find('#mysolar_open_lesson button');
   $(lessonsButton).removeClass("disabled");
 }
 
 function close_lesson() {
   // Botão de exibir aula minimizada
-  var lessonsButton = $('#frame_content').contents().find('#mysolar_lessons');
+  var lessonsButton = $('#frame_content').contents().find('#mysolar_open_lesson');
 
   // Desabilitando botão
   $("button", lessonsButton).addClass("disabled");
