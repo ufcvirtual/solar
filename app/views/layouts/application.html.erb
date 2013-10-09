@@ -178,7 +178,13 @@
           </ul>
           <ul id="mysolar_extras">
             <li id="mysolar_lessons">
-              <button type="button" class="btn disabled" data-tooltip="Aulas abertas" name="Aulas abertas" onclick="javascript:maximize();"><i class="icon-class"></i></button>
+            <% if  cookies[:open_lesson] != nil %>
+              <span> <%= cookies[:open_lesson] %> </span>
+              <button type="button" class="btn" data-tooltip="Aulas abertas" name="Aulas abertas" onclick="javascript:show_lesson(document.cookie(lesson_name));"><i class="icon-class"></i></button>
+            <% else %>
+              <span> <%= cookies[:open_lesson] %> </span>
+              <button type="button" class="btn disabled" data-tooltip="Aulas abertas" name="Aulas abertas" onclick=""><i class="icon-class"></i></button>
+            <% end %>
             </li>
             <li id="mysolar_languages">
               <button type="button" class="btn" data-tooltip="Idiomas" data-dropdown="#language-dropdown" name="Idiomas"><i class="icon-earth"></i><i class="icon-arrow-down-3"></i></button>

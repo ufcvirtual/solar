@@ -72,14 +72,34 @@ function reload_frame(path,name,mov_atual) {
   move(0);
 }
 
+// function disableLessonsBtn(external)
+// {
+//   // Alterando o seletor dependendo se a chamada foi feita a partir do frame externo ou não
+//   if ( external == true ) {
+//     var lessonsButton = $('#frame_content').contents().find('#mysolar_lessons');
+//   } else {
+//     var lessonsButton = $('#mysolar_lessons');
+//   }
+// }
+
+function lessonFrameButtons()
+{
+  //Exibindo botoes de minimizar e fechar
+  minButton = '<div onclick="javascript:minimize();" id="min_button">&nbsp;</div>';
+  closeButton = '<div onclick="javascript:close_lesson();" id="close_button">&nbsp;</div>';
+  $("#lesson_external_div", parent.document.body).append(closeButton);
+  $("#lesson_external_div", parent.document.body).append(minButton);
+}
+
 function minimize() {
+  
   // Botão de exibir aula minimizada
   var lessonsButton = $('#frame_content').contents().find('#mysolar_lessons');
 
-  //Removendo esmaecimento
+  // Removendo esmaecimento
   $("#dimmed_div").fadeOut('fast', function() { $("#dimmed_div").remove(); });
 
-  //Ocultando o frame da aula
+  // Ocultando o frame da aula
 
   $("#lesson_content").animate(
   {
@@ -91,14 +111,9 @@ function minimize() {
       $(this).hide();
       $("button", lessonsButton).removeClass("disabled");
   });
-  // $("#lesson_content").fadeTo('fast', 0.0, function() { $("#lesson_content").css('display', 'none'); }); // codigo original
 
-  //Exibindo a abinha minimizada
-  //min_tab = '<div onclick="javascript:maximize();" id="min_tab" name="min_tab"><div id="close_tab_button" >&nbsp;</div>&nbsp;&nbsp; <b>Aula</b></div>';
-
+  // Removendo botões de minimizar e fechar
   $("#min_button, #close_button").remove();
-
-  // $("#lesson_external_div").append(min_tab);
 
   $("#close_tab_button").click(function(event) {
       close_lesson();
@@ -112,15 +127,15 @@ function maximize() {
   // Botão de exibir aula minimizada
   var lessonsButton = $('#mysolar_lessons');
 
-  //Desabilitando o botão
+  // Desabilitando o botão
   $("button", lessonsButton).addClass("disabled");
 
-  //Esmaecendo a tela
+  // Esmaecendo a tela
   dimmed_div = '<div onclick="javascript:minimize();" id="dimmed_div" name="dimmed_div" style="">&nbsp;</div>';
   $("#lesson_external_div", parent.document.body).append(dimmed_div);
-  $("#dimmed_div", parent.document.body).fadeTo('fast', 0.8);
+  $("#dimmed_div", parent.document.body).fadeTo('fast', 0.4);
 
-  //Exibindo a aula
+  // Exibindo a aula
   $("#lesson_content", parent.document.body).show();
   $("#lesson_content", parent.document.body).animate(
     {
@@ -130,15 +145,14 @@ function maximize() {
       height: '94%'
     });
 
-  //Botões de minimizar e fechar
-  minButton = '<div onclick="javascript:minimize();" id="min_button">&nbsp;</div>';
-  closeButton = '<div onclick="javascript:close_lesson();" id="close_button">&nbsp;</div>';
-
-  $("#lesson_external_div", parent.document.body).append(closeButton);
-  $("#lesson_external_div", parent.document.body).append(minButton);
+  // Exibindo botoes de minimizar e fechar
+  lessonFrameButtons()
 }
 
 function show_lesson(path) {
+  document.cookie = "open_lesson="+path+"; path=/"
+  alert( document.cookie );
+
   //Esmaecendo a tela
   dimmed_div = '<div onclick="javascript:minimize();" id="dimmed_div" name="dimmed_div">&nbsp;</div>';
   $("#lesson_external_div", parent.document.body).append(dimmed_div);
@@ -156,39 +170,35 @@ function show_lesson(path) {
   
   setTimeout('$("#lesson_content",parent.document.body).slideDown("fast");', 5);
 
-  //Exibindo botoes de minimizar e fechar
-  minButton = '<div onclick="javascript:minimize();" id="min_button">&nbsp;</div>';
-  closeButton = '<div onclick="javascript:close_lesson();" id="close_button">&nbsp;</div>';
-  $("#lesson_external_div", parent.document.body).append(closeButton);
-  $("#lesson_external_div", parent.document.body).append(minButton);
+  // Exibindo botoes de minimizar e fechar
+  lessonFrameButtons();
+}
 
-  //Removendo a aba minimizada, se ela estiver aparecendo
-  $("#min_tab", parent.document.body).slideUp('fast', function() {$("#min_tab", parent.document.body).remove();});
+function lesson_expire() {
+  //Expirando cookie
+  document.cookie = "open_lesson=deleted;expires=" + new Date(0).toUTCString();
+
+  // Botão de exibir aula minimizada
+  var lessonsButton = $('#frame_content').contents().find('#mysolar_lessons');
+
+  // Desabilitando botão
+  $("button", lessonsButton).addClass("disabled");
 }
 
 function close_lesson() {
+  lesson_expire();
+
   //Removendo esmaecimento
   $("#dimmed_div").fadeOut('fast', function() {$("#dimmed_div").remove();});
 
   //Ocultando o frame da aula
-  $("#lesson_content").fadeTo('fast', 0.0, function() {$("#lesson_content").remove();});
+  $("#lesson_content").fadeOut('fast', function() {$("#lesson_content").remove();});
 
-  $("#min_button").remove();
-  $("#close_button").remove();
-
-  $("#lesson_external_div").append(min_tab);
-  $("#min_tab").slideDown('fast');
-
-  //Removendo a aba minimizada, se ela estiver aparecendo
-  $("#min_tab").slideUp('fast', function() {$("#min_tab").remove();});
+  $("#min_button, #close_button").remove();
 }
 
 function clear_lesson() {
-  $("#min_tab", parent.document.body).remove();
-  $("#lesson_content", parent.document.body).remove();
-  $("#dimmed_div", parent.document.body).remove();
-  $("#min_button", parent.document.body).remove();
-  $("#close_button", parent.document.body).remove();
+  $("#lesson_content, #dimmed_div, #min_button, #close_button", parent.document.body).remove();
 }
 
 function change_youtube_link_to_embeded(path){
