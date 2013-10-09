@@ -10,7 +10,7 @@ class Course < ActiveRecord::Base
   validates :name, :code, presence: true, uniqueness: true
 
   def has_any_lower_association?
-      self.offers.count > 0
+    self.offers.count > 0
   end
 
   def lower_associated_objects
