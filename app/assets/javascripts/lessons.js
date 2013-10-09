@@ -1,15 +1,3 @@
-function readCookie(name)
-{
-  var nameEQ = name + "=";
-  var ca = document.cookie.split(';');
-  for(var i=0;i < ca.length;i++) {
-    var c = ca[i];
-    while (c.charAt(0)==' ') c = c.substring(1,c.length);
-    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-  }
-  return null;
-}
-
 function move(direction) {
   var mov_atual = $("#mov_atual").html();
   var total = $("#total_lesson").html();
@@ -84,16 +72,6 @@ function reload_frame(path,name,mov_atual) {
   move(0);
 }
 
-// function disableLessonsBtn(external)
-// {
-//   // Alterando o seletor dependendo se a chamada foi feita a partir do frame externo ou não
-//   if ( external == true ) {
-//     var lessonsButton = $('#frame_content').contents().find('#mysolar_lessons');
-//   } else {
-//     var lessonsButton = $('#mysolar_lessons');
-//   }
-// }
-
 function lessonFrameButtons()
 {
   //Exibindo botoes de minimizar e fechar
@@ -128,13 +106,12 @@ function lessonFrameContent(path)
 function minimize() {
   
   // Botão de exibir aula minimizada
-  var lessonsButton = $('#frame_content').contents().find('#mysolar_lessons');
+  var lessonsButton = $('#frame_content').contents().find('#mysolar_lessons button');
 
   // Removendo esmaecimento
   $("#dimmed_div").fadeOut('fast', function() { $("#dimmed_div").remove(); });
 
   // Ocultando o frame da aula
-
   $("#lesson_content").animate(
   {
       height: lessonsButton.outerHeight(),
@@ -143,47 +120,33 @@ function minimize() {
       left: lessonsButton.offset().left
   },500, function(){
       $(this).hide();
-      $("button", lessonsButton).removeClass("disabled");
+      $(lessonsButton).removeClass("disabled");
   });
 
   // Removendo botões de minimizar e fechar
   $("#min_button, #close_button").remove();
-
-  $("#close_tab_button").click(function(event) {
-      close_lesson();
-      event.stopPropagation();
-  });
 }
 
 function maximize() {
-  console.info("maximizar");
+  if ( $("#lesson_content", parent.document.body).length != 0 ) {
+    lessonFrameDim();
 
-  // Botão de exibir aula minimizada
-  var lessonsButton = $('#mysolar_lessons');
+    // Exibindo a aula
+    $("#lesson_content", parent.document.body).show();
+    $("#lesson_content", parent.document.body).animate(
+      {
+        left: '1%',
+        top: '3%',
+        width: '96%',
+        height: '94%'
+      });
 
-  // Desabilitando o botão
-  $("button", lessonsButton).addClass("disabled");
-
-  lessonFrameDim();
-
-  console.info("carregando");
-  path = readCookie("open_lesson");
-  console.info(path);
-  lessonFrameContent(path);
-  console.info("aula carregada");
-
-  // Exibindo a aula
-  $("#lesson_content", parent.document.body).show();
-  $("#lesson_content", parent.document.body).animate(
-    {
-      left: '1%',
-      top: '3%',
-      width: '96%',
-      height: '94%'
-    });
-
-  // Exibindo botoes de minimizar e fechar
-  lessonFrameButtons()
+    // Exibindo botoes de minimizar e fechar
+    lessonFrameButtons()
+  } else {
+    event.preventDefault();
+  }
+  
 }
 
 function show_lesson(path) {
@@ -198,21 +161,18 @@ function show_lesson(path) {
 
   // Exibindo botoes de minimizar e fechar
   lessonFrameButtons();
+
+  // Ativar botão de exibir aula minimizada
+  var lessonsButton = $('#frame_content').contents().find('#mysolar_lessons button');
+  $(lessonsButton).removeClass("disabled");
 }
 
-function lesson_expire() {
-  //Expirando cookie
-  document.cookie = "open_lesson=deleted;expires=" + new Date(0).toUTCString();
-
+function close_lesson() {
   // Botão de exibir aula minimizada
   var lessonsButton = $('#frame_content').contents().find('#mysolar_lessons');
 
   // Desabilitando botão
   $("button", lessonsButton).addClass("disabled");
-}
-
-function close_lesson() {
-  lesson_expire();
 
   //Removendo esmaecimento
   $("#dimmed_div").fadeOut('fast', function() {$("#dimmed_div").remove();});

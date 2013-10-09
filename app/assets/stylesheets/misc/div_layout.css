@@ -74,27 +74,8 @@
 }
 
 #min_button:Hover {
-	cursor      : pointer;
+	cursor: pointer;
 	/*background-position: 1px 1px;*/
-}
-
-#close_tab_button {
-  position    : absolute;
-	top         : 3px;
-	right       : 2px;
-	width       : 15px;
-	height      : 15px;
-	border      : 0px;
-	cursor      : pointer;
-	background-image: url('/assets/lesson_close.png');
-  background-repeat: no-repeat;
-	background-position:0px 0px;
-	font-size   : xx-small;
-	z-index     :  30;
-}
-#close_tab_button:Hover {
-	cursor      : pointer;
-	/*background-position: 1px 0px;*/
 }
 
 #min_tab {

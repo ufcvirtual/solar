@@ -339,6 +339,8 @@
   mysolar_mn_customize: "Customize"
   mysolar_mn_enrollment: "Enrollment"
   mysolar_search: "Search"
+  mysolar_open_lesson: "Show opened lesson"
+  mysolar_languages: "Languages"
   date_name: Date
   help: "Help"
 
