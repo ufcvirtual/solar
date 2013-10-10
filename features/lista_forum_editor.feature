@@ -40,4 +40,4 @@ Cenário: Exibir página e atualizar conteudo em div
       E eu deverei ver "Comunicação"
       E eu deverei ver "Educação"
     Dado que eu cliquei em ".discussion"
-      E eu deverei ver "Fóruns disponíveis"
+      E eu deverei ver "Fóruns"

@@ -28,12 +28,12 @@
                   = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_description"))
 
               - unless chat.chat_type==0 
-                - students = participants(chat.id)
+                - participants = chat.users
                 %i.icon-people
-                %a{:class=> "chat_list", :"data-dropdown"=>"#students-dropdown#{chat.id}" }= students.count.to_s + ' ' + t(:students, :scope => [:chat_rooms, :list])
-                .dropdown.dropdown-tip{ :class => "chat_list", :id => "students-dropdown#{chat.id}" }
-                  %ul{ :class => "dropdown-menu" }
-                    -students.each do |p|
+                %a{class: "chat_list", :"data-dropdown"=>"#students-dropdown#{chat.id}" }= participants.count.to_s + ' ' + t(:students, scope: [:chat_rooms, :list])
+                .dropdown.dropdown-tip{ class: "chat_list", id: "students-dropdown#{chat.id}" }
+                  %ul{ class: "dropdown-menu" }
+                    -participants.each do |p|
                       %li=p.name
 
             %td{align: "center"}
@@ -45,7 +45,7 @@
 
   - if !@responsible
     .block_title
-      %h2= t(:title_other_chats, :scope => [:chat_rooms, :list])
+      %h2= t(:title_other_chats, scope: [:chat_rooms, :list])
     - unless @other_chats.nil?
       %table.tb_list
         %thead
@@ -64,12 +64,12 @@
                     = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_enunciation"))
 
                 - unless chat.chat_type==0 
-                  - students = participants(chat.id)
+                  - participants = chat.users
                   %i.icon-people
-                  %a{:class=> "chat_list", :"data-dropdown"=>"#students-dropdown#{chat.id}" }= students.count.to_s + ' ' + t(:students, :scope => [:chat_rooms, :list])
-                  .dropdown.dropdown-tip{ :class => "chat_list", :id => "students-dropdown#{chat.id}" }
-                    %ul{ :class => "dropdown-menu" }
-                      -students.each do |p|
+                  %a{class: "chat_list", :"data-dropdown"=>"#students-dropdown#{chat.id}" }= participants.count.to_s + ' ' + t(:students, :scope => [:chat_rooms, :list])
+                  .dropdown.dropdown-tip{ class: "chat_list", id: "students-dropdown#{chat.id}" }
+                    %ul{ class: "dropdown-menu" }
+                      -participants.each do |p|
                         %li=p.name
 
               %td{align: "center"}

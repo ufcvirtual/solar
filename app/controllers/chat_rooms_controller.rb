@@ -83,11 +83,11 @@ class ChatRoomsController < ApplicationController
   end
 
   def list
-    allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id)) ? active_tab[:url][:allocation_tag_id] : AllocationTag.find_by_group_id(params[:group_id] || []).id
-    
-    alloc = Allocation.find_by_user_id_and_allocation_tag_id(current_user.id, allocation_tags_ids)
-    @alloc = alloc.id unless alloc.nil?
+    authorize! :list, ChatRoom
 
+    allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id)) ? active_tab[:url][:allocation_tag_id] : AllocationTag.find_by_group_id(params[:group_id] || []).id
+     
+    @alloc = Allocation.find_by_user_id_and_allocation_tag_id(current_user.id, allocation_tags_ids).try(:id)
     @responsible = ChatRoom.responsible?(allocation_tags_ids, current_user.id) 
     @my_chats = ChatRoom.chats_user(allocation_tags_ids, current_user.id)
     @other_chats = ChatRoom.chats_other_users(allocation_tags_ids, current_user.id) unless @responsible
