@@ -134,7 +134,7 @@ res22:
 
 res23:
   id: 23
-  controller: 'bibliography'
+  controller: 'bibliographies'
   action: 'list'
   description: 'Bibliografia do curso'
 

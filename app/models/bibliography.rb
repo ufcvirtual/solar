@@ -1,7 +1,8 @@
 class Bibliography < ActiveRecord::Base
 
   GROUP_PERMISSION, OFFER_PERMISSION, CURRICULUM_UNIT_PERMISSION = true, true, true
-  include ToolsAssociation
+
+  attr_accessible :additional_text, :author, :edition, :isbn_issn, :locale, :publisher, :title, :url, :year
 
   def self.bibliography_filter(allocation_tags_ids)
     ActiveRecord::Base.connection.select_all  <<SQL
