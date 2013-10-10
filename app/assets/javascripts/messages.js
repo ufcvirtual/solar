@@ -25,18 +25,33 @@ function selected_messages() {
 }
 
 function message_menu_dropdown() {
+  $(".message_status").change(function() {
+    if ( $( "select option:selected" ).hasClass("check_all") )
+      show_all();
+    if ( $( "select option:selected" ).hasClass("check_read") )
+    {
+      hide_unreads();
+      show_reads();
+    }
+    if ( $( "select option:selected" ).hasClass("check_unread") )
+    {
+      show_unreads();
+      hide_reads();
+    }
+  });
+
   $('#check_all').click(function(){
-    show_all();
+    //show_all();
   });
 
   $('#check_read').click(function(){
-    hide_unreads();
-    show_reads();
+    //hide_unreads();
+    //show_reads();
   });
 
   $('#check_unread').click(function(){
-    show_unreads();
-    hide_reads();
+    //show_unreads();
+    //hide_reads();
   });
 }
 
