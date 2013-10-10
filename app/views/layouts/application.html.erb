@@ -188,19 +188,10 @@
           </ul>
           <ul id="mysolar_extras">
             <li id="mysolar_suggestions"><button class="btn" onclick="javascript:window.open('https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ')">Sugestões para o Solar 2.0</button></li>
-            <li id="mysolar_languages">
-              <button type="button" class="btn" data-tooltip="<%= t(:mysolar_languages) %>" data-dropdown="#language-dropdown" name="Idiomas"><i class="icon-earth"></i><i class="icon-arrow-down-3"></i></button>
-            </li>
             <li id="mysolar_open_lesson">
               <button type="button" class="btn btn_main disabled" data-tooltip="<%= t(:mysolar_open_lesson) %>" name="<%= t(:mysolar_open_lesson) %>" onclick="javascript:maximize();"><i class="icon-class"></i></button>
             </li>
           </ul>
-          <div id="language-dropdown" class="dropdown dropdown-tip">
-            <ul class="dropdown-menu">
-              <li><%= link_to "English (USA)", url_for(:locale => 'en-US') %></li>
-              <li><%= link_to "Português (BR)", url_for(:locale => 'pt-BR') %></li>
-            </ul>
-          </div>
         </div>
       </div>
 
@@ -245,12 +236,22 @@
       </div>
 
       <div id="footer_push" style="height:35px"></div>
+
+      <%- locales = ['pt-BR', 'en-US'] %>
+      <%- selected = "#{I18n.locale}" %>
       <div id="footer">
         <ul>
           <li><%= link_to t(:login_footer1), 'http://www.virtual.ufc.br', :target => '_blank' %></li>
           <li><%= link_to t(:login_footer2), 'http://www.ufc.br', :target => '_blank' %></li>
           <li><%= t(:login_footer3) %></li>
           <li><%= link_to t(:license_terms), 'http://github.com/wwagner33/solar/blob/master/GPLv3', :target => '_blank' %></li>
+          <li class="choice-language">
+            <%= link_to t(:login_language), '#', :class => "link-arrow" %>
+            <ul class="choice-language-menu">
+              <li class="language pt_BR <%= (selected == locales.first) ? 'selected' : '' %>"><%= link_to 'Português (BR)', url_for(locale: locales.first) %></li>
+              <li class="language en_US <%= (selected == locales.last) ? 'selected' : '' %>"><%= link_to 'English (USA)', url_for(locale: locales.last) %></li>
+            </ul>
+          </li>
         </ul>
       </div>
 <%#= render '/portlets/chat' %>
