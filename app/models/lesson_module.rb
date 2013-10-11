@@ -1,9 +1,11 @@
 class LessonModule < ActiveRecord::Base
 
   GROUP_PERMISSION, OFFER_PERMISSION = true, true
-  include ToolsAssociation
 
-  belongs_to :allocation_tag
+  has_many :academic_allocations, as: :academic_tool #, dependent: :delete_all
+  has_many :allocation_tags, through: :academic_allocations
+  has_many :groups, through: :allocation_tags
+
   has_many :lessons
 
   before_destroy :move_lessons_to_default
