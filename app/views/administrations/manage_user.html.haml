@@ -1,0 +1,27 @@
+.block_wrapper.users
+  .block_title
+    %h2= "consultar usuarios"
+
+.block_wrapper.search
+  .block_title
+    %h2= t(".search")
+
+  .block_content.block_content_toolbar.block_content_text
+    = select_tag "type_search", options_for_select(@types)
+    = text_field_tag "text_search", @text_search
+    = button_tag "busca", type: :button, class: "btn btn_default", id: "search_user", alt: "busca"
+
+  .block_content
+    #list_users
+
+:javascript
+
+  $(document).ready(function() {
+
+    $("#search_user").click(function() {
+      var url_for = "#{search_users_administrations_path}";
+      var data = { user: encodeURIComponent($("#text_search").val()), type_search: $("#type_search").val()  };
+      $.get(url_for, data, function(data) { $('#list_users').html(data); });
+    });
+
+  });

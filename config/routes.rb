@@ -27,6 +27,13 @@ Solar::Application.routes.draw do
     end
   end
 
+  resources :administrations do
+    collection do
+      get :manage_user
+      get :search_users
+    end
+  end
+
   ## curriculum_units/:id/participants
   ## curriculum_units/:id/informations
   resources :curriculum_units do
