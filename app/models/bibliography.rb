@@ -2,20 +2,27 @@ class Bibliography < ActiveRecord::Base
 
   GROUP_PERMISSION, OFFER_PERMISSION, CURRICULUM_UNIT_PERMISSION = true, true, true
 
-  attr_accessible :additional_text, :author, :edition, :isbn_issn, :locale, :publisher, :title, :url, :year
+  has_many :academic_allocations, as: :academic_tool, dependent: :destroy
+  has_many :allocation_tags, through: :academic_allocations
+  has_many :groups, through: :allocation_tags
 
-  def self.bibliography_filter(allocation_tags_ids)
-    ActiveRecord::Base.connection.select_all  <<SQL
-     SELECT DISTINCT t1.*
-         FROM bibliographies as t1
-        INNER JOIN allocation_tags as t2 ON (t1.allocation_tag_id = t2.id)
-         LEFT JOIN offers as t4 ON (t2.offer_id = t4.id)
-         LEFT JOIN groups as t5 ON (t2.offer_id = t4.id)
-         LEFT JOIN courses as t6 ON (t2.course_id = t6.id)
-        WHERE t2.course_id is null
-          AND t2.curriculum_unit_id is null
-          AND t2.id IN (#{allocation_tags_ids.join(',')})
-SQL
+  attr_accessible :type_bibliography, :title, :subtitle, :address, :publisher, :pages, :volume, :edition, :publication_year,
+    :periodicity, :issn, :isbn, :periodicity_year_start, :periodicity_year_end, :article_periodicity_title,
+    :fascicle, :publication_month, :additional_information, :url, :accessed_in
+
+  # constantes :: tipos de bibliografia
+    # 1 - livro
+    # 2 - periodico
+    # 3 - artigo
+    # 4 - documento eletronico
+    # 5 - livre
+
+  validates :title, :type_bibliography, presence: true
+  validates :issn, length: {is: 8}, if: "not issn.nil?"
+  validates :isbn, length: {is: 13}, if: "not isbn.nil?"
+
+  def self.all_by_allocation_tags(allocation_tags_ids)
+    joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: allocation_tags_ids})
   end
 
 end

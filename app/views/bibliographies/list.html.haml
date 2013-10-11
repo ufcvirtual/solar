@@ -1,42 +1,15 @@
-- if not(@bibliography_filter.nil? or @bibliography_filter.empty?)
-  - @bibliography_filter.each do |bib|
+- if not @bibliographies.empty?
+
+  - @bibliographies.each do |bib|
     .block_wrapper
       .block_title
         %h2
-          %i.icon-book>
-          \ #{bib["title"]}
+          %i.icon-book
+          = bib.title if bib.type_bibliography != 5
       .block_content.block_content_text
         %div
-          - unless  bib["author"] == nil
-            - author = bib["author"].to_s.split(' ')
-            = (author.last).upcase
-            = ', ' << author.first if author.length > 1
-            \.
-          - unless  bib["title"] == nil
-            %span{style: "font-weight: bold"}>= bib["title"]
-            \.
-          - unless  bib["edition"] == nil
-            = bib["edition"]
-            \.ed .
-          - unless  bib["locale"] == nil
-            = bib["locale"]
-            \:
-          - unless  bib["publisher"] == nil
-            = bib["publisher"]
-            ,
-          - unless  bib["year"] == nil
-            = bib["year"]
-            \.
-          - unless  bib["additional_text"] == nil
-            = bib["additional_text"]
-          - unless  bib["isbn_issn"] == nil
-            %p{style: "margin-top: 4px"}
-              ISBN/ISSN: #{bib["isbn_issn"]}
-          - unless  bib["url"] == nil
-            URL:
-            %a.link_content{href: "<haml_loud", target: "_blank"}
-              bib["url"] >#{bib["url"]}
-            %br/
+          = bib.title # ainda falta melhorar
+
 - else
   .block_wrapper
     .block_content_text_list.text_none

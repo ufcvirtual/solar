@@ -252,3 +252,33 @@ acaal43:
   allocation_tag_id: 2
   academic_tool_id: 9
   academic_tool_type: "Discussion"
+
+acaal44:
+  id: 44
+  allocation_tag_id: 3
+  academic_tool_id: 1
+  academic_tool_type: "Bibliography"
+
+acaal45:
+  id: 45
+  allocation_tag_id: 3
+  academic_tool_id: 2
+  academic_tool_type: "Bibliography"
+
+acaal46:
+  id: 46
+  allocation_tag_id: 3
+  academic_tool_id: 3
+  academic_tool_type: "Bibliography"
+
+acaal47:
+  id: 47
+  allocation_tag_id: 7
+  academic_tool_id: 4
+  academic_tool_type: "Bibliography"
+
+acaal48:
+  id: 48
+  allocation_tag_id: 3
+  academic_tool_id: 5
+  academic_tool_type: "Bibliography"
