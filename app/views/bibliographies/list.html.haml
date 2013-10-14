@@ -1,0 +1,16 @@
+- if not @bibliographies.empty?
+
+  - @bibliographies.each do |bib|
+    .block_wrapper
+      .block_title
+        %h2
+          %i.icon-book
+          = bib.title if bib.type_bibliography != 5
+      .block_content.block_content_text
+        %div
+          = bib.title # ainda falta melhorar
+
+- else
+  .block_wrapper
+    .block_content_text_list.text_none
+      = t(:bibliography_null)

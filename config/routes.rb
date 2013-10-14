@@ -1,6 +1,5 @@
 Solar::Application.routes.draw do 
-
-  devise_for :users, :path_names => {:sign_up => :register}
+  devise_for :users, path_names: {sign_up: :register}
 
   devise_scope :user do
     get  :login, to: "devise/sessions#new"
@@ -255,7 +254,9 @@ Solar::Application.routes.draw do
     end
   end
 
-  get "bibliography/list", to: "bibliography#list"
+  resources :bibliographies do
+    get :list, on: :collection
+  end
 
   get "/media/lessons/:id/:file.:extension", to: "access_control#lesson", index: true
   get "/media/lessons/:id/:folder/*path", to: "access_control#lesson", index: false
