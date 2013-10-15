@@ -10,16 +10,39 @@ class Bibliography < ActiveRecord::Base
     :periodicity, :issn, :isbn, :periodicity_year_start, :periodicity_year_end, :article_periodicity_title,
     :fascicle, :publication_month, :additional_information, :url, :accessed_in
 
-  # constantes :: tipos de bibliografia
-    # 1 - livro
-    # 2 - periodico
-    # 3 - artigo
-    # 4 - documento eletronico
-    # 5 - livre
-
   validates :title, :type_bibliography, presence: true
   validates :issn, length: {is: 8}, if: "not issn.nil?"
   validates :isbn, length: {is: 13}, if: "not isbn.nil?"
+
+  # retornar o nome do tipo ## type_name?
+  def type
+    btype = case type_bibliography
+    when Bibliography_Book
+      "book"
+    when Bibliography_Periodical
+      "periodical"
+    when Bibliography_Article
+      "article"
+    when Bibliography_Eletronic_Doc
+      "eletronic_doc"
+    when Bibliography_Free
+      "free"
+    end
+
+    I18n.t(btype, scope: [:bibliographies, :type]) if btype
+  end
+
+  # ainda nao terminado
+  def resume
+    btype = case type_bibliography
+    when Bibliography_Book
+    when Bibliography_Periodical
+    when Bibliography_Article
+    when Bibliography_Eletronic_Doc
+    when Bibliography_Free
+      title
+    end
+  end
 
   def self.all_by_allocation_tags(allocation_tags_ids)
     joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: allocation_tags_ids})

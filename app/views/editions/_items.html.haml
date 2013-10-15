@@ -4,12 +4,11 @@
     %legend= t(".information")
     .block_content.block_content_alt
 
-      / - if (can? :lista_de_bibliography, Bibliography, :on => @allocation_tags_ids) and Bibliography.constants.include?("#{@selected}_PERMISSION".to_sym))
-      - if (Bibliography.constants.include?("#{@selected}_PERMISSION".to_sym))
+      - if (can? :list, Bibliography, on: @allocation_tags_ids)  and (Bibliography.constants.include?("#{@selected}_PERMISSION".to_sym))
         .uc_item
-          .bibliography
-            = link_to(content_tag(:i, nil, :class=>'icon-book big'), "#", :class=>'btn disabled', :onclick => "javascript:alert('#{t(".in_development")}');")
-            = link_to t(".bibliography"), "#", :onclick => "javascript:alert('#{t(".in_development")}');"
+          .bibliography{:"data-link" => list_bibliographies_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
+            = link_to(content_tag(:i, nil, class: 'icon-people big'), "#", class: 'btn')
+            = link_to t(".bibliography"), "#"
 
       / - if (can? :lista_de_schedules, Schedule, :on => @allocation_tags_ids) and (Schedule.constants.include?("#{@selected}_PERMISSION".to_sym))
       .uc_item

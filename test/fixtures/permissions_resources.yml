@@ -768,6 +768,32 @@ discedit6:
   resource_id: 88
   per_id: false
 
+## bibliografia
+
+bibedit1:
+  profile_id: 5
+  resource_id: 134
+  per_id: false
+
+bibedit2:
+  profile_id: 5
+  resource_id: 135
+  per_id: false
+
+bibedit3:
+  profile_id: 5
+  resource_id: 136
+  per_id: false
+
+bibedit4:
+  profile_id: 5
+  resource_id: 137
+  per_id: false
+
+
+
+
+
 # Editions - Página de edição
 
 edition1:

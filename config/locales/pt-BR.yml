@@ -831,6 +831,40 @@
       discussion_with_posts: Fórum com postagens
       mandatory_final_date: Data final obrigatória
 
+  bibliographies:
+    type:
+      book: Livro
+      periodical: Periódico
+      article: Artigo
+      eletronic_doc: Doc. Eletrônico
+      free: Livre
+    form:
+      new: Novo item - %{bib_type}
+      edit: Editar item - %{bib_type}
+      groups: Turmas
+    free_form:
+      description: Descrição
+    list:
+      new: Nova Bibliografia
+      item: Item
+      type: Tipo
+      edit: Editar Bibliografia
+      delete: Deletar Bibliografia
+      choose_at_least_one: "Selecione, ao menos, uma bibliografia"
+      choose_one: Selecione uma bibliografia
+      expand_description: Expandir descrição
+      compress_description: Comprimir descrição
+      bibliographies: Bibliografias
+      no_data: Nenhuma bibliografia disponível
+    success:
+      created: Item bibliográfico criado com sucesso.
+      updated: Item bibliográfico atualizado com sucesso.
+      deleted: Item bibliográfico deletado com sucesso.
+    error:
+      created: Não foi possível criar item bibliográfico.
+      updated: Não foi possível atualizar item bibliográfico.
+      deleted: Não foi possível deletar item bibliográfico.
+
   # messages
   message_title: "Mensagens"
   message_inbox: "Entrada"

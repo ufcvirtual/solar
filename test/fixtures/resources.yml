@@ -135,7 +135,7 @@ res22:
 res23:
   id: 23
   controller: 'bibliographies'
-  action: 'list'
+  action: 'index'
   description: 'Bibliografia do curso'
 
 # Assignments - parte 1
@@ -743,3 +743,29 @@ res133:
   controller: 'chat_rooms'
   action: 'list'
   description: 'Lista chats da turma para participantes'
+
+## bibliografia
+
+res134:
+  id: 134
+  controller: 'bibliographies'
+  action: 'list'
+  description: 'Edição - Lista de bibliografias'
+
+res135:
+  id: 135
+  controller: 'bibliographies'
+  action: 'create'
+  description: 'Criação de bibliografia'
+
+res136:
+  id: 136
+  controller: 'bibliographies'
+  action: 'update'
+  description: 'Edição de bibliografia'
+
+res137:
+  id: 137
+  controller: 'bibliographies'
+  action: 'destroy'
+  description: 'Deleção de bibliografia'
