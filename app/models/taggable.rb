@@ -5,7 +5,7 @@ module Taggable
     base.after_create :allocation_tag_association
     base.after_create :allocate_profiles
 
-    base.has_one :allocation_tag, :dependent => :destroy
+    base.has_one :allocation_tag, dependent: :destroy
     base.has_many :allocations, :through => :allocation_tag
     base.has_many :users, :through => :allocation_tag
     base.has_many :lesson_modules, :through => :allocation_tag
@@ -57,7 +57,10 @@ module Taggable
 
   ## criacao de lesson module default :: devera ser chamada apenas por groups e offers
   def create_default_lesson_module(name)
-    LessonModule.create(allocation_tag: allocation_tag, name: name, is_default: true)
+    LessonModule.transaction do
+      lm = LessonModule.create(name: name, is_default: true)
+      AcademicAllocation.create(allocation_tag: allocation_tag, academic_tool_id: lm.id, academic_tool_type: 'LessonModule')
+    end
   end
 
   ##

@@ -57,24 +57,28 @@ class LessonsController < ApplicationController
   # POST /lessons.json
   def create
     authorize! :create, Lesson, on: params[:allocation_tags_ids].split(" ")
-
+  
     begin
       params[:lesson][:lesson_module_id] = params[:lesson_module_id]
       params[:lesson][:user_id] = current_user.id
       params[:lesson][:order] = Lesson.where(lesson_module_id: params[:lesson_module_id]).maximum(:order).to_i + 1
+      
 
       @lesson = Lesson.new(params[:lesson])
+     
       Lesson.transaction do
         @lesson.schedule = Schedule.create!(start_date: params[:start_date], end_date: params[:end_date])
         @lesson.save!
       end
 
+      
       @lesson.type_lesson == Lesson_Type_File ? files_and_folders(@lesson) : manage_file = false
 
       render ((manage_file != false) ? {template: "lesson_files/index"} : {json: {success: true, notice: t(:created, scope: [:lessons, :success])}})
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue 
+    rescue Exception => error
+      raise "#{error}"
       render :new
     end # rescue
   end
@@ -82,8 +86,9 @@ class LessonsController < ApplicationController
   # GET /lessons/1/edit
   def edit
     authorize! :update, Lesson, on: params[:allocation_tags_ids].split(" ") # para pode editar percisa ter permissao para salvar
+    
+    @lesson_modules = LessonModule.joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: params[:allocation_tags_ids].split(' ')})
 
-    @lesson_modules = LessonModule.where(allocation_tag_id: params[:allocation_tags_ids].split(' '))
     @lesson = Lesson.find(params[:id])
   end
 
@@ -92,7 +97,7 @@ class LessonsController < ApplicationController
   def update
     authorize! :update, Lesson, on: params[:allocation_tags_ids].split(" ")
 
-    @lesson_modules = LessonModule.where(allocation_tag_id: params[:allocation_tags_ids].split(' '))
+    @lesson_modules = LessonModule.joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: params[:allocation_tags_ids].split(' ')})
     @lesson = Lesson.find(params[:id])
     error = false
     begin

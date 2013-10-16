@@ -1,60 +1,49 @@
 module1:
   id: 1
-  allocation_tag_id: 6
   name: modulo 1
   is_default: false
 
 module2:
   id: 2
-  allocation_tag_id: 6
   name: modulo 2
   is_default: false
 
 module3:
   id: 3
-  allocation_tag_id: 2
   name: modulo 1 / turma 2
   is_default: false
 
 module4:
   id: 4
-  allocation_tag_id: 2
-  name: Modulo Geral da Turma
+  name: Sem Nome Default
   is_default: true
 
 module5: # contém aulas
   id: 5
-  allocation_tag_id: 6
   name: Modulo Geral
   is_default: true  
 
 module6: # não contém aulas
   id: 6
-  allocation_tag_id: 21
   name: Modulo Geral
   is_default: true    
 
 module7: # não contém aulas
   id: 7
-  allocation_tag_id: 22
   name: Modulo Geral da Turma
   is_default: true
 
 module8:
   id: 8
-  allocation_tag_id: 5
   name: Modulo Geral
   is_default: true
 
-# criar este module na mao para testar
-# module9: # módulo para curso > não deve ser usado, existe apenas para testar os módulos de relacionamento com turma/oferta/uc/curso
-#   id: 9
-#   allocation_tag_id: 19
-#   name: Modulo Geral
-#   is_default: true
+module9: # módulo para curso > não deve ser usado, existe apenas para testar os módulos de relacionamento com turma/oferta/uc/curso
+  id: 9
+  name: Modulo Geral
+  is_default: true
 
-# module10: # módulo para uc > não deve ser usado, existe apenas para testar os módulos de relacionamento com turma/oferta/uc/curso
-#   id: 10
-#   allocation_tag_id: 13
-#   name: Modulo Geral
-#   is_default: true
+module10: # módulo para uc > não deve ser usado, existe apenas para testar os módulos de relacionamento com turma/oferta/uc/curso
+  id: 10
+  name: Modulo Geral
+  is_default: true

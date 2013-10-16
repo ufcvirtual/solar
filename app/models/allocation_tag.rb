@@ -6,17 +6,14 @@ class AllocationTag < ActiveRecord::Base
   belongs_to :group
 
   has_many :offers, :through => :curriculum_unit
-  has_many :support_material_files
-  has_many :allocations
-  has_many :lesson_modules
-  has_many :lessons, :through => :lesson_modules
-  has_many :discussions
+  has_many :allocations, dependent: :destroy
   has_many :schedule_events
   
   #Relação Extra
   has_many :academic_allocations
   #Relação Extra
 
+  #before_destroy :verify_lesson_module
   has_many :users, :through => :allocations, :uniq => true
   has_many :groups, :finder_sql => Proc.new {
     if not group_id.nil?
@@ -30,7 +27,6 @@ class AllocationTag < ActiveRecord::Base
     end
   }
 
-  before_destroy :verify_lesson_module
 
   def self.find_all_groups(allocations)
     query = <<SQL
@@ -168,9 +164,9 @@ SQL
     end
   end
 
-  def verify_lesson_module
-    self.lesson_modules.first.delete if((not self.lesson_modules.empty?) and self.lesson_modules.size == 1 and self.lesson_modules.first.lessons.empty?)
-  end
+  # def verify_lesson_module
+  #   self.lesson_modules.first.delete if((not self.lesson_modules.empty?) and self.lesson_modules.size == 1 and self.lesson_modules.first.lessons.empty?)
+  # end
 
 
 end

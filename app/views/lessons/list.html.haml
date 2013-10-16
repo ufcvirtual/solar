@@ -8,14 +8,14 @@
   - previous_allocation_tag = nil
 
   - @allocation_tags.each_with_index do |allocation_tag, idxat|
-
     .block_wrapper
       - unless previous_allocation_tag == idxat
         - previous_allocation_tag = idxat
 
-      - unless allocation_tag.lesson_modules.empty?
-        - allocation_tag.lesson_modules.each_with_index do |lesson_module, idxm|
+      - unless allocation_tag.academic_allocations.where(academic_tool_type: 'LessonModule').empty?
+        - allocation_tag.academic_allocations.where(academic_tool_type: 'LessonModule').each_with_index do |academic_allocation, idxm|
 
+          - lesson_module = LessonModule.find(academic_allocation.academic_tool_id)
           - lessons = lessons_by_module(lesson_module.id)
           .block_wrapper.module{id: "module_#{lesson_module.id}"}
             .block_title
@@ -44,7 +44,8 @@
                     .dropdown-panel
                       #dropdown_alert{:style => "display: block"}
                         %ul
-                        - allocation_tag.lesson_modules.each_with_index do |lmodule, idx|
+                        - allocation_tag.academic_allocations.where(academic_tool_type: 'LessonModule').each_with_index do |aallocation, idx|
+                        - lmodule = LessonModule.find(aallocation.academic_tool_id)
                           - unless idx == idxm
                             %li
                               %span{style: "display: inline"}

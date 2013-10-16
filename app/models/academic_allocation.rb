@@ -3,7 +3,9 @@ class AcademicAllocation < ActiveRecord::Base
   belongs_to :allocation_tag
 
   #Relacionamentos extras#
-  has_many :sent_assignments
+  
+  #Assignment
+  has_many :sent_assignments, dependent: :destroy
   has_many :group_assignments, dependent: :destroy
 
   validate :verify_assignment_offer_date_range, if: :is_assignment?
@@ -11,9 +13,17 @@ class AcademicAllocation < ActiveRecord::Base
   before_save :verify_association_with_allocation_tag
   before_validation :verify_uniqueness
 
+  #LessonModule
+  before_destroy :move_lessons_to_default, if: :is_lesson_module?
+
+
   def is_assignment?
-  	academic_tool_type.eql? 'Assignment'
+    academic_tool_type.eql? 'Assignment'
   end
+  
+  def is_lesson_module?
+    academic_tool_type.eql? 'LessonModule'
+  end  
 
   private
 
@@ -33,20 +43,37 @@ class AcademicAllocation < ActiveRecord::Base
         else
           permission = false
       end
-
       return permission ? true : (raise ActiveRecord::AssociationTypeMismatch)
     end
+
 
     ## verifica se já existe uma AcademicAllocation com todos os dados iguais
     def verify_uniqueness
       errors.add(:base, I18n.t(:uniqueness, scope: [:activerecord, :errors])) unless AcademicAllocation.where(allocation_tag_id: allocation_tag_id, academic_tool_type: academic_tool_type, academic_tool_id: academic_tool_id).empty?
     end
 
+    #Métodos destinados ao Assignment
     ## Datas da atividade devem estar no intervalo de datas da oferta
     def verify_assignment_offer_date_range
       if allocation_tag.group
         errors.add(:base, I18n.t(:final_date_smaller_than_offer, :scope => [:assignment, :notifications], :end_date_offer => allocation_tag.group.offer.end_date.to_date)) if academic_tool.schedule.end_date > allocation_tag.group.offer.end_date
       end
     end
+
+
+    # Métodos destinados ao Lesson Module  
+    def move_lessons_to_default
+      lesson_module = LessonModule.find(academic_tool_id)
+      if lesson_module.is_default
+        errors.add(:base, I18n.t(:cant_delete, :scope => [:lesson_modules, :errors]))
+        return false
+      else
+        not_exist_default = LessonModule.joins(:academic_allocations).where({is_default: true,academic_allocations: {allocation_tag_id: allocation_tag_id}}).empty?
+        unless  not_exist_default
+            lesson_module.lessons.update_all(lesson_module_id: LessonModule.joins(:academic_allocations).where({is_default: true,academic_allocations: {allocation_tag_id: allocation_tag_id}}))
+        end    
+      end
+    end
+
 
 end

@@ -12,7 +12,7 @@ Contexto:
     | 2        | 1                  | 1           | 1      |
     | 3        | 1                  | 1           | 1      |
 
-@javascript
+@javascript @wip
 Cenário: Listar aulas do curso
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"

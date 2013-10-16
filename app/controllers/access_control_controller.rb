@@ -36,7 +36,7 @@ class AccessControlController < ApplicationController
 
   def lesson
     @lesson = Lesson.find(params[:id])
-    authorize! :show, Lesson, {on: [@lesson.allocation_tag.id], read: true}
+    authorize! :show, Lesson, {on: [active_tab[:url][:allocation_tag_id]], read: true}
 
     if @lesson.path(false).index('.html')
       if params[:index]

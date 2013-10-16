@@ -6,7 +6,6 @@ class Group < ActiveRecord::Base
 
   has_one :curriculum_unit, through: :offer
   has_one :course, through: :offer
-
   has_many :academic_allocations, through: :allocation_tag
 
   validates :code, :offer_id, presence: true

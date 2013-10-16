@@ -10,7 +10,10 @@ class LessonFilesController < ApplicationController
   def index
     begin 
       @lesson = Lesson.where(id: params[:lesson_id]).first
-      authorize! :new, Lesson, on: [@lesson.lesson_module.allocation_tag_id]
+      allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule')
+      .select(:allocation_tag_id).map(&:allocation_tag_id)
+
+      authorize! :new, Lesson, on: [allocation_tags_ids]
       @address = @lesson.address
 
       raise 'error' unless @lesson and @lesson.type_lesson == Lesson_Type_File
@@ -24,7 +27,10 @@ class LessonFilesController < ApplicationController
   def new
     begin
       @lesson  = Lesson.where(id: params[:lesson_id]).first
-      authorize! :new, Lesson, on: [@lesson.lesson_module.allocation_tag_id]
+      allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule')
+      .select(:allocation_tag_id).map(&:allocation_tag_id)
+      authorize! :new, Lesson, on: [allocation_tags_ids]
+    
       lesson_path = @lesson.path(true, false)
 
       if params[:type] == 'folder'
@@ -58,17 +64,20 @@ class LessonFilesController < ApplicationController
 
     rescue CanCan::AccessDenied
       error = true
-    rescue
+    rescue Exception => error
+      raise "#{error}"
       error = true
     end
 
-    render error ? {nothing: true, status: 500} : {action: :index, satus: 200}
+    render error ? {nothing: true, status: 500} : {action: :index, status: 200}
   end
 
   def edit
     begin
       @lesson  = Lesson.where(id: params[:lesson_id]).first
-      authorize! :new, Lesson, on: [@lesson.lesson_module.allocation_tag_id]
+      allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule')
+      .select(:allocation_tag_id).map(&:allocation_tag_id)
+      authorize! :new, Lesson, on: [allocation_tags_ids]
       lesson_path = @lesson.path(true, false)
 
       if params[:type] == 'rename' # renomear
@@ -118,7 +127,9 @@ class LessonFilesController < ApplicationController
   def destroy
     begin
       @lesson  = Lesson.where(id: params[:lesson_id]).first
-      authorize! :new, Lesson, on: [@lesson.lesson_module.allocation_tag_id]
+      allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule')
+      .select(:allocation_tag_id).map(&:allocation_tag_id)
+      authorize! :new, Lesson, on: [allocation_tags_ids]
 
       params[:path] = '' if params[:root_node] == 'true' # ignora a pasta raiz caso delete todos os arquivos da aula
       # erro se estiver tentando remover o arquivo inicial ou alguma pasta "superior" à ele e não for a pasta raiz
@@ -140,7 +151,9 @@ class LessonFilesController < ApplicationController
 
   def extract_files
     @lesson = Lesson.find(params[:lesson_id])
-    authorize! :update, Lesson, on: [@lesson.allocation_tag.id] # com permissao para editar aula
+    allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule')
+      .select(:allocation_tag_id).map(&:allocation_tag_id)
+    authorize! :update, Lesson, on: [allocation_tags_ids] # com permissao para editar aula
 
     file = Lesson::FILES_PATH.join(params[:lesson_id], params[:file])
     to = File.dirname(file)

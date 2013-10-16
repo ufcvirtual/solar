@@ -7,10 +7,9 @@ module LessonsHelper
   def lessons_list(lessons, atual_id_open = nil)
     count, total_lesson = 1, lessons.length
     order_lesson, text = '', ''
-
     lessons.each do |l|
-      order_lesson = (atual_id_open == l.lesson_id) ? count.to_s : order_lesson.to_s
-      path_lesson  = l.type_lesson == 1 ? l.address : "/media/lessons/#{l.lesson_id}/#{l.address}"
+      order_lesson = (atual_id_open == l.id) ? count.to_s : order_lesson.to_s
+      path_lesson  = l.type_lesson == 1 ? l.address : "/media/lessons/#{l.id}/#{l.address}"
       text_lesson  = [t(:lesson, :scope => [:lessons, :list]), ' ', count.to_s, ' - ', total_lesson.to_s].join('')
 
       unless ((l.schedule.end_date.nil?) or (l.schedule.end_date.to_date < Date.today)) and (l.schedule.start_date.to_date > Date.today)

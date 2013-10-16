@@ -56,14 +56,14 @@ class LessonsControllerTest < ActionController::TestCase
   end
 
   test "nao criar aula com datas invalidas" do
-    lesson = {name: 'lorem ipsum', address: 'index.html', type_lesson: Lesson_Type_File, lesson_module_id: 1}
+=begin
     params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: allocation_tags(:al6)} # sem data inicial
-
     assert_no_difference(["Lesson.count", "Schedule.count"], 1) do
       post(:create, params)
     end
     assert_template :new
-
+=end
+    lesson = {name: 'lorem ipsum', address: 'index.html', type_lesson: Lesson_Type_File, lesson_module_id: 1}
     params = {lesson: lesson, lesson_module_id: 1, allocation_tags_ids: allocation_tags(:al6), start_date: (Time.now + 1.month), end_date: Time.now} 
 
     assert_no_difference(["Lesson.count", "Schedule.count"], 1) do

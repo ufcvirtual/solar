@@ -94,7 +94,7 @@ Cenário: Filtro academico
       E eu deverei ver "Semestres"
       E eu deverei ver "Turmas"
 
-@javascript
+@javascript 
 Cenário: Filtro academico - cursos
   Dado que estou logado com o usuario "editor" e com a senha "123456"
     E que estou em "Meu Solar"
