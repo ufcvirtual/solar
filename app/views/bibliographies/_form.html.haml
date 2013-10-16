@@ -1,37 +1,12 @@
-= form_for @bibliography do |f|
-  - if @bibliography.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@bibliography.errors.count, "error")} prohibited this bibliography from being saved:"
-      %ul
-        - @bibliography.errors.full_messages.each do |msg|
-          %li= msg
-
-  .field
-    = f.label :title
-    = f.text_field :title
-  .field
-    = f.label :additional_text
-    = f.text_field :additional_text
-  .field
-    = f.label :publisher
-    = f.text_field :publisher
-  .field
-    = f.label :edition
-    = f.text_field :edition
-  .field
-    = f.label :year
-    = f.text_field :year
-  .field
-    = f.label :author
-    = f.text_field :author
-  .field
-    = f.label :locale
-    = f.text_field :locale
-  .field
-    = f.label :url
-    = f.text_field :url
-  .field
-    = f.label :isbn_issn
-    = f.text_field :isbn_issn
-  .actions
-    = f.submit 'Save'
+.bibliography_form
+  - case @bibliography.type_bibliography
+  - when Bibliography_Book
+    = render partial: "book_form"
+  - when Bibliography_Periodical
+    = render partial: "periodical_form"
+  - when Bibliography_Article
+    = render partial: "article_form"
+  - when Bibliography_Eletronic_Doc
+    = render partial: "eletronic_doc_form"
+  - when Bibliography_Free
+    = render partial: "free_form"

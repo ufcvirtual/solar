@@ -53,7 +53,7 @@ Solar::Application.routes.draw do
   resources :groups, except: [:show] do
     resources :discussions, only: [:index] do
       collection do 
-        get :mobilis_list, to: :list
+        get :mobilis_list, to: :index, mobilis: true
       end
     end  
     get :list, on: :collection
@@ -254,8 +254,20 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :bibliographies do
-    get :list, on: :collection
+  resources :bibliographies, except: [:new, :show] do
+    collection do
+      get :list
+
+      get :new_book           , to: :new, type_bibliography: 1
+      get :new_periodical     , to: :new, type_bibliography: 2
+      get :new_article        , to: :new, type_bibliography: 3
+      get :new_eletronic_doc  , to: :new, type_bibliography: 4
+      get :new_free           , to: :new, type_bibliography: 5
+
+      put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "Bibliography", as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "Bibliography", as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "Bibliography", as: :add_group_to
+    end
   end
 
   get "/media/lessons/:id/:file.:extension", to: "access_control#lesson", index: true

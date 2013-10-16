@@ -1,10 +1,11 @@
 class BibliographyAddFields < ActiveRecord::Migration
 
+  # como a tabela muda, é necessário esse código junto com o código de reset
   class Bibliography < ActiveRecord::Base
   end
 
   def up
-    bibliographies = Bibliography.all.dup # ainda com allocation_tag ==> nao vai mais existir
+    bibliographies = Bibliography.all
 
     drop_table :bibliographies
 
@@ -19,8 +20,8 @@ class BibliographyAddFields < ActiveRecord::Migration
       t.integer :edition
       t.integer :publication_year
       t.string :periodicity
-      t.string :issn, limit: 8
-      t.string :isbn, limit: 13
+      t.string :issn, limit: 9 # 9999-999x
+      t.string :isbn, limit: 17 #  978-3-16-148410-0
       t.integer :periodicity_year_start
       t.integer :periodicity_year_end
       t.text :article_periodicity_title
@@ -48,7 +49,7 @@ class BibliographyAddFields < ActiveRecord::Migration
       title << "URL: #{bibliography.url}"             if not bibliography.url.nil?
       title = title.join(". ")
 
-      bib = Bibliography.create type_bibliography: 5, title: title # mudar pela constante
+      bib = Bibliography.create type_bibliography: Bibliography_Free, title: title # mudar pela constante
       AcademicAllocation.create(allocation_tag_id: bibliography.allocation_tag_id, academic_tool_id: bib.id, academic_tool_type: 'Bibliography')
     end
   end

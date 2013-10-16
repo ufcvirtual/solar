@@ -218,62 +218,35 @@ select[disabled] {
   padding: 2px 0;
 }
 
-/**
-* TODO: código aparentemente inutilizado, verificar
-*
-#curriculum_unit_code, #curriculum_unit_passing_grade {
-  width: 65px;
-}
-
-.group_code.field_with_errors .error {
-  display: block;
-  margin-left: $form_label_width - 10px;
-}
-
-.form_usuario_label {
-  text-align: right;
-  width: 15px;
-  padding-right: 10px;
-  padding-left: 10px;
-  margin-top: 2px;
-  font-size: 14px;
-  white-space: pre-wrap;
-  vertical-align: middle;
-}
-
-.login_form_link_return {
-  position: relative;
-  top: 10px;
-  text-align: center;
-  line-height: 25px;
-  background-color: #fff;
-  color: #222;
-}
-
-.login_form_link_return:hover {
-  text-decoration: none;
-  color: #222;
-}
-
-.form_usuario_table {
-  line-height: 15px;
-  margin-bottom: 25px;
-  color: #fff;
-}
-
-.form_usuario_tr {
-  height: 30px;
-}
-
-#user_gender {
-  width: 45px;
-}
-
-
-*/
-
 .checkbox_label label{
   color: $label_color; 
   width: auto;
 }
 
+.form-inputs .inline { 
+  & > div {
+    display: inline-block;
+    vertical-align: top;
+
+    &:first-child {
+      min-width: 240px;
+    }
+  }
+}
+
+/**
+ * Para bibliografia
+ */
+
+.new_bibliography, .edit_bibliography {
+
+  .form_label:first-child {
+    width: 95px;
+  }
+
+  .error {
+    margin-left: 100px;
+    margin-bottom: 0;
+    padding-left: 0;
+  }
+}

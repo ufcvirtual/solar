@@ -1,35 +1,15 @@
-%h1 Listing bibliographies
+- if not @bibliographies.empty?
 
-%table
-  %tr
-    %th Title
-    %th Additional text
-    %th Publisher
-    %th Edition
-    %th Year
-    %th Author
-    %th Locale
-    %th Url
-    %th Isbn issn
-    %th
-    %th
-    %th
+  - @bibliographies.each do |bib|
+    .block_wrapper
+      .block_title
+        %h2
+          %i.icon-book
+      .block_content.block_content_text
+        %div
+          = bib.resume # ainda falta melhorar
 
-  - @bibliographies.each do |bibliography|
-    %tr
-      %td= bibliography.title
-      %td= bibliography.additional_text
-      %td= bibliography.publisher
-      %td= bibliography.edition
-      %td= bibliography.year
-      %td= bibliography.author
-      %td= bibliography.locale
-      %td= bibliography.url
-      %td= bibliography.isbn_issn
-      %td= link_to 'Show', bibliography
-      %td= link_to 'Edit', edit_bibliography_path(bibliography)
-      %td= link_to 'Destroy', bibliography, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New Bibliography', new_bibliography_path
+- else
+  .block_wrapper
+    .block_content_text_list.text_none
+      = t(:bibliography_null)

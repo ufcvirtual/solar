@@ -1,0 +1,64 @@
+
+// faltando revisao
+
+function save_bibliography(){
+  $('form#bibliography_form').serialize_and_submit({
+    replace_list: $('.list_bibliographies')
+  });
+}
+
+$(function(){
+
+  if ($("#radio_option_group").prop("checked"))
+    $(".group_label").show();
+
+  /* Lista */
+
+  $(".expand, .compress").click(function(){
+    $(this).parent().hide();
+    $($(this).parent().siblings()[0]).show();
+  });
+
+  $(".link_new_bibliography").call_fancybox();
+
+  $('.delete_bibliography').click(function(){
+    if ($(this).attr('disabled') == 'disabled'){
+      flash_message("<%=I18n.t(:choose_at_least_one, scope: 'bibliographies.list')%>", "alert");
+      return false;
+    }
+
+    if (!confirm("<%=I18n.t(:message_confirm)%>"))
+      return false;
+
+    var bibliographies = $('.ckb_bibliography:checked', $(this).parents("div.list_bibliographies"));
+    var bibliography_ids = $('.ckb_bibliography:checked', $(this).parents("div.list_bibliographies")).map(function() { return this.value; }).get();
+
+    if (bibliography_ids.length) {
+      $.delete($(this).data('link-delete').replace(':id', bibliography_ids), function(data){
+        flash_message(data.notice, 'notice');
+        bibliographies.parents('tr').fadeOut().remove();
+
+        $(".btn_edit, .btn_del").attr("disabled", true);
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+      });
+    }
+  });
+
+  $(".btn_edit").click(function(){
+    if ($(this).attr('disabled') == 'disabled'){
+      flash_message("<%=I18n.t(:choose_one, scope: 'bibliographies.list')%>", "alert");
+      return false;
+    }
+
+    var bibliography_ids = $('.ckb_bibliography:checked', $(this).parents("div.list_bibliographies")).map(function() { return this.value; }).get();
+    var url_edit = $(this).data('link-edit').replace(':id', bibliography_ids);
+    $(this).call_fancybox({href : url_edit, open: true});
+
+  });
+
+  $(".all_bibliographies").nice_checkbox();
+
+});

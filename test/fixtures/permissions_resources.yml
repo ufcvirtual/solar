@@ -711,6 +711,7 @@ allocation5:
   per_id: false
 
 # Unidade Curricular - Editor
+
 ucedit0:
   profile_id: 5
   resource_id: 11
@@ -736,7 +737,7 @@ ucedit4:
   resource_id: 82
   per_id: false
 
-# # Discussions - Fóruns
+# Discussions - Fóruns
 
 discedit1:
   profile_id: 5
@@ -766,6 +767,28 @@ discedit5:
 discedit6:
   profile_id: 5
   resource_id: 88
+  per_id: false
+
+## bibliografia
+
+bibedit1:
+  profile_id: 5
+  resource_id: 134
+  per_id: false
+
+bibedit2:
+  profile_id: 5
+  resource_id: 135
+  per_id: false
+
+bibedit3:
+  profile_id: 5
+  resource_id: 136
+  per_id: false
+
+bibedit4:
+  profile_id: 5
+  resource_id: 137
   per_id: false
 
 # Editions - Página de edição
@@ -1128,4 +1151,3 @@ editmon1:
   profile_id: 13
   resource_id: 89
   per_id: false
-

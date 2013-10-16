@@ -1,0 +1,21 @@
+= simple_form_for(@bibliography, html: {id: "bibliography_form"}) do |f|
+  %span.form_requirement= t(:required_fields)
+  %h1#lightBoxDialogTitle= t((@bibliography.persisted? ? :edit : :new), scope: [:bibliographies, :form], bib_type: @bibliography.type)
+    
+  .form-inputs.block_content
+    = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+
+    = f.input :type_bibliography, as: :hidden, input_html: {value: @bibliography.type_bibliography}
+    = f.input :title
+
+    .input.group_label.invisible
+      = f.label t(:groups, scope: [:bibliographies, :form])
+      %span.groups
+        - @groups_codes.each do |group_code|
+          %span.collection_check_boxes= group_code
+
+    .form-actions.right_buttons
+      = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
+      = button_to_function t(:save), "save_bibliography()" , class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
+
+= javascript_include_tag "edition_bibliographies"
