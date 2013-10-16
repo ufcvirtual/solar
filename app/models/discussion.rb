@@ -115,4 +115,22 @@ class Discussion < ActiveRecord::Base
     discussion_posts.empty? # não pode dar unbind nem remover se fórum possuir posts
   end
 
+  def resume
+    {
+      id: id,
+      description: description,
+      name: name,
+      last_post_date: latest_posts.first.try(:updated_at),
+      status: status,
+      start_date: schedule.start_date,
+      end_date: schedule.end_date
+    }
+  end
+
+  def status
+    return 2 if closed?
+    return 1 if opened?
+    return 0 # nao iniciado
+  end
+
 end

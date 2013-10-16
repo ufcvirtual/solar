@@ -53,7 +53,7 @@ Solar::Application.routes.draw do
   resources :groups, except: [:show] do
     resources :discussions, only: [:index] do
       collection do 
-        get :mobilis_list, to: :list, mobilis: true
+        get :mobilis_list, to: :index, mobilis: true
       end
     end  
     get :list, on: :collection

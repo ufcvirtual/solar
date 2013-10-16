@@ -17,7 +17,7 @@ class DiscussionsController < ApplicationController
     respond_to do |format|
       format.html
       format.xml  { render xml: @discussions }
-      format.json  { render json: (params[:mobilis] ? {discussions: @discussions } : @discussions)} # SolarMobilis: GET /groups/:group_id/discussions/mobilis_list.json
+      format.json  { render json: (params[:mobilis] ? {discussions: @discussions.map(&:resume) } : @discussions)} # SolarMobilis: GET /groups/:group_id/discussions/mobilis_list.json
     end
   end
 
