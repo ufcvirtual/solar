@@ -14,14 +14,4 @@
   .block_content
     #list_users
 
-:javascript
-
-  $(document).ready(function() {
-
-    $("#search_user").click(function() {
-      var url_for = "#{search_users_administrations_path}";
-      var data = { user: encodeURIComponent($("#text_search").val()), type_search: $("#type_search").val()  };
-      $.get(url_for, data, function(data) { $('#list_users').html(data); });
-    });
-
-  });
+=javascript_include_tag "administrations"

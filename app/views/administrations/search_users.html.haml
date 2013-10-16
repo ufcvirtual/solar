@@ -15,12 +15,24 @@
         %td{style: 'width:100px'}= user.username
         %td{style: 'width:80px'}= user.cpf        
         %td{style: 'width:100px'}
-          = hidden_field_tag(:user_id, user.id)
-          = #button_tag t(".designate"), type: "button", class: "btn btn_default btn_designate", alt: t(".designate_user", user_name: user.name), :"data-link-create" => create_designation_allocations_path(user_id: user.id, status: Allocation_Activated, allocation_tags_ids: @allocation_tags_ids.flatten), :"data-link-list" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids.flatten)
+          = #hidden_field_tag(:user_id, user.id)
+          = #button_tag "i", type: "button", class: "btn btn_default", alt: t(".designate_user", user_name: user.name), :"data-link-create" => info_user_administrations_path(user_id: user.id)
+
+          = #link_to content_tag(:i, nil, class: 'icon-plus-3'), info_user_administrations_path(user_id: user.id), class: " btn btn_main", id: "btn_info_user_administrations", :"data-tooltip" => "info"
+          %a{class: "info_list", :"data-dropdown"=>"#info-dropdown#{user.id}" }= content_tag(:i, nil, class: 'icon-plus-3')
+          .dropdown.dropdown-tip{ class: "info_list", id: "info-dropdown#{user.id}" }
+            %ul{ class: "dropdown-menu" }
+              %li
+                = link_to "info", info_user_administrations_path(user_id: user.id), class: " btn btn_main", id: "btn_info_user_administrations", :"data-tooltip" => "info"
+              %li
+                = link_to "alloc", allocations_user_administrations_path(user_id: user.id), class: " btn btn_main", id: "btn_allocations_user_administrations", :"data-tooltip" => "alloc"
+              %li
+                = label_tag "ult acesso 1/1/1900"
 
 - else
   .block_content_text_list.text_none 
-    = t(".designate_search_no_found")
+    = #t(".designate_search_no_found")
+    = "não achei esse usuário"
 
 :javascript
 
@@ -47,6 +59,8 @@
           flash_message('#{I18n.t(:not_allocated, :scope => [:allocations, :error])}', 'alert');
         }
       }); // ajax
+
     });
+
 
   });

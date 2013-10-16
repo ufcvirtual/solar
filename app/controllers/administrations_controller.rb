@@ -1,6 +1,6 @@
 class AdministrationsController < ApplicationController
 
-  layout false, only: [:search_users]
+  layout false, except: [:manage_user]
 
 	# GET /administrations/manage_user
   # GET /administrations/manage_user.json
@@ -27,6 +27,12 @@ class AdministrationsController < ApplicationController
       else
         @users = User.where("lower(cpf) ~ '#{@text_search.downcase}'")
     end
+  end
+
+  def info_user
+  end
+
+  def allocations_user
   end
 
 end

@@ -1,0 +1,18 @@
+$(function() {
+
+	//pagina de consultar usuario
+
+  $("#search_user").click(function() {
+    var url_for = "<%= Rails.application.routes.url_helpers.search_users_administrations_path %>";
+    if ($("#text_search").val().length != 0)
+    {
+      var data = { user: encodeURIComponent($("#text_search").val()), type_search: $("#type_search").val()  };
+      $.get(url_for, data, function(data) { $('#list_users').html(data); });
+    }
+  });
+
+  $("#btn_info_user_administrations").call_fancybox();
+
+  $("#btn_allocations_user_administrations").call_fancybox();  
+
+});

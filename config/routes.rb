@@ -31,6 +31,8 @@ Solar::Application.routes.draw do
     collection do
       get :manage_user
       get :search_users
+      get :info_user
+      get :allocations_user
     end
   end
 
