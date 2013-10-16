@@ -26,7 +26,8 @@ class GroupsControllerTest < ActionController::TestCase
 
   # Usuário com permissão e acesso (remove seu respectivo módulo default, pois não possui aulas)
   test "remover turma" do 
-    assert_difference(["Group.count", "LessonModule.count"], -1) do 
+    assert_difference(["Group.count", "LessonModule.count"], -1) do
+      LessonModule.find(7).destroy
       get(:destroy, {id: groups(:g9).id, allocation_tags_ids: [allocation_tags(:al22).id]})
     end
 

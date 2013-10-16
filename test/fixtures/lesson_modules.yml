@@ -37,13 +37,3 @@ module8:
   id: 8
   name: Modulo Geral
   is_default: true
-
-module9: # módulo para curso > não deve ser usado, existe apenas para testar os módulos de relacionamento com turma/oferta/uc/curso
-  id: 9
-  name: Modulo Geral
-  is_default: true
-
-module10: # módulo para uc > não deve ser usado, existe apenas para testar os módulos de relacionamento com turma/oferta/uc/curso
-  id: 10
-  name: Modulo Geral
-  is_default: true

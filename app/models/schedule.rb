@@ -24,7 +24,7 @@ class Schedule < ActiveRecord::Base
 
   def start_date_before_end_date
     unless start_date.nil? or end_date.nil?
-      errors.add(:start_date, I18n.t(:range_date_error, :scope => [:discussion, :errors])) if (start_date > end_date)
+      errors.add(:start_date, I18n.t(:range_date_error, :scope => [:discussions, :error])) if (start_date > end_date)
     end
   end
 

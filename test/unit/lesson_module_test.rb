@@ -24,4 +24,30 @@ class LessonModuleTest < ActiveSupport::TestCase
     assert Lesson.find_all_by_lesson_module_id(lesson_modules(:module4)).size == (number_lessons_of_module_not_default + number_lessons_of_module_default)
   end
   
+  test 'nao deve ser criado em disciplina' do
+    lesson_module = LessonModule.create(name: 'Modulo Geral', is_default: true)
+
+    allocation_tag_disciplina = allocation_tags(:al13)
+    begin
+      AcademicAllocation.create(allocation_tag_id: allocation_tag_disciplina.id, academic_tool_id: lesson_module.id, academic_tool_type: 'LessonModule' )
+    rescue ActiveRecord::AssociationTypeMismatch
+      assert true  
+    rescue
+      assert false
+    end
+  end
+  
+  test 'nao deve ser criado em curso' do
+    lesson_module = LessonModule.create(name: 'Modulo Geral', is_default: true)
+
+    allocation_tag_disciplina = allocation_tags(:al19)
+    begin
+      AcademicAllocation.create(allocation_tag_id: allocation_tag_disciplina.id, academic_tool_id: lesson_module.id, academic_tool_type: 'LessonModule' )
+    rescue ActiveRecord::AssociationTypeMismatch
+      assert true  
+    rescue
+      assert false
+    end
+  end  
+
 end

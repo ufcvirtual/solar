@@ -15,7 +15,7 @@ class  ScheduleTest < ActiveSupport::TestCase
     schedule = Schedule.create(:start_date => schedules(:schedule18).start_date, :end_date => schedules(:schedule25).start_date)    
 
     assert (not schedule.valid?)
-    assert_equal schedule.errors[:start_date].first, I18n.t(:range_date_error, :scope => [:discussion, :errors])
+    assert_equal schedule.errors[:start_date].first, I18n.t(:range_date_error, :scope => [:discussions, :error])
   end
 
   test "metodo 'can_destroy?'" do

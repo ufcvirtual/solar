@@ -77,8 +77,7 @@ class LessonsController < ApplicationController
       render ((manage_file != false) ? {template: "lesson_files/index"} : {json: {success: true, notice: t(:created, scope: [:lessons, :success])}})
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue Exception => error
-      raise "#{error}"
+    rescue Exception 
       render :new
     end # rescue
   end

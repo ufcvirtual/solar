@@ -64,8 +64,7 @@ class LessonFilesController < ApplicationController
 
     rescue CanCan::AccessDenied
       error = true
-    rescue Exception => error
-      raise "#{error}"
+    rescue Exception
       error = true
     end
 

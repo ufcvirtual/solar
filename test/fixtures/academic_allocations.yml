@@ -321,19 +321,6 @@ acaal54:
  academic_tool_id: 8
  academic_tool_type: "LessonModule"
 
-#Procurar testes e fazer fixtures na mão
-# acaal50:
-#   id: 50
-#   allocation_tag_id: 19
-#   academic_tool_id: 9
-#   academic_tool_type: "LessonModule"
-
-# acaal51:
-#   id: 51
-#   allocation_tag_id: 13
-#   academic_tool_id: 10
-#   academic_tool_type: "LessonModule"
-
 acaal55:
  id: 55
  allocation_tag_id: 6
