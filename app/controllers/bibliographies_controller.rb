@@ -2,7 +2,6 @@ class BibliographiesController < ApplicationController
 
   layout false, except: :index # define todos os layouts do controller como falso
 
-
   def list
     authorize! :list, Bibliography, on: @allocation_tags_ids = (params[:allocation_tags_ids].class == String ? params[:allocation_tags_ids].split(",") : params[:allocation_tags_ids])
 
@@ -66,7 +65,7 @@ class BibliographiesController < ApplicationController
 
     @bibliography = Bibliography.find(params[:id])
     begin
-      @bibliography.update_attributes(params[:bibliography])
+      @bibliography.update_attributes!(params[:bibliography])
 
       render json: {success: true, notice: t(:updated, scope: [:bibliographies, :success])}
     rescue ActiveRecord::AssociationTypeMismatch

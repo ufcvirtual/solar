@@ -1,5 +1,6 @@
 = simple_form_for(@bibliography, html: {id: "bibliography_form"}) do |f|
   %span.form_requirement= t(:required_fields)
+  %h1#lightBoxDialogTitle= t((@bibliography.persisted? ? :edit : :new), scope: [:bibliographies, :form], bib_type: @bibliography.type)
     
   .form-inputs.block_content
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids

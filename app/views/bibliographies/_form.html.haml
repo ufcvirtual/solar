@@ -1,6 +1,4 @@
 .bibliography_form
-  %h1#lightBoxDialogTitle= t((@bibliography.persisted? ? ".edit" : ".new"), bib_type: @bibliography.type)
-
   - case @bibliography.type_bibliography
   - when Bibliography_Book
     = render partial: "book_form"

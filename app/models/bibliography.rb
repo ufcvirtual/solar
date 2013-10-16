@@ -11,8 +11,11 @@ class Bibliography < ActiveRecord::Base
     :fascicle, :publication_month, :additional_information, :url, :accessed_in
 
   validates :title, :type_bibliography, presence: true
-  validates :issn, length: {is: 8}, if: "not issn.nil?"
-  validates :isbn, length: {is: 13}, if: "not isbn.nil?"
+  validates :issn, length: {is: 9}, if: "issn.present?" # com formatacao
+  validates :isbn, length: {is: 17}, if: "isbn.present?" # com formatacao
+
+  # validacoes condicionais
+  validates :address, :publisher, :periodicity_year_start, presence: true, if: "type_bibliography == #{Bibliography_Periodical}"
 
   # retornar o nome do tipo ## type_name?
   def type
@@ -37,6 +40,7 @@ class Bibliography < ActiveRecord::Base
     btype = case type_bibliography
     when Bibliography_Book
     when Bibliography_Periodical
+      "#{title}. #{address}: #{publisher}. #{periodicity_year_start} - #{periodicity_year_end}. #{periodicity}. ISSN #{issn}"
     when Bibliography_Article
     when Bibliography_Eletronic_Doc
     when Bibliography_Free

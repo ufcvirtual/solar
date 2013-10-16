@@ -20,8 +20,8 @@ class BibliographyAddFields < ActiveRecord::Migration
       t.integer :edition
       t.integer :publication_year
       t.string :periodicity
-      t.string :issn, limit: 8
-      t.string :isbn, limit: 13
+      t.string :issn, limit: 9 # 9999-999x
+      t.string :isbn, limit: 17 #  978-3-16-148410-0
       t.integer :periodicity_year_start
       t.integer :periodicity_year_end
       t.text :article_periodicity_title

@@ -164,6 +164,7 @@
       curriculum_unit: "Unidade Curricular"
       group: "Turma"
       course: "Curso"
+      bibliography: "Bibliografia"
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -285,6 +286,15 @@
         description: Descrição
         start_hour: Hora de início
         end_hour: Hora de término
+      bibliography:
+        title: Título
+        subtitle: Subtítulo
+        address: Local
+        publisher: Editora
+        periodicity: Periodicidade
+        issn: ISSN
+        periodicity_year_start: Ano de Início
+        periodicity_year_end: Ano de Término
 
     errors:
       uniqueness: "Registro já existe no sistema"
