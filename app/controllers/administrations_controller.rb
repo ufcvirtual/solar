@@ -17,15 +17,15 @@ class AdministrationsController < ApplicationController
   	@type_search = params[:type_search]
     @text_search = URI.unescape(params[:user]) unless params[:user].nil?
 
-    case @text_search
-      when 0
-        @users = User.where("lower(name) ~ '#{@type_search.downcase}'")
-      when 1
-        @users = User.where("lower(email) ~ '#{@type_search.downcase}'")
-      when 2
-        @users = User.where("lower(username) ~ '#{@type_search.downcase}'")
+    case @type_search
+      when "0"
+        @users = User.where("lower(name) ~ '#{@text_search.downcase}'")
+      when "1"
+        @users = User.where("lower(email) ~ '#{@text_search.downcase}'")
+      when "2"
+        @users = User.where("lower(username) ~ '#{@text_search.downcase}'")
       else
-        @users = User.where("lower(cpf) ~ '#{@type_search.downcase}'")
+        @users = User.where("lower(cpf) ~ '#{@text_search.downcase}'")
     end
   end
 
