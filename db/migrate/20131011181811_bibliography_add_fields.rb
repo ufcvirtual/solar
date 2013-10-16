@@ -15,6 +15,7 @@ class BibliographyAddFields < ActiveRecord::Migration
       t.text :subtitle
       t.string :address
       t.string :publisher
+      t.integer :count_pages
       t.integer :pages
       t.integer :volume
       t.integer :edition

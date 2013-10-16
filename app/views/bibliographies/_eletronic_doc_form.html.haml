@@ -6,7 +6,10 @@
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
     = f.input :type_bibliography, as: :hidden, input_html: {value: @bibliography.type_bibliography}
-    = f.input :title
+    = f.input :title, as: :string
+    = f.input :additional_information
+    = f.input :url, as: :string, required: true
+    = f.input :accessed_in, as: :string, required: true
 
     .input.group_label.invisible
       = f.label t(:groups, scope: [:bibliographies, :form])
@@ -18,4 +21,4 @@
       = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
       = button_to_function t(:save), "save_bibliography()" , class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
 
-= javascript_include_tag "edition_bibliographies"
+= javascript_include_tag "bibliographies"

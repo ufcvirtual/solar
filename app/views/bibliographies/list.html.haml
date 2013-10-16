@@ -1,4 +1,3 @@
-
 .block_wrapper.list_bibliographies{:"data-link-list" => list_bibliographies_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: params[:all_groups_ids])}
 
   .block_title
@@ -51,7 +50,7 @@
   - else
     .block_content_text.block_content_text_list.text_none= t(".no_data")
 
-= javascript_include_tag "edition_bibliographies", "tooltip", "groups_tags"
+= javascript_include_tag "bibliographies", "tooltip", "groups_tags"
 
 :javascript
 

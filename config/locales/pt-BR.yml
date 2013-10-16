@@ -295,6 +295,16 @@
         issn: ISSN
         periodicity_year_start: Ano de Início
         periodicity_year_end: Ano de Término
+        pages: Páginas
+        count_pages: Num. Páginas
+        volulme: Volume
+        edition: Edição
+        publication_year: Ano de Publicação
+        publication_month: Mês de Publicação
+        article_periodicity_title: Título do Periódico
+        additional_information: Informações Complementares
+        url: Disponível em
+        accessed_in: Acessado em
 
     errors:
       uniqueness: "Registro já existe no sistema"

@@ -6,7 +6,17 @@
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
     = f.input :type_bibliography, as: :hidden, input_html: {value: @bibliography.type_bibliography}
-    = f.input :title
+    = f.input :title, as: :string
+    = f.input :subtitle, as: :string
+    .inline
+      = f.input :address, required: true, input_html: {size: 20}
+      = f.input :publisher, required: true, input_html: {size: 10}
+    .inline
+      = f.input :count_pages, as: :string, input_html: {size: 5}
+      = f.input :volume, as: :string, input_html: {size: 5}
+    .inline
+      = f.input :edition, as: :string, required: true, input_html: {size: 5}
+      = f.input :publication_year, as: :string, required: true, required: true, input_html: {size: 5}
 
     .input.group_label.invisible
       = f.label t(:groups, scope: [:bibliographies, :form])
@@ -18,4 +28,4 @@
       = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
       = button_to_function t(:save), "save_bibliography()" , class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
 
-= javascript_include_tag "edition_bibliographies"
+= javascript_include_tag "bibliographies"

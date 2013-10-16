@@ -9,6 +9,10 @@ function save_bibliography(){
 
 $(function(){
 
+  // mask
+  $("#bibliography_issn").mask("9999-9999"); // ultimo digito deveria aceitar a letra X
+  $("#bibliography_periodicity_year_start, #bibliography_periodicity_year_end, #bibliography_publication_year, #bibliography_edition").mask("9999");
+
   if ($("#radio_option_group").prop("checked"))
     $(".group_label").show();
 
