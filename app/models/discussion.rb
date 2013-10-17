@@ -120,17 +120,17 @@ class Discussion < ActiveRecord::Base
       id: id,
       description: description,
       name: name,
-      last_post_date: latest_posts.first.try(:updated_at),
+      last_post_date: latest_posts.first.try(:updated_at).try(:to_s, :db),
       status: status,
-      start_date: schedule.start_date,
-      end_date: schedule.end_date
+      start_date: schedule.start_date.try(:to_s, :db),
+      end_date: schedule.end_date.try(:to_s, :db)
     }
   end
 
   def status
-    return 2 if closed?
-    return 1 if opened?
-    return 0 # nao iniciado
+    return "2" if closed?
+    return "1" if opened?
+    return "0" # nao iniciado
   end
 
 end
