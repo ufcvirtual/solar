@@ -6,7 +6,7 @@ class AssignmentsController < ApplicationController
   layout false, only: [:index, :new, :edit, :create, :update, :destroy]
 
   before_filter :prepare_for_group_selection, :only => [:professor, :student]
-  load_and_authorize_resource :only => [:information, :show, :import_groups_page, :import_groups, :manage_groups, :evaluate, :send_comment, :remove_comment]
+  load_and_authorize_resource :only => [:information, :import_groups_page, :import_groups, :manage_groups, :evaluate, :send_comment, :remove_comment]
 
   authorize_resource :only => [:download_files, :upload_file, :send_public_files_page, :delete_file]
 
@@ -33,11 +33,14 @@ class AssignmentsController < ApplicationController
   # => alunos: podem enviar/excluir arquivos
   ##
   def show
+    @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+    authorize! :show, Assignment, on: [@allocation_tag.id]
+
+    @assignment      = Assignment.find(params[:id])
     @user            = current_user
     @student_id      = params[:group_id].nil? ? params[:student_id] : nil
     @group_id        = params[:group_id].nil? ? nil : params[:group_id] 
     @group           = GroupAssignment.find(params[:group_id]) unless @group_id.nil? # grupo
-    @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
     @sent_assignment = @assignment.sent_assignment_by_user_id_or_group_assignment_id(@allocation_tag.id, @student_id, @group_id)
     @situation       = @assignment.situation_of_student(@allocation_tag.id, @student_id, @group_id)
     @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  # arquivos que fazem parte da descrição da atividade
