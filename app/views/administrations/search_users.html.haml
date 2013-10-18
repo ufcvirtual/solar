@@ -6,7 +6,7 @@
         %th{style: 'width:200px'}= t(".email")
         %th{style: 'width:100px'}= t(".login")
         %th{style: 'width:80px'}= t(".cpf")
-        %th{style: 'width:100px'}= ""
+        %th{style: 'width:120px'}= ""
     %tbody
     - @users.each do |user|
       %tr.lines
@@ -14,21 +14,16 @@
         %td{style: 'width:200px'}= user.email
         %td{style: 'width:100px'}= user.username
         %td{style: 'width:80px'}= user.cpf        
-        %td{style: 'width:100px'}
-          = #hidden_field_tag(:user_id, user.id)
-          = #button_tag "i", type: "button", class: "btn btn_default", alt: t(".designate_user", user_name: user.name), :"data-link-create" => info_user_administrations_path(user_id: user.id)
-
-          = #link_to content_tag(:i, nil, class: 'icon-plus-3'), info_user_administrations_path(user_id: user.id), class: " btn btn_main", id: "btn_info_user_administrations", :"data-tooltip" => "info"
-          %a{class: "info_list", :"data-dropdown"=>"#info-dropdown#{user.id}" }= content_tag(:i, nil, class: 'icon-plus-3')
+        %td{style: 'width:120px; align:right'}
+          %a{class: "info_list btn", :"data-dropdown"=>"#info-dropdown#{user.id}" }=content_tag(:i, nil, class: 'icon-info')
           .dropdown.dropdown-tip{ class: "info_list", id: "info-dropdown#{user.id}" }
             %ul{ class: "dropdown-menu" }
-              %li
-                = link_to "info", info_user_administrations_path(user_id: user.id), class: " btn btn_main", id: "btn_info_user_administrations", :"data-tooltip" => "info"
-              %li
-                = link_to "alloc", allocations_user_administrations_path(user_id: user.id), class: " btn btn_main", id: "btn_allocations_user_administrations", :"data-tooltip" => "alloc"
-              %li
-                = label_tag "ult acesso 1/1/1900"
-
+              %li= link_to "info", info_user_administrations_path(user_id: user.id), class: "fancybox.ajax", id: "btn_info_user_administrations", :"data-tooltip" => "info"
+              %li= link_to "alloc", allocations_user_administrations_path(user_id: user.id), class: "fancybox.ajax", id: "btn_allocations_user_administrations", :"data-tooltip" => "alloc"
+              %li= label_tag "ult acesso 1/1/1900"
+          = link_to content_tag(:i, nil, class: 'btn icon-edit'), edit_user_administrations_path(user_id: user.id), class: "fancybox.ajax", id: "btn_edit_user", :"data-tooltip" => "edit user"
+          = link_to content_tag(:i, nil, class: 'btn icon-key'), change_password_administrations_path(user_id: user.id), class: "fancybox.ajax", id: "btn_change_password", :"data-tooltip" => "change passwd"
+          
 - else
   .block_content_text_list.text_none 
     = #t(".designate_search_no_found")

@@ -28,11 +28,16 @@ Solar::Application.routes.draw do
   end
 
   resources :administrations do
+    member do
+      put "change_password"
+    end
     collection do
       get :manage_user
       get :search_users
       get :info_user
+      get :edit_user
       get :allocations_user
+      get :change_password
     end
   end
 

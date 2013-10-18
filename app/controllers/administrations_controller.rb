@@ -32,7 +32,13 @@ class AdministrationsController < ApplicationController
   def info_user
   end
 
+  def edit_user
+  end
+
   def allocations_user
+  end
+
+  def change_password
   end
 
 end
