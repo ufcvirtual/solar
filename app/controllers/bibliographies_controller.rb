@@ -27,6 +27,8 @@ class BibliographiesController < ApplicationController
     authorize! :create, Bibliography, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     @bibliography = Bibliography.new type_bibliography: params[:type_bibliography]
+    @bibliography.authors.build
+
     @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
   end
 

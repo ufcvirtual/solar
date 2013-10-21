@@ -286,6 +286,8 @@
         description: Descrição
         start_hour: Hora de início
         end_hour: Hora de término
+      author:
+        name: Autor
       bibliography:
         title: Título
         subtitle: Subtítulo
@@ -859,9 +861,11 @@
       eletronic_doc: Doc. Eletrônico
       free: Livre
     form:
+      author_placeholder: "SOBRENOME, Nome"
       new: Novo item - %{bib_type}
       edit: Editar item - %{bib_type}
       groups: Turmas
+      add_author: Adicionar Autor
     free_form:
       description: Descrição
     list:
