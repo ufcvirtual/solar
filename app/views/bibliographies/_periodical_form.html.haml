@@ -4,15 +4,15 @@
 
   .form-inputs.block_content
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
-
     = f.input :type_bibliography, as: :hidden, input_html: {value: @bibliography.type_bibliography}
+
     = f.input :title, as: :string
     = f.input :subtitle, as: :string
     .inline
       = f.input :address, required: true, input_html: {size: 20}
       = f.input :publisher, required: true, input_html: {size: 10}
     .inline
-      = f.input :periodicity, input_html: {size: 20}
+      = f.input :periodicity, input_html: {size: 20}, placeholder: t(:periodicity_placeholder, scope: [:bibliographies, :form])
       = f.input :issn, input_html: {maxlength: 9, size: 10}
     .inline
       = f.input :periodicity_year_start, as: :string, required: true, input_html: {size: 5}
@@ -28,4 +28,7 @@
       = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
       = button_to_function t(:save), "save_bibliography()" , class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
 
-= javascript_include_tag "bibliographies"
+:javascript
+
+  $("#bibliography_issn").mask("9999-9999"); // ultimo digito deveria aceitar a letra X
+  $("#bibliography_periodicity_year_start, #bibliography_periodicity_year_end").mask("9999");

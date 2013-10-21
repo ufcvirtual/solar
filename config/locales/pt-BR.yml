@@ -299,7 +299,7 @@
         periodicity_year_end: Ano de Término
         pages: Páginas
         count_pages: Num. Páginas
-        volulme: Volume
+        volume: Volume
         edition: Edição
         publication_year: Ano de Publicação
         publication_month: Mês de Publicação
@@ -862,6 +862,7 @@
       free: Livre
     form:
       author_placeholder: "SOBRENOME, Nome"
+      periodicity_placeholder: "Trimestral"
       new: Novo item - %{bib_type}
       edit: Editar item - %{bib_type}
       groups: Turmas

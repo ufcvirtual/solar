@@ -4,24 +4,9 @@
     
   .form-inputs.block_content{"data-form-type" => @bibliography.persisted? ? "edit" : "new"}
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
-
     = f.input :type_bibliography, as: :hidden, input_html: {value: @bibliography.type_bibliography}
-    = f.simple_fields_for :authors do |fa|
-      .duplicatable_nested_form
-        .inline
-          = fa.input :name, required: true, placeholder: t(:author_placeholder, scope: [:bibliographies, :form])
 
-          - if fa.object.new_record?
-            = link_to content_tag(:i, nil, class: 'icon-minus'), '', remote: true, class: 'destroy_duplicate_nested_form'
-          - else
-            .destroy_author
-              = fa.input :_destroy, as: :hidden
-              = link_to content_tag(:i, nil, class: 'icon-minus'), '', remote: true, class: 'destroy_duplicate_nested_form'
-
-    / falta colocar no lugar certo
-    .input.string
-      = link_to t(:add_author, scope: [:bibliographies, :form]), '', class: 'btn duplicate_nested_form'
-
+    = render partial: "authors", locals: {f: f}
     = f.input :title, as: :string
     = f.input :subtitle, as: :string
     .inline
@@ -44,5 +29,6 @@
       = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
       = button_to_function t(:save), "save_bibliography()" , class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
 
-/ = javascript_include_tag "bibliographies"
-= javascript_include_tag "bibliography_authors"
+:javascript
+
+  $("#bibliography_volume, #bibliography_count_pages, #bibliography_publication_year, #bibliography_edition").mask("9999");

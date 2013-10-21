@@ -4,8 +4,9 @@
     
   .form-inputs.block_content
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
-
     = f.input :type_bibliography, as: :hidden, input_html: {value: @bibliography.type_bibliography}
+
+    = render partial: "authors", locals: {f: f}
     = f.input :title, as: :string
     = f.input :subtitle, as: :string
     = f.input :article_periodicity_title, as: :string
@@ -14,7 +15,7 @@
       = f.input :fascicle, as: :string, input_html: {size: 5}
     .inline
       = f.input :volume, as: :string, required: true, input_html: {size: 5}
-      = f.input :pages, as: :string, required: true, input_html: {size: 5}
+      = f.input :pages, as: :string, required: true, input_html: {size: 5}, placeholder: "5, 12-20"
     .inline
       = f.input :publication_month, as: :string, required: true, input_html: {size: 10}
       = f.input :publication_year, as: :string, required: true, input_html: {size: 5}
@@ -29,4 +30,6 @@
       = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
       = button_to_function t(:save), "save_bibliography()" , class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
 
-= javascript_include_tag "bibliographies"
+:javascript
+
+  $("#bibliography_volume, #bibliography_fascicle, #bibliography_publication_year, #bibliography_edition").mask("9999");
