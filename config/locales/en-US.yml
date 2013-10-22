@@ -1540,3 +1540,16 @@
   tutorial_previous: Previous
   tutorial_skip: Skip
   tutorial_done: Done
+
+  #FullCalendar
+  fullcalendar:
+    today: today
+    titleFormat:
+      month: 'MMMM yyyy'
+      week: "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}"
+      day: 'dddd, MMM d, yyyy'
+    columnFormat:
+      month: 'ddd'
+      week: 'ddd M/d'
+      day: 'dddd M/d'
+

@@ -1758,3 +1758,15 @@
   tutorial_previous: Anterior
   tutorial_skip: Pular
   tutorial_done: Fechar
+
+  #FullCalendar
+  fullcalendar:
+    today: hoje
+    titleFormat:
+      month: 'MMMM yyyy'
+      week: "d[ MMM yyyy]{ '&#8212;'d MMM yyyy}"
+      day: 'dddd, d MMM, yyyy'
+    columnFormat:
+      month: 'ddd'
+      week: 'ddd d/M'
+      day: 'dddd d/M'

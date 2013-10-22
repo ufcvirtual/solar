@@ -2,6 +2,8 @@ class Assignment < ActiveRecord::Base
 
   GROUP_PERMISSION = true
 
+  include Event
+
   belongs_to :schedule
 
   has_many :allocation_tags, through: :academic_allocations

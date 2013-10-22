@@ -30,4 +30,4 @@
 
   var start_date = "#{@discussion.schedule.start_date}";
   var end_date = "#{@discussion.schedule.end_date}";
-
+  var div_to_replace = ("#{params[:calendar] == true}" ? $(".calendar_schedules") : $(".list_discussions"));

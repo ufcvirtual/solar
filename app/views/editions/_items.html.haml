@@ -12,9 +12,9 @@
 
       / - if (can? :lista_de_schedules, Schedule, :on => @allocation_tags_ids) and (Schedule.constants.include?("#{@selected}_PERMISSION".to_sym))
       .uc_item
-        .schedule
-          = link_to(content_tag(:i, nil, class: 'icon-calendar big'), "#", class: 'btn disabled', onclick: "javascript:alert('#{t(".in_development")}');")
-          = link_to t(".schedule"), "#", onclick: "javascript:alert('#{t(".in_development")}');"
+        .schedule{:"data-link" => calendar_schedules_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
+          = link_to(content_tag(:i, nil, class: 'icon-calendar big'), "#", class: 'btn')
+          = link_to t(".schedule"), "#"
 
       - if (can? :designates, Allocation, on: @allocation_tags_ids) and (Allocation.constants.include?("#{@selected}_PERMISSION".to_sym))
         .uc_item

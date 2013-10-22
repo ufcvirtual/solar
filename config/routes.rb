@@ -206,6 +206,8 @@ Solar::Application.routes.draw do
 
   resources :schedules, only: [:index] do
     get :list, on: :collection
+    get :schedules_events, on: :collection, as: :calendar
+    get :events, on: :collection
   end
 
   resources :messages, except: [:destroy, :update] do

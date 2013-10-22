@@ -2,6 +2,8 @@ class Discussion < ActiveRecord::Base
 
   GROUP_PERMISSION, OFFER_PERMISSION = true, true
 
+  include Event
+
   belongs_to :schedule
 
   has_many :academic_allocations, as: :academic_tool, dependent: :destroy

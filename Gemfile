@@ -27,6 +27,8 @@ gem "haml", "~> 4.0.1"
 gem "haml-rails", "~> 0.4", :group => :development
 gem "ckeditor", "~> 4.0.2"
 
+gem "fullcalendar-rails", "~> 1.6.4.0"
+
 # platform adicionado para evitar que o unicorn tente ser executado no windows
 gem "unicorn", "~> 4.6.2", :platform => :ruby
 
