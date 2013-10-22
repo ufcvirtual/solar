@@ -7,6 +7,7 @@
       datepicker: "%d/%m/%Y"
       month_and_year: "%b %Y"
       day_and_month: "%d/%b"
+      bibliography: "%d %b, %Y"
     month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
     abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Spt, Oct, Nov, Dec]
     order: 
@@ -37,6 +38,7 @@
       curriculum_unit: "Curriculum Unit"
       group: "Class"
       course: "Course"
+      bibliography: "Bibliography"
     attributes:
       user:
         alternate_email: "Alternate e-mail"
@@ -153,6 +155,28 @@
         description: Description
         start_hour: Start hour
         end_hour: End hour
+      author:
+        name: Author
+      bibliography:
+        title: Title
+        subtitle: Subtitle
+        address: Address
+        publisher: Publisher
+        periodicity: Periodicity
+        issn: ISSN
+        periodicity_year_start: Start Year
+        periodicity_year_end: End Year
+        fascicle: Fascicle
+        pages: Pages
+        count_pages: Count Pages
+        volume: Volume
+        edition: Edition
+        publication_year: Publication Year
+        publication_month: Publication Month
+        article_periodicity_title: Periodicity Title
+        additional_information: Additional Information
+        url: Available in
+        accessed_in: Accessed in
 
     errors:
       uniqueness: "Record already exists in the system"
@@ -676,6 +700,43 @@
       offer_period: must be on the date range of offer (%{start} - %{end})
       discussion_with_posts: "Discussion with posts"
       mandatory_final_date: "Mandatory final date"
+
+  bibliographies:
+    type:
+      book: Book
+      periodical: Periodical
+      article: Article
+      eletronic_doc: Eletronic Doc.
+      free: Free
+    form:
+      author_placeholder: "SURNAME, Name"
+      periodicity_placeholder: "Weekly"
+      new: New item - %{bib_type}
+      edit: Edit item - %{bib_type}
+      groups: Groups
+      add_author: Add Author
+    free_form:
+      description: Description
+    list:
+      new: New Bibliography
+      item: Item
+      type: Type
+      edit: Edit Bibliography
+      delete: Delete Bibliography
+      choose_at_least_one: Choose at least one bibliography
+      choose_one: Choose a bibliography
+      bibliographies: Bibliographies
+      no_data: No data
+      accessed_in: "Accessed in:"
+      available_in: "Available em:"
+    success:
+      created: Bibliography item was successfully created.
+      updated: Bibliography item was successfully updated.
+      deleted: Bibliography item was successfully deleted.
+    error:
+      created: Bibliography item wasn't created.
+      updated: Bibliography item wasn't updated.
+      deleted: Bibliography item wasn't deleted.
 
   message_title: "Messages"
   message_inbox: "Inbox"

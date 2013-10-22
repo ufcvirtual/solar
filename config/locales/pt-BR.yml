@@ -9,6 +9,7 @@
       datepicker: "%d/%m/%Y"
       month_and_year: "%b %Y"
       day_and_month: "%d/%b"
+      bibliography: "%d %b, %Y"
     day_names: [Domingo, Segunda, Terça, Quarta, Quinta, Sexta, Sábado]
     abbr_day_names: [Dom, Seg, Ter, Qua, Qui, Sex, Sáb]
     month_names: [~, Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro]
@@ -297,6 +298,7 @@
         issn: ISSN
         periodicity_year_start: Ano de Início
         periodicity_year_end: Ano de Término
+        fascicle: Fascículo
         pages: Páginas
         count_pages: Num. Páginas
         volume: Volume
@@ -877,10 +879,10 @@
       delete: Deletar Bibliografia
       choose_at_least_one: "Selecione, ao menos, uma bibliografia"
       choose_one: Selecione uma bibliografia
-      expand_description: Expandir descrição
-      compress_description: Comprimir descrição
       bibliographies: Bibliografias
       no_data: Nenhuma bibliografia disponível
+      accessed_in: "Acesso em:"
+      available_in: "Disponível em:"
     success:
       created: Item bibliográfico criado com sucesso.
       updated: Item bibliográfico atualizado com sucesso.

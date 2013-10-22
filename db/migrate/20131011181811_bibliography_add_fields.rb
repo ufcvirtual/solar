@@ -16,7 +16,7 @@ class BibliographyAddFields < ActiveRecord::Migration
       t.string :address
       t.string :publisher
       t.integer :count_pages
-      t.integer :pages
+      t.string :pages, limit: 50
       t.integer :volume
       t.integer :edition
       t.integer :publication_year
@@ -27,7 +27,7 @@ class BibliographyAddFields < ActiveRecord::Migration
       t.integer :periodicity_year_end
       t.text :article_periodicity_title
       t.integer :fascicle
-      t.integer :publication_month
+      t.string :publication_month, limit: 50
       t.text :additional_information
       t.text :url
       t.date :accessed_in

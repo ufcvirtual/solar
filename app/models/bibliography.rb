@@ -40,17 +40,46 @@ class Bibliography < ActiveRecord::Base
     I18n.t(btype, scope: [:bibliographies, :type]) if btype
   end
 
-  # ainda nao terminado
+  def resume_authors
+    authors.map(&:name).join(", ")
+  end
+
   def resume
     btype = case type_bibliography
     when Bibliography_Book
-      "falta terminar"
+      r = [resume_authors]
+      r << title if title
+      r << subtitle if subtitle
+      r << "#{edition}. ed" if edition
+      r << "#{address}: #{publisher}, #{publication_year}" if address and publisher and publication_year
+      r << "#{count_pages} p" if count_pages
+      r << "v. #{volume}" if volume
+      r.join(". ")
     when Bibliography_Periodical
-      "#{title}. #{address}: #{publisher}. #{periodicity_year_start} - #{periodicity_year_end}. #{periodicity}. ISSN #{issn}"
+      r = [title]
+      r << subtitle if subtitle
+      r << "#{address}: #{publisher}" if address and publisher
+      r << periodicity_year_end ? "#{periodicity_year_start} - #{periodicity_year_end}" : periodicity_year_start
+      r << periodicity if periodicity
+      r << "ISSN: #{issn}" if issn
+      r.join(". ")
     when Bibliography_Article
-      "falta terminar"
+      r = [resume_authors]
+      r << title if title
+      r << subtitle if subtitle
+      r << article_periodicity_title if article_periodicity_title
+      r << address if address
+      r << "v. #{volume}" if volume
+      r << "n. #{fascicle}" if fascicle
+      r << "p. #{pages}, #{publication_month}, #{publication_year}" if pages and publication_month and publication_year
+      r.join(". ")
     when Bibliography_Eletronic_Doc
-      "falta terminar"
+      r = [resume_authors]
+      r << title if title
+      r << additional_information if additional_information
+      r << "#{I18n.t(:available_in, scope: [:bibliographies, :list])} #{url}" if url
+      r << "#{I18n.t(:accessed_in, scope: [:bibliographies, :list])} #{I18n.l(accessed_in, format: :bibliography)}" if accessed_in
+      r.join(". ")
     when Bibliography_Free
       title
     end
