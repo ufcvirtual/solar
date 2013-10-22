@@ -109,7 +109,7 @@
     $('#save').click(function(){
       $('#assignment_form:last').serialize_and_submit({
         files: true,
-        replace_list: ("#{params[:calendar] == true}" ? $(".calendar_schedules") : $(".list_assignments"))
+        replace_list: (("#{params[:calendar]}" == "") ? $(".list_assignments") : $(".calendar_schedules"))
       });
     });
 
