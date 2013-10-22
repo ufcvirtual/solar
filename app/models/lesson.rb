@@ -8,6 +8,9 @@ class Lesson < ActiveRecord::Base
 
   has_many :allocation_tags, through: :lesson_module
 
+  has_many :groups, through: :allocation_tags
+  has_many :offers, through: :allocation_tags
+
   before_save :url_protocol, :if => :is_link?
   after_save :create_or_update_folder
 

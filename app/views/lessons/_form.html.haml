@@ -46,6 +46,13 @@
           .disabled
             =f.label " "
             =t(:example, :scope => [:lessons, :new])
+      
+      .input
+        = f.label t(".groups")
+        %span.groups
+          - @groups.each do |group|
+            %span.collection_check_boxes= group.code      
+      
       .right_buttons
         = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
         = button_tag t(:save, :scope => [:lessons, :new]), :class => "btn btn_main btn_lightbox", :alt => t(:save, :scope => [:lessons, :new]), :type => "button", :id => "save_button"

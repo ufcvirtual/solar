@@ -5,6 +5,9 @@ class LessonModulesController < ApplicationController
   def new
     authorize! :new, LessonModule, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
+    @allocation_tags_ids = params[:allocation_tags_ids]
+    authorize! :new, LessonModule, :on => @allocation_tags_ids
+    @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
     @module = LessonModule.new
   end
 
@@ -33,6 +36,7 @@ class LessonModulesController < ApplicationController
         format.html{ render :nothing => true, :status => 500 }
       end
     rescue Exception
+      @groups     = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
       respond_to do |format|
         format.html{ render :new, :status => 200 }
       end
@@ -41,9 +45,9 @@ class LessonModulesController < ApplicationController
   end
 
   def edit
-    authorize! :edit, LessonModule, on: @allocation_tags_ids = params[:allocation_tags_ids]
-
     @module = LessonModule.find(params[:id])
+    @groups = @module.groups
+    authorize! :edit, LessonModule, on: @allocation_tags_ids = params[:allocation_tags_ids]
   end
 
   def update
@@ -63,6 +67,7 @@ class LessonModulesController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render nothing: true, status: :unprocessable_entity
     rescue
+      @groups = @modules.groups
       respond_to do |format|
         format.html{ render :new, :status => 200 }
       end

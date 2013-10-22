@@ -699,6 +699,7 @@
       example: "(exemplo: http://www.seusite.com.br)"
       continue: Prosseguir
       save: Salvar
+      groups: Turmas
     notifications:
       must_select_lessons: Uma ou mais aulas devem ser selecionadas
       must_select_a_lesson: Uma aula deve ser selecionada

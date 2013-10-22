@@ -543,6 +543,7 @@
       example: "(example: http://www.yourwebsite.com.br)"
       continue: Continue
       save: Save
+      groups: Groups
     notifications:
       must_select_lessons: One or more lessons must be selected
       must_select_a_lesson: One lesson must be selected

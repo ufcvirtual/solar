@@ -50,6 +50,7 @@ class LessonsController < ApplicationController
     authorize! :new, Lesson
 
     @lesson_module = LessonModule.find(params[:lesson_module_id]) if params[:lesson_module_id].present?
+    @groups = @lesson_module.groups
     @lesson = Lesson.new
   end
 
@@ -62,7 +63,7 @@ class LessonsController < ApplicationController
       params[:lesson][:lesson_module_id] = params[:lesson_module_id]
       params[:lesson][:user_id] = current_user.id
       params[:lesson][:order] = Lesson.where(lesson_module_id: params[:lesson_module_id]).maximum(:order).to_i + 1
-      
+      @lesson_module = LessonModule.find(params[:lesson_module_id]) if params[:lesson_module_id].present?
 
       @lesson = Lesson.new(params[:lesson])
      
@@ -78,6 +79,7 @@ class LessonsController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue Exception 
+      @groups  = @lesson_module.groups 
       render :new
     end # rescue
   end
@@ -89,6 +91,7 @@ class LessonsController < ApplicationController
     @lesson_modules = LessonModule.joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: params[:allocation_tags_ids].split(' ')})
 
     @lesson = Lesson.find(params[:id])
+    @groups = @lesson.lesson_module.groups
   end
 
   # PUT /lessons/1
@@ -107,6 +110,7 @@ class LessonsController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
     rescue 
+      @groups = @lesson.lesson_module.groups
       error = true
       @schedule_error = @lesson.schedule.errors.full_messages[0] unless @lesson.schedule.valid?
     end

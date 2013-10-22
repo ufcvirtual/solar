@@ -5,6 +5,9 @@ class LessonModule < ActiveRecord::Base
   has_many :academic_allocations, as: :academic_tool, dependent: :destroy
   has_many :allocation_tags, through: :academic_allocations
 
+  has_many :groups, through: :allocation_tags
+  has_many :offers, through: :allocation_tags
+
   has_many :lessons, dependent: :destroy
   
   validates :name, presence: true
