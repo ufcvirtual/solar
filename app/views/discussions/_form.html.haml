@@ -15,7 +15,7 @@
           .right= s.input :end_date, as: :string, input_html: {id: 'until-date', value: l(@discussion.schedule.end_date.to_date, format: :datepicker)}
 
       .input.group_label.invisible
-        = f.label t(:groups, scope: [:discussion, :form])
+        = f.label t(".groups")
         %span.groups
           - @groups_codes.each do |group_code|
             %span.collection_check_boxes= group_code

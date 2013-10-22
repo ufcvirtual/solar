@@ -649,7 +649,7 @@
 
   discussions:
     form:
-      ssave: Save
+      save: Save
       cancel: Cancel
       new: New discussion
       edit: Edit discussion
