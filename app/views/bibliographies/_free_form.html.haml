@@ -1,18 +1,14 @@
 = simple_form_for(@bibliography, html: {id: "bibliography_form"}) do |f|
   %span.form_requirement= t(:required_fields)
-  %h1#lightBoxDialogTitle= t((@bibliography.persisted? ? :edit : :new), scope: [:bibliographies, :form], bib_type: @bibliography.type)
+  %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit : :new), scope: [:bibliographies, :form], bib_type: f.object.type)
     
   .form-inputs.block_content
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
-    = f.input :type_bibliography, as: :hidden, input_html: {value: @bibliography.type_bibliography}
+    = f.input :type_bibliography, as: :hidden, input_html: {value: f.object.type_bibliography}
 
     = f.input :title, label: t(".description")
 
-    .input.group_label.invisible
-      = f.label t(:groups, scope: [:bibliographies, :form])
-      %span.groups
-        - @groups_codes.each do |group_code|
-          %span.collection_check_boxes= group_code
+    = render partial: "groups", locals: {f: f}
 
     .form-actions.right_buttons
       = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)

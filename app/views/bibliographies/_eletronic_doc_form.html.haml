@@ -1,22 +1,19 @@
 = simple_form_for(@bibliography, html: {id: "bibliography_form"}) do |f|
   %span.form_requirement= t(:required_fields)
-  %h1#lightBoxDialogTitle= t((@bibliography.persisted? ? :edit : :new), scope: [:bibliographies, :form], bib_type: @bibliography.type)
-    
+  %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit : :new), scope: [:bibliographies, :form], bib_type: f.object.type)
+
   .form-inputs.block_content
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
-    = f.input :type_bibliography, as: :hidden, input_html: {value: @bibliography.type_bibliography}
+    = f.input :type_bibliography, as: :hidden, input_html: {value: f.object.type_bibliography}
 
     = render partial: "authors", locals: {f: f}
+
     = f.input :title, as: :string
     = f.input :additional_information
     = f.input :url, as: :string, required: true, placeholder: "www.site.com"
-    = f.input :accessed_in, as: :string, required: true, placeholder: l(Date.today, format: :long)
+    = f.input :accessed_in, as: :string, required: true, input_html: {size: 10, value: l((f.object.accessed_in || Date.today), format: :datepicker)}
 
-    .input.group_label.invisible
-      = f.label t(:groups, scope: [:bibliographies, :form])
-      %span.groups
-        - @groups_codes.each do |group_code|
-          %span.collection_check_boxes= group_code
+    = render partial: "groups", locals: {f: f}
 
     .form-actions.right_buttons
       = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
@@ -26,3 +23,4 @@
 
   $("#bibliography_issn").mask("9999-9999"); // ultimo digito deveria aceitar a letra X
   $("#bibliography_periodicity_year_start, #bibliography_periodicity_year_end").mask("9999");
+  $("#bibliography_accessed_in").datepicker();

@@ -1,6 +1,3 @@
-
-// faltando revisao
-
 function save_bibliography(){
   $('form#bibliography_form').serialize_and_submit({
     replace_list: $('.list_bibliographies')
@@ -8,20 +5,8 @@ function save_bibliography(){
 }
 
 $(function(){
-
-  // mask
-  $("#bibliography_issn").mask("9999-9999"); // ultimo digito deveria aceitar a letra X
-  $("#bibliography_periodicity_year_start, #bibliography_periodicity_year_end, #bibliography_publication_year, #bibliography_edition").mask("9999");
-
   if ($("#radio_option_group").prop("checked"))
     $(".group_label").show();
-
-  /* Lista */
-
-  $(".expand, .compress").click(function(){
-    $(this).parent().hide();
-    $($(this).parent().siblings()[0]).show();
-  });
 
   $(".link_new_bibliography").call_fancybox();
 
@@ -64,5 +49,4 @@ $(function(){
   });
 
   $(".all_bibliographies").nice_checkbox();
-
 });
