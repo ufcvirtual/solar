@@ -9,15 +9,15 @@ class AdministrationsController < ApplicationController
     #authorize! :manage_user
 
     @types = Array.new(2,4)
-    @types = [ ['nome', '0'], ['email', '1'], ['login', '2'], ['cpf', '3'] ]
+    @types = [ [t(".name"), '0'], [t(".email"), '1'], [t(".username"), '2'], [t(".cpf"), '3'] ]
   end
 
   # Método chamado por ajax para buscar usuários
   def search_users
-  	@type_search = params[:type_search]
+  	type_search = params[:type_search]
     @text_search = URI.unescape(params[:user]) unless params[:user].nil?
 
-    case @type_search
+    case type_search
       when "0"
         @users = User.where("lower(name) ~ '#{@text_search.downcase}'")
       when "1"
@@ -30,12 +30,16 @@ class AdministrationsController < ApplicationController
   end
 
   def info_user
-  end
-
-  def edit_user
+    id = params[:id]
+    @info_user = User.find_by_id(id) unless id.nil?
   end
 
   def allocations_user
+    id = params[:id]
+    @allocations_user = Allocation.find_by_user_id(id) unless id.nil?
+  end
+
+  def edit_user
   end
 
   def change_password

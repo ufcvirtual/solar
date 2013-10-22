@@ -1,6 +1,6 @@
 $(function() {
 
-	//pagina de consultar usuario
+	// --- pagina de consultar usuario
 
   $("#search_user").click(function() {
     var url_for = "<%= Rails.application.routes.url_helpers.search_users_administrations_path %>";
@@ -11,12 +11,19 @@ $(function() {
     }
   });
 
-  $("#btn_info_user_administrations").call_fancybox();
+  //$(".btn_edit_user").call_fancybox(); 
 
-  $("#btn_allocations_user_administrations").call_fancybox();
+  $(".btn_info_user_administrations").click(function() {
+    var url = $(this).data('link-edit');
+    $(this).call_fancybox({href : url, open: true});
+  });
 
-  $("#btn_edit_user").call_fancybox(); 
+  $(".btn_allocations_user_administrations").click(function() {
+    $(this).call_fancybox();
+  });
 
-  $("#btn_change_password").call_fancybox();  
+  $(".btn_change_password").click(function() {
+    $(this).call_fancybox();
+  });
 
 });

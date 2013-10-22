@@ -1,15 +1,15 @@
 .block_wrapper.users
   .block_title
-    %h2= "consultar usuarios"
+    %h2= t(:title, :scope => [:administrations, :users])
 
 .block_wrapper.search
   .block_title
-    %h2= t(".search")
+    %h2= t(:search, :scope => [:administrations, :users])
 
   .block_content.block_content_toolbar.block_content_text
     = select_tag "type_search", options_for_select(@types)
     = text_field_tag "text_search", @text_search
-    = button_tag "busca", type: :button, class: "btn btn_default", id: "search_user", alt: "busca"
+    = button_tag t(:search, :scope => [:administrations, :users]), type: :button, class: "btn btn_default", id: "search_user"
 
   .block_content
     #list_users

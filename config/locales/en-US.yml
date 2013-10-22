@@ -1243,6 +1243,40 @@
         semester: Semester
         code: Code
 
+  email: Email
+  cpf: "CPF"
+  administrations:
+    close: Close
+    users:
+      title: Consult users
+      search: Search
+      details: Detailed information
+      allocations: "Allocations"
+      last_accessed: "Last accessed"
+      edit: Edit
+      change_password: Change password
+      message_not_found: "User not found"
+    informations:
+      detailed: Detailed Information
+      personal_data: Personal Data
+      contact: Contact
+      gender: "Gender"
+      birthdate: "Birthdate"
+      zipcode: "Zipcode"
+      telephone: Telephone
+      cell_phone: Cell Phone
+      special_needs: Special needs
+      others: Others
+      institution: Institution
+      additional: "Additional Informations"
+      biography: Biography
+      interests: Interests
+      music: Music
+      movies: Movies
+      books: Books
+      phrase: Phrase
+      site: Site
+
   editions:
     filter: Filter
     alert: "Fill the required fields"

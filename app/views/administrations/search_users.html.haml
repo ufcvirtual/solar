@@ -6,7 +6,7 @@
         %th{style: 'width:200px'}= t(".email")
         %th{style: 'width:100px'}= t(".login")
         %th{style: 'width:80px'}= t(".cpf")
-        %th{style: 'width:120px'}= ""
+        %th{style: 'width:150px'}= ""
     %tbody
     - @users.each do |user|
       %tr.lines
@@ -14,48 +14,19 @@
         %td{style: 'width:200px'}= user.email
         %td{style: 'width:100px'}= user.username
         %td{style: 'width:80px'}= user.cpf        
-        %td{style: 'width:120px; align:right'}
-          %a{class: "info_list btn", :"data-dropdown"=>"#info-dropdown#{user.id}" }=content_tag(:i, nil, class: 'icon-info')
+        %td{style: 'width:150px; align:right'}
+          %a{class: "info_list btn", :"data-dropdown"=>"#info-dropdown#{user.id}" }=content_tag(:i, nil, class: 'icon-info') + content_tag(:i, nil, class: 'icon-arrow-down-3')
           .dropdown.dropdown-tip{ class: "info_list", id: "info-dropdown#{user.id}" }
             %ul{ class: "dropdown-menu" }
-              %li= link_to "info", info_user_administrations_path(user_id: user.id), class: "fancybox.ajax", id: "btn_info_user_administrations", :"data-tooltip" => "info"
-              %li= link_to "alloc", allocations_user_administrations_path(user_id: user.id), class: "fancybox.ajax", id: "btn_allocations_user_administrations", :"data-tooltip" => "alloc"
-              %li= label_tag "ult acesso 1/1/1900"
-          = link_to content_tag(:i, nil, class: 'btn icon-edit'), edit_user_administrations_path(user_id: user.id), class: "fancybox.ajax", id: "btn_edit_user", :"data-tooltip" => "edit user"
-          = link_to content_tag(:i, nil, class: 'btn icon-key'), change_password_administrations_path(user_id: user.id), class: "fancybox.ajax", id: "btn_change_password", :"data-tooltip" => "change passwd"
-          
+              %li= link_to t(:details, :scope => [:administrations, :users]), "#", class: 'btn_info_user_administrations', :"data-link-edit" => info_user_administrations_path(id: user.id), :"data-tooltip" => t(:details, :scope => [:administrations, :users])
+              %li= link_to t(:allocations, :scope => [:administrations, :users]), "#", class: 'btn_allocations_user_administrations', :"data-link-edit" => allocations_user_administrations_path(id: user.id), :"data-tooltip" => t(:allocations, :scope => [:administrations, :users])
+              %li= label_tag t(:last_accessed, :scope => [:administrations, :users]) + " 1/1/1900"
+
+          = link_to content_tag(:i, nil, class: 'btn icon-edit'), "#", class: 'btn_allocations_user_administrations', :"data-link-edit" => allocations_user_administrations_path(id: user.id), :"data-tooltip" => t(:edit, :scope => [:administrations, :users])
+          = link_to content_tag(:i, nil, class: 'btn icon-key'), "#", class: 'btn_allocations_user_administrations', :"data-link-edit" => change_password_administrations_path(id: user.id), :"data-tooltip" => t(:change_password, :scope => [:administrations, :users])
+
 - else
   .block_content_text_list.text_none 
-    = #t(".designate_search_no_found")
-    = "não achei esse usuário"
+    = t(:message_not_found, :scope => [:administrations, :users])
 
-:javascript
-
-  $(function(){
-
-    $(".btn_designate").click(function(){
-      var profile = $("#profile_id", $(this).parents("tr")).val();
-      var url_list = $(this).data("link-list");
-
-      $.ajax({
-        type: 'POST',
-        url: $(this).data("link-create"),
-        data: {
-          profile: profile
-        },
-        success: function(data) {
-          $.get(url_list, function(data){
-            $(".list_designates:last").replaceWith(data);
-          });
-
-          flash_message('#{I18n.t(:allocated, :scope => [:allocations, :success])}', 'notice');
-        },
-        error: function() {
-          flash_message('#{I18n.t(:not_allocated, :scope => [:allocations, :error])}', 'alert');
-        }
-      }); // ajax
-
-    });
-
-
-  });
+=javascript_include_tag "administrations"

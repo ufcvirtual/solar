@@ -1459,6 +1459,40 @@
         semester: Semestre
         code: Código
 
+  email: Email
+  cpf: "CPF" 
+  administrations:
+    close: Fechar
+    users:
+      title: "Consultar usuários"
+      search: Busca
+      details: "Informações detalhadas"
+      allocations: "Alocações"
+      last_accessed: "Último acesso"
+      edit: Editar
+      change_password: Alterar senha
+      message_not_found: "Usuário não encontrado"
+    informations:
+      detailed: "Informações Detalhadas"
+      personal_data: "Dados Pessoais"
+      contact: Contato
+      gender: "Gênero"
+      birthdate: "Data de nascimento"
+      zipcode: "CEP"
+      telephone: Telefone
+      cell_phone: Celular
+      special_needs: Necessidades especiais
+      others: Outros
+      institution: "Instituição"
+      additional: "Informações Adicionais"
+      biography: Biografia
+      interests: Interesses
+      music: "Músicas"
+      movies: Filmes
+      books: Livros
+      phrase: Frase
+      site: Site
+
   editions:
     alert: "Preencha os campos obrigatórios"
     academic:
