@@ -472,6 +472,7 @@
 
   # User
   user_error_no_file_sent: Nenhum arquivo enviado
+  user_cannot_login: "Este usuário está bloqueado. Por favor, entre em contato com o administrador."
 
   #Meus dados
   my_data: "Meus Dados"

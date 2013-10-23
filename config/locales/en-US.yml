@@ -316,6 +316,7 @@
 
   # User
   user_error_no_file_sent: No file sent
+  user_cannot_login: "This user is blocked. Please, contact the administrator."
 
   #pagina meus dados
   my_data: "My Data"

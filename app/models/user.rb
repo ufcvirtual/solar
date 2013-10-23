@@ -184,4 +184,12 @@ class User < ActiveRecord::Base
     allocation_tags.where(allocations: {status: Allocation_Activated.to_i}).map(&map.to_sym).flatten.uniq
   end
 
+  def active_for_authentication?
+    super and self.active
+  end
+
+  def inactive_message
+    I18n.t(:user_cannot_login)
+  end
+
 end
