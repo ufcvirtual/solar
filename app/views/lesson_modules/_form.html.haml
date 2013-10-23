@@ -6,11 +6,12 @@
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
     = f.input :name
-    .input
-      = f.label t(".groups")
-      %span.groups
-        - @groups.each do |group|
-          %span.collection_check_boxes= group.code      
+    - unless @groups.empty?
+      .input
+        = f.label t(".groups")
+        %span.groups
+          - @groups.each do |group|
+            %span.collection_check_boxes= group.code      
 
     .form-actions.right_buttons
       = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"

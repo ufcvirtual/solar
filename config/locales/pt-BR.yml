@@ -699,7 +699,6 @@
       example: "(exemplo: http://www.seusite.com.br)"
       continue: Prosseguir
       save: Salvar
-      groups: Turmas
     notifications:
       must_select_lessons: Uma ou mais aulas devem ser selecionadas
       must_select_a_lesson: Uma aula deve ser selecionada
@@ -719,6 +718,7 @@
       updated: Aula atualizada com sucesso.
     form: 
       cancel: Cancelar
+      groups: Turmas
 
   lesson_modules:
     general_of_offer: "Geral"
@@ -729,6 +729,7 @@
     form:
       save: Salvar
       cancel: Cancelar
+      groups: Turmas
     errors:
       existing_name: já existe
       cant_delete: "Módulo padrão não pode ser excluído"
