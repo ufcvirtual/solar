@@ -13,8 +13,8 @@
       = render partial: "periodical_form", locals: {f: f}
     - when Bibliography::TYPE_ARTICLE
       = render partial: "article_form", locals: {f: f}
-    - when Bibliography::TYPE_ELETRONIC_DOC
-      = render partial: "eletronic_doc_form", locals: {f: f}
+    - when Bibliography::TYPE_ELECTRONIC_DOC
+      = render partial: "electronic_doc_form", locals: {f: f}
     - when Bibliography::TYPE_FREE
       = render partial: "free_form", locals: {f: f}
 

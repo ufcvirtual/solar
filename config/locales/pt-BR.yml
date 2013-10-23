@@ -861,7 +861,7 @@
       book: Livro
       periodical: Periódico
       article: Artigo
-      eletronic_doc: Doc. Eletrônico
+      electronic_doc: Doc. Eletrônico
       free: Livre
     form:
       author_placeholder: "SOBRENOME, Nome"

@@ -2,7 +2,9 @@ class Bibliography < ActiveRecord::Base
 
   GROUP_PERMISSION, OFFER_PERMISSION, CURRICULUM_UNIT_PERMISSION = true, true, true
 
-  TYPE_BOOK, TYPE_PERIODICAL, TYPE_ARTICLE, TYPE_ELETRONIC_DOC, TYPE_FREE = 1, 2, 3, 4, 5
+  TYPE_BOOK, TYPE_PERIODICAL, TYPE_ARTICLE, TYPE_ELECTRONIC_DOC, TYPE_FREE = 1, 2, 3, 4, 5
+
+  default_scope {order(:title, :type_bibliography)}
 
   has_many :academic_allocations, as: :academic_tool, dependent: :destroy
   has_many :allocation_tags, through: :academic_allocations
@@ -18,9 +20,9 @@ class Bibliography < ActiveRecord::Base
   validates :address, :publisher, :edition, :publication_year                 , presence: true, if: "type_bibliography == TYPE_BOOK"
   validates :address, :publisher, :periodicity_year_start                     , presence: true, if: "type_bibliography == TYPE_PERIODICAL"
   validates :address, :volume, :pages, :publication_year, :publication_month  , presence: true, if: "type_bibliography == TYPE_ARTICLE"
-  validates :url, :accessed_in                                                , presence: true, if: "type_bibliography == TYPE_ELETRONIC_DOC"
+  validates :url, :accessed_in                                                , presence: true, if: "type_bibliography == TYPE_ELECTRONIC_DOC"
 
-  before_validation proc { |record| record.errors.add(:base, I18n.t(:author_required, scope: [:bibliographies])) }, if: "[TYPE_BOOK, TYPE_ARTICLE, TYPE_ELETRONIC_DOC].include?(type_bibliography) and authors.empty?"
+  before_validation proc { |record| record.errors.add(:base, I18n.t(:author_required, scope: [:bibliographies])) }, if: "[TYPE_BOOK, TYPE_ARTICLE, TYPE_ELECTRONIC_DOC].include?(type_bibliography) and authors.empty?"
 
   attr_accessible :type_bibliography, :title, :subtitle, :address, :publisher, :pages, :count_pages, :volume, :edition, :publication_year,
     :periodicity, :issn, :isbn, :periodicity_year_start, :periodicity_year_end, :article_periodicity_title,
@@ -35,8 +37,8 @@ class Bibliography < ActiveRecord::Base
       "periodical"
     when TYPE_ARTICLE
       "article"
-    when TYPE_ELETRONIC_DOC
-      "eletronic_doc"
+    when TYPE_ELECTRONIC_DOC
+      "electronic_doc"
     when TYPE_FREE
       "free"
     end
@@ -77,7 +79,7 @@ class Bibliography < ActiveRecord::Base
       r << "n. #{fascicle}" if fascicle
       r << "p. #{pages}, #{publication_month}, #{publication_year}" if pages and publication_month and publication_year
       r.join(". ")
-    when TYPE_ELETRONIC_DOC
+    when TYPE_ELECTRONIC_DOC
       r = [resume_authors]
       r << title if title
       r << additional_information if additional_information

@@ -51,7 +51,7 @@ class BibliographyTest < ActiveSupport::TestCase
   end
 
   test "criar doc eletronico" do
-    params = {type_bibliography: Bibliography::TYPE_ELETRONIC_DOC, url: "www.google.com", accessed_in: Date.today, authors_attributes: {"0" => {name: "Autor"}}}
+    params = {type_bibliography: Bibliography::TYPE_ELECTRONIC_DOC, url: "www.google.com", accessed_in: Date.today, authors_attributes: {"0" => {name: "Autor"}}}
 
     bib = Bibliography.new params
     assert bib.invalid?

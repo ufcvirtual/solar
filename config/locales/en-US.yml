@@ -707,7 +707,7 @@
       book: Book
       periodical: Periodical
       article: Article
-      eletronic_doc: Eletronic Doc.
+      electronic_doc: Electronic Doc.
       free: Free
     form:
       author_placeholder: "SURNAME, Name"

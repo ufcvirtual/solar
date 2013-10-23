@@ -19,7 +19,7 @@ class BibliographiesControllerTest < ActionController::TestCase
     assert_routing({method: :get, path: "/bibliographies/new_book"}         , {controller: "bibliographies", action: "new", type_bibliography: Bibliography::TYPE_BOOK})
     assert_routing({method: :get, path: "/bibliographies/new_periodical"}   , {controller: "bibliographies", action: "new", type_bibliography: Bibliography::TYPE_PERIODICAL})
     assert_routing({method: :get, path: "/bibliographies/new_article"}      , {controller: "bibliographies", action: "new", type_bibliography: Bibliography::TYPE_ARTICLE})
-    assert_routing({method: :get, path: "/bibliographies/new_eletronic_doc"}, {controller: "bibliographies", action: "new", type_bibliography: Bibliography::TYPE_ELETRONIC_DOC})
+    assert_routing({method: :get, path: "/bibliographies/new_electronic_doc"}, {controller: "bibliographies", action: "new", type_bibliography: Bibliography::TYPE_ELECTRONIC_DOC})
     assert_routing({method: :get, path: "/bibliographies/new_free"}         , {controller: "bibliographies", action: "new", type_bibliography: Bibliography::TYPE_FREE})
   end
 

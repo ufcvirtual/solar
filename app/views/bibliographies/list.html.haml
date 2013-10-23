@@ -15,7 +15,7 @@
           %li= link_to bt = t(:book, scope)         , new_book_bibliographies_path(allocation_tags_ids: @allocation_tags_ids)         , :"data-box-title" => bt, class: li_class
           %li= link_to bt = t(:article, scope)      , new_article_bibliographies_path(allocation_tags_ids: @allocation_tags_ids)      , :"data-box-title" => bt, class: li_class
           %li= link_to bt = t(:periodical, scope)   , new_periodical_bibliographies_path(allocation_tags_ids: @allocation_tags_ids)   , :"data-box-title" => bt, class: li_class
-          %li= link_to bt = t(:eletronic_doc, scope), new_eletronic_doc_bibliographies_path(allocation_tags_ids: @allocation_tags_ids), :"data-box-title" => bt, class: li_class
+          %li= link_to bt = t(:electronic_doc, scope), new_electronic_doc_bibliographies_path(allocation_tags_ids: @allocation_tags_ids), :"data-box-title" => bt, class: li_class
           %li= link_to bt = t(:free, scope)         , new_free_bibliographies_path(allocation_tags_ids: @allocation_tags_ids)         , :"data-box-title" => bt, class: li_class
 
     .block_toolbar_right
