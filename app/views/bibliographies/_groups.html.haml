@@ -1,7 +1,0 @@
-- unless @groups_codes.empty?
-
-  .input.group_label
-    = f.label t(:groups, scope: [:bibliographies, :form])
-    %span.groups
-      - @groups_codes.each do |group_code|
-        %span.collection_check_boxes= group_code

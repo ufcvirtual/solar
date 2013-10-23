@@ -856,6 +856,7 @@
       mandatory_final_date: Data final obrigatória
 
   bibliographies:
+    author_required: Autor obrigatório
     type:
       book: Livro
       periodical: Periódico

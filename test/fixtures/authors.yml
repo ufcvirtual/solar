@@ -1,0 +1,11 @@
+author1:
+  bibliography_id: 1
+  name: "LOREM, Ipsum"
+
+author2:
+  bibliography_id: 1
+  name: "DOLOR, Sit Amet"
+
+author3:
+  bibliography_id: 2
+  name: "ELIT, Adipiscing"

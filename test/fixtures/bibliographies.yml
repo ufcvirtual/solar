@@ -1,7 +1,12 @@
 livro1:
   id: 1
-  type_bibliography: 5
-  title: Title 1
+  type_bibliography: <%= Bibliography::TYPE_BOOK %>
+  title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  address: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  publisher: "Lorem ipsum"
+  count_pages: 350
+  edition: 1
+  publication_year: 2011
 
 livro2:
   id: 2

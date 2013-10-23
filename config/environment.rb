@@ -65,10 +65,4 @@ Discussion_Responsible_Extra_Time   = 3
 Discussion_Post_Max_Indent_Level    = 4
 Assignment_Responsible_Extra_Time   = 3 
 
-Bibliography_Book           = 1
-Bibliography_Periodical     = 2
-Bibliography_Article        = 3
-Bibliography_Eletronic_Doc  = 4
-Bibliography_Free           = 5
-
 Url_Chat = 'http://10.0.10.7/ChatExemplo/Chat/Loginuser?F='

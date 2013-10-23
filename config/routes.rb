@@ -274,11 +274,11 @@ Solar::Application.routes.draw do
     collection do
       get :list
 
-      get :new_book           , to: :new, type_bibliography: 1
-      get :new_periodical     , to: :new, type_bibliography: 2
-      get :new_article        , to: :new, type_bibliography: 3
-      get :new_eletronic_doc  , to: :new, type_bibliography: 4
-      get :new_free           , to: :new, type_bibliography: 5
+      get :new_book           , to: :new, type_bibliography: Bibliography::TYPE_BOOK
+      get :new_periodical     , to: :new, type_bibliography: Bibliography::TYPE_PERIODICAL
+      get :new_article        , to: :new, type_bibliography: Bibliography::TYPE_ARTICLE
+      get :new_eletronic_doc  , to: :new, type_bibliography: Bibliography::TYPE_ELETRONIC_DOC
+      get :new_free           , to: :new, type_bibliography: Bibliography::TYPE_FREE
 
       put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "Bibliography", as: :unbind_group_from
       put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "Bibliography", as: :remove_group_from

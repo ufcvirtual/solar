@@ -2,6 +2,8 @@ class Bibliography < ActiveRecord::Base
 
   GROUP_PERMISSION, OFFER_PERMISSION, CURRICULUM_UNIT_PERMISSION = true, true, true
 
+  TYPE_BOOK, TYPE_PERIODICAL, TYPE_ARTICLE, TYPE_ELETRONIC_DOC, TYPE_FREE = 1, 2, 3, 4, 5
+
   has_many :academic_allocations, as: :academic_tool, dependent: :destroy
   has_many :allocation_tags, through: :academic_allocations
   has_many :groups, through: :allocation_tags
@@ -13,10 +15,12 @@ class Bibliography < ActiveRecord::Base
   validates :issn, length: {is: 9}, if: "issn.present?" # com formatacao
   validates :isbn, length: {is: 17}, if: "isbn.present?" # com formatacao
 
-  validates :address, :publisher, :edition, :publication_year                 , presence: true, if: "type_bibliography == #{Bibliography_Book}"
-  validates :address, :publisher, :periodicity_year_start                     , presence: true, if: "type_bibliography == #{Bibliography_Periodical}"
-  validates :address, :volume, :pages, :publication_year, :publication_month  , presence: true, if: "type_bibliography == #{Bibliography_Article}"
-  validates :url, :accessed_in                                                , presence: true, if: "type_bibliography == #{Bibliography_Eletronic_Doc}"
+  validates :address, :publisher, :edition, :publication_year                 , presence: true, if: "type_bibliography == TYPE_BOOK"
+  validates :address, :publisher, :periodicity_year_start                     , presence: true, if: "type_bibliography == TYPE_PERIODICAL"
+  validates :address, :volume, :pages, :publication_year, :publication_month  , presence: true, if: "type_bibliography == TYPE_ARTICLE"
+  validates :url, :accessed_in                                                , presence: true, if: "type_bibliography == TYPE_ELETRONIC_DOC"
+
+  before_validation proc { |record| record.errors.add(:base, I18n.t(:author_required, scope: [:bibliographies])) }, if: "[TYPE_BOOK, TYPE_ARTICLE, TYPE_ELETRONIC_DOC].include?(type_bibliography) and authors.empty?"
 
   attr_accessible :type_bibliography, :title, :subtitle, :address, :publisher, :pages, :count_pages, :volume, :edition, :publication_year,
     :periodicity, :issn, :isbn, :periodicity_year_start, :periodicity_year_end, :article_periodicity_title,
@@ -25,15 +29,15 @@ class Bibliography < ActiveRecord::Base
 
   def type
     btype = case type_bibliography
-    when Bibliography_Book
+    when TYPE_BOOK
       "book"
-    when Bibliography_Periodical
+    when TYPE_PERIODICAL
       "periodical"
-    when Bibliography_Article
+    when TYPE_ARTICLE
       "article"
-    when Bibliography_Eletronic_Doc
+    when TYPE_ELETRONIC_DOC
       "eletronic_doc"
-    when Bibliography_Free
+    when TYPE_FREE
       "free"
     end
 
@@ -46,7 +50,7 @@ class Bibliography < ActiveRecord::Base
 
   def resume
     btype = case type_bibliography
-    when Bibliography_Book
+    when TYPE_BOOK
       r = [resume_authors]
       r << title if title
       r << subtitle if subtitle
@@ -55,7 +59,7 @@ class Bibliography < ActiveRecord::Base
       r << "#{count_pages} p" if count_pages
       r << "v. #{volume}" if volume
       r.join(". ")
-    when Bibliography_Periodical
+    when TYPE_PERIODICAL
       r = [title]
       r << subtitle if subtitle
       r << "#{address}: #{publisher}" if address and publisher
@@ -63,7 +67,7 @@ class Bibliography < ActiveRecord::Base
       r << periodicity if periodicity
       r << "ISSN: #{issn}" if issn
       r.join(". ")
-    when Bibliography_Article
+    when TYPE_ARTICLE
       r = [resume_authors]
       r << title if title
       r << subtitle if subtitle
@@ -73,14 +77,14 @@ class Bibliography < ActiveRecord::Base
       r << "n. #{fascicle}" if fascicle
       r << "p. #{pages}, #{publication_month}, #{publication_year}" if pages and publication_month and publication_year
       r.join(". ")
-    when Bibliography_Eletronic_Doc
+    when TYPE_ELETRONIC_DOC
       r = [resume_authors]
       r << title if title
       r << additional_information if additional_information
       r << "#{I18n.t(:available_in, scope: [:bibliographies, :list])} #{url}" if url
       r << "#{I18n.t(:accessed_in, scope: [:bibliographies, :list])} #{I18n.l(accessed_in, format: :bibliography)}" if accessed_in
       r.join(". ")
-    when Bibliography_Free
+    when TYPE_FREE
       title
     end
   end

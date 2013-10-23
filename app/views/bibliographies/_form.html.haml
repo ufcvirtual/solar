@@ -1,12 +1,30 @@
-.bibliography_form
-  - case @bibliography.type_bibliography
-  - when Bibliography_Book
-    = render partial: "book_form"
-  - when Bibliography_Periodical
-    = render partial: "periodical_form"
-  - when Bibliography_Article
-    = render partial: "article_form"
-  - when Bibliography_Eletronic_Doc
-    = render partial: "eletronic_doc_form"
-  - when Bibliography_Free
-    = render partial: "free_form"
+= simple_form_for(@bibliography, html: {id: "bibliography_form"}) do |f|
+  %span.form_requirement= t(:required_fields)
+  %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit : :new), scope: [:bibliographies, :form], bib_type: f.object.type)
+
+  .form-inputs.block_content{"data-form-type" => f.object.persisted? ? "edit" : "new"}
+    = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+    = f.input :type_bibliography, as: :hidden, input_html: {value: f.object.type_bibliography}
+
+    - case @bibliography.type_bibliography
+    - when Bibliography::TYPE_BOOK
+      = render partial: "book_form", locals: {f: f}
+    - when Bibliography::TYPE_PERIODICAL
+      = render partial: "periodical_form", locals: {f: f}
+    - when Bibliography::TYPE_ARTICLE
+      = render partial: "article_form", locals: {f: f}
+    - when Bibliography::TYPE_ELETRONIC_DOC
+      = render partial: "eletronic_doc_form", locals: {f: f}
+    - when Bibliography::TYPE_FREE
+      = render partial: "free_form", locals: {f: f}
+
+    - unless @groups_codes.empty?
+      .input.group_label
+        = f.label t(:groups, scope: [:bibliographies, :form])
+        %span.groups
+          - @groups_codes.each do |group_code|
+            %span.collection_check_boxes= group_code
+
+    .form-actions.right_buttons
+      = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
+      = button_to_function t(:save), "save_bibliography()" , class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"

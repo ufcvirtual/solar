@@ -702,6 +702,7 @@
       mandatory_final_date: "Mandatory final date"
 
   bibliographies:
+    author_required: Author required
     type:
       book: Book
       periodical: Periodical
