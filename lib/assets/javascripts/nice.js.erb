@@ -91,7 +91,7 @@ $.fn.nice_checkbox = function(options) {
     } else 
       check = parent.checked;
 
-    children.each(function(i){ $(this).prop("checked", check); });
+    children.each(function(i){ if ($(this).is(':visible')) $(this).prop("checked", check); });
 
     if (can_enable_or_disable) {
       // o botao de edicao devera ser habilitado apenas para um unico objeto

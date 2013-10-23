@@ -20,12 +20,17 @@ function show_all() {
   show_unreads();
 }
 
+function select_none() {
+  $('[type=checkbox]').map(function(){ $(this).attr("checked",false) });
+}
+
 function selected_messages() {
   return $('[type=checkbox]:checked.selected_messages').map(function(){ return $(this).data('message-id') }).get();
 }
 
 function message_menu_dropdown() {
   $(".message_status").change(function() {
+    select_none();
     if ( $( "select option:selected" ).hasClass("check_all") )
       show_all();
     if ( $( "select option:selected" ).hasClass("check_read") )
@@ -38,20 +43,6 @@ function message_menu_dropdown() {
       show_unreads();
       hide_reads();
     }
-  });
-
-  $('#check_all').click(function(){
-    //show_all();
-  });
-
-  $('#check_read').click(function(){
-    //hide_unreads();
-    //show_reads();
-  });
-
-  $('#check_unread').click(function(){
-    //show_unreads();
-    //hide_reads();
   });
 }
 
