@@ -1,24 +1,25 @@
-.module_form{:style => "text-align: left;"}
-  = simple_form_for(@module, :html => {:id => "module_form"}) do |f| 
-    %h1#lightBoxDialogTitle= t((@module.persisted? ? :edit_lesson_module : :new_module), scope: [:lessons, :list])
-    %span.form_requirement= t(:required_fields)
-    
-    .form-inputs.block_content.retreat
-      = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+= simple_form_for(@module, html: {id: "module_form"}) do |f|
+  %span.form_requirement= t(:required_fields)
+  %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit_lesson_module : :new_module), scope: [:lessons, :list])
 
-      = f.input :name, :required => true
+  .form-inputs.block_content
+    = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
-      .form-actions.right_buttons
-        = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
-        = button_tag t(".save"), :class => "btn btn_main btn_lightbox", :alt => t(".save"), :type => "button", :id => "save"
+    = f.input :name
+
+  .form-actions.right_buttons
+    = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+    = button_to_function t(:save), "save_module()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
 
 :javascript
 
-  $(function(){
-    $('#save').click(function(){
-      $('form#module_form').serialize_and_submit({
-        replace_list: $('.list_lessons:last')
-      });
-    });
-
+  $(function() {
+    // evento de keypress do fancybox nao funciona pra esse form
+    $("form#module_form .form-inputs").keypress(function(e) { if (e.which == 13) e.preventDefault(); });
   });
+
+  function save_module() {
+    $('form#module_form').serialize_and_submit({
+      replace_list: $('.list_lessons:last')
+    });
+  }

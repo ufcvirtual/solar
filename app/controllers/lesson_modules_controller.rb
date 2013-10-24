@@ -3,9 +3,9 @@ class LessonModulesController < ApplicationController
   layout false
 
   def new
-    @allocation_tags_ids = params[:allocation_tags_ids]
-    authorize! :new, LessonModule, :on => @allocation_tags_ids
-    @module              = LessonModule.new
+    authorize! :new, LessonModule, on: @allocation_tags_ids = params[:allocation_tags_ids]
+
+    @module = LessonModule.new
   end
 
   def create
@@ -41,9 +41,9 @@ class LessonModulesController < ApplicationController
   end
 
   def edit
-    @allocation_tags_ids = params[:allocation_tags_ids]
-    @module              = LessonModule.find(params[:id])
-    authorize! :edit, LessonModule, :on => @allocation_tags_ids
+    authorize! :edit, LessonModule, on: @allocation_tags_ids = params[:allocation_tags_ids]
+
+    @module = LessonModule.find(params[:id])
   end
 
   def update
