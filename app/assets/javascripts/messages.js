@@ -83,3 +83,9 @@ function message_add_new_file() {
     });
   });
 }
+
+function validate_sending() {
+  var receiver = $('#to').val().trim();
+  if (receiver=='')
+    return false;
+};

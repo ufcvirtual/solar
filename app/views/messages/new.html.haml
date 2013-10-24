@@ -21,7 +21,7 @@
 .message_external_div
 
   = render "message_header"
-  = simple_form_for :message, url: send_message_messages_path, html: {id: "form_message_text", multipart: true} do |f|
+  = simple_form_for :message, url: send_message_messages_path, html: {id: "form_message_text", multipart: true, :onsubmit => "return validate_sending();"} do |f|
     = render "message_header_to", form: f
 
     #div_new_message
@@ -31,3 +31,5 @@
       = f.submit t(:message_send), id: "send_message", class: "btn btn_main", alt: t(:message_send)
       = hidden_field_tag :id, @original_message_id
       = link_to t(:message_discard), inbox_messages_path, {class: "btn btn_caution"}
+
+= javascript_include_tag "message"
