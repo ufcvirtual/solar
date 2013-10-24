@@ -10,14 +10,32 @@ class DiscussionsControllerTest < ActionController::TestCase
 
   ## API - Mobilis
   test "lista de foruns da turma FOR de introducao a liguistica" do
+    discussion3 = discussions(:forum_3)
+
     sign_in users(:aluno1)
     assert_routing '/groups/1/discussions', {controller: "discussions", action: "index", group_id: "1"}
 
     get :index, {format: 'json', group_id: 1}
     assert_response :success
     assert_not_nil assigns(:discussions)
+    
+    expected_response = [{id: discussion3.id, description: discussion3.description, name: discussion3.name, last_post_date: nil, status: discussion3.status, start_date: discussion3.schedule.start_date.try(:to_s, :db), end_date: discussion3.schedule.end_date.try(:to_s, :db)}].to_json
+    assert_equal  response.body, expected_response
   end
 
+  test "lista de foruns da turma FOR de introducao a liguistica Solar Mobilis" do
+    discussion3 = discussions(:forum_3)
+
+    sign_in users(:aluno1)
+    assert_routing '/groups/1/discussions/mobilis_list', {controller: "discussions", action: "index", group_id: "1", mobilis: true}
+
+    get :index, {format: 'json', group_id: 1, mobilis: true}
+    assert_response :success
+    assert_not_nil assigns(:discussions)
+    
+    expected_response = {discussions: [{id: discussion3.id, description: discussion3.description, name: discussion3.name, last_post_date: nil, status: discussion3.status, start_date: discussion3.schedule.start_date.try(:to_s, :db), end_date: discussion3.schedule.end_date.try(:to_s, :db)}]}.to_json
+    assert_equal  response.body, expected_response
+  end
 
   ##
   # Edicao
