@@ -30,11 +30,6 @@ class AdministrationsController < ApplicationController
 
   end
 
-  def info_user
-    id = params[:id]
-    @info_user = User.find_by_id(id) unless id.nil?
-  end
-
   def allocations_user
     id = params[:id]
     @allocations_user = Allocation.find_by_user_id(id) unless id.nil?

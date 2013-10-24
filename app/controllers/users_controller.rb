@@ -2,7 +2,13 @@ require 'ostruct'
 
 class UsersController < ApplicationController
 
+  layout false, only: :show
   load_and_authorize_resource only: [:mysolar, :update_photo]
+
+  def show
+    # authorize! :show, User, on: allocation_tags # todo usuario vai ter permissao para ver todos?
+    @user = User.find(params[:id])
+  end
 
   def verify_cpf
     if (not(params[:cpf].present?) or not(Cpf.new(params[:cpf]).valido?))
