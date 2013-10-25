@@ -8,8 +8,6 @@ module Event
       format_date(end_time), format_date(end_time), format_date(start_time), format_date(start_time), allocation_tags] }}
   end
 
-  # need to override the json view to return what full_calendar is expecting.
-  # http://arshaw.com/fullcalendar/docs/event_data/Event_Object/
   def schedule_json(options = {})
     {
       id: id,
@@ -17,14 +15,15 @@ module Event
       description: (respond_to?(:enunciation) ? enunciation : description) || "",
       start: schedule.start_date,
       :end => schedule.end_date,
-      allDay: (not respond_to?(:start_hour)), # se não tiver hora de inicio e fim é do dia todo
-      recurring: (respond_to?(:start_hour) and respond_to?(:end_hour)), # se tiver hora de inicio e fim, é recorrente de todo dia no intervalo
+      allDay: (not respond_to?(:start_hour) or start_hour.blank?), # se não tiver hora de inicio e fim é do dia todo
+      recurring: (respond_to?(:start_hour) and respond_to?(:end_hour) and not(start_hour.blank? or end_hour.blank?)), # se tiver hora de inicio e fim, é recorrente de todo dia no intervalo
       # repeats: (schedule.end_date.to_date - schedule.start_date.to_date),
       # repeat_freq: 1,
-      # url: Rails.application.routes.url_helpers.assignment_path(id),
+      # url: Rails.application.routes.url_helpers.discussion_path(id, allocation_tags_ids: 'at_param'),
       start_hour: (respond_to?(:start_hour) ? start_hour : nil),
       end_hour: (respond_to?(:end_hour) ? end_hour : nil),
-      color: verify_type(self.class.to_s)
+      color: verify_type(self.class.to_s, (respond_to?(:type_event) ? type_event : nil)),
+      type: self.class.name.tableize.singularize
     }
   end
 
@@ -32,7 +31,7 @@ module Event
     Time.at(date_time.to_i).to_formatted_s(:db)
   end
 
-  def verify_type(model_name)
+  def verify_type(model_name, type_event)
     return (
       case model_name
         when "Assignment"
@@ -41,8 +40,14 @@ module Event
           "#A7C1F0"
         when "Discussion"
           "#CAFCCC"
-        # when Prova presencial ou Encontro presencial
-        # F5D5EF
+        when "ScheduleEvent"
+          if type_event == 1
+            "#F5D5EF"
+          elsif type_event == 2
+            "#FFD9E0"
+          else
+            "#E3E3E3"
+          end
         else
           "#FCEBCA"
       end

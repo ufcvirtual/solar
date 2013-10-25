@@ -177,6 +177,13 @@
         additional_information: Additional Information
         url: Available in
         accessed_in: Accessed in
+      schedule_event:
+        title: Title
+        type_event: Type
+        place: Place
+        description: Description
+        start_hour: Start hour
+        end_hour: End hour
 
     errors:
       uniqueness: "Record already exists in the system"
@@ -816,7 +823,7 @@
   # discussions: "Discussion"
   lesson: "Lesson"
   schedule_assignment: "Assignment"
-  schedule_events: "Schedule Event"
+  # schedule_events: "Schedule Event"
   no_events: "No events to selected day"
 
   # Assignments
@@ -1526,6 +1533,11 @@
       current_year: can't precede current year
       current_date: can't be earlier than today
     to: "to "
+    list:
+      assignments: Assignment
+      lesson: Lesson
+      discussions: Discussion
+      schedule_events: Schedule Event
 
   courses:
     index:
@@ -1650,3 +1662,21 @@
       week: 'ddd M/d'
       day: 'dddd M/d'
 
+  #Eventos da agenda
+  schedule_events:
+    types:
+      presential_test: Presential Test
+      presential_meeting: Presential Meeting
+      recess: Recess
+      holiday: Holiday
+    form:
+      groups: Groups
+    success:
+      created: Event was successfully created.
+      updated: Event was successfully updated.
+      deleted: Event was successfully deleted.
+    error:
+      range_hour_error: must be posterior to final hour
+      created: Event wasn't created.
+      updated: Event wasn't updated.
+      deleted: Event wasn't deleted.

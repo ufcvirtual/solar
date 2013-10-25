@@ -6,13 +6,16 @@
 
 .calendar_schedules{:"data-link-list" => calendar_schedules_path(allocation_tags_ids: params[:allocation_tags_ids], all_groups_ids: params[:all_groups_ids])}
 
-  #calendar{:"data-edition" => "true", :"data-ids" => "chat,discussion,assignment"}
+  #calendar{:"data-edition" => "true", :"data-ids" => "chat,discussion,assignment,event"}
 
 
   = "Legenda:"
   %span{style: "background-color: #CCCCFF; border-color: #CCCCFF; color: black; max-width: 70px;"}= "Trabalho"
   %span{style: "background-color: #A7C1F0; border-color: #A7C1F0; color: black; width: 60px;"}= "Chat"
   %span{style: "background-color: #CAFCCC; border-color: #CAFCCC; color: black; width: 60px;"}= "Fórum"
+  %span{style: "background-color: #F5D5EF; border-color: #F5D5EF; color: black; width: 60px;"}= "Prova Presencial"
+  %span{style: "background-color: #FFD9E0; border-color: #FFD9E0; color: black; width: 60px;"}= "Encontro Presencial"
+  %span{style: "background-color: #E3E3E3; border-color: #E3E3E3; color: black; width: 60px;"}= "Recesso ou Feriado"
   %span{style: "background-color: #FCEBCA; border-color: #FCEBCA; color: black; width: 60px;"}= "Outros"
 
 
@@ -27,5 +30,8 @@
     $("#assignment")
       .html("Novo Trabalho")
       .call_fancybox({href: "#{new_assignment_path(allocation_tags_ids: [params[:allocation_tags_ids]].flatten, calendar: true)}"});
+    $("#event")
+      .html("Novo Evento")
+      .call_fancybox({href: "#{new_schedule_event_path(allocation_tags_ids: [params[:allocation_tags_ids]].flatten, calendar: true)}"});
   });
   

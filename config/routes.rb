@@ -223,6 +223,8 @@ Solar::Application.routes.draw do
     get :events, on: :collection
   end
 
+  resources :schedule_events, except: [:index]
+
   resources :messages, except: [:destroy, :update] do
     member do
       put ":box/:new_status", to: "messages#update", as: :change_status, constraints: {box: /(inbox)|(outbox)|(trashbox)/, new_status: /(read)|(unread)|(trash)|(restore)/}

@@ -21,11 +21,6 @@ class SchedulesController < ApplicationController
   end
 
   def events
-    # full_calendar will hit the index method with query parameters
-    # 'start' and 'end' in order to filter the results for the
-    # appropriate month/week/day.  It should be possiblt to change
-    # this to be starts_at and ends_at to match rails conventions.
-    # I'll eventually do that to make the demo a little cleaner.
     @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
 
     # authorize! :sechedules_events, Schedule, on: @allocation_tags_ids
@@ -33,13 +28,15 @@ class SchedulesController < ApplicationController
     @assignments = Assignment.scoped.between(params['start'], params['end'], @allocation_tags_ids).uniq
     @chats = ChatRoom.scoped.between(params['start'], params['end'], @allocation_tags_ids).uniq
     @discussions = Discussion.scoped.between(params['start'], params['end'], @allocation_tags_ids).uniq
+    @schedules_events = ScheduleEvent.scoped.between(params['start'], params['end'], @allocation_tags_ids).uniq
 
-    @events = (@assignments + @chats + @discussions).map(&:schedule_json)
+
+    @events = (@assignments + @chats + @discussions + @schedules_events).map(&:schedule_json)
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @events }
-      format.js  { render :json => @events }
+      format.xml  { render xml: @events }
+      format.js  { render json: @events }
     end
   end
 

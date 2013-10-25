@@ -309,6 +309,13 @@
         additional_information: Informações Complementares
         url: Disponível em
         accessed_in: Acessado em
+      schedule_event:
+        title: Título
+        type_event: Tipo
+        place: Local
+        description: Descrição
+        start_hour: Hora de início
+        end_hour: Hora de término
 
     errors:
       uniqueness: "Registro já existe no sistema"
@@ -970,7 +977,7 @@
   agenda_null: "Nenhuma atividade marcada para esta agenda"
   # discussions: "Forum"
   lesson: "Aula"
-  schedule_events: "Evento da Agenda"
+  # schedule_events: "Evento da Agenda"
   schedule_assignment: "Trabalho"
   no_events: "Sem eventos para o dia selecionado"
 
@@ -1684,6 +1691,11 @@
       current_year: não deve preceder o ano atual
       current_date: não deve preceder o dia de hoje
     to: "à "
+    list:
+      assignments: Trabalho
+      lesson: Aula
+      discussions: Fórum
+      schedule_events: Evento
 
   courses:
     index:
@@ -1808,3 +1820,22 @@
       month: 'ddd'
       week: 'ddd d/M'
       day: 'dddd d/M'
+
+  #Eventos da agenda
+  schedule_events:
+    types:
+      presential_test: Prova Presencial
+      presential_meeting: Encontro Presencial
+      recess: Recesso
+      holiday: Feriado
+    form:
+      groups: Turmas
+    success:
+      created: Evento criado com sucesso.
+      updated: Evento atualizado com sucesso.
+      deleted: Evento deletado com sucesso.
+    error:
+      range_hour_error: deve ser posterior à inicial
+      created: Não foi possível criar evento.
+      updated: Não foi possível atualizar evento.
+      deleted: Não foi possível deletar evento.

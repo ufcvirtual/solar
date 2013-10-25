@@ -332,3 +332,27 @@ acaal56:
  allocation_tag_id: 6
  academic_tool_id: 2
  academic_tool_type: "LessonModule"                  
+
+acaal57:
+  id: 57
+  allocation_tag_id: 3
+  academic_tool_id: 1
+  academic_tool_type: "ScheduleEvent"
+
+acaal58:
+  id: 58
+  allocation_tag_id: 3
+  academic_tool_id: 2
+  academic_tool_type: "ScheduleEvent"
+
+acaal59:
+  id: 59
+  allocation_tag_id: 3
+  academic_tool_id: 3
+  academic_tool_type: "ScheduleEvent"
+
+acaal60:
+  id: 60
+  allocation_tag_id: 3
+  academic_tool_id: 4
+  academic_tool_type: "ScheduleEvent"

@@ -66,3 +66,8 @@ Discussion_Post_Max_Indent_Level    = 4
 Assignment_Responsible_Extra_Time   = 3 
 
 Url_Chat = 'http://10.0.10.7/ChatExemplo/Chat/Loginuser?F='
+
+Presential_Test     = 1
+Presential_Meeting  = 2
+Recess              = 3
+Holiday             = 4

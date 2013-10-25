@@ -21,7 +21,6 @@ Cenário: Exibir Agenda
     Então eu deverei ver o link "Agenda"
   Quando eu clicar no link "Agenda"
     Então eu deverei ver "Recesso"
-    E eu deverei ver "Reunião com videoconferência"
     E eu deverei ver "Avaliação"
     E eu deverei ver "Feriado"
 
