@@ -13,9 +13,9 @@
           - @groups.each do |group|
             %span.collection_check_boxes= group.code      
 
-    .form-actions.right_buttons
-      = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
-      = button_tag t(".save"), :class => "btn btn_main btn_lightbox", :alt => t(".save"), :type => "button", :id => "save"
+  .form-actions.right_buttons
+    = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+    = button_to_function t(:save), "save_module()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
 
 :javascript
 

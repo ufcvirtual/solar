@@ -19,7 +19,8 @@ class LessonModulesController < ApplicationController
     begin
       authorize! :create, LessonModule, :on => @allocation_tags_ids
       raise "error" unless @module.valid?
-
+      
+      puts "ENTREI"
       LessonModule.transaction do
         lm = LessonModule.create!(:name => params[:lesson_module][:name], is_default: false)  
         @allocation_tags_ids.each do |id|
