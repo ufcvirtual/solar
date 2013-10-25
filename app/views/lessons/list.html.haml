@@ -6,6 +6,8 @@
   = link_to t(".new_module"), new_lesson_module_path(:allocation_tags_ids => params[:allocation_tags_ids]), :'data-tooltip' => t(".new_module"), class: "btn btn_default link_new_module", id: "new-discussion" 
   
   - at = @allocation_tags.map(&:id).join(",") 
+  - puts 'Allocation_tags' + at
+  / - all_groups = Group.where(id: params[:all_groups_ids])
 
   - unless AcademicAllocation.select("DISTINCT on (academic_tool_id) *").where(academic_tool_type: 'LessonModule').where("allocation_tag_id IN("+at+")").empty?
     - AcademicAllocation.select("DISTINCT on (academic_tool_id) *").where(academic_tool_type: 'LessonModule').where("allocation_tag_id IN("+at+")").each_with_index do |academic_allocation, idxm|
@@ -16,6 +18,9 @@
         .block_title
           %h2
             = lesson_module.name
+            
+            / = render "groups/groups_tags", groups: lesson_module.groups, tool: lesson_module, all_groups: all_groups, paths: {add: add_group_to_lesson_modules_path(id: "param_id", tool_id: lesson_module.id), remove: remove_group_from_lesson_modules_path(id: "param_id", tool_id: lesson_module.id), unbind: unbind_group_from_lesson_modules_path(id: "param_id", tool_id: lesson_module.id)}
+
             = link_to (content_tag(:i, nil, :class=>'icon-edit')), edit_lesson_module_path(lesson_module, allocation_tags_ids: params[:allocation_tags_ids]), class: 'block_title_button edit_module', :'data-tooltip' => t(".edit_lesson_module")
             = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'block_title_button delete_module', :'data-link-delete' => lesson_module_path(lesson_module, allocation_tags_ids: params[:allocation_tags_ids]), :'data-tooltip' => t(".delete_lesson_module"), :"data-module-id" => lesson_module.id
         .block_content_toolbar
@@ -94,7 +99,11 @@
   - else
     .block_content.block_content_text= t(:none, scope: [:lesson_modules])
 
+/= javascript_include_tag "tooltip", "lesson_modules", "groups_tags"
+
 :javascript
+  // var div_list = $(".list_lesson_modules");
+  // var all_allocation_tags_ids = "#{AllocationTag.where(group_id: params[:all_groups_ids]).map(&:id).join(",")}";
 
   jQuery(function($) {
 

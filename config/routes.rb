@@ -247,7 +247,14 @@ Solar::Application.routes.draw do
     # get :team, on: :collection
   end
 
-  resources :lesson_modules, except: [:index, :show]
+  resources :lesson_modules, except: [:index, :show] do
+    collection do
+      get :list
+      put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "LessonModule", as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "LessonModule", as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "LessonModule", as: :add_group_to
+    end
+  end
 
   # resources :tabs, only: [:show, :create, :destroy]
   get :activate_tab, to: "tabs#show", as: :activate_tab

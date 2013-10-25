@@ -30,10 +30,20 @@ module6: # não contém aulas
 
 module7: # não contém aulas
   id: 7
-  name: Modulo Geral da Turma
+  name: Modulo Geral da Turma - TL FOR
   is_default: true
 
 module8:
   id: 8
   name: Modulo Geral
+  is_default: true
+
+module9: # não contém aulas
+  id: 9
+  name: Modulo Geral da Turma - QM CAU
+  is_default: true
+
+module10: # não contém aulas
+  id: 10
+  name: Modulo Geral da Turma - QM MAR
   is_default: true

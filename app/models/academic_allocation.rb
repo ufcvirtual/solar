@@ -64,15 +64,10 @@ class AcademicAllocation < ActiveRecord::Base
     # Métodos destinados ao Lesson Module  
     def move_lessons_to_default
       lesson_module = LessonModule.find(academic_tool_id)
-      if lesson_module.is_default
-        errors.add(:base, I18n.t(:cant_delete, :scope => [:lesson_modules, :errors]))
-        return false
-      else
-        not_exist_default = LessonModule.joins(:academic_allocations).where({is_default: true,academic_allocations: {allocation_tag_id: allocation_tag_id}}).empty?
-        unless  not_exist_default
-            lesson_module.lessons.update_all(lesson_module_id: LessonModule.joins(:academic_allocations).where({is_default: true,academic_allocations: {allocation_tag_id: allocation_tag_id}}))
-        end    
-      end
+      not_exist_default = LessonModule.joins(:academic_allocations).where({is_default: true,academic_allocations: {allocation_tag_id: allocation_tag_id}}).empty?
+      unless  not_exist_default
+        lesson_module.lessons.update_all(lesson_module_id: LessonModule.joins(:academic_allocations).where({is_default: true,academic_allocations: {allocation_tag_id: allocation_tag_id}}))
+      end     
     end
 
 

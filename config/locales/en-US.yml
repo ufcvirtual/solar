@@ -577,6 +577,7 @@
     errors:
       existing_name: already exists
       cant_delete: "Default module can't be deleted"
+      cant_delete_shared: "Shared module has lessons and therefore can not be deleted"
 
   lesson_files:
     root: Root

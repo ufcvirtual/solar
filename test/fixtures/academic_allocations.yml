@@ -356,3 +356,15 @@ acaal60:
   allocation_tag_id: 3
   academic_tool_id: 4
   academic_tool_type: "ScheduleEvent"
+
+acaal61:
+ id: 61
+ allocation_tag_id: 3
+ academic_tool_id: 9
+ academic_tool_type: "LessonModule"
+
+acaal62:
+ id: 62
+ allocation_tag_id: 11
+ academic_tool_id: 10
+ academic_tool_type: "LessonModule"

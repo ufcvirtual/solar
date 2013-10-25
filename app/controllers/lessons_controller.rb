@@ -87,9 +87,9 @@ class LessonsController < ApplicationController
   # GET /lessons/1/edit
   def edit
     authorize! :update, Lesson, on: params[:allocation_tags_ids].split(" ") # para pode editar percisa ter permissao para salvar
-    
-    @lesson_modules = LessonModule.joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: params[:allocation_tags_ids].split(' ')})
 
+
+    @lesson_modules = LessonModule.select("DISTINCT ON (id)""lesson_modules"".*").joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: params[:allocation_tags_ids]})
     @lesson = Lesson.find(params[:id])
     @groups = @lesson.lesson_module.groups
   end
@@ -99,7 +99,7 @@ class LessonsController < ApplicationController
   def update
     authorize! :update, Lesson, on: params[:allocation_tags_ids].split(" ")
 
-    @lesson_modules = LessonModule.joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: params[:allocation_tags_ids].split(' ')})
+    @lesson_modules = LessonModule.select("DISTINCT ON (id)""lesson_modules"".*").joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: params[:allocation_tags_ids]})
     @lesson = Lesson.find(params[:id])
     error = false
     begin
