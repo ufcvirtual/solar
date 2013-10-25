@@ -791,6 +791,28 @@ bibedit4:
   resource_id: 137
   per_id: false
 
+## aviso
+
+notificationedit1:
+  profile_id: 5
+  resource_id: 138
+  per_id: false
+
+notificationedit2:
+  profile_id: 5
+  resource_id: 139
+  per_id: false
+
+notificationedit3:
+  profile_id: 5
+  resource_id: 140
+  per_id: false
+
+notificationedit4:
+  profile_id: 5
+  resource_id: 141
+  per_id: false
+
 # Editions - Página de edição
 
 edition1:

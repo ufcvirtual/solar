@@ -769,3 +769,29 @@ res137:
   controller: 'bibliographies'
   action: 'destroy'
   description: 'Deleção de bibliografia'
+
+## aviso
+
+res138:
+  id: 138
+  controller: 'notifications'
+  action: 'list'
+  description: 'Edição - Lista de avisos'
+
+res139:
+  id: 139
+  controller: 'notifications'
+  action: 'create'
+  description: 'Criação de aviso'
+
+res140:
+  id: 140
+  controller: 'notifications'
+  action: 'update'
+  description: 'Edição de aviso'
+
+res141:
+  id: 141
+  controller: 'notifications'
+  action: 'destroy'
+  description: 'Deleção de aviso'

@@ -750,6 +750,33 @@
       updated: Bibliography item wasn't updated.
       deleted: Bibliography item wasn't deleted.
 
+  notifications:
+    form:
+      new: New Notification
+      edit: Edit Notification
+      day_from: From
+      day_to: to
+    list:
+      notifications: Notifications
+      notification: Notification
+      period: Period
+      new: New notification
+      edit: Edit notification
+      delete: Delete notification
+      no_data: No data
+      expand_description: Expand description
+      compress_description: Compress description
+      choose_at_least_one: Choose at least one assignment
+      choose_one: Choose a assignment
+    success:
+      created: Notification was successfully created.
+      updated: Notification was successfully updated.
+      deleted: Notification was successfully deleted.
+    error:
+      created: Notification wasn't created.
+      updated: Notification wasn't updated.
+      deleted: Notification wasn't deleted.
+
   message_title: "Messages"
   message_inbox: "Inbox"
   message_outbox: "Outbox"
@@ -1371,7 +1398,7 @@
       bibliography: Bibliography
       schedule: Schedule
       allocation: Allocation
-      warning: Warning
+      notification: Warning
       discussion: Discussion
       chat: Chat
       videoconference: Videoconference

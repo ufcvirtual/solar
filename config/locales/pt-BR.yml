@@ -166,6 +166,7 @@
       group: "Turma"
       course: "Curso"
       bibliography: "Bibliografia"
+      notification: Aviso
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -316,6 +317,9 @@
         description: Descrição
         start_hour: Hora de início
         end_hour: Hora de término
+      notification:
+        title: Título
+        description: Descrição
 
     errors:
       uniqueness: "Registro já existe no sistema"
@@ -892,7 +896,7 @@
       choose_at_least_one: "Selecione, ao menos, uma bibliografia"
       choose_one: Selecione uma bibliografia
       bibliographies: Bibliografias
-      no_data: Nenhuma bibliografia disponível
+      no_data: Nenhuma bibliografia cadastrada
       accessed_in: "Acesso em:"
       available_in: "Disponível em:"
     success:
@@ -903,6 +907,33 @@
       created: Não foi possível criar item bibliográfico.
       updated: Não foi possível atualizar item bibliográfico.
       deleted: Não foi possível deletar item bibliográfico.
+
+  notifications:
+    form:
+      new: Novo Aviso
+      edit: Editar Aviso
+      day_from: De
+      day_to: a
+    list:
+      notifications: Avisos
+      notification: Aviso
+      period: Período
+      new: Novo aviso
+      edit: Editar aviso
+      delete: Deletar aviso
+      no_data: Nenhum aviso cadastrado
+      expand_description: Expandir descrição
+      compress_description: Comprimir descrição
+      choose_at_least_one: "Selecione, ao menos, um aviso"
+      choose_one: Selecione um aviso
+    success:
+      created: Aviso criado com sucesso.
+      updated: Aviso atualizado com sucesso.
+      deleted: Aviso deletado com sucesso.
+    error:
+      created: Não foi possível criar aviso.
+      updated: Não foi possível atualizar aviso.
+      deleted: Não foi possível deletar aviso.
 
   # messages
   message_title: "Mensagens"
@@ -1524,7 +1555,7 @@
       bibliography: Bibliografia
       schedule: Agenda
       allocation: Alocação
-      warning: Aviso
+      notification: Aviso
       discussion: Fórum
       chat: Chat
       videoconference: Videoconferência

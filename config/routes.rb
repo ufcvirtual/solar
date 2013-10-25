@@ -280,17 +280,27 @@ Solar::Application.routes.draw do
 
   resources :bibliographies, except: [:new, :show] do
     collection do
-      get :list
+      get :list # edicao
 
       get :new_book           , to: :new, type_bibliography: Bibliography::TYPE_BOOK
       get :new_periodical     , to: :new, type_bibliography: Bibliography::TYPE_PERIODICAL
       get :new_article        , to: :new, type_bibliography: Bibliography::TYPE_ARTICLE
-      get :new_electronic_doc  , to: :new, type_bibliography: Bibliography::TYPE_ELECTRONIC_DOC
+      get :new_electronic_doc , to: :new, type_bibliography: Bibliography::TYPE_ELECTRONIC_DOC
       get :new_free           , to: :new, type_bibliography: Bibliography::TYPE_FREE
 
       put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "Bibliography", as: :unbind_group_from
       put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "Bibliography", as: :remove_group_from
       put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "Bibliography", as: :add_group_to
+    end
+  end
+
+  resources :notifications do
+    collection do
+      get :list # edicao
+
+      put ":tool_id/unbind/group/:id" , to: "groups#change_tool", type: "unbind", tool_type: "Notification", as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: "groups#change_tool", type: "remove", tool_type: "Notification", as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: "groups#change_tool", type: "add"   , tool_type: "Notification", as: :add_group_to
     end
   end
 

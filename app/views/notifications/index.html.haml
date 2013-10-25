@@ -1,0 +1,11 @@
+%table
+  %tr
+    %th Title
+    %th Message
+    %th Schedule
+
+  - @notifications.each do |notification|
+    %tr
+      %td= notification.title
+      %td= notification.description
+      %td= notification.schedule
