@@ -4,10 +4,8 @@ class LessonModulesController < ApplicationController
 
   def new
     authorize! :new, LessonModule, on: @allocation_tags_ids = params[:allocation_tags_ids]
-
-    @allocation_tags_ids = params[:allocation_tags_ids]
-    authorize! :new, LessonModule, :on => @allocation_tags_ids
-    @groups = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
+    #puts "VER ISSO ASDFAF #{allocation_tags_ids.to_s}"
+    @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).uniq
     @module = LessonModule.new
   end
 
@@ -20,7 +18,6 @@ class LessonModulesController < ApplicationController
       authorize! :create, LessonModule, :on => @allocation_tags_ids
       raise "error" unless @module.valid?
       
-      puts "ENTREI"
       LessonModule.transaction do
         lm = LessonModule.create!(:name => params[:lesson_module][:name], is_default: false)  
         @allocation_tags_ids.each do |id|
@@ -37,7 +34,8 @@ class LessonModulesController < ApplicationController
         format.html{ render :nothing => true, :status => 500 }
       end
     rescue Exception
-      @groups     = AllocationTag.find(@allocation_tags_ids).map(&:groups).flatten.uniq
+      @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).uniq
+
       respond_to do |format|
         format.html{ render :new, :status => 200 }
       end
@@ -46,9 +44,9 @@ class LessonModulesController < ApplicationController
   end
 
   def edit
+    authorize! :edit, LessonModule, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @module = LessonModule.find(params[:id])
     @groups = @module.groups
-    authorize! :edit, LessonModule, on: @allocation_tags_ids = params[:allocation_tags_ids]
   end
 
   def update
