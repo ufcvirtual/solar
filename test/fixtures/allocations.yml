@@ -412,7 +412,7 @@ user3_editor_al13:
   profile_id: 5
   status: 1
 
-# acesso do editor ao curso Letras Portgues
+# acesso do editor ao curso Letras Portugues
 editor_at18:
   id: 57
   user_id: 14
@@ -420,7 +420,7 @@ editor_at18:
   profile_id: 5
   status: 1
 
-# acesso do editor ao curso Letras Portgues
+# acesso do editor a uc Teoria da Literatura I
 editor_at12:
   id: 58
   user_id: 14

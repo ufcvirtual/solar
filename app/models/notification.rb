@@ -19,7 +19,7 @@ class Notification < ActiveRecord::Base
 
   def period
     p = [I18n.l(start_date, format: :normal)]
-    p << I18n.l(end_date, format: :normal) if end_date
+    p << I18n.l(end_date, format: :normal) if end_date and end_date != start_date
     p.join(" - ")
   end
 
