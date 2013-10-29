@@ -368,3 +368,29 @@ acaal62:
  allocation_tag_id: 11
  academic_tool_id: 10
  academic_tool_type: "LessonModule"
+
+## avisos
+
+group_aviso_63:
+ id: 63
+ allocation_tag_id: 2 # TL-CAU - 2011.1
+ academic_tool_id: 1
+ academic_tool_type: "Notification"
+
+offer_aviso_64:
+ id: 64
+ allocation_tag_id: 2 # 2011.1
+ academic_tool_id: 2
+ academic_tool_type: "Notification"
+
+uc_aviso_65:
+ id: 65
+ allocation_tag_id: 12 # teoria da literatura
+ academic_tool_id: 3
+ academic_tool_type: "Notification"
+
+course_aviso_66:
+ id: 66
+ allocation_tag_id: 18 # letras portugues
+ academic_tool_id: 4
+ academic_tool_type: "Notification"

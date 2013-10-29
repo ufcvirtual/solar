@@ -96,12 +96,11 @@ class NotificationsController < ApplicationController
   def destroy
     authorize! :destroy, Notification, on: params[:allocation_tags_ids]
 
-    begin
-      @notification = Notification.where(id: params[:id].split(","))
+    @notification = Notification.where(id: params[:id].split(","))
+    unless @notification.empty?
       @notification.destroy_all
-
       render json: {success: true, notice: t(:deleted, scope: [:notifications, :success])}
-    rescue
+    else
       render json: {success: false, alert: t(:deleted, scope: [:notifications, :error])}, status: :unprocessable_entity
     end
   end

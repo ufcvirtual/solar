@@ -411,3 +411,19 @@ user3_editor_al13:
   allocation_tag_id: 13
   profile_id: 5
   status: 1
+
+# acesso do editor ao curso Letras Portgues
+editor_at18:
+  id: 57
+  user_id: 14
+  allocation_tag_id: 18
+  profile_id: 5
+  status: 1
+
+# acesso do editor ao curso Letras Portgues
+editor_at12:
+  id: 58
+  user_id: 14
+  allocation_tag_id: 12
+  profile_id: 5
+  status: 1
