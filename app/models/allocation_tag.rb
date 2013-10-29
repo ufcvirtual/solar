@@ -168,5 +168,19 @@ SQL
   #   self.lesson_modules.first.delete if((not self.lesson_modules.empty?) and self.lesson_modules.size == 1 and self.lesson_modules.first.lessons.empty?)
   # end
 
+  def self.allocation_tag_details(allocation_tag)
+    if !allocation_tag.curriculum_unit_id.nil?
+      detail = allocation_tag.curriculum_unit.name
+    elsif !allocation_tag.offer.nil?
+      detail = allocation_tag.offer.course.name + ' | '
+      detail = detail + allocation_tag.offer.curriculum_unit.name + ' | '
+      detail = detail + allocation_tag.offer.semester.name
+    elsif !allocation_tag.group.nil?
+      detail = allocation_tag.group.offer.course.name + ' | '
+      detail = detail + allocation_tag.group.offer.curriculum_unit.name + ' | '
+      detail = detail + allocation_tag.group.offer.semester.name + ' | '
+      detail = detail + allocation_tag.group.code
+    end
+  end
 
 end

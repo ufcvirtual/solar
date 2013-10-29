@@ -9,4 +9,8 @@ module AdministrationsHelper
     end
 	end
 
+	def allocation_details(allocation_tag)
+		AllocationTag.allocation_tag_details(allocation_tag)
+	end
+
 end

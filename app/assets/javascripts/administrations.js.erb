@@ -19,7 +19,8 @@ $(function() {
   });
 
   $(".btn_allocations_user_administrations").click(function() {
-    $(this).call_fancybox();
+    var url = $(this).data('link-edit');
+    $(this).call_fancybox({href : url, open: true});
   });
 
   $(".btn_change_password").click(function() {

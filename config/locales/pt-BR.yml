@@ -1537,6 +1537,14 @@
       books: Livros
       phrase: Frase
       site: Site
+    allocations:
+      title: "Alocações"
+      period: "Período"
+      current: "Atual"
+      allocation: "Alocação"
+      status: "Status"
+      active: Ativo
+      blocked: Bloqueado
 
   editions:
     alert: "Preencha os campos obrigatórios"

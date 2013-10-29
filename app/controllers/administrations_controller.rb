@@ -32,7 +32,11 @@ class AdministrationsController < ApplicationController
 
   def allocations_user
     id = params[:id]
-    @allocations_user = Allocation.find_by_user_id(id) unless id.nil?
+    #@allocations_user = Allocation.find_all_by_user_id(id) unless id.nil?
+    @allocations_user = Allocation.joins(:allocation_tag)
+                        .includes(allocation_tag: [group: [offer: [curriculum_unit: :curriculum_unit_type]]])
+                        .select("allocations.*").where(allocations: {user_id: id})
+    @profiles = @allocations_user.map(&:profile).flatten.uniq
   end
 
   def edit_user

@@ -1,1 +1,29 @@
-="bla bla bla"
+.allocations_user
+
+	.block_content
+		.block_title
+			%h2= t(:title, :scope => [:administrations, :allocations])
+		.block_left
+			= t(:period, :scope => [:administrations, :allocations])
+			= 'colocar list'
+
+	- @profiles.each do |p|
+		.block_content
+			.block_title
+				%h2= p.name
+			%div
+				%table.tb_list
+					%thead
+						%tr.lines
+							%th= t(:allocation, :scope => [:administrations, :allocations])
+							%th{style: 'width:100px'}= t(:status, :scope => [:administrations, :allocations])
+							%th{style: 'width:100px'}= ''
+					%tbody
+						- @allocations_user.where("profile_id="+p.id.to_s).each do |a|
+							%tr.lines
+								%td= allocation_details(a.allocation_tag)
+								%td= a.status
+								%td= 'butaum'
+
+	.right_buttons
+		= button_to_function t(:close, :scope => [:administrations]), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"

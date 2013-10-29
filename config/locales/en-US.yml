@@ -1380,6 +1380,14 @@
       books: Books
       phrase: Phrase
       site: Site
+    allocations:
+      title: Allocations
+      period: Period
+      current: Current
+      allocation: Allocation
+      status: "Status"
+      active: Active
+      blocked: Blocked
 
   editions:
     filter: Filter
