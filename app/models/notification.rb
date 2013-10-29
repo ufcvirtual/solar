@@ -13,6 +13,7 @@ class Notification < ActiveRecord::Base
   before_validation proc { self.schedule.check_end_date = true } # data final obrigatoria
 
   validates :title, :description, presence: true
+  validates :title, length: {maximum: 255}
 
   attr_accessible :title, :description, :schedule_attributes, :schedule_id
 

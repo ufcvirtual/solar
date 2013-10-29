@@ -39,6 +39,7 @@
       group: "Class"
       course: "Course"
       bibliography: "Bibliography"
+      notification: "Notification"
     attributes:
       user:
         alternate_email: "Alternate e-mail"
@@ -184,6 +185,9 @@
         description: Description
         start_hour: Start hour
         end_hour: End hour
+      notification:
+        title: Title
+        description: Description
 
     errors:
       uniqueness: "Record already exists in the system"
@@ -1398,7 +1402,7 @@
       bibliography: Bibliography
       schedule: Schedule
       allocation: Allocation
-      notification: Warning
+      notification: Notification
       discussion: Discussion
       chat: Chat
       videoconference: Videoconference

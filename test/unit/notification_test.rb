@@ -3,15 +3,26 @@ require 'test_helper'
 class NotificationTest < ActiveSupport::TestCase
 
   test "criar notificacao" do
-    # params = {type_bibliography: Bibliography::TYPE_BOOK, address: "Fortaleza", publisher: "Editora", edition: 1, publication_year: "2013", authors_attributes: {"0" => {name: "Autor"}}}
+    params = {description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", schedule_attributes: {start_date: Date.today, end_date: Date.today + 1.day}}
 
-    # bib = Bibliography.new params
-    # assert bib.invalid?
+    warning = Notification.new params
+    assert warning.invalid?
 
-    # bib.title = "Titulo"
-    # assert bib.valid?
+    warning.title = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
 
-    # assert bib.save
+    assert warning.valid?
+    assert warning.save
+  end
+
+  test "nao cadastra sem data final" do
+    params = {title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", schedule_attributes: {start_date: Date.today}}
+    warning = Notification.new params
+
+    assert warning.invalid?
+    assert warning.errors.messages.has_key?(:"schedule.end_date")
+
+    warning.schedule.end_date = Date.today
+    assert warning.valid?
   end
 
 end

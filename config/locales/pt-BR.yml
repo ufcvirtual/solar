@@ -166,7 +166,7 @@
       group: "Turma"
       course: "Curso"
       bibliography: "Bibliografia"
-      notification: Aviso
+      notification: "Aviso"
     attributes:
       user:
         alternate_email: "E-mail alternativo"

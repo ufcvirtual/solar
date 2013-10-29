@@ -216,3 +216,25 @@ sc_for_chat2:
   id: 42
   start_date: '2011-12-01'
   end_date: '2014-12-01'
+
+## para avisos
+
+sc_for_aviso1:
+  id: 43
+  start_date: <%= Date.today %>
+  end_date: <%= Date.today + 1.day %>
+
+sc_for_aviso2:
+  id: 44
+  start_date: <%= Date.today %>
+  end_date: <%= Date.today + 1.week %>
+
+sc_for_aviso3:
+  id: 45
+  start_date: <%= Date.today + 1.day %>
+  end_date: <%= Date.today + 1.week %>
+
+sc_for_aviso4:
+  id: 46
+  start_date: <%= Date.today %>
+  end_date: <%= Date.today %>
