@@ -1,5 +1,4 @@
-= stylesheet_link_tag "fullcalendar.css"
-= javascript_include_tag "fullcalendar", "calendar"
+
 
 = hidden_field_tag :allocation_tags_ids, params[:allocation_tags_ids]
 = hidden_field_tag :all_groups_ids, params[:all_groups_ids]
@@ -10,17 +9,21 @@
 
 
   = "Legenda:"
-  %span{style: "background-color: #CCCCFF; border-color: #CCCCFF; color: black; max-width: 70px;"}= "Trabalho"
-  %span{style: "background-color: #A7C1F0; border-color: #A7C1F0; color: black; width: 60px;"}= "Chat"
-  %span{style: "background-color: #CAFCCC; border-color: #CAFCCC; color: black; width: 60px;"}= "Fórum"
-  %span{style: "background-color: #F5D5EF; border-color: #F5D5EF; color: black; width: 60px;"}= "Prova Presencial"
-  %span{style: "background-color: #FFD9E0; border-color: #FFD9E0; color: black; width: 60px;"}= "Encontro Presencial"
-  %span{style: "background-color: #E3E3E3; border-color: #E3E3E3; color: black; width: 60px;"}= "Recesso ou Feriado"
-  %span{style: "background-color: #FCEBCA; border-color: #FCEBCA; color: black; width: 60px;"}= "Outros"
-
+  %span.fc-event.fc-event-title.assignment="Trabalho"
+  %span.fc-event.fc-event-title.chat="Chat"
+  %span.fc-event.fc-event-title.discussion="Fórum"
+  %span.fc-event.fc-event-title.presential_test="Prova presencial"
+  %span.fc-event.fc-event-title.presential_meeting="Encontro presencial"
+  %span.fc-event.fc-event-title.recess_holiday="Recesso ou feriado"
+  %span.fc-event.fc-event-title.other="Outros"
+  
+= stylesheet_link_tag "fullcalendar.css"
+= javascript_include_tag "fullcalendar", "calendar"
 
 :javascript
+
   $(function(){
+    // var dayNames = "<%= I18n.t(:month_names, scope: [:date]) %>";
     $("#chat")
       .html("Novo Chat")
       .call_fancybox({href: "#{new_chat_room_path(allocation_tags_ids: [params[:allocation_tags_ids]].flatten, calendar: true)}"});

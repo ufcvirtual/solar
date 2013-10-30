@@ -13,7 +13,7 @@ $(document).ready(function() {
     header: {
             left: 'prev,next today',
             center: 'title',
-            right: 'month,agendaWeek,agendaDay'
+            right: 'month,agendaWeek,agendaDay,list'
         },
         defaultView: 'month',
         height: 500,
@@ -40,7 +40,11 @@ $(document).ready(function() {
         ids_to_forms: ids_to_forms_param,
         timeFormat: 'h:mm t{ - h:mm t} ',
         dragOpacity: "0.5",
-        
+        contentHeight: 700,
+        height: 1000,
+        allDayText: "dia todo",
+        // dayNamesShort: dayNames,
+
         eventRender: function(event, element) { 
              var fancyContent = '<div class="dropdown-panel">'+
               '<h1>Event Details</h1> <br>' +

@@ -48,8 +48,7 @@ class ScheduleEventsController < ApplicationController
       render json: {success: true, notice: t(:updated, scope: [:schedule_events, :success])}
     rescue ActiveRecord::AssociationTypeMismatch
       render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue Exception => error
-      raise "#{error}"
+    rescue
       @groups_codes = @schedule_event.groups.map(&:code)
       render :edit
     end
@@ -60,8 +59,7 @@ class ScheduleEventsController < ApplicationController
     begin
       ScheduleEvent.find(params[:id]).try(:destroy)
       render json: {success: true, notice: t(:deleted, scope: [:schedule_events, :success])}
-    rescue Exception => error
-      raise "#{error}"
+    rescue
       render json: {success: false, alert: t(:deleted, scope: [:schedule_events, :error])}, status: :unprocessable_entity
     end
   end

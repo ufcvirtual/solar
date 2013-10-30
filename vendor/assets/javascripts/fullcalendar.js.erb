@@ -80,7 +80,8 @@ var defaults = {
     today: '',
     agendaDay: 'icon-calendar-day',
     agendaWeek: 'icon-calendar-week',
-    month: 'icon-calendar-list'// colocar o ícone do mês
+    month: 'icon-calendar-list',// colocar o ícone do mês
+    list: 'icon-calendar-list'
   },
   
   // jquery-ui theming
@@ -112,7 +113,8 @@ var rtlDefaults = {
     today: '',
     agendaDay: 'icon-calendar-day',
     agendaWeek: 'icon-calendar-week',
-    month: 'icon-calendar-list'// colocar o ícone do mês
+    month: 'icon-calendar-list',// colocar o ícone do mês
+    list: 'icon-calendar-list'
   },
   buttonIcons: {
     prev: 'circle-triangle-e',
@@ -324,6 +326,12 @@ function Calendar(element, options, eventSources) {
   // TODO: improve view switching (still weird transition in IE, and FF has whiteout problem)
   
   function changeView(newViewName) {
+    // se for listagem, não permite ir para "hoje" ou utilizar as setas de navegação
+    if(newViewName == 'list')
+      $(".block_toolbar_left button").prop("disabled", true);
+    else
+      $(".block_toolbar_left button").prop("disabled", false);
+
     if (!currentView || newViewName != currentView.name) {
       ignoreWindowResize++; // because setMinHeight might change the height before render (and subsequently setSize) is reached
 
@@ -421,8 +429,6 @@ function Calendar(element, options, eventSources) {
     }
   }
   
-  
-  
   /* Resizing
   -----------------------------------------------------------------------------*/
   
@@ -508,8 +514,7 @@ function Calendar(element, options, eventSources) {
       rerenderEvents();
     }
   }
-  
-  
+
   function refetchEvents() {
     fetchEvents(currentView.visStart, currentView.visEnd); // will call reportEvents
   }
@@ -777,7 +782,7 @@ function Header(calendar, options) {
                 calendar.changeView(buttonName);
               };
             }
-            if (buttonClick) {
+            if (buttonClick || buttonName=="list") {
               var icon = options.theme ? smartProperty(options.buttonIcons, buttonName) : null;
               var text = smartProperty(options.buttonText, buttonName);
               if(buttonName == 'today'){
@@ -792,8 +797,14 @@ function Header(calendar, options) {
               if (button) {
                 button
                   .click(function() {
-                    if (!button.hasClass(tm + '-state-disabled'))
-                      buttonClick();
+                    if (!button.hasClass(tm + '-state-disabled')){
+                      if(buttonName == "list"){
+                        button.removeClass(tm + '-state-hover'); // forget why
+                        calendar.changeView(buttonName);
+                      }else{
+                        buttonClick();
+                      }
+                    }
                   })
                   .mousedown(function() {
                     button
@@ -3929,7 +3940,7 @@ function AgendaEventRenderer() {
     var html = "<";
     var url = event.url;
     var skinCss = getSkinCss(event, opt);
-    var skinCssAttr = (skinCss ? " style='" + skinCss + "'" : '');
+    var skinCssAttr = (skinCss ? " style=''" : '');
     var classes = ['fc-event', 'fc-event-skin', 'fc-event-vert'];
     if (isEventDraggable(event)) {
       classes.push('fc-event-draggable');
@@ -5002,13 +5013,11 @@ function DayEventRenderer() {
 function SelectionManager() {
   var t = this;
   
-  
   // exports
   t.select = select;
   t.unselect = unselect;
   t.reportSelection = reportSelection;
   t.daySelectionMousedown = daySelectionMousedown;
-  
   
   // imports
   var opt = t.opt;
@@ -5017,11 +5026,8 @@ function SelectionManager() {
   var renderSelection = t.renderSelection;
   var clearSelection = t.clearSelection;
   
-  
   // locals
   var selected = false;
-
-
 
   // unselectAuto
   if (opt('selectable') && opt('unselectAuto')) {
@@ -5246,6 +5252,251 @@ function HorizontalPositionCache(getElement) {
     lefts = {};
     rights = {};
   };
+
+fcViews.list = listView;
+defaults.buttonText.list='list';
+ 
+function listView(element, calendar) {
+        var t = this;
+ 
+        // exports
+        t.render = render;
+ 
+        // imports
+        ListView.call(t, element, calendar, 'list');
+        var opt = t.opt;
+        var renderList = t.renderList;
+        var formatDate = calendar.formatDate;
+        function render(date, delta) {
+            if (delta)
+                addDays(date, delta);
+            var start = cloneDate(date, true);
+            var end = addDays(cloneDate(start), 1);
+            //       t.title = formatDate(date, opt('titleFormat'));
+            t.start = t.visStart = start;
+            t.end = t.visEnd = end;
+            renderList(1, 1, false);
+        }
+    }
+ 
+    function ListView(element, calendar, viewName) {
+        var t = this;
+ 
+        // exports
+        t.renderList = renderList;
+        t.setHeight = setHeight;
+        t.setWidth = setWidth;
+        t.page = 0;
+        t.clearEvents = clearEvents;
+        t.renderEvents = renderEvents;
+ 
+        t.cellIsAllDay = function () {
+            return true
+        };
+ 
+        t.getColWidth = function () {
+            return colWidth
+        };
+        t.getDaySegmentContainer = function () {
+            return daySegmentContainer
+        };
+ 
+ 
+        // imports
+        View.call(t, element, calendar, viewName);
+        OverlayManager.call(t);
+        SelectionManager.call(t);
+ 
+        var opt = t.opt;
+        var trigger = t.trigger;
+        var clearEvents = t.clearEvents;
+        var renderOverlay = t.renderOverlay;
+        var clearOverlays = t.clearOverlays;
+        var daySelectionMousedown = t.daySelectionMousedown;
+        var formatDate = calendar.formatDate;
+ 
+        // locals
+        var updateEvents = t.calendar.updateEvents;
+        var table;
+        var head;
+        var headCells;
+        var body;
+        var bodyRows;
+        var bodyCells;
+        var bodyFirstCells;
+        var bodyCellTopInners;
+        var daySegmentContainer;
+ 
+        var viewWidth;
+        var viewHeight;
+        var colWidth;
+        var weekNumberWidth;
+ 
+        var rowCnt, colCnt;
+        var coordinateGrid;
+        var hoverListener;
+        var colContentPositions;
+ 
+        var rtl, dis, dit;
+        var firstDay;
+        var nwe; // no weekends? a 0 or 1 for easy computations
+        var tm;
+        var colFormat;
+        var showWeekNumbers;
+        var weekNumberTitle;
+        var weekNumberFormat;
+        var eventElementHandlers = t.eventElementHandlers;
+ 
+        function renderList(r, c, showNumbers) {
+            rowCnt = r;
+            colCnt = c;
+ 
+            var firstTime = !body;
+            if (firstTime)
+                buildTable();
+            else
+                clearEvents();
+        }
+ 
+        function buildTable() {
+            t.page = 1;
+            body = true;
+            t.title = "Lista de eventos futuros"
+         }
+ 
+        function setHeight(height) {
+            viewHeight = height;
+ 
+            var bodyHeight = viewHeight; //- head.height();
+            //        var rowHeight;
+            //        var rowHeightLast;
+            //        var cell;
+         
+            //       rowHeight = Math.floor(bodyHeight / rowCnt);
+            //        rowHeightLast = bodyHeight - rowHeight * (rowCnt - 1);
+ 
+            //      unlockHeight();
+        }
+ 
+ 
+        function setWidth(width) {
+            viewWidth = width;
+            //          colWidth = Math.floor((viewWidth - weekNumberWidth) / colCnt);
+        }
+ 
+        var reportEventClear = t.reportEventClear;
+        var getDaySegmentContainer = t.getDaySegmentContainer;
+ 
+        function renderEvents(events, modifiedEventId) {
+            
+            // eventos a serem listados
+            var list_events = new Array();
+
+            $(events).each(function (i) { 
+              var event = $(events)[i];
+              var today = new Date();
+              // se o evento inicia de hoje em diante ou termina de hoje em diante
+              if(event.start >= today || event.end >= today){
+                // se o evento já começou, mas acaba algum dia depois de hoje
+                if(event.start<today && event.end>today){
+                  // adiciona um evento à lista informando o evento de hoje e o evento final
+                  var today_event = {
+                    "id": event.id,
+                    "title": event.title,
+                    "description": event.description,
+                    "start": today,
+                    "end": event.end,
+                    "allDay": event.allDay,
+                    "recurring": event.recurring,
+                    "start_hour": event.start_hour,
+                    "start_hour": event.end_hour,
+                    "color": event.color,
+                    "type": event.type
+                  };
+                  var end_event = {
+                    "id": event.id,
+                    "title": event.title,
+                    "description": event.description,
+                    "start": event.end,
+                    "end": event.end,
+                    "allDay": event.allDay,
+                    "recurring": event.recurring,
+                    "start_hour": event.start_hour,
+                    "start_hour": event.end_hour,
+                    "color": event.color,
+                    "type": event.type
+                  };
+                  list_events.push(today_event);
+                  list_events.push(end_event);
+                }else{
+                  // caso contrário, lista o evento "normal"
+                  list_events.push(event);
+                }
+              }
+            });
+
+            // ordena os eventos pela data de início (a fim de "agrupar" os eventos do mesmo dia)
+            list_events.sort(function(event1, event2){
+              var event1=event1.start, event2= event2.start;
+              if(event1== event2) return 0;
+              return event1> event2? 1: -1;
+            });
+
+            var html = $("<div class='list_events'>");
+            // Fetch and Show events.
+            var first_day = true;
+            for (evt in list_events) {
+              var dt, tm, day, time, day_events;
+              var oldtm = tm;
+              var olddt = dt;
+              if (list_events[evt]) {
+                dt = formatDate(list_events[evt].start, 'dddd, MMM d, yyyy');
+                if(list_events[evt].allDay == true)
+                  tm = "dia todo";
+                else
+                  tm = formatDate(list_events[evt].start, 'h(:mm)tt');
+
+                if (dt !== olddt) {
+                  first_day = (evt == 0 ? true : false);
+                  day = $("<div class='day"+(first_day ? ' today' : '')+"'></div>");
+                  dtelem = $("<h3>" + dt + "</h3>").appendTo(day);
+                  day_events = $("<div class='day_events"+(first_day ? ' today' : '')+"'></div>").appendTo(day);
+                  day.appendTo(html);
+                }
+                
+                if(tm !== oldtm){
+                  if(evt != 0 && olddt == dt)
+                    $("<div class='line "+(first_day ? 'today' : '')+"'></div>").appendTo(day_events);
+                  time = $("<div class='time'> <h2>" + tm + "</h2></div>");
+                  time.appendTo(day_events);
+                }
+
+                eventelem = $("<div class='event"+(first_day ? ' today' : '')+"'>");
+
+                eventelem.append(
+                    "<span class='fc-event fc-event-title' style='color: black; background-color: "+list_events[evt].color+"; width: auto; border-color: "+list_events[evt].color+"'>" 
+                    + list_events[evt].title + "</div>");
+
+                eventelem.appendTo(time);
+
+                // eventElementHandlers(list_events[evt], eventelem);
+              }
+ 
+            }
+ 
+            $(element).html(html);
+            $(html).append("</div>");
+            // reportEvents(events);
+            // renderDaySegs(compileSegs(events), modifiedEventId);
+            //    trigger('eventAfterAllRender');
+        }
+ 
+ 
+        function clearEvents() {
+            reportEventClear();
+            //         getDaySegmentContainer().empty();
+        }
+    };
   
 }
 
