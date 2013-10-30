@@ -30,7 +30,6 @@ class SchedulesController < ApplicationController
     @discussions = Discussion.scoped.between(params['start'], params['end'], @allocation_tags_ids).uniq
     @schedules_events = ScheduleEvent.scoped.between(params['start'], params['end'], @allocation_tags_ids).uniq
 
-
     @events = (@assignments + @chats + @discussions + @schedules_events).map(&:schedule_json)
 
     respond_to do |format|
