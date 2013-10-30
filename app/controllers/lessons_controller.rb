@@ -26,6 +26,7 @@ class LessonsController < ApplicationController
       authorize! :list, Lesson, on: [allocation_tags].flatten
       @allocation_tags = AllocationTag.where(id: allocation_tags)
       @allocation_tags_ids = @allocation_tags.map(&:id)
+      @academic_allocations = AcademicAllocation.select("DISTINCT on (academic_tool_id) *").where(academic_tool_type: 'LessonModule').where(allocation_tag_id: @allocation_tags_ids)
     rescue
       render nothing: true, status: 500
     end

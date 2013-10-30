@@ -5,11 +5,10 @@
 
   = link_to t(".new_module"), new_lesson_module_path(:allocation_tags_ids => params[:allocation_tags_ids]), :'data-tooltip' => t(".new_module"), class: "btn btn_default link_new_module", id: "new-discussion" 
   
-  - at = @allocation_tags.map(&:id).join(",") 
   / - all_groups = Group.where(id: params[:all_groups_ids])
 
-  - unless AcademicAllocation.select("DISTINCT on (academic_tool_id) *").where(academic_tool_type: 'LessonModule').where("allocation_tag_id IN("+at+")").empty?
-    - AcademicAllocation.select("DISTINCT on (academic_tool_id) *").where(academic_tool_type: 'LessonModule').where("allocation_tag_id IN("+at+")").each_with_index do |academic_allocation, idxm|
+  - unless @academic_allocations.empty?
+    - @academic_allocations.each_with_index do |academic_allocation, idxm|
 
       - lesson_module = LessonModule.find(academic_allocation.academic_tool_id)
       - lessons = lessons_by_module(lesson_module.id)

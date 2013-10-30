@@ -4,7 +4,6 @@ class LessonModulesController < ApplicationController
 
   def new
     authorize! :new, LessonModule, on: @allocation_tags_ids = params[:allocation_tags_ids]
-    #puts "VER ISSO ASDFAF #{allocation_tags_ids.to_s}"
     @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).uniq
     @module = LessonModule.new
   end
