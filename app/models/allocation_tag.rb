@@ -183,4 +183,16 @@ SQL
     end
   end
 
+  def self.curriculum_unit_type(allocation_tag)
+    if !allocation_tag.curriculum_unit_id.nil?
+      allocation_tag.curriculum_unit.curriculum_unit_type.description
+    elsif !allocation_tag.offer.nil?
+      allocation_tag.offer.curriculum_unit.curriculum_unit_type.description
+    elsif !allocation_tag.group.nil?
+      allocation_tag.group.offer.curriculum_unit.curriculum_unit_type.description
+    else
+      ''
+    end
+  end
+
 end

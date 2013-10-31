@@ -1,5 +1,7 @@
 module AdministrationsHelper
 
+	include AllocationsHelper
+
 	def last_accessed(id)
 		last_accessed = Log.find_by_user_id(id)
 		if !last_accessed.nil?
@@ -13,4 +15,11 @@ module AdministrationsHelper
 		AllocationTag.allocation_tag_details(allocation_tag)
 	end
 
+	def type(allocation_tag)
+		AllocationTag.curriculum_unit_type(allocation_tag)
+	end
+
+	def allocation_status(status)
+		name_of(status)
+	end
 end

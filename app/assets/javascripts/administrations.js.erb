@@ -27,4 +27,14 @@ $(function() {
     $(this).call_fancybox();
   });
 
+  $(".btn_manage_allocation").click(function() {
+    $(obj).closest('tr').addClass('active');
+    $.get($(obj).attr('edit-link'), function(data) { $(obj).closest('tr').html(data); });
+  });
+
+  function manage_cancel(obj) {
+    $(obj).closest('tr').removeClass('active');
+    $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
+  }
+
 });

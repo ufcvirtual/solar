@@ -35,6 +35,7 @@ Solar::Application.routes.draw do
       get :manage_user
       get :search_users
       get :edit_user
+      get :edit_allocation
       get :allocations_user
       get :change_password
     end

@@ -5,7 +5,7 @@
 			%h2= t(:title, :scope => [:administrations, :allocations])
 		.block_left
 			= t(:period, :scope => [:administrations, :allocations])
-			= 'colocar list'
+			= select_tag "period", options_for_select(@periods, @periods.first)
 
 	- @profiles.each do |p|
 		.block_content
@@ -16,14 +16,16 @@
 					%thead
 						%tr.lines
 							%th= t(:allocation, :scope => [:administrations, :allocations])
-							%th{style: 'width:100px'}= t(:status, :scope => [:administrations, :allocations])
-							%th{style: 'width:100px'}= ''
+							%th{style: 'width:120px'}= ''
+							%th{style: 'width:80px'}= t(:status, :scope => [:administrations, :allocations])
+							%th{style: 'width:80px'}= ''
 					%tbody
 						- @allocations_user.where("profile_id="+p.id.to_s).each do |a|
 							%tr.lines
 								%td= allocation_details(a.allocation_tag)
-								%td= a.status
-								%td= 'butaum'
+								%td= type(a.allocation_tag)
+								%td= allocation_status(a.status)
+								%td.right_buttons= link_to content_tag(:i, nil, class: 'btn icon-edit'), "manage_allocation(this)", :"show-link" => allocation_path(a), :"edit-link" => edit_allocation_path(a), class:  "btn_manage_allocation"
 
 	.right_buttons
 		= button_to_function t(:close, :scope => [:administrations]), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
