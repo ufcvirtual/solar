@@ -536,6 +536,7 @@
       file_type: File
       draft: Draft
       released: Released
+      group: Group
     new:
       draft: draft
       approved: approved

@@ -43,6 +43,31 @@
 * Tratando dos titulos dos conteudos
 */
 
+div.block_module{
+
+  height: 48px !important;
+  padding-top: 6px !important;
+  overflow: visible !important;
+  border-bottom: 1px solid;
+  border-bottom-color: rgba(0, 62, 122, 0.3);
+
+  h2{
+    position: relative !important;
+    display: block !important;
+    border-bottom: 2px solid;
+    border-bottom-color: #003e7a;
+  }
+  .block_buttons{
+    display: inline-block;
+  }
+
+  .groups_tags{
+    background-color: rgb(243, 243, 243);
+    height: 28px;
+  }
+}
+
+
 .mysolar_header {
   font-variant: small-caps;
   height: 26px;

@@ -692,6 +692,7 @@
       file_type: Arquivo
       draft: Rascunho
       released: Liberada
+      group: Turma
     new:
       draft: rascunho
       approved: liberada
