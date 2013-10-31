@@ -13,6 +13,43 @@ module Taggable
     attr_accessor :user_id
   end
 
+
+  def disable_user_profile_allocation(user_id, profile_id)
+    Allocation.where(user_id: user_id, allocation_tag_id: self.allocation_tag.id, profile_id: profile_id).first.update_atributes(status: Allocation_Cancelled)
+  end
+
+  def disable_user_allocations(user_id)
+    Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag).update_all(status: Allocation_Cancelled)
+  end
+
+  def disable_user_profile_allocation(user_id, profile_id)
+    Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag, profile_id: profile_id).update_all(status: Allocation_Cancelled)
+  end
+
+  def disable_user_allocations_in_related(user_id)
+    Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag.related).update_all(status: Allocation_Cancelled)
+  end
+
+  def disable_user_profile_allocations_in_related(user_id, profile_id)
+    Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag.related, profile_id: profile_id).update_all(status: Allocation_Cancelled)
+  end
+
+  def enable_user_allocations(user_id)
+    Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag).update_all(status: Allocation_Activated)
+  end
+
+  def enable_user_profile_allocation(user_id, profile_id)
+    Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag, profile_id: profile_id).update_all(status: Allocation_Activated)
+  end
+
+  def enable_user_profile_allocations_in_related(user_id, profile_id)
+    Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag.related, profile_id: profile_id).update_all(status: Allocation_Activated)
+  end
+
+  def enable_user_allocations_in_related(user_id)
+    Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag.related).update_all(status: Allocation_Activated)
+  end
+
   def unallocate_if_possible
     return false if self.has_any_lower_association?
     unallocate_if_up_to_one_user
