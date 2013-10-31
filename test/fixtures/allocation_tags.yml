@@ -125,3 +125,7 @@ al26:
 al27:
   id: 27
   course_id: 3
+
+al28:
+  id: 28
+  offer_id: 10

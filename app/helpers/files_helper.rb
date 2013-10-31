@@ -22,7 +22,7 @@ module FilesHelper
   # }
   ##
   def compress(opts = {})
-    require 'zip/zip'
+    require 'zip'
 
     some_file_doesnt_exist = false
 
@@ -37,7 +37,7 @@ module FilesHelper
       paths         = [opts[:under_path]].flatten.compact.uniq # caminhos de todos os arquivos
 
       FileUtils.rm archive, force: true
-      Zip::ZipFile.open(archive, Zip::ZipFile::CREATE) do |zipfile| # criação do zip
+      Zip::File.open(archive, Zip::File::CREATE) do |zipfile| # criação do zip
         paths.each_with_index do |path, idx|
           dir = (opts[:folders_names].present?) ? opts[:folders_names][idx] : path.split('/').last
           zipfile.mkdir(dir)
@@ -54,13 +54,16 @@ module FilesHelper
 
         return archive if File.exists?(archive)
 
-        Zip::ZipFile.open(archive, Zip::ZipFile::CREATE) do |zipfile| # criação do zip
+        Zip::File.open(archive, Zip::File::CREATE) do |zipfile| # criação do zip
           make_tree(opts[:files], opts[:name_zip_file]).each do |dir, files|
             zipfile.mkdir(dir.to_s)
             # adiciona todos os arquivos do nível em questão no zip
             files.map do |file| 
               if File.exists?(file.attachment.path.to_s)
-                zipfile.add(File.join(dir.to_s, file.attachment_file_name), file.attachment.path.to_s) 
+                begin
+                  zipfile.add(File.join(dir.to_s, file.attachment_file_name), file.attachment.path.to_s) 
+                rescue
+                end
               else
                 some_file_doesnt_exist = true
               end
@@ -83,12 +86,12 @@ module FilesHelper
   # destination: File.join(Rails.root, 'media', 'lessons', 'lesson_id', 'aula_1', 'aula')       # ./media/lessons/lesson_id/aula_1/aula/
   ##
   def extract(path_zip_file, destination)
-    require 'zip/zip'
+    require 'zip'
 
     return t(:file_doesnt_exist, scope: :lesson_files) unless File.exist?(path_zip_file)
-    return t(:zip_contains_invalid_files, scope: :lesson_files) unless (Zip::ZipFile.open(path_zip_file).map {|f|f.to_s.split('.').last}.uniq.compact & Solar::Application.config.black_list[:extensions]).empty?
+    return t(:zip_contains_invalid_files, scope: :lesson_files) unless (Zip::File.open(path_zip_file).map {|f|f.to_s.split('.').last}.uniq.compact & Solar::Application.config.black_list[:extensions]).empty?
 
-    Zip::ZipFile.open(path_zip_file) do |zipfile|
+    Zip::File.open(path_zip_file) do |zipfile|
       zipfile.each do |f|
         f_path = File.join(destination, f.name)
         FileUtils.mkdir_p(File.dirname(f_path))

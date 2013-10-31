@@ -54,7 +54,7 @@ class OffersControllerTest < ActionController::TestCase
   test "nao criar oferta - sem acesso" do
     s = semesters(:s2013_1)
 
-    c_letras, uc_int_ling = courses(:c1), curriculum_units(:r1)
+    c_letras, uc_int_ling = courses(:c3), curriculum_units(:r1)
 
     assert_no_difference("Offer.count") do
       post :create, {offer: {course_id: c_letras.id, curriculum_unit_id: uc_int_ling.id, semester_id: s.id}, format: :json}
@@ -147,10 +147,10 @@ class OffersControllerTest < ActionController::TestCase
   end
 
   test "nao remove oferta - sem acesso" do
-    offer_2011_1 = offers(:of2) # sem permissao nesta oferta
+    lit_bra_2013_1 = offers(:of10) # sem permissao nesta oferta
 
     assert_no_difference(["Offer.count", "Schedule.count"]) do
-      delete :destroy, id: offer_2011_1.id, format: :json
+      delete :destroy, id: lit_bra_2013_1.id, format: :json
     end
 
     assert_response :unauthorized
@@ -183,7 +183,7 @@ class OffersControllerTest < ActionController::TestCase
   end
 
   test "nao desativar todas as turmas - sem acesso" do
-    post :deactivate_groups, id: offers(:of4).id, format: :json
+    post :deactivate_groups, id: offers(:of10).id, format: :json
 
     assert_response :unauthorized
     assert_not_equal offers(:of4).groups.count, offers(:of4).groups.where(status: false).count

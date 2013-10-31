@@ -379,7 +379,7 @@ group_aviso_63:
 
 offer_aviso_64:
  id: 64
- allocation_tag_id: 2 # 2011.1
+ allocation_tag_id: 5 # 2011.1
  academic_tool_id: 2
  academic_tool_type: "Notification"
 

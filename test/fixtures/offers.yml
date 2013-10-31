@@ -21,9 +21,9 @@ of3:
 
 of4:
   id: 4
-  curriculum_unit_id: 4
-  course_id: 1
-  semester_id: 2
+  curriculum_unit_id: 4 # Semipresencial sm nvista
+  course_id: 1 # Letras Portugues
+  semester_id: 2 # 2011.1
   enrollment_schedule_id: 32
 
 of5:
@@ -58,3 +58,9 @@ of9: # oferta que não deve aparecer para matrícula
   curriculum_unit_id: 3
   course_id: 2
   semester_id: 1
+
+of10:
+  id: 10
+  curriculum_unit_id: 5 # literatura brasileira I
+  course_id: 3 # Introducao a Linguistica
+  semester_id: 4 # 2013.1

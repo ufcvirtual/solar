@@ -32,6 +32,8 @@ gem "fullcalendar-rails", "~> 1.6.4.0"
 # platform adicionado para evitar que o unicorn tente ser executado no windows
 gem "unicorn", "~> 4.6.2", :platform => :ruby
 
+gem "rubyzip", "~> 1.0.0"
+
 group :development do
   gem "rb-readline", "~> 0.4.2"
   gem "net-ssh", "~> 2.6.6" # dependencia capistrano
