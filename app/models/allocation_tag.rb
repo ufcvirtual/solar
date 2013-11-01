@@ -5,17 +5,14 @@ class AllocationTag < ActiveRecord::Base
   belongs_to :offer
   belongs_to :group
 
-  has_many :offers, :through => :curriculum_unit
-  has_many :allocations, dependent: :destroy
   has_many :schedule_events
-  
-  #Relação Extra
-  has_many :academic_allocations
-  #Relação Extra
+  has_many :allocations,          dependent: :destroy
+  has_many :academic_allocations, dependent: :restrict # nao posso deletar uma ferramenta academica se tiver conteudo
 
-  #before_destroy :verify_lesson_module
-  has_many :users, :through => :allocations, :uniq => true
-  has_many :groups, :finder_sql => Proc.new {
+  has_many :users,  through: :allocations, uniq: true
+  has_many :offers, through: :curriculum_unit
+
+  has_many :groups, finder_sql: Proc.new {
     if not group_id.nil?
       %Q{ SELECT * FROM groups WHERE id = #{group_id} }
     elsif not offer_id.nil?
@@ -87,7 +84,7 @@ class AllocationTag < ActiveRecord::Base
         end
     end
 
-    at = (lower + upper).flatten.compact.uniq.sort
+    at = (lower + upper).flatten.compact.uniq
     return at if args[:objects]
     return at.map(&:id)
   end

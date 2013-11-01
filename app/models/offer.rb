@@ -1,20 +1,19 @@
 class Offer < ActiveRecord::Base
-
   include Taggable
 
   belongs_to :course
   belongs_to :curriculum_unit
   belongs_to :semester
 
-  belongs_to :period_schedule, class_name: "Schedule", foreign_key: "offer_schedule_id"
-  belongs_to :enrollment_schedule, class_name: "Schedule", foreign_key: "enrollment_schedule_id"
+  belongs_to :period_schedule,      class_name: "Schedule", foreign_key: "offer_schedule_id"
+  belongs_to :enrollment_schedule,  class_name: "Schedule", foreign_key: "enrollment_schedule_id"
 
   has_many :groups
-  has_many :assignments, through: :academic_allocations
+  has_many :academic_allocations, through: :allocation_tag
+  has_many :lesson_modules,       through: :academic_allocations, source: :academic_tool, source_type: "LessonModule"
+  has_many :assignments,          through: :academic_allocations, source: :academic_tool, source_type: "Assignment"
 
   after_create :set_default_lesson_module # modulo default da oferta
-
-  before_destroy :can_destroy?
 
   after_destroy { |record|
     record.period_schedule.destroy if record.period_schedule.try(:can_destroy?)
@@ -45,18 +44,10 @@ class Offer < ActiveRecord::Base
     self.curriculum_unit_id = curriculum_unit.try(:id)
   end
 
-  def can_destroy?
-    not(has_any_lower_association?)
-  end
-
   def check_period
     self.period_schedule.check_end_date = true if period_schedule and period_schedule.start_date
     self.period_schedule.verify_current_date = true if period_schedule
     self.enrollment_schedule.verify_current_date = true if enrollment_schedule
-  end
-
-  def has_any_lower_association?
-    self.groups.count > 0
   end
 
   def lower_associated_objects
@@ -103,6 +94,10 @@ class Offer < ActiveRecord::Base
       first_day_of_year, last_day_of_year = Date.parse("#{year}-01-01"), Date.parse("#{year}-12-31")
       self.joins(:period_schedule).where("(schedules.end_date BETWEEN ? AND ?) OR (schedules.start_date BETWEEN ? AND ?)", first_day_of_year, last_day_of_year, first_day_of_year, last_day_of_year)
     end
+  end
+
+  def has_any_lower_association?
+    self.groups.count > 0
   end
 
 end

@@ -398,6 +398,9 @@
   required_fields: "* campo(s) obrigatório(s)"
   object_not_found: "Objeto não encontrado"
   search: "Filtrar"
+  dont_destroy_with_lower_associations: "Possui associações que impedem a deleção"
+  dont_destroy_with_many_allocations: "Possui associações com outros usuários"
+  dont_destroy_with_content: "Possui conteúdo"
 
   #Página de Login
   login_description1: "O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,

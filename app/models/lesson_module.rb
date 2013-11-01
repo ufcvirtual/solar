@@ -16,13 +16,13 @@ class LessonModule < ActiveRecord::Base
   validates :name, presence: true
   
   def verify_situation_module 
-   if lessons.count > 0  and  academic_allocations.count > 1
+   if lessons.count > 0  and academic_allocations.count > 1
      errors.add(:base, I18n.t(:cant_delete_shared, :scope => [:lesson_modules, :errors]))
      return false
    elsif is_default
      errors.add(:base, I18n.t(:cant_delete, :scope => [:lesson_modules, :errors]))
      return false
-   end 
-  end    
+   end
+  end
  
 end

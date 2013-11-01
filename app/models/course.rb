@@ -1,11 +1,12 @@
 class Course < ActiveRecord::Base
-  default_scope order: "name"
-
   include Taggable
 
+  default_scope order: "name"
+
   has_many :offers
-  has_many :groups, :through => :offers, :uniq => true
-  has_many :curriculum_units, :through => :offers, :uniq => true
+  has_many :groups,               through: :offers, uniq: true
+  has_many :curriculum_units,     through: :offers, uniq: true
+  has_many :academic_allocations, through: :allocation_tag
 
   validates :name, :code, presence: true, uniqueness: true
 

@@ -112,7 +112,6 @@ class OffersControllerTest < ActionController::TestCase
     offer_2012_1 = offers(:of7)
 
     assert_difference(["Offer.count", "LessonModule.count"], -1) do # schedule compartilhada com semestre
-      LessonModule.find(6).destroy
       assert_difference("Schedule.count", -2) do
         delete :destroy, id: offer_2012_1.id
       end

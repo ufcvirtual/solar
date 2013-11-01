@@ -1,68 +1,47 @@
 module Taggable
 
-  def self.included(base)   
-    base.before_destroy :unallocate_if_possible
+  def self.included(base)
+    base.before_destroy :destroy_empty_modules # modulos vazios (default)
+    base.before_destroy :can_destroy?
+
     base.after_create :allocation_tag_association
     base.after_create :allocate_profiles
 
     base.has_one :allocation_tag, dependent: :destroy
-    base.has_many :allocations, :through => :allocation_tag
-    base.has_many :users, :through => :allocation_tag
-    base.has_many :lesson_modules, :through => :allocation_tag
+
+    base.has_many :allocations, through: :allocation_tag
+    base.has_many :users,       through: :allocation_tag
 
     attr_accessor :user_id
   end
 
+  ## verificando destroy
 
-  def disable_user_profile_allocation(user_id, profile_id)
-    Allocation.where(user_id: user_id, allocation_tag_id: self.allocation_tag.id, profile_id: profile_id).first.update_atributes(status: Allocation_Cancelled)
-  end
-
-  def disable_user_allocations(user_id)
-    Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag).update_all(status: Allocation_Cancelled)
-  end
-
-  def disable_user_profile_allocation(user_id, profile_id)
-    Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag, profile_id: profile_id).update_all(status: Allocation_Cancelled)
-  end
-
-  def disable_user_allocations_in_related(user_id)
-    Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag.related).update_all(status: Allocation_Cancelled)
-  end
-
-  def disable_user_profile_allocations_in_related(user_id, profile_id)
-    Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag.related, profile_id: profile_id).update_all(status: Allocation_Cancelled)
-  end
-
-  def enable_user_allocations(user_id)
-    Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag).update_all(status: Allocation_Activated)
-  end
-
-  def enable_user_profile_allocation(user_id, profile_id)
-    Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag, profile_id: profile_id).update_all(status: Allocation_Activated)
-  end
-
-  def enable_user_profile_allocations_in_related(user_id, profile_id)
-    Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag.related, profile_id: profile_id).update_all(status: Allocation_Activated)
-  end
-
-  def enable_user_allocations_in_related(user_id)
-    Allocation.where(user_id: user_id, allocation_tag_id: allocation_tag.related).update_all(status: Allocation_Activated)
-  end
-
-  def unallocate_if_possible
-    return false if self.has_any_lower_association?
-    unallocate_if_up_to_one_user
-  end
-
-  def unallocate_if_up_to_one_user
-    if at_most_one_user_allocated?
-      @user_id = self.allocations.select(:user_id).first.user_id if self.allocations.count > 0
-      unallocate_user_in_lower_associations(user_id) if user_id
-      return true
+  def destroy_empty_modules
+    if respond_to?(:lesson_modules) and lesson_modules.map(&:lessons).flatten.empty?
+      lesson_modules.map(&:academic_allocations).flatten.map(&:delete) # usando delete para nao chamar callbacks
+      lesson_modules.map(&:delete)
     end
-    return false
   end
+
+  def can_destroy?
+    if self.has_any_lower_association?
+      errors.add(:base, I18n.t(:dont_destroy_with_lower_associations))
+      return false
+    end
+
+    if not at_most_one_user_allocated? # se possuir mais de um usuario alocado, nao deleta
+      errors.add(:base, I18n.t(:dont_destroy_with_many_allocations))
+      return false
+    end
+
+    if academic_allocations.count > 0 # verifica se possui conteudo
+      errors.add(:base, I18n.t(:dont_destroy_with_content))
+      return false
+    end
+  end
+
+  ## demais metodos
 
   def at_most_one_user_allocated?
     not (self.allocations.select("DISTINCT user_id").count  > 1)
@@ -88,22 +67,76 @@ module Taggable
     self.allocation_tag.is_only_user_allocated_in_related?(user_id)
   end
 
-  def can_destroy?
-    ((is_up_to_one_user?) and (not has_any_lower_association?))
-  end
-
   ## criacao de lesson module default :: devera ser chamada apenas por groups e offers
   def create_default_lesson_module(name)
     LessonModule.transaction do
       lm = LessonModule.create(name: name, is_default: true)
-      AcademicAllocation.create(allocation_tag: allocation_tag, academic_tool_id: lm.id, academic_tool_type: 'LessonModule')
-    end
+      lm.academic_allocations.create(allocation_tag: allocation_tag)
+    end if respond_to?(:lesson_modules)
   end
 
-  ##
-  # Após criar algum elemento taggable (uc, curso, turma, oferta), verifica todos os perfis que o usuário possui 
-  # e, para cada um daqueles que possuem permissão de realizar a ação previamente realizada, é criada uma alocação
-  ##
+  ###
+  ## Alocações
+  ###
+
+  ## user_id, new_status, opts = {profile_id, related}
+  def change_allocation_status(user_id, new_status, opts = {})
+    where = {user_id: user_id}
+    where.merge!({profile_id: opts[:profile_id]}) if opts.include?(:profile_id) and not opts[:profile_id].nil?
+
+    if opts.include?(:related) and opts[:related]
+      all = Allocation.where(allocation_tag_id: allocation_tag.related({lower: true})).where(where)
+    else
+      all = allocations.where(where)
+    end
+
+    all.update_all(status: new_status)
+  end
+
+  ## desabilitar todas as alocacoes do usuario nesta ferramenta academica
+  def disable_user_allocations(user_id)
+    change_allocation_status(user_id, Allocation_Cancelled)
+  end
+
+  ## desabilitar todas as alocacoes do usuario para o perfil informado nesta ferramenta academica
+  def disable_user_profile_allocation(user_id, profile_id)
+    change_allocation_status(user_id, Allocation_Cancelled, {profile_id: profile_id})
+  end
+
+  ## desabilitar todas as alocacoes do usuario nesta ferramenta academica e nas ferramentas academicas abaixo desta (ex: offers -> groups)
+  def disable_user_allocations_in_related(user_id)
+    change_allocation_status(user_id, Allocation_Cancelled, {related: true})
+  end
+
+  ## desabilitar todas as alocacoes do usuario para o perfil informado nesta ferramenta academica e nas ferramentas academicas abaixo desta (ex: offers -> groups)
+  def disable_user_profile_allocations_in_related(user_id, profile_id)
+    change_allocation_status(user_id, Allocation_Cancelled, {profile_id: profile_id, related: true})
+  end
+
+  ## ativar alocacao do usuario nesta ferramenta academica
+  def enable_user_allocations(user_id)
+    change_allocation_status(user_id, Allocation_Activated)
+  end
+
+  ## ativar alocacao do usuario nesta ferramenta academica e nas ferramentas academicas abaixo desta (ex: offers -> groups)
+  def enable_user_allocations_in_related(user_id)
+    change_allocation_status(user_id, Allocation_Activated, {related: true})
+  end
+
+  ## ativar alocacao do usuario para o perfil informado nesta ferramenta academica
+  def enable_user_profile_allocation(user_id, profile_id)
+    change_allocation_status(user_id, Allocation_Activated, {profile_id: profile_id})
+  end
+
+  ## ativar alocacao do usuario para o perfil informado nesta ferramenta academica e nas ferramentas academicas abaixo desta (ex: offers -> groups)
+  def enable_user_profile_allocations_in_related(user_id, profile_id)
+    change_allocation_status(user_id, Allocation_Activated, {profile_id: profile_id, related: true})
+  end
+
+  ########
+
+  ## Após criar algum elemento taggable (uc, curso, turma, oferta), verifica todos os perfis que o usuário possui 
+  ## e, para cada um daqueles que possuem permissão de realizar a ação previamente realizada, é criada uma alocação
   def allocate_profiles
     if user_id
       profiles_with_access = User.find(user_id).profiles.joins(:resources).where(resources: {action: 'create', controller: self.class.name.underscore << 's'}).flatten
@@ -113,13 +146,5 @@ module Taggable
       end
     end
   end
-
-  private
-    def unallocate_user_in_lower_associations(user_id)    
-      self.lower_associated_objects do |down_associated_object| 
-        down_associated_object.unallocate_user_in_lower_associations(user_id)
-      end if self.respond_to?(:lower_associated_objects)
-      unallocate_user(user_id)
-    end
 
 end
