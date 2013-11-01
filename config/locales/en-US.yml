@@ -818,6 +818,7 @@
   message_send_ok: "Message sent successfully."
   message_send_error: "Unable to send message."
   message_send_error_no_receiver: "Message not sent. No recipients found in the environment."
+  message_no_receiver_selected: "No recipient selected."
   message_personal_contacts: "Personal Contacts"
   message_header: "Message sent by: "
   message_complete: "Complete"

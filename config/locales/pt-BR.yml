@@ -973,6 +973,7 @@
   message_send_ok: "Mensagem enviada com sucesso."
   message_send_error: "Não foi possível enviar mensagem."
   message_send_error_no_receiver: "Mensagem não enviada. Nenhum destinatário encontrado no ambiente."
+  message_no_receiver_selected: "Nenhum destinatário selecionado."
   message_personal_contacts: "Contatos Pessoais"
   message_header: "Mensagem enviada por: "
   message_complete: "Concluir"
