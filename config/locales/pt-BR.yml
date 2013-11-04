@@ -892,7 +892,7 @@
     free_form:
       description: Descrição
     index:
-      items: Itens Bibiliográficos
+      items: Itens Bibliográficos
     list:
       new: Nova Bibliografia
       item: Item
