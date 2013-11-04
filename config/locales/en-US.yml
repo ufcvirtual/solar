@@ -737,6 +737,8 @@
       add_author: Add Author
     free_form:
       description: Description
+    index:
+      items: Bibliography Items
     list:
       new: New Bibliography
       item: Item
@@ -851,9 +853,6 @@
   icon_add_participant: "Add participant icon"
   icon_lesson: "Lesson icon"
   icon_bibliography: "Bibliography icon"
-
-  bibliography_title: "Bibliography of"
-  bibliography_null: "Nothing bibliography registered"
 
   #AGENDA
   agenda_title: "Agenda of"

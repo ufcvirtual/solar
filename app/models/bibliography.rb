@@ -54,7 +54,7 @@ class Bibliography < ActiveRecord::Base
     btype = case type_bibliography
     when TYPE_BOOK
       r = [resume_authors]
-      r << title if title
+      r << "<b>#{title}</b>" if title
       r << subtitle if subtitle
       r << "#{edition}. ed" if edition
       r << "#{address}: #{publisher}, #{publication_year}" if address and publisher and publication_year
@@ -62,7 +62,7 @@ class Bibliography < ActiveRecord::Base
       r << "v. #{volume}" if volume
       r.join(". ")
     when TYPE_PERIODICAL
-      r = [title]
+      r = ["<b>#{title}</b>"]
       r << subtitle if subtitle
       r << "#{address}: #{publisher}" if address and publisher
       r << periodicity_year_end ? "#{periodicity_year_start} - #{periodicity_year_end}" : periodicity_year_start
@@ -71,7 +71,7 @@ class Bibliography < ActiveRecord::Base
       r.join(". ")
     when TYPE_ARTICLE
       r = [resume_authors]
-      r << title if title
+      r << "<b>#{title}</b>" if title
       r << subtitle if subtitle
       r << article_periodicity_title if article_periodicity_title
       r << address if address
@@ -81,7 +81,7 @@ class Bibliography < ActiveRecord::Base
       r.join(". ")
     when TYPE_ELECTRONIC_DOC
       r = [resume_authors]
-      r << title if title
+      r << "<b>#{title}</b>" if title
       r << additional_information if additional_information
       r << "#{I18n.t(:available_in, scope: [:bibliographies, :list])} #{url}" if url
       r << "#{I18n.t(:accessed_in, scope: [:bibliographies, :list])} #{I18n.l(accessed_in, format: :bibliography)}" if accessed_in
@@ -92,7 +92,7 @@ class Bibliography < ActiveRecord::Base
   end
 
   def self.all_by_allocation_tags(allocation_tags_ids)
-    joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: allocation_tags_ids})
+    joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: allocation_tags_ids}).uniq
   end
 
 end

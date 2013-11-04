@@ -5,24 +5,17 @@ class BibliographiesController < ApplicationController
   def list
     authorize! :list, Bibliography, on: @allocation_tags_ids = (params[:allocation_tags_ids].class == String ? params[:allocation_tags_ids].split(",") : params[:allocation_tags_ids])
 
-    @bibliographies = Bibliography.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).uniq
+    @bibliographies = Bibliography.all_by_allocation_tags(@allocation_tags_ids)
   end
 
   # GET /bibliographies
-  # GET /bibliographies.json
   def index
-    authorize! :index, Bibliography
+    authorize! :index, Bibliography, on: [at = active_tab[:url][:allocation_tag_id]]
 
-    @bibliographies = Bibliography.all_by_allocation_tags(AllocationTag.find_related_ids(active_tab[:url][:allocation_tag_id])) # sempre dentro de uma UC
-
-    respond_to do |format|
-      format.html
-      format.json { render json: @bibliographies }
-    end
+    @bibliographies = Bibliography.all_by_allocation_tags(AllocationTag.find(at).related(upper: true) + [at]) # tem que listar bibliografias relacionadas para cima
   end
 
   # GET /bibliographies/new
-  # GET /bibliographies/new.json
   def new
     authorize! :create, Bibliography, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
@@ -41,7 +34,6 @@ class BibliographiesController < ApplicationController
   end
 
   # POST /bibliographies
-  # POST /bibliographies.json
   def create
     authorize! :create, Bibliography, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
     @bibliography = Bibliography.new(params[:bibliography])
@@ -61,7 +53,6 @@ class BibliographiesController < ApplicationController
   end
 
   # PUT /bibliographies/1
-  # PUT /bibliographies/1.json
   def update
     authorize! :update, Bibliography, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
 
@@ -79,7 +70,6 @@ class BibliographiesController < ApplicationController
   end
 
   # DELETE /bibliographies/1
-  # DELETE /bibliographies/1.json
   def destroy
     authorize! :destroy, Bibliography, on: params[:allocation_tags_ids]
 

@@ -37,12 +37,7 @@
             %td{style: 'text-align:center;'}= check_box_tag :ckb_bibliography, bibliography.id, false, {class: "ckb_bibliography"}
             %td
               %div
-                .description
-                  - resume = bibliography.resume
-                  .minimun= raw(truncate resume, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
-                  .complete.invisible
-                    = resume
-                    = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_description"))
+                .description=raw bibliography.resume
                 .group_label.invisible= render "groups/groups_tags", groups: bibliography.groups, tool: bibliography, all_groups: all_groups, paths: {add: add_group_to_bibliographies_path(id: "param_id", tool_id: bibliography.id), remove: remove_group_from_bibliographies_path(id: "param_id", tool_id: bibliography.id), unbind: unbind_group_from_bibliographies_path(id: "param_id", tool_id: bibliography.id)}
             %td
               = bibliography.type

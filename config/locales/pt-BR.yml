@@ -891,6 +891,8 @@
       add_author: Adicionar Autor
     free_form:
       description: Descrição
+    index:
+      items: Itens Bibiliográficos
     list:
       new: Nova Bibliografia
       item: Item
@@ -1006,9 +1008,6 @@
   icon_add_participant: "Ícone de adicionar participante"
   icon_lesson: "Ícone de aulas"
   icon_bibliography: "Ícone bibliografia"
-
-  bibliography_title: "Bibliografia de"
-  bibliography_null: "Nenhuma bibliografia cadastrada"
 
   #AGENDA
   agenda_title: "Agenda de"

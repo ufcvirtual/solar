@@ -1,15 +1,18 @@
-- if not @bibliographies.empty?
+.block_title
+  %h2= t(".items")
+.blcok_content
+  - unless @bibliographies.nil? or @bibliographies.empty?
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th{align: "left"}=t(:item, scope: [:bibliographies, :list])
+          %th{align: "center", style: "width: 15%;"}=t(:type, scope: [:bibliographies, :list])
+      %tbody
+        - @bibliographies.each do |bibliography|
+          %tr.lines{id: "tr_#{bibliography.id}"}
+            %td
+              .description=raw bibliography.resume
+            %td= bibliography.type
 
-  - @bibliographies.each do |bib|
-    .block_wrapper
-      .block_title
-        %h2
-          %i.icon-book
-      .block_content.block_content_text
-        %div
-          = bib.resume # ainda falta melhorar
-
-- else
-  .block_wrapper
-    .block_content_text_list.text_none
-      = t(:bibliography_null)
+  - else
+    .block_content_text.block_content_text_list.text_none= t(:no_data, scope: [:bibliographies, :list])
