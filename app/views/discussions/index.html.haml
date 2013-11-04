@@ -8,7 +8,7 @@
       %thead
         %tr.lines
           %th{align:"left"}=t :title
-          %th{align:"center", style:"width: 22%;"}=t :forum_table_date
+          %th.date{align:"center", style:"width: 22%;"}=t :forum_table_date
       %tbody
         - @discussions.each do |discussion|
           %tr{class: "lines #{'period_ended' if discussion.closed? and (not discussion.extra_time?(current_user.id))} "}

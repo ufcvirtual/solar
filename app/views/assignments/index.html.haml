@@ -15,12 +15,12 @@
     %table.tb_list
       %thead
         %tr.lines
-          %th{style: 'text-align:center;'}
+          %th.center.no_sort
             %input#all_assignments{type: "checkbox", :"data-children-names" => "ckb_assignment"}
           %th{style: 'text-align:left;'}= t(:name, scope: "assignment.list")
-          %th{style: 'text-align:center;'}= t(:type, scope: "assignment.list")
-          %th{style: 'text-align:center;'}= t(:availability, scope: "assignment.list")
-          %th{style: 'text-align:center;'}= t(:answers, scope: "assignment.list")
+          %th.center= t(:type, scope: "assignment.list")
+          %th.center.no_sort= t(:availability, scope: "assignment.list")
+          %th.center{:style => "width: 12%"}= t(:answers, scope: "assignment.list")
 
       %tbody
         - @assignments.each do |assignment|
@@ -65,7 +65,7 @@
   - else
     .block_content_text_list.text_none= t(:none, scope: "assignment.list")
 
-= javascript_include_tag "tooltip", "assignments", "groups_tags"
+= javascript_include_tag "tooltip", "assignments", "groups_tags", "tablesorter"
 
 :javascript
   var div_list = $(".list_assignments");

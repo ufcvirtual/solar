@@ -10,7 +10,7 @@
         %thead
           %tr.lines
             %th= t(:description, :scope => [:assignment, :information])
-            %th{:align => "right", :style => "width:170px"}= t(:date_range, :scope => [:assignment, :information])
+            %th.date{:align => "right", :style => "width:170px"}= t(:date_range, :scope => [:assignment, :information])
         %tbody
           - @individual_activities.each_with_index do |individual_activity, idx|
             %tr.lines
@@ -35,7 +35,7 @@
         %thead
           %tr.lines
             %th= t(:description, :scope => [:assignment, :information])
-            %th{:align => "right", :style => "width:170px"}= t(:date_range, :scope => [:assignment, :information])
+            %th.date{:align => "right", :style => "width:170px"}= t(:date_range, :scope => [:assignment, :information])
         %tbody
           - @group_activities.each_with_index do |group_activity, idx|
             %tr.lines

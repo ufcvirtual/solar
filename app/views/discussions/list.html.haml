@@ -16,9 +16,9 @@
     %table.tb_list
       %thead
         %tr.lines
-          %th{style: 'text-align:center; width: 8%;'}= check_box_tag :all_discussions, false, false, :"data-children-names" => "ckb_discussion", class: "all_discussions"
+          %th.no_sort{style: 'text-align:center; width: 8%;'}= check_box_tag :all_discussions, false, false, :"data-children-names" => "ckb_discussion", class: "all_discussions"
           %th{align: "left"}=t :title
-          %th{align: "center", style: "width: 26%;"}=t :forum_table_date
+          %th.no_sort{align: "center", style: "width: 26%;"}=t :forum_table_date
       %tbody
         - @discussions.each do |discussion|
           %tr.lines{id: "tr_#{discussion.id}"}
@@ -38,7 +38,7 @@
   - else
     .block_content_text.block_content_text_list.text_none= t(:forum_message)
 
-= javascript_include_tag "edition_discussions", "tooltip", "groups_tags"
+= javascript_include_tag "edition_discussions", "tooltip", "groups_tags", "tablesorter"
 
 :javascript
 

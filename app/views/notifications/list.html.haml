@@ -16,9 +16,9 @@
     %table.tb_list
       %thead
         %tr.lines
-          %th{style: 'text-align:center; width: 8%;'}= check_box_tag :all_notifications, false, false, :"data-children-names" => "ckb_notification", class: "all_notifications"
+          %th.no_sort{style: 'text-align:center; width: 25px;'}= check_box_tag :all_notifications, false, false, :"data-children-names" => "ckb_notification", class: "all_notifications"
           %th{align: "left"}=t(".notification")
-          %th{align: "center", style: "width: 26%;"}= t(".period")
+          %th.no_sort{align: "center", style: "width: 26%;"}= t(".period")
       %tbody
         - @notifications.each do |notification|
           %tr.lines{id: "tr_#{notification.id}"}
@@ -37,7 +37,7 @@
   - else
     .block_content_text.block_content_text_list.text_none= t(".no_data")
 
-= javascript_include_tag "notifications", "tooltip", "groups_tags"
+= javascript_include_tag "notifications", "tooltip", "groups_tags", 'tablesorter'
 
 :javascript
 

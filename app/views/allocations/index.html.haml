@@ -15,12 +15,12 @@
   %table.tb_list.enrollments
     %thead
       %tr.lines
-        %th{style: "width:10px"}= check_box_tag( 'all', 'all', false, {id: "cbx_all"} )
+        %th.no_sort.center{style: "width:10px"}= check_box_tag( 'all', 'all', false, {id: "cbx_all"} )
         %th= t(".manage_student")
         %th{style: 'width:120px'}= t(".manage_group")
         %th{style: 'width:120px'}= t(".manage_curriculum_unit")
         %th{style: 'width:100px'}= t(".manage_status")
-        %th{style: 'width:120px'}= t(".manage_options")
+        %th.no_sort{style: 'width:120px'}= t(".manage_options")
     %tbody
       - @allocations.each do |allocation|
         %tr.lines

@@ -63,21 +63,21 @@
           %thead
             %tr.lines
               - unless lessons.nil? or lessons.empty?
-                %th{style: 'text-align:center;'}= check_box_tag( 'all', 'all', false, {id: "all_m_#{lesson_module.id}", class: 'lesson_check_all', :"data-children-names" => "m_#{lesson_module.id}", :"data-bla" => "#module_#{lesson_module.id}"} )
-                %th{style: 'text-align:center;'}= t(".order")
+                %th.center.no_sort{style: 'width: 25px'}= check_box_tag( 'all', 'all', false, {id: "all_m_#{lesson_module.id}", class: 'lesson_check_all', :"data-children-names" => "m_#{lesson_module.id}", :"data-bla" => "#module_#{lesson_module.id}"} )
+                %th.center.no_sort= t(".order")
                 %th= t(".name")
-                %th{style: 'width: 5%; text-align:center;'}= t(".type")
-                %th{style: 'text-align:center;'}= t(".availability")
-                %th{style: 'text-align:center;'}= t(".acceptance")
+                %th.center{style: 'width: 10%'}= t(".type")
+                %th.center.no_sort= t(".availability")
+                %th.center.no_sort= t(".acceptance")
 
           %tbody
             - unless lessons.nil? or lessons.empty?
               - lessons.each_with_index do |lesson, idxl|
 
                 %tr.lines{lesson_name: lesson.name, lesson_id: lesson.id, lesson_order: lesson.order, lesson_status: lesson.status}
-                  %td{style: "width: 25px;", align: 'center' }
+                  %td.center
                     = check_box_tag( "m_#{lesson_module.id}", lesson.id, false, {class: "m_#{lesson_module.id}", :"data-file-type" => (lesson.type_lesson == Lesson_Type_File) })
-                  %td{style: "width: 50px;", align: 'center'}
+                  %td.center{style: "width: 50px;"}
                     .lesson_arrows
                       .lesson_arrow_up= link_to (image_tag "lesson/up_arrow.png"), "#", class: 'up'
                       .lesson_arrow_down= link_to (image_tag "lesson/down_arrow.png"), "#", class: 'down'
@@ -89,11 +89,11 @@
 
                   %td= (lesson.type_lesson == Lesson_Type_File ? t(".file_type") : t(".link_type"))
 
-                  %td{style: "width: 160px", align: 'center'}
+                  %td.center{style: "width: 160px"}
                     = t(".since") unless not(lesson.schedule.end_date.nil?)
                     = [l(lesson.schedule.start_date, format: :normal), (lesson.has_end_date? ? l(lesson.schedule.end_date, format: :normal) : t(:no_end_date, scope: [:lessons, :list]))].join(" - ")
 
-                  %td{style: "width: 70px", align: 'center'}
+                  %td.center{style: "width: 70px"}
                     - status = [Lesson_Test, Lesson_Approved].delete_if {|v| v == lesson.status}
                     = link_to (image_tag "#{(lesson.status == Lesson_Test) ? 'rejected' : 'released'}.png"), "#", class: 'change_lesson_status', :"data-link-update" => change_status_lesson_path(id: lesson.id, status: status, allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => (lesson.status == Lesson_Test ?  t(".draft") :  t(".released")), :"data-module-id" => lesson_module.id
             - else
@@ -103,7 +103,7 @@
   - else
     .block_content.block_content_text= t(:none, scope: [:lesson_modules])
 
-= javascript_include_tag "tooltip", "lessons", "groups_tags"
+= javascript_include_tag "tooltip", "lessons", "groups_tags", "tablesorter"
 
 :javascript
     var div_list = $(".list_lessons");

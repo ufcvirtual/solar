@@ -19,16 +19,16 @@
     %h2= t(".curriculum_unit")
   .block_content
     %table.tb_list.enrollment_list
-      %thead
-      %tbody
-        - unless @groups.empty?
+      - unless @groups.empty?
+        %thead
           %tr.lines
             %th= t(".curriculum_unit")
             %th= t(".category")
             %th= t(:semester)
             %th= t(".group")
-            %th= t(".period")
-            %th= t(:mysolar_mn_enrollment)
+            %th.no_sort= t(".period")
+            %th.no_sort= t(:mysolar_mn_enrollment)
+        %tbody
           - @groups.each do |group|
             - period_info = enrollment_info(group.offer)
             - uc = group.curriculum_unit
@@ -56,8 +56,8 @@
                     = label_tag "lb_rejected", t(".rejected"), class: 'enrollment_label'
                   - else
                     = button_to t(".enroll"), {controller: "allocations", action: "create", allocation_tag_id: group.allocation_tag.id, user_id: current_user.id}, class: 'btn btn_default', disabled: not(period_info[:is_active])
-        - else
-          %td.any_found.text_none= t(".no_curriculum_unit_found")
+      - else
+        %td.any_found.text_none= t(".no_curriculum_unit_found")
 
 :javascript
    $(function(){

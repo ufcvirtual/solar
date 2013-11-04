@@ -10,10 +10,10 @@
         %thead
           %tr.lines
             %th= t(:description, :scope => [:assignment, :information])
-            %th{:align => "center", :style => "width:70px"}= t(:date_range, :scope => [:assignment, :information])
+            %th.center.date{:style => "width:70px"}= t(:date_range, :scope => [:assignment, :information])
             %th{:align => "right", :style => "width:80px"}= t(:situation, :scope => [:assignment, :information])
-            %th{:align => "center", :style => "width:40px"}= t(:grade, :scope => [:assignment, :information])
-            %th{:align => "center", :style => "width:80px"}= t(:comments, :scope => [:assignment, :comments])
+            %th.center{:style => "width:40px"}= t(:grade, :scope => [:assignment, :information])
+            %th.center.no_sort{:style => "width:80px"}= t(:comments, :scope => [:assignment, :comments])
         %tbody
           - @individual_assignments_info["assignments"].each_with_index do |assignment, idx|
             %tr.lines
@@ -59,10 +59,10 @@
         %thead
           %tr.lines
             %th=t(:description, :scope => [:assignment, :information])
-            %th{:align => "center", :style => "width:70px"}= t(:date, :scope => [:assignment, :information])
+            %th.center.date{:style => "width:70px"}= t(:date, :scope => [:assignment, :information])
             %th{:align => "right", :style => "width:80px"}= t(:situation, :scope => [:assignment, :information])
-            %th{:align => "center", :style => "width:40px"}= t(:grade, :scope => [:assignment, :information]) 
-            %th{:align => "center", :style => "width:80px"}= t(:comments, :scope => [:assignment, :comments]) 
+            %th.center{:style => "width:40px"}= t(:grade, :scope => [:assignment, :information]) 
+            %th.center.no_sort{:style => "width:80px"}= t(:comments, :scope => [:assignment, :comments]) 
         %tbody
           - @group_assignments_info["assignments"].each_with_index do |assignment, idx|
             - group = GroupAssignment.find(@group_assignments_info["groups_ids"][idx]) unless @group_assignments_info["groups_ids"][idx].nil?

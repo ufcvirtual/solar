@@ -21,10 +21,10 @@
       %table.tb_list
         %thead
           %tr.lines
-            %th{style: 'text-align:center; width: 8%;'}= check_box_tag :all_support_material, false, false, :"data-children-names" => "c_", class: "all_support_material"
+            %th.center.no_sort{style: 'width: 25px;'}= check_box_tag :all_support_material, false, false, :"data-children-names" => "c_", class: "all_support_material"
             %th{style: 'text-align:left;'}= t(".name")
-            %th{style: 'text-align:center;'}= t(".date")
-            %th{style: 'text-align:center;'}= t(".type")
+            %th.center.date= t(".date")
+            %th.center= t(".type")
 
         %tbody
           - @support_materials.each do |material|
@@ -51,7 +51,7 @@
     - else
       .block_content_text_list.text_none= t(".none")
 
-= javascript_include_tag "tooltip", "groups_tags"
+= javascript_include_tag "tooltip", "groups_tags", "tablesorter"
 
 :javascript
 

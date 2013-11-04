@@ -13,19 +13,19 @@
             %th{style: 'width:80px'}= t(".cpf")
             %th{style: 'width:200px'}= t(".email")
             %th{style: 'width:120px'}= t(".profile")
-            %th{style: 'width: 50px'}= t(".designated_on")
-            %th{style: 'width:100px'}= ""
+            %th{style: 'width: 80px'}= t(".designated_on")
+            %th.no_sort
         %tbody
           - unless @allocations.nil? or @allocations.empty?
             - @allocations.each do |allocation|
               %tr.lines
                 %td= allocation.user.name
-                %td{style: 'width:80px'}= allocation.user.cpf
-                %td{style: 'width:200px'}= allocation.user.email
-                %td{style: 'width:120px'}= allocation.profile.name
-                %td{style: 'width: 50px'}= allocation.group ? allocation.group.code : (allocation.offer ? allocation.offer.semester.name : allocation.course.name)
+                %td= allocation.user.cpf
+                %td= allocation.user.email
+                %td= allocation.profile.name
+                %td= allocation.group ? allocation.group.code : (allocation.offer ? allocation.offer.semester.name : allocation.course.name)
 
-                %td{style: 'width:100px'}
+                %td
                   - status, link = (allocation.status == Allocation_Activated) ? ["deactivate", deactivate_allocation_path(id: allocation, text_search: @text_search)] : ["activate", activate_allocation_path(id: allocation, text_search: @text_search)]
 
                   = button_tag t(".#{status}"), type: :button, class: "btn btn_caution #{status}", alt: t(".#{status}_user", user_name: allocation.user.name), :'data-link' => link, :"data-link-list" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids.flatten)
@@ -42,6 +42,8 @@
 
     .block_content.allocations_list
       #list_users
+
+= javascript_include_tag 'tablesorter'
    
 :javascript
 

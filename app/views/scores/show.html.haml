@@ -12,9 +12,9 @@
         %thead
           %tr.lines
             %th{:align => "left"}= t(:assignments, scope: [:assignment])
-            %th{:align => "right", :style => "width: 24%;"}= t(:date_name)
-            %th{:align => "center", :style => "width: 12%;"}= t(:situation, :scope => [:assignment, :information])
-            %th{:align => "center", :style => "width: 8%;"}= t(:grade, :scope => [:assignment, :information])
+            %th.date{:align => "right", :style => "width: 24%;"}= t(:date_name)
+            %th.center{:style => "width: 12%;"}= t(:situation, :scope => [:assignment, :information])
+            %th.center{:style => "width: 8%;"}= t(:grade, :scope => [:assignment, :information])
         %tbody
           - @individual_activities["assignments"].each_with_index do |activity, idx|
             %tr.lines

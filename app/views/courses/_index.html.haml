@@ -7,12 +7,12 @@
       = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_course_path, class: " btn btn_main", id: "new_course", :'data-tooltip' => t(".new") 
 
   %table.tb_list
-    %head
+    %thead
       %tr.lines
         %th= t(".code")
         %th= t(".name")
-        %th{:width => "12%"}
-    %body
+        %th.no_sort{:width => "12%"}
+    %tbody
       - @courses.each do |course|
         %tr.lines
           %td= course.code

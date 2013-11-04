@@ -20,18 +20,17 @@
   %table.tb_list{:cellpadding => "10", :cellspacing => "0", :width => "100%", :style => "table-layout: fixed"}
     %thead
       %tr.lines
-        %th{:width => "12%"}
+        %th.no_sort.center{:style => "width:25px"}
           %input#all_curriculum_unit{type: "checkbox", :"data-children-names" => "ckb_curriculum_unit"}
-          = CurriculumUnit.human_attribute_name(:code)
+        %th.no_sort{:width => "12%"}= CurriculumUnit.human_attribute_name(:code)
         %th{:width => "38%"}= CurriculumUnit.human_attribute_name(:name)
         %th{:width => "28%"}= CurriculumUnit.human_attribute_name(:category)
-        %th{:width => "12%"}
+        %th.no_sort{:width => "12%"}
     %tbody
       - @curriculum_units.each do |curriculum_unit|
         %tr.lines
-          %td
-            = check_box_tag 'ckb_curriculum_unit', curriculum_unit.id, checked = false, {class: 'selected_curriculum_unit', :"data-curriculum_unit-id" => curriculum_unit.id}
-            = curriculum_unit.code
+          %td= check_box_tag 'ckb_curriculum_unit', curriculum_unit.id, checked = false, {class: 'selected_curriculum_unit', :"data-curriculum_unit-id" => curriculum_unit.id}
+          %td= curriculum_unit.code
           %td= curriculum_unit.name
           %td{:align => "left"}= curriculum_unit.curriculum_unit_type.description
           %td{:align => "right"}= link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn edit', :'data-tooltip' => t(".edit", uc_or_module: t_tool_name),  disabled: not(can? :update, curriculum_unit), :"data-link-edit" => edit_curriculum_unit_path(curriculum_unit)

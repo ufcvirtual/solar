@@ -16,9 +16,9 @@
     %table.tb_list
       %thead
         %tr.lines
-          %th{style: 'text-align:center; width: 8%;'}= check_box_tag :all_chats, false, false, :"data-children-names" => "c_"
+          %th.no_sort.center{style: 'width: 25px;'}= check_box_tag :all_chats, false, false, :"data-children-names" => "c_"
           %th{style: 'text-align:left;'}= t(".chat_name")
-          %th{style: 'text-align:center; width: 21%;'}= t(".availability")
+          %th.no_sort.center{style: 'width: 21%;'}= t(".availability")
 
       %tbody
         - @chat_rooms.each do |chat|
@@ -44,7 +44,7 @@
   - else
     .block_content.block_content_text= t(".no_chats")
 
-= javascript_include_tag "chat_rooms", "tooltip", "groups_tags"
+= javascript_include_tag "chat_rooms", "tooltip", "groups_tags", "tablesorter"
 
 :javascript
 
