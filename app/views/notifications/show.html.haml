@@ -1,1 +1,19 @@
-ainda nao feito
+.show_notification
+  %h1#lightBoxDialogTitle= @notification.title
+
+  .block_content
+    .notification
+      = raw @notification.description
+
+  .right_buttons
+    = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
+
+:css
+  .show_notification {
+    max-width: 750px;
+  }
+
+  .show_notification .block_content {
+    padding-top: 10px;
+    padding-left: 5px;
+  }

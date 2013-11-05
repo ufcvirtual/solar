@@ -192,4 +192,8 @@ class User < ActiveRecord::Base
     I18n.t(:user_cannot_login)
   end
 
+  def all_allocation_tags(objects = false)
+    allocation_tags.map {|at| at.related(all: true, objects: objects)}.flatten.uniq
+  end
+
 end

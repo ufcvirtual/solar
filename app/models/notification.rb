@@ -8,6 +8,8 @@ class Notification < ActiveRecord::Base
   has_many :allocation_tags, through: :academic_allocations
   has_many :groups, through: :allocation_tags
 
+  has_many :read_notifications
+
   accepts_nested_attributes_for :schedule, allow_destroy: true
 
   before_validation proc { self.schedule.check_end_date = true } # data final obrigatoria
@@ -29,6 +31,18 @@ class Notification < ActiveRecord::Base
 
   def end_date
     schedule.end_date
+  end
+
+  def read?(user)
+    not read_notifications.where(user_id: user).empty?
+  end
+
+  def mark_as_read(user)
+    read_notifications.create(user: user) unless read?(user)
+  end
+
+  def self.of_user(user)
+    joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: user.all_allocation_tags}).uniq
   end
 
 end

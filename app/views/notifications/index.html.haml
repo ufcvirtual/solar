@@ -1,11 +1,24 @@
-%table
-  %tr
-    %th Title
-    %th Message
-    %th Schedule
-
+%table.notifications.tb_list
   - @notifications.each do |notification|
-    %tr
-      %td= notification.title
-      %td= notification.description
-      %td= notification.schedule
+    %tr.lines{class: notification.read?(current_user) ? "" : "unread", "data-link-show" => notification_path(notification)}
+      %td
+        .head
+          .title= raw(truncate notification.title, length: 150)
+          .period= notification.period
+        .description= raw(truncate notification.description, length: 200)
+
+:css
+  table.notifications .unread {
+    background-color: #fefae6 !important;
+  }
+
+  table.notifications tr {
+    cursor: pointer;
+  }
+
+:javascript
+  $(function(){
+    $('table.notifications tr').click(function(){
+      $(this).call_fancybox({href : $(this).data('link-show'), open: true});
+    })
+  });

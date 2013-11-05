@@ -1,6 +1,6 @@
 class NotificationsController < ApplicationController
 
-  layout false, except: [:index, :show]
+  layout false#, except: [:index]
 
   def list
     authorize! :list, Notification, on: @allocation_tags_ids = (params[:allocation_tags_ids].class == String ? params[:allocation_tags_ids].split(",") : params[:allocation_tags_ids])
@@ -8,31 +8,28 @@ class NotificationsController < ApplicationController
     @notifications = Notification.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids}).uniq
   end
 
-  ## falta definicao do index
-
   # GET /notifications
   # GET /notifications.json
-  # def index
-  #   @notifications = Notification.all
+  def index
+    @notifications = Notification.of_user(current_user)
 
-  #   respond_to do |format|
-  #     format.html # index.html.erb
-  #     format.json { render json: @notifications }
-  #   end
-  # end
-
-  ## falta definicao do show
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @notifications }
+    end
+  end
 
   # GET /notifications/1
   # GET /notifications/1.json
-  # def show
-  #   @notification = Notification.find(params[:id])
+  def show
+    @notification = Notification.find(params[:id])
+    @notification.mark_as_read(current_user)
 
-  #   respond_to do |format|
-  #     format.html # show.html.erb
-  #     format.json { render json: @notification }
-  #   end
-  # end
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @notification }
+    end
+  end
 
   # GET /notifications/new
   # GET /notifications/new.json
