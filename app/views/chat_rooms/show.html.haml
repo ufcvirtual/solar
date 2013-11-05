@@ -1,5 +1,5 @@
 .show_chat
-  %h1#lightBoxDialogTitle= "Show"
+  %h1#lightBoxDialogTitle= t(".chat_details")
 
   .form-inputs.block_content
     .input
@@ -30,9 +30,9 @@
         %span.participants{style: "margin-left: 142px;"}
           #participants_box
             - if (@chat_room.chat_type == 1)
-              = label_tag "Participantes definidos"
+              = label_tag t(".defined_participants")
             - else
-              = label_tag "Todos da turma"
+              = label_tag t(".all_participants")
             .box{class: (@chat_room.chat_type == 1 ? "" : "invisible")}
               - participants = @chat_room.users
               - unless participants.empty?

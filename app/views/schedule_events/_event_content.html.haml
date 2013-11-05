@@ -1,6 +1,6 @@
 .event_details_dropdown
   %h1
-    = "#{model_name}: "
+    = I18n.t "schedule_events.event_content.#{model_name.to_s.tableize}"
     = event.respond_to?(:name) ? event.name : event.title
   - recurring = (event.respond_to?(:start_hour) and event.respond_to?(:end_hour) and not(event.start_hour.blank? or event.end_hour.blank?))
   %h3= (recurring ? "#{event.start_hour} - #{event.end_hour}" : "all day")

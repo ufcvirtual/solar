@@ -719,6 +719,13 @@
       offer_period: must be on the date range of offer (%{start} - %{end})
       discussion_with_posts: "Discussion with posts"
       mandatory_final_date: "Mandatory final date"
+    show:
+      name: Name
+      description: Description
+      groups: Groups
+      start_date: Start date
+      end_date: End date
+      discussion_details: Discussion's details
 
   bibliographies:
     author_required: Author required
@@ -1301,6 +1308,16 @@
       created: Assignment wasn't created.
       updated: Assignment wasn't updated.
       deleted: Assignment wasn't deleted.
+    show:
+      name: Name
+      enunciation: Enunciation
+      type_assignment: Type
+      start_date: Start date
+      end_date: End date
+      files: Files
+      empty_files: There're no files
+      groups: Groups
+      assignment_details: Assignment's details
 
   groups:
     list:
@@ -1662,6 +1679,19 @@
       updated: Chat wasn't updated.
       deleted: Chat wasn't deleted.
       chat_has_messages: Chat wasn't deleted. Already has messages.
+    show:
+      participants: Participants
+      groups: Groups
+      all_participants: All from group
+      empty_group: Empty group
+      title: Title
+      description: Description
+      start_hour: Start hour
+      end_hour: End hour
+      start_date: Start date
+      end_date: End date
+      defined_participants: Defined participants
+      chat_details: Chat's details
 
 #Facebook
 
@@ -1736,3 +1766,9 @@
       groups: Groups
       start_date: Start
       end_date: End
+      event_details: Event's details
+    event_content:
+      chat_rooms: "Chat: "
+      assignments: "Assignment: "
+      discussions: "Discussion: "
+      schedule_events: "Event: "

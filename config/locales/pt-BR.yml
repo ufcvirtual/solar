@@ -879,6 +879,7 @@
       groups: Turmas
       start_date: Início
       end_date: Término
+      discussion_details: Detalhes do fórum
 
   bibliographies:
     author_required: Autor obrigatório
@@ -1473,6 +1474,7 @@
       files: Arquivos
       empty_files: Não há arquivos
       groups: Turmas
+      assignment_details: Detalhes do trabalho
 
   groups:
     list:
@@ -1838,7 +1840,7 @@
     show:
       participants: Participantes
       groups: Turmas
-      all_participants: Todos
+      all_participants: Todos da turma
       empty_group: Turma vazia
       title: Título
       description: Descrição
@@ -1846,6 +1848,8 @@
       end_hour: Hora de término
       start_date: Início
       end_date: Término
+      defined_participants: Participantes definidos
+      chat_details: Detalhes do chat
 
   #Facebook
 
@@ -1921,3 +1925,9 @@
       groups: Turmas
       start_date: Início
       end_date: Término
+      event_details: Detalhes do evento
+    event_content:
+      chat_rooms: "Chat: "
+      assignments: "Trabalho: "
+      discussions: "Fórum: "
+      schedule_events: "Evento: "
