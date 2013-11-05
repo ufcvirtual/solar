@@ -3,9 +3,9 @@ class AssignmentsController < ApplicationController
   include AssignmentsHelper
   include FilesHelper
 
-  layout false, only: [:index, :new, :edit, :create, :update, :destroy]
+  layout false, only: [:index, :new, :edit, :create, :update, :destroy, :show]
 
-  before_filter :prepare_for_group_selection, :only => [:professor, :student]
+  before_filter :prepare_for_group_selection, :only => [:professor, :student_view]
   load_and_authorize_resource :only => [:information, :import_groups_page, :import_groups, :manage_groups, :evaluate, :send_comment, :remove_comment]
 
   authorize_resource :only => [:download_files, :upload_file, :send_public_files_page, :delete_file]
@@ -24,33 +24,6 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.new
     @assignment.build_schedule(start_date: Date.current, end_date: Date.current)
     @assignment.enunciation_files.build
-  end
-
-  ##
-  # Informações do andamento da atividade para um aluno/grupo escolhido
-  # Nesta página, há as opções de comentários para o trabalho do aluno/grupo, avaliação e afins
-  # => responsáveis: podem comentar/avaliar
-  # => alunos: podem enviar/excluir arquivos
-  ##
-  def show
-    @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
-    authorize! :show, Assignment, on: [@allocation_tag.id]
-
-    @assignment      = Assignment.find(params[:id])
-    @user            = current_user
-    @student_id      = params[:group_id].nil? ? params[:student_id] : nil
-    @group_id        = params[:group_id].nil? ? nil : params[:group_id] 
-    @group           = GroupAssignment.find(params[:group_id]) unless @group_id.nil? # grupo
-    @sent_assignment = @assignment.sent_assignment_by_user_id_or_group_assignment_id(@allocation_tag.id, @student_id, @group_id)
-    @situation       = @assignment.situation_of_student(@allocation_tag.id, @student_id, @group_id)
-    @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  # arquivos que fazem parte da descrição da atividade
-
-    raise CanCan::AccessDenied unless @assignment.user_can_access_assignment(@allocation_tag, current_user.id, @student_id, @group_id)
-
-    unless @sent_assignment.nil?
-      @sent_assignment_files = @sent_assignment.assignment_files
-      @comments              = @sent_assignment.assignment_comments
-    end
   end
 
   def edit
@@ -112,9 +85,12 @@ class AssignmentsController < ApplicationController
 
     begin
       Assignment.transaction do
-        Assignment.includes(:sent_assignments).
-          where(assignments: {id: params[:id].split(",")}, sent_assignments: {id: nil}). # retirando trabalhos com resposta de alunos
-          map(&:destroy)
+        assignments = Assignment.includes(:sent_assignments).where(id: params[:id].split(","), sent_assignments: {id: nil})
+        raise "error" if assignments.empty?
+
+        Assignment.transaction do
+          assignments.destroy_all
+        end
       end
       render json: {success: true, notice: t(:deleted, scope: [:assignments, :success])}
     rescue
@@ -122,7 +98,41 @@ class AssignmentsController < ApplicationController
     end
   end
 
+  def show
+    # authorize! :show, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
+    @assignment = Assignment.find(params[:id])
+    @enunciation_files = @assignment.enunciation_files.compact
+    @groups_codes = @assignment.groups.map(&:code)
+  end
+
   # Não REST
+
+  ##
+  # Informações do andamento da atividade para um aluno/grupo escolhido
+  # Nesta página, há as opções de comentários para o trabalho do aluno/grupo, avaliação e afins
+  # => responsáveis: podem comentar/avaliar
+  # => alunos: podem enviar/excluir arquivos
+  ##
+  def student
+    @allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
+    authorize! :student, Assignment, on: [@allocation_tag.id]
+
+    @assignment      = Assignment.find(params[:id])
+    @user            = current_user
+    @student_id      = params[:group_id].nil? ? params[:student_id] : nil
+    @group_id        = params[:group_id].nil? ? nil : params[:group_id] 
+    @group           = GroupAssignment.find(params[:group_id]) unless @group_id.nil? # grupo
+    @sent_assignment = @assignment.sent_assignment_by_user_id_or_group_assignment_id(@allocation_tag.id, @student_id, @group_id)
+    @situation       = @assignment.situation_of_student(@allocation_tag.id, @student_id, @group_id)
+    @assignment_enunciation_files = AssignmentEnunciationFile.find_all_by_assignment_id(@assignment.id)  # arquivos que fazem parte da descrição da atividade
+
+    raise CanCan::AccessDenied unless @assignment.user_can_access_assignment(@allocation_tag, current_user.id, @student_id, @group_id)
+
+    unless @sent_assignment.nil?
+      @sent_assignment_files = @sent_assignment.assignment_files
+      @comments              = @sent_assignment.assignment_comments
+    end
+  end
 
   def professor
     authorize! :professor, Assignment
@@ -134,8 +144,8 @@ class AssignmentsController < ApplicationController
     render :layout => false if params[:allocation_tags_ids]
   end
 
-  def student
-    authorize! :student, Assignment
+  def student_view
+    authorize! :student_view, Assignment
 
     group_id                     = params['selected_group'] # turma
     @student_id                  = current_user.id

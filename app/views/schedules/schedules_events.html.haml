@@ -8,14 +8,15 @@
   #calendar{:"data-edition" => "true", :"data-ids" => "chat,discussion,assignment,event"}
 
 
-  = "Legenda:"
-  %span.fc-event.fc-event-title.assignment="Trabalho"
-  %span.fc-event.fc-event-title.chat="Chat"
-  %span.fc-event.fc-event-title.discussion="Fórum"
-  %span.fc-event.fc-event-title.presential_test="Prova presencial"
-  %span.fc-event.fc-event-title.presential_meeting="Encontro presencial"
-  %span.fc-event.fc-event-title.recess_holiday="Recesso ou feriado"
-  %span.fc-event.fc-event-title.other="Outros"
+  .legend
+    = label_tag "Legenda:"
+    %span.fc-event.fc-event-title.assignment="Trabalho"
+    %span.fc-event.fc-event-title.chat="Chat"
+    %span.fc-event.fc-event-title.discussion="Fórum"
+    %span.fc-event.fc-event-title.presential_test="Prova presencial"
+    %span.fc-event.fc-event-title.presential_meeting="Encontro presencial"
+    %span.fc-event.fc-event-title.recess_holiday="Recesso ou feriado"
+    %span.fc-event.fc-event-title.other="Outros"
   
 = stylesheet_link_tag "fullcalendar.css"
 = javascript_include_tag "fullcalendar", "calendar"

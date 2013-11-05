@@ -19,8 +19,8 @@
           - @individual_activities["assignments"].each_with_index do |activity, idx|
             %tr.lines
               %td{:align => "left"}
-                - if can? :show, Assignment
-                  = link_to activity.name, assignment_path(activity.id, :student_id => @student.id), {:class => 'link_content'}
+                - if can? :student, Assignment
+                  = link_to activity.name, student_assignment_path(activity.id, :student_id => @student.id), {:class => 'link_content'}
                 - else
                   = activity.name
               %td{:align => "left"}
@@ -32,12 +32,12 @@
           - @group_activities["assignments"].each_with_index do |activity, idx|
             %tr.lines
               %td{:align => "left"}
-                - if (@group_activities["groups_ids"][idx].nil? and not (can? :information, Assignment)) or not(can? :show, Assignment)
+                - if (@group_activities["groups_ids"][idx].nil? and not (can? :information, Assignment)) or not(can? :student, Assignment)
                   %div{:style => "color: #204783"}= activity.name
                 - elsif @group_activities["groups_ids"][idx].nil?
                   =link_to activity.name, information_assignment_path(activity.id), {:class => 'link_content'}
                 - else
-                  =link_to activity.name, assignment_path(activity.id, :student_id => @student.id, :group_id => @group_activities["groups_ids"][idx]), {:class => 'link_content'}
+                  =link_to activity.name, student_assignment_path(activity.id, :student_id => @student.id, :group_id => @group_activities["groups_ids"][idx]), {:class => 'link_content'}
               %td{:align => "left"}
                 =l activity.schedule.start_date, :format => :normal 
                 = "-" 

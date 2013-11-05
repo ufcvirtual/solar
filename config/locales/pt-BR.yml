@@ -873,6 +873,12 @@
       offer_period: deve estar dentro do período da oferta (%{start} - %{end})
       discussion_with_posts: Fórum com postagens
       mandatory_final_date: Data final obrigatória
+    show:
+      name: Nome
+      description: Descrição
+      groups: Turmas
+      start_date: Início
+      end_date: Término
 
   bibliographies:
     author_required: Autor obrigatório
@@ -1458,6 +1464,15 @@
       created: Não foi possível criar trabalho.
       updated: Não foi possível atualizar trabalho.
       deleted: Não foi possível deletar trabalho.
+    show:
+      name: Nome
+      enunciation: Enunciado
+      type_assignment: Tipo
+      start_date: Início
+      end_date: Término
+      files: Arquivos
+      empty_files: Não há arquivos
+      groups: Turmas
 
   groups:
     list:
@@ -1820,6 +1835,17 @@
       updated: Não foi possível atualizar chat.
       deleted: Não foi possível deletar chat.
       chat_has_messages: Não foi possível deletar chat. Já possui mensagens.
+    show:
+      participants: Participantes
+      groups: Turmas
+      all_participants: Todos
+      empty_group: Turma vazia
+      title: Título
+      description: Descrição
+      start_hour: Hora de início
+      end_hour: Hora de término
+      start_date: Início
+      end_date: Término
 
   #Facebook
 
@@ -1885,3 +1911,13 @@
       created: Não foi possível criar evento.
       updated: Não foi possível atualizar evento.
       deleted: Não foi possível deletar evento.
+    show:
+      title: Título
+      type_event: Tipo
+      place: Local
+      description: Descrição
+      start_hour: Hora de início
+      end_hour: Hora de término
+      groups: Turmas
+      start_date: Início
+      end_date: Término

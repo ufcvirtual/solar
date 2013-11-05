@@ -1726,3 +1726,13 @@
       created: Event wasn't created.
       updated: Event wasn't updated.
       deleted: Event wasn't deleted.
+    show:
+      title: Title
+      type_event: Type
+      place: Place
+      description: Description
+      start_hour: Start hour
+      end_hour: End hour
+      groups: Groups
+      start_date: Start
+      end_date: End

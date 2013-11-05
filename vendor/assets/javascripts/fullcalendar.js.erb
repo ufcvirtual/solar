@@ -177,7 +177,6 @@ $.fn.fullCalendar = function(options) {
     calendar.render();
   });
   
-  
   return this;
   
 };
@@ -218,8 +217,7 @@ function Calendar(element, options, eventSources) {
   t.getView = getView;
   t.option = option;
   t.trigger = trigger;
-  
-  
+
   // imports
   EventManager.call(t, options, eventSources);
   var isFetchNeeded = t.isFetchNeeded;
@@ -326,11 +324,11 @@ function Calendar(element, options, eventSources) {
   // TODO: improve view switching (still weird transition in IE, and FF has whiteout problem)
   
   function changeView(newViewName) {
+    // limpa todos os dropdowns da página para não haver conflitos
+    $(".dropdown").not("#dropdown_options").remove();
+
     // se for listagem, não permite ir para "hoje" ou utilizar as setas de navegação
-    if(newViewName == 'list')
-      $(".block_toolbar_left button").prop("disabled", true);
-    else
-      $(".block_toolbar_left button").prop("disabled", false);
+    $(".block_toolbar_left button").prop("disabled", (newViewName == 'list'));
 
     if (!currentView || newViewName != currentView.name) {
       ignoreWindowResize++; // because setMinHeight might change the height before render (and subsequently setSize) is reached
@@ -744,24 +742,26 @@ function Header(calendar, options) {
     var e = $("<td class='block_toolbar_" + position + "'/>");
 
     // se estiver na edição, adiciona botão de cadastros
-    if (options.edition == "true" && position == "left" && options.ids_to_forms != "undefined"){
-      var button = $("<a class='btn btn_main' data-dropdown='#dropdown_options' href='#'>")
-        .append("<i class='icon-plus-3'></i>")
-        .append("<i class='icon-arrow-down-3'></i>")
-        .append("</a>");
-      e.append(button);
-      e.append("<span class='fc-header-space'/>");
-
-      var dropdown = $("<div class='dropdown dropdown-tip' id='dropdown_options'>");
-      var dropdown_ul = $("<ul class='dropdown-menu'>");
+    if (options.edition == "true" && position == "left" && options.ids_to_forms != undefined && options.ids_to_forms != ""){
       ids_to_forms = options.ids_to_forms.split(",");
-      $.each(ids_to_forms, function(i){
-        dropdown_ul.append("<li><a href='#' id='"+ids_to_forms[i]+"'></a></li>");
-      });
-      dropdown_ul.append("</ul>");
-      dropdown.append(dropdown_ul)
-        .append("</div>");
-      e.append(dropdown);
+      if(ids_to_forms.length > 0){
+        var button = $("<a class='btn btn_main' data-dropdown='#dropdown_options' href='#'>")
+          .append("<i class='icon-plus-3'></i>")
+          .append("<i class='icon-arrow-down-3'></i>")
+          .append("</a>");
+        e.append(button);
+        e.append("<span class='fc-header-space'/>");
+
+        var dropdown = $("<div class='dropdown dropdown-tip' id='dropdown_options'>");
+        var dropdown_ul = $("<ul class='dropdown-menu'>");
+        $.each(ids_to_forms, function(i){
+          dropdown_ul.append("<li><a href='#' id='"+ids_to_forms[i]+"'></a></li>");
+        });
+        dropdown_ul.append("</ul>");
+        dropdown.append(dropdown_ul)
+          .append("</div>");
+        e.append(dropdown);
+      }
     }
 
     var buttonStr = options.header[position];
@@ -1023,7 +1023,7 @@ function EventManager(options, _sources) {
                     "allDay": event.allDay,
                     "recurring": event.recurring,
                     "start_hour": event.start_hour,
-                    "start_hour": event.end_hour,
+                    "end_hour": event.end_hour,
                     "color": event.color,
                     "type": event.type
                   };
@@ -3963,6 +3963,7 @@ function AgendaEventRenderer() {
     html +=
       " class='" + classes.join(' ') + "'" +
       " style='position:absolute;z-index:8;top:" + seg.top + "px;left:" + seg.left + "px;" + skinCss + "'" +
+      " data-dropdown='#dropdown_details_" + event.type + "_" + event.id + "'" +
       ">" +
       "<div class='fc-event-inner fc-event-skin'" + skinCssAttr + ">" +
       "<div class='fc-event-head fc-event-skin'" + skinCssAttr + ">" +
@@ -5409,25 +5410,28 @@ function listView(element, calendar) {
                     "allDay": event.allDay,
                     "recurring": event.recurring,
                     "start_hour": event.start_hour,
-                    "start_hour": event.end_hour,
-                    "color": event.color,
-                    "type": event.type
-                  };
-                  var end_event = {
-                    "id": event.id,
-                    "title": event.title,
-                    "description": event.description,
-                    "start": event.end,
-                    "end": event.end,
-                    "allDay": event.allDay,
-                    "recurring": event.recurring,
-                    "start_hour": event.start_hour,
-                    "start_hour": event.end_hour,
+                    "end_hour": event.end_hour,
                     "color": event.color,
                     "type": event.type
                   };
                   list_events.push(today_event);
-                  list_events.push(end_event);
+
+                  if(event.allDay == true){
+                    var end_event = {
+                      "id": event.id,
+                      "title": event.title,
+                      "description": event.description,
+                      "start": event.end,
+                      "end": event.end,
+                      "allDay": event.allDay,
+                      "recurring": event.recurring,
+                      "start_hour": event.start_hour,
+                      "end_hour": event.end_hour,
+                      "color": event.color,
+                      "type": event.type
+                    };  
+                    list_events.push(end_event);
+                  }
                 }else{
                   // caso contrário, lista o evento "normal"
                   list_events.push(event);
@@ -5446,15 +5450,18 @@ function listView(element, calendar) {
             // Fetch and Show events.
             var first_day = true;
             for (evt in list_events) {
-              var dt, tm, day, time, day_events;
+              var dt, tm, day, time, day_events, start, end;
               var oldtm = tm;
               var olddt = dt;
               if (list_events[evt]) {
                 dt = formatDate(list_events[evt].start, 'dddd, MMM d, yyyy');
                 if(list_events[evt].allDay == true)
                   tm = "dia todo";
-                else
-                  tm = formatDate(list_events[evt].start, 'h(:mm)tt');
+                else{
+                  start = list_events[evt].start_hour;
+                  end = list_events[evt].end_hour;
+                  tm = start + " - " + end;
+                }
 
                 if (dt !== olddt) {
                   first_day = (evt == 0 ? true : false);
@@ -5471,30 +5478,27 @@ function listView(element, calendar) {
                   time.appendTo(day_events);
                 }
 
-                eventelem = $("<div class='event"+(first_day ? ' today' : '')+"'>");
+                eventelem = $("<div class='event"+(first_day ? ' today' : '')+"' data-dropdown='#dropdown_details_" + list_events[evt].type + "_" + list_events[evt].id + "' >");
 
                 eventelem.append(
-                    "<span class='fc-event fc-event-title' style='color: black; background-color: "+list_events[evt].color+"; width: auto; border-color: "+list_events[evt].color+"'>" 
+                    "<span class='fc-event fc-event-title' style='color: black; background-color: "+list_events[evt].color+"; width: auto; border-color: "+list_events[evt].color
+                    +"'>" 
                     + list_events[evt].title + "</div>");
 
                 eventelem.appendTo(time);
 
-                // eventElementHandlers(list_events[evt], eventelem);
+                eventElementHandlers(list_events[evt], eventelem);
               }
  
             }
  
             $(element).html(html);
             $(html).append("</div>");
-            // reportEvents(events);
-            // renderDaySegs(compileSegs(events), modifiedEventId);
-            //    trigger('eventAfterAllRender');
         }
  
  
         function clearEvents() {
             reportEventClear();
-            //         getDaySegmentContainer().empty();
         }
     };
   

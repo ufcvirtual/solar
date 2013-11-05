@@ -184,7 +184,7 @@ Solar::Application.routes.draw do
 
   resources :assignments do
     collection do
-      get :student
+      get :student_view
       get :professor
 
       get :download_files
@@ -200,6 +200,7 @@ Solar::Application.routes.draw do
     member do
       get :information
       get :import_groups_page
+      get :student
       post :evaluate
       post :send_comment
       post :manage_groups
@@ -224,7 +225,9 @@ Solar::Application.routes.draw do
     get :events, on: :collection
   end
 
-  resources :schedule_events, except: [:index]
+  resources :schedule_events, except: [:index] do
+    get :dropdown_content, on: :collection
+  end
 
   resources :messages, except: [:destroy, :update] do
     member do

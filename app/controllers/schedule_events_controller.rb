@@ -63,4 +63,17 @@ class ScheduleEventsController < ApplicationController
       render json: {success: false, alert: t(:deleted, scope: [:schedule_events, :error])}, status: :unprocessable_entity
     end
   end
+
+  def dropdown_content
+    model_name = params[:type].constantize
+    render partial: "event_content", locals: {event: model_name.find(params[:id]), model_name: model_name, allocation_tags_ids: params[:allocation_tags_ids].split(" ")}
+  end
+
+  def show
+    @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    # authorize! :show, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    @schedule_event = ScheduleEvent.find(params[:id])
+    @groups_codes = @schedule_event.groups.map(&:code)
+  end
+
 end

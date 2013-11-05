@@ -13,7 +13,12 @@
         :"#{t(:presential_test, scope: [:schedule_events, :types])}" => Presential_Test, 
         :"#{t(:recess, scope: [:schedule_events, :types])}" => Recess, 
         :"#{t(:holiday, scope: [:schedule_events, :types])}" => Holiday}
-      = f.input :type_event, collection: types, include_blank: false, required: true
+      - if @schedule_event.persisted?
+        .input
+          = f.label :type_event
+          %span= label_tag types.index(@schedule_event.type_event), nil, class: "label_right"
+      - else
+        = f.input :type_event, collection: types, include_blank: false, required: true
       %span{style: show_fields ? "" : "display: none"}
         = f.input :place, maxlength: 250, required: true
       = f.input :description

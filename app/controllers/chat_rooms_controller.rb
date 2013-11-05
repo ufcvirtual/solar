@@ -93,4 +93,11 @@ class ChatRoomsController < ApplicationController
     @other_chats = ChatRoom.chats_other_users(allocation_tags_ids, current_user.id) unless @responsible
   end
 
+  def show
+    # authorize! :show, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    @chat_room = ChatRoom.find(params[:id])
+    @groups_codes = @chat_room.groups.map(&:code)
+  end
+
+
 end

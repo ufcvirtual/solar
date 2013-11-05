@@ -25,10 +25,17 @@ class SchedulesController < ApplicationController
 
     # authorize! :sechedules_events, Schedule, on: @allocation_tags_ids
 
-    @assignments = Assignment.scoped.between(params['start'], params['end'], @allocation_tags_ids).uniq
-    @chats = ChatRoom.scoped.between(params['start'], params['end'], @allocation_tags_ids).uniq
-    @discussions = Discussion.scoped.between(params['start'], params['end'], @allocation_tags_ids).uniq
-    @schedules_events = ScheduleEvent.scoped.between(params['start'], params['end'], @allocation_tags_ids).uniq
+    unless params.include?("list")
+      @assignments = Assignment.scoped.between(params['start'], params['end'], @allocation_tags_ids).uniq
+      @chats = ChatRoom.scoped.between(params['start'], params['end'], @allocation_tags_ids).uniq
+      @discussions = Discussion.scoped.between(params['start'], params['end'], @allocation_tags_ids).uniq
+      @schedules_events = ScheduleEvent.scoped.between(params['start'], params['end'], @allocation_tags_ids).uniq
+    else
+      @assignments = Assignment.scoped.after(Date.current, @allocation_tags_ids).uniq
+      @chats = ChatRoom.scoped.after(Date.current, @allocation_tags_ids).uniq
+      @discussions = Discussion.scoped.after(Date.current, @allocation_tags_ids).uniq
+      @schedules_events = ScheduleEvent.scoped.after(Date.current, @allocation_tags_ids).uniq
+    end
 
     @events = (@assignments + @chats + @discussions + @schedules_events).map(&:schedule_json)
 
