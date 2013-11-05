@@ -1,29 +1,39 @@
 livro1:
   id: 1
   type_bibliography: <%= Bibliography::TYPE_BOOK %>
-  title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  address: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+  address: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
   publisher: "Lorem ipsum"
   count_pages: 350
   edition: 1
   publication_year: 2011
 
-livro2:
+periodical:
   id: 2
-  type_bibliography: 5
-  title: Title 2
+  type_bibliography: <%= Bibliography::TYPE_PERIODICAL %>
+  title: "Vivamus non malesuada urna"
+  address: "Maecenas accumsan"
+  publisher: "urna at condimentum vulputate"
+  periodicity_year_start: 2013
 
-livro3:
+article:
   id: 3
-  type_bibliography: 5
-  title: Title 3
+  type_bibliography: <%= Bibliography::TYPE_ARTICLE %>
+  title: "Maecenas rutrum condimentum justo bibendum venenatis"
+  address: "enim dolor mattis est"
+  volume: 1
+  pages: 199
+  publication_month: "ullamcorper"
+  publication_year: 2013
 
-livro4:
+electronic_doc:
   id: 4
-  type_bibliography: 5
-  title: Title 4
+  type_bibliography: <%= Bibliography::TYPE_ELECTRONIC_DOC %>
+  title: "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus"
+  url: "www.site.com"
+  accessed_in: <%= Date.today %>
 
-livro5:
+free:
   id: 5
-  type_bibliography: 5
-  title: Title 5
+  type_bibliography: <%= Bibliography::TYPE_FREE %>
+  title: "Ut molestie lorem nec orci bibendum, vel tempor enim iaculis. Proin sodales cursus purus, tincidunt lacinia tellus tincidunt nec."

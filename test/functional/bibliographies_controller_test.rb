@@ -48,8 +48,10 @@ class BibliographiesControllerTest < ActionController::TestCase
       }
     end
 
+    assert_not_nil bib = assigns(:bibliography)
+
     assert_difference(["AcademicAllocation.count", "Bibliography.count", "Author.count"], -1) do
-      delete :destroy, {id: Bibliography.last.id, allocation_tags_ids: [@quimica]}
+      delete :destroy, {id: bib.id, allocation_tags_ids: [@quimica]}
     end
   end
 

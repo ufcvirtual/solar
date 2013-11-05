@@ -7,5 +7,9 @@ author2:
   name: "DOLOR, Sit Amet"
 
 author3:
-  bibliography_id: 2
+  bibliography_id: 3
   name: "ELIT, Adipiscing"
+
+author4:
+  bibliography_id: 4
+  name: "MAECENAS, Accumsan"
