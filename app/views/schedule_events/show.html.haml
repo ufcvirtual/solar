@@ -1,0 +1,56 @@
+- show_fields = (@schedule_event.type_event == Presential_Meeting or @schedule_event.type_event == Presential_Test)
+
+.show_event
+  %h1#lightBoxDialogTitle= t(".event_details")
+
+  .form-inputs.block_content
+    .input
+      = label_tag t(".title")
+      %span= label_tag @schedule_event.title
+
+    - types = {:"#{t(:presential_meeting, scope: [:schedule_events, :types])}" => Presential_Meeting, 
+      :"#{t(:presential_test, scope: [:schedule_events, :types])}" => Presential_Test, 
+      :"#{t(:recess, scope: [:schedule_events, :types])}" => Recess, 
+      :"#{t(:holiday, scope: [:schedule_events, :types])}" => Holiday}
+    .input
+      = label_tag t(".type_event")
+      %span= label_tag types.index(@schedule_event.type_event), nil, class: "label_right"
+
+    .input{style: show_fields ? "" : "display: none"}
+      = label_tag t(".place")
+      %span= label_tag @schedule_event.place
+
+    .input
+      = label_tag t(".description")
+      %span= label_tag @schedule_event.description
+
+    .schedule_dates
+      .left
+        .input
+          = label_tag t(".start_date")
+          %span= label_tag l(@schedule_event.schedule.start_date.to_date, format: :datepicker)
+        .input
+          = label_tag t(".end_date")
+          %span= label_tag l(@schedule_event.schedule.end_date.to_date, format: :datepicker)
+
+      .right{style: "margin-left: 60px; margin-right: 30px; #{show_fields ? "" : "display: none"}"}
+        .input
+          = label_tag t(".start_hour")
+          %span= label_tag @schedule_event.start_hour
+        .input
+          = label_tag t(".end_hour")
+          %span= label_tag @schedule_event.end_hour
+      
+    .schedule_dates
+      .left
+        .input.group_label.invisible
+          = label_tag t(".groups")
+          %span.groups
+            - @groups_codes.each do |group_code|
+              %span.collection_check_boxes= group_code
+
+    .schedule_dates{style: "float: right;"}
+      .right.right_buttons
+        = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+
+= javascript_include_tag "schedule_events"

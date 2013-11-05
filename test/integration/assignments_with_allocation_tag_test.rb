@@ -29,7 +29,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "listar as atividades de um aluno para usuario com permissao" do 
     login(users(:aluno1))
     get @quimica_tab
-    get student_assignments_path
+    get student_view_assignments_path
     assert_response :success
     assert_template :student
     assert_not_nil assigns(:individual_assignments_info)
@@ -39,7 +39,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test 'nao listar as atividades de um aluno para usuario sem permissao' do 
     login(users(:professor))
     get @quimica_tab
-    get student_assignments_path
+    get student_view_assignments_path
     assert_response :redirect
     assert_redirected_to(home_path)
     assert_equal( flash[:alert], I18n.t(:no_permission) )
@@ -341,7 +341,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "exibir pagina de avaliacao da atividade individual para usuario com permissao" do
     login users(:professor)
     get @quimica_tab
-    get assignment_path id: assignments(:a9).id, student_id: users(:aluno1).id
+    get student_assignment_path id: assignments(:a9).id, student_id: users(:aluno1).id
     assert_response :success
     assert_not_nil assigns(:student_id)
     assert_nil assigns(:group_id)
@@ -350,14 +350,14 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_not_nil assigns(:assignment_enunciation_files)
     assert_not_nil assigns(:sent_assignment_files)
     assert_not_nil assigns(:comments)
-    assert_template :show
+    assert_template :student
   end
 
   # Perfil com permissao e usuario com acesso a atividade
   test "exibir pagina de avaliacao da atividade em grupo para usuario com permissao" do
     login users(:professor)
     get @quimica_tab
-    get assignment_path :id => assignments(:a6).id, :student_id => users(:aluno1).id, :group_id => group_assignments(:ga6).id
+    get student_assignment_path :id => assignments(:a6).id, :student_id => users(:aluno1).id, :group_id => group_assignments(:ga6).id
     assert_response :success
     assert_nil assigns(:student_id)
     assert_not_nil assigns(:group_id)
@@ -366,14 +366,14 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_not_nil assigns(:assignment_enunciation_files)
     assert_nil assigns(:sent_assignment_files)
     assert_nil assigns(:comments)
-    assert_template :show
+    assert_template :student
   end
 
   # Perfil com permissao e usuario sem acesso a atividade
   test "nao exibir pagina de avaliacao da atividade individual para usuario com permissao e sem acesso" do
     login users(:aluno2)
     get @quimica_tab
-    get assignment_path :id => assignments(:a9).id, :student_id => users(:aluno1).id
+    get student_assignment_path :id => assignments(:a9).id, :student_id => users(:aluno1).id
     assert_response :redirect
     # assert_equal I18n.t(:no_permission), flash[:alert]
     # Expected response to be a redirect to <http://test.host/home> but was a redirect to <http://test.host/>
@@ -386,7 +386,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
   test "nao exibir pagina de avaliacao da atividade em grupo para usuario com permissao e sem acesso" do
     login users(:aluno3)
     get @quimica_tab
-    get assignment_path id: assignments(:a6).id, student_id: users(:aluno2).id, group_id: group_assignments(:ga6).id
+    get student_assignment_path id: assignments(:a6).id, student_id: users(:aluno2).id, group_id: group_assignments(:ga6).id
     assert_response :redirect
     assert_redirected_to(home_path)
     assert_equal I18n.t(:no_permission), flash[:alert]
@@ -532,9 +532,9 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
       delete remove_comment_assignment_path(assignments(:a9).id), {:comment_id => assignment_comments(:ac2).id}
     end
     assert_response :success
-    get assignment_path(assignments(:a9).id), {:student_id => users(:aluno1).id}
+    get student_assignment_path(assignments(:a9).id), {:student_id => users(:aluno1).id}
     assert_no_tag :tag => "table", :attributes => { :class => "assignment_comment tb_comments tb_comment_#{assignment_comments(:ac2).id}" }
-    assert_template :show
+    assert_template :student
   end
 
   # Perfil com permissao e usuario com acesso, mas fora do período permitido
@@ -557,7 +557,7 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t(:no_permission), flash[:alert]
 
     # sign_in users(:professor)
-    # get(:show, {:id => assignments(:a9).id, :student_id => users(:aluno1).id})    
+    # get(:student, {:id => assignments(:a9).id, :student_id => users(:aluno1).id})    
     # assert_response :success
     # assert_tag :tag => "table", :attributes => { :class => "assignment_comment tb_comments tb_comment_#{assignment_comments(:ac2).id}" }
   end
@@ -573,8 +573,8 @@ class AssignmentsWithAllocationTagTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t(:no_permission), flash[:alert]
 
     login users(:professor)
-    get assignment_path(assignments(:a9).id), {:student_id => users(:aluno1).id}
-    assert_template :show
+    get student_assignment_path(assignments(:a9).id), {:student_id => users(:aluno1).id}
+    assert_template :student
     assert_tag :tag => "table", :attributes => { :class => "assignment_comment tb_comment_#{assignment_comments(:ac2).id} tb_comments" }
   end
 

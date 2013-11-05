@@ -100,3 +100,55 @@
 .list_events .fc-event.fc-event-title{
   font-size: 10pt;
 }
+
+.calendar_schedules .legend{
+  font-size: 11pt;
+  text-align: center;
+  label{
+    color: #7c7c7c;
+    font-size: 10pt;
+    width: auto;
+    text-align: center;
+  }
+}
+
+#calendar .dropdown-tip{
+  width: 435px;
+  .dropdown-panel{
+      max-width: 417px;
+      margin-bottom: 10px;
+    }
+  .event_details_dropdown{
+    h1, h2, h3{
+      font-family: 'PT Sans', sans-serif;
+      background-color: white;
+      border-bottom: none;
+    }
+    h1{
+      font-weight: bold;
+      text-align: left;
+      font-size: 11pt;
+    }
+    h2, h3{
+      color: #7c7c7c;
+      font-size: 10pt;
+      font-weight: normal;
+    }
+    h2{
+      margin: 6px;
+    }
+    .line{
+      border-bottom: solid 1px #E3E3E3;
+      padding-bottom: 5px;
+      margin-bottom: 5px;
+    }
+    .btn-group .left{
+      float: left;
+      margin-right: 316px;
+    }
+    .btn-group .right{
+      float: right;
+    }
+  }
+}
+

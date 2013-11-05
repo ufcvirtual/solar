@@ -92,4 +92,10 @@ class DiscussionsController < ApplicationController
     end
   end
 
+  def show
+    # authorize! :show, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    @discussion = Discussion.find(params[:id])
+    @groups_codes = @discussion.groups.map(&:code)
+  end
+
 end

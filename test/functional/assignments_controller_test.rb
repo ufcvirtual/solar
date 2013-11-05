@@ -12,7 +12,7 @@ class AssignmentsControllerTest < ActionController::TestCase
 
   test "rotas" do
     ## apenas algumas rotas
-    assert_routing({method: :get, path: "/assignments/student"}, {controller: "assignments", action: "student"})
+    assert_routing({method: :get, path: "/assignments/student_view"}, {controller: "assignments", action: "student_view"})
     assert_routing({method: :get, path: "/assignments/professor"}, {controller: "assignments", action: "professor"})
     assert_routing({method: :post, path: "/assignments/upload_file"}, {controller: "assignments", action: "upload_file"})
     assert_routing({method: :delete, path: "/assignments/delete_file"}, {controller: "assignments", action: "delete_file"})

@@ -32,7 +32,7 @@
                 - if grade == "without_group"
                   = link_to t(:assignment_wg), information_assignment_path(assignment.id)
                 - else
-                  = link_to grade_link, assignment_path(assignment.id, :student_id => student.id, :group_id => @scores["students_groups"][idx][idx2]) 
+                  = link_to grade_link, student_assignment_path(assignment.id, :student_id => student.id, :group_id => @scores["students_groups"][idx][idx2]) 
             - if @assignments.empty?
               %td{:align => "center"}= "-"
             %td{:align => "center"}= "-"

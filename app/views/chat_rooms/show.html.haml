@@ -1,0 +1,58 @@
+.show_chat
+  %h1#lightBoxDialogTitle= t(".chat_details")
+
+  .form-inputs.block_content
+    .input
+      = label_tag t(".title")
+      %span= label_tag @chat_room.title
+    .input
+      = label_tag t(".description")
+      %span= label_tag @chat_room.description
+    .schedule_dates
+      .left
+        .input
+          = label_tag t(".start_date")
+          %span= label_tag l(@chat_room.schedule.start_date.to_date, format: :datepicker)
+        .input
+          = label_tag t(".end_date")
+          %span= label_tag l(@chat_room.schedule.end_date.to_date, format: :datepicker)
+
+      .right
+        .input
+          = label_tag t(".start_hour")
+          %span= label_tag @chat_room.start_hour
+        .input
+          = label_tag t(".end_hour")
+          %span= label_tag @chat_room.end_hour
+
+      .input
+        = label_tag t(".participants")
+        %span.participants{style: "margin-left: 142px;"}
+          #participants_box
+            - if (@chat_room.chat_type == 1)
+              = label_tag t(".defined_participants")
+            - else
+              = label_tag t(".all_participants")
+            .box{class: (@chat_room.chat_type == 1 ? "" : "invisible")}
+              - participants = @chat_room.users
+              - unless participants.empty?
+                %div
+                  -participants.each do |p|
+                    = p.name
+                    %br
+              - else
+                = t(".empty_group")
+
+      .schedule_dates
+        .left
+          .input.group_label.invisible
+            = label_tag t(".groups")
+            %span.groups
+              - @groups_codes.each do |group_code|
+                %span.collection_check_boxes= group_code
+    
+    .schedule_dates{style: "float: right;"}
+      .right.right_buttons
+        = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+
+= javascript_include_tag "schedule_events"

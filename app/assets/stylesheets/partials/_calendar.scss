@@ -10,31 +10,6 @@
  * http://docs.jquery.com/UI/Theming/API
  */
 
-#calendar{
-    .dropdown-tip{
-        width: 435px;
-    }
-
-    .dropdown-panel{
-        max-width: 417px;
-        background: #F7F8FA;
-        margin-bottom: 10px;
-
-        label{
-            width: 82px;
-            text-align: right;
-            margin-right: 10px;
-            float: left;
-        }
-
-        h1{
-            font-weight: bold !important;
-            color: #666;
-            text-align: center;
-        }
-    }
-}
-
 .fc-view {
     overflow: visible !important;
 }

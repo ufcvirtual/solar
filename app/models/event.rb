@@ -6,6 +6,10 @@ module Event
       ((schedules.end_date < ?) OR (schedules.start_date < ?)) AND ((schedules.start_date > ?) OR (schedules.end_date > ?))
       AND allocation_tags.id IN (?)", 
       format_date(end_time), format_date(end_time), format_date(start_time), format_date(start_time), allocation_tags] }}
+    # recupera os eventos que vão iniciar "de hoje em diante" ou já começaram, mas ainda vão terminar
+    base.scope :after, lambda {|today, allocation_tags| {joins: [:schedule, academic_allocations: :allocation_tag], conditions: ["
+      (schedules.start_date >= ?) OR (schedules.end_date >= ?) AND allocation_tags.id IN (?)", 
+      today, today, allocation_tags] }}
   end
 
   def schedule_json(options = {})
@@ -17,13 +21,11 @@ module Event
       :end => schedule.end_date,
       allDay: (not respond_to?(:start_hour) or start_hour.blank?), # se não tiver hora de inicio e fim é do dia todo
       recurring: (respond_to?(:start_hour) and respond_to?(:end_hour) and not(start_hour.blank? or end_hour.blank?)), # se tiver hora de inicio e fim, é recorrente de todo dia no intervalo
-      # repeats: (schedule.end_date.to_date - schedule.start_date.to_date),
-      # repeat_freq: 1,
       # url: Rails.application.routes.url_helpers.discussion_path(id, allocation_tags_ids: 'at_param'),
       start_hour: (respond_to?(:start_hour) ? start_hour : nil),
       end_hour: (respond_to?(:end_hour) ? end_hour : nil),
       color: verify_type(self.class.to_s, (respond_to?(:type_event) ? type_event : nil)),
-      type: self.class.name.tableize.singularize
+      type: self.class.name
     }
   end
 

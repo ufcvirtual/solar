@@ -161,7 +161,7 @@ res26:
 res27:
   id: 27
   controller: 'assignments'
-  action: 'student'
+  action: 'student_view'
   description: 'Lista dos trabalhos - visão aluno'
 
 res28:
@@ -179,8 +179,8 @@ res29:
 res30:
   id: 30
   controller: 'assignments'
-  action: 'show'
-  description: 'Informacoes completas sobre a atividade'
+  action: 'student'
+  description: 'Informacoes completas sobre a atividade do aluno'
 
 res31:
   id: 31

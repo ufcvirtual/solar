@@ -873,6 +873,13 @@
       offer_period: deve estar dentro do período da oferta (%{start} - %{end})
       discussion_with_posts: Fórum com postagens
       mandatory_final_date: Data final obrigatória
+    show:
+      name: Nome
+      description: Descrição
+      groups: Turmas
+      start_date: Início
+      end_date: Término
+      discussion_details: Detalhes do fórum
 
   bibliographies:
     author_required: Autor obrigatório
@@ -1458,6 +1465,16 @@
       created: Não foi possível criar trabalho.
       updated: Não foi possível atualizar trabalho.
       deleted: Não foi possível deletar trabalho.
+    show:
+      name: Nome
+      enunciation: Enunciado
+      type_assignment: Tipo
+      start_date: Início
+      end_date: Término
+      files: Arquivos
+      empty_files: Não há arquivos
+      groups: Turmas
+      assignment_details: Detalhes do trabalho
 
   groups:
     list:
@@ -1820,6 +1837,19 @@
       updated: Não foi possível atualizar chat.
       deleted: Não foi possível deletar chat.
       chat_has_messages: Não foi possível deletar chat. Já possui mensagens.
+    show:
+      participants: Participantes
+      groups: Turmas
+      all_participants: Todos da turma
+      empty_group: Turma vazia
+      title: Título
+      description: Descrição
+      start_hour: Hora de início
+      end_hour: Hora de término
+      start_date: Início
+      end_date: Término
+      defined_participants: Participantes definidos
+      chat_details: Detalhes do chat
 
   #Facebook
 
@@ -1885,3 +1915,19 @@
       created: Não foi possível criar evento.
       updated: Não foi possível atualizar evento.
       deleted: Não foi possível deletar evento.
+    show:
+      title: Título
+      type_event: Tipo
+      place: Local
+      description: Descrição
+      start_hour: Hora de início
+      end_hour: Hora de término
+      groups: Turmas
+      start_date: Início
+      end_date: Término
+      event_details: Detalhes do evento
+    event_content:
+      chat_rooms: "Chat: "
+      assignments: "Trabalho: "
+      discussions: "Fórum: "
+      schedule_events: "Evento: "

@@ -1,0 +1,44 @@
+.event_details_dropdown
+  %h1
+    = I18n.t "schedule_events.event_content.#{model_name.to_s.tableize}"
+    = event.respond_to?(:name) ? event.name : event.title
+  - recurring = (event.respond_to?(:start_hour) and event.respond_to?(:end_hour) and not(event.start_hour.blank? or event.end_hour.blank?))
+  %h3= (recurring ? "#{event.start_hour} - #{event.end_hour}" : "all day")
+  - same_day = (event.schedule.start_date == event.schedule.end_date)
+  %h3= (same_day ? l(event.schedule.start_date, format: :normal) : [l(event.schedule.start_date, format: :normal), l(event.schedule.end_date, format: :normal)].join(" - "))
+
+  %h2= truncate((event.respond_to?(:enunciation) ? event.enunciation : event.description) || "", length: 200, omission: '...')
+
+  .line
+
+  .btn-group
+    // colocar as permissões. se não for editor, mostra só o "show_event"
+    .left
+      = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_event', :"data-link-delete" => polymorphic_path([event], allocation_tags_ids: allocation_tags_ids), :'data-tooltip' => "deletar", id: event.id
+    .right
+      = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_polymorphic_path([event], allocation_tags_ids: allocation_tags_ids, calendar: true), class: 'btn edit_event', :'data-tooltip' => "editar", id: event.id
+      = link_to (content_tag(:i, nil, class: 'icon-eye')), polymorphic_path([event], allocation_tags_ids: allocation_tags_ids), class: 'btn btn_main show_event', :'data-tooltip' => "visualizar", id: event.id
+
+:javascript
+
+  $(function(){
+    $(".delete_event").click(function(){
+      if (!confirm("#{I18n.t(:message_confirm)}"))
+        return false;
+
+      $.delete($(this).data('link-delete'), function(data){
+        flash_message(data.notice, 'notice');
+        $.get($(".calendar_schedules").data("link-list"), function(data){
+            $(".calendar_schedules").replaceWith(data);
+        });
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+      })
+    });
+
+    $(".edit_event").call_fancybox();
+    $(".show_event").call_fancybox();
+  });
+  

@@ -8,6 +8,31 @@ $(document).ready(function() {
   var edition_param = $("#calendar").attr("data-edition");
   var ids_to_forms_param = $("#calendar").attr("data-ids");
 
+  var lastView;
+
+  // Sources para recuperar os eventos
+  var fcSources = {
+    calendar: {
+                url: '/schedules/events',
+                data: {
+                  "allocation_tags_ids": $("#allocation_tags_ids").val(),
+                  "all_groups_ids": $("#all_groups_ids").val()
+                },
+                textColor: 'black',
+                ignoreTimezone: false
+            },
+    list: {
+                url: '/schedules/events',
+                data: {
+                  "allocation_tags_ids": $("#allocation_tags_ids").val(),
+                  "all_groups_ids": $("#all_groups_ids").val(),
+                  "list": "true"
+                },
+                textColor: 'black',
+                ignoreTimezone: false
+            }
+    };
+
   $('#calendar').fullCalendar({
     editable: false,
     header: {
@@ -26,16 +51,7 @@ $(document).ready(function() {
               $('#loading').hide();
         },
         
-        eventSources: [{
-            url: '/schedules/events',
-            data: {
-              "allocation_tags_ids": $("#allocation_tags_ids").val(),
-              "all_groups_ids": $("#all_groups_ids").val()
-            },
-            textColor: 'black',
-            ignoreTimezone: false
-        }],
-
+        eventSources: [],
         edition: edition_param,
         ids_to_forms: ids_to_forms_param,
         timeFormat: 'h:mm t{ - h:mm t} ',
@@ -46,20 +62,44 @@ $(document).ready(function() {
         // dayNamesShort: dayNames,
 
         eventRender: function(event, element) { 
-             var fancyContent = '<div class="dropdown-panel">'+
-              '<h1>Event Details</h1> <br>' +
-              '<label><b>Event: </b></label>' + event.title + '<br>' + 
-              '<label><b>Date: </b></label>' + event.date + '<br>' + 
-              '<label><b>Start Time: </b></label>' + event.start + '<br>' + 
-              '<label><b>End Time: </b></label>' + event.end + '<br>' + 
-              '<label><b>Description: </b></label>' + '<div class="event_desc">' + event.description + '</div>' + 
-              '<label><b>Location: </b></label><a href=' + event.url + '>' + event.location + '</a>' + '<br>' + '</div>';
-
-          var dropdown = $("<div class='dropdown dropdown-tip' id='dropdown_details_"+event.type+"_"+event.id+"'>"+fancyContent+"</div>");
-          $(element).after(dropdown);
         },
 
         eventClick: function(event, jsEvent, view){
+          show_info_dropdown(event, jsEvent.currentTarget);
         },
+
+        viewDisplay: function(view) {
+          if(lastView!=null && lastView!=view.name){ // se mudou de visão
+            if (view.name != 'list' && lastView == 'list') // se não for lista e a anterior for lista
+              $('#calendar').fullCalendar('removeEventSource', fcSources.list)
+                            .fullCalendar( 'addEventSource', fcSources.calendar);
+            if(view.name == 'list') //se for lista
+              $('#calendar').fullCalendar('removeEventSource', fcSources.calendar)
+                            .fullCalendar( 'addEventSource', fcSources.list);
+          }
+          if(lastView == null) // primeira vez que abre calendário
+            $('#calendar').fullCalendar( 'addEventSource', fcSources.calendar);  
+
+          lastView = view.name;
+         }
   });
+
 });
+
+function show_info_dropdown(event, div){
+  var dropdown_panel = $(div).next('.dropdown');
+  if(!dropdown_panel.length){
+    var dropdown_content = $('<div class="dropdown-panel"></div>');
+    var event_data = {
+      "id": event.id,
+      "type": event.type,
+      "allocation_tags_ids": $("#allocation_tags_ids").val()
+    };
+    
+    $.get("/schedule_events/dropdown_content", event_data, function(data){$(dropdown_content).append(data);});
+
+    var dropdown = $("<div class='dropdown dropdown-tip' id='dropdown_details_"+event.type+"_"+event.id+"' style='z-index: 999;'></div>");
+    $(dropdown).append(dropdown_content);
+    $(div).after(dropdown);
+  }
+}
