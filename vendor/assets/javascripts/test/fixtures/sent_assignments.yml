@@ -1,0 +1,36 @@
+sa1:
+  id: 1
+  academic_allocation_id: 6 # quimica I - atividade III
+  user_id: 7
+  grade: 6.3
+
+sa2:
+  id: 2
+  academic_allocation_id: 8
+  group_assignment_id: 5 # quimica I - trabalho em grupo2
+  grade: 3
+
+sa3:
+  id: 3
+  academic_allocation_id: 12 # quimica I - Atividade em campo III
+  user_id: 7 
+
+sa4:
+  id: 4
+  academic_allocation_id: 14 # literatura brasileria I - group id 5 - al8
+  group_assignment_id: 7 # ## literatura brasileria I - group id 5 - al8 - grupo 1 (ga7)
+
+sa5:
+  id: 5
+  academic_allocation_id: 13 # literatura brasileria I - group id 5 - al8
+  user_id: 9 #aluno3
+
+sa6:
+  id: 6
+  academic_allocation_id: 10 #quimica I - Atividade individual VII - al7: atividade concluída
+  user_id: 7
+
+sa7:
+  id: 7
+  academic_allocation_id: 1 # Letras Portugues - Teoria da Literatura I - TL-CAU - Atividade individual VII - al:2
+  user_id: 7

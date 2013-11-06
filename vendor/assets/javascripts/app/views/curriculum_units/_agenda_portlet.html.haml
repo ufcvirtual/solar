@@ -1,0 +1,11 @@
+#block_schedule.block_small
+  .block_title
+    %h2
+      %i.icon-calendar
+      = t(:curriculum_access_agenda)
+  .calendar#agenda{:url_for => schedules_path}
+  .calendar_events
+
+:javascript
+  var dates_with_events = eval(#{@scheduled_events});
+  $(function() { showAgenda(dates_with_events); });

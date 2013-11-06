@@ -1,0 +1,49 @@
+= javascript_include_tag 'group_assignments.js'
+
+.group_assignments_import
+  .block_title
+    %h2=t(:import_groups, :scope => [:assignment, :import_groups])
+
+  .block_content#group_assignments
+    - unless @assignments.nil? or @assignments.empty?
+      %table.tb_list
+        %tbody>
+          - @assignments.each do |a|
+            %tr.lines
+              %td
+                .group_assignment_title{:onclick => "javascript:toggle_div('div_group_import_#{a["id"]}');"}
+                  %a.link_content{:id => "name_#{a["id"]}"}=a["name"]
+                - gps = GroupAssignment.all_by_assignment_id(a["id"], @allocation_tag.id)
+                %div{:id => "div_group_import_#{a["id"]}"}
+                  - unless gps.nil? or gps.empty?
+                    .all_students_to_import
+                      - gps.each do |g|
+                        %li
+                          - gp = GroupParticipant.all_by_group_assignment(g["id"])
+                          %h3.groupname{:onclick => "javascript:clickOnGroup('import_#{g['id']}');"}
+                            .menu_icon_arrow 
+                              = "‣"
+                            = g["group_name"]
+                            = "("
+                            = gp.size
+                            = ")"
+                          %div{:class => "students_import_#{g["id"]}"}
+                            - unless gp.empty?
+                              - gp.each do |p|
+                                %ul.each_student{:style => "margin-left: 15px"}= p.user.name
+                            - else
+                              %div{:style => "margin-left: 10px"}= t(:no_participant, :scope => [:assignment, :import_groups])
+                    .import_buttons
+                      = form_for(:support_material, :html => { :multipart => true }, :url => import_groups_assignment_path(@assignment.id, :assignment_id_import_from => a["id"] ) ) do |f|
+                        = f.submit t(:import, :scope => [:assignment, :import_groups]), :class=>'btn btn_main'
+                        = button_tag(:type => 'button', :class => "btn btn_caution", :alt => t(:cancel, :scope => [:assignment, :import_groups]), :onclick => "removeLightBox();") do
+                          = content_tag(:span, t(:cancel, :scope => [:assignment, :import_groups]))
+                  - else
+                    %div{:style => "margin-left: 10px"}= t(:assignment_without_groups, :scope => [:assignment, :group_assignments])
+    - else
+      .block_content.block_content_text= t(:itens_not_found)
+
+:javascript
+  $(".group_assignment_title").click(function(){
+    $(this).toggleClass('group_assignment_title_contract');
+  })

@@ -1,0 +1,132 @@
+// Conteúdo e navegacao de aulas
+#lesson_area {
+  border: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  overflow-x: hidden;
+  overflow-Y: hidden;
+  background-color: #eee;
+}
+
+#lesson_content_header {
+  font-size: 11px;
+  width: 100%;
+  height: 25px;
+  margin: 0px;
+  padding: 0px 3px 0px 8px;
+  background-color: #dee8ec;
+  color: #000;
+}
+
+#lesson_header {
+  font-size: 12px;
+  width: 100%;
+  height: 22px;
+  margin: 0px;
+  padding: 6px 0px 0px 8px;
+  background-color: #1d4786;
+  color: #fff;
+}
+
+#lesson_goto {
+  display: inline;
+  float: right;
+  height: 20px;
+  margin-right: 50px;
+  margin-top: 4px;
+  text-align: center;
+  vertical-align: top;
+  width: auto;
+}
+
+#lesson_click_area {
+  display: inline-block;
+  width: 50%;
+  height: 22px;
+}
+
+.lesson_back, .lesson_next {
+  width: 9px;
+  display: inline-block;
+  cursor: pointer;
+  height: 20px;
+  vertical-align: bottom;
+}
+
+.lesson_link {
+  width: 17px;
+  display: inline-block;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  margin-right: 1px;
+  margin-bottom: 3px;
+  font-size: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+  border: 0;
+  line-height: 19px;
+  background-color: #b8cbcf;
+  color: #000;
+}
+
+.lesson_description {
+  text-transform: capitalize;
+}
+
+.lesson_arrows {
+  display: inline-block;
+  position: relative;
+  min-height: 15px;
+}
+
+.lesson_arrow_up, .lesson_arrow_down {
+  display: block;
+  margin: 0;
+  padding: 0;
+  height: 10px;
+}
+
+.lesson_img_nav {
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+#lesson_text_goto {
+  height: 16px;
+  width: 22px;
+  font-size: 11px;
+  padding: 0px;
+}
+
+.select_end_date {
+  text-align: left;
+  color: $color_main_text;
+}
+
+/**
+* rolagem da lista de aulas
+*/
+#content-scroll {
+  width: 270px;
+  height: 22px;
+  overflow: hidden;
+  padding-top: 2px;
+  display: inline-block;
+}
+
+#content-holder {
+  width: 360px;
+  height: 25px;
+}
+
+.lesson_dates{
+  display: inline-block;
+  color: $label_color;
+}

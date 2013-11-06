@@ -1,0 +1,53 @@
+forum_1:
+  id: 1
+  name: 'Forum 1'
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  schedule_id: 6
+
+forum_2:
+  id: 2
+  name: 'Forum 2'
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  schedule_id: 7
+
+forum_3:
+  id: 3
+  name: 'Forum 1'
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  schedule_id: 7
+
+forum_4:
+  id: 4
+  name: 'Forum 1'
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  schedule_id: 7
+
+forum_5:
+  id: 5
+  name: 'Forum 3'
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  schedule_id: 23
+
+forum_6:
+  id: 6
+  name: 'Forum 4'
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  schedule_id: 25
+
+forum_7:
+  id: 7
+  name: 'Forum 5'
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  schedule_id: 18 
+
+forum_8:
+  id: 8
+  name: 'Forum 6'
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  schedule_id: 26
+
+forum_9:
+  id: 9
+  name: 'Forum 7'
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi.'
+  schedule_id: 18

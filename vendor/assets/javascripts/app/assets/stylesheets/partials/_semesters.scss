@@ -1,0 +1,67 @@
+// SEMESTRES E OFERTAS
+
+.semester_same_dates, #semester_period { // TODO: usado em offers
+  color: #56585E;
+}
+
+#semester_period { // TODO usado em semesters
+  float: right;
+  position: relative;
+  top: 10px;
+  vertical-align: bottom;
+  font-size: 9pt;
+}
+
+.offer_schedule_dates, .enrollment_schedule_dates { // TODO: usado em offers e semesters
+  display: inline-block;
+  color: $label_color;
+}
+
+.block_content_text_list{
+    padding: 5px;
+    padding-right: 5px;
+    border-bottom: solid 1px;
+    border-bottom-color: $border;
+    min-height: 20px;
+    background-color: #f8fbfe;
+    padding-top: 12px;
+}
+
+.new_semester, .new_offer {
+
+  [class*="_check_box"] {
+    margin-left: 76px;
+    text-align: left;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: $label_color;
+  }
+
+  .end_date_check_box { // TODO: usado em offers e semesters
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+}
+
+.period_date{
+  color: $label_color;
+  margin-left: 76px;
+}
+
+.offer_schedule_dates .error, .enrollment_schedule_dates .error { // TODO: usado em offers e semesters
+  display: none;
+}
+
+.offer_schedule_dates.error, .enrollment_schedule_dates.error { // TODO: usado em offers e semesters
+  vertical-align: inherit;
+  color: #E03838;
+}
+
+.offer_schedule_dates.info, .enrollment_schedule_dates.info {  // TODO: usado em offers e semesters
+  vertical-align: bottom;
+  color: black;
+}
+
+.link_edit_offer{
+  float: right;
+}

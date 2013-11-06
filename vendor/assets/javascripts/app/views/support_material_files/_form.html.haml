@@ -1,0 +1,40 @@
+.new_support_material_form
+  = simple_form_for @support_material, html: {id: 'support_material_form', multipart: true} do |f|
+    - title = [(@support_material.persisted? ? "edit" : "new"), (@support_material.material_type == Material_Type_File ? "file" : "link")].join("_")
+    %h1#lightBoxDialogTitle= t(title.to_sym, scope: [:support_material_files, :list])
+    %span.form_requirement= t(:required_fields)  
+    = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+    = f.hidden_field :material_type, value: @support_material.material_type
+
+    .form-inputs.block_content
+      - if @support_material.material_type == Material_Type_Link
+        = f.input :url, as: :string, required: true
+      - else
+        = f.file_field :attachment, as: :file, required: true
+
+      .input.group_label.invisible
+        = f.label t(".groups")
+        %span.groups
+          - @groups_codes.each do |group_code|
+            %span.collection_check_boxes= group_code
+
+      .new_support_material_buttons
+        = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+        = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", id: "save"
+    
+:javascript
+
+  jQuery(function($){
+
+    if ($("#radio_option_group").prop("checked"))
+      $(".input.group_label").show();
+
+    $('#support_material_form:first').keypress(function(event) { if (event.keyCode == 13) { event.preventDefault(); } }); // prevenir enter
+
+    $('#save').click(function(){
+      $('#support_material_form:first').serialize_and_submit({
+        files: true,
+        replace_list: $('.list_support_material:last')
+      });
+    });
+  });

@@ -1,0 +1,55 @@
+<div id="lesson_area">
+  <div id="lesson_header">
+    <%= @curriculum_unit.name %> > <span id="lesson_name"></span>
+  </div>
+  <div id="lesson_content_header">
+    <% lessons_opened_id = params[:id] %>
+    <% lessons = @lessons %>
+
+    <% unless lessons.nil? %>
+      <div id="lesson_click_area">
+        <div id="link_lesson_back" class="lesson_back">
+          <a href="javascript:move(1)"><%= image_tag("lesson_left.png", :class => 'lesson_img_nav') %></a>
+        </div>
+        <div id="content-scroll">
+          <div id="content-holder">
+            <% ret = lessons_list(lessons, lessons_opened_id) %>
+            <% order_lesson = ret[1] %>
+            <% total_lesson = ret[2] %>
+            <%= raw ret[0] %>
+          </div>
+        </div>
+        <div id="link_lesson_next" class="lesson_next">
+          <a href="javascript:move(2)"><%= image_tag("lesson_right.png", :class => 'lesson_img_nav') %></a>
+        </div>
+      </div>
+
+      <span id="mov_atual" class="invisible"></span>
+      <span id="total_lesson" class="invisible"><%= lessons.length %></span>
+
+      <div id="lesson_goto">
+        <%=t(:lesson_goto)%>&nbsp;
+        <%=text_field_tag 'lesson_text_goto'%>&nbsp;/&nbsp;<%=total_lesson.to_s%>&nbsp;
+        <span><a href="javascript:goto_lesson()"><%=image_tag("lesson_goto.png", :alt=>t(:lesson_goto),  :class => "lesson_img_nav")%></a></span>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% atual_lesson = Lesson.find(lessons_opened_id) %>
+<% path_lesson = atual_lesson.path.to_s %>
+
+<script type="text/javascript">
+  window.parent.frame_lesson_content.location.href = "<%= path_lesson %>";
+  $("#lesson_name").html("<%= [t(:lesson, :scope => [:lessons, :list]), ' ', order_lesson.to_s, ' - ', total_lesson.to_s].join('') %>");
+  $("#mov_atual").html("<%=order_lesson%>");
+  move(0);
+
+  $('[id^="lesson_link"]').click(function(){
+    path        = $(this).attr("data-path");
+    text_lesson = $(this).attr("data-text_lesson");
+    count       = $(this).attr("data-count");
+    reload_frame(path, text_lesson, count);    
+  });
+
+</script>

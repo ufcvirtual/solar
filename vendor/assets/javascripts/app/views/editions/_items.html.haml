@@ -1,0 +1,92 @@
+.edition_items
+
+  %fieldset#uc_informations
+    %legend= t(".information")
+    .block_content.block_content_alt
+
+      - if (can? :list, Bibliography, on: @allocation_tags_ids) and (Bibliography.constants.include?("#{@selected}_PERMISSION".to_sym))
+        .uc_item
+          .bibliography{:"data-link" => list_bibliographies_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
+            = link_to(content_tag(:i, nil, class: 'icon-people big'), "#", class: 'btn')
+            = link_to t(".bibliography"), "#"
+
+      / - if (can? :lista_de_schedules, Schedule, :on => @allocation_tags_ids) and (Schedule.constants.include?("#{@selected}_PERMISSION".to_sym))
+      .uc_item
+        .schedule{:"data-link" => calendar_schedules_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
+          = link_to(content_tag(:i, nil, class: 'icon-calendar big'), "#", class: 'btn')
+          = link_to t(".schedule"), "#"
+
+      - if (can? :designates, Allocation, on: @allocation_tags_ids) and (Allocation.constants.include?("#{@selected}_PERMISSION".to_sym))
+        .uc_item
+          .allocation{:"data-link" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
+            = link_to(content_tag(:i, nil, class: 'icon-user-add big'), "#", class: 'btn')
+            = link_to t(".allocation"), "#"
+
+      - if (can? :list, Notification, on: @allocation_tags_ids) and (Notification.constants.include?("#{@selected}_PERMISSION".to_sym))
+        .uc_item
+          .notification{:"data-link" => list_notifications_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
+            = link_to(content_tag(:i, nil, class: 'icon-warning big'), "#", class: 'btn')
+            = link_to t(".notification"), "#"
+
+  %fieldset#uc_comunication
+    %legend=t(".comunication")
+    .block_content.block_content_alt
+
+      - if (can? :list, Discussion, on: @allocation_tags_ids)  and (Discussion.constants.include?("#{@selected}_PERMISSION".to_sym))
+        .uc_item
+          .discussion{:"data-link" => list_discussions_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
+            = link_to(content_tag(:i, nil, class: 'icon-people big'), "#", class: 'btn')
+            = link_to t(".discussion"), "#"
+
+      - if ((can? :index, ChatRoom, on: @allocation_tags_ids) and ChatRoom.constants.include?("#{@selected}_PERMISSION".to_sym))
+        .uc_item
+          .chat{:"data-link" => chat_rooms_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
+            = link_to(content_tag(:i, nil, class: "icon-chat big"), "#", class: "btn")
+            = link_to t(".chat"), "#"
+
+      / - if (can? :lista_de_videoconference, Videoconference, :on => @allocation_tags_ids) and (Videoconference.constants.include?("#{@selected}_PERMISSION".to_sym))
+      .uc_item
+        .videoconference
+          = link_to(content_tag(:i, nil, class: 'icon-video-conference big'), "#", class: 'btn disabled', onclick: "javascript:alert('#{t(".in_development")}');")
+          = link_to t(".videoconference"), "#", onclick: "javascript:alert('#{t(".in_development")}');"
+
+  %fieldset#uc_education
+    %legend=t(".education")
+    .block_content.block_content_alt
+
+      - if (can? :list, Lesson, on: @allocation_tags_ids) and (Lesson.constants.include?("#{@selected}_PERMISSION".to_sym))
+        .uc_item
+          .lesson{:"data-link" => list_lessons_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
+            = link_to(content_tag(:i, nil, class: 'icon-class big'), "#", class: 'btn')
+            = link_to t(".lesson"), "#"
+
+      - if (can? :list, SupportMaterialFile, on: @allocation_tags_ids) and (SupportMaterialFile.constants.include?("#{@selected}_PERMISSION".to_sym))
+        .uc_item 
+          .support_material{:"data-link" => list_support_material_files_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
+            = link_to(content_tag(:i, nil, class: 'icon-archive big'), "#", class: 'btn')
+            = link_to t(".support_material"), "#"
+
+      - if (can? :list, Assignment, on: @allocation_tags_ids) and (Assignment.constants.include?("#{@selected}_PERMISSION".to_sym))
+        .uc_item
+          .assignment{:"data-link" => assignments_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
+            = link_to(content_tag(:i, nil, class: 'icon-homework big'), "#", class: 'btn')
+            = link_to t(".assignment"), "#"
+
+      / - if (can? lista_de_tests, Test, :on => @allocation_tags_ids) and (Test.constants.include?("#{@selected}_PERMISSION".to_sym))
+      .uc_item
+        .test
+          = link_to(content_tag(:i, nil, class: 'icon-exam big'), "#", class: 'btn disabled', onclick: "javascript:alert('#{t(".in_development")}');")
+          = link_to t(".test"), "#", onclick: "javascript:alert('#{t(".in_development")}');"
+
+:javascript 
+
+  $(document).ready(function(){
+
+    $(".edition_items a").not(".disabled").click(function(){
+      $.get($($(this).parent()).data("link"), function(data){
+        $(".edition_items").html(data);
+        $(".back").removeClass("invisible");
+      });
+    });
+
+  });

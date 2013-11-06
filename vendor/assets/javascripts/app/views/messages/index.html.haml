@@ -1,0 +1,91 @@
+.block_wrapper.messages
+
+  = render "message_header"
+
+  .block_white
+    .align-left.padding-checkbox
+      %input#ckb_all{type: "checkbox", :"data-children-names" => "checkbox_message"}
+      = t(".filter_selected")
+      %select.message_status
+        %option.check_all
+          = t(:message_select_all)
+        %option.check_read
+          = t(:message_select_read)
+        %option.check_unread
+          = t(:message_select_unread)
+
+    .align-right.btn-group
+      = link_to new_message_path, class: "btn btn_main", :"data-tooltip" => t(:message_new) do
+        %i.icon-plus-3
+      - if not ["trashbox", "outbox"].include?(@box)
+        #mark_as_unread.btn{"data-tooltip" => t(:message_mark_as_unread), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "unread", box: @box)}
+          %i.icon-mail
+        #mark_as_read.btn{"data-tooltip" => t(:message_mark_as_read), :"data-new-status" => "read", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "read", box: @box)}
+          %i.icon-mail-read
+      - if @box != "trashbox"
+        #remove_message.btn{:"data-tooltip" => t(:message_delete), :"data-new-status" => "trash", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "trash", box: @box)}
+          %i.icon-trash
+      - else
+        #restore_message.btn{:"data-tooltip" => t(:message_restore), :"data-new-status" => "restore", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "restore", box: @box)}
+          %i.icon-restore
+
+  .block_content
+    - if @messages.count > 0
+      %table.message_div_list
+        - @messages.each do |message|
+          - msg_path = message_path(id: message.id, box: @box)
+          %tr.message_line
+            %td.message_line_check
+              = check_box_tag 'checkbox_message', message.id, checked = false, {class: 'selected_messages', :"data-message-id" => message.id}
+              - css_class = message.was_read?(current_user.id, @box) ? "message_read" : "message_unread"
+              = hidden_field_tag 'message_style', css_class
+            %td.td_subject
+              - if label = message.label(current_user.id)
+                %span.message_label= label
+              = link_to message.subject, msg_path, class: css_class
+
+            %td.td_attachment= content_tag(:i, nil, class: 'icon-paperclip') if message.has_attachment?
+            %td.td_sender= link_to message.sent_by.name, msg_path
+            %td.td_time= link_to l(message.send_date, format: :short), msg_path
+    - else
+      .text_none= t(:message_none)
+
+  .message_div_navigation
+    = will_paginate @messages
+
+:javascript
+
+  jQuery(function($){
+    message_menu_dropdown();
+
+    $('#ckb_all').nice_checkbox();
+
+    $('div#mark_as_read, div#mark_as_unread, div#remove_message, div#restore_message').click(function(){
+      var message_ids = selected_messages();
+      if (!message_ids.length)
+        return false;
+
+      var url = $(this).data('link-udpate-status').replace(':id', message_ids);
+      var new_status = $(this).data('new-status');
+      var msgs = $('[type=checkbox]:checked.selected_messages');
+
+      $.ajax({
+        type: 'PUT',
+        url: url,
+        success: function(response) {
+          if ($.inArray(new_status, ['trash', 'restore']) != -1) // comportamento diferente
+            msgs.parents('tr').fadeOut(500, function(){ $(this).remove() });
+          else {
+            var links = $('.td_subject a', msgs.parents('tr'));
+            if (new_status == "read")
+              links.addClass('message_read').removeClass('message_unread');
+            else
+              links.addClass('message_unread').removeClass('message_read');
+          }
+
+          // contar entrada corretamente
+          $('span#count_msgs_unread').html(['(', $('.message_unread').length, ')'].join(''));
+        }
+      });
+    });
+  });

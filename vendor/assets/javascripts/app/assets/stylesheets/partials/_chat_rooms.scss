@@ -1,0 +1,92 @@
+.description{
+  font-size: 11px;
+  color: $text_grey;
+}
+
+.complete{
+  border-left: 2px solid #C0C0C0;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.description .hide{
+  float:right;
+}
+
+.new_chat .schedule_dates .input input {
+  width: 85px;
+}
+
+.input textarea{
+  width: 310px;
+}
+
+.new_chat .schedule_dates .left, .right {
+  float: left;
+}
+
+.box, #tab label{
+  border: 1px solid grey;
+  background-color: white;
+}
+
+#tab label{
+  padding-top: 2px;
+  color: $label_color;
+  border-bottom: none;
+  height: auto;
+  padding-right: 5px;
+  padding-left: 5px;
+  max-width: 120px;
+  z-index: 2;
+}
+
+.box{
+  padding: 5px;
+  padding-top: -5px;
+  margin-bottom: 5px;
+  margin-top: -1px;
+  max-height: 100px;
+  overflow: auto;
+  width: 300px;
+  z-index: 1;
+}
+
+#define_participants {
+  margin-top: -20px;
+}
+
+#define_participants label{
+  color: $text_grey;
+}
+
+#chat_room_type{
+  margin-top: 7px;
+}
+
+#participants_box{
+  width: 312px;
+  margin-left: 98px;
+  position: relative;
+  bottom: 18px;
+}
+
+.new_chat .required + .error, .optional + .error{
+  margin-left: 70px;
+}
+
+.chat_list .dropdown-menu{
+ overflow-y: scroll;
+ max-height: 100px;
+ padding: 3px;
+ padding-top: 6px;
+}
+
+.chat_list .dropdown-menu li{
+ white-space: nowrap;
+}
+
+.chat_list .dropdown-link a{
+ vertical-align:bottom;
+}

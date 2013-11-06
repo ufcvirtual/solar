@@ -1,0 +1,15 @@
+- if not @bibliographies.empty?
+
+  - @bibliographies.each do |bib|
+    .block_wrapper
+      .block_title
+        %h2
+          %i.icon-book
+      .block_content.block_content_text
+        %div
+          = bib.resume # ainda falta melhorar
+
+- else
+  .block_wrapper
+    .block_content_text_list.text_none
+      = t(:bibliography_null)

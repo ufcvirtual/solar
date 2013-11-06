@@ -1,0 +1,72 @@
+.block_wrapper.list_assignments{:"data-link-list" => assignments_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: params[:all_groups_ids])}
+  .block_title
+    %h2= t(:assignment, scope: [:editions, :items])
+
+  .block_content_toolbar
+    .block_toolbar_left.btn-group
+      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_assignment_path(allocation_tags_ids: [@allocation_tags_ids].flatten), class: " btn btn_main fancybox.ajax", id: "new_assignment", :"data-tooltip" => t(:new, scope: "assignment.list")
+    .block_toolbar_right
+      .btn-group
+        = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit edit_assignment', "data-link-to-edit" => edit_assignment_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), "data-edit-title" => t(:edit, scope: "assignment.list"), disabled: true, :"data-tooltip" => t(".edit_assignment")
+        = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'btn btn_del delete_assignment', :"data-link-delete" => assignment_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), :"data-link-to-list" => assignments_path(allocation_tags_ids: [@allocation_tags_ids]), disabled: true, :"data-tooltip" => t(".delete_assignment")
+
+  - unless @assignments.empty? or @assignments.nil?
+    - all_groups = Group.where(id: params[:all_groups_ids])
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th{style: 'text-align:center;'}
+            %input#all_assignments{type: "checkbox", :"data-children-names" => "ckb_assignment"}
+          %th{style: 'text-align:left;'}= t(:name, scope: "assignment.list")
+          %th{style: 'text-align:center;'}= t(:type, scope: "assignment.list")
+          %th{style: 'text-align:center;'}= t(:availability, scope: "assignment.list")
+          %th{style: 'text-align:center;'}= t(:answers, scope: "assignment.list")
+
+      %tbody
+        - @assignments.each do |assignment|
+          - can_delete = assignment.sent_assignments.count.zero?
+          - has_file = (not assignment.assignment_enunciation_files.empty?)
+          %tr.lines{id: "tr_#{assignment.id}"}
+            %td{style: 'text-align:center;'}
+              = check_box_tag("ckb_assignment", assignment.id, false, {class: "ckb_assignment", :"data-can-delete" => can_delete})
+            %td
+              %div
+                .title
+                  = assignment.name
+                  - if has_file
+                    %i.icon-paperclip
+                .description
+                  .minimun
+                    = assignment.enunciation.truncate(200)
+                    - if assignment.enunciation.size>200 or has_file
+                      = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_enunciation"))
+                  .complete.invisible
+                    = assignment.enunciation
+                    - if has_file
+                      .attached_files=t(".attached_files")
+                      - assignment.assignment_enunciation_files.each do |file|
+                        .file
+                          = image_tag( icon_attachment(file.attachment_file_name) )                            
+                          = file.attachment_file_name
+                    = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_enunciation"))
+                = render "groups/groups_tags", groups: assignment.groups, tool: assignment, all_groups: all_groups, paths: {add: add_group_to_assignments_path(id: "param_id", tool_id: assignment.id), remove: remove_group_from_assignments_path(id: "param_id", tool_id: assignment.id), unbind: unbind_group_from_assignments_path(id: "param_id", tool_id: assignment.id)}
+
+            %td{style: 'text-align:center;'}
+              %div.title= t(((assignment.type_assignment.to_i == Assignment_Type_Individual) ? :individual : :group), scope: "assignment.list")
+            %td{style: 'text-align:center;'}
+              %div
+                %span= l(assignment.schedule.start_date, format: :normal)
+                %span= ' - '
+                %span= l(assignment.schedule.end_date, format: :normal)
+
+            %td{style: 'text-align:center;'}
+              %div= can_delete ? t(:no, scope: "assignment.list") : t(:yes, scope: "assignment.list")
+
+  - else
+    .block_content_text_list.text_none= t(:none, scope: "assignment.list")
+
+= javascript_include_tag "tooltip", "assignments", "groups_tags"
+
+:javascript
+  var div_list = $(".list_assignments");
+  var all_allocation_tags_ids = "#{AllocationTag.where(group_id: params[:all_groups_ids]).map(&:id).join(",")}";

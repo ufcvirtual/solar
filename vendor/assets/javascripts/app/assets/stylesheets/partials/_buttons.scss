@@ -1,0 +1,346 @@
+@import "compass/css3";
+@import "compass/css3/images";
+@import "compass/css3/box-shadow";
+
+$btn-color: #ffffff;
+$btn_main-color: #005cc0;
+$btn_caution-color: #ee5f5b;
+$btn-width: 54px; 
+$btn-height: 28px;
+
+/* codigo para remover padding extra que o firefox adiciona automaticamente */
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+input::-moz-focus-inner {
+    padding: 1px 0 0 0;
+}
+
+.btn, .btn_caution {
+    display: inline-block;
+    *display: inline;
+    padding: 4px 6px;
+    margin: 0;
+    font-size: 11px; /* original: 14px */
+    line-height: 18px; /* original: 20px */
+    text-decoration: none !important;
+    color: #333333;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: $btn-color; /* Old browsers */
+    @include filter-gradient($btn-color, darken($btn-color,7%)); /* IE */
+    @include background-image(linear-gradient($btn-color, darken($btn-color,7%))); /* CSS3 */
+    background-repeat: repeat-x;
+    border: 1px solid #cccccc;
+    *border: 1px;
+    border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    border-bottom-color: #b3b3b3;
+    *zoom: 1;
+    @include box-shadow(rgba(255, 255, 255, 0.2) 0 1px 0 inset, rgba(0, 0, 0, 0.05) 0 1px 2px inset);
+}
+
+.btn_lightbox,.btn_form{
+    min-height: $btn-height;
+    min-width: $btn-width;
+}
+
+.btn_lightbox{
+    margin-bottom: 8px;
+}
+
+/* grupos de botões */
+.btn-group {
+    position: relative;
+    display: inline-block;
+    *display: inline;
+    font-size: 0;
+    white-space: nowrap;
+    vertical-align: middle;
+    *zoom: 1;
+}
+
+.btn-group:first-child {
+    *margin-left: 0;
+}
+
+.btn-group + .btn-group {
+    margin-left: 4px;
+}
+
+/* TODO - andrei - possível codigo para área de barra de ferramentes, analisar viabilidade */
+// .btn-toolbar {
+//     margin-top: 10px;
+//     margin-bottom: 10px;
+//     font-size: 0;
+// }
+
+// .btn-toolbar > .btn + .btn,
+// .btn-toolbar > .btn-group + .btn,
+// .btn-toolbar > .btn + .btn-group {
+//     margin-left: 5px;
+// }
+
+.btn-group > .btn + .btn {
+    margin-left: -1px;
+}
+
+.btn-group > .btn:hover,
+.btn-group > .btn:focus,
+.btn-group > .btn:active,
+.btn-group > .btn.active {
+    z-index: 2;
+}
+
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn.disabled,
+.btn_disabled,
+.btn[disabled],
+.btn.dropdown-open {
+    background-color: darken($btn-color,7%);
+}
+
+.btn i {
+    color: #000000;
+    @include opacity(0.5);
+    filter:alpha(opacity=50);
+}
+
+.btn:hover i,
+.btn:focus i,
+.btn:active i,
+.btn.dropdown-open i {
+    @include opacity(0.8);
+    filter:alpha(opacity=80);
+}
+
+.btn.disabled i,
+.btn_disabled i,
+.btn[disabled] i,
+.btn[disabled]:focus i,
+.btn[disabled]:active i,
+.btn[disabled]:hover i {
+    @include opacity(0.5);
+    filter:alpha(opacity=50);
+}
+
+.btn:hover,
+.btn:focus {
+    text-decoration: none;
+}
+
+.btn:focus {
+    outline: thin dotted #333;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+
+.btn.active,
+.btn:active,
+.btn.dropdown-open {
+    background-image: none;
+    outline: 0;
+    @include box-shadow(rgba(0, 0, 0, 0.15) 0 2px 4px inset, rgba(0, 0, 0, 0.05) 0 1px 2px inset);
+}
+
+.btn_pressed {
+    color: #333333;
+    background-color: #ffffff;
+    background-image: none;
+    @include box-shadow(#9a9a9a 0px 1px 2px inset);
+}
+
+.btn_main {
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background: $btn_main-color; /* Old browsers */
+    @include filter-gradient($btn_main-color, darken($btn_main-color, 10%)); /* IE */
+    @include background-image(linear-gradient($btn_main-color, darken($btn_main-color, 15%))); /* CSS3 */
+    background-repeat: repeat-x;
+    border-color: #0044cc #0044cc #002a80;
+}
+
+.btn_main i {
+    color: #ffffff;
+    @include opacity(0.85);
+    filter:alpha(opacity=85);
+}
+
+.btn_main:hover i,
+.btn_main:focus i,
+.btn_main:active i,
+.btn_main.dropdown-open i {
+    @include opacity(1.0);
+    filter:alpha(opacity=100);
+}
+
+.btn_main:hover,
+.btn_main:focus,
+.btn_main.active,
+.btn_main.disabled,
+.btn_main.btn_disabled,
+.btn_main[disabled],
+.btn_main.dropdown-open {
+    background-color: desaturate($btn_main-color, 30%);
+    @include background-image(linear-gradient(lighten($btn_main-color, 10%), darken($btn_main-color,10%))); /* CSS3 */
+}
+
+.btn_main.disabled i,
+.btn_main.btn_disabled i,
+.btn_main[disabled] i,
+.btn_main[disabled]:focus i,
+.btn_main[disabled]:active i,
+.btn_main[disabled]:hover i {
+    @include opacity(0.5);
+    filter:alpha(opacity=50);
+}
+
+.btn_main:hover i,
+.btn_main:focus i,
+.btn_main:active i,
+.btn_main.active i,
+.btn_caution:hover i,
+.btn_caution:focus i,
+.btn_caution:active i {
+    color: #ffffff;
+}
+
+.btn_warning,
+.btn_caution:hover,
+.btn_caution:focus,
+.btn_caution:active {
+    color: #ffffff;
+    background: $btn_caution-color; /* Old browsers */
+    @include filter-gradient($btn_caution-color, darken($btn_caution-color, 20%)); /* IE */
+    @include background-image(linear-gradient($btn_caution-color, darken($btn_caution-color, 20%))); /* CSS3 */
+    background-repeat: repeat-x;
+    border-color: #bd362f #bd362f #802420;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    text-shadow: none;
+}
+
+.btn_caution[disabled] {
+    border-color: #bd362f #bd362f #802420;
+}
+
+.btn_caution[disabled] i {
+    color: #ffffff;
+    text-shadow: none;
+    @include box-shadow(none);
+}
+
+.btn_warning i {
+    @include opacity(0.9);
+    filter:alpha(opacity=90);
+    color: #ffffff;
+}
+
+.btn_caution:hover i,
+.btn_caution:focus i,
+.btn_caution:active i,
+.btn_warning:hover i,
+.btn_warning:focus i,
+.btn_warning:active i {
+    @include opacity(1.0);
+    filter:alpha(opacity=100);
+}
+
+.btn_caution.disabled,
+.btn_caution.btn_disabled
+.btn_caution[disabled] {
+    border-color: #bd362f #bd362f #802420;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+
+.btn_caution.disabled i,
+.btn_caution.btn_disabled i,
+.btn_caution[disabled] i,
+.btn_caution[disabled]:focus i,
+.btn_caution[disabled]:active i,
+.btn_caution[disabled]:hover i,
+.btn_warning.disabled i,
+.btn_warning.btn_disabled i,
+.btn_warning[disabled] i,
+.btn_warning[disabled]:focus i,
+.btn_warning[disabled]:active i,
+.btn_warning[disabled]:hover i {
+    color: #fff;
+    @include opacity(0.5);
+    filter:alpha(opacity=50);
+    text-shadow: none;
+}
+
+.btn_caution.disabled,
+.btn_caution.btn_disabled,
+.btn_caution[disabled] {
+    background-color: #CE1A15;
+    *background-color: #CE1A15;
+}
+
+.btn_warning:hover,
+.btn_warning:focus,
+.btn_warning:active,
+.btn_warning.disabled,
+.btn_warning.btn_disabled,
+.btn_warning[disabled] {
+    color: #ffffff;
+    background-color: darken($btn_caution-color, 20%);
+    *background-color: darken($btn_caution-color, 20%);
+}
+
+.btn_warning:active {
+    background-color: #942a25;
+}
+
+.btn.disabled,
+.btn_disabled,
+.btn[disabled] {
+    cursor: default;
+    background-image: none;
+    @include opacity(0.45);
+    filter: alpha(opacity=45);
+    @include box-shadow(none);
+}
+
+/* TODO - andrei - revisar onde este seletor está sendo utilizado */
+.block_content_toolbar .btn.btn_spacing_left {
+    margin-left: 5px;
+    border-left-width: 1px;
+}
+
+/* botão específico do lightbox de upload de arquivos de aula */
+$btn-initial-file-color: #f9db43;
+$btn-initial-file-color-final: #f9c143;
+#btn-initial-file {
+    background: $btn-initial-file-color; /* Old browsers */
+    @include filter-gradient($btn-initial-file-color, $btn-initial-file-color-final); /* IE */
+    @include background-image(linear-gradient($btn-initial-file-color, $btn-initial-file-color-final)); /* CSS3 */
+    background-repeat: repeat-x;
+    @include opacity(0.9);
+    filter:alpha(opacity=45);
+}
+
+#btn-initial-file:hover {
+    @include opacity(1.0);
+    filter:alpha(opacity=100);
+}
+
+/* icone para botões com dropdown */
+.btn-group .icon-arrow-down-3:before {
+    margin-left: -5px;
+    font-size: 14px;
+}
+
+#search{
+    margin: 5px;
+}
+
+.btn_dropdown a {
+  cursor: pointer;
+}

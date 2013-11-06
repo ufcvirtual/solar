@@ -1,0 +1,7 @@
+#post_attachment_wrapper
+  = form_for(:public_area, :url => upload_file_assignments_path(:type => 'public')) do |f|
+    = f.file_field :file, :name => :file
+    .alter_photo_text=raw t(:send_file_obs, :scope => [:assignment, :files])
+    .alter_photo_text=raw t(:send_file_text, :scope => [:assignment, :files])
+    #post_attachment_form_submit
+      %a.UploadFileSubmit.forum_button= f.submit t(:save)

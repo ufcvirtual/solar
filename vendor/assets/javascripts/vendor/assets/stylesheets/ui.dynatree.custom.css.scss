@@ -1,0 +1,80 @@
+@import "ui.dynatree";
+
+#tree {
+    height: 218px;
+    overflow-y: auto;
+    padding: 5px 3px;
+}
+
+ul.dynatree-container{
+    border: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+#tree, ul.dynatree-container {
+    background-color: #F5F8FB;
+}
+
+#folder_dropdown ul.dynatree-container {
+    background-color: white;
+}
+
+#folders_tree {
+    padding-top: 0px;
+    border: none;
+    padding-top: 0px;
+    margin-top: 0px;
+    min-height: 80px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.dynatree-folder .dynatree-ico-cf span.dynatree-icon, .dynatree-folder .dynatree-ico-ef span.dynatree-icon, .dynatree-folder span.dynatree-icon, span.dynatree-icon{
+	background-position: 0px;
+}
+
+/* substitui ícone padrão dos itens da lista pelo do sistema */
+span.dynatree-icon{
+	background-image: url("/assets/lesson/file.png");
+}
+
+span.dynatree-folder a {
+    font-weight: normal;
+}
+
+/* se tiver a classe de pasta, o ícone a ser exibido é um correspondente */
+.dynatree-folder span.dynatree-icon{
+	background-image: url("/assets/lesson/folder.png");
+}
+
+/* raiz não deve possuir a imagem de pasta */
+li#dynatree-id-_2 > .dynatree-node > span:nth-child(3){ 
+    background-image: none;
+    display: none;
+}
+
+
+#initial_file > a.dynatree-title{
+    color: #e7aa3f;
+    font-weight: bold;
+}
+
+#initial_file > span.dynatree-icon{
+    background-image: url("/assets/lesson/initial_file-TEMP.png");
+}
+
+#initial_file_parent > span.dynatree-icon{
+    background-image: url("/assets/lesson/initial_file-TEMP.png");
+}
+
+#some_child_selected{
+    color: green;
+    font-style: italic;
+}
+
+#no_child_selected{
+    color: black;
+    font-style: normal;
+}
+

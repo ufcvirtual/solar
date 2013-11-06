@@ -1,0 +1,32 @@
+%div
+  = form_for(:enrollments, url: enrollments_allocations_path, method: :get) do |f|
+    = f.hidden_field(:offer_id, {value: params[:offer_id], name: :offer_id}) if params.include?(:offer_id)
+    = f.hidden_field(:group_id, {value: params[:group_id], name: :group_id}) if params.include?(:group_id)
+    = t(:status) + ':'
+    = select(:status, :id, status_hash.invert.to_a, {prompt:  t(:all), selected:  params[:status]},
+                                                    {name:  'status', onchange: "javascript:this.form.submit();"})
+    %span.filter_counter= "(#{t(".total_students", count: @allocations.map(&:user_id).uniq.length)})"
+
+.block_title
+  %h2= t(".manage_title")
+  %span.block_actions= button_tag( t(".enroll_selected"), class:  "btn btn_default btn_enroll_selected")
+
+.block_content
+  %table.tb_list.enrollments
+    %thead
+      %tr.lines
+        %th{style: "width:10px"}= check_box_tag( 'all', 'all', false, {id: "cbx_all"} )
+        %th= t(".manage_student")
+        %th{style: 'width:120px'}= t(".manage_group")
+        %th{style: 'width:120px'}= t(".manage_curriculum_unit")
+        %th{style: 'width:100px'}= t(".manage_status")
+        %th{style: 'width:120px'}= t(".manage_options")
+    %tbody
+      - @allocations.each do |allocation|
+        %tr.lines
+          %td= check_box_tag(allocation.id, allocation.id, false, {:"status-value" => allocation.status, class: "cbx_value"})
+          %td= allocation.user.name
+          %td= allocation.group.code_semester
+          %td= allocation.group.curriculum_unit.name
+          %td= name_of allocation.status
+          %td= button_to_function t(".manage"), "manage_enrollment(this)", :"show-link" => allocation_path(allocation), :"edit-link" => edit_allocation_path(allocation), class:  "btn btn_default btn_manage_enrollment"

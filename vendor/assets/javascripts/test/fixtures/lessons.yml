@@ -1,0 +1,84 @@
+pag_ufc:
+  id: 1
+  user_id: 1
+  name: aula 1 pag ufc
+  address: http://www.ufc.br
+  type_lesson: 1
+  order: 1
+  status: 1
+  schedule_id: 11
+  lesson_module_id: 1
+
+pag_uol:
+  id: 2
+  user_id: 1
+  name: aula 2 pag uol
+  address: 'http://www.uol.com.br'
+  type_lesson: 1
+  order: 2
+  status: 1
+  schedule_id: 12
+  lesson_module_id: 1
+
+pag_globo:
+  id: 3
+  user_id: 1
+  name: aula 3
+  address: 'http://www.globo.com'
+  type_lesson: 1
+  order: 3
+  status: 1
+  schedule_id: 13
+  lesson_module_id: 2
+
+pag_virtual:
+  id: 4
+  user_id: 1
+  name: aula 4
+  address: 'http://www.virtual.ufc.br'
+  type_lesson: 1
+  order: 4
+  status: 1
+  schedule_id: 14
+  lesson_module_id: 2
+
+pag_bbc:
+  id: 5
+  user_id: 1
+  name: aula 5
+  address: 'http://www.bbc.com'
+  type_lesson: 1
+  order: 5
+  status: 1
+  schedule_id: 15
+  lesson_module_id: 2
+
+pag_goo:
+  id: 6
+  name: aula 6
+  address: 'http://www.google.com'
+  type_lesson: 1
+  order: 6
+  status: 0
+  schedule_id: 15
+  lesson_module_id: 3
+
+pag_index:
+  id: 7
+  name: aula 7
+  address: 'index.html'
+  type_lesson: 0
+  order: 7
+  status: 0
+  schedule_id: 15
+  lesson_module_id: 3
+
+lesson_files_to_delete:
+  id: 8
+  name: aula to delete
+  address: 'index.html'
+  type_lesson: 0
+  order: 8
+  status: 0
+  schedule_id: 15
+  lesson_module_id: 3

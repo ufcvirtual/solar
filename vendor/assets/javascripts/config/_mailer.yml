@@ -1,0 +1,19 @@
+##
+# Arquivo de configuracoes de email - ficara fora do sistema por seguranca
+# Arquivo criado apenas para servir de base para o arquivo real
+##
+
+smtp_settings:
+  :address: 'smtp.something.com'
+  :authentication: 'plain'
+  :domain: 'something.com'
+  :user_name: 'user@something.com'
+  :password: 'password'
+  :enable_starttls_auto: true
+  :port: 587
+
+default_sender:
+  :from: 'user@something.com'
+
+default_url_options:
+  :host: 'localhost:3000'

@@ -1,0 +1,23 @@
+#message_general_title.block_title
+  - css_class_inbox  = (@box == "inbox")    ? "message_general_div_option_active" : "message_general_div_option"
+  - css_class_outbox = (@box == "outbox")   ? "message_general_div_option_active" : "message_general_div_option"
+  - css_class_trash  = (@box == "trashbox") ? "message_general_div_option_active" : "message_general_div_option"
+
+  #menu_inbox{:class => css_class_inbox}
+    %h2
+      = link_to(inbox_messages_path(bread: :menu_messages)) do
+        = content_tag(:i, nil, class: 'icon-inbox')
+        %span.message_link_menu= t(:message_inbox)
+        %span#count_msgs_unread.text_alert_message="(#{Message.user_inbox(current_user.id, true).count})"
+
+  #menu_outbox{:class => css_class_outbox}
+    %h2
+      = link_to(outbox_messages_path(bread: :menu_messages)) do
+        = content_tag(:i, nil, class: 'icon-outbox')
+        %span.message_link_menu= t(:message_outbox)
+
+  #menu_trash{:class => css_class_trash}
+    %h2
+      = link_to(trashbox_messages_path(bread: :menu_messages)) do
+        = content_tag(:i, nil, class: 'icon-trash')
+        %span.message_link_menu= t(:message_trash)

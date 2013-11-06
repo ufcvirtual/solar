@@ -1,0 +1,103 @@
+// MATRICULA
+.enrollment_list {
+
+  label {
+  margin: 5px 0 3px 0;
+  }
+
+  tr.lines td {
+    vertical-align: middle;
+  }
+}
+
+.enrollment_search {
+  height: 12px;
+  font-size: 12px;
+}
+
+.enrollment_search_icon {
+  vertical-align: middle;
+  border: 0px;
+  cursor: pointer;
+}
+
+.filter_enrollment {
+
+  label {
+    width: auto;
+  }
+
+  #autocomplete-input {
+    height: 17px;
+    width: 193px;
+    font-size: 11px;
+  }
+
+  .icon-search {
+    margin-left: -3px;
+  }
+
+  .btn {
+    margin-bottom: 1px;
+  }
+
+  .ui-autocomplete {
+    width: 198px !important;
+  }
+
+  width:800px;
+}
+
+.any_found{
+  padding: 5px;
+  padding-right: 5px;
+  border-bottom: solid 1px;
+  border-bottom-color: #d0d0d0;
+  height: 28px;
+}
+
+#offer_category {
+  height: 29px;
+  padding: 3px;
+  width: 210px;
+}
+
+#offer_search {
+  height: 17px;
+  width: 210px;
+}
+
+.enrollment_link {
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+  border: 0;
+}
+
+.enrollment_right {
+  float: right;
+  position: relative;
+  margin-right: 0px;
+  right: 0;
+  top: 5px;
+}
+
+.select_category {
+  height: 19px;
+  font-size: 10px;
+}
+
+.enrollment_label {
+  font-size: 10pt;
+  width: auto;
+  color: #000;
+}
+
+.enrollment_bar {
+  padding: 2px 4px;
+}
+
+.allocations_list {
+  max-height: 260px;
+  overflow: auto;
+}

@@ -1,0 +1,71 @@
+
+/* carregando fontes externas */
+
+@font-face {
+    font-family: 'PT Sans';
+    src: url('pt_sans-web-bold-webfont.eot');
+    font-weight: bold;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'PT Sans';
+    src: url('pt_sans-web-bolditalic-webfont.eot');
+    font-weight: bold;
+    font-style: italic;
+
+}
+
+@font-face {
+    font-family: 'PT Sans';
+    src: url('pt_sans-web-italic-webfont.eot');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'PT Sans';
+    src: url('pt_sans-web-regular-webfont.eot');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Ubuntu Condensed';
+    src: url('ubuntucondensed-regular-webfont.eot');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Ubuntu';
+    src: url('ubuntu-bold-webfont.eot');
+    font-weight: bold;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Ubuntu Light';
+    src: url('ubuntu-light-webfont.eot');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ubuntu';
+    src: url('ubuntu-regular-webfont.eot');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Solar';
+    src:url('Solar.eot');
+    font-weight: normal;
+    font-style: normal;
+}

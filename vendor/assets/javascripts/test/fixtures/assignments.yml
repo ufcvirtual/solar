@@ -1,0 +1,107 @@
+# introducao a linguistica
+a1:
+  id: 1
+  name: Atividade I
+  enunciation: Segue em anexo questionario que devem ser respondidos para a 3a nota
+  schedule_id: 17
+
+# quimica I
+a2:
+  id: 2
+  name: Atividade II
+  enunciation: Acima de tudo, é fundamental ressaltar que a contínua expansão de nossa atividade ainda não demonstrou convincentemente que vai participar na mudança dos conhecimentos estratégicos para atingir a excelência.Acima de tudo, é fundamental ressaltar que a contínua expansão de nossa atividade ainda não demonstrou convincentemente que vai participar na mudança dos conhecimentos estratégicos para atingir a excelência.Acima de tudo, é fundamental ressaltar que a contínua expansão de nossa atividade ainda não demonstrou convincentemente que vai participar na mudança dos conhecimentos estratégicos para atingir a excelência.Acima de tudo, é fundamental ressaltar que a contínua expansão de nossa atividade ainda não demonstrou convincentemente que vai participar na mudança dos conhecimentos estratégicos para atingir a excelência.
+  schedule_id: 18
+
+# quimica I - atividade III
+a3:
+  id: 3
+  name: Atividade III
+  enunciation: Podemos já vislumbrar o modo pelo qual a crescente influência da mídia talvez venha a ressaltar a relatividade do levantamento das variáveis envolvidas.Podemos já vislumbrar o modo pelo qual a crescente influência da mídia talvez venha a ressaltar a relatividade do levantamento das variáveis envolvidas.
+  schedule_id: 19
+
+# quimica I - trabalho em grupo
+a4:
+  id: 4
+  name: Atividade em grupo I
+  enunciation: enunciado de trabalho em grupo
+  schedule_id: 20
+  type_assignment: 1
+
+# quimica I - trabalho em grupo2
+a5:
+  id: 5
+  name: Atividade em grupo II
+  enunciation: enunciado de trabalho em grupo
+  schedule_id: 21
+  type_assignment: 1
+
+# quimica I - trabalho em grupo3
+a6:
+  id: 6
+  name: Atividade em grupo III
+  enunciation: esta é uma atividade sem grupo algum.
+  schedule_id: 21
+  type_assignment: 1
+
+a7:
+  id: 7
+  name: Atividade individual VII
+  enunciation: esta é uma atividade individual
+  schedule_id: 22 #prazo concluído
+  type_assignment: 0 #individual
+
+a8:
+  id: 8
+  name: Atividade individual IV
+  enunciation: esta é uma atividade individual
+  schedule_id: 18 #prazo não iniciado
+  type_assignment: 0 #individual
+
+a9:
+  id: 9
+  name: Atividade individual V
+  enunciation: esta é uma atividade individual
+  schedule_id: 19 #prazo em aberto
+  type_assignment: 0 #individual
+
+a10:
+  id: 10
+  name: Atividade I
+  enunciation: esta é uma atividade individual
+  schedule_id: 19 #prazo em aberto
+  type_assignment: 0 #individual
+
+a11:
+  id: 11
+  name: Atividade em grupo I
+  enunciation: esta é uma atividade em grupo
+  schedule_id: 19 #prazo em aberto
+  type_assignment: 1 #grupo
+
+a12:
+  id: 12
+  name: Atividade em grupo II
+  enunciation: esta é uma atividade em grupo
+  schedule_id: 19 #prazo em aberto
+  type_assignment: 1 #grupo
+
+a13:
+  id: 13
+  name: Atividade individual VI
+  enunciation: esta é uma atividade individual
+  schedule_id: 17 #prazo concluído
+  type_assignment: 0 #individual
+
+a14:
+  id: 14
+  name: Atividade individual VII
+  enunciation: esta é uma atividade individual
+  schedule_id: 27 #prazo em aberto
+  type_assignment: 0 #individual
+
+a15:
+  id: 15
+  name: Atividade individual VIII
+  enunciation: esta é uma atividade individual
+  schedule_id: 17 #prazo concluido
+  type_assignment: 0 #individual

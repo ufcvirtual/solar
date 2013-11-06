@@ -1,0 +1,33 @@
+.discussion_form
+  = simple_form_for(@discussion, html: {id: "discussion_form"}) do |f|
+    %h1#lightBoxDialogTitle= t(@discussion.persisted? ? ".edit" : ".new")
+    %span.form_requirement= t(:required_fields)
+      
+    .form-inputs.block_content
+      = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+
+      = f.input :name
+      = f.input :description
+
+      = f.fields_for :schedule, defaults: {required: true} do |s|
+        .schedule_dates
+          .left= s.input :start_date, as: :string, input_html: {id: 'from-date', value: l(@discussion.schedule.start_date.to_date, format: :datepicker)}
+          .right= s.input :end_date, as: :string, input_html: {id: 'until-date', value: l(@discussion.schedule.end_date.to_date, format: :datepicker)}
+
+      .input.group_label.invisible
+        = f.label t(".groups")
+        %span.groups
+          - @groups_codes.each do |group_code|
+            %span.collection_check_boxes= group_code
+
+      .form-actions.right_buttons
+        = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(".cancel")
+        = button_to_function t(".save"), "save_discussion()" , class: "btn btn_main btn_lightbox", alt: t(".save"), type: "button"
+
+= javascript_include_tag "edition_discussions"
+
+:javascript
+
+  var start_date = "#{@discussion.schedule.start_date}";
+  var end_date = "#{@discussion.schedule.end_date}";
+  var div_to_replace = ("#{params[:calendar]}" == "" ? $(".list_discussions") : $(".calendar_schedules"));

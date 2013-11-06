@@ -1,0 +1,46 @@
+.block_wrapper.list_discussions{:"data-link-list" => list_discussions_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: params[:all_groups_ids])}
+
+  .block_title
+    %h2= t(".discussions")
+  .block_content_toolbar
+    .block_toolbar_left.btn-group
+      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_discussion_path(allocation_tags_ids: @allocation_tags_ids), class: " btn btn_main", id: "new-discussion", :"data-tooltip" => t(".new")
+
+    .block_toolbar_right
+      .btn-group
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit', :"data-link-edit" => edit_discussion_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".edit")
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_discussion',  :"data-link-delete" => discussion_path(id: ':id', :allocation_tags_ids => @allocation_tags_ids), disabled: true, :'data-tooltip' => t(".delete")
+
+  - unless @discussions.nil? or @discussions.empty?
+    - all_groups = Group.where(id: params[:all_groups_ids])
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th{style: 'text-align:center; width: 8%;'}= check_box_tag :all_discussions, false, false, :"data-children-names" => "ckb_discussion", class: "all_discussions"
+          %th{align: "left"}=t :title
+          %th{align: "center", style: "width: 26%;"}=t :forum_table_date
+      %tbody
+        - @discussions.each do |discussion|
+          %tr.lines{id: "tr_#{discussion.id}"}
+            %td{style: 'text-align:center;'}= check_box_tag :ckb_discussion, discussion.id, false, {class: "ckb_discussion"}
+            %td
+              %div
+                .title= discussion.name
+                .description
+                  .minimun= raw(truncate discussion.description, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
+                  .complete.invisible
+                    = discussion.description
+                    = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_description"))
+                .group_label.invisible= render "groups/groups_tags", groups: discussion.groups, tool: discussion, all_groups: all_groups, paths: {add: add_group_to_discussions_path(id: "param_id", tool_id: discussion.id), remove: remove_group_from_discussions_path(id: "param_id", tool_id: discussion.id), unbind: unbind_group_from_discussions_path(id: "param_id", tool_id: discussion.id)}
+            %td{style: 'text-align:center;'}= [l(discussion.schedule.start_date, format: :normal), l(discussion.schedule.end_date, format: :normal)].join(" - ")
+
+
+  - else
+    .block_content_text.block_content_text_list.text_none= t(:forum_message)
+
+= javascript_include_tag "edition_discussions", "tooltip", "groups_tags"
+
+:javascript
+
+  var div_list = $(".list_discussions");
+  var all_allocation_tags_ids = "#{AllocationTag.where(group_id: params[:all_groups_ids]).map(&:id).join(",")}";

@@ -1,0 +1,66 @@
+= link_to t(".new"), new_semester_path, class: " btn btn_default", id: "new_semester", :"data-tooltip" => t(".new")
+
+- type_id = (@type_id || @type.try(:id))
+
+- unless @semesters.empty?
+  - @semesters.each do |semester|
+    .semester{id: "semester-#{semester.id}"}
+      .block_title
+        %h2
+          = semester.name
+          = link_to (content_tag(:i, nil, :class=>'icon-edit')), edit_semester_path(semester), class: 'block_title_button', :'data-tooltip' => t(".edit"), id: "edit_semester_#{semester.id}"
+          = link_to (content_tag(:i, nil, :class=>'icon-trash')), "#", class: 'del_semester', :"data-link-delete" => semester_path(semester), :'data-tooltip' => t(".delete"), id: "semester-del-#{semester.id}"
+        #semester_period
+          - period = [l(semester.offer_schedule.start_date, format: :normal), l(semester.offer_schedule.end_date, format: :normal)].join(' - ')
+          = [t(".period"), ": #{period}"].join
+      .block_content_toolbar
+        .block_toolbar_left.btn-group
+          = link_to (content_tag(:i, nil, class: 'icon-plus-3')), new_semester_offer_path(semester, type_id: type_id, course_id: (params[:course_id] || ""), curriculum_unit_id: (params[:curriculum_unit_id] || "")), :"data-semester-name" => semester.name, class: " btn btn_main link_new_offer", :"data-tooltip" => t(".new_offer")
+
+        .block_toolbar_right
+          = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'delete_offer btn btn_del', :'data-tooltip' => t(".delete_offer"), :"data-link-delete" => offer_path(id: ':id')
+
+      = render partial: "offers/list", object: @offers = semester.offers, object: @type_id = type_id
+- else
+  .block_content_text.text_none= t(".none")
+
+= javascript_include_tag "tooltip"
+
+:javascript
+  $(function(){
+    $('#new_semester, .link_new_offer, [id^="edit_semester_"]').call_fancybox();
+
+    $('.btn_del').attr("disabled", true);
+
+    $('.del_semester').click(function(){
+      $(this).nice_delete({parent: 'div.semester'});
+    });
+
+    $('.delete_offer').click(function() {
+      if ($(this).attr('disabled') == 'disabled'){
+        flash_message("#{t(".choose_one_offer")}", "alert");
+        return false;
+      }
+
+      if(!confirm("#{t(:message_confirm)}"))
+        return false;
+        
+      // tentar melhorar o nice_delete para incluir a delecao de muitas linhas
+      
+      var offers = $('.ckb_offers:checked', $(this).parents(".semester"));
+      var offers_ids = offers.map(function() { return this.value; }).get();
+
+      if (offers_ids.length) {
+        $.delete($(this).data('link-delete').replace(':id', offers_ids), function(data){
+          flash_message(data.notice, 'notice');
+          offers.parents('tr').fadeOut().remove();
+        }).error(function(data){
+          var data = $.parseJSON(data.responseText);
+          if (typeof(data.alert) != "undefined")
+            flash_message(data.alert, 'alert');
+        });
+      }
+
+      return false;
+    });
+  });

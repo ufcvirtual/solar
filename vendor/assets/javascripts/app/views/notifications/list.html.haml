@@ -1,0 +1,45 @@
+.block_wrapper.list_notifications{"data-link-list" => list_notifications_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: params[:all_groups_ids])}
+
+  .block_title
+    %h2= t(".notifications")
+  .block_content_toolbar
+    .block_toolbar_left.btn-group
+      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_notification_path(allocation_tags_ids: @allocation_tags_ids), class: "btn btn_main link_new_notification", :"data-tooltip" => t(".new")
+
+    .block_toolbar_right
+      .btn-group
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit', :"data-link-edit" => edit_notification_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".edit")
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_notification',  :"data-link-delete" => notification_path(id: ':id', :allocation_tags_ids => @allocation_tags_ids), disabled: true, :'data-tooltip' => t(".delete")
+
+  - unless @notifications.nil? or @notifications.empty?
+    - all_groups = Group.where(id: params[:all_groups_ids])
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th{style: 'text-align:center; width: 8%;'}= check_box_tag :all_notifications, false, false, :"data-children-names" => "ckb_notification", class: "all_notifications"
+          %th{align: "left"}=t(".notification")
+          %th{align: "center", style: "width: 26%;"}= t(".period")
+      %tbody
+        - @notifications.each do |notification|
+          %tr.lines{id: "tr_#{notification.id}"}
+            %td{style: 'text-align:center;'}= check_box_tag :ckb_notification, notification.id, false, {class: "ckb_notification"}
+            %td
+              %div
+                .title= notification.title
+                .description
+                  .minimun= raw(truncate notification.description, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
+                  .complete.invisible
+                    = raw notification.description
+                    = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_description"))
+                .group_label.invisible= render "groups/groups_tags", groups: notification.groups, tool: notification, all_groups: all_groups, paths: {add: add_group_to_notifications_path(id: "param_id", tool_id: notification.id), remove: remove_group_from_notifications_path(id: "param_id", tool_id: notification.id), unbind: unbind_group_from_notifications_path(id: "param_id", tool_id: notification.id)}
+            %td{style: 'text-align:center;'}= notification.period
+
+  - else
+    .block_content_text.block_content_text_list.text_none= t(".no_data")
+
+= javascript_include_tag "notifications", "tooltip", "groups_tags"
+
+:javascript
+
+  var div_list = $(".list_notifications");
+  var all_allocation_tags_ids = "#{AllocationTag.where(group_id: params[:all_groups_ids]).map(&:id).join(",")}";

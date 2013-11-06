@@ -1,0 +1,66 @@
+# ofertas de 1 à 4 dentro do período de matrícula até 2021
+of1:
+  id: 1
+  curriculum_unit_id: 1
+  course_id: 1
+  semester_id: 2
+
+of2:
+  id: 2
+  curriculum_unit_id: 2
+  course_id: 1
+  semester_id: 2
+  enrollment_schedule_id: 30
+
+of3:
+  id: 3 # possui módulo default e depêndencias
+  curriculum_unit_id: 3
+  course_id: 2
+  semester_id: 2
+  enrollment_schedule_id: 31
+
+of4:
+  id: 4
+  curriculum_unit_id: 4 # Semipresencial sm nvista
+  course_id: 1 # Letras Portugues
+  semester_id: 2 # 2011.1
+  enrollment_schedule_id: 32
+
+of5:
+  id: 5
+  curriculum_unit_id: 5
+  course_id: 2
+  semester_id: 2
+  enrollment_schedule_id: 25 # período de matrícula já passou
+
+of6:
+  id: 6 
+  curriculum_unit_id: 1
+  course_id: 1
+  semester_id: 3 # 2012.1
+
+of7: # não possui dependências, apenas módulo default
+  id: 7
+  curriculum_unit_id: 3
+  course_id: 2
+  semester_id: 3
+  offer_schedule_id: 37
+  enrollment_schedule_id: 33
+
+of8: # oferta que não deve aparecer para matrícula
+  id: 8
+  curriculum_unit_id: 2
+  course_id: 1
+  semester_id: 1
+
+of9: # oferta que não deve aparecer para matrícula
+  id: 9
+  curriculum_unit_id: 3
+  course_id: 2
+  semester_id: 1
+
+of10:
+  id: 10
+  curriculum_unit_id: 5 # literatura brasileira I
+  course_id: 3 # Introducao a Linguistica
+  semester_id: 4 # 2013.1

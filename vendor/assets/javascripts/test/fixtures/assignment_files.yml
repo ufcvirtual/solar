@@ -1,0 +1,39 @@
+af6:
+  id: 6
+  user_id: 7 #aluno1
+  sent_assignment_id: 3 #sa3
+  attachment_file_name: "teste1.txt"
+  attachment_file_size: 1024
+  attachment_updated_at: "2012-09-18"
+
+af7:
+  id: 7
+  user_id: 8 #aluno2
+  sent_assignment_id:  2 #sa2
+  attachment_file_name: "teste2.txt"
+  attachment_file_size: 1024
+  attachment_updated_at: "2012-09-18"
+
+af8:
+  id: 8
+  user_id: 9 #aluno3
+  sent_assignment_id: 4 #sa4
+  attachment_file_name: "teste3.txt"
+  attachment_file_size: 1024
+  attachment_updated_at: "2012-09-18"
+
+af9:
+  id: 9
+  user_id: 9 #aluno3
+  sent_assignment_id: 5 #sa5
+  attachment_file_name: "teste4.txt"
+  attachment_file_size: 1024
+  attachment_updated_at: "2012-09-18"
+
+af10:
+  id: 10
+  user_id: 7 #aluno1
+  sent_assignment_id: 6 #sa6
+  attachment_file_name: "teste5.txt"
+  attachment_file_size: 1024
+  attachment_updated_at: "2012-09-18"

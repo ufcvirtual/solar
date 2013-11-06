@@ -1,0 +1,1884 @@
+"pt-BR":
+
+  # formatos de data e hora
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      short: "%d de %B"
+      long: "%d de %B de %Y"
+      datepicker: "%d/%m/%Y"
+      month_and_year: "%b %Y"
+      day_and_month: "%d/%b"
+      bibliography: "%d %b, %Y"
+    day_names: [Domingo, Segunda, Terça, Quarta, Quinta, Sexta, Sábado]
+    abbr_day_names: [Dom, Seg, Ter, Qua, Qui, Sex, Sáb]
+    month_names: [~, Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro]
+    abbr_month_names: [~, Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez]
+    order: 
+        - :day
+        - :month
+        - :year
+  time:
+    formats:
+      clock: "%m/%d/%Y %H:%M:%S"
+      default: "%A, %d de %B de %Y, %H:%M h"
+      short: "%d/%m %H:%M h"
+      today: "%H:%M"
+      not_today: "%d/%m"
+      long: "%A, %d de %B de %Y, %H:%M h"
+      normal: "%d/%m/%Y"
+      files: "%d/%m/%Y, %H:%M"
+      discussion_post_date: "%d/%m/%Y"
+      discussion_post_hour: "%H:%M h"
+      simple_day_and_month: "%d/%b"
+      at_date: "%d/%m/%Y às %H:%M"
+    am: ''
+    pm: ''
+
+  # distancia do tempo em palavras
+  datetime:
+    distance_in_words:
+      half_a_minute: 'meio minuto'
+      less_than_x_seconds:
+        one: 'menos de 1 segundo'
+        other: 'menos de %{count} segundos'
+
+      x_seconds:
+        one: '1 segundo'
+        other: '%{count} segundos'
+
+      less_than_x_minutes:
+        one: 'menos de um minuto'
+        other: 'menos de %{count} minutos'
+
+      x_minutes:
+        one: '1 minuto'
+        other: '%{count} minutos'
+
+      about_x_hours:
+        one: 'aproximadamente 1 hora'
+        other: 'aproximadamente %{count} horas'
+
+      x_days:
+        one: '1 dia'
+        other: '%{count} dias'
+
+      about_x_months:
+        one: 'aproximadamente 1 mês'
+        other: 'aproximadamente %{count} meses'
+
+      x_months:
+        one: '1 mês'
+        other: '%{count} meses'
+
+      about_x_years:
+        one: 'aproximadamente 1 ano'
+        other: 'aproximadamente %{count} anos'
+
+      over_x_years:
+        one: 'mais de 1 ano'
+        other: 'mais de %{count} anos'
+
+      almost_x_years:
+        one: 'quase 1 ano'
+        other: 'quase %{count} anos'
+
+    prompts:
+      year: "Ano"
+      month: "Mês"
+      day: "Dia"
+      hour: "Hora"
+      minute: "Minuto"
+      second: "Segundos"
+
+  # numeros
+  number:
+    format:
+      precision: 3
+      separator: ','
+      delimiter: '.'
+    currency:
+      format:
+        unit: 'R$'
+        precision: 2
+        format: '%u %n'
+        separator: ','
+        delimiter: '.'
+    percentage:
+      format:
+        delimiter: '.'
+    precision:
+      format:
+        delimiter: '.'
+    human:
+      format:
+        precision: 2
+        delimiter: '.'
+        significant: true
+        strip_unsignificant_zeros: true
+      # number_to_human_size()
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: "Byte"
+            other: "Bytes"
+          kb: "KB"
+          mb: "MB"
+          gb: "GB"
+          tb: "TB"
+      # number_to_human()
+      # new in rails 3: please add to other locales
+      decimal_units:
+        format: "%n %u"
+        units:
+          unit: ""
+          thousand: "mil"
+          million:
+            one: milhão
+            other: milhões
+          billion:
+            one: bilhão
+            other: bilhões
+          trillion:
+            one: trilhão
+            other: trilhões
+          quadrillion:
+            one: quatrilhão
+            other: quatrilhões
+
+  # Usado no Array.to_sentence
+  support:
+    array:
+      words_connector: ", "
+      two_words_connector: " e "
+      last_word_connector: " e "
+
+  errors:
+    messages:
+      not_saved: ""
+
+  # ActiveRecord
+  activerecord:
+    models:
+      user: "Usuario"
+      curriculum_unit: "Unidade Curricular"
+      group: "Turma"
+      course: "Curso"
+      bibliography: "Bibliografia"
+      notification: "Aviso"
+    attributes:
+      user:
+        alternate_email: "E-mail alternativo"
+        password: "Senha"
+        current_password: "Senha"
+        new_password: "Nova Senha"
+        username: "Usuário"
+        name: "Nome"
+        nick: "Apelido"
+        birthdate: "Data de Nascimento"
+        gender: "Sexo"
+        address: "Endereço"
+        address_number: "Número"
+        address_neighborhood: "Bairro"
+        address_complement: "Complemento"
+        zipcode: "CEP"
+        cpf: "CPF "
+        country: "País"
+        state: "Estado"
+        city: "Cidade"
+        institution: "Instituição"
+        special_needs: "Qual"
+        password_confirmation: "Confirmação da senha"
+        interests: "Interesses"
+        music: "Música"
+        movies: "Filmes"
+        books: "Livros"
+        phrase: "Frase"
+        email: "E-mail"
+        telephone: "Telefone"
+        cell_phone: "Celular"
+        email_confirmation: "Confirmação do e-mail"
+        alternate_email: "E-mail alternativo"
+        photo_content_type: "Tipo de arquivo inválido."
+        photo_file_size: "Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB."
+      curriculum_unit:
+        name: Nome
+        code: Código
+        category: Categoria
+        curriculum_unit_type_id: Categoria
+        curriculum_unit_type: Categoria
+        syllabus: Ementa
+        objectives: Objetivos
+        prerequisites: Pré-requisitos
+        resume: Resumo
+        passing_grade: Média
+      course: 
+        name: Nome
+        code: Código   
+      discussion_post: 
+        content: Conteúdo
+      public_file:
+        attachment_content_type: ""
+        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
+        attachment_file_name: Arquivo
+      discussion_post_file:
+        attachment_content_type: ""
+      message_file:
+        message_content_type: ""
+      assignment_file:
+        attachment_content_type: ""
+        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
+        attachment_file_name: Arquivo
+      comment_file:
+        attachment_content_type: ""
+        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
+      group_assignment:
+        group_name: "Nome do grupo"
+      assignment_comment:
+        comment: Comentário
+      sent_assignment:
+        grade: Nota
+        comment: Comentário
+      discussion:
+        name: Título
+        description: Descrição
+        schedule: Período
+      schedule:
+        start_date: Início
+        end_date: Fim
+      assignment:
+        allocation_tag_id: Turma
+        name: Título
+        type_assignment: Tipo
+        enunciation: Enunciado
+        end_evaluation_period: Data final do período de avaliação
+        schedule: Período
+        start_date: Data de início
+        end_date: Data de término
+      assignment_enunciation_file:
+        attachment: "Arquivos"
+      semester:
+        offer: Oferta
+        enrollment: Matrícula
+        name: Nome
+      offer:
+        offer: Oferta
+        enrollment: Matrícula
+        course: Curso
+        curriculum_unit: Unidade Curricular
+        start_date: Data inicial
+        end_date: Data final
+        semester: Semestre
+      lesson:
+        name: Nome
+        description: Descrição
+        start_date: Início
+        end_date: Fim
+        status: Status
+        address: URL
+      lesson_module:
+        name: Nome
+      support_material_file:
+        attachment: Arquivo
+        attachment_content_type: Tipo do arquivo
+        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
+      chat_room:
+        title: Título
+        description: Descrição
+        start_hour: Hora de início
+        end_hour: Hora de término
+      author:
+        name: Autor
+      bibliography:
+        title: Título
+        subtitle: Subtítulo
+        address: Local
+        publisher: Editora
+        periodicity: Periodicidade
+        issn: ISSN
+        periodicity_year_start: Ano de Início
+        periodicity_year_end: Ano de Término
+        fascicle: Fascículo
+        pages: Páginas
+        count_pages: Num. Páginas
+        volume: Volume
+        edition: Edição
+        publication_year: Ano de Publicação
+        publication_month: Mês de Publicação
+        article_periodicity_title: Título do Periódico
+        additional_information: Informações Complementares
+        url: Disponível em
+        accessed_in: Acessado em
+      schedule_event:
+        title: Título
+        type_event: Tipo
+        place: Local
+        description: Descrição
+        start_hour: Hora de início
+        end_hour: Hora de término
+      notification:
+        title: Título
+        description: Descrição
+
+    errors:
+      uniqueness: "Registro já existe no sistema"
+      template:
+        header:
+          one: "Não foi possível gravar %{model}: 1 erro"
+          other: "Não foi possível gravar %{model}: %{count} erros."
+        body: "Por favor, verifique o(s) seguinte(s) campo(s):"
+      messages:
+        inclusion: "não está incluído(a) na lista"
+        exclusion: "não está disponível"
+        invalid: "não é válido(a)"
+        confirmation: "não está de acordo com a confirmação"
+        accepted: "deve ser aceito(a)"
+        empty: "obrigatório(a)"
+        blank: "obrigatório(a)"
+        too_long: " é muito longo(a) (máximo: %{count} caracteres)"
+        too_short: "é muito curto(a) (mínimo: %{count} caracteres)"
+        wrong_length: "não possui o tamanho esperado (%{count} caracteres)"
+        taken: "já está em uso"
+        not_a_number: "não é um número"
+        not_an_integer: "não é um número inteiro"
+        greater_than: "deve ser maior do que %{count}"
+        greater_than_or_equal_to: "deve ser maior ou igual a %{count}"
+        equal_to: "deve ser igual a %{count}"
+        less_than: "deve ser menor do que %{count}"
+        less_than_or_equal_to: "deve ser menor ou igual a %{count}"
+        odd: "deve ser ímpar"
+        even: "deve ser par"
+        record_invalid: "%{errors}"
+      models:
+        user:
+          attributes:
+            email:
+              not_found: "não encontrado"
+            photo_content_type:
+              invalid_type: "Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG."
+        assignment_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: "Tipo de arquivo inválido."
+            attachment_file_name:
+              blank: deve ser selecionado
+        public_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: "Tipo de arquivo inválido."
+            attachment_file_name:
+              blank: deve ser selecionado
+        comment_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: "Tipo de arquivo inválido."
+        discussion_post_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: "Tipo de arquivo inválido."
+        message_file:
+          attributes:
+            message_content_type:
+              invalid_type: "Tipo de arquivo inválido."
+        lesson:
+          attributes:
+            address:
+              invalid: inválida
+        support_material_file:
+          attributes:
+            attachment_content_type:
+              invalid_type: inválido
+
+  ########### GERAL ###############
+
+  all: "Todos"
+  home: "Home"
+  of: "de"
+  required_fields: "* campo(s) obrigatório(s)"
+  object_not_found: "Objeto não encontrado"
+  search: "Filtrar"
+
+  #Página de Login
+  login_description1: "O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,
+        da Universidade Federal do Ceará. Ele é orientado ao professor e ao aluno,
+        possibilitando a publicação de cursos e a interação com os mesmos."
+  login_description2: "O Solar foi desenvolvido potencializando o aprendizado a partir da relação com
+        a própria interface gráfica do ambiente, sendo desenvolvido para que o usuário
+        tenha rapidez no acesso às páginas e ao conteúdo, fácil navegabilidade e
+        compatibilidade com navegadores. Aqui, o interagente se sente seguro a
+        explorar os espaços disponibilizados. O ambiente é apoiado
+        numa filosofia de interação e não de controle."
+  login_title: "Sistema Online de Aprendizagem da Universidade Federal do Ceará"
+  login_footer: "Instituto UFC Virtual 2011 - Universidade Federal do Ceará | Equipe de Desenvolvimento"
+  login_footer1: "Instituto UFC Virtual"
+  login_footer2: "Universidade Federal do Ceará"
+  login_footer3: "Equipe de Desenvolvimento"
+  login_language: "Idioma"
+  license_terms: "Termos de licença"
+  UFC_virtual: "Universidade Virtual"
+  #news: "Notícias"
+  #tutorial: "Tutorial"
+  home: "Início"
+  team: "Equipe"
+  signin: "Acessar"
+  signup: "Cadastrar"
+  sign_in: "Login"
+  sign_up: "Cadastrar"
+  user: "Usuário"
+  user_name: "Usuário"
+  password: "Senha"
+  remember_me: "Lembrar minha senha"
+  forgot_my_password: "Esqueci minha senha"
+  expired: "Prazo encerrado"
+  name: "Nome"
+  size: "Tamanho"
+
+
+  # application controller
+  app_controller_require: "Por favor, efetue login!"
+  app_controller_require_no: "Por favor, efetue logout!"
+
+  # forms de usuario em geral (para mensagens de validação)
+  username: "Login"
+
+  form_login: "Login"
+  form_username: "Login"
+  form_alternate_email: "E-mail alternativo"
+  form_password: "Senha"
+  form_name: "Nome"
+  form_nick: "Apelido"
+  form_cpf: "CPF"
+  form_institution: "Instituição"
+  form_special_needs: "Necessidades especiais"
+  form_password_confirmation: "Confirmação da senha"
+  form_email_confirmation: "Confirmação do e-mail"
+  form_email: "E-mail"
+
+  # pagina de cadastro de usuario
+  new_user_cpf_in_use: "CPF já cadastrado no sistema"
+  new_user_title: "Novo Cadastro"
+  new_user_msg_ok: "Usuário criado com sucesso!"
+  new_user_personal_data: "Dados Pessoais"
+  new_user_access_data: "Acesso"
+  new_user_contact_data: "Contato"
+  new_user_other_info: "Outros"
+  special_needs_yes: "Sim"
+  special_needs_no: "Não"
+  which: "Qual"
+  confirm: "Confirmar"
+  verify: "Verificar"
+  back: "Voltar"
+  save: "Salvar"
+  edit: "Editar"
+  show: "Visualizar"
+  destroy: "Excluir"
+  new_user_msg_cpf_error: "Inválido"
+  itens_not_found: "Sem itens para exibir"
+  registration_next: "Próximo"
+  registration_previous: "Anterior"
+  registration_done: "Concluir"
+  registration_cancel: "Cancelar"
+  state_other: "Outro"
+
+  # User
+  user_error_no_file_sent: Nenhum arquivo enviado
+  user_cannot_login: "Este usuário está bloqueado. Por favor, entre em contato com o administrador."
+
+  #Meus dados
+  my_data: "Meus Dados"
+  my_personal_data: "Pessoais"
+  my_cadastral_data: "Cadastrais"
+  my_professional_data: "Profissionais"
+  alter_data: "Alterar Dados"
+  cancel: "Cancelar"
+  send: "Enviar"
+  contact: "Contato"
+  authentication: "Autenticação"
+  current_password: "Senha"
+  new_password: "Nova Senha"
+  password_confirmation: "Confirmar Senha"
+  address_street: "Rua"
+  special_needs_question: "Portador de necessidades especiais?"
+  m: Masculino
+  f: Feminino
+
+  empty_old_password: "Senha antiga vazia"
+  bad_password_confirmation: "A nova senha e a confirmação não conferem!"
+  incorrect_old_password: "Senha antiga incorreta"
+  successful_update: "Usuário alterado com sucesso!"
+  unsuccessful_update: "Atualização não realizada!"
+  successful_update_photo: "Foto alterada com sucesso!"
+
+  #alteracao de foto do layout
+  alter_photo: "Alterar foto"
+
+  # pagina do meu solar
+  mysolar_news: "Novidades"
+  mysolar_edit_profile: "Editar perfil"
+  mysolar_change_picture: "Alterar foto"
+  mysolar_recent_activities: "Atividades Recentes"
+  mysolar_agenda: "Agenda"
+  mysolar_class: "Aulas"
+  mysolar_forum: "Fórum"
+  mysolar_chat: "Chat"
+  mysolar_alt_img_user: "Imagem do usuário"
+  mysolar_alt_img_solar: "Logo do Solar"
+  mysolar_alt_img_support: "Suporte"
+  mysolar_alt_img_exit: "Sair"
+  mysolar_mn_mydata: "Meus Dados"
+  mysolar_mn_profile: "Editar perfil"
+  mysolar_mn_customize: "Personalizar"
+  mysolar_mn_enrollment: "Matrícula"
+  mysolar_search: "Busca"
+  mysolar_open_lesson: "Exibir aula aberta"
+  mysolar_languages: "Idiomas"
+  date_name: Data
+  help: "Ajuda"
+
+  # portlets do meu solar
+  # Unidades curriculares
+  my_solar_curriculum_units: "Unidade Curricular"
+  my_solar_curriculum_without: "Nenhuma unidade curricular encontrada."
+  my_solar_uc_without_group: Não há turmas
+  my_solar_uc_without_offer: Não há ofertas
+
+  #       msg de erro ,ainda no login    #
+  login_data_invalid: "Dados de login incorretos!"
+
+  # Página Esqueci Minha Senha
+
+  pwd_recovery_security: "Segurança"
+  pwd_recovery_subtitle: "Esqueceu a sua senha?"
+  change_your_password: "Alterar sua senha"
+
+  pwd_recovery_text: "Para recuperar seu acesso, digite o CPF e o endereço de e-mail que você usa para acessar a conta do Solar."
+  pwd_recovery_text2: "Nós enviaremos a nova senha para o seu e-mail em instantes."
+
+  pwd_recovery_email: "Digite seu e-mail"
+  pwd_recovery_cpf: "Digite seu CPF"
+  pwd_recovery_send: "Enviar"
+  pwd_recovery_back: "Voltar"
+
+  pwd_recovery_sucess_msg: "Senha enviada com sucesso!"
+  pwd_recovery_error_msg: "Não foi possivel enviar nova senha. Por favor, tente novamente."
+  pwd_recovery_unknown_user_msg: "Usuário não encontrado."
+
+  pwd_recovery_mail_body: "Caro(a) %{recipient}, \n\nVocê solicitou recuperação de acesso ao Solar.
+      \n\nSeus dados para acessar o ambiente são:
+      \n    Login: %{login}
+      \n    Nova Senha: %{password}
+        \n\nAtenciosamente,\nAdministração do ambiente.
+      \n\n\nAmbiente Virtual SOLAR: http://www.solar2.virtual.ufc.br
+      \n\n\n[Esta é uma mensagem automática. Por favor, não a responda.]"
+
+# Página de alterar foto"
+  choose_file: "Escolher arquivo"
+  photo_text: "Você pode fazer upload de um arquivo JPG, GIF ou PNG (Não faça upload
+      \n\n de imagens contendo celebridades, nudez, trabalhos artísticos e imagens
+      \n\n protegidas por direitos autorais). O tamanho máximo da sua foto deve ser
+      \n\n de até 700KB."
+  send_photo: "Envie sua foto:"
+  your_computer: "Do seu computador"
+  no_file: "Nenhum arquivo enviado..."
+  or: "ou"
+  external_link: "De um link externo"
+  url: "Digite aqui a URL da imagem no campo de texto acima."
+  send: "Enviar"
+
+  # página de matrícula"
+  enrollments:
+    all: Todos
+    enrolled: Matriculados
+    index:
+      search: "Buscar"
+      search_in: " em "
+      view: "Ver"
+      view_all: "Todos"
+      view_enrolled: "Matriculados"
+      cancel: "Cancelar"
+      enroll: "Matricular"
+      curriculum_unit: "Unidade Curricular"
+      category: "Categoria"
+      group: "Turma"
+      title: "Matrícula"
+      enrolled: "Matriculado"
+      rejected: "Matricula Rejeitada"
+      confirm: "Tem certeza de que deseja cancelar?"
+      cancel_request: "Cancelar pedido"
+      period: Período de matrícula
+      of: "por"
+      no_curriculum_unit_found: "Nenhuma unidade curricular encontrada"
+    not_defined: Não definido
+
+  enrollm_request_cancel_message: "Pedido de matrícula cancelado"  
+  enrollm_cancelled_message: "Matrícula cancelada"
+  enrollm_not_cancelled_message: "Matrícula não cancelada"
+  enrollm_reactivated_message: "Matrícula reativada"
+  enrollm_acepted_message: "Matrícula efetivada."
+  enrollm_rejected_message: "Matrícula rejeitada."
+
+  # informacoes da unidade curricular
+  syllabus: "Ementa"
+  objectives: "Objetivos"
+  prerequisites: "Pré-requisitos"
+  resume: "Resumo"
+  semester_date: "Período"
+  passing_grade: "Média"
+  error_no_item_selected: Nenhum registro selecionado
+  curriculum_unit_type_id: Categoria
+  curriculum_unit_new_button: Nova
+
+  curriculum_unit_new_title: Nova Unidade Curricular
+  curriculum_unit_edit_title: Editar Unidade Curricular
+  curriculum_unit_delete_confirm: Tem certeza de que deseja excluir %{curriculum_unit_name}?
+  curriculum_unit_information_title: "Informações da Unidade Curricular"
+  curriculum_unit_responsible: "Responsáveis"
+  curriculum_unit_participants: "Participantes da turma"
+  curriculum_access_alert: "Número de abas excedido. Por favor, feche uma aba para abrir uma nova."
+  curriculum_access_lesson: "Aulas"
+  curriculum_access_message: "Mensagens"
+  curriculum_access_message_inbox: "Caixa de Entrada"
+  curriculum_access_message_new: "Nova Mensagem"
+  curriculum_access_message_more: "mais"
+  curriculum_access_forum: "Fórum"
+  curriculum_access_curriculum_unit: "Unidade Curricular"
+  curriculum_access_agenda: "Agenda"
+  curriculum_access_view: "Visualizar"
+  curriculum_access_new: " novas"
+  curriculum_access_more: "+ mais"
+
+  participants_title: "Participantes"
+  participants_none: "Nenhum participante encontrado"
+
+  #Aulas
+  lesson_title: "Aulas"
+  lesson_message: "Nenhuma aula disponível"
+  lesson_goto: "Ir para aula"
+  lesson_closed: "Aula encerrada"
+  lesson_closed_short: "encerrada"
+  since: A partir de
+  no_end_date: Em diante
+
+  lessons:
+    curriculum_unit_not_selected: Unidade Curricular não selecionada
+    index:
+      lesson_table_date: Data de acesso
+      lesson_table_title: "Aulas disponíveis"
+    list: 
+      lesson: Aula
+      order: Ordem
+      name: Nome da aula
+      availability: Disponibilidade
+      acceptance: Aprovação
+      since: A partir de 
+      none: Nenhuma aula cadastrada
+      new: Nova aula
+      new_lesson: Nova aula
+      edit_lesson: Editar aula
+      new_module: Novo módulo
+      edit_lesson_module: Editar módulo
+      delete_lesson_module: Deletar módulo
+      no_end_date: Em diante
+      move_lesson: Mover aula
+      move: Mover
+      cancel: Cancelar
+      release: Liberar aula
+      manage_files: Gerenciar arquivos
+      delete_lesson: Deletar aula
+      download_zip: Baixar zip
+      type: Tipo
+      link_type: Link
+      file_type: Arquivo
+      draft: Rascunho
+      released: Liberada
+      group: Turma
+    new:
+      draft: rascunho
+      approved: liberada
+      type_lesson: Tipo
+      archive: Arquivo
+      link: Link
+      status: Status
+      enable_end_date: Habilitar data final
+      example: "(exemplo: http://www.seusite.com.br)"
+      continue: Prosseguir
+      save: Salvar
+    notifications:
+      must_select_lessons: Uma ou mais aulas devem ser selecionadas
+      must_select_a_lesson: Uma aula deve ser selecionada
+      select_only_a_lesson: Selecione apenas uma aula
+    files:
+      new_folder: Nova Pasta
+    errors:
+      cant_delete: "Aula tornou-se rascunho, pois estava disponível para uso dos alunos!"  
+      invalid_lesson_to_download: Apenas aulas do tipo de arquivo e não vazias podem ser baixadas
+      deleted: Não foi possível deletar as aulas
+      must_select_module: Um módulo destino deve ser selecionado
+    success:
+      saved_as_draft: Aulas deletadas ou salvas como rascunho com sucesso
+      deleted: Aulas deletadas com sucesso
+      moved: Aulas movidas com sucesso
+      created: Aula criada com sucesso.
+      updated: Aula atualizada com sucesso.
+    form: 
+      cancel: Cancelar
+      groups: Turmas
+
+  lesson_modules:
+    general_of_offer: "Geral"
+    general_of_group: "Geral da Turma"
+    none: "Nenhum módulo cadastrado"
+    buttons:
+      new: "Novo módulo"
+    form:
+      save: Salvar
+      cancel: Cancelar
+      groups: Turmas
+    errors:
+      existing_name: já existe
+      cant_delete: "Módulo padrão não pode ser excluído"
+      cant_delete_shared: "Módulo compartilhado tem lições e, portanto, não pode ser excluído"
+
+  lesson_files:
+    root: Raiz
+    delete_confirm: Você tem certeza que deseja excluir os itens selecionados?
+    clean_lesson_confirm: Você tem certeza que deseja limpar os arquivos da aula?
+    delete_error: Não foi possível excluir itens
+    new_folder_error: Não foi possível criar pasta
+    name_error: Precisa ser preenchido e único
+    rename_error: Não foi possível renomear
+    files_management: Gerenciamento de arquivos
+    lesson_must_have_file_type: A aula deve ser do tipo de arquivo
+    one_lesson_must_be_selected: Uma aula deve ser selecionada
+    item_must_be_selected: Um item deve ser selecionado
+    one_folder_must_be_selected: Apenas uma pasta deve ser selecionada
+    items_must_be_selected: Um ou mais itens devem ser selecionados
+    unzip_error: Erro ao descompactar arquivo
+    zip_contains_invalid_files: O zip contém arquivos inválidos
+    file_doesnt_exist: Arquivo inexistente
+    index:
+      cancel: Cancelar
+      move_to: "Mover para:"
+      move: Mover
+      conclude: Finalizar
+      all: Todos
+      upload: Upload de arquivos
+      new_folder: Adicionar nova pasta
+      initial_file: Definir como arquivo inicial
+      unzip: Descompactar
+      rename: Renomear
+      remove: Remover
+      move: Mover
+      attention_message: 'Atenção:'
+      save_automatically_message: ' todas as alterações são salvas automaticamente.'
+      send_file: Enviar arquivo
+    destination_folder_error: Uma pasta de destino deve ser selecionada
+    move_error: Não foi possível mover
+    at_least_one: "Selecione, ao menos, um item para %{to}"
+    move: mover
+    remove: remover
+    existing_folder_error: Já existe uma pasta de mesmo nome no destino selecionado
+    same_folder_error: Não é possível mover uma pasta para ela mesma
+    existing_file_error: "Não enviado, já existe um arquivo de mesmo nome no destino selecionado"
+    upload_error: Não foi possível realizar o upload
+    bad_extension_error: "Não enviado(s), tipo de arquivo inválido"
+    file_too_big_error: "Não enviado(s), arquivo muito grande. O tamanho máximo deve ser de até 200MB."
+    must_be_a_file: Deve ser um arquivo
+    must_be_a_zip_file: Deve ser um arquivo zip
+    initial_file_error: Não foi possível definir o arquivo inicial
+    cant_remove_initial_file: 'Não é possível remover arquivo inicial, favor primeiro redefini-lo'
+    define_initial_file_error: Um arquivo inicial deve ser definido.
+
+  support_material_files:
+    list:
+      name: "Nome"
+      date: "Data"
+      type: "Tipo"
+      link: "Link"
+      file: "Arquivo"
+      new_link: "Novo Link"
+      edit_link: "Editar Link"
+      new_file: "Novo Arquivo"
+      none: "Nenhum material cadastrado"
+    form:
+      groups: Turmas
+
+  #Listagem de Fóruns
+  title: "Título"
+  forum_table_title: "Fóruns disponíveis"
+  forum_table_date: "Data de acesso"
+  forum_message: "Nenhum fórum disponível"
+  forum_no_messages: Nenhuma postagem em fórum disponível
+  forum: "Fórum"
+  forum_new_message: "Nova Postagem"
+  forum_closed: "Fórum encerrado"
+  forum_closed_short: "encerrado"
+  discussion_closed_to_students: "encerrado para alunos"
+
+  # FORUNS
+  posts:
+    index:
+      show_plainlist: "Ver em lista"
+      show_thread: "Ver em Árvore"
+      answer: "Responder"
+      edit: "Editar"
+      remove: "Excluir"
+      remove_file: "Remover arquivo"
+      remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
+      attach_file: "Anexar arquivo"
+      file_list: "Anexos"
+      attach_file_title: "Envio de arquivos"
+    create:
+      created: "Postagem criada com sucesso"
+      not_created: "A postagem não foi criada"
+    update:
+      updated: "Postagem atualizada com sucesso"
+      not_updated: "A postagem não foi atualizada"
+
+  post_files:
+    new:
+      attach_save: "Salvar"
+      attach_another_file: "Anexar outro arquivo"
+
+  discussions:
+    form:
+      save: Salvar
+      cancel: Cancelar
+      new: Novo Fórum
+      edit: Editar Fórum
+      groups: Turmas
+    list:
+      new: Novo Fórum
+      edit: Editar Fórum
+      delete: Deletar Fórum
+      choose_at_least_one: "Selecione, ao menos, um fórum"
+      choose_one: Selecione um fórum
+      expand_description: Expandir descrição
+      compress_description: Comprimir descrição
+      discussions: Fóruns
+    success:
+      created: Fórum criado com sucesso.
+      updated: Fórum atualizado com sucesso.
+      deleted: Fórum deletado com sucesso.
+    error:
+      deleted: Não foi possível deletar fórum.
+      created: Não foi possível criar fórum.
+      updated: Não foi possível atualizar fórum.
+      existing_name: já existe
+      range_date_error: deve ser menor que a data final
+      offer_period: deve estar dentro do período da oferta (%{start} - %{end})
+      discussion_with_posts: Fórum com postagens
+      mandatory_final_date: Data final obrigatória
+
+  bibliographies:
+    author_required: Autor obrigatório
+    type:
+      book: Livro
+      periodical: Periódico
+      article: Artigo
+      electronic_doc: Doc. Eletrônico
+      free: Livre
+    form:
+      author_placeholder: "SOBRENOME, Nome"
+      periodicity_placeholder: "Trimestral"
+      new: Novo item - %{bib_type}
+      edit: Editar item - %{bib_type}
+      groups: Turmas
+      add_author: Adicionar Autor
+    free_form:
+      description: Descrição
+    list:
+      new: Nova Bibliografia
+      item: Item
+      type: Tipo
+      edit: Editar Bibliografia
+      delete: Deletar Bibliografia
+      choose_at_least_one: "Selecione, ao menos, uma bibliografia"
+      choose_one: Selecione uma bibliografia
+      bibliographies: Bibliografias
+      no_data: Nenhuma bibliografia cadastrada
+      accessed_in: "Acesso em:"
+      available_in: "Disponível em:"
+    success:
+      created: Item bibliográfico criado com sucesso.
+      updated: Item bibliográfico atualizado com sucesso.
+      deleted: Item bibliográfico deletado com sucesso.
+    error:
+      created: Não foi possível criar item bibliográfico.
+      updated: Não foi possível atualizar item bibliográfico.
+      deleted: Não foi possível deletar item bibliográfico.
+
+  notifications:
+    form:
+      new: Novo Aviso
+      edit: Editar Aviso
+      day_from: De
+      day_to: a
+    list:
+      notifications: Avisos
+      notification: Aviso
+      period: Período
+      new: Novo aviso
+      edit: Editar aviso
+      delete: Deletar aviso
+      no_data: Nenhum aviso cadastrado
+      expand_description: Expandir descrição
+      compress_description: Comprimir descrição
+      choose_at_least_one: "Selecione, ao menos, um aviso"
+      choose_one: Selecione um aviso
+    success:
+      created: Aviso criado com sucesso.
+      updated: Aviso atualizado com sucesso.
+      deleted: Aviso deletado com sucesso.
+    error:
+      created: Não foi possível criar aviso.
+      updated: Não foi possível atualizar aviso.
+      deleted: Não foi possível deletar aviso.
+
+  # messages
+  message_title: "Mensagens"
+  message_inbox: "Entrada"
+  message_outbox: "Enviadas"
+  message_trash: "Lixeira"
+  message_search: "Buscar Mensagem"
+  message_new: "Nova Mensagem"
+  message_filter: "Filtro"
+  message_select: "Selecionar"
+  message_move: "Mover para"
+  message_delete: "Excluir"
+  message_mark_as_read: "Marcar como lida"
+  message_mark_as_unread: "Marcar como não lida"
+  message_attach: "Possui arquivo anexado"
+  message_select_all: "Todas"
+  message_select_none: "Nenhuma"
+  message_select_read: "Lidas"
+  message_select_unread: "Não lidas"
+  message_none: "Nenhuma mensagem encontrada"
+  message_no_new: "Nenhuma mensagem nova"
+  message_restore: "Restaurar"
+
+  message_new_title: "Nova mensagem"
+  message_send: "Enviar"
+  message_discard: "Descartar"
+  message_attach_file: "Anexar um arquivo"
+  message_to: "Para"
+  message_from: "De"
+  message_subject: "Assunto"
+  message_date: "Data"
+  message_reply: "Responder"
+  message_reply_all: "Responder para todos"
+  message_route: "Encaminhar"
+  message_attachments: "Arquivos anexos"
+  message_send_ok: "Mensagem enviada com sucesso."
+  message_send_error: "Não foi possível enviar mensagem."
+  message_send_error_no_receiver: "Mensagem não enviada. Nenhum destinatário encontrado no ambiente."
+  message_personal_contacts: "Contatos Pessoais"
+  message_header: "Mensagem enviada por: "
+  message_complete: "Concluir"
+  message_cancel: "Cancelar"
+  message_subject_reply: "Res: "
+  message_subject_route: "Enc: "
+  message_confirm: "Tem certeza de que deseja excluir?"
+  message_confirm_status: "Tem certeza de que deseja %{status}?"
+  message_receiver_already_added: já adicionado
+
+  navigation_of: " de "
+  navigation_next: "Próxima >"
+  navigation_previous: "< Anterior"
+  navigation_first: "<< Primeira"
+  navigation_last: "Última >>"
+
+  icon_agenda: "Ícone da agenda"
+  icon_forum: "Ícone do fórum"
+  icon_message: "Ícone de mensagem"
+  icon_curriculum_unit: "Ícone de unidade curricular"
+  icon_lesson: "Ícone de aula"
+  icon_agenda_event: "Ícone de evento da agenda"
+  icon_send_email: "Ícone de enviar email"
+  icon_participants: "Ícone de participantes"
+  icon_profile: Ícone de perfil""
+  icon_chat: "Ícone do chat"
+  icon_add_participant: "Ícone de adicionar participante"
+  icon_lesson: "Ícone de aulas"
+  icon_bibliography: "Ícone bibliografia"
+
+  bibliography_title: "Bibliografia de"
+  bibliography_null: "Nenhuma bibliografia cadastrada"
+
+  #AGENDA
+  agenda_title: "Agenda de"
+  new_activity: "Nova atividade"
+  agenda_null: "Nenhuma atividade marcada para esta agenda"
+  # discussions: "Forum"
+  lesson: "Aula"
+  # schedule_events: "Evento da Agenda"
+  schedule_assignment: "Trabalho"
+  no_events: "Sem eventos para o dia selecionado"
+
+  # Assignments
+  not_started: Não Iniciado
+  corrected: Corrigido
+  sent: Enviado
+  not_sent: Não Enviado
+  without_group: Sem Grupo
+
+  assignment:
+    assignments: Trabalhos
+    new:
+      groups: Turmas
+    list:
+      "yes": Sim
+      "no": Não
+      groups: "Turmas:"
+      new: Novo Trabalho
+      edit: Editar Trabalho
+      name: Nome do Trabalho
+      availability: Disponibilidade
+      type: Tipo
+      individual: Individual
+      group: Grupo
+      none: Nenhum trabalho cadastrado
+      answers: Respostas
+      choose_at_least_one: "Selecione, ao menos, um trabalho"
+      choose_one: Selecione um trabalho
+    information:
+      begin: Início
+      end: Fim
+      individual_assignments: Atividades individuais
+      group_assignments: Atividades em Grupo
+      title: Título
+      date_range: Período
+      description: Descrição
+      situation: Situação
+      grade: Nota
+      public_area: Área Pública
+      more: mais
+      less: menos
+      students: Alunos
+      title: Portfolio de
+      name: Nome
+      date: Data
+    comments:
+      save: Salvar
+      removed_comment: Comentário removido com sucesso
+      comments: Comentários
+      comments_teacher: Comentários do Professor
+      comment: Comentário
+      comment_sent_success: Comentário enviado com sucesso
+      confirm_comment: Confirma comentário?
+      cancel_comment: Cancelar comentário?
+      comment_canceled: Comentário cancelado
+      new: Novo
+      edit: Editar
+      cancel: Cancelar
+      delete: Excluir
+    evaluation:
+      evaluated_success: Avaliação realizada com sucesso
+      confirm_evaluation: Confirma avaliação?
+      cancel_evaluation: Cancelar avaliação?
+      evaluation_canceled: Avaliação cancelada
+      evaluate: Avaliar
+      change_grade: Editar nota
+      evaluation: Avaliação
+      save: Salvar
+      cancel: Cancelar
+    files:
+      remove_file: Remover arquivo %{file_name}
+      recover_file: Recuperar arquivo %{file_name}
+      sent_by: Enviado por
+      size: Tamanho
+      download_file: Baixar arquivo %{file_name}
+      files: arquivo(s)
+      attached_files : Anexos
+      activity_files: Arquivos da atividade
+      name: Nome
+      delete_msg: Deseja realmente excluir este arquivo?
+      uploaded_success: Arquivo enviado com sucesso
+      deleted_success: Arquivo deletado com sucesso
+      error_no_file_sent: Nenhum arquivo enviado
+      send_file: Upload de Arquivos Para Portfolio
+      send_file_obs: Aguarde o envio completo do arquivo. O tamanho não deve exceder 5MB.
+      send_file_text: "Exemplos de arquivos aceitos:<br />
+      &nbsp;&nbsp;- Documentos do Microsoft Office<br />
+      &nbsp;&nbsp;- Documentos do OpenOffice.org (ODF)<br />
+      &nbsp;&nbsp;- Arquivos Compactados (.zip, .rar...)<br />
+      &nbsp;&nbsp;- Documentos PDF<br />
+      &nbsp;&nbsp;- Arquivos de Video (avi, mpeg,...)<br />
+      &nbsp;&nbsp;- Arquivos de Audio (mp3, wma...)"
+      sent_files: Arquivos enviados
+      error_delete: Erro ao tentar excluir arquivo
+      delete_interval_error: Modificação de arquivos fora do intervalo permitido
+      send_interval_error: Envio de arquivos fora do intervalo permitido
+      download_all_files_zip: Baixar todos arquivos (zip)
+      upload_on_public_area: Enviar arquivos para a área pública
+      sent_on: Enviado em
+      attach_another: Anexar outro arquivo
+      delete: Excluir
+      must_be_selected: Arquivo deve ser selecionado
+      click_to_add_file: Clique aqui para adicionar arquivo
+    notifications:
+      student_with_no_group: Você não faz parte de nenhum grupo
+      date_range_expired: Prazo expirado
+      final_date_smaller_than_offer: Data final deve ser menor ou igual à  data da oferta (%end_date_offer)
+      start_date_greater_than_offer: Data inicial deve ser maior ou igual à data da oferta (%start_date_offer)
+    group_assignments:
+      group: Grupo
+      groups: Grupos
+      participants: Participantes
+      cancel: Cancelar
+      new_group: Novo grupo
+      import_groups: Importar grupos
+      save: Salvar
+      manage_groups: Gerenciar grupos
+      remove: Remover grupo %{group_name}
+      management_cancel: Alterações canceladas
+      no_participant: Grupo sem participantes
+      students_with_no_group: Alunos sem grupo
+      without_group: Sem grupo
+      management_success: Grupos gerenciados com sucesso
+      delete_error: Grupo não pode ser removido
+      student_move_error: Aluno não pode ser removido
+      assignment_without_groups: Atividade não possui grupos
+      already_evaluated: já avaliado
+      already_sent_files: já enviou arquivos
+      save_management: Salvar alterações?
+      cancel_management: Cancelar alterações?
+      existing_name_error: já existe
+      evaluate: Avaliar
+    import_groups:
+      cancel: Cancelar
+      import_groups: Importar grupos
+      import: Importar
+      no_participant: Grupo sem participantes
+      import_success: Grupos importados com sucesso
+
+  # Assignment Comments
+  comment_error_delete_file: Erro ao tentar excluir arquivo
+
+  # acompanhamento
+  student: "Aluno"
+  scores_of: "Acompanhamento de"
+  public_files: "Arquivos Publicos"
+  tests: "Provas"
+  private_area: "Trabalhos"
+  participation: "Participação"
+  access_to_the_course: "Acessos ao Curso"
+  group: "Turma"
+  legends: "Legendas"
+  legend_assignments: "Legenda dos Trabalhos"
+  assignment_without_correction: "Trabalho enviado, mas não corrigido (sem nota)."
+  assignment_not_sent: "Trabalho não enviado"
+  student_without_group: Aluno sem grupo
+  assignment_as: "TE"
+  assignment_an: "TN"
+  assignment_wg: SG
+  amount: "Qtd"
+  amount_participation_discussions: "Participações em Fóruns"
+  from_date: "Da Data"
+  until_date: "Até a Data"
+  search_format_date: "dd-mm-yy"
+  amount_access: "Quantidade de Acessos"
+  invalid_identifier: "Identificador Inválido"
+  to: "a"
+  history_search: "Busca"
+  history_find: "Buscar"
+  history_access: "Histórico de Acessos"
+  scores_discussions: "Acompanhamento de Foruns do Aluno"
+  scores_history_access: "Acompanhamento de Histórico de Acesso do Aluno"
+  assignment_correction_of: "Correção de"
+  error_find_ajax: "Erro ao tentar consultar. Tente novamente mais tarde."
+
+  # Mensagem de erro para permissão
+  no_permission: "Você não tem permissão para acessar esta página"
+  # Mensagem de erro associação entre ferramentas e turma/oferta/uc/curso
+  not_associated: Esta ferramenta não está associada aos dados informados
+
+  # Menu
+  menu_content: Conteúdo
+  menu_lesson: Aulas
+  menu_support_material: Material de Apoio
+  menu_support_material_record: Cadastro de Material de Apoio
+  menu_activity: Atividades
+  menu_discussion: Fórum
+  menu_portfolio: Portfolio
+  menu_test: Prova
+  menu_chat: Chat
+  menu_webconference: Webconferencia
+  menu_score: Acompanhamento
+  menu_general_information: Informações Gerais
+  menu_program: Programa
+  menu_agenda: Agenda
+  menu_bibliography: Bibliografia
+  menu_participants: Participantes
+  menu_social: Social
+  menu_wiki: Wiki
+  menu_blog: Blog
+  menu_messages: Mensagens
+  menu_adm: Administracao
+  menu_notice: Aviso
+  menu_manage_profiles: Gerenciar Perfis
+  menu_indicate_user: Indicar Usuario
+  menu_reports: Relatorios
+  menu_virtual_disc: Disco Virtual
+  menu_institucional_assessment: Avaliacao Institucional
+  menu_manage_assessment: Gerenciar Avaliacoes
+  menu_response_assessment: Responder Avaliação
+  menu_curriculum_unit: Unidade Curricular
+  menu_manage_registration: Gerenciar Matrículas
+  menu_registration: Matrícula
+  menu_history: Historico
+  menu_group_assignment: Grupos
+  menu_edition: Edição
+  menu_academic_edition: Acadêmico
+  menu_content_edition: Conteúdo
+
+  # Componente de filtro/busca de allocationTags (places_nav_panel)
+  places_nav_panel_course_hint: "Digite o nome do curso ou parte dele"
+  places_nav_panel_semester_hint: "Digite o semestre"
+  places_nav_panel_curriculum_unit_hint: "Digite o nome da disciplina ou parte dele"
+  places_nav_panel_group_hint: "Digite o código da turma ou parte dele"
+  places_nav_panel_searching_text: "Procurando..."
+  places_nav_panel_empty_text: "Nenhum resultado"
+  places_nav_panel_to_offer: Ofertar
+  places_nav_panel_to_manage: Gerenciar
+
+  #Course 
+  new_course_title: Cadastro de Curso
+  update_course_title: Atualização de Curso
+
+  #Offer
+  offer: "Oferta"
+  offer_confirm: "Você tem certeza que deseja deletar?"
+  semester: "Semestre"
+  start_date: "Data inicial"
+  end_date: "Data final"
+  course: "Curso"
+  curriculum_unit: "Unidade Curricular"
+
+  devise:
+    failure:
+      already_authenticated: 'Você já está logado.'
+      unauthenticated: 'Você precisa logar antes de continuar.'
+      unconfirmed: 'Você precisa confirmar sua conta antes de continuar.'
+      locked: 'Sua conta está bloqueada.'
+      invalid: 'Usuário ou senha inválidos.'
+      invalid_token: 'Invalid authentication token.'
+      timeout: 'Sua sessão expirou, por favor faça login novamente para continuar.'
+      inactive: 'Sua conta ainda não foi ativada.'
+      user:
+        not_found_in_database: 'Usuário ou senha inválidos.'
+    sessions:
+      signed_in: 'Login efetuado com sucesso.'
+      signed_out: 'Logout efetuado com sucesso.'
+    passwords:
+      new_password: Nova senha
+      confirm_new_password: Confirmar nova senha
+      change_my_password: Mudar senha
+      send_instructions: 'Você receberá um email com instruções sobre como resetar sua senha em alguns minutos.'
+      updated: 'Sua senha foi modificada com sucesso. Você agora está logado.'
+      updated_not_active: 'Sua senha foi modificada com sucesso. Você agora está logado.'
+      send_paranoid_instructions: "Um link de recuperação de senha será enviado para seu email, caso ele exista em nossa base de dados."
+    confirmations:
+      send_instructions: 'Instruções de como confirmar sua conta serão enviados para seu email em alguns minutos.'
+      send_paranoid_instructions: 'Instruções de como confirmar sua conta serão enviados para seu email em alguns minutos, caso ele exista em nossa base de dados'
+      confirmed: 'Sua conta foi confirmada com sucesso. Agora você está logado.'
+    registrations:
+      signed_up: 'Bem vindo! Sua conta foi criada com sucesso.'
+      updated: 'Dados atualizados com sucesso.'
+      destroyed: 'Sua conta foi cancelada com sucesso.'
+      signed_up_but_unconfirmed: 'não confirmada'
+      signed_up_but_inactive: 'inativa'
+      signed_up_but_locked: 'bloqueada'
+    unlocks:
+      send_instructions: 'Você receberá um email sobre como desbloquear sua conta em alguns minutos.'
+      unlocked: 'Sua conta foi desbloqueada com sucesso. Agora você está logado.'
+      send_paranoid_instructions: 'Se sua conta existir, você receberá um email com instruções sobre como desbloquea-la em alguns minutos.'
+    mailer:
+      confirmation_instructions:
+        subject: 'Instruções de confirmação'
+      reset_password_instructions:
+        subject: 'Instruções de reset de senha'
+      unlock_instructions:
+        subject: 'Instruções de desbloqueio'
+      msg:
+        hello: "Olá %{email}!"
+        request: "Alguém solicou um link para alterar sua senha, e você pode fazer isso através do link abaixo."
+        ignore: "Se não foi você quem solicitou este link, por favor ignore este email."
+        change: "Sua senha não vai ser modificada enquanto você não acessar o link e criar uma nova."
+
+ # suport material file
+  support_folder_name: Material de Apoio
+  support_download_all: Baixar todo o material de apoio como zip
+  support_download_all_folder: Baixar toda a pasta como zip
+  support_material_file_uploaded: Arquivo enviado com sucesso
+  support_material_file_deleted: Arquivo deletado com sucesso
+  support_material_error_no_file_sent: Nenhum arquivo enviado
+  support_material_error_delete_file: Erro ao tentar excluir arquivo
+  support_material_sent_on: Enviado em
+  support_material_size: Tamanho
+  support_material_name: Nome
+
+  # Support Material File Editor
+  support_send_document: DOCUMENTO
+  support_send_link: LINK
+  support_create_folder: PASTA
+  support_text_field_link: Cole aqui o link que deseja enviar
+  support_new_folder: Nova Pasta
+  support_delete: Excluir
+  support_add: Adicionar
+  support_cancel: Cancelar
+  support_edit: Editar
+  support_rename: Renomear
+  support_error_no_item_selected: Erro ao excluir. Nenhum item foi selecionado
+  support_error_missing_link: Link obrigatório
+  support_sent_link: Link enviado com sucesso
+  support_error_existing_folder: Pasta já existente
+  support_error_missing_folder: Pasta deve ser preenchida
+  support_error_existing_file: Arquivo escolhido já existente nesta pasta
+  support_all_files: Todos os arquivos
+  support_file_message: 'O tamanho não deve exceder 5MB. Formato suportados: doc, docx, xls, xlsx, ppt, pptx, odf, zip, rar, wmv, avi, mp4, mp3, pdf'
+  support_no_link_added: Nenhum link adicionado
+  support_no_file_added: Nenhum arquivo adicionado
+  support_confirm_exclusion_folder: Você tem certeza que deseja excluir esta pasta?
+  support_rename_folder: Renomear pasta
+  support_delete_folder: Excluir pasta
+  support_folder_renamed: Pasta renomeada com sucesso
+  support_no_changes: Nenhuma alteração feita
+  support_download_folder: Baixar pasta
+  support_allocation_curriculum_unit: Unidade Curricular
+  support_allocation_offer: Oferta
+  support_allocation_group: Turma
+  support_folder_temporary_message: 'Esta pasta é temporária. Para concluir sua criação, envie um arquivo'
+
+  # Files
+  file_error_nonexistent_file: Arquivo não encontrado
+
+  ## allocations
+
+  allocations:
+    index:
+      manage: Gerenciar
+      manage_title: Matrículas Solicitadas
+      manage_student: Aluno
+      manage_group: Turma
+      manage_curriculum_unit: Unidade Curricular
+      manage_status: Status
+      manage_options: Opções
+      enroll_selected: Matricular Selecionados
+      total_students:
+        zero: Sem alunos
+        one: 'Total: 1 aluno'
+        other: 'Total: %{count} alunos'
+    status:
+      pending: Pendente
+      pending_reactivate: Reat. Pendente
+      activated: Matriculado
+      cancelled: Cancelado
+      rejected: Rejeitado
+    manage:
+      enrollment_successful_update: Atualizacao realizada com sucesso
+      enrollment_unsuccessful_update: Atualizacao nao realizada
+      not_same_status: Selecione apenas registros com o mesmo status
+    edit:
+      students: Alunos
+      group: Turma
+      status: Status
+      save: Salvar
+      cancel: Cancelar
+    error:
+      student_already_in_group: Aluno já está nesta turma
+    designates:
+      activate: Ativar
+      deactivate: Desativar
+      designate_users: Usuários Alocados
+      new_designate: Nova Alocação
+      search_users: Buscar Usuários
+      search: Buscar
+      user: Usuário
+      activate_user: Ativar %{user_name}
+      deactivate_user: Desativar %{user_name}
+      designated_on: Alocado em
+      profile: Perfil
+      cpf: Cpf
+      email: Email
+      name: Nome
+    search_users:
+      designate: Alocar
+      designate_search_no_found: Nenhum usuário encontrado
+      designate_profile_no_found: Nenhum perfil disponível para alocação
+      designate_user: Alocar %{user_name}
+      profile: Perfil
+      cpf: Cpf
+      email: Email
+      name: Nome
+    success:
+      enrollm_request: Pedido de matrícula realizado
+      allocated: Usuário alocado
+      activated: Usuário ativado
+      deactivated: Usuário desativado
+    error:
+      enrollm_request: Pedido de matrícula não realizado
+      not_allocated: Não foi possível alocar usuário
+      not_activated: Não foi possível ativar usuário
+      not_deactivated: Não foi possível desativar usuário
+
+  allocation_pending: Pendente
+
+  ## CRUD
+  options: "Opções"
+  successfully_created: '%{register} foi criado(a) com sucesso.'
+  successfully_updated: '%{register} foi atualizado(a) com sucesso.'
+  successfully_deleted: '%{register} foi excluído(a) com sucesso.'
+  cant_delete: '%{register} possui associações quem impedem sua exclusão!'
+  #adicionar erros. Ex: nao foi possivel...
+
+  notifier:
+    enrollment_accepted:
+      subject: "[SOLAR] Matrícula aceita"
+
+  assignments:
+    index: 
+      expand_enunciation: Expandir enunciado
+      compress_enunciation: Comprimir enunciado
+      delete_assignment: Deletar trabalhos
+      edit_assignment: Editar trabalho
+      attached_files: Arquivos em anexo
+    form:
+      groups: Turmas
+      files: Arquivos
+    success:
+      created: Trabalho criado com sucesso.
+      updated: Trabalho atualizado com sucesso.
+      deleted: Trabalho deletado com sucesso.
+    error:
+      created: Não foi possível criar trabalho.
+      updated: Não foi possível atualizar trabalho.
+      deleted: Não foi possível deletar trabalho.
+
+  groups:
+    list:
+      all: Selecionar Todos
+      new: Nova turma
+      enable: Ativar
+      disable: Desativar
+      delete: Deletar turma
+      choose_at_least_one: "Selecione, ao menos, uma turma"
+      choose_one: Selecione uma turma
+      edit: Editar turma
+      none: Nenhuma turma cadastrada
+    group_list:
+      code: Código
+      enabled: Ativada
+      disabled: Desativada
+      activation: Ativação
+    groups_tags:
+      groups: Turmas
+      unbind: Desvincular
+      remove: Excluir
+      add: Adicionar
+      cancel: Cancelar
+      add_group: Adicionar Turma
+    success:
+      created: Turma criada com sucesso.
+      updated: Turma atualizada com sucesso.
+      deleted: Turma deletada com sucesso.
+      add: Turma(s) adicionada(s) com sucesso.
+      unbind: Turma desvinculada com sucesso.
+      remove: Turma removida com sucesso.
+    error:
+      created: Não foi possível criar turma.
+      updated: Não foi possível atualizar turma.
+      deleted: Não foi possível deletar turma.
+      academic_allocation_already_exists: Esta turma já existe para esta ferramenta
+      tool_change: Não foi possível alterar a turma para esta ferramenta
+      last_group: Não é possível fazer alteração. Ferramenta deve possuir alguma turma.
+      option_not_found: Opção não encontrada.
+      cant_transfer_dependencies: Possui dependencias que não podem ser perdidas ou copiadas.
+    groups_checkboxes:  
+      select_all: Selecionar todas
+      no_groups: "Não há turmas"
+
+  simple_form:
+    labels:
+      group:
+        semester: Semestre
+        code: Código
+
+  email: Email
+  cpf: "CPF" 
+  administrations:
+    close: Fechar
+    users:
+      title: "Consultar usuários"
+      search: Busca
+      details: "Informações detalhadas"
+      allocations: "Alocações"
+      last_accessed: "Último acesso"
+      edit: Editar
+      change_password: Alterar senha
+      message_not_found: "Usuário não encontrado"
+    informations:
+      detailed: "Informações Detalhadas"
+      personal_data: "Dados Pessoais"
+      contact: Contato
+      gender: "Gênero"
+      birthdate: "Data de nascimento"
+      zipcode: "CEP"
+      telephone: Telefone
+      cell_phone: Celular
+      special_needs: Necessidades especiais
+      others: Outros
+      institution: "Instituição"
+      additional: "Informações Adicionais"
+      biography: Biografia
+      interests: Interesses
+      music: "Músicas"
+      movies: Filmes
+      books: Livros
+      phrase: Frase
+      site: Site
+    allocations:
+      title: "Alocações"
+      period: "Período"
+      current: "Atual"
+      allocation: "Alocação"
+      status: "Status"
+      active: Ativo
+      blocked: Bloqueado
+
+  editions:
+    alert: "Preencha os campos obrigatórios"
+    academic:
+      courses: "Cursos"
+      curriculum_units: "Unidades Curriculares"
+      semesters: "Semestres"
+      groups: "Turmas"
+      modules: "Módulos"
+      type: "Tipo*"
+      filter: Filtro
+    items:
+      information: Informação
+      education: Educação
+      comunication: Comunicação
+      bibliography: Bibliografia
+      schedule: Agenda
+      allocation: Alocação
+      notification: Aviso
+      discussion: Fórum
+      chat: Chat
+      videoconference: Videoconferência
+      lesson_module: Módulo
+      lesson: Aula
+      support_material: Material de apoio
+      assignment: Trabalho
+      test: Prova
+      edition_of: Edição de %{of}
+      in_development: Em desenvolvimento
+    success:
+      saved: Salvo com sucesso
+      deleted: Excluido com sucesso
+    semesters:
+      filter: Filtro
+      all: "Todos"
+      actives: "Ativos"
+      type: "Tipo*"
+      course: Curso
+      curriculum_unit: Unidade Curricular
+      period: Período
+      warning: "Selecione uma Unidade Curricular ou um Curso para pesquisar por todos."
+    courses:
+      filter: Filtro
+      type: "Tipo*"
+      course: Curso
+    curriculum_units:
+      filter: Filtro
+      course: Curso
+      type: "Tipo*"
+      curriculum_unit: Unidade Curricular
+    groups:
+      filter: Filtro
+      type: "Tipo*"
+      course: "Curso*"
+      curriculum_unit: "Unidade Curricular*"
+      semester: "Semestre*"
+      warning: Todos os itens devem ser selecionados para realizar a pesquisa.
+    cant_save: Não foi possível salvar
+    are_you_sure_of_deletion: Você tem certeza de que deseja excluir?
+    cant_delete: Não foi possível excluir
+    not_possible_to_access_page_with_data: Não é possível acessar esta página com os dados fornecidos
+    content:
+      filter: Filtro
+      type: "Tipo*"
+      course: "Curso*"
+      curriculum_unit: "Unidade Curricular"
+      module: "Módulo"
+      semester: "Semestre"
+      offer: "Oferta"
+      group: "Turma"
+
+  curriculum_units:
+    success:
+      created: Unidade Curricular criada com sucesso.
+      updated: Unidade Curricular atualizada com sucesso.
+      deleted: Unidade Curricular deletada com sucesso.
+    error:
+      created: Não foi possível criar Unidade Curricular.
+      updated: Não foi possível atualizar Unidade Curricular.
+      deleted: Não foi possível deletar Unidade Curricular.
+    index:
+      new_course: Novo Curso
+      new_module: Novo Módulo
+      new_curriculum_unit: Nova Unidade Curricular
+      edit: Editar %{uc_or_module}
+      delete: Excluir %{uc_or_module}
+      curriculum_unit: Unidade Curricular
+      module: Módulo
+      course: Curso
+      new: Novo %{uc_or_module}
+      cant_edit: Não é possível editar esta unidade curricular
+      choose_at_least_one: "Selecione, ao menos, uma unidade curricular"
+    form:
+      save: Salvar
+      cancel: Cancelar
+      new_course: Novo Curso
+      new_module: Novo Módulo
+      new_curriculum_unit: Nova Unidade Curricular
+      edit_course: Editar Curso
+      edit_module: Editar Módulo
+      edit_curriculum_unit: Editar Unidade Curricular
+
+  semesters:
+    success:
+      created: Semestre criado com sucesso.
+      updated: Semestre atualizado com sucesso.
+      deleted: Semestre deletado com sucesso.
+    error:
+      created: Não foi possível criar semestre.
+      updated: Não foi possível atualizar semestre.
+      deleted: Não foi possível deletar semestre.
+    list:
+      new: Novo semestre
+      edit: Editar Semestre
+      delete: Deletar Semestre
+      new_offer: Nova oferta
+      delete_offer: Deletar oferta
+      period: Período
+      none: Nenhum semestre cadastrado
+      choose_one_offer: Selecione uma oferta
+    form:
+      enable_end_date: Habilitar data final
+
+  offers:
+    success:
+      created: Oferta criada com sucesso.
+      updated: Oferta atualizada com sucesso.
+      deleted: Oferta deletada com sucesso.
+    error:
+      created: Não foi possível criar oferta.
+      updated: Não foi possível atualizar oferta.
+      deleted: Não foi possível deletar oferta.
+      already_exist: já existe uma oferta com os dados informados
+    list:
+      type: Tipo
+      course: Curso
+      curriculum_unit: Unidade Curricular
+      offer: Oferta
+      offer_edit: Editar Oferta
+      offer_delete: Deletar Oferta
+      same_dates_from_offer: Mesmas datas do semestre
+      none: Nenhuma oferta cadastrada
+      choose_at_least_one: "Selecione, ao menos, uma oferta"
+      cant_edit: Não é possível editar esta oferta
+    index:
+      offers: Ofertas
+      new: Nova
+      new_offer: Nova Oferta
+      edit_offer: Editar Oferta
+      edit: Editar
+      delete: Excluir
+      course: Curso
+      curriculum_unit: Unidade Curricular
+      date_range: Período
+      enrollment_period: Período de Matrícula 
+      semester: Semestre
+      options: Opções
+      no_groups: Não há turmas
+      groups_already_deactivated: Turmas já desativadas
+      all_groups_deactivated: Todas as turmas desativadas
+      deactivate_groups: Desativar turmas
+      cant_deactivate: Não foi possível desativar as turmas
+      not_defined: Não definido
+      are_you_sure: Você tem certeza?
+    form:
+      save: Salvar
+      cancel: Cancelar
+      date_range: Período
+      course: Curso
+      curriculum_unit: Unidade Curricular
+      to:  a 
+      end_offer: Fim
+      all: Todos(as)
+      enroll_period: Período de matrícula
+      enable_end_date: Habilitar data final
+      start_date: Início
+      semester_offer: Oferta do Semestre
+      semester_enrollment: Matrícula do Semestre
+      define_different_dates: Definir datas diferentes do semestre
+    no_end_date: Em diante
+    existing_semester: já existe
+    schedule_error: deve ser menor que final do período
+
+  schedules:
+    errors:
+      current_year: não deve preceder o ano atual
+      current_date: não deve preceder o dia de hoje
+    to: "à "
+    list:
+      assignments: Trabalho
+      lesson: Aula
+      discussions: Fórum
+      schedule_events: Evento
+
+  courses:
+    index:
+      new: Novo curso
+      edit: Editar curso
+      delete: Deletar curso
+      code: Código
+      name: Nome
+      cant_edit: Não é possível editar este curso
+      cant_delete: Não é possível remover este curso
+    form:
+      name: Nome
+      code: Código
+      save: Salvar
+      cancel: Cancelar
+    success:
+      created: Curso criado com sucesso.
+      updated: Curso atualizado com sucesso.
+      deleted: Curso deletado com sucesso.
+    error:
+      created: Não foi possível criar curso.
+      updated: Não foi possível atualizar curso.
+      deleted: Não foi possível deletar curso.
+
+  support_materials:
+    success:
+      created: Material de apoio criado com sucesso.
+      updated: Material de apoio atualizado com sucesso.
+      deleted: Material de apoio deletado com sucesso.
+    error:
+      must_select_something: Um ou mais itens devem ser selecionados
+    index:
+      choose_at_least_one: "Selecione, ao menos, um material de apoio"
+      choose_one: "Selecione um material de apoio do tipo: link"
+      must_be_link: Deve ser um link
+
+  chat_rooms:
+    list:
+      title_my_chats: Meus Chats
+      title_other_chats: Outros Chats
+      detail: Detalhes
+      availability: Disponibilidade
+      message_no_chat: Nenhum chat disponível
+      expand_description: Expandir descrição
+      compress_description: Comprimir descrição
+      students: Alunos
+      message_ended: Encerrado
+      message_did_not_start: Não iniciou
+    index:
+      chats: Chats
+      new_chat: Novo Chat
+      edit_chat: Editar Chat
+      chat_name: Nome do chat
+      availability: Disponibilidade
+      groups: "Turmas: "
+      no_chats: Não há chats
+      delete_chats: Deletar Chats
+      hour_period: "%{start_hour}h - %{end_hour}h"
+      choose_at_least_one: "Selecione, ao menos, um chat"
+      choose_one: Selecione um chat
+      expand_description: Expandir descrição
+      compress_description: Comprimir descrição
+    form: 
+      participants: Participantes
+      groups: Turmas
+      define_participants: Definir participantes
+      all_participants: Todos
+      empty_group: Turma vazia
+    success:
+      created: Chat criado com sucesso.
+      updated: Chat atualizado com sucesso.
+      deleted: Chat deletado com sucesso.
+    error:
+      range_hour_error: deve ser posterior à inicial
+      created: Não foi possível criar chat.
+      updated: Não foi possível atualizar chat.
+      deleted: Não foi possível deletar chat.
+      chat_has_messages: Não foi possível deletar chat. Já possui mensagens.
+
+  #Facebook
+
+  facebook:
+    login: Entrar
+    logout: Sair
+    update_feed: Atualizar feed
+    original_content: Ver contéudo original
+    logged_in_as: Logado como
+    placeholder: No que você está pensando?
+    publish: Publicar
+    settings: Configurações
+
+  messages:
+    message_header_to:
+      attach: "Anexar: "
+    show:
+      to: "Para: "
+      from: "De: "
+      attachments: "Anexos: "
+    index:
+      filter_selected: "Visualizar: "
+
+  #Autocomplete
+
+  autocomplete:
+    no_options: Não há opções para os valores selecionados
+    all_options: Todas as opções
+
+  #Tutoriais
+  tutorial_next: Próximo
+  tutorial_previous: Anterior
+  tutorial_skip: Pular
+  tutorial_done: Fechar
+
+  #FullCalendar
+  fullcalendar:
+    today: hoje
+    titleFormat:
+      month: 'MMMM yyyy'
+      week: "d[ MMM yyyy]{ '&#8212;'d MMM yyyy}"
+      day: 'dddd, d MMM, yyyy'
+    columnFormat:
+      month: 'ddd'
+      week: 'ddd d/M'
+      day: 'dddd d/M'
+
+  #Eventos da agenda
+  schedule_events:
+    types:
+      presential_test: Prova Presencial
+      presential_meeting: Encontro Presencial
+      recess: Recesso
+      holiday: Feriado
+    form:
+      groups: Turmas
+    success:
+      created: Evento criado com sucesso.
+      updated: Evento atualizado com sucesso.
+      deleted: Evento deletado com sucesso.
+    error:
+      range_hour_error: deve ser posterior à inicial
+      created: Não foi possível criar evento.
+      updated: Não foi possível atualizar evento.
+      deleted: Não foi possível deletar evento.

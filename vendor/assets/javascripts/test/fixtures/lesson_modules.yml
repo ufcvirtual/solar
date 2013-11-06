@@ -1,0 +1,49 @@
+module1:
+  id: 1
+  name: modulo 1
+  is_default: false
+
+module2:
+  id: 2
+  name: modulo 2
+  is_default: false
+
+module3:
+  id: 3
+  name: modulo 1 / turma 2
+  is_default: false
+
+module4:
+  id: 4
+  name: Sem Nome Default
+  is_default: true
+
+module5: # contém aulas
+  id: 5
+  name: Modulo Geral
+  is_default: true  
+
+module6: # não contém aulas
+  id: 6
+  name: Modulo Geral
+  is_default: true    
+
+module7: # não contém aulas
+  id: 7
+  name: Modulo Geral da Turma - TL FOR
+  is_default: true
+
+module8:
+  id: 8
+  name: Modulo Geral
+  is_default: true
+
+module9: # não contém aulas
+  id: 9
+  name: Modulo Geral da Turma - QM CAU
+  is_default: true
+
+module10: # não contém aulas
+  id: 10
+  name: Modulo Geral da Turma - QM MAR
+  is_default: true

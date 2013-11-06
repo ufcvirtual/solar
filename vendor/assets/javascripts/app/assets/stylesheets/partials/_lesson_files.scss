@@ -1,0 +1,103 @@
+// LIGHTBOX DE GERENECIA DE ARQUIVOS DE AULAS - lesson_files
+
+#files_menu_bar {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#files_select {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+#lesson_files_select_all {
+  font-size: 10pt;
+  color: #8D8D8D;
+}
+
+.lesson_module,
+.lesson_date,
+.lesson_type,
+.url_lesson {
+  margin-bottom: 5px;
+}
+
+.lesson_module .hint {
+  display: inline-block;
+  padding-top: 5px;
+}
+
+#folder_dropdown .dropdown-panel {
+  padding: 7px;
+}
+
+#folder_dropdown_alert,
+#dropdown_alert {
+  @include dropdown_with_form_alert;
+}
+
+#dropdown_alert {
+  padding: 7px;
+
+  li {
+    padding: 2px;
+  }
+}
+
+#lesson_dropdown {
+
+  .control_buttons {
+    padding-top: 5px;
+
+    .btn.btn_main {
+      margin-left: 5px;
+    }
+  }
+}
+
+#folder_dropdown_content {
+  width: 200px;
+  overflow: hidden;
+
+  .control_buttons {
+    float: right;
+    padding-top: 7px;
+  }
+}
+
+#fileupload {
+  display: none;
+}
+
+#files_bottom_bar {
+  margin-top: 5px;
+  overflow: hidden;
+}
+
+#btn-finish { // FIXME utilizado apenas em lesson_files, mudar seletor para ser menos genérico
+  float: right;
+}
+
+#tree {
+  max-height: 235px;
+  overflow-y: auto;
+}
+
+#save_automatically_message {  // FIXME utilizado apenas em lesson_files, mudar seletor para ser menos genérico
+  float: left;
+  font-size: 10pt;
+  margin-top: 13px;
+  color: #da1124;
+}
+
+#attention_message { // FIXME utilizado apenas em lesson_files, mudar seletor para ser menos genérico
+  font-weight: bold;
+}
+
+/**
+* TODO: código aparentemente inutilizado, verificar
+*
+#final_enroll_date {
+  margin-top: 5px;
+}
+*/

@@ -1,0 +1,43 @@
+.new_group
+  = simple_form_for @group, html: {id: 'group_form'} do |f|
+    %h1#lightBoxDialogTitle= t((@group.persisted? ? :edit : :new), scope: "groups.list")
+    %span.form_requirement= t(:required_fields)
+    
+    .form-inputs.block_content
+      = f.input :offer_id, as: :hidden, input_html: {value: @group.offer.id}
+
+      %div
+        = f.label t(:course)
+        = @group.offer.course.name
+      %div
+        = f.label t(:curriculum_unit)
+        = @group.offer.curriculum_unit.name
+      %div
+        = f.label t(:semester)
+        = @group.offer.semester.name
+
+      = f.input :code
+
+      .right_buttons
+        = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+        = button_tag t(:save), :class => "btn btn_main btn_lightbox", :type => "button", :id => "save"
+
+:javascript
+
+  $(function(){
+
+    $("#save").click(function(){
+      $('form#group_form').serialize_and_submit({
+        complement_success: function(data) {
+          var url = "#{list_groups_path(type: @group.offer.curriculum_unit.curriculum_unit_type.id, curriculum_unit_id: 'curriculum_unit_param', course_id: 'course_param', semester_id: 'semester_param')}".replace('curriculum_unit_param', $('#curriculum_unit').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('semester_param', $('#semester').combobox('value'));
+
+          $.get(url, function(data) {
+            $('.groups_list').html(data);
+          });
+        }
+      });
+    });
+
+  });
+
+

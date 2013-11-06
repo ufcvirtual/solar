@@ -1,0 +1,19 @@
+- if not(@schedule.nil? || @schedule.empty?)
+  - @schedule.each do |schedule|
+    .block_wrapper
+      .block_title
+        %h2
+          -#%div{:class => "block_title_icon #{schedule['schedule_type']}"}
+          = t(".#{schedule['schedule_type'].to_sym}")
+      .agenda_left
+        .agenda_left_date
+          - start_date = schedule['start_date'].nil? ? nil : schedule['start_date'].to_date
+          - end_date = schedule['end_date'].nil? ? nil : schedule['end_date'].to_date
+          = raw display_date_format(start_date, end_date)
+      .agenda_right
+        %span.title= schedule['name']
+        .content
+          %p= schedule['description']
+- else
+  .block_content_text_list.text_none
+    = t(:agenda_null)

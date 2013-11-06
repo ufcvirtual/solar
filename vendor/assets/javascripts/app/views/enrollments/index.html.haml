@@ -1,0 +1,75 @@
+= javascript_include_tag "tooltip", "autocomplete"
+= stylesheet_link_tag "autocomplete"
+
+.block_wrapper
+  .block_content.enrollment_bar
+    = form_for :curriculum_unit, url: enrollments_path, method: :get do |f|
+      .enrollment_left
+        .filter_enrollment
+          = f.label t(".search"), class: "enrollment_label_search"
+          = select_tag(:curriculum_unit, options_from_collection_for_select(@curriculum_units, :id, :code_name), {include_blank: false, class: "select_category", selected: @search_curriculum_unit})
+          = f.label t(".search_in"), class: "enrollment_label"
+          = select_tag(:type, options_from_collection_for_select(CurriculumUnitType.all, :id, :description), {include_blank: true, class: "select_category", selected: @search_category})
+          = f.label t(".of"), class: "enrollment_label"
+          = select_tag(:status, options_for_select(@status, @status.first), class: "select_category")
+          = button_tag content_tag(:i, nil, class: 'icon-search', id: "search"), class: 'btn', :"data-url-search" => enrollments_path
+
+.block_wrapper
+  .block_title
+    %h2= t(".curriculum_unit")
+  .block_content
+    %table.tb_list.enrollment_list
+      %thead
+      %tbody
+        - unless @groups.empty?
+          %tr.lines
+            %th= t(".curriculum_unit")
+            %th= t(".category")
+            %th= t(:semester)
+            %th= t(".group")
+            %th= t(".period")
+            %th= t(:mysolar_mn_enrollment)
+          - @groups.each do |group|
+            - period_info = enrollment_info(group.offer)
+            - uc = group.curriculum_unit
+            %tr.lines
+              %td= group.curriculum_unit.name
+              %td
+                = image_tag(uc.curriculum_unit_type.icon_name)
+                = uc.curriculum_unit_type.description
+              %td= group.offer.semester.name
+              %td= group.code
+              %td= period_info[:period]
+              %td
+                - allocation = group.allocations.where(user_id: current_user.id, profile_id: 1).first
+                - case allocation.try(:status)
+                  - when Allocation_Pending.to_i, Allocation_Pending_Reactivate.to_i
+                    = button_to t(".cancel_request"), cancel_request_allocation_path(allocation), method: :delete, confirm: t(".confirm"), class: 'btn btn_caution'
+                  - when Allocation_Activated.to_i
+                    - if uc.curriculum_unit_type.allows_enrollment # nao aceita mais matricula
+                      = button_to t(".cancel"), cancel_allocation_path(allocation), method: :delete, confirm: t(".confirm"), class: 'btn btn_caution'
+                    - else 
+                      = label_tag "lb_enrollm", t(".enrolled"), class: 'enrollment_label'
+                  - when Allocation_Cancelled.to_i
+                    = button_to t(".enroll"), reactivate_allocation_path(allocation), class: 'btn btn_default', disabled: not(period_info[:is_active])
+                  - when Allocation_Rejected.to_i
+                    = label_tag "lb_rejected", t(".rejected"), class: 'enrollment_label'
+                  - else
+                    = button_to t(".enroll"), {controller: "allocations", action: "create", allocation_tag_id: group.allocation_tag.id, user_id: current_user.id}, class: 'btn btn_default', disabled: not(period_info[:is_active])
+        - else
+          %td.any_found.text_none= t(".no_curriculum_unit_found")
+
+:javascript
+   $(function(){
+      $("#curriculum_unit, #type, #status").combobox();
+      $("#curriculum_unit").combobox('value', "#{@search_curriculum_unit}");
+      $("#type").combobox('value', "#{@search_category}");
+      $("#status").combobox('value', "#{@search_status}");
+
+      $('#status').combobox({
+        change: function(event, ui) {
+          if(ui.item == null)
+            $(this).combobox('value', 'all');
+        }
+      });
+    });

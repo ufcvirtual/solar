@@ -1,0 +1,146 @@
+// EDIÇÃO
+fieldset {
+  border: 1px solid;
+  border-color: #D0D0D0;
+  padding: 15px 20px 5px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+
+  legend {
+    font-family: 'Ubuntu Condensed';
+    color: $color_main;
+  }
+
+  .block_content_alt {
+    margin-bottom: 20px;
+    background-color: #ffffff;
+
+    li {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.block_toolbar_left{
+  margin-left: 6px;
+}
+
+#semester-4{
+  margin-top: 10px;
+}
+
+.ui-autocomplete {
+  z-index: 60 !important;
+}
+
+.filter_type .ui-autocomplete, .filter .ui-autocomplete{
+  width: 306px !important;
+ }
+
+.offer_course .ui-autocomplete, .offer_curriculum_unit .ui-autocomplete{
+  width: 300px !important;
+}
+
+.uc_item,
+.academic_item {
+  @include item_button;
+}
+
+.block_title.edition {
+  border-bottom: solid 1px;
+  border-bottom-color: #D0D0D0;
+  margin-bottom: 15px;
+}
+
+.filter_notice {
+  text-align: center;
+  font-size: 11px;
+  margin-bottom: 15px;
+  margin-top: -20px;
+  color: gray;
+}
+
+.edition .filter .groups{
+  @include tags_div;
+  margin-left:20px;
+}
+
+.edition p{
+  text-align: right;
+  color: #D5031C;
+  margin-bottom: 0;
+}
+
+.edition #search{
+  margin-left: 415px;
+}
+
+.edition.block_content{
+  background-color: white;
+}
+
+.offer_groups_options {
+  overflow: hidden;
+
+  .collection_check_boxes {
+    color: white;
+  }
+}
+
+label[for="all"], .type_description {
+  color: $text_grey;
+}
+
+label[for="all"]{
+  font-size: 10pt;
+}
+
+.radio_options { // FIXME: nome genérico demais
+  float: left;
+}
+
+/**
+* Menu dropdown
+*/
+.dropdown-menu a {
+  font-size: 10pt;
+  font-family: 'PT Sans', sans-serif;
+}
+
+/**
+* Para o futuro Wizard
+*
+.uc_item_ok {
+    position: absolute;
+    top: -5px;
+    right: 20px;
+    background: url("/assets/index_files/icones/item_ok.png") no-repeat scroll 0 0 transparent;
+    width: 23px;
+    height: 23px;
+}
+*/
+
+/**
+* TODO: código aparentemente inutilizado, verificar
+*
+.edition_allocation_tag_path {
+  padding-top: 5px;
+  border-bottom: 1px solid;
+  border-bottom-color: #8d8d8d;
+  color: #696969;
+}
+
+#back_button {
+  margin-bottom: 10px;
+}
+
+#new_module {
+  margin-bottom: 10px;
+}
+
+label[for^="group_group_id_"]{
+  color: white;
+  font-size: 10pt;
+}
+*/
+

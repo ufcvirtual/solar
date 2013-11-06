@@ -1,0 +1,137 @@
+= javascript_include_tag 'autocomplete'
+
+// Para saber se possui datas
+- doesnt_have_enroll_end_date, doesnt_have_enroll_start_date = @offer.enrollment_schedule.try(:end_date).nil?, @offer.enrollment_schedule.try(:start_date).nil?
+- doesnt_have_period_end_date, doesnt_have_period_start_date = @offer.period_schedule.try(:end_date).nil?, @offer.period_schedule.try(:start_date).nil?
+- doesnt_have_period, doesnt_have_enrollment = (@offer.period_schedule.try(:start_date).nil? and @offer.period_schedule.try(:end_date).nil?), (@offer.enrollment_schedule.try(:start_date).nil?)
+// Valor das datas
+- enroll_end_date   = (doesnt_have_enroll_end_date ? '' : "#{l(@offer.enrollment_schedule.try(:end_date).to_date, format: :datepicker)}")
+- enroll_start_date = (doesnt_have_enroll_start_date ? '' : "#{l(@offer.enrollment_schedule.try(:start_date).to_date, format: :datepicker)}")
+- period_end_date   = (doesnt_have_period_end_date ? '' : "#{l(@offer.period_schedule.try(:end_date).to_date, format: :datepicker)}")
+- period_start_date = (doesnt_have_period_start_date ? '' : "#{l(@offer.period_schedule.try(:start_date).to_date, format: :datepicker)}")
+
+= simple_form_for @offer, html: {id: "offer_form"} do |f|
+  %h1#lightBoxDialogTitle= t((@offer.persisted? ? :edit_offer : :new_offer), scope: "offers.index")
+  %span.form_requirement= t(:required_fields)
+
+  .form-inputs.block_content
+    = f.input :type_id, as: :hidden, input_html: {value: @type_id}
+    = f.association :semester, as: :hidden, input_html: {value: @offer.semester_id}
+    - if @type_id != 3
+      = f.association :course
+      = f.association :curriculum_unit
+    - else
+      = f.association :course, collection: Course.all_associated_with_curriculum_unit_by_name
+
+    // Datas da oferta
+    %div
+      // do semestre (informação)
+      = f.label t(".semester_offer")
+      .offer_schedule_dates.info=l @offer.semester.offer_schedule.start_date.to_date, format: :datepicker
+      .offer_schedule_dates.label.info= t(:to, scope: [:schedules])
+      .offer_schedule_dates.info=l @offer.semester.offer_schedule.end_date.to_date, format: :datepicker
+    .period_schedule_check_box.period_date
+      = check_box_tag :have_period_schedule, true, not(doesnt_have_period)
+      %span.checkbox_label= label_tag :have_period_schedule, t(".define_different_dates")  
+    // da oferta, caso usuário escolha seu preenchimento
+    #period_schedule{class: (doesnt_have_period ? 'invisible' : '')}
+      = f.label :offer, required: true
+      = f.simple_fields_for :period_schedule, defaults: {label: false, as: :string, input_html: {size: 10}} do |s|
+        .offer_schedule_dates= s.input :start_date, required: false, input_html: {value: period_start_date}
+        .offer_schedule_dates.label= t(:to, scope: [:schedules])
+        .offer_schedule_dates= s.input :end_date, input_html: {value: period_end_date}
+      // exibição de erros na localização padrão (sem isso, erros na primeira data -start_date- quebram o layout, pois há a tentativa de exibir o erro ao lado do campo)
+      .offer_schedule_dates.error= @offer.period_schedule.errors[:start_date].first || @offer.period_schedule.errors[:end_date].first unless @offer.period_schedule.nil? or @offer.period_schedule.errors.full_messages.empty? 
+
+    // Datas da matrícula
+    %div
+      // do semestre (informação)
+      = f.label t(".semester_enrollment")
+      .enrollment_schedule_dates.info=l @offer.semester.enrollment_schedule.start_date.to_date, format: :datepicker
+      .enrollment_schedule_dates.info= (@offer.semester.enrollment_schedule.end_date.nil? ? (t(:no_end_date, scope: [:offers]).downcase) : (t(:to, scope: [:schedules]) + l(@offer.semester.enrollment_schedule.end_date.to_date, format: :datepicker)))
+    .enrollment_schedule_check_box.period_date
+      = check_box_tag :have_enrollment_schedule, true, not(doesnt_have_enrollment)
+      %span.checkbox_label= label_tag :have_enrollment_schedule, t(".define_different_dates")  
+    // da oferta, caso usuário escolha o preenchimento
+    #enrollment_schedule{class: (doesnt_have_enrollment ? 'invisible' : '')}
+      = f.label :enrollment, required: true
+      = f.simple_fields_for :enrollment_schedule, defaults: {label: false, as: :string, input_html: {size: 10}} do |s|
+        .enrollment_schedule_dates= s.input :start_date, required: false, input_html: {value: enroll_start_date}
+        // data final da matrícula, caso o usuário escolha seu preenchimento
+        %span#enrollment_schedule_end_date{class: (doesnt_have_enroll_end_date ? 'invisible' : '')}
+          .enrollment_schedule_dates.label= t(:to, scope: [:schedules])
+          .enrollment_schedule_dates= s.input :end_date, input_html: {value: enroll_end_date }
+        // exibição de erros na localização padrão (sem isso, erros na primeira data -start_date- quebram o layout, pois há a tentativa de exibir o erro ao lado do campo)
+        .enrollment_schedule_dates.error= @offer.enrollment_schedule.errors[:start_date].first || @offer.enrollment_schedule.errors[:end_date].first unless @offer.enrollment_schedule.nil? or @offer.enrollment_schedule.errors.full_messages.empty?
+      .end_date_check_box.period_date
+        = check_box_tag :have_end_date, true, not(doesnt_have_enroll_end_date)
+        %span.checkbox_label= label_tag :have_end_date, t('.enable_end_date')
+
+    .form-actions.right_buttons
+      = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+      = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", alt: t(:save), id: "save"
+
+:javascript
+
+  $(function(){
+
+    $("#offer_course_id, #offer_curriculum_unit_id").combobox();
+
+    $("#offer_course_id").combobox("value", "#{@offer.course_id}");
+    $("#offer_curriculum_unit_id").combobox("value", "#{@offer.curriculum_unit_id}");
+
+    // datepicker
+    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
+
+    /* impede que o usuário selecione uma data final menor que inicial e uma inicial maior que a final */
+    $('#offer_period_schedule_attributes_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#offer_period_schedule_attributes_end_date').datepicker("option", "minDate", selected); } }) );
+    $('#offer_period_schedule_attributes_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#offer_period_schedule_attributes_start_date').datepicker("option", "maxDate", selected); } }) );
+
+    $('#offer_enrollment_schedule_attributes_start_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#offer_enrollment_schedule_attributes_end_date').datepicker("option", "minDate", selected); } }) );
+    $('#offer_enrollment_schedule_attributes_end_date').datepicker( $.extend({}, options, { onSelect: function(selected) { $('#offer_enrollment_schedule_attributes_start_date').datepicker("option", "maxDate", selected); } }) );
+
+    $("#save").click(function(){
+      $('form#offer_form').serialize_and_submit({
+        complement_success: function(data) {
+          var table = $("#table-offer-#{@offer.semester_id}");
+          var url = table.data('link-offers');
+          table.load(url);
+        }
+      });
+    });
+
+    $('input#have_end_date').click(function(){
+      if($("input#have_end_date:checked").val() == 'true'){
+        $('#enrollment_schedule_end_date').show();
+        $('#offer_enrollment_schedule_attributes_end_date').datepicker('setDate', "#{enroll_end_date}");
+      }else{
+        $('#enrollment_schedule_end_date').hide();
+        $('#offer_enrollment_schedule_attributes_end_date').datepicker('setDate', "");
+      }
+    });
+
+    $('input#have_period_schedule').click(function(){
+      if($("input#have_period_schedule:checked").val() == 'true'){
+        $('#period_schedule').show();
+        $('#offer_period_schedule_attributes_start_date').datepicker('setDate', "#{period_start_date}");
+        $('#offer_period_schedule_attributes_end_date').datepicker('setDate', "#{period_end_date}");
+      }else{
+        $('#period_schedule').hide();
+        $('#offer_period_schedule_attributes_start_date').datepicker('setDate', "");
+        $('#offer_period_schedule_attributes_end_date').datepicker('setDate', "");
+      }
+    });
+
+    $('input#have_enrollment_schedule').click(function(){
+      if($("input#have_enrollment_schedule:checked").val() == 'true'){
+        $('#enrollment_schedule').show();
+        $('#offer_enrollment_schedule_attributes_start_date').datepicker('setDate', "#{enroll_start_date}");
+        $('#offer_enrollment_schedule_attributes_end_date').datepicker('setDate', "#{enroll_end_date}");
+      }else{
+        $('#enrollment_schedule').hide();
+        $('#offer_enrollment_schedule_attributes_start_date').datepicker('setDate', "");
+      }
+    });
+
+
+  });

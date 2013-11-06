@@ -1,0 +1,66 @@
+%div{:style => "width: 700px;"}
+
+  .mysolar_header
+    %h1.mysolar_title
+      %i.icon-suitcase
+      = t(:group)
+      = @group.code
+
+  / Lista dos alunos com notass
+
+  %div.tb_list
+    %table.tb_list#list_of_studantes{:width => "100%", :cellspacing => "0", :border => "0", :summary => "lista de estudantes"}
+      %thead
+        %tr.lines
+          %th{:rowspan => "2", :align => "left"}= t(:student)
+          %th{:rowspan => "2", :style => "width: 16%;"}= t(:public_files)
+          %th{:colspan => "#{@assignments.length}", :style => "width: 20%;"}= t(:private_area)
+          %th{:rowspan => "2", :style => "width: 12%;"}= t(:participation)
+          %th{:rowspan => "2", :style => "width: 18%;"}= t(:access_to_the_course)
+        %tr
+          - unless @assignments.empty?
+            - @assignments.each_with_index do |assignment, idx|
+              %th= "#{idx + 1}º"
+        - @students.each_with_index do |student, idx|
+          %tr.lines
+            %td.td_student{:align => "left"}= link_to student.name, student_scores_path(student.id)
+            %td{:align => "center"}= @scores["student_count_public_files"][idx]
+            - @assignments.each_with_index do |assignment, idx2|
+              - grade = @scores["students_grades"][idx][idx2]
+              - grade_link = t("assignment_#{grade}", :default => grade)
+              %td{:align => "center", :class => "assignment_#{grade}"}
+                - if grade == "without_group"
+                  = link_to t(:assignment_wg), information_assignment_path(assignment.id)
+                - else
+                  = link_to grade_link, assignment_path(assignment.id, :student_id => student.id, :group_id => @scores["students_groups"][idx][idx2]) 
+            - if @assignments.empty?
+              %td{:align => "center"}= "-"
+            %td{:align => "center"}= "-"
+            %td{:align => "center"}= @scores["student_count_access"][idx]
+
+/ Legenda das notas
+#scores_notes.legend_score_footer
+  %div
+    = t(:assignment_as)
+    = t(:assignment_without_correction)
+  %div
+    = t(:assignment_an)
+    = t(:assignment_not_sent)
+  %div
+    = t(:assignment_wg)
+    = t(:student_without_group)
+
+/ Paginacao
+.legend#scores_pagination{:style => "text-align: center;"}
+  %span=raw render_pagination_bar(@students.size) unless @students.empty?
+
+/ Legenda dos trabalhos
+- unless @assignments.empty?
+  .legend
+    %ul
+      %li
+        %h1= t(:legend_assignments)
+      - @assignments.each_with_index do |assignment, idx|
+        %li
+          = "#{idx + 1}º - "
+          = assignment.name

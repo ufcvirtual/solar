@@ -1,0 +1,78 @@
+<div class="block_wrapper">
+  <div class="block_title">
+    <h2><%=t(:curriculum_unit_responsible)%></h2>
+  </div>
+  <div class="block_content block_content_overflow">
+  <% if @responsible %>
+
+    <% if @responsible.length == 0 %>
+      <div class="participants_list_none"><%= t(:participants_none)%></div>
+    <% end %>
+
+    <% @responsible.each do |resp| %>
+      <div class="participants_list_item">
+        <% if resp.photo_file_name %>
+          <%=image_tag resp.photo.url(:medium), :alt => t(:mysolar_alt_img_user) + ' ' + resp.name %>
+        <% else %>
+          <%=image_tag 'no_image.png', :alt => t(:mysolar_alt_img_user) + ' ' + resp.name %>
+        <% end %>
+
+        <div class="participant_name" title="<%=resp.name%>">
+          <% if resp.name.length > 20 %>
+            <%=resp.name.slice(0..19) + '...'%>
+          <% else %>
+            <%=resp.name%>
+          <% end %>
+        </div>
+        <div class="participant_role">
+          <%= raw("(#{resp.profile_name})") %>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="participants_list_none"><%= t(:participants_none)%></div>
+  <% end %>
+  </div>
+</div>
+
+<div class="block_wrapper">
+  <div class="block_title">
+    <h2><%=t(:curriculum_unit_participants)%></h2>
+  </div>
+  <div class="block_content block_content_overflow">
+  <% if @participants %>
+    <% if @participants.length == 0 %>
+      <div class="participants_list_none"><%= t(:participants_none)%></div>
+    <% end %>
+
+    <% @participants.each do |part| %>
+      <div class="participants_list_item">
+        <% unless part.photo_file_name.nil? %>
+          <%=image_tag part.photo.url(:medium), :alt => t(:mysolar_alt_img_user) + ' ' + part.name %>
+        <% else %>
+          <%=image_tag 'no_image.png', :alt => t(:mysolar_alt_img_user) + ' ' + part.name %>
+        <% end %>
+
+        <div class="participant_name" title="<%=part.name%>">
+          <% if part.name.length > 20 %>
+            <%=part.name.slice(0..19) + '...'%>
+          <% else %>
+            <%=part.name%>
+          <% end %>
+        </div>
+
+        <div class="participant_role">
+          <% if part.profile_id.to_s != @student_profile.to_s %>
+            <%= raw("(#{part.profile_name})") %>
+          <% else %>
+            <br/>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  <% else %>
+    <div class="participants_list_none"><%= t(:participants_none)%></div>
+  <% end %>
+  </div>
+</div>

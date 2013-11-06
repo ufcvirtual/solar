@@ -1,0 +1,33 @@
+recess1:
+  id: 1
+  title: Recesso
+  description: Recesso institucional
+  schedule_id: 27 #2
+  type_event: 3
+
+presential_test1:
+  id: 2
+  title: Avaliação
+  description: Avaliação marcada para esse período
+  schedule_id: 27 #3
+  type_event: 1
+  start_hour: "10:30"
+  end_hour: "12:30"
+  place: "Polo A"
+
+presential_meeting1:
+  id: 3
+  title: Encontro Presencial
+  description: Encontro Presencial marcado para esse período
+  schedule_id: 27 #4
+  type_event: 2
+  start_hour: "10:30"
+  end_hour: "12:30"
+  place: "Polo A"
+
+holiday1:
+  id: 4
+  title: Feriado
+  description: Feriado nesse período
+  schedule_id: 27 #5
+  type_event: 4

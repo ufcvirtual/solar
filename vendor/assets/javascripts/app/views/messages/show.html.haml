@@ -1,0 +1,76 @@
+.message_external_div
+  .block_title
+    %h2= @message.subject
+  .block_content.messages
+    .align-left
+      = link_to new_message_path(id: @message.id, target: "sender"), class: 'btn btn_main', :'data-tooltip' => t(:message_reply) do
+        %i.icon-reply
+      = link_to new_message_path(id: @message.id, target: "all"), class: 'btn', :'data-tooltip' => t(:message_reply_all) do
+        %i.icon-reply-all
+      = link_to new_message_path(id: @message.id), class: 'btn', :'data-tooltip' => t(:message_route) do
+        %i.icon-forward
+
+    .align-right
+      = link_to ({:action => 'new', :search => @search_text}), :class =>'btn', 'data-tooltip' => t(:message_new) do
+        %i.icon-plus-3
+
+      - if @box != "trashbox"
+        #mark_as_unread.btn{:"data-tooltip" => t(:message_mark_as_unread), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "unread", box: @box)}
+          %i.icon-mail-read
+
+        #remove_message.btn{:"data-tooltip" => t(:message_delete), :"data-new-status" => "trash", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "trash", box: @box)}
+          %i.icon-trash
+
+      - if @box == "trashbox"
+        #restore_message.btn{:"data-tooltip" => t(:message_restore), :"data-new-status" => "restore", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "restore", box: @box)}
+          %i.icon-restore
+
+    .clearfix
+
+  .message_header_new
+    .message_text_from
+      .label-show.align-left
+        = t(".from")
+      - user = @message.sent_by
+      = "#{user.name}"
+      %span
+        = raw "<#{link_to(user.email, new_message_path(to: user.email))}>"
+    .message_text_to
+      .label-show.align-left
+        = t(".to")
+      = raw @message.recipients.map { |r| "#{r.nick} <span>&lt;#{link_to(r.email, new_message_path(to: r.email))}&gt;</span>" }.join(', ')
+
+    - unless (attachments = @message.files).empty?
+      .message_attachments
+        .label-show.align-left
+          %i.icon-paperclip
+          = t(".attachments")
+        %br
+        - attachments.each do |file|
+          .new-attach
+            = link_to ['-', file.message_file_name].join, download_file_messages_path(file_id: file.id)
+
+  %hr
+  .message_div_show
+    = sanitize @message.content
+
+  %hr
+
+  .message_div_navigation
+    %a.btn.align-left{href: messages_path}
+      %i.icon-arrow-left
+      = t(:back)
+
+:javascript
+
+  $(function(){
+    $('#remove_message, #restore_message, #mark_as_unread').click(function(){
+      $.ajax({
+        type: 'PUT',
+        url: $(this).data('link-udpate-status'),
+        success: function(response) {
+          window.location.href = "#{inbox_messages_path}";
+        }
+      });
+    });
+  });

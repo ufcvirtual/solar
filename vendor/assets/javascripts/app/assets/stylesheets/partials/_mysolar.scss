@@ -1,0 +1,413 @@
+// Meu Solar
+
+/**
+* Barra superior geral
+*/
+#mysolar_topbar_wide_background {
+  height: 38px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -10;
+  background-color: $color_main;
+}
+
+#mysolar_topbar {
+  width: 100%;
+  height: 74px;
+  z-index: 2;
+  /*
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  */
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 400;
+  /*background-color: $color_main;*/
+  overflow: hidden;
+  color: #fff;
+}
+/**
+/* Barra secundária
+*/
+#mysolar_identity {
+  width: 100%;
+  height: $mysolar_topbar_height;
+  background-color: $color_main;
+}
+
+#mysolar_logo {
+  //width: 185px;
+  height: $mysolar_topbar_height;
+  float: left;
+  background-color: $color_main;
+}
+
+#mysolar_top_help {
+  background-color: $color_main;
+}
+
+#solar_logo {
+  margin-top: 4px;
+  margin-left: 5px;
+}
+
+#mysolar_top_options {
+  height: $mysolar_topbar_height;
+  line-height: $mysolar_topbar_height;
+  float: right;
+  font-size: 10pt;
+  list-style-type: none;
+  padding: 0 10px 0 0;
+  margin: 0;
+
+  li {
+    line-height: $mysolar_topbar_height - 3px;
+    display: inline-block;
+    padding: 3px 6px 0 6px;
+    vertical-align: middle;
+    float: left;
+    /* necessario para funcionar ok no IE7 */
+    /*    zoom: 1;
+    *display: inline;*/
+  }
+}
+
+#mysolar_top_options #mysolar_top_submenu_label:hover,
+#mysolar_top_options #mysolar_top_logout:hover,
+#mysolar_top_options #mysolar_top_help:hover {
+  height: $mysolar_topbar_height - 3px;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: $color_main;
+  background-color: white !important;
+  color: $color_main;
+}
+
+#mysolar_top_options li:hover a {
+  color: $color_main;
+}
+
+#mysolar_top_img_user {
+  float: right;
+  padding-left: 4px;
+}
+
+/**
+/* Foto do usuário
+*/
+#mysolar_top_submenu {
+  font-size: 10pt;
+  position: absolute;
+  top: $mysolar_topbar_height;
+  width: 170px;
+  margin-left: -40px;
+  z-index: 100;
+  display: none;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+  border-right: 2px solid;
+  border-top: none;
+  padding: 10px;
+  text-align: left;
+  overflow: hidden;
+  box-shadow: 3px 3px 15px 0px #bbb;
+  color: $color_main;;
+  background-color: #fff;
+  border-bottom-color: $color_contrast;
+  border-left-color: $color_contrast;
+  border-right-color: $color_contrast;
+  ul {
+    border-top-color: #EBEBEB;
+  }
+}
+
+#mysolar_top_submenu a:hover {
+  text-decoration: underline;
+}
+
+#mysolar_top_submenu ul {
+  width: 100%;
+  display: block;
+  border-top-width: 3px;
+  border-top-style: solid;
+  margin-top: 5px;
+}
+
+#mysolar_top_submenu ul li {
+  padding: 7px;
+}
+
+#mysolar_top_submenu_username {
+  font-size: 9pt;
+}
+
+#mysolar_top_submenu_useremail {
+  font-size: 8pt;
+  margin-top: 4px;
+}
+
+.mysolar_top_submenu_label_selected {
+  border-top: none;
+  border-bottom: none;
+  vertical-align: top;
+  background-color: #fff;
+}
+
+.mysolar_top_submenu_label_regular {
+  border-top: none;
+  border-bottom: none;
+  vertical-align: top;
+  background-color: transparent;
+}
+
+.mysolar_top_submenu_label_selected a.mysolar_top_link {
+  vertical-align: top;
+  color: #000;
+}
+
+a.mysolar_top_link {
+  color: #ffffff;
+}
+
+.mysolar_top_submenu_label_regular a {
+  vertical-align: top;
+}
+
+#image_user {
+  /*    vertical-align: text-bottom;*/
+  height: 30px;
+  cursor: pointer;
+  float: left;
+  margin-right: 7px;
+}
+
+/**
+/* Relogio
+*/
+#server_clock_wrapper:hover {
+  border-bottom: 2px solid !important;
+  border-bottom-color: transparent !important;
+}
+
+#mysolar_top_user_nick {
+  margin-top: 10px;
+}
+
+/**
+/* Barra de Abas dos Cursos
+*/
+#mysolar_tabs {
+  width: 100%;
+  height: 33px;
+  border-bottom: 1px solid;
+  border-bottom-color: #D0D0D0;
+}
+
+#mysolar_tabs_wrapper {
+  float: left;
+  line-height: 28px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  font-family: 'Ubuntu Condensed', sans-serif;
+  font-size: 14pt;
+}
+
+.mysolar_unit_tab, .mysolar_unit_active_tab {
+  list-style-type: none;
+  display: inline-block;
+  margin: 6px 0px 0px 0px;
+  padding: 0 7px;
+  height: 26px;
+  font-variant: small-caps;
+  /* codigo necessario para exibir corretamente no IE 7 */
+  zoom: 1;
+  *display: inline;
+}
+
+.mysolar_unit_tab a {
+  color: $color_main_medium;
+}
+
+.mysolar_unit_active_tab {
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: $color_contrast;
+  /*background-color: #fff;
+  border-top-color: $color_main;
+  border-right-color: $color_main;
+  border-left-color: $color_main;
+  border-bottom-color: #fff;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  -moz-border-top-left-radius: 5px;
+  -moz-border-top-right-radius: 5px;*/
+  a {
+    color: $color_contrast_text;
+  }
+}
+
+.tabs_close {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  position: relative;
+  left: 5px;
+  /*    top: -2px;*/
+  margin-right: 5px;
+  background: url('/assets/tabs_close.png') no-repeat right bottom;
+}
+
+/**
+/* Itens adicionais (busca, acessibilidade, etc)
+*/
+#mysolar_extras {
+  line-height: 28px;
+  height: 36px;
+  float: right;
+  font-size: 11pt;
+  list-style-type: none;
+  padding: 0 10px 0 0;
+  margin: 0;
+}
+
+#mysolar_extras li {
+  display: inline-block;
+  /* codigo necessario para exibir corretamente no IE 7 */
+  zoom: 1;
+  *display: inline;
+  text-align: center;
+  margin-top: 2px;
+}
+
+#mysolar_extras li span {
+  padding: 0 5px;
+}
+
+.search_keyword {
+  border-width: 1px;
+  border-style: solid;
+  height: 20px;
+  width: 130px;
+  padding: 0 20px 0 2px;
+  margin-right: 4px;
+  border-color: #d0d0d0;
+  background: url('/assets/images/search.png') no-repeat right bottom #fff;
+}
+
+.search_keyword_inactive {
+  font-style: italic;
+  color: #b0b0b0;
+}
+
+/* acessibilidade */
+.acessibility_icons {
+  vertical-align: middle;
+  margin: 0 2px;
+}
+
+/**
+/* Barra Lateral de Menu (sidebar)
+*/
+#mysolar_sidebar {
+  width: 175px;
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  z-index: 1;
+  /*    float: left;*/
+  /*    position: absolute;*/
+  vertical-align: top;
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+  margin-top: 10px;
+  padding-top: 0;
+}
+
+#mysolar_menu_accordion {
+  display: inline-block;
+  padding-top: 0;
+  margin-top: 0;
+  width: 100%;
+}
+
+.mysolar_menu_group > ul {
+  padding: 0 10px 0 10px;
+  margin: 5px 0;
+}
+
+.mysolar_menu_group > ul:first-child {
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.mysolar_menu_title_single_active {
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: $color_contrast;
+  a {
+    color: $color_contrast_text;
+  }
+}
+
+.menu_icon_arrow, .menu_icon_circle {
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  margin-right: 5px;
+  font-size: 14pt;
+  display: inline-block;
+  /* codigo necessario para exibir corretamente no IE 7 */
+  zoom: 1;
+  *display: inline;
+}
+
+/* BUG: icone rotacionado está com problemas no IE 7-8, não testado no 9 */
+.menu_icon_animate {
+  -moz-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  /*    filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.00000000, M12=-1.00000000, M21=1.00000000, M22=0.00000000,sizingMethod='auto expand');*/
+  /*    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);*/
+  transform: rotate(90deg);
+}
+
+.mysolar_menu_title {
+  width: 100%;
+  margin: 2px;
+  /*    padding-left: 12px;*/
+  cursor: pointer;
+  font-weight: normal;
+  height: 30px;
+  line-height: 30px;
+  font-variant: small-caps;
+  font-size: 12pt;
+  font-family: 'Ubuntu Condensed', sans-serif;
+  /*    padding-left: 15px;*/
+  color: $color_main_text;
+}
+
+.mysolar_menu_title_active > a {
+  color: $color_contrast_text;
+}
+
+.submenu {
+  display: none;
+  padding: 5px 0 5px 10px;
+  margin: 0;
+  border-top: 2px solid;
+  font-size: 10pt;
+  border-top-color: $color_contrast;
+  background-color: $color_contrast_light; /* alternativa: f5f8fb */
+
+  > li {
+    padding: 5px 0;
+  }
+  a {
+    color: #222;
+  }
+}

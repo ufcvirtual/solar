@@ -1,0 +1,36 @@
+%div{:style => "margin-bottom:5px"}
+  %button#download_all.btn.btn_default{"data-tooltip" => t("support_download_all"), :onclick => "javascript:window.location.href='#{download_all_support_material_files_path(allocation_tag_id: @allocation_tag_ids.join(','), :type => "all")}'", :type => "button", :value => t("support_download_all")}
+    %i.icon-archive
+- @folders_list.each do |folder_name, folder_content|
+  .block_wrapper
+    .block_title
+      - unless folder_name == 'LINKS'
+        %h2.support_material_title= folder_name
+        %span.block_actions
+          %button#download_folder.btn{"data-tooltip" => t("support_download_folder"), :onclick => "javascript:window.location.href='#{download_folder_support_material_files_path(folder: (folder_name || 'nil'), allocation_tag_id: @allocation_tag_ids.join(','))}'", :type => "button", :value => t("support_download_folder")}
+            %i.icon-install
+      - else
+        %h2= folder_name
+    %table.tb_list{:border => "0", :cellpadding => "10", :cellspacing => "0", :width => "100%"}
+      %thead
+        %tr
+          %th= t(:support_material_name)
+          %th{:style => "width:80px"}= t(:support_material_size)
+          %th{:style => "width:80px"}= t(:support_material_sent_on)
+      %tbody
+        - folder_content.each do |file|
+          %tr.lines
+            %td
+              - if file['url'] == nil
+                = link_to image_tag(icon_attachment(file["attachment_file_name"])), download_support_material_file_path(id: file['id']), {:class => 'file_icon'}
+                = link_to file['attachment_file_name'], download_support_material_file_path(id: file['id'])
+              - else
+                = image_tag 'icon_file_link.png', :alt => ''
+                = link_to file['url'], file['url'], :target => '_blank'
+            %td
+              - if file['url'] == nil
+                = format('%.2f KB', file["attachment_file_size"].to_i/1024.0)
+            %td
+              = l file["attachment_updated_at"].to_date
+- if @folders_list.nil? or @folders_list.empty?
+  .block_content.block_content_text= t(:itens_not_found)

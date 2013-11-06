@@ -1,0 +1,294 @@
+  # puts " - Criando Permissoes de Menu"
+pm1:
+  profile_id: 1
+  menu_id: 10
+
+pm2:
+  profile_id: 1
+  menu_id: 101
+
+pm3:
+  profile_id: 1
+  menu_id: 20
+
+pm4:
+  profile_id: 1
+  menu_id: 201
+
+pm5:
+  profile_id: 1
+  menu_id: 202
+
+pm6:
+  profile_id: 1
+  menu_id: 204
+
+pm7:
+  profile_id: 1
+  menu_id: 30
+
+pm8:
+  profile_id: 1
+  menu_id: 301
+
+pm9:
+  profile_id: 1
+  menu_id: 303
+
+pm10:
+  profile_id: 1
+  menu_id: 304
+
+pm11:
+  profile_id: 1
+  menu_id: 50
+
+pm12:
+  profile_id: 1
+  menu_id: 302
+
+pm13:
+  profile_id: 1
+  menu_id: 102
+
+# professor titular
+pm14:
+  profile_id: 2
+  menu_id: 10
+
+pm15:
+  profile_id: 2
+  menu_id: 101
+
+pm16:
+  profile_id: 2
+  menu_id: 20
+
+pm17:
+  profile_id: 2
+  menu_id: 201
+
+pm18:
+  profile_id: 2
+  menu_id: 207
+
+pm19:
+  profile_id: 2
+  menu_id: 208
+
+pm20:
+  profile_id: 2
+  menu_id: 30
+
+pm21:
+  profile_id: 2
+  menu_id: 301
+
+pm22:
+  profile_id: 2
+  menu_id: 303
+
+pm23:
+  profile_id: 2
+  menu_id: 304
+
+pm24:
+  profile_id: 2
+  menu_id: 50
+
+pm25:
+  profile_id: 2
+  menu_id: 302
+
+pm26:
+  profile_id: 2
+  menu_id: 102
+
+pm27:
+  profile_id: 2
+  menu_id: 209
+
+# tutor a distancia
+pm28:
+  profile_id: 3
+  menu_id: 10
+
+pm29:
+  profile_id: 3
+  menu_id: 101
+
+pm30:
+  profile_id: 3
+  menu_id: 20
+
+pm31:
+  profile_id: 3
+  menu_id: 201
+
+pm32:
+  profile_id: 3
+  menu_id: 30
+
+pm33:
+  profile_id: 3
+  menu_id: 301
+
+pm34:
+  profile_id: 3
+  menu_id: 303
+
+pm35:
+  profile_id: 3
+  menu_id: 304
+
+pm36:
+  profile_id: 3
+  menu_id: 50
+
+pm37:
+  profile_id: 3
+  menu_id: 100
+
+# pm38:
+#   profile_id: 3
+#   menu_id: 70
+
+pm39:
+  profile_id: 3
+  menu_id: 302
+
+pm40:
+  profile_id: 3
+  menu_id: 102
+
+pm41:
+  profile_id: 3
+  menu_id: 209
+
+pm42:
+  profile_id: 3
+  menu_id: 207
+
+pm43:
+  profile_id: 3
+  menu_id: 208
+
+# tutor presencial
+pm44:
+  profile_id: 4
+  menu_id: 209
+
+# editor
+pm45:
+  profile_id: 5
+  menu_id: 10
+
+pm46:
+  profile_id: 5
+  menu_id: 101
+
+pm47:
+  profile_id: 5
+  menu_id: 20
+
+pm48:
+  profile_id: 5
+  menu_id: 201
+
+pm49:
+  profile_id: 5
+  menu_id: 30
+
+pm50:
+  profile_id: 5
+  menu_id: 301
+
+pm51:
+  profile_id: 5
+  menu_id: 303
+
+pm52:
+  profile_id: 5
+  menu_id: 304
+
+pm53:
+  profile_id: 5
+  menu_id: 50
+
+pm54:
+  profile_id: 5
+  menu_id: 100
+
+# pm55:
+#   profile_id: 5
+#   menu_id: 70
+
+pm56:
+  profile_id: 5
+  menu_id: 302
+
+pm57:
+  profile_id: 5
+  menu_id: 102
+
+# pm58:
+#   profile_id: 5
+#   menu_id: 120
+
+pm59:
+  profile_id: 5
+  menu_id: 90
+
+pm60:
+  profile_id: 5
+  menu_id: 901
+
+# basico
+pm61:
+  profile_id: 12
+  menu_id: 100
+
+# editor
+pm62:
+  profile_id: 5
+  menu_id: 130
+
+# editor
+pm63:
+  profile_id: 5
+  menu_id: 131
+
+pm64:
+  profile_id: 5
+  menu_id: 132
+
+# aluno monitor
+pm65:
+  profile_id: 13
+  menu_id: 130
+
+pm66:
+  profile_id: 13
+  menu_id: 131
+
+pm67:
+  profile_id: 13
+  menu_id: 132
+
+# listagem de chat para participante
+
+pm68:
+  profile_id: 1
+  menu_id: 205
+
+pm69:
+  profile_id: 2
+  menu_id: 205
+
+pm70:
+  profile_id: 3
+  menu_id: 205
+
+pm71:
+  profile_id: 4
+  menu_id: 205

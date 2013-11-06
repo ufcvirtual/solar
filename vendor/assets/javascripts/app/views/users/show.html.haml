@@ -1,0 +1,63 @@
+.info_user
+
+	.block_content
+		.block_title
+			%h2= t(:detailed, :scope => [:administrations, :informations])
+		.block_left
+			- if	@user.photo_file_name
+				=image_tag @user.photo.url(:medium), :alt => t(:mysolar_alt_img_user) + ' ' + @user.name, :class => 'block_photo'
+			- else
+				=image_tag 'no_image.png', :alt => t(:mysolar_alt_img_user) + ' ' + @user.name, :class => 'block_photo'
+		.block_right
+			%div=@user.name
+			%div=@user.cpf
+			%div=@user.active
+
+	.block_content
+		.block_title
+			%h2= t(:personal_data, :scope => [:administrations, :informations])
+		%div
+			= t(:gender, :scope => [:administrations, :informations]) + ": "
+			- if @user.gender
+				= t(:m)
+			- else
+				= t(:f)
+		%div
+			= t(:birthdate, :scope => [:administrations, :informations]) + ": " + l(@user.birthdate)
+		%div= t(:special_needs, :scope => [:administrations, :informations]) + ": " + @user.special_needs unless @user.special_needs.nil?
+
+	.block_content
+		.block_title
+			%h2= t(:contact, :scope => [:administrations, :informations])
+		%div
+			= @user.address
+			= @user.address_number
+			= @user.address_complement
+			= @user.address_neighborhood
+			= t(:zipcode, :scope => [:administrations, :informations]) + ": " + @user.zipcode unless @user.zipcode.nil?
+		%div
+			= @user.city
+			= @user.state
+			= @user.country
+		%div= t(:telephone, :scope => [:administrations, :informations]) + ": " + @user.telephone.to_s
+		%div= t(:cell_phone, :scope => [:administrations, :informations]) + ": " + @user.cell_phone.to_s
+
+	.block_content
+		.block_title
+			%h2= t(:others, :scope => [:administrations, :informations])
+		%div
+			= t(:institution, :scope => [:administrations, :informations]) + ": " + @user.institution
+
+	.block_content
+		.block_title
+			%h2= t(:additional, :scope => [:administrations, :informations])
+		%div= t(:biography, :scope => [:administrations, :informations]) + ": " + @user.bio
+		%div= t(:interests, :scope => [:administrations, :informations]) + ": " + @user.interests
+		%div= t(:music, :scope => [:administrations, :informations]) + ": " + @user.music
+		%div= t(:movies, :scope => [:administrations, :informations]) + ": " + @user.movies
+		%div= t(:books, :scope => [:administrations, :informations]) + ": " + @user.books
+		%div= t(:phrase, :scope => [:administrations, :informations]) + ": " + @user.phrase
+		%div= t(:site, :scope => [:administrations, :informations]) + ": " + @user.site
+
+	.right_buttons
+		= button_to_function t(:close, :scope => [:administrations]), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"

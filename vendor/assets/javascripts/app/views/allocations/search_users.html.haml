@@ -1,0 +1,58 @@
+- unless @users.nil? or @users.empty?
+  %table.tb_list.tb_allocation
+    %thead
+      %tr.lines
+        %th= t(".name")
+        %th{style: 'width:80px'}= t(".cpf")
+        %th{style: 'width:200px'}= t(".email")
+        %th{style: 'width:120px'}= t(".profile")
+        %th{style: 'width:100px'}= ""
+    %tbody
+    - @users.each do |user|
+      - profiles_allocable = profiles_available_for_allocation(user.id, @allocation_tags_ids.join(","))
+      %tr.lines
+        %td= user.name
+        %td{style: 'width:80px'}= user.cpf
+        %td{style: 'width:200px'}= user.email
+        - unless (profiles_allocable.nil? or profiles_allocable.empty?)
+          %td{style: 'width:120px'}
+            = select_tag(:profile_id, options_from_collection_for_select(profiles_allocable, :id, :name))
+          %td{style: 'width:100px'}
+            = hidden_field_tag(:user_id, user.id)
+            = button_tag t(".designate"), type: "button", class: "btn btn_default btn_designate", alt: t(".designate_user", user_name: user.name), :"data-link-create" => create_designation_allocations_path(user_id: user.id, status: Allocation_Activated, allocation_tags_ids: @allocation_tags_ids.flatten), :"data-link-list" => designates_allocations_path(allocation_tags_ids: @allocation_tags_ids.flatten)
+        - else
+          %td{colspan: 2}
+            .unavailable
+              = t(".designate_profile_no_found")
+- else
+  .block_content_text_list.text_none 
+    = t(".designate_search_no_found")
+
+:javascript
+
+  $(function(){
+
+    $(".btn_designate").click(function(){
+      var profile = $("#profile_id", $(this).parents("tr")).val();
+      var url_list = $(this).data("link-list");
+
+      $.ajax({
+        type: 'POST',
+        url: $(this).data("link-create"),
+        data: {
+          profile: profile
+        },
+        success: function(data) {
+          $.get(url_list, function(data){
+            $(".list_designates:last").replaceWith(data);
+          });
+
+          flash_message('#{I18n.t(:allocated, :scope => [:allocations, :success])}', 'notice');
+        },
+        error: function() {
+          flash_message('#{I18n.t(:not_allocated, :scope => [:allocations, :error])}', 'alert');
+        }
+      }); // ajax
+    });
+
+  });

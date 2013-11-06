@@ -1,0 +1,222 @@
+/*
+ * *** Adaptado ***
+ *
+ * jQuery UI CSS Framework 1.8.11
+ *
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Theming/API
+ */
+
+#calendar{
+    .dropdown-tip{
+        width: 435px;
+    }
+
+    .dropdown-panel{
+        max-width: 417px;
+        background: #F7F8FA;
+        margin-bottom: 10px;
+
+        label{
+            width: 82px;
+            text-align: right;
+            margin-right: 10px;
+            float: left;
+        }
+
+        h1{
+            font-weight: bold !important;
+            color: #666;
+            text-align: center;
+        }
+    }
+}
+
+.fc-view {
+    overflow: visible !important;
+}
+
+.highlight-date-mark {
+    a.ui-state-default {
+        background-color: $color_main_medium;
+        color: #fff;
+    }
+}
+.ui-helper-hidden-accessible { display: none; }
+
+/* portlet de calendario da tela de acesso a curso */
+.calendar {
+  font-size: 0.9em;
+  width: 100%;
+  padding-bottom: 2px;
+  background-color: $color_main_light;
+  .ui-datepicker .ui-datepicker-next,
+  .ui-datepicker .ui-datepicker-prev{
+    margin-top: 0;
+  }
+  .ui-datepicker-inline {
+    width: 100%;
+    border: none;
+    background: none;
+  }
+}
+
+/* cabecalho do calendario */
+  .ui-datepicker-header {
+    background: #fff;
+    color: #000;
+    height: 1.2em;
+    padding: .3em;
+    font-weight: bold;
+    border-radius: 0;
+    border: none;
+    .ui-state-hover {
+        background-color: transparent !important;
+        border: none !important;
+    }
+  }
+
+.ui-datepicker-prev.ui-state-hover,
+.ui-datepicker-next.ui-state-hover {
+    background-color: transparent !important;
+    // border: 1px solid transparent !important;
+    // top: 1px !important;
+}
+
+.ui-datepicker-next,
+.ui-datepicker-prev {
+    top: 1px !important;
+}
+
+.calendar_events {
+  height: 100%;
+  padding: 3px 8px 2px 8px;
+  overflow: auto;
+  background: $color_main_light;
+}
+
+/* ... Component containers ... */
+
+/* corpo do calendario */
+.ui-datepicker-content {
+    left: 0px;
+    color: #222222;
+    padding-bottom: 3px; }
+
+.ui-datepicker-calendar {
+    margin-top: 0.2em;
+    width: 95%;
+    font-family: "Ubuntu";
+}
+
+#ui-datepicker-div{
+    background-color: #fff;
+    padding-top: 5px;
+    padding-bottom: 5px; 
+    padding-left: 10px;
+    padding-right: 10px;
+}
+/* ... Interaction states ... */
+
+.ui-datepicker-calendar {
+    /* celulas */
+    .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+        border: 1px solid transparent;
+        font-weight: normal;
+        min-height: 1.1em;
+        text-align: center;
+
+    }
+    /* ... Interaction Cues ... */
+    /* celula ativa */
+    .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+        border: 1px solid $color_contrast;
+        background: $color_contrast_light;
+        font-weight: normal;
+        color: #000;
+    }
+
+    /* data atual */
+    .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {
+        // background: none;
+        color: $color_contrast_text;
+        // border: none;
+        font-weight: bold;
+    }
+}
+
+/*
+ *  * *** Adaptado ***
+ *
+ * jQuery UI Datepicker 1.8.11
+ *
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Datepicker#theming
+ */
+
+.ui-datepicker { padding: .1em .1em; }
+.ui-datepicker .ui-datepicker-header { position:relative; padding:.1em 0; }
+
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
+    position:absolute; top: 3px; width: 1.8em; height: 1.2em; }
+.ui-datepicker .ui-datepicker-prev-hover, .ui-datepicker .ui-datepicker-next-hover { top: 3px; }
+.ui-datepicker .ui-datepicker-prev { 
+    left: 37px;
+    margin-top: 2px;
+    color: #cfcfcf;
+    width: 9px;
+    height: 11px;
+    cursor: pointer;
+    background-image: url(/assets/calendar_arrow_left.png) !important }
+.ui-datepicker .ui-datepicker-next { 
+    right: 37px;
+    margin-top: 2px;
+    color: #cfcfcf;
+    width: 9px;
+    height: 11px;
+    cursor: pointer;
+    background-image: url(/assets/calendar_arrow_right.png) !important }
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span {
+    display: block; position: absolute; left: 50%; margin-left: -2px; top: 50%; margin-top: -10px;  }
+
+.ui-datepicker .ui-datepicker-title {
+    margin: 0 1.2em; line-height: 1.4em; text-align: center; }
+.ui-datepicker .ui-datepicker-title select {
+    font-size:1em; margin:1px 0; }
+
+.ui-datepicker select.ui-datepicker-month-year {width: 100%;}
+.ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year { width: 49%;}
+
+.ui-datepicker table {
+    width: 95%; font-size: 1.0em; border-collapse: collapse; /*margin:0 2 .1em;*/ margin: 0.3em auto 0}
+.ui-datepicker tbody {
+    font-size: .9em;
+}
+.ui-datepicker th {
+    padding: .1em .1em ; text-align: center; font-weight: bold; border: 0; min-height: 1.2em; font-size: .9em; }
+.ui-datepicker td {
+    border: 0; padding: 0em; width: 14.25%; min-height: 1.2em; }
+.ui-datepicker td span, .ui-datepicker td a {
+    display: block; padding: 0px; text-align: right; text-decoration: none; }
+.ui-datepicker-week-end {color: $color_contrast_text;}
+
+
+/* IE6 IFRAME FIX (taken from datepicker 1.5.3 */
+.ui-datepicker-cover {
+    display: none; /*sorry for IE5*/
+    display/**/: block; /*sorry for IE5*/
+    position: absolute; /*must have*/
+    z-index: -1; /*must have*/
+    filter: mask(); /*must have*/
+    top: -4px; /*must have*/
+    left: -4px; /*must have*/
+    width: 200px; /*must have*/
+    height: 200px; /*must have*/
+}
+/** ----------------------- **/

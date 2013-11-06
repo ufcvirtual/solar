@@ -1,0 +1,23 @@
+notification_group:
+  id: 1
+  title: "Lorem ipsum dolor sit amet"
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  schedule_id: 43
+
+notification_offer:
+  id: 2
+  title: "Quisque facilisis massa sit amet ante varius tempus."
+  description: "Nam et porta massa. In hac habitasse platea dictumst."
+  schedule_id: 44
+
+notification_uc:
+  id: 3
+  title: "Nunc nec malesuada lacus."
+  description: "Pellentesque tincidunt metus nec leo pretium, ac condimentum lectus ultricies. Vestibulum tristique, dolor et sagittis convallis, massa lorem ornare diam, malesuada vestibulum nisi eros euismod lacus."
+  schedule_id: 45
+
+notification_course:
+  id: 4
+  title: "Nullam convallis nec mi ac ultricies."
+  description: "Maecenas consectetur ultrices sapien, ut consectetur erat ornare ut. Morbi porttitor, massa vel fermentum suscipit, erat justo tristique odio, eget molestie mauris tellus quis sem. In dapibus eros sed dignissim cursus. Etiam sem quam, molestie non accumsan facilisis, eleifend ac sapien. Integer ultricies eleifend odio, vitae malesuada sem fermentum ac. In dui purus, cursus eget iaculis gravida, pellentesque porta ipsum. Pellentesque rutrum eu est sed dapibus. Phasellus placerat augue vitae molestie laoreet. In pulvinar euismod auctor."
+  schedule_id: 46

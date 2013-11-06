@@ -1,0 +1,7 @@
+pf4:
+ id: 4
+ user_id: 7 #aluno1
+ allocation_tag_id: 3
+ attachment_file_name: "teste1.txt"
+ attachment_file_size: 70400
+ attachment_updated_at: "2012-06-15"

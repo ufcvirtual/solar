@@ -1,0 +1,97 @@
+// = require jquery
+// = require jquery_ujs
+// = require jquery.qtip.min
+// = require jquery.sticky
+
+// = require jquery-ui
+// = require jquery.ui.datepicker-en-US
+// = require jquery.ui.datepicker-pt-BR
+
+// = require jquery.mask.min
+
+// = require jquery.dropdown
+// = require intro.min
+
+// = require mysolar
+// = require lightbox
+
+// = require messages
+// = require lessons
+// = require allocations
+
+// = require fancybox
+// = require helpers
+// = require nice
+
+// = require tooltip
+
+/**
+ * Retira o menu de usuário na barra superior ao clicar em outro canto da tela
+ */
+
+$(function() {
+  $("#change_picture").fancybox({
+    maxWidth  : 500
+  });
+});
+
+$(function(){
+  $("body").click(function(e) {
+    if((e.target.id !== 'mysolar_top_submenu') && (e.target.id !== 'mysolar_top_user_nick') && (e.target.id !== 'image_user')){
+      $("#mysolar_top_submenu").slideUp(150);
+      $('#mysolar_top_submenu_label').removeClass('mysolar_top_submenu_label_selected');
+      $('#mysolar_top_submenu_label').addClass('mysolar_top_submenu_label_regular');
+    }
+  });
+});
+
+/**
+ * Menu Accordion
+ */
+$(function() {
+  $('.mysolar_menu_title').click(function() {
+    // verificando se o item do menu já está ativo
+    if ( $(this).parent().hasClass('mysolar_menu_title_active') == false ) {
+      // limpando o menu, removendo itens ativos e ocultando submenu
+      $('.mysolar_menu_title').each(function(){
+        $(this).parent().removeClass('mysolar_menu_title_active').removeClass('mysolar_menu_title_single_active');
+        $(this).find('div').removeClass('menu_icon_animate');
+        $(this).next('.submenu').slideUp('fast');
+      });
+    }
+    // verificando se o item possui filhos
+    if ( $(this).parent().hasClass('mysolar_menu_title_single') == false ) {
+      // adicionando icone da seta
+      $(this).parents('li').find('.menu_icon_arrow').addClass('menu_icon_animate');
+      // tornando o item ativo
+      $(this).parent().addClass('mysolar_menu_title_active');
+      // exibindo submenu
+      $(this).next('.submenu').slideDown('fast');
+    } else {
+      // adicionando icone da bolinhaaaaaa
+      $(this).parents('li').find('.menu_icon_circle').addClass('.menu_icon_animate');
+      // tornando o item ativo
+      $(this).parent().addClass('mysolar_menu_title_single_active');
+    }
+  });
+
+  if($('.mysolar_menu_title_single > a').children("div.menu_icon_circle").length == 0)
+    $('.mysolar_menu_title_single > a').prepend('<div class="menu_icon_circle">&bull;</div>');
+  
+  if($('.mysolar_menu_title_multiple > a').children("div.menu_icon_arrow").length == 0)
+    $('.mysolar_menu_title_multiple > a').prepend('<div class="menu_icon_arrow">&#8227;</div>');
+
+  // abre menu corrente
+  $('.open_menu').click();
+});
+
+/**
+* Alertas
+*/
+$(window).load(function(){
+  $(".flash_message_wrapper").sticky({
+    topSpacing: 0,
+    center:true,
+    className:"sticky-float"
+  })
+})
