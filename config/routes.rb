@@ -219,15 +219,16 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :schedules, only: [:index] do
-    get :list, on: :collection
-    get :schedules_events, on: :collection, as: :calendar
-    get :events, on: :collection
+  resources :agendas, only: [:index] do
+    collection do
+      get :list
+      get :calendar
+      get :events
+      get :dropdown_content
+    end
   end
 
-  resources :schedule_events, except: [:index] do
-    get :dropdown_content, on: :collection
-  end
+  resources :schedule_events, except: [:index]
 
   resources :messages, except: [:destroy, :update] do
     member do

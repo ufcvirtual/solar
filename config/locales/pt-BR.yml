@@ -1926,8 +1926,9 @@
       start_date: Início
       end_date: Término
       event_details: Detalhes do evento
-    event_content:
+    event_resume:
       chat_rooms: "Chat: "
       assignments: "Trabalho: "
       discussions: "Fórum: "
       schedule_events: "Evento: "
+      all_day: dia todo

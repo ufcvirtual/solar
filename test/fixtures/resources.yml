@@ -153,9 +153,9 @@ res25:
 
 res26:
   id: 26
-  controller: 'schedules'
+  controller: 'agendas'
   action: 'list'
-  description: 'Agenda'
+  description: 'Agenda - lista'
 
 # Assignments - parte 2
 res27:
@@ -795,3 +795,58 @@ res141:
   controller: 'notifications'
   action: 'destroy'
   description: 'Deleção de aviso'
+
+# detalhes de ferramentas
+
+res142:
+  id: 142
+  controller: 'assignments'
+  action: 'show'
+  description: 'Detalhes do trabalho'
+
+res143:
+  id: 143
+  controller: 'chat_rooms'
+  action: 'show'
+  description: 'Detalhes do chat'
+
+res144:
+  id: 144
+  controller: 'discussions'
+  action: 'show'
+  description: 'Detalhes do fórum'
+
+
+res145:
+  id: 145
+  controller: 'schedule_events'
+  action: 'show'
+  description: 'Detalhes do evento'
+
+# agenda
+
+res146:
+  id: 146
+  controller: 'agendas'
+  action: 'calendar'
+  description: 'Calendário de eventos'
+
+# crud de evento
+
+res147:
+  id: 147
+  controller: 'schedule_events'
+  action: 'destroy'
+  description: 'Deleção evento (prova e encontro presenciais ou recesso ou feriado)'
+
+res148:
+  id: 148
+  controller: 'schedule_events'
+  action: 'new'
+  description: 'Criação evento (prova e encontro presenciais ou recesso ou feriado)'
+
+res149:
+  id: 149
+  controller: 'schedule_events'
+  action: 'edit'
+  description: 'Edição evento (prova e encontro presenciais ou recesso ou feriado)'

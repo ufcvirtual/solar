@@ -1767,8 +1767,9 @@
       start_date: Start
       end_date: End
       event_details: Event's details
-    event_content:
+    event_resume:
       chat_rooms: "Chat: "
       assignments: "Assignment: "
       discussions: "Discussion: "
       schedule_events: "Event: "
+      all_day: all day

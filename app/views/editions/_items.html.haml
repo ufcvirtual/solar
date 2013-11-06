@@ -12,7 +12,7 @@
 
       / - if (can? :lista_de_schedules, Schedule, :on => @allocation_tags_ids) and (Schedule.constants.include?("#{@selected}_PERMISSION".to_sym))
       .uc_item
-        .schedule{:"data-link" => calendar_schedules_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
+        .schedule{:"data-link" => calendar_agendas_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
           = link_to(content_tag(:i, nil, class: 'icon-calendar big'), "#", class: 'btn')
           = link_to t(".schedule"), "#"
 

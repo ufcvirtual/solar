@@ -15,7 +15,7 @@ class CurriculumUnitsController < ApplicationController
     @lessons          = Lesson.to_open(allocation_tags.join(', '))
     @discussion_posts = list_portlet_discussion_posts(allocation_tags.join(', '))
 
-    schedules_events  = Schedule.events(allocation_tags)
+    schedules_events  = Agenda.events(allocation_tags)
     @scheduled_events = schedules_events.collect { |schedule_event|
       schedule_end_date = schedule_event['end_date'].nil? ? "" : schedule_event['end_date'].to_date
       [schedule_event['start_date'].to_date, schedule_end_date]

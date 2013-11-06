@@ -99,7 +99,7 @@ class AssignmentsController < ApplicationController
   end
 
   def show
-    # authorize! :show, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].uniq
+    authorize! :show, Assignment, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
     @assignment = Assignment.find(params[:id])
     @enunciation_files = @assignment.enunciation_files.compact
     @groups_codes = @assignment.groups.map(&:code)

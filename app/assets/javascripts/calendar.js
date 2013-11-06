@@ -13,7 +13,7 @@ $(document).ready(function() {
   // Sources para recuperar os eventos
   var fcSources = {
     calendar: {
-                url: '/schedules/events',
+                url: '/agendas/events',
                 data: {
                   "allocation_tags_ids": $("#allocation_tags_ids").val(),
                   "all_groups_ids": $("#all_groups_ids").val()
@@ -22,7 +22,7 @@ $(document).ready(function() {
                 ignoreTimezone: false
             },
     list: {
-                url: '/schedules/events',
+                url: '/agendas/events',
                 data: {
                   "allocation_tags_ids": $("#allocation_tags_ids").val(),
                   "all_groups_ids": $("#all_groups_ids").val(),
@@ -96,7 +96,7 @@ function show_info_dropdown(event, div){
       "allocation_tags_ids": $("#allocation_tags_ids").val()
     };
     
-    $.get("/schedule_events/dropdown_content", event_data, function(data){$(dropdown_content).append(data);});
+    $.get("/agendas/dropdown_content", event_data, function(data){$(dropdown_content).append(data);});
 
     var dropdown = $("<div class='dropdown dropdown-tip' id='dropdown_details_"+event.type+"_"+event.id+"' style='z-index: 999;'></div>");
     $(dropdown).append(dropdown_content);

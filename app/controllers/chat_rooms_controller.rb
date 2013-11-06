@@ -94,7 +94,7 @@ class ChatRoomsController < ApplicationController
   end
 
   def show
-    # authorize! :show, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :show, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
     @chat_room = ChatRoom.find(params[:id])
     @groups_codes = @chat_room.groups.map(&:code)
   end
