@@ -3,27 +3,27 @@
 
   .form-inputs.block_content
     .input
-      = label_tag t(".name")
-      %span= label_tag @discussion.name
+      = label_tag t(".name"), nil, class: "form_label"
+      %span.label_info= label_tag @discussion.name
     .input
-      = label_tag t(".description")
-      %span= label_tag @discussion.description
+      = label_tag t(".description"), nil, class: "form_label"
+      %span.label_info= label_tag @discussion.description
     .input
-      = label_tag t(".start_date")
-      %span= label_tag l(@discussion.schedule.start_date.to_date, format: :datepicker)
+      = label_tag t(".start_date"), nil, class: "form_label"
+      %span.label_info= label_tag l(@discussion.schedule.start_date.to_date, format: :datepicker)
     .input
-      = label_tag t(".end_date")
-      %span= label_tag l(@discussion.schedule.end_date.to_date, format: :datepicker)
+      = label_tag t(".end_date"), nil, class: "form_label"
+      %span.label_info= label_tag l(@discussion.schedule.end_date.to_date, format: :datepicker)
     .schedule_dates
       .left
         .input.group_label.invisible
-          = label_tag t(".groups")
+          = label_tag t(".groups"), nil, class: "form_label"
           %span.groups
             - @groups_codes.each do |group_code|
               %span.collection_check_boxes= group_code
 
     .schedule_dates{style: "float: right;"}
       .right.right_buttons
-        = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+        = button_to_function t("agendas.close"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
 
 = javascript_include_tag "schedule_events"

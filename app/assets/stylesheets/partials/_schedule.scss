@@ -75,3 +75,22 @@
 .agenda_left_month_year .year_left {
   margin-right: 30px;
 }
+
+
+/* calendario */
+
+.label_info{
+  color: black;
+  margin-left: 5px;
+  display: inline-block;
+  font-size: 10pt;
+  width: 300px;
+}
+
+.show label{
+  vertical-align: top;
+}
+
+.label_info.files{
+  text-decoration: underline;
+}
