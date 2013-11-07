@@ -64,6 +64,11 @@ div.block_module{
   .groups_tags{
     background-color: rgb(243, 243, 243);
     height: 28px;
+    font-size: 14px !important;
+
+    .title label{
+      color: #000;
+    }
   }
 }
 
