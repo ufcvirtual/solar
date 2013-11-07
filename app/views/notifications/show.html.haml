@@ -19,7 +19,7 @@
 
 :javascript
   function load_fancy(id) {
-    $("table.notifications tr[id=" + id + "]").call_fancybox({href: "#{notification_path(':id')}".replace(':id', id), open: true});
+    $("table.notifications tr[id=" + id + "]").removeClass("unread").addClass("read").call_fancybox({href: "#{notification_path(':id')}".replace(':id', id), open: true});
   }
 
   function next_notification() {
