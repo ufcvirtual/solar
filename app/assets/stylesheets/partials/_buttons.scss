@@ -344,3 +344,25 @@ $btn-initial-file-color-final: #f9c143;
 .btn_dropdown a {
   cursor: pointer;
 }
+
+.block_buttons {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+
+  .left, .right {
+    display: inline-block;
+  }
+
+  .left input, .right input {
+    margin-bottom: 0;
+  }
+
+  .left {
+    float: left;
+  }
+
+  .right {
+    float: right;
+  }
+}

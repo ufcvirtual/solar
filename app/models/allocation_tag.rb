@@ -147,10 +147,6 @@ class AllocationTag < ActiveRecord::Base
     end
   end
 
-  # def verify_lesson_module
-  #   self.lesson_modules.first.delete if((not self.lesson_modules.empty?) and self.lesson_modules.size == 1 and self.lesson_modules.first.lessons.empty?)
-  # end
-
   def self.allocation_tag_details(allocation_tag)
     if !allocation_tag.curriculum_unit_id.nil?
       detail = allocation_tag.curriculum_unit.name
@@ -176,6 +172,10 @@ class AllocationTag < ActiveRecord::Base
     else
       ''
     end
+  end
+
+  def info
+    self.send(attributes.delete_if {|k, v| v.nil?}.keys.last.gsub(/_id/, '')).try(:info)
   end
 
 end

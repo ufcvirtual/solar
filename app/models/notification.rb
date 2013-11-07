@@ -1,13 +1,13 @@
 class Notification < ActiveRecord::Base
-
   GROUP_PERMISSION, OFFER_PERMISSION, CURRICULUM_UNIT_PERMISSION, COURSE_PERMISSION = true, true, true, true
+
+  scope :active, -> { joins(:schedule).where("schedules.start_date <= ? and schedules.end_date >= ?", Date.today, Date.today) }
 
   belongs_to :schedule
 
   has_many :academic_allocations, as: :academic_tool, dependent: :destroy
   has_many :allocation_tags, through: :academic_allocations
   has_many :groups, through: :allocation_tags
-
   has_many :read_notifications
 
   accepts_nested_attributes_for :schedule, allow_destroy: true
@@ -42,7 +42,11 @@ class Notification < ActiveRecord::Base
   end
 
   def self.of_user(user)
-    joins(:academic_allocations).where(academic_allocations: {allocation_tag_id: user.all_allocation_tags}).uniq
+    active.select("notifications.*, rn.user_id AS read")
+      .joins(:academic_allocations)
+      .joins("LEFT JOIN read_notifications rn ON rn.notification_id = notifications.id AND rn.user_id = #{user.id}")
+      .where(academic_allocations: {allocation_tag_id: user.all_allocation_tags})
+      .order("read DESC, schedules.start_date DESC, schedules.end_date DESC")
   end
 
 end

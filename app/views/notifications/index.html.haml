@@ -1,24 +1,15 @@
-%table.notifications.tb_list
-  - @notifications.each do |notification|
-    %tr.lines{class: notification.read?(current_user) ? "" : "unread", "data-link-show" => notification_path(notification)}
+%table.notifications.tb_list{"data-notifications-count" => @notifications.count}
+  - @notifications.each_with_index do |notification, idx|
+    - tr_class = notification.read?(current_user) ? "read" : "unread"
+    %tr.lines{id: notification.id, class: tr_class, "data-link-show" => notification_path(notification), "data-notification-idx" => idx}
       %td
-        .head
-          .title= raw(truncate notification.title, length: 150)
-          .period= notification.period
+        .title= raw(truncate notification.title, length: 150)
         .description= raw(truncate notification.description, length: 200)
-
-:css
-  table.notifications .unread {
-    background-color: #fefae6 !important;
-  }
-
-  table.notifications tr {
-    cursor: pointer;
-  }
 
 :javascript
   $(function(){
     $('table.notifications tr').click(function(){
+      $(this).removeClass("unread").addClass("read");
       $(this).call_fancybox({href : $(this).data('link-show'), open: true});
-    })
+    });
   });

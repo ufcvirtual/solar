@@ -37,4 +37,8 @@ class Group < ActiveRecord::Base
     false
   end
 
+  def info
+    [offer.course.try(:name), offer.curriculum_unit.try(:name), offer.semester.name, code].compact.join(" - ")
+  end
+
 end

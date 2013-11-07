@@ -26,4 +26,8 @@ class Course < ActiveRecord::Base
     Course.where(name: CurriculumUnit.find_all_by_curriculum_unit_type_id(type).map(&:name))
   end
 
+  def info
+    name
+  end
+
 end

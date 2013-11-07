@@ -2,18 +2,42 @@
   %h1#lightBoxDialogTitle= @notification.title
 
   .block_content
+    / .head
+    /   - @to.each do |to|
+    /     %p
+    /       %b= t(:for)
+    /       = to
     .notification
       = raw @notification.description
 
-  .right_buttons
-    = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
+  .block_buttons
+    .left
+      = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-4'), "prev_notification()", class: "prev"
+    .right
+      = button_to_function t(:close), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+      = link_to_function content_tag(:i, nil, class: 'icon-arrow-right-4'), "next_notification()", class: "next"
 
-:css
-  .show_notification {
-    max-width: 750px;
+:javascript
+  function load_fancy(id) {
+    $("table.notifications tr[id=" + id + "]").call_fancybox({href: "#{notification_path(':id')}".replace(':id', id), open: true});
   }
 
-  .show_notification .block_content {
-    padding-top: 10px;
-    padding-left: 5px;
+  function next_notification() {
+    load_fancy($("table.notifications tr[id=#{@notification.id}]").next().attr("id"));
   }
+
+  function prev_notification() {
+    load_fancy($("table.notifications tr[id=#{@notification.id}]").prev().attr("id"));
+  }
+
+  $(function(){
+    var notification_idx = parseInt($("table.notifications tr[id=#{@notification.id}]").data("notification-idx"));
+    var first = (notification_idx == 0);
+    var last = (notification_idx + 1) == parseInt($("table.notifications").data("notifications-count"));
+
+    if (first)
+      $(".prev").hide();
+
+    if (last)
+      $(".next").hide();
+  });
