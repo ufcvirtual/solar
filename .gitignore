@@ -26,3 +26,4 @@ config/mailer.yml
 config/deploy.rb
 config/facebook.yml
 config/unicorn.rb
+config/im.yml

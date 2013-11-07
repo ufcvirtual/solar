@@ -8,6 +8,24 @@
     <%= stylesheet_link_tag "fancybox" %>
     <%= javascript_include_tag "application" %>
     <%= javascript_tag '$.fx.off = true;' if Rails.env.test? %>
+
+    <!-- Componentes utilizados no IM -->
+    <%= javascript_include_tag "converse/sha1" %>
+    <%= javascript_include_tag "converse/components/strophe/strophe" %>
+    <%= javascript_include_tag "converse/components/strophe.roster/index" %>
+    <%= javascript_include_tag "converse/components/strophe.muc/index" %>
+    <%= javascript_include_tag "converse/components/strophe.vcard/index" %>
+    <%= javascript_include_tag "converse/components/strophe.disco/index" %>
+    <%= javascript_include_tag "converse/components/underscore/underscore" %>
+    <%= javascript_include_tag "converse/components/backbone/backbone" %>
+    <%= javascript_include_tag "converse/components/backbone.localStorage/backbone.localStorage" %>
+    <%= javascript_include_tag "converse/components/tinysort/src/jquery.tinysort" %>
+    <%= javascript_include_tag "converse/components/jed/jed" %>
+    <%= javascript_include_tag "converse/locale/en/LC_MESSAGES/en" %>
+    <%= javascript_include_tag "converse/locale/pt_BR/LC_MESSAGES/pt_BR" %>
+    <%= javascript_include_tag "converse/converse" %>
+    <%= stylesheet_link_tag "converse/converse" %>
+
     <!--[if lte IE 9]>
       <%= stylesheet_link_tag "fonts/fonts-ie" %>
     <![endif]-->
@@ -255,5 +273,42 @@
       </div>
 <%#= render '/portlets/chat' %>
     </div>
+
+<!-- IM - Bate-Papo -->
+    <div id="chatpanel">
+      <div id="collective-xmpp-chat-data"></div>
+        <div id="toggle-controlbox" >
+            <a href="#" class="chat toggle-online-users">
+                <strong class="conn-feedback">  Bate-Papo  </strong> <strong style="display: none" id="online-count">(0)</strong>
+            </a>
+      </div>
+    </div>
+
   </body>
+
+<!-- Inicialização do IM -->
+  <script type="text/javascript">
+
+    xmpp_id = "<%= current_user.id %>";
+    xmpp_username = "<%= current_user.username %>";
+    xmpp_cpf = "<%= current_user.cpf %>";
+    xmpp_registered = "<%= current_user.registered %>";
+    xmpp_ip = "<%= @ip %>";
+    xmpp_dominio = "<%= @dominio %>";
+    number_chatbox = 0;
+
+    converse.initialize({
+        prebind: false,
+        auto_list_rooms: false,
+        auto_subscribe: false,
+        bosh_service_url: 'http://'+ xmpp_ip +':7070/http-bind/',
+        hide_muc_server: false,
+        i18n: locales["pt_BR"], // Refer to ./locale/locales.js to see which locales are supported
+        allow_contact_requests: false,
+        show_only_online_users: true,
+        show_controlbox_by_default: true,
+        xhr_user_search: false
+    });
+
+</script>
 </html>

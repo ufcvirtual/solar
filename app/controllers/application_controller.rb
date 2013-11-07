@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :authenticate_user!, except: :verify_cpf # devise
-  before_filter :set_locale, :start_user_session, :application_context, :current_menu, :another_level_breadcrumb
+  before_filter :register_user, :set_locale, :start_user_session, :application_context, :current_menu, :another_level_breadcrumb
 
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
@@ -178,6 +178,24 @@ class ApplicationController < ActionController::Base
 
     def find_tab_by_context(context_id)
       user_session[:tabs][:opened].each { |tab| return tab[0] if (tab[1][:url][:context].to_i == context_id.to_i) }
+    end
+
+    def register_user
+        if current_user 
+            conf = YAML::load_file(File.join("config/",'im.yml'))
+            @dominio = conf["dominio"]
+            @ip = conf["ip"]
+            unless current_user.registered
+                jid = Jabber::JID::new("#{current_user.username}#{@dominio}")
+                xmpp_client = Jabber::Client.new(jid)
+                xmpp_client.connect("#{@ip}")
+                sha1 = Digest::SHA1.hexdigest("#{current_user.cpf.slice(5,12)}#{current_user.username}#{current_user.id}")
+                xmpp_client.register(sha1, 'name' => "#{current_user.name}", 'email' => "#{current_user.email}")
+                xmpp_client.close
+                current_user.registered = true
+                current_user.save
+            end
+        end
     end
 
 end

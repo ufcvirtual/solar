@@ -1,5 +1,5 @@
 source "http://rubygems.org"
-#Teste
+
 gem "rails", "~> 3.2.13"
 gem "rack", "~> 1.4.5"
 gem "rake", "~> 10.0.4"
@@ -28,6 +28,8 @@ gem "haml-rails", "~> 0.4", :group => :development
 gem "ckeditor", "~> 4.0.6"
 
 gem "fullcalendar-rails", "~> 1.6.4.0"
+
+gem "xmpp4r", "~> 0.5.5" 
 
 # platform adicionado para evitar que o unicorn tente ser executado no windows
 gem "unicorn", "~> 4.6.2", :platform => :ruby
