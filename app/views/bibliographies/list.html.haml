@@ -28,7 +28,7 @@
     %table.tb_list
       %thead
         %tr.lines
-          %th.no_sort{style: 'text-align:center; width: 25px;'}= check_box_tag :all_bibliographies, false, false, :"data-children-names" => "ckb_bibliography", class: "all_bibliographies"
+          %th.center.no_sort{style: 'width: 25px;'}= check_box_tag :all_bibliographies, false, false, :"data-children-names" => "ckb_bibliography", class: "all_bibliographies"
           %th{align: "left"}=t(".item")
           %th{align: "center", style: "width: 26%;"}=t(".type")
       %tbody
@@ -45,7 +45,7 @@
   - else
     .block_content_text.block_content_text_list.text_none= t(".no_data")
 
-= javascript_include_tag "bibliographies", "tooltip", "groups_tags", "tablesorter"
+= javascript_include_tag "tablesorter", "bibliographies", "tooltip", "groups_tags"
 
 :javascript
 
