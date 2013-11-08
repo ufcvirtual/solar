@@ -157,7 +157,7 @@
                 $.proxy(function (iq) {
                     // Successful callback
                     $vcard = $(iq).find('vCard');
-                    var fullname = $vcard.find('FN').text(),
+                    var //fullname = $vcard.find('FN').text(),
                         img = $vcard.find('BINVAL').text(),
                         img_type = $vcard.find('TYPE').text(),
                         url = $vcard.find('URL').text();
@@ -166,7 +166,7 @@
                         var rosteritem = converse.roster.get(jid);
                         if (rosteritem) {
                             rosteritem.save({
-                                'fullname': fullname || jid,
+                                'fullname': rosteritem.attributes.fullname,
                                 'image_type': img_type,
                                 'image': img,
                                 'url': url,
@@ -499,7 +499,7 @@
                     username = msg_dict.fullname;
                 } else  {
                     template = this.message_template;
-                    username = sender === 'me' && 'eu' || msg_dict.fullname.split('@')[0];
+                    username = sender === 'me' && 'eu' || msg_dict.fullname;
                 }
                 $el.find('div.chat-event').remove();
                 $el.append(
@@ -758,7 +758,7 @@
                 '<div class="chat-head chat-head-chatbox">' +
                     '<a class="close-chatbox-button icon-close"></a>' +
                     '<a href="#"  class="user">' +
-                        '<div class="chat-title"> {{ user_id }} </div>' +
+                        '<div class="chat-title"> {{ fullname }} </div>' +
 
                     '</a>' +
                     '<p class="user-custom-message"><p/>' +
@@ -2123,7 +2123,7 @@
 
             template: _.template(
                 '<a class="open-chat" title="'+__('Click to chat with this contact')+'" href="#">'+
-                    '<span class="icon-{{ chat_status }}" title="{{ status_desc }}"></span>{{ user_id }}'+
+                    '<span class="icon-{{ chat_status }}" title="{{ status_desc }}"></span>{{ fullname }}'+
                 '</a>'
                 // +'<a class="remove-xmpp-contact icon-remove" title="'+__('Click to remove this contact')+'" href="#"></a>'
                 ),
