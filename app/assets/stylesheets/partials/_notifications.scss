@@ -19,3 +19,11 @@ table.notifications {
     padding-left: 5px;
   }
 }
+
+.show_notification{
+  #lightBoxDialogTitle{
+    .prev, .next{
+      float: right;  
+    }
+  }
+}

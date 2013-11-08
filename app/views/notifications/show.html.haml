@@ -1,5 +1,8 @@
 .show_notification
-  %h1#lightBoxDialogTitle= @notification.title
+  #lightBoxDialogTitle
+    %h1= @notification.title
+    = link_to_function content_tag(:i, nil, class: 'icon-arrow-right-4'), "next_notification()", class: "next"
+    = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-4'), "prev_notification()", class: "prev"
 
   .block_content
     / .head
@@ -11,11 +14,9 @@
       = raw @notification.description
 
   .block_buttons
-    .left
-      = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-4'), "prev_notification()", class: "prev"
     .right
       = button_to_function t(:close), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
-      = link_to_function content_tag(:i, nil, class: 'icon-arrow-right-4'), "next_notification()", class: "next"
+      
 
 :javascript
   function load_fancy(id) {
