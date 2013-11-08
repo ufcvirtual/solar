@@ -3,10 +3,10 @@
 .show_event
   %h1#lightBoxDialogTitle= t(".event_details")
 
-  .form-inputs.block_content
+  .form-inputs.block_content.show
     .input
       = label_tag t(".title"), nil, class: "form_label"
-      %span.label_info= label_tag @schedule_event.title
+      %span.label_info= @schedule_event.title
 
     - types = {:"#{t(:presential_meeting, scope: [:schedule_events, :types])}" => Presential_Meeting, 
       :"#{t(:presential_test, scope: [:schedule_events, :types])}" => Presential_Test, 
@@ -14,30 +14,27 @@
       :"#{t(:holiday, scope: [:schedule_events, :types])}" => Holiday}
     .input
       = label_tag t(".type_event"), nil, class: "form_label"
-      %span.label_info= label_tag types.index(@schedule_event.type_event), nil, class: "label_right"
+      %span.label_info= types.index(@schedule_event.type_event)
 
     .input{style: show_fields ? "" : "display: none"}
       = label_tag t(".place"), nil, class: "form_label"
-      %span.label_info= label_tag @schedule_event.place
+      %span.label_info= @schedule_event.place
 
     .input
       = label_tag t(".description"), nil, class: "form_label"
-      %span.label_info= label_tag @schedule_event.description
+      %span.label_info= @schedule_event.description
 
     .input
       = label_tag t(".start_date"), nil, class: "form_label"
-      %span.label_info= label_tag l(@schedule_event.schedule.start_date.to_date, format: :datepicker)
+      %span.label_info= l(@schedule_event.schedule.start_date.to_date, format: :datepicker)
     .input
       = label_tag t(".end_date"), nil, class: "form_label"
-      %span.label_info= label_tag l(@schedule_event.schedule.end_date.to_date, format: :datepicker)
+      %span.label_info= l(@schedule_event.schedule.end_date.to_date, format: :datepicker)
 
     %div{style: "#{show_fields ? "" : "display: none"}"}
       .input
-        = label_tag t(".start_hour"), nil, class: "form_label"
-        %span.label_info= label_tag @schedule_event.start_hour
-      .input
-        = label_tag t(".end_hour"), nil, class: "form_label"
-        %span.label_info= label_tag @schedule_event.end_hour
+        = label_tag t(".time"), nil, class: "form_label"
+        %span.label_info= [@schedule_event.start_hour, @schedule_event.end_hour].join(t(".to"))
       
     .schedule_dates
       .left

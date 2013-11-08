@@ -1846,8 +1846,8 @@
       empty_group: Turma vazia
       title: Título
       description: Descrição
-      start_hour: Hora de início
-      end_hour: Hora de término
+      time: Horário
+      to: " às "
       start_date: Início
       end_date: Término
       defined_participants: Participantes definidos
@@ -1922,8 +1922,8 @@
       type_event: Tipo
       place: Local
       description: Descrição
-      start_hour: Hora de início
-      end_hour: Hora de término
+      time: Horário
+      to: " às "
       groups: Turmas
       start_date: Início
       end_date: Término
@@ -1936,4 +1936,10 @@
       discussions: "Fórum: "
       schedule_events: "Evento: "
       all_day: dia todo
+      groups: Turmas
     close: Fechar
+    calendar:
+      new_chat: Novo Chat
+      new_discussion: Novo Fórum
+      new_assignment: Novo Trabalho
+      new_event: Novo Evento

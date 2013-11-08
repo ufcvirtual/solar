@@ -9,3 +9,6 @@ $color_main_text: #dd8b14;
 $color_contrast: #0F0272;
 $color_contrast_light: adjust_color($color_contrast, $lightness: 75%);
 $color_contrast_text: adjust_color($color_contrast, $lightness: -10%);
+
+$background_grey: #EFEFEF;
+$light_grey: #A3A3A3;

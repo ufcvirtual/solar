@@ -5454,6 +5454,7 @@ function listView(element, calendar) {
               var oldtm = tm;
               var olddt = dt;
               if (list_events[evt]) {
+
                 dt = formatDate(list_events[evt].start, 'dddd, MMM d, yyyy');
                 if(list_events[evt].allDay == true)
                   tm = "dia todo";
@@ -5463,6 +5464,7 @@ function listView(element, calendar) {
                   tm = start + " - " + end;
                 }
 
+                // gera div do dia (data)
                 if (dt !== olddt) {
                   first_day = (evt == 0 ? true : false);
                   day = $("<div class='day"+(first_day ? ' today' : '')+"'></div>");
@@ -5471,13 +5473,16 @@ function listView(element, calendar) {
                   day.appendTo(html);
                 }
                 
-                if(tm !== oldtm){
+                // gera div dos horários
+                if(tm !== oldtm || dt != olddt){
                   if(evt != 0 && olddt == dt)
                     $("<div class='line "+(first_day ? 'today' : '')+"'></div>").appendTo(day_events);
                   time = $("<div class='time'> <h2>" + tm + "</h2></div>");
+                  // adiciona horário à data
                   time.appendTo(day_events);
                 }
 
+                // gera div do evento
                 eventelem = $("<div class='event"+(first_day ? ' today' : '')+"' data-dropdown='#dropdown_details_" + list_events[evt].type + "_" + list_events[evt].id + "' >");
 
                 eventelem.append(
@@ -5485,6 +5490,7 @@ function listView(element, calendar) {
                     +"'>" 
                     + list_events[evt].title + "</div>");
 
+                // adiciona evento ao horário certo
                 eventelem.appendTo(time);
 
                 eventElementHandlers(list_events[evt], eventelem);

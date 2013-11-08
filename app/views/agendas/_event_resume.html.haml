@@ -9,19 +9,31 @@
 
   %h2= truncate((event.respond_to?(:enunciation) ? event.enunciation : event.description) || "", length: 200, omission: '...')
 
+  .input.group_label.invisible
+    = label_tag I18n.t("agendas.event_resume.groups")
+    %span.groups
+      - event.groups.map(&:code).each do |group_code|
+        %span.collection_check_boxes= group_code
+
   .line
 
   .btn-group
-    // colocar as permissões. se não for editor, mostra só o "show_event"
     .left
-      = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_event', :"data-link-delete" => polymorphic_path([event], allocation_tags_ids: allocation_tags_ids), :'data-tooltip' => "deletar", id: event.id
+      - if can? :destroy, model_name, on: allocation_tags_ids
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_event', :"data-link-delete" => polymorphic_path([event], allocation_tags_ids: allocation_tags_ids), :'data-tooltip' => "deletar", id: event.id
     .right
-      = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_polymorphic_path([event], allocation_tags_ids: allocation_tags_ids, calendar: true), class: 'btn edit_event', :'data-tooltip' => "editar", id: event.id
-      = link_to (content_tag(:i, nil, class: 'icon-eye')), polymorphic_path([event], allocation_tags_ids: allocation_tags_ids), class: 'btn btn_main show_event', :'data-tooltip' => "visualizar", id: event.id
+      - if can? :edit, model_name, on: allocation_tags_ids
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_polymorphic_path([event], allocation_tags_ids: allocation_tags_ids, calendar: true), class: 'btn edit_event', :'data-tooltip' => "editar", id: event.id
+      - if can? :show, model_name, on: allocation_tags_ids
+        = link_to (content_tag(:i, nil, class: 'icon-eye')), polymorphic_path([event], allocation_tags_ids: allocation_tags_ids), class: 'btn btn_main show_event', :'data-tooltip' => "visualizar", id: event.id
 
 :javascript
 
   $(function(){
+
+    if ($("#radio_option_group").prop("checked"))
+      $(".group_label").show();
+
     $(".delete_event").click(function(){
       if (!confirm("#{I18n.t(:message_confirm)}"))
         return false;

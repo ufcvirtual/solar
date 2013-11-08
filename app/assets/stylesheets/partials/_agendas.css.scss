@@ -1,0 +1,260 @@
+/* Calendário */
+
+#calendar .block_wrapper{
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.list_events{
+  font-family: 'PT Sans', sans-serif;
+  font-size: 10pt;
+}
+
+.list_events h3{
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 3px;
+}
+
+.list_events .day h3{
+  background-color: $background_grey;
+  color: $light_grey;
+}
+
+.list_events .day_events{
+  border: solid 1px $light_grey;
+  padding: 3px;
+}
+
+.list_events .day.today{
+  border: solid 1px $color_contrast;
+  background-color: $color_contrast_light;
+  h3{
+    background-color: $color_contrast_light;
+    border-bottom: solid 1px $color_contrast;
+    color: $color_contrast;
+  }
+}
+
+.list_events .day_events.today{
+  border: none;
+}
+
+.list_events .day_events.today{
+  background-color: $color_contrast_light;
+}
+
+.list_events .line{
+  border-bottom: dashed 1px $light_grey;
+}
+
+.list_events .line.today{
+  border-bottom: dashed 1px $color_contrast;
+}
+
+.list_events .time h2{
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.day_events .event{
+  margin-left: 80px;
+  top: -16px;
+  position: relative;
+  margin-top: 4px;
+}
+
+.fc-event.assignment{
+  background-color: #CCCCFF; 
+  border-color: #CCCCFF;
+}
+.fc-event.chat{
+  background-color: #A7C1F0; 
+  border-color: #A7C1F0;
+}
+.fc-event.discussion{
+  background-color: #CAFCCC; 
+  border-color: #CAFCCC;
+}
+.fc-event.presential_test{
+  background-color: #F5D5EF; 
+  border-color: #F5D5EF;
+}
+.fc-event.presential_meeting{
+  background-color: #FFD9E0; 
+  border-color: #FFD9E0;
+}
+.fc-event.recess_holiday{
+  background-color: #E3E3E3; 
+  border-color: #E3E3E3;
+}
+.fc-event.other{
+  background-color: #FCEBCA; 
+  border-color: #FCEBCA;
+}
+
+.fc-event.fc-event-title{
+  color: black;
+}
+
+.list_events .fc-event.fc-event-title{
+  font-size: 10pt;
+}
+
+.calendar_schedules .legend{
+  font-size: 11pt;
+  text-align: center;
+  label{
+    color: $text_grey;
+    font-size: 10pt;
+    width: auto;
+    text-align: center;
+  }
+}
+
+/* Dropdown */
+
+#calendar .dropdown-tip{
+  width: 435px;
+  .dropdown-panel{
+      max-width: 417px;
+      margin-bottom: 10px;
+    }
+  .event_details_dropdown{
+    h1, h2, h3, .group_label label{
+      font-family: 'PT Sans', sans-serif;
+      background-color: white;
+      border-bottom: none;
+    }
+    h1{
+      font-weight: bold;
+      text-align: left;
+      font-size: 11pt;
+    }
+    h2, h3, .group_label label{
+      color: $text_grey;
+      font-size: 10pt;
+      font-weight: normal;
+    }
+    h2{
+      margin: 6px;
+    }
+    .line{
+      border-bottom: solid 1px $background_grey;
+      padding-bottom: 5px;
+      margin-bottom: 5px;
+    }
+    .btn-group .left{
+      float: left;
+      margin-right: 316px;
+    }
+    .btn-group .right{
+      float: right;
+    }
+    .group_label label{
+      width: 40px;
+      vertical-align: top;
+      padding-top: 5px;
+    }
+  }
+}
+
+
+.label_info{
+  color: black;
+  margin-left: 5px;
+  display: inline-block;
+  font-size: 10pt;
+  width: 300px;
+}
+
+.show label{
+  vertical-align: top;
+}
+
+.label_info.files{
+  text-decoration: underline;
+}
+
+.show .group_label label{
+  margin-top: 5px;
+}
+
+/* Lista atual para interagentes */
+
+.schedule_link_more {
+  font-size: 11px;
+  margin-right: 2px;
+  float: right;
+  color: #4b6380;
+}
+
+.agenda_left {
+  float: left;
+  min-height: 65px;
+  width: 160px;
+  font-size: 11pt;
+  background-color: $color_main_light;
+}
+
+.agenda_right {
+  white-space: normal;
+  min-height: 60px;
+  overflow: hidden;
+  font-weight: normal;
+  font-size: 10pt;
+  padding-top: 10px;
+  text-align: justify;
+}
+
+.agenda_right p {
+  padding: 5px 5px 5px 10px;
+}
+
+.agenda_right .title {
+  padding-left: 10px;
+  font-weight: bold;
+  font-size: 10pt;
+}
+
+.agenda_left_date {
+  margin-top: 7px;
+  text-align: center;
+}
+
+.agenda_left_interval, .agenda_left_day, .agenda_left_day_and_month {
+  font-size: 12pt;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.block_title_icon.discussions {
+  display: inline-block;
+  background: url('/assets/images/schedule/meeting_attendance_16x16.png') no-repeat;
+}
+
+.block_title_icon.lesson,
+.block_title_icon.assignments,
+.block_title_icon.schedule_events {
+  display: inline-block;
+  background: url('/assets/images/schedule/assignments_16x16.png') no-repeat;
+}
+
+.block_title_icon.chat {
+  display: inline-block;
+  background: url('/assets/images/schedule/chat_16x16.png') no-repeat;
+}
+
+.block_title_icon.meeting_attendance {
+  display: inline-block;
+  background: url('/assets/images/schedule/meeting_attendance_16x16.png') no-repeat;
+}
+
+.agenda_ajax {
+  font-size: 9pt;
+  color: #4B6380;
+}
+
+.agenda_left_month_year .year_left {
+  margin-right: 30px;
+}

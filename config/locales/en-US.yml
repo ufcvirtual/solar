@@ -1688,8 +1688,8 @@
       empty_group: Empty group
       title: Title
       description: Description
-      start_hour: Start hour
-      end_hour: End hour
+      time: Time
+      to: " to "
       start_date: Start date
       end_date: End date
       defined_participants: Defined participants
@@ -1763,8 +1763,8 @@
       type_event: Type
       place: Place
       description: Description
-      start_hour: Start hour
-      end_hour: End hour
+      time: Time
+      to: " to "  
       groups: Groups
       start_date: Start
       end_date: End
@@ -1777,4 +1777,10 @@
       discussions: "Discussion: "
       schedule_events: "Event: "
       all_day: all day
+      groups: Groups
     close: Close
+    calendar:
+      new_chat: New Chat
+      new_discussion: New Discussion
+      new_assignment: New Assignment
+      new_event: New Event
