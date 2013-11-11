@@ -12,8 +12,8 @@
       bibliography: "%d %b, %Y"
     day_names: [Domingo, Segunda, Terça, Quarta, Quinta, Sexta, Sábado]
     abbr_day_names: [Dom, Seg, Ter, Qua, Qui, Sex, Sáb]
-    month_names: [~, Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro]
-    abbr_month_names: [~, Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez]
+    month_names: [Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro]
+    abbr_month_names: [Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez]
     order: 
         - :day
         - :month
@@ -1876,7 +1876,6 @@
       filter_selected: "Visualizar: "
 
   #Autocomplete
-
   autocomplete:
     no_options: Não há opções para os valores selecionados
     all_options: Todas as opções
@@ -1890,14 +1889,16 @@
   #FullCalendar
   fullcalendar:
     today: hoje
+    future_events: Lista de eventos futuros
     titleFormat:
       month: 'MMMM yyyy'
-      week: "d[ MMM yyyy]{ '&#8212;'d MMM yyyy}"
+      week: 'd MMM, yyyy {- d MMM, yyyy}'
       day: 'dddd, d MMM, yyyy'
     columnFormat:
       month: 'ddd'
       week: 'ddd d/M'
       day: 'dddd d/M'
+    listFormat: 'ddddd, d de MMMMM, yyyy'
 
   #Eventos da agenda
   schedule_events:
@@ -1943,3 +1944,12 @@
       new_discussion: Novo Fórum
       new_assignment: Novo Trabalho
       new_event: Novo Evento
+      chat: Chat
+      discussion: Fórum
+      assignment: Trabalho
+      presential_meeting: Encontro Presencial
+      presential_test: Prova Presencial
+      recess_or_holiday: Recesso ou Feriado
+      other: Outros
+      legend: Legenda
+      all_day: dia todo

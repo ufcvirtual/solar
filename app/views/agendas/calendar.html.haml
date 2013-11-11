@@ -1,30 +1,44 @@
-
-
 = hidden_field_tag :allocation_tags_ids, params[:allocation_tags_ids]
 = hidden_field_tag :all_groups_ids, params[:all_groups_ids]
+
+= hidden_field_tag :current_locale, I18n.locale
 
 .calendar_schedules{:"data-link-list" => calendar_agendas_path(allocation_tags_ids: params[:allocation_tags_ids], all_groups_ids: params[:all_groups_ids])}
 
   #calendar{:"data-edition" => "true", :"data-ids" => "chat,discussion,assignment,event"}
 
-
   .legend
-    = label_tag "Legenda:"
-    %span.fc-event.fc-event-title.assignment="Trabalho"
-    %span.fc-event.fc-event-title.chat="Chat"
-    %span.fc-event.fc-event-title.discussion="Fórum"
-    %span.fc-event.fc-event-title.presential_test="Prova presencial"
-    %span.fc-event.fc-event-title.presential_meeting="Encontro presencial"
-    %span.fc-event.fc-event-title.recess_holiday="Recesso ou feriado"
-    %span.fc-event.fc-event-title.other="Outros"
-  
+    = label_tag t(".legend")
+    %span.fc-event.fc-event-title.assignment=t(".assignment")
+    %span.fc-event.fc-event-title.chat=t(".chat")
+    %span.fc-event.fc-event-title.discussion=t(".discussion")
+    %span.fc-event.fc-event-title.presential_test=t(".presential_test")
+    %span.fc-event.fc-event-title.presential_meeting=t(".presential_meeting")
+    %span.fc-event.fc-event-title.recess_holiday=t(".recess_or_holiday")
+    %span.fc-event.fc-event-title.other=t(".other")
+
 = stylesheet_link_tag "fullcalendar.css"
+
+:javascript
+  var monthNames = '#{t("date.month_names").join(",")}'.split(",");
+  var monthNamesShort =  '#{t("date.abbr_month_names").join(",")}'.split(",");
+  var dayNames = '#{t("date.day_names").join(",")}'.split(",");
+  var dayNamesShort = '#{t("date.abbr_day_names").join(",")}'.split(",");
+  var allDay = '#{t(".all_day")}';
+  var today = '#{t("fullcalendar.today")}';
+  var monthTitle = '#{t("fullcalendar.titleFormat.month")}';
+  var weekTitle = '#{t("fullcalendar.titleFormat.week")}';
+  var dayTitle = '#{t("fullcalendar.titleFormat.day")}';
+  var monthColumn = '#{t("fullcalendar.columnFormat.month")}';
+  var weekColumn = '#{t("fullcalendar.columnFormat.week")}';
+  var dayColumn = '#{t("fullcalendar.columnFormat.day")}';
+  var futureEvents = '#{t("fullcalendar.future_events")}';
+  var listFormat = '#{t("fullcalendar.listFormat")}';
+
 = javascript_include_tag "fullcalendar", "calendar"
 
 :javascript
-
   $(function(){
-    // var dayNames = "<%= I18n.t(:month_names, scope: [:date]) %>";
     $("#chat")
       .html("#{t(".new_chat")}")
       .call_fancybox({href: "#{new_chat_room_path(allocation_tags_ids: [params[:allocation_tags_ids]].flatten, calendar: true)}"});
@@ -38,4 +52,3 @@
       .html("#{t(".new_event")}")
       .call_fancybox({href: "#{new_schedule_event_path(allocation_tags_ids: [params[:allocation_tags_ids]].flatten, calendar: true)}"});
   });
-  
