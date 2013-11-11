@@ -197,6 +197,7 @@
             var $button, $form;
             if (status === Strophe.Status.CONNECTED) {
                 converse.log('Connected');
+                document.getElementById("chatpanel").style.display = "block";
                 converse.onConnected();
             } else if (status === Strophe.Status.DISCONNECTED) {
                 $form = $('#converse-login');
@@ -2472,11 +2473,11 @@
             initialize: function () {
                 this.model.on("add", function (item) {
                     this.addRosterItemView(item).render(item);
-                    if (!item.get('vcard_updated')) {
-                        // This will update the vcard, which triggers a change
-                        // request which will rerender the roster item.
-                        converse.getVCard(item.get('jid'));
-                    }
+                    // if (!item.get('vcard_updated')) {
+                    //     // This will update the vcard, which triggers a change
+                    //     // request which will rerender the roster item.
+                    //     converse.getVCard(item.get('jid'));
+                    // }
                 }, this);
 
                 this.model.on('change', function (item) {
