@@ -1931,13 +1931,16 @@
       event_details: Detalhes do evento
   
   agendas:
-    event_resume:
+    dropdown_content:
       chat_rooms: "Chat: "
       assignments: "Trabalho: "
       discussions: "Fórum: "
       schedule_events: "Evento: "
       all_day: dia todo
       groups: Turmas
+      remove: Remover
+      edit: Editar
+      details: Ver detalhes
     close: Fechar
     calendar:
       new_chat: Novo Chat

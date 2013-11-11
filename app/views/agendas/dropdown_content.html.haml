@@ -1,0 +1,62 @@
+.event_details_dropdown
+  %h1
+    = t ".#{@model_name.to_s.tableize}"
+    = @event.respond_to?(:name) ? @event.name : @event.title
+  - recurring = (@event.respond_to?(:start_hour) and @event.respond_to?(:end_hour) and not(@event.start_hour.blank? or @event.end_hour.blank?))
+  %h3= (recurring ? "#{@event.start_hour} - #{@event.end_hour}" : t(".all_day"))
+  - same_day = (@event.schedule.start_date == @event.schedule.end_date)
+  %h3= (same_day ? l(@event.schedule.start_date, format: :normal) : [l(@event.schedule.start_date, format: :normal), l(@event.schedule.end_date, format: :normal)].join(" - "))
+
+  %h2= truncate((@event.respond_to?(:enunciation) ? @event.enunciation : @event.description) || "", length: 200, omission: '...')
+
+  .input.group_label.invisible
+    = label_tag t(".groups")
+    %span.groups
+      - @event.groups.map(&:code).each do |group_code|
+        %span.collection_check_boxes= group_code
+
+  .line
+
+  .btn-group
+    .left
+      - if can? :destroy, @model_name, on: @allocation_tags_ids
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_caution delete_event', :"data-link-delete" => polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t(".remove"), id: @event.id
+    .right
+      - if can? :edit, @model_name, on: @allocation_tags_ids
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids, calendar: true), class: 'btn edit_event', :'data-tooltip' => t(".edit"), id: @event.id
+      - if can? :show, @model_name, on: @allocation_tags_ids
+        = link_to (content_tag(:i, nil, class: 'icon-eye')), polymorphic_path([@event], allocation_tags_ids: @allocation_tags_ids), class: 'btn btn_main show_event', :'data-tooltip' => t(".details"), id: @event.id
+
+= javascript_include_tag "tooltip"
+
+:javascript
+
+  $(function(){
+
+    if ($("#radio_option_group").prop("checked"))
+      $(".group_label").show();
+
+    $(".delete_event").click(function(){
+      if (!confirm("#{I18n.t(:message_confirm)}"))
+        return false;
+
+      $.delete($(this).data('link-delete'), function(data){
+        flash_message(data.notice, 'notice');
+        $.get($(".calendar_schedules").data("link-list"), function(data){
+            $(".calendar_schedules").replaceWith(data);
+        });
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+      })
+    });
+
+    $(".edit_event").call_fancybox();
+    $(".show_event").call_fancybox({
+      autoDimensions: false,
+      maxWidth: 402,
+      maxHeight: 500
+    });
+  });
+  

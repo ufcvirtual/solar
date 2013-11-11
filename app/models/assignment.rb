@@ -1,8 +1,6 @@
-class Assignment < ActiveRecord::Base
+class Assignment < Event
 
   GROUP_PERMISSION = true
-
-  include Event
 
   belongs_to :schedule
 

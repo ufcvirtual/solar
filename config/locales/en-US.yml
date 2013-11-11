@@ -1775,13 +1775,16 @@
       event_details: Event's details
     
   agendas:
-    event_resume:
+    dropdown_content:
       chat_rooms: "Chat: "
       assignments: "Assignment: "
       discussions: "Discussion: "
       schedule_events: "Event: "
       all_day: all day
       groups: Groups
+      remove: Remove
+      edit: Edit
+      details: See Details
     close: Close
     calendar:
       new_chat: New Chat

@@ -976,7 +976,8 @@ function EventManager(options, _sources) {
                 var end_date = new Date(event.end);
                 var start_hour = event.start_hour.split(":");
                 var end_hour = event.end_hour.split(":");
-                while(start_date <= end_date){
+                // compara as datas sem considerar o horário
+                while(start_date.getDate() <= end_date.getDate() && start_date.getMonth() <= end_date.getMonth() && start_date.getYear() <= end_date.getYear()){
                   // cria novos eventos
                   var new_event = { 
                     "id": event.id,

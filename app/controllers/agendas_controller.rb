@@ -1,7 +1,7 @@
 class AgendasController < ApplicationController
   before_filter :prepare_for_group_selection, only: :list
 
-  layout false, only: [:calendar]
+  layout false, only: [:calendar, :dropdown_content]
 
   def index
      # se não estiver em uma uc específica, recupera as allocations tags ativadas do usuário
@@ -26,26 +26,18 @@ class AgendasController < ApplicationController
     @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? [active_tab[:url][:allocation_tag_id]] : params[:allocation_tags_ids].split(" "))
     authorize! :calendar, Agenda, on: @allocation_tags_ids
 
-    unless params.include?("list")
-      @assignments = Assignment.scoped.between(params['start'], params['end'], @allocation_tags_ids).uniq
-      @chats = ChatRoom.scoped.between(params['start'], params['end'], @allocation_tags_ids).uniq
-      @discussions = Discussion.scoped.between(params['start'], params['end'], @allocation_tags_ids).uniq
-      @schedules_events = ScheduleEvent.scoped.between(params['start'], params['end'], @allocation_tags_ids).uniq
-    else
-      @assignments = Assignment.scoped.after(Date.current, @allocation_tags_ids).uniq
-      @chats = ChatRoom.scoped.after(Date.current, @allocation_tags_ids).uniq
-      @discussions = Discussion.scoped.after(Date.current, @allocation_tags_ids).uniq
-      @schedules_events = ScheduleEvent.scoped.after(Date.current, @allocation_tags_ids).uniq
-    end
-
-    @events = (@assignments + @chats + @discussions + @schedules_events).map(&:schedule_json)
+    events = (params.include?("list") ? 
+      Event.descendants.map{ |event| event.scoped.after(Date.current, @allocation_tags_ids) }.uniq : 
+      Event.descendants.map{ |event| event.scoped.between(params['start'], params['end'], @allocation_tags_ids) }.uniq )
+    @events = [events].flatten.map(&:schedule_json).uniq
 
     render json: @events
   end
 
   def dropdown_content
-    model_name = params[:type].constantize
-    render partial: "event_resume", locals: {event: model_name.find(params[:id]), model_name: model_name, allocation_tags_ids: params[:allocation_tags_ids].split(" ")}
+    @model_name = params[:type].constantize
+    @event = @model_name.find(params[:id])
+    @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
   end
 
 end
