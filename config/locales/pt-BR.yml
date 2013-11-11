@@ -1529,6 +1529,8 @@
 
   email: Email
   cpf: "CPF" 
+  active: Ativo
+  blocked: Bloqueado  
   administrations:
     close: Fechar
     users:
@@ -1537,7 +1539,7 @@
       details: "Informações detalhadas"
       allocations: "Alocações"
       last_accessed: "Último acesso"
-      edit: Editar
+      edit: Editar      
       change_password: Alterar senha
       message_not_found: "Usuário não encontrado"
     informations:

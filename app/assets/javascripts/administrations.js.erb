@@ -11,8 +11,6 @@ $(function() {
     }
   });
 
-  //$(".btn_edit_user").call_fancybox(); 
-
   $(".btn_info_user_administrations").click(function() {
     var url = $(this).data('link-edit');
     $(this).call_fancybox({href : url, open: true});
@@ -27,14 +25,60 @@ $(function() {
     $(this).call_fancybox();
   });
 
-  $(".btn_manage_allocation").click(function() {
-    $(obj).closest('tr').addClass('active');
-    $.get($(obj).attr('edit-link'), function(data) { $(obj).closest('tr').html(data); });
-  });
-
-  function manage_cancel(obj) {
-    $(obj).closest('tr').removeClass('active');
-    $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
-  }
-
 });
+
+
+function manage_allocation(obj) {
+  $(obj).closest('tr').addClass('active');
+  $.get($(obj).attr('edit-link'), function(data) { $(obj).closest('tr').html(data); });
+};
+
+function cancel_allocation(obj) {
+  $(obj).closest('tr').removeClass('active');
+  $.get($(obj).attr('show-link'), function(data) { $(obj).closest('.allocations_user').html(data); });
+}
+
+function update_allocation(obj) {
+  var url = $(obj).attr('save-link');
+
+  $.ajax({
+    type: 'PUT',
+    url: url,
+    data: {
+      "id": $(obj).attr('allocation-id'),
+      "status": $('#status_id option:selected', $(obj).closest('tr')).val()
+    },
+    success: function(data, textStatus, jqXHR) {
+      $(obj).closest('tr').removeClass('active');
+      $.get($(obj).attr('show-link'), function(data) { $(obj).closest('.allocations_user').html(data); });
+    }
+  })
+}
+
+function edit_user(obj) {
+  $(obj).closest('tr').addClass('active');
+  $.get($(obj).attr('edit-link'), function(data) { $(obj).closest('tr').html(data); });
+};
+
+function cancel(obj) {
+  $(obj).closest('tr').removeClass('active');
+  $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
+}
+
+function update_user(obj) {
+  var url = $(obj).attr('save-link');
+
+  $.ajax({
+    type: 'PUT',
+    url: url,
+    data: {
+      "name": $(obj).closest('tr').find('input[id=name]').val(),
+      "email": $(obj).closest('tr').find('input[id=email]').val(),
+      "status": $('#status_id option:selected', $(obj).closest('tr')).val()
+    },
+    success: function(data, textStatus, jqXHR) {
+      $(obj).closest('tr').removeClass('active');
+      $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
+    }
+  })
+}

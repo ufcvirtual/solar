@@ -30,12 +30,15 @@ Solar::Application.routes.draw do
   resources :administrations do
     member do
       put "change_password"
+      put "update_allocation"
+      put "update_user"
     end
     collection do
-      get :manage_user
+      get :manage_user 
       get :search_users
-      get :edit_user
-      get :edit_allocation
+      get "user/:id/show_user", to: :show_user, as: :show_user
+      get "user/:id/edit", to: :edit_user, as: :edit_user
+      get "allocation/:id/edit", to: :edit_allocation, as: :edit_allocation
       get :allocations_user
       get :change_password
     end

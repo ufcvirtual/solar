@@ -1,0 +1,10 @@
+%td
+	%input{:type=>"text", :required => true, :id => 'name', :value => @user.name}
+%td{style: 'width:200px'}
+	%input{:type=>"text", :required => true, :id => 'email', :value => @user.email}
+%td{style: 'width:100px'}= @user.username
+%td{style: 'width:80px'}= @user.cpf
+%td{style: 'width:75px'}= select(:status, :id, user_status.invert.to_a, {selected: @user.active? ? 1 : 0})
+%td{style: 'width:140px; align:right'}
+	= link_to_function content_tag(:i, nil, class: 'btn icon-edit'), "update_user(this)", :"save-link" => update_user_administration_path(@user), :"show-link" => administration_path(id: @user.id), class:  "btn_manage_cancel"
+	= link_to_function content_tag(:i, nil, class: 'btn icon-cross'), "cancel(this)", :"show-link" => administration_path(id: @user.id), class: "btn_manage_cancel"

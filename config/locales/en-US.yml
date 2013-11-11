@@ -1374,6 +1374,8 @@
 
   email: Email
   cpf: "CPF"
+  active: Active
+  blocked: Blocked
   administrations:
     close: Close
     users:

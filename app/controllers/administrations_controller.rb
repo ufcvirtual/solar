@@ -32,12 +32,7 @@ class AdministrationsController < ApplicationController
 
   def allocations_user
     id = params[:id]
-=begin
-    @allocations_user = Allocation.joins(:allocation_tag)
-                          .includes(allocation_tag: [group: [offer: [curriculum_unit: :curriculum_unit_type]]])
-                          .select("allocations.*")
-                          .where('user_id = ? and (curriculum_unit_id is not null or offer_id is not null or group_id is not null)',id)
-=end
+
     @allocations_user = User.find(id).allocations
                           .joins("LEFT JOIN allocation_tags at ON at.id = allocations.allocation_tag_id")
                           .where("(at.curriculum_unit_id is not null or at.offer_id is not null or at.group_id is not null)")
@@ -47,7 +42,31 @@ class AdministrationsController < ApplicationController
     @periods = Schedule.joins(:semester_periods).map {|p| [p.start_date.year, p.end_date.year] }.flatten.uniq.sort! {|x,y| y <=> x} #desc
   end
 
+  def edit_allocation
+    @allocation = Allocation.find(params[:id])
+  end
+
+  def update_allocation
+    @allocation = Allocation.find(params[:id])
+    @allocation.update_attribute(:status, params[:status])
+  end
+
+  def show_user
+    @user = User.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render json: @user }
+    end
+  end
+
   def edit_user
+    @user = User.find(params[:id])
+  end
+
+  def update_user
+    @user = User.find(params[:id])
+    active = (params[:status]==1) ? true : false
+    @user.update_attributes!(active: active, name: params[:name], email: params[:email])
   end
 
   def change_password

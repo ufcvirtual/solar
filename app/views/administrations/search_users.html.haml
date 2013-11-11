@@ -6,7 +6,8 @@
         %th{style: 'width:200px'}= t(".email")
         %th{style: 'width:100px'}= t(".login")
         %th{style: 'width:80px'}= t(".cpf")
-        %th{style: 'width:150px'}= ""
+        %th{style: 'width:75px'}= ""
+        %th{style: 'width:140px'}= ""
     %tbody
     - @users.each do |user|
       %tr.lines
@@ -14,6 +15,7 @@
         %td{style: 'width:200px'}= user.email
         %td{style: 'width:100px'}= user.username
         %td{style: 'width:80px'}= user.cpf
+        %td{style: 'width:75px'}= name_user_status(user.active)
         %td{style: 'width:150px; align:right'}
           %a{class: "info_list btn", :"data-dropdown"=>"#info-dropdown#{user.id}" }=content_tag(:i, nil, class: 'icon-info') + content_tag(:i, nil, class: 'icon-arrow-down-triangle')
           .dropdown.dropdown-tip{ class: "info_list", id: "info-dropdown#{user.id}" }
@@ -22,8 +24,9 @@
               %li= link_to t(:allocations, :scope => [:administrations, :users]), "#", class: 'btn_allocations_user_administrations', :"data-link-edit" => allocations_user_administrations_path(id: user.id), :"data-tooltip" => t(:allocations, :scope => [:administrations, :users])
               %li{ class: 'border' }= (label_tag t(:last_accessed, :scope => [:administrations, :users]) + ' ' + last_accessed(user.id))
 
-          = link_to content_tag(:i, nil, class: 'btn icon-edit'), "#", class: 'btn_allocations_user_administrations', :"data-link-edit" => allocations_user_administrations_path(id: user.id), :"data-tooltip" => t(:edit, :scope => [:administrations, :users])
-          = link_to content_tag(:i, nil, class: 'btn icon-key'), "#", class: 'btn_allocations_user_administrations', :"data-link-edit" => change_password_administrations_path(id: user.id), :"data-tooltip" => t(:change_password, :scope => [:administrations, :users])
+          = link_to_function content_tag(:i, nil, class: 'btn icon-edit'), "edit_user(this)", :"data-tooltip" => t(:edit, :scope => [:administrations, :users]), :"edit-link" => edit_user_administrations_path(user), :"show-link" => administration_path(id: user.id)
+
+          = link_to content_tag(:i, nil, class: 'btn icon-key'), "#", class: 'btn_change_pwd_administrations', :"data-link-edit" => change_password_administrations_path(id: user.id), :"data-tooltip" => t(:change_password, :scope => [:administrations, :users])
 
   .navigation
     =# will_paginate @users
