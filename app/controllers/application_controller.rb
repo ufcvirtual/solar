@@ -1,3 +1,4 @@
+require 'xmpp4r/roster/iq/roster'
 ##########
 # Variaveis de sessao do usuario
 # 
@@ -190,7 +191,13 @@ class ApplicationController < ActionController::Base
                 xmpp_client = Jabber::Client.new(jid)
                 xmpp_client.connect("#{@ip}")
                 sha1 = Digest::SHA1.hexdigest("#{current_user.cpf.slice(5,12)}#{current_user.username}#{current_user.id}")
-                xmpp_client.register(sha1, 'name' => "#{current_user.name}", 'email' => "#{current_user.email}")
+                xmpp_client.register(sha1, 'name' => "#{current_user.nick}", 'email' => "#{current_user.email}")
+                
+                xmpp_client.auth(sha1)
+                iq = Jabber::Iq.new(:set)
+                iq.add(Jabber::Roster::IqQueryRoster.new).add(Jabber::Roster::RosterItem.new(ARGV[2], ARGV[3])).groups =["Grupo 1"]
+                cl.send(iq)
+
                 xmpp_client.close
                 current_user.registered = true
                 current_user.save

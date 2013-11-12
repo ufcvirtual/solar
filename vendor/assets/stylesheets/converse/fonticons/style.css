@@ -26,9 +26,9 @@
 /*
 Instead of a list of all class selectors,
 you can use the generic selector below, but it's slower:
-[class*="icon-"] {
+[class*="icons-"] {
 */
-.icon-home, .icon-pencil, .icon-camera, .icon-camera-2, .icon-play, .icon-music, .icon-headphones, .icon-phone, .icon-phone-hang-up, .icon-address-book, .icon-notebook, .icon-envelop, .icon-pushpin, .icon-online, .icon-away, .icon-bubbles, .icon-bubbles-2, .icon-bubbles-3, .icon-user, .icon-users, .icon-quotes-left, .icon-spinner, .icon-search, .icon-cogs, .icon-wrench, .icon-unlocked, .icon-lock, .icon-lock-2, .icon-key, .icon-key-2, .icon-zoom-out, .icon-zoom-in, .icon-cog, .icon-remove, .icon-remove-2, .icon-eye, .icon-eye-blocked, .icon-attachment, .icon-globe, .icon-heart, .icon-happy, .icon-thumbs-up, .icon-smiley, .icon-tongue, .icon-sad, .icon-wink, .icon-wondering, .icon-confused, .icon-shocked, .icon-evil, .icon-angry, .icon-cool, .icon-grin, .icon-info, .icon-notification, .icon-warning, .icon-spell-check, .icon-volume-high, .icon-volume-medium, .icon-volume-low, .icon-volume-mute, .icon-volume-mute-2, .icon-volume-decrease, .icon-volume-increase, .icon-bold, .icon-underline, .icon-italic, .icon-strikethrough, .icon-new-tab, .icon-youtube, .icon-close, .icon-blocked, .icon-cancel-circle, .icon-minus, .icon-plus, .icon-checkbox-checked, .icon-checkbox-unchecked, .icon-checkbox-partial, .icon-radio-checked, .icon-radio-unchecked, .icon-room-info, .icon-newspaper, .icon-image, .icon-offline, .icon-dnd {
+.icons-home, .icons-pencil, .icons-camera, .icons-camera-2, .icons-play, .icons-music, .icons-headphones, .icons-phone, .icons-phone-hang-up, .icons-address-book, .icons-notebook, .icons-envelop, .icons-pushpin, .icons-online, .icons-away, .icons-bubbles, .icons-bubbles-2, .icons-bubbles-3, .icons-user, .icons-users, .icons-quotes-left, .icons-spinner, .icons-search, .icons-cogs, .icons-wrench, .icons-unlocked, .icons-lock, .icons-lock-2, .icons-key, .icons-key-2, .icons-zoom-out, .icons-zoom-in, .icons-cog, .icons-remove, .icons-remove-2, .icons-eye, .icons-eye-blocked, .icons-attachment, .icons-globe, .icons-heart, .icons-happy, .icons-thumbs-up, .icons-smiley, .icons-tongue, .icons-sad, .icons-wink, .icons-wondering, .icons-confused, .icons-shocked, .icons-evil, .icons-angry, .icons-cool, .icons-grin, .icons-info, .icons-notification, .icons-warning, .icons-spell-check, .icons-volume-high, .icons-volume-medium, .icons-volume-low, .icons-volume-mute, .icons-volume-mute-2, .icons-volume-decrease, .icons-volume-increase, .icons-bold, .icons-underline, .icons-italic, .icons-strikethrough, .icons-new-tab, .icons-youtube, .icons-close, .icons-blocked, .icons-cancel-circle, .icons-minus, .icons-plus, .icons-checkbox-checked, .icons-checkbox-unchecked, .icons-checkbox-partial, .icons-radio-checked, .icons-radio-unchecked, .icons-room-info, .icons-newspaper, .icons-image, .icons-offline, .icons-dnd {
 	font-family: 'Converse-js';
 	speak: none;
 	font-style: normal;
@@ -38,258 +38,261 @@ you can use the generic selector below, but it's slower:
 	line-height: 1;
 	-webkit-font-smoothing: antialiased;
 }
-.icon-home:before {
+.icons-home:before {
 	content: "\e000";
 }
-.icon-pencil:before {
+.icons-pencil:before {
 	content: "\270e";
 }
-.icon-camera:before {
+.icons-camera:before {
 	content: "\e003";
 }
-.icon-camera-2:before {
+.icons-camera-2:before {
 	content: "\2616";
 }
-.icon-play:before {
+.icons-play:before {
 	content: "\25d9";
 }
-.icon-music:before {
+.icons-music:before {
 	content: "\266b";
 }
-.icon-headphones:before {
+.icons-headphones:before {
 	content: "\266c";
 }
-.icon-phone:before {
+.icons-phone:before {
 	content: "\260f";
 }
-.icon-phone-hang-up:before {
+.icons-phone-hang-up:before {
 	content: "\260e";
 }
-.icon-address-book:before {
+.icons-address-book:before {
 	content: "\270f";
 }
-.icon-notebook:before {
+.icons-notebook:before {
 	content: "\2710";
 }
-.icon-envelop:before {
+.icons-envelop:before {
 	content: "\2709";
 }
-.icon-pushpin:before {
+.icons-pushpin:before {
 	content: "\e012";
 }
-.icon-online:before {
+.icons-online:before {
 	content: "\25fc";
+  color: #32CD32;
 }
-.icon-away:before {
+.icons-away:before {
 	content: "\25fb";
+  color: #CD0000;
 }
-.icon-bubbles:before {
+.icons-bubbles:before {
 	content: "\e015";
 }
-.icon-bubbles-2:before {
+.icons-bubbles-2:before {
 	content: "\e016";
 }
-.icon-bubbles-3:before {
+.icons-bubbles-3:before {
 	content: "\e017";
 }
-.icon-user:before {
+.icons-user:before {
 	content: "\e01a";
 }
-.icon-users:before {
+.icons-users:before {
 	content: "\e01b";
 }
-.icon-quotes-left:before {
+.icons-quotes-left:before {
 	content: "\e01d";
 }
-.icon-spinner:before {
+.icons-spinner:before {
 	content: "\231b";
 }
-.icon-search:before {
+.icons-search:before {
 	content: "\e021";
 }
-.icon-cogs:before {
+.icons-cogs:before {
 	content: "\e022";
 }
-.icon-wrench:before {
+.icons-wrench:before {
 	content: "\e024";
 }
-.icon-unlocked:before {
+.icons-unlocked:before {
 	content: "\e025";
 }
-.icon-lock:before {
+.icons-lock:before {
 	content: "\e026";
 }
-.icon-lock-2:before {
+.icons-lock-2:before {
 	content: "\e027";
 }
-.icon-key:before {
+.icons-key:before {
 	content: "\e028";
 }
-.icon-key-2:before {
+.icons-key-2:before {
 	content: "\e029";
 }
-.icon-zoom-out:before {
+.icons-zoom-out:before {
 	content: "\e02a";
 }
-.icon-zoom-in:before {
+.icons-zoom-in:before {
 	content: "\e02b";
 }
-.icon-cog:before {
+.icons-cog:before {
 	content: "\e02f";
 }
-.icon-remove:before {
+.icons-remove:before {
 	content: "\e02d";
 }
-.icon-remove-2:before {
+.icons-remove-2:before {
 	content: "\e02e";
 }
-.icon-eye:before {
+.icons-eye:before {
 	content: "\e030";
 }
-.icon-eye-blocked:before {
+.icons-eye-blocked:before {
 	content: "\e031";
 }
-.icon-attachment:before {
+.icons-attachment:before {
 	content: "\e032";
 }
-.icon-globe:before {
+.icons-globe:before {
 	content: "\e033";
 }
-.icon-heart:before {
+.icons-heart:before {
 	content: "\2764";
 }
-.icon-happy:before {
+.icons-happy:before {
 	content: "\263b";
 }
-.icon-thumbs-up:before {
+.icons-thumbs-up:before {
 	content: "\261d";
 }
-.icon-smiley:before {
+.icons-smiley:before {
 	content: "\263a";
 }
-.icon-tongue:before {
+.icons-tongue:before {
 	content: "\e038";
 }
-.icon-sad:before {
+.icons-sad:before {
 	content: "\2639";
 }
-.icon-wink:before {
+.icons-wink:before {
 	content: "\e03a";
 }
-.icon-wondering:before {
+.icons-wondering:before {
 	content: "\2369";
 }
-.icon-confused:before {
+.icons-confused:before {
 	content: "\2368";
 }
-.icon-shocked:before {
+.icons-shocked:before {
 	content: "\2364";
 }
-.icon-evil:before {
+.icons-evil:before {
 	content: "\261f";
 }
-.icon-angry:before {
+.icons-angry:before {
 	content: "\e03f";
 }
-.icon-cool:before {
+.icons-cool:before {
 	content: "\e040";
 }
-.icon-grin:before {
+.icons-grin:before {
 	content: "\e041";
 }
-.icon-info:before {
+.icons-info:before {
 	content: "\2360";
 }
-.icon-notification:before {
+.icons-notification:before {
 	content: "\e01f";
 }
-.icon-warning:before {
+.icons-warning:before {
 	content: "\26a0";
 }
-.icon-spell-check:before {
+.icons-spell-check:before {
 	content: "\e045";
 }
-.icon-volume-high:before {
+.icons-volume-high:before {
 	content: "\e046";
 }
-.icon-volume-medium:before {
+.icons-volume-medium:before {
 	content: "\e047";
 }
-.icon-volume-low:before {
+.icons-volume-low:before {
 	content: "\e048";
 }
-.icon-volume-mute:before {
+.icons-volume-mute:before {
 	content: "\e049";
 }
-.icon-volume-mute-2:before {
+.icons-volume-mute-2:before {
 	content: "\e04a";
 }
-.icon-volume-decrease:before {
+.icons-volume-decrease:before {
 	content: "\e04b";
 }
-.icon-volume-increase:before {
+.icons-volume-increase:before {
 	content: "\e04c";
 }
-.icon-bold:before {
+.icons-bold:before {
 	content: "\e04d";
 }
-.icon-underline:before {
+.icons-underline:before {
 	content: "\e04e";
 }
-.icon-italic:before {
+.icons-italic:before {
 	content: "\e04f";
 }
-.icon-strikethrough:before {
+.icons-strikethrough:before {
 	content: "\e050";
 }
-.icon-new-tab:before {
+.icons-new-tab:before {
 	content: "\e053";
 }
-.icon-youtube:before {
+.icons-youtube:before {
 	content: "\e055";
 }
-.icon-close:before {
+.icons-close:before {
 	content: "\2715";
 }
-.icon-blocked:before {
+.icons-blocked:before {
 	content: "\2718";
 }
-.icon-cancel-circle:before {
+.icons-cancel-circle:before {
 	content: "\e058";
 }
-.icon-minus:before {
+.icons-minus:before {
 	content: "\e05a";
 }
-.icon-plus:before {
+.icons-plus:before {
 	content: "\271a";
 }
-.icon-checkbox-checked:before {
+.icons-checkbox-checked:before {
 	content: "\2611";
 }
-.icon-checkbox-unchecked:before {
+.icons-checkbox-unchecked:before {
 	content: "\2b27";
 }
-.icon-checkbox-partial:before {
+.icons-checkbox-partial:before {
 	content: "\2b28";
 }
-.icon-radio-checked:before {
+.icons-radio-checked:before {
 	content: "\2b26";
 }
-.icon-radio-unchecked:before {
+.icons-radio-unchecked:before {
 	content: "\2b25";
 }
-.icon-room-info:before {
+.icons-room-info:before {
 	content: "\e059";
 }
-.icon-newspaper:before {
+.icons-newspaper:before {
 	content: "\e001";
 }
-.icon-image:before {
+.icons-image:before {
 	content: "\2b14";
 }
-.icon-offline:before {
+.icons-offline:before {
 	content: "\e002";
 }
-.icon-dnd:before {
+.icons-dnd:before {
 	content: "\e004";
+  color: #FFA500;
 }

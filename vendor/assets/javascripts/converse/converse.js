@@ -157,7 +157,7 @@
                 $.proxy(function (iq) {
                     // Successful callback
                     $vcard = $(iq).find('vCard');
-                    var //fullname = $vcard.find('FN').text(),
+                    var $vcard = $(iq).find('vCard');
                         img = $vcard.find('BINVAL').text(),
                         img_type = $vcard.find('TYPE').text(),
                         url = $vcard.find('URL').text();
@@ -165,8 +165,9 @@
 
                         var rosteritem = converse.roster.get(jid);
                         if (rosteritem) {
+                            fullname = _.isEmpty(fullname)? rosteritem.get('fullname') || jid: fullname;
                             rosteritem.save({
-                                'fullname': rosteritem.attributes.fullname,
+                                'fullname': fullname,
                                 'image_type': img_type,
                                 'image': img,
                                 'url': url,
@@ -559,7 +560,7 @@
                         texto=head.childNodes.item(1);
                         texto=texto.childNodes.item(0);
                         texto.style.color="black";
-                        head.style.backgroundColor = "#ffcc00";
+                        head.style.backgroundColor = "#1E90FF";
                     }
                 }
                 this.scrollDown();
@@ -734,7 +735,6 @@
 
             toggleChatbox: function()
             {   
-                // this.model.get('box_id') é a função para pegar o ID da div .chatbox
                 v = document.getElementById(this.model.get('box_id'));
                 if(v.childNodes.item(1).style.display != "none")
                 {
@@ -742,6 +742,9 @@
                     v.childNodes.item(2).style.display = "none";
                     //v.childNodes.item(0).style.transition =  "1s";
                     v.childNodes.item(0).style.top = "295px";
+                    v.childNodes.item(0).style.backgroundColor="rgb(168, 168, 168)";
+                    v.childNodes.item(0).style.color="rgb(0, 0, 0)";
+                    v.childNodes.item(0).childNodes.item(1).childNodes.item(0).style.color="rgb(0, 0, 0)";
                     v.style.boxShadow = "0px 0px 0px 0px";
                 }
                 else{
@@ -749,15 +752,16 @@
                     v.childNodes.item(2).style.display = "";
                     //v.childNodes.item(0).style.transition =  "";
                     v.childNodes.item(0).style.top = "0px";
-                    v.childNodes.item(0).style.backgroundColor="rgb(79, 106, 114)";
-                    v.childNodes.item(0).childNodes.item(1).childNodes.item(0).style.color="white";
+                    v.childNodes.item(0).style.backgroundColor="rgb(14, 125, 216)";
+                    v.childNodes.item(0).style.color="rgb(255, 255, 255)";
+                    v.childNodes.item(0).childNodes.item(1).childNodes.item(0).style.color="rgb(255, 255, 255)";
                     v.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
                 }
             },
 
             template: _.template(
                 '<div class="chat-head chat-head-chatbox">' +
-                    '<a class="close-chatbox-button icon-close"></a>' +
+                    '<a class="close-chatbox-button icons-close"></a>' +
                     '<a href="#"  class="user">' +
                         '<div class="chat-title"> {{ fullname }} </div>' +
 
@@ -862,7 +866,7 @@
                     '<dt id="xmpp-contact-search" class="fancy-dropdown">' +
                         '<a class="toggle-xmpp-contact-form" href="#"'+
                             'title="'+__('Click to add new chat contacts')+'">'+
-                        '<span class="icon-plus"></span>'+__('Add a contact')+'</a>' +
+                        '<span class="icons-plus"></span>'+__('Add a contact')+'</a>' +
                     '</dt>' +
                     '<dd class="search-xmpp" style="display:none"><ul></ul></dd>' +
                 '</dl>'
@@ -999,7 +1003,7 @@
                 '<dd class="available-chatroom">'+
                 '<a class="open-room" data-room-jid="{{jid}}"'+
                     'title="'+__('Click to open this room')+'" href="#">{{name}}</a>'+
-                '<a class="room-info icon-room-info" data-room-jid="{{jid}}"'+
+                '<a class="room-info icons-room-info" data-room-jid="{{jid}}"'+
                     'title="'+__('Show more information on this room')+'" href="#">&nbsp;</a>'+
                 '</dd>'),
 
@@ -1275,9 +1279,12 @@
             },
 
             template: _.template(
-                '<div class="chat-head oc-chat-head">'+
-                    '<ul id="controlbox-tabs"></ul>'+
-                    '<a class="close-chatbox-button icon-close"></a>'+
+                '<div class="chat-head oc-chat-head" > '+
+                //'<span class="icons-{{ chat_status }}"></span>'+
+                '<a style="color: white"> Bate-Papo </a>' +
+                '<a style="display: none; color: white" id="online-count">(0)</a>' +
+                '<ul id="controlbox-tabs"></ul>'+
+                '<a class="close-chatbox-button icons-close"></a>'+
                 '</div>'+
                 '<div class="controlbox-panes"></div>'
             ),
@@ -1303,6 +1310,7 @@
             },
 
             render: function () {
+                //chat_status = this.model.get('status') || 'online';
                 if ((!converse.prebind) && (!converse.connection)) {
                     // Add login panel if the user still has to authenticate
                    //this.$el.html(this.template(this.model.toJSON()));
@@ -1379,8 +1387,8 @@
 
             template: _.template(
                 '<div class="chat-head chat-head-chatroom">' +
-                    '<a class="close-chatbox-button icon-close"></a>' +
-                    '<a class="configure-chatroom-button icon-wrench" style="display:none"></a>' +
+                    '<a class="close-chatbox-button icons-close"></a>' +
+                    '<a class="configure-chatroom-button icons-wrench" style="display:none"></a>' +
                     '<div class="chat-title"> {{ name }} </div>' +
                     '<p class="chatroom-topic"><p/>' +
                 '</div>' +
@@ -2124,14 +2132,14 @@
 
             template: _.template(
                 '<a class="open-chat" title="'+__('Click to chat with this contact')+'" href="#">'+
-                    '<span class="icon-{{ chat_status }}" title="{{ status_desc }}"></span>{{ fullname }}'+
+                    '<span class="icons-{{ chat_status }}" title="{{ status_desc }}"></span>{{ fullname }}'+
                 '</a>'
-                // +'<a class="remove-xmpp-contact icon-remove" title="'+__('Click to remove this contact')+'" href="#"></a>'
+                // +'<a class="remove-xmpp-contact icons-remove" title="'+__('Click to remove this contact')+'" href="#"></a>'
                 ),
 
             pending_template: _.template(
                 '<span>{{ fullname }}</span>' +
-                '<a class="remove-xmpp-contact icon-remove" title="'+__('Click to remove this contact')+'" href="#"></a>'),
+                '<a class="remove-xmpp-contact icons-remove" title="'+__('Click to remove this contact')+'" href="#"></a>'),
 
             request_template: _.template('<div>{{ fullname }}</div>' +
                 '<button type="button" class="accept-xmpp-request">' +
@@ -2473,11 +2481,11 @@
             initialize: function () {
                 this.model.on("add", function (item) {
                     this.addRosterItemView(item).render(item);
-                    // if (!item.get('vcard_updated')) {
-                    //     // This will update the vcard, which triggers a change
-                    //     // request which will rerender the roster item.
-                    //     converse.getVCard(item.get('jid'));
-                    // }
+                    if (!item.get('vcard_updated')) {
+                        // This will update the vcard, which triggers a change
+                        // request which will rerender the roster item.
+                        converse.getVCard(item.get('jid'));
+                    }
                 }, this);
 
                 this.model.on('change', function (item) {
@@ -2703,10 +2711,10 @@
             status_template: _.template(
                 '<div class="xmpp-status">' +
                     '<a class="choose-xmpp-status {{ chat_status }}" data-value="{{status_message}}" href="#" title="'+__('Click to change your chat status')+'">' +
-                        '<span class="icon-{{ chat_status }}"></span>'+
+                        '<span class="icons-{{ chat_status }}"></span>'+
                         '{{ status_message }}' +
                     '</a>' +
-                    // '<a class="change-xmpp-status-message icon-pencil" href="#" title="'+__('Click here to write a custom status message')+'"></a>' +
+                    // '<a class="change-xmpp-status-message icons-pencil" href="#" title="'+__('Click here to write a custom status message')+'"></a>' +
                 '</div>'),
 
             renderStatusChangeForm: function (ev) {
@@ -2772,7 +2780,7 @@
             option_template: _.template(
                 '<li>' +
                     '<a href="#" class="{{ value }}" data-value="{{ value }}">'+
-                        '<span class="icon-{{ value }}"></span>'+
+                        '<span class="icons-{{ value }}"></span>'+
                         '{{ text }}'+
                     '</a>' +
                 '</li>'),

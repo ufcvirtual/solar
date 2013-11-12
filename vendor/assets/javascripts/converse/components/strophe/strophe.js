@@ -2397,6 +2397,7 @@ Strophe.Connection.prototype = {
                                     this, _connect_cb.bind(this)),
                                 body.tree().getAttribute("rid")));
         this._throttledRequestHandler();
+
     },
 
     /** Function: attach

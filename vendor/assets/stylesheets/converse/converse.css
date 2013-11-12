@@ -79,8 +79,8 @@
 }
 
 #chatpanel .chat-head-chatbox {
-    background-color: rgb(79, 106, 114);
-    background-color: rgba(79, 106, 114, 1);
+    background-color: rgb(14, 125, 216);
+    background-color: rgba(14, 125, 216, 1);
 }
 
 #chatpanel .chat-head-chatroom {
@@ -144,7 +144,7 @@
 #chatpanel .chat-content {
     padding: 0.3em;
     font-size: 13px;
-    color: rgb(79, 79, 79);
+    color: rgb(119, 119, 119);
     height:200px;
     width: 192px;
     overflow-y:auto;
@@ -194,11 +194,11 @@
 }
 
 #chatpanel .chat-message-them {
-    color: #F62817;
+    color: #777777;
 }
 
 #chatpanel .chat-message-me {
-    color: #436976;
+    color: #777777;
 }
 
 #chatpanel .chat-message-room {
@@ -261,7 +261,7 @@
 
 #chatpanel div.chat-title {
     color: white;
-    font-weight: bold;
+    /*font-weight: bold;*/
     line-height: 15px;
     display: block;
     margin-top: 2px;
@@ -360,10 +360,11 @@
     color: #FFF;
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
-    height: 35px;
+    height: 29px;
     clear: right;
-    background-color: #5390C8;
-    padding: 3px 0 0 0;
+    background-color: #0E7DD8;
+    padding: 10px 0 0 15px;
+    text-shadow: rgba(0,0,0,0.51) 0 -1px 0;
 }
 
 #chatpanel a.configure-chatroom-button,
@@ -691,7 +692,7 @@
 }
 
 #chatpanel ul#controlbox-tabs li a {
-    display:block;
+    display:none;
     font-size:12px;
     height: 34px;
     line-height:34px;

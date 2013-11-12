@@ -54,6 +54,5 @@ class InstantMessagesController < ApplicationController
       # session[:rid]  = @client.instance_variable_get("@http_rid")
       # session[:jid]  = @client.instance_variable_get("@jid").inspect
     end
-  end
-  
-  end
+  end  
+end
