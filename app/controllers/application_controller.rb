@@ -1,4 +1,3 @@
-require 'xmpp4r/roster/iq/roster'
 ##########
 # Variaveis de sessao do usuario
 # 
