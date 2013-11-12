@@ -1,8 +1,0 @@
-chat3_msg1:
-  id: 1
-  chat_room_id: 3
-  allocation_id: 11 # turma 3 - QM-CAU
-  message_type: 1 # enviada pelo usuário
-  text: "Bem vindos ao chat 3"
-  created_at: <%= Date.today %>
-  user_id: 7

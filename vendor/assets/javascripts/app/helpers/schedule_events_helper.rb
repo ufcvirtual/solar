@@ -1,2 +1,0 @@
-module ScheduleEventsHelper
-end
