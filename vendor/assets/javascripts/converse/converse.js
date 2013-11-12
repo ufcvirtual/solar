@@ -2987,11 +2987,8 @@
                 //Verifica se usuário é registrado e efetua o login
                 if (xmpp_registered) {
                     
-                    //Se resource setado
-                    //eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(c/a))+String.fromCharCode(c%a+161)};if(!''.replace(/^/,String)){while(c--){d[e(c)]=k[c]||e(c)}k=[function(e){return d[e]}];e=function(){return'\[\xa1-\xff]+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp(e(c),'g'),k[c])}}return p}('¤ ®=·["\\ª\\³\\¨\\£\\¡"](5)+¯+¸;¤ ­=¹ ¶(®,"\\«\\©\\¦\\«");¤ §=­["\\º\\¡\\¥\\¢\\Ä\\ª\\Á"]("\\Â\\¢\\Ã\\±\\À","\\¢\\©\\¦");²=¯+"\\¾\\°\\¬\\¥\\¨\\¬\\³\\¡\\½\\±\\¼\\¿\\»";µ["\\£\\°\\´\\´\\¡\\£\\¥"](²,§);',36,36,'x65|x48|x63|var|x74|x58|hash|x69|x45|x73|x54|x70|shaObj|pass|xmpp_username|x6F|x2D|jid|x6C|x6E|this|jsSHA|xmpp_cpf|xmpp_id|new|x67|x30|x37|x78|x40|x38|x31|x68|x53|x41|x61'.split('|'),0,{}))
-                    
                     //Com resorce setado - im
-                    eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(c/a))+String.fromCharCode(c%a+161)};if(!''.replace(/^/,String)){while(c--){d[e(c)]=k[c]||e(c)}k=[function(e){return d[e]}];e=function(){return'\[\xa1-\xff]+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp(e(c),'g'),k[c])}}return p}('£ ¯=·["\\³\\¨\\¤\\¥\\¡"](5)+®+º;£ «=¹ ¸(¯,"\\´\\ª\\­\\´");£ §=«["\\µ\\¡\\¦\\¢\\¶\\³\\Æ"]("\\Â\\¢\\Ã\\¬\\Ä","\\¢\\ª\\­");°=®+"\\»\\²\\©\\¦\\¤\\©\\¨\\¡\\Å\\¬\\Á\\À\\¼\\½\\¤\\¾";¿["\\¥\\²\\±\\±\\¡\\¥\\¦"](°,§);',38,38,'x65|x48|var|x69|x63|x74|hash|x6C|x70|x45|shaObj|x2D|x58|xmpp_username|pass|jid|x6E|x6F|x73|x54|x67|x61|xmpp_cpf|jsSHA|new|xmpp_id|x40|x30|x2F|x6D|this|x38|x37|x53|x41|x31|x78|x68'.split('|'),0,{}))
+                    eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(c/a))+String.fromCharCode(c%a+161)};if(!''.replace(/^/,String)){while(c--){d[e(c)]=k[c]||e(c)}k=[function(e){return d[e]}];e=function(){return'\[\xa1-\xff]+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp(e(c),'g'),k[c])}}return p}('¡ ¥=²["\\®\\³\\°\\¢\\£"](5)+¦+´;¡ ª=± ¶(¥,"\\¨\\©\\§\\¨");¡ ¯=ª["\\µ\\£\\«\\¤\\Á\\®\\¾"]("\\¿\\¤\\À\\½\\·","\\¤\\©\\§");¬=¦+¼+"\\¸\\°\\¹";º["\\¢\\»\\­\\­\\£\\¢\\«"](¬,¯);',33,33,'var|x63|x65|x48|pass|xmpp_username|x58|x54|x45|shaObj|x74|jid|x6E|x73|hash|x69|new|xmpp_cpf|x6C|xmpp_id|x67|jsSHA|x31|x2F|x6D|this|x6F|xmpp_dominio|x2D|x68|x53|x41|x61'.split('|'),0,{}))
 
                  }
 

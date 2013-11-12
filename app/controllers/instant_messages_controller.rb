@@ -12,7 +12,7 @@ class InstantMessagesController < ApplicationController
 # var pass = xmpp_cpf.slice(5)+xmpp_username+xmpp_id;
 # var shaObj = new jsSHA(pass, "TEXT");
 # var hash = shaObj.getHash("SHA-1", "HEX");
-# jid = xmpp_username + "@optiplex-780/im";
+# jid = xmpp_username + xmpp_dominio +"/im";
 # this.connect(jid, hash);
 ##############################################################################
 
