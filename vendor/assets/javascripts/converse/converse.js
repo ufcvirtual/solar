@@ -1372,6 +1372,7 @@
                         break;
                     default:
                         this.last_msgid = converse.connection.muc.groupchat(this.model.get('jid'), body);
+                        console.log(this.last_msgid);
                     break;
                 }
             },
@@ -2072,17 +2073,15 @@
                 aux = true;
                 chatboxes_visible = $("#collective-xmpp-chat-data .chatbox:not(:first):visible");
                 chatboxes = $("#collective-xmpp-chat-data .chatbox:not(:first)");
-                if(chatboxes_visible.length >= maxWindows)
+                if(chatboxes_visible.length > maxWindows)
                 {
 
-                    // console.log(this.model.get('id'));
-                     console.log($lastChatbox);
-                    //esse  negócio não perfeito porque eu não posso pegar o id da janela que ainda vai ser criada >:(
-                    for(this.i = 0; i < chatboxes_visible.length; i++)
+                    for(this.i = 0; i < chatboxes_visible.length - 1; i++)
                     {
                         if(x.get("box_id") == $(chatboxes_visible[i]).attr("id"))
                         {
                             aux = false;
+                            break;
                         }
                     }
                     if(aux)
