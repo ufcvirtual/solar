@@ -20,7 +20,7 @@
 	color: red;
 }
 
-.icon-warning, .icon-checkmark, .icon-info, .icon-help, .icon-question, .icon-info-2, .icon-mail, .icon-paperplane, .icon-edit, .icon-paperclip, .icon-reply, .icon-reply-all, .icon-forward, .icon-user, .icon-user-add, .icon-vcard, .icon-export, .icon-location, .icon-share, .icon-heart, .icon-heart-2, .icon-star, .icon-star-2, .icon-thumbs-up, .icon-thumbs-down, .icon-chat, .icon-comment, .icon-quote, .icon-house, .icon-popup, .icon-search, .icon-printer, .icon-bell, .icon-link, .icon-flag, .icon-settings, .icon-tools, .icon-tag, .icon-camera, .icon-music, .icon-music-2, .icon-book, .icon-lesson, .icon-lifebuoy, .icon-eye, .icon-clock, .icon-microphone, .icon-calendar, .icon-briefcase, .icon-hourglass, .icon-language, .icon-key, .icon-suitcase, .icon-earth, .icon-keyboard, .icon-browser, .icon-publish, .icon-adjust, .icon-sun, .icon-code, .icon-screen, .icon-credit-card, .icon-database, .icon-rss, .icon-signal, .icon-lock, .icon-lock-open, .icon-logout, .icon-login, .icon-cross, .icon-plus, .icon-minus, .icon-cross-2, .icon-minus-2, .icon-plus-2, .icon-cross-3, .icon-minus-3, .icon-plus-3, .icon-erase, .icon-blocked, .icon-cycle, .icon-shuffle, .icon-cw, .icon-arrow, .icon-arrow-2, .icon-retweet, .icon-loop, .icon-history, .icon-back, .icon-switch, .icon-list, .icon-add-to-list, .icon-layout, .icon-list-2, .icon-text, .icon-text-2, .icon-document, .icon-docs, .icon-landscape, .icon-folder, .icon-pictures, .icon-archive, .icon-trash, .icon-outbox, .icon-inbox, .icon-disk, .icon-install, .icon-cloud, .icon-upload, .icon-bookmark, .icon-book-2, .icon-bookmarks, .icon-pause, .icon-record, .icon-stop, .icon-next, .icon-previous, .icon-first, .icon-last, .icon-resize-enlarge, .icon-resize-shrink, .icon-sound, .icon-mute, .icon-flow-cascade, .icon-flow-branch, .icon-flow-tree, .icon-flow-line, .icon-flow-parallel, .icon-arrow-left, .icon-arrow-down, .icon-arrow-up--upload, .icon-arrow-right, .icon-arrow-left-2, .icon-arrow-down-2, .icon-arrow-up, .icon-arrow-right-2, .icon-arrow-left-3, .icon-arrow-down-3, .icon-arrow-up-2, .icon-arrow-right-3, .icon-arrow-left-4, .icon-arrow-down-4, .icon-arrow-up-3, .icon-arrow-right-4, .icon-arrow-left-5, .icon-arrow-down-5, .icon-arrow-up-4, .icon-untitled, .icon-arrow-right-5, .icon-arrow-up-5, .icon-arrow-down-6, .icon-arrow-left-6, .icon-twitter, .icon-twitter-2, .icon-facebook, .icon-facebook-2, .icon-facebook-3, .icon-phone, .icon-move, .icon-clipboard, .icon-box, .icon-new, .icon-calendar-week, .icon-calendar-list, .icon-calendar-day, .icon-write, .icon-unzip-file, .icon-map, .icon-checkmark-2, .icon-checkmark-outline, .icon-mail-read, .icon-class, .icon-exam, .icon-homework, .icon-play, .icon-people, .icon-rotate, .icon-restore, .icon-video-conference, .icon-checkbox-checked, .icon-checkbox-unchecked, .icon-ellipsis {
+[class*="icon-"] {
 	font-family: 'Solar';
 	speak: none;
 	font-style: normal;
@@ -28,9 +28,12 @@
 	font-variant: normal;
 	text-transform: none;
 	line-height: 1;
-	-webkit-font-smoothing: antialiased;
 	font-size: 18px;
 	vertical-align: middle;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 .big {
 	font-size: 32px;
@@ -78,6 +81,9 @@
 .icon-user:before {
 	content: "\e00d";
 }
+.icon-users:before {
+	content: "\e00e";
+}
 .icon-user-add:before {
 	content: "\e00f";
 }
@@ -96,7 +102,7 @@
 .icon-heart:before {
 	content: "\e015";
 }
-.icon-heart-2:before {
+.icon-heart2:before {
 	content: "\e016";
 }
 .icon-star:before {
@@ -189,6 +195,9 @@
 .icon-language:before {
 	content: "\e036";
 }
+.icon-network:before {
+	content: "\e037";
+}
 .icon-key:before {
 	content: "\e038";
 }
@@ -219,8 +228,8 @@
 .icon-screen:before {
 	content: "\e041";
 }
-.icon-credit-card:before {
-	content: "\e043";
+.icon-infinity:before {
+	content: "\e042";
 }
 .icon-database:before {
 	content: "\e044";
@@ -281,6 +290,9 @@
 }
 .icon-shuffle:before {
 	content: "\e05b";
+}
+.icon-ccw:before {
+	content: "\e05c";
 }
 .icon-cw:before {
 	content: "\e05d";
@@ -371,27 +383,6 @@
 }
 .icon-bookmarks:before {
 	content: "\e07a";
-}
-.icon-pause:before {
-	content: "\e07c";
-}
-.icon-record:before {
-	content: "\e07d";
-}
-.icon-stop:before {
-	content: "\e07e";
-}
-.icon-next:before {
-	content: "\e07f";
-}
-.icon-previous:before {
-	content: "\e080";
-}
-.icon-first:before {
-	content: "\e081";
-}
-.icon-last:before {
-	content: "\e082";
 }
 .icon-resize-enlarge:before {
 	content: "\e083";
@@ -492,6 +483,15 @@
 .icon-arrow-left-6:before {
 	content: "\e0a3";
 }
+.icon-ellipsis:before {
+	content: "\e0a4";
+}
+.icon-dots:before {
+	content: "\e0a5";
+}
+.icon-dot:before {
+	content: "\e0a6";
+}
 .icon-twitter:before {
 	content: "\e0ab";
 }
@@ -504,13 +504,25 @@
 .icon-facebook-2:before {
 	content: "\e0ae";
 }
+.icon-googleplus:before {
+	content: "\e0af";
+}
 .icon-facebook-3:before {
 	content: "\e0b0";
+}
+.icon-googleplus-2:before {
+	content: "\e0b1";
+}
+.icon-dropbox:before {
+	content: "\e0b5";
 }
 .icon-phone:before {
 	content: "\e0b8";
 }
-.icon-move:before {
+.icon-mobile:before {
+	content: "\e0b9";
+}
+.icon-menu:before {
 	content: "\e0ba";
 }
 .icon-clipboard:before {
@@ -540,45 +552,18 @@
 .icon-map:before {
 	content: "\e012";
 }
-.icon-checkmark-2:before {
+.icon-homework:before {
 	content: "\e0aa";
 }
-.icon-checkmark-outline:before {
+.icon-exam:before {
 	content: "\e0b6";
 }
 .icon-mail-read:before {
-	content: "\e02b";
+	content: "\e0c0";
 }
-.icon-class:before {
-	content: "\e034";
+.icon-calendar-month:before {
+	content: "\e600";
 }
-.icon-exam:before {
-	content: "\e037";
-}
-.icon-homework:before {
-	content: "\e042";
-}
-.icon-play:before {
-	content: "\e047";
-}
-.icon-people:before {
-	content: "\e00e";
-}
-.icon-rotate:before {
-	content: "\e05c";
-}
-.icon-restore:before {
-	content: "\e048";
-}
-.icon-video-conference:before {
-	content: "\e049";
-}
-.icon-checkbox-checked:before {
-	content: "\e04a";
-}
-.icon-checkbox-unchecked:before {
-	content: "\e07b";
-}
-.icon-ellipsis:before {
-    content: "\e0a4";
+.icon-sort-by-alphabet:before {
+	content: "\e601";
 }
