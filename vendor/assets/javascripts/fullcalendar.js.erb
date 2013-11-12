@@ -990,7 +990,8 @@ function EventManager(options, _sources) {
                     "start_hour": event.start_hour,
                     "end_hour": event.end_hour,
                     "color": event.color,
-                    "type": event.type
+                    "type": event.type,
+                    "dropdown_path": event.dropdown_path
                   };
                   events.push(new_event);
                   start_date.setDate(start_date.getDate()+1); // próximo dia
@@ -5378,7 +5379,8 @@ function listView(element, calendar) {
                     "start_hour": event.start_hour,
                     "end_hour": event.end_hour,
                     "color": event.color,
-                    "type": event.type
+                    "type": event.type,
+                    "dropdown_path": event.dropdown_path
                   };
                   list_events.push(today_event);
 
@@ -5394,7 +5396,8 @@ function listView(element, calendar) {
                       "start_hour": event.start_hour,
                       "end_hour": event.end_hour,
                       "color": event.color,
-                      "type": event.type
+                      "type": event.type,
+                      "dropdown_path": event.dropdown_path
                     };  
                     list_events.push(end_event);
                   }

@@ -9,7 +9,7 @@
     .input
       - types = {:"#{t(:individual, scope: [:assignment, :list])}" => Assignment_Type_Individual, :"#{t(:group, scope: [:assignment, :list])}" => Assignment_Type_Group}
       = label_tag t(".type_assignment"), nil, class: "form_label"
-      %span.label_info= types.index(@assignment.type_assignment)
+      %span.label_info= types.key(@assignment.type_assignment)
 
     .input
       = label_tag t(".enunciation"), nil, class: "form_label"

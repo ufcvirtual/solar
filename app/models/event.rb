@@ -1,25 +1,15 @@
-# module Event
 class Event < ActiveRecord::Base
-
-  # def self.abstract_class?
-  #   true
-  # end
-
   self.abstract_class = true
 
-  # def self.included(base)
-    # recupera os eventos que pertençam ao período visualizado e que tenham relação com as allocations_tags passadas
-    # base.
-    scope :between, lambda {|start_time, end_time, allocation_tags| {joins: [:schedule, academic_allocations: :allocation_tag], conditions: ["
-      ((schedules.end_date < ?) OR (schedules.start_date < ?)) AND ((schedules.start_date > ?) OR (schedules.end_date > ?))
-      AND allocation_tags.id IN (?)", 
-      format_date(end_time), format_date(end_time), format_date(start_time), format_date(start_time), allocation_tags] }}
-    # recupera os eventos que vão iniciar "de hoje em diante" ou já começaram, mas ainda vão terminar
-    # base.
-    scope :after, lambda {|today, allocation_tags| {joins: [:schedule, academic_allocations: :allocation_tag], conditions: ["
-      ((schedules.start_date >= ?) OR (schedules.end_date >= ?)) AND allocation_tags.id IN (?)", 
-      today, today, allocation_tags] }}
-  # end
+  # recupera os eventos que pertençam ao período visualizado e que tenham relação com as allocations_tags passadas
+  scope :between, lambda {|start_time, end_time, allocation_tags| {joins: [:schedule, academic_allocations: :allocation_tag], conditions: ["
+    ((schedules.end_date < ?) OR (schedules.start_date < ?)) AND ((schedules.start_date > ?) OR (schedules.end_date > ?))
+    AND allocation_tags.id IN (?)", 
+    format_date(end_time), format_date(end_time), format_date(start_time), format_date(start_time), allocation_tags] }}
+  # recupera os eventos que vão iniciar "de hoje em diante" ou já começaram, mas ainda vão terminar
+  scope :after, lambda {|today, allocation_tags| {joins: [:schedule, academic_allocations: :allocation_tag], conditions: ["
+    ((schedules.start_date >= ?) OR (schedules.end_date >= ?)) AND allocation_tags.id IN (?)", 
+    today, today, allocation_tags] }}
 
   def schedule_json(options = {})
     {
@@ -33,7 +23,8 @@ class Event < ActiveRecord::Base
       start_hour: (respond_to?(:start_hour) ? start_hour : nil),
       end_hour: (respond_to?(:end_hour) ? end_hour : nil),
       color: verify_type(self.class.to_s, (respond_to?(:type_event) ? type_event : nil)),
-      type: self.class.name
+      type: self.class.name,
+      dropdown_path: Rails.application.routes.url_helpers.send("dropdown_content_of_#{self.class.name.to_s.tableize.singularize}_path", id: id, allocation_tags_ids: 'all_params')
     }
   end
 

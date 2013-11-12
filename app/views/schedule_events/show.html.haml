@@ -14,7 +14,7 @@
       :"#{t(:holiday, scope: [:schedule_events, :types])}" => Holiday}
     .input
       = label_tag t(".type_event"), nil, class: "form_label"
-      %span.label_info= types.index(@schedule_event.type_event)
+      %span.label_info= types.key(@schedule_event.type_event)
 
     .input{style: show_fields ? "" : "display: none"}
       = label_tag t(".place"), nil, class: "form_label"

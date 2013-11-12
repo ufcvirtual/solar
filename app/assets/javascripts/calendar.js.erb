@@ -92,13 +92,8 @@ function show_info_dropdown(event, div){
   var dropdown_panel = $(div).next('.dropdown');
   if(!dropdown_panel.length){
     var dropdown_content = $('<div class="dropdown-panel"></div>');
-    var event_data = {
-      "id": event.id,
-      "type": event.type,
-      "allocation_tags_ids": $("#allocation_tags_ids").val()
-    };
-    
-    $.get("/agendas/dropdown_content", event_data, function(data){$(dropdown_content).append(data);});
+    var url = event.dropdown_path.replace('all_params', $("#allocation_tags_ids").val().replace(/ /g, ","));
+    $.get(url, function(data){$(dropdown_content).append(data);});
 
     var dropdown = $("<div class='dropdown dropdown-tip' id='dropdown_details_"+event.type+"_"+event.id+"' style='z-index: 999;'></div>");
     $(dropdown).append(dropdown_content);

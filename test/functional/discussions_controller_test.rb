@@ -167,4 +167,15 @@ class DiscussionsControllerTest < ActionController::TestCase
     assert_response :unprocessable_entity
   end  
 
+  test "edicao - ver detalhes" do
+    get(:show, {id: discussions(:forum_1).id, allocation_tags_ids: [allocation_tags(:al3).id]})
+    assert_template :show
+  end
+
+  test "edicao - ver detalhes - aluno" do
+    sign_in users(:aluno1)
+    get(:show, {id: discussions(:forum_1).id, allocation_tags_ids: [allocation_tags(:al3).id]})
+    assert_template :show
+  end
+
 end

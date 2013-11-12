@@ -224,7 +224,19 @@ Solar::Application.routes.draw do
       get :list
       get :calendar
       get :events
-      get :dropdown_content
+
+      resources :assignment, only: [] do
+        get "assignment/:id/:allocation_tags_ids", to: "agendas#dropdown_content", type: "Assignment", as: :dropdown_content_of, on: :member
+      end
+      resources :discussion, only: [] do
+        get "/:allocation_tags_ids", to: "agendas#dropdown_content", type: "Discussion", as: :dropdown_content_of, on: :member
+      end
+      resources :chat_room, only: [] do
+        get "/:allocation_tags_ids", to: "agendas#dropdown_content", type: "ChatRoom", as: :dropdown_content_of, on: :member
+      end
+      resources :schedule_event, only: [] do
+        get "/:allocation_tags_ids", to: "agendas#dropdown_content", type: "ScheduleEvent", as: :dropdown_content_of, on: :member
+      end
     end
   end
 
