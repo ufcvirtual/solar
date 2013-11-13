@@ -4,7 +4,7 @@
 
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_chat_room_path(allocation_tags_ids: [@allocation_tags_ids].flatten), class: " btn btn_main", id: "new_chat", :"data-tooltip" => t(".new_chat")
+      = link_to content_tag(:i, nil, class: 'icon-plus'), new_chat_room_path(allocation_tags_ids: [@allocation_tags_ids].flatten), class: " btn btn_main", id: "new_chat", :"data-tooltip" => t(".new_chat")
 
     .block_toolbar_right
       .btn-group

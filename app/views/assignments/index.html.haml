@@ -4,7 +4,7 @@
 
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_assignment_path(allocation_tags_ids: [@allocation_tags_ids].flatten), class: " btn btn_main fancybox.ajax", id: "new_assignment", :"data-tooltip" => t(:new, scope: "assignment.list")
+      = link_to content_tag(:i, nil, class: 'icon-plus'), new_assignment_path(allocation_tags_ids: [@allocation_tags_ids].flatten), class: " btn btn_main fancybox.ajax", id: "new_assignment", :"data-tooltip" => t(:new, scope: "assignment.list")
     .block_toolbar_right
       .btn-group
         = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit edit_assignment', "data-link-to-edit" => edit_assignment_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), "data-edit-title" => t(:edit, scope: "assignment.list"), disabled: true, :"data-tooltip" => t(".edit_assignment")

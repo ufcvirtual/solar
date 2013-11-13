@@ -1,8 +1,8 @@
 .show_notification
   #lightBoxDialogTitle
     %h1= @notification.title
-    = link_to_function content_tag(:i, nil, class: 'icon-arrow-right-4'), "next_notification()", class: "next"
-    = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-4'), "prev_notification()", class: "prev"
+    = link_to_function content_tag(:i, nil, class: 'icon-arrow-right-thin'), "next_notification()", class: "next"
+    = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-thin'), "prev_notification()", class: "prev"
 
   .block_content
     / .head

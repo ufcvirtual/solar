@@ -79,7 +79,7 @@
     .block_wrapper
       .block_title
         %h2
-          %i.icon-people
+          %i.icon-users
           = @group.group_name
       .block_content
         - gp = GroupParticipant.all_by_group_assignment(@group_id)
@@ -99,7 +99,7 @@
   .block_wrapper
     .block_title
       %h2
-        %i.icon-people
+        %i.icon-users
         = t(:student)
     .block_content
       = User.find(@student_id).name
@@ -245,7 +245,7 @@
                             .assignment_comment_date= l(comment_file.attachment_updated_at, :format => :at_date)
                             / = button_tag(:type => :button, :onclick => "javascript:remove_file(#{comment_file.id}, #{comment.id}, this);", :id => "remove_file_#{comment_file.id}", :class => "btn btn_default", :title => t(:remove_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files]), :alt => t(:remove_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files])) do
                             /   %i.icon-trash
-                            = link_to (content_tag(:i, nil, :class=>'icon-cross-3 warning')), '#', :onclick => "javascript:remove_file(#{comment_file.id}, #{comment.id}, this);", :id => "remove_file_#{comment_file.id}", :title => t(:remove_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files])
+                            = link_to (content_tag(:i, nil, :class=>'icon-cross-circle warning')), '#', :onclick => "javascript:remove_file(#{comment_file.id}, #{comment.id}, this);", :id => "remove_file_#{comment_file.id}", :title => t(:remove_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files])
                             = link_to (content_tag(:i, nil, :class=>'icon-restore')), '#', :onclick => "javascript:recover_file(#{comment_file.id}, #{comment.id}, this);", :id => "recover_file_#{comment_file.id}", :title => t(:recover_file, :file_name => comment_file.attachment_file_name, :scope => [:assignment, :files])
                       = hidden_field_tag 'deleted_files[]', "", {:id => "delete_file_#{comment.id}"}
                       = file_field_tag 'comment_files[]', :class => "comments_files"

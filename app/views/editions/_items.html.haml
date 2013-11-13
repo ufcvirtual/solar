@@ -7,7 +7,7 @@
       - if (can? :list, Bibliography, on: @allocation_tags_ids) and (Bibliography.constants.include?("#{@selected}_PERMISSION".to_sym))
         .uc_item
           .bibliography{:"data-link" => list_bibliographies_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
-            = link_to(content_tag(:i, nil, class: 'icon-people big'), "#", class: 'btn')
+            = link_to(content_tag(:i, nil, class: 'icon-users big'), "#", class: 'btn')
             = link_to t(".bibliography"), "#"
 
       - if (can? :calendar, Agenda, on: @allocation_tags_ids)
@@ -35,7 +35,7 @@
       - if (can? :list, Discussion, on: @allocation_tags_ids)  and (Discussion.constants.include?("#{@selected}_PERMISSION".to_sym))
         .uc_item
           .discussion{:"data-link" => list_discussions_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
-            = link_to(content_tag(:i, nil, class: 'icon-people big'), "#", class: 'btn')
+            = link_to(content_tag(:i, nil, class: 'icon-users big'), "#", class: 'btn')
             = link_to t(".discussion"), "#"
 
       - if ((can? :index, ChatRoom, on: @allocation_tags_ids) and ChatRoom.constants.include?("#{@selected}_PERMISSION".to_sym))
