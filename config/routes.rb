@@ -35,9 +35,10 @@ Solar::Application.routes.draw do
     end
     collection do
       get :manage_user 
-      get :search_users
+      get :search_users      
       get "user/:id/show_user", to: :show_user, as: :show_user
       get "user/:id/edit", to: :edit_user, as: :edit_user
+      get "allocation/:id/show_allocation", to: :show_allocation, as: :show_allocation
       get "allocation/:id/edit", to: :edit_allocation, as: :edit_allocation
       get :allocations_user
       get :change_password

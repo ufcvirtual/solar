@@ -27,15 +27,14 @@ $(function() {
 
 });
 
-
-function manage_allocation(obj) {
+function manage(obj) {
   $(obj).closest('tr').addClass('active');
   $.get($(obj).attr('edit-link'), function(data) { $(obj).closest('tr').html(data); });
 };
 
-function cancel_allocation(obj) {
+function cancel(obj) {
   $(obj).closest('tr').removeClass('active');
-  $.get($(obj).attr('show-link'), function(data) { $(obj).closest('.allocations_user').html(data); });
+  $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
 }
 
 function update_allocation(obj) {
@@ -45,24 +44,13 @@ function update_allocation(obj) {
     type: 'PUT',
     url: url,
     data: {
-      "id": $(obj).attr('allocation-id'),
       "status": $('#status_id option:selected', $(obj).closest('tr')).val()
     },
     success: function(data, textStatus, jqXHR) {
       $(obj).closest('tr').removeClass('active');
-      $.get($(obj).attr('show-link'), function(data) { $(obj).closest('.allocations_user').html(data); });
+      $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
     }
   })
-}
-
-function edit_user(obj) {
-  $(obj).closest('tr').addClass('active');
-  $.get($(obj).attr('edit-link'), function(data) { $(obj).closest('tr').html(data); });
-};
-
-function cancel(obj) {
-  $(obj).closest('tr').removeClass('active');
-  $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
 }
 
 function update_user(obj) {

@@ -1,0 +1,16 @@
+%td=@user.name
+%td{style: 'width:200px'}=@user.email
+%td{style: 'width:100px'}=@user.username
+%td{style: 'width:80px'}=@user.cpf
+%td{style: 'width:75px'}=name_user_status(@user.active)
+%td{style: 'width:140px; align:right'}
+  %a{class: "info_list btn", :"data-dropdown"=>"#info-dropdown#{@user.id}" }=content_tag(:i, nil, class: 'icon-info') + content_tag(:i, nil, class: 'icon-arrow-down-3')
+  .dropdown.dropdown-tip{ class: "info_list", id: "info-dropdown#{@user.id}" }
+    %ul{ class: "dropdown-menu" }
+      %li= link_to t(:details, :scope => [:administrations, :users]), "#", class: 'btn_info_user_administrations', :"data-link-edit" => user_path(@user), :"data-tooltip" => t(:details, :scope => [:administrations, :users])
+      %li= link_to t(:allocations, :scope => [:administrations, :users]), "#", class: 'btn_allocations_user_administrations', :"data-link-edit" => allocations_user_administrations_path(id: @user.id), :"data-tooltip" => t(:allocations, :scope => [:administrations, :users])
+      %li{ class: 'border' }= (label_tag t(:last_accessed, :scope => [:administrations, :users]) + ' ' + last_accessed(@user.id))
+
+  = link_to_function content_tag(:i, nil, class: 'btn icon-edit'), "manage(this)", :"data-tooltip" => t(:edit, :scope => [:administrations, :users]), :"edit-link" => edit_user_administrations_path(@user), :"show-link" => show_user_administrations_path(id: @user.id)
+
+  = link_to content_tag(:i, nil, class: 'btn icon-key'), "#", class: 'btn_change_pwd_administrations', :"data-link-edit" => change_password_administrations_path(id: @user.id), :"data-tooltip" => t(:change_password, :scope => [:administrations, :users])

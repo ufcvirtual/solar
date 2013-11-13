@@ -17,17 +17,18 @@ class AdministrationsController < ApplicationController
   	type_search = params[:type_search]
     @text_search = URI.unescape(params[:user]) unless params[:user].nil?
 
-    case type_search
-      when "0"
-        @users = User.where("lower(name) ~ '#{@text_search.downcase}'").paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
-      when "1"
-        @users = User.where("lower(email) ~ '#{@text_search.downcase}'").paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
-      when "2"
-        @users = User.where("lower(username) ~ '#{@text_search.downcase}'").paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
-      else
-        @users = User.where("lower(cpf) ~ '#{@text_search.downcase}'").paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
+    unless @text_search.nil?
+      case type_search
+        when "0"
+          @users = User.where("lower(name) ~ '#{@text_search.downcase}'").paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
+        when "1"
+          @users = User.where("lower(email) ~ '#{@text_search.downcase}'").paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
+        when "2"
+          @users = User.where("lower(username) ~ '#{@text_search.downcase}'").paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
+        else
+          @users = User.where("lower(cpf) ~ '#{@text_search.downcase}'").paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
+      end
     end
-
   end
 
   def allocations_user
@@ -42,6 +43,14 @@ class AdministrationsController < ApplicationController
     @periods = Schedule.joins(:semester_periods).map {|p| [p.start_date.year, p.end_date.year] }.flatten.uniq.sort! {|x,y| y <=> x} #desc
   end
 
+  def show_allocation
+    @allocation = Allocation.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render json: @allocation}
+    end
+  end
+
   def edit_allocation
     @allocation = Allocation.find(params[:id])
   end
@@ -49,6 +58,11 @@ class AdministrationsController < ApplicationController
   def update_allocation
     @allocation = Allocation.find(params[:id])
     @allocation.update_attribute(:status, params[:status])
+
+    respond_to do |format|
+      format.html { render action: :show_allocation, id: params[:id] }
+      format.json { render json: {status: "ok"}  }
+    end
   end
 
   def show_user
@@ -66,7 +80,12 @@ class AdministrationsController < ApplicationController
   def update_user
     @user = User.find(params[:id])
     active = (params[:status]==1) ? true : false
-    @user.update_attributes!(active: active, name: params[:name], email: params[:email])
+    @user.update_attributes(active: active, name: params[:name], email: params[:email])
+
+    respond_to do |format|
+      format.html { render action: :show_user, id: params[:id] }
+      format.json { render json: {status: "ok"}  }
+    end
   end
 
   def change_password
