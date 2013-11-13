@@ -11,21 +11,13 @@ $(function() {
     }
   });
 
-  $(".btn_info_user_administrations").click(function() {
-    var url = $(this).data('link-edit');
-    $(this).call_fancybox({href : url, open: true});
-  });
-
-  $(".btn_allocations_user_administrations").click(function() {
-    var url = $(this).data('link-edit');
-    $(this).call_fancybox({href : url, open: true});
-  });
-
   $(".btn_change_password").click(function() {
     $(this).call_fancybox();
   });
 
 });
+
+// --- pagina de consultar usuario
 
 function manage(obj) {
   $(obj).closest('tr').addClass('active');
@@ -69,4 +61,14 @@ function update_user(obj) {
       $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
     }
   })
+}
+
+function information(obj) {
+  var url = $(obj).attr('show-link');
+  $(obj).call_fancybox({href : url, open: true});
+}
+
+function allocations(obj) { 
+  var url = $(obj).attr('show-link');
+  $(obj).call_fancybox({href : url, open: true});
 }
