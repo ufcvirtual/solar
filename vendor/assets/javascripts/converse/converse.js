@@ -1284,7 +1284,7 @@
                 '<a style="color: white"> Bate-Papo </a>' +
                 '<a style="display: none; color: white" id="online-count">(0)</a>' +
                 '<ul id="controlbox-tabs"></ul>'+
-                '<a class="close-chatbox-button icons-close"></a>'+
+                //'<a class="close-chatbox-button icons-close"></a>'+
                 '</div>'+
                 '<div class="controlbox-panes"></div>'
             ),
@@ -3007,10 +3007,17 @@
         // This is the end of the initialize method.
         this.chatboxes = new this.ChatBoxes();
         this.chatboxesview = new this.ChatBoxesView({model: this.chatboxes});
+        aux = true;
         $('.toggle-online-users').bind(
             'click',
             $.proxy(function (e) {
-                e.preventDefault(); this.toggleControlBox();
+                e.preventDefault(); 
+                //this.toggleControlBox();
+                if(aux)
+                    $("#collective-xmpp-chat-data").css("display","none");
+                else
+                    $("#collective-xmpp-chat-data").css("display","block");
+                aux = !aux;
             }, this)
         );
         if ((this.prebind) && (!this.connection)) {
