@@ -15,7 +15,7 @@
           = [t(".period"), ": #{period}"].join
       .block_content_toolbar
         .block_toolbar_left.btn-group
-          = link_to (content_tag(:i, nil, class: 'icon-plus-3')), new_semester_offer_path(semester, type_id: type_id, course_id: (params[:course_id] || ""), curriculum_unit_id: (params[:curriculum_unit_id] || "")), :"data-semester-name" => semester.name, class: " btn btn_main link_new_offer", :"data-tooltip" => t(".new_offer")
+          = link_to (content_tag(:i, nil, class: 'icon-plus')), new_semester_offer_path(semester, type_id: type_id, course_id: (params[:course_id] || ""), curriculum_unit_id: (params[:curriculum_unit_id] || "")), :"data-semester-name" => semester.name, class: " btn btn_main link_new_offer", :"data-tooltip" => t(".new_offer")
 
         .block_toolbar_right
           = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'delete_offer btn btn_del', :'data-tooltip' => t(".delete_offer"), :"data-link-delete" => offer_path(id: ':id')

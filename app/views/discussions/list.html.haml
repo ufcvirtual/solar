@@ -4,7 +4,7 @@
     %h2= t(".discussions")
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_discussion_path(allocation_tags_ids: @allocation_tags_ids), class: " btn btn_main", id: "new-discussion", :"data-tooltip" => t(".new")
+      = link_to content_tag(:i, nil, class: 'icon-plus'), new_discussion_path(allocation_tags_ids: @allocation_tags_ids), class: " btn btn_main", id: "new-discussion", :"data-tooltip" => t(".new")
 
     .block_toolbar_right
       .btn-group

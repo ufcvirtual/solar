@@ -12,7 +12,7 @@
 
     .align-right
       = link_to ({:action => 'new', :search => @search_text}), :class =>'btn', 'data-tooltip' => t(:message_new) do
-        %i.icon-plus-3
+        %i.icon-plus
 
       - if @box != "trashbox"
         #mark_as_unread.btn{:"data-tooltip" => t(:message_mark_as_unread), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "unread", box: @box)}

@@ -29,7 +29,7 @@
       %span#lesson_files_select_all= t(".all")
     .btn-group
       %a.btn.btn_main#btn-new{:href => nil, 'data-dropdown' => "#lesson_item_dropdown"}
-        = content_tag(:i, nil, :class=>'icon-plus-3')
+        = content_tag(:i, nil, :class=>'icon-plus')
         %i.icon-arrow-down-3
       #lesson_item_dropdown.dropdown.dropdown-tip
         %ul.dropdown-menu
@@ -38,7 +38,7 @@
           %li
             %a#lesson_new_folder{:href => nil, 'data-path' => new_folder_lesson_files_path(lesson_id: @lesson.id)}= t(".new_folder")
     .btn-group
-      = button_tag content_tag(:i, nil, :class=>'icon-house'), type: :button, :class => 'btn', id: 'btn-initial-file', :'data-tooltip' => t('.initial_file')
+      = button_tag content_tag(:i, nil, :class=>'icon-home'), type: :button, :class => 'btn', id: 'btn-initial-file', :'data-tooltip' => t('.initial_file')
     .btn-group
       = button_tag content_tag(:i, nil, :class=>'icon-unzip-file'), type: :button, :class => 'btn', id: 'btn-unzip', :'data-tooltip' => t('.unzip'), :"data-unzip-path" => extract_lesson_files_path(@lesson.id, ':file')
       = button_tag content_tag(:i, nil, :class=>'icon-edit'), type: :button, :class => 'btn', id: 'btn-rename', :'data-tooltip' => t('.rename')

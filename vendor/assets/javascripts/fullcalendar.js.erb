@@ -67,8 +67,8 @@ var defaults = {
   firstDay: 0,
 
   buttonText: {
-    prev: 'icon-arrow-left-4',
-    next: 'icon-arrow-right-4',
+    prev: 'icon-arrow-left-thin',
+    next: 'icon-arrow-right-thin',
     prevYear: '&nbsp;&lt;&lt;&nbsp;',
     nextYear: '&nbsp;&gt;&gt;&nbsp;',
     today: '',
@@ -98,8 +98,8 @@ var rtlDefaults = {
     right: 'day, week, month'
   },
   buttonText: {
-    prev: 'icon-arrow-left-4',
-    next: 'icon-arrow-right-4',
+    prev: 'icon-arrow-left-thin',
+    next: 'icon-arrow-right-thin',
     prevYear: '&nbsp;&lt;&lt;&nbsp;',
     nextYear: '&nbsp;&gt;&gt;&nbsp;',
     today: '',
@@ -710,8 +710,8 @@ function Header(calendar, options) {
       ids_to_forms = options.ids_to_forms.split(",");
       if(ids_to_forms.length > 0){
         var button = $("<a class='btn btn_main' data-dropdown='#dropdown_options' href='#'>")
-          .append("<i class='icon-plus-3'></i>")
-          .append("<i class='icon-arrow-down-3'></i>")
+          .append("<i class='icon-plus'></i>")
+          .append("<i class='icon-arrow-down-triangle'></i>")
           .append("</a>");
         e.append(button);
         e.append("<span class='fc-header-space'/>");

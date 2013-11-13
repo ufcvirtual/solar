@@ -34,7 +34,7 @@
               %label
               %span#file{:"data-file-id" => ef.id}
                 = ef.attachment_file_name
-                %i.icon-cross-3.warning.remove_file
+                %i.icon-cross-circle.warning.remove_file
 
       .input
         = f.label t(".groups")
@@ -74,7 +74,7 @@
       $("input[type='file']", new_form).click();
 
       $("input[type='file']", new_form).change(function(){
-        var new_file_name = "<div class='input files'> <label></label> <span id='file' data-input-file-name=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-3 warning remove_file'></i> </span> </div>";
+        var new_file_name = "<div class='input files'> <label></label> <span id='file' data-input-file-name=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-circle warning remove_file'></i> </span> </div>";
 
         if ($(".list_files_to_send .files:last").lenght)
           $(".list_files_to_send .files:last").after(new_file_name);

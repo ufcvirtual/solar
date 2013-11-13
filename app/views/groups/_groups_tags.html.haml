@@ -13,7 +13,7 @@
   - new_groups = (all_groups - groups).in_groups(2, false)
   - unless new_groups.first.empty?
     %span.new_groups
-      = content_tag(:i, nil, class: "icon icon-plus-3 add_group", :"data-dropdown" => ".add_group_dropdown_#{tool.id}", :"data-tooltip" => t(".add_group"))
+      = content_tag(:i, nil, class: "icon icon-plus add_group", :"data-dropdown" => ".add_group_dropdown_#{tool.id}", :"data-tooltip" => t(".add_group"))
       %div{id: "dropdown", class: "dropdown dropdown-tip add_group_dropdown_#{tool.id}"}
         = form_for :group do |f|
           - new_groups.each do |new_group|
