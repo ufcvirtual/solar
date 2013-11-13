@@ -384,7 +384,7 @@
                     }
                     this.windowState = e.type;
                 },this));
-                this.giveFeedback(__('Online Contacts'));
+                this.giveFeedback(__('Connected'));
                 if (this.testing) {
                     this.callback(this);
                 } else  {
