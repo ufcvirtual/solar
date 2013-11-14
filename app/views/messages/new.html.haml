@@ -19,17 +19,67 @@
   };
 
 .message_external_div
-
   = render "message_header"
-  = simple_form_for :message, url: send_message_messages_path, html: {id: "form_message_text", multipart: true, :onsubmit => "return validate_sending();"} do |f|
-    = render "message_header_to", form: f
+  = simple_form_for @message, html: {id: "form_message_text", multipart: true} do |f|
+
+    = render "contacts"
+    = f.input :contacts, as: :hidden
+
+    .block_content
+      .message_header_new
+        .message_new_text_to
+          .label.align-left
+            %a#link_to_contacts.link_content= t(:message_to)
+          .input.align-right= text_field_tag :message_to, "", class: "message_new_textbox", readonly: true, placeholder: "os contatos serao add aqui"
+        .message_new_text_to
+          .label.align-left= t(:message_subject)
+          .input.align-right= f.input :subject, label: false, input_html: {class: "message_new_textbox"}
+
+        .message_new_upload
+
+          #new_message_file
+            .label.align-left= t(".attach")
+            / para add novo arquivo
+            %button#link_upload.btn.btn_default{"data-tooltip" => t(:message_attach_file), onclick: "message_add_new_file(); return false;"}
+              %i.icon-paperclip
+
+            / verificar como foi feito em outras telas
+            = f.simple_fields_for :files do |file|
+              .duplicatable_nested_form
+                .inline
+                  = file.file_field :attachment
+
+                  - if file.object.new_record?
+                    = link_to content_tag(:i, nil, class: 'icon-minus'), '', remote: true, class: 'destroy_duplicate_nested_form'
+                  - else
+                    .destroy_file
+                      = file.input :_destroy, as: :hidden
+                      = link_to content_tag(:i, nil, class: 'icon-minus'), '', remote: true, class: 'destroy_duplicate_nested_form'
+
 
     #div_new_message
-      = f.input :content, label: false, as: :ckeditor, input_html: {value: @original_message, name: "content"}
+      = f.input :content, label: false, as: :ckeditor
 
     .message_new_action
+
+      / desabilitar botao de enviar enquanto nao preencher content e contatos
+
       = f.submit t(:message_send), id: "send_message", class: "btn btn_main", alt: t(:message_send)
-      = hidden_field_tag :id, @original_message_id
+      / = hidden_field_tag :id, @original_message_id
       = link_to t(:message_discard), inbox_messages_path, {class: "btn btn_caution"}
 
 = javascript_include_tag "message"
+
+:javascript
+
+  function message_add_new_file() {
+    alert("ainda nao feito... fazer para todo o sistema: has_many");
+  }
+
+  $(function(){
+
+    $("#link_to_contacts, #message_to").click(function(){
+      $.fancybox.open({ modal: true, href: "#content-div" });
+    });
+
+  });

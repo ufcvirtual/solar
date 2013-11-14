@@ -11,9 +11,10 @@ class User < ActiveRecord::Base
   has_many :user_messages
   has_many :message_labels
   has_many :assignment_files
+  has_many :chat_messages
+
   has_many :user_contacts, class_name: "UserContact", foreign_key: "user_id"
   has_many :user_contacts, class_name: "UserContact", foreign_key: "user_related_id"
-  has_many :chat_messages
 
   after_create :basic_profile_allocation
 
@@ -195,6 +196,15 @@ class User < ActiveRecord::Base
   # faltando pegar apenas alocacoes validas
   def all_allocation_tags(objects = false)
     allocation_tags.map {|at| at.related(all: true, objects: objects)}.flatten.uniq
+  end
+
+  def to_msg
+    {
+      id: id,
+      name: name,
+      email: email,
+      resume: "#{name} <#{email}>"
+    }
   end
 
 end

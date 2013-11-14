@@ -257,9 +257,9 @@ Solar::Application.routes.draw do
     end
 
     collection do
-      get :index, box: "inbox"
-      get :inbox, action: :index, box: "inbox", as: :inbox
-      get :outbox, action: :index, box: "outbox", as: :outbox
+      get :index,                    box: "inbox"
+      get :inbox,    action: :index, box: "inbox", as: :inbox
+      get :outbox,   action: :index, box: "outbox", as: :outbox
       get :trashbox, action: :index, box: "trashbox", as: :trashbox
 
       post :ajax_get_contacts

@@ -3,10 +3,10 @@
     .message_new_text_to
       .label.align-left
         %a#link_to_contacts.link_content= t(:message_to)
-      .input.align-right= text_field_tag  'to', @target, :class=> "message_new_textbox", :readonly => true
+      .input.align-right= text_field_tag :to, @target, class: "message_new_textbox", readonly: true
     .message_new_text_to
       .label.align-left= t(:message_subject)
-      .input.align-right= text_field_tag  'subject', @subject, :class=> "message_new_textbox"
+      .input.align-right= form.input :subject, label: false, input_html: {value: @subject, class: "message_new_textbox"}
     .clearfix
     .message_new_upload
 

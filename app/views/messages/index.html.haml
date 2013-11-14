@@ -40,13 +40,13 @@
               - css_class = message.was_read?(current_user.id, @box) ? "message_read" : "message_unread"
               = hidden_field_tag 'message_style', css_class
             %td.td_subject
-              - if label = message.label(current_user.id)
+              - message.labels(current_user.id, system_label = @show_system_label).each do |label|
                 %span.message_label= label
               = link_to message.subject, msg_path, class: css_class
 
             %td.td_attachment= content_tag(:i, nil, class: 'icon-paperclip') if message.has_attachment?
             %td.td_sender= link_to message.sent_by.name, msg_path
-            %td.td_time= link_to l(message.send_date, format: :short), msg_path
+            %td.td_time= link_to l(message.created_at, format: :short), msg_path
     - else
       .text_none= t(:message_none)
 

@@ -1886,8 +1886,8 @@
     newsfeed: Feed de notícias
 
   messages:
-    message_header_to:
-      attach: "Anexar: "
+    new:
+      attach: "Anexar"
     show:
       to: "Para: "
       from: "De: "

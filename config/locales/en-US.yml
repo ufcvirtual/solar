@@ -1730,8 +1730,8 @@
     newsfeed: News Feed 
 
   messages:
-    message_header_to:
-      attach: "Attach "
+    new:
+      attach: "Attach"
     show:
       to: "To: "
       from: "From: "

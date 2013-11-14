@@ -244,7 +244,9 @@
     width: 705px;
   }
 }
-#newPostUploadPanel{
+
+#new_message_file{
+  padding-bottom: 5px;
   .label{
     width: 60px;
     margin-top: 5px;
@@ -453,10 +455,6 @@ ul.message_menu_listbox li ul {
   a:hover {
     background: #eee;
   }
-}
-
-#newPostUploadPanel { // FIXME: essa classe é utilizada apenas em mensagens mas o nome dela está estranho
-  padding-bottom: 5px;
 }
 
 #receiver_already_added {
