@@ -403,6 +403,8 @@
         });
 
         this.ChatBox = Backbone.Model.extend({
+            url: "//",
+
             initialize: function () {
                 if (this.get('box_id') !== 'controlbox') {
                     this.messages = new converse.Messages();
@@ -1236,7 +1238,6 @@
                 'click a.close-chatbox-button': 'closeChat',
                 'click ul#controlbox-tabs li a': 'switchTab'
             },
-
             initialize: function () {
                 this.$el.appendTo(converse.chatboxesview.$el);
                 this.model.on('change', $.proxy(function (item, changed) {
@@ -3007,6 +3008,8 @@
         // This is the end of the initialize method.
         this.chatboxes = new this.ChatBoxes();
         this.chatboxesview = new this.ChatBoxesView({model: this.chatboxes});
+        
+        //Esconde as chatboxes ao clicar no "Conectado" 
         aux = true;
         $('.toggle-online-users').bind(
             'click',
@@ -3020,6 +3023,8 @@
                 aux = !aux;
             }, this)
         );
+
+
         if ((this.prebind) && (!this.connection)) {
             if ((!this.jid) || (!this.sid) || (!this.rid) || (!this.bosh_service_url)) {
                 this.log('If you set prebind=true, you MUST supply JID, RID and SID values');
