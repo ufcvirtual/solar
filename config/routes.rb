@@ -251,19 +251,26 @@ Solar::Application.routes.draw do
 
   resources :schedule_events, except: [:index]
 
-  resources :messages, except: [:destroy, :update] do
+  resources :messages, only: [:new, :show, :create, :index] do
     member do
       put ":box/:new_status", to: "messages#update", as: :change_status, constraints: {box: /(inbox)|(outbox)|(trashbox)/, new_status: /(read)|(unread)|(trash)|(restore)/}
+
+      get :reply,     to: :reply, type: "reply"
+      get :reply_all, to: :reply, type: "reply_all"
+      get :forward,   to: :reply, type: "forward"
+
     end
 
     collection do
+      put ":id", to: :create
+
       get :index,                    box: "inbox"
-      get :inbox,    action: :index, box: "inbox", as: :inbox
-      get :outbox,   action: :index, box: "outbox", as: :outbox
+      get :inbox,    action: :index, box: "inbox",    as: :inbox
+      get :outbox,   action: :index, box: "outbox",   as: :outbox
       get :trashbox, action: :index, box: "trashbox", as: :trashbox
 
-      post :ajax_get_contacts
-      post :send_message
+      # post :ajax_get_contacts
+      # post :send_message
 
       get "download/file/:file_id", to: "messages#download_files", as: :download_file
     end
@@ -336,7 +343,7 @@ Solar::Application.routes.draw do
 
   get "/media/users/:user_id/photos/:style.:extension", to: "access_control#users"
 
-  get "/media/messages/:file.:extension", to: "access_control#message"
+  # get "/media/messages/:file.:extension", to: "access_control#message"
   get "/media/assignment/sent_assignment_files/:file.:extension", to: "access_control#assignment"
   get "/media/assignment/comments/:file.:extension", to: "access_control#assignment"
   get "/media/assignment/public_area/:file.:extension", to: "access_control#assignment"

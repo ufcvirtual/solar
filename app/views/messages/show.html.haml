@@ -3,15 +3,15 @@
     %h2= @message.subject
   .block_content.messages
     .align-left
-      = link_to new_message_path(id: @message.id, target: "sender"), class: 'btn btn_main', :'data-tooltip' => t(:message_reply) do
+      = link_to reply_message_path(@message), class: 'btn btn_main', :'data-tooltip' => t(:message_reply) do
         %i.icon-reply
-      = link_to new_message_path(id: @message.id, target: "all"), class: 'btn', :'data-tooltip' => t(:message_reply_all) do
+      = link_to reply_all_message_path(@message), class: 'btn', :'data-tooltip' => t(:message_reply_all) do
         %i.icon-reply-all
-      = link_to new_message_path(id: @message.id), class: 'btn', :'data-tooltip' => t(:message_route) do
+      = link_to forward_message_path(@message), class: 'btn', :'data-tooltip' => t(:message_forward) do
         %i.icon-forward
 
     .align-right
-      = link_to ({:action => 'new', :search => @search_text}), :class =>'btn', 'data-tooltip' => t(:message_new) do
+      = link_to new_message_path, :class =>'btn', 'data-tooltip' => t(:message_new) do
         %i.icon-plus
 
       - if @box != "trashbox"
@@ -53,7 +53,6 @@
   %hr
   .message_div_show
     = sanitize @message.content
-
   %hr
 
   .message_div_navigation

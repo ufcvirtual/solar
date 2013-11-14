@@ -1,0 +1,83 @@
+:javascript
+  CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
+
+= javascript_include_tag "ckeditor/init"
+
+:javascript
+  CKEDITOR.editorConfig = function(config) {
+    config.toolbar =
+      [
+        { name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
+        { name: 'styles', items : [ 'Styles', 'Format' ] },
+        { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] },
+        { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] },
+        { name: 'links', items : [ 'Link', 'Unlink' ] },
+        { name: 'insert', items : ['EqnEditor'] }
+      ];
+
+      config.extraPlugins = 'eqneditor';
+  };
+
+.message_external_div
+  = render "message_header"
+  = simple_form_for @message, html: {id: "form_message_text", multipart: true} do |f|
+
+    - if @original
+      = f.input :original, as: :hidden, input_html: {value: @original.id}
+    = render "contacts"
+    = f.input :contacts, as: :hidden, input_html: {value: [@reply_to].flatten.compact.map { |c| c[:id] }.join(", ")}
+
+    .block_content
+      .message_header_new
+        .message_new_text_to
+          .label.align-left
+            %a#link_to_contacts.link_content= t(:message_to)
+          .input.align-right= text_field_tag :message_to, [@reply_to].flatten.compact.map { |c| c[:resume] }.join(", "), class: "message_new_textbox", readonly: true, placeholder: "os contatos serao add aqui"
+        .message_new_text_to
+          .label.align-left= t(:message_subject)
+          .input.align-right= f.input :subject, label: false, input_html: {class: "message_new_textbox"}
+
+        .message_new_upload
+
+          #new_message_file
+            .label.align-left= t(".attach")
+            / para add novo arquivo
+            %button#link_upload.btn.btn_default{"data-tooltip" => t(:message_attach_file), onclick: "message_add_new_file(); return false;"}
+              %i.icon-paperclip
+
+            / verificar como foi feito em outras telas
+            = f.simple_fields_for :files do |file|
+              .duplicatable_nested_form
+                .inline
+                  = file.file_field :attachment
+
+                  / - if file.object.new_record?
+                  /   = link_to content_tag(:i, nil, class: 'icon-minus'), '', remote: true, class: 'destroy_duplicate_nested_form'
+                  / - else
+                  /   .destroy_file
+                  /     = file.input :_destroy, as: :hidden
+                  /     = link_to content_tag(:i, nil, class: 'icon-minus'), '', remote: true, class: 'destroy_duplicate_nested_form'
+
+
+    #div_new_message
+      = f.input :content, label: false, as: :ckeditor
+
+    .message_new_action
+      = f.submit t(:message_send), id: "send_message", class: "btn btn_main", alt: t(:message_send)
+      = link_to t(:message_discard), inbox_messages_path, {class: "btn btn_caution"}
+
+= javascript_include_tag "message"
+
+:javascript
+
+  function message_add_new_file() {
+    alert("ainda nao feito... fazer para todo o sistema: has_many");
+  }
+
+  $(function(){
+
+    $("#link_to_contacts, #message_to").click(function(){
+      $.fancybox.open({ modal: true, href: "#content-div" });
+    });
+
+  });
