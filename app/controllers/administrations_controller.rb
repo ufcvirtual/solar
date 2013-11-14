@@ -79,9 +79,8 @@ class AdministrationsController < ApplicationController
 
   def update_user
     @user = User.find(params[:id])
-    active = (params[:status]==1) ? true : false
+    active = (params[:status]=="1") ? true : false
     @user.update_attributes(active: active, name: params[:name], email: params[:email])
-raise error
     respond_to do |format|
       format.html { render action: :show_user, id: params[:id] }
       format.json { render json: {status: "ok"}  }
