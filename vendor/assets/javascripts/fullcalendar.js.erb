@@ -74,7 +74,7 @@ var defaults = {
     today: '',
     agendaDay: 'icon-calendar-day',
     agendaWeek: 'icon-calendar-week',
-    month: 'icon-calendar-list',// colocar o ícone do mês
+    month: 'icon-calendar-month',
     list: 'icon-calendar-list'
   },
   
@@ -105,7 +105,7 @@ var rtlDefaults = {
     today: '',
     agendaDay: 'icon-calendar-day',
     agendaWeek: 'icon-calendar-week',
-    month: 'icon-calendar-list',// colocar o ícone do mês
+    month: 'icon-calendar-month',
     list: 'icon-calendar-list'
   },
   buttonIcons: {
@@ -3085,7 +3085,7 @@ function AgendaView(element, calendar, viewName) {
     }
     
     slotScroller =
-      $("<div style='position:absolute;width:100%;overflow-x:hidden;overflow-y:auto'/>")
+      $("<div style='position:absolute;width:100%;overflow-x:hidden;overflow-y:auto; z-index: 1'/>")
         .appendTo(slotLayer);
         
     slotContent =

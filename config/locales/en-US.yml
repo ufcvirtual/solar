@@ -1753,6 +1753,8 @@
       holiday: Holiday
     form:
       groups: Groups
+      new: New event
+      edit: Edit event
     success:
       created: Event was successfully created.
       updated: Event was successfully updated.

@@ -6,6 +6,20 @@ Solar::Application.configure do
   # since you don't have to restart the webserver when you make code changes.
   config.cache_classes = false
 
+
+
+  # Para poder usar o "descendants" em desenvolvimento:
+  # Conforme em http://avinmathew.com/using-rails-descendants-method-in-development,
+  # O "cache_classes = false" definido em desenvolvimento, faz com que a aplicação 
+  # não carregue as classes até que elas sejam referenciadas. Com isso, o método
+  # "descendants" pode não retornar todas as classes esperadas. Com as linhas abaixo,
+  # todas as classes são carregadas assim que a aplicação é iniciada e, em seguida,
+  # as classes são "requeridas" pela aplicação em cada requisição
+  config.eager_load_paths += Dir['app/models/*.rb']
+  ActionDispatch::Reloader.to_prepare do
+    Dir['app/models/*.rb'].each {|file| require_dependency file}
+  end
+
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true
 

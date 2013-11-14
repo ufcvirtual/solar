@@ -1,11 +1,10 @@
 = hidden_field_tag :allocation_tags_ids, params[:allocation_tags_ids]
 = hidden_field_tag :all_groups_ids, params[:all_groups_ids]
+= hidden_field_tag :selected, params[:selected]
 
-= hidden_field_tag :current_locale, I18n.locale
+.calendar_schedules{:"data-link-list" => calendar_agendas_path(allocation_tags_ids: params[:allocation_tags_ids], all_groups_ids: params[:all_groups_ids], selected: params[:selected])}
 
-.calendar_schedules{:"data-link-list" => calendar_agendas_path(allocation_tags_ids: params[:allocation_tags_ids], all_groups_ids: params[:all_groups_ids])}
-
-  #calendar{:"data-edition" => "true", :"data-ids" => "chat,discussion,assignment,event"}
+  #calendar{:"data-edition" => "true", :"data-ids" => @access_forms}
 
   .legend
     = label_tag t(".legend")
@@ -39,7 +38,7 @@
 
 :javascript
   $(function(){
-    $("#chat")
+    $("#chat_room")
       .html("#{t(".new_chat")}")
       .call_fancybox({href: "#{new_chat_room_path(allocation_tags_ids: [params[:allocation_tags_ids]].flatten, calendar: true)}"});
     $("#discussion")
@@ -48,7 +47,7 @@
     $("#assignment")
       .html("#{t(".new_assignment")}")
       .call_fancybox({href: "#{new_assignment_path(allocation_tags_ids: [params[:allocation_tags_ids]].flatten, calendar: true)}"});
-    $("#event")
+    $("#schedule_event")
       .html("#{t(".new_event")}")
       .call_fancybox({href: "#{new_schedule_event_path(allocation_tags_ids: [params[:allocation_tags_ids]].flatten, calendar: true)}"});
   });

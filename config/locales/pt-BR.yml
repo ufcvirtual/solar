@@ -1909,6 +1909,8 @@
       holiday: Feriado
     form:
       groups: Turmas
+      new: Novo evento
+      edit: Editar evento
     success:
       created: Evento criado com sucesso.
       updated: Evento atualizado com sucesso.
