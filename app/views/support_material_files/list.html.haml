@@ -6,7 +6,7 @@
       .block_toolbar_left.btn-group
         %a.btn.btn_main{href: "#", :"data-dropdown" => "#dropdown_support_material"}
           = content_tag(:i, nil, class: 'icon-plus')
-          %i.icon-arrow-down-3
+          %i.icon-arrow-down-triangle
         .dropdown.dropdown-tip#dropdown_support_material
           %ul.dropdown-menu
             %li= link_to t(".new_file"), new_support_material_file_path(material_type: Material_Type_File, allocation_tags_ids: @allocation_tags_ids), :"data-box-title" => t(".new_file"), class: 'link_new_material_file'

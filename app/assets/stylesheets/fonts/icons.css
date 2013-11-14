@@ -20,6 +20,7 @@
 	color: red;
 }
 
+
 [class^="icon-"], [class*=" icon-"] {
 	font-family: 'Solar';
 	speak: none;
@@ -458,7 +459,7 @@
 .icon-mobile:before {
 	content: "\e0b9";
 }
-.icon-menu:before {
+.icon-move:before {
 	content: "\e0ba";
 }
 .icon-clipboard:before {
@@ -520,6 +521,9 @@
 }
 .icon-arrow-down-triangle:before {
 	content: "\e095";
+}
+.icon-arrow-up-triangle:before {
+	content: "\e096";
 }
 .icon-checkbox-checked:before {
 	content: "\e605";

@@ -25,7 +25,7 @@
                 .minimun= raw(truncate chat.description, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
                 .complete.invisible
                   = chat.description
-                  = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_description"))
+                  = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
 
               - unless chat.chat_type==0 
                 - participants = chat.users
@@ -61,7 +61,7 @@
                   .minimun= raw(truncate chat.description, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
                   .complete.invisible
                     = chat.description
-                    = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_enunciation"))
+                    = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_enunciation"))
 
                 - unless chat.chat_type==0 
                   - participants = chat.users
