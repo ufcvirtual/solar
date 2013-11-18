@@ -1530,7 +1530,7 @@
   email: Email
   cpf: "CPF" 
   active: Ativo
-  blocked: Bloqueado  
+  blocked: Bloqueado
   administrations:
     close: Fechar
     users:

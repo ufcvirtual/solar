@@ -27,7 +27,7 @@
 
           = link_to_function content_tag(:i, nil, class: 'btn icon-edit'), "manage(this)", :"data-tooltip" => t(:edit, :scope => [:administrations, :users]), :"edit-link" => edit_user_administrations_path(user), :"show-link" => show_user_administrations_path(id: user.id)
 
-          = link_to content_tag(:i, nil, class: 'btn icon-key'), "#", class: 'btn_change_pwd_administrations', :"data-link-edit" => change_password_administrations_path(id: user.id), :"data-tooltip" => t(:change_password, :scope => [:administrations, :users])
+          = link_to_function content_tag(:i, nil, class: 'btn icon-key'), "change_password(this)", :"data-tooltip" => t(:change_password, :scope => [:administrations, :users]), :"edit-link" => change_password_administration_path(user), :"show-link" => show_user_administrations_path(id: user.id)
 
   .navigation
     =# will_paginate @users

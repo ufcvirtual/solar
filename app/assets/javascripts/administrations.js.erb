@@ -11,10 +11,6 @@ $(function() {
     }
   });
 
-  $(".btn_change_password").click(function() {
-    $(this).call_fancybox();
-  });
-
 });
 
 // --- pagina de consultar usuario
@@ -71,4 +67,18 @@ function information(obj) {
 function allocations(obj) { 
   var url = $(obj).attr('show-link');
   $(obj).call_fancybox({href : url, open: true});
+}
+
+function change_password(obj) {
+  var url = $(obj).attr('edit-link');
+
+  $.ajax({
+    type: 'PUT',
+    url: url,
+    data: {},
+    success: function(data, textStatus, jqXHR) {
+      $(obj).closest('tr').removeClass('active');
+      $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
+    }
+  })
 }
