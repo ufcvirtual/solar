@@ -10,8 +10,7 @@
       %tbody
         - @bibliographies.each do |bibliography|
           %tr.lines{id: "tr_#{bibliography.id}"}
-            %td
-              .description=raw bibliography.resume
+            %td= raw bibliography.resume
             %td= bibliography.type
 
   - else
