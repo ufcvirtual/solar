@@ -557,6 +557,7 @@
                     head = v.childNodes.item(0);
                     if(head.style.top=="295px")
                     {
+                        console.log("Nova mensagem");
                         texto=head.childNodes.item(1);
                         texto=texto.childNodes.item(0);
                         texto.style.color="black";
@@ -2067,7 +2068,9 @@
 
             openChat: function (ev) {
                 
-                $lastChatbox = $("#collective-xmpp-chat-data .chatbox:not(:first):visible:last");
+                if(maxWindows > 0)
+                {
+                    $lastChatbox = $("#collective-xmpp-chat-data .chatbox:not(:first):visible:last");
 
                  x = converse.chatboxesview.showChatBox({
                     'id': this.model.get('jid'),
@@ -2100,6 +2103,8 @@
                      
             
                 ev.preventDefault();
+                }
+                
             },
 
             removeContact: function (ev) {
@@ -2926,7 +2931,7 @@
                     if(chatboxes_visible.length > maxWindows)
                     {
 
-                        for(i = number_chatbox - 1 ; i  > maxWindows - 1; i-- )
+                        for(i = number_chatbox - 1 ; i  > maxWindows - 1 && i > 0; i-- )
                         {
 
                             chatbox_visible = chatboxes_visible[i];
