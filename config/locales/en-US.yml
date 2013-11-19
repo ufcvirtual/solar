@@ -1709,7 +1709,8 @@
     logged_in_as: Logged in as
     placeholder: What's on your mind?
     publish: Post
-    settings: Settings 
+    settings: Settings
+    newsfeed: News Feed 
 
   messages:
     message_header_to:

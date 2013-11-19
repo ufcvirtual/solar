@@ -14,6 +14,7 @@
 
   .new_post
     %form{:action => fb_post_wall_social_networks_path}
+      %input{type: 'hidden', name:'gid', value: @gid}
       %textarea{:name => 'post', :placeholder => t(:placeholder, :scope => [:facebook])}
       .bar_input
         %input{:type => 'submit',:value => t(:publish, :scope => [:facebook])}
@@ -33,8 +34,25 @@
       .post_content
         = fb_post.message
         .post_image
-          = image_tag fb_post.adress if fb_post.media_type.eql? 'photo' or fb_post.media_type.eql? 'video'
-          - if fb_post.media_type.eql? 'link' or fb_post.media_type.eql? 'swf'
-            = image_tag fb_post.adress
+          = image_tag fb_post.adress if fb_post.media_type.eql? 'photo' or fb_post.media_type.eql? 'video' or fb_post.media_type.eql? 'link' or fb_post.media_type.eql? 'swf'
         .post_url
           %a.link{href: "#{fb_post.link}", :target => "_blank"}= t(:original_content, :scope => [:facebook]) if fb_post.link
+
+- elsif @fb_msg_groups.present?
+  - @fb_msg_groups.each do |fb_msg_group|
+    .post
+      .post_header
+        .user_avatar
+          = image_tag "http://graph.facebook.com/#{fb_msg_group.actor.to_s}/picture", :size => "26x26", :alt => "User Image"
+        .user_info
+          %span.username
+            = fb_msg_group.name
+          %span.date
+            = fb_msg_group.created_time
+      .post_content
+        = fb_msg_group.message
+        .post_image
+          = image_tag fb_msg_group.adress if fb_msg_group.media_type.eql? 'photo' or fb_msg_group.media_type.eql? 'video' or fb_msg_group.media_type.eql? 'link' or fb_msg_group.media_type.eql? 'swf'
+        .post_url
+          %a.link{href: "#{fb_msg_group.link}", :target => "_blank"}= t(:original_content, :scope => [:facebook]) if fb_msg_group.link
+

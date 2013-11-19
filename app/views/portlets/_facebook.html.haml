@@ -13,7 +13,7 @@
       - else
         - oauth = Koala::Facebook::OAuth.new(Fb_Config['app_id'], Fb_Config['secret_key'], Fb_Config['data-href'])
         .fb-login
-          = link_to oauth.url_for_oauth_code(:permissions => ["read_stream", "publish_stream"]), target: '_top', :class => 'btn btn_main' do
+          = link_to oauth.url_for_oauth_code(:permissions => ["read_stream", "publish_stream","user_groups"]), target: '_top', :class => 'btn btn_main' do
             = t(:login, :scope => [:facebook]) 
             %i.icon-facebook
         -#= link_to t(:login, :scope => [:facebook]), oauth.url_for_oauth_code(:permissions => ["read_stream", "publish_stream"]), target: '_top'
@@ -37,7 +37,17 @@
               = t(:logged_in_as, :scope => [:facebook])
             %span.commondark
               = " " + @graph.get_object("me")['name']
-        -if @graph  
+          %li.info
+            %a{href: fb_feed_social_networks_path, target: "iframe"}= t(:newsfeed, :scope => [:facebook])  
+
+            - @graph.get_object("me/groups").each do |my_group|
+              %li.info
+                %span.commondark
+                  %a{href: fb_feed_group_social_networks_path(my_group['id']), target: "iframe"}= my_group['name']
+                - if my_group['unread'].present?
+                  %span.counter
+                    = my_group['unread']  
+                  
           %li.logout
             = link_to t(:logout, :scope => [:facebook]), fb_logout_social_networks_path
       /   %li.events
