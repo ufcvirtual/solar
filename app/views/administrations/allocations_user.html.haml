@@ -21,7 +21,7 @@
 							%th{style: 'width:80px'}= ''
 					%tbody
 						- @allocations_user.where("profile_id="+p.id.to_s).each do |a|
-							%tr.lines{:class => semester(a)}
+							%tr.lines.allocations{:class => semester(a)}
 								%td= allocation_details(a.allocation_tag)
 								%td= type(a.allocation_tag)
 								%td= name_allocation_status(a.status)
@@ -39,3 +39,25 @@
 			show_semester();
 	})
 	.change();
+
+	function show_semester() {
+		var semester = $('#period option:selected').val();
+		
+		$(".block_content").show();
+		$('.allocations').hide();
+
+		if (semester==''){
+			$(".semester_active").show();
+		}
+		else{
+			semester = semester.replace(".", "\\\.");
+			$("."+semester).show();
+		}
+
+		$(".tb_list tbody").each( function() {
+			if ( $(this).children(":visible").length == 0 ) {
+				$(this).parents(".block_content").hide();
+			}
+		});
+
+	};

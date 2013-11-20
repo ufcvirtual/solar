@@ -15,10 +15,6 @@ $(function() {
 
 // --- pagina de consultar usuario
 
-function show_semester() {
-  var semester = $('#period option:selected').val();
-};
-
 function manage(obj) {
   $(obj).closest('tr').addClass('active');
   $.get($(obj).attr('edit-link'), function(data) { $(obj).closest('tr').html(data); });

@@ -38,7 +38,9 @@ class AdministrationsController < ApplicationController
                           .where("(at.curriculum_unit_id is not null or at.offer_id is not null or at.group_id is not null )")
 
     @profiles = @allocations_user.map(&:profile).flatten.uniq
-    @periods = Schedule.joins(:semester_periods).map {|p| [p.start_date.year, p.end_date.year] }.flatten.uniq.sort! {|x,y| y <=> x} #desc
+
+    @periods = [ [t(:active),''] ]
+    @periods += Semester.all().map{|s| s.name}.flatten.uniq.sort! {|x,y| y <=> x}
   end
 
   def show_allocation
