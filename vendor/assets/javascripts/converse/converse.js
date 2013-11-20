@@ -198,7 +198,7 @@
             var $button, $form;
             if (status === Strophe.Status.CONNECTED) {
                 converse.log('Connected');
-                document.getElementById("chatpanel").style.display = "block";
+                document.getElementById("collective-xmpp-chat-data").style.display = "block";
                 converse.onConnected();
             } else if (status === Strophe.Status.DISCONNECTED) {
                 $form = $('#converse-login');
