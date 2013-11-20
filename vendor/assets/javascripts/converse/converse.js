@@ -557,7 +557,7 @@
 
                     v=document.getElementById(this.model.get('box_id'));
                     head = v.childNodes.item(0);
-                    if(head.style.top=="295px")
+                    if(head.style.top=="300px")
                     {
                         console.log("Nova mensagem");
                         texto=head.childNodes.item(1);
@@ -743,7 +743,6 @@
                 {
                     v.childNodes.item(1).style.display = "none";
                     v.childNodes.item(2).style.display = "none";
-                    //v.childNodes.item(0).style.transition =  "1s";
                     v.childNodes.item(0).style.top = "300px";
                     v.childNodes.item(0).style.backgroundColor="rgb(168, 168, 168)";
                     v.childNodes.item(0).style.color="rgb(0, 0, 0)";
@@ -753,7 +752,6 @@
                 else{
                     v.childNodes.item(1).style.display = "";
                     v.childNodes.item(2).style.display = "";
-                    //v.childNodes.item(0).style.transition =  "";
                     v.childNodes.item(0).style.top = "0px";
                     v.childNodes.item(0).style.backgroundColor="rgb(14, 125, 216)";
                     v.childNodes.item(0).style.color="rgb(255, 255, 255)";
@@ -1971,11 +1969,6 @@
                           chatboxes = $("#collective-xmpp-chat-data .chatbox:not(:first)");
                           chatboxes_visible = $("#collective-xmpp-chat-data .chatbox:not(:first):visible");
                           chatboxes_invisible = $("#collective-xmpp-chat-data .chatbox:not(:first):not(:visible)");
-                          // chatboxes_not_visible = $("#collective-xmpp-chat-data .chatbox:not(:first):not(:visible)");
-                          
-                         // console.log(maxWindows);
-                         // console.log("chatboxes_visible: " + chatboxes_visible.length);
-                         // console.log(number_chatbox);
                             if(chatboxes_visible.length > maxWindows)
                             {
 
@@ -2920,15 +2913,9 @@
 
                   maxWindows = Math.floor(($(window).width()/217.00) - 1) ;
                   number_chatbox = $(".chatbox").length - 1;
-                  // USAR ISSO DAQUI AMANHÃ FALOU' $("#collective-xmpp-chat-data .chatbox:not(:first):visible:last")
                   chatboxes = $("#collective-xmpp-chat-data .chatbox:not(:first)");
                   chatboxes_visible = $("#collective-xmpp-chat-data .chatbox:not(:first):visible");
                   chatboxes_invisible = $("#collective-xmpp-chat-data .chatbox:not(:first):not(:visible)");
-                  // chatboxes_not_visible = $("#collective-xmpp-chat-data .chatbox:not(:first):not(:visible)");
-                  
-                 // console.log(maxWindows);
-                 // console.log("chatboxes_visible: " + chatboxes_visible.length);
-                 // console.log(chatboxes_visible.length > 1);
                     if(chatboxes_visible.length > maxWindows)
                     {
 
@@ -2953,31 +2940,7 @@
                             }
                         }
 
-                    }
-
-                   
-                   
-                   // for(i = chatboxes_not_visible.length - 1 ;i >= 0; i--)
-                   //  {
-                   //      chatbox = chatboxes_not_visible[i];
-                   //      if( $(chatbox).position().top == 0 )
-                   //      {
-
-                   //          console.log("debug");
-                   //           $(chatbox).css("display","inline");
-                   //      }
-                   //  }
-
-
-                  /*
-                  if(chatBoxToTheLeft.last() != null)
-                  {
-                        if(chatBoxToTheLeft.last().position().top == 0 )
-                        {
-                            aux = chatBoxInvisibleList.remove();
-                            $("#" + aux).css("display","inline");
-                        }
-                  }*/               
+                    }           
 
                 }
             },
