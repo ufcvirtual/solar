@@ -11,6 +11,12 @@ $(function() {
     }
   });
 
+  $(".pagination a").click(function() {
+    var url = $(this).attr("href");
+    $.get(url, function(data) { $('#list_users').html(data); });
+    return false;
+  });
+
 });
 
 // --- pagina de consultar usuario

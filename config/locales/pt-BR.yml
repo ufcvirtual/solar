@@ -1,5 +1,9 @@
 "pt-BR":
 
+  will_paginate:
+    previous_label: "« Anterior"
+    next_label: "Próximo »"
+
   # formatos de data e hora
   date:
     formats:

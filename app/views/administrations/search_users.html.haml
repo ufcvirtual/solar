@@ -30,7 +30,7 @@
           = link_to_function content_tag(:i, nil, class: 'btn icon-key'), "change_password(this)", :"data-tooltip" => t(:change_password, :scope => [:administrations, :users]), :"edit-link" => change_password_administration_path(user), :"show-link" => show_user_administrations_path(id: user.id)
 
   .navigation
-    =# will_paginate @users
+    = will_paginate @users
 
 - else
   .block_content_text_list.text_none 
