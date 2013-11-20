@@ -33,14 +33,12 @@ class AdministrationsController < ApplicationController
 
   def allocations_user
     id = params[:id]
-
-    @periods = Schedule.joins(:semester_periods).map {|p| [p.start_date.year, p.end_date.year] }.flatten.uniq.sort! {|x,y| y <=> x} #desc
-
     @allocations_user = User.find(id).allocations
                           .joins("LEFT JOIN allocation_tags at ON at.id = allocations.allocation_tag_id")
                           .where("(at.curriculum_unit_id is not null or at.offer_id is not null or at.group_id is not null )")
 
     @profiles = @allocations_user.map(&:profile).flatten.uniq
+    @periods = Schedule.joins(:semester_periods).map {|p| [p.start_date.year, p.end_date.year] }.flatten.uniq.sort! {|x,y| y <=> x} #desc
   end
 
   def show_allocation
@@ -66,7 +64,6 @@ class AdministrationsController < ApplicationController
   end
 
   def show_user
-    puts "\n\n\n *** show_user *** "
     @user = User.find(params[:id])
     respond_to do |format|
       format.html
@@ -83,7 +80,6 @@ class AdministrationsController < ApplicationController
     active = (params[:status]=="1") ? true : false
     @user.update_attributes(active: active, name: params[:name], email: params[:email])
     respond_to do |format|
-      #format.html { render action: :show_user, id: params[:id] }
       format.json { render json: {status: "ok"}  }
     end
   end
@@ -93,12 +89,10 @@ class AdministrationsController < ApplicationController
       @user = User.find(params[:id]).send_reset_password_instructions
       respond_to do |format|
         format.json { render json: {status: "ok"}  }
-        #format.html { render :show_user, id: params[:id], notice: t(".pwd_recovery_sucess_msg") }
       end
     rescue
       respond_to do |format|
-        #format.json { render json: {status: "ok"}  }
-        #format.html { render :show_user, id: params[:id], alert: t(".pwd_recovery_error_msg") } 
+        format.json { render json: {success: false}  }
       end 
     end
   end

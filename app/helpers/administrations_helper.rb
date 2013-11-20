@@ -19,6 +19,10 @@ module AdministrationsHelper
 		AllocationTag.curriculum_unit_type(allocation_tag)
 	end
 
+	def semester(allocation_tag)
+		AllocationTag.semester_info(allocation_tag)
+	end
+
 	def name_allocation_status(status)
 		name_of(status)
 	end

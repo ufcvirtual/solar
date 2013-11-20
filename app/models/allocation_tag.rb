@@ -174,6 +174,26 @@ class AllocationTag < ActiveRecord::Base
     end
   end
 
+  def self.semester_info(allocation_tag)
+    if !allocation_tag.offer.nil?
+      if allocation_tag.offer.semester.offer_schedule.start_date <= Date.today && 
+        allocation_tag.offer.semester.offer_schedule.end_date >= Date.today
+        'semester_active ' + allocation_tag.offer.semester.name
+      else
+        allocation_tag.offer.semester.name
+      end
+    elsif !allocation_tag.group.nil?
+      if allocation_tag.group.offer.semester.offer_schedule.start_date <= Date.today && 
+        allocation_tag.group.offer.semester.offer_schedule.end_date >= Date.today
+        'semester_active ' + allocation_tag.group.offer.semester.name 
+      else
+        allocation_tag.group.offer.semester.name 
+      end
+    else
+      ''
+    end
+  end
+
   def info
     self.send(attributes.delete_if {|k, v| v.nil?}.keys.last.gsub(/_id/, '')).try(:info)
   end

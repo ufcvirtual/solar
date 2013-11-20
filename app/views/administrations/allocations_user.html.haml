@@ -21,7 +21,7 @@
 							%th{style: 'width:80px'}= ''
 					%tbody
 						- @allocations_user.where("profile_id="+p.id.to_s).each do |a|
-							%tr.lines
+							%tr.lines{:class => semester(a)}
 								%td= allocation_details(a.allocation_tag)
 								%td= type(a.allocation_tag)
 								%td= name_allocation_status(a.status)
@@ -30,3 +30,12 @@
 
 	.right_buttons
 		= button_to_function t(:close, :scope => [:administrations]), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+
+:javascript
+	show_semester();
+
+	$("#period")
+		.change(function () {
+			show_semester();
+	})
+	.change();
