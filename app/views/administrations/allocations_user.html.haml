@@ -25,7 +25,7 @@
 								%td= allocation_details(a.allocation_tag)
 								%td= type(a.allocation_tag)
 								%td= name_allocation_status(a.status)
-								%td.right_buttons
+								%td.right_buttons.manage
 									= link_to_function content_tag(:i, nil, class: 'btn icon-edit'), "manage(this)", :"show-link" => show_allocation_administrations_path(a), :"edit-link" => edit_allocation_administrations_path(a), class:  "btn_manage_allocation"
 
 	.right_buttons
@@ -45,6 +45,7 @@
 		
 		$(".block_content").show();
 		$('.allocations').hide();
+		$('.right_buttons.manage').hide();
 
 		if (semester==''){
 			$(".semester_active").show();
@@ -53,6 +54,12 @@
 			semester = semester.replace(".", "\\\.");
 			$("."+semester).show();
 		}
+
+		$(".semester_active").each ( function() {
+			if ( !$(this).is( ":hidden" ) ) {
+				$(this).children(".right_buttons.manage").show();
+			}
+		})
 
 		$(".tb_list tbody").each( function() {
 			if ( $(this).children(":visible").length == 0 ) {
