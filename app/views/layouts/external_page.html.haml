@@ -12,7 +12,9 @@
     = javascript_include_tag "lessons"
     = csrf_meta_tags
     = yield(:head)
+    
   %body
+
     %iframe.frame_navigation#frame_content{src: url_for(:home), frameborder: 0}
     / Div a ser manipulada para apresentação de aulas
     #lesson_external_div

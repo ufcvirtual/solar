@@ -194,11 +194,11 @@
 }
 
 #chatpanel .chat-message-them {
-    color: #777777;
+    color: #dc3d3d;
 }
 
 #chatpanel .chat-message-me {
-    color: #777777;
+    color: #3d97dc;
 }
 
 #chatpanel .chat-message-room {

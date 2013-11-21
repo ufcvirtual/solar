@@ -201,7 +201,7 @@
                 document.getElementById("collective-xmpp-chat-data").style.display = "block";
                 converse.onConnected();
             } else if (status === Strophe.Status.DISCONNECTED) {
-                $form = $('#converse-login');
+              /*  $form = $('#converse-login');
                 $button = $form.find('input[type=submit]');
                 if ($button) { $button.show().siblings('span').remove(); }
                 converse.giveFeedback(__('Disconnected'), 'error');
@@ -209,7 +209,7 @@
                     converse.connection.jid,
                     converse.connection.pass,
                     converse.onConnect
-                );
+                );*/
             } else if (status === Strophe.Status.Error) {
                 $form = $('#converse-login');
                 $button = $form.find('input[type=submit]');
@@ -692,6 +692,7 @@
 
             closeChat: function () {
                 if (converse.connection) {
+                    //TODO fazer o "reaparecimento" das chatboxes que não foram fechadas pelo usuário
                     box=document.getElementById(this.el.id);
                     box.title="fechado";
                     this.model.destroy();
@@ -2985,9 +2986,14 @@
                 e.preventDefault(); 
                 //this.toggleControlBox();
                 if(aux)
+                {
                     $("#collective-xmpp-chat-data").css("display","none");
+                }
                 else
+                {
                     $("#collective-xmpp-chat-data").css("display","block");
+
+                } 
                 aux = !aux;
             }, this)
         );
