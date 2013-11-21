@@ -3012,16 +3012,19 @@
             'click',
             $.proxy(function (e) {
                 e.preventDefault(); 
-                //this.toggleControlBox();
-                if(aux){
-                    $("#collective-xmpp-chat-data").css("display","none");
-                    this.giveFeedback(__('Show'));
+
+                if ($('.conn-feedback').text() == __('Show') || $('.conn-feedback').text() == __('Hide')){
+                    if(aux){
+                        $("#collective-xmpp-chat-data").css("display","none");
+                        this.giveFeedback(__('Show'));
+                        aux = !aux;
+                    }
+                    else{
+                            $("#collective-xmpp-chat-data").css("display","block");
+                            this.giveFeedback(__('Hide'));
+                            aux = !aux;
+                    }
                 }
-                else{
-                    $("#collective-xmpp-chat-data").css("display","block");
-                    this.giveFeedback(__('Hide'));
-                }
-                aux = !aux;
             }, this)
         );
 
