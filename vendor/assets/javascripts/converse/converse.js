@@ -198,18 +198,23 @@
             var $button, $form;
             if (status === Strophe.Status.CONNECTED) {
                 converse.log('Connected');
-                document.getElementById("chatpanel").style.display = "block";
+                document.getElementById("collective-xmpp-chat-data").style.display = "block";
                 converse.onConnected();
             } else if (status === Strophe.Status.DISCONNECTED) {
+                v=$("#collective-xmpp-chat-data");
+                v[0].style.display="none";
+                aux = false;
                 $form = $('#converse-login');
                 $button = $form.find('input[type=submit]');
                 if ($button) { $button.show().siblings('span').remove(); }
                 converse.giveFeedback(__('Disconnected'), 'error');
-                converse.connection.connect(
-                    converse.connection.jid,
-                    converse.connection.pass,
-                    converse.onConnect
-                );
+                // converse.connection.connect(
+                //     converse.connection.jid,
+                //     converse.connection.pass,
+                //     converse.onConnect
+                // );
+                
+
             } else if (status === Strophe.Status.Error) {
                 $form = $('#converse-login');
                 $button = $form.find('input[type=submit]');
@@ -384,7 +389,7 @@
                     }
                     this.windowState = e.type;
                 },this));
-                this.giveFeedback(__('Connected'));
+                this.giveFeedback(__('Hide'));
                 if (this.testing) {
                     this.callback(this);
                 } else  {
@@ -518,6 +523,13 @@
 
             insertStatusNotification: function (message, replace) {
                 var $chat_content = this.$el.find('.chat-content');
+                //modifica a imagem de status ao usuário modificar seu status
+                v=this.$el[0];
+                img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
+                if(message.search("ocupado")!=-1) img.src=imgAway;
+                if(message.search("ausente")!=-1 || message.search("offline")!=-1) img.src=imgDnd;
+
+
                 $chat_content.find('div.chat-event').remove().end()
                     .append($('<div class="chat-event"></div>').text(message));
                 this.scrollDown();
@@ -554,10 +566,10 @@
                 }
                 if ((message.get('sender') != 'me') && (converse.windowState == 'blur')) {
                     converse.incrementMsgCounter();
-
+                    //muda imagem status ao receber menssagem no estado onblur
                     v=document.getElementById(this.model.get('box_id'));
                     head = v.childNodes.item(0);
-                    if(head.style.top=="295px")
+                    if(head.style.top=="300px")
                     {
                         texto=head.childNodes.item(1);
                         texto=texto.childNodes.item(0);
@@ -565,6 +577,7 @@
                         head.style.backgroundColor = "#1E90FF";
                     }
                 }
+
                 this.scrollDown();
             },
 
@@ -760,13 +773,14 @@
                     v.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
                 }
             },
-
+            
             template: _.template(
                 '<div class="chat-head chat-head-chatbox">' +
                     '<a class="close-chatbox-button icons-close"></a>' +
                     '<a href="#"  class="user">' +
-                        '<div class="chat-title"> {{ fullname }} </div>' +
-
+                        '<div class="chat-title"> {{ fullname }}'+
+                        '<img src="" class="imgStatus" />' +
+                        '</div>' +
                     '</a>' +
                     '<p class="user-custom-message"><p/>' +
                 '</div>' +
@@ -1961,20 +1975,18 @@
 
                         } else {
                             view = new converse.ChatBoxView({model: item});
-
+                            //adiciona imagem de status aos ja criados
+                            v=view.$el[0];
+                            img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
+                            img.src=imgDnd;
                         }
                         this.views[item.get('id')] = view;
                          maxWindows = ($(window).width()/217.00) - 1 ;
                           number_chatbox = $(".chatbox").length - 1;
-                          // USAR ISSO DAQUI AMANHÃ FALOU' $("#collective-xmpp-chat-data .chatbox:not(:first):visible:last")
                           chatboxes = $("#collective-xmpp-chat-data .chatbox:not(:first)");
                           chatboxes_visible = $("#collective-xmpp-chat-data .chatbox:not(:first):visible");
                           chatboxes_invisible = $("#collective-xmpp-chat-data .chatbox:not(:first):not(:visible)");
-                          // chatboxes_not_visible = $("#collective-xmpp-chat-data .chatbox:not(:first):not(:visible)");
-                          
-                         // console.log(maxWindows);
-                         // console.log("chatboxes_visible: " + chatboxes_visible.length);
-                         // console.log(number_chatbox);
+
                             if(chatboxes_visible.length > maxWindows)
                             {
 
@@ -2029,8 +2041,10 @@
                             converse.log(response.responseText);
                         }
                     });
-                    //recebe box que foi criada e adiciona sombra
+                    //recebe box que foi criada e adiciona sombra e adiciona imagem de status
                     v=document.getElementById(chatbox.attributes.box_id);
+                    img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
+                    img.src=imgOn;
                     v.title="";
                     v.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
                 }
@@ -2068,7 +2082,9 @@
 
             openChat: function (ev) {
                 
-                $lastChatbox = $("#collective-xmpp-chat-data .chatbox:not(:first):visible:last");
+                if(maxWindows > 0)
+                {
+                    $lastChatbox = $("#collective-xmpp-chat-data .chatbox:not(:first):visible:last");
 
                  x = converse.chatboxesview.showChatBox({
                     'id': this.model.get('jid'),
@@ -2101,6 +2117,8 @@
                      
             
                 ev.preventDefault();
+                }
+                
             },
 
             removeContact: function (ev) {
@@ -2541,15 +2559,30 @@
             },
 
             renderRosterItem: function (item, view) {
+                chats=$(".chatbox");
+                //adiciona a imagem de ausente
+                if(item.attributes.chat_status=="dnd"){
+                    for(var c=1;c<chats.length;c++){                        
+                            if(chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[0].data.search(item.attributes.fullname)!=-1){
+                                chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[1].src=imgAway;
+                            }
+                    }
+                }
                 if ((converse.show_only_online_users) && (item.get('chat_status') !== 'online')) {
                     view.$el.remove();
                     view.delegateEvents();
                     return this;
                 }
                 if ($.contains(document.documentElement, view.el)) {
-                    view.render();
+                    view.render();                    
                 } else {
                     this.$el.find('#xmpp-contacts').after(view.render().el);
+                    //lista usuário on e muda imagem do status
+                    for(var c=1;c<chats.length;c++){                        
+                        if(chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[0].data.search(item.attributes.fullname)!=-1){
+                            chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[1].src=imgOn;
+                        }
+                    }
                 }
             },
 
@@ -2886,9 +2919,6 @@
                 '<input type="text" id="bosh_service_url">'),
 
             connect: function (jid, hash) {
-                /*if ($form) {
-                    $form.find('input[type=submit]').hide().after('<span class="spinner login-submit"/>');
-                }*/
                 converse.connection = new Strophe.Connection(converse.bosh_service_url);
                 converse.connection.connect(jid, hash, converse.onConnect);
             },
@@ -2905,29 +2935,21 @@
             initialize: function (cfg) {
                 cfg.$parent.html(this.$el.html(this.template()));
                 this.$tabs = cfg.$parent.parent().find('#controlbox-tabs');
-                /*this.model.on('connection-fail', function () { this.showConnectButton(); }, this);
-                this.model.on('auth-fail', function () { this.showConnectButton(); }, this);*/
                 this.authenticate();
-                // var chatBoxInvisibleList = new Pilha();
                 window.onresize = function(event)
                 {
                   
 
                   maxWindows = Math.floor(($(window).width()/217.00) - 1) ;
                   number_chatbox = $(".chatbox").length - 1;
-                  // USAR ISSO DAQUI AMANHÃ FALOU' $("#collective-xmpp-chat-data .chatbox:not(:first):visible:last")
                   chatboxes = $("#collective-xmpp-chat-data .chatbox:not(:first)");
                   chatboxes_visible = $("#collective-xmpp-chat-data .chatbox:not(:first):visible");
                   chatboxes_invisible = $("#collective-xmpp-chat-data .chatbox:not(:first):not(:visible)");
-                  // chatboxes_not_visible = $("#collective-xmpp-chat-data .chatbox:not(:first):not(:visible)");
-                  
-                 // console.log(maxWindows);
-                 // console.log("chatboxes_visible: " + chatboxes_visible.length);
-                 // console.log(chatboxes_visible.length > 1);
+
                     if(chatboxes_visible.length > maxWindows)
                     {
 
-                        for(i = number_chatbox - 1 ; i  > maxWindows - 1; i-- )
+                        for(i = number_chatbox - 1 ; i  > maxWindows - 1 && i > 0; i-- )
                         {
 
                             chatbox_visible = chatboxes_visible[i];
@@ -2947,33 +2969,7 @@
                                         $(chatbox_visible).css("display","inline");
                             }
                         }
-
                     }
-
-                   
-                   
-                   // for(i = chatboxes_not_visible.length - 1 ;i >= 0; i--)
-                   //  {
-                   //      chatbox = chatboxes_not_visible[i];
-                   //      if( $(chatbox).position().top == 0 )
-                   //      {
-
-                   //          console.log("debug");
-                   //           $(chatbox).css("display","inline");
-                   //      }
-                   //  }
-
-
-                  /*
-                  if(chatBoxToTheLeft.last() != null)
-                  {
-                        if(chatBoxToTheLeft.last().position().top == 0 )
-                        {
-                            aux = chatBoxInvisibleList.remove();
-                            $("#" + aux).css("display","inline");
-                        }
-                  }*/               
-
                 }
             },
 
@@ -3016,10 +3012,14 @@
             $.proxy(function (e) {
                 e.preventDefault(); 
                 //this.toggleControlBox();
-                if(aux)
+                if(aux){
                     $("#collective-xmpp-chat-data").css("display","none");
-                else
+                    this.giveFeedback(__('Show'));
+                }
+                else{
                     $("#collective-xmpp-chat-data").css("display","block");
+                    this.giveFeedback(__('Hide'));
+                }
                 aux = !aux;
             }, this)
         );

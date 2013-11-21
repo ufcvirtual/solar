@@ -83,7 +83,7 @@ you can use the generic selector below, but it's slower:
 }
 .icons-away:before {
 	content: "\25fb";
-  color: #CD0000;
+  color: #FFA500;
 }
 .icons-bubbles:before {
 	content: "\e015";
@@ -294,5 +294,5 @@ you can use the generic selector below, but it's slower:
 }
 .icons-dnd:before {
 	content: "\e004";
-  color: #FFA500;
+  color: #CD0000;
 }

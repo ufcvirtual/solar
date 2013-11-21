@@ -194,11 +194,11 @@
 }
 
 #chatpanel .chat-message-them {
-    color: #777777;
+    color: #d95656;
 }
 
 #chatpanel .chat-message-me {
-    color: #777777;
+    color: #4f57bf;
 }
 
 #chatpanel .chat-message-room {
@@ -265,12 +265,13 @@
     line-height: 15px;
     display: block;
     margin-top: 2px;
+    margin-left: 5px;
     margin-right: 20px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     text-shadow: rgba(0,0,0,0.51) 0 -1px 0;
-    height: 1em;
+    height: 2em;
 }
 
 #chatpanel .chat-head-chatbox,
@@ -891,4 +892,11 @@
 #chatpanel .xmpp-status-menu li a span {
     padding: 0 5px 0 5px;
     color: rgb(79, 79, 79);
+}
+.imgStatus{
+    position:absolute;
+    top:12px;
+    left:4px;
+    width:8px; 
+    height:8px;
 }
