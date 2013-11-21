@@ -527,8 +527,8 @@
                 v=this.$el[0];
                 img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
                 if(message.search("ocupado")!=-1) img.src=imgDnd;
-                if(message.search("ausente")!=-1 || message.search("offline")!=-1) img.src=imgAway;
-
+                if(message.search("ausente")!=-1) img.src=imgAway;
+                if(message.search("offline")!=-1)  img.src=imgOff;
 
                 $chat_content.find('div.chat-event').remove().end()
                     .append($('<div class="chat-event"></div>').text(message));
@@ -1979,7 +1979,7 @@
                             //adiciona imagem de status aos ja criados
                             v=view.$el[0];
                             img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
-                            img.src=imgAway;
+                            img.src=imgOff;
                         }
                         this.views[item.get('id')] = view;
                          maxWindows = ($(window).width()/217.00) - 1 ;

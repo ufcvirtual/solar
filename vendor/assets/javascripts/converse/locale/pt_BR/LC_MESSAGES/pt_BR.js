@@ -425,7 +425,7 @@
                 ],
                 "Disconnected": [
                     null,
-                    "Desconectado (Recarregue a Página)"
+                    "Desconectado (Recarregue a página)"
                 ],
                 "Hide": [
                     null,
