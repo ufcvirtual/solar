@@ -526,8 +526,8 @@
                 //modifica a imagem de status ao usuário modificar seu status
                 v=this.$el[0];
                 img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
-                if(message.search("ocupado")!=-1) img.src=imgAway;
-                if(message.search("ausente")!=-1 || message.search("offline")!=-1) img.src=imgDnd;
+                if(message.search("ocupado")!=-1) img.src=imgDnd;
+                if(message.search("ausente")!=-1 || message.search("offline")!=-1) img.src=imgAway;
 
 
                 $chat_content.find('div.chat-event').remove().end()
@@ -1979,7 +1979,7 @@
                             //adiciona imagem de status aos ja criados
                             v=view.$el[0];
                             img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
-                            img.src=imgDnd;
+                            img.src=imgAway;
                         }
                         this.views[item.get('id')] = view;
                          maxWindows = ($(window).width()/217.00) - 1 ;
@@ -2565,7 +2565,7 @@
                 if(item.attributes.chat_status=="dnd"){
                     for(var c=1;c<chats.length;c++){                        
                             if(chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[0].data.search(item.attributes.fullname)!=-1){
-                                chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[1].src=imgAway;
+                                chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[1].src=imgDnd;
                             }
                     }
                 }
