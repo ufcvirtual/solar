@@ -571,6 +571,7 @@
                     head = v.childNodes.item(0);
                     if(head.style.top=="300px")
                     {
+                        console.log("Nova mensagem");
                         texto=head.childNodes.item(1);
                         texto=texto.childNodes.item(0);
                         texto.style.color="black";
