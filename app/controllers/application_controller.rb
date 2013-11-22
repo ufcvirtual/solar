@@ -185,6 +185,7 @@ class ApplicationController < ActionController::Base
             conf = YAML::load_file(File.join("config/",'im.yml'))
             @dominio = conf["dominio"]
             @ip = conf["ip"]
+            @porta = conf["porta"]
             unless current_user.registered
                 jid = Jabber::JID::new("#{current_user.username}#{@dominio}")
                 xmpp_client = Jabber::Client.new(jid)

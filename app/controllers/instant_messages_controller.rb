@@ -34,7 +34,7 @@ class InstantMessagesController < ApplicationController
     if current_user.is_registered 
       @client = Jabber::HTTPBinding::Client.new("#{current_user.username}"+ @dominio +"/im")
       puts "#{current_user.username}"+ @dominio +"/im"
-      @client.connect('http://'+ @ip +':7070/http-bind/')
+      @client.connect('http://'+ @ip +':' + @porta + '/http-bind/')
       puts @current_user.username
       @client.auth(current_user.username)
       puts current_user.username
@@ -43,7 +43,7 @@ class InstantMessagesController < ApplicationController
       msg = { :jid => @client.instance_variable_get("@jid").inspect, 
               :sid => @client.instance_variable_get("@http_sid"),
               :rid => @client.instance_variable_get("@http_rid"), 
-              :bosh_service_url => 'http://'+ @ip +':7070/http-bind/' }
+              :bosh_service_url => 'http://'+ @ip +':' + @porta + '/http-bind/' }
        
       puts "4"
       puts msg
