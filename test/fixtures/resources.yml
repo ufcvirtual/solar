@@ -850,3 +850,65 @@ res149:
   controller: 'schedule_events'
   action: 'edit'
   description: 'Edição evento (prova e encontro presenciais ou recesso ou feriado)'
+
+# administracao de usuario
+
+res150:
+  id: 150
+  controller: 'administrations'
+  action: 'manage_user'
+  description: 'Página de administração de usuário'
+
+res151:
+  id: 151
+  controller: 'administrations'
+  action: 'search_users'
+  description: 'Busca de usuário na administração'
+
+res152:
+  id: 152
+  controller: 'administrations'
+  action: 'allocations_user'
+  description: 'Página de administração de alocação de usuário'
+
+res153:
+  id: 153
+  controller: 'administrations'
+  action: 'show_allocation'
+  description: 'Página para exibição de uma alocação de usuário'
+
+res154:
+  id: 154
+  controller: 'administrations'
+  action: 'edit_allocation'
+  description: 'Página para edição de uma alocação de usuário'
+
+res155:
+  id: 155
+  controller: 'administrations'
+  action: 'update_allocation'
+  description: 'Altera alocação de usuário na administração'
+
+res156:
+  id: 156
+  controller: 'administrations'
+  action: 'show_user'
+  description: 'Página para exibição de dados de usuário'
+
+res157:
+  id: 157
+  controller: 'administrations'
+  action: 'edit_user'
+  description: 'Página para edição de dados de usuário'
+
+res158:
+  id: 158
+  controller: 'administrations'
+  action: 'update_user'
+  description: 'Altera dados de usuário na administração'
+
+res159:
+  id: 159
+  controller: 'administrations'
+  action: 'change_password'
+  description: 'Altera senha de usuário na administração'

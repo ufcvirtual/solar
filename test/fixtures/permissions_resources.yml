@@ -1307,3 +1307,53 @@ editmon1:
   profile_id: 13
   resource_id: 89
   per_id: false
+
+admuser1:
+  profile_id: 6
+  resource_id: 150
+  per_id: false
+
+admuser2:
+  profile_id: 6
+  resource_id: 151
+  per_id: false
+
+admuser3:
+  profile_id: 6
+  resource_id: 152
+  per_id: false
+
+admuser4:
+  profile_id: 6
+  resource_id: 153
+  per_id: false
+
+admuser5:
+  profile_id: 6
+  resource_id: 154
+  per_id: false
+
+admuser6:
+  profile_id: 6
+  resource_id: 155
+  per_id: false
+
+admuser7:
+  profile_id: 6
+  resource_id: 156
+  per_id: false
+
+admuser8:
+  profile_id: 6
+  resource_id: 157
+  per_id: false
+
+admuser9:
+  profile_id: 6
+  resource_id: 158
+  per_id: false
+
+admuser10:
+  profile_id: 6
+  resource_id: 159
+  per_id: false

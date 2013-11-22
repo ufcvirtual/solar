@@ -1094,6 +1094,7 @@
   menu_edition: Edition
   menu_academic_edition: Academic
   menu_content_edition: Content
+  menu_admin_user: Manage Users
 
   # Filtro de edição (Places_nav_panel)
 
