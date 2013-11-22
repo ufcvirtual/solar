@@ -97,12 +97,10 @@
 /**
 /* Foto do usuário
 */
-#mysolar_top_submenu {
+#mysolar_top_submenu, #mysolar_submenu_help{
   font-size: 10pt;
   position: absolute;
   top: $mysolar_topbar_height;
-  width: 170px;
-  margin-left: -40px;
   z-index: 100;
   display: none;
   border-bottom: 2px solid;
@@ -118,12 +116,23 @@
   border-bottom-color: $color_contrast;
   border-left-color: $color_contrast;
   border-right-color: $color_contrast;
+}
+
+#mysolar_top_submenu{
+  width: 170px;
+  margin-left: -40px;
   ul {
     border-top-color: #EBEBEB;
   }
 }
 
-#mysolar_top_submenu a:hover {
+#mysolar_submenu_help{
+  width: 70px;
+  margin-left: -7px;
+  border-top-color: #EBEBEB; 
+}
+
+#mysolar_top_submenu a:hover, #mysolar_submenu_help a:hover {
   text-decoration: underline;
 }
 
@@ -135,7 +144,7 @@
   margin-top: 5px;
 }
 
-#mysolar_top_submenu ul li {
+#mysolar_top_submenu ul li, #mysolar_submenu_help ul li {
   padding: 7px;
 }
 
@@ -152,7 +161,7 @@
   border-top: none;
   border-bottom: none;
   vertical-align: top;
-  background-color: #fff;
+  background-color: #fff !important;
 }
 
 .mysolar_top_submenu_label_regular {

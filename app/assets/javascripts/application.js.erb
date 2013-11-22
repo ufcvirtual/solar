@@ -47,6 +47,16 @@ $(function(){
   });
 });
 
+$(function(){
+  $("body").click(function(e) {
+    if((e.target.id !== 'mysolar_submenu_help') && (e.target.id !== 'help_top')){
+      $("#mysolar_submenu_help").slideUp(150);
+      $('#mysolar_top_help').removeClass('mysolar_top_submenu_label_selected');
+      $('#mysolar_top_help').addClass('mysolar_top_submenu_label_regular');
+    }
+  });
+});
+
 /**
  * Menu Accordion
  */

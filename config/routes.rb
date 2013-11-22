@@ -22,8 +22,7 @@ Solar::Application.routes.draw do
     collection do
       get :fb_authenticate
       get :fb_feed
-      get "fb_feed/group/:id", to: "social_networks#fb_feed_groups", as: :fb_feed_group
-      get :fb_logout
+      get :fb_logout  
       get :fb_post_wall
     end
   end
@@ -283,6 +282,7 @@ Solar::Application.routes.draw do
   get :close_tab, to: "tabs#destroy", as: :close_tab
 
   get :home, to: "users#mysolar", as: :home
+  get :tutorials, to: "users#tutorials", as: :tutorials
   get :user_root, to: 'users#mysolar'
 
   resources :support_material_files do
@@ -336,7 +336,6 @@ Solar::Application.routes.draw do
   get "/media/assignment/public_area/:file.:extension", to: "access_control#assignment"
   get "/media/assignment/enunciation/:file.:extension", to: "access_control#assignment"
 
-  root to: 'devise/sessions#new'
 
-  # match ':controller(/:action(/:id(.:format)))'
+  root to: 'devise/sessions#new'
 end

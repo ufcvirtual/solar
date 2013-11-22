@@ -540,6 +540,15 @@
   date_name: Data
   help: "Ajuda"
 
+  #Submenu de ajuda
+  tutorials: "Tutoriais"
+  context: "Contextual"
+
+  # Página de tutoriais
+  description: "Descrição"
+  edition: "Edição"
+  enrollment: "Matrícula"
+
   # portlets do meu solar
   # Unidades curriculares
   my_solar_curriculum_units: "Unidade Curricular"
