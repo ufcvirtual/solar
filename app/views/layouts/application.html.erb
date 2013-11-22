@@ -279,7 +279,8 @@
       <div id="collective-xmpp-chat-data" style="display: none"></div>
         <div id="toggle-controlbox" >
             <a href="#" class="chat toggle-online-users">
-                <strong class="conn-feedback">  Bate-Papo  </strong><!--  <strong style="display: none" id="online-count">(0)</strong> -->
+                <strong class="conn-feedback">  Bate-Papo  </strong>
+                <!--  <strong style="display: none" id="online-count">(0)</strong> -->
             </a>
       </div>
     </div>
@@ -288,7 +289,12 @@
 
 <!-- Inicialização do IM -->
   <script type="text/javascript">
-
+    imgOn="<%= image_path('IM_online_Icon.png') %>";
+    imgAway="<%= image_path('IM_away_Icon.png') %>";
+    imgDnd="<%= image_path('IM_dnd_Icon.png') %>";
+    imgOff="<%= image_path('IM_offline_Icon.png') %>";
+    imgMessage="<%= image_path('IM_message_Icon.png') %>";
+    imgAnt=imgDnd;
     xmpp_id = "<%= current_user.id %>";
     xmpp_username = "<%= current_user.username %>";
     xmpp_cpf = "<%= current_user.cpf %>";
@@ -300,6 +306,9 @@
 
     converse.initialize({
         prebind: false,
+        // jid: data.jid,
+        // sid: data.sid,
+        // rid: data.rid,
         auto_list_rooms: false,
         auto_subscribe: false,
         bosh_service_url: 'http://'+ xmpp_ip +':' + xmpp_port + '/http-bind/',
@@ -309,6 +318,7 @@
         show_only_online_users: true,
         show_controlbox_by_default: true,
         xhr_user_search: false
+
     });
 
    

@@ -36,9 +36,10 @@ class InstantMessagesController < ApplicationController
       puts "#{current_user.username}"+ @dominio +"/im"
       @client.connect('http://'+ @ip +':' + @porta + '/http-bind/')
       puts @current_user.username
-      @client.auth(current_user.username)
-      puts current_user.username
-      @client.send(Jabber::Presence.new.set_type(:available))
+      sha1 = Digest::SHA1.hexdigest("#{current_user.cpf.slice(5,12)}#{current_user.username}#{current_user.id}")
+      puts sha1
+      @client.auth(sha1)
+      # @client.send(Jabber::Presence.new.set_type(:available))
 
       msg = { :jid => @client.instance_variable_get("@jid").inspect, 
               :sid => @client.instance_variable_get("@http_sid"),
@@ -54,5 +55,5 @@ class InstantMessagesController < ApplicationController
       # session[:rid]  = @client.instance_variable_get("@http_rid")
       # session[:jid]  = @client.instance_variable_get("@jid").inspect
     end
-  end  
+  end 
 end

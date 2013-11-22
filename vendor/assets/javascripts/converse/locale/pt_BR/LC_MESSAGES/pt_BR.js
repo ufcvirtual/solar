@@ -425,7 +425,15 @@
                 ],
                 "Disconnected": [
                     null,
-                    "Desconectado"
+                    "Desconectado (Recarregue a página)"
+                ],
+                "Hide": [
+                    null,
+                    "Esconder (-)"
+                ],
+                "Show": [
+                    null,
+                    "Mostrar (+)"
                 ],
                 "Error": [
                     null,
