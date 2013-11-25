@@ -292,3 +292,11 @@ pm70:
 pm71:
   profile_id: 4
   menu_id: 205
+
+pm72:
+  profile_id: 6
+  menu_id: 60
+
+pm73:
+  profile_id: 6
+  menu_id: 605

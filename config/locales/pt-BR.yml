@@ -1,5 +1,9 @@
 "pt-BR":
 
+  will_paginate:
+    previous_label: "« Anterior"
+    next_label: "Próximo »"
+
   # formatos de data e hora
   date:
     formats:
@@ -1253,6 +1257,7 @@
   menu_edition: Edição
   menu_academic_edition: Acadêmico
   menu_content_edition: Conteúdo
+  menu_admin_user: "Gerência de Usuários"
 
   # Componente de filtro/busca de allocationTags (places_nav_panel)
   places_nav_panel_course_hint: "Digite o nome do curso ou parte dele"

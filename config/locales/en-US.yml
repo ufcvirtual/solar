@@ -1,5 +1,9 @@
 "en-US":
 
+  will_paginate:
+    previous_label: "« Previous"
+    next_label: "Next »"
+
   # Formatos de data e hora
   date:
     formats:
@@ -1099,6 +1103,7 @@
   menu_edition: Edition
   menu_academic_edition: Academic
   menu_content_edition: Content
+  menu_admin_user: Manage Users
 
   # Filtro de edição (Places_nav_panel)
 
