@@ -1,13 +1,9 @@
 class AdministrationsController < ApplicationController
 
   layout false, except: [:manage_user]
+  #authorize_resource :class => false
 
-	# GET /administrations/manage_user
-  # GET /administrations/manage_user.json
   def manage_user
-    #verifica permissao
-    #authorize! :manage_user
-
     @types = Array.new(2,4)
     @types = [ [t(".name"), '0'], [t(".email"), '1'], [t(".username"), '2'], [t(".cpf"), '3'] ]
   end

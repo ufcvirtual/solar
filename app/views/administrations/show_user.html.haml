@@ -7,8 +7,8 @@
   %a{class: "info_list btn", :"data-dropdown"=>"#info-dropdown#{@user.id}" }=content_tag(:i, nil, class: 'icon-info') + content_tag(:i, nil, class: 'icon-arrow-down-triangle')
   .dropdown.dropdown-tip{ class: "info_list", id: "info-dropdown#{@user.id}" }
     %ul{ class: "dropdown-menu" }
-      %li= link_to_function t(:details, :scope => [:administrations, :users]), "information(this)", :"data-tooltip" => t(:details, :scope => [:administrations, :users]), :"show-link" => user_path(@user.id)
-      %li= link_to_function t(:allocations, :scope => [:administrations, :users]), "allocations(this)", :"data-tooltip" => t(:allocations, :scope => [:administrations, :users]), :"show-link" => allocations_user_administrations_path(id: @user.id)
+      %li= link_to_function t(:details, :scope => [:administrations, :users]), "open_administration(this)", :"data-tooltip" => t(:details, :scope => [:administrations, :users]), :"show-link" => user_path(@user.id)
+      %li= link_to_function t(:allocations, :scope => [:administrations, :users]), "open_administration(this)", :"data-tooltip" => t(:allocations, :scope => [:administrations, :users]), :"show-link" => allocations_user_administrations_path(id: @user.id)
       %li{ class: 'border' }= (label_tag t(:last_accessed, :scope => [:administrations, :users]) + ' ' + last_accessed(@user.id))
 
   = link_to_function content_tag(:i, nil, class: 'btn icon-edit'), "manage(this)", :"data-tooltip" => t(:edit, :scope => [:administrations, :users]), :"edit-link" => edit_user_administrations_path(@user), :"show-link" => show_user_administrations_path(id: @user.id)

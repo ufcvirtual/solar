@@ -65,12 +65,7 @@ function update_user(obj) {
   })
 }
 
-function information(obj) {
-  var url = $(obj).attr('show-link');
-  $(obj).call_fancybox({href : url, open: true});
-}
-
-function allocations(obj) { 
+function open_administration(obj) {
   var url = $(obj).attr('show-link');
   $(obj).call_fancybox({href : url, open: true});
 }
