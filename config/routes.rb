@@ -282,7 +282,7 @@ Solar::Application.routes.draw do
   get :close_tab, to: "tabs#destroy", as: :close_tab
 
   get :home, to: "users#mysolar", as: :home
-  get :tutorials, to: "users#tutorials", as: :tutorials
+  get :tutorials, to: "pages#tutorials", as: :tutorials
   get :user_root, to: 'users#mysolar'
 
   resources :support_material_files do
