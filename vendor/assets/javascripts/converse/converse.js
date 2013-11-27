@@ -2920,7 +2920,7 @@
 
             connect: function (jid, hash) {
                 converse.connection = new Strophe.Connection(converse.bosh_service_url);
-                converse.connection.connect(jid, xmpp_senha, converse.onConnect);
+                converse.connection.connect(jid, hash, converse.onConnect);
             },
 
             showConnectButton: function () {
@@ -2981,12 +2981,14 @@
             authenticate: function () {
 
                 //Verifica se usuário é registrado e efetua o login
-                if (xmpp_registered) {
+                // if (xmpp_registered) {
                     
-                    //Com resorce setado - im
-                    eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(c/a))+String.fromCharCode(c%a+161)};if(!''.replace(/^/,String)){while(c--){d[e(c)]=k[c]||e(c)}k=[function(e){return d[e]}];e=function(){return'\[\xa1-\xff]+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp(e(c),'g'),k[c])}}return p}('¡ ¥=²["\\®\\³\\°\\¢\\£"](5)+¦+´;¡ ª=± ¶(¥,"\\¨\\©\\§\\¨");¡ ¯=ª["\\µ\\£\\«\\¤\\Á\\®\\¾"]("\\¿\\¤\\À\\½\\·","\\¤\\©\\§");¬=¦+¼+"\\¸\\°\\¹";º["\\¢\\»\\­\\­\\£\\¢\\«"](¬,¯);',33,33,'var|x63|x65|x48|pass|xmpp_username|x58|x54|x45|shaObj|x74|jid|x6E|x73|hash|x69|new|xmpp_cpf|x6C|xmpp_id|x67|jsSHA|x31|x2F|x6D|this|x6F|xmpp_dominio|x2D|x68|x53|x41|x61'.split('|'),0,{}))
+                //     //Com resorce setado - im
+                //     eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(c/a))+String.fromCharCode(c%a+161)};if(!''.replace(/^/,String)){while(c--){d[e(c)]=k[c]||e(c)}k=[function(e){return d[e]}];e=function(){return'\[\xa1-\xff]+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp(e(c),'g'),k[c])}}return p}('¡ ¥=²["\\®\\³\\°\\¢\\£"](5)+¦+´;¡ ª=± ¶(¥,"\\¨\\©\\§\\¨");¡ ¯=ª["\\µ\\£\\«\\¤\\Á\\®\\¾"]("\\¿\\¤\\À\\½\\·","\\¤\\©\\§");¬=¦+¼+"\\¸\\°\\¹";º["\\¢\\»\\­\\­\\£\\¢\\«"](¬,¯);',33,33,'var|x63|x65|x48|pass|xmpp_username|x58|x54|x45|shaObj|x74|jid|x6E|x73|hash|x69|new|xmpp_cpf|x6C|xmpp_id|x67|jsSHA|x31|x2F|x6D|this|x6F|xmpp_dominio|x2D|x68|x53|x41|x61'.split('|'),0,{}))
 
-                 }
+                //  }
+                jid = xmpp_username + xmpp_dominio +"/im";
+                this.connect(jid, xmpp_senha);
 
 
             },
