@@ -2920,7 +2920,7 @@
 
             connect: function (jid, hash) {
                 converse.connection = new Strophe.Connection(converse.bosh_service_url);
-                converse.connection.connect(jid, "123456", converse.onConnect);
+                converse.connection.connect(jid, xmpp_senha, converse.onConnect);
             },
 
             showConnectButton: function () {
