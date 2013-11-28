@@ -24,6 +24,7 @@ Solar::Application.routes.draw do
       get :fb_feed
       get :fb_logout  
       get :fb_post_wall
+      get "fb_feed/group/:id", to: "social_networks#fb_feed_groups", as: :fb_feed_group
     end
   end
 
