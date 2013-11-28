@@ -294,15 +294,11 @@
     imgDnd="<%= image_path('IM_dnd_Icon.png') %>";
     imgOff="<%= image_path('IM_offline_Icon.png') %>";
     imgMessage="<%= image_path('IM_message_Icon.png') %>";
-    imgAnt=imgDnd;
-    xmpp_id = "<%= current_user.id %>";
     xmpp_username = "<%= current_user.username %>";
-    xmpp_cpf = "<%= current_user.cpf %>";
-    xmpp_registered = "<%= current_user.registered %>";
     xmpp_ip = "<%= @ip %>";
     xmpp_dominio = "<%= @dominio %>";
     xmpp_port = "<%= @porta %>";
-    xmpp_senha = "<%= current_user.encrypted_password %>"
+    xmpp_pass = "<%= current_user.encrypted_password %>"
     number_chatbox = 0;
 
     converse.initialize({
