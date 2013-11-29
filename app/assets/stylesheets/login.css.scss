@@ -444,24 +444,38 @@ footer{
   padding-right: 15px;
 }
 
-.choice-language ul {
+.choice-language ul, .choice-tutorial ul {
   position: absolute;
   display: none;
-  width: 130px;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.choice-language ul li a {
+.choice-language ul{
+  width: 130px;
+}
+
+.choice-tutorial ul{
+  width: 75px;
+}
+
+.choice-language ul li a, .choice-tutorial ul li a {
   display: block;
   text-decoration: none;
   color: #234a84;
   font-size: 12px;
-  padding: 4px 3px 4px 18px;
   border: 1px solid #ccc;
   border-bottom: 0;
   background-color: #ffffff;
+}
+
+.choice-language ul li a{
+  padding: 4px 3px 4px 18px;
+}
+
+.choice-tutorial ul li a{
+  padding: 4px 3px 4px 5px;
 }
 
 .choice-language ul li+li a {
@@ -472,7 +486,7 @@ footer{
   background: url("check-language.png") no-repeat 3px 5px;
 }
 
-.choice-language ul li a:hover {
+.choice-language ul li a:hover, .choice-tutorial ul li a:hover {
   background-color: #e7e9eb;
   color: #234a84;
 }

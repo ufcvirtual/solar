@@ -393,6 +393,7 @@
   #Submenu de ajuda
   tutorials: "Tutorials"
   context: "Contextual"
+  tutorial: 'Tutorial'
 
   # Página de tutoriais
   description: "Description"
