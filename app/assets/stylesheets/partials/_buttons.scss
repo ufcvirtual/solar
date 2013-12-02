@@ -346,9 +346,9 @@ $btn-initial-file-color-final: #f9c143;
 }
 
 .block_buttons {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
+  padding-left: 3px;
+  padding-botto
+  width: auto;
 
   .left, .right {
     display: inline-block;
