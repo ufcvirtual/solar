@@ -60,8 +60,7 @@ class Assignment < Event
     group_id = (student_group.nil? ? group_assignment_id : student_group.id) # se aluno estiver em grupo, recupera id
     sent_assignment = sent_assignment_by_user_id_or_group_assignment_id(allocation_tag_id, user_id, group_assignment_id) 
 
-
-    if schedule.start_date.to_date > Date.current()
+    if schedule.start_date.to_date > Date.current
       situation = "not_started"  
     elsif (not sent_assignment.nil? and  not sent_assignment.grade.nil?)
       situation = "corrected"

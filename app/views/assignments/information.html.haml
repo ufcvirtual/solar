@@ -129,7 +129,7 @@
             %th{:align => "center", :style => "width:50px"}=t :comments, :scope => [:assignment, :comments]
         %tbody
           - @students.each_with_index do |student, idx|
-            - student_info = assignment_participant_info(@allocation_tag.id, student.id, @assignment.id)
+            - student_info = assignment_participant_info(student.id, @assignment.id, @allocation_tag.id)
             %tr.lines
               %td
                 = link_to student.name, student_assignment_path(@assignment.id, :student_id => student.id), :class => :link_content
