@@ -72,9 +72,11 @@ $(function() {
 
         viewDisplay: function(view) {
           if(lastView!=null && lastView!=view.name){ // se mudou de visão
-            if (view.name != 'list' && lastView == 'list') // se não for lista e a anterior for lista
+            if (view.name != 'list' && lastView == 'list'){ // se não for lista e a anterior for lista
+              $("#no_events").remove();
               $('#calendar').fullCalendar('removeEventSource', fcSources.list)
                             .fullCalendar( 'addEventSource', fcSources.calendar);
+            }
             if(view.name == 'list') //se for lista
               $('#calendar').fullCalendar('removeEventSource', fcSources.calendar)
                             .fullCalendar( 'addEventSource', fcSources.list);

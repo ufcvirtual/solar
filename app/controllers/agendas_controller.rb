@@ -12,13 +12,16 @@ class AgendasController < ApplicationController
   end
 
   def list
-    allocation_tags = active_tab[:url][:allocation_tag_id] || params[:allocation_tags_ids]
-    @schedule       = Agenda.events(allocation_tags)
+    @allocation_tags_ids = active_tab[:url][:allocation_tag_id]
+    # raise "#{@allocation_tags_ids}"
+    render action: :calendar
   end
 
   # calendário de eventos
   def calendar
-    authorize! :calendar, Agenda, on: (active_tab[:url].include?(:allocation_tag_id) ? [active_tab[:url][:allocation_tag_id]] : params[:allocation_tags_ids].split(" ")).flatten
+    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? [active_tab[:url][:allocation_tag_id]] : params[:allocation_tags_ids].split(" ")).flatten
+
+    authorize! :calendar, Agenda, on: @allocation_tags_ids
     @access_forms = Event.descendants.collect{ |model| model.to_s.tableize.singularize if model.constants.include?("#{params[:selected].try(:upcase)}_PERMISSION".to_sym) }.compact.join(",")
   end
 

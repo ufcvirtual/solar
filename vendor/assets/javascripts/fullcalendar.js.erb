@@ -5466,9 +5466,14 @@ function listView(element, calendar) {
               }
  
             }
- 
+
             $(element).html(html);
             $(html).append("</div>");
+
+            if(!events.length && $(".block_content_text").length <= 1)
+              $(".block_content_toolbar").after("<div class='block_content block_content_text' id='no_events'>"+noEventsMessage+"</div>");
+            else
+              $("#no_events").remove();
         }
  
  

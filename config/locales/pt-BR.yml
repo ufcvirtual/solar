@@ -1917,6 +1917,7 @@
       week: 'ddd d/M'
       day: 'dddd d/M'
     listFormat: 'ddddd, d de MMMMM, yyyy'
+    noEvents: Não há futuros eventos
 
   #Eventos da agenda
   schedule_events:

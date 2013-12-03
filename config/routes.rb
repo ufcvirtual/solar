@@ -230,7 +230,7 @@ Solar::Application.routes.draw do
       get :events
 
       resources :assignment, only: [] do
-        get "assignment/:id/:allocation_tags_ids", to: "agendas#dropdown_content", type: "Assignment", as: :dropdown_content_of, on: :member
+        get "/:allocation_tags_ids", to: "agendas#dropdown_content", type: "Assignment", as: :dropdown_content_of, on: :member
       end
       resources :discussion, only: [] do
         get "/:allocation_tags_ids", to: "agendas#dropdown_content", type: "Discussion", as: :dropdown_content_of, on: :member
