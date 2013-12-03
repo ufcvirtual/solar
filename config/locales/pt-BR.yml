@@ -1886,6 +1886,8 @@
     newsfeed: Feed de notícias
 
   messages:
+    form:
+      without_recipient: "Necessário pelo menos um destinatário."
     new:
       attach: "Anexar"
     show:

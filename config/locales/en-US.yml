@@ -1730,6 +1730,8 @@
     newsfeed: News Feed 
 
   messages:
+    form:
+      without_recipient: "Need at least one recipient."
     new:
       attach: "Attach"
     show:

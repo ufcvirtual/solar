@@ -2,7 +2,7 @@
   #content-div
     .contacts-uc
       - map_contacts = @contacts.map {|c| [c[:curriculum_unit], c[:id]]}
-      = select_tag "uc", options_for_select(map_contacts), onchange: "msg_show_contacts(this); return false;", prompt: t(:contacts)
+      = select_tag "uc", options_for_select(map_contacts, @allocation_tag_id), onchange: "msg_show_contacts(this); return false;", prompt: t(:contacts)
 
     .contacts-list
       %label= "Selecionar:"
@@ -21,17 +21,31 @@
 
     .form-actions.right_buttons
       = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
-      = button_to_function t(:save), "msg_add()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
+      = button_to_function t(:save), "msg_add_contacts()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
 
 :javascript
+
+  $(function(){
+    // nova msg dentro de uma UC
+    if ($('select#uc option:selected').val() != "")
+      msg_show_contacts($('select#uc'));
+  });
+
   function msg_show_contacts(obj) {
     $(".contacts-group").hide();
     $(".contacts-group#" + $(":selected", $(obj)).attr("value")).show();
   }
 
+  // add e retira usuario da selecao
   function msg_select_contact(contact) {
-    var select = ($(contact).data("selected") == false); // inicia como nao selecionado
-    $(contact).data("selected", select);
+    // se o usuario esta sendo selecionado ou saindo da selecao
+    var select = ($(contact).data("selected") == false);
+    var user_id = $(contact).data("user-id");
+    // se este usuario ja esta selecionado e uma nova tentativa de selecao do mesmo em uma outra UC
+    if (($('.contacts-selected .contact a[data-user-id="' + user_id + '"]').length > 0) && select)
+      return false; // usuario já foi selecionado
+
+    $(contact).data("selected", select); // marca/desmarca usuario como selecionado
 
     if (select)
       $(contact).parents("div.contact:first").appendTo(".contacts-selected");
@@ -39,14 +53,12 @@
       $(contact).parents("div.contact:first").appendTo(".contacts-list .contacts-group#" + $(contact).data("uc-id"));
   }
 
-
-  // renomear
-  function msg_add() {
+  function msg_add_contacts() {
     var contacts_to_show = [];
     var contacts = [];
     $(".contacts-selected a").each(function(){
       contacts.push($(this).data("user-id"));
-      contacts_to_show.push($(this).html());
+      contacts_to_show.push($(this).text());
     });
 
     $("#message_to").val(contacts_to_show.join(", "));

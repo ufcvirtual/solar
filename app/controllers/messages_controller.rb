@@ -22,8 +22,6 @@ class MessagesController < ApplicationController
     # melhorar
     @unreads = Message.user_inbox(current_user.id, allocation_tag_id, true).count
 
-    # apenas msgs para quimica
-
     @messages = Message.send("user_#{@box}", current_user.id, allocation_tag_id)
                         .paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
                         .order("created_at DESC")
@@ -32,6 +30,10 @@ class MessagesController < ApplicationController
   def new
     @message = Message.new
     @message.files.build
+
+    # melhorar
+    @allocation_tag_id = active_tab[:url][:allocation_tag_id]
+    @unreads = Message.user_inbox(current_user.id, @allocation_tag_id, true).count
 
     @contacts = user_contacts
   end
@@ -45,6 +47,10 @@ class MessagesController < ApplicationController
 
   def reply
     # verificar permissao -> deve ter permissao para a msg pai
+
+    # melhorar
+    @allocation_tag_id = active_tab[:url][:allocation_tag_id]
+    @unreads = Message.user_inbox(current_user.id, @allocation_tag_id, true).count
 
     @original = Message.find(params[:id])
     @message = Message.new subject: @original.subject

@@ -203,7 +203,7 @@ class User < ActiveRecord::Base
       id: id,
       name: name,
       email: email,
-      resume: Rack::Utils.escape_html("#{name} <#{email}>")
+      resume: "#{name} <#{email}>"
     }
   end
 

@@ -75,9 +75,15 @@
   }
 
   $(function(){
-
     $("#link_to_contacts, #message_to").click(function(){
       $.fancybox.open({ modal: true, href: "#content-div" });
     });
 
+    // tentando enviar sem destinatário
+    $("#send_message").click(function(event){
+      if ($('#message_to').val() == ""){
+        event.preventDefault();
+        alert("#{I18n.t(:without_recipient, scope: [:messages, :form])}");
+      }
+    });
   });
