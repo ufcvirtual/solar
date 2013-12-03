@@ -129,38 +129,66 @@ $(function(){
     $(btnParentPrevious).show();
   });
 
+  /* Menu de idiomas */
+  // $('body').on('click', function() {
+  //   $(".choice-language-menu").hide(); /* oculta o menu caso clique fora dele */
+  // });
 
-  /* Menus de idiomas e tutorial */
+  // $(".choice-language-menu").on('click', function(event){
+  //   event.stopPropagation(); /* impede que o menuu seja ocultado ao clicar sobre ele */
+  // });
 
-  var menu_tutorial = $(".choice-tutorial-menu");
-  var menu_language = $(".choice-language-menu");
+  $(".choice-language > a").on('click', function(event) {
+    // event.preventDefault();
+    // event.stopPropagation();  impede que o menuu seja ocultado ao clicar sobre ele 
+    languageParent = $(this).parent('li');
+    $('.choice-language-menu', languageParent).toggle().position({
+      my: 'bottom',
+      at: 'top-5',
+      of: languageParent
+    });
+  });
+  
+ //Menu de tutoriais
+  // $('body').on('click', function() {
+  //   $(".choice-tutorial-menu").hide(); /* oculta o menu caso clique fora dele */
+  // });
 
-  /* ocultar menus ao clicar no documento */
-  $(document).on('click', function() {
-    $(menu_tutorial).hide();
-    $(menu_language).hide();
+  // $(".choice-tutorial-menu").on('click', function(event){
+  //   event.stopPropagation(); /* impede que o menuu seja ocultado ao clicar sobre ele */
+  // });
+
+  $(".choice-tutorial > a").on('click', function(event) {
+    tutorialParent = $(this).parent('li');
+    $('.choice-tutorial-menu', tutorialParent).toggle().position({
+      my: 'bottom',
+      at: 'top-5',
+      of: tutorialParent
+    });
   });
 
-  function menu(item, itemMenu) {
-    event.preventDefault();
-    event.stopPropagation();
+  $(".choice-tutorial-menu").click(function() {
+    $('.choice-tutorial-menu').hide();
+  });
 
-    $(itemMenu, item).toggle().position({ 
-      my: 'center-7 bottom',
-      at: 'center top-5',
-      of: item
-    });
-  };
 
-  $(".choice-tutorial > a, .choice-language > a").on("click", function(event){
-    event.preventDefault();
-    event.stopPropagation();
-    $(menu_tutorial).hide();
-    $(menu_language).hide();
-    var item = $(this).parent();
-    var itemMenu = "." + $(item).attr("class") + "-menu";
-    menu(item, itemMenu);
-  })
+
+  var uls = $('.choice-tutorial ul');
+
+  $('.choice-tutorial > li').click(function( e ){
+    e.stopPropagation();
+    uls.hide();
+    $( this ).find('ul').show();
+  });
+  $('.choice-tutorial').click(function( e ){
+    e.stopPropagation();
+  });
+  $('body').click(function(){
+    uls.hide();
+  });
+
+
+
 
 });
 
