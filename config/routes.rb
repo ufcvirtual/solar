@@ -258,7 +258,6 @@ Solar::Application.routes.draw do
       get :reply,     to: :reply, type: "reply"
       get :reply_all, to: :reply, type: "reply_all"
       get :forward,   to: :reply, type: "forward"
-
     end
 
     collection do

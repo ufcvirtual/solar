@@ -8,7 +8,7 @@
       = link_to(inbox_messages_path(bread: :menu_messages)) do
         = content_tag(:i, nil, class: 'icon-inbox')
         %span.message_link_menu= t(:message_inbox)
-        %span#count_msgs_unread.text_alert_message="(#{Message.user_inbox(current_user.id, true).count})"
+        %span#count_msgs_unread.text_alert_message="(#{@unreads})"
 
   #menu_outbox{:class => css_class_outbox}
     %h2

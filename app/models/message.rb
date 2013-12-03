@@ -49,21 +49,34 @@ class Message < ActiveRecord::Base
     l.flatten.compact.uniq
   end
 
-  def self.user_inbox(user_id, only_unread = false)
+  def self.user_inbox(user_id, allocation_tag_id = nil, only_unread = false)
     query = ["NOT cast(user_messages.status & #{Message_Filter_Sender + Message_Filter_Trash} as boolean)"] # NOT (sender, trash)
     query << "NOT cast(user_messages.status & #{Message_Filter_Read} as boolean)" if only_unread
 
-    joins(:user_messages).where(user_messages: {user_id: user_id}).where(query.join(" AND ")).order("created_at DESC").uniq
+    where = []
+    where = "messages.allocation_tag_id = (#{allocation_tag_id})" unless allocation_tag_id.nil?
+
+    joins(:user_messages).where(user_messages: {user_id: user_id})
+      .where(where)
+      .where(query.join(" AND ")).order("created_at DESC").uniq
   end
 
-  def self.user_outbox(user_id)
+  def self.user_outbox(user_id, allocation_tag_id = nil)
+    where = []
+    where = "messages.allocation_tag_id = (#{allocation_tag_id})" unless allocation_tag_id.nil?
+
     joins(:user_messages).where(user_messages: {user_id: user_id})
+      .where(where)
       .where("cast(user_messages.status & #{Message_Filter_Sender} as boolean)
         AND NOT cast(user_messages.status & #{Message_Filter_Trash} as boolean)").order("created_at DESC").uniq # sender AND NOT trash
   end
 
-  def self.user_trashbox(user_id)
+  def self.user_trashbox(user_id, allocation_tag_id = nil)
+    where = []
+    where = "messages.allocation_tag_id = (#{allocation_tag_id})" unless allocation_tag_id.nil?
+
     joins(:user_messages).where(user_messages: {user_id: user_id})
+      .where(where)
       .where("cast(user_messages.status & #{Message_Filter_Trash} as boolean)").order("created_at DESC").uniq # IN (trash)
   end
 

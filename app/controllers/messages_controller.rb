@@ -8,17 +8,23 @@ class MessagesController < ApplicationController
   ## REVER ##
   include MysolarHelper
 
-  Path_Message_Files = Rails.root.join('media', 'messages')
+  ## REVER
+  # Path_Message_Files = Rails.root.join('media', 'messages')
 
   before_filter :prepare_for_group_selection, only: [:index]
 
+  ## [inbox, outbox, trashbox]
   def index
-    @show_system_label = active_tab[:url][:allocation_tag_id].nil?
+    allocation_tag_id = active_tab[:url][:allocation_tag_id]
+    @show_system_label = allocation_tag_id.nil?
     @box = params[:box] || "inbox"
+
+    # melhorar
+    @unreads = Message.user_inbox(current_user.id, allocation_tag_id, true).count
 
     # apenas msgs para quimica
 
-    @messages = Message.send("user_#{@box}", current_user.id)
+    @messages = Message.send("user_#{@box}", current_user.id, allocation_tag_id)
                         .paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
                         .order("created_at DESC")
   end
@@ -92,7 +98,7 @@ class MessagesController < ApplicationController
 
         @message.save!
 
-        ## email
+        ## email ##
 
         system_label = not(allocation_tag_id.nil?)
 
@@ -146,11 +152,11 @@ class MessagesController < ApplicationController
 
   ## REVER ##
 
-  # metodo chamado por ajax para atualizar contatos
-  def ajax_get_contacts
-    get_contacts
-    render layout: false
-  end
+  # # metodo chamado por ajax para atualizar contatos
+  # def ajax_get_contacts
+  #   get_contacts
+  #   render layout: false
+  # end
 
 
 
