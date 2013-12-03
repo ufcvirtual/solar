@@ -55,4 +55,38 @@ class Event < ActiveRecord::Base
     )
   end
 
+  # recupera o "caminho" o qual a ferramenta pertence
+  def parents_path
+    # recupera as allocation_tags
+    allocation_tags = self.academic_allocations.map(&:allocation_tag)
+    parents_path = []
+
+    # se não for para turmas ou for para uma turma
+    if allocation_tags.map(&:group).include?(nil) or allocation_tags.map(&:group).compact.size == 1
+      allocation_tags.each do |allocation_tag|
+        path = []
+
+        # pode pertencer a uma turma, oferta, curso ou uc
+        group = allocation_tag.group
+        offer = allocation_tag.offer || group.try(:offer)
+        curriculum_unit = allocation_tag.curriculum_unit || offer.try(:curriculum_unit)
+        course = allocation_tag.course || offer.try(:course)
+
+        # monta string com o caminho o qual a ferramenta pertence
+        path.insert(0, group.code) unless group.nil?
+        path.insert(0, offer.semester.name) unless offer.nil?
+        path.insert(0, curriculum_unit.name) unless curriculum_unit.nil?
+        path.insert(0, course.name) unless course.nil?
+
+        parents_path.insert(0, path.join(" - "))
+      end
+      parents_path
+    else
+      # quando tiver mais de uma turma, deve montar o caminho informando a quantidade de turmas
+      first_group = allocation_tags.first.group
+      [first_group.offer.course.name, first_group.offer.curriculum_unit.name, first_group.offer.semester.name, allocation_tags.count.to_s + " turmas"].join(" - ")
+    end
+    
+  end
+
 end

@@ -1962,6 +1962,7 @@
       remove: Remover
       edit: Editar
       details: Ver detalhes
+      see_groups: Ver turmas
     close: Fechar
     calendar:
       new_chat: Novo Chat

@@ -1805,7 +1805,8 @@
       groups: Groups
       remove: Remove
       edit: Edit
-      details: See Details
+      details: See details
+      see_groups: See groups
     close: Close
     calendar:
       new_chat: New Chat

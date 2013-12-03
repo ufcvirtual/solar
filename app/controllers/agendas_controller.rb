@@ -12,8 +12,9 @@ class AgendasController < ApplicationController
   end
 
   def list
-    @allocation_tags_ids = active_tab[:url][:allocation_tag_id]
-    # raise "#{@allocation_tags_ids}"
+    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? [active_tab[:url][:allocation_tag_id]] : params[:allocation_tags_ids].split(" ")).flatten
+
+    authorize! :calendar, Agenda, {on: @allocation_tags_ids, read: true}
     render action: :calendar
   end
 
@@ -21,14 +22,14 @@ class AgendasController < ApplicationController
   def calendar
     @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? [active_tab[:url][:allocation_tag_id]] : params[:allocation_tags_ids].split(" ")).flatten
 
-    authorize! :calendar, Agenda, on: @allocation_tags_ids
+    authorize! :calendar, Agenda, {on: @allocation_tags_ids, read: true}
     @access_forms = Event.descendants.collect{ |model| model.to_s.tableize.singularize if model.constants.include?("#{params[:selected].try(:upcase)}_PERMISSION".to_sym) }.compact.join(",")
   end
 
   # eventos para exibição no calendário
   def events
     @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? [active_tab[:url][:allocation_tag_id]] : params[:allocation_tags_ids].split(" ")).flatten
-    authorize! :calendar, Agenda, on: @allocation_tags_ids
+    authorize! :calendar, Agenda, {on: @allocation_tags_ids, read: true}
 
     events = (params.include?("list") ? 
       Event.descendants.map{ |event| event.scoped.after(Date.current, @allocation_tags_ids) }.uniq : 
