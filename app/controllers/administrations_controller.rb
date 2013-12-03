@@ -1,6 +1,6 @@
 class AdministrationsController < ApplicationController
 
-  layout false, except: [:manage_user]
+  layout false, except: [:manage_user, :manage_profiles]
   #authorize_resource :class => false
 
   def manage_user
@@ -92,6 +92,38 @@ class AdministrationsController < ApplicationController
       respond_to do |format|
         format.json { render json: {success: false}  }
       end 
+    end
+  end
+
+  def manage_profiles
+    @all_profiles = Profile.all_except_basic
+  end
+
+  def show_permissions
+    @current_profile = Profile.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render json: @current_profile }
+    end
+  end
+
+  def new_profile
+  end
+
+  def create_profile
+  end
+
+  def edit_profile
+    @current_profile = Profile.find(params[:id])
+    @all_profiles = [ '' ]
+    @all_profiles += Profile.all_except_basic.map{|f| [f.name, f.id]}
+  end
+
+  def update_profile
+    @current_profile = Profile.find(params[:id])
+    @current_profile.update_attributes(name: params[:name], description: params[:description])
+    respond_to do |format|
+      format.json { render json: {status: "ok"}  }
     end
   end
 

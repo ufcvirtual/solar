@@ -1,6 +1,6 @@
 $(function() {
 
-	// --- pagina de consultar usuario
+	// --- exclusivo da admin de usuario
   
   $("#search_user").click(function() {
     var url_for = "<%= Rails.application.routes.url_helpers.search_users_administrations_path %>";
@@ -19,7 +19,10 @@ $(function() {
 
 });
 
-// --- pagina de consultar usuario
+function open_administration(obj) {
+  var url = $(obj).attr('show-link');
+  $(obj).call_fancybox({href : url, open: true});
+}
 
 function manage(obj) {
   $(obj).closest('tr').addClass('active');
@@ -30,6 +33,12 @@ function cancel(obj) {
   $(obj).closest('tr').removeClass('active');
   $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
 }
+
+// --- exclusivo da admin de perfil
+
+
+
+// --- exclusivo da admin de usuario
 
 function update_allocation(obj) {
   var url = $(obj).attr('save-link');
@@ -65,11 +74,6 @@ function update_user(obj) {
   })
 }
 
-function open_administration(obj) {
-  var url = $(obj).attr('show-link');
-  $(obj).call_fancybox({href : url, open: true});
-}
-
 function change_password(obj) {
   var url = $(obj).attr('edit-link');
 
@@ -83,3 +87,4 @@ function change_password(obj) {
     }
   })
 }
+

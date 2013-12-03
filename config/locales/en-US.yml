@@ -1430,6 +1430,8 @@
       status: "Status"
       active: Active
       blocked: Blocked
+    profiles:
+      title: Manage Profiles
 
   editions:
     filter: Filter

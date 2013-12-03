@@ -1585,6 +1585,8 @@
       status: "Status"
       active: Ativo
       blocked: Bloqueado
+    profiles:
+      title: Gerenciar Perfis
 
   editions:
     alert: "Preencha os campos obrigatórios"

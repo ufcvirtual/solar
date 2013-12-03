@@ -7,6 +7,10 @@ class Profile < ActiveRecord::Base
 
   has_many :resources, :through => :permissions_resources
 
+  def self.all_except_basic
+    Profile.where("types<>?", Profile_Type_Basic)
+  end
+
   ## recupera uma lista perfis que possuem quaisquer permissões requisitadas
   def self.authorized_profiles(resources)
 
