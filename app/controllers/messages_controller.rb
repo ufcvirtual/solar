@@ -54,6 +54,7 @@ class MessagesController < ApplicationController
 
     @original = Message.find(params[:id])
     @message = Message.new subject: @original.subject
+    @message.files.build
 
     # colocar essa parte em um template/helper?
     @message.content = %{
@@ -66,14 +67,19 @@ class MessagesController < ApplicationController
     }
 
     @contacts = user_contacts
+    @files = @original.files
+
     @reply_to = []
     case params[:type]
       when "reply"
         @reply_to = [@original.sent_by.to_msg]
+        @message.subject = "#{t(:message_subject_reply)} #{@message.subject}"
       when "reply_all"
         @reply_to = @original.users.uniq.map(&:to_msg)
+        @message.subject = "#{t(:message_subject_reply)} #{@message.subject}"
       when "forward"
         # sem contato default
+        @message.subject = "#{t(:message_subject_route)} #{@message.subject}"
     end
   end
 
@@ -100,6 +106,7 @@ class MessagesController < ApplicationController
 
         ## files ##
 
+        ## faltando retirar arquivos indesejados
         @message.files << @original.files if @original and not @original.files.empty?
 
         @message.save!
