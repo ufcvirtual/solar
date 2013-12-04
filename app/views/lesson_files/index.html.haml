@@ -61,7 +61,7 @@
     %span#attention_message
       = t(".attention_message")
     %span= t(".save_automatically_message")
-  #files_bottom_bar= button_to_function t(".conclude"), "jQuery.fancybox.close()", type: :button, :class => 'btn btn_main'
+    #files_bottom_bar= button_to_function t(".conclude"), "jQuery.fancybox.close()", type: :button, :class => 'btn btn_main'
   
 = javascript_include_tag "jquery.tokeninput"
 = javascript_include_tag "lesson_files"

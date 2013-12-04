@@ -70,8 +70,11 @@
 }
 
 #files_bottom_bar {
-  margin-top: 5px;
-  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+  input {
+    float: right;
+  }
 }
 
 #btn-finish { // FIXME utilizado apenas em lesson_files, mudar seletor para ser menos genérico
@@ -84,7 +87,6 @@
 }
 
 #save_automatically_message {  // FIXME utilizado apenas em lesson_files, mudar seletor para ser menos genérico
-  float: left;
   font-size: 10pt;
   margin-top: 13px;
   color: #da1124;
