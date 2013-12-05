@@ -704,14 +704,17 @@
             },
 
             closeChat: function () {
+
                 if (converse.connection) {
                     //TODO fazer o "reaparecimento" das chatboxes que não foram fechadas pelo usuário
-                    box=document.getElementById(this.el.id);
-                    box.title="fechado";
+                    box = document.getElementById(this.el.id);
+                    box.title = "fechado";
                     this.model.destroy();
+
                 } else {
                     this.model.trigger('hide');
                 }
+
             },
 
             updateVCard: function () {
@@ -782,7 +785,7 @@
                         '<img src="" class="imgStatus" />' +
                         '</div>' +
                     '</a>' +
-                    '<p class="user-custom-message"><p/>' +
+                    '<p class="user-custom-message" style="display:none" ><p/>' +
                 '</div>' +
                 '<div class="chat-content"></div>' +
                 '<form class="sendXMPPMessage" action="" method="post">' +
