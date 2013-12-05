@@ -7,7 +7,7 @@
   # Formatos de data e hora
   date:
     formats:
-      default: "%d/%m/%Y"
+      default: "%m/%d/%Y"
       datepicker: "%d/%m/%Y"
       month_and_year: "%b %Y"
       day_and_month: "%d/%b"

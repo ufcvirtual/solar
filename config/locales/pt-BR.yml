@@ -24,7 +24,7 @@
         - :year
   time:
     formats:
-      clock: "%m/%d/%Y %H:%M:%S"
+      clock: "%d/%m/%Y %H:%M:%S"
       default: "%A, %d de %B de %Y, %H:%M h"
       short: "%d/%m %H:%M h"
       today: "%H:%M"
