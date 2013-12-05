@@ -2,7 +2,7 @@
   #content-div
     .contacts-uc
       - map_contacts = @contacts.map {|c| [c[:curriculum_unit], c[:id]]}
-      = select_tag "uc", options_for_select(map_contacts, @allocation_tag_id), onchange: "msg_show_contacts(this); return false;", prompt: t(:contacts)
+      = select_tag "uc", options_for_select(map_contacts, @allocation_tag_id), onchange: "msg_show_contacts(this); return false;", prompt: t(:contacts, scope: :messages)
 
     .contacts-list
       %label= "Selecionar:"

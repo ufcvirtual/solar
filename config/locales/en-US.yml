@@ -811,51 +811,6 @@
       updated: Notification wasn't updated.
       deleted: Notification wasn't deleted.
 
-  message_title: "Messages"
-  message_inbox: "Inbox"
-  message_outbox: "Outbox"
-  message_trash: "Trash"
-  message_search: "Message Search"
-  message_new: "New Message"
-  message_filter: "Filter"
-  message_select: "Select"
-  message_move: "Move"
-  message_delete: "Delete"
-  message_mark_as_read: "Mark as read"
-  message_mark_as_unread: "Mark as unread"
-  message_attach: "Has attachment"
-  message_select_all: "All"
-  message_select_none: "None"
-  message_select_read: "Read"
-  message_select_unread: "Unread"
-  message_none: "No messages found"
-  message_no_new: "No new messages"
-  message_restore: "Restore"
-
-  message_new_title: "New message"
-  message_send: "Send"
-  message_discard: "Discard"
-  message_attach_file: "Attach a file"
-  message_to: "To"
-  message_from: "From"
-  message_subject: "Subject"
-  message_date: "Date"
-  message_reply: "Reply"
-  message_reply_all: "Reply all"
-  message_forward: "Route"
-  message_attachments: "Attachments"
-  message_send_ok: "Message sent successfully."
-  message_send_error: "Unable to send message."
-  message_send_error_no_receiver: "Message not sent. No recipients found in the environment."
-  message_no_receiver_selected: "No recipient selected."
-  message_personal_contacts: "Personal Contacts"
-  message_header: "Message sent by: "
-  message_complete: "Complete"
-  message_cancel: "Cancel"
-  message_confirm: "Are you sure you want to delete this?"
-  message_confirm_status: "Are you sure you want to %{status} this?"
-  message_receiver_already_added: already added
-
   navigation_of: " of "
   navigation_next: "Next >"
   navigation_previous: "< Previous"
@@ -1727,19 +1682,51 @@
     settings: Settings
     newsfeed: News Feed 
 
+  message_confirm: "Are you sure you want to delete this?"
+
   messages:
+    mail_header: "Sent by: "
+    mail_sent: "Message was successfully sent"
+
+    new: "New"
+    delete: "Delete"
+    restore: "Restore"
+
+    select_all: "All"
+    select_read: "Read"
+    select_unread: "Unread"
+
+    mark_as_read: "Marck as read"
+    mark_as_unread: "Mark as unread"
+
+    none: "No message found"
     no_subject: "(no subject)"
-    add_contacts: "Click here to add contacts"
+    contacts: "Contacts"
     subject:
       reply: "Re: "
       forward: "Fwd: "
     form:
-      without_recipient: "Need at least one recipient."
+      message_to: "To"
+      subject: "Subject"
       attach: "Attach"
+      attach_file: "Attach a file"
+      send: "Send"
+      without_recipient: "Need at least one recipient."
+      discard: "Discard"
+      add_contacts: "Click here to add contacts"
+    header:
+      inbox: "Inbox"
+      outbox: "Outbox"
+      trashbox: "Trashbox"
     show:
-      to: "To: "
       from: "From: "
+      date: "Date: "
+      subject: "Subject: "
+      to: "To: "
       attachments: "Attachments: "
+      reply: "Reply"
+      reply_all: "Reply to all"
+      forward: "Forward"
     index:
       filter_selected: "View: "
 

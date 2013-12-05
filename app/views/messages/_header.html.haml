@@ -7,17 +7,17 @@
     %h2
       = link_to(inbox_messages_path(bread: :menu_messages)) do
         = content_tag(:i, nil, class: 'icon-inbox')
-        %span.message_link_menu= t(:message_inbox)
+        %span.message_link_menu= t(".inbox")
         %span#count_msgs_unread.text_alert_message="(#{@unreads})"
 
   #menu_outbox{:class => css_class_outbox}
     %h2
       = link_to(outbox_messages_path(bread: :menu_messages)) do
         = content_tag(:i, nil, class: 'icon-outbox')
-        %span.message_link_menu= t(:message_outbox)
+        %span.message_link_menu= t(".outbox")
 
   #menu_trash{:class => css_class_trash}
     %h2
       = link_to(trashbox_messages_path(bread: :menu_messages)) do
         = content_tag(:i, nil, class: 'icon-trash')
-        %span.message_link_menu= t(:message_trash)
+        %span.message_link_menu= t(".trashbox")

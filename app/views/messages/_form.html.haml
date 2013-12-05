@@ -19,7 +19,7 @@
   };
 
 .message_external_div
-  = render "message_header"
+  = render "header"
   = simple_form_for @message, html: {id: "form_message_text", multipart: true} do |f|
 
     - if @original
@@ -31,10 +31,10 @@
       .message_header_new
         .message_new_text_to
           .label.align-left
-            %a#link_to_contacts.link_content= t(:message_to)
-          .input.align-right= text_field_tag :message_to, [@reply_to].flatten.compact.map { |c| c[:resume] }.join(", "), class: "message_new_textbox", readonly: true, placeholder: t(:add_contacts, scope: :messages)
+            %a#link_to_contacts.link_content= t(".message_to")
+          .input.align-right= text_field_tag :message_to, [@reply_to].flatten.compact.map { |c| c[:resume] }.join(", "), class: "message_new_textbox", readonly: true, placeholder: t(".add_contacts")
         .message_new_text_to
-          .label.align-left= t(:message_subject)
+          .label.align-left= t(".subject")
           .input.align-right= f.input :subject, label: false, input_html: {class: "message_new_textbox"}
 
         .message_new_upload
@@ -42,7 +42,7 @@
           #new_message_file
             .label.align-left= t(".attach")
             / para add novo arquivo
-            %button#link_upload.btn.btn_default.duplicate_nested_form{"data-tooltip" => t(:message_attach_file)}
+            %button#link_upload.btn.btn_default.duplicate_nested_form{"data-tooltip" => t(".attach_file")}
               %i.icon-paperclip
 
             - if @files
@@ -65,8 +65,8 @@
       = f.input :content, label: false, as: :ckeditor
 
     .message_new_action
-      = f.submit t(:message_send), id: "send_message", class: "btn btn_main", alt: t(:message_send)
-      = link_to t(:message_discard), inbox_messages_path, {class: "btn btn_caution"}
+      = f.submit t(".send"), id: "send_message", class: "btn btn_main", alt: t(".send")
+      = link_to t(".discard"), inbox_messages_path, {class: "btn btn_caution"}
 
 = javascript_include_tag "message"
 

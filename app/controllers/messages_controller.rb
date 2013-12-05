@@ -1,15 +1,6 @@
 class MessagesController < ApplicationController
-  ## REVER ##
   include FilesHelper
-  ## REVER ##
   include MessagesHelper
-  ## REVER ##
-  include CurriculumUnitsHelper
-  ## REVER ##
-  include MysolarHelper
-
-  ## REVER
-  # Path_Message_Files = Rails.root.join('media', 'messages')
 
   before_filter :prepare_for_group_selection, only: [:index]
 
@@ -19,7 +10,6 @@ class MessagesController < ApplicationController
     @show_system_label = allocation_tag_id.nil?
     @box = params[:box] || "inbox"
 
-    # melhorar
     @unreads = Message.user_inbox(current_user.id, allocation_tag_id, true).count
 
     @messages = Message.send("user_#{@box}", current_user.id, allocation_tag_id)
@@ -31,38 +21,33 @@ class MessagesController < ApplicationController
     @message = Message.new
     @message.files.build
 
-    # melhorar
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
     @unreads = Message.user_inbox(current_user.id, @allocation_tag_id, true).count
-
     @contacts = user_contacts
   end
 
   def show
     @message = Message.find(params[:id])
-
-    # tentar melhorar => levar para o model
     change_message_status(@message.id, "read", @box = params[:box] || "inbox")
   end
 
   def reply
-    # verificar permissao -> deve ter permissao para a msg pai
+    @original = Message.find(params[:id])
+    raise CanCan::AccessDenied unless @original.user_has_permission?(current_user.id)
 
-    # melhorar
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
     @unreads = Message.user_inbox(current_user.id, @allocation_tag_id, true).count
 
-    @original = Message.find(params[:id])
     @message = Message.new subject: @original.subject
     @message.files.build
 
     # colocar essa parte em um template/helper?
     @message.content = %{
       <br/><br/>----------------------------------------<br/>
-      #{t(:message_from)}: #{@original.sent_by.to_msg[:resume]}<br/>
-      #{t(:message_date)}: #{l(@original.created_at, format: :clock)}<br/>
-      #{t(:message_subject)}: #{@original.subject}<br/>
-      #{t(:message_to)}: #{@original.users.map(&:to_msg).map{ |c| c[:resume] }.join(',')}<br/>
+      #{t(:from, scope: [:messages, :show])} #{@original.sent_by.to_msg[:resume]}<br/>
+      #{t(:date, scope: [:messages, :show])} #{l(@original.created_at, format: :clock)}<br/>
+      #{t(:subject, scope: [:messages, :show])} #{@original.subject}<br/>
+      #{t(:to, scope: [:messages, :show])} #{@original.users.map(&:to_msg).map{ |c| c[:resume] }.join(',')}<br/>
       #{@original.content}
     }
 
@@ -118,7 +103,7 @@ class MessagesController < ApplicationController
         system_label = not(allocation_tag_id.nil?)
 
         msg = %{
-          <b>#{t(:message_header)} #{current_user.to_msg[:resume]}</b><br/>
+          <b>#{t(:mail_header, scope: :messages)} #{current_user.to_msg[:resume]}</b><br/>
           #{@message.labels(current_user.id, system_label) if system_label}<br/>
           ________________________________________________________________________<br/><br/>
           #{@message.content}
@@ -131,9 +116,8 @@ class MessagesController < ApplicationController
         end
       end
 
-      redirect_to outbox_messages_path, notice: t(:message_send_ok)
+      redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages)
     rescue => error
-      raise "#{error}"
       @contacts = user_contacts
 
       render :new
@@ -152,32 +136,12 @@ class MessagesController < ApplicationController
     end
   end
 
-
-  ## REVER ##
-
   def download_files
     file = MessageFile.find(params[:file_id])
     raise CanCan::AccessDenied unless file.message.user_has_permission?(current_user.id)
 
     download_file(inbox_messages_path, file.attachment.path, file.attachment_file_name)
   end
-
-
-
-
-
-  ## REVER ##
-
-  # # metodo chamado por ajax para atualizar contatos
-  # def ajax_get_contacts
-  #   get_contacts
-  #   render layout: false
-  # end
-
-
-
-
-
 
   private
 
