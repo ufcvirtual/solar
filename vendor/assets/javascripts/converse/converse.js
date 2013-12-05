@@ -119,7 +119,7 @@
             'dnd': 'Não Pertube',
             'online': 'Online',
             'offline': 'Offline',
-            'unavailable': 'Indisponível',
+            'unavailable': 'Offline',
             'xa': 'Ausente',
             'away': 'Ausente'
         };
@@ -545,6 +545,21 @@
                 // If this message is on a different day than the one received
                 // prior, then indicate it on the chatbox.
                 idx = _.indexOf(times, time)-1;
+                //setando imagem de status ao receber nova menssage
+                contacts=converse.roster.models; //pega lista completa de usuários
+                var c=0;
+                while(c<contacts.length){
+                    if(contacts[c].attributes.fullname.search(message.attributes.fullname) != -1){
+                        v=document.getElementById(this.model.get('box_id'));
+                        img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
+                        if(contacts[c].attributes.chat_status.search("online")!=-1) img.src=imgOn;
+                        if(contacts[c].attributes.chat_status.search("dnd")!=-1)img.src=imgDnd;
+                        if(contacts[c].attributes.chat_status.search("away")!=-1)img.src=imgAway;
+                        if(contacts[c].attributes.chat_status.search("offline")!=-1)img.src=imgOff;
+                    }
+                    c++;    
+                }
+
                 if (idx >= 0) {
                     previous_message = this.model.messages.at(idx);
                     prev_date = converse.parseISO8601(previous_message.get('time'));
@@ -559,7 +574,7 @@
                     }
                 }
                 if (message.get('composing')) {
-                    this.insertStatusNotification(__('%1$s está digitando', message.get('fullname')));
+                    this.insertStatusNotification(__('%1$s está digitando', message.get('fullname')));               
                     return;
                 } else {
                     this.appendMessage($chat_content, _.clone(message.attributes));
@@ -571,7 +586,6 @@
                     head = v.childNodes.item(0);
                     if(head.style.top=="300px")
                     {
-                        console.log("Nova mensagem");
                         texto=head.childNodes.item(1);
                         texto=texto.childNodes.item(0);
                         texto.style.color="black";
@@ -874,7 +888,7 @@
                             '<option value="online">'+__('Online')+'</option>'+
                             '<option value="dnd">'+__('Busy')+'</option>'+
                             '<option value="away">'+__('Away')+'</option>'+
-                            //'<option value="offline">'+__('Offline')+'</option>'+
+                            '<option value="unavailable">'+__('Offline')+'</option>'+
                         '</select>'+
                     '</span>'+
                 '</form>'
@@ -2786,6 +2800,8 @@
                     pretty_status = __('away for long');
                 } else if (stat === 'away') {
                     pretty_status = __('away');
+                } else if (stat === 'unavailable') {
+                    pretty_status = __('offline');
                 } else {
                     pretty_status = __(stat) || __('online'); // XXX: Is 'online' the right default choice here?
                 }
@@ -2924,6 +2940,7 @@
             connect: function (jid, hash) {
                 converse.connection = new Strophe.Connection(converse.bosh_service_url);
                 converse.connection.connect(jid, hash, converse.onConnect);
+                xmpp_pass = "";
             },
 
             showConnectButton: function () {
@@ -2983,16 +3000,8 @@
 
             authenticate: function () {
 
-                //Verifica se usuário é registrado e efetua o login
-                // if (xmpp_registered) {
-                    
-                //     //Com resorce setado - im
-                //     eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(c/a))+String.fromCharCode(c%a+161)};if(!''.replace(/^/,String)){while(c--){d[e(c)]=k[c]||e(c)}k=[function(e){return d[e]}];e=function(){return'\[\xa1-\xff]+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp(e(c),'g'),k[c])}}return p}('¡ ¥=²["\\®\\³\\°\\¢\\£"](5)+¦+´;¡ ª=± ¶(¥,"\\¨\\©\\§\\¨");¡ ¯=ª["\\µ\\£\\«\\¤\\Á\\®\\¾"]("\\¿\\¤\\À\\½\\·","\\¤\\©\\§");¬=¦+¼+"\\¸\\°\\¹";º["\\¢\\»\\­\\­\\£\\¢\\«"](¬,¯);',33,33,'var|x63|x65|x48|pass|xmpp_username|x58|x54|x45|shaObj|x74|jid|x6E|x73|hash|x69|new|xmpp_cpf|x6C|xmpp_id|x67|jsSHA|x31|x2F|x6D|this|x6F|xmpp_dominio|x2D|x68|x53|x41|x61'.split('|'),0,{}))
-
-                //  }
                 jid = xmpp_username + xmpp_dominio +"/im";
-                this.connect(jid, xmpp_senha);
-
+                this.connect(jid, xmpp_pass);
 
             },
 

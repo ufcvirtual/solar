@@ -28,7 +28,7 @@ Instead of a list of all class selectors,
 you can use the generic selector below, but it's slower:
 [class*="icons-"] {
 */
-.icons-home, .icons-pencil, .icons-camera, .icons-camera-2, .icons-play, .icons-music, .icons-headphones, .icons-phone, .icons-phone-hang-up, .icons-address-book, .icons-notebook, .icons-envelop, .icons-pushpin, .icons-online, .icons-away, .icons-bubbles, .icons-bubbles-2, .icons-bubbles-3, .icons-user, .icons-users, .icons-quotes-left, .icons-spinner, .icons-search, .icons-cogs, .icons-wrench, .icons-unlocked, .icons-lock, .icons-lock-2, .icons-key, .icons-key-2, .icons-zoom-out, .icons-zoom-in, .icons-cog, .icons-remove, .icons-remove-2, .icons-eye, .icons-eye-blocked, .icons-attachment, .icons-globe, .icons-heart, .icons-happy, .icons-thumbs-up, .icons-smiley, .icons-tongue, .icons-sad, .icons-wink, .icons-wondering, .icons-confused, .icons-shocked, .icons-evil, .icons-angry, .icons-cool, .icons-grin, .icons-info, .icons-notification, .icons-warning, .icons-spell-check, .icons-volume-high, .icons-volume-medium, .icons-volume-low, .icons-volume-mute, .icons-volume-mute-2, .icons-volume-decrease, .icons-volume-increase, .icons-bold, .icons-underline, .icons-italic, .icons-strikethrough, .icons-new-tab, .icons-youtube, .icons-close, .icons-blocked, .icons-cancel-circle, .icons-minus, .icons-plus, .icons-checkbox-checked, .icons-checkbox-unchecked, .icons-checkbox-partial, .icons-radio-checked, .icons-radio-unchecked, .icons-room-info, .icons-newspaper, .icons-image, .icons-offline, .icons-dnd {
+.icons-home, .icons-pencil, .icons-camera, .icons-camera-2, .icons-play, .icons-music, .icons-headphones, .icons-phone, .icons-phone-hang-up, .icons-address-book, .icons-notebook, .icons-envelop, .icons-pushpin, .icons-online, .icons-away, .icons-bubbles, .icons-bubbles-2, .icons-bubbles-3, .icons-user, .icons-users, .icons-quotes-left, .icons-spinner, .icons-search, .icons-cogs, .icons-wrench, .icons-unlocked, .icons-lock, .icons-lock-2, .icons-key, .icons-key-2, .icons-zoom-out, .icons-zoom-in, .icons-cog, .icons-remove, .icons-remove-2, .icons-eye, .icons-eye-blocked, .icons-attachment, .icons-globe, .icons-heart, .icons-happy, .icons-thumbs-up, .icons-smiley, .icons-tongue, .icons-sad, .icons-wink, .icons-wondering, .icons-confused, .icons-shocked, .icons-evil, .icons-angry, .icons-cool, .icons-grin, .icons-info, .icons-notification, .icons-warning, .icons-spell-check, .icons-volume-high, .icons-volume-medium, .icons-volume-low, .icons-volume-mute, .icons-volume-mute-2, .icons-volume-decrease, .icons-volume-increase, .icons-bold, .icons-underline, .icons-italic, .icons-strikethrough, .icons-new-tab, .icons-youtube, .icons-close, .icons-blocked, .icons-cancel-circle, .icons-minus, .icons-plus, .icons-checkbox-checked, .icons-checkbox-unchecked, .icons-checkbox-partial, .icons-radio-checked, .icons-radio-unchecked, .icons-room-info, .icons-newspaper, .icons-image, .icons-offline, .icons-dnd, .icons-unavailable {
 	font-family: 'Converse-js';
 	speak: none;
 	font-style: normal;
@@ -291,6 +291,9 @@ you can use the generic selector below, but it's slower:
 }
 .icons-offline:before {
 	content: "\e002";
+}
+.icons-unavailable:before {
+  content: "\e002";
 }
 .icons-dnd:before {
 	content: "\e004";
