@@ -1005,8 +1005,6 @@
   message_header: "Mensagem enviada por: "
   message_complete: "Concluir"
   message_cancel: "Cancelar"
-  message_subject_reply: "Res: "
-  message_subject_route: "Enc: "
   message_confirm: "Tem certeza de que deseja excluir?"
   message_confirm_status: "Tem certeza de que deseja %{status}?"
   message_receiver_already_added: já adicionado
@@ -1886,9 +1884,13 @@
     newsfeed: Feed de notícias
 
   messages:
+    no_subject: "(sem assunto)"
+    add_contacts: "Clique aqui para adicionar contatos"
+    subject:
+      reply: "Res: "
+      forward: "Enc: "
     form:
       without_recipient: "Necessário pelo menos um destinatário."
-    new:
       attach: "Anexar"
     show:
       to: "Para: "

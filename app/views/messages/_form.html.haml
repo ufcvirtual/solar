@@ -32,7 +32,7 @@
         .message_new_text_to
           .label.align-left
             %a#link_to_contacts.link_content= t(:message_to)
-          .input.align-right= text_field_tag :message_to, [@reply_to].flatten.compact.map { |c| c[:resume] }.join(", "), class: "message_new_textbox", readonly: true, placeholder: "EN-US: os contatos serao add aqui"
+          .input.align-right= text_field_tag :message_to, [@reply_to].flatten.compact.map { |c| c[:resume] }.join(", "), class: "message_new_textbox", readonly: true, placeholder: t(:add_contacts, scope: :messages)
         .message_new_text_to
           .label.align-left= t(:message_subject)
           .input.align-right= f.input :subject, label: false, input_html: {class: "message_new_textbox"}
@@ -45,19 +45,21 @@
             %button#link_upload.btn.btn_default.duplicate_nested_form{"data-tooltip" => t(:message_attach_file)}
               %i.icon-paperclip
 
-            - unless @files.empty?
-              .original.files
+            - if @files
+              .original_files
                 - @files.each do |file|
                   .attach
+                    = hidden_field :message, :original_files, value: file.id, multiple: true
                     = link_to ['-', file.attachment_file_name].join, download_file_messages_path(file_id: file.id)
+                    = link_to content_tag(:i, nil, class: 'icon-minus-square'), '', remote: true, class: 'destroy_original_file'
 
-            = f.simple_fields_for :files do |file|
+            = f.simple_fields_for :files do |f_file|
               .duplicatable_nested_form
                 .inline
-                  = file.file_field :attachment
+                  = f_file.file_field :attachment
 
-                  - if file.object.new_record?
-                    = link_to content_tag(:i, nil, class: 'icon-minus'), '', remote: true, class: 'destroy_duplicate_nested_form'
+                  - if f_file.object.new_record?
+                    = link_to content_tag(:i, nil, class: 'icon-minus-square'), '', remote: true, class: 'destroy_duplicate_nested_form'
 
     #div_new_message
       = f.input :content, label: false, as: :ckeditor
@@ -71,10 +73,6 @@
 :javascript
 
   $(function(){
-    $("#link_to_contacts, #message_to").click(function(){
-      $.fancybox.open({ modal: true, href: "#content-div" });
-    });
-
     // tentando enviar sem destinatário
     $("#send_message").click(function(event){
       if ($('#message_to').val() == ""){
@@ -82,9 +80,17 @@
         alert("#{I18n.t(:without_recipient, scope: [:messages, :form])}");
       }
     });
+
+    // abrir lista de contatos
+    $("#link_to_contacts, #message_to").click(function(){
+      $.fancybox.open({ modal: true, href: "#content-div" });
+    });
+
+    // retirar anexos da msg original
+    $(".destroy_original_file").click(function(){
+      $(this).closest('div.attach').slideUp().remove();
+    });
   });
-
-
 
   // add files
 
@@ -93,7 +99,6 @@
     if ($('.duplicatable_nested_form').length)
       nestedForm = $('.duplicatable_nested_form').last().clone();
 
-    // duplicar div para add autor
     $('.duplicate_nested_form').click(function(e) {
       var formsOnPage, lastNestedForm, newNestedForm;
       e.preventDefault();

@@ -852,8 +852,6 @@
   message_header: "Message sent by: "
   message_complete: "Complete"
   message_cancel: "Cancel"
-  message_subject_reply: "Re: "
-  message_subject_route: "Fwd: "
   message_confirm: "Are you sure you want to delete this?"
   message_confirm_status: "Are you sure you want to %{status} this?"
   message_receiver_already_added: already added
@@ -1730,9 +1728,13 @@
     newsfeed: News Feed 
 
   messages:
+    no_subject: "(no subject)"
+    add_contacts: "Click here to add contacts"
+    subject:
+      reply: "Re: "
+      forward: "Fwd: "
     form:
       without_recipient: "Need at least one recipient."
-    new:
       attach: "Attach"
     show:
       to: "To: "

@@ -8,12 +8,14 @@ class Message < ActiveRecord::Base
   has_many :user_message_labels, through: :user_messages, uniq: true
   has_many :message_labels, through: :user_message_labels, uniq: true
 
+  before_save proc { |record| record.subject = I18n.t(:no_subject, scope: :messages) if record.subject == "" }
+
   accepts_nested_attributes_for :user_messages, allow_destroy: true
   accepts_nested_attributes_for :files, allow_destroy: true
 
-  validates :content, presence: true # :contacts ??
-
   attr_accessor :contacts
+
+  validates :content, presence: true
 
   # box = [inbox, outbox, trashbox]
   def was_read?(user_id, box)

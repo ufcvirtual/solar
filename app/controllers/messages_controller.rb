@@ -73,13 +73,13 @@ class MessagesController < ApplicationController
     case params[:type]
       when "reply"
         @reply_to = [@original.sent_by.to_msg]
-        @message.subject = "#{t(:message_subject_reply)} #{@message.subject}"
+        @message.subject = "#{t(:reply, scope: [:messages, :subject])} #{@message.subject}"
       when "reply_all"
         @reply_to = @original.users.uniq.map(&:to_msg)
-        @message.subject = "#{t(:message_subject_reply)} #{@message.subject}"
+        @message.subject = "#{t(:reply, scope: [:messages, :subject])} #{@message.subject}"
       when "forward"
         # sem contato default
-        @message.subject = "#{t(:message_subject_route)} #{@message.subject}"
+        @message.subject = "#{t(:forward, scope: [:messages, :subject])} #{@message.subject}"
     end
   end
 
@@ -88,8 +88,11 @@ class MessagesController < ApplicationController
     params[:message][:allocation_tag_id] = allocation_tag_id if allocation_tag_id
     contacts = params[:message].delete(:contacts).split(",")
 
-    # se o id estiver presente, indica que é uma resposta
-    @original = Message.find(params[:message].delete(:original)) if params[:message][:original].present?
+    # é uma resposta
+    if params[:message][:original].present?
+      @original = Message.find(params[:message].delete(:original)) # precisa para a view de new, caso algum problema aconteca
+      original_files = @original.files.where(message_files: {id: params[:message].delete(:original_files)})
+    end
 
     begin
       Message.transaction do
@@ -106,8 +109,7 @@ class MessagesController < ApplicationController
 
         ## files ##
 
-        ## faltando retirar arquivos indesejados
-        @message.files << @original.files if @original and not @original.files.empty?
+        @message.files << original_files if original_files and not original_files.empty?
 
         @message.save!
 
@@ -131,6 +133,7 @@ class MessagesController < ApplicationController
 
       redirect_to outbox_messages_path, notice: t(:message_send_ok)
     rescue => error
+      raise "#{error}"
       @contacts = user_contacts
 
       render :new
