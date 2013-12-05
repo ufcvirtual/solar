@@ -181,10 +181,9 @@ class ApplicationController < ActionController::Base
     end
 
     def init_xmpp_im
-
-        conf = YAML::load_file(File.join("config/",'im.yml'))
-            @dominio = conf["dominio"]
-            @ip = conf["ip"]
-            @porta = conf["porta"]
+      conf = YAML::load_file(File.join("config/",'im.yml'))
+      @dominio = conf["dominio"]
+      @ip = conf["ip"]
+      @porta = conf["porta"]
     end
 end

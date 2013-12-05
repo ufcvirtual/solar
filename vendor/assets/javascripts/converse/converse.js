@@ -119,7 +119,7 @@
             'dnd': 'Não Pertube',
             'online': 'Online',
             'offline': 'Offline',
-            'unavailable': 'Indisponível',
+            'unavailable': 'Offline',
             'xa': 'Ausente',
             'away': 'Ausente'
         };
@@ -885,7 +885,7 @@
                             '<option value="online">'+__('Online')+'</option>'+
                             '<option value="dnd">'+__('Busy')+'</option>'+
                             '<option value="away">'+__('Away')+'</option>'+
-                            //'<option value="offline">'+__('Offline')+'</option>'+
+                            '<option value="unavailable">'+__('Offline')+'</option>'+
                         '</select>'+
                     '</span>'+
                 '</form>'
@@ -2797,6 +2797,8 @@
                     pretty_status = __('away for long');
                 } else if (stat === 'away') {
                     pretty_status = __('away');
+                } else if (stat === 'unavailable') {
+                    pretty_status = __('offline');
                 } else {
                     pretty_status = __(stat) || __('online'); // XXX: Is 'online' the right default choice here?
                 }
@@ -2935,6 +2937,7 @@
             connect: function (jid, hash) {
                 converse.connection = new Strophe.Connection(converse.bosh_service_url);
                 converse.connection.connect(jid, hash, converse.onConnect);
+                xmpp_pass = "";
             },
 
             showConnectButton: function () {
