@@ -351,10 +351,10 @@
 .icon-trash:before {
 	content: "\e071";
 }
-.icon-upload:before {
+.icon-outbox:before {
 	content: "\e072";
 }
-.icon-download:before {
+.icon-inbox:before {
 	content: "\e073";
 }
 .icon-disk:before {
