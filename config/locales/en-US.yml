@@ -1701,7 +1701,11 @@
 
     none: "No message found"
     no_subject: "(no subject)"
-    contacts: "Contacts"
+    contacts:
+      title: "Selection of contacts"
+      contacts: "Contacts"
+      select: "Select: "
+      to: "To: "
     subject:
       reply: "Re: "
       forward: "Fwd: "

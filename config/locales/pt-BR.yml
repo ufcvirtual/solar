@@ -1856,7 +1856,11 @@
 
     none: "Nenhuma mensagem encontrada"
     no_subject: "(sem assunto)"
-    contacts: "Contatos"
+    contacts:
+      title: "Seleção de contatos"
+      contacts: "Contatos"
+      select: "Selecionar: "
+      to: "Para: "
     subject:
       reply: "Res: "
       forward: "Enc: "

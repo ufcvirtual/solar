@@ -1,27 +1,29 @@
 .contacts-selection.invisible
   #content-div
-    .contacts-uc
-      - map_contacts = @contacts.map {|c| [c[:curriculum_unit], c[:id]]}
-      = select_tag "uc", options_for_select(map_contacts, @allocation_tag_id), onchange: "msg_show_contacts(this); return false;", prompt: t(:contacts, scope: :messages)
+    #lightBoxDialogTitle
+      %h1= t(".title")
 
-    .contacts-list
-      %label= "Selecionar:"
+    .block_content
+      .contacts-uc
+        - map_contacts = @contacts.map {|c| [c[:curriculum_unit], c[:id]]}
+        = select_tag "uc", options_for_select(map_contacts, @allocation_tag_id), onchange: "msg_show_contacts(this); return false;", prompt: t(".contacts")
 
-      - @contacts.each do |uc|
-        .contacts-group.invisible{id: uc[:id]}
-          - uc[:contacts].each do |contact|
-            .contact= link_to_function contact[:resume], "msg_select_contact(this); return false;", "data-uc-id" => uc[:id], "data-user-id" => contact[:id], "data-selected" => false
+      = t(".select")
+      .contacts-list
+        - @contacts.each do |uc|
+          .contacts-group.invisible{id: uc[:id]}
+            - uc[:contacts].each do |contact|
+              .contact= link_to_function contact[:resume], "msg_select_contact(this); return false;", "data-uc-id" => uc[:id], "data-user-id" => contact[:id], "data-selected" => false
 
-    %hr
-    %label= "Selecionados:"
-    .contacts-selected
-      - [@reply_to].flatten.compact.each do |contact|
-        .contact= link_to_function contact[:resume], "$(this).parents('div.contact').remove(); return false;", "data-user-id" => contact[:id], "data-selected" => true
+      = t(".to")
+      .contacts-selected
+        - [@reply_to].flatten.compact.each do |contact|
+          .contact= link_to_function contact[:resume], "$(this).parents('div.contact').remove(); return false;", "data-user-id" => contact[:id], "data-selected" => true
 
-
-    .form-actions.right_buttons
-      = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
-      = button_to_function t(:save), "msg_add_contacts()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
+    .block_buttons
+      .right
+        = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
+        = button_to_function t(:save), "msg_add_contacts()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
 
 :javascript
 
