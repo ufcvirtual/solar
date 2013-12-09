@@ -8,8 +8,6 @@ class ChangeMessagesAndLabels < ActiveRecord::Migration
       t.references :allocation_tag
       t.foreign_key :allocation_tags
 
-      t.remove :send_date
-
       t.timestamps
     end
 
@@ -24,6 +22,10 @@ class ChangeMessagesAndLabels < ActiveRecord::Migration
       end
 
       l.destroy # destruindo label do sistema
+    end
+
+    change_table :messages do |t|
+      t.remove :send_date
     end
 
     change_table :message_labels do |t|

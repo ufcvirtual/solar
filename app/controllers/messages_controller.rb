@@ -157,7 +157,7 @@ class MessagesController < ApplicationController
       contacts = []
       # mudar para considerar apenas as allocation_tags das ofertas correntes
       (current_user.allocations.map(&:allocation_tag).compact.uniq).each do |at, idx|
-        uc = at.group.curriculum_unit
+        uc = at.groups.first.curriculum_unit
         contacts << {
           id: uc.id,
           curriculum_unit: uc.name,
