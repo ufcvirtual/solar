@@ -41,25 +41,26 @@
 
           #new_message_file
             .label.align-left= t(".attach")
-            / para add novo arquivo
+
             %button#link_upload.btn.btn_default.duplicate_nested_form{"data-tooltip" => t(".attach_file")}
               %i.icon-paperclip
 
             - if @files
-              .original_files
+              .list_files_to_send.original_files
                 - @files.each do |file|
                   .attach
                     = hidden_field :message, :original_files, value: file.id, multiple: true
                     = link_to ['-', file.attachment_file_name].join, download_file_messages_path(file_id: file.id)
                     = link_to content_tag(:i, nil, class: 'icon-minus-square'), '', remote: true, class: 'destroy_original_file'
 
-            = f.simple_fields_for :files do |f_file|
-              .duplicatable_nested_form
-                .inline
-                  = f_file.file_field :attachment
+            .invisible
+              = f.simple_fields_for :files do |f_file|
+                .duplicatable_nested_form
+                  .inline
+                    = f_file.file_field :attachment
 
-                  - if f_file.object.new_record?
-                    = link_to content_tag(:i, nil, class: 'icon-minus-square'), '', remote: true, class: 'destroy_duplicate_nested_form'
+            .list_files_to_send
+              .files_to_send
 
     #div_new_message
       = f.input :content, label: false, as: :ckeditor
@@ -127,6 +128,26 @@
 
       $(newNestedForm).insertAfter(lastNestedForm);
 
-      $('.destroy_duplicate_nested_form', newNestedForm).on('click', function(event) { $(this).closest('.duplicatable_nested_form').slideUp().remove(); });
+      // abrindo escolha de arquivos diretamente
+      var newfile = $('input[type="file"]', $(newNestedForm));
+      newfile.click();
+
+      $(newfile).change(function(){
+        // verificando tamanho do arquivo
+        if ((this.files[0].size/1024/1024) > ("#{MessageFile::MAX_FILE_SIZE/1024/1024}")) {
+          alert("#{t(:file_too_big, scope: :messages)}");
+          $(newNestedForm).remove();
+          return false;
+        }
+
+        var new_file_name = "<div class='input files file_attached'>" + this.files[0].name + "&nbsp;&nbsp;&nbsp;<i class='icon-minus-square remove-file'></i> </span> </div>";
+        $(".files_to_send").append(new_file_name);
+
+        $('.remove-file:last').click(function(){
+          $(this).closest('.files.file_attached').slideUp().remove();
+          $(newfile).closest('.duplicatable_nested_form').slideUp().remove();
+        });
+      });
+
     });
   });

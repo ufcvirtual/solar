@@ -82,10 +82,12 @@
             else
               links.addClass('message_unread').removeClass('message_read');
           }
-
-          // contar entrada corretamente
-          $('span#count_msgs_unread').html(['(', $('.message_unread').length, ')'].join(''));
         }
+      }).complete(function(){
+        // contar msgs da caixa de entrada
+        $.get("#{count_unread_messages_path}", function(data){
+          $('span#count_msgs_unread').html(['(', data.unread, ')'].join(''));
+        });
       });
     });
   });

@@ -1840,6 +1840,7 @@
   message_confirm: "Tem certeza de que deseja excluir?"
 
   messages:
+    file_too_big: "Arquivo muito grande!"
     mail_header: "Mensagem enviada por: "
     mail_sent: "Mensagem enviada com sucesso."
 

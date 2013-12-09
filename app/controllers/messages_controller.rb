@@ -69,8 +69,8 @@ class MessagesController < ApplicationController
   end
 
   def create
-    allocation_tag_id = active_tab[:url][:allocation_tag_id]
-    params[:message][:allocation_tag_id] = allocation_tag_id if allocation_tag_id
+    @allocation_tag_id = active_tab[:url][:allocation_tag_id]
+    params[:message][:allocation_tag_id] = @allocation_tag_id if @allocation_tag_id
     contacts = params[:message].delete(:contacts).split(",")
 
     # é uma resposta
@@ -100,7 +100,7 @@ class MessagesController < ApplicationController
 
         ## email ##
 
-        system_label = not(allocation_tag_id.nil?)
+        system_label = not(@allocation_tag_id.nil?)
 
         msg = %{
           <b>#{t(:mail_header, scope: :messages)} #{current_user.to_msg[:resume]}</b><br/>
@@ -118,7 +118,9 @@ class MessagesController < ApplicationController
 
       redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages)
     rescue => error
+      @unreads = Message.user_inbox(current_user.id, @allocation_tag_id, true).count
       @contacts = user_contacts
+      @message.files.build
 
       render :new
     end
@@ -134,6 +136,12 @@ class MessagesController < ApplicationController
     rescue
       render json: {success: false}, status: :unprocessable_entity
     end
+  end
+
+  def count_unread
+    render json: {
+      unread: Message.user_inbox(current_user.id, active_tab[:url][:allocation_tag_id], true).count
+    }
   end
 
   def download_files

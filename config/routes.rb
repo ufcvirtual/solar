@@ -267,9 +267,7 @@ Solar::Application.routes.draw do
       get :inbox,    action: :index, box: "inbox",    as: :inbox
       get :outbox,   action: :index, box: "outbox",   as: :outbox
       get :trashbox, action: :index, box: "trashbox", as: :trashbox
-
-      # post :ajax_get_contacts
-      # post :send_message
+      get :count_unread
 
       get "download/file/:file_id", to: "messages#download_files", as: :download_file
     end

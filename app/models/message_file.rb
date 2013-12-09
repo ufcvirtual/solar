@@ -1,7 +1,9 @@
 class MessageFile < ActiveRecord::Base
   belongs_to :message
 
-  validates_attachment_size :attachment, less_than: 1.megabytes
+  MAX_FILE_SIZE = 1.megabytes
+
+  validates_attachment_size :attachment, less_than: MAX_FILE_SIZE
   validates_attachment_content_type_in_black_list :attachment
 
   has_attached_file :attachment,

@@ -1685,6 +1685,7 @@
   message_confirm: "Are you sure you want to delete this?"
 
   messages:
+    file_too_big: "File too big"
     mail_header: "Sent by: "
     mail_sent: "Message was successfully sent"
 
