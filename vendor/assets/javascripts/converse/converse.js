@@ -198,7 +198,6 @@
             var $button, $form;
             if (status === Strophe.Status.CONNECTED) {
                 converse.log('Connected');
-                document.getElementById("collective-xmpp-chat-data").style.display = "block";
                 converse.onConnected();
             } else if (status === Strophe.Status.DISCONNECTED) {
 
@@ -396,6 +395,10 @@
                     this.callback();
                 }
             }, this));
+
+            //Se conectado, mostra o IM
+            document.getElementById("collective-xmpp-chat-data").style.display = "block";
+
         };
 
 
@@ -523,13 +526,6 @@
 
             insertStatusNotification: function (message, replace) {
                 var $chat_content = this.$el.find('.chat-content');
-                //modifica a imagem de status ao usuário modificar seu status
-                v=this.$el[0];
-                img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
-                if(message.search("ocupado")!=-1) img.src=imgDnd;
-                if(message.search("ausente")!=-1) img.src=imgAway;
-                if(message.search("offline")!=-1)  img.src=imgOff;
-
                 $chat_content.find('div.chat-event').remove().end()
                     .append($('<div class="chat-event"></div>').text(message));
                 this.scrollDown();
@@ -545,21 +541,6 @@
                 // If this message is on a different day than the one received
                 // prior, then indicate it on the chatbox.
                 idx = _.indexOf(times, time)-1;
-                //setando imagem de status ao receber nova menssage
-                contacts=converse.roster.models; //pega lista completa de usuários
-                var c=0;
-                while(c<contacts.length){
-                    if(contacts[c].attributes.fullname.search(message.attributes.fullname) != -1){
-                        v=document.getElementById(this.model.get('box_id'));
-                        img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
-                        if(contacts[c].attributes.chat_status.search("online")!=-1) img.src=imgOn;
-                        if(contacts[c].attributes.chat_status.search("dnd")!=-1)img.src=imgDnd;
-                        if(contacts[c].attributes.chat_status.search("away")!=-1)img.src=imgAway;
-                        if(contacts[c].attributes.chat_status.search("offline")!=-1)img.src=imgOff;
-                    }
-                    c++;    
-                }
-
                 if (idx >= 0) {
                     previous_message = this.model.messages.at(idx);
                     prev_date = converse.parseISO8601(previous_message.get('time'));
@@ -2057,10 +2038,21 @@
                     });
                     //recebe box que foi criada e adiciona sombra e adiciona imagem de status
                     v=document.getElementById(chatbox.attributes.box_id);
-                    img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
-                    img.src=imgOn;
                     v.title="";
                     v.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
+                    img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
+                    contacts=converse.roster.models; //pega lista completa de usuários
+                    var c=0;
+                    while(c<contacts.length){
+                        if(contacts[c].attributes.fullname.search(chatbox.attributes.fullname) != -1){
+                            v=document.getElementById(this.model.get('box_id'));
+                            if(contacts[c].attributes.chat_status.search("online")!=-1) img.src=imgOn;
+                            if(contacts[c].attributes.chat_status.search("dnd")!=-1)img.src=imgDnd;
+                            if(contacts[c].attributes.chat_status.search("away")!=-1)img.src=imgAway;
+                            if(contacts[c].attributes.chat_status.search("offline")!=-1)img.src=imgOff;
+                        }
+                        c++;    
+                    }
                 }
                 return chatbox;
             }
@@ -2582,6 +2574,30 @@
                             }
                     }
                 }
+                //adiciona img online
+                if(item.attributes.chat_status=="online"){
+                    for(var c=1;c<chats.length;c++){                        
+                            if(chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[0].data.search(item.attributes.fullname)!=-1){
+                                chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[1].src=imgOn;
+                            }
+                    }
+                }
+                //adiciona img indisponivel
+                if(item.attributes.chat_status=="away"){
+                    for(var c=1;c<chats.length;c++){                        
+                            if(chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[0].data.search(item.attributes.fullname)!=-1){
+                                chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[1].src=imgAway;
+                            }
+                    }
+                }
+                //adiciona img offline
+                if(item.attributes.chat_status=="offline"){
+                    for(var c=1;c<chats.length;c++){                        
+                            if(chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[0].data.search(item.attributes.fullname)!=-1){
+                                chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[1].src=imgOff;
+                            }
+                    }
+                }
                 if ((converse.show_only_online_users) && (item.get('chat_status') !== 'online')) {
                     view.$el.remove();
                     view.delegateEvents();
@@ -2591,12 +2607,7 @@
                     view.render();                    
                 } else {
                     this.$el.find('#xmpp-contacts').after(view.render().el);
-                    //lista usuário on e muda imagem do status
-                    for(var c=1;c<chats.length;c++){                        
-                        if(chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[0].data.search(item.attributes.fullname)!=-1){
-                            chats[c].childNodes[0].childNodes[1].childNodes[0].childNodes[1].src=imgOn;
-                        }
-                    }
+                    
                 }
             },
 
