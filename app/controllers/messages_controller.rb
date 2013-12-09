@@ -153,16 +153,23 @@ class MessagesController < ApplicationController
 
   private
 
+    # melhorar para considerar apenas as allocation_tags das ofertas correntes
     def user_contacts
-      contacts = []
-      # mudar para considerar apenas as allocation_tags das ofertas correntes
+      contacts, ucs = [], []
       (current_user.allocations.map(&:allocation_tag).compact.uniq).each do |at, idx|
+        responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(at.related.join(","),
+          Profile_Type_Class_Responsible)
+        participants = CurriculumUnit.class_participants_by_allocations_tags_and_is_not_profile_type(at.groups.map(&:allocation_tag).map(&:id).join(","), Profile_Type_Class_Responsible)
+
         uc = at.groups.first.curriculum_unit
-        contacts << {
-          id: uc.id,
-          curriculum_unit: uc.name,
-          contacts: at.users.map(&:to_msg)
-        }
+        unless ucs.include?(uc)
+          ucs << uc
+          contacts << {
+            id: uc.id,
+            curriculum_unit: uc.name,
+            contacts: (responsible + participants).uniq.map(&:to_msg).sort! {|a, b| a[:name].downcase <=> b[:name].downcase}
+          }
+        end
       end
       contacts
     end
