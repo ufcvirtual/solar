@@ -280,46 +280,41 @@
         <div id="toggle-controlbox" >
             <a href="#" class="chat toggle-online-users">
                 <strong class="conn-feedback">  Bate-Papo  </strong>
-                <!--  <strong style="display: none" id="online-count">(0)</strong> -->
             </a>
       </div>
     </div>
 
   </body>
 
-<!-- Inicialização do IM -->
+  <!-- Inicialização do IM -->
   <script type="text/javascript">
-    imgOn="<%= image_path('IM_online_Icon.png') %>";
-    imgAway="<%= image_path('IM_away_Icon.png') %>";
-    imgDnd="<%= image_path('IM_dnd_Icon.png') %>";
-    imgOff="<%= image_path('IM_offline_Icon.png') %>";
-    imgMessage="<%= image_path('IM_message_Icon.png') %>";
+    imgOn = "<%= image_path('IM_online_Icon.png') %>";
+    imgAway = "<%= image_path('IM_away_Icon.png') %>";
+    imgDnd = "<%= image_path('IM_dnd_Icon.png') %>";
+    imgOff = "<%= image_path('IM_offline_Icon.png') %>";
+    imgMessage = "<%= image_path('IM_message_Icon.png') %>";
     xmpp_username = "<%= current_user.username %>";
     xmpp_ip = "<%= @ip %>";
     xmpp_dominio = "<%= @dominio %>";
     xmpp_port = "<%= @porta %>";
-    xmpp_pass = "<%= current_user.encrypted_password %>"
+    xmpp_pass = "<%= current_user.encrypted_password %>";
     number_chatbox = 0;
 
     converse.initialize({
-        prebind: false,
-        // jid: data.jid,
-        // sid: data.sid,
-        // rid: data.rid,
-        auto_list_rooms: false,
-        auto_subscribe: false,
-        bosh_service_url: 'http://'+ xmpp_ip +':' + xmpp_port + '/http-bind/',
-        hide_muc_server: false,
-        i18n: locales["pt_BR"], // Refer to ./locale/locales.js to see which locales are supported
-        allow_contact_requests: false,
-        show_only_online_users: false,
-        show_controlbox_by_default: true,
-        xhr_user_search: false
-
+      prebind: false,
+      // jid: data.jid,
+      // sid: data.sid,
+      // rid: data.rid,
+      auto_list_rooms: false,
+      auto_subscribe: false,
+      bosh_service_url: 'http://'+ xmpp_ip +':' + xmpp_port + '/http-bind/',
+      hide_muc_server: false,
+      i18n: locales["pt_BR"], // Refer to ./locale/locales.js to see which locales are supported
+      allow_contact_requests: false,
+      show_only_online_users: false,
+      show_controlbox_by_default: true,
+      xhr_user_search: false
     });
 
-   
-
-
-</script>
+  </script>
 </html>

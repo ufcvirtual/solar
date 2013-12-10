@@ -320,12 +320,11 @@ Solar::Application.routes.draw do
   get "/media/assignment/enunciation/:file.:extension", to: "access_control#assignment"
 
   # IM
-  resources :instant_messages, only: [] do
-    collection do
-      get :register_user
-      get :prebind
-    end
-  end
+  # resources :instant_messages, only: [] do
+  #   collection do
+  #     get :prebind
+  #   end
+  # end
 
   root to: 'devise/sessions#new'
 
