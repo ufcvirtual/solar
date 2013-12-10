@@ -32,6 +32,7 @@ Solar::Application.routes.draw do
     member do
       put "update_allocation"
       put "update_user"
+      put "update_profile"
       put "change_password"
     end
     collection do
@@ -43,6 +44,7 @@ Solar::Application.routes.draw do
       get "allocation/:id/edit", to: :edit_allocation, as: :edit_allocation
       get :allocations_user
       get :manage_profiles
+      get :list_profiles
       get :new_profile
       get "profile/:id/permissions", to: :show_permissions, as: :show_permissions
       get "profile/:id/edit", to: :edit_profile, as: :edit_profile

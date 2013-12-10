@@ -27,40 +27,6 @@ class AdministrationsController < ApplicationController
     end
   end
 
-  def allocations_user
-    id = params[:id]
-    @allocations_user = User.find(id).allocations
-                          .joins("LEFT JOIN allocation_tags at ON at.id = allocations.allocation_tag_id")
-                          .where("(at.curriculum_unit_id is not null or at.offer_id is not null or at.group_id is not null )")
-
-    @profiles = @allocations_user.map(&:profile).flatten.uniq
-
-    @periods = [ [t(:active),''] ]
-    @periods += Semester.all().map{|s| s.name}.flatten.uniq.sort! {|x,y| y <=> x}
-  end
-
-  def show_allocation
-    @allocation = Allocation.find(params[:id])
-    respond_to do |format|
-      format.html
-      format.json { render json: @allocation}
-    end
-  end
-
-  def edit_allocation
-    @allocation = Allocation.find(params[:id])
-  end
-
-  def update_allocation
-    @allocation = Allocation.find(params[:id])
-    @allocation.update_attribute(:status, params[:status])
-
-    respond_to do |format|
-      format.html { render action: :show_allocation, id: params[:id] }
-      format.json { render json: {status: "ok"}  }
-    end
-  end
-
   def show_user
     @user = User.find(params[:id])
     respond_to do |format|
@@ -95,8 +61,89 @@ class AdministrationsController < ApplicationController
     end
   end
 
+  def allocations_user
+    id = params[:id]
+    @allocations_user = User.find(id).allocations
+                          .joins("LEFT JOIN allocation_tags at ON at.id = allocations.allocation_tag_id")
+                          .where("(at.curriculum_unit_id is not null or at.offer_id is not null or at.group_id is not null )")
+
+    @profiles = @allocations_user.map(&:profile).flatten.uniq
+
+    @periods = [ [t(:active),''] ]
+    @periods += Semester.all().map{|s| s.name}.flatten.uniq.sort! {|x,y| y <=> x}
+  end
+
+  def show_allocation
+    @allocation = Allocation.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render json: @allocation}
+    end
+  end
+
+  def edit_allocation
+    @allocation = Allocation.find(params[:id])
+  end
+
+  def update_allocation
+    @allocation = Allocation.find(params[:id])
+    @allocation.update_attribute(:status, params[:status])
+
+    respond_to do |format|
+      format.html { render action: :show_allocation, id: params[:id] }
+      format.json { render json: {status: "ok"}  }
+    end
+  end
+
   def manage_profiles
     @all_profiles = Profile.all_except_basic
+  end
+
+  def list_profiles
+    @all_profiles = Profile.all_except_basic
+    respond_to do |format|
+      format.json { render json: @all_profiles }
+    end
+  end
+
+  def new_profile
+    @current_profile = Profile.new
+
+    @all_profiles = [ '' ]
+    @all_profiles += Profile.all_except_basic.map{|f| [f.name, f.id]}
+  end
+
+  def create_profile
+    @current_profile = Profile.new(params[:profile])
+
+    begin
+      Profile.transaction do
+        @current_profile.save!
+        
+        template = params[:template_profile]
+        # atribui permissoes padrao
+
+        # copia permissoes do perfil modelo, se houver
+
+      end
+      render json: {success: true, notice: 'criou'}
+    rescue ActiveRecord::AssociationTypeMismatch
+      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
+    rescue
+      render :new
+    end
+  end
+
+  def edit_profile
+    @current_profile = Profile.find(params[:id])
+  end
+
+  def update_profile
+    @current_profile = Profile.find(params[:id])
+    @current_profile.update_attributes(name: params[:profile][:name], description: params[:profile][:description])
+    respond_to do |format|
+      format.json { render json: {status: "ok"}  }
+    end
   end
 
   def show_permissions
@@ -104,26 +151,6 @@ class AdministrationsController < ApplicationController
     respond_to do |format|
       format.html
       format.json { render json: @current_profile }
-    end
-  end
-
-  def new_profile
-  end
-
-  def create_profile
-  end
-
-  def edit_profile
-    @current_profile = Profile.find(params[:id])
-    @all_profiles = [ '' ]
-    @all_profiles += Profile.all_except_basic.map{|f| [f.name, f.id]}
-  end
-
-  def update_profile
-    @current_profile = Profile.find(params[:id])
-    @current_profile.update_attributes(name: params[:name], description: params[:description])
-    respond_to do |format|
-      format.json { render json: {status: "ok"}  }
     end
   end
 
