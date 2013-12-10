@@ -23,8 +23,9 @@ class Post < ActiveRecord::Base
   end
 
   def to_mobilis
-    attachments = files.map { |file| attachments << {type: file.attachment_content_type, name: file.attachment_file_name, link: Rails.application.routes.url_helpers.download_post_post_file_path(post_id: id, id: file.id)} }
-
+    attachments = []
+    files.map { |file| attachments << {type: file.attachment_content_type, name: file.attachment_file_name, link: Rails.application.routes.url_helpers.download_post_post_file_path(post_id: id, id: file.id)} }
+    
     {
       id: id,
       profile_id: profile_id,

@@ -51,13 +51,13 @@
 	.block_content
 		.block_title
 			%h2= t(:additional, :scope => [:administrations, :informations])
-		%div= t(:biography, :scope => [:administrations, :informations]) + ": " + @user.bio
-		%div= t(:interests, :scope => [:administrations, :informations]) + ": " + @user.interests
-		%div= t(:music, :scope => [:administrations, :informations]) + ": " + @user.music
-		%div= t(:movies, :scope => [:administrations, :informations]) + ": " + @user.movies
-		%div= t(:books, :scope => [:administrations, :informations]) + ": " + @user.books
-		%div= t(:phrase, :scope => [:administrations, :informations]) + ": " + @user.phrase
-		%div= t(:site, :scope => [:administrations, :informations]) + ": " + @user.site
+		%div= t(:biography, :scope => [:administrations, :informations]) + ": " + @user.bio unless @user.bio.nil?
+		%div= t(:interests, :scope => [:administrations, :informations]) + ": " + @user.interests unless @user.interests.nil?
+		%div= t(:music, :scope => [:administrations, :informations]) + ": " + @user.music unless @user.music.nil?
+		%div= t(:movies, :scope => [:administrations, :informations]) + ": " + @user.movies unless @user.movies.nil?
+		%div= t(:books, :scope => [:administrations, :informations]) + ": " + @user.books unless @user.books.nil?
+		%div= t(:phrase, :scope => [:administrations, :informations]) + ": " + @user.phrase unless @user.phrase.nil?
+		%div= t(:site, :scope => [:administrations, :informations]) + ": " + @user.site unless @user.site.nil?
 
 	.right_buttons
 		= button_to_function t(:close, :scope => [:administrations]), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"

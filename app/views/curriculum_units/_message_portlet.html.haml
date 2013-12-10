@@ -12,7 +12,7 @@
       - @messages.each do |message|
         .block_content_line
           %span.block_content_gray
-            = l message.send_date, format: ((message.send_date.to_date == Date.today) ? :today : :not_today)
+            = l message.created_at, format: ((message.created_at.to_date == Date.today) ? :today : :not_today)
           = link_to message.sent_by.name.truncate(13), message_path(id: message.id, bread: :menu_messages, box: :inbox), {class: 'link_content'}
           = raw message.subject.truncate(63)
     - else

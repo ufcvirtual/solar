@@ -97,7 +97,7 @@
         /**
          * Intro
          */
-        $("#mysolar_top_help").click(function(){
+        $("#help_context").click(function(){
           introJs().setOptions({
             showStepNumbers: false,
             nextLabel: '<%= t(:tutorial_next) %>',
@@ -141,7 +141,7 @@
               {
                 element: '#mysolar_top_help',
                 position: 'left',
-                intro: 'Caso deseje ver este tutorial novamente, basta clicar em Ajuda.<br><br>Aproveite o novo <b>Solar 2.0!</b>'
+                intro: 'Caso deseje ver este tutorial novamente, basta clicar em Ajuda e depois em Contextual.<br><br>Aproveite o novo <b>Solar 2.0!</b>'
               }
             ]
           }).start();
@@ -169,8 +169,8 @@
             <li id="server_clock_wrapper">
               <span name="server_clock" id="server_clock"></span>
             </li>
-            <li id="mysolar_top_help">
-              <a href="#" class="mysolar_top_link"><%= t(:help) %></a>
+            <li id="mysolar_top_help" class="mysolar_top_submenu_label_regular">
+              <a href="" onclick="mysolarTopSubmenuHelpToggle();return false;" id = "help_top" class="mysolar_top_link"> <%= t(:help) %></a>
             </li>
             <li id="mysolar_top_logout">
               <%= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, :class => "mysolar_top_link") %>
@@ -194,6 +194,17 @@
             </li>
             <li>
               <%= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path) %>
+            </li>
+          </ul>
+        </div>
+
+        <div id="mysolar_submenu_help">
+          <ul>
+            <li>
+              <%= link_to t(:context), "#", id: 'help_context' %>
+            </li>
+            <li>
+              <%= link_to t(:tutorials), tutorials_path, id: 'my_tutorials' %>
             </li>
           </ul>
         </div>

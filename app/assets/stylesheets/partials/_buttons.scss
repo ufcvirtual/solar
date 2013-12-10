@@ -332,7 +332,7 @@ $btn-initial-file-color-final: #f9c143;
 }
 
 /* icone para botões com dropdown */
-.btn-group .icon-arrow-down-3:before {
+.btn-group .icon-arrow-down-triangle:before {
     margin-left: -5px;
     font-size: 14px;
 }
@@ -343,4 +343,25 @@ $btn-initial-file-color-final: #f9c143;
 
 .btn_dropdown a {
   cursor: pointer;
+}
+
+.block_buttons {
+  padding-left: 3px;
+  width: auto;
+
+  .left, .right {
+    display: inline-block;
+  }
+
+  .left input, .right input {
+    margin-bottom: 0;
+  }
+
+  .left {
+    float: left;
+  }
+
+  .right {
+    float: right;
+  }
 }

@@ -113,6 +113,10 @@ relat_admin:
   menu_id: 604
   context_id: 1
 
+user_user: 
+  menu_id: 605
+  context_id: 1
+
 # MENU PAI - 70
 disco_virtual:
   menu_id: 70

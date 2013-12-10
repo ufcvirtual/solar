@@ -1,0 +1,27 @@
+.block_wrapper
+  .block_title
+    %h2= t(:title, :scope => [:administrations, :profiles])
+
+.block_wrapper
+  .block_content.block_content_toolbar.block_content_text
+    %a.btn.btn_main{:href => "#"}
+      = content_tag(:i, nil, :class=>'icon-plus')
+
+  .block_content
+    - unless @permissions.blank?
+      %table.tb_list.tb_allocation
+        %thead
+          %tr.lines
+            %th=# t(:name)
+            %th=# t(:description)
+            %th.no_sort{style: 'width:80px'}= ""
+        %tbody
+          - @permissions.each do |permission|
+            %tr.lines
+              %td=# profile.name
+              %td=# profile.description
+              %td{style: 'align:right'}
+                = #link_to_function content_tag(:i, nil, class: 'btn icon-lock'), "open_administration(this)", :"data-tooltip" => t(:change_password, :scope => [:administrations, :users]), :"show-link" => show_permissions_administrations_path(profile)
+                = #link_to_function content_tag(:i, nil, class: 'btn icon-edit'), "open_administration(this)", :"data-tooltip" => t(:edit, :scope => [:administrations, :users]), :"show-link" => edit_profile_administrations_path(profile)
+
+=javascript_include_tag "administrations"

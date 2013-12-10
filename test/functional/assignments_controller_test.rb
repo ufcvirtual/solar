@@ -114,4 +114,15 @@ class AssignmentsControllerTest < ActionController::TestCase
     end
   end
 
+  test "edicao - ver detalhes" do
+    get(:show, {id: assignments(:a2).id, allocation_tags_ids: [allocation_tags(:al3).id]})
+    assert_template :show
+  end
+
+  test "edicao - ver detalhes - aluno" do
+    sign_in users(:aluno1)
+    get(:show, {id: assignments(:a2).id, allocation_tags_ids: [allocation_tags(:al3).id]})
+    assert_template :show
+  end
+
 end

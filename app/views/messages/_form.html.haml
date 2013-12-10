@@ -1,0 +1,153 @@
+:javascript
+  CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
+
+= javascript_include_tag "ckeditor/init"
+
+:javascript
+  CKEDITOR.editorConfig = function(config) {
+    config.toolbar =
+      [
+        { name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
+        { name: 'styles', items : [ 'Styles', 'Format' ] },
+        { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] },
+        { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] },
+        { name: 'links', items : [ 'Link', 'Unlink' ] },
+        { name: 'insert', items : ['EqnEditor'] }
+      ];
+
+      config.extraPlugins = 'eqneditor';
+  };
+
+.message_external_div
+  = render "header"
+  = simple_form_for @message, html: {id: "form_message_text", multipart: true} do |f|
+
+    - if @original
+      = f.input :original, as: :hidden, input_html: {value: @original.id}
+    = render "contacts"
+    = f.input :contacts, as: :hidden, input_html: {value: [@reply_to].flatten.compact.map { |c| c[:id] }.join(", ")}
+
+    .block_content
+      .message_header_new
+        .message_new_text_to
+          .label.align-left
+            %a#link_to_contacts.link_content= t(".message_to")
+          .input.align-right= text_field_tag :message_to, [@reply_to].flatten.compact.map { |c| c[:resume] }.join(", "), class: "message_new_textbox", readonly: true, placeholder: t(".add_contacts")
+        .message_new_text_to
+          .label.align-left= t(".subject")
+          .input.align-right= f.input :subject, label: false, input_html: {class: "message_new_textbox"}
+
+        .message_new_upload
+
+          #new_message_file
+            .label.align-left= t(".attach")
+
+            %button#link_upload.btn.btn_default.duplicate_nested_form{"data-tooltip" => t(".attach_file")}
+              %i.icon-paperclip
+
+            - if @files
+              .list_files_to_send.original_files
+                - @files.each do |file|
+                  .attach
+                    = hidden_field :message, :original_files, value: file.id, multiple: true
+                    = link_to ['-', file.attachment_file_name].join, download_file_messages_path(file_id: file.id)
+                    = link_to content_tag(:i, nil, class: 'icon-minus-square'), '', remote: true, class: 'destroy_original_file'
+
+            .invisible
+              = f.simple_fields_for :files do |f_file|
+                .duplicatable_nested_form
+                  .inline
+                    = f_file.file_field :attachment
+
+            .list_files_to_send
+              .files_to_send
+
+    #div_new_message
+      = f.input :content, label: false, as: :ckeditor
+
+    .message_new_action
+      = f.submit t(".send"), id: "send_message", class: "btn btn_main", alt: t(".send")
+      = link_to t(".discard"), inbox_messages_path, {class: "btn btn_caution"}
+
+= javascript_include_tag "message"
+
+:javascript
+
+  $(function(){
+    // tentando enviar sem destinatário
+    $("#send_message").click(function(event){
+      if ($('#message_to').val() == ""){
+        event.preventDefault();
+        alert("#{I18n.t(:without_recipient, scope: [:messages, :form])}");
+      }
+    });
+
+    // abrir lista de contatos
+    $("#link_to_contacts, #message_to").click(function(){
+      $.fancybox.open({ modal: true, href: "#content-div" });
+    });
+
+    // retirar anexos da msg original
+    $(".destroy_original_file").click(function(){
+      $(this).closest('div.attach').slideUp().remove();
+    });
+  });
+
+  // add files
+
+  jQuery(function($) {
+    var nestedForm;
+    if ($('.duplicatable_nested_form').length)
+      nestedForm = $('.duplicatable_nested_form').last().clone();
+
+    $('.duplicate_nested_form').click(function(e) {
+      var formsOnPage, lastNestedForm, newNestedForm;
+      e.preventDefault();
+
+      lastNestedForm = $('.duplicatable_nested_form').last();
+      newNestedForm = $(nestedForm).clone();
+
+      formsOnPage = $('.duplicatable_nested_form').length;
+
+      $(newNestedForm).find('label').each(function() {
+        var newLabel, oldLabel;
+        oldLabel = $(this).attr('for');
+        newLabel = oldLabel.replace(new RegExp(/_[0-9]+_/), "_" + formsOnPage + "_");
+        return $(this).attr('for', newLabel);
+      });
+
+      $(newNestedForm).find('select, input').each(function() {
+        var newId, newName, oldId, oldName;
+        oldId = $(this).attr('id');
+        newId = oldId.replace(new RegExp(/_[0-9]+_/), "_" + formsOnPage + "_");
+        $(this).attr('id', newId);
+        oldName = $(this).attr('name');
+        newName = oldName.replace(new RegExp(/\[[0-9]+\]/), "[" + formsOnPage + "]");
+        return $(this).attr('name', newName);
+      });
+
+      $(newNestedForm).insertAfter(lastNestedForm);
+
+      // abrindo escolha de arquivos diretamente
+      var newfile = $('input[type="file"]', $(newNestedForm));
+      newfile.click();
+
+      $(newfile).change(function(){
+        // verificando tamanho do arquivo
+        if ((this.files[0].size/1024/1024) > ("#{MessageFile::MAX_FILE_SIZE/1024/1024}")) {
+          alert("#{t(:file_too_big, scope: :messages)}");
+          $(newNestedForm).remove();
+          return false;
+        }
+
+        var new_file_name = "<div class='input files file_attached'>" + this.files[0].name + "&nbsp;&nbsp;&nbsp;<i class='icon-minus-square remove-file'></i> </span> </div>";
+        $(".files_to_send").append(new_file_name);
+
+        $('.remove-file:last').click(function(){
+          $(this).closest('.files.file_attached').slideUp().remove();
+          $(newfile).closest('.duplicatable_nested_form').slideUp().remove();
+        });
+      });
+
+    });
+  });

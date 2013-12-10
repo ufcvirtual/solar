@@ -37,4 +37,14 @@ class Group < ActiveRecord::Base
     false
   end
 
+
+  def as_label
+    [offer.semester.name, code, offer.curriculum_unit.try(:name)].join("|")
+  end
+
+
+  def info
+    [offer.course.try(:name), offer.curriculum_unit.try(:name), offer.semester.name, code].compact.join(" - ")
+  end
+
 end

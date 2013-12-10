@@ -4,7 +4,7 @@ class ScheduleEventsController < ApplicationController
   
   def new
     @allocation_tags_ids = params[:allocation_tags_ids]
-    # authorize! :new, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    authorize! :new, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
     @schedule_event = ScheduleEvent.new
     @schedule_event.build_schedule(start_date: Date.current, end_date: Date.current)
     @groups_codes = Group.joins(:allocation_tag).where(allocation_tags: {id: [@allocation_tags_ids].flatten}).map(&:code).uniq
@@ -12,7 +12,7 @@ class ScheduleEventsController < ApplicationController
 
   def create
     @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
-    # authorize! :create, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
+    authorize! :new, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ")
     @schedule_event = ScheduleEvent.new params[:schedule_event]
 
     begin
@@ -31,7 +31,7 @@ class ScheduleEventsController < ApplicationController
 
   def edit
     @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
-    # authorize! :update, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :edit, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
     @schedule_event = ScheduleEvent.find(params[:id])
     @schedule = @schedule_event.schedule
     @groups_codes = @schedule_event.groups.map(&:code)
@@ -39,7 +39,7 @@ class ScheduleEventsController < ApplicationController
 
   def update
     @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
-    # authorize! :update, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :edit, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
     @schedule_event = ScheduleEvent.find(params[:id])
     
     begin
@@ -55,7 +55,7 @@ class ScheduleEventsController < ApplicationController
   end
 
   def destroy
-    # authorize! :destroy, ScheduleEvent, on: params[:allocation_tags_ids]
+    authorize! :destroy, ScheduleEvent, on: params[:allocation_tags_ids]
     begin
       ScheduleEvent.find(params[:id]).try(:destroy)
       render json: {success: true, notice: t(:deleted, scope: [:schedule_events, :success])}
@@ -64,14 +64,9 @@ class ScheduleEventsController < ApplicationController
     end
   end
 
-  def dropdown_content
-    model_name = params[:type].constantize
-    render partial: "event_content", locals: {event: model_name.find(params[:id]), model_name: model_name, allocation_tags_ids: params[:allocation_tags_ids].split(" ")}
-  end
-
   def show
     @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
-    # authorize! :show, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
+    authorize! :show, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids].split(" ").flatten
     @schedule_event = ScheduleEvent.find(params[:id])
     @groups_codes = @schedule_event.groups.map(&:code)
   end

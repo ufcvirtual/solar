@@ -4,7 +4,7 @@
     %h2= t(".notifications")
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_notification_path(allocation_tags_ids: @allocation_tags_ids), class: "btn btn_main link_new_notification", :"data-tooltip" => t(".new")
+      = link_to content_tag(:i, nil, class: 'icon-plus'), new_notification_path(allocation_tags_ids: @allocation_tags_ids), class: "btn btn_main link_new_notification", :"data-tooltip" => t(".new")
 
     .block_toolbar_right
       .btn-group
@@ -30,14 +30,14 @@
                   .minimun= raw(truncate notification.description, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
                   .complete.invisible
                     = raw notification.description
-                    = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_description"))
+                    = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
                 .group_label.invisible= render "groups/groups_tags", groups: notification.groups, tool: notification, all_groups: all_groups, paths: {add: add_group_to_notifications_path(id: "param_id", tool_id: notification.id), remove: remove_group_from_notifications_path(id: "param_id", tool_id: notification.id), unbind: unbind_group_from_notifications_path(id: "param_id", tool_id: notification.id)}
             %td{style: 'text-align:center;'}= notification.period
 
   - else
     .block_content_text.block_content_text_list.text_none= t(".no_data")
 
-= javascript_include_tag "notifications", "tooltip", "groups_tags", 'tablesorter'
+= javascript_include_tag "tablesorter", "notifications", "tooltip", "groups_tags"
 
 :javascript
 

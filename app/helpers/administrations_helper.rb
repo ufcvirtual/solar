@@ -19,7 +19,23 @@ module AdministrationsHelper
 		AllocationTag.curriculum_unit_type(allocation_tag)
 	end
 
-	def allocation_status(status)
+	def semester(allocation_tag)
+		AllocationTag.semester_info(allocation_tag)
+	end
+
+	def name_allocation_status(status)
 		name_of(status)
 	end
+
+	def allocation_status
+		status = status_hash
+	end
+
+	def name_user_status(status)
+		status ? user_status[1] : user_status[0]
+	end
+
+	def user_status
+    { 0 => t(:blocked), 1 => t(:active) }
+  end
 end

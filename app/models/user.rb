@@ -11,9 +11,10 @@ class User < ActiveRecord::Base
   has_many :user_messages
   has_many :message_labels
   has_many :assignment_files
+  has_many :chat_messages
+
   has_many :user_contacts, class_name: "UserContact", foreign_key: "user_id"
   has_many :user_contacts, class_name: "UserContact", foreign_key: "user_related_id"
-  has_many :chat_messages
 
   after_create :basic_profile_allocation
 
@@ -29,7 +30,7 @@ class User < ActiveRecord::Base
   attr_accessible :username, :email, :email_confirmation, :alternate_email, :password, :password_confirmation, :remember_me, :name, :nick, :birthdate,
     :address, :address_number, :address_complement, :address_neighborhood, :zipcode, :country, :state, :city,
     :telephone, :cell_phone, :institution, :gender, :cpf, :bio, :interests, :music, :movies, :books, :phrase, :site, :photo,
-    :special_needs, :registered
+    :special_needs, :active
 
   attr_accessor :login, :has_special_needs
 
@@ -192,8 +193,18 @@ class User < ActiveRecord::Base
     I18n.t(:user_cannot_login)
   end
 
+  # faltando pegar apenas alocacoes validas
   def all_allocation_tags(objects = false)
     allocation_tags.map {|at| at.related(all: true, objects: objects)}.flatten.uniq
+  end
+
+  def to_msg
+    {
+      id: id,
+      name: name,
+      email: email,
+      resume: "#{name} <#{email}>"
+    }
   end
 
 end

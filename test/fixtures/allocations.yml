@@ -427,3 +427,24 @@ editor_at12:
   allocation_tag_id: 12
   profile_id: 5
   status: 1
+
+professor_at_of3:
+  id: 59
+  user_id: 6
+  allocation_tag_id: 6
+  profile_id: 3
+  status: 2
+
+professor_at_g3:
+  id: 60
+  user_id: 6
+  allocation_tag_id: 3
+  profile_id: 2
+  status: 2
+
+editor_admin:
+  id: 61
+  user_id: 14
+  allocation_tag_id: 
+  profile_id: 6
+  status: 1

@@ -7,14 +7,14 @@
       - if (can? :list, Bibliography, on: @allocation_tags_ids) and (Bibliography.constants.include?("#{@selected}_PERMISSION".to_sym))
         .uc_item
           .bibliography{:"data-link" => list_bibliographies_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
-            = link_to(content_tag(:i, nil, class: 'icon-people big'), "#", class: 'btn')
+            = link_to(content_tag(:i, nil, class: 'icon-users big'), "#", class: 'btn')
             = link_to t(".bibliography"), "#"
 
-      / - if (can? :lista_de_schedules, Schedule, :on => @allocation_tags_ids) and (Schedule.constants.include?("#{@selected}_PERMISSION".to_sym))
-      .uc_item
-        .schedule{:"data-link" => calendar_schedules_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
-          = link_to(content_tag(:i, nil, class: 'icon-calendar big'), "#", class: 'btn')
-          = link_to t(".schedule"), "#"
+      - if (can? :calendar, Agenda, on: @allocation_tags_ids)
+        .uc_item
+          .schedule{:"data-link" => calendar_agendas_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids, selected: @selected)}
+            = link_to(content_tag(:i, nil, class: 'icon-calendar big'), "#", class: 'btn')
+            = link_to t(".schedule"), "#"
 
       - if (can? :designates, Allocation, on: @allocation_tags_ids) and (Allocation.constants.include?("#{@selected}_PERMISSION".to_sym))
         .uc_item
@@ -35,7 +35,7 @@
       - if (can? :list, Discussion, on: @allocation_tags_ids)  and (Discussion.constants.include?("#{@selected}_PERMISSION".to_sym))
         .uc_item
           .discussion{:"data-link" => list_discussions_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: @all_groups_ids)}
-            = link_to(content_tag(:i, nil, class: 'icon-people big'), "#", class: 'btn')
+            = link_to(content_tag(:i, nil, class: 'icon-users big'), "#", class: 'btn')
             = link_to t(".discussion"), "#"
 
       - if ((can? :index, ChatRoom, on: @allocation_tags_ids) and ChatRoom.constants.include?("#{@selected}_PERMISSION".to_sym))

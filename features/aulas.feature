@@ -5,16 +5,9 @@ Funcionalidade: Exibir aulas de curso
   Eu quero visualizar as aulas do curso
   Para poder acessá-las
 
-Contexto:
-  Dado que tenho "allocations"
-    | user_id  | allocation_tag_id  | profile_id  | status |
-    | 1        | 1                  | 2           | 1      |
-    | 2        | 1                  | 1           | 1      |
-    | 3        | 1                  | 1           | 1      |
-
-@javascript @wip
+@javascript
 Cenário: Listar aulas do curso
-  Dado que estou logado com o usuario "user" e com a senha "123456"
+  Dado que estou logado com o usuario "aluno1" e com a senha "123456"
     E que estou em "Meu Solar"
   Quando eu clicar no link "Quimica I"
     Então eu deverei ver "Aulas"

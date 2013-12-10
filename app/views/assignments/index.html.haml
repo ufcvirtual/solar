@@ -4,7 +4,7 @@
 
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_assignment_path(allocation_tags_ids: [@allocation_tags_ids].flatten), class: " btn btn_main fancybox.ajax", id: "new_assignment", :"data-tooltip" => t(:new, scope: "assignment.list")
+      = link_to content_tag(:i, nil, class: 'icon-plus'), new_assignment_path(allocation_tags_ids: [@allocation_tags_ids].flatten), class: " btn btn_main fancybox.ajax", id: "new_assignment", :"data-tooltip" => t(:new, scope: "assignment.list")
     .block_toolbar_right
       .btn-group
         = link_to (content_tag(:i, nil, :class=>'icon-edit')), "#", class: 'btn btn_edit edit_assignment', "data-link-to-edit" => edit_assignment_path(':id', allocation_tags_ids: [@allocation_tags_ids].flatten), "data-edit-title" => t(:edit, scope: "assignment.list"), disabled: true, :"data-tooltip" => t(".edit_assignment")
@@ -48,7 +48,7 @@
                         .file
                           = image_tag( icon_attachment(file.attachment_file_name) )                            
                           = file.attachment_file_name
-                    = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_enunciation"))
+                    = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_enunciation"))
                 = render "groups/groups_tags", groups: assignment.groups, tool: assignment, all_groups: all_groups, paths: {add: add_group_to_assignments_path(id: "param_id", tool_id: assignment.id), remove: remove_group_from_assignments_path(id: "param_id", tool_id: assignment.id), unbind: unbind_group_from_assignments_path(id: "param_id", tool_id: assignment.id)}
 
             %td{style: 'text-align:center;'}
@@ -65,7 +65,7 @@
   - else
     .block_content_text_list.text_none= t(:none, scope: "assignment.list")
 
-= javascript_include_tag "tooltip", "assignments", "groups_tags", "tablesorter"
+= javascript_include_tag "tablesorter", "tooltip", "assignments", "groups_tags"
 
 :javascript
   var div_list = $(".list_assignments");

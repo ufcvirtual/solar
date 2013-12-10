@@ -158,6 +158,35 @@ ma11:
   resource_id: 69
   per_id: true
 
+# agenda
+
+agendastudent1:
+  profile_id: 1
+  resource_id: 146
+  per_id: false
+
+# detalhes de ferramentas
+
+tooldetailstudent1:
+  profile_id: 1
+  resource_id: 142
+  per_id: false
+
+tooldetailstudent2:
+  profile_id: 1
+  resource_id: 143
+  per_id: false
+
+tooldetailstudent3:
+  profile_id: 1
+  resource_id: 144
+  per_id: false
+
+tooldetailstudent4:
+  profile_id: 1
+  resource_id: 145
+  per_id: false
+
 ##############################
 # PROFESSOR TITULAR #
 ##############################
@@ -361,6 +390,36 @@ mapt4:
   profile_id: 2
   resource_id: 57
   per_id: false
+
+# agenda
+
+agendaprof1:
+  profile_id: 2
+  resource_id: 146
+  per_id: false
+
+# detalhes de ferramentas
+
+tooldetailprof1:
+  profile_id: 2
+  resource_id: 142
+  per_id: false
+
+tooldetailprof2:
+  profile_id: 2
+  resource_id: 143
+  per_id: false
+
+tooldetailprof3:
+  profile_id: 2
+  resource_id: 144
+  per_id: false
+
+tooldetailprof4:
+  profile_id: 2
+  resource_id: 145
+  per_id: false
+
 
 ##############################
 # TUTOR A DISTANCIA #
@@ -566,6 +625,34 @@ mata4:
   resource_id: 57
   per_id: false
 
+# agenda
+
+agendatutordist1:
+  profile_id: 3
+  resource_id: 146
+  per_id: false
+
+# detalhes de ferramentas
+
+tooldetailtutordist1:
+  profile_id: 3
+  resource_id: 142
+  per_id: false
+
+tooldetailtutordist2:
+  profile_id: 3
+  resource_id: 143
+  per_id: false
+
+tooldetailtutordist3:
+  profile_id: 3
+  resource_id: 144
+  per_id: false
+
+tooldetailtutordist4:
+  profile_id: 3
+  resource_id: 145
+  per_id: false
 
 ##############################
 # TUTOR PRESENCIAL           #
@@ -1046,6 +1133,52 @@ chatedit4:
   resource_id: 131
   per_id: false
 
+# agenda
+
+agendaedit1:
+  profile_id: 5
+  resource_id: 146
+  per_id: false
+
+# eventos
+
+eventedit1:
+  profile_id: 5
+  resource_id: 147
+  per_id: false
+
+eventedit2:
+  profile_id: 5
+  resource_id: 148
+  per_id: false
+
+eventedit3:
+  profile_id: 5
+  resource_id: 149
+  per_id: false
+
+# detalhes de ferramentas
+
+tooldetail1:
+  profile_id: 5
+  resource_id: 142
+  per_id: false
+
+tooldetail2:
+  profile_id: 5
+  resource_id: 143
+  per_id: false
+
+tooldetail3:
+  profile_id: 5
+  resource_id: 144
+  per_id: false
+
+tooldetail4:
+  profile_id: 5
+  resource_id: 145
+  per_id: false
+
 # chat_rooms para participantes
 
 chatlist1:
@@ -1067,6 +1200,7 @@ chatlist4:
   profile_id: 4
   resource_id: 133
   per_id: false
+
 
 ##############################
 # BASICO #
@@ -1172,4 +1306,54 @@ discmon6:
 editmon1:
   profile_id: 13
   resource_id: 89
+  per_id: false
+
+admuser1:
+  profile_id: 6
+  resource_id: 150
+  per_id: false
+
+admuser2:
+  profile_id: 6
+  resource_id: 151
+  per_id: false
+
+admuser3:
+  profile_id: 6
+  resource_id: 152
+  per_id: false
+
+admuser4:
+  profile_id: 6
+  resource_id: 153
+  per_id: false
+
+admuser5:
+  profile_id: 6
+  resource_id: 154
+  per_id: false
+
+admuser6:
+  profile_id: 6
+  resource_id: 155
+  per_id: false
+
+admuser7:
+  profile_id: 6
+  resource_id: 156
+  per_id: false
+
+admuser8:
+  profile_id: 6
+  resource_id: 157
+  per_id: false
+
+admuser9:
+  profile_id: 6
+  resource_id: 158
+  per_id: false
+
+admuser10:
+  profile_id: 6
+  resource_id: 159
   per_id: false

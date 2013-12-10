@@ -83,7 +83,7 @@ $.fn.nice_checkbox = function(options) {
   /***
    * Capturando evento de click no parent
    */
-  $(this).click(function() {
+  $(parent).click(function() {
     var parent = this, icon, check;
     if ((icon = $('i', parent)).length) {
       $(icon).toggleClass('icon-checkbox-unchecked').toggleClass('icon-checkbox-checked');

@@ -1,6 +1,6 @@
 .block_wrapper.messages
 
-  = render "message_header"
+  = render "header"
 
   .block_white
     .align-left.padding-checkbox
@@ -8,25 +8,25 @@
       = t(".filter_selected")
       %select.message_status
         %option.check_all
-          = t(:message_select_all)
+          = t(:select_all, scope: :messages)
         %option.check_read
-          = t(:message_select_read)
+          = t(:select_read, scope: :messages)
         %option.check_unread
-          = t(:message_select_unread)
+          = t(:select_unread, scope: :messages)
 
     .align-right.btn-group
-      = link_to new_message_path, class: "btn btn_main", :"data-tooltip" => t(:message_new) do
-        %i.icon-plus-3
+      = link_to new_message_path, class: "btn btn_main", :"data-tooltip" => t(:new, scope: :messages) do
+        %i.icon-plus
       - if not ["trashbox", "outbox"].include?(@box)
-        #mark_as_unread.btn{"data-tooltip" => t(:message_mark_as_unread), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "unread", box: @box)}
+        #mark_as_unread.btn{"data-tooltip" => t(:mark_as_unread, scope: :messages), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "unread", box: @box)}
           %i.icon-mail
-        #mark_as_read.btn{"data-tooltip" => t(:message_mark_as_read), :"data-new-status" => "read", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "read", box: @box)}
+        #mark_as_read.btn{"data-tooltip" => t(:mark_as_read, scope: :messages), :"data-new-status" => "read", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "read", box: @box)}
           %i.icon-mail-read
       - if @box != "trashbox"
-        #remove_message.btn{:"data-tooltip" => t(:message_delete), :"data-new-status" => "trash", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "trash", box: @box)}
+        #remove_message.btn{:"data-tooltip" => t(:delete, scope: :messages), :"data-new-status" => "trash", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "trash", box: @box)}
           %i.icon-trash
       - else
-        #restore_message.btn{:"data-tooltip" => t(:message_restore), :"data-new-status" => "restore", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "restore", box: @box)}
+        #restore_message.btn{:"data-tooltip" => t(:restore, scope: :messages), :"data-new-status" => "restore", :"data-link-udpate-status" => change_status_message_path(id: ":id", new_status: "restore", box: @box)}
           %i.icon-restore
 
   .block_content
@@ -40,15 +40,15 @@
               - css_class = message.was_read?(current_user.id, @box) ? "message_read" : "message_unread"
               = hidden_field_tag 'message_style', css_class
             %td.td_subject
-              - if label = message.label(current_user.id)
+              - message.labels(current_user.id, system_label = @show_system_label).each do |label|
                 %span.message_label= label
               = link_to message.subject, msg_path, class: css_class
 
             %td.td_attachment= content_tag(:i, nil, class: 'icon-paperclip') if message.has_attachment?
             %td.td_sender= link_to message.sent_by.name, msg_path
-            %td.td_time= link_to l(message.send_date, format: :short), msg_path
+            %td.td_time= link_to l(message.created_at, format: :short), msg_path
     - else
-      .text_none= t(:message_none)
+      .text_none= t(:none, scope: :messages)
 
   .message_div_navigation
     = will_paginate @messages
@@ -82,10 +82,12 @@
             else
               links.addClass('message_unread').removeClass('message_read');
           }
-
-          // contar entrada corretamente
-          $('span#count_msgs_unread').html(['(', $('.message_unread').length, ')'].join(''));
         }
+      }).complete(function(){
+        // contar msgs da caixa de entrada
+        $.get("#{count_unread_messages_path}", function(data){
+          $('span#count_msgs_unread').html(['(', data.unread, ')'].join(''));
+        });
       });
     });
   });

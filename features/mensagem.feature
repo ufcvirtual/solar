@@ -5,41 +5,28 @@ Funcionalidade: Enviar, receber e visualizar mensagens
   Eu quero enviar, receber e visualizar mensagens
   Para me comunicar com os demais usuários do sistema
 
-Contexto:
-  Dado que tenho "allocations"
-    | user_id  | allocation_tag_id  | profile_id  | status |
-    | 1        | 2                  | 1           | 1      |
-    | 5        | 4                  | 2           | 1      |
-    | 5        | 5                  | 2           | 1      |
-    | 5        | 6                  | 2           | 1      |
-
+@javascript
 Cenário: Abrir mensagem
   Dado que estou logado com o usuario "user" e com a senha "123456"
     E que estou em "Meu Solar"
     E eu clicar no link "Mensagens"
-  Quando eu clicar no link "Professor 2"
-#  Então eu deverei ver o link "Nova Mensagem"
-#    E eu deverei ver "Excluir"
-#    E eu deverei ver "Marcar como não lida"
-    E eu deverei ver "<prof2@email.com>"
+  Quando eu clicar no link "Professor"
+    E eu deverei ver "<prof@solar.ufc.br>"
     E eu deverei ver "<user@user.com>"
-    E eu deverei ver "assunto da msg 1"
-    E eu deverei ver "bla bla bla msg1"
-#    E eu deverei ver o link "Responder"
-#    E eu deverei ver o link "Responder para todos"
-#    E eu deverei ver o link "Encaminhar"
+    E eu deverei ver "assunto da msg 27/5 (ii)"
+    E eu deverei ver "bla bla bla ..."
 
+@javascript
 Cenário: Acessar página de mensagens a partir de "Unidade curricular"
-  Dado que estou logado com o usuario "user" e com a senha "123456"
+  Dado que estou logado com o usuario "prof" e com a senha "123456"
     E que estou em "Meu Solar"
-  Quando eu clicar no link "Teoria da Literatura I"
-  Entao eu deverei ver a migalha de pao "Home" > "Teoria da Literatura I"
+  Quando eu clicar no link "Quimica I"
+  Entao eu deverei ver a migalha de pao "Home" > "Quimica I"
     E eu clicar no link "Mensagens"
-    E eu deverei ver "Professor 2"
+    E eu clicar no link "Saída"
+    E eu deverei ver "Professor"
     E eu deverei ver "assunto da msg 1"
     E eu deverei ver "11/05 10:42 h"
-    E eu nao deverei ver "assunto da msg 23/5"
-    E eu nao deverei ver "23/05 18:42 h"
 
 #@wip
 #Cenário: Acessar página de mensagens a partir do "Meu Solar"

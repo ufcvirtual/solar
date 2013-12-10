@@ -60,7 +60,7 @@
   .block_wrapper.manage_groups
     .block_title
       %h2
-        %i.icon-people
+        %i.icon-users
         =t :groups, :scope => [:assignment, :group_assignments]
       %span.group_elements_float
         - if can? :manage_groups, @assignment
@@ -116,7 +116,7 @@
   .block_wrapper
     .block_title
       %h2
-        %i.icon-people
+        %i.icon-users
         =t :participants, :scope => [:assignment, :group_assignments]
     .block_content
       %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
@@ -129,7 +129,7 @@
             %th{:align => "center", :style => "width:50px"}=t :comments, :scope => [:assignment, :comments]
         %tbody
           - @students.each_with_index do |student, idx|
-            - student_info = assignment_participant_info(@allocation_tag.id, student.id, @assignment.id)
+            - student_info = assignment_participant_info(student.id, @assignment.id, @allocation_tag.id)
             %tr.lines
               %td
                 = link_to student.name, student_assignment_path(@assignment.id, :student_id => student.id), :class => :link_content

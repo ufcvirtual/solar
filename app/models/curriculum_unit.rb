@@ -103,4 +103,8 @@ SQL
     code.blank? ? name : [code, name].join(' - ')
   end
 
+  def info
+    name
+  end
+
 end

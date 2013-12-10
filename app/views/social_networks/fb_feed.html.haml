@@ -14,6 +14,7 @@
 
   .new_post
     %form{:action => fb_post_wall_social_networks_path}
+      %input{type: 'hidden', name:'gid', value: @gid}
       %textarea{:name => 'post', :placeholder => t(:placeholder, :scope => [:facebook])}
       .bar_input
         %input{:type => 'submit',:value => t(:publish, :scope => [:facebook])}
@@ -24,17 +25,37 @@
     .post
       .post_header
         .user_avatar
-          = image_tag "http://graph.facebook.com/#{fb_post.actor.to_s}/picture", :size => "26x26", :alt => "User Image"
+          = image_tag "http://graph.facebook.com/#{fb_post['from']['id']}/picture", :size => "26x26", :alt => "User Image"
         .user_info
           %span.username
-            = fb_post.name
+            = fb_post['from']['name']
           %span.date
-            = fb_post.created_time
+            = l(fb_post['created_time'].to_time.in_time_zone(Time.zone) , format: :clock)
+
       .post_content
-        = fb_post.message
+        = fb_post['message']
         .post_image
-          = image_tag fb_post.adress if fb_post.media_type.eql? 'photo' or fb_post.media_type.eql? 'video'
-          - if fb_post.media_type.eql? 'link' or fb_post.media_type.eql? 'swf'
-            = image_tag fb_post.adress
+          = image_tag fb_post['picture'].gsub('_s','_n') if fb_post['type'].eql? 'photo' 
+          = image_tag fb_post['picture'] if fb_post['type'].eql? 'video' or fb_post['type'].eql? 'link' or fb_post['type'].eql? 'swf'
         .post_url
-          %a.link{href: "#{fb_post.link}", :target => "_blank"}= t(:original_content, :scope => [:facebook]) if fb_post.link
+          %a.link{href: "#{fb_post['link']}", :target => "_blank"}= t(:original_content, :scope => [:facebook]) unless fb_post['type'].eql? 'status'
+
+- elsif @fb_msg_groups.present?
+  - @fb_msg_groups.each do |fb_msg_group|
+    .post
+      .post_header
+        .user_avatar
+          = image_tag "http://graph.facebook.com/#{fb_msg_group['from']['id']}/picture", :size => "26x26", :alt => "User Image"
+        .user_info
+          %span.username
+            = fb_msg_group['name']
+          %span.date
+            = l(fb_msg_group['created_time'].to_time.in_time_zone(Time.zone), format: :clock)
+      .post_content
+        = fb_msg_group['message']
+        .post_image
+          = image_tag fb_msg_group['picture'].gsub('_s','_n') if fb_msg_group['type'].eql? 'photo' 
+          = image_tag fb_msg_group['picture'] if fb_msg_group['type'].eql? 'video' or fb_msg_group['type'].eql? 'link' or fb_msg_group['type'].eql? 'swf'
+        .post_url
+          %a.link{href: "#{fb_msg_group['link']}", :target => "_blank"}= t(:original_content, :scope => [:facebook]) unless fb_msg_group['type'].eql? 'status'
+

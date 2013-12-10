@@ -1,4 +1,4 @@
-class ScheduleEvent < ActiveRecord::Base
+class ScheduleEvent < Event
 
   COURSE_PERMISSION, CURRICULUM_UNIT_PERMISSION, GROUP_PERMISSION, OFFER_PERMISSION = true, true, true, true
 
@@ -17,8 +17,6 @@ class ScheduleEvent < ActiveRecord::Base
   accepts_nested_attributes_for :schedule
 
   attr_accessible :title, :description, :schedule_attributes, :schedule_id, :type_event, :start_hour, :end_hour, :place
-
-  include Event
 
   def verify_hours
     errors.add(:end_hour, I18n.t(:range_hour_error, scope: [:schedule_events, :error])) if end_hour.rjust(5, '0') < start_hour.rjust(5, '0')

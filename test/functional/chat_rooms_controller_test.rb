@@ -149,4 +149,15 @@ class ChatRoomsControllerTest < ActionController::TestCase
     assert_equal flash[:alert], I18n.t(:no_permission)
   end
 
+  test "edicao - ver detalhes" do
+    get(:show, {id: chat_rooms(:chat2).id, allocation_tags_ids: [allocation_tags(:al3).id]})
+    assert_template :show
+  end
+
+  test "edicao - ver detalhes - aluno" do
+    sign_in users(:aluno1)
+    get(:show, {id: chat_rooms(:chat2).id, allocation_tags_ids: [allocation_tags(:al3).id]})
+    assert_template :show
+  end
+
 end

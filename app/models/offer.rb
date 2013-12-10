@@ -100,4 +100,8 @@ class Offer < ActiveRecord::Base
     self.groups.count > 0
   end
 
+  def info
+    [course.try(:name), curriculum_unit.try(:name), semester.name].compact.join(" - ")
+  end
+
 end

@@ -22,22 +22,31 @@ Solar::Application.routes.draw do
     collection do
       get :fb_authenticate
       get :fb_feed
-      get :fb_logout
+      get :fb_logout  
       get :fb_post_wall
+      get "fb_feed/group/:id", to: "social_networks#fb_feed_groups", as: :fb_feed_group
     end
   end
 
   resources :administrations do
     member do
+      put "update_allocation"
+      put "update_user"
       put "change_password"
     end
     collection do
-      get :manage_user
+      get :manage_user 
       get :search_users
-      get :edit_user
-      get :edit_allocation
+      get "user/:id/show_user", to: :show_user, as: :show_user
+      get "user/:id/edit", to: :edit_user, as: :edit_user
+      get "allocation/:id/show_allocation", to: :show_allocation, as: :show_allocation
+      get "allocation/:id/edit", to: :edit_allocation, as: :edit_allocation
       get :allocations_user
-      get :change_password
+      get :manage_profiles
+      get :new_profile
+      get "profile/:id/permissions", to: :show_permissions, as: :show_permissions
+      get "profile/:id/edit", to: :edit_profile, as: :edit_profile
+      post :create_profile
     end
   end
 
@@ -219,29 +228,46 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :schedules, only: [:index] do
-    get :list, on: :collection
-    get :schedules_events, on: :collection, as: :calendar
-    get :events, on: :collection
+  resources :agendas, only: [:index] do
+    collection do
+      get :list
+      get :calendar
+      get :events
+
+      resources :assignment, only: [] do
+        get "/:allocation_tags_ids", to: "agendas#dropdown_content", type: "Assignment", as: :dropdown_content_of, on: :member
+      end
+      resources :discussion, only: [] do
+        get "/:allocation_tags_ids", to: "agendas#dropdown_content", type: "Discussion", as: :dropdown_content_of, on: :member
+      end
+      resources :chat_room, only: [] do
+        get "/:allocation_tags_ids", to: "agendas#dropdown_content", type: "ChatRoom", as: :dropdown_content_of, on: :member
+      end
+      resources :schedule_event, only: [] do
+        get "/:allocation_tags_ids", to: "agendas#dropdown_content", type: "ScheduleEvent", as: :dropdown_content_of, on: :member
+      end
+    end
   end
 
-  resources :schedule_events, except: [:index] do
-    get :dropdown_content, on: :collection
-  end
+  resources :schedule_events, except: [:index]
 
-  resources :messages, except: [:destroy, :update] do
+  resources :messages, only: [:new, :show, :create, :index] do
     member do
       put ":box/:new_status", to: "messages#update", as: :change_status, constraints: {box: /(inbox)|(outbox)|(trashbox)/, new_status: /(read)|(unread)|(trash)|(restore)/}
+
+      get :reply,     to: :reply, type: "reply"
+      get :reply_all, to: :reply, type: "reply_all"
+      get :forward,   to: :reply, type: "forward"
     end
 
     collection do
-      get :index, box: "inbox"
-      get :inbox, action: :index, box: "inbox", as: :inbox
-      get :outbox, action: :index, box: "outbox", as: :outbox
-      get :trashbox, action: :index, box: "trashbox", as: :trashbox
+      put ":id", to: :create
 
-      post :ajax_get_contacts
-      post :send_message
+      get :index,                    box: "inbox"
+      get :inbox,    action: :index, box: "inbox",    as: :inbox
+      get :outbox,   action: :index, box: "outbox",   as: :outbox
+      get :trashbox, action: :index, box: "trashbox", as: :trashbox
+      get :count_unread
 
       get "download/file/:file_id", to: "messages#download_files", as: :download_file
     end
@@ -266,6 +292,7 @@ Solar::Application.routes.draw do
   get :close_tab, to: "tabs#destroy", as: :close_tab
 
   get :home, to: "users#mysolar", as: :home
+  get :tutorials, to: "pages#tutorials", as: :tutorials
   get :user_root, to: 'users#mysolar'
 
   resources :support_material_files do
@@ -313,7 +340,7 @@ Solar::Application.routes.draw do
 
   get "/media/users/:user_id/photos/:style.:extension", to: "access_control#users"
 
-  get "/media/messages/:file.:extension", to: "access_control#message"
+  # get "/media/messages/:file.:extension", to: "access_control#message"
   get "/media/assignment/sent_assignment_files/:file.:extension", to: "access_control#assignment"
   get "/media/assignment/comments/:file.:extension", to: "access_control#assignment"
   get "/media/assignment/public_area/:file.:extension", to: "access_control#assignment"
@@ -327,6 +354,4 @@ Solar::Application.routes.draw do
   # end
 
   root to: 'devise/sessions#new'
-
-  # match ':controller(/:action(/:id(.:format)))'
 end

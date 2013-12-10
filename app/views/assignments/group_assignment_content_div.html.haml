@@ -3,7 +3,7 @@
 .block_wrapper.manage_groups
   .block_title
     %h2
-      %i.icon-people
+      %i.icon-users
       =t :groups, :scope => [:assignment, :group_assignments]
     %span.group_elements_float
       - if can? :manage_groups, @assignment

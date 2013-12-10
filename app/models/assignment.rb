@@ -1,8 +1,6 @@
-class Assignment < ActiveRecord::Base
+class Assignment < Event
 
   GROUP_PERMISSION = true
-
-  include Event
 
   belongs_to :schedule
 
@@ -62,8 +60,7 @@ class Assignment < ActiveRecord::Base
     group_id = (student_group.nil? ? group_assignment_id : student_group.id) # se aluno estiver em grupo, recupera id
     sent_assignment = sent_assignment_by_user_id_or_group_assignment_id(allocation_tag_id, user_id, group_assignment_id) 
 
-
-    if schedule.start_date.to_date > Date.current()
+    if schedule.start_date.to_date > Date.current
       situation = "not_started"  
     elsif (not sent_assignment.nil? and  not sent_assignment.grade.nil?)
       situation = "corrected"
@@ -156,9 +153,9 @@ class Assignment < ActiveRecord::Base
   end
 
   def students_without_groups(allocation_tag)
-    academic_allocation  = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id,self.id, 'Assignment') 
+    academic_allocation  = AcademicAllocation.find_by_allocation_tag_id_and_academic_tool_id_and_academic_tool_type(allocation_tag.id,self.id, 'Assignment')  
     students_in_class   = Assignment.list_students_by_allocations(allocation_tag.id).map(&:id)
-    students_with_group = academic_allocation.group_assignments.map(&:group_participants).flatten.map(&:user_id)
+    students_with_group = (academic_allocation.nil? ? [] : academic_allocation.group_assignments.map(&:group_participants).flatten.map(&:user_id))
     students            = [students_in_class - students_with_group].flatten.compact.uniq
     return students.empty? ? [] : User.select('id, name').find(students)
   end

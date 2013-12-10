@@ -1,8 +1,6 @@
-class Discussion < ActiveRecord::Base
+class Discussion < Event
 
   GROUP_PERMISSION, OFFER_PERMISSION = true, true
-
-  include Event
 
   belongs_to :schedule
 

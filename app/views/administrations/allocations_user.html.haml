@@ -21,11 +21,50 @@
 							%th{style: 'width:80px'}= ''
 					%tbody
 						- @allocations_user.where("profile_id="+p.id.to_s).each do |a|
-							%tr.lines
+							%tr.lines.allocations{:class => semester(a)}
 								%td= allocation_details(a.allocation_tag)
 								%td= type(a.allocation_tag)
-								%td= allocation_status(a.status)
-								%td.right_buttons= link_to content_tag(:i, nil, class: 'btn icon-edit'), "manage_allocation(this)", :"show-link" => allocation_path(a), :"edit-link" => edit_allocation_path(a), class:  "btn_manage_allocation"
+								%td= name_allocation_status(a.status)
+								%td.right_buttons.manage
+									= link_to_function content_tag(:i, nil, class: 'btn icon-edit'), "manage(this)", :"show-link" => show_allocation_administrations_path(a), :"edit-link" => edit_allocation_administrations_path(a), class:  "btn_manage_allocation"
 
 	.right_buttons
 		= button_to_function t(:close, :scope => [:administrations]), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+
+:javascript
+	show_semester();
+
+	$("#period")
+		.change(function () {
+			show_semester();
+	})
+	.change();
+
+	function show_semester() {
+		var semester = $('#period option:selected').val();
+		
+		$(".block_content").show();
+		$('.allocations').hide();
+		$('.right_buttons.manage').hide();
+
+		if (semester==''){
+			$(".semester_active").show();
+		}
+		else{
+			semester = semester.replace(".", "\\\.");
+			$("."+semester).show();
+		}
+
+		$(".semester_active").each ( function() {
+			if ( !$(this).is( ":hidden" ) ) {
+				$(this).children(".right_buttons.manage").show();
+			}
+		})
+
+		$(".tb_list tbody").each( function() {
+			if ( $(this).children(":visible").length == 0 ) {
+				$(this).parent(".block_content").hide();
+			}
+		});
+
+	};

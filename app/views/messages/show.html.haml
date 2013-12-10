@@ -3,26 +3,26 @@
     %h2= @message.subject
   .block_content.messages
     .align-left
-      = link_to new_message_path(id: @message.id, target: "sender"), class: 'btn btn_main', :'data-tooltip' => t(:message_reply) do
+      = link_to reply_message_path(@message), class: 'btn btn_main', :'data-tooltip' => t(".reply") do
         %i.icon-reply
-      = link_to new_message_path(id: @message.id, target: "all"), class: 'btn', :'data-tooltip' => t(:message_reply_all) do
+      = link_to reply_all_message_path(@message), class: 'btn', :'data-tooltip' => t(".reply_all") do
         %i.icon-reply-all
-      = link_to new_message_path(id: @message.id), class: 'btn', :'data-tooltip' => t(:message_route) do
+      = link_to forward_message_path(@message), class: 'btn', :'data-tooltip' => t(".forward") do
         %i.icon-forward
 
     .align-right
-      = link_to ({:action => 'new', :search => @search_text}), :class =>'btn', 'data-tooltip' => t(:message_new) do
-        %i.icon-plus-3
+      = link_to new_message_path, :class =>'btn', 'data-tooltip' => t(:new, scope: :messages) do
+        %i.icon-plus
 
       - if @box != "trashbox"
-        #mark_as_unread.btn{:"data-tooltip" => t(:message_mark_as_unread), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "unread", box: @box)}
+        #mark_as_unread.btn{:"data-tooltip" => t(:mark_as_unread, scope: :messages), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "unread", box: @box)}
           %i.icon-mail-read
 
-        #remove_message.btn{:"data-tooltip" => t(:message_delete), :"data-new-status" => "trash", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "trash", box: @box)}
+        #remove_message.btn{:"data-tooltip" => t(:delete, scope: :messages), :"data-new-status" => "trash", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "trash", box: @box)}
           %i.icon-trash
 
       - if @box == "trashbox"
-        #restore_message.btn{:"data-tooltip" => t(:message_restore), :"data-new-status" => "restore", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "restore", box: @box)}
+        #restore_message.btn{:"data-tooltip" => t(:restore, scope: :messages), :"data-new-status" => "restore", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "restore", box: @box)}
           %i.icon-restore
 
     .clearfix
@@ -48,12 +48,11 @@
         %br
         - attachments.each do |file|
           .new-attach
-            = link_to ['-', file.message_file_name].join, download_file_messages_path(file_id: file.id)
+            = link_to ['-', file.attachment_file_name].join, download_file_messages_path(file_id: file.id)
 
   %hr
   .message_div_show
     = sanitize @message.content
-
   %hr
 
   .message_div_navigation

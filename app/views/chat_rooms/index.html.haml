@@ -4,7 +4,7 @@
 
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus-3'), new_chat_room_path(allocation_tags_ids: [@allocation_tags_ids].flatten), class: " btn btn_main", id: "new_chat", :"data-tooltip" => t(".new_chat")
+      = link_to content_tag(:i, nil, class: 'icon-plus'), new_chat_room_path(allocation_tags_ids: [@allocation_tags_ids].flatten), class: " btn btn_main", id: "new_chat", :"data-tooltip" => t(".new_chat")
 
     .block_toolbar_right
       .btn-group
@@ -34,7 +34,7 @@
                     = raw(truncate chat.description, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
                   .complete.invisible
                     = chat.description
-                    = content_tag(:i, nil, class: "compress icon-arrow-up-2", :"data-tooltip" => t(".compress_description"))
+                    = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
                 = render "groups/groups_tags", groups: chat.groups, tool: chat, all_groups: all_groups, paths: {add: add_group_to_chat_rooms_path(id: "param_id", tool_id: chat.id), remove: remove_group_from_chat_rooms_path(id: "param_id", tool_id: chat.id), unbind: unbind_group_from_chat_rooms_path(id: "param_id", tool_id: chat.id)}
 
             %td{style: 'text-align:center;'}
@@ -44,7 +44,7 @@
   - else
     .block_content.block_content_text= t(".no_chats")
 
-= javascript_include_tag "chat_rooms", "tooltip", "groups_tags", "tablesorter"
+= javascript_include_tag "tablesorter", "chat_rooms", "tooltip", "groups_tags"
 
 :javascript
 

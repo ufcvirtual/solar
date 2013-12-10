@@ -1,0 +1,20 @@
+= javascript_include_tag 'autocomplete'
+
+= simple_form_for @current_profile, :url => create_profile_administrations_path do |f|
+
+  %span.form_requirement= t(:required_fields)
+
+  = hidden_field_tag :id, @id
+  .form-inputs.block_content
+    = f.input :name, required: true, :"data-limit"=> 250
+    = f.input :description, required: true, :"data-limit"=> 400
+
+    %div.input.string
+      = f.label 'modelo', :class => 'form_label'
+      = #f.input :collection => @all_profiles, :selected => @current_profile.id
+      = #select :model_profile, @all_profiles, :selected => @current_profile.id, :include_blank => false
+      = select_tag :model_profile, options_for_select(@all_profiles, @current_profile.id)
+
+    .form-actions.right_buttons
+      = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+      = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", alt: t(:save), id: "save"

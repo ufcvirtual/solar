@@ -22,7 +22,20 @@ class NotificationsControllerTest < ActionController::TestCase
     assert_routing({method: :put, path: "/notifications/1/add/group/1"}   , {controller: "groups", action: "change_tool", tool_id: "1", id: "1", type: "add"   , tool_type: "Notification"})
   end
 
-  test "eidcao - listar" do
+  test "exibicao para alunos" do
+    sign_in users(:aluno1)
+    get :index
+
+    assert_response :success
+    assert_not_nil assigns(:notifications)
+
+
+    get :show, id: notifications(:notification_group).id
+    assert_response :success
+    assert_not_nil assigns(:notification)
+  end
+
+  test "edicao - listar" do
     get :list, {allocation_tags_ids: [@quimica]}
 
     assert_response :success

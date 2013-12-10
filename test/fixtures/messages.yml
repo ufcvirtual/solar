@@ -2,46 +2,47 @@ message1:
   id: 1
   subject: 'assunto da msg 1'
   content: 'bla bla bla msg1'
-  send_date: '2011-05-11 10:42:25'
+  created_at: '2011-05-11 10:42:25'
+  allocation_tag_id: 3 # quimica I
 
 message2:
   id: 2
   subject: 'assunto da msg 17/5'
   content: 'bla bla bla msg2'
-  send_date: '2011-05-17 21:06:15'
+  created_at: '2011-05-17 21:06:15'
 
 message3:
   id: 3
   subject: 'assunto da msg 22/5'
   content: 'bla bla bla msg3'
-  send_date: '2011-05-22 17:05:22'
+  created_at: '2011-05-22 17:05:22'
 
 message4:
   id: 4
   subject: 'assunto da msg 23/5'
   content: 'bla bla bla ...'
-  send_date: '2011-05-23 18:42:25'
+  created_at: '2011-05-23 18:42:25'
 
 message5:
   id: 5
   subject: 'assunto da msg 25/5'
   content: 'bla bla bla ...'
-  send_date: '2011-05-25 12:42:25'
+  created_at: '2011-05-25 12:42:25'
 
 message6:
   id: 6
   subject: 'assunto da msg 26/5'
   content: 'bla bla bla ...'
-  send_date: '2011-05-26 11:42:25'
+  created_at: '2011-05-26 11:42:25'
 
 message7:
   id: 7
   subject: 'assunto da msg 27/5 (i)'
   content: 'bla bla bla ...'
-  send_date: '2011-05-27 13:42:25'
+  created_at: '2011-05-27 13:42:25'
 
 message8:
   id: 8
   subject: 'assunto da msg 27/5 (ii)'
   content: 'bla bla bla ...'
-  send_date: '2011-05-27 16:42:25'
+  created_at: '2011-05-27 16:42:25'

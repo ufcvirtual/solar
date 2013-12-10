@@ -5,4 +5,7 @@ class PagesController < ApplicationController
     render :layout => 'external_page'
   end
 
+  def tutorials
+  end
+
 end

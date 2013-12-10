@@ -1,6 +1,6 @@
 class NotificationsController < ApplicationController
 
-  layout false#, except: [:index]
+  layout false
 
   def list
     authorize! :list, Notification, on: @allocation_tags_ids = (params[:allocation_tags_ids].class == String ? params[:allocation_tags_ids].split(",") : params[:allocation_tags_ids])
@@ -24,6 +24,8 @@ class NotificationsController < ApplicationController
   def show
     @notification = Notification.find(params[:id])
     @notification.mark_as_read(current_user)
+
+    # @to = (@notification.allocation_tags & current_user.all_allocation_tags(objects: true)).map(&:info)
 
     respond_to do |format|
       format.html # show.html.erb

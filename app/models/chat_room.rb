@@ -1,8 +1,6 @@
-class ChatRoom < ActiveRecord::Base
+class ChatRoom < Event
   
   GROUP_PERMISSION = true
-
-  include Event
 
   has_many :messages, class_name: "ChatMessage"
   has_many :participants, class_name: "ChatParticipant", dependent: :destroy

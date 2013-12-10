@@ -1,9 +1,6 @@
-%td= allocation_details(a.allocation_tag)
-%td= type(a.allocation_tag)
-%td= #select(:status, :id, @status_hash.invert.to_a, {selected: a.status})
+%td= allocation_details(@allocation.allocation_tag)
+%td= type(@allocation.allocation_tag)
+%td= select(:status, :id, allocation_status.invert.to_a, {selected: @allocation.status})
 %td.right_buttons
-  = button_to_function t(".save"), "save_allocation(this)", :"allocation-id" => @allocation.id, :"save-link" => allocation_path(@allocation), class: "btn btn_main btn_save_allocation"
-  = button_to_function t(".cancel"), "manage_cancel(this)", :"show-link" => allocations_user_administrations_path(@allocation), :"edit-link" => edit_allocation_path(@allocation), class: "btn btn_default btn_manage_cancel"
-  
-:javascript
-  eval("#{show_flash}")
+  = link_to_function content_tag(:i, nil, class: 'btn icon-edit'), "update_allocation(this)", :"save-link" => update_allocation_administration_path(@allocation), :"show-link" => show_allocation_administrations_path(id: @allocation.id), class:  "btn_manage_cancel"
+  = link_to_function content_tag(:i, nil, class: 'btn icon-cross'), "cancel(this)", :"show-link" => show_allocation_administrations_path(id: @allocation.user_id), class: "btn_manage_cancel"

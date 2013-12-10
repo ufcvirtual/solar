@@ -1,7 +1,7 @@
 $(function() {
 
-	// --- pagina de consultar usuario
-
+	// --- exclusivo da admin de usuario
+  
   $("#search_user").click(function() {
     var url_for = "<%= Rails.application.routes.url_helpers.search_users_administrations_path %>";
     if ($("#text_search").val().length != 0)
@@ -11,30 +11,80 @@ $(function() {
     }
   });
 
-  //$(".btn_edit_user").call_fancybox(); 
-
-  $(".btn_info_user_administrations").click(function() {
-    var url = $(this).data('link-edit');
-    $(this).call_fancybox({href : url, open: true});
+  $(".pagination a").click(function() {
+    var url = $(this).attr("href");
+    $.get(url, function(data) { $('#list_users').html(data); });
+    return false;
   });
-
-  $(".btn_allocations_user_administrations").click(function() {
-    var url = $(this).data('link-edit');
-    $(this).call_fancybox({href : url, open: true});
-  });
-
-  $(".btn_change_password").click(function() {
-    $(this).call_fancybox();
-  });
-
-  $(".btn_manage_allocation").click(function() {
-    $(obj).closest('tr').addClass('active');
-    $.get($(obj).attr('edit-link'), function(data) { $(obj).closest('tr').html(data); });
-  });
-
-  function manage_cancel(obj) {
-    $(obj).closest('tr').removeClass('active');
-    $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
-  }
 
 });
+
+function open_administration(obj) {
+  var url = $(obj).attr('show-link');
+  $(obj).call_fancybox({href : url, open: true});
+}
+
+function manage(obj) {
+  $(obj).closest('tr').addClass('active');
+  $.get($(obj).attr('edit-link'), function(data) { $(obj).closest('tr').html(data); });
+};
+
+function cancel(obj) {
+  $(obj).closest('tr').removeClass('active');
+  $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
+}
+
+// --- exclusivo da admin de perfil
+
+
+
+// --- exclusivo da admin de usuario
+
+function update_allocation(obj) {
+  var url = $(obj).attr('save-link');
+
+  $.ajax({
+    type: 'PUT',
+    url: url,
+    data: {
+      "status": $('#status_id option:selected', $(obj).closest('tr')).val()
+    },
+    success: function(data, textStatus, jqXHR) {
+      $(obj).closest('tr').removeClass('active');
+      $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
+    }
+  })
+}
+
+function update_user(obj) {
+  var url = $(obj).attr('save-link');
+
+  $.ajax({
+    type: 'PUT',
+    url: url,
+    data: {
+      "name": $(obj).closest('tr').find('input[id=name]').val(),
+      "email": $(obj).closest('tr').find('input[id=email]').val(),
+      "status": $('#status_id option:selected', $(obj).closest('tr')).val()
+    },
+    success: function(data, textStatus, jqXHR) {
+      $(obj).closest('tr').removeClass('active');
+      $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
+    }
+  })
+}
+
+function change_password(obj) {
+  var url = $(obj).attr('edit-link');
+
+  $.ajax({
+    type: 'PUT',
+    url: url,
+    data: {},
+    success: function(data, textStatus, jqXHR) {
+      $(obj).closest('tr').removeClass('active');
+      $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
+    }
+  })
+}
+
