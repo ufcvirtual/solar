@@ -544,6 +544,7 @@
                 contacts=converse.roster.models; //pega lista completa de usuários
                 var c=0;
                 v=document.getElementById(this.model.get('box_id'));
+                v.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
                 v.title="";
                 img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
                 while(c<contacts.length){
