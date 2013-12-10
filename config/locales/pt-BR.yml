@@ -1856,6 +1856,7 @@
     mark_as_unread: "Marcar como não lida"
 
     none: "Nenhuma mensagem encontrada"
+    no_new: "Sem novas mensagens"
     no_subject: "(sem assunto)"
     contacts:
       title: "Seleção de contatos"

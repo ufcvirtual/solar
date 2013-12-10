@@ -1701,6 +1701,7 @@
     mark_as_unread: "Mark as unread"
 
     none: "No message found"
+    no_new: "No new messages"
     no_subject: "(no subject)"
     contacts:
       title: "Selection of contacts"

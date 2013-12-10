@@ -16,7 +16,7 @@
           = link_to message.sent_by.name.truncate(13), message_path(id: message.id, bread: :menu_messages, box: :inbox), {class: 'link_content'}
           = raw message.subject.truncate(63)
     - else
-      .block_content_text= t(:message_no_new)
+      .block_content_text= t(:no_new, scope: :messages)
   .block_messages_opt
     = link_to t(:curriculum_access_message_inbox), messages_path(bread: :menu_messages), {class: "link_content_gray"}
     \ |

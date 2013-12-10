@@ -16,7 +16,7 @@ class ChangeMessagesAndLabels < ActiveRecord::Migration
       messages = l.messages
 
       messages.each do |m|
-        m.allocation_tag_id = Group.where(code: l.title.split('|')[1]).first.allocation_tag.id
+        m.allocation_tag_id = Group.where(code: l.title.split('|')[1]).first.try(:allocation_tag).try(:id)
         m.created_at = m.send_date
         m.save
       end

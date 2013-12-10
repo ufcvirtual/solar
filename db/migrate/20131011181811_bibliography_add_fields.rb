@@ -50,7 +50,7 @@ class BibliographyAddFields < ActiveRecord::Migration
       title << "URL: #{bibliography.url}"             if not bibliography.url.nil?
       title = title.join(". ")
 
-      bib = Bibliography.create type_bibliography: Bibliography_Free, title: title # mudar pela constante
+      bib = Bibliography.create type_bibliography: ::Bibliography::TYPE_FREE, title: title # mudar pela constante
       AcademicAllocation.create(allocation_tag_id: bibliography.allocation_tag_id, academic_tool_id: bib.id, academic_tool_type: 'Bibliography')
     end
   end
