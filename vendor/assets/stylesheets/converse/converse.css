@@ -273,7 +273,7 @@
     white-space: nowrap;
     text-shadow: rgba(0,0,0,0.51) 0 -1px 0;
     height: 22px;
-    width: 170px;
+    /*width: 170px;*/
 }
 
 #chatpanel .chat-head-chatbox,
