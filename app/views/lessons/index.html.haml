@@ -17,7 +17,7 @@
             %td
               - if lesson.closed?
                 = lesson.name
-                = "(#{t(:lesson_closed_short)})" if lesson.closed?
+                = "(#{t(:lesson_closed_short)})"
               - else
                 = link_to lesson.name, {}, :class => "link_content", :onclick => "javascript:show_lesson('#{lesson_path(lesson.id)}')"
             %td

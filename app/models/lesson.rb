@@ -75,8 +75,19 @@ class Lesson < ActiveRecord::Base
     !!(try(:schedule).try(:end_date))
   end
 
+  # pode visualizar
+  def open_to_show?
+    started? and not closed?
+  end
+
+  # já iniciou
+  def started?
+    schedule.start_date <= Date.today
+  end
+
+  # fechado
   def closed?
-    ((not schedule.end_date.nil?) and (schedule.end_date < Date.today)) or (schedule.start_date > Date.today)
+    not(schedule.end_date.nil?) and (schedule.end_date < Date.today)
   end  
 
   def self.to_open(allocation_tag_ids)
