@@ -541,6 +541,22 @@
                 // If this message is on a different day than the one received
                 // prior, then indicate it on the chatbox.
                 idx = _.indexOf(times, time)-1;
+                contacts=converse.roster.models; //pega lista completa de usuários
+                var c=0;
+                v=document.getElementById(this.model.get('box_id'));
+                v.title="";
+                img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
+                while(c<contacts.length){
+                    if(contacts[c].attributes.fullname.search(message.attributes.fullname) != -1){
+                        v=document.getElementById(this.model.get('box_id'));
+                        img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
+                        if(contacts[c].attributes.chat_status.search("online")!=-1) img.src=imgOn;
+                        if(contacts[c].attributes.chat_status.search("dnd")!=-1)img.src=imgDnd;
+                        if(contacts[c].attributes.chat_status.search("away")!=-1)img.src=imgAway;
+                        if(contacts[c].attributes.chat_status.search("offline")!=-1)img.src=imgOff;
+                    }
+                    c++;    
+                }
                 if (idx >= 0) {
                     previous_message = this.model.messages.at(idx);
                     prev_date = converse.parseISO8601(previous_message.get('time'));
@@ -563,7 +579,6 @@
                 if ((message.get('sender') != 'me') && (converse.windowState == 'blur')) {
                     converse.incrementMsgCounter();
                     //muda imagem status ao receber menssagem no estado onblur
-                    v=document.getElementById(this.model.get('box_id'));
                     head = v.childNodes.item(0);
                     if(head.style.top=="300px")
                     {
@@ -2730,6 +2745,7 @@
             },
 
             setStatus: function (value) {
+                //muda status
                 this.sendPresence(value);
                 this.save({'status': value});
             },
