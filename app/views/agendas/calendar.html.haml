@@ -1,6 +1,7 @@
 = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 = hidden_field_tag :all_groups_ids, params[:all_groups_ids]
 = hidden_field_tag :selected, params[:selected]
+= hidden_field_tag :events_path, events_agendas_path
 
 .calendar_schedules{:"data-link-list" => calendar_agendas_path(allocation_tags_ids: @allocation_tags_ids, all_groups_ids: params[:all_groups_ids], selected: params[:selected])}
 
