@@ -28,6 +28,13 @@ Solar::Application.routes.draw do
     end
   end
 
+  scope "/admin" do
+    resources :profiles do
+      get :permissions, on: :member
+      post "permissions/grant", to: :grant, on: :member
+    end
+  end
+
   resources :administrations do
     member do
       put "update_allocation"
@@ -36,19 +43,15 @@ Solar::Application.routes.draw do
       put "change_password"
     end
     collection do
-      get :manage_user 
       get :search_users
       get "user/:id/show_user", to: :show_user, as: :show_user
       get "user/:id/edit", to: :edit_user, as: :edit_user
       get "allocation/:id/show_allocation", to: :show_allocation, as: :show_allocation
       get "allocation/:id/edit", to: :edit_allocation, as: :edit_allocation
       get :allocations_user
-      get :manage_profiles
-      get :list_profiles
-      get :new_profile
-      get "profile/:id/permissions", to: :show_permissions, as: :show_permissions
-      get "profile/:id/edit", to: :edit_profile, as: :edit_profile
-      post :create_profile
+
+      ## melhorar
+      get :manage_user
     end
   end
 

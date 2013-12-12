@@ -162,17 +162,12 @@ class User < ActiveRecord::Base
 
   def profiles_with_access_on(action, controller, allocation_tag_id = nil, only_id = false)
     if allocation_tag_id.nil?
-      profiles = self.profiles.
-        joins(permissions_resources: :resource).
-        where(
-          resources: {action: action, controller: controller}).
+      profiles = self.profiles.joins(:resources).
+        where(resources: {action: action, controller: controller}).
         order("profiles.id DESC")
     else
-      profiles = self.profiles.
-        joins(permissions_resources: :resource).
-        where(
-          allocations: { allocation_tag_id: allocation_tag_id }, 
-          resources: {action: action, controller: controller}).
+      profiles = self.profiles.joins(:resources).
+        where(allocations: { allocation_tag_id: allocation_tag_id }, resources: {action: action, controller: controller}).
         order("profiles.id DESC")
     end
 

@@ -3,6 +3,10 @@ class AdministrationsController < ApplicationController
   layout false, except: [:manage_user, :manage_profiles]
   #authorize_resource :class => false
 
+
+  ## USERS
+
+
   def manage_user
     @types = Array.new(2,4)
     @types = [ [t(".name"), '0'], [t(".email"), '1'], [t(".username"), '2'], [t(".cpf"), '3'] ]
@@ -61,6 +65,10 @@ class AdministrationsController < ApplicationController
     end
   end
 
+
+  ## ALLOCATIONS
+
+
   def allocations_user
     id = params[:id]
     @allocations_user = User.find(id).allocations
@@ -92,65 +100,6 @@ class AdministrationsController < ApplicationController
     respond_to do |format|
       format.html { render action: :show_allocation, id: params[:id] }
       format.json { render json: {status: "ok"}  }
-    end
-  end
-
-  def manage_profiles
-    @all_profiles = Profile.all_except_basic
-  end
-
-  def list_profiles
-    @all_profiles = Profile.all_except_basic
-    respond_to do |format|
-      format.json { render json: @all_profiles }
-    end
-  end
-
-  def new_profile
-    @current_profile = Profile.new
-
-    @all_profiles = [ '' ]
-    @all_profiles += Profile.all_except_basic.map{|f| [f.name, f.id]}
-  end
-
-  def create_profile
-    @current_profile = Profile.new(params[:profile])
-
-    begin
-      Profile.transaction do
-        @current_profile.save!
-        
-        template = params[:template_profile]
-        # atribui permissoes padrao
-
-        # copia permissoes do perfil modelo, se houver
-
-      end
-      render json: {success: true, notice: 'criou'}
-    rescue ActiveRecord::AssociationTypeMismatch
-      render json: {success: false, alert: t(:not_associated)}, status: :unprocessable_entity
-    rescue
-      render :new
-    end
-  end
-
-  def edit_profile
-    @current_profile = Profile.find(params[:id])
-  end
-
-  def update_profile
-    @current_profile = Profile.find(params[:id])
-    @current_profile.update_attributes(name: params[:profile][:name], description: params[:profile][:description])
-    respond_to do |format|
-      format.json { render json: {status: "ok"}  }
-    end
-  end
-
-  def show_permissions
-    @current_profile = Profile.find(params[:id])
-    respond_to do |format|
-      format.html
-      format.json { render json: @current_profile }
     end
   end
 

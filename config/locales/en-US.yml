@@ -194,6 +194,10 @@
       notification:
         title: Title
         description: Description
+      profile:
+        name: Name
+        description: Description
+        template: Template
 
     errors:
       uniqueness: "Record already exists in the system"
@@ -1736,6 +1740,24 @@
     index:
       filter_selected: "View: "
 
+  profiles:
+    form:
+      select_template: Select a template
+    index:
+      new: New
+    list:
+      edit: Edit
+      delete: Delete
+      permissions: Permissions
+    success:
+      created: Profile was successfully created.
+      updated: Profile was successfully updated.
+      deleted: Profile was successfully deleted.
+    error:
+      created: Profile wasn't created.
+      updated: Profile wasn't updated.
+      deleted: Profile wasn't deleted.
+
   #Autocomplete
   autocomplete:
     no_options: There's no option to the selected values
@@ -1793,7 +1815,7 @@
       start_date: Start
       end_date: End
       event_details: Event's details
-    
+
   agendas:
     dropdown_content:
       chat_rooms: "Chat: "

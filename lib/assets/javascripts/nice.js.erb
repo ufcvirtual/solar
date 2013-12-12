@@ -176,7 +176,7 @@ $.fn.nice_delete = function(options) {
       if (typeof(data.notice) != "undefined")
         flash_message(data.notice, 'notice');
 
-      parent.fadeOut(500, function(){ $(this).remove() });
+      parent.slideUp().remove();
 
       if (typeof(options.complement_success) == "function")
         options.complement_success(data);

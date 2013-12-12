@@ -324,6 +324,10 @@
       notification:
         title: Título
         description: Descrição
+      profile:
+        name: Nome
+        description: Descrição
+        template: Modelo
 
     errors:
       uniqueness: "Registro já existe no sistema"
@@ -1890,6 +1894,25 @@
       forward: "Encaminhar"
     index:
       filter_selected: "Visualizar: "
+
+  profiles:
+    form:
+      select_template: Selecione um modelo
+    index:
+      new: Novo perfil
+    list:
+      edit: Editar perfil
+      delete: Deletar perfil
+      permissions: Permissões
+    success:
+      created: Perfil criado com sucesso.
+      updated: Perfil atualizado com sucesso.
+      deleted: Perfil deletado com sucesso.
+    error:
+      range_hour_error: deve ser posterior à inicial
+      created: Não foi possível criar perfil.
+      updated: Não foi possível atualizar perfil.
+      deleted: Não foi possível deletar perfil.
 
   #Autocomplete
   autocomplete:

@@ -1,0 +1,56 @@
+%h1#lightBoxDialogTitle= "#{t(:title, scope: [:administrations, :profiles])} - #{@profile.name}"
+
+.block_wrapper
+  .block_content.list_profiles
+    - unless @resources.blank?
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th= "en-us: funcionalidade"
+            %th= t(:description)
+            %th= "en-us: permissao"
+        %tbody
+          - @resources.each do |r|
+            - permission = not(r[:permission].blank?)
+            %tr.lines{class: permission ? "permission" : ""}
+              %td= t(r[:controller].singularize.to_sym, scope: :controllers)
+              %td= r[:description]
+              %td= check_box_tag('resource', r.id, permission, :onchange => "javascript:mudeminhacor(this);", class: "ckb_resource")
+
+.right_buttons
+  = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
+  = button_to_function t(:save), "profile_save_permissions()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
+
+:css
+  .permission {
+    color: red;
+  }
+
+  .verde {
+    color: green;
+  }
+
+:javascript
+
+  // já com permissao fica azul
+  // add e retirou fica normal
+  // add fica vermelhor
+  // retirar fica verde
+
+  function mudeminhacor(ck) {
+    $(ck).closest('tr').addClass('verde');
+  }
+
+  function profile_save_permissions() {
+    var resources = $('.ckb_resource:checked').map(function() { return this.value; }).get();
+    $.post("#{permissions_grant_profile_path}", {resources: resources}, function(data){
+      if (typeof(data) != "undefined" && typeof(data.notice) != "undefined")
+        flash_message(data.notice, 'notice');
+    }).error(function(data){
+      var response = JSON.parse(data.responseText);
+      if (typeof(response.alert) != "undefined")
+        flash_message(response.alert, 'alert');
+    }).complete(function(){
+      $.fancybox.close();
+    });
+  }
