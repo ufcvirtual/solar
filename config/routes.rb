@@ -51,18 +51,9 @@ Solar::Application.routes.draw do
       get "allocation/:id/show_allocation", to: :show_allocation, as: :show_allocation
       get "allocation/:id/edit", to: :edit_allocation, as: :edit_allocation
       get :allocations_user
-<<<<<<< HEAD
 
       ## melhorar
       get :manage_user
-=======
-      get :manage_profiles
-      get :list_profiles
-      get :new_profile
-      get "profile/:id/permissions", to: :show_permissions, as: :show_permissions
-      get "profile/:id/edit", to: :edit_profile, as: :edit_profile
-      post :create_profile
->>>>>>> 56349290
     end
   end
 
