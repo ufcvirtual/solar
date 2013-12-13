@@ -200,3 +200,17 @@ form{
   height: auto;
 }
 
+.new_feed{
+  color: #ffffff;
+  background-color: #3F6488;;
+  padding: 2px;
+}
+
+.star{
+  position: relative;
+  left: -22px;
+  color: #FFAE03;
+  font-size: 16px;
+  top: -7px;
+  display: none;
+}

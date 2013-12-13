@@ -11,6 +11,7 @@
 .head
   = link_to(content_tag(:i, nil, :class=>'icon-write new_post_button'), '#', 'data-tooltip' => t(:publish, :scope => [:facebook]))
   = link_to(content_tag(:i, nil, :class=>'icon-cycle'), '#', :onclick => 'location.reload(true);', :class => 'feed', 'data-tooltip' => t(:update_feed, :scope => [:facebook]))
+  = content_tag(:i, nil, class: 'icon-star star')
 
   .new_post
     %form{:action => fb_post_wall_social_networks_path}
@@ -57,5 +58,21 @@
           = image_tag fb_msg_group['picture'].gsub('_s','_n') if fb_msg_group['type'].eql? 'photo' 
           = image_tag fb_msg_group['picture'] if fb_msg_group['type'].eql? 'video' or fb_msg_group['type'].eql? 'link' or fb_msg_group['type'].eql? 'swf'
         .post_url
-          %a.link{href: "#{fb_msg_group['link']}", :target => "_blank"}= t(:original_content, :scope => [:facebook]) unless fb_msg_group['type'].eql? 'status'
+          %a.link{href: "#{fb_msg_group['link']}"}= t(:original_content, :scope => [:facebook]) unless fb_msg_group['type'].eql? 'status'
 
+:javascript
+  var last_post_time = "#{@fb_posts.blank? ? @fb_msg_groups.first['created_time'] : @fb_posts.first['created_time']}";
+  var new_post_path = "#{@fb_posts.blank? ? fb_feed_group_new_social_networks_path : fb_feed_new_social_networks_path}";
+
+  function verifyFeed(){
+    $.get(new_post_path, function(data){
+      if (data.new_time > last_post_time){
+       $(".icon-cycle").addClass("new_feed");
+       $(".star:hidden").show();
+      }
+    });
+  }
+
+  $(function(){
+    setInterval(verifyFeed, 2000);
+  });

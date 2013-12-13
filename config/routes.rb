@@ -25,6 +25,8 @@ Solar::Application.routes.draw do
       get :fb_logout  
       get :fb_post_wall
       get "fb_feed/group/:id", to: "social_networks#fb_feed_groups", as: :fb_feed_group
+      get "fb_feed/group/:id/news", to: "social_networks#fb_feed_group_news", as: :fb_feed_group_new
+      get :fb_feed_new
     end
   end
 
@@ -49,9 +51,18 @@ Solar::Application.routes.draw do
       get "allocation/:id/show_allocation", to: :show_allocation, as: :show_allocation
       get "allocation/:id/edit", to: :edit_allocation, as: :edit_allocation
       get :allocations_user
+<<<<<<< HEAD
 
       ## melhorar
       get :manage_user
+=======
+      get :manage_profiles
+      get :list_profiles
+      get :new_profile
+      get "profile/:id/permissions", to: :show_permissions, as: :show_permissions
+      get "profile/:id/edit", to: :edit_profile, as: :edit_profile
+      post :create_profile
+>>>>>>> 56349290
     end
   end
 
