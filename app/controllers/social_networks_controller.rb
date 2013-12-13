@@ -27,8 +27,6 @@ class SocialNetworksController < ApplicationController
     @fb_posts = @graph.get_object("me/home?limit=10")
   end
 
-
-
   def fb_feed_new
     # Pega um objeto da ferramenta API, através da qual podemos acessar as informações do usuário no facebook
     @graph = Koala::Facebook::API.new(user_session[:fb_token]) if user_session[:fb_token].present?
@@ -38,8 +36,12 @@ class SocialNetworksController < ApplicationController
     render json: {new_time: @fb_posts.first["created_time"]}
   end
 
-
-
+  def fb_feed_group_news
+    @graph = Koala::Facebook::API.new(user_session[:fb_token]) if user_session[:fb_token].present?
+    @fb_msg_groups = []
+    @fb_msg_groups = @graph.get_object(params[:id]+'/feed?fields=created_time&limit=1')
+    render json: {new_time: @fb_msg_groups.first["created_time"]}
+  end 
 
   def fb_feed_groups
     @graph = Koala::Facebook::API.new(user_session[:fb_token]) if user_session[:fb_token].present?

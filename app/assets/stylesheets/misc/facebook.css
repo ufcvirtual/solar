@@ -202,14 +202,15 @@ form{
 
 .new_feed{
   color: #ffffff;
-  background-color: #003e7a;
+  background-color: #3F6488;;
   padding: 2px;
 }
 
-#star{
+.star{
   position: relative;
   left: -22px;
-  width: 15px;
-  top: -3px;
+  color: #FFAE03;
+  font-size: 16px;
+  top: -7px;
   display: none;
 }
