@@ -39,7 +39,7 @@
           = image_tag fb_post['picture'].gsub('_s','_n') if fb_post['type'].eql? 'photo' 
           = image_tag fb_post['picture'] if fb_post['type'].eql? 'video' or fb_post['type'].eql? 'link' or fb_post['type'].eql? 'swf'
         .post_url
-          %a.link{href: "#{fb_post['link']}", :target => "_blank"}= t(:original_content, :scope => [:facebook]) unless fb_post['type'].eql? 'status'
+          %a.link{href: "#{fb_post['link']}"}= t(:original_content, :scope => [:facebook]) unless fb_post['type'].eql? 'status'
 
 - elsif @fb_msg_groups.present?
   - @fb_msg_groups.each do |fb_msg_group|
