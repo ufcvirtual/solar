@@ -11,6 +11,7 @@
 .head
   = link_to(content_tag(:i, nil, :class=>'icon-write new_post_button'), '#', 'data-tooltip' => t(:publish, :scope => [:facebook]))
   = link_to(content_tag(:i, nil, :class=>'icon-cycle'), '#', :onclick => 'location.reload(true);', :class => 'feed', 'data-tooltip' => t(:update_feed, :scope => [:facebook]))
+  %img{src: "/assets/star.png", id:'star'}
 
   .new_post
     %form{:action => fb_post_wall_social_networks_path}
@@ -59,3 +60,19 @@
         .post_url
           %a.link{href: "#{fb_msg_group['link']}", :target => "_blank"}= t(:original_content, :scope => [:facebook]) unless fb_msg_group['type'].eql? 'status'
 
+:javascript
+    var last_post_time = "#{@fb_posts.first['created_time']}";
+    var new_post_path = "#{fb_feed_new_social_networks_path}";
+
+  $(function(){
+    function verifyFeed(){
+
+      $.get(new_post_path, function(data){
+        if(data.new_time > last_post_time)
+         $(".icon-cycle").addClass("new_feed");
+         $("img:hidden").show();
+      });
+    }
+
+    setInterval(verifyFeed, 2000);
+  });
