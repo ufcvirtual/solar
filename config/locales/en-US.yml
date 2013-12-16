@@ -23,6 +23,7 @@
   time:
     formats:
       clock: "%m/%d/%Y %H:%M:%S"
+      clock_time: "%H:%M:%S"
       default: "%d/%b/%Y, %H:%M:%S"
       short: "%d/%b %H:%M"
       today: "%H:%M"
