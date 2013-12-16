@@ -347,6 +347,11 @@
   height: 150px;
   background-color: #fff;
   border-color: #ddd;
+  .already_added{
+    color: red;
+    display: inline-block;
+    padding-left: 3px;
+  }
 }
 
 .contacts-selected {

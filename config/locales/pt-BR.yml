@@ -1859,6 +1859,8 @@
     mark_as_read: "Marcar como lida"
     mark_as_unread: "Marcar como não lida"
 
+    already_added: já adicionado
+
     none: "Nenhuma mensagem encontrada"
     no_new: "Sem novas mensagens"
     no_subject: "(sem assunto)"
@@ -1877,6 +1879,7 @@
       attach_file: "Anexar um arquivo"
       send: "Enviar"
       without_recipient: "Necessário pelo menos um destinatário."
+      must_have_content: Necessário escrever mensagem
       discard: "Descartar"
       add_contacts: "Clique aqui para adicionar contatos"
     header:

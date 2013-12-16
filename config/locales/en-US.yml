@@ -1704,6 +1704,8 @@
     mark_as_read: "Marck as read"
     mark_as_unread: "Mark as unread"
 
+    already_added: already added
+
     none: "No message found"
     no_new: "No new messages"
     no_subject: "(no subject)"
@@ -1722,6 +1724,7 @@
       attach_file: "Attach a file"
       send: "Send"
       without_recipient: "Need at least one recipient."
+      must_have_content: A message must be written
       discard: "Discard"
       add_contacts: "Click here to add contacts"
     header:

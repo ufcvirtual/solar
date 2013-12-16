@@ -44,8 +44,15 @@
     var select = ($(contact).data("selected") == false);
     var user_id = $(contact).data("user-id");
     // se este usuario ja esta selecionado e uma nova tentativa de selecao do mesmo em uma outra UC
-    if (($('.contacts-selected .contact a[data-user-id="' + user_id + '"]').length > 0) && select)
+    if (($('.contacts-selected .contact a[data-user-id="' + user_id + '"]').length > 0) && select){
+      var added_user_msg = $(contact).children(".already_added");
+      if(!added_user_msg.length){
+        var already_added_msg = "<div class='already_added'>#{t('messages.already_added')}</div>";
+        $(already_added_msg).appendTo($(contact)).delay(1000).fadeOut();
+      }else
+        $(added_user_msg).show().delay(1000).fadeOut();
       return false; // usuario já foi selecionado
+    }
 
     $(contact).data("selected", select); // marca/desmarca usuario como selecionado
 
