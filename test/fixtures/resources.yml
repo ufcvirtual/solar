@@ -912,3 +912,41 @@ res159:
   controller: 'administrations'
   action: 'change_password'
   description: 'Altera senha de usuário na administração'
+
+## gerenciar perfis
+
+res160:
+  id: 160
+  controller: 'profiles'
+  action: 'index'
+  description: 'Listar perfis'
+
+res161:
+  id: 161
+  controller: 'profiles'
+  action: 'create'
+  description: 'Criar perfil'
+
+res162:
+  id: 162
+  controller: 'profiles'
+  action: 'update'
+  description: 'Atualizar perfil'
+
+res163:
+  id: 163
+  controller: 'profiles'
+  action: 'destroy'
+  description: 'Remover perfil'
+
+res164:
+  id: 164
+  controller: 'profiles'
+  action: 'permissions'
+  description: 'Listar permissões de um perfil'
+
+res165:
+  id: 165
+  controller: 'profiles'
+  action: 'grant'
+  description: 'Adicionar/Retirar permissões de um perfil'

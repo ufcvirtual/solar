@@ -1747,12 +1747,20 @@
   profiles:
     form:
       select_template: Select a template
+      new: New Profile
+      delete: Delete
     index:
       new: New
     list:
       edit: Edit
-      delete: Delete
       permissions: Permissions
+    permissions:
+      permissions: Permissions
+      profile: "Profile: %{profile}"
+      filter: Filter
+      edit: Edit Permissions
+      save: Save Permissions
+      cancel: Cancel Edition
     success:
       created: Profile was successfully created.
       updated: Profile was successfully updated.

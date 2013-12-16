@@ -6,7 +6,9 @@ class Profile < ActiveRecord::Base
 
   has_and_belongs_to_many :resources, join_table: "permissions_resources"
 
-  validates :name, presence: true
+  validates :description, :name, presence: true
+  validates :name, length: {maximum: 250}
+  validates :description, length: {maximum: 400}
 
   attr_accessor :template
 

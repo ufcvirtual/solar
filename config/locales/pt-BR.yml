@@ -1902,18 +1902,25 @@
   profiles:
     form:
       select_template: Selecione um modelo
+      new: Novo Perfil
+      delete: Deletar
     index:
       new: Novo perfil
     list:
       edit: Editar perfil
-      delete: Deletar perfil
       permissions: Permissões
+    permissions:
+      permissions: Permissões
+      profile: "Perfil: %{profile}"
+      filter: Filtrar
+      edit: Editar permissões
+      save: Salvar permissões
+      cancel: Cancelar edição
     success:
       created: Perfil criado com sucesso.
       updated: Perfil atualizado com sucesso.
       deleted: Perfil deletado com sucesso.
     error:
-      range_hour_error: deve ser posterior à inicial
       created: Não foi possível criar perfil.
       updated: Não foi possível atualizar perfil.
       deleted: Não foi possível deletar perfil.

@@ -442,9 +442,16 @@ professor_at_g3:
   profile_id: 2
   status: 2
 
-editor_admin:
-  id: 61
-  user_id: 14
-  allocation_tag_id: 
+## tentar retirar editor admin
+
+admin_basic:
+  id: 62
+  user_id: 15
+  profile_id: 12
+  status: 1
+
+admin:
+  id: 63
+  user_id: 15
   profile_id: 6
   status: 1

@@ -22,7 +22,7 @@ editor:
   name: "Editor"
   types: 8
 
-adm:
+admin:
   id: 6
   name: "Administrador"
 
