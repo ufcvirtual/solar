@@ -544,7 +544,6 @@
                 contacts = converse.roster.models; //pega lista completa de usuários
                 var c = 0;
                 v = document.getElementById(this.model.get('box_id'));
-                v.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
                 v.title = "";
                 //adiciona sombra caso precise
                 if( v.childNodes[0].style.top != "300px" )
