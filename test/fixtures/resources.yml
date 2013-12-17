@@ -857,96 +857,66 @@ res150:
   id: 150
   controller: 'administrations'
   action: 'manage_user'
-  description: 'Página de administração de usuário'
+  description: 'Buscar/Listar usuários'
 
 res151:
   id: 151
   controller: 'administrations'
-  action: 'search_users'
-  description: 'Busca de usuário na administração'
+  action: 'allocations_user'
+  description: 'Listar alocações do usuário'
 
 res152:
   id: 152
   controller: 'administrations'
-  action: 'allocations_user'
-  description: 'Página de administração de alocação de usuário'
+  action: 'update_allocation'
+  description: 'Alterar alocação de usuário'
 
 res153:
   id: 153
   controller: 'administrations'
-  action: 'show_allocation'
-  description: 'Página para exibição de uma alocação de usuário'
+  action: 'update_user'
+  description: 'Alterar dados de usuário'
 
 res154:
   id: 154
   controller: 'administrations'
-  action: 'edit_allocation'
-  description: 'Página para edição de uma alocação de usuário'
-
-res155:
-  id: 155
-  controller: 'administrations'
-  action: 'update_allocation'
-  description: 'Altera alocação de usuário na administração'
-
-res156:
-  id: 156
-  controller: 'administrations'
-  action: 'show_user'
-  description: 'Página para exibição de dados de usuário'
-
-res157:
-  id: 157
-  controller: 'administrations'
-  action: 'edit_user'
-  description: 'Página para edição de dados de usuário'
-
-res158:
-  id: 158
-  controller: 'administrations'
-  action: 'update_user'
-  description: 'Altera dados de usuário na administração'
-
-res159:
-  id: 159
-  controller: 'administrations'
   action: 'change_password'
-  description: 'Altera senha de usuário na administração'
+  description: 'Gerar nova senha para usuário'
 
 ## gerenciar perfis
 
-res160:
-  id: 160
+res155:
+  id: 155
   controller: 'profiles'
   action: 'index'
   description: 'Listar perfis'
 
-res161:
-  id: 161
+res156:
+  id: 156
   controller: 'profiles'
   action: 'create'
   description: 'Criar perfil'
 
-res162:
-  id: 162
+res157:
+  id: 157
   controller: 'profiles'
   action: 'update'
   description: 'Atualizar perfil'
 
-res163:
-  id: 163
+res158:
+  id: 158
   controller: 'profiles'
   action: 'destroy'
   description: 'Remover perfil'
 
-res164:
-  id: 164
+res159:
+  id: 159
   controller: 'profiles'
   action: 'permissions'
   description: 'Listar permissões de um perfil'
 
-res165:
-  id: 165
+res160:
+  id: 160
   controller: 'profiles'
   action: 'grant'
   description: 'Adicionar/Retirar permissões de um perfil'

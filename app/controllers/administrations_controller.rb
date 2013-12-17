@@ -12,7 +12,7 @@ class AdministrationsController < ApplicationController
   # Método chamado por ajax para buscar usuários
   def search_users
     begin
-      authorize! :search_users, Administration
+      authorize! :manage_user, Administration
       type_search = params[:type_search]
       @text_search = URI.unescape(params[:user]) unless params[:user].nil?
 
@@ -35,7 +35,7 @@ class AdministrationsController < ApplicationController
 
   def show_user
     begin
-      authorize! :show_user, Administration
+      authorize! :update_user, Administration
       @user = User.find(params[:id])
       respond_to do |format|
         format.html
@@ -48,7 +48,7 @@ class AdministrationsController < ApplicationController
 
   def edit_user
     begin
-      authorize! :edit_user, Administration
+      authorize! :update_user, Administration
       @user = User.find(params[:id])
     rescue CanCan::AccessDenied
       render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
@@ -108,7 +108,7 @@ class AdministrationsController < ApplicationController
 
   def show_allocation
     begin
-      authorize! :show_allocation, Administration
+      authorize! :update_allocation, Administration
       @allocation = Allocation.find(params[:id])
       respond_to do |format|
         format.html
@@ -121,7 +121,7 @@ class AdministrationsController < ApplicationController
 
   def edit_allocation
     begin
-      authorize! :edit_allocation, Administration
+      authorize! :update_allocation, Administration
       @allocation = Allocation.find(params[:id])
     rescue CanCan::AccessDenied
       render json: {success: false, alert: t(:no_permission)}, status: :unauthorized

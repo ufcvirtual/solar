@@ -1333,57 +1333,32 @@ admuser5:
   resource_id: 154
   per_id: false
 
-admuser6:
+admin_profile1:
   profile_id: 6
   resource_id: 155
   per_id: false
 
-admuser7:
+admin_profile2:
   profile_id: 6
   resource_id: 156
   per_id: false
 
-admuser8:
+admin_profile3:
   profile_id: 6
   resource_id: 157
   per_id: false
 
-admuser9:
+admin_profile4:
   profile_id: 6
   resource_id: 158
   per_id: false
 
-admuser10:
+admin_profile5:
   profile_id: 6
   resource_id: 159
   per_id: false
 
-admin_profile1:
-  profile_id: 6
-  resource_id: 160
-  per_id: false
-
-admin_profile2:
-  profile_id: 6
-  resource_id: 161
-  per_id: false
-
-admin_profile3:
-  profile_id: 6
-  resource_id: 162
-  per_id: false
-
-admin_profile4:
-  profile_id: 6
-  resource_id: 163
-  per_id: false
-
-admin_profile5:
-  profile_id: 6
-  resource_id: 164
-  per_id: false
-
 admin_profile6:
   profile_id: 6
-  resource_id: 165
+  resource_id: 160
   per_id: false
