@@ -546,6 +546,9 @@
                 v = document.getElementById(this.model.get('box_id'));
                 v.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
                 v.title = "";
+                //adiciona sombra caso precise
+                if( v.childNodes[0].style.top != "300px" )
+                    v.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
                 img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
                 while(c<contacts.length){
                     if(contacts[c].attributes.fullname.search(message.attributes.fullname) != -1){
@@ -554,7 +557,7 @@
                         if(contacts[c].attributes.chat_status.search("online")!=-1) img.src=imgOn;
                         if(contacts[c].attributes.chat_status.search("dnd")!=-1)img.src=imgDnd;
                         if(contacts[c].attributes.chat_status.search("away")!=-1)img.src=imgAway;
-                        if(contacts[c].attributes.chat_status.search("offline")!=-1)img.src=imgOff;
+                        //if(contacts[c].attributes.chat_status.search("offline")!=-1)img.src=imgOff;
                     }
                     c++;    
                 }
@@ -1289,7 +1292,8 @@
             id: 'controlbox',
             events: {
                 'click a.close-chatbox-button': 'closeChat',
-                'click ul#controlbox-tabs li a': 'switchTab'
+                'click ul#controlbox-tabs li a': 'switchTab',
+                'click #chat':'minimizarChat'
             },
             initialize: function () {
                 this.$el.appendTo(converse.chatboxesview.$el);
@@ -1334,7 +1338,7 @@
             },
 
             template: _.template(
-                '<div class="chat-head oc-chat-head" > '+
+                '<div class="chat-head oc-chat-head" id="chat"> '+
                 //'<span class="icons-{{ chat_status }}"></span>'+
                 '<a style="color: white"> Bate-Papo </a>' +
                 '<a style="display: none; color: white" id="online-count">(0)</a>' +
@@ -1343,6 +1347,27 @@
                 '</div>'+
                 '<div class="controlbox-panes"></div>'
             ),
+            minimizarChat: function(ev){
+                //Minimiza e maximiza a chat box
+                el = $("#chat")[0];
+                CP = el.parentNode.childNodes[1];
+                TB = $("#toggle-controlbox")[0];
+                if ( CP.style.display != "none" )
+                {   
+                    CP.style.display = "none";
+                    TB.style.display = "none";
+                    $("#controlbox")[0].style.boxShadow = "0px 0px 0px 0px";
+                    el.style.position = "relative";
+                    el.style.top = "300px";
+                }
+                else{
+                    el.style.position = "relative";
+                    el.style.top = "0px";
+                    CP.style.display = "block";
+                    TB.style.display = "block";
+                    $("#controlbox")[0].style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
+                }
+            },
 
             switchTab: function (ev) {
                 ev.preventDefault();
@@ -2538,16 +2563,19 @@
         this.RosterView = Backbone.View.extend({
             tagName: 'dl',
             id: 'converse-roster',
+            events: {
+                "keyup #nomeFilt": "buscar",
+            },
             rosteritemviews: {},
 
             requesting_contacts_template: _.template(
                 '<dt id="xmpp-contact-requests">'+__('Contact requests')+'</dt>'),
 
             contacts_template: _.template(
-                '<dt id="xmpp-contacts">'+__('My contacts')+'</dt>'),
+                '<div id="buscar">Buscar:<input type="text" id="nomeFilt" name="nomeFilt" placeholder="Buscar Usuário"/></div><dt id="xmpp-contacts" >'+__('My contacts')+'</dt>'),
 
             pending_contacts_template: _.template(
-                '<dt id="pending-xmpp-contacts">'+__('Pending contacts')+'</dt>'),
+                '<dt id="pending-xmpp-contacts" >'+__('Pending contacts')+'</dt>'),
 
             initialize: function () {
                 this.model.on("add", function (item) {
@@ -2576,6 +2604,27 @@
                 this.$el.hide().html(roster_markup);
 
                 this.model.fetch({add: true}); // Get the cached roster items from localstorage
+            },
+            buscar: function(el){
+                valor=el.target.value;
+                if(valor!=""){
+                    rosters=$("dd");
+                    for(c=1;c<rosters.length;c++){
+                        string =rosters[c].childNodes[0].childNodes[1].data;
+                        if(string.toLowerCase().search(valor.toLowerCase())!=-1){
+                            rosters[c].style.display="block";
+                        }
+                        else{
+                            rosters[c].style.display="none";
+                        }
+                    }
+                }
+                else{
+                    for(c=1;c<rosters.length;c++){
+                        rosters[c].style.display="block";
+                    }
+                }
+
             },
 
             updateChatBox: function (item, changed) {
@@ -2651,7 +2700,7 @@
                     return this;
                 }
                 if ($.contains(document.documentElement, view.el)) {
-                    view.render();                    
+                    view.render();   
                 } else {
                     this.$el.find('#xmpp-contacts').after(view.render().el);
                     
