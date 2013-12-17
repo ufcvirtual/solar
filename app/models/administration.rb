@@ -1,3 +1,3 @@
-class Administration
+class Administration < ActiveRecord::Base
 
 end
