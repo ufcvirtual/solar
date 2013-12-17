@@ -16,9 +16,7 @@ class Message < ActiveRecord::Base
   attr_accessor :contacts
 
   validates :content, presence: true
-
-  default_scope { order("created_at DESC").uniq }
-
+  
   scope :by_user, ->(user_id) { joins(:user_messages).where(user_messages: {user_id: user_id}) }
 
   # box = [inbox, outbox, trashbox]
@@ -62,7 +60,7 @@ class Message < ActiveRecord::Base
     where = []
     where = "messages.allocation_tag_id = (#{allocation_tag_id})" unless allocation_tag_id.nil?
 
-    by_user(user_id).where(where).where(query.join(" AND "))
+    by_user(user_id).where(where).where(query.join(" AND ")).order("created_at DESC").uniq
   end
 
   def self.user_outbox(user_id, allocation_tag_id = nil)
@@ -71,7 +69,8 @@ class Message < ActiveRecord::Base
 
     by_user(user_id).where(where)
       .where("cast(user_messages.status & #{Message_Filter_Sender} as boolean)
-        AND NOT cast(user_messages.status & #{Message_Filter_Trash} as boolean)") # sender AND NOT trash
+        AND NOT cast(user_messages.status & #{Message_Filter_Trash} as boolean)")
+      .order("created_at DESC").uniq # sender AND NOT trash
   end
 
   def self.user_trashbox(user_id, allocation_tag_id = nil)
@@ -79,7 +78,8 @@ class Message < ActiveRecord::Base
     where = "messages.allocation_tag_id = (#{allocation_tag_id})" unless allocation_tag_id.nil?
 
     by_user(user_id).where(where)
-      .where("cast(user_messages.status & #{Message_Filter_Trash} as boolean)") # IN (trash)
+      .where("cast(user_messages.status & #{Message_Filter_Trash} as boolean)")
+      .order("created_at DESC").uniq # IN (trash)
   end
 
   def user_has_permission?(user_id)

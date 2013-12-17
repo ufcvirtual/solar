@@ -14,6 +14,7 @@ class MessagesController < ApplicationController
 
     @messages = Message.send("user_#{@box}", current_user.id, allocation_tag_id)
                         .paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
+                        .order("created_at DESC").uniq
   end
 
   def new
