@@ -7,7 +7,13 @@ $(function() {
     if ($("#text_search").val().length != 0)
     {
       var data = { user: encodeURIComponent($("#text_search").val()), type_search: $("#type_search").val()  };
-      $.get(url_for, data, function(data) { $('#list_users').html(data); });
+      $.get(url_for, data, function(data) { 
+        $('#list_users').html(data); 
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+      });
     }
   });
 
@@ -26,12 +32,24 @@ function open_administration(obj) {
 
 function manage(obj) {
   $(obj).closest('tr').addClass('active');
-  $.get($(obj).attr('edit-link'), function(data) { $(obj).closest('tr').html(data); });
+  $.get($(obj).attr('edit-link'), function(data) { 
+    $(obj).closest('tr').html(data); 
+  }).error(function(data){
+    var data = $.parseJSON(data.responseText);
+    if (typeof(data.alert) != "undefined")
+      flash_message(data.alert, 'alert');
+  });
 };
 
 function cancel(obj) {
   $(obj).closest('tr').removeClass('active');
-  $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
+  $.get($(obj).attr('show-link'), function(data) { 
+    $(obj).closest('tr').html(data); 
+  }).error(function(data){
+    var data = $.parseJSON(data.responseText);
+    if (typeof(data.alert) != "undefined")
+      flash_message(data.alert, 'alert');
+  });
 }
 
 // --- exclusivo da admin de perfil
@@ -43,46 +61,44 @@ function cancel(obj) {
 function update_allocation(obj) {
   var url = $(obj).attr('save-link');
 
-  $.ajax({
-    type: 'PUT',
-    url: url,
-    data: {
-      "status": $('#status_id option:selected', $(obj).closest('tr')).val()
-    },
-    success: function(data, textStatus, jqXHR) {
+  $.put(url, 
+    {"status": $('#status_id option:selected', $(obj).closest('tr')).val()}, 
+    function(data, textStatus, jqXHR){
       $(obj).closest('tr').removeClass('active');
       $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
-    }
-  })
+  }).error(function(data){
+    var data = $.parseJSON(data.responseText);
+    if (typeof(data.alert) != "undefined")
+      flash_message(data.alert, 'alert');
+  });
 }
 
 function update_user(obj) {
   var url = $(obj).attr('save-link');
 
-  $.ajax({
-    type: 'PUT',
-    url: url,
-    data: {
-      "name": $(obj).closest('tr').find('input[id=name]').val(),
-      "email": $(obj).closest('tr').find('input[id=email]').val(),
-      "status": $('#status_id option:selected', $(obj).closest('tr')).val()
-    },
-    success: function(data, textStatus, jqXHR) {
-      $(obj).closest('tr').removeClass('active');
-      $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
-    }
-  })
+  $.put(url, {
+    "name": $(obj).closest('tr').find('input[id=name]').val(),
+    "email": $(obj).closest('tr').find('input[id=email]').val(),
+    "status": $('#status_id option:selected', $(obj).closest('tr')).val()
+  }, function(data, textStatus, jqXHR){
+    $(obj).closest('tr').removeClass('active');
+    $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
+  }).error(function(data){
+    var data = $.parseJSON(data.responseText);
+    if (typeof(data.alert) != "undefined")
+      flash_message(data.alert, 'alert');
+  });
 }
 
 function change_password(obj) {
   var url = $(obj).attr('edit-link');
-  $.ajax({
-    type: 'PUT',
-    url: url,
-    data: {},
-    success: function(data, textStatus, jqXHR) {
-      $(obj).closest('tr').removeClass('active');
-      $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
-    }
-  })
+  $.put(url, function(data, textStatus, jqXHR){
+    $(obj).closest('tr').removeClass('active');
+    $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
+    flash_message(data.notice, "notice");
+  }).error(function(data){
+    var data = $.parseJSON(data.responseText);
+    if (typeof(data.alert) != "undefined")
+      flash_message(data.alert, 'alert');
+  });
 }

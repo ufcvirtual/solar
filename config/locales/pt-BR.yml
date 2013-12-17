@@ -1544,6 +1544,10 @@
       blocked: Bloqueado
     profiles:
       title: Gerenciar Perfis
+    success:
+      email_sent: Email enviado com sucesso
+    error:
+      email_not_sent: Não foi possível enviar email
 
   editions:
     alert: "Preencha os campos obrigatórios"

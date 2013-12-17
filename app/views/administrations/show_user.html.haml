@@ -11,6 +11,6 @@
       %li= link_to_function t(:allocations, :scope => [:administrations, :users]), "open_administration(this)", :"data-tooltip" => t(:allocations, :scope => [:administrations, :users]), :"show-link" => allocations_user_administrations_path(id: @user.id)
       %li{ class: 'border' }= (label_tag t(:last_accessed, :scope => [:administrations, :users]) + ' ' + last_accessed(@user.id))
 
-  = link_to_function content_tag(:i, nil, class: 'btn icon-edit'), "manage(this)", :"data-tooltip" => t(:edit, :scope => [:administrations, :users]), :"edit-link" => edit_user_administrations_path(@user), :"show-link" => show_user_administrations_path(id: @user.id)
+  = link_to_function content_tag(:i, nil, class: 'icon-edit'), "manage(this)", class: "btn", :"data-tooltip" => t(:edit, :scope => [:administrations, :users]), :"edit-link" => edit_user_administrations_path(@user), :"show-link" => show_user_administrations_path(id: @user.id)
 
-  = link_to_function content_tag(:i, nil, class: 'btn icon-key'), "change_password(this)", :"data-tooltip" => t(:change_password, :scope => [:administrations, :users]), :"edit-link" => change_password_administration_path(@user), :"show-link" => show_user_administrations_path(id: @user.id)
+  = link_to_function content_tag(:i, nil, class: 'icon-key'), "change_password(this)", class: "btn", :"data-tooltip" => t(:change_password, :scope => [:administrations, :users]), :"edit-link" => change_password_administration_path(@user), :"show-link" => show_user_administrations_path(id: @user.id)

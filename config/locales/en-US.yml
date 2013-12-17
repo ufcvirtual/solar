@@ -300,6 +300,8 @@
   app_controller_require: "Please log!"
   app_controller_require_no: "Please log out!"
 
+  username: Login
+
   # forms de usuario em geral (para mensagens de validação)
   form_login: "Login"
   form_username: "Login"
@@ -1390,6 +1392,10 @@
       blocked: Blocked
     profiles:
       title: Manage Profiles
+    success:
+      email_sent: Email sent sucessfully
+    error:
+      email_not_sent: Email not sent
 
   editions:
     filter: Filter

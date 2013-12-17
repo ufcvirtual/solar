@@ -6,8 +6,8 @@
 %td{style: 'width:80px'}= @user.cpf
 %td{style: 'width:75px'}= select(:status, :id, user_status.invert.to_a, {selected: @user.active? ? 1 : 0})
 %td{style: 'width:150px; align:right'}
-	= link_to_function content_tag(:i, nil, class: 'btn icon-edit'), "update_user(this)", :"save-link" => update_user_administration_path(@user), :"show-link" => show_user_administrations_path(id: @user.id), class:  "btn_manage_cancel"
-	= link_to_function content_tag(:i, nil, class: 'btn icon-cross'), "cancel(this)", :"show-link" => show_user_administrations_path(id: @user.id), class: "btn_manage_cancel"
+	= link_to_function content_tag(:i, nil, class: 'icon-checkmark'), "update_user(this)", :"save-link" => update_user_administration_path(@user), :"show-link" => show_user_administrations_path(id: @user.id), class:  "btn btn_manage_cancel"
+	= link_to_function content_tag(:i, nil, class: 'icon-cross'), "cancel(this)", :"show-link" => show_user_administrations_path(id: @user.id), class: "btn btn_manage_cancel"
 
 :javascript
 	eval("#{show_flash}")
