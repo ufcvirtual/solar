@@ -540,17 +540,17 @@
 
                 // If this message is on a different day than the one received
                 // prior, then indicate it on the chatbox.
-                idx = _.indexOf(times, time)-1;
-                contacts=converse.roster.models; //pega lista completa de usuários
-                var c=0;
-                v=document.getElementById(this.model.get('box_id'));
+                idx = _.indexOf(times, time) - 1;
+                contacts = converse.roster.models; //pega lista completa de usuários
+                var c = 0;
+                v = document.getElementById(this.model.get('box_id'));
                 v.style.boxShadow = "1px 1px 1px 1px rgba(0,0,0,0.4)";
-                v.title="";
+                v.title = "";
                 img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
                 while(c<contacts.length){
                     if(contacts[c].attributes.fullname.search(message.attributes.fullname) != -1){
-                        v=document.getElementById(this.model.get('box_id'));
-                        img=v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
+                        v = document.getElementById(this.model.get('box_id'));
+                        img = v.childNodes[0].childNodes[1].childNodes[0].childNodes[1];
                         if(contacts[c].attributes.chat_status.search("online")!=-1) img.src=imgOn;
                         if(contacts[c].attributes.chat_status.search("dnd")!=-1)img.src=imgDnd;
                         if(contacts[c].attributes.chat_status.search("away")!=-1)img.src=imgAway;
@@ -583,8 +583,8 @@
                     head = v.childNodes.item(0);
                     if(head.style.top=="300px")
                     {
-                        texto=head.childNodes.item(1);
-                        texto=texto.childNodes.item(0);
+                        texto = head.childNodes.item(1);
+                        texto = texto.childNodes.item(0);
                         texto.style.color="black";
                         head.style.backgroundColor = "#1E90FF";
                     }
@@ -718,14 +718,37 @@
 
                 if (converse.connection) {
                     //TODO fazer o "reaparecimento" das chatboxes que não foram fechadas pelo usuário
+
+
                     box = document.getElementById(this.el.id);
                     box.title = "fechado";
                     this.model.destroy();
+                      
+                
+
 
                 } else {
                     this.model.trigger('hide');
+
                 }
 
+                chatboxes = $("#collective-xmpp-chat-data .chatbox:not(:first)");
+                chatboxes_visible = $("#collective-xmpp-chat-data .chatbox:not(:first):visible");
+                chatboxes_invisible = $("#collective-xmpp-chat-data .chatbox:not(:first):not(:visible)");
+                if(chatboxes_visible.length <= maxWindows)
+                {
+                    for(i = 0; i < chatboxes_invisible.length; i++)
+                     {
+
+                        chatbox_visible = chatboxes_invisible[i];
+                        if(typeof(chatbox_visible) !== 'undefined' && chatbox_visible != null)
+                            if(chatbox_visible.title !="fechado")
+                            {
+                              $(chatbox_visible).css("display","inline");
+                                break;
+                            }
+                     }                
+                }         
             },
 
             updateVCard: function () {
@@ -760,6 +783,8 @@
                 if (this.model.get('status')) {
                     this.showStatusMessage(this.model.get('status'));
                 }
+
+
             },
 
             
@@ -1272,6 +1297,7 @@
                     var i;
                     if (_.has(item.changed, 'connected')) {
                         this.render();
+
                         converse.features.on('add', $.proxy(this.featureAdded, this));
                         // Features could have been added before the controlbox was
                         // initialized. Currently we're only interested in MUC
@@ -1356,6 +1382,7 @@
                         this.roomspanel.render();
                     }
                 }
+
                 return this;
             }
         });
@@ -1483,6 +1510,7 @@
                 this);
                 this.$el.appendTo(converse.chatboxesview.$el);
                 this.render().show().model.messages.fetch({add: true});
+                
             },
 
             onLeave: function () {
@@ -2984,6 +3012,7 @@
                 cfg.$parent.html(this.$el.html(this.template()));
                 this.$tabs = cfg.$parent.parent().find('#controlbox-tabs');
                 this.authenticate();
+
                 window.onresize = function(event)
                 {
                   
@@ -2993,7 +3022,7 @@
                   chatboxes = $("#collective-xmpp-chat-data .chatbox:not(:first)");
                   chatboxes_visible = $("#collective-xmpp-chat-data .chatbox:not(:first):visible");
                   chatboxes_invisible = $("#collective-xmpp-chat-data .chatbox:not(:first):not(:visible)");
-                    if(chatboxes_visible.length > maxWindows)
+                    if(chatboxes_visible.length > maxWindows - 1)
                     {
 
                         for(i = number_chatbox - 1 ; i  > maxWindows - 1 && i > 0; i-- )
