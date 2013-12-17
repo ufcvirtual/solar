@@ -1,0 +1,36 @@
+/ = javascript_include_tag 'autocomplete'
+
+= simple_form_for @profile, html: {id: "profile_form"} do |f|
+  %span.form_requirement= t(:required_fields)
+  %h1#lightBoxDialogTitle= t(".new")
+
+  .form-inputs.block_content 
+    = f.input :name
+    = f.input :description, as: :text
+    - if f.object.new_record?
+      = f.input :template, collection: Profile.all_except_basic, prompt: t(".select_template")
+
+    .block_buttons
+      - unless f.object.new_record?
+        .left
+          = button_to_function t(".delete"), "profile_delete()", class: "btn btn_default btn_caution", type: "button"
+
+      .right
+        = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button" 
+        = button_to_function t(:save), "profile_save()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
+
+:javascript
+
+  function profile_save() {
+    $('form#profile_form').serialize_and_submit({
+      replace_list: $('.list_profiles')
+    });
+  }
+
+  function profile_delete() {
+    $(".tb_list tr[data-profile-id=#{@profile.id}]").nice_delete({
+      complete: function() {
+        $.fancybox.close();
+      }
+    });
+  }

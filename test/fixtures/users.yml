@@ -337,8 +337,6 @@ basico:
   address_neighborhood: Lorem ipsum dolor sit amet.
   zipcode: 60000000
   country: China
-  # state: bem baratinho
-  # city: Olho de coco
   institution: UFP
   bio: Lorem ipsum dolor sit amet.
   interests: Lorem ipsum dolor sit amet.
@@ -378,3 +376,31 @@ editor:
   encrypted_password: <%= password %>
   password_salt: ziApLgRyXbqJPBN18g4g
   authentication_token: apbT4Ue132asgpkCAB1q
+
+admin:
+  id: 15
+  username: admin
+  email: admin@com.br
+  name: admin
+  nick: Admin
+  birthdate: 1900-03-02
+  cpf: 42804565696
+  gender: true
+  address: Lorem ipsum dolor sit amet.
+  address_number: 111
+  address_neighborhood: UFC
+  zipcode: 60000000
+  country: Brasil
+  state: AL
+  city: Bom Conselho
+  institution: UFAL
+  bio: Lorem ipsum dolor sit amet.
+  interests: Lorem ipsum dolor sit amet.
+  music: Lorem ipsum dolor sit amet.
+  movies: Lorem ipsum dolor sit amet.
+  books: Lorem ipsum dolor sit amet.
+  phrase: Lorem ipsum dolor sit amet.
+  site: www.admin.com
+  encrypted_password: <%= password %>
+  password_salt: ziApLgRyXbqJPBN18g4g
+  authentication_token: bbcO4Ue132asgpkCAB1q

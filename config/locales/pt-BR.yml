@@ -25,6 +25,7 @@
   time:
     formats:
       clock: "%d/%m/%Y %H:%M:%S"
+      clock_time: "%H:%M:%S"
       default: "%A, %d de %B de %Y, %H:%M h"
       short: "%d/%m %H:%M h"
       today: "%H:%M"
@@ -324,6 +325,10 @@
       notification:
         title: Título
         description: Descrição
+      profile:
+        name: Nome
+        description: Descrição
+        template: Modelo
 
     errors:
       uniqueness: "Registro já existe no sistema"
@@ -1855,6 +1860,8 @@
     mark_as_read: "Marcar como lida"
     mark_as_unread: "Marcar como não lida"
 
+    already_added: já adicionado
+
     none: "Nenhuma mensagem encontrada"
     no_new: "Sem novas mensagens"
     no_subject: "(sem assunto)"
@@ -1873,6 +1880,7 @@
       attach_file: "Anexar um arquivo"
       send: "Enviar"
       without_recipient: "Necessário pelo menos um destinatário."
+      must_have_content: Necessário escrever mensagem
       discard: "Descartar"
       add_contacts: "Clique aqui para adicionar contatos"
     header:
@@ -1890,6 +1898,32 @@
       forward: "Encaminhar"
     index:
       filter_selected: "Visualizar: "
+
+  profiles:
+    form:
+      select_template: Selecione um modelo
+      new: Novo Perfil
+      delete: Deletar
+    index:
+      new: Novo perfil
+    list:
+      edit: Editar perfil
+      permissions: Permissões
+    permissions:
+      permissions: Permissões
+      profile: "Perfil: %{profile}"
+      filter: Filtrar
+      edit: Editar permissões
+      save: Salvar permissões
+      cancel: Cancelar edição
+    success:
+      created: Perfil criado com sucesso.
+      updated: Perfil atualizado com sucesso.
+      deleted: Perfil deletado com sucesso.
+    error:
+      created: Não foi possível criar perfil.
+      updated: Não foi possível atualizar perfil.
+      deleted: Não foi possível deletar perfil.
 
   #Autocomplete
   autocomplete:

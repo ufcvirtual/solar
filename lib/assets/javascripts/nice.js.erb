@@ -169,14 +169,14 @@ $.fn.nice_delete = function(options) {
     options = {};
 
   options = $.extend({ parent: 'tr', url: $(this).data("link-delete") }, options);
-  var parent = $(this).parents(options.parent);
+  var parent = $(this).closest(options.parent);
 
   if (typeof(options) != "undefined" && typeof(options.success) == "undefined") { // definir success
     options.success = function(data) {
       if (typeof(data.notice) != "undefined")
         flash_message(data.notice, 'notice');
 
-      parent.fadeOut(500, function(){ $(this).remove() });
+      parent.slideUp().remove();
 
       if (typeof(options.complement_success) == "function")
         options.complement_success(data);
@@ -191,12 +191,18 @@ $.fn.nice_delete = function(options) {
     }
   }
 
+  if (typeof(options.complete) == "undefined")
+    options.complete = function(data) {
+      // default: faz nada
+    }
+
   $.ajax({
     method: "DELETE",
     url: options.url,
     success: options.success,
-    error: options.error
-  });
+    error: options.error,
+    complete: options.complete
+  })
 
   return this;
 }
@@ -265,4 +271,19 @@ $.fn.serialize_and_submit = function(options) {
 
   $.ajax(ajax_options);
   return this;
+}
+
+/**
+ * Filtra uma tabela com o conteúdo de um input.
+ * A tabela é passada através de options como {table: '#table'}
+ */
+$.fn.nice_table_filter = function(options) {
+  $(this).keyup(function(){
+    var term = $(this).val().toLowerCase(), table = $(options.table);
+    if (term != "") {
+      $('tbody > tr', table).hide(); // esconde todas as tr
+      $('tbody td', table).filter(function(){ return $(this).text().toLowerCase().indexOf(term) > -1 }).closest('tr').show(); // exibe apenas as que contem o texto da busca
+    } else
+      $('tbody > tr', $(options.table)).show();
+  });
 }

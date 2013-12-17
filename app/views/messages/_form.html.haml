@@ -74,11 +74,14 @@
 :javascript
 
   $(function(){
-    // tentando enviar sem destinatário
+    // tentando enviar sem destinatário ou sem corpo da mensagem
     $("#send_message").click(function(event){
       if ($('#message_to').val() == ""){
         event.preventDefault();
         alert("#{I18n.t(:without_recipient, scope: [:messages, :form])}");
+      }else if ($(".cke_contents iframe").contents().find("body").text() == ""){
+        event.preventDefault();
+        alert("#{I18n.t(:must_have_content, scope: [:messages, :form])}"); 
       }
     });
 

@@ -23,6 +23,7 @@
   time:
     formats:
       clock: "%m/%d/%Y %H:%M:%S"
+      clock_time: "%H:%M:%S"
       default: "%d/%b/%Y, %H:%M:%S"
       short: "%d/%b %H:%M"
       today: "%H:%M"
@@ -194,6 +195,10 @@
       notification:
         title: Title
         description: Description
+      profile:
+        name: Name
+        description: Description
+        template: Template
 
     errors:
       uniqueness: "Record already exists in the system"
@@ -1700,6 +1705,8 @@
     mark_as_read: "Marck as read"
     mark_as_unread: "Mark as unread"
 
+    already_added: already added
+
     none: "No message found"
     no_new: "No new messages"
     no_subject: "(no subject)"
@@ -1718,6 +1725,7 @@
       attach_file: "Attach a file"
       send: "Send"
       without_recipient: "Need at least one recipient."
+      must_have_content: A message must be written
       discard: "Discard"
       add_contacts: "Click here to add contacts"
     header:
@@ -1735,6 +1743,32 @@
       forward: "Forward"
     index:
       filter_selected: "View: "
+
+  profiles:
+    form:
+      select_template: Select a template
+      new: New Profile
+      delete: Delete
+    index:
+      new: New
+    list:
+      edit: Edit
+      permissions: Permissions
+    permissions:
+      permissions: Permissions
+      profile: "Profile: %{profile}"
+      filter: Filter
+      edit: Edit Permissions
+      save: Save Permissions
+      cancel: Cancel Edition
+    success:
+      created: Profile was successfully created.
+      updated: Profile was successfully updated.
+      deleted: Profile was successfully deleted.
+    error:
+      created: Profile wasn't created.
+      updated: Profile wasn't updated.
+      deleted: Profile wasn't deleted.
 
   #Autocomplete
   autocomplete:
@@ -1793,7 +1827,7 @@
       start_date: Start
       end_date: End
       event_details: Event's details
-    
+
   agendas:
     dropdown_content:
       chat_rooms: "Chat: "

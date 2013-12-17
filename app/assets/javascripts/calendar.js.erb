@@ -1,5 +1,7 @@
 $(function() {
 
+  var url = $("#events_path").val();
+
   var date = new Date();
   var d = date.getDate();
   var m = date.getMonth();
@@ -12,7 +14,7 @@ $(function() {
   // Sources para recuperar os eventos
   var fcSources = {
     calendar: {
-        url: '/agendas/events',
+        url: url,
         data: {
           "allocation_tags_ids": $("#allocation_tags_ids").val(),
           "all_groups_ids": $("#all_groups_ids").val()
@@ -21,7 +23,7 @@ $(function() {
         ignoreTimezone: false
     },
     list: {
-      url: '/agendas/events',
+      url: url,
       data: {
         "allocation_tags_ids": $("#allocation_tags_ids").val(),
         "all_groups_ids": $("#all_groups_ids").val(),

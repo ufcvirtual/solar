@@ -1,0 +1,93 @@
+.block_wrapper
+  .block_title
+    %h2= t(".profile", profile: @profile.name)
+
+.block_wrapper
+  .block_title
+    %h2= t(".permissions")
+    .block_toolbar_right
+      = link_to_function content_tag(:i, nil, class: 'btn icon-arrow-left-thin'), "profile_permission_back()", :"data-tooltip" => t(:back)
+  .block_content_toolbar.block_content_text
+    .block_toolbar_left
+      = label "permission", "search", t(".filter")
+      = text_field_tag "permission_search"
+    .block_toolbar_right
+      = link_to_function content_tag(:i, nil, class: 'btn icon-edit'), "profile_permission_enable_edition()", :"data-tooltip" => t(".edit"), class: "edit-enable"
+      = link_to_function content_tag(:i, nil, class: 'btn icon-cross'), "profile_permission_cancel_edition()", :"data-tooltip" => t(".cancel"), class: "edit-cancel invisible"
+      = link_to_function content_tag(:i, nil, class: 'btn icon-checkmark'), "profile_permission_save()", :"data-tooltip" => t(".save"), class: "edit-save invisible"
+
+  .block_content
+    - unless @resources.blank?
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th= t(".category")
+            %th= t(".permission")
+            %th.no_sort= t(".enable")
+        %tbody
+          - @resources.each do |r|
+            - permission = not(r[:permission].blank?)
+            %tr.lines{class: permission ? "permission" : ""}
+              %td= t(r[:controller].singularize.to_sym, scope: :controllers)
+              %td= r[:description]
+              %td= check_box_tag "resource", r.id, permission, disabled: true, onchange: "javascript:mudeminhacor(this);", class: "ckb_resource"
+
+
+:css
+  .permission {
+    color: red;
+  }
+
+  .verde {
+    color: green;
+  }
+
+:javascript
+
+  $("#permission_search").nice_table_filter({
+    table: $('.tb_list')
+  });
+
+  function profile_permission_back() {
+    $(".profiles-list").show();
+    $(".profile-permissions-list").hide();
+  }
+
+  function profile_permission_enable_edition() {
+    $(":checkbox").attr("disabled", false);
+
+    $(".edit-enable").hide();
+    $(".edit-cancel, .edit-save").show();
+  }
+
+  function profile_permission_cancel_edition() {
+    $(":checkbox").attr("disabled", true);
+
+    $(".edit-enable").show();
+    $(".edit-cancel, .edit-save").hide();
+  }
+
+  function profile_permission_save() {
+    var resources = $('.ckb_resource:checked').map(function() { return this.value; }).get();
+    $.post("#{permissions_grant_profile_path}", {resources: resources}, function(data){
+      profile_permission_cancel_edition();
+      if (typeof(data) != "undefined" && typeof(data.notice) != "undefined")
+        flash_message(data.notice, 'notice');
+
+    }).error(function(data){
+      var response = JSON.parse(data.responseText);
+      if (typeof(response.alert) != "undefined")
+        flash_message(response.alert, 'alert');
+    });
+  }
+
+
+
+  // já com permissao fica azul
+  // add e retirou fica normal
+  // add fica vermelhor
+  // retirar fica verde
+
+  function mudeminhacor(ck) {
+    $(ck).closest('tr').addClass('verde');
+  }

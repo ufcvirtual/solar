@@ -14,7 +14,7 @@ class MessagesController < ApplicationController
 
     @messages = Message.send("user_#{@box}", current_user.id, allocation_tag_id)
                         .paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
-                        .order("created_at DESC")
+                        .order("created_at DESC").uniq
   end
 
   def new
@@ -156,11 +156,10 @@ class MessagesController < ApplicationController
     # melhorar para considerar apenas as allocation_tags das ofertas correntes
     def user_contacts
       contacts, ucs = [], []
-      (current_user.allocations.map(&:allocation_tag).compact.uniq).each do |at, idx|
+      (current_user.allocations.map(&:allocation_tag).compact.uniq).each do |at|
         responsible = CurriculumUnit.class_participants_by_allocations_tags_and_is_profile_type(at.related.join(","),
           Profile_Type_Class_Responsible)
-        participants = CurriculumUnit.class_participants_by_allocations_tags_and_is_not_profile_type(at.groups.map(&:allocation_tag).map(&:id).join(","), Profile_Type_Class_Responsible)
-
+        participants = CurriculumUnit.class_participants_by_allocations_tags_and_is_not_profile_type(at.groups.map(&:allocation_tag).compact.map(&:id).join(","), Profile_Type_Class_Responsible)
         uc = at.groups.first.curriculum_unit
         unless ucs.include?(uc)
           ucs << uc

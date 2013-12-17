@@ -45,11 +45,7 @@ class AccessControlController < ApplicationController
         file_path = Lesson::FILES_PATH.join(params[:id], params[:folder], [params[:path], '.', params[:format]].join)
       end
 
-      if File.exist? file_path
-        render file: file_path, layout: false
-      else
-        render nothing: true
-      end
+      File.exist?(file_path) ? send_file(file_path, disposition: 'inline') : render(nothing: true)
     else
       send_file(@lesson.path(true), {disposition: 'inline', type: return_type(params[:extension])})
     end

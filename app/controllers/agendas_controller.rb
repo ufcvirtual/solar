@@ -12,7 +12,7 @@ class AgendasController < ApplicationController
   end
 
   def list
-    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? [active_tab[:url][:allocation_tag_id]] : params[:allocation_tags_ids].split(" ")).flatten
+    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ?  AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.flatten : params[:allocation_tags_ids].split(" ")).flatten
 
     authorize! :calendar, Agenda, {on: @allocation_tags_ids, read: true}
     render action: :calendar
@@ -20,7 +20,7 @@ class AgendasController < ApplicationController
 
   # calendário de eventos
   def calendar
-    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? [active_tab[:url][:allocation_tag_id]] : params[:allocation_tags_ids].split(" ")).flatten
+    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.flatten : params[:allocation_tags_ids].split(" ")).flatten
 
     authorize! :calendar, Agenda, {on: @allocation_tags_ids, read: true}
     @access_forms = Event.descendants.collect{ |model| model.to_s.tableize.singularize if model.constants.include?("#{params[:selected].try(:upcase)}_PERMISSION".to_sym) }.compact.join(",")
@@ -28,7 +28,7 @@ class AgendasController < ApplicationController
 
   # eventos para exibição no calendário
   def events
-    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? [active_tab[:url][:allocation_tag_id]] : params[:allocation_tags_ids].split(" ")).flatten
+    @allocation_tags_ids = (active_tab[:url].include?(:allocation_tag_id) ? AllocationTag.find(active_tab[:url][:allocation_tag_id]).related.flatten : params[:allocation_tags_ids].split(" ")).flatten
     authorize! :calendar, Agenda, {on: @allocation_tags_ids, read: true}
 
     events = (params.include?("list") ? 

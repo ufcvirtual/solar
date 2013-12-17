@@ -16,6 +16,8 @@ class Message < ActiveRecord::Base
   attr_accessor :contacts
 
   validates :content, presence: true
+  
+  scope :by_user, ->(user_id) { joins(:user_messages).where(user_messages: {user_id: user_id}) }
 
   # box = [inbox, outbox, trashbox]
   def was_read?(user_id, box)
@@ -46,7 +48,7 @@ class Message < ActiveRecord::Base
 
   def labels(user_id = nil, system_label = true)
     l = []
-    l << message_labels.where(user_id: user_id).map(&:name) if user_id
+    l << message_labels.where(user_id: user_id).map(&:name) if user_id # label criada pelo usuário (funcionalidade futura)
     l << group.as_label if system_label and allocation_tag_id # label pela turma (default do sistema)
     l.flatten.compact.uniq
   end
@@ -58,28 +60,26 @@ class Message < ActiveRecord::Base
     where = []
     where = "messages.allocation_tag_id = (#{allocation_tag_id})" unless allocation_tag_id.nil?
 
-    joins(:user_messages).where(user_messages: {user_id: user_id})
-      .where(where)
-      .where(query.join(" AND ")).order("created_at DESC").uniq
+    by_user(user_id).where(where).where(query.join(" AND ")).order("created_at DESC").uniq
   end
 
   def self.user_outbox(user_id, allocation_tag_id = nil)
     where = []
     where = "messages.allocation_tag_id = (#{allocation_tag_id})" unless allocation_tag_id.nil?
 
-    joins(:user_messages).where(user_messages: {user_id: user_id})
-      .where(where)
+    by_user(user_id).where(where)
       .where("cast(user_messages.status & #{Message_Filter_Sender} as boolean)
-        AND NOT cast(user_messages.status & #{Message_Filter_Trash} as boolean)").order("created_at DESC").uniq # sender AND NOT trash
+        AND NOT cast(user_messages.status & #{Message_Filter_Trash} as boolean)")
+      .order("created_at DESC").uniq # sender AND NOT trash
   end
 
   def self.user_trashbox(user_id, allocation_tag_id = nil)
     where = []
     where = "messages.allocation_tag_id = (#{allocation_tag_id})" unless allocation_tag_id.nil?
 
-    joins(:user_messages).where(user_messages: {user_id: user_id})
-      .where(where)
-      .where("cast(user_messages.status & #{Message_Filter_Trash} as boolean)").order("created_at DESC").uniq # IN (trash)
+    by_user(user_id).where(where)
+      .where("cast(user_messages.status & #{Message_Filter_Trash} as boolean)")
+      .order("created_at DESC").uniq # IN (trash)
   end
 
   def user_has_permission?(user_id)

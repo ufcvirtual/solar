@@ -70,15 +70,14 @@
 
         function showLocalTime(container) {
           if (!$('#'+container).length) return;
-          updateTime(container, "<%=l DateTime.now, :format => :clock %>");
+          updateTime(container, "<%=l DateTime.now, format: :clock_time %>".split(":"));
         }
 
         function updateTime(el, server_time) {
-          var localtime = new Date(server_time);
+          var localtime = new Date(new Date().setHours(server_time[0], server_time[1], server_time[2]))
           localtime.setSeconds(localtime.getSeconds()+1);
-
           $("#"+el).html(formatNumber(localtime.getHours()) + ":" + formatNumber(localtime.getMinutes()) + ":" + formatNumber(localtime.getSeconds()));
-          setTimeout(function(){updateTime(el, localtime);}, 1000);
+          setTimeout(function(){updateTime(el, [localtime.getHours(), localtime.getMinutes(), localtime.getSeconds()]);}, 1000);
         }
 
         function formatNumber(num) { return (num < 10) ? "0" + num : num; }

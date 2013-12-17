@@ -1,14 +1,19 @@
 class Profile < ActiveRecord::Base
 
-  has_many :allocations
-  has_many :users, :through => :allocations
-  has_many :permissions_resources
-  has_many :permissions_menus
+  has_many :users, through: :allocations
+  has_many :allocations, dependent: :restrict
+  has_many :permissions_menus, dependent: :destroy
 
-  has_many :resources, :through => :permissions_resources
+  has_and_belongs_to_many :resources, join_table: "permissions_resources"
+
+  validates :description, :name, presence: true
+  validates :name, length: {maximum: 250}
+  validates :description, length: {maximum: 400}
+
+  attr_accessor :template
 
   def self.all_except_basic
-    Profile.where("types<>?", Profile_Type_Basic)
+    Profile.where("types <> ?", Profile_Type_Basic).order("name")
   end
 
   ## recupera uma lista perfis que possuem quaisquer permissões requisitadas
