@@ -293,10 +293,16 @@ pm71:
   profile_id: 4
   menu_id: 205
 
+# admin
+
 pm72:
   profile_id: 6
   menu_id: 60
 
 pm73:
+  profile_id: 6
+  menu_id: 602
+
+pm74:
   profile_id: 6
   menu_id: 605

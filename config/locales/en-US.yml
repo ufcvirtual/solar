@@ -41,12 +41,32 @@
   # ActiveRecord
   activerecord:
     models:
-      user: "User"
-      curriculum_unit: "Curriculum Unit"
-      group: "Class"
-      course: "Course"
-      bibliography: "Bibliography"
-      notification: "Notification"
+      course: Course
+      curriculum_unit: Curriculum Unit
+      offer: Offer
+      semester: Semester
+      group: Group
+      user: User
+      allocation: Allocation
+      edition: Edition
+      administration: Administration
+      profile: Profile
+      bibliography: Bibliography
+      notification: Notification
+      agenda: Agenda
+      assignment: Assignment
+      assignment_comment: Assignment Comment
+      chat_room: Chat
+      enrollment: Enrollment
+      lesson: Lesson
+      lesson_module: Lesson Module
+      message: Message
+      discussion: Discussion
+      post: Discussion - Post
+      post_file: Discussion - File
+      schedule_event: Event
+      score: Score
+      support_material_file: Support Material
     attributes:
       user:
         alternate_email: "Alternate e-mail"
@@ -1761,6 +1781,9 @@
       edit: Edit
       permissions: Permissions
     permissions:
+      category: Category
+      permission: Permission
+      enable: Enable
       permissions: Permissions
       profile: "Profile: %{profile}"
       filter: Filter

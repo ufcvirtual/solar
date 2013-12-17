@@ -166,12 +166,32 @@
   # ActiveRecord
   activerecord:
     models:
-      user: "Usuario"
-      curriculum_unit: "Unidade Curricular"
-      group: "Turma"
-      course: "Curso"
-      bibliography: "Bibliografia"
-      notification: "Aviso"
+      course: Curso
+      curriculum_unit: Unidade Curricular
+      offer: Oferta
+      semester: Semestre
+      group: Turma
+      user: Usuário
+      allocation: Alocação
+      edition: Edição
+      administration: Administração
+      profile: Perfil
+      bibliography: Bibliografia
+      notification: Aviso
+      agenda: Agenda
+      assignment: Trabalho
+      assignment_comment: Comentário de Trabalho
+      chat_room: Chat
+      enrollment: Matrícula
+      lesson: Aula
+      lesson_module: Módulos de Aula
+      message: Mensagem
+      discussion: Fórum
+      post: Fórum - Postagen
+      post_file: Fórum - Arquivo
+      schedule_event: Evento
+      score: Acompanhamento
+      support_material_file: Material de Apoio
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -1200,7 +1220,7 @@
   menu_messages: Mensagens
   menu_adm: Administracao
   menu_notice: Aviso
-  menu_manage_profiles: Gerenciar Perfis
+  menu_manage_profiles: Gerência de Perfis
   menu_indicate_user: Indicar Usuario
   menu_reports: Relatorios
   menu_virtual_disc: Disco Virtual
@@ -1914,6 +1934,9 @@
       edit: Editar perfil
       permissions: Permissões
     permissions:
+      category: Categoria
+      permission: Permissão
+      enable: Habilitado
       permissions: Permissões
       profile: "Perfil: %{profile}"
       filter: Filtrar
