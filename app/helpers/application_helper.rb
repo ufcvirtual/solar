@@ -68,7 +68,7 @@ module ApplicationHelper
     group_selected     = groups.first.id if group_selected.blank?
 
     result = ''
-    if (groups.length > 1)
+    if (groups.length > 1 and @can_select_group)
       result = "<form accept-charset='UTF-8' action='' method='#{request.method}' name='groupSelectionForm' style='display:inline'>"
       result <<  t(:group) << ":&nbsp"
       result << select_tag(:selected_group, options_from_collection_for_select(groups, :id, :code_semester, group_selected),
@@ -87,7 +87,7 @@ module ApplicationHelper
 
       result << " <input name='authenticity_token' value='#{form_authenticity_token}' type='hidden'>"
       result << '</form>'
-    elsif groups.length == 1
+    else
       result = t(:group) << ":&nbsp #{groups[0].code_semester}"
     end
 

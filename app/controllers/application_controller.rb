@@ -112,6 +112,8 @@ class ApplicationController < ActionController::Base
   end
 
   def prepare_for_group_selection
+    @can_select_group = true
+
     return unless active_tab[:url][:context] == Context_Curriculum_Unit.to_i
 
     # verifica se o grupo foi passado e se é um grupo válido
