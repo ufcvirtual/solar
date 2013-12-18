@@ -1145,6 +1145,7 @@
 
             render: function () {
                 this.$tabs.append(this.tab_template());
+
                 return this;
             },
 
@@ -1532,6 +1533,9 @@
                         undefined);
                 },
                 this);
+
+
+
                 this.$el.appendTo(converse.chatboxesview.$el);
                 this.render().show().model.messages.fetch({add: true});
                 
@@ -1941,6 +1945,7 @@
             model: converse.ChatBox,
 
             onConnected: function () {
+
                 this.localStorage = new Backbone.LocalStorage(
                     hex_sha1('converse.chatboxes-'+converse.bare_jid));
                 if (!this.get('controlbox')) {
@@ -3060,6 +3065,30 @@
                 cfg.$parent.html(this.$el.html(this.template()));
                 this.$tabs = cfg.$parent.parent().find('#controlbox-tabs');
                 this.authenticate();
+
+                $(document).ready(function(){
+                setTimeout(function()
+                    {
+                        console.log("Passou aqui no ready");
+                        maxWindows = Math.floor(($(window).width()/217.00) - 1) ;
+                                          number_chatbox = $(".chatbox").length - 1;
+
+                        chatboxes = $("#collective-xmpp-chat-data .chatbox:not(:first)");
+                        chatboxes_visible = $("#collective-xmpp-chat-data .chatbox:not(:first):visible");
+                        chatboxes_invisible = $("#collective-xmpp-chat-data .chatbox:not(:first):not(:visible)");
+                        if(chatboxes_visible.length > maxWindows - 1)
+                        {
+
+                            for(i = number_chatbox - 1 ; i  > maxWindows - 1 && i > 0; i-- )
+                            {
+
+                                chatbox_visible = chatboxes_visible[i];
+                                $(chatbox_visible).css("display","none");
+
+                            }
+                        }
+                    },800);
+                });
 
                 window.onresize = function(event)
                 {
